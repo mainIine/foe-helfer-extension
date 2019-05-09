@@ -1,0 +1,62 @@
+{
+	"name": "FoE - Helfer",
+	"version": "2.2.5",
+	"description": "Kleine Tools und Helfer für ein besseres Spieleerlebnis in Forge of Empires",
+	"manifest_version": 2,
+	"permissions": [
+		"activeTab",
+		"storage",
+		"tabs",
+	  	"notifications",
+	  	"management",
+		"https://*.forgeofempires.com/*",
+		"https://foe-rechner.de/"
+	],
+
+	"browser_action": {
+		"default_icon": {
+			"16": "images/app16.png",
+			"19": "images/app19.png",
+			"32": "images/app32.png",
+			"38": "images/app38.png",
+			"48": "images/app48.png"
+		},
+		"default_popup": "content/popup.html",
+		"default_title": "FoE - Helfer"
+	},
+
+	"icons": {
+		"16": "images/app16.png",
+		"48": "images/app48.png",
+		"128": "images/app128.png"
+	},
+
+	"web_accessible_resources": [
+		"css/web/style.css",
+		"vendor/*.js",
+		"js/web/*.*",
+		"css/images/*.png"
+	],
+	
+	"content_scripts": [
+		{
+			"matches": ["https://*.forgeofempires.com/*"],
+			"exclude_globs": ["*zz0*"],
+			"include_globs": ["*game*"],
+			"run_at": "document_start",
+			"js": [
+				"js/inject.js"
+			]
+		}
+	],
+
+  	"externally_connectable" : {
+	  	"matches": ["https://*.forgeofempires.com/*"],
+	  	"ids": ["*"]
+	},
+
+	"background": {
+	  	"scripts": ["js/background.js"],
+	  	"persistent": true
+	}
+}

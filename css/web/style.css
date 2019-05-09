@@ -1,0 +1,700 @@
+/*
+* **************************************************************************************
+*
+* Dateiname:                 style.css
+* Projekt:                   foe
+*
+* erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+* erstellt am:	              23.01.19 09:44 Uhr
+* zu letzt bearbeitet:       23.01.19 09:44 Uhr
+*
+* Copyright © 2019
+*
+* **************************************************************************************
+*/
+
+body {
+	position: absolute !important;
+	height: 100% !important;
+	width: 100% !important;
+	overflow: hidden;
+}
+
+.game-cursor {
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
+}
+
+.game-cursor:hover {
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+}
+
+.window-box {
+	background: url('../images/box-bg.png') center center repeat;
+	z-index: 100;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: #F3D6A0;
+	position: absolute;
+	text-align: left;
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
+	border-color: transparent;
+	border-width: 35px 10px 10px 10px;
+	border-style: solid;
+	border-image-source: url('../images/window.png');
+	border-image-slice: 54 28 28;
+	border-image-width: 54px 28px 28px;
+	border-image-repeat: round;
+	border-image-outset: 0.3;
+	padding: 10px;
+	border-radius: 20px;
+}
+
+.window-head {
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	top: -30px;
+	left: 7px;
+	right: 1px;
+}
+
+.window-head:not(span) {
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_drag.cur'), auto;
+}
+
+.window-head span.title {
+	font-weight: 700;
+	display: block;
+	font-size: 1rem;
+}
+
+.window-head span.window-close {
+	display: inline-block;
+	width: 26px;
+	height: 24px;
+	background: url('../images/close.png') -1px -1px no-repeat;
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+	position: relative;
+}
+
+.window-box .window-close:hover {
+	background-position: -1px -27px;
+}
+
+.window-body {
+	padding-bottom: 5px;
+}
+
+.window-body::-webkit-scrollbar {
+	width: 8px;
+}
+
+.window-body::-webkit-scrollbar-thumb {
+	background: #281207;
+	border-radius: 10px;
+}
+
+/*******************************************************************************************/
+
+.toolTipWrapper {
+	text-align: left;
+	display: none;
+	position: absolute;
+	width: 180px;
+	right: 67px;
+	top: 50%;
+	border: 10px solid transparent;
+	background-color: #5e5a4e;
+	border-image: url('../images/tooltip_bg.png') 10 round;
+	z-index: 999;
+	transform: translateY(-50%);
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: #f2ede1;
+	padding: 3px;
+}
+
+.toolTipWrapper::after {
+	content: '';
+	width: 18px;
+	height: 31px;
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: -22px;
+	background: url('../images/tooltip_bg_arrow.png') center center no-repeat;
+}
+
+.toolTipWrapper .tooltip-error {
+	color: #f79090;
+}
+
+.toolTipWrapper .toolTipHeader {
+	color: #bdc5cb;
+	background-color: #313d45;
+	box-shadow: inset 0 0 2px #000;
+	margin: -7px -7px 2px -7px;
+	padding: 0 5px 1.3px;
+}
+
+/*******************************************************************************************/
+
+.foe-table {
+	border-spacing: 0;
+	border-collapse: separate;
+	width: 100%;
+	background-color: transparent;
+}
+
+
+table.foe-table {
+	border-spacing: 0;
+	border-collapse: separate;
+	width: 100%;
+	background-color: transparent;
+}
+
+table.foe-table thead tr,
+.dark-bg {
+	background-color: rgba(0,0,0, 0.35);
+}
+
+table.foe-table tbody tr:nth-child(odd) {
+	background-color: rgba(255,255,255, 0.07);
+}
+
+table.foe-table tr th,
+table.foe-table tr td {
+	padding: 2px 5px;
+}
+
+table.foe-table tr td {
+	border-top: 1px solid #7F5A34;
+	border-bottom: 1px solid #3D250F;
+}
+
+table.foe-table tr.success td {
+	color: #29b206;
+}
+
+
+.button--lg {
+	position: absolute;
+	display: none;
+	width: 194px;
+	z-index: 999;
+	color: #efcf9a;
+	line-height: 24px;
+	font-family: Arial,Verdana;
+	background-image: url('../images/btn-bg.png');
+	font-size: 13px;
+	font-weight: 700;
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+	background-position: -1px -2px;
+	background-size: 196px 53px;
+}
+
+.button--lg:hover {
+	background-position: -1px -29px;
+}
+
+
+p {
+	margin: 0 0 10px 0;
+}
+
+.text-center {
+	text-align: center;
+}
+.text-right {
+	text-align: right;
+}
+
+/* ------------------------------------------------------------------- */
+/* ------------------------------------------------------------------- */
+/* ------------------------------------------------------------------- */
+
+#costCalculator {
+	top: 30%;
+	left: 30px;
+	width: 270px;
+}
+
+
+#costCalculator #costCalculatorBody input {
+	display: inline-block;
+	width: 45px;
+	height: calc(1rem + 2px);
+	padding: .275rem .65rem;
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+#costCalculator #costCalculatorBody strong {
+	color: #FFB539;
+}
+
+#costCalculator #costCalculatorBody strong.error {
+	color: #b20000;
+}
+
+#costCalculator #costCalculatorBody strong.success {
+	color: #29b206;
+}
+
+
+/***************************************************/
+
+
+#OwnPartBox {
+	top: 100px;
+	right: 100px;
+	width: 340px;
+	font-size: 80%;
+}
+
+
+#OwnPartBox .OwnPartDrops {
+	display: flex;
+}
+
+#OwnPartBox .OwnPartDrops div:first-child {
+	min-width: 90px;
+	margin-right: 10px;
+}
+
+#OwnPartBox .OwnPartDrops .dropLGStepSelect {
+	min-width: 40px;
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper {
+	margin-left: auto;
+	position: relative;
+	top: -3px;
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper input {
+	max-width: 45px;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	text-align: right;
+	margin: 0;
+	font-size: 0.8rem;
+	height: 15px;
+}
+
+#OwnPartBox .OwnPartDrops div select {
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	max-width: 160px;
+}
+
+#OwnPartBoxBodyWrapper {
+	margin-top: 10px;
+}
+
+#OwnPartBox #OwnPartBoxBody {
+	position: relative;
+	margin-left: 0;
+}
+
+
+#OwnPartBox #OwnPartBoxBody strong {
+	color: #ffb539;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.normal {
+	color: #fff;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.success {
+	color: #29b206;
+}
+
+#OwnPartBox #OwnPartTable .error {
+	color: #8b0000;
+}
+
+#OwnPartBox #OwnPartTable input {
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	width: 45px;
+	text-align: center;
+}
+
+#OwnPartBox #arc-percent {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	text-align: right;
+	width: 50px;
+	margin: 0 5px;
+}
+
+.OwnPartBoxBackground {
+	position: absolute;
+	width: 210px;
+	top: 0;
+	left: -6px;
+}
+
+.OwnPartBoxBackground .divider {
+	display: block;
+	height: 0;
+	margin: 10px auto;
+	width: 80%;
+	border-top: 1px solid #7b5730;
+	border-bottom: 1px solid #9e774e;
+}
+
+.OwnPartBoxBackground .outerArrow:before {
+	content: "";
+	width: 36px;
+	height: 36px;
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/itembar/itembar_0.png');
+	background-repeat: no-repeat;
+	background-position: -197px -36px;
+	transform: rotate(-90deg);
+	position: absolute;
+	top: 0;
+	left: -33px;
+	z-index: -1;
+}
+
+.OwnPartBoxBackground .outerArrow span.arrow {
+	width: 24px;
+	height: 24px;
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/itembar/itembar_0.png');
+	background-repeat: no-repeat;
+	background-position: -1px -35px;
+	position: absolute;
+	top: 7px;
+	left: -27px;
+}
+
+.OwnPartBoxBackground .outerArrow span.arrow:hover {
+	background-position: -1px -59px;
+}
+
+.show .OwnPartBoxBackground .outerArrow span.arrow {
+	background-position: -25px -35px;
+}
+
+.show .OwnPartBoxBackground .outerArrow span.arrow:hover {
+	background-position: -25px -59px;
+}
+
+.OwnPartBoxBackground .OwnPartBoxBackgroundBody {
+	width: 0;
+	height: 0;
+	position: absolute;
+	overflow: hidden;
+	top: 15px;
+	left: 15px;
+}
+
+.OwnPartBoxBackground .btn-outer {
+	margin-bottom: 6px;
+}
+
+.OwnPartBoxBackground .button-own {
+	width: 165px;
+	z-index: 999;
+	color: #efcf9a;
+	line-height: 16px;
+	font-family: Arial,Verdana;
+	background-image: url('../images/btn-bg.png');
+	font-size: 13px;
+	font-weight: 700;
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+	background-position: -3px -4px;
+	background-size: 180px 53px;
+	display: block;
+	padding: 2px 4px;
+	border: 2px solid transparent;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	transition: border 0.3s ease-in-out;
+}
+
+.OwnPartBoxBackground .button-own:hover {
+	background-position: -3px -31px;
+}
+
+.OwnPartBoxBackground .button-own.border-success {
+	border-color: #1c6506;
+}
+
+.OwnPartBoxBackground input {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	font-size: 0.8rem;
+	height: 15px;
+	width: 174px;
+	margin-bottom: 10px;
+}
+
+/***************************************************/
+
+#ResultBox {
+	top: 20%;
+	right: 30px;
+	width: 420px;
+}
+
+#ResultBox #ResultBoxBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 440px;
+	margin-top: 2px;
+}
+
+
+#ResultBox #ResultBoxBody table tr td:first-child {
+	white-space: nowrap;
+}
+
+#ResultBox #ResultBoxBody tr:not(.success) strong {
+	color: #ffb539;
+}
+
+
+/*****************************************************************/
+#ant-hud {
+	position: absolute;
+	right: 0;
+	z-index: 999;
+	width: 64px;
+	height: 270px;
+	top: 360px;
+}
+
+#ant-hud:before {
+	content: "";
+	width: 270px;
+	height: 64px;
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
+	background-position: 1047px 0;
+	transform: rotate(-90deg);
+	position: absolute;
+	top: 103px;
+	right: -103px;
+	z-index: -1;
+}
+
+#ant-hud-wrapper {
+	width: 55px;
+	height: 220px;
+	position: absolute;
+	right: 2px;
+	top: 26px;
+	overflow: hidden;
+}
+
+#ant-hud-slider {
+	position: absolute;
+	top: 0;
+	transition: top 0.7s ease-in-out;
+}
+
+.hud-btn-up {
+	position: absolute;
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
+	background-position: 1539px 15px;
+	width: 56px;
+	height: 15px;
+	top: 5px;
+	right: 2px;
+	display: block;
+}
+
+.hud-btn-up-active {
+	background-position: 1481px 15px;
+}
+.hud-btn-up-active:hover {
+	background-position: 1423px 15px;
+}
+
+.hud-btn-down{
+	right: 1px;
+	width: 58px;
+	height: 16px;
+	display: block;
+	position: absolute;
+	bottom: 4px;
+}
+.hud-btn-down:before {
+	content: "";
+	transform: scaleY(-1);
+	background-position: 1540px 15px;
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
+	width: 56px;
+	height: 16px;
+	display: block;
+	position: absolute;
+	right: 1px;
+}
+
+.hud-btn-down-active:before {
+	background-position: 1364px 17px;
+}
+
+.hud-btn-down-active:hover:before {
+	background-position: 1422px 17px;
+}
+
+.hud-btn {
+	display: block;
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
+	background-position: 992px 63px;
+	width: 55px;
+	height: 55px;
+	position: relative;
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+}
+
+
+.hud-btn-red {
+	background-position: 1049px 63px;
+}
+
+
+.hud-btn span {
+	background-position: center center;
+	background-repeat: no-repeat;
+	display: block;
+	width: 38px;
+	height: 38px;
+	background-size: contain;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+}
+
+
+#getFPs span {
+	background-image: url('../images/btn-fps.png');
+}
+
+#calcFPs span {
+	background-image: url('../images/calculator.png');
+}
+
+#ownFPs span {
+	background-image: url('../images/own-part.png');
+}
+
+#ChatBtn span {
+	background-image: url('../images/chat.png');
+}
+
+#BHBox span {
+	background-image: url('../images/bh.png');
+}
+
+
+/***********************************************************************************/
+
+#FPBox {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 355px;
+}
+
+
+#FPBox #FPBoxBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 300px;
+	margin-top: 2px;
+}
+
+#FPBox table tr.building-type td {
+	padding-top: 15px;
+}
+
+#FPBox #FPBoxBody strong {
+	color: #ffb539;
+}
+
+
+
+/***********************************************************************************/
+
+#BHResultBox {
+	top: 20%;
+	right: 30px;
+	width: 900px;
+}
+
+#BHResultBox::-webkit-scrollbar {
+	width: 8px;
+}
+
+#BHResultBox::-webkit-scrollbar-thumb {
+	background: #281207;
+	border-radius: 10px;
+}
+
+#BHResultBox #BHResultBoxBody {
+	overflow: auto;
+	height: 600px;
+	margin-top: 2px;
+}
+
+#BHResultBox #ResultBoxBody strong {
+	color: #ffb539;
+}
+
+
+/*********************************************************************************/
+
+#fp-bar {
+	position: fixed;
+	top: 6px;
+	left: calc(50vW + 140px);
+	z-index: 100;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	color: #F3D6A0;
+	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
+}
+
+#fp-bar strong {
+	color: #FFB539;
+}
+
+
+/*******************************************************************************/
+
+.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
+.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0; height: 100%; }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0; height: 100%; }
+.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}

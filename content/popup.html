@@ -1,0 +1,45 @@
+<!--
+  ~ ***************************************************************************************
+  ~
+  ~ Dateiname:                 popup.html
+  ~ Projekt:                   foe
+  ~
+  ~ erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+  ~ erstellt am:	           01.02.19 11:36 Uhr
+  ~ zu letzt bearbeitet:       01.02.19 11:29 Uhr
+  ~
+  ~ Copyright © 2019
+  ~
+  ~ ***************************************************************************************
+  -->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="../vendor/bootstrap-4.2.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/main.css" rel="stylesheet">
+    </head>
+    <body>
+    	<h5>Einstellungen</h5>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="cost_calc">Dein Arche Bonus</label>
+                    <input type="number" class="form-control form-control-sm" id="cost_calc" placeholder="Arche Bonus">
+                    <p><small class="text-help">Wird für den Kostenrechner genutzt</small></p>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" role="button" id="save">Speichern</button>
+
+        <p class="text-right mt-3 mb-0">
+            <small class="text-muted">&copy; 2019 - <span class="foe-link">foe-rechner.de</span></small>
+        </p>
+
+        <script src="../vendor/jQuery/jquery-3.3.1.slim.min.js"></script>
+        <script src="../js/popup.js"></script>
+    </body>
+</html>
