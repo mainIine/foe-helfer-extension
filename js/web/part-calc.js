@@ -60,22 +60,40 @@ Parts = {
 		});
 
 		// Es wird ein exerner Platz eingetragen
-		$('body').on('blur', '.own-part-external', function(){
+		$('body').on('blur', '.own-part-input', function(){
 
-			//clearTimeout(Parts.TimeOut);
+			$('.own-part-input').each(function(i){
+				// Parts.CurrentBuildingExternal[(i +1)] = parseInt(v);
 
-			// Kleiner Timeout um die ganze Zahl eingeben zu können
-			//Parts.timeout = setTimeout(()=> {
-				$('.own-part-external').each(function(i){
-					Parts.CurrentBuildingExternal[i] = parseInt($(this).val());
-				});
+				let v = $(this).val();
 
-				// console.log('External readed');
+				if(v === ''){
+					$(this).val(0);
+					v = 0;
+				}
 
+				Parts.CurrentBuildingExternal[i] = {
+					value: parseInt(v),
+					type: 'input'
+				};
+			});
+
+			const isAllZero = !Parts.CurrentBuildingExternal.some(el => el.value !== 0);
+
+			if(isAllZero !== true){
 				Parts.BoxBody(Parts.CurrentBuildingExternal);
-
-			//}, 1000);
+			} else {
+				Parts.BoxBody();
+			}
 		});
+	},
+
+
+	extend: (obj, src)=> {
+		for (let key in src) {
+			obj.push(src[key]);
+		}
+		return obj;
 	},
 
 
@@ -84,7 +102,7 @@ Parts = {
 	 *
 	 * @constructor
 	 */
-	BoxBody: (external)=> {
+	BoxBody: (input)=> {
 
 		let d = JSON.parse(localStorage.getItem('OwnCurrentBuildingCity')),
 			rankings = JSON.parse(localStorage.getItem('OwnCurrentBuildingGreat')),
@@ -93,46 +111,105 @@ Parts = {
 			total_lg = parseInt(d['state']['forge_points_for_level_up']),
 			arc = ((parseFloat( Parts.CurrentBuildingPercent ) + 100) / 100 ),
 			total_maezen = 0,
-			places = [],
+			places = {},
+			placesExt = {},
+			placesTmp = [],
 			meds = [],
 			bps = [],
-			own_parts = [],
 			h = [],
+			input_total = 0,
+			ext = {
+				0: 0,
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0,
+				5: 0
+			},
 			ot = 0;
 
 		Parts.CurrentBuildingID = cityentity_id;
 
+		console.log('rankings: ', rankings);
+
 		// 6x Durchlauf um die Plätze + Mäzen zu errechnen
 		// nur einer kann der eigenen sein
-		for(let i = 0; i < 6; i++)
-		{
-			if(rankings.hasOwnProperty(i))
+		for(let x = 0; x < 6; x++) {
+			if(rankings.hasOwnProperty(x))
 			{
-				// LG Besitzer
-				if(rankings[i]['player']['is_self'] === true){
+				// LG Besitzer überspringen
+				if(rankings[x]['player']['is_self'] === true){
 					continue;
 				}
 
-				let spa = (rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[i]['reward']['strategy_point_amount']) : 0),
-					place = Math.ceil( spa * arc);
+				let spa = (rankings[x]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[x]['reward']['strategy_point_amount']) : 0),
+					place = Math.round( spa * arc),
+					p = (rankings[x]['rank'] -1);
 
-				places[rankings[i]['rank']] = place;
+				// Platz + Mäzenbonus
+				places[p] = place;
+
+				placesExt[p] = place;
+
+				placesTmp[p] = {
+					value: place,
+					type: 'original'
+				};
+
 				total_maezen += place;
 
+				// Medallien berechnen
+				let m = (rankings[x]['reward']['resources'] !== undefined ? parseInt(rankings[x]['reward']['resources']['medals']) : 0);
+				meds[ rankings[x]['rank'] ] = HTML.Format(Math.ceil( m * arc));
 
-				let m = (rankings[i]['reward']['resources'] !== undefined ? parseInt(rankings[i]['reward']['resources']['medals']) : 0),
-					med = HTML.Format(Math.ceil( m * arc));
-
-				meds[ rankings[i]['rank'] ] = med;
-
-
-				let b = (rankings[i]['reward']['blueprints'] !== undefined ? parseInt(rankings[i]['reward']['blueprints']) : 0),
-					bp = HTML.Format(Math.ceil( b * arc));
-
-				bps[ rankings[i]['rank'] ] = bp;
+				// Blaupausen berechnen
+				let b = (rankings[x]['reward']['blueprints'] !== undefined ? parseInt(rankings[x]['reward']['blueprints']) : 0);
+				bps[ rankings[x]['rank'] ] = HTML.Format(Math.ceil( b * arc));
 			}
 		}
 
+
+		console.log('placesExt - Before: ', placesExt);
+		console.log('places - Before: ', places);
+
+		let working = {};
+
+		if(input !== undefined){
+			working = Parts.extend(placesTmp, input);
+
+			working = working.sort(Parts.compareValues('value', 'desc'));
+
+			for(let i = 0; i < 5; i++){
+
+				if(input[i]['value'] > places[i]){
+					placesExt[i] = working[i]['value'];
+
+					if(working[i]['type'] === 'input'){
+						ext[i] = working[i]['value'];
+					}
+				}
+
+				// places[(i +1)] = w['value'];
+
+				if(working[i]['type'] === 'input' && working[i]['value'] > 0)
+				{
+					input_total += working[i]['value'];
+				}
+			}
+
+		} else {
+
+			for(let i = 0; i < 5; i++){
+				working[i] = {type: 'original', value: places[i]};
+			}
+		}
+
+		console.log('input: ', input);
+		console.log('places - After: ', places);
+		console.log('placesExt - After: ', placesExt);
+		console.log('ext: ', ext);
+
+		console.log('----------------------------------------------------------');
 
 		// Info-Block
 
@@ -153,253 +230,275 @@ Parts = {
 			own_4_1 = 0,
 			own_4_2 = 0,
 			own_5_1 = 0,
-			ext_rest = 0,
+
+			own_parts = {
+				0: 0,
+				1: 0,
+				2: 0,
+				3: 0,
+				4: 0,
+				5: 0
+			},
 			ownpart_total = 0;
 
-		own_1_1 = Math.round( total_lg - (places[1] * 2) );
-		
-		if(own_1_1 < 0){
-			own_1_1 = 0;
+
+		if(placesExt[0] > 0){
+			own_1_1 = Math.round( total_lg - (placesExt[0] + places[0]) );
+
+			if(own_1_1 < 0){
+				own_1_1 = 0;
+			}
+			own_parts[0] = own_1_1;
+
+		} else {
+			own_1_1 = Math.round( total_lg - (places[0] * 2) );
+
+			if(own_1_1 < 0){
+				own_1_1 = 0;
+			}
+			own_parts[0] = own_1_1;
 		}
 
-		// gibt es was zum abziehen?
-		/*
-		if(own_1_1 > 0 && external !== undefined && external[0] > 0 && external[0] < own_1_1){
-			own_1_1 = (own_1_1 - external[0]);
-		}
-		*/
-		own_parts[1] = own_1_1;
 		
 		// -----------------------------------------------
 		
-		own_2_1 = parseInt(total_lg - (places[3] * 2));
-		own_2_2 = Math.round( own_2_1 - own_1_1 - places[1] - places[2] );
+		own_2_1 = parseInt(total_lg - (places[2] * 2));
+		own_2_2 = Math.round( own_2_1 - own_1_1 - places[0] - places[1] );
 		
 		if(own_2_2 < 0){
 			own_2_2 = 0;
 		}
 		
-		own_parts[2] = own_2_2;
+		own_parts[1] = own_2_2;
 	
 		// -----------------------------------------------
 		
-		own_3_1 = parseInt( total_lg - (places[4] * 2) );
-		own_3_2 = Math.round( own_3_1 - own_2_2 - own_1_1 - places[1] - places[2] - places[3] );
+		own_3_1 = parseInt( total_lg - (places[3] * 2) );
+		own_3_2 = Math.round( own_3_1 - own_2_2 - own_1_1 - places[0] - places[1] - places[2] );
 		
 		if(own_3_2 < 0){
 			own_3_2 = 0;
 		}
 		
-		own_parts[3] = own_3_2;
+		own_parts[2] = own_3_2;
 		
 		// -----------------------------------------------
 		
-		if(places[5] > 0 || places[4] > 0){
-			own_4_1 = (total_lg - ( places[5] * 2 ));
-			own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - places[1] - places[2] - places[3] - places[4] );
+		if(places[4] > 0 || places[3] > 0){
+			own_4_1 = (total_lg - ( places[4] * 2 ));
+			own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - places[0] - places[1] - places[2] - places[3] );
 			
 			if(own_4_2 < 0){
 				own_4_2 = 0;
 			}
 		}
 		
-		own_parts[4] = own_4_2;
+		own_parts[3] = own_4_2;
 		
 		// -----------------------------------------------
 		
-		own_5_1 = Math.round( total_lg - own_4_2 - own_3_2 - own_2_2 - own_1_1 - places[1] - places[2] - places[3] - places[4] - places[5] );
+		own_5_1 = Math.round( total_lg - own_4_2 - own_3_2 - own_2_2 - own_1_1 - places[0] - places[1] - places[2] - places[3] - places[4] );
 		
 		if(own_5_1 < 0){
 			own_5_1 = 0;
 		}
 		
-		own_parts[5] = own_5_1;
-
-		// "externe" Berechnung
-		if(external !== undefined){
-
-		}
+		own_parts[4] = own_5_1;
 
 
-		ownpart_total += own_1_1;
+		ownpart_total = own_1_1;
 		ownpart_total += own_2_2;
 		ownpart_total += own_3_2;
 		ownpart_total += own_4_2;
 		ownpart_total += own_5_1;
 
+
+		// "externe" Berechnung => ggf. Korrektur
+		if(input !== undefined){
+
+			// ----------------------------------------------------------------
+			// Eigenanteile neu berechnen
+
+
+
+			// -----------------------------------------------
+
+			own_2_1 = (total_lg - (placesExt[2] * 2));
+			own_2_2 = Math.round( own_2_1 - own_1_1 - placesExt[0] - placesExt[1] );
+
+			if(own_2_2 < 0){
+				own_2_2 = 0;
+			}
+
+			own_parts[1] = own_2_2;
+
+			// -----------------------------------------------
+
+			own_3_1 = ( total_lg - (placesExt[3] * 2) );
+			own_3_2 = Math.round( own_3_1 - own_2_2 - own_1_1 - placesExt[0] - placesExt[1] - placesExt[2] );
+
+			if(own_3_2 < 0){
+				own_3_2 = 0;
+			}
+
+			own_parts[2] = own_3_2;
+
+			// -----------------------------------------------
+
+			if(placesExt[4] > 0 || placesExt[3] > 0){
+				own_4_1 = (total_lg - ( placesExt[4] * 2 ));
+				own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - placesExt[0] - placesExt[1] - placesExt[2] - placesExt[3] );
+
+				if(own_4_2 < 0){
+					own_4_2 = 0;
+				}
+			}
+
+			own_parts[3] = own_4_2;
+
+			// -----------------------------------------------
+
+			own_5_1 = Math.round( total_lg - own_4_2 - own_3_2 - own_2_2 - own_1_1 - placesExt[0] - placesExt[1] - placesExt[2] - placesExt[3] - placesExt[4] );
+
+			if(own_5_1 < 0){
+				own_5_1 = 0;
+			}
+
+			own_parts[4] = own_5_1;
+
+			ownpart_total = own_1_1;
+			ownpart_total += own_2_2;
+			ownpart_total += own_3_2;
+			ownpart_total += own_4_2;
+			ownpart_total += own_5_1;
+
+		}
+
+		//console.log('own_parts[]: ', own_parts);
+
 		h.push('<table id="OwnPartTable" class="foe-table">');
 
 		h.push('<thead>');
 
 		h.push('<tr>');
-		h.push('<th class="text-center" colspan="2">Mäzen Anteil: <strong>' + total_maezen + '</strong></th>');
-		h.push('<th class="text-center" colspan="2">Eigenanteil: <strong class="success">' + ownpart_total + '</strong></th>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<th colspan="4" class="text-center">LG Gesamt-FP: ' + total_lg + '</strong></th>');
-		h.push('</tr>');
-
-		h.push('</thead>');
-		h.push('<tbody>');
-
-		h.push('<tr>');
-		h.push('<td><strong>Reihenfolge</strong></td>');
-		h.push('<td class="text-center"><strong>FP Einzahlen</strong></td>');
-		h.push('<td class="text-center">BPs</td>');
-		h.push('<td class="text-center">Meds</td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td>1. Eigenanteil</td>');
-
-		if(own_parts[1] > 0){
-			ot += parseInt(own_parts[1]);
-		}
-
-		h.push('<td class="text-center"><strong class="success">' + own_parts[1] + '</strong></td>');
-		h.push('<td colspan="2"></td>');
-		h.push('</tr>');
-
-
-		h.push('<tr>');
-		h.push('<td>Platz 1</td>');
-		h.push('<td class="text-center"><strong>' + places[1] + '</strong>'+ (total_lg - places[1] < 0 ? ' <span class="error"> >50%</span>' : '') +'</td>');
-		h.push('<td class="text-center">' + bps[1] + '</td>');
-		h.push('<td class="text-center">' + meds[1] + '</td>');
-		h.push('</tr>');
-
-
-		h.push('<tr>');
-		h.push('<td>Platz 2</td>');
-		h.push('<td class="text-center"><strong>' + places[2] + '</strong></td>');
-		h.push('<td class="text-center">' + bps[2] + '</td>');
-		h.push('<td class="text-center">' + meds[2] + '</td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td>2. Eigenanteil</td>');
-		if(own_parts[2] > 0){
-			ot += parseInt(own_parts[2]);
-		}
-		h.push('<td class="text-center"><strong class="success">' + own_parts[2] + (own_parts[1] > 0 && own_parts[2] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="2"></td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td>Platz 3</td>');
-		h.push('<td class="text-center"><strong>' + places[3] + '</strong></td>');
-		h.push('<td class="text-center">' + bps[3] + '</td>');
-		h.push('<td class="text-center">' + meds[3] + '</td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td>3. Eigenanteil</td>');
-
-		if(own_parts[3] > 0){
-			ot += parseInt(own_parts[3]);
-		}
-		h.push('<td class="text-center"><strong class="success">' + own_parts[3] + (own_parts[2] > 0 && own_parts[3] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="2"></td>');
-		h.push('</tr>');
-
-
-		h.push('<tr>');
-		h.push('<td>Platz 4</td>');
-		h.push('<td class="text-center"><strong>' + places[4] + '</strong></td>');
-		h.push('<td class="text-center">' + bps[4] + '</td>');
-		h.push('<td class="text-center">' + meds[4] + '</td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td>4. Eigenanteil</td>');
-		if(own_parts[4] > 0){
-			ot += parseInt(own_parts[4]);
-		}
-		h.push('<td class="text-center"><strong class="success">' + own_parts[4] + (own_parts[3] > 0 && own_parts[4] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="2"></td>');
-		h.push('</tr>');
-
-
-		h.push('<tr>');
-		h.push('<td>Platz 5</td>');
-		h.push('<td class="text-center"><strong>' + places[5] + '</strong></td>');
-		h.push('<td class="text-center">' + bps[5] + '</td>');
-		h.push('<td class="text-center">' + meds[5] + '</td>');
-		h.push('</tr>');
-
-		if(own_parts[5] > 0){
-			h.push('<tr>');
-			h.push('<td>5. Eigenanteil</td>');
-
-			ot += parseInt(own_parts[5]);
-
-			h.push('<td class="text-center"><strong class="success">' + own_parts[5] + (own_parts[4] > 0 && own_parts[5] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-			h.push('<td colspan="4"></td>');
-			h.push('</tr>');
-		}
-
-		h.push('<tbody>');
-		h.push('</table>');
-
-		/*
-		h.push('<table id="OwnPartTable" class="foe-table">');
-
-		h.push('<thead>');
-
-		h.push('<tr>');
-		h.push('<th class="text-center" colspan="3">Mäzen Anteil: <strong>' + total_maezen + '</strong></th>');
+		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + '</strong></th>');
 		h.push('<th class="text-center" colspan="3">Eigenanteil: <strong class="success">' + ownpart_total + '</strong></th>');
 		h.push('</tr>');
 
 		h.push('<tr>');
-		h.push('<th colspan="6" class="text-center">LG Gesamt-FP: ' + total_lg + '</strong></th>');
+		if(input_total > 0){
+			h.push('<th colspan="3" class="text-center" style="width: 50%">LG Gesamt-FP: <strong>' + total_lg + '</strong></th>');
+			h.push('<th colspan="3" class="text-center">Externe FP: <strong class="info">' + input_total + '</strong></th>');
+		} else {
+			h.push('<th colspan="6" class="text-center">LG Gesamt-FP: <strong>' + total_lg + '</strong></th>');
+		}
+
 		h.push('</tr>');
 
 		h.push('</thead>');
 		h.push('<tbody>');
 
 		h.push('<tr>');
-		h.push('<td><strong>Reihenfolge</strong></td>');
-		h.push('<td class="text-center"><strong>FP Einzahlen</strong></td>');
-		h.push('<td class="text-center">Extern</td>');
+		h.push('<td>Reihenfolge</td>');
+		h.push('<td class="text-center">Einzahlen</td>');
+		h.push('<td class="text-center">Ext.</td>');
 		h.push('<td class="text-center">BPs</td>');
 		h.push('<td class="text-center">Meds</td>');
+		h.push('<td class="text-center">Ext.</td>');
 		h.push('</tr>');
 
+
+		if(own_parts[0] > 0 && ext[0] < places[0]){
+
+			h.push('<tr>');
+			h.push('<td>Eigenanteil</td>');
+			h.push('<td class="text-center"><strong class="success">' + own_parts[0] + '</strong></td>');
+			h.push('<td colspan="4"></td>');
+			h.push('</tr>');
+
+			ot += parseInt(own_parts[0]);
+		}
+
+
 		h.push('<tr>');
-		h.push('<td>1. Eigenanteil</td>');
+		h.push('<td>Platz 1</td>');
+
+		if(working[0]['type'] === 'input'){
+			h.push('<td class="text-center">-</td>');
+			h.push('<td class="text-center"><strong class="info">' + working[0]['value'] + '</strong></td>');
+		} else {
+			h.push('<td class="text-center"><strong>' + places[0] + '</strong></td>');
+			h.push('<td class="text-center">-</td>');
+		}
+
+		h.push('<td class="text-center">' + bps[1] + '</td>');
+		h.push('<td class="text-center">' + meds[1] + '</td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[0]['value'] : 0 ) + '"></td>');
+		h.push('</tr>');
+
+		if(own_parts[0] > 0 && ext[0] > places[0]){
+
+			h.push('<tr>');
+			h.push('<td>Eigenanteil</td>');
+			h.push('<td class="text-center"><strong class="success">' + own_parts[0] + '</strong></td>');
+			h.push('<td colspan="4"></td>');
+			h.push('</tr>');
+
+			ot += parseInt(own_parts[0]);
+		}
+
+
+		/**
+		 * 	Platz 2
+		 */
+		h.push('<tr>');
+		h.push('<td>Platz 2</td>');
+
+		if(working[1]['type'] === 'input'){
+			h.push('<td class="text-center">-</td>');
+			h.push('<td class="text-center"><strong class="info">' + working[1]['value'] + '</strong></td>');
+		} else {
+			h.push('<td class="text-center"><strong>' + places[1] + '</strong></td>');
+			h.push('<td class="text-center">-</td>');
+		}
+
+		h.push('<td class="text-center">' + bps[2] + '</td>');
+		h.push('<td class="text-center">' + meds[2] + '</td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[1]['value'] : 0 ) + '"></td>');
+		h.push('</tr>');
+
+
+		h.push('<tr>');
+		h.push('<td>Eigenanteil</td>');
 
 		if(own_parts[1] > 0){
 			ot += parseInt(own_parts[1]);
 		}
 
-		h.push('<td class="text-center"><strong class="success">' + own_parts[1] + '</strong></td>');
+		h.push('<td class="text-center"><strong class="success">' + own_parts[1] + (own_parts[0] > 0 && own_parts[1] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
 		h.push('<td colspan="4"></td>');
 		h.push('</tr>');
 
 
 		h.push('<tr>');
-		h.push('<td>Platz 1</td>');
-		h.push('<td class="text-center"><strong>' + places[1] + '</strong>'+ (total_lg - places[1] < 0 ? ' <span class="error"> >50%</span>' : '') +'</td>');
-		h.push('<td><input id="ext_1" type="number" value="' + (Parts.CurrentBuildingExternal[0] || 0) + '" class="own-part-external"></td>');
-		h.push('<td class="text-center">' + bps[1] + '</td>');
-		h.push('<td class="text-center">' + meds[1] + '</td>');
-		h.push('<td></td>');
-		h.push('</tr>');
+		h.push('<td>Platz 3</td>');
 
+		if(working[2]['type'] === 'input'){
+			h.push('<td class="text-center">-</td>');
+			h.push('<td class="text-center"><strong class="info">' + working[2]['value'] + '</strong></td>');
+		} else {
+			h.push('<td class="text-center"><strong>' + places[2] + '</strong></td>');
+			h.push('<td class="text-center">-</td>');
+		}
 
-		h.push('<tr>');
-		h.push('<td>Platz 2</td>');
-		h.push('<td class="text-center"><strong>' + places[2] + '</strong></td>');
-		h.push('<td><input id="ext_2" type="number" value="0" class="own-part-external"></td>');
-		h.push('<td class="text-center">' + bps[2] + '</td>');
-		h.push('<td class="text-center">' + meds[2] + '</td>');
-		h.push('<td></td>');
+		h.push('<td class="text-center">' + bps[3] + '</td>');
+		h.push('<td class="text-center">' + meds[3] + '</td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[2]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 		h.push('<tr>');
-		h.push('<td>2. Eigenanteil</td>');
+		h.push('<td>Eigenanteil</td>');
+
 		if(own_parts[2] > 0){
 			ot += parseInt(own_parts[2]);
 		}
@@ -407,18 +506,27 @@ Parts = {
 		h.push('<td colspan="4"></td>');
 		h.push('</tr>');
 
+		/**
+		 * 	Platz 4
+		 */
 		h.push('<tr>');
-		h.push('<td>Platz 3</td>');
-		h.push('<td class="text-center"><strong>' + places[3] + '</strong></td>');
-		h.push('<td><input id="ext_3" type="number" value="0" class="own-part-external"></td>');
-		h.push('<td class="text-center">' + bps[3] + '</td>');
-		h.push('<td class="text-center">' + meds[3] + '</td>');
-		h.push('<td></td>');
+		h.push('<td>Platz 4</td>');
+
+		if(working[3]['type'] === 'input'){
+			h.push('<td class="text-center">-</td>');
+			h.push('<td class="text-center"><strong class="info">' + working[3]['value'] + '</strong></td>');
+		} else {
+			h.push('<td class="text-center"><strong>' + places[3] + '</strong></td>');
+			h.push('<td class="text-center">-</td>');
+		}
+
+		h.push('<td class="text-center">' + bps[4] + '</td>');
+		h.push('<td class="text-center">' + meds[4] + '</td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[3]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 		h.push('<tr>');
-		h.push('<td>3. Eigenanteil</td>');
-
+		h.push('<td>Eigenanteil</td>');
 		if(own_parts[3] > 0){
 			ot += parseInt(own_parts[3]);
 		}
@@ -427,53 +535,68 @@ Parts = {
 		h.push('</tr>');
 
 
-		h.push('<tr>');
-		h.push('<td>Platz 4</td>');
-		h.push('<td class="text-center"><strong>' + places[4] + '</strong></td>');
-		h.push('<td><input id="ext_4" type="number" value="0" class="own-part-external"></td>');
-		h.push('<td class="text-center">' + bps[4] + '</td>');
-		h.push('<td class="text-center">' + meds[4] + '</td>');
-		h.push('<td></td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td>4. Eigenanteil</td>');
-
-		if(own_parts[4] > 0){
-			ot += parseInt(own_parts[4]);
-		}
-		h.push('<td class="text-center"><strong class="success">' + own_parts[4] + (own_parts[3] > 0 && own_parts[4] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="4"></td>');
-		h.push('</tr>');
-
-
+		/**
+		 * 	Platz 5
+		 */
 		h.push('<tr>');
 		h.push('<td>Platz 5</td>');
-		h.push('<td class="text-center"><strong>' + places[5] + '</strong></td>');
-		h.push('<td><input id="ext_4" type="number" value="0" class="own-part-external"></td></td>');
+
+		if(working[4]['type'] === 'input'){
+			h.push('<td class="text-center">-</td>');
+			h.push('<td class="text-center"><strong class="info">' + working[4]['value'] + '</strong></td>');
+		} else {
+			h.push('<td class="text-center"><strong>' + places[4] + '</strong></td>');
+			h.push('<td class="text-center">-</td>');
+		}
+
 		h.push('<td class="text-center">' + bps[5] + '</td>');
 		h.push('<td class="text-center">' + meds[5] + '</td>');
-		h.push('<td></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[4]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
-		if(own_parts[5] > 0){
+
+		if(own_parts[4] > 0){
 			h.push('<tr>');
-			h.push('<td>5. Eigenanteil</td>');
+			h.push('<td>Eigenanteil</td>');
 
-			ot += parseInt(own_parts[5]);
+			ot += parseInt(own_parts[4]);
 
-			h.push('<td class="text-center"><strong class="success">' + own_parts[5] + (own_parts[4] > 0 && own_parts[5] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-			h.push('<td colspan="4"></td>');
+			h.push('<td class="text-center"><strong class="success">' + own_parts[4] + (own_parts[3] > 0 && own_parts[4] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
+			h.push('<td colspan="3"></td>');
 			h.push('</tr>');
 		}
 
 		h.push('<tbody>');
 		h.push('</table>');
-		*/
 
 		$('#OwnPartBoxBody').html( h.join('') );
 
 		Parts.BuildBackgroundBody(places);
+	},
+
+	compareValues: (key, order='asc')=> {
+		return function(a, b) {
+			if(!a.hasOwnProperty(key) ||
+				!b.hasOwnProperty(key)) {
+				return 0;
+			}
+
+			const varA = (typeof a[key] === 'string') ?
+				a[key].toUpperCase() : a[key];
+			const varB = (typeof b[key] === 'string') ?
+				b[key].toUpperCase() : b[key];
+
+			let comparison = 0;
+			if (varA > varB) {
+				comparison = 1;
+			} else if (varA < varB) {
+				comparison = -1;
+			}
+			return (
+				(order == 'desc') ?
+					(comparison * -1) : comparison
+			);
+		};
 	},
 
 

@@ -63,6 +63,14 @@ chrome.storage.sync.get({
 	};
 	(document.head || document.documentElement).appendChild(cp);
 
+	let momentJS = document.createElement('script');
+	momentJS.src = chrome.extension.getURL('vendor/moment/moment-with-locales.min.js');
+	momentJS.id = 'moment-script';
+	momentJS.onload = function(){
+		this.remove();
+	};
+	(document.head || document.documentElement).appendChild(momentJS);
+
 
 	// Stylesheet einfügen
 	let style = document.createElement('link');
