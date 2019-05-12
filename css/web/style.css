@@ -82,10 +82,6 @@ body {
 	background-position: -1px -27px;
 }
 
-.window-body {
-	padding-bottom: 5px;
-}
-
 .window-body::-webkit-scrollbar {
 	width: 8px;
 }
@@ -322,6 +318,10 @@ p {
 
 #OwnPartBox #OwnPartBoxBody strong.success {
 	color: #29b206;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.info {
+	color: #2196f3;
 }
 
 #OwnPartBox #OwnPartTable .error {

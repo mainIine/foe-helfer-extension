@@ -158,6 +158,34 @@ HTML = {
 		} else {
 			return new Intl.NumberFormat('de-DE', { style: 'decimal' }).format(number);
 		}
+	},
+
+
+	/**
+	 * Konvertierung von Unix zu "lesbar"
+	 *
+	 * @param timestamp
+	 * @returns {string}
+	 */
+	timeConvert: (timestamp) => {
+	let a = new Date(timestamp * 1000),
+		months = ['Jan', 'Feb', 'Mrz', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+		year = a.getFullYear(),
+		month = months[a.getMonth()],
+		day = a.getDate(),
+		hour = a.getHours(),
+		min = a.getMinutes(),
+		sec = a.getSeconds(),
+		r = {
+			day: day,
+			month: month,
+			year: year,
+			hour: hour,
+			min: min,
+			sec: sec
+		};
+
+		return r;
 	}
 };
 

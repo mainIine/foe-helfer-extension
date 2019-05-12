@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function(){
 		this.remove();
 	};
 	(document.head || document.documentElement).appendChild(jui);
-
 });
 
 
@@ -148,7 +147,19 @@ let PlayerNames = [],
 
 
 				// --------------------------------------------------------------------------------------------------
-				// Es wurde das LG eines Mitspielers angeklickt
+				// --------------------------------------------------------------------------------------------------
+				// Es wurde das LG eines Mitspielers angeklickt, bzw davor die Übersicht
+
+				// Übersicht der LGs eines Nachbarn
+				let GreatBuildingsServiceOverview = d.find(obj => {
+					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'getOtherPlayerOverview';
+				});
+
+				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ext_player_id){
+					localStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
+				}
+
+
 				let Calculator1 = d.find(obj => {
 					return obj.requestClass === 'CityMapService' && obj.requestMethod === 'updateEntity';
 				});
@@ -191,6 +202,7 @@ let PlayerNames = [],
 
 
 				// -----------------------------------------------------------------------------------------------------
+				// -----------------------------------------------------------------------------------------------------
 				// Spieler klickt eines seiner LGs an
 
 				if(Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] === ext_player_id) {
@@ -227,6 +239,7 @@ let PlayerNames = [],
 				}
 
 
+				// --------------------------------------------------------------------------------------------------
 				// --------------------------------------------------------------------------------------------------
 
 				let OtherPlayersVisits = d.find(obj => {
@@ -554,6 +567,7 @@ MainParser = {
 					});
 				}
 
+				/*
 				// Nachbarn
 				if(d[k]['is_neighbor'] === true){
 					NeighborNames.push({
@@ -561,6 +575,7 @@ MainParser = {
 						name:d[k]['name']
 					});
 				}
+				*/
 
 				// Freunde
 				if(d[k]['is_friend'] === true){
@@ -612,7 +627,7 @@ MainParser = {
 			PlayerNames = PlayerNames.concat(FriendNames);
 		}
 
-
+		/*
 		// Nachbarn gefunden?
 		if(NeighborNames.length > 0){
 			localStorage.setItem('NeighborNames', JSON.stringify(NeighborNames));
@@ -625,6 +640,7 @@ MainParser = {
 
 			PlayerNames = PlayerNames.concat(NeighborNames);
 		}
+		*/
 
 
 		// Unique - Putzi Putzi

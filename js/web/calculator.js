@@ -15,6 +15,10 @@
 
 Calculator = {
 
+	ArcBonus: 90,
+	EntityOverview: [],
+
+
 	/**
 	 * Kostenrechner anzeigen
 	 *
@@ -26,36 +30,53 @@ Calculator = {
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#costCalculator').length === 0 ){
+
+			// moment.js global setzen
+			moment.locale('de');
+
+			let ab = localStorage.getItem('CalculatorArcBonus');
+
+			// alten Wert übernehmen, wenn vorhanden
+			if(cost_calc > 0 && ab === null){
+				Calculator.ArcBonus = cost_calc;
+				localStorage.setItem('CalculatorArcBonus', Calculator.ArcBonus);
+
+			} else if(ab !== null){
+				Calculator.ArcBonus = parseFloat(ab);
+			}
+
 			HTML.Box('costCalculator', 'Kostenrechner');
 		}
+
+		// Übersicht laden + passendes LG
+		Calculator.EntityOverview = JSON.parse( localStorage.getItem('OtherActiveBuildingOverview') );
 
 
 		let div = $('#costCalculator'),
 			afp = d['availablePackagesForgePointSum'],
 			h = [],
-			p = '';
+			lsp;
 
 
-		let Player = PlayerNames.find(obj => {
-			return obj.id === e['player_id'];
+		let BuildingInfo = Calculator.EntityOverview.find(obj => {
+			return obj.city_entity_id === e['cityentity_id'];
 		});
 
-		if(Player !== undefined){
-			p = ' - ' + Player['name'];
-		}
+
+		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
+
+		// LG - Daten + Spielername
+		h.push('<p><strong>' + BuildingInfo['name']  + ' - ' + BuildingInfo['player']['name'] + ' </strong><br>Stufe '+ e['level'] +' &rarr; '+ (parseInt(e['level']) +1) +'</p>');
 
 
-		h.push('<div class="text-center dark-bg" style="padding: 5px 0 3px;">');
-
-		h.push('<p><strong>' + BuildingNamesi18n[e['cityentity_id']]  + p + ' </strong><br>Stufe '+ e['level'] +' &rarr; '+ (parseInt(e['level']) +1) +'</p>');
-
+		// FP im Lager
 		h.push('<p>Verfügbare Forgepunke: <strong class="fp-storage">' + (afp || 0)  + '</strong></p>');
 
 		if($('.fp-storage').length > 0){
 			$('.fp-storage').text(afp);
 		}
 
-		h.push('<p class="costFactorWrapper">Arche Bonus in <input type="number" id="costFactor" step="0.1" min="12" max="120" value="'+ cost_calc +'">%</p>');
+		h.push('<p class="costFactorWrapper">Arche Bonus - <input type="number" id="costFactor" step="0.1" min="12" max="120" value="'+ Calculator.ArcBonus +'">%</p>');
 
 		h.push('</div>');
 
@@ -66,7 +87,7 @@ Calculator = {
 
 		let r = d['rankings'],
 			places = [],
-			arc = ((parseFloat( cost_calc ) + 100) / 100 );
+			arc = ((parseFloat( Calculator.ArcBonus ) + 100) / 100 );
 
 		for(let i in r)
 		{
@@ -103,7 +124,7 @@ Calculator = {
 						let gespFP = ((isNaN(parseInt(r[i]['forge_points']))) ? 0 : parseInt(r[i]['forge_points'])),
 							invFP = ((isNaN(parseInt(e['state']['invested_forge_points']))) ? 0 : parseInt(e['state']['invested_forge_points'])),
 							frFP  = parseInt(e['state']['forge_points_for_level_up']) - invFP,
-							einsatz = Math.ceil(( frFP + gespFP ) / 2);
+							einsatz = Math.round(( frFP + gespFP ) / 2);
 
 						let spa = parseInt(r[i]['reward']['strategy_point_amount']),
 							blp = r[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(r[i]['reward']['blueprints']) * arc) : 0,
@@ -144,12 +165,22 @@ Calculator = {
 
 		h.push('</table>');
 
+		lsp = moment.unix(BuildingInfo['last_spent']).fromNow();
+		h.push('<p class="text-center" style="margin: 5px 0 0 0;"><small><em>Letzte Einzahlung: ' + lsp  + '</em></small></p>');
+
+		// in die bereits vorhandene Box drücken
 		div.find('#costCalculatorBody').html(h.join(''));
 
 
 		// wenn der Wert des Archebonus verändert wird, Event feuern
 		$('body').on('blur', '#costFactor', function(){
-			let arc = ((parseFloat( $('#costFactor').val() ) + 100) / 100 ),
+
+			let ab = parseFloat( $('#costFactor').val() );
+			Calculator.ArcBonus = ab;
+
+			localStorage.setItem('CalculatorArcBonus', ab);
+
+			let arc = ((ab + 100) / 100 ),
 				h = [];
 
 			h.push('<thead>' +
@@ -188,7 +219,7 @@ Calculator = {
 			$('#costCalculator').show();
 		});
 
-
+		// Schliessen Button binden
 		$('#costCalculatorclose').bind('click', function() {
 			$('#costCalculator').remove();
 		});
