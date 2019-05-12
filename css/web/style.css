@@ -20,6 +20,12 @@ body {
 	overflow: hidden;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 .game-cursor {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
 }
@@ -160,6 +166,10 @@ table.foe-table thead tr,
 
 table.foe-table tbody tr:nth-child(odd) {
 	background-color: rgba(255,255,255, 0.07);
+}
+
+table.foe-table tbody tr:hover {
+	background-color: rgba(243, 214, 160, 0.4);
 }
 
 table.foe-table tr th,
@@ -313,7 +323,7 @@ p {
 }
 
 #OwnPartBox #OwnPartBoxBody strong.normal {
-	color: #fff;
+	color: #F3D6A0;
 }
 
 #OwnPartBox #OwnPartBoxBody strong.success {
@@ -535,7 +545,7 @@ p {
 	background-position: 1423px 15px;
 }
 
-.hud-btn-down{
+.hud-btn-down {
 	right: 1px;
 	width: 58px;
 	height: 16px;

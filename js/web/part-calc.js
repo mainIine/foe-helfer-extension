@@ -23,9 +23,13 @@ Parts = {
 	CurrentBuildingID : false,
 	CurrentBuildingStep : false,
 	CurrentBuildingPercent: 90,
-	CurrentBuildingExternal: [],
+	Input: [],
+	InputOriginal: [],
+	InputCount: 0,
+	InputTotal: 0,
 
 	TimeOut: null,
+
 
 	buildBox: ()=> {
 
@@ -62,8 +66,10 @@ Parts = {
 		// Es wird ein exerner Platz eingetragen
 		$('body').on('blur', '.own-part-input', function(){
 
+			Parts.InputTotal = 0;
+			Parts.InputCount = 0;
+
 			$('.own-part-input').each(function(i){
-				// Parts.CurrentBuildingExternal[(i +1)] = parseInt(v);
 
 				let v = $(this).val();
 
@@ -72,16 +78,29 @@ Parts = {
 					v = 0;
 				}
 
-				Parts.CurrentBuildingExternal[i] = {
+				if(i > 0){
+					Parts.InputTotal += parseInt(v);
+				}
+
+				if(parseInt(v) > 0){
+					Parts.InputCount++;
+				}
+
+				Parts.Input[i] = {
+					value: parseInt(v),
+					type: 'input'
+				};
+
+				Parts.InputOriginal[i] = {
 					value: parseInt(v),
 					type: 'input'
 				};
 			});
 
-			const isAllZero = !Parts.CurrentBuildingExternal.some(el => el.value !== 0);
+			const isAllZero = !Parts.Input.some(el => el.value !== 0);
 
 			if(isAllZero !== true){
-				Parts.BoxBody(Parts.CurrentBuildingExternal);
+				Parts.BoxBody(Parts.Input);
 			} else {
 				Parts.BoxBody();
 			}
@@ -89,10 +108,27 @@ Parts = {
 	},
 
 
-	extend: (obj, src)=> {
-		for (let key in src) {
-			obj.push(src[key]);
+	extend: (plc, inp)=> {
+
+		let obj = [];
+
+		for(let i in plc)
+		{
+
+			for(let x in inp)
+			{
+				if(inp[x]['value'] > plc[i]['value'])
+				{
+					obj[i] = inp[x];
+					delete inp[x];
+				}
+			}
+
+			if(obj[i] === undefined){
+				obj[i] = plc[i];
+			}
 		}
+
 		return obj;
 	},
 
@@ -109,11 +145,14 @@ Parts = {
 			cityentity_id = d['cityentity_id'],
 			level = d['level'],
 			total_lg = parseInt(d['state']['forge_points_for_level_up']),
+			total_lg_org = parseInt(d['state']['forge_points_for_level_up']),
 			arc = ((parseFloat( Parts.CurrentBuildingPercent ) + 100) / 100 ),
 			total_maezen = 0,
 			places = {},
 			placesExt = {},
 			placesTmp = [],
+			inputTmp = [],
+			nextOwnAdd = 0,
 			meds = [],
 			bps = [],
 			h = [],
@@ -130,7 +169,7 @@ Parts = {
 
 		Parts.CurrentBuildingID = cityentity_id;
 
-		console.log('rankings: ', rankings);
+
 
 		// 6x Durchlauf um die Plätze + Mäzen zu errechnen
 		// nur einer kann der eigenen sein
@@ -149,14 +188,14 @@ Parts = {
 				// Platz + Mäzenbonus
 				places[p] = place;
 
-				placesExt[p] = place;
+				// placesExt[p] = place;
 
 				placesTmp[p] = {
 					value: place,
 					type: 'original'
 				};
 
-				total_maezen += place;
+				//total_maezen += place;
 
 				// Medallien berechnen
 				let m = (rankings[x]['reward']['resources'] !== undefined ? parseInt(rankings[x]['reward']['resources']['medals']) : 0);
@@ -171,49 +210,45 @@ Parts = {
 
 		console.log('placesExt - Before: ', placesExt);
 		console.log('places - Before: ', places);
-
-		let working = {};
+		
 
 		if(input !== undefined){
-			working = Parts.extend(placesTmp, input);
 
-			working = working.sort(Parts.compareValues('value', 'desc'));
+			console.log('total_lg - Before: ', total_lg);
+			console.log('Parts.InputTotal: ', Parts.InputTotal);
+
+			if(Parts.InputCount > 1){
+				total_lg -= Parts.InputTotal;
+			}
+
+			inputTmp = input.sort(Parts.compareValues('value', 'desc'));
+
+			placesExt = Parts.extend(placesTmp, inputTmp);
+
 
 			for(let i = 0; i < 5; i++){
 
-				if(input[i]['value'] > places[i]){
-					placesExt[i] = working[i]['value'];
-
-					if(working[i]['type'] === 'input'){
-						ext[i] = working[i]['value'];
-					}
+				if(placesExt[i]['type'] === 'input' && placesExt[i]['value'] > 0)
+				{
+					input_total += placesExt[i]['value'];
 				}
 
-				// places[(i +1)] = w['value'];
-
-				if(working[i]['type'] === 'input' && working[i]['value'] > 0)
-				{
-					input_total += working[i]['value'];
+				if(placesExt[i]['type'] === 'original'){
+					total_maezen += placesExt[i]['value'];
 				}
 			}
 
 		} else {
-
-			for(let i = 0; i < 5; i++){
-				working[i] = {type: 'original', value: places[i]};
-			}
+			placesExt = placesTmp;
 		}
 
-		console.log('input: ', input);
-		console.log('places - After: ', places);
+		console.log('total_lg - After: ', total_lg);
 		console.log('placesExt - After: ', placesExt);
-		console.log('ext: ', ext);
-
-		console.log('----------------------------------------------------------');
+		console.log('-------------------------------------------------------------');
 
 		// Info-Block
 
-		h.push('<table class="foe-table"><tr><td style="width: 50%">');
+		h.push('<table style="width: 100%"><tr><td style="width: 50%">');
 		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[ cityentity_id] + ' </strong><br>Stufe '+ level +' &rarr; '+ (parseInt(level) +1) +'</p>');
 		h.push('</td>');
 		h.push('<td class="text-right">');
@@ -242,8 +277,8 @@ Parts = {
 			ownpart_total = 0;
 
 
-		if(placesExt[0] > 0){
-			own_1_1 = Math.round( total_lg - (placesExt[0] + places[0]) );
+		if(placesExt[0]['value'] > 0 && places[0]){
+			own_1_1 = Math.round( total_lg - (placesExt[0]['value'] + places[0]) );
 
 			if(own_1_1 < 0){
 				own_1_1 = 0;
@@ -251,7 +286,7 @@ Parts = {
 			own_parts[0] = own_1_1;
 
 		} else {
-			own_1_1 = Math.round( total_lg - (places[0] * 2) );
+			own_1_1 = Math.round( total_lg - (placesExt[0]['value'] * 2) );
 
 			if(own_1_1 < 0){
 				own_1_1 = 0;
@@ -262,10 +297,10 @@ Parts = {
 		
 		// -----------------------------------------------
 		
-		own_2_1 = parseInt(total_lg - (places[2] * 2));
-		own_2_2 = Math.round( own_2_1 - own_1_1 - places[0] - places[1] );
+		own_2_1 = parseInt(total_lg - (placesExt[2]['value'] * 2));
+		own_2_2 = Math.round( own_2_1 - own_1_1 - placesExt[0]['value'] - placesExt[1]['value'] );
 		
-		if(own_2_2 < 0){
+		if(own_2_2 < 0 || placesExt[3]['type'] === 'input'){
 			own_2_2 = 0;
 		}
 		
@@ -273,38 +308,54 @@ Parts = {
 	
 		// -----------------------------------------------
 		
-		own_3_1 = parseInt( total_lg - (places[3] * 2) );
-		own_3_2 = Math.round( own_3_1 - own_2_2 - own_1_1 - places[0] - places[1] - places[2] );
+		own_3_1 = parseInt( total_lg - (placesExt[3]['value'] * 2) );
+		own_3_2 = Math.round( own_3_1 - own_2_2 - own_1_1 - placesExt[0]['value'] - placesExt[1]['value'] - placesExt[2]['value'] );
 		
-		if(own_3_2 < 0){
+		if(own_3_2 < 0 || placesExt[3]['type'] === 'input'){
 			own_3_2 = 0;
 		}
-		
+
 		own_parts[2] = own_3_2;
 		
 		// -----------------------------------------------
 		
-		if(places[4] > 0 || places[3] > 0){
+		if(places[4] > 0 || placesExt[3]['value'] > 0){
 			own_4_1 = (total_lg - ( places[4] * 2 ));
-			own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - places[0] - places[1] - places[2] - places[3] );
+			own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - placesExt[0]['value'] - placesExt[1]['value'] - placesExt[2]['value'] - placesExt[3]['value'] );
 			
-			if(own_4_2 < 0){
+			if(own_4_2 < 0 || placesExt[3]['type'] === 'input'){
 				own_4_2 = 0;
 			}
+		}
+
+		if(Parts.InputCount > 1 && placesExt[4]['value'] === 0){
+			nextOwnAdd += own_4_2;
+			own_4_2 += Parts.InputTotal;
 		}
 		
 		own_parts[3] = own_4_2;
 		
 		// -----------------------------------------------
 		
-		own_5_1 = Math.round( total_lg - own_4_2 - own_3_2 - own_2_2 - own_1_1 - places[0] - places[1] - places[2] - places[3] - places[4] );
-		
+		own_5_1 = Math.round( total_lg - own_4_2 - own_3_2 - own_2_2 - own_1_1 - placesExt[0]['value'] - placesExt[1]['value'] - placesExt[2]['value'] - placesExt[3]['value'] - placesExt[4]['value']);
+
 		if(own_5_1 < 0){
 			own_5_1 = 0;
 		}
+
+		if(Parts.InputCount > 1 && placesExt[4]['value'] > 0){
+			own_5_1 += Parts.InputTotal;
+		}
+
+		/*
+		if(Parts.InputCount > 1 && (placesExt[3]['type'] === 'original' && placesExt[3]['value'] > 0 && placesExt[4]['type'] === 'input')){
+			own_3_2 += 0;
+		}
+		*/
+
+
 		
 		own_parts[4] = own_5_1;
-
 
 		ownpart_total = own_1_1;
 		ownpart_total += own_2_2;
@@ -313,66 +364,6 @@ Parts = {
 		ownpart_total += own_5_1;
 
 
-		// "externe" Berechnung => ggf. Korrektur
-		if(input !== undefined){
-
-			// ----------------------------------------------------------------
-			// Eigenanteile neu berechnen
-
-
-
-			// -----------------------------------------------
-
-			own_2_1 = (total_lg - (placesExt[2] * 2));
-			own_2_2 = Math.round( own_2_1 - own_1_1 - placesExt[0] - placesExt[1] );
-
-			if(own_2_2 < 0){
-				own_2_2 = 0;
-			}
-
-			own_parts[1] = own_2_2;
-
-			// -----------------------------------------------
-
-			own_3_1 = ( total_lg - (placesExt[3] * 2) );
-			own_3_2 = Math.round( own_3_1 - own_2_2 - own_1_1 - placesExt[0] - placesExt[1] - placesExt[2] );
-
-			if(own_3_2 < 0){
-				own_3_2 = 0;
-			}
-
-			own_parts[2] = own_3_2;
-
-			// -----------------------------------------------
-
-			if(placesExt[4] > 0 || placesExt[3] > 0){
-				own_4_1 = (total_lg - ( placesExt[4] * 2 ));
-				own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - placesExt[0] - placesExt[1] - placesExt[2] - placesExt[3] );
-
-				if(own_4_2 < 0){
-					own_4_2 = 0;
-				}
-			}
-
-			own_parts[3] = own_4_2;
-
-			// -----------------------------------------------
-
-			own_5_1 = Math.round( total_lg - own_4_2 - own_3_2 - own_2_2 - own_1_1 - placesExt[0] - placesExt[1] - placesExt[2] - placesExt[3] - placesExt[4] );
-
-			if(own_5_1 < 0){
-				own_5_1 = 0;
-			}
-
-			own_parts[4] = own_5_1;
-
-			ownpart_total = own_1_1;
-			ownpart_total += own_2_2;
-			ownpart_total += own_3_2;
-			ownpart_total += own_4_2;
-			ownpart_total += own_5_1;
-
-		}
 
 		//console.log('own_parts[]: ', own_parts);
 
@@ -381,16 +372,16 @@ Parts = {
 		h.push('<thead>');
 
 		h.push('<tr>');
-		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + '</strong></th>');
+		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + (input_total > 0 ? ' <strong class="info">+ ' + input_total + '</strong>' : '') + '</strong></th>');
 		h.push('<th class="text-center" colspan="3">Eigenanteil: <strong class="success">' + ownpart_total + '</strong></th>');
 		h.push('</tr>');
 
 		h.push('<tr>');
 		if(input_total > 0){
-			h.push('<th colspan="3" class="text-center" style="width: 50%">LG Gesamt-FP: <strong>' + total_lg + '</strong></th>');
+			h.push('<th colspan="3" class="text-center" style="width: 50%">LG Gesamt-FP: <strong class="normal">' + total_lg_org + '</strong></th>');
 			h.push('<th colspan="3" class="text-center">Externe FP: <strong class="info">' + input_total + '</strong></th>');
 		} else {
-			h.push('<th colspan="6" class="text-center">LG Gesamt-FP: <strong>' + total_lg + '</strong></th>');
+			h.push('<th colspan="6" class="text-center">LG Gesamt-FP: <strong class="normal">' + total_lg_org + '</strong></th>');
 		}
 
 		h.push('</tr>');
@@ -423,9 +414,9 @@ Parts = {
 		h.push('<tr>');
 		h.push('<td>Platz 1</td>');
 
-		if(working[0]['type'] === 'input'){
+		if(placesExt[0]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
-			h.push('<td class="text-center"><strong class="info">' + working[0]['value'] + '</strong></td>');
+			h.push('<td class="text-center"><strong class="info">' + placesExt[0]['value'] + '</strong></td>');
 		} else {
 			h.push('<td class="text-center"><strong>' + places[0] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
@@ -433,7 +424,7 @@ Parts = {
 
 		h.push('<td class="text-center">' + bps[1] + '</td>');
 		h.push('<td class="text-center">' + meds[1] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[0]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[0]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 		if(own_parts[0] > 0 && ext[0] > places[0]){
@@ -454,9 +445,9 @@ Parts = {
 		h.push('<tr>');
 		h.push('<td>Platz 2</td>');
 
-		if(working[1]['type'] === 'input'){
+		if(placesExt[1]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
-			h.push('<td class="text-center"><strong class="info">' + working[1]['value'] + '</strong></td>');
+			h.push('<td class="text-center"><strong class="info">' + placesExt[1]['value'] + '</strong></td>');
 		} else {
 			h.push('<td class="text-center"><strong>' + places[1] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
@@ -464,7 +455,7 @@ Parts = {
 
 		h.push('<td class="text-center">' + bps[2] + '</td>');
 		h.push('<td class="text-center">' + meds[2] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[1]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[1]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
@@ -483,9 +474,9 @@ Parts = {
 		h.push('<tr>');
 		h.push('<td>Platz 3</td>');
 
-		if(working[2]['type'] === 'input'){
+		if(placesExt[2]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
-			h.push('<td class="text-center"><strong class="info">' + working[2]['value'] + '</strong></td>');
+			h.push('<td class="text-center"><strong class="info">' + placesExt[2]['value'] + '</strong></td>');
 		} else {
 			h.push('<td class="text-center"><strong>' + places[2] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
@@ -493,7 +484,7 @@ Parts = {
 
 		h.push('<td class="text-center">' + bps[3] + '</td>');
 		h.push('<td class="text-center">' + meds[3] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[2]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[2]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 		h.push('<tr>');
@@ -512,9 +503,9 @@ Parts = {
 		h.push('<tr>');
 		h.push('<td>Platz 4</td>');
 
-		if(working[3]['type'] === 'input'){
+		if(placesExt[3]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
-			h.push('<td class="text-center"><strong class="info">' + working[3]['value'] + '</strong></td>');
+			h.push('<td class="text-center"><strong class="info">' + placesExt[3]['value'] + '</strong></td>');
 		} else {
 			h.push('<td class="text-center"><strong>' + places[3] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
@@ -522,7 +513,7 @@ Parts = {
 
 		h.push('<td class="text-center">' + bps[4] + '</td>');
 		h.push('<td class="text-center">' + meds[4] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[3]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[3]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 		h.push('<tr>');
@@ -541,9 +532,9 @@ Parts = {
 		h.push('<tr>');
 		h.push('<td>Platz 5</td>');
 
-		if(working[4]['type'] === 'input'){
+		if(placesExt[4]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
-			h.push('<td class="text-center"><strong class="info">' + working[4]['value'] + '</strong></td>');
+			h.push('<td class="text-center"><strong class="info">' + placesExt[4]['value'] + '</strong></td>');
 		} else {
 			h.push('<td class="text-center"><strong>' + places[4] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
@@ -551,7 +542,7 @@ Parts = {
 
 		h.push('<td class="text-center">' + bps[5] + '</td>');
 		h.push('<td class="text-center">' + meds[5] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? input[4]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[4]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
@@ -562,7 +553,7 @@ Parts = {
 			ot += parseInt(own_parts[4]);
 
 			h.push('<td class="text-center"><strong class="success">' + own_parts[4] + (own_parts[3] > 0 && own_parts[4] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-			h.push('<td colspan="3"></td>');
+			h.push('<td colspan="4"></td>');
 			h.push('</tr>');
 		}
 
