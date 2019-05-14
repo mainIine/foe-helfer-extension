@@ -88,14 +88,18 @@ input[type=number]::-webkit-outer-spin-button {
 	background-position: -1px -27px;
 }
 
-.window-body::-webkit-scrollbar {
-	width: 8px;
+::-webkit-scrollbar {
+	width: 5px;
 }
 
-.window-body::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
 }
+
+.nano .nano-content { padding: 10px; }
+.nano .nano-pane   { background: #281207; }
+.nano .nano-slider { background: #3D250F; }
 
 /*******************************************************************************************/
 
@@ -232,8 +236,8 @@ p {
 
 #costCalculator #costCalculatorBody input {
 	display: inline-block;
-	width: 45px;
-	height: calc(1rem + 2px);
+	width: 25px;
+	text-align: center;
 	padding: .275rem .65rem;
 	line-height: 1.5;
 	background-color: #F9EBC6;
@@ -353,8 +357,8 @@ p {
 	color: #93795D;
 	background-clip: padding-box;
 	border: 1px solid #4C2F1E;
-	text-align: right;
-	width: 50px;
+	text-align: center;
+	width: 30px;
 	margin: 0 5px;
 }
 
@@ -416,9 +420,12 @@ p {
 	height: 0;
 	position: absolute;
 	overflow: hidden;
+	overflow-y: auto;
 	top: 15px;
 	left: 15px;
 }
+
+
 
 .OwnPartBoxBackground .btn-outer {
 	margin-bottom: 6px;
@@ -656,15 +663,6 @@ p {
 	top: 20%;
 	right: 30px;
 	width: 900px;
-}
-
-#BHResultBox::-webkit-scrollbar {
-	width: 8px;
-}
-
-#BHResultBox::-webkit-scrollbar-thumb {
-	background: #281207;
-	border-radius: 10px;
 }
 
 #BHResultBox #BHResultBoxBody {
