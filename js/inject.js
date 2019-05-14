@@ -71,7 +71,6 @@ chrome.storage.sync.get({
 	};
 	(document.head || document.documentElement).appendChild(momentJS);
 
-
 	// Stylesheet einfügen
 	let style = document.createElement('link');
 	style.href = chrome.extension.getURL('css/web/style.css?v=' + v);
@@ -79,4 +78,3 @@ chrome.storage.sync.get({
 	style.rel = 'stylesheet';
 	(document.head || document.documentElement).appendChild(style);
 });
-

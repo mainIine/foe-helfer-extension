@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 let PlayerNames = [],
-	NeighborNames = [],
 	FriendNames = [],
 	BuildingNamesi18n = false,
 	Conversations = [],

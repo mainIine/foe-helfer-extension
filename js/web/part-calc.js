@@ -11,12 +11,7 @@
  * Copyright © 2019
  *
  * **************************************************************************************
- *
- * i18n
- * https://foede.innogamescdn.com/start/metadata?id=city_entities-ca34975f8e60acb4cce76ba85325ac1ba42e5e21
  */
-
-let all_LGs = [];
 
 Parts = {
 
@@ -28,9 +23,10 @@ Parts = {
 	InputCount: 0,
 	InputTotal: 0,
 
-	TimeOut: null,
 
-
+	/**
+	 * HTML Box in den DOM drücken und ggf. Funktionen binden
+	 */
 	buildBox: ()=> {
 
 		let perc = localStorage.getItem('CurrentBuildingPercent');
@@ -55,81 +51,64 @@ Parts = {
 		});
 
 
-		$('body').on('blur', '#arc-percent', function() {
+		$('body').on('blur', '#arc-percent', function(){
 			let p = $(this).val();
 			localStorage.setItem('CurrentBuildingPercent', p);
 			Parts.CurrentBuildingPercent = p;
 
-			Parts.BoxBody();
+			Parts.collectExternals();
 		});
 
 		// Es wird ein exerner Platz eingetragen
 		$('body').on('blur', '.own-part-input', function(){
-
-			Parts.InputTotal = 0;
-			Parts.InputCount = 0;
-
-			$('.own-part-input').each(function(i){
-
-				let v = $(this).val();
-
-				if(v === ''){
-					$(this).val(0);
-					v = 0;
-				}
-
-				if(i > 0){
-					Parts.InputTotal += parseInt(v);
-				}
-
-				if(parseInt(v) > 0){
-					Parts.InputCount++;
-				}
-
-				Parts.Input[i] = {
-					value: parseInt(v),
-					type: 'input'
-				};
-
-				Parts.InputOriginal[i] = {
-					value: parseInt(v),
-					type: 'input'
-				};
-			});
-
-			const isAllZero = !Parts.Input.some(el => el.value !== 0);
-
-			if(isAllZero !== true){
-				Parts.BoxBody(Parts.Input);
-			} else {
-				Parts.BoxBody();
-			}
+			Parts.collectExternals();
 		});
 	},
 
 
-	extend: (plc, inp)=> {
+	/**
+	 * Externe Plätze einsammeln und ggf. übergeben
+	 */
+	collectExternals: ()=> {
+		Parts.InputTotal = 0;
+		Parts.InputCount = 0;
 
-		let obj = [];
+		$('.own-part-input').each(function(i){
 
-		for(let i in plc)
-		{
+			let v = $(this).val();
 
-			for(let x in inp)
-			{
-				if(inp[x]['value'] > plc[i]['value'])
-				{
-					obj[i] = inp[x];
-					delete inp[x];
-				}
+			if(v === ''){
+				$(this).val(0);
+				v = 0;
 			}
 
-			if(obj[i] === undefined){
-				obj[i] = plc[i];
+			if(i > 0){
+				Parts.InputTotal += parseInt(v);
 			}
+
+			if(parseInt(v) > 0){
+				Parts.InputCount++;
+			}
+
+			Parts.Input[i] = {
+				value: parseInt(v),
+				type: 'input'
+			};
+
+			Parts.InputOriginal[i] = {
+				value: parseInt(v),
+				type: 'input'
+			};
+		});
+
+		// Prüfen ob alle "null" sind
+		const isAllZero = !Parts.Input.some(el => el.value !== 0);
+
+		if(isAllZero !== true){
+			Parts.BoxBody(Parts.Input);
+		} else {
+			Parts.BoxBody();
 		}
-
-		return obj;
 	},
 
 
@@ -148,27 +127,19 @@ Parts = {
 			total_lg_org = parseInt(d['state']['forge_points_for_level_up']),
 			arc = ((parseFloat( Parts.CurrentBuildingPercent ) + 100) / 100 ),
 			total_maezen = 0,
+			maezenTmp = 0,
 			places = {},
 			placesExt = {},
 			placesTmp = [],
 			inputTmp = [],
-			nextOwnAdd = 0,
 			meds = [],
 			bps = [],
 			h = [],
 			input_total = 0,
-			ext = {
-				0: 0,
-				1: 0,
-				2: 0,
-				3: 0,
-				4: 0,
-				5: 0
-			},
+
 			ot = 0;
 
 		Parts.CurrentBuildingID = cityentity_id;
-
 
 
 		// 6x Durchlauf um die Plätze + Mäzen zu errechnen
@@ -185,17 +156,16 @@ Parts = {
 					place = Math.round( spa * arc),
 					p = (rankings[x]['rank'] -1);
 
-				// Platz + Mäzenbonus
+				// Werte für die Kopierbutton
 				places[p] = place;
 
-				// placesExt[p] = place;
+				maezenTmp += place;
 
+				// originale Plätze des LGs
 				placesTmp[p] = {
 					value: place,
 					type: 'original'
 				};
-
-				//total_maezen += place;
 
 				// Medallien berechnen
 				let m = (rankings[x]['reward']['resources'] !== undefined ? parseInt(rankings[x]['reward']['resources']['medals']) : 0);
@@ -207,24 +177,18 @@ Parts = {
 			}
 		}
 
-
-		console.log('placesExt - Before: ', placesExt);
-		console.log('places - Before: ', places);
-		
-
+		// Spieler hat externe FP eingetragen, bissel was vorbereiten
 		if(input !== undefined){
 
-			console.log('total_lg - Before: ', total_lg);
-			console.log('Parts.InputTotal: ', Parts.InputTotal);
-
-			if(Parts.InputCount > 1){
-				total_lg -= Parts.InputTotal;
-			}
-
+			// Durcheinander? Schick von groß nach klein Sortieren
 			inputTmp = input.sort(Parts.compareValues('value', 'desc'));
 
+			//
 			placesExt = Parts.extend(placesTmp, inputTmp);
 
+			if(Parts.InputCount > 1 && placesExt[0]['type'] !== 'input'){
+				total_lg -= Parts.InputTotal;
+			}
 
 			for(let i = 0; i < 5; i++){
 
@@ -239,15 +203,14 @@ Parts = {
 			}
 
 		} else {
+
+			// Standard Berechnung
 			placesExt = placesTmp;
+			total_maezen = maezenTmp;
 		}
 
-		console.log('total_lg - After: ', total_lg);
-		console.log('placesExt - After: ', placesExt);
-		console.log('-------------------------------------------------------------');
 
 		// Info-Block
-
 		h.push('<table style="width: 100%"><tr><td style="width: 50%">');
 		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[ cityentity_id] + ' </strong><br>Stufe '+ level +' &rarr; '+ (parseInt(level) +1) +'</p>');
 		h.push('</td>');
@@ -277,8 +240,8 @@ Parts = {
 			ownpart_total = 0;
 
 
-		if(placesExt[0]['value'] > 0 && places[0]){
-			own_1_1 = Math.round( total_lg - (placesExt[0]['value'] + places[0]) );
+		if(placesExt[0]['type'] === 'input' && placesExt[0]['value'] > 0){
+			own_1_1 = Math.round( total_lg - placesExt[0]['value'] - (placesExt[1]['value'] * 2) );
 
 			if(own_1_1 < 0){
 				own_1_1 = 0;
@@ -299,8 +262,8 @@ Parts = {
 		
 		own_2_1 = parseInt(total_lg - (placesExt[2]['value'] * 2));
 		own_2_2 = Math.round( own_2_1 - own_1_1 - placesExt[0]['value'] - placesExt[1]['value'] );
-		
-		if(own_2_2 < 0 || placesExt[3]['type'] === 'input'){
+
+		if(own_2_2 < 0){
 			own_2_2 = 0;
 		}
 		
@@ -319,8 +282,8 @@ Parts = {
 		
 		// -----------------------------------------------
 		
-		if(places[4] > 0 || placesExt[3]['value'] > 0){
-			own_4_1 = (total_lg - ( places[4] * 2 ));
+		if(placesExt[3]['value'] > 0){
+			own_4_1 = (total_lg - ( placesExt[4]['value'] * 2 ));
 			own_4_2 = Math.round( own_4_1 - own_3_2 - own_2_2 - own_1_1 - placesExt[0]['value'] - placesExt[1]['value'] - placesExt[2]['value'] - placesExt[3]['value'] );
 			
 			if(own_4_2 < 0 || placesExt[3]['type'] === 'input'){
@@ -329,7 +292,6 @@ Parts = {
 		}
 
 		if(Parts.InputCount > 1 && placesExt[4]['value'] === 0){
-			nextOwnAdd += own_4_2;
 			own_4_2 += Parts.InputTotal;
 		}
 		
@@ -343,36 +305,55 @@ Parts = {
 			own_5_1 = 0;
 		}
 
+		// Spezielle Korrekturen
 		if(Parts.InputCount > 1 && placesExt[4]['value'] > 0){
 			own_5_1 += Parts.InputTotal;
 		}
 
-		/*
-		if(Parts.InputCount > 1 && (placesExt[3]['type'] === 'original' && placesExt[3]['value'] > 0 && placesExt[4]['type'] === 'input')){
-			own_3_2 += 0;
-		}
-		*/
-
-
-		
 		own_parts[4] = own_5_1;
 
-		ownpart_total = own_1_1;
+
+		if(Parts.InputCount > 1 && (placesExt[1]['type'] === 'input' && placesExt[2]['value'] === 'original' && placesExt[3]['type'] === 'input')){
+			own_2_2 += Parts.InputTotal;
+		}
+
+		if(Parts.InputCount > 1 && (placesExt[0]['type'] === 'input' && placesExt[1]['type'] === 'original' && placesExt[2]['type'] === 'input' && placesExt[3]['type'] === 'original')){
+			own_3_2 += own_2_2;
+			own_parts[2] = own_3_2
+
+			own_2_2 = 0;
+			own_parts[1] = 0;
+		}
+
+		if(Parts.InputCount > 1 && (placesExt[1]['type'] === 'original' && placesExt[2]['type'] === 'input' && placesExt[3]['type'] === 'input' && placesExt[3]['type'] === 'original')){
+			own_4_2 += Parts.InputTotal;
+			own_parts[3] = own_4_2;
+		}
+
+		// Eigenanteil 4 korrigieren
+		if(Parts.InputCount > 1 && (placesExt[2]['type'] === 'input' && placesExt[3]['type'] === 'input' && placesExt[4]['type'] === 'input')){
+			ownpart_total -= own_4_2;
+			own_parts[3] = 0;
+		}
+
+		if(Parts.InputCount > 1 && (placesExt[0]['type'] === 'input' && placesExt[1]['type'] === 'original' && placesExt[2]['type'] === 'input' && placesExt[3]['type'] === 'original' && placesExt[4]['type'] === 'original')){
+			own_4_2 -= Parts.InputTotal;
+			own_parts[3] = own_4_2;
+		}
+
+		ownpart_total += own_1_1;
 		ownpart_total += own_2_2;
 		ownpart_total += own_3_2;
 		ownpart_total += own_4_2;
 		ownpart_total += own_5_1;
 
 
-
-		//console.log('own_parts[]: ', own_parts);
-
-		h.push('<table id="OwnPartTable" class="foe-table">');
+		h.push('<table class="foe-table" style="margin-bottom: 10px;">');
 
 		h.push('<thead>');
 
 		h.push('<tr>');
-		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + (input_total > 0 ? ' <strong class="info">+ ' + input_total + '</strong>' : '') + '</strong></th>');
+		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + (input_total > 0 ? ' <strong class="info">+' + input_total + '</strong>' : '') + '</strong></th>');
 		h.push('<th class="text-center" colspan="3">Eigenanteil: <strong class="success">' + ownpart_total + '</strong></th>');
 		h.push('</tr>');
 
@@ -387,6 +368,9 @@ Parts = {
 		h.push('</tr>');
 
 		h.push('</thead>');
+		h.push('</table>');
+
+		h.push('<table id="OwnPartTable" class="foe-table">');
 		h.push('<tbody>');
 
 		h.push('<tr>');
@@ -399,7 +383,7 @@ Parts = {
 		h.push('</tr>');
 
 
-		if(own_parts[0] > 0 && ext[0] < places[0]){
+		if(own_parts[0] > 0 && placesExt[0]['type'] === 'original'){
 
 			h.push('<tr>');
 			h.push('<td>Eigenanteil</td>');
@@ -411,6 +395,9 @@ Parts = {
 		}
 
 
+		/**
+		 * Platz 1
+		 */
 		h.push('<tr>');
 		h.push('<td>Platz 1</td>');
 
@@ -418,7 +405,7 @@ Parts = {
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + placesExt[0]['value'] + '</strong></td>');
 		} else {
-			h.push('<td class="text-center"><strong>' + places[0] + '</strong></td>');
+			h.push('<td class="text-center"><strong>' + placesExt[0]['value'] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
 		}
 
@@ -427,7 +414,8 @@ Parts = {
 		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[0]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
-		if(own_parts[0] > 0 && ext[0] > places[0]){
+
+		if(own_parts[0] > 0 && placesExt[0]['type'] === 'input'){
 
 			h.push('<tr>');
 			h.push('<td>Eigenanteil</td>');
@@ -449,7 +437,7 @@ Parts = {
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + placesExt[1]['value'] + '</strong></td>');
 		} else {
-			h.push('<td class="text-center"><strong>' + places[1] + '</strong></td>');
+			h.push('<td class="text-center"><strong>' + placesExt[1]['value'] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
 		}
 
@@ -459,16 +447,16 @@ Parts = {
 		h.push('</tr>');
 
 
-		h.push('<tr>');
-		h.push('<td>Eigenanteil</td>');
-
 		if(own_parts[1] > 0){
 			ot += parseInt(own_parts[1]);
-		}
 
-		h.push('<td class="text-center"><strong class="success">' + own_parts[1] + (own_parts[0] > 0 && own_parts[1] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="4"></td>');
-		h.push('</tr>');
+			h.push('<tr>');
+			h.push('<td>Eigenanteil</td>');
+
+			h.push('<td class="text-center"><strong class="success">' + own_parts[1] + (own_parts[0] > 0 && own_parts[1] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
+			h.push('<td colspan="4"></td>');
+			h.push('</tr>');
+		}
 
 
 		h.push('<tr>');
@@ -478,7 +466,7 @@ Parts = {
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + placesExt[2]['value'] + '</strong></td>');
 		} else {
-			h.push('<td class="text-center"><strong>' + places[2] + '</strong></td>');
+			h.push('<td class="text-center"><strong>' + placesExt[2]['value'] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
 		}
 
@@ -487,15 +475,19 @@ Parts = {
 		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[2]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
-		h.push('<tr>');
-		h.push('<td>Eigenanteil</td>');
+
 
 		if(own_parts[2] > 0){
 			ot += parseInt(own_parts[2]);
+
+			h.push('<tr>');
+			h.push('<td>Eigenanteil</td>');
+
+			h.push('<td class="text-center"><strong class="success">' + own_parts[2] + (own_parts[1] > 0 && own_parts[2] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
+			h.push('<td colspan="4"></td>');
+			h.push('</tr>');
 		}
-		h.push('<td class="text-center"><strong class="success">' + own_parts[2] + (own_parts[1] > 0 && own_parts[2] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="4"></td>');
-		h.push('</tr>');
+
 
 		/**
 		 * 	Platz 4
@@ -507,7 +499,7 @@ Parts = {
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + placesExt[3]['value'] + '</strong></td>');
 		} else {
-			h.push('<td class="text-center"><strong>' + places[3] + '</strong></td>');
+			h.push('<td class="text-center"><strong>' +placesExt[3]['value'] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
 		}
 
@@ -516,14 +508,17 @@ Parts = {
 		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[3]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
-		h.push('<tr>');
-		h.push('<td>Eigenanteil</td>');
+
 		if(own_parts[3] > 0){
 			ot += parseInt(own_parts[3]);
+
+			h.push('<tr>');
+			h.push('<td>Eigenanteil</td>');
+
+			h.push('<td class="text-center"><strong class="success">' + own_parts[3] + (own_parts[2] > 0 && own_parts[3] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
+			h.push('<td colspan="4"></td>');
+			h.push('</tr>');
 		}
-		h.push('<td class="text-center"><strong class="success">' + own_parts[3] + (own_parts[2] > 0 && own_parts[3] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
-		h.push('<td colspan="4"></td>');
-		h.push('</tr>');
 
 
 		/**
@@ -532,11 +527,11 @@ Parts = {
 		h.push('<tr>');
 		h.push('<td>Platz 5</td>');
 
-		if(placesExt[4]['type'] === 'input'){
+		if(placesExt[4]['type'] === 'input' && placesExt[4]['value'] > 0){
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + placesExt[4]['value'] + '</strong></td>');
 		} else {
-			h.push('<td class="text-center"><strong>' + places[4] + '</strong></td>');
+			h.push('<td class="text-center"><strong>' + placesExt[4]['value'] + '</strong></td>');
 			h.push('<td class="text-center">-</td>');
 		}
 
@@ -565,28 +560,70 @@ Parts = {
 		Parts.BuildBackgroundBody(places);
 	},
 
-	compareValues: (key, order='asc')=> {
+
+	/**
+	 * Neues Objekt mit den Original-Plätzen und ggf überschrieben externen Plätzen
+	 *
+	 * @param plc
+	 * @param inp
+	 * @returns {Array}
+	 */
+	extend: (plc, inp)=> {
+
+		let obj = [];
+
+		for(let i in plc)
+		{
+
+			for(let x in inp)
+			{
+				if(inp[x]['value'] >= plc[i]['value'] && inp[x]['value'] > 0)
+				{
+					if((obj[i] === undefined))
+					{
+						obj[i] = inp[x];
+					}
+
+					delete inp[x];
+				}
+			}
+
+			if(obj[i] === undefined){
+				obj[i] = plc[i];
+			}
+		}
+
+		return obj;
+	},
+
+
+	/**
+	 * Sortierung eines Objekts in die entsprechende Richtung
+	 *
+	 * @param key
+	 * @param order
+	 * @returns {Function}
+	 */
+	compareValues: (key, order = 'asc')=> {
 		return function(a, b) {
-			if(!a.hasOwnProperty(key) ||
-				!b.hasOwnProperty(key)) {
+
+			if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
 				return 0;
 			}
 
-			const varA = (typeof a[key] === 'string') ?
-				a[key].toUpperCase() : a[key];
-			const varB = (typeof b[key] === 'string') ?
-				b[key].toUpperCase() : b[key];
+			const varA = (typeof a[key] === 'string') ?	a[key].toUpperCase() : a[key];
+			const varB = (typeof b[key] === 'string') ?	b[key].toUpperCase() : b[key];
 
 			let comparison = 0;
+
 			if (varA > varB) {
 				comparison = 1;
+
 			} else if (varA < varB) {
 				comparison = -1;
 			}
-			return (
-				(order == 'desc') ?
-					(comparison * -1) : comparison
-			);
+
+			return ((order == 'desc') ?	(comparison * -1) : comparison);
 		};
 	},
 
@@ -610,17 +647,15 @@ Parts = {
 		b.push('<input type="text" id="build-name" placeholder="Individueller LG Name"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '">');
 
 		// 5x hoch zählen
-		for (let i = 1; i < 5; i++){
+		for (let i = 0; i < 6; i++){
 
 			let e = [];
 
-			for(let x = i; x < 5; x++){
+			for(let x = i; x < 6; x++){
 				if(parseInt(h[x]) > 0){
-					e.push('P'+ x + '('+ h[x] + ')');
+					e.push('P'+ (x +1) + '('+ h[x] + ')');
 				}
 			}
-
-			// delete h[i];
 
 			// Kopierbutton zusammen fummeln
 			if(e.length > 0){
@@ -632,17 +667,17 @@ Parts = {
 		b.push('<span class="divider"></span>');
 
 		// 5x hoch zählen
-		for (let j = 1; j < 5; j++){
+		for (let j = 0; j < 6; j++){
 
 			let ps = [];
 
 			for(let x = j; x < 5; x++){
 				if(parseInt(k[x]) > 0){
-					ps.push('P'+ x);
+					ps.push('P'+ (x +1));
 				}
 			}
 
-			delete k[j];
+			// delete k[j];
 
 			// Kopierbutton zusammen fummeln
 			if(ps.length > 0){
@@ -659,11 +694,11 @@ Parts = {
 					pn = $('#player-name').val(),
 					bn = $('#build-name').val();
 
-				if(pn.length !==''){
+				if(pn.length !=''){
 					localStorage.setItem('PlayerCopyName', pn);
 				}
 
-				if(bn.length !==''){
+				if(bn.length !=''){
 					localStorage.setItem(Parts.CurrentBuildingID, bn);
 				}
 
@@ -721,7 +756,7 @@ Parts = {
 		if(show === true){
 			$('#OwnPartBox').addClass('show');
 			$('#OwnPartBox').animate({left: nbl + 'px', paddingLeft: '200px'}, 250, function(){
-				$('.OwnPartBoxBackgroundBody').animate({width: '178px', height: '350px'}, 250);
+				$('.OwnPartBoxBackgroundBody').animate({width: '185px', height: '350px'}, 250);
 			});
 
 		} else {
@@ -729,28 +764,6 @@ Parts = {
 
 			$('.OwnPartBoxBackgroundBody').animate({width: '0px', height: '0px'}, 250, function () {
 				$('#OwnPartBox').animate({left: (abl + 200) + 'px', paddingLeft: '10px'}, 250);
-			});
-		}
-	},
-
-
-	/**
-	 *
-	 * @constructor
-	 */
-	LoadLGList: ()=> {
-		let list = localStorage.getItem('LG_List');
-
-		if(list !== null){
-			all_LGs = JSON.parse(list);
-
-		} else {
-			// Daten holen und aufbereiten
-			MainParser.send2Server({get:'all'}, 'GetAllLGData', function(r){
-				if(r.status === 'OK'){
-					localStorage.setItem('LG_List', JSON.stringify(r.data));
-					all_LGs = r.data;
-				}
 			});
 		}
 	},
