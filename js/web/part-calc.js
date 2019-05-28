@@ -1,12 +1,11 @@
 /*
  * **************************************************************************************
  *
- * Dateiname:                 part_calc.js
+ * Dateiname:                 part-calc.js
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.02.19 14:20 Uhr
- * zu letzt bearbeitet:       01.02.19 14:20 Uhr
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
  *
  * Copyright © 2019
  *
@@ -40,7 +39,7 @@ Parts = {
 		}
 
 		// Box in den DOM
-		HTML.Box('OwnPartBox', 'Eigenanteils Rechner');
+		HTML.Box('OwnPartBox', 'Eigenanteils Rechner', 'https://foe-rechner.de/extension/index#Eigenanteilsrechner');
 
 		// Body zusammen fummeln
 		Parts.BoxBody();
@@ -637,61 +636,55 @@ Parts = {
 	BuildBackgroundBody: (p)=>{
 		let b = [],
 			n = localStorage.getItem('PlayerCopyName'),
+			m = localStorage.getItem('current_player_name'),
 			h = p,
 			k = p,
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
 		b.push('<span class="header"><strong>Werte kopieren</strong></span>');
 
-		b.push('<input type="text" id="player-name" placeholder="Dein Name"' + (n !== null ? ' value="'+ n +'"' : '') + '>');
+		b.push('<input type="text" id="player-name" placeholder="Dein Name" value="' + (n !== null ? n : m) + '">');
 		b.push('<input type="text" id="build-name" placeholder="Individueller LG Name"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '">');
 
-		// 5x hoch zählen
-		for (let i = 0; i < 6; i++){
+		let drp = '<select id="chain-scheme">' +
+			'<option value="" disabled>-- Ausgabe Schema --</option>' +
+			'<option value="1">Name LG P5 P4 P3 P2 P1</option>' +
+			'<option value="2">Name LG P1 P2 P3 P4 P5</option>' +
+			'<option value="3">Name LG P5/4/3/2/1</option>' +
+			'<option value="4">Name LG P1/2/3/4/5</option>' +
+			'<option value="5" selected>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
+			'<option value="6">Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
+			'</select>';
 
-			let e = [];
+		b.push(drp);
 
-			for(let x = i; x < 6; x++){
-				if(parseInt(h[x]) > 0){
-					e.push('P'+ (x +1) + '('+ h[x] + ')');
-				}
-			}
+		let cb = '<div class="checkboxes">' +
+			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1" checked> Platz 1.</label>' +
 
-			// Kopierbutton zusammen fummeln
-			if(e.length > 0){
-				let en = e.reverse().join(' ');
-				b.push('<div class="btn-outer"><span title="' + en + '" class="button-own" data-clipboard-text="' + en +'">' + en +'</span></div>');
-			}
-		}
+			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2" checked> Platz 2.</label>' +
 
-		b.push('<span class="divider"></span>');
+			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3" checked> Platz 3.</label>' +
 
-		// 5x hoch zählen
-		for (let j = 0; j < 6; j++){
+			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4" checked> Platz 4.</label>' +
 
-			let ps = [];
+			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5" checked> Platz 5.</label>' +
 
-			for(let x = j; x < 5; x++){
-				if(parseInt(k[x]) > 0){
-					ps.push('P'+ (x +1));
-				}
-			}
+			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> Leveln</label>' +
+			'</div>';
 
-			// delete k[j];
+		b.push(cb);
 
-			// Kopierbutton zusammen fummeln
-			if(ps.length > 0){
-				let psn = ps.reverse().join(' ');
-				b.push('<div class="btn-outer"><span title="' + psn + '" class="button-own" data-clipboard-text="' + psn +'">' + psn +'</span></div>');
-			}
-		}
+		b.push('<div class="btn-outer text-center" style="margin-top: 10px"><span class="button-own">Werte Kopieren</span></div>');
+
+		// ---------------------------------------------------------------------------------------------
+
 
 		// es soll etwas kopiert werden
 		// Player-Namen und individuellen LG Namen ermittlen
 		new ClipboardJS('.button-own', {
 			text: function(trigger) {
-				let pc = trigger.getAttribute('data-clipboard-text'),
-					pn = $('#player-name').val(),
+
+				let pn = $('#player-name').val(),
 					bn = $('#build-name').val();
 
 				if(pn.length !=''){
@@ -702,6 +695,7 @@ Parts = {
 					localStorage.setItem(Parts.CurrentBuildingID, bn);
 				}
 
+
 				$(trigger).addClass('border-success');
 
 				// nach 4s den grünen Rahmen wieder ausblenden
@@ -709,7 +703,59 @@ Parts = {
 					$(trigger).removeClass('border-success');
 				}, 4000);
 
-				return (pn ? pn+' ' : '') + bn + ' ' + pc;
+
+				let s = $('#chain-scheme').val();
+
+				let sol = {
+						1: 'Pi',
+						2: 'Pi',
+						3: '/i',
+						4: '/i',
+						5: 'Pi(fp)',
+						6: 'Pi(fp)',
+					},
+					sop = {
+						1: {d: 'd'},
+						2: {d: 'u'},
+						3: {d: 'd'},
+						4: {d: 'u'},
+						5: {d: 'd'},
+						6: {d: 'u'}
+					};
+
+				let parts = [];
+
+				// Spieler Name
+				parts.push(pn);
+
+				// LG Name
+				parts.push( bn );
+
+				// Plätze wenn angehakt
+				if(sop[s]['d'] === 'u'){
+					for(let i = 1; i < 6; i++){
+						if( $('#chain-p'+i).prop('checked') ){
+							let p = sol[s].replace(/i/, i);
+							p = p.replace(/fp/, h[ (i  -1) ]);
+							parts.push(p);
+						}
+					}
+
+				} else {
+					for(let i = 5; i > 0; i--){
+						if( $('#chain-p'+i).prop('checked') ){
+							let p = sol[s].replace(/i/, i);
+							p = p.replace(/fp/, h[ (i  -1) ]);
+							parts.push(p);
+						}
+					}
+				}
+
+				if( $('#chain-level').prop('checked') ){
+					parts.push('\nBitte Leveln');
+				}
+
+				return parts.join(' ');
 			}
 		});
 
@@ -717,6 +763,10 @@ Parts = {
 		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
 			$('.OwnPartBoxBackgroundBody').html( b.join('') );
+
+			setTimeout(()=>{
+				Parts.BackGroundBoxHeight()
+			}, 50);
 
 			// und raus...
 			return;
@@ -727,7 +777,6 @@ Parts = {
 			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody').append(b.join('')) );
 
 		$('#OwnPartBox').append( div.append(a) );
-
 
 		// der "Toogle"-Pfeil wurde geklickt,
 		// lasst die Spiele beginnen
@@ -766,6 +815,16 @@ Parts = {
 				$('#OwnPartBox').animate({left: (abl + 200) + 'px', paddingLeft: '10px'}, 250);
 			});
 		}
+	},
+
+
+	/**
+	 * Setzt die Höhe der Background
+	 *
+	 * @constructor
+	 */
+	BackGroundBoxHeight: ()=>{
+		$('#OwnPartBoxBackgroundBody').height( $('#OwnPartBoxBody').outerHeight() - 5 );
 	},
 
 

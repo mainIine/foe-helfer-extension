@@ -5,8 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.02.19 14:20 Uhr
- * zu letzt bearbeitet:       01.02.19 14:20 Uhr
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
  *
  * Copyright © 2019
  *
@@ -39,7 +38,8 @@ chrome.storage.sync.get({
 		'calculator',
 		'part-calc',
 		'read-buildings',
-		'strategy-points'
+		'strategy-points',
+		'settings'
 	];
 
 	// Scripte laden
@@ -73,8 +73,13 @@ chrome.storage.sync.get({
 
 	// Stylesheet einfügen
 	let style = document.createElement('link');
-	style.href = chrome.extension.getURL('css/web/style.css?v=' + v);
-	style.id = 'ant-style';
+	style.href = chrome.extension.getURL('css/web/style-menu.css?v=' + v);
 	style.rel = 'stylesheet';
 	(document.head || document.documentElement).appendChild(style);
+
+	// Stylesheet einfügen
+	let boxes = document.createElement('link');
+	boxes.href = chrome.extension.getURL('css/web/boxes.css?v=' + v);
+	boxes.rel = 'stylesheet';
+	(document.head || document.documentElement).appendChild(boxes);
 });

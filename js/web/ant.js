@@ -5,8 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              28.01.19 11:36 Uhr
- * zu letzt bearbeitet:       28.01.19 11:36 Uhr
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
  *
  * Copyright © 2019
  *
@@ -80,12 +79,12 @@ let PlayerNames = [],
                 // --------------------------------------------------------------------------------------------------
                 // Player- und Gilden-ID setzen
                 let StartupService = d.find(obj => {
-					return obj.requestClass === 'StartupService' && obj.requestMethod === 'getData';
+					return obj['requestClass'] === 'StartupService' && obj['requestMethod'] === 'getData';
 				});
 
 				if(StartupService !== undefined){
-					// Player-ID & Gilden-ID setzten
-					MainParser.StartUp(StartupService);
+					// Player-ID, Gilden-ID und Name setzten
+					MainParser.StartUp(StartupService['responseData']['user_data']);
 
 					// andere Gildenmitglieder, Nachbarn und Freunde
 					MainParser.SocialbarList(StartupService['responseData']['socialbar_list']);
@@ -106,7 +105,7 @@ let PlayerNames = [],
 				// --------------------------------------------------------------------------------------------------
 				// Chat-Titel notieren
 				let ConversationService = d.find(obj => {
-					return (obj.requestClass === 'ConversationService' && obj.requestMethod === 'getOverview') || (obj.requestClass === 'ConversationService' && obj.requestMethod === 'getTeasers');
+					return (obj['requestClass'] === 'ConversationService' && obj['requestMethod'] === 'getOverview') || (obj['requestClass'] === 'ConversationService' && obj['requestMethod'] === 'getTeasers');
 				});
 
 				if(ConversationService !== undefined){
@@ -117,7 +116,7 @@ let PlayerNames = [],
 				// --------------------------------------------------------------------------------------------------
 				// Übersetzungen der Güter
 				let GoodsService = d.find(obj => {
-					return obj.requestClass === 'ResourceService' && obj.requestMethod === 'getResourceDefinitions';
+					return obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getResourceDefinitions';
 				});
 
 				if(GoodsService !== undefined){
@@ -129,7 +128,7 @@ let PlayerNames = [],
 				// Noch Verfügbare FP aktualisieren
 
 				let FPOverview = d.find(obj => {
-					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'getAvailablePackageForgePoints'
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getAvailablePackageForgePoints'
 				});
 
 				if(FPOverview !== undefined){
@@ -137,7 +136,7 @@ let PlayerNames = [],
 				}
 
 				let GreatBuildingsFPs = d.find(obj => {
-					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'getConstruction'
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction'
 				});
 
 				if(GreatBuildingsFPs !== undefined){
@@ -151,7 +150,7 @@ let PlayerNames = [],
 
 				// Übersicht der LGs eines Nachbarn
 				let GreatBuildingsServiceOverview = d.find(obj => {
-					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'getOtherPlayerOverview';
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getOtherPlayerOverview';
 				});
 
 				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ext_player_id){
@@ -160,11 +159,11 @@ let PlayerNames = [],
 
 
 				let Calculator1 = d.find(obj => {
-					return obj.requestClass === 'CityMapService' && obj.requestMethod === 'updateEntity';
+					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'updateEntity';
 				});
 
 				let Calculator2 = d.find(obj => {
-					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'getConstruction';
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
 				});
 
 				if((Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] !== ext_player_id)
@@ -184,11 +183,11 @@ let PlayerNames = [],
 				/*
 				// es werden gerade FPs eingezahlt, Update zünden
 				let Calculator3 = d.find(obj => {
-					return obj.requestClass === 'CityMapService' && obj.requestMethod === 'reset';
+					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'reset';
 				});
 
 				let Calculator4 = d.find(obj => {
-					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'contributeForgePoints';
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
 				});
 
 
@@ -211,7 +210,7 @@ let PlayerNames = [],
 				// --------------------------------------------------------------------------------------------------
 
 				let OtherPlayersGild = d.find(obj => {
-					return obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'getClanMemberList'
+					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getClanMemberList'
 				});
 
 				if(OtherPlayersGild !== undefined){
@@ -220,7 +219,7 @@ let PlayerNames = [],
 
 
 				let OtherPlayersFriends = d.find(obj => {
-					return obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'getFriendsList'
+					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getFriendsList'
 				});
 
 				// andere Gildenmitglieder in einem anderen Objekt
@@ -229,7 +228,7 @@ let PlayerNames = [],
 				}
 
 				let OtherPlayersNeighbor = d.find(obj => {
-					return obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'getNeighborList'
+					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getNeighborList'
 				});
 
 				// andere Gildenmitglieder in einem anderen Objekt
@@ -242,16 +241,16 @@ let PlayerNames = [],
 				// --------------------------------------------------------------------------------------------------
 
 				let OtherPlayersVisits = d.find(obj => {
-					return obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'visitPlayer'
+					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'visitPlayer'
 				});
 
 				// Ernten anderer Spieler
-				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== ext_guild_id){
+				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== ext_guild_id && Settings.GetSetting('ShowNeighborsGoods')){
 					Reader.OtherPlayersBuildings(OtherPlayersVisits['responseData']);
 				}
 
 				// LGs des eigenen Clans auslesen
-				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] === ext_guild_id){
+				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] === ext_guild_id && Settings.GetSetting('SendGildMemberLGInfo')){
 					MainParser.OtherPlayersLGs(OtherPlayersVisits['responseData']);
 				}
 
@@ -260,7 +259,7 @@ let PlayerNames = [],
 				// Gildenmitglieder in der GEX (Fortschritt, Plazierung usw.)
 
 				let GEXList = d.find(obj => {
-					return obj.requestClass === 'GuildExpeditionService' && obj.requestMethod === 'getContributionList'
+					return obj['requestClass'] === 'GuildExpeditionService' && obj['requestMethod'] === 'getContributionList'
 				});
 
 				if(GEXList !== undefined && MainParser.checkNextUpdate('GuildExpedition')){
@@ -272,7 +271,7 @@ let PlayerNames = [],
 				// Gildenplatzierung in der GEX
 
 				let GEXGuild = d.find(obj => {
-					return obj.requestClass === 'ChampionshipService' && obj.requestMethod === 'getOverview'
+					return obj['requestClass'] === 'ChampionshipService' && obj['requestMethod'] === 'getOverview'
 				});
 
 				if(GEXGuild !== undefined && MainParser.checkNextUpdate('Championship')){
@@ -284,7 +283,7 @@ let PlayerNames = [],
 				// LG Investitionen
 
 				let LGInvests = d.find(obj => {
-					return obj.requestClass === 'GreatBuildingsService' && obj.requestMethod === 'getContributions'
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getContributions'
 				});
 
 				if(LGInvests !== undefined && MainParser.checkNextUpdate('GreatBuildings')){
@@ -296,7 +295,7 @@ let PlayerNames = [],
 				// LG Freundesliste
 
 				let Friends = d.find(obj => {
-					return obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'getFriendsList'
+					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getFriendsList'
 				});
 
 				if(Friends !== undefined && MainParser.checkNextUpdate('FriendsList')){
@@ -308,10 +307,10 @@ let PlayerNames = [],
 				// Moppel Aktivitäten
 
 				let Motivations = d.find(obj => {
-					return obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'getEventsPaginated'
+					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getEventsPaginated'
 				});
 
-				if(Motivations !== undefined){
+				if(Motivations !== undefined && Settings.GetSetting('SendTavernInfo')){
 					let page = Motivations['responseData']['page'],
 						time = MainParser.checkNextUpdate('OtherPlayersMotivation-' + page);
 
@@ -346,7 +345,6 @@ let PlayerNames = [],
  * 		setStorage: MainParser.setStorage,
  * 		getStorage: (function(*=): string),
  * 		Championship: MainParser.Championship,
- * 		removeButtons: MainParser.removeButtons,
  * 		send2Server: MainParser.send2Server,
  * 		OtherPlayersMotivation: MainParser.OtherPlayersMotivation,
  * 		compareTime: MainParser.compareTime,
@@ -804,8 +802,14 @@ MainParser = {
 	},
 
 
+	/**
+	 * Spieler Daten sichern
+	 *
+	 * @param d
+	 * @constructor
+	 */
 	StartUp: (d)=> {
-		ext_guild_id = d['responseData']['user_data']['clan_id'];
+		ext_guild_id = d['clan_id'];
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
 			key: 'current_guild_id',
@@ -813,13 +817,15 @@ MainParser = {
 		});
 		localStorage.setItem('current_guild_id', ext_guild_id);
 
-		ext_player_id = d['responseData']['user_data']['player_id'];
+		ext_player_id = d['player_id'];
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
 			key: 'current_player_id',
 			data: ext_player_id
 		});
 		localStorage.setItem('current_player_id', ext_player_id);
+
+		localStorage.setItem('current_player_name', d['user_name']);
 	},
 
 
@@ -864,13 +870,39 @@ MainParser = {
 
 
 	/**
-	 * Alle Gebäude sichern
+	 * Alle Gebäude sichern,
+	 * Eigene LGs updaten
 	 *
 	 * @param d
 	 * @constructor
 	 */
 	SaveBuildings: (d)=> {
 		MainParser.setStorage('PlayerBuildings', JSON.stringify(d));
+
+		let lgs = [];
+
+		for(let i in d)
+		{
+			if(d.hasOwnProperty(i))
+			{
+				if(d[i]['type'] === 'greatbuilding'){
+					let b = {
+						cityentity_id: d[i]['cityentity_id'],
+						level: d[i]['level'],
+						max_level: d[i]['max_level'],
+						invested_forge_points: d[i]['state']['invested_forge_points'] || 0,
+						forge_points_for_level_up: d[i]['state']['forge_points_for_level_up']
+					};
+
+					lgs.push(b);
+				}
+			}
+		}
+
+		if(lgs.length > 0)
+		{
+			MainParser.send2Server(lgs, 'SelfPlayerLGs');
+		}
 	},
 
 
@@ -972,16 +1004,6 @@ MainParser = {
 				MainParser.setStorage('FriendsList', MainParser.getAddedDateTime(6, 0));
 			});
 		}
-	},
-
-
-	removeButtons: ()=> {
-		document.onkeydown = function(evt) {
-			evt = evt || window.event;
-			if (evt.keyCode === 27) {
-				$('.button--lg, .window-box').remove();
-			}
-		};
 	},
 
 

@@ -5,8 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.02.19 14:20 Uhr
- * zu letzt bearbeitet:       01.02.19 14:20 Uhr
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
  *
  * Copyright © 2019
  *
@@ -41,7 +40,10 @@ let BlackListBuildingsString = [
 	'R_MultiAge_SportBonus18',			// Tholos der Idole
 	'R_MultiAge_CarnivalBonus18',		// Große Brücke
 	'R_MultiAge_FallBonus18',			// Herbstmühle
+	'R_MultiAge_ArcheologyBonus19',		// Weltausstellung
 ];
+
+
 
 /**
  *
@@ -70,7 +72,10 @@ Reader = {
 	 */
 	OtherPlayersBuildings: (dp)=> {
 
-		Reader.data = [];
+		Reader.data = {
+			ready : [],
+			work: []
+		};
 		Reader.player_name = dp['other_player']['name'];
 
 		$('#ResultBox').remove();
@@ -94,13 +99,12 @@ Reader = {
 					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]+':' , d[i]);
 					GoodsParser.readType(d[i]);
 
-				} else if(d[i]['type'] === 'residential' && d[i]['state']['current_product'] !== undefined){
-					// GoodsParser.residentialBuilding(d[i]);
+				} else if(d[i]['type'] === 'residential' && d[i]['state']['current_product'] !== undefined) {
 
-					// console.log(BuildingNamesi18n[d[i]['cityentity_id']] + ': ', BlackListBuildingsString.indexOf(id));
-
-					if(BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1){
-						// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]+':' , d[i]);
+					// Residental Multiage ausschliessen
+					if(id.indexOf('R_MultiAge_') === -1)
+					// if(BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1)
+					{
 						GoodsParser.readType(d[i]);
 					}
 
@@ -112,8 +116,9 @@ Reader = {
 		}
 
 		// was gefunden?
-		if(Reader.data.length > 0){
+		if(Reader.data.ready.length > 0 || Reader.data.work.length > 0){
 			Reader.showResult();
+
 		} else {
 			if($('#ResultBox').length > 0)
 			{
@@ -128,44 +133,77 @@ Reader = {
 	 */
 	showResult: ()=> {
 
-		let d = helper.arr.multisort(Reader.data, ['name'], ['ASC']);
+		// let d = helper.arr.multisort(Reader.data, ['name'], ['ASC']);
+		let rd = helper.arr.multisort(Reader.data.ready, ['name'], ['ASC']);
+		let wk = helper.arr.multisort(Reader.data.work, ['name'], ['ASC']);
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#ResultBox').length === 0 ){
 
-			HTML.Box('ResultBox', 'Aktive Produktionen - ' + Reader.player_name);
+			HTML.Box('ResultBox', 'Produktionen - ' + Reader.player_name);
 		}
 
 		let div = $('#ResultBox'),
 			h = [];
 
-		h.push('<table id="ResultBoxTable" class="foe-table">');
 
-		h.push('<thead>');
 
-		h.push('<tr>');
-		h.push('<th width="1"><strong>Gebäude</strong></th>');
-		// h.push('<th><strong>Produkt</strong></th>');
-		h.push('<th><strong>Menge</strong></th>');
-		h.push('</tr>');
+		if(rd.length > 0){
 
-		h.push('</thead>');
-		h.push('<tbody>');
+			h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
-		for (let i in d)
-		{
-			if (d.hasOwnProperty(i))
+			h.push('<thead>');
+
+			h.push('<tr>');
+			h.push('<th colspan="2"><strong>Fertige Produktionen</strong></th>');
+			h.push('</tr>');
+
+			h.push('</thead>');
+			h.push('<tbody>');
+
+			for (let i in rd)
 			{
-				h.push('<tr' + (d[i]['state'] === true ? ' class="success"' : '') + '>');
-					h.push('<td>' + d[i]['name'] + '</td>');
-					// h.push('<td>' + d[i]['product'] + '</td>');
-					h.push('<td>' + d[i]['amount'] + '</td>');
-				h.push('</tr>');
+				if (rd.hasOwnProperty(i))
+				{
+					h.push('<tr>');
+					h.push('<td>' + rd[i]['name'] + '</td>');
+					h.push('<td>' + rd[i]['amount'] + '</td>');
+					h.push('</tr>');
+				}
 			}
+
+			h.push('</tbody>');
+			h.push('</table>');
 		}
 
-		h.push('<tbody>');
-		h.push('</table>');
+
+		if(wk.length > 0){
+
+			h.push('<table class="foe-table">');
+
+			h.push('<thead>');
+
+			h.push('<tr>');
+			h.push('<th colspan="2"><strong>Laufende Produktionen</strong></th>');
+			h.push('</tr>');
+
+			h.push('</thead>');
+			h.push('<tbody>');
+
+			for (let i in wk)
+			{
+				if (wk.hasOwnProperty(i))
+				{
+					h.push('<tr>');
+					h.push('<td>' + wk[i]['name'] + '</td>');
+					h.push('<td>' + wk[i]['amount'] + '</td>');
+					h.push('</tr>');
+				}
+			}
+
+			h.push('</tbody>');
+			h.push('</table>');
+		}
 
 		div.find('#ResultBoxBody').html(h.join(''));
 		div.show();
@@ -203,6 +241,10 @@ GoodsParser = {
 	 */
 	readType: (d)=> {
 
+		//if(){
+
+		//}
+
 		if(d['state']['current_product'] === undefined) {
 			GoodsParser.emptyGoods(d);
 
@@ -213,13 +255,16 @@ GoodsParser = {
 			if(p['amount'] !== undefined){
 				let entry = {
 					name: BuildingNamesi18n[d['cityentity_id']],
-					// product: p['name'],
-					type: p['type'],
 					amount: p['amount'],
 					state: p['state']
 				};
 
-				Reader.data.push(entry);
+				if( entry['state'] === true ){
+					Reader.data.ready.push(entry);
+				} else {
+					Reader.data.work.push(entry);
+				}
+
 			}
 		}
 	},
@@ -330,16 +375,14 @@ GoodsParser = {
 	 * @param d
 	 */
 	emptyGoods: (d)=> {
-		let n = bn[d['cityentity_id']] !== undefined ? bn[d['cityentity_id']] : d['cityentity_id'],
+		let data = {
+			name: BuildingNamesi18n[d['cityentity_id']],
+			fp: '-',
+			product: 'unbenutzt',
+			// cords: {x: d[i]['x'], y: d[i]['y']}
+		};
 
-			data = {
-				name: n,
-				fp: '-',
-				product: 'unbenutzt',
-				// cords: {x: d[i]['x'], y: d[i]['y']}
-			};
-
-		Reader.data.push(data);
+		Reader.data.work.push(data);
 	}
 
 };

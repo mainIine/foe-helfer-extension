@@ -1,4 +1,18 @@
 /*
+ * **************************************************************************************
+ *
+ * Dateiname:                 helper.js
+ * Projekt:                   foe
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+/*
 Example:
 
 let peoples = [
@@ -63,8 +77,8 @@ helper.arr = {
 			return direction === 0 ? 1 : -1;
 		}
 
-		return arr.sort(function (a,b) {
-			return multisort_recursive(a,b,columns,order_by,0);
+		return arr.sort(function(a, b) {
+			return multisort_recursive(a, b, columns, order_by,0);
 		});
 	}
 };
@@ -76,21 +90,66 @@ HTML = {
 	 * Erzeugt eine HTML Box im DOM
 	 *
 	 * @param id
-	 * @param title
+	 * @param titel
+	 * @param ask
 	 * @constructor
 	 */
-	Box: (id, title)=> {
-		let head = $('<div />').attr('id', id + 'Header').attr('class', 'window-head').html('<span class="title">' + title + '</span><span id="'+ id + 'close" class="window-close"></span>'),
-			div = $('<div />').attr('id', id).attr('class', 'window-box').append( head ).append( $('<div />').attr('id', id + 'Body').attr('class', 'window-body') );
+	Box: (id, titel, ask = null)=> {
+		let min = $('<span />').addClass('window-minimize'),
+			close = $('<span />').attr('id', id + 'close').addClass('window-close'),
+			title = $('<span />').addClass('title').text(titel),
 
+			head = $('<div />').attr('id', id + 'Header').attr('class', 'window-head').append(title).append(min).append(close),
+			body = $('<div />').attr('id', id + 'Body').attr('class', 'window-body'),
+			div = $('<div />').attr('id', id).attr('class', 'window-box open').append( head ).append( body ),
+			cords = localStorage.getItem(id + 'Cords');
+
+		if(cords !== null){
+			let c = cords.split('|');
+			div.offset({ top: c[0], left: c[1]});
+		}
+
+		if(ask !== null){
+			div.find(title).after( $('<span />').addClass('window-ask').attr('data-url', ask) );
+		}
 
 		$('body').append(div);
 
 		setTimeout(
-			() => {
-				HTML.dragElement(document.getElementById(id));
+			()=> {
+
+				$('body').on('click', '.window-ask', function(){
+					window.open( $(this).data('url'), '_blank');
+				});
+
+				HTML.DragBox(document.getElementById(id));
+				HTML.MinimizeBox(div);
 			}, 50
 		);
+	},
+
+
+	/**
+	 * Minimiert auf Klick die Box
+	 *
+	 * @param div
+	 * @constructor
+	 */
+	MinimizeBox: (div)=> {
+		let btn = $(div).find('.window-minimize');
+
+		$(btn).bind('click', function(){
+			let box = $(this).closest('.window-box'),
+				open = box.hasClass('open');
+
+			if(open === true){
+				box.removeClass('open');
+				box.addClass('closed');
+			} else {
+				box.removeClass('closed');
+				box.addClass('open');
+			}
+		});
 	},
 
 
@@ -99,15 +158,13 @@ HTML = {
 	 *
 	 * @param el
 	 */
-	dragElement: (el)=> {
+	DragBox: (el)=> {
 
 		document.getElementById(el.id + "Header").removeEventListener("mousedown", dragMouseDown);
 
-		// document.getElementById(el.id + "Header").onmousedown = null;
-		document.onmouseup = null;
-		document.onmousemove = null
+		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;
 
-		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+		id = el.id;
 
 		if (document.getElementById(el.id + "Header")) {
 			document.getElementById(el.id + "Header").onmousedown = dragMouseDown;
@@ -135,8 +192,15 @@ HTML = {
 			pos3 = e.clientX;
 			pos4 = e.clientY;
 
-			el.style.top = (el.offsetTop - pos2) + "px";
-			el.style.left = (el.offsetLeft - pos1) + "px";
+			top = (el.offsetTop - pos2);
+			left = (el.offsetLeft - pos1);
+
+			el.style.top = top + "px";
+			el.style.left = left + "px";
+
+			let cords = top + '|' + left;
+
+			localStorage.setItem(id + 'Cords', cords);
 		}
 
 		function closeDragElement() {
@@ -144,6 +208,7 @@ HTML = {
 			document.onmousemove = null;
 		}
 	},
+
 
 	/**
 	 * Formatiert Zahlen oder gibt = 0 einen "-" aus
@@ -158,34 +223,6 @@ HTML = {
 		} else {
 			return new Intl.NumberFormat('de-DE', { style: 'decimal' }).format(number);
 		}
-	},
-
-
-	/**
-	 * Konvertierung von Unix zu "lesbar"
-	 *
-	 * @param timestamp
-	 * @returns {string}
-	 */
-	timeConvert: (timestamp) => {
-	let a = new Date(timestamp * 1000),
-		months = ['Jan', 'Feb', 'Mrz', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-		year = a.getFullYear(),
-		month = months[a.getMonth()],
-		day = a.getDate(),
-		hour = a.getHours(),
-		min = a.getMinutes(),
-		sec = a.getSeconds(),
-		r = {
-			day: day,
-			month: month,
-			year: year,
-			hour: hour,
-			min: min,
-			sec: sec
-		};
-
-		return r;
 	}
 };
 
