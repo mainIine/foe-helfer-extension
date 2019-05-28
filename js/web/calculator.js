@@ -5,8 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              04.02.19 15:31 Uhr
- * zu letzt bearbeitet:       04.02.19 15:30 Uhr
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
  *
  * Copyright © 2019
  *
@@ -45,7 +44,7 @@ Calculator = {
 				Calculator.ArcBonus = parseFloat(ab);
 			}
 
-			HTML.Box('costCalculator', 'Kostenrechner');
+			HTML.Box('costCalculator', 'Kostenrechner', 'https://foe-rechner.de/extension/index#Kostenrechner');
 		}
 
 		// Übersicht laden + passendes LG

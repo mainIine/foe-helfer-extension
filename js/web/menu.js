@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       01.02.19 14:20 Uhr
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
  *
  * Copyright © 2019
  *
@@ -68,7 +68,7 @@ Menu = {
 		/**
 		 * Live-Chat
 		 */
-		hudSlider.append( Menu.Chat_Btn() );
+		// hudSlider.append( Menu.Chat_Btn() );
 
 
 		/**
@@ -77,7 +77,25 @@ Menu = {
 		hudSlider.append( Menu.getFP_Btn() );
 
 
-		//hudSlider.append( Menu.BH_Btn() );
+		/**
+		 * Einstellungen
+		 */
+		hudSlider.append( Menu.Setting_Btn() );
+
+
+		/**
+		 * Frage / Antwort
+		 */
+		hudSlider.append( Menu.Ask_Btn() );
+
+
+		/**
+		 * Bug Buttons
+		 */
+		hudSlider.append( Menu.Bug_Btn() )
+
+
+		// hudSlider.append( Menu.BH_Btn() );
 
 
 		Menu.CheckButtons();
@@ -208,9 +226,6 @@ Menu = {
 
 		btn_OwnBG.append(btn_Own);
 
-		// Parts.LoadLGList();
-
-
 		return btn_OwnBG;
 	},
 
@@ -235,6 +250,80 @@ Menu = {
 
 		btn.append(btn_sp);
 
+
+		return btn;
+	},
+
+
+
+	/**
+	 * Einstellungen
+	 *
+	 * @constructor
+	 */
+	Setting_Btn: ()=> {
+
+		let btn = $('<div />').attr('id', 'SettingBtn').addClass('hud-btn');
+
+		Menu.toolTippBox('Einstellungen', 'Hier stellst du ein paar Kleinigkeiten ein', 'SettingBtn');
+
+		let btn_Set = $('<span />');
+
+		btn_Set.on('click', function() {
+			Settings.init();
+		});
+
+		btn.append(btn_Set);
+
+		return btn;
+	},
+
+
+	/**
+	 * Frage/Antwort
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	Ask_Btn: ()=> {
+
+		let btn = $('<div />').attr('id', 'AskBtn').addClass('hud-btn');
+
+		Menu.toolTippBox('Frage / Antwort', 'Du weißt nicht wie etwas funktioniert?<br>Schau nach!', 'AskBtn');
+
+		let btn_Ask = $('<span />');
+
+		btn_Ask.on('click', function() {
+			let win = window.open('https://foe-rechner.de/extension/index', '_blank');
+			win.focus();
+		});
+
+		btn.append(btn_Ask);
+
+		return btn;
+	},
+
+
+	/**
+	 * Bug-Link
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	Bug_Btn: ()=> {
+
+		let btn = $('<div />').attr('id', 'BugBtn').addClass('hud-btn');
+
+		Menu.toolTippBox('Fehler / Wünsche', 'Etwas geht nicht wie es soll oder du hast eine Idee?', 'BugBtn');
+
+		let btn_Bug = $('<span />');
+
+		btn_Bug.on('click', function() {
+			let win = window.open('https://github.com/dsiekiera/foe-helfer-extension/issues', '_blank');
+			win.focus();
+		});
+
+		btn.append(btn_Bug);
 
 		return btn;
 	},

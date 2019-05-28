@@ -1,0 +1,525 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 boxes.css
+ * Projekt:                   foe
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ *  
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+
+.window-head span.window-minimize,
+.OwnPartBoxBackground .outerArrow:before,
+.OwnPartBoxBackground .outerArrow span.arrow {
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/itembar/itembar_0.png');
+}
+
+#SettingsBoxBody .item .item-row .check {
+	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/window/window_0.png');
+}
+
+/* ---------------------------------------------------------------------------------------- */
+
+.window-box {
+	background: url('../images/box-bg.png') center center repeat;
+	z-index: 100;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: #F3D6A0;
+	position: absolute;
+	text-align: left;
+	border-color: transparent;
+	border-width: 35px 10px 10px 10px;
+	border-style: solid;
+	border-image-source: url('../images/window.png');
+	border-image-slice: 54 28 28;
+	border-image-width: 54px 28px 28px;
+	border-image-repeat: round;
+	border-image-outset: 0.3;
+	padding: 10px;
+	border-radius: 20px;
+}
+
+.window-head {
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	top: -30px;
+	left: 7px;
+	right: 1px;
+}
+
+.window-head span.title {
+	font-weight: 700;
+	display: block;
+	font-size: 1rem;
+}
+
+.window-head span:nth-child(2) {
+	margin-left: auto;
+}
+
+.window-head span.window-ask {
+	display: inline-block;
+	background-position: -1858px -204px;
+	margin-right: 3px;
+	width: 26px;
+	height: 24px;
+	position: relative;
+}
+
+.window-head span.window-ask:hover {
+	background-position: -1830px -220px;
+}
+
+.window-head span.window-minimize {
+	background-position:-144px -35px;
+	margin-right: 3px;
+	width: 26px;
+	height: 24px;
+	display: inline-block;
+	position: relative;
+}
+
+.open .window-head span.window-minimize:hover {
+	background-position: -144px -59px;
+}
+
+.closed .window-head span.window-minimize {
+	background-position: -168px -35px;
+}
+
+.closed .window-head span.window-minimize:hover {
+	background-position: -168px -59px;
+}
+
+.window-head span.window-close {
+	display: inline-block;
+	background: transparent url('../images/close.png') -1px -1px no-repeat;
+	width: 26px;
+	height: 24px;
+	position: relative;
+}
+
+.window-head span.window-close:hover {
+	background-position: -1px -27px;
+}
+
+.window-body {
+	height: 100%;
+	overflow: hidden;
+}
+
+.closed .window-body {
+	height: 0;
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+
+#costCalculator {
+	top: 30%;
+	left: 30px;
+	width: 270px;
+}
+
+
+#costCalculator #costCalculatorBody input {
+	display: inline-block;
+	width: 25px;
+	text-align: center;
+	padding: .275rem .65rem;
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+#costCalculator #costCalculatorBody strong {
+	color: #FFB539;
+}
+
+#costCalculator #costCalculatorBody strong.error {
+	color: #b20000;
+}
+
+#costCalculator #costCalculatorBody strong.success {
+	color: #29b206;
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+
+#OwnPartBox {
+	top: 100px;
+	right: 100px;
+	width: 340px;
+	font-size: 80%;
+}
+
+#OwnPartBox .OwnPartDrops {
+	display: flex;
+}
+
+#OwnPartBox .OwnPartDrops div:first-child {
+	min-width: 90px;
+	margin-right: 10px;
+}
+
+#OwnPartBox .OwnPartDrops .dropLGStepSelect {
+	min-width: 40px;
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper {
+	margin-left: auto;
+	position: relative;
+	top: -3px;
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper input {
+	max-width: 45px;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	text-align: right;
+	margin: 0;
+	font-size: 0.8rem;
+	height: 15px;
+}
+
+#OwnPartBox .OwnPartDrops div select {
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	max-width: 160px;
+}
+
+#OwnPartBoxBodyWrapper {
+	margin-top: 10px;
+}
+
+#OwnPartBox #OwnPartBoxBody {
+	position: relative;
+	margin-left: 0;
+}
+
+
+#OwnPartBox #OwnPartBoxBody strong {
+	color: #ffb539;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.normal {
+	color: #F3D6A0;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.success {
+	color: #29b206;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.info {
+	color: #2196f3;
+}
+
+#OwnPartBox #OwnPartTable .error {
+	color: #8b0000;
+}
+
+#OwnPartBox #OwnPartTable input {
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	width: 45px;
+	text-align: center;
+}
+
+#OwnPartBox #arc-percent {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	text-align: center;
+	width: 30px;
+	margin: 0 5px;
+}
+
+.OwnPartBoxBackground {
+	position: absolute;
+	width: 210px;
+	top: 0;
+	left: -6px;
+}
+
+.OwnPartBoxBackground .divider {
+	display: block;
+	height: 0;
+	margin: 10px auto;
+	width: 80%;
+	border-top: 1px solid #7b5730;
+	border-bottom: 1px solid #9e774e;
+}
+
+.OwnPartBoxBackground .outerArrow:before {
+	content: "";
+	width: 36px;
+	height: 36px;
+	background-position: -197px -36px;
+	transform: rotate(-90deg);
+	position: absolute;
+	top: -13px;
+	left: -33px;
+	z-index: -1;
+}
+
+.OwnPartBoxBackground .outerArrow span.arrow {
+	width: 24px;
+	height: 24px;
+	background-position: -1px -35px;
+	position: absolute;
+	top: -6px;
+	left: -27px;
+}
+
+.OwnPartBoxBackground .outerArrow span.arrow:hover {
+	background-position: -1px -59px;
+}
+
+.show .OwnPartBoxBackground .outerArrow span.arrow {
+	background-position: -25px -35px;
+}
+
+.show .OwnPartBoxBackground .outerArrow span.arrow:hover {
+	background-position: -25px -59px;
+}
+
+.OwnPartBoxBackground .OwnPartBoxBackgroundBody {
+	width: 0;
+	height: 0;
+	position: absolute;
+	overflow: hidden;
+	overflow-y: auto;
+	top: 15px;
+	left: 15px;
+}
+
+.OwnPartBoxBackground .btn-outer {
+	margin-bottom: 6px;
+}
+
+.OwnPartBoxBackground .button-own {
+	width: 165px;
+	z-index: 999;
+	color: #efcf9a;
+	line-height: 16px;
+	font-family: Arial,Verdana;
+	background-image: url('../images/btn-bg.png');
+	font-size: 13px;
+	font-weight: 700;
+	background-position: -3px -4px;
+	background-size: 180px 53px;
+	display: block;
+	padding: 2px 4px;
+	border: 2px solid transparent;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	transition: border 0.3s ease-in-out;
+}
+
+.OwnPartBoxBackground .button-own:hover {
+	background-position: -3px -31px;
+}
+
+.OwnPartBoxBackground .button-own.border-success {
+	border-color: #1c6506;
+}
+
+.OwnPartBoxBackground input[type=text],
+.OwnPartBoxBackground select {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	font-size: 0.8rem;
+	height: 18px;
+	width: 174px;
+	margin-bottom: 10px;
+}
+
+.OwnPartBoxBackground select {
+	height: 22px;
+	width: 176px;
+}
+
+
+.OwnPartBoxBackground label.form-check-label {
+	padding: 1px;
+	line-height: 1.4rem;
+	margin: 0 3px 3px 0;
+	background-color: rgba(255,255,255, 0.07);
+	display: inline-block;
+	width: 70px;
+	vertical-align: middle;
+	transition: background-color 0.3s linear;
+}
+
+.OwnPartBoxBackground label:nth-child(odd){
+	margin-left: 5px;
+	margin-right: 18px;
+}
+
+.OwnPartBoxBackground label.form-check-label:hover {
+	background-color: rgba(255,255,255, 0.1);
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+
+#ResultBox {
+	top: 20%;
+	right: 30px;
+	width: 420px;
+}
+
+#ResultBox #ResultBoxBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 440px;
+	margin-top: 2px;
+}
+
+
+#ResultBox #ResultBoxBody table tr td:first-child {
+	white-space: nowrap;
+}
+
+#ResultBox #ResultBoxBody tr:not(.success) strong {
+	color: #ffb539;
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+
+#FPBox {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 355px;
+}
+
+
+#FPBox #FPBoxBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 300px;
+	margin-top: 2px;
+}
+
+#FPBox table tr.building-type td {
+	padding-top: 15px;
+}
+
+#FPBox #FPBoxBody strong {
+	color: #ffb539;
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+#BHResultBox {
+	top: 20%;
+	right: 30px;
+	width: 900px;
+}
+
+#BHResultBox #BHResultBoxBody {
+	overflow: auto;
+	height: 600px;
+	margin-top: 2px;
+}
+
+#BHResultBox #ResultBoxBody strong {
+	color: #ffb539;
+}
+
+
+/*--------------------------------------------------------------------------*/
+
+#SettingsBox {
+	top: 50%;
+	left: 50%;
+	width: 610px;
+	height: 330px;
+	font-size: 80%;
+	transform: translate(-50%, -50%);
+}
+
+#SettingsBoxBody .item {
+	border: 0.5px solid #7f5a34;
+	margin-bottom: 15px;
+	box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
+}
+
+#SettingsBoxBody .item .title {
+	box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
+	border-bottom: 1px solid rgb(65,41,17);
+	padding: 4px 10px;
+	font-weight: 700;
+	color: #ffcc68;
+	background-color: rgba(0,0,0,0.15);
+}
+
+#SettingsBoxBody .item .item-row {
+	display: flex;
+	flex-wrap: nowrap;
+	flex-direction: row;
+	align-items: center;
+}
+
+#SettingsBoxBody .item .item-row .desc {
+	width: 67%;
+	padding: 10px;
+}
+
+#SettingsBoxBody .item .item-row .check {
+	position: relative;
+	display: inline-block;
+	width: 171px;
+	height: 30px;
+	background-position: -509px -450px;
+}
+
+#SettingsBoxBody .item .item-row .check input.setting-check {
+	position: absolute;
+	right: 2px;
+	top: 6px;
+	width: 21px;
+	transform: scale(1.5, 1.5);
+}
+
+#SettingsBoxBody .item .item-row .check span.toogle-word {
+	display: block;
+	width: 141px;
+	text-align: center;
+	line-height: 1.9rem;
+	font-size: 0.9rem;
+	color: #b0bbcd;
+	font-weight: 700;
+}

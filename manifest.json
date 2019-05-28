@@ -1,6 +1,6 @@
 {
 	"name": "FoE - Helfer",
-	"version": "2.2.8",
+	"version": "2.2.10",
 	"description": "Kleine Tools und Helfer für ein besseres Spieleerlebnis in Forge of Empires",
 	"manifest_version": 2,
 	"permissions": [
@@ -32,7 +32,7 @@
 	},
 
 	"web_accessible_resources": [
-		"css/web/style.css",
+		"css/web/*.css",
 		"vendor/*.js",
 		"js/web/*.*",
 		"css/images/*.png"
@@ -41,7 +41,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
-			"exclude_globs": ["*zz0*"],
+			"exclude_globs": ["*zz0*", "*tt0*"],
 			"include_globs": ["*game*"],
 			"run_at": "document_start",
 			"js": [
