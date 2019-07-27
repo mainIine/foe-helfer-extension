@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       15.07.19 11:47 Uhr
+ * zu letzt bearbeitet:       27.07.19 13:00 Uhr
  *
  * Copyright © 2019
  *
@@ -86,6 +86,10 @@ let i18n = {
 		"Chat" : {
 			"Title" : "Gilden Live-Chat",
 			"Desc" : "In Echtzeit mit allen quatschen"
+		},
+		"Forum" : {
+			"Title" : "Forum",
+			"Desc" : "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum reden..."
 		},
 		"Ask" : {
 			"Title" : "Frage / Antwort",
