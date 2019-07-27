@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       25.07.19 11:00 Uhr
+ * zu letzt bearbeitet:       27.07.19 13:10 Uhr
  *
  * Copyright © 2019
  *
@@ -67,6 +67,11 @@ Menu = {
 		if(Settings.GetSetting('ShowOutpost')){
 			hudSlider.append( Menu.outP_Btn() );
 		}
+
+		/**
+		 * Forum
+		 */
+		hudSlider.append( Menu.Forum_Btn() );
 
 		/**
 		 * Live-Chat
@@ -335,6 +340,31 @@ Menu = {
 		});
 
 		btn.append(btn_Ask);
+
+		return btn;
+	},
+
+
+	/**
+	 * Forum
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	Forum_Btn: ()=> {
+
+		let btn = $('<div />').attr('id', 'ForumBtn').addClass('hud-btn');
+
+		Menu.toolTippBox(i18n['Menu']['Forum']['Title'], i18n['Menu']['Forum']['Desc'], 'ForumBtn');
+
+		let btn_Forum = $('<span />');
+
+		btn_Forum.on('click', function() {
+			let win = window.open('https://forum.foe-rechner.de', '_blank');
+			win.focus();
+		});
+
+		btn.append(btn_Forum);
 
 		return btn;
 	},
