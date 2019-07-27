@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       19.07.19 13:10 Uhr
  *
  * Copyright © 2019
  *
@@ -40,7 +40,8 @@ helper.arr = {
 	 * <a href="/param">@param</a> {array} [order_by] List of directions (ASC, DESC)
 	 * @returns {array}
 	 */
-	multisort: function(arr, columns, order_by) {
+	multisort: function(arr, columns, order_by)
+	{
 		if(typeof columns == 'undefined') {
 			columns = [];
 			for(let x = 0; x < arr[0].length; x++) {
@@ -92,9 +93,10 @@ HTML = {
 	 * @param id
 	 * @param titel
 	 * @param ask
+	 * @param auto_close
 	 * @constructor
 	 */
-	Box: (id, titel, ask = null)=> {
+	Box: (id, titel, ask = null, auto_close = true)=> {
 		let min = $('<span />').addClass('window-minimize'),
 			close = $('<span />').attr('id', id + 'close').addClass('window-close'),
 			title = $('<span />').addClass('title').text(titel),
@@ -118,12 +120,24 @@ HTML = {
 		setTimeout(
 			()=> {
 
+				if(auto_close){
+					$('body').on('click', '#' + id + 'close', ()=>{
+						$('#' + id).hide('fast', ()=>{
+							$('#' + id).remove();
+						});
+					});
+				}
+
+
 				$('body').on('click', '.window-ask', function(){
 					window.open( $(this).data('url'), '_blank');
 				});
 
 				HTML.DragBox(document.getElementById(id));
 				HTML.MinimizeBox(div);
+
+
+
 			}, 50
 		);
 	},

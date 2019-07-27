@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       19.07.19 12:56 Uhr
  *
  * Copyright © 2019
  *
@@ -18,20 +18,45 @@ Settings = {
 	 * Einstellungspunkte
 	 */
 	Preferrences: {
+		GlobalSend : {
+			status: false,
+			title : i18n['Settings']['GlobalSend']['Title'],
+			desc : i18n['Settings']['GlobalSend']['Desc']
+		},
 		SendTavernInfo : {
 			status: false,
-			title : 'Moppel Aktivität',
-			desc : 'Sollen beim aufrufen der Events die Moppel-Aktivitäten übertragen werden?'
+			title : i18n['Settings']['SendTavernInfo']['Title'],
+			desc : i18n['Settings']['SendTavernInfo']['Desc']
 		},
 		SendGildMemberLGInfo : {
 			status: false,
-			title: 'LG Daten anderer Gildenmitglieder',
-			desc: 'Beim besuchen von anderen Gildenmitgliedern werden sämtliche LG Daten an foe-rechner.de geschickt'
+			title : i18n['Settings']['SendGildMemberLGInfo']['Title'],
+			desc : i18n['Settings']['SendGildMemberLGInfo']['Desc']
+		},
+		SendGEXInfo : {
+			status: false,
+			title : i18n['Settings']['SendGEXInfo']['Title'],
+			desc : i18n['Settings']['SendGEXInfo']['Desc']
 		},
 		ShowNeighborsGoods : {
+			status: false,
+			title : i18n['Settings']['ShowNeighborsGoods']['Title'],
+			desc : i18n['Settings']['ShowNeighborsGoods']['Desc']
+		},
+		SendInvestigations : {
+			status: false,
+			title : i18n['Settings']['SendInvestigations']['Title'],
+			desc : i18n['Settings']['SendInvestigations']['Desc']
+		},
+		ShowTavernBadge : {
 			status: true,
-			title: 'Nachbarschafts Ernte',
-			desc: 'Beim Besuch anzeigen was derzeit produziert wird'
+			title : i18n['Settings']['ShowTavernBadge']['Title'],
+			desc : i18n['Settings']['ShowTavernBadge']['Desc']
+		},
+		ShowOutpost : {
+			status: false,
+			title : i18n['Settings']['ShowOutpost']['Title'],
+			desc : i18n['Settings']['ShowOutpost']['Desc']
 		},
 	},
 
@@ -43,10 +68,6 @@ Settings = {
 
 		if( $('#SettingsBox').length < 1 ){
 			HTML.Box('SettingsBox', 'Einstellungen');
-
-			$('#SettingsBoxclose').bind('click', function(){
-				$('#SettingsBox').remove();
-			});
 		}
 
 		Settings.BuildBody();
@@ -85,7 +106,7 @@ Settings = {
 				}
 
 				ct.text(d['title']);
-				cd.text(d['desc']);
+				cd.html(d['desc']);
 				cs.find('input.setting-check').attr('data-id', key).prop('checked', status);
 				cs.find('.toogle-word').text( status === true ? 'Aktiv' : 'Inaktiv' );
 
@@ -113,7 +134,7 @@ Settings = {
 
 		localStorage.setItem(id, v);
 
-		$(el).prev().text( v === true ? 'Aktiv' : 'Inaktiv' );
+		$(el).prev().text( v === true ? i18n['Settings']['active'] : i18n['Settings']['inactive'] );
 	},
 
 

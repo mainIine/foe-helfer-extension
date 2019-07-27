@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       19.07.19 12:55 Uhr
  *
  * Copyright © 2019
  *
@@ -39,15 +39,10 @@ Parts = {
 		}
 
 		// Box in den DOM
-		HTML.Box('OwnPartBox', 'Eigenanteils Rechner', 'https://foe-rechner.de/extension/index#Eigenanteilsrechner');
+		HTML.Box('OwnPartBox', i18n['Boxes']['OwnpartCalculator']['Title'], i18n['Boxes']['OwnpartCalculator']['HelpLink']);
 
 		// Body zusammen fummeln
 		Parts.BoxBody();
-
-		// Schliessenbutton Event
-		$('#OwnPartBoxclose').bind('click', ()=> {
-			$('#OwnPartBox').remove();
-		});
 
 
 		$('body').on('blur', '#arc-percent', function(){
@@ -211,10 +206,10 @@ Parts = {
 
 		// Info-Block
 		h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[ cityentity_id] + ' </strong><br>Stufe '+ level +' &rarr; '+ (parseInt(level) +1) +'</p>');
+		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[ cityentity_id] + ' </strong><br>' + i18n['Boxes']['OwnpartCalculator']['Step'] + ' '+ level +' &rarr; '+ (parseInt(level) +1) +'</p>');
 		h.push('</td>');
 		h.push('<td class="text-right">');
-		h.push('<span>Arche:</span><input type="number" id="arc-percent" step="0.1" min="12" max="200" value="'+ Parts.CurrentBuildingPercent +'"><span>%</span>');
+		h.push('<span>' + i18n['Boxes']['OwnpartCalculator']['ArcBonus'] +  ':</span><input type="number" id="arc-percent" step="0.1" min="12" max="200" value="'+ Parts.CurrentBuildingPercent +'"><span>%</span>');
 		h.push('</td>');
 		h.push('</tr></table>');
 
@@ -353,15 +348,15 @@ Parts = {
 
 		h.push('<tr>');
 		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + (input_total > 0 ? ' <strong class="info">+' + input_total + '</strong>' : '') + '</strong></th>');
-		h.push('<th class="text-center" colspan="3">Eigenanteil: <strong class="success">' + ownpart_total + '</strong></th>');
+		h.push('<th class="text-center" colspan="3">' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + ': <strong class="success">' + ownpart_total + '</strong></th>');
 		h.push('</tr>');
 
 		h.push('<tr>');
 		if(input_total > 0){
-			h.push('<th colspan="3" class="text-center" style="width: 50%">LG Gesamt-FP: <strong class="normal">' + total_lg_org + '</strong></th>');
-			h.push('<th colspan="3" class="text-center">Externe FP: <strong class="info">' + input_total + '</strong></th>');
+			h.push('<th colspan="3" class="text-center" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['Step'] + ': <strong class="normal">' + total_lg_org + '</strong></th>');
+			h.push('<th colspan="3" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['ExternalFP'] + ': <strong class="info">' + input_total + '</strong></th>');
 		} else {
-			h.push('<th colspan="6" class="text-center">LG Gesamt-FP: <strong class="normal">' + total_lg_org + '</strong></th>');
+			h.push('<th colspan="6" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['LGTotalFP'] + ': <strong class="normal">' + total_lg_org + '</strong></th>');
 		}
 
 		h.push('</tr>');
@@ -373,8 +368,8 @@ Parts = {
 		h.push('<tbody>');
 
 		h.push('<tr>');
-		h.push('<td>Reihenfolge</td>');
-		h.push('<td class="text-center">Einzahlen</td>');
+		h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Order'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Deposit'] + '</td>');
 		h.push('<td class="text-center">Ext.</td>');
 		h.push('<td class="text-center">BPs</td>');
 		h.push('<td class="text-center">Meds</td>');
@@ -385,7 +380,7 @@ Parts = {
 		if(own_parts[0] > 0 && placesExt[0]['type'] === 'original'){
 
 			h.push('<tr>');
-			h.push('<td>Eigenanteil</td>');
+			h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
 			h.push('<td class="text-center"><strong class="success">' + own_parts[0] + '</strong></td>');
 			h.push('<td colspan="4"></td>');
 			h.push('</tr>');
@@ -404,7 +399,9 @@ Parts = {
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + placesExt[0]['value'] + '</strong></td>');
 		} else {
-			h.push('<td class="text-center"><strong>' + placesExt[0]['value'] + '</strong></td>');
+			let o50 = (placesExt[0]['value'] > (total_lg_org / 2));
+
+			h.push('<td class="text-center"><strong>' + placesExt[0]['value'] + '</strong>' + (o50 ? ' <strong><small class="nw danger">(>50% !)</small></strong>' : '') + '</td>');
 			h.push('<td class="text-center">-</td>');
 		}
 
@@ -450,7 +447,7 @@ Parts = {
 			ot += parseInt(own_parts[1]);
 
 			h.push('<tr>');
-			h.push('<td>Eigenanteil</td>');
+			h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
 
 			h.push('<td class="text-center"><strong class="success">' + own_parts[1] + (own_parts[0] > 0 && own_parts[1] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
 			h.push('<td colspan="4"></td>');
@@ -480,7 +477,7 @@ Parts = {
 			ot += parseInt(own_parts[2]);
 
 			h.push('<tr>');
-			h.push('<td>Eigenanteil</td>');
+			h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
 
 			h.push('<td class="text-center"><strong class="success">' + own_parts[2] + (own_parts[1] > 0 && own_parts[2] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
 			h.push('<td colspan="4"></td>');
@@ -512,7 +509,7 @@ Parts = {
 			ot += parseInt(own_parts[3]);
 
 			h.push('<tr>');
-			h.push('<td>Eigenanteil</td>');
+			h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
 
 			h.push('<td class="text-center"><strong class="success">' + own_parts[3] + (own_parts[2] > 0 && own_parts[3] > 0 ? ' <small>(=' + ot + ')</small>' : '') + '</strong></td>');
 			h.push('<td colspan="4"></td>');
@@ -542,7 +539,7 @@ Parts = {
 
 		if(own_parts[4] > 0){
 			h.push('<tr>');
-			h.push('<td>Eigenanteil</td>');
+			h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
 
 			ot += parseInt(own_parts[4]);
 
@@ -641,13 +638,13 @@ Parts = {
 			k = p,
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
-		b.push('<span class="header"><strong>Werte kopieren</strong></span>');
+		b.push('<span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span>');
 
-		b.push('<input type="text" id="player-name" placeholder="Dein Name" value="' + (n !== null ? n : m) + '">');
-		b.push('<input type="text" id="build-name" placeholder="Individueller LG Name"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '">');
+		b.push('<input type="text" id="player-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['YourName'] + '" value="' + (n !== null ? n : m) + '">');
+		b.push('<input type="text" id="build-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['IndividualName'] + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '">');
 
 		let drp = '<select id="chain-scheme">' +
-			'<option value="" disabled>-- Ausgabe Schema --</option>' +
+			'<option value="" disabled>-- ' + i18n['Boxes']['OwnpartCalculator']['OutputScheme'] + ' --</option>' +
 			'<option value="1">Name LG P5 P4 P3 P2 P1</option>' +
 			'<option value="2">Name LG P1 P2 P3 P4 P5</option>' +
 			'<option value="3">Name LG P5/4/3/2/1</option>' +
@@ -659,22 +656,22 @@ Parts = {
 		b.push(drp);
 
 		let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1" checked> Platz 1.</label>' +
+			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 1.</label>' +
 
-			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2" checked> Platz 2.</label>' +
+			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 2.</label>' +
 
-			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3" checked> Platz 3.</label>' +
+			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 3.</label>' +
 
-			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4" checked> Platz 4.</label>' +
+			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 4.</label>' +
 
-			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5" checked> Platz 5.</label>' +
+			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 5.</label>' +
 
-			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> Leveln</label>' +
+			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n['Boxes']['OwnpartCalculator']['Levels'] + '</label>' +
 			'</div>';
 
 		b.push(cb);
 
-		b.push('<div class="btn-outer text-center" style="margin-top: 10px"><span class="button-own">Werte Kopieren</span></div>');
+		b.push('<div class="btn-outer text-center" style="margin-top: 10px"><span class="button-own">' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</span></div>');
 
 		// ---------------------------------------------------------------------------------------------
 
@@ -694,7 +691,6 @@ Parts = {
 				if(bn.length !=''){
 					localStorage.setItem(Parts.CurrentBuildingID, bn);
 				}
-
 
 				$(trigger).addClass('border-success');
 
@@ -729,7 +725,11 @@ Parts = {
 				parts.push(pn);
 
 				// LG Name
-				parts.push( bn );
+				parts.push(bn);
+
+				if( $('#chain-level').prop('checked') ){
+					parts.push('Bitte Leveln');
+				}
 
 				// Plätze wenn angehakt
 				if(sop[s]['d'] === 'u'){
@@ -749,10 +749,6 @@ Parts = {
 							parts.push(p);
 						}
 					}
-				}
-
-				if( $('#chain-level').prop('checked') ){
-					parts.push('\nBitte Leveln');
 				}
 
 				return parts.join(' ');

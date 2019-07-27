@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       26.07.19 17:27 Uhr
  *
  * Copyright © 2019
  *
@@ -43,7 +43,9 @@ let BlackListBuildingsString = [
 	'R_MultiAge_ArcheologyBonus19',		// Weltausstellung
 ];
 
-
+let Whitelist = [
+	'R_MultiAge_SummerBonusSetA17a'
+];
 
 /**
  *
@@ -80,6 +82,7 @@ Reader = {
 
 		$('#ResultBox').remove();
 
+
 		let d = dp['city_map']['entities'];
 
 		for (let i in d)
@@ -95,14 +98,14 @@ Reader = {
 
 				let id = d[i]['cityentity_id'];
 
-				if((d[i]['type'] === 'production' || d[i]['type'] === 'goods') && d[i]['state']['current_product'] !== undefined){
+				if((d[i]['type'] === 'production' || d[i]['type'] === 'goods') && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined){
 					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]+':' , d[i]);
 					GoodsParser.readType(d[i]);
 
-				} else if(d[i]['type'] === 'residential' && d[i]['state']['current_product'] !== undefined) {
+				} else if(d[i]['type'] === 'residential' && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
 
 					// Residental Multiage ausschliessen
-					if(id.indexOf('R_MultiAge_') === -1)
+					if(id.indexOf('R_MultiAge_') === -1 || Whitelist.includes(id))
 					// if(BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1)
 					{
 						GoodsParser.readType(d[i]);
@@ -140,12 +143,11 @@ Reader = {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#ResultBox').length === 0 ){
 
-			HTML.Box('ResultBox', 'Produktionen - ' + Reader.player_name);
+			HTML.Box('ResultBox', i18n['Boxes']['Neighbors']['Title'] + Reader.player_name);
 		}
 
 		let div = $('#ResultBox'),
 			h = [];
-
 
 
 		if(rd.length > 0){
@@ -155,7 +157,7 @@ Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="2"><strong>Fertige Produktionen</strong></th>');
+			h.push('<th colspan="2"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -165,7 +167,7 @@ Reader = {
 			{
 				if (rd.hasOwnProperty(i))
 				{
-					h.push('<tr>');
+					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
 					h.push('</tr>');
@@ -184,7 +186,7 @@ Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="2"><strong>Laufende Produktionen</strong></th>');
+			h.push('<th colspan="2"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -207,30 +209,21 @@ Reader = {
 
 		div.find('#ResultBoxBody').html(h.join(''));
 		div.show();
-
-		$('body').on('click', '#ResultBoxclose', ()=>{
-			$('#ResultBox').hide('fast', ()=>{
-				$(this).remove();
-			});
-		});
-
 	},
 };
 
 
 /**
- * Klasse zum auswerten der Güter die gerade produziert werden
  *
- * @type {{
-	 * 	emptyGoods: GoodsParser.emptyGoods,
-	 * 	sumGoods: (function(*): number),
-	 * 	readType: GoodsParser.readType,
-	 * 	getProducts: (function(*): {
-	 * 		amount: number,
-	 * 		name: (*|string),
-	 * 		state: boolean
-	 * 	})
- * 	}}
+ * @type {
+ * 		{
+ * 		emptyGoods: GoodsParser.emptyGoods,
+ * 		bazaarBuilding: GoodsParser.bazaarBuilding,
+ * 		sumGoods: (function(*): number),
+ * 		readType: GoodsParser.readType,
+ * 		getProducts: (function(*): {amount: (string), state: boolean})
+ * 		}
+ * 	}
  */
 GoodsParser = {
 
@@ -241,11 +234,18 @@ GoodsParser = {
 	 */
 	readType: (d)=> {
 
-		//if(){
+		// console.log('d[\'state\'][\'current_product\']: ', d['state']['current_product']);
 
-		//}
+		let name = d['state']['current_product']['asset_name'];
 
-		if(d['state']['current_product'] === undefined) {
+		// Ruhmeshallen ausgrenzen
+		if(name.includes('bazaar_')){
+			//console.log('d[\'state\'][\'current_product\']: ', d['state']['current_product']);
+
+			GoodsParser.bazaarBuilding(d);
+		}
+
+		else if(d['state']['current_product'] === undefined) {
 			GoodsParser.emptyGoods(d);
 
 		} else {
@@ -291,9 +291,9 @@ GoodsParser = {
 					let n = GoodsNames[k];
 
 					if(n === 'Forge-Punkte'){
-						g.push('<strong>'+ a[k] +' '+ n + '</strong>');
+						g.push('<strong>' + a[k] + ' ' + n + '</strong>');
 					} else {
-						g.push(a[k] +' '+ n);
+						g.push(a[k] + ' ' + n);
 					}
 				}
 			}
@@ -301,28 +301,8 @@ GoodsParser = {
 			amount = g.join('<br>');
 
 		} else if(d['state']['current_product']['product']['resources']['supplies'] !== undefined) {
-			//name = 'Werkzeug';
-			//amount = d['state']['current_product']['product']['resources']['supplies'];
+			amount = d['state']['current_product']['product']['resources']['supplies'] + ' Werkzeuge';
 
-			amount = 'Werkzeuge ' + d['state']['current_product']['product']['resources']['supplies'];
-
-		/*
-		} else if(d['state']['current_product']['deposit_id'] !== undefined) {
-
-			let a = d['state']['current_product']['product']['resources'];
-
-			for(let k in a) {
-				if(a.hasOwnProperty(k)) {
-					amount += parseInt(a[k]);
-				}
-			}
-
-			name = d['state']['current_product']['name'];
-
-		} else if(d['state']['current_product']['deposit_boost_factor'] !== undefined) {
-			amount = GoodsParser.sumGoods(d['state']['current_product']['product']['resources']);
-			name = 'Güter';
-		*/
 		} else {
 			let a = d['state']['current_product']['product']['resources'],
 				g = [];
@@ -332,9 +312,9 @@ GoodsParser = {
 					let n = GoodsNames[k];
 
 					if(n === 'Forge-Punkte'){
-						g.push('<strong>'+ a[k] +' '+ n + '</strong>');
+						g.push('<strong>' + a[k] + ' ' + n + '</strong>');
 					} else {
-						g.push(a[k] +' '+ n);
+						g.push(a[k] + ' ' + n);
 					}
 				}
 			}
@@ -346,6 +326,27 @@ GoodsParser = {
 			amount: amount,
 			state: state
 		};
+	},
+
+
+	/**
+	 * Gebäude mit "Gildenmacht"
+	 *
+	 * @param d
+	 */
+	bazaarBuilding: (d)=> {
+
+		let entry = {
+			name: d['state']['current_product']['name'],
+			amount: d['state']['current_product']['clan_power'] + ' ' + d['state']['current_product']['name'],
+			state: d['state']['__class__'] === 'ProductionFinishedState'
+		};
+
+		if( entry['state'] === true ){
+			Reader.data.ready.push(entry);
+		} else {
+			Reader.data.work.push(entry);
+		}
 	},
 
 

@@ -1,6 +1,6 @@
 {
 	"name": "FoE - Helfer",
-	"version": "2.2.10",
+	"version": "2.3.2",
 	"description": "Kleine Tools und Helfer für ein besseres Spieleerlebnis in Forge of Empires",
 	"manifest_version": 2,
 	"permissions": [
@@ -10,19 +10,14 @@
 	  	"notifications",
 	  	"management",
 		"https://*.forgeofempires.com/*",
-		"https://foe-rechner.de/"
+		"https://foe-rechner.de/",
+		"https://api.foe-rechner.de/"
 	],
 
 	"browser_action": {
-		"default_icon": {
-			"16": "images/app16.png",
-			"19": "images/app19.png",
-			"32": "images/app32.png",
-			"38": "images/app38.png",
-			"48": "images/app48.png"
-		},
+		"default_icon": "images/app16.png",
 		"default_popup": "content/popup.html",
-		"default_title": "FoE - Helfer"
+		"default_title": "FoE Helfer"
 	},
 
 	"icons": {

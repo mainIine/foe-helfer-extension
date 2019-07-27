@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       25.07.19 11:00 Uhr
  *
  * Copyright © 2019
  *
@@ -64,11 +64,14 @@ Menu = {
 		 */
 		hudSlider.append( Menu.ownFP_Btn() );
 
+		if(Settings.GetSetting('ShowOutpost')){
+			hudSlider.append( Menu.outP_Btn() );
+		}
 
 		/**
 		 * Live-Chat
 		 */
-		// hudSlider.append( Menu.Chat_Btn() );
+		hudSlider.append( Menu.Chat_Btn() );
 
 
 		/**
@@ -157,7 +160,7 @@ Menu = {
 		let btn_FPsBG = $('<div />').attr('id', 'getFPs').addClass('hud-btn');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('FP Produktion', 'Zeigt die derzeitige Anzahl aller sammelbaren FPs an.', 'getFPs');
+		Menu.toolTippBox(i18n['Menu']['TotalFPs']['Title'], i18n['Menu']['TotalFPs']['Desc'], 'getFPs');
 
 
 		let btn_FPs = $('<span />');
@@ -184,7 +187,7 @@ Menu = {
 		let btn_CalcBG = $('<div />').attr('id', 'calcFPs').addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('Kostenrechner', '<em id="calcFPs-closed" class="tooltip-error">Deaktiviert: Öffne zuerst das LG eines anderen Spielers!<br></em>Rechnet für dich alle Plätze aus', 'calcFPs');
+		Menu.toolTippBox(i18n['Menu']['Calculator']['Title'], '<em id="calcFPs-closed" class="tooltip-error">' + i18n['Menu']['Calculator']['Warning'] +  '<br></em>' + i18n['Menu']['Calculator']['Desc'], 'calcFPs');
 
 		let btn_Calc = $('<span />');
 
@@ -204,6 +207,40 @@ Menu = {
 
 
 	/**
+	 * Outpost Button
+	 *
+	 * @returns {*|jQuery}
+	 */
+	outP_Btn: ()=> {
+
+		let btn_outPBG = $('<div />').attr('id', 'outP').addClass('hud-btn'),
+			desc = i18n['Menu']['OutP']['Desc'];
+
+		if(localStorage.getItem('OutpostConsumables') === null){
+			btn_outPBG.addClass('hud-btn-red');
+			desc = i18n['Menu']['OutP']['DescWarning'];
+		}
+
+		// Tooltip einbinden
+		Menu.toolTippBox(i18n['Menu']['OutP']['Title'], desc, 'outP');
+
+		let btn_out = $('<span />');
+
+		btn_out.bind('click', function(){
+			let r = localStorage.getItem('OutpostConsumables');
+
+			if(r !== null){
+				Outpost.BuildBox();
+			}
+		});
+
+		btn_outPBG.append(btn_out);
+
+		return btn_outPBG;
+	},
+
+
+	/**
 	 * Eigenanteilsrechner Button
 	 *
 	 * @returns {*|jQuery}
@@ -213,7 +250,7 @@ Menu = {
 		let btn_OwnBG = $('<div />').attr('id', 'ownFPs').addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('Eigenanteilsrechner', '<em id="ownFPs-closed" class="tooltip-error">Deaktiviert: Öffne zuerst eines deiner LGs!<br></em>Zahlplan erstellen und kopieren', 'ownFPs');
+		Menu.toolTippBox(i18n['Menu']['OwnpartCalculator']['Title'], '<em id="ownFPs-closed" class="tooltip-error">' + i18n['Menu']['OwnpartCalculator']['Warning'] +  '<br></em>' + i18n['Menu']['OwnpartCalculator']['Desc'], 'ownFPs');
 
 		let btn_Own = $('<span />');
 
@@ -240,12 +277,12 @@ Menu = {
 		let btn = $('<div />').attr('id', 'ChatBtn').addClass('hud-btn');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('Gilden Live-Chat', 'In Echtzeit mit allen quatschen', 'ChatBtn');
+		Menu.toolTippBox(i18n['Menu']['Chat']['Title'], i18n['Menu']['Chat']['Desc'], 'ChatBtn');
 
 		let btn_sp = $('<span />');
 
 		btn_sp.on('click', function() {
-			chrome.runtime.sendMessage(extID, {type: 'chat'});
+			chrome.runtime.sendMessage(extID, {type: 'chat', player: ExtPlayerID, guild: ExtGuildID, world: ExtWorld});
 		});
 
 		btn.append(btn_sp);
@@ -253,7 +290,6 @@ Menu = {
 
 		return btn;
 	},
-
 
 
 	/**
@@ -265,11 +301,11 @@ Menu = {
 
 		let btn = $('<div />').attr('id', 'SettingBtn').addClass('hud-btn');
 
-		Menu.toolTippBox('Einstellungen', 'Hier stellst du ein paar Kleinigkeiten ein', 'SettingBtn');
+		Menu.toolTippBox(i18n['Menu']['Settings']['Title'], i18n['Menu']['Settings']['Desc'], 'SettingBtn');
 
 		let btn_Set = $('<span />');
 
-		btn_Set.on('click', function() {
+		btn_Set.on('click', function(){
 			Settings.init();
 		});
 
@@ -289,7 +325,7 @@ Menu = {
 
 		let btn = $('<div />').attr('id', 'AskBtn').addClass('hud-btn');
 
-		Menu.toolTippBox('Frage / Antwort', 'Du weißt nicht wie etwas funktioniert?<br>Schau nach!', 'AskBtn');
+		Menu.toolTippBox(i18n['Menu']['Ask']['Title'], i18n['Menu']['Ask']['Desc'], 'AskBtn');
 
 		let btn_Ask = $('<span />');
 
@@ -314,7 +350,7 @@ Menu = {
 
 		let btn = $('<div />').attr('id', 'BugBtn').addClass('hud-btn');
 
-		Menu.toolTippBox('Fehler / Wünsche', 'Etwas geht nicht wie es soll oder du hast eine Idee?', 'BugBtn');
+		Menu.toolTippBox(i18n['Menu']['Bugs']['Title'], i18n['Menu']['Bugs']['Desc'], 'BugBtn');
 
 		let btn_Bug = $('<span />');
 
@@ -373,3 +409,8 @@ Menu = {
 		$('#ant-hud').append( ToolTipp );
 	},
 };
+
+// Menü einbinden
+setTimeout(()=>{
+	Menu.BuildOverlayMenu()
+}, 500);
