@@ -1,0 +1,27 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 popup.css
+ * Projekt:                   foe
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zu letzt bearbeitet:       08.07.19 13:16 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+body {
+    min-width: 350px;
+    padding: 25px;
+}
+
+.foe-link {
+	color: #007bff;
+	cursor: pointer;
+}
+
+.paypal-link {
+	cursor: pointer;
+}

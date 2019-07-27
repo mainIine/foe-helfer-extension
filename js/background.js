@@ -5,8 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.02.19 14:20 Uhr
- * zu letzt bearbeitet:       01.02.19 14:20 Uhr
+ * zu letzt bearbeitet:       22.07.19 14:40 Uhr
  *
  * Copyright © 2019
  *
@@ -26,7 +25,6 @@ chrome.runtime.onInstalled.addListener(() => {
 			}
 		}
 	});
-
 
 	if(!isDevMode()){
 		chrome.tabs.create({url: "https://foe-rechner.de/extension/chrome?v=" + version});
@@ -69,6 +67,7 @@ function getDataForChat()
 	return data;
 }
 
+
 let popupWindowId = 0;
 
 /**
@@ -76,7 +75,6 @@ let popupWindowId = 0;
  */
 chrome.runtime.onMessageExternal.addListener((request) => {
 
-	// console.log('request: ', request);
 
 	if (request.type === 'message') {
 		let t = request.time,
@@ -96,29 +94,29 @@ chrome.runtime.onMessageExternal.addListener((request) => {
 
 	} else if(request.type === 'chat'){
 
-		let popupUrl = chrome.runtime.getURL('content/chat.html');
-		chrome.tabs.query({url:popupUrl},function(tabs){
+		let url = 'content/chat.html?player=' + request.player + '&guild=' + request.guild + '&world=' + request.world,
+			popupUrl = chrome.runtime.getURL(url);
+
+		// Prüfen ob ein PopUp mit dieser URL bereits existiert
+		chrome.tabs.query({url:popupUrl}, (tab)=>{
 
 			// nur öffnen wenn noch nicht passiert
-			if(tabs.length === 0){
+			if(tab.length < 1){
 
-				// Popup an das Fenster vom FoE binden
-				chrome.tabs.getSelected(null, function(tab){
-					let o = {
-						url: 'content/chat.html',
-						type: 'popup',
-						width: 320,
-						height: 420,
-						tabId: tab.id,
-						focused: true
-					};
+				let o = {
+					url: url,
+					type: 'popup',
+					width: 500,
+					height: 520,
+					focused: true
+				};
 
-					// Popup erzeugen
-					chrome.windows.create(o, (win)=> {
-						popupWindowId = win.id;
-					});
+				// Popup erzeugen
+				let id = chrome.windows.create(o, (win)=> {
+					popupWindowId = win.id;
 				});
 
+			// gibt es schon, nach "vorn" holen
 			} else {
 				chrome.windows.update(popupWindowId, {
 					focused:true

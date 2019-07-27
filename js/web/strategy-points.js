@@ -5,28 +5,26 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.02.19 14:20 Uhr
- * zu letzt bearbeitet:       01.02.19 14:20 Uhr
+ * zu letzt bearbeitet:       19.07.19 12:57 Uhr
  *
  * Copyright © 2019
  *
  * **************************************************************************************
  */
 
-let BuildingTypes = {
-	greatbuilding: 'Legendäre Gebäude',
-	production : 'Produktionsgebäude',
-	random_production : 'Zufalls - Produktionen',
-	residential : 'Eventgebäude',
-};
-
 StrategyPoints = {
 
 	entities : [],
 	completeBuildings: [],
-	points : 0,
-	BuildingNames : [],
+	points: 0,
+	BuildingNames: [],
 
+	BuildingTypes: {
+		greatbuilding: i18n.AllPoints.headings.greatbuilding,
+		production : i18n.AllPoints.headings.production,
+		random_production : i18n['AllPoints']['headings']['random_production'],
+		residential : i18n['AllPoints']['headings']['residential'],
+	},
 
 	/**
 	 *  Start der ganzen Prozedur
@@ -75,6 +73,7 @@ StrategyPoints = {
 					// Typ ist noch kein Array?
 					if(Array.isArray(StrategyPoints.completeBuildings[building['type']]) === false){
 						StrategyPoints.completeBuildings[building['type']] = [];
+						StrategyPoints.completeBuildings[building['type']]['total'] = 0;
 					}
 
 					let index = StrategyPoints.completeBuildings[building['type']].map((el) => el.entity_id).indexOf(d[i]['cityentity_id']);
@@ -87,7 +86,7 @@ StrategyPoints = {
 						StrategyPoints.completeBuildings[building['type']][ index ]['count']++;
 					}
 
-
+					StrategyPoints.completeBuildings[building['type']]['total'] += parseInt(building['points']);
 					StrategyPoints.points += parseInt(building['points']);
 				}
 			}
@@ -102,7 +101,6 @@ StrategyPoints = {
 				StrategyPoints.completeBuildings[type] = helper.arr.multisort(StrategyPoints.completeBuildings[type], ['name'], ['ASC']);
 			}
 		}
-
 
 		if(typeof StrategyPoints.completeBuildings === "object"){
 			StrategyPoints.showInfoBox();
@@ -148,7 +146,7 @@ StrategyPoints = {
 			return ;
 		}
 
-		HTML.Box('FPBox', 'FP - Produktionen');
+		HTML.Box('FPBox', i18n['Boxes']['StrategyPoints']['Title']);
 
 
 		let h = [];
@@ -158,12 +156,12 @@ StrategyPoints = {
 		h.push('<thead>');
 
 		h.push('<tr>');
-		h.push('<th colspan="3" class="text-center">Gesamt FP aus allen Gebäuden: <strong>' + StrategyPoints.points + '</strong></th>');
+		h.push('<th colspan="3" class="text-center">' + i18n['Boxes']['StrategyPoints']['TotalFPs'] + StrategyPoints.points + '</strong></th>');
 		h.push('</tr>');
 
 		h.push('<tr>');
 		h.push('<th></th>');
-		h.push('<th class="text-center"><strong>Anzahl</strong></th>');
+		h.push('<th class="text-center"><strong>' + i18n['Boxes']['StrategyPoints']['Amount'] + '</strong></th>');
 		h.push('<th class="text-center"><strong>FP</strong></th>');
 		h.push('</tr>');
 
@@ -177,12 +175,13 @@ StrategyPoints = {
 			if (cB.hasOwnProperty(type))
 			{
 				h.push('<tr class="building-type">');
-				h.push('<td colspan="3"><strong>' + BuildingTypes[ type ] + '</strong></td>');
+				h.push('<td colspan="2"><strong>' + StrategyPoints.BuildingTypes[ type ] + '</strong></td>');
+				h.push('<td class="text-center"><strong>=' + cB[type]['total'] + '</strong></td>');
 				h.push('</tr>');
 
 				for(let b in cB[type])
 				{
-					if(cB[type].hasOwnProperty(b))
+					if(cB[type].hasOwnProperty(b) && b !== 'total')
 					{
 						h.push('<tr>');
 						h.push('<td>' + cB[type][b]['name'] + '</td>');
@@ -198,10 +197,6 @@ StrategyPoints = {
 		h.push('</table>');
 
 		$('#FPBox').find('#FPBoxBody').html(h.join(''));
-
-		$('#FPBoxclose').bind('click', function () {
-			$('#FPBox').remove();
-		});
 	},
 
 

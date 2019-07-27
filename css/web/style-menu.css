@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       16.07.19 10:44 Uhr
  *
  * Copyright © 2019
  *
@@ -39,6 +39,7 @@ input[type=number]::-webkit-outer-spin-button {
 .window-head:not(span),
 .button-own,
 .window-box,
+.cursor-default,
 .button--lg,
 .hud-btn {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
@@ -117,6 +118,14 @@ p {
 }
 .text-right {
 	text-align: right;
+}
+
+.danger {
+	color: #f92727;
+}
+
+.info {
+	color: #2196f3;
 }
 
 /***************************************************************/
@@ -257,6 +266,10 @@ p {
 	background-image: url('../images/calculator.png');
 }
 
+#outP span {
+	background-image: url('../images/vikings_ship.png');
+}
+
 #ownFPs span {
 	background-image: url('../images/own-part.png');
 }
@@ -338,6 +351,7 @@ p {
 	font-size: 0.9rem;
 	color: #F3D6A0;
 	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
+	user-select: none;
 }
 
 #fp-bar strong {

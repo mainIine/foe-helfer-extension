@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.05.19 09:22 Uhr
+ * zu letzt bearbeitet:       16.07.19 15:32 Uhr
  *  
  * Copyright © 2019
  *
@@ -44,6 +44,7 @@
 	border-image-outset: 0.3;
 	padding: 10px;
 	border-radius: 20px;
+	user-select: none;
 }
 
 .window-head {
@@ -127,7 +128,7 @@
 #costCalculator {
 	top: 30%;
 	left: 30px;
-	width: 270px;
+	width: 330px;
 }
 
 
@@ -150,13 +151,17 @@
 }
 
 #costCalculator #costCalculatorBody strong.error {
-	color: #b20000;
+	color: #ef1616;
 }
 
 #costCalculator #costCalculatorBody strong.success {
 	color: #29b206;
 }
 
+#costCalculator #costCalculatorBody strong.info,
+#costCalculator #costCalculatorBody tr.info-row strong {
+	color: #2196f3;
+}
 
 /*--------------------------------------------------------------------------*/
 
@@ -166,6 +171,10 @@
 	right: 100px;
 	width: 340px;
 	font-size: 80%;
+}
+
+#OwnPartBox.closed .OwnPartBoxBackground {
+	display: none;
 }
 
 #OwnPartBox .OwnPartDrops {
@@ -346,7 +355,7 @@
 }
 
 .OwnPartBoxBackground .button-own.border-success {
-	border-color: #1c6506;
+	border-color: #29b206;
 }
 
 .OwnPartBoxBackground input[type=text],
@@ -428,7 +437,7 @@
 #FPBox #FPBoxBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	height: 300px;
+	max-height: 300px;
 	margin-top: 2px;
 }
 
@@ -469,6 +478,10 @@
 	height: 330px;
 	font-size: 80%;
 	transform: translate(-50%, -50%);
+}
+
+#SettingsBoxBody {
+	overflow-y: auto;
 }
 
 #SettingsBoxBody .item {
@@ -522,4 +535,110 @@
 	font-size: 0.9rem;
 	color: #b0bbcd;
 	font-weight: 700;
+}
+
+
+/* -------------------------------------------------------------------------------------------------- */
+
+#tavern-boost {
+	position: absolute;
+	right: 70px;
+	top: 80px;
+	z-index: 100;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.8rem;
+	font-weight: 400;
+	width: 140px;
+	height: 96px;
+	user-select: none;
+	color: #efcf9a;
+}
+
+#tavern-boost:before {
+	content: "";
+	position: absolute;
+	width: 96px;
+	height: 140px;
+	z-index: -1;
+	background: url('https://foede.innogamescdn.com/assets/city/gui/citymap_icons/citymap_icons_0.png') -158px 0 no-repeat;
+	-webkit-transform: rotate(30deg);
+	transform: rotate(-90deg);
+	top: -22px;
+	right: 22px;
+}
+
+#tavern-boost > span {
+	position: absolute;
+	display: block;
+	text-align: center;
+	top: 41px;
+	left: 35px;
+}
+
+#tavern-boost span {
+	user-select: none;
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+#outpostConsumables {
+	top: 30%;
+	right: 15%;
+	width: 620px;
+}
+
+#outpostConsumables #outpostConsumablesBody tr.total-row td {
+	border-top: 2px solid #efcf9a;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody tr.resource-row td {
+	color: #FFB539;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody .text-danger {
+	color: #ef1616;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody .text-success {
+	color: #29b206;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody .text-muted {
+	color: #8a8a8a;
+}
+
+#outpostConsumables #outpostConsumablesBody td {
+	position: relative;
+}
+
+#outpostConsumables #outpostConsumablesBody .diplomacy-ask {
+	font-weight: 700;
+	display: inline-block;
+	margin-left: 6px;
+	background: #2196f3;
+	padding: 0 4px;
+	border-radius: 50%;
+	width: 10px;
+	line-height: 1.3em;
+	z-index: 1;
+}
+
+#outpostConsumables #outpostConsumablesBody .diplomacy-tip {
+	position: absolute;
+	white-space: nowrap;
+	text-align: left;
+	background: rgba(0,0,0, 0.6);
+	padding: 5px;
+	left: 25px;
+	top: 25px;
+	z-index: 1;
+	display: none;
+}
+
+#outpostConsumables #outpostConsumablesBody .diplomacy-ask:hover .diplomacy-tip {
+	display: block;
 }
