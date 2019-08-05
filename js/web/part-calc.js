@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.07.19 12:55 Uhr
+ * zu letzt bearbeitet:       29.07.19 12:10 Uhr
  *
  * Copyright © 2019
  *
@@ -28,14 +28,14 @@ Parts = {
 	 */
 	buildBox: ()=> {
 
-		let perc = localStorage.getItem('CurrentBuildingPercent');
-		if(perc !== null){
-			Parts.CurrentBuildingPercent = perc;
-		}
-
 		// Gibt es schon? Raus...
 		if( $('#OwnPartBox').length > 0 ){
 			return;
+		}
+
+		let perc = localStorage.getItem('CurrentBuildingPercent');
+		if(perc !== null){
+			Parts.CurrentBuildingPercent = perc;
 		}
 
 		// Box in den DOM
@@ -141,8 +141,9 @@ Parts = {
 		for(let x = 0; x < 6; x++) {
 			if(rankings.hasOwnProperty(x))
 			{
-				// LG Besitzer überspringen
-				if(rankings[x]['player']['is_self'] === true){
+				// LG Besitzer überspringen oder Besitzer ist nicht dabei,
+				// dann P6 überspringen der er nichts mehr bekommt
+				if(rankings[x]['player']['is_self'] === true || rankings[x]['reward'] === undefined){
 					continue;
 				}
 
