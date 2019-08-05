@@ -1,6 +1,17 @@
 ##Changelog - Chrome Extension
 
 
+#####v2.3.3
+**BugFix**
+- Kostenrechner:
+	- erkennt nun Besitzer, gelöschte User und P6 ohne Gewinn
+
+- Eigenanteilsrechner:
+	- erkennt nun Besitzer, gelöschte User und P6 ohne Gewinn
+
+---
+
+
 #####v2.3.2
 **BugFix**
 - Menü:

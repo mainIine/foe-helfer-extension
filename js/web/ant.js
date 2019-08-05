@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       25.07.19 11:00 Uhr
+ * zu letzt bearbeitet:       29.07.19 15:24 Uhr
  *
  * Copyright © 2019
  *
@@ -24,6 +24,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	Conversations = [],
 	GoodsNames = [],
 	PossibleLangs = ['de','en'];
+
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -97,9 +98,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 				// --------------------------------------------------------------------------------------------------
 				// Player- und Gilden-ID setzen
-				let StartupService = d.find(obj => {
-					return obj['requestClass'] === 'StartupService' && obj['requestMethod'] === 'getData';
-				});
+				let StartupService = d.find(obj => (obj['requestClass'] === 'StartupService' && obj['requestMethod'] === 'getData'));
 
 				if(StartupService !== undefined){
 					// Player-ID, Gilden-ID und Name setzten
@@ -747,6 +746,7 @@ MainParser = {
 	 * Zeitfenster - 15min
 	 *
 	 * @param d
+	 * @param e
 	 * @returns {boolean}
 	 * @constructor
 	 */

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.07.19 22:05 Uhr
+ * zu letzt bearbeitet:       28.07.19 08:21 Uhr
  *
  * Copyright © 2019
  *
@@ -36,6 +36,10 @@ Tavern = {
 	TavernBoost: (d)=>{
 
 		// extra_negotiation_turn => Extra Zug
+
+		if(d['type'] !== 'extra_negotiation_turn'){
+			return ;
+		}
 
 		localStorage.setItem('TavernBoostType', d['type']);
 		localStorage.setItem('TavernBoostExpire', d['expireTime']);
