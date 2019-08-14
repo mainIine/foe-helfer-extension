@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.07.19 15:32 Uhr
+ * zu letzt bearbeitet:       13.08.19 20:52 Uhr
  *  
  * Copyright © 2019
  *
@@ -455,12 +455,12 @@
 #BHResultBox {
 	top: 20%;
 	right: 30px;
-	width: 900px;
+	width: 420px;
 }
 
 #BHResultBox #BHResultBoxBody {
 	overflow: auto;
-	height: 600px;
+	height: 250px;
 	margin-top: 2px;
 }
 
@@ -560,7 +560,7 @@
 	width: 96px;
 	height: 140px;
 	z-index: -1;
-	background: url('https://foede.innogamescdn.com/assets/city/gui/citymap_icons/citymap_icons_0.png') -158px 0 no-repeat;
+	background: url('https://foede.innogamescdn.com/assets/city/gui/citymap_icons/citymap_icons_0.png') -147px -148px no-repeat;
 	-webkit-transform: rotate(30deg);
 	transform: rotate(-90deg);
 	top: -22px;

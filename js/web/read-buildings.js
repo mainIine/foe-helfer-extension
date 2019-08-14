@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.07.19 17:27 Uhr
+ * zu letzt bearbeitet:       12.08.19 13:15 Uhr
  *
  * Copyright © 2019
  *
@@ -49,20 +49,11 @@ let Whitelist = [
 
 /**
  *
- * @type {
- * {
- * 		loadJSON: Reader.loadJSON,
- * 		data: Array,
- * 		getBuildingName: (function(*): *),
- * 		OtherPlayersBuildings: Reader.OtherPlayersBuildings,
- * 		player_name: string,
- * 		showResult: Reader.showResult
- * 	}
- * 	}
+ * @type {{data: {}, OtherPlayersBuildings: Reader.OtherPlayersBuildings, player_name: string, showResult: Reader.showResult}}
  */
 Reader = {
 
-	data: [],
+	data: {},
 	player_name: '',
 
 
@@ -78,6 +69,7 @@ Reader = {
 			ready : [],
 			work: []
 		};
+
 		Reader.player_name = dp['other_player']['name'];
 
 		$('#ResultBox').remove();

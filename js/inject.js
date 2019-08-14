@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       27.07.19 13:49 Uhr
+ * zu letzt bearbeitet:       12.08.19 18:14 Uhr
  *
  * Copyright © 2019
  *
@@ -83,12 +83,13 @@ cp.onload = function(){
 
 setTimeout(()=>{
 	let s = [
+		'helper',
 		'ant',
 		'menu',
-		'helper',
-		'outpost',
 		'tavern',
+		'outposts',
 		'calculator',
+		'infoboard',
 		'part-calc',
 		'read-buildings',
 		'settings',

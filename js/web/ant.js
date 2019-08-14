@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       29.07.19 15:24 Uhr
+ * zu letzt bearbeitet:       14.08.19 13:18 Uhr
  *
  * Copyright © 2019
  *
@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", function(){
 						}
 					}
 
-					let OutpostDiplomacyBuildings = j.filter(obj => (obj['type'] === 'diplomacy'));
+					// let OutpostDiplomacyBuildings = j.filter(obj => (obj['type'] === 'diplomacy'));
 
-					localStorage.setItem('OutpostDiplomacyBuildings', JSON.stringify(OutpostDiplomacyBuildings));
+					// localStorage.setItem('OutpostDiplomacyBuildings', JSON.stringify(OutpostDiplomacyBuildings));
 				});
 			}
 
@@ -95,6 +95,8 @@ document.addEventListener("DOMContentLoaded", function(){
 			{
 
 				let d = JSON.parse(this.responseText);
+
+				// console.log('d: ', d);
 
 				// --------------------------------------------------------------------------------------------------
 				// Player- und Gilden-ID setzen
@@ -136,36 +138,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 				// --------------------------------------------------------------------------------------------------
-				// Alle Typen der Außenposten "notieren"
-				let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
-
-				if(OutpostGetAll !== undefined && Settings.GetSetting('ShowOutpost')){
-					Outpost.GetAll(OutpostGetAll['responseData']);
-				}
-
-				// Gebäude des Außenpostens sichern
-				let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
-
-				if(OutpostService !== undefined && Settings.GetSetting('ShowOutpost')){
-					Outpost.SaveConsumables(OutpostService['responseData']);
-				}
-
-				// Außenposten-Güter des Spielers ermitteln
-				let FirstCheck = localStorage.getItem('OutpostConsumablesCurrencyType'),
-					OutpostRessources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
-
-				if(OutpostRessources !== undefined && Settings.GetSetting('ShowOutpost') && (ActiveMap === 'cultural_outpost' || FirstCheck === null)){
-					Outpost.CollectResources(OutpostRessources['responseData']['resources']);
-				}
-
-				// --------------------------------------------------------------------------------------------------
 				// --------------------------------------------------------------------------------------------------
 				// Chat-Titel notieren
 				let ConversationService = d.find(obj => {
 					return (obj['requestClass'] === 'ConversationService' && obj['requestMethod'] === 'getOverview') || (obj['requestClass'] === 'ConversationService' && obj['requestMethod'] === 'getTeasers');
 				});
 
-				if(ConversationService !== undefined && Settings.GetSetting('GlobalSend')){
+				if(ConversationService !== undefined){
 					MainParser.setConversations(ConversationService['responseData']);
 				}
 
@@ -212,6 +191,14 @@ document.addEventListener("DOMContentLoaded", function(){
 					StrategyPoints.ForgePointBar(GreatBuildingsFPs['responseData']['availablePackagesForgePointSum']);
 				}
 
+
+				let FPFromInventory = d.find(obj => {
+					return obj['requestClass'] === 'InventoryService' && obj['requestMethod'] === 'getItems'
+				});
+
+				if(FPFromInventory !== undefined){
+					StrategyPoints.GetFromInventory(FPFromInventory['responseData']);
+				}
 
 				// --------------------------------------------------------------------------------------------------
 				// --------------------------------------------------------------------------------------------------
@@ -286,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 				// andere Gildenmitglieder in einem anderen Objekt
 				if(OtherPlayersFriends !== undefined && Settings.GetSetting('GlobalSend')){
-					MainParser.ParseOtherPlayers(OtherPlayersFriends['responseData']);
+					// MainParser.ParseOtherPlayers(OtherPlayersFriends['responseData']);
 				}
 
 				let OtherPlayersNeighbor = d.find(obj => {
@@ -295,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 				// andere Gildenmitglieder in einem anderen Objekt
 				if(OtherPlayersNeighbor !== undefined && Settings.GetSetting('GlobalSend')){
-					MainParser.ParseOtherPlayers(OtherPlayersNeighbor['responseData']);
+					// MainParser.ParseOtherPlayers(OtherPlayersNeighbor['responseData']);
 				}
 
 
@@ -339,6 +326,39 @@ document.addEventListener("DOMContentLoaded", function(){
 				if(GEXGuild !== undefined && MainParser.checkNextUpdate('Championship') && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendGEXInfo')){
 					MainParser.Championship(GEXGuild['responseData']);
 				}
+
+
+
+
+				// --------------------------------------------------------------------------------------------------
+				// Alle Typen der Außenposten "notieren"
+				// const OutpostGetAll = d.find(obj => {return obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'});
+				// const OutpostGetAll = d.find((item) => item['requestClass'] === 'OutpostService' && item['requestMethod'] === 'getAll');
+				// let OutpostGetAll = d.find((item) => item['requestClass'] === 'OutpostService');
+				// let OutpostGetAll = d.filter((item) => item['requestClass'] === 'OutpostService').shift();
+				let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
+
+
+				if(OutpostGetAll !== undefined && Settings.GetSetting('ShowOutpost')){
+					Outposts.GetAll(OutpostGetAll['responseData']);
+				}
+
+				// Gebäude des Außenpostens sichern
+				let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
+
+				if(OutpostService !== undefined && Settings.GetSetting('ShowOutpost')){
+					Outposts.SaveConsumables(OutpostService['responseData']);
+				}
+
+				// Außenposten-Güter des Spielers ermitteln
+				let FirstCheck = localStorage.getItem('OutpostConsumablesCurrencyType');
+				let OutpostRessources = d.find(obj => {return obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'});
+
+				if(OutpostRessources !== undefined && Settings.GetSetting('ShowOutpost') && (ActiveMap === 'cultural_outpost' || FirstCheck === null)){
+					Outposts.CollectResources(OutpostRessources['responseData']['resources']);
+				}
+
+
 
 
 				// --------------------------------------------------------------------------------------------------
@@ -559,6 +579,30 @@ MainParser = {
 	},
 
 
+	// Daten an foe-rechner schicken, wenn aktiviert
+	apiCall: (data, ep, successCallback)=> {
+
+		let pID = ExtPlayerID,
+			cW = localStorage.getItem('current_world'),
+			gID = ExtGuildID;
+
+		if(cW === '' || cW === null || cW === undefined)
+		{
+			return ;
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			data: {data},
+			dataType: 'json',
+			success: function(r){
+				successCallback(r);
+			}
+		});
+	},
+
+
 	/**
 	 * Benachrichtigung zeigen
 	 *
@@ -617,22 +661,12 @@ MainParser = {
 
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
-				MainParser.send2Server(player, 'OtherPlayers', function(r){
-
-					// nach Erfolg, Zeitstempel in den LocalStorage
-					if(r['status'] === 'OK'){
-						MainParser.setStorage('OtherPlayers', MainParser.getAddedDateTime(6, 0));
-						// MainParser.showInfo('Update durchgeführt', r['msg']);
-					} else {
-						MainParser.showInfo('Fehler!', r['msg']);
-					}
-
-				});
+				MainParser.apiCall(player, 'OtherPlayers');
 			}
 
 		}
 
-		MainParser.ParseOtherPlayers(d);
+		// MainParser.ParseOtherPlayers(d);
 	},
 
 
@@ -950,11 +984,7 @@ MainParser = {
 		};
 
 		// ab zum Server
-		MainParser.send2Server(data, 'SelfPlayer', function(r){
-
-			// nach Erfolg, Zeitstempel in den LocalStorage
-			MainParser.setStorage('SelfPlayer', MainParser.getAddedDateTime(6, 0));
-		});
+		MainParser.apiCall(data, 'SelfPlayer');
 	},
 
 
@@ -964,7 +994,7 @@ MainParser = {
 	 * @param d
 	 * @constructor
 	 */
-	GreatBuildings: (d)=> {
+	GreatBuildings: (d)=>{
 
 		// ab zum Server
 		MainParser.send2Server(d, 'GreatBuildings', function(r){
@@ -987,7 +1017,7 @@ MainParser = {
 	 * @param d
 	 * @constructor
 	 */
-	SaveBuildings: (d)=> {
+	SaveBuildings: (d)=>{
 		MainParser.setStorage('PlayerBuildings', JSON.stringify(d));
 
 		if(Settings.GetSetting('GlobalSend') === false)
@@ -1017,13 +1047,13 @@ MainParser = {
 
 		if(lgs.length > 0)
 		{
-			MainParser.send2Server(lgs, 'SelfPlayerLGs');
+			MainParser.apiCall(lgs, 'SelfPlayerLGs');
 		}
 	},
 
 
 	SaveLGInventory: (d)=>{
-		MainParser.send2Server(d, 'LGInventory');
+		MainParser.apiCall(d, 'LGInventory');
 	},
 
 
@@ -1149,9 +1179,15 @@ MainParser = {
 	 */
 	setConversations: (d)=> {
 
+		let StorageHeader = localStorage.getItem('ConversationsHeaders');
+
+		// wenn noch nichts drin , aber im LocalStorage vorhanden, laden
+		if(Conversations.length === 0 && StorageHeader !== null){
+			Conversations = JSON.parse(StorageHeader);
+		}
 
 		// GildenChat
-		if(d['clanTeaser'] !== undefined && Conversations.indexOf(d['clanTeaser']['id']) === -1){
+		if(d['clanTeaser'] !== undefined && Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
 			Conversations.push({
 				id: d['clanTeaser']['id'],
 				title: d['clanTeaser']['title']
@@ -1163,7 +1199,8 @@ MainParser = {
 			for(let k in d['teasers']){
 
 				if(d['teasers'].hasOwnProperty(k)){
-					if(Conversations.includes(d['teasers'][k]['title']) === false){
+
+					if(Conversations.filter((obj)=> (obj.id === d['teasers'][k]['id'])).length === 0){
 						Conversations.push({
 							id: d['teasers'][k]['id'],
 							title: d['teasers'][k]['title']
@@ -1177,7 +1214,7 @@ MainParser = {
 
 			for(let k in d){
 				if(d.hasOwnProperty(k)){
-					if(Conversations.includes(d[k]['title']) === false){
+					if(Conversations.filter((obj)=> (obj.id === d[k]['id'])).length === 0){
 						Conversations.push({
 							id: d[k]['id'],
 							title: d[k]['title']
@@ -1185,6 +1222,10 @@ MainParser = {
 					}
 				}
 			}
+		}
+
+		if(Conversations.length > 0){
+			localStorage.setItem('ConversationsHeaders', JSON.stringify(Conversations));
 		}
 	},
 

@@ -1,11 +1,11 @@
 /*
  * **************************************************************************************
  *
- * Dateiname:                 outpost.js
+ * Dateiname:                 outposts.js
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.07.19 13:14 Uhr
+ * zu letzt bearbeitet:       12.08.19 12:59 Uhr
  *
  * Copyright © 2019
  *
@@ -18,18 +18,18 @@
  * 	{
  * 		{
  * 			Order: {},
- * 			GetAll: Outpost.GetAll,
+ * 			GetAll: Outposts.GetAll,
  * 			Currency: {},
- * 			BuildBoxContent: Outpost.BuildBoxContent,
+ * 			BuildBoxContent: Outposts.BuildBoxContent,
  * 			Service: {},
  * 			SaveConsumables:
- * 			Outpost.SaveConsumables,
- * 			BuildBox: Outpost.BuildBox,
- * 			CollectResources: Outpost.CollectResources
+ * 			Outposts.SaveConsumables,
+ * 			BuildBox: Outposts.BuildBox,
+ * 			CollectResources: Outposts.CollectResources
  * 		}
  * 	}
  */
-Outpost = {
+Outposts = {
 
 	Service: {},
 	Currency: {},
@@ -41,13 +41,13 @@ Outpost = {
 	 *
 	 * @constructor
 	 */
-	BuildBox: ()=> {
+	BuildInfoBox: ()=> {
 
 		let db = localStorage.getItem('OutpostDiplomacyBuildings');
 
 		if(db !== null)
 		{
-			Outpost.DiplomacyBuildings = JSON.parse(db);
+			Outposts.DiplomacyBuildings = JSON.parse(db);
 		}
 
 		if( $('#outpostConsumables').length === 0 )
@@ -55,7 +55,7 @@ Outpost = {
 			HTML.Box('outpostConsumables', i18n['Boxes']['Outpost']['Title']);
 		}
 
-		Outpost.BuildBoxContent();
+		Outposts.BuildInfoBoxContent();
 
 		// Schliessen Button binden
 		$('#outpostConsumablesclose').bind('click', function() {
@@ -69,7 +69,7 @@ Outpost = {
 	 *
 	 * @constructor
 	 */
-	BuildBoxContent: ()=> {
+	BuildInfoBoxContent: ()=> {
 
 		let t = [],
 			ct = [],
@@ -79,7 +79,7 @@ Outpost = {
 			cv = localStorage.getItem('OutpostConsumablesCurrencyValue'),
 			type = localStorage.getItem('OutpostConsumablesCurrencyType'),
 			all = c[ c.length-1 ]['requirements']['resources'],
-			db = Outpost.DiplomacyBuildings.filter(obj => (obj['abilities'][0]['content'] === type)),
+			db = Outposts.DiplomacyBuildings.filter(obj => (obj['abilities'][0]['content'] === type)),
 			pb = [];
 
 		pb.push({
@@ -104,6 +104,7 @@ Outpost = {
 				}
 			}
 		}
+
 
 		// Array umdrehen
 		pb = pb.reverse();
@@ -261,7 +262,7 @@ Outpost = {
 
 		t.push('<tr class="resource-row">');
 
-		t.push('<td>Verfügbar</td><td></td>');
+		t.push('<td>Vorhanden</td><td></td>');
 
 		for(let name in pr)
 		{
@@ -286,7 +287,12 @@ Outpost = {
 				{
 					let tt = (pr[name] - ct[name]);
 
-					t.push('<td class="text-center text-' + (tt < 1 ? 'danger' : 'success') + '">' + tt + '</td>');
+					if(tt < 0){
+						t.push('<td class="text-center text-' + (tt < 1 ? 'danger' : 'success') + '">' + tt + '</td>');
+					} else {
+						t.push('<td class="text-center">-</td>');
+					}
+
 				} else {
 					t.push('<td></td>');
 				}
@@ -318,14 +324,14 @@ Outpost = {
 			{
 				let ct = d[i]['content'];
 
-				Outpost.Service[ct] = {
+				Outposts.Service[ct] = {
 					name: d[i]['name']
 				};
 
-				Outpost.Order[ct] = d[i]['goodsResourceIds'];
-				Outpost.Order[ct].push('diplomacy');
+				Outposts.Order[ct] = d[i]['goodsResourceIds'];
+				Outposts.Order[ct].push('diplomacy');
 
-				Outpost.Currency[ d[i]['goodsResourceIds'][0] ] = {
+				Outposts.Currency[ d[i]['goodsResourceIds'][0] ] = {
 					currency: d[i]['primaryResourceId'],
 					type: d[i]['populationResourceId']
 				}
@@ -352,28 +358,27 @@ Outpost = {
 
 		ct = JSON.parse(ct);
 
-
 		// den eigentlichen Typen ermitteln
-		for(let name in Outpost.Currency)
+		for(let name in Outposts.Currency)
 		{
 			if(ct.hasOwnProperty(name))
 			{
-				type = Outpost.Currency[name]['type'];
+				type = Outposts.Currency[name]['type'];
 				break;
 			}
 		}
 
 
 		// die Währung ermitteln
-		for(let name in Outpost.Currency)
+		for(let name in Outposts.Currency)
 		{
-			if(Outpost.Currency.hasOwnProperty(name))
+			if(Outposts.Currency.hasOwnProperty(name))
 			{
 				if(d[name] !== undefined)
 				{
-					localStorage.setItem('OutpostConsumablesCurrencyName', Outpost.Currency[name]['currency']);
-					localStorage.setItem('OutpostConsumablesCurrencyValue', d[Outpost.Currency[name]['currency']]);
-					localStorage.setItem('OutpostConsumablesCurrencyType', Outpost.Currency[name]['type']);
+					localStorage.setItem('OutpostConsumablesCurrencyName', Outposts.Currency[name]['currency']);
+					localStorage.setItem('OutpostConsumablesCurrencyValue', d[Outposts.Currency[name]['currency']]);
+					localStorage.setItem('OutpostConsumablesCurrencyType', Outposts.Currency[name]['type']);
 
 					break;
 				}
@@ -382,14 +387,14 @@ Outpost = {
 
 
 		// die Güter ermittlen
-		for (let i = 0; i < Outpost.Order[type].length; i++)
+		for (let i = 0; i < Outposts.Order[type].length; i++)
 		{
-			pr[Outpost.Order[type][i]] = d[Outpost.Order[type][i]];
+			pr[Outposts.Order[type][i]] = d[Outposts.Order[type][i]];
 		}
 
 		localStorage.setItem('OutpostConsumablesResources', JSON.stringify(pr));
 
-		Outpost.BuildBoxContent();
+		Outposts.BuildInfoBoxContent();
 	},
 
 

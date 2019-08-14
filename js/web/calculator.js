@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       22.07.19 15:48 Uhr
+ * zu letzt bearbeitet:       13.08.19 20:41 Uhr
  *
  * Copyright © 2019
  *
@@ -262,9 +262,11 @@ Calculator = {
 
 					}
 					else {
-						
-						if(gespFP >= einsatz || sum - einsatz < 1)
-						{
+
+						if(sum - einsatz === 0){
+							h.push('<td class="text-center">' + HTML.Format(einsatz) + '</td><td class="text-center"><strong class="success">0</strong></td>');
+						}
+						else if(gespFP >= einsatz || sum - einsatz < 1) {
 							h.push('<td class="text-center">-</td><td class="text-center">-</td>');
 
 						}
@@ -313,29 +315,6 @@ Calculator = {
 		}
 
 		h.push('</table>');
-
-
-		lsp = moment.unix(BuildingInfo['last_spent']).fromNow();
-
-		h.push('<div class="text-center" style="margin: 5px 0 0 0;">' +
-					'<small><em>' + i18n['Boxes']['Calculator']['LastDeposit'] + ': ' + lsp  + '</em></small><br>');
-
-		if(e['state']['next_state_transition_at'] !== undefined)
-		{
-			let nlup = moment.unix(e['state']['next_state_transition_at']).calendar();
-
-			h.push('<small>' +
-					'<em>' + i18n['Boxes']['Calculator']['Harvest'] + nlup + ' &rarr; ' +
-						'<span id="timer">' +
-							'<span id="timer-hours">00h</span> ' +
-							'<span id="timer-mins">00m</span> ' +
-							'<span id="timer-secs">00s</span>' +
-						'</span>' +
-					'</em>' +
-				'</small>');
-		}
-
-		h.push('</div>');
 
 		// in die bereits vorhandene Box drücken
 		div.find('#costCalculatorBody').html(h.join(''));

@@ -1,6 +1,28 @@
 ##Changelog - Chrome Extension
 
 
+
+#####v2.3.4
+**Update**
+- FP-Lager Anzeige:
+	- wird nun beim Spielstart ermittelt
+- Kostenrechner:
+	- Ab sofort erscheint in der letzten Spalte eine "0" wenn +-0 erreicht würde (verlustfrei) => [#80](https://github.com/dsiekiera/foe-helfer-extension/issues/80) 
+
+
+**BugFix**
+- Kostenrechner:
+	- Erntedatum des LGs entfernt, wurde von Inno ausgebaut
+	
+- Außenposten:
+	- wird korrekt erkannt und geöffnet	[#61](https://github.com/dsiekiera/foe-helfer-extension/issues/61), ggf. Reload!
+
+- Tavernenboost:
+	- zeigt wirklich nur noch den extra Zug an [#75](https://github.com/dsiekiera/foe-helfer-extension/issues/75), wenn aktiviert
+	
+---
+
+
 #####v2.3.3
 **BugFix**
 - Kostenrechner:
@@ -360,7 +382,8 @@
 
 #####v1.7.3
 **Update**
-- Nachbar-Produktionen:  Jede Menge Übersetungen eingefügt
+- Nachbar-Produktionen:
+	- Jede Menge Übersetungen eingefügt
 
 ---
 
