@@ -1,6 +1,6 @@
 {
 	"name": "FoE - Helfer",
-	"version": "2.3.3",
+	"version": "2.3.4",
 	"description": "Kleine Tools und Helfer für ein besseres Spieleerlebnis in Forge of Empires",
 	"manifest_version": 2,
 	"permissions": [

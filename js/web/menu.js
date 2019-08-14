@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       27.07.19 13:10 Uhr
+ * zu letzt bearbeitet:       10.08.19 11:24 Uhr
  *
  * Copyright © 2019
  *
@@ -218,7 +218,7 @@ Menu = {
 	 */
 	outP_Btn: ()=> {
 
-		let btn_outPBG = $('<div />').attr('id', 'outP').addClass('hud-btn'),
+		let btn_outPBG = $('<div />').attr('id', 'outPostBtn').addClass('hud-btn'),
 			desc = i18n['Menu']['OutP']['Desc'];
 
 		if(localStorage.getItem('OutpostConsumables') === null){
@@ -229,17 +229,17 @@ Menu = {
 		// Tooltip einbinden
 		Menu.toolTippBox(i18n['Menu']['OutP']['Title'], desc, 'outP');
 
-		let btn_out = $('<span />');
+		let btn_outpost = $('<span />');
 
-		btn_out.bind('click', function(){
+		btn_outpost.bind('click', function(){
 			let r = localStorage.getItem('OutpostConsumables');
 
 			if(r !== null){
-				Outpost.BuildBox();
+				Outposts.BuildInfoBox();
 			}
 		});
 
-		btn_outPBG.append(btn_out);
+		btn_outPBG.append(btn_outpost);
 
 		return btn_outPBG;
 	},

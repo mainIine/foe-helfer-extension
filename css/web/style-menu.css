@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       27.07.19 13:08 Uhr
+ * zu letzt bearbeitet:       10.08.19 11:24 Uhr
  *
  * Copyright © 2019
  *
@@ -266,7 +266,7 @@ p {
 	background-image: url('../images/calculator.png');
 }
 
-#outP span {
+#outPostBtn span {
 	background-image: url('../images/vikings_ship.png');
 }
 

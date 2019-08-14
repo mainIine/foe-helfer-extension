@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.07.19 12:57 Uhr
+ * zu letzt bearbeitet:       13.08.19 20:29 Uhr
  *
  * Copyright © 2019
  *
@@ -134,6 +134,36 @@ StrategyPoints = {
 		}
 
 		return false;
+	},
+
+
+	/**
+	 * Holt beim Start alle FPs aus dem Lager
+	 *
+	 * @param d
+	 * @constructor
+	 */
+	GetFromInventory: (d)=> {
+		let t = 0;
+
+		for(let i in d)
+		{
+			if(d.hasOwnProperty(i)){
+				if(d[i]['itemAssetName'] === 'large_forgepoints'){
+					t += (d[i]['inStock'] * 10);
+
+				} else if(d[i]['itemAssetName'] === 'medium_forgepoints'){
+					t += (d[i]['inStock'] * 5);
+
+				} else if(d[i]['itemAssetName'] === 'small_forgepoints'){
+					t += (d[i]['inStock'] * 2);
+				}
+			}
+		}
+
+		if(t > 0){
+			StrategyPoints.ForgePointBar(t);
+		}
 	},
 
 

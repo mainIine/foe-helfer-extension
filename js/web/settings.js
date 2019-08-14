@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.07.19 12:56 Uhr
+ * zu letzt bearbeitet:       14.08.19 11:19 Uhr
  *
  * Copyright © 2019
  *
@@ -19,7 +19,7 @@ Settings = {
 	 */
 	Preferrences: {
 		GlobalSend : {
-			status: false,
+			status: true,
 			title : i18n['Settings']['GlobalSend']['Title'],
 			desc : i18n['Settings']['GlobalSend']['Desc']
 		},
@@ -34,12 +34,12 @@ Settings = {
 			desc : i18n['Settings']['SendGildMemberLGInfo']['Desc']
 		},
 		SendGEXInfo : {
-			status: false,
+			status: true,
 			title : i18n['Settings']['SendGEXInfo']['Title'],
 			desc : i18n['Settings']['SendGEXInfo']['Desc']
 		},
 		ShowNeighborsGoods : {
-			status: false,
+			status: true,
 			title : i18n['Settings']['ShowNeighborsGoods']['Title'],
 			desc : i18n['Settings']['ShowNeighborsGoods']['Desc']
 		},
@@ -54,7 +54,7 @@ Settings = {
 			desc : i18n['Settings']['ShowTavernBadge']['Desc']
 		},
 		ShowOutpost : {
-			status: false,
+			status: true,
 			title : i18n['Settings']['ShowOutpost']['Title'],
 			desc : i18n['Settings']['ShowOutpost']['Desc']
 		},
