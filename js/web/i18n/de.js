@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       27.07.19 13:00 Uhr
+ * zu letzt bearbeitet:       15.08.19, 11:41 Uhr
  *
  * Copyright © 2019
  *
@@ -60,7 +60,11 @@ let i18n = {
 		},
 
 		"Outpost" : {
-			"Title" : "Güter des Außenpostens"
+			"Title" : "Güter des Außenpostens",
+			"TitleShort" : "Güterübersicht - ",
+			"DescRequired" : "Benötigt",
+			"DescInStock" : "Vorhanden",
+			"DescStillMissing" : "Fehlt noch",
 		}
 	},
 
