@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       10.08.19 11:24 Uhr
+ * zu letzt bearbeitet:       15.08.19, 19:29 Uhr
  *
  * Copyright © 2019
  *
@@ -143,8 +143,7 @@ Menu = {
 
 
 		$('.hud-btn').hover(function() {
-			let id = $(this).attr('id'),
-				pos = $(this).position();
+			let id = $(this).attr('id');
 
 			$('[data-btn="' + id + '"]').show();
 

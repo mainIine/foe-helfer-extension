@@ -1,6 +1,23 @@
 ##Changelog - Chrome Extension
 
 
+#####v2.3.5
+
+**Update**
+- Außenposten:
+	- Sammeln der Resourcen geschieht nun häufiger => aktuellerer Bestand
+
+- Eigenanteilsrechner:
+	- "Werte kopieren" umgebaut [#59](https://github.com/dsiekiera/foe-helfer-extension/issues/59)
+
+**BugFix**
+- Extension:
+    - unter bestimmten Konstelationen wurde keine Daten übertragen
+
+- Außenposten:
+    - fehlender Wert erzeugte einen Error und blockierte das weitere ausführen
+
+---
 
 #####v2.3.4
 **Update**

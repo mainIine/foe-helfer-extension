@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       14.08.19 13:18 Uhr
+ * zu letzt bearbeitet:       23.08.19, 10:22 Uhr
  *
  * Copyright © 2019
  *
@@ -29,7 +29,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 document.addEventListener("DOMContentLoaded", function(){
 
 	// aktuelle Welt notieren
-	localStorage.setItem('current_world', window.location.hostname.split('.')[0]);
+	ExtWorld = window.location.hostname.split('.')[0];
+	localStorage.setItem('current_world', ExtWorld);
 
 	// Local-Storage leeren
 	localStorage.removeItem('OwnCurrentBuildingCity');
@@ -351,15 +352,11 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 
 				// Außenposten-Güter des Spielers ermitteln
-				let FirstCheck = localStorage.getItem('OutpostConsumablesCurrencyType');
 				let OutpostRessources = d.find(obj => {return obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'});
 
-				if(OutpostRessources !== undefined && Settings.GetSetting('ShowOutpost') && (ActiveMap === 'cultural_outpost' || FirstCheck === null)){
+				if(OutpostRessources !== undefined && Settings.GetSetting('ShowOutpost')){
 					Outposts.CollectResources(OutpostRessources['responseData']['resources']);
 				}
-
-
-
 
 				// --------------------------------------------------------------------------------------------------
 				// LG Investitionen
@@ -559,10 +556,10 @@ MainParser = {
 	send2Server: (data, ep, successCallback)=> {
 
 		let pID = ExtPlayerID,
-			cW = localStorage.getItem('current_world'),
+			cW = ExtWorld,
 			gID = ExtGuildID;
 
-		if(cW.indexOf('zz') > -1 || cW === '' || cW === null || cW === undefined)
+		if(cW === '' || cW === null || cW === undefined)
 		{
 			return ;
 		}
@@ -573,7 +570,10 @@ MainParser = {
 			data: {data},
 			dataType: 'json',
 			success: function(r){
-				successCallback(r);
+				if(successCallback !== undefined)
+				{
+					successCallback(r);
+				}
 			}
 		});
 	},
@@ -583,7 +583,7 @@ MainParser = {
 	apiCall: (data, ep, successCallback)=> {
 
 		let pID = ExtPlayerID,
-			cW = localStorage.getItem('current_world'),
+			cW = ExtWorld,
 			gID = ExtGuildID;
 
 		if(cW === '' || cW === null || cW === undefined)
@@ -597,7 +597,10 @@ MainParser = {
 			data: {data},
 			dataType: 'json',
 			success: function(r){
-				successCallback(r);
+				if(successCallback !== undefined)
+				{
+					successCallback(r);
+				}
 			}
 		});
 	},
@@ -837,7 +840,6 @@ MainParser = {
 		if(ExtGuildID !== d['other_player']['clan_id']){
 			return false;
 		}
-
 		let lg = d['city_map']['entities'],
 			data = [],
 			player = {
@@ -878,7 +880,7 @@ MainParser = {
 
 				// nach Erfolg, Zeitstempel in den LocalStorage
 				if(r['status'] === 'OK'){
-					MainParser.setStorage('LG-' + d['other_player']['player_id'], MainParser.getAddedDateTime(6, 0));
+					MainParser.setStorage('LG-' + d['other_player']['player_id'], MainParser.getAddedDateTime(2, 0));
 					MainParser.showInfo(d['other_player']['name'] + ' geupdated', r['msg']);
 				} else {
 					MainParser.showInfo('Fehler!', r['msg']);
@@ -937,6 +939,8 @@ MainParser = {
 	 */
 	StartUp: (d)=> {
 		ExtGuildID = d['clan_id'];
+		ExtWorld = window.location.hostname.split('.')[0];
+
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
 			key: 'current_guild_id',
@@ -952,13 +956,12 @@ MainParser = {
 		});
 		localStorage.setItem('current_player_id', ExtPlayerID);
 
-		ExtWorld = localStorage.getItem('current_world');
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
 			key: 'current_world',
 			data: ExtWorld
 		});
-
+		localStorage.setItem('current_world', ExtWorld);
 
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       29.07.19 12:10 Uhr
+ * zu letzt bearbeitet:       23.08.19, 10:28 Uhr
  *
  * Copyright © 2019
  *
@@ -639,12 +639,12 @@ Parts = {
 			k = p,
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
-		b.push('<span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span>');
+		b.push('<p><span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span></p>');
 
-		b.push('<input type="text" id="player-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['YourName'] + '" value="' + (n !== null ? n : m) + '">');
-		b.push('<input type="text" id="build-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['IndividualName'] + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '">');
+		b.push('<div><span>Spieler:</span><input type="text" id="player-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['YourName'] + '" value="' + (n !== null ? n : m) + '"></div>');
+		b.push('<div><span>Gebäude:</span><input type="text" id="build-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['IndividualName'] + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '"></div>');
 
-		let drp = '<select id="chain-scheme">' +
+		let drp = '<div><span>Schema:</span><select id="chain-scheme">' +
 			'<option value="" disabled>-- ' + i18n['Boxes']['OwnpartCalculator']['OutputScheme'] + ' --</option>' +
 			'<option value="1">Name LG P5 P4 P3 P2 P1</option>' +
 			'<option value="2">Name LG P1 P2 P3 P4 P5</option>' +
@@ -652,7 +652,7 @@ Parts = {
 			'<option value="4">Name LG P1/2/3/4/5</option>' +
 			'<option value="5" selected>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
 			'<option value="6">Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
-			'</select>';
+			'</select></div>';
 
 		b.push(drp);
 
@@ -698,7 +698,11 @@ Parts = {
 				// nach 4s den grünen Rahmen wieder ausblenden
 				setTimeout(function(){
 					$(trigger).removeClass('border-success');
-				}, 4000);
+
+					// wieder zuklappen
+					Parts.BackGroundBoxAnimation(false);
+
+				}, 3000);
 
 
 				let s = $('#chain-scheme').val();
@@ -761,19 +765,17 @@ Parts = {
 		if( $('.OwnPartBoxBackground').length > 0 ){
 			$('.OwnPartBoxBackgroundBody').html( b.join('') );
 
-			setTimeout(()=>{
-				Parts.BackGroundBoxHeight()
-			}, 50);
-
 			// und raus...
 			return;
 		}
 
 		// Container zusammen setzen
 		let div = $('<div />').addClass('OwnPartBoxBackground'),
-			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody').append(b.join('')) );
+			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(b.join('')) );
 
 		$('#OwnPartBox').append( div.append(a) );
+
+		$('#OwnPartBox').append( $('<div />').addClass('black-bg').hide() );
 
 		// der "Toogle"-Pfeil wurde geklickt,
 		// lasst die Spiele beginnen
@@ -799,29 +801,18 @@ Parts = {
 			abl = ep.left,
 			nbl = abl - 200;
 
+		$box.find('.black-bg').fadeToggle();
+
 		if(show === true){
-			$('#OwnPartBox').addClass('show');
-			$('#OwnPartBox').animate({left: nbl + 'px', paddingLeft: '200px'}, 250, function(){
-				$('.OwnPartBoxBackgroundBody').animate({width: '185px', height: '350px'}, 250);
+			$('.OwnPartBoxBackgroundBody').animate({height: 230, opacity: 1}, 250, function () {
+				$box.addClass('show');
 			});
 
 		} else {
-			$('#OwnPartBox').removeClass('show');
-
-			$('.OwnPartBoxBackgroundBody').animate({width: '0px', height: '0px'}, 250, function () {
-				$('#OwnPartBox').animate({left: (abl + 200) + 'px', paddingLeft: '10px'}, 250);
+			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
+				$box.removeClass('show');
 			});
 		}
-	},
-
-
-	/**
-	 * Setzt die Höhe der Background
-	 *
-	 * @constructor
-	 */
-	BackGroundBoxHeight: ()=>{
-		$('#OwnPartBoxBackgroundBody').height( $('#OwnPartBoxBody').outerHeight() - 5 );
 	},
 
 

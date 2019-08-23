@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       13.08.19 20:41 Uhr
+ * zu letzt bearbeitet:       14.08.19, 14:20 Uhr
  *
  * Copyright © 2019
  *
@@ -17,7 +17,6 @@ Calculator = {
 	ArcBonus: 90,
 	EntityOverview: [],
 	CurrentPlayer: 0,
-	Timer: null,
 
 
 	/**
@@ -48,15 +47,12 @@ Calculator = {
 			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 		}
 
-		clearInterval(Calculator.Timer);
-
 		// Übersicht laden + passendes LG
 		Calculator.EntityOverview = JSON.parse(localStorage.getItem('OtherActiveBuildingOverview'));
 
 		let div = $('#costCalculator'),
 			afp = d['availablePackagesForgePointSum'],
-			h = [],
-			lsp;
+			h = [];
 
 
 		let BuildingInfo = Calculator.EntityOverview.find(obj => {
@@ -319,8 +315,6 @@ Calculator = {
 		// in die bereits vorhandene Box drücken
 		div.find('#costCalculatorBody').html(h.join(''));
 
-		Calculator.CountDown( moment.unix(e['state']['next_state_transition_at']) );
-
 		// wenn der Wert des Archebonus verändert wird, Event feuern
 		$('body').on('blur', '#costFactor', function(){
 
@@ -365,34 +359,6 @@ Calculator = {
 		// Schliessen Button binden
 		$('#costCalculatorclose').bind('click', function(){
 			$('#costCalculator').remove();
-
-			clearInterval(Calculator.Timer);
 		});
 	},
-
-
-	CountDown: (endDate)=> {
-		Calculator.Timer = setInterval(function(){
-
-			let now = new Date().getTime();
-			let t = endDate - now;
-
-			if (t >= 0) {
-
-				let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-				let mins = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-				let secs = Math.floor((t % (1000 * 60)) / 1000);
-
-				document.getElementById('timer-hours').innerHTML = ("0" + hours).slice(-2) + '<span class="label">h</span>';
-
-				document.getElementById('timer-mins').innerHTML = ("0" + mins).slice(-2) + '<span class="label">m</span>';
-
-				document.getElementById('timer-secs').innerHTML = ("0" + secs).slice(-2) + '<span class="label">s</span>';
-
-			} else {
-				document.getElementById('timer').innerHTML = 'Erntezeit!';
-			}
-
-		}, 1000);
-	}
 };

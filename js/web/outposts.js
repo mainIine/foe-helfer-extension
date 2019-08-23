@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       12.08.19 12:59 Uhr
+ * zu letzt bearbeitet:       23.08.19, 10:18 Uhr
  *
  * Copyright © 2019
  *
@@ -71,6 +71,11 @@ Outposts = {
 	 */
 	BuildInfoBoxContent: ()=> {
 
+		if(Outposts.DiplomacyBuildings === null)
+		{
+			return ;
+		}
+
 		let t = [],
 			ct = [],
 			c = JSON.parse(localStorage.getItem('OutpostConsumables')),
@@ -86,6 +91,10 @@ Outposts = {
 			name: db[0]['name'],
 			diplomacy: db[0]['staticResources']['resources']['diplomacy']
 		});
+
+
+		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.Service[type].name );
+
 
 		// Diplomatische Gebäude duchsteppen
 		for(let b in db)
@@ -241,7 +250,7 @@ Outposts = {
 
 		t.push('<tr class="total-row">');
 
-		t.push('<td>Rest - Gesamt</td><td></td>');
+		t.push('<td>' + i18n['Boxes']['Outpost']['DescRequired'] + '</td><td></td>');
 
 		for(let name in pr)
 		{
@@ -262,7 +271,7 @@ Outposts = {
 
 		t.push('<tr class="resource-row">');
 
-		t.push('<td>Vorhanden</td><td></td>');
+		t.push('<td>' + i18n['Boxes']['Outpost']['DescInStock'] + '</td><td></td>');
 
 		for(let name in pr)
 		{
@@ -277,7 +286,7 @@ Outposts = {
 
 		t.push('<tr class="total-row">');
 
-		t.push('<td><strong>Fehlt noch</strong></td><td colspan=""></td>');
+		t.push('<td><strong>' + i18n['Boxes']['Outpost']['DescStillMissing'] + '</strong></td><td colspan=""></td>');
 
 		for(let name in pr)
 		{
