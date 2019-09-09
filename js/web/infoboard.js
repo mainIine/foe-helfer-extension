@@ -7,7 +7,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       13.08.19 21:03 Uhr
+ * zu letzt bearbeitet:       06.09.19, 18:07 Uhr
  *
  * Copyright © 2019
  *
@@ -19,6 +19,9 @@ let Infoboard = {
 	InjectionLoaded: false,
 
 
+	/**
+	 * Setzt einen ByPass auf den WebSocket und "hört" mit
+	 */
 	init: ()=> {
 
 		let StorageHeader = localStorage.getItem('ConversationsHeaders');
@@ -54,17 +57,22 @@ let Infoboard = {
 	},
 
 
+	/**
+	 * Erzeugt die Box wenn noch nicht im DOM
+	 *
+	 * @constructor
+	 */
 	Box: ()=> {
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#BHResultBox').length === 0 ){
-			HTML.Box('BHResultBox', 'Hintergrund Nachrichten');
+		if( $('#BackgroundInfo').length === 0 ){
+			HTML.Box('BackgroundInfo', i18n['Menu']['Info']['Title']);
 		}
 
-		let div = $('#BHResultBox'),
+		let div = $('#BackgroundInfo'),
 			h = [];
 
-		h.push('<table id="BHResultBoxTable" class="foe-table">');
+		h.push('<table id="BackgroundInfoTable" class="foe-table">');
 
 		h.push('<thead>');
 
@@ -78,17 +86,23 @@ let Infoboard = {
 
 		h.push('</tbody>');
 
-		div.find('#BHResultBoxBody').html(h.join(''));
+		div.find('#BackgroundInfoBody').html(h.join(''));
 
 		div.show();
 
-
-		$('body').on('click', '#BHResultBoxclose', ()=>{
-			$('#BHResultBox').remove();
+		$('body').on('click', '#BackgroundInfoclose', ()=>{
+			$('#BackgroundInfo').remove();
 		});
 	},
 
 
+	/**
+	 * Setzt eine neue Zeile für die Box zusammen
+	 *
+	 * @param dir
+	 * @param data
+	 * @constructor
+	 */
 	BoxContent: (dir, data)=> {
 
 		let Msg = data[0];
@@ -116,7 +130,7 @@ let Infoboard = {
 			'<td>' + msg + '</td>'
 		)
 
-		$('#BHResultBoxTable tbody').prepend(tr);
+		$('#BackgroundInfoTable tbody').prepend(tr);
 	},
 };
 
@@ -158,7 +172,7 @@ let Info = {
 
 		return {
 			type: 'Nachricht',
-			msg: Info.GetConversationHeader(d['conversationId']) + '<em>' + d['sender']['name'] + '</em> - ' + msg
+			msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
 		};
 	},
 
@@ -180,23 +194,36 @@ let Info = {
 
 
 	/**
+	 *
+	 *
+	 * @param d
+	 * @returns {{msg: string, type: string}}
+	 * @constructor
+	 */
+	GuildExpeditionService_receiveContributionNotification: (d)=> {
+		return {
+			type: 'GEX',
+			msg: '<strong>' + d['player']['name'] + '</strong> hat gerade ' + Number(d['expeditionPoints']).toLocaleString('de-DE') + ' Punkte in der GEX bekommen.'
+		};
+	},
+
+
+	/**
 	 * Sucht den Titel einer Nachricht heraus
 	 *
 	 * @param id
 	 * @returns {string}
 	 * @constructor
 	 */
-	GetConversationHeader: (id)=> {
+	GetConversationHeader: (id, name)=> {
 		if(Conversations.length > 0){
 			let header = Conversations.find(obj => (obj['id'] === id));
 
 			if(header !== undefined){
-				return '<div><strong style="color:#ffb539">' + header['title'] + '</strong></div>';
+				return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
 			}
 		}
 
 		return '';
 	}
 };
-
-// Infoboard.init();

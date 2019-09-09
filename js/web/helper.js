@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.07.19 13:10 Uhr
+ * zu letzt bearbeitet:       09.09.19, 14:01 Uhr
  *
  * Copyright © 2019
  *
@@ -94,9 +94,11 @@ HTML = {
 	 * @param titel
 	 * @param ask
 	 * @param auto_close
+	 * @param dragdrop
+	 * @param resize Resize
 	 * @constructor
 	 */
-	Box: (id, titel, ask = null, auto_close = true)=> {
+	Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false)=> {
 		let min = $('<span />').addClass('window-minimize'),
 			close = $('<span />').attr('id', id + 'close').addClass('window-close'),
 			title = $('<span />').addClass('title').text(titel),
@@ -120,7 +122,7 @@ HTML = {
 		setTimeout(
 			()=> {
 
-				if(auto_close){
+				if(auto_close === true){
 					$('body').on('click', '#' + id + 'close', ()=>{
 						$('#' + id).hide('fast', ()=>{
 							$('#' + id).remove();
@@ -128,15 +130,21 @@ HTML = {
 					});
 				}
 
+				if(ask !== null) {
+					$('body').on('click', '.window-ask', function () {
+						window.open($(this).data('url'), '_blank');
+					});
+				}
 
-				$('body').on('click', '.window-ask', function(){
-					window.open( $(this).data('url'), '_blank');
-				});
+				if(dragdrop === true) {
+					HTML.DragBox(document.getElementById(id));
+				}
 
-				HTML.DragBox(document.getElementById(id));
+				if(resize === true){
+					HTML.Resizeable(id);
+				}
+
 				HTML.MinimizeBox(div);
-
-
 
 			}, 50
 		);
@@ -225,6 +233,48 @@ HTML = {
 
 
 	/**
+	 * Box lässt sich in der Größe verändern
+	 *
+	 * @param id
+	 * @constructor
+	 */
+	Resizeable: (id)=> {
+		let box = $('#'+id),
+			grip = $('<div />').addClass('window-grippy'),
+			sizeLS = localStorage.getItem(id + 'Size');
+
+		// Größe wurde definiert, setzten
+		if(sizeLS !== null)
+		{
+			let s = sizeLS.split('|');
+
+			// passt die Box von der Höhe her in den Viewport?
+			// nein, Höhe wird automatisch gesetzt, Breite übernommen
+			if( $(window).height() - s[1] < 20 )
+			{
+				box.width(s[0]);
+			}
+			// ja, gespeicherte Daten sezten
+			else {
+				box.width(s[0]).height(s[1]);
+			}
+		}
+
+		box.append(grip);
+
+		// Box wird in der GRöße verändert, speichern
+		box.resizable({
+			handleSelector: ".window-grippy",
+			onDragEnd: (e, $el, opt)=>{
+				let size = $el.width() + '|' + $el.height();
+
+				localStorage.setItem(id + 'Size', size);
+			},
+		});
+	},
+
+
+	/**
 	 * Formatiert Zahlen oder gibt = 0 einen "-" aus
 	 *
 	 * @param number
@@ -238,122 +288,4 @@ HTML = {
 			return new Intl.NumberFormat('de-DE', { style: 'decimal' }).format(number);
 		}
 	}
-};
-
-
-AntSocket = {
-
-	InjectionLoaded: false,
-
-
-	init: ()=> {
-
-		AntSocket.Box();
-
-		if(AntSocket.InjectionLoaded === false){
-			WebSocket.prototype._send = WebSocket.prototype.send;
-
-			WebSocket.prototype.send = function (data) {
-				if(data !== 'PING'){
-					// console.log("\u2192 ", JSON.parse(data));
-					// AntSocket.BoxContent('out', JSON.parse(data));
-				}
-
-				this._send(data);
-
-				this.addEventListener('message', function (msg) {
-					if(msg.data !== 'PONG'){
-						// console.log('\u2190', JSON.parse(msg.data));
-						AntSocket.BoxContent('in', JSON.parse(msg.data));
-					}
-
-
-				}, false);
-
-				this.send = function (data) {
-					this._send(data);
-
-					if(data !== 'PING'){
-						// console.log("\u2192 ", JSON.parse(data));
-						// AntSocket.BoxContent('out', JSON.parse(data));
-					}
-				};
-			};
-
-			AntSocket.InjectionLoaded = true;
-		}
-	},
-
-
-	Box: ()=> {
-		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#BHResultBox').length === 0 ){
-			HTML.Box('BHResultBox', 'WebSocket Traffic');
-		}
-
-		let div = $('#BHResultBox'),
-			h = [];
-
-		h.push('<table id="BHResultBoxTable" class="foe-table">');
-
-		h.push('<thead>');
-
-		h.push('<tr>');
-		h.push('<th width="1"><strong>Event / <em>Methode</em></strong></th>');
-		h.push('<th><strong>Data</strong></th>');
-		h.push('</tr>');
-
-		h.push('</thead>');
-		h.push('<tbody>');
-
-		h.push('</tbody>');
-
-		div.find('#BHResultBoxBody').html(h.join(''));
-		div.show();
-
-		div.resizable({
-			resize: function( event, ui ) {
-				$('#BHResultBoxBody').height( ui.size.height - 7 );
-			}
-		});
-
-		$('body').on('click', '#BHResultBoxclose', ()=>{
-			$('#BHResultBox').remove();
-		});
-	},
-
-
-	BoxContent: (dir, data)=> {
-
-		/*
-		let Msg = data.find(obj => {
-			return (obj.requestClass === 'ConversationService' && obj.requestMethod === 'getNewMessage') ||
-				(obj.requestClass === 'GuildExpeditionService') ||
-				(obj.requestClass === 'OtherPlayerService' && obj.requestMethod === 'newEvent');
-		});
-
-		if(Msg === undefined){
-			return ;
-		}
-		*/
-
-		let Msg = data[0];
-
-		if(Msg === undefined || Msg['requestClass'] === undefined){
-			return ;
-		}
-
-		if(Msg !== undefined && Msg['requestClass'] !== undefined && Msg['requestClass'] === 'FriendsTavernService' || (Msg !== undefined && Msg['requestClass'] !== undefined && Msg['requestClass'] === 'MessageService' && Msg['requestMethod'] === 'newMessage')){
-			return ;
-		}
-
-		let tr = $('<tr />');
-
-		tr.append(
-			'<td>' + Msg['requestClass'] + '<br><em>' + Msg['requestMethod'] + '</em></td>' +
-			'<td>' + JSON.stringify(Msg['responseData']) + '</td>'
-		)
-
-		$('#BHResultBoxTable tbody').prepend(tr);
-	},
 };

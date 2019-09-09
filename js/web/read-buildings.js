@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       12.08.19 13:15 Uhr
+ * zu letzt bearbeitet:       09.09.19, 19:00 Uhr
  *
  * Copyright © 2019
  *
@@ -55,7 +55,7 @@ Reader = {
 
 	data: {},
 	player_name: '',
-
+	CityEntities: null,
 
 	/**
 	 * Die Gebäude ermitteln
@@ -74,24 +74,20 @@ Reader = {
 
 		$('#ResultBox').remove();
 
-
 		let d = dp['city_map']['entities'];
+
+		// console.log('all => d: ', d);
+
+		Reader.CityEntities = d;
 
 		for (let i in d)
 		{
 			if (d.hasOwnProperty(i))
 			{
-
-				/*
-				if(d[i]['type'] !== 'street'){
-					console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]+':' , d[i]);
-				}
-				*/
-
 				let id = d[i]['cityentity_id'];
 
 				if((d[i]['type'] === 'production' || d[i]['type'] === 'goods') && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined){
-					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]+':' , d[i]);
+					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
 					GoodsParser.readType(d[i]);
 
 				} else if(d[i]['type'] === 'residential' && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
@@ -104,9 +100,8 @@ Reader = {
 					}
 
 				} else if(d[i]['type'] === 'greatbuilding' && d[i]['state']['current_product'] !== undefined){
-					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]+':' , d[i]);
+					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
 				}
-
 			}
 		}
 
@@ -133,8 +128,8 @@ Reader = {
 		let wk = helper.arr.multisort(Reader.data.work, ['name'], ['ASC']);
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#ResultBox').length === 0 ){
-
+		if( $('#ResultBox').length === 0 )
+		{
 			HTML.Box('ResultBox', i18n['Boxes']['Neighbors']['Title'] + Reader.player_name);
 		}
 
@@ -149,7 +144,7 @@ Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="2"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -162,6 +157,7 @@ Reader = {
 					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
+					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -178,7 +174,7 @@ Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="2"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -191,6 +187,7 @@ Reader = {
 					h.push('<tr>');
 					h.push('<td>' + wk[i]['name'] + '</td>');
 					h.push('<td>' + wk[i]['amount'] + '</td>');
+					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -201,7 +198,39 @@ Reader = {
 
 		div.find('#ResultBoxBody').html(h.join(''));
 		div.show();
+
+		// Ein Gebäude soll auf der Karte dargestellt werden
+		$('body').on('click', '.foe-table .show-entity', function(){
+			Reader.ShowFunction($(this).data('id'));
+		});
 	},
+
+
+	/**
+	 * Zeigt pulsierend ein Gebäude auf der Map
+	 *
+	 * @param id
+	 * @constructor
+	 */
+	ShowFunction: (id)=> {
+
+		let h = CityMap.hashCode(Reader.player_name);
+
+		if( $('#map' + h).length < 1 )
+		{
+			CityMap.init(Reader.CityEntities, Reader.player_name);
+		}
+
+		$('[data-entityid]').removeClass('pulsate');
+
+		setTimeout(()=>{
+			let target = $('[data-entityid="' + id + '"]');
+
+			$('#map-container').scrollTo(target, 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+
+			target.addClass('pulsate');
+		}, 200);
+	}
 };
 
 
@@ -226,29 +255,30 @@ GoodsParser = {
 	 */
 	readType: (d)=> {
 
-		// console.log('d[\'state\'][\'current_product\']: ', d['state']['current_product']);
-
-		let name = d['state']['current_product']['asset_name'];
-
 		// Ruhmeshallen ausgrenzen
-		if(name.includes('bazaar_')){
-			//console.log('d[\'state\'][\'current_product\']: ', d['state']['current_product']);
-
+		/*
+		if(d['state']['current_product']['asset_name'] !== undefined && d['state']['current_product']['asset_name'].indexOf('bazaar_') > -1){
 			GoodsParser.bazaarBuilding(d);
 		}
+		*/
 
-		else if(d['state']['current_product'] === undefined) {
+		// produziert nix
+		//else
+			if(d['state']['current_product'] === undefined) {
 			GoodsParser.emptyGoods(d);
+		}
 
-		} else {
+		// alle anderen
+		else {
 
 			let p = GoodsParser.getProducts(d);
 
 			if(p['amount'] !== undefined){
 				let entry = {
-					name: BuildingNamesi18n[d['cityentity_id']],
+					name: BuildingNamesi18n[d['cityentity_id']]['name'],
 					amount: p['amount'],
-					state: p['state']
+					state: p['state'],
+					id: d['id']
 				};
 
 				if( entry['state'] === true ){
@@ -256,7 +286,6 @@ GoodsParser = {
 				} else {
 					Reader.data.work.push(entry);
 				}
-
 			}
 		}
 	},
@@ -270,49 +299,23 @@ GoodsParser = {
 	 */
 	getProducts: (d)=> {
 
-		let amount = '',
+		let amount,
 			state = d['state']['__class__'] === 'ProductionFinishedState';
 
-		if(d['state']['current_product']['asset_name'] === 'production_icon_money'){
+		let g = [],
+			a = d['state']['current_product']['product']['resources'];
 
-			let g = [],
-				a = d['state']['current_product']['product']['resources'];
-
-			for(let k in a) {
-				if(a.hasOwnProperty(k)) {
-					let n = GoodsNames[k];
-
-					if(n === 'Forge-Punkte'){
-						g.push('<strong>' + a[k] + ' ' + n + '</strong>');
-					} else {
-						g.push(a[k] + ' ' + n);
-					}
+		for(let k in a) {
+			if(a.hasOwnProperty(k)) {
+				if(k === 'strategy_points'){
+					g.push('<strong>' + a[k] + ' ' + GoodsNames[k] + '</strong>');
+				} else {
+					g.push(a[k] + ' ' + GoodsNames[k]);
 				}
 			}
-
-			amount = g.join('<br>');
-
-		} else if(d['state']['current_product']['product']['resources']['supplies'] !== undefined) {
-			amount = d['state']['current_product']['product']['resources']['supplies'] + ' Werkzeuge';
-
-		} else {
-			let a = d['state']['current_product']['product']['resources'],
-				g = [];
-
-			for(let k in a) {
-				if(a.hasOwnProperty(k)) {
-					let n = GoodsNames[k];
-
-					if(n === 'Forge-Punkte'){
-						g.push('<strong>' + a[k] + ' ' + n + '</strong>');
-					} else {
-						g.push(a[k] + ' ' + n);
-					}
-				}
-			}
-
-			amount = g.join('<br>');
 		}
+
+		amount = g.join('<br>');
 
 		return {
 			amount: amount,
@@ -341,7 +344,6 @@ GoodsParser = {
 		}
 	},
 
-
 	/**
 	 * Güter oder ggf. FPs zusammenrechnen
 	 *
@@ -361,7 +363,6 @@ GoodsParser = {
 		return sum;
 	},
 
-
 	/**
 	 * Fertiges Array wenn nix drin ist
 	 *
@@ -369,7 +370,7 @@ GoodsParser = {
 	 */
 	emptyGoods: (d)=> {
 		let data = {
-			name: BuildingNamesi18n[d['cityentity_id']],
+			name: BuildingNamesi18n[d['cityentity_id']]['name'],
 			fp: '-',
 			product: 'unbenutzt',
 			// cords: {x: d[i]['x'], y: d[i]['y']}

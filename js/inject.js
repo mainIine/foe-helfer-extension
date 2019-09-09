@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       12.08.19 18:14 Uhr
+ * zu letzt bearbeitet:       09.09.19, 16:25 Uhr
  *
  * Copyright © 2019
  *
@@ -15,18 +15,17 @@
 
 let tid = setInterval(InjectCode, 5),
 	manifestData = chrome.runtime.getManifest(),
-	v = manifestData.version,
-	PossibleLangs = ['de','en'];
+	PossibleLangs = ['de','en'],
+	v = manifestData.version;
 
 // muss sehr früh in den head-Tag
 function InjectCode()
 {
 	if(document.head !== null){
 
-		let code = "let extID='"+ chrome.runtime.id + "';",
-			script = document.createElement('script');
+		let script = document.createElement('script');
 
-		script.innerText = code;
+		script.innerText = "let extID='"+ chrome.runtime.id + "',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
 		document.head.appendChild(script);
 
 		// Stylesheet einfügen
@@ -64,24 +63,34 @@ i18nJS.onload = function(){
 };
 (document.head || document.documentElement).appendChild(i18nJS);
 
-let momentJS = document.createElement('script');
-momentJS.src = chrome.extension.getURL('vendor/moment/moment-with-locales.min.js');
-momentJS.id = 'moment-script';
-momentJS.onload = function(){
-	this.remove();
-};
-(document.head || document.documentElement).appendChild(momentJS);
-
-let cp = document.createElement('script');
-cp.src = chrome.extension.getURL('vendor/clipboard/clipboard.min.js');
-cp.id = 'clipboard-script';
-cp.onload = function(){
-	this.remove();
-};
-(document.head || document.documentElement).appendChild(cp);
-
 
 setTimeout(()=>{
+
+	let vendorScripts = [
+		'moment/moment-with-locales.min',
+		'CountUp/jquery.easy_number_animate.min',
+		'clipboard/clipboard.min',
+		'Tabslet/jquery.tabslet.min',
+		'tableSorter/table-sorter',
+		'ScrollTo/jquery.scrollTo.min',
+		'jQuery/jquery-resizable.min',
+		'tooltip/tooltip',
+	];
+
+	for(let vs in vendorScripts)
+	{
+		if(vendorScripts.hasOwnProperty(vs))
+		{
+			let sc = document.createElement('script');
+			sc.src = chrome.extension.getURL('vendor/' + vendorScripts[vs] + '.js?v=' + v);
+			sc.onload = function(){
+				this.remove();
+			};
+			(document.head || document.documentElement).appendChild(sc);
+		}
+	}
+
+
 	let s = [
 		'helper',
 		'ant',
@@ -90,10 +99,12 @@ setTimeout(()=>{
 		'outposts',
 		'calculator',
 		'infoboard',
+		'productions',
 		'part-calc',
 		'read-buildings',
 		'settings',
 		'strategy-points',
+		'citymap'
 	];
 
 	// Scripte laden
@@ -101,7 +112,6 @@ setTimeout(()=>{
 		if(s.hasOwnProperty(i)){
 			let sc = document.createElement('script');
 			sc.src = chrome.extension.getURL('js/web/' + s[i] + '.js?v=' + v);
-			sc.id = s[i] + '-script';
 			sc.onload = function(){
 				this.remove();
 			};

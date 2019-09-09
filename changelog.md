@@ -1,5 +1,38 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.5
+
+**Neu**
+- Produkt Übersicht:
+    - zeigt alle Produkte gruppiert an
+    - mit Klick auf Tabellenkopf neu sortierbar
+    - zeigt Erntezeitpunkt exakt an, auch relativ
+    - Errechnung aller Produktionen
+
+- InfoBox:
+    - am Anfang leer, zeigt sie aber nach einer Zeit alle Aktivitiäten vom Hintergund an: 
+        - GEX Punkte pro Stufe anderer Gildenmitglieder
+        - Auktionen
+        - Nachrichten aller Art
+        - gelevelte LGs
+        - mehr folgen...
+        
+**Update**
+- Erntehelfer:
+    - zeigt auf einer Map die genaue Position des Gebäudes an
+    - erkennt nun zuverlässiger die Güter und Produktionen
+
+- Sidebar:
+    - ermittelt automatisch die scrollbaren "Ansichten", derzeit 3
+
+- Kostenrechner:
+    - berechnet ob noch etwas einzahlbar ist, ansonsten => "grau"
+
+**BugFix**
+- Eigenanteilsrechner:
+    - Overlay hinter dem Einzahlschema flackerte oder blieb schwarz
+
+---
 
 #####v2.3.5
 

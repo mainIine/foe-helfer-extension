@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.08.19, 10:28 Uhr
+ * zu letzt bearbeitet:       04.09.19, 20:59 Uhr
  *
  * Copyright © 2019
  *
@@ -207,7 +207,7 @@ Parts = {
 
 		// Info-Block
 		h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[ cityentity_id] + ' </strong><br>' + i18n['Boxes']['OwnpartCalculator']['Step'] + ' '+ level +' &rarr; '+ (parseInt(level) +1) +'</p>');
+		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + i18n['Boxes']['OwnpartCalculator']['Step'] + ' '+ level +' &rarr; '+ (parseInt(level) +1) +'</p>');
 		h.push('</td>');
 		h.push('<td class="text-right">');
 		h.push('<span>' + i18n['Boxes']['OwnpartCalculator']['ArcBonus'] +  ':</span><input type="number" id="arc-percent" step="0.1" min="12" max="200" value="'+ Parts.CurrentBuildingPercent +'"><span>%</span>');
@@ -642,7 +642,7 @@ Parts = {
 		b.push('<p><span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span></p>');
 
 		b.push('<div><span>Spieler:</span><input type="text" id="player-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['YourName'] + '" value="' + (n !== null ? n : m) + '"></div>');
-		b.push('<div><span>Gebäude:</span><input type="text" id="build-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['IndividualName'] + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]) + '"></div>');
+		b.push('<div><span>Gebäude:</span><input type="text" id="build-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['IndividualName'] + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]['name']) + '"></div>');
 
 		let drp = '<div><span>Schema:</span><select id="chain-scheme">' +
 			'<option value="" disabled>-- ' + i18n['Boxes']['OwnpartCalculator']['OutputScheme'] + ' --</option>' +
@@ -796,21 +796,19 @@ Parts = {
 	 * @constructor
 	 */
 	BackGroundBoxAnimation: (show)=> {
-		let $box = $('#OwnPartBox'),
-			ep = $box.position(),
-			abl = ep.left,
-			nbl = abl - 200;
+		let $box = $('#OwnPartBox');
 
-		$box.find('.black-bg').fadeToggle();
 
 		if(show === true){
 			$('.OwnPartBoxBackgroundBody').animate({height: 230, opacity: 1}, 250, function () {
 				$box.addClass('show');
+				$box.find('.black-bg').show();
 			});
 
 		} else {
 			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
 				$box.removeClass('show');
+				$box.find('.black-bg').hide();
 			});
 		}
 	},

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       10.08.19 11:24 Uhr
+ * zu letzt bearbeitet:       09.09.19, 16:34 Uhr
  *
  * Copyright © 2019
  *
@@ -58,6 +58,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 ::-webkit-scrollbar {
 	width: 5px;
+	height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -118,6 +119,10 @@ p {
 }
 .text-right {
 	text-align: right;
+}
+
+.wsnw {
+	white-space: nowrap;
 }
 
 .danger {
@@ -259,7 +264,7 @@ p {
 
 
 #getFPs span {
-	background-image: url('../images/btn-fps.png');
+	background-image: url('../images/crate.png');
 }
 
 #calcFPs span {
@@ -294,8 +299,8 @@ p {
 	background-image: url('../images/bug.png');
 }
 
-#BHBox span {
-	background-image: url('../images/bh.png');
+#InfoBox span {
+	background-image: url('../images/info.png');
 }
 
 
@@ -364,14 +369,3 @@ p {
 
 
 /*******************************************************************************/
-
-.ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
-.ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
-.ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0; }
-.ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0; }
-.ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0; height: 100%; }
-.ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0; height: 100%; }
-.ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
-.ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
-.ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
-.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}

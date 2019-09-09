@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       15.08.19, 19:29 Uhr
+ * zu letzt bearbeitet:       06.09.19, 17:39 Uhr
  *
  * Copyright © 2019
  *
@@ -16,7 +16,10 @@ Menu = {
 
 	isBottom: false,
 	ToolTippCount: 0,
-	ToolTippTop: 0,
+	ToolTippTop: 53,
+	MenuScrollTop: 0,
+	SlideParts: 0,
+	ActiveSlide: 1,
 
 	/**
 	 *
@@ -32,7 +35,7 @@ Menu = {
 
 
 		let btnUp = $('<span />').addClass('hud-btn-up'),
-			btnDown = $('<span />').addClass('hud-btn-down');
+			btnDown = $('<span />').addClass('hud-btn-down hud-btn-down-active');
 
 		hud.append(btnUp);
 		hud.append(hudWrapper)
@@ -64,6 +67,7 @@ Menu = {
 		 */
 		hudSlider.append( Menu.ownFP_Btn() );
 
+
 		if(Settings.GetSetting('ShowOutpost')){
 			hudSlider.append( Menu.outP_Btn() );
 		}
@@ -84,6 +88,11 @@ Menu = {
 		 */
 		hudSlider.append( Menu.getFP_Btn() );
 
+		/**
+		 * InfoBox
+		 */
+		hudSlider.append( Menu.Info_Btn() );
+
 
 		/**
 		 * Einstellungen
@@ -100,11 +109,14 @@ Menu = {
 		/**
 		 * Bug Buttons
 		 */
-		hudSlider.append( Menu.Bug_Btn() )
+		hudSlider.append( Menu.Bug_Btn() );
 
 
 		// hudSlider.append( Menu.BH_Btn() );
-
+		// wie viele Elemente und was ist die gesamt Höhe
+		setTimeout(()=>{
+			Menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / 4);
+		}, 100);
 
 		Menu.CheckButtons();
 	},
@@ -117,29 +129,59 @@ Menu = {
 	 */
 	CheckButtons: ()=>{
 
-		if( $("#ant-hud-slider").children().length > 4){
-			$('.hud-btn-down').addClass('hud-btn-down-active');
+		let childs = $("#ant-hud-slider").children().length,
+			activeIdx = 0;
 
-			$('body').on('click', '.hud-btn-down-active', function(){
-				$('#ant-hud-slider').css({
-					'top':'-220px'
-				});
 
+		$('.hud-btn').click(function() {
+			activeIdx = $(this).index('.hud-btn');
+		});
+
+
+		// Klick auf Pfeil nach unten
+		$('body').on('click', '.hud-btn-down-active', function(){
+
+			Menu.ActiveSlide++;
+			Menu.MenuScrollTop -= 220;
+
+			$('#ant-hud-slider').css({
+				'top': Menu.MenuScrollTop + 'px'
+			});
+
+			if(Menu.ActiveSlide > 1) {
+				$('.hud-btn-up').addClass('hud-btn-up-active');
+			}
+
+			if(Menu.ActiveSlide === Menu.SlideParts){
 				$('.hud-btn-down').removeClass('hud-btn-down-active');
 
-				$('.hud-btn-up').addClass('hud-btn-up-active');
-			});
-
-			$('body').on('click', '.hud-btn-up-active', function(){
-				$('#ant-hud-slider').css({
-					'top':'0px'
-				});
-
-				$('.hud-btn-up').removeClass('hud-btn-up-active');
-
+			} else if (Menu.ActiveSlide < Menu.SlideParts) {
 				$('.hud-btn-down').addClass('hud-btn-down-active');
+			}
+		});
+
+
+		// Klick auf Pfeil nach oben
+		$('body').on('click', '.hud-btn-up-active', function(){
+
+			Menu.ActiveSlide--;
+			Menu.MenuScrollTop += 220;
+
+			$('#ant-hud-slider').css({
+				'top': Menu.MenuScrollTop + 'px'
 			});
-		}
+
+			if(Menu.ActiveSlide === 1){
+				$('.hud-btn-up').removeClass('hud-btn-up-active');
+			}
+
+			if(Menu.ActiveSlide < Menu.SlideParts) {
+				$('.hud-btn-down').addClass('hud-btn-down-active');
+
+			} else if(Menu.ActiveSlide === Menu.SlideParts){
+				$('.hud-btn-down').removeClass('hud-btn-down-active');
+			}
+		});
 
 
 		$('.hud-btn').hover(function() {
@@ -156,6 +198,34 @@ Menu = {
 
 
 	/**
+	 * Tooltip Box
+	 *
+	 * @param title
+	 * @param desc
+	 * @param id
+	 */
+	toolTippBox: (title, desc, id)=> {
+
+		Menu.ToolTippCount++;
+
+		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id).css({'top'  : Menu.ToolTippTop + 'px'});
+
+		if(Menu.ToolTippCount % 4 === 0){
+			Menu.ToolTippTop = 53;
+		} else {
+			Menu.ToolTippTop += 55;
+		}
+
+		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
+
+		$('#ant-hud').append( ToolTipp );
+	},
+
+	/*----------------------------------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
+	/*----------------------------------------------------------------------------------------------------------------*/
+
+	/**
 	 * FP Gesamtanzahl Button
 	 *
 	 * @returns {*|jQuery}
@@ -164,13 +234,13 @@ Menu = {
 		let btn_FPsBG = $('<div />').attr('id', 'getFPs').addClass('hud-btn');
 
 		// Tooltip einbinden
-		Menu.toolTippBox(i18n['Menu']['TotalFPs']['Title'], i18n['Menu']['TotalFPs']['Desc'], 'getFPs');
+		Menu.toolTippBox(i18n['Menu']['Productions']['Title'], i18n['Menu']['Productions']['Desc'], 'getFPs');
 
 
 		let btn_FPs = $('<span />');
 
 		btn_FPs.bind('click', function(){
-			StrategyPoints.init();
+			Productions.init();
 		});
 
 		btn_FPsBG.append(btn_FPs);
@@ -226,7 +296,7 @@ Menu = {
 		}
 
 		// Tooltip einbinden
-		Menu.toolTippBox(i18n['Menu']['OutP']['Title'], desc, 'outP');
+		Menu.toolTippBox(i18n['Menu']['OutP']['Title'], desc, 'outPostBtn');
 
 		let btn_outpost = $('<span />');
 
@@ -394,52 +464,28 @@ Menu = {
 	},
 
 
-	BH_Btn: ()=> {
+	/**
+	 * InfoBox für den Hintergrund "Verkehr"
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	Info_Btn: ()=> {
 
-		let btn_BHBG = $('<div />').attr('id', 'BHBox').addClass('hud-btn');
+		let btn_Info = $('<div />').attr('id', 'InfoBox').addClass('hud-btn');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('BlackHad Sniffer', 'Mal gucken was alles durch den Kanal geht...', 'BHBox');
+		Menu.toolTippBox(i18n['Menu']['Info']['Title'], i18n['Menu']['Info']['Desc'], 'InfoBox');
 
-		let btn_BH = $('<span />');
+		let btn_Inf = $('<span />');
 
-		btn_BH.on('click', function() {
-			AntSocket.init();
+		btn_Inf.on('click', function() {
+			Infoboard.init();
 		});
 
-		btn_BHBG.append(btn_BH);
+		btn_Info.append(btn_Inf);
 
 
-		return btn_BHBG;
-	},
-
-
-	/**
-	 * Tooltip Box
-	 *
-	 * @param title
-	 * @param desc
-	 * @param id
-	 */
-	toolTippBox: (title, desc, id)=> {
-
-		Menu.ToolTippCount++;
-
-		if(Menu.ToolTippCount % 5 === 0){
-			Menu.ToolTippTop = 53;
-		} else {
-			Menu.ToolTippTop += 55;
-		}
-
-		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id).css({'top'  : Menu.ToolTippTop + 'px'});
-
-		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
-
-		$('#ant-hud').append( ToolTipp );
-	},
+		return btn_Info;
+	}
 };
-
-// Menü einbinden
-setTimeout(()=>{
-	Menu.BuildOverlayMenu()
-}, 500);

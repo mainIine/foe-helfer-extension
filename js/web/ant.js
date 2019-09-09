@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.08.19, 10:22 Uhr
+ * zu letzt bearbeitet:       09.09.19, 15:42 Uhr
  *
  * Copyright © 2019
  *
@@ -21,6 +21,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtGuildID = 0,
 	ExtWorld = '',
 	BuildingNamesi18n = false,
+	CityMapData = null,
 	Conversations = [],
 	GoodsNames = [],
 	PossibleLangs = ['de','en'];
@@ -36,13 +37,6 @@ document.addEventListener("DOMContentLoaded", function(){
 	localStorage.removeItem('OwnCurrentBuildingCity');
 	localStorage.removeItem('OwnCurrentBuildingGreat');
 
-	let countJS = document.createElement('script');
-	countJS.src = 'chrome-extension://' + extID + '/vendor/CountUp/jquery.easy_number_animate.min.js';
-	countJS.id = 'easy_number_animate';
-	countJS.onload = function(){
-		this.remove();
-	};
-	(document.head || document.documentElement).appendChild(countJS);
 
 	MainParser.setLanguage();
 });
@@ -53,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function(){
 	let XHR = XMLHttpRequest.prototype,
 		open = XHR.open,
 		send = XHR.send;
-
 
 	XHR.open = function(method, url){
 		this._method = method;
@@ -80,13 +73,14 @@ document.addEventListener("DOMContentLoaded", function(){
 					{
 						if (j.hasOwnProperty(i))
 						{
-							BuildingNamesi18n[j[i]['asset_id']] = j[i]['name'];
+							BuildingNamesi18n[j[i]['asset_id']] = {
+								name: j[i]['name'],
+								width: j[i]['width'],
+								height: j[i]['length'],
+								type: j[i]['type'],
+							};
 						}
 					}
-
-					// let OutpostDiplomacyBuildings = j.filter(obj => (obj['type'] === 'diplomacy'));
-
-					// localStorage.setItem('OutpostDiplomacyBuildings', JSON.stringify(OutpostDiplomacyBuildings));
 				});
 			}
 
@@ -115,6 +109,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
 					// Alle Gebäude sichern
 					MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
+
+					Menu.BuildOverlayMenu();
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -180,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
 				if(FPOverview !== undefined){
-					StrategyPoints.ForgePointBar(FPOverview['responseData']);
+					StrategyPoints.ForgePointBar(FPOverview['responseData'][0]);
 				}
 
 
@@ -199,6 +195,14 @@ document.addEventListener("DOMContentLoaded", function(){
 
 				if(FPFromInventory !== undefined){
 					StrategyPoints.GetFromInventory(FPFromInventory['responseData']);
+				}
+
+				let FPGetFromInventory = d.find(obj => {
+					return obj['requestClass'] === 'InventoryService' && obj['requestMethod'] === 'getInventory'
+				});
+
+				if(FPGetFromInventory !== undefined){
+					StrategyPoints.GetFromInventory(FPGetFromInventory['responseData']['inventoryItems']);
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -969,6 +973,18 @@ MainParser = {
 			data: d['user_name']
 		});
 		localStorage.setItem('current_player_name', d['user_name']);
+
+		if(devMode)
+		{
+			HTML.Box('DevNode','Hinweis!', null, true, false);
+
+			setTimeout(()=>{
+				let desc = 'Hey BETA-Tester!<br>Bitte immer den Cache zwischendurch leeren!<br><br>- F12 > Konsole auf<br>- Reiter "Network" > Haken bei "Disable cache"<br>- mit geöffneter Konsole neu laden';
+
+				$('#DevNodeBody').html(desc);
+
+			}, 200);
+		}
 	},
 
 
@@ -1021,7 +1037,7 @@ MainParser = {
 	 * @constructor
 	 */
 	SaveBuildings: (d)=>{
-		MainParser.setStorage('PlayerBuildings', JSON.stringify(d));
+		CityMapData = d;
 
 		if(Settings.GetSetting('GlobalSend') === false)
 		{
