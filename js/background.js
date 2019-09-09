@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       22.07.19 14:40 Uhr
+ * zu letzt bearbeitet:       09.09.19, 15:23 Uhr
  *
  * Copyright © 2019
  *
@@ -74,7 +74,6 @@ let popupWindowId = 0;
  * Auf einen response von ant.js lauschen
  */
 chrome.runtime.onMessageExternal.addListener((request) => {
-
 
 	if (request.type === 'message') {
 		let t = request.time,

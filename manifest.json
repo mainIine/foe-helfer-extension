@@ -1,6 +1,6 @@
 {
 	"name": "FoE - Helfer",
-	"version": "2.3.5",
+	"version": "2.3.6",
 	"description": "Kleine Tools und Helfer für ein besseres Spieleerlebnis in Forge of Empires",
 	"manifest_version": 2,
 	"permissions": [
@@ -30,7 +30,7 @@
 		"css/web/*.css",
 		"vendor/*.js",
 		"js/web/*.*",
-		"css/images/*.png"
+		"css/images/*.*"
 	],
 	
 	"content_scripts": [

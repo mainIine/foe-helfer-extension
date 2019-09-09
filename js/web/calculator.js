@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       14.08.19, 14:20 Uhr
+ * zu letzt bearbeitet:       07.09.19, 16:45 Uhr
  *
  * Copyright © 2019
  *
@@ -67,11 +67,7 @@ Calculator = {
 
 
 		// FP im Lager
-		h.push('<p>'+ i18n['Boxes']['Calculator']['AvailableFP'] +': <strong class="fp-storage">' + (afp || 0)  + '</strong></p>');
-
-		if($('.fp-storage').length > 0){
-			$('.fp-storage').text(afp);
-		}
+		h.push('<p>'+ i18n['Boxes']['Calculator']['AvailableFP'] +': <strong class="fp-storage"></strong></p>');
 
 
 		h.push('<p class="costFactorWrapper">'+ i18n['Boxes']['Calculator']['ArcBonus'] +' - <input type="number" id="costFactor" step="'+ (Calculator.ArcBonus > 80 ? '0.1' : '0.5') +'" min="12" max="200" value="'+ Calculator.ArcBonus +'">%</p>');
@@ -96,6 +92,7 @@ Calculator = {
 			arc = ((parseFloat( Calculator.ArcBonus ) + 100) / 100 );
 
 
+		// Ränge durchsteppen
 		for(let i in r)
 		{
 			if (r.hasOwnProperty(i))
@@ -119,10 +116,10 @@ Calculator = {
 						fp: 0,
 						blp: 0,
 						med: 0,
-						gespFP: 0,
-						invFP: 0,
-						frFP: 0,
-						einsatz: 0
+						EingezahltAufRang: 0,
+						GesamtInvesFP: 0,
+						RestFreieFPAufRang: 0,
+						HalberEinzahlbarerPlatzAufRang: 0
 					};
 
 					// Platz + Grund-FP "merken"
@@ -143,10 +140,10 @@ Calculator = {
 							fp: 0,
 							blp: blp,
 							med: med,
-							gespFP: 0,
-							invFP: 0,
-							frFP: 0,
-							einsatz: 0
+							EingezahltAufRang: 0,
+							GesamtInvesFP: 0,
+							RestFreieFPAufRang: 0,
+							HalberEinzahlbarerPlatzAufRang: 0
 						};
 
 					// Platz + Grund-FP "merken"
@@ -159,7 +156,6 @@ Calculator = {
 						'<td class="text-center">' + HTML.Format(blp) + '</td>' +
 						'<td class="text-center">' + HTML.Format(med) + '</td>');
 
-					// h.push('<td class="text-center"></td>');
 
 					if(isSelf && r[i]['forge_points'] > 0)
 					{
@@ -174,80 +170,89 @@ Calculator = {
 					h.push('</tr>');
 
 
-				} else
-				{
+				}
 
-					let gespFP = (isNaN(parseInt(r[i]['forge_points']))) ? 0 : parseInt(r[i]['forge_points']),
-						invFP = (isNaN(parseInt(e['state']['invested_forge_points']))) ? 0 : parseInt(e['state']['invested_forge_points']),
-						frFP  = parseInt(e['state']['forge_points_for_level_up']) - invFP,
-						einsatz = Math.round(( frFP + gespFP ) / 2);
+				// Andere Spieler
+				// "normal" einzahlen
+				else {
 
-					let spa = parseInt(r[i]['reward']['strategy_point_amount']),
+
+					let // Gesamt LG FP
+						TotalFP = parseInt(e['state']['forge_points_for_level_up']),
+
+						// eingezahlte FP auf dem Rang
+						EingezahltAufRang = (isNaN(parseInt(r[i]['forge_points']))) ? 0 : parseInt(r[i]['forge_points']),
+						
+						// gesamt investierte FPs
+						GesamtInvesFP = (isNaN(parseInt(e['state']['invested_forge_points']))) ? 0 : parseInt(e['state']['invested_forge_points']),
+						
+						// restliche freie FP = gesamt LG FPs - bereits gesamt investierte
+						RestFreieFPAufRang  = TotalFP - GesamtInvesFP,
+						
+						// 1/2 des möglichen HalberEinzahlbarerPlatzAufRanges = restliche freie FP - eingezahlte FP auf dem Rang
+						HalberEinzahlbarerPlatzAufRang = Math.round(( RestFreieFPAufRang + EingezahltAufRang ) / 2);
+					
+
+					let // diese FPs gibt es für diesen Rang zurück
+						NormalRangZurueck = parseInt(r[i]['reward']['strategy_point_amount']),
+						
+						// Blaupausen
 						blp = r[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(r[i]['reward']['blueprints']) * arc) : 0,
+						
 						med = r[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(r[i]['reward']['resources']['medals']) * arc) : 0,
-						sum = Math.round(spa * arc),
+						
+						MaezenRangTotal = Math.round(NormalRangZurueck * arc),
+						
 						arr = {
 							p: r[i]['rank'],
-							fp: spa,
+							fp: NormalRangZurueck,
 							blp: blp,
 							med: med,
-							gespFP: gespFP,
-							invFP: invFP,
-							frFP: frFP,
-							einsatz: einsatz
+							EingezahltAufRang: EingezahltAufRang,
+							GesamtInvesFP: GesamtInvesFP,
+							RestFreieFPAufRang: RestFreieFPAufRang,
+							HalberEinzahlbarerPlatzAufRang: HalberEinzahlbarerPlatzAufRang
 						};
 
 					// Platz + Grund-FP "merken"
 					places.push(arr);
 
+					let trClass = '';
 
-					h.push('<tr' + (isSelf ? ' class="info-row"' : '') + '><td><strong>' + r[i]['rank'] + '</strong></td>' +
+					if(isSelf) {
+						trClass = ' class="info-row"';
+					}
+
+					// kann nicht mehr eingezahlt werden, zu viel
+					else if((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) > TotalFP) {
+						trClass = ' class="text-grey"';
+					}
+
+
+					// erste drei Spalten
+					h.push('<tr' + trClass + '><td><strong>' + r[i]['rank'] + '</strong></td>' +
 						'<td class="text-center">' +
-							'<strong class="'+ (sum > afp ? 'error' : 'success') +'">' +
-								HTML.Format(sum) +
+							'<strong class="'+ (MaezenRangTotal > afp ? 'error' : 'success') +'">' +
+								HTML.Format(MaezenRangTotal) +
 							'</strong>' +
 						'</td>' +
 						'<td class="text-center">' + HTML.Format(blp) + '</td>' +
 						'<td class="text-center">' + HTML.Format(med) + '</td>');
 
-					/*
-					if(isSelf){
 
-						console.log('gespFP: ', gespFP);
-						console.log('einsatz: ', einsatz);
-						console.log('sum - einsatz: ', sum - einsatz);
-						console.log('gespFP - einsatz: ', gespFP - einsatz);
-						console.log('frFP + gespFP: ', Math.round(( frFP - gespFP ) / 2));
-						console.log('-----------------------------------------');
+					// letzte beiden Spalten
 
-						// eingezahlt ist weniger als "save"
-						if(gespFP < einsatz)
-						{
-							h.push('<td class="text-center"><strong class="error">' + HTML.Format( gespFP) + '</strong></td>');
-
-						} else if(gespFP === einsatz){
-							h.push('<td class="text-center"><strong class="success">&#10004;</strong></td>');
-
-						} else if(gespFP > einsatz){
-							h.push('<td class="text-center"><strong class="error">&#10060;</strong></td>');
-						}
-
-					} else {
-						h.push('<td class="text-center"></td>');
-					}
-					*/
-
-					
+					// Spieler selbst
 					if(isSelf)
 					{
-						if(gespFP === sum)
+						if(EingezahltAufRang === MaezenRangTotal)
 						{
-							h.push('<td class="text-center">' + HTML.Format(gespFP) + '</td><td class="text-center"><strong>0</strong></td>');
+							h.push('<td class="text-center">' + HTML.Format(EingezahltAufRang) + '</td><td class="text-center"><strong>0</strong></td>');
 
 						}
-						else if(gespFP > 0) {
-							h.push('<td class="text-center">' + HTML.Format(gespFP) + '</td>');
-							let w = (sum - gespFP);
+						else if(EingezahltAufRang > 0) {
+							h.push('<td class="text-center">' + HTML.Format(EingezahltAufRang) + '</td>');
+							let w = (MaezenRangTotal - EingezahltAufRang);
 							h.push('<td class="text-center"><strong>' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
 
 						}
@@ -257,47 +262,40 @@ Calculator = {
 						}
 
 					}
+
+					// andere Spieler oder leer
 					else {
 
-						if(sum - einsatz === 0){
-							h.push('<td class="text-center">' + HTML.Format(einsatz) + '</td><td class="text-center"><strong class="success">0</strong></td>');
+						// geht genau auf
+						if(MaezenRangTotal - HalberEinzahlbarerPlatzAufRang === 0){
+							h.push('<td class="text-center" data-case="1">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td><td class="text-center"><strong class="success">0</strong></td>');
 						}
-						else if(gespFP >= einsatz || sum - einsatz < 1) {
+
+						else if(EingezahltAufRang >= HalberEinzahlbarerPlatzAufRang || MaezenRangTotal - HalberEinzahlbarerPlatzAufRang < 1) {
 							h.push('<td class="text-center">-</td><td class="text-center">-</td>');
 
 						}
-						else if(einsatz > 0) {
-							h.push('<td class="text-center">' + HTML.Format(einsatz) + '</td>');
+						else if(HalberEinzahlbarerPlatzAufRang > 0) {
+							h.push('<td class="text-center" data-case="2">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td>');
 
-							let w = (sum - einsatz);
-							h.push('<td class="text-center"><strong class="success">' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
+							let w = (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang);
 
-						} else
-						{
-							h.push('<td class="text-center">-</td>');
+							// würde leveln
+							if((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP)
+							{
+								h.push('<td class="text-center" data-case="3"><strong class="warning" title="ACHTUNG! Levelt das LG!">' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
+							}
+							else {
+								h.push('<td class="text-center" data-case="4"><strong class="success">' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
+							}
+						}
+
+						// letzte beiden leer
+						else {
+							h.push('<td class="text-center" data-case="5">-</td>');
 							h.push('<td class="text-center">-</td>');
 						}
 					}
-
-					/*
-					if(gespFP >= einsatz || sum - einsatz < 1)
-					{
-						h.push('<td class="text-center">-</td>' +
-							'<td class="text-center">-</td>');
-
-					}
-					else if(einsatz > 0) {
-						h.push('<td class="text-center">' + HTML.Format(gespFP) + '</td>');
-
-						let w = (sum - einsatz);
-						h.push('<td class="text-center"><strong class="success">' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
-
-					} else
-					{
-						h.push('<td class="text-center">-</td>');
-						h.push('<td class="text-center">-</td>');
-					}
-					*/
 
 					h.push('</tr>');
 				}
@@ -315,6 +313,9 @@ Calculator = {
 		// in die bereits vorhandene Box drücken
 		div.find('#costCalculatorBody').html(h.join(''));
 
+		// alle Ansichten aktualisieren
+		StrategyPoints.ForgePointBar(afp);
+
 		// wenn der Wert des Archebonus verändert wird, Event feuern
 		$('body').on('blur', '#costFactor', function(){
 
@@ -329,24 +330,24 @@ Calculator = {
 			h.push('<thead><th>#</th><th>'+ i18n['Boxes']['Calculator']['Earnings'] +'</th><th>BP</th><th>Meds</th><th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th><th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th></thead>');
 
 			for(let i in places){
-				let spa = parseInt(places[i]['fp']),
-					sum = Math.round(spa * arc);
+				let NormalRangZurueck = parseInt(places[i]['fp']),
+					MaezenRangTotal = Math.round(NormalRangZurueck * arc);
 
 				h.push('<tr><td><strong>' + places[i]['p'] + '</strong></td>' +
-					'<td class="text-center"><strong class="'+ (sum > afp ? 'error' : 'success') +'">' + HTML.Format(sum) + '</strong></td>' +
+					'<td class="text-center"><strong class="'+ (MaezenRangTotal > afp ? 'error' : 'success') +'">' + HTML.Format(MaezenRangTotal) + '</strong></td>' +
 					'<td class="text-center">' + HTML.Format(places[i]['blp']) + '</td>' +
 					'<td class="text-center">' + HTML.Format(places[i]['med']) + '</td>');
 
 
 				// wenn nix rumkommt, bleibt es leer
-				if(places[i]['gespFP'] >= places[i]['einsatz'] || sum - places[i]['einsatz'] < 1){
+				if(places[i]['EingezahltAufRang'] >= places[i]['HalberEinzahlbarerPlatzAufRang'] || MaezenRangTotal - places[i]['HalberEinzahlbarerPlatzAufRang'] < 1){
 					h.push('<td class="text-center">-</td><td class="text-center">-</td></tr>');
 
 				} else {
 
-					h.push('<td class="text-center">' + HTML.Format(places[i]['einsatz']) + '</td>');
+					h.push('<td class="text-center">' + HTML.Format(places[i]['HalberEinzahlbarerPlatzAufRang']) + '</td>');
 
-					let w = sum - places[i]['einsatz'];
+					let w = MaezenRangTotal - places[i]['HalberEinzahlbarerPlatzAufRang'];
 					h.push('<td class="text-center"><strong class="success">' + ( w === 0 ? '+-0' : HTML.Format(w)) + '</strong></td></tr>');
 				}
 			}
