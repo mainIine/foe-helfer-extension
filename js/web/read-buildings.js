@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 19:00 Uhr
+ * zu letzt bearbeitet:       10.09.19, 08:54 Uhr
  *
  * Copyright © 2019
  *
@@ -49,13 +49,13 @@ let Whitelist = [
 
 /**
  *
- * @type {{data: {}, OtherPlayersBuildings: Reader.OtherPlayersBuildings, player_name: string, showResult: Reader.showResult}}
+ * @type {{data: {}, CityEntities: [], ShowFunction: Reader.ShowFunction, OtherPlayersBuildings: Reader.OtherPlayersBuildings, player_name: string, showResult: Reader.showResult}}
  */
-Reader = {
+let Reader = {
 
 	data: {},
 	player_name: '',
-	CityEntities: null,
+	CityEntities: [],
 
 	/**
 	 * Die Gebäude ermitteln
@@ -63,12 +63,15 @@ Reader = {
 	 * @param dp
 	 * @constructor
 	 */
-	OtherPlayersBuildings: (dp)=> {
+	OtherPlayersBuildings: (dp) => {
 
 		Reader.data = {
-			ready : [],
+			ready: [],
 			work: []
 		};
+
+		// Werte des letzten Nachbarn löschen
+		CityMap.CityData = null;
 
 		Reader.player_name = dp['other_player']['name'];
 
@@ -76,42 +79,38 @@ Reader = {
 
 		let d = dp['city_map']['entities'];
 
-		// console.log('all => d: ', d);
-
 		Reader.CityEntities = d;
 
-		for (let i in d)
-		{
-			if (d.hasOwnProperty(i))
-			{
+		for (let i in d) {
+			if (d.hasOwnProperty(i)) {
 				let id = d[i]['cityentity_id'];
 
-				if((d[i]['type'] === 'production' || d[i]['type'] === 'goods') && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined){
+				if ((d[i]['type'] === 'production' || d[i]['type'] === 'goods') && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
 					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
 					GoodsParser.readType(d[i]);
 
-				} else if(d[i]['type'] === 'residential' && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
+				} else
+					if (d[i]['type'] === 'residential' && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
 
-					// Residental Multiage ausschliessen
-					if(id.indexOf('R_MultiAge_') === -1 || Whitelist.includes(id))
-					// if(BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1)
-					{
-						GoodsParser.readType(d[i]);
+						// Residental Multiage ausschliessen
+						if (id.indexOf('R_MultiAge_') === -1 || Whitelist.includes(id))
+						// if(BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1)
+						{
+							GoodsParser.readType(d[i]);
+						}
+
+					} else if (d[i]['type'] === 'greatbuilding' && d[i]['state']['current_product'] !== undefined) {
+						// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
 					}
-
-				} else if(d[i]['type'] === 'greatbuilding' && d[i]['state']['current_product'] !== undefined){
-					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
-				}
 			}
 		}
 
 		// was gefunden?
-		if(Reader.data.ready.length > 0 || Reader.data.work.length > 0){
+		if (Reader.data.ready.length > 0 || Reader.data.work.length > 0) {
 			Reader.showResult();
 
 		} else {
-			if($('#ResultBox').length > 0)
-			{
+			if ($('#ResultBox').length > 0) {
 				$('#ResultBox').remove();
 			}
 		}
@@ -121,15 +120,14 @@ Reader = {
 	/**
 	 *  HTML Box anzeigen
 	 */
-	showResult: ()=> {
+	showResult: () => {
 
 		// let d = helper.arr.multisort(Reader.data, ['name'], ['ASC']);
 		let rd = helper.arr.multisort(Reader.data.ready, ['name'], ['ASC']);
 		let wk = helper.arr.multisort(Reader.data.work, ['name'], ['ASC']);
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#ResultBox').length === 0 )
-		{
+		if ($('#ResultBox').length === 0) {
 			HTML.Box('ResultBox', i18n['Boxes']['Neighbors']['Title'] + Reader.player_name);
 		}
 
@@ -137,7 +135,7 @@ Reader = {
 			h = [];
 
 
-		if(rd.length > 0){
+		if (rd.length > 0) {
 
 			h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
@@ -150,10 +148,8 @@ Reader = {
 			h.push('</thead>');
 			h.push('<tbody>');
 
-			for (let i in rd)
-			{
-				if (rd.hasOwnProperty(i))
-				{
+			for (let i in rd) {
+				if (rd.hasOwnProperty(i)) {
 					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
@@ -167,7 +163,7 @@ Reader = {
 		}
 
 
-		if(wk.length > 0){
+		if (wk.length > 0) {
 
 			h.push('<table class="foe-table">');
 
@@ -180,10 +176,8 @@ Reader = {
 			h.push('</thead>');
 			h.push('<tbody>');
 
-			for (let i in wk)
-			{
-				if (wk.hasOwnProperty(i))
-				{
+			for (let i in wk) {
+				if (wk.hasOwnProperty(i)) {
 					h.push('<tr>');
 					h.push('<td>' + wk[i]['name'] + '</td>');
 					h.push('<td>' + wk[i]['amount'] + '</td>');
@@ -200,7 +194,7 @@ Reader = {
 		div.show();
 
 		// Ein Gebäude soll auf der Karte dargestellt werden
-		$('body').on('click', '.foe-table .show-entity', function(){
+		$('body').on('click', '.foe-table .show-entity', function () {
 			Reader.ShowFunction($(this).data('id'));
 		});
 	},
@@ -212,18 +206,17 @@ Reader = {
 	 * @param id
 	 * @constructor
 	 */
-	ShowFunction: (id)=> {
+	ShowFunction: (id) => {
 
 		let h = CityMap.hashCode(Reader.player_name);
 
-		if( $('#map' + h).length < 1 )
-		{
+		if ($('#map' + h).length < 1) {
 			CityMap.init(Reader.CityEntities, Reader.player_name);
 		}
 
 		$('[data-entityid]').removeClass('pulsate');
 
-		setTimeout(()=>{
+		setTimeout(() => {
 			let target = $('[data-entityid="' + id + '"]');
 
 			$('#map-container').scrollTo(target, 800, {offset: {left: -280, top: -280}, easing: 'swing'});

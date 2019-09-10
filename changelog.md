@@ -1,6 +1,14 @@
 ##Changelog - Chrome Extension
 
-#####v2.3.5
+#####v2.3.6.1
+
+**BugFix**
+- Erntehelfer (CityMap):
+    - Werte wurden teilweise vom Nachbarn davor nicht gelöscht
+    
+---
+
+#####v2.3.6
 
 **Neu**
 - Produkt Übersicht:
