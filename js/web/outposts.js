@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.08.19, 10:18 Uhr
+ * zu letzt bearbeitet:       16.09.19, 21:34 Uhr
  *
  * Copyright © 2019
  *
@@ -43,7 +43,7 @@ Outposts = {
 	 */
 	BuildInfoBox: ()=> {
 
-		let db = localStorage.getItem('OutpostDiplomacyBuildings');
+		let db = localStorage.getItem('OutpostConsumables');
 
 		if(db !== null)
 		{
@@ -56,11 +56,6 @@ Outposts = {
 		}
 
 		Outposts.BuildInfoBoxContent();
-
-		// Schliessen Button binden
-		$('#outpostConsumablesclose').bind('click', function() {
-			$('#outpostConsumables').remove();
-		});
 	},
 
 
@@ -70,7 +65,6 @@ Outposts = {
 	 * @constructor
 	 */
 	BuildInfoBoxContent: ()=> {
-
 		if(Outposts.DiplomacyBuildings === null)
 		{
 			return ;
@@ -84,17 +78,15 @@ Outposts = {
 			cv = localStorage.getItem('OutpostConsumablesCurrencyValue'),
 			type = localStorage.getItem('OutpostConsumablesCurrencyType'),
 			all = c[ c.length-1 ]['requirements']['resources'],
-			db = Outposts.DiplomacyBuildings.filter(obj => (obj['abilities'][0]['content'] === type)),
+			db = Outposts.DiplomacyBuildings,
 			pb = [];
 
 		pb.push({
 			name: db[0]['name'],
-			diplomacy: db[0]['staticResources']['resources']['diplomacy']
+			diplomacy: db[0]['requirements']['resources']['diplomacy']
 		});
 
-
 		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.Service[type].name );
-
 
 		// Diplomatische Gebäude duchsteppen
 		for(let b in db)
@@ -107,7 +99,7 @@ Outposts = {
 					{
 						pb.push({
 							name: db[b]['name'],
-							diplomacy: db[b]['staticResources']['resources']['diplomacy'],
+							diplomacy: db[b]['requirements']['resources']['diplomacy'],
 						});
 					}
 				}
@@ -120,8 +112,7 @@ Outposts = {
 
 		localStorage.setItem('OutpostConsumablesTypes', JSON.stringify(all));
 
-
-		t.push('<p class="text-right"><strong>' + GoodsNames[cn] + ': ' + cv + '</strong></p>');
+		t.push('<p class="text-right"><strong>' + GoodsNames[cn] + ': ' + Number(cv).toLocaleString('de-DE') + '</strong></p>');
 
 		t.push('<table class="foe-table">');
 		t.push('<thead>');
@@ -355,15 +346,11 @@ Outposts = {
 	 * @param d
 	 * @constructor
 	 */
-	CollectResources: (d)=> {
+	CollectResources: (d)=>{
+
 		let ct = localStorage.getItem('OutpostConsumablesTypes'),
 			pr = {},
 			type;
-
-		if(ct === null)
-		{
-			return;
-		}
 
 		ct = JSON.parse(ct);
 
@@ -385,6 +372,7 @@ Outposts = {
 			{
 				if(d[name] !== undefined)
 				{
+
 					localStorage.setItem('OutpostConsumablesCurrencyName', Outposts.Currency[name]['currency']);
 					localStorage.setItem('OutpostConsumablesCurrencyValue', d[Outposts.Currency[name]['currency']]);
 					localStorage.setItem('OutpostConsumablesCurrencyType', Outposts.Currency[name]['type']);
@@ -403,7 +391,7 @@ Outposts = {
 
 		localStorage.setItem('OutpostConsumablesResources', JSON.stringify(pr));
 
-		Outposts.BuildInfoBoxContent();
+		// Outposts.BuildInfoBoxContent();
 	},
 
 
@@ -416,12 +404,12 @@ Outposts = {
 	SaveConsumables: (d)=>{
 		localStorage.setItem('OutpostConsumables', JSON.stringify(d));
 
+		Outposts.DiplomacyBuildings = d;
+
 		$('#outPW').remove();
-		$('#outP').removeClass('hud-btn-red');
+		$('#outPostBtn').removeClass('hud-btn-red');
 
 		let res = d[ d.length-1 ]['requirements']['resources'];
-
 		localStorage.setItem('OutpostConsumablesTypes', JSON.stringify(res));
 	},
-
 };

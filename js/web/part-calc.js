@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       04.09.19, 20:59 Uhr
+ * zu letzt bearbeitet:       16.09.19, 13:17 Uhr
  *
  * Copyright © 2019
  *
@@ -635,6 +635,7 @@ Parts = {
 		let b = [],
 			n = localStorage.getItem('PlayerCopyName'),
 			m = localStorage.getItem('current_player_name'),
+			s = localStorage.getItem(Parts.CurrentBuildingID + 'Scheme'),
 			h = p,
 			k = p,
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
@@ -646,12 +647,12 @@ Parts = {
 
 		let drp = '<div><span>Schema:</span><select id="chain-scheme">' +
 			'<option value="" disabled>-- ' + i18n['Boxes']['OwnpartCalculator']['OutputScheme'] + ' --</option>' +
-			'<option value="1">Name LG P5 P4 P3 P2 P1</option>' +
-			'<option value="2">Name LG P1 P2 P3 P4 P5</option>' +
-			'<option value="3">Name LG P5/4/3/2/1</option>' +
-			'<option value="4">Name LG P1/2/3/4/5</option>' +
-			'<option value="5" selected>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
-			'<option value="6">Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
+			'<option value="1"' + (s === '1' ? ' selected' : '') + '>Name LG P5 P4 P3 P2 P1</option>' +
+			'<option value="2"' + (s === '2' ? ' selected' : '') + '>Name LG P1 P2 P3 P4 P5</option>' +
+			'<option value="3"' + (s === '3' ? ' selected' : '') + '>Name LG P5/4/3/2/1</option>' +
+			'<option value="4"' + (s === '4' ? ' selected' : '') + '>Name LG P1/2/3/4/5</option>' +
+			'<option value="5"' + (s === '5' ? ' selected' : '') + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
+			'<option value="6"' + (s === '6' ? ' selected' : '') + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
 			'</select></div>';
 
 		b.push(drp);
@@ -683,7 +684,8 @@ Parts = {
 			text: function(trigger) {
 
 				let pn = $('#player-name').val(),
-					bn = $('#build-name').val();
+					bn = $('#build-name').val(),
+					sn = $('#chain-scheme option:selected').val();
 
 				if(pn.length !=''){
 					localStorage.setItem('PlayerCopyName', pn);
@@ -692,6 +694,9 @@ Parts = {
 				if(bn.length !=''){
 					localStorage.setItem(Parts.CurrentBuildingID, bn);
 				}
+
+				// Schema speichern
+				localStorage.setItem(Parts.CurrentBuildingID + 'Scheme', sn);
 
 				$(trigger).addClass('border-success');
 
@@ -704,8 +709,6 @@ Parts = {
 
 				}, 3000);
 
-
-				let s = $('#chain-scheme').val();
 
 				let sol = {
 						1: 'Pi',
