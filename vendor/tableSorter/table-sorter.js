@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       06.09.19, 17:06 Uhr
+ * zu letzt bearbeitet:       16.09.19, 15:08 Uhr
  *
  * Copyright © 2019
  *
@@ -137,7 +137,6 @@
         /* table row highlighter */
         this.on('click', 'tr td', function () {
             let row = $(this).closest('tr');
-            row.hasClass('to-be-highlighted') ? null : row.addClass('to-be-highlighted');
             $('tr', table).each(function () {
                 $(this).hasClass('highlight-row') && !$(this).hasClass('to-be-highlighted') ? $(this).removeClass('highlight-row') : null;
             });
@@ -174,22 +173,28 @@
     function getVal(elm, column, type) {
         let val = $(elm).children('td').eq(column).text();
         let rtn = 0;
+
         if (type === 'date') {
-            let d = new Date(val);
-            rtn = d.getTime(); //returns NaN for invalid dates
+            let d = new Date( $(elm).children('td').eq(column).data('date') );
+            rtn = d.getTime();
+
         } else if (type === 'numeric') {
             let i = 0;
             rtn = parseFloat(val.replace(/[\.\D\%]/g, function (match) {
                 return match === "." ? (i++ === 0 ? '.' : '') : '';
             }));
+
         } else if ('caseSensitive' === type) {
             rtn = assignNumberToString(val);
+
         } else {
             rtn = assignNumberToString(val.toLowerCase());
         }
+
         if (isNaN(rtn)) {
             rtn = 10;
         }
+
         return rtn;
     }
 

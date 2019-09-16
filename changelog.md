@@ -1,5 +1,21 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.7
+
+**BugFix**
+- Außenposten:
+    - "leere Box" - Fehler behoben [#73](https://github.com/dsiekiera/foe-helfer-extension/issues/73) [#87](https://github.com/dsiekiera/foe-helfer-extension/issues/87) [#94](https://github.com/dsiekiera/foe-helfer-extension/issues/94)
+
+- Produkt Übersicht:
+    - doppelter Quellcode verursachte falschen Filter [#93](https://github.com/dsiekiera/foe-helfer-extension/issues/93)
+    - Trennzeichen bei großen Zahlen zerschoss die Sortierung [#92](https://github.com/dsiekiera/foe-helfer-extension/issues/92)
+
+**Neu**
+- Produkt Übersicht:
+    - sortierbar nach Erntezeit
+
+---
+
 #####v2.3.6.1
 
 **BugFix**

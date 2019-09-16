@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 15:42 Uhr
+ * zu letzt bearbeitet:       16.09.19, 21:14 Uhr
  *
  * Copyright © 2019
  *
@@ -343,7 +343,6 @@ document.addEventListener("DOMContentLoaded", function(){
 				// let OutpostGetAll = d.filter((item) => item['requestClass'] === 'OutpostService').shift();
 				let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
 
-
 				if(OutpostGetAll !== undefined && Settings.GetSetting('ShowOutpost')){
 					Outposts.GetAll(OutpostGetAll['responseData']);
 				}
@@ -356,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 
 				// Außenposten-Güter des Spielers ermitteln
-				let OutpostRessources = d.find(obj => {return obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'});
+				let OutpostRessources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
 
 				if(OutpostRessources !== undefined && Settings.GetSetting('ShowOutpost')){
 					Outposts.CollectResources(OutpostRessources['responseData']['resources']);

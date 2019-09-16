@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 10:21 Uhr
+ * zu letzt bearbeitet:       16.09.19, 15:06 Uhr
  *
  * Copyright © 2019
  *
@@ -17,6 +17,8 @@ Productions = {
 	BuildingsAll: [],
 	BuildingsProducts: [],
 	BuildingsProductsGroups: [],
+
+	ActiveTab: 'strategy_points',
 
 	BuildingTypes: {
 		greatbuilding: i18n.Boxes.Productions.Headings.greatbuilding,
@@ -52,6 +54,7 @@ Productions = {
 
 		moment.locale('de');
 		Productions.Tabs = [];
+		Productions.TabsContent = [];
 
 		Productions.entities = Productions.GetSavedData();
 
@@ -271,8 +274,8 @@ Productions = {
 
 							let tds = '<tr>' +
 								'<td>' + buildings[i]['name'] + '</td>' +
-								'<td class="text-right">' + Number(buildings[i]['products'][type]).toLocaleString('de-DE') + '</td>' +
-								'<td class="wsnw">' + moment.unix(buildings[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>' +
+								'<td class="text-right is-number">' + Number(buildings[i]['products'][type]).toLocaleString('de-DE') + '</td>' +
+								'<td class="wsnw is-date" data-date="' + moment.unix(buildings[i]['at']).format('YYYY-MM-DD HH:mm') + '">' + moment.unix(buildings[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>' +
 								'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 								'</tr>';
 
@@ -323,7 +326,7 @@ Productions = {
 							let tds = '<tr>' +
 								'<td colspan="1" class="text-right">' + groups[i]['count'] + 'x </td>' +
 								'<td colspan="2">' + groups[i]['name'] + '</td>' +
-								'<td colspan="1">' + Number(groups[i]['products']).toLocaleString('de-DE') + '</td>' +
+								'<td colspan="1" class="is-number">' + Number(groups[i]['products']).toLocaleString('de-DE') + '</td>' +
 								'</tr>';
 
 							rowB.push(tds);
@@ -362,11 +365,11 @@ Productions = {
 					table.push('</thead>');
 					table.push('<tbody class="' + type + '-mode ' + type + '-single">');
 
-					// Sortierung
+					// Sortierung - Einzelheader
 					table.push('<tr class="sorter-header">');
 					table.push('<th class="ascending game-cursor" data-type="' + type + '-single">Name</th>');
 					table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">Menge</th>');
-					table.push('<th class="no-sort">&nbsp;</th>');
+					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">Ernte</th>');
 					table.push('<th class="no-sort">&nbsp;</th>');
 					table.push('</tr>');
 
@@ -380,7 +383,7 @@ Productions = {
 				{
 					table.push('<tbody class="' + type + '-mode ' + type + '-groups" style="display:none">');
 
-					// Sortierung
+					// Sortierung - Gruppiert-Header
 					table.push('<tr class="sorter-header">');
 					table.push('<th class="game-cursor text-right" data-type="' + type + '-groups">Anzahl</th>');
 					table.push('<th class="ascending game-cursor" colspan="2" data-type="' + type + '-groups">Name</th>');
@@ -458,12 +461,13 @@ Productions = {
 
 		$('#Productions').find('#ProductionsBody').html( h.join('') );
 
+		// Zusatzfunktionen für die Tabelle
 		setTimeout(()=>{
 			$('.tabs').tabslet();
 			$('.sortable-table').tableSorter();
 			Productions.SwitchFunction();
 			Productions.SortingAllTab();
-		}, 200)
+		}, 500)
 	},
 
 
@@ -519,19 +523,17 @@ Productions = {
 	 */
 	SwitchFunction: ()=>{
 		$('body').on('click', '.change-view', function(){
-			let t = $(this).data('type');
+			let btn = $(this),
+				t = $(this).data('type');
 
-			$('.' + t + '-mode').fadeToggle('fast');
-
-			setTimeout(()=>{
+			$('.' + t + '-mode').fadeToggle('fast', function() {
 				if( $('.' + t + '-single').is(':visible') )
 				{
-					$(this).text(i18n['Boxes']['Productions']['ModeGroups']);
+					btn.text(i18n['Boxes']['Productions']['ModeGroups']);
 				} else {
-					$(this).text(i18n['Boxes']['Productions']['ModeSingle']);
+					btn.text(i18n['Boxes']['Productions']['ModeSingle']);
 				}
-			}, 300);
-
+			});
 		});
 	},
 
@@ -556,7 +558,6 @@ Productions = {
 					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="4">' + Productions.BuildingTypes[matches[0]] + '</th></tr></tbody>').appendTo('.all-mode');
 				}
 
-				/* add to parent */
 				$(this).appendTo( $('#parent-' + matches[0]) );
 			}
 		});

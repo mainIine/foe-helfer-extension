@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 16:25 Uhr
+ * zu letzt bearbeitet:       16.09.19, 14:37 Uhr
  *
  * Copyright © 2019
  *
@@ -56,7 +56,7 @@ if(PossibleLangs.includes(lang) === false)
 }
 
 let i18nJS = document.createElement('script');
-i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lang + '.js');
+i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lang + '.js?v=' + v);
 i18nJS.id = 'i18n-script';
 i18nJS.onload = function(){
 	this.remove();
@@ -71,10 +71,10 @@ setTimeout(()=>{
 		'CountUp/jquery.easy_number_animate.min',
 		'clipboard/clipboard.min',
 		'Tabslet/jquery.tabslet.min',
-		'tableSorter/table-sorter',
 		'ScrollTo/jquery.scrollTo.min',
 		'jQuery/jquery-resizable.min',
 		'tooltip/tooltip',
+		'tableSorter/table-sorter',
 	];
 
 	for(let vs in vendorScripts)
