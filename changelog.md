@@ -1,5 +1,17 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.7.1
+
+- Produkt Übersicht:
+    - Kopf-Filter angepasst [#92](https://github.com/dsiekiera/foe-helfer-extension/issues/92)
+    - aktive Münzbonus hinzugefügt => korrekte Berechnung [#90](https://github.com/dsiekiera/foe-helfer-extension/issues/90)
+    
+- Eigenanteilsrechner:
+    - Kopierbutton war außer Funktion [#95](https://github.com/dsiekiera/foe-helfer-extension/issues/95)
+
+
+---
+
 #####v2.3.7
 
 **BugFix**

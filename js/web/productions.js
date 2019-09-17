@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.09.19, 15:06 Uhr
+ * zu letzt bearbeitet:       17.09.19, 19:08 Uhr
  *
  * Copyright © 2019
  *
@@ -39,6 +39,8 @@ Productions = {
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
+	Boosts: [],
+
 	Buildings: [
 		'greatbuilding',
 		'residential',
@@ -57,6 +59,9 @@ Productions = {
 		Productions.TabsContent = [];
 
 		Productions.entities = Productions.GetSavedData();
+
+		// Münzboost ausrechnen und bereitstellen
+		Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100 );
 
 		// leere Arrays erzeugen
 		for(let i in Productions.Types)
@@ -106,14 +111,6 @@ Productions = {
 				// das Gebäude produziert etwas?
 				if(building !== false){
 
-					/*
-					// "Alle" - prüfen ob es noch nicht im Array ist
-					let check = Productions.BuildingsAll.map((el) => el.eid).indexOf(building['eid']);
-					if(check === -1)
-					{
-						Productions.BuildingsAll.push(building);
-					}
-					*/
 					Productions.BuildingsAll.push(building);
 
 					// Nach Produkt
@@ -207,7 +204,15 @@ Productions = {
 
 		for(let k in a) {
 			if(a.hasOwnProperty(k)) {
-				products[k] = a[k];
+
+				// Wenn Münzen, dann Bonus drauf
+				if(k === 'money')
+				{
+					products[k] = (parseInt(a[k]) * Productions.Boosts['money']);;
+				}
+				else {
+					products[k] = a[k]
+				}
 			}
 		}
 
@@ -274,7 +279,7 @@ Productions = {
 
 							let tds = '<tr>' +
 								'<td>' + buildings[i]['name'] + '</td>' +
-								'<td class="text-right is-number">' + Number(buildings[i]['products'][type]).toLocaleString('de-DE') + '</td>' +
+								'<td class="text-right is-number" data-number="' + buildings[i]['products'][type] + '">' + Number(buildings[i]['products'][type]).toLocaleString('de-DE') + '</td>' +
 								'<td class="wsnw is-date" data-date="' + moment.unix(buildings[i]['at']).format('YYYY-MM-DD HH:mm') + '">' + moment.unix(buildings[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>' +
 								'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 								'</tr>';
@@ -326,7 +331,7 @@ Productions = {
 							let tds = '<tr>' +
 								'<td colspan="1" class="text-right">' + groups[i]['count'] + 'x </td>' +
 								'<td colspan="2">' + groups[i]['name'] + '</td>' +
-								'<td colspan="1" class="is-number">' + Number(groups[i]['products']).toLocaleString('de-DE') + '</td>' +
+								'<td colspan="1" class="is-number" data-number="' + groups[i]['products'] + '">' + Number(groups[i]['products']).toLocaleString('de-DE') + '</td>' +
 								'</tr>';
 
 							rowB.push(tds);

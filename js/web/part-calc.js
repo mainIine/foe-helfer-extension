@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.09.19, 13:17 Uhr
+ * zu letzt bearbeitet:       17.09.19, 19:42 Uhr
  *
  * Copyright © 2019
  *
@@ -651,7 +651,7 @@ Parts = {
 			'<option value="2"' + (s === '2' ? ' selected' : '') + '>Name LG P1 P2 P3 P4 P5</option>' +
 			'<option value="3"' + (s === '3' ? ' selected' : '') + '>Name LG P5/4/3/2/1</option>' +
 			'<option value="4"' + (s === '4' ? ' selected' : '') + '>Name LG P1/2/3/4/5</option>' +
-			'<option value="5"' + (s === '5' ? ' selected' : '') + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
+			'<option value="5"' + (s === '5' ? ' selected' : (s === null ? ' selected' : '') ) + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
 			'<option value="6"' + (s === '6' ? ' selected' : '') + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
 			'</select></div>';
 
@@ -685,7 +685,7 @@ Parts = {
 
 				let pn = $('#player-name').val(),
 					bn = $('#build-name').val(),
-					sn = $('#chain-scheme option:selected').val();
+					sn = $('#chain-scheme').val();
 
 				if(pn.length !=''){
 					localStorage.setItem('PlayerCopyName', pn);
@@ -706,8 +706,7 @@ Parts = {
 
 					// wieder zuklappen
 					Parts.BackGroundBoxAnimation(false);
-
-				}, 3000);
+				}, 1750);
 
 
 				let sol = {
