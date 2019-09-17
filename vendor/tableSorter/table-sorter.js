@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.09.19, 15:08 Uhr
+ * zu letzt bearbeitet:       17.09.19, 17:05 Uhr
  *
  * Copyright © 2019
  *
@@ -180,9 +180,12 @@
 
         } else if (type === 'numeric') {
             let i = 0;
+            rtn = $(elm).children('td').eq(column).data('number');
+            /*
             rtn = parseFloat(val.replace(/[\.\D\%]/g, function (match) {
                 return match === "." ? (i++ === 0 ? '.' : '') : '';
             }));
+            */
 
         } else if ('caseSensitive' === type) {
             rtn = assignNumberToString(val);

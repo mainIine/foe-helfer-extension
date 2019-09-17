@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       07.09.19, 16:45 Uhr
+ * zu letzt bearbeitet:       17.09.19, 19:26 Uhr
  *
  * Copyright © 2019
  *
@@ -63,7 +63,7 @@ Calculator = {
 		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
 		// LG - Daten + Spielername
-		h.push('<p><strong>' + BuildingInfo['name']  + ' - ' + BuildingInfo['player']['name'] + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + e['level'] + ' &rarr; ' + (parseInt(e['level']) +1) +'</p>');
+		h.push('<p class="header"><strong><span>' + BuildingInfo['name']  + '</span> - ' + BuildingInfo['player']['name'] + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + e['level'] + ' &rarr; ' + (parseInt(e['level']) +1) +'</p>');
 
 
 		// FP im Lager

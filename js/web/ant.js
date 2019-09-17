@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.09.19, 21:14 Uhr
+ * zu letzt bearbeitet:       17.09.19, 18:06 Uhr
  *
  * Copyright © 2019
  *
@@ -111,6 +111,16 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
 
 					Menu.BuildOverlayMenu();
+				}
+
+				// --------------------------------------------------------------------------------------------------
+				// Boosts zusammen tragen
+				let BoostService = d.find(obj => {
+					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'getAllBoosts';
+				});
+
+				if(BoostService !== undefined){
+					MainParser.CollectBoosts(BoostService['responseData']);
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -436,6 +446,24 @@ document.addEventListener("DOMContentLoaded", function(){
  *}
  */
 MainParser = {
+
+	BoostMapper: {
+		'supplies_boost': 'supply_production',
+		'happiness' : 'happiness_amount',
+		'military_boost' : 'att_boost_attacker',
+		'money_boost' : 'coin_production'
+	},
+
+	/**
+	 * Speichert alle aktiven Boosts
+	 */
+	AllBoosts: {
+		'def_boost_defender': 0,
+		'happiness_amount': 0,
+		'att_boost_attacker': 0,
+		'coin_production': 0,
+		'supply_production': 0
+	},
 
 	/**
 	 *
@@ -1059,6 +1087,11 @@ MainParser = {
 					};
 
 					lgs.push(b);
+
+					if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
+					{
+						MainParser.AllBoosts[ MainParser.BoostMapper[ d[i]['bonus']['type'] ] ] += d[i]['bonus']['value']
+					}
 				}
 			}
 		}
@@ -1066,6 +1099,26 @@ MainParser = {
 		if(lgs.length > 0)
 		{
 			MainParser.apiCall(lgs, 'SelfPlayerLGs');
+		}
+	},
+
+
+	/**
+	 * Sammelt aktive Boosts der Stadt
+	 *
+	 * @param d
+	 * @constructor
+	 */
+	CollectBoosts: (d)=>{
+		for(let i in d)
+		{
+			if(d.hasOwnProperty(i))
+			{
+				if(MainParser.AllBoosts[d[i]['type']] !== undefined)
+				{
+					MainParser.AllBoosts[d[i]['type']] += d[i]['value']
+				}
+			}
 		}
 	},
 
