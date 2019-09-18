@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       15.08.19, 13:12 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:24 Uhr
  *
  * Copyright © 2019
  *
@@ -53,6 +53,21 @@ let i18n = {
 			"Amount": "Anzahl"
 		},
 
+		"Productions" : {
+			"Title" : "Produktions Übersicht",
+			"SearchInput": "Gebäude Suche...",
+			"ModeGroups": "Gruppiert",
+			"ModeSingle": "Einzeln",
+			"Headings" : {
+				"greatbuilding" : "Legendäre Gebäude",
+				"production" : "Produktionsgebäude",
+				"random_production" : "Zufalls Produktionen",
+				"residential" : "Eventgebäude",
+				"main_building" : "Rathaus",
+				"all" : "Alle"
+			}
+		},
+
 		"Neighbors" : {
 			"Title" : "Produktionen von ",
 			"ReadyProductions" : "Fertige Produktionen",
@@ -64,14 +79,14 @@ let i18n = {
 			"TitleShort" : "Güterübersicht - ",
 			"DescRequired" : "Benötigt",
 			"DescInStock" : "Vorhanden",
-			"DescStillMissing" : "Fehlt noch",
+			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
 		}
 	},
 
 	"Menu" : {
-		"TotalFPs" : {
-			"Title" : "FP Produktion",
-			"Desc" : "Zeigt die derzeitige Anzahl aller sammelbaren FPs an."
+		"Productions" : {
+			"Title" : "Produktions Übersicht",
+			"Desc" : "Zeigt die derzeitige Anzahl aller Produktionen an."
 		},
 		"Calculator" : {
 			"Title" : "Kostenrechner",
@@ -107,6 +122,10 @@ let i18n = {
 			"Title" : "Außenposten",
 			"Desc" : "Übersicht über die benötigten Ressourcen",
 			"DescWarning" : "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen"
+		},
+		"Info" : {
+			"Title" : "Info Box",
+			"Desc" : "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>"
 		}
 	},
 
@@ -144,15 +163,6 @@ let i18n = {
 		"ShowOutpost": {
 			"Title" : "Außenposten Resourcen",
 			"Desc" : "Blendet einen Menüpunkt für Außenposten Resourcen ein<br><u>Hinweis:</u> Spiel Reload erforderlich"
-		}
-	},
-
-	"AllPoints" : {
-		"headings" : {
-			"greatbuilding" : "Legendäre Gebäude",
-			"production" : "Produktionsgebäude",
-			"random_production" : "Zufalls Produktionen",
-			"residential" : "Eventgebäude"
 		}
 	}
 };

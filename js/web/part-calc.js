@@ -5,14 +5,14 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.09.19, 19:42 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
  *
  * Copyright © 2019
  *
  * **************************************************************************************
  */
 
-Parts = {
+let Parts = {
 
 	CurrentBuildingID : false,
 	CurrentBuildingStep : false,

@@ -5,14 +5,14 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.09.19, 19:26 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
  *
  * Copyright © 2019
  *
  * **************************************************************************************
  */
 
-Calculator = {
+let Calculator = {
 
 	ArcBonus: 90,
 	EntityOverview: [],
@@ -129,10 +129,9 @@ Calculator = {
 						'<td><strong>' + r[i]['rank'] + '</strong></td>' +
 						'<td colspan="5" class="text-center"><small><em>' + i18n['Boxes']['Calculator']['NoFPorMedsAvailable'] + '</em></small></td>' +
 						'</tr>');
+				}
 
-
-				} else if(r[i]['reward'] !== undefined && r[i]['reward']['strategy_point_amount'] === undefined)
-				{
+				else if(r[i]['reward'] !== undefined && r[i]['reward']['strategy_point_amount'] === undefined) {
 					let blp = r[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(r[i]['reward']['blueprints']) * arc) : 0,
 						med = r[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(r[i]['reward']['resources']['medals']) * arc) : 0,
 						arr = {
@@ -162,14 +161,13 @@ Calculator = {
 						h.push('<td class="text-center">' + r[i]['forge_points'] + '</td>' +
 							'<td class="text-center"><strong class="info">0</strong></td>');
 
-					} else
-					{
+					}
+
+					else {
 						h.push('<td class="text-center">-</td><td class="text-center">-</td>');
 					}
 
 					h.push('</tr>');
-
-
 				}
 
 				// Andere Spieler
@@ -223,11 +221,10 @@ Calculator = {
 						trClass = ' class="info-row"';
 					}
 
-					// kann nicht mehr eingezahlt werden, zu viel
-					else if((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) > TotalFP) {
+					// kann nicht mehr eingezahlt werden, zu viel || ist schon mit (1,9) belegt oder überzahlt
+					else if((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) > TotalFP || EingezahltAufRang >= MaezenRangTotal) {
 						trClass = ' class="text-grey"';
 					}
-
 
 					// erste drei Spalten
 					h.push('<tr' + trClass + '><td><strong>' + r[i]['rank'] + '</strong></td>' +

@@ -5,14 +5,14 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       05.09.19, 14:04 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:28 Uhr
  *
  * Copyright © 2019
  *
  * **************************************************************************************
  */
 
-StrategyPoints = {
+let StrategyPoints = {
 
 	OldStrategyPoints: 0,
 

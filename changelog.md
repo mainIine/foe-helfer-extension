@@ -1,5 +1,16 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.7.2
+**BugFix**
+- Kostenrechner:
+    - berechnet nun genau ob überhaupt noch ein Platz eingezahlt werden kann [#86](https://github.com/dsiekiera/foe-helfer-extension/issues/86) [#82](https://github.com/dsiekiera/foe-helfer-extension/issues/82)
+
+- Tavernenboost:
+    - manchmal wurde ein JS Fehler erzeugt, wobei das Badge nicht verschwand [#91](https://github.com/dsiekiera/foe-helfer-extension/issues/91)
+
+---
+
+
 #####v2.3.7.1
 
 - Produkt Übersicht:

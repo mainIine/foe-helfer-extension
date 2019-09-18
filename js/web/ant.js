@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.09.19, 18:06 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:26 Uhr
  *
  * Copyright © 2019
  *
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function(){
 	// Local-Storage leeren
 	localStorage.removeItem('OwnCurrentBuildingCity');
 	localStorage.removeItem('OwnCurrentBuildingGreat');
-
 
 	MainParser.setLanguage();
 });
@@ -445,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function(){
  * 	}
  *}
  */
-MainParser = {
+let MainParser = {
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
