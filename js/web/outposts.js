@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.09.19, 21:34 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:24 Uhr
  *
  * Copyright © 2019
  *
@@ -29,7 +29,7 @@
  * 		}
  * 	}
  */
-Outposts = {
+let Outposts = {
 
 	Service: {},
 	Currency: {},
@@ -287,11 +287,11 @@ Outposts = {
 				{
 					let tt = (pr[name] - ct[name]);
 
-					if(tt < 0){
-						t.push('<td class="text-center text-' + (tt < 1 ? 'danger' : 'success') + '">' + tt + '</td>');
-					} else {
-						t.push('<td class="text-center">-</td>');
-					}
+					//if(tt < 0){
+						t.push('<td class="text-center text-' + (tt < 0 ? 'danger' : 'success') + '">' + tt + '</td>');
+					//} else {
+					//	t.push('<td class="text-center">-</td>');
+					//}
 
 				} else {
 					t.push('<td></td>');

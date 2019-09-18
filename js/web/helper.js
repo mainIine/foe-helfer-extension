@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 14:01 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
  *
  * Copyright © 2019
  *
@@ -85,7 +85,7 @@ helper.arr = {
 };
 
 
-HTML = {
+let HTML = {
 
 	/**
 	 * Erzeugt eine HTML Box im DOM

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       06.09.19, 18:01 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:19 Uhr
  *
  * Copyright © 2019
  *
@@ -79,7 +79,7 @@ let i18n = {
 			"TitleShort" : "Güterübersicht - ",
 			"DescRequired" : "Benötigt",
 			"DescInStock" : "Vorhanden",
-			"DescStillMissing" : "Fehlt noch",
+			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
 		}
 	},
 

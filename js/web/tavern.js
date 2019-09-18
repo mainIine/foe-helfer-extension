@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       05.09.19, 13:17 Uhr
+ * zu letzt bearbeitet:       18.09.19, 15:37 Uhr
  *
  * Copyright © 2019
  *
@@ -25,9 +25,14 @@
  * 	}
  */
 
-Tavern = {
+let Tavern = {
 
 	gl: null,
+
+	/**
+	 * Enthält die setInterval-ID
+	 */
+	cID: null,
 
 	/**
 	 * Liest einen Tavernenboost aus und stellt ihn dar
@@ -63,8 +68,23 @@ Tavern = {
 		let e = localStorage.getItem('TavernBoostExpire');
 
 		if(e !== null){
+			Tavern.cID = setInterval(Tavern.InjectBadge, 10)
+		}
+	},
+
+
+	/**
+	 * Rotierende Funktion bis "moment-JS" komplett geladen ist
+	 *
+	 * @constructor
+	 */
+	InjectBadge: ()=> {
+		if(typeof moment !== "undefined"){
+
 			Tavern.BuildBox();
-			Tavern.BoosterCountDown( moment.unix(e) );
+			Tavern.BoosterCountDown( moment.unix(localStorage.getItem('TavernBoostExpire')) );
+
+			clearInterval(Tavern.cID);
 		}
 	},
 
@@ -138,53 +158,6 @@ Tavern = {
 
 		}, 1000);
 	},
-
-	/*
-	createTexture: ()=>{
-
-		$('body').append( $('<canvas />').attr('id', 'canvas').width(500).height(500) );
-
-		setTimeout(()=>{
-			let canvas = document.getElementById('canvas');
-
-			Tavern.gl = canvas.getContext('webgl');
-
-			let texture_object = Tavern.gl.createTexture(),
-				building = new Image();
-
-			building.onload = function(){
-				Tavern.handleLoadedTexture(building, texture_object);
-			};
-
-			building.src = 'https://foede.innogamescdn.com/assets/city/buildings/textures/R_SS_MultiAge_HalloweenBonus18_0.atf';
-
-			// return texture_object;
-		}, 100);
-	},
-
-	handleLoadedTexture:(img, texture)=> {
-
-		Tavern.gl.bindTexture(Tavern.gl.TEXTURE_2D, texture);
-
-		// Set parameters of the texture object. We will set other properties
-		// of the texture map as we develop more sophisticated texture maps.
-		Tavern.gl.texParameteri(Tavern.gl.TEXTURE_2D, Tavern.gl.TEXTURE_WRAP_S, Tavern.gl.CLAMP_TO_EDGE);
-		Tavern.gl.texParameteri(Tavern.gl.TEXTURE_2D, Tavern.gl.TEXTURE_WRAP_T, Tavern.gl.CLAMP_TO_EDGE);
-		Tavern.gl.texParameteri(Tavern.gl.TEXTURE_2D, Tavern.gl.TEXTURE_MIN_FILTER, Tavern.gl.NEAREST);
-		Tavern.gl.texParameteri(Tavern.gl.TEXTURE_2D, Tavern.gl.TEXTURE_MAG_FILTER, Tavern.gl.NEAREST);
-
-		// Tell gl to flip the orientation of the image on the Y axis. Most
-		// images have their origin in the upper-left corner. WebGL expects
-		// the origin of an image to be in the lower-left corner.
-		Tavern.gl.pixelStorei(Tavern.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-
-
-		// Store in the image in the GPU's texture object
-		Tavern.gl.texImage2D(Tavern.gl.TEXTURE_2D, 0, Tavern.gl.ALPHA, 303, 250, 0, Tavern.gl.ALPHA, Tavern.gl.UNSIGNED_BYTE, img);
-
-		//gl.bindTexture(gl.TEXTURE_2D, null);
-	},
-	*/
 };
 
 Tavern.CheckTavernBoost();
