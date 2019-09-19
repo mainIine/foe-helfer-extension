@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 18:47 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:04 Uhr
  *
  * Copyright © 2019
  *
@@ -24,7 +24,15 @@ let CityMap = {
 
 		if( $('#city-map-overlay').length < 1 )
 		{
-			HTML.Box('city-map-overlay', Title, null, true, true, true);
+			let args = {
+				'id': 'city-map-overlay',
+				'title': Title,
+				'auto_close': true,
+				'dragdrop': true,
+				'resize': true
+			};
+
+			HTML.Box(args);
 
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);

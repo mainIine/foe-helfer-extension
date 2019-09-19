@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:26 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:16 Uhr
  *
  * Copyright © 2019
  *
@@ -1002,7 +1002,11 @@ let MainParser = {
 
 		if(devMode)
 		{
-			HTML.Box('DevNode','Hinweis!', null, true, false);
+			HTML.Box({
+				'id': 'DevNode',
+				'title': 'Hinweis!',
+				'auto_close': true
+			});
 
 			setTimeout(()=>{
 				let desc = 'Hey BETA-Tester!<br>Bitte immer den Cache zwischendurch leeren!<br><br>- F12 > Konsole auf<br>- Reiter "Network" > Haken bei "Disable cache"<br>- mit geöffneter Konsole neu laden';

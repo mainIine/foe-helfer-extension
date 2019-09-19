@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:28 Uhr
+ * zu letzt bearbeitet:       19.09.19, 10:50 Uhr
  *
  * Copyright © 2019
  *
@@ -54,7 +54,7 @@ let Productions = {
 	 */
 	init: ()=> {
 
-		moment.locale('de');
+		moment.locale(MainParser.getLanguage());
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 
@@ -237,7 +237,14 @@ let Productions = {
 			return ;
 		}
 
-		HTML.Box('Productions', i18n['Boxes']['Productions']['Title']);
+
+		HTML.Box({
+			'id': 'Productions',
+			'title': i18n['Boxes']['Productions']['Title'],
+			'auto_close': true,
+			'dragdrop': true,
+			'minimize': true
+		});
 
 		let h = [];
 
@@ -373,8 +380,8 @@ let Productions = {
 					// Sortierung - Einzelheader
 					table.push('<tr class="sorter-header">');
 					table.push('<th class="ascending game-cursor" data-type="' + type + '-single">Name</th>');
-					table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">Menge</th>');
-					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">Ernte</th>');
+					table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['amount'] + '</th>');
+					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['earning'] + '</th>');
 					table.push('<th class="no-sort">&nbsp;</th>');
 					table.push('</tr>');
 
@@ -390,9 +397,9 @@ let Productions = {
 
 					// Sortierung - Gruppiert-Header
 					table.push('<tr class="sorter-header">');
-					table.push('<th class="game-cursor text-right" data-type="' + type + '-groups">Anzahl</th>');
+					table.push('<th class="game-cursor text-right" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['number'] + '</th>');
 					table.push('<th class="ascending game-cursor" colspan="2" data-type="' + type + '-groups">Name</th>');
-					table.push('<th class="is-number game-cursor" data-type="' + type + '-groups">Menge</th>');
+					table.push('<th class="is-number game-cursor" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['amount'] + '</th>');
 					table.push('</tr>');
 
 					table.push( rowB.join('') );

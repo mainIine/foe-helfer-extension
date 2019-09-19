@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:28 Uhr
+ * zu letzt bearbeitet:       19.09.19, 10:57 Uhr
  *
  * Copyright © 2019
  *
@@ -67,7 +67,12 @@ let Settings = {
 	init: ()=> {
 
 		if( $('#SettingsBox').length < 1 ){
-			HTML.Box('SettingsBox', 'Einstellungen');
+
+			HTML.Box({
+				'id': 'SettingsBox',
+				'title': i18n['Boxes']['Settings']['Title'],
+				'auto_close': true
+			});
 		}
 
 		Settings.BuildBody();
@@ -108,7 +113,7 @@ let Settings = {
 				ct.text(d['title']);
 				cd.html(d['desc']);
 				cs.find('input.setting-check').attr('data-id', key).prop('checked', status);
-				cs.find('.toogle-word').text( status === true ? 'Aktiv' : 'Inaktiv' );
+				cs.find('.toogle-word').text( status === true ? i18n['Boxes']['Settings']['Active'] : i18n['Boxes']['Settings']['Inactive'] );
 
 				$('#SettingsBoxBody').append(
 					c.append(ct).append( cr.append(cd).append(cs) )
@@ -134,7 +139,7 @@ let Settings = {
 
 		localStorage.setItem(id, v);
 
-		$(el).prev().text( v === true ? i18n['Settings']['active'] : i18n['Settings']['inactive'] );
+		$(el).prev().text( v === true ? i18n['Boxes']['Settings']['Active'] : i18n['Boxes']['Settings']['Inactive'] );
 	},
 
 

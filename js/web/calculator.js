@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:00 Uhr
  *
  * Copyright © 2019
  *
@@ -41,8 +41,15 @@ let Calculator = {
 				Calculator.ArcBonus = parseFloat(ab);
 			}
 
+			let args = {
+				'id': 'costCalculator',
+				'title': i18n['Boxes']['Calculator']['Title'],
+				'ask': i18n['Boxes']['Calculator']['HelpLink'],
+				'auto_close': true,
+				'dragdrop': true
+			};
 
-			HTML.Box('costCalculator', i18n['Boxes']['Calculator']['Title'], i18n['Boxes']['Calculator']['HelpLink'], false);
+			HTML.Box(args);
 
 			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 		}

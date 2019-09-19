@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:28 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:09 Uhr
  *
  * Copyright © 2019
  *
@@ -128,7 +128,13 @@ let Reader = {
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if ($('#ResultBox').length === 0) {
-			HTML.Box('ResultBox', i18n['Boxes']['Neighbors']['Title'] + Reader.player_name);
+			HTML.Box({
+				'id': 'ResultBox',
+				'title': i18n['Boxes']['Neighbors']['Title'] + Reader.player_name,
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': true
+			});
 		}
 
 		let div = $('#ResultBox'),

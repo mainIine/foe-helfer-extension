@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:24 Uhr
+ * zu letzt bearbeitet:       19.09.19, 10:56 Uhr
  *
  * Copyright © 2019
  *
@@ -15,154 +15,162 @@
 let i18n = {
 	"Boxes" : {
 		"OwnpartCalculator" : {
-			"Title": "Eigenanteilsrechner",
+			"Title": "Co-payment calculator",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
-			"Step": "Stufe",
-			"ArcBonus": "Arche Bonus",
-			"OwnPart": "Eigenanteil",
-			"LGTotalFP": "LG Gesamt-FP",
-			"ExternalFP": "Externe FP",
-			"Order": "Reihenfolge",
-			"Deposit": "Einzahlen",
-			"CopyValues": "Werte kopieren",
-			"YourName": "Dein Name",
-			"IndividualName": "Individueller LG Name",
-			"OutputScheme": "Ausgabe Schema",
-			"Place": "Platz",
-			"Levels": "Leveln"
+			"Step": "Step",
+			"ArcBonus": "Arc bonus",
+			"PatronPart": "Patron share: ",
+			"OwnPart": "Own contribution",
+			"LGTotalFP": "Lb Total-FP",
+			"ExternalFP": "External FP",
+			"Order": "Sequence",
+			"Deposit": "Deposit",
+			"CopyValues": "Copy values",
+			"YourName": "Your name",
+			"IndividualName": "individual Lb name",
+			"OutputScheme": "Output scheme",
+			"Place": "Place",
+			"Levels": "levels"
 		},
 
 		"Calculator": {
-			"Title": "Kostenrechner",
+			"Title": "Cost calculator",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
-			"Step": "Stufe ",
-			"AvailableFP": "Verfügbare Forgepunke",
-			"ArcBonus": "Arche Bonus",
-			"Earnings": "Ertrag",
+			"Step": "Step ",
+			"AvailableFP": "Available Forgepoints",
+			"ArcBonus": "Arc bonus",
+			"Earnings": "Earnings",
 			"Save": "Save",
-			"Commitment": "Einsatz",
-			"Profit": "Gewinn",
-			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
-			"LastDeposit": "Letzte Einzahlung",
-			"Harvest": "Ernte: "
+			"Commitment": "Commitment",
+			"Profit": "Profit",
+			"NoFPorMedsAvailable": "No FPs or BPs available"
 		},
 
 		"StrategyPoints" : {
-			"Title" : "FP - Produktionen",
-			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
-			"Amount": "Anzahl"
+			"Title" : "FP - Productions",
+			"TotalFPs": "Total FPs from all buildings: ",
+			"Amount": "Number"
 		},
 
 		"Productions" : {
-			"Title" : "Produktions Übersicht",
-			"SearchInput": "Gebäude Suche...",
-			"ModeGroups": "Gruppiert",
-			"ModeSingle": "Einzeln",
+			"Title" : "Production overview",
+			"SearchInput": "Search building...",
+			"ModeGroups": "Groups",
+			"ModeSingle": "Single",
 			"Headings" : {
-				"greatbuilding" : "Legendäre Gebäude",
-				"production" : "Produktionsgebäude",
-				"random_production" : "Zufalls Produktionen",
-				"residential" : "Eventgebäude",
-				"main_building" : "Rathaus",
-				"all" : "Alle"
+				"number" : "Number",
+				"amount" : "Amount",
+				"earning" : "Earning",
+				"greatbuilding" : "Legendary buildings",
+				"production" : "Production building",
+				"random_production" : "Random productions",
+				"residential" : "Event buildings",
+				"main_building" : "Town hall",
+				"all" : "All"
 			}
 		},
 
 		"Neighbors" : {
-			"Title" : "Produktionen von ",
-			"ReadyProductions" : "Fertige Produktionen",
-			"OngoingProductions" : "Laufende Produktionen"
+			"Title" : "Productions of ",
+			"ReadyProductions" : "Finished productions",
+			"OngoingProductions" : "Ongoing productions"
 		},
 
 		"Outpost" : {
-			"Title" : "Güter des Außenpostens",
-			"TitleShort" : "Güterübersicht - ",
-			"DescRequired" : "Benötigt",
-			"DescInStock" : "Vorhanden",
-			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"Title" : "Goods of the outpost",
+			"TitleShort" : "Goods overview - ",
+			"TitleBuildings" : "Building",
+			"TitleFree" : "Free",
+			"DescRequired" : "Requires",
+			"DescInStock" : "Available",
+			"DescStillMissing" : "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+		},
+
+		"Settings" : {
+			"Title" : "Settings",
+			"Active" : "Active",
+			"Inactive" : "Inactive",
 		}
 	},
 
 	"Menu" : {
 		"Productions" : {
-			"Title" : "Produktions Übersicht",
-			"Desc" : "Zeigt die derzeitige Anzahl aller Produktionen an."
+			"Title" : "Production overview",
+			"Desc" : "Displays the current number of all productions."
 		},
 		"Calculator" : {
-			"Title" : "Kostenrechner",
-			"Desc" : "Rechnet für Dich alle Plätze aus und ermittelt Snipe-Bare FPs",
-			"Warning": "Deaktiviert: Öffne zuerst das LG eines anderen Spielers!"
+			"Title" : "Cost calculator",
+			"Desc" : "Calculates all seats for you and calculates snipeable FPs",
+			"Warning": "Disabled: Open another player's LG first!"
 		},
 		"OwnpartCalculator" : {
-			"Title" : "Eigenanteilsrechner",
-			"Desc" : "Zahlplan erstellen, externe Plätze berechnen und Werte kopieren",
-			"Warning": "Deaktiviert: Öffne zuerst eines deiner Legendären Gebäude!"
+			"Title" : "Co-payment calculator",
+			"Desc" : "Create payment plan, calculate external seats and copy values",
+			"Warning": "Disabled: Open one of your Legendary Buildings first!"
 		},
 		"Settings" : {
-			"Title" : "Einstellungen",
-			"Desc" : "Hier stellst du ein paar Kleinigkeiten ein"
+			"Title" : "Settings",
+			"Desc" : "Here are some little settings"
 		},
 		"Chat" : {
-			"Title" : "Gilden Live-Chat",
-			"Desc" : "In Echtzeit mit allen quatschen"
+			"Title" : "Guild live chat",
+			"Desc" : "Talk in real time with everyone"
 		},
 		"Forum" : {
 			"Title" : "Forum",
-			"Desc" : "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum reden..."
+			"Desc" : "You have a question? You annoying something? Or just to talk ..."
 		},
 		"Ask" : {
-			"Title" : "Frage / Antwort",
-			"Desc" : "Du weißt nicht wie etwas funktioniert?<br>Schau nach!"
+			"Title" : "Question / Answer",
+			"Desc" : "You do not know how something works?<br>Take a look!"
 		},
 		"Bugs" : {
-			"Title" : "Fehler / Wünsche",
-			"Desc" : "Etwas geht nicht wie es soll oder du hast eine Idee?"
+			"Title" : "Mistakes / Wishes",
+			"Desc" : "Something is not how it should or you have an idea?"
 		},
 		"OutP" : {
-			"Title" : "Außenposten",
-			"Desc" : "Übersicht über die benötigten Ressourcen",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen"
+			"Title" : "Outpost",
+			"Desc" : "Overview of the required resources",
+			"DescWarning" : "<em id='outPW' class='tooltip-error'>Disabled: check out the outpost first!<br></em>Overview of the required resources"
 		},
 		"Info" : {
 			"Title" : "Info Box",
-			"Desc" : "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>"
+			"Desc" : "Shows you all the things that happen in the \"background\"<br><em>Fills up with info ...</em>"
 		}
 	},
 
 	"Settings" : {
-		"active" : "Aktiv",
-		"inactive" : "Inaktiv",
 		"GlobalSend": {
-			"Title" : "Übermittlung an foe-rechner.de",
-			"Desc" : "Wenn Du mit deiner Gilde Daten tracken möchtest, aktiviere diesen Punkt.<br>Für eine autarke Extension einfach deaktiveren"
+			"Title" : "Transmission to foe-rechner.de",
+			"Desc" : "If you want to track data with your guild, activate this point. <br> For a self-sufficient extension simply disable."
 		},
 		"SendTavernInfo": {
-			"Title" : "Moppel Aktivität",
-			"Desc" : "Sollen beim aufrufen der Events die Moppel-Aktivitäten übertragen werden?"
+			"Title" : "Motivation activity",
+			"Desc" : "Should the motivation activities be transferred when the events are called?"
 		},
 		"SendGEXInfo": {
-			"Title" : "GEX Auswertungen",
-			"Desc" : "Übermittelt beim klicken in der GEX auf Platzierungen oder Rangliste die Daten"
+			"Title" : "GEX evaluations",
+			"Desc" : "When clicking in the GEX on placements or rankings the data transmitted"
 		},
 		"SendGildMemberLGInfo": {
-			"Title" : "LG Daten anderer Gildenmitglieder",
-			"Desc" : "Beim besuchen von anderen Gildenmitgliedern werden sämtliche LG Daten an foe-rechner.de geschickt, wenn Global aktivert"
+			"Title" : "Lb data of other guild members",
+			"Desc" : "When visiting other guild members, all Lb data will be sent to foe-rechner.de when Global activates."
 		},
 		"ShowNeighborsGoods": {
-			"Title" : "Nachbarschafts Ernte",
-			"Desc" : "Beim Besuch anzeigen was derzeit produziert wird"
+			"Title" : "Neighborhood harvest",
+			"Desc" : "During the visit show what is currently produced"
 		},
 		"SendInvestigations": {
-			"Title" : "FP Investitionen",
-			"Desc" : "Beim betreten des 'Rathauses' > 'Neuigkeiten' > 'Legendäre Bauwerke' werden die FP investionen übermittelt"
+			"Title" : "FP investment",
+			"Desc" : "Entering the 'Town Hall'> 'News'> 'Legendary Buildings' will transmit the Fp investments"
 		},
 		"ShowTavernBadge": {
-			"Title" : "Tavernen Badge anzeigen",
-			"Desc" : "Sobald ein Boost in der Taverne aktiviert wird, erschein ein global verschiebbarer Counter"
+			"Title" : "Show tavernas badge",
+			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears."
 		},
 		"ShowOutpost": {
-			"Title" : "Außenposten Resourcen",
-			"Desc" : "Blendet einen Menüpunkt für Außenposten Resourcen ein<br><u>Hinweis:</u> Spiel Reload erforderlich"
+			"Title" : "Outpost resources",
+			"Desc" : "Displays a menu item for Outpost Resources <br><u>Note:</u> Game Reload required."
 		}
 	}
 };

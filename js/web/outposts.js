@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:24 Uhr
+ * zu letzt bearbeitet:       19.09.19, 10:37 Uhr
  *
  * Copyright © 2019
  *
@@ -52,7 +52,15 @@ let Outposts = {
 
 		if( $('#outpostConsumables').length === 0 )
 		{
-			HTML.Box('outpostConsumables', i18n['Boxes']['Outpost']['Title']);
+			let args = {
+				'id': 'outpostConsumables',
+				'title': i18n['Boxes']['Outpost']['Title'],
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': true
+			};
+
+			HTML.Box(args);
 		}
 
 		Outposts.BuildInfoBoxContent();
@@ -117,8 +125,8 @@ let Outposts = {
 		t.push('<table class="foe-table">');
 		t.push('<thead>');
 		t.push('<tr>');
-		t.push('<th>Gebäude</th>');
-		t.push('<th class="text-center">Frei</th>');
+		t.push('<th>' + i18n['Boxes']['Outpost']['TitleBuildings'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Outpost']['TitleFree'] + '</th>');
 
 
 		for(let name in pr)
