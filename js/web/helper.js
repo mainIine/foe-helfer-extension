@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:26 Uhr
  *
  * Copyright © 2019
  *
@@ -98,23 +98,42 @@ let HTML = {
 	 * @param resize Resize
 	 * @constructor
 	 */
-	Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false)=> {
-		let min = $('<span />').addClass('window-minimize'),
-			close = $('<span />').attr('id', id + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').text(titel),
+	// Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false)=> {
+	/**
+	 * id,
+	 * title,
+	 * ask = null,
+	 * auto_close = true,
+	 * dragdrop = true,
+	 * resize = false
+	 * minimize = true
+	 *
+	 * @param args
+	 * @constructor
+	 */
+	Box: (args)=> {
 
-			head = $('<div />').attr('id', id + 'Header').attr('class', 'window-head').append(title).append(min).append(close),
-			body = $('<div />').attr('id', id + 'Body').attr('class', 'window-body'),
-			div = $('<div />').attr('id', id).attr('class', 'window-box open').append( head ).append( body ),
-			cords = localStorage.getItem(id + 'Cords');
+		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
+			title = $('<span />').addClass('title').text(args['title']),
+
+			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
+			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
+			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ),
+			cords = localStorage.getItem(args['id'] + 'Cords');
+
+		if(args['minimize'] !== undefined){
+			let min = $('<span />').addClass('window-minimize');
+
+			min.insertAfter(title);
+		}
 
 		if(cords !== null){
 			let c = cords.split('|');
 			div.offset({ top: c[0], left: c[1]});
 		}
 
-		if(ask !== null){
-			div.find(title).after( $('<span />').addClass('window-ask').attr('data-url', ask) );
+		if(args['ask'] !== undefined){
+			div.find(title).after( $('<span />').addClass('window-ask').attr('data-url', args['ask']) );
 		}
 
 		$('body').append(div);
@@ -122,29 +141,32 @@ let HTML = {
 		setTimeout(
 			()=> {
 
-				if(auto_close === true){
-					$('body').on('click', '#' + id + 'close', ()=>{
-						$('#' + id).hide('fast', ()=>{
-							$('#' + id).remove();
+				if(args['auto_close'] !== undefined){
+					$('body').on('click', '#' + args['id'] + 'close', ()=>{
+						$('#' + args['id']).hide('fast', ()=>{
+							$('#' + args['id']).remove();
 						});
 					});
 				}
 
-				if(ask !== null) {
+				if(args['ask'] !== undefined) {
 					$('body').on('click', '.window-ask', function () {
-						window.open($(this).data('url'), '_blank');
+						window.open( $(this).data('url'), '_blank');
 					});
 				}
 
-				if(dragdrop === true) {
-					HTML.DragBox(document.getElementById(id));
+				if(args['dragdrop'] !== undefined) {
+					HTML.DragBox(document.getElementById(args['id']));
 				}
 
-				if(resize === true){
-					HTML.Resizeable(id);
+				if(args['resize'] !== undefined){
+					HTML.Resizeable(args['id']);
 				}
 
-				HTML.MinimizeBox(div);
+				if(args['minimize'] !== undefined){
+					HTML.MinimizeBox(div);
+				}
+
 
 			}, 50
 		);

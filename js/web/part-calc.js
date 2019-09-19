@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:08 Uhr
  *
  * Copyright © 2019
  *
@@ -39,7 +39,14 @@ let Parts = {
 		}
 
 		// Box in den DOM
-		HTML.Box('OwnPartBox', i18n['Boxes']['OwnpartCalculator']['Title'], i18n['Boxes']['OwnpartCalculator']['HelpLink']);
+		HTML.Box({
+			'id': 'OwnPartBox',
+			'title': i18n['Boxes']['OwnpartCalculator']['Title'],
+			'ask': i18n['Boxes']['OwnpartCalculator']['HelpLink'],
+			'auto_close': true,
+			'dragdrop': true,
+			'minimize': true
+		});
 
 		// Body zusammen fummeln
 		Parts.BoxBody();

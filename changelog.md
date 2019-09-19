@@ -1,6 +1,10 @@
 ##Changelog - Chrome Extension
 
-#####v2.3.7.2
+#####v2.3.8
+**Neu**
+- Extension:
+    - Englische Übersetzung integriert
+
 **BugFix**
 - Kostenrechner:
     - berechnet nun genau ob überhaupt noch ein Platz eingezahlt werden kann [#86](https://github.com/dsiekiera/foe-helfer-extension/issues/86) [#82](https://github.com/dsiekiera/foe-helfer-extension/issues/82)

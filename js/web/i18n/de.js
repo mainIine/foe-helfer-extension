@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:19 Uhr
+ * zu letzt bearbeitet:       19.09.19, 10:54 Uhr
  *
  * Copyright © 2019
  *
@@ -19,6 +19,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Stufe",
 			"ArcBonus": "Arche Bonus",
+			"PatronPart": "Mäzen Anteil: ",
 			"OwnPart": "Eigenanteil",
 			"LGTotalFP": "LG Gesamt-FP",
 			"ExternalFP": "Externe FP",
@@ -43,8 +44,6 @@ let i18n = {
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
-			"LastDeposit": "Letzte Einzahlung",
-			"Harvest": "Ernte: "
 		},
 
 		"StrategyPoints" : {
@@ -59,6 +58,9 @@ let i18n = {
 			"ModeGroups": "Gruppiert",
 			"ModeSingle": "Einzeln",
 			"Headings" : {
+				"number" : "Anzahl",
+				"amount" : "Menge",
+				"earning" : "Ernte",
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
@@ -77,9 +79,17 @@ let i18n = {
 		"Outpost" : {
 			"Title" : "Güter des Außenpostens",
 			"TitleShort" : "Güterübersicht - ",
+			"TitleBuildings" : "Gebäude",
+			"TitleFree" : "Frei",
 			"DescRequired" : "Benötigt",
 			"DescInStock" : "Vorhanden",
 			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+		},
+
+		"Settings" : {
+			"Title" : "Einstellungen",
+			"Active" : "Aktiv",
+			"Inactive" : "Inaktiv",
 		}
 	},
 
@@ -130,8 +140,6 @@ let i18n = {
 	},
 
 	"Settings" : {
-		"active" : "Aktiv",
-		"inactive" : "Inaktiv",
 		"GlobalSend": {
 			"Title" : "Übermittlung an foe-rechner.de",
 			"Desc" : "Wenn Du mit deiner Gilde Daten tracken möchtest, aktiviere diesen Punkt.<br>Für eine autarke Extension einfach deaktiveren"

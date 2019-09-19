@@ -7,7 +7,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       06.09.19, 18:07 Uhr
+ * zu letzt bearbeitet:       18.09.19, 18:05 Uhr
  *
  * Copyright © 2019
  *
@@ -66,7 +66,16 @@ let Infoboard = {
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#BackgroundInfo').length === 0 ){
-			HTML.Box('BackgroundInfo', i18n['Menu']['Info']['Title']);
+
+			let args = {
+				'id': 'BackgroundInfo',
+				'title': i18n['Menu']['Info']['Title'],
+				'auto_close': true,
+				'dragdrop': true,
+				'resize': true
+			};
+
+			HTML.Box(args);
 		}
 
 		let div = $('#BackgroundInfo'),
@@ -89,10 +98,6 @@ let Infoboard = {
 		div.find('#BackgroundInfoBody').html(h.join(''));
 
 		div.show();
-
-		$('body').on('click', '#BackgroundInfoclose', ()=>{
-			$('#BackgroundInfo').remove();
-		});
 	},
 
 
@@ -160,12 +165,19 @@ let Info = {
 	ConversationService_getNewMessage: (d)=> {
 		let msg;
 
+		console.log('d: ', d);
+
 		if(d['text'] !== ''){
-			msg = d['text'].replace(/(\r\n|\n|\r)/gm,"<br>");
+			msg = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
 
 		} else if(d['attachment'] !== undefined){
 
-			if(d['attachment']['type'] === 'trade_offer'){
+			// LG
+			if(d['attachment']['type'] === 'great_building') {
+				msg = BuildingNamesi18n[d['attachment']['cityEntityId']]['name'] + ' - Stufe ' + d['attachment']['level'];
+			}
+			// Handel
+			else if(d['attachment']['type'] === 'trade_offer'){
 				msg = d['attachment']['offeredAmount'] + ' ' + GoodsNames[d['attachment']['offeredResource']] +' &#187; ' + d['attachment']['neededAmount'] + ' ' + GoodsNames[d['attachment']['neededResource']];
 			}
 		}
@@ -222,6 +234,10 @@ let Info = {
 			if(header !== undefined){
 				return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
 			}
+		}
+
+		else {
+			return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
 		}
 
 		return '';
