@@ -34,7 +34,7 @@ let i18n = {
 			"Levels": "niveaux"
 		},
 
-		"Calculatrice": {
+		"Calculator": {
 			"Title": "Calculatrice de coûts",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
