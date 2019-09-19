@@ -15,7 +15,7 @@
 
 let tid = setInterval(InjectCode, 5),
 	manifestData = chrome.runtime.getManifest(),
-	PossibleLangs = ['de','en'],
+	PossibleLangs = ['de','en','fr'],
 	v = manifestData.version;
 
 // muss sehr früh in den head-Tag

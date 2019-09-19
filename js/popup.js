@@ -23,6 +23,11 @@ let i18n = {
 		'title' : 'FoE Helper',
 		'desc' : "You like this little free extension and you want to support it so that it stays that way? <br> Then every little donation for support is always welcome.",
 		'thanks' : 'Thank you so much!'
+	},
+	'fr' : {
+		'title' : 'FoE Assistant',
+		'desc' : "Vous aimez cette petite extension gratuite et vous voulez la soutenir pour continuer ainsi ? <br> Chaque petite donation pour le support est toujours la bienvenue.",
+		'thanks' : 'Merci beaucoup !'
 	}
 };
 

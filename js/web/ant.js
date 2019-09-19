@@ -24,7 +24,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	CityMapData = null,
 	Conversations = [],
 	GoodsNames = [],
-	PossibleLangs = ['de','en'];
+	PossibleLangs = ['de','en','fr'];
 
 
 document.addEventListener("DOMContentLoaded", function(){
