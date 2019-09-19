@@ -61,7 +61,7 @@ let i18n = {
 			"Headings" : {
 				"number" : "Nombre",
 				"amount" : "Total",
-				"earning" : "Earning",
+				"earning" : "Heure de récolte",
 				"greatbuilding" : "Grand monument",
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
