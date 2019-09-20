@@ -22,8 +22,8 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Niveau",
 			"ArcBonus": "Bonus Arche",
-			"PatronPart": "Patron share: ",
-			"OwnPart": "Contribution personnelle",
+			"PatronPart": "Contribution externe :",
+			"OwnPart": "Contribution personnelle :",
 			"LGTotalFP": "Total PFs",
 			"ExternalFP": "PFs externes",
 			"Order": "Séquence",
@@ -53,13 +53,13 @@ let i18n = {
 			"Title" : "PFs - Productions",
 			"TotalFPs": "Total PFs pour tous les batiments: ",
 			"Amount": "Nombre",
-			"FPBar" : "PFs-Stock: "
+			"FPBar" : "PFs en stock: "
 		},
 
 		"Productions" : {
 			"Title" : "Vue d'ensemble des productions",
 			"SearchInput": "Chercher un batiment...",
-			"Total" : "Totalement: ",
+			"Total" : "Total: ",
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
 			"Headings" : {
