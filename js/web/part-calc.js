@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 18:08 Uhr
+ * zu letzt bearbeitet:       19.09.19, 15:30 Uhr
  *
  * Copyright © 2019
  *
@@ -355,7 +355,7 @@ let Parts = {
 		h.push('<thead>');
 
 		h.push('<tr>');
-		h.push('<th class="text-center" colspan="3" style="width: 50%">Mäzen Anteil: <strong>' + total_maezen + (input_total > 0 ? ' <strong class="info">+' + input_total + '</strong>' : '') + '</strong></th>');
+		h.push('<th class="text-center" colspan="3" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['PatronPart'] + ' <strong>' + total_maezen + (input_total > 0 ? ' <strong class="info">+' + input_total + '</strong>' : '') + '</strong></th>');
 		h.push('<th class="text-center" colspan="3">' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + ': <strong class="success">' + ownpart_total + '</strong></th>');
 		h.push('</tr>');
 
@@ -401,7 +401,7 @@ let Parts = {
 		 * Platz 1
 		 */
 		h.push('<tr>');
-		h.push('<td>Platz 1</td>');
+		h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 1</td>');
 
 		if(placesExt[0]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
@@ -422,7 +422,7 @@ let Parts = {
 		if(own_parts[0] > 0 && placesExt[0]['type'] === 'input'){
 
 			h.push('<tr>');
-			h.push('<td>Eigenanteil</td>');
+			h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
 			h.push('<td class="text-center"><strong class="success">' + own_parts[0] + '</strong></td>');
 			h.push('<td colspan="4"></td>');
 			h.push('</tr>');
@@ -435,7 +435,7 @@ let Parts = {
 		 * 	Platz 2
 		 */
 		h.push('<tr>');
-		h.push('<td>Platz 2</td>');
+		h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 2</td>');
 
 		if(placesExt[1]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
@@ -464,7 +464,7 @@ let Parts = {
 
 
 		h.push('<tr>');
-		h.push('<td>Platz 3</td>');
+		h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 3</td>');
 
 		if(placesExt[2]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
@@ -497,7 +497,7 @@ let Parts = {
 		 * 	Platz 4
 		 */
 		h.push('<tr>');
-		h.push('<td>Platz 4</td>');
+		h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 4</td>');
 
 		if(placesExt[3]['type'] === 'input'){
 			h.push('<td class="text-center">-</td>');
@@ -529,7 +529,7 @@ let Parts = {
 		 * 	Platz 5
 		 */
 		h.push('<tr>');
-		h.push('<td>Platz 5</td>');
+		h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 5</td>');
 
 		if(placesExt[4]['type'] === 'input' && placesExt[4]['value'] > 0){
 			h.push('<td class="text-center">-</td>');

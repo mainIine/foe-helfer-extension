@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 10:56 Uhr
+ * zu letzt bearbeitet:       19.09.19, 15:32 Uhr
  *
  * Copyright © 2019
  *
@@ -13,6 +13,9 @@
  */
 
 let i18n = {
+	"Local" : "en-EN",
+	"DateTime" : "D/M/YY h:mm:ss a",
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Co-payment calculator",
@@ -49,12 +52,14 @@ let i18n = {
 		"StrategyPoints" : {
 			"Title" : "FP - Productions",
 			"TotalFPs": "Total FPs from all buildings: ",
-			"Amount": "Number"
+			"Amount": "Number",
+			"FPBar" : "FP-Stock: "
 		},
 
 		"Productions" : {
 			"Title" : "Production overview",
 			"SearchInput": "Search building...",
+			"Total" : "Total: ",
 			"ModeGroups": "Groups",
 			"ModeSingle": "Single",
 			"Headings" : {

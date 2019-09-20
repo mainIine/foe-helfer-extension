@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.09.19, 14:37 Uhr
+ * zu letzt bearbeitet:       20.09.19, 11:01 Uhr
  *
  * Copyright © 2019
  *
@@ -15,7 +15,7 @@
 
 let tid = setInterval(InjectCode, 5),
 	manifestData = chrome.runtime.getManifest(),
-	PossibleLangs = ['de','en'],
+	PossibleLangs = ['de','en','fr'],
 	v = manifestData.version;
 
 // muss sehr früh in den head-Tag

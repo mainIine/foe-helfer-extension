@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 10:50 Uhr
+ * zu letzt bearbeitet:       19.09.19, 15:27 Uhr
  *
  * Copyright © 2019
  *
@@ -54,7 +54,7 @@ let Productions = {
 	 */
 	init: ()=> {
 
-		moment.locale(MainParser.getLanguage());
+		moment.locale(MainParser.Language);
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 
@@ -237,7 +237,6 @@ let Productions = {
 			return ;
 		}
 
-
 		HTML.Box({
 			'id': 'Productions',
 			'title': i18n['Boxes']['Productions']['Title'],
@@ -286,8 +285,8 @@ let Productions = {
 
 							let tds = '<tr>' +
 								'<td>' + buildings[i]['name'] + '</td>' +
-								'<td class="text-right is-number" data-number="' + buildings[i]['products'][type] + '">' + Number(buildings[i]['products'][type]).toLocaleString('de-DE') + '</td>' +
-								'<td class="wsnw is-date" data-date="' + moment.unix(buildings[i]['at']).format('YYYY-MM-DD HH:mm') + '">' + moment.unix(buildings[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>' +
+								'<td class="text-right is-number" data-number="' + buildings[i]['products'][type] + '">' + Number(buildings[i]['products'][type]).toLocaleString(i18n['Local']) + '</td>' +
+								'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 								'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 								'</tr>';
 
@@ -313,12 +312,12 @@ let Productions = {
 									countProducts[p] += buildings[i]['products'][p];
 									countAll += buildings[i]['products'][p];
 
-									pA.push(Number(buildings[i]['products'][p]).toLocaleString('de-DE') + ' ' + GoodsNames[p]);
+									pA.push(Number(buildings[i]['products'][p]).toLocaleString(i18n['Local']) + ' ' + GoodsNames[p]);
 								}
 							}
 
 							tds +='<td>' + pA.join('<br>') + '</td>' +
-								'<td>' + moment.unix(buildings[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>' +
+								'<td>' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 								'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 								'</tr>';
 
@@ -358,13 +357,13 @@ let Productions = {
 					{
 						if(countProducts.hasOwnProperty(ca))
 						{
-							table.push('<span>' + GoodsNames[ca] +' <strong>' + Number(countProducts[ca]).toLocaleString('de-DE') + '</strong></span>');
+							table.push('<span>' + GoodsNames[ca] +' <strong>' + Number(countProducts[ca]).toLocaleString(i18n['Local']) + '</strong></span>');
 						}
 					}
 
 					table.push('</td>');
 					table.push('</tr>');
-					table.push('<tr><td></td><td class="total-products"><strong>Gesamt: ' + Number(countAll).toLocaleString('de-DE') + '</strong></td><td colspan="2"></td></tr>');
+					table.push('<tr><td></td><td class="total-products"><strong>' + i18n['Boxes']['Productions']['Total'] + Number(countAll).toLocaleString(i18n['Local']) + '</strong></td><td colspan="2"></td></tr>');
 				}
 
 				else {
