@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 10:54 Uhr
+ * zu letzt bearbeitet:       19.09.19, 15:32 Uhr
  *
  * Copyright © 2019
  *
@@ -13,6 +13,9 @@
  */
 
 let i18n = {
+	"Local" : "de-DE",
+	"DateTime" : "DD.MM.YYYY HH:mm [Uhr]",
+	
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Eigenanteilsrechner",
@@ -49,12 +52,14 @@ let i18n = {
 		"StrategyPoints" : {
 			"Title" : "FP - Produktionen",
 			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
-			"Amount": "Anzahl"
+			"Amount": "Anzahl",
+			"FPBar" : "FP-Lager: "
 		},
 
 		"Productions" : {
 			"Title" : "Produktions Übersicht",
 			"SearchInput": "Gebäude Suche...",
+			"Total" : "Gesamt: ",
 			"ModeGroups": "Gruppiert",
 			"ModeSingle": "Einzeln",
 			"Headings" : {

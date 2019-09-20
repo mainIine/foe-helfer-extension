@@ -1,5 +1,13 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.8.1
+
+**Neu**
+- Extension:
+    - Französische Übersetzung integriert [#96](https://github.com/dsiekiera/foe-helfer-extension/issues/96)
+
+---
+
 #####v2.3.8
 **Neu**
 - Extension:

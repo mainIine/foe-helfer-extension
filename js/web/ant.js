@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 18:16 Uhr
+ * zu letzt bearbeitet:       20.09.19, 11:01 Uhr
  *
  * Copyright © 2019
  *
@@ -16,15 +16,13 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ActiveMap = 'main',
 	PlayerNames = [],
 	FriendNames = [],
-	Language = 'de',
 	ExtPlayerID = 0,
 	ExtGuildID = 0,
 	ExtWorld = '',
 	BuildingNamesi18n = false,
 	CityMapData = null,
 	Conversations = [],
-	GoodsNames = [],
-	PossibleLangs = ['de','en'];
+	GoodsNames = [];
 
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -446,6 +444,10 @@ document.addEventListener("DOMContentLoaded", function(){
  */
 let MainParser = {
 
+	Language: 'en',
+
+	PossibleLangs: ['de','en', 'fr'],
+
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
 		'happiness' : 'happiness_amount',
@@ -474,10 +476,10 @@ let MainParser = {
 		// gibt es eine Übersetzung?
 		if(PossibleLangs.includes(lang) === false)
 		{
-			lang = 'de';
+			lang = 'en';
 		}
 
-		Language = lang;
+		MainParser.Language = lang;
 	},
 
 
@@ -486,7 +488,7 @@ let MainParser = {
 	 * @returns {string}
 	 */
 	getLanguage: ()=>{
-		return Language;
+		return MainParser.Language;
 	},
 
 

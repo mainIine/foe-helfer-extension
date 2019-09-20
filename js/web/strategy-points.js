@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:28 Uhr
+ * zu letzt bearbeitet:       19.09.19, 15:32 Uhr
  *
  * Copyright © 2019
  *
@@ -57,7 +57,7 @@ let StrategyPoints = {
 
 		// noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			let div = $('<div />').attr('id', 'fp-bar').text('FP-Lager: ').append( $('<strong />').addClass('fp-storage') );
+			let div = $('<div />').attr('id', 'fp-bar').text(i18n['Boxes']['StrategyPoints']['FPBar']).append( $('<strong />').addClass('fp-storage') );
 
 			$('body').append(div);
 		}
