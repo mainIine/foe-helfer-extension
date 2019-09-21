@@ -18,7 +18,7 @@ let i18n = {
 
 	"Boxes" : {
 		"OwnpartCalculator" : {
-			"Title": "Calculatrice de up à plusieurs",
+			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Niveau",
 			"ArcBonus": "Bonus Arche",
@@ -37,7 +37,7 @@ let i18n = {
 		},
 
 		"Calculator": {
-			"Title": "Calculatrice de coûts",
+			"Title": "Calcul de PFs pour les GMs des autres",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
@@ -63,8 +63,8 @@ let i18n = {
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
 			"Headings" : {
-				"number" : "Nombre",
-				"amount" : "Lot",
+				"number" : "Occurences",
+				"amount" : "Nombre",
 				"earning" : "Récolte",
 				"greatbuilding" : "Grand monument",
 				"production" : "Bâtiment de production",
