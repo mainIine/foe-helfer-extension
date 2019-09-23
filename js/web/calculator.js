@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 18:00 Uhr
+ * zu letzt bearbeitet:       23.09.19, 08:56 Uhr
  *
  * Copyright © 2019
  *
@@ -46,7 +46,8 @@ let Calculator = {
 				'title': i18n['Boxes']['Calculator']['Title'],
 				'ask': i18n['Boxes']['Calculator']['HelpLink'],
 				'auto_close': true,
-				'dragdrop': true
+				'dragdrop': true,
+				'minimize': true
 			};
 
 			HTML.Box(args);
@@ -54,23 +55,40 @@ let Calculator = {
 			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 		}
 
-		// Übersicht laden + passendes LG
-		Calculator.EntityOverview = JSON.parse(localStorage.getItem('OtherActiveBuildingOverview'));
-
 		let div = $('#costCalculator'),
 			afp = d['availablePackagesForgePointSum'],
-			h = [];
+			h = [],
+			Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
+			BuildingName,
+			PlayerName = null;
 
+		// wenn das LG über die Übersicht geladen wurde...
+		if(Overview !== null)
+		{
+			// Übersicht laden + passendes LG
+			Calculator.EntityOverview = JSON.parse(Overview);
 
-		let BuildingInfo = Calculator.EntityOverview.find(obj => {
-			return obj['city_entity_id'] === e['cityentity_id'];
-		});
+			let BuildingInfo = Calculator.EntityOverview.find(obj => {
+				return obj['city_entity_id'] === e['cityentity_id'];
+			});
+
+			BuildingName = BuildingInfo['name'];
+			PlayerName = BuildingInfo['player']['name'];
+
+			// direkt wieder löschen da beim nächsten sonst der falsche Name stehen könnte
+			sessionStorage.removeItem('OtherActiveBuildingOverview');
+		}
+
+		// Name weg lassen wenn es auf dem Forum / einer Nachricht geladen wurde
+		else {
+			BuildingName = BuildingNamesi18n[ e['cityentity_id'] ]['name'];
+		}
 
 
 		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
 		// LG - Daten + Spielername
-		h.push('<p class="header"><strong><span>' + BuildingInfo['name']  + '</span> - ' + BuildingInfo['player']['name'] + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + e['level'] + ' &rarr; ' + (parseInt(e['level']) +1) +'</p>');
+		h.push('<p class="header"><strong><span>' + BuildingName + '</span>' + (PlayerName !== null ? ' - ' + PlayerName : '') + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + e['level'] + ' &rarr; ' + (parseInt(e['level']) +1) +'</p>');
 
 
 		// FP im Lager
@@ -271,8 +289,8 @@ let Calculator = {
 					else {
 
 						// geht genau auf
-						if(MaezenRangTotal - HalberEinzahlbarerPlatzAufRang === 0){
-							h.push('<td class="text-center" data-case="1">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td><td class="text-center"><strong class="success">0</strong></td>');
+						if(MaezenRangTotal - HalberEinzahlbarerPlatzAufRang === 1){
+							h.push('<td class="text-center" data-case="1">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td><td class="text-center"><strong class="success">1</strong></td>');
 						}
 
 						else if(EingezahltAufRang >= HalberEinzahlbarerPlatzAufRang || MaezenRangTotal - HalberEinzahlbarerPlatzAufRang < 1) {

@@ -1,7 +1,9 @@
 {
-	"name": "FoE - Helfer",
-	"version": "2.3.8.1",
-	"description": "Kleine Tools und Helfer für ein besseres Spieleerlebnis in Forge of Empires",
+	"name": "__MSG_appName__",
+	"description": "__MSG_appDesc__",
+	"default_locale": "en",
+
+	"version": "2.3.9.1",
 	"manifest_version": 2,
 	"permissions": [
 		"activeTab",
@@ -17,7 +19,7 @@
 	"browser_action": {
 		"default_icon": "images/app16.png",
 		"default_popup": "content/popup.html",
-		"default_title": "FoE Helfer"
+		"default_title": "__MSG_appName__"
 	},
 
 	"icons": {
@@ -36,7 +38,6 @@
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
-			"exclude_globs": ["*zz0*", "*tt0*"],
 			"include_globs": ["*game*"],
 			"run_at": "document_start",
 			"js": [

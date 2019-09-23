@@ -1,10 +1,29 @@
 ##Changelog - Chrome Extension
 
-#####v2.3.8.1
+#####v2.3.9.1
+
+**BugFix**
+- Kostenrechner:
+    - öffnet sich ab sofort auch aus einer Nachricht oder dem Gilden [#97](https://github.com/dsiekiera/foe-helfer-extension/issues/97) [#101](https://github.com/dsiekiera/foe-helfer-extension/issues/101)
+
+- Eigenanteilsrechner:
+    - Kopierfunktion gefixt [#104](https://github.com/dsiekiera/foe-helfer-extension/issues/104)
+
+- Außenposten:
+    - Diplomatie-Empfehlung (blaues Fragezeichen) nutzte falsche Werte [#103](https://github.com/dsiekiera/foe-helfer-extension/issues/103)
+    
+**Update**
+- Extension
+    - Französisch geupdated
+    
+---
+
+#####v2.3.9
 
 **Neu**
 - Extension:
     - Französische Übersetzung integriert [#96](https://github.com/dsiekiera/foe-helfer-extension/issues/96)
+    - komplett internationalisiert
 
 ---
 

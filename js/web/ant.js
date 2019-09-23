@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.09.19, 11:01 Uhr
+ * zu letzt bearbeitet:       23.09.19, 09:57 Uhr
  *
  * Copyright © 2019
  *
@@ -66,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function(){
 				{
 					let j = JSON.parse(r);
 
+					sessionStorage.setItem('BuildingsData', JSON.stringify(j));
+
 					for (let i in j)
 					{
 						if (j.hasOwnProperty(i))
@@ -87,8 +89,6 @@ document.addEventListener("DOMContentLoaded", function(){
 			{
 
 				let d = JSON.parse(this.responseText);
-
-				// console.log('d: ', d);
 
 				// --------------------------------------------------------------------------------------------------
 				// Player- und Gilden-ID setzen
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
 				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ExtPlayerID){
-					localStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
+					sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
 				}
 
 
@@ -234,13 +234,14 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
 				});
 
+
 				if((Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] !== ExtPlayerID)
 				){
 					$('#calcFPs').removeClass('hud-btn-red');
 					$('#calcFPs-closed').remove();
 
-					localStorage.setItem('OtherActiveBuilding', JSON.stringify(Calculator2['responseData']));
-					localStorage.setItem('OtherActiveBuildingData', JSON.stringify(Calculator1['responseData'][0]));
+					sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Calculator2['responseData']));
+					sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(Calculator1['responseData'][0]));
 
 					// wenn schon offen, den Inhalt updaten
 					if( $('#costCalculator').is(':visible') ){

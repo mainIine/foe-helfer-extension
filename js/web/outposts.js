@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 10:37 Uhr
+ * zu letzt bearbeitet:       23.09.19, 10:06 Uhr
  *
  * Copyright © 2019
  *
@@ -80,40 +80,31 @@ let Outposts = {
 
 		let t = [],
 			ct = [],
-			c = JSON.parse(localStorage.getItem('OutpostConsumables')),
+			bd = JSON.parse(sessionStorage.getItem('BuildingsData')),
+			c = Outposts.DiplomacyBuildings,
 			pr = JSON.parse(localStorage.getItem('OutpostConsumablesResources')),
 			cn = localStorage.getItem('OutpostConsumablesCurrencyName'),
 			cv = localStorage.getItem('OutpostConsumablesCurrencyValue'),
 			type = localStorage.getItem('OutpostConsumablesCurrencyType'),
 			all = c[ c.length-1 ]['requirements']['resources'],
-			db = Outposts.DiplomacyBuildings,
 			pb = [];
 
-		pb.push({
-			name: db[0]['name'],
-			diplomacy: db[0]['requirements']['resources']['diplomacy']
-		});
 
 		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.Service[type].name );
 
-		// Diplomatische Gebäude duchsteppen
-		for(let b in db)
+		// Diplomatische Gebäude raussuchen, die erforscht sind
+		for(let x in c)
 		{
-			if(db.hasOwnProperty(b))
+			if(c.hasOwnProperty(x) && c[x]['rewards'][0].toLowerCase().indexOf('diplomacy') > -1 && c[x]['isUnlocked'])
 			{
-				for(let x in c)
-				{
-					if(c.hasOwnProperty(x) && c[x]['rewards'][0] === db[b]['asset_id'] && c[x]['isUnlocked'])
-					{
-						pb.push({
-							name: db[b]['name'],
-							diplomacy: db[b]['requirements']['resources']['diplomacy'],
-						});
-					}
-				}
+				let b = bd.find(obj => (obj['asset_id'] === c[x]['rewards'][0]));
+
+				pb.push({
+					name: c[x]['name'],
+					diplomacy: b['staticResources']['resources']['diplomacy'],
+				});
 			}
 		}
-
 
 		// Array umdrehen
 		pb = pb.reverse();
@@ -189,7 +180,7 @@ let Outposts = {
 										pb.forEach((item, i)=> {
 
 											// letzte Element des Arrays
-											if (i === pb.length-1){
+											if (i === pb.length-1 && rest > 0){
 												let c = Math.ceil(rest / item['diplomacy']);
 												content.push(c + 'x ' + item['name']);
 

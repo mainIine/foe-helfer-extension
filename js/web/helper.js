@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 18:26 Uhr
+ * zu letzt bearbeitet:       23.09.19, 08:56 Uhr
  *
  * Copyright © 2019
  *
@@ -307,7 +307,7 @@ let HTML = {
 		if(number === 0){
 			return '-';
 		} else {
-			return new Intl.NumberFormat('de-DE', { style: 'decimal' }).format(number);
+			return Number(number).toLocaleString(i18n['Local']);
 		}
 	}
 };
