@@ -18,12 +18,12 @@ let i18n = {
 
 	"Boxes" : {
 		"OwnpartCalculator" : {
-			"Title": "Calculatrice de up à plusieurs",
+			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Niveau",
 			"ArcBonus": "Bonus Arche",
-			"PatronPart": "Patron share: ",
-			"OwnPart": "Contribution personnelle",
+			"PatronPart": "Contribution externe :",
+			"OwnPart": "Contribution personnelle :",
 			"LGTotalFP": "Total PFs",
 			"ExternalFP": "PFs externes",
 			"Order": "Séquence",
@@ -37,7 +37,7 @@ let i18n = {
 		},
 
 		"Calculator": {
-			"Title": "Calculatrice de coûts",
+			"Title": "Calcul de PFs pour les GMs des autres",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
@@ -53,18 +53,18 @@ let i18n = {
 			"Title" : "PFs - Productions",
 			"TotalFPs": "Total PFs pour tous les batiments: ",
 			"Amount": "Nombre",
-			"FPBar" : "PFs-Stock: "
+			"FPBar" : "PFs en stock: "
 		},
 
 		"Productions" : {
 			"Title" : "Vue d'ensemble des productions",
 			"SearchInput": "Chercher un batiment...",
-			"Total" : "Totalement: ",
+			"Total" : "Total: ",
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
 			"Headings" : {
-				"number" : "Nombre",
-				"amount" : "Lot",
+				"number" : "Occurences",
+				"amount" : "Nombre",
 				"earning" : "Récolte",
 				"greatbuilding" : "Grand monument",
 				"production" : "Bâtiment de production",
