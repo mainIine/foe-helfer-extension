@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 15:30 Uhr
+ * zu letzt bearbeitet:       23.09.19, 09:20 Uhr
  *
  * Copyright © 2019
  *
@@ -692,7 +692,7 @@ let Parts = {
 
 				let pn = $('#player-name').val(),
 					bn = $('#build-name').val(),
-					sn = $('#chain-scheme').val();
+					cs = $('#chain-scheme').val();
 
 				if(pn.length !=''){
 					localStorage.setItem('PlayerCopyName', pn);
@@ -703,7 +703,7 @@ let Parts = {
 				}
 
 				// Schema speichern
-				localStorage.setItem(Parts.CurrentBuildingID + 'Scheme', sn);
+				localStorage.setItem(Parts.CurrentBuildingID + 'Scheme', cs);
 
 				$(trigger).addClass('border-success');
 
@@ -746,10 +746,10 @@ let Parts = {
 				}
 
 				// Plätze wenn angehakt
-				if(sop[s]['d'] === 'u'){
+				if(sop[cs]['d'] === 'u'){
 					for(let i = 1; i < 6; i++){
 						if( $('#chain-p'+i).prop('checked') ){
-							let p = sol[s].replace(/i/, i);
+							let p = sol[cs].replace(/i/, i);
 							p = p.replace(/fp/, h[ (i  -1) ]);
 							parts.push(p);
 						}
@@ -758,7 +758,7 @@ let Parts = {
 				} else {
 					for(let i = 5; i > 0; i--){
 						if( $('#chain-p'+i).prop('checked') ){
-							let p = sol[s].replace(/i/, i);
+							let p = sol[cs].replace(/i/, i);
 							p = p.replace(/fp/, h[ (i  -1) ]);
 							parts.push(p);
 						}

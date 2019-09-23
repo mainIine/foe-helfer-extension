@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 15:27 Uhr
+ * zu letzt bearbeitet:       23.09.19, 08:56 Uhr
  *
  * Copyright © 2019
  *
@@ -256,7 +256,7 @@ let Menu = {
 	 */
 	calcFP_Btn: ()=> {
 
-		localStorage.removeItem('OtherActiveBuilding');
+		sessionStorage.removeItem('OtherActiveBuilding');
 
 		let btn_CalcBG = $('<div />').attr('id', 'calcFPs').addClass('hud-btn hud-btn-red');
 
@@ -266,8 +266,8 @@ let Menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function() {
-			let b = localStorage.getItem('OtherActiveBuilding'),
-				d = localStorage.getItem('OtherActiveBuildingData');
+			let b = sessionStorage.getItem('OtherActiveBuilding'),
+				d = sessionStorage.getItem('OtherActiveBuildingData');
 
 			if(b !== null){
 				Calculator.Show( JSON.parse(b), JSON.parse(d));
