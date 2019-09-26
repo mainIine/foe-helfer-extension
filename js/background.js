@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 15:23 Uhr
+ * zu letzt bearbeitet:       26.09.19, 18:13 Uhr
  *
  * Copyright © 2019
  *
@@ -27,7 +27,9 @@ chrome.runtime.onInstalled.addListener(() => {
 	});
 
 	if(!isDevMode()){
-		chrome.tabs.create({url: "https://foe-rechner.de/extension/chrome?v=" + version});
+		chrome.tabs.create({
+			url: 'https://foe-rechner.de/extension/chrome?v=' + version + '&lang=' + chrome.i18n.getUILanguage()
+		});
 	}
 });
 
@@ -40,31 +42,6 @@ chrome.runtime.onInstalled.addListener(() => {
 function isDevMode()
 {
 	return !('update_url' in chrome.runtime.getManifest());
-}
-
-
-/**
- * Sended via chrome.extension.getBackgroundPage() Daten an die chat-popup.js
- *
- * @returns {array}
- */
-function getDataForChat()
-{
-	let data = [];
-
-	chrome.storage.local.get(['OtherPlayers'], function(result) {
-		data['OtherPlayers'] = result.OtherPlayers;
-	});
-
-	chrome.storage.local.get(['current_guild_id'], function(result) {
-		data['current_guild_id'] = result.current_guild_id;
-	});
-
-	chrome.storage.local.get(['current_player_id'], function(result) {
-		data['current_player_id'] = result.current_player_id;
-	});
-
-	return data;
 }
 
 
@@ -125,5 +102,13 @@ chrome.runtime.onMessageExternal.addListener((request) => {
 
 	} else if(request.type === 'storeData'){
 		chrome.storage.local.set({ [request.key] : request.data });
+
+	} else if(request.type === 'send2Api') {
+		let data = request.data,
+			xhr = new XMLHttpRequest();
+
+		xhr.open('POST', request.url);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.send(JSON.stringify({data}));
 	}
 });

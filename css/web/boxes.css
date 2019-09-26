@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.09.19, 19:31 Uhr
+ * zu letzt bearbeitet:       26.09.19, 18:06 Uhr
  *  
  * Copyright © 2019
  *
@@ -196,6 +196,16 @@
 #costCalculator #costCalculatorBody strong.info,
 #costCalculator #costCalculatorBody tr.info-row strong {
 	color: #2196f3;
+}
+
+#costCalculatorBody .costFactorWrapper > span {
+	display: inline-block;
+	margin-right: 15px;
+}
+
+#costCalculatorBody .costFactorWrapper .btn-default:not(:first-child) {
+	display: inline-block;
+	margin-left: 3px;
 }
 
 #costCalculatorBody #costTable {
@@ -445,7 +455,7 @@
 	line-height: 1.4rem;
 	margin-bottom: 5px;
 	background-color: rgba(255,255,255, 0.07);
-	width: 70px;
+	width: 75px;
 	vertical-align: middle;
 	transition: background-color 0.3s linear;
 }
@@ -711,7 +721,7 @@
 	display: inline-block;
 	width: 171px;
 	height: 30px;
-	background-position: -509px -450px;
+	background-position: -474px -442px;
 }
 
 #SettingsBoxBody .item .item-row .check input.setting-check {

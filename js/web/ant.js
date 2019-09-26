@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.09.19, 09:57 Uhr
+ * zu letzt bearbeitet:       26.09.19, 17:57 Uhr
  *
  * Copyright © 2019
  *
@@ -14,8 +14,6 @@
 
 let ApiURL = 'https://api.foe-rechner.de/',
 	ActiveMap = 'main',
-	PlayerNames = [],
-	FriendNames = [],
 	ExtPlayerID = 0,
 	ExtGuildID = 0,
 	ExtWorld = '',
@@ -432,8 +430,6 @@ document.addEventListener("DOMContentLoaded", function(){
  * 		OwnLG: MainParser.OwnLG,
  * 		loadJSON: MainParser.loadJSON,
  * 		SocialbarList: MainParser.SocialbarList,
- * 		setStorage: MainParser.setStorage,
- * 		getStorage: (function(*=): string),
  * 		Championship: MainParser.Championship,
  * 		send2Server: MainParser.send2Server,
  * 		OtherPlayersMotivation: MainParser.OtherPlayersMotivation,
@@ -447,8 +443,6 @@ let MainParser = {
 
 	Language: 'en',
 
-	PossibleLangs: ['de','en', 'fr'],
-
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
 		'happiness' : 'happiness_amount',
@@ -456,6 +450,7 @@ let MainParser = {
 		'money_boost' : 'coin_production'
 	},
 
+	
 	/**
 	 * Speichert alle aktiven Boosts
 	 */
@@ -467,29 +462,13 @@ let MainParser = {
 		'supply_production': 0
 	},
 
+	
 	/**
 	 *
 	 */
 	setLanguage: ()=>{
 		// Translation
-		let lang = window.navigator.language.split('-')[0];
-
-		// gibt es eine Übersetzung?
-		if(PossibleLangs.includes(lang) === false)
-		{
-			lang = 'en';
-		}
-
-		MainParser.Language = lang;
-	},
-
-
-	/**
-	 *
-	 * @returns {string}
-	 */
-	getLanguage: ()=>{
-		return MainParser.Language;
+		MainParser.Language = GuiLng;
 	},
 
 
@@ -526,19 +505,13 @@ let MainParser = {
 	},
 
 
-	// Wert mit key und value in den localStorage schreiben
-	setStorage: (k, v)=> {
-		localStorage.setItem(k, v);
-	},
-
-
-	// einen Wert aus dem localStorage holen
-	getStorage: (k)=> {
-		return localStorage.getItem(k);
-	},
-
-
-	// der storage hat immer schon einen Zeitaufschlag
+	/**
+	 * Der Storage hat immer schon einen Zeitaufschlag
+	 *
+	 * @param actual
+	 * @param storage
+	 * @returns {string|boolean}
+	 */
 	compareTime: (actual, storage)=> {
 
 		// es gibt noch keinen Eintrag
@@ -576,16 +549,27 @@ let MainParser = {
 	},
 
 
-	// prüfen ob ein Update notwendig ist
+	/**
+	 * prüfen ob ein Update notwendig ist
+	 *
+	 * @param ep
+	 * @returns {*}
+	 */
 	checkNextUpdate: (ep)=> {
-		let s = MainParser.getStorage(ep),
+		let s = localStorage.getItem(ep),
 			a = MainParser.getCurrentDateTime();
 
 		return MainParser.compareTime(a, s);
 	},
 
 
-	// Daten nach "Hause" schicken
+	/**
+	 * Daten nach "Hause" schicken
+	 *
+	 * @param data
+	 * @param ep
+	 * @param successCallback
+	 */
 	send2Server: (data, ep, successCallback)=> {
 
 		let pID = ExtPlayerID,
@@ -612,7 +596,13 @@ let MainParser = {
 	},
 
 
-	// Daten an foe-rechner schicken, wenn aktiviert
+	/**
+	 * Daten an foe-rechner schicken, wenn aktiviert
+	 *
+	 * @param data
+	 * @param ep
+	 * @param successCallback
+	 */
 	apiCall: (data, ep, successCallback)=> {
 
 		let pID = ExtPlayerID,
@@ -697,117 +687,13 @@ let MainParser = {
 
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
-				MainParser.apiCall(player, 'OtherPlayers');
-			}
-
-		}
-
-		// MainParser.ParseOtherPlayers(d);
-	},
-
-
-	/**
-	 * Alle Namen aller Spieler ermitteln (Gilde,Freunde,Nachbarn)
-	 *
-	 * @param d
-	 * @constructor
-	 */
-	ParseOtherPlayers: (d)=> {
-
-		for(let k in d){
-
-			if(d.hasOwnProperty(k)){
-
-				// Gildenmitglieder
-				if(d[k]['is_guild_member'] === true){
-					PlayerNames.push({
-						id:d[k]['player_id'],
-						name:d[k]['name']
-					});
-				}
-
-				/*
-				// Nachbarn
-				if(d[k]['is_neighbor'] === true){
-					NeighborNames.push({
-						id:d[k]['player_id'],
-						name:d[k]['name']
-					});
-				}
-				*/
-
-				// Freunde
-				if(d[k]['is_friend'] === true){
-					FriendNames.push({
-						id:d[k]['player_id'],
-						name:d[k]['name']
-					});
-				}
+				chrome.runtime.sendMessage(extID, {
+					type: 'send2Api',
+					url: ApiURL + 'OtherPlayers/?player_id=' + ExtGuildID + '&guild_id=' + ExtPlayerID + '&world=' + ExtWorld,
+					data: JSON.stringify(player)
+				});
 			}
 		}
-
-
-		// Gildenmitglieder gefunden, sichern!
-		if(PlayerNames.length > 0){
-
-			PlayerNames = PlayerNames.map(JSON.stringify).reverse()
-				.filter(function(item, index, arr){
-					return arr.indexOf(item, index + 1) === -1;
-				})
-				.reverse().map(JSON.parse);
-
-			localStorage.setItem('GildMembers', JSON.stringify(PlayerNames));
-
-			// zur background.js schicken, dort wird es gesichert für den Chat und den Kostenrechner
-			chrome.runtime.sendMessage(extID, {
-				type: 'storeData',
-				key: 'OtherPlayers',
-				data: JSON.stringify(PlayerNames)
-			});
-
-			// war der falsche Tab, gibt es evt eine Sicherung?
-		} else if(localStorage.getItem('GildMembers') !== null){
-			let PlayerN = JSON.parse( localStorage.getItem('GildMembers') );
-
-			PlayerNames = PlayerNames.concat(PlayerN);
-		}
-
-
-		// Freunde gefunden?
-		if(FriendNames.length > 0){
-			localStorage.setItem('FriendNames', JSON.stringify(FriendNames));
-
-			PlayerNames = PlayerNames.concat(FriendNames);
-
-			// falscher Tab, evt ist eine Sicherung da?
-		} else if(localStorage.getItem('FriendNames') !== null){
-			FriendNames = JSON.parse( localStorage.getItem('FriendNames') );
-
-			PlayerNames = PlayerNames.concat(FriendNames);
-		}
-
-		/*
-		// Nachbarn gefunden?
-		if(NeighborNames.length > 0){
-			localStorage.setItem('NeighborNames', JSON.stringify(NeighborNames));
-
-			PlayerNames = PlayerNames.concat(NeighborNames);
-
-		// falscher Tab, evt ist eine Sicherung da?
-		} else if(localStorage.getItem('NeighborNames') !== null){
-			NeighborNames = JSON.parse( localStorage.getItem('NeighborNames') );
-
-			PlayerNames = PlayerNames.concat(NeighborNames);
-		}
-		*/
-
-
-		// Unique - Putzi Putzi
-		PlayerNames = PlayerNames.map(JSON.stringify).reverse()
-			.filter(function(item, index, arr){
-				return arr.indexOf(item, index + 1) === -1;
-			})
-			.reverse().map(JSON.parse);
 	},
 
 
@@ -846,7 +732,7 @@ let MainParser = {
 
 			// nach Erfolg, Zeitstempel in den LocalStorage
 			if(r['status'] === 'OK'){
-				MainParser.setStorage(lg_name, MainParser.getAddedDateTime(0, 15));
+				localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
 			}
 		});
 	},
@@ -913,7 +799,7 @@ let MainParser = {
 
 				// nach Erfolg, Zeitstempel in den LocalStorage
 				if(r['status'] === 'OK'){
-					MainParser.setStorage('LG-' + d['other_player']['player_id'], MainParser.getAddedDateTime(2, 0));
+					localStorage.setItem('LG-' + d['other_player']['player_id'], MainParser.getAddedDateTime(2, 0));
 					MainParser.showInfo(d['other_player']['name'] + ' geupdated', r['msg']);
 				} else {
 					MainParser.showInfo('Fehler!', r['msg']);
@@ -923,6 +809,11 @@ let MainParser = {
 	},
 
 
+	/**
+	 *
+	 * @param d
+	 * @constructor
+	 */
 	GuildExpedition: (d)=> {
 
 		// ab zum Server
@@ -930,7 +821,7 @@ let MainParser = {
 		{
 			// nach Erfolg, Zeitstempel in den LocalStorage
 			if(r['status'] === 'OK'){
-				MainParser.setStorage('GuildExpedition', MainParser.getAddedDateTime(2, 0));
+				localStorage.setItem('GuildExpedition', MainParser.getAddedDateTime(2, 0));
 				MainParser.showInfo('Update durchgeführt', r['msg']);
 			} else {
 				MainParser.showInfo('Fehler!', r['msg']);
@@ -939,6 +830,10 @@ let MainParser = {
 	},
 
 
+	/**
+	 * @param d
+	 * @constructor
+	 */
 	Championship: (d)=> {
 
 		let data = [],
@@ -954,13 +849,12 @@ let MainParser = {
 
 			// nach Erfolg, Zeitstempel in den LocalStorage
 			if(r['status'] === 'OK'){
-				MainParser.setStorage('Championship', MainParser.getAddedDateTime(2, 0));
+				localStorage.setItem('Championship', MainParser.getAddedDateTime(2, 0));
 				MainParser.showInfo('Update durchgeführt', r['msg']);
 			} else {
 				MainParser.showInfo('Fehler!', r['msg']);
 			}
 		});
-
 	},
 
 
@@ -1021,6 +915,12 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Eigene Daten updaten (Gildenwechsel etc)
+	 *
+	 * @param d
+	 * @constructor
+	 */
 	SelfPlayer: (d)=>{
 
 		if(Settings.GetSetting('GlobalSend') === false)
@@ -1036,7 +936,11 @@ let MainParser = {
 		};
 
 		// ab zum Server
-		MainParser.apiCall(data, 'SelfPlayer');
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'SelfPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(data)
+		});
 	},
 
 
@@ -1053,7 +957,7 @@ let MainParser = {
 
 			// nach Erfolg, Zeitstempel in den LocalStorage
 			if(r['status'] === 'OK'){
-				MainParser.setStorage('GreatBuildings', MainParser.getAddedDateTime(0, 30));
+				localStorage.setItem('GreatBuildings', MainParser.getAddedDateTime(0, 30));
 				MainParser.showInfo('Update durchgeführt', r['msg']);
 			} else {
 				MainParser.showInfo('Fehler!', r['msg']);
@@ -1129,8 +1033,18 @@ let MainParser = {
 	},
 
 
+	/**
+	 * LGs des Spielers speichern
+	 *
+	 * @param d
+	 * @constructor
+	 */
 	SaveLGInventory: (d)=>{
-		MainParser.apiCall(d, 'LGInventory');
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'LGInventory/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(d)
+		});
 	},
 
 
@@ -1188,13 +1102,13 @@ let MainParser = {
 
 				// nach Erfolg, Zeitstempel in den LocalStorage
 				if(r['status'] === 'OK'){
-					MainParser.setStorage('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
+					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
 					// Meldung ausgeben
 					MainParser.showInfo('Spieler gefunden', r['msg'], 1600);
 
 				} else if (r['status'] === 'NOTICE') {
-					MainParser.setStorage('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
+					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
 					// Meldung ausgeben
 					MainParser.showInfo('Alles aktuell!', r['msg'], 6000);
@@ -1229,7 +1143,7 @@ let MainParser = {
 
 		if(data.length > 0){
 			MainParser.send2Server(data, 'FriendsList', function(r){
-				MainParser.setStorage('FriendsList', MainParser.getAddedDateTime(6, 0));
+				localStorage.setItem('FriendsList', MainParser.getAddedDateTime(6, 0));
 			});
 		}
 	},

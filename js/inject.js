@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.09.19, 11:01 Uhr
+ * zu letzt bearbeitet:       26.09.19, 18:01 Uhr
  *
  * Copyright © 2019
  *
@@ -16,7 +16,20 @@
 let tid = setInterval(InjectCode, 5),
 	manifestData = chrome.runtime.getManifest(),
 	PossibleLangs = ['de','en','fr'],
+	lng = chrome.i18n.getUILanguage(),
 	v = manifestData.version;
+
+// wir brauchen nur den ersten Teil
+if(lng.indexOf('-') > 0)
+{
+	lng = lng.split('-')[0];
+}
+
+// gibt es eine Übersetzung?
+if(PossibleLangs.includes(lng) === false)
+{
+	lng = 'en';
+}
 
 // muss sehr früh in den head-Tag
 function InjectCode()
@@ -25,7 +38,7 @@ function InjectCode()
 
 		let script = document.createElement('script');
 
-		script.innerText = "let extID='"+ chrome.runtime.id + "',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
+		script.innerText = "let extID='"+ chrome.runtime.id + "',GuiLng='" + lng + "',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
 		document.head.appendChild(script);
 
 		// Stylesheet einfügen
@@ -46,17 +59,8 @@ function InjectCode()
 }
 
 
-// Translation
-let lang = window.navigator.language.split('-')[0];
-
-// gibt es eine Übersetzung?
-if(PossibleLangs.includes(lang) === false)
-{
-	lang = 'de';
-}
-
 let i18nJS = document.createElement('script');
-i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lang + '.js?v=' + v);
+i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v);
 i18nJS.id = 'i18n-script';
 i18nJS.onload = function(){
 	this.remove();

@@ -1,5 +1,23 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.10
+
+**Update**
+- Kostenrechner:
+    - Formel verbessert
+    - wenn der eingestellte Arche Bonus nicht 85% oder 90% ist => neue Buttons zum schnellen umschalten der Erträge
+
+**Bugfix**
+- Außenposten:
+    - Erkennung der Japanischen Außenposten verbessert
+    
+- Extension:
+    - Chrome GUI Sprache wird genutzt (genauer) [#107](https://github.com/dsiekiera/foe-helfer-extension/issues/107) 
+  
+- Eigentanteilsrechner
+    - in englischer Sprache brach der Text unschön um [#106](https://github.com/dsiekiera/foe-helfer-extension/issues/106)  
+---
+
 #####v2.3.9.1
 
 **BugFix**
