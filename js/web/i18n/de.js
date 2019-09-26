@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 15:32 Uhr
+ * zu letzt bearbeitet:       26.09.19, 15:25 Uhr
  *
  * Copyright © 2019
  *
@@ -105,7 +105,7 @@ let i18n = {
 		},
 		"Calculator" : {
 			"Title" : "Kostenrechner",
-			"Desc" : "Rechnet für Dich alle Plätze aus und ermittelt Snipe-Bare FPs",
+			"Desc" : "Rechnet für Dich alle Plätze aus und ermittelt snipe-bare FPs",
 			"Warning": "Deaktiviert: Öffne zuerst das LG eines anderen Spielers!"
 		},
 		"OwnpartCalculator" : {
@@ -123,7 +123,7 @@ let i18n = {
 		},
 		"Forum" : {
 			"Title" : "Forum",
-			"Desc" : "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum reden..."
+			"Desc" : "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum Reden..."
 		},
 		"Ask" : {
 			"Title" : "Frage / Antwort",
@@ -151,15 +151,15 @@ let i18n = {
 		},
 		"SendTavernInfo": {
 			"Title" : "Moppel Aktivität",
-			"Desc" : "Sollen beim aufrufen der Events die Moppel-Aktivitäten übertragen werden?"
+			"Desc" : "Sollen beim Aufrufen der Events die Moppel-Aktivitäten übertragen werden?"
 		},
 		"SendGEXInfo": {
 			"Title" : "GEX Auswertungen",
-			"Desc" : "Übermittelt beim klicken in der GEX auf Platzierungen oder Rangliste die Daten"
+			"Desc" : "Übermittelt beim Llicken in der GEX auf Platzierungen oder Rangliste die Daten"
 		},
 		"SendGildMemberLGInfo": {
 			"Title" : "LG Daten anderer Gildenmitglieder",
-			"Desc" : "Beim besuchen von anderen Gildenmitgliedern werden sämtliche LG Daten an foe-rechner.de geschickt, wenn Global aktivert"
+			"Desc" : "Beim Besuchen von anderen Gildenmitgliedern werden sämtliche LG Daten an foe-rechner.de geschickt, wenn Global aktivert"
 		},
 		"ShowNeighborsGoods": {
 			"Title" : "Nachbarschafts Ernte",

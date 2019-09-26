@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.09.19, 10:06 Uhr
+ * zu letzt bearbeitet:       26.09.19, 11:44 Uhr
  *
  * Copyright © 2019
  *
@@ -86,11 +86,11 @@ let Outposts = {
 			cn = localStorage.getItem('OutpostConsumablesCurrencyName'),
 			cv = localStorage.getItem('OutpostConsumablesCurrencyValue'),
 			type = localStorage.getItem('OutpostConsumablesCurrencyType'),
-			all = c[ c.length-1 ]['requirements']['resources'],
+			all = Outposts.Order[type],
 			pb = [];
 
-
 		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.Service[type].name );
+
 
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		for(let x in c)
@@ -109,8 +109,6 @@ let Outposts = {
 		// Array umdrehen
 		pb = pb.reverse();
 
-		localStorage.setItem('OutpostConsumablesTypes', JSON.stringify(all));
-
 		t.push('<p class="text-right"><strong>' + GoodsNames[cn] + ': ' + Number(cv).toLocaleString('de-DE') + '</strong></p>');
 
 		t.push('<table class="foe-table">');
@@ -119,12 +117,15 @@ let Outposts = {
 		t.push('<th>' + i18n['Boxes']['Outpost']['TitleBuildings'] + '</th>');
 		t.push('<th class="text-center">' + i18n['Boxes']['Outpost']['TitleFree'] + '</th>');
 
-
-		for(let name in pr)
+		// Güter durchsteppen
+		for(const good of all)
 		{
-			if(pr.hasOwnProperty(name))
+			t.push('<th class="text-center">' + GoodsNames[ good ] + '</th>');
+
+			// falls nicht alle übermittelt wurde, mit "0" auffüllen
+			if(pr[good] === undefined)
 			{
-				t.push('<th class="text-center">' + GoodsNames[ name ] + '</th>');
+				pr[good] = 0;
 			}
 		}
 
@@ -137,7 +138,6 @@ let Outposts = {
 
 		for(let i in c)
 		{
-
 			if(c.hasOwnProperty(i))
 			{
 				let unl = c[i]['isUnlocked'];
@@ -155,78 +155,75 @@ let Outposts = {
 
 				let res = c[i]['requirements']['resources'];
 
-				for(let name in pr)
+				for(const good of all)
 				{
-					if(pr.hasOwnProperty(name))
+					if(res[good] !== undefined && res[good] > 0)
 					{
-						if(res[name] !== undefined && res[name] > 0)
+						t.push('<td class="text-center">');
+
+						// Zeile mit dem nächsten unerforschtem Gebäude
+						if(ulnc === false && unl === false)
 						{
-							t.push('<td class="text-center">');
 
-							// Zeile mit dem nächsten unerforschtem Gebäude
-							if(ulnc === false && unl === false)
+							t.push( ( res[good] > pr[good] ? res[good] + ' <small class="text-danger">' + (pr[good] - res[good]) + '</small>' : '<span class="text-success">' + res[good] + '</span>' ) );
+
+							// Empfehlung für Diplomatie
+							if(good === 'diplomacy')
 							{
+								let content = [],
+									rest = (res[good] - pr[good]);
 
-								t.push( ( res[name] > pr[name] ? res[name] + ' <small class="text-danger">' + (pr[name] - res[name]) + '</small>' : '<span class="text-success">' + res[name] + '</span>' ) );
-
-								// Empfehlung für Diplomatie
-								if(name === 'diplomacy')
+								if(rest > 0)
 								{
-									let content = [],
-										rest = (res[name] - pr[name]);
+									pb.forEach((item, i)=> {
 
-									if(rest > 0)
-									{
-										pb.forEach((item, i)=> {
+										// letzte Element des Arrays
+										if (i === pb.length-1 && rest > 0){
+											let c = Math.ceil(rest / item['diplomacy']);
+											content.push(c + 'x ' + item['name']);
 
-											// letzte Element des Arrays
-											if (i === pb.length-1 && rest > 0){
-												let c = Math.ceil(rest / item['diplomacy']);
+										} else {
+											let c = Math.floor(rest / item['diplomacy']);
+
+											// passt in den Rest
+											if(c > 0) {
+												rest -= (item['diplomacy'] * c);
 												content.push(c + 'x ' + item['name']);
-
-											} else {
-												let c = Math.floor(rest / item['diplomacy']);
-
-												// passt in den Rest
-												if(c > 0) {
-													rest -= (item['diplomacy'] * c);
-													content.push(c + 'x ' + item['name']);
-												}
 											}
-										});
+										}
+									});
 
-										t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
-									}
-								}
-
-							} else {
-
-								// bereits erforscht
-								if(unl === true)
-								{
-									t.push('<span class="text-muted">' + res[name] + '</span>');
-								} else {
-									t.push(res[name]);
+									t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
 								}
 							}
-
-							t.push('</td>');
-
-							if(unl === false && name !== 'diplomacy')
-							{
-								if(ct[name] === undefined)
-								{
-									ct[name] = res[name];
-								} else {
-									ct[name] += res[name];
-								}
-
-							}
-
 
 						} else {
-							t.push('<td></td>');
+
+							// bereits erforscht
+							if(unl === true)
+							{
+								t.push('<span class="text-muted">' + res[good] + '</span>');
+							} else {
+								t.push(res[good]);
+							}
 						}
+
+						t.push('</td>');
+
+						if(unl === false && good !== 'diplomacy')
+						{
+							if(ct[good] === undefined)
+							{
+								ct[good] = res[good];
+							} else {
+								ct[good] += res[good];
+							}
+
+						}
+
+
+					} else {
+						t.push('<td></td>');
 					}
 				}
 
@@ -242,33 +239,25 @@ let Outposts = {
 
 		t.push('<td>' + i18n['Boxes']['Outpost']['DescRequired'] + '</td><td></td>');
 
-		for(let name in pr)
+		for(const good of all)
 		{
-			if(pr.hasOwnProperty(name))
+			if(good !== 'diplomacy')
 			{
-				if(name !== 'diplomacy')
-				{
-					t.push('<td class="text-center">' + ct[ name ] + '</td>');
-				} else {
-					t.push('<td></td>');
-				}
-
+				t.push('<td class="text-center">' + ct[ good ] + '</td>');
+			} else {
+				t.push('<td></td>');
 			}
 		}
 
 		t.push('</tr>');
 
-
 		t.push('<tr class="resource-row">');
 
 		t.push('<td>' + i18n['Boxes']['Outpost']['DescInStock'] + '</td><td></td>');
 
-		for(let name in pr)
+		for(const good of all)
 		{
-			if(pr.hasOwnProperty(name))
-			{
-				t.push('<td class="text-center">' + pr[ name ] + '</td>');
-			}
+			t.push('<td class="text-center">' + pr[ good ] + '</td>');
 		}
 
 		t.push('</tr>');
@@ -278,23 +267,20 @@ let Outposts = {
 
 		t.push('<td><strong>' + i18n['Boxes']['Outpost']['DescStillMissing'] + '</strong></td><td colspan=""></td>');
 
-		for(let name in pr)
+		for(const good of all)
 		{
-			if(pr.hasOwnProperty(name))
+			if(good !== 'diplomacy')
 			{
-				if(name !== 'diplomacy')
-				{
-					let tt = (pr[name] - ct[name]);
+				let tt = (pr[good] - ct[good]);
 
-					//if(tt < 0){
-						t.push('<td class="text-center text-' + (tt < 0 ? 'danger' : 'success') + '">' + tt + '</td>');
-					//} else {
-					//	t.push('<td class="text-center">-</td>');
-					//}
+				//if(tt < 0){
+					t.push('<td class="text-center text-' + (tt < 0 ? 'danger' : 'success') + '">' + tt + '</td>');
+				//} else {
+				//	t.push('<td class="text-center">-</td>');
+				//}
 
-				} else {
-					t.push('<td></td>');
-				}
+			} else {
+				t.push('<td></td>');
 			}
 		}
 
