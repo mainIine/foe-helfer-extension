@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 18:01 Uhr
+ * zu letzt bearbeitet:       01.10.19, 13:56 Uhr
  *
  * Copyright © 2019
  *
@@ -16,8 +16,9 @@
 let tid = setInterval(InjectCode, 5),
 	manifestData = chrome.runtime.getManifest(),
 	PossibleLangs = ['de','en','fr'],
-	lng = chrome.i18n.getUILanguage(),
-	v = manifestData.version;
+	lng = chrome.i18n.getUILanguage();
+
+const v = manifestData.version;
 
 // wir brauchen nur den ersten Teil
 if(lng.indexOf('-') > 0)
@@ -122,4 +123,4 @@ setTimeout(()=>{
 			(document.head || document.documentElement).appendChild(sc);
 		}
 	}
-}, 500);
+}, 50);
