@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 15:27 Uhr
+ * zu letzt bearbeitet:       27.09.19, 19:27 Uhr
  *
  * Copyright © 2019
  *
@@ -54,7 +54,7 @@ let Productions = {
 	 */
 	init: ()=> {
 
-		moment.locale(MainParser.Language);
+		moment.locale(i18n['Local']);
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 

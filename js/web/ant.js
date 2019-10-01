@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 17:57 Uhr
+ * zu letzt bearbeitet:       30.09.19, 08:54 Uhr
  *
  * Copyright © 2019
  *
@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
 				// Ernten anderer Spieler
-				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== ExtGuildID && Settings.GetSetting('ShowNeighborsGoods')){
+				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== ExtGuildID && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== 7965 && Settings.GetSetting('ShowNeighborsGoods')){
 					Reader.OtherPlayersBuildings(OtherPlayersVisits['responseData']);
 				}
 

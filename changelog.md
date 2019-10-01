@@ -6,6 +6,12 @@
 - Extension:
     - Spielupdate von Inno läd das komplette Game schneller, Extension entsprechend angepasst [#116](https://github.com/dsiekiera/foe-helfer-extension/issues/116#issuecomment-537002900)
 
+- Produkt Übersicht:
+    - falsche Sprache bei relativer Zeitangabe angepasst
+    
+- Kosterrechner:
+    - "flackern" vor der Berechnung verringert
+
 ---
 
 #####v2.3.10

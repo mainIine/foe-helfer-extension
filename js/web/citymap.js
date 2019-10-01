@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.09.19, 18:04 Uhr
+ * zu letzt bearbeitet:       28.09.19, 17:17 Uhr
  *
  * Copyright © 2019
  *
@@ -17,6 +17,12 @@ let CityMap = {
 	CityData: null,
 	ScaleUnit: 1,
 
+	/**
+	 * Zündung...
+	 *
+	 * @param Data
+	 * @param Title
+	 */
 	init: (Data = false, Title = 'Deine Stadt...')=> {
 
 		// es wurde bereits eine Scallierung gesetzt?
@@ -57,6 +63,12 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Stadtkarte vorbereiten => Menü rein
+	 *
+	 * @param Title
+	 * @constructor
+	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
 			CityView = localStorage.getItem('CityMapView') || 'skew',
@@ -109,6 +121,11 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Erzeugt ein Raster für den Hintergrund
+	 *
+	 * @constructor
+	 */
 	BuildGrid:()=> {
 
 		let xWidth = 60,
@@ -129,6 +146,12 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Container gemäß den Koordianten zusammensetzen
+	 *
+	 * @param Data
+	 * @constructor
+	 */
 	SetBuildings: (Data = null)=> {
 
 		let MapData,

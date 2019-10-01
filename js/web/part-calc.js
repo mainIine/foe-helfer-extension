@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.09.19, 09:20 Uhr
+ * zu letzt bearbeitet:       28.09.19, 16:59 Uhr
  *
  * Copyright © 2019
  *
@@ -61,7 +61,7 @@ let Parts = {
 		});
 
 		// Es wird ein exerner Platz eingetragen
-		$('body').on('blur', '.own-part-input', function(){
+		$('body').on('blur', '.ext-part-input', function(){
 			Parts.collectExternals();
 		});
 	},
@@ -74,7 +74,7 @@ let Parts = {
 		Parts.InputTotal = 0;
 		Parts.InputCount = 0;
 
-		$('.own-part-input').each(function(i){
+		$('.ext-part-input').each(function(i){
 
 			let v = $(this).val();
 
@@ -415,7 +415,7 @@ let Parts = {
 
 		h.push('<td class="text-center">' + bps[1] + '</td>');
 		h.push('<td class="text-center">' + meds[1] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[0]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.InputOriginal[0]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
@@ -447,7 +447,7 @@ let Parts = {
 
 		h.push('<td class="text-center">' + bps[2] + '</td>');
 		h.push('<td class="text-center">' + meds[2] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[1]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.InputOriginal[1]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
@@ -476,7 +476,7 @@ let Parts = {
 
 		h.push('<td class="text-center">' + bps[3] + '</td>');
 		h.push('<td class="text-center">' + meds[3] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[2]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.InputOriginal[2]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
@@ -509,7 +509,7 @@ let Parts = {
 
 		h.push('<td class="text-center">' + bps[4] + '</td>');
 		h.push('<td class="text-center">' + meds[4] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[3]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.InputOriginal[3]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
@@ -541,7 +541,7 @@ let Parts = {
 
 		h.push('<td class="text-center">' + bps[5] + '</td>');
 		h.push('<td class="text-center">' + meds[5] + '</td>');
-		h.push('<td class="text-center"><input min="0" step="1" type="number" class="own-part-input" value="' + (input !== undefined ? Parts.InputOriginal[4]['value'] : 0 ) + '"></td>');
+		h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.InputOriginal[4]['value'] : 0 ) + '"></td>');
 		h.push('</tr>');
 
 
