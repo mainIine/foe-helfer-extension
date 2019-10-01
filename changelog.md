@@ -1,5 +1,13 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.10.1
+
+**Bugfix**
+- Extension:
+    - Spielupdate von Inno läd das komplette Game schneller, Extension entsprechend angepasst [#116](https://github.com/dsiekiera/foe-helfer-extension/issues/116#issuecomment-537002900)
+
+---
+
 #####v2.3.10
 
 **Update**

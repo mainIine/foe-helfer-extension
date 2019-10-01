@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 15:25 Uhr
+ * zu letzt bearbeitet:       01.10.19, 13:26 Uhr
  *
  * Copyright © 2019
  *
@@ -155,7 +155,7 @@ let i18n = {
 		},
 		"SendGEXInfo": {
 			"Title" : "GEX Auswertungen",
-			"Desc" : "Übermittelt beim Llicken in der GEX auf Platzierungen oder Rangliste die Daten"
+			"Desc" : "Übermittelt beim Klicken in der GEX auf Platzierungen oder Rangliste die Daten"
 		},
 		"SendGildMemberLGInfo": {
 			"Title" : "LG Daten anderer Gildenmitglieder",
