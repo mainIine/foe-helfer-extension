@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 15:08 Uhr
+ * zu letzt bearbeitet:       01.10.19, 09:16 Uhr
  *
  * Copyright © 2019
  *
@@ -127,14 +127,36 @@ let Calculator = {
 		h.push('</div>');
 
 
-		h.push('<table id="costTable" class="foe-table"></table>');
+		h.push('<table id="costTable" class="foe-table">');
+
+		h.push('<thead>' +
+				'<th>#</th>' +
+				'<th>'+ i18n['Boxes']['Calculator']['Earnings'] +'</th>' +
+				'<th>BP</th>' +
+				'<th>Meds</th>' +
+				'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
+				'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
+				'</thead>');
+
+		//for(let i = 0; i > 4; i++)
+		//{
+			h.push('<tbody>');
+			h.push('<tr><td><strong>1</strong></td><td>-</td><td>-</td><td>-<td><td>-</td></tr>');
+			h.push('<tr><td><strong>2</strong></td><td>-</td><td>-</td><td>-<td><td>-</td></tr>');
+			h.push('<tr><td><strong>3</strong></td><td>-</td><td>-</td><td>-<td><td>-</td></tr>');
+			h.push('<tr><td><strong>4</strong></td><td>-</td><td>-</td><td>-<td><td>-</td></tr>');
+			h.push('<tr><td><strong>5</strong></td><td>-</td><td>-</td><td>-<td><td>-</td></tr>');
+			h.push('</tbody>');
+		//}
+		
+
+		h.push('</table>');
 
 		// in die bereits vorhandene Box drücken
 		div.find('#costCalculatorBody').html(h.join(''));
 
 		// alle Ansichten aktualisieren
 		setTimeout(()=>{
-			console.log('Im Timeout');
 			StrategyPoints.ForgePointBar(Calculator.AvailableFP);
 			Calculator.CalcBody(arc);
 		},200);
