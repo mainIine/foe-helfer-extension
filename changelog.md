@@ -1,5 +1,17 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.10.2
+
+**Bugfix**
+- Außenposten:
+	- Anzeige der Güter für alle Außenposten gefixt [#108](https://github.com/dsiekiera/foe-helfer-extension/issues/108) [#110](https://github.com/dsiekiera/foe-helfer-extension/issues/110)
+	- Formatierung nach Sprache gefixt
+
+- Webseite:
+    - Moppelaktivitäten werden wieder sauber erfasst [#119](https://github.com/dsiekiera/foe-helfer-extension/issues/119)
+
+---
+
 #####v2.3.10.1
 
 **Bugfix**
