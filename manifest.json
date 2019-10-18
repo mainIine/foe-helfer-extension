@@ -3,7 +3,7 @@
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
 
-	"version": "2.3.11.1",
+	"version": "2.3.11.2",
 	"manifest_version": 2,
 	"permissions": [
 		"activeTab",
