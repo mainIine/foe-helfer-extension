@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 17:54 Uhr
+ * zu letzt bearbeitet:       18.10.19, 23:46 Uhr
  *
  * Copyright © 2019
  *
@@ -199,6 +199,10 @@ let i18n = {
 		"ShowOutpost": {
 			"Title" : "Outpost resources",
 			"Desc" : "Displays a menu item for Outpost Resources <br><u>Note:</u> Game Reload required."
+		},
+		"PreScanLGList": {
+			"Title" : "Preliminary scan of the LG overview",
+			"Desc" : "Scans the overview list of the neighbor when opening and determines possibly fillable LGs. <br> <u> Note: </u> Since the final seats are only transmitted when opening a LG, the result may differ. The scan is saved, however."
 		},
 		"CalculatorShowNegativ": {
 			"Title" : "Negative profit in the cost calculator",
