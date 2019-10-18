@@ -1,5 +1,25 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.11
+**Update**
+- Kostenrechner:
+    - scannt bereits in der Übersicht ob es Gebäude gibt in die man investieren könnte und mekrt sich diese
+    - Rest-FP Anzeige bis zum leveln
+    - Zusätzliche Buttons für Prozente ordnen sich korrekt ein
+
+- Info Box:
+    - Filter für das selektive anzeigen von Meldungen [#121](https://github.com/dsiekiera/foe-helfer-extension/issues/121)
+    - "Box leeren" Button hinzugefügt
+    - wenn gewünscht, kann ein Ton aktivert werden um beim wechseln des Tabs einen Ton zu hören
+    
+- Produkt Übersicht:
+    - Rathaus aus der Münzboost Berechnung entfernt [#122](https://github.com/dsiekiera/foe-helfer-extension/issues/122)
+    - Sticky Tabellenköpfe (bleiben beim Scollen oben stehen)
+    - Tab Icons aufgrund eines Inno-Updates gefixt
+    - Sortierungen der ersten 4 Tabs verbessert
+
+---
+
 #####v2.3.10.2
 
 **Bugfix**

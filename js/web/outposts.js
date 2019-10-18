@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 11:44 Uhr
+ * zu letzt bearbeitet:       07.10.19, 16:51 Uhr
  *
  * Copyright © 2019
  *
@@ -109,7 +109,7 @@ let Outposts = {
 		// Array umdrehen
 		pb = pb.reverse();
 
-		t.push('<p class="text-right"><strong>' + GoodsNames[cn] + ': ' + Number(cv).toLocaleString('de-DE') + '</strong></p>');
+		t.push('<p class="text-right"><strong>' + GoodsNames[cn] + ': ' + HTML.Format(cv) + '</strong></p>');
 
 		t.push('<table class="foe-table">');
 		t.push('<thead>');
@@ -273,11 +273,7 @@ let Outposts = {
 			{
 				let tt = (pr[good] - ct[good]);
 
-				//if(tt < 0){
-					t.push('<td class="text-center text-' + (tt < 0 ? 'danger' : 'success') + '">' + tt + '</td>');
-				//} else {
-				//	t.push('<td class="text-center">-</td>');
-				//}
+				t.push('<td class="text-center text-' + (tt < 0 ? 'danger' : 'success') + '">' + tt + '</td>');
 
 			} else {
 				t.push('<td></td>');
@@ -355,7 +351,7 @@ let Outposts = {
 		{
 			if(Outposts.Currency.hasOwnProperty(name))
 			{
-				if(d[name] !== undefined)
+				if(d[name] !== undefined && Outposts.Currency[name]['type'] === type)
 				{
 
 					localStorage.setItem('OutpostConsumablesCurrencyName', Outposts.Currency[name]['currency']);
@@ -376,7 +372,10 @@ let Outposts = {
 
 		localStorage.setItem('OutpostConsumablesResources', JSON.stringify(pr));
 
-		// Outposts.BuildInfoBoxContent();
+		if( $('#outpostConsumables').is(':visible') )
+		{
+			Outposts.BuildInfoBoxContent();
+		}
 	},
 
 

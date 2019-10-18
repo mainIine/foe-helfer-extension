@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 18:06 Uhr
+ * zu letzt bearbeitet:       18.10.19, 17:38 Uhr
  *  
  * Copyright © 2019
  *
@@ -88,6 +88,27 @@
 	position: relative;
 }
 
+.window-head span.window-speaker {
+	height: 24px;
+	display: inline-block;
+	position: relative;
+	background-position: 0 -1650px;
+	width: 44px;
+	margin-right: 3px;
+}
+
+.window-head span.window-speaker:hover {
+	background-position: -121px -1635px;
+}
+
+.window-head span.window-speaker.deactivated {
+	background-position: -200px -1617px;
+}
+
+.window-head span.window-speaker.deactivated:hover {
+	background-position: 0 -1624px;
+}
+
 .open .window-head span.window-minimize:hover {
 	background-position: -144px -59px;
 }
@@ -127,7 +148,7 @@
 }
 
 .closed .window-body {
-	height: 0;
+	height: 0 !important;
 }
 
 .window-grippy {
@@ -135,8 +156,8 @@
 	width: 16px;
 	height: 16px;
 	padding: 4px;
-	bottom: 8px;
-	right: 8px;
+	bottom: -8px;
+	right: -7px;
 	cursor: nwse-resize;
 	background: url('../images/wingrip.png') no-repeat;
 }
@@ -147,7 +168,7 @@
 #costCalculator {
 	top: 30%;
 	left: 30px;
-	width: 330px;
+	width: 340px;
 }
 
 
@@ -198,6 +219,18 @@
 	color: #2196f3;
 }
 
+#costCalculator #costCalculatorBody tr.bg-green {
+	background-color: rgba(18, 125, 9, 0.3);
+}
+
+#costCalculator #costCalculatorBody tr.bg-red {
+	background-color: rgba(121, 8, 8, 0.3);
+}
+
+#costCalculator #costCalculatorBody tr.bg-yellow {
+	background-color: rgba(208, 126, 3, 0.4);
+}
+
 #costCalculatorBody .costFactorWrapper > span {
 	display: inline-block;
 	margin-right: 15px;
@@ -213,7 +246,20 @@
 }
 
 /*--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
 
+#LGOverviewBox {
+	top: 30%;
+	right: 15%;
+	width: 300px;
+}
+
+#LGOverviewBox .yellow-strong strong {
+	color: #FFB539;
+}
+
+/*--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------*/
 
 #OwnPartBox {
 	top: 100px;
@@ -556,9 +602,11 @@
 }
 
 #Productions #ProductionsBody table tbody.parent th {
-	background-color: rgba(0,0,0, 0.35);
+	background-color: #3f2a1b;
 	color: #ffb539;
 	padding-top: 15px;
+	position: sticky;
+	top: 0;
 }
 
 #Productions #ProductionsBody table tr.highlight-row {
@@ -581,6 +629,12 @@
 	height: 22px;
 	margin: 3px 0 3px 3px;
 	text-align: center;
+}
+
+#Productions #ProductionsBody table tr.sorter-header th {
+	position: sticky;
+	top: 0;
+	background-color: rgba(0,0,0, 0.35);
 }
 
 #Productions #ProductionsBody table th .change-view:hover {
@@ -628,7 +682,7 @@
 
 #Productions #ProductionsBody .tabs ul li a {
 	text-decoration: none;
-	background: transparent url("https://foede.innogamescdn.com/assets/shared/icons/icons_0.png") 0 0 no-repeat;
+	background: transparent url('../images/productions.png') 0 0 no-repeat;
 	display: block;
 	width: 26px;
 	height: 26px;
@@ -637,22 +691,22 @@
 	top: 4px;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a {
-	background-position: -182px -1220px;
-}
-#Productions #ProductionsBody .tabs ul li.medals a {
-	background-position: -234px -1153px;
+	background-position: 0 0;
 }
 #Productions #ProductionsBody .tabs ul li.money a {
-	background-position: -28px -1171px;
+	background-position: -26px 0;
 }
 #Productions #ProductionsBody .tabs ul li.supplies a {
-	background-position: -199px -1329px;
+	background-position: -51px 0;
+}
+#Productions #ProductionsBody .tabs ul li.medals a {
+	background-position: -78px 0;
 }
 #Productions #ProductionsBody .tabs ul li.packaging a {
-	background-position: -155px -1194px;
+	background-position: -103px 0;
 }
 #Productions #ProductionsBody .tabs ul li.all a {
-	background-position: -104px -1134px;
+	background-position: -128px 0;
 }
 
 /*--------------------------------------------------------------------------*/
@@ -660,7 +714,7 @@
 #BackgroundInfo {
 	top: 20%;
 	right: 30px;
-	width: 420px;
+	width: 470px;
 }
 
 #BackgroundInfo #BackgroundInfoBody {
@@ -673,6 +727,33 @@
 	color: #ffb539;
 }
 
+#BackgroundInfo #BackgroundInfoBody .filter-row {
+	line-height: 1rem;
+	display: flex;
+	background-color: rgba(0,0,0, 0.5);
+	position: sticky;
+	top: 0;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row span {
+	display: inline-block;
+	margin-right: 15px;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row span input {
+	position: relative;
+	margin: 0;
+	top: 2px;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row .btn-reset-box {
+	margin-left: auto;
+}
+
+#BackgroundInfo #BackgroundInfoBody table.foe-table thead tr th {
+	position: sticky;
+	top: 24px;
+}
 
 /*--------------------------------------------------------------------------*/
 
@@ -836,9 +917,9 @@
 	position: absolute;
 	white-space: nowrap;
 	text-align: left;
-	background: rgba(0,0,0, 0.6);
+	background: rgba(0,0,0, 0.7);
 	padding: 5px;
-	left: 25px;
+	right: 6px;
 	top: 25px;
 	z-index: 1;
 	display: none;

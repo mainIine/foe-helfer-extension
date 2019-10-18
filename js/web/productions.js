@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       27.09.19, 19:27 Uhr
+ * zu letzt bearbeitet:       09.10.19, 20:59 Uhr
  *
  * Copyright © 2019
  *
@@ -205,8 +205,8 @@ let Productions = {
 		for(let k in a) {
 			if(a.hasOwnProperty(k)) {
 
-				// Wenn Münzen, dann Bonus drauf
-				if(k === 'money')
+				// Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
+				if(k === 'money' && a['id'] > 1)
 				{
 					products[k] = (parseInt(a[k]) * Productions.Boosts['money']);;
 				}
@@ -232,6 +232,10 @@ let Productions = {
 	 * HTML Box erstellen und einblenden
 	 */
 	showBox: ()=>{
+
+		String.prototype.cleanup = function() {
+			return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
+		};
 
 		if( $('#Productions').length > 0 ){
 			return ;
@@ -284,7 +288,7 @@ let Productions = {
 							countAll += parseInt(buildings[i]['products'][type]);
 
 							let tds = '<tr>' +
-								'<td>' + buildings[i]['name'] + '</td>' +
+								'<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>' +
 								'<td class="text-right is-number" data-number="' + buildings[i]['products'][type] + '">' + Number(buildings[i]['products'][type]).toLocaleString(i18n['Local']) + '</td>' +
 								'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 								'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
@@ -335,8 +339,8 @@ let Productions = {
 					for (let i in groups) {
 						if (groups.hasOwnProperty(i)) {
 							let tds = '<tr>' +
-								'<td colspan="1" class="text-right">' + groups[i]['count'] + 'x </td>' +
-								'<td colspan="2">' + groups[i]['name'] + '</td>' +
+								'<td colspan="1" class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
+								'<td colspan="2" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
 								'<td colspan="1" class="is-number" data-number="' + groups[i]['products'] + '">' + Number(groups[i]['products']).toLocaleString('de-DE') + '</td>' +
 								'</tr>';
 
@@ -396,7 +400,7 @@ let Productions = {
 
 					// Sortierung - Gruppiert-Header
 					table.push('<tr class="sorter-header">');
-					table.push('<th class="game-cursor text-right" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['number'] + '</th>');
+					table.push('<th class="game-cursor text-right is-number" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['number'] + '</th>');
 					table.push('<th class="ascending game-cursor" colspan="2" data-type="' + type + '-groups">Name</th>');
 					table.push('<th class="is-number game-cursor" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['amount'] + '</th>');
 					table.push('</tr>');

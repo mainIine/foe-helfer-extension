@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.09.19, 17:05 Uhr
+ * zu letzt bearbeitet:       09.10.19, 20:48 Uhr
  *
  * Copyright © 2019
  *
@@ -171,7 +171,7 @@
     }
 
     function getVal(elm, column, type) {
-        let val = $(elm).children('td').eq(column).text();
+        let val = $(elm).children('td').eq(column).data('text');
         let rtn = 0;
 
         if (type === 'date') {

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.09.19, 11:18 Uhr
+ * zu letzt bearbeitet:       17.10.19, 19:24 Uhr
  *
  * Copyright © 2019
  *
@@ -22,8 +22,8 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Niveau",
 			"ArcBonus": "Bonus Arche",
-			"PatronPart": "Contribution externe :",
-			"OwnPart": "Contribution personnelle :",
+			"PatronPart": "Contribution externe",
+			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
 			"ExternalFP": "PFs externes",
 			"Order": "Séquence",
@@ -43,10 +43,17 @@ let i18n = {
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus Arche",
 			"Earnings": "Gains",
+			"Course": "Cours",
+			"Up2LevelUp": "Jusqu'au nivellement",
+			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
 			"Profit": "Gain",
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible"
+		},
+
+		"LGOverviewBox": {
+			"Title": "Dépôts possibles",
 		},
 
 		"StrategyPoints" : {
@@ -95,6 +102,22 @@ let i18n = {
 			"Title" : "Paramètres",
 			"Active" : "Actif",
 			"Inactive" : "Inactif",
+		},
+
+		"Infobox" : {
+			"Title" : "Infobox",
+			"Filter" : "Filtre",
+			"FilterGex" : "GEX",
+			"FilterAuction" : "Enchères",
+			"FilterLevel" : "Niveau supérieur",
+			"FilterMessage" : "Message",
+			"ResetBox" : "Vider la boîte",
+			"Messages" : {
+				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ Punkte points au GEX.",
+				"LevelUp" : "Le __building__ de __player__'s vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__</strong>ème place",
+				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
+				"MsgBuilding" : "__building__ - Niveau __level__"
+			}
 		}
 	},
 

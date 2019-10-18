@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       30.09.19, 08:54 Uhr
+ * zu letzt bearbeitet:       17.10.19, 19:02 Uhr
  *
  * Copyright © 2019
  *
@@ -219,11 +219,21 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getOtherPlayerOverview';
 				});
 
-				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ExtPlayerID){
+				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ExtPlayerID && Settings.GetSetting('PreScanLGList')){
 					sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
+
+					$('#calcFPs').removeClass('hud-btn-red');
+					$('#calcFPs-closed').remove();
+
+					// wenn schon offen, den Inhalt updaten
+					if ($('#LGOverviewBox').is(':visible'))
+					{
+						Calculator.ShowOverview();
+					}
 				}
 
 
+				// es wird ein LG eines Spielers geöffnet
 				let Calculator1 = d.find(obj => {
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'updateEntity';
 				});
@@ -231,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function(){
 				let Calculator2 = d.find(obj => {
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
 				});
-
 
 				if((Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] !== ExtPlayerID)
 				){
@@ -247,6 +256,15 @@ document.addEventListener("DOMContentLoaded", function(){
 					}
 				}
 
+				// ein Spieler zahlt gerade ein
+				let RestToLevelUp = d.find(obj => {
+					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'reset';
+				});
+
+				if(RestToLevelUp !== undefined && $('#costCalculator').length > 0 )
+				{
+					Calculator.UpdateRestToLevelUp(RestToLevelUp['responseData'][0]['state']);
+				}
 
 				// --------------------------------------------------------------------------------------------------
 				// Tavernenboost wurde gekauft

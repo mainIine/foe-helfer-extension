@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 15:32 Uhr
+ * zu letzt bearbeitet:       09.10.19, 22:30 Uhr
  *
  * Copyright © 2019
  *
@@ -15,7 +15,7 @@
 let StrategyPoints = {
 
 	OldStrategyPoints: 0,
-
+	AvailableFP : 0,
 
 	/**
 	 * Holt beim Start alle FPs aus dem Lager
@@ -43,6 +43,7 @@ let StrategyPoints = {
 
 		if(t > 0){
 			StrategyPoints.ForgePointBar(t);
+			StrategyPoints.AvailableFP = t;
 		}
 	},
 
@@ -50,7 +51,7 @@ let StrategyPoints = {
 	/**
 	 * Kleine FP-Bar im Header
 	 *
-	 * @param fp
+	 * @param NewFP Die neu zu setzenden FP
 	 * @constructor
 	 */
 	ForgePointBar: (NewFP)=> {
@@ -72,6 +73,7 @@ let StrategyPoints = {
 			});
 
 			StrategyPoints.OldStrategyPoints = NewFP;
+			StrategyPoints.AvailableFP = NewFP;
 		}
 	},
 };

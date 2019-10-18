@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 15:32 Uhr
+ * zu letzt bearbeitet:       17.10.19, 19:24 Uhr
  *
  * Copyright © 2019
  *
@@ -43,10 +43,17 @@ let i18n = {
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
 			"Earnings": "Earnings",
+			"Course": "Cours",
+			"Up2LevelUp": "Until leveling",
+			"FP": "FP",
 			"Save": "Save",
 			"Commitment": "Commitment",
 			"Profit": "Profit",
 			"NoFPorMedsAvailable": "No FPs or BPs available"
+		},
+
+		"LGOverviewBox": {
+			"Title": "Possible deposits",
 		},
 
 		"StrategyPoints" : {
@@ -95,6 +102,22 @@ let i18n = {
 			"Title" : "Settings",
 			"Active" : "Active",
 			"Inactive" : "Inactive",
+		},
+
+		"Infobox" : {
+			"Title" : "Infobox",
+			"Filter" : "Filter",
+			"FilterGex" : "GEX",
+			"FilterAuction" : "Auktion",
+			"FilterLevel" : "Level-Up",
+			"FilterMessage" : "Nachricht",
+			"ResetBox" : "Box leeren",
+			"Messages" : {
+				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place.",
+				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",
+				"MsgBuilding" : "__building__ - Level __level__"
+			}
 		}
 	},
 
