@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 17:54 Uhr
+ * zu letzt bearbeitet:       18.10.19, 23:46 Uhr
  *
  * Copyright © 2019
  *
@@ -199,6 +199,10 @@ let i18n = {
 		"ShowOutpost": {
 			"Title" : "Ressources de la colonie",
 			"Desc" : "Affiche un menu pour les ressources de la colonie<br><u>Note:</u> Un rechargement du jeu est requis."
+		},
+		"PreScanLGList": {
+			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
+			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."
 		},
 		"CalculatorShowNegativ": {
 			"Title" : "Bénéfice négatif dans le calculateur de coûts",

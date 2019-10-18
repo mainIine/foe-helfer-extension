@@ -7,7 +7,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 18:08 Uhr
+ * zu letzt bearbeitet:       18.10.19, 18:56 Uhr
  *
  * Copyright © 2019
  *
@@ -43,7 +43,7 @@ let Infoboard = {
 				this._send(data);
 
 				this.addEventListener('message', function(msg) {
-					if(msg.data !== 'PONG'){
+					if(msg.data !== 'PONG' && $('#BackgroundInfo').length > 0){
 						Infoboard.BoxContent('in', JSON.parse(msg.data));
 					}
 

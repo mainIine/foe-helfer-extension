@@ -1,5 +1,13 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.11.2 
+
+**BugFix**
+- Extension:
+    - Übersetzungen korrigiert (Englisch, Französisch)
+
+---
+
 #####v2.3.11.1 
 
 **Update**
