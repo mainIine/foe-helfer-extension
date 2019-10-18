@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 17:38 Uhr
+ * zu letzt bearbeitet:       18.10.19, 18:09 Uhr
  *  
  * Copyright © 2019
  *
@@ -715,12 +715,12 @@
 	top: 20%;
 	right: 30px;
 	width: 470px;
+	padding: 2px;
 }
 
 #BackgroundInfo #BackgroundInfoBody {
 	overflow: auto;
 	max-height: 350px;
-	margin-top: 2px;
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
@@ -730,9 +730,11 @@
 #BackgroundInfo #BackgroundInfoBody .filter-row {
 	line-height: 1rem;
 	display: flex;
+	align-items: center;
 	background-color: rgba(0,0,0, 0.5);
 	position: sticky;
 	top: 0;
+	padding: 5px;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span {
@@ -748,11 +750,6 @@
 
 #BackgroundInfo #BackgroundInfoBody .filter-row .btn-reset-box {
 	margin-left: auto;
-}
-
-#BackgroundInfo #BackgroundInfoBody table.foe-table thead tr th {
-	position: sticky;
-	top: 24px;
 }
 
 /*--------------------------------------------------------------------------*/
