@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.10.19, 19:24 Uhr
+ * zu letzt bearbeitet:       18.10.19, 17:54 Uhr
  *
  * Copyright © 2019
  *
@@ -199,6 +199,10 @@ let i18n = {
 		"ShowOutpost": {
 			"Title" : "Outpost resources",
 			"Desc" : "Displays a menu item for Outpost Resources <br><u>Note:</u> Game Reload required."
+		},
+		"CalculatorShowNegativ": {
+			"Title" : "Negative profit in the cost calculator",
+			"Desc" : "Would you like to see the negative profit displayed?"
 		}
 	}
 };

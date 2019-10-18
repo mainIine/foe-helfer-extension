@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.10.19, 19:24 Uhr
+ * zu letzt bearbeitet:       18.10.19, 17:54 Uhr
  *
  * Copyright © 2019
  *
@@ -199,6 +199,10 @@ let i18n = {
 		"ShowOutpost": {
 			"Title" : "Ressources de la colonie",
 			"Desc" : "Affiche un menu pour les ressources de la colonie<br><u>Note:</u> Un rechargement du jeu est requis."
+		},
+		"CalculatorShowNegativ": {
+			"Title" : "Bénéfice négatif dans le calculateur de coûts",
+			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
 		}
 	}
 };
