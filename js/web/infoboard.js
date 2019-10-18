@@ -7,7 +7,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 17:39 Uhr
+ * zu letzt bearbeitet:       18.10.19, 18:08 Uhr
  *
  * Copyright © 2019
  *
@@ -112,17 +112,9 @@ let Infoboard = {
 		// Tabelle
 		h.push('<table id="BackgroundInfoTable" class="foe-table">');
 
-		h.push('<thead>');
+		h.push('<tbody></tbody>');
 
-		h.push('<tr>');
-		h.push('<th width="1">Typ</th>');
-		h.push('<th><strong>Message</strong></th>');
-		h.push('</tr>');
-
-		h.push('</thead>');
-		h.push('<tbody>');
-
-		h.push('</tbody>');
+		h.push('</table>');
 
 		div.find('#BackgroundInfoBody').html(h.join(''));
 

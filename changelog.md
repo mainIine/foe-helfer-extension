@@ -1,5 +1,17 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.11.1 
+
+**Update**
+- Info Box:
+    - Kopf überarbeitet
+    
+**BugFix**
+- Extension:
+    - Übersetzungen vervollständigt (Englisch, Französisch)
+
+---
+
 #####v2.3.11
 **Update**
 - Kostenrechner:
