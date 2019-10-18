@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 15:09 Uhr
+ * zu letzt bearbeitet:       18.10.19, 14:37 Uhr
  *
  * Copyright © 2019
  *
@@ -31,6 +31,10 @@ input[type=number]::-webkit-outer-spin-button {
 .hud-btn-down:before,
 .hud-btn {
 	background-image:  url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
+}
+
+.window-speaker {
+	background-image: url('https://foede.innogamescdn.com/assets/shared/buttons/buttons_0.png');
 }
 
 .game-cursor,
@@ -104,9 +108,9 @@ table.foe-table {
 	background-color: transparent;
 }
 
-table.foe-table thead tr,
+table.foe-table thead tr th,
 .dark-bg {
-	background-color: rgba(0,0,0, 0.35);
+	background-color: rgba(0,0,0, 0.5);
 }
 
 table.foe-table tbody tr:nth-child(odd) {

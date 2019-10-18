@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.09.19, 10:57 Uhr
+ * zu letzt bearbeitet:       18.10.19, 11:14 Uhr
  *
  * Copyright © 2019
  *
@@ -57,6 +57,16 @@ let Settings = {
 			status: true,
 			title : i18n['Settings']['ShowOutpost']['Title'],
 			desc : i18n['Settings']['ShowOutpost']['Desc']
+		},
+		PreScanLGList : {
+			status: false,
+			title : i18n['Settings']['PreScanLGList']['Title'],
+			desc : i18n['Settings']['PreScanLGList']['Desc']
+		},
+		CalculatorShowNegativ : {
+			status: false,
+			title : i18n['Settings']['CalculatorShowNegativ']['Title'],
+			desc : i18n['Settings']['CalculatorShowNegativ']['Desc']
 		},
 	},
 
@@ -143,6 +153,13 @@ let Settings = {
 	},
 
 
+	/**
+	 * Gibt den Status aus dem localStorage oder den Settings zurück
+	 *
+	 * @param name
+	 * @returns {any}
+	 * @constructor
+	 */
 	GetSetting: (name)=> {
 		let s = localStorage.getItem(name);
 

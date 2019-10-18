@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.09.19, 08:56 Uhr
+ * zu letzt bearbeitet:       18.10.19, 15:18 Uhr
  *
  * Copyright © 2019
  *
@@ -98,7 +98,7 @@ let HTML = {
 	 * @param resize Resize
 	 * @constructor
 	 */
-	// Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false)=> {
+	// Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false, speaker = #id)=> {
 	/**
 	 * id,
 	 * title,
@@ -121,17 +121,27 @@ let HTML = {
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ),
 			cords = localStorage.getItem(args['id'] + 'Cords');
 
+		// Minimierenbutton
 		if(args['minimize'] !== undefined){
 			let min = $('<span />').addClass('window-minimize');
-
 			min.insertAfter(title);
 		}
 
+		// Lautsprecher für Töne
+		if(args['speaker'] !== undefined){
+			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
+			spk.insertAfter(title);
+
+			$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
+		}
+
+		// es gibt gespeicherte Koordinaten
 		if(cords !== null){
 			let c = cords.split('|');
 			div.offset({ top: c[0], left: c[1]});
 		}
 
+		// Ein Link zu einer Seite
 		if(args['ask'] !== undefined){
 			div.find(title).after( $('<span />').addClass('window-ask').attr('data-url', args['ask']) );
 		}
@@ -150,7 +160,7 @@ let HTML = {
 				}
 
 				if(args['ask'] !== undefined) {
-					$('body').on('click', '.window-ask', function () {
+					$('body').on('click', '.window-ask', function() {
 						window.open( $(this).data('url'), '_blank');
 					});
 				}
@@ -167,6 +177,9 @@ let HTML = {
 					HTML.MinimizeBox(div);
 				}
 
+				if(args['speaker'] !== undefined){
+					$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
+				}
 
 			}, 50
 		);
@@ -309,5 +322,29 @@ let HTML = {
 		} else {
 			return Number(number).toLocaleString(i18n['Local']);
 		}
+	},
+
+
+	/**
+	 * Ersetzt Variablen in einem String mit Argumenten
+	 *
+	 * @param string
+	 * @param args
+	 * @returns {*}
+	 */
+	i18nReplacer: (string, args)=> {
+		if(string === undefined || args === undefined){
+			return ;
+		}
+
+		for(let key in args)
+		{
+			if(args.hasOwnProperty(key))
+			{
+				const regExp = new RegExp('__' + key + '__', 'g');
+				string = string.replace(regExp, args[key]);
+			}
+		}
+		return string;
 	}
 };

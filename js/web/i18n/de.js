@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       01.10.19, 13:26 Uhr
+ * zu letzt bearbeitet:       18.10.19, 11:47 Uhr
  *
  * Copyright © 2019
  *
@@ -43,10 +43,20 @@ let i18n = {
 			"AvailableFP": "Verfügbare Forgepunke",
 			"ArcBonus": "Arche Bonus",
 			"Earnings": "Ertrag",
+			"Course": "Kurs",
+			"Up2LevelUp": "Bis zum leveln",
+			"FP": "FP",
 			"Save": "Save",
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
+		},
+
+		"LGOverviewBox": {
+			"Title": "Mögliche Einzahlungen",
+			"Building": "Gebäude",
+			"Level": "Level",
+			"PayedTotal": "Eingezahlt / Gesamt",
 		},
 
 		"StrategyPoints" : {
@@ -95,6 +105,22 @@ let i18n = {
 			"Title" : "Einstellungen",
 			"Active" : "Aktiv",
 			"Inactive" : "Inaktiv",
+		},
+
+		"Infobox" : {
+			"Title" : "Infobox",
+			"Filter" : "Filter",
+			"FilterGex" : "GEX",
+			"FilterAuction" : "Auktion",
+			"FilterLevel" : "Level-Up",
+			"FilterMessage" : "Nachricht",
+			"ResetBox" : "Box leeren",
+			"Messages" : {
+				"GEX" : "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
+				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt",
+				"Auction" : "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
+				"MsgBuilding" : "__building__ - Stufe __level__"
+			}
 		}
 	},
 
@@ -176,6 +202,14 @@ let i18n = {
 		"ShowOutpost": {
 			"Title" : "Außenposten Resourcen",
 			"Desc" : "Blendet einen Menüpunkt für Außenposten Resourcen ein<br><u>Hinweis:</u> Spiel Reload erforderlich"
+		},
+		"PreScanLGList": {
+			"Title" : "Vorab-Scann der LG Übersicht",
+			"Desc" : "Scannt die Übersichtsliste des Nachbarn beim öffnen und ermittelt eventuell befüllbare LGs.<br><u>Hinweis:</u> Da die endgültigen Plätze erst beim öffnen eines LGs übermittel werden, kann das Ergebniss abweichen. Der Scann wird jedoch gespeichert."
+		},
+		"CalculatorShowNegativ": {
+			"Title" : "Negativer Gewinn im Kostenrechner",
+			"Desc" : "Möchtest Du auch den negativen Gewinn angezeigt bekommen?"
 		}
 	}
 };

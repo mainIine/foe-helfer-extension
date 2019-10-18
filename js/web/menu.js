@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       23.09.19, 08:56 Uhr
+ * zu letzt bearbeitet:       17.10.19, 18:59 Uhr
  *
  * Copyright © 2019
  *
@@ -267,10 +267,14 @@ let Menu = {
 
 		btn_Calc.bind('click', function() {
 			let b = sessionStorage.getItem('OtherActiveBuilding'),
-				d = sessionStorage.getItem('OtherActiveBuildingData');
+				d = sessionStorage.getItem('OtherActiveBuildingData'),
+				o = sessionStorage.getItem('OtherActiveBuildingOverview');
 
 			if(b !== null){
 				Calculator.Show( JSON.parse(b), JSON.parse(d));
+
+			} else if(o !== null) {
+				Calculator.ShowOverview();
 			}
 		});
 
