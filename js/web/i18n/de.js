@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 11:47 Uhr
+ * zu letzt bearbeitet:       28.10.19, 17:17 Uhr
  *
  * Copyright © 2019
  *
@@ -43,7 +43,7 @@ let i18n = {
 			"AvailableFP": "Verfügbare Forgepunke",
 			"ArcBonus": "Arche Bonus",
 			"Earnings": "Ertrag",
-			"Course": "Kurs",
+			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
 			"Save": "Save",
@@ -54,9 +54,15 @@ let i18n = {
 
 		"LGOverviewBox": {
 			"Title": "Mögliche Einzahlungen",
+			"Tooltip": {
+				"FoundNew": "neu gefunden",
+				"FoundAgain": "wiedererkannt",
+				"NoPayment": "bisher keine Einzahlung",
+			},
 			"Building": "Gebäude",
 			"Level": "Level",
-			"PayedTotal": "Eingezahlt / Gesamt",
+			"PayedTotal": "Eingez. / Gesamt",
+			"Rate": "Kurs"
 		},
 
 		"StrategyPoints" : {

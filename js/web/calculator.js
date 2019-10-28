@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 12:04 Uhr
+ * zu letzt bearbeitet:       28.10.19, 17:16 Uhr
  *
  * Copyright © 2019
  *
@@ -21,7 +21,7 @@ let Calculator = {
 	Building: [],
 	Places: [],
 	OldRest: 0,
-	SkipNextOverview: false,
+	SoundFile: new Audio('chrome-extension://' + extID + '/vendor/sounds/message.mp3'),
 
 	/**
 	 * Kostenrechner anzeigen
@@ -71,7 +71,6 @@ let Calculator = {
 		Calculator.AvailableFP = d['availablePackagesForgePointSum'] || StrategyPoints.AvailableFP;
 		Calculator.Places = d['rankings'];
 		Calculator.Building = e;
-		Calculator.SkipNextOverview = true;
 
 		// wenn das LG über die Übersicht geladen wurde...
 		if(Overview !== null)
@@ -83,16 +82,17 @@ let Calculator = {
 				return obj['city_entity_id'] === e['cityentity_id'];
 			});
 
-			BuildingName = BuildingInfo['name'];
-			PlayerName = BuildingInfo['player']['name'];
+			if(BuildingInfo !== undefined && BuildingInfo['player']['player_id'] === e['player_id']) {
+				PlayerName = BuildingInfo['player']['name'];
+			}
 
 			// direkt wieder löschen da beim nächsten sonst der falsche Name stehen könnte
 			sessionStorage.removeItem('OtherActiveBuildingOverview');
 		}
 
-		// Name weg lassen wenn es auf dem Forum / einer Nachricht geladen wurde
-		else {
-			BuildingName = BuildingNamesi18n[ e['cityentity_id'] ]['name'];
+		// BuildingName konnte nicht aus der BuildingInfo geladen werden
+		if(BuildingName === undefined) {
+			BuildingName = BuildingNamesi18n[e['cityentity_id']]['name'];
 		}
 
 		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
@@ -147,13 +147,15 @@ let Calculator = {
 		h.push('<table id="costTable" class="foe-table">');
 
 		h.push('<thead>' +
-				'<th>#</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Earnings'] +'</th>' +
-				'<th>BP</th>' +
-				'<th>Meds</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Course'] +'</th>' +
+					'<tr>' +
+						'<th>#</th>' +
+						'<th>'+ i18n['Boxes']['Calculator']['Earnings'] +'</th>' +
+						'<th>BP</th>' +
+						'<th>Meds</th>' +
+						'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
+						'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
+						'<th>'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
+					'</tr>' +
 				'</thead>');
 
 		// "Blindfelder" gegen das "flackern" erzeugen
@@ -250,7 +252,7 @@ let Calculator = {
 				'<th>Meds</th>' +
 				'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
 				'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Course'] +'</th>' +
+				'<th>'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
 			'</thead>');
 
 		// Ränge durchsteppen
@@ -331,6 +333,12 @@ let Calculator = {
 						
 						// 1/2 des möglichen HalberEinzahlbarerPlatzAufRanges = restliche freie FP - eingezahlte FP auf dem Rang
 						HalberEinzahlbarerPlatzAufRang = Math.round(( RestFreieFPAufRang + EingezahltAufRang ) / 2);
+
+					// Sonderfall: Absichern des Rangs führt nur zum Gleichstand.
+					// In diesem Fall wird 1 FP mehr benötigt um den bestehenden Platz zu überholen
+					if(HalberEinzahlbarerPlatzAufRang === EingezahltAufRang){
+						HalberEinzahlbarerPlatzAufRang++;
+					}
 
 					let EingezahltAufRang2 = 0;
 
@@ -562,12 +570,6 @@ let Calculator = {
 	 */
 	ParseOverview: (arc, d)=> {
 
-		if (Calculator.SkipNextOverview)
-		{
-			Calculator.SkipNextOverview = false;
-			return;
-		}
-
 		// nix drin, raus
 		if (d.length === 0)
 		{
@@ -593,14 +595,32 @@ let Calculator = {
 			PlayerName = GBs['0']['player']['name'];
 
 		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
-		h.push('<p class="yellow-strong"><strong>' + PlayerName + ' </strong></p>');
+
+		h.push('<p class="head-bar">' +
+				'<strong>' + PlayerName + ' </strong>' +
+				'<span class="color-description">?' +
+					'<span>' +
+						'<span style="color:#FFB539">' + i18n['Boxes']['LGOverviewBox']['Tooltip']['FoundNew'] + '</span>' +
+						'<span style="color:#29b206">' + i18n['Boxes']['LGOverviewBox']['Tooltip']['FoundAgain'] + '</span>' +
+						'<span style="color:#FF6000">' + i18n['Boxes']['LGOverviewBox']['Tooltip']['NoPayment'] + '</span>' +
+					'</span>' +
+				'</span>' +
+			'</p>');
+
 		h.push('</div>');
 		h.push('<table id="OverviewTable" class="foe-table">');
 
-		h.push('<thead><tr><th>' + i18n['Boxes']['LGOverviewBox']['Building'] + '</th><th class="text-center">' + i18n['Boxes']['LGOverviewBox']['Level'] + '</th><th class="text-center">' + i18n['Boxes']['LGOverviewBox']['PayedTotal'] + '</th></tr></thead>');
+		h.push('<thead>' +
+			'<tr>' +
+				'<th>' + i18n['Boxes']['LGOverviewBox']['Building'] + '</th>' +
+				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['Level'] + '</th>' +
+				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['PayedTotal'] + '</th>' +
+				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['Rate'] + '</th>' +
+			'</tr>' +
+		'</thead>');
 
-		let RankFound = false;
-		let PlayAudio = true;
+		let PlayAudio = true,
+			LGFound = false;
 
 		// alle LGs der Übersicht durchsteppen
 		for (let i in GBs)
@@ -615,9 +635,10 @@ let Calculator = {
 					MaxProgress = GBs[i]['max_progress'],
 					Rank = GBs[i]['rank'];
 
-				let BestKurs = 0;
-				let StorageKey = PlayerID + "/" + EntityID;
-				let StorageValue = localStorage.getItem(StorageKey);
+				let BestKurs = 0,
+					StorageKey = PlayerID + "/" + EntityID,
+					StorageValue = localStorage.getItem(StorageKey),
+					StrongClass;
 
 				if (StorageValue !== null)
 				{
@@ -629,11 +650,6 @@ let Calculator = {
 					{
 						BestKurs = StorageKeyParts[2];
 					}
-				}
-
-				if (Rank !== undefined)
-				{
-					RankFound = true;
 				}
 
 				let UnderScorePos = EntityID.indexOf('_');
@@ -649,16 +665,36 @@ let Calculator = {
 
 				let P1 = Calculator.GetP1(AgeString, GBLevel);
 
-				if (P1 * arc >= (MaxProgress - CurrentProgress) / 2)
+				if (Rank === undefined && P1 * arc >= (MaxProgress - CurrentProgress) / 2)
 				{
 					if (BestKurs < arc * 100)
 					{
-						RankFound = true;
+						LGFound = true;
+						let Kurs = '';
+
+						if (CurrentProgress === 0)
+						{
+							StrongClass = ' class="warning"'; // Möglicherweise nicht freigeschaltet
+							Kurs = Math.round(MaxProgress * 100 / P1 / 2) + '%'
+						}
+						else if (BestKurs === 0)
+						{
+							StrongClass = '';
+							PlayAudio = true;
+							Kurs = '???%';
+						}
+						else
+						{
+							StrongClass = ' class="success"';
+							PlayAudio = true;
+							Kurs = BestKurs + '%';
+						}
 
 						h.push('<tr>');
-						h.push('<td>' + GBName + '</td>');
-						h.push('<td class="text-center">' + GBLevel + '</td>');
-						h.push('<td class="text-center">' + HTML.Format(CurrentProgress) + ' / ' + HTML.Format(MaxProgress) + '</td>');
+						h.push('<td><strong' + StrongClass + '>' + GBName + '</strong></td>');
+						h.push('<td class="text-center"><strong' + StrongClass + '>' + GBLevel + '</strong></td>');
+						h.push('<td class="text-center"><strong' + StrongClass + '>' + HTML.Format(CurrentProgress) + ' / ' + HTML.Format(MaxProgress) + '</strong></td>');
+						h.push('<td class="text-center"><strong' + StrongClass + '>' + Kurs + '</strong></td>');
 						h.push('</tr>');
 					}
 				}
@@ -667,16 +703,18 @@ let Calculator = {
 
 		h.push('</table>');
 
-		if(RankFound && PlayAudio)
+		if (LGFound) //Gibt was zu holen
 		{
-			// h.push( Calculator.PlaySound() );
+			if (PlayAudio)
+			{
+				Calculator.PlaySound();
+			}
 		}
-
-		// gibt nichts zu holen
-		if(!RankFound) {
+		else // gibt nichts zu holen
+		{
 			h = [];
 
-			h.push( '<div class="text-center yellow-strong">Bei <strong>' + PlayerName + '</strong> gibt es nichts zu holen</div>' );
+			h.push('<div class="text-center yellow-strong">Bei <strong>' + PlayerName + '</strong> gibt es nichts zu holen</div>');
 		}
 
 		$('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));
@@ -690,8 +728,7 @@ let Calculator = {
 	 * @constructor
 	 */
 	PlaySound: ()=>{
-		let url = 'chrome-extension://' + extID + '/vendor/sounds/message.mp3';
-		return '<audio autoplay volume="0.5"><source src="' + url + '" type="audio/mpeg"></audio>';
+		Calculator.SoundFile.play();
 	},
 
 

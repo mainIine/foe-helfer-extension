@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       07.10.19, 16:51 Uhr
+ * zu letzt bearbeitet:       24.10.19, 13:25 Uhr
  *
  * Copyright © 2019
  *
@@ -396,4 +396,42 @@ let Outposts = {
 		let res = d[ d.length-1 ]['requirements']['resources'];
 		localStorage.setItem('OutpostConsumablesTypes', JSON.stringify(res));
 	},
+
+
+	Extensions: ()=> {
+		return {
+			vikings: {
+				1: {axes: 1, mead: 1, horns: 1, wool: 1},
+				2: {axes: 5, mead: 1, horns: 1, wool: 1},
+				3: {axes: 12, mead: 1, horns: 1, wool: 1},
+				4: {axes: 21, mead: 5, horns: 1, wool: 1},
+				5: {axes: 32, mead: 12, horns: 1, wool: 1},
+				6: {axes: 41, mead: 21, horns: 5, wool: 1},
+				7: {axes: 48, mead: 32, horns: 12, wool: 1},
+				8: {axes: 55, mead: 41, horns: 21, wool: 5},
+				9: {axes: 62, mead: 48, horns: 32, wool: 12},
+				10: {axes: 69, mead: 55, horns: 41, wool: 21},
+				11: {axes: 76, mead: 62, horns: 48, wool: 32},
+				12: {axes: 82, mead: 69, horns: 55, wool: 41},
+				13: {axes: 89, mead: 76, horns: 62, wool: 48},
+				14: {axes: 96, mead: 82, horns: 69, wool: 55},
+				15: {axes: 103, mead: 89, horns: 76, wool: 62},
+				16: {axes: 110, mead: 69, horns: 82, wool: 69}
+			},
+			japanese: {
+				1: {soy: 8, paintings: 8, armor: 8, instruments: 8},
+				2: {soy: 19, paintings: 8, armor: 8, instruments: 8},
+				3: {soy: 31, paintings: 19, armor: 8, instruments: 8},
+				4: {soy: 46, paintings: 31, armor: 8, instruments: 8},
+				5: {soy: 51, paintings: 46, armor: 19, instruments: 8},
+				6: {soy: 56, paintings: 51, armor: 31, instruments: 8},
+				7: {soy: 60, paintings: 56, armor: 46, instruments: 19},
+				8: {soy: 65, paintings: 60, armor: 51, instruments: 31},
+				9: {soy: 70, paintings: 65, armor: 56, instruments: 46},
+				10: {soy: 74, paintings: 70, armor: 60, instruments: 51},
+				11: {soy: 79, paintings: 74, armor: 65, instruments: 56},
+				12: {soy: 84, paintings: 79, armor: 70, instruments: 60}
+			}
+		};
+	}
 };

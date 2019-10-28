@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 23:46 Uhr
+ * zu letzt bearbeitet:       28.10.19, 17:18 Uhr
  *
  * Copyright © 2019
  *
@@ -43,7 +43,7 @@ let i18n = {
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus Arche",
 			"Earnings": "Gains",
-			"Course": "Cours",
+			"Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
@@ -54,6 +54,15 @@ let i18n = {
 
 		"LGOverviewBox": {
 			"Title": "Dépôts possibles",
+			"Tooltip": {
+				"FoundNew": "trouvé nouveau",
+				"FoundAgain": "reconnu",
+				"NoPayment": "jusqu'ici aucun dépôt",
+			},
+			"Building": "Bâtiment",
+			"Level": "Niveau",
+			"PayedTotal": "Payé / Total",
+			"Rate": "Cours",
 		},
 
 		"StrategyPoints" : {
