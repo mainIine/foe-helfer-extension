@@ -6,10 +6,12 @@
 - Kostenrechner:
     - Name wurde nicht immer erkannt
     - Fehler Behoben [#133](https://github.com/dsiekiera/foe-helfer-extension/issues/133)
+    - Fehlende Übersetzung ergänzt
 
 **Update**
 - Kostenrechner:
     - LG Übersicht: Tooltip für Erläuterung, bessere Erkennung
+    - Wenn Stufe nicht offen, erscheint ein Overlay
 
 ---
 
