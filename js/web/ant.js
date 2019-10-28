@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.10.19, 19:02 Uhr
+ * zu letzt bearbeitet:       25.10.19, 10:15 Uhr
  *
  * Copyright © 2019
  *
@@ -59,8 +59,7 @@ document.addEventListener("DOMContentLoaded", function(){
 			{
 				BuildingNamesi18n = [];
 
-				// MainParser.loadBuildings(this._url);
-				MainParser.loadJSON(this._url,function(r)
+				MainParser.loadJSON(this._url, function(r)
 				{
 					let j = JSON.parse(r);
 

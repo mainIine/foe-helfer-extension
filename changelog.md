@@ -1,5 +1,18 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.12
+
+**BugFix**
+- Kostenrechner:
+    - Name wurde nicht immer erkannt
+    - Fehler Behoben [#133](https://github.com/dsiekiera/foe-helfer-extension/issues/133)
+
+**Update**
+- Kostenrechner:
+    - LG Übersicht: Tooltip für Erläuterung, bessere Erkennung
+
+---
+
 #####v2.3.11.2 
 
 **BugFix**

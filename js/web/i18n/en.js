@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 23:46 Uhr
+ * zu letzt bearbeitet:       28.10.19, 17:17 Uhr
  *
  * Copyright © 2019
  *
@@ -43,7 +43,7 @@ let i18n = {
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
 			"Earnings": "Earnings",
-			"Course": "Cours",
+			"Rate": "Cours",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
 			"Save": "Save",
@@ -54,6 +54,15 @@ let i18n = {
 
 		"LGOverviewBox": {
 			"Title": "Possible deposits",
+			"Tooltip": {
+				"FoundNew": "found new",
+				"FoundAgain": "recognized",
+				"NoPayment": "so far no deposit",
+			},
+			"Building": "Building",
+			"Level": "Level",
+			"PayedTotal": "Payed / Total",
+			"Rate": "Rate",
 		},
 
 		"StrategyPoints" : {

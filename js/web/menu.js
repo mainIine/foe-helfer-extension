@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.10.19, 18:59 Uhr
+ * zu letzt bearbeitet:       28.10.19, 16:47 Uhr
  *
  * Copyright © 2019
  *
@@ -270,11 +270,14 @@ let Menu = {
 				d = sessionStorage.getItem('OtherActiveBuildingData'),
 				o = sessionStorage.getItem('OtherActiveBuildingOverview');
 
-			if(b !== null){
-				Calculator.Show( JSON.parse(b), JSON.parse(d));
+			// Passiert nur mit geöffneter Übersicht im Spiel
+			if (o !== null) {
+				Calculator.ShowOverview(); // Übersicht wird zuerst geladen, da Detailansicht beim Laden die Übersicht aus dem sessionStorage löscht
+			}
 
-			} else if(o !== null) {
-				Calculator.ShowOverview();
+			// Passiert mit geöffneter Detailansicht im Spiel und geöffneter Übersicht, falls vorher die Detailansicht geöffnet war
+			if (b !== null) {
+				Calculator.Show(JSON.parse(b), JSON.parse(d));
 			}
 		});
 
