@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 17:18 Uhr
+ * zu letzt bearbeitet:       28.10.19, 18:07 Uhr
  *
  * Copyright © 2019
  *
@@ -49,7 +49,8 @@ let i18n = {
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
 			"Profit": "Gain",
-			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible"
+			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
+			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 		},
 
 		"LGOverviewBox": {
@@ -63,6 +64,7 @@ let i18n = {
 			"Level": "Niveau",
 			"PayedTotal": "Payé / Total",
 			"Rate": "Cours",
+			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer"
 		},
 
 		"StrategyPoints" : {

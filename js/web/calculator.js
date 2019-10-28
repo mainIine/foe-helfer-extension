@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 17:16 Uhr
+ * zu letzt bearbeitet:       28.10.19, 18:25 Uhr
  *
  * Copyright © 2019
  *
@@ -174,11 +174,17 @@ let Calculator = {
 
 		Calculator.OldRest = rest;
 
-		h.push('<div class="text-center" style="margin-top:5px;"><em>'+ i18n['Boxes']['Calculator']['Up2LevelUp'] +': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> '+ i18n['Boxes']['Calculator']['FP'] +'</em></div>');
+		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>'+ i18n['Boxes']['Calculator']['Up2LevelUp'] +': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> '+ i18n['Boxes']['Calculator']['FP'] +'</em></div>');
 
 
 		// in die bereits vorhandene Box drücken
 		$('#costCalculator').find('#costCalculatorBody').html(h.join(''));
+
+		// Stufe ist noch nicht freigeschaltet
+		if(e['level'] === e['max_level'])
+		{
+			$('#costCalculator').find('#costCalculatorBody').append( $('<div />').addClass('lg-not-opened').attr('data-text', i18n['Boxes']['Calculator']['LGNotOpen']) );
+		}
 
 		// alle Ansichten aktualisieren
 		setTimeout(()=>{
@@ -703,18 +709,25 @@ let Calculator = {
 
 		h.push('</table>');
 
-		if (LGFound) //Gibt was zu holen
+		// Gibt was zu holen
+		if (LGFound)
 		{
 			if (PlayAudio)
 			{
 				Calculator.PlaySound();
 			}
 		}
-		else // gibt nichts zu holen
-		{
+
+		// gibt nichts zu holen
+		else {
 			h = [];
 
-			h.push('<div class="text-center yellow-strong">Bei <strong>' + PlayerName + '</strong> gibt es nichts zu holen</div>');
+			h.push('<div class="text-center yellow-strong nothing-to-get">' + HTML.i18nReplacer(
+				i18n['Boxes']['LGOverviewBox']['NothingToGet'],
+				{
+					'player' : PlayerName
+				}
+			) + '</div>');
 		}
 
 		$('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));

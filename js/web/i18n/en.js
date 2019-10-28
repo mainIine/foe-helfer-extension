@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 17:17 Uhr
+ * zu letzt bearbeitet:       28.10.19, 18:07 Uhr
  *
  * Copyright © 2019
  *
@@ -49,7 +49,8 @@ let i18n = {
 			"Save": "Save",
 			"Commitment": "Commitment",
 			"Profit": "Profit",
-			"NoFPorMedsAvailable": "No FPs or BPs available"
+			"NoFPorMedsAvailable": "No FPs or BPs available",
+			"LGNotOpen": "The next level is currently not unlocked",
 		},
 
 		"LGOverviewBox": {
@@ -63,6 +64,7 @@ let i18n = {
 			"Level": "Level",
 			"PayedTotal": "Payed / Total",
 			"Rate": "Rate",
+			"NothingToGet": "<strong>__player__</strong> has nothing to fetch"
 		},
 
 		"StrategyPoints" : {

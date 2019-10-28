@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 17:17 Uhr
+ * zu letzt bearbeitet:       28.10.19, 18:05 Uhr
  *
  * Copyright © 2019
  *
@@ -50,6 +50,7 @@ let i18n = {
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
+			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 		},
 
 		"LGOverviewBox": {
@@ -62,7 +63,8 @@ let i18n = {
 			"Building": "Gebäude",
 			"Level": "Level",
 			"PayedTotal": "Eingez. / Gesamt",
-			"Rate": "Kurs"
+			"Rate": "Kurs",
+			"NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen"
 		},
 
 		"StrategyPoints" : {
