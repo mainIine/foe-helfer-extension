@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 18:25 Uhr
+ * zu letzt bearbeitet:       04.11.19, 17:37 Uhr
  *
  * Copyright © 2019
  *
@@ -22,6 +22,7 @@ let Calculator = {
 	Places: [],
 	OldRest: 0,
 	SoundFile: new Audio('chrome-extension://' + extID + '/vendor/sounds/message.mp3'),
+
 
 	/**
 	 * Kostenrechner anzeigen
@@ -416,12 +417,12 @@ let Calculator = {
 					// erste drei Spalten
 					h.push('<tr' + trClass + '><td><strong>' + r[i]['rank'] + '</strong></td>' +
 						'<td class="text-center">' +
-							'<strong class="'+ (MaezenRangTotal > Calculator.AvailableFP ? 'error' : 'success') +'">' +
+							'<strong class="' + (MaezenRangTotal > Calculator.AvailableFP ? 'error' : 'success') + '">' +
 								HTML.Format(MaezenRangTotal) +
 							'</strong>' +
 						'</td>' +
-						'<td class="text-center">' + HTML.Format(blp) + '</td>' +
-						'<td class="text-center">' + HTML.Format(med) + '</td>');
+						'<td class="text-center' + (MaezenRangTotal > Calculator.AvailableFP ? ' error' : '') + '">' + HTML.Format(blp) + '</td>' +
+						'<td class="text-center' + (MaezenRangTotal > Calculator.AvailableFP ? ' error' : '') + '">' + HTML.Format(med) + '</td>');
 
 
 					// letzte beiden Spalten
@@ -554,6 +555,10 @@ let Calculator = {
 	 * @constructor
 	 */
 	UpdateRestToLevelUp: (e)=> {
+		if (e['forge_points_for_level_up'] === undefined || e['invested_forge_points'] === undefined) {
+			return;
+		}
+
 		let NewRest = (e['forge_points_for_level_up'] - e['invested_forge_points']);
 
 		$('#up-to-level-up').easy_number_animate({
@@ -625,7 +630,7 @@ let Calculator = {
 			'</tr>' +
 		'</thead>');
 
-		let PlayAudio = true,
+		let PlayAudio = false,
 			LGFound = false;
 
 		// alle LGs der Übersicht durchsteppen
