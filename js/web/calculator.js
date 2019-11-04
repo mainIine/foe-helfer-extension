@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 18:25 Uhr
+ * zu letzt bearbeitet:       04.11.19, 01:46 Uhr
  *
  * Copyright © 2019
  *
@@ -553,7 +553,11 @@ let Calculator = {
 	 * @param e
 	 * @constructor
 	 */
-	UpdateRestToLevelUp: (e)=> {
+    UpdateRestToLevelUp: (e) => {
+        if (e['forge_points_for_level_up'] == undefined || e['invested_forge_points'] == undefined) {
+            return;
+        }
+
 		let NewRest = (e['forge_points_for_level_up'] - e['invested_forge_points']);
 
 		$('#up-to-level-up').easy_number_animate({
@@ -625,7 +629,7 @@ let Calculator = {
 			'</tr>' +
 		'</thead>');
 
-		let PlayAudio = true,
+		let PlayAudio = false,
 			LGFound = false;
 
 		// alle LGs der Übersicht durchsteppen
