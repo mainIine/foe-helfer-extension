@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       25.10.19, 10:15 Uhr
+ * zu letzt bearbeitet:       04.11.19, 01:46 Uhr
  *
  * Copyright © 2019
  *
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
 				});
 
-				if((Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] !== ExtPlayerID)
+				if((Calculator1 !== undefined && Calculator2 !== undefined)
 				){
 					$('#calcFPs').removeClass('hud-btn-red');
 					$('#calcFPs-closed').remove();
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				// -----------------------------------------------------------------------------------------------------
 				// Spieler klickt eines seiner LGs an
 
-				if(Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] === ExtPlayerID) {
+				if(Calculator1 !== undefined && Calculator2 !== undefined) {
 					MainParser.OwnLG(Calculator1['responseData'][0], Calculator2['responseData']['rankings']);
 				}
 
