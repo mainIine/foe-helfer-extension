@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 18:14 Uhr
+ * zu letzt bearbeitet:       04.11.19, 01:46 Uhr
  *  
  * Copyright © 2019
  *
@@ -342,7 +342,7 @@
 #OwnPartBox {
 	top: 100px;
 	right: 100px;
-	width: 340px;
+	width: 370px;
 	font-size: 80%;
 }
 
