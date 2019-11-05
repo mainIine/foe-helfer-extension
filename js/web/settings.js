@@ -68,6 +68,12 @@ let Settings = {
 			title : i18n['Settings']['CalculatorShowNegativ']['Title'],
 			desc : i18n['Settings']['CalculatorShowNegativ']['Desc']
 		},
+		ResetBoxPositions : {
+			button: 'ResetBoxCoords',
+			buttonText: i18n['Settings']['ResetBoxPositions']['Button'],
+			title : i18n['Settings']['ResetBoxPositions']['Title'],
+			desc : i18n['Settings']['ResetBoxPositions']['Desc']
+		}
 	},
 
 
@@ -102,6 +108,7 @@ let Settings = {
 			{
 				let d = Settings.Preferrences[key],
 					status = d['status'],
+					button = d['button'],
 					c = $('<div />').addClass('item'),
 					cr = $('<div />').addClass('item-row'),
 					ct = $('<div />').addClass('title'),
@@ -118,6 +125,14 @@ let Settings = {
 
 				if(s !== null){
 					status = JSON.parse(s);
+				}
+
+				if(status === undefined){
+					let b = $('<span />').addClass('button-wrapper').append(
+						$('<button class="btn-default" id="' + button + '" onclick="Settings.' + button + '()">' + d['buttonText'] + '</button>')
+					);
+
+					cs.html(b);
 				}
 
 				ct.text(d['title']);
@@ -168,5 +183,20 @@ let Settings = {
 		} else {
 			return Settings.Preferrences[name]['status'];
 		}
+	},
+
+
+	ResetBoxCoords: ()=>{
+		$.each(localStorage, function(key, value){
+			if(key.toLowerCase().indexOf('cords') > -1){
+				localStorage.removeItem(key);
+			}
+		});
+
+		$('#ResetBoxCoords').addClass('btn-green');
+
+		setTimeout(()=>{
+			$('#ResetBoxCoords').removeClass('btn-green');
+		}, 2500)
 	}
 };

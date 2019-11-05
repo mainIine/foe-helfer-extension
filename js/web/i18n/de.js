@@ -21,19 +21,21 @@ let i18n = {
 			"Title": "Eigenanteilsrechner",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Stufe",
-			"ArcBonus": "Arche Bonus",
-			"PatronPart": "Mäzen Anteil: ",
+			"PatronPart": "Mäzen Anteil",
 			"OwnPart": "Eigenanteil",
 			"LGTotalFP": "LG Gesamt-FP",
-			"ExternalFP": "Externe FP",
+            "OwnPartRemaining": "Verbleibend",
+            "Done": "Erledigt",
 			"Order": "Reihenfolge",
 			"Deposit": "Einzahlen",
 			"CopyValues": "Werte kopieren",
 			"YourName": "Dein Name",
 			"IndividualName": "Individueller LG Name",
 			"OutputScheme": "Ausgabe Schema",
-			"Place": "Platz",
-			"Levels": "Leveln"
+            "Auto": "Auto",
+            "Place": "Platz",
+            "Levels": "Leveln",
+            "NoPlaceSafe": "Kein Platz sicher"
 		},
 
 		"Calculator": {
@@ -50,7 +52,8 @@ let i18n = {
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
-			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
+            "LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
+            "LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		},
 
 		"LGOverviewBox": {
@@ -205,7 +208,7 @@ let i18n = {
 		},
 		"ShowTavernBadge": {
 			"Title" : "Tavernen Badge anzeigen",
-			"Desc" : "Sobald ein Boost in der Taverne aktiviert wird, erschein ein global verschiebbarer Counter"
+            "Desc" : "Sobald ein Boost in der Taverne aktiviert wird, erscheint ein global verschiebbarer Counter"
 		},
 		"ShowOutpost": {
 			"Title" : "Außenposten Resourcen",
@@ -218,6 +221,11 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Negativer Gewinn im Kostenrechner",
 			"Desc" : "Möchtest Du auch den negativen Gewinn angezeigt bekommen?"
-		}
+        },
+        "ResetBoxPositions": {
+            "Title" : "Box Koordinaten",
+            "Desc" : "Sollen alle Box Koordinaten zurückgesetzt werden?",
+            "Button" : "Löschen!"
+        }
 	}
 };
