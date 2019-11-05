@@ -21,19 +21,21 @@ let i18n = {
 			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Niveau",
-			"ArcBonus": "Bonus Arche",
 			"PatronPart": "Contribution externe",
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
-			"ExternalFP": "PFs externes",
+            "OwnPartRemaining": "Remaining",
+            "Done": "Done", //Todo: Translate
 			"Order": "Séquence",
-			"Deposit": "A poser",
+            "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
 			"YourName": "Votre nom",
 			"IndividualName": "nom individuel",
 			"OutputScheme": "Schéma de sortie",
-			"Place": "Place",
-			"Levels": "niveaux"
+            "Auto": "Auto", //Todo: Translate?
+            "Place": "Place",
+            "Levels": "niveaux",
+            "No place safe": "No place safe" //Todo: Translate
 		},
 
 		"Calculator": {
@@ -41,16 +43,17 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
-			"ArcBonus": "Bonus Arche",
-			"Earnings": "Gains",
-			"Rate": "Cours",
+			"ArcBonus": "Arc Bonus", //Todo: Translate
+            "Earnings": "Gains", //Todo: Translate
+            "Rate": "Rate", //Todo: Translate
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
-			"Profit": "Gain",
+            "Profit": "Profit", //Todo: Translate
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
-			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
+            "LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
+            "LGNotConnected": "Le bâtiment n'est pas relié à une rue",
 		},
 
 		"LGOverviewBox": {
@@ -214,10 +217,15 @@ let i18n = {
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
 			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Bénéfice négatif dans le calculateur de coûts",
-			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
-		}
+        },
+        "CalculatorShowNegativ": {
+            "Title" : "Bénéfice négatif dans le calculateur de coûts",
+            "Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
+        },
+        "ResetBoxPositions": {
+            "Title" : "Coordonnées de la boîte",
+            "Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
+            "Button" : "Supprimer!"
+        }
 	}
 };

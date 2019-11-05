@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       04.11.19, 01:46 Uhr
+ * zu letzt bearbeitet:       04.11.19, 17:47 Uhr
  *  
  * Copyright © 2019
  *
@@ -175,7 +175,7 @@
 	position: relative;
 }
 
-#costCalculator #costCalculatorBody .lg-not-opened {
+#costCalculator #costCalculatorBody .lg-not-possible {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -184,7 +184,7 @@
 	background-color: rgba(0,0,0, 0.7);
 }
 
-#costCalculator #costCalculatorBody .lg-not-opened::after {
+#costCalculator #costCalculatorBody .lg-not-possible::after {
 	content: attr(data-text);
 	position: absolute;
 	top: 50%;
@@ -221,7 +221,8 @@
 	color: #F3D6A0;
 }
 
-#costCalculator #costCalculatorBody strong.error {
+#costCalculator #costCalculatorBody td.error,
+#costCalculator #costCalculatorBody td .error {
 	color: #ef1616;
 }
 
@@ -342,7 +343,7 @@
 #OwnPartBox {
 	top: 100px;
 	right: 100px;
-	width: 370px;
+	width: 380px;
 	font-size: 80%;
 }
 
@@ -426,7 +427,7 @@
 	color: #93795D;
 	background-clip: padding-box;
 	border: 1px solid #4C2F1E;
-	width: 45px;
+	width: 35px;
 	text-align: center;
 }
 
@@ -843,6 +844,7 @@
 
 #SettingsBoxBody {
 	overflow-y: auto;
+	padding: 5px;
 }
 
 #SettingsBoxBody .item {
@@ -896,6 +898,10 @@
 	font-size: 0.9rem;
 	color: #b0bbcd;
 	font-weight: 700;
+}
+
+#SettingsBoxBody .item .item-row .btn-default {
+	width: 170px;
 }
 
 

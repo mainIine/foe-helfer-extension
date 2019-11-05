@@ -75,6 +75,22 @@ document.addEventListener("DOMContentLoaded", function(){
 								height: j[i]['length'],
 								type: j[i]['type'],
 							};
+
+							if(j[i]['abilities'] !== undefined)
+							{
+								for(let x in j[i]['abilities'])
+								{
+									if (j[i]['abilities'].hasOwnProperty(x))
+									{
+										let ar = j[i]['abilities'][x];
+
+										if(ar['additionalResources'] !== undefined && ar['additionalResources']['AllAge'] !== undefined && ar['additionalResources']['AllAge']['resources'] !== undefined)
+										{
+											BuildingNamesi18n[j[i]['asset_id']]['additionalResources'] = ar['additionalResources']['AllAge']['resources'];
+										}
+									}
+								}
+							}
 						}
 					}
 				});
@@ -339,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GuildExpeditionService' && obj['requestMethod'] === 'getContributionList'
 				});
 
-				if(GEXList !== undefined && MainParser.checkNextUpdate('GuildExpedition') && Settings.GetSetting('GlobalSend')  && Settings.GetSetting('SendGEXInfo')){
+				if(GEXList !== undefined && MainParser.checkNextUpdate('GuildExpedition') === true && Settings.GetSetting('GlobalSend')  && Settings.GetSetting('SendGEXInfo')){
 					MainParser.GuildExpedition(GEXList['responseData']);
 				}
 
@@ -351,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'ChampionshipService' && obj['requestMethod'] === 'getOverview'
 				});
 
-				if(GEXGuild !== undefined && MainParser.checkNextUpdate('Championship') && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendGEXInfo')){
+				if(GEXGuild !== undefined && MainParser.checkNextUpdate('Championship') === true && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendGEXInfo')){
 					MainParser.Championship(GEXGuild['responseData']);
 				}
 
@@ -391,7 +407,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getContributions'
 				});
 
-				if(LGInvests !== undefined && MainParser.checkNextUpdate('GreatBuildings') && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendInvestigations')){
+				if(LGInvests !== undefined && MainParser.checkNextUpdate('GreatBuildings') === true && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendInvestigations')){
 					MainParser.GreatBuildings(LGInvests['responseData']);
 				}
 
@@ -403,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getFriendsList'
 				});
 
-				if(Friends !== undefined && MainParser.checkNextUpdate('FriendsList') && Settings.GetSetting('GlobalSend')){
+				if(Friends !== undefined && MainParser.checkNextUpdate('FriendsList') === true && Settings.GetSetting('GlobalSend')){
 					MainParser.FriendsList(Friends['responseData']);
 				}
 
@@ -673,7 +689,7 @@ let MainParser = {
 			return ;
 		}
 
-		if(MainParser.checkNextUpdate('OtherPlayers'))
+		if(MainParser.checkNextUpdate('OtherPlayers') === true)
 		{
 			let player = [];
 
@@ -974,7 +990,7 @@ let MainParser = {
 
 			// nach Erfolg, Zeitstempel in den LocalStorage
 			if(r['status'] === 'OK'){
-				localStorage.setItem('GreatBuildings', MainParser.getAddedDateTime(0, 30));
+				localStorage.setItem('GreatBuildings', MainParser.getAddedDateTime(0, 5));
 				MainParser.showInfo('Update durchgeführt', r['msg']);
 			} else {
 				MainParser.showInfo('Fehler!', r['msg']);

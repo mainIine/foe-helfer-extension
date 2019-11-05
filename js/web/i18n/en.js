@@ -21,10 +21,11 @@ let i18n = {
 			"Title": "Co-payment calculator",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Step",
-			"ArcBonus": "Arc bonus",
-			"PatronPart": "Patron share: ",
+			"PatronPart": "Patron share",
 			"OwnPart": "Own contribution",
-			"LGTotalFP": "Lb Total-FP",
+            "LGTotalFP": "GB Total-FP",
+            "OwnPartRemaining": "Remaining",
+            "Done": "Done",
 			"ExternalFP": "External FP",
 			"Order": "Sequence",
 			"Deposit": "Deposit",
@@ -32,8 +33,10 @@ let i18n = {
 			"YourName": "Your name",
 			"IndividualName": "individual Lb name",
 			"OutputScheme": "Output scheme",
-			"Place": "Place",
-			"Levels": "levels"
+            "Auto": "Auto",
+            "Place": "Place",
+            "Levels": "levels",
+            "NoPlaceSafe": "No place safe"
 		},
 
 		"Calculator": {
@@ -50,7 +53,8 @@ let i18n = {
 			"Commitment": "Commitment",
 			"Profit": "Profit",
 			"NoFPorMedsAvailable": "No FPs or BPs available",
-			"LGNotOpen": "The next level is currently not unlocked",
+            "LGNotOpen": "The next level is currently not unlocked",
+            "LGNotConnected": "The building is not connected to a street",
 		},
 
 		"LGOverviewBox": {
@@ -218,6 +222,11 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Negative profit in the cost calculator",
 			"Desc" : "Would you like to see the negative profit displayed?"
-		}
+        },
+        "ResetBoxPositions": {
+            "Title" : "Box coordinates",
+            "Desc" : "Should all box coordinates be reset?",
+            "Button" : "Delete!"
+        }
 	}
 };
