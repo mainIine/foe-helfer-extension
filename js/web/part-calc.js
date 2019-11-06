@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       06.11.19, 12:43 Uhr
+ * zu letzt bearbeitet:       06.11.19, 18:36 Uhr
  *
  * Copyright © 2019
  *
@@ -68,6 +68,22 @@ let Parts = {
 
 		// Es wird ein externer Platz eingetragen
 		$('body').on('blur', '.ext-part-input', function(){
+			Parts.collectExternals();
+		});
+
+
+		// eine neuer globaler Arche-Satz wird gewählt
+		$('body').on('click', '.btn-set-arc', function(){
+			let a = $(this).data('value');
+
+			for(let i = 0; i < 5; i++)
+			{
+				Parts.CurrentBuildingPercents[i] = a;
+				$('.arc-percent-input').eq(i).val(a);
+			}
+
+			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
+
 			Parts.collectExternals();
 		});
 	},
@@ -232,6 +248,8 @@ let Parts = {
         h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
+        h.push('<button class="btn btn-default btn-set-arc" data-value="85">85%</button>');
+		h.push('<button class="btn btn-default btn-set-arc" data-value="90">90%</button>');
         h.push('</td>');
         h.push('</tr></table>');
 
@@ -268,7 +286,7 @@ let Parts = {
         h.push('<td class="text-center">BPs</td>');
         h.push('<td class="text-center">Meds</td>');
         h.push('<td class="text-center">Ext.</td>');
-        h.push('<td class="text-center">Arc</td>');
+        h.push('<td class="text-center">Ark</td>');
         h.push('</tr>');
 
         for (let i = 0; i < 5; i++) {
