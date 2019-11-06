@@ -29,20 +29,14 @@ let Parts = {
 			return;
 		}
 
-		let perc = localStorage.getItem('CurrentBuildingPercent0');
-		if(perc !== null) Parts.CurrentBuildingPercents[0] = perc;
 
-        perc = localStorage.getItem('CurrentBuildingPercent1');
-        if (perc !== null) Parts.CurrentBuildingPercents[1] = perc;
+		// prüfen ob es hinterlegte Werte gibt
+		let perc = localStorage.getItem('CurrentBuildingPercent');
 
-        perc = localStorage.getItem('CurrentBuildingPercent2');
-        if (perc !== null) Parts.CurrentBuildingPercents[2] = perc;
-
-        perc = localStorage.getItem('CurrentBuildingPercent3');
-        if (perc !== null) Parts.CurrentBuildingPercents[3] = perc;
-
-        perc = localStorage.getItem('CurrentBuildingPercent4');
-        if (perc !== null) Parts.CurrentBuildingPercents[4] = perc;
+		// Array zurück holen
+		if(perc !== null){
+			Parts.CurrentBuildingPercents = JSON.parse(perc);
+		}
 
 		// Box in den DOM
 		HTML.Box({
@@ -56,46 +50,21 @@ let Parts = {
 
 		// Body zusammen fummeln
 		Parts.BoxBody();
-        
-		$('body').on('blur', '#arc-percent0', function(){
-			let p = $(this).val();
-			localStorage.setItem('CurrentBuildingPercent0', p);
-            Parts.CurrentBuildingPercents[0] = p;
 
-			Parts.collectExternals();
-        });    
+		// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
+		$('body').on('blur', '.arc-percent-input', function(){
+			let aprc = [];
 
-        $('body').on('blur', '#arc-percent1', function () {
-            let p = $(this).val();
-            localStorage.setItem('CurrentBuildingPercent1', p);
-            Parts.CurrentBuildingPercents[1] = p;
+			$('.arc-percent-input').each(function(){
+				aprc.push($(this).val() );
+			});
+
+			Parts.CurrentBuildingPercents = aprc;
+            localStorage.setItem('CurrentBuildingPercent', JSON.stringify(aprc));
 
             Parts.collectExternals();
-        });  
+		});
 
-        $('body').on('blur', '#arc-percent2', function () {
-            let p = $(this).val();
-            localStorage.setItem('CurrentBuildingPercent2', p);
-            Parts.CurrentBuildingPercents[2] = p;
-
-            Parts.collectExternals();
-        });  
-
-        $('body').on('blur', '#arc-percent3', function () {
-            let p = $(this).val();
-            localStorage.setItem('CurrentBuildingPercent3', p);
-            Parts.CurrentBuildingPercents[3] = p;
-
-            Parts.collectExternals();
-        });  
-
-        $('body').on('blur', '#arc-percent4', function () {
-            let p = $(this).val();
-            localStorage.setItem('CurrentBuildingPercent4', p);
-            Parts.CurrentBuildingPercents[4] = p;
-
-            Parts.collectExternals();
-        });  
 
 		// Es wird ein externer Platz eingetragen
 		$('body').on('blur', '.ext-part-input', function(){
@@ -147,8 +116,9 @@ let Parts = {
             MedalRewards = [], //Medaillen Maezenboni pro Platz (0 basiertes Array)
             BPRewards = [], //Blaupause Maezenboni pro Platz (0 basiertes Array)
             h = [],
-            EigenStart = 0 //Bereits eingezahlter Eigenanteil (wird ausgelesen)
+            EigenStart = 0, //Bereits eingezahlter Eigenanteil (wird ausgelesen)
             Eigens = [], //Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
+            Dangers = [], //Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
             Maezens = [], //Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
             Total = parseInt(d['state']['forge_points_for_level_up']), //Gesamt FP des aktuellen Levels
             MaezenTotal = 0, //Summe aller Fremdeinzahlungen
@@ -156,12 +126,11 @@ let Parts = {
             ExtTotal = 0, //Summe aller Externen Einzahlungen
             EigenCounter = 0, //Eigenanteile Counter während Tabellenerstellung
             Rest = Total, //Verbleibende FP: Counter während Berechnung
-            NonExts = [false, false, false, false, false],
-            i=0;
-			
+            NonExts = [false, false, false, false, false]; //Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
+            			
         Parts.CurrentBuildingID = cityentity_id;
 
-        for (i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++) {
             arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
         }
         
@@ -175,7 +144,8 @@ let Parts = {
                 continue;
             }
 
-            let Place = rankings[x]['rank'] - 1;
+            let Place = rankings[x]['rank'] - 1,
+				MedalCount = 0;
 
             Maezens[Place] = rankings[x]['forge_points'];
             if (Maezens[Place] === undefined) Maezens[Place] = 0;
@@ -207,8 +177,8 @@ let Parts = {
                
         Maezens.sort(function (a, b) { return b - a });
 
-        for (i = 0; i < Maezens.length; i++) {
-            if (Maezens[i] == 0) {
+        for (let i = 0; i < Maezens.length; i++) {
+            if (Maezens[i] === 0) {
                 Maezens.length = Math.max(i, 5);
                 break;
             }
@@ -218,16 +188,18 @@ let Parts = {
 
         Rest -= ExtTotal;
         
-        i = 0;
-        for (i = 0; i < 5; i++) {
-
+        for (let i = 0; i < 5; i++) {
             if (FPRewards[i] <= Maezens[i] || Rest <= Maezens[i]) {
-                Eigens[i] = 0
+                Eigens[i] = 0;
                 continue;
             }
 
-            Eigens[i] = Math.max(Rest + Maezens[i] - 2 * FPRewards[i], 0);
-            Eigens[i] = Math.ceil(Eigens[i]);
+            Eigens[i] = Math.ceil(Rest + Maezens[i] - 2 * FPRewards[i]);
+            if (Eigens[i] < 0) {
+                Dangers[i] = Math.floor(0 - Eigens[i]/2);
+                Eigens[i] = 0;
+            }
+            
             for (let j = Maezens.length - 1; j >= i; j--) {
                 if (Maezens[j] > 0) {
                     Maezens[j + 1] = Maezens[j];
@@ -239,20 +211,20 @@ let Parts = {
             Rest -= Eigens[i] + Maezens[i];
         }
 
-        if(Rest>0) Eigens[i] = Rest;
+        if(Rest>0) Eigens[5] = Rest;
         
         EigenTotal = EigenStart;
-        for (i = 0; i < Eigens.length; i++) {
+        for (let i = 0; i < Eigens.length; i++) {
             EigenTotal += Eigens[i];
         }      
 
-        for (i = FPRewards.length; i < Maezens; i++)
+        for (let i = FPRewards.length; i < Maezens; i++)
             FPRewards[i] = 0;
 
-        for (i = MedalRewards.length; i < Maezens; i++)
+        for (let i = MedalRewards.length; i < Maezens; i++)
             MedalRewards[i] = 0;
 
-        for (i = BPRewards.length; i < Maezens; i++)
+        for (let i = BPRewards.length; i < Maezens; i++)
             BPRewards[i] = 0;
         
         // Info-Block
@@ -268,14 +240,14 @@ let Parts = {
         h.push('<thead>');
 
         h.push('<tr>');
-        h.push('<th class="text-center" colspan="3" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['PatronPart'] + ' <strong>' + MaezenTotal + (ExtTotal > 0 ? ' <strong class="info">+' + ExtTotal + '</strong>' : '') + '</strong></th>');
+        h.push('<th class="text-center" colspan="3" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['PatronPart'] + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></th>');
         h.push('<th class="text-center" colspan="3">' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + ': <strong class="success">' + EigenTotal + '</strong></th>');
         h.push('</tr>');
 
         h.push('<tr>');
-        if (ExtTotal > 0) {
+        if (EigenStart > 0) {
             h.push('<th colspan="3" class="text-center" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['LGTotalFP'] + ': <strong class="normal">' + Total + '</strong></th>');
-            h.push('<th colspan="3" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['ExternalFP'] + ': <strong class="info">' + ExtTotal + '</strong></th>');
+            h.push('<th colspan="3" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['OwnPartRemaining'] + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></th>');
         }
         else {
             h.push('<th colspan="6" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['LGTotalFP'] + ': <strong class="normal">' + Total + '</strong></th>');
@@ -292,57 +264,72 @@ let Parts = {
         h.push('<tr>');
         h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Order'] + '</td>');
         h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Deposit'] + '</td>');
-        h.push('<td class="text-center">Ext.</td>');
+        h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Done'] + '</td>');
         h.push('<td class="text-center">BPs</td>');
         h.push('<td class="text-center">Meds</td>');
         h.push('<td class="text-center">Ext.</td>');
         h.push('<td class="text-center">Arc</td>');
         h.push('</tr>');
 
-        if (EigenStart > 0) {
-            EigenCounter += EigenStart;
-
-            h.push('<tr>');
-            h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
-            h.push('<td class="text-center">-</td>');
-            h.push('<td class="text-center"><strong class="success">' + EigenStart + '</strong></td>');
-            h.push('<td colspan="4"></td>');
-            h.push('</tr>');
-        }
-
-        for (i = 0; i < 5; i++) {
-            if (Eigens[i] > 0) {
-                EigenCounter += Eigens[i];
+        for (let i = 0; i < 5; i++) {
+            EigenCounter += Eigens[i];
+            if (i === 0 && EigenStart > 0) {
+                EigenCounter += EigenStart;
 
                 h.push('<tr>');
                 h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
-                h.push('<td class="text-center"><strong class="success">' + Eigens[i] + (EigenCounter > Eigens[i] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
-                h.push('<td colspan="5"></td>');
+                h.push('<td class="text-center"><strong class="success">' + (Eigens[i]>0 ? Eigens[i] + ' <small>(=' + (Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
+                h.push('<td class="text-center"><strong class="info">' + EigenStart + '</strong></td>');
+                h.push('<td colspan="4"></td>');
                 h.push('</tr>');
+            }
+            else {
+                if (Eigens[i] > 0) {
+                    h.push('<tr>');
+                    h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
+                    h.push('<td class="text-center"><strong class="success">' + Eigens[i] + (EigenCounter > Eigens[i] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
+                    h.push('<td colspan="5"></td>');
+                    h.push('</tr>');
+                }
             }
 
             h.push('<tr>');
             h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' ' + (i+1) + '</td>');
 
             if (NonExts[i]) {
-                h.push('<td class="text-center"><strong>' + Maezens[i] + '</strong>' + '</td>');  //Todo: 50% Danger
-                h.push('<td class="text-center">-</td>');
+                h.push('<td class="text-center"><strong>' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong>' + '</td>');
+                if (Dangers[i] > 0) {
+                    h.push('<td class="text-center"><strong class="error">danger (' + Dangers[i] + 'FP)</strong></td>');
+                }
+                else {
+                    h.push('<td class="text-center"><strong class="info">-</strong></td>');
+                }
             }
             else {
-                h.push('<td class="text-center">-</td>');
-                h.push('<td class="text-center"><strong class="info">' + Maezens[i] + '</strong></td>');
+                h.push('<td class="text-center"><strong>-</strong></td>');
+                let MaezenString = Maezens[i] > 0 ? Maezens[i] : '-';
+                let MaezenDiff = Maezens[i] - FPRewards[i];
+                let MaezenDiffString = '';
+                if (MaezenDiff > 0) {
+                    MaezenDiffString = '<strong class="success"> (+' + MaezenDiff + ')</strong>';
+                }
+                else if (MaezenDiff < 0) {
+                    MaezenDiffString = '<strong class="error"> (' + MaezenDiff + ')</strong>';
+                }
+
+                h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
             }
 
             h.push('<td class="text-center">' + BPRewards[i] + '</td>');
-            h.push('<td class="text-center">' + MedalRewards[i] + '</td>');
+            h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
             h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.Input[i] : 0) + '"></td>');
-            h.push('<td class="text-center"><input type="number" id="arc-percent' + i + '"step="0.1" min="12" max="200" value="' + Parts.CurrentBuildingPercents[i] + '"></td>');
+            h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.CurrentBuildingPercents[i] + '"></td>');
 
             h.push('</tr>');
         }
 
         let MaezenRest = 0;
-        for (i = 5; i < Maezens.length; i++) {
+        for (let i = 5; i < Maezens.length; i++) {
             MaezenRest += Maezens[i];
         }
 
@@ -362,14 +349,14 @@ let Parts = {
             h.push('<tr>');
             h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
             h.push('<td class="text-center"><strong class="success">' + Eigens[5] + (EigenCounter > Eigens[5] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
-            h.push('<td colspan="4"></td>');
+            h.push('<td colspan="5"></td>');
             h.push('</tr>');
         }
         
         h.push('<tbody>');
         h.push('</table>');
 
-        Parts.BuildBackgroundBody(Maezens);
+        Parts.BuildBackgroundBody(Maezens, Eigens, NonExts);
 
 		$('#OwnPartBoxBody').html( h.join('') );
 },
@@ -380,12 +367,11 @@ let Parts = {
 	 * @param p
 	 * @constructor
 	 */
-	BuildBackgroundBody: (p)=>{
+	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
 			n = localStorage.getItem('PlayerCopyName'),
 			m = localStorage.getItem('current_player_name'),
 			s = localStorage.getItem(Parts.CurrentBuildingID + 'Scheme'),
-			h = p,
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
 		b.push('<p><span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span></p>');
@@ -405,16 +391,18 @@ let Parts = {
 
 		b.push(drp);
 
-		let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 1.</label>' +
+        let cb = '<div class="checkboxes">' +
+            '<label class="form-check-label" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0"> ' + i18n['Boxes']['OwnpartCalculator']['Auto'] + '</label>' +
 
-			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 2.</label>' +
+			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 1</label>' +
 
-			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 3.</label>' +
+			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 2</label>' +
 
-			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 4.</label>' +
+			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 3</label>' +
 
-			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 5.</label>' +
+			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 4</label>' +
+
+			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 5</label>' +
 
 			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n['Boxes']['OwnpartCalculator']['Levels'] + '</label>' +
 			'</div>';
@@ -484,27 +472,54 @@ let Parts = {
 
 				if( $('#chain-level').prop('checked') ){
 					parts.push('Bitte Leveln');
-				}
+                }
+
+                let PrintPlace = [false, false, false, false, false];
+                let NoPlaceSafe = false;
+
+                if ($('#chain-auto').prop('checked')) {
+                    NoPlaceSafe = true;
+
+                    for (let i = 0; i < 5; i++) {
+                        if (Eigens[i] > 0)
+                            break;
+                        if (NonExts[i]) {
+                            PrintPlace[i] = true;
+                            NoPlaceSafe = false;
+                        }
+                    }
+                }
+                else {
+                    for (let i = 0; i < 5; i++) {
+                        if ($('#chain-p' + (i+1)).prop('checked'))
+                            PrintPlace[i] = true;
+                    }
+                }
 
 				// Plätze wenn angehakt
-				if(sop[cs]['d'] === 'u'){
-					for(let i = 1; i < 6; i++){
-						if( $('#chain-p'+i).prop('checked') ){
-							let p = sol[cs].replace(/i/, i);
-							p = p.replace(/fp/, h[ (i  -1) ]);
-							parts.push(p);
-						}
-					}
+                if (!NoPlaceSafe) {
+                    if (sop[cs]['d'] === 'u') {
+                        for (let i = 0; i < 5; i++) {
+                            if (PrintPlace[i]) {
+                                let p = sol[cs].replace(/i/, (i + 1));
+                                p = p.replace(/fp/, Maezens[i]);
+                                parts.push(p);
+                            }
+                        }
 
-				} else {
-					for(let i = 5; i > 0; i--){
-						if( $('#chain-p'+i).prop('checked') ){
-							let p = sol[cs].replace(/i/, i);
-							p = p.replace(/fp/, h[ (i  -1) ]);
-							parts.push(p);
-						}
-					}
-				}
+                    } else { //NoPlaceSafe
+                        for (let i = 5 - 1; i >= 0; i--) {
+                            if (PrintPlace[i]) {
+                                let p = sol[cs].replace(/i/, (i + 1));
+                                p = p.replace(/fp/, Maezens[i]);
+                                parts.push(p);
+                            }
+                        }
+                    }
+                }
+                else {
+                    parts.push(i18n['Boxes']['OwnpartCalculator']['NoPlaceSafe']);
+                }
 
 				return parts.join(' ');
 			}
@@ -550,7 +565,7 @@ let Parts = {
 
 
 		if(show === true){
-			$('.OwnPartBoxBackgroundBody').animate({height: 230, opacity: 1}, 250, function () {
+			$('.OwnPartBoxBackgroundBody').animate({height: 260, opacity: 1}, 250, function () {
 				$box.addClass('show');
 				$box.find('.black-bg').show();
 			});
