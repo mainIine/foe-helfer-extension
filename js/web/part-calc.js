@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       04.11.19, 01:46 Uhr
+ * zu letzt bearbeitet:       06.11.19, 12:43 Uhr
  *
  * Copyright © 2019
  *
@@ -18,7 +18,8 @@ let Parts = {
 	CurrentBuildingStep : false,
     CurrentBuildingPercents: [90, 90, 90, 90, 90],
     Input: [],
-    
+
+
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
 	 */
@@ -29,9 +30,8 @@ let Parts = {
 			return;
 		}
 
-
 		// prüfen ob es hinterlegte Werte gibt
-		let perc = localStorage.getItem('CurrentBuildingPercent');
+		let perc = localStorage.getItem('CurrentBuildingPercentArray');
 
 		// Array zurück holen
 		if(perc !== null){
@@ -60,7 +60,7 @@ let Parts = {
 			});
 
 			Parts.CurrentBuildingPercents = aprc;
-            localStorage.setItem('CurrentBuildingPercent', JSON.stringify(aprc));
+            localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(aprc));
 
             Parts.collectExternals();
 		});
@@ -310,11 +310,12 @@ let Parts = {
                 let MaezenString = Maezens[i] > 0 ? Maezens[i] : '-';
                 let MaezenDiff = Maezens[i] - FPRewards[i];
                 let MaezenDiffString = '';
+
                 if (MaezenDiff > 0) {
-                    MaezenDiffString = '<strong class="success"> (+' + MaezenDiff + ')</strong>';
+                    MaezenDiffString = ' <strong class="success"><small>(+' + MaezenDiff + ')</small></strong>';
                 }
                 else if (MaezenDiff < 0) {
-                    MaezenDiffString = '<strong class="error"> (' + MaezenDiff + ')</strong>';
+                    MaezenDiffString = ' <strong class="error"><small>(' + MaezenDiff + ')</small></strong>';
                 }
 
                 h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
@@ -360,7 +361,8 @@ let Parts = {
 
 		$('#OwnPartBoxBody').html( h.join('') );
 },
-      
+
+
 	/**
 	 * Daten für die Kopierbuttons
 	 *
@@ -586,6 +588,21 @@ let Parts = {
 	 * @constructor
 	 */
 	RefreshData: ()=> {
+		Parts.BoxBody();
+	},
+
+
+	/**
+	 * Updated die Werte
+	 *
+	 * @param d
+	 * @param e
+	 * @constructor
+	 */
+	UpdateBody: (d, e)=> {
+		localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(e));
+		localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(d));
+
 		Parts.BoxBody();
 	}
 };

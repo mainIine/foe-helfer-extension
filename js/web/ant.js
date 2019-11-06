@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       04.11.19, 01:46 Uhr
+ * zu letzt bearbeitet:       06.11.19, 12:33 Uhr
  *
  * Copyright © 2019
  *
@@ -257,6 +257,14 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
 				});
 
+				let Calculator3 = d.find(obj => {
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
+				});
+
+				let Calculator4 = d.find(obj => {
+					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'reset';
+				});
+
 				if((Calculator1 !== undefined && Calculator2 !== undefined)
 				){
 					$('#calcFPs').removeClass('hud-btn-red');
@@ -300,6 +308,11 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.OwnLG(Calculator1['responseData'][0], Calculator2['responseData']['rankings']);
 				}
 
+				// Spieler zahlt in sein eigenes LG ein und die Box ist offen
+				if(Calculator3 !== undefined && Calculator4 !== undefined && $('#OwnPartBox').length > 0){
+					Parts.UpdateBody(Calculator3['responseData'], Calculator4['responseData'][0]);
+				}
+
 				// --------------------------------------------------------------------------------------------------
 
 				let OtherPlayersGild = d.find(obj => {
@@ -309,26 +322,6 @@ document.addEventListener("DOMContentLoaded", function(){
 				if(OtherPlayersGild !== undefined && Settings.GetSetting('GlobalSend')){
 					MainParser.SocialbarList(OtherPlayersGild['responseData']);
 				}
-
-
-				let OtherPlayersFriends = d.find(obj => {
-					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getFriendsList'
-				});
-
-				// andere Gildenmitglieder in einem anderen Objekt
-				if(OtherPlayersFriends !== undefined && Settings.GetSetting('GlobalSend')){
-					// MainParser.ParseOtherPlayers(OtherPlayersFriends['responseData']);
-				}
-
-				let OtherPlayersNeighbor = d.find(obj => {
-					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getNeighborList'
-				});
-
-				// andere Gildenmitglieder in einem anderen Objekt
-				if(OtherPlayersNeighbor !== undefined && Settings.GetSetting('GlobalSend')){
-					// MainParser.ParseOtherPlayers(OtherPlayersNeighbor['responseData']);
-				}
-
 
 				// --------------------------------------------------------------------------------------------------
 				// --------------------------------------------------------------------------------------------------
@@ -372,14 +365,8 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 
 
-
-
 				// --------------------------------------------------------------------------------------------------
 				// Alle Typen der Außenposten "notieren"
-				// const OutpostGetAll = d.find(obj => {return obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'});
-				// const OutpostGetAll = d.find((item) => item['requestClass'] === 'OutpostService' && item['requestMethod'] === 'getAll');
-				// let OutpostGetAll = d.find((item) => item['requestClass'] === 'OutpostService');
-				// let OutpostGetAll = d.filter((item) => item['requestClass'] === 'OutpostService').shift();
 				let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
 
 				if(OutpostGetAll !== undefined && Settings.GetSetting('ShowOutpost')){
