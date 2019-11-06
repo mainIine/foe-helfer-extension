@@ -51,6 +51,7 @@ let i18n = {
 			"Profit": "Gain",
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
+			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
 		},
 
 		"LGOverviewBox": {
@@ -218,6 +219,11 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Bénéfice négatif dans le calculateur de coûts",
 			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
+		},
+		"ResetBoxPositions": {
+			"Title" : "Coordonnées de la boîte",
+			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
+			"Button" : "Supprimer!"
 		}
 	}
 };

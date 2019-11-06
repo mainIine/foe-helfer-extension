@@ -184,7 +184,10 @@ let Calculator = {
 		// Stufe ist noch nicht freigeschaltet
 		if(e['level'] === e['max_level'])
 		{
-			$('#costCalculator').find('#costCalculatorBody').append( $('<div />').addClass('lg-not-opened').attr('data-text', i18n['Boxes']['Calculator']['LGNotOpen']) );
+			$('#costCalculator').find('#costCalculatorBody').append( $('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotOpen']) );
+
+		} else if(e['connected'] === undefined){
+			$('#costCalculator').find('#costCalculatorBody').append( $('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotConnected']) );
 		}
 
 		// alle Ansichten aktualisieren
