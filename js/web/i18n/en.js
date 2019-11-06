@@ -53,8 +53,8 @@ let i18n = {
 			"Commitment": "Commitment",
 			"Profit": "Profit",
 			"NoFPorMedsAvailable": "No FPs or BPs available",
-            "LGNotOpen": "The next level is currently not unlocked",
-            "LGNotConnected": "The building is not connected to a street",
+			"LGNotOpen": "The next level is currently not unlocked",
+			"LGNotConnected": "The building is not connected to a street",
 		},
 
 		"LGOverviewBox": {
@@ -222,11 +222,11 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Negative profit in the cost calculator",
 			"Desc" : "Would you like to see the negative profit displayed?"
-        },
-        "ResetBoxPositions": {
-            "Title" : "Box coordinates",
-            "Desc" : "Should all box coordinates be reset?",
-            "Button" : "Delete!"
-        }
+		},
+		"ResetBoxPositions": {
+			"Title" : "Box coordinates",
+			"Desc" : "Should all box coordinates be reset?",
+			"Button" : "Delete!"
+		}
 	}
 };

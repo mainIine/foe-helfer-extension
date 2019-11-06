@@ -52,8 +52,8 @@ let i18n = {
 			"Commitment": "PFs posés",
             "Profit": "Profit", //Todo: Translate
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
-            "LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
-            "LGNotConnected": "Le bâtiment n'est pas relié à une rue",
+			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
+			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
 		},
 
 		"LGOverviewBox": {
@@ -217,15 +217,15 @@ let i18n = {
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
 			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."
-        },
-        "CalculatorShowNegativ": {
-            "Title" : "Bénéfice négatif dans le calculateur de coûts",
-            "Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
-        },
-        "ResetBoxPositions": {
-            "Title" : "Coordonnées de la boîte",
-            "Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
-            "Button" : "Supprimer!"
-        }
+		},
+		"CalculatorShowNegativ": {
+			"Title" : "Bénéfice négatif dans le calculateur de coûts",
+			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
+		},
+		"ResetBoxPositions": {
+			"Title" : "Coordonnées de la boîte",
+			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
+			"Button" : "Supprimer!"
+		}
 	}
 };
