@@ -21,19 +21,21 @@ let i18n = {
 			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Niveau",
-			"ArcBonus": "Bonus Arche",
 			"PatronPart": "Contribution externe",
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
-			"ExternalFP": "PFs externes",
+            "OwnPartRemaining": "Remaining",
+            "Done": "Done", //Todo: Translate
 			"Order": "Séquence",
-			"Deposit": "A poser",
+            "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
 			"YourName": "Votre nom",
 			"IndividualName": "nom individuel",
 			"OutputScheme": "Schéma de sortie",
-			"Place": "Place",
-			"Levels": "niveaux"
+            "Auto": "Auto", //Todo: Translate?
+            "Place": "Place",
+            "Levels": "niveaux",
+            "No place safe": "No place safe" //Todo: Translate
 		},
 
 		"Calculator": {
@@ -41,14 +43,14 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
-			"ArcBonus": "Bonus Arche",
-			"Earnings": "Gains",
-			"Rate": "Cours",
+			"ArcBonus": "Arc Bonus", //Todo: Translate
+            "Earnings": "Gains", //Todo: Translate
+            "Rate": "Rate", //Todo: Translate
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
-			"Profit": "Gain",
+            "Profit": "Profit", //Todo: Translate
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",

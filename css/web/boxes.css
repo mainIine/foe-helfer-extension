@@ -12,7 +12,6 @@
  * **************************************************************************************
  */
 
-
 .window-head span.window-minimize,
 .OwnPartBoxBackground .outerArrow:before,
 .OwnPartBoxBackground .outerArrow span.arrow {
@@ -343,7 +342,7 @@
 #OwnPartBox {
 	top: 100px;
 	right: 100px;
-	width: 340px;
+	width: 380px;
 	font-size: 80%;
 }
 

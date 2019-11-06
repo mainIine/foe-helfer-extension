@@ -21,10 +21,11 @@ let i18n = {
 			"Title": "Co-payment calculator",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Step",
-			"ArcBonus": "Arc bonus",
-			"PatronPart": "Patron share: ",
+			"PatronPart": "Patron share",
 			"OwnPart": "Own contribution",
-			"LGTotalFP": "Lb Total-FP",
+            "LGTotalFP": "GB Total-FP",
+            "OwnPartRemaining": "Remaining",
+            "Done": "Done",
 			"ExternalFP": "External FP",
 			"Order": "Sequence",
 			"Deposit": "Deposit",
@@ -32,8 +33,10 @@ let i18n = {
 			"YourName": "Your name",
 			"IndividualName": "individual Lb name",
 			"OutputScheme": "Output scheme",
-			"Place": "Place",
-			"Levels": "levels"
+            "Auto": "Auto",
+            "Place": "Place",
+            "Levels": "levels",
+            "NoPlaceSafe": "No place safe"
 		},
 
 		"Calculator": {

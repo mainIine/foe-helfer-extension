@@ -21,19 +21,21 @@ let i18n = {
 			"Title": "Eigenanteilsrechner",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 			"Step": "Stufe",
-			"ArcBonus": "Arche Bonus",
-			"PatronPart": "Mäzen Anteil: ",
+			"PatronPart": "Mäzen Anteil",
 			"OwnPart": "Eigenanteil",
 			"LGTotalFP": "LG Gesamt-FP",
-			"ExternalFP": "Externe FP",
+            "OwnPartRemaining": "Verbleibend",
+            "Done": "Erledigt",
 			"Order": "Reihenfolge",
 			"Deposit": "Einzahlen",
 			"CopyValues": "Werte kopieren",
 			"YourName": "Dein Name",
 			"IndividualName": "Individueller LG Name",
 			"OutputScheme": "Ausgabe Schema",
-			"Place": "Platz",
-			"Levels": "Leveln"
+            "Auto": "Auto",
+            "Place": "Platz",
+            "Levels": "Leveln",
+            "NoPlaceSafe": "Kein Platz sicher"
 		},
 
 		"Calculator": {
@@ -225,5 +227,5 @@ let i18n = {
 			"Desc" : "Sollen alle Box Koordinaten zurückgesetzt werden?",
 			"Button" : "Löschen!"
 		}
-	}
+	} 
 };
