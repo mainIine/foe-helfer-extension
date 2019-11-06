@@ -134,8 +134,9 @@ let Parts = {
             h = [],
             EigenStart = 0, //Bereits eingezahlter Eigenanteil (wird ausgelesen)
             Eigens = [], //Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
-            Dangers = [], //Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
+            Dangers = [0, 0, 0, 0, 0], //Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
             Maezens = [], //Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
+            LeveltLG = [false, false, false, false, false],
             Total = parseInt(d['state']['forge_points_for_level_up']), //Gesamt FP des aktuellen Levels
             MaezenTotal = 0, //Summe aller Fremdeinzahlungen
             EigenTotal = 0, //Summe aller Eigenanteile
@@ -143,8 +144,11 @@ let Parts = {
             EigenCounter = 0, //Eigenanteile Counter während Tabellenerstellung
             Rest = Total, //Verbleibende FP: Counter während Berechnung
             NonExts = [false, false, false, false, false]; //Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
-            			
+
         Parts.CurrentBuildingID = cityentity_id;
+        if (level === undefined) {
+            level = 0;
+        }
 
         for (let i = 0; i < 5; i++) {
             arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
@@ -221,7 +225,13 @@ let Parts = {
                     Maezens[j + 1] = Maezens[j];
                 }
             }
-            Maezens[i] = Math.min(FPRewards[i], Rest);
+            Maezens[i] = FPRewards[i];
+            if (Maezens[i] >= Rest) {
+                LeveltLG[i] = true;
+                if (Dangers[i] > 0)
+                    Dangers[i] -= Maezens[i] - Rest;
+                Maezens[i] = Rest;
+            }
             NonExts[i] = true;
             MaezenTotal += Maezens[i];
             Rest -= Eigens[i] + Maezens[i];
@@ -286,7 +296,7 @@ let Parts = {
         h.push('<td class="text-center">BPs</td>');
         h.push('<td class="text-center">Meds</td>');
         h.push('<td class="text-center">Ext.</td>');
-        h.push('<td class="text-center">Ark</td>');
+        h.push('<td class="text-center">Arc</td>');
         h.push('</tr>');
 
         for (let i = 0; i < 5; i++) {
@@ -315,9 +325,12 @@ let Parts = {
             h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' ' + (i+1) + '</td>');
 
             if (NonExts[i]) {
-                h.push('<td class="text-center"><strong>' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong>' + '</td>');
-                if (Dangers[i] > 0) {
-                    h.push('<td class="text-center"><strong class="error">danger (' + Dangers[i] + 'FP)</strong></td>');
+                h.push('<td class="text-center"><strong>' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong >' + '</td>');
+                if (LeveltLG[i]) {
+                    h.push('<td class="text-center"><strong class="error">levelt</strong></td>');
+                }
+                else if (Dangers[i] > 5) {
+                    h.push('<td class="text-center"><strong class="error">danger (' + (Dangers[i]) + 'FP)</strong></td>');
                 }
                 else {
                     h.push('<td class="text-center"><strong class="info">-</strong></td>');
@@ -328,12 +341,13 @@ let Parts = {
                 let MaezenString = Maezens[i] > 0 ? Maezens[i] : '-';
                 let MaezenDiff = Maezens[i] - FPRewards[i];
                 let MaezenDiffString = '';
-
-                if (MaezenDiff > 0) {
-                    MaezenDiffString = ' <strong class="success"><small>(+' + MaezenDiff + ')</small></strong>';
-                }
-                else if (MaezenDiff < 0) {
-                    MaezenDiffString = ' <strong class="error"><small>(' + MaezenDiff + ')</small></strong>';
+                if (Maezens[i] > 0) {
+                    if (MaezenDiff > 0) {
+                        MaezenDiffString = '<strong class="success"> (+' + MaezenDiff + ')</strong>';
+                    }
+                    else if (MaezenDiff < 0) {
+                        MaezenDiffString = '<strong class="error"> (' + MaezenDiff + ')</strong>';
+                    }
                 }
 
                 h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
@@ -405,14 +419,14 @@ let Parts = {
 			'<option value="2"' + (s === '2' ? ' selected' : '') + '>Name LG P1 P2 P3 P4 P5</option>' +
 			'<option value="3"' + (s === '3' ? ' selected' : '') + '>Name LG P5/4/3/2/1</option>' +
 			'<option value="4"' + (s === '4' ? ' selected' : '') + '>Name LG P1/2/3/4/5</option>' +
-			'<option value="5"' + (s === '5' ? ' selected' : (s === null ? ' selected' : '') ) + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
-			'<option value="6"' + (s === '6' ? ' selected' : '') + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
-			'</select></div>';
+            '<option value="5"' + (s === '5' ? ' selected' : '') + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
+            '<option value="6"' + (s === '6' ? ' selected' : (s === null ? ' selected' : '') ) + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
+            '</select></div>';
 
-		b.push(drp);
+        b.push(drp);
 
         let cb = '<div class="checkboxes">' +
-            '<label class="form-check-label" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0"> ' + i18n['Boxes']['OwnpartCalculator']['Auto'] + '</label>' +
+            '<label class="form-check-label" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0" checked> ' + i18n['Boxes']['OwnpartCalculator']['Auto'] + '</label>' +
 
 			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 1</label>' +
 
