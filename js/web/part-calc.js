@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       06.11.19, 18:36 Uhr
+ * zu letzt bearbeitet:       07.11.19, 20:53 Uhr
  *
  * Copyright © 2019
  *
@@ -296,7 +296,7 @@ let Parts = {
         h.push('<td class="text-center">BPs</td>');
         h.push('<td class="text-center">Meds</td>');
         h.push('<td class="text-center">Ext.</td>');
-        h.push('<td class="text-center">Arc</td>');
+        h.push('<td class="text-center">Ark</td>');
         h.push('</tr>');
 
         for (let i = 0; i < 5; i++) {
