@@ -1,5 +1,11 @@
 ##Changelog - Chrome Extension
 
+
+#####v2.3.12.1
+**Update**
+- Extension: 
+    - Boxen können nicht mehr "zu hoch" geschoben werden [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helfer-extension/issues/145)
+
 #####v2.3.12
 
 **BugFix**
@@ -23,7 +29,7 @@
         - Individuelle Prozente pro Platz einstellbar
 
 - Einstellungen:
-    - neuer Menüpunkt => Box Koordinaten geresetten
+    - neuer Menüpunkt => "Box Koordinaten resetten"
     
 ---
 

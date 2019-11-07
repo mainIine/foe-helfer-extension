@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 15:18 Uhr
+ * zu letzt bearbeitet:       07.11.19, 21:51 Uhr
  *
  * Copyright © 2019
  *
@@ -251,6 +251,14 @@ let HTML = {
 
 			top = (el.offsetTop - pos2);
 			left = (el.offsetLeft - pos1);
+
+			// Schutz gegen "zu Hoch geschoben"
+			if(top < 0) {
+				top = 12;
+
+				document.onmouseup = null;
+				document.onmousemove = null;
+			}
 
 			el.style.top = top + "px";
 			el.style.left = left + "px";
