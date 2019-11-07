@@ -1,5 +1,11 @@
 ##Changelog - Chrome Extension
 
+
+#####v2.3.12.1
+**Update**
+- Extension: 
+    - Boxen können nicht mehr "zu hoch" geschoben werden [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helfer-extension/issues/145)
+
 #####v2.3.12
 
 **BugFix**
@@ -8,11 +14,23 @@
     - Fehler Behoben [#133](https://github.com/dsiekiera/foe-helfer-extension/issues/133)
     - Fehlende Übersetzung ergänzt
 
+- LG-Investionen:
+    - Timeout gesetzt [#134](https://github.com/dsiekiera/foe-helfer-extension/issues/134)
+
 **Update**
 - Kostenrechner:
     - LG Übersicht: Tooltip für Erläuterung, bessere Erkennung
-    - Wenn Stufe nicht offen, erscheint ein Overlay
+    - Wenn Stufe nicht offen oder Straße fehlt, erscheint ein Overlay
 
+- Eigenanteilsrechner:
+    - komplett überarbeitet 
+        - beliebig viele Externe Spieler/Sniper werden beachtet [#47](https://github.com/dsiekiera/foe-helfer-extension/issues/47) [#72](https://github.com/dsiekiera/foe-helfer-extension/issues/72) [#113](https://github.com/dsiekiera/foe-helfer-extension/issues/113) [#139](https://github.com/dsiekiera/foe-helfer-extension/issues/139) [#143](https://github.com/dsiekiera/foe-helfer-extension/issues/143)
+        - Echtzeit Aktualsierung
+        - Individuelle Prozente pro Platz einstellbar
+
+- Einstellungen:
+    - neuer Menüpunkt => "Box Koordinaten resetten"
+    
 ---
 
 #####v2.3.11.2 
