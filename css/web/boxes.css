@@ -97,7 +97,7 @@
 }
 
 .window-head span.window-speaker:hover {
-	background-position: -121px -1635px;
+    background-position: 0 -1624px;
 }
 
 .window-head span.window-speaker.deactivated {
@@ -105,7 +105,7 @@
 }
 
 .window-head span.window-speaker.deactivated:hover {
-	background-position: 0 -1624px;
+    background-position: -121px -1635px;
 }
 
 .open .window-head span.window-minimize:hover {

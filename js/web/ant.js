@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       07.11.19, 20:57 Uhr
+ * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
  *
  * Copyright © 2019
  *
@@ -31,13 +31,14 @@ document.addEventListener("DOMContentLoaded", function(){
 
 	// Local-Storage leeren
 	localStorage.removeItem('OwnCurrentBuildingCity');
-	localStorage.removeItem('OwnCurrentBuildingGreat');
+    localStorage.removeItem('OwnCurrentBuildingGreat');
 
 	MainParser.setLanguage();
 });
 
 
-(function(){
+(function () {
+    let LastKostenrechnerOpenTime = 0;
 
 	let XHR = XMLHttpRequest.prototype,
 		open = XHR.open,
@@ -242,51 +243,58 @@ document.addEventListener("DOMContentLoaded", function(){
 
 					// wenn schon offen, den Inhalt updaten
 					if ($('#LGOverviewBox').is(':visible'))
-					{
-						Calculator.ShowOverview();
+                    {
+                        let CurrentTime = new Date().getTime()
+                        if (CurrentTime < LastKostenrechnerOpenTime + 1000)
+                            Calculator.ShowOverview(true);
+                        else
+                            Calculator.ShowOverview(false);
 					}
 				}
-
-
+                
 				// es wird ein LG eines Spielers geöffnet
-				let Calculator1 = d.find(obj => {
+                let getConstruction = d.find(obj => {
+                    return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
+                });
+
+                let contributeForgePoints = d.find(obj => {
+                    return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
+                });
+
+                let Rankings;
+                if (getConstruction !== undefined) {
+                    Rankings = getConstruction['responseData']['rankings'];
+                }
+                else if (contributeForgePoints !== undefined) {
+                    Rankings = contributeForgePoints['responseData'];
+                }
+                
+				let UpdateEntity = d.find(obj => {
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'updateEntity';
 				});
 
-				let Calculator2 = d.find(obj => {
-					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
-				});
+                if (UpdateEntity !== undefined && Rankings !== undefined) {
+                    //Eigenes LG
+                    if (UpdateEntity['responseData'][0]['player_id'] === ExtPlayerID) {
+                         MainParser.OwnLG(UpdateEntity['responseData'][0], Rankings);
+                    }
 
-				let Calculator3 = d.find(obj => {
-					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
-				});
+                    //Fremdes LG
+                    else {
+                        LastKostenrechnerOpenTime = new Date().getTime()
 
-				let Calculator4 = d.find(obj => {
-					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'reset';
-				});
+                        $('#calcFPs').removeClass('hud-btn-red');
+                        $('#calcFPs-closed').remove();
 
-				if((Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] !== ExtPlayerID)
-				){
-					$('#calcFPs').removeClass('hud-btn-red');
-					$('#calcFPs-closed').remove();
+                        sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
+                        sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
 
-					sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Calculator2['responseData']));
-					sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(Calculator1['responseData'][0]));
+                        // wenn schon offen, den Inhalt updaten
+                        if ($('#costCalculator').is(':visible')) {
+                            Calculator.Show(Rankings, UpdateEntity['responseData'][0]);
+                        }
+                    }
 
-					// wenn schon offen, den Inhalt updaten
-					if( $('#costCalculator').is(':visible') ){
-						Calculator.Show(Calculator2['responseData'], Calculator1['responseData'][0]);
-					}
-				}
-
-				// ein Spieler zahlt gerade ein
-				let RestToLevelUp = d.find(obj => {
-					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'reset';
-				});
-
-				if(RestToLevelUp !== undefined && $('#costCalculator').length > 0 )
-				{
-					Calculator.UpdateRestToLevelUp(RestToLevelUp['responseData'][0]['state']);
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -297,20 +305,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 				if(TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')){
 					Tavern.TavernBoost(TavernBoostService['responseData']);
-				}
-
-
-				// -----------------------------------------------------------------------------------------------------
-				// -----------------------------------------------------------------------------------------------------
-				// Spieler klickt eines seiner LGs an
-
-				if(Calculator1 !== undefined && Calculator2 !== undefined && Calculator1['responseData'][0]['player_id'] === ExtPlayerID) {
-					MainParser.OwnLG(Calculator1['responseData'][0], Calculator2['responseData']['rankings']);
-				}
-
-				// Spieler zahlt in sein eigenes LG ein und die Box ist offen
-				if(Calculator3 !== undefined && Calculator4 !== undefined && $('#OwnPartBox').length > 0){
-					Parts.UpdateBody(Calculator3['responseData'], Calculator4['responseData'][0]);
 				}
 
 				// --------------------------------------------------------------------------------------------------
