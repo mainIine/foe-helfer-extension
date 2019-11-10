@@ -275,28 +275,40 @@ let Menu = {
                 UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined,
                 Overview = OverviewJSON !== null ? JSON.parse(OverviewJSON) : undefined;
             
-			// Falls Übersicht und Detailansicht vorhanden, dann Übersicht per Klick auf Menü nur angzeigen, wenn sie zur Detailansicht passt
-            if (Overview !== undefined) {
-                //Keine Details vorhanden => Zeige Übersicht
-                if (UpdateEntity === undefined) {
-                    Calculator.ShowOverview();
-                }
-                else
-                {
-                    let BuildingInfo = Overview.find(obj => {
-                        return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
-                    });
+			// Nur Übersicht verfügbar
+            if (Overview !== undefined && UpdateEntity === undefined) {
+                Calculator.ShowOverview(false);
+            }
 
-                    if (BuildingInfo !== undefined) {
+            // Nur Detailansicht verfügbar
+            else if (UpdateEntity !== undefined && Overview === undefined) {
+                Calculator.Show(Rankings, UpdateEntity);
+            }
+
+            // Beide verfügbar
+            else if (UpdateEntity !== undefined && Overview !== undefined) {
+                let BuildingInfo = Overview.find(obj => {
+                    return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
+                });
+
+                // Beide gehören zum selben Spieler => beide anzeigen
+                if (BuildingInfo !== undefined) {
+                    Calculator.ShowOverview();
+                    Calculator.Show(Rankings, UpdateEntity);
+                }
+
+                // Unterschiedliche Spieler => Öffne die neuere Ansicht
+                else {
+                    let DetailViewIsNewer = sessionStorage.getItem('DetailViewIsNewer');
+                    if (DetailViewIsNewer === "true") {
+                        Calculator.Show(Rankings, UpdateEntity);
+                    }
+                    else {
                         Calculator.ShowOverview();
                     }
                 }
-			}
 
-			// Passiert mit geöffneter Detailansicht im Spiel und geöffneter Übersicht, falls vorher die Detailansicht geöffnet war
-            if (UpdateEntity !== undefined) {
-                Calculator.Show(Rankings, UpdateEntity);
-			}
+            }
 		});
 
 		btn_CalcBG.append(btn_Calc);
