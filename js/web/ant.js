@@ -236,7 +236,8 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
 				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ExtPlayerID && Settings.GetSetting('PreScanLGList')){
-					sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
+                    sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
+                    sessionStorage.setItem('DetailViewIsNewer', false);
 
 					$('#calcFPs').removeClass('hud-btn-red');
 					$('#calcFPs-closed').remove();
@@ -288,6 +289,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                         sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
                         sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
+                        sessionStorage.setItem('DetailViewIsNewer', true);
 
                         // wenn schon offen, den Inhalt updaten
                         if ($('#costCalculator').is(':visible')) {

@@ -47,7 +47,7 @@ let Calculator = {
                 Calculator.PlayInfoSound = false;
 
             } else {
-                Infoboard.PlayInfoSound = (spk !== 'deactivated');
+                Calculator.PlayInfoSound = (spk !== 'deactivated');
             }
 
             let ab = localStorage.getItem('CalculatorArcBonus');
@@ -354,11 +354,11 @@ let Calculator = {
 						// eingezahlte FP auf dem Rang
                         EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
 						
-						// gesamt investierte FPs
-                        GesamtInvesFP = (isNaN(parseInt(UpdateEntity['state']['invested_forge_points']))) ? 0 : parseInt(UpdateEntity['state']['invested_forge_points']),
-						
-						// restliche freie FP = gesamt LG FPs - bereits gesamt investierte
-						RestFreieFPAufRang  = TotalFP - GesamtInvesFP + EigenBetrag,
+                        // gesamt investierte FPs
+                        GesamtInvesFP = (isNaN(parseInt(UpdateEntity['state']['invested_forge_points']))) ? 0 : parseInt(UpdateEntity['state']['invested_forge_points']) - EigenBetrag,
+
+                        // restliche freie FP = gesamt LG FPs - bereits gesamt investierte
+                        RestFreieFPAufRang = TotalFP - GesamtInvesFP,
 						
 						// 1/2 des möglichen HalberEinzahlbarerPlatzAufRanges = restliche freie FP - eingezahlte FP auf dem Rang
 						HalberEinzahlbarerPlatzAufRang = Math.round(( RestFreieFPAufRang + EingezahltAufRang ) / 2);
@@ -592,7 +592,7 @@ let Calculator = {
                 Calculator.PlayOverviewInfoSound = false;
 
             } else {
-                Infoboard.PlayOverviewInfoSound = (spk !== 'deactivated');
+                Calculator.PlayOverviewInfoSound = (spk !== 'deactivated');
             }
 
 			let args = {
@@ -833,75 +833,75 @@ let Calculator = {
 
 		if (AgeString === 'BronzeAge')
 		{
-			if (BronzeAge.length < Level) return 0; else return BronzeAge[Level - 1];
+			if (BronzeAge.length < Level) return 0; else return BronzeAge[Level];
 		}
 		else if (AgeString === 'IronAge')
 		{
-			if (IronAge.length < Level) return 0; else return IronAge[Level - 1];
+			if (IronAge.length < Level) return 0; else return IronAge[Level];
 		}
 		else if (AgeString === 'EarlyMiddleAge')
 		{
-			if (EarlyMiddleAge.length < Level) return 0; else return EarlyMiddleAge[Level - 1];
+			if (EarlyMiddleAge.length < Level) return 0; else return EarlyMiddleAge[Level];
 		}
 		else if (AgeString === 'HighMiddleAge')
 		{
-			if (HighMiddleAge.length < Level) return 0; else return HighMiddleAge[Level - 1];
+			if (HighMiddleAge.length < Level) return 0; else return HighMiddleAge[Level];
 		}
 		else if (AgeString === 'LateMiddleAge')
 		{
-			if (LateMiddleAge.length < Level) return 0; else return LateMiddleAge[Level - 1];
+			if (LateMiddleAge.length < Level) return 0; else return LateMiddleAge[Level];
 		}
 		else if (AgeString === 'ColonialAge')
 		{
-			if (ColonialAge.length < Level) return 0; else return ColonialAge[Level - 1];
+			if (ColonialAge.length < Level) return 0; else return ColonialAge[Level];
 		}
 		else if (AgeString === 'IndustrialAge')
 		{
-			if (IndustrialAge.length < Level) return 0; else return IndustrialAge[Level - 1];
+			if (IndustrialAge.length < Level) return 0; else return IndustrialAge[Level];
 		}
 		else if (AgeString === 'ProgressiveEra')
 		{
-			if (ProgressiveEra.length < Level) return 0; else return ProgressiveEra[Level - 1];
+			if (ProgressiveEra.length < Level) return 0; else return ProgressiveEra[Level];
 		}
 		else if (AgeString === 'ModernEra')
 		{
-			if (ModernEra.length < Level) return 0; else return ModernEra[Level - 1];
+			if (ModernEra.length < Level) return 0; else return ModernEra[Level];
 		}
 		else if (AgeString === 'PostModernEra')
 		{
-			if (PostModernEra.length < Level) return 0; else return PostModernEra[Level - 1];
+			if (PostModernEra.length < Level) return 0; else return PostModernEra[Level];
 		}
 		else if (AgeString === 'ContemporaryEra')
 		{
-			if (ContemporaryEra.length < Level) return 0; else return ContemporaryEra[Level - 1];
+			if (ContemporaryEra.length < Level) return 0; else return ContemporaryEra[Level];
 		}
 		else if (AgeString === 'TomorrowEra')
 		{
-			if (TomorrowEra.length < Level) return 0; else return TomorrowEra[Level - 1];
+			if (TomorrowEra.length < Level) return 0; else return TomorrowEra[Level];
 		}
 		else if (AgeString === 'FutureEra')
 		{
-			if (FutureEra.length < Level) return 0; else return FutureEra[Level - 1];
+			if (FutureEra.length < Level) return 0; else return FutureEra[Level];
 		}
 		else if (AgeString === 'ArcticFuture')
 		{
-			if (ArcticFuture.length < Level) return 0; else return ArcticFuture[Level - 1];
+			if (ArcticFuture.length < Level) return 0; else return ArcticFuture[Level];
 		}
 		else if (AgeString === 'OceanicFuture')
 		{
-			if (BronzeAge.length < Level) return 0; else return OceanicFuture[Level - 1];
+			if (BronzeAge.length < Level) return 0; else return OceanicFuture[Level];
 		}
 		else if (AgeString === 'VirtualFuture')
 		{
-			if (VirtualFuture.length < Level) return 0; else return VirtualFuture[Level - 1];
+			if (VirtualFuture.length < Level) return 0; else return VirtualFuture[Level];
 		}
 		else if (AgeString === 'SpaceAgeMars')
 		{
-			if (SpaceAgeMars.length < Level) return 0; else return SpaceAgeMars[Level - 1];
+			if (SpaceAgeMars.length < Level) return 0; else return SpaceAgeMars[Level];
 		}
 		else if (AgeString === 'AllAge')
 		{
-			if (AllAge.length < Level) return 0; else return AllAge[Level - 1];
+			if (AllAge.length < Level) return 0; else return AllAge[Level];
 		}
 		else
 		{
