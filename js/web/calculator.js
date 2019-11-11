@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       04.11.19, 17:37 Uhr
+ * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
  *
  * Copyright © 2019
  *
@@ -14,218 +14,224 @@
 
 let Calculator = {
 
-	ArcBonus: 90,
-	AvailableFP: 0,
-	EntityOverview: [],
-	CurrentPlayer: 0,
-	Building: [],
-	Places: [],
-	OldRest: 0,
-	SoundFile: new Audio('chrome-extension://' + extID + '/vendor/sounds/message.mp3'),
-
+    ArcBonus: 90,
+    EntityOverview: [],
+    CurrentPlayer: 0,
+    Building: [],
+    Places: [],
+    SoundFile: new Audio('chrome-extension://' + extID + '/vendor/sounds/message.mp3'),
+    PlayerName: undefined,
+    LastPlayerID: 0,
+    PlayInfoSound: null,
+    PlayOverviewInfoSound: null,
 
 	/**
 	 * Kostenrechner anzeigen
 	 *
-	 * @param d
-	 * @param e
+	 * @param Rankings
+	 * @param UpdateEntity
 	 * @param isOverview
 	 * @constructor
 	 */
-	Show: (d, e)=> {
+    Show: (Rankings, UpdateEntity) => {
 
-		// moment.js global setzen
-		moment.locale(MainParser.Language);
+        // moment.js global setzen
+        moment.locale(MainParser.Language);
 
-		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#costCalculator').length === 0)
-		{
-			let ab = localStorage.getItem('CalculatorArcBonus');
+        // Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
+        if ($('#costCalculator').length === 0) {
+            let spk = localStorage.getItem('CalculatorTone');
 
-			// alten Wert übernehmen, wenn vorhanden
-			if(ab !== null){
-				Calculator.ArcBonus = parseFloat(ab);
-			}
+            if (spk === null) {
+                localStorage.setItem('CalculatorTone', 'deactivated');
+                Calculator.PlayInfoSound = false;
 
-			let args = {
-				'id': 'costCalculator',
-				'title': i18n['Boxes']['Calculator']['Title'],
-				'ask': i18n['Boxes']['Calculator']['HelpLink'],
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true
-			};
+            } else {
+                Calculator.PlayInfoSound = (spk !== 'deactivated');
+            }
 
-			HTML.Box(args);
+            let ab = localStorage.getItem('CalculatorArcBonus');
 
-			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
-		}
+            // alten Wert übernehmen, wenn vorhanden
+            if (ab !== null) {
+                Calculator.ArcBonus = parseFloat(ab);
+            }
 
-		let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
-			BuildingName,
-			PlayerName = null,
-			h = [],
-			arc = ((parseFloat( Calculator.ArcBonus ) + 100) / 100 );
+            let args = {
+                'id': 'costCalculator',
+                'title': i18n['Boxes']['Calculator']['Title'],
+                'ask': i18n['Boxes']['Calculator']['HelpLink'],
+                'auto_close': true,
+                'dragdrop': true,
+                'minimize': true,
+                'speaker': 'CalculatorTone'
+            };
 
+            HTML.Box(args);
 
-		// ab hier wurde ein einzelnes LG geöffnet
-		Calculator.AvailableFP = d['availablePackagesForgePointSum'] || StrategyPoints.AvailableFP;
-		Calculator.Places = d['rankings'];
-		Calculator.Building = e;
+            Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
+        }
 
-		// wenn das LG über die Übersicht geladen wurde...
-		if(Overview !== null)
-		{
-			// Übersicht laden + passendes LG
-			Calculator.EntityOverview = JSON.parse(Overview);
-
-			let BuildingInfo = Calculator.EntityOverview.find(obj => {
-				return obj['city_entity_id'] === e['cityentity_id'];
-			});
-
-			if(BuildingInfo !== undefined && BuildingInfo['player']['player_id'] === e['player_id']) {
-				PlayerName = BuildingInfo['player']['name'];
-			}
-
-			// direkt wieder löschen da beim nächsten sonst der falsche Name stehen könnte
-			sessionStorage.removeItem('OtherActiveBuildingOverview');
-		}
-
-		// BuildingName konnte nicht aus der BuildingInfo geladen werden
-		if(BuildingName === undefined) {
-			BuildingName = BuildingNamesi18n[e['cityentity_id']]['name'];
-		}
-
-		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
-
-		// LG - Daten + Spielername
-		h.push('<p class="header"><strong><span>' + BuildingName + '</span>' + (PlayerName !== null ? ' - ' + PlayerName : '') + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + e['level'] + ' &rarr; ' + (parseInt(e['level']) +1) +'</p>');
+        let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
+            h = [],
+            arc = ((parseFloat(Calculator.ArcBonus) + 100) / 100);
 
 
-		// FP im Lager
-		h.push('<p>'+ i18n['Boxes']['Calculator']['AvailableFP'] +': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
+        // ab hier wurde ein einzelnes LG geöffnet
+        Calculator.Places = Rankings;
+        Calculator.Building = UpdateEntity;
 
-		h.push('<p class="costFactorWrapper">');
+        // Wenn sich Spieler geändert hat, dann BuildingName/PlayerName zurücksetzen
+        if (UpdateEntity['player_id'] !== Calculator.LastPlayerID) {
+            PlayerName = undefined;
+        }
+        
+        // Übersicht vorhanden
+        if (Overview !== null) {
+            // Übersicht laden + passendes LG
+            Calculator.EntityOverview = JSON.parse(Overview);
 
-		h.push('<span>' + i18n['Boxes']['Calculator']['ArcBonus'] +' - <input type="number" id="costFactor" step="'+ (Calculator.ArcBonus > 80 ? '0.1' : '0.5') +'" min="12" max="200" value="'+ Calculator.ArcBonus +'">%</span>');
+            let BuildingInfo = Calculator.EntityOverview.find(obj => {
+                return obj['city_entity_id'] === UpdateEntity['cityentity_id'];
+            });
 
-		// Zusätzliche Buttons für die Standard Prozente
-		let own_arc = '<button class="btn btn-default btn-default-active btn-toggle-arc" data-value="' + arc + '">' + Calculator.ArcBonus + '%</button>';
+            // Übersicht vom richtigen Spieler vorhanden => Spielername auslesen
+            if (BuildingInfo !== undefined && BuildingInfo['player']['player_id'] === UpdateEntity['player_id']) {
+                PlayerName = BuildingInfo['player']['name'];
+            }
+        }
 
-		// ... und korrekt einsortieren
-		if(arc < 1.85)
-		{
-			h.push(own_arc);
-		}
+        // BuildingName konnte nicht aus der BuildingInfo geladen werden
+        let BuildingName = BuildingNamesi18n[UpdateEntity['cityentity_id']]['name'];
+        
+        h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
-		if(arc !== 1.85)
-		{
-			h.push('<button class="btn btn-default btn-toggle-arc" data-value="1.85">85%</button>');
-		}
+        // LG - Daten + Spielername
+        h.push('<p class="header"><strong><span>' + BuildingName + '</span>' + (PlayerName !== undefined ? ' - ' + PlayerName : '') + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + UpdateEntity['level'] + ' &rarr; ' + (parseInt(UpdateEntity['level']) + 1) + '</p>');
+        
+        // FP im Lager
+        h.push('<p>' + i18n['Boxes']['Calculator']['AvailableFP'] + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
 
-		if(arc > 1.85 && arc < 1.9)
-		{
-			h.push(own_arc);
-		}
+        h.push('<p class="costFactorWrapper">');
 
-		if(arc !== 1.9)
-		{
-			h.push('<button class="btn btn-default btn-toggle-arc" data-value="1.9">90%</button>');
-		}
+        h.push('<span>' + i18n['Boxes']['Calculator']['ArcBonus'] + ' - <input type="number" id="costFactor" step="' + (Calculator.ArcBonus > 80 ? '0.1' : '0.5') + '" min="12" max="200" value="' + Calculator.ArcBonus + '">%</span>');
 
-		if(arc >= 1.9)
-		{
-			h.push(own_arc);
-		}
-		
+        // Zusätzliche Buttons für die Standard Prozente
+        let own_arc = '<button class="btn btn-default btn-default-active btn-toggle-arc" data-value="' + arc + '">' + Calculator.ArcBonus + '%</button>';
 
-		h.push('</p>');
+        // ... und korrekt einsortieren
+        if (arc < 1.85) {
+            h.push(own_arc);
+        }
 
-		h.push('</div>');
+        if (arc !== 1.85) {
+            h.push('<button class="btn btn-default btn-toggle-arc" data-value="1.85">85%</button>');
+        }
 
+        if (arc > 1.85 && arc < 1.9) {
+            h.push(own_arc);
+        }
 
-		// Tabelle zusammen fummeln
-		h.push('<table id="costTable" class="foe-table">');
+        if (arc !== 1.9) {
+            h.push('<button class="btn btn-default btn-toggle-arc" data-value="1.9">90%</button>');
+        }
 
-		h.push('<thead>' +
-					'<tr>' +
-						'<th>#</th>' +
-						'<th>'+ i18n['Boxes']['Calculator']['Earnings'] +'</th>' +
-						'<th>BP</th>' +
-						'<th>Meds</th>' +
-						'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
-						'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
-						'<th>'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
-					'</tr>' +
-				'</thead>');
+        if (arc >= 1.9) {
+            h.push(own_arc);
+        }
+        
+        h.push('</p>');
 
-		// "Blindfelder" gegen das "flackern" erzeugen
-		h.push('<tbody>');
-		for(let i = 1; i < 6; i++)
-		{
-			h.push('<tr><td><strong>' + i + '</strong></td><td>-</td><td>-</td><td>-<td><td>-</td><td></td></tr>');
-		}
-		h.push('</tbody>');
+        h.push('</div>');
+        
+        // Tabelle zusammen fummeln
+        h.push('<table id="costTable" class="foe-table">');
 
-		h.push('</table>');
+        h.push('<thead>' +
+            '<tr>' +
+            '<th>#</th>' +
+            '<th>' + i18n['Boxes']['Calculator']['Earnings'] + '</th>' +
+            '<th>BP</th>' +
+            '<th>Meds</th>' +
+            '<th>' + i18n['Boxes']['Calculator']['Commitment'] + '</th>' +
+            '<th>' + i18n['Boxes']['Calculator']['Profit'] + '</th>' +
+            '<th>' + i18n['Boxes']['Calculator']['Rate'] + '</th>' +
+            '</tr>' +
+            '</thead>');
 
+        // "Blindfelder" gegen das "flackern" erzeugen
+        h.push('<tbody>');
+        for (let i = 1; i < 6; i++) {
+            h.push('<tr><td><strong>' + i + '</strong></td><td>-</td><td>-</td><td>-<td><td>-</td><td></td></tr>');
+        }
+        h.push('</tbody>');
 
-		// Wieviel fehlt noch bis zum leveln?
-		let rest = (e['state']['invested_forge_points'] === undefined ? e['state']['forge_points_for_level_up'] : e['state']['forge_points_for_level_up'] - e['state']['invested_forge_points']);
-
-		Calculator.OldRest = rest;
-
-		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>'+ i18n['Boxes']['Calculator']['Up2LevelUp'] +': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> '+ i18n['Boxes']['Calculator']['FP'] +'</em></div>');
-
-
-		// in die bereits vorhandene Box drücken
-		$('#costCalculator').find('#costCalculatorBody').html(h.join(''));
-
-		// Stufe ist noch nicht freigeschaltet
-		if(e['level'] === e['max_level'])
-		{
-			$('#costCalculator').find('#costCalculatorBody').append( $('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotOpen']) );
-
-		} else if(e['connected'] === undefined){
-			$('#costCalculator').find('#costCalculatorBody').append( $('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotConnected']) );
-		}
-
-		// alle Ansichten aktualisieren
-		setTimeout(()=>{
-			Calculator.CalcBody(arc);
-
-			setTimeout(()=>{
-				StrategyPoints.ForgePointBar(Calculator.AvailableFP);
-			}, 200);
-
-		},200);
+        h.push('</table>');
 
 
-		// schnell zwischen den Prozenten wechseln
-		$('body').on('click', '.btn-toggle-arc', function(){
-
-			$('.btn-toggle-arc').removeClass('btn-default-active');
-
-			let arc = $(this).data('value');
-			Calculator.CalcBody(arc);
-
-			$(this).addClass('btn-default-active');
-		});
+        // Wieviel fehlt noch bis zum leveln?
+        let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
+        
+        h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
 
 
-		// wenn der Wert des Archebonus verändert wird, Event feuern
-		$('body').on('blur', '#costFactor', function(){
+        // in die bereits vorhandene Box drücken
+        $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
 
-			let ab = parseFloat( $('#costFactor').val() );
-			Calculator.ArcBonus = ab;
+        // Stufe ist noch nicht freigeschaltet
+        if (UpdateEntity['level'] === UpdateEntity['max_level']) {
+            $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotOpen']));
 
-			localStorage.setItem('CalculatorArcBonus', ab);
+        } else if (UpdateEntity['connected'] === undefined) {
+            $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotConnected']));
+        }
+                
+        Calculator.CalcBody(arc);
 
-			let arc = ((ab + 100) / 100 );
+        // alle Ansichten aktualisieren
+        setTimeout(() => {
+                StrategyPoints.ForgePointBar(StrategyPoints.AvailableFP);
+            }, 200);
+        
+        // schnell zwischen den Prozenten wechseln
+        $('body').on('click', '.btn-toggle-arc', function () {
 
-			Calculator.CalcBody(arc);
-		});
-	},
+            $('.btn-toggle-arc').removeClass('btn-default-active');
+
+            let arc = $(this).data('value');
+            Calculator.CalcBody(arc);
+
+            $(this).addClass('btn-default-active');
+        });
+
+
+        // wenn der Wert des Archebonus verändert wird, Event feuern
+        $('body').on('blur', '#costFactor', function () {
+
+            let ab = parseFloat($('#costFactor').val());
+            Calculator.ArcBonus = ab;
+
+            localStorage.setItem('CalculatorArcBonus', ab);
+
+            let arc = ((ab + 100) / 100);
+
+            Calculator.CalcBody(arc);
+        });
+
+        $('body').on('click', '#CalculatorTone', function () {
+
+            let disabled = $(this).hasClass('deactivated');
+
+            localStorage.setItem('CalculatorTone', (disabled ? '' : 'deactivated'));
+            Calculator.PlayInfoSound = !!disabled;
+
+            if (disabled === true) {
+                $('#CalculatorTone').removeClass('deactivated');
+            } else {
+                $('#CalculatorTone').addClass('deactivated');
+            }
+        });
+    },
 
 
 	/**
@@ -233,15 +239,14 @@ let Calculator = {
 	 *
 	 * @constructor
 	 */
-	ShowOverview: ()=> {
+    ShowOverview: (DisableAudio) => {
 
-		let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
-			arc = ((parseFloat( Calculator.ArcBonus ) + 100) / 100 );
+        let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
+            arc = ((parseFloat(Calculator.ArcBonus) + 100) / 100);
 
-		Calculator.ParseOverview(arc, JSON.parse(Overview));
-	},
-
-
+        Calculator.ParseOverview(arc, JSON.parse(Overview), DisableAudio);
+    },
+       
 	/**
 	 * Der Tabellen-Körper mit allen Funktionen
 	 *
@@ -249,11 +254,10 @@ let Calculator = {
 	 * @constructor
 	 */
 	CalcBody: (arc)=> {
-		let r = Calculator.Places,
-			e = Calculator.Building,
+		let Rankings = Calculator.Places,
+			UpdateEntity = Calculator.Building,
 			h = [],
 			BestKurs = 999999;
-
 
 		h.push('<thead>' +
 				'<th>#</th>' +
@@ -263,45 +267,63 @@ let Calculator = {
 				'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
 				'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
 				'<th>'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
-			'</thead>');
+            '</thead>');
 
-		// Ränge durchsteppen
-		for(let i in r)
+        let EigenPos,
+            EigenBetrag = 0;
+
+        // Ränge durchsteppen, Suche nach Eigeneinzahlung
+        for (let i in Rankings)
+        {
+            if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) {
+                EigenPos = i;
+                EigenBetrag = EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']);
+                break;
+            }
+        }
+
+		// Ränge nochmals durchsteppen
+        for (let i in Rankings)
 		{
-			if (r.hasOwnProperty(i))
+            if (Rankings.hasOwnProperty(i))
 			{
 				// hier sitzt der LG Besitzer drin oder der User wurde gelöscht
-				if(r[i]['rank'] === undefined || r[i]['rank'] === -1)
+                if (Rankings[i]['rank'] === undefined || Rankings[i]['rank'] === -1)
 				{
 					continue;
 				}
 
-				let isSelf = (r[i]['player']['player_id'] !== undefined && r[i]['player']['player_id'] === Calculator.CurrentPlayer);
+                let isSelf = (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer);
 
 				// gibt es für diesen Platz FPs zurück?
-				if(r[i]['reward'] === undefined)
+                if (Rankings[i]['reward'] === undefined)
 				{
 					h.push('<tr>' +
-						'<td><strong>' + r[i]['rank'] + '</strong></td>' +
+                        '<td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
 						'<td colspan="6" class="text-center"><small><em>' + i18n['Boxes']['Calculator']['NoFPorMedsAvailable'] + '</em></small></td>' +
 						'</tr>');
 				}
 
-				// meistens Platz 5 usw.
-				else if(r[i]['reward'] !== undefined && r[i]['reward']['strategy_point_amount'] === undefined) {
+				// Belohnung aber keine FP
+                else if (Rankings[i]['reward'] !== undefined && Rankings[i]['reward']['strategy_point_amount'] === undefined) {
 
-					let blp = r[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(r[i]['reward']['blueprints']) * arc) : 0,
-						med = r[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(r[i]['reward']['resources']['medals']) * arc) : 0,
-						EingezahltAufRang = (isNaN(parseInt(r[i]['forge_points']))) ? 0 : parseInt(r[i]['forge_points']),
+                    let blp = Rankings[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['blueprints']) * arc) : 0,
+                        med = Rankings[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['resources']['medals']) * arc) : 0,
+                        EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
 						trClass;
 
 					// schon besetzt
-					if(EingezahltAufRang > 0)
+                    if (EingezahltAufRang > 0)
 					{
 						trClass = ' class="text-grey"';
-					}
+                    }
 
-					h.push('<tr'+ trClass + '><td><strong>' + r[i]['rank'] + '</strong></td>' +
+                    // Schon Einzahlung in höheren Rang vorhanden
+                    else if ((EigenPos !== undefined && i > EigenPos)) {
+                        trClass = ' class="text-grey"';
+                    }
+
+                    h.push('<tr' + trClass + '><td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
 						'<td class="text-center">' +
 							'<strong class="'+ (isSelf ? 'info' : 'success') +'">0</strong>' +
 						'</td>' +
@@ -309,9 +331,9 @@ let Calculator = {
 						'<td class="text-center">' + HTML.Format(med) + '</td>');
 
 
-					if(isSelf && r[i]['forge_points'] > 0)
+                    if (isSelf && Rankings[i]['forge_points'] > 0)
 					{
-						h.push('<td class="text-center">' + r[i]['forge_points'] + '</td>' +
+                        h.push('<td class="text-center">' + Rankings[i]['forge_points'] + '</td>' +
 							'<td class="text-center"><strong class="info">0</strong></td>' +
 							'<td></td>'
 						);
@@ -324,56 +346,46 @@ let Calculator = {
 					h.push('</tr>');
 				}
 
-				// Andere Spieler
-				// "normal" einzahlen
+				// Platz der FP zurückgibt
 				else {
-
-
-					let // Gesamt LG FP
-						TotalFP = parseInt(e['state']['forge_points_for_level_up']),
+                    let // Gesamt LG FP
+                        TotalFP = parseInt(UpdateEntity['state']['forge_points_for_level_up']),
 
 						// eingezahlte FP auf dem Rang
-						EingezahltAufRang = (isNaN(parseInt(r[i]['forge_points']))) ? 0 : parseInt(r[i]['forge_points']),
+                        EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
 						
-						// gesamt investierte FPs
-						GesamtInvesFP = (isNaN(parseInt(e['state']['invested_forge_points']))) ? 0 : parseInt(e['state']['invested_forge_points']),
-						
-						// restliche freie FP = gesamt LG FPs - bereits gesamt investierte
-						RestFreieFPAufRang  = TotalFP - GesamtInvesFP,
+                        // gesamt investierte FPs
+                        GesamtInvesFP = (isNaN(parseInt(UpdateEntity['state']['invested_forge_points']))) ? 0 : parseInt(UpdateEntity['state']['invested_forge_points']) - EigenBetrag,
+
+                        // restliche freie FP = gesamt LG FPs - bereits gesamt investierte
+                        RestFreieFPAufRang = TotalFP - GesamtInvesFP,
 						
 						// 1/2 des möglichen HalberEinzahlbarerPlatzAufRanges = restliche freie FP - eingezahlte FP auf dem Rang
 						HalberEinzahlbarerPlatzAufRang = Math.round(( RestFreieFPAufRang + EingezahltAufRang ) / 2);
 
-					// Sonderfall: Absichern des Rangs führt nur zum Gleichstand.
-					// In diesem Fall wird 1 FP mehr benötigt um den bestehenden Platz zu überholen
-					if(HalberEinzahlbarerPlatzAufRang === EingezahltAufRang){
-						HalberEinzahlbarerPlatzAufRang++;
-					}
+					    // Sonderfall: Absichern des Rangs führt nur zum Gleichstand.
+					    // In diesem Fall wird 1 FP mehr benötigt um den bestehenden Platz zu überholen
+					    if(HalberEinzahlbarerPlatzAufRang === EingezahltAufRang) {
+					    	HalberEinzahlbarerPlatzAufRang++;
+					    }
 
 					let EingezahltAufRang2 = 0;
 
-					if (+i + 1 < r.length)
-					{
-						if (r[+i + 1]['rank'] === undefined || r[+i + 1]['rank'] === -1) //Spieler selbst oder Spieler gelöscht => überspringen
-						{
-							if (+i + 2 < r.length)
-							{
-								EingezahltAufRang2 = (isNaN(parseInt(r[+i + 2]['forge_points']))) ? 0 : parseInt(r[+i + 2]['forge_points']);
-							}
-						}
-						else
-						{
-							EingezahltAufRang2 = (isNaN(parseInt(r[+i + 1]['forge_points']))) ? 0 : parseInt(r[+i + 1]['forge_points']);
-						}
-					}
-
+                    for (let j = +i + 1; j < Rankings.length; j++) {
+                        //Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
+                        if (Rankings[j]['rank'] !== undefined && Rankings[j]['rank'] !== -1) {
+                            EingezahltAufRang2 = (isNaN(parseInt(Rankings[j]['forge_points']))) ? 0 : parseInt(Rankings[j]['forge_points']);
+                            break;
+                        }
+                    }
+                    
 					let // diese FPs gibt es für diesen Rang zurück
-						NormalRangZurueck = parseInt(r[i]['reward']['strategy_point_amount']),
+                        NormalRangZurueck = parseInt(Rankings[i]['reward']['strategy_point_amount']),
 						
 						// Blaupausen
-						blp = r[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(r[i]['reward']['blueprints']) * arc) : 0,
+                        blp = Rankings[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['blueprints']) * arc) : 0,
 						
-						med = r[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(r[i]['reward']['resources']['medals']) * arc) : 0,
+                        med = Rankings[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['resources']['medals']) * arc) : 0,
 						
 						MaezenRangTotal = Math.round(NormalRangZurueck * arc),
 
@@ -393,7 +405,12 @@ let Calculator = {
 
 					if(isSelf) {
 						trClass = ' class="info-row"';
-					}
+                    }
+
+                    // Schon Einzahlung in höheren Rang vorhanden
+                    else if ((EigenPos !== undefined && i > EigenPos)) {
+                        trClass = ' class="text-grey"';
+                    }
 
 					// bereits eingezahlt + Mäzen geht genau bis gesamt FP
 					else if( ( (RestFreieFPAufRang - EingezahltAufRang) > (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang) && (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang > 0)) || ((RestFreieFPAufRang / 2) === MaezenRangTotal)) {
@@ -415,10 +432,9 @@ let Calculator = {
 						trClass = ' class="text-grey"';
 						zuViel = true;
 					}
-
-
+                    
 					// erste drei Spalten
-					h.push('<tr' + trClass + '><td><strong>' + r[i]['rank'] + '</strong></td>' +
+                    h.push('<tr' + trClass + '><td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
 						'<td class="text-center">' +
 							'<strong class="' + (MaezenRangTotal > Calculator.AvailableFP ? 'error' : 'success') + '">' +
 								HTML.Format(MaezenRangTotal) +
@@ -432,7 +448,7 @@ let Calculator = {
 					// Spieler selbst
 					if(isSelf)
 					{
-						let ZielEinzahlung = (RestFreieFPAufRang + EingezahltAufRang + EingezahltAufRang2) / 2;
+						let ZielEinzahlung = Math.round((RestFreieFPAufRang + EingezahltAufRang2) / 2);
 						let Kurs = Math.round(EingezahltAufRang * 100 / NormalRangZurueck);
 
 						if (EingezahltAufRang === MaezenRangTotal)
@@ -534,7 +550,7 @@ let Calculator = {
 				}
 
 				// nach dem Platz 5 raus...
-				if(r[i]['rank'] === 5)
+                if (Rankings[i]['rank'] === 5)
 				{
 					break;
 				}
@@ -543,36 +559,12 @@ let Calculator = {
 
 		$('#costTable').html(h.join(''));
 
-		let StorageKey = e['player_id'] + '/' + e['cityentity_id'];
+        let StorageKey = UpdateEntity['player_id'] + '/' + UpdateEntity['cityentity_id'];
 
 		// Level/FP/BestKurs/UNIX-Time
-		let StorageValue = e['level'] + '/' + e['state']['invested_forge_points'] + '/' + BestKurs + '/' + new Date().getTime();
+        let StorageValue = UpdateEntity['level'] + '/' + UpdateEntity['state']['invested_forge_points'] + '/' + BestKurs + '/' + new Date().getTime();
 		localStorage.setItem(StorageKey, StorageValue);
 	},
-
-
-	/**
-	 * Updated den Wert unter dem Kostenrechner der restlichen FPs
-	 *
-	 * @param e
-	 * @constructor
-	 */
-	UpdateRestToLevelUp: (e)=> {
-		if (e['forge_points_for_level_up'] === undefined || e['invested_forge_points'] === undefined) {
-			return;
-		}
-
-		let NewRest = (e['forge_points_for_level_up'] - e['invested_forge_points']);
-
-		$('#up-to-level-up').easy_number_animate({
-			start_value: Calculator.OldRest,
-			end_value: NewRest,
-			duration: 750
-		});
-
-		Calculator.OldRest = NewRest;
-	},
-
 
 	/**
 	 * Übersicht der LGs scannen
@@ -582,7 +574,7 @@ let Calculator = {
 	 * @param d
 	 * @constructor
 	 */
-	ParseOverview: (arc, d)=> {
+    ParseOverview: (arc, d, DisableAudio)=> {
 
 		// nix drin, raus
 		if (d.length === 0)
@@ -592,12 +584,23 @@ let Calculator = {
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#LGOverviewBox').length === 0 )
-		{
+        {
+            let spk = localStorage.getItem('CalculatorOverviewTone');
+
+            if (spk === null) {
+                localStorage.setItem('CalculatorOverviewTone', 'deactivated');
+                Calculator.PlayOverviewInfoSound = false;
+
+            } else {
+                Calculator.PlayOverviewInfoSound = (spk !== 'deactivated');
+            }
+
 			let args = {
 				'id': 'LGOverviewBox',
 				'title': i18n['Boxes']['LGOverviewBox']['Title'],
 				'auto_close': true,
-				'dragdrop': true
+                'dragdrop': true,
+                'speaker': 'CalculatorOverviewTone'
 			};
 
 			HTML.Box(args);
@@ -720,9 +723,9 @@ let Calculator = {
 		// Gibt was zu holen
 		if (LGFound)
 		{
-			if (PlayAudio)
+            if (PlayAudio && !DisableAudio)
 			{
-				Calculator.PlaySound();
+				Calculator.PlayOverviewSound();
 			}
 		}
 
@@ -738,19 +741,49 @@ let Calculator = {
 			) + '</div>');
 		}
 
-		$('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));
+        $('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));
+
+
+        $('body').on('click', '#CalculatorOverviewTone', function () {
+
+            let disabled = $(this).hasClass('deactivated');
+
+            localStorage.setItem('CalculatorOverviewTone', (disabled ? '' : 'deactivated'));
+            Calculator.PlayOverviewInfoSound = !!disabled;
+
+            if (disabled === true) {
+                $('#CalculatorOverviewTone').removeClass('deactivated');
+            } else {
+                $('#CalculatorOverviewTone').addClass('deactivated');
+            }
+        });
 	},
 
 
 	/**
-	 * Spielt einen Sound ab
+	 * Spielt einen Sound im Calculator ab
 	 *
 	 * @returns {string}
 	 * @constructor
 	 */
-	PlaySound: ()=>{
-		Calculator.SoundFile.play();
-	},
+    PlaySound: () => {
+        if (Calculator.PlayInfoSound) {
+            Calculator.SoundFile.play();
+        }
+    },
+
+
+    /**
+    * Spielt einen Sound in der Overview ab
+    *
+    * @returns {string}
+    * @constructor
+    */
+    PlayOverviewSound: () => {
+        if (Calculator.PlayOverviewInfoSound) {
+            Calculator.SoundFile.play();
+        }
+    },
 
 
 	/**
@@ -800,75 +833,75 @@ let Calculator = {
 
 		if (AgeString === 'BronzeAge')
 		{
-			if (BronzeAge.length < Level) return 0; else return BronzeAge[Level - 1];
+			if (BronzeAge.length < Level) return 0; else return BronzeAge[Level];
 		}
 		else if (AgeString === 'IronAge')
 		{
-			if (IronAge.length < Level) return 0; else return IronAge[Level - 1];
+			if (IronAge.length < Level) return 0; else return IronAge[Level];
 		}
 		else if (AgeString === 'EarlyMiddleAge')
 		{
-			if (EarlyMiddleAge.length < Level) return 0; else return EarlyMiddleAge[Level - 1];
+			if (EarlyMiddleAge.length < Level) return 0; else return EarlyMiddleAge[Level];
 		}
 		else if (AgeString === 'HighMiddleAge')
 		{
-			if (HighMiddleAge.length < Level) return 0; else return HighMiddleAge[Level - 1];
+			if (HighMiddleAge.length < Level) return 0; else return HighMiddleAge[Level];
 		}
 		else if (AgeString === 'LateMiddleAge')
 		{
-			if (LateMiddleAge.length < Level) return 0; else return LateMiddleAge[Level - 1];
+			if (LateMiddleAge.length < Level) return 0; else return LateMiddleAge[Level];
 		}
 		else if (AgeString === 'ColonialAge')
 		{
-			if (ColonialAge.length < Level) return 0; else return ColonialAge[Level - 1];
+			if (ColonialAge.length < Level) return 0; else return ColonialAge[Level];
 		}
 		else if (AgeString === 'IndustrialAge')
 		{
-			if (IndustrialAge.length < Level) return 0; else return IndustrialAge[Level - 1];
+			if (IndustrialAge.length < Level) return 0; else return IndustrialAge[Level];
 		}
 		else if (AgeString === 'ProgressiveEra')
 		{
-			if (ProgressiveEra.length < Level) return 0; else return ProgressiveEra[Level - 1];
+			if (ProgressiveEra.length < Level) return 0; else return ProgressiveEra[Level];
 		}
 		else if (AgeString === 'ModernEra')
 		{
-			if (ModernEra.length < Level) return 0; else return ModernEra[Level - 1];
+			if (ModernEra.length < Level) return 0; else return ModernEra[Level];
 		}
 		else if (AgeString === 'PostModernEra')
 		{
-			if (PostModernEra.length < Level) return 0; else return PostModernEra[Level - 1];
+			if (PostModernEra.length < Level) return 0; else return PostModernEra[Level];
 		}
 		else if (AgeString === 'ContemporaryEra')
 		{
-			if (ContemporaryEra.length < Level) return 0; else return ContemporaryEra[Level - 1];
+			if (ContemporaryEra.length < Level) return 0; else return ContemporaryEra[Level];
 		}
 		else if (AgeString === 'TomorrowEra')
 		{
-			if (TomorrowEra.length < Level) return 0; else return TomorrowEra[Level - 1];
+			if (TomorrowEra.length < Level) return 0; else return TomorrowEra[Level];
 		}
 		else if (AgeString === 'FutureEra')
 		{
-			if (FutureEra.length < Level) return 0; else return FutureEra[Level - 1];
+			if (FutureEra.length < Level) return 0; else return FutureEra[Level];
 		}
 		else if (AgeString === 'ArcticFuture')
 		{
-			if (ArcticFuture.length < Level) return 0; else return ArcticFuture[Level - 1];
+			if (ArcticFuture.length < Level) return 0; else return ArcticFuture[Level];
 		}
 		else if (AgeString === 'OceanicFuture')
 		{
-			if (BronzeAge.length < Level) return 0; else return OceanicFuture[Level - 1];
+			if (BronzeAge.length < Level) return 0; else return OceanicFuture[Level];
 		}
 		else if (AgeString === 'VirtualFuture')
 		{
-			if (VirtualFuture.length < Level) return 0; else return VirtualFuture[Level - 1];
+			if (VirtualFuture.length < Level) return 0; else return VirtualFuture[Level];
 		}
 		else if (AgeString === 'SpaceAgeMars')
 		{
-			if (SpaceAgeMars.length < Level) return 0; else return SpaceAgeMars[Level - 1];
+			if (SpaceAgeMars.length < Level) return 0; else return SpaceAgeMars[Level];
 		}
 		else if (AgeString === 'AllAge')
 		{
-			if (AllAge.length < Level) return 0; else return AllAge[Level - 1];
+			if (AllAge.length < Level) return 0; else return AllAge[Level];
 		}
 		else
 		{

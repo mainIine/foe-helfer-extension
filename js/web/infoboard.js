@@ -7,7 +7,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 18:56 Uhr
+ * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
  *
  * Copyright © 2019
  *
@@ -160,14 +160,15 @@ let Infoboard = {
 			s = c + '_' + m + t;
 
 		// Gibt es eine Funktion dafür?
-		if (!s in Info) {
-			return ;
+        if (Info[s] === undefined) {
+			return;
 		}
 
 		let bd = Info[s](Msg['responseData']),
 			status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
 			tr = $('<tr />').addClass(bd['class']),
 			msg = bd['msg'];
+
 
 		// wenn nicht angezeigt werden soll, direkt versteckeln
 		if(status === false)
