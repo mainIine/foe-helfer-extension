@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
+ * zu letzt bearbeitet:       11.11.19, 19:11 Uhr
  *
  * Copyright © 2019
  *
@@ -20,7 +20,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	BuildingNamesi18n = false,
 	CityMapData = null,
 	Conversations = [],
-	GoodsNames = [];
+	GoodsNames = [],
+	MainMenuLoaded = false;
 
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -120,8 +121,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 					// Alle Gebäude sichern
 					MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
-
-					Menu.BuildOverlayMenu();
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -421,6 +420,21 @@ document.addEventListener("DOMContentLoaded", function(){
 					if(time === true){
 						MainParser.OtherPlayersMotivation(Motivations['responseData']);
 					}
+				}
+
+
+				let Time = d.find(obj => {
+					return obj['requestClass'] === 'TimeService' && obj['requestMethod'] === 'updateTime';
+				});
+
+				// erste Runde
+				if(MainMenuLoaded === false){
+					MainMenuLoaded = Time['responseData']['time'];
+				}
+				// zweite Runde
+				else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
+					Menu.BuildOverlayMenu();
+					MainMenuLoaded = true;
 				}
 			}
 		});
