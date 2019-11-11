@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       07.11.19, 20:53 Uhr
+ * zu letzt bearbeitet:       10.11.19, 00:46 Uhr
  *
  * Copyright © 2019
  *
@@ -128,22 +128,23 @@ let Parts = {
             cityentity_id = d['cityentity_id'],
             level = d['level'],
             arcs = [],
-            FPRewards = [], //FP Maezenboni pro Platz (0 basiertes Array)
-            MedalRewards = [], //Medaillen Maezenboni pro Platz (0 basiertes Array)
-            BPRewards = [], //Blaupause Maezenboni pro Platz (0 basiertes Array)
+            FPRewards = [], // FP Maezenboni pro Platz (0 basiertes Array)
+            MedalRewards = [], // Medaillen Maezenboni pro Platz (0 basiertes Array)
+            BPRewards = [], // Blaupause Maezenboni pro Platz (0 basiertes Array)
             h = [],
-            EigenStart = 0, //Bereits eingezahlter Eigenanteil (wird ausgelesen)
-            Eigens = [], //Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
-            Dangers = [0, 0, 0, 0, 0], //Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
-            Maezens = [], //Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
+            EigenStart = 0, // Bereits eingezahlter Eigenanteil (wird ausgelesen)
+            Eigens = [], // Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
+            Dangers = [0, 0, 0, 0, 0], // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
+            Maezens = [], // Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
             LeveltLG = [false, false, false, false, false],
-            Total = parseInt(d['state']['forge_points_for_level_up']), //Gesamt FP des aktuellen Levels
-            MaezenTotal = 0, //Summe aller Fremdeinzahlungen
-            EigenTotal = 0, //Summe aller Eigenanteile
-            ExtTotal = 0, //Summe aller Externen Einzahlungen
-            EigenCounter = 0, //Eigenanteile Counter während Tabellenerstellung
-            Rest = Total, //Verbleibende FP: Counter während Berechnung
-            NonExts = [false, false, false, false, false]; //Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
+            Total = parseInt(d['state']['forge_points_for_level_up']), // Gesamt FP des aktuellen Levels
+            MaezenTotal = 0, // Summe aller Fremdeinzahlungen
+            EigenTotal, // Summe aller Eigenanteile
+            ExtTotal = 0, // Summe aller Externen Einzahlungen
+            EigenCounter = 0, // Eigenanteile Counter während Tabellenerstellung
+            Rest = Total, // Verbleibende FP: Counter während Berechnung
+            NonExts = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
+
 
         Parts.CurrentBuildingID = cityentity_id;
         if (level === undefined) {
@@ -177,12 +178,12 @@ let Parts = {
 
                 // Medallien berechnen
                 MedalCount = (rankings[x]['reward']['resources'] !== undefined ? parseInt(rankings[x]['reward']['resources']['medals']) : 0);
-                MedalRewards[Place] = Math.ceil(MedalCount * arcs[Place]);
+                MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
                 if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
                 // Blaupausen berechnen
                 let BlueprintCount = (rankings[x]['reward']['blueprints'] !== undefined ? parseInt(rankings[x]['reward']['blueprints']) : 0);
-                BPRewards[Place] = Math.ceil(BlueprintCount * arcs[Place]);
+                BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
                 if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
             }
         }
@@ -622,19 +623,4 @@ let Parts = {
 	RefreshData: ()=> {
 		Parts.BoxBody();
 	},
-
-
-	/**
-	 * Updated die Werte
-	 *
-	 * @param d
-	 * @param e
-	 * @constructor
-	 */
-	UpdateBody: (d, e)=> {
-		localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(e));
-		localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(d));
-
-		Parts.BoxBody();
-	}
 };
