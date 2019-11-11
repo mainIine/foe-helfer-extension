@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 16:47 Uhr
+ * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
  *
  * Copyright © 2019
  *
@@ -255,8 +255,9 @@ let Menu = {
 	 * @returns {*|jQuery}
 	 */
 	calcFP_Btn: ()=> {
-
-		sessionStorage.removeItem('OtherActiveBuilding');
+        sessionStorage.removeItem('OtherActiveBuilding');
+        sessionStorage.removeItem('OtherActiveBuildingData');
+        sessionStorage.removeItem('OtherActiveBuildingOverview');
 
 		let btn_CalcBG = $('<div />').attr('id', 'calcFPs').addClass('hud-btn hud-btn-red');
 
@@ -266,19 +267,48 @@ let Menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function() {
-			let b = sessionStorage.getItem('OtherActiveBuilding'),
-				d = sessionStorage.getItem('OtherActiveBuildingData'),
-				o = sessionStorage.getItem('OtherActiveBuildingOverview');
+            let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
+                UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData'),
+                OverviewJSON = sessionStorage.getItem('OtherActiveBuildingOverview');
 
-			// Passiert nur mit geöffneter Übersicht im Spiel
-			if (o !== null) {
-				Calculator.ShowOverview(); // Übersicht wird zuerst geladen, da Detailansicht beim Laden die Übersicht aus dem sessionStorage löscht
-			}
+            let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
+                UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined,
+                Overview = OverviewJSON !== null ? JSON.parse(OverviewJSON) : undefined;
+            
+			// Nur Übersicht verfügbar
+            if (Overview !== undefined && UpdateEntity === undefined) {
+                Calculator.ShowOverview(false);
+            }
 
-			// Passiert mit geöffneter Detailansicht im Spiel und geöffneter Übersicht, falls vorher die Detailansicht geöffnet war
-			if (b !== null) {
-				Calculator.Show(JSON.parse(b), JSON.parse(d));
-			}
+            // Nur Detailansicht verfügbar
+            else if (UpdateEntity !== undefined && Overview === undefined) {
+                Calculator.Show(Rankings, UpdateEntity);
+            }
+
+            // Beide verfügbar
+            else if (UpdateEntity !== undefined && Overview !== undefined) {
+                let BuildingInfo = Overview.find(obj => {
+                    return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
+                });
+
+                // Beide gehören zum selben Spieler => beide anzeigen
+                if (BuildingInfo !== undefined) {
+                    Calculator.ShowOverview();
+                    Calculator.Show(Rankings, UpdateEntity);
+                }
+
+                // Unterschiedliche Spieler => Öffne die neuere Ansicht
+                else {
+                    let DetailViewIsNewer = sessionStorage.getItem('DetailViewIsNewer');
+                    if (DetailViewIsNewer === "true") {
+                        Calculator.Show(Rankings, UpdateEntity);
+                    }
+                    else {
+                        Calculator.ShowOverview();
+                    }
+                }
+
+            }
 		});
 
 		btn_CalcBG.append(btn_Calc);
@@ -326,7 +356,9 @@ let Menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	ownFP_Btn: ()=> {
+    ownFP_Btn: () => {
+        localStorage.removeItem('OwnCurrentBuildingCity');
+        localStorage.removeItem('OwnCurrentBuildingGreat');
 
 		let btn_OwnBG = $('<div />').attr('id', 'ownFPs').addClass('hud-btn hud-btn-red');
 
