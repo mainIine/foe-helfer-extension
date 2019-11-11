@@ -331,9 +331,11 @@ let Outposts = {
 
 		let ct = localStorage.getItem('OutpostConsumablesTypes'),
 			pr = {},
-			type;
+            type;
 
-		ct = JSON.parse(ct);
+        if (ct === null) return;
+
+        ct = JSON.parse(ct);
 
 		// den eigentlichen Typen ermitteln
 		for(let name in Outposts.Currency)
