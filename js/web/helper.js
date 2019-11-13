@@ -129,6 +129,10 @@ let HTML = {
 
 		// Lautsprecher für Töne
 		if(args['speaker'] !== undefined){
+
+			// Click Event grillen...
+			$('body').off('click', '#' + args['speaker']);
+
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
 			spk.insertAfter(title);
 

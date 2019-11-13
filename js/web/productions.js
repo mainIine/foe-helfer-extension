@@ -61,7 +61,8 @@ let Productions = {
 		Productions.entities = Productions.GetSavedData();
 
 		// Münzboost ausrechnen und bereitstellen
-		Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100 );
+        Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100);
+        Productions.Boosts['supplies'] = ((MainParser.AllBoosts['supply_production'] + 100) / 100);
 
 		// leere Arrays erzeugen
 		for(let i in Productions.Types)
@@ -134,11 +135,13 @@ let Productions = {
 										Productions.BuildingsProductsGroups[x][ni] = [];
 										Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
 										Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
-										Productions.BuildingsProductsGroups[x][ni]['products'] = parseInt(building['products'][x]);
+                                        Productions.BuildingsProductsGroups[x][ni]['products'] = parseInt(building['products'][x]);
+                                        Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = parseInt(building['motivatedproducts'][x]);
 										Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
 
 									} else {
-										Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
+                                        Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
+                                        Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
 										Productions.BuildingsProductsGroups[x][index]['count']++;
 									}
 								}
@@ -154,10 +157,12 @@ let Productions = {
 									Productions.BuildingsProducts['packaging'][mId]['id'] = building['id'];
 									Productions.BuildingsProducts['packaging'][mId]['name'] = building['name'];
 									Productions.BuildingsProducts['packaging'][mId]['type'] = building['type'];
-									Productions.BuildingsProducts['packaging'][mId]['products'] = [];
+                                    Productions.BuildingsProducts['packaging'][mId]['products'] = [];
+                                    Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'] = [];
 								}
 
-								Productions.BuildingsProducts['packaging'][mId]['products'][x] = building['products'][x];
+                                Productions.BuildingsProducts['packaging'][mId]['products'][x] = building['products'][x];
+                                Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'][x] = building['motivatedproducts'][x];
 							}
 						}
 					}
@@ -198,33 +203,69 @@ let Productions = {
 	 */
 	readType: (d)=> {
 
-		let products = [];
+        let Products = [],
+            CurrentRessources = d['state']['current_product']['product']['resources'],
+            EntityID = d['cityentity_id'],
+            ProductionOption = d['state']['current_product']['production_option'];
+        
+        let AdditionalRessources = BuildingNamesi18n[EntityID]['additionalResources'];
 
-		let a = d['state']['current_product']['product']['resources'];
-
-		for(let k in a) {
-			if(a.hasOwnProperty(k)) {
+        for (let Ressource in CurrentRessources) {
+            if (CurrentRessources.hasOwnProperty(Ressource)) {
 
 				// Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
-				if(k === 'money' && a['id'] > 1)
-				{
-					products[k] = (parseInt(a[k]) * Productions.Boosts['money']);;
-				}
+                if (Ressource === 'money' && d['id'] > 1) {
+                    Products[Ressource] = Math.round(parseInt(CurrentRessources[Ressource]) * Productions.Boosts['money']);
+                }
+                else if (Ressource === 'supplies' && ProductionOption !== undefined) {
+                    Products[Ressource] = Math.round(parseInt(CurrentRessources[Ressource]) * Productions.Boosts['supplies']);
+                }
 				else {
-					products[k] = a[k]
+                    Products[Ressource] = CurrentRessources[Ressource]
 				}
 			}
-		}
+        }
 
-		return {
-			name: BuildingNamesi18n[d['cityentity_id']]['name'],
-			products: products,
-			id: d['id'],
-			eid: d['cityentity_id'],
-			at: d['state']['next_state_transition_at'],
-			in: d['state']['next_state_transition_in'],
-			type: d['type']
-		};
+        let AdditionalProduct,
+            MotivatedProducts = { ...Products };
+                
+        for (let Ressource in AdditionalRessources) {
+            if (Ressource.startsWith('random_good') || Ressource.startsWith('all_goods')) continue;
+
+            if (AdditionalRessources.hasOwnProperty(Ressource)) {
+                // Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
+                if (Ressource === 'money' && d['id'] > 1) {
+                    AdditionalProduct = Math.round(parseInt(AdditionalRessources[Ressource]) * Productions.Boosts['money']);
+                }
+                else {
+                    AdditionalProduct = AdditionalRessources[Ressource];
+                }
+
+                if (AdditionalProduct > 0) {
+                    if (Products[Ressource] === undefined) {
+                        Products[Ressource] = 0;
+                        MotivatedProducts[Ressource] = AdditionalProduct;
+                    }
+                    else if (Products[Ressource] < AdditionalProduct) {
+                        MotivatedProducts[Ressource] += AdditionalProduct;
+                    }
+                }
+            }
+        }
+
+        let At = d['state']['next_state_transition_at'],
+            In = d['state']['next_state_transition_in'];
+
+        return {
+            name: BuildingNamesi18n[d['cityentity_id']]['name'],
+            products: Products,
+            motivatedproducts: MotivatedProducts,
+            id: d['id'],
+            eid: d['cityentity_id'],
+            at: At !== undefined ? At : (new Date().getTime()) / 1000, // Kein Datum => Produktion kann eingesammelt werden
+            in: In !== undefined ? In : 0,
+            type: d['type']
+        };
 	},
 
 
@@ -277,7 +318,8 @@ let Productions = {
 					rowA = [],
 					rowB = [],
 					countProducts = [],
-					countAll = 0;
+                    countAll = 0,
+                    countAllMotivated = 0;
 
 				for(let i in buildings)
 				{
@@ -285,11 +327,15 @@ let Productions = {
 					{
 						if(type !== 'packaging')
 						{
-							countAll += parseInt(buildings[i]['products'][type]);
+                            countAll += parseInt(buildings[i]['products'][type]);
+                            countAllMotivated += parseInt(buildings[i]['motivatedproducts'][type]);
+
+                            let ProductCount = buildings[i]['products'][type],
+                                MotivatedProductCount = buildings[i]['motivatedproducts'][type];
 
 							let tds = '<tr>' +
 								'<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>' +
-								'<td class="text-right is-number" data-number="' + buildings[i]['products'][type] + '">' + Number(buildings[i]['products'][type]).toLocaleString(i18n['Local']) + '</td>' +
+                                '<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + Number(ProductCount).toLocaleString(i18n['Local']) + (ProductCount !== MotivatedProductCount ? '/' + Number(MotivatedProductCount).toLocaleString(i18n['Local']) : '') + '</td>' +
 								'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 								'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 								'</tr>';
@@ -314,7 +360,7 @@ let Productions = {
 									}
 
 									countProducts[p] += buildings[i]['products'][p];
-									countAll += buildings[i]['products'][p];
+                                    countAll += buildings[i]['products'][p];
 
 									pA.push(Number(buildings[i]['products'][p]).toLocaleString(i18n['Local']) + ' ' + GoodsNames[p]);
 								}
@@ -337,11 +383,14 @@ let Productions = {
 				if(type !== 'packaging') {
 
 					for (let i in groups) {
-						if (groups.hasOwnProperty(i)) {
+                        if (groups.hasOwnProperty(i)) {
+                            let ProductCount = groups[i]['products'],
+                                MotivatedProductCount = groups[i]['motivatedproducts'];
+
 							let tds = '<tr>' +
 								'<td colspan="1" class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
 								'<td colspan="2" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
-								'<td colspan="1" class="is-number" data-number="' + groups[i]['products'] + '">' + Number(groups[i]['products']).toLocaleString('de-DE') + '</td>' +
+                                '<td colspan="1" class="is-number" data-number="' + MotivatedProductCount + '">' + Number(ProductCount).toLocaleString(i18n['Local']) + (ProductCount !== MotivatedProductCount ? '/' + Number(MotivatedProductCount).toLocaleString(i18n['Local']) : '') + '</td>' +
 								'</tr>';
 
 							rowB.push(tds);
@@ -367,14 +416,14 @@ let Productions = {
 
 					table.push('</td>');
 					table.push('</tr>');
-					table.push('<tr><td></td><td class="total-products"><strong>' + i18n['Boxes']['Productions']['Total'] + Number(countAll).toLocaleString(i18n['Local']) + '</strong></td><td colspan="2"></td></tr>');
+                    table.push('<tr><td></td><td class="total-products"><strong>' + i18n['Boxes']['Productions']['Total'] + Number(countAll).toLocaleString(i18n['Local']) + '</strong></td><td colspan="2"></td></tr>');
 				}
 
 				else {
 					table.push('<thead>');
 					table.push('<tr class="other-header">');
 					table.push('<th colspan="2"><span class="change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
-					table.push('<th colspan="2" class="text-right"><strong>' + GoodsNames[type] + ': ' + Number(countAll).toLocaleString('de-DE') + '</strong></th>');
+                    table.push('<th colspan="2" class="text-right"><strong>' + GoodsNames[type] + ': ' + Number(countAll).toLocaleString(i18n['Local']) + (countAll !== countAllMotivated ? '/' + Number(countAllMotivated).toLocaleString(i18n['Local']) : '') + '</strong></th>');
 					table.push('</tr>');
 
 					table.push('</thead>');
@@ -446,7 +495,7 @@ let Productions = {
 
 				rowC.push('<td>' + moment.unix(building[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>');
 				rowC.push('<td>' + moment.unix(building[i]['at']).fromNow() + '</td>');
-				rowC.push('</tr>');
+                rowC.push('</tr>');
 			}
 		}
 
