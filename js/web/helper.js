@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       07.11.19, 21:51 Uhr
+ * zu letzt bearbeitet:       11.11.19, 20:38 Uhr
  *
  * Copyright © 2019
  *
@@ -129,6 +129,10 @@ let HTML = {
 
 		// Lautsprecher für Töne
 		if(args['speaker'] !== undefined){
+
+			// Click Event grillen...
+			$('body').off('click', '#' + args['speaker']);
+
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
 			spk.insertAfter(title);
 
