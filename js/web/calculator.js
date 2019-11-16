@@ -73,6 +73,7 @@ let Calculator = {
         }
 
         let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
+			PlayerName,
             h = [],
             arc = ((parseFloat(Calculator.ArcBonus) + 100) / 100);
 
