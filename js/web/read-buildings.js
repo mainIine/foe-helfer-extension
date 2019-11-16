@@ -15,36 +15,13 @@
 // https://foede.innogamescdn.com/start/metadata?id=city_entities-xxxxxxx
 
 // nicht plünderbare Gebäude
+
 let BlackListBuildingsArray = [
-	'R_MultiAge_EasterBonus5',			// Schrein des Wissens
-	'Z_MultiAge_CupBonus1', 			// Ruhmeshalle
-	'R_MultiAge_Expedition16b',			// Heilige Himmelswacht
-	'R_MultiAge_SpringBonus17gBlue',	// Wasser-Pagode
-	'R_MultiAge_SpringBonus17gGreen',	// Erd-Pagode
-	'R_MultiAge_SpringBonus17gRed',		// Feuer-Pagode
-	'R_MultiAge_SummerBonus18gPirate', 	// Piratenschiff
-	'R_MultiAge_SummerBonus18gRoyal', 	// königliches Schiff
-	'R_MultiAge_SummerBonus18gTrader', 	// Handelsschiff
-	'R_MultiAge_FallBonus18gaqueous', 	// blaue Herbstmühle
-	'R_MultiAge_FallBonus18gcolorful', 	// farbenfrohe Herbstmühle
-	'R_MultiAge_FallBonus18gsunflower', // Sonnenblumen Herbstmühle
+    
 ];
 
 let BlackListBuildingsString = [
-	'R_MultiAge_SportBonus19',			// Koloss
-	'R_MultiAge_SpringBonus17',			// Pagode
-	'R_MultiAge_SportBonus17',			// Monument der Helden
-	'R_MultiAge_CulturalBuilding1', 	// Yggdrasil
-	'R_MultiAge_SummerBonus18',			// Schiffe
-	'R_MultiAge_WinterBonus18',			// Winterdom
-	'R_MultiAge_SportBonus18',			// Tholos der Idole
-	'R_MultiAge_CarnivalBonus18',		// Große Brücke
-	'R_MultiAge_FallBonus18',			// Herbstmühle
-	'R_MultiAge_ArcheologyBonus19',		// Weltausstellung
-];
-
-let Whitelist = [
-	'R_MultiAge_SummerBonusSetA17a'
+    'R_MultiAge_SummerBonus19' //Großer Leuchtturm
 ];
 
 /**
@@ -79,31 +56,24 @@ let Reader = {
 
 		let d = dp['city_map']['entities'];
 
-		Reader.CityEntities = d;
+        Reader.CityEntities = d;      
 
-		for (let i in d) {
-			if (d.hasOwnProperty(i)) {
-				let id = d[i]['cityentity_id'];
-
-				if ((d[i]['type'] === 'production' || d[i]['type'] === 'goods') && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
-					// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
-					GoodsParser.readType(d[i]);
-
-				} else
-					if (d[i]['type'] === 'residential' && d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
-
-						// Residental Multiage ausschliessen
-						if (id.indexOf('R_MultiAge_') === -1 || Whitelist.includes(id))
-						// if(BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1)
-						{
-							GoodsParser.readType(d[i]);
-						}
-
-					} else if (d[i]['type'] === 'greatbuilding' && d[i]['state']['current_product'] !== undefined) {
-						// console.log('LG '+ BuildingNamesi18n[d[i]['cityentity_id']]['name']+':' , d[i]);
-					}
-			}
-		}
+        for (let i in d) {
+            if (d.hasOwnProperty(i)) {
+                let id = d[i]['cityentity_id'];
+                
+                if (BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1) {
+                    if (d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
+                        if (d[i]['type'] === 'goods') {
+                            GoodsParser.readType(d[i]);
+                        }
+                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production') && d[i]['state']['is_motivated'] === false) {
+                            GoodsParser.readType(d[i]);
+                        }
+                    }
+                }
+            }
+        }
 
 		// was gefunden?
 		if (Reader.data.ready.length > 0 || Reader.data.work.length > 0) {

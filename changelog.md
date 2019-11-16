@@ -6,6 +6,9 @@
 - Extension: 
     - Boxen können nicht mehr "zu hoch" geschoben werden [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helfer-extension/issues/145)
 
+- Produkt Übersicht:
+    - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion
+
 #####v2.3.12
 
 **BugFix**
