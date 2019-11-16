@@ -204,24 +204,24 @@ let Productions = {
 	readType: (d)=> {
 
         let Products = [],
-            CurrentRessources = d['state']['current_product']['product']['resources'],
+            CurrentResources = d['state']['current_product']['product']['resources'],
             EntityID = d['cityentity_id'],
             ProductionOption = d['state']['current_product']['production_option'];
         
-        let AdditionalRessources = BuildingNamesi18n[EntityID]['additionalResources'];
+        let AdditionalResources = BuildingNamesi18n[EntityID]['additionalResources'];
 
-        for (let Ressource in CurrentRessources) {
-            if (CurrentRessources.hasOwnProperty(Ressource)) {
+        for (let Resource in CurrentResources) {
+            if (CurrentResources.hasOwnProperty(Resource)) {
 
 				// Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
-                if (Ressource === 'money' && d['id'] > 1) {
-                    Products[Ressource] = Math.round(parseInt(CurrentRessources[Ressource]) * Productions.Boosts['money']);
+                if (Resource === 'money' && d['id'] > 1) {
+                    Products[Resource] = Math.round(parseInt(CurrentResources[Resource]) * Productions.Boosts['money']);
                 }
-                else if (Ressource === 'supplies' && ProductionOption !== undefined) {
-                    Products[Ressource] = Math.round(parseInt(CurrentRessources[Ressource]) * Productions.Boosts['supplies']);
+                else if (Resource === 'supplies' && ProductionOption !== undefined) {
+                    Products[Resource] = Math.round(parseInt(CurrentResources[Resource]) * Productions.Boosts['supplies']);
                 }
 				else {
-                    Products[Ressource] = CurrentRessources[Ressource]
+                    Products[Resource] = CurrentResources[Resource]
 				}
 			}
         }
@@ -229,25 +229,25 @@ let Productions = {
         let AdditionalProduct,
             MotivatedProducts = { ...Products };
                 
-        for (let Ressource in AdditionalRessources) {
-            if (Ressource.startsWith('random_good') || Ressource.startsWith('all_goods')) continue;
+        for (let Resource in AdditionalResources) {
+            if (Resource.startsWith('random_good') || Resource.startsWith('all_goods')) continue;
 
-            if (AdditionalRessources.hasOwnProperty(Ressource)) {
+            if (AdditionalResources.hasOwnProperty(Resource)) {
                 // Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
-                if (Ressource === 'money' && d['id'] > 1) {
-                    AdditionalProduct = Math.round(parseInt(AdditionalRessources[Ressource]) * Productions.Boosts['money']);
+                if (Resource === 'money' && d['id'] > 1) {
+                    AdditionalProduct = Math.round(parseInt(AdditionalResources[Resource]) * Productions.Boosts['money']);
                 }
                 else {
-                    AdditionalProduct = AdditionalRessources[Ressource];
+                    AdditionalProduct = AdditionalResources[Resource];
                 }
 
                 if (AdditionalProduct > 0) {
-                    if (Products[Ressource] === undefined) {
-                        Products[Ressource] = 0;
-                        MotivatedProducts[Ressource] = AdditionalProduct;
+                    if (Products[Resource] === undefined) {
+                        Products[Resource] = 0;
+                        MotivatedProducts[Resource] = AdditionalProduct;
                     }
-                    else if (Products[Ressource] < AdditionalProduct) {
-                        MotivatedProducts[Ressource] += AdditionalProduct;
+                    else if (Products[Resource] < AdditionalProduct) {
+                        MotivatedProducts[Resource] += AdditionalProduct;
                     }
                 }
             }
