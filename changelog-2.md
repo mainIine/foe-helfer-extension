@@ -6,7 +6,8 @@
      - Boxes can no longer be pushed "too high" [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helper-extension/issues/145)
 
 - Product overview:
-     - Shows which buildings would also produce FPs => possible highest production
+     - Shows which buildings would also produce FPs => Possible high-level production (especially SdWs)
+     - Boost added to supplies
 
 #####v2.3.12
 
