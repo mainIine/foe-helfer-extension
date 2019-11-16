@@ -377,14 +377,14 @@ document.addEventListener("DOMContentLoaded", function(){
 					let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
 
 					if(OutpostService !== undefined){
-						Outposts.SaveConsumables(OutpostService['responseData']);
+                        Outposts.SaveBuildings(OutpostService['responseData']);
 					}
 
 					// Außenposten-Güter des Spielers ermitteln
-					let OutpostRessources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
+					let OutpostResources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
 
-					if(OutpostRessources !== undefined){
-						Outposts.CollectResources(OutpostRessources['responseData']['resources']);
+					if(OutpostResources !== undefined){
+						Outposts.CollectResources(OutpostResources['responseData']['resources']);
 					}
 				}
 

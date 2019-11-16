@@ -1,13 +1,22 @@
 ##Changelog - Chrome Extension
 
 
+#####v2.3.12.2
+**Update**
+- Außenposten:
+    - Unvollständige Güteranzeige beim ersten Start der Extension behoben bzw. Wechsel des Außenpostens behoben [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
+	
+- Plünderanzeige:
+    - Es wurden nicht alle Gebäude angzeigt [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
+
 #####v2.3.12.1
 **Update**
 - Extension: 
     - Boxen können nicht mehr "zu hoch" geschoben werden [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helfer-extension/issues/145)
 
 - Produkt Übersicht:
-    - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion
+    - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion (insbesondere SdWs)
+    - Boost zu Vorräten hinzugefügt
 
 #####v2.3.12
 

@@ -327,7 +327,7 @@ let Menu = {
 		let btn_outPBG = $('<div />').attr('id', 'outPostBtn').addClass('hud-btn'),
 			desc = i18n['Menu']['OutP']['Desc'];
 
-		if(localStorage.getItem('OutpostConsumables') === null){
+		if(localStorage.getItem('OutpostBuildings') === null){
 			btn_outPBG.addClass('hud-btn-red');
 			desc = i18n['Menu']['OutP']['DescWarning'];
 		}
@@ -338,9 +338,9 @@ let Menu = {
 		let btn_outpost = $('<span />');
 
 		btn_outpost.bind('click', function(){
-			let r = localStorage.getItem('OutpostConsumables');
+            let OutpostBuildings = localStorage.getItem('OutpostBuildings');
 
-			if(r !== null){
+			if(OutpostBuildings !== null){
 				Outposts.BuildInfoBox();
 			}
 		});
