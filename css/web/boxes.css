@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       06.11.19, 18:37 Uhr
+ * zu letzt bearbeitet:       16.11.19, 17:08 Uhr
  *  
  * Copyright © 2019
  *
@@ -922,27 +922,16 @@
 	height: 96px;
 	user-select: none;
 	color: #efcf9a;
-}
-
-#tavern-boost:before {
-	content: "";
-	position: absolute;
-	width: 96px;
-	height: 140px;
-	z-index: -1;
-	background: url('https://foede.innogamescdn.com/assets/city/gui/citymap_icons/citymap_icons_0.png') -147px -148px no-repeat;
-	-webkit-transform: rotate(30deg);
-	transform: rotate(-90deg);
-	top: -22px;
-	right: 22px;
+	background: url('../images/tavern-badge.png') center center no-repeat;
 }
 
 #tavern-boost > span {
 	position: absolute;
 	display: block;
 	text-align: center;
-	top: 41px;
-	left: 35px;
+	top: 40px;
+	left: 0;
+	width: 140px;
 }
 
 #tavern-boost span {

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       11.11.19, 19:11 Uhr
+ * zu letzt bearbeitet:       11.11.19, 19:49 Uhr
  *
  * Copyright © 2019
  *
@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				let StartupService = d.find(obj => (obj['requestClass'] === 'StartupService' && obj['requestMethod'] === 'getData'));
 
 				if(StartupService !== undefined){
+
 					// Player-ID, Gilden-ID und Name setzten
 					MainParser.StartUp(StartupService['responseData']['user_data']);
 
@@ -361,26 +362,32 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 				// --------------------------------------------------------------------------------------------------
-				// Alle Typen der Außenposten "notieren"
-				let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
+				// soll der Außenposten dargestellt werden?
+				if(Settings.GetSetting('ShowOutpost'))
+				{
+					// Alle Typen der Außenposten "notieren"
+					let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
 
-				if(OutpostGetAll !== undefined && Settings.GetSetting('ShowOutpost')){
-					Outposts.GetAll(OutpostGetAll['responseData']);
+
+					if(OutpostGetAll !== undefined){
+						Outposts.GetAll(OutpostGetAll['responseData']);
+					}
+
+					// Gebäude des Außenpostens sichern
+					let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
+
+					if(OutpostService !== undefined){
+						Outposts.SaveConsumables(OutpostService['responseData']);
+					}
+
+					// Außenposten-Güter des Spielers ermitteln
+					let OutpostRessources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
+
+					if(OutpostRessources !== undefined){
+						Outposts.CollectResources(OutpostRessources['responseData']['resources']);
+					}
 				}
 
-				// Gebäude des Außenpostens sichern
-				let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
-
-				if(OutpostService !== undefined && Settings.GetSetting('ShowOutpost')){
-					Outposts.SaveConsumables(OutpostService['responseData']);
-				}
-
-				// Außenposten-Güter des Spielers ermitteln
-				let OutpostRessources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
-
-				if(OutpostRessources !== undefined && Settings.GetSetting('ShowOutpost')){
-					Outposts.CollectResources(OutpostRessources['responseData']['resources']);
-				}
 
 				// --------------------------------------------------------------------------------------------------
 				// LG Investitionen

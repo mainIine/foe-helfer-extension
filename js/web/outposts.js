@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       24.10.19, 13:25 Uhr
+ * zu letzt bearbeitet:       11.11.19, 20:09 Uhr
  *
  * Copyright © 2019
  *
@@ -355,7 +355,6 @@ let Outposts = {
 			{
 				if(d[name] !== undefined && Outposts.Currency[name]['type'] === type)
 				{
-
 					localStorage.setItem('OutpostConsumablesCurrencyName', Outposts.Currency[name]['currency']);
 					localStorage.setItem('OutpostConsumablesCurrencyValue', d[Outposts.Currency[name]['currency']]);
 					localStorage.setItem('OutpostConsumablesCurrencyType', Outposts.Currency[name]['type']);
