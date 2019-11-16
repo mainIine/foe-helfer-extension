@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     }
 
                     //Fremdes LG
-                    else {
+                    if (UpdateEntity['responseData'][0]['player_id'] !== ExtPlayerID) {
                         LastKostenrechnerOpenTime = new Date().getTime()
 
                         $('#calcFPs').removeClass('hud-btn-red');
@@ -305,9 +305,9 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'addBoost';
 				});
 
-				if(TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')){
-					Tavern.TavernBoost(TavernBoostService['responseData']);
-				}
+				if(TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')) {
+                    Tavern.TavernBoost(TavernBoostService['responseData']);
+                }
 
 				// --------------------------------------------------------------------------------------------------
 
