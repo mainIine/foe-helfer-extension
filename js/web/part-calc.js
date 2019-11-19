@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       10.11.19, 00:46 Uhr
+ * zu letzt bearbeitet:       19.11.19, 14:10 Uhr
  *
  * Copyright © 2019
  *
@@ -344,10 +344,10 @@ let Parts = {
                 let MaezenDiffString = '';
                 if (Maezens[i] > 0) {
                     if (MaezenDiff > 0) {
-                        MaezenDiffString = '<strong class="success"> (+' + MaezenDiff + ')</strong>';
+                        MaezenDiffString = ' <strong class="success"><small>(+' + MaezenDiff + ')</small></strong>';
                     }
                     else if (MaezenDiff < 0) {
-                        MaezenDiffString = '<strong class="error"> (' + MaezenDiff + ')</strong>';
+                        MaezenDiffString = ' <strong class="error"><small>(' + MaezenDiff + ')</small></strong>';
                     }
                 }
 
@@ -373,6 +373,7 @@ let Parts = {
             h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 6' + (Maezens.length > 6 ? ('-' + Maezens.length) : '') + '</td>');
             h.push('<td class="text-center">-</td>');
             h.push('<td class="text-center"><strong class="info">' + MaezenRest + '</strong></td>');
+            h.push('<td colspan="4"></td>');
             h.push('</tr>');
         }
 

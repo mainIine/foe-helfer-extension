@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 18:05 Uhr
+ * zu letzt bearbeitet:       19.11.19, 10:33 Uhr
  *
  * Copyright © 2019
  *
@@ -227,5 +227,12 @@ let i18n = {
 			"Desc" : "Sollen alle Box Koordinaten zurückgesetzt werden?",
 			"Button" : "Löschen!"
 		}
-	} 
+	},
+
+	"API" : {
+		"UpdateSuccess" : "Update durchgeführt",
+		"GEXPlayer" : "Die GEX Platzierungen der Mitglieder wurden geupdatet",
+		"GEXChampionship" : "Die GEX-Gilden Platzierung wurde geupdatet",
+		"LGInvest" : "Deine LG Investitionen wurden übertragen"
+	}
 };

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 14:37 Uhr
+ * zu letzt bearbeitet:       19.11.19, 14:15 Uhr
  *
  * Copyright © 2019
  *
@@ -34,7 +34,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .window-speaker {
-	background-image: url('https://foede.innogamescdn.com/assets/shared/buttons/buttons_0.png');
+	background-image: url('../images/speaker.png');
 }
 
 .game-cursor,
