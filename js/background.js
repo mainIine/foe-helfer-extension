@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.11.19, 17:44 Uhr
+ * zu letzt bearbeitet:       19.11.19, 09:44 Uhr
  *
  * Copyright © 2019
  *
@@ -37,7 +37,7 @@ chrome.runtime.onInstalled.addListener(() => {
 		}
 
 		// Fallback auf "en"
-		if(lng !== 'de' || lng !== 'en'){
+		if(lng !== 'de' && lng !== 'en'){
 			lng = 'en';
 		}
 
@@ -118,11 +118,10 @@ chrome.runtime.onMessageExternal.addListener((request) => {
 		chrome.storage.local.set({ [request.key] : request.data });
 
 	} else if(request.type === 'send2Api') {
-		let data = request.data,
-			xhr = new XMLHttpRequest();
+		let xhr = new XMLHttpRequest();
 
 		xhr.open('POST', request.url);
 		xhr.setRequestHeader('Content-Type', 'application/json');
-		xhr.send(JSON.stringify({data}));
+		xhr.send(request.data);
 	}
 });

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       11.11.19, 19:49 Uhr
+ * zu letzt bearbeitet:       19.11.19, 10:29 Uhr
  *
  * Copyright © 2019
  *
@@ -177,16 +177,6 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.setGoodsNames(GoodsService['responseData']);
 				}
 
-				// --------------------------------------------------------------------------------------------------
-				// LG Inventory
-
-				let LGInventory = d.find(obj => {
-					return obj['requestClass'] === 'InventoryService' && obj['requestMethod'] === 'getGreatBuildings'
-				});
-
-				if(LGInventory !== undefined && Settings.GetSetting('GlobalSend')){
-					MainParser.SaveLGInventory(LGInventory['responseData']);
-				}
 
 
 				// --------------------------------------------------------------------------------------------------
@@ -309,17 +299,8 @@ document.addEventListener("DOMContentLoaded", function(){
 					Tavern.TavernBoost(TavernBoostService['responseData']);
 				}
 
-				// --------------------------------------------------------------------------------------------------
 
-				let OtherPlayersGild = d.find(obj => {
-					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getClanMemberList'
-				});
 
-				if(OtherPlayersGild !== undefined && Settings.GetSetting('GlobalSend')){
-					MainParser.SocialbarList(OtherPlayersGild['responseData']);
-				}
-
-				// --------------------------------------------------------------------------------------------------
 				// --------------------------------------------------------------------------------------------------
 
 				let OtherPlayersVisits = d.find(obj => {
@@ -331,34 +312,6 @@ document.addEventListener("DOMContentLoaded", function(){
 					Reader.OtherPlayersBuildings(OtherPlayersVisits['responseData']);
 				}
 
-				// LGs des eigenen Clans auslesen
-				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] === ExtGuildID && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendGildMemberLGInfo')){
-					MainParser.OtherPlayersLGs(OtherPlayersVisits['responseData']);
-				}
-
-
-				// --------------------------------------------------------------------------------------------------
-				// Gildenmitglieder in der GEX (Fortschritt, Plazierung usw.)
-
-				let GEXList = d.find(obj => {
-					return obj['requestClass'] === 'GuildExpeditionService' && obj['requestMethod'] === 'getContributionList'
-				});
-
-				if(GEXList !== undefined && MainParser.checkNextUpdate('GuildExpedition') === true && Settings.GetSetting('GlobalSend')  && Settings.GetSetting('SendGEXInfo')){
-					MainParser.GuildExpedition(GEXList['responseData']);
-				}
-
-
-				// --------------------------------------------------------------------------------------------------
-				// Gildenplatzierung in der GEX
-
-				let GEXGuild = d.find(obj => {
-					return obj['requestClass'] === 'ChampionshipService' && obj['requestMethod'] === 'getOverview'
-				});
-
-				if(GEXGuild !== undefined && MainParser.checkNextUpdate('Championship') === true && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendGEXInfo')){
-					MainParser.Championship(GEXGuild['responseData']);
-				}
 
 
 				// --------------------------------------------------------------------------------------------------
@@ -389,45 +342,117 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 
 
-				// --------------------------------------------------------------------------------------------------
-				// LG Investitionen
+				// es dürfen Daten an foe-rechner.de geschickt werden
+				if(Settings.GetSetting('GlobalSend')){
 
-				let LGInvests = d.find(obj => {
-					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getContributions'
-				});
+					// eigene LG Daten speichern
 
-				if(LGInvests !== undefined && MainParser.checkNextUpdate('GreatBuildings') === true && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendInvestigations')){
-					MainParser.GreatBuildings(LGInvests['responseData']);
-				}
+					let LGInventory = d.find(obj => {
+						return obj['requestClass'] === 'InventoryService' && obj['requestMethod'] === 'getGreatBuildings'
+					});
 
+					if(LGInventory !== undefined){
+						MainParser.SaveLGInventory(LGInventory['responseData']);
+					}
 
-				// --------------------------------------------------------------------------------------------------
-				// LG Freundesliste
-
-				let Friends = d.find(obj => {
-					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getFriendsList'
-				});
-
-				if(Friends !== undefined && MainParser.checkNextUpdate('FriendsList') === true && Settings.GetSetting('GlobalSend')){
-					MainParser.FriendsList(Friends['responseData']);
-				}
+					//--------------------------------------------------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------
 
 
-				// --------------------------------------------------------------------------------------------------
-				// Moppel Aktivitäten
+					// Liste der Gildenmitglieder
 
-				let Motivations = d.find(obj => {
-					return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getEventsPaginated'
-				});
+					let OtherPlayersGild = d.find(obj => {
+						return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getClanMemberList'
+					});
 
-				if(Motivations !== undefined && Settings.GetSetting('GlobalSend') && Settings.GetSetting('SendTavernInfo')){
-					let page = Motivations['responseData']['page'],
-						time = MainParser.checkNextUpdate('OtherPlayersMotivation-' + page);
+					if(OtherPlayersGild !== undefined){
+						MainParser.SocialbarList(OtherPlayersGild['responseData']);
+					}
 
-					if(time === true){
-						MainParser.OtherPlayersMotivation(Motivations['responseData']);
+					//--------------------------------------------------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------
+
+
+					// LGs des eigenen Clans auslesen
+
+					if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] === ExtGuildID && Settings.GetSetting('SendGildMemberLGInfo')){
+						MainParser.OtherPlayersLGs(OtherPlayersVisits['responseData']);
+					}
+
+					//--------------------------------------------------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------
+
+
+					// Gildenmitglieder in der GEX (Fortschritt, Plazierung usw.)
+
+					let GEXList = d.find(obj => {
+						return obj['requestClass'] === 'GuildExpeditionService' && obj['requestMethod'] === 'getContributionList'
+					});
+
+					if(GEXList !== undefined && MainParser.checkNextUpdate('GuildExpedition') === true && Settings.GetSetting('SendGEXInfo')){
+						MainParser.GuildExpedition(GEXList['responseData']);
+					}
+
+					//--------------------------------------------------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------
+
+
+					// Gildenplatzierung in der GEX
+
+					let GEXGuild = d.find(obj => {
+						return obj['requestClass'] === 'ChampionshipService' && obj['requestMethod'] === 'getOverview'
+					});
+
+					if(GEXGuild !== undefined && MainParser.checkNextUpdate('Championship') === true && Settings.GetSetting('SendGEXInfo')){
+						MainParser.Championship(GEXGuild['responseData']);
+					}
+
+
+					// LG Investitionen
+
+					let LGInvests = d.find(obj => {
+						return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getContributions'
+					});
+
+					if(LGInvests !== undefined && MainParser.checkNextUpdate('GreatBuildings') === true && Settings.GetSetting('SendInvestigations')){
+						MainParser.GreatBuildings(LGInvests['responseData']);
+					}
+
+					//--------------------------------------------------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------
+
+
+					// LG Freundesliste
+
+					let Friends = d.find(obj => {
+						return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getFriendsList'
+					});
+
+					if(Friends !== undefined){
+						MainParser.FriendsList(Friends['responseData']);
+					}
+
+					//--------------------------------------------------------------------------------------------------
+					//--------------------------------------------------------------------------------------------------
+
+
+					// Moppel Aktivitäten
+
+					let Motivations = d.find(obj => {
+						return obj['requestClass'] === 'OtherPlayerService' && obj['requestMethod'] === 'getEventsPaginated'
+					});
+
+					if(Motivations !== undefined && Settings.GetSetting('SendTavernInfo')){
+						let page = Motivations['responseData']['page'],
+							time = MainParser.checkNextUpdate('OtherPlayersMotivation-' + page);
+
+						if(time === true){
+							MainParser.OtherPlayersMotivation(Motivations['responseData']);
+						}
 					}
 				}
+
+
 
 
 				let Time = d.find(obj => {
@@ -701,7 +726,7 @@ let MainParser = {
 				if(d.hasOwnProperty(k)){
 
 					// wenn die Gilden-ID eine andere ist, abbrechen
-					if(ExtGuildID !== d[k]['clan_id']){
+					if(ExtGuildID !== d[k]['clan_id'] || d[k]['clan_id'] === ''){
 						break;
 					}
 
@@ -726,7 +751,7 @@ let MainParser = {
 			if(player.length > 0){
 				chrome.runtime.sendMessage(extID, {
 					type: 'send2Api',
-					url: ApiURL + 'OtherPlayers/?player_id=' + ExtGuildID + '&guild_id=' + ExtPlayerID + '&world=' + ExtWorld,
+					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 					data: JSON.stringify(player)
 				});
 			}
@@ -784,18 +809,11 @@ let MainParser = {
 	 */
 	OtherPlayersLGs: (d)=> {
 
-		// ist es schon wieder so weit?
-		let time = MainParser.checkNextUpdate('LG-' + d['other_player']['player_id']);
-		if(time !== true){
-			MainParser.showInfo('Hinweis', 'Bis zum nächsten Übermitteln musst du noch '+ time +' warten');
-
-			return false;
-		}
-
 		// gehört nicht zur Gilde
 		if(ExtGuildID !== d['other_player']['clan_id']){
 			return false;
 		}
+
 		let lg = d['city_map']['entities'],
 			data = [],
 			player = {
@@ -808,6 +826,10 @@ let MainParser = {
 		data.push(player);
 
 		for(let k in lg){
+
+			if(!lg.hasOwnProperty(k)){
+				break;
+			}
 
 			// nur wenn es eines dieser Gebäude ist
 			if(lg[k]['cityentity_id'].indexOf("_Landmark") > -1 ||
@@ -832,16 +854,13 @@ let MainParser = {
 			data.push({lgs: lgs});
 
 			// ab zum Server
-			MainParser.send2Server(data, 'OtherPlayersLGs', function(r){
-
-				// nach Erfolg, Zeitstempel in den LocalStorage
-				if(r['status'] === 'OK'){
-					localStorage.setItem('LG-' + d['other_player']['player_id'], MainParser.getAddedDateTime(2, 0));
-					MainParser.showInfo(d['other_player']['name'] + ' geupdated', r['msg']);
-				} else {
-					MainParser.showInfo('Fehler!', r['msg']);
-				}
+			chrome.runtime.sendMessage(extID, {
+				type: 'send2Api',
+				url: ApiURL + 'OtherPlayersLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(data)
 			});
+
+			MainParser.showInfo(d['other_player']['name'] + ' geupdated', 'Holla');
 		}
 	},
 
@@ -853,17 +872,22 @@ let MainParser = {
 	 */
 	GuildExpedition: (d)=> {
 
-		// ab zum Server
-		MainParser.send2Server(d, 'GuildExpedition', function(r)
-		{
-			// nach Erfolg, Zeitstempel in den LocalStorage
-			if(r['status'] === 'OK'){
-				localStorage.setItem('GuildExpedition', MainParser.getAddedDateTime(2, 0));
-				MainParser.showInfo('Update durchgeführt', r['msg']);
-			} else {
-				MainParser.showInfo('Fehler!', r['msg']);
-			}
+		// doppeltes Senden unterdrücken
+		let time = MainParser.checkNextUpdate('API-GEXPlayer');
+
+		if(time !== true){
+			return;
+		}
+
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'GEXPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(d)
 		});
+
+		MainParser.showInfo(i18n['API']['UpdateSuccess'], i18n['API']['GEXPlayer']);
+
+		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
 
 
@@ -873,25 +897,18 @@ let MainParser = {
 	 */
 	Championship: (d)=> {
 
-		let data = [],
-			i = {
+		let data = {
 				participants: d['participants'],
 				ranking: d['ranking'],
 			};
 
-		data.push(i);
-
-		// ab zum Server
-		MainParser.send2Server(data, 'Championship', function(r){
-
-			// nach Erfolg, Zeitstempel in den LocalStorage
-			if(r['status'] === 'OK'){
-				localStorage.setItem('Championship', MainParser.getAddedDateTime(2, 0));
-				MainParser.showInfo('Update durchgeführt', r['msg']);
-			} else {
-				MainParser.showInfo('Fehler!', r['msg']);
-			}
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'GEXChampionship/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(data)
 		});
+
+		MainParser.showInfo(i18n['API']['UpdateSuccess'], i18n['API']['GEXChampionship']);
 	},
 
 
@@ -989,17 +1006,13 @@ let MainParser = {
 	 */
 	GreatBuildings: (d)=>{
 
-		// ab zum Server
-		MainParser.send2Server(d, 'GreatBuildings', function(r){
-
-			// nach Erfolg, Zeitstempel in den LocalStorage
-			if(r['status'] === 'OK'){
-				localStorage.setItem('GreatBuildings', MainParser.getAddedDateTime(0, 5));
-				MainParser.showInfo('Update durchgeführt', r['msg']);
-			} else {
-				MainParser.showInfo('Fehler!', r['msg']);
-			}
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'LGInvest/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(d)
 		});
+
+		MainParser.showInfo(i18n['API']['UpdateSuccess'], i18n['API']['LGInvest']);
 	},
 
 
@@ -1045,7 +1058,12 @@ let MainParser = {
 
 		if(lgs.length > 0)
 		{
-			MainParser.apiCall(lgs, 'SelfPlayerLGs');
+			// ab zum Server
+			chrome.runtime.sendMessage(extID, {
+				type: 'send2Api',
+				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(lgs)
+			});
 		}
 	},
 
@@ -1162,7 +1180,7 @@ let MainParser = {
 			if (d.hasOwnProperty(i)) {
 
 				// nicht selbst mitschicken
-				if(d[i]['player_id'] != ExtPlayerID){
+				if(d[i]['player_id'] !== ExtPlayerID){
 					let pl = {
 						avatar: d[i]['avatar'],
 						city_name: d[i]['city_name'],
@@ -1179,8 +1197,10 @@ let MainParser = {
 		}
 
 		if(data.length > 0){
-			MainParser.send2Server(data, 'FriendsList', function(r){
-				localStorage.setItem('FriendsList', MainParser.getAddedDateTime(6, 0));
+			chrome.runtime.sendMessage(extID, {
+				type: 'send2Api',
+				url: ApiURL + 'FriendsList/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(d)
 			});
 		}
 	},

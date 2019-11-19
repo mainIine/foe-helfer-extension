@@ -1,5 +1,13 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.12.2
+**Bugfix**
+- Extension:
+    - Spracherkennung für Changelog gefixt
+    - API Endpunkte neu definiert, Daten wie LGs der Gildies, eigene Daten, GEX usw. werden nun sauber übertragen [#67](https://github.com/dsiekiera/foe-helfer-extension/issues/67)
+    - fehlende Übersetzungen ergänzt
+    - Lautsprecher Icon gefixt
+---
 
 #####v2.3.12.1
 **Update**
@@ -7,7 +15,10 @@
     - Boxen können nicht mehr "zu hoch" geschoben werden [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helfer-extension/issues/145)
 
 - Produkt Übersicht:
-    - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion
+    - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion (insbesondere SdWs)
+    - Boost zu Vorräten hinzugefügt
+
+---
 
 #####v2.3.12
 
