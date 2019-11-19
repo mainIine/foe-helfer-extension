@@ -1,9 +1,17 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.12.3
+**Bugfix**
+- Extension:
+    - Speaker Icon later
+    - optical adjustments to the own contribution calculator
+    
+---
+
 #####v2.3.12.2
 - Extension:
     - Fixed speech recognition for changelog
-    - Redefined API endpoints, data such as LGs of Gildies, own data, GEX, etc. are now transmitted cleanly
+    - Redefined API endpoints, data such as LGs of Gildies, own data, GEX, etc. are now transmitted cleanly [#67](https://github.com/dsiekiera/foe-helfer-extension/issues/67)
     - Missing translations added
     - Fixed a speaker icon
 
