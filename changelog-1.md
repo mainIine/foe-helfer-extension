@@ -1,13 +1,22 @@
 ##Changelog - Chrome Extension
 
 
+#####v2.3.12.3
+**Bugfix**
+- Extension:
+    - Lautsprecher Icon nachgereicht
+    - optische Anpassungen am Eigenanteilsrechner
+    
+---
+
 #####v2.3.12.2
-**Update**
-- Außenposten:
-    - Unvollständige Güteranzeige beim ersten Start der Extension behoben bzw. Wechsel des Außenpostens behoben [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
-	
-- Plünderanzeige:
-    - Es wurden nicht alle Gebäude angzeigt [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
+**Bugfix**
+- Extension:
+    - Spracherkennung für Changelog gefixt
+    - API Endpunkte neu definiert, Daten wie LGs der Gildies, eigene Daten, GEX usw. werden nun sauber übertragen [#67](https://github.com/dsiekiera/foe-helfer-extension/issues/67)
+    - fehlende Übersetzungen ergänzt
+    - Lautsprecher Icon gefixt
+---
 
 #####v2.3.12.1
 **Update**
@@ -17,6 +26,7 @@
 - Produkt Übersicht:
     - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion (insbesondere SdWs)
     - Boost zu Vorräten hinzugefügt
+---
 
 #####v2.3.12
 

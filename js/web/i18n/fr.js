@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       28.10.19, 18:07 Uhr
+ * zu letzt bearbeitet:       19.11.19, 10:37 Uhr
  *
  * Copyright © 2019
  *
@@ -25,17 +25,17 @@ let i18n = {
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
             "OwnPartRemaining": "Remaining",
-            "Done": "Done", //Todo: Translate
+            "Done": "Fini",
 			"Order": "Séquence",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
 			"YourName": "Votre nom",
 			"IndividualName": "nom individuel",
 			"OutputScheme": "Schéma de sortie",
-            "Auto": "Auto", //Todo: Translate?
+            "Auto": "Automatique",
             "Place": "Place",
             "Levels": "niveaux",
-            "No place safe": "No place safe" //Todo: Translate
+            "NoPlaceSafe": "Pas de place à coup sûr"
 		},
 
 		"Calculator": {
@@ -43,14 +43,14 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
-			"ArcBonus": "Arc Bonus", //Todo: Translate
-            "Earnings": "Gains", //Todo: Translate
-            "Rate": "Rate", //Todo: Translate
+			"ArcBonus": "Bonus d'arche",
+            "Earnings": "Bénéfices",
+            "Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
-            "Profit": "Profit", //Todo: Translate
+            "Profit": "Profit",
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
@@ -227,5 +227,12 @@ let i18n = {
 			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
 			"Button" : "Supprimer!"
 		}
+	},
+
+	"API" : {
+		"UpdateSuccess" : "Mise à jour effectuée",
+		"GEXPlayer" : "Les stages GEX des membres ont été mis à jour",
+		"GEXChampionship" : "Le placement de guilde GEX a été mis à jour",
+		"LGInvest" : "Vos investissements LG ont été transférés"
 	}
 };

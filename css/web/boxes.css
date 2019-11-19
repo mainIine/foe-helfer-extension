@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       16.11.19, 17:08 Uhr
+ * zu letzt bearbeitet:       19.11.19, 10:57 Uhr
  *  
  * Copyright © 2019
  *
@@ -88,24 +88,25 @@
 }
 
 .window-head span.window-speaker {
-	height: 24px;
+	height: 22px;
 	display: inline-block;
 	position: relative;
-	background-position: 0 -1650px;
-	width: 44px;
+	background-position: 0 0;
+	width: 42px;
 	margin-right: 3px;
+	top: 1px;
 }
 
 .window-head span.window-speaker:hover {
-    background-position: 0 -1624px;
+    background-position: -42px 0;
 }
 
 .window-head span.window-speaker.deactivated {
-	background-position: -200px -1617px;
+	background-position: 42px 22px;
 }
 
 .window-head span.window-speaker.deactivated:hover {
-    background-position: -121px -1635px;
+	background-position: 0 -22px;
 }
 
 .open .window-head span.window-minimize:hover {

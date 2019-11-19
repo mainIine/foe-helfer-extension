@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.11.19, 13:48 Uhr
+ * zu letzt bearbeitet:       11.11.19, 20:09 Uhr
  *
  * Copyright © 2019
  *
@@ -326,7 +326,7 @@ let Outposts = {
 	CollectResources: ()=>{
         let Goods = {},
             type; //Todo: Laden
-     
+
 		// die Güter ermittlen
         for (let i = 0; i < Outposts.OutpostData['goodsResourceIds'].length; i++)
         {
