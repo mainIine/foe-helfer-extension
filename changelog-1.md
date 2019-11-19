@@ -1,5 +1,14 @@
 ##Changelog - Chrome Extension
 
+
+#####v2.3.12.3
+**Bugfix**
+- Extension:
+    - Lautsprecher Icon nachgereicht
+    - optische Anpassungen am Eigenanteilsrechner
+    
+---
+
 #####v2.3.12.2
 **Bugfix**
 - Extension:
