@@ -17,12 +17,12 @@
  * @type
  * 	{
  * 		{
- * 			Order: {},
+ * 			OutpostData: ,
+ * 			DiplymacyBuildings: ,
+ * 			Resources ,
  * 			GetAll: Outposts.GetAll,
- * 			Currency: {},
- * 			BuildBoxContent: Outposts.BuildBoxContent,
- * 			Service: {},
- * 			SaveConsumables:
+ *          BuildBoxContent: Outposts.BuildBoxContent,
+ *          SaveConsumables:
  * 			Outposts.SaveConsumables,
  * 			BuildBox: Outposts.BuildBox,
  * 			CollectResources: Outposts.CollectResources
@@ -30,11 +30,10 @@
  * 	}
  */
 let Outposts = {
-
-	Service: {},
-	Currency: {},
-	Order:{},
-	DiplomacyBuildings: null,
+    OutpostData : null,
+    DiplomacyBuildings : null,
+    Currency : null,
+    Resources : null,
 
 	/**
 	 * Füg eine Box in den DOM ein
@@ -43,11 +42,11 @@ let Outposts = {
 	 */
 	BuildInfoBox: ()=> {
 
-		let db = localStorage.getItem('OutpostConsumables');
+        let OutpostBuildings = localStorage.getItem('OutpostBuildings');
 
-		if(db !== null)
+		if(OutpostBuildings !== null)
 		{
-			Outposts.DiplomacyBuildings = JSON.parse(db);
+			Outposts.DiplomacyBuildings = JSON.parse(OutpostBuildings);
 		}
 
 		if( $('#outpostConsumables').length === 0 )
@@ -78,38 +77,32 @@ let Outposts = {
 			return ;
 		}
 
-		let t = [],
-			ct = [],
-			bd = JSON.parse(sessionStorage.getItem('BuildingsData')),
-			c = Outposts.DiplomacyBuildings,
-			pr = JSON.parse(localStorage.getItem('OutpostConsumablesResources')),
-			cn = localStorage.getItem('OutpostConsumablesCurrencyName'),
-			cv = localStorage.getItem('OutpostConsumablesCurrencyValue'),
-			type = localStorage.getItem('OutpostConsumablesCurrencyType'),
-			all = Outposts.Order[type],
-			pb = [];
+        let t = [],
+            ct = [],
+            BuildingsData = JSON.parse(sessionStorage.getItem('BuildingsData')),
+            Buildings = Outposts.DiplomacyBuildings,
+            UnlockedDiplomacyBuildings =[];
 
-		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.Service[type].name );
-
+        $('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.OutpostData['contentName']);
 
 		// Diplomatische Gebäude raussuchen, die erforscht sind
-		for(let x in c)
+		for(let i in Buildings)
 		{
-			if(c.hasOwnProperty(x) && c[x]['rewards'][0].toLowerCase().indexOf('diplomacy') > -1 && c[x]['isUnlocked'])
+            if (Buildings.hasOwnProperty(i) && Buildings[i]['rewards'][0].toLowerCase().indexOf('diplomacy') > -1 && Buildings[i]['isUnlocked'])
 			{
-				let b = bd.find(obj => (obj['asset_id'] === c[x]['rewards'][0]));
+                let BuildingData = BuildingsData.find(obj => (obj['asset_id'] === Buildings[i]['rewards'][0]));
 
-				pb.push({
-					name: c[x]['name'],
-					diplomacy: b['staticResources']['resources']['diplomacy'],
+                UnlockedDiplomacyBuildings.push({
+					name: Buildings[i]['name'],
+                    diplomacy: BuildingData['staticResources']['resources']['diplomacy'],
 				});
 			}
 		}
 
 		// Array umdrehen
-		pb = pb.reverse();
+        UnlockedDiplomacyBuildings = UnlockedDiplomacyBuildings.reverse();
 
-		t.push('<p class="text-right"><strong>' + GoodsNames[cn] + ': ' + HTML.Format(cv) + '</strong></p>');
+        t.push('<p class="text-right"><strong>' + GoodsNames[Outposts.OutpostData['primaryResourceId']] + ': ' + HTML.Format(ResourceStock[Outposts.OutpostData['primaryResourceId']]) + '</strong></p>');
 
 		t.push('<table class="foe-table">');
 		t.push('<thead>');
@@ -118,14 +111,14 @@ let Outposts = {
 		t.push('<th class="text-center">' + i18n['Boxes']['Outpost']['TitleFree'] + '</th>');
 
 		// Güter durchsteppen
-		for(const good of all)
+		for(let ResourceID in Outposts.Resources)
 		{
-			t.push('<th class="text-center">' + GoodsNames[ good ] + '</th>');
+            t.push('<th class="text-center">' + GoodsNames[ResourceID] + '</th>');
 
 			// falls nicht alle übermittelt wurde, mit "0" auffüllen
-			if(pr[good] === undefined)
+            if (Outposts.Resources[ResourceID] === undefined)
 			{
-				pr[good] = 0;
+                Outposts.Resources[ResourceID] = 0;
 			}
 		}
 
@@ -136,11 +129,11 @@ let Outposts = {
 		let ulnc = false,
 			check = false;
 
-		for(let i in c)
+		for(let i in Buildings)
 		{
-			if(c.hasOwnProperty(i))
+            if (Buildings.hasOwnProperty(i))
 			{
-				let unl = c[i]['isUnlocked'];
+                let unl = Buildings[i]['isUnlocked'];
 
 				if(unl === false)
 				{
@@ -149,15 +142,15 @@ let Outposts = {
 
 				t.push('<tr>');
 
-				t.push('<td>' + c[i]['name'] + '</td>');
+                t.push('<td>' + Buildings[i]['name'] + '</td>');
 
-				t.push('<td class="text-center">' + (c[i]['isUnlocked'] ? '&#10004;' : '&#10060;' ) + '</td>');
+                t.push('<td class="text-center">' + (Buildings[i]['isUnlocked'] ? '&#10004;' : '&#10060;') + '</td>');
 
-				let res = c[i]['requirements']['resources'];
+                let res = Buildings[i]['requirements']['resources'];
 
-				for(const good of all)
+                for (let ResourceID in Outposts.Resources)
 				{
-					if(res[good] !== undefined && res[good] > 0)
+                    if (res[ResourceID] !== undefined && res[ResourceID] > 0)
 					{
 						t.push('<td class="text-center">');
 
@@ -165,20 +158,20 @@ let Outposts = {
 						if(ulnc === false && unl === false)
 						{
 
-							t.push( ( res[good] > pr[good] ? res[good] + ' <small class="text-danger">' + (pr[good] - res[good]) + '</small>' : '<span class="text-success">' + res[good] + '</span>' ) );
+                            t.push((res[ResourceID] > Outposts.Resources[ResourceID] ? res[ResourceID] + ' <small class="text-danger">' + (Outposts.Resources[ResourceID] - res[ResourceID]) + '</small>' : '<span class="text-success">' + res[ResourceID] + '</span>' ) );
 
 							// Empfehlung für Diplomatie
-							if(good === 'diplomacy')
+                            if (ResourceID === 'diplomacy')
 							{
 								let content = [],
-									rest = (res[good] - pr[good]);
+                                    rest = (res[ResourceID] - Outposts.Resources[ResourceID]);
 
 								if(rest > 0)
 								{
-									pb.forEach((item, i)=> {
+									UnlockedDiplomacyBuildings.forEach((item, i)=> {
 
 										// letzte Element des Arrays
-										if (i === pb.length-1 && rest > 0){
+                                        if (i === UnlockedDiplomacyBuildings.length-1 && rest > 0){
 											let c = Math.ceil(rest / item['diplomacy']);
 											content.push(c + 'x ' + item['name']);
 
@@ -202,21 +195,21 @@ let Outposts = {
 							// bereits erforscht
 							if(unl === true)
 							{
-								t.push('<span class="text-muted">' + res[good] + '</span>');
+								t.push('<span class="text-muted">' + res[ResourceID] + '</span>');
 							} else {
-								t.push(res[good]);
+                                t.push(res[ResourceID]);
 							}
 						}
 
 						t.push('</td>');
 
-						if(unl === false && good !== 'diplomacy')
+						if(unl === false && ResourceID !== 'diplomacy')
 						{
-							if(ct[good] === undefined)
+                            if (ct[ResourceID] === undefined)
 							{
-								ct[good] = res[good];
+                                ct[ResourceID] = res[ResourceID];
 							} else {
-								ct[good] += res[good];
+                                ct[ResourceID] += res[ResourceID];
 							}
 
 						}
@@ -232,18 +225,16 @@ let Outposts = {
 				ulnc = check;
 			}
 		}
-
-
-
+               
 		t.push('<tr class="total-row">');
 
 		t.push('<td>' + i18n['Boxes']['Outpost']['DescRequired'] + '</td><td></td>');
 
-		for(const good of all)
+        for (let ResourceID in Outposts.Resources)
 		{
-			if(good !== 'diplomacy')
+            if (ResourceID !== 'diplomacy')
 			{
-				t.push('<td class="text-center">' + ct[ good ] + '</td>');
+                t.push('<td class="text-center">' + ct[ResourceID] + '</td>');
 			} else {
 				t.push('<td></td>');
 			}
@@ -255,9 +246,9 @@ let Outposts = {
 
 		t.push('<td>' + i18n['Boxes']['Outpost']['DescInStock'] + '</td><td></td>');
 
-		for(const good of all)
+        for (let ResourceID in Outposts.Resources)
 		{
-			t.push('<td class="text-center">' + pr[ good ] + '</td>');
+            t.push('<td class="text-center">' + Outposts.Resources[ResourceID] + '</td>');
 		}
 
 		t.push('</tr>');
@@ -267,11 +258,11 @@ let Outposts = {
 
 		t.push('<td><strong>' + i18n['Boxes']['Outpost']['DescStillMissing'] + '</strong></td><td colspan=""></td>');
 
-		for(const good of all)
+        for (let ResourceID in Outposts.Resources)
 		{
-			if(good !== 'diplomacy')
+            if (ResourceID !== 'diplomacy')
 			{
-				let tt = (pr[good] - ct[good]);
+                let tt = (Outposts.Resources[ResourceID] - ct[ResourceID]);
 
 				t.push('<td class="text-center text-' + (tt < 0 ? 'danger' : 'success') + '">' + tt + '</td>');
 
@@ -297,27 +288,32 @@ let Outposts = {
 	 * @param d
 	 * @constructor
 	 */
-	GetAll: (d)=> {
+    GetAll: (d) => {
+        let LastStartedPos,
+            LastStartedTime = 0;
 
 		for(let i in d)
 		{
 			if(d.hasOwnProperty(i) && d[i]['isActive'])
-			{
-				let ct = d[i]['content'];
-
-				Outposts.Service[ct] = {
-					name: d[i]['name']
-				};
-
-				Outposts.Order[ct] = d[i]['goodsResourceIds'];
-				Outposts.Order[ct].push('diplomacy');
-
-				Outposts.Currency[ d[i]['goodsResourceIds'][0] ] = {
-					currency: d[i]['primaryResourceId'],
-					type: d[i]['populationResourceId']
-				}
+            {
+                if (d[i]['startedAt'] !== undefined && d[i]['startedAt'] > LastStartedTime) {
+                    LastStartedPos = i;
+                    LastStartedTime = d[i]['startedAt'];
+                }
 			}
-		}
+        }
+
+        if (LastStartedPos !== undefined) {
+            let OldOutpostType = localStorage.getItem('OutpostType'),
+                NewOutpostType = d[LastStartedPos]['content'];
+
+            if (OldOutpostType === undefined || OldOutpostType !== NewOutpostType) {
+                localStorage.setItem('OutpostType', NewOutpostType);
+                localStorage.removeItem('OutpostBuildings'); //Typ des Außenpostens hat sich geändert => Gebäude löschen => führt dazu, dass Button erst nach dem Besuch des Außenpostens grün wird
+            }
+
+            Outposts.OutpostData = d[LastStartedPos];
+        }
 	},
 
 
@@ -327,51 +323,18 @@ let Outposts = {
 	 * @param d
 	 * @constructor
 	 */
-	CollectResources: (d)=>{
-
-		let ct = localStorage.getItem('OutpostConsumablesTypes'),
-			pr = {},
-            type;
-
-        if (ct === null) return;
-
-        ct = JSON.parse(ct);
-
-		// den eigentlichen Typen ermitteln
-		for(let name in Outposts.Currency)
-		{
-			if(ct.hasOwnProperty(name))
-			{
-				type = Outposts.Currency[name]['type'];
-				break;
-			}
-		}
-
-
-		// die Währung ermitteln
-		for(let name in Outposts.Currency)
-		{
-			if(Outposts.Currency.hasOwnProperty(name))
-			{
-				if(d[name] !== undefined && Outposts.Currency[name]['type'] === type)
-				{
-					localStorage.setItem('OutpostConsumablesCurrencyName', Outposts.Currency[name]['currency']);
-					localStorage.setItem('OutpostConsumablesCurrencyValue', d[Outposts.Currency[name]['currency']]);
-					localStorage.setItem('OutpostConsumablesCurrencyType', Outposts.Currency[name]['type']);
-
-					break;
-				}
-			}
-		}
-
+	CollectResources: ()=>{
+        let Goods = {},
+            type; //Todo: Laden
 
 		// die Güter ermittlen
-		for (let i = 0; i < Outposts.Order[type].length; i++)
-		{
-			pr[Outposts.Order[type][i]] = d[Outposts.Order[type][i]];
-		}
-
-		localStorage.setItem('OutpostConsumablesResources', JSON.stringify(pr));
+        for (let i = 0; i < Outposts.OutpostData['goodsResourceIds'].length; i++)
+        {
+            let GoodName = Outposts.OutpostData['goodsResourceIds'][i];
+            Goods[GoodName] = ResourceStock[GoodName];
+        }
+        Outposts.Resources = Goods
+        Outposts.Resources['diplomacy'] = ResourceStock['diplomacy'];
 
 		if( $('#outpostConsumables').is(':visible') )
 		{
@@ -386,16 +349,13 @@ let Outposts = {
 	 * @param d
 	 * @constructor
 	 */
-	SaveConsumables: (d)=>{
-		localStorage.setItem('OutpostConsumables', JSON.stringify(d));
+	SaveBuildings: (d)=>{
+        localStorage.setItem('OutpostBuildings', JSON.stringify(d));
 
 		Outposts.DiplomacyBuildings = d;
 
 		$('#outPW').remove();
 		$('#outPostBtn').removeClass('hud-btn-red');
-
-		let res = d[ d.length-1 ]['requirements']['resources'];
-		localStorage.setItem('OutpostConsumablesTypes', JSON.stringify(res));
 	},
 
 

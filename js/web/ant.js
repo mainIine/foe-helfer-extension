@@ -13,17 +13,19 @@
  */
 
 let ApiURL = 'https://api.foe-rechner.de/',
-	ActiveMap = 'main',
-	ExtPlayerID = 0,
-	ExtGuildID = 0,
-	ExtWorld = '',
-	BuildingNamesi18n = false,
-	CityMapData = null,
-	Conversations = [],
-	GoodsNames = [],
-	MainMenuLoaded = false;
-
-
+    ActiveMap = 'main',
+    ExtPlayerID = 0,
+    ExtGuildID = 0,
+    ExtWorld = '',
+    CurrentEra = null,
+    BuildingNamesi18n = false,
+    CityMapData = null,
+    Conversations = [],
+    GoodsNames = [],
+    GoodsList = [],
+    ResourceStock = [],
+    MainMenuLoaded = false;
+  
 document.addEventListener("DOMContentLoaded", function(){
 
 	// aktuelle Welt notieren
@@ -98,6 +100,10 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 			}
 
+            if (this._url.indexOf("metadata?id=research") > -1) {
+                Technologies.AllTechnologies = JSON.parse(this.responseText);
+                $('#Tech').removeClass('hud-btn-red');
+            }
 
 			// nur die jSON mit den Daten abfangen
 			if(this._url.indexOf("game/json?h=") > -1)
@@ -121,7 +127,9 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.SelfPlayer(StartupService['responseData']['user_data']);
 
 					// Alle Gebäude sichern
-					MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
+                    MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
+
+                    GoodsList = StartupService['responseData']['goodsList'];
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -271,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     }
 
                     //Fremdes LG
-                    else {
+                    if (UpdateEntity['responseData'][0]['player_id'] !== ExtPlayerID) {
                         LastKostenrechnerOpenTime = new Date().getTime()
 
                         $('#calcFPs').removeClass('hud-btn-red');
@@ -295,9 +303,9 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'addBoost';
 				});
 
-				if(TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')){
-					Tavern.TavernBoost(TavernBoostService['responseData']);
-				}
+				if(TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')) {
+                    Tavern.TavernBoost(TavernBoostService['responseData']);
+                }
 
 
 
@@ -330,14 +338,15 @@ document.addEventListener("DOMContentLoaded", function(){
 					let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
 
 					if(OutpostService !== undefined){
-						Outposts.SaveConsumables(OutpostService['responseData']);
+                        Outposts.SaveBuildings(OutpostService['responseData']);
 					}
 
-					// Außenposten-Güter des Spielers ermitteln
-					let OutpostRessources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
+					// Güter des Spielers ermitteln
+					let ResourceService = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
 
-					if(OutpostRessources !== undefined){
-						Outposts.CollectResources(OutpostRessources['responseData']['resources']);
+                    if (ResourceService !== undefined) {
+                        ResourceStock = ResourceService['responseData']['resources'];
+                        Outposts.CollectResources();
 					}
 				}
 
@@ -467,7 +476,18 @@ document.addEventListener("DOMContentLoaded", function(){
 				else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
 					Menu.BuildOverlayMenu();
 					MainMenuLoaded = true;
-				}
+                }
+
+                // --------------------------------------------------------------------------------------------------
+				// Technologien
+
+                let ResearchService = d.find(obj => {
+                    return obj['requestClass'] === 'ResearchService' && obj['requestMethod'] === 'getProgress';
+                });
+
+                if (ResearchService !== undefined) {
+                    Technologies.UnlockedTechologies = ResearchService['responseData'];
+                }
 			}
 		});
 
@@ -920,7 +940,8 @@ let MainParser = {
 	 */
 	StartUp: (d)=> {
 		ExtGuildID = d['clan_id'];
-		ExtWorld = window.location.hostname.split('.')[0];
+        ExtWorld = window.location.hostname.split('.')[0];
+        CurrentEra = d['era']['era'];
 
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
