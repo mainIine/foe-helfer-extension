@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       24.10.19, 13:25 Uhr
+ * zu letzt bearbeitet:       17.11.19, 13:48 Uhr
  *
  * Copyright © 2019
  *
@@ -19,7 +19,6 @@
  * 		{
  * 			OutpostData: ,
  * 			DiplymacyBuildings: ,
- * 			Currency: ,
  * 			Resources ,
  * 			GetAll: Outposts.GetAll,
  *          BuildBoxContent: Outposts.BuildBoxContent,
@@ -103,7 +102,7 @@ let Outposts = {
 		// Array umdrehen
         UnlockedDiplomacyBuildings = UnlockedDiplomacyBuildings.reverse();
 
-        t.push('<p class="text-right"><strong>' + GoodsNames[Outposts.OutpostData['primaryResourceId']] + ': ' + HTML.Format(Outposts.Currency) + '</strong></p>');
+        t.push('<p class="text-right"><strong>' + GoodsNames[Outposts.OutpostData['primaryResourceId']] + ': ' + HTML.Format(ResourceStock[Outposts.OutpostData['primaryResourceId']]) + '</strong></p>');
 
 		t.push('<table class="foe-table">');
 		t.push('<thead>');
@@ -226,9 +225,7 @@ let Outposts = {
 				ulnc = check;
 			}
 		}
-
-
-
+               
 		t.push('<tr class="total-row">');
 
 		t.push('<td>' + i18n['Boxes']['Outpost']['DescRequired'] + '</td><td></td>');
@@ -326,21 +323,18 @@ let Outposts = {
 	 * @param d
 	 * @constructor
 	 */
-	CollectResources: (d)=>{
+	CollectResources: ()=>{
         let Goods = {},
             type; //Todo: Laden
-                
-		// die Währung ermitteln
-        Outposts.Currency = d[Outposts.OutpostData['primaryResourceId']];
-
+     
 		// die Güter ermittlen
         for (let i = 0; i < Outposts.OutpostData['goodsResourceIds'].length; i++)
         {
             let GoodName = Outposts.OutpostData['goodsResourceIds'][i];
-            Goods[GoodName] = d[GoodName];
+            Goods[GoodName] = ResourceStock[GoodName];
         }
         Outposts.Resources = Goods
-        Outposts.Resources['diplomacy'] = d['diplomacy'];
+        Outposts.Resources['diplomacy'] = ResourceStock['diplomacy'];
 
 		if( $('#outpostConsumables').is(':visible') )
 		{
@@ -362,8 +356,6 @@ let Outposts = {
 
 		$('#outPW').remove();
 		$('#outPostBtn').removeClass('hud-btn-red');
-
-		let res = d[ d.length-1 ]['requirements']['resources'];
 	},
 
 

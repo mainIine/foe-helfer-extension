@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       26.09.19, 18:13 Uhr
+ * zu letzt bearbeitet:       16.11.19, 17:44 Uhr
  *
  * Copyright © 2019
  *
@@ -27,8 +27,22 @@ chrome.runtime.onInstalled.addListener(() => {
 	});
 
 	if(!isDevMode()){
+
+		// Sprache ermitteln
+		let lng = chrome.i18n.getUILanguage();
+
+		// is ein "-" drin? ==> en-en, en-us, en-gb usw...
+		if(lng.indexOf('-') > -1){
+			lng = lng.split('-')[0];
+		}
+
+		// Fallback auf "en"
+		if(lng !== 'de' || lng !== 'en'){
+			lng = 'en';
+		}
+
 		chrome.tabs.create({
-			url: 'https://foe-rechner.de/extension/chrome?v=' + version + '&lang=' + chrome.i18n.getUILanguage()
+			url: 'https://foe-rechner.de/extension/chrome?v=' + version + '&lang=' + lng
 		});
 	}
 });

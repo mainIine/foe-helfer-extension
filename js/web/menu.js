@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
+ * zu letzt bearbeitet:       17.11.19, 13:48 Uhr
  *
  * Copyright © 2019
  *
@@ -67,10 +67,17 @@ let Menu = {
 		 */
 		hudSlider.append( Menu.ownFP_Btn() );
 
-
+        /**
+        * Außenposten
+        */
 		if(Settings.GetSetting('ShowOutpost')){
 			hudSlider.append( Menu.outP_Btn() );
-		}
+        }
+
+        /**
+        * Technologien
+        */
+        hudSlider.append(Menu.Technologies_Btn());
 
 		/**
 		 * Forum
@@ -381,7 +388,7 @@ let Menu = {
 
 
 	/**
-	 * Eigenanteilsrechner Button
+	 * Chat Button
 	 *
 	 * @returns {*|jQuery}
 	 */
@@ -402,8 +409,32 @@ let Menu = {
 
 
 		return btn;
-	},
+    },
 
+
+    /**
+    * Technologien
+    *
+    * @constructor
+    */
+    Technologies_Btn: () => {
+        let btn_TechBG = $('<div />').attr('id', 'Tech').addClass('hud-btn hud-btn-red');
+
+        // Tooltip einbinden
+        Menu.toolTippBox('Title', '<em id="Tech-closed" class="tooltip-error">' + 'Warning' + '<br></em>' + 'Desc', 'Tech');
+
+        let btn_Tech = $('<span />');
+
+        btn_Tech.on('click', function () {
+            if (Technologies.AllTechnologies !== null) {
+                Technologies.Show();
+            }
+        });
+
+        btn_TechBG.append(btn_Tech);
+
+        return btn_TechBG;
+    },
 
 	/**
 	 * Einstellungen

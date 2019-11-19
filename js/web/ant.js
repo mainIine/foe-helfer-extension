@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       11.11.19, 19:11 Uhr
+ * zu letzt bearbeitet:       17.11.19, 13:48 Uhr
  *
  * Copyright © 2019
  *
@@ -13,17 +13,19 @@
  */
 
 let ApiURL = 'https://api.foe-rechner.de/',
-	ActiveMap = 'main',
-	ExtPlayerID = 0,
-	ExtGuildID = 0,
-	ExtWorld = '',
-	BuildingNamesi18n = false,
-	CityMapData = null,
-	Conversations = [],
-	GoodsNames = [],
-	MainMenuLoaded = false;
-
-
+    ActiveMap = 'main',
+    ExtPlayerID = 0,
+    ExtGuildID = 0,
+    ExtWorld = '',
+    CurrentEra = null,
+    BuildingNamesi18n = false,
+    CityMapData = null,
+    Conversations = [],
+    GoodsNames = [],
+    GoodsList = [],
+    ResourceStock = [],
+    MainMenuLoaded = false;
+  
 document.addEventListener("DOMContentLoaded", function(){
 
 	// aktuelle Welt notieren
@@ -98,6 +100,10 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 			}
 
+            if (this._url.indexOf("metadata?id=research") > -1) {
+                Technologies.AllTechnologies = JSON.parse(this.responseText);
+                $('#Tech').removeClass('hud-btn-red');
+            }
 
 			// nur die jSON mit den Daten abfangen
 			if(this._url.indexOf("game/json?h=") > -1)
@@ -121,7 +127,9 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.SelfPlayer(StartupService['responseData']['user_data']);
 
 					// Alle Gebäude sichern
-					MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
+                    MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
+
+                    GoodsList = StartupService['responseData']['goodsList'];
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -380,11 +388,12 @@ document.addEventListener("DOMContentLoaded", function(){
                         Outposts.SaveBuildings(OutpostService['responseData']);
 					}
 
-					// Außenposten-Güter des Spielers ermitteln
-					let OutpostResources = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
+					// Güter des Spielers ermitteln
+					let ResourceService = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
 
-					if(OutpostResources !== undefined){
-						Outposts.CollectResources(OutpostResources['responseData']['resources']);
+                    if (ResourceService !== undefined) {
+                        ResourceStock = ResourceService['responseData']['resources'];
+                        Outposts.CollectResources();
 					}
 				}
 
@@ -442,7 +451,18 @@ document.addEventListener("DOMContentLoaded", function(){
 				else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
 					Menu.BuildOverlayMenu();
 					MainMenuLoaded = true;
-				}
+                }
+
+                // --------------------------------------------------------------------------------------------------
+				// Technologien
+
+                let ResearchService = d.find(obj => {
+                    return obj['requestClass'] === 'ResearchService' && obj['requestMethod'] === 'getProgress';
+                });
+
+                if (ResearchService !== undefined) {
+                    Technologies.UnlockedTechologies = ResearchService['responseData'];
+                }
 			}
 		});
 
@@ -903,7 +923,8 @@ let MainParser = {
 	 */
 	StartUp: (d)=> {
 		ExtGuildID = d['clan_id'];
-		ExtWorld = window.location.hostname.split('.')[0];
+        ExtWorld = window.location.hostname.split('.')[0];
+        CurrentEra = d['era']['era'];
 
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
