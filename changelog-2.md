@@ -1,5 +1,6 @@
 ##Changelog - Chrome Extension
 
+
 #####v2.3.12.3
 **Bugfix**
 - Extension:
@@ -66,10 +67,9 @@
 #####v2.3.11.1 
 
 **Update**
-- Info box:
     - Head overworked
     
-** ** BugFix
+**BugFix**
 - Extension:
     - Translations completed (English, French)
 

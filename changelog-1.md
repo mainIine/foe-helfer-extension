@@ -26,7 +26,6 @@
 - Produkt Übersicht:
     - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion (insbesondere SdWs)
     - Boost zu Vorräten hinzugefügt
-
 ---
 
 #####v2.3.12
