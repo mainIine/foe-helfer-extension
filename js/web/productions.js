@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.11.19, 13:48 Uhr
+ * zu letzt bearbeitet:       20.11.19, 17:39 Uhr
  *
  * Copyright © 2019
  *
@@ -292,7 +292,7 @@ let Productions = {
 
 		let h = [];
 
-		h.push('<div class="tabs">');
+		h.push('<div class="production-tabs tabs">');
 
 
 		// einzelne Güterarten durchsteppen
@@ -523,15 +523,15 @@ let Productions = {
 
 		h.push('</div>');
 
-		$('#Productions').find('#ProductionsBody').html( h.join('') );
+		$('#Productions').find('#ProductionsBody').html( h.join('') ).promise().done(function(){
 
-		// Zusatzfunktionen für die Tabelle
-		setTimeout(()=>{
-			$('.tabs').tabslet();
+			// Zusatzfunktionen für die Tabelle
+			$('.production-tabs').tabslet({active: 1});
 			$('.sortable-table').tableSorter();
 			Productions.SwitchFunction();
 			Productions.SortingAllTab();
-		}, 500)
+
+		});
 	},
 
 

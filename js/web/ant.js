@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.11.19, 10:29 Uhr
+ * zu letzt bearbeitet:       20.11.19, 22:33 Uhr
  *
  * Copyright © 2019
  *
@@ -57,53 +57,71 @@ document.addEventListener("DOMContentLoaded", function(){
 
 		this.addEventListener('load', function()
 		{
+			// console.log('this._url: ', this._url);
+
+			// *.mo Datei parsen
+			if (this._url.indexOf("client_lang-") > -1)
+			{
+				MainParser.loadFile(this._url, (r)=>{
+					MainParser.i18n = jedGettextParser.mo.parse(r);
+					console.log('MainParser.i18n: ', MainParser.i18n);
+				});
+			}
+
 
 			// die Gebäudenamen übernehmen
-			if(this._url.indexOf("metadata?id=city_entities") > -1 && BuildingNamesi18n === false)
+			if(this._url.indexOf("metadata?id=city_entities") > -1)
 			{
 				BuildingNamesi18n = [];
 
-				MainParser.loadJSON(this._url, function(r)
+				let j = JSON.parse(this.responseText);
+
+				sessionStorage.setItem('BuildingsData', JSON.stringify(j));
+
+				for (let i in j)
 				{
-					let j = JSON.parse(r);
-
-					sessionStorage.setItem('BuildingsData', JSON.stringify(j));
-
-					for (let i in j)
+					if (j.hasOwnProperty(i))
 					{
-						if (j.hasOwnProperty(i))
+						BuildingNamesi18n[j[i]['asset_id']] = {
+							name: j[i]['name'],
+							width: j[i]['width'],
+							height: j[i]['length'],
+							type: j[i]['type'],
+						};
+
+						if(j[i]['abilities'] !== undefined)
 						{
-							BuildingNamesi18n[j[i]['asset_id']] = {
-								name: j[i]['name'],
-								width: j[i]['width'],
-								height: j[i]['length'],
-								type: j[i]['type'],
-							};
-
-							if(j[i]['abilities'] !== undefined)
+							for(let x in j[i]['abilities'])
 							{
-								for(let x in j[i]['abilities'])
+								if (j[i]['abilities'].hasOwnProperty(x))
 								{
-									if (j[i]['abilities'].hasOwnProperty(x))
-									{
-										let ar = j[i]['abilities'][x];
+									let ar = j[i]['abilities'][x];
 
-										if(ar['additionalResources'] !== undefined && ar['additionalResources']['AllAge'] !== undefined && ar['additionalResources']['AllAge']['resources'] !== undefined)
-										{
-											BuildingNamesi18n[j[i]['asset_id']]['additionalResources'] = ar['additionalResources']['AllAge']['resources'];
-										}
+									if(ar['additionalResources'] !== undefined && ar['additionalResources']['AllAge'] !== undefined && ar['additionalResources']['AllAge']['resources'] !== undefined)
+									{
+										BuildingNamesi18n[j[i]['asset_id']]['additionalResources'] = ar['additionalResources']['AllAge']['resources'];
 									}
 								}
 							}
 						}
 					}
-				});
+				}
+
+				MainParser.Buildings = BuildingNamesi18n;
 			}
 
-            if (this._url.indexOf("metadata?id=research") > -1) {
+			// Technologien
+            if (this._url.indexOf("metadata?id=research") > -1)
+            {
                 Technologies.AllTechnologies = JSON.parse(this.responseText);
                 $('#Tech').removeClass('hud-btn-red');
             }
+
+            // Armee Typen
+			if (this._url.indexOf("metadata?id=unit_types") > -1)
+			{
+				Unit.Types = JSON.parse(this.responseText);
+			}
 
 			// nur die jSON mit den Daten abfangen
 			if(this._url.indexOf("game/json?h=") > -1)
@@ -129,7 +147,13 @@ document.addEventListener("DOMContentLoaded", function(){
 					// Alle Gebäude sichern
                     MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
 
+                    // Güterliste
                     GoodsList = StartupService['responseData']['goodsList'];
+
+                    // Armeen
+					Unit.Attack = StartupService['responseData']['armies'][0]['units'];
+					Unit.Defense = StartupService['responseData']['armies'][1]['units'];
+					Unit.Pool = StartupService['responseData']['armies'][2]['units'];
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -186,6 +210,24 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 
 
+				// --------------------------------------------------------------------------------------------------
+				// Armee Update
+				let UnitService = d.find(obj => {
+					return obj['requestClass'] === 'ArmyUnitManagementService' && obj['requestMethod'] === 'getArmyInfo';
+				});
+
+				if(UnitService !== undefined){
+					Unit.Cache = UnitService['responseData'];
+
+					if( $('#unitBtn').hasClass('hud-btn-red') ){
+						$('#unitBtn').removeClass('hud-btn-red');
+						$('#unit-closed').remove();
+					}
+
+					if($('#units').length > 0){
+						Unit.BuildBox();
+					}
+				}
 
 				// --------------------------------------------------------------------------------------------------
 				// Noch Verfügbare FP aktualisieren
@@ -498,32 +540,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
 /**
  *
- * @type {
- * 	{
- * 		SelfPlayer: MainParser.SelfPlayer,
- * 		showInfo: MainParser.showInfo,
- * 		GuildExpedition: MainParser.GuildExpedition,
- * 		FriendsList: MainParser.FriendsList,
- * 		GreatBuildings: MainParser.GreatBuildings,
- * 		SaveBuildings: MainParser.SaveBuildings,
- * 		getAddedDateTime: (function(*=, *=): number),
- * 		getCurrentDateTime: (function(): number),
- * 		checkNextUpdate: (function(*=): (*|boolean|*)),
- * 		OwnLG: MainParser.OwnLG,
- * 		loadJSON: MainParser.loadJSON,
- * 		SocialbarList: MainParser.SocialbarList,
- * 		Championship: MainParser.Championship,
- * 		send2Server: MainParser.send2Server,
- * 		OtherPlayersMotivation: MainParser.OtherPlayersMotivation,
- * 		compareTime: MainParser.compareTime,
- * 		StartUp: MainParser.StartUp,
- * 		OtherPlayersLGs: MainParser.OtherPlayersLGs
- * 	}
- *}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): (*|string|boolean)), Language: string, ParseMoFile: MainParser.ParseMoFile, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, setGoodsNames: MainParser.setGoodsNames, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
 	Language: 'en',
+	Buildings: null,
+	i18n: null,
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -551,6 +574,26 @@ let MainParser = {
 	setLanguage: ()=>{
 		// Translation
 		MainParser.Language = GuiLng;
+	},
+
+
+	ParseMoFile: ()=> {
+
+		MainParser.loadFile(MainParser.MoFile, function(r){
+			let dd = r;
+
+			let aBuf = new ArrayBuffer(dd.length);
+			let view = new Uint8Array(aBuf);
+
+			for (let i = 0; i < dd.length; ++i) {
+				view[i] = dd[i];
+			}
+
+			let data = jedGettextParser.mo.parse(aBuf);
+
+			console.log('data: ', data);
+			console.log('view: ', view);
+		});
 	},
 
 
@@ -880,7 +923,15 @@ let MainParser = {
 				data: JSON.stringify(data)
 			});
 
-			MainParser.showInfo(d['other_player']['name'] + ' geupdated', 'Holla');
+			MainParser.showInfo(
+				d['other_player']['name'] + ' geupdated',
+				HTML.i18nReplacer(
+					i18n['API']['LGGildMember'],
+					{
+						'player' : d['other_player']['name']
+					}
+				)
+			);
 		}
 	},
 
@@ -1309,12 +1360,32 @@ let MainParser = {
 		xobj.overrideMimeType("application/json");
 		xobj.open('GET', url, true);
 		xobj.onreadystatechange = function () {
-			if (xobj.readyState == 4 && xobj.status == "200") {
+			if (xobj.readyState === 4 && xobj.status === 200) {
 				callback(xobj.responseText);
 			} else {
 				callback(false);
 			}
 		};
 		xobj.send(null);
-	}
+	},
+
+	loadFile: (url, callback)=> {
+
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET', url, true);
+		xhr.responseType = 'blob';
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				let reader = new FileReader();
+				reader.readAsArrayBuffer(xhr.response);
+				reader.onload =  function(e){
+					callback(e.target.result);
+				};
+			} else {
+				callback(false);
+			}
+		};
+		xhr.send();
+
+	},
 };

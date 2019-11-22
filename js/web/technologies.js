@@ -4,10 +4,10 @@
  * Dateiname:                 technologies.js
  * Projekt:                   foe
  *
- * erstellt von:              Gindi4711
- * zu letzt bearbeitet:       18.11.19, 01:59 Uhr
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zu letzt bearbeitet:       19.11.19, 14:38 Uhr
  *
- * Copyright © 2019
+ * Copyright Â© 2019
  *
  * **************************************************************************************
  */
