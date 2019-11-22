@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       17.11.19, 13:48 Uhr
+ * zu letzt bearbeitet:       20.11.19, 17:21 Uhr
  *
  * Copyright © 2019
  *
@@ -67,6 +67,7 @@ let Menu = {
 		 */
 		hudSlider.append( Menu.ownFP_Btn() );
 
+
         /**
         * Außenposten
         */
@@ -79,10 +80,18 @@ let Menu = {
         */
         hudSlider.append(Menu.Technologies_Btn());
 
+
+		/**
+		 * Armeen
+		 */
+		hudSlider.append(Menu.Unit_Btn())
+
+
 		/**
 		 * Forum
 		 */
 		hudSlider.append( Menu.Forum_Btn() );
+
 
 		/**
 		 * Live-Chat
@@ -94,6 +103,7 @@ let Menu = {
 		 * FP - Berechnen
 		 */
 		hudSlider.append( Menu.getFP_Btn() );
+
 
 		/**
 		 * InfoBox
@@ -120,7 +130,7 @@ let Menu = {
 
 
 		// hudSlider.append( Menu.BH_Btn() );
-		// wie viele Elemente und was ist die gesamt Höhe
+		// wie viele Elemente und wieviele Abschnitte sind es
 		setTimeout(()=>{
 			Menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / 4);
 		}, 100);
@@ -412,12 +422,13 @@ let Menu = {
     },
 
 
-    /**
-    * Technologien
-    *
-    * @constructor
-    */
-    Technologies_Btn: () => {
+	/**
+	 * Technologien
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	Technologies_Btn: ()=> {
         let btn_TechBG = $('<div />').attr('id', 'Tech').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
@@ -435,6 +446,32 @@ let Menu = {
 
         return btn_TechBG;
     },
+
+
+	/**
+	 * Armeen
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	Unit_Btn: ()=> {
+		let btn_UnitBG = $('<div />').attr('id', 'unitBtn').addClass('hud-btn hud-btn-red');
+
+		// Tooltip einbinden
+		Menu.toolTippBox('Armeen', '<em id="unit-closed" class="tooltip-error">' + 'Öffne erst 1x deine "Armee-Organisiation"' + '<br></em>' + 'Alle deine Armeen im Überblick', 'unitBtn');
+
+		let btn_Unit = $('<span />');
+
+		btn_Unit.on('click', function () {
+			if(Unit.Cache !== null){
+				Unit.Show();
+			}
+		});
+
+		btn_UnitBG.append(btn_Unit);
+
+		return btn_UnitBG;
+	},
+
 
 	/**
 	 * Einstellungen

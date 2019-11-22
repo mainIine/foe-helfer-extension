@@ -1,5 +1,12 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.12.4
+**Update**
+- Product overview:
+    - Shows which buildings would also produce FPs => Possible high-level production (especially SdWs)
+    - Boost added to supplies
+
+---
 
 #####v2.3.12.3
 **Bugfix**

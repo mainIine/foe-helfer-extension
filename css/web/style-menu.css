@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.11.19, 14:15 Uhr
+ * zu letzt bearbeitet:       19.11.19, 17:26 Uhr
  *
  * Copyright © 2019
  *
@@ -337,7 +337,47 @@ p {
 	background-image: url('../images/info.png');
 }
 
+#unitBtn span {
+	background-image: url('../images/units.png');
+}
 
+/* Tabs */
+
+.window-body .tabs ul {
+	margin: 5px 0 0 0;
+	padding: 0;
+	border-bottom: 2px solid rgb(101, 61, 20);
+}
+
+.window-body .tabs ul li {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	background: transparent url("https://foede.innogamescdn.com/assets/shared/gui/itembar/itembar_0.png") -167px -731px no-repeat;
+	width: 71px;
+	height: 31px;
+}
+
+.window-body .tabs ul li:hover {
+	background-position: -167px -765px;
+}
+
+.window-body .tabs ul li.active {
+	background-position: -167px -799px;
+}
+
+.window-body .tabs ul li a {
+	text-decoration: none;
+	display: block;
+	width: 26px;
+	height: 26px;
+	position: relative;
+	left: 35px;
+	top: 4px;
+}
+
+
+/* Tooltip */
 .toolTipWrapper {
 	text-align: left;
 	display: none;

@@ -5,7 +5,7 @@
  * Projekt:                   foe
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.11.19, 10:33 Uhr
+ * zu letzt bearbeitet:       20.11.19, 22:37 Uhr
  *
  * Copyright © 2019
  *
@@ -234,6 +234,7 @@ let i18n = {
 		"UpdateSuccess" : "Update performed",
 		"GEXPlayer" : "GEX placements of members have been updated",
 		"GEXChampionship" : "The GEX guild placement has been updated",
-		"LGInvest" : "Your LG investments have been transferred"
+		"LGInvest" : "Your LG investments have been transferred",
+		"LGGildMember" : "__player__'s Legendary buildings have been submitted"
 	}
 };
