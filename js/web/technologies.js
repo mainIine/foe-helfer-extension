@@ -130,6 +130,7 @@ let Technologies = {
             if (RequiredResources[ResourceName] !== undefined) {
                 let Required = RequiredResources[ResourceName];
                 let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
+                if (Stock === undefined) Stock = 0;
 
                 h.push('<tr>');
                 h.push('<td>' + GoodsNames[ResourceName] + '</td>');
