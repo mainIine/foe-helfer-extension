@@ -2,16 +2,13 @@
 
 #####v2.3.12.4
 **Update**
-- Produkt Übersicht:
-    - Zeigt an welche Gebäude auch FPs produzieren würden => Mögliche Höhstproduktion (insbesondere SdWs)
-    - Boost zu Vorräten hinzugefügt
 
 **BugFix**
 - Außenposten:
 	- Unvollständige Güteranzeige beim ersten Start der Extension behoben bzw. Wechsel des Außenpostens behoben [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
 
 - Erntehelfer:
-    - Es wurden nicht alle Gebäude angzeigt [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
+    - Es wurden nicht alle Gebäude angezeigt [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
 
 ---
 
