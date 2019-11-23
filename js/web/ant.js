@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function(){
 			}
 
 			// Technologien
-            if (this._url.indexOf("metadata?id=research") > -1)
+            if (this._url.indexOf("metadata?id=research-") > -1)
             {
                 Technologies.AllTechnologies = JSON.parse(this.responseText);
                 $('#Tech').removeClass('hud-btn-red');
