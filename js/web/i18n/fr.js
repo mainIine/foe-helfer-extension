@@ -110,7 +110,15 @@ let i18n = {
 			"DescRequired" : "Requis",
 			"DescInStock" : "Disponible",
 			"DescStillMissing" : "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-		},
+        },
+
+        "Technologies": {
+            "Title": "Les coûts de la recherche pour l'ère actuelle", //Todo: Translate
+            "Resource": "Ressource", //Todo: Translate
+            "DescRequired": "Requis",
+            "DescInStock": "Disponible",
+            "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+        },
 
 		"Settings" : {
 			"Title" : "Paramètres",
@@ -149,7 +157,12 @@ let i18n = {
 			"Title" : "Calculatrice de up à plusieurs",
 			"Desc" : "Crée un plan de pose de PFs, calcul les coûts et copies les valeurs",
 			"Warning": "Désactivé: Ouvre d'abord un de tes GM !"
-		},
+        },
+        "Technologies": {
+            "Title": "Technologies", //Todo: Translate
+            "Desc": "Calculer le coût de la recherche", //Todo: Translate
+            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
+        },
 		"Settings" : {
 			"Title" : "Paramètres",
 			"Desc" : "Ici il y a quelques éléments à configurer"

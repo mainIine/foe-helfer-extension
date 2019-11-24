@@ -110,7 +110,15 @@ let i18n = {
 			"DescRequired" : "Benötigt",
 			"DescInStock" : "Vorhanden",
 			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-		},
+        },
+
+        "Technologies": {
+            "Title": "Forschungskosten für aktuelles Zeitalter",
+            "Resource": "Ressource",
+            "DescRequired": "Benötigt",
+            "DescInStock": "Vorhanden",
+            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
 
 		"Settings" : {
 			"Title" : "Einstellungen",
@@ -149,7 +157,12 @@ let i18n = {
 			"Title" : "Eigenanteilsrechner",
 			"Desc" : "Zahlplan erstellen, externe Plätze berechnen und Werte kopieren",
 			"Warning": "Deaktiviert: Öffne zuerst eines deiner Legendären Gebäude!"
-		},
+        },
+        "Technologies": {
+            "Title": "Technologien",
+            "Desc": "Kosten für Forschung berechnen",
+            "Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!"
+        },
 		"Settings" : {
 			"Title" : "Einstellungen",
 			"Desc" : "Hier stellst du ein paar Kleinigkeiten ein"

@@ -108,10 +108,18 @@ let i18n = {
 			"TitleShort" : "Goods overview - ",
 			"TitleBuildings" : "Building",
 			"TitleFree" : "Free",
-			"DescRequired" : "Requires",
+			"DescRequired" : "Required",
 			"DescInStock" : "Available",
 			"DescStillMissing" : "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
-		},
+        },
+
+        "Technologies": {
+            "Title": "Research cost for current era",
+            "Resource": "Resource",
+            "DescRequired": "Required",
+            "DescInStock": "Available",
+            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+        },
 
 		"Settings" : {
 			"Title" : "Settings",
@@ -150,7 +158,12 @@ let i18n = {
 			"Title" : "Co-payment calculator",
 			"Desc" : "Create payment plan, calculate external seats and copy values",
 			"Warning": "Disabled: Open one of your Legendary Buildings first!"
-		},
+        },
+        "Technologies": {
+            "Title": "Technologies",
+            "Desc": "Calculate cost for research",
+            "Warning": "Disabled: Open the research menu first!"
+        },
 		"Settings" : {
 			"Title" : "Settings",
 			"Desc" : "Here are some little settings"
