@@ -432,7 +432,7 @@ let Menu = {
         let btn_TechBG = $('<div />').attr('id', 'Tech').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
-        Menu.toolTippBox('Title', '<em id="Tech-closed" class="tooltip-error">' + 'Warning' + '<br></em>' + 'Desc', 'Tech');
+        Menu.toolTippBox(i18n['Menu']['Technologies']['Title'], '<em id="Tech-closed" class="tooltip-error">' + i18n['Menu']['Technologies']['Warning'] + '<br></em>' + i18n['Menu']['Technologies']['Desc'], 'Tech');
 
         let btn_Tech = $('<span />');
 

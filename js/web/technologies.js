@@ -41,7 +41,7 @@ let Technologies = {
        if ($('#technologies').length === 0) {
             let args = {
                 'id': 'technologies',
-                'title': 'Title',
+                'title': i18n['Boxes']['Technologies']['Title'],
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true
@@ -104,10 +104,10 @@ let Technologies = {
 
         h.push('<thead>' +
             '<tr>' +
-            '<th>Ressource</th>' +
-            '<th>Benoetigt</th>' +
-            '<th>Vorhanden</th>' +
-            '<th>Ueberschuss/Fehlt</th>' +
+            '<th>' + i18n['Boxes']['Technologies']['Resource'] + '</th>' +
+            '<th>' + i18n['Boxes']['Technologies']['DescRequired'] + '</th>' +
+            '<th>' + i18n['Boxes']['Technologies']['DescInStock'] + '</th>' +
+            '<th>' + i18n['Boxes']['Technologies']['DescStillMissing'] + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -131,12 +131,13 @@ let Technologies = {
                 let Required = RequiredResources[ResourceName];
                 let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
                 if (Stock === undefined) Stock = 0;
+                let Diff = Stock - Required;
 
                 h.push('<tr>');
                 h.push('<td>' + GoodsNames[ResourceName] + '</td>');
                 h.push('<td>' + HTML.Format(Required) + '</td>');
                 h.push('<td>' + HTML.Format(Stock) + '</td>');
-                h.push('<td>' + HTML.Format(Stock - Required) + '</td>');
+                h.push('<td class="text-center text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
                 h.push('</tr>');
             }
         }

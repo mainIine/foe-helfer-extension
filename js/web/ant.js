@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function(){
             {
                 Technologies.AllTechnologies = JSON.parse(this.responseText);
                 $('#Tech').removeClass('hud-btn-red');
+                $('#Tech-closed').remove();
             }
 
             // Armee Typen
