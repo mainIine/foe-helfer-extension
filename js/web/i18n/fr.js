@@ -98,7 +98,7 @@ let i18n = {
 
 		"Neighbors" : {
 			"Title" : "Production de ",
-			"ReadyProductions" : "Productions terminées",
+			"ReadyProductions" : "Productions terminée*s",
 			"OngoingProductions" : "Productions en cours"
 		},
 
@@ -113,11 +113,32 @@ let i18n = {
         },
 
         "Technologies": {
-            "Title": "Les coûts de la recherche pour l'ère actuelle", //Todo: Translate
+            "Title": "Les coûts de la recherche pour", //Todo: Translate
             "Resource": "Ressource", //Todo: Translate
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+            "Eras": {
+                1: "Âge de Pierre",
+                2: "Âge du Bronze",
+                3: "Âge du Fer",
+                4: "Haut Moyen Âge",
+                5: "Moyen Âge Classique",
+                6: "Renaissance",
+                7: "Âge Colonial",
+                8: "Âge Industriel",
+                9: "Ère Progressiste",
+                10: "Ère Moderne",
+                11: "Ère Postmoderne",
+                12: "Ère Contemporaine",
+                13: "Ère de Demain",
+                14: "Ère du Futur",
+                15: "Futur Arctique",
+                16: "Futur Océanique",
+                17: "Futur Virtuel",
+                18: "Ère Spatiale - Mars",
+                19: "Ère Spatiale - Ceres"
+            }
         },
 
 		"Settings" : {

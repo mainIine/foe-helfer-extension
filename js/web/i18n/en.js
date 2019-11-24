@@ -114,11 +114,32 @@ let i18n = {
         },
 
         "Technologies": {
-            "Title": "Research cost for current era",
+            "Title": "Research cost for",
             "Resource": "Resource",
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+            "Eras": {
+                1: "Stone Age",
+                2: "Bronze Age",
+                3: "Iron Age",
+                4: "Early Middle Age",
+                5: "High Middle Age",
+                6: "Late Middle Age",
+                7: "Colonial Age",
+                8: "Industrial Age",
+                9: "Progressive Era",
+                10: "Modern Era",
+                11: "PostModern Era",
+                12: "Contemporary Era",
+                13: "Tomorrow Era",
+                14: "Future Era",
+                15: "Arctic Future",
+                16: "Oceanic Future",
+                17: "Virtual Future",
+                18: "Space Age Mars",
+                19: "Space Age Ceres"
+            }
         },
 
 		"Settings" : {
