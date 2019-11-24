@@ -93,7 +93,7 @@ let Unit = {
 			let mb =cache['bonuses'].find(o => (o['type'] === 'military_boost')),
 				at =cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
 				ab =cache['bonuses'].find(o => (o['type'] === 'attack_boost')),
-				a = type['baseDamage'] + mb['value'] + at['value'] + ab['value'];
+                a = type['baseDamage'] + (mb !== undefined ? mb['value'] : 0) + (at !== undefined ? at['value'] : 0) + (ab !== undefined ? ab['value'] : 0);
 
 			attack.push('<td>' + a + '</td>');
 
