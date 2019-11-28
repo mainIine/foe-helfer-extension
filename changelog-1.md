@@ -2,6 +2,8 @@
 
 #####v2.3.12.4
 **Update**
+ Neues Tool:
+-Forschungen: Zeigt die gesamten Güter/FP/Vorratskosten bis zum Ende des aktuellen oder nächsten Zeitalters an
 
 **BugFix**
 - Außenposten:
