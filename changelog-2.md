@@ -1,8 +1,15 @@
 ##Changelog - Chrome Extension
 
 #####v2.3.12.4
+New Tool:
+-Research: Shows the total Research costs(FP/gold/supply/goods) until the end of the current era
 
+**BugFix**
+- Outpost:
+	- Incomplete good display when starting the extension for the first time of switching between outpost types solved [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
 
+- Plunder helper:
+    - Not all buildings have been shown [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
 ---
 
 #####v2.3.12.3
