@@ -344,9 +344,13 @@ let Menu = {
 		let btn_outPBG = $('<div />').attr('id', 'outPostBtn').addClass('hud-btn'),
 			desc = i18n['Menu']['OutP']['Desc'];
 
+        if (Outposts.OutpostData === null) {
+            btn_outPBG.addClass('hud-btn-red');
+            desc = i18n['Menu']['OutP']['DescWarningOutpostData'];
+        }
 		if(localStorage.getItem('OutpostBuildings') === null){
 			btn_outPBG.addClass('hud-btn-red');
-			desc = i18n['Menu']['OutP']['DescWarning'];
+			desc = i18n['Menu']['OutP']['DescWarningBuildings'];
 		}
 
 		// Tooltip einbinden

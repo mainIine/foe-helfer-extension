@@ -207,8 +207,9 @@ let i18n = {
 		},
 		"OutP" : {
 			"Title" : "Outpost",
-			"Desc" : "Overview of the required resources",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Disabled: check out the outpost first!<br></em>Overview of the required resources"
+            "Desc": "Overview of the required resources",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start an outpost and reload the game (F5)",
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Disabled: check out the outpost first!<br></em>Overview of the required resources"
 		},
 		"Info" : {
 			"Title" : "Info Box",
