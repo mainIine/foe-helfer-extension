@@ -206,8 +206,9 @@ let i18n = {
 		},
 		"OutP" : {
 			"Title" : "Außenposten",
-			"Desc" : "Übersicht über die benötigten Ressourcen",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen"
+            "Desc": "Übersicht über die benötigten Ressourcen",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiviert: Starte zuerst einen Außenposten und lade das Spiel neu (F5)",
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen"
 		},
 		"Info" : {
 			"Title" : "Info Box",

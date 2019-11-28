@@ -15,8 +15,8 @@
 let Technologies = {
     AllTechnologies: null,
     UnlockedTechologies: false,
-    SelectedEraID: undefined,
-    
+    SelectedEraID: undefined, 
+       
     Eras: {
         StoneAge: 1,
         BronzeAge: 2,
@@ -35,10 +35,9 @@ let Technologies = {
         ArcticFuture: 15,
         OceanicFuture: 16,
         VirtualFuture: 17,
-        SpaceAgeMars: 18,
-        SpageAgeCeres: 19
+        SpaceAgeMars: 18
     },
-
+      
     Show: () => {
        if ($('#technologies').length === 0) {
             let args = {

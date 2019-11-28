@@ -206,8 +206,9 @@ let i18n = {
 		},
 		"OutP" : {
 			"Title" : "Colonie",
-			"Desc" : "Vue d'ensemble des ressources nécessaires",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires"
+            "Desc": "Vue d'ensemble des ressources nécessaires",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé: Démarrer un avant-poste et recharger le jeu (F5)", //Todo: Translate
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires"
 		},
 		"Info" : {
 			"Title" : "Info techniques",
