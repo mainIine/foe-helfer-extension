@@ -436,6 +436,7 @@ let Menu = {
         let btn_TechBG = $('<div />').attr('id', 'Tech').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
+
         Menu.toolTippBox(i18n['Menu']['Technologies']['Title'], '<em id="Tech-closed" class="tooltip-error">' + i18n['Menu']['Technologies']['Warning'] + '<br></em>' + i18n['Menu']['Technologies']['Desc'], 'Tech');
 
         let btn_Tech = $('<span />');
@@ -461,7 +462,7 @@ let Menu = {
 		let btn_UnitBG = $('<div />').attr('id', 'unitBtn').addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('Armeen', '<em id="unit-closed" class="tooltip-error">' + 'Öffne erst 1x deine "Armee-Organisiation"' + '<br></em>' + 'Alle deine Armeen im Überblick', 'unitBtn');
+		Menu.toolTippBox('Armeen', '<em id="unit-closed" class="tooltip-error">' + 'Öffne erst 1x deine "Armee-Organisiation"<br>Taste "U"' + '<br></em>' + 'Alle deine Armeen im Überblick', 'unitBtn');
 
 		let btn_Unit = $('<span />');
 
