@@ -1046,7 +1046,7 @@
 #units {
 	top: 30%;
 	right: 15%;
-	width: 450px;
+	width: 490px;
 }
 
 #units .window-body {
@@ -1244,7 +1244,6 @@
 	position: relative;
 }
 
-
 #grid-outer * {
 	padding: 0;
 	margin: 0;
@@ -1260,10 +1259,6 @@
 #map-grid {
 	display: flex;
 	flex-wrap: wrap;
-	/*
-	border-top: 1px solid #ccc;
-	border-left: 1px solid #ccc;
-	*/
 }
 
 #map-grid span[data-grid] {
@@ -1301,7 +1296,6 @@
 	width: 0.5em;
 	height: 0.5em;
 }
-
 
 #grid-outer span.entity {
 	display: block;

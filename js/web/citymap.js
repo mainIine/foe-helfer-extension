@@ -154,9 +154,10 @@ let CityMap = {
 	 */
 	SetBuildings: (Data = null)=> {
 
+		// https://foede.innogamescdn.com/assets/city/buildings/R_SS_MultiAge_SportBonus18i.png
+
 		let MapData,
 			MapDataSorted,
-			ComeFrom,
 			ActiveId = $('#grid-outer').find('.pulsate').data('entityid') || null;
 
 		// einmal komplett leer machen, wenn gewünscht
@@ -168,12 +169,10 @@ let CityMap = {
 			if(Data !== null)
 			{
 				MapData = Data;
-				ComeFrom = 'external';
 			}
 			// eigene Stadt
 			else {
 				MapData = CityMapData;
-				ComeFrom = 'self';
 			}
 
 			MapDataSorted = MapData.sort( function(X1, X2) {
