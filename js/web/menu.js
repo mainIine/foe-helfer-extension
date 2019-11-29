@@ -344,9 +344,13 @@ let Menu = {
 		let btn_outPBG = $('<div />').attr('id', 'outPostBtn').addClass('hud-btn'),
 			desc = i18n['Menu']['OutP']['Desc'];
 
+        if (Outposts.OutpostData === null) {
+            btn_outPBG.addClass('hud-btn-red');
+            desc = i18n['Menu']['OutP']['DescWarningOutpostData'];
+        }
 		if(localStorage.getItem('OutpostBuildings') === null){
 			btn_outPBG.addClass('hud-btn-red');
-			desc = i18n['Menu']['OutP']['DescWarning'];
+			desc = i18n['Menu']['OutP']['DescWarningBuildings'];
 		}
 
 		// Tooltip einbinden
@@ -432,7 +436,8 @@ let Menu = {
         let btn_TechBG = $('<div />').attr('id', 'Tech').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
-        Menu.toolTippBox('Technologie Fortschritt', '<em id="Tech-closed" class="tooltip-error">' + 'Besuche zuerst den Technologie Baum' + '<br></em>' + 'Erfahre wie viele Güter,Vorräte oder FP durch brauchst', 'Tech');
+
+        Menu.toolTippBox(i18n['Menu']['Technologies']['Title'], '<em id="Tech-closed" class="tooltip-error">' + i18n['Menu']['Technologies']['Warning'] + '<br></em>' + i18n['Menu']['Technologies']['Desc'], 'Tech');
 
         let btn_Tech = $('<span />');
 

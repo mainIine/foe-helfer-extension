@@ -98,7 +98,7 @@ let i18n = {
 
 		"Neighbors" : {
 			"Title" : "Production de ",
-			"ReadyProductions" : "Productions terminées",
+			"ReadyProductions" : "Productions terminée*s",
 			"OngoingProductions" : "Productions en cours"
 		},
 
@@ -110,7 +110,36 @@ let i18n = {
 			"DescRequired" : "Requis",
 			"DescInStock" : "Disponible",
 			"DescStillMissing" : "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-		},
+        },
+
+        "Technologies": {
+            "Title": "Les coûts de la recherche pour", //Todo: Translate
+            "Resource": "Ressource", //Todo: Translate
+            "DescRequired": "Requis",
+            "DescInStock": "Disponible",
+            "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+            "Eras": {
+                1: "Âge de Pierre",
+                2: "Âge du Bronze",
+                3: "Âge du Fer",
+                4: "Haut Moyen Âge",
+                5: "Moyen Âge Classique",
+                6: "Renaissance",
+                7: "Âge Colonial",
+                8: "Âge Industriel",
+                9: "Ère Progressiste",
+                10: "Ère Moderne",
+                11: "Ère Postmoderne",
+                12: "Ère Contemporaine",
+                13: "Ère de Demain",
+                14: "Ère du Futur",
+                15: "Futur Arctique",
+                16: "Futur Océanique",
+                17: "Futur Virtuel",
+                18: "Ère Spatiale - Mars",
+                19: "Ère Spatiale - Ceres"
+            }
+        },
 
 		"Settings" : {
 			"Title" : "Paramètres",
@@ -149,7 +178,12 @@ let i18n = {
 			"Title" : "Calculatrice de up à plusieurs",
 			"Desc" : "Crée un plan de pose de PFs, calcul les coûts et copies les valeurs",
 			"Warning": "Désactivé: Ouvre d'abord un de tes GM !"
-		},
+        },
+        "Technologies": {
+            "Title": "Technologies", //Todo: Translate
+            "Desc": "Calculer le coût de la recherche", //Todo: Translate
+            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
+        },
 		"Settings" : {
 			"Title" : "Paramètres",
 			"Desc" : "Ici il y a quelques éléments à configurer"
@@ -172,8 +206,9 @@ let i18n = {
 		},
 		"OutP" : {
 			"Title" : "Colonie",
-			"Desc" : "Vue d'ensemble des ressources nécessaires",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires"
+            "Desc": "Vue d'ensemble des ressources nécessaires",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé: Démarrer un avant-poste et recharger le jeu (F5)", //Todo: Translate
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires"
 		},
 		"Info" : {
 			"Title" : "Info techniques",

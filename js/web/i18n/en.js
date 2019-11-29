@@ -108,10 +108,39 @@ let i18n = {
 			"TitleShort" : "Goods overview - ",
 			"TitleBuildings" : "Building",
 			"TitleFree" : "Free",
-			"DescRequired" : "Requires",
+			"DescRequired" : "Required",
 			"DescInStock" : "Available",
 			"DescStillMissing" : "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
-		},
+        },
+
+        "Technologies": {
+            "Title": "Research cost for",
+            "Resource": "Resource",
+            "DescRequired": "Required",
+            "DescInStock": "Available",
+            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+            "Eras": {
+                1: "Stone Age",
+                2: "Bronze Age",
+                3: "Iron Age",
+                4: "Early Middle Age",
+                5: "High Middle Age",
+                6: "Late Middle Age",
+                7: "Colonial Age",
+                8: "Industrial Age",
+                9: "Progressive Era",
+                10: "Modern Era",
+                11: "PostModern Era",
+                12: "Contemporary Era",
+                13: "Tomorrow Era",
+                14: "Future Era",
+                15: "Arctic Future",
+                16: "Oceanic Future",
+                17: "Virtual Future",
+                18: "Space Age Mars",
+                19: "Space Age Ceres"
+            }
+        },
 
 		"Settings" : {
 			"Title" : "Settings",
@@ -150,7 +179,12 @@ let i18n = {
 			"Title" : "Co-payment calculator",
 			"Desc" : "Create payment plan, calculate external seats and copy values",
 			"Warning": "Disabled: Open one of your Legendary Buildings first!"
-		},
+        },
+        "Technologies": {
+            "Title": "Technologies",
+            "Desc": "Calculate cost for research",
+            "Warning": "Disabled: Open the research menu first!"
+        },
 		"Settings" : {
 			"Title" : "Settings",
 			"Desc" : "Here are some little settings"
@@ -173,8 +207,9 @@ let i18n = {
 		},
 		"OutP" : {
 			"Title" : "Outpost",
-			"Desc" : "Overview of the required resources",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Disabled: check out the outpost first!<br></em>Overview of the required resources"
+            "Desc": "Overview of the required resources",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start an outpost and reload the game (F5)",
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Disabled: check out the outpost first!<br></em>Overview of the required resources"
 		},
 		"Info" : {
 			"Title" : "Info Box",

@@ -17,7 +17,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     ExtPlayerID = 0,
     ExtGuildID = 0,
     ExtWorld = '',
-    CurrentEra = null,
+    CurrentEraID = null,
     BuildingNamesi18n = false,
     CityMapData = null,
     Conversations = [],
@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function(){
             {
                 Technologies.AllTechnologies = JSON.parse(this.responseText);
                 $('#Tech').removeClass('hud-btn-red');
+                $('#Tech-closed').remove();
             }
 
             // Armee Typen
@@ -1003,7 +1004,7 @@ let MainParser = {
 	StartUp: (d)=> {
 		ExtGuildID = d['clan_id'];
         ExtWorld = window.location.hostname.split('.')[0];
-        CurrentEra = d['era']['era'];
+        CurrentEraID = Technologies.Eras[d['era']['era']];
 
 		chrome.runtime.sendMessage(extID, {
 			type: 'storeData',
