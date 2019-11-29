@@ -42,6 +42,7 @@ let Unit = {
 			};
 
 			HTML.Box(args);
+			moment.locale(i18n['Local']);
 		}
 
 		Unit.BuildBox();
@@ -49,6 +50,28 @@ let Unit = {
 
 
 	BuildBox:()=> {
+
+		let top = [],
+			alca = CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1')),
+			countDownDate = moment.unix(alca['state']['next_state_transition_at']);
+
+		let x = setInterval(function() {
+			let diff = countDownDate.diff(moment());
+
+			if (diff <= 0) {
+				clearInterval(x);
+
+				$('.alca-countdown').html('<span class="text-danger">Ernte!</span>');
+			} else
+				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
+
+		}, 1000);
+
+		top.push('<div style="padding: 4px;" class="text-center">');
+
+		top.push('Die nächsten ' + alca.state.current_product.amount + ' Einheiten kommen in <span class="alca-countdown"></span> um ' + moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss') + ' Uhr');
+
+		top.push('</div>');
 
 		// Angriffsarmee
 		let attack = [];
@@ -72,6 +95,8 @@ let Unit = {
 
 		attack.push('<tbody>');
 
+		let cnt = 0;
+
 		for(let i in Unit.Attack)
 		{
 			if(!Unit.Attack.hasOwnProperty(i)){
@@ -90,15 +115,34 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			attack.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let mb =cache['bonuses'].find(o => (o['type'] === 'military_boost')),
-				at =cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
-				ab =cache['bonuses'].find(o => (o['type'] === 'attack_boost')),
-				a = type['baseDamage'] + mb['value'] + at['value'] + ab['value'];
+			let mb = cache['bonuses'].find(o => (o['type'] === 'military_boost')),
+				at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
+				ab = cache['bonuses'].find(o => (o['type'] === 'attack_boost')),
 
-			attack.push('<td>' + a + '</td>');
+				ap = (mb['value'] + at['value'] + ab['value']),
+				a = Math.round(type['baseDamage'] * (ap / 100)) + type['baseDamage'],
+				dp = (mb['value'] + at['value']),
+				d = Math.round(type['baseArmor'] * (dp / 100)) + type['baseArmor'];
+
+			attack.push('<td class="text-center"><em><small>+' + ap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + dp + '%</small></em><br><strong class="text-success"> = ' + d + '</strong></td>');
 
 			attack.push('</tr>');
+
+			cnt++;
 		}
+
+
+		if(cnt < 8)
+		{
+			for(let i = cnt; i <= 7; i++)
+			{
+				attack.push('<tr>');
+				attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>nicht belegt</em></strong></td>');
+				attack.push('</tr>');
+			}
+		}
+
 
 		attack.push('</tbody>');
 
@@ -115,15 +159,18 @@ let Unit = {
 		defense.push('<table class="foe-table">');
 
 		defense.push('<thead>');
-		defense.push('<tr>');
-		defense.push('<th></th>');
-		defense.push('<th>Einheit</th>');
-		defense.push('<th>Anzahl</th>');
-		defense.push('</tr>');
+			defense.push('<tr>');
+				defense.push('<th></th>');
+				defense.push('<th>Einheit</th>');
+				defense.push('<th class="text-center">Status</th>');
+				defense.push('<th>Angriff</th>');
+				defense.push('<th>Verteidigung</th>');
+			defense.push('</tr>');
 		defense.push('</thead>');
 
 		defense.push('<tbody>');
 
+		cnt = 0;
 		for(let i in Unit.Defense)
 		{
 			if(!Unit.Defense.hasOwnProperty(i)){
@@ -132,12 +179,41 @@ let Unit = {
 
 			defense.push('<tr>');
 
-			let d = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.Defense[i]['unitTypeId']));
+			let type = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.Defense[i]['unitTypeId'])),
+				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Defense[i]['unitId'])),
+				era = type['minEra'];
 
 			defense.push('<td><span class="units-icon ' + Unit.Defense[i]['unitTypeId'] + '"></span></td>');
-			defense.push('<td>' + d['name'] + '</td>');
-			defense.push('<td>1</td>');
+			defense.push('<td>' + type['name'] + '</td>');
+
+			let status = cache['currentHitpoints'] * 10;
+			defense.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
+
+			let at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
+				fr = cache['bonuses'].find(o => (o['type'] === 'fierce_resistance')),
+				db = cache['bonuses'].find(o => (o['type'] === 'defense_boost')),
+
+				dap = (fr['value'] + at['value']),
+				a = Math.round(type['baseDamage'] * (dap / 100)) + type['baseDamage'],
+				ddp = (fr['value'] + at['value'] + db['value']),
+				d = Math.round(type['baseArmor'] * (ddp / 100)) + type['baseArmor'];
+
+			defense.push('<td class="text-center"><em><small>+' + dap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' +ddp + '%</small></em><br><strong class="text-success"> = ' + d + '</strong></td>');
+
 			defense.push('</tr>');
+
+			cnt++;
+		}
+
+		if(cnt < 8)
+		{
+			for(let i = cnt; i <= 7; i++)
+			{
+				defense.push('<tr>');
+				defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>nicht belegt</em></strong></td>');
+				defense.push('</tr>');
+			}
 		}
 
 		defense.push('</tbody>');
@@ -194,6 +270,8 @@ let Unit = {
 		// fertige Tabelle zusammen setzten
 		let h = [];
 
+		h.push(top);
+
 		h.push('<div class="unit-tabs tabs">');
 		h.push( Unit.GetTabs() );
 		h.push( Unit.GetTabContent() );
@@ -241,7 +319,7 @@ let Unit = {
 
 
 	/**
-	 * Setzt alle gespeicherten Tabellen zusammen
+	 * Setzt alle gespeicherten Tabs zusammen
 	 *
 	 * @returns {string}
 	 * @constructor
