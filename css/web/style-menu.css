@@ -316,6 +316,10 @@ p {
 	background-image: url('../images/own-part.png');
 }
 
+#Tech span {
+    background-image: url('../images/technologies.png');
+}
+
 #ChatBtn span {
 	background-image: url('../images/chat.png');
 }

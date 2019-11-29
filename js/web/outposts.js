@@ -323,7 +323,9 @@ let Outposts = {
 	 * @param d
 	 * @constructor
 	 */
-	CollectResources: ()=>{
+    CollectResources: () => {
+        if (Outposts.OutpostData === null) return; //Kein Außenposten aktiv
+
         let Goods = {},
             type; //Todo: Laden
 

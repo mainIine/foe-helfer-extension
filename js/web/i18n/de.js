@@ -110,7 +110,36 @@ let i18n = {
 			"DescRequired" : "Benötigt",
 			"DescInStock" : "Vorhanden",
 			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-		},
+        },
+
+        "Technologies": {
+            "Title": "Forschungskosten für",
+            "Resource": "Ressource",
+            "DescRequired": "Benötigt",
+            "DescInStock": "Vorhanden",
+            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+            "Eras": {
+                1: "Steinzeit",
+                2: "Bronzezeit",
+                3: "Eisenzeit",
+                4: "Frühes Mittelalter",
+                5: "Hochmittelalter",
+                6: "Spätes Mittelalter",
+                7: "Kolonialzeit",
+                8: "Industriezeitalter",
+                9: "Jahrhundertwende",
+                10: "Moderne",
+                11: "Postmoderne",
+                12: "Gegenwart",
+                13: "Morgen",
+                14: "Zukunft",
+                15: "Arktische Zukunft",
+                16: "Ozeanische Zukunft",
+                17: "Virtuelle Zukunft",
+                18: "Raumfahrt: Mars",
+                19: "Raumfahrt: Ceres"
+            }
+        },
 
 		"Settings" : {
 			"Title" : "Einstellungen",
@@ -149,7 +178,12 @@ let i18n = {
 			"Title" : "Eigenanteilsrechner",
 			"Desc" : "Zahlplan erstellen, externe Plätze berechnen und Werte kopieren",
 			"Warning": "Deaktiviert: Öffne zuerst eines deiner Legendären Gebäude!"
-		},
+        },
+        "Technologies": {
+            "Title": "Technologien",
+            "Desc": "Kosten für Forschung berechnen",
+            "Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!"
+        },
 		"Settings" : {
 			"Title" : "Einstellungen",
 			"Desc" : "Hier stellst du ein paar Kleinigkeiten ein"
@@ -172,8 +206,9 @@ let i18n = {
 		},
 		"OutP" : {
 			"Title" : "Außenposten",
-			"Desc" : "Übersicht über die benötigten Ressourcen",
-			"DescWarning" : "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen"
+            "Desc": "Übersicht über die benötigten Ressourcen",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiviert: Starte zuerst einen Außenposten und lade das Spiel neu (F5)",
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen"
 		},
 		"Info" : {
 			"Title" : "Info Box",

@@ -13,7 +13,7 @@
  */
 
 let StrategyPoints = {
-
+    RefreshDone: false,
 	OldStrategyPoints: 0,
 	AvailableFP : 0,
 
@@ -54,18 +54,21 @@ let StrategyPoints = {
 	 * @param NewFP Die neu zu setzenden FP
 	 * @constructor
 	 */
-	ForgePointBar: (NewFP)=> {
+    ForgePointBar: (NewFP) => {
+        if (NewFP === undefined) NewFP = 0;
 
 		// noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			let div = $('<div />').attr('id', 'fp-bar').text(i18n['Boxes']['StrategyPoints']['FPBar']).append( $('<strong />').addClass('fp-storage') );
+			let div = $('<div />').attr('id', 'fp-bar').text(i18n['Boxes']['StrategyPoints']['FPBar']).append( $('<strong>0</strong>').addClass('fp-storage') );
 
 			$('body').append(div);
 		}
 
 		// Update mit Animation, wenn es überhaupt notwendig ist
-		if(NewFP < StrategyPoints.OldStrategyPoints || NewFP > StrategyPoints.OldStrategyPoints)
-		{
+		if(NewFP < StrategyPoints.OldStrategyPoints || NewFP > StrategyPoints.OldStrategyPoints || !StrategyPoints.RefreshDone)
+        {
+            RefreshDone = true;
+
 			$('.fp-storage').easy_number_animate({
 				start_value: StrategyPoints.OldStrategyPoints,
 				end_value: NewFP,
