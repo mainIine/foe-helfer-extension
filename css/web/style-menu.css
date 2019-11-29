@@ -139,7 +139,8 @@ table.foe-table tr td {
 	border-bottom: 1px solid #3D250F;
 }
 
-table.foe-table tr.success td {
+table.foe-table tr.success td,
+.text-success {
 	color: #29b206;
 }
 
@@ -159,10 +160,12 @@ p {
 	white-space: nowrap;
 }
 
+.text-danger,
 .danger {
 	color: #f92727;
 }
 
+.text-info,
 .info {
 	color: #2196f3;
 }
