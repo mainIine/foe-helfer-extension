@@ -421,8 +421,8 @@ let Parts = {
 			'<option value="2"' + (s === '2' ? ' selected' : '') + '>Name LG P1 P2 P3 P4 P5</option>' +
 			'<option value="3"' + (s === '3' ? ' selected' : '') + '>Name LG P5/4/3/2/1</option>' +
 			'<option value="4"' + (s === '4' ? ' selected' : '') + '>Name LG P1/2/3/4/5</option>' +
-            '<option value="5"' + (s === '5' ? ' selected' : '') + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
-            '<option value="6"' + (s === '6' ? ' selected' : (s === null ? ' selected' : '') ) + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
+            '<option value="5"' + (s === '5' ? ' selected' : (s === null ? ' selected' : '')) + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
+            '<option value="6"' + (s === '6' ? ' selected' : '' ) + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
             '</select></div>';
 
         b.push(drp);

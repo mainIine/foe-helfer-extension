@@ -69,11 +69,11 @@ chrome.runtime.onMessageExternal.addListener((request) => {
 	if (request.type === 'message') {
 		let t = request.time,
 			opt = {
-			type: "basic",
-			title: request.title,
-			message: request.msg,
-			iconUrl: "images/app48.png"
-		};
+				type: "basic",
+				title: request.title,
+				message: request.msg,
+				iconUrl: "images/app48.png"
+			};
 
 		// Desktop Meldung zusammen setzen
 		chrome.notifications.create('', opt, (id)=> {

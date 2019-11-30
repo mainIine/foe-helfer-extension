@@ -1,16 +1,26 @@
 ##Changelog - Chrome Extension
 
 #####v2.3.12.4
+**Neu**
+- Forschungen:
+    -Zeigt die gesamten Güter / FP / Vorratskosten bis zum Ende des aktuellen oder des gewählten Zeitalters an
+- Armeen (BETA):
+    - Zeigt alle vorhanden Einheiten übersichtlich mit Angriff- und Verteidigungswerten
+
 **Update**
- Neues Tool:
--Forschungen: Zeigt die gesamten Güter/FP/Vorratskosten bis zum Ende des aktuellen oder nächsten Zeitalters an
+- Einstellungen:
+    - in der Einstellungsbox (InGame) kann ab sofort eine eigene Sprache gewählt werden [#177](https://github.com/dsiekiera/foe-helfer-extension/issues/177)
+    - Styling überarbeitet
 
 **BugFix**
 - Außenposten:
 	- Unvollständige Güteranzeige beim ersten Start der Extension behoben bzw. Wechsel des Außenpostens behoben [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
 
 - Erntehelfer:
-    - Es wurden nicht alle Gebäude angezeigt [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
+    - Es wurden nicht alle Gebäude angezeigt [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159) [#183](https://github.com/dsiekiera/foe-helfer-extension/issues/183)
+
+- Einstellungen:
+    - verschobene Hintergrund-Grafik gefixt
 
 ---
 

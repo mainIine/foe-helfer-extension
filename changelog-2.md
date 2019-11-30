@@ -1,15 +1,27 @@
 ##Changelog - Chrome Extension
 
 #####v2.3.12.4
-New Tool:
--Research: Shows the total Research costs(FP/gold/supply/goods) until the end of the current era
+**New**
+- Researches:
+    - Apply all goods / FP / storage costs until the end of the current or the selected age
+- Armies (BETA):
+    - Shows all available units clearly with attack and defense values
+
+**Update**
+- Settings:
+    - In the settings box (InGame) you can now choose your own language [#177](https://github.com/dsiekiera/foe-helfer-extension/issues/177)
+    - Styling revised
 
 **BugFix**
 - Outpost:
-	- Incomplete good display when starting the extension for the first time of switching between outpost types solved [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
+    - Fixed incomplete goods display when first starting the extension or fixed the change of outpost [#163](https://github.com/dsiekiera/foe-helfer-extension/issues/163)
 
-- Plunder helper:
+- Harvest-Helper:
     - Not all buildings have been shown [#159](https://github.com/dsiekiera/foe-helfer-extension/issues/159)
+
+- Settings:
+    - fixed moved background graphics
+
 ---
 
 #####v2.3.12.3
