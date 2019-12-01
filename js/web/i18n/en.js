@@ -142,6 +142,10 @@ let i18n = {
             }
         },
 
+        "Negotiation": {
+            "Title": "Negotiation helper"
+        },
+
 		"Settings" : {
 			"Title" : "Settings",
 			"Active" : "Active",
@@ -184,6 +188,9 @@ let i18n = {
             "Title": "Technologies",
             "Desc": "Calculate cost for research",
             "Warning": "Disabled: Open the research menu first!"
+        },
+        "Negotiation": {
+            "Title": "Negotiation helper"
         },
 		"Settings" : {
 			"Title" : "Settings",

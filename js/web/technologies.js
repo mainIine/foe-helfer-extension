@@ -15,7 +15,7 @@
 let Technologies = {
     AllTechnologies: null,
     UnlockedTechologies: false,
-    SelectedEraID: undefined, 
+    SelectedEraID: undefined,
        
     Eras: {
         StoneAge: 1,
@@ -160,7 +160,7 @@ let Technologies = {
                 let Diff = Stock - Required;
 
                 h.push('<tr>');
-                h.push('<td>' + GoodsNames[ResourceName] + '</td>');
+                h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                 h.push('<td>' + HTML.Format(Required) + '</td>');
                 h.push('<td>' + HTML.Format(Stock) + '</td>');
                 h.push('<td class="text-center text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
