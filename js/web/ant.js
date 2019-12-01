@@ -25,7 +25,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     GoodsList = [],
     ResourceStock = [],
     MainMenuLoaded = false;
-  
+
 document.addEventListener("DOMContentLoaded", function(){
 
 	// aktuelle Welt notieren
@@ -211,6 +211,17 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 				// --------------------------------------------------------------------------------------------------
+				// Letzten Alca Auswurf tracken
+				let AlcatrazService = d.find(obj => {
+					return obj['requestClass'] === 'CityProductionService' && obj['requestMethod'] === 'pickupProduction';
+				});
+
+				if(AlcatrazService !== undefined){
+					localStorage.setItem('LastAlcatrazUnits', JSON.stringify(AlcatrazService['responseData']['militaryProducts']));
+				}
+
+
+				// --------------------------------------------------------------------------------------------------
 				// Armee Update
 				let UnitService = d.find(obj => {
 					return obj['requestClass'] === 'ArmyUnitManagementService' && obj['requestMethod'] === 'getArmyInfo';
@@ -292,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function(){
                             Calculator.ShowOverview(false);
 					}
 				}
-                
+
 				// es wird ein LG eines Spielers geöffnet
                 let getConstruction = d.find(obj => {
                     return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
@@ -309,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 else if (contributeForgePoints !== undefined) {
                     Rankings = contributeForgePoints['responseData'];
                 }
-                
+
 				let UpdateEntity = d.find(obj => {
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'updateEntity';
 				});
@@ -582,7 +593,7 @@ let MainParser = {
 		'money_boost' : 'coin_production'
 	},
 
-	
+
 	/**
 	 * Speichert alle aktiven Boosts
 	 */
@@ -594,7 +605,7 @@ let MainParser = {
 		'supply_production': 0
 	},
 
-	
+
 	/**
 	 *
 	 */
