@@ -276,9 +276,9 @@ let GoodsParser = {
 		for(let k in a) {
 			if(a.hasOwnProperty(k)) {
 				if(k === 'strategy_points'){
-					g.push('<strong>' + a[k] + ' ' + GoodsNames[k] + '</strong>');
+                    g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
 				} else {
-					g.push(a[k] + ' ' + GoodsNames[k]);
+                    g.push(a[k] + ' ' + GoodsData[k]['name']);
 				}
 			}
 		}

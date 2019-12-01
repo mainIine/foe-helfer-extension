@@ -141,6 +141,10 @@ let i18n = {
             }
         },
 
+        "Negotiation": {
+            "Title": "assistant de négociation" //Todo: Translate
+        },
+
 		"Settings" : {
 			"Title" : "Paramètres",
 			"Active" : "Actif",
@@ -183,6 +187,9 @@ let i18n = {
             "Title": "Technologies", //Todo: Translate
             "Desc": "Calculer le coût de la recherche", //Todo: Translate
             "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
+        },
+        "Negotiation": {
+            "Title": "assistant de négociation" //Todo: Translate
         },
 		"Settings" : {
 			"Title" : "Paramètres",
