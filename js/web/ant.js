@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	localStorage.removeItem('OwnCurrentBuildingCity');
     localStorage.removeItem('OwnCurrentBuildingGreat');
 
-    MainParser.setLanguage();
+	MainParser.setLanguage();
 });
 
 (function () {
@@ -527,6 +527,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 				// zweite Runde
 				else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
+					MainParser.setLanguage();
 					Menu.BuildOverlayMenu();
 					MainMenuLoaded = true;
                 }
@@ -583,6 +584,7 @@ document.addEventListener("DOMContentLoaded", function(){
 let MainParser = {
 
 	Language: 'en',
+	PossibleLanguages: ['de', 'en', 'fr'],
 	Buildings: null,
 	i18n: null,
 

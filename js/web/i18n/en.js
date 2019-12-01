@@ -166,6 +166,18 @@ let i18n = {
 				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",
 				"MsgBuilding" : "__building__ - Level __level__"
 			}
+		},
+
+		"Units" : {
+			"Title": "Army overview",
+			"NextUnitsIn": "The next __count__ units will arrive in <span class=\"alca-countdown\"></span> at __harvest__ Uhr",
+			"Unit": "Unit",
+			"Status": "Status",
+			"Attack": "Attack",
+			"Defend": "Defense",
+			"NotFilled": "not filled",
+			"Bind": "Bound",
+			"Unbind": "Unbound"
 		}
 	},
 
@@ -269,6 +281,15 @@ let i18n = {
 			"Title" : "Box coordinates",
 			"Desc" : "Should all box coordinates be reset?",
 			"Button" : "Delete!"
+		},
+		"ChangeLanguage": {
+			"Title" : "Change language",
+			"Desc" : "Which language, instead of the recognized one, should be used?",
+			"Dropdown": {
+				"de" : "German",
+				"en" : "English",
+				"fr" : "French",
+			}
 		}
 	},
 
