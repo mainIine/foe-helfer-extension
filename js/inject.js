@@ -37,7 +37,8 @@ requestIdleCallback(checkForDOM);
 
 let tid = setInterval(InjectCSS, 0),
 	PossibleLangs = ['de','en','fr'],
-	lng = chrome.i18n.getUILanguage();
+	lng = chrome.i18n.getUILanguage(),
+	uLng = localStorage.getItem('user-language');
 
 
 // wir brauchen nur den ersten Teil
@@ -52,6 +53,9 @@ if(PossibleLangs.includes(lng) === false)
 	lng = 'en';
 }
 
+if(uLng !== null){
+	lng = uLng;
+}
 
 let i18nJS = document.createElement('script');
 i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v);

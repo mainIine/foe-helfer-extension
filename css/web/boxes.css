@@ -19,7 +19,7 @@
 }
 
 #SettingsBoxBody .item .item-row .check {
-	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/window/window_0.png');
+	background-image: url('../images/setting-cb.png');
 }
 
 /* ---------------------------------------------------------------------------------------- */
@@ -823,7 +823,10 @@
 
 #SettingsBoxBody {
 	overflow-y: auto;
-	padding: 5px;
+}
+
+#SettingsBoxBody .SettingsBoxBodyInner {
+	padding: 8px;
 }
 
 #SettingsBoxBody .item {
@@ -849,22 +852,25 @@
 }
 
 #SettingsBoxBody .item .item-row .desc {
-	width: 67%;
+	width: 66%;
 	padding: 10px;
 }
 
 #SettingsBoxBody .item .item-row .check {
 	position: relative;
 	display: inline-block;
-	width: 171px;
-	height: 30px;
-	background-position: -474px -442px;
+	width: 173px;
+	height: 32px;
+}
+
+#SettingsBoxBody .item .item-row .unchecked {
+	background-position: 0 -32px;
 }
 
 #SettingsBoxBody .item .item-row .check input.setting-check {
 	position: absolute;
-	right: 2px;
-	top: 6px;
+	right: 3px;
+	top: 7px;
 	width: 21px;
 	transform: scale(1.5, 1.5);
 }
@@ -873,14 +879,16 @@
 	display: block;
 	width: 141px;
 	text-align: center;
-	line-height: 1.9rem;
+	line-height: 32px;
 	font-size: 0.9rem;
 	color: #b0bbcd;
 	font-weight: 700;
 }
 
-#SettingsBoxBody .item .item-row .btn-default {
-	width: 170px;
+#SettingsBoxBody .item .item-row .btn-default,
+#SettingsBoxBody .item .item-row .setting-dropdown {
+	width: 172px;
+	padding: 4px 0;
 }
 
 
@@ -982,8 +990,30 @@
 #technologies {
     top: 30%;
     right: 15%;
-    width: 380px;
+    width: 450px;
 }
+
+	#technologies #technologiesBody {
+		overflow-x: hidden;
+		overflow-y: auto;
+		min-height: 300px;
+		max-height: 500px;
+	}
+
+	#technologies #technologiesBody .techno-head {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 5px;
+	}
+
+	#technologies #technologiesBody .techno-head > * {
+		width: 33.333334%;
+	}
+
+	#technologies #technologiesBody .techno-head strong {
+		color: #FFB539;
+	}
 
     #technologies #technologiesBody tr.total-row td {
         border-top: 2px solid #efcf9a;
@@ -1148,6 +1178,26 @@
 	font-size: 75%;
 	border-radius: 10px;
 }
+
+#units #unitsBody .tabs ul li a {
+	width: 21px;
+	left: 37px;
+	background: transparent url('../images/unit-icons.png') 0 3px no-repeat;
+	background-size: 90px 20px;
+}
+
+#units #unitsBody .tabs ul li.defense a {
+	background-position: -21px 3px;
+}
+
+#units #unitsBody .tabs ul li.pool a {
+	background-position: -41px 3px;
+}
+
+#units #unitsBody .new ul li.pool a {
+	background-position: 0 3px;
+}
+
 
 .ArcticFuture_champion {background-position: 0 0}
 .BronzeAge_champion {background-position: 0 -32px}

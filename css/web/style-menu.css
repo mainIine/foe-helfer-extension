@@ -38,6 +38,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .game-cursor,
+.game-cursor option,
 .window-minimize,
 .window-close,
 .window-head:not(span),
@@ -50,6 +51,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .game-cursor:hover,
+.game-cursor option:hover,
 .window-minimize:hover,
 .window-close:hover,
 .window-head:not(span):hover,

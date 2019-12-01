@@ -35,7 +35,7 @@ let Unit = {
 		if ($('#units').length === 0) {
 			let args = {
 				'id': 'units',
-				'title': 'Armee Übersicht',
+				'title': i18n['Boxes']['Units']['Title'],
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -49,6 +49,11 @@ let Unit = {
 	},
 
 
+	/**
+	 * Rendern und in den BoxContent
+	 *
+	 * @constructor
+	 */
 	BuildBox:()=> {
 
 		let top = [],
@@ -69,7 +74,13 @@ let Unit = {
 
 		top.push('<div style="padding: 4px;" class="text-center">');
 
-		top.push('Die nächsten ' + alca.state.current_product.amount + ' Einheiten kommen in <span class="alca-countdown"></span> um ' + moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss') + ' Uhr');
+		top.push(HTML.i18nReplacer(
+			i18n['Boxes']['Units']['NextUnitsIn'],
+			{
+				count: alca.state.current_product.amount,
+				harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+			})
+		);
 
 		top.push('</div>');
 
@@ -86,10 +97,10 @@ let Unit = {
 		attack.push('<thead>');
 			attack.push('<tr>');
 				attack.push('<th></th>');
-				attack.push('<th>Einheit</th>');
-				attack.push('<th class="text-center">Status</th>');
-				attack.push('<th class="text-center">Angriff</th>');
-				attack.push('<th class="text-center">Verteidigung</th>');
+				attack.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Status'] + '</th>');
+				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Attack'] + '</th>');
+				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Defend'] + '</th>');
 			attack.push('</tr>');
 		attack.push('</thead>');
 
@@ -125,7 +136,7 @@ let Unit = {
 				d = Math.round(type['baseArmor'] * (dp / 100)) + type['baseArmor'];
 
 			attack.push('<td class="text-center"><em><small>+' + ap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
-			attack.push('<td class="text-center"><em><small>+' + dp + '%</small></em><br><strong class="text-success"> = ' + d + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + dp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
 
 			attack.push('</tr>');
 
@@ -138,7 +149,7 @@ let Unit = {
 			for(let i = cnt; i <= 7; i++)
 			{
 				attack.push('<tr>');
-				attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>nicht belegt</em></strong></td>');
+				attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
 				attack.push('</tr>');
 			}
 		}
@@ -161,10 +172,10 @@ let Unit = {
 		defense.push('<thead>');
 			defense.push('<tr>');
 				defense.push('<th></th>');
-				defense.push('<th>Einheit</th>');
-				defense.push('<th class="text-center">Status</th>');
-				defense.push('<th>Angriff</th>');
-				defense.push('<th>Verteidigung</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Status'] + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Attack'] + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Defend'] + '</th>');
 			defense.push('</tr>');
 		defense.push('</thead>');
 
@@ -199,7 +210,7 @@ let Unit = {
 				d = Math.round(type['baseArmor'] * (ddp / 100)) + type['baseArmor'];
 
 			defense.push('<td class="text-center"><em><small>+' + dap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
-			defense.push('<td class="text-center"><em><small>+' +ddp + '%</small></em><br><strong class="text-success"> = ' + d + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + ddp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
 
 			defense.push('</tr>');
 
@@ -211,7 +222,7 @@ let Unit = {
 			for(let i = cnt; i <= 7; i++)
 			{
 				defense.push('<tr>');
-				defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>nicht belegt</em></strong></td>');
+				defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
 				defense.push('</tr>');
 			}
 		}
@@ -233,9 +244,9 @@ let Unit = {
 		pool.push('<thead>');
 		pool.push('<tr>');
 		pool.push('<th></th>');
-		pool.push('<th>Einheit</th>');
-		pool.push('<th class="text-center">Gebunden</th>');
-		pool.push('<th class="text-center">Ungebunden</th>');
+		pool.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+		pool.push('<th class="text-center">' + i18n['Boxes']['Units']['Bind'] + '</th>');
+		pool.push('<th class="text-center">' + i18n['Boxes']['Units']['Unbind'] + '</th>');
 		pool.push('</tr>');
 		pool.push('</thead>');
 
@@ -265,7 +276,9 @@ let Unit = {
 		pool.push('</table>');
 
 		Unit.SetTabContent('pool', pool.join(''));
-		
+
+		// Evt. gibt es Einheiten?
+		Unit.GetLastAlcaUnits();
 
 		// fertige Tabelle zusammen setzten
 		let h = [];
@@ -326,5 +339,69 @@ let Unit = {
 	 */
 	GetTabContent: ()=> {
 		return Unit.TabsContent.join('');
+	},
+
+	/**
+	 * Die letzten Einheiten die aus dem Alca gekommen sind
+	 *
+	 * @constructor
+	 */
+	GetLastAlcaUnits: ()=> {
+
+		let last = [],
+			au = localStorage.getItem('LastAlcatrazUnits'),
+			AlcaUnits = null;
+
+		// nix drin
+		if(au === null){
+			return ;
+		}
+
+		AlcaUnits = JSON.parse(au);
+
+		Unit.SetTabs('alca');
+
+		last.push('<table class="foe-table">');
+
+		last.push('<thead>');
+		last.push('<tr>');
+		last.push('<th></th>');
+		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Unbind'] + '</th>');
+		last.push('</tr>');
+		last.push('</thead>');
+
+		last.push('<tbody>');
+
+		let cnt = 0;
+
+		for(let i in AlcaUnits)
+		{
+			if(!AlcaUnits.hasOwnProperty(i)){
+				break;
+			}
+
+			let type = Unit.Types.find(obj => (obj['unitTypeId'] === AlcaUnits[i]['unitTypeId'])),
+				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === AlcaUnits[i]['unitId'])),
+				era = type['minEra'];
+
+			last.push('<tr data-era="' + era + '">');
+
+			last.push('<td><span class="units-icon ' + AlcaUnits[i]['unitTypeId'] + '"></span></td>');
+			last.push('<td>' + type['name'] + '</td>');
+
+			let status = cache['currentHitpoints'] * 10;
+			last.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
+
+			last.push('</tr>');
+
+			cnt++;
+		}
+
+		last.push('</tbody>');
+
+		last.push('</table>');
+
+		Unit.SetTabContent('last', last.join(''));
 	}
 };
