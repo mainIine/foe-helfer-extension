@@ -102,7 +102,7 @@ let Outposts = {
 		// Array umdrehen
         UnlockedDiplomacyBuildings = UnlockedDiplomacyBuildings.reverse();
 
-        t.push('<p class="text-right"><strong>' + GoodsNames[Outposts.OutpostData['primaryResourceId']] + ': ' + HTML.Format(ResourceStock[Outposts.OutpostData['primaryResourceId']]) + '</strong></p>');
+        t.push('<p class="text-right"><strong>' + GoodsData[Outposts.OutpostData['primaryResourceId']]['name'] + ': ' + HTML.Format(ResourceStock[Outposts.OutpostData['primaryResourceId']]) + '</strong></p>');
 
 		t.push('<table class="foe-table">');
 		t.push('<thead>');
@@ -113,7 +113,7 @@ let Outposts = {
 		// Güter durchsteppen
 		for(let ResourceID in Outposts.Resources)
 		{
-            t.push('<th class="text-center">' + GoodsNames[ResourceID] + '</th>');
+            t.push('<th class="text-center">' + GoodsData[ResourceID]['name'] + '</th>');
 
 			// falls nicht alle übermittelt wurde, mit "0" auffüllen
             if (Outposts.Resources[ResourceID] === undefined)

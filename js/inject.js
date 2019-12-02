@@ -140,6 +140,7 @@ function InjectCode()
         'part-calc',
         'unit',
         'technologies',
+        'negotiation',
 		'read-buildings',
 		'settings',
 		'strategy-points',
