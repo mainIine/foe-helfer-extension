@@ -285,7 +285,7 @@ let Info = {
 			}
 			// Handel
 			else if(d['attachment']['type'] === 'trade_offer'){
-				msg = d['attachment']['offeredAmount'] + ' ' + GoodsNames[d['attachment']['offeredResource']] +' &#187; ' + d['attachment']['neededAmount'] + ' ' + GoodsNames[d['attachment']['neededResource']];
+				msg = d['attachment']['offeredAmount'] + ' ' + GoodsData[d['attachment']['offeredResource']]['name'] +' &#187; ' + d['attachment']['neededAmount'] + ' ' + GoodsNames[d['attachment']['neededResource']];
 			}
 		}
 
