@@ -169,7 +169,7 @@ let i18n = {
 
 		"Units" : {
 			"Title": "Armee Übersicht",
-			"NextUnitsIn": "Die nächsten __count__ Einheiten kommen kommen in <span class=\"alca-countdown\"></span> um __harvest__ Uhr",
+			"NextUnitsIn": "Die nächsten __count__ Einheiten kommen in <span class=\"alca-countdown\"></span> um __harvest__ Uhr",
 			"Unit": "Einheit",
 			"Status": "Status",
 			"Attack": "Angriff",
@@ -290,6 +290,28 @@ let i18n = {
 				"fr" : "Französisch",
 			}
 		}
+	},
+
+	"Eras" : {
+		"NoAge": "Ohne Zeitalter",
+		"StoneAge": "Steinzeit",
+		"BronzeAge": "Bronzezeit",
+		"IronAge": "Eisenzeit",
+		"EarlyMiddleAge": "Frühes Mittelalter",
+		"HighMiddleAge": "Hochmittelalter",
+		"LateMiddleAge": "Spätes Mittelalter",
+		"ColonialAge": "Kolonialzeit",
+		"IndustrialAge": "Industriezeitalter",
+		"ProgressiveEra": "Jahrhundertwende",
+		"ModernEra": "Die Moderne",
+		"PostModernEra": "Die Postmoderne",
+		"ContemporaryEra": "Gegenwart",
+		"TomorrowEra": "Morgen",
+		"FutureEra": "Zukunft",
+		"ArcticFuture": "Arktische Zukunft",
+		"OceanicFuture": "Ozeanische Zukunft",
+		"VirtualFuture": "Virtuelle Zukunft",
+		"SpaceAgeMars" : "Raumfahrt: Mars"
 	},
 
 	"API" : {

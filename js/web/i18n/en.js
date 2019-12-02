@@ -293,6 +293,28 @@ let i18n = {
 		}
 	},
 
+	"Eras": {
+		"NoAge": "Without Age",
+		"Stone Age": "Stone Age",
+		"Bronze Age": "Bronze Age",
+		"Iron Age": "Iron Age",
+		"EarlyMiddleAge": "Early Middle Ages",
+		"HighMiddleAge": "High Middle Ages",
+		"LateMiddleAge": "Late Middle Ages",
+		"ColonialAge": "colonial era",
+		"Industrial Age": "Industrial Age",
+		"ProgressiveEra": "turn of the century",
+		"ModernEra": "Modernity",
+		"PostModernEra": "Postmodernism",
+		"ContemporaryEra": "Present",
+		"TomorrowEra": "Tomorrow",
+		"FutureEra": "Future",
+		"ArcticFuture": "Arctic Future",
+		"Oceanic Future": "Oceanic Future",
+		"VirtualFuture": "Virtual Future",
+		"SpaceAgeMars": "Space: Mars"
+	},
+
 	"API" : {
 		"UpdateSuccess" : "Update performed",
 		"GEXPlayer" : "GEX placements of members have been updated",
