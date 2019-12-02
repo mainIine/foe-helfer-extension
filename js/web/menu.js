@@ -84,7 +84,7 @@ let Menu = {
 		/**
 		 * Armeen
 		 */
-		hudSlider.append(Menu.Unit_Btn())
+		hudSlider.append(Menu.Unit_Btn());
 
 
 		/**
