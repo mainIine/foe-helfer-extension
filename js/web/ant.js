@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	localStorage.removeItem('OwnCurrentBuildingCity');
     localStorage.removeItem('OwnCurrentBuildingGreat');
 
+	MainParser.setLanguage();
 });
 
 
@@ -182,8 +183,17 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'getEntities';
 				});
 
-				if(CityMapService !== undefined && ActiveMap === 'cultural_outpost'){
-					ActiveMap = 'main';
+
+
+				if(CityMapService !== undefined){
+					if(ActiveMap === 'cultural_outpost'){
+						ActiveMap = 'main';
+					}
+
+					// ErnteBox beim zurückkehren in die Stadt schliessen
+					$('#ResultBox').fadeToggle(function(){
+						$(this).remove();
+					});
 				}
 
 
@@ -527,7 +537,6 @@ document.addEventListener("DOMContentLoaded", function(){
 				}
 				// zweite Runde
 				else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
-					MainParser.setLanguage();
 					Menu.BuildOverlayMenu();
 					MainMenuLoaded = true;
                 }
@@ -557,7 +566,6 @@ document.addEventListener("DOMContentLoaded", function(){
 let MainParser = {
 
 	Language: 'en',
-	PossibleLanguages: ['de', 'en', 'fr'],
 	Buildings: null,
 	i18n: null,
 
