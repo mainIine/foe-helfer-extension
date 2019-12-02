@@ -81,6 +81,12 @@ let Menu = {
         hudSlider.append(Menu.Technologies_Btn());
 
 
+        /**
+        * Negotiation
+        */
+        hudSlider.append(Menu.Negotiation_Btn());
+
+
 		/**
 		 * Armeen
 		 */
@@ -450,6 +456,31 @@ let Menu = {
         btn_TechBG.append(btn_Tech);
 
         return btn_TechBG;
+    },
+
+
+    /**
+	 * Negotiation
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+    Negotiation_Btn: () => {
+        let btn_NegotiationBG = $('<div />').attr('id', 'Negotiation').addClass('hud-btn');
+
+        // Tooltip einbinden
+        Menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], i18n['Menu']['Negotiation']['Desc'], 'Negotiation');
+
+
+        let btn_Negotiation = $('<span />');
+
+        btn_Negotiation.bind('click', function () {
+            Negotiation.Show();
+        });
+
+        btn_NegotiationBG.append(btn_Negotiation);
+
+        return btn_NegotiationBG;
     },
 
 

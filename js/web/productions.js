@@ -362,7 +362,7 @@ let Productions = {
 									countProducts[p] += buildings[i]['products'][p];
                                     countAll += buildings[i]['products'][p];
 
-									pA.push(Number(buildings[i]['products'][p]).toLocaleString(i18n['Local']) + ' ' + GoodsNames[p]);
+                                    pA.push(Number(buildings[i]['products'][p]).toLocaleString(i18n['Local']) + ' ' + GoodsData[p]['name']);
 								}
 							}
 
@@ -410,7 +410,7 @@ let Productions = {
 					{
 						if(countProducts.hasOwnProperty(ca))
 						{
-							table.push('<span>' + GoodsNames[ca] +' <strong>' + Number(countProducts[ca]).toLocaleString(i18n['Local']) + '</strong></span>');
+                            table.push('<span>' + GoodsData[ca]['name'] +' <strong>' + Number(countProducts[ca]).toLocaleString(i18n['Local']) + '</strong></span>');
 						}
 					}
 
@@ -423,7 +423,7 @@ let Productions = {
 					table.push('<thead>');
 					table.push('<tr class="other-header">');
 					table.push('<th colspan="2"><span class="change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
-                    table.push('<th colspan="2" class="text-right"><strong>' + GoodsNames[type] + ': ' + Number(countAll).toLocaleString(i18n['Local']) + (countAll !== countAllMotivated ? '/' + Number(countAllMotivated).toLocaleString(i18n['Local']) : '') + '</strong></th>');
+                    table.push('<th colspan="2" class="text-right"><strong>' + GoodsData[type]['name'] + ': ' + Number(countAll).toLocaleString(i18n['Local']) + (countAll !== countAllMotivated ? '/' + Number(countAllMotivated).toLocaleString(i18n['Local']) : '') + '</strong></th>');
 					table.push('</tr>');
 
 					table.push('</thead>');
@@ -487,7 +487,7 @@ let Productions = {
 				{
 					if(prod.hasOwnProperty(p))
 					{
-						pA.push(Number(prod[p]).toLocaleString('de-DE') + ' ' + GoodsNames[p]);
+                        pA.push(Number(prod[p]).toLocaleString('de-DE') + ' ' + GoodsData[p]['name']);
 					}
 				}
 

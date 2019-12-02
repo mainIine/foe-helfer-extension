@@ -141,6 +141,10 @@ let i18n = {
             }
         },
 
+        "Negotiation": {
+            "Title" : "Verhandlungassistent"
+        },
+
 		"Settings" : {
 			"Title" : "Einstellungen",
 			"Active" : "Aktiv",
@@ -195,6 +199,9 @@ let i18n = {
             "Title": "Technologien",
             "Desc": "Kosten für Forschung berechnen",
             "Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!"
+        },
+        "Negotiation": {
+            "Title": "Verhandlungassistent"
         },
 		"Settings" : {
 			"Title" : "Einstellungen",
