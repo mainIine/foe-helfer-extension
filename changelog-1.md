@@ -4,10 +4,12 @@
 **BugFix**
 - Armee Übersicht:
     - Wenn ein Boost-LG fehlte wurde die Box nicht geladen [#185](https://github.com/dsiekiera/foe-helfer-extension/issues/185)
+    - Abfragen Dreher gefixt, Danke an [Th3C0D3R](https://github.com/Th3C0D3R)
 
 **Update**
 - Extension:
     - Erntehelfer schliesst sich beim zurückkehren in die eigenen Stadt [#178](https://github.com/dsiekiera/foe-helfer-extension/issues/178)
+    - "Transparente" Box gefixt [#188](https://github.com/dsiekiera/foe-helfer-extension/issues/188)
 
 ---
 

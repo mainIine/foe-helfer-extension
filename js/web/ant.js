@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'CityProductionService' && obj['requestMethod'] === 'pickupProduction';
 				});
 
-				if(AlcatrazService !== undefined){
+				if(AlcatrazService !== undefined && AlcatrazService['responseData']['militaryProducts'] !== undefined && AlcatrazService['responseData']['militaryProducts'].lenght > 0){
 					localStorage.setItem('LastAlcatrazUnits', JSON.stringify(AlcatrazService['responseData']['militaryProducts']));
 				}
 

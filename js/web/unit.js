@@ -74,13 +74,14 @@ let Unit = {
 
 		top.push('<div style="padding: 4px;" class="text-center">');
 
-		top.push(HTML.i18nReplacer(
-			i18n['Boxes']['Units']['NextUnitsIn'],
-			{
-				count: alca.state.current_product.amount,
-				harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
-			})
-		);
+		let timer = HTML.i18nReplacer(
+					i18n['Boxes']['Units']['NextUnitsIn'],
+				{
+						count: alca.state.current_product.amount,
+						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+					});
+
+		top.push(timer);
 
 		top.push('</div>');
 
@@ -320,7 +321,7 @@ let Unit = {
 			}
 
 			pool.push('<tr>');
-			pool.push('<th colspan="4">' + era + '</th>');
+			pool.push('<th colspan="4">' + i18n['Eras'][era] + '</th>');
 			pool.push('</tr>');
 
 			for(let i in eras[era])
@@ -426,6 +427,10 @@ let Unit = {
 		}
 
 		AlcaUnits = JSON.parse(au);
+
+		if(AlcaUnits.length === 0){
+			return;
+		}
 
 		Unit.SetTabs('alca');
 
