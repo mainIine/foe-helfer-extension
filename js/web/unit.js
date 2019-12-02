@@ -136,7 +136,7 @@ let Unit = {
 				mb = mb['value'];
 			}
 
-			if(at !== undefined){
+			if(at === undefined){
 				at = 0;
 			} else {
 				at = at['value'];
@@ -222,7 +222,7 @@ let Unit = {
 				fr = cache['bonuses'].find(o => (o['type'] === 'fierce_resistance')),
 				db = cache['bonuses'].find(o => (o['type'] === 'defense_boost'));
 
-			if(at !== undefined){
+			if(at === undefined){
 				at = 0;
 			} else {
 				at = at['value'];
