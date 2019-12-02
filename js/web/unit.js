@@ -128,11 +128,29 @@ let Unit = {
 
 			let mb = cache['bonuses'].find(o => (o['type'] === 'military_boost')),
 				at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
-				ab = cache['bonuses'].find(o => (o['type'] === 'attack_boost')),
+				ab = cache['bonuses'].find(o => (o['type'] === 'attack_boost'));
 
-				ap = (mb['value'] + at['value'] + ab['value']),
+			if(mb === undefined){
+				mb = 0;
+			} else {
+				mb = mb['value'];
+			}
+
+			if(at !== undefined){
+				at = 0;
+			} else {
+				at = at['value'];
+			}
+
+			if(ab === undefined){
+				ab = 0;
+			} else {
+				ab = ab['value'];
+			}
+
+			let ap = (mb + at + ab),
 				a = Math.round(type['baseDamage'] * (ap / 100)) + type['baseDamage'],
-				dp = (mb['value'] + at['value']),
+				dp = (mb + at),
 				d = Math.round(type['baseArmor'] * (dp / 100)) + type['baseArmor'];
 
 			attack.push('<td class="text-center"><em><small>+' + ap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
@@ -202,11 +220,29 @@ let Unit = {
 
 			let at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
 				fr = cache['bonuses'].find(o => (o['type'] === 'fierce_resistance')),
-				db = cache['bonuses'].find(o => (o['type'] === 'defense_boost')),
+				db = cache['bonuses'].find(o => (o['type'] === 'defense_boost'));
 
-				dap = (fr['value'] + at['value']),
+			if(at !== undefined){
+				at = 0;
+			} else {
+				at = at['value'];
+			}
+
+			if(fr === undefined){
+				fr = 0;
+			} else {
+				fr = fr['value'];
+			}
+
+			if(db === undefined){
+				db = 0;
+			} else {
+				db = db['value'];
+			}
+
+			let dap = (fr + at),
 				a = Math.round(type['baseDamage'] * (dap / 100)) + type['baseDamage'],
-				ddp = (fr['value'] + at['value'] + db['value']),
+				ddp = (fr + at + db),
 				d = Math.round(type['baseArmor'] * (ddp / 100)) + type['baseArmor'];
 
 			defense.push('<td class="text-center"><em><small>+' + dap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
@@ -233,9 +269,33 @@ let Unit = {
 
 		Unit.SetTabContent('defense', defense.join(''));
 
+
 		
 		// alle Einheiten im Überblick
-		let pool = [];
+		let pool = [],
+			eras = [],
+			c = Unit.Cache['counts'];
+
+		// zuerst Sortieren
+		for(let i in c)
+		{
+			if(!c.hasOwnProperty(i)){
+				break;
+			}
+
+			let d = Unit.Types.find(obj => (obj['unitTypeId'] === c[i]['unitTypeId']));
+
+			if(eras[d['minEra']] === undefined){
+				eras[d['minEra']] = [];
+			}
+
+			eras[d['minEra']].push({
+				id: c[i]['unitTypeId'],
+				name: d['name'],
+				attached: (c[i]['attached'] === undefined ? '-' : c[i]['attached']),
+				unattached: (c[i]['unattached'] === undefined ? '-' : c[i]['unattached']),
+			});
+		}
 
 		Unit.SetTabs('pool');
 
@@ -252,23 +312,31 @@ let Unit = {
 
 		pool.push('<tbody>');
 
-		let c = Unit.Cache['counts'];
 
-		for(let i in c)
+		for(let era in eras)
 		{
-			if(!c.hasOwnProperty(i)){
+			if(!eras.hasOwnProperty(era)){
 				break;
 			}
 
 			pool.push('<tr>');
-
-			let d = Unit.Types.find(obj => (obj['unitTypeId'] === c[i]['unitTypeId']));
-
-			pool.push('<td><span class="units-icon ' + c[i]['unitTypeId'] + '"></span></td>');
-			pool.push('<td>' + d['name'] + '</td>');
-			pool.push('<td class="text-center">' + (c[i]['attached'] === undefined ? '-' : c[i]['attached']) + '</td>');
-			pool.push('<td class="text-center">' + (c[i]['unattached'] === undefined ? '-' : c[i]['unattached']) + '</td>');
+			pool.push('<th colspan="4">' + era + '</th>');
 			pool.push('</tr>');
+
+			for(let i in eras[era])
+			{
+				if(!eras[era].hasOwnProperty(i)){
+					break;
+				}
+
+				pool.push('<tr>');
+				pool.push('<td><span class="units-icon ' + eras[era][i]['id'] + '"></span></td>');
+				pool.push('<td>' + eras[era][i]['name'] + '</td>');
+				pool.push('<td class="text-center">' + eras[era][i]['attached'] + '</td>');
+				pool.push('<td class="text-center">' + eras[era][i]['unattached'] + '</td>');
+				pool.push('</tr>');
+			}
+
 		}
 
 		pool.push('</tbody>');
