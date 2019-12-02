@@ -21,7 +21,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     BuildingNamesi18n = false,
     CityMapData = null,
     Conversations = [],
-    GoodsNames = [],
+    GoodsData = [],
     GoodsList = [],
     ResourceStock = [],
     MainMenuLoaded = false;
@@ -39,8 +39,8 @@ document.addEventListener("DOMContentLoaded", function(){
 	MainParser.setLanguage();
 });
 
-
 (function () {
+
     let LastKostenrechnerOpenTime = 0;
 
 	let XHR = XMLHttpRequest.prototype,
@@ -67,8 +67,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					console.log('MainParser.i18n: ', MainParser.i18n);
 				});
 			}
-
-
+            
 			// die Gebäudenamen übernehmen
 			if(this._url.indexOf("metadata?id=city_entities") > -1)
 			{
@@ -216,7 +215,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
 				if(GoodsService !== undefined){
-					MainParser.setGoodsNames(GoodsService['responseData']);
+					MainParser.setGoodsData(GoodsService['responseData']);
 				}
 
 
@@ -551,6 +550,33 @@ document.addEventListener("DOMContentLoaded", function(){
                 if (ResearchService !== undefined) {
                     Technologies.UnlockedTechologies = ResearchService['responseData'];
                 }
+
+                // --------------------------------------------------------------------------------------------------
+				// Negotiation
+
+                let GuildBattlegroundService = d.find(obj => {
+                    return obj['requestMethod'] === 'startNegotiation';
+                });
+
+                if (GuildBattlegroundService !== undefined) {
+                    Negotiation.StartNegotiation(GuildBattlegroundService['responseData']);
+                }
+
+                let NegotiationSubmitTurn = d.find(obj => {
+                    return obj['requestClass'] === 'NegotiationGameService' && obj['requestMethod'] === 'submitTurn';
+                })
+
+                if (NegotiationSubmitTurn !== undefined) {
+                    Negotiation.SubmitTurn(NegotiationSubmitTurn['responseData']);
+                }
+
+                let NegotiationGiveUp = d.find(obj => {
+                    return obj['requestClass'] === 'NegotiationGameService' && obj['requestMethod'] === 'giveUp';
+                })
+
+                if (NegotiationGiveUp !== undefined) {
+                    Negotiation.ExitNegotiation(NegotiationGiveUp['responseData']);
+                }
 			}
 		});
 
@@ -561,7 +587,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): (*|string|boolean)), Language: string, ParseMoFile: MainParser.ParseMoFile, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, setGoodsNames: MainParser.setGoodsNames, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): (*|string|boolean)), Language: string, ParseMoFile: MainParser.ParseMoFile, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, setGoodsData: MainParser.setGoodsData, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -1304,10 +1330,10 @@ let MainParser = {
 	 *
 	 * @param d
 	 */
-	setGoodsNames: (d)=> {
+	setGoodsData: (d)=> {
 		for(let i in d){
 			if(d.hasOwnProperty(i)) {
-				GoodsNames[ d[i]['id'] ] = d[i]['name'];
+				GoodsData[d[i]['id']] = d[i];
 			}
 		}
 	},
