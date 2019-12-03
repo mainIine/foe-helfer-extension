@@ -1078,6 +1078,10 @@
     right: 15%;
     width: 600px;
 }
+	#negotiation #negotiationBody p {
+		margin-top: 10px;
+		font-size: 140%;
+	}
 
     #negotiation #negotiationBody tr.total-row td {
         border-top: 2px solid #efcf9a;

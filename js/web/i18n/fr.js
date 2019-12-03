@@ -142,7 +142,15 @@ let i18n = {
         },
 
         "Negotiation": {
-            "Title": "assistant de négociation" //Todo: Translate
+            "Title": "assistant de négociation",
+			"Start" : "S'il vous plaît commencer la négociation",
+			"NoSupport" : "La négociation n'est actuellement pas prise en charge",
+			"ErrorSelfPlaying": "Erreur inconnue, veuillez terminer manuellement.",
+			"Chance": "Chance",
+			"Person": "Personne",
+			"WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
+			"Success": "Succès",
+			"TryEnd": "Essayer de finir",
         },
 
 		"Settings" : {
@@ -201,7 +209,8 @@ let i18n = {
             "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
         },
         "Negotiation": {
-            "Title": "assistant de négociation" //Todo: Translate
+            "Title": "Assistant de négociation",
+			"Desc": "Faire des propositions de négociations précises"
         },
 		"Settings" : {
 			"Title" : "Paramètres",

@@ -162,6 +162,10 @@ p {
 	white-space: nowrap;
 }
 
+.text-warning {
+	color: #FFB539;
+}
+
 .text-danger,
 .danger {
 	color: #f92727;
@@ -348,6 +352,10 @@ p {
 
 #unitBtn span {
 	background-image: url('../images/units.png');
+}
+
+#negotationBtn span {
+	background-image: url('../images/negotation.png');
 }
 
 /* Tabs */
