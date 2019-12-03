@@ -142,7 +142,15 @@ let i18n = {
         },
 
         "Negotiation": {
-            "Title" : "Verhandlungassistent"
+            "Title" : "Verhandlungassistent",
+			"Start" : "Bitte Verhandlung starten",
+			"NoSupport" : "Verhandlung wird derzeit leider noch nicht unterstützt",
+			"ErrorSelfPlaying": "Unbekannter Fehler, bitte manuell fertig spielen",
+			"Chance": "Chance",
+			"Person": "Person",
+			"WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
+			"Success": "Erfolg",
+			"TryEnd": "Versuche zu Ende",
         },
 
 		"Settings" : {
@@ -201,7 +209,8 @@ let i18n = {
             "Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!"
         },
         "Negotiation": {
-            "Title": "Verhandlungassistent"
+            "Title": "Verhandlungassistent",
+			"Desc": "Macht dir präzise Vorschläge für Verhandlungen"
         },
 		"Settings" : {
 			"Title" : "Einstellungen",

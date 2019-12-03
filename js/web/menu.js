@@ -466,11 +466,10 @@ let Menu = {
 	 * @constructor
 	 */
     Negotiation_Btn: () => {
-        let btn_NegotiationBG = $('<div />').attr('id', 'Negotiation').addClass('hud-btn');
+        let btn_NegotiationBG = $('<div />').attr('id', 'negotationBtn').addClass('hud-btn');
 
         // Tooltip einbinden
-        Menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], i18n['Menu']['Negotiation']['Desc'], 'Negotiation');
-
+        Menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], i18n['Menu']['Negotiation']['Desc'], 'negotationBtn');
 
         let btn_Negotiation = $('<span />');
 

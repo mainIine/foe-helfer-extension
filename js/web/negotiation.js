@@ -1,11 +1,11 @@
 /*
  * **************************************************************************************
  *
- * Dateiname:                 technologies.js
+ * Dateiname:                 negotiation.js
  * Projekt:                   foe
  *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       30.11.19, 18:55 Uhr
+ * erstellt von:             andrgin
+ * zu letzt bearbeitet:      30.11.19, 18:55 Uhr
  *
  * Copyright © 2019
  *
@@ -20,9 +20,16 @@ let Negotiation = {
     CurrentTable: undefined,
     Goods: [],
     Guesses: [],
-    PlatzCount: 5,
-    Message : undefined,
+    PlaceCount: 5,
+    Message: undefined,
+	MessageClass: 'warning',
 
+
+	/**
+	 * Box in den DOM legen
+	 *
+	 * @constructor
+	 */
     Show: () => {
         if ($('#negotiation').length === 0) {
             let args = {
@@ -35,54 +42,76 @@ let Negotiation = {
 
             HTML.Box(args);
 
-            if (Negotiation.Message === undefined) Negotiation.Message = 'Bitte Verhandlung starten';
+            if (Negotiation.Message === undefined) {
+				Negotiation.Message = i18n['Boxes']['Negotiation']['Start'];
+			}
         }
 
         Negotiation.BuildBox();
     },
 
+
+	/**
+	 * Body der Box parsen
+	 *
+	 * @constructor
+	 */
     BuildBox: () => {
         Negotiation.CalcBody();
     },
 
+
+	/**
+	 * Berechnungen durchführen
+	 *
+	 * @constructor
+	 */
     CalcBody: () => {
         let h = [];
 
         if (Negotiation.CurrentTry === 0) {
-            h.push('<strong>' + Negotiation.Message + '</strong>')
+            h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>')
         }
         else {
             if (Negotiation.CurrentTable === undefined) {
                 if (Negotiation.CurrentTry === 1) {
-                    h.push('<strong>Verhandlung wird derzeit leider noch nicht unterstützt</strong>')
+                    h.push('<p class="text-danger text-center"><strong>' + i18n['Boxes']['Negotiation']['NoSupport'] + '</strong></p>')
                 }
                 else {
-                    h.push('<strong>Unbekannter Fehler. Bitte manuell fertig spielen</strong>');
+                    h.push('<p class="text-danger text-center"><strong>' + i18n['Boxes']['Negotiation']['ErrorSelfPlaying'] + '</strong></p>');
                 }
             }
             else {
-                h.push('<table id="negotiation" class="foe-table">');
+                h.push('<table class="foe-table">');
+
+                h.push('<thead>');
                 h.push('<tr>');
-                h.push('<td>Chance: ' + HTML.Format(Math.round(Negotiation.CurrentTable['Chance'])) + '%</td>')
-                for (let i = 0; i < Negotiation.PlatzCount; i++) {
-                    h.push('<td></td>');
-                }
+                h.push('<td colspan="' + (Negotiation.PlaceCount +1) + '" class="text-warning">' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['Chance'])) + '%</td>')
                 h.push('</tr>');
 
                 h.push('<tr>');
-                h.push('<td>');
-                for (let i = 0; i < Negotiation.PlatzCount; i++) {
-                    h.push('<td>Person' + (i+1) + '</td>');
+
+                h.push('<th></th>');
+
+                for (let i = 0; i < Negotiation.PlaceCount; i++) {
+                    h.push('<th class="text-center">' + i18n['Boxes']['Negotiation']['Person'] + ' ' + (i+1) + '</th>');
                 }
+
                 h.push('</tr>');
+                h.push('</thead>');
+
+				h.push('<tbody>');
 
                 for (let i = 0; i < Negotiation.Guesses.length; i++) {
                     h.push('<tr>');
-                    h.push('<td>Runde' + (i+1) + ':</td>');
-                    for (let Platz = 0; Platz < Negotiation.PlatzCount; Platz++) {
+                    h.push('<td>Runde ' + (i+1) + ':</td>');
+
+                    for (let Platz = 0; Platz < Negotiation.PlaceCount; Platz++) {
                         let Good = Negotiation.Goods[Negotiation.Guesses[i][Platz]];
+
                         if (Good !== undefined) {
-                            h.push('<td><span class="goods-sprite ' + Good + '"></span></td>');
+                        	let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
+                            h.push('<td class="text-center"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
                         }
                         else {
                             h.push('<td></td>');                            
@@ -90,6 +119,9 @@ let Negotiation = {
                     }
                     h.push('</tr>');
                 }
+
+				h.push('</thead>');
+
                 h.push('</table>');
             }
         }
@@ -97,6 +129,13 @@ let Negotiation = {
         $('#negotiationBody').html(h.join(''));
     },
 
+
+	/**
+	 * Chancen Berechnung aus den Files
+	 *
+	 * @param responseData
+	 * @constructor
+	 */
     StartNegotiation: (responseData) => {
         Negotiation.CurrentTry = 1;
         let Ressources = responseData['possibleCosts']['resources']
@@ -143,6 +182,13 @@ let Negotiation = {
         Negotiation.BuildBox();
     },
 
+
+	/**
+	 * Es wurde eine Runde abgeschickt
+	 *
+	 * @param responseData
+	 * @constructor
+	 */
     SubmitTurn: (responseData) => {
         if (Negotiation.CurrentTry === 0) return;
 
@@ -176,7 +222,8 @@ let Negotiation = {
         if (Result === -1) {
             Negotiation.CurrentTry = 0;
             Negotiation.CurrentTable = undefined;
-            Negotiation.Message = 'Falsche Güter ausgewählt. Bitte manuell fertig spielen';
+            Negotiation.Message = i18n['Boxes']['Negotiation']['WrongGoods'];
+            Negotiation.MessageClass = 'danger';
         }
         else {
             for (let i = 0; i < 5; i++) {
@@ -187,12 +234,14 @@ let Negotiation = {
             if (Result === 0) {
                 Negotiation.CurrentTry = 0;
                 Negotiation.CurrentTable = undefined;
-                Negotiation.Message = 'Erfolg';
+                Negotiation.Message = i18n['Boxes']['Negotiation']['Success'];
+				Negotiation.MessageClass = 'success';
             }
             else if (Negotiation.CurrentTry > Negotiation.TryCount) {
                 Negotiation.CurrentTry = 0;
                 Negotiation.CurrentTable = undefined;
-                Negotiation.Message = 'Versuche zu Ende';
+                Negotiation.Message = i18n['Boxes']['Negotiation']['TryEnd'];
+				Negotiation.MessageClass = 'warning';
             }
             else {
                 Negotiation.CurrentTable = Negotiation.CurrentTable['ResultTable'][Result];
@@ -203,20 +252,44 @@ let Negotiation = {
         Negotiation.BuildBox();
     },
 
+
+	/**
+	 * Verhandlung zu Ende
+	 *
+	 * @constructor
+	 */
     ExitNegotiation: () => {
         Negotiation.CurrentTry = 0;
     },
-	
+
+
+	/**
+	 * Name zusammen setzen
+	 *
+	 * @param TryCount
+	 * @param GoodCount
+	 * @returns {string}
+	 * @constructor
+	 */
     GetTableName: (TryCount, GoodCount) => {
         return TryCount + '_' + GoodCount;
     },
 
+
+	/**
+	 * Gut bestimmen
+	 *
+	 * @param GoodName
+	 * @returns {*}
+	 * @constructor
+	 */
     GetGoodValue: (GoodName) => {
         let Good = GoodsData[GoodName];
         let Era = Good['era'];
 
         let EraID = Technologies.Eras[Era];
-        if (EraID === undefined) EraID = 0;
+        if (EraID === undefined)
+        	EraID = 0;
 
         return EraID;
     }

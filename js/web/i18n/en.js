@@ -143,7 +143,15 @@ let i18n = {
         },
 
         "Negotiation": {
-            "Title": "Negotiation helper"
+            "Title": "Negotiation helper",
+			"Start" : "Please start negotiation",
+			"NoSupport" : "Negotiation is currently not supported",
+			"ErrorSelfPlaying": "Unknown error, please finish manually",
+			"Chance": "Chance",
+			"Person": "Person",
+			"WrongGoods": "Wrong goods selected, please finish manually",
+			"Success": "Success",
+			"TryEnd": "Try to finish",
         },
 
 		"Settings" : {
@@ -202,7 +210,8 @@ let i18n = {
             "Warning": "Disabled: Open the research menu first!"
         },
         "Negotiation": {
-            "Title": "Negotiation helper"
+            "Title": "Negotiation helper",
+			"Desc": "Make precise proposals for negotiations"
         },
 		"Settings" : {
 			"Title" : "Settings",
