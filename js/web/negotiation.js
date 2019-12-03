@@ -80,9 +80,13 @@ let Negotiation = {
                     h.push('<tr>');
                     h.push('<td>Runde' + (i+1) + ':</td>');
                     for (let Platz = 0; Platz < Negotiation.PlatzCount; Platz++) {
-                        let Good = GoodsData[Negotiation.Goods[Negotiation.Guesses[i][Platz]]];
-                        let GoodName = Good !== undefined ? Good['name'] : '-';
-                        h.push('<td>' + GoodName + '</td>');
+                        let Good = Negotiation.Goods[Negotiation.Guesses[i][Platz]];
+                        if (Good !== undefined) {
+                            h.push('<td><span class="goods-sprite ' + Good + '"></span></td>');
+                        }
+                        else {
+                            h.push('<td></td>');                            
+                        }
                     }
                     h.push('</tr>');
                 }
