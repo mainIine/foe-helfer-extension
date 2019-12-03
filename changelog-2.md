@@ -1,5 +1,18 @@
 ##Changelog - Chrome Extension
 
+##### v2.3.12.5
+** ** BugFix
+- Army overview:
+    - If a Boost LG was missing, the box was not loaded [#185](https://github.com/dsiekiera/foe-helfer-extension/issues/185)
+    - Fixes turned "if", Thanks to [Th3C0D3R](https://github.com/Th3C0D3R)
+
+** Update **
+- Extension:
+    - Harvester closes when returning to his own city [#178](https://github.com/dsiekiera/foe-helfer-extension/issues/178)
+    - Fixed "Transparent" box [#188](https://github.com/dsiekiera/foe-helfer-extension/issues/188)
+
+---
+
 #####v2.3.12.4
 **New**
 - Researches:

@@ -7,7 +7,7 @@
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * zu letzt bearbeitet:       30.11.19, 18:55 Uhr
  *
- * Copyright © 2019
+ * Copyright Â© 2019
  *
  * **************************************************************************************
  */
@@ -54,7 +54,7 @@ let Negotiation = {
         else {
             if (Negotiation.CurrentTable === undefined) {
                 if (Negotiation.CurrentTry === 1) {
-                    h.push('<strong>Verhandlung wird derzeit leider noch nicht unterstützt</strong>');
+                    h.push('<strong>Verhandlung wird derzeit leider noch nicht unterstÃ¼tzt</strong>')
                 }
                 else {
                     h.push('<strong>Unbekannter Fehler. Bitte manuell fertig spielen</strong>');
@@ -172,7 +172,7 @@ let Negotiation = {
         if (Result === -1) {
             Negotiation.CurrentTry = 0;
             Negotiation.CurrentTable = undefined;
-            Negotiation.Message = 'Falsche Güter ausgewählt. Bitte manuell fertig spielen';
+            Negotiation.Message = 'Falsche GÃ¼ter ausgewÃ¤hlt. Bitte manuell fertig spielen';
         }
         else {
             for (let i = 0; i < 5; i++) {

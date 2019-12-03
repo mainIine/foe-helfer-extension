@@ -84,7 +84,7 @@ let Menu = {
         /**
         * Negotiation
         */
-        hudSlider.append(Menu.Negotiation_Btn());
+        // hudSlider.append(Menu.Negotiation_Btn());
 
 
 		/**
