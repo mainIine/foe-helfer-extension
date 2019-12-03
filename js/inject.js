@@ -85,18 +85,24 @@ function InjectCSS()
 		script.innerText = "let extID='"+ chrome.runtime.id + "',GuiLng='" + lng + "',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
 		document.head.appendChild(script);
 
-		// Stylesheet einfügen
-		let style = document.createElement('link');
-		style.href = chrome.extension.getURL('css/web/style-menu.css?v=' + v);
-		style.rel = 'stylesheet';
-		document.head.appendChild(style);
+		let cssFiles = [
+			'goods',
+			'style-menu',
+			'boxes'
+		];
 
-
 		// Stylesheet einfügen
-		let boxes = document.createElement('link');
-		boxes.href = chrome.extension.getURL('css/web/boxes.css?v=' + v);
-		boxes.rel = 'stylesheet';
-		document.head.appendChild(boxes);
+		for(let i in cssFiles)
+		{
+			if(!cssFiles.hasOwnProperty(i)) {
+				break;
+			}
+
+			let css = document.createElement('link');
+			css.href = chrome.extension.getURL('css/web/' + cssFiles[i] + '.css?v=' + v);
+			css.rel = 'stylesheet';
+			document.head.appendChild(css);
+		}
 
 		clearInterval(tid);
 	}
