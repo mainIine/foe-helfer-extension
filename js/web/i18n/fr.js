@@ -292,6 +292,28 @@ let i18n = {
 		}
 	},
 
+	"Eras": {
+		"NoAge": "Sans âge",
+		"StoneAge": "Age de Pierre",
+		"BronzeAge": "l'âge du bronze",
+		"IronAge": "Age du fer",
+		"EarlyMiddleAge": "Early Middle Age",
+		"HighMiddleAge": "Haut Moyen Âge",
+		"LateMiddleAge": "Late Middle Age",
+		"ColonialAge": "l'ère coloniale",
+		"IndustrialAge": "âge industriel",
+		"ProgressiveEra": "tournant du siècle",
+		"ModernEra": "Modernity",
+		"PostModernEra": "Postmodernism",
+		"ContemporaryEra": "Présent",
+		"TomorrowEra": "Demain",
+		"FutureEra": "Future",
+		"ArcticFuture": "Future Arctic",
+		"OceanicFuture": "Oceanic Future",
+		"VirtualFuture": "Virtual Future",
+		"SpaceAgeMars": "Space: Mars"
+	},
+
 	"API" : {
 		"UpdateSuccess" : "Mise à jour effectuée",
 		"GEXPlayer" : "Les stages GEX des membres ont été mis à jour",
