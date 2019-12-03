@@ -20,7 +20,8 @@ let Negotiation = {
     CurrentTable: undefined,
     Goods: [],
     Guesses: [],
-    PlatzCount : 5,
+    PlatzCount: 5,
+    Message : undefined,
 
     Show: () => {
         if ($('#negotiation').length === 0) {
@@ -33,6 +34,8 @@ let Negotiation = {
             };
 
             HTML.Box(args);
+
+            if (Negotiation.Message === undefined) Negotiation.Message = 'Bitte Verhandlung starten';
         }
 
         Negotiation.BuildBox();
@@ -46,20 +49,18 @@ let Negotiation = {
         let h = [];
 
         if (Negotiation.CurrentTry === 0) {
-            h.push('<strong>Bitte Verhandlung starten</strong>')
+            h.push('<strong>' + Negotiation.Message + '</strong>')
         }
         else {
             if (Negotiation.CurrentTable === undefined) {
                 if (Negotiation.CurrentTry === 1) {
-                    h.push('<strong>Verhandlung wird derzeit leider noch nicht unterstützt</strong>')
+                    h.push('<strong>Verhandlung wird derzeit leider noch nicht unterstützt</strong>');
                 }
                 else {
-                    h.push('<strong>Bitte manuell fertig spielen</strong>')
+                    h.push('<strong>Unbekannter Fehler. Bitte manuell fertig spielen</strong>');
                 }
             }
             else {
-                let Guess = Negotiation.CurrentTable['Guess'];
-
                 h.push('<table id="negotiation" class="foe-table">');
                 h.push('<tr>');
                 h.push('<td>Chance: ' + HTML.Format(Math.round(Negotiation.CurrentTable['Chance'])) + '%</td>')
@@ -75,11 +76,11 @@ let Negotiation = {
                 }
                 h.push('</tr>');
 
-                for (let i = 0; i < Guesses.length; i++) {
+                for (let i = 0; i < Negotiation.Guesses.length; i++) {
                     h.push('<tr>');
                     h.push('<td>Runde' + (i+1) + ':</td>');
                     for (let Platz = 0; Platz < Negotiation.PlatzCount; Platz++) {
-                        let Good = GoodsData[Negotiation.Goods[Guesses[i][Platz]]];
+                        let Good = GoodsData[Negotiation.Goods[Negotiation.Guesses[i][Platz]]];
                         let GoodName = Good !== undefined ? Good['name'] : '-';
                         h.push('<td>' + GoodName + '</td>');
                     }
@@ -130,24 +131,30 @@ let Negotiation = {
         let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount)
         Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
-        Guesses = [];
-        Guesses[0] = Negotiation.CurrentTable.Guess;
+        Negotiation.Guesses = [];
+        if (Negotiation.CurrentTable !== undefined) {
+            Negotiation.Guesses[0] = Negotiation.CurrentTable.Guess;
+        }
 		
         Negotiation.BuildBox();
     },
 
     SubmitTurn: (responseData) => {
+        if (Negotiation.CurrentTry === 0) return;
+
         Negotiation.CurrentTry++;
 
         let SlotData = responseData['turnResult']['slots'],
-            Result = 0;
+            Result = 0,
+            OldGuess = Negotiation.Guesses[Negotiation.CurrentTry - 1 - 1],
+            Slots = [0, 0, 0, 0, 0];
 
-        let Slots = [0,0,0,0,0];
         for (let i = 0; i < SlotData.length; i++) {
             let State = SlotData[i]['state'],
+                ResourceId = SlotData[i]['resourceId'],
                 SlotID = SlotData[i]['slotId'];
 
-            if (SlotID === undefined) SlotID = 0;
+            if (SlotID === undefined) SlotID = 0;          
 
             if (State === 'correct')
                 Slots[SlotID] = 0;
@@ -155,20 +162,38 @@ let Negotiation = {
                 Slots[SlotID] = 1;
             else
                 Slots[SlotID] = 2;
+
+            if (Negotiation.Goods[OldGuess[SlotID]] !== ResourceId) {
+                Result = -1;
+                break;
+            }
         }
 
-        for (let i = 0; i < 5; i++) {
-            Result *= 4;
-            Result += Slots[i];
-        }
-
-        if (Result === 0 || Negotiation.CurrentTry > Negotiation.TryCount) {
+        if (Result === -1) {
             Negotiation.CurrentTry = 0;
             Negotiation.CurrentTable = undefined;
+            Negotiation.Message = 'Falsche Güter ausgewählt. Bitte manuell fertig spielen';
         }
         else {
-            Negotiation.CurrentTable = Negotiation.CurrentTable['ResultTable'][Result];
-            Guesses[Guesses.length] = Negotiation.CurrentTable.Guess;
+            for (let i = 0; i < 5; i++) {
+                Result *= 4;
+                Result += Slots[i];
+            }
+
+            if (Result === 0) {
+                Negotiation.CurrentTry = 0;
+                Negotiation.CurrentTable = undefined;
+                Negotiation.Message = 'Erfolg';
+            }
+            else if (Negotiation.CurrentTry > Negotiation.TryCount) {
+                Negotiation.CurrentTry = 0;
+                Negotiation.CurrentTable = undefined;
+                Negotiation.Message = 'Versuche zu Ende';
+            }
+            else {
+                Negotiation.CurrentTable = Negotiation.CurrentTable['ResultTable'][Result];
+                Negotiation.Guesses[Negotiation.Guesses.length] = Negotiation.CurrentTable.Guess;
+            }
         }
 
         Negotiation.BuildBox();
