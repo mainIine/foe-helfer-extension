@@ -143,16 +143,13 @@ let i18n = {
 
         "Negotiation": {
             "Title": "assistant de négociation",
-			"Start" : "S'il vous plaît commencer la négociation",
-			"NoSupport" : "La négociation n'est actuellement pas prise en charge",
-			"ErrorSelfPlaying": "Erreur inconnue, veuillez terminer manuellement.",
-			"Chance": "Chance",
-			"Person": "Personne",
-			"WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-			"Success": "Succès",
-			"TryEnd": "Essayer de finir",
+            "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
+            "TryEnd": "Essayer de finir",
+            "Success": "Succès",
+            "Chance": "Chance",
+            "Person": "Personne",
         },
-
+        
 		"Settings" : {
 			"Title" : "Paramètres",
 			"Active" : "Actif",
