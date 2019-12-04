@@ -208,7 +208,8 @@ let i18n = {
         },
         "Negotiation": {
             "Title": "Verhandlungassistent",
-			"Desc": "Macht dir präzise Vorschläge für Verhandlungen"
+			"Desc": "Macht dir präzise Vorschläge für Verhandlungen",
+			"Warning": "Deaktiviert: Starte zuerst eine neue Verhandlung!"
         },
 		"Settings" : {
 			"Title" : "Einstellungen",

@@ -66,7 +66,7 @@ let Unit = {
 			if (diff <= 0) {
 				clearInterval(x);
 
-				$('.alca-countdown').html('<span class="text-danger">Ernte!</span>');
+				$('.alca-info').html('<span class="text-danger">Ernte!</span>');
 			} else
 				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
 
@@ -81,7 +81,7 @@ let Unit = {
 						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
 					});
 
-		top.push(timer);
+		top.push('<div class="alca-info text-center">' + timer + '</div>');
 
 		top.push('</div>');
 
@@ -352,7 +352,7 @@ let Unit = {
 		// fertige Tabelle zusammen setzten
 		let h = [];
 
-		h.push(top);
+		h.push(top.join(''));
 
 		h.push('<div class="unit-tabs tabs">');
 		h.push( Unit.GetTabs() );
