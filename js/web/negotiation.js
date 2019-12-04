@@ -58,6 +58,20 @@ let Negotiation = {
     },
 
 
+    /**
+    * Body der Box aktualisieren falls bereits geöffnet
+    *
+    * @constructor
+    */
+    RefreshBox: () => {
+        if ($('#negotiation').length > 0) {
+            setTimeout(() => {
+                Negotiation.CalcBody();
+            }, 200);
+        }
+    },
+
+    
 	/**
 	 * Berechnungen durchführen
 	 *
@@ -243,7 +257,7 @@ let Negotiation = {
             }
         }
 
-        Negotiation.BuildBox();
+        Negotiation.RefreshBox();
     },
 
 
@@ -254,6 +268,11 @@ let Negotiation = {
 	 */
     ExitNegotiation: () => {
         Negotiation.CurrentTry = 0;
+        Negotiation.CurrentTable = undefined;
+        Negotiation.Message = i18n['Boxes']['Negotiation']['Canceled'];
+        Negotiation.MessageClass = 'danger';
+
+        Negotiation.RefreshBox();
     },
 
 
@@ -347,10 +366,6 @@ let Negotiation = {
 			Negotiation.Guesses[0] = Negotiation.CurrentTable['Guess'];
 		}
 
-		if( $('#negotiation').length > 0 ){
-			setTimeout(()=>{
-				Negotiation.CalcBody();
-			}, 200);
-		}
+        Negotiation.RefreshBox();
 	}
 };
