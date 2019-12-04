@@ -466,16 +466,18 @@ let Menu = {
 	 * @constructor
 	 */
     Negotiation_Btn: () => {
-        let btn_NegotiationBG = $('<div />').attr('id', 'negotationBtn').addClass('hud-btn');
+        let btn_NegotiationBG = $('<div />').attr('id', 'negotationBtn').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
         Menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], i18n['Menu']['Negotiation']['Desc'], 'negotationBtn');
 
         let btn_Negotiation = $('<span />');
 
-        btn_Negotiation.bind('click', function () {
-            Negotiation.Show();
-        });
+		btn_Negotiation.bind('click', function () {
+			if( $('#negotationBtn').hasClass('hud-btn-red') === false) {
+				Negotiation.Show();
+			}
+		});
 
         btn_NegotiationBG.append(btn_Negotiation);
 
