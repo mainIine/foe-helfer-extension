@@ -145,6 +145,7 @@ let i18n = {
             "Title" : "Verhandlungassistent",
             "WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
             "TryEnd": "Versuche zu Ende",
+            "Canceled": "Verhandlung wurde abgebrochen",
             "Success": "Erfolg",
 			"Chance": "Chance",
 			"Person": "Person",
