@@ -527,7 +527,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-
 				let Time = d.find(obj => {
 					return obj['requestClass'] === 'TimeService' && obj['requestMethod'] === 'updateTime';
 				});
@@ -563,12 +562,12 @@ document.addEventListener("DOMContentLoaded", function(){
                 });
 
                 if (GuildBattlegroundService !== undefined) {
-                    Negotiation.StartNegotiation(GuildBattlegroundService['responseData']);
+                	Negotiation.StartNegotiation(GuildBattlegroundService['responseData']);
                 }
 
                 let NegotiationSubmitTurn = d.find(obj => {
                     return obj['requestClass'] === 'NegotiationGameService' && obj['requestMethod'] === 'submitTurn';
-                })
+                });
 
                 if (NegotiationSubmitTurn !== undefined) {
                     Negotiation.SubmitTurn(NegotiationSubmitTurn['responseData']);
@@ -1402,6 +1401,7 @@ let MainParser = {
 		};
 		xobj.send(null);
 	},
+
 
 	loadFile: (url, callback)=> {
 

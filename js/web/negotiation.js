@@ -15,6 +15,7 @@
 let Negotiation = {
     Tables: {},
     CurrentTry: 0,
+	Resources: null,
     TryCount: undefined,
 	GoodCount: undefined,
     CurrentTable: undefined,
@@ -90,8 +91,8 @@ let Negotiation = {
             h.push('<tr>');
             h.push('<td>Runde ' + (i + 1) + ':</td>');
 
-            for (let Platz = 0; Platz < Negotiation.PlaceCount; Platz++) {
-                let Good = Negotiation.Goods[Negotiation.Guesses[i][Platz]];
+            for (let place = 0; place < Negotiation.PlaceCount; place++) {
+                let Good = Negotiation.Goods[Negotiation.Guesses[i][place]];
 
                 if (Good !== undefined) {
                     let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
@@ -123,13 +124,18 @@ let Negotiation = {
 	 * @constructor
 	 */
     StartNegotiation: (responseData) => {
+
+    	if( $('#negotationBtn').hasClass('hud-btn-red') ){
+			$('#negotationBtn').removeClass('hud-btn-red');
+		}
+
         Negotiation.CurrentTry = 1;
         Negotiation.Message = undefined;
-        let Ressources = responseData['possibleCosts']['resources']
+        let Resources = responseData['possibleCosts']['resources'];
 
         Negotiation.Goods = [];
-        for (let RessourceName in Ressources) {
-            Negotiation.Goods[Negotiation.Goods.length] = RessourceName;
+        for (let ResourceName in Resources) {
+            Negotiation.Goods[Negotiation.Goods.length] = ResourceName;
         }
 
         Negotiation.Goods.sort(function (Good1, Good2) {
@@ -165,16 +171,9 @@ let Negotiation = {
         {
             Negotiation.TryCount = 3;
         }
-        
-        let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount)
-        Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
-        Negotiation.Guesses = [];
-        if (Negotiation.CurrentTable !== undefined) {
-            Negotiation.Guesses[0] = Negotiation.CurrentTable.Guess;
-        }
-		
-        Negotiation.BuildBox();
+		Negotiation.Guesses = [];
+        Negotiation.GetTable();
     },
 
 
@@ -315,26 +314,43 @@ let Negotiation = {
         }
 
         return Value;
-    }
+    },
+
+
+	/**
+	 * Läd die Tabelle
+	 *
+	 * @constructor
+	 */
+	GetTable: ()=> {
+
+		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
+
+		// gibt es noch nicht, laden
+    	if( Negotiation.Tables[TableName] === undefined ){
+
+			let url = 'chrome-extension://' + extID + '/js/web/negotiationtables/';
+
+    		MainParser.loadJSON(url + TableName + '.json', function(response){
+				Negotiation.Tables[TableName] = JSON.parse(response);
+
+				Negotiation.CurrentTable = Negotiation.Tables[TableName];
+
+				if (Negotiation.CurrentTable !== undefined) {
+					Negotiation.Guesses[0] = Negotiation.CurrentTable['Guess'];
+				}
+			});
+		}
+    	// bereits geladen
+    	else {
+			Negotiation.CurrentTable = Negotiation.Tables[TableName];
+			Negotiation.Guesses[0] = Negotiation.CurrentTable['Guess'];
+		}
+
+		if( $('#negotiation').length > 0 ){
+			setTimeout(()=>{
+				Negotiation.CalcBody();
+			}, 200);
+		}
+	}
 };
-
-(function () {
-    let url = 'chrome-extension://' + extID + '/js/web/negotiationtables/';
-
-    for (let TryCount = 3; TryCount <= 4; TryCount++) {
-        for (let GoodCount = 2; GoodCount <= 10; GoodCount++) {
-            let Request = new XMLHttpRequest;
-            Request.open("GET", url + Negotiation.GetTableName(TryCount, GoodCount) + '.json');
-            Request.onreadystatechange = function () {
-                if (this.readyState == 4) {
-                    if (Request.responseText !== '') {
-                        let json = JSON.parse(Request.responseText);
-                        let TableName = Negotiation.GetTableName(json['TryCount'], json['GoodCount']);
-                        Negotiation.Tables[TableName] = json;
-                    }
-                }
-            };
-            Request.send();
-        }
-    }
-})();
