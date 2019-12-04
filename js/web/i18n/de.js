@@ -143,14 +143,11 @@ let i18n = {
 
         "Negotiation": {
             "Title" : "Verhandlungassistent",
-			"Start" : "Bitte Verhandlung starten",
-			"NoSupport" : "Verhandlung wird derzeit leider noch nicht unterstützt",
-			"ErrorSelfPlaying": "Unbekannter Fehler, bitte manuell fertig spielen",
+            "WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
+            "TryEnd": "Versuche zu Ende",
+            "Success": "Erfolg",
 			"Chance": "Chance",
 			"Person": "Person",
-			"WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
-			"Success": "Erfolg",
-			"TryEnd": "Versuche zu Ende",
         },
 
 		"Settings" : {
