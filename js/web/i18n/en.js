@@ -209,7 +209,8 @@ let i18n = {
         },
         "Negotiation": {
             "Title": "Negotiation helper",
-			"Desc": "Make precise proposals for negotiations"
+			"Desc": "Make precise proposals for negotiations",
+			"Warning": "Disabled: Start a negotiation first!"
         },
 		"Settings" : {
 			"Title" : "Settings",

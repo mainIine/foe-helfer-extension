@@ -1,12 +1,28 @@
 ##Changelog - Chrome Extension
 
-##### v2.3.12.5
-** ** BugFix
+#####v2.3.13
+**New**
+- Negotiation Assistant:
+    - proposes matching goods through calculated algorithms for each round [#183](https://github.com/dsiekiera/foe-helfer-extension/issues/183)
+    - recognizes the tavern's 4 moves and calculates the possibilities of the combinations accordingly
+
+**Update**
+- Harvest-Helper:
+    - CityMap and building list close when leaving the neighbor [forum](https://forum.foe-rechner.de/d/11-wunsche-zur-plunderanzeige)
+
+**BugFix**
+- Guild LiveChat:
+    - Token added [#198](https://github.com/dsiekiera/foe-helfer-extension/issues/198)
+
+---
+
+#####v2.3.12.5
+**BugFix**
 - Army overview:
     - If a Boost LG was missing, the box was not loaded [#185](https://github.com/dsiekiera/foe-helfer-extension/issues/185)
     - Fixes turned "if", Thanks to [Th3C0D3R](https://github.com/Th3C0D3R)
 
-** Update **
+**Update**
 - Extension:
     - Harvester closes when returning to his own city [#178](https://github.com/dsiekiera/foe-helfer-extension/issues/178)
     - Fixed "Transparent" box [#188](https://github.com/dsiekiera/foe-helfer-extension/issues/188)

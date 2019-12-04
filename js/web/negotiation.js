@@ -15,7 +15,6 @@
 let Negotiation = {
     Tables: {},
     CurrentTry: 0,
-	Resources: null,
     TryCount: undefined,
 	GoodCount: undefined,
     CurrentTable: undefined,
@@ -141,6 +140,7 @@ let Negotiation = {
 
     	if( $('#negotationBtn').hasClass('hud-btn-red') ){
 			$('#negotationBtn').removeClass('hud-btn-red');
+			$('#negotiation-closed').remove();
 		}
 
         Negotiation.CurrentTry = 1;

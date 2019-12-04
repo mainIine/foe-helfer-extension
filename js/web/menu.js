@@ -469,7 +469,7 @@ let Menu = {
         let btn_NegotiationBG = $('<div />').attr('id', 'negotationBtn').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
-        Menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], i18n['Menu']['Negotiation']['Desc'], 'negotationBtn');
+        Menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], '<em id="negotiation-closed" class="tooltip-error">' + i18n['Menu']['Negotiation']['Warning'] + '<br></em>' + i18n['Menu']['Negotiation']['Desc'], 'negotationBtn');
 
         let btn_Negotiation = $('<span />');
 

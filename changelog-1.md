@@ -1,5 +1,21 @@
 ##Changelog - Chrome Extension
 
+#####v2.3.13
+**Neu**
+- Verhandlungsassistent:
+    - schlägt durch berechnete Algorithmen passende Güter für jede Runde vor [#183](https://github.com/dsiekiera/foe-helfer-extension/issues/183)
+    - erkennt den 4 Zug der Taverne und kalkuliert entsprechend die Möglichkeiten der Kombinationen
+
+**Update**
+- Erntehelfer:
+    - CityMap und Gebäudeliste schliessen beim verlassen des Nachbarn [Forum](https://forum.foe-rechner.de/d/11-wunsche-zur-plunderanzeige)
+
+**BugFix**
+- Gilden-LiveChat:
+    - Token ergänzt [#198](https://github.com/dsiekiera/foe-helfer-extension/issues/198)
+
+---
+
 #####v2.3.12.5
 **BugFix**
 - Armee Übersicht:
