@@ -144,14 +144,11 @@ let i18n = {
 
         "Negotiation": {
             "Title": "Negotiation helper",
-			"Start" : "Please start negotiation",
-			"NoSupport" : "Negotiation is currently not supported",
-			"ErrorSelfPlaying": "Unknown error, please finish manually",
-			"Chance": "Chance",
-			"Person": "Person",
-			"WrongGoods": "Wrong goods selected, please finish manually",
-			"Success": "Success",
-			"TryEnd": "Try to finish",
+            "WrongGoods": "Wrong goods selected, please finish manually",
+            "TryEnd": "No more tries",
+            "Success": "Success",
+            "Chance": "Chance",
+            "Person": "Person",
         },
 
 		"Settings" : {
