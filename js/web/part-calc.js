@@ -119,6 +119,7 @@ let Parts = {
 	/**
 	 * Sichtbarer Teil
 	 *
+	 * @param input
 	 * @constructor
 	 */
 	BoxBody: (input)=> {
@@ -394,20 +395,22 @@ let Parts = {
         Parts.BuildBackgroundBody(Maezens, Eigens, NonExts);
 
 		$('#OwnPartBoxBody').html( h.join('') );
-},
+	},
 
 
 	/**
 	 * Daten für die Kopierbuttons
 	 *
-	 * @param p
+	 * @param Maezens
+	 * @param Eigens
+	 * @param NonExts
 	 * @constructor
 	 */
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
 			n = localStorage.getItem('PlayerCopyName'),
 			m = localStorage.getItem('current_player_name'),
-			s = localStorage.getItem(Parts.CurrentBuildingID + 'Scheme'),
+			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
 		b.push('<p><span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span></p>');
@@ -468,7 +471,7 @@ let Parts = {
 				}
 
 				// Schema speichern
-				localStorage.setItem(Parts.CurrentBuildingID + 'Scheme', cs);
+				localStorage.setItem('DropdownScheme', cs);
 
 				$(trigger).addClass('border-success');
 
@@ -618,7 +621,6 @@ let Parts = {
 	/**
 	 * Die Box ist schon offen, Content updaten
 	 *
-	 * @param d
 	 * @constructor
 	 */
 	RefreshData: ()=> {

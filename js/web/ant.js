@@ -35,8 +35,6 @@ document.addEventListener("DOMContentLoaded", function(){
 	// Local-Storage leeren
 	localStorage.removeItem('OwnCurrentBuildingCity');
     localStorage.removeItem('OwnCurrentBuildingGreat');
-
-	MainParser.setLanguage();
 });
 
 (function () {
@@ -193,6 +191,10 @@ document.addEventListener("DOMContentLoaded", function(){
 					$('#ResultBox').fadeToggle(function(){
 						$(this).remove();
 					});
+
+					$('#city-map-overlay').fadeToggle(function(){
+						$(this).remove();
+					});
 				}
 
 
@@ -225,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'CityProductionService' && obj['requestMethod'] === 'pickupProduction';
 				});
 
-				if(AlcatrazService !== undefined && AlcatrazService['responseData']['militaryProducts'] !== undefined && AlcatrazService['responseData']['militaryProducts'].lenght > 0){
+				if(AlcatrazService !== undefined && AlcatrazService['responseData']['militaryProducts'] !== undefined){
 					localStorage.setItem('LastAlcatrazUnits', JSON.stringify(AlcatrazService['responseData']['militaryProducts']));
 				}
 
@@ -538,6 +540,8 @@ document.addEventListener("DOMContentLoaded", function(){
 				else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
 					Menu.BuildOverlayMenu();
 					MainMenuLoaded = true;
+
+					MainParser.setLanguage();
                 }
 
                 // --------------------------------------------------------------------------------------------------
@@ -594,6 +598,9 @@ let MainParser = {
 	Language: 'en',
 	Buildings: null,
 	i18n: null,
+	PossibleLanguages: [
+		'de', 'en', 'fr'
+	],
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -621,26 +628,6 @@ let MainParser = {
 	setLanguage: ()=>{
 		// Translation
 		MainParser.Language = GuiLng;
-	},
-
-
-	ParseMoFile: ()=> {
-
-		MainParser.loadFile(MainParser.MoFile, function(r){
-			let dd = r;
-
-			let aBuf = new ArrayBuffer(dd.length);
-			let view = new Uint8Array(aBuf);
-
-			for (let i = 0; i < dd.length; ++i) {
-				view[i] = dd[i];
-			}
-
-			let data = jedGettextParser.mo.parse(aBuf);
-
-			console.log('data: ', data);
-			console.log('view: ', view);
-		});
 	},
 
 
