@@ -41,10 +41,6 @@ let Negotiation = {
             };
 
             HTML.Box(args);
-
-            if (Negotiation.Message === undefined) {
-				Negotiation.Message = i18n['Boxes']['Negotiation']['Start'];
-			}
         }
 
         Negotiation.BuildBox();
@@ -68,62 +64,52 @@ let Negotiation = {
 	 */
     CalcBody: () => {
         let h = [];
-
-        if (Negotiation.CurrentTry === 0) {
-            h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>')
+        h.push('<table class="foe-table">');
+        
+        h.push('<thead>');
+        if (Negotiation.CurrentTable !== undefined) {
+            h.push('<tr>');
+            h.push('<td colspan="' + (Negotiation.PlaceCount + 1) + '" class="text-warning">' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['Chance'])) + '%</td>')
+            h.push('</tr>');
         }
-        else {
-            if (Negotiation.CurrentTable === undefined) {
-                if (Negotiation.CurrentTry === 1) {
-                    h.push('<p class="text-danger text-center"><strong>' + i18n['Boxes']['Negotiation']['NoSupport'] + '</strong></p>')
+
+        h.push('<tr>');
+
+        h.push('<th></th>');
+
+        for (let i = 0; i < Negotiation.PlaceCount; i++) {
+            h.push('<th class="text-center">' + i18n['Boxes']['Negotiation']['Person'] + ' ' + (i + 1) + '</th>');
+        }
+
+        h.push('</tr>');
+        h.push('</thead>');
+
+        h.push('<tbody>');
+
+        for (let i = 0; i < Negotiation.Guesses.length; i++) {
+            h.push('<tr>');
+            h.push('<td>Runde ' + (i + 1) + ':</td>');
+
+            for (let Platz = 0; Platz < Negotiation.PlaceCount; Platz++) {
+                let Good = Negotiation.Goods[Negotiation.Guesses[i][Platz]];
+
+                if (Good !== undefined) {
+                    let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
+                    h.push('<td class="text-center"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
                 }
                 else {
-                    h.push('<p class="text-danger text-center"><strong>' + i18n['Boxes']['Negotiation']['ErrorSelfPlaying'] + '</strong></p>');
+                    h.push('<td></td>');                            
                 }
             }
-            else {
-                h.push('<table class="foe-table">');
+            h.push('</tr>');
+        }
 
-                h.push('<thead>');
-                h.push('<tr>');
-                h.push('<td colspan="' + (Negotiation.PlaceCount +1) + '" class="text-warning">' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['Chance'])) + '%</td>')
-                h.push('</tr>');
+		h.push('</thead>');
 
-                h.push('<tr>');
+        h.push('</table>');
 
-                h.push('<th></th>');
-
-                for (let i = 0; i < Negotiation.PlaceCount; i++) {
-                    h.push('<th class="text-center">' + i18n['Boxes']['Negotiation']['Person'] + ' ' + (i+1) + '</th>');
-                }
-
-                h.push('</tr>');
-                h.push('</thead>');
-
-				h.push('<tbody>');
-
-                for (let i = 0; i < Negotiation.Guesses.length; i++) {
-                    h.push('<tr>');
-                    h.push('<td>Runde ' + (i+1) + ':</td>');
-
-                    for (let Platz = 0; Platz < Negotiation.PlaceCount; Platz++) {
-                        let Good = Negotiation.Goods[Negotiation.Guesses[i][Platz]];
-
-                        if (Good !== undefined) {
-                        	let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
-                            h.push('<td class="text-center"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
-                        }
-                        else {
-                            h.push('<td></td>');                            
-                        }
-                    }
-                    h.push('</tr>');
-                }
-
-				h.push('</thead>');
-
-                h.push('</table>');
-            }
+        if (Negotiation.Message !== undefined) {
+            h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>')
         }
 
         $('#negotiationBody').html(h.join(''));
@@ -138,6 +124,7 @@ let Negotiation = {
 	 */
     StartNegotiation: (responseData) => {
         Negotiation.CurrentTry = 1;
+        Negotiation.Message = undefined;
         let Ressources = responseData['possibleCosts']['resources']
 
         Negotiation.Goods = [];
@@ -160,6 +147,14 @@ let Negotiation = {
                 Now = new Date().getTime();
 
             if (BoostType === 'extra_negotiation_turn' && moment.unix(BoostExpire) > Now) {
+                Negotiation.TryCount = 4;
+            }
+            else {
+                Negotiation.TryCount = 3;
+            }
+        }
+        else if (responseData['context'] === undefined) {
+            if (Negotiation.Goods.length > 6) {
                 Negotiation.TryCount = 4;
             }
             else {
@@ -284,14 +279,42 @@ let Negotiation = {
 	 * @constructor
 	 */
     GetGoodValue: (GoodName) => {
-        let Good = GoodsData[GoodName];
-        let Era = Good['era'];
+        if (GoodName === 'money') {
+            Value = 0;
+        }
+        else if (GoodName === 'supplies') {
+            Value = 50;
+        }
+        else if (GoodName === 'medals') {
+            Value = 3000;
+        }
+        else if (GoodName === 'promethium') {
+            Value = 3500;
+        }
+        else if (GoodName === 'orichalcum') {
+            Value = 4000;
+        }
+        else {
+            let Good = GoodsData[GoodName];
+            let Era = Good['era'];
 
-        let EraID = Technologies.Eras[Era];
-        if (EraID === undefined)
-        	EraID = 0;
+            let EraID = Technologies.Eras[Era];
+            if (EraID === undefined) EraID = 20;
 
-        return EraID;
+            Value = EraID * 100;
+
+            let Stock = ResourceStock[GoodName];
+            if (Stock === undefined || Stock === 0)
+            {
+                Value += 99;
+            }
+            else
+            {
+                Value+= (1.0 / Stock);
+            }
+        }
+
+        return Value;
     }
 };
 
