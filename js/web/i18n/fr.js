@@ -145,6 +145,7 @@ let i18n = {
             "Title": "assistant de négociation",
             "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
             "TryEnd": "Essayer de finir",
+            "Canceled": "La négociation a été annulée", //Todo: Translate
             "Success": "Succès",
             "Chance": "Chance",
             "Person": "Personne",

@@ -146,6 +146,7 @@ let i18n = {
             "Title": "Negotiation helper",
             "WrongGoods": "Wrong goods selected, please finish manually",
             "TryEnd": "No more tries",
+            "Canceled": "Negotiation has been canceled",
             "Success": "Success",
             "Chance": "Chance",
             "Person": "Person",
