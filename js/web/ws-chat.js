@@ -23,6 +23,7 @@ Chat = {
 	OwnName: '',
 	WebsocketChat : null,
 	ReadMode: 'live',
+	Token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjIxMjQxNTBjZDVkMDhlOGQ3NGZlNGIxYmQ2YjY1ZTQxOWM5NTlkZThiZGQ1ZWI1NjZmNTcwODczMTRlZmI4NzA2NWU1MDIyYTUyZDZhYThkIn0.eyJhdWQiOiI2IiwianRpIjoiMjEyNDE1MGNkNWQwOGU4ZDc0ZmU0YjFiZDZiNjVlNDE5Yzk1OWRlOGJkZDVlYjU2NmY1NzA4NzMxNGVmYjg3MDY1ZTUwMjJhNTJkNmFhOGQiLCJpYXQiOjE1NzU0NjY1ODIsIm5iZiI6MTU3NTQ2NjU4MiwiZXhwIjoxNjA3MDg4OTgyLCJzdWIiOiIxMjIiLCJzY29wZXMiOltdfQ.cUVU87n1ud8bcpnmiE84LRkc88wk6krjgnmbNz4dUSFQZ98yvPapYrz6ln0IIm9qn1SyxChTsJdTxUa6G3bBjGhfg8jpQ_pIwzG66VrONtc3xdW0sAZwq6nL5uSs_UQdCfY_U4DlCI8ENYtbTxQVDQ-D73zXrnOLc3UqBl-y-1RsQY2k4lbx9mqtBnz_O4bKeu52NXHjdGa2OXRI5oT4SLg74uXkq4u_h27cuCdwJUJX-18hlUVjmHIQ2Sdm7bv2A5ShgdwIbYqm8s0YZ2yQpmA_e3vXGEBl_GvLFJf0a7OKGdyr5EyNONX6g3wq1zNr0K3UV52ZF7jrdH16roCNkyKHltXLCmrrHjbUOigQ3iiFDX6qHir3sUdJMca-JU6v5dggYn1m0YkEARW_2SFbDU-9wFouIB6PF6ZKIRnXMAdWP9td6j2eQOogK8kzIJpBnivCBdot54AyZDWZAFKUAn05oSadj7Sfamna3lgj0RKpkXl4uvu00zS4qDjXE4yUsHPsp2s56-dhhRMjP2eMAwZnorpsyfc3IWsRfl-3G1n7ac1HiqLvHZ-wtmcaRP4_wBVeF4DfijGXnd19Cksto3Kg45a3ao5ubRTWPbH51Goe1yqEc2-MYJEx_fWHAPA3ZYEZMGrnjT7JThe94y_JgDa89H3Frs9CeToiMbpXe6E',
 
 	/**
 	 * Holt die Daten für den Chat
@@ -95,7 +96,7 @@ Chat = {
 			}, 100
 		);
 
-		let wsUri = 'wss://connect.websocket.in/foe-guild-' + Chat.GildID + '?room_id=1';
+		let wsUri = 'wss://connect.websocket.in/v2/' + Chat.GildID + '?token=' + Chat.Token;
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
