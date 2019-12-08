@@ -24,7 +24,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     GoodsData = [],
     GoodsList = [],
     ResourceStock = [],
-    MainMenuLoaded = false;
+    MainMenuLoaded = false,
+    LGCurrentLevelMedals = undefined;
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -320,16 +321,26 @@ document.addEventListener("DOMContentLoaded", function(){
                     return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
                 });
 
+                let getConstructionRanking = d.find(obj => {
+                    return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstructionRanking';
+                });
+
                 let contributeForgePoints = d.find(obj => {
                     return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
                 });
-
+                
                 let Rankings;
                 if (getConstruction !== undefined) {
                     Rankings = getConstruction['responseData']['rankings'];
+                    IsLevelScroll = false;
+                }
+                else if (getConstructionRanking !== undefined) {
+                    Rankings = getConstructionRanking['responseData'];
+                    IsLevelScroll = true;
                 }
                 else if (contributeForgePoints !== undefined) {
                     Rankings = contributeForgePoints['responseData'];
+                    IsLevelScroll = false;
                 }
 
 				let UpdateEntity = d.find(obj => {
@@ -337,13 +348,54 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
                 if (UpdateEntity !== undefined && Rankings !== undefined) {
+                    let IsPreviousLevel = false;
+
                     //Eigenes LG
                     if (UpdateEntity['responseData'][0]['player_id'] === ExtPlayerID) {
-                         MainParser.OwnLG(UpdateEntity['responseData'][0], Rankings);
+                        //LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
+                        if (IsLevelScroll) {
+                            let Medals = 0;
+                            for (let i = 0; i < Rankings.length; i++) {
+                                if (Rankings[i]['reward']['resources']['medals'] !== undefined) {
+                                    Medals = Rankings[i]['reward']['resources']['medals'];
+                                    break;
+                                }
+                            }
+
+                            if (Medals !== LGCurrentLevelMedals) {
+                                IsPreviousLevel = true;
+                            }
+                        }
+                        else {
+                            let Medals = 0;
+                            for (let i = 0; i < Rankings.length; i++) {
+                                if (Rankings[i]['reward']['resources']['medals'] !== undefined) {
+                                    Medals = Rankings[i]['reward']['resources']['medals'];
+                                    break;
+                                }
+                            }
+                            LGCurrentLevelMedals = Medals;
+                        }
+
+                        localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(UpdateEntity['responseData'][0]));
+                        localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(Rankings));
+                        localStorage.setItem('OwnCurrentBuildingPreviousLevel', IsPreviousLevel);
+
+                        // das erste LG wurde geladen
+                        $('#ownFPs').removeClass('hud-btn-red');
+                        $('#ownFPs-closed').remove();
+
+                        if ($('#OwnPartBox').length > 0) {
+                            Parts.RefreshData();
+                        }
+
+                        if (!IsLevelScroll) {
+                            MainParser.OwnLG(UpdateEntity['responseData'][0], Rankings);
+                        }
                     }
 
                     //Fremdes LG
-                    if (UpdateEntity['responseData'][0]['player_id'] !== ExtPlayerID) {
+                    if (UpdateEntity['responseData'][0]['player_id'] !== ExtPlayerID && !IsPreviousLevel) {
                         LastKostenrechnerOpenTime = new Date().getTime()
 
                         $('#calcFPs').removeClass('hud-btn-red');
@@ -855,34 +907,22 @@ let MainParser = {
 	 * @constructor
 	 */
 	OwnLG: (d, e)=> {
+        // ist es schon wieder so weit?
+        let lg_name = 'LG-' + d['cityentity_id'] + '-' + ExtPlayerID,
+            time = MainParser.checkNextUpdate(lg_name);
 
-		localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(d));
-		localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(e));
+        // noch nicht wieder updaten oder es ist kein "eigenes" LG
+        if (time !== true || d['player_id'] !== ExtPlayerID) {
+            return false;
+        }
 
-		// das erste LG wurde geladen
-		$('#ownFPs').removeClass('hud-btn-red');
-		$('#ownFPs-closed').remove();
+        MainParser.send2Server(d, 'OwnLG', function (r) {
 
-		if( $('#OwnPartBox').length > 0 ){
-			Parts.RefreshData(d, e);
-		}
-
-		// ist es schon wieder so weit?
-		let lg_name = 'LG-'+ d['cityentity_id'] +'-' + ExtPlayerID,
-			time = MainParser.checkNextUpdate(lg_name);
-
-		// noch nicht wieder updaten oder es ist kein "eigenes" LG
-		if(time !== true || d['player_id'] !== ExtPlayerID){
-			return false;
-		}
-
-		MainParser.send2Server(d, 'OwnLG', function(r){
-
-			// nach Erfolg, Zeitstempel in den LocalStorage
-			if(r['status'] === 'OK'){
-				localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
-			}
-		});
+            // nach Erfolg, Zeitstempel in den LocalStorage
+            if (r['status'] === 'OK') {
+                localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
+            }
+        });
 	},
 
 
