@@ -20,7 +20,8 @@ let i18n = {
 		"OwnpartCalculator" : {
 			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
-			"Step": "Niveau",
+            "Step": "Niveau",
+            "OldLevel": "ancien niveau", //Todo: Translate
 			"PatronPart": "Contribution externe",
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
