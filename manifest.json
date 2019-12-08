@@ -33,7 +33,8 @@
 		"vendor/*.js",
 		"vendor/sounds/*.mp3",
 		"js/web/*.*",
-		"css/images/*.*"
+		"css/images/*.*",
+		"content/*.html"
 	],
 	
 	"content_scripts": [
