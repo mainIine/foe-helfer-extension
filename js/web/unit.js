@@ -17,7 +17,6 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
-	Pool: null,
 
 	Cache : null,
 
@@ -107,9 +106,15 @@ let Unit = {
 
 		attack.push('<tbody>');
 
-		let cnt = 0;
+        let cnt = 0;
 
-		for(let i in Unit.Attack)
+        Unit.Attack = [];
+        for (let i in Unit.Cache['units']) {
+            if (Unit.Cache['units'][i]['is_attacking']) {
+                Unit.Attack[Unit.Attack.length] = Unit.Cache['units'][i];
+            }
+        }
+        for(let i in Unit.Attack)
 		{
 			if(!Unit.Attack.hasOwnProperty(i)){
 				break;
@@ -158,21 +163,15 @@ let Unit = {
 			attack.push('<td class="text-center"><em><small>+' + dp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
 
 			attack.push('</tr>');
-
-			cnt++;
 		}
 
 
-		if(cnt < 8)
-		{
-			for(let i = cnt; i <= 7; i++)
-			{
-				attack.push('<tr>');
-				attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
-				attack.push('</tr>');
-			}
+    	for(let i = Unit.Attack.length; i < 8; i++)
+	    {
+		    attack.push('<tr>');
+			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
+			attack.push('</tr>');
 		}
-
 
 		attack.push('</tbody>');
 
@@ -200,7 +199,12 @@ let Unit = {
 
 		defense.push('<tbody>');
 
-		cnt = 0;
+        Unit.Defense = [];
+        for (let i in Unit.Cache['units']) {
+            if (Unit.Cache['units'][i]['is_defending']) {
+                Unit.Defense[Unit.Defense.length] = Unit.Cache['units'][i];
+            }
+        }
 		for(let i in Unit.Defense)
 		{
 			if(!Unit.Defense.hasOwnProperty(i)){
@@ -250,18 +254,13 @@ let Unit = {
 			defense.push('<td class="text-center"><em><small>+' + ddp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
 
 			defense.push('</tr>');
-
-			cnt++;
 		}
 
-		if(cnt < 8)
+		for(let i = Unit.Defense.length; i < 8; i++)
 		{
-			for(let i = cnt; i <= 7; i++)
-			{
-				defense.push('<tr>');
-				defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
-				defense.push('</tr>');
-			}
+			defense.push('<tr>');
+			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
+			defense.push('</tr>');
 		}
 
 		defense.push('</tbody>');
