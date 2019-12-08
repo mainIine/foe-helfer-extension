@@ -56,33 +56,37 @@ let Unit = {
 	BuildBox:()=> {
 
 		let top = [],
-			alca = CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1')),
-			countDownDate = moment.unix(alca['state']['next_state_transition_at']);
+			alca = CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
 
-		let x = setInterval(function() {
-			let diff = countDownDate.diff(moment());
+		if(alca !== undefined){
+			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
 
-			if (diff <= 0) {
-				clearInterval(x);
+			let x = setInterval(function() {
+				let diff = countDownDate.diff(moment());
 
-				$('.alca-info').html('<span class="text-danger">Ernte!</span>');
-			} else
-				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
+				if (diff <= 0) {
+					clearInterval(x);
 
-		}, 1000);
+					$('.alca-info').html('<span class="text-danger">Ernte!</span>');
+				} else
+					$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
 
-		top.push('<div style="padding: 4px;" class="text-center">');
+			}, 1000);
 
-		let timer = HTML.i18nReplacer(
-					i18n['Boxes']['Units']['NextUnitsIn'],
+			top.push('<div style="padding: 4px;" class="text-center">');
+
+			let timer = HTML.i18nReplacer(
+				i18n['Boxes']['Units']['NextUnitsIn'],
 				{
-						count: alca.state.current_product.amount,
-						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
-					});
+					count: alca.state.current_product.amount,
+					harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+				});
 
-		top.push('<div class="alca-info text-center">' + timer + '</div>');
+			top.push('<div class="alca-info text-center">' + timer + '</div>');
 
-		top.push('</div>');
+			top.push('</div>');
+		}
+
 
 		// Angriffsarmee
 		let attack = [];
@@ -106,14 +110,18 @@ let Unit = {
 
 		attack.push('<tbody>');
 
-        let cnt = 0;
 
         Unit.Attack = [];
+
         for (let i in Unit.Cache['units']) {
+
+        	if(!Unit.Cache['units'].hasOwnProperty(i)) break;
+
             if (Unit.Cache['units'][i]['is_attacking']) {
                 Unit.Attack[Unit.Attack.length] = Unit.Cache['units'][i];
             }
         }
+
         for(let i in Unit.Attack)
 		{
 			if(!Unit.Attack.hasOwnProperty(i)){
