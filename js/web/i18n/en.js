@@ -20,7 +20,8 @@ let i18n = {
 		"OwnpartCalculator" : {
 			"Title": "Co-payment calculator",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
-			"Step": "Step",
+            "Step": "Step",
+            "OldLevel": "Old level",
 			"PatronPart": "Patron share",
 			"OwnPart": "Own contribution",
             "LGTotalFP": "GB Total-FP",
