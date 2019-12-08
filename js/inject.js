@@ -145,6 +145,7 @@ function InjectCode()
 		'productions',
         'part-calc',
         'unit',
+		'notes',
         'technologies',
         'negotiation',
 		'read-buildings',

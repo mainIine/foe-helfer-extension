@@ -410,6 +410,7 @@ let Unit = {
 		return Unit.TabsContent.join('');
 	},
 
+
 	/**
 	 * Die letzten Einheiten die aus dem Alca gekommen sind
 	 *
@@ -432,21 +433,8 @@ let Unit = {
 			return;
 		}
 
-		Unit.SetTabs('alca');
-
-		last.push('<table class="foe-table">');
-
-		last.push('<thead>');
-		last.push('<tr>');
-		last.push('<th></th>');
-		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Unbind'] + '</th>');
-		last.push('</tr>');
-		last.push('</thead>');
-
-		last.push('<tbody>');
-
-		let cnt = 0;
+		let LastAlca = [],
+			LastTotal = AlcaUnits.length;
 
 		for(let i in AlcaUnits)
 		{
@@ -455,16 +443,51 @@ let Unit = {
 			}
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === AlcaUnits[i]['unitTypeId'])),
-				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === AlcaUnits[i]['unitId'])),
 				era = type['minEra'];
 
-			last.push('<tr data-era="' + era + '">');
+			if(LastAlca[AlcaUnits[i]['unitTypeId']] === undefined){
+				LastAlca[AlcaUnits[i]['unitTypeId']] = {
+					era: era,
+					id: AlcaUnits[i]['unitTypeId'],
+					name: type['name'],
+					count: 1
+				};
 
-			last.push('<td><span class="units-icon ' + AlcaUnits[i]['unitTypeId'] + '"></span></td>');
-			last.push('<td>' + type['name'] + '</td>');
+			} else {
+				LastAlca[AlcaUnits[i]['unitTypeId']]['count']++;
+			}
+		}
 
-			let status = cache['currentHitpoints'] * 10;
-			last.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
+		Unit.SetTabs('alca');
+
+		last.push('<table class="foe-table">');
+
+		last.push('<thead>');
+		last.push('<tr>');
+		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
+		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+		last.push('<th class="text-center">Anzahl</th>');
+		last.push('<th class="text-center">Anteilig</th>');
+		last.push('</tr>');
+		last.push('</thead>');
+
+		last.push('<tbody>');
+
+		let cnt = 0;
+
+		for(let i in LastAlca)
+		{
+			if(!LastAlca.hasOwnProperty(i)){
+				break;
+			}
+
+			last.push('<tr data-era="' + LastAlca[i]['era'] + '">');
+
+			last.push('<td><span class="units-icon ' + LastAlca[i]['id'] + '"></span></td>');
+			last.push('<td>' + LastAlca[i]['name'] + '</td>');
+
+			last.push('<td class="text-center">' + LastAlca[i]['count'] + 'x</td>');
+			last.push('<td class="text-center">' + Math.round((LastAlca[i]['count'] * 100 ) / LastTotal) + '%</td>');
 
 			last.push('</tr>');
 
@@ -475,6 +498,6 @@ let Unit = {
 
 		last.push('</table>');
 
-		Unit.SetTabContent('last', last.join(''));
+		Unit.SetTabContent('alca', last.join(''));
 	}
 };

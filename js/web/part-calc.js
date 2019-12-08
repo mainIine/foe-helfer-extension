@@ -18,6 +18,7 @@ let Parts = {
 	CurrentBuildingStep : false,
     CurrentBuildingPercents: [90, 90, 90, 90, 90],
     Input: [],
+	SaveCopy: [],
 
 
 	/**
@@ -448,7 +449,10 @@ let Parts = {
 
 		b.push(cb);
 
-		b.push('<div class="btn-outer text-center" style="margin-top: 10px"><span class="button-own">' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</span></div>');
+		b.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
+				'<span class="btn-default button-own">' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</span> ' +
+				'<span class="btn-default button-save-own">Merken</span>' +
+			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
 
@@ -457,111 +461,12 @@ let Parts = {
 		// Player-Namen und individuellen LG Namen ermittlen
 		new ClipboardJS('.button-own', {
 			text: function(trigger) {
-
-				let pn = $('#player-name').val(),
-					bn = $('#build-name').val(),
-					cs = $('#chain-scheme').val();
-
-				if(pn.length !=''){
-					localStorage.setItem('PlayerCopyName', pn);
-				}
-
-				if(bn.length !=''){
-					localStorage.setItem(Parts.CurrentBuildingID, bn);
-				}
-
-				// Schema speichern
-				localStorage.setItem('DropdownScheme', cs);
-
-				$(trigger).addClass('border-success');
-
-				// nach 4s den grünen Rahmen wieder ausblenden
-				setTimeout(function(){
-					$(trigger).removeClass('border-success');
-
-					// wieder zuklappen
-					Parts.BackGroundBoxAnimation(false);
-				}, 1750);
-
-
-				let sol = {
-						1: 'Pi',
-						2: 'Pi',
-						3: '/i',
-						4: '/i',
-						5: 'Pi(fp)',
-						6: 'Pi(fp)',
-					},
-					sop = {
-						1: {d: 'd'},
-						2: {d: 'u'},
-						3: {d: 'd'},
-						4: {d: 'u'},
-						5: {d: 'd'},
-						6: {d: 'u'}
-					};
-
-				let parts = [];
-
-				// Spieler Name
-				parts.push(pn);
-
-				// LG Name
-				parts.push(bn);
-
-				if( $('#chain-level').prop('checked') ){
-					parts.push('Bitte Leveln');
-                }
-
-                let PrintPlace = [false, false, false, false, false];
-                let NoPlaceSafe = false;
-
-                if ($('#chain-auto').prop('checked')) {
-                    NoPlaceSafe = true;
-
-                    for (let i = 0; i < 5; i++) {
-                        if (Eigens[i] > 0)
-                            break;
-                        if (NonExts[i]) {
-                            PrintPlace[i] = true;
-                            NoPlaceSafe = false;
-                        }
-                    }
-                }
-                else {
-                    for (let i = 0; i < 5; i++) {
-                        if ($('#chain-p' + (i+1)).prop('checked'))
-                            PrintPlace[i] = true;
-                    }
-                }
-
-				// Plätze wenn angehakt
-                if (!NoPlaceSafe) {
-                    if (sop[cs]['d'] === 'u') {
-                        for (let i = 0; i < 5; i++) {
-                            if (PrintPlace[i]) {
-                                let p = sol[cs].replace(/i/, (i + 1));
-                                p = p.replace(/fp/, Maezens[i]);
-                                parts.push(p);
-                            }
-                        }
-
-                    } else { //NoPlaceSafe
-                        for (let i = 5 - 1; i >= 0; i--) {
-                            if (PrintPlace[i]) {
-                                let p = sol[cs].replace(/i/, (i + 1));
-                                p = p.replace(/fp/, Maezens[i]);
-                                parts.push(p);
-                            }
-                        }
-                    }
-                }
-                else {
-                    parts.push(i18n['Boxes']['OwnpartCalculator']['NoPlaceSafe']);
-                }
-
-				return parts.join(' ');
+				return Parts.CopyFunction(Maezens, Eigens, NonExts, trigger, 'copy');
 			}
+		});
+
+		$('body').on('click', '.button-save-own', function(){
+			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
 
 
@@ -590,6 +495,145 @@ let Parts = {
 				Parts.BackGroundBoxAnimation(true);
 			}
 		});
+	},
+
+
+	/**
+	 * Ausgeben oder Merken
+	 *
+	 * @param Maezens
+	 * @param Eigens
+	 * @param NonExts
+	 * @param Event
+	 * @param Action
+	 * @returns {string}
+	 * @constructor
+	 */
+	CopyFunction: (Maezens, Eigens, NonExts, Event, Action)=> {
+
+		let pn = $('#player-name').val(),
+			bn = $('#build-name').val(),
+			cs = $('#chain-scheme').val();
+
+		if(pn.length != ''){
+			localStorage.setItem('PlayerCopyName', pn);
+		}
+
+		if(bn.length != ''){
+			localStorage.setItem(Parts.CurrentBuildingID, bn);
+		}
+
+		// Schema speichern
+		localStorage.setItem('DropdownScheme', cs);
+
+		$(Event).addClass('btn-green');
+
+		// nach 1,75s den grünen Rahmen wieder ausblenden
+		setTimeout(function(){
+			$(Event).removeClass('btn-green');
+
+			// wieder zuklappen
+			Parts.BackGroundBoxAnimation(false);
+		}, 1750);
+
+
+		let sol = {
+				1: 'Pi',
+				2: 'Pi',
+				3: '/i',
+				4: '/i',
+				5: 'Pi(fp)',
+				6: 'Pi(fp)',
+			},
+			sop = {
+				1: {d: 'd'},
+				2: {d: 'u'},
+				3: {d: 'd'},
+				4: {d: 'u'},
+				5: {d: 'd'},
+				6: {d: 'u'}
+			};
+
+		let parts = [];
+
+		// Spieler Name
+		parts.push(pn);
+
+		// LG Name
+		parts.push(bn);
+
+		if( $('#chain-level').prop('checked') ){
+			parts.push('Bitte Leveln');
+		}
+
+		let PrintPlace = [false, false, false, false, false];
+		let NoPlaceSafe = false;
+
+		if ($('#chain-auto').prop('checked')) {
+			NoPlaceSafe = true;
+
+			for (let i = 0; i < 5; i++) {
+				if (Eigens[i] > 0)
+					break;
+				if (NonExts[i]) {
+					PrintPlace[i] = true;
+					NoPlaceSafe = false;
+				}
+			}
+		}
+		else {
+			for (let i = 0; i < 5; i++) {
+				if ($('#chain-p' + (i+1)).prop('checked'))
+					PrintPlace[i] = true;
+			}
+		}
+
+		// Plätze wenn angehakt
+		if (!NoPlaceSafe) {
+			if (sop[cs]['d'] === 'u') {
+				for (let i = 0; i < 5; i++) {
+					if (PrintPlace[i]) {
+						let p = sol[cs].replace(/i/, (i + 1));
+						p = p.replace(/fp/, Maezens[i]);
+						parts.push(p);
+					}
+				}
+
+			} else { //NoPlaceSafe
+				for (let i = 5 - 1; i >= 0; i--) {
+					if (PrintPlace[i]) {
+						let p = sol[cs].replace(/i/, (i + 1));
+						p = p.replace(/fp/, Maezens[i]);
+						parts.push(p);
+					}
+				}
+			}
+		}
+		else {
+			parts.push(i18n['Boxes']['OwnpartCalculator']['NoPlaceSafe']);
+		}
+
+		// "Merken"
+		if(Action === 'save')
+		{
+			Parts.SaveCopy.push(parts.join(' '));
+
+			// doppelte löschen
+			Parts.SaveCopy = [...new Set(Parts.SaveCopy)];
+
+		} else {
+
+			Parts.SaveCopy.push(parts.join(' '));
+
+			// doppelte löschen
+			Parts.SaveCopy = [...new Set(Parts.SaveCopy)];
+
+			let copy = Parts.SaveCopy.join('\n');
+
+			Parts.SaveCopy = [];
+
+			return copy;
+		}
 	},
 
 

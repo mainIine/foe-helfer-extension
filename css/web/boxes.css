@@ -151,6 +151,10 @@
 	height: 0 !important;
 }
 
+.closed .window-head {
+    top: -37px !important;
+}
+
 .window-grippy {
 	position: absolute;
 	width: 16px;
@@ -518,41 +522,13 @@
 	opacity: 0;
 }
 
-.OwnPartBoxBackgroundBody > div > span {
+.OwnPartBoxBackgroundBody > div > span:not(.btn-default) {
 	display: inline-block;
 	width: 70px;
 }
 
 .OwnPartBoxBackground .btn-outer {
 	margin-bottom: 6px;
-}
-
-.OwnPartBoxBackground .button-own {
-	width: 165px;
-	z-index: 999;
-	color: #efcf9a;
-	line-height: 16px;
-	font-family: Arial,Verdana;
-	background-image: url('../images/btn-bg.png');
-	font-size: 13px;
-	font-weight: 700;
-	background-position: -3px -4px;
-	background-size: 180px 78px;
-	display: inline-block;
-	padding: 2px 4px;
-	border: 2px solid transparent;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	transition: border 0.3s ease-in-out;
-}
-
-.OwnPartBoxBackground .button-own:hover {
-	background-position: -3px -30px;
-}
-
-.OwnPartBoxBackground .button-own.border-success {
-	background-position: -3px -55px;
 }
 
 .OwnPartBoxBackground input[type=text],
@@ -1325,6 +1301,13 @@
 .war_chariot {background-position: -905px -32px}
 .war_elephant {background-position: -905px -63px}
 .warrior_monk {background-position: -905px -94px}
+
+
+#note-box {
+	left: 20%;
+	width: 300px;
+	top: 20%;
+}
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
