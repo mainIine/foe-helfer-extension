@@ -148,11 +148,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
                     // Güterliste
                     GoodsList = StartupService['responseData']['goodsList'];
-
-                    // Armeen
-					Unit.Attack = StartupService['responseData']['armies'][0]['units'];
-					Unit.Defense = StartupService['responseData']['armies'][1]['units'];
-					Unit.Pool = StartupService['responseData']['armies'][2]['units'];
 				}
 
 				// --------------------------------------------------------------------------------------------------
