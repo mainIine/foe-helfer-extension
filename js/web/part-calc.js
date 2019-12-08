@@ -127,6 +127,7 @@ let Parts = {
 
         let d = JSON.parse(localStorage.getItem('OwnCurrentBuildingCity')),
             rankings = JSON.parse(localStorage.getItem('OwnCurrentBuildingGreat')),
+            IsPreviousLevel = (localStorage.getItem('OwnCurrentBuildingPreviousLevel') === "true"),
             cityentity_id = d['cityentity_id'],
             level = d['level'],
             arcs = [],
@@ -149,6 +150,15 @@ let Parts = {
 
 
         Parts.CurrentBuildingID = cityentity_id;
+        if (IsPreviousLevel) {
+            Total = 0;
+            for (let i = 0; i < rankings.length; i++) {
+                let ToAdd = rankings[i]['forge_points'];
+                if (ToAdd !== undefined) Total += ToAdd;
+            }
+            Rest = Total;
+        }
+
         if (level === undefined) {
             level = 0;
         }
@@ -188,6 +198,14 @@ let Parts = {
                 BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
                 if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
             }
+        }
+
+        //Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
+        for (let x = Maezens.length; x < 5; i++) {
+            Maezens[i] = 0;
+            FPRewards[i] = 0;
+            MedalRewards[i] = 0;
+            BPRewards[i] = 0;
         }
 
         if (input !== undefined) {
@@ -258,7 +276,7 @@ let Parts = {
         
         // Info-Block
         h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-        h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1) + '</p>');
+        h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n['Boxes']['OwnpartCalculator']['OldLevel'] : i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
         h.push('<button class="btn btn-default btn-set-arc" data-value="85">85%</button>');
@@ -394,6 +412,12 @@ let Parts = {
         h.push('</table>');
 
         Parts.BuildBackgroundBody(Maezens, Eigens, NonExts);
+
+        // Wieviel fehlt noch bis zum leveln?
+        if (IsPreviousLevel === false) {
+            let rest = (d['state']['invested_forge_points'] === undefined ? d['state']['forge_points_for_level_up'] : d['state']['forge_points_for_level_up'] - d['state']['invested_forge_points']);
+            h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+        }
 
 		$('#OwnPartBoxBody').html( h.join('') );
 	},

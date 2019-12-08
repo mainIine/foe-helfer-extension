@@ -20,7 +20,8 @@ let i18n = {
 		"OwnpartCalculator" : {
 			"Title": "Eigenanteilsrechner",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
-			"Step": "Stufe",
+            "Step": "Stufe",
+            "OldLevel": "Altes Level",
 			"PatronPart": "Mäzen Anteil",
 			"OwnPart": "Eigenanteil",
 			"LGTotalFP": "LG Gesamt-FP",
