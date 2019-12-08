@@ -734,11 +734,6 @@ let MainParser = {
 			cW = ExtWorld,
 			gID = ExtGuildID;
 
-		if(cW === '' || cW === null || cW === undefined)
-		{
-			return ;
-		}
-
 		$.ajax({
 			type: 'POST',
 			url: 'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
@@ -766,11 +761,6 @@ let MainParser = {
 		let pID = ExtPlayerID,
 			cW = ExtWorld,
 			gID = ExtGuildID;
-
-		if(cW === '' || cW === null || cW === undefined)
-		{
-			return ;
-		}
 
 		$.ajax({
 			type: 'POST',
