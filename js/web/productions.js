@@ -101,7 +101,8 @@ let Productions = {
 	ReadData: ()=>{
 
 		let d = Productions.entities;
-
+		Productions.BuildingsAll = [];
+		
 		for(let i in d)
 		{
 			if (d.hasOwnProperty(i) && d[i]['id'] < 2000000000)
