@@ -221,6 +221,11 @@ let i18n = {
 			"Title" : "Guild live chat",
 			"Desc" : "Talk in real time with everyone"
 		},
+		"Unit" : {
+			"Title" : "Armies",
+			"Desc": "All your armies at a glance",
+			"Warning": "Open 1x your \"Army Organization\" <br>Button \"U\""
+		},
 		"Forum" : {
 			"Title" : "Forum",
 			"Desc" : "You have a question? You annoying something? Or just to talk ..."

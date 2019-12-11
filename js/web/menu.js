@@ -494,7 +494,7 @@ let Menu = {
 		let btn_UnitBG = $('<div />').attr('id', 'unitBtn').addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		Menu.toolTippBox('Armeen', '<em id="unit-closed" class="tooltip-error">' + 'Öffne erst 1x deine "Armee-Organisiation"<br>Taste "U"' + '<br></em>' + 'Alle deine Armeen im Überblick', 'unitBtn');
+		Menu.toolTippBox(i18n['Menu']['Unit']['Title'], '<em id="unit-closed" class="tooltip-error">' + i18n['Menu']['Unit']['Warning'] + '<br></em>' + i18n['Menu']['Unit']['Desc'], 'unitBtn');
 
 		let btn_Unit = $('<span />');
 
