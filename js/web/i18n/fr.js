@@ -222,7 +222,7 @@ let i18n = {
 		},
 		"Unit" : {
 			"Title" : "Armées",
-			"Desc": "All your armies at a glance",
+			"Desc": "Toutes vos armées en un coup d'œil",
 			"Warning": "Ouvrez 1x votre \"Organisation de l'Armée\" <br>Bouton \"U\""
 		},
 		"Forum" : {
