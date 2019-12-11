@@ -25,7 +25,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     GoodsList = [],
     ResourceStock = [],
     MainMenuLoaded = false,
-    LGCurrentLevelMedals = undefined;
+	LGCurrentLevelMedals = undefined
+	UsePartCalcOnAllLGs = true;
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -123,8 +124,7 @@ document.addEventListener("DOMContentLoaded", function(){
 			}
 
 			// nur die jSON mit den Daten abfangen
-			if(this._url.indexOf("game/json?h=") > -1)
-			{
+			if (this._url.indexOf("game/json?h=") > -1) {
 
 				let d = JSON.parse(this.responseText);
 
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function(){
 				// Player- und Gilden-ID setzen
 				let StartupService = d.find(obj => (obj['requestClass'] === 'StartupService' && obj['requestMethod'] === 'getData'));
 
-				if(StartupService !== undefined){
+				if (StartupService !== undefined) {
 
 					// Player-ID, Gilden-ID und Name setzten
 					MainParser.StartUp(StartupService['responseData']['user_data']);
@@ -144,10 +144,10 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.SelfPlayer(StartupService['responseData']['user_data']);
 
 					// Alle Gebäude sichern
-                    MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
+					MainParser.SaveBuildings(StartupService['responseData']['city_map']['entities']);
 
-                    // Güterliste
-                    GoodsList = StartupService['responseData']['goodsList'];
+					// Güterliste
+					GoodsList = StartupService['responseData']['goodsList'];
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'getAllBoosts';
 				});
 
-				if(BoostService !== undefined){
+				if (BoostService !== undefined) {
 					MainParser.CollectBoosts(BoostService['responseData']);
 				}
 
@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'getCityMap';
 				});
 
-				if(GridService !== undefined){
+				if (GridService !== undefined) {
 					ActiveMap = GridService['responseData']['gridId'];
 				}
 
@@ -178,17 +178,17 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
-				if(CityMapService !== undefined){
-					if(ActiveMap === 'cultural_outpost'){
+				if (CityMapService !== undefined) {
+					if (ActiveMap === 'cultural_outpost') {
 						ActiveMap = 'main';
 					}
 
 					// ErnteBox beim zurückkehren in die Stadt schliessen
-					$('#ResultBox').fadeToggle(function(){
+					$('#ResultBox').fadeToggle(function () {
 						$(this).remove();
 					});
 
-					$('#city-map-overlay').fadeToggle(function(){
+					$('#city-map-overlay').fadeToggle(function () {
 						$(this).remove();
 					});
 				}
@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return (obj['requestClass'] === 'ConversationService' && obj['requestMethod'] === 'getOverview') || (obj['requestClass'] === 'ConversationService' && obj['requestMethod'] === 'getTeasers');
 				});
 
-				if(ConversationService !== undefined){
+				if (ConversationService !== undefined) {
 					MainParser.setConversations(ConversationService['responseData']);
 				}
 
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getResourceDefinitions';
 				});
 
-				if(GoodsService !== undefined){
+				if (GoodsService !== undefined) {
 					MainParser.setGoodsData(GoodsService['responseData']);
 				}
 
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'CityProductionService' && obj['requestMethod'] === 'pickupProduction';
 				});
 
-				if(AlcatrazService !== undefined && AlcatrazService['responseData']['militaryProducts'] !== undefined){
+				if (AlcatrazService !== undefined && AlcatrazService['responseData']['militaryProducts'] !== undefined) {
 					localStorage.setItem('LastAlcatrazUnits', JSON.stringify(AlcatrazService['responseData']['militaryProducts']));
 				}
 
@@ -234,15 +234,15 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'ArmyUnitManagementService' && obj['requestMethod'] === 'getArmyInfo';
 				});
 
-				if(UnitService !== undefined){
+				if (UnitService !== undefined) {
 					Unit.Cache = UnitService['responseData'];
 
-					if( $('#unitBtn').hasClass('hud-btn-red') ){
+					if ($('#unitBtn').hasClass('hud-btn-red')) {
 						$('#unitBtn').removeClass('hud-btn-red');
 						$('#unit-closed').remove();
 					}
 
-					if($('#units').length > 0){
+					if ($('#units').length > 0) {
 						Unit.BuildBox();
 					}
 				}
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getAvailablePackageForgePoints'
 				});
 
-				if(FPOverview !== undefined){
+				if (FPOverview !== undefined) {
 					StrategyPoints.ForgePointBar(FPOverview['responseData'][0]);
 				}
 
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction'
 				});
 
-				if(GreatBuildingsFPs !== undefined){
+				if (GreatBuildingsFPs !== undefined) {
 					StrategyPoints.ForgePointBar(GreatBuildingsFPs['responseData']['availablePackagesForgePointSum']);
 				}
 
@@ -272,7 +272,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'InventoryService' && obj['requestMethod'] === 'getItems'
 				});
 
-				if(FPFromInventory !== undefined){
+				if (FPFromInventory !== undefined) {
 					StrategyPoints.GetFromInventory(FPFromInventory['responseData']);
 				}
 
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'InventoryService' && obj['requestMethod'] === 'getInventory'
 				});
 
-				if(FPGetFromInventory !== undefined){
+				if (FPGetFromInventory !== undefined) {
 					StrategyPoints.GetFromInventory(FPGetFromInventory['responseData']['inventoryItems']);
 				}
 
@@ -293,118 +293,117 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getOtherPlayerOverview';
 				});
 
-				if(GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ExtPlayerID && Settings.GetSetting('PreScanLGList')){
-                    sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
-                    sessionStorage.setItem('DetailViewIsNewer', false);
+				if (GreatBuildingsServiceOverview !== undefined && GreatBuildingsServiceOverview['responseData'][0]['player']['player_id'] !== ExtPlayerID && Settings.GetSetting('PreScanLGList')) {
+					sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(GreatBuildingsServiceOverview['responseData']));
+					sessionStorage.setItem('DetailViewIsNewer', false);
 
 					$('#calcFPs').removeClass('hud-btn-red');
 					$('#calcFPs-closed').remove();
 
 					// wenn schon offen, den Inhalt updaten
-					if ($('#LGOverviewBox').is(':visible'))
-                    {
-                        let CurrentTime = new Date().getTime()
-                        if (CurrentTime < LastKostenrechnerOpenTime + 1000)
-                            Calculator.ShowOverview(true);
-                        else
-                            Calculator.ShowOverview(false);
+					if ($('#LGOverviewBox').is(':visible')) {
+						let CurrentTime = new Date().getTime()
+						if (CurrentTime < LastKostenrechnerOpenTime + 1000)
+							Calculator.ShowOverview(true);
+						else
+							Calculator.ShowOverview(false);
 					}
 				}
 
 				// es wird ein LG eines Spielers geöffnet
-                let getConstruction = d.find(obj => {
-                    return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
-                });
+				let getConstruction = d.find(obj => {
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstruction';
+				});
 
-                let getConstructionRanking = d.find(obj => {
-                    return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstructionRanking';
-                });
+				let getConstructionRanking = d.find(obj => {
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'getConstructionRanking';
+				});
 
-                let contributeForgePoints = d.find(obj => {
-                    return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
-                });
-                
-                let Rankings;
-                if (getConstruction !== undefined) {
-                    Rankings = getConstruction['responseData']['rankings'];
-                    IsLevelScroll = false;
-                }
-                else if (getConstructionRanking !== undefined) {
-                    Rankings = getConstructionRanking['responseData'];
-                    IsLevelScroll = true;
-                }
-                else if (contributeForgePoints !== undefined) {
-                    Rankings = contributeForgePoints['responseData'];
-                    IsLevelScroll = false;
-                }
+				let contributeForgePoints = d.find(obj => {
+					return obj['requestClass'] === 'GreatBuildingsService' && obj['requestMethod'] === 'contributeForgePoints';
+				});
+
+				let Rankings;
+				if (getConstruction !== undefined) {
+					Rankings = getConstruction['responseData']['rankings'];
+					IsLevelScroll = false;
+				}
+				else if (getConstructionRanking !== undefined) {
+					Rankings = getConstructionRanking['responseData'];
+					IsLevelScroll = true;
+				}
+				else if (contributeForgePoints !== undefined) {
+					Rankings = contributeForgePoints['responseData'];
+					IsLevelScroll = false;
+				}
 
 				let UpdateEntity = d.find(obj => {
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'updateEntity';
 				});
 
-                if (UpdateEntity !== undefined && Rankings !== undefined) {
-                    let IsPreviousLevel = false;
+				if (UpdateEntity !== undefined && Rankings !== undefined) {
+					let IsPreviousLevel = false;
 
-                    //Eigenes LG
-                    if (UpdateEntity['responseData'][0]['player_id'] === ExtPlayerID) {
-                        //LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
-                        if (IsLevelScroll) {
-                            let Medals = 0;
-                            for (let i = 0; i < Rankings.length; i++) {
-                                if (Rankings[i]['reward']['resources']['medals'] !== undefined) {
-                                    Medals = Rankings[i]['reward']['resources']['medals'];
-                                    break;
-                                }
-                            }
+					//Eigenes LG
+					if (UpdateEntity['responseData'][0]['player_id'] === ExtPlayerID || UsePartCalcOnAllLGs) {
+						//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
+						if (IsLevelScroll) {
+							let Medals = 0;
+							for (let i = 0; i < Rankings.length; i++) {
+								if (Rankings[i]['reward'] !== undefined) {
+									Medals = Rankings[i]['reward']['resources']['medals'];
+									break;
+								}
+							}
 
-                            if (Medals !== LGCurrentLevelMedals) {
-                                IsPreviousLevel = true;
-                            }
-                        }
-                        else {
-                            let Medals = 0;
-                            for (let i = 0; i < Rankings.length; i++) {
-                                if (Rankings[i]['reward']['resources']['medals'] !== undefined) {
-                                    Medals = Rankings[i]['reward']['resources']['medals'];
-                                    break;
-                                }
-                            }
-                            LGCurrentLevelMedals = Medals;
-                        }
+							if (Medals !== LGCurrentLevelMedals) {
+								IsPreviousLevel = true;
+							}
+						}
+						else {
+							let Medals = 0;
+							for (let i = 0; i < Rankings.length; i++) {
+								if (Rankings[i]['reward'] !== undefined) {
+									Medals = Rankings[i]['reward']['resources']['medals'];
+									break;
+								}
+							}
+							LGCurrentLevelMedals = Medals;
+						}
 
-                        localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(UpdateEntity['responseData'][0]));
-                        localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(Rankings));
-                        localStorage.setItem('OwnCurrentBuildingPreviousLevel', IsPreviousLevel);
+						localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(UpdateEntity['responseData'][0]));
+						localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(Rankings));
+						localStorage.setItem('OwnCurrentBuildingPreviousLevel', IsPreviousLevel);
 
-                        // das erste LG wurde geladen
-                        $('#ownFPs').removeClass('hud-btn-red');
-                        $('#ownFPs-closed').remove();
+						// das erste LG wurde geladen
+						$('#ownFPs').removeClass('hud-btn-red');
+						$('#ownFPs-closed').remove();
 
-                        if ($('#OwnPartBox').length > 0) {
-                            Parts.RefreshData();
-                        }
+						if ($('#OwnPartBox').length > 0) {
+							Parts.RefreshData();
+						}
 
-                        if (!IsLevelScroll) {
-                            MainParser.OwnLG(UpdateEntity['responseData'][0], Rankings);
-                        }
-                    }
+						if (!IsLevelScroll) {
+							MainParser.OwnLG(UpdateEntity['responseData'][0], Rankings);
+						}
+					}
 
-                    //Fremdes LG
-                    if (UpdateEntity['responseData'][0]['player_id'] !== ExtPlayerID && !IsPreviousLevel) {
-                        LastKostenrechnerOpenTime = new Date().getTime()
+					//Fremdes LG
+					if (UpdateEntity['responseData'][0]['player_id'] !== ExtPlayerID && !IsPreviousLevel) {
+						LastKostenrechnerOpenTime = new Date().getTime()
 
-                        $('#calcFPs').removeClass('hud-btn-red');
-                        $('#calcFPs-closed').remove();
+						$('#calcFPs').removeClass('hud-btn-red');
+						$('#calcFPs-closed').remove();
 
-                        sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
-                        sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
-                        sessionStorage.setItem('DetailViewIsNewer', true);
+						sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
+						sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
+						sessionStorage.setItem('DetailViewIsNewer', true);
 
-                        // wenn schon offen, den Inhalt updaten
-                        if ($('#costCalculator').is(':visible')) {
-                            Calculator.Show(Rankings, UpdateEntity['responseData'][0]);
-                        }
-                    }
+						// wenn schon offen, den Inhalt updaten
+						if ($('#costCalculator').is(':visible')) {
+							Calculator.Show(Rankings, UpdateEntity['responseData'][0]);
+						}
+					}
 
 				}
 
@@ -414,9 +413,9 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'addBoost';
 				});
 
-				if(TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')) {
-                    Tavern.TavernBoost(TavernBoostService['responseData']);
-                }
+				if (TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')) {
+					Tavern.TavernBoost(TavernBoostService['responseData']);
+				}
 
 
 
@@ -427,12 +426,13 @@ document.addEventListener("DOMContentLoaded", function(){
 				});
 
 				// Ernten anderer Spieler
-				if(OtherPlayersVisits !== undefined && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== ExtGuildID && OtherPlayersVisits['responseData']['other_player']['clan_id'] !== 7965 && Settings.GetSetting('ShowNeighborsGoods')){
-					Reader.OtherPlayersBuildings(OtherPlayersVisits['responseData']);
+				if (OtherPlayersVisits !== undefined && Settings.GetSetting('ShowNeighborsGoods')){
+					let OtherPlayer = OtherPlayersVisits['responseData']['other_player'];
+						if(OtherPlayer['is_neighbor'] && !OtherPlayer['is_friend'] && !OtherPlayer['is_guild_member']) {
+						Reader.OtherPlayersBuildings(OtherPlayersVisits['responseData']);
+					}
 				}
-
-
-
+				
 				// --------------------------------------------------------------------------------------------------
 				// soll der Außenposten dargestellt werden?
 				if(Settings.GetSetting('ShowOutpost'))
