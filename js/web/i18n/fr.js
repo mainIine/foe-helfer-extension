@@ -220,6 +220,11 @@ let i18n = {
 			"Title" : "Chat de guilde",
 			"Desc" : "Discute en temps réel avec tout le monde"
 		},
+		"Unit" : {
+			"Title" : "Armées",
+			"Desc": "All your armies at a glance",
+			"Warning": "Ouvrez 1x votre \"Organisation de l'Armée\" <br>Bouton \"U\""
+		},
 		"Forum" : {
 			"Title" : "Forum",
 			"Desc" : "Vous avez une question? Quelque chose à proposer ? Ou juste pour parler..."

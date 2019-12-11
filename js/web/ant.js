@@ -25,7 +25,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     GoodsList = [],
     ResourceStock = [],
     MainMenuLoaded = false,
-    LGCurrentLevelMedals = undefined;
+    LGCurrentLevelMedals = undefined,
+	IsLevelScroll;
 
 document.addEventListener("DOMContentLoaded", function(){
 
