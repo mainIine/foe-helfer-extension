@@ -220,6 +220,11 @@ let i18n = {
 			"Title" : "Gilden Live-Chat",
 			"Desc" : "In Echtzeit mit allen quatschen"
 		},
+		"Unit" : {
+			"Title" : "Armeen",
+			"Desc": "Toutes vos armées en un coup d'œil",
+			"Warning": "Öffne erst 1x deine \"Armee-Organisation\"<br>Taste \"U\""
+		},
 		"Forum" : {
 			"Title" : "Forum",
 			"Desc" : "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum Reden..."

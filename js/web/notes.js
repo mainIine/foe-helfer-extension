@@ -83,6 +83,25 @@ let Notes = {
 	},
 
 
+	setNote: ()=>{
+
+		let data = {
+			other_id: '',
+			type: '',
+			data: '',
+			alarm: ''
+		};
+
+		// ab zum Server
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'PlayerNotes/set.php?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(data)
+		});
+
+	},
+
+
 	closeBox: ()=> {
 		$('#note-box').fadeToggle(function(){
 			$(this).remove();
