@@ -168,44 +168,42 @@ let Parts = {
         }
         
         // Wenn in Rankings nichts mehr steht, dann abbrechen
-        for (let x = 0; true; x++) {
-            if (!rankings.hasOwnProperty(x)) break;
-
-            if (rankings[x]['rank'] === undefined) {
-                EigenStart = rankings[x]['forge_points'];
+        for (let i = 0; i < rankings.length; i++) {
+            if (rankings[i]['rank'] === undefined || rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
+                EigenStart = rankings[i]['forge_points'];
                 Rest -= EigenStart;
                 continue;
             }
 
-            let Place = rankings[x]['rank'] - 1,
+            let Place = rankings[i]['rank'] - 1,
 				MedalCount = 0;
 
-            Maezens[Place] = rankings[x]['forge_points'];
+            Maezens[Place] = rankings[i]['forge_points'];
             if (Maezens[Place] === undefined) Maezens[Place] = 0;
 
             if (Place < 5) {
-                let FPCount = (rankings[x]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[x]['reward']['strategy_point_amount']) : 0);
+                let FPCount = (rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[i]['reward']['strategy_point_amount']) : 0);
                 FPRewards[Place] = Math.round(FPCount * arcs[Place]);
                 if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
                 // Medallien berechnen
-                MedalCount = (rankings[x]['reward']['resources'] !== undefined ? parseInt(rankings[x]['reward']['resources']['medals']) : 0);
+                MedalCount = (rankings[i]['reward']['resources'] !== undefined ? parseInt(rankings[i]['reward']['resources']['medals']) : 0);
                 MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
                 if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
                 // Blaupausen berechnen
-                let BlueprintCount = (rankings[x]['reward']['blueprints'] !== undefined ? parseInt(rankings[x]['reward']['blueprints']) : 0);
+                let BlueprintCount = (rankings[i]['reward']['blueprints'] !== undefined ? parseInt(rankings[i]['reward']['blueprints']) : 0);
                 BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
                 if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
             }
         }
 
         //Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
-        for (let x = Maezens.length; x < 5; i++) {
-            Maezens[i] = 0;
-            FPRewards[i] = 0;
-            MedalRewards[i] = 0;
-            BPRewards[i] = 0;
+        for (let i = Maezens.length; i < 5; i++) {
+			Maezens[i] = 0;
+			FPRewards[i] = 0;
+			MedalRewards[i] = 0;
+			BPRewards[i] = 0;
         }
 
         if (input !== undefined) {
