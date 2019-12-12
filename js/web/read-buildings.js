@@ -21,7 +21,8 @@ let BlackListBuildingsArray = [
 ];
 
 let BlackListBuildingsString = [
-    'R_MultiAge_SummerBonus19' //Großer Leuchtturm
+	'R_MultiAge_SummerBonus19', //Großer Leuchtturm
+	'R_MultiAge_Battlegrounds1' //Ehrenstatue
 ];
 
 /**

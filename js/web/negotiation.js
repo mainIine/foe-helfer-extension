@@ -173,17 +173,13 @@ let Negotiation = {
                 Negotiation.TryCount = 3;
             }
         }
-        else if (responseData['context'] === undefined) {
+        else {
             if (Negotiation.Goods.length > 6) {
                 Negotiation.TryCount = 4;
             }
             else {
                 Negotiation.TryCount = 3;
             }
-        }
-        else
-        {
-            Negotiation.TryCount = 3;
         }
 
 		Negotiation.Guesses = [];
