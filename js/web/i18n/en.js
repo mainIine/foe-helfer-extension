@@ -163,10 +163,10 @@ let i18n = {
 			"Title" : "Infobox",
 			"Filter" : "Filter",
 			"FilterGex" : "GEX",
-			"FilterAuction" : "Auktion",
+			"FilterAuction" : "Auction",
 			"FilterLevel" : "Level-Up",
-			"FilterMessage" : "Nachricht",
-			"ResetBox" : "Box leeren",
+			"FilterMessage" : "Message",
+			"ResetBox" : "Reset Box",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",
 				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place.",
