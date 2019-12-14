@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 ant.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 22:33 Uhr
+ * erstellt am:	              14.12.19, 18:26 Uhr
+ * zuletzt bearbeitet:       12.12.19, 10:54 Uhr
  *
  * Copyright © 2019
  *
@@ -25,7 +26,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     GoodsList = [],
     ResourceStock = [],
     MainMenuLoaded = false,
-	LGCurrentLevelMedals = undefined
+	LGCurrentLevelMedals = undefined,
+	IsLevelScroll = false,
 	UsePartCalcOnAllLGs = false;
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -59,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		{
 			// console.log('this._url: ', this._url);
 
+			/*
 			// *.mo Datei parsen
 			if (this._url.indexOf("client_lang-") > -1)
 			{
@@ -67,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function(){
 					console.log('MainParser.i18n: ', MainParser.i18n);
 				});
 			}
+			*/
             
 			// die Gebäudenamen übernehmen
 			if(this._url.indexOf("metadata?id=city_entities") > -1)
@@ -124,7 +128,8 @@ document.addEventListener("DOMContentLoaded", function(){
 			}
 
 			// nur die jSON mit den Daten abfangen
-			if (this._url.indexOf("game/json?h=") > -1) {
+			if (this._url.indexOf("game/json?h=") > -1)
+			{
 
 				let d = JSON.parse(this.responseText);
 

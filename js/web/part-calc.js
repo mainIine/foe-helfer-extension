@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 part-calc.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.11.19, 14:10 Uhr
+ * erstellt am:	              14.12.19, 18:26 Uhr
+ * zuletzt bearbeitet:       14.12.19, 18:16 Uhr
  *
  * Copyright © 2019
  *
@@ -473,7 +474,7 @@ let Parts = {
 
 		b.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
 				'<span class="btn-default button-own">' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</span> ' +
-				'<span class="btn-default button-save-own">Merken</span>' +
+				'<span class="btn-default button-save-own">' + i18n['Boxes']['OwnpartCalculator']['Note'] + '</span>' +
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
@@ -591,6 +592,7 @@ let Parts = {
 		let PrintPlace = [false, false, false, false, false];
 		let NoPlaceSafe = false;
 
+		// automatisch ermitteln
 		if ($('#chain-auto').prop('checked')) {
 			NoPlaceSafe = true;
 
@@ -603,6 +605,7 @@ let Parts = {
 				}
 			}
 		}
+		// einzelne Plätze wurde angehakt
 		else {
 			for (let i = 0; i < 5; i++) {
 				if ($('#chain-p' + (i+1)).prop('checked'))
@@ -610,7 +613,7 @@ let Parts = {
 			}
 		}
 
-		// Plätze wenn angehakt
+		// Plätze formatieren
 		if (!NoPlaceSafe) {
 			if (sop[cs]['d'] === 'u') {
 				for (let i = 0; i < 5; i++) {
@@ -635,23 +638,18 @@ let Parts = {
 			parts.push(i18n['Boxes']['OwnpartCalculator']['NoPlaceSafe']);
 		}
 
-		// "Merken"
-		if(Action === 'save')
+
+		// wenn dieser Wert noch nicht im Array liegt...
+		if(Parts.SaveCopy.includes(parts.join(' ')) === false){
+			Parts.SaveCopy.push(parts.join(' '));
+		}
+
+		// Nur wenn "Kopieren" etwas ausgeben
+		if(Action === 'copy')
 		{
-			Parts.SaveCopy.push(parts.join(' '));
-
-			// doppelte löschen
-			Parts.SaveCopy = [...new Set(Parts.SaveCopy)];
-
-		} else {
-
-			Parts.SaveCopy.push(parts.join(' '));
-
-			// doppelte löschen
-			Parts.SaveCopy = [...new Set(Parts.SaveCopy)];
-
 			let copy = Parts.SaveCopy.join('\n');
 
+			// wieder leer machen
 			Parts.SaveCopy = [];
 
 			return copy;
