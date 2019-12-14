@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 en.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 22:37 Uhr
+ * erstellt am:	              14.12.19, 18:26 Uhr
+ * zuletzt bearbeitet:       14.12.19, 18:17 Uhr
  *
  * Copyright © 2019
  *
@@ -31,6 +32,7 @@ let i18n = {
 			"Order": "Sequence",
 			"Deposit": "Deposit",
 			"CopyValues": "Copy values",
+			"Note": "Note",
 			"YourName": "Your name",
 			"IndividualName": "individual Lb name",
 			"OutputScheme": "Output scheme",
