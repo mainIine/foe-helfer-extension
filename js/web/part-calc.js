@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              14.12.19, 18:26 Uhr
- * zuletzt bearbeitet:       14.12.19, 18:16 Uhr
+ * erstellt am:	              14.12.19, 18:47 Uhr
+ * zuletzt bearbeitet:       14.12.19, 18:44 Uhr
  *
  * Copyright © 2019
  *
@@ -538,13 +538,8 @@ let Parts = {
 			bn = $('#build-name').val(),
 			cs = $('#chain-scheme').val();
 
-		if(pn.length != ''){
-			localStorage.setItem('PlayerCopyName', pn);
-		}
-
-		if(bn.length != ''){
-			localStorage.setItem(Parts.CurrentBuildingID, bn);
-		}
+		localStorage.setItem('PlayerCopyName', pn);
+		localStorage.setItem(Parts.CurrentBuildingID, bn);
 
 		// Schema speichern
 		localStorage.setItem('DropdownScheme', cs);
@@ -638,6 +633,17 @@ let Parts = {
 			parts.push(i18n['Boxes']['OwnpartCalculator']['NoPlaceSafe']);
 		}
 
+		if(Parts.SaveCopy.length > 0){
+			for(let i = 0; i < Parts.SaveCopy.length; i++)
+			{
+				// prüfen ob dieses LG mit diesem Namen schon enthalten ist, löschen
+				if(Parts.SaveCopy[i].indexOf(bn) > -1)
+				{
+					// raus löschen
+					Parts.SaveCopy.splice(i, 1);
+				}
+			}
+		}
 
 		// wenn dieser Wert noch nicht im Array liegt...
 		if(Parts.SaveCopy.includes(parts.join(' ')) === false){
