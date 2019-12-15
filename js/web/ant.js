@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              14.12.19, 18:26 Uhr
- * zuletzt bearbeitet:       12.12.19, 10:54 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 18:54 Uhr
  *
  * Copyright © 2019
  *
@@ -153,6 +153,26 @@ document.addEventListener("DOMContentLoaded", function(){
 
 					// Güterliste
 					GoodsList = StartupService['responseData']['goodsList'];
+				}
+
+				// --------------------------------------------------------------------------------------------------
+				// Bonus notieren, enthält tägliche Rathaus FP
+				let BonusService = d.find(obj => {
+					return obj['requestClass'] === 'BonusService' && obj['requestMethod'] === 'getBonuses';
+				});
+
+				if (BonusService !== undefined) {
+					MainParser.BonusService = BonusService['responseData'];
+				}
+
+				// --------------------------------------------------------------------------------------------------
+				// Botschafter notieren, enthält Bonus FPs oder Münzen
+				let EmissaryService = d.find(obj => {
+					return obj['requestClass'] === 'EmissaryService' && obj['requestMethod'] === 'getAssigned';
+				});
+
+				if (EmissaryService !== undefined) {
+					MainParser.EmissaryService = EmissaryService['responseData'];
 				}
 
 				// --------------------------------------------------------------------------------------------------
@@ -642,7 +662,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): (*|string|boolean)), Language: string, ParseMoFile: MainParser.ParseMoFile, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, setGoodsData: MainParser.setGoodsData, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, Player: [], GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string], i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -652,6 +672,8 @@ let MainParser = {
 	PossibleLanguages: [
 		'de', 'en', 'fr'
 	],
+	BonusService: null,
+	EmissaryService: null,
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',

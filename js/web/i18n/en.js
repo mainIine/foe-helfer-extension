@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              14.12.19, 18:26 Uhr
- * zuletzt bearbeitet:       14.12.19, 18:17 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 13:08 Uhr
  *
  * Copyright © 2019
  *
@@ -253,6 +253,11 @@ let i18n = {
 	},
 
 	"Settings" : {
+		"Version": {
+			"Title" : "Version",
+			"DescDebug" : "Chrome Extension <strong class='text-danger'>BETA</strong> Version",
+			"Desc" : "Chrome Extension Version"
+		},
 		"GlobalSend": {
 			"Title" : "Transmission to foe-rechner.de",
 			"Desc" : "If you want to track data with your guild, activate this point. <br> For a self-sufficient extension simply disable."

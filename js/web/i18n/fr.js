@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              14.12.19, 18:26 Uhr
- * zuletzt bearbeitet:       14.12.19, 18:18 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
  *
  * Copyright © 2019
  *
@@ -252,6 +252,11 @@ let i18n = {
 	},
 
 	"Settings" : {
+		"Version": {
+			"Title" : "Version",
+			"DescDebug" : "Version de l'extension Chrome <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Version de l'extension Chrome"
+		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
 			"Desc" : "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le."

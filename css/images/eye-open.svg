@@ -4,8 +4,8 @@
 	<defs>
     <style type="text/css"><![CDATA[
        #MyEye {
-         stroke: white;
-         fill: white;
+         stroke: #F3D6A0;
+         fill: #F3D6A0;
        }
     ]]></style>
   </defs>

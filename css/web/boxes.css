@@ -2,11 +2,12 @@
  * **************************************************************************************
  *
  * Dateiname:                 boxes.css
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 21:55 Uhr
- *  
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 14:09 Uhr
+ *
  * Copyright © 2019
  *
  * **************************************************************************************
@@ -613,7 +614,7 @@
 #Productions {
 	top: 100px;
 	left: 100px;
-	width: 480px;
+	width: 500px;
 	padding: 5px 0 0 0;
 }
 
@@ -623,6 +624,17 @@
 	overflow-y: auto;
 	max-height: 500px;
 	margin-top: 2px;
+}
+
+#Productions #ProductionsBody .show-entity {
+	display: block;
+	width: 20px;
+	height: 20px;
+}
+
+#Productions #ProductionsBody .show-entity img {
+	width: 20px;
+	height: 20px;
 }
 
 #Productions table tr.building-type td {
@@ -701,7 +713,7 @@
 	padding: 2px 4px;
 	border-radius: 2px;
 	background-color: rgba(0,0,0, 0.4);
-	margin: 0 8px 5px 0;
+	margin: 3px 8px 2px 0;
 	white-space: nowrap;
 }
 
