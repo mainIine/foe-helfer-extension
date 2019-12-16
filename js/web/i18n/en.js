@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:08 Uhr
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:50 Uhr
  *
  * Copyright © 2019
  *
@@ -153,10 +153,12 @@ let i18n = {
             "Success": "Success",
             "Chance": "Chance",
 			"Person": "Person",
-			"Average": "Average",
+			"Average": "Ø Amount",
 			"Costs": "Costs:",
+			"Round": "Round",
 			"GoodsLow": "ATTENTION: Good stock is low",
-			"GoodsCritical": "ATTENTION: Good stock is critical"
+			"GoodsCritical": "ATTENTION: Good stock is critical",
+			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt."
         },
 
 		"Settings" : {

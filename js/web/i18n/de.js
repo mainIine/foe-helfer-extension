@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:50 Uhr
  *
  * Copyright © 2019
  *
@@ -152,10 +152,12 @@ let i18n = {
             "Success": "Erfolg",
 			"Chance": "Chance",
 			"Person": "Person",
-			"Average": "Durchschn.",
+			"Average": "Ø Menge",
 			"Costs": "Kosten:",
+			"Round": "Runde",
 			"GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
-			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch"
+			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
+			"DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge ab dem 1. Versuch festzulegen."
         },
 
 		"Settings" : {

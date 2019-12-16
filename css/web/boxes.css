@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 14:09 Uhr
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:43 Uhr
  *
  * Copyright © 2019
  *
@@ -1064,8 +1064,34 @@
 #negotiation {
     top: 30%;
     right: 15%;
-    width: 600px;
+    width: 840px;
 }
+	#negotiation #negotiationBody #good-sort {
+		display: flex;
+		justify-content: space-between;
+		margin-right: 15px;
+	}
+
+	#negotiation #negotiationBody #good-sort .good {
+		text-align: center;
+		width: 4em;
+		padding: 2px;
+		border-radius: 3px;
+	}
+
+	#negotiation #negotiationBody .goods-dragable .good:hover {
+		background-color: rgba(255,255,255, 0.33);
+		cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+	}
+
+	#negotiation #negotiationBody #good-sort .good-drag {
+		opacity: 0.5;
+	}
+
+	#negotiation #negotiationBody #good-sort .good span {
+		display: inline-block;
+	}
+
 	#negotiation #negotiationBody p {
 		margin-top: 10px;
 		font-size: 140%;
