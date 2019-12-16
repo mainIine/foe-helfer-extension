@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:50 Uhr
  *
  * Copyright © 2019
  *
@@ -152,10 +152,12 @@ let i18n = {
             "Success": "Succès",
             "Chance": "Chance",
 			"Person": "Personne",
-			"Average": "coûts", //Todo: Translate
-			"Costs": "moyens:", //Todo: Translate
+			"Average": "Ø Coûts", //Todo: Translate
+			"Costs": "Moyens:",
+			"Round": "Rond",
 			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
-			"GoodsCritical": "ATTENTION: le stock de marchandises est critique" //Todo: Translate
+			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
+			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative."
         },
         
 		"Settings" : {

@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 calculator.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       11.11.19, 20:24 Uhr
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:17 Uhr
  *
  * Copyright © 2019
  *
@@ -566,6 +567,7 @@ let Calculator = {
         let StorageValue = UpdateEntity['level'] + '/' + UpdateEntity['state']['invested_forge_points'] + '/' + BestKurs + '/' + new Date().getTime();
 		localStorage.setItem(StorageKey, StorageValue);
 	},
+
 
 	/**
 	 * Übersicht der LGs scannen
