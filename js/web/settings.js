@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:07 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:07 Uhr
  *
  * Copyright © 2019
  *
@@ -73,6 +73,11 @@ let Settings = {
 			status: false,
 			title : i18n['Settings']['CalculatorShowNegativ']['Title'],
 			desc : i18n['Settings']['CalculatorShowNegativ']['Desc']
+		},
+		AutomaticNegotiation : {
+			status: true,
+			title : i18n['Settings']['AutomaticNegotiation']['Title'],
+			desc : i18n['Settings']['AutomaticNegotiation']['Desc']
 		},
 		ResetBoxPositions : {
 			button: 'ResetBoxCoords',

@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 19:53 Uhr
- * zuletzt bearbeitet:       16.12.19, 19:43 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:30 Uhr
  *
  * Copyright © 2019
  *
@@ -1062,9 +1062,10 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 #negotiation {
-    top: 30%;
-    right: 15%;
-    width: 840px;
+	top: 15%;
+	left: 50%;
+	width: 790px;
+	transform: translateX(-50%);
 }
 	#negotiation #negotiationBody #good-sort {
 		display: flex;
@@ -1106,6 +1107,10 @@
         color: #FFB539;
         font-weight: 700;
     }
+
+	#negotiation #negotiationBody tr.goods-opacity td {
+		opacity: .4;
+	}
 
     #negotiation #negotiationBody .text-danger {
         color: #ef1616;

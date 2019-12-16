@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 19:53 Uhr
- * zuletzt bearbeitet:       16.12.19, 19:49 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:34 Uhr
  *
  * Copyright © 2019
  *
@@ -39,7 +39,6 @@ let Negotiation = {
                 'id': 'negotiation',
                 'title': i18n['Boxes']['Negotiation']['Title'],
                 'auto_close': true,
-                'dragdrop': true,
                 'minimize': true
             };
 
@@ -87,19 +86,22 @@ let Negotiation = {
         if (Negotiation.CurrentTable !== undefined) {
             h.push('<tbody>');
 
-			h.push('<tr>');
-			h.push('<td colspan="' + Negotiation.GoodCount + '" class="text-right"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
-			h.push('</tr>');
+			if(Negotiation.CurrentTry === 1) {
+				h.push('<tr>');
+				h.push('<td colspan="5" class="text-right"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
+				h.push('</tr>');
+			}
 
             h.push('<tr>');
-            h.push('<td colspan="' + Negotiation.GoodCount + '" class="text-warning"><strong>' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+            h.push('<td colspan="4" class="text-warning"><strong>' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
             h.push('</tr>');
 
             h.push('<tr>');
 
             h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Average'] + '</td>');
 
-			h.push('<td colspan="' + Negotiation.GoodCount + '"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
+			h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
 
             for (let i = 0; i < Negotiation.GoodCount; i++) {
 
@@ -149,7 +151,6 @@ let Negotiation = {
 
         h.push('<tbody>');
         h.push('<tr class="thead">');
-        h.push('<th></th>');
 
         for (let i = 0; i < Negotiation.PlaceCount; i++) {
             h.push('<th class="text-center">' + i18n['Boxes']['Negotiation']['Person'] + ' ' + (i + 1) + '</th>');
@@ -158,25 +159,30 @@ let Negotiation = {
         h.push('</tr>');
         h.push('</tbody>');
 
+
         h.push('<tbody>');
 
+        let cnt = 0;
         for (let i = 0; i < Negotiation.Guesses.length; i++) {
-            h.push('<tr>');
-            h.push('<td width="1">' + i18n['Boxes']['Negotiation']['Round'] + ' ' + (i + 1) + '/' + (Negotiation.TryCount) + ':</td>');
+			console.log('i <> Negotiation.Guesses.length: ', i + ' <> ' + Negotiation.Guesses.length);
+            h.push('<tr' + ((i +1) < Negotiation.Guesses.length ? ' class="goods-opacity"' : '') + '>');
 
             for (let place = 0; place < Negotiation.PlaceCount; place++) {
                 let Good = Negotiation.Goods[Negotiation.Guesses[i][place]];
 
                 if (Good !== undefined) {
                     let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
-                    h.push('<td class="text-center"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
+                    h.push('<td style="width:20%" class="text-center"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
                 }
                 else {
-                    h.push('<td></td>');                            
+                    h.push('<td style="width:20%">&nbsp;</td>');
                 }
             }
             h.push('</tr>');
+
+            cnt = i;
         }
+
 
 		h.push('</thead>');
 
@@ -194,6 +200,10 @@ let Negotiation = {
         }
 
         $('#negotiationBody').html(h.join('')).promise().done(function(){
+
+        	// Rundenzahl oben rechts
+        	$('#round-count').find('strong').text(i18n['Boxes']['Negotiation']['Round'] + ' ' + (cnt + 1) + '/' + (Negotiation.TryCount));
+
         	if(Negotiation.CurrentTry === 1){
 				new Sortable(document.getElementById('good-sort'), {
 					animation: 150,
@@ -224,6 +234,7 @@ let Negotiation = {
 			$('#negotationBtn').removeClass('hud-btn-red');
 			$('#negotiation-closed').remove();
 		}
+
 
         Negotiation.CurrentTry = 1;
         Negotiation.Message = undefined;
@@ -352,6 +363,12 @@ let Negotiation = {
         Negotiation.MessageClass = 'danger';
 
         Negotiation.RefreshBox();
+
+		if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiation').length > 0){
+			$('#negotiation').fadeToggle(function(){
+				$(this).remove();
+			});
+		}
     },
 
 
@@ -446,5 +463,12 @@ let Negotiation = {
             Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
             Negotiation.RefreshBox();
         }
+
+    	// wenn aktiviert, automatisch starten
+    	if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiation').length === 0){
+    		setTimeout(()=>{
+				Negotiation.Show();
+			}, 300);
+		}
     }
 };
