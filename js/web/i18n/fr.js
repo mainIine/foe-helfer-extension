@@ -151,7 +151,11 @@ let i18n = {
             "Canceled": "La négociation a été annulée", //Todo: Translate
             "Success": "Succès",
             "Chance": "Chance",
-            "Person": "Personne",
+			"Person": "Personne",
+			"Average": "coûts", //Todo: Translate
+			"Costs": "moyens:", //Todo: Translate
+			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
+			"GoodsCritical": "ATTENTION: le stock de marchandises est critique" //Todo: Translate
         },
         
 		"Settings" : {
