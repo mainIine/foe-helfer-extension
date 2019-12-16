@@ -1420,8 +1420,6 @@ let MainParser = {
 		xobj.onreadystatechange = function () {
 			if (xobj.readyState === 4 && xobj.status === 200) {
 				callback(xobj.responseText);
-			} else {
-				callback(false);
 			}
 		};
 		xobj.send(null);

@@ -1079,6 +1079,18 @@
         font-weight: 700;
     }
 
+	#negotiation #negotiationBody td.success {
+		color: #29b206;
+	}
+
+	#negotiation #negotiationBody td.warning {
+		color: #FF6000;
+	}
+
+	#negotiation #negotiationBody td.error {
+		color: #ef1616;
+	}
+
     #negotiation #negotiationBody .text-muted {
         color: #8a8a8a;
     }
