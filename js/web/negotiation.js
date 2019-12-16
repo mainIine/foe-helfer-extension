@@ -85,7 +85,7 @@ let Negotiation = {
             h.push('<td colspan="' + (Negotiation.GoodCount + 1) + '" class="text-warning">' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</td>')
             h.push('</tr>');
             h.push('<tr>');
-            h.push('<td class="text-warning">Durchschn.</td>');
+            h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Average'] + '</td>');
             for (let i = 0; i < Negotiation.GoodCount; i++) {
                 let Good = Negotiation.Goods[i];
                 let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
@@ -93,7 +93,7 @@ let Negotiation = {
             }
             h.push('</tr>');
             h.push('<tr>');
-            h.push('<td class="text-warning">Kosten:</td>');
+            h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Costs'] + '</td>');
 
             for (let i = 0; i < Negotiation.GoodCount; i++) {
                 let GoodName = Negotiation.Goods[i];
@@ -172,10 +172,10 @@ let Negotiation = {
         }
 
         if (StockState === 1) {
-            h.push('<p class="text-center text-warning"><strong>' + 'Gütervorrat möglicherweise zu gering' + '</strong></p>')
+            h.push('<p class="text-center text-warning"><strong>' + i18n['Boxes']['Negotiation']['GoodsLow'] + '</strong></p>')
         }
         else if (StockState === 2) {
-            h.push('<p class="text-center text-danger"><strong>' + 'Gütervorrat zu gering' + '</strong></p>')
+            h.push('<p class="text-center text-danger"><strong>' + i18n['Boxes']['Negotiation']['GoodsCritical'] + '</strong></p>')
         }
 
         $('#negotiationBody').html(h.join(''));
