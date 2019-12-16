@@ -152,6 +152,10 @@ let i18n = {
             "Success": "Erfolg",
 			"Chance": "Chance",
 			"Person": "Person",
+			"Average": "Durchschn.",
+			"Costs": "Kosten:",
+			"GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
+			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch"
         },
 
 		"Settings" : {

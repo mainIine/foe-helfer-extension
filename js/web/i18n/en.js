@@ -152,7 +152,11 @@ let i18n = {
             "Canceled": "Negotiation has been canceled",
             "Success": "Success",
             "Chance": "Chance",
-            "Person": "Person",
+			"Person": "Person",
+			"Average": "Average",
+			"Costs": "Costs:",
+			"GoodsLow": "ATTENTION: Good stock is low",
+			"GoodsCritical": "ATTENTION: Good stock is critical"
         },
 
 		"Settings" : {

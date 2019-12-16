@@ -19,6 +19,7 @@ let Negotiation = {
 	GoodCount: undefined,
     CurrentTable: undefined,
     Goods: [],
+    GoodAmounts : [],
     Guesses: [],
     PlaceCount: 5,
     Message: undefined,
@@ -64,9 +65,7 @@ let Negotiation = {
     */
     RefreshBox: () => {
         if ($('#negotiation').length > 0) {
-            setTimeout(() => {
-                Negotiation.CalcBody();
-            }, 200);
+            Negotiation.CalcBody();
         }
     },
 
@@ -77,18 +76,64 @@ let Negotiation = {
 	 * @constructor
 	 */
     CalcBody: () => {
-        let h = [];
-        h.push('<table class="foe-table">');
+        let h = [],
+            StockState = 0;;
         
-        h.push('<thead>');
         if (Negotiation.CurrentTable !== undefined) {
+            h.push('<table>');
             h.push('<tr>');
-            h.push('<td colspan="' + (Negotiation.PlaceCount + 1) + '" class="text-warning">' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['Chance'])) + '%</td>')
+            h.push('<td colspan="' + (Negotiation.GoodCount + 1) + '" class="text-warning">' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</td>')
             h.push('</tr>');
+            h.push('<tr>');
+            h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Average'] + '</td>');
+            for (let i = 0; i < Negotiation.GoodCount; i++) {
+                let Good = Negotiation.Goods[i];
+                let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
+                h.push('<td class="text-warning"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
+            }
+            h.push('</tr>');
+            h.push('<tr>');
+            h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Costs'] + '</td>');
+
+            for (let i = 0; i < Negotiation.GoodCount; i++) {
+                let GoodName = Negotiation.Goods[i];
+
+                let GoodAmount = Negotiation.GoodAmounts[GoodName];
+                GoodAmount *= Negotiation.CurrentTable['go'][i];
+
+                let Stock = ResourceStock[GoodName];
+                if (Stock === undefined) Stock = 0;
+
+                let TextClass;
+                if (Stock < GoodAmount) {
+                    TextClass = 'error';
+                    StockState = Math.max(StockState, 2);
+                }
+                else if (Stock < 5 * Negotiation.GoodAmounts[GoodName]){
+                    TextClass = 'warning';
+                    StockState = Math.max(StockState, 1);
+                }
+                else {
+                    TextClass = 'success';
+                }
+                
+                if (Negotiation.Goods[i] === 'money' || Negotiation.Goods[i] === 'supplies' || Negotiation.Goods[i] === 'medals') {
+                    GoodAmount = Math.round(GoodAmount);
+                }
+                else {
+                    GoodAmount = Math.round(GoodAmount * 1000) / 1000;
+                }
+
+                h.push('<td class="' + TextClass + '">' + GoodAmount + '</td>');                
+            }
+            h.push('</tr>');
+            h.push('</table>');
         }
+        
+        h.push('<table class="foe-table">');
 
+        h.push('<thead>');
         h.push('<tr>');
-
         h.push('<th></th>');
 
         for (let i = 0; i < Negotiation.PlaceCount; i++) {
@@ -102,7 +147,7 @@ let Negotiation = {
 
         for (let i = 0; i < Negotiation.Guesses.length; i++) {
             h.push('<tr>');
-            h.push('<td>Runde ' + (i + 1) + ':</td>');
+            h.push('<td>Runde ' + (i + 1) + '/' + (Negotiation.TryCount) + ':</td>');
 
             for (let place = 0; place < Negotiation.PlaceCount; place++) {
                 let Good = Negotiation.Goods[Negotiation.Guesses[i][place]];
@@ -124,6 +169,13 @@ let Negotiation = {
 
         if (Negotiation.Message !== undefined) {
             h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>')
+        }
+
+        if (StockState === 1) {
+            h.push('<p class="text-center text-warning"><strong>' + i18n['Boxes']['Negotiation']['GoodsLow'] + '</strong></p>')
+        }
+        else if (StockState === 2) {
+            h.push('<p class="text-center text-danger"><strong>' + i18n['Boxes']['Negotiation']['GoodsCritical'] + '</strong></p>')
         }
 
         $('#negotiationBody').html(h.join(''));
@@ -150,6 +202,7 @@ let Negotiation = {
         Negotiation.Goods = [];
         for (let ResourceName in Resources) {
             Negotiation.Goods[Negotiation.Goods.length] = ResourceName;
+            Negotiation.GoodAmounts[ResourceName] = Resources[ResourceName];
         }
 
         Negotiation.Goods.sort(function (Good1, Good2) {
@@ -248,8 +301,8 @@ let Negotiation = {
 				Negotiation.MessageClass = 'warning';
             }
             else {
-                Negotiation.CurrentTable = Negotiation.CurrentTable['ResultTable'][Result];
-                Negotiation.Guesses[Negotiation.Guesses.length] = Negotiation.CurrentTable.Guess;
+                Negotiation.CurrentTable = Negotiation.CurrentTable['r'][Result];
+                Negotiation.Guesses[Negotiation.Guesses.length] = Negotiation.CurrentTable['gu'];
             }
         }
 
@@ -338,7 +391,6 @@ let Negotiation = {
 	 * @constructor
 	 */
 	GetTable: ()=> {
-
 		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
 
 		// gibt es noch nicht, laden
@@ -352,16 +404,17 @@ let Negotiation = {
 				Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
 				if (Negotiation.CurrentTable !== undefined) {
-					Negotiation.Guesses[0] = Negotiation.CurrentTable['Guess'];
-				}
+					Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+                }
+
+                Negotiation.RefreshBox();
 			});
 		}
     	// bereits geladen
     	else {
 			Negotiation.CurrentTable = Negotiation.Tables[TableName];
-			Negotiation.Guesses[0] = Negotiation.CurrentTable['Guess'];
-		}
-
-        Negotiation.RefreshBox();
-	}
+            Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+            Negotiation.RefreshBox();
+        }
+    }
 };
