@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 de.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 22:33 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
  *
  * Copyright © 2019
  *
@@ -30,6 +31,7 @@ let i18n = {
 			"Order": "Reihenfolge",
 			"Deposit": "Einzahlen",
 			"CopyValues": "Werte kopieren",
+			"Note": "Merken",
 			"YourName": "Dein Name",
 			"IndividualName": "Individueller LG Name",
 			"OutputScheme": "Ausgabe Schema",
@@ -250,6 +252,11 @@ let i18n = {
 	},
 
 	"Settings" : {
+		"Version": {
+			"Title" : "Version",
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong> Version",
+			"Desc" : "Chrome Extension Version"
+		},
 		"GlobalSend": {
 			"Title" : "Übermittlung an foe-rechner.de",
 			"Desc" : "Wenn Du mit deiner Gilde Daten tracken möchtest, aktiviere diesen Punkt.<br>Für eine autarke Extension einfach deaktiveren"

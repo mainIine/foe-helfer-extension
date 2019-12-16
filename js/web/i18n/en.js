@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 en.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 22:37 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 13:08 Uhr
  *
  * Copyright © 2019
  *
@@ -31,6 +32,7 @@ let i18n = {
 			"Order": "Sequence",
 			"Deposit": "Deposit",
 			"CopyValues": "Copy values",
+			"Note": "Note",
 			"YourName": "Your name",
 			"IndividualName": "individual Lb name",
 			"OutputScheme": "Output scheme",
@@ -163,10 +165,10 @@ let i18n = {
 			"Title" : "Infobox",
 			"Filter" : "Filter",
 			"FilterGex" : "GEX",
-			"FilterAuction" : "Auktion",
+			"FilterAuction" : "Auction",
 			"FilterLevel" : "Level-Up",
-			"FilterMessage" : "Nachricht",
-			"ResetBox" : "Box leeren",
+			"FilterMessage" : "Message",
+			"ResetBox" : "Reset Box",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",
 				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place.",
@@ -251,6 +253,11 @@ let i18n = {
 	},
 
 	"Settings" : {
+		"Version": {
+			"Title" : "Version",
+			"DescDebug" : "Chrome Extension <strong class='text-danger'>BETA</strong> Version",
+			"Desc" : "Chrome Extension Version"
+		},
 		"GlobalSend": {
 			"Title" : "Transmission to foe-rechner.de",
 			"Desc" : "If you want to track data with your guild, activate this point. <br> For a self-sufficient extension simply disable."

@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 fr.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 22:37 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
  *
  * Copyright © 2019
  *
@@ -21,7 +22,7 @@ let i18n = {
 			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
             "Step": "Niveau",
-            "OldLevel": "ancien niveau", //Todo: Translate
+            "OldLevel": "Ancien niveau", //Todo: Translate
 			"PatronPart": "Contribution externe",
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
@@ -30,8 +31,9 @@ let i18n = {
 			"Order": "Séquence",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
+			"Note": "Ne pas oublier",
 			"YourName": "Votre nom",
-			"IndividualName": "nom individuel",
+			"IndividualName": "Nom individuel",
 			"OutputScheme": "Schéma de sortie",
             "Auto": "Automatique",
             "Place": "Place",
@@ -250,6 +252,11 @@ let i18n = {
 	},
 
 	"Settings" : {
+		"Version": {
+			"Title" : "Version",
+			"DescDebug" : "Version de l'extension Chrome <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Version de l'extension Chrome"
+		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
 			"Desc" : "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le."

@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 inject.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 17:07 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 12:27 Uhr
  *
  * Copyright © 2019
  *
@@ -13,8 +14,7 @@
  */
 
 let ant = document.createElement('script'),
-	manifestData = chrome.runtime.getManifest(),
-	v = manifestData.version;
+	v = chrome.runtime.getManifest().version;
 
 ant.src = chrome.extension.getURL('js/web/ant.js?v=' + v);
 ant.id = 'ant-script';
@@ -82,7 +82,7 @@ function InjectCSS()
 
 		let script = document.createElement('script');
 
-		script.innerText = "let extID='"+ chrome.runtime.id + "',GuiLng='" + lng + "',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
+		script.innerText = "let extID='"+ chrome.runtime.id + "',GuiLng='" + lng + "',extVersion='"+ v +"',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
 		document.head.appendChild(script);
 
 		let cssFiles = [

@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 settings.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       18.10.19, 11:14 Uhr
+ * erstellt am:	              15.12.19, 19:28 Uhr
+ * zuletzt bearbeitet:       15.12.19, 13:07 Uhr
  *
  * Copyright © 2019
  *
@@ -17,7 +18,12 @@ let Settings = {
 	/**
 	 * Einstellungspunkte
 	 */
-	Preferrences: {
+	Preferences: {
+		Version: {
+			callback: 'VersionInfo',
+			title: i18n['Settings']['Version']['Title'],
+			desc: (devMode === true ? i18n['Settings']['Version']['DescDebug'] : i18n['Settings']['Version']['Desc'])
+		},
 		GlobalSend : {
 			status: true,
 			title : i18n['Settings']['GlobalSend']['Title'],
@@ -111,13 +117,13 @@ let Settings = {
 			$('<div />').addClass('SettingsBoxBodyInner')
 		);
 
-		for(let key in Settings.Preferrences)
+		for(let key in Settings.Preferences)
 		{
-			if(!Settings.Preferrences.hasOwnProperty(key)) {
+			if(!Settings.Preferences.hasOwnProperty(key)) {
 				break;
 			}
 
-			let d = Settings.Preferrences[key],
+			let d = Settings.Preferences[key],
 				status = d['status'],
 				button = d['button'],
 				c = $('<div />').addClass('item'),
@@ -205,8 +211,19 @@ let Settings = {
 		if(s !== null){
 			return JSON.parse(s);
 		} else {
-			return Settings.Preferrences[name]['status'];
+			return Settings.Preferences[name]['status'];
 		}
+	},
+
+
+	/**
+	 * Versionsnummer ausgeben
+	 *
+	 * @returns {string}
+	 * @constructor
+	 */
+	VersionInfo: ()=> {
+		return '<div class="text-center" style="width:173px;"><strong>' + extVersion + '</strong></div>';
 	},
 
 
