@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 19:53 Uhr
- * zuletzt bearbeitet:       16.12.19, 19:50 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:40 Uhr
  *
  * Copyright © 2019
  *
@@ -303,6 +303,10 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Negative profit in the cost calculator",
 			"Desc" : "Would you like to see the negative profit displayed?"
+		},
+		"AutomaticNegotiation": {
+			"Title" : "Negotiation helper",
+			"Desc" : "Should the assistant open automatically with a negotiation and close when canceled?"
 		},
 		"ResetBoxPositions": {
 			"Title" : "Box coordinates",
