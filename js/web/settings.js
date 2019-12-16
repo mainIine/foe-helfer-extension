@@ -211,7 +211,7 @@ let Settings = {
 		if(s !== null){
 			return JSON.parse(s);
 		} else {
-			return Settings.Preferrences[name]['status'];
+			return Settings.Preferences[name]['status'];
 		}
 	},
 
