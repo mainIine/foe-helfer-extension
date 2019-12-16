@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 12:27 Uhr
+ * erstellt am:	              16.12.19, 18:08 Uhr
+ * zuletzt bearbeitet:       16.12.19, 17:19 Uhr
  *
  * Copyright © 2019
  *
@@ -145,6 +145,7 @@ function InjectCode()
 		'productions',
         'part-calc',
         'unit',
+		'guildfights',
 		'notes',
         'technologies',
         'negotiation',
