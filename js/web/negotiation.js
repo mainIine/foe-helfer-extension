@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 21:41 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:34 Uhr
+ * erstellt am:	              17.12.19, 11:07 Uhr
+ * zuletzt bearbeitet:       17.12.19, 10:53 Uhr
  *
  * Copyright © 2019
  *
@@ -34,12 +34,14 @@ let Negotiation = {
 	 * @constructor
 	 */
     Show: () => {
-        if ($('#negotiation').length === 0) {
+        if ($('#negotiationBox').length === 0) {
             let args = {
-                'id': 'negotiation',
+                'id': 'negotiationBox',
                 'title': i18n['Boxes']['Negotiation']['Title'],
                 'auto_close': true,
-                'minimize': true
+                'minimize': true,
+				'dragdrop': true,
+				'saveCords': false
             };
 
             HTML.Box(args);
@@ -65,7 +67,7 @@ let Negotiation = {
     * @constructor
     */
     RefreshBox: () => {
-        if ($('#negotiation').length > 0) {
+        if ($('#negotiationBox').length > 0) {
             Negotiation.CalcBody();
         }
     },
@@ -78,11 +80,12 @@ let Negotiation = {
 	 */
     CalcBody: () => {
         let h = [],
-            StockState = 0;
+            StockState = 0,
+			IsEnd = false;
 
 		h.push('<table class="foe-table no-hover">');
 
-        // Durch
+
         if (Negotiation.CurrentTable !== undefined) {
             h.push('<tbody>');
 
@@ -164,7 +167,7 @@ let Negotiation = {
 
         let cnt = 0;
         for (let i = 0; i < Negotiation.Guesses.length; i++) {
-			console.log('i <> Negotiation.Guesses.length: ', i + ' <> ' + Negotiation.Guesses.length);
+
             h.push('<tr' + ((i +1) < Negotiation.Guesses.length ? ' class="goods-opacity"' : '') + '>');
 
             for (let place = 0; place < Negotiation.PlaceCount; place++) {
@@ -189,7 +192,8 @@ let Negotiation = {
         h.push('</table>');
 
         if (Negotiation.Message !== undefined) {
-            h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>')
+        	IsEnd = true;
+            h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>');
         }
 
         if (StockState === 1) {
@@ -199,10 +203,15 @@ let Negotiation = {
             h.push('<p class="text-center text-danger"><strong>' + i18n['Boxes']['Negotiation']['GoodsCritical'] + '</strong></p>')
         }
 
-        $('#negotiationBody').html(h.join('')).promise().done(function(){
+        $('#negotiationBoxBody').html(h.join('')).promise().done(function(){
 
         	// Rundenzahl oben rechts
         	$('#round-count').find('strong').text(i18n['Boxes']['Negotiation']['Round'] + ' ' + (cnt + 1) + '/' + (Negotiation.TryCount));
+
+        	// Verhandlungen Fertig/abgebrochen/Fehler
+        	if(IsEnd === true){
+				$('.foe-table').find('tr').removeClass('goods-opacity');
+			}
 
         	if(Negotiation.CurrentTry === 1){
 				new Sortable(document.getElementById('good-sort'), {
@@ -232,7 +241,7 @@ let Negotiation = {
 
     	if( $('#negotationBtn').hasClass('hud-btn-red') ){
 			$('#negotationBtn').removeClass('hud-btn-red');
-			$('#negotiation-closed').remove();
+			$('#negotiationBox-closed').remove();
 		}
 
 
@@ -302,12 +311,15 @@ let Negotiation = {
                 ResourceId = SlotData[i]['resourceId'],
                 SlotID = SlotData[i]['slotId'];
 
-            if (SlotID === undefined) SlotID = 0;          
+            if (SlotID === undefined)
+            	SlotID = 0;
 
             if (State === 'correct')
                 Slots[SlotID] = 0;
+
             else if (State === 'wrong_person')
                 Slots[SlotID] = 1;
+
             else
                 Slots[SlotID] = 2;
 
@@ -322,6 +334,7 @@ let Negotiation = {
             Negotiation.CurrentTable = undefined;
             Negotiation.Message = i18n['Boxes']['Negotiation']['WrongGoods'];
             Negotiation.MessageClass = 'danger';
+
         }
         else {
             for (let i = 0; i < 5; i++) {
@@ -334,12 +347,14 @@ let Negotiation = {
                 Negotiation.CurrentTable = undefined;
                 Negotiation.Message = i18n['Boxes']['Negotiation']['Success'];
 				Negotiation.MessageClass = 'success';
+
             }
             else if (Negotiation.CurrentTry > Negotiation.TryCount) {
                 Negotiation.CurrentTry = 0;
                 Negotiation.CurrentTable = undefined;
                 Negotiation.Message = i18n['Boxes']['Negotiation']['TryEnd'];
 				Negotiation.MessageClass = 'warning';
+
             }
             else {
                 Negotiation.CurrentTable = Negotiation.CurrentTable['r'][Result];
@@ -364,8 +379,8 @@ let Negotiation = {
 
         Negotiation.RefreshBox();
 
-		if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiation').length > 0){
-			$('#negotiation').fadeToggle(function(){
+		if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length > 0){
+			$('#negotiationBox').fadeToggle(function(){
 				$(this).remove();
 			});
 		}
@@ -393,6 +408,8 @@ let Negotiation = {
 	 * @constructor
 	 */
     GetGoodValue: (GoodName) => {
+    	let Value = 0;
+
         if (GoodName === 'money') {
             Value = 0;
         }
@@ -465,7 +482,7 @@ let Negotiation = {
         }
 
     	// wenn aktiviert, automatisch starten
-    	if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiation').length === 0){
+    	if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0){
     		setTimeout(()=>{
 				Negotiation.Show();
 			}, 300);
