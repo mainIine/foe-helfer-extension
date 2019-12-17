@@ -4,8 +4,9 @@
  * Dateiname:                 campagnemap.js
  * Projekt:                   foe-chrome
  *
- * erstellt von:              Th3OnlyC0D3R
- * zu letzt bearbeitet:       17.12.19, 10:54 Uhr
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 18:20 Uhr
  *
  * Copyright © 2019
  *
@@ -35,6 +36,7 @@ let KampagneMap = {
         KampagneMap.BuildBox();
     },
 
+
     /**
 	 *
 	 * @constructor
@@ -42,6 +44,7 @@ let KampagneMap = {
     BuildBox: () => {
         KampagneMap.CalcBody();
     },
+
 
     /**
 	 *
@@ -60,40 +63,57 @@ let KampagneMap = {
                 OffeneProvinzen.push(prov);
             }
         });
+
         let CurrentProvince = KampagneMap.AllProvinces.find(obj => {
             if (obj['id'] !== undefined)
                 return obj['id'] === KampagneMap.Provinces[0]['provinceId'];
         });
+
         if (OffeneProvinzen.length === 0) {
             h.push('<div class="campagne-head">');
             h.push('<div class="text-center"><strong>' + CurrentProvince['name'] + '</strong></div>');
             h.push('<div><strong>' + i18n['Boxes']['Campagne']['AlreadyDone'] + '</strong></div>');
             h.push('</div>');
             $('#campagneBody').html(h.join(''));
-            
         }
+
         else{
             let RequiredResources = [];
             let Rewards = []
+
             OffeneProvinzen.forEach(prov => {
                 for (let ResourceName in prov['resourcePrice']['resources']) {
+
+                	if(!prov['resourcePrice']['resources'].hasOwnProperty(ResourceName)){
+                		break;
+					}
+
                     if (RequiredResources[ResourceName] === undefined)
                         RequiredResources[ResourceName] = 0;
+
                     RequiredResources[ResourceName] += prov['resourcePrice']['resources'][ResourceName];
                 }
+
                 if (Rewards[prov['reward']['type']] === undefined)
                     Rewards[prov['reward']['type']] = 0;
+
                 Rewards[prov['reward']['type']] += prov['reward']['amount']
             });
+
             h.push('<div class="campagne-head">');
             h.push('<div class="text-center"><strong>' + CurrentProvince['name'] + '</strong></div>');
             h.push('</div>');
     
             h.push('<div class="campagne-head">');
             h.push('<div class="text-center"><strong>' + i18n['Boxes']['Campagne']['Reward'] + ': </strong></div>');
+
             for (let RewardTyp in Rewards) {
+            	if(!Rewards.hasOwnProperty(RewardTyp)){
+            		break;
+				}
                 h.push('<div><strong> ' + Rewards[RewardTyp] + ' ' + GoodsData[RewardTyp]['name'] + '</strong></div>');
             }
+
             h.push('</div>');
     
             h.push('<table class="foe-table">');
@@ -108,24 +128,33 @@ let KampagneMap = {
     
             // Reihenfolge der Ausgabe generieren
             let OutputList = ['strategy_points', 'money', 'supplies'];
+
             for (let i = 0; i < 70; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'promethium';
+
             for (let i = 70; i < 75; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'orichalcum';
+
             for (let i = 75; i < GoodsList.length; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
+
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i];
+
                 if (RequiredResources[ResourceName] !== undefined) {
-                    let Required = RequiredResources[ResourceName];
-                    let Stock = ResourceStock[ResourceName];
-                    if (Stock === undefined) Stock = 0;
+                    let Required = RequiredResources[ResourceName],
+                    	Stock = ResourceStock[ResourceName];
+
+                    if (Stock === undefined)
+                    	Stock = 0;
+
                     let Diff = Stock - Required;
+
                     h.push('<tr>');
                     h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td>' + HTML.Format(Required) + '</td>');
@@ -134,7 +163,9 @@ let KampagneMap = {
                     h.push('</tr>');
                 }
             }
+
             h.push('</table');
+
             $('#campagneBody').html(h.join(''));
         }
     },

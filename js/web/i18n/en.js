@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 21:41 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:40 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:18 Uhr
  *
  * Copyright © 2019
  *
@@ -166,6 +166,7 @@ let i18n = {
 			"Average": "Ø Amount",
 			"Costs": "Costs:",
 			"Round": "Round",
+			"Stock": "Stock:",
 			"GoodsLow": "ATTENTION: Good stock is low",
 			"GoodsCritical": "ATTENTION: Good stock is critical",
 			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt."
@@ -335,6 +336,7 @@ let i18n = {
 				"de" : "German",
 				"en" : "English",
 				"fr" : "French",
+				"es" : "Spanish",
 			}
 		}
 	},
