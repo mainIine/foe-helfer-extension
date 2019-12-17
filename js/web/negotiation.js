@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 11:07 Uhr
- * zuletzt bearbeitet:       17.12.19, 10:53 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:14 Uhr
  *
  * Copyright © 2019
  *
@@ -100,7 +100,8 @@ let Negotiation = {
 
 			h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
 
-            for (let i = 0; i < Negotiation.GoodCount; i++) {
+            for (let i = 0; i < Negotiation.GoodCount; i++)
+            {
 
                 let GoodName = Negotiation.Goods[i],
 					GoodAmount = Negotiation.GoodAmounts[GoodName],
@@ -132,7 +133,7 @@ let Negotiation = {
 					GoodAmount = Math.round(GoodAmount * 10) / 10;
 				}
 
-                h.push('<div class="good" data-slug="' + GoodName + '">' +
+                h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n['Boxes']['Negotiation']['Stock'] + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
 						'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
 						'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
@@ -142,7 +143,8 @@ let Negotiation = {
 
             h.push('</tr>');
 
-            if (Negotiation.CurrentTry === 1) {
+            if (Negotiation.CurrentTry === 1)
+            {
                 h.push('<tr>');
                 h.push('<td colspan="5" class="text-center"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
                 h.push('</tr>');
@@ -213,6 +215,11 @@ let Negotiation = {
         	if(IsEnd === true){
 				$('.foe-table').find('tr').removeClass('goods-opacity');
 			}
+
+			// Lagerbestand via Tooltip
+			$('.good').tooltip({
+				container: '#negotiationBox'
+			});
 
         	if(Negotiation.CurrentTry === 1){
 				new Sortable(document.getElementById('good-sort'), {

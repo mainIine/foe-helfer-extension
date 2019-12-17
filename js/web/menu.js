@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 menu.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.11.19, 17:21 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 18:22 Uhr
  *
  * Copyright © 2019
  *
@@ -462,6 +463,7 @@ let Menu = {
         return btn_TechBG;
     },
 
+
 	/**
 	 * KampanienMap
 	 *
@@ -472,7 +474,6 @@ let Menu = {
         let btn_MapBG = $('<div />').attr('id', 'Map').addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
-
         Menu.toolTippBox(i18n['Menu']['Campagne']['Title'], '<em id="map-closed" class="tooltip-error">' + i18n['Menu']['Campagne']['Warning'] + '<br></em>' + i18n['Menu']['Campagne']['Desc'], 'Map');
 
         let btn_Map = $('<span />');
@@ -487,6 +488,7 @@ let Menu = {
 
         return btn_MapBG;
     },
+
 
     /**
 	 * Negotiation
