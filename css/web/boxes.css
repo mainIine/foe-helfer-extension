@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 21:41 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:30 Uhr
+ * erstellt am:	              17.12.19, 11:07 Uhr
+ * zuletzt bearbeitet:       17.12.19, 08:52 Uhr
  *
  * Copyright © 2019
  *
@@ -1061,88 +1061,88 @@
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-#negotiation {
+#negotiationBox {
 	top: 15%;
 	left: 50%;
 	width: 790px;
 	transform: translateX(-50%);
 }
-	#negotiation #negotiationBody #good-sort {
+	#negotiationBox #negotiationBoxBody #good-sort {
 		display: flex;
 		justify-content: space-between;
 		margin-right: 15px;
 	}
 
-	#negotiation #negotiationBody #good-sort .good {
+	#negotiationBox #negotiationBoxBody #good-sort .good {
 		text-align: center;
 		width: 4em;
 		padding: 2px;
 		border-radius: 3px;
 	}
 
-	#negotiation #negotiationBody .goods-dragable .good:hover {
+	#negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
 		background-color: rgba(255,255,255, 0.33);
 		cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 	}
 
-	#negotiation #negotiationBody #good-sort .good-drag {
+	#negotiationBox #negotiationBoxBody #good-sort .good-drag {
 		opacity: 0.5;
 	}
 
-	#negotiation #negotiationBody #good-sort .good span {
+	#negotiationBox #negotiationBoxBody #good-sort .good span {
 		display: inline-block;
 	}
 
-	#negotiation #negotiationBody p {
+	#negotiationBox #negotiationBoxBody p {
 		margin-top: 10px;
 		font-size: 140%;
 	}
 
-    #negotiation #negotiationBody tr.total-row td {
+    #negotiationBox #negotiationBoxBody tr.total-row td {
         border-top: 2px solid #efcf9a;
         font-weight: 700;
     }
 
-    #negotiation #negotiationBody tr.resource-row td {
+    #negotiationBox #negotiationBoxBody tr.resource-row td {
         color: #FFB539;
         font-weight: 700;
     }
 
-	#negotiation #negotiationBody tr.goods-opacity td {
+	#negotiationBox #negotiationBoxBody tr.goods-opacity td {
 		opacity: .4;
 	}
 
-    #negotiation #negotiationBody .text-danger {
+    #negotiationBox #negotiationBoxBody .text-danger {
         color: #ef1616;
         font-weight: 700;
     }
 
-    #negotiation #negotiationBody .text-success {
+    #negotiationBox #negotiationBoxBody .text-success {
         color: #29b206;
         font-weight: 700;
     }
 
-	#negotiation #negotiationBody td.success {
+	#negotiationBox #negotiationBoxBody td.success {
 		color: #29b206;
 	}
 
-	#negotiation #negotiationBody td.warning {
+	#negotiationBox #negotiationBoxBody td.warning {
 		color: #FF6000;
 	}
 
-	#negotiation #negotiationBody td.error {
+	#negotiationBox #negotiationBoxBody td.error {
 		color: #ef1616;
 	}
 
-    #negotiation #negotiationBody .text-muted {
+    #negotiationBox #negotiationBoxBody .text-muted {
         color: #8a8a8a;
     }
 
-    #negotiation #negotiationBody td {
+    #negotiationBox #negotiationBoxBody td {
         position: relative;
     }
 
-    #negotiation #negotiationBody .diplomacy-ask {
+    #negotiationBox #negotiationBoxBody .diplomacy-ask {
         font-weight: 700;
         display: inline-block;
         margin-left: 6px;
@@ -1154,7 +1154,7 @@
         z-index: 1;
     }
 
-    #negotiation #negotiationBody .diplomacy-tip {
+    #negotiationBox #negotiationBoxBody .diplomacy-tip {
         position: absolute;
         white-space: nowrap;
         text-align: left;
@@ -1166,7 +1166,7 @@
         display: none;
     }
 
-    #negotiation #negotiationBody .diplomacy-ask:hover .diplomacy-tip {
+    #negotiationBox #negotiationBoxBody .diplomacy-ask:hover .diplomacy-tip {
         display: block;
     }
 
