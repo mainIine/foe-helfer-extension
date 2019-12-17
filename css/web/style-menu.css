@@ -340,6 +340,16 @@ p {
     background-image: url('../images/technologies.png');
 }
 
+#Map span {
+	background-image: url('../images/map.png');
+	-webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+
 #ChatBtn span {
 	background-image: url('../images/chat.png');
 }

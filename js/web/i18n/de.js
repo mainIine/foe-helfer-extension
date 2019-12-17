@@ -144,6 +144,16 @@ let i18n = {
             }
         },
 
+        "Campagne": {
+            "Title": "Eroberungskosten für ",
+            "Reward": "Gesamtbelohnung ",
+            "AlreadyDone": " bereits erobert!",
+            "Resource": "Ressource",
+            "DescRequired": "Benötigt",
+            "DescInStock": "Vorhanden",
+            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
+
         "Negotiation": {
             "Title" : "Verhandlungassistent",
             "WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
@@ -215,6 +225,11 @@ let i18n = {
             "Desc": "Kosten für Forschung berechnen",
             "Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!"
         },
+        "Campagne": {
+            "Title": "Kampagne",
+            "Desc": "Übersicht über die benötigten Ressourcen",
+        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
         "Negotiation": {
             "Title": "Verhandlungassistent",
 			"Desc": "Macht dir präzise Vorschläge für Verhandlungen",
