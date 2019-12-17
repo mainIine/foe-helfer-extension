@@ -99,7 +99,8 @@
 .goods-sprite.ai_data::before{background-position: -917.1px -146.4px;width:25px;height:35px;transform:rotate(-90deg)}
 .goods-sprite.electromagnets::before{background-position: -943.6px -146.4px;width:32.1px;height:34.3px}
 /* EOF generated */
-.goods-sprite-extra::before{background:url('../images/goods-extra.png') top left no-repeat;background-size:134px 45px}
+.goods-sprite-extra::before{background:url('../images/goods-extra.png') top left no-repeat;background-size:180px 45px}
 .goods-sprite-extra.supplies::before{background-position: 0 0;width:45px;height:45px}
 .goods-sprite-extra.money::before{background-position: -45px 0;width:45px;height:45px}
 .goods-sprite-extra.medals::before{background-position: -94px 0;width:45px;height:45px}
+.goods-sprite-extra.empty::before {background-position: -138px 0;width: 45px;height: 45px}
