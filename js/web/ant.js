@@ -21,7 +21,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
     CurrentEraID = null,
     BuildingNamesi18n = false,
 	CityMapData = null,
-	CampaignServiceData = null,
     Conversations = [],
     GoodsData = [],
     GoodsList = [],
@@ -660,8 +659,8 @@ document.addEventListener("DOMContentLoaded", function(){
 					return obj['requestClass'] === 'CampaignService' && obj['requestMethod'] === 'getProvinceData';
 				});
 				if(MapService !== undefined){
+					KampagneMap.AllProvinces = JSON.parse(localStorage.getItem('AllProvinces'));
 					KampagneMap.Provinces = MapService['responseData'];
-
 					if($('#Map').hasClass('hud-btn-red')){
 						$('#Map').removeClass('hud-btn-red');
 						$('#map-closed').remove();
@@ -669,6 +668,13 @@ document.addEventListener("DOMContentLoaded", function(){
 					if ($('#campagne').length > 0) {
 						KampagneMap.BuildBox();
 					}
+				}
+
+				let CampaignServiceData = d.find(obj =>{
+					return obj['requestClass'] === 'CampaignService' && obj['requestMethod'] === 'start';
+				});
+				if(CampaignServiceData !== undefined){
+					localStorage.setItem('AllProvinces', JSON.stringify(CampaignServiceData['responseData']['provinces']));
 				}
 
                 // --------------------------------------------------------------------------------------------------

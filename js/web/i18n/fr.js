@@ -117,7 +117,7 @@ let i18n = {
 
         "Technologies": {
             "Title": "Les coûts de la recherche pour", //Todo: Translate
-            "Resource": "Ressource", //Todo: Translate
+            "Resource": "Ressources", //Todo: Translate
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
@@ -145,11 +145,13 @@ let i18n = {
         },
 
         "Campagne": {
-            "Title": "Provinzeroberungskosten für ",
-            "Resource": "Ressource",
-            "DescRequired": "Benötigt",
-            "DescInStock": "Vorhanden",
-            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+            "Title": "Coûts de conquête pour",
+            "Reward": "Récompense totale ",
+            "AlreadyDone": " déjà conquis!",
+            "Resource": "Ressources",
+            "DescRequired": "Requis",
+            "DescInStock": "Disponible",
+            "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
         },
 
         "Negotiation": {
