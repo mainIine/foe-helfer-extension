@@ -1153,7 +1153,6 @@
 }
 	#negotiationBox #negotiationBoxBody #good-sort {
 		display: flex;
-		justify-content: space-between;
 		margin-right: 15px;
 	}
 
