@@ -146,11 +146,13 @@ let i18n = {
         },
 
         "Campagne": {
-            "Title": "Provinzeroberungskosten für ",
-            "Resource": "Ressource",
-            "DescRequired": "Benötigt",
-            "DescInStock": "Vorhanden",
-            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+            "Title": "Conquest costs for ",
+            "Reward": "Total Reward ",
+            "AlreadyDone": " already conquered!",
+            "Resource": "Resource",
+            "DescRequired": "Required",
+            "DescInStock": "Available",
+            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
         },
 
         "Negotiation": {

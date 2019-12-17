@@ -145,7 +145,9 @@ let i18n = {
         },
 
         "Campagne": {
-            "Title": "Provinzeroberungskosten für ",
+            "Title": "Eroberungskosten für ",
+            "Reward": "Gesamtbelohnung ",
+            "AlreadyDone": " bereits erobert!",
             "Resource": "Ressource",
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",

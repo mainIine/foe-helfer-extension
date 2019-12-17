@@ -1068,7 +1068,7 @@
 	#campagne #campagneBody {
 		overflow-x: hidden;
 		overflow-y: auto;
-		min-height: 300px;
+		min-height: 100px;
 		max-height: 500px;
 	}
 
@@ -1080,7 +1080,7 @@
 	}
 
 	#campagne #campagneBody .campagne-head > * {
-		width: 33.333334%;
+		width: 100%;
 	}
 
 	#campagne #campagneBody .campagne-head strong {
