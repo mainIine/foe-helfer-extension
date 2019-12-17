@@ -117,7 +117,7 @@ let i18n = {
 
         "Technologies": {
             "Title": "Les coûts de la recherche pour", //Todo: Translate
-            "Resource": "Ressource", //Todo: Translate
+            "Resource": "Ressources", //Todo: Translate
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
@@ -142,6 +142,16 @@ let i18n = {
                 18: "Ère Spatiale - Mars",
                 19: "Ère Spatiale - Ceres"
             }
+        },
+
+        "Campagne": {
+            "Title": "Coûts de conquête pour",
+            "Reward": "Récompense totale ",
+            "AlreadyDone": " déjà conquis!",
+            "Resource": "Ressources",
+            "DescRequired": "Requis",
+            "DescInStock": "Disponible",
+            "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
         },
 
         "Negotiation": {
@@ -215,6 +225,11 @@ let i18n = {
             "Desc": "Calculer le coût de la recherche", //Todo: Translate
             "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
         },
+        "Campagne": {
+            "Title": "Kampagne",
+            "Desc": "Übersicht über die benötigten Ressourcen",
+        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
         "Negotiation": {
             "Title": "Assistant de négociation",
 			"Desc": "Faire des propositions de négociations précises",

@@ -148,6 +148,7 @@ function InjectCode()
         'unit',
 		'guildfights',
 		'notes',
+		'campagnemap',
         'technologies',
         'negotiation',
 		'read-buildings',
