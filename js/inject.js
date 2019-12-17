@@ -146,6 +146,7 @@ function InjectCode()
         'part-calc',
         'unit',
 		'notes',
+		'campagnemap',
         'technologies',
         'negotiation',
 		'read-buildings',

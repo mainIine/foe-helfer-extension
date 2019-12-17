@@ -145,6 +145,14 @@ let i18n = {
             }
         },
 
+        "Campagne": {
+            "Title": "Provinzeroberungskosten für ",
+            "Resource": "Ressource",
+            "DescRequired": "Benötigt",
+            "DescInStock": "Vorhanden",
+            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
+
         "Negotiation": {
             "Title": "Negotiation helper",
             "WrongGoods": "Wrong goods selected, please finish manually",
@@ -210,6 +218,11 @@ let i18n = {
             "Desc": "Calculate cost for research",
             "Warning": "Disabled: Open the research menu first!"
         },
+        "Campagne": {
+            "Title": "Kampagne",
+            "Desc": "Übersicht über die benötigten Ressourcen",
+        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
         "Negotiation": {
             "Title": "Negotiation helper",
 			"Desc": "Make precise proposals for negotiations",

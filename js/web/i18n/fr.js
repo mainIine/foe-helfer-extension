@@ -144,6 +144,14 @@ let i18n = {
             }
         },
 
+        "Campagne": {
+            "Title": "Provinzeroberungskosten für ",
+            "Resource": "Ressource",
+            "DescRequired": "Benötigt",
+            "DescInStock": "Vorhanden",
+            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
+
         "Negotiation": {
             "Title": "assistant de négociation",
             "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
@@ -209,6 +217,11 @@ let i18n = {
             "Desc": "Calculer le coût de la recherche", //Todo: Translate
             "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
         },
+        "Campagne": {
+            "Title": "Kampagne",
+            "Desc": "Übersicht über die benötigten Ressourcen",
+        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
         "Negotiation": {
             "Title": "Assistant de négociation",
 			"Desc": "Faire des propositions de négociations précises",
