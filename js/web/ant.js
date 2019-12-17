@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 18:54 Uhr
+ * erstellt am:	              16.12.19, 18:08 Uhr
+ * zuletzt bearbeitet:       16.12.19, 17:49 Uhr
  *
  * Copyright © 2019
  *
@@ -186,6 +186,34 @@ document.addEventListener("DOMContentLoaded", function(){
 					MainParser.CollectBoosts(BoostService['responseData']);
 				}
 
+
+				// --------------------------------------------------------------------------------------------------
+				// Gildengefechte - Snapshot
+				let GuildBattlegroundPlayerService = d.find(obj => {
+					return obj['requestClass'] === 'GuildBattlegroundService' && obj['requestMethod'] === 'getPlayerLeaderboard';
+				});
+
+				if (GuildBattlegroundPlayerService !== undefined) {
+
+					// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
+					if(GildFights.NewAction !== null){
+						GildFights.PrevAction = GildFights.NewAction;
+					}
+
+					GildFights.NewAction = GuildBattlegroundPlayerService['responseData'];
+				}
+
+
+				// Gildengefechte - Map, Gilden
+				let GuildBattlegroundMapService = d.find(obj => {
+					return obj['requestClass'] === 'GuildBattlegroundService' && obj['requestMethod'] === 'getBattleground';
+				});
+
+				if (GuildBattlegroundMapService !== undefined) {
+					GildFights.init();
+					GildFights.MapData = GuildBattlegroundMapService['responseData'];
+				}
+
 				// --------------------------------------------------------------------------------------------------
 				// Karte wird gewechselt zum Außenposten
 				let GridService = d.find(obj => {
@@ -201,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function(){
 				let CityMapService = d.find(obj => {
 					return obj['requestClass'] === 'CityMapService' && obj['requestMethod'] === 'getEntities';
 				});
-
 
 
 				if (CityMapService !== undefined) {
@@ -1465,8 +1492,6 @@ let MainParser = {
 		xobj.onreadystatechange = function () {
 			if (xobj.readyState === 4 && xobj.status === 200) {
 				callback(xobj.responseText);
-			} else {
-				callback(false);
 			}
 		};
 		xobj.send(null);
