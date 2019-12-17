@@ -22,7 +22,7 @@ let Settings = {
 		Version: {
 			callback: 'VersionInfo',
 			title: i18n['Settings']['Version']['Title'],
-			desc: (devMode === true ? i18n['Settings']['Version']['DescDebug'] : i18n['Settings']['Version']['Desc'])
+			desc: i18n['Settings']['Version']['Desc']
 		},
 		GlobalSend : {
 			status: true,
@@ -211,7 +211,7 @@ let Settings = {
 		if(s !== null){
 			return JSON.parse(s);
 		} else {
-			return Settings.Preferrences[name]['status'];
+			return Settings.Preferences[name]['status'];
 		}
 	},
 

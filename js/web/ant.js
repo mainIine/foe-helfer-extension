@@ -20,7 +20,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     ExtWorld = '',
     CurrentEraID = null,
     BuildingNamesi18n = false,
-    CityMapData = null,
+	CityMapData = null,
+	CampaignServiceData = null,
     Conversations = [],
     GoodsData = [],
     GoodsList = [],
@@ -624,7 +625,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 if (ResearchService !== undefined) {
                     Technologies.UnlockedTechologies = ResearchService['responseData'];
-                }
+				}
+				
+                // --------------------------------------------------------------------------------------------------
+				// KampagneMap Service
+				let MapService = d.find(obj =>{
+					return obj['requestClass'] === 'CampaignService' && obj['requestMethod'] === 'getProvinceData';
+				});
+				if(MapService !== undefined){
+					KampagneMap.Provinces = MapService['responseData'];
+
+					if($('#Map').hasClass('hud-btn-red')){
+						$('#Map').removeClass('hud-btn-red');
+						$('#map-closed').remove();
+					}
+					if ($('#campagne').length > 0) {
+						KampagneMap.BuildBox();
+					}
+				}
 
                 // --------------------------------------------------------------------------------------------------
 				// Negotiation
@@ -1110,7 +1128,7 @@ let MainParser = {
 
 		if(devMode)
 		{
-			HTML.Box({
+			/* HTML.Box({
 				'id': 'DevNode',
 				'title': 'Hinweis!',
 				'auto_close': true
@@ -1121,7 +1139,7 @@ let MainParser = {
 
 				$('#DevNodeBody').html(desc);
 
-			}, 200);
+			}, 200); */
 		}
 	},
 

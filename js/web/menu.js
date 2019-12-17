@@ -80,6 +80,10 @@ let Menu = {
         */
         hudSlider.append(Menu.Technologies_Btn());
 
+		/**
+        * Kampange
+        */
+	   hudSlider.append(Menu.CampagneMap_Btn());
 
         /**
         * Negotiation
@@ -458,6 +462,31 @@ let Menu = {
         return btn_TechBG;
     },
 
+	/**
+	 * KampanienMap
+	 *
+	 * @returns {*|jQuery}
+	 * @constructor
+	 */
+	CampagneMap_Btn: ()=> {
+        let btn_MapBG = $('<div />').attr('id', 'Map').addClass('hud-btn hud-btn-red');
+
+        // Tooltip einbinden
+
+        Menu.toolTippBox(i18n['Menu']['Campagne']['Title'], '<em id="map-closed" class="tooltip-error">' + i18n['Menu']['Campagne']['Warning'] + '<br></em>' + i18n['Menu']['Campagne']['Desc'], 'Map');
+
+        let btn_Map = $('<span />');
+
+        btn_Map.on('click', function () {
+            if (KampagneMap.Provinces !== null) {
+                KampagneMap.Show();
+            }
+        });
+
+        btn_MapBG.append(btn_Map);
+
+        return btn_MapBG;
+    },
 
     /**
 	 * Negotiation

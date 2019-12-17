@@ -338,6 +338,11 @@ p {
     background-image: url('../images/technologies.png');
 }
 
+#Map span {
+    background-image: url('../images/crate.png');
+}
+
+
 #ChatBtn span {
 	background-image: url('../images/chat.png');
 }
