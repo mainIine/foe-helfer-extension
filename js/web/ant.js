@@ -1161,7 +1161,7 @@ let MainParser = {
 
 		if(devMode)
 		{
-			/* HTML.Box({
+			HTML.Box({
 				'id': 'DevNode',
 				'title': 'Hinweis!',
 				'auto_close': true
@@ -1172,7 +1172,7 @@ let MainParser = {
 
 				$('#DevNodeBody').html(desc);
 
-			}, 200); */
+			}, 200);
 		}
 	},
 
