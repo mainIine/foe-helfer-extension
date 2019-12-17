@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 helper.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       11.11.19, 20:38 Uhr
+ * erstellt am:	              17.12.19, 11:07 Uhr
+ * zuletzt bearbeitet:       17.12.19, 10:12 Uhr
  *
  * Copyright © 2019
  *
@@ -100,13 +101,14 @@ let HTML = {
 	 */
 	// Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false, speaker = #id)=> {
 	/**
-	 * id,
-	 * title,
-	 * ask = null,
-	 * auto_close = true,
-	 * dragdrop = true,
+	 * id
+	 * title
+	 * ask = null
+	 * auto_close = true
+	 * dragdrop = true
 	 * resize = false
 	 * minimize = true
+	 * saveCords = true
 	 *
 	 * @param args
 	 * @constructor
@@ -150,43 +152,38 @@ let HTML = {
 			div.find(title).after( $('<span />').addClass('window-ask').attr('data-url', args['ask']) );
 		}
 
-		$('body').append(div);
-
-		setTimeout(
-			()=> {
-
-				if(args['auto_close'] !== undefined){
-					$('body').on('click', '#' + args['id'] + 'close', ()=>{
-						$('#' + args['id']).hide('fast', ()=>{
-							$('#' + args['id']).remove();
-						});
+		// wenn Box im DOM, verfeinern
+		$('body').append(div).promise().done(function() {
+			if(args['auto_close'] !== undefined){
+				$('body').on('click', '#' + args['id'] + 'close', ()=>{
+					$('#' + args['id']).hide('fast', ()=>{
+						$('#' + args['id']).remove();
 					});
-				}
+				});
+			}
 
-				if(args['ask'] !== undefined) {
-					$('body').on('click', '.window-ask', function() {
-						window.open( $(this).data('url'), '_blank');
-					});
-				}
+			if(args['ask'] !== undefined) {
+				$('body').on('click', '.window-ask', function() {
+					window.open( $(this).data('url'), '_blank');
+				});
+			}
 
-				if(args['dragdrop'] !== undefined) {
-					HTML.DragBox(document.getElementById(args['id']));
-				}
+			if(args['dragdrop'] !== undefined) {
+				HTML.DragBox(document.getElementById(args['id']), args['saveCords']);
+			}
 
-				if(args['resize'] !== undefined){
-					HTML.Resizeable(args['id']);
-				}
+			if(args['resize'] !== undefined){
+				HTML.Resizeable(args['id']);
+			}
 
-				if(args['minimize'] !== undefined){
-					HTML.MinimizeBox(div);
-				}
+			if(args['minimize'] !== undefined){
+				HTML.MinimizeBox(div);
+			}
 
-				if(args['speaker'] !== undefined){
-					$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
-				}
-
-			}, 50
-		);
+			if(args['speaker'] !== undefined){
+				$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
+			}
+		});
 	},
 
 
@@ -218,8 +215,10 @@ let HTML = {
 	 * Macht eine HTML BOX DragAble
 	 *
 	 * @param el
+	 * @param save
+	 * @constructor
 	 */
-	DragBox: (el)=> {
+	DragBox: (el, save = true)=> {
 
 		document.getElementById(el.id + "Header").removeEventListener("mousedown", dragMouseDown);
 
@@ -267,9 +266,11 @@ let HTML = {
 			el.style.top = top + "px";
 			el.style.left = left + "px";
 
-			let cords = top + '|' + left;
+			if(save === true){
+				let cords = top + '|' + left;
 
-			localStorage.setItem(id + 'Cords', cords);
+				localStorage.setItem(id + 'Cords', cords);
+			}
 		}
 
 		function closeDragElement() {

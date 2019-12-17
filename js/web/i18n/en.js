@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:08 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:40 Uhr
  *
  * Copyright © 2019
  *
@@ -160,7 +160,13 @@ let i18n = {
             "Canceled": "Negotiation has been canceled",
             "Success": "Success",
             "Chance": "Chance",
-            "Person": "Person",
+			"Person": "Person",
+			"Average": "Ø Amount",
+			"Costs": "Costs:",
+			"Round": "Round",
+			"GoodsLow": "ATTENTION: Good stock is low",
+			"GoodsCritical": "ATTENTION: Good stock is critical",
+			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt."
         },
 
 		"Settings" : {
@@ -310,6 +316,10 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Negative profit in the cost calculator",
 			"Desc" : "Would you like to see the negative profit displayed?"
+		},
+		"AutomaticNegotiation": {
+			"Title" : "Negotiation helper",
+			"Desc" : "Should the assistant open automatically with a negotiation and close when canceled?"
 		},
 		"ResetBoxPositions": {
 			"Title" : "Box coordinates",

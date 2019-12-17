@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:39 Uhr
  *
  * Copyright © 2019
  *
@@ -160,6 +160,12 @@ let i18n = {
             "Success": "Erfolg",
 			"Chance": "Chance",
 			"Person": "Person",
+			"Average": "Ø Menge",
+			"Costs": "Kosten:",
+			"Round": "Runde",
+			"GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
+			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
+			"DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen."
         },
 
 		"Settings" : {
@@ -309,6 +315,10 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Negativer Gewinn im Kostenrechner",
 			"Desc" : "Möchtest Du auch den negativen Gewinn angezeigt bekommen?"
+		},
+		"AutomaticNegotiation": {
+			"Title" : "Verhandlungsassisten",
+			"Desc" : "Soll der Assistent automatisch mit einer Verhandlung geöffnet und bei Abbruch geschlossen werden?"
 		},
 		"ResetBoxPositions": {
 			"Title" : "Box Koordinaten",

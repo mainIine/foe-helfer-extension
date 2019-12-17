@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 12:27 Uhr
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 18:37 Uhr
  *
  * Copyright © 2019
  *
@@ -120,7 +120,8 @@ function InjectCode()
 		'jQuery/jquery-resizable.min',
 		'tooltip/tooltip',
 		'tableSorter/table-sorter',
-		'jedParser/jedParser'
+		'Sortable/Sortable.min',
+		//'jedParser/jedParser'
 	];
 
 	for (let vs in vendorScripts) {
@@ -145,6 +146,7 @@ function InjectCode()
 		'productions',
         'part-calc',
         'unit',
+		'guildfights',
 		'notes',
 		'campagnemap',
         'technologies',

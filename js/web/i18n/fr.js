@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 13:03 Uhr
+ * erstellt am:	              16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       16.12.19, 21:40 Uhr
  *
  * Copyright © 2019
  *
@@ -153,13 +153,19 @@ let i18n = {
         },
 
         "Negotiation": {
-            "Title": "assistant de négociation",
+            "Title": "Assistant de négociation",
             "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
             "TryEnd": "Essayer de finir",
             "Canceled": "La négociation a été annulée", //Todo: Translate
             "Success": "Succès",
             "Chance": "Chance",
-            "Person": "Personne",
+			"Person": "Personne",
+			"Average": "Ø Coûts", //Todo: Translate
+			"Costs": "Moyens:",
+			"Round": "Rond",
+			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
+			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
+			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative."
         },
         
 		"Settings" : {
@@ -309,6 +315,10 @@ let i18n = {
 		"CalculatorShowNegativ": {
 			"Title" : "Bénéfice négatif dans le calculateur de coûts",
 			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
+		},
+		"AutomaticNegotiation": {
+			"Title" : "Assistant de négociation",
+			"Desc" : "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermer en cas d'annulation?"
 		},
 		"ResetBoxPositions": {
 			"Title" : "Coordonnées de la boîte",
