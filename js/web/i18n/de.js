@@ -184,11 +184,13 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Nachricht",
+			"FilterTrade" : "Handel",
 			"ResetBox" : "Box leeren",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
 				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt",
 				"Auction" : "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
+				"Trade" : "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 				"MsgBuilding" : "__building__ - Stufe __level__"
 			}
 		},
