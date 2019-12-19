@@ -479,8 +479,8 @@ const FoEproxy = (function () {
 	});
 
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
-		if (!lgUpdateData || !lgUpdateData.Ranking) {
-			lgUpdateData = {Ranking: null, UpdateEntity: data};
+		if (!lgUpdateData || !lgUpdateData.Rankings) {
+			lgUpdateData = {Rankings: null, UpdateEntity: data};
 			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
 			Promise.resolve().then(()=>lgUpdateData = null);
 		} else {
