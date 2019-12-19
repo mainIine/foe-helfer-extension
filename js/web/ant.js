@@ -97,7 +97,7 @@ const FoEproxy = (function () {
 		addMetaHandler: function(meta, callback) {
 			let list = proxyMetaMap[meta];
 			if (!list) {
-				map[meta] = list = [];
+				proxyMetaMap[meta] = list = [];
 			}
 			if (list.indexOf(callback) !== -1) {
 				// already registered
@@ -111,7 +111,7 @@ const FoEproxy = (function () {
 			if (!list) {
 				return;
 			}
-			map[method] = list.filter(c => c !== callback);
+			proxyMetaMap[meta] = list.filter(c => c !== callback);
 		},
 		// for raw requests access
 		addRawHandler: function(callback) {
@@ -152,7 +152,7 @@ const FoEproxy = (function () {
 	 */
 	function proxyAction(service, method, data, postData) {
 		_proxyAction(service, method, data, postData);
-		_proxyAction('all', method, data, postData);
+		_proxyAction(service, 'all', data, postData);
 		_proxyAction('all', 'all', data, postData);
 	}
 
@@ -209,7 +209,7 @@ const FoEproxy = (function () {
 	XHR.send = function(postData){
 		this._postData = postData;
 		
-		this.addEventListener('load', onloadHandler);
+		this.addEventListener('load', onLoadHandler);
 
 		return send.apply(this, arguments);
 	};
@@ -411,12 +411,12 @@ const FoEproxy = (function () {
 
 
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-		StrategyPoints.GetFromInventory(dataresponseData);
+		StrategyPoints.GetFromInventory(data.responseData);
 	});
 
 	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
 		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
-	}
+	});
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
@@ -455,25 +455,25 @@ const FoEproxy = (function () {
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
 
 		let Rankings;
-		if (getConstruction !== undefined) {
+		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
 			IsLevelScroll = false;
 		}
-		else if (getConstructionRanking !== undefined) {
+		else if (getConstructionRanking != null) {
 			Rankings = getConstructionRanking.responseData;
 			IsLevelScroll = true;
 		}
-		else if (contributeForgePoints !== undefined) {
+		else if (contributeForgePoints != null) {
 			Rankings = contributeForgePoints.responseData;
 			IsLevelScroll = false;
 		}
 		
 		if (!lgUpdateData || !lgUpdateData.UpdateEntity) {
-			lgUpdateData = {Ranking: Ranking, UpdateEntity: null};
+			lgUpdateData = {Rankings: Rankings, UpdateEntity: null};
 			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-			Promise.resolve().then(()=>lgUpdateData = null;);
+			Promise.resolve().then(()=>lgUpdateData = null);
 		} else {
-			lgUpdateData.Ranking = Ranking;
+			lgUpdateData.Rankings = Rankings;
 			lgUpdate();
 		}
 	});
@@ -482,7 +482,7 @@ const FoEproxy = (function () {
 		if (!lgUpdateData || !lgUpdateData.Ranking) {
 			lgUpdateData = {Ranking: null, UpdateEntity: data};
 			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-			Promise.resolve().then(()=>lgUpdateData = null;);
+			Promise.resolve().then(()=>lgUpdateData = null);
 		} else {
 			lgUpdateData.UpdateEntity = data;
 			lgUpdate();
@@ -491,7 +491,7 @@ const FoEproxy = (function () {
 	
 	// Update Funktion, die ausgeführt wird, sobald beide Informationen in lgUpdateData vorhanden sind.
 	function lgUpdate() {
-		const {UpdateEntity, Ranking} = lgUpdateData;
+		const {UpdateEntity, Rankings} = lgUpdateData;
 		lgUpdateData = null;
 		let IsPreviousLevel = false;
 
@@ -609,7 +609,7 @@ const FoEproxy = (function () {
 		}
 		ResourceStock = data.responseData.resources;
 		Outposts.CollectResources();
-	}
+	});
 
 
 	// Verarbeite Daten die an foe-rechner.de geschickt werden können
@@ -619,7 +619,7 @@ const FoEproxy = (function () {
 		if (!Settings.GetSetting('GlobalSend')) {
 			return;
 		}
-		MainParser.SaveLGInventory(LGInventory['responseData']);
+		MainParser.SaveLGInventory(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -689,7 +689,7 @@ const FoEproxy = (function () {
 			return;
 		}
 		MainParser.GreatBuildings(LGInvests['responseData']);
-	}
+	});
 
 	//--------------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------------
@@ -712,11 +712,11 @@ const FoEproxy = (function () {
 		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendTavernInfo')) {
 			return;
 		}
-		let page = Motivations['responseData']['page'],
+		let page = data.responseData.page,
 			time = MainParser.checkNextUpdate('OtherPlayersMotivation-' + page);
 
 		if(time === true){
-			MainParser.OtherPlayersMotivation(Motivations['responseData']);
+			MainParser.OtherPlayersMotivation(data.responseData);
 		}
 	});
 	
@@ -727,7 +727,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
 		// erste Runde
 		if(MainMenuLoaded === false){
-			MainMenuLoaded = Time['responseData']['time'];
+			MainMenuLoaded = data.responseData.time;
 		}
 		// zweite Runde
 		else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
@@ -767,7 +767,7 @@ const FoEproxy = (function () {
 	// --------------------------------------------------------------------------------------------------
 	// Negotiation
 
-	FoEproxy.addHandler('startNegotiation', (data, postData) => {
+	FoEproxy.addHandler('GuildExpeditionService', 'startNegotiation', (data, postData) => {
 		Negotiation.StartNegotiation(data.responseData);
 	});
 
