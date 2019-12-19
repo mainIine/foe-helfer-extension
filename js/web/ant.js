@@ -152,6 +152,7 @@ const FoEproxy = (function () {
 	 */
 	function proxyAction(service, method, data, postData) {
 		_proxyAction(service, method, data, postData);
+		_proxyAction('all', method, data, postData);
 		_proxyAction(service, 'all', data, postData);
 		_proxyAction('all', 'all', data, postData);
 	}
@@ -767,7 +768,7 @@ const FoEproxy = (function () {
 	// --------------------------------------------------------------------------------------------------
 	// Negotiation
 
-	FoEproxy.addHandler('GuildExpeditionService', 'startNegotiation', (data, postData) => {
+	FoEproxy.addHandler('all', 'startNegotiation', (data, postData) => {
 		Negotiation.StartNegotiation(data.responseData);
 	});
 
