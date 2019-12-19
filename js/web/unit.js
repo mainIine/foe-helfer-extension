@@ -62,14 +62,19 @@ let Unit = {
 			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
 
 			let x = setInterval(function() {
-				let diff = countDownDate.diff(moment());
+				if(countDownDate.isValid()){
+					let diff = countDownDate.diff(moment());
 
-				if (diff <= 0) {
+					if (diff <= 0) {
+						clearInterval(x);
+						$('.alca-info').html('<span class="text-danger"><strong>Ernte!</strong></span>');
+					} else
+						$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
+				}
+				else{
 					clearInterval(x);
-
 					$('.alca-info').html('<span class="text-danger">Ernte!</span>');
-				} else
-					$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
+				}
 
 			}, 1000);
 
