@@ -1,5 +1,43 @@
 ##Changelog - Chrome Extension
 
+#####2.3.14
+
+**Neu**
+- Extension:
+    - Spanisch eingefügt
+
+- Karte der Kontinente:
+	- Besucht man eine Provinz werden auf Wunsch alle Güterkosten für diese Provinz angezeigt - Danke an [Th3C0D3R](https://github.com/Th3C0D3R)
+
+
+**Update**
+- EA Rechner:	
+    - es werden nun die FP bis leveln des LGs angezeigt [#205](https://github.com/dsiekiera/foe-helfer-extension/issues/205)
+    - es ist nun möglich den EA Rechner auch für bereits abgeschlossene Level zu verwenden, im LG rückwärts blättern
+
+- Produktübersicht:
+	- Zusammenzählung der Güter wird nach Zeitaltern gruppiert [#228](https://github.com/dsiekiera/foe-helfer-extension/issues/228)
+	- Mit dem Auge-Icon kann das eigene Gebäude auf der Map angezeigt werden [#154](https://github.com/dsiekiera/foe-helfer-extension/issues/154)
+	- "tägliche FP" und sämtliche Bonus von Botschaftern werden in das Rathaus eingefügt und dargestellt [#175](https://github.com/dsiekiera/foe-helfer-extension/issues/175)
+
+- Verhandlungsassisten:
+    - Güterkosten optimiert
+    - es werden nun die durchschnittlichen Güterkosten für den Rest der Verhandlung angezeigt
+    - Warnmeldungen, wenn der Gütervorrat knapp wird
+    - Mouseover über Icons (oberste Reihe) zeigt Lagerbestand
+
+**BugFix**
+
+- Armee-Übersicht:
+	- beim entfernen von Einheiten aus dem Angriff oder der Verteidigung kam es zu Fehlern
+	- wenn kein Alcatraz vorhanden war, kam es zu einem Fehler
+
+- Infobox:
+	- Bei LevelUp Nachrichten stand statt dem Level “unknown” [Dank an Thomas (via Mail)]
+
+
+---
+
 #####v2.3.13
 **Neu**
 - Verhandlungsassistent:

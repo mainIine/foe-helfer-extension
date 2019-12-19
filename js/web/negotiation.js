@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 11:07 Uhr
- * zuletzt bearbeitet:       17.12.19, 10:53 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:14 Uhr
  *
  * Copyright © 2019
  *
@@ -88,13 +88,7 @@ let Negotiation = {
 
         if (Negotiation.CurrentTable !== undefined) {
             h.push('<tbody>');
-
-			if(Negotiation.CurrentTry === 1) {
-				h.push('<tr>');
-				h.push('<td colspan="5" class="text-right"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
-				h.push('</tr>');
-			}
-
+            
             h.push('<tr>');
             h.push('<td colspan="4" class="text-warning"><strong>' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
@@ -106,7 +100,8 @@ let Negotiation = {
 
 			h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
 
-            for (let i = 0; i < Negotiation.GoodCount; i++) {
+            for (let i = 0; i < Negotiation.GoodCount; i++)
+            {
 
                 let GoodName = Negotiation.Goods[i],
 					GoodAmount = Negotiation.GoodAmounts[GoodName],
@@ -138,7 +133,7 @@ let Negotiation = {
 					GoodAmount = Math.round(GoodAmount * 10) / 10;
 				}
 
-                h.push('<div class="good" data-slug="' + GoodName + '">' +
+                h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n['Boxes']['Negotiation']['Stock'] + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
 						'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
 						'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
@@ -147,6 +142,13 @@ let Negotiation = {
             h.push('</div></td>');
 
             h.push('</tr>');
+
+            if (Negotiation.CurrentTry === 1)
+            {
+                h.push('<tr>');
+                h.push('<td colspan="5" class="text-center"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
+                h.push('</tr>');
+            }
 
             h.push('</tbody>');
         }
@@ -171,10 +173,11 @@ let Negotiation = {
             h.push('<tr' + ((i +1) < Negotiation.Guesses.length ? ' class="goods-opacity"' : '') + '>');
 
             for (let place = 0; place < Negotiation.PlaceCount; place++) {
-                let Good = Negotiation.Goods[Negotiation.Guesses[i][place]];
-
+                let GoodIndex = Negotiation.Guesses[i][place];
+                let Good = (GoodIndex === 255 ? 'empty' : Negotiation.Goods[GoodIndex]);
+                
                 if (Good !== undefined) {
-                    let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals') ? ' goods-sprite-extra ' : '';
+                    let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
                     h.push('<td style="width:20%" class="text-center"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
                 }
                 else {
@@ -213,6 +216,11 @@ let Negotiation = {
 				$('.foe-table').find('tr').removeClass('goods-opacity');
 			}
 
+			// Lagerbestand via Tooltip
+			$('.good').tooltip({
+				container: '#negotiationBox'
+			});
+
         	if(Negotiation.CurrentTry === 1){
 				new Sortable(document.getElementById('good-sort'), {
 					animation: 150,
@@ -239,12 +247,11 @@ let Negotiation = {
 	 */
     StartNegotiation: (responseData) => {
 
-    	if( $('#negotationBtn').hasClass('hud-btn-red') ){
+        if ($('#negotationBtn').hasClass('hud-btn-red')) {
 			$('#negotationBtn').removeClass('hud-btn-red');
 			$('#negotiationBox-closed').remove();
 		}
-
-
+        
         Negotiation.CurrentTry = 1;
         Negotiation.Message = undefined;
         let Resources = responseData['possibleCosts']['resources'];
@@ -347,7 +354,11 @@ let Negotiation = {
                 Negotiation.CurrentTable = undefined;
                 Negotiation.Message = i18n['Boxes']['Negotiation']['Success'];
 				Negotiation.MessageClass = 'success';
-
+                if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length > 0) {
+                    $('#negotiationBox').fadeToggle(function () {
+                        $(this).remove();
+                    });
+                }
             }
             else if (Negotiation.CurrentTry > Negotiation.TryCount) {
                 Negotiation.CurrentTry = 0;
@@ -472,6 +483,9 @@ let Negotiation = {
                 }
 
                 Negotiation.RefreshBox();
+                if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+                    Negotiation.Show();
+                }
 			});
 		}
     	// bereits geladen
@@ -479,13 +493,11 @@ let Negotiation = {
 			Negotiation.CurrentTable = Negotiation.Tables[TableName];
             Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
             Negotiation.RefreshBox();
+            if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+                setTimeout(() => {
+                    Negotiation.Show();
+                }, 300);
+            }
         }
-
-    	// wenn aktiviert, automatisch starten
-    	if(Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0){
-    		setTimeout(()=>{
-				Negotiation.Show();
-			}, 300);
-		}
     }
 };

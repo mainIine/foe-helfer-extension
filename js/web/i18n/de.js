@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 21:41 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:39 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:18 Uhr
  *
  * Copyright © 2019
  *
@@ -45,7 +45,7 @@ let i18n = {
 			"Title": "Kostenrechner",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Stufe ",
-			"AvailableFP": "Verfügbare Forgepunke",
+			"AvailableFP": "Verfügbare Forgepunkte",
 			"ArcBonus": "Arche Bonus",
 			"Earnings": "Ertrag",
 			"Rate": "Kurs",
@@ -144,6 +144,16 @@ let i18n = {
             }
         },
 
+        "Campagne": {
+            "Title": "Eroberungskosten für ",
+            "Reward": "Gesamtbelohnung ",
+            "AlreadyDone": " bereits erobert!",
+            "Resource": "Ressource",
+            "DescRequired": "Benötigt",
+            "DescInStock": "Vorhanden",
+            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
+
         "Negotiation": {
             "Title" : "Verhandlungassistent",
             "WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
@@ -155,6 +165,7 @@ let i18n = {
 			"Average": "Ø Menge",
 			"Costs": "Kosten:",
 			"Round": "Runde",
+			"Stock": "Lager:",
 			"GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
 			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
 			"DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen."
@@ -215,6 +226,11 @@ let i18n = {
             "Desc": "Kosten für Forschung berechnen",
             "Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!"
         },
+        "Campagne": {
+            "Title": "Kampagne",
+            "Desc": "Übersicht über die benötigten Ressourcen",
+        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
         "Negotiation": {
             "Title": "Verhandlungassistent",
 			"Desc": "Macht dir präzise Vorschläge für Verhandlungen",
@@ -319,6 +335,7 @@ let i18n = {
 				"de" : "Deutsch",
 				"en" : "Englisch",
 				"fr" : "Französisch",
+				"es" : "Spanisch"
 			}
 		}
 	},
