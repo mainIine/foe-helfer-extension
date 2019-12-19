@@ -1,5 +1,43 @@
 ##Changelog - Chrome Extension
 
+##### 02/03/14
+
+**New**
+- Extension:
+    - Spanish added
+
+- Map of the continents:
+    - If you visit a province, all freight costs for this province are displayed on request - thanks to [Th3C0D3R] (https://github.com/Th3C0D3R)
+
+
+**Update**
+- EA calculator:
+    - the FP up to level of the LG are now displayed [# 205] (https://github.com/dsiekiera/foe-helfer-extension/issues/205)
+    - It is now possible to use the EA calculator for levels that have already been completed, scroll backwards in the LG
+
+- Product overview:
+    - The total of the goods is grouped according to ages [# 228] (https://github.com/dsiekiera/foe-helfer-extension/issues/228)
+    - With the eye icon your own building can be shown on the map [# 154] (https://github.com/dsiekiera/foe-helfer-extension/issues/154)
+    - "Daily FP" and all bonuses from ambassadors are inserted and displayed in the town hall [# 175] (https://github.com/dsiekiera/foe-helfer-extension/issues/175)
+
+- Negotiators:
+    - Optimized freight costs
+    - The average freight costs for the rest of the negotiation are now displayed
+    - Warning messages when the stock of goods becomes scarce
+    - Mouseover over icons (top row) shows inventory
+
+**BugFix**
+
+- Army overview:
+    - Errors occurred when removing units from the attack or defense
+    - If there was no Alcatraz, an error occurred
+
+- Info box:
+    - With LevelUp messages instead of the level “unknown” [thanks to Thomas (via mail)]
+
+
+---
+
 #####v2.3.13
 **New**
 - Negotiation Assistant:

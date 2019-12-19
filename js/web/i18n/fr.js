@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 21:41 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:40 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:19 Uhr
  *
  * Copyright © 2019
  *
@@ -117,7 +117,7 @@ let i18n = {
 
         "Technologies": {
             "Title": "Les coûts de la recherche pour", //Todo: Translate
-            "Resource": "Ressource", //Todo: Translate
+            "Resource": "Ressources", //Todo: Translate
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
@@ -144,6 +144,16 @@ let i18n = {
             }
         },
 
+        "Campagne": {
+            "Title": "Coûts de conquête pour",
+            "Reward": "Récompense totale ",
+            "AlreadyDone": " déjà conquis!",
+            "Resource": "Ressources",
+            "DescRequired": "Requis",
+            "DescInStock": "Disponible",
+            "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+        },
+
         "Negotiation": {
             "Title": "Assistant de négociation",
             "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
@@ -155,6 +165,7 @@ let i18n = {
 			"Average": "Ø Coûts", //Todo: Translate
 			"Costs": "Moyens:",
 			"Round": "Rond",
+			"Stock": "Stock:",
 			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
 			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
 			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative."
@@ -215,6 +226,11 @@ let i18n = {
             "Desc": "Calculer le coût de la recherche", //Todo: Translate
             "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
         },
+        "Campagne": {
+            "Title": "Kampagne",
+            "Desc": "Übersicht über die benötigten Ressourcen",
+        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
         "Negotiation": {
             "Title": "Assistant de négociation",
 			"Desc": "Faire des propositions de négociations précises",
@@ -319,6 +335,7 @@ let i18n = {
 				"de" : "Allemand",
 				"en" : "Anglaise",
 				"fr" : "Français",
+				"es" : "Espagnol"
 			}
 		}
 	},

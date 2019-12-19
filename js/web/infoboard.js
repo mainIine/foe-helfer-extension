@@ -4,10 +4,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 infoboard.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       10.11.19, 00:45 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:09 Uhr
  *
  * Copyright © 2019
  *
@@ -313,7 +314,7 @@ let Info = {
 					{
 						'player' : d['player']['name'],
 						'building': d['great_building_name'],
-						'level': d['level'],
+						'level': d['attachment']['level'],
 						'rank' : d['rank']
 					}
 				)

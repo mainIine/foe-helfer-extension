@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 18:08 Uhr
- * zuletzt bearbeitet:       16.12.19, 17:49 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:28 Uhr
  *
  * Copyright © 2019
  *
@@ -20,7 +20,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     ExtWorld = '',
     CurrentEraID = null,
     BuildingNamesi18n = false,
-    CityMapData = null,
+	CityMapData = null,
     Conversations = [],
     GoodsData = [],
     GoodsList = [],
@@ -651,7 +651,34 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 if (ResearchService !== undefined) {
                     Technologies.UnlockedTechologies = ResearchService['responseData'];
-                }
+				}
+				
+                // --------------------------------------------------------------------------------------------------
+				// KampagneMap Service
+				let MapService = d.find(obj =>{
+					return obj['requestClass'] === 'CampaignService' && obj['requestMethod'] === 'getProvinceData';
+				});
+
+				if(MapService !== undefined){
+					KampagneMap.AllProvinces = JSON.parse(localStorage.getItem('AllProvinces'));
+
+					KampagneMap.Provinces = MapService['responseData'];
+					if($('#Map').hasClass('hud-btn-red')){
+						$('#Map').removeClass('hud-btn-red');
+						$('#map-closed').remove();
+					}
+					if ($('#campagne').length > 0) {
+						KampagneMap.BuildBox();
+					}
+				}
+
+				let CampaignServiceData = d.find(obj =>{
+					return obj['requestClass'] === 'CampaignService' && obj['requestMethod'] === 'start';
+				});
+
+				if(CampaignServiceData !== undefined){
+					localStorage.setItem('AllProvinces', JSON.stringify(CampaignServiceData['responseData']['provinces']));
+				}
 
                 // --------------------------------------------------------------------------------------------------
 				// Negotiation
@@ -697,7 +724,7 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr'
+		'de', 'en', 'fr','es'
 	],
 	BonusService: null,
 	EmissaryService: null,

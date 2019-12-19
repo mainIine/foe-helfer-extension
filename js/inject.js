@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.12.19, 19:53 Uhr
- * zuletzt bearbeitet:       16.12.19, 18:37 Uhr
+ * erstellt am:	              17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       17.12.19, 22:31 Uhr
  *
  * Copyright © 2019
  *
@@ -36,10 +36,9 @@ requestIdleCallback(checkForDOM);
 
 
 let tid = setInterval(InjectCSS, 0),
-	PossibleLangs = ['de','en','fr'],
+	PossibleLangs = ['de','en','fr','es'],
 	lng = chrome.i18n.getUILanguage(),
 	uLng = localStorage.getItem('user-language');
-
 
 // wir brauchen nur den ersten Teil
 if(lng.indexOf('-') > 0)
@@ -56,6 +55,8 @@ if(PossibleLangs.includes(lng) === false)
 if(uLng !== null){
 	lng = uLng;
 }
+
+console.log('lng: ', lng);
 
 let i18nJS = document.createElement('script');
 i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v);
@@ -148,6 +149,7 @@ function InjectCode()
         'unit',
 		'guildfights',
 		'notes',
+		'campagnemap',
         'technologies',
         'negotiation',
 		'read-buildings',
