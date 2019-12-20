@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 22:44 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:28 Uhr
+ * erstellt am:	              20.12.19, 08:42 Uhr
+ * zuletzt bearbeitet:       20.12.19, 08:41 Uhr
  *
  * Copyright © 2019
  *
@@ -73,6 +73,7 @@ const FoEproxy = (function () {
 			}
 			list.push(callback);
 		},
+
 		removeHandler: function(service, method, callback) {
 			// default service and method to 'all'
 			if (method === undefined) {
@@ -93,6 +94,7 @@ const FoEproxy = (function () {
 			}
 			map[method] = list.filter(c => c !== callback);
 		},
+
 		// for metadata requests: metadata?id=<meta>-<hash>
 		addMetaHandler: function(meta, callback) {
 			let list = proxyMetaMap[meta];
@@ -106,6 +108,7 @@ const FoEproxy = (function () {
 			
 			list.push(callback);
 		},
+
 		removeMetaHandler: function(meta, callback) {
 			let list = proxyMetaMap[meta];
 			if (!list) {
@@ -113,6 +116,7 @@ const FoEproxy = (function () {
 			}
 			proxyMetaMap[meta] = list.filter(c => c !== callback);
 		},
+
 		// for raw requests access
 		addRawHandler: function(callback) {
 			if (proxyRaw.indexOf(callback) !== -1) {
@@ -122,6 +126,7 @@ const FoEproxy = (function () {
 			
 			proxyRaw.push(callback);
 		},
+
 		removeRawHandler: function(callback) {
 			proxyRaw = proxyRaw.filter(c => c !== callback);
 		}
@@ -147,6 +152,7 @@ const FoEproxy = (function () {
 			}
 		}
 	}
+
 	/**
 	 * This function gets the callbacks from proxyMap[service][method],proxyMap[service]['all'] and proxyMap['all']['all'] and executes them.
 	 */
@@ -359,6 +365,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
 		MainParser.setConversations(data.responseData);
 	});
+
 	FoEproxy.addHandler('ConversationService', 'getTeasers', (data, postData) => {
 		MainParser.setConversations(data.responseData);
 	});
@@ -689,7 +696,7 @@ const FoEproxy = (function () {
 		if (MainParser.checkNextUpdate('GreatBuildings') !== true) {
 			return;
 		}
-		MainParser.GreatBuildings(LGInvests['responseData']);
+		MainParser.GreatBuildings(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -784,7 +791,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, Player: [], GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string], i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
