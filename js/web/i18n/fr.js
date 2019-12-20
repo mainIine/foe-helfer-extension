@@ -198,6 +198,9 @@ let i18n = {
 		"Units" : {
 			"Title": "Army overview",
 			"NextUnitsIn": "Les __count__ prochaines unités arriveront dans <span class=\"alca-countdown\"></span> à __harvest__",
+			"ReadyToLoot": "Prêt à récolter!",
+			"Proportionally": "En proportion",
+			"Quantity": "Nombre",
 			"Unit": "Unité",
 			"Status": "Status",
 			"Attack": "Attaque",

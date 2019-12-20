@@ -2,4 +2,5 @@
 /.vs
 /js/web/negotiationtables/Test
 response province.json
-questlist.txt
+questlist.json
+bug.PNG
