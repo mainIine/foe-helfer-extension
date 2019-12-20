@@ -40,7 +40,6 @@ let Infoboard = {
 			WebSocket.prototype._send = WebSocket.prototype.send;
 
 			WebSocket.prototype.send = function (data) {
-
 				this._send(data);
 
 				this.addEventListener('message', function(msg) {
