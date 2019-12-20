@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 11:07 Uhr
- * zuletzt bearbeitet:       17.12.19, 08:52 Uhr
+ * erstellt am:	              20.12.19, 08:42 Uhr
+ * zuletzt bearbeitet:       19.12.19, 23:38 Uhr
  *
  * Copyright © 2019
  *
@@ -1255,6 +1255,50 @@
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+#LiveGildFighting {
+	top: 30%;
+	right: 15%;
+	width: 900px;
+}
+
+#LiveGildFightingBody {
+	overflow: auto;
+}
+
+#LiveGildFightingBody tr th  {
+	position: sticky;
+	top: 0;
+	background-color: rgba(0,0,0, 0.45);
+	white-space: nowrap;
+}
+
+#LiveGildFightingBody tr th span.head-color {
+	height: 5px;
+	display: block;
+}
+
+#LiveGildFightingBody tr td {
+	transition: background-color .6s;
+}
+
+#LiveGildFightingBody tr td.red-pulse {
+	background-color: rgba(255, 0, 0, 0.45);
+	transition: background-color .6s;
+}
+
+#LiveGildFightingBody tr td span.attack {
+	display: block;
+	height: 5px;
+	background-color: rgba(255,255,255,0.45);
+}
+
+#LiveGildFightingBody tr td span.attack span {
+	height: 5px;
+	display: block;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 #units {
 	top: 30%;
 	right: 15%;
@@ -1315,8 +1359,6 @@
 #units #unitsBody .tabs ul li.alca a {
 	background-position: -67px 3px;
 }
-
-
 
 .ArcticFuture_champion {background-position: 0 0}
 .BronzeAge_champion {background-position: 0 -32px}

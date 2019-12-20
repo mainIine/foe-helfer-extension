@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 22:44 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:31 Uhr
+ * erstellt am:	              20.12.19, 08:42 Uhr
+ * zuletzt bearbeitet:       19.12.19, 21:52 Uhr
  *
  * Copyright © 2019
  *
@@ -55,8 +55,6 @@ if(PossibleLangs.includes(lng) === false)
 if(uLng !== null){
 	lng = uLng;
 }
-
-console.log('lng: ', lng);
 
 let i18nJS = document.createElement('script');
 i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v);
