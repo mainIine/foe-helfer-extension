@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 11:07 Uhr
- * zuletzt bearbeitet:       17.12.19, 10:12 Uhr
+ * erstellt am:	              20.12.19, 08:42 Uhr
+ * zuletzt bearbeitet:       19.12.19, 21:15 Uhr
  *
  * Copyright © 2019
  *
@@ -91,22 +91,13 @@ let HTML = {
 	/**
 	 * Erzeugt eine HTML Box im DOM
 	 *
-	 * @param id
-	 * @param titel
-	 * @param ask
-	 * @param auto_close
-	 * @param dragdrop
-	 * @param resize Resize
-	 * @constructor
-	 */
-	// Box: (id, titel, ask = null, auto_close = true, dragdrop = true, resize = false, speaker = #id)=> {
-	/**
 	 * id
 	 * title
 	 * ask = null
 	 * auto_close = true
 	 * dragdrop = true
 	 * resize = false
+	 * speaker = false
 	 * minimize = true
 	 * saveCords = true
 	 *
