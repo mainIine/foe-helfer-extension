@@ -51,11 +51,13 @@ let Tavern = {
 		localStorage.setItem('TavernBoostType', d['type']);
 		localStorage.setItem('TavernBoostExpire', d['expireTime']);
 
-		Tavern.BuildBox();
+		if (Settings.GetSetting('ShowTavernBadge')) {
+			Tavern.BuildBox();
 
-		setTimeout(()=>{
-			Tavern.BoosterCountDown( moment.unix(d['expireTime']));
-		}, 200);
+			setTimeout(() => {
+				Tavern.BoosterCountDown(moment.unix(d['expireTime']));
+			}, 200);
+		}
 	},
 
 

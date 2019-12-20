@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              16.12.19, 21:41 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:40 Uhr
+ * zuletzt bearbeitet:        20.12.19, 21:30 Uhr
  *
  * Copyright © 2019
  *
@@ -87,6 +87,8 @@ let i18n = {
 			"Total" : "Total: ",
 			"ModeGroups": "Groups",
 			"ModeSingle": "Single",
+			"Happiness": "Happiness",
+			"AdjacentBuildings": "Adjacent buildings",
 			"Headings" : {
 				"number" : "Number",
 				"amount" : "Amount",
@@ -94,8 +96,13 @@ let i18n = {
 				"greatbuilding" : "Legendary buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
-				"residential" : "Event buildings",
-				"main_building" : "Town hall",
+				"residential": "Event buildings",
+				"decoration": "Dekorations",
+				"street": "Streets",
+				"goods": "Goods buildings",
+				"culture": "Cultural buildings",
+				"main_building": "Town hall",
+				"boost": "Boost",
 				"all" : "All"
 			}
 		},
