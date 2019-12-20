@@ -651,10 +651,10 @@ const FoEproxy = (function () {
 		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendGildMemberLGInfo')) {
 			return;
 		}
-		if (OtherPlayersVisits.responseData.other_player.clan_id !== ExtGuildID){
+		if (data.responseData.other_player.clan_id !== ExtGuildID){
 			return;
 		}
-		MainParser.OtherPlayersLGs(OtherPlayersVisits['responseData']);
+		MainParser.OtherPlayersLGs(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
