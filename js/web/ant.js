@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              20.12.19, 08:42 Uhr
- * zuletzt bearbeitet:       20.12.19, 08:41 Uhr
+ * erstellt am:	              20.12.19, 13:19 Uhr
+ * zuletzt bearbeitet:       20.12.19, 12:23 Uhr
  *
  * Copyright © 2019
  *
@@ -189,7 +189,8 @@ const FoEproxy = (function () {
 		// handle metadata request handlers
 		const metadataIndex = url.indexOf("metadata?id=");
 		if (metadataIndex > -1) {
-			const meta = url.substring(metadataIndex + "metadata?id=".length).split('-', 1)[0];
+			const metaURL = metadataIndex + "metadata?id=",
+				meta = url.substring(metaURL.length).split('-', 1)[0];
 			const metaHandler = proxyMetaMap[meta];
 			
 			if (metaHandler) {

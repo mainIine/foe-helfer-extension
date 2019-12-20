@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              20.12.19, 08:42 Uhr
- * zuletzt bearbeitet:       19.12.19, 23:18 Uhr
+ * erstellt am:	              20.12.19, 13:19 Uhr
+ * zuletzt bearbeitet:       20.12.19, 13:17 Uhr
  *
  * Copyright © 2019
  *
@@ -29,10 +29,13 @@ let GildFights = {
 		pink: 'rgb(199,51,196)'
 	},
 
+	ProvinceNames : {
+		2 : 'C1: Niali Diath'
+	},
+
 	InjectionLoaded: false,
 
 	init: ()=> {
-
 
 		if(GildFights.InjectionLoaded === false){
 			WebSocket.prototype._send = WebSocket.prototype.send;
@@ -45,7 +48,7 @@ let GildFights = {
 					if(msg.data !== 'PONG' && $('#LiveGildFighting').length > 0){
 						let d = JSON.parse(msg.data)[0];
 
-						if(d['requestClass'] === 'GuildBattlegroundService'){
+						if(d['requestClass'] === 'GuildBattlegroundService' && d['responseData'][0] !== undefined){
 							console.log('msg', d['responseData'][0]);
 							GildFights.RefreshTable(d['responseData'][0]);
 						}
@@ -68,11 +71,12 @@ let GildFights = {
 		if( $('#LiveGildFighting').length === 0 ){
 
 			HTML.Box({
-				'id': 'LiveGildFighting',
-				'title': 'Live Gefechte',
-				'auto_close': true,
-				'dragdrop': true,
-				'resize': true
+				id: 'LiveGildFighting',
+				title: 'Live Gefechte',
+				auto_close: true,
+				dragdrop: true,
+				resize: true,
+				minimize: true
 			});
 		}
 
@@ -167,6 +171,20 @@ let GildFights = {
 
 	RefreshTable: (data)=> {
 
+		// Provinz wurde übernommen
+		if(data['conquestProgress'].length === 0)
+		{
+
+			$('[data-id="' + data['id'] + '"]').each(function(){
+				$(this).html('');
+			});
+
+			$('[data-field="' + data['id'] + '-' + data['ownerId'] + '"]').text('Sp: ' + data['victoryPoints']);
+
+			return;
+		}
+
+		// Es wird gerade gekämpft
 		for(let i in data['conquestProgress'])
 		{
 			if(!data['conquestProgress'].hasOwnProperty(i)){
