@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              16.12.19, 18:08 Uhr
- * zuletzt bearbeitet:       16.12.19, 17:49 Uhr
+ * zuletzt bearbeitet:        20.12.19, 21:30 Uhr
  *
  * Copyright © 2019
  *
@@ -90,8 +90,11 @@ document.addEventListener("DOMContentLoaded", function(){
 							width: j[i]['width'],
 							height: j[i]['length'],
 							type: j[i]['type'],
+							provided_happiness: j[i]['provided_happiness'],
+							population: undefined,
+							entity_levels : j[i]['entity_levels'],
 						};
-
+						
 						if(j[i]['abilities'] !== undefined)
 						{
 							for(let x in j[i]['abilities'])
@@ -106,6 +109,10 @@ document.addEventListener("DOMContentLoaded", function(){
 									}
 								}
 							}
+						}
+
+						if (j[i]['staticResources'] !== undefined && j[i]['staticResources']['resources'] !== undefined) {
+							BuildingNamesi18n[j[i]['asset_id']]['population'] = j[i]['staticResources']['resources']['population'];
 						}
 					}
 				}
@@ -461,13 +468,27 @@ document.addEventListener("DOMContentLoaded", function(){
 
 				// --------------------------------------------------------------------------------------------------
 				// Tavernenboost wurde gekauft
-				let TavernBoostService = d.find(obj => {
+				let TavernBoostServiceAddBoost = d.find(obj => {
 					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'addBoost';
 				});
 
-				if (TavernBoostService !== undefined && Settings.GetSetting('ShowTavernBadge')) {
-					Tavern.TavernBoost(TavernBoostService['responseData']);
+				if (TavernBoostServiceAddBoost !== undefined) {
+					Tavern.TavernBoost(TavernBoostServiceAddBoost['responseData']);
 				}
+
+				let TavernBoostServiceGetAllBoosts = d.find(obj => {
+					return obj['requestClass'] === 'BoostService' && obj['requestMethod'] === 'getAllBoosts';
+				});
+
+				if (TavernBoostServiceGetAllBoosts !== undefined) {
+					for (let i in TavernBoostServiceGetAllBoosts['responseData']) {
+						if (TavernBoostServiceGetAllBoosts['responseData'][i]['value'] === 1) {
+							Tavern.TavernBoost(TavernBoostServiceGetAllBoosts['responseData'][i]);
+						}
+					}
+				}
+
+				
 
 
 
@@ -487,29 +508,29 @@ document.addEventListener("DOMContentLoaded", function(){
 				
 				// --------------------------------------------------------------------------------------------------
 				// soll der Außenposten dargestellt werden?
-				if(Settings.GetSetting('ShowOutpost'))
-				{
+				if (Settings.GetSetting('ShowOutpost')) {
 					// Alle Typen der Außenposten "notieren"
 					let OutpostGetAll = d.find(obj => (obj['requestClass'] === 'OutpostService' && obj['requestMethod'] === 'getAll'));
 
-
-					if(OutpostGetAll !== undefined){
+					if (OutpostGetAll !== undefined) {
 						Outposts.GetAll(OutpostGetAll['responseData']);
 					}
 
 					// Gebäude des Außenpostens sichern
 					let OutpostService = d.find(obj => (obj['requestClass'] === 'AdvancementService' && obj['requestMethod'] === 'getAll'));
 
-					if(OutpostService !== undefined){
-                        Outposts.SaveBuildings(OutpostService['responseData']);
+					if (OutpostService !== undefined) {
+						Outposts.SaveBuildings(OutpostService['responseData']);
 					}
+				}
 
-					// Güter des Spielers ermitteln
-					let ResourceService = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
+				// Güter des Spielers ermitteln => Immer ausführen, da auch außerhalb von Außenposten benötigt
+				let ResourceService = d.find(obj => (obj['requestClass'] === 'ResourceService' && obj['requestMethod'] === 'getPlayerResources'));
 
-                    if (ResourceService !== undefined) {
+                if (ResourceService !== undefined) {
                         ResourceStock = ResourceService['responseData']['resources'];
-                        Outposts.CollectResources();
+					if (Settings.GetSetting('ShowOutpost')) { //Außenposten nur aktualisieren wenn aktiviert
+						Outposts.CollectResources();
 					}
 				}
 
@@ -1258,7 +1279,9 @@ let MainParser = {
 
 					if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
 					{
-						MainParser.AllBoosts[ MainParser.BoostMapper[ d[i]['bonus']['type'] ] ] += d[i]['bonus']['value']
+						if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
+							MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
+						}
 					}
 				}
 			}
