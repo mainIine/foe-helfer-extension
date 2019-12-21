@@ -86,6 +86,8 @@ let i18n = {
 			"Total" : "Gesamt: ",
 			"ModeGroups": "Gruppiert",
 			"ModeSingle": "Einzeln",
+			"Happiness": "Zufriedenheit",
+			"AdjacentBuildings": "Angrenzende Gebäude",
 			"Headings" : {
 				"number" : "Anzahl",
 				"amount" : "Menge",
@@ -93,8 +95,13 @@ let i18n = {
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
-				"residential" : "Eventgebäude",
-				"main_building" : "Rathaus",
+				"residential": "Eventgebäude",
+				"decoration": "Dekorationen",
+				"street": "Straßen",
+				"goods": "Gütergebäude",
+				"culture": "Kulturelle Gebäude",
+				"main_building": "Rathaus",
+				"boost": "Boost",
 				"all" : "Alle"
 			}
 		},

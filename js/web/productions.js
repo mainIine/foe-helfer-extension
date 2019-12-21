@@ -1,4 +1,4 @@
-/*
+/*P
  * **************************************************************************************
  *
  * Dateiname:                 productions.js
@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              15.12.19, 19:28 Uhr
- * zuletzt bearbeitet:       15.12.19, 19:21 Uhr
+ * zuletzt bearbeitet:        20.12.19, 21:30 Uhr
  *
  * Copyright © 2019
  *
@@ -26,8 +26,13 @@ let Productions = {
 		greatbuilding: i18n.Boxes.Productions.Headings.greatbuilding,
 		production : i18n.Boxes.Productions.Headings.production,
 		random_production : i18n.Boxes.Productions.Headings.random_production,
-		residential : i18n.Boxes.Productions.Headings.residential,
-		main_building : i18n.Boxes.Productions.Headings.main_building,
+		residential: i18n.Boxes.Productions.Headings.residential,
+		decoration: i18n.Boxes.Productions.Headings.decoration,
+		street: i18n.Boxes.Productions.Headings.street,
+		goods: i18n.Boxes.Productions.Headings.goods,
+		culture: i18n.Boxes.Productions.Headings.culture,
+		main_building: i18n.Boxes.Productions.Headings.main_building,
+		boost: i18n.Boxes.Productions.Headings.boost,
 	},
 
 	Tabs: [],
@@ -38,6 +43,8 @@ let Productions = {
 		'money',			// Münzen
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
+		'population',		// Bevölkerung
+		'happiness',		// Zufriedenheit
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
@@ -48,7 +55,9 @@ let Productions = {
 		'residential',
 		'random_production',
 		'production',
-		'main_building'
+		'main_building',
+		'street',
+		'boost'
 	],
 
 	/**
@@ -104,6 +113,9 @@ let Productions = {
 
 		let d = Productions.entities;
 		Productions.BuildingsAll = [];
+
+		let PopulationSum = 0,
+			HappinessSum = 0;
 		
 		for(let i in d)
 		{
@@ -115,66 +127,117 @@ let Productions = {
 				}
 
 				// jede einzelne Produktart holen
-				let building = Productions.ReadBuildings(d[i]);
+				let building = Productions.readType(d[i]);
 
 				// das Gebäude produziert etwas?
 				if(building !== false){
-
 					Productions.BuildingsAll.push(building);
 
-					// Nach Produkt
-					for(let x in building['products'])
-					{
-						if(!building['products'].hasOwnProperty(x)){
-							break;
-						}
-
-						if(Productions.Types.includes(x))
-						{
-							// Alle Gebäude einzeln auflisten, nach Produkt sortiert
-							Productions.BuildingsProducts[x].push(building);
-
-							if(x !== 'packaging')
-							{
-								let index = Productions.BuildingsProductsGroups[x].map((el) => el.eid).indexOf(building['eid']);
-
-								// Alle Gebäude gruppieren und
-								if(index === -1){
-									let ni = Productions.BuildingsProductsGroups[x].length +1;
-
-									Productions.BuildingsProductsGroups[x][ni] = [];
-									Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
-									Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
-									Productions.BuildingsProductsGroups[x][ni]['products'] = parseInt(building['products'][x]);
-									Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = parseInt(building['motivatedproducts'][x]);
-									Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
-
-								} else {
-									Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
-									Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
-									Productions.BuildingsProductsGroups[x][index]['count']++;
-								}
-							}
-						}
-
-						else {
-							let mId = d[i]['cityentity_id'] + '_' + d[i]['id'];
-
-							if(Array.isArray(Productions.BuildingsProducts['packaging'][mId]) === false)
-							{
-								Productions.BuildingsProducts['packaging'][mId] = [];
-								Productions.BuildingsProducts['packaging'][mId]['at'] = building['at'];
-								Productions.BuildingsProducts['packaging'][mId]['id'] = building['id'];
-								Productions.BuildingsProducts['packaging'][mId]['name'] = building['name'];
-								Productions.BuildingsProducts['packaging'][mId]['type'] = building['type'];
-								Productions.BuildingsProducts['packaging'][mId]['products'] = [];
-								Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'] = [];
-							}
-
-							Productions.BuildingsProducts['packaging'][mId]['products'][x] = building['products'][x];
-							Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'][x] = building['motivatedproducts'][x];
-						}
+					if (building['products']['population'] !== undefined) {
+						PopulationSum += building['products']['population'];
 					}
+					if (building['products']['happiness'] !== undefined) {
+						HappinessSum += building['products']['happiness'];
+					}
+
+				}
+			}
+		}
+
+		let HappinessBonus = MainParser.AllBoosts['happiness_amount'];
+		if (HappinessBonus !== undefined && HappinessBonus !== 0) {
+			let building = {
+				name: i18n['Boxes']['Productions']['AdjacentBuildings'],
+				type: 'boost',
+				products: [],
+				motivatedproducts: [],
+				at: (new Date().getTime()) / 1000,
+				in: 0
+			}
+			building.products['happiness'] = HappinessBonus;
+			building.motivatedproducts['happiness'] = HappinessBonus;
+
+			HappinessSum += HappinessBonus;
+
+			Productions.BuildingsAll.push(building);
+		}
+
+		let ProdBonus = 0;
+		if (HappinessSum < PopulationSum) {
+			ProdBonus = -0.5;
+		}
+		else if (HappinessSum < 1.4 * PopulationSum) {
+			ProdBonus = 0;
+		}
+		else {
+			ProdBonus = 0.2;
+		}
+
+		Productions.Boosts['money'] += ProdBonus;
+		Productions.Boosts['supplies'] += ProdBonus;
+
+		for (let i in Productions.BuildingsAll) {
+			let building = Productions.BuildingsAll[i];
+
+			if (building['products']['money'] !== undefined && building.id !== 1) {
+				building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
+			}
+			if (building['motivatedproducts']['money'] !== undefined && building.id !== 1) {
+				building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
+			}
+
+			if (building['products']['supplies'] !== undefined && building['type'] !== 'greatbuilding') {
+				building['products']['supplies'] = Math.round(building['products']['supplies'] * Productions.Boosts['supplies']);
+			}
+			if (building['motivatedproducts']['supplies'] !== undefined && building['type'] !== 'greatbuilding') {
+				building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
+			}
+
+			// Nach Produkt
+			for (let x in building['products']) {
+				if (!building['products'].hasOwnProperty(x)) {
+					break;
+				}
+
+				if (Productions.Types.includes(x) && x !== 'packaging') {
+					// Alle Gebäude einzeln auflisten, nach Produkt sortiert
+					Productions.BuildingsProducts[x].push(building);
+
+						let index = Productions.BuildingsProductsGroups[x].map((el) => el.eid).indexOf(building['eid']);
+
+						// Alle Gebäude gruppieren und
+						if (index === -1) {
+							let ni = Productions.BuildingsProductsGroups[x].length + 1;
+
+							Productions.BuildingsProductsGroups[x][ni] = [];
+							Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
+							Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
+							Productions.BuildingsProductsGroups[x][ni]['products'] = parseInt(building['products'][x]);
+							Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = parseInt(building['motivatedproducts'][x]);
+							Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
+
+						} else {
+							Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
+							Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
+							Productions.BuildingsProductsGroups[x][index]['count']++;
+						}
+				}
+
+				else {
+					let mId = d[i]['cityentity_id'] + '_' + d[i]['id'];
+
+					if (Array.isArray(Productions.BuildingsProducts['packaging'][mId]) === false) {
+						Productions.BuildingsProducts['packaging'][mId] = [];
+						Productions.BuildingsProducts['packaging'][mId]['at'] = building['at'];
+						Productions.BuildingsProducts['packaging'][mId]['id'] = building['id'];
+						Productions.BuildingsProducts['packaging'][mId]['name'] = building['name'];
+						Productions.BuildingsProducts['packaging'][mId]['type'] = building['type'];
+						Productions.BuildingsProducts['packaging'][mId]['products'] = [];
+						Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'] = [];
+					}
+
+					Productions.BuildingsProducts['packaging'][mId]['products'][x] = building['products'][x];
+					Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'][x] = building['motivatedproducts'][x];
 				}
 			}
 		}
@@ -184,39 +247,34 @@ let Productions = {
 
 
 	/**
-	 * Prüfung ob das Gebäude etwas produziert
-	 *
-	 * @param d
-	 * @returns {*}
-	 * @constructor
-	 */
-	ReadBuildings: (d)=> {
-
-		if(	d.state !== undefined &&
-			d.state.current_product !== undefined &&
-			d.state.current_product.product !== undefined &&
-			d.state.current_product.product.resources !== undefined
-		){
-			return Productions.readType(d);
-		}
-
-		return false;
-	},
-
-
-	/**
 	 * alle Produkte auslesen
 	 *
 	 * @param d
 	 * @returns {{eid: *, at: *, in: *, name: *, id: *, type: *, products: *}}
 	 */
-	readType: (d)=> {
+	readType: (d) => {
+		let Products = [],
+			CurrentResources = undefined,
+			EntityID = d['cityentity_id'];
 
-        let Products = [],
-            CurrentResources = d['state']['current_product']['product']['resources'],
-            EntityID = d['cityentity_id'],
-            ProductionOption = d['state']['current_product']['production_option'],
-			AdditionalResources = BuildingNamesi18n[EntityID]['additionalResources'];
+		let BuildingData = BuildingNamesi18n[EntityID];
+
+		let AdditionalResources = BuildingData['additionalResources'];
+
+		let Ret = {
+			name: BuildingData['name'],
+			id: d['id'],
+			eid: d['cityentity_id'],
+			type: d['type'],
+			at: (new Date().getTime()) / 1000,
+			in: 0
+		}
+
+		if (d.state !== undefined && d.state.current_product !== undefined && d.state.current_product.product !== undefined) {
+			if (d.state.current_product.product.resources !== undefined) {
+				CurrentResources = d['state']['current_product']['product']['resources'];
+			}
+		}
 
         for (let Resource in CurrentResources) {
 
@@ -224,22 +282,47 @@ let Productions = {
             	break;
 			}
 
-			// Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
-			if (Resource === 'money' && d['id'] > 1) {
-				Products[Resource] = Math.round(parseInt(CurrentResources[Resource]) * Productions.Boosts['money']);
-			}
+			Products[Resource] = CurrentResources[Resource];
+		}
 
-			// Werkzeuge
-			else if (Resource === 'supplies' && ProductionOption !== undefined) {
-				Products[Resource] = Math.round(parseInt(CurrentResources[Resource]) * Productions.Boosts['supplies']);
+		if (d['bonus'] !== undefined) {
+			if (d['bonus']['type'] === 'population') {
+				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + d['bonus']['value'];
 			}
-			else {
-				Products[Resource] = CurrentResources[Resource]
+			else if (d['bonus']['type'] === 'happiness') {
+				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + d['bonus']['value'];
 			}
-        }
+		}
 
+		if (d['state'] !== undefined && d['state']['__class__'] !== 'ConstructionState' && d['state']['__class__'] !== 'UnconnectedState') {
+			if (BuildingData['population'] !== undefined) {
+				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + BuildingData['population'];
+			}
+			if (BuildingData['provided_happiness'] !== undefined) {
+				let Faktor = 1;
+				if (d['state']['__class__'] === 'PolishedState') {
+					Faktor = 2;
+				}
+				Products['happiness'] = BuildingData['provided_happiness'] * Faktor;
+			}
+		}
+	
+		if (BuildingData['entity_levels'] !== undefined && BuildingData['entity_levels'][d['level']] !== undefined) {
+			let EntityLevel = BuildingData['entity_levels'][d['level']];
+			if (EntityLevel['provided_population'] !== undefined) {
+				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + EntityLevel['provided_population'];
+			}
+			if (EntityLevel['provided_happiness'] !== undefined) {
+				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + EntityLevel['provided_happiness'];
+			}
+		}
+		
         let AdditionalProduct,
-            MotivatedProducts = { ...Products };
+			MotivatedProducts = [];
+
+		for (let ProductName in Products) {
+			MotivatedProducts[ProductName] = Products[ProductName];
+		}
                 
         for (let Resource in AdditionalResources) {
 
@@ -249,13 +332,7 @@ let Productions = {
 
             if (Resource.startsWith('random_good') || Resource.startsWith('all_goods')) continue;
 
-			// Wenn Münzen, dann Bonus drauf, außer Rathaus (id 1)
-			if (Resource === 'money' && d['id'] > 1) {
-				AdditionalProduct = Math.round(parseInt(AdditionalResources[Resource]) * Productions.Boosts['money']);
-			}
-			else {
-				AdditionalProduct = AdditionalResources[Resource];
-			}
+			AdditionalProduct = AdditionalResources[Resource];
 
 			if (AdditionalProduct > 0) {
 				if (Products[Resource] === undefined) {
@@ -266,25 +343,28 @@ let Productions = {
 					MotivatedProducts[Resource] += AdditionalProduct;
 				}
 			}
-        }
+		}
 
-        let At = d['state']['next_state_transition_at'],
-            In = d['state']['next_state_transition_in'];
+		if (d['state'] !== undefined) {
+			let At = d['state']['next_state_transition_at'],
+				In = d['state']['next_state_transition_in'];
 
+			if (At !== undefined) Ret.at = At;
+			if (In !== undefined) Ret.in = In;
+		}
+
+		Ret.products = Products;
+		Ret.motivatedproducts = MotivatedProducts;
+		
         if(d['id'] === '1'){
 			console.log('Products: ', Products);
 		}
 
-        return {
-            name: BuildingNamesi18n[d['cityentity_id']]['name'],
-            products: Products,
-            motivatedproducts: MotivatedProducts,
-            id: d['id'],
-            eid: d['cityentity_id'],
-            at: At !== undefined ? At : (new Date().getTime()) / 1000, // Kein Datum => Produktion kann eingesammelt werden
-            in: In !== undefined ? In : 0,
-            type: d['type']
-        }
+		//Todo: Dummy Schleife ersetzen
+		for (let i in Ret.motivatedproducts) {
+			return Ret;
+		}
+		return false;
 	},
 
 
@@ -360,16 +440,18 @@ let Productions = {
 							MotivatedProductCount = buildings[i]['motivatedproducts'][type],
 							CssClass = '';
 
-
-						let tds = '<tr>' +
-							'<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>' +
-							'<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
-							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
-							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
-							'<td><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>' +
-							'</tr>';
-
-						rowA.push(tds);
+						rowA.push('<tr>');
+						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
+						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
+						if (type !== 'population' && type !== 'happiness') {
+							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>');
+							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
+						}
+						else {
+							rowA.push('<td><td>');
+						}
+						rowA.push('<td><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+						rowA.push('</tr>');
 					}
 
 					// nur Gebäude mit Gütern
@@ -391,7 +473,7 @@ let Productions = {
 								countProducts[p] += buildings[i]['products'][p];
 								countAll += buildings[i]['products'][p];
 
-								pA.push( HTML.Format(buildings[i]['products'][p]) + ' ' + GoodsData[p]['name']);
+								pA.push(HTML.Format(buildings[i]['products'][p]) + ' ' + Productions.GetGoodName(p));
 							}
 						}
 
@@ -447,7 +529,7 @@ let Productions = {
 							eras[e] = [];
 						}
 
-						eras[e].push('<span>' + GoodsData[ca]['name'] +' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
+						eras[e].push('<span>' + Productions.GetGoodName(ca) +' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
 					}
 				}
 
@@ -481,7 +563,7 @@ let Productions = {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
 				table.push('<th colspan="2"><span class="change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
-				table.push('<th colspan="4" class="text-right"><strong>' + GoodsData[type]['name'] + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
+				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>'); //Todo: Translate Zufriedenheit
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -491,7 +573,12 @@ let Productions = {
 				table.push('<tr class="sorter-header">');
 				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">Name</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['amount'] + '</th>');
-				table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['earning'] + '</th>');
+				if (type !== 'population' && type !== 'happiness') {
+					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['earning'] + '</th>');
+				}
+				else {
+					table.push('<th class="no-sort">&nbsp;</th>');
+				}
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('</tr>');
@@ -539,20 +626,29 @@ let Productions = {
 				rowC.push('<td>' + building[i]['name'] + '</td>');
 
 				let pA = [],
-					prod = building[i]['products'];
+					prod = building[i]['products'],
+					ShowTime = false;
 
 				for(let p in prod)
 				{
 					if(prod.hasOwnProperty(p))
 					{
-                        pA.push(HTML.Format(prod[p]) + ' ' + GoodsData[p]['name']);
+						pA.push(HTML.Format(prod[p]) + ' ' + Productions.GetGoodName(p));
+						if (p !== 'happiness' && p !== 'population') {
+							ShowTime = true;
+						}
 					}
 				}
 
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
 
-				rowC.push('<td>' + moment.unix(building[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>');
-				rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+				if (ShowTime) {
+					rowC.push('<td>' + moment.unix(building[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>');
+					rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+				}
+				else {
+					rowC.push('<td></td><td colspan="2"></td>');
+				}
                 rowC.push('</tr>');
 			}
 		}
@@ -821,7 +917,7 @@ let Productions = {
 			let dailyFP = MainParser.BonusService.find(o => (o['type'] === 'daily_strategypoint'));
 
 			// tägliche FP ans Rathaus übergeben
-			if(dailyFP !== undefined)
+			if(dailyFP !== undefined && dailyFP['value'] !== undefined)
 			{
 				if(d['state']['current_product']['product']['resources']['strategy_points'] === undefined){
 					d['state']['current_product']['product']['resources']['strategy_points'] = 0;
@@ -856,5 +952,15 @@ let Productions = {
 
 			target.addClass('pulsate');
 		}, 500);
+	},
+
+
+	GetGoodName: (GoodType) => {
+		if (GoodType === 'happiness') {
+			return i18n['Boxes']['Productions']['Happiness'];
+		}
+		else {
+			return GoodsData[GoodType]['name'];
+		}
 	}
 };

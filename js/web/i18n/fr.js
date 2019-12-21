@@ -86,6 +86,8 @@ let i18n = {
 			"Total" : "Total: ",
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
+			"Happiness": "satisfaction",
+			"AdjacentBuildings": "bâtiment adjacent",
 			"Headings" : {
 				"number" : "Occurences",
 				"amount" : "Nombre",
@@ -94,7 +96,12 @@ let i18n = {
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
 				"residential" : "Bâtiments événementiels",
-				"main_building" : "Hôtel de ville",
+				"decoration": "décorations", //Todo: Translate
+				"street": "Rues", //Todo: Translate
+				"goods": "Bâtiment fret", //Todo: Translate
+				"culture": "Bâtiments culturels", //Todo: Translate
+				"main_building": "Hôtel de ville",
+				"boost": "Augmentation", //Todo: Translate
 				"all" : "Tout"
 			}
 		},
