@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              20.12.19, 13:19 Uhr
- * zuletzt bearbeitet:       20.12.19, 12:23 Uhr
+ * erstellt am:	              21.12.19, 12:01 Uhr
+ * zuletzt bearbeitet:       21.12.19, 11:43 Uhr
  *
  * Copyright © 2019
  *
@@ -277,9 +277,8 @@ const FoEproxy = (function () {
 	FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
 		Unit.Types = JSON.parse(xhr.responseText);
 	});
-	
-	
-	
+
+
 	// --------------------------------------------------------------------------------------------------
 	// Player- und Gilden-ID setzen
 	FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
@@ -319,25 +318,6 @@ const FoEproxy = (function () {
 
 
 	// --------------------------------------------------------------------------------------------------
-	// Gildengefechte - Snapshot
-	FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
-		// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
-		if(GildFights.NewAction !== null){
-			GildFights.PrevAction = GildFights.NewAction;
-		}
-
-		GildFights.NewAction = data.responseData;
-	});
-
-
-	// Gildengefechte - Map, Gilden
-	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-		GildFights.init();
-		GildFights.MapData = data.responseData;
-	});
-	
-
-	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
@@ -360,18 +340,6 @@ const FoEproxy = (function () {
 		});
 	});
 
-	// --------------------------------------------------------------------------------------------------
-	// --------------------------------------------------------------------------------------------------
-	// Chat-Titel notieren
-	FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
-		MainParser.setConversations(data.responseData);
-	});
-
-	FoEproxy.addHandler('ConversationService', 'getTeasers', (data, postData) => {
-		MainParser.setConversations(data.responseData);
-	});
-	
-	
 
 
 	// --------------------------------------------------------------------------------------------------
@@ -841,7 +809,7 @@ let MainParser = {
 	 * @param min
 	 * @returns {number}
 	 */
-	getAddedDateTime: (hrs, min)=> {
+	getAddedDateTime: (hrs, min = 0)=> {
 
 		let time = new Date().getTime(),
 			h = hrs || 0,
