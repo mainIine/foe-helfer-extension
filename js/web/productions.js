@@ -313,7 +313,11 @@ let Productions = {
 				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + EntityLevel['provided_population'];
 			}
 			if (EntityLevel['provided_happiness'] !== undefined) {
-				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + EntityLevel['provided_happiness'];
+				let Faktor = 1;
+				if (d['state']['__class__'] === 'PolishedState') {
+					Faktor = 2;
+				}
+				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
 			}
 		}
 		
@@ -360,11 +364,12 @@ let Productions = {
 			console.log('Products: ', Products);
 		}
 
-		//Todo: Dummy Schleife ersetzen
-		for (let i in Ret.motivatedproducts) {
+		if (Object.keys(Ret.motivatedproducts).length > 0) {
 			return Ret;
 		}
-		return false;
+		else {
+			return false;
+		}
 	},
 
 
