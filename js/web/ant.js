@@ -189,8 +189,8 @@ const FoEproxy = (function () {
 		// handle metadata request handlers
 		const metadataIndex = url.indexOf("metadata?id=");
 		if (metadataIndex > -1) {
-			const metaURL = metadataIndex + "metadata?id=",
-				meta = url.substring(metaURL.length).split('-', 1)[0];
+			const metaURLend = metadataIndex + "metadata?id=".length,
+				meta = url.substring(metaURLend).split('-', 1)[0];
 			const metaHandler = proxyMetaMap[meta];
 			
 			if (metaHandler) {
@@ -445,13 +445,15 @@ const FoEproxy = (function () {
 			IsLevelScroll = false;
 		}
 		
-		if (!lgUpdateData || !lgUpdateData.UpdateEntity) {
-			lgUpdateData = {Rankings: Rankings, UpdateEntity: null};
-			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-			Promise.resolve().then(()=>lgUpdateData = null);
-		} else {
-			lgUpdateData.Rankings = Rankings;
-			lgUpdate();
+		if (Rankings) {
+			if (!lgUpdateData || !lgUpdateData.UpdateEntity) {
+				lgUpdateData = {Rankings: Rankings, UpdateEntity: null};
+				// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
+				Promise.resolve().then(()=>lgUpdateData = null);
+			} else {
+				lgUpdateData.Rankings = Rankings;
+				lgUpdate();
+			}
 		}
 	});
 
