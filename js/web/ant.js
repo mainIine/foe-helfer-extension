@@ -263,6 +263,10 @@ const FoEproxy = (function () {
 						}
 					}
 				}
+
+				if (j[i]['staticResources'] !== undefined && j[i]['staticResources']['resources'] !== undefined) {
+					BuildingNamesi18n[j[i]['asset_id']]['population'] = j[i]['staticResources']['resources']['population'];
+				}
 			}
 		}
 
@@ -575,9 +579,6 @@ const FoEproxy = (function () {
 	// --------------------------------------------------------------------------------------------------
 	// Tavernenboost wurde gekauft
 	FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
-		if (!Settings.GetSetting('ShowTavernBadge')) {
-			return;
-		}
 		Tavern.TavernBoost(data.responseData);
 	});
 
@@ -618,11 +619,10 @@ const FoEproxy = (function () {
 
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
+		ResourceStock = data.responseData.resources; //Lagerbestand immer aktulisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		if (Settings.GetSetting('ShowOutpost')) {
+			Outposts.CollectResources();
 		}
-		ResourceStock = data.responseData.resources;
-		Outposts.CollectResources();
 	});
 
 
