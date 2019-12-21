@@ -234,16 +234,19 @@ const FoEproxy = (function () {
 
 		sessionStorage.setItem('BuildingsData', JSON.stringify(j));
 
-		for (let i in j)
-		{
-			if (j.hasOwnProperty(i))
-			{
-				BuildingNamesi18n[j[i]['asset_id']] = {
-					name: j[i]['name'],
-					width: j[i]['width'],
-					height: j[i]['length'],
-					type: j[i]['type'],
-				};
+				for (let i in j)
+				{
+					if (j.hasOwnProperty(i))
+					{
+						BuildingNamesi18n[j[i]['asset_id']] = {
+							name: j[i]['name'],
+							width: j[i]['width'],
+							height: j[i]['length'],
+							type: j[i]['type'],
+							provided_happiness: j[i]['provided_happiness'],
+							population: undefined,
+							entity_levels : j[i]['entity_levels'],
+						};
 
 				if(j[i]['abilities'] !== undefined)
 				{
@@ -1337,7 +1340,9 @@ let MainParser = {
 
 					if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
 					{
-						MainParser.AllBoosts[ MainParser.BoostMapper[ d[i]['bonus']['type'] ] ] += d[i]['bonus']['value']
+						if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
+							MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
+						}
 					}
 				}
 			}

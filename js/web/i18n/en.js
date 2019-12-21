@@ -87,6 +87,8 @@ let i18n = {
 			"Total" : "Total: ",
 			"ModeGroups": "Groups",
 			"ModeSingle": "Single",
+			"Happiness": "Happiness",
+			"AdjacentBuildings": "Adjacent buildings",
 			"Headings" : {
 				"number" : "Number",
 				"amount" : "Amount",
@@ -94,8 +96,13 @@ let i18n = {
 				"greatbuilding" : "Legendary buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
-				"residential" : "Event buildings",
-				"main_building" : "Town hall",
+				"residential": "Event buildings",
+				"decoration": "Dekorations",
+				"street": "Streets",
+				"goods": "Goods buildings",
+				"culture": "Cultural buildings",
+				"main_building": "Town hall",
+				"boost": "Boost",
 				"all" : "All"
 			}
 		},

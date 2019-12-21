@@ -614,7 +614,7 @@
 #Productions {
 	top: 100px;
 	left: 100px;
-	width: 500px;
+	width: 580px;
 	padding: 5px 0 0 0;
 }
 
@@ -1598,6 +1598,14 @@
 	border-color: #1c7430;
 }
 #grid-outer span.street {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+#grid-outer span.goods {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+#grid-outer span.culture {
 	background-color: #6c757d;
 	border-color: #6c757d;
 }
