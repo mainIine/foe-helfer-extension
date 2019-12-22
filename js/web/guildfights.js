@@ -5,35 +5,70 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              20.12.19, 13:19 Uhr
- * zuletzt bearbeitet:       20.12.19, 13:17 Uhr
+ * erstellt am:	              22.12.19, 13:34 Uhr
+ * zuletzt bearbeitet:       22.12.19, 12:48 Uhr
  *
  * Copyright © 2019
  *
  * **************************************************************************************
  */
 
+// Provinznamen der GG
+FoEproxy.addMetaHandler('guild_battleground_maps', (xhr, postData) => {
+	GildFights.ProvinceNames = JSON.parse(xhr.responseText);
+});
+
+// Provinzfarben der GG
+FoEproxy.addMetaHandler('battleground_colour', (xhr, postData) => {
+	GildFights.Colors = JSON.parse(xhr.responseText);
+});
+
+// Gildengefechte - Snapshot
+FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
+	// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
+	if(localStorage.getItem('GildFights.NewAction') !== null){
+		GildFights.PrevAction = JSON.parse(localStorage.getItem('GildFights.NewAction'));
+		GildFights.PrevActionTimestamp = parseInt(localStorage.getItem('GildFights.NewActionTimestamp'));
+	}
+	else if(GildFights.NewAction !== null){
+		GildFights.PrevAction = GildFights.NewAction;
+		GildFights.PrevActionTimestamp = GildFights.NewActionTimestamp;
+	}
+
+	GildFights.NewAction = data['responseData'];
+	localStorage.setItem('GildFights.NewAction', JSON.stringify(GildFights.NewAction));
+
+	GildFights.NewActionTimestamp = moment().unix();
+	localStorage.setItem('GildFights.NewActionTimestamp', GildFights.NewActionTimestamp);
+
+	if( $('#GildPlayers').length > 0 ){
+		GildFights.BuildPlayerContent();
+	} else {
+		GildFights.ShowPlayerBox();
+	}
+});
+
+
+// Gildengefechte - Map, Gilden
+FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+	GildFights.init();
+	GildFights.MapData = data['responseData'];
+});
+
+
 let GildFights = {
 
 	PrevAction: null,
+	PrevActionTimestamp: null,
 	NewAction: null,
+	NewActionTimestamp: null,
 	MapData: null,
-	Colors : {
-		red: 'rgb(159,6,2)',
-		green: 'rgb(78,175,18)',
-		yellow: 'rgb(239,210,89)',
-		teal: 'rgb(21,223,223)',
-		orange: 'rgb(208,136,0)',
-		blue: 'rgb(181,180,180)',
-		purple: 'rgb(133,24,196)',
-		pink: 'rgb(199,51,196)'
-	},
-
-	ProvinceNames : {
-		2 : 'C1: Niali Diath'
-	},
-
+	PlayersPortraits: null,
+	Colors : null,
+	SortedColors: null,
+	ProvinceNames : null,
 	InjectionLoaded: false,
+
 
 	init: ()=> {
 
@@ -49,7 +84,7 @@ let GildFights = {
 						let d = JSON.parse(msg.data)[0];
 
 						if(d['requestClass'] === 'GuildBattlegroundService' && d['responseData'][0] !== undefined){
-							console.log('msg', d['responseData'][0]);
+							// console.log('msg', d['responseData'][0]);
 							GildFights.RefreshTable(d['responseData'][0]);
 						}
 					}
@@ -66,7 +101,7 @@ let GildFights = {
 	},
 
 
-	ShowBox: ()=> {
+	ShowGildBox: ()=> {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#LiveGildFighting').length === 0 ){
 
@@ -80,11 +115,161 @@ let GildFights = {
 			});
 		}
 
-		GildFights.BuildContent();
+		GildFights.BuildFightContent();
 	},
 
 
-	BuildContent: () => {
+	ShowPlayerBox: () => {
+		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
+		if( $('#GildPlayers').length === 0 ){
+
+			moment.locale(MainParser.Language);
+
+			HTML.Box({
+				id: 'GildPlayers',
+				title: 'Spieler Übersicht',
+				auto_close: true,
+				dragdrop: true,
+				resize: true,
+				minimize: true,
+				saveCords: false
+			});
+		}
+
+		GildFights.BuildPlayerContent();
+	},
+
+
+	BuildPlayerContent: ()=> {
+		let t = [];
+
+		t.push('<table class="foe-table">');
+
+		t.push('<thead>');
+		t.push('<tr>');
+
+		t.push('<th>&nbsp;</th>');
+		t.push('<th>Spieler</th>');
+		t.push('<th class="text-center">Verhandlungen</th>');
+		t.push('<th class="text-center">Kämpfe</th>');
+
+		t.push('</tr>');
+		t.push('</thead>');
+
+		t.push('<tbody>');
+
+		for(let i in GildFights.NewAction)
+		{
+			if(!GildFights.NewAction.hasOwnProperty(i)){
+				break;
+			}
+
+			let p = GildFights.NewAction[i];
+
+			let fightAddOn = '',
+				negotaionAddOn = '',
+				change = false;
+
+			if(GildFights.PrevAction !== null){
+
+				if(GildFights.PrevAction[i]['negotiationsWon'] < p['negotiationsWon']){
+					negotaionAddOn = ' <small class="text-success">&#8593; ' + (p['negotiationsWon'] - GildFights.PrevAction[i]['negotiationsWon']) + '</small>';
+					change = true;
+				}
+
+				if(GildFights.PrevAction[i]['battlesWon'] < p['battlesWon']){
+					fightAddOn = ' <small class="text-success">&#8593; ' + (p['battlesWon'] - GildFights.PrevAction[i]['battlesWon']) + '</small>';
+					change = true;
+				}
+			}
+
+			t.push('<tr' + (change === true ? ' class="bg-green"' : '') + '>');
+			// ToDo: bg-green anlegen (leicht transparenter Hintergrund)
+			t.push('<td>');
+			t.push('<img src="https://foede.innogamescdn.com/assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
+			// t.push(p['player']['avatar']);
+			t.push('</td>');
+
+			t.push('<td>');
+			t.push(p['player']['name']);
+			t.push('</td>');
+
+
+
+			t.push('<td class="text-center">');
+			t.push((p['negotiationsWon'] || 0) + negotaionAddOn);
+			t.push('</td>');
+
+			t.push('<td class="text-center">');
+			t.push((p['battlesWon'] || 0) + fightAddOn);
+			t.push('</td>');
+
+			t.push('</tr>');
+		}
+
+		t.push('</tbody>');
+
+		$('#GildPlayersBody').html( t.join('') );
+
+		if( $('#GildPlayersHeader .title').find('.time-diff').length === 0 )
+		{
+			$('#GildPlayersHeader .title').append( $('<small />').addClass('time-diff') );
+		}
+
+		// es gibt schon einen Snapshot vorher
+		if (GildFights.PrevActionTimestamp !== null){
+
+			let start = moment.unix(GildFights.PrevActionTimestamp),
+				end = moment.unix(GildFights.NewActionTimestamp),
+				duration = moment.duration(end.diff(start));
+
+			let time = duration.humanize();
+
+			$('.time-diff').text(' - letzter Snapshot vor ' + time );
+		}
+	},
+
+
+	PrepareColors: ()=> {
+
+		// ist schon fertig aufbereitet
+		if(GildFights.SortedColors !== null){
+			return;
+		}
+
+		let colors = [],
+			bP = GildFights.MapData['battlegroundParticipants'];
+
+		for(let i in bP)
+		{
+			if(!bP.hasOwnProperty(i))
+			{
+				break;
+			}
+
+			let c = null;
+
+			// "weiße" Farbe für den eigenen Clan raussuchen
+			if(bP[i]['clan']['id'] === ExtGuildID){
+				c = GildFights.Colors.find(o => (o['id'] === 'own_guild_colour'));
+			} else {
+				c = GildFights.Colors.find(o => (o['id'] === bP[i]['colour']));
+			}
+
+			colors[bP[i]['participantId']] = {
+				base: c['base'],
+				main: c['mainColour']
+			};
+		}
+
+		GildFights.SortedColors = colors;
+	},
+
+
+	BuildFightContent: () => {
+
+		GildFights.PrepareColors();
+
 		let t = [],
 			mP = GildFights.MapData['map']['provinces'],
 			bP = GildFights.MapData['battlegroundParticipants'],
@@ -102,7 +287,7 @@ let GildFights = {
 				break;
 			}
 
-			t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + GildFights.Colors[bP[x]['colour']] + '"></span></th>');
+			t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + GildFights.SortedColors[bP[x]['participantId']]['main'] + '"></span></th>');
 		}
 
 
@@ -117,10 +302,18 @@ let GildFights = {
 				break;
 			}
 
+			let prov;
+
+			if(cnt === 0){
+				prov = GildFights.ProvinceNames[0]['provinces'][0];
+			} else {
+				prov = GildFights.ProvinceNames[0]['provinces'].find(o => (o['id'] === cnt));
+			}
+
 			t.push('<tr data-id="' + cnt + '">');
 
 			t.push('<td>');
-			t.push(cnt);
+			t.push(prov['name']);
 			t.push('</td>');
 
 			for(let x = 0; x < bP.length; x++)
@@ -142,9 +335,8 @@ let GildFights = {
 							}
 
 							let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId']));
-							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ GildFights.Colors[p['colour']] +';width:' + cP[y]['progress'] + '%"></span></span>');
+							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ GildFights.SortedColors[p['participantId']]['main'] +';width:' + cP[y]['progress'] + '%"></span></span>');
 						}
-
 					}
 
 					t.push('</td>');
@@ -172,10 +364,9 @@ let GildFights = {
 	RefreshTable: (data)=> {
 
 		// Provinz wurde übernommen
-		if(data['conquestProgress'].length === 0)
+		if(data['lockedUntil'] !== undefined)
 		{
-
-			$('[data-id="' + data['id'] + '"]').each(function(){
+			$('[data-id="' + data['id'] + '"]').find('td').each(function(){
 				$(this).html('');
 			});
 
@@ -202,7 +393,7 @@ let GildFights = {
 			}
 			// neuen "Balken" einfügen
 			else {
-				cell.append($('<span class="attack attacker-' + d['participantId'] + '"><span style="background-color:'+ GildFights.Colors[p['colour']] +';width:' + d['progress'] + '%"></span></span>'));
+				cell.append($('<span class="attack attacker-' + d['participantId'] + '"><span style="background-color:'+ GildFights.SortedColors[p['participantId']]['main'] +';width:' + d['progress'] + '%"></span></span>'));
 			}
 
 			cell.addClass('red-pulse');
