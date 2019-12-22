@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              21.12.19, 12:01 Uhr
- * zuletzt bearbeitet:       21.12.19, 11:43 Uhr
+ * erstellt am:	              22.12.19, 13:34 Uhr
+ * zuletzt bearbeitet:       21.12.19, 20:01 Uhr
  *
  * Copyright © 2019
  *
@@ -278,6 +278,18 @@ const FoEproxy = (function () {
 		Unit.Types = JSON.parse(xhr.responseText);
 	});
 
+	// Portrait-Mapping für Spiler Avatare
+	FoEproxy.addRawHandler((xhr, postData) => {
+		if(xhr._url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+			let portraits = {};
+
+			$(xhr.responseText).find('portrait').each(function(){
+				portraits[$(this).attr('name')] = $(this).attr('src');
+			});
+
+			MainParser.PlayerPortraits = portraits;
+		}
+	});
 
 	// --------------------------------------------------------------------------------------------------
 	// Player- und Gilden-ID setzen
@@ -762,7 +774,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -774,6 +786,7 @@ let MainParser = {
 	],
 	BonusService: null,
 	EmissaryService: null,
+	PlayerPortraits: null,
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -1430,26 +1443,34 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Übermittelt die Freundesliste beim betreten des Spieles
+	 * oder wenn nicht aktivert wenn der Tab ausgewählt wurde
+	 *
+	 * @param d
+	 * @constructor
+	 */
 	FriendsList: (d)=>{
 		let data = [];
 
 		for(let i in d){
-			if (d.hasOwnProperty(i)) {
+			if (!d.hasOwnProperty(i)) {
+				break;
+			}
 
-				// nicht selbst mitschicken
-				if(d[i]['player_id'] !== ExtPlayerID){
-					let pl = {
-						avatar: d[i]['avatar'],
-						city_name: d[i]['city_name'],
-						player_id: d[i]['player_id'],
-						clan_id: d[i]['clan_id'] || '',
-						name: d[i]['name'],
-						score: d[i]['score'],
-						rank: d[i]['rank']
-					};
+			// nicht selbst mitschicken
+			if(d[i]['player_id'] !== ExtPlayerID){
+				let pl = {
+					avatar: d[i]['avatar'],
+					city_name: d[i]['city_name'],
+					player_id: d[i]['player_id'],
+					clan_id: d[i]['clan_id'] || '',
+					name: d[i]['name'],
+					score: d[i]['score'],
+					rank: d[i]['rank']
+				};
 
-					data.push(pl);
-				}
+				data.push(pl);
 			}
 		}
 

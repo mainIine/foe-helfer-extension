@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              21.12.19, 12:01 Uhr
- * zuletzt bearbeitet:       21.12.19, 11:55 Uhr
+ * erstellt am:	              22.12.19, 13:34 Uhr
+ * zuletzt bearbeitet:       22.12.19, 12:48 Uhr
  *
  * Copyright © 2019
  *
@@ -26,9 +26,9 @@ FoEproxy.addMetaHandler('battleground_colour', (xhr, postData) => {
 // Gildengefechte - Snapshot
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
 	// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
-	if(sessionStorage.getItem('GildFights.NewAction') !== null){
-		GildFights.PrevAction = JSON.parse(sessionStorage.getItem('GildFights.NewAction'));
-		GildFights.PrevActionTimestamp = sessionStorage.getItem('GildFights.NewActionTimestamp');
+	if(localStorage.getItem('GildFights.NewAction') !== null){
+		GildFights.PrevAction = JSON.parse(localStorage.getItem('GildFights.NewAction'));
+		GildFights.PrevActionTimestamp = parseInt(localStorage.getItem('GildFights.NewActionTimestamp'));
 	}
 	else if(GildFights.NewAction !== null){
 		GildFights.PrevAction = GildFights.NewAction;
@@ -36,10 +36,10 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 	}
 
 	GildFights.NewAction = data['responseData'];
-	sessionStorage.setItem('GildFights.NewAction', JSON.stringify(GildFights.NewAction));
+	localStorage.setItem('GildFights.NewAction', JSON.stringify(GildFights.NewAction));
 
-	GildFights.NewActionTimestamp = new Date().getTime();
-	sessionStorage.setItem('GildFights.NewActionTimestamp', GildFights.NewActionTimestamp);
+	GildFights.NewActionTimestamp = moment().unix();
+	localStorage.setItem('GildFights.NewActionTimestamp', GildFights.NewActionTimestamp);
 
 	if( $('#GildPlayers').length > 0 ){
 		GildFights.BuildPlayerContent();
@@ -65,6 +65,7 @@ let GildFights = {
 	MapData: null,
 	PlayersPortraits: null,
 	Colors : null,
+	SortedColors: null,
 	ProvinceNames : null,
 	InjectionLoaded: false,
 
@@ -123,8 +124,6 @@ let GildFights = {
 		if( $('#GildPlayers').length === 0 ){
 
 			moment.locale(MainParser.Language);
-
-			// GildFights.loadPortraits();
 
 			HTML.Box({
 				id: 'GildPlayers',
@@ -187,8 +186,8 @@ let GildFights = {
 			t.push('<tr' + (change === true ? ' class="bg-green"' : '') + '>');
 			// ToDo: bg-green anlegen (leicht transparenter Hintergrund)
 			t.push('<td>');
-			// t.push('<img src="' + GildFights.PlayersPortraits[ p['player']['avatar'] ] + '" alt="">');
-			t.push(p['player']['avatar']);
+			t.push('<img src="https://foede.innogamescdn.com/assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
+			// t.push(p['player']['avatar']);
 			t.push('</td>');
 
 			t.push('<td>');
@@ -217,16 +216,60 @@ let GildFights = {
 			$('#GildPlayersHeader .title').append( $('<small />').addClass('time-diff') );
 		}
 
+		// es gibt schon einen Snapshot vorher
 		if (GildFights.PrevActionTimestamp !== null){
-			// let mins = moment.utc(moment().unix(GildFights.NewActionTimestamp).diff(moment().unix(GildFights.PrevActionTimestamp))).format("HH:mm:ss");
-			let mins = moment.duration(moment().unix(GildFights.PrevActionTimestamp).diff(moment().unix(GildFights.NewActionTimestamp)));
 
-			$('.time-diff').text(' ' + mins );
+			let start = moment.unix(GildFights.PrevActionTimestamp),
+				end = moment.unix(GildFights.NewActionTimestamp),
+				duration = moment.duration(end.diff(start));
+
+			let time = duration.humanize();
+
+			$('.time-diff').text(' - letzter Snapshot vor ' + time );
 		}
 	},
 
 
+	PrepareColors: ()=> {
+
+		// ist schon fertig aufbereitet
+		if(GildFights.SortedColors !== null){
+			return;
+		}
+
+		let colors = [],
+			bP = GildFights.MapData['battlegroundParticipants'];
+
+		for(let i in bP)
+		{
+			if(!bP.hasOwnProperty(i))
+			{
+				break;
+			}
+
+			let c = null;
+
+			// "weiße" Farbe für den eigenen Clan raussuchen
+			if(bP[i]['clan']['id'] === ExtGuildID){
+				c = GildFights.Colors.find(o => (o['id'] === 'own_guild_colour'));
+			} else {
+				c = GildFights.Colors.find(o => (o['id'] === bP[i]['colour']));
+			}
+
+			colors[bP[i]['participantId']] = {
+				base: c['base'],
+				main: c['mainColour']
+			};
+		}
+
+		GildFights.SortedColors = colors;
+	},
+
+
 	BuildFightContent: () => {
+
+		GildFights.PrepareColors();
+
 		let t = [],
 			mP = GildFights.MapData['map']['provinces'],
 			bP = GildFights.MapData['battlegroundParticipants'],
@@ -244,7 +287,7 @@ let GildFights = {
 				break;
 			}
 
-			t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + GildFights.Colors[bP[x]['colour']] + '"></span></th>');
+			t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + GildFights.SortedColors[bP[x]['participantId']]['main'] + '"></span></th>');
 		}
 
 
@@ -262,9 +305,9 @@ let GildFights = {
 			let prov;
 
 			if(cnt === 0){
-				prov = GildFights.ProvinceNames['provinces'][0];
+				prov = GildFights.ProvinceNames[0]['provinces'][0];
 			} else {
-				prov = GildFights.ProvinceNames['provinces'].find(o => (o['id'] === cnt));
+				prov = GildFights.ProvinceNames[0]['provinces'].find(o => (o['id'] === cnt));
 			}
 
 			t.push('<tr data-id="' + cnt + '">');
@@ -292,7 +335,7 @@ let GildFights = {
 							}
 
 							let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId']));
-							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ GildFights.Colors[p['colour']] +';width:' + cP[y]['progress'] + '%"></span></span>');
+							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ GildFights.SortedColors[p['participantId']]['main'] +';width:' + cP[y]['progress'] + '%"></span></span>');
 						}
 					}
 
@@ -323,7 +366,7 @@ let GildFights = {
 		// Provinz wurde übernommen
 		if(data['lockedUntil'] !== undefined)
 		{
-			$('[data-id="' + data['id'] + '"]').each(function(){
+			$('[data-id="' + data['id'] + '"]').find('td').each(function(){
 				$(this).html('');
 			});
 
@@ -350,7 +393,7 @@ let GildFights = {
 			}
 			// neuen "Balken" einfügen
 			else {
-				cell.append($('<span class="attack attacker-' + d['participantId'] + '"><span style="background-color:'+ GildFights.Colors[p['colour']] +';width:' + d['progress'] + '%"></span></span>'));
+				cell.append($('<span class="attack attacker-' + d['participantId'] + '"><span style="background-color:'+ GildFights.SortedColors[p['participantId']]['main'] +';width:' + d['progress'] + '%"></span></span>'));
 			}
 
 			cell.addClass('red-pulse');
@@ -359,38 +402,6 @@ let GildFights = {
 			setTimeout(() =>  {
 				cell.removeClass('red-pulse');
 			}, 1000);
-		}
-	},
-
-
-	loadPortraits: ()=> {
-
-		let pPortraits = localStorage.getItem('PlayersPortraits'),
-			pPortraitsTimestamp = localStorage.getItem('PlayersPortraitsTimestamp');
-
-		if(pPortraits === null ||  MainParser.compareTime(new Date().getTime(), pPortraitsTimestamp) === false)
-		{
-			let portraits = {};
-
-			$.ajax({
-				type: 'GET',
-				url: 'https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml',
-				dataType: 'xml',
-				success: function(xml){
-
-					$(xml).find('portrait').each(function(){
-						portraits[$(this).attr('name')] = $(this).attr('src');
-					});
-
-					localStorage.setItem('PlayersPortraits', JSON.stringify(portraits));
-					localStorage.setItem('PlayersPortraitsTimestamp', MainParser.getAddedDateTime(24));
-
-					GildFights.PlayersPortraits = portraits;
-				}
-			});
-
-		} else {
-			GildFights.PlayersPortraits = JSON.parse(pPortraits);
 		}
 	}
 };

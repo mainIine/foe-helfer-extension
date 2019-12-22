@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              21.12.19, 12:01 Uhr
- * zuletzt bearbeitet:       20.12.19, 15:12 Uhr
+ * erstellt am:	              22.12.19, 13:34 Uhr
+ * zuletzt bearbeitet:       22.12.19, 12:24 Uhr
  *
  * Copyright © 2019
  *
@@ -1262,6 +1262,10 @@
 	transform: translate(-50%,-50%);
 }
 
+#GildPlayersHeader small {
+	font-weight: lighter;
+}
+
 #GildPlayersBody {
 	max-height: 504px;
 	overflow-x: hidden;
@@ -1273,6 +1277,11 @@
 	top: 0;
 	background-color: rgba(0,0,0, 0.45);
 	white-space: nowrap;
+}
+
+#GildPlayersBody tr td img {
+	max-width: 40px;
+	border-radius: 50%;
 }
 
 #LiveGildFighting {
