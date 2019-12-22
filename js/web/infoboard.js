@@ -1,5 +1,3 @@
-
-
 /*
  * **************************************************************************************
  *
@@ -7,13 +5,22 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 22:44 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:09 Uhr
+ * erstellt am:	              21.12.19, 12:01 Uhr
+ * zuletzt bearbeitet:       20.12.19, 13:26 Uhr
  *
  * Copyright © 2019
  *
  * **************************************************************************************
  */
+
+// Chat-Titel notieren
+FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
+	MainParser.setConversations(data.responseData);
+});
+
+FoEproxy.addHandler('ConversationService', 'getTeasers', (data, postData) => {
+	MainParser.setConversations(data.responseData);
+});
 
 let Infoboard = {
 
