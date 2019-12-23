@@ -66,16 +66,9 @@ let Unit = {
 			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
 
 			let x = setInterval(function() {
-				let diff = countDownDate.diff(moment());
-
-				if (diff <= 0) {
-					clearInterval(x);
-
-					$('.alca-info').html('<span class="text-danger">Ernte!</span>');
-				} else
-					$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
-
+				Unit.UpdateAlcaLable(countDownDate,x);
 			}, 1000);
+			Unit.UpdateAlcaLable(countDownDate,x);
 
 			top.push('<div style="padding: 4px;" class="text-center">');
 
@@ -421,6 +414,26 @@ let Unit = {
 		return Unit.TabsContent.join('');
 	},
 
+	/**
+	 * Aktuallisiert die Anzeige für die Alcatraz-Produktion
+	 * 
+	 */
+	UpdateAlcaLable:(countDownDate, intervalID)=>{
+		if(countDownDate.isValid()){
+			let diff = countDownDate.diff(moment());
+
+			if (diff <= 0) {
+				clearInterval(intervalID);
+				$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
+			} else
+				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
+		}
+		else{
+			clearInterval(intervalID);
+			$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
+		}
+
+	},
 
 	/**
 	 * Die letzten Einheiten die aus dem Alca gekommen sind
@@ -477,8 +490,8 @@ let Unit = {
 		last.push('<tr>');
 		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
 		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-		last.push('<th class="text-center">Anzahl</th>');
-		last.push('<th class="text-center">Anteilig</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Quantity'] + '</th>');
 		last.push('</tr>');
 		last.push('</thead>');
 
