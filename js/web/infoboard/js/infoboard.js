@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       21.12.19, 12:01 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
