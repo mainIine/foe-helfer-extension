@@ -124,7 +124,7 @@ let _menu = {
 		/**
 		 * Forum
 		 */
-		hudSlider.append( Menu.Forum_Btn() );
+		hudSlider.append( _menu.Forum_Btn() );
 
 
 		/**
