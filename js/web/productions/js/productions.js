@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:40 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -386,6 +386,9 @@ let Productions = {
 			return ;
 		}
 
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('productions');
+
 		HTML.Box({
 			'id': 'Productions',
 			'title': i18n['Boxes']['Productions']['Title'],
@@ -455,7 +458,7 @@ let Productions = {
 						else {
 							rowA.push('<td><td>');
 						}
-						rowA.push('<td><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+						rowA.push('<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
 						rowA.push('</tr>');
 					}
 
@@ -485,7 +488,7 @@ let Productions = {
 						tds +='<td>' + pA.join('<br>') + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
-							'<td><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>' +
+							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>' +
 							'</tr>';
 
 						rowA.push(tds);
@@ -567,7 +570,7 @@ let Productions = {
 			else {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
-				table.push('<th colspan="2"><span class="change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
+				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
 				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>'); //Todo: Translate Zufriedenheit
 				table.push('</tr>');
 

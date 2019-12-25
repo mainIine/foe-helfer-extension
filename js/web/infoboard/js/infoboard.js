@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       21.12.19, 12:01 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -47,7 +47,6 @@ let Infoboard = {
 			WebSocket.prototype._send = WebSocket.prototype.send;
 
 			WebSocket.prototype.send = function (data) {
-
 				this._send(data);
 
 				this.addEventListener('message', function(msg) {
@@ -107,10 +106,11 @@ let Infoboard = {
 		h.push('<div class="filter-row">');
 		h.push('<span><strong>' + i18n['Boxes']['Infobox']['Filter'] + ':</strong></span>');
 
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg" checked> ' + i18n['Boxes']['Infobox']['FilterGex'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg" checked> ' + i18n['Boxes']['Infobox']['FilterAuction'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg" checked> ' + i18n['Boxes']['Infobox']['FilterMessage'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg" checked> ' + i18n['Boxes']['Infobox']['FilterLevel'] + '</label></span>');
+		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGex'] + '</label></span>');
+		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterAuction'] + '</label></span>');
+		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterMessage'] + '</label></span>');
+		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterLevel'] + '</label></span>');
+		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterTrade'] + '</label></span>');
 
 		h.push('<button class="btn btn-default btn-reset-box">' + i18n['Boxes']['Infobox']['ResetBox'] + '</button>');
 
@@ -287,7 +287,7 @@ let Info = {
 						i18n['Boxes']['Infobox']['Messages']['MsgBuilding'],
 						{
 							'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-							'level': d['level']
+							'level': d['attachment']['level']
 						}
 					)
 			}
@@ -327,7 +327,29 @@ let Info = {
 				)
 		};
 	},
-
+	/**
+	 * Handel wurde angenommen
+	 *
+	 * @param d
+	 * @returns {{msg: string, type: string}}
+	 * @constructor
+	 */
+	OtherPlayerService_newEventtrade_accepted:(d)=>{
+		return{
+			class: 'trade',
+			type: i18n['Boxes']['Infobox']['FilterTrade'],
+			msg: HTML.i18nReplacer(
+				i18n['Boxes']['Infobox']['Messages']['Trade'],
+					{
+						'player' : d['other_player']['name'],
+						'offer': GoodsData[d['offer']['good_id']]['name'],
+						'offerValue': d['offer']['value'],
+						'need': GoodsData[d['need']['good_id']]['name'],
+						'needValue': d['need']['value']
+					}
+			)
+		}
+	},
 
 	/**
 	 *
