@@ -42,6 +42,15 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 const FoEproxy = (function () {
+	const requestInfoHolder = new WeakMap();
+	function getRequestData(xhr) {
+		let data = requestInfoHolder.get(xhr);
+		if (data != null) return data;
+
+		data = {url: null, method: null, postData: null};
+		requestInfoHolder.set(xhr, data);
+		return data;
+	}
 
 	const proxyMap = {};
 	const proxyMetaMap = {};
@@ -168,19 +177,21 @@ const FoEproxy = (function () {
 		send = XHR.send;
 
 	XHR.open = function(method, url){
-		this._method = method;
-		this._url = url;
+		const data = getRequestData(this);
+		data.method = method;
+		data.url = url;
 		return open.apply(this, arguments);
 	};
 	
 	function onLoadHandler() {
-		const url = this._url;
-		const postData = this._postData;
+		const requestData = getRequestData(this);
+		const url = requestData.url;
+		const postData = requestData.postData;
 		
 		// handle raw request handlers
 		for (let callback of proxyRaw) {
 			try {
-				callback(this, postData);
+				callback(this, requestData);
 			} catch (e) {
 				console.error(e);
 			}
@@ -215,7 +226,8 @@ const FoEproxy = (function () {
 	}
 
 	XHR.send = function(postData){
-		this._postData = postData;
+		const data = getRequestData(this);
+		data.postData = postData;
 		
 		this.addEventListener('load', onLoadHandler);
 
@@ -286,8 +298,8 @@ const FoEproxy = (function () {
 	});
 
 	// Portrait-Mapping für Spiler Avatare
-	FoEproxy.addRawHandler((xhr, postData) => {
-		if(xhr._url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+	FoEproxy.addRawHandler((xhr, requestData) => {
+		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function(){
