@@ -1,0 +1,150 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 productions.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              24.12.19, 10:53 Uhr
+ * zuletzt bearbeitet:        24.12.19, 10:52 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#Productions {
+	top: 100px;
+	left: 100px;
+	width: 580px;
+	padding: 5px 0 0 0;
+}
+
+
+#Productions #ProductionsBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 500px;
+	margin-top: 2px;
+}
+
+#Productions #ProductionsBody .show-entity {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+}
+
+#Productions #ProductionsBody .show-entity img {
+	width: 20px;
+	height: 20px;
+}
+
+#Productions table tr.building-type td {
+	padding-top: 15px;
+}
+
+#Productions #ProductionsBody strong {
+	color: #ffb539;
+}
+
+#Productions #ProductionsBody table .sorter-header th {
+	position: relative;
+}
+
+#Productions #ProductionsBody table .sorter-header .ascending:after,
+#Productions #ProductionsBody table .sorter-header .descending:after {
+	color: #ffb539;
+	position: absolute;
+	top: -3px;
+	font-size: 20px;
+}
+
+#Productions #ProductionsBody table .sorter-header .ascending:after {
+	content: "↑";
+}
+#Productions #ProductionsBody table .sorter-header .descending:after {
+	content: "↓";
+}
+
+#Productions #ProductionsBody table td {
+	font-size: 85%;
+}
+
+#Productions #ProductionsBody table tbody.parent th {
+	background-color: #3f2a1b;
+	color: #ffb539;
+	padding-top: 15px;
+	position: sticky;
+	top: 0;
+}
+
+#Productions #ProductionsBody table tr.highlight-row {
+	background-color: rgba(40, 18, 7, 0.8);
+	color: #ffb539;
+}
+
+#Productions #ProductionsBody table #all-search {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	line-height: 18px;
+}
+
+#Productions #ProductionsBody table tr.sorter-header th {
+	position: sticky;
+	top: 0;
+	background-color: rgba(0,0,0, 0.35);
+}
+
+#Productions #ProductionsBody table td.all-products span {
+	display: inline-block;
+	padding: 2px 4px;
+	border-radius: 2px;
+	background-color: rgba(0,0,0, 0.4);
+	margin: 3px 8px 2px 0;
+	white-space: nowrap;
+}
+
+#Productions #ProductionsBody table td.total-products span {
+	display: inline-block;
+	padding: 2px 4px;
+	color: #ffb539;
+	white-space: nowrap;
+}
+
+#Productions #ProductionsBody .tabs ul li:hover {
+	background-position: -167px -765px;
+}
+
+#Productions #ProductionsBody .tabs ul li.active {
+	background-position: -167px -799px;
+}
+
+#Productions #ProductionsBody .tabs ul li a {
+	background: transparent url('../images/productions.png') 0 0 no-repeat;
+}
+#Productions #ProductionsBody .tabs ul li.strategy_points a {
+	background-position: 0 0;
+}
+#Productions #ProductionsBody .tabs ul li.money a {
+	background-position: -26px 0;
+}
+#Productions #ProductionsBody .tabs ul li.supplies a {
+	background-position: -51px 0;
+}
+#Productions #ProductionsBody .tabs ul li.medals a {
+	background-position: -78px 0;
+}
+#Productions #ProductionsBody .tabs ul li.population a {
+	background-position: -183px 0;
+}
+#Productions #ProductionsBody .tabs ul li.happiness a {
+	background-position: -156px 0;
+}
+#Productions #ProductionsBody .tabs ul li.packaging a {
+	background-position: -103px 0;
+}
+#Productions #ProductionsBody .tabs ul li.all a {
+	background-position: -128px 0;
+}

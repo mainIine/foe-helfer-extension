@@ -191,11 +191,13 @@ let i18n = {
 			"FilterAuction" : "Enchères",
 			"FilterLevel" : "Niveau supérieur",
 			"FilterMessage" : "Message",
+			"FilterTrade" : "Commerce",
 			"ResetBox" : "Vider la boîte",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ Punkte points au GEX.",
 				"LevelUp" : "Le __building__ de __player__'s vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__</strong>ème place",
 				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
+				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez __needValue__ __need__ pour __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Niveau __level__"
 			}
 		},
@@ -203,6 +205,9 @@ let i18n = {
 		"Units" : {
 			"Title": "Army overview",
 			"NextUnitsIn": "Les __count__ prochaines unités arriveront dans <span class=\"alca-countdown\"></span> à __harvest__",
+			"ReadyToLoot": "Prêt à récolter!",
+			"Proportionally": "En proportion",
+			"Quantity": "Nombre",
 			"Unit": "Unité",
 			"Status": "Status",
 			"Attack": "Attaque",

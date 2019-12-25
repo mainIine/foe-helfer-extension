@@ -97,13 +97,6 @@ let _menu = {
 		 */
 		hudSlider.append(_menu.Unit_Btn())
 
-
-		/**
-		 * Forum
-		 */
-		hudSlider.append( _menu.Forum_Btn() );
-
-
 		/**
 		 * Live-Chat
 		 */
@@ -126,6 +119,12 @@ let _menu = {
 		 * Einstellungen
 		 */
 		hudSlider.append( _menu.Setting_Btn() );
+
+
+		/**
+		 * Forum
+		 */
+		hudSlider.append( _menu.Forum_Btn() );
 
 
 		/**
