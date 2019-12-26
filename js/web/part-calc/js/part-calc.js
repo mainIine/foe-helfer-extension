@@ -432,8 +432,8 @@ let Parts = {
 	 */
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
-			n = localStorage.getItem('PlayerCopyName'),
-			m = localStorage.getItem('current_player_name'),
+			n = localStorage.getItem(ExtPlayerID+'_PlayerCopyName'),
+			m = localStorage.getItem(ExtPlayerID+'_current_player_name'),
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
@@ -538,7 +538,7 @@ let Parts = {
 			bn = $('#build-name').val(),
 			cs = $('#chain-scheme').val();
 
-		localStorage.setItem('PlayerCopyName', pn);
+		localStorage.setItem(ExtPlayerID+'_PlayerCopyName', pn);
 		localStorage.setItem(Parts.CurrentBuildingID, bn);
 
 		// Schema speichern

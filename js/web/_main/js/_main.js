@@ -1222,7 +1222,7 @@ let MainParser = {
 			key: 'current_player_name',
 			data: d['user_name']
 		});
-		localStorage.setItem('current_player_name', d['user_name']);
+		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
 
 		if(devMode)
 		{
