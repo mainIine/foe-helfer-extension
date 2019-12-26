@@ -19,6 +19,7 @@ let Technologies = {
     SelectedEraID: undefined,
        
     Eras: {
+        NoAge: 0,
         StoneAge: 1,
         BronzeAge: 2,
         IronAge: 3,
@@ -36,7 +37,8 @@ let Technologies = {
         ArcticFuture: 15,
         OceanicFuture: 16,
         VirtualFuture: 17,
-        SpaceAgeMars: 18
+        SpaceAgeMars: 18,
+        SpaceAgeCeres: 19
     },
 
 

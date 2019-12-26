@@ -24,7 +24,9 @@ let Calculator = {
     PlayerName: undefined,
     LastPlayerID: 0,
     PlayInfoSound: null,
-    PlayOverviewInfoSound: null,
+	PlayOverviewInfoSound: null,
+	EnableNewCoreLogic: true,
+	EnableOldCoreLogic: false,
 
 	/**
 	 * Kostenrechner anzeigen
@@ -269,292 +271,430 @@ let Calculator = {
 				'<th>'+ i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
 				'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
 				'<th>'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
-            '</thead>');
+			'</thead>');
 
         let EigenPos,
             EigenBetrag = 0;
 
         // Ränge durchsteppen, Suche nach Eigeneinzahlung
-        for (let i in Rankings)
-        {
+		for (let i = 0; i < Rankings.length;i++) {
             if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) {
                 EigenPos = i;
                 EigenBetrag = EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']);
                 break;
             }
-        }
+		}
 
-		// Ränge nochmals durchsteppen
-        for (let i in Rankings)
-		{
-            if (Rankings.hasOwnProperty(i))
-			{
-				// hier sitzt der LG Besitzer drin oder der User wurde gelöscht
-                if (Rankings[i]['rank'] === undefined || Rankings[i]['rank'] === -1)
-				{
+		if (Calculator.EnableNewCoreLogic) {
+			let States = [],
+				FPNettoRewards = [],
+				FPRewards = [],
+				BPRewards = [],
+				MedalRewards = [],
+				RankCosts = [],
+				Einzahlungen = [],
+				LastRank = 5 - 1;
+
+			for (let i = 0; i < Rankings.length; i++) {
+				let Rank,
+					CurrentFP,
+					TotalFP,
+					RestFP,
+					IsSelf = false;
+
+				if (Rankings[i]['rank'] === undefined || Rankings[i]['rank'] === -1) {
+					continue;
+				}
+				else {
+					Rank = Rankings[i]['rank'] - 1;
+				}
+
+				if (Rank > 5 - 1) {
+					break;
+				}
+
+				States[Rank] = undefined; // NotPossible / EndOfRanks / Self / NegativeProfig / LevelWarning / Profit
+				FPNettoRewards[Rank] = 0;
+				FPRewards[Rank] = 0;
+				BPRewards[Rank] = 0;
+				MedalRewards[Rank] = 0;
+				RankCosts[Rank] = undefined;
+				Einzahlungen[Rank] = 0;
+
+				if (Rankings[i]['reward'] !== undefined) {
+					if (Rankings[i]['reward']['strategy_point_amount'] !== undefined) FPNettoRewards[Rank] = Math.round(Rankings[i]['reward']['strategy_point_amount']);
+					if (Rankings[i]['reward']['blueprints'] !== undefined) BPRewards[Rank] = Math.round(Rankings[i]['reward']['blueprints']);
+					if (Rankings[i]['reward']['resources']['medals'] !== undefined) MedalRewards[Rank] = Math.round(Rankings[i]['reward']['resources']['medals']);
+				}
+
+				FPRewards[Rank] = Math.round(FPNettoRewards[Rank] * arc);
+				BPRewards[Rank] = Math.round(BPRewards[Rank] * arc);
+				MedalRewards[Rank] = Math.round(MedalRewards[Rank] * arc);
+
+				// Bereits vorher Gewinn oder eigene Einzahlung erkannt => Weitere Plätze machen keinen Sinn mehr
+				if (Rank > LastRank) {
+					States[Rank] = 'EndOfRanks';
 					continue;
 				}
 
-                let isSelf = (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer);
+				if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) IsSelf = true;
 
-				// gibt es für diesen Platz FPs zurück?
-                if (Rankings[i]['reward'] === undefined)
-				{
-					h.push('<tr>' +
-                        '<td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
-						'<td colspan="6" class="text-center"><small><em>' + i18n['Boxes']['Calculator']['NoFPorMedsAvailable'] + '</em></small></td>' +
-						'</tr>');
-				}
+				if (Rankings[i]['forge_points'] !== undefined) Einzahlungen[Rank] = Rankings[i]['forge_points'];
 
-				// Belohnung aber keine FP
-                else if (Rankings[i]['reward'] !== undefined && Rankings[i]['reward']['strategy_point_amount'] === undefined) {
+				CurrentFP = UpdateEntity['state']['invested_forge_points'] - EigenBetrag;
+				TotalFP = UpdateEntity['state']['forge_points_for_level_up'];
+				RestFP = TotalFP - CurrentFP;
 
-                    let blp = Rankings[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['blueprints']) * arc) : 0,
-                        med = Rankings[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['resources']['medals']) * arc) : 0,
-                        EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
-						trClass;
+				if (IsSelf) {
+					States[Rank] = 'Self';
+					LastRank = Rank; //Weitere Plätze ignorieren
 
-					// schon besetzt
-                    if (EingezahltAufRang > 0)
-					{
-						trClass = ' class="text-grey"';
-                    }
-
-                    // Schon Einzahlung in höheren Rang vorhanden
-                    else if ((EigenPos !== undefined && i > EigenPos)) {
-                        trClass = ' class="text-grey"';
-                    }
-
-                    h.push('<tr' + trClass + '><td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
-						'<td class="text-center">' +
-							'<strong class="'+ (isSelf ? 'info' : 'success') +'">0</strong>' +
-						'</td>' +
-						'<td class="text-center">' + HTML.Format(blp) + '</td>' +
-						'<td class="text-center">' + HTML.Format(med) + '</td>');
-
-
-                    if (isSelf && Rankings[i]['forge_points'] > 0)
-					{
-                        h.push('<td class="text-center">' + Rankings[i]['forge_points'] + '</td>' +
-							'<td class="text-center"><strong class="info">0</strong></td>' +
-							'<td></td>'
-						);
+					for (let j = i + 1; j < Rankings.length; j++) {
+						//Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
+						if (Rankings[j]['rank'] !== undefined && Rankings[j]['rank'] !== -1 && Rankings[j]['forge_points'] !== undefined) {
+							RankCosts[Rank] = Math.round((Rankings[j]['forge_points'] + RestFP) / 2);
+							break;
+						}
 					}
-
-					else {
-						h.push('<td class="text-center">-</td><td class="text-center">-</td><td>&nbsp;</td>');
-					}
-
-					h.push('</tr>');
+					if (RankCosts[Rank] === undefined) RankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
 				}
-
-				// Platz der FP zurückgibt
 				else {
-                    let // Gesamt LG FP
-                        TotalFP = parseInt(UpdateEntity['state']['forge_points_for_level_up']),
+					RankCosts[Rank] = Math.round((Einzahlungen[Rank] + RestFP) / 2);
 
-						// eingezahlte FP auf dem Rang
-                        EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
-						
-                        // gesamt investierte FPs
-                        GesamtInvesFP = (isNaN(parseInt(UpdateEntity['state']['invested_forge_points']))) ? 0 : parseInt(UpdateEntity['state']['invested_forge_points']) - EigenBetrag,
+					// Platz schon vergeben
+					if (RankCosts[Rank] <= Einzahlungen[Rank]) {
+						RankCosts[Rank] = 0;
+						States[Rank] = 'NotPossible';
+					}
+					else {
+						LastRank = Rank;
 
-                        // restliche freie FP = gesamt LG FPs - bereits gesamt investierte
-                        RestFreieFPAufRang = TotalFP - GesamtInvesFP,
-						
-						// 1/2 des möglichen HalberEinzahlbarerPlatzAufRanges = restliche freie FP - eingezahlte FP auf dem Rang
-						HalberEinzahlbarerPlatzAufRang = Math.round(( RestFreieFPAufRang + EingezahltAufRang ) / 2);
+						if (RankCosts[Rank] === RestFP) {
+							States[Rank] = 'LevelWarning';
+						}
+						else if (FPRewards[Rank] < RankCosts[Rank]) {
+							States[Rank] = 'NegativeProfit';
+						}
+						else {
+							States[Rank] = 'Profit';
+						}
+					}
+				}
+			}
 
-					    // Sonderfall: Absichern des Rangs führt nur zum Gleichstand.
-					    // In diesem Fall wird 1 FP mehr benötigt um den bestehenden Platz zu überholen
-					    if(HalberEinzahlbarerPlatzAufRang === EingezahltAufRang) {
-					    	HalberEinzahlbarerPlatzAufRang++;
-					    }
+			for (let Rank = 0; Rank < 5; Rank++) {
+				let Costs = (States[Rank] === 'Self' ? Einzahlungen[Rank] : RankCosts[Rank]);
+				let Gewinn = FPRewards[Rank] - Costs,
+					Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(Costs / FPNettoRewards[Rank] * 100) : 0);
 
-					let EingezahltAufRang2 = 0;
+				if (States[Rank] === 'NotPossible') {
+					h.push('<tr class="text-grey">');
+				}
+				else if (States[Rank] === 'EndOfRanks') {
+					h.push('<tr class="bg-red">');
+				}
+				else if (States[Rank] === 'Self') {
+					h.push('<tr class="info-row">');
+				}
+				else if (States[Rank] === 'NegativeProfit') {
+					h.push('<tr class="bg-red">');
+				}
+				else if (States[Rank] === 'LevelWarning') {
+					h.push('<tr class="bg-yellow">');
+				}
+				else if (States[Rank] === 'Profit') {
+					h.push('<tr class="bg-green">');
+				}
+				else {
+					h.push('<tr>');
+				}
 
-                    for (let j = +i + 1; j < Rankings.length; j++) {
-                        //Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
-                        if (Rankings[j]['rank'] !== undefined && Rankings[j]['rank'] !== -1) {
-                            EingezahltAufRang2 = (isNaN(parseInt(Rankings[j]['forge_points']))) ? 0 : parseInt(Rankings[j]['forge_points']);
-                            break;
-                        }
-                    }
-                    
-					let // diese FPs gibt es für diesen Rang zurück
-                        NormalRangZurueck = parseInt(Rankings[i]['reward']['strategy_point_amount']),
-						
-						// Blaupausen
-                        blp = Rankings[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['blueprints']) * arc) : 0,
-						
-                        med = Rankings[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['resources']['medals']) * arc) : 0,
-						
-						MaezenRangTotal = Math.round(NormalRangZurueck * arc),
+				h.push('<td class="text-center"><strong>' + (Rank + 1) + '</strong></td>')
+				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > Calculator.AvailableFP ? 'error' : 'success') + '">' + (FPRewards[Rank] > 0 ? HTML.Format(FPRewards[Rank]) : '0') + '</strong></td>');
+				h.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
+				h.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
 
-						zuViel = false;
+				if (States[Rank] === 'Self') {
+					h.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < RankCosts[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(RankCosts[Rank]) + '</td>');
+					h.push('<td class="text-center"><strong class="info">' + HTML.Format(Gewinn) + '</strong></td>');
+					h.push('<td class="text-center"><strong class="info">' + (Kurs > 0 ? HTML.Format(Kurs) + '%' : '-') + '</strong></td>');
+				}
+				else if (States[Rank] === 'NegativeProfit') {
+					h.push('<td class="text-center">' + HTML.Format(RankCosts[Rank]) + '</td>');
+					h.push('<td class="text-center"><strong class="error">' + HTML.Format(Gewinn) + '</strong></td>');
+					h.push('<td class="text-center">-</td>');
+				}
+				else if (States[Rank] === 'LevelWarning') {
+					h.push('<td class="text-center">' + HTML.Format(RankCosts[Rank]) + '</td>');
+					h.push('<td class="text-center"><strong class="warning">' + HTML.Format(Gewinn) + '</strong></td>');
+					h.push('<td class="text-center"><strong class="warning">' + (Kurs > 0 ? HTML.Format(Kurs) + '%' : '-') + '</strong></td>');
+				}
+				else if (States[Rank] === 'Profit') {
+					h.push('<td class="text-center">' + HTML.Format(RankCosts[Rank]) + '</td>');
+					h.push('<td class="text-center"><strong class="success">' + HTML.Format(Gewinn) + '</strong></td>');
+					h.push('<td class="text-center"><strong class="success">' + (Kurs > 0 ? HTML.Format(Kurs) + '%' : '-') + '</strong></td>');
+					Calculator.PlaySound();
+				}
+				else {
+					h.push('<td class="text-center">-</td>');
+					h.push('<td class="text-center">-</td>');
+					h.push('<td class="text-center">-</td>');
+				}
 
+				h.push('</tr>');
+			}
+		}
 
-					let trClass = '';
-
-					/*
-					console.log('Platz: ' + i);
-					console.log('GesamtInvesFP: ', GesamtInvesFP);
-					console.log('HalberEinzahlbarerPlatzAufRang: ', HalberEinzahlbarerPlatzAufRang);
-					console.log('TotalFP: ', TotalFP);
-					console.log('(GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP: ', (GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP);
-					console.log('---------------------------');
-					*/
-
-					if(isSelf) {
-						trClass = ' class="info-row"';
-                    }
-
-                    // Schon Einzahlung in höheren Rang vorhanden
-                    else if ((EigenPos !== undefined && i > EigenPos)) {
-                        trClass = ' class="text-grey"';
-                    }
-
-					// bereits eingezahlt + Mäzen geht genau bis gesamt FP
-					else if( ( (RestFreieFPAufRang - EingezahltAufRang) > (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang) && (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang > 0)) || ((RestFreieFPAufRang / 2) === MaezenRangTotal)) {
-						trClass = ' class="bg-green"';
+		if (Calculator.EnableOldCoreLogic) {
+			// Ränge nochmals durchsteppen
+			for (let i in Rankings) {
+				if (Rankings.hasOwnProperty(i)) {
+					// hier sitzt der LG Besitzer drin oder der User wurde gelöscht
+					if (Rankings[i]['rank'] === undefined || Rankings[i]['rank'] === -1) {
+						continue;
 					}
 
-					// ist mehr offen als Mäzenrang, nicht save
-					else if(TotalFP > (MaezenRangTotal + GesamtInvesFP) && EingezahltAufRang < MaezenRangTotal) {
-						trClass = ' class="bg-red"';
+					let isSelf = (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer);
+
+					// gibt es für diesen Platz FPs zurück?
+					if (Rankings[i]['reward'] === undefined) {
+						h.push('<tr>' +
+							'<td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
+							'<td colspan="6" class="text-center"><small><em>' + i18n['Boxes']['Calculator']['NoFPorMedsAvailable'] + '</em></small></td>' +
+							'</tr>');
 					}
 
-					// ist mehr offen als Mäzenrang, nicht save
-					else if((HalberEinzahlbarerPlatzAufRang < MaezenRangTotal) && (GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP) {
-						trClass = ' class="bg-yellow"';
-					}
+					// Belohnung aber keine FP
+					else if (Rankings[i]['reward'] !== undefined && Rankings[i]['reward']['strategy_point_amount'] === undefined) {
 
-					// kann nicht mehr eingezahlt werden, zu viel || ist schon mit (1,9) belegt oder überzahlt
-					else if((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) > TotalFP || EingezahltAufRang >= MaezenRangTotal) {
-						trClass = ' class="text-grey"';
-						zuViel = true;
-					}
-                    
-					// erste drei Spalten
-                    h.push('<tr' + trClass + '><td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
-						'<td class="text-center">' +
-							'<strong class="' + (MaezenRangTotal > Calculator.AvailableFP ? 'error' : 'success') + '">' +
-								HTML.Format(MaezenRangTotal) +
-							'</strong>' +
-						'</td>' +
-						'<td class="text-center' + (MaezenRangTotal > Calculator.AvailableFP ? ' error' : '') + '">' + HTML.Format(blp) + '</td>' +
-						'<td class="text-center' + (MaezenRangTotal > Calculator.AvailableFP ? ' error' : '') + '">' + HTML.Format(med) + '</td>');
+						let blp = Rankings[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['blueprints']) * arc) : 0,
+							med = Rankings[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['resources']['medals']) * arc) : 0,
+							EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
+							trClass;
+
+						// schon besetzt
+						if (EingezahltAufRang > 0) {
+							trClass = ' class="text-grey"';
+						}
+
+						// Schon Einzahlung in höheren Rang vorhanden
+						else if ((EigenPos !== undefined && i > EigenPos)) {
+							trClass = ' class="text-grey"';
+						}
+
+						h.push('<tr' + trClass + '><td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
+							'<td class="text-center">' +
+							'<strong class="' + (isSelf ? 'info' : 'success') + '">0</strong>' +
+							'</td>' +
+							'<td class="text-center">' + HTML.Format(blp) + '</td>' +
+							'<td class="text-center">' + HTML.Format(med) + '</td>');
 
 
-					// letzte beiden Spalten
-					// Spieler selbst
-					if(isSelf)
-					{
-						let ZielEinzahlung = Math.round((RestFreieFPAufRang + EingezahltAufRang2) / 2);
-						let Kurs = Math.round(EingezahltAufRang * 100 / NormalRangZurueck);
-
-						if (EingezahltAufRang === MaezenRangTotal)
-						{
-							h.push(
-								'<td class="text-center">' + HTML.Format(EingezahltAufRang) + '/' + HTML.Format(Math.ceil(ZielEinzahlung)) + '</td>' +
-								'<td class="text-center"><strong>0</strong></td>' +
-								'<td class="text-center"><strong>' + HTML.Format(Kurs) + '%</strong></td>'
+						if (isSelf && Rankings[i]['forge_points'] > 0) {
+							h.push('<td class="text-center">' + Rankings[i]['forge_points'] + '</td>' +
+								'<td class="text-center"><strong class="info">0</strong></td>' +
+								'<td></td>'
 							);
 						}
-						else if (EingezahltAufRang > 0)
-						{
-							h.push('<td class="text-center">' + HTML.Format(EingezahltAufRang) + '/' + HTML.Format(Math.ceil(ZielEinzahlung)) + '</td>');
 
-							let w = (MaezenRangTotal - EingezahltAufRang);
-							h.push('<td class="text-center"><strong>' + (w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
-							h.push('<td class="text-center"><strong>' + HTML.Format(Kurs) + '%</strong></td>');
+						else {
+							h.push('<td class="text-center">-</td><td class="text-center">-</td><td>&nbsp;</td>');
 						}
-						else
-						{
-							h.push('<td class="text-center">-</td>');
-							h.push('<td class="text-center">-</td>');
-							h.push('<td class="text-center">' + HTML.Format(Kurs) + '%</td>');
-						}
+
+						h.push('</tr>');
 					}
 
-					// andere Spieler oder leer
+					// Platz der FP zurückgibt
 					else {
+						let // Gesamt LG FP
+							TotalFP = parseInt(UpdateEntity['state']['forge_points_for_level_up']),
 
-						let Kurs = Math.round((HalberEinzahlbarerPlatzAufRang * 100 / NormalRangZurueck));
+							// eingezahlte FP auf dem Rang
+							EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']),
 
-						// geht genau auf
-						if(MaezenRangTotal - HalberEinzahlbarerPlatzAufRang === 1){
-							h.push('<td class="text-center" data-case="1">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td><td class="text-center"><strong class="success">1</strong></td>');
+							// gesamt investierte FPs
+							GesamtInvesFP = (isNaN(parseInt(UpdateEntity['state']['invested_forge_points']))) ? 0 : parseInt(UpdateEntity['state']['invested_forge_points']) - EigenBetrag,
 
-							h.push('<td class="text-center">' + HTML.Format(Kurs) + '%</td>');
-							if (zuViel === false) {
-								BestKurs = Math.min(BestKurs, Kurs);
+							// restliche freie FP = gesamt LG FPs - bereits gesamt investierte
+							RestFreieFPAufRang = TotalFP - GesamtInvesFP,
+
+							// 1/2 des möglichen HalberEinzahlbarerPlatzAufRanges = restliche freie FP - eingezahlte FP auf dem Rang
+							HalberEinzahlbarerPlatzAufRang = Math.round((RestFreieFPAufRang + EingezahltAufRang) / 2);
+
+						// Sonderfall: Absichern des Rangs führt nur zum Gleichstand.
+						// In diesem Fall wird 1 FP mehr benötigt um den bestehenden Platz zu überholen
+						if (HalberEinzahlbarerPlatzAufRang === EingezahltAufRang) {
+							HalberEinzahlbarerPlatzAufRang++;
+						}
+
+						let EingezahltAufRang2 = 0;
+
+						for (let j = +i + 1; j < Rankings.length; j++) {
+							//Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
+							if (Rankings[j]['rank'] !== undefined && Rankings[j]['rank'] !== -1) {
+								EingezahltAufRang2 = (isNaN(parseInt(Rankings[j]['forge_points']))) ? 0 : parseInt(Rankings[j]['forge_points']);
+								break;
 							}
 						}
 
-						else if(EingezahltAufRang >= MaezenRangTotal || (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang) < 1) {
+						let // diese FPs gibt es für diesen Rang zurück
+							NormalRangZurueck = parseInt(Rankings[i]['reward']['strategy_point_amount']),
 
-							let v = '-';
+							// Blaupausen
+							blp = Rankings[i]['reward']['blueprints'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['blueprints']) * arc) : 0,
 
-							// negativ auch ausgeben?
-							if(Settings.GetSetting('CalculatorShowNegativ')){
-								let w = (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang);
-								v = '<strong class="' + (w > 0 ? 'success' : 'error') + '">' + HTML.Format(w) + '</strong>';
-							}
+							med = Rankings[i]['reward']['resources']['medals'] !== undefined ? Math.round(parseInt(Rankings[i]['reward']['resources']['medals']) * arc) : 0,
 
-							h.push('<td class="text-center">-</td><td class="text-center">' + v + '</td><td>&nbsp;</td>');
+							MaezenRangTotal = Math.round(NormalRangZurueck * arc),
 
-							if(zuViel === false) {
-								BestKurs = Math.min(BestKurs, Kurs);
-							}
+							zuViel = false;
+
+
+						let trClass = '';
+
+						if (isSelf) {
+							trClass = ' class="info-row"';
 						}
 
-						else if(HalberEinzahlbarerPlatzAufRang > 0 && zuViel === false) {
-							h.push('<td class="text-center" data-case="2">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td>');
+						// Schon Einzahlung in höheren Rang vorhanden
+						else if ((EigenPos !== undefined && i > EigenPos)) {
+							trClass = ' class="text-grey"';
+						}
 
-							let w = (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang);
+						// bereits eingezahlt + Mäzen geht genau bis gesamt FP
+						else if (((RestFreieFPAufRang - EingezahltAufRang) > (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang) && (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang > 0)) || ((RestFreieFPAufRang / 2) === MaezenRangTotal)) {
+							trClass = ' class="bg-green"';
+						}
 
-							// würde leveln
-							if((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP)
-							{
-								h.push('<td class="text-center" data-case="3"><abbr><strong class="warning" title="ACHTUNG! Levelt das LG!">' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></abbr></td>');
+						// ist mehr offen als Mäzenrang, nicht save
+						else if (TotalFP > (MaezenRangTotal + GesamtInvesFP) && EingezahltAufRang < MaezenRangTotal) {
+							trClass = ' class="bg-red"';
+						}
 
+						// ist mehr offen als Mäzenrang, nicht save
+						else if ((HalberEinzahlbarerPlatzAufRang < MaezenRangTotal) && (GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP) {
+							trClass = ' class="bg-yellow"';
+						}
+
+						// kann nicht mehr eingezahlt werden, zu viel || ist schon mit (1,9) belegt oder überzahlt
+						else if ((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) > TotalFP || EingezahltAufRang >= MaezenRangTotal) {
+							trClass = ' class="text-grey"';
+							zuViel = true;
+						}
+
+						// erste drei Spalten
+						h.push('<tr' + trClass + '><td><strong>' + Rankings[i]['rank'] + '</strong></td>' +
+							'<td class="text-center">' +
+							'<strong class="' + (MaezenRangTotal > Calculator.AvailableFP ? 'error' : 'success') + '">' +
+							HTML.Format(MaezenRangTotal) +
+							'</strong>' +
+							'</td>' +
+							'<td class="text-center' + (MaezenRangTotal > Calculator.AvailableFP ? ' error' : '') + '">' + HTML.Format(blp) + '</td>' +
+							'<td class="text-center' + (MaezenRangTotal > Calculator.AvailableFP ? ' error' : '') + '">' + HTML.Format(med) + '</td>');
+
+
+						// letzte beiden Spalten
+						// Spieler selbst
+						if (isSelf) {
+							let ZielEinzahlung = Math.round((RestFreieFPAufRang + EingezahltAufRang2) / 2);
+							let Kurs = Math.round(EingezahltAufRang * 100 / NormalRangZurueck);
+
+							if (EingezahltAufRang === MaezenRangTotal) {
+								h.push(
+									'<td class="text-center">' + HTML.Format(EingezahltAufRang) + '/' + HTML.Format(Math.ceil(ZielEinzahlung)) + '</td>' +
+									'<td class="text-center"><strong>0</strong></td>' +
+									'<td class="text-center"><strong>' + HTML.Format(Kurs) + '%</strong></td>'
+								);
+							}
+							else if (EingezahltAufRang > 0) {
+								h.push('<td class="text-center">' + HTML.Format(EingezahltAufRang) + '/' + HTML.Format(Math.ceil(ZielEinzahlung)) + '</td>');
+
+								let w = (MaezenRangTotal - EingezahltAufRang);
+								h.push('<td class="text-center"><strong>' + (w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
 								h.push('<td class="text-center"><strong>' + HTML.Format(Kurs) + '%</strong></td>');
-
-								BestKurs = Math.min(BestKurs, Kurs);
-
-								if (w >= 0)
-								{
-									h.push( Calculator.PlaySound() );
-								}
 							}
 							else {
-								h.push('<td class="text-center" data-case="4"><strong class="success">' + ( w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
-
+								h.push('<td class="text-center">-</td>');
+								h.push('<td class="text-center">-</td>');
 								h.push('<td class="text-center">' + HTML.Format(Kurs) + '%</td>');
-								BestKurs = Math.min(BestKurs, Kurs);
-
-								if (w >= 0)
-								{
-									h.push( Calculator.PlaySound() );
-								}
 							}
 						}
 
-						// letzte beiden leer
+						// andere Spieler oder leer
 						else {
-							h.push('<td class="text-center" data-case="5">-</td>');
-							h.push('<td class="text-center">-</td><td>&nbsp;</td>');
+
+							let Kurs = Math.round((HalberEinzahlbarerPlatzAufRang * 100 / NormalRangZurueck));
+
+							// geht genau auf
+							if (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang === 1) {
+								h.push('<td class="text-center" data-case="1">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td><td class="text-center"><strong class="success">1</strong></td>');
+
+								h.push('<td class="text-center">' + HTML.Format(Kurs) + '%</td>');
+								if (zuViel === false) {
+									BestKurs = Math.min(BestKurs, Kurs);
+								}
+							}
+
+							else if (EingezahltAufRang >= MaezenRangTotal || (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang) < 1) {
+
+								let v = '-';
+
+								// negativ auch ausgeben?
+								if (Settings.GetSetting('CalculatorShowNegativ')) {
+									let w = (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang);
+									v = '<strong class="' + (w > 0 ? 'success' : 'error') + '">' + HTML.Format(w) + '</strong>';
+								}
+
+								h.push('<td class="text-center">-</td><td class="text-center">' + v + '</td><td>&nbsp;</td>');
+
+								if (zuViel === false) {
+									BestKurs = Math.min(BestKurs, Kurs);
+								}
+							}
+
+							else if (HalberEinzahlbarerPlatzAufRang > 0 && zuViel === false) {
+								h.push('<td class="text-center" data-case="2">' + HTML.Format(HalberEinzahlbarerPlatzAufRang) + '</td>');
+
+								let w = (MaezenRangTotal - HalberEinzahlbarerPlatzAufRang);
+
+								// würde leveln
+								if ((GesamtInvesFP + HalberEinzahlbarerPlatzAufRang) === TotalFP) {
+									h.push('<td class="text-center" data-case="3"><abbr><strong class="warning" title="ACHTUNG! Levelt das LG!">' + (w === 0 ? '0' : HTML.Format(w)) + '</strong></abbr></td>');
+
+									h.push('<td class="text-center"><strong>' + HTML.Format(Kurs) + '%</strong></td>');
+
+									BestKurs = Math.min(BestKurs, Kurs);
+
+									if (w >= 0) {
+										h.push(Calculator.PlaySound());
+									}
+								}
+								else {
+									h.push('<td class="text-center" data-case="4"><strong class="success">' + (w === 0 ? '0' : HTML.Format(w)) + '</strong></td>');
+
+									h.push('<td class="text-center">' + HTML.Format(Kurs) + '%</td>');
+									BestKurs = Math.min(BestKurs, Kurs);
+
+									if (w >= 0) {
+										h.push(Calculator.PlaySound());
+									}
+								}
+							}
+
+							// letzte beiden leer
+							else {
+								h.push('<td class="text-center" data-case="5">-</td>');
+								h.push('<td class="text-center">-</td><td>&nbsp;</td>');
+							}
 						}
+
+						h.push('</tr>');
 					}
 
-					h.push('</tr>');
-				}
-
-				// nach dem Platz 5 raus...
-                if (Rankings[i]['rank'] === 5)
-				{
-					break;
+					// nach dem Platz 5 raus...
+					if (Rankings[i]['rank'] === 5) {
+						break;
+					}
 				}
 			}
 		}
