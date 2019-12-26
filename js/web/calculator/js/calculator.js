@@ -1,4 +1,5 @@
 /*
+ * 
  * **************************************************************************************
  *
  * Dateiname:                 calculator.js
@@ -400,7 +401,7 @@ let Calculator = {
 					h.push('<tr class="bg-red">');
 				}
 				else if (States[Rank] === 'LevelWarning') {
-					h.push('<tr class="bg-yellow">');
+					h.push('<tr class="bg-yellow" title="' + i18n['Boxes']['Calculator']['LevelWarning'] + '">');
 				}
 				else if (States[Rank] === 'Profit') {
 					h.push('<tr class="bg-green">');
@@ -426,6 +427,7 @@ let Calculator = {
 				}
 				else if (States[Rank] === 'LevelWarning') {
 					h.push('<td class="text-center">' + HTML.Format(RankCosts[Rank]) + '</td>');
+					//h.push('<td class="text-center"><strong class="warning">' + HTML.Format(Gewinn) + '</strong></td>');
 					h.push('<td class="text-center"><strong class="warning">' + HTML.Format(Gewinn) + '</strong></td>');
 					h.push('<td class="text-center"><strong class="warning">' + (Kurs > 0 ? HTML.Format(Kurs) + '%' : '-') + '</strong></td>');
 				}

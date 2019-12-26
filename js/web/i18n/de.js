@@ -58,6 +58,7 @@ let i18n = {
 			"Save": "Save",
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
+			"LevelWarning": "ACHTUNG! Levelt das LG!",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
 			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",

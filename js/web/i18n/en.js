@@ -58,6 +58,7 @@ let i18n = {
 			"Save": "Save",
 			"Commitment": "Commitment",
 			"Profit": "Profit",
+			"LevelWarning": "ATTENTION! Leveling the GB!",
 			"NoFPorMedsAvailable": "No FPs or BPs available",
 			"LGNotOpen": "The next level is currently not unlocked",
 			"LGNotConnected": "The building is not connected to a street",
