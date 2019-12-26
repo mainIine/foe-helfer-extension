@@ -57,7 +57,8 @@ let i18n = {
 			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
-            "Profit": "Profit",
+			"Profit": "Profit",
+			"LevelWarning": "ATTENTION: nivelez le bâtiment légendaire!", //Todo: Translate
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",

@@ -58,6 +58,7 @@ let i18n = {
 			"Save": "Guardar",
 			"Commitment": "Contribucion",
 			"Profit": "Ganancia",
+			"LevelWarning": "ATENCIÓN: nivela el legendario edificio!", //Todo: Translate
 			"NoFPorMedsAvailable": "No hay FP o planos disponibles",
 			"LGNotOpen": "El proximo nivel no esta disponible todavia",
 			"LGNotConnected": "El edificio no esta conectado a una carretera",
