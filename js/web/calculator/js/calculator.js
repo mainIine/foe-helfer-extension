@@ -25,8 +25,8 @@ let Calculator = {
     LastPlayerID: 0,
     PlayInfoSound: null,
 	PlayOverviewInfoSound: null,
-	EnableNewCoreLogic: true,
-	EnableOldCoreLogic: false,
+	EnableNewCoreLogic: false,
+	EnableOldCoreLogic: true,
 
 	/**
 	 * Kostenrechner anzeigen
