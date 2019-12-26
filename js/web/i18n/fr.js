@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
             "OwnPartRemaining": "Remaining",
-            "Done": "Fini",
+			"Done": "Fini",
+			"BPs": "Plan", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
+			"Ext": "Ext", //Todo: Translate
+			"Arc": "Arche", //Todo: Translate
 			"Order": "Séquence",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
