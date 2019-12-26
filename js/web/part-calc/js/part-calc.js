@@ -313,10 +313,10 @@ let Parts = {
         h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Order'] + '</td>');
         h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Deposit'] + '</td>');
         h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Done'] + '</td>');
-        h.push('<td class="text-center">BPs</td>');
-        h.push('<td class="text-center">Meds</td>');
-        h.push('<td class="text-center">Ext.</td>');
-        h.push('<td class="text-center">Ark</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['BPs'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Meds'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Ext'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Arc'] + '</td>');
         h.push('</tr>');
 
         for (let i = 0; i < 5; i++) {

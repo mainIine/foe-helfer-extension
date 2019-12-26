@@ -88,63 +88,61 @@ let Negotiation = {
 
         if (Negotiation.CurrentTable !== undefined) {
             h.push('<tbody>');
-            
+
             h.push('<tr>');
             h.push('<td colspan="4" class="text-warning"><strong>' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
-			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
+            h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
             h.push('</tr>');
 
             h.push('<tr>');
 
             h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Average'] + '</td>');
 
-			h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
+            h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
 
-            for (let i = 0; i < Negotiation.GoodCount; i++)
-            {
+            for (let i = 0; i < Negotiation.GoodCount; i++) {
 
                 let GoodName = Negotiation.Goods[i],
-					GoodAmount = Negotiation.GoodAmounts[GoodName],
-					extraGood = (GoodName === 'money' || GoodName === 'supplies' || GoodName === 'medals') ? ' goods-sprite-extra ' : '',
-					Stock = ResourceStock[GoodName],
-					TextClass;
+                    GoodAmount = Negotiation.GoodAmounts[GoodName],
+                    extraGood = (GoodName === 'money' || GoodName === 'supplies' || GoodName === 'medals') ? ' goods-sprite-extra ' : '',
+                    Stock = ResourceStock[GoodName],
+                    TextClass;
 
-				GoodAmount *= Negotiation.CurrentTable['go'][i];
+                GoodAmount *= Negotiation.CurrentTable['go'][i];
 
-				if (Stock === undefined)
-					Stock = 0;
+                if (Stock === undefined)
+                    Stock = 0;
 
-				if (Stock < GoodAmount) {
-					TextClass = 'error';
-					StockState = Math.max(StockState, 2);
-				}
-				else if (Stock < 5 * Negotiation.GoodAmounts[GoodName]){
-					TextClass = 'warning';
-					StockState = Math.max(StockState, 1);
-				}
-				else {
-					TextClass = 'success';
-				}
+                if (Stock < GoodAmount) {
+                    TextClass = 'error';
+                    StockState = Math.max(StockState, 2);
+                }
+                else if (Stock < 5 * Negotiation.GoodAmounts[GoodName]) {
+                    TextClass = 'warning';
+                    StockState = Math.max(StockState, 1);
+                }
+                else {
+                    TextClass = 'success';
+                }
 
-				if (Negotiation.Goods[i] === 'money' || Negotiation.Goods[i] === 'supplies' || Negotiation.Goods[i] === 'medals') {
-					GoodAmount = Math.round(GoodAmount);
-				}
-				else {
-					GoodAmount = Math.round(GoodAmount * 10) / 10;
-				}
+                if (Negotiation.Goods[i] === 'money' || Negotiation.Goods[i] === 'supplies' || Negotiation.Goods[i] === 'medals') {
+                    GoodAmount = Math.round(GoodAmount);
+                }
+                else {
+                    GoodAmount = Math.round(GoodAmount * 10) / 10;
+                }
 
                 h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n['Boxes']['Negotiation']['Stock'] + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
-						'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
-						'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
-					'</div>');
+                    '<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
+                    '<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
+                    '</div>');
             }
 
             h.push('</div></td>');
 
             h.push('</tr>');
 
-            if (Negotiation.CurrentTry === 1)
-            {
+            if (Negotiation.CurrentTry === 1) {
                 h.push('<tr>');
                 h.push('<td colspan="5" class="text-center"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
                 h.push('</tr>');
@@ -152,8 +150,11 @@ let Negotiation = {
 
             h.push('</tbody>');
         }
-
-
+        else if (Negotiation.CurrentTable === undefined && Negotiation.CurrentTry === 1){
+            Negotiation.MessageClass = 'danger';
+            Negotiation.Message = 'ERROR: Could not load negotation table'; //Todo: Translate
+        }
+        
         h.push('<tbody>');
         h.push('<tr class="thead">');
 
@@ -221,7 +222,7 @@ let Negotiation = {
 				container: '#negotiationBox'
 			});
 
-        	if(Negotiation.CurrentTry === 1){
+            if (Negotiation.CurrentTable !== undefined && Negotiation.CurrentTry === 1){
 				new Sortable(document.getElementById('good-sort'), {
 					animation: 150,
 					ghostClass: 'good-drag',
@@ -443,6 +444,9 @@ let Negotiation = {
             let EraID = Technologies.Eras[Era];
             if (EraID === undefined) EraID = 20;
 
+            if (Era === 'SpaceAgeMars') { //Marsgüter mit arkt. Gütern gleich setzen
+                EraID -= 3;
+            }
             Value = EraID * 100;
 
             let Stock = ResourceStock[GoodName];
@@ -471,7 +475,7 @@ let Negotiation = {
 		// gibt es noch nicht, laden
     	if( Negotiation.Tables[TableName] === undefined ){
 
-			let url = 'chrome-extension://' + extID + '/js/web/negotiation/js/negotiationtables/';
+			let url = 'chrome-extension://' + extID + '/js/web/negotiation/tables/';
 
     		MainParser.loadJSON(url + TableName + '.json', function(response){
 				Negotiation.Tables[TableName] = JSON.parse(response);
