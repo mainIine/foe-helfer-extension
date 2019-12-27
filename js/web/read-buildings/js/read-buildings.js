@@ -107,6 +107,9 @@ let Reader = {
 				'dragdrop': true,
 				'minimize': true
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('read-buildings');
 		}
 
 		let div = $('#ResultBox'),
@@ -203,6 +206,7 @@ let Reader = {
 		}, 200);
 	}
 };
+
 
 /**
  *

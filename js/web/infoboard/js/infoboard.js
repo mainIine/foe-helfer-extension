@@ -87,16 +87,17 @@ let Infoboard = {
 				Infoboard.PlayInfoSound = (spk !== 'deactivated');
 			}
 
-			let args = {
+			HTML.Box({
 				'id': 'BackgroundInfo',
 				'title': i18n['Menu']['Info']['Title'],
 				'auto_close': true,
 				'dragdrop': true,
 				'resize': true,
 				'speaker': 'infoboxTone'
-			};
+			});
 
-			HTML.Box(args);
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('infoboard');
 		}
 
 		let div = $('#BackgroundInfo'),
@@ -327,6 +328,8 @@ let Info = {
 				)
 		};
 	},
+
+
 	/**
 	 * Handel wurde angenommen
 	 *
@@ -350,6 +353,7 @@ let Info = {
 			)
 		}
 	},
+
 
 	/**
 	 *

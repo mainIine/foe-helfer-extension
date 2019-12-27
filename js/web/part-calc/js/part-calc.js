@@ -50,6 +50,9 @@ let Parts = {
 			'minimize': true
 		});
 
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('part-calc');
+
 		// Body zusammen fummeln
 		Parts.BoxBody();
 
