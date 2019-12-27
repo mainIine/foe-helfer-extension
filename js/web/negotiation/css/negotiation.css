@@ -1,0 +1,122 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 negotiation.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              27.12.19, 12:32 Uhr
+ * zuletzt bearbeitet:       27.12.19, 12:32 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#negotiationBox {
+	top: 15%;
+	left: 50%;
+	width: 790px;
+	transform: translateX(-50%);
+}
+#negotiationBox #negotiationBoxBody #good-sort {
+	display: flex;
+	margin-right: 15px;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good {
+	text-align: center;
+	width: 4em;
+	padding: 2px;
+	border-radius: 3px;
+}
+
+#negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
+	background-color: rgba(255,255,255, 0.33);
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good-drag {
+	opacity: 0.5;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good span {
+	display: inline-block;
+}
+
+#negotiationBox #negotiationBoxBody p {
+	margin-top: 10px;
+	font-size: 140%;
+}
+
+#negotiationBox #negotiationBoxBody tr.total-row td {
+	border-top: 2px solid #efcf9a;
+	font-weight: 700;
+}
+
+#negotiationBox #negotiationBoxBody tr.resource-row td {
+	color: #FFB539;
+	font-weight: 700;
+}
+
+#negotiationBox #negotiationBoxBody tr.goods-opacity td {
+	opacity: .4;
+}
+
+#negotiationBox #negotiationBoxBody .text-danger {
+	color: #ef1616;
+	font-weight: 700;
+}
+
+#negotiationBox #negotiationBoxBody .text-success {
+	color: #29b206;
+	font-weight: 700;
+}
+
+#negotiationBox #negotiationBoxBody td.success {
+	color: #29b206;
+}
+
+#negotiationBox #negotiationBoxBody td.warning {
+	color: #FF6000;
+}
+
+#negotiationBox #negotiationBoxBody td.error {
+	color: #ef1616;
+}
+
+#negotiationBox #negotiationBoxBody .text-muted {
+	color: #8a8a8a;
+}
+
+#negotiationBox #negotiationBoxBody td {
+	position: relative;
+}
+
+#negotiationBox #negotiationBoxBody .diplomacy-ask {
+	font-weight: 700;
+	display: inline-block;
+	margin-left: 6px;
+	background: #2196f3;
+	padding: 0 4px;
+	border-radius: 50%;
+	width: 10px;
+	line-height: 1.3em;
+	z-index: 1;
+}
+
+#negotiationBox #negotiationBoxBody .diplomacy-tip {
+	position: absolute;
+	white-space: nowrap;
+	text-align: left;
+	background: rgba(0,0,0, 0.7);
+	padding: 5px;
+	right: 6px;
+	top: 25px;
+	z-index: 1;
+	display: none;
+}
+
+#negotiationBox #negotiationBoxBody .diplomacy-ask:hover .diplomacy-tip {
+	display: block;
+}

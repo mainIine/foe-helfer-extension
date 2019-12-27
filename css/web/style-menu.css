@@ -75,10 +75,10 @@ input[type=number]::-webkit-outer-spin-button {
 	padding: 0.2rem 1rem;
 	font-size: 0.8rem;
 	line-height: 1.5;
-	background: rgb(228,193,75);
-	background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
-	background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-	background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	background: rgb(183,112,55);
+	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
+	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	border: #000 1px solid;
 	border-radius: 4px;
 	color: #F3D6A0;
@@ -89,10 +89,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 .btn-default:hover,
 .btn-default-active {
-	background: rgb(183,112,55);
-	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
-	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	background: rgb(228,193,75);
+	background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
+	background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 }
 

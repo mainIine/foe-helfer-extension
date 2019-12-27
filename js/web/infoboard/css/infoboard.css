@@ -1,0 +1,55 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 infoboard.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              27.12.19, 12:11 Uhr
+ * zuletzt bearbeitet:       27.12.19, 12:11 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#BackgroundInfo {
+	top: 20%;
+	right: 30px;
+	width: 560px;
+	padding: 2px;
+}
+
+#BackgroundInfo #BackgroundInfoBody {
+	overflow: auto;
+	max-height: 350px;
+}
+
+#BackgroundInfo #BackgroundInfoBody strong {
+	color: #ffb539;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row {
+	line-height: 1rem;
+	display: flex;
+	align-items: center;
+	background-color: rgba(0,0,0, 0.5);
+	position: sticky;
+	top: 0;
+	padding: 5px;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row span {
+	display: inline-block;
+	margin-right: 15px;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row span input {
+	position: relative;
+	margin: 0;
+	top: 2px;
+}
+
+#BackgroundInfo #BackgroundInfoBody .filter-row .btn-reset-box {
+	margin-left: auto;
+}

@@ -53,11 +53,7 @@ let Tavern = {
 		localStorage.setItem('TavernBoostExpire', d['expireTime']);
 
 		if (Settings.GetSetting('ShowTavernBadge')) {
-			Tavern.BuildBox();
-
-			setTimeout(() => {
-				Tavern.BoosterCountDown(moment.unix(d['expireTime']));
-			}, 200);
+			Tavern.BuildBox(d);
 		}
 	},
 
@@ -95,11 +91,16 @@ let Tavern = {
 	/**
 	 * Setzt das Overlay-Badge zusammen
 	 *
+	 * @param d
 	 * @constructor
 	 */
-	BuildBox: ()=> {
+	BuildBox: (d)=> {
 
 		if( $('#tavern-boost').length === 0 ){
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('tavern');
+
 			let tb = $('<div />').attr('id', 'tavern-boost').addClass('cursor-default'),
 				cords = localStorage.getItem( 'tavern-boostCords');
 
@@ -114,7 +115,9 @@ let Tavern = {
 				'<span id="Booster-Timer-secs">00s</span>' +
 				'</span>';
 
-			$('body').append(tb.append(sp));
+			$('body').append(tb.append(sp)).promise().done(function(){
+				Tavern.BoosterCountDown(moment.unix(d['expireTime']));
+			});
 		}
 	},
 
