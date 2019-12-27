@@ -109,7 +109,7 @@ let Productions = {
 	 *
 	 * @constructor
 	 */
-	ReadData: ()=>{
+	ReadData: ()=> {
 
 		let d = Productions.entities;
 		Productions.BuildingsAll = [];
@@ -376,7 +376,7 @@ let Productions = {
 	/**
 	 * HTML Box erstellen und einblenden
 	 */
-	showBox: ()=>{
+	showBox: ()=> {
 
 		String.prototype.cleanup = function() {
 			return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
@@ -707,7 +707,7 @@ let Productions = {
 	 * @param id
 	 * @constructor
 	 */
-	SetTabs: (id)=>{
+	SetTabs: (id)=> {
 		Productions.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
 	},
 
@@ -730,7 +730,7 @@ let Productions = {
 	 * @param content
 	 * @constructor
 	 */
-	SetTabContent: (id, content)=>{
+	SetTabContent: (id, content)=> {
 		Productions.TabsContent.push('<div id="' + id + '">' + content + '</div>');
 	},
 
@@ -963,7 +963,14 @@ let Productions = {
 	},
 
 
-	GetGoodName: (GoodType) => {
+	/**
+	 * Namen der Güter ermitteln
+	 *
+	 * @param GoodType
+	 * @returns {*|string}
+	 * @constructor
+	 */
+	GetGoodName: (GoodType)=> {
 		if (GoodType === 'happiness') {
 			return i18n['Boxes']['Productions']['Happiness'];
 		}
