@@ -538,7 +538,7 @@ const FoEproxy = (function () {
 		}
 
 		//Fremdes LG
-		if (UpdateEntity.responseData[0].player_id !== ExtPlayerID && !IsPreviousLevel) {
+		if (UpdateEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
 			LastKostenrechnerOpenTime = new Date().getTime()
 
 			$('#calcFPs').removeClass('hud-btn-red');
