@@ -588,26 +588,6 @@ const FoEproxy = (function () {
 			Reader.OtherPlayersBuildings(data.responseData);
 		}
 	});
-	
-	
-	// --------------------------------------------------------------------------------------------------
-	// Verarbeiter für Außenposten daten:
-	
-	// Alle Typen der Außenposten "notieren"
-	FoEproxy.addHandler('OutpostService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.GetAll(data.responseData);
-	});
-
-	// Gebäude des Außenpostens sichern
-	FoEproxy.addHandler('AdvancementService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.SaveBuildings(data.responseData);
-	});
 
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
