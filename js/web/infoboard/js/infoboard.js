@@ -22,6 +22,10 @@ FoEproxy.addHandler('ConversationService', 'getTeasers', (data, postData) => {
 	MainParser.setConversations(data.responseData);
 });
 
+FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
+	MainParser.setConversations(data.responseData);
+});
+
 let Infoboard = {
 
 	InjectionLoaded: false,
@@ -37,8 +41,8 @@ let Infoboard = {
 		let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
 		// wenn noch nichts drin , aber im LocalStorage vorhanden, laden
-		if(Conversations.length === 0 && StorageHeader !== null){
-			Conversations = JSON.parse(StorageHeader);
+		if(MainParser.Conversations.length === 0 && StorageHeader !== null){
+			MainParser.Conversations = JSON.parse(StorageHeader);
 		}
 
 		Infoboard.Box();
@@ -397,8 +401,8 @@ let Info = {
 	 * @constructor
 	 */
 	GetConversationHeader: (id, name)=> {
-		if(Conversations.length > 0){
-			let header = Conversations.find(obj => (obj['id'] === id));
+		if(MainParser.Conversations.length > 0){
+			let header = MainParser.Conversations.find(obj => (obj['id'] === id));
 
 			if(header !== undefined){
 				return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
