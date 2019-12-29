@@ -21,7 +21,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
     CurrentEraID = null,
     BuildingNamesi18n = false,
 	CityMapData = null,
-    Conversations = [],
     GoodsData = [],
     GoodsList = [],
     ResourceStock = [],
@@ -777,7 +776,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -790,6 +789,7 @@ let MainParser = {
 	BonusService: null,
 	EmissaryService: null,
 	PlayerPortraits: null,
+	Conversations: [],
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -1513,30 +1513,40 @@ let MainParser = {
 		let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
 		// wenn noch nichts drin , aber im LocalStorage vorhanden, laden
-		if(Conversations.length === 0 && StorageHeader !== null){
-			Conversations = JSON.parse(StorageHeader);
+		if(MainParser.Conversations.length === 0 && StorageHeader !== null){
+			MainParser.Conversations = JSON.parse(StorageHeader);
 		}
 
 		// GildenChat
-		if(d['clanTeaser'] !== undefined && Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
-			Conversations.push({
+		if(d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
+			MainParser.Conversations.push({
 				id: d['clanTeaser']['id'],
 				title: d['clanTeaser']['title']
 			});
 		}
 
+		//
 		if(d['teasers'] !== undefined){
 			// die anderen Chats
 			for(let k in d['teasers']){
 
-				if(d['teasers'].hasOwnProperty(k)){
+				if(!d['teasers'].hasOwnProperty(k)){
+					break;
+				}
 
-					if(Conversations.filter((obj)=> (obj.id === d['teasers'][k]['id'])).length === 0){
-						Conversations.push({
-							id: d['teasers'][k]['id'],
-							title: d['teasers'][k]['title']
-						});
-					}
+				// prüfen ob es zur ID einen key gibt
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
+
+				// Konversation gibt es schon
+				if(key !== undefined){
+					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+				}
+				// ... gibt es noch nicht
+				else {
+					MainParser.Conversations.push({
+						id: d['teasers'][k]['id'],
+						title: d['teasers'][k]['title']
+					});
 				}
 			}
 		}
@@ -1544,19 +1554,29 @@ let MainParser = {
 		if(d[0] !== undefined && d[0].length > 0){
 
 			for(let k in d){
-				if(d.hasOwnProperty(k)){
-					if(Conversations.filter((obj)=> (obj.id === d[k]['id'])).length === 0){
-						Conversations.push({
-							id: d[k]['id'],
-							title: d[k]['title']
-						});
-					}
+				if(!d.hasOwnProperty(k)){
+					break;
+				}
+
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
+
+				if(key !== undefined) {
+					MainParser.Conversations[key]['title'] = d[k]['title'];
+
+				} else {
+					MainParser.Conversations.push({
+						id: d[k]['id'],
+						title: d[k]['title']
+					});
 				}
 			}
 		}
 
-		if(Conversations.length > 0){
-			localStorage.setItem('ConversationsHeaders', JSON.stringify(Conversations));
+		if(MainParser.Conversations.length > 0){
+			// Dupletten entfernen
+			MainParser.Conversations = [...new Set(MainParser.Conversations.map(s => JSON.stringify(s)))].map(s => JSON.parse(s));
+
+			localStorage.setItem('ConversationsHeaders', JSON.stringify(MainParser.Conversations));
 		}
 	},
 
