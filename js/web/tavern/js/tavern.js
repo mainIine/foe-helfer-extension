@@ -72,7 +72,7 @@ let Tavern = {
 				'</span>';
 
 			$('body').append(tb.append(sp)).promise().done(function(){
-				Tavern.BoosterCountDown(moment.unix(d['expireTime']));
+				Tavern.BoosterCountDown(moment.unix(Tavern.ExpireTime));
 			});
 		}
 	},
