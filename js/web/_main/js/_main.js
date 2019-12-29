@@ -559,7 +559,9 @@ const FoEproxy = (function () {
 	// --------------------------------------------------------------------------------------------------
 	// Tavernenboost wurde gekauft
 	FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
-		Tavern.TavernBoost(data.responseData);
+		if (data.responseData['type'] === 'extra_negotiation_turn') {
+			Tavern.SetExpireTime(data.responseData['expireTime']);
+		}
 	});
 
 
@@ -1357,6 +1359,10 @@ let MainParser = {
 				if(MainParser.AllBoosts[d[i]['type']] !== undefined)
 				{
 					MainParser.AllBoosts[d[i]['type']] += d[i]['value']
+				}
+
+				if (d[i]['type'] === 'extra_negotiation_turn') {
+					Tavern.SetExpireTime(d[i]['expireTime']);
 				}
 			}
 		}
