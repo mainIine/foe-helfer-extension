@@ -273,11 +273,9 @@ let Negotiation = {
         Negotiation.GoodCount = Negotiation.Goods.length;
 
         if (responseData['context'] === 'guildExpedition') {
-            let BoostType = localStorage.getItem('TavernBoostType'),
-                BoostExpire = localStorage.getItem('TavernBoostExpire'),
-                Now = new Date().getTime();
+            let Now = new Date().getTime();
 
-            if (BoostType === 'extra_negotiation_turn' && moment.unix(BoostExpire) > Now) {
+            if (moment.unix(Tavern.ExpireTime) > Now) {
                 Negotiation.TryCount = 4;
             }
             else {
