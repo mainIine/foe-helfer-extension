@@ -21,7 +21,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
     CurrentEraID = null,
     BuildingNamesi18n = false,
 	CityMapData = null,
-    Conversations = [],
     GoodsData = [],
     GoodsList = [],
     ResourceStock = [],
@@ -42,19 +41,39 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 const FoEproxy = (function () {
+	const requestInfoHolder = new WeakMap();
+	function getRequestData(xhr) {
+		let data = requestInfoHolder.get(xhr);
+		if (data != null) return data;
 
+		data = {url: null, method: null, postData: null};
+		requestInfoHolder.set(xhr, data);
+		return data;
+	}
+
+	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
 	
 	const proxy = {
-		// for requests game/json?...
+		/**
+		 * Fügt einen datenhandler für Antworten von game/json hinzu.
+		 * @param {string} service Der Servicewert, der in der Antwort gesetzt sein soll oder 'all'
+		 * @param {string} method Der Methodenwert, der in der Antwort gesetzt sein soll oder 'all'
+		 * TODO: Genaueren Typ für den Callback definieren
+		 * @param {(data: FoE_NETWORK_TYPE, postData: any) => void} callback Der Handler, welcher mit der Antwort aufgerufen werden soll.
+		 */
 		addHandler: function(service, method, callback) {
 			// default service and method to 'all'
 			if (method === undefined) {
+				// @ts-ignore
 				callback = service;
 				service = method = 'all';
 			} else if (callback === undefined) {
+				// @ts-ignore
 				callback = method;
 				method = 'all';
 			}
@@ -167,20 +186,30 @@ const FoEproxy = (function () {
 		open = XHR.open,
 		send = XHR.send;
 
+	/**
+	 * @param {string} method
+	 * @param {string} url
+	 */
 	XHR.open = function(method, url){
-		this._method = method;
-		this._url = url;
+		const data = getRequestData(this);
+		data.method = method;
+		data.url = url;
+		// @ts-ignore
 		return open.apply(this, arguments);
 	};
 	
+	/**
+	 * @this {XHR}
+	 */
 	function onLoadHandler() {
-		const url = this._url;
-		const postData = this._postData;
+		const requestData = getRequestData(this);
+		const url = requestData.url;
+		const postData = requestData.postData;
 		
 		// handle raw request handlers
 		for (let callback of proxyRaw) {
 			try {
-				callback(this, postData);
+				callback(this, requestData);
 			} catch (e) {
 				console.error(e);
 			}
@@ -207,18 +236,28 @@ const FoEproxy = (function () {
 		// nur die jSON mit den Daten abfangen
 		if (url.indexOf("game/json?h=") > -1) {
 
-			let d = JSON.parse(this.responseText);
+			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
+			
+			let requestData = postData;
+			try {
+				requestData = JSON.parse(new TextDecoder().decode(postData));
+			} catch (e) {
+				console.log('Can\'t parse postData: ', postData);
+			}
+
 			for (let entry of d) {
-				proxyAction(entry.requestClass, entry.requestMethod, entry, postData);
+				proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 			}
 		}
 	}
 
-	XHR.send = function(postData){
-		this._postData = postData;
+	XHR.send = function(postData) {
+		const data = getRequestData(this);
+		data.postData = postData;
 		
 		this.addEventListener('load', onLoadHandler);
 
+		// @ts-ignore
 		return send.apply(this, arguments);
 	};
 	return proxy;
@@ -286,8 +325,8 @@ const FoEproxy = (function () {
 	});
 
 	// Portrait-Mapping für Spiler Avatare
-	FoEproxy.addRawHandler((xhr, postData) => {
-		if(xhr._url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+	FoEproxy.addRawHandler((xhr, requestData) => {
+		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function(){
@@ -578,26 +617,6 @@ const FoEproxy = (function () {
 			Reader.OtherPlayersBuildings(data.responseData);
 		}
 	});
-	
-	
-	// --------------------------------------------------------------------------------------------------
-	// Verarbeiter für Außenposten daten:
-	
-	// Alle Typen der Außenposten "notieren"
-	FoEproxy.addHandler('OutpostService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.GetAll(data.responseData);
-	});
-
-	// Gebäude des Außenpostens sichern
-	FoEproxy.addHandler('AdvancementService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.SaveBuildings(data.responseData);
-	});
 
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
@@ -779,7 +798,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -792,6 +811,7 @@ let MainParser = {
 	BonusService: null,
 	EmissaryService: null,
 	PlayerPortraits: null,
+	Conversations: [],
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -1519,30 +1539,40 @@ let MainParser = {
 		let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
 		// wenn noch nichts drin , aber im LocalStorage vorhanden, laden
-		if(Conversations.length === 0 && StorageHeader !== null){
-			Conversations = JSON.parse(StorageHeader);
+		if(MainParser.Conversations.length === 0 && StorageHeader !== null){
+			MainParser.Conversations = JSON.parse(StorageHeader);
 		}
 
 		// GildenChat
-		if(d['clanTeaser'] !== undefined && Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
-			Conversations.push({
+		if(d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
+			MainParser.Conversations.push({
 				id: d['clanTeaser']['id'],
 				title: d['clanTeaser']['title']
 			});
 		}
 
+		//
 		if(d['teasers'] !== undefined){
 			// die anderen Chats
 			for(let k in d['teasers']){
 
-				if(d['teasers'].hasOwnProperty(k)){
+				if(!d['teasers'].hasOwnProperty(k)){
+					break;
+				}
 
-					if(Conversations.filter((obj)=> (obj.id === d['teasers'][k]['id'])).length === 0){
-						Conversations.push({
-							id: d['teasers'][k]['id'],
-							title: d['teasers'][k]['title']
-						});
-					}
+				// prüfen ob es zur ID einen key gibt
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
+
+				// Konversation gibt es schon
+				if(key !== undefined){
+					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+				}
+				// ... gibt es noch nicht
+				else {
+					MainParser.Conversations.push({
+						id: d['teasers'][k]['id'],
+						title: d['teasers'][k]['title']
+					});
 				}
 			}
 		}
@@ -1550,19 +1580,29 @@ let MainParser = {
 		if(d[0] !== undefined && d[0].length > 0){
 
 			for(let k in d){
-				if(d.hasOwnProperty(k)){
-					if(Conversations.filter((obj)=> (obj.id === d[k]['id'])).length === 0){
-						Conversations.push({
-							id: d[k]['id'],
-							title: d[k]['title']
-						});
-					}
+				if(!d.hasOwnProperty(k)){
+					break;
+				}
+
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
+
+				if(key !== undefined) {
+					MainParser.Conversations[key]['title'] = d[k]['title'];
+
+				} else {
+					MainParser.Conversations.push({
+						id: d[k]['id'],
+						title: d[k]['title']
+					});
 				}
 			}
 		}
 
-		if(Conversations.length > 0){
-			localStorage.setItem('ConversationsHeaders', JSON.stringify(Conversations));
+		if(MainParser.Conversations.length > 0){
+			// Dupletten entfernen
+			MainParser.Conversations = [...new Set(MainParser.Conversations.map(s => JSON.stringify(s)))].map(s => JSON.parse(s));
+
+			localStorage.setItem('ConversationsHeaders', JSON.stringify(MainParser.Conversations));
 		}
 	},
 

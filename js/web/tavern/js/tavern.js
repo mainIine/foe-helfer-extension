@@ -53,6 +53,10 @@ let Tavern = {
 	BuildBox: ()=> {
 
 		if( $('#tavern-boost').length === 0 ){
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('tavern');
+
 			let tb = $('<div />').attr('id', 'tavern-boost').addClass('cursor-default'),
 				cords = localStorage.getItem( 'tavern-boostCords');
 
@@ -67,7 +71,9 @@ let Tavern = {
 				'<span id="Booster-Timer-secs">00s</span>' +
 				'</span>';
 
-			$('body').append(tb.append(sp));
+			$('body').append(tb.append(sp)).promise().done(function(){
+				Tavern.BoosterCountDown(moment.unix(d['expireTime']));
+			});
 		}
 	},
 

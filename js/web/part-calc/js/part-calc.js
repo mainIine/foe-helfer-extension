@@ -50,6 +50,9 @@ let Parts = {
 			'minimize': true
 		});
 
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('part-calc');
+
 		// Body zusammen fummeln
 		Parts.BoxBody();
 
@@ -278,8 +281,8 @@ let Parts = {
         h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n['Boxes']['OwnpartCalculator']['OldLevel'] : i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
-        h.push('<button class="btn btn-default btn-set-arc" data-value="85">85%</button>');
-		h.push('<button class="btn btn-default btn-set-arc" data-value="90">90%</button>');
+        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
+		h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
         h.push('</td>');
         h.push('</tr></table>');
 

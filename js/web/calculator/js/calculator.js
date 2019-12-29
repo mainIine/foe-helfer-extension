@@ -61,17 +61,18 @@ let Calculator = {
                 Calculator.ArcBonus = parseFloat(ab);
             }
 
-            let args = {
-                'id': 'costCalculator',
-                'title': i18n['Boxes']['Calculator']['Title'],
-                'ask': i18n['Boxes']['Calculator']['HelpLink'],
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': true,
-                'speaker': 'CalculatorTone'
-            };
+            HTML.Box({
+				'id': 'costCalculator',
+				'title': i18n['Boxes']['Calculator']['Title'],
+				'ask': i18n['Boxes']['Calculator']['HelpLink'],
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': true,
+				'speaker': 'CalculatorTone'
+			});
 
-            HTML.Box(args);
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('calculator');
 
             Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
         }
@@ -756,15 +757,16 @@ let Calculator = {
                 Calculator.PlayOverviewInfoSound = (spk !== 'deactivated');
             }
 
-			let args = {
+			HTML.Box({
 				'id': 'LGOverviewBox',
 				'title': i18n['Boxes']['LGOverviewBox']['Title'],
 				'auto_close': true,
-                'dragdrop': true,
-                'speaker': 'CalculatorOverviewTone'
-			};
+				'dragdrop': true,
+				'speaker': 'CalculatorOverviewTone'
+			});
 
-			HTML.Box(args);
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('calculator');
 		}
 
 

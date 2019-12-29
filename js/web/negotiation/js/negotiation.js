@@ -35,16 +35,19 @@ let Negotiation = {
 	 */
     Show: () => {
         if ($('#negotiationBox').length === 0) {
-            let args = {
-                'id': 'negotiationBox',
-                'title': i18n['Boxes']['Negotiation']['Title'],
-                'auto_close': true,
-                'minimize': true,
+
+        	// Box in den DOM
+            HTML.Box({
+				'id': 'negotiationBox',
+				'title': i18n['Boxes']['Negotiation']['Title'],
+				'auto_close': true,
+				'minimize': true,
 				'dragdrop': true,
 				'saveCords': false
-            };
+			});
 
-            HTML.Box(args);
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('negotiation');
         }
 
         Negotiation.BuildBox();

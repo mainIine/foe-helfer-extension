@@ -23,14 +23,17 @@ let KampagneMap = {
      */
     Show: () => {
         if ($('#campagne').length === 0) {
-            let args = {
-                'id': 'campagne',
-                'title': i18n['Boxes']['Campagne']['Title'],
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': false
-            };
-            HTML.Box(args);
+
+            HTML.Box({
+				'id': 'campagne',
+				'title': i18n['Boxes']['Campagne']['Title'],
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': false
+			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('campagnemap');
         }
 
         KampagneMap.BuildBox();
