@@ -48,15 +48,18 @@ let Technologies = {
 	 */
     Show: ()=> {
        if ($('#technologies').length === 0) {
-            let args = {
-                'id': 'technologies',
-                'title': i18n['Boxes']['Technologies']['Title'],
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': true
-            };
 
-           HTML.Box(args);
+           HTML.Box({
+			   'id': 'technologies',
+			   'title': i18n['Boxes']['Technologies']['Title'],
+			   'auto_close': true,
+			   'dragdrop': true,
+			   'minimize': true
+		   });
+
+		   // CSS in den DOM prügeln
+		   HTML.AddCssFile('technologies');
+
            Technologies.SelectedEraID = CurrentEraID;
         }
 

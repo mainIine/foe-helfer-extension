@@ -113,6 +113,9 @@ let GildFights = {
 				resize: true,
 				minimize: true
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('guildfights');
 		}
 
 		GildFights.BuildFightContent();
@@ -134,6 +137,9 @@ let GildFights = {
 				minimize: true,
 				saveCords: false
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('guildfights');
 		}
 
 		GildFights.BuildPlayerContent();

@@ -16,11 +16,12 @@
 let _menu = {
 
 	isBottom: false,
-	ToolTippCount: 0,
-	ToolTippTop: 53,
 	MenuScrollTop: 0,
 	SlideParts: 0,
 	ActiveSlide: 1,
+	HudCount: 0,
+	HudHeight: 0,
+
 
 	/**
 	 *
@@ -42,9 +43,48 @@ let _menu = {
 		hud.append(hudWrapper)
 		hud.append(btnDown);
 
-		$('body').append( hud );
+		$('body').append( hud ).ready(function () {
 
-		_menu.ListLinks();
+			// Buttons einfügen
+			_menu.ListLinks();
+
+			_menu.SetMenuHeight();
+		});
+
+		// Wenn sie die Fenstergröße verändert, neu berechnen
+		window.onresize = function(event) {
+			_menu.SetMenuHeight();
+		};
+	},
+
+
+	/**
+	 * Sammelfunktion
+	 *
+	 * @constructor
+	 */
+	SetMenuHeight: ()=> {
+		// Höhe ermitteln und setzten
+		_menu.Prepare();
+
+		// Tool-Tipp "top" setzen
+		_menu.SetToolTippTop();
+	},
+
+
+	/**
+	 * Ermittelt die Fensterhöhe und ermittelt die passende Höhe
+	 *
+	 * @constructor
+	 */
+	Prepare: ()=> {
+
+		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').position().top) / 55 );
+		_menu.HudHeight = (_menu.HudCount * 55);
+		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
+
+		$('#ant-hud').height(_menu.HudHeight + 2);
+		$('#ant-hud-wrapper').height(_menu.HudHeight);
 	},
 
 
@@ -84,7 +124,7 @@ let _menu = {
 		/**
         * Kampange
         */
-	   hudSlider.append(_menu.CampagneMap_Btn());
+	   	hudSlider.append(_menu.CampagneMap_Btn());
 
         /**
         * Negotiation
@@ -138,13 +178,6 @@ let _menu = {
 		 */
 		hudSlider.append( _menu.Bug_Btn() );
 
-
-		// hudSlider.append( Menu.BH_Btn() );
-		// wie viele Elemente und wieviele Abschnitte sind es
-		setTimeout(()=>{
-			_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / 4);
-		}, 100);
-
 		_menu.CheckButtons();
 	},
 
@@ -156,11 +189,10 @@ let _menu = {
 	 */
 	CheckButtons: ()=>{
 
-		let childs = $("#ant-hud-slider").children().length,
-			activeIdx = 0;
+		let activeIdx = 0;
 
 
-		$('.hud-btn').click(function() {
+		$('.hud-btn').click(function(){
 			activeIdx = $(this).index('.hud-btn');
 		});
 
@@ -169,7 +201,7 @@ let _menu = {
 		$('body').on('click', '.hud-btn-down-active', function(){
 
 			_menu.ActiveSlide++;
-			_menu.MenuScrollTop -= 220;
+			_menu.MenuScrollTop -= _menu.HudHeight;
 
 			$('#ant-hud-slider').css({
 				'top': _menu.MenuScrollTop + 'px'
@@ -192,7 +224,7 @@ let _menu = {
 		$('body').on('click', '.hud-btn-up-active', function(){
 
 			_menu.ActiveSlide--;
-			_menu.MenuScrollTop += 220;
+			_menu.MenuScrollTop += _menu.HudHeight;
 
 			$('#ant-hud-slider').css({
 				'top': _menu.MenuScrollTop + 'px'
@@ -211,6 +243,7 @@ let _menu = {
 		});
 
 
+		// Tooltipp einblenden
 		$('.hud-btn').hover(function() {
 			let id = $(this).attr('id');
 
@@ -233,24 +266,41 @@ let _menu = {
 	 */
 	toolTippBox: (title, desc, id)=> {
 
-		_menu.ToolTippCount++;
-
-		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id).css({'top'  : _menu.ToolTippTop + 'px'});
-
-		if(_menu.ToolTippCount % 4 === 0){
-			_menu.ToolTippTop = 53;
-		} else {
-			_menu.ToolTippTop += 55;
-		}
+		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id);
 
 		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
 
 		$('#ant-hud').append( ToolTipp );
 	},
 
+
+	/**
+	 * Ermittelt die Anzahl der sichtbaren Punkte
+	 * und setzt das Top-Value
+	 *
+	 * @constructor
+	 */
+	SetToolTippTop: ()=> {
+
+		let cnt = 1,
+			TTtop = 53;
+
+		$('.toolTipWrapper').each(function(){
+
+			$(this).css({'top': TTtop + 'px'});
+
+			if(cnt === _menu.HudCount){
+				cnt = 1;
+				TTtop = 53;
+			} else {
+				cnt++;
+				TTtop += 55;
+			}
+		});
+	},
+
 	/*----------------------------------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------------------------------*/
+
 
 	/**
 	 * FP Gesamtanzahl Button

@@ -87,16 +87,17 @@ let Infoboard = {
 				Infoboard.PlayInfoSound = (spk !== 'deactivated');
 			}
 
-			let args = {
+			HTML.Box({
 				'id': 'BackgroundInfo',
 				'title': i18n['Menu']['Info']['Title'],
 				'auto_close': true,
 				'dragdrop': true,
 				'resize': true,
 				'speaker': 'infoboxTone'
-			};
+			});
 
-			HTML.Box(args);
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('infoboard');
 		}
 
 		let div = $('#BackgroundInfo'),
@@ -172,8 +173,13 @@ let Infoboard = {
 			return;
 		}
 
-		let bd = Info[s](Msg['responseData']),
-			status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
+		let bd = Info[s](Msg['responseData']);
+
+        if(bd === false){
+        	return;
+		}
+
+		let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
 			tr = $('<tr />').addClass(bd['class']),
 			msg = bd['msg'];
 
@@ -247,6 +253,7 @@ let Infoboard = {
 let Info = {
 
 	/**
+	 * Jmd hat in einer Auktion mehr geboten
 	 *
 	 * @param d
 	 * @returns {{msg: string, type: string}}
@@ -327,6 +334,8 @@ let Info = {
 				)
 		};
 	},
+
+
 	/**
 	 * Handel wurde angenommen
 	 *
@@ -351,14 +360,21 @@ let Info = {
 		}
 	},
 
+
 	/**
-	 *
+	 * Ein Gildenmitglied hat in der GEX gekämpft
 	 *
 	 * @param d
-	 * @returns {{msg: string, type: string}}
+	 * @returns {boolean|{msg: *, type: string, class: string}}
 	 * @constructor
 	 */
 	GuildExpeditionService_receiveContributionNotification: (d)=> {
+
+		// "mich" nicht anzeigen
+		if(d['player']['player_id'] === ExtPlayerID) {
+			return false;
+		}
+
 		return {
 			class: 'gex',
 			type: 'GEX',
