@@ -26,11 +26,7 @@ input[type=number]::-webkit-outer-spin-button {
 	margin: 0;
 }
 
-#ant-hud:before,
-.window-head span.window-ask,
-.hud-btn-up,
-.hud-btn-down:before,
-.hud-btn {
+.window-head span.window-ask {
 	background-image:  url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
 }
 
@@ -220,64 +216,78 @@ p {
 	width: 64px;
 	height: 270px;
 	top: 360px;
+	padding-top: 24px;
+	padding-bottom: 24px;
 }
 
-#ant-hud:before {
-	content: "";
-	width: 270px;
-	height: 64px;
-	background-position: 1047px 0;
-	transform: rotate(-90deg);
-	position: absolute;
-	top: 103px;
-	right: -103px;
-	z-index: -1;
+#ant-hud::before,
+#ant-hud::after,
+.hud-btn,
+.hud-btn-up::before,
+.hud-btn-up-active::before,
+.hud-btn-down::before,
+.hud-btn-down-active::before {
+	background: url('../../js/web/_menu/images/menu.png') top left no-repeat;
 }
+
+#ant-hud::before {
+	content: '';
+	width: 64px;
+	height: 26px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#ant-hud::after {
+	content: '';
+	width: 64px;
+	height: 24px;
+	background-position: bottom left;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
 
 #ant-hud-wrapper {
-	width: 55px;
+	width: 64px;
 	height: 220px;
 	position: absolute;
-	right: 2px;
+	right: 0;
 	top: 26px;
 	overflow: hidden;
+	background: url('../../js/web/_menu/images/menu-bg.png') top left repeat-y
 }
 
 #ant-hud-slider {
 	position: absolute;
 	top: 0;
+	right: 3px;
 	transition: top 0.7s ease-in-out;
 }
 
-.hud-btn-up {
+.hud-btn-up,
+.hud-btn-down {
 	position: absolute;
-	background-position: 1539px 15px;
 	width: 56px;
 	height: 15px;
-	top: 5px;
 	right: 2px;
 	display: block;
+	z-index: 1;
 }
 
-.hud-btn-up-active {
-	background-position: 1481px 15px;
-}
-.hud-btn-up-active:hover {
-	background-position: 1423px 15px;
+.hud-btn-up {
+	top: 5px;
 }
 
 .hud-btn-down {
-	right: 1px;
-	width: 58px;
-	height: 16px;
-	display: block;
-	position: absolute;
 	bottom: 4px;
 }
-.hud-btn-down:before {
-	content: "";
-	transform: scaleY(-1);
-	background-position: 1540px 15px;
+
+.hud-btn-up::before,
+.hud-btn-down::before {
+	content: '';
 	width: 56px;
 	height: 16px;
 	display: block;
@@ -285,27 +295,42 @@ p {
 	right: 1px;
 }
 
-.hud-btn-down-active:before {
-	background-position: 1364px 17px;
+.hud-btn-up::before {
+	background-position: -65px 0;
 }
 
-.hud-btn-down-active:hover:before {
-	background-position: 1422px 17px;
+.hud-btn-down::before {
+	bottom: 1px;
+	transform: scaleY(-1);
+	background-position: -65px 0;
+}
+
+.hud-btn-up-active::before {
+	background-position: -124px 0;
+}
+.hud-btn-up-active:hover::before {
+	background-position: -66px -16px;
+}
+
+.hud-btn-down-active::before {
+	background-position: -124px 0;
+}
+
+.hud-btn-down-active:hover::before {
+	background-position: -124px -16px;
 }
 
 .hud-btn {
 	display: block;
-	background-position: 992px 63px;
+	background-position: -122px -33px;
 	width: 55px;
 	height: 55px;
 	position: relative;
 }
 
-
 .hud-btn-red {
-	background-position: 1049px 63px;
+	background-position: -65px -33px;
 }
-
 
 .hud-btn span {
 	background-position: center center;
