@@ -1,0 +1,26 @@
+
+#outpostConsumables .info-line {
+	display: flex;
+	justify-content: space-between;
+	margin: 5px;
+}
+
+#outpostConsumables td>label,
+#outpostConsumables td>label>span {
+	width: 100%;
+	display: inline-block;
+}
+
+#outpostConsumables input[type=radio] {
+	display: none;
+}
+
+
+#outpostConsumables .selected,
+#outpostConsumables input[type=radio]:checked ~ span {
+	background-color: rgba(0,255,0,0.2);
+}
+
+#outpostConsumables input[type=radio]:checked ~ span.outpost_tile_off {
+	background-color: rgba(255,0,0,0.2);
+}
