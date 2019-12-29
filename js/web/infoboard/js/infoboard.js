@@ -173,8 +173,13 @@ let Infoboard = {
 			return;
 		}
 
-		let bd = Info[s](Msg['responseData']),
-			status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
+		let bd = Info[s](Msg['responseData']);
+
+        if(bd === false){
+        	return;
+		}
+
+		let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
 			tr = $('<tr />').addClass(bd['class']),
 			msg = bd['msg'];
 
@@ -248,6 +253,7 @@ let Infoboard = {
 let Info = {
 
 	/**
+	 * Jmd hat in einer Auktion mehr geboten
 	 *
 	 * @param d
 	 * @returns {{msg: string, type: string}}
@@ -356,13 +362,19 @@ let Info = {
 
 
 	/**
-	 *
+	 * Ein Gildenmitglied hat in der GEX gekämpft
 	 *
 	 * @param d
-	 * @returns {{msg: string, type: string}}
+	 * @returns {boolean|{msg: *, type: string, class: string}}
 	 * @constructor
 	 */
 	GuildExpeditionService_receiveContributionNotification: (d)=> {
+
+		// "mich" nicht anzeigen
+		if(d['player']['player_id'] === ExtPlayerID) {
+			return false;
+		}
+
 		return {
 			class: 'gex',
 			type: 'GEX',
