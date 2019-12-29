@@ -2,10 +2,11 @@
  * **************************************************************************************
  *
  * Dateiname:                 chat.css
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       11.07.19 15:38 Uhr
+ * erstellt am:	              29.12.19, 17:09 Uhr
+ * zuletzt bearbeitet:       27.07.19, 12:28 Uhr
  *
  * Copyright © 2019
  *
@@ -15,7 +16,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	background: url('images/box-bg.png') center center repeat;
+	background: url('../../../../css/images/box-bg.png') center center repeat;
 	overflow: hidden;
 }
 
@@ -61,7 +62,7 @@ body {
 
 .chat-wrapper #users {
 	width: 180px;
-	background: url('images/chat-bg.png') center top/contain repeat-y;
+	background: url('../images/chat-bg.png') center top/contain repeat-y;
 	height: calc(100% - 34px);
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -107,7 +108,7 @@ body {
 	height: calc(100% - 34px);
 	overflow-x: hidden;
 	overflow-y: auto;
-	background: url('images/chat-bg.png') center top/contain repeat-y;
+	background: url('../images/chat-bg.png') center top/contain repeat-y;
 	color: #644c34;
 	width: 85%;
 }

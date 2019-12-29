@@ -949,7 +949,7 @@ let Productions = {
 	 */
 	ShowFunction: (id)=> {
 
-		CityMap.init();
+		CityMap.init(CityMapData);
 
 		$('[data-entityid]').removeClass('pulsate');
 
