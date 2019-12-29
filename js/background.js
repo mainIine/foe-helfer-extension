@@ -84,7 +84,7 @@ chrome.runtime.onMessageExternal.addListener((request) => {
 
 	} else if(request.type === 'chat'){
 
-		let url = 'content/chat.html?player=' + request.player + '&guild=' + request.guild + '&world=' + request.world,
+		let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&guild=' + request.guild + '&world=' + request.world,
 			popupUrl = chrome.runtime.getURL(url);
 
 		// Prüfen ob ein PopUp mit dieser URL bereits existiert
