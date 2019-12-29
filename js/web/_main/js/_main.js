@@ -52,18 +52,29 @@ const FoEproxy = (function () {
 		return data;
 	}
 
+	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
 	
 	const proxy = {
-		// for requests game/json?...
+		/**
+		 * Fügt einen datenhandler für Antworten von game/json hinzu.
+		 * @param {string} service Der Servicewert, der in der Antwort gesetzt sein soll oder 'all'
+		 * @param {string} method Der Methodenwert, der in der Antwort gesetzt sein soll oder 'all'
+		 * TODO: Genaueren Typ für den Callback definieren
+		 * @param {(data: FoE_NETWORK_TYPE, postData: any) => void} callback Der Handler, welcher mit der Antwort aufgerufen werden soll.
+		 */
 		addHandler: function(service, method, callback) {
 			// default service and method to 'all'
 			if (method === undefined) {
+				// @ts-ignore
 				callback = service;
 				service = method = 'all';
 			} else if (callback === undefined) {
+				// @ts-ignore
 				callback = method;
 				method = 'all';
 			}
@@ -176,13 +187,21 @@ const FoEproxy = (function () {
 		open = XHR.open,
 		send = XHR.send;
 
+	/**
+	 * @param {string} method
+	 * @param {string} url
+	 */
 	XHR.open = function(method, url){
 		const data = getRequestData(this);
 		data.method = method;
 		data.url = url;
+		// @ts-ignore
 		return open.apply(this, arguments);
 	};
 	
+	/**
+	 * @this {XHR}
+	 */
 	function onLoadHandler() {
 		const requestData = getRequestData(this);
 		const url = requestData.url;
@@ -218,19 +237,28 @@ const FoEproxy = (function () {
 		// nur die jSON mit den Daten abfangen
 		if (url.indexOf("game/json?h=") > -1) {
 
-			let d = JSON.parse(this.responseText);
+			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
+			
+			let requestData = postData;
+			try {
+				requestData = JSON.parse(new TextDecoder().decode(postData));
+			} catch (e) {
+				console.log('Can\'t parse postData: ', postData);
+			}
+
 			for (let entry of d) {
-				proxyAction(entry.requestClass, entry.requestMethod, entry, postData);
+				proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 			}
 		}
 	}
 
-	XHR.send = function(postData){
+	XHR.send = function(postData) {
 		const data = getRequestData(this);
 		data.postData = postData;
 		
 		this.addEventListener('load', onLoadHandler);
 
+		// @ts-ignore
 		return send.apply(this, arguments);
 	};
 	return proxy;
