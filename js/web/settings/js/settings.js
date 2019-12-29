@@ -105,6 +105,9 @@ let Settings = {
 				'title': i18n['Boxes']['Settings']['Title'],
 				'auto_close': true
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('settings');
 		}
 
 		Settings.BuildBody();
