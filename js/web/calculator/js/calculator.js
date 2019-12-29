@@ -295,14 +295,15 @@ let Calculator = {
 				MedalRewards = [],
 				RankCosts = [],
 				Einzahlungen = [],
-				LastRank = 5 - 1;
+				BestGewinn = -999999,
+				LastRankCost = undefined;
 
 			for (let i = 0; i < Rankings.length; i++) {
 				let Rank,
 					CurrentFP,
 					TotalFP,
 					RestFP,
-					IsSelf = false;
+					IsSelf = false;			
 
 				if (Rankings[i]['rank'] === undefined || Rankings[i]['rank'] === -1) {
 					continue;
@@ -311,31 +312,26 @@ let Calculator = {
 					Rank = Rankings[i]['rank'] - 1;
 				}
 
-				if (Rank > 5 - 1) {
-					break;
-				}
+				if (Rankings[i]['reward'] === undefined) break; // Ende der Belohnungsränge => raus
 
-				States[Rank] = undefined; // NotPossible / EndOfRanks / Self / NegativeProfig / LevelWarning / Profit
+				States[Rank] = undefined; // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
 				FPNettoRewards[Rank] = 0;
 				FPRewards[Rank] = 0;
 				BPRewards[Rank] = 0;
 				MedalRewards[Rank] = 0;
 				RankCosts[Rank] = undefined;
 				Einzahlungen[Rank] = 0;
-
-				if (Rankings[i]['reward'] !== undefined) {
-					if (Rankings[i]['reward']['strategy_point_amount'] !== undefined) FPNettoRewards[Rank] = Math.round(Rankings[i]['reward']['strategy_point_amount']);
-					if (Rankings[i]['reward']['blueprints'] !== undefined) BPRewards[Rank] = Math.round(Rankings[i]['reward']['blueprints']);
-					if (Rankings[i]['reward']['resources']['medals'] !== undefined) MedalRewards[Rank] = Math.round(Rankings[i]['reward']['resources']['medals']);
-				}
-
+				
+				if (Rankings[i]['reward']['strategy_point_amount'] !== undefined) FPNettoRewards[Rank] = Math.round(Rankings[i]['reward']['strategy_point_amount']);
+				if (Rankings[i]['reward']['blueprints'] !== undefined) BPRewards[Rank] = Math.round(Rankings[i]['reward']['blueprints']);
+				if (Rankings[i]['reward']['resources']['medals'] !== undefined) MedalRewards[Rank] = Math.round(Rankings[i]['reward']['resources']['medals']);
+			
 				FPRewards[Rank] = Math.round(FPNettoRewards[Rank] * arc);
 				BPRewards[Rank] = Math.round(BPRewards[Rank] * arc);
 				MedalRewards[Rank] = Math.round(MedalRewards[Rank] * arc);
 
-				// Bereits vorher Gewinn oder eigene Einzahlung erkannt => Weitere Plätze machen keinen Sinn mehr
-				if (Rank > LastRank) {
-					States[Rank] = 'EndOfRanks';
+				if (EigenPos !== undefined && i > EigenPos) {
+					States[Rank] = 'NotPossible';
 					continue;
 				}
 
@@ -343,13 +339,12 @@ let Calculator = {
 
 				if (Rankings[i]['forge_points'] !== undefined) Einzahlungen[Rank] = Rankings[i]['forge_points'];
 
-				CurrentFP = UpdateEntity['state']['invested_forge_points'] - EigenBetrag;
+				CurrentFP = (UpdateEntity['state']['invested_forge_points'] !== undefined ? UpdateEntity['state']['invested_forge_points'] : 0) - EigenBetrag;
 				TotalFP = UpdateEntity['state']['forge_points_for_level_up'];
 				RestFP = TotalFP - CurrentFP;
 
 				if (IsSelf) {
 					States[Rank] = 'Self';
-					LastRank = Rank; //Weitere Plätze ignorieren
 
 					for (let j = i + 1; j < Rankings.length; j++) {
 						//Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
@@ -367,10 +362,9 @@ let Calculator = {
 					if (RankCosts[Rank] <= Einzahlungen[Rank]) {
 						RankCosts[Rank] = 0;
 						States[Rank] = 'NotPossible';
+						continue;
 					}
 					else {
-						LastRank = Rank;
-
 						if (RankCosts[Rank] === RestFP) {
 							States[Rank] = 'LevelWarning';
 						}
@@ -381,18 +375,40 @@ let Calculator = {
 							States[Rank] = 'Profit';
 						}
 					}
+
+					//Selbe Kosten wie vorheriger Rang => nicht belegbar
+					if (LastRankCost != undefined && RankCosts[Rank] === LastRankCost) {
+						States[Rank] = 'NotPossible';
+						RankCosts[Rank] = undefined;
+						continue;
+					}
+					else {
+						LastRankCost = RankCosts[Rank];
+					}
+
+					let CurrentGewinn = FPRewards[Rank] - RankCosts[Rank];
+					if (CurrentGewinn > BestGewinn) {
+						BestGewinn = CurrentGewinn;
+					}
+					else {
+						States[Rank] = 'WorseProfit';
+					}
 				}
 			}
 
-			for (let Rank = 0; Rank < 5; Rank++) {
+			for (let Rank = 0; Rank < RankCosts.length; Rank++) {
 				let Costs = (States[Rank] === 'Self' ? Einzahlungen[Rank] : RankCosts[Rank]);
 				let Gewinn = FPRewards[Rank] - Costs,
 					Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(Costs / FPNettoRewards[Rank] * 100) : 0);
 
+				if (Kurs > 0) {
+					BestKurs = Math.min(BestKurs, Kurs);
+				}
+				
 				if (States[Rank] === 'NotPossible') {
 					h.push('<tr class="text-grey">');
 				}
-				else if (States[Rank] === 'EndOfRanks') {
+				else if (States[Rank] === 'WorseProfit') {
 					h.push('<tr class="bg-red">');
 				}
 				else if (States[Rank] === 'Self') {
@@ -430,7 +446,7 @@ let Calculator = {
 					h.push('<td class="text-center">' + HTML.Format(RankCosts[Rank]) + '</td>');
 					//h.push('<td class="text-center"><strong class="warning">' + HTML.Format(Gewinn) + '</strong></td>');
 					h.push('<td class="text-center"><strong class="warning">' + HTML.Format(Gewinn) + '</strong></td>');
-					h.push('<td class="text-center"><strong class="warning">' + (Kurs > 0 ? HTML.Format(Kurs) + '%' : '-') + '</strong></td>');
+					h.push('<td class="text-center"><strong class="warning">' + (Kurs > 0 && Gewinn >= 0 ? HTML.Format(Kurs) + '%' : '-') + '</strong></td>');
 				}
 				else if (States[Rank] === 'Profit') {
 					h.push('<td class="text-center">' + HTML.Format(RankCosts[Rank]) + '</td>');
