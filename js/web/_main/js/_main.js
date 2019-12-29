@@ -41,19 +41,39 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 const FoEproxy = (function () {
+	const requestInfoHolder = new WeakMap();
+	function getRequestData(xhr) {
+		let data = requestInfoHolder.get(xhr);
+		if (data != null) return data;
 
+		data = {url: null, method: null, postData: null};
+		requestInfoHolder.set(xhr, data);
+		return data;
+	}
+
+	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
 	
 	const proxy = {
-		// for requests game/json?...
+		/**
+		 * Fügt einen datenhandler für Antworten von game/json hinzu.
+		 * @param {string} service Der Servicewert, der in der Antwort gesetzt sein soll oder 'all'
+		 * @param {string} method Der Methodenwert, der in der Antwort gesetzt sein soll oder 'all'
+		 * TODO: Genaueren Typ für den Callback definieren
+		 * @param {(data: FoE_NETWORK_TYPE, postData: any) => void} callback Der Handler, welcher mit der Antwort aufgerufen werden soll.
+		 */
 		addHandler: function(service, method, callback) {
 			// default service and method to 'all'
 			if (method === undefined) {
+				// @ts-ignore
 				callback = service;
 				service = method = 'all';
 			} else if (callback === undefined) {
+				// @ts-ignore
 				callback = method;
 				method = 'all';
 			}
@@ -166,20 +186,30 @@ const FoEproxy = (function () {
 		open = XHR.open,
 		send = XHR.send;
 
+	/**
+	 * @param {string} method
+	 * @param {string} url
+	 */
 	XHR.open = function(method, url){
-		this._method = method;
-		this._url = url;
+		const data = getRequestData(this);
+		data.method = method;
+		data.url = url;
+		// @ts-ignore
 		return open.apply(this, arguments);
 	};
 	
+	/**
+	 * @this {XHR}
+	 */
 	function onLoadHandler() {
-		const url = this._url;
-		const postData = this._postData;
+		const requestData = getRequestData(this);
+		const url = requestData.url;
+		const postData = requestData.postData;
 		
 		// handle raw request handlers
 		for (let callback of proxyRaw) {
 			try {
-				callback(this, postData);
+				callback(this, requestData);
 			} catch (e) {
 				console.error(e);
 			}
@@ -206,18 +236,28 @@ const FoEproxy = (function () {
 		// nur die jSON mit den Daten abfangen
 		if (url.indexOf("game/json?h=") > -1) {
 
-			let d = JSON.parse(this.responseText);
+			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
+			
+			let requestData = postData;
+			try {
+				requestData = JSON.parse(new TextDecoder().decode(postData));
+			} catch (e) {
+				console.log('Can\'t parse postData: ', postData);
+			}
+
 			for (let entry of d) {
-				proxyAction(entry.requestClass, entry.requestMethod, entry, postData);
+				proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 			}
 		}
 	}
 
-	XHR.send = function(postData){
-		this._postData = postData;
+	XHR.send = function(postData) {
+		const data = getRequestData(this);
+		data.postData = postData;
 		
 		this.addEventListener('load', onLoadHandler);
 
+		// @ts-ignore
 		return send.apply(this, arguments);
 	};
 	return proxy;
@@ -285,8 +325,8 @@ const FoEproxy = (function () {
 	});
 
 	// Portrait-Mapping für Spiler Avatare
-	FoEproxy.addRawHandler((xhr, postData) => {
-		if(xhr._url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+	FoEproxy.addRawHandler((xhr, requestData) => {
+		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function(){
@@ -574,26 +614,6 @@ const FoEproxy = (function () {
 		if (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member) {
 			Reader.OtherPlayersBuildings(data.responseData);
 		}
-	});
-	
-	
-	// --------------------------------------------------------------------------------------------------
-	// Verarbeiter für Außenposten daten:
-	
-	// Alle Typen der Außenposten "notieren"
-	FoEproxy.addHandler('OutpostService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.GetAll(data.responseData);
-	});
-
-	// Gebäude des Außenpostens sichern
-	FoEproxy.addHandler('AdvancementService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.SaveBuildings(data.responseData);
 	});
 
 	// Güter des Spielers ermitteln
