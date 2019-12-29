@@ -41,8 +41,6 @@ let Tavern = {
 		
 		if (Settings.GetSetting('ShowTavernBadge')) {
 			Tavern.BuildBox();
-
-			Tavern.BoosterCountDown(moment.unix(Tavern.ExpireTime));
 		}
 	},
 
