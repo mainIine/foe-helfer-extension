@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
-HTML.AddCssFile('outposts');
+// HTML.AddCssFile('outposts');
 
 let Outposts = {
 	/** @type {FoE_JSON_CulturalOutpost[]|null} */
