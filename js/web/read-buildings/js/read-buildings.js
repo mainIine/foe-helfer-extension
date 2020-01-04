@@ -26,6 +26,12 @@ let BlackListBuildingsString = [
 	'R_MultiAge_Battlegrounds1' //Ehrenstatue
 ];
 
+// grau darzustellende Produktionen
+let UnimportantProds = [
+	'supplies', // Vorräte
+	'money'     // Münzen
+];
+
 /**
  *
  * @type {{data: {}, CityEntities: [], ShowFunction: Reader.ShowFunction, OtherPlayersBuildings: Reader.OtherPlayersBuildings, player_name: string, showResult: Reader.showResult}}
@@ -96,7 +102,10 @@ let Reader = {
 
 		// let d = helper.arr.multisort(Reader.data, ['name'], ['ASC']);
 		let rd = helper.arr.multisort(Reader.data.ready, ['name'], ['ASC']);
+		rd = helper.arr.multisort(rd, ['isImportant'], ['DESC']);
+		
 		let wk = helper.arr.multisort(Reader.data.work, ['name'], ['ASC']);
+		wk = helper.arr.multisort(wk, ['isImportant'], ['DESC']);
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if ($('#ResultBox').length === 0) {
@@ -216,7 +225,7 @@ let Reader = {
  * 		bazaarBuilding: GoodsParser.bazaarBuilding,
  * 		sumGoods: (function(*): number),
  * 		readType: GoodsParser.readType,
- * 		getProducts: (function(*): {amount: (string), state: boolean})
+ * 		getProducts: (function(*): {amount: (string), state: boolean, isImportant: boolean})
  * 		}
  * 	}
  */
@@ -252,8 +261,14 @@ let GoodsParser = {
 					name: BuildingNamesi18n[d['cityentity_id']]['name'],
 					amount: p['amount'],
 					state: p['state'],
-					id: d['id']
+					id: d['id'],
+					isImportant: p['isImportant']
 				};
+				
+				if (p['isImportant'] === false ) {
+					entry.name = '<spark style="color:grey;">' + BuildingNamesi18n[d['cityentity_id']]['name'] + '</spark>';
+					entry.amount = '<spark style="color:grey;">' + p['amount'] + '</spark>';
+				}
 
 				if( entry['state'] === true ){
 					Reader.data.ready.push(entry);
@@ -269,22 +284,29 @@ let GoodsParser = {
 	 * ermittelt die Produktart
 	 *
 	 * @param d
-	 * @returns {{amount: number, name: (*|string), state: boolean}}
+	 * @returns {{amount: number, name: (*|string), state: boolean, isImportant: boolean}}
 	 */
 	getProducts: (d)=> {
 
 		let amount,
-			state = d['state']['__class__'] === 'ProductionFinishedState';
-
+			state = d['state']['__class__'] === 'ProductionFinishedState',
+			isImportant = false
 		let g = [],
 			a = d['state']['current_product']['product']['resources'];
 
 		for(let k in a) {
 			if(a.hasOwnProperty(k)) {
+				if (!isImportant) 
+					isImportant = !UnimportantProds.includes(k);
+				
 				if(k === 'strategy_points'){
                     g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
+					
 				} else {
-                    g.push(a[k] + ' ' + GoodsData[k]['name']);
+					if(isImportant) 
+						g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
+                    else 
+						g.push(a[k] + ' ' + GoodsData[k]['name']);
 				}
 			}
 		}
@@ -293,7 +315,8 @@ let GoodsParser = {
 
 		return {
 			amount: amount,
-			state: state
+			state: state,
+			isImportant: isImportant
 		};
 	},
 
