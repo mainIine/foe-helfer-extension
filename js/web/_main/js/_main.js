@@ -22,7 +22,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     BuildingNamesi18n = false,
 	CityMapData = null,
     GoodsData = [],
-    GoodsList = [],
+	GoodsList = [],
+	PlayerDict = {},
     ResourceStock = [],
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
@@ -398,8 +399,11 @@ const FoEproxy = (function () {
 		});
 	});
 
-
-
+	// Nachricht geöffnet
+	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+		MainParser.UpdatePlayerDictFromMessages(data.responseData)
+	});
+	   
 	// --------------------------------------------------------------------------------------------------
 	// Übersetzungen der Güter
 	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
@@ -1511,6 +1515,25 @@ let MainParser = {
 				url: ApiURL + 'FriendsList/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(d)
 			});
+		}
+	},
+
+		
+	/**
+	 * Übersetzungen für die Güter zusammen setzen
+	 *
+	 * @param d
+	 */
+	UpdatePlayerDictFromMessages: (d) => {
+		for (let i in d['messages']) {
+			let Message = d['messages'][i];
+			let PlayerID = Message['sender']['player_id'];
+
+			if (PlayerID !== undefined) {
+				if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+				PlayerDict[PlayerID]['PlayerID'] = PlayerID;
+				PlayerDict[PlayerID]['PlayerName'] = Message['sender']['name'];
+			}
 		}
 	},
 
