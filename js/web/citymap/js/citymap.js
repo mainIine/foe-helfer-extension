@@ -41,6 +41,9 @@ let CityMap = {
 
 			HTML.Box(args);
 
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('citymap');
+
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);
 			}, 100);
@@ -227,5 +230,38 @@ let CityMap = {
 	 */
 	hashCode: (str)=>{
 		return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
-	}
+	},
+
+
+	showSumbitBox: ()=> {
+		if( $('#city-map-submit').length < 1 )
+		{
+			HTML.Box({
+				'id': 'CityMapSubmit',
+				'title': i18n['Boxes']['CityMap']['Title'],
+				'auto_close': true,
+				'saveCords': false
+			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('citymap');
+
+			let desc = '<p class="text-center">' + i18n['Boxes']['CityMap']['Desc1'] + '</p>';
+
+			desc += '<p class="text-center" id="msg-line">' + i18n['Boxes']['CityMap']['Desc2'] + '</p>';
+
+			$('#CityMapSubmitBody').html(desc);
+		}
+	},
+
+	SubmitData: ()=> {
+
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'CityPlanner/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(CityMapData)
+		});
+
+		$('#msg-line').html('<span class="text-green">' + i18n['Boxes']['CityMap']['SubmitSuccess'] + '<a target="_blank" href="htpps://foe-rechner.de">foe-rechner.de</a></span>');
+	},
 };
