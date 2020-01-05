@@ -53,8 +53,10 @@ const FoEproxy = (function () {
 
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+
 	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+
 	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
 	
@@ -273,19 +275,19 @@ const FoEproxy = (function () {
 
 		sessionStorage.setItem('BuildingsData', JSON.stringify(j));
 
-				for (let i in j)
-				{
-					if (j.hasOwnProperty(i))
-					{
-						BuildingNamesi18n[j[i]['asset_id']] = {
-							name: j[i]['name'],
-							width: j[i]['width'],
-							height: j[i]['length'],
-							type: j[i]['type'],
-							provided_happiness: j[i]['provided_happiness'],
-							population: undefined,
-							entity_levels : j[i]['entity_levels'],
-						};
+		for (let i in j)
+		{
+			if (j.hasOwnProperty(i))
+			{
+				BuildingNamesi18n[j[i]['asset_id']] = {
+					name: j[i]['name'],
+					width: j[i]['width'],
+					height: j[i]['length'],
+					type: j[i]['type'],
+					provided_happiness: j[i]['provided_happiness'],
+					population: undefined,
+					entity_levels : j[i]['entity_levels'],
+				};
 
 				if(j[i]['abilities'] !== undefined)
 				{
@@ -324,7 +326,7 @@ const FoEproxy = (function () {
 		Unit.Types = JSON.parse(xhr.responseText);
 	});
 
-	// Portrait-Mapping für Spiler Avatare
+	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
 		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
 			let portraits = {};
@@ -674,7 +676,7 @@ const FoEproxy = (function () {
 		if (MainParser.checkNextUpdate('GuildExpedition') !== true) {
 			return;
 		}
-		MainParser.GuildExpedition(GEXList['responseData']);
+		MainParser.GuildExpedition(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
