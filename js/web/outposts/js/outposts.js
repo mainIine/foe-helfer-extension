@@ -13,8 +13,6 @@
  * **************************************************************************************
  */
 
-// HTML.AddCssFile('outposts');
-
 let Outposts = {
 	/** @type {FoE_JSON_CulturalOutpost[]|null} */
 	OutpostsData: null,
@@ -64,6 +62,8 @@ let Outposts = {
 			};
 
 			HTML.Box(args);
+
+			HTML.AddCssFile('outposts');
 
 			const window = /** @type {HTMLElement} */(document.getElementById('outpostConsumables'));
 			window.addEventListener('change', (event) => {
