@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Eigenanteil",
 			"LGTotalFP": "LG Gesamt-FP",
             "OwnPartRemaining": "Verbleibend",
-            "Done": "Erledigt",
+			"Done": "Erledigt",
+			"BPs": "BPs",
+			"Meds": "Meds",
+			"Ext": "Ext",
+			"Arc": "Arche",
 			"Order": "Reihenfolge",
 			"Deposit": "Einzahlen",
 			"CopyValues": "Werte kopieren",
@@ -54,6 +58,7 @@ let i18n = {
 			"Save": "Save",
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
+			"LevelWarning": "ACHTUNG! Levelt das LG!",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
 			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
@@ -86,6 +91,8 @@ let i18n = {
 			"Total" : "Gesamt: ",
 			"ModeGroups": "Gruppiert",
 			"ModeSingle": "Einzeln",
+			"Happiness": "Zufriedenheit",
+			"AdjacentBuildings": "Angrenzende Gebäude",
 			"Headings" : {
 				"number" : "Anzahl",
 				"amount" : "Menge",
@@ -93,8 +100,13 @@ let i18n = {
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
-				"residential" : "Eventgebäude",
-				"main_building" : "Rathaus",
+				"residential": "Eventgebäude",
+				"decoration": "Dekorationen",
+				"street": "Straßen",
+				"goods": "Gütergebäude",
+				"culture": "Kulturelle Gebäude",
+				"main_building": "Rathaus",
+				"boost": "Boost",
 				"all" : "Alle"
 			}
 		},
@@ -184,11 +196,13 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Nachricht",
+			"FilterTrade" : "Handel",
 			"ResetBox" : "Box leeren",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
 				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt",
 				"Auction" : "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
+				"Trade" : "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 				"MsgBuilding" : "__building__ - Stufe __level__"
 			}
 		},
@@ -196,6 +210,9 @@ let i18n = {
 		"Units" : {
 			"Title": "Armee Übersicht",
 			"NextUnitsIn": "Die nächsten __count__ Einheiten kommen in <span class=\"alca-countdown\"></span> um __harvest__ Uhr",
+			"ReadyToLoot": "Bereit zur Ernte!",
+			"Proportionally": "Anteilig",
+			"Quantity": "Anzahl",
 			"Unit": "Einheit",
 			"Status": "Status",
 			"Attack": "Angriff",
@@ -203,6 +220,13 @@ let i18n = {
 			"NotFilled": "nicht gefüllt",
 			"Bind": "Gebunden",
 			"Unbind": "Ungebunden"
+		},
+
+		"CityMap": {
+			"Title": "Daten übermitteln",
+			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
+			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
 		}
 	},
 

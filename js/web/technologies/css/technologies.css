@@ -1,0 +1,98 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 technologies.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              27.12.19, 12:29 Uhr
+ * zuletzt bearbeitet:       27.12.19, 12:29 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#technologies {
+	top: 30%;
+	right: 15%;
+	width: 450px;
+}
+
+#technologies #technologiesBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	min-height: 300px;
+	max-height: 500px;
+}
+
+#technologies #technologiesBody .techno-head {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 5px;
+}
+
+#technologies #technologiesBody .techno-head > * {
+	width: 33.333334%;
+}
+
+#technologies #technologiesBody .techno-head strong {
+	color: #FFB539;
+}
+
+#technologies #technologiesBody tr.total-row td {
+	border-top: 2px solid #efcf9a;
+	font-weight: 700;
+}
+
+#technologies #technologiesBody tr.resource-row td {
+	color: #FFB539;
+	font-weight: 700;
+}
+
+#technologies #technologiesBody .text-danger {
+	color: #ef1616;
+	font-weight: 700;
+}
+
+#technologies #technologiesBody .text-success {
+	color: #29b206;
+	font-weight: 700;
+}
+
+#technologies #technologiesBody .text-muted {
+	color: #8a8a8a;
+}
+
+#technologies #technologiesBody td {
+	position: relative;
+}
+
+#technologies #technologiesBody .diplomacy-ask {
+	font-weight: 700;
+	display: inline-block;
+	margin-left: 6px;
+	background: #2196f3;
+	padding: 0 4px;
+	border-radius: 50%;
+	width: 10px;
+	line-height: 1.3em;
+	z-index: 1;
+}
+
+#technologies #technologiesBody .diplomacy-tip {
+	position: absolute;
+	white-space: nowrap;
+	text-align: left;
+	background: rgba(0,0,0, 0.7);
+	padding: 5px;
+	right: 6px;
+	top: 25px;
+	z-index: 1;
+	display: none;
+}
+
+#technologies #technologiesBody .diplomacy-ask:hover .diplomacy-tip {
+	display: block;
+}
