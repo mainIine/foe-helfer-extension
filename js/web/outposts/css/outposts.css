@@ -1,3 +1,66 @@
+#outpostConsumables {
+	top: 30%;
+	right: 15%;
+	width: 620px;
+}
+
+#outpostConsumables #outpostConsumablesBody tr.total-row td {
+	border-top: 2px solid #efcf9a;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody tr.resource-row td {
+	color: #FFB539;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody .text-danger {
+	color: #ef1616;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody .text-success {
+	color: #29b206;
+	font-weight: 700;
+}
+
+#outpostConsumables #outpostConsumablesBody .text-muted {
+	color: #8a8a8a;
+}
+
+#outpostConsumables #outpostConsumablesBody td {
+	position: relative;
+}
+
+#outpostConsumables #outpostConsumablesBody .diplomacy-ask {
+	font-weight: 700;
+	display: inline-block;
+	margin-left: 6px;
+	background: #2196f3;
+	padding: 0 4px;
+	border-radius: 50%;
+	width: 10px;
+	line-height: 1.3em;
+	z-index: 1;
+}
+
+#outpostConsumables #outpostConsumablesBody .diplomacy-tip {
+	position: absolute;
+	white-space: nowrap;
+	text-align: left;
+	background: rgba(0,0,0, 0.7);
+	padding: 5px;
+	right: 6px;
+	top: 25px;
+	z-index: 1;
+	display: none;
+}
+
+#outpostConsumables #outpostConsumablesBody .diplomacy-ask:hover .diplomacy-tip {
+	display: block;
+}
+
+
 
 #outpostConsumables .info-line {
 	display: flex;

@@ -100,7 +100,7 @@ let Productions = {
 	 * @constructor
 	 */
 	GetSavedData: ()=> {
-		return CityMapData;
+		return MainParser.CityMapData;
 	},
 
 
@@ -949,7 +949,7 @@ let Productions = {
 	 */
 	ShowFunction: (id)=> {
 
-		CityMap.init(CityMapData);
+		CityMap.init(MainParser.CityMapData);
 
 		$('[data-entityid]').removeClass('pulsate');
 

@@ -20,7 +20,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
     ExtWorld = '',
     CurrentEraID = null,
     BuildingNamesi18n = false,
-	CityMapData = null,
     GoodsData = [],
 	GoodsList = [],
 	PlayerDict = {},
@@ -52,12 +51,19 @@ const FoEproxy = (function () {
 		return data;
 	}
 
+	// XHR-handler
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+
 	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+
 	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
+
+	// Websocket-Handler
+	const wsHandlerMap = {};
+	let wsRawHandler = [];
 	
 	const proxy = {
 		/**
@@ -149,8 +155,162 @@ const FoEproxy = (function () {
 
 		removeRawHandler: function(callback) {
 			proxyRaw = proxyRaw.filter(c => c !== callback);
+		},
+
+		/**
+		 * Fügt einen datenhandler für Nachrichtedn des WebSockets hinzu.
+		 * @param {string} service Der Servicewert, der in der Nachricht gesetzt sein soll oder 'all'
+		 * @param {string} method Der Methodenwert, der in der Nachricht gesetzt sein soll oder 'all'
+		 * TODO: Genaueren Typ für den Callback definieren
+		 * @param {(data: FoE_NETWORK_TYPE) => void} callback Der Handler, welcher mit der Nachricht aufgerufen werden soll.
+		 */
+		addWsHandler: function(service, method, callback) {
+			// default service and method to 'all'
+			if (method === undefined) {
+				// @ts-ignore
+				callback = service;
+				service = method = 'all';
+			} else if (callback === undefined) {
+				// @ts-ignore
+				callback = method;
+				method = 'all';
+			}
+
+			let map = wsHandlerMap[service];
+			if (!map) {
+				wsHandlerMap[service] = map = {};
+			}
+			let list = map[method];
+			if (!list) {
+				map[method] = list = [];
+			}
+			if (list.indexOf(callback) !== -1) {
+				// already registered
+				return;
+			}
+			list.push(callback);
+		},
+
+		removeWsHandler: function(service, method, callback) {
+			// default service and method to 'all'
+			if (method === undefined) {
+				callback = service;
+				service = method = 'all';
+			} else if (callback === undefined) {
+				callback = method;
+				method = 'all';
+			}
+
+			let map = wsHandlerMap[service];
+			if (!map) {
+				return;
+			}
+			let list = map[method];
+			if (!list) {
+				return;
+			}
+			map[method] = list.filter(c => c !== callback);
+		},
+
+		// for raw requests access
+		addRawWsHandler: function(callback) {
+			if (wsRawHandler.indexOf(callback) !== -1) {
+				// already registered
+				return;
+			}
+
+			wsRawHandler.push(callback);
+		},
+
+		removeRawWsHandler: function(callback) {
+			wsRawHandler = wsRawHandler.filter(c => c !== callback);
 		}
 	};
+
+	// ###########################################
+	// ############## Websocket-Proxy ############
+	// ###########################################
+	{
+		/**
+		 * This function gets the callbacks from wsHandlerMap[service][method] and executes them.
+		 * @param {string} service
+		 * @param {string} method
+		 * @param {FoE_NETWORK_TYPE} data
+		 */
+		function _proxyWsAction(service, method, data) {
+			const map = wsHandlerMap[service];
+			if (!map) {
+				return;
+			}
+			const list = map[method];
+			if (!list) {
+				return;
+			}
+			for (let callback of list) {
+				try {
+					callback(data);
+				} catch (e) {
+					console.error(e);
+				}
+			}
+		}
+
+		/**
+		 * This function gets the callbacks from wsHandlerMap[service][method],wsHandlerMap[service]['all'],wsHandlerMap['all'][method] and wsHandlerMap['all']['all'] and executes them.
+		 * @param {string} service
+		 * @param {string} method
+		 * @param {FoE_NETWORK_TYPE} data
+		 */
+		function proxyWsAction(service, method, data) {
+			_proxyWsAction(service, method, data);
+			_proxyWsAction('all', method, data);
+			_proxyWsAction(service, 'all', data);
+			_proxyWsAction('all', 'all', data);
+		}
+
+		const oldWSSend = WebSocket.prototype.send;
+		/**
+		 * @this {WebSocket}
+		 * @param {MessageEvent} evt
+		 */
+		function wsMessageCollector(evt) {
+			try {
+				if (evt.data === 'PONG') return;
+				/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
+				const data  = JSON.parse(evt.data);
+
+				// do raw-ws-handlers
+				for (let callback of wsRawHandler) {
+					try {
+						callback(data);
+					} catch (e) {
+						console.error(e);
+					}
+				}
+
+				// do ws-handlers
+				if (data instanceof Array) {
+					for (let entry of data) {
+						proxyWsAction(entry.requestClass, entry.requestMethod, entry);
+					}
+				} else if (data.__class__ === "ServerResponse") {
+					proxyWsAction(data.requestClass, data.requestMethod, data);
+				}
+			} catch (e) {
+				console.error(e);
+			}
+		}
+
+		WebSocket.prototype.send = function (data) {
+			oldWSSend.call(this, data);
+			this.addEventListener('message', wsMessageCollector, {capture: false, passive: true});
+			this.send = oldWSSend;
+		};
+	}
+
+	// ###########################################
+	// ################# XHR-Proxy ###############
+	// ###########################################
 	
 	/**
 	 * This function gets the callbacks from proxyMap[service][method] and executes them.
@@ -264,29 +424,35 @@ const FoEproxy = (function () {
 	return proxy;
 })();
 
+//FoEproxy.addRawHandler((xhr, postData) => {
+//	if(postData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+//		console.log('URL: ', postData.url, xhr.responseText);
+//	}
+//});
+
 (function () {
 	
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		BuildingNamesi18n = [];
 
-		let j = JSON.parse(xhr.responseText);
+		const j = JSON.parse(xhr.responseText);
 
 		sessionStorage.setItem('BuildingsData', JSON.stringify(j));
 
-				for (let i in j)
-				{
-					if (j.hasOwnProperty(i))
-					{
-						BuildingNamesi18n[j[i]['asset_id']] = {
-							name: j[i]['name'],
-							width: j[i]['width'],
-							height: j[i]['length'],
-							type: j[i]['type'],
-							provided_happiness: j[i]['provided_happiness'],
-							population: undefined,
-							entity_levels : j[i]['entity_levels'],
-						};
+		for (let i in j)
+		{
+			if (j.hasOwnProperty(i))
+			{
+				BuildingNamesi18n[j[i]['asset_id']] = {
+					name: j[i]['name'],
+					width: j[i]['width'],
+					height: j[i]['length'],
+					type: j[i]['type'],
+					provided_happiness: j[i]['provided_happiness'],
+					population: undefined,
+					entity_levels : j[i]['entity_levels'],
+				};
 
 				if(j[i]['abilities'] !== undefined)
 				{
@@ -325,7 +491,7 @@ const FoEproxy = (function () {
 		Unit.Types = JSON.parse(xhr.responseText);
 	});
 
-	// Portrait-Mapping für Spiler Avatare
+	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
 		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
 			let portraits = {};
@@ -358,6 +524,9 @@ const FoEproxy = (function () {
 
 		// PlayerDict
 		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
+
+		// freigeschaltete Erweiterungen sichern
+		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
 	
 	// --------------------------------------------------------------------------------------------------
@@ -500,7 +669,7 @@ const FoEproxy = (function () {
 	// lgUpdateData sammelt die informationen aus mehreren Handlern
 	let lgUpdateData = null;
 	
-	FoEproxy.addHandler('GreatBuildingsService', (data, postData) => {
+	FoEproxy.addHandler('GreatBuildingsService', 'all', (data, postData) => {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
@@ -696,7 +865,7 @@ const FoEproxy = (function () {
 		if (MainParser.checkNextUpdate('GuildExpedition') !== true) {
 			return;
 		}
-		MainParser.GuildExpedition(GEXList['responseData']);
+		MainParser.GuildExpedition(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -818,7 +987,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: *, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: *, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -832,6 +1001,8 @@ let MainParser = {
 	EmissaryService: null,
 	PlayerPortraits: null,
 	Conversations: [],
+	CityMapData: null,
+	UnlockedAreas: null,
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -1339,7 +1510,7 @@ let MainParser = {
 	 * @constructor
 	 */
 	SaveBuildings: (d)=>{
-		CityMapData = d;
+		MainParser.CityMapData = d;
 
 		if(Settings.GetSetting('GlobalSend') === false)
 		{
@@ -1631,7 +1802,7 @@ let MainParser = {
 			for(let k in d['teasers']){
 
 				if(!d['teasers'].hasOwnProperty(k)){
-					break;
+					continue;
 				}
 
 				// prüfen ob es zur ID einen key gibt
@@ -1655,12 +1826,12 @@ let MainParser = {
 
 			for(let k in d){
 				if(!d.hasOwnProperty(k)){
-					break;
+					continue;
 				}
 
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
 
-				if(key !== undefined) {
+				if(key !== -1) {
 					MainParser.Conversations[key]['title'] = d[k]['title'];
 
 				} else {

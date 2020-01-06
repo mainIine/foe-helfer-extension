@@ -60,7 +60,7 @@ let Unit = {
 	BuildBox:()=> {
 
 		let top = [],
-			alca = CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+			alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
 
 		if(alca !== undefined){
 			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);

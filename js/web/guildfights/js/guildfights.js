@@ -73,28 +73,15 @@ let GildFights = {
 	init: ()=> {
 
 		if(GildFights.InjectionLoaded === false){
-			WebSocket.prototype._send = WebSocket.prototype.send;
+			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
+				if ($('#LiveGildFighting').length > 0) {
 
-			WebSocket.prototype.send = function (data) {
-
-				this._send(data);
-
-				this.addEventListener('message', function(msg) {
-					if(msg.data !== 'PONG' && $('#LiveGildFighting').length > 0){
-						let d = JSON.parse(msg.data)[0];
-
-						if(d['requestClass'] === 'GuildBattlegroundService' && d['responseData'][0] !== undefined){
-							// console.log('msg', d['responseData'][0]);
-							GildFights.RefreshTable(d['responseData'][0]);
-						}
+					if(data.responseData[0] !== undefined){
+						// console.log('msg', data.responseData[0]);
+						GildFights.RefreshTable(data.responseData[0]);
 					}
-
-				}, false);
-
-				this.send = function (data) {
-					this._send(data);
-				};
-			};
+				}
+			});
 
 			GildFights.InjectionLoaded = true;
 		}
