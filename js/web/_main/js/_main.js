@@ -423,11 +423,17 @@ const FoEproxy = (function () {
 	return proxy;
 })();
 
+//FoEproxy.addRawHandler((xhr, postData) => {
+//	if(postData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+//		console.log('URL: ', postData.url, xhr.responseText);
+//	}
+//});
+
 (function () {
 	
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		const BuildingNamesi18n = [];
+		BuildingNamesi18n = [];
 
 		const j = JSON.parse(xhr.responseText);
 
