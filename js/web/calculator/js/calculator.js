@@ -122,7 +122,8 @@ let Calculator = {
 		}
 
         // BuildingName konnte nicht aus der BuildingInfo geladen werden
-        let BuildingName = BuildingNamesi18n[UpdateEntity['cityentity_id']]['name'];
+		let BuildingName = BuildingNamesi18n[UpdateEntity['cityentity_id']]['name'];
+		let Level = (UpdateEntity['level'] !== undefined ? UpdateEntity['level'] : 0);
         
         h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
@@ -131,7 +132,7 @@ let Calculator = {
 		if (Calculator.PlayerName !== undefined) {
 			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
 		}
-		h.push('</strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + UpdateEntity['level'] + ' &rarr; ' + (parseInt(UpdateEntity['level']) + 1) + '</p>');
+		h.push('</strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + Level + ' &rarr; ' + (Level + 1) + '</p>');
         
         // FP im Lager
         h.push('<p>' + i18n['Boxes']['Calculator']['AvailableFP'] + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
@@ -200,12 +201,7 @@ let Calculator = {
         }
  
         Calculator.CalcBody();
-
-        // alle Ansichten aktualisieren
-        setTimeout(() => {
-                StrategyPoints.ForgePointBar(StrategyPoints.AvailableFP);
-            }, 200);
-        
+		        
         // schnell zwischen den Prozenten wechseln
         $('body').on('click', '.btn-toggle-arc', function () {
 
