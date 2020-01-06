@@ -27,7 +27,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = false;
+	UsePartCalcOnAllLGs = true;
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -1716,7 +1716,9 @@ let MainParser = {
 		if (Source === 'Conversation') {
 			for (let i in d['messages']) {
 				let Message = d['messages'][i];
-				MainParser.UpdatePlayerDictCore(Message.sender);
+				if (Message.sender !== undefined) {
+					MainParser.UpdatePlayerDictCore(Message.sender);
+				}
 			}
 		}
 		else if (Source === 'LGOverview') {
