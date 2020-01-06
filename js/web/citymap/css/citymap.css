@@ -1,0 +1,199 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 citymap.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              04.01.20, 20:00 Uhr
+ * zuletzt bearbeitet:       04.01.20, 19:58 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+#city-map-overlay {
+	left: 15px;
+	width: 70em;
+	bottom: 15px;
+	top: 15px;
+}
+
+#city-map-overlayBody.window-body {
+	position: relative;
+}
+
+#city-map-menu {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+	border-bottom: 2px solid #281207;
+	height: 30px;
+}
+
+#map-container {
+	overflow: auto;
+	margin-top: 40px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+#grid-outer {
+	position: relative;
+}
+
+#grid-outer * {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+#grid-outer[data-view="skew"] {
+	transform: rotate(33deg) skew(-30deg,-5deg);
+}
+
+#map-grid {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+#map-grid span[data-grid] {
+	display: inline-block;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+[data-unit="1"] #map-grid {
+	width: 60.1em;
+	height: 64em;
+}
+[data-unit="1"][data-view="skew"] {
+	transform: translate(0,-20%);
+}
+[data-unit="1"] #map-grid span[data-grid] {
+	width: 1em;
+	height: 1em;
+}
+
+[data-unit="1.5"] #map-grid {
+	width: 40.06666666667em;
+	height: 42.666666666667em;
+}
+[data-unit="1.5"] #map-grid span[data-grid] {
+	width: 0.6em;
+	height: 0.6em;
+}
+
+[data-unit="2"] #map-grid {
+	width: 30.05em;
+	height: 32em;
+}
+[data-unit="2"] #map-grid span[data-grid] {
+	width: 0.5em;
+	height: 0.5em;
+}
+
+#grid-outer span.entity {
+	display: block;
+	background-color: #fff;
+	position: absolute;
+	z-index: 1;
+	border: 1px solid;
+
+	transition: all 0.3s ease-in-out;
+}
+
+#grid-outer span.residential {
+	background-color: #7abaff;
+	border-color: #219eff;
+}
+#grid-outer span.decoration {
+	background-color: #497445;
+	border-color: #1c7430;
+}
+#grid-outer span.street {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+#grid-outer span.goods {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+#grid-outer span.culture {
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+#grid-outer span.main_building {
+	background-color: #ffb100;
+	border-color: #ffb100;
+}
+#grid-outer span.production {
+	background-color: #416dff;
+	border-color: #2732ff;
+}
+#grid-outer span.greatbuilding {
+	background-color: #ff5026;
+	border-color: #ff2101;
+}
+#grid-outer span.random_production {
+	background-color: #a8ff18;
+	border-color: #4cff11;
+}
+#grid-outer span.tower {
+	background-color: #cdcdcd;
+	border-color: #787a7a;
+}
+
+#grid-outer span span {
+	display: none;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	padding: 2px 3px;
+	background-color: #333;
+	white-space: nowrap;
+}
+
+#grid-outer span:hover span {
+	display: inline-block;
+}
+
+@-webkit-keyframes pulse {
+	0% { -webkit-transform: scale(0.9); opacity: 0.7; }
+	50% { -webkit-transform: scale(1); opacity: 1; }
+	100% { -webkit-transform: scale(0.9); opacity: 0.7; }
+}
+
+@keyframes pulse {
+	0% { transform: scale(0.9); opacity: 0.7; }
+	50% { transform: scale(1); opacity: 1; }
+	100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.pulsate {
+	-webkit-animation: pulse 1s infinite ease-in-out;
+	-o-animation: pulse 1s infinite ease-in-out;
+	-ms-animation: pulse 1s infinite ease-in-out;
+	-moz-animation: pulse 1s infinite ease-in-out;
+	animation: pulse 1s infinite ease-in-out;
+}
+
+/* ------------------------------------------------------------------------- */
+
+#CityMapSubmit {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 300px;
+}
+
+#CityMapSubmit #CityMapSubmitBody {
+	padding: 0.3rem;
+}

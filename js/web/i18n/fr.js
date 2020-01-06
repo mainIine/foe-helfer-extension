@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
             "OwnPartRemaining": "Remaining",
-            "Done": "Fini",
+			"Done": "Fini",
+			"BPs": "Plan", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
+			"Ext": "Ext", //Todo: Translate
+			"Arc": "Arche", //Todo: Translate
 			"Order": "Séquence",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
@@ -53,7 +57,8 @@ let i18n = {
 			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
-            "Profit": "Profit",
+			"Profit": "Profit",
+			"LevelWarning": "ATTENTION: nivelez le bâtiment légendaire!", //Todo: Translate
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
@@ -86,6 +91,8 @@ let i18n = {
 			"Total" : "Total: ",
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
+			"Happiness": "satisfaction",
+			"AdjacentBuildings": "bâtiment adjacent",
 			"Headings" : {
 				"number" : "Occurences",
 				"amount" : "Nombre",
@@ -94,7 +101,12 @@ let i18n = {
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
 				"residential" : "Bâtiments événementiels",
-				"main_building" : "Hôtel de ville",
+				"decoration": "décorations", //Todo: Translate
+				"street": "Rues", //Todo: Translate
+				"goods": "Bâtiment fret", //Todo: Translate
+				"culture": "Bâtiments culturels", //Todo: Translate
+				"main_building": "Hôtel de ville",
+				"boost": "Augmentation", //Todo: Translate
 				"all" : "Tout"
 			}
 		},
@@ -184,11 +196,13 @@ let i18n = {
 			"FilterAuction" : "Enchères",
 			"FilterLevel" : "Niveau supérieur",
 			"FilterMessage" : "Message",
+			"FilterTrade" : "Commerce",
 			"ResetBox" : "Vider la boîte",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ Punkte points au GEX.",
 				"LevelUp" : "Le __building__ de __player__'s vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__</strong>ème place",
 				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
+				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez __needValue__ __need__ pour __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Niveau __level__"
 			}
 		},
@@ -196,6 +210,9 @@ let i18n = {
 		"Units" : {
 			"Title": "Army overview",
 			"NextUnitsIn": "Les __count__ prochaines unités arriveront dans <span class=\"alca-countdown\"></span> à __harvest__",
+			"ReadyToLoot": "Prêt à récolter!",
+			"Proportionally": "En proportion",
+			"Quantity": "Nombre",
 			"Unit": "Unité",
 			"Status": "Status",
 			"Attack": "Attaque",

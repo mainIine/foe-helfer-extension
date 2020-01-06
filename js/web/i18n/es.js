@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Cuota propia",
 			"LGTotalFP": "Gran edificio FP en total",
             "OwnPartRemaining": "quedan",
-            "Done": "Listo",
+			"Done": "Listo",
+			"BPs": "Plano", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
+			"Ext": "Ext", //Todo: Translate
+			"Arc": "Arca", //Todo: Translate
 			"Order": "Orden",
 			"Deposit": "Ingresar",
 			"CopyValues": "Copiar valores",
@@ -54,6 +58,7 @@ let i18n = {
 			"Save": "Guardar",
 			"Commitment": "Contribucion",
 			"Profit": "Ganancia",
+			"LevelWarning": "ATENCIÓN: nivela el legendario edificio!", //Todo: Translate
 			"NoFPorMedsAvailable": "No hay FP o planos disponibles",
 			"LGNotOpen": "El proximo nivel no esta disponible todavia",
 			"LGNotConnected": "El edificio no esta conectado a una carretera",
@@ -86,6 +91,8 @@ let i18n = {
 			"Total" : "Gesamt: ",
 			"ModeGroups": "Gruppiert",
 			"ModeSingle": "Einzeln",
+			"Happiness": "Happiness", //Todo: Translate
+			"AdjacentBuildings": "Adjacent buildings", //Todo: Translate
 			"Headings" : {
 				"number" : "Numero",
 				"amount" : "Cantidad",
@@ -94,7 +101,12 @@ let i18n = {
 				"production" : "Edificios de produccion",
 				"random_production" : "Produccion casual",
 				"residential" : "Edificio de evento",
+				"decoration": "Decorations",
+				"street": "Streets",
+				"goods": "Goods buildings",
+				"culture": "Cultural buildings",
 				"main_building" : "Ayuntamiento",
+				"boost": "Boost",
 				"all" : "Todos"
 			}
 		},
@@ -180,15 +192,17 @@ let i18n = {
 		"Infobox" : {
 			"Title" : "Infobox",
 			"Filter" : "Filtro",
-			"FilterEG" : "EG",
+			"FilterGex" : "EG",
 			"FilterAuction" : "Subasta",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Mensaje",
+			"FilterTrade" : "Comercio",
 			"ResetBox" : "Vaciar el box",
 			"Messages" : {
-				"EG" : "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
+				"GEX" : "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
 				"LevelUp" : "__player__'s __building__ ha conseguido __level__ .<br>Tu conseguistes el <strong>__rank__</strong> ",
 				"Auction" : "<strong>__player__</strong> ha pujado ahora mismo__amount__ monedas",
+				"Trade" : "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - nivel __level__"
 			}
 		},
@@ -196,6 +210,9 @@ let i18n = {
 		"Units" : {
 			"Title": "Resumen del ejercito",
 			"NextUnitsIn": "Las proximas __count__ unidades llegan <span class=\"alca-countdown\"></span> a las __harvest__ horas",
+			"ReadyToLoot": "Listo para la cosecha!",
+			"Proportionally": "En proporción",
+			"Quantity": "Cantidad",
 			"Unit": "Unidad",
 			"Status": "Estado",
 			"Attack": "Ataque",
@@ -287,7 +304,7 @@ let i18n = {
 			"Title" : "Actividad de motivar",
 			"Desc" : "Quieres que sean transferidas las actividades de motivar al iniciar?"
 		},
-		"SendEGInfo": {
+		"SendGEXInfo": {
 			"Title" : "EG evaluaciones",
 			"Desc" : "Transmite los datos de EG al hacer clic en rankings o colocaciones"
 		},
@@ -306,10 +323,6 @@ let i18n = {
 		"ShowTavernBadge": {
 			"Title" : "Mostrar placa de tabernas ",
 			"Desc" : "Tan pronto como se activa un boost en la taberna, aparece un contador, globalmente desplazable"
-		},
-		"SendGEXInfo": {
-			"Title" : "GEX Auswertungen",
-			"Desc" : "Übermittelt beim Klicken in der GEX auf Platzierungen oder Rangliste die Daten"
 		},
 		"ShowOutpost": {
 			"Title" : "Recursos de los asentamientos culturales",
@@ -368,8 +381,8 @@ let i18n = {
 
 	"API" : {
 		"UpdateSuccess" : "Actualizacion realizada",
-		"EGPlayer" : "Se han actualizado los puestos de los miembros en la EG",
-		"EGChampionship" : "Se ha actualizado el puesto del gremio en la EG",
+		"GEXPlayer" : "Se han actualizado los puestos de los miembros en la EG",
+		"GEXChampionship" : "Se ha actualizado el puesto del gremio en la EG",
 		"LGInvest" : "Tus inversiones en grandes edifivios han sido transferidos",
 		"LGGildMember" : "__player__'s GEs han sido transferidos"
 	}

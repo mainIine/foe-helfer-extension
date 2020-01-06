@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 22:44 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:31 Uhr
+ * erstellt am:	              22.12.19, 14:31 Uhr
+ * zuletzt bearbeitet:       22.12.19, 13:50 Uhr
  *
  * Copyright © 2019
  *
@@ -16,8 +16,8 @@
 let ant = document.createElement('script'),
 	v = chrome.runtime.getManifest().version;
 
-ant.src = chrome.extension.getURL('js/web/ant.js?v=' + v);
-ant.id = 'ant-script';
+ant.src = chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v);
+ant.id = 'main-script';
 
 ant.onload = function(){
 	this.remove();
@@ -55,8 +55,6 @@ if(PossibleLangs.includes(lng) === false)
 if(uLng !== null){
 	lng = uLng;
 }
-
-console.log('lng: ', lng);
 
 let i18nJS = document.createElement('script');
 i18nJS.src = chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v);
@@ -139,7 +137,7 @@ function InjectCode()
 
 	let s = [
 		'helper',
-		'menu',
+		'_menu',
 		'tavern',
 		'outposts',
 		'calculator',
@@ -162,7 +160,7 @@ function InjectCode()
 	for (let i in s) {
 		if (s.hasOwnProperty(i)) {
 			let sc = document.createElement('script');
-			sc.src = extURL + 'js/web/' + s[i] + '.js?v=' + v;
+			sc.src = extURL + 'js/web/' + s[i] + '/js/' + s[i] + '.js?v=' + v;
 			sc.onload = function () {
 				this.remove();
 			};
