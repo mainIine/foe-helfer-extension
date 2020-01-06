@@ -1,6 +1,20 @@
 ##Changelog - Chrome Extension
 
-#####2.3.14
+#####2.3.15.1
+
+**Update**
+- Erntehelfer:
+    - Sortierung geändert, Münzen und Werkzeugen werden erst am Ende der Tabelle angezeigt
+
+
+**BugFix**
+- Gebäudenamen
+    - fehlerhafte Konstante konnte Extensionübersetzungen zerstören
+    
+
+---
+
+#####2.3.15
 
 **Neu**
 - Gildengefechte: 
