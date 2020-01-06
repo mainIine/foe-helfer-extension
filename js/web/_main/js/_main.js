@@ -355,6 +355,9 @@ const FoEproxy = (function () {
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
+
+		// PlayerDict
+		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
 	});
 	
 	// --------------------------------------------------------------------------------------------------
@@ -401,7 +404,14 @@ const FoEproxy = (function () {
 
 	// Nachricht geöffnet
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
-		MainParser.UpdatePlayerDictFromMessages(data.responseData)
+		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
+	});
+
+	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
+	FoEproxy.addHandler('OtherPlayerService', (data, postData) => {
+		if (data.requestMethod === 'getNeighborList' || data.requestMethod === 'getFriendsList' || data.requestMethod === 'getClanMemberList') {
+			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList');
+		}
 	});
 	   
 	// --------------------------------------------------------------------------------------------------
@@ -464,6 +474,8 @@ const FoEproxy = (function () {
 	// Übersicht der LGs eines Nachbarn
 	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
+
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
@@ -492,7 +504,7 @@ const FoEproxy = (function () {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
-
+		
 		let Rankings;
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
@@ -517,6 +529,10 @@ const FoEproxy = (function () {
 				lgUpdate();
 			}
 		}
+	});
+
+	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
@@ -1520,20 +1536,55 @@ let MainParser = {
 
 		
 	/**
-	 * Übersetzungen für die Güter zusammen setzen
+	 * Spielerinfos Updaten von Nachrichtenliste
 	 *
 	 * @param d
+	 * @param Source
 	 */
-	UpdatePlayerDictFromMessages: (d) => {
-		for (let i in d['messages']) {
-			let Message = d['messages'][i];
-			let PlayerID = Message['sender']['player_id'];
-
-			if (PlayerID !== undefined) {
-				if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
-				PlayerDict[PlayerID]['PlayerID'] = PlayerID;
-				PlayerDict[PlayerID]['PlayerName'] = Message['sender']['name'];
+	UpdatePlayerDict: (d, Source) => {
+		if (Source === 'Conversation') {
+			for (let i in d['messages']) {
+				let Message = d['messages'][i];
+				MainParser.UpdatePlayerDictCore(Message.sender);
 			}
+		}
+		else if (Source === 'LGOverview') {
+			MainParser.UpdatePlayerDictCore(d[0].player);
+		}
+		else if (Source === 'LGContributions') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i].player);
+			}
+		}
+		else if (Source === 'StartUpService') {
+			for (let i in d.socialbar_list) {
+				MainParser.UpdatePlayerDictCore(d.socialbar_list[i]);
+			}
+		}
+		else if (Source === 'PlayerList') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i]);
+			}
+		}
+	},
+
+
+	/**
+	* Spielerinfos Updaten
+	*
+	* @param d
+	*/
+	UpdatePlayerDictCore: (Player) => {
+		let PlayerID = Player['player_id'];
+
+		if (PlayerID !== undefined) {
+			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
+			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
+			if (Player['clan'] !== undefined) PlayerDict[PlayerID]['ClanName'] = Player['clan']['name'];
+			if (Player['is_neighbor'] !== undefined) PlayerDict[PlayerID]['IsNeighbor'] = Player['is_neighbor'];
+			if (Player['is_guild_member'] !== undefined) PlayerDict[PlayerID]['IsGuildMember'] = Player['is_guild_member'];
+			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
 		}
 	},
 
@@ -1587,7 +1638,7 @@ let MainParser = {
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
 
 				// Konversation gibt es schon
-				if(key !== undefined){
+				if(key !== -1){
 					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
 				}
 				// ... gibt es noch nicht

@@ -83,8 +83,8 @@ let Calculator = {
             Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
         }
 
-        let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
-			PlayerName,
+		let Overview = sessionStorage.getItem('OtherActiveBuildingOverview'),
+			PlayerID = UpdateEntity['player_id'],
             h = [];
 		
         // ab hier wurde ein einzelnes LG geöffnet
@@ -93,8 +93,9 @@ let Calculator = {
 
         // Wenn sich Spieler geändert hat, dann BuildingName/PlayerName zurücksetzen
         if (UpdateEntity['player_id'] !== Calculator.LastPlayerID) {
-            PlayerName = undefined;
-        }
+			Calculator.PlayerName = undefined;
+			Calculator.ClanName = undefined;
+		}
 
 		Calculator.OpenedFromOverview = false;
         // Übersicht vorhanden
@@ -107,14 +108,17 @@ let Calculator = {
             });
 
             // Übersicht vom richtigen Spieler vorhanden => Spielername auslesen
-			if (BuildingInfo !== undefined && BuildingInfo['player']['player_id'] === UpdateEntity['player_id']) {
+			if (BuildingInfo !== undefined && BuildingInfo['player']['player_id'] === PlayerID) {
 				Calculator.OpenedFromOverview = true;
-				PlayerName = BuildingInfo['player']['name'];
+				Calculator.PlayerName = BuildingInfo['player']['name'];
 			}
         }
 
-		if (PlayerName === undefined && PlayerDict[UpdateEntity['player_id']] !== undefined) {
-			PlayerName = PlayerDict[UpdateEntity['player_id']]['PlayerName'];
+		if (Calculator.PlayerName === undefined && PlayerDict[UpdateEntity['player_id']] !== undefined) {
+			Calculator.PlayerName = PlayerDict[PlayerID]['PlayerName'];
+		}
+		if (PlayerDict[PlayerID] !== undefined && PlayerDict[PlayerID]['ClanName'] !== undefined) {
+			Calculator.ClanName = PlayerDict[PlayerID]['ClanName'];
 		}
 
         // BuildingName konnte nicht aus der BuildingInfo geladen werden
@@ -123,7 +127,11 @@ let Calculator = {
         h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
         // LG - Daten + Spielername
-        h.push('<p class="header"><strong><span>' + BuildingName + '</span>' + (PlayerName !== undefined ? ' - ' + PlayerName : '') + ' </strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + UpdateEntity['level'] + ' &rarr; ' + (parseInt(UpdateEntity['level']) + 1) + '</p>');
+		h.push('<p class="header"><strong><span>' + BuildingName + '</span>');
+		if (Calculator.PlayerName !== undefined) {
+			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
+		}
+		h.push('</strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + UpdateEntity['level'] + ' &rarr; ' + (parseInt(UpdateEntity['level']) + 1) + '</p>');
         
         // FP im Lager
         h.push('<p>' + i18n['Boxes']['Calculator']['AvailableFP'] + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
