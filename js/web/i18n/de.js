@@ -225,7 +225,7 @@ let i18n = {
 		"CityMap": {
 			"Title": "Daten übermitteln",
 			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
-			"Desc2": "<button class='btn-default' id='submit-data' style='color: #F3D6A0' onclick='CityMap.SubmitData()'>Abschicken</button>",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
 			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
 		}
 	},

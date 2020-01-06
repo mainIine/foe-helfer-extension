@@ -176,7 +176,7 @@ let CityMap = {
 			}
 			// eigene Stadt
 			else {
-				MapData = CityMapData;
+				MapData = MainParser.CityMapData;
 			}
 
 			MapDataSorted = MapData.sort( function(X1, X2) {
@@ -254,14 +254,25 @@ let CityMap = {
 		}
 	},
 
+
+	/**
+	 * Areas und Stadtinfos zu foe-rechner.de schicken
+	 *
+	 * @constructor
+	 */
 	SubmitData: ()=> {
+
+		let d = {
+			entities: MainParser.CityMapData,
+			areas: MainParser.UnlockedAreas
+		};
 
 		chrome.runtime.sendMessage(extID, {
 			type: 'send2Api',
 			url: ApiURL + 'CityPlanner/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-			data: JSON.stringify(CityMapData)
+			data: JSON.stringify(d)
 		});
 
-		$('#msg-line').html('<span class="text-green">' + i18n['Boxes']['CityMap']['SubmitSuccess'] + '<a target="_blank" href="htpps://foe-rechner.de">foe-rechner.de</a></span>');
+		$('#msg-line').html('<span class="text-green">' + i18n['Boxes']['CityMap']['SubmitSuccess'] + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 	},
 };
