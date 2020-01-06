@@ -3,6 +3,51 @@
 #####2.3.14
 
 **Neu**
+- Gildengefechte: 
+    - [#206](https://github.com/dsiekiera/foe-helfer-extension/issues/206) - Snapshot zwischenspeichern
+
+**Update**
+- Produktionen:
+    - [#140](https://github.com/dsiekiera/foe-helfer-extension/issues/140) - Bevölkerung und Zufriedenheit hinzugefügt
+     
+- Verhandlungen:
+    - [#215](https://github.com/dsiekiera/foe-helfer-extension/issues/215) - Default Priorität von Marsgütern verringert
+     
+- Eigenanteilsrechner:
+    - [#263](https://github.com/dsiekiera/foe-helfer-extension/issues/263) - aktivierter Prozentbutton wird hervorgehoben
+
+- Außenposten:
+    - [#136](https://github.com/dsiekiera/foe-helfer-extension/issues/136) - Erweiterungen können geplant werden und Gesamtkosten werden mit aufgelistet
+    - [#240](https://github.com/dsiekiera/foe-helfer-extension/issues/240) - Kosten für die nächste Erweiterung wird angezeigt, Aktuelle Münzproduktion pro 4 Stunden wird angezeigt
+
+- Menü:
+    - [#196](https://github.com/dsiekiera/foe-helfer-extension/issues/196) - Die Menüleiste wird nun je nach Auflösung dynamisch in der Höhe angepasst
+
+**BugFix**
+
+- Produktionen:
+    - [#173](https://github.com/dsiekiera/foe-helfer-extension/issues/173) - Boost auf Grund von verärgerter/begeisterter Bevölkerung hinzugefügt, Vorratsboosts auf Nicht Produktionsgebäude korrigiert
+	- [#269](https://github.com/dsiekiera/foe-helfer-extension/issues/269) - Korrekte Karte wird beim Klick auf das Auge geladen (Gebäudestandort)
+    - [#246](https://github.com/dsiekiera/foe-helfer-extension/issues/246) - Fehler in der Güterübersicht des Gutes "Verpackungen" behoben.
+
+- Verhandlungen: 
+    - [#268](https://github.com/dsiekiera/foe-helfer-extension/issues/268) - Fehler bei der Erkennung der 4. Runde in der GEX bei deaktiviertem Tavernen Badge behoben
+    - [#215](https://github.com/dsiekiera/foe-helfer-extension/issues/215) - Fehler beim Ermitteln des aktuellen Lagerstandes bei deaktiviertem Außenpostenmodul behoben
+
+- Eigenanteilsrechner:
+    - [#248](https://github.com/dsiekiera/foe-helfer-extension/issues/248) - Falscher Name bei mehreren Accounts pro Browser
+
+- Infobox:
+    - [#207](https://github.com/dsiekiera/foe-helfer-extension/issues/207) - Eigener Name taucht nicht mehr auf
+    - [#262](https://github.com/dsiekiera/foe-helfer-extension/issues/262) - bessere Funktion zum updaten der Nachrichten-Überschriften
+    - [#281](https://github.com/dsiekiera/foe-helfer-extension/issues/281) - hing sich beim wechsel in die GildenGefechte auf
+
+
+---
+
+#####2.3.14
+
+**Neu**
 - Extension:
     - Spanisch eingefügt
 
