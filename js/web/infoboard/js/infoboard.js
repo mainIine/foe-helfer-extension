@@ -160,14 +160,14 @@ let Infoboard = {
 			s = c + '_' + m + t;
 
 		// Gibt es eine Funktion dafür?
-        if (Info[s] === undefined) {
+		if (Info[s] === undefined) {
 			return;
 		}
 
 		let bd = Info[s](Msg['responseData']);
 
-        if(bd === false){
-        	return;
+		if(bd === false){
+			return;
 		}
 
 		let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
@@ -279,12 +279,12 @@ let Info = {
 			// LG
 			if(d['attachment']['type'] === 'great_building') {
 				msg = HTML.i18nReplacer(
-						i18n['Boxes']['Infobox']['Messages']['MsgBuilding'],
-						{
-							'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-							'level': d['attachment']['level']
-						}
-					)
+					i18n['Boxes']['Infobox']['Messages']['MsgBuilding'],
+					{
+						'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+						'level': d['attachment']['level']
+					}
+				)
 			}
 			// Handel
 			else if(d['attachment']['type'] === 'trade_offer'){
@@ -311,14 +311,14 @@ let Info = {
 			class: 'level',
 			type: 'Level-Up',
 			msg: HTML.i18nReplacer(
-					i18n['Boxes']['Infobox']['Messages']['LevelUp'],
-					{
-						'player' : d['player']['name'],
-						'building': d['great_building_name'],
-						'level': d['attachment']['level'],
-						'rank' : d['rank']
-					}
-				)
+				i18n['Boxes']['Infobox']['Messages']['LevelUp'],
+				{
+					'player' : d['player']['name'],
+					'building': d['great_building_name'],
+					'level': d['attachment']['level'],
+					'rank' : d['rank']
+				}
+			)
 		};
 	},
 
@@ -335,13 +335,13 @@ let Info = {
 			type: i18n['Boxes']['Infobox']['FilterTrade'],
 			msg: HTML.i18nReplacer(
 				i18n['Boxes']['Infobox']['Messages']['Trade'],
-					{
-						'player' : d['other_player']['name'],
-						'offer': GoodsData[d['offer']['good_id']]['name'],
-						'offerValue': d['offer']['value'],
-						'need': GoodsData[d['need']['good_id']]['name'],
-						'needValue': d['need']['value']
-					}
+				{
+					'player' : d['other_player']['name'],
+					'offer': GoodsData[d['offer']['good_id']]['name'],
+					'offerValue': d['offer']['value'],
+					'need': GoodsData[d['need']['good_id']]['name'],
+					'needValue': d['need']['value']
+				}
 			)
 		}
 	},
@@ -364,12 +364,12 @@ let Info = {
 			class: 'gex',
 			type: 'GEX',
 			msg: HTML.i18nReplacer(
-					i18n['Boxes']['Infobox']['Messages']['GEX'],
-					{
-						'player' : d['player']['name'],
-						'points' : HTML.Format(d['expeditionPoints'])
-					}
-				)
+				i18n['Boxes']['Infobox']['Messages']['GEX'],
+				{
+					'player' : d['player']['name'],
+					'points' : HTML.Format(d['expeditionPoints'])
+				}
+			)
 		};
 	},
 
