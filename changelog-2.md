@@ -1,5 +1,20 @@
 ##Changelog - Chrome Extension
 
+
+#####2.3.15.1
+
+**Update**
+- Harvest-helper:
+    - Sorting changed, coins and tools are only shown at the end of the table
+
+
+**BugFix**
+- Building names:
+    - incorrect constant could destroy extension translations
+    
+
+---
+
 ##### 2.3.15
 
 **New**
