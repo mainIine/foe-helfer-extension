@@ -41,6 +41,9 @@ let CityMap = {
 
 			HTML.Box(args);
 
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('citymap');
+
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);
 			}, 100);
@@ -173,7 +176,7 @@ let CityMap = {
 			}
 			// eigene Stadt
 			else {
-				MapData = CityMapData;
+				MapData = MainParser.CityMapData;
 			}
 
 			MapDataSorted = MapData.sort( function(X1, X2) {
@@ -227,5 +230,49 @@ let CityMap = {
 	 */
 	hashCode: (str)=>{
 		return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
-	}
+	},
+
+
+	showSumbitBox: ()=> {
+		if( $('#city-map-submit').length < 1 )
+		{
+			HTML.Box({
+				'id': 'CityMapSubmit',
+				'title': i18n['Boxes']['CityMap']['Title'],
+				'auto_close': true,
+				'saveCords': false
+			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('citymap');
+
+			let desc = '<p class="text-center">' + i18n['Boxes']['CityMap']['Desc1'] + '</p>';
+
+			desc += '<p class="text-center" id="msg-line">' + i18n['Boxes']['CityMap']['Desc2'] + '</p>';
+
+			$('#CityMapSubmitBody').html(desc);
+		}
+	},
+
+
+	/**
+	 * Areas und Stadtinfos zu foe-rechner.de schicken
+	 *
+	 * @constructor
+	 */
+	SubmitData: ()=> {
+
+		let d = {
+			entities: MainParser.CityMapData,
+			areas: MainParser.UnlockedAreas
+		};
+
+		chrome.runtime.sendMessage(extID, {
+			type: 'send2Api',
+			url: ApiURL + 'CityPlanner/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			data: JSON.stringify(d)
+		});
+
+		$('#msg-line').html('<span class="text-green">' + i18n['Boxes']['CityMap']['SubmitSuccess'] + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+	},
 };

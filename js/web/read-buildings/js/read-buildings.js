@@ -200,6 +200,9 @@ let Reader = {
 
 		let h = CityMap.hashCode(Reader.player_name);
 
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('citymap');
+
 		if ($('#map' + h).length < 1) {
 			CityMap.init(Reader.CityEntities, Reader.player_name);
 		}

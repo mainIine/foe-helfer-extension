@@ -20,7 +20,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
     ExtWorld = '',
     CurrentEraID = null,
     BuildingNamesi18n = false,
-	CityMapData = null,
     GoodsData = [],
     GoodsList = [],
     ResourceStock = [],
@@ -54,8 +53,10 @@ const FoEproxy = (function () {
 	// XHR-handler
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+
 	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+
 	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
 
@@ -432,19 +433,19 @@ const FoEproxy = (function () {
 
 		sessionStorage.setItem('BuildingsData', JSON.stringify(j));
 
-				for (let i in j)
-				{
-					if (j.hasOwnProperty(i))
-					{
-						BuildingNamesi18n[j[i]['asset_id']] = {
-							name: j[i]['name'],
-							width: j[i]['width'],
-							height: j[i]['length'],
-							type: j[i]['type'],
-							provided_happiness: j[i]['provided_happiness'],
-							population: undefined,
-							entity_levels : j[i]['entity_levels'],
-						};
+		for (let i in j)
+		{
+			if (j.hasOwnProperty(i))
+			{
+				BuildingNamesi18n[j[i]['asset_id']] = {
+					name: j[i]['name'],
+					width: j[i]['width'],
+					height: j[i]['length'],
+					type: j[i]['type'],
+					provided_happiness: j[i]['provided_happiness'],
+					population: undefined,
+					entity_levels : j[i]['entity_levels'],
+				};
 
 				if(j[i]['abilities'] !== undefined)
 				{
@@ -483,7 +484,7 @@ const FoEproxy = (function () {
 		Unit.Types = JSON.parse(xhr.responseText);
 	});
 
-	// Portrait-Mapping für Spiler Avatare
+	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
 		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
 			let portraits = {};
@@ -513,6 +514,9 @@ const FoEproxy = (function () {
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
+
+		// freigeschaltete Erweiterungen sichern
+		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
 	
 	// --------------------------------------------------------------------------------------------------
@@ -835,7 +839,7 @@ const FoEproxy = (function () {
 		if (MainParser.checkNextUpdate('GuildExpedition') !== true) {
 			return;
 		}
-		MainParser.GuildExpedition(GEXList['responseData']);
+		MainParser.GuildExpedition(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -957,7 +961,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: *, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: *, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -971,6 +975,8 @@ let MainParser = {
 	EmissaryService: null,
 	PlayerPortraits: null,
 	Conversations: [],
+	CityMapData: null,
+	UnlockedAreas: null,
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
@@ -1478,7 +1484,7 @@ let MainParser = {
 	 * @constructor
 	 */
 	SaveBuildings: (d)=>{
-		CityMapData = d;
+		MainParser.CityMapData = d;
 
 		if(Settings.GetSetting('GlobalSend') === false)
 		{
