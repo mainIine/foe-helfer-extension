@@ -48,23 +48,11 @@ let Infoboard = {
 		Infoboard.Box();
 
 		if(Infoboard.InjectionLoaded === false){
-			WebSocket.prototype._send = WebSocket.prototype.send;
-
-			WebSocket.prototype.send = function (data) {
-				this._send(data);
-
-				this.addEventListener('message', function(msg) {
-					if(msg.data !== 'PONG' && $('#BackgroundInfo').length > 0){
-						Infoboard.BoxContent('in', JSON.parse(msg.data));
-					}
-
-				}, false);
-
-				this.send = function (data) {
-					this._send(data);
-				};
-			};
-
+			FoEproxy.addRawWsHandler(data => {
+				if ($('#BackgroundInfo').length > 0) {
+					Infoboard.BoxContent('in', data);
+				}
+			});
 			Infoboard.InjectionLoaded = true;
 		}
 	},
@@ -157,7 +145,6 @@ let Infoboard = {
 	 *
 	 * @param dir
 	 * @param data
-	 * @constructor
 	 */
 	BoxContent: (dir, data)=> {
 
@@ -173,14 +160,14 @@ let Infoboard = {
 			s = c + '_' + m + t;
 
 		// Gibt es eine Funktion dafür?
-        if (Info[s] === undefined) {
+		if (Info[s] === undefined) {
 			return;
 		}
 
 		let bd = Info[s](Msg['responseData']);
 
-        if(bd === false){
-        	return;
+		if(bd === false){
+			return;
 		}
 
 		let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
@@ -211,7 +198,6 @@ let Infoboard = {
 	/**
 	 * Filter für Message Type
 	 *
-	 * @constructor
 	 */
 	FilterInput: ()=>{
 
@@ -244,7 +230,6 @@ let Infoboard = {
 	/**
 	 * Leert die Infobox, auf Wunsch
 	 *
-	 * @constructor
 	 */
 	ResetBox: ()=> {
 		$('body').on('click', '.btn-reset-box', function(){
@@ -260,8 +245,7 @@ let Info = {
 	 * Jmd hat in einer Auktion mehr geboten
 	 *
 	 * @param d
-	 * @returns {{msg: string, type: string}}
-	 * @constructor
+	 * @returns {{class: 'auction', msg: string, type: string}}
 	 */
 	ItemAuctionService_updateBid: (d)=> {
 		return {
@@ -282,7 +266,7 @@ let Info = {
 	 * Nachricht von jemandem
 	 *
 	 * @param d
-	 * @constructor
+	 * @returns {{class: 'message', msg: string, type: string}}
 	 */
 	ConversationService_getNewMessage: (d)=> {
 		let msg;
@@ -295,12 +279,12 @@ let Info = {
 			// LG
 			if(d['attachment']['type'] === 'great_building') {
 				msg = HTML.i18nReplacer(
-						i18n['Boxes']['Infobox']['Messages']['MsgBuilding'],
-						{
-							'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-							'level': d['attachment']['level']
-						}
-					)
+					i18n['Boxes']['Infobox']['Messages']['MsgBuilding'],
+					{
+						'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+						'level': d['attachment']['level']
+					}
+				)
 			}
 			// Handel
 			else if(d['attachment']['type'] === 'trade_offer'){
@@ -320,22 +304,21 @@ let Info = {
 	 * LG wurde gelevelt
 	 *
 	 * @param d
-	 * @returns {{msg: string, type: string}}
-	 * @constructor
+	 * @returns {{class: 'level', msg: string, type: string}}
 	 */
 	OtherPlayerService_newEventgreat_building_contribution: (d)=> {
 		return {
 			class: 'level',
 			type: 'Level-Up',
 			msg: HTML.i18nReplacer(
-					i18n['Boxes']['Infobox']['Messages']['LevelUp'],
-					{
-						'player' : d['player']['name'],
-						'building': d['great_building_name'],
-						'level': d['attachment']['level'],
-						'rank' : d['rank']
-					}
-				)
+				i18n['Boxes']['Infobox']['Messages']['LevelUp'],
+				{
+					'player' : d['player']['name'],
+					'building': d['great_building_name'],
+					'level': d['attachment']['level'],
+					'rank' : d['rank']
+				}
+			)
 		};
 	},
 
@@ -344,22 +327,21 @@ let Info = {
 	 * Handel wurde angenommen
 	 *
 	 * @param d
-	 * @returns {{msg: string, type: string}}
-	 * @constructor
+	 * @returns {{class: 'trade', msg: string, type: string}}
 	 */
 	OtherPlayerService_newEventtrade_accepted:(d)=>{
-		return{
+		return {
 			class: 'trade',
 			type: i18n['Boxes']['Infobox']['FilterTrade'],
 			msg: HTML.i18nReplacer(
 				i18n['Boxes']['Infobox']['Messages']['Trade'],
-					{
-						'player' : d['other_player']['name'],
-						'offer': GoodsData[d['offer']['good_id']]['name'],
-						'offerValue': d['offer']['value'],
-						'need': GoodsData[d['need']['good_id']]['name'],
-						'needValue': d['need']['value']
-					}
+				{
+					'player' : d['other_player']['name'],
+					'offer': GoodsData[d['offer']['good_id']]['name'],
+					'offerValue': d['offer']['value'],
+					'need': GoodsData[d['need']['good_id']]['name'],
+					'needValue': d['need']['value']
+				}
 			)
 		}
 	},
@@ -370,7 +352,6 @@ let Info = {
 	 *
 	 * @param d
 	 * @returns {boolean|{msg: *, type: string, class: string}}
-	 * @constructor
 	 */
 	GuildExpeditionService_receiveContributionNotification: (d)=> {
 
@@ -383,12 +364,12 @@ let Info = {
 			class: 'gex',
 			type: 'GEX',
 			msg: HTML.i18nReplacer(
-					i18n['Boxes']['Infobox']['Messages']['GEX'],
-					{
-						'player' : d['player']['name'],
-						'points' : HTML.Format(d['expeditionPoints'])
-					}
-				)
+				i18n['Boxes']['Infobox']['Messages']['GEX'],
+				{
+					'player' : d['player']['name'],
+					'points' : HTML.Format(d['expeditionPoints'])
+				}
+			)
 		};
 	},
 
@@ -397,8 +378,8 @@ let Info = {
 	 * Sucht den Titel einer Nachricht heraus
 	 *
 	 * @param id
+	 * @param {string} name
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetConversationHeader: (id, name)=> {
 		if(MainParser.Conversations.length > 0){
