@@ -1007,7 +1007,7 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr','es'
+		'de', 'en', 'fr','es','ru'
 	],
 	BonusService: null,
 	EmissaryService: null,
