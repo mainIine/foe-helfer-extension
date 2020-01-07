@@ -245,9 +245,9 @@ let i18n = {
             "Warning": "Disabled: Open the research menu first!"
         },
         "Campagne": {
-            "Title": "Kampagne",
-            "Desc": "Übersicht über die benötigten Ressourcen",
-        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+            "Title": "Campaign",
+            "Desc": "Overview of the resources required",
+        	"Warning" : "Disabled: Visit a province first!"
 		},
         "Negotiation": {
             "Title": "Negotiation helper",
