@@ -547,6 +547,12 @@ const FoEproxy = (function () {
 		MainParser.CollectBoosts(data.responseData);
 	});
 
+	// --------------------------------------------------------------------------------------------------
+	// Quests
+	FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
+		MainParser.Quests = data.responseData;
+	});
+
 
 	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten
@@ -649,7 +655,7 @@ const FoEproxy = (function () {
 			return;
 		}
 		sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(data.responseData));
-		sessionStorage.setItem('DetailViewIsNewer', false);
+		Calculator.DetailViewIsNewer = false;
 
 		$('#calcFPs').removeClass('hud-btn-red');
 		$('#calcFPs-closed').remove();
@@ -774,7 +780,7 @@ const FoEproxy = (function () {
 
 			sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
 			sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
-			sessionStorage.setItem('DetailViewIsNewer', true);
+			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
 			if ($('#costCalculator').is(':visible')) {
@@ -1003,6 +1009,7 @@ let MainParser = {
 	Conversations: [],
 	CityMapData: null,
 	UnlockedAreas: null,
+	Quests: null,
 
 	BoostMapper: {
 		'supplies_boost': 'supply_production',

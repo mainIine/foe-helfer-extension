@@ -28,6 +28,7 @@ let Calculator = {
     LastPlayerID: 0,
     PlayInfoSound: null,
 	PlayOverviewInfoSound: null,
+	DetailViewIsNewer: false,
 	OpenedFromOverview: undefined,
 
 	/**
@@ -186,7 +187,24 @@ let Calculator = {
         // Wieviel fehlt noch bis zum leveln?
         let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
         
-        h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+
+		// Schleifenquest für "Benutze FP" suchen
+		for (let i in MainParser.Quests) {
+			let Exit = false;
+			let Quest = MainParser.Quests[i];
+
+			if (Quest.questGiver.id === 'scientist' && Quest.successConditions.length === 1) {
+				for (let j in Quest.successConditions) {
+					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
+					let MaxProgress = Quest.successConditions[j].maxProgress;
+					h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + 'Schleifenquest:' + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(MaxProgress - CurrentProgress) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>'); // Todo: Translate
+					Exit = true;
+					break;
+				}
+				if (Exit) break; // Ganz raus breaken
+			}
+		}
 
 
         // in die bereits vorhandene Box drücken
