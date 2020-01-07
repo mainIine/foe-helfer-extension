@@ -36,7 +36,7 @@ requestIdleCallback(checkForDOM);
 
 
 let tid = setInterval(InjectCSS, 0),
-	PossibleLangs = ['de','en','fr','es'],
+	PossibleLangs = ['de','en','fr','es','ru'],
 	lng = chrome.i18n.getUILanguage(),
 	uLng = localStorage.getItem('user-language');
 
