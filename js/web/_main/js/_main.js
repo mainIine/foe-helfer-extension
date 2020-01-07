@@ -982,6 +982,18 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 		Negotiation.ExitNegotiation(data.responseData);
 	});
+
+	FoEproxy.addRawWsHandler((data) => {
+		let Msg = data[0];
+		if(Msg === undefined || Msg['requestClass'] === undefined){
+			return ;
+		}
+		if(Msg['requestMethod'] === "newEvent" && Msg['responseData']['type'] === "trade_accepted"){
+			let d = Msg['responseData'];
+			ResourceStock[d['need']['good_id']] += d['need']['value'];
+		}
+	});
+
 })();
 
 
