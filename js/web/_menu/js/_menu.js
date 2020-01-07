@@ -376,8 +376,7 @@ let _menu = {
 
                 // Unterschiedliche Spieler => Öffne die neuere Ansicht
                 else {
-                    let DetailViewIsNewer = sessionStorage.getItem('DetailViewIsNewer');
-                    if (DetailViewIsNewer === "true") {
+                    if (Calculator.DetailViewIsNewer) {
                         Calculator.Show(Rankings, UpdateEntity);
                     }
                     else {
