@@ -491,7 +491,7 @@ let Outposts = {
 		let LastStartedTime = 0;
 		
 		let currentOutpost = outposts.find(
-			outpost => outpost.isActive && outpost.startedAt !== undefined && outpost.startedAt > LastStartedTime
+			outpost => outpost.startedAt !== undefined && outpost.startedAt > LastStartedTime
 		);
 		
 		if (currentOutpost) {
