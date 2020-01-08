@@ -16,7 +16,7 @@
 #OwnPartBox {
 	top: 100px;
 	right: 100px;
-	width: 380px;
+	width: 440px;
 	font-size: 80%;
 }
 
@@ -95,7 +95,7 @@
 }
 
 #OwnPartBox #OwnPartTable .error {
-	color: #ec4d4d;;
+	color: #ec4d4d;
 }
 
 #OwnPartBox #OwnPartTable input {

@@ -20,10 +20,17 @@ body {
 	overflow: hidden;
 }
 
+/* Chrome, Opera */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
 	-webkit-appearance: none;
+	appearance: none;
 	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance:textfield;
 }
 
 .window-head span.window-ask {
@@ -101,14 +108,21 @@ input[type=number]::-webkit-outer-spin-button {
 	border: #106000 1px solid;
 }
 
+/* Chrome */
 ::-webkit-scrollbar {
 	width: 5px;
 	height: 5px;
 }
-
 ::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
+}
+
+/* Firefox */
+.window-box,
+.window-body {
+	scrollbar-color: #281207 #57250c;
+	scrollbar-width: thin;
 }
 
 
