@@ -167,6 +167,13 @@ let i18n = {
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
         },
 
+        "EventList": {
+            "Title": "Event-Questliste für: ",
+            "Reward": "Belohnung",
+            "Previous": "Vorherige",
+            "Next": "Nächste",
+        },
+
         "Negotiation": {
             "Title" : "Verhandlungassistent",
             "WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
