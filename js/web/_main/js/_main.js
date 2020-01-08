@@ -1494,22 +1494,6 @@ let MainParser = {
 			data: d['user_name']
 		});
 		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
-
-		if(devMode)
-		{
-			HTML.Box({
-				'id': 'DevNode',
-				'title': 'Hinweis!',
-				'auto_close': true
-			});
-
-			setTimeout(()=>{
-				let desc = 'Hey BETA-Tester!<br>Bitte immer den Cache zwischendurch leeren!<br><br>- F12 > Konsole auf<br>- Reiter "Network" > Haken bei "Disable cache"<br>- mit geöffneter Konsole neu laden';
-
-				$('#DevNodeBody').html(desc);
-
-			}, 200);
-		}
 	},
 
 

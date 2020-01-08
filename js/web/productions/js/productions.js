@@ -731,7 +731,10 @@ let Productions = {
 	 * @constructor
 	 */
 	SetTabContent: (id, content)=> {
-		Productions.TabsContent.push('<div id="' + id + '">' + content + '</div>');
+		// ab dem zweiten Eintrag verstecken
+		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
+
+		Productions.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
 	},
 
 
