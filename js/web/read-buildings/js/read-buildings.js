@@ -46,7 +46,6 @@ let Reader = {
 	 * Die Gebäude ermitteln
 	 *
 	 * @param dp
-	 * @constructor
 	 */
 	OtherPlayersBuildings: (dp) => {
 
@@ -194,7 +193,6 @@ let Reader = {
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	ShowFunction: (id) => {
 

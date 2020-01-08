@@ -34,7 +34,6 @@ let Tavern = {
 	 * Aktualisiert die ExpireTime und zeigt den Badge an falls aktiviert
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SetExpireTime: (ExpireTime)=>{
 		Tavern.ExpireTime = ExpireTime;
@@ -48,7 +47,6 @@ let Tavern = {
 	/**
 	 * Setzt das Overlay-Badge zusammen
 	 *
-	 * @constructor
 	 */
 	BuildBox: ()=> {
 
@@ -82,7 +80,6 @@ let Tavern = {
 	 * Zählt die verbleibende Zeit runter
 	 *
 	 * @param endDate
-	 * @constructor
 	 */
 	BoosterCountDown: (endDate)=> {
 

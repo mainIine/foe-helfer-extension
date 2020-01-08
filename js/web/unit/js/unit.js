@@ -28,7 +28,6 @@ let Unit = {
 	/**
 	 * Erstellt eine HTML Box für den DOM
 	 *
-	 * @constructor
 	 */
 	Show: ()=> {
 
@@ -55,7 +54,6 @@ let Unit = {
 	/**
 	 * Rendern und in den BoxContent
 	 *
-	 * @constructor
 	 */
 	BuildBox:()=> {
 
@@ -374,7 +372,6 @@ let Unit = {
 	 * Merkt sich alle Tabs
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	SetTabs: (id)=>{
 		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
@@ -385,7 +382,6 @@ let Unit = {
 	 * Gibt alle gemerkten Tabs aus
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal">' + Unit.Tabs.join('') + '</ul>';
@@ -397,7 +393,6 @@ let Unit = {
 	 *
 	 * @param id
 	 * @param content
-	 * @constructor
 	 */
 	SetTabContent: (id, content)=>{
 		Unit.TabsContent.push('<div id="' + id + '">' + content + '</div>');
@@ -408,7 +403,6 @@ let Unit = {
 	 * Setzt alle gespeicherten Tabs zusammen
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabContent: ()=> {
 		return Unit.TabsContent.join('');
@@ -440,7 +434,6 @@ let Unit = {
 	/**
 	 * Die letzten Einheiten die aus dem Alca gekommen sind
 	 *
-	 * @constructor
 	 */
 	GetLastAlcaUnits: ()=> {
 

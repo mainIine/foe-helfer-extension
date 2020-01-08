@@ -31,7 +31,6 @@ let Negotiation = {
 	/**
 	 * Box in den DOM legen
 	 *
-	 * @constructor
 	 */
     Show: () => {
         if ($('#negotiationBox').length === 0) {
@@ -57,7 +56,6 @@ let Negotiation = {
 	/**
 	 * Body der Box parsen
 	 *
-	 * @constructor
 	 */
     BuildBox: () => {
         Negotiation.CalcBody();
@@ -67,7 +65,6 @@ let Negotiation = {
     /**
     * Body der Box aktualisieren falls bereits geöffnet
     *
-    * @constructor
     */
     RefreshBox: () => {
         if ($('#negotiationBox').length > 0) {
@@ -79,7 +76,6 @@ let Negotiation = {
 	/**
 	 * Berechnungen durchführen
 	 *
-	 * @constructor
 	 */
     CalcBody: () => {
         let h = [],
@@ -247,7 +243,6 @@ let Negotiation = {
 	 * Chancen Berechnung aus den Files
 	 *
 	 * @param responseData
-	 * @constructor
 	 */
     StartNegotiation: (responseData) => {
 
@@ -303,7 +298,6 @@ let Negotiation = {
 	 * Es wurde eine Runde abgeschickt
 	 *
 	 * @param responseData
-	 * @constructor
 	 */
     SubmitTurn: (responseData) => {
         if (Negotiation.CurrentTry === 0) return;
@@ -382,7 +376,6 @@ let Negotiation = {
 	/**
 	 * Verhandlung zu Ende
 	 *
-	 * @constructor
 	 */
     ExitNegotiation: () => {
         Negotiation.CurrentTry = 0;
@@ -406,7 +399,6 @@ let Negotiation = {
 	 * @param TryCount
 	 * @param GoodCount
 	 * @returns {string}
-	 * @constructor
 	 */
     GetTableName: (TryCount, GoodCount) => {
         return TryCount + '_' + GoodCount;
@@ -418,7 +410,6 @@ let Negotiation = {
 	 *
 	 * @param GoodName
 	 * @returns {*}
-	 * @constructor
 	 */
     GetGoodValue: (GoodName) => {
     	let Value = 0;

@@ -125,7 +125,6 @@ let Parts = {
 	 * Sichtbarer Teil
 	 *
 	 * @param input
-	 * @constructor
 	 */
 	BoxBody: (input)=> {
 
@@ -431,7 +430,6 @@ let Parts = {
 	 * @param Maezens
 	 * @param Eigens
 	 * @param NonExts
-	 * @constructor
 	 */
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
@@ -533,7 +531,6 @@ let Parts = {
 	 * @param Event
 	 * @param Action
 	 * @returns {string}
-	 * @constructor
 	 */
 	CopyFunction: (Maezens, Eigens, NonExts, Event, Action)=> {
 
@@ -670,7 +667,6 @@ let Parts = {
 	 * Lecker Animation für das Anzeigen der Kopieren Buttons
 	 *
 	 * @param show
-	 * @constructor
 	 */
 	BackGroundBoxAnimation: (show)=> {
 		let $box = $('#OwnPartBox');
@@ -694,7 +690,6 @@ let Parts = {
 	/**
 	 * Die Box ist schon offen, Content updaten
 	 *
-	 * @constructor
 	 */
 	RefreshData: ()=> {
 		Parts.BoxBody();
