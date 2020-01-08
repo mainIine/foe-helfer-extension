@@ -75,6 +75,7 @@ let i18n = {
 			"Level": "Nivel",
 			"PayedTotal": "Ingresado / Total",
 			"Rate": "Cotizacion",
+			"Profit": "Ganancia",
 			"NothingToGet": "Con <strong>__player__</strong> no hay nada para pillar"
 		},
 

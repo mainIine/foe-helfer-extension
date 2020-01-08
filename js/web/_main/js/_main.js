@@ -21,12 +21,13 @@ let ApiURL = 'https://api.foe-rechner.de/',
     CurrentEraID = null,
     BuildingNamesi18n = false,
     GoodsData = [],
-    GoodsList = [],
+	GoodsList = [],
+	PlayerDict = {},
     ResourceStock = [],
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = false;
+	UsePartCalcOnAllLGs = true;
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -63,7 +64,11 @@ const FoEproxy = (function () {
 	// Websocket-Handler
 	const wsHandlerMap = {};
 	let wsRawHandler = [];
-	
+
+	// startup Queues
+	let xhrQueue = [];
+	let wsQueue = [];
+
 	const proxy = {
 		/**
 		 * Fügt einen datenhandler für Antworten von game/json hinzu.
@@ -226,87 +231,100 @@ const FoEproxy = (function () {
 		}
 	};
 
+	window.addEventListener('foe-helper#loaded', () => {
+		console.log('firing all events');
+		const xhrQ = xhrQueue;
+		xhrQueue = null;
+		const wsQ = wsQueue;
+		wsQueue = null;
+
+		xhrQ.forEach(xhrRequest => xhrOnLoadHandler.call(xhrRequest));
+		wsQ.forEach(wsMessage => wsMessageHandler(wsMessage));
+	});
+
 	// ###########################################
 	// ############## Websocket-Proxy ############
 	// ###########################################
-	{
-		/**
-		 * This function gets the callbacks from wsHandlerMap[service][method] and executes them.
-		 * @param {string} service
-		 * @param {string} method
-		 * @param {FoE_NETWORK_TYPE} data
-		 */
-		function _proxyWsAction(service, method, data) {
-			const map = wsHandlerMap[service];
-			if (!map) {
-				return;
+	/**
+	 * This function gets the callbacks from wsHandlerMap[service][method] and executes them.
+	 * @param {string} service
+	 * @param {string} method
+	 * @param {FoE_NETWORK_TYPE} data
+	 */
+	function _proxyWsAction(service, method, data) {
+		const map = wsHandlerMap[service];
+		if (!map) {
+			return;
+		}
+		const list = map[method];
+		if (!list) {
+			return;
+		}
+		for (let callback of list) {
+			try {
+				callback(data);
+			} catch (e) {
+				console.error(e);
 			}
-			const list = map[method];
-			if (!list) {
-				return;
-			}
-			for (let callback of list) {
+		}
+	}
+
+	/**
+	 * This function gets the callbacks from wsHandlerMap[service][method],wsHandlerMap[service]['all'],wsHandlerMap['all'][method] and wsHandlerMap['all']['all'] and executes them.
+	 * @param {string} service
+	 * @param {string} method
+	 * @param {FoE_NETWORK_TYPE} data
+	 */
+	function proxyWsAction(service, method, data) {
+		_proxyWsAction(service, method, data);
+		_proxyWsAction('all', method, data);
+		_proxyWsAction(service, 'all', data);
+		_proxyWsAction('all', 'all', data);
+	}
+
+	const oldWSSend = WebSocket.prototype.send;
+	/**
+	 * @this {WebSocket}
+	 * @param {MessageEvent} evt
+	 */
+	function wsMessageHandler(evt) {
+		if (wsQueue) {
+			wsQueue.push(evt);
+			return;
+		}
+		try {
+			if (evt.data === 'PONG') return;
+			/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
+			const data  = JSON.parse(evt.data);
+
+			// do raw-ws-handlers
+			for (let callback of wsRawHandler) {
 				try {
 					callback(data);
 				} catch (e) {
 					console.error(e);
 				}
 			}
-		}
 
-		/**
-		 * This function gets the callbacks from wsHandlerMap[service][method],wsHandlerMap[service]['all'],wsHandlerMap['all'][method] and wsHandlerMap['all']['all'] and executes them.
-		 * @param {string} service
-		 * @param {string} method
-		 * @param {FoE_NETWORK_TYPE} data
-		 */
-		function proxyWsAction(service, method, data) {
-			_proxyWsAction(service, method, data);
-			_proxyWsAction('all', method, data);
-			_proxyWsAction(service, 'all', data);
-			_proxyWsAction('all', 'all', data);
-		}
-
-		const oldWSSend = WebSocket.prototype.send;
-		/**
-		 * @this {WebSocket}
-		 * @param {MessageEvent} evt
-		 */
-		function wsMessageCollector(evt) {
-			try {
-				if (evt.data === 'PONG') return;
-				/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
-				const data  = JSON.parse(evt.data);
-
-				// do raw-ws-handlers
-				for (let callback of wsRawHandler) {
-					try {
-						callback(data);
-					} catch (e) {
-						console.error(e);
-					}
+			// do ws-handlers
+			if (data instanceof Array) {
+				for (let entry of data) {
+					proxyWsAction(entry.requestClass, entry.requestMethod, entry);
 				}
-
-				// do ws-handlers
-				if (data instanceof Array) {
-					for (let entry of data) {
-						proxyWsAction(entry.requestClass, entry.requestMethod, entry);
-					}
-				} else if (data.__class__ === "ServerResponse") {
-					proxyWsAction(data.requestClass, data.requestMethod, data);
-				}
-			} catch (e) {
-				console.error(e);
+			} else if (data.__class__ === "ServerResponse") {
+				proxyWsAction(data.requestClass, data.requestMethod, data);
 			}
+		} catch (e) {
+			console.error(e);
 		}
-
-		WebSocket.prototype.send = function (data) {
-			oldWSSend.call(this, data);
-			this.addEventListener('message', wsMessageCollector, {capture: false, passive: true});
-			this.send = oldWSSend;
-		};
 	}
 
+	WebSocket.prototype.send = function (data) {
+		oldWSSend.call(this, data);
+		this.addEventListener('message', wsMessageHandler, {capture: false, passive: true});
+		this.send = oldWSSend;
+	};
+	
 	// ###########################################
 	// ################# XHR-Proxy ###############
 	// ###########################################
@@ -361,7 +379,11 @@ const FoEproxy = (function () {
 	/**
 	 * @this {XHR}
 	 */
-	function onLoadHandler() {
+	function xhrOnLoadHandler() {
+		if (xhrQueue) {
+			xhrQueue.push(this);
+			return;
+		}
 		const requestData = getRequestData(this);
 		const url = requestData.url;
 		const postData = requestData.postData;
@@ -415,11 +437,12 @@ const FoEproxy = (function () {
 		const data = getRequestData(this);
 		data.postData = postData;
 		
-		this.addEventListener('load', onLoadHandler);
+		this.addEventListener('load', xhrOnLoadHandler, {capture: false, passive: true});
 
 		// @ts-ignore
 		return send.apply(this, arguments);
 	};
+
 	return proxy;
 })();
 
@@ -521,6 +544,9 @@ const FoEproxy = (function () {
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
 
+		// PlayerDict
+		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
+
 		// freigeschaltete Erweiterungen sichern
 		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
@@ -567,8 +593,18 @@ const FoEproxy = (function () {
 		});
 	});
 
+	// Nachricht geöffnet
+	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
+	});
 
-
+	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
+	FoEproxy.addHandler('OtherPlayerService', (data, postData) => {
+		if (data.requestMethod === 'getNeighborList' || data.requestMethod === 'getFriendsList' || data.requestMethod === 'getClanMemberList') {
+			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList');
+		}
+	});
+	   
 	// --------------------------------------------------------------------------------------------------
 	// Übersetzungen der Güter
 	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
@@ -629,6 +665,8 @@ const FoEproxy = (function () {
 	// Übersicht der LGs eines Nachbarn
 	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
+
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
@@ -657,7 +695,7 @@ const FoEproxy = (function () {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
-
+		
 		let Rankings;
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
@@ -682,6 +720,10 @@ const FoEproxy = (function () {
 				lgUpdate();
 			}
 		}
+	});
+
+	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
@@ -962,6 +1004,18 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 		Negotiation.ExitNegotiation(data.responseData);
 	});
+
+	FoEproxy.addRawWsHandler((data) => {
+		let Msg = data[0];
+		if(Msg === undefined || Msg['requestClass'] === undefined){
+			return ;
+		}
+		if(Msg['requestMethod'] === "newEvent" && Msg['responseData']['type'] === "trade_accepted"){
+			let d = Msg['responseData'];
+			ResourceStock[d['need']['good_id']] += d['need']['value'];
+		}
+	});
+
 })();
 
 
@@ -975,7 +1029,7 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr','es'
+		'de', 'en', 'fr','es','ru'
 	],
 	BonusService: null,
 	EmissaryService: null,
@@ -1001,6 +1055,14 @@ let MainParser = {
 		'att_boost_attacker': 0,
 		'coin_production': 0,
 		'supply_production': 0
+	},
+
+	sendExtMessage: (data) => {
+		// @ts-ignore
+		if (typeof chrome !== 'undefined') { chrome.runtime.sendMessage(extID, data);
+		} else {
+			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
+		}
 	},
 
 
@@ -1169,8 +1231,7 @@ let MainParser = {
 	 */
 	showInfo: (title, msg, time)=> {
 		let t = time === undefined ? 4000 : time;
-
-		chrome.runtime.sendMessage(extID, {type: 'message', title: title, msg: msg, time: t});
+		MainParser.sendExtMessage({type: 'message', title: title, msg: msg, time: t});
 	},
 
 
@@ -1218,7 +1279,7 @@ let MainParser = {
 
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
-				chrome.runtime.sendMessage(extID, {
+				MainParser.sendExtMessage({
 					type: 'send2Api',
 					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 					data: JSON.stringify(player)
@@ -1311,7 +1372,7 @@ let MainParser = {
 			data.push({lgs: lgs});
 
 			// ab zum Server
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'OtherPlayersLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(data)
@@ -1344,7 +1405,7 @@ let MainParser = {
 			return;
 		}
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'GEXPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1367,7 +1428,7 @@ let MainParser = {
 				ranking: d['ranking'],
 			};
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'GEXChampionship/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(data)
@@ -1388,7 +1449,7 @@ let MainParser = {
         ExtWorld = window.location.hostname.split('.')[0];
         CurrentEraID = Technologies.Eras[d['era']['era']];
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_guild_id',
 			data: ExtGuildID
@@ -1396,21 +1457,21 @@ let MainParser = {
 		localStorage.setItem('current_guild_id', ExtGuildID);
 
 		ExtPlayerID = d['player_id'];
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_id',
 			data: ExtPlayerID
 		});
 		localStorage.setItem('current_player_id', ExtPlayerID);
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_world',
 			data: ExtWorld
 		});
 		localStorage.setItem('current_world', ExtWorld);
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_name',
 			data: d['user_name']
@@ -1456,7 +1517,7 @@ let MainParser = {
 		};
 
 		// ab zum Server
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'SelfPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(data)
@@ -1472,7 +1533,7 @@ let MainParser = {
 	 */
 	GreatBuildings: (d)=>{
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'LGInvest/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1527,7 +1588,7 @@ let MainParser = {
 		if(lgs.length > 0)
 		{
 			// ab zum Server
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(lgs)
@@ -1567,7 +1628,7 @@ let MainParser = {
 	 * @constructor
 	 */
 	SaveLGInventory: (d)=>{
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'LGInventory/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1677,11 +1738,67 @@ let MainParser = {
 		}
 
 		if(data.length > 0){
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'FriendsList/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(d)
 			});
+		}
+	},
+
+		
+	/**
+	 * Spielerinfos Updaten von Nachrichtenliste
+	 *
+	 * @param d
+	 * @param Source
+	 */
+	UpdatePlayerDict: (d, Source) => {
+		if (Source === 'Conversation') {
+			for (let i in d['messages']) {
+				let Message = d['messages'][i];
+				if (Message.sender !== undefined) {
+					MainParser.UpdatePlayerDictCore(Message.sender);
+				}
+			}
+		}
+		else if (Source === 'LGOverview') {
+			MainParser.UpdatePlayerDictCore(d[0].player);
+		}
+		else if (Source === 'LGContributions') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i].player);
+			}
+		}
+		else if (Source === 'StartUpService') {
+			for (let i in d.socialbar_list) {
+				MainParser.UpdatePlayerDictCore(d.socialbar_list[i]);
+			}
+		}
+		else if (Source === 'PlayerList') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i]);
+			}
+		}
+	},
+
+
+	/**
+	* Spielerinfos Updaten
+	*
+	* @param d
+	*/
+	UpdatePlayerDictCore: (Player) => {
+		let PlayerID = Player['player_id'];
+
+		if (PlayerID !== undefined) {
+			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
+			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
+			if (Player['clan'] !== undefined) PlayerDict[PlayerID]['ClanName'] = Player['clan']['name'];
+			if (Player['is_neighbor'] !== undefined) PlayerDict[PlayerID]['IsNeighbor'] = Player['is_neighbor'];
+			if (Player['is_guild_member'] !== undefined) PlayerDict[PlayerID]['IsGuildMember'] = Player['is_guild_member'];
+			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
 		}
 	},
 
