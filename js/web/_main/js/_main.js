@@ -64,7 +64,11 @@ const FoEproxy = (function () {
 	// Websocket-Handler
 	const wsHandlerMap = {};
 	let wsRawHandler = [];
-	
+
+	// startup Queues
+	let xhrQueue = [];
+	let wsQueue = [];
+
 	const proxy = {
 		/**
 		 * Fügt einen datenhandler für Antworten von game/json hinzu.
@@ -227,87 +231,100 @@ const FoEproxy = (function () {
 		}
 	};
 
+	window.addEventListener('foe-helper#loaded', () => {
+		console.log('firing all events');
+		const xhrQ = xhrQueue;
+		xhrQueue = null;
+		const wsQ = wsQueue;
+		wsQueue = null;
+
+		xhrQ.forEach(xhrRequest => xhrOnLoadHandler.call(xhrRequest));
+		wsQ.forEach(wsMessage => wsMessageHandler(wsMessage));
+	});
+
 	// ###########################################
 	// ############## Websocket-Proxy ############
 	// ###########################################
-	{
-		/**
-		 * This function gets the callbacks from wsHandlerMap[service][method] and executes them.
-		 * @param {string} service
-		 * @param {string} method
-		 * @param {FoE_NETWORK_TYPE} data
-		 */
-		function _proxyWsAction(service, method, data) {
-			const map = wsHandlerMap[service];
-			if (!map) {
-				return;
+	/**
+	 * This function gets the callbacks from wsHandlerMap[service][method] and executes them.
+	 * @param {string} service
+	 * @param {string} method
+	 * @param {FoE_NETWORK_TYPE} data
+	 */
+	function _proxyWsAction(service, method, data) {
+		const map = wsHandlerMap[service];
+		if (!map) {
+			return;
+		}
+		const list = map[method];
+		if (!list) {
+			return;
+		}
+		for (let callback of list) {
+			try {
+				callback(data);
+			} catch (e) {
+				console.error(e);
 			}
-			const list = map[method];
-			if (!list) {
-				return;
-			}
-			for (let callback of list) {
+		}
+	}
+
+	/**
+	 * This function gets the callbacks from wsHandlerMap[service][method],wsHandlerMap[service]['all'],wsHandlerMap['all'][method] and wsHandlerMap['all']['all'] and executes them.
+	 * @param {string} service
+	 * @param {string} method
+	 * @param {FoE_NETWORK_TYPE} data
+	 */
+	function proxyWsAction(service, method, data) {
+		_proxyWsAction(service, method, data);
+		_proxyWsAction('all', method, data);
+		_proxyWsAction(service, 'all', data);
+		_proxyWsAction('all', 'all', data);
+	}
+
+	const oldWSSend = WebSocket.prototype.send;
+	/**
+	 * @this {WebSocket}
+	 * @param {MessageEvent} evt
+	 */
+	function wsMessageHandler(evt) {
+		if (wsQueue) {
+			wsQueue.push(evt);
+			return;
+		}
+		try {
+			if (evt.data === 'PONG') return;
+			/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
+			const data  = JSON.parse(evt.data);
+
+			// do raw-ws-handlers
+			for (let callback of wsRawHandler) {
 				try {
 					callback(data);
 				} catch (e) {
 					console.error(e);
 				}
 			}
-		}
 
-		/**
-		 * This function gets the callbacks from wsHandlerMap[service][method],wsHandlerMap[service]['all'],wsHandlerMap['all'][method] and wsHandlerMap['all']['all'] and executes them.
-		 * @param {string} service
-		 * @param {string} method
-		 * @param {FoE_NETWORK_TYPE} data
-		 */
-		function proxyWsAction(service, method, data) {
-			_proxyWsAction(service, method, data);
-			_proxyWsAction('all', method, data);
-			_proxyWsAction(service, 'all', data);
-			_proxyWsAction('all', 'all', data);
-		}
-
-		const oldWSSend = WebSocket.prototype.send;
-		/**
-		 * @this {WebSocket}
-		 * @param {MessageEvent} evt
-		 */
-		function wsMessageCollector(evt) {
-			try {
-				if (evt.data === 'PONG') return;
-				/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
-				const data  = JSON.parse(evt.data);
-
-				// do raw-ws-handlers
-				for (let callback of wsRawHandler) {
-					try {
-						callback(data);
-					} catch (e) {
-						console.error(e);
-					}
+			// do ws-handlers
+			if (data instanceof Array) {
+				for (let entry of data) {
+					proxyWsAction(entry.requestClass, entry.requestMethod, entry);
 				}
-
-				// do ws-handlers
-				if (data instanceof Array) {
-					for (let entry of data) {
-						proxyWsAction(entry.requestClass, entry.requestMethod, entry);
-					}
-				} else if (data.__class__ === "ServerResponse") {
-					proxyWsAction(data.requestClass, data.requestMethod, data);
-				}
-			} catch (e) {
-				console.error(e);
+			} else if (data.__class__ === "ServerResponse") {
+				proxyWsAction(data.requestClass, data.requestMethod, data);
 			}
+		} catch (e) {
+			console.error(e);
 		}
-
-		WebSocket.prototype.send = function (data) {
-			oldWSSend.call(this, data);
-			this.addEventListener('message', wsMessageCollector, {capture: false, passive: true});
-			this.send = oldWSSend;
-		};
 	}
 
+	WebSocket.prototype.send = function (data) {
+		oldWSSend.call(this, data);
+		this.addEventListener('message', wsMessageHandler, {capture: false, passive: true});
+		this.send = oldWSSend;
+	};
+	
 	// ###########################################
 	// ################# XHR-Proxy ###############
 	// ###########################################
@@ -362,7 +379,11 @@ const FoEproxy = (function () {
 	/**
 	 * @this {XHR}
 	 */
-	function onLoadHandler() {
+	function xhrOnLoadHandler() {
+		if (xhrQueue) {
+			xhrQueue.push(this);
+			return;
+		}
 		const requestData = getRequestData(this);
 		const url = requestData.url;
 		const postData = requestData.postData;
@@ -416,11 +437,12 @@ const FoEproxy = (function () {
 		const data = getRequestData(this);
 		data.postData = postData;
 		
-		this.addEventListener('load', onLoadHandler);
+		this.addEventListener('load', xhrOnLoadHandler, {capture: false, passive: true});
 
 		// @ts-ignore
 		return send.apply(this, arguments);
 	};
+
 	return proxy;
 })();
 
@@ -1043,6 +1065,14 @@ let MainParser = {
 		'supply_production': 0
 	},
 
+	sendExtMessage: (data) => {
+		// @ts-ignore
+		if (typeof chrome !== 'undefined') { chrome.runtime.sendMessage(extID, data);
+		} else {
+			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
+		}
+	},
+
 
 	/**
 	 *
@@ -1209,8 +1239,7 @@ let MainParser = {
 	 */
 	showInfo: (title, msg, time)=> {
 		let t = time === undefined ? 4000 : time;
-
-		chrome.runtime.sendMessage(extID, {type: 'message', title: title, msg: msg, time: t});
+		MainParser.sendExtMessage({type: 'message', title: title, msg: msg, time: t});
 	},
 
 
@@ -1258,7 +1287,7 @@ let MainParser = {
 
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
-				chrome.runtime.sendMessage(extID, {
+				MainParser.sendExtMessage({
 					type: 'send2Api',
 					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 					data: JSON.stringify(player)
@@ -1351,7 +1380,7 @@ let MainParser = {
 			data.push({lgs: lgs});
 
 			// ab zum Server
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'OtherPlayersLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(data)
@@ -1384,7 +1413,7 @@ let MainParser = {
 			return;
 		}
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'GEXPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1407,7 +1436,7 @@ let MainParser = {
 				ranking: d['ranking'],
 			};
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'GEXChampionship/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(data)
@@ -1428,7 +1457,7 @@ let MainParser = {
         ExtWorld = window.location.hostname.split('.')[0];
         CurrentEraID = Technologies.Eras[d['era']['era']];
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_guild_id',
 			data: ExtGuildID
@@ -1436,42 +1465,26 @@ let MainParser = {
 		localStorage.setItem('current_guild_id', ExtGuildID);
 
 		ExtPlayerID = d['player_id'];
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_id',
 			data: ExtPlayerID
 		});
 		localStorage.setItem('current_player_id', ExtPlayerID);
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_world',
 			data: ExtWorld
 		});
 		localStorage.setItem('current_world', ExtWorld);
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_name',
 			data: d['user_name']
 		});
 		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
-
-		if(devMode)
-		{
-			HTML.Box({
-				'id': 'DevNode',
-				'title': 'Hinweis!',
-				'auto_close': true
-			});
-
-			setTimeout(()=>{
-				let desc = 'Hey BETA-Tester!<br>Bitte immer den Cache zwischendurch leeren!<br><br>- F12 > Konsole auf<br>- Reiter "Network" > Haken bei "Disable cache"<br>- mit geöffneter Konsole neu laden';
-
-				$('#DevNodeBody').html(desc);
-
-			}, 200);
-		}
 	},
 
 
@@ -1496,7 +1509,7 @@ let MainParser = {
 		};
 
 		// ab zum Server
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'SelfPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(data)
@@ -1512,7 +1525,7 @@ let MainParser = {
 	 */
 	GreatBuildings: (d)=>{
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'LGInvest/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1567,7 +1580,7 @@ let MainParser = {
 		if(lgs.length > 0)
 		{
 			// ab zum Server
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(lgs)
@@ -1607,7 +1620,7 @@ let MainParser = {
 	 * @constructor
 	 */
 	SaveLGInventory: (d)=>{
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'LGInventory/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1717,7 +1730,7 @@ let MainParser = {
 		}
 
 		if(data.length > 0){
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'FriendsList/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(d)
