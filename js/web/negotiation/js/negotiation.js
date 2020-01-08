@@ -475,8 +475,7 @@ let Negotiation = {
 
 		// gibt es noch nicht, laden
     	if( Negotiation.Tables[TableName] === undefined ){
-
-			let url = 'chrome-extension://' + extID + '/js/web/negotiation/tables/';
+			let url =  extUrl + 'js/web/negotiation/tables/';
 
     		MainParser.loadJSON(url + TableName + '.json', function(response){
 				Negotiation.Tables[TableName] = JSON.parse(response);
