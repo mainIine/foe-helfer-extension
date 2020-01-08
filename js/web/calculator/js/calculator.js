@@ -32,6 +32,73 @@ let Calculator = {
 	OpenedFromOverview: undefined,
 
 	/**
+	* Kostenrechner öffnen
+	*
+	* @constructor
+	*/
+	Open: () => {
+		let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
+			UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData'),
+			OverviewJSON = sessionStorage.getItem('OtherActiveBuildingOverview');
+
+		let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
+			UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined,
+			Overview = OverviewJSON !== null ? JSON.parse(OverviewJSON) : undefined;
+
+		// Nur Übersicht verfügbar
+		if (Overview !== undefined && UpdateEntity === undefined) {
+			Calculator.ShowOverview(false);
+		}
+
+		// Nur Detailansicht verfügbar
+		else if (UpdateEntity !== undefined && Overview === undefined) {
+			Calculator.Show(Rankings, UpdateEntity);
+		}
+
+		// Beide verfügbar
+		else if (UpdateEntity !== undefined && Overview !== undefined) {
+			let BuildingInfo = Overview.find(obj => {
+				return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
+			});
+
+			// Beide gehören zum selben Spieler => beide anzeigen
+			if (BuildingInfo !== undefined) {
+				Calculator.ShowOverview();
+				Calculator.Show(Rankings, UpdateEntity);
+			}
+
+			// Unterschiedliche Spieler => Öffne die neuere Ansicht
+			else {
+				if (Calculator.DetailViewIsNewer) {
+					Calculator.Show(Rankings, UpdateEntity);
+				}
+				else {
+					Calculator.ShowOverview();
+				}
+			}
+		}
+	},
+
+
+	/**
+	* Kostenrechner öffnen
+	*
+	* @constructor
+	*/
+	RefreshCalculator: () => {
+		let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
+			UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData');
+
+		let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
+			UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined;
+
+		if ($('#costCalculator').is(':visible')) {
+			Calculator.Show(Rankings, UpdateEntity);
+		}
+	},
+
+
+	/**
 	 * Kostenrechner anzeigen
 	 *
 	 * @param Rankings
@@ -191,18 +258,16 @@ let Calculator = {
 
 		// Schleifenquest für "Benutze FP" suchen
 		for (let i in MainParser.Quests) {
-			let Exit = false;
 			let Quest = MainParser.Quests[i];
 
 			if (Quest.questGiver.id === 'scientist' && Quest.successConditions.length === 1) {
 				for (let j in Quest.successConditions) {
 					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
 					let MaxProgress = Quest.successConditions[j].maxProgress;
-					h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + 'Schleifenquest:' + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(MaxProgress - CurrentProgress) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>'); // Todo: Translate
-					Exit = true;
-					break;
+					if (CurrentEraID <= 3 || MaxProgress > 15) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + 'Aktiver Schleifenquest' + ': <span id="up-to-level-up" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : 'Schleifenquest abgeschlossen') + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>'); // Todo: Translate
+					}
 				}
-				if (Exit) break; // Ganz raus breaken
 			}
 		}
 

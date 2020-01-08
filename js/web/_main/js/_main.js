@@ -551,6 +551,7 @@ const FoEproxy = (function () {
 	// Quests
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 		MainParser.Quests = data.responseData;
+		Calculator.RefreshCalculator();
 	});
 
 
