@@ -27,7 +27,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = true;
+	UsePartCalcOnAllLGs = true,
+	CurrentTime = 0;
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -940,6 +941,7 @@ const FoEproxy = (function () {
 
 			MainParser.setLanguage();
 		}
+		CurrentTime = data.responseData.time;
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -983,6 +985,8 @@ const FoEproxy = (function () {
 		Negotiation.ExitNegotiation(data.responseData);
 	});
 
+	// --------------------------------------------------------------------------------------------------
+	// GüterUpdate nach angenommenen Handel
 	FoEproxy.addRawWsHandler((data) => {
 		let Msg = data[0];
 		if(Msg === undefined || Msg['requestClass'] === undefined){
@@ -992,6 +996,19 @@ const FoEproxy = (function () {
 			let d = Msg['responseData'];
 			ResourceStock[d['need']['good_id']] += d['need']['value'];
 		}
+	});
+
+	// --------------------------------------------------------------------------------------------------
+	// HiddenReward
+
+	FoEproxy.addHandler('HiddenRewardService','getOverview', (data, postData) => {
+		console.clear();
+		console.log("AKTUELLE ZEIT: "+ CurrentTime)
+		data.responseData.hiddenRewards.forEach(rewards => {
+			if(rewards.startTime < CurrentTime < rewards.expireTime){
+				console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
+			}
+		});
 	});
 
 })();
