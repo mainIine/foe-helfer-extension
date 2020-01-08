@@ -458,7 +458,7 @@ let Productions = {
 						else {
 							rowA.push('<td><td>');
 						}
-						rowA.push('<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+						rowA.push('<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
 						rowA.push('</tr>');
 					}
 
@@ -488,7 +488,7 @@ let Productions = {
 						tds +='<td>' + pA.join('<br>') + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
-							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>' +
+							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>' +
 							'</tr>';
 
 						rowA.push(tds);

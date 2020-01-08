@@ -326,7 +326,7 @@ let HTML = {
 		}
 
 		// noch nicht im DOM, einfügen
-		let url = 'chrome-extension://' + extID + '/js/web/' + modul + '/',
+		let url = extUrl + 'js/web/' + modul + '/',
 			cssUrl = url + 'css/' + modul + '.css?v=' + extVersion;
 
 		let css = $('<link />')
