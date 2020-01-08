@@ -75,6 +75,7 @@ let i18n = {
 			"Level": "Niveau",
 			"PayedTotal": "Payé / Total",
 			"Rate": "Cours",
+			"Profit": "Profit",
 			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer"
 		},
 

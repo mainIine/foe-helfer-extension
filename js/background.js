@@ -13,7 +13,7 @@
  */
 
 chrome.runtime.onInstalled.addListener(() => {
-	let version = chrome.app.getDetails().version;
+	let version = chrome.runtime.getManifest().version;
 
 	chrome.tabs.query({active: true, currentWindow: true}, (tabs)=> {
 		// sind wir in FoE?
@@ -61,11 +61,8 @@ function isDevMode()
 
 let popupWindowId = 0;
 
-/**
- * Auf einen response von ant.js lauschen
- */
-chrome.runtime.onMessageExternal.addListener((request) => {
 
+function handleWebpageRequests(request) {
 	if (request.type === 'message') {
 		let t = request.time,
 			opt = {
@@ -124,4 +121,13 @@ chrome.runtime.onMessageExternal.addListener((request) => {
 		xhr.setRequestHeader('Content-Type', 'application/json');
 		xhr.send(request.data);
 	}
-});
+}
+
+/**
+ * Auf einen response von ant.js lauschen
+ */
+if (chrome.app) { // Chrome
+	chrome.runtime.onMessageExternal.addListener(handleWebpageRequests);
+} else { // Firefox
+	chrome.runtime.onMessage.addListener(handleWebpageRequests);
+}

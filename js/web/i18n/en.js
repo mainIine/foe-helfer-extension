@@ -52,11 +52,11 @@ let i18n = {
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
 			"Earnings": "Earnings",
-			"Rate": "Cours",
+			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
 			"Save": "Save",
-			"Commitment": "Commitment",
+			"Commitment": "Costs",
 			"Profit": "Profit",
 			"LevelWarning": "ATTENTION! Leveling the GB!",
 			"NoFPorMedsAvailable": "No FPs or BPs available",
@@ -75,6 +75,7 @@ let i18n = {
 			"Level": "Level",
 			"PayedTotal": "Payed / Total",
 			"Rate": "Rate",
+			"Profit": "Profit",
 			"NothingToGet": "<strong>__player__</strong> has nothing to fetch"
 		},
 
@@ -244,9 +245,9 @@ let i18n = {
             "Warning": "Disabled: Open the research menu first!"
         },
         "Campagne": {
-            "Title": "Kampagne",
-            "Desc": "Übersicht über die benötigten Ressourcen",
-        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+            "Title": "Campaign",
+            "Desc": "Overview of the resources required",
+        	"Warning" : "Disabled: Visit a province first!"
 		},
         "Negotiation": {
             "Title": "Negotiation helper",

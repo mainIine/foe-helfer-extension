@@ -16,7 +16,7 @@
 #costCalculator {
 	top: 30%;
 	left: 30px;
-	width: 340px;
+	width: 360px;
 }
 
 #costCalculator #costCalculatorBody {
@@ -120,7 +120,7 @@
 #LGOverviewBox {
 	top: 30%;
 	right: 15%;
-	width: 400px;
+	width: 460px;
 }
 
 #LGOverviewBox .head-bar {
