@@ -102,7 +102,6 @@ let HTML = {
 	 * saveCords = true
 	 *
 	 * @param args
-	 * @constructor
 	 */
 	Box: (args)=> {
 
@@ -182,7 +181,6 @@ let HTML = {
 	 * Minimiert auf Klick die Box
 	 *
 	 * @param div
-	 * @constructor
 	 */
 	MinimizeBox: (div)=> {
 		let btn = $(div).find('.window-minimize');
@@ -207,7 +205,6 @@ let HTML = {
 	 *
 	 * @param el
 	 * @param save
-	 * @constructor
 	 */
 	DragBox: (el, save = true)=> {
 
@@ -275,7 +272,6 @@ let HTML = {
 	 * Box lässt sich in der Größe verändern
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	Resizeable: (id)=> {
 		let box = $('#'+id),
@@ -317,7 +313,6 @@ let HTML = {
 	 * Bindet auf Wunsch eine weitere CSS eines Modules ein
 	 *
 	 * @param modul
-	 * @constructor
 	 */
 	AddCssFile: (modul)=> {
 		// prüfen ob schon geladen
@@ -343,7 +338,6 @@ let HTML = {
 	 *
 	 * @param number
 	 * @returns {*}
-	 * @constructor
 	 */
 	Format: (number)=>{
 		if(number === 0){

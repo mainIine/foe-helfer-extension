@@ -36,7 +36,6 @@ let Calculator = {
 	 * @param Rankings
 	 * @param UpdateEntity
 	 * @param isOverview
-	 * @constructor
 	 */
     Show: (Rankings, UpdateEntity) => {
 
@@ -245,7 +244,6 @@ let Calculator = {
 	/**
 	 * Daten für die kleine Übersichtsbox aufbereiten
 	 *
-	 * @constructor
 	 */
     ShowOverview: (DisableAudio) => {
 
@@ -257,7 +255,6 @@ let Calculator = {
 	/**
 	 * Der Tabellen-Körper mit allen Funktionen
 	 *
-	 * @constructor
 	 */
 	CalcBody: ()=> {
 		let Rankings = Calculator.Places,
@@ -509,7 +506,6 @@ let Calculator = {
 	 * @param div
 	 * @param arc
 	 * @param d
-	 * @constructor
 	 */
     ParseOverview: (d, DisableAudio)=> {
 
@@ -716,7 +712,6 @@ let Calculator = {
 	 * Spielt einen Sound im Calculator ab
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
@@ -729,7 +724,6 @@ let Calculator = {
     * Spielt einen Sound in der Overview ab
     *
     * @returns {string}
-    * @constructor
     */
     PlayOverviewSound: () => {
         if (Calculator.PlayOverviewInfoSound) {
@@ -744,7 +738,6 @@ let Calculator = {
 	 * @param AgeString
 	 * @param Level
 	 * @returns {number}
-	 * @constructor
 	 */
 	GetP1: (AgeString, Level)=>{
 		let BronzeAge = [5, 10, 10, 15, 25, 30, 35, 40, 45, 55, 60, 65, 75, 80, 85, 95, 100, 110, 115, 125, 130, 140, 145, 155, 160, 170, 180, 185, 195, 200, 210, 220, 225, 235, 245, 250, 260, 270, 275, 285, 295, 300, 310, 320, 330, 340, 345, 355, 365, 375, 380, 390, 400, 410, 420, 430, 440, 445, 455, 465, 475, 485, 495, 505, 510, 520, 530, 540, 550, 560, 570, 580, 590, 600, 610, 620, 630, 640, 650, 660, 670, 680, 690, 700, 710, 720, 730, 740, 750, 760, 770, 780, 790, 800, 810, 820, 830, 840, 850, 860, 870, 880, 890, 905, 915, 925, 935, 945, 955, 965, 975, 985, 995, 1010, 1020, 1030, 1040, 1050, 1060, 1070, 1085, 1095, 1105, 1115, 1125, 1135, 1150, 1160, 1170, 1180, 1190, 1200, 1215, 1225, 1235, 1245, 1255, 1270, 1280, 1290, 1300, 1310, 1325, 1335, 1345, 1355, 1370, 1380, 1390, 1400, 1415, 1425, 1435, 1445, 1460, 1470, 1480];

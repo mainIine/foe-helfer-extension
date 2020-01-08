@@ -117,7 +117,6 @@ let Settings = {
 	/**
 	 * Box zusammen setzen
 	 *
-	 * @constructor
 	 */
 	BuildBody: ()=> {
 
@@ -188,7 +187,6 @@ let Settings = {
 	 * Beim Klick speichern
 	 *
 	 * @param el
-	 * @constructor
 	 */
 	StoreSettings: (el)=> {
 		let id = $(el).data('id'),
@@ -211,7 +209,6 @@ let Settings = {
 	 *
 	 * @param name
 	 * @returns {any}
-	 * @constructor
 	 */
 	GetSetting: (name)=> {
 		let s = localStorage.getItem(name);
@@ -228,7 +225,6 @@ let Settings = {
 	 * Versionsnummer ausgeben
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	VersionInfo: ()=> {
 		return '<div class="text-center" style="width:173px;"><strong>' + extVersion + '</strong></div>';
@@ -238,7 +234,6 @@ let Settings = {
 	/**
 	 * Funktion zum zurücksetzten aller Box-Koordiniaten
 	 *
-	 * @constructor
 	 */
 	ResetBoxCoords: ()=>{
 		$.each(localStorage, function(key, value){
@@ -259,7 +254,6 @@ let Settings = {
 	 * Sprachwechsler
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	LanguageDropdown: ()=>{
 		let dp = [];

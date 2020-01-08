@@ -1239,7 +1239,6 @@ let MainParser = {
 	 * Gildenmitglieder durchsteppen
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SocialbarList: (d)=> {
 
@@ -1296,7 +1295,6 @@ let MainParser = {
 	 * @param d
 	 * @param e
 	 * @returns {boolean}
-	 * @constructor
 	 */
 	OwnLG: (d, e)=> {
         // ist es schon wieder so weit?
@@ -1323,7 +1321,6 @@ let MainParser = {
 	 *
 	 * @param d
 	 * @returns {boolean}
-	 * @constructor
 	 */
 	OtherPlayersLGs: (d)=> {
 
@@ -1394,7 +1391,6 @@ let MainParser = {
 	/**
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	GuildExpedition: (d)=> {
 
@@ -1419,7 +1415,6 @@ let MainParser = {
 
 	/**
 	 * @param d
-	 * @constructor
 	 */
 	Championship: (d)=> {
 
@@ -1442,7 +1437,6 @@ let MainParser = {
 	 * Spieler Daten sichern
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	StartUp: (d)=> {
 		ExtGuildID = d['clan_id'];
@@ -1484,7 +1478,6 @@ let MainParser = {
 	 * Eigene Daten updaten (Gildenwechsel etc)
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SelfPlayer: (d)=>{
 
@@ -1513,7 +1506,6 @@ let MainParser = {
 	 * LG Investitionen
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	GreatBuildings: (d)=>{
 
@@ -1532,7 +1524,6 @@ let MainParser = {
 	 * Eigene LGs updaten
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SaveBuildings: (d)=>{
 		MainParser.CityMapData = d;
@@ -1585,7 +1576,6 @@ let MainParser = {
 	 * Sammelt aktive Boosts der Stadt
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	CollectBoosts: (d)=>{
 		for(let i in d)
@@ -1609,7 +1599,6 @@ let MainParser = {
 	 * LGs des Spielers speichern
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SaveLGInventory: (d)=>{
 		MainParser.sendExtMessage({
@@ -1695,7 +1684,6 @@ let MainParser = {
 	 * oder wenn nicht aktivert wenn der Tab ausgewählt wurde
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	FriendsList: (d)=>{
 		let data = [];
