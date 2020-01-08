@@ -23,7 +23,7 @@ let Calculator = {
     CurrentPlayer: 0,
     Building: [],
     Places: [],
-    SoundFile: new Audio('chrome-extension://' + extID + '/vendor/sounds/message.mp3'),
+    SoundFile: new Audio(extUrl + 'vendor/sounds/message.mp3'),
     PlayerName: undefined,
     LastPlayerID: 0,
     PlayInfoSound: null,
