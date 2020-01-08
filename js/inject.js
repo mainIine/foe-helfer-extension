@@ -26,12 +26,12 @@ function promisedLoadCode(src) {
 		sc.src = src;
 		
 		sc.addEventListener('load', function() {
-			//this.remove();
+			this.remove();
 			resolve();
 		});
 		sc.addEventListener('error', function() {
 			console.error('error loading script '+src);
-			//this.remove();
+			this.remove();
 			reject();
 		});
 		
