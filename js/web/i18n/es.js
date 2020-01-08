@@ -221,6 +221,13 @@ let i18n = {
 			"NotFilled": "no esta lleno",
 			"Bind": "Atado",
 			"Unbind": "libre"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data", //Todo: Translate
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
 		}
 	},
 
@@ -350,10 +357,11 @@ let i18n = {
 			"Title" : "Cambiar idioma",
 			"Desc" : "Que idioma debe usarse en lugar del reconocido?",
 			"Dropdown": {
-				"de" : "Alemán",
-				"en" : "Inglés",
-				"fr" : "Francés",
-				"es" : "Español"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},

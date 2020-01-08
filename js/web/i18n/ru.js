@@ -75,6 +75,7 @@ let i18n = {
 			"Level": "Уровень",
 			"PayedTotal": "Вложено / Всего",
 			"Rate": "Курс",
+			"Profit": "Профит",
 			"NothingToGet": "У <strong>__player__</strong> нечего получить"
 		},
 
@@ -220,6 +221,13 @@ let i18n = {
 			"NotFilled": "без фильтра",
 			"Bind": "Казарменный",
 			"Unbind": "Свободный"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data", //Todo: Translate
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
 		}
 	},
 
@@ -349,25 +357,25 @@ let i18n = {
 			"Title" : "Изменить язык",
 			"Desc" : "Какой язык должен быть использван вместо автоматически определенного?",
 			"Dropdown": {
-				"de" : "Немецкий",
-				"en" : "Английский",
-				"fr" : "Французский",
-				"es" : "Испанский",
-				"ru" : "Русский"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},
 
 	"Eras": {
 		"NoAge": "Без эпохи",
-		"Stone Age": "Каменный Век",
-		"Bronze Age": "Бронзовый Век",
-		"Iron Age": "Железный Век",
+		"StoneAge": "Каменный Век",
+		"BronzeAge": "Бронзовый Век",
+		"IronAge": "Железный Век",
 		"EarlyMiddleAge": "Раннее Средневековье",
 		"HighMiddleAge": "Высокое Средневековье",
 		"LateMiddleAge": "Позднее Средневековье",
 		"ColonialAge": "Колониальный Период",
-		"Industrial Age": "Индустриальная Эпоха",
+		"IndustrialAge": "Индустриальная Эпоха",
 		"ProgressiveEra": "Эра Прогрессивизма",
 		"ModernEra": "Эпоха Модерна",
 		"PostModernEra": "Эпоха Постмодерна",
@@ -375,7 +383,7 @@ let i18n = {
 		"TomorrowEra": "Завтра",
 		"FutureEra": "Будущее",
 		"ArcticFuture": "Арктическое Будущее",
-		"Oceanic Future": "Океаническое Будущее",
+		"OceanicFuture": "Океаническое Будущее",
 		"VirtualFuture": "Виртуальное Будущее",
 		"SpaceAgeMars": "Космическая Эра Марса"
 	},
