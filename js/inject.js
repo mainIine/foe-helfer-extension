@@ -13,11 +13,12 @@
  * **************************************************************************************
  */
 
-const v = chrome.runtime.getManifest().version;
+// trenne Code vom Globalen Scope
+{
 
 /**
- * 
- * @param {string} src
+ * Lädt ein JavaScript in der Webseite. Der zurückgegebene Promise wird aufgelöst, sobald der code geladen wurde.
+ * @param {string} src die zu ladende URL
  * @returns {Promise<void>} 
  */
 function promisedLoadCode(src) {
@@ -35,7 +36,10 @@ function promisedLoadCode(src) {
 			reject();
 		});
 		
-		while (!document.head && !document.documentElement) await new Promise((resolve) => requestIdleCallback(resolve));
+		while (!document.head && !document.documentElement) await new Promise((resolve) => {
+			// @ts-ignore
+			requestIdleCallback(resolve);
+		});
 
 		(document.head || document.documentElement).appendChild(sc);
 	});
@@ -43,21 +47,22 @@ function promisedLoadCode(src) {
 
 
 
+
+const v = chrome.runtime.getManifest().version;
 let antLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
 
-let tid = setInterval(InjectCSS, 0),
-	PossibleLangs = ['de','en','fr','es','ru'],
-	lng = chrome.i18n.getUILanguage(),
-	uLng = localStorage.getItem('user-language');
+const PossibleLangs = ['de','en','fr','es','ru'];
+let   lng = chrome.i18n.getUILanguage();
+const uLng = localStorage.getItem('user-language');
 
 // wir brauchen nur den ersten Teil
-if(lng.indexOf('-') > 0)
+if (lng.indexOf('-') > 0)
 {
 	lng = lng.split('-')[0];
 }
 
 // gibt es eine Übersetzung?
-if(PossibleLangs.includes(lng) === false)
+if (PossibleLangs.includes(lng) === false)
 {
 	lng = 'en';
 }
@@ -72,23 +77,32 @@ let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/i18n/' 
 // prüfen ob jQuery im DOM geladen wurde
 function checkForjQuery(){
 	if (typeof jQuery === undefined){
+		// @ts-ignore
 		requestIdleCallback(checkForjQuery);
 	} else {
-		antLoadpromise.then(InjectCode);
+		InjectCode();
 	}
 }
-requestIdleCallback(checkForjQuery);
+checkForjQuery();
 
 
-function InjectCSS()
-{
+let tid = setInterval(InjectCSS, 0);
+function InjectCSS() {
 	// Dokument geladen
 	if(document.head !== null){
 
 		let script = document.createElement('script');
 
-		script.innerText = "let extID='"+ chrome.runtime.id +"',extUrl='"+chrome.extension.getURL('')+"',GuiLng='" + lng + "',extVersion='"+ v +"',devMode=" + !('update_url' in chrome.runtime.getManifest()) + ";";
+		script.innerText = `
+			let extID='${chrome.runtime.id}',
+				extUrl='${chrome.extension.getURL('')}',
+				GuiLng='${lng}',
+				extVersion='${v}',
+				devMode=${!('update_url' in chrome.runtime.getManifest())};
+		`;
 		document.head.appendChild(script);
+		// Das script wurde direkt ausgeführt und kann wieder entfernt werden.
+		script.remove();
 
 		let cssFiles = [
 			'goods',
@@ -113,10 +127,13 @@ function InjectCSS()
 	}
 }
 
-async function InjectCode()
-{
-	let extURL = chrome.extension.getURL(''),
-		vendorScripts = [
+async function InjectCode() {
+
+	// warte zunächst, dass ant und i18n geladen sind
+	await Promise.all([antLoadpromise, i18nJSLoadpromise]);
+
+	const extURL = chrome.extension.getURL('');
+	const vendorScripts = [
 		'moment/moment-with-locales.min',
 		'CountUp/jquery.easy_number_animate.min',
 		'clipboard/clipboard.min',
@@ -133,7 +150,7 @@ async function InjectCode()
 	await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
 
 
-	let s = [
+	const s = [
 		'helper',
 		'_menu',
 		'tavern',
@@ -164,10 +181,11 @@ async function InjectCode()
 
 // Firefox unterstützt keine direkte kommunikation mit background.js
 // also müssen die Nachrichten weitergeleitet werden.
+// @ts-ignore
 if (!chrome.app) {
 	// höre auf dem window objekt auf spezielle Nachrichten unter '<extID>#message'
 	// und leite sie weiter wenn sie von dieser Seite kommen
-	window.addEventListener(chrome.runtime.id+'#message', evt => {
+	window.addEventListener(chrome.runtime.id+'#message', (/** @type {CustomEvent} */ evt) => {
 		if (evt.srcElement === window) {
 			try {
 				chrome.runtime.sendMessage(chrome.runtime.id, evt.detail);
@@ -176,4 +194,7 @@ if (!chrome.app) {
 			}
 		}
 	});
+}
+
+// ende der Trennung vom Globalen Scope
 }
