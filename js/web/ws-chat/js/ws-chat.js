@@ -171,7 +171,7 @@ Chat = {
 
 		// https://github.com/joypixels/emojify.js/blob/master/src/emojify.js
 		emojify.setConfig({
-			img_dir: '../vendor/emoyify/images/emoji'
+			img_dir: '../../../../../vendor/emoyify/images/emoji'
 		});
 
 		$('#message-input').focus();
