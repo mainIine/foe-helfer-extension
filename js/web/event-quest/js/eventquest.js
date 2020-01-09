@@ -54,13 +54,12 @@ let EventQuest = {
         });
     },
 
+
     /**
 	 *
 	 * @constructor
 	 */
     CalcBody: () => {
-
-        let h = [];
 
         if (EventQuest.AllQuests === null)
             return;
@@ -107,5 +106,4 @@ let EventQuest = {
 
         $('#eventquestBody').html(h.join(''));
     },
-
-}
+};
