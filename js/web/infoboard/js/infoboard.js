@@ -61,7 +61,6 @@ let Infoboard = {
 	/**
 	 * Erzeugt die Box wenn noch nicht im DOM
 	 *
-	 * @constructor
 	 */
 	Box: ()=> {
 
