@@ -188,13 +188,14 @@ let HTML = {
 		$(btn).bind('click', function(){
 			let box = $(this).closest('.window-box'),
 				open = box.hasClass('open');
-
 			if(open === true){
 				box.removeClass('open');
 				box.addClass('closed');
+				box.find('.window-body').css("visibility", "hidden");
 			} else {
 				box.removeClass('closed');
 				box.addClass('open');
+				box.find('.window-body').css("visibility", "visible");
 			}
 		});
 	},
