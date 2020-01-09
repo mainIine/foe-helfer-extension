@@ -569,13 +569,11 @@ let Calculator = {
 		$('#costTable').html(h.join(''));
 
 		//Overview nur im Snipemodus aktualisieren
-		if (Calculator.MinRate === 0) {
-			let StorageKey = 'OV_' + UpdateEntity['player_id'] + '/' + UpdateEntity['cityentity_id'];
+		let StorageKey = 'OV_' + UpdateEntity['player_id'] + '/' + UpdateEntity['cityentity_id'];
 
-			// Level/FP/BestKurs/UNIX-Time
-			let StorageValue = UpdateEntity['level'] + '/' + UpdateEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
-			localStorage.setItem(StorageKey, StorageValue);
-		}
+		// Level/FP/BestKurs/UNIX-Time
+		let StorageValue = UpdateEntity['level'] + '/' + UpdateEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
+		localStorage.setItem(StorageKey, StorageValue);
 	},
 
 
