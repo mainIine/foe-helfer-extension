@@ -32,6 +32,22 @@ if( typeof helper == 'undefined' ) {
 	var helper = { } ;
 }
 
+helper.str = {
+	/**
+	 * Function to copy string to clipboard
+	 * 
+	 * <a href="/param">@param</a> {string} [textToCopy] Source string
+	 */
+	copyToClipboard: function(textToCopy){
+		var copyFrom = $('<textarea/>');
+		copyFrom.text(textToCopy);
+		$('body').append(copyFrom);
+		copyFrom.select();
+		document.execCommand('copy');
+		copyFrom.remove();
+	}
+};
+
 helper.arr = {
 	/**
 	 * Function to sort multidimensional array
