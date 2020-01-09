@@ -120,7 +120,6 @@ let GildFights = {
 				title: 'Spieler Übersicht',
 				auto_close: true,
 				dragdrop: true,
-				resize: true,
 				minimize: true,
 				saveCords: false
 			});
