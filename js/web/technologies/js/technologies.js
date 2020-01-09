@@ -113,7 +113,8 @@ let Technologies = {
         }
 
         // Güter zaehlen
-        let RequiredResources = [];
+        let RequiredResources = [],
+            TechCount = 0;
         for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
             let Tech = Technologies.AllTechnologies[i];
             if (Tech['currentSP'] === undefined)
@@ -134,6 +135,8 @@ let Technologies = {
 
                         RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
                     }
+
+                    TechCount++;
                 }
             }
         }
@@ -147,7 +150,6 @@ let Technologies = {
 			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n['Boxes']['Technologies']['Eras'][NextEraID] + '</button>');
         h.push('</div>');
 
-
         h.push('<table class="foe-table">');
 
         h.push('<thead>' +
@@ -159,35 +161,42 @@ let Technologies = {
             '</tr>' +
             '</thead>');
 
-        // Reihenfolge der Ausgabe generieren
-        let OutputList = ['strategy_points', 'money', 'supplies'];
-        for (let i = 0; i < 70; i++) {
-            OutputList[OutputList.length] = GoodsList[i]['id'];
-        }
-        OutputList[OutputList.length] = 'promethium';
-        for (let i = 70; i < 75; i++) {
-            OutputList[OutputList.length] = GoodsList[i]['id'];
-        }
-        OutputList[OutputList.length] = 'orichalcum';
-        for (let i = 75; i < GoodsList.length; i++) {
-            OutputList[OutputList.length] = GoodsList[i]['id'];
-        }
-
-        for (let i = 0; i < OutputList.length; i++) {
-            let ResourceName = OutputList[i];
-            if (RequiredResources[ResourceName] !== undefined) {
-                let Required = RequiredResources[ResourceName];
-                let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
-                if (Stock === undefined) Stock = 0;
-                let Diff = Stock - Required;
-
-                h.push('<tr>');
-                h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
-                h.push('<td>' + HTML.Format(Required) + '</td>');
-                h.push('<td>' + HTML.Format(Stock) + '</td>');
-                h.push('<td class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
-                h.push('</tr>');
+        if (TechCount > 0) {
+            // Reihenfolge der Ausgabe generieren
+            let OutputList = ['strategy_points', 'money', 'supplies'];
+            for (let i = 0; i < 70; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
             }
+            OutputList[OutputList.length] = 'promethium';
+            for (let i = 70; i < 75; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+            OutputList[OutputList.length] = 'orichalcum';
+            for (let i = 75; i < GoodsList.length; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+
+            for (let i = 0; i < OutputList.length; i++) {
+                let ResourceName = OutputList[i];
+                if (RequiredResources[ResourceName] !== undefined) {
+                    let Required = RequiredResources[ResourceName];
+                    let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
+                    if (Stock === undefined) Stock = 0;
+                    let Diff = Stock - Required;
+
+                    h.push('<tr>');
+                    h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
+                    h.push('<td>' + HTML.Format(Required) + '</td>');
+                    h.push('<td>' + HTML.Format(Stock) + '</td>');
+                    h.push('<td class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
+                    h.push('</tr>');
+                }
+            }
+        }
+        else {
+            h.push('<tr>');
+            h.push('<td>' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
+            h.push('</tr>');
         }
         h.push('</table');
 

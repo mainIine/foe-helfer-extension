@@ -280,8 +280,8 @@ let Parts = {
         h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n['Boxes']['OwnpartCalculator']['OldLevel'] : i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
-        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">' + 'Fördern 1.85' + '</button>');  //Todo: Translate
-		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">' + 'Fördern 1.90' + '</button>');  //Todo: Translate
+        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
+		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
         h.push('</td>');
         h.push('</tr></table>');
 
@@ -479,16 +479,12 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-
-
-		// es soll etwas kopiert werden
-		// Player-Namen und individuellen LG Namen ermittlen
-		new ClipboardJS('.button-own', {
-			text: function(trigger) {
-				return Parts.CopyFunction(Maezens, Eigens, NonExts, trigger, 'copy');
-			}
+		$('body').off("click",'.button-own');
+		$('body').on('click', '.button-own', function(){
+			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
+			helper.str.copyToClipboard(copyParts);
 		});
-
+		$('body').off("click",'.button-save-own');
 		$('body').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});

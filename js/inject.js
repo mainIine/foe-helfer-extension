@@ -128,56 +128,59 @@ function InjectCSS() {
 }
 
 async function InjectCode() {
+	try {
+		// warte zunächst, dass ant und i18n geladen sind
+		await Promise.all([antLoadpromise, i18nJSLoadpromise]);
 
-	// warte zunächst, dass ant und i18n geladen sind
-	await Promise.all([antLoadpromise, i18nJSLoadpromise]);
+		const extURL = chrome.extension.getURL('');
+		const vendorScripts = [
+			'moment/moment-with-locales.min',
+			'CountUp/jquery.easy_number_animate.min',
+			'Tabslet/jquery.tabslet.min',
+			'ScrollTo/jquery.scrollTo.min',
+			'jQuery/jquery-resizable.min',
+			'tooltip/tooltip',
+			'tableSorter/table-sorter',
+			'Sortable/Sortable.min',
+			'jsZip/jszip.min',
+			//'jedParser/jedParser'
+		];
 
-	const extURL = chrome.extension.getURL('');
-	const vendorScripts = [
-		'moment/moment-with-locales.min',
-		'CountUp/jquery.easy_number_animate.min',
-		'clipboard/clipboard.min',
-		'Tabslet/jquery.tabslet.min',
-		'ScrollTo/jquery.scrollTo.min',
-		'jQuery/jquery-resizable.min',
-		'tooltip/tooltip',
-		'tableSorter/table-sorter',
-		'Sortable/Sortable.min',
-		'jsZip/jszip.min',
-		//'jedParser/jedParser'
-	];
-
-	// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
-	await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
+		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
+		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
 
 
-	const s = [
-		'helper',
-		'_menu',
-		'tavern',
-		'outposts',
-		'calculator',
-		'infoboard',
-		'productions',
-        'part-calc',
-        'unit',
-		'guildfights',
-		'notes',
-		'campagnemap',
-        'technologies',
-        'negotiation',
-		'read-buildings',
-		'settings',
-		'strategy-points',
-		'citymap'
-	];
+		const s = [
+			'helper',
+			'_menu',
+			'tavern',
+			'outposts',
+			'calculator',
+			'infoboard',
+			'productions',
+			'part-calc',
+			'unit',
+			'guildfights',
+			'notes',
+			'campagnemap',
+			'technologies',
+			'negotiation',
+			'read-buildings',
+			'settings',
+			'strategy-points',
+			'citymap'
+		];
 
-	// Scripte laden (nacheinander)
-	for (let i = 0; i < s.length; i++) {
-		await promisedLoadCode(extURL + 'js/web/' + s[i] + '/js/' + s[i] + '.js?v=' + v);
+		// Scripte laden (nacheinander)
+		for (let i = 0; i < s.length; i++) {
+			await promisedLoadCode(extURL + 'js/web/' + s[i] + '/js/' + s[i] + '.js?v=' + v);
+		}
+
+		window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+	} catch (err) {
+		// stelle sicher, dass bei einem unvollständiges Laden nicht der paket-buffer im FoEproxy voll läuft.
+		window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
 	}
-
-	window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 }
 
 // Firefox unterstützt keine direkte kommunikation mit background.js

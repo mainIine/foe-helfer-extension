@@ -178,7 +178,7 @@ let GildFights = {
 			t.push('<tr' + (change === true ? ' class="bg-green"' : '') + '>');
 			// ToDo: bg-green anlegen (leicht transparenter Hintergrund)
 			t.push('<td>');
-			t.push('<img src="https://foede.innogamescdn.com/assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
+			t.push('<img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
 			// t.push(p['player']['avatar']);
 			t.push('</td>');
 
