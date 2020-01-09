@@ -266,11 +266,11 @@ let Calculator = {
 		for (let i in MainParser.Quests) {
 			let Quest = MainParser.Quests[i];
 
-			if (Quest.questGiver.id === 'scientist' && Quest.successConditions.length === 1) {
+			if (Quest.questGiver.id === 'scientist') {
 				for (let j in Quest.successConditions) {
 					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
 					let MaxProgress = Quest.successConditions[j].maxProgress;
-					if (CurrentEraID <= 3 || MaxProgress > 15) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+					if (CurrentEraID <= 3 || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
 						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + 'Aktiver Schleifenquest' + ': <span id="up-to-level-up" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : 'Schleifenquest abgeschlossen') + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>'); // Todo: Translate
 					}
 				}
@@ -530,7 +530,7 @@ let Calculator = {
 			//Nummer
 			h.push('<td class="text-center"><strong>' + (Rank + 1) + '</strong></td>')
 			// Ertrag/BP/Medaillen
-			h.push('<td class="text-center"><strong class="' + (FPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : 'success') + '">' + HTML.Format(FPRewards[Rank]) + '</strong></td>');
+			h.push('<td class="text-center"><strong class="' + (FPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(FPRewards[Rank]) + '</strong></td>');
 			h.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			h.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
 
@@ -542,19 +542,19 @@ let Calculator = {
 			}
 			else if (States[Rank] === 'NegativeProfit') {
 				// Einsatz/Gewinn/Kurs
-				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : 'success') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
 				h.push('<td class="text-center"><strong class="error">' + HTML.Format(Gewinn) + '</strong></td>');
 				h.push('<td class="text-center">-</td>');
 			}
 			else if (States[Rank] === 'LevelWarning') {
 				// Einsatz/Gewinn/Kurs
-				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : 'success') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
 				h.push('<td class="text-center"><strong class="' + (Gewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(Gewinn) + '</strong></td>');
 				h.push('<td class="text-center"><strong class="warning">' + (Gewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-') + '</strong></td>');
 			}
 			else if (States[Rank] === 'Profit') {
 				// Einsatz/Gewinn/Kurs
-				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : 'success') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
 				h.push('<td class="text-center"><strong class="success">' + HTML.Format(Gewinn) + '</strong></td>');
 				h.push('<td class="text-center"><strong class="success">' + Calculator.FormatKurs(Kurs) + '</strong></td>');
 				Calculator.PlaySound();
