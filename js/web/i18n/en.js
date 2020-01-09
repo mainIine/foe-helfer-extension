@@ -221,6 +221,13 @@ let i18n = {
 			"NotFilled": "not filled",
 			"Bind": "Bound",
 			"Unbind": "Unbound"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data",
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
+			"SubmitSuccess": "Data was transfered successfully... Now visit "
 		}
 	},
 
@@ -350,10 +357,11 @@ let i18n = {
 			"Title" : "Change language",
 			"Desc" : "Which language, instead of the recognized one, should be used?",
 			"Dropdown": {
-				"de" : "German",
-				"en" : "English",
-				"fr" : "French",
-				"es" : "Spanish",
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},

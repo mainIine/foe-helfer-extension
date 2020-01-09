@@ -338,48 +338,7 @@ let _menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function() {
-            let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
-                UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData'),
-                OverviewJSON = sessionStorage.getItem('OtherActiveBuildingOverview');
-
-            let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
-                UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined,
-                Overview = OverviewJSON !== null ? JSON.parse(OverviewJSON) : undefined;
-            
-			// Nur Übersicht verfügbar
-            if (Overview !== undefined && UpdateEntity === undefined) {
-                Calculator.ShowOverview(false);
-            }
-
-            // Nur Detailansicht verfügbar
-            else if (UpdateEntity !== undefined && Overview === undefined) {
-                Calculator.Show(Rankings, UpdateEntity);
-            }
-
-            // Beide verfügbar
-            else if (UpdateEntity !== undefined && Overview !== undefined) {
-                let BuildingInfo = Overview.find(obj => {
-                    return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
-                });
-
-                // Beide gehören zum selben Spieler => beide anzeigen
-                if (BuildingInfo !== undefined) {
-                    Calculator.ShowOverview();
-                    Calculator.Show(Rankings, UpdateEntity);
-                }
-
-                // Unterschiedliche Spieler => Öffne die neuere Ansicht
-                else {
-                    let DetailViewIsNewer = sessionStorage.getItem('DetailViewIsNewer');
-                    if (DetailViewIsNewer === "true") {
-                        Calculator.Show(Rankings, UpdateEntity);
-                    }
-                    else {
-                        Calculator.ShowOverview();
-                    }
-                }
-
-            }
+			Calculator.Open();
 		});
 
 		btn_CalcBG.append(btn_Calc);
