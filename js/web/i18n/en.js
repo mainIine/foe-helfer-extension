@@ -133,7 +133,8 @@ let i18n = {
             "Resource": "Resource",
             "DescRequired": "Required",
             "DescInStock": "Available",
-            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+			"NoTechs": "You have reached the end of this era",
             "Eras": {
                 1: "Stone Age",
                 2: "Bronze Age",

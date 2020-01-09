@@ -133,7 +133,8 @@ let i18n = {
             "Resource": "Recurso",
             "DescRequired": "Necesitado",
             "DescInStock": "Disponible",
-            "DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"NoTechs": "You have reached the end of this era", //Todo: Translate
             "Eras": {
                 1: "Edad de Piedra",
                 2: "Edad de Bronce",
