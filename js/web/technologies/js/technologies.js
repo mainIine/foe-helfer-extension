@@ -44,7 +44,6 @@ let Technologies = {
 
 	/**
 	 * Zeigt
-	 * @constructor
 	 */
     Show: ()=> {
        if ($('#technologies').length === 0) {
@@ -69,7 +68,6 @@ let Technologies = {
 
 	/**
 	 *
-	 * @constructor
 	 */
     BuildBox: ()=> {
         Technologies.CalcBody();
@@ -89,7 +87,6 @@ let Technologies = {
 
 	/**
 	 *
-	 * @constructor
 	 */
     CalcBody: ()=> {
         let h = [],
