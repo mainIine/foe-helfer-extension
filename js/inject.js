@@ -136,7 +136,6 @@ async function InjectCode() {
 	const vendorScripts = [
 		'moment/moment-with-locales.min',
 		'CountUp/jquery.easy_number_animate.min',
-		'clipboard/clipboard.min',
 		'Tabslet/jquery.tabslet.min',
 		'ScrollTo/jquery.scrollTo.min',
 		'jQuery/jquery-resizable.min',
