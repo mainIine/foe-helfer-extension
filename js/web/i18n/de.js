@@ -364,10 +364,11 @@ let i18n = {
 			"Title" : "Sprache wechseln",
 			"Desc" : "Welche Sprache, statt der erkannten, soll genutzt werden?",
 			"Dropdown": {
-				"de" : "Deutsch",
-				"en" : "Englisch",
-				"fr" : "Französisch",
-				"es" : "Spanisch"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},
