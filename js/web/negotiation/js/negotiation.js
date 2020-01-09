@@ -474,34 +474,49 @@ let Negotiation = {
 		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
 
 		// gibt es noch nicht, laden
-    	if( Negotiation.Tables[TableName] === undefined ){
-			let url =  extUrl + 'js/web/negotiation/tables/';
+		if (Negotiation.Tables[TableName] === undefined) {
+			let url = extUrl + 'js/web/negotiation/tables/';
 
-    		MainParser.loadJSON(url + TableName + '.json', function(response){
-				Negotiation.Tables[TableName] = JSON.parse(response);
+			fetch(url + TableName + '.zip')
+				.then(function (response) {
+					if (response.status === 200 || response.status === 0) {
+						return Promise.resolve(response.blob());
+					} else {
+						return Promise.reject(new Error(response.statusText));
+					}
+				})
+				.then(JSZip.loadAsync)
+				.then(function (zip) {
+					// @ts-ignore
+					return zip.file(TableName + ".json").async("uint8array");
+				})
+				.then((/** @type {Uint8Array} */response) => {
+					Negotiation.Tables[TableName] = JSON.parse(new TextDecoder().decode(response));
 
-				Negotiation.CurrentTable = Negotiation.Tables[TableName];
+					Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
-				if (Negotiation.CurrentTable !== undefined) {
-					Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
-                }
+					if (Negotiation.CurrentTable !== undefined) {
+						Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+					}
 
-                Negotiation.RefreshBox();
-                if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-                    Negotiation.Show();
-                }
-			});
+					Negotiation.RefreshBox();
+					if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+						Negotiation.Show();
+					}
+				})
+				.catch(console.error)
+			;
 		}
-    	// bereits geladen
-    	else {
+		// bereits geladen
+		else {
 			Negotiation.CurrentTable = Negotiation.Tables[TableName];
-            Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
-            Negotiation.RefreshBox();
-            if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-                setTimeout(() => {
-                    Negotiation.Show();
-                }, 300);
-            }
-        }
-    }
+			Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+			Negotiation.RefreshBox();
+			if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+				setTimeout(() => {
+					Negotiation.Show();
+				}, 300);
+			}
+		}
+	}
 };
