@@ -386,5 +386,15 @@ let HTML = {
 			}
 		}
 		return string;
+	},
+
+
+	EnterFullscreen: ()=> {
+
+	},
+
+
+	LeaveFullscreen:()=> {
+
 	}
 };

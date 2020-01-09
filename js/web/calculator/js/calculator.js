@@ -217,24 +217,24 @@ let Calculator = {
 			Calculator.MinRate = Calculator.LastSelectedMinRate;
 		}
 
-		let OwnArcBonus = '<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === (Calculator.ArcBonus * 100) ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="' + (Calculator.ArcBonus * 100) + '">' + Calculator.ArcBonus +'%</button>';
+		let OwnArcBonus = '<button class="btn btn-default ' + (Calculator.LastSelectedMinRate === (Calculator.ArcBonus + 100) ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="' + (Calculator.ArcBonus + 100) + '">' + Calculator.ArcBonus +'%</button>';
 
 
 		h.push('<button class="btn btn-default ' + (Calculator.OpenedFromOverview ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="0">' + 'Snipen' + '</button>'); //Todo: Translate
 
-		if((Calculator.ArcBonus * 100) < 185){
+		if((Calculator.ArcBonus + 100) < 185){
 			h.push(OwnArcBonus);
 		}
 
 		h.push('<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === 185 ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="185">85%</button>');
 
-		if((Calculator.ArcBonus * 100) > 185 && (Calculator.ArcBonus * 100) < 190){
+		if((Calculator.ArcBonus + 100) > 185 && (Calculator.ArcBonus + 100) < 190){
 			h.push(OwnArcBonus);
 		}
 
 		h.push('<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === 190 ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="190">90%</button>');
 
-		if((Calculator.ArcBonus * 100) > 190){
+		if((Calculator.ArcBonus + 100) > 190){
 			h.push(OwnArcBonus);
 		}
                 
@@ -310,6 +310,7 @@ let Calculator = {
 				Calculator.LastSelectedMinRate = Calculator.MinRate;
 				localStorage.setItem('CalculatorLastSelectedMinRate', Calculator.LastSelectedMinRate);
 			}
+
             Calculator.CalcBody();
 
             $(this).addClass('btn-default-active');
@@ -367,12 +368,12 @@ let Calculator = {
 			arc = 1 + Calculator.ArcBonus / 100;
 
 		h.push('<thead>' +
-				'<th>#</th>' +
-				'<th>' + i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
-				'<th>BP</th>' +
-				'<th>Meds</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
-				'<th>'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
+				'<th class="text-center">#</th>' +
+				'<th class="text-center">' + i18n['Boxes']['Calculator']['Commitment'] +'</th>' +
+				'<th class="text-center">BP</th>' +
+				'<th class="text-center">Meds</th>' +
+				'<th class="text-center">'+ i18n['Boxes']['Calculator']['Profit'] +'</th>' +
+				'<th class="text-center">'+ i18n['Boxes']['Calculator']['Rate'] +'</th>' +
 			'</thead>');
 
         let EigenPos,

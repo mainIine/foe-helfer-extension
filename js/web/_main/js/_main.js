@@ -39,6 +39,15 @@ document.addEventListener("DOMContentLoaded", function(){
 	// Local-Storage leeren
 	localStorage.removeItem('OwnCurrentBuildingCity');
     localStorage.removeItem('OwnCurrentBuildingGreat');
+
+    // Fullscreen erkennen und verarbeiten
+	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
+		if (!window.screenTop && !window.screenY) {
+			HTML.LeaveFullscreen();
+		} else {
+			HTML.EnterFullscreen();
+		}
+	});
 });
 
 const FoEproxy = (function () {
