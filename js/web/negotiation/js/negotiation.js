@@ -499,16 +499,16 @@ let Negotiation = {
 				.catch(console.error)
 			;
 		}
-    	// bereits geladen
-    	else {
+		// bereits geladen
+		else {
 			Negotiation.CurrentTable = Negotiation.Tables[TableName];
-            Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
-            Negotiation.RefreshBox();
-            if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-                setTimeout(() => {
-                    Negotiation.Show();
-                }, 300);
-            }
-        }
-    }
+			Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+			Negotiation.RefreshBox();
+			if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+				setTimeout(() => {
+					Negotiation.Show();
+				}, 300);
+			}
+		}
+	}
 };
