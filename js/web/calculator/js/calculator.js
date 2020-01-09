@@ -28,7 +28,75 @@ let Calculator = {
     LastPlayerID: 0,
     PlayInfoSound: null,
 	PlayOverviewInfoSound: null,
+	DetailViewIsNewer: false,
 	OpenedFromOverview: undefined,
+
+	/**
+	* Kostenrechner öffnen
+	*
+	* @constructor
+	*/
+	Open: () => {
+		let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
+			UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData'),
+			OverviewJSON = sessionStorage.getItem('OtherActiveBuildingOverview');
+
+		let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
+			UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined,
+			Overview = OverviewJSON !== null ? JSON.parse(OverviewJSON) : undefined;
+
+		// Nur Übersicht verfügbar
+		if (Overview !== undefined && UpdateEntity === undefined) {
+			Calculator.ShowOverview(false);
+		}
+
+		// Nur Detailansicht verfügbar
+		else if (UpdateEntity !== undefined && Overview === undefined) {
+			Calculator.Show(Rankings, UpdateEntity);
+		}
+
+		// Beide verfügbar
+		else if (UpdateEntity !== undefined && Overview !== undefined) {
+			let BuildingInfo = Overview.find(obj => {
+				return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
+			});
+
+			// Beide gehören zum selben Spieler => beide anzeigen
+			if (BuildingInfo !== undefined) {
+				Calculator.ShowOverview();
+				Calculator.Show(Rankings, UpdateEntity);
+			}
+
+			// Unterschiedliche Spieler => Öffne die neuere Ansicht
+			else {
+				if (Calculator.DetailViewIsNewer) {
+					Calculator.Show(Rankings, UpdateEntity);
+				}
+				else {
+					Calculator.ShowOverview();
+				}
+			}
+		}
+	},
+
+
+	/**
+	* Kostenrechner öffnen
+	*
+	* @constructor
+	*/
+	RefreshCalculator: () => {
+		let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
+			UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData');
+
+		let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
+			UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined;
+
+		if ($('#costCalculator').is(':visible')) {
+			Calculator.Show(Rankings, UpdateEntity);
+		}
+	},
+
 
 	/**
 	 * Kostenrechner anzeigen
@@ -185,7 +253,22 @@ let Calculator = {
         // Wieviel fehlt noch bis zum leveln?
         let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
         
-        h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+
+		// Schleifenquest für "Benutze FP" suchen
+		for (let i in MainParser.Quests) {
+			let Quest = MainParser.Quests[i];
+
+			if (Quest.questGiver.id === 'scientist' && Quest.successConditions.length === 1) {
+				for (let j in Quest.successConditions) {
+					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
+					let MaxProgress = Quest.successConditions[j].maxProgress;
+					if (CurrentEraID <= 3 || MaxProgress > 15) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + 'Aktiver Schleifenquest' + ': <span id="up-to-level-up" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : 'Schleifenquest abgeschlossen') + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>'); // Todo: Translate
+					}
+				}
+			}
+		}
 
 
         // in die bereits vorhandene Box drücken
