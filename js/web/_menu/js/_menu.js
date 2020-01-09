@@ -136,7 +136,7 @@ let _menu = {
 		/**
 		 * Live-Chat
 		 */
-		hudSlider.append( _menu.Chat_Btn() );
+		// hudSlider.append( _menu.Chat_Btn() );
 
 
 		/**
