@@ -22,7 +22,6 @@ let StrategyPoints = {
 	 * Holt beim Start alle FPs aus dem Lager
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	GetFromInventory: (d)=> {
 		let t = 0;
@@ -53,7 +52,6 @@ let StrategyPoints = {
 	 * Kleine FP-Bar im Header
 	 *
 	 * @param NewFP Die neu zu setzenden FP
-	 * @constructor
 	 */
     ForgePointBar: (NewFP) => {
         if (NewFP === undefined) NewFP = 0;

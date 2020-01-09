@@ -145,11 +145,7 @@
 }
 
 .closed .window-body {
-	height: 0 !important;
-}
-
-.closed .window-head {
-    top: -37px !important;
+	height: 22px !important;
 }
 
 .window-grippy {
