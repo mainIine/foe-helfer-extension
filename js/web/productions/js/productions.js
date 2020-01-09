@@ -97,7 +97,6 @@ let Productions = {
 	 * ALle Gebäude aus dem Cache holen
 	 *
 	 * @returns {any}
-	 * @constructor
 	 */
 	GetSavedData: ()=> {
 		return MainParser.CityMapData;
@@ -107,7 +106,6 @@ let Productions = {
 	/**
 	 * Alle Gebäude durchsteppen
 	 *
-	 * @constructor
 	 */
 	ReadData: ()=> {
 
@@ -705,7 +703,6 @@ let Productions = {
 	 * Merkt sich alle Tabs
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	SetTabs: (id)=> {
 		Productions.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
@@ -716,7 +713,6 @@ let Productions = {
 	 * Gibt alle gemerkten Tabs aus
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal">' + Productions.Tabs.join('') + '</ul>';
@@ -728,7 +724,6 @@ let Productions = {
 	 *
 	 * @param id
 	 * @param content
-	 * @constructor
 	 */
 	SetTabContent: (id, content)=> {
 		// ab dem zweiten Eintrag verstecken
@@ -742,7 +737,6 @@ let Productions = {
 	 * Setzt alle gespeicherten Tabellen zusammen
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabContent: ()=> {
 		return Productions.TabsContent.join('');
@@ -752,7 +746,6 @@ let Productions = {
 	/**
 	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
 	 *
-	 * @constructor
 	 */
 	SwitchFunction: ()=>{
 		$('body').on('click', '.change-view', function(){
@@ -774,7 +767,6 @@ let Productions = {
 	/**
 	 * Sortiert alle Gebäude des letzten Tabs
 	 *
-	 * @constructor
 	 */
 	SortingAllTab: ()=>{
 
@@ -819,7 +811,6 @@ let Productions = {
 
 	/**
 	 * Blendet je nach Dropdown die Typen ein
-	 * @constructor
 	 */
 	Dropdown: ()=>{
 		$('body').on('change', '#all-drop', function() {
@@ -840,7 +831,6 @@ let Productions = {
 	/**
 	 * Kleine Suche für die "Gesamt"-Liste
 	 *
-	 * @constructor
 	 */
 	Filter: ()=>{
 		let input, filter, tr, td, i, txtValue;
@@ -948,7 +938,6 @@ let Productions = {
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	ShowFunction: (id)=> {
 
@@ -971,7 +960,6 @@ let Productions = {
 	 *
 	 * @param GoodType
 	 * @returns {*|string}
-	 * @constructor
 	 */
 	GetGoodName: (GoodType)=> {
 		if (GoodType === 'happiness') {

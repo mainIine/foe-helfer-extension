@@ -31,7 +31,6 @@ let Negotiation = {
 	/**
 	 * Box in den DOM legen
 	 *
-	 * @constructor
 	 */
     Show: () => {
         if ($('#negotiationBox').length === 0) {
@@ -57,7 +56,6 @@ let Negotiation = {
 	/**
 	 * Body der Box parsen
 	 *
-	 * @constructor
 	 */
     BuildBox: () => {
         Negotiation.CalcBody();
@@ -67,7 +65,6 @@ let Negotiation = {
     /**
     * Body der Box aktualisieren falls bereits geöffnet
     *
-    * @constructor
     */
     RefreshBox: () => {
         if ($('#negotiationBox').length > 0) {
@@ -79,7 +76,6 @@ let Negotiation = {
 	/**
 	 * Berechnungen durchführen
 	 *
-	 * @constructor
 	 */
     CalcBody: () => {
         let h = [],
@@ -221,11 +217,13 @@ let Negotiation = {
 			}
 
 			// Lagerbestand via Tooltip
+			// @ts-ignore
 			$('.good').tooltip({
 				container: '#negotiationBox'
 			});
 
             if (Negotiation.CurrentTable !== undefined && Negotiation.CurrentTry === 1){
+				// @ts-ignore
 				new Sortable(document.getElementById('good-sort'), {
 					animation: 150,
 					ghostClass: 'good-drag',
@@ -247,7 +245,6 @@ let Negotiation = {
 	 * Chancen Berechnung aus den Files
 	 *
 	 * @param responseData
-	 * @constructor
 	 */
     StartNegotiation: (responseData) => {
 
@@ -303,7 +300,6 @@ let Negotiation = {
 	 * Es wurde eine Runde abgeschickt
 	 *
 	 * @param responseData
-	 * @constructor
 	 */
     SubmitTurn: (responseData) => {
         if (Negotiation.CurrentTry === 0) return;
@@ -382,7 +378,6 @@ let Negotiation = {
 	/**
 	 * Verhandlung zu Ende
 	 *
-	 * @constructor
 	 */
     ExitNegotiation: () => {
         Negotiation.CurrentTry = 0;
@@ -406,7 +401,6 @@ let Negotiation = {
 	 * @param TryCount
 	 * @param GoodCount
 	 * @returns {string}
-	 * @constructor
 	 */
     GetTableName: (TryCount, GoodCount) => {
         return TryCount + '_' + GoodCount;
@@ -418,7 +412,6 @@ let Negotiation = {
 	 *
 	 * @param GoodName
 	 * @returns {*}
-	 * @constructor
 	 */
     GetGoodValue: (GoodName) => {
     	let Value = 0;
@@ -468,29 +461,43 @@ let Negotiation = {
 	/**
 	 * Läd die Tabelle
 	 *
-	 * @constructor
 	 */
 	GetTable: ()=> {
 		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
 
 		// gibt es noch nicht, laden
-    	if( Negotiation.Tables[TableName] === undefined ){
-			let url =  extUrl + 'js/web/negotiation/tables/';
+		if (Negotiation.Tables[TableName] === undefined) {
+			let url = extUrl + 'js/web/negotiation/tables/';
 
-    		MainParser.loadJSON(url + TableName + '.json', function(response){
-				Negotiation.Tables[TableName] = JSON.parse(response);
+			fetch(url + TableName + '.zip')
+				.then(function (response) {
+					if (response.status === 200 || response.status === 0) {
+						return Promise.resolve(response.blob());
+					} else {
+						return Promise.reject(new Error(response.statusText));
+					}
+				})
+				.then(JSZip.loadAsync)
+				.then(function (zip) {
+					// @ts-ignore
+					return zip.file(TableName + ".json").async("uint8array");
+				})
+				.then((/** @type {Uint8Array} */response) => {
+					Negotiation.Tables[TableName] = JSON.parse(new TextDecoder().decode(response));
 
-				Negotiation.CurrentTable = Negotiation.Tables[TableName];
+					Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
-				if (Negotiation.CurrentTable !== undefined) {
-					Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
-                }
+					if (Negotiation.CurrentTable !== undefined) {
+						Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+					}
 
-                Negotiation.RefreshBox();
-                if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-                    Negotiation.Show();
-                }
-			});
+					Negotiation.RefreshBox();
+					if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+						Negotiation.Show();
+					}
+				})
+				.catch(console.error)
+			;
 		}
     	// bereits geladen
     	else {

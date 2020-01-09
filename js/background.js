@@ -12,6 +12,9 @@
  * **************************************************************************************
  */
 
+// trenne Code vom Globalen Scope
+{
+
 chrome.runtime.onInstalled.addListener(() => {
 	let version = chrome.runtime.getManifest().version;
 
@@ -126,8 +129,12 @@ function handleWebpageRequests(request) {
 /**
  * Auf einen response von ant.js lauschen
  */
+// @ts-ignore
 if (chrome.app) { // Chrome
 	chrome.runtime.onMessageExternal.addListener(handleWebpageRequests);
 } else { // Firefox
 	chrome.runtime.onMessage.addListener(handleWebpageRequests);
+}
+
+// ende der Trennung vom Globalen Scope
 }
