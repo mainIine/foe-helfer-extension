@@ -19,7 +19,6 @@ let KampagneMap = {
 
     /**
      * Zeigt
-     * @constructor
      */
     Show: () => {
         if ($('#campagne').length === 0) {
@@ -42,7 +41,6 @@ let KampagneMap = {
 
     /**
 	 *
-	 * @constructor
 	 */
     BuildBox: () => {
         KampagneMap.CalcBody();
@@ -51,7 +49,6 @@ let KampagneMap = {
 
     /**
 	 *
-	 * @constructor
 	 */
     CalcBody: () => {
 
