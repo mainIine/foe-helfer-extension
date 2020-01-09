@@ -27,7 +27,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = true,
+	UsePartCalcOnAllLGs = false,
 	CurrentTime = 0;
 
 document.addEventListener("DOMContentLoaded", function(){
