@@ -133,7 +133,8 @@ let i18n = {
             "Resource": "Ressource",
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
-            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"NoTechs": "Du bist am Ende des Zeitalters angelangt",
             "Eras": {
                 1: "Steinzeit",
                 2: "Bronzezeit",

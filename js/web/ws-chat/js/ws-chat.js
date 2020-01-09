@@ -312,7 +312,7 @@ Chat = {
 			});
 
 			PlayerName = Player['player_name'];
-			PlayerImg = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+			PlayerImg = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 			ExtClass = 'user-other';
 			TextR = Chat.MakeImage(text);
 			TextR = emojify.replace(TextR);
@@ -359,7 +359,7 @@ Chat = {
 		}
 
 		let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
-			.append( $('<img />').attr('src', 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
+			.append( $('<img />').attr('src', MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
 			.append( $('<span />').text( Player['player_name'] ) );
 
 		$('#users').append(pR);
@@ -711,7 +711,7 @@ Chat = {
 
 			$.ajax({
 				type: 'GET',
-				url: 'https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml',
+				url: MainParser.InnoCDN + 'assets/shared/avatars/Portraits.xml',
 				dataType: 'xml',
 				success: function(xml){
 
