@@ -143,6 +143,7 @@ async function InjectCode() {
 		'tooltip/tooltip',
 		'tableSorter/table-sorter',
 		'Sortable/Sortable.min',
+		'jsZip/jszip.min',
 		//'jedParser/jedParser'
 	];
 
