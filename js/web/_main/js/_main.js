@@ -516,7 +516,9 @@ const FoEproxy = (function () {
 
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
-		if(requestData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml")
+		if(idx !== -1) {
+			MainParser.InnoCDN = requestData.url.substring(0, idx+1);
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function(){
@@ -607,7 +609,7 @@ const FoEproxy = (function () {
 	});
 
 	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
-	FoEproxy.addHandler('OtherPlayerService', (data, postData) => {
+	FoEproxy.addHandler('OtherPlayerService', 'all', (data, postData) => {
 		if (data.requestMethod === 'getNeighborList' || data.requestMethod === 'getFriendsList' || data.requestMethod === 'getClanMemberList') {
 			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList');
 		}
@@ -1062,7 +1064,9 @@ let MainParser = {
 	CityMapData: null,
 	UnlockedAreas: null,
 	Quests: null,
+	InnoCDN: 'https://foede.innogamescdn.com/',
 
+	/** @type {Record<string,string>} */
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
 		'happiness' : 'happiness_amount',

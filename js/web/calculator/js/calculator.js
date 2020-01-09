@@ -35,7 +35,6 @@ let Calculator = {
 	/**
 	* Kostenrechner öffnen
 	*
-	* @constructor
 	*/
 	Open: () => {
 		let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
@@ -84,7 +83,6 @@ let Calculator = {
 	/**
 	* Kostenrechner öffnen
 	*
-	* @constructor
 	*/
 	RefreshCalculator: () => {
 		let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
