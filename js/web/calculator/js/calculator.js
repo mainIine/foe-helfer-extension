@@ -31,6 +31,7 @@ let Calculator = {
 	DetailViewIsNewer: false,
 	OpenedFromOverview: undefined,
 
+
 	/**
 	* Kostenrechner öffnen
 	*
@@ -129,7 +130,7 @@ let Calculator = {
                 Calculator.ArcBonus = parseFloat(ab);
 			}
 
-			StoredLastSelectedMinRate = localStorage.getItem('CalculatorLastSelectedMinRate');
+			let StoredLastSelectedMinRate = localStorage.getItem('CalculatorLastSelectedMinRate');
 			if (StoredLastSelectedMinRate !== null) {
 				Calculator.LastSelectedMinRate = parseFloat(StoredLastSelectedMinRate);
 			}
@@ -218,9 +219,26 @@ let Calculator = {
 			Calculator.MinRate = Calculator.LastSelectedMinRate;
 		}
 
+		let OwnArcBonus = '<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === (Calculator.ArcBonus * 100) ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="' + (Calculator.ArcBonus * 100) + '">' + Calculator.ArcBonus +'%</button>';
+
+
 		h.push('<button class="btn btn-default ' + (Calculator.OpenedFromOverview ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="0">' + 'Snipen' + '</button>'); //Todo: Translate
-		h.push('<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === 185 ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="185">Fördern 1.85</button>'); //Todo: Translate
-		h.push('<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === 190 ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="190">Fördern 1.90</button>'); //Todo: Translate
+
+		if((Calculator.ArcBonus * 100) < 185){
+			h.push(OwnArcBonus);
+		}
+
+		h.push('<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === 185 ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="185">85%</button>');
+
+		if((Calculator.ArcBonus * 100) > 185 && (Calculator.ArcBonus * 100) < 190){
+			h.push(OwnArcBonus);
+		}
+
+		h.push('<button class="btn btn-default ' + (!Calculator.OpenedFromOverview && Calculator.LastSelectedMinRate === 190 ? 'btn-default-active ' : '') + 'btn-toggle-arc" data-value="190">90%</button>');
+
+		if((Calculator.ArcBonus * 100) > 190){
+			h.push(OwnArcBonus);
+		}
                 
         h.push('</p>');
 
@@ -334,7 +352,8 @@ let Calculator = {
 
         Calculator.ParseOverview(JSON.parse(Overview), DisableAudio);
     },
-       
+
+
 	/**
 	 * Der Tabellen-Körper mit allen Funktionen
 	 *
@@ -346,6 +365,7 @@ let Calculator = {
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
 			BestKursEinsatz = undefined,
+			EingezahltAufRang = 0,
 			arc = 1 + Calculator.ArcBonus / 100;
 
 		h.push('<thead>' +
@@ -401,12 +421,17 @@ let Calculator = {
 			BPRewards[Rank] = 0;
 			MedalRewards[Rank] = 0;
 			RankCosts[Rank] = undefined;
-			MinRankCost = undefined;
+			let MinRankCost = undefined;
 			Einzahlungen[Rank] = 0;
 				
-			if (Rankings[i]['reward']['strategy_point_amount'] !== undefined) FPNettoRewards[Rank] = Math.round(Rankings[i]['reward']['strategy_point_amount']);
-			if (Rankings[i]['reward']['blueprints'] !== undefined) BPRewards[Rank] = Math.round(Rankings[i]['reward']['blueprints']);
-			if (Rankings[i]['reward']['resources']['medals'] !== undefined) MedalRewards[Rank] = Math.round(Rankings[i]['reward']['resources']['medals']);
+			if (Rankings[i]['reward']['strategy_point_amount'] !== undefined)
+				FPNettoRewards[Rank] = Math.round(Rankings[i]['reward']['strategy_point_amount']);
+
+			if (Rankings[i]['reward']['blueprints'] !== undefined)
+				BPRewards[Rank] = Math.round(Rankings[i]['reward']['blueprints']);
+
+			if (Rankings[i]['reward']['resources']['medals'] !== undefined)
+				MedalRewards[Rank] = Math.round(Rankings[i]['reward']['resources']['medals']);
 
 			FPRewards[Rank] = Math.round(FPNettoRewards[Rank] * arc);
 			BPRewards[Rank] = Math.round(BPRewards[Rank] * arc);
@@ -418,9 +443,11 @@ let Calculator = {
 				continue;
 			}
 
-			if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) IsSelf = true;
+			if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer)
+				IsSelf = true;
 
-			if (Rankings[i]['forge_points'] !== undefined) Einzahlungen[Rank] = Rankings[i]['forge_points'];
+			if (Rankings[i]['forge_points'] !== undefined)
+				Einzahlungen[Rank] = Rankings[i]['forge_points'];
 
 			CurrentFP = (UpdateEntity['state']['invested_forge_points'] !== undefined ? UpdateEntity['state']['invested_forge_points'] : 0) - EigenBetrag;
 			TotalFP = UpdateEntity['state']['forge_points_for_level_up'];
@@ -436,7 +463,10 @@ let Calculator = {
 						break;
 					}
 				}
-				if (RankCosts[Rank] === undefined) RankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
+
+				if (RankCosts[Rank] === undefined)
+					RankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
+
 				RankCosts[Rank] = Math.max(RankCosts[Rank], Math.min(MinRankCost, RestFP));
 			}
 			else {
@@ -461,8 +491,8 @@ let Calculator = {
 					}
 				}
 
-				//Selbe Kosten wie vorheriger Rang => nicht belegbar
-				if (LastRankCost != undefined && RankCosts[Rank] === LastRankCost) {
+				// Selbe Kosten wie vorheriger Rang => nicht belegbar
+				if (LastRankCost !== undefined && RankCosts[Rank] === LastRankCost) {
 					States[Rank] = 'NotPossible';
 					RankCosts[Rank] = undefined;
 					continue;
