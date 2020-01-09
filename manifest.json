@@ -10,6 +10,7 @@
 		"storage",
 		"tabs",
 	  	"notifications",
+		"clipboardWrite",
 	  	"management",
 		"https://*.forgeofempires.com/*",
 		"https://foe-rechner.de/",

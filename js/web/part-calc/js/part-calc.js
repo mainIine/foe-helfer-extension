@@ -479,16 +479,12 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-
-
-		// es soll etwas kopiert werden
-		// Player-Namen und individuellen LG Namen ermittlen
-		new ClipboardJS('.button-own', {
-			text: function(trigger) {
-				return Parts.CopyFunction(Maezens, Eigens, NonExts, trigger, 'copy');
-			}
+		$('body').off("click",'.button-own');
+		$('body').on('click', '.button-own', function(){
+			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
+			helper.str.copyToClipboard(copyParts);
 		});
-
+		$('body').off("click",'.button-save-own');
 		$('body').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
