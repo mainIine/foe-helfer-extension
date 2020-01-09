@@ -52,6 +52,8 @@ const FoEproxy = (function () {
 		return data;
 	}
 
+	let proxyEnabled = true;
+
 	// XHR-handler
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
@@ -233,7 +235,6 @@ const FoEproxy = (function () {
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
-		console.log('firing all events');
 		const xhrQ = xhrQueue;
 		xhrQueue = null;
 		const wsQ = wsQueue;
@@ -241,7 +242,13 @@ const FoEproxy = (function () {
 
 		xhrQ.forEach(xhrRequest => xhrOnLoadHandler.call(xhrRequest));
 		wsQ.forEach(wsMessage => wsMessageHandler(wsMessage));
-	});
+	}, {capture:false, once: true, passive: true});
+
+	window.addEventListener('foe-helper#error-loading', () => {
+		xhrQueue = null;
+		wsQueue = null;
+		proxyEnabled = false;
+	}, {capture:false, once: true, passive: true});
 
 	// ###########################################
 	// ############## Websocket-Proxy ############
@@ -283,7 +290,6 @@ const FoEproxy = (function () {
 		_proxyWsAction('all', 'all', data);
 	}
 
-	const oldWSSend = WebSocket.prototype.send;
 	/**
 	 * @this {WebSocket}
 	 * @param {MessageEvent} evt
@@ -320,10 +326,15 @@ const FoEproxy = (function () {
 		}
 	}
 
+	// Achtung! Die WebSocket.prototype.send funktion wird nicht zurück ersetzt, falls anderer code den prototypen auch austauscht.
+	const observedWebsockets = new WeakSet();
+	const oldWSSend = WebSocket.prototype.send;
 	WebSocket.prototype.send = function (data) {
 		oldWSSend.call(this, data);
-		this.addEventListener('message', wsMessageHandler, {capture: false, passive: true});
-		this.send = oldWSSend;
+		if (proxyEnabled && !observedWebsockets.has(this)) {
+			observedWebsockets.add(this);
+			this.addEventListener('message', wsMessageHandler, {capture: false, passive: true});
+		}
 	};
 	
 	// ###########################################
@@ -361,6 +372,8 @@ const FoEproxy = (function () {
 		_proxyAction('all', 'all', data, postData);
 	}
 
+	// Achtung! Die XMLHttpRequest.prototype.open und XMLHttpRequest.prototype.send funktionen werden nicht zurück ersetzt,
+	//          falls anderer code den prototypen auch austauscht.
 	const XHR = XMLHttpRequest.prototype,
 		open = XHR.open,
 		send = XHR.send;
@@ -370,9 +383,11 @@ const FoEproxy = (function () {
 	 * @param {string} url
 	 */
 	XHR.open = function(method, url){
-		const data = getRequestData(this);
-		data.method = method;
-		data.url = url;
+		if (proxyEnabled) {
+			const data = getRequestData(this);
+			data.method = method;
+			data.url = url;
+		}
 		// @ts-ignore
 		return open.apply(this, arguments);
 	};
@@ -381,6 +396,7 @@ const FoEproxy = (function () {
 	 * @this {XHR}
 	 */
 	function xhrOnLoadHandler() {
+		if (!proxyEnabled) return;
 		if (xhrQueue) {
 			xhrQueue.push(this);
 			return;
@@ -435,10 +451,11 @@ const FoEproxy = (function () {
 	}
 
 	XHR.send = function(postData) {
-		const data = getRequestData(this);
-		data.postData = postData;
-		
-		this.addEventListener('load', xhrOnLoadHandler, {capture: false, passive: true});
+		if (proxyEnabled) {
+			const data = getRequestData(this);
+			data.postData = postData;
+			this.addEventListener('load', xhrOnLoadHandler, {capture: false, passive: true});
+		}
 
 		// @ts-ignore
 		return send.apply(this, arguments);
@@ -447,17 +464,11 @@ const FoEproxy = (function () {
 	return proxy;
 })();
 
-//FoEproxy.addRawHandler((xhr, postData) => {
-//	if(postData.url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
-//		console.log('URL: ', postData.url, xhr.responseText);
-//	}
-//});
-
 (function () {
 	
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		BuildingNamesi18n = [];
+		BuildingNamesi18n = {};
 
 		const j = JSON.parse(xhr.responseText);
 
@@ -782,7 +793,7 @@ const FoEproxy = (function () {
 
 			localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(UpdateEntity.responseData[0]));
 			localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(Rankings));
-			localStorage.setItem('OwnCurrentBuildingPreviousLevel', IsPreviousLevel);
+			localStorage.setItem('OwnCurrentBuildingPreviousLevel', ''+IsPreviousLevel);
 
 			// das erste LG wurde geladen
 			$('#ownFPs').removeClass('hud-btn-red');
