@@ -202,7 +202,7 @@ let GildFights = {
 				}
 			}
 
-			t.push('<tr' + (change === true ? ' class="bg-green"' : '') + '>');
+			t.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
 			t.push('<td><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ playerNew['avatar'] ] + '.jpg" alt=""></td>');
 
