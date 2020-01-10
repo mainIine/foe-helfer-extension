@@ -120,7 +120,7 @@ let _menu = {
 		/**
         * Kampange
         */
-	   	hudSlider.append(_menu.CampagneMap_Btn());
+		   hudSlider.append(_menu.CampagneMap_Btn());
 
         /**
         * Negotiation
@@ -149,7 +149,11 @@ let _menu = {
 		 * InfoBox
 		 */
 		hudSlider.append( _menu.Info_Btn() );
-
+		   
+		/**
+        * Event QuestList
+        */
+	   hudSlider.append(_menu.QuestList_Btn());
 
 		/**
 		 * Einstellungen
@@ -489,6 +493,29 @@ let _menu = {
         return btn_MapBG;
     },
 
+	
+
+	/**
+	 * QuestList
+	 *
+	 * @returns {*|jQuery}
+	 */
+	QuestList_Btn: ()=> {
+        let btn_EventBG = $('<div />').attr('id', 'Event').addClass('hud-btn');
+
+        // Tooltip einbinden
+        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Campagne']['Desc'], 'Event');
+
+        let btn_Event = $('<span />');
+
+        btn_Event.on('click', function () {
+            EventQuest.Show();
+        });
+
+        btn_EventBG.append(btn_Event);
+
+        return btn_EventBG;
+    },
 
     /**
 	 * Negotiation
