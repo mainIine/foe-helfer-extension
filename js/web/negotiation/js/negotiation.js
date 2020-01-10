@@ -248,9 +248,9 @@ let Negotiation = {
 	 */
     StartNegotiation: (responseData) => {
 
-        if ($('#negotationBtn').hasClass('hud-btn-red')) {
-			$('#negotationBtn').removeClass('hud-btn-red');
-			$('#negotiationBox-closed').remove();
+        if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
+			$('#negotiation-Btn').removeClass('hud-btn-red');
+			$('#negotiation-Btn-closed').remove();
 		}
         
         Negotiation.CurrentTry = 1;
