@@ -13,6 +13,31 @@
  * **************************************************************************************
  */
 
+// Armee Typen
+FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
+	Unit.Types = JSON.parse(xhr.responseText);
+});
+
+FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
+	Unit.Cache = data.responseData;
+
+	if ($('#unit-Btn').hasClass('hud-btn-red')) {
+		$('#unit-Btn').removeClass('hud-btn-red');
+		$('#unit-Btn-closed').remove();
+	}
+
+	if ($('#units').length > 0) {
+		Unit.BuildBox();
+	}
+});
+
+FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
+	if (data.responseData.militaryProducts === undefined) {
+		return;
+	}
+	localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+});
+
 let Unit = {
 
 	Types: null,

@@ -18,8 +18,7 @@
 	// jQuery detection
 	let intval = -1;
 	function checkForJQuery() {
-		if (typeof jQuery !== 'undefined') {
-			console.log('found jquery')
+		if (typeof jQuery !== 'undefined'){
 			clearInterval(intval);
 			window.dispatchEvent(new CustomEvent('foe-helper#jQuery-loaded'));
 		}
@@ -488,7 +487,8 @@ const FoEproxy = (function () {
 })();
 
 (function () {
-	
+
+	// globale Handler
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		BuildingNamesi18n = {};
@@ -534,18 +534,6 @@ const FoEproxy = (function () {
 		}
 
 		MainParser.Buildings = BuildingNamesi18n;
-	});
-	
-	// Technologien
-	FoEproxy.addMetaHandler('research', (xhr, postData) => {
-		Technologies.AllTechnologies = JSON.parse(xhr.responseText);
-		$('#Tech').removeClass('hud-btn-red');
-		$('#Tech-closed').remove();
-	});
-
-	// Armee Typen
-	FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
-		Unit.Types = JSON.parse(xhr.responseText);
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -656,34 +644,6 @@ const FoEproxy = (function () {
 	});
 
 
-	// --------------------------------------------------------------------------------------------------
-	// Letzten Alca Auswurf tracken
-	FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-		if (data.responseData.militaryProducts === undefined) {
-			return;
-		}
-		localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
-	});
-
-
-	// --------------------------------------------------------------------------------------------------
-	// Armee Update
-	FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
-		Unit.Cache = data.responseData;
-
-		if ($('#unitBtn').hasClass('hud-btn-red')) {
-			$('#unitBtn').removeClass('hud-btn-red');
-			$('#unit-closed').remove();
-		}
-
-		if ($('#units').length > 0) {
-			Unit.BuildBox();
-		}
-	});
-
-	// --------------------------------------------------------------------------------------------------
-	// Noch Verfügbare FP aktualisieren
-
 	FoEproxy.addHandler('GreatBuildingsService', 'getAvailablePackageForgePoints', (data, postData) => {
 		StrategyPoints.ForgePointBar(data.responseData[0]);
 	});
@@ -717,8 +677,8 @@ const FoEproxy = (function () {
 		sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(data.responseData));
 		Calculator.DetailViewIsNewer = false;
 
-		$('#calcFPs').removeClass('hud-btn-red');
-		$('#calcFPs-closed').remove();
+		$('#calculator-Btn').removeClass('hud-btn-red');
+		$('#calculator-Btn-closed').remove();
 
 		// wenn schon offen, den Inhalt updaten
 		if ($('#LGOverviewBox').is(':visible')) {
@@ -819,8 +779,8 @@ const FoEproxy = (function () {
 			localStorage.setItem('OwnCurrentBuildingPreviousLevel', ''+IsPreviousLevel);
 
 			// das erste LG wurde geladen
-			$('#ownFPs').removeClass('hud-btn-red');
-			$('#ownFPs-closed').remove();
+			$('#partCalc-Btn').removeClass('hud-btn-red');
+			$('#partCalc-Btn-closed').remove();
 
 			if ($('#OwnPartBox').length > 0) {
 				Parts.RefreshData();
@@ -835,8 +795,8 @@ const FoEproxy = (function () {
 		if (UpdateEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
 			LastKostenrechnerOpenTime = new Date().getTime()
 
-			$('#calcFPs').removeClass('hud-btn-red');
-			$('#calcFPs-closed').remove();
+			$('#calculator-Btn').removeClass('hud-btn-red');
+			$('#calculator-Btn-closed').remove();
 
 			sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
 			sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
@@ -993,7 +953,6 @@ const FoEproxy = (function () {
 	// ende der Verarbeiter von data für foe-rechner.de
 
 
-
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
 		// erste Runde
 		if(MainMenuLoaded === false){
@@ -1009,31 +968,6 @@ const FoEproxy = (function () {
 		CurrentTime = data.responseData.time;
 	});
 
-	// --------------------------------------------------------------------------------------------------
-	// Technologien
-
-	FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
-		Technologies.UnlockedTechologies = data.responseData;
-	});
-	
-	// --------------------------------------------------------------------------------------------------
-	// KampagneMap Service
-	FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
-		KampagneMap.AllProvinces = JSON.parse(localStorage.getItem('AllProvinces'));
-
-		KampagneMap.Provinces = data.responseData;
-		if($('#Map').hasClass('hud-btn-red')){
-			$('#Map').removeClass('hud-btn-red');
-			$('#map-closed').remove();
-		}
-		if ($('#campagne').length > 0) {
-			KampagneMap.BuildBox();
-		}
-	});
-
-	FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
-		localStorage.setItem('AllProvinces', JSON.stringify(data.responseData.provinces));
-	});
 
 	// --------------------------------------------------------------------------------------------------
 	// Negotiation

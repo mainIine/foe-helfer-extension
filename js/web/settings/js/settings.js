@@ -59,11 +59,6 @@ let Settings = {
 			title : i18n['Settings']['ShowTavernBadge']['Title'],
 			desc : i18n['Settings']['ShowTavernBadge']['Desc']
 		},
-		ShowOutpost : {
-			status: true,
-			title : i18n['Settings']['ShowOutpost']['Title'],
-			desc : i18n['Settings']['ShowOutpost']['Desc']
-		},
 		PreScanLGList : {
 			status: false,
 			title : i18n['Settings']['PreScanLGList']['Title'],
