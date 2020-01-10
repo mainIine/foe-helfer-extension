@@ -46,6 +46,13 @@ function promisedLoadCode(src) {
 }
 
 
+// prüfen ob jQuery im DOM geladen wurde
+// => jQuery Loaded event abfangen
+const jQueryLoading = new Promise(resolve => {
+	window.addEventListener('foe-helper#jQuery-loaded', evt => {
+		resolve();
+	}, {capture: false, once: true, passive: true});
+});
 
 
 const v = chrome.runtime.getManifest().version;
@@ -74,16 +81,7 @@ if(uLng !== null){
 let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v));
 
 
-// prüfen ob jQuery im DOM geladen wurde
-function checkForjQuery(){
-	if (typeof jQuery === 'undefined'){
-		// @ts-ignore
-		requestIdleCallback(checkForjQuery);
-	} else {
-		InjectCode();
-	}
-}
-checkForjQuery();
+InjectCode();
 
 
 let tid = setInterval(InjectCSS, 0);
@@ -117,7 +115,7 @@ function InjectCSS() {
 async function InjectCode() {
 	try {
 		// warte zunächst, dass ant und i18n geladen sind
-		await Promise.all([antLoadpromise, i18nJSLoadpromise]);
+		await Promise.all([antLoadpromise, i18nJSLoadpromise, jQueryLoading]);
 
 		const extURL = chrome.extension.getURL('');
 		const vendorScripts = [

@@ -13,6 +13,20 @@
  * **************************************************************************************
  */
 
+
+{
+	// jQuery detection
+	let intval = -1;
+	function checkForJQuery() {
+		if (typeof jQuery !== 'undefined') {
+			console.log('found jquery')
+			clearInterval(intval);
+			window.dispatchEvent(new CustomEvent('foe-helper#jQuery-loaded'));
+		}
+	}
+	intval = setInterval(checkForJQuery, 1);
+}
+
 let ApiURL = 'https://api.foe-rechner.de/',
     ActiveMap = 'main',
     ExtPlayerID = 0,
