@@ -569,6 +569,7 @@ let Outposts = {
 		}
 	},
 
+
 	/**
 	 * Setzt ob die Kosten der Freischaltungen aufsummiert werden sollen.
 	 * @param {boolean} shouldDisplayAllTiles
@@ -638,7 +639,7 @@ let Outposts = {
 /** @type {any} */(globalThis).Outposts = Outposts;
 
 // --------------------------------------------------------------------------------------------------
-// Verarbeiter für Außenposten daten:
+// Verarbeiter für Außenposten Daten:
 
 // Alle Typen der Außenposten "notieren"
 FoEproxy.addHandler('OutpostService', 'getAll', (/** @type {FoE_NETWORK_OutpostService_getAll} */ data, _postData) => {
