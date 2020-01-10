@@ -13,6 +13,23 @@
  * **************************************************************************************
  */
 
+FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
+	KampagneMap.AllProvinces = JSON.parse(localStorage.getItem('AllProvinces'));
+
+	KampagneMap.Provinces = data.responseData;
+	if($('#Map').hasClass('hud-btn-red')){
+		$('#Map').removeClass('hud-btn-red');
+		$('#map-closed').remove();
+	}
+	if ($('#campagne').length > 0) {
+		KampagneMap.BuildBox();
+	}
+});
+
+FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
+	localStorage.setItem('AllProvinces', JSON.stringify(data.responseData.provinces));
+});
+
 let KampagneMap = {
     Provinces: null,
     AllProvinces: null,

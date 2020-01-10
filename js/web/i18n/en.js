@@ -333,10 +333,6 @@ let i18n = {
 			"Title" : "Show tavernas badge",
 			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears."
 		},
-		"ShowOutpost": {
-			"Title" : "Outpost resources",
-			"Desc" : "Displays a menu item for Outpost Resources <br><u>Note:</u> Game Reload required."
-		},
 		"PreScanLGList": {
 			"Title" : "Preliminary scan of the LG overview",
 			"Desc" : "Scans the overview list of the neighbor when opening and determines possibly fillable LGs. <br> <u> Note: </u> Since the final seats are only transmitted when opening a LG, the result may differ. The scan is saved, however."
