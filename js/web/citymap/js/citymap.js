@@ -71,7 +71,6 @@ let CityMap = {
 	 * Stadtkarte vorbereiten => Menü rein
 	 *
 	 * @param Title
-	 * @constructor
 	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
@@ -128,7 +127,6 @@ let CityMap = {
 	/**
 	 * Erzeugt ein Raster für den Hintergrund
 	 *
-	 * @constructor
 	 */
 	BuildGrid:()=> {
 
@@ -154,7 +152,6 @@ let CityMap = {
 	 * Container gemäß den Koordianten zusammensetzen
 	 *
 	 * @param Data
-	 * @constructor
 	 */
 	SetBuildings: (Data = null)=> {
 
@@ -258,7 +255,6 @@ let CityMap = {
 	/**
 	 * Areas und Stadtinfos zu foe-rechner.de schicken
 	 *
-	 * @constructor
 	 */
 	SubmitData: ()=> {
 

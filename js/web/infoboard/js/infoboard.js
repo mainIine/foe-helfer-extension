@@ -30,7 +30,7 @@ let Infoboard = {
 
 	InjectionLoaded: false,
 	PlayInfoSound : null,
-	SoundFile: new Audio('chrome-extension://' + extID + '/vendor/sounds/ping.mp3'),
+	SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
 
 
 	/**
@@ -61,7 +61,6 @@ let Infoboard = {
 	/**
 	 * Erzeugt die Box wenn noch nicht im DOM
 	 *
-	 * @constructor
 	 */
 	Box: ()=> {
 
@@ -288,7 +287,7 @@ let Info = {
 			}
 			// Handel
 			else if(d['attachment']['type'] === 'trade_offer'){
-				msg = d['attachment']['offeredAmount'] + ' ' + GoodsData[d['attachment']['offeredResource']]['name'] +' &#187; ' + d['attachment']['neededAmount'] + ' ' + GoodsNames[d['attachment']['neededResource']];
+				msg = d['attachment']['offeredAmount'] + ' ' + GoodsData[d['attachment']['offeredResource']]['name'] +' &#187; ' + d['attachment']['neededAmount'] + ' ' + GoodsData[d['attachment']['neededResource']]['name'];
 			}
 		}
 

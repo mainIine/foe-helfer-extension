@@ -125,7 +125,6 @@ let Parts = {
 	 * Sichtbarer Teil
 	 *
 	 * @param input
-	 * @constructor
 	 */
 	BoxBody: (input)=> {
 
@@ -282,7 +281,7 @@ let Parts = {
         h.push('</td>');
         h.push('<td class="text-right">');
         h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
-		h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
+		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
         h.push('</td>');
         h.push('</tr></table>');
 
@@ -431,7 +430,6 @@ let Parts = {
 	 * @param Maezens
 	 * @param Eigens
 	 * @param NonExts
-	 * @constructor
 	 */
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
@@ -481,16 +479,12 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-
-
-		// es soll etwas kopiert werden
-		// Player-Namen und individuellen LG Namen ermittlen
-		new ClipboardJS('.button-own', {
-			text: function(trigger) {
-				return Parts.CopyFunction(Maezens, Eigens, NonExts, trigger, 'copy');
-			}
+		$('body').off("click",'.button-own');
+		$('body').on('click', '.button-own', function(){
+			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
+			helper.str.copyToClipboard(copyParts);
 		});
-
+		$('body').off("click",'.button-save-own');
 		$('body').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
@@ -533,7 +527,6 @@ let Parts = {
 	 * @param Event
 	 * @param Action
 	 * @returns {string}
-	 * @constructor
 	 */
 	CopyFunction: (Maezens, Eigens, NonExts, Event, Action)=> {
 
@@ -670,7 +663,6 @@ let Parts = {
 	 * Lecker Animation für das Anzeigen der Kopieren Buttons
 	 *
 	 * @param show
-	 * @constructor
 	 */
 	BackGroundBoxAnimation: (show)=> {
 		let $box = $('#OwnPartBox');
@@ -694,7 +686,6 @@ let Parts = {
 	/**
 	 * Die Box ist schon offen, Content updaten
 	 *
-	 * @constructor
 	 */
 	RefreshData: ()=> {
 		Parts.BoxBody();

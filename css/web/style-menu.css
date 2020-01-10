@@ -20,10 +20,17 @@ body {
 	overflow: hidden;
 }
 
+/* Chrome, Opera */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
 	-webkit-appearance: none;
+	appearance: none;
 	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance:textfield;
 }
 
 .window-head span.window-ask {
@@ -101,14 +108,21 @@ input[type=number]::-webkit-outer-spin-button {
 	border: #106000 1px solid;
 }
 
+/* Chrome */
 ::-webkit-scrollbar {
 	width: 5px;
 	height: 5px;
 }
-
 ::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
+}
+
+/* Firefox */
+.window-box,
+.window-body {
+	scrollbar-color: #281207 #57250c;
+	scrollbar-width: thin;
 }
 
 
@@ -346,27 +360,27 @@ p {
 }
 
 
-#getFPs span {
-	background-image: url('../images/crate.png');
+#productions-Btn span {
+	background-image: url('../images/productions.png');
 }
 
-#calcFPs span {
+#calculator-Btn span {
 	background-image: url('../images/calculator.png');
 }
 
-#outPostBtn span {
+#outpost-Btn span {
 	background-image: url('../images/vikings_ship.png');
 }
 
-#ownFPs span {
-	background-image: url('../images/own-part.png');
+#partCalc-Btn span {
+	background-image: url('../images/part-calc.png');
 }
 
-#Tech span {
+#technologies-Btn span {
     background-image: url('../images/technologies.png');
 }
 
-#Map span {
+#campagneMap-Btn span {
 	background-image: url('../images/map.png');
 	-webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
@@ -375,36 +389,35 @@ p {
     transform: rotate(-90deg);
 }
 
-
-#ChatBtn span {
+#chat-Btn span {
 	background-image: url('../images/chat.png');
 }
 
-#ForumBtn span {
+#forum-Btn span {
 	background-image: url('../images/forum.png');
 }
 
-#AskBtn span {
+#ask-Btn span {
 	background-image: url('../images/ask.png');
 }
 
-#SettingBtn span {
+#settings-Btn span {
 	background-image: url('../images/wrench.png');
 }
 
-#BugBtn span {
+#github-Btn span {
 	background-image: url('../images/bug.png');
 }
 
-#InfoBox span {
+#infobox-Btn span {
 	background-image: url('../images/info.png');
 }
 
-#unitBtn span {
+#unit-Btn span {
 	background-image: url('../images/units.png');
 }
 
-#negotationBtn span {
+#negotiation-Btn span {
 	background-image: url('../images/negotation.png');
 }
 

@@ -1,7 +1,7 @@
 ## FoE Helper
 #### A small extension for the Chrome browser
 
-You can install it from here: [Chrome Store](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf)
+You can install it from here: [Chrome Store](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf) or [Firefox Add-Ons](https://addons.mozilla.org/addon/foe-helper/)
 
 ###### FAQ
 

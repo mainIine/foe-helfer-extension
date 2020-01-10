@@ -16,13 +16,12 @@
 let StrategyPoints = {
     RefreshDone: false,
 	OldStrategyPoints: 0,
-	AvailableFP : 0,
+	InventoryFP : 0,
 
 	/**
 	 * Holt beim Start alle FPs aus dem Lager
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	GetFromInventory: (d)=> {
 		let t = 0;
@@ -44,7 +43,7 @@ let StrategyPoints = {
 
 		if(t > 0){
 			StrategyPoints.ForgePointBar(t);
-			StrategyPoints.AvailableFP = t;
+			StrategyPoints.InventoryFP = t;
 		}
 	},
 
@@ -53,7 +52,6 @@ let StrategyPoints = {
 	 * Kleine FP-Bar im Header
 	 *
 	 * @param NewFP Die neu zu setzenden FP
-	 * @constructor
 	 */
     ForgePointBar: (NewFP) => {
         if (NewFP === undefined) NewFP = 0;
@@ -77,7 +75,18 @@ let StrategyPoints = {
 			});
 
 			StrategyPoints.OldStrategyPoints = NewFP;
-			StrategyPoints.AvailableFP = NewFP;
+			StrategyPoints.InventoryFP = NewFP;
 		}
+	},
+
+
+	/**
+	 * Liefert die gesamt verfügbaren FP
+	 *
+	 */
+	get AvailableFP() {
+		let Ret = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
+		Ret += StrategyPoints.InventoryFP;
+		return Ret;
 	},
 };

@@ -62,6 +62,8 @@ let i18n = {
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
 			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
+			"ActiveRecurringQuest": "Aktiver Schleifenquest:",
+			"Done": "abgeschlossen"
 		},
 
 		"LGOverviewBox": {
@@ -75,6 +77,7 @@ let i18n = {
 			"Level": "Level",
 			"PayedTotal": "Eingez. / Gesamt",
 			"Rate": "Kurs",
+			"Profit": "Gewinn",
 			"NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen"
 		},
 
@@ -125,6 +128,10 @@ let i18n = {
 			"DescRequired" : "Benötigt",
 			"DescInStock" : "Vorhanden",
 			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"ExpansionsSum" : "Erweiterungen",
+			"nextTile" : "nächste Erweiterung",
+			"tileNotPlanned" : "off",
+			"infoLine" : "__runNumber__. Durchlauf, Bonus x4 Chance: __chanceX4__%",
         },
 
         "Technologies": {
@@ -132,7 +139,8 @@ let i18n = {
             "Resource": "Ressource",
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
-            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"NoTechs": "Du bist am Ende des Zeitalters angelangt",
             "Eras": {
                 1: "Steinzeit",
                 2: "Bronzezeit",
@@ -166,6 +174,13 @@ let i18n = {
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
         },
 
+        "EventList": {
+            "Title": "Event-Questliste für: ",
+            "Reward": "Belohnung",
+            "Previous": "Vorherige",
+            "Next": "Nächste",
+        },
+
         "Negotiation": {
             "Title" : "Verhandlungassistent",
             "WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
@@ -180,7 +195,8 @@ let i18n = {
 			"Stock": "Lager:",
 			"GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
 			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
-			"DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen."
+			"DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
+			"TableLoadError": "Fehler beim Laden der Verhandlungtabelle"
         },
 
 		"Settings" : {
@@ -331,20 +347,12 @@ let i18n = {
 			"Title" : "Tavernen Badge anzeigen",
 			"Desc" : "Sobald ein Boost in der Taverne aktiviert wird, erscheint ein global verschiebbarer Counter"
 		},
-		"ShowOutpost": {
-			"Title" : "Außenposten Resourcen",
-			"Desc" : "Blendet einen Menüpunkt für Außenposten Resourcen ein<br><u>Hinweis:</u> Spiel Reload erforderlich"
-		},
 		"PreScanLGList": {
 			"Title" : "Vorab-Scann der LG Übersicht",
 			"Desc" : "Scannt die Übersichtsliste des Nachbarn beim öffnen und ermittelt eventuell befüllbare LGs.<br><u>Hinweis:</u> Da die endgültigen Plätze erst beim öffnen eines LGs übermittel werden, kann das Ergebniss abweichen. Der Scann wird jedoch gespeichert."
 		},
-		"CalculatorShowNegativ": {
-			"Title" : "Negativer Gewinn im Kostenrechner",
-			"Desc" : "Möchtest Du auch den negativen Gewinn angezeigt bekommen?"
-		},
 		"AutomaticNegotiation": {
-			"Title" : "Verhandlungsassisten",
+			"Title" : "Verhandlungsassistent",
 			"Desc" : "Soll der Assistent automatisch mit einer Verhandlung geöffnet und bei Abbruch geschlossen werden?"
 		},
 		"ResetBoxPositions": {
@@ -356,10 +364,11 @@ let i18n = {
 			"Title" : "Sprache wechseln",
 			"Desc" : "Welche Sprache, statt der erkannten, soll genutzt werden?",
 			"Dropdown": {
-				"de" : "Deutsch",
-				"en" : "Englisch",
-				"fr" : "Französisch",
-				"es" : "Spanisch"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},
