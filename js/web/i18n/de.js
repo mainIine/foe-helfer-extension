@@ -170,6 +170,8 @@ let i18n = {
 
         "EventList": {
             "Title": "Event-Questliste für: ",
+            "Desc": "Aufgabe",
+            "DescCurrent": "Aktuelle Quest",
             "Reward": "Belohnung",
             "Previous": "Vorherige",
             "Next": "Nächste",
@@ -263,6 +265,10 @@ let i18n = {
             "Title": "Kampagne",
             "Desc": "Übersicht über die benötigten Ressourcen",
         	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
+        "Event": {
+            "Title": "Event Questliste",
+            "Desc": "Übersicht über die nächsten Event Quests"
 		},
         "Negotiation": {
             "Title": "Verhandlungassistent",
