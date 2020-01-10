@@ -569,7 +569,7 @@ let Productions = {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
 				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
-				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>'); //Todo: Translate Zufriedenheit
+				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -750,11 +750,14 @@ let Productions = {
 	SwitchFunction: ()=>{
 		$('body').on('click', '.change-view', function(){
 			let btn = $(this),
-				t = $(this).data('type');
+				t = $(this).data('type'),
+				hiddenTb = $('.' + t + '-mode:hidden'),
+				vissibleTb = $('.' + t + '-mode:visible');
 
-			$('.' + t + '-mode').fadeToggle('fast', function() {
-				if( $('.' + t + '-single').is(':visible') )
-				{
+			vissibleTb.fadeOut(400, function(){
+				hiddenTb.fadeIn(400);
+
+				if( $('.' + t + '-single').is(':visible') ){
 					btn.text(i18n['Boxes']['Productions']['ModeGroups']);
 				} else {
 					btn.text(i18n['Boxes']['Productions']['ModeSingle']);
