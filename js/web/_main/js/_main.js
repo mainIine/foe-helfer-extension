@@ -835,10 +835,8 @@ const FoEproxy = (function () {
 
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-		ResourceStock = data.responseData.resources; //Lagerbestand immer aktulisieren. Betrifft auch andere Module wie Technologies oder Negotiation
-		if (Settings.GetSetting('ShowOutpost')) {
-			Outposts.CollectResources();
-		}
+		ResourceStock = data.responseData.resources; // Lagerbestand immer aktulisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		Outposts.CollectResources();
 	});
 
 
