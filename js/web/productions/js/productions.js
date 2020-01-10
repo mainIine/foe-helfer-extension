@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:40 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -97,19 +97,17 @@ let Productions = {
 	 * ALle Gebäude aus dem Cache holen
 	 *
 	 * @returns {any}
-	 * @constructor
 	 */
 	GetSavedData: ()=> {
-		return CityMapData;
+		return MainParser.CityMapData;
 	},
 
 
 	/**
 	 * Alle Gebäude durchsteppen
 	 *
-	 * @constructor
 	 */
-	ReadData: ()=>{
+	ReadData: ()=> {
 
 		let d = Productions.entities;
 		Productions.BuildingsAll = [];
@@ -376,7 +374,7 @@ let Productions = {
 	/**
 	 * HTML Box erstellen und einblenden
 	 */
-	showBox: ()=>{
+	showBox: ()=> {
 
 		String.prototype.cleanup = function() {
 			return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
@@ -385,6 +383,9 @@ let Productions = {
 		if( $('#Productions').length > 0 ){
 			return ;
 		}
+
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('productions');
 
 		HTML.Box({
 			'id': 'Productions',
@@ -455,7 +456,7 @@ let Productions = {
 						else {
 							rowA.push('<td><td>');
 						}
-						rowA.push('<td><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+						rowA.push('<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
 						rowA.push('</tr>');
 					}
 
@@ -485,7 +486,7 @@ let Productions = {
 						tds +='<td>' + pA.join('<br>') + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
-							'<td><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>' +
+							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>' +
 							'</tr>';
 
 						rowA.push(tds);
@@ -567,7 +568,7 @@ let Productions = {
 			else {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
-				table.push('<th colspan="2"><span class="change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
+				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
 				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>'); //Todo: Translate Zufriedenheit
 				table.push('</tr>');
 
@@ -702,9 +703,8 @@ let Productions = {
 	 * Merkt sich alle Tabs
 	 *
 	 * @param id
-	 * @constructor
 	 */
-	SetTabs: (id)=>{
+	SetTabs: (id)=> {
 		Productions.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
 	},
 
@@ -713,7 +713,6 @@ let Productions = {
 	 * Gibt alle gemerkten Tabs aus
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal">' + Productions.Tabs.join('') + '</ul>';
@@ -725,10 +724,12 @@ let Productions = {
 	 *
 	 * @param id
 	 * @param content
-	 * @constructor
 	 */
-	SetTabContent: (id, content)=>{
-		Productions.TabsContent.push('<div id="' + id + '">' + content + '</div>');
+	SetTabContent: (id, content)=> {
+		// ab dem zweiten Eintrag verstecken
+		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
+
+		Productions.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
 	},
 
 
@@ -736,7 +737,6 @@ let Productions = {
 	 * Setzt alle gespeicherten Tabellen zusammen
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabContent: ()=> {
 		return Productions.TabsContent.join('');
@@ -746,7 +746,6 @@ let Productions = {
 	/**
 	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
 	 *
-	 * @constructor
 	 */
 	SwitchFunction: ()=>{
 		$('body').on('click', '.change-view', function(){
@@ -768,7 +767,6 @@ let Productions = {
 	/**
 	 * Sortiert alle Gebäude des letzten Tabs
 	 *
-	 * @constructor
 	 */
 	SortingAllTab: ()=>{
 
@@ -813,7 +811,6 @@ let Productions = {
 
 	/**
 	 * Blendet je nach Dropdown die Typen ein
-	 * @constructor
 	 */
 	Dropdown: ()=>{
 		$('body').on('change', '#all-drop', function() {
@@ -834,7 +831,6 @@ let Productions = {
 	/**
 	 * Kleine Suche für die "Gesamt"-Liste
 	 *
-	 * @constructor
 	 */
 	Filter: ()=>{
 		let input, filter, tr, td, i, txtValue;
@@ -942,11 +938,10 @@ let Productions = {
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	ShowFunction: (id)=> {
 
-		CityMap.init();
+		CityMap.init(MainParser.CityMapData);
 
 		$('[data-entityid]').removeClass('pulsate');
 
@@ -960,7 +955,13 @@ let Productions = {
 	},
 
 
-	GetGoodName: (GoodType) => {
+	/**
+	 * Namen der Güter ermitteln
+	 *
+	 * @param GoodType
+	 * @returns {*|string}
+	 */
+	GetGoodName: (GoodType)=> {
 		if (GoodType === 'happiness') {
 			return i18n['Boxes']['Productions']['Happiness'];
 		}

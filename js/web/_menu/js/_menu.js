@@ -16,15 +16,15 @@
 let _menu = {
 
 	isBottom: false,
-	ToolTippCount: 0,
-	ToolTippTop: 53,
 	MenuScrollTop: 0,
 	SlideParts: 0,
 	ActiveSlide: 1,
+	HudCount: 0,
+	HudHeight: 0,
+
 
 	/**
 	 *
-	 * @constructor
 	 */
 	BuildOverlayMenu: ()=>{
 
@@ -42,16 +42,52 @@ let _menu = {
 		hud.append(hudWrapper)
 		hud.append(btnDown);
 
-		$('body').append( hud );
+		$('body').append( hud ).ready(function () {
 
-		_menu.ListLinks();
+			// Buttons einfügen
+			_menu.ListLinks();
+
+			_menu.SetMenuHeight();
+		});
+
+		// Wenn sie die Fenstergröße verändert, neu berechnen
+		window.onresize = function(event) {
+			_menu.SetMenuHeight();
+		};
+	},
+
+
+	/**
+	 * Sammelfunktion
+	 *
+	 */
+	SetMenuHeight: ()=> {
+		// Höhe ermitteln und setzten
+		_menu.Prepare();
+
+		// Tool-Tipp "top" setzen
+		_menu.SetToolTippTop();
+	},
+
+
+	/**
+	 * Ermittelt die Fensterhöhe und ermittelt die passende Höhe
+	 *
+	 */
+	Prepare: ()=> {
+
+		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').position().top) / 55 );
+		_menu.HudHeight = (_menu.HudCount * 55);
+		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
+
+		$('#ant-hud').height(_menu.HudHeight + 2);
+		$('#ant-hud-wrapper').height(_menu.HudHeight);
 	},
 
 
 	/**
 	 * Bindet alle benötigten Button ein
 	 *
-	 * @constructor
 	 */
 	ListLinks: ()=> {
 		let hudSlider = $('#ant-hud-slider');
@@ -84,7 +120,7 @@ let _menu = {
 		/**
         * Kampange
         */
-	   hudSlider.append(_menu.CampagneMap_Btn());
+	   	hudSlider.append(_menu.CampagneMap_Btn());
 
         /**
         * Negotiation
@@ -100,7 +136,7 @@ let _menu = {
 		/**
 		 * Live-Chat
 		 */
-		hudSlider.append( _menu.Chat_Btn() );
+		// hudSlider.append( _menu.Chat_Btn() );
 
 
 		/**
@@ -124,7 +160,7 @@ let _menu = {
 		/**
 		 * Forum
 		 */
-		hudSlider.append( Menu.Forum_Btn() );
+		hudSlider.append( _menu.Forum_Btn() );
 
 
 		/**
@@ -138,13 +174,6 @@ let _menu = {
 		 */
 		hudSlider.append( _menu.Bug_Btn() );
 
-
-		// hudSlider.append( Menu.BH_Btn() );
-		// wie viele Elemente und wieviele Abschnitte sind es
-		setTimeout(()=>{
-			_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / 4);
-		}, 100);
-
 		_menu.CheckButtons();
 	},
 
@@ -152,15 +181,13 @@ let _menu = {
 	/**
 	 * Panel scrollbar machen
 	 *
-	 * @constructor
 	 */
 	CheckButtons: ()=>{
 
-		let childs = $("#ant-hud-slider").children().length,
-			activeIdx = 0;
+		let activeIdx = 0;
 
 
-		$('.hud-btn').click(function() {
+		$('.hud-btn').click(function(){
 			activeIdx = $(this).index('.hud-btn');
 		});
 
@@ -169,7 +196,7 @@ let _menu = {
 		$('body').on('click', '.hud-btn-down-active', function(){
 
 			_menu.ActiveSlide++;
-			_menu.MenuScrollTop -= 220;
+			_menu.MenuScrollTop -= _menu.HudHeight;
 
 			$('#ant-hud-slider').css({
 				'top': _menu.MenuScrollTop + 'px'
@@ -192,7 +219,7 @@ let _menu = {
 		$('body').on('click', '.hud-btn-up-active', function(){
 
 			_menu.ActiveSlide--;
-			_menu.MenuScrollTop += 220;
+			_menu.MenuScrollTop += _menu.HudHeight;
 
 			$('#ant-hud-slider').css({
 				'top': _menu.MenuScrollTop + 'px'
@@ -211,6 +238,7 @@ let _menu = {
 		});
 
 
+		// Tooltipp einblenden
 		$('.hud-btn').hover(function() {
 			let id = $(this).attr('id');
 
@@ -227,30 +255,46 @@ let _menu = {
 	/**
 	 * Tooltip Box
 	 *
-	 * @param title
-	 * @param desc
-	 * @param id
+	 * @param {string} title
+	 * @param {string} desc
+	 * @param {string} id
 	 */
 	toolTippBox: (title, desc, id)=> {
 
-		_menu.ToolTippCount++;
-
-		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id).css({'top'  : _menu.ToolTippTop + 'px'});
-
-		if(_menu.ToolTippCount % 4 === 0){
-			_menu.ToolTippTop = 53;
-		} else {
-			_menu.ToolTippTop += 55;
-		}
+		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id);
 
 		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
 
 		$('#ant-hud').append( ToolTipp );
 	},
 
+
+	/**
+	 * Ermittelt die Anzahl der sichtbaren Punkte
+	 * und setzt das Top-Value
+	 *
+	 */
+	SetToolTippTop: ()=> {
+
+		let cnt = 1,
+			TTtop = 53;
+
+		$('.toolTipWrapper').each(function(){
+
+			$(this).css({'top': TTtop + 'px'});
+
+			if(cnt === _menu.HudCount){
+				cnt = 1;
+				TTtop = 53;
+			} else {
+				cnt++;
+				TTtop += 55;
+			}
+		});
+	},
+
 	/*----------------------------------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------------------------------*/
+
 
 	/**
 	 * FP Gesamtanzahl Button
@@ -294,48 +338,7 @@ let _menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function() {
-            let RankingsJSON = sessionStorage.getItem('OtherActiveBuilding'),
-                UpdateEntityJSON = sessionStorage.getItem('OtherActiveBuildingData'),
-                OverviewJSON = sessionStorage.getItem('OtherActiveBuildingOverview');
-
-            let Rankings = RankingsJSON !== null ? JSON.parse(RankingsJSON) : undefined,
-                UpdateEntity = UpdateEntityJSON !== null ? JSON.parse(UpdateEntityJSON) : undefined,
-                Overview = OverviewJSON !== null ? JSON.parse(OverviewJSON) : undefined;
-            
-			// Nur Übersicht verfügbar
-            if (Overview !== undefined && UpdateEntity === undefined) {
-                Calculator.ShowOverview(false);
-            }
-
-            // Nur Detailansicht verfügbar
-            else if (UpdateEntity !== undefined && Overview === undefined) {
-                Calculator.Show(Rankings, UpdateEntity);
-            }
-
-            // Beide verfügbar
-            else if (UpdateEntity !== undefined && Overview !== undefined) {
-                let BuildingInfo = Overview.find(obj => {
-                    return obj['city_entity_id'] === UpdateEntity['cityentity_id'] && obj['player']['player_id'] === UpdateEntity['player_id'];
-                });
-
-                // Beide gehören zum selben Spieler => beide anzeigen
-                if (BuildingInfo !== undefined) {
-                    Calculator.ShowOverview();
-                    Calculator.Show(Rankings, UpdateEntity);
-                }
-
-                // Unterschiedliche Spieler => Öffne die neuere Ansicht
-                else {
-                    let DetailViewIsNewer = sessionStorage.getItem('DetailViewIsNewer');
-                    if (DetailViewIsNewer === "true") {
-                        Calculator.Show(Rankings, UpdateEntity);
-                    }
-                    else {
-                        Calculator.ShowOverview();
-                    }
-                }
-
-            }
+			Calculator.Open();
 		});
 
 		btn_CalcBG.append(btn_Calc);
@@ -426,7 +429,7 @@ let _menu = {
 		let btn_sp = $('<span />');
 
 		btn_sp.on('click', function() {
-			chrome.runtime.sendMessage(extID, {type: 'chat', player: ExtPlayerID, guild: ExtGuildID, world: ExtWorld});
+			MainParser.sendExtMessage({type: 'chat', player: ExtPlayerID, guild: ExtGuildID, world: ExtWorld});
 		});
 
 		btn.append(btn_sp);
@@ -440,7 +443,6 @@ let _menu = {
 	 * Technologien
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	Technologies_Btn: ()=> {
         let btn_TechBG = $('<div />').attr('id', 'Tech').addClass('hud-btn hud-btn-red');
@@ -467,7 +469,6 @@ let _menu = {
 	 * KampanienMap
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	CampagneMap_Btn: ()=> {
         let btn_MapBG = $('<div />').attr('id', 'Map').addClass('hud-btn hud-btn-red');
@@ -493,7 +494,6 @@ let _menu = {
 	 * Negotiation
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
     Negotiation_Btn: () => {
         let btn_NegotiationBG = $('<div />').attr('id', 'negotationBtn').addClass('hud-btn hud-btn-red');
@@ -518,7 +518,6 @@ let _menu = {
 	/**
 	 * Armeen
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	Unit_Btn: ()=> {
 		let btn_UnitBG = $('<div />').attr('id', 'unitBtn').addClass('hud-btn hud-btn-red');
@@ -543,7 +542,6 @@ let _menu = {
 	/**
 	 * Einstellungen
 	 *
-	 * @constructor
 	 */
 	Setting_Btn: ()=> {
 
@@ -567,7 +565,6 @@ let _menu = {
 	 * Frage/Antwort
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	Ask_Btn: ()=> {
 
@@ -592,7 +589,6 @@ let _menu = {
 	 * Forum
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	Forum_Btn: ()=> {
 
@@ -617,7 +613,6 @@ let _menu = {
 	 * Bug-Link
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	Bug_Btn: ()=> {
 
@@ -642,7 +637,6 @@ let _menu = {
 	 * InfoBox für den Hintergrund "Verkehr"
 	 *
 	 * @returns {*|jQuery}
-	 * @constructor
 	 */
 	Info_Btn: ()=> {
 

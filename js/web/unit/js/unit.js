@@ -28,7 +28,6 @@ let Unit = {
 	/**
 	 * Erstellt eine HTML Box für den DOM
 	 *
-	 * @constructor
 	 */
 	Show: ()=> {
 
@@ -55,12 +54,11 @@ let Unit = {
 	/**
 	 * Rendern und in den BoxContent
 	 *
-	 * @constructor
 	 */
 	BuildBox:()=> {
 
 		let top = [],
-			alca = CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+			alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
 
 		if(alca !== undefined){
 			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
@@ -374,7 +372,6 @@ let Unit = {
 	 * Merkt sich alle Tabs
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	SetTabs: (id)=>{
 		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
@@ -385,7 +382,6 @@ let Unit = {
 	 * Gibt alle gemerkten Tabs aus
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal">' + Unit.Tabs.join('') + '</ul>';
@@ -397,7 +393,6 @@ let Unit = {
 	 *
 	 * @param id
 	 * @param content
-	 * @constructor
 	 */
 	SetTabContent: (id, content)=>{
 		Unit.TabsContent.push('<div id="' + id + '">' + content + '</div>');
@@ -408,11 +403,11 @@ let Unit = {
 	 * Setzt alle gespeicherten Tabs zusammen
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabContent: ()=> {
 		return Unit.TabsContent.join('');
 	},
+
 
 	/**
 	 * Aktuallisiert die Anzeige für die Alcatraz-Produktion
@@ -435,10 +430,10 @@ let Unit = {
 
 	},
 
+
 	/**
 	 * Die letzten Einheiten die aus dem Alca gekommen sind
 	 *
-	 * @constructor
 	 */
 	GetLastAlcaUnits: ()=> {
 

@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       12.12.19, 10:19 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -26,6 +26,12 @@ let BlackListBuildingsString = [
 	'R_MultiAge_Battlegrounds1' //Ehrenstatue
 ];
 
+// grau darzustellende Produktionen
+let UnimportantProds = [
+	'supplies', // Vorräte
+	'money'     // Münzen
+];
+
 /**
  *
  * @type {{data: {}, CityEntities: [], ShowFunction: Reader.ShowFunction, OtherPlayersBuildings: Reader.OtherPlayersBuildings, player_name: string, showResult: Reader.showResult}}
@@ -40,7 +46,6 @@ let Reader = {
 	 * Die Gebäude ermitteln
 	 *
 	 * @param dp
-	 * @constructor
 	 */
 	OtherPlayersBuildings: (dp) => {
 
@@ -96,7 +101,10 @@ let Reader = {
 
 		// let d = helper.arr.multisort(Reader.data, ['name'], ['ASC']);
 		let rd = helper.arr.multisort(Reader.data.ready, ['name'], ['ASC']);
+		rd = helper.arr.multisort(rd, ['isImportant'], ['DESC']);
+		
 		let wk = helper.arr.multisort(Reader.data.work, ['name'], ['ASC']);
+		wk = helper.arr.multisort(wk, ['isImportant'], ['DESC']);
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if ($('#ResultBox').length === 0) {
@@ -107,6 +115,9 @@ let Reader = {
 				'dragdrop': true,
 				'minimize': true
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('read-buildings');
 		}
 
 		let div = $('#ResultBox'),
@@ -131,7 +142,7 @@ let Reader = {
 					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -159,7 +170,7 @@ let Reader = {
 					h.push('<tr>');
 					h.push('<td>' + wk[i]['name'] + '</td>');
 					h.push('<td>' + wk[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -182,11 +193,13 @@ let Reader = {
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	ShowFunction: (id) => {
 
 		let h = CityMap.hashCode(Reader.player_name);
+
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('citymap');
 
 		if ($('#map' + h).length < 1) {
 			CityMap.init(Reader.CityEntities, Reader.player_name);
@@ -204,6 +217,7 @@ let Reader = {
 	}
 };
 
+
 /**
  *
  * @type {
@@ -212,7 +226,7 @@ let Reader = {
  * 		bazaarBuilding: GoodsParser.bazaarBuilding,
  * 		sumGoods: (function(*): number),
  * 		readType: GoodsParser.readType,
- * 		getProducts: (function(*): {amount: (string), state: boolean})
+ * 		getProducts: (function(*): {amount: (string), state: boolean, isImportant: boolean})
  * 		}
  * 	}
  */
@@ -248,8 +262,14 @@ let GoodsParser = {
 					name: BuildingNamesi18n[d['cityentity_id']]['name'],
 					amount: p['amount'],
 					state: p['state'],
-					id: d['id']
+					id: d['id'],
+					isImportant: p['isImportant']
 				};
+				
+				if (p['isImportant'] === false ) {
+					entry.name = '<spark style="color:grey;">' + BuildingNamesi18n[d['cityentity_id']]['name'] + '</spark>';
+					entry.amount = '<spark style="color:grey;">' + p['amount'] + '</spark>';
+				}
 
 				if( entry['state'] === true ){
 					Reader.data.ready.push(entry);
@@ -265,22 +285,29 @@ let GoodsParser = {
 	 * ermittelt die Produktart
 	 *
 	 * @param d
-	 * @returns {{amount: number, name: (*|string), state: boolean}}
+	 * @returns {{amount: number, name: (*|string), state: boolean, isImportant: boolean}}
 	 */
 	getProducts: (d)=> {
 
 		let amount,
-			state = d['state']['__class__'] === 'ProductionFinishedState';
-
+			state = d['state']['__class__'] === 'ProductionFinishedState',
+			isImportant = false
 		let g = [],
 			a = d['state']['current_product']['product']['resources'];
 
 		for(let k in a) {
 			if(a.hasOwnProperty(k)) {
+				if (!isImportant) 
+					isImportant = !UnimportantProds.includes(k);
+				
 				if(k === 'strategy_points'){
                     g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
+					
 				} else {
-                    g.push(a[k] + ' ' + GoodsData[k]['name']);
+					if(isImportant) 
+						g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
+                    else 
+						g.push(a[k] + ' ' + GoodsData[k]['name']);
 				}
 			}
 		}
@@ -289,7 +316,8 @@ let GoodsParser = {
 
 		return {
 			amount: amount,
-			state: state
+			state: state,
+			isImportant: isImportant
 		};
 	},
 

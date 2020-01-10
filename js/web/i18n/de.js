@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Eigenanteil",
 			"LGTotalFP": "LG Gesamt-FP",
             "OwnPartRemaining": "Verbleibend",
-            "Done": "Erledigt",
+			"Done": "Erledigt",
+			"BPs": "BPs",
+			"Meds": "Meds",
+			"Ext": "Ext",
+			"Arc": "Arche",
 			"Order": "Reihenfolge",
 			"Deposit": "Einzahlen",
 			"CopyValues": "Werte kopieren",
@@ -54,6 +58,7 @@ let i18n = {
 			"Save": "Save",
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
+			"LevelWarning": "ACHTUNG! Levelt das LG!",
 			"NoFPorMedsAvailable": "Keine FPs oder BPs verfügbar",
 			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
@@ -70,6 +75,7 @@ let i18n = {
 			"Level": "Level",
 			"PayedTotal": "Eingez. / Gesamt",
 			"Rate": "Kurs",
+			"Profit": "Gewinn",
 			"NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen"
 		},
 
@@ -127,7 +133,8 @@ let i18n = {
             "Resource": "Ressource",
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
-            "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"NoTechs": "Du bist am Ende des Zeitalters angelangt",
             "Eras": {
                 1: "Steinzeit",
                 2: "Bronzezeit",
@@ -159,6 +166,13 @@ let i18n = {
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
+
+        "EventList": {
+            "Title": "Event-Questliste für: ",
+            "Reward": "Belohnung",
+            "Previous": "Vorherige",
+            "Next": "Nächste",
         },
 
         "Negotiation": {
@@ -215,6 +229,13 @@ let i18n = {
 			"NotFilled": "nicht gefüllt",
 			"Bind": "Gebunden",
 			"Unbind": "Ungebunden"
+		},
+
+		"CityMap": {
+			"Title": "Daten übermitteln",
+			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
+			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
 		}
 	},
 
@@ -344,10 +365,11 @@ let i18n = {
 			"Title" : "Sprache wechseln",
 			"Desc" : "Welche Sprache, statt der erkannten, soll genutzt werden?",
 			"Dropdown": {
-				"de" : "Deutsch",
-				"en" : "Englisch",
-				"fr" : "Französisch",
-				"es" : "Spanisch"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},

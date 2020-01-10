@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Cuota propia",
 			"LGTotalFP": "Gran edificio FP en total",
             "OwnPartRemaining": "quedan",
-            "Done": "Listo",
+			"Done": "Listo",
+			"BPs": "Plano", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
+			"Ext": "Ext", //Todo: Translate
+			"Arc": "Arca", //Todo: Translate
 			"Order": "Orden",
 			"Deposit": "Ingresar",
 			"CopyValues": "Copiar valores",
@@ -54,6 +58,7 @@ let i18n = {
 			"Save": "Guardar",
 			"Commitment": "Contribucion",
 			"Profit": "Ganancia",
+			"LevelWarning": "ATENCIÓN: nivela el legendario edificio!", //Todo: Translate
 			"NoFPorMedsAvailable": "No hay FP o planos disponibles",
 			"LGNotOpen": "El proximo nivel no esta disponible todavia",
 			"LGNotConnected": "El edificio no esta conectado a una carretera",
@@ -70,6 +75,7 @@ let i18n = {
 			"Level": "Nivel",
 			"PayedTotal": "Ingresado / Total",
 			"Rate": "Cotizacion",
+			"Profit": "Ganancia",
 			"NothingToGet": "Con <strong>__player__</strong> no hay nada para pillar"
 		},
 
@@ -86,6 +92,8 @@ let i18n = {
 			"Total" : "Gesamt: ",
 			"ModeGroups": "Gruppiert",
 			"ModeSingle": "Einzeln",
+			"Happiness": "Happiness", //Todo: Translate
+			"AdjacentBuildings": "Adjacent buildings", //Todo: Translate
 			"Headings" : {
 				"number" : "Numero",
 				"amount" : "Cantidad",
@@ -94,7 +102,12 @@ let i18n = {
 				"production" : "Edificios de produccion",
 				"random_production" : "Produccion casual",
 				"residential" : "Edificio de evento",
+				"decoration": "Decorations",
+				"street": "Streets",
+				"goods": "Goods buildings",
+				"culture": "Cultural buildings",
 				"main_building" : "Ayuntamiento",
+				"boost": "Boost",
 				"all" : "Todos"
 			}
 		},
@@ -120,7 +133,8 @@ let i18n = {
             "Resource": "Recurso",
             "DescRequired": "Necesitado",
             "DescInStock": "Disponible",
-            "DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"NoTechs": "You have reached the end of this era", //Todo: Translate
             "Eras": {
                 1: "Edad de Piedra",
                 2: "Edad de Bronce",
@@ -180,14 +194,14 @@ let i18n = {
 		"Infobox" : {
 			"Title" : "Infobox",
 			"Filter" : "Filtro",
-			"FilterEG" : "EG",
+			"FilterGex" : "EG",
 			"FilterAuction" : "Subasta",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Mensaje",
 			"FilterTrade" : "Comercio",
 			"ResetBox" : "Vaciar el box",
 			"Messages" : {
-				"EG" : "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
+				"GEX" : "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
 				"LevelUp" : "__player__'s __building__ ha conseguido __level__ .<br>Tu conseguistes el <strong>__rank__</strong> ",
 				"Auction" : "<strong>__player__</strong> ha pujado ahora mismo__amount__ monedas",
 				"Trade" : "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
@@ -208,6 +222,13 @@ let i18n = {
 			"NotFilled": "no esta lleno",
 			"Bind": "Atado",
 			"Unbind": "libre"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data", //Todo: Translate
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
 		}
 	},
 
@@ -292,7 +313,7 @@ let i18n = {
 			"Title" : "Actividad de motivar",
 			"Desc" : "Quieres que sean transferidas las actividades de motivar al iniciar?"
 		},
-		"SendEGInfo": {
+		"SendGEXInfo": {
 			"Title" : "EG evaluaciones",
 			"Desc" : "Transmite los datos de EG al hacer clic en rankings o colocaciones"
 		},
@@ -311,10 +332,6 @@ let i18n = {
 		"ShowTavernBadge": {
 			"Title" : "Mostrar placa de tabernas ",
 			"Desc" : "Tan pronto como se activa un boost en la taberna, aparece un contador, globalmente desplazable"
-		},
-		"SendGEXInfo": {
-			"Title" : "GEX Auswertungen",
-			"Desc" : "Übermittelt beim Klicken in der GEX auf Platzierungen oder Rangliste die Daten"
 		},
 		"ShowOutpost": {
 			"Title" : "Recursos de los asentamientos culturales",
@@ -341,10 +358,11 @@ let i18n = {
 			"Title" : "Cambiar idioma",
 			"Desc" : "Que idioma debe usarse en lugar del reconocido?",
 			"Dropdown": {
-				"de" : "Alemán",
-				"en" : "Inglés",
-				"fr" : "Francés",
-				"es" : "Español"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},
@@ -373,8 +391,8 @@ let i18n = {
 
 	"API" : {
 		"UpdateSuccess" : "Actualizacion realizada",
-		"EGPlayer" : "Se han actualizado los puestos de los miembros en la EG",
-		"EGChampionship" : "Se ha actualizado el puesto del gremio en la EG",
+		"GEXPlayer" : "Se han actualizado los puestos de los miembros en la EG",
+		"GEXChampionship" : "Se ha actualizado el puesto del gremio en la EG",
 		"LGInvest" : "Tus inversiones en grandes edifivios han sido transferidos",
 		"LGGildMember" : "__player__'s GEs han sido transferidos"
 	}
