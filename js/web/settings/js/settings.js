@@ -60,14 +60,9 @@ let Settings = {
 			desc : i18n['Settings']['ShowTavernBadge']['Desc']
 		},
 		PreScanLGList : {
-			status: false,
+			status: true,
 			title : i18n['Settings']['PreScanLGList']['Title'],
 			desc : i18n['Settings']['PreScanLGList']['Desc']
-		},
-		CalculatorShowNegativ : {
-			status: false,
-			title : i18n['Settings']['CalculatorShowNegativ']['Title'],
-			desc : i18n['Settings']['CalculatorShowNegativ']['Desc']
 		},
 		AutomaticNegotiation : {
 			status: true,
