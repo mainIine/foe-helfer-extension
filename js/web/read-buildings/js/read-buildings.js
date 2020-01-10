@@ -46,7 +46,6 @@ let Reader = {
 	 * Die Gebäude ermitteln
 	 *
 	 * @param dp
-	 * @constructor
 	 */
 	OtherPlayersBuildings: (dp) => {
 
@@ -143,7 +142,7 @@ let Reader = {
 					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -171,7 +170,7 @@ let Reader = {
 					h.push('<tr>');
 					h.push('<td>' + wk[i]['name'] + '</td>');
 					h.push('<td>' + wk[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="chrome-extension://' + extID + '/css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -194,7 +193,6 @@ let Reader = {
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	ShowFunction: (id) => {
 

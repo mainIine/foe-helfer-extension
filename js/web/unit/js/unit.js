@@ -13,6 +13,31 @@
  * **************************************************************************************
  */
 
+// Armee Typen
+FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
+	Unit.Types = JSON.parse(xhr.responseText);
+});
+
+FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
+	Unit.Cache = data.responseData;
+
+	if ($('#unit-Btn').hasClass('hud-btn-red')) {
+		$('#unit-Btn').removeClass('hud-btn-red');
+		$('#unit-Btn-closed').remove();
+	}
+
+	if ($('#units').length > 0) {
+		Unit.BuildBox();
+	}
+});
+
+FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
+	if (data.responseData.militaryProducts === undefined) {
+		return;
+	}
+	localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+});
+
 let Unit = {
 
 	Types: null,
@@ -28,7 +53,6 @@ let Unit = {
 	/**
 	 * Erstellt eine HTML Box für den DOM
 	 *
-	 * @constructor
 	 */
 	Show: ()=> {
 
@@ -55,7 +79,6 @@ let Unit = {
 	/**
 	 * Rendern und in den BoxContent
 	 *
-	 * @constructor
 	 */
 	BuildBox:()=> {
 
@@ -374,7 +397,6 @@ let Unit = {
 	 * Merkt sich alle Tabs
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	SetTabs: (id)=>{
 		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
@@ -385,7 +407,6 @@ let Unit = {
 	 * Gibt alle gemerkten Tabs aus
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal">' + Unit.Tabs.join('') + '</ul>';
@@ -397,7 +418,6 @@ let Unit = {
 	 *
 	 * @param id
 	 * @param content
-	 * @constructor
 	 */
 	SetTabContent: (id, content)=>{
 		Unit.TabsContent.push('<div id="' + id + '">' + content + '</div>');
@@ -408,7 +428,6 @@ let Unit = {
 	 * Setzt alle gespeicherten Tabs zusammen
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	GetTabContent: ()=> {
 		return Unit.TabsContent.join('');
@@ -433,14 +452,12 @@ let Unit = {
 			clearInterval(intervalID);
 			$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
 		}
-
 	},
 
 
 	/**
 	 * Die letzten Einheiten die aus dem Alca gekommen sind
 	 *
-	 * @constructor
 	 */
 	GetLastAlcaUnits: ()=> {
 
@@ -492,8 +509,8 @@ let Unit = {
 		last.push('<tr>');
 		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
 		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
 		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Quantity'] + '</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
 		last.push('</tr>');
 		last.push('</thead>');
 

@@ -32,6 +32,22 @@ if( typeof helper == 'undefined' ) {
 	var helper = { } ;
 }
 
+helper.str = {
+	/**
+	 * Function to copy string to clipboard
+	 * 
+	 * <a href="/param">@param</a> {string} [textToCopy] Source string
+	 */
+	copyToClipboard: function(textToCopy){
+		var copyFrom = $('<textarea/>');
+		copyFrom.text(textToCopy);
+		$('body').append(copyFrom);
+		copyFrom.select();
+		document.execCommand('copy');
+		copyFrom.remove();
+	}
+};
+
 helper.arr = {
 	/**
 	 * Function to sort multidimensional array
@@ -102,7 +118,6 @@ let HTML = {
 	 * saveCords = true
 	 *
 	 * @param args
-	 * @constructor
 	 */
 	Box: (args)=> {
 
@@ -182,7 +197,6 @@ let HTML = {
 	 * Minimiert auf Klick die Box
 	 *
 	 * @param div
-	 * @constructor
 	 */
 	MinimizeBox: (div)=> {
 		let btn = $(div).find('.window-minimize');
@@ -190,13 +204,14 @@ let HTML = {
 		$(btn).bind('click', function(){
 			let box = $(this).closest('.window-box'),
 				open = box.hasClass('open');
-
 			if(open === true){
 				box.removeClass('open');
 				box.addClass('closed');
+				box.find('.window-body').css("visibility", "hidden");
 			} else {
 				box.removeClass('closed');
 				box.addClass('open');
+				box.find('.window-body').css("visibility", "visible");
 			}
 		});
 	},
@@ -207,7 +222,6 @@ let HTML = {
 	 *
 	 * @param el
 	 * @param save
-	 * @constructor
 	 */
 	DragBox: (el, save = true)=> {
 
@@ -275,7 +289,6 @@ let HTML = {
 	 * Box lässt sich in der Größe verändern
 	 *
 	 * @param id
-	 * @constructor
 	 */
 	Resizeable: (id)=> {
 		let box = $('#'+id),
@@ -317,7 +330,6 @@ let HTML = {
 	 * Bindet auf Wunsch eine weitere CSS eines Modules ein
 	 *
 	 * @param modul
-	 * @constructor
 	 */
 	AddCssFile: (modul)=> {
 		// prüfen ob schon geladen
@@ -326,7 +338,7 @@ let HTML = {
 		}
 
 		// noch nicht im DOM, einfügen
-		let url = 'chrome-extension://' + extID + '/js/web/' + modul + '/',
+		let url = extUrl + 'js/web/' + modul + '/',
 			cssUrl = url + 'css/' + modul + '.css?v=' + extVersion;
 
 		let css = $('<link />')
@@ -343,7 +355,6 @@ let HTML = {
 	 *
 	 * @param number
 	 * @returns {*}
-	 * @constructor
 	 */
 	Format: (number)=>{
 		if(number === 0){
@@ -375,5 +386,15 @@ let HTML = {
 			}
 		}
 		return string;
+	},
+
+
+	EnterFullscreen: ()=> {
+
+	},
+
+
+	LeaveFullscreen:()=> {
+
 	}
 };

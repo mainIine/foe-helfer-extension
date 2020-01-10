@@ -39,7 +39,7 @@ let Notes = {
 	 * Ein frisches iFrame in die Box setzen
 	 */
 	createIframeBox: ()=> {
-		let u = 'chrome-extension://' + extID + '/content/text-box.html?lng=' + MainParser.Language,
+		let u =  + '/content/text-box.html?lng=' + MainParser.Language,
 			i = $('<iframe />').attr('src', u).css({'width':'100%','height':'100%'}).attr('frameBorder','0');
 
 		$('#note-boxBody').html( i );
@@ -60,7 +60,8 @@ let Notes = {
 			messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
 
 		eventer(messageEvent, function (e) {
-			if (e.data !== undefined && e.origin === 'chrome-extension://' + extID){
+			// TODO: check if this origin check still works
+			if (e.data !== undefined && e.origin === extUrl){
 				let text = e.data;
 
 				if(text === 'closeBox'){

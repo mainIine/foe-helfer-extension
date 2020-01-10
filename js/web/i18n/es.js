@@ -62,6 +62,8 @@ let i18n = {
 			"NoFPorMedsAvailable": "No hay FP o planos disponibles",
 			"LGNotOpen": "El proximo nivel no esta disponible todavia",
 			"LGNotConnected": "El edificio no esta conectado a una carretera",
+			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+			"Done": "done" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -75,6 +77,7 @@ let i18n = {
 			"Level": "Nivel",
 			"PayedTotal": "Ingresado / Total",
 			"Rate": "Cotizacion",
+			"Profit": "Ganancia",
 			"NothingToGet": "Con <strong>__player__</strong> no hay nada para pillar"
 		},
 
@@ -125,6 +128,10 @@ let i18n = {
 			"DescRequired" : "Necesitado",
 			"DescInStock" : "Disponible",
 			"DescStillMissing" : "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"ExpansionsSum" : "Expansions", // TODO: translate
+			"nextTile" : "next Expansion", // TODO: translate
+			"tileNotPlanned" : "off", // TODO: translate
+			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: translate
         },
 
         "Technologies": {
@@ -132,7 +139,8 @@ let i18n = {
             "Resource": "Recurso",
             "DescRequired": "Necesitado",
             "DescInStock": "Disponible",
-            "DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+			"NoTechs": "You have reached the end of this era", //Todo: Translate
             "Eras": {
                 1: "Edad de Piedra",
                 2: "Edad de Bronce",
@@ -174,13 +182,14 @@ let i18n = {
             "Success": "Acierto",
 			"Chance": "Oportunidad",
 			"Person": "Persona",
-			"Average": "Ø Menge",
-			"Costs": "Kosten:",
-			"Round": "Runde",
-			"Stock": "Lager:",
-			"GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
-			"GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
-			"DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen."
+			"Average": "Ø Amount", //Todo: Translate
+			"Costs": "Costs:", //Todo: Translate
+			"Round": "Round", //Todo: Translate
+			"Stock": "Stock:", //Todo: Translate
+			"GoodsLow": "ATTENTION: Good stock is low", //Todo: Translate
+			"GoodsCritical": "ATTENTION: Good stock is critical", //Todo: Translate
+			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.", //Todo: Translate
+			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
         },
 
 		"Settings" : {
@@ -220,6 +229,13 @@ let i18n = {
 			"NotFilled": "no esta lleno",
 			"Bind": "Atado",
 			"Unbind": "libre"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data", //Todo: Translate
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
 		}
 	},
 
@@ -324,17 +340,9 @@ let i18n = {
 			"Title" : "Mostrar placa de tabernas ",
 			"Desc" : "Tan pronto como se activa un boost en la taberna, aparece un contador, globalmente desplazable"
 		},
-		"ShowOutpost": {
-			"Title" : "Recursos de los asentamientos culturales",
-			"Desc" : "Muestra un elemento de menu para los asentamientos culturales<br><u>Nota:</u> Se requiere recarga del juego (F5)"
-		},
 		"PreScanLGList": {
 			"Title" : "Escanear con antelacion los grandes edificios",
 			"Desc" : "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina rellenables grandes edificios.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Beneficio negativo en el calculador de costes",
-			"Desc" : "Tambien te gustaría ver el beneficio negativo?"
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Verhandlungsassisten",
@@ -349,10 +357,11 @@ let i18n = {
 			"Title" : "Cambiar idioma",
 			"Desc" : "Que idioma debe usarse en lugar del reconocido?",
 			"Dropdown": {
-				"de" : "Alemán",
-				"en" : "Inglés",
-				"fr" : "Francés",
-				"es" : "Español"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},

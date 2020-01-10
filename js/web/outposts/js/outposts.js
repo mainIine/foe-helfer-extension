@@ -26,7 +26,7 @@ let Outposts = {
 	CityMap: null,
 	
 	// display settings
-	/** @type {Record<string, FoE_JSON_GoodName>} */
+	/** @type {Record<string, Record<string, FoE_JSON_GoodName>>} */
 	PlannedTiles: JSON.parse(localStorage.getItem('Outposts_PlannedTiles')||'{}'),
 	GUINeedsUpdate: false,
 	DisplaySums: false,
@@ -47,8 +47,16 @@ let Outposts = {
 			}
 		}
 
-		if (Outposts.Advancements === null) {
+		if (Outposts.Advancements === null || Outposts.OutpostData === null) {
 			return;
+		}
+
+		{
+			let oldPlannedFormat = Object.values(Outposts.PlannedTiles).find(planned => typeof planned === 'string');
+			if (oldPlannedFormat) {
+				// @ts-ignore
+				Outposts.PlannedTiles = {[Outposts.OutpostData.content]: Outposts.PlannedTiles};
+			}
 		}
 
 		if( $('#outpostConsumables').length === 0 )
@@ -69,13 +77,19 @@ let Outposts = {
 			window.addEventListener('change', (event) => {
 				const target = /** @type {HTMLInputElement} */(event.target);
 				const namePrefix = 'foe_helper_';
-				if (target.tagName === 'INPUT' && target.type === 'radio' && target.checked && target.name.startsWith(namePrefix)) {
+				if (target.tagName === 'INPUT' && target.type === 'radio' && target.checked && target.name.startsWith(namePrefix) && Outposts.OutpostData) {
+					const cultureName = Outposts.OutpostData.content;
 					const name = target.name.substr(namePrefix.length);
 					let value = target.value;
 					if (value === '#off') {
-						delete Outposts.PlannedTiles[name];
+						if (Outposts.PlannedTiles[cultureName]) {
+							delete Outposts.PlannedTiles[cultureName][name];
+						}
 					} else {
-						Outposts.PlannedTiles[name] = value;
+						if (!Outposts.PlannedTiles[cultureName]) {
+							Outposts.PlannedTiles[cultureName] = {};
+						}
+						Outposts.PlannedTiles[cultureName][name] = value;
 					}
 					localStorage.setItem('Outposts_PlannedTiles', JSON.stringify(Outposts.PlannedTiles));
 					Outposts.RequestGUIUpdate();
@@ -96,17 +110,18 @@ let Outposts = {
 		if ( !$('#outpostConsumables').is(':visible') ) {
 			return;
 		}
-		if (Outposts.Advancements === null || Outposts.OutpostData === null) {
+		const OutpostData = Outposts.OutpostData;
+		if (Outposts.Advancements === null || OutpostData === null) {
 			return;
 		}
 
-		const primaryResourceId = Outposts.OutpostData.primaryResourceId;
-		const resourceIDs = [...Outposts.OutpostData.goodsResourceIds, 'diplomacy'];
+		const primaryResourceId = OutpostData.primaryResourceId;
+		const resourceIDs = [...OutpostData.goodsResourceIds, 'diplomacy'];
 		const advancements = Outposts.Advancements;
 		const buildings = Outposts.CityMap ? Outposts.CityMap.entities : [];
-		const plannedTiles = Outposts.PlannedTiles;
+		const plannedTiles = Outposts.PlannedTiles[OutpostData.content] || {};
 
-		const currentRun = Outposts.OutpostData.playthroughs.find(run => !run.isCompleted);
+		const currentRun = OutpostData.playthroughs.find(run => !run.isCompleted);
 
 		const BuildingsData = JSON.parse(sessionStorage.getItem('BuildingsData')||'null');
 
@@ -178,7 +193,7 @@ let Outposts = {
 
 		// HTML erstellen
 
-		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + Outposts.OutpostData.contentName);
+		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + OutpostData.contentName);
 
 		/** output HTML teile-liste
 		 * @type {string[]}
@@ -193,8 +208,10 @@ let Outposts = {
 		// Durchlauf Informationen
 		if (currentRun) {
 			t.push(
-				  ((currentRun.id||0)+1) + '. Durchlauf, '
-				+ 'Bonus x4 Chance: ' + (currentRun.productionBonusProbability*100) + '%'
+				HTML.i18nReplacer(i18n['Boxes']['Outpost']['infoLine'], {
+					runNumber: (currentRun.id||0)+1,
+					chanceX4: currentRun.productionBonusProbability*100
+				})
 			);
 		}
 
@@ -224,7 +241,7 @@ let Outposts = {
 					t.push(
 						'<td>'
 						+ '<input type="checkbox" onclick="Outposts.listAllTiles(this.checked)"'+(displayAllTiles?' checked':'')+'/>'
-						+ (i18n['Boxes']['Outpost']['nextTile'] || 'nächste Erweiterung')
+						+ i18n['Boxes']['Outpost']['nextTile']
 						+ '</td>'
 					);
 				} else {
@@ -238,7 +255,7 @@ let Outposts = {
 						t.push('<td class="text-center">'
 							+ '<label><input type="radio" value="#off" name="foe_helper_'+tileID+'" '
 							+ (plannedTiles[tileID] == null ? ' checked' : '')
-							+ '/><span class="outpost_tile_off">off</span></label>'
+							+ '/><span class="outpost_tile_off">'+i18n['Boxes']['Outpost']['tileNotPlanned']+'</span></label>'
 							+ '</td>'
 						);
 					} else {
@@ -393,7 +410,7 @@ let Outposts = {
 			if (found) {
 				t.push('<tr class="total-row">');
 
-				t.push('<td><strong>' + (i18n['Boxes']['Outpost']['ExpansionsSum']||'Erweiterungen') + '</strong></td><td></td>');
+				t.push('<td><strong>' + i18n['Boxes']['Outpost']['ExpansionsSum'] + '</strong></td><td></td>');
 
 				for (let resourceID of resourceIDs) {
 					const resourceCost = plannedTilesCostSum[resourceID];
@@ -511,7 +528,7 @@ let Outposts = {
 			$('#outpostConsumables').hide('fast', ()=>{
 				$('#outpostConsumables').remove();
 			});
-			$('#outPostBtn').addClass('hud-btn-red');
+			$('#outpost-Btn').addClass('hud-btn-red');
 		}
 	},
 
@@ -538,7 +555,7 @@ let Outposts = {
 		Outposts.Advancements = d;
 
 		$('#outPW').remove();
-		$('#outPostBtn').removeClass('hud-btn-red');
+		$('#outpost-Btn').removeClass('hud-btn-red');
 		Outposts.RequestGUIUpdate();
 	},
 
@@ -553,6 +570,7 @@ let Outposts = {
 			Outposts.RequestGUIUpdate();
 		}
 	},
+
 
 	/**
 	 * Setzt ob die Kosten der Freischaltungen aufsummiert werden sollen.
@@ -623,31 +641,54 @@ let Outposts = {
 /** @type {any} */(globalThis).Outposts = Outposts;
 
 // --------------------------------------------------------------------------------------------------
-// Verarbeiter für Außenposten daten:
+// Verarbeiter für Außenposten Daten:
 
 // Alle Typen der Außenposten "notieren"
 FoEproxy.addHandler('OutpostService', 'getAll', (/** @type {FoE_NETWORK_OutpostService_getAll} */ data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	// store all informations in case of outpost change
 	Outposts.OutpostsData = data.responseData;
 	Outposts.UpdateOutpostData();
 });
 
+FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostService_start} */ data, _postData) => {
+	// store changed informations
+	const culture = data.responseData;
+	const content = culture.content;
+	let idx = Outposts.OutpostsData.findIndex(c => c.content === content);
+	if (idx !== -1) {
+		Outposts.OutpostsData[idx] = culture;
+	} else {
+		Outposts.OutpostsData.push(culture);
+	}
+	Outposts.UpdateOutpostData();
+});
+
+// OutpostService.cancel wird von einem OutpostService.getAll gefolgt
+
+
+
 // Gebäude des Außenpostens sichern
 FoEproxy.addHandler('AdvancementService', 'getAll', (/** @type {FoE_NETWORK_AdvancementService_getAll} */data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	Outposts.SaveBuildings(data.responseData);
 });
 
+// eine Forschung Freischalten
+FoEproxy.addHandler('AdvancementService', 'unlock', (/** @type {FoE_NETWORK_AdvancementService_unlock} */data, postData) => {
+	if (postData instanceof Array) {
+		postData = postData.find(request => request.requestClass === 'AdvancementService' && request.requestMethod === 'unlock');
+	}
+	if (postData && data.responseData.__class__ === 'Success' && Outposts.Advancements) {
+		let advancement = Outposts.Advancements.find(advancement => !advancement.isUnlocked);
+		if (advancement) {
+			advancement.isUnlocked = true;
+			Outposts.RequestGUIUpdate();
+		}
+	}
+});
+
+
 // Status der Gebäude updaten
 FoEproxy.addHandler('CityProductionService', 'startProduction', (/** @type {FoE_NETWORK_CityProductionService_startProduction} */data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	const cityMap = Outposts.CityMap;
 	if (!cityMap) {
 		return;
@@ -668,9 +709,6 @@ FoEproxy.addHandler('CityProductionService', 'startProduction', (/** @type {FoE_
 });
 
 FoEproxy.addHandler('CityMapService', 'getCityMap', (/** @type {FoE_NETWORK_CityMapService_getCityMap} */data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	const response = data.responseData;
 	if (response.gridId === 'cultural_outpost') {
 		Outposts.CityMap = data.responseData;
@@ -678,3 +716,49 @@ FoEproxy.addHandler('CityMapService', 'getCityMap', (/** @type {FoE_NETWORK_City
 	}
 });
 
+FoEproxy.addHandler('CityMapService', 'placeExpansion', (/** @type {FoE_NETWORK_CityMapService_placeExpansion} */data, postData) => {
+	// TODO: update city layout Data
+	const city = Outposts.CityMap;
+	if (city) {
+		const tilesets = city.tilesets;
+		if (postData instanceof Array) {
+			// API-Compatobilität: falls noch alle anfragen gelistet werden, suche die richtige Anfrage raus
+			postData = postData.find(post => post.requestClass === 'CityMapService' && post.requestMethod === 'placeExpansion');
+		}
+		if (postData) {
+			// suche die gekaufte erweiterung
+			const type = postData.requestData[0].type;
+			const idx = tilesets.findIndex(tile => tile.type === type);
+			if (idx >= 0) {
+				// entferne die gekaufte Erweiterung aus der liste der kaufbaren Erweiterungen
+				tilesets.splice(idx, 1);
+				Outposts.RequestGUIUpdate();
+			}
+		}
+	}
+});
+
+
+FoEproxy.addHandler('CityMapService', 'removeBuilding', (/** @type {FoE_NETWORK_CityMapService_removeBuilding} */data, postData) => {
+	const city = Outposts.CityMap;
+	if (city) {
+		const entities = city.entities;
+		if (postData instanceof Array) {
+			// API-Compatobilität: falls noch alle anfragen gelistet werden, suche die richtige Anfrage raus
+			postData = postData.find(post => post.requestClass === 'CityMapService' && post.requestMethod === 'removeBuilding');
+		}
+		if (postData) {
+			postData.requestData.forEach(removedID => {
+				const idx = entities.findIndex(tile => (tile.id||0) === (removedID||0));
+				if (idx >= 0) {
+					// entferne das gelöschte gebäude
+					entities.splice(idx, 1);
+					Outposts.RequestGUIUpdate();
+				}
+			});
+			data.responseData.forEach(building => {
+				Outposts.updateBuilding(building);
+			});
+		}
+	}
+});

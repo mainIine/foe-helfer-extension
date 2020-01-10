@@ -59,20 +59,10 @@ let Settings = {
 			title : i18n['Settings']['ShowTavernBadge']['Title'],
 			desc : i18n['Settings']['ShowTavernBadge']['Desc']
 		},
-		ShowOutpost : {
-			status: true,
-			title : i18n['Settings']['ShowOutpost']['Title'],
-			desc : i18n['Settings']['ShowOutpost']['Desc']
-		},
 		PreScanLGList : {
-			status: false,
+			status: true,
 			title : i18n['Settings']['PreScanLGList']['Title'],
 			desc : i18n['Settings']['PreScanLGList']['Desc']
-		},
-		CalculatorShowNegativ : {
-			status: false,
-			title : i18n['Settings']['CalculatorShowNegativ']['Title'],
-			desc : i18n['Settings']['CalculatorShowNegativ']['Desc']
 		},
 		AutomaticNegotiation : {
 			status: true,
@@ -117,7 +107,6 @@ let Settings = {
 	/**
 	 * Box zusammen setzen
 	 *
-	 * @constructor
 	 */
 	BuildBody: ()=> {
 
@@ -188,7 +177,6 @@ let Settings = {
 	 * Beim Klick speichern
 	 *
 	 * @param el
-	 * @constructor
 	 */
 	StoreSettings: (el)=> {
 		let id = $(el).data('id'),
@@ -211,7 +199,6 @@ let Settings = {
 	 *
 	 * @param name
 	 * @returns {any}
-	 * @constructor
 	 */
 	GetSetting: (name)=> {
 		let s = localStorage.getItem(name);
@@ -228,7 +215,6 @@ let Settings = {
 	 * Versionsnummer ausgeben
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	VersionInfo: ()=> {
 		return '<div class="text-center" style="width:173px;"><strong>' + extVersion + '</strong></div>';
@@ -238,7 +224,6 @@ let Settings = {
 	/**
 	 * Funktion zum zurücksetzten aller Box-Koordiniaten
 	 *
-	 * @constructor
 	 */
 	ResetBoxCoords: ()=>{
 		$.each(localStorage, function(key, value){
@@ -259,7 +244,6 @@ let Settings = {
 	 * Sprachwechsler
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	LanguageDropdown: ()=>{
 		let dp = [];
