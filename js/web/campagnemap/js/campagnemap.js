@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:44 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -19,18 +19,20 @@ let KampagneMap = {
 
     /**
      * Zeigt
-     * @constructor
      */
     Show: () => {
         if ($('#campagne').length === 0) {
-            let args = {
-                'id': 'campagne',
-                'title': i18n['Boxes']['Campagne']['Title'],
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': false
-            };
-            HTML.Box(args);
+
+            HTML.Box({
+				'id': 'campagne',
+				'title': i18n['Boxes']['Campagne']['Title'],
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': false
+			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('campagnemap');
         }
 
         KampagneMap.BuildBox();
@@ -39,7 +41,6 @@ let KampagneMap = {
 
     /**
 	 *
-	 * @constructor
 	 */
     BuildBox: () => {
         KampagneMap.CalcBody();
@@ -48,7 +49,6 @@ let KampagneMap = {
 
     /**
 	 *
-	 * @constructor
 	 */
     CalcBody: () => {
 

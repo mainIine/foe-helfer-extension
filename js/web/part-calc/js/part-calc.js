@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       14.12.19, 18:47 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -49,6 +49,9 @@ let Parts = {
 			'dragdrop': true,
 			'minimize': true
 		});
+
+		// CSS in den DOM prügeln
+		HTML.AddCssFile('part-calc');
 
 		// Body zusammen fummeln
 		Parts.BoxBody();
@@ -122,7 +125,6 @@ let Parts = {
 	 * Sichtbarer Teil
 	 *
 	 * @param input
-	 * @constructor
 	 */
 	BoxBody: (input)=> {
 
@@ -278,8 +280,8 @@ let Parts = {
         h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n['Boxes']['OwnpartCalculator']['OldLevel'] : i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
-        h.push('<button class="btn btn-default btn-set-arc" data-value="85">85%</button>');
-		h.push('<button class="btn btn-default btn-set-arc" data-value="90">90%</button>');
+        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
+		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
         h.push('</td>');
         h.push('</tr></table>');
 
@@ -313,10 +315,10 @@ let Parts = {
         h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Order'] + '</td>');
         h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Deposit'] + '</td>');
         h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Done'] + '</td>');
-        h.push('<td class="text-center">BPs</td>');
-        h.push('<td class="text-center">Meds</td>');
-        h.push('<td class="text-center">Ext.</td>');
-        h.push('<td class="text-center">Ark</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['BPs'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Meds'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Ext'] + '</td>');
+		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Arc'] + '</td>');
         h.push('</tr>');
 
         for (let i = 0; i < 5; i++) {
@@ -428,12 +430,11 @@ let Parts = {
 	 * @param Maezens
 	 * @param Eigens
 	 * @param NonExts
-	 * @constructor
 	 */
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
-			n = localStorage.getItem('PlayerCopyName'),
-			m = localStorage.getItem('current_player_name'),
+			n = localStorage.getItem(ExtPlayerID+'_PlayerCopyName'),
+			m = localStorage.getItem(ExtPlayerID+'_current_player_name'),
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
@@ -478,16 +479,12 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-
-
-		// es soll etwas kopiert werden
-		// Player-Namen und individuellen LG Namen ermittlen
-		new ClipboardJS('.button-own', {
-			text: function(trigger) {
-				return Parts.CopyFunction(Maezens, Eigens, NonExts, trigger, 'copy');
-			}
+		$('body').off("click",'.button-own');
+		$('body').on('click', '.button-own', function(){
+			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
+			helper.str.copyToClipboard(copyParts);
 		});
-
+		$('body').off("click",'.button-save-own');
 		$('body').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
@@ -530,7 +527,6 @@ let Parts = {
 	 * @param Event
 	 * @param Action
 	 * @returns {string}
-	 * @constructor
 	 */
 	CopyFunction: (Maezens, Eigens, NonExts, Event, Action)=> {
 
@@ -538,7 +534,7 @@ let Parts = {
 			bn = $('#build-name').val(),
 			cs = $('#chain-scheme').val();
 
-		localStorage.setItem('PlayerCopyName', pn);
+		localStorage.setItem(ExtPlayerID+'_PlayerCopyName', pn);
 		localStorage.setItem(Parts.CurrentBuildingID, bn);
 
 		// Schema speichern
@@ -667,7 +663,6 @@ let Parts = {
 	 * Lecker Animation für das Anzeigen der Kopieren Buttons
 	 *
 	 * @param show
-	 * @constructor
 	 */
 	BackGroundBoxAnimation: (show)=> {
 		let $box = $('#OwnPartBox');
@@ -691,7 +686,6 @@ let Parts = {
 	/**
 	 * Die Box ist schon offen, Content updaten
 	 *
-	 * @constructor
 	 */
 	RefreshData: ()=> {
 		Parts.BoxBody();

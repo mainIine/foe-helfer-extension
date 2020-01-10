@@ -27,8 +27,11 @@ let i18n = {
 			"OwnPart": "Own contribution",
             "LGTotalFP": "GB Total-FP",
             "OwnPartRemaining": "Remaining",
-            "Done": "Done",
-			"ExternalFP": "External FP",
+			"Done": "Done",
+			"BPs": "BPs",
+			"Meds": "Meds",
+			"Ext": "Ext",
+			"Arc": "Arc",
 			"Order": "Sequence",
 			"Deposit": "Deposit",
 			"CopyValues": "Copy values",
@@ -49,12 +52,13 @@ let i18n = {
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
 			"Earnings": "Earnings",
-			"Rate": "Cours",
+			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
 			"Save": "Save",
-			"Commitment": "Commitment",
+			"Commitment": "Costs",
 			"Profit": "Profit",
+			"LevelWarning": "ATTENTION! Leveling the GB!",
 			"NoFPorMedsAvailable": "No FPs or BPs available",
 			"LGNotOpen": "The next level is currently not unlocked",
 			"LGNotConnected": "The building is not connected to a street",
@@ -71,6 +75,7 @@ let i18n = {
 			"Level": "Level",
 			"PayedTotal": "Payed / Total",
 			"Rate": "Rate",
+			"Profit": "Profit",
 			"NothingToGet": "<strong>__player__</strong> has nothing to fetch"
 		},
 
@@ -128,7 +133,8 @@ let i18n = {
             "Resource": "Resource",
             "DescRequired": "Required",
             "DescInStock": "Available",
-            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+			"NoTechs": "You have reached the end of this era",
             "Eras": {
                 1: "Stone Age",
                 2: "Bronze Age",
@@ -216,6 +222,13 @@ let i18n = {
 			"NotFilled": "not filled",
 			"Bind": "Bound",
 			"Unbind": "Unbound"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data",
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
+			"SubmitSuccess": "Data was transfered successfully... Now visit "
 		}
 	},
 
@@ -240,9 +253,9 @@ let i18n = {
             "Warning": "Disabled: Open the research menu first!"
         },
         "Campagne": {
-            "Title": "Kampagne",
-            "Desc": "Übersicht über die benötigten Ressourcen",
-        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+            "Title": "Campaign",
+            "Desc": "Overview of the resources required",
+        	"Warning" : "Disabled: Visit a province first!"
 		},
         "Negotiation": {
             "Title": "Negotiation helper",
@@ -345,24 +358,25 @@ let i18n = {
 			"Title" : "Change language",
 			"Desc" : "Which language, instead of the recognized one, should be used?",
 			"Dropdown": {
-				"de" : "German",
-				"en" : "English",
-				"fr" : "French",
-				"es" : "Spanish",
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},
 
 	"Eras": {
 		"NoAge": "Without Age",
-		"Stone Age": "Stone Age",
-		"Bronze Age": "Bronze Age",
-		"Iron Age": "Iron Age",
+		"StoneAge": "Stone Age",
+		"BronzeAge": "Bronze Age",
+		"IronAge": "Iron Age",
 		"EarlyMiddleAge": "Early Middle Ages",
 		"HighMiddleAge": "High Middle Ages",
 		"LateMiddleAge": "Late Middle Ages",
 		"ColonialAge": "colonial era",
-		"Industrial Age": "Industrial Age",
+		"IndustrialAge": "Industrial Age",
 		"ProgressiveEra": "turn of the century",
 		"ModernEra": "Modernity",
 		"PostModernEra": "Postmodernism",
@@ -370,7 +384,7 @@ let i18n = {
 		"TomorrowEra": "Tomorrow",
 		"FutureEra": "Future",
 		"ArcticFuture": "Arctic Future",
-		"Oceanic Future": "Oceanic Future",
+		"OceanicFuture": "Oceanic Future",
 		"VirtualFuture": "Virtual Future",
 		"SpaceAgeMars": "Space: Mars"
 	},

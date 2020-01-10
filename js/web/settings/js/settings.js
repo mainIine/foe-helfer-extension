@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       16.12.19, 21:41 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -105,6 +105,9 @@ let Settings = {
 				'title': i18n['Boxes']['Settings']['Title'],
 				'auto_close': true
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('settings');
 		}
 
 		Settings.BuildBody();
@@ -114,7 +117,6 @@ let Settings = {
 	/**
 	 * Box zusammen setzen
 	 *
-	 * @constructor
 	 */
 	BuildBody: ()=> {
 
@@ -185,7 +187,6 @@ let Settings = {
 	 * Beim Klick speichern
 	 *
 	 * @param el
-	 * @constructor
 	 */
 	StoreSettings: (el)=> {
 		let id = $(el).data('id'),
@@ -208,7 +209,6 @@ let Settings = {
 	 *
 	 * @param name
 	 * @returns {any}
-	 * @constructor
 	 */
 	GetSetting: (name)=> {
 		let s = localStorage.getItem(name);
@@ -225,7 +225,6 @@ let Settings = {
 	 * Versionsnummer ausgeben
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	VersionInfo: ()=> {
 		return '<div class="text-center" style="width:173px;"><strong>' + extVersion + '</strong></div>';
@@ -235,7 +234,6 @@ let Settings = {
 	/**
 	 * Funktion zum zurücksetzten aller Box-Koordiniaten
 	 *
-	 * @constructor
 	 */
 	ResetBoxCoords: ()=>{
 		$.each(localStorage, function(key, value){
@@ -256,7 +254,6 @@ let Settings = {
 	 * Sprachwechsler
 	 *
 	 * @returns {string}
-	 * @constructor
 	 */
 	LanguageDropdown: ()=>{
 		let dp = [];

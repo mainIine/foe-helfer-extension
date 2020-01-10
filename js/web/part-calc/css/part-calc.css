@@ -1,0 +1,240 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 part-calc.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              27.12.19, 12:45 Uhr
+ * zuletzt bearbeitet:       27.12.19, 12:45 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#OwnPartBox {
+	top: 100px;
+	right: 100px;
+	width: 440px;
+	font-size: 80%;
+}
+
+#OwnPartBox.closed .OwnPartBoxBackground {
+	display: none;
+}
+
+#OwnPartBox .OwnPartDrops {
+	display: flex;
+}
+
+#OwnPartBox .OwnPartDrops div:first-child {
+	min-width: 90px;
+	margin-right: 10px;
+}
+
+#OwnPartBox .OwnPartDrops .dropLGStepSelect {
+	min-width: 40px;
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper {
+	margin-left: auto;
+	position: relative;
+	top: -3px;
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper input {
+	max-width: 45px;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	text-align: right;
+	margin: 0;
+	font-size: 0.8rem;
+	height: 15px;
+}
+
+#OwnPartBox .OwnPartDrops div select {
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	max-width: 160px;
+}
+
+#OwnPartBoxBodyWrapper {
+	margin-top: 10px;
+}
+
+#OwnPartBox #OwnPartBoxBody {
+	position: relative;
+	margin-left: 0;
+}
+
+#OwnPartBox #OwnPartBoxBody .btn-set-arc {
+	margin-right: 5px;
+}
+
+
+#OwnPartBox #OwnPartBoxBody strong {
+	color: #ffb539;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.normal {
+	color: #F3D6A0;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.success {
+	color: #29b206;
+}
+
+#OwnPartBox #OwnPartBoxBody strong.info {
+	color: #2196f3;
+}
+
+#OwnPartBox #OwnPartTable .error {
+	color: #ec4d4d;
+}
+
+#OwnPartBox #OwnPartTable input {
+	line-height: 1.5;
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	width: 35px;
+	text-align: center;
+}
+
+#OwnPartBox #arc-percent {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	text-align: center;
+	width: 30px;
+	margin: 0 5px;
+}
+
+#OwnPartBox .black-bg {
+	position: absolute;
+	background-color: rgba(0,0,0, 0.65);
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.OwnPartBoxBackground {
+	position: absolute;
+	width: 210px;
+	top: 0;
+	left: -6px;
+}
+
+.OwnPartBoxBackground .divider {
+	display: block;
+	height: 0;
+	margin: 10px auto;
+	width: 80%;
+	border-top: 1px solid #7b5730;
+	border-bottom: 1px solid #9e774e;
+}
+
+.OwnPartBoxBackground .outerArrow:before {
+	content: "";
+	width: 36px;
+	height: 36px;
+	background-position: -197px -36px;
+	transform: rotate(-90deg);
+	position: absolute;
+	top: -13px;
+	left: -33px;
+	z-index: -1;
+}
+
+.OwnPartBoxBackground .outerArrow span.arrow {
+	width: 24px;
+	height: 24px;
+	background-position: -169px -59px;
+	position: absolute;
+	top: -6px;
+	left: -27px;
+}
+
+.OwnPartBoxBackground .outerArrow span.arrow:hover {
+	background-position: -169px -83px;
+}
+
+.show .OwnPartBoxBackground .outerArrow span.arrow {
+	background-position: -145px -35px;
+}
+
+.show .OwnPartBoxBackground .outerArrow span.arrow:hover {
+	background-position: -145px -59px;
+}
+
+
+.OwnPartBoxBackground .OwnPartBoxBackgroundBody {
+	width: 252px;
+	height: 0;
+	position: absolute;
+	overflow: hidden;
+	overflow-y: auto;
+	top: 0;
+	left: 34px;
+	padding: 0 15px;
+	border-width: 0 10px 10px 10px;
+	border-image-width: 0 28px 28px;
+	opacity: 0;
+}
+
+.OwnPartBoxBackgroundBody > div > span:not(.btn-default) {
+	display: inline-block;
+	width: 70px;
+}
+
+.OwnPartBoxBackground .btn-outer {
+	margin-bottom: 6px;
+}
+
+.OwnPartBoxBackground input[type=text],
+.OwnPartBoxBackground select {
+	background-color: #F9EBC6;
+	color: #93795D;
+	background-clip: padding-box;
+	border: 1px solid #4C2F1E;
+	font-size: 0.8rem;
+	height: 18px;
+	width: 164px;
+	margin-bottom: 10px;
+	padding: 2px 5px;
+}
+
+.OwnPartBoxBackground select {
+	height: 22px;
+	width: 176px;
+}
+
+.OwnPartBoxBackground .checkboxes {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.OwnPartBoxBackground label.form-check-label {
+	padding: 1px;
+	line-height: 1.4rem;
+	margin-bottom: 5px;
+	background-color: rgba(255,255,255, 0.07);
+	width: 75px;
+	vertical-align: middle;
+	transition: background-color 0.3s linear;
+}
+
+
+.OwnPartBoxBackground label.form-check-label:hover {
+	background-color: rgba(255,255,255, 0.1);
+}

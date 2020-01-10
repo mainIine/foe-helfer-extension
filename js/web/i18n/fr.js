@@ -27,7 +27,11 @@ let i18n = {
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
             "OwnPartRemaining": "Remaining",
-            "Done": "Fini",
+			"Done": "Fini",
+			"BPs": "Plan", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
+			"Ext": "Ext", //Todo: Translate
+			"Arc": "Arche", //Todo: Translate
 			"Order": "Séquence",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
@@ -53,7 +57,8 @@ let i18n = {
 			"FP": "PF",
 			"Save": "Sauver",
 			"Commitment": "PFs posés",
-            "Profit": "Profit",
+			"Profit": "Profit",
+			"LevelWarning": "ATTENTION: nivelez le bâtiment légendaire!", //Todo: Translate
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
@@ -70,6 +75,7 @@ let i18n = {
 			"Level": "Niveau",
 			"PayedTotal": "Payé / Total",
 			"Rate": "Cours",
+			"Profit": "Profit",
 			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer"
 		},
 
@@ -127,7 +133,8 @@ let i18n = {
             "Resource": "Ressources", //Todo: Translate
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
-            "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+			"NoTechs": "You have reached the end of this era", //Todo: Translate
             "Eras": {
                 1: "Âge de Pierre",
                 2: "Âge du Bronze",
@@ -215,6 +222,13 @@ let i18n = {
 			"NotFilled": "non rempli",
 			"Bind": "Liè",
 			"Unbind": "Non liè"
+		},
+		
+		"CityMap": {
+			"Title": "Submit data", //Todo: Translate
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
 		}
 	},
 
@@ -344,10 +358,11 @@ let i18n = {
 			"Title" : "Changer de langue",
 			"Desc" : "Quelle langue, au lieu de la langue reconnue, devrait être utilisée?",
 			"Dropdown": {
-				"de" : "Allemand",
-				"en" : "Anglaise",
-				"fr" : "Français",
-				"es" : "Espagnol"
+				"de": "Deutsch",
+				"en": "English",
+				"fr": "Français",
+				"es": "Español",
+				"ru": "Русский"
 			}
 		}
 	},

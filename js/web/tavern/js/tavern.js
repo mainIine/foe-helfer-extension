@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:40 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -18,8 +18,7 @@
  *
  * @type {
  * 		{
- * 		TavernBoost: Tavern.TavernBoost,
- * 		CheckTavernBoost: Tavern.CheckTavernBoost,
+ * 		SetExpireTime: Tavern.SetExpireTime,
  * 		BuildBox: Tavern.BuildBox,
  * 		BoosterCountDown: Tavern.BoosterCountDown
  * 		}
@@ -28,66 +27,19 @@
 
 let Tavern = {
 
-	gl: null,
+	ExpireTime: undefined,
+
 
 	/**
-	 * Enthält die setInterval-ID
-	 */
-	cID: null,
-
-	/**
-	 * Liest einen Tavernenboost aus und stellt ihn dar
+	 * Aktualisiert die ExpireTime und zeigt den Badge an falls aktiviert
 	 *
 	 * @param d
-	 * @constructor
 	 */
-	TavernBoost: (d)=>{
-
-		// extra_negotiation_turn => Extra Zug
-
-		if(d['type'] !== 'extra_negotiation_turn'){
-			return ;
-		}
-
-		localStorage.setItem('TavernBoostType', d['type']);
-		localStorage.setItem('TavernBoostExpire', d['expireTime']);
-
+	SetExpireTime: (ExpireTime)=>{
+		Tavern.ExpireTime = ExpireTime;
+		
 		if (Settings.GetSetting('ShowTavernBadge')) {
 			Tavern.BuildBox();
-
-			setTimeout(() => {
-				Tavern.BoosterCountDown(moment.unix(d['expireTime']));
-			}, 200);
-		}
-	},
-
-
-	/**
-	 * Checkt ob bereits ein Booster läuft
-	 *
-	 * @constructor
-	 */
-	CheckTavernBoost: ()=> {
-		let e = localStorage.getItem('TavernBoostExpire');
-
-		if(e !== null){
-			Tavern.cID = setInterval(Tavern.InjectBadge, 10)
-		}
-	},
-
-
-	/**
-	 * Rotierende Funktion bis "moment-JS" komplett geladen ist
-	 *
-	 * @constructor
-	 */
-	InjectBadge: ()=> {
-		if(typeof moment !== "undefined"){
-
-			Tavern.BuildBox();
-			Tavern.BoosterCountDown( moment.unix(localStorage.getItem('TavernBoostExpire')) );
-
-			clearInterval(Tavern.cID);
 		}
 	},
 
@@ -95,11 +47,14 @@ let Tavern = {
 	/**
 	 * Setzt das Overlay-Badge zusammen
 	 *
-	 * @constructor
 	 */
 	BuildBox: ()=> {
 
 		if( $('#tavern-boost').length === 0 ){
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('tavern');
+
 			let tb = $('<div />').attr('id', 'tavern-boost').addClass('cursor-default'),
 				cords = localStorage.getItem( 'tavern-boostCords');
 
@@ -114,7 +69,9 @@ let Tavern = {
 				'<span id="Booster-Timer-secs">00s</span>' +
 				'</span>';
 
-			$('body').append(tb.append(sp));
+			$('body').append(tb.append(sp)).promise().done(function(){
+				Tavern.BoosterCountDown(moment.unix(Tavern.ExpireTime));
+			});
 		}
 	},
 
@@ -123,13 +80,10 @@ let Tavern = {
 	 * Zählt die verbleibende Zeit runter
 	 *
 	 * @param endDate
-	 * @constructor
 	 */
 	BoosterCountDown: (endDate)=> {
 
-		setTimeout(()=>{
-			HTML.DragBox(document.getElementById('tavern-boost'));
-		}, 200);
+		HTML.DragBox(document.getElementById('tavern-boost'));
 
 		let Timer = setInterval(function(){
 
@@ -155,12 +109,8 @@ let Tavern = {
 				$('#tavern-boost').fadeToggle(function(){
 					$(this).remove();
 				});
-
-				localStorage.removeItem('TavernBoostExpire');
 			}
 
 		}, 1000);
 	},
 };
-
-Tavern.CheckTavernBoost();

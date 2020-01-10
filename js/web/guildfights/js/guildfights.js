@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 13:34 Uhr
- * zuletzt bearbeitet:       22.12.19, 12:48 Uhr
+ * erstellt am:	              22.12.19, 14:31 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -73,28 +73,15 @@ let GildFights = {
 	init: ()=> {
 
 		if(GildFights.InjectionLoaded === false){
-			WebSocket.prototype._send = WebSocket.prototype.send;
+			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
+				if ($('#LiveGildFighting').length > 0) {
 
-			WebSocket.prototype.send = function (data) {
-
-				this._send(data);
-
-				this.addEventListener('message', function(msg) {
-					if(msg.data !== 'PONG' && $('#LiveGildFighting').length > 0){
-						let d = JSON.parse(msg.data)[0];
-
-						if(d['requestClass'] === 'GuildBattlegroundService' && d['responseData'][0] !== undefined){
-							// console.log('msg', d['responseData'][0]);
-							GildFights.RefreshTable(d['responseData'][0]);
-						}
+					if(data.responseData[0] !== undefined){
+						// console.log('msg', data.responseData[0]);
+						GildFights.RefreshTable(data.responseData[0]);
 					}
-
-				}, false);
-
-				this.send = function (data) {
-					this._send(data);
-				};
-			};
+				}
+			});
 
 			GildFights.InjectionLoaded = true;
 		}
@@ -113,6 +100,9 @@ let GildFights = {
 				resize: true,
 				minimize: true
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('guildfights');
 		}
 
 		GildFights.BuildFightContent();
@@ -130,10 +120,12 @@ let GildFights = {
 				title: 'Spieler Übersicht',
 				auto_close: true,
 				dragdrop: true,
-				resize: true,
 				minimize: true,
 				saveCords: false
 			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('guildfights');
 		}
 
 		GildFights.BuildPlayerContent();
@@ -186,7 +178,7 @@ let GildFights = {
 			t.push('<tr' + (change === true ? ' class="bg-green"' : '') + '>');
 			// ToDo: bg-green anlegen (leicht transparenter Hintergrund)
 			t.push('<td>');
-			t.push('<img src="https://foede.innogamescdn.com/assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
+			t.push('<img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
 			// t.push(p['player']['avatar']);
 			t.push('</td>');
 

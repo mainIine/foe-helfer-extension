@@ -13,6 +13,20 @@
  * **************************************************************************************
  */
 
+
+{
+	// jQuery detection
+	let intval = -1;
+	function checkForJQuery() {
+		if (typeof jQuery !== 'undefined') {
+			console.log('found jquery')
+			clearInterval(intval);
+			window.dispatchEvent(new CustomEvent('foe-helper#jQuery-loaded'));
+		}
+	}
+	intval = setInterval(checkForJQuery, 1);
+}
+
 let ApiURL = 'https://api.foe-rechner.de/',
     ActiveMap = 'main',
     ExtPlayerID = 0,
@@ -20,15 +34,15 @@ let ApiURL = 'https://api.foe-rechner.de/',
     ExtWorld = '',
     CurrentEraID = null,
     BuildingNamesi18n = false,
-	CityMapData = null,
-    Conversations = [],
     GoodsData = [],
-    GoodsList = [],
+	GoodsList = [],
+	PlayerDict = {},
     ResourceStock = [],
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = false;
+	UsePartCalcOnAllLGs = false,
+	CurrentTime = 0;
 
 document.addEventListener("DOMContentLoaded", function(){
 
@@ -39,22 +53,64 @@ document.addEventListener("DOMContentLoaded", function(){
 	// Local-Storage leeren
 	localStorage.removeItem('OwnCurrentBuildingCity');
     localStorage.removeItem('OwnCurrentBuildingGreat');
+
+    // Fullscreen erkennen und verarbeiten
+	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
+		if (!window.screenTop && !window.screenY) {
+			HTML.LeaveFullscreen();
+		} else {
+			HTML.EnterFullscreen();
+		}
+	});
 });
 
 const FoEproxy = (function () {
+	const requestInfoHolder = new WeakMap();
+	function getRequestData(xhr) {
+		let data = requestInfoHolder.get(xhr);
+		if (data != null) return data;
 
+		data = {url: null, method: null, postData: null};
+		requestInfoHolder.set(xhr, data);
+		return data;
+	}
+
+	let proxyEnabled = true;
+
+	// XHR-handler
+	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
+
+	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
+
+	/** @type {((data: any, requestData: any) => void)[]} */
 	let proxyRaw = [];
-	
+
+	// Websocket-Handler
+	const wsHandlerMap = {};
+	let wsRawHandler = [];
+
+	// startup Queues
+	let xhrQueue = [];
+	let wsQueue = [];
+
 	const proxy = {
-		// for requests game/json?...
+		/**
+		 * Fügt einen datenhandler für Antworten von game/json hinzu.
+		 * @param {string} service Der Servicewert, der in der Antwort gesetzt sein soll oder 'all'
+		 * @param {string} method Der Methodenwert, der in der Antwort gesetzt sein soll oder 'all'
+		 * TODO: Genaueren Typ für den Callback definieren
+		 * @param {(data: FoE_NETWORK_TYPE, postData: any) => void} callback Der Handler, welcher mit der Antwort aufgerufen werden soll.
+		 */
 		addHandler: function(service, method, callback) {
 			// default service and method to 'all'
 			if (method === undefined) {
+				// @ts-ignore
 				callback = service;
 				service = method = 'all';
 			} else if (callback === undefined) {
+				// @ts-ignore
 				callback = method;
 				method = 'all';
 			}
@@ -129,8 +185,184 @@ const FoEproxy = (function () {
 
 		removeRawHandler: function(callback) {
 			proxyRaw = proxyRaw.filter(c => c !== callback);
+		},
+
+		/**
+		 * Fügt einen datenhandler für Nachrichtedn des WebSockets hinzu.
+		 * @param {string} service Der Servicewert, der in der Nachricht gesetzt sein soll oder 'all'
+		 * @param {string} method Der Methodenwert, der in der Nachricht gesetzt sein soll oder 'all'
+		 * TODO: Genaueren Typ für den Callback definieren
+		 * @param {(data: FoE_NETWORK_TYPE) => void} callback Der Handler, welcher mit der Nachricht aufgerufen werden soll.
+		 */
+		addWsHandler: function(service, method, callback) {
+			// default service and method to 'all'
+			if (method === undefined) {
+				// @ts-ignore
+				callback = service;
+				service = method = 'all';
+			} else if (callback === undefined) {
+				// @ts-ignore
+				callback = method;
+				method = 'all';
+			}
+
+			let map = wsHandlerMap[service];
+			if (!map) {
+				wsHandlerMap[service] = map = {};
+			}
+			let list = map[method];
+			if (!list) {
+				map[method] = list = [];
+			}
+			if (list.indexOf(callback) !== -1) {
+				// already registered
+				return;
+			}
+			list.push(callback);
+		},
+
+		removeWsHandler: function(service, method, callback) {
+			// default service and method to 'all'
+			if (method === undefined) {
+				callback = service;
+				service = method = 'all';
+			} else if (callback === undefined) {
+				callback = method;
+				method = 'all';
+			}
+
+			let map = wsHandlerMap[service];
+			if (!map) {
+				return;
+			}
+			let list = map[method];
+			if (!list) {
+				return;
+			}
+			map[method] = list.filter(c => c !== callback);
+		},
+
+		// for raw requests access
+		addRawWsHandler: function(callback) {
+			if (wsRawHandler.indexOf(callback) !== -1) {
+				// already registered
+				return;
+			}
+
+			wsRawHandler.push(callback);
+		},
+
+		removeRawWsHandler: function(callback) {
+			wsRawHandler = wsRawHandler.filter(c => c !== callback);
 		}
 	};
+
+	window.addEventListener('foe-helper#loaded', () => {
+		const xhrQ = xhrQueue;
+		xhrQueue = null;
+		const wsQ = wsQueue;
+		wsQueue = null;
+
+		xhrQ.forEach(xhrRequest => xhrOnLoadHandler.call(xhrRequest));
+		wsQ.forEach(wsMessage => wsMessageHandler(wsMessage));
+	}, {capture:false, once: true, passive: true});
+
+	window.addEventListener('foe-helper#error-loading', () => {
+		xhrQueue = null;
+		wsQueue = null;
+		proxyEnabled = false;
+	}, {capture:false, once: true, passive: true});
+
+	// ###########################################
+	// ############## Websocket-Proxy ############
+	// ###########################################
+	/**
+	 * This function gets the callbacks from wsHandlerMap[service][method] and executes them.
+	 * @param {string} service
+	 * @param {string} method
+	 * @param {FoE_NETWORK_TYPE} data
+	 */
+	function _proxyWsAction(service, method, data) {
+		const map = wsHandlerMap[service];
+		if (!map) {
+			return;
+		}
+		const list = map[method];
+		if (!list) {
+			return;
+		}
+		for (let callback of list) {
+			try {
+				callback(data);
+			} catch (e) {
+				console.error(e);
+			}
+		}
+	}
+
+	/**
+	 * This function gets the callbacks from wsHandlerMap[service][method],wsHandlerMap[service]['all'],wsHandlerMap['all'][method] and wsHandlerMap['all']['all'] and executes them.
+	 * @param {string} service
+	 * @param {string} method
+	 * @param {FoE_NETWORK_TYPE} data
+	 */
+	function proxyWsAction(service, method, data) {
+		_proxyWsAction(service, method, data);
+		_proxyWsAction('all', method, data);
+		_proxyWsAction(service, 'all', data);
+		_proxyWsAction('all', 'all', data);
+	}
+
+	/**
+	 * @this {WebSocket}
+	 * @param {MessageEvent} evt
+	 */
+	function wsMessageHandler(evt) {
+		if (wsQueue) {
+			wsQueue.push(evt);
+			return;
+		}
+		try {
+			if (evt.data === 'PONG') return;
+			/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
+			const data  = JSON.parse(evt.data);
+
+			// do raw-ws-handlers
+			for (let callback of wsRawHandler) {
+				try {
+					callback(data);
+				} catch (e) {
+					console.error(e);
+				}
+			}
+
+			// do ws-handlers
+			if (data instanceof Array) {
+				for (let entry of data) {
+					proxyWsAction(entry.requestClass, entry.requestMethod, entry);
+				}
+			} else if (data.__class__ === "ServerResponse") {
+				proxyWsAction(data.requestClass, data.requestMethod, data);
+			}
+		} catch (e) {
+			console.error(e);
+		}
+	}
+
+	// Achtung! Die WebSocket.prototype.send funktion wird nicht zurück ersetzt, falls anderer code den prototypen auch austauscht.
+	const observedWebsockets = new WeakSet();
+	const oldWSSend = WebSocket.prototype.send;
+	WebSocket.prototype.send = function (data) {
+		oldWSSend.call(this, data);
+		if (proxyEnabled && !observedWebsockets.has(this)) {
+			observedWebsockets.add(this);
+			this.addEventListener('message', wsMessageHandler, {capture: false, passive: true});
+		}
+	};
+	
+	// ###########################################
+	// ################# XHR-Proxy ###############
+	// ###########################################
 	
 	/**
 	 * This function gets the callbacks from proxyMap[service][method] and executes them.
@@ -163,24 +395,43 @@ const FoEproxy = (function () {
 		_proxyAction('all', 'all', data, postData);
 	}
 
+	// Achtung! Die XMLHttpRequest.prototype.open und XMLHttpRequest.prototype.send funktionen werden nicht zurück ersetzt,
+	//          falls anderer code den prototypen auch austauscht.
 	const XHR = XMLHttpRequest.prototype,
 		open = XHR.open,
 		send = XHR.send;
 
+	/**
+	 * @param {string} method
+	 * @param {string} url
+	 */
 	XHR.open = function(method, url){
-		this._method = method;
-		this._url = url;
+		if (proxyEnabled) {
+			const data = getRequestData(this);
+			data.method = method;
+			data.url = url;
+		}
+		// @ts-ignore
 		return open.apply(this, arguments);
 	};
 	
-	function onLoadHandler() {
-		const url = this._url;
-		const postData = this._postData;
+	/**
+	 * @this {XHR}
+	 */
+	function xhrOnLoadHandler() {
+		if (!proxyEnabled) return;
+		if (xhrQueue) {
+			xhrQueue.push(this);
+			return;
+		}
+		const requestData = getRequestData(this);
+		const url = requestData.url;
+		const postData = requestData.postData;
 		
 		// handle raw request handlers
 		for (let callback of proxyRaw) {
 			try {
-				callback(this, postData);
+				callback(this, requestData);
 			} catch (e) {
 				console.error(e);
 			}
@@ -207,20 +458,32 @@ const FoEproxy = (function () {
 		// nur die jSON mit den Daten abfangen
 		if (url.indexOf("game/json?h=") > -1) {
 
-			let d = JSON.parse(this.responseText);
+			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
+			
+			let requestData = postData;
+			try {
+				requestData = JSON.parse(new TextDecoder().decode(postData));
+			} catch (e) {
+				console.log('Can\'t parse postData: ', postData);
+			}
+
 			for (let entry of d) {
-				proxyAction(entry.requestClass, entry.requestMethod, entry, postData);
+				proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 			}
 		}
 	}
 
-	XHR.send = function(postData){
-		this._postData = postData;
-		
-		this.addEventListener('load', onLoadHandler);
+	XHR.send = function(postData) {
+		if (proxyEnabled) {
+			const data = getRequestData(this);
+			data.postData = postData;
+			this.addEventListener('load', xhrOnLoadHandler, {capture: false, passive: true});
+		}
 
+		// @ts-ignore
 		return send.apply(this, arguments);
 	};
+
 	return proxy;
 })();
 
@@ -228,25 +491,25 @@ const FoEproxy = (function () {
 	
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		BuildingNamesi18n = [];
+		BuildingNamesi18n = {};
 
-		let j = JSON.parse(xhr.responseText);
+		const j = JSON.parse(xhr.responseText);
 
 		sessionStorage.setItem('BuildingsData', JSON.stringify(j));
 
-				for (let i in j)
-				{
-					if (j.hasOwnProperty(i))
-					{
-						BuildingNamesi18n[j[i]['asset_id']] = {
-							name: j[i]['name'],
-							width: j[i]['width'],
-							height: j[i]['length'],
-							type: j[i]['type'],
-							provided_happiness: j[i]['provided_happiness'],
-							population: undefined,
-							entity_levels : j[i]['entity_levels'],
-						};
+		for (let i in j)
+		{
+			if (j.hasOwnProperty(i))
+			{
+				BuildingNamesi18n[j[i]['asset_id']] = {
+					name: j[i]['name'],
+					width: j[i]['width'],
+					height: j[i]['length'],
+					type: j[i]['type'],
+					provided_happiness: j[i]['provided_happiness'],
+					population: undefined,
+					entity_levels : j[i]['entity_levels'],
+				};
 
 				if(j[i]['abilities'] !== undefined)
 				{
@@ -285,9 +548,11 @@ const FoEproxy = (function () {
 		Unit.Types = JSON.parse(xhr.responseText);
 	});
 
-	// Portrait-Mapping für Spiler Avatare
-	FoEproxy.addRawHandler((xhr, postData) => {
-		if(xhr._url.startsWith("https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml")) {
+	// Portrait-Mapping für Spieler Avatare
+	FoEproxy.addRawHandler((xhr, requestData) => {
+		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml")
+		if(idx !== -1) {
+			MainParser.InnoCDN = requestData.url.substring(0, idx+1);
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function(){
@@ -315,6 +580,12 @@ const FoEproxy = (function () {
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
+
+		// PlayerDict
+		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
+
+		// freigeschaltete Erweiterungen sichern
+		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
 	
 	// --------------------------------------------------------------------------------------------------
@@ -333,6 +604,13 @@ const FoEproxy = (function () {
 	// Boosts zusammen tragen
 	FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
 		MainParser.CollectBoosts(data.responseData);
+	});
+
+	// --------------------------------------------------------------------------------------------------
+	// Quests
+	FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
+		MainParser.Quests = data.responseData;
+		Calculator.RefreshCalculator();
 	});
 
 
@@ -359,8 +637,18 @@ const FoEproxy = (function () {
 		});
 	});
 
+	// Nachricht geöffnet
+	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
+	});
 
-
+	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
+	FoEproxy.addHandler('OtherPlayerService', 'all', (data, postData) => {
+		if (data.requestMethod === 'getNeighborList' || data.requestMethod === 'getFriendsList' || data.requestMethod === 'getClanMemberList') {
+			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList');
+		}
+	});
+	   
 	// --------------------------------------------------------------------------------------------------
 	// Übersetzungen der Güter
 	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
@@ -421,11 +709,13 @@ const FoEproxy = (function () {
 	// Übersicht der LGs eines Nachbarn
 	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
+
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
 		sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(data.responseData));
-		sessionStorage.setItem('DetailViewIsNewer', false);
+		Calculator.DetailViewIsNewer = false;
 
 		$('#calcFPs').removeClass('hud-btn-red');
 		$('#calcFPs-closed').remove();
@@ -445,11 +735,11 @@ const FoEproxy = (function () {
 	// lgUpdateData sammelt die informationen aus mehreren Handlern
 	let lgUpdateData = null;
 	
-	FoEproxy.addHandler('GreatBuildingsService', (data, postData) => {
+	FoEproxy.addHandler('GreatBuildingsService', 'all', (data, postData) => {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
-
+		
 		let Rankings;
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
@@ -474,6 +764,10 @@ const FoEproxy = (function () {
 				lgUpdate();
 			}
 		}
+	});
+
+	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
+		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
@@ -522,7 +816,7 @@ const FoEproxy = (function () {
 
 			localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(UpdateEntity.responseData[0]));
 			localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(Rankings));
-			localStorage.setItem('OwnCurrentBuildingPreviousLevel', IsPreviousLevel);
+			localStorage.setItem('OwnCurrentBuildingPreviousLevel', ''+IsPreviousLevel);
 
 			// das erste LG wurde geladen
 			$('#ownFPs').removeClass('hud-btn-red');
@@ -538,7 +832,7 @@ const FoEproxy = (function () {
 		}
 
 		//Fremdes LG
-		if (UpdateEntity.responseData[0].player_id !== ExtPlayerID && !IsPreviousLevel) {
+		if (UpdateEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
 			LastKostenrechnerOpenTime = new Date().getTime()
 
 			$('#calcFPs').removeClass('hud-btn-red');
@@ -546,7 +840,7 @@ const FoEproxy = (function () {
 
 			sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
 			sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
-			sessionStorage.setItem('DetailViewIsNewer', true);
+			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
 			if ($('#costCalculator').is(':visible')) {
@@ -559,7 +853,9 @@ const FoEproxy = (function () {
 	// --------------------------------------------------------------------------------------------------
 	// Tavernenboost wurde gekauft
 	FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
-		Tavern.TavernBoost(data.responseData);
+		if (data.responseData['type'] === 'extra_negotiation_turn') {
+			Tavern.SetExpireTime(data.responseData['expireTime']);
+		}
 	});
 
 
@@ -575,26 +871,6 @@ const FoEproxy = (function () {
 		if (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member) {
 			Reader.OtherPlayersBuildings(data.responseData);
 		}
-	});
-	
-	
-	// --------------------------------------------------------------------------------------------------
-	// Verarbeiter für Außenposten daten:
-	
-	// Alle Typen der Außenposten "notieren"
-	FoEproxy.addHandler('OutpostService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.GetAll(data.responseData);
-	});
-
-	// Gebäude des Außenpostens sichern
-	FoEproxy.addHandler('AdvancementService', 'getAll', (data, postData) => {
-		if (!Settings.GetSetting('ShowOutpost')) {
-			return;
-		}
-		Outposts.SaveBuildings(data.responseData);
 	});
 
 	// Güter des Spielers ermitteln
@@ -655,7 +931,7 @@ const FoEproxy = (function () {
 		if (MainParser.checkNextUpdate('GuildExpedition') !== true) {
 			return;
 		}
-		MainParser.GuildExpedition(GEXList['responseData']);
+		MainParser.GuildExpedition(data.responseData);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -730,6 +1006,7 @@ const FoEproxy = (function () {
 
 			MainParser.setLanguage();
 		}
+		CurrentTime = data.responseData.time;
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -772,12 +1049,38 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 		Negotiation.ExitNegotiation(data.responseData);
 	});
+
+	// --------------------------------------------------------------------------------------------------
+	// GüterUpdate nach angenommenen Handel
+	FoEproxy.addRawWsHandler((data) => {
+		let Msg = data[0];
+		if(Msg === undefined || Msg['requestClass'] === undefined){
+			return ;
+		}
+		if(Msg['requestMethod'] === "newEvent" && Msg['responseData']['type'] === "trade_accepted"){
+			let d = Msg['responseData'];
+			ResourceStock[d['need']['good_id']] += d['need']['value'];
+		}
+	});
+
+	// --------------------------------------------------------------------------------------------------
+	// HiddenReward
+
+	FoEproxy.addHandler('HiddenRewardService','getOverview', (data, postData) => {
+		// console.log("AKTUELLE ZEIT: "+ CurrentTime)
+		// data.responseData.hiddenRewards.forEach(rewards => {
+		// 	if(rewards.startTime < CurrentTime < rewards.expireTime){
+		// 		console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
+		// 	}
+		// });
+	});
+
 })();
 
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: *, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: *, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -785,12 +1088,18 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr','es'
+		'de', 'en', 'fr','es','ru'
 	],
 	BonusService: null,
 	EmissaryService: null,
 	PlayerPortraits: null,
+	Conversations: [],
+	CityMapData: null,
+	UnlockedAreas: null,
+	Quests: null,
+	InnoCDN: 'https://foede.innogamescdn.com/',
 
+	/** @type {Record<string,string>} */
 	BoostMapper: {
 		'supplies_boost': 'supply_production',
 		'happiness' : 'happiness_amount',
@@ -808,6 +1117,14 @@ let MainParser = {
 		'att_boost_attacker': 0,
 		'coin_production': 0,
 		'supply_production': 0
+	},
+
+	sendExtMessage: (data) => {
+		// @ts-ignore
+		if (typeof chrome !== 'undefined') { chrome.runtime.sendMessage(extID, data);
+		} else {
+			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
+		}
 	},
 
 
@@ -976,8 +1293,7 @@ let MainParser = {
 	 */
 	showInfo: (title, msg, time)=> {
 		let t = time === undefined ? 4000 : time;
-
-		chrome.runtime.sendMessage(extID, {type: 'message', title: title, msg: msg, time: t});
+		MainParser.sendExtMessage({type: 'message', title: title, msg: msg, time: t});
 	},
 
 
@@ -985,7 +1301,6 @@ let MainParser = {
 	 * Gildenmitglieder durchsteppen
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SocialbarList: (d)=> {
 
@@ -1025,7 +1340,7 @@ let MainParser = {
 
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
-				chrome.runtime.sendMessage(extID, {
+				MainParser.sendExtMessage({
 					type: 'send2Api',
 					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 					data: JSON.stringify(player)
@@ -1042,7 +1357,6 @@ let MainParser = {
 	 * @param d
 	 * @param e
 	 * @returns {boolean}
-	 * @constructor
 	 */
 	OwnLG: (d, e)=> {
         // ist es schon wieder so weit?
@@ -1069,7 +1383,6 @@ let MainParser = {
 	 *
 	 * @param d
 	 * @returns {boolean}
-	 * @constructor
 	 */
 	OtherPlayersLGs: (d)=> {
 
@@ -1118,7 +1431,7 @@ let MainParser = {
 			data.push({lgs: lgs});
 
 			// ab zum Server
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'OtherPlayersLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(data)
@@ -1140,7 +1453,6 @@ let MainParser = {
 	/**
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	GuildExpedition: (d)=> {
 
@@ -1151,7 +1463,7 @@ let MainParser = {
 			return;
 		}
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'GEXPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1165,7 +1477,6 @@ let MainParser = {
 
 	/**
 	 * @param d
-	 * @constructor
 	 */
 	Championship: (d)=> {
 
@@ -1174,7 +1485,7 @@ let MainParser = {
 				ranking: d['ranking'],
 			};
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'GEXChampionship/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(data)
@@ -1188,14 +1499,13 @@ let MainParser = {
 	 * Spieler Daten sichern
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	StartUp: (d)=> {
 		ExtGuildID = d['clan_id'];
         ExtWorld = window.location.hostname.split('.')[0];
         CurrentEraID = Technologies.Eras[d['era']['era']];
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_guild_id',
 			data: ExtGuildID
@@ -1203,42 +1513,26 @@ let MainParser = {
 		localStorage.setItem('current_guild_id', ExtGuildID);
 
 		ExtPlayerID = d['player_id'];
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_id',
 			data: ExtPlayerID
 		});
 		localStorage.setItem('current_player_id', ExtPlayerID);
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_world',
 			data: ExtWorld
 		});
 		localStorage.setItem('current_world', ExtWorld);
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_name',
 			data: d['user_name']
 		});
-		localStorage.setItem('current_player_name', d['user_name']);
-
-		if(devMode)
-		{
-			HTML.Box({
-				'id': 'DevNode',
-				'title': 'Hinweis!',
-				'auto_close': true
-			});
-
-			setTimeout(()=>{
-				let desc = 'Hey BETA-Tester!<br>Bitte immer den Cache zwischendurch leeren!<br><br>- F12 > Konsole auf<br>- Reiter "Network" > Haken bei "Disable cache"<br>- mit geöffneter Konsole neu laden';
-
-				$('#DevNodeBody').html(desc);
-
-			}, 200);
-		}
+		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
 	},
 
 
@@ -1246,7 +1540,6 @@ let MainParser = {
 	 * Eigene Daten updaten (Gildenwechsel etc)
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SelfPlayer: (d)=>{
 
@@ -1263,7 +1556,7 @@ let MainParser = {
 		};
 
 		// ab zum Server
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'SelfPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(data)
@@ -1275,11 +1568,10 @@ let MainParser = {
 	 * LG Investitionen
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	GreatBuildings: (d)=>{
 
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'LGInvest/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1294,10 +1586,9 @@ let MainParser = {
 	 * Eigene LGs updaten
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SaveBuildings: (d)=>{
-		CityMapData = d;
+		MainParser.CityMapData = d;
 
 		if(Settings.GetSetting('GlobalSend') === false)
 		{
@@ -1334,7 +1625,7 @@ let MainParser = {
 		if(lgs.length > 0)
 		{
 			// ab zum Server
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(lgs)
@@ -1347,7 +1638,6 @@ let MainParser = {
 	 * Sammelt aktive Boosts der Stadt
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	CollectBoosts: (d)=>{
 		for(let i in d)
@@ -1358,6 +1648,10 @@ let MainParser = {
 				{
 					MainParser.AllBoosts[d[i]['type']] += d[i]['value']
 				}
+
+				if (d[i]['type'] === 'extra_negotiation_turn') {
+					Tavern.SetExpireTime(d[i]['expireTime']);
+				}
 			}
 		}
 	},
@@ -1367,10 +1661,9 @@ let MainParser = {
 	 * LGs des Spielers speichern
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	SaveLGInventory: (d)=>{
-		chrome.runtime.sendMessage(extID, {
+		MainParser.sendExtMessage({
 			type: 'send2Api',
 			url: ApiURL + 'LGInventory/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
@@ -1453,7 +1746,6 @@ let MainParser = {
 	 * oder wenn nicht aktivert wenn der Tab ausgewählt wurde
 	 *
 	 * @param d
-	 * @constructor
 	 */
 	FriendsList: (d)=>{
 		let data = [];
@@ -1480,11 +1772,67 @@ let MainParser = {
 		}
 
 		if(data.length > 0){
-			chrome.runtime.sendMessage(extID, {
+			MainParser.sendExtMessage({
 				type: 'send2Api',
 				url: ApiURL + 'FriendsList/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 				data: JSON.stringify(d)
 			});
+		}
+	},
+
+		
+	/**
+	 * Spielerinfos Updaten von Nachrichtenliste
+	 *
+	 * @param d
+	 * @param Source
+	 */
+	UpdatePlayerDict: (d, Source) => {
+		if (Source === 'Conversation') {
+			for (let i in d['messages']) {
+				let Message = d['messages'][i];
+				if (Message.sender !== undefined) {
+					MainParser.UpdatePlayerDictCore(Message.sender);
+				}
+			}
+		}
+		else if (Source === 'LGOverview') {
+			MainParser.UpdatePlayerDictCore(d[0].player);
+		}
+		else if (Source === 'LGContributions') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i].player);
+			}
+		}
+		else if (Source === 'StartUpService') {
+			for (let i in d.socialbar_list) {
+				MainParser.UpdatePlayerDictCore(d.socialbar_list[i]);
+			}
+		}
+		else if (Source === 'PlayerList') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i]);
+			}
+		}
+	},
+
+
+	/**
+	* Spielerinfos Updaten
+	*
+	* @param d
+	*/
+	UpdatePlayerDictCore: (Player) => {
+		let PlayerID = Player['player_id'];
+
+		if (PlayerID !== undefined) {
+			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
+			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
+			if (Player['clan'] !== undefined) PlayerDict[PlayerID]['ClanName'] = Player['clan']['name'];
+			if (Player['is_neighbor'] !== undefined) PlayerDict[PlayerID]['IsNeighbor'] = Player['is_neighbor'];
+			if (Player['is_guild_member'] !== undefined) PlayerDict[PlayerID]['IsGuildMember'] = Player['is_guild_member'];
+			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
 		}
 	},
 
@@ -1513,30 +1861,40 @@ let MainParser = {
 		let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
 		// wenn noch nichts drin , aber im LocalStorage vorhanden, laden
-		if(Conversations.length === 0 && StorageHeader !== null){
-			Conversations = JSON.parse(StorageHeader);
+		if(MainParser.Conversations.length === 0 && StorageHeader !== null){
+			MainParser.Conversations = JSON.parse(StorageHeader);
 		}
 
 		// GildenChat
-		if(d['clanTeaser'] !== undefined && Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
-			Conversations.push({
+		if(d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
+			MainParser.Conversations.push({
 				id: d['clanTeaser']['id'],
 				title: d['clanTeaser']['title']
 			});
 		}
 
+		//
 		if(d['teasers'] !== undefined){
 			// die anderen Chats
 			for(let k in d['teasers']){
 
-				if(d['teasers'].hasOwnProperty(k)){
+				if(!d['teasers'].hasOwnProperty(k)){
+					continue;
+				}
 
-					if(Conversations.filter((obj)=> (obj.id === d['teasers'][k]['id'])).length === 0){
-						Conversations.push({
-							id: d['teasers'][k]['id'],
-							title: d['teasers'][k]['title']
-						});
-					}
+				// prüfen ob es zur ID einen key gibt
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
+
+				// Konversation gibt es schon
+				if(key !== -1){
+					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+				}
+				// ... gibt es noch nicht
+				else {
+					MainParser.Conversations.push({
+						id: d['teasers'][k]['id'],
+						title: d['teasers'][k]['title']
+					});
 				}
 			}
 		}
@@ -1544,19 +1902,29 @@ let MainParser = {
 		if(d[0] !== undefined && d[0].length > 0){
 
 			for(let k in d){
-				if(d.hasOwnProperty(k)){
-					if(Conversations.filter((obj)=> (obj.id === d[k]['id'])).length === 0){
-						Conversations.push({
-							id: d[k]['id'],
-							title: d[k]['title']
-						});
-					}
+				if(!d.hasOwnProperty(k)){
+					continue;
+				}
+
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
+
+				if(key !== -1) {
+					MainParser.Conversations[key]['title'] = d[k]['title'];
+
+				} else {
+					MainParser.Conversations.push({
+						id: d[k]['id'],
+						title: d[k]['title']
+					});
 				}
 			}
 		}
 
-		if(Conversations.length > 0){
-			localStorage.setItem('ConversationsHeaders', JSON.stringify(Conversations));
+		if(MainParser.Conversations.length > 0){
+			// Dupletten entfernen
+			MainParser.Conversations = [...new Set(MainParser.Conversations.map(s => JSON.stringify(s)))].map(s => JSON.parse(s));
+
+			localStorage.setItem('ConversationsHeaders', JSON.stringify(MainParser.Conversations));
 		}
 	},
 

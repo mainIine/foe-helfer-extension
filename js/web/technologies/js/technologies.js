@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       02.12.19, 13:17 Uhr
+ * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
  *
  * Copyright © 2019
  *
@@ -19,6 +19,7 @@ let Technologies = {
     SelectedEraID: undefined,
        
     Eras: {
+        NoAge: 0,
         StoneAge: 1,
         BronzeAge: 2,
         IronAge: 3,
@@ -36,25 +37,28 @@ let Technologies = {
         ArcticFuture: 15,
         OceanicFuture: 16,
         VirtualFuture: 17,
-        SpaceAgeMars: 18
+        SpaceAgeMars: 18,
+        SpaceAgeCeres: 19
     },
 
 
 	/**
 	 * Zeigt
-	 * @constructor
 	 */
     Show: ()=> {
        if ($('#technologies').length === 0) {
-            let args = {
-                'id': 'technologies',
-                'title': i18n['Boxes']['Technologies']['Title'],
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': true
-            };
 
-           HTML.Box(args);
+           HTML.Box({
+			   'id': 'technologies',
+			   'title': i18n['Boxes']['Technologies']['Title'],
+			   'auto_close': true,
+			   'dragdrop': true,
+			   'minimize': true
+		   });
+
+		   // CSS in den DOM prügeln
+		   HTML.AddCssFile('technologies');
+
            Technologies.SelectedEraID = CurrentEraID;
         }
 
@@ -64,7 +68,6 @@ let Technologies = {
 
 	/**
 	 *
-	 * @constructor
 	 */
     BuildBox: ()=> {
         Technologies.CalcBody();
@@ -84,7 +87,6 @@ let Technologies = {
 
 	/**
 	 *
-	 * @constructor
 	 */
     CalcBody: ()=> {
         let h = [],
@@ -111,7 +113,8 @@ let Technologies = {
         }
 
         // Güter zaehlen
-        let RequiredResources = [];
+        let RequiredResources = [],
+            TechCount = 0;
         for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
             let Tech = Technologies.AllTechnologies[i];
             if (Tech['currentSP'] === undefined)
@@ -132,6 +135,8 @@ let Technologies = {
 
                         RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
                     }
+
+                    TechCount++;
                 }
             }
         }
@@ -145,7 +150,6 @@ let Technologies = {
 			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n['Boxes']['Technologies']['Eras'][NextEraID] + '</button>');
         h.push('</div>');
 
-
         h.push('<table class="foe-table">');
 
         h.push('<thead>' +
@@ -157,35 +161,42 @@ let Technologies = {
             '</tr>' +
             '</thead>');
 
-        // Reihenfolge der Ausgabe generieren
-        let OutputList = ['strategy_points', 'money', 'supplies'];
-        for (let i = 0; i < 70; i++) {
-            OutputList[OutputList.length] = GoodsList[i]['id'];
-        }
-        OutputList[OutputList.length] = 'promethium';
-        for (let i = 70; i < 75; i++) {
-            OutputList[OutputList.length] = GoodsList[i]['id'];
-        }
-        OutputList[OutputList.length] = 'orichalcum';
-        for (let i = 75; i < GoodsList.length; i++) {
-            OutputList[OutputList.length] = GoodsList[i]['id'];
-        }
-
-        for (let i = 0; i < OutputList.length; i++) {
-            let ResourceName = OutputList[i];
-            if (RequiredResources[ResourceName] !== undefined) {
-                let Required = RequiredResources[ResourceName];
-                let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
-                if (Stock === undefined) Stock = 0;
-                let Diff = Stock - Required;
-
-                h.push('<tr>');
-                h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
-                h.push('<td>' + HTML.Format(Required) + '</td>');
-                h.push('<td>' + HTML.Format(Stock) + '</td>');
-                h.push('<td class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
-                h.push('</tr>');
+        if (TechCount > 0) {
+            // Reihenfolge der Ausgabe generieren
+            let OutputList = ['strategy_points', 'money', 'supplies'];
+            for (let i = 0; i < 70; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
             }
+            OutputList[OutputList.length] = 'promethium';
+            for (let i = 70; i < 75; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+            OutputList[OutputList.length] = 'orichalcum';
+            for (let i = 75; i < GoodsList.length; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+
+            for (let i = 0; i < OutputList.length; i++) {
+                let ResourceName = OutputList[i];
+                if (RequiredResources[ResourceName] !== undefined) {
+                    let Required = RequiredResources[ResourceName];
+                    let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
+                    if (Stock === undefined) Stock = 0;
+                    let Diff = Stock - Required;
+
+                    h.push('<tr>');
+                    h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
+                    h.push('<td>' + HTML.Format(Required) + '</td>');
+                    h.push('<td>' + HTML.Format(Stock) + '</td>');
+                    h.push('<td class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
+                    h.push('</tr>');
+                }
+            }
+        }
+        else {
+            h.push('<tr>');
+            h.push('<td>' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
+            h.push('</tr>');
         }
         h.push('</table');
 

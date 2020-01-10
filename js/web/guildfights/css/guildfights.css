@@ -1,0 +1,94 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 guildfights.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              27.12.19, 12:37 Uhr
+ * zuletzt bearbeitet:       27.12.19, 12:37 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#GildPlayers {
+	left: 50%;
+	top: 50%;
+	width: 600px;
+	height: 500px;
+	transform: translate(-50%,-50%);
+}
+
+#GildPlayers.closed {
+	left: 50%;
+	top: 50%;
+	width: 600px;
+	height: 22px !important;
+	transform: translate(-50%,-50%);
+}
+
+
+#GildPlayersHeader small {
+	font-weight: lighter;
+}
+
+#GildPlayersBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#GildPlayersBody tr th  {
+	position: sticky;
+	top: 0;
+	background-color: rgba(0,0,0, 0.45);
+	white-space: nowrap;
+}
+
+#GildPlayersBody tr td img {
+	max-width: 40px;
+	border-radius: 50%;
+}
+
+#LiveGildFighting {
+	top: 30%;
+	right: 15%;
+	width: 900px;
+}
+
+#LiveGildFightingBody {
+	overflow: auto;
+}
+
+#LiveGildFightingBody tr th  {
+	position: sticky;
+	top: 0;
+	background-color: rgba(0,0,0, 0.45);
+	white-space: nowrap;
+}
+
+#LiveGildFightingBody tr th span.head-color {
+	height: 5px;
+	display: block;
+}
+
+#LiveGildFightingBody tr td {
+	transition: background-color .6s;
+}
+
+#LiveGildFightingBody tr td.red-pulse {
+	background-color: rgba(255, 0, 0, 0.45);
+	transition: background-color .6s;
+}
+
+#LiveGildFightingBody tr td span.attack {
+	display: block;
+	height: 5px;
+	background-color: rgba(255,255,255,0.45);
+}
+
+#LiveGildFightingBody tr td span.attack span {
+	height: 5px;
+	display: block;
+}

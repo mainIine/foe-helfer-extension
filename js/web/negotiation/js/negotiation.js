@@ -31,20 +31,22 @@ let Negotiation = {
 	/**
 	 * Box in den DOM legen
 	 *
-	 * @constructor
 	 */
     Show: () => {
         if ($('#negotiationBox').length === 0) {
-            let args = {
-                'id': 'negotiationBox',
-                'title': i18n['Boxes']['Negotiation']['Title'],
-                'auto_close': true,
-                'minimize': true,
+
+        	// Box in den DOM
+            HTML.Box({
+				'id': 'negotiationBox',
+				'title': i18n['Boxes']['Negotiation']['Title'],
+				'auto_close': true,
+				'minimize': true,
 				'dragdrop': true,
 				'saveCords': false
-            };
+			});
 
-            HTML.Box(args);
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('negotiation');
         }
 
         Negotiation.BuildBox();
@@ -54,7 +56,6 @@ let Negotiation = {
 	/**
 	 * Body der Box parsen
 	 *
-	 * @constructor
 	 */
     BuildBox: () => {
         Negotiation.CalcBody();
@@ -64,7 +65,6 @@ let Negotiation = {
     /**
     * Body der Box aktualisieren falls bereits geöffnet
     *
-    * @constructor
     */
     RefreshBox: () => {
         if ($('#negotiationBox').length > 0) {
@@ -76,7 +76,6 @@ let Negotiation = {
 	/**
 	 * Berechnungen durchführen
 	 *
-	 * @constructor
 	 */
     CalcBody: () => {
         let h = [],
@@ -88,63 +87,61 @@ let Negotiation = {
 
         if (Negotiation.CurrentTable !== undefined) {
             h.push('<tbody>');
-            
+
             h.push('<tr>');
             h.push('<td colspan="4" class="text-warning"><strong>' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
-			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
+            h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
             h.push('</tr>');
 
             h.push('<tr>');
 
             h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Average'] + '</td>');
 
-			h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
+            h.push('<td colspan="4"><div id="good-sort" ' + (Negotiation.CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
 
-            for (let i = 0; i < Negotiation.GoodCount; i++)
-            {
+            for (let i = 0; i < Negotiation.GoodCount; i++) {
 
                 let GoodName = Negotiation.Goods[i],
-					GoodAmount = Negotiation.GoodAmounts[GoodName],
-					extraGood = (GoodName === 'money' || GoodName === 'supplies' || GoodName === 'medals') ? ' goods-sprite-extra ' : '',
-					Stock = ResourceStock[GoodName],
-					TextClass;
+                    GoodAmount = Negotiation.GoodAmounts[GoodName],
+                    extraGood = (GoodName === 'money' || GoodName === 'supplies' || GoodName === 'medals') ? ' goods-sprite-extra ' : '',
+                    Stock = ResourceStock[GoodName],
+                    TextClass;
 
-				GoodAmount *= Negotiation.CurrentTable['go'][i];
+                GoodAmount *= Negotiation.CurrentTable['go'][i];
 
-				if (Stock === undefined)
-					Stock = 0;
+                if (Stock === undefined)
+                    Stock = 0;
 
-				if (Stock < GoodAmount) {
-					TextClass = 'error';
-					StockState = Math.max(StockState, 2);
-				}
-				else if (Stock < 5 * Negotiation.GoodAmounts[GoodName]){
-					TextClass = 'warning';
-					StockState = Math.max(StockState, 1);
-				}
-				else {
-					TextClass = 'success';
-				}
+                if (Stock < GoodAmount) {
+                    TextClass = 'error';
+                    StockState = Math.max(StockState, 2);
+                }
+                else if (Stock < 5 * Negotiation.GoodAmounts[GoodName]) {
+                    TextClass = 'warning';
+                    StockState = Math.max(StockState, 1);
+                }
+                else {
+                    TextClass = 'success';
+                }
 
-				if (Negotiation.Goods[i] === 'money' || Negotiation.Goods[i] === 'supplies' || Negotiation.Goods[i] === 'medals') {
-					GoodAmount = Math.round(GoodAmount);
-				}
-				else {
-					GoodAmount = Math.round(GoodAmount * 10) / 10;
-				}
+                if (Negotiation.Goods[i] === 'money' || Negotiation.Goods[i] === 'supplies' || Negotiation.Goods[i] === 'medals') {
+                    GoodAmount = Math.round(GoodAmount);
+                }
+                else {
+                    GoodAmount = Math.round(GoodAmount * 10) / 10;
+                }
 
                 h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n['Boxes']['Negotiation']['Stock'] + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
-						'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
-						'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
-					'</div>');
+                    '<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
+                    '<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
+                    '</div>');
             }
 
             h.push('</div></td>');
 
             h.push('</tr>');
 
-            if (Negotiation.CurrentTry === 1)
-            {
+            if (Negotiation.CurrentTry === 1) {
                 h.push('<tr>');
                 h.push('<td colspan="5" class="text-center"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
                 h.push('</tr>');
@@ -152,8 +149,11 @@ let Negotiation = {
 
             h.push('</tbody>');
         }
-
-
+        else if (Negotiation.CurrentTable === undefined && Negotiation.CurrentTry === 1){
+            Negotiation.MessageClass = 'danger';
+            Negotiation.Message = 'ERROR: Could not load negotation table'; //Todo: Translate
+        }
+        
         h.push('<tbody>');
         h.push('<tr class="thead">');
 
@@ -217,11 +217,13 @@ let Negotiation = {
 			}
 
 			// Lagerbestand via Tooltip
+			// @ts-ignore
 			$('.good').tooltip({
 				container: '#negotiationBox'
 			});
 
-        	if(Negotiation.CurrentTry === 1){
+            if (Negotiation.CurrentTable !== undefined && Negotiation.CurrentTry === 1){
+				// @ts-ignore
 				new Sortable(document.getElementById('good-sort'), {
 					animation: 150,
 					ghostClass: 'good-drag',
@@ -243,7 +245,6 @@ let Negotiation = {
 	 * Chancen Berechnung aus den Files
 	 *
 	 * @param responseData
-	 * @constructor
 	 */
     StartNegotiation: (responseData) => {
 
@@ -272,11 +273,9 @@ let Negotiation = {
         Negotiation.GoodCount = Negotiation.Goods.length;
 
         if (responseData['context'] === 'guildExpedition') {
-            let BoostType = localStorage.getItem('TavernBoostType'),
-                BoostExpire = localStorage.getItem('TavernBoostExpire'),
-                Now = new Date().getTime();
+            let Now = new Date().getTime();
 
-            if (BoostType === 'extra_negotiation_turn' && moment.unix(BoostExpire) > Now) {
+            if (moment.unix(Tavern.ExpireTime) > Now) {
                 Negotiation.TryCount = 4;
             }
             else {
@@ -301,7 +300,6 @@ let Negotiation = {
 	 * Es wurde eine Runde abgeschickt
 	 *
 	 * @param responseData
-	 * @constructor
 	 */
     SubmitTurn: (responseData) => {
         if (Negotiation.CurrentTry === 0) return;
@@ -380,7 +378,6 @@ let Negotiation = {
 	/**
 	 * Verhandlung zu Ende
 	 *
-	 * @constructor
 	 */
     ExitNegotiation: () => {
         Negotiation.CurrentTry = 0;
@@ -404,7 +401,6 @@ let Negotiation = {
 	 * @param TryCount
 	 * @param GoodCount
 	 * @returns {string}
-	 * @constructor
 	 */
     GetTableName: (TryCount, GoodCount) => {
         return TryCount + '_' + GoodCount;
@@ -416,7 +412,6 @@ let Negotiation = {
 	 *
 	 * @param GoodName
 	 * @returns {*}
-	 * @constructor
 	 */
     GetGoodValue: (GoodName) => {
     	let Value = 0;
@@ -443,6 +438,9 @@ let Negotiation = {
             let EraID = Technologies.Eras[Era];
             if (EraID === undefined) EraID = 20;
 
+            if (Era === 'SpaceAgeMars') { //Marsgüter mit arkt. Gütern gleich setzen
+                EraID -= 3;
+            }
             Value = EraID * 100;
 
             let Stock = ResourceStock[GoodName];
@@ -463,41 +461,54 @@ let Negotiation = {
 	/**
 	 * Läd die Tabelle
 	 *
-	 * @constructor
 	 */
 	GetTable: ()=> {
 		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
 
 		// gibt es noch nicht, laden
-    	if( Negotiation.Tables[TableName] === undefined ){
+		if (Negotiation.Tables[TableName] === undefined) {
+			let url = extUrl + 'js/web/negotiation/tables/';
 
-			let url = 'chrome-extension://' + extID + '/js/web/negotiation/js/negotiationtables/';
+			fetch(url + TableName + '.zip')
+				.then(function (response) {
+					if (response.status === 200 || response.status === 0) {
+						return Promise.resolve(response.blob());
+					} else {
+						return Promise.reject(new Error(response.statusText));
+					}
+				})
+				.then(JSZip.loadAsync)
+				.then(function (zip) {
+					// @ts-ignore
+					return zip.file(TableName + ".json").async("uint8array");
+				})
+				.then((/** @type {Uint8Array} */response) => {
+					Negotiation.Tables[TableName] = JSON.parse(new TextDecoder().decode(response));
 
-    		MainParser.loadJSON(url + TableName + '.json', function(response){
-				Negotiation.Tables[TableName] = JSON.parse(response);
+					Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
-				Negotiation.CurrentTable = Negotiation.Tables[TableName];
+					if (Negotiation.CurrentTable !== undefined) {
+						Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+					}
 
-				if (Negotiation.CurrentTable !== undefined) {
-					Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
-                }
-
-                Negotiation.RefreshBox();
-                if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-                    Negotiation.Show();
-                }
-			});
+					Negotiation.RefreshBox();
+					if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+						Negotiation.Show();
+					}
+				})
+				.catch(console.error)
+			;
 		}
-    	// bereits geladen
-    	else {
+		// bereits geladen
+		else {
 			Negotiation.CurrentTable = Negotiation.Tables[TableName];
-            Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
-            Negotiation.RefreshBox();
-            if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-                setTimeout(() => {
-                    Negotiation.Show();
-                }, 300);
-            }
-        }
-    }
+			Negotiation.Guesses[0] = Negotiation.CurrentTable['gu'];
+			Negotiation.RefreshBox();
+			if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+				setTimeout(() => {
+					Negotiation.Show();
+				}, 300);
+			}
+		}
+	}
 };
