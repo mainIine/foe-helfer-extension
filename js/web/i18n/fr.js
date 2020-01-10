@@ -333,10 +333,6 @@ let i18n = {
 			"Title" : "Affiche un compteur sur la taverne",
 			"Desc" : "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît."
 		},
-		"ShowOutpost": {
-			"Title" : "Ressources de la colonie",
-			"Desc" : "Affiche un menu pour les ressources de la colonie<br><u>Note:</u> Un rechargement du jeu est requis."
-		},
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
 			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."

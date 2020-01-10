@@ -333,10 +333,6 @@ let i18n = {
 			"Title" : "Mostrar placa de tabernas ",
 			"Desc" : "Tan pronto como se activa un boost en la taberna, aparece un contador, globalmente desplazable"
 		},
-		"ShowOutpost": {
-			"Title" : "Recursos de los asentamientos culturales",
-			"Desc" : "Muestra un elemento de menu para los asentamientos culturales<br><u>Nota:</u> Se requiere recarga del juego (F5)"
-		},
 		"PreScanLGList": {
 			"Title" : "Escanear con antelacion los grandes edificios",
 			"Desc" : "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina rellenables grandes edificios.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda."

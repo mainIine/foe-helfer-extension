@@ -346,10 +346,6 @@ let i18n = {
 			"Title" : "Tavernen Badge anzeigen",
 			"Desc" : "Sobald ein Boost in der Taverne aktiviert wird, erscheint ein global verschiebbarer Counter"
 		},
-		"ShowOutpost": {
-			"Title" : "Außenposten Resourcen",
-			"Desc" : "Blendet einen Menüpunkt für Außenposten Resourcen ein<br><u>Hinweis:</u> Spiel Reload erforderlich"
-		},
 		"PreScanLGList": {
 			"Title" : "Vorab-Scann der LG Übersicht",
 			"Desc" : "Scannt die Übersichtsliste des Nachbarn beim öffnen und ermittelt eventuell befüllbare LGs.<br><u>Hinweis:</u> Da die endgültigen Plätze erst beim öffnen eines LGs übermittel werden, kann das Ergebniss abweichen. Der Scann wird jedoch gespeichert."
