@@ -187,18 +187,23 @@ let GildFights = {
 				negotaionAddOn = '',
 				change = false;
 
+			// gibt es einen älteren Snapshot?
 			if(GildFights.PrevAction !== null){
 
 				let playerOld = GildFights.PrevAction.find(p => (p['player_id'] === playerNew['player_id']));
 
-				if(playerOld['negotiationsWon'] < playerNew['negotiationsWon']){
-					negotaionAddOn = ' <small class="text-success">&#8593; ' + (playerNew['negotiationsWon'] - playerOld['negotiationsWon']) + '</small>';
-					change = true;
-				}
+				// gibt es zu diesem Spieler Daten?
+				if(playerOld !== undefined) {
 
-				if(playerOld['battlesWon'] < playerNew['battlesWon']){
-					fightAddOn = ' <small class="text-success">&#8593; ' + (playerNew['battlesWon'] - playerOld['battlesWon']) + '</small>';
-					change = true;
+					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon']) {
+						negotaionAddOn = ' <small class="text-success">&#8593; ' + (playerNew['negotiationsWon'] - playerOld['negotiationsWon']) + '</small>';
+						change = true;
+					}
+
+					if (playerOld['battlesWon'] < playerNew['battlesWon']) {
+						fightAddOn = ' <small class="text-success">&#8593; ' + (playerNew['battlesWon'] - playerOld['battlesWon']) + '</small>';
+						change = true;
+					}
 				}
 			}
 
