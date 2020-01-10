@@ -239,7 +239,7 @@ let Outposts = {
 					t.push(
 						'<td>'
 						+ '<input type="checkbox" onclick="Outposts.listAllTiles(this.checked)"'+(displayAllTiles?' checked':'')+'/>'
-						+ (i18n['Boxes']['Outpost']['nextTile'] || 'nächste Erweiterung')
+						+ i18n['Boxes']['Outpost']['nextTile']
 						+ '</td>'
 					);
 				} else {
@@ -253,7 +253,7 @@ let Outposts = {
 						t.push('<td class="text-center">'
 							+ '<label><input type="radio" value="#off" name="foe_helper_'+tileID+'" '
 							+ (plannedTiles[tileID] == null ? ' checked' : '')
-							+ '/><span class="outpost_tile_off">off</span></label>'
+							+ '/><span class="outpost_tile_off">'+i18n['Boxes']['Outpost']['tileNotPlanned']+'</span></label>'
 							+ '</td>'
 						);
 					} else {
@@ -408,7 +408,7 @@ let Outposts = {
 			if (found) {
 				t.push('<tr class="total-row">');
 
-				t.push('<td><strong>' + (i18n['Boxes']['Outpost']['ExpansionsSum']||'Erweiterungen') + '</strong></td><td></td>');
+				t.push('<td><strong>' + i18n['Boxes']['Outpost']['ExpansionsSum'] + '</strong></td><td></td>');
 
 				for (let resourceID of resourceIDs) {
 					const resourceCost = plannedTilesCostSum[resourceID];

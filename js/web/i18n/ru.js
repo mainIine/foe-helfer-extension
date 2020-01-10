@@ -126,6 +126,9 @@ let i18n = {
 			"DescRequired" : "Требуется",
 			"DescInStock" : "Доступно",
 			"DescStillMissing" : "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
+			"ExpansionsSum" : "Expansions", // TODO: translate
+			"nextTile" : "next Expansion", // TODO: translate
+			"tileNotPlanned" : "off", // TODO: translate
         },
 
         "Technologies": {
