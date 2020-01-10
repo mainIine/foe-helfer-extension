@@ -13,6 +13,20 @@
  * **************************************************************************************
  */
 
+
+{
+	// jQuery detection
+	let intval = -1;
+	function checkForJQuery() {
+		if (typeof jQuery !== 'undefined') {
+			console.log('found jquery')
+			clearInterval(intval);
+			window.dispatchEvent(new CustomEvent('foe-helper#jQuery-loaded'));
+		}
+	}
+	intval = setInterval(checkForJQuery, 1);
+}
+
 let ApiURL = 'https://api.foe-rechner.de/',
     ActiveMap = 'main',
     ExtPlayerID = 0,
@@ -27,7 +41,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
     MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = true,
+	UsePartCalcOnAllLGs = false,
 	CurrentTime = 0;
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -1053,13 +1067,12 @@ const FoEproxy = (function () {
 	// HiddenReward
 
 	FoEproxy.addHandler('HiddenRewardService','getOverview', (data, postData) => {
-		console.clear();
-		console.log("AKTUELLE ZEIT: "+ CurrentTime)
-		data.responseData.hiddenRewards.forEach(rewards => {
-			if(rewards.startTime < CurrentTime < rewards.expireTime){
-				console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
-			}
-		});
+		// console.log("AKTUELLE ZEIT: "+ CurrentTime)
+		// data.responseData.hiddenRewards.forEach(rewards => {
+		// 	if(rewards.startTime < CurrentTime < rewards.expireTime){
+		// 		console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
+		// 	}
+		// });
 	});
 
 })();

@@ -264,7 +264,7 @@ let Calculator = {
 		for (let i in MainParser.Quests) {
 			let Quest = MainParser.Quests[i];
 
-			if (Quest.questGiver.id === 'scientist') {
+			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
 				for (let j in Quest.successConditions) {
 					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
 					let MaxProgress = Quest.successConditions[j].maxProgress;
