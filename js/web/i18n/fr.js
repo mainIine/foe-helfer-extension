@@ -62,6 +62,8 @@ let i18n = {
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
+			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+			"Done": "done" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -182,7 +184,8 @@ let i18n = {
 			"Stock": "Stock:",
 			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
 			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
-			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative."
+			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
+			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
         },
         
 		"Settings" : {
@@ -336,10 +339,6 @@ let i18n = {
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
 			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Bénéfice négatif dans le calculateur de coûts",
-			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Assistant de négociation",
