@@ -17,9 +17,9 @@ FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
 	KampagneMap.AllProvinces = JSON.parse(localStorage.getItem('AllProvinces'));
 
 	KampagneMap.Provinces = data.responseData;
-	if($('#Map').hasClass('hud-btn-red')){
-		$('#Map').removeClass('hud-btn-red');
-		$('#map-closed').remove();
+	if($('#campagneMap-Btn').hasClass('hud-btn-red')){
+		$('#campagneMap-Btn').removeClass('hud-btn-red');
+		$('#campagneMap-Btn-closed').remove();
 	}
 	if ($('#campagne').length > 0) {
 		KampagneMap.BuildBox();
