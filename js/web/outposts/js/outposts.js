@@ -208,8 +208,10 @@ let Outposts = {
 		// Durchlauf Informationen
 		if (currentRun) {
 			t.push(
-				  ((currentRun.id||0)+1) + '. Durchlauf, '
-				+ 'Bonus x4 Chance: ' + (currentRun.productionBonusProbability*100) + '%'
+				HTML.i18nReplacer(i18n['Boxes']['Outpost']['infoLine'], {
+					runNumber: (currentRun.id||0)+1,
+					chanceX4: currentRun.productionBonusProbability*100
+				})
 			);
 		}
 
