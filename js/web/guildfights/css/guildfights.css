@@ -51,6 +51,10 @@
 	border-radius: 50%;
 }
 
+#GildPlayersBody tr.bg-green td {
+	background-color: rgba(18, 125, 9, 0.2);
+}
+
 #LiveGildFighting {
 	top: 30%;
 	right: 15%;
