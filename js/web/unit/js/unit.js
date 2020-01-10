@@ -452,7 +452,6 @@ let Unit = {
 			clearInterval(intervalID);
 			$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
 		}
-
 	},
 
 
@@ -510,8 +509,8 @@ let Unit = {
 		last.push('<tr>');
 		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
 		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
 		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Quantity'] + '</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
 		last.push('</tr>');
 		last.push('</thead>');
 
