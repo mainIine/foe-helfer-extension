@@ -643,18 +643,12 @@ let Outposts = {
 
 // Alle Typen der Außenposten "notieren"
 FoEproxy.addHandler('OutpostService', 'getAll', (/** @type {FoE_NETWORK_OutpostService_getAll} */ data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	// store all informations in case of outpost change
 	Outposts.OutpostsData = data.responseData;
 	Outposts.UpdateOutpostData();
 });
 
 FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostService_start} */ data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	// store changed informations
 	const culture = data.responseData;
 	const content = culture.content;
@@ -673,17 +667,11 @@ FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostSe
 
 // Gebäude des Außenpostens sichern
 FoEproxy.addHandler('AdvancementService', 'getAll', (/** @type {FoE_NETWORK_AdvancementService_getAll} */data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	Outposts.SaveBuildings(data.responseData);
 });
 
 // eine Forschung Freischalten
 FoEproxy.addHandler('AdvancementService', 'unlock', (/** @type {FoE_NETWORK_AdvancementService_unlock} */data, postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	if (postData instanceof Array) {
 		postData = postData.find(request => request.requestClass === 'AdvancementService' && request.requestMethod === 'unlock');
 	}
@@ -699,9 +687,6 @@ FoEproxy.addHandler('AdvancementService', 'unlock', (/** @type {FoE_NETWORK_Adva
 
 // Status der Gebäude updaten
 FoEproxy.addHandler('CityProductionService', 'startProduction', (/** @type {FoE_NETWORK_CityProductionService_startProduction} */data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	const cityMap = Outposts.CityMap;
 	if (!cityMap) {
 		return;
@@ -722,9 +707,6 @@ FoEproxy.addHandler('CityProductionService', 'startProduction', (/** @type {FoE_
 });
 
 FoEproxy.addHandler('CityMapService', 'getCityMap', (/** @type {FoE_NETWORK_CityMapService_getCityMap} */data, _postData) => {
-	if (!Settings.GetSetting('ShowOutpost')) {
-		return;
-	}
 	const response = data.responseData;
 	if (response.gridId === 'cultural_outpost') {
 		Outposts.CityMap = data.responseData;
