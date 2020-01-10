@@ -528,7 +528,7 @@ let Outposts = {
 			$('#outpostConsumables').hide('fast', ()=>{
 				$('#outpostConsumables').remove();
 			});
-			$('#outPostBtn').addClass('hud-btn-red');
+			$('#outpost-Btn').addClass('hud-btn-red');
 		}
 	},
 
@@ -555,7 +555,7 @@ let Outposts = {
 		Outposts.Advancements = d;
 
 		$('#outPW').remove();
-		$('#outPostBtn').removeClass('hud-btn-red');
+		$('#outpost-Btn').removeClass('hud-btn-red');
 		Outposts.RequestGUIUpdate();
 	},
 
@@ -760,5 +760,5 @@ FoEproxy.addHandler('CityMapService', 'removeBuilding', (/** @type {FoE_NETWORK_
 				Outposts.updateBuilding(building);
 			});
 		}
-	}});
-
+	}
+});
