@@ -69,7 +69,7 @@ let _menu = {
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function(event) {
-			_menu.SetMenuHeight();
+			_menu.SetMenuHeight(true);
 		};
 	},
 
@@ -77,13 +77,24 @@ let _menu = {
 	/**
 	 * Sammelfunktion
 	 *
+	 * @param reset
 	 */
-	SetMenuHeight: ()=> {
+	SetMenuHeight: (reset = true)=> {
 		// Höhe ermitteln und setzten
 		_menu.Prepare();
 
-		// Tool-Tipp "top" setzen
-		//_menu.SetToolTippTop();
+		if(reset){
+			// Slider nach oben resetten
+			$('#ant-hud-slider').css({
+				'top': '0'
+			});
+
+			_menu.MenuScrollTop = 0;
+			_menu.ActiveSlide = 1;
+
+			$('.hud-btn-up').removeClass('hud-btn-up-active');
+			$('.hud-btn-down').addClass('hud-btn-down-active');
+		}
 	},
 
 
