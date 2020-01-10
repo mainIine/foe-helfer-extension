@@ -51,6 +51,18 @@
 	border-radius: 50%;
 }
 
+#GildPlayersBody tr.mark-player td {
+	border-top: 1px solid #FFB539;
+	border-bottom: 1px solid #FFB539;
+}
+#GildPlayersBody tr.mark-player td:first-child {
+	border-left: 1px solid #FFB539;
+}
+#GildPlayersBody tr.mark-player td:last-child {
+	border-right: 1px solid #FFB539;
+}
+
+
 #GildPlayersBody tr.bg-green td {
 	background-color: rgba(18, 125, 9, 0.2);
 }
