@@ -40,6 +40,9 @@ let Reader = {
 
 	data: {},
 	player_name: '',
+	Sound:    new Audio('chrome-extension://' + extID + '/vendor/sounds/message.mp3'),
+	doPlaySound: false,
+    PlayInfoSoundGui: null,
 	CityEntities: [],
 
 	/**
@@ -85,6 +88,11 @@ let Reader = {
 
 		// was gefunden?
 		if (Reader.data.ready.length > 0 || Reader.data.work.length > 0) {
+			
+			if(Reader.doPlaySound === true && Reader.PlayInfoSoundGui === true) {
+                Reader.Sound.load();
+				Reader.Sound.play();
+			}
 			Reader.showResult();
 
 		} else {
@@ -109,12 +117,21 @@ let Reader = {
 
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if ($('#ResultBox').length === 0) {
+            let spk = localStorage.getItem('ReaderTone');
+
+            if (spk === null) {
+                localStorage.setItem('ReaderTone', 'deactivated');
+                Reader.PlayInfoSoundGui = false;
+            } else {
+                Reader.PlayInfoSoundGui = (spk !== 'deactivated');
+            }
 			HTML.Box({
 				'id': 'ResultBox',
 				'title': i18n['Boxes']['Neighbors']['Title'] + Reader.player_name,
 				'auto_close': true,
 				'dragdrop': true,
-				'minimize': true
+				'minimize': true,
+				'speaker': 'ReaderTone'
 			});
 
 			// CSS in den DOM prügeln
@@ -187,6 +204,22 @@ let Reader = {
 		$('body').on('click', '.foe-table .show-entity', function () {
 			Reader.ShowFunction($(this).data('id'));
 		});
+
+        $('body').on('click', '#ReaderTone', function () {
+
+            let disabled = $(this).hasClass('deactivated');
+
+            localStorage.setItem('ReaderTone', (disabled ? '' : 'deactivated'));
+            Reader.PlayInfoSoundGui = !!disabled;
+
+            if (disabled === true) {
+                $('#ReaderTone').removeClass('deactivated');
+            } else {
+                $('#ReaderTone').addClass('deactivated');
+            }
+        });
+        //reset sound 
+		Reader.doPlaySound = false;
 	},
 
 
@@ -301,10 +334,10 @@ let GoodsParser = {
 			if(a.hasOwnProperty(k)) {
 				if (!isImportant) 
 					isImportant = !UnimportantProds.includes(k);
-				
+				if (!Reader.doPlaySound) 
+				    Reader.doPlaySound = isImportant;
 				if(k === 'strategy_points'){
-                    g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
-					
+                    g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');					
 				} else {
 					if(isImportant) 
 						g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
