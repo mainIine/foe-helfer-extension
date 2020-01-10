@@ -131,6 +131,7 @@ let i18n = {
 			"ExpansionsSum" : "Expansions", // TODO: check translation
 			"nextTile" : "next Expansion", // TODO: check translation
 			"tileNotPlanned" : "off", // TODO: check translation
+			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: check translation
         },
 
         "Technologies": {

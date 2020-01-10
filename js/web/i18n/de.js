@@ -130,7 +130,8 @@ let i18n = {
 			"DescStillMissing" : "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
 			"ExpansionsSum" : "Erweiterungen",
 			"nextTile" : "nächste Erweiterung",
-			"tileNotPlanned" : "off"
+			"tileNotPlanned" : "off",
+			"infoLine" : "__runNumber__. Durchlauf, Bonus x4 Chance: __chanceX4__%",
         },
 
         "Technologies": {
