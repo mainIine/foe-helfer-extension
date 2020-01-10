@@ -126,6 +126,10 @@ let i18n = {
 			"DescRequired" : "Required",
 			"DescInStock" : "Available",
 			"DescStillMissing" : "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+			"ExpansionsSum" : "Expansions", // TODO: check translation
+			"nextTile" : "next Expansion", // TODO: check translation
+			"tileNotPlanned" : "off", // TODO: check translation
+			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: check translation
         },
 
         "Technologies": {
