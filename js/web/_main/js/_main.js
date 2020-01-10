@@ -1053,13 +1053,12 @@ const FoEproxy = (function () {
 	// HiddenReward
 
 	FoEproxy.addHandler('HiddenRewardService','getOverview', (data, postData) => {
-		console.clear();
-		console.log("AKTUELLE ZEIT: "+ CurrentTime)
-		data.responseData.hiddenRewards.forEach(rewards => {
-			if(rewards.startTime < CurrentTime < rewards.expireTime){
-				console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
-			}
-		});
+		// console.log("AKTUELLE ZEIT: "+ CurrentTime)
+		// data.responseData.hiddenRewards.forEach(rewards => {
+		// 	if(rewards.startTime < CurrentTime < rewards.expireTime){
+		// 		console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
+		// 	}
+		// });
 	});
 
 })();

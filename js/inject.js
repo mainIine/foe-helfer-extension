@@ -76,7 +76,7 @@ let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/i18n/' 
 
 // prüfen ob jQuery im DOM geladen wurde
 function checkForjQuery(){
-	if (typeof jQuery === undefined){
+	if (typeof jQuery === 'undefined'){
 		// @ts-ignore
 		requestIdleCallback(checkForjQuery);
 	} else {
@@ -90,19 +90,6 @@ let tid = setInterval(InjectCSS, 0);
 function InjectCSS() {
 	// Dokument geladen
 	if(document.head !== null){
-
-		let script = document.createElement('script');
-
-		script.innerText = `
-			let extID='${chrome.runtime.id}',
-				extUrl='${chrome.extension.getURL('')}',
-				GuiLng='${lng}',
-				extVersion='${v}',
-				devMode=${!('update_url' in chrome.runtime.getManifest())};
-		`;
-		document.head.appendChild(script);
-		// Das script wurde direkt ausgeführt und kann wieder entfernt werden.
-		script.remove();
 
 		let cssFiles = [
 			'goods',
@@ -149,6 +136,18 @@ async function InjectCode() {
 		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
 		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
 
+		// setze einige globale Variablen
+		let script = document.createElement('script');
+		script.innerText = `
+			let extID='${chrome.runtime.id}',
+				extUrl='${chrome.extension.getURL('')}',
+				GuiLng='${lng}',
+				extVersion='${v}',
+				devMode=${!('update_url' in chrome.runtime.getManifest())};
+		`;
+		document.head.appendChild(script);
+		// Das script wurde (angeblich) direkt ausgeführt und kann wieder entfernt werden.
+		script.remove();
 
 		const s = [
 			'helper',
