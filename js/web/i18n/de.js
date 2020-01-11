@@ -103,7 +103,7 @@ let i18n = {
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
-				"residential": "Eventgebäude",
+				"residential": "Wohngebäude",
 				"decoration": "Dekorationen",
 				"street": "Straßen",
 				"goods": "Gütergebäude",

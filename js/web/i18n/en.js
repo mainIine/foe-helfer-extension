@@ -103,7 +103,7 @@ let i18n = {
 				"greatbuilding" : "Legendary buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
-				"residential": "Event buildings",
+				"residential": "residental buildings",
 				"decoration": "Dekorations",
 				"street": "Streets",
 				"goods": "Goods buildings",

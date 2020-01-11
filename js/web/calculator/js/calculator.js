@@ -304,10 +304,13 @@ let Calculator = {
         // wenn der Wert des Archebonus verändert wird, Event feuern
         $('body').on('blur', '#costFactor', function () {
 
-			Calculator.ArcBonus = parseFloat($('#costFactor').val());
-			Calculator.SelectedArcBonus = Calculator.ArcBonus;
-			localStorage.setItem('CalculatorArcBonus', Calculator.ArcBonus);
-			Calculator.RefreshCalculator();
+			let NewArcBonus = parseFloat($('#costFactor').val());
+			if (NewArcBonus !== Calculator.ArcBonus) {
+				Calculator.ArcBonus = NewArcBonus;
+				Calculator.SelectedArcBonus = Calculator.ArcBonus;
+				localStorage.setItem('CalculatorArcBonus', Calculator.ArcBonus);
+				Calculator.RefreshCalculator();
+			}
         });
 
         $('body').on('click', '#CalculatorTone', function () {
@@ -349,7 +352,8 @@ let Calculator = {
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
 			BestKursEinsatz = undefined
-			arc = 1 + (Calculator.SelectedArcBonus / 100);
+			arc = 1 + (Calculator.SelectedArcBonus / 100),
+			IsDefaultArc = (Calculator.SelectedArcBonus === Calculator.ArcBonus);
 
 		h.push('<thead>' +
 				'<th>#</th>' +
@@ -523,7 +527,7 @@ let Calculator = {
 			}
 			else {
 				h.push('<tr>');
-			}
+			}	
 
 			//Nummer
 			h.push('<td class="text-center"><strong>' + (Rank + 1) + '</strong></td>')
@@ -541,19 +545,19 @@ let Calculator = {
 			else if (States[Rank] === 'NegativeProfit') {
 				// Einsatz/Gewinn/Kurs
 				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
-				h.push('<td class="text-center"><strong class="error">' + HTML.Format(Gewinn) + '</strong></td>');
+				h.push('<td class="text-center"><strong class="error">' + (IsDefaultArc ? HTML.Format(Gewinn) : '') + '</strong></td>');
 				h.push('<td class="text-center">-</td>');
 			}
 			else if (States[Rank] === 'LevelWarning') {
 				// Einsatz/Gewinn/Kurs
 				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
-				h.push('<td class="text-center"><strong class="' + (Gewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(Gewinn) + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (Gewinn >= 0 ? 'success' : 'error') + '">' + (IsDefaultArc ? HTML.Format(Gewinn) : '') + '</strong></td>');
 				h.push('<td class="text-center"><strong class="warning">' + (Gewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-') + '</strong></td>');
 			}
 			else if (States[Rank] === 'Profit') {
 				// Einsatz/Gewinn/Kurs
 				h.push('<td class="text-center"><strong class="' + (RankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(RankCosts[Rank]) + '</strong></td>');
-				h.push('<td class="text-center"><strong class="success">' + HTML.Format(Gewinn) + '</strong></td>');
+				h.push('<td class="text-center"><strong class="success">' + (IsDefaultArc ? HTML.Format(Gewinn) : '') + '</strong></td>');
 				h.push('<td class="text-center"><strong class="success">' + Calculator.FormatKurs(Kurs) + '</strong></td>');
 				Calculator.PlaySound();
 			}
