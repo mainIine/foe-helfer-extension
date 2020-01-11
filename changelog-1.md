@@ -1,5 +1,50 @@
 ##Changelog - Chrome Extension
 
+#####2.4.0.1
+
+**Neu**
+- Extension:
+    - volle [Chrome](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf) und [Firefox](https://addons.mozilla.org/addon/foe-helper/) Unterstützung
+
+**Update**
+- Menü:
+    - [#279](https://github.com/dsiekiera/foe-helfer-extension/issues/279) Drag&Drop für Sortierung eingebaut
+    - resettet sich nach einem Resize
+
+**BugFix**
+- Extension:
+    - [#284](https://github.com/dsiekiera/foe-helfer-extension/issues/284) neue Mechanik zum besseren stabilen laden der kompletten Extension
+    - [#297](https://github.com/dsiekiera/foe-helfer-extension/issues/297) der FP Balken (oben Mitte) wird ab sofort zum Inventar dazu gerechnet
+    
+- Kampagnen Karte:
+    - [#260](https://github.com/dsiekiera/foe-helfer-extension/issues/260) Angenommene Handelsangebote werden mit der Güterliste verrechnet
+    
+- Eigenanteilsrechner:
+    - [#285](https://github.com/dsiekiera/foe-helfer-extension/issues/285) Breite des Rechners für Englisch vergrößert
+    - [#195](https://github.com/dsiekiera/foe-helfer-extension/issues/195) Merken- und Kopierenbutton funktionieren nun sauber
+
+- Außenposten:
+    - Übersetzungen gefixt
+    - [#302](https://github.com/dsiekiera/foe-helfer-extension/issues/302) Fehlerhafte leere Box behoben
+
+- Kostenrechner:
+    - [#239](https://github.com/dsiekiera/foe-helfer-extension/issues/239) [#261](https://github.com/dsiekiera/foe-helfer-extension/issues/261) [#287](https://github.com/dsiekiera/foe-helfer-extension/issues/287) Farben für korrekte Belegung gefixt
+    - [#276](https://github.com/dsiekiera/foe-helfer-extension/issues/276) Rundung Kostenrechner vs. Vorab Scan gefixt
+    - [#282](https://github.com/dsiekiera/foe-helfer-extension/issues/282) am unteren Ende wird eine Leiste mit aktiven Schleifen-Quests angezeigt
+    
+- Gildengefechte
+    - [#306](https://github.com/dsiekiera/foe-helfer-extension/issues/306) fehlerhaftes laden der Portraits hat die Box abstürzen lassen
+
+---
+
+#####2.4.0
+
+**BugFix**
+- Extension:
+    - [#314](https://github.com/dsiekiera/foe-helfer-extension/issues/314) Firefox Version lädt die Module in falscher Reihenfolge
+
+---
+
 #####2.3.15.1
 
 **Update**

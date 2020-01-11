@@ -205,7 +205,7 @@ let Technologies = {
         }
         else {
             h.push('<tr>');
-            h.push('<td>' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
+            h.push('<td colspan="4" class="text-center">' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
             h.push('</tr>');
         }
         h.push('</table');
