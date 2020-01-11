@@ -14,19 +14,14 @@
  */
 
 #GildPlayers {
-	left: 50%;
-	top: 50%;
+	left: calc(50vw - 300px);
+	top: calc(50vw - 270px);
 	width: 600px;
 	height: 500px;
-	transform: translate(-50%,-50%);
 }
 
 #GildPlayers.closed {
-	left: 50%;
-	top: 50%;
-	width: 600px;
 	height: 22px !important;
-	transform: translate(-50%,-50%);
 }
 
 
