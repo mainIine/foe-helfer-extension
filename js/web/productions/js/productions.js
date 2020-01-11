@@ -176,20 +176,22 @@ let Productions = {
 
 		for (let i in Productions.BuildingsAll) {
 			let building = Productions.BuildingsAll[i];
+			
+			if (building['type'] === 'residential' || building['type'] === 'production') {
+				if (building['products']['money'] !== undefined) {
+					building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
+				}
+				if (building['motivatedproducts']['money'] !== undefined) {
+					building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
+				}
 
-			if (building['products']['money'] !== undefined && building.id !== 1) {
-				building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
-			}
-			if (building['motivatedproducts']['money'] !== undefined && building.id !== 1) {
-				building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
-			}
-
-			if (building['products']['supplies'] !== undefined && building['type'] !== 'greatbuilding') {
+				if (building['products']['supplies'] !== undefined) {
 				building['products']['supplies'] = Math.round(building['products']['supplies'] * Productions.Boosts['supplies']);
-			}
-			if (building['motivatedproducts']['supplies'] !== undefined && building['type'] !== 'greatbuilding') {
-				building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
-			}
+				}
+				if (building['motivatedproducts']['supplies'] !== undefined) {
+					building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
+				}
+			}	
 
 			// Nach Produkt
 			for (let x in building['products']) {
