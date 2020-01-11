@@ -62,6 +62,8 @@ let i18n = {
 			"NoFPorMedsAvailable": "Нет СО или доступных ВС",
 			"LGNotOpen": "Следующий уровень еще не открыт",
 			"LGNotConnected": "ВС не соединено с дорогой",
+			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+			"Done": "done" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -126,6 +128,10 @@ let i18n = {
 			"DescRequired" : "Требуется",
 			"DescInStock" : "Доступно",
 			"DescStillMissing" : "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
+			"ExpansionsSum" : "Expansions", // TODO: translate
+			"nextTile" : "next Expansion", // TODO: translate
+			"tileNotPlanned" : "off", // TODO: translate
+			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: translate
         },
 
         "Technologies": {
@@ -182,7 +188,8 @@ let i18n = {
 			"Stock": "Склад:",
 			"GoodsLow": "ВНИМАНИЕ: Мало товара на складе",
 			"GoodsCritical": "ВНИМАНИЕ: Недостаточно товара на складе",
-			"DragDrop": "Вы можете самостоятелько изменить значки используя перетаскивание, чтобы установить последовательность первой попытки."
+			"DragDrop": "Вы можете самостоятелько изменить значки используя перетаскивание, чтобы установить последовательность первой попытки.",
+			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
         },
 
 		"Settings" : {
@@ -229,6 +236,14 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
 		}
 	},
 
@@ -333,17 +348,9 @@ let i18n = {
 			"Title" : "Показать значок таверны",
 			"Desc" : "Как только активирован дополнительный ход в таверне, появится глобальный счетчик."
 		},
-		"ShowOutpost": {
-			"Title" : "Ресурсы поселения",
-			"Desc" : "Отображать пунки меню товаров Поселения <br><u>Примечание:</u> Необходима перезагрузка игры (F5)."
-		},
 		"PreScanLGList": {
 			"Title" : "Предварительное сканирование ВС",
 			"Desc" : "Сканировать список соседей, когда открывается их ВС и определять возможные вложения в ВС. <br> <u> Примечание: </u> Поскольку итоговые места передаются только при открытии ВС, результат может отличаться. Тем не менее, результаты сканирования будут сохранены."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Отрицательный профит в калькуляторе вложений ВС",
-			"Desc" : "Хотите, чтобы отображался отрицательный профит?"
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Помощник переговоров",
