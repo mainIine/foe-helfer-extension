@@ -62,6 +62,8 @@ let i18n = {
 			"NoFPorMedsAvailable": "No FPs or BPs available",
 			"LGNotOpen": "The next level is currently not unlocked",
 			"LGNotConnected": "The building is not connected to a street",
+			"ActiveRecurringQuest": "Active recurring quest:",
+			"Done": "done"
 		},
 
 		"LGOverviewBox": {
@@ -126,6 +128,10 @@ let i18n = {
 			"DescRequired" : "Required",
 			"DescInStock" : "Available",
 			"DescStillMissing" : "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+			"ExpansionsSum" : "Expansions", // TODO: check translation
+			"nextTile" : "next Expansion", // TODO: check translation
+			"tileNotPlanned" : "off", // TODO: check translation
+			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: check translation
         },
 
         "Technologies": {
@@ -182,7 +188,8 @@ let i18n = {
 			"Stock": "Stock:",
 			"GoodsLow": "ATTENTION: Good stock is low",
 			"GoodsCritical": "ATTENTION: Good stock is critical",
-			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt."
+			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.",
+			"TableLoadError": "Error loading the negotiation table"
         },
 
 		"Settings" : {
@@ -229,6 +236,14 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
 			"SubmitSuccess": "Data was transfered successfully... Now visit "
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
 		}
 	},
 
@@ -333,17 +348,9 @@ let i18n = {
 			"Title" : "Show tavernas badge",
 			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears."
 		},
-		"ShowOutpost": {
-			"Title" : "Outpost resources",
-			"Desc" : "Displays a menu item for Outpost Resources <br><u>Note:</u> Game Reload required."
-		},
 		"PreScanLGList": {
 			"Title" : "Preliminary scan of the LG overview",
 			"Desc" : "Scans the overview list of the neighbor when opening and determines possibly fillable LGs. <br> <u> Note: </u> Since the final seats are only transmitted when opening a LG, the result may differ. The scan is saved, however."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Negative profit in the cost calculator",
-			"Desc" : "Would you like to see the negative profit displayed?"
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Negotiation helper",

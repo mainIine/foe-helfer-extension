@@ -62,6 +62,8 @@ let i18n = {
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
+			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+			"Done": "done" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -126,6 +128,10 @@ let i18n = {
 			"DescRequired" : "Requis",
 			"DescInStock" : "Disponible",
 			"DescStillMissing" : "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
+			"ExpansionsSum" : "Expansions", // TODO: translate
+			"nextTile" : "next Expansion", // TODO: translate
+			"tileNotPlanned" : "off", // TODO: translate
+			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: translate
         },
 
         "Technologies": {
@@ -182,7 +188,8 @@ let i18n = {
 			"Stock": "Stock:",
 			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
 			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
-			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative."
+			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
+			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
         },
         
 		"Settings" : {
@@ -229,6 +236,14 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
 		}
 	},
 
@@ -333,17 +348,9 @@ let i18n = {
 			"Title" : "Affiche un compteur sur la taverne",
 			"Desc" : "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît."
 		},
-		"ShowOutpost": {
-			"Title" : "Ressources de la colonie",
-			"Desc" : "Affiche un menu pour les ressources de la colonie<br><u>Note:</u> Un rechargement du jeu est requis."
-		},
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
 			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Bénéfice négatif dans le calculateur de coûts",
-			"Desc" : "Voulez-vous voir le bénéfice négatif affiché?"
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Assistant de négociation",
