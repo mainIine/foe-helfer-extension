@@ -55,6 +55,8 @@ let i18n = {
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
 			"Save": "Guardar",
+			"BPs": "Plano", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
 			"Commitment": "Contribucion",
 			"Profit": "Ganancia",
 			"LevelWarning": "ATENCIÓN: nivela el legendario edificio!", //Todo: Translate
@@ -171,7 +173,14 @@ let i18n = {
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-        },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 		
         "Negotiation": {
             "Title" : "Ayudante de negociacion",
@@ -368,7 +377,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},

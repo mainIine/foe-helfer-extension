@@ -55,6 +55,8 @@ let i18n = {
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
 			"Save": "Save",
+			"BPs": "BPs",
+			"Meds": "Meds",
 			"Commitment": "Costs",
 			"Profit": "Profit",
 			"LevelWarning": "ATTENTION! Leveling the GB!",
@@ -171,7 +173,14 @@ let i18n = {
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
-        },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ",
+			"Reward": "Reward",
+			"Previous": "Previous",
+			"Next": "Next",
+		},
 
         "Negotiation": {
             "Title": "Negotiation helper",
@@ -368,7 +377,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},
