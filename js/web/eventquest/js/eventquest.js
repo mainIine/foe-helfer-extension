@@ -57,6 +57,12 @@ let EventQuest = {
             $('.btn-switchage').removeClass('btn-default-active');
 
             EventQuest.CurrentQuestID = $(this).data('value');
+            if(EventQuest.CurrentQuestID === 1){
+                EventQuest.PreviousQuestID = null;
+            }
+            if(EventQuest.CurrentQuestID === EventQuest.AllQuests.length){
+                EventQuest.NextQuestID = null;
+            }
             EventQuest.CalcBody();
 
             $(this).addClass('btn-default-active');
@@ -73,7 +79,7 @@ let EventQuest = {
             return;
         let div = $('#questlist'),
             h = [];
-        // Filter
+
         h.push('<div class="event-head">');
         if (EventQuest.CurrentQuestID > 1)
             h.push('<button class="btn btn-default btn-switchage" data-value="' + EventQuest.PreviousQuestID + '">' + i18n['Boxes']['EventList']['Previous'] + '</button>');
