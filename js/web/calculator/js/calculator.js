@@ -211,44 +211,54 @@ let Calculator = {
 			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
 		}
 		h.push('</strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + Level + ' &rarr; ' + (Level + 1) + '</p>');
-        
+
         // FP im Lager
         h.push('<p>' + i18n['Boxes']['Calculator']['AvailableFP'] + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
 
-        h.push('<p class="costFactorWrapper">');
+		h.push('</div>');
 
-		h.push(i18n['Boxes']['Calculator']['ArcBonus'] + ': ' + Calculator.ArcBonus + '%<br>');
-        h.push('<span>' + 'Fördern mit: ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>'); //Todo: Translate
+		h.push('<div class="dark-bg costFactorWrapper">');
+
+		h.push('<div>');
 
 		// Zusätzliche Buttons für die Standard Prozente
 		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + Calculator.ArcBonus + '">' + Calculator.ArcBonus + '%</button>';
 
-        // ... und korrekt einsortieren
+		// ... und korrekt einsortieren
 		if (Calculator.ArcBonus < 85) {
-            h.push(own_arc);
-        }
+			h.push(own_arc);
+		}
 
-        h.push('<button class="btn btn-default btn-toggle-arc" data-value="85">85%</button>');
+		h.push('<button class="btn btn-default btn-toggle-arc" data-value="85">85%</button>');
 
 		if (Calculator.ArcBonus > 85 && Calculator.ArcBonus < 90) {
-            h.push(own_arc);
-        }
-         
-        h.push('<button class="btn btn-default btn-toggle-arc" data-value="90">90%</button>');
+			h.push(own_arc);
+		}
+
+		h.push('<button class="btn btn-default btn-toggle-arc" data-value="90">90%</button>');
 
 		if (Calculator.ArcBonus > 90) {
-            h.push(own_arc);
-        }       
+			h.push(own_arc);
+		}
 
-        h.push('</p>');
+		h.push('<br>');
+
+		h.push('<span><strong>Fördern mit:</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>'); //Todo: Translate
+
+		h.push('</div><div>');
+
+		h.push(i18n['Boxes']['Calculator']['ArcBonus'] + ': ' + Calculator.ArcBonus + '%<br>');
+		h.push('<strong>Snipen</strong><br>');
+
+        h.push('</div>');
 
         h.push('</div>');
         
         // Tabelle zusammen fummeln
-		h.push('<table><tr>');
-		h.push('<td><table id="costTableFordern" class="foe-table" style="float:left;"></table></td>');
-		h.push('<td><table id="costTableSnipen" class="foe-table" style="float:right;"></table></td>');	      
-		h.push('</tr></table>');
+		h.push('<table style="width:100%"><tbody><tr>');
+		h.push('<td><table id="costTableFordern" class="foe-table"></table></td>');
+		h.push('<td><table id="costTableSnipen" class="foe-table"></table></td>');
+		h.push('</tr></tbody></table>');
 
         // Wieviel fehlt noch bis zum leveln?
         let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
