@@ -58,7 +58,7 @@ const jQueryLoading = new Promise(resolve => {
 const v = chrome.runtime.getManifest().version;
 let antLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
 
-const PossibleLangs = ['de','en','fr','es','ru'];
+const PossibleLangs = ['de','en','fr','es','ru','sv'];
 let   lng = chrome.i18n.getUILanguage();
 const uLng = localStorage.getItem('user-language');
 
