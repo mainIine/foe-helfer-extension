@@ -242,6 +242,14 @@ let i18n = {
 			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
 			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
+		},
+
+		"Gildfights": {
+			"Titel": "Spieler Übersicht",
+			"Player": "Spieler",
+			"Negotiations": "Verhandlungen",
+			"Fights": "Kämpfe",
+			"LastSnapshot": " - letzter Snapshot vor __time__",
 		}
 	},
 

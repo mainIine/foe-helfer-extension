@@ -131,6 +131,7 @@ let GildFights = {
 		GildFights.BuildFightContent();
 	},
 
+
 	/**
 	 * Zeigt die Spielerübersicht
 	 */
@@ -142,11 +143,10 @@ let GildFights = {
 
 			HTML.Box({
 				id: 'GildPlayers',
-				title: 'Spieler Übersicht',
+				title: i18n['Boxes']['Gildfights']['Title'],
 				auto_close: true,
 				dragdrop: true,
-				minimize: true,
-				saveCords: false
+				minimize: true
 			});
 
 			// CSS in den DOM prügeln
@@ -157,6 +157,9 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Inhalt des Snapshots darstellen
+	 */
 	BuildPlayerContent: ()=> {
 		let t = [];
 
@@ -166,9 +169,9 @@ let GildFights = {
 		t.push('<tr>');
 
 		t.push('<th>&nbsp;</th>');
-		t.push('<th>Spieler</th>');
-		t.push('<th class="text-center">Verhandlungen</th>');
-		t.push('<th class="text-center">Kämpfe</th>');
+		t.push('<th>' + i18n['Boxes']['Gildfights']['Player'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Negotiations'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Fights'] + '</th>');
 
 		t.push('</tr>');
 		t.push('</thead>');
@@ -242,11 +245,16 @@ let GildFights = {
 
 			let time = duration.humanize();
 
-			$('.time-diff').text(' - letzter Snapshot vor ' + time );
+			$('.time-diff').text(
+				HTML.i18nReplacer(i18n['Boxes']['Gildfights']['LastSnapshot'], time)
+			);
 		}
 	},
 
 
+	/**
+	 * Farben der einzelenen Gilden ermitteln und zuordnen
+	 */
 	PrepareColors: ()=> {
 
 		// ist schon fertig aufbereitet
@@ -283,6 +291,9 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Inhalt der Kartenbox
+	 */
 	BuildFightContent: () => {
 
 		GildFights.PrepareColors();
@@ -378,6 +389,11 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Echtzeit aktualisierung der Kartenbox
+	 *
+	 * @param data
+	 */
 	RefreshTable: (data)=> {
 
 		// Provinz wurde übernommen
