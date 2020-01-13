@@ -55,6 +55,8 @@ let i18n = {
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
+			"BPs": "Plan", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
 			"Commitment": "PFs posés",
 			"Profit": "Profit",
 			"LevelWarning": "ATTENTION: nivelez le bâtiment légendaire!", //Todo: Translate
@@ -171,7 +173,14 @@ let i18n = {
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-        },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 
         "Negotiation": {
             "Title": "Assistant de négociation",

@@ -55,6 +55,8 @@ let i18n = {
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
 			"Save": "Сохранить",
+			"BPs": "СО",
+			"Meds": "Медали",
 			"Commitment": "Вклад",
 			"Profit": "Профит",
 			"LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
@@ -171,7 +173,14 @@ let i18n = {
             "DescRequired": "Требуется",
             "DescInStock": "Доступно",
             "DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
-        },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 
         "Negotiation": {
             "Title": "Помощник переговоров",

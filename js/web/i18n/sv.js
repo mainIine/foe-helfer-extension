@@ -51,17 +51,20 @@ let i18n = {
 			"Step": "Nivå ",
 			"AvailableFP": "Tillgängliga FP",
 			"ArcBonus": "Arkbonus",
-			"Earnings": "Vinst",
 			"Rate": "Kvot",
 			"Up2LevelUp": "Till nästa nivå",
 			"FP": "FP",
 			"Save": "Spara",
+			"BPs": "Ritning",
+			"Meds": "Medalj",
 			"Commitment": "Kostnad",
 			"Profit": "Vinst",
 			"LevelWarning": "VARNING! Höjer nivå på MB!",
 			"NoFPorMedsAvailable": "Inga FP eller ritning tillgängliga",
 			"LGNotOpen": "Nästa niå är inte upplåst ännu",
 			"LGNotConnected": "Byggnaden är inte inkopplad med en väg",
+			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+			"Done": "done" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -137,7 +140,8 @@ let i18n = {
             "Resource": "Resurs",
             "DescRequired": "Behov",
             "DescInStock": "Tillgängligt",
-            "DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ef1616'>Saknas</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ef1616'>Saknas</span>",
+			"NoTechs": "You have reached the end of this era", //Todo: Translate
             "Eras": {
                 1: "Stenåldern",
                 2: "Bronsåldern",
@@ -169,7 +173,14 @@ let i18n = {
             "DescRequired": "Behov",
             "DescInStock": "Tillgängliga",
             "DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ef1616'>Saknas</span>",
-        },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 
         "Negotiation": {
             "Title": "Förhandling hjälp",
@@ -185,7 +196,8 @@ let i18n = {
 			"Stock": "Lager:",
 			"GoodsLow": "VARNING: Varulager är lågt",
 			"GoodsCritical": "VARNING: Varulager är kritiskt",
-			"DragDrop": "Du kan omorganisera ikonerna på medel via dra & släpp för att välja ordningen för första försöket."
+			"DragDrop": "Du kan omorganisera ikonerna på medel via dra & släpp för att välja ordningen för första försöket.",
+			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
         },
 
 		"Settings" : {
@@ -225,6 +237,21 @@ let i18n = {
 			"NotFilled": "Inte fylld",
 			"Bind": "Bunden",
 			"Unbind": "Obunden"
+		},
+
+		"CityMap": {
+			"Title": "Submit data", //Todo: Translate
+			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview", //Todo: Translate
+			"Player": "Player", //Todo: Translate
+			"Negotiations": "Negotiations", //Todo: Translate
+			"Fights": "Fights", //Todo: Translate
+			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
 		}
 	},
 
@@ -329,17 +356,9 @@ let i18n = {
 			"Title" : "Visa värdshusprestation",
 			"Desc" : "När extra runda i värdshuset aktiverats kommer en ikon visas."
 		},
-		"ShowOutpost": {
-			"Title" : "Bosättningsresurser",
-			"Desc" : "Visar en meny ikon för Bosättningsresurser <br><u>Notering:</u> Spel måste laddas om."
-		},
 		"PreScanLGList": {
 			"Title" : "Preliminär kontroll av MB översikt",
 			"Desc" : "Kontrollera listan av MB och visar om det finns MB placeringar att ta. <br> <u> Notering: </u> Eftersom sista platsen bara skickas om man öppnar MB kan resltatet skifta. Kontrollen sparas."
-		},
-		"CalculatorShowNegativ": {
-			"Title" : "Negativ vinst i kostnadskalkylatorn",
-			"Desc" : "Vill du se negativa vister?"
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Förhandlingshjälp",

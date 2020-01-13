@@ -55,6 +55,8 @@ let i18n = {
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
 			"Save": "Save",
+			"BPs": "BPs",
+			"Meds": "Meds",
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
 			"LevelWarning": "ACHTUNG! Levelt das LG!",
