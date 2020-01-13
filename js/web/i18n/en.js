@@ -368,7 +368,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},
