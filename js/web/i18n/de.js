@@ -51,7 +51,6 @@ let i18n = {
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
 			"ArcBonus": "Arche Bonus",
-			"Earnings": "Ertrag",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
