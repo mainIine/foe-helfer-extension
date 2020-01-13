@@ -582,6 +582,11 @@ const FoEproxy = (function () {
 		MainParser.BonusService = data.responseData;
 	});
 
+	// Limited Bonus (Archenbonus, Kraken etc.)
+	FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
+		Calculator.SetArcBonus(data.responseData);
+	});
+
 	// --------------------------------------------------------------------------------------------------
 	// Botschafter notieren, enthält Bonus FPs oder Münzen
 	FoEproxy.addHandler('EmissaryService', 'getAssigned', (data, postData) => {

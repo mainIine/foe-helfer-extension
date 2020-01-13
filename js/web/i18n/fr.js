@@ -51,7 +51,6 @@ let i18n = {
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus d'arche",
-            "Earnings": "Bénéfices",
             "Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
@@ -103,7 +102,7 @@ let i18n = {
 				"greatbuilding" : "Grand monument",
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
-				"residential" : "Bâtiments événementiels",
+				"residential": "residental buildings", // Todo: Translate
 				"decoration": "décorations", //Todo: Translate
 				"street": "Rues", //Todo: Translate
 				"goods": "Bâtiment fret", //Todo: Translate
