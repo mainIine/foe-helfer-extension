@@ -101,6 +101,24 @@
 	background-color: rgba(208, 126, 3, 0.4);
 }
 
+#costCalculatorBody .costFactorWrapper {
+	padding: 5px 10px;
+	display: flex;
+	align-items: center;
+}
+#costCalculatorBody .costFactorWrapper > div:first-child {
+	text-align: center;
+	width: 36%;
+}
+#costCalculatorBody .costFactorWrapper > div:last-child {
+	text-align: center;
+	width: 64%;
+}
+
+#costCalculatorBody .costFactorWrapper .btn-default {
+	padding: 0.2rem 0.4rem;
+}
+
 #costCalculatorBody .costFactorWrapper > span {
 	display: inline-block;
 	margin-right: 15px;
