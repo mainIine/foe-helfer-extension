@@ -257,6 +257,7 @@ let Calculator = {
         // Tabelle zusammen fummeln
 		h.push('<table style="width:100%"><tbody><tr>');
 		h.push('<td><table id="costTableFordern" class="foe-table"></table></td>');
+		h.push('<td><table id="costTableBPMeds" class="foe-table"></table></td>');
 		h.push('<td><table id="costTableSnipen" class="foe-table"></table></td>');
 		h.push('</tr></tbody></table>');
 
@@ -328,7 +329,7 @@ let Calculator = {
 			});
 		}
 	},
-
+	
 
 	/**
 	 * Daten für die kleine Übersichtsbox aufbereiten
@@ -350,6 +351,7 @@ let Calculator = {
 		let Rankings = Calculator.Places,
 			UpdateEntity = Calculator.Building,
 			hFordern = [],
+			hBPMeds = [],
 			hSnipen = [],
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
@@ -535,9 +537,12 @@ let Calculator = {
 			'<th>' + i18n['Boxes']['Calculator']['Profit'] + '</th>' +
 			'</thead>');
 
+		hBPMeds.push('<thead>' +
+			'<th>' + i18n['Boxes']['Calculator']['BPs'] + '</th>' +
+			'<th>' + i18n['Boxes']['Calculator']['Meds'] + '</th>' +
+			'</thead>');
+
 		hSnipen.push('<thead>' +
-			'<th>BP</th>' +
-			'<th>Meds</th>' +
 			'<th>' + i18n['Boxes']['Calculator']['Commitment'] + '</th>' +
 			'<th>' + i18n['Boxes']['Calculator']['Profit'] + '</th>' +
 			'<th>' + i18n['Boxes']['Calculator']['Rate'] + '</th>' +
@@ -578,6 +583,28 @@ let Calculator = {
 			}
 			else {
 				hFordern.push('<tr>');
+			}
+
+			if (ForderStates[Rank] === 'NotPossible' && SnipeStates[Rank] === 'NotPossible') {
+				hBPMeds.push('<tr class="text-grey">');
+			}
+			else if (ForderStates[Rank] === 'WorseProfit' && SnipeStates[Rank] === 'WorseProfit') {
+				hBPMeds.push('<tr class="text-grey">');
+			}
+			else if (ForderStates[Rank] === 'Self' && SnipeStates[Rank] === 'Self') {
+				hBPMeds.push('<tr class="info-row">');
+			}
+			else if (ForderStates[Rank] === 'NegativeProfit' && SnipeStates[Rank] === 'NegativeProfit') {
+				hBPMeds.push('<tr class="bg-red">');
+			}
+			else if (ForderStates[Rank] === 'LevelWarning' && SnipeStates[Rank] === 'LevelWarning') {
+				hBPMeds.push('<tr class="bg-yellow" title="' + i18n['Boxes']['Calculator']['LevelWarning'] + '">');
+			}
+			else if (ForderStates[Rank] === 'Profit' && SnipeStates[Rank] === 'Profit') {
+				hBPMeds.push('<tr class="bg-green">');
+			}
+			else {
+				hBPMeds.push('<tr>');
 			}
 
 			if (SnipeStates[Rank] === 'NotPossible') {
@@ -628,8 +655,8 @@ let Calculator = {
 			}
 
 			//BP/Medaillen
-			hSnipen.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
-			hSnipen.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
+			hBPMeds.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
+			hBPMeds.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
 
 			// Snipen
 			if (SnipeStates[Rank] === 'Self') {
@@ -664,10 +691,12 @@ let Calculator = {
 				hSnipen.push('<td class="text-center">-</td>');
 			}
 			hFordern.push('</tr>');
+			hBPMeds.push('</tr>');
 			hSnipen.push('</tr>');
 		}
 		
 		$('#costTableFordern').html(hFordern.join(''));
+		$('#costTableBPMeds').html(hBPMeds.join(''));
 		$('#costTableSnipen').html(hSnipen.join(''));
 
 		//Overview nur im Snipemodus aktualisieren

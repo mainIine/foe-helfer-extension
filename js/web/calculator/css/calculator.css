@@ -83,6 +83,7 @@
 	opacity: 0.5;
 }
 
+/* Todo: tr info-row: Hintergrund blau, strong text nur blau, wenn td class=info */
 #costCalculator #costCalculatorBody strong.info,
 #costCalculator #costCalculatorBody tr.info-row strong {
 	color: #2196f3;
