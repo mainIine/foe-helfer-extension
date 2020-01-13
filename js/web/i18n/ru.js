@@ -51,7 +51,6 @@ let i18n = {
 			"Step": "Уровень ",
 			"AvailableFP": "Доступные СО",
 			"ArcBonus": "Боунс Арки",
-			"Earnings": "Прибыль",
 			"Rate": "Курс",
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
@@ -103,7 +102,7 @@ let i18n = {
 				"greatbuilding" : "Великие Строения",
 				"production" : "Производственные постройки",
 				"random_production" : "Случайные производственные здания",
-				"residential" : "Постройки событий",
+				"residential": "residental buildings", // Todo: Translate
 				"decoration": "Декор",
 				"street": "Дороги",
 				"goods": "Промышленные постройки",

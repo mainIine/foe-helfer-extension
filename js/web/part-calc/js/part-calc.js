@@ -669,7 +669,12 @@ let Parts = {
 
 
 		if(show === true){
-			$('.OwnPartBoxBackgroundBody').animate({height: 260, opacity: 1}, 250, function () {
+			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
+			e.style.height = 'auto';
+			let h = e.offsetHeight;
+			e.style.height = '0px';
+
+			$('.OwnPartBoxBackgroundBody').animate({height: h, opacity: 1}, 250, function () {
 				$box.addClass('show');
 				$box.find('.black-bg').show();
 			});

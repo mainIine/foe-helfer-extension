@@ -51,7 +51,6 @@ let i18n = {
 			"Step": "Nivel",
 			"AvailableFP": "Disponibles puntos forge",
 			"ArcBonus": "Bonus del Arca",
-			"Earnings": "Rendimiento",
 			"Rate": "Cotizacion",
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
@@ -103,7 +102,7 @@ let i18n = {
 				"greatbuilding" : "Grandes Edificio",
 				"production" : "Edificios de produccion",
 				"random_production" : "Produccion casual",
-				"residential" : "Edificio de evento",
+				"residential": "residental buildings", // Todo: Translate
 				"decoration": "Decorations",
 				"street": "Streets",
 				"goods": "Goods buildings",
