@@ -365,12 +365,12 @@ let Calculator = {
 			FPRewards = [],
 			BPRewards = [],
 			MedalRewards = [],
+			ForderFPRewards = [],
 			ForderRankCosts = [],
 			SnipeRankCosts = [],
 			Einzahlungen = [],
 			BestGewinn = -999999,
-			SnipeLastRankCost = undefined,
-			ForderEinsatz = undefined;
+			SnipeLastRankCost = undefined;
 
 		for (let i = 0; i < Rankings.length; i++) {
 			let Rank,
@@ -394,6 +394,7 @@ let Calculator = {
 			FPRewards[Rank] = 0;
 			BPRewards[Rank] = 0;
 			MedalRewards[Rank] = 0;
+			ForderFPRewards[Rank] = 0;
 			ForderRankCosts[Rank] = undefined;
 			SnipeRankCosts[Rank] = undefined;
 			Einzahlungen[Rank] = 0;
@@ -410,6 +411,7 @@ let Calculator = {
 			FPRewards[Rank] = Math.round(FPNettoRewards[Rank] * arc);
 			BPRewards[Rank] = Math.round(BPRewards[Rank] * arc);
 			MedalRewards[Rank] = Math.round(MedalRewards[Rank] * arc);
+			ForderFPRewards[Rank] = Math.round(FPNettoRewards[Rank] * ForderArc);
 			
 			if (EigenPos !== undefined && i > EigenPos) {
 				ForderStates[Rank] = 'NotPossible';
@@ -426,7 +428,6 @@ let Calculator = {
 			CurrentFP = (UpdateEntity['state']['invested_forge_points'] !== undefined ? UpdateEntity['state']['invested_forge_points'] : 0) - EigenBetrag;
 			TotalFP = UpdateEntity['state']['forge_points_for_level_up'];
 			RestFP = TotalFP - CurrentFP;
-			ForderEinsatz = Math.round(FPNettoRewards[Rank] * ForderArc);
 
 			if (IsSelf) {
 				ForderStates[Rank] = 'Self';
@@ -443,11 +444,11 @@ let Calculator = {
 				if (SnipeRankCosts[Rank] === undefined)
 					SnipeRankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
 
-				ForderRankCosts[Rank] = Math.max(ForderEinsatz, SnipeRankCosts[Rank]);
+				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SnipeRankCosts[Rank]);
 			}
 			else {
 				SnipeRankCosts[Rank] = Math.round((Einzahlungen[Rank] + RestFP) / 2);
-				ForderRankCosts[Rank] = Math.max(ForderEinsatz, SnipeRankCosts[Rank]);
+				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SnipeRankCosts[Rank]);
 				ForderRankCosts[Rank] = Math.min(ForderRankCosts[Rank], RestFP);
 
 				let ExitLoop = false;
@@ -462,7 +463,7 @@ let Calculator = {
 					if (ForderRankCosts[Rank] === RestFP) {
 						ForderStates[Rank] = 'LevelWarning';
 					}
-					else if (ForderRankCosts[Rank] <= ForderEinsatz) {
+					else if (ForderRankCosts[Rank] <= ForderFPRewards[Rank]) {
 						ForderStates[Rank] = 'Profit';
 					}
 					else {
@@ -612,7 +613,7 @@ let Calculator = {
 				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else {
-				hFordern.push('<td class="text-center">-</td>');
+				hFordern.push('<td class="text-center">' + HTML.Format(ForderFPRewards[Rank]) + '</td>');
 				hFordern.push('<td class="text-center">-</td>');
 			}
 
