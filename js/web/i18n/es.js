@@ -51,7 +51,6 @@ let i18n = {
 			"Step": "Nivel",
 			"AvailableFP": "Disponibles puntos forge",
 			"ArcBonus": "Bonus del Arca",
-			"Earnings": "Rendimiento",
 			"Rate": "Cotizacion",
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
