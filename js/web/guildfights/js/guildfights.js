@@ -246,7 +246,7 @@ let GildFights = {
 			let time = duration.humanize();
 
 			$('.time-diff').text(
-				HTML.i18nReplacer(i18n['Boxes']['Gildfights']['LastSnapshot'], time)
+				HTML.i18nReplacer(i18n['Boxes']['Gildfights']['LastSnapshot'], {'__time__': time})
 			);
 		}
 	},
