@@ -299,7 +299,6 @@ let Calculator = {
 
 			// schnell zwischen den Prozenten wechseln
 			$('body').on('click', '.btn-toggle-arc', function () {
-
 				Calculator.ForderBonus = parseFloat($(this).data('value'));
 				$('#costFactor').val(Calculator.ForderBonus);
 				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);			
@@ -308,7 +307,6 @@ let Calculator = {
 			
 			// wenn der Wert des Archebonus verändert wird, Event feuern
 			$('body').on('blur', '#costFactor', function () {
-
 				Calculator.ForderBonus = parseFloat($('#costFactor').val());
 				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
 				Calculator.CalcBody();

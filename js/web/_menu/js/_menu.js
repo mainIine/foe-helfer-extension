@@ -105,6 +105,14 @@ let _menu = {
 	Prepare: ()=> {
 
 		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').position().top) / 55 );
+
+		// hat der Spieler eine LÄnge vorgebeben?
+		let MenuLength = localStorage.getItem('MenuLength');
+
+		if(MenuLength !== null && MenuLength < _menu.HudCount){
+			_menu.HudCount = parseInt(MenuLength);
+		}
+
 		_menu.HudHeight = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
 
@@ -207,7 +215,7 @@ let _menu = {
 		$('.hud-btn').stop().hover(function() {
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = $this.position().top + 53;
+				y = ($this.offset().top - _menu.HudHeight) -53;
 
 			$('[data-btn="' + id + '"]').css({'top': y +'px'}).show();
 
@@ -575,7 +583,6 @@ let _menu = {
 
 		return btn;
 	},
-
 
 	/**
 	 * Chat Button
