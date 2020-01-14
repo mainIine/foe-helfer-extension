@@ -325,8 +325,11 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome Extension Version"
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Spieler Id:",
+			"GuildId": "Gilden Id:",
+			"World": "Welt:"
 		},
 		"GlobalSend": {
 			"Title" : "Übermittlung an foe-rechner.de",
@@ -368,6 +371,10 @@ let i18n = {
 			"Title" : "Box Koordinaten",
 			"Desc" : "Sollen alle Box Koordinaten zurückgesetzt werden?",
 			"Button" : "Löschen!"
+		},
+		"MenuLength": {
+			"Title" : "Menü Länge",
+			"Desc" : "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe."
 		},
 		"ChangeLanguage": {
 			"Title" : "Sprache wechseln",

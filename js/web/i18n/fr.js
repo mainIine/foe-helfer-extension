@@ -325,8 +325,11 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Version de l'extension Chrome <strong class='text-danger'>BETA</strong>",
-			"Desc" : "Version de l'extension Chrome"
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Player-Id:",
+			"GuildId": "Gild-Id:",
+			"World": "World:"
 		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
