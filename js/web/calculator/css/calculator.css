@@ -105,14 +105,23 @@
 	padding: 5px 10px;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 }
+
 #costCalculatorBody .costFactorWrapper > div:first-child {
 	text-align: center;
 	width: 36%;
 }
+
+#costCalculatorBody .costFactorWrapper > div:first-child span {
+	white-space: nowrap;
+	display: block;
+	margin-top: 6px;
+}
+
 #costCalculatorBody .costFactorWrapper > div:last-child {
 	text-align: center;
-	width: 64%;
+	width: 39%;
 }
 
 #costCalculatorBody .costFactorWrapper .btn-default {

@@ -148,6 +148,9 @@
 	height: 100%;
 	overflow: hidden;
 }
+
+.window-body input[type=text],
+.window-body input[type=number],
 .window-body select {
 	background-color: #F9EBC6;
 	color: #93795D;

@@ -325,8 +325,11 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Chrome tillägg <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome tillägg version"
+			"DescDebug" : "Chrome tillägg  <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome tillägg version",
+			"PlayerId": "Player-Id:",
+			"GuildId": "Gild-Id:",
+			"World": "World:"
 		},
 		"GlobalSend": {
 			"Title" : "Överföring till foe-rechner.de",
