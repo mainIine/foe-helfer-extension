@@ -31,6 +31,8 @@
 	position: absolute;
 	text-align: left;
 	padding: 1px;
+	top: 30%;
+	left: 40%;
 	border-color: transparent;
 	border-width: 35px 10px 10px 10px;
 	border-style: solid;
@@ -162,7 +164,7 @@
 }
 
 .closed .window-body {
-	height: 22px !important;
+	height: 3px !important;
 }
 
 .window-grippy {
@@ -175,10 +177,12 @@
 	cursor: nwse-resize;
 	background: url('../images/wingrip.png') no-repeat;
 }
+.closed .window-grippy {
+	display:none;
+}
 
 
-
-/* ------------------------------------------------------------------------------------------------------------------ */
+	/* ------------------------------------------------------------------------------------------------------------------ */
 
 
 #note-box {
