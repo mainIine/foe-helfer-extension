@@ -252,6 +252,10 @@ let i18n = {
 			"Negotiations": "Verhandlungen",
 			"Fights": "Kämpfe",
 			"LastSnapshot": " - letzter Snapshot vor __time__",
+		},
+
+		"HiddenRewards": {
+			"Title": "Versteckte Belohnungen"
 		}
 	},
 
@@ -319,6 +323,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info Box",
 			"Desc" : "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Versteckte Belohnungen",
+			"Desc": "Übersicht der versteckten Belohnungen"
 		}
 	},
 
@@ -418,5 +426,18 @@ let i18n = {
 		"GEXChampionship" : "Die GEX-Gilden Platzierung wurde geupdatet",
 		"LGInvest" : "Deine LG Investitionen wurden übertragen",
 		"LGGildMember" : "__player__'s LGs wurden übermittelt"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "Natur",
+			"shore": "Küste",
+			"cityRoadSmall": "Einspurige Strasse"
+		},
+		"Table": {
+			"type": "Typ",
+			"position": "Position",
+			"expires": "Verschindet am/um"
+		}
 	}
 };
