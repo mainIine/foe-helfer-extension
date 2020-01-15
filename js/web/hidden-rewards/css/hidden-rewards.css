@@ -1,3 +1,8 @@
+#HiddenRewardBox {
+    top: 30%;
+    left: 30px;
+}
+
 #HiddenRewardBox table td.incident {
     display: inline-block;
     background-size: 50px 35px;
