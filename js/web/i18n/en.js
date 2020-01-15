@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "en-EN",
 	"DateTime" : "D/M/YY h:mm:ss a",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Co-payment calculator",

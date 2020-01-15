@@ -20,6 +20,7 @@ let _menu = {
 	SlideParts: 0,
 	ActiveSlide: 1,
 	HudCount: 0,
+	HudLength: 0,
 	HudHeight: 0,
 
 	Items : [
@@ -105,13 +106,13 @@ let _menu = {
 	 */
 	Prepare: ()=> {
 
-		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').position().top) / 55 );
+		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').offset().top) / 55 );
 
 		// hat der Spieler eine LÄnge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
 		if(MenuLength !== null && MenuLength < _menu.HudCount){
-			_menu.HudCount = parseInt(MenuLength);
+			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
 		_menu.HudHeight = (_menu.HudCount * 55);
@@ -220,7 +221,7 @@ let _menu = {
 		$('.hud-btn').stop().hover(function() {
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = ($this.offset().top - _menu.HudHeight) -53;
+				y = ($this.offset().top +30);
 
 			$('[data-btn="' + id + '"]').css({'top': y +'px'}).show();
 
@@ -260,7 +261,7 @@ let _menu = {
 
 		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
 
-		$('#ant-hud').append( ToolTipp );
+		$('body').append( ToolTipp );
 	},
 
 	/*----------------------------------------------------------------------------------------------------------------*/

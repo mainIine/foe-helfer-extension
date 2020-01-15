@@ -303,7 +303,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('body').on('change', '#menu-input-length', function(){
+		$('body').on('keyup', '#menu-input-length', function(){
 			let value = $(this).val();
 
 			if(value > 0){
@@ -312,7 +312,7 @@ let Settings = {
 				localStorage.removeItem('MenuLength');
 			}
 
-			location.reload();
+			_menu.SetMenuHeight(true);
 		});
 
 		return ip;

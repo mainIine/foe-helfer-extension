@@ -573,7 +573,7 @@ const FoEproxy = (function () {
 		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
 
 		// freigeschaltete Erweiterungen sichern
-		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
 	
 	// --------------------------------------------------------------------------------------------------
