@@ -380,6 +380,10 @@ p {
     background-image: url('../images/technologies.png');
 }
 
+#hiddenRewards-Btn span {
+	background-image: url('../images/incident_crates.png');
+}
+
 #campagneMap-Btn span {
 	background-image: url('../images/map.png');
 	-webkit-transform: rotate(-90deg);

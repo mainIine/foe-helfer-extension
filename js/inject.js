@@ -165,7 +165,8 @@ async function InjectCode() {
 			'read-buildings',
 			'settings',
 			'strategy-points',
-			'citymap'
+			'citymap',
+			'hidden-rewards'
 		];
 
 		// Scripte laden (nacheinander)

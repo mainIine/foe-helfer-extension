@@ -23,6 +23,7 @@ let _menu = {
 	HudHeight: 0,
 
 	Items : [
+		'hiddenRewards',
 		'calculator',
 		'partCalc',
 		'outpost',
@@ -130,7 +131,11 @@ let _menu = {
 			StorgedItems = localStorage.getItem('MenuSort');
 
 		if(StorgedItems !== null){
-			_menu.Items = JSON.parse(StorgedItems);
+			let storedItems = JSON.parse(StorgedItems);
+
+			if(_menu.Items.length == storedItems.length) {
+				_menu.Items = JSON.parse(StorgedItems);
+			}
 		}
 
 		// Menüpunkte einbinden
@@ -470,6 +475,23 @@ let _menu = {
 
         return btn_MapBG;
     },
+
+	hiddenRewards_Btn: ()=> {
+		let btn_RewardsBG = $('<div />').attr({'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards'}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n['Menu']['HiddenRewards']['Title'], i18n['Menu']['HiddenRewards']['Desc'], 'hiddenRewards-Btn');
+
+		let btn_Rewards = $('<span />');
+
+		btn_Rewards.on('click', function () {
+			HiddenRewards.init();
+		})
+
+		btn_RewardsBG.append(btn_Rewards);
+
+		return btn_RewardsBG;
+	},
 
 	/**
 	 * Armeen
