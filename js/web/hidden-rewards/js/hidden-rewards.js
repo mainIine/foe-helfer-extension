@@ -1,6 +1,9 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = data.responseData.hiddenRewards;
     HiddenRewards.prepareData();
+    if ($('#HiddenRewardBox').length >= 1) {
+        HiddenRewards.BuildBox();
+    }
 });
 
 let HiddenRewards = {
