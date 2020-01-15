@@ -256,6 +256,10 @@ let i18n = {
 			"Negotiations": "Negotiations",
 			"Fights": "Fights",
 			"LastSnapshot": " - last snapshot __time__ ago",
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards"
 		}
 	},
 
@@ -418,5 +422,18 @@ let i18n = {
 		"GEXChampionship" : "The GEX guild placement has been updated",
 		"LGInvest" : "Your LG investments have been transferred",
 		"LGGildMember" : "__player__'s Legendary buildings have been submitted"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "nature",
+			"shore": "Shore",
+			"cityRoadSmall": "Small Road"
+		},
+		"Table": {
+			"type": "Type",
+			"position": "Position",
+			"expires": "Expires at"
+		}
 	}
 };
