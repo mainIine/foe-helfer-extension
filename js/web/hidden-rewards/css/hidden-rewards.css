@@ -11,6 +11,11 @@
     height: 30px;
 }
 
+#HiddenRewardBox td.warning,
+#HiddenRewardBox td .warning {
+    color: #FF6000;
+}
+
 #HiddenRewardBox table td.incident_broken_cart {
     background-image: url("../images/incident_broken_cart.png");
 }
