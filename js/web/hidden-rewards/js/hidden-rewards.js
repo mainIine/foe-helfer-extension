@@ -40,6 +40,7 @@ let HiddenRewards = {
             data.push({
                 type: HiddenRewards.Cache[idx].type,
                 position: position,
+                starts: HiddenRewards.Cache[idx].startTime,
                 expires: HiddenRewards.Cache[idx].expireTime,
             });
         }
@@ -54,32 +55,44 @@ let HiddenRewards = {
     },
 
     BuildBox:()=> {
-        var t = [];
+        var h = [];
 
-        t.push('<table class="foe-table">');
+        h.push('<table class="foe-table">');
 
-        t.push('<thead>');
-            t.push('<tr>');
-                t.push('<th>' + i18n.HiddenRewards.Table.type + '</th>');
-                t.push('<th>' + i18n.HiddenRewards.Table.position + '</th>');
-                t.push('<th>' + i18n.HiddenRewards.Table.expires + '</th>');
-            t.push('</tr>');
-        t.push('</thead>');
+        h.push('<thead>');
+            h.push('<tr>');
+                h.push('<th>' + i18n.HiddenRewards.Table.type + '</th>');
+                h.push('<th>' + i18n.HiddenRewards.Table.position + '</th>');
+                h.push('<th>' + i18n.HiddenRewards.Table.expires + '</th>');
+            h.push('</tr>');
+        h.push('</thead>');
 
-        t.push('<tbody>');
-        for(let idx in HiddenRewards.Cache) {
+        h.push('<tbody>');
+
+        let cnt = 0;
+        for (let idx in HiddenRewards.Cache) {
             var hiddenReward = HiddenRewards.Cache[idx];
 
-            t.push('<tr>');
-                t.push('<td class="incident ' + hiddenReward.type + '" title="' + hiddenReward.type + '">&nbsp;</td>');
-                t.push('<td>' + hiddenReward.position + '</td>');
-                t.push('<td>' + moment.unix(hiddenReward.expires).format(i18n['DateTime']) + '</td>');
-            t.push('</tr>');
+            let StartTime = moment.unix(hiddenReward.starts),
+                EndTime = moment.unix(hiddenReward.expires);
+
+            if (StartTime < new Date().getTime() && EndTime < new Date().getTime()) {
+                h.push('<tr>');
+                h.push('<td class="incident ' + hiddenReward.type + '" title="' + hiddenReward.type + '">&nbsp;</td>');
+                h.push('<td>' + hiddenReward.position + '</td>');
+                h.push('<td>' + EndTime.format(i18n['DateTime']) + '</td>');
+                h.push('</tr>');
+                cnt++;
+            }
         }
-        t.push('</tbody>');
+        if (cnt === 0) {
+            h.push('<td colspan="3">' + 'Keine Ereignisse vorhanden' + '</td>'); //Todo: Translate
+        }
 
-        t.push('</table>');
+        h.push('</tbody>');
 
-        jQuery('#HiddenRewardBoxBody').html(t.join(''));
+        h.push('</table>');
+
+        jQuery('#HiddenRewardBoxBody').html(h.join(''));
     }
 }
