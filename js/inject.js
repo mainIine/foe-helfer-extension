@@ -78,7 +78,7 @@ if(uLng !== null){
 	lng = uLng;
 }
 
-let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v));
+let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_i18n/' + lng + '.js?v=' + v));
 
 
 InjectCode();
@@ -117,19 +117,20 @@ async function InjectCode() {
 		// warte zunächst, dass ant und i18n geladen sind
 		await Promise.all([antLoadpromise, i18nJSLoadpromise, jQueryLoading]);
 
-		const extURL = chrome.extension.getURL('');
-		const vendorScripts = [
-			'moment/moment-with-locales.min',
-			'CountUp/jquery.easy_number_animate.min',
-			'Tabslet/jquery.tabslet.min',
-			'ScrollTo/jquery.scrollTo.min',
-			'jQuery/jquery-resizable.min',
-			'tooltip/tooltip',
-			'tableSorter/table-sorter',
-			'Sortable/Sortable.min',
-			'jsZip/jszip.min',
-			//'jedParser/jedParser'
-		];
+		const extURL = chrome.extension.getURL(''),
+			vendorScripts = [
+				'moment/moment-with-locales.min',
+				'CountUp/jquery.easy_number_animate.min',
+				'Tabslet/jquery.tabslet.min',
+				'ScrollTo/jquery.scrollTo.min',
+				'jQuery/jquery-resizable.min',
+				'jQuery/jquery-ui.min',
+				'tooltip/tooltip',
+				'tableSorter/table-sorter',
+				'Sortable/Sortable.min',
+				'jsZip/jszip.min',
+				//'jedParser/jedParser'
+			];
 
 		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
 		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
@@ -148,7 +149,7 @@ async function InjectCode() {
 		script.remove();
 
 		const s = [
-			'helper',
+			'_helper',
 			'_menu',
 			'tavern',
 			'outposts',

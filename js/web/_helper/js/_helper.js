@@ -122,7 +122,7 @@ let HTML = {
 	Box: (args)=> {
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').text(args['title']),
+			title = $('<span />').addClass('title').html(args['title'] + i18n['Global']['BoxTitle']),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),

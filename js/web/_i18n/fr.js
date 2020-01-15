@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "fr-FR",
 	"DateTime" : "DD.MM.YYYY HH:mm",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Calcul de PFs pour mes GMs",

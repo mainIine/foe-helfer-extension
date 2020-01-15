@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "ru-RU",
 	"DateTime" : "DD.MM.YYYY HH:mm",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Калькурятор вложений в свои ВС",
