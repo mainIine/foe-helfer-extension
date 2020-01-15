@@ -76,11 +76,16 @@ let HiddenRewards = {
             let StartTime = moment.unix(hiddenReward.starts),
                 EndTime = moment.unix(hiddenReward.expires);
 
-            if (StartTime < new Date().getTime() && EndTime < new Date().getTime()) {
+            if (EndTime > new Date().getTime()) {
                 h.push('<tr>');
                 h.push('<td class="incident ' + hiddenReward.type + '" title="' + hiddenReward.type + '">&nbsp;</td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
-                h.push('<td>' + EndTime.format(i18n['DateTime']) + '</td>');
+                if (StartTime > new Date().getTime()) {
+                    h.push('<td class="warning">' + 'Erscheint ' + moment.unix(hiddenReward.starts).fromNow() + '</td>'); //Todo: Translate
+                }
+                else {
+                    h.push('<td class="">' + 'Verschwindet ' + moment.unix(hiddenReward.expires).fromNow() + '</td>'); //Todo: Translate
+                }
                 h.push('</tr>');
                 cnt++;
             }
