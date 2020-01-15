@@ -16,7 +16,11 @@
 let i18n = {
 	"Local" : "es-ES",
 	"DateTime" : "DD.MM.YYYY HH:mm [Uhr]",
-	
+
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Calculator cuata propia",

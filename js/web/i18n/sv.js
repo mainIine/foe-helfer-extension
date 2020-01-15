@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "sv-SE",
 	"DateTime" : "YY/M/D h:mm:ss a",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title" : "MB kalkylator",

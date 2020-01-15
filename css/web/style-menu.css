@@ -233,6 +233,7 @@ p {
 	top: 360px;
 	padding-top: 24px;
 	padding-bottom: 24px;
+	transition: height 0.2s linear;
 }
 
 #ant-hud::before,
