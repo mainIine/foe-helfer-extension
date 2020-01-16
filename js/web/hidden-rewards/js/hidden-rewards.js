@@ -7,31 +7,27 @@ let HiddenRewards = {
 
     Cache: null,
 
-
     init: () => {
-        if( $('#HiddenRewardBox').length < 1 ){
+        if( $('#HiddenRewardBox').length < 1 ) {
 
-            HTML.Box({
-                'id': 'HiddenRewardBox',
-                'title': i18n.Boxes.HiddenRewards.Title,
-                'auto_close': false,
-                'dragdrop': true,
-                'minimize': true
-            });
+			HTML.AddCssFile('hidden-rewards');
 
+			HTML.Box({
+				'id': 'HiddenRewardBox',
+				'title': i18n.Boxes.HiddenRewards.Title,
+				'auto_close': false,
+				'dragdrop': true,
+				'minimize': true
+			});
 
-            moment.locale(i18n['Local']);
-
-            // CSS in den DOM prügeln
-            HTML.AddCssFile('hidden-rewards');
-        }
-
+			moment.locale(i18n['Local']);
+		}
         HiddenRewards.BuildBox();
     },
 
 
     prepareData: () => {
-        var data = [];
+        let data = [];
 
         for(let idx in HiddenRewards.Cache) {
             let position = HiddenRewards.Cache[idx].position.context;
