@@ -185,9 +185,12 @@ let i18n = {
 
 		"EventList": {
 			"Title": "Event quest list for: ", //Todo: Translate
+			"Desc": "Task", //Todo: Translate
 			"Reward": "Reward", //Todo: Translate
-			"Previous": "Previous", //Todo: Translate
-			"Next": "Next", //Todo: Translate
+            "Number": "No.", //Todo: Translate
+			"Or": " or ", //Todo: Translate
+			"And": " and ", //Todo: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
 		},
 
         "Negotiation": {
@@ -287,6 +290,10 @@ let i18n = {
             "Title": "Kampagne",
             "Desc": "Übersicht über die benötigten Ressourcen",
         	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
+        "Event": {
+            "Title": "Event Questlist", //Todo: Translate
+            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
 		},
         "Negotiation": {
             "Title": "Assistant de négociation",
