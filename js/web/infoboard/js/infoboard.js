@@ -322,10 +322,15 @@ let Info = {
 
 		if(data['lockedUntil'] !== undefined)
 		{
+			let p = bP.find(o => (o['participantId'] === d['participantId']));
+
+			let tc = GildFights.SortedColors[ p['participantId'] ]['highlight'],
+				ts = GildFights.SortedColors[ p['participantId'] ]['shadow'];
+
 			return {
 				class: 'guildfighs',
 				type: 'Gild-Fights',
-				msg: 'Provinz xxx wurde von xxx übernommen und ist bis xxx gesperrt'
+				msg: 'Provinz <span style="color:#ffb539">' + prov['name'] + '</span> wurde von <span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> übernommen und ist bis ' + moment.unix(data['lockedUntil']).format('HH:mm:ss') +  ' Uhr gesperrt'
 			};
 		}
 
@@ -352,12 +357,13 @@ let Info = {
 			let tc = GildFights.SortedColors[ p['participantId'] ]['highlight'],
 				ts = GildFights.SortedColors[ p['participantId'] ]['shadow'];
 
-			t += '<strong style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</strong> hat auf <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong> / <strong>' + d['maxProgress'] + '</strong> Punkte<br>';
+			t += '<span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> hat auf <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong> / <strong>' + d['maxProgress'] + '</strong> Punkte<br>';
 
 			if(Info.GildPoints[ data['id'] ] === undefined){
 				Info.GildPoints[ data['id'] ] = {};
 			}
 
+			// mitschreiben um keine Punkte doppelt auszugeben
 			Info.GildPoints[ data['id'] ][ d['participantId'] ] = d['progress'];
 		}
 
