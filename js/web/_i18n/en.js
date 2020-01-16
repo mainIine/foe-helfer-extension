@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
-			"Earnings": "Earnings",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
@@ -92,7 +91,7 @@ let i18n = {
 			"TotalFPs": "Total FPs from all buildings: ",
 			"Amount": "Number",
 			"FPBar" : "FP-Stock: ",
-			"BuyableFP" : "Buyable: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -395,8 +394,8 @@ let i18n = {
 			"Button" : "Delete!"
 		},
 		"MenuLength": {
-			"Title" : "Menü Länge",
-			"Desc" : "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe."
+			"Title" : "Menu length",
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height."
 		},
 		"ChangeLanguage": {
 			"Title" : "Change language",

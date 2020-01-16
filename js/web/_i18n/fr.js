@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus d'arche",
-			"Earnings": "Bénéfices",
 			"Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
@@ -222,6 +221,7 @@ let i18n = {
 			"FilterAuction" : "Enchères",
 			"FilterLevel" : "Niveau supérieur",
 			"FilterMessage" : "Message",
+			"FilterGildFights" : "Guild Fights",
 			"FilterTrade" : "Commerce",
 			"ResetBox" : "Vider la boîte",
 			"Messages" : {
@@ -261,6 +261,10 @@ let i18n = {
 			"Negotiations": "Negotiations",
 			"Fights": "Fights",
 			"LastSnapshot": " - last snapshot __time__ ago",
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards"
 		}
 	},
 
@@ -332,6 +336,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info techniques",
 			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'<br><em>Cela se remplit avec les infos ...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards",
+			"Desc": "Overview of hidden rewards"
 		}
 	},
 
@@ -385,6 +393,10 @@ let i18n = {
 			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
 			"Button" : "Supprimer!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length", //Todo: Translate
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height." //Todo: Translate
+		},
 		"ChangeLanguage": {
 			"Title" : "Changer de langue",
 			"Desc" : "Quelle langue, au lieu de la langue reconnue, devrait être utilisée?",
@@ -428,5 +440,18 @@ let i18n = {
 		"GEXChampionship" : "Le placement de guilde GEX a été mis à jour",
 		"LGInvest" : "Vos investissements LG ont été transférés",
 		"LGGildMember" : "__player__'s bâtiments légendaires ont été soumis"
+	},
+	
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "nature", //Todo: Translate
+			"shore": "Shore", //Todo: Translate
+			"cityRoadSmall": "Small Road" //Todo: Translate
+		},
+		"Table": {
+			"type": "Type", //Todo: Translate
+			"position": "Position", //Todo: Translate
+			"expires": "Expires at" //Todo: Translate
+		}
 	}
 };
