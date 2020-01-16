@@ -233,6 +233,7 @@ p {
 	top: 360px;
 	padding-top: 24px;
 	padding-bottom: 24px;
+	transition: height 0.2s linear;
 }
 
 #ant-hud::before,
@@ -360,27 +361,31 @@ p {
 }
 
 
-#getFPs span {
-	background-image: url('../images/crate.png');
+#productions-Btn span {
+	background-image: url('../images/productions.png');
 }
 
-#calcFPs span {
+#calculator-Btn span {
 	background-image: url('../images/calculator.png');
 }
 
-#outPostBtn span {
+#outpost-Btn span {
 	background-image: url('../images/vikings_ship.png');
 }
 
-#ownFPs span {
-	background-image: url('../images/own-part.png');
+#partCalc-Btn span {
+	background-image: url('../images/part-calc.png');
 }
 
-#Tech span {
+#technologies-Btn span {
     background-image: url('../images/technologies.png');
 }
 
-#Map span {
+#hiddenRewards-Btn span {
+	background-image: url('../images/incident_crates.png');
+}
+
+#campagneMap-Btn span {
 	background-image: url('../images/map.png');
 	-webkit-transform: rotate(-90deg);
     -moz-transform: rotate(-90deg);
@@ -389,36 +394,35 @@ p {
     transform: rotate(-90deg);
 }
 
-
-#ChatBtn span {
+#chat-Btn span {
 	background-image: url('../images/chat.png');
 }
 
-#ForumBtn span {
+#forum-Btn span {
 	background-image: url('../images/forum.png');
 }
 
-#AskBtn span {
+#ask-Btn span {
 	background-image: url('../images/ask.png');
 }
 
-#SettingBtn span {
+#settings-Btn span {
 	background-image: url('../images/wrench.png');
 }
 
-#BugBtn span {
+#github-Btn span {
 	background-image: url('../images/bug.png');
 }
 
-#InfoBox span {
+#infobox-Btn span {
 	background-image: url('../images/info.png');
 }
 
-#unitBtn span {
+#unit-Btn span {
 	background-image: url('../images/units.png');
 }
 
-#negotationBtn span {
+#negotiation-Btn span {
 	background-image: url('../images/negotation.png');
 }
 

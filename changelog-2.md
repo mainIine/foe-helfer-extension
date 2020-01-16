@@ -1,5 +1,49 @@
 ##Changelog - Chrome Extension
 
+#####2.4.0.1
+
+**New**
+- Extension:
+    - full [Chrome](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf) and [Firefox](https://addons.mozilla.org/addon/foe-helper/) support
+
+**Update**
+- Menu:
+    - [#279](https://github.com/dsiekiera/foe-helfer-extension/issues/279) Drag & drop for sorting built in
+    - resets itself after a resize
+
+**BugFix**
+- Extension:
+    - [#284](https://github.com/dsiekiera/foe-helfer-extension/issues/284) new mechanics for better stable loading of the complete extension
+    - [#297](https://github.com/dsiekiera/foe-helfer-extension/issues/297) the FP bar (top middle) is now included in the inventory
+    
+- Campain Map:
+    - [#260](https://github.com/dsiekiera/foe-helfer-extension/issues/260) Accepted trade offers are offset against the goods list
+    
+- Ownpart calculator:
+    - [#285](https://github.com/dsiekiera/foe-helfer-extension/issues/285) Width of the calculator for English increased
+    - [#195](https://github.com/dsiekiera/foe-helfer-extension/issues/195) Bookmark and Copy buttons now work properly
+
+- Outpost:
+    - Übersetzungen gefixt
+    - [#302](https://github.com/dsiekiera/foe-helfer-extension/issues/302) Faulty empty box fixed
+
+- Cost Calculator:
+    - [#239](https://github.com/dsiekiera/foe-helfer-extension/issues/239) [#261](https://github.com/dsiekiera/foe-helfer-extension/issues/261) [#287](https://github.com/dsiekiera/foe-helfer-extension/issues/287) Fixed colors for correct assignment
+    - [#276](https://github.com/dsiekiera/foe-helfer-extension/issues/276) Rounding cost calculator vs. Fixed scan in advance
+    - [#282](https://github.com/dsiekiera/foe-helfer-extension/issues/282) At the bottom, a bar with active loop quests is displayed
+    
+- Gildfights:
+    - [#306](https://github.com/dsiekiera/foe-helfer-extension/issues/306) Incorrect loading of the portraits caused the box to crash
+
+---
+
+#####2.4.0
+
+**BugFix**
+- Extension:
+    - [#314](https://github.com/dsiekiera/foe-helfer-extension/issues/314) Firefox version loads the modules in the wrong order
+
+---
 
 #####2.3.15.1
 

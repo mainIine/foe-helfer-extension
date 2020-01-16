@@ -84,6 +84,7 @@ let Infoboard = {
 				'auto_close': true,
 				'dragdrop': true,
 				'resize': true,
+				'minimize': true,
 				'speaker': 'infoboxTone'
 			});
 

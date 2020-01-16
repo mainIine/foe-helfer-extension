@@ -35,7 +35,24 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 		GildFights.PrevActionTimestamp = GildFights.NewActionTimestamp;
 	}
 
-	GildFights.NewAction = data['responseData'];
+	let d = data['responseData'],
+		players = [];
+
+	for(let i in d){
+		if(!d.hasOwnProperty(i)){
+			break;
+		}
+
+		players.push({
+			player_id: d[i]['player']['player_id'],
+			name: d[i]['player']['name'],
+			avatar: d[i]['player']['avatar'],
+			battlesWon: d[i]['battlesWon'] || 0,
+			negotiationsWon: d[i]['negotiationsWon'] || 0
+		});
+	}
+
+	GildFights.NewAction = players;
 	localStorage.setItem('GildFights.NewAction', JSON.stringify(GildFights.NewAction));
 
 	GildFights.NewActionTimestamp = moment().unix();
@@ -70,6 +87,9 @@ let GildFights = {
 	InjectionLoaded: false,
 
 
+	/**
+	 * Zündung
+	 */
 	init: ()=> {
 
 		if(GildFights.InjectionLoaded === false){
@@ -88,6 +108,9 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Zeigt die große Map mit Gefechten
+	 */
 	ShowGildBox: ()=> {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#LiveGildFighting').length === 0 ){
@@ -109,6 +132,9 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Zeigt die Spielerübersicht
+	 */
 	ShowPlayerBox: () => {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#GildPlayers').length === 0 ){
@@ -117,11 +143,10 @@ let GildFights = {
 
 			HTML.Box({
 				id: 'GildPlayers',
-				title: 'Spieler Übersicht',
+				title: i18n['Boxes']['Gildfights']['Title'],
 				auto_close: true,
 				dragdrop: true,
-				minimize: true,
-				saveCords: false
+				minimize: true
 			});
 
 			// CSS in den DOM prügeln
@@ -132,6 +157,9 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Inhalt des Snapshots darstellen
+	 */
 	BuildPlayerContent: ()=> {
 		let t = [];
 
@@ -141,9 +169,9 @@ let GildFights = {
 		t.push('<tr>');
 
 		t.push('<th>&nbsp;</th>');
-		t.push('<th>Spieler</th>');
-		t.push('<th class="text-center">Verhandlungen</th>');
-		t.push('<th class="text-center">Kämpfe</th>');
+		t.push('<th>' + i18n['Boxes']['Gildfights']['Player'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Negotiations'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Fights'] + '</th>');
 
 		t.push('</tr>');
 		t.push('</thead>');
@@ -156,44 +184,44 @@ let GildFights = {
 				break;
 			}
 
-			let p = GildFights.NewAction[i];
+			let playerNew = GildFights.NewAction[i];
 
 			let fightAddOn = '',
 				negotaionAddOn = '',
 				change = false;
 
+			// gibt es einen älteren Snapshot?
 			if(GildFights.PrevAction !== null){
 
-				if(GildFights.PrevAction[i]['negotiationsWon'] < p['negotiationsWon']){
-					negotaionAddOn = ' <small class="text-success">&#8593; ' + (p['negotiationsWon'] - GildFights.PrevAction[i]['negotiationsWon']) + '</small>';
-					change = true;
-				}
+				let playerOld = GildFights.PrevAction.find(p => (p['player_id'] === playerNew['player_id']));
 
-				if(GildFights.PrevAction[i]['battlesWon'] < p['battlesWon']){
-					fightAddOn = ' <small class="text-success">&#8593; ' + (p['battlesWon'] - GildFights.PrevAction[i]['battlesWon']) + '</small>';
-					change = true;
+				// gibt es zu diesem Spieler Daten?
+				if(playerOld !== undefined) {
+
+					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon']) {
+						negotaionAddOn = ' <small class="text-success">&#8593; ' + (playerNew['negotiationsWon'] - playerOld['negotiationsWon']) + '</small>';
+						change = true;
+					}
+
+					if (playerOld['battlesWon'] < playerNew['battlesWon']) {
+						fightAddOn = ' <small class="text-success">&#8593; ' + (playerNew['battlesWon'] - playerOld['battlesWon']) + '</small>';
+						change = true;
+					}
 				}
 			}
 
-			t.push('<tr' + (change === true ? ' class="bg-green"' : '') + '>');
-			// ToDo: bg-green anlegen (leicht transparenter Hintergrund)
-			t.push('<td>');
-			t.push('<img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ p['player']['avatar'] ] + '.jpg" alt="">');
-			// t.push(p['player']['avatar']);
-			t.push('</td>');
+			t.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
-			t.push('<td>');
-			t.push(p['player']['name']);
-			t.push('</td>');
+			t.push('<td><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ playerNew['avatar'] ] + '.jpg" alt=""></td>');
 
-
+			t.push('<td>' + playerNew['name'] + '</td>');
 
 			t.push('<td class="text-center">');
-			t.push((p['negotiationsWon'] || 0) + negotaionAddOn);
+				t.push(playerNew['negotiationsWon'] + negotaionAddOn);
 			t.push('</td>');
 
 			t.push('<td class="text-center">');
-			t.push((p['battlesWon'] || 0) + fightAddOn);
+				t.push(playerNew['battlesWon'] + fightAddOn);
 			t.push('</td>');
 
 			t.push('</tr>');
@@ -217,11 +245,16 @@ let GildFights = {
 
 			let time = duration.humanize();
 
-			$('.time-diff').text(' - letzter Snapshot vor ' + time );
+			$('.time-diff').text(
+				HTML.i18nReplacer(i18n['Boxes']['Gildfights']['LastSnapshot'], {'__time__': time})
+			);
 		}
 	},
 
 
+	/**
+	 * Farben der einzelenen Gilden ermitteln und zuordnen
+	 */
 	PrepareColors: ()=> {
 
 		// ist schon fertig aufbereitet
@@ -258,6 +291,9 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Inhalt der Kartenbox
+	 */
 	BuildFightContent: () => {
 
 		GildFights.PrepareColors();
@@ -353,6 +389,11 @@ let GildFights = {
 	},
 
 
+	/**
+	 * Echtzeit aktualisierung der Kartenbox
+	 *
+	 * @param data
+	 */
 	RefreshTable: (data)=> {
 
 		// Provinz wurde übernommen
