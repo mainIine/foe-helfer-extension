@@ -16,7 +16,11 @@
 let i18n = {
 	"Local" : "de-DE",
 	"DateTime" : "DD.MM.YYYY HH:mm [Uhr]",
-	
+
+	"Global" : {
+		"BoxTitle": " <small><em> - FoE Helfer</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Eigenanteilsrechner",
@@ -56,6 +60,8 @@ let i18n = {
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
 			"Save": "Save",
+			"BPs": "BPs",
+			"Meds": "Meds",
 			"Commitment": "Einsatz",
 			"Profit": "Gewinn",
 			"LevelWarning": "ACHTUNG! Levelt das LG!",
@@ -87,6 +93,7 @@ let i18n = {
 			"Amount": "Anzahl",
 			"FPBar" : "FP-Lager: ",
 			"BuyableFP" : "Kaufbar: ",
+			"FPBar" : "FP-Lager: "
 		},
 
 		"Productions" : {
@@ -177,6 +184,8 @@ let i18n = {
 
         "EventList": {
             "Title": "Event-Questliste für: ",
+            "Desc": "Aufgabe",
+            "DescCurrent": "Aktuelle Quest",
             "Reward": "Belohnung",
             "Previous": "Vorherige",
             "Next": "Nächste",
@@ -244,6 +253,18 @@ let i18n = {
 			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
 			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
+		},
+
+		"Gildfights": {
+			"Titel": "Spieler Übersicht",
+			"Player": "Spieler",
+			"Negotiations": "Verhandlungen",
+			"Fights": "Kämpfe",
+			"LastSnapshot": " - letzter Snapshot vor __time__",
+		},
+
+		"HiddenRewards": {
+			"Title": "Versteckte Belohnungen"
 		}
 	},
 
@@ -271,6 +292,10 @@ let i18n = {
             "Title": "Kampagne",
             "Desc": "Übersicht über die benötigten Ressourcen",
         	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
+        "Event": {
+            "Title": "Event Questliste",
+            "Desc": "Übersicht über die nächsten Event Quests"
 		},
         "Negotiation": {
             "Title": "Verhandlungassistent",
@@ -311,14 +336,21 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info Box",
 			"Desc" : "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Versteckte Belohnungen",
+			"Desc": "Übersicht der versteckten Belohnungen"
 		}
 	},
 
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome Extension Version"
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Spieler Id:",
+			"GuildId": "Gilden Id:",
+			"World": "Welt:"
 		},
 		"GlobalSend": {
 			"Title" : "Übermittlung an foe-rechner.de",
@@ -361,6 +393,10 @@ let i18n = {
 			"Desc" : "Sollen alle Box Koordinaten zurückgesetzt werden?",
 			"Button" : "Löschen!"
 		},
+		"MenuLength": {
+			"Title" : "Menü Länge",
+			"Desc" : "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe."
+		},
 		"ChangeLanguage": {
 			"Title" : "Sprache wechseln",
 			"Desc" : "Welche Sprache, statt der erkannten, soll genutzt werden?",
@@ -369,7 +405,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},
@@ -402,5 +439,18 @@ let i18n = {
 		"GEXChampionship" : "Die GEX-Gilden Platzierung wurde geupdatet",
 		"LGInvest" : "Deine LG Investitionen wurden übertragen",
 		"LGGildMember" : "__player__'s LGs wurden übermittelt"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "Natur",
+			"shore": "Küste",
+			"cityRoadSmall": "Einspurige Strasse"
+		},
+		"Table": {
+			"type": "Typ",
+			"position": "Position",
+			"expires": "Verschindet am/um"
+		}
 	}
 };

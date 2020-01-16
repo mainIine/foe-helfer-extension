@@ -95,3 +95,18 @@
 	width: 172px;
 	padding: 4px 0;
 }
+
+#SettingsBoxBody .item .item-row input[type=number] {
+	width: 152px;
+	padding: 4px 8px;
+}
+
+#SettingsBoxBody .item .item-row dl {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#SettingsBoxBody .item .item-row dl dt {
+	width: 40%;
+}

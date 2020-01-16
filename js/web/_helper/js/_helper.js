@@ -122,11 +122,11 @@ let HTML = {
 	Box: (args)=> {
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').text(args['title']),
+			title = $('<span />').addClass('title').html(args['title'] + i18n['Global']['BoxTitle']),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
-			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ),
+			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
 
 		// Minimierenbutton
@@ -161,9 +161,9 @@ let HTML = {
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function() {
 			if(args['auto_close'] !== undefined){
-				$('body').on('click', '#' + args['id'] + 'close', ()=>{
-					$('#' + args['id']).hide('fast', ()=>{
-						$('#' + args['id']).remove();
+				$('body').on('click', '#' + args['id'] + 'close', function(){
+					$('#' + args['id']).fadeToggle('fast', function(){
+						$(this).remove();
 					});
 				});
 			}
@@ -189,6 +189,8 @@ let HTML = {
 			if(args['speaker'] !== undefined){
 				$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
 			}
+
+			div.fadeToggle('fast');
 		});
 	},
 
@@ -379,11 +381,13 @@ let HTML = {
 
 		for(let key in args)
 		{
-			if(args.hasOwnProperty(key))
-			{
-				const regExp = new RegExp('__' + key + '__', 'g');
-				string = string.replace(regExp, args[key]);
+			if(!args.hasOwnProperty(key)){
+				break;
 			}
+
+			const regExp = new RegExp('__' + key + '__', 'g');
+			string = string.replace(regExp, args[key]);
+
 		}
 		return string;
 	},

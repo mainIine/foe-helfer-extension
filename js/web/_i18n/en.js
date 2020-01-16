@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "en-EN",
 	"DateTime" : "D/M/YY h:mm:ss a",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Co-payment calculator",
@@ -56,6 +60,8 @@ let i18n = {
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
 			"Save": "Save",
+			"BPs": "BPs",
+			"Meds": "Meds",
 			"Commitment": "Costs",
 			"Profit": "Profit",
 			"LevelWarning": "ATTENTION! Leveling the GB!",
@@ -173,7 +179,16 @@ let i18n = {
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+
         },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ",
+			"Reward": "Reward",
+			"Previous": "Previous",
+			"Next": "Next",
+		},
 
         "Negotiation": {
             "Title": "Negotiation helper",
@@ -237,6 +252,18 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
 			"SubmitSuccess": "Data was transfered successfully... Now visit "
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards"
 		}
 	},
 
@@ -310,8 +337,11 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Chrome Extension <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome Extension Version"
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Player-Id:",
+			"GuildId": "Gild-Id:",
+			"World": "World:"
 		},
 		"GlobalSend": {
 			"Title" : "Transmission to foe-rechner.de",
@@ -362,7 +392,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},
@@ -395,5 +426,18 @@ let i18n = {
 		"GEXChampionship" : "The GEX guild placement has been updated",
 		"LGInvest" : "Your LG investments have been transferred",
 		"LGGildMember" : "__player__'s Legendary buildings have been submitted"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "nature",
+			"shore": "Shore",
+			"cityRoadSmall": "Small Road"
+		},
+		"Table": {
+			"type": "Type",
+			"position": "Position",
+			"expires": "Expires at"
+		}
 	}
 };
