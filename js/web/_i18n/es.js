@@ -55,12 +55,13 @@ let i18n = {
 			"Step": "Nivel",
 			"AvailableFP": "Disponibles puntos forge",
 			"ArcBonus": "Bonus del Arca",
+			"Earnings": "Rendimiento",
 			"Rate": "Cotizacion",
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
 			"Save": "Guardar",
-			"BPs": "Plano", //Todo: Translate
-			"Meds": "Méds", //Todo: Translate
+			"BPs": "Plano",
+			"Meds": "Méds",
 			"Commitment": "Contribucion",
 			"Profit": "Ganancia",
 			"LevelWarning": "ATENCIÓN: nivela el legendario edificio!", //Todo: Translate
@@ -90,7 +91,8 @@ let i18n = {
 			"Title" : "FP - Producciones",
 			"TotalFPs": "Todos los FP de todos los edificios: ",
 			"Amount": "Cantidad",
-			"FPBar" : "FP en almacen: "
+			"FPBar" : "FP en almacen: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -108,7 +110,7 @@ let i18n = {
 				"greatbuilding" : "Grandes Edificio",
 				"production" : "Edificios de produccion",
 				"random_production" : "Produccion casual",
-				"residential": "residental buildings", // Todo: Translate
+				"residential" : "Edificio de evento",
 				"decoration": "Decorations",
 				"street": "Streets",
 				"goods": "Goods buildings",
@@ -177,13 +179,17 @@ let i18n = {
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+        },
 		},
 
 		"EventList": {
 			"Title": "Event quest list for: ", //Todo: Translate
+			"Desc": "Task", //Todo: Translate
 			"Reward": "Reward", //Todo: Translate
-			"Previous": "Previous", //Todo: Translate
-			"Next": "Next", //Todo: Translate
+            "Number": "No.", //Todo: Translate
+			"Or": " or ", //Todo: Translate
+			"And": " and ", //Todo: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
 		},
 		
         "Negotiation": {
@@ -280,9 +286,13 @@ let i18n = {
             "Warning": "Deactivado: Abre prinmero el arbol de tecnologias!"
         },
 		"Campagne": {
-            "Title": "Kampagne",
-            "Desc": "Übersicht über die benötigten Ressourcen",
-        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+            "Title": "Campaign", //Todo: Translate
+            "Desc": "Overview of the resources required", //Todo: Translate
+        	"Warning" : "Disabled: Visit a province first!" //Todo: Translate
+		},
+        "Event": {
+            "Title": "Event Questlist", //Todo: Translate
+            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
 		},
         "Negotiation": {
             "Title": "Asistente de negociaciones",

@@ -55,6 +55,7 @@ let i18n = {
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
 			"ArcBonus": "Arche Bonus",
+			"Earnings": "Ertrag",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
@@ -90,6 +91,8 @@ let i18n = {
 			"Title" : "FP - Produktionen",
 			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
 			"Amount": "Anzahl",
+			"FPBar" : "FP-Lager: ",
+			"BuyableFP" : "Kaufbar: ",
 			"FPBar" : "FP-Lager: "
 		},
 
@@ -108,7 +111,7 @@ let i18n = {
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
-				"residential": "Wohngebäude",
+				"residential": "Eventgebäude",
 				"decoration": "Dekorationen",
 				"street": "Straßen",
 				"goods": "Gütergebäude",
@@ -181,9 +184,12 @@ let i18n = {
 
         "EventList": {
             "Title": "Event-Questliste für: ",
+            "Desc": "Aufgabe",
             "Reward": "Belohnung",
-            "Previous": "Vorherige",
-            "Next": "Nächste",
+			"Number": "Nr.",
+			"Or": " oder ",
+			"And": " und ",
+			"Upcoming": "Ungefähre Vorschau <em>(Werte werden bei Aktiverung aktualisiert)</em>",
         },
 
         "Negotiation": {
@@ -217,6 +223,7 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Nachricht",
+			"FilterGildFights" : "Gildengefechte",
 			"FilterTrade" : "Handel",
 			"ResetBox" : "Box leeren",
 			"Messages" : {
@@ -287,6 +294,10 @@ let i18n = {
             "Title": "Kampagne",
             "Desc": "Übersicht über die benötigten Ressourcen",
         	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+		},
+        "Event": {
+            "Title": "Event Questliste",
+            "Desc": "Übersicht über die nächsten Event Quests"
 		},
         "Negotiation": {
             "Title": "Verhandlungassistent",
