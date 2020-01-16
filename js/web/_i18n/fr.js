@@ -55,8 +55,8 @@ let i18n = {
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus d'arche",
-      "Earnings": "Bénéfices",
-      "Rate": "Cours",
+			"Earnings": "Bénéfices",
+			"Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
@@ -111,7 +111,6 @@ let i18n = {
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
 				"residential" : "Bâtiments événementiels",
-				"residential": "residental buildings", // Todo: Translate
 				"decoration": "décorations", //Todo: Translate
 				"street": "Rues", //Todo: Translate
 				"goods": "Bâtiment fret", //Todo: Translate
@@ -180,7 +179,6 @@ let i18n = {
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-        },
 		},
 
 		"EventList": {
@@ -341,9 +339,7 @@ let i18n = {
 		"Version": {
 			"Title" : "Version",
 			"DescDebug" : "Version de l'extension Chrome <strong class='text-danger'>BETA</strong>",
-			"Desc" : "Version de l'extension Chrome"
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
-			"Desc" : "Chrome Extension Version",
+			"Desc" : "Version de l'extension Chrome",
 			"PlayerId": "Player-Id:",
 			"GuildId": "Gild-Id:",
 			"World": "World:"

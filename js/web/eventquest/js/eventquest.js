@@ -28,6 +28,7 @@ let EventQuest = {
         MainParser.loadJSON(url, (data) => {
             EventQuest.Event = JSON.parse(data);
             EventQuest.AllQuests = EventQuest.Event['lang'][lng];
+
             if ($('#event').length === 0) {
 
                 HTML.Box({
