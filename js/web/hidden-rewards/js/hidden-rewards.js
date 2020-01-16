@@ -4,7 +4,9 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 });
 
 let HiddenRewards = {
+
     Cache: null,
+
 
     init: () => {
         if( $('#HiddenRewardBox').length < 1 ){
@@ -26,6 +28,7 @@ let HiddenRewards = {
 
         HiddenRewards.BuildBox();
     },
+
 
     prepareData: () => {
         var data = [];
@@ -54,8 +57,9 @@ let HiddenRewards = {
         HiddenRewards.Cache = data;
     },
 
+
     BuildBox:()=> {
-        var h = [];
+        let h = [];
 
         h.push('<table class="foe-table">');
 
@@ -71,7 +75,12 @@ let HiddenRewards = {
 
         let cnt = 0;
         for (let idx in HiddenRewards.Cache) {
-            var hiddenReward = HiddenRewards.Cache[idx];
+
+        	if(!HiddenRewards.Cache.hasOwnProperty(idx)){
+        		break;
+			}
+
+            let hiddenReward = HiddenRewards.Cache[idx];
 
             let StartTime = moment.unix(hiddenReward.starts),
                 EndTime = moment.unix(hiddenReward.expires);
@@ -98,6 +107,6 @@ let HiddenRewards = {
 
         h.push('</table>');
 
-        jQuery('#HiddenRewardBoxBody').html(h.join(''));
+        $('#HiddenRewardBoxBody').html(h.join(''));
     }
-}
+};
