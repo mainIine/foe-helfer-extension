@@ -316,7 +316,7 @@ let HTML = {
 
 		box.append(grip);
 
-		// Box wird in der GRöße verändert, speichern
+		// Box wird in der Größe verändert, speichern
 		box.resizable({
 			handleSelector: ".window-grippy",
 			onDragEnd: (e, $el, opt)=>{
