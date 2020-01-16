@@ -176,20 +176,22 @@ let Productions = {
 
 		for (let i in Productions.BuildingsAll) {
 			let building = Productions.BuildingsAll[i];
+			
+			if (building['type'] === 'residential' || building['type'] === 'production') {
+				if (building['products']['money'] !== undefined) {
+					building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
+				}
+				if (building['motivatedproducts']['money'] !== undefined) {
+					building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
+				}
 
-			if (building['products']['money'] !== undefined && building.id !== 1) {
-				building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
-			}
-			if (building['motivatedproducts']['money'] !== undefined && building.id !== 1) {
-				building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
-			}
-
-			if (building['products']['supplies'] !== undefined && building['type'] !== 'greatbuilding') {
+				if (building['products']['supplies'] !== undefined) {
 				building['products']['supplies'] = Math.round(building['products']['supplies'] * Productions.Boosts['supplies']);
-			}
-			if (building['motivatedproducts']['supplies'] !== undefined && building['type'] !== 'greatbuilding') {
-				building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
-			}
+				}
+				if (building['motivatedproducts']['supplies'] !== undefined) {
+					building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
+				}
+			}	
 
 			// Nach Produkt
 			for (let x in building['products']) {
@@ -569,7 +571,7 @@ let Productions = {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
 				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
-				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>'); //Todo: Translate Zufriedenheit
+				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -750,11 +752,14 @@ let Productions = {
 	SwitchFunction: ()=>{
 		$('body').on('click', '.change-view', function(){
 			let btn = $(this),
-				t = $(this).data('type');
+				t = $(this).data('type'),
+				hiddenTb = $('.' + t + '-mode:hidden'),
+				vissibleTb = $('.' + t + '-mode:visible');
 
-			$('.' + t + '-mode').fadeToggle('fast', function() {
-				if( $('.' + t + '-single').is(':visible') )
-				{
+			vissibleTb.fadeOut(400, function(){
+				hiddenTb.fadeIn(400);
+
+				if( $('.' + t + '-single').is(':visible') ){
 					btn.text(i18n['Boxes']['Productions']['ModeGroups']);
 				} else {
 					btn.text(i18n['Boxes']['Productions']['ModeSingle']);

@@ -151,7 +151,7 @@ let Negotiation = {
         }
         else if (Negotiation.CurrentTable === undefined && Negotiation.CurrentTry === 1){
             Negotiation.MessageClass = 'danger';
-            Negotiation.Message = 'ERROR: Could not load negotation table'; //Todo: Translate
+            Negotiation.Message = i18n['Boxes']['Negotiation']['TableLoadError'];
         }
         
         h.push('<tbody>');

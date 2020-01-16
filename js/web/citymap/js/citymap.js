@@ -16,7 +16,10 @@
 let CityMap = {
 
 	CityData: null,
-	ScaleUnit: 1,
+	ScaleUnit: 100,
+	CityView: 'skew',
+	UnlockedAreas: null,
+	OccupiedArea: 0,
 
 	/**
 	 * Zündung...
@@ -26,23 +29,34 @@ let CityMap = {
 	 */
 	init: (Data = false, Title = 'Deine Stadt...')=> {
 
+		let scale = localStorage.getItem('CityMapScale'),
+			view = localStorage.getItem('CityMapView');
+
 		// es wurde bereits eine Scallierung gesetzt?
-		CityMap.ScaleUnit = localStorage.getItem('CityMapScale') || 1;
+		if(null !== scale){
+			CityMap.ScaleUnit = parseInt(scale);
+		}
+
+		// es wurde bereits eine Ansicht gesetzt?
+		if(null !== view){
+			CityMap.CityView = view;
+		}
+
 
 		if( $('#city-map-overlay').length < 1 )
 		{
-			let args = {
-				'id': 'city-map-overlay',
-				'title': Title,
-				'auto_close': true,
-				'dragdrop': true,
-				'resize': true
-			};
-
-			HTML.Box(args);
-
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('citymap');
+
+			HTML.Box({
+				id: 'city-map-overlay',
+				title: Title,
+				auto_close: true,
+				dragdrop: true,
+				resize: true,
+				minimize : true
+			});
+
 
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);
@@ -74,10 +88,9 @@ let CityMap = {
 	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
-			CityView = localStorage.getItem('CityMapView') || 'skew',
-			CityScale = localStorage.getItem('CityMapScale') || 1;
+			w = $('<div />').attr({'id':'wrapper'});
 
-		oB.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityScale).attr('data-view', CityView).append( $('<div />').attr('id', 'map-grid') ) ) );
+		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -85,8 +98,8 @@ let CityMap = {
 
 		/* Ansicht wechseln */
 		let dropView = $('<select />').attr('id', 'menu-view').addClass('game-cursor')
-			.append( $('<option />').prop('selected', CityView === 'normal').attr('data-view', 'normal').text('Normal').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityView === 'skew').attr('data-view', 'skew').text('Kavalier Persp.').addClass('game-cursor') );
+			.append( $('<option />').prop('selected', CityMap.CityView === 'normal').attr('data-view', 'normal').text('Normal').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.CityView === 'skew').attr('data-view', 'skew').text('Kavalier Persp.').addClass('game-cursor') );
 
 		menu.append(dropView);
 
@@ -100,16 +113,22 @@ let CityMap = {
 
 		/* Scalierung wechseln */
 		let scaleView = $('<select />').attr('id', 'scale-view').addClass('game-cursor')
-			.append( $('<option />').prop('selected', CityScale === '2').attr('data-scale', 2).text('Scale 3').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityScale === '1.5').attr('data-scale', 1.5).text('Scale 2').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityScale === '1').attr('data-scale', 1).text('Scale 1').addClass('game-cursor') );
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 60).attr('data-scale', 60).text('60%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 80).attr('data-scale', 80).text('80%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 100).attr('data-scale', 100).text('100%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 120).attr('data-scale', 120).text('120%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 140).attr('data-scale', 140).text('140%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 160).attr('data-scale', 160).text('160%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 180).attr('data-scale', 180).text('180%').addClass('game-cursor') )
+		;
 
 		menu.append(scaleView);
 
 		$('body').on('change', '#scale-view', function(){
-			let unit = $('#scale-view option:selected').data('scale');
+			let unit = parseInt($('#scale-view option:selected').data('scale'));
 
 			CityMap.ScaleUnit = unit;
+
 			$('#grid-outer').attr('data-unit', unit);
 			localStorage.setItem('CityMapScale', unit);
 
@@ -120,7 +139,8 @@ let CityMap = {
 
 
 		/* In das Menü "schieben" */
-		oB.prepend(menu);
+		w.prepend(menu);
+		oB.append(w);
 	},
 
 
@@ -130,20 +150,31 @@ let CityMap = {
 	 */
 	BuildGrid:()=> {
 
-		let xWidth = 60,
-			yHeigth = 64,
-			G = $('#map-grid');
+		let ua = CityMap.UnlockedAreas;
 
-		// Zeile für Zeile nach unten
-		for (let y = 1; yHeigth >= y; y++)
+		for(let i in ua)
 		{
-			// immer 60 Felder nach rechts
-			for(let x = 1; xWidth >= x; x++)
-			{
-				G.append(
-					$('<span />').attr('data-grid', x + '-' + y)
-				);
+			if(!ua.hasOwnProperty(i)){
+				break;
 			}
+
+			let w = ((ua[i]['width'] * CityMap.ScaleUnit) / 100 ),
+				h = ((ua[i]['length'] * CityMap.ScaleUnit) / 100 ),
+				x = ((ua[i]['x'] * CityMap.ScaleUnit) / 100 ),
+				y = ((ua[i]['y'] * CityMap.ScaleUnit) / 100 ),
+
+				G = $('#map-grid'),
+
+				a = $('<span />')
+					.addClass('map-bg')
+					.css({
+						width: w + 'em',
+						height: h + 'em',
+						left: x + 'em',
+						top: y + 'em',
+					});
+
+			G.append(a);
 		}
 	},
 
@@ -162,7 +193,13 @@ let CityMap = {
 			ActiveId = $('#grid-outer').find('.pulsate').data('entityid') || null;
 
 		// einmal komplett leer machen, wenn gewünscht
+		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
+
+		CityMap.OccupiedArea = 0;
+
+		// Unlocked Areas rendern
+		CityMap.BuildGrid();
 
 		if(CityMap.CityData === null)
 		{
@@ -193,14 +230,22 @@ let CityMap = {
 			if(MapDataSorted.hasOwnProperty(b) && MapDataSorted[b]['type'] !== 'friends_tavern' && MapDataSorted[b]['type'] !== 'off_grid')
 			{
 				let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
+
+					x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
+					y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
+					w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
+					h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
+
 					f = $('<span />').addClass('entity ' + d['type']).css({
-						width: (parseInt(d['width']) / CityMap.ScaleUnit) + 'em',
-						height: (parseInt(d['height']) / CityMap.ScaleUnit) + 'em',
-						left: (MapDataSorted[b]['x']=== undefined ? 0 : (parseInt(MapDataSorted[b]['x']) / CityMap.ScaleUnit)) + "em",
-						top: (MapDataSorted[b]['y'] === undefined ? 0 : (parseInt(MapDataSorted[b]['y']) / CityMap.ScaleUnit)) + "em"
-					})
+							width: w + 'em',
+							height: h + 'em',
+							left: x + 'em',
+							top: y + 'em'
+						})
 						.attr('title', d['name'])
 						.attr('data-entityid', MapDataSorted[b]['id']);
+
+				CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
 
 				// die Größe wurde geändert, wieder aktivieren
 				if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
@@ -214,8 +259,34 @@ let CityMap = {
 
 		// Gebäudenamen via Tooltip
 		$('.entity').tooltip({
-			container: '#map-container'
+			container: '#city-map-overlayBody'
 		});
+
+		$('#grid-outer').draggable();
+
+		CityMap.getAreas();
+	},
+
+
+	getAreas: ()=>{
+		let total = ((CityMap.UnlockedAreas.length) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
+			occupied = CityMap.OccupiedArea,
+			txtTotal = 'Gesamte Fläche: ' + total,
+			txtFree = 'Freie Fläche: ' + (total - occupied);
+
+		if( $('#area-state').length === 0 ){
+			let aW = $('<div />').attr('id', 'area-state');
+
+			aW.append( $('<p />').addClass('total-area') );
+			aW.append( $('<p />').addClass('occupied-area') );
+
+			$('#sidebar').append(aW);
+
+		}
+
+		$('.total-area').html(txtTotal);
+		$('.occupied-area').html(txtFree);
+
 	},
 
 
