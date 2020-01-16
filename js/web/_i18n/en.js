@@ -55,6 +55,7 @@ let i18n = {
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
+			"Earnings": "Earnings",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
@@ -90,7 +91,8 @@ let i18n = {
 			"Title" : "FP - Productions",
 			"TotalFPs": "Total FPs from all buildings: ",
 			"Amount": "Number",
-			"FPBar" : "FP-Stock: "
+			"FPBar" : "FP-Stock: ",
+			"BuyableFP" : "Buyable: ",
 		},
 
 		"Productions" : {
@@ -108,7 +110,7 @@ let i18n = {
 				"greatbuilding" : "Legendary buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
-				"residential": "residental buildings",
+				"residential": "Event buildings",
 				"decoration": "Dekorations",
 				"street": "Streets",
 				"goods": "Goods buildings",
@@ -177,6 +179,8 @@ let i18n = {
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+
+        },
 		},
 
 		"EventList": {
