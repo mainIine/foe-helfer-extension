@@ -180,7 +180,6 @@ let i18n = {
             "DescInStock": "Доступно",
             "DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
         },
-		},
 
 		"EventList": {
 			"Title": "Event quest list for: ", //Todo: Translate
@@ -339,8 +338,6 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Версия",
-			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>БЕТА</strong> Версия",
-			"Desc" : "Версия расширения для Chrome"
 			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>BETA</strong>",
 			"Desc" : "Версия расширения для Chrome",
 			"PlayerId": "Player-Id:",
@@ -396,9 +393,9 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
 				"ru": "Русский",
-				"sv": "Svenska"
+				"sv": "Svenska",
+				"cs": "Český"
 			}
 		}
 	},

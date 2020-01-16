@@ -407,7 +407,8 @@ let i18n = {
 				"fr": "Français",
 				"es": "Español",
 				"ru": "Русский",
-				"sv": "Svenska"
+				"sv": "Svenska",
+				"cs": "Český"
 			}
 		}
 	},
