@@ -13,6 +13,16 @@
  * **************************************************************************************
  */
 
+FoEproxy.addMetaHandler('research', (xhr, postData) => {
+	Technologies.AllTechnologies = JSON.parse(xhr.responseText);
+	$('#technologies-Btn').removeClass('hud-btn-red');
+	$('#technologies-Btn-closed').remove();
+});
+
+FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
+	Technologies.UnlockedTechologies = data.responseData;
+});
+
 let Technologies = {
     AllTechnologies: null,
     UnlockedTechologies: false,
@@ -195,7 +205,7 @@ let Technologies = {
         }
         else {
             h.push('<tr>');
-            h.push('<td>' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
+            h.push('<td colspan="4" class="text-center">' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
             h.push('</tr>');
         }
         h.push('</table');

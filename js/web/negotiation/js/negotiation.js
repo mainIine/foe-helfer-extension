@@ -151,7 +151,7 @@ let Negotiation = {
         }
         else if (Negotiation.CurrentTable === undefined && Negotiation.CurrentTry === 1){
             Negotiation.MessageClass = 'danger';
-            Negotiation.Message = 'ERROR: Could not load negotation table'; //Todo: Translate
+            Negotiation.Message = i18n['Boxes']['Negotiation']['TableLoadError'];
         }
         
         h.push('<tbody>');
@@ -248,9 +248,9 @@ let Negotiation = {
 	 */
     StartNegotiation: (responseData) => {
 
-        if ($('#negotationBtn').hasClass('hud-btn-red')) {
-			$('#negotationBtn').removeClass('hud-btn-red');
-			$('#negotiationBox-closed').remove();
+        if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
+			$('#negotiation-Btn').removeClass('hud-btn-red');
+			$('#negotiation-Btn-closed').remove();
 		}
         
         Negotiation.CurrentTry = 1;
