@@ -13,10 +13,42 @@
  * **************************************************************************************
  */
 
+FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
+	let offer = data.responseData[0].offers[0];
+	StrategyPoints.RefreshBuyableForgePoints(offer.formula);
+});
+
+FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
+	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
+});
+
 let StrategyPoints = {
     RefreshDone: false,
 	OldStrategyPoints: 0,
 	InventoryFP : 0,
+
+	RefreshBuyableForgePoints: (formula) => {
+    	let amount = 0;
+    	let currentlyCosts = formula.baseValue;
+    	let boughtCount = formula.boughtCount;
+    	let factor = formula.factor;
+
+		for(let counter = 1; counter <= boughtCount; counter++) {
+			currentlyCosts += factor;
+		}
+
+    	for(let money = ResourceStock.money; money >= currentlyCosts; money--) {
+    		currentlyCosts += factor;
+			money -= currentlyCosts;
+    		amount++;
+		}
+
+		if(jQuery('.buyable-fp').length == 0) {
+			jQuery('#fp-bar').append(' ' + i18n['Boxes']['StrategyPoints']['BuyableFP'] + '<strong class="buyable-fp">' + amount + '</strong>');
+		} else {
+			jQuery('.buyable-fp').text(amount);
+		}
+	},
 
 	/**
 	 * Holt beim Start alle FPs aus dem Lager

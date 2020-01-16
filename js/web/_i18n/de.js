@@ -55,6 +55,7 @@ let i18n = {
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
 			"ArcBonus": "Arche Bonus",
+			"Earnings": "Ertrag",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
@@ -90,6 +91,8 @@ let i18n = {
 			"Title" : "FP - Produktionen",
 			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
 			"Amount": "Anzahl",
+			"FPBar" : "FP-Lager: ",
+			"BuyableFP" : "Kaufbar: ",
 			"FPBar" : "FP-Lager: "
 		},
 
@@ -108,7 +111,7 @@ let i18n = {
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
-				"residential": "Wohngebäude",
+				"residential": "Eventgebäude",
 				"decoration": "Dekorationen",
 				"street": "Straßen",
 				"goods": "Gütergebäude",
