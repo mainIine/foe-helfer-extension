@@ -286,7 +286,9 @@ let GildFights = {
 
 			colors[bP[i]['participantId']] = {
 				base: c['base'],
-				main: c['mainColour']
+				main: c['mainColour'],
+				highlight: c['highlight'],
+				shadow: c['shadow'],
 			};
 		}
 

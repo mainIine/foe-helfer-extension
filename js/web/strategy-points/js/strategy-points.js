@@ -28,6 +28,7 @@ let StrategyPoints = {
 	InventoryFP : 0,
 
 	RefreshBuyableForgePoints: (formula) => {
+
     	let amount = 0;
     	let currentlyCosts = formula.baseValue;
     	let boughtCount = formula.boughtCount;
@@ -43,12 +44,14 @@ let StrategyPoints = {
     		amount++;
 		}
 
-		if(jQuery('.buyable-fp').length == 0) {
-			jQuery('#fp-bar').append(' ' + i18n['Boxes']['StrategyPoints']['BuyableFP'] + '<strong class="buyable-fp">' + amount + '</strong>');
+		if($('.buyable-fp').length == 0) {
+			$('#fp-bar').append(' ' + i18n['Boxes']['StrategyPoints']['BuyableFP'] + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
+
 		} else {
-			jQuery('.buyable-fp').text(amount);
+			$('.buyable-fp').text(amount);
 		}
 	},
+
 
 	/**
 	 * Holt beim Start alle FPs aus dem Lager
@@ -61,15 +64,17 @@ let StrategyPoints = {
 		for(let i in d)
 		{
 			if(d.hasOwnProperty(i)){
-				if(d[i]['itemAssetName'] === 'large_forgepoints'){
-					t += (d[i]['inStock'] * 10);
+				break;
+			}
 
-				} else if(d[i]['itemAssetName'] === 'medium_forgepoints'){
-					t += (d[i]['inStock'] * 5);
+			if(d[i]['itemAssetName'] === 'large_forgepoints'){
+				t += (d[i]['inStock'] * 10);
 
-				} else if(d[i]['itemAssetName'] === 'small_forgepoints'){
-					t += (d[i]['inStock'] * 2);
-				}
+			} else if(d[i]['itemAssetName'] === 'medium_forgepoints'){
+				t += (d[i]['inStock'] * 5);
+
+			} else if(d[i]['itemAssetName'] === 'small_forgepoints'){
+				t += (d[i]['inStock'] * 2);
 			}
 		}
 
