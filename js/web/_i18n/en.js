@@ -55,6 +55,7 @@ let i18n = {
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
+			"Earnings": "Earnings",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
@@ -90,7 +91,8 @@ let i18n = {
 			"Title" : "FP - Productions",
 			"TotalFPs": "Total FPs from all buildings: ",
 			"Amount": "Number",
-			"FPBar" : "FP-Stock: "
+			"FPBar" : "FP-Stock: ",
+			"BuyableFP" : "Buyable: ",
 		},
 
 		"Productions" : {
@@ -108,7 +110,7 @@ let i18n = {
 				"greatbuilding" : "Legendary buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
-				"residential": "residental buildings",
+				"residential": "Event buildings",
 				"decoration": "Dekorations",
 				"street": "Streets",
 				"goods": "Goods buildings",
@@ -177,13 +179,18 @@ let i18n = {
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+
+        },
 		},
 
 		"EventList": {
 			"Title": "Event quest list for: ",
+			"Desc": "Task",
 			"Reward": "Reward",
-			"Previous": "Previous",
-			"Next": "Next",
+            "Number": "No.",
+			"Or": " or ",
+			"And": " and ",
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)",
 		},
 
         "Negotiation": {
@@ -287,6 +294,10 @@ let i18n = {
             "Title": "Campaign",
             "Desc": "Overview of the resources required",
         	"Warning" : "Disabled: Visit a province first!"
+		},
+        "Event": {
+            "Title": "Event Questlist",
+            "Desc": "Overview of the current and upcoming quests"
 		},
         "Negotiation": {
             "Title": "Negotiation helper",

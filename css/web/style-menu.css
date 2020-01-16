@@ -387,11 +387,10 @@ p {
 
 #campagneMap-Btn span {
 	background-image: url('../images/map.png');
-	-webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+}
+
+#questlist_Btn span {
+	background-image: url('../images/quest.png');
 }
 
 #chat-Btn span {

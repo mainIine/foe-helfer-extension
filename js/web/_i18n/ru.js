@@ -55,6 +55,7 @@ let i18n = {
 			"Step": "Уровень ",
 			"AvailableFP": "Доступные СО",
 			"ArcBonus": "Боунс Арки",
+			"Earnings": "Прибыль",
 			"Rate": "Курс",
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
@@ -90,7 +91,8 @@ let i18n = {
 			"Title" : "СО - Производство",
 			"TotalFPs": "Всего СО со всех построек: ",
 			"Amount": "Количество",
-			"FPBar" : "Кол-во СО в пакетах: "
+			"FPBar" : "Кол-во СО в пакетах: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -108,7 +110,7 @@ let i18n = {
 				"greatbuilding" : "Великие Строения",
 				"production" : "Производственные постройки",
 				"random_production" : "Случайные производственные здания",
-				"residential": "residental buildings", // Todo: Translate
+				"residential" : "Постройки событий",
 				"decoration": "Декор",
 				"street": "Дороги",
 				"goods": "Промышленные постройки",
@@ -177,13 +179,17 @@ let i18n = {
             "DescRequired": "Требуется",
             "DescInStock": "Доступно",
             "DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
+        },
 		},
 
 		"EventList": {
 			"Title": "Event quest list for: ", //Todo: Translate
+			"Desc": "Task", //Todo: Translate
 			"Reward": "Reward", //Todo: Translate
-			"Previous": "Previous", //Todo: Translate
-			"Next": "Next", //Todo: Translate
+            "Number": "No.", //Todo: Translate
+			"Or": " or ", //Todo: Translate
+			"And": " and ", //Todo: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
 		},
 
         "Negotiation": {
@@ -284,6 +290,10 @@ let i18n = {
             "Desc": "Обзор ресурсов, требуемых для захвата провинции",
         	"Warning" : "Отключено: Для включения посетите провинцию!"
 		},
+        "Event": {
+            "Title": "Event Questlist", //Todo: Translate
+            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
+		},
         "Negotiation": {
             "Title": "Помощник переговоров",
 			"Desc": "Предлагает товары для переговоров",
@@ -329,6 +339,8 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Версия",
+			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>БЕТА</strong> Версия",
+			"Desc" : "Версия расширения для Chrome"
 			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>BETA</strong>",
 			"Desc" : "Версия расширения для Chrome",
 			"PlayerId": "Player-Id:",
@@ -384,6 +396,7 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
+				"ru": "Русский"
 				"ru": "Русский",
 				"sv": "Svenska"
 			}
