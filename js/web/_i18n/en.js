@@ -185,9 +185,12 @@ let i18n = {
 
 		"EventList": {
 			"Title": "Event quest list for: ",
+			"Desc": "Task",
 			"Reward": "Reward",
-			"Previous": "Previous",
-			"Next": "Next",
+            "Number": "No.",
+			"Or": " or ",
+			"And": " and ",
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)",
 		},
 
         "Negotiation": {
@@ -291,6 +294,10 @@ let i18n = {
             "Title": "Campaign",
             "Desc": "Overview of the resources required",
         	"Warning" : "Disabled: Visit a province first!"
+		},
+        "Event": {
+            "Title": "Event Questlist",
+            "Desc": "Overview of the current and upcoming quests"
 		},
         "Negotiation": {
             "Title": "Negotiation helper",

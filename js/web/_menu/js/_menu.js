@@ -484,15 +484,17 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	questlist_Btn: ()=> {
-        let btn_EventBG = $('<div />').attr('id', 'Event').addClass('hud-btn');
+        let btn_EventBG = $('<div />').attr('id', 'questlist_Btn').addClass('hud-btn');
 
         // Tooltip einbinden
-        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Campagne']['Desc'], 'Event');
+        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Event']['Desc'], 'questlist_Btn');
 
         let btn_Event = $('<span />');
 
         btn_Event.on('click', function () {
+			EventQuest.Visible = true;
             EventQuest.Show();
+			EventQuest.Visible = false;
         });
 
         btn_EventBG.append(btn_Event);

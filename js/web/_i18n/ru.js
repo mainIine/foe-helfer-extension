@@ -184,9 +184,12 @@ let i18n = {
 
 		"EventList": {
 			"Title": "Event quest list for: ", //Todo: Translate
+			"Desc": "Task", //Todo: Translate
 			"Reward": "Reward", //Todo: Translate
-			"Previous": "Previous", //Todo: Translate
-			"Next": "Next", //Todo: Translate
+            "Number": "No.", //Todo: Translate
+			"Or": " or ", //Todo: Translate
+			"And": " and ", //Todo: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
 		},
 
         "Negotiation": {
@@ -286,6 +289,10 @@ let i18n = {
             "Title": "Карта континента",
             "Desc": "Обзор ресурсов, требуемых для захвата провинции",
         	"Warning" : "Отключено: Для включения посетите провинцию!"
+		},
+        "Event": {
+            "Title": "Event Questlist", //Todo: Translate
+            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
 		},
         "Negotiation": {
             "Title": "Помощник переговоров",

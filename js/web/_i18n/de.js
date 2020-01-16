@@ -185,10 +185,11 @@ let i18n = {
         "EventList": {
             "Title": "Event-Questliste für: ",
             "Desc": "Aufgabe",
-            "DescCurrent": "Aktuelle Quest",
             "Reward": "Belohnung",
-            "Previous": "Vorherige",
-            "Next": "Nächste",
+			"Number": "Nr.",
+			"Or": " oder ",
+			"And": " und ",
+			"Upcoming": "VORSCHAU AUF DIE NÄCHSTEN QUESTS (Zahlen können variieren)",
         },
 
         "Negotiation": {
