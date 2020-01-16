@@ -85,7 +85,8 @@ let i18n = {
 			"Title" : "FP - Productions",
 			"TotalFPs": "Total FPs from all buildings: ",
 			"Amount": "Number",
-			"FPBar" : "FP-Stock: "
+			"FPBar" : "FP-Stock: ",
+			"BuyableFP" : "Buyable: ",
 		},
 
 		"Productions" : {

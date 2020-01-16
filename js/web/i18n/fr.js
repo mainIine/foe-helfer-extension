@@ -85,7 +85,8 @@ let i18n = {
 			"Title" : "PFs - Productions",
 			"TotalFPs": "Total PFs pour tous les batiments: ",
 			"Amount": "Nombre",
-			"FPBar" : "PFs en stock: "
+			"FPBar" : "PFs en stock: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
