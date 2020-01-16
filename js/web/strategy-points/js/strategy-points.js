@@ -63,7 +63,7 @@ let StrategyPoints = {
 
 		for(let i in d)
 		{
-			if(d.hasOwnProperty(i)){
+			if(!d.hasOwnProperty(i)){
 				break;
 			}
 

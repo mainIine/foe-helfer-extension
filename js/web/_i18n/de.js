@@ -92,8 +92,7 @@ let i18n = {
 			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
 			"Amount": "Anzahl",
 			"FPBar" : "FP-Lager: ",
-			"BuyableFP" : "Kaufbar: ",
-			"FPBar" : "FP-Lager: "
+			"BuyableFP" : "Kaufbar: "
 		},
 
 		"Productions" : {
