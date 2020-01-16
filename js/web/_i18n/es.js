@@ -179,7 +179,6 @@ let i18n = {
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-        },
 		},
 
 		"EventList": {
@@ -395,7 +394,8 @@ let i18n = {
 				"fr": "Français",
 				"es": "Español",
 				"ru": "Русский",
-				"sv": "Svenska"
+				"sv": "Svenska",
+				"cs": "Český"
 			}
 		}
 	},
