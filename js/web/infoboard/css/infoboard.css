@@ -22,7 +22,6 @@
 
 #BackgroundInfo #BackgroundInfoBody {
 	overflow: auto;
-	max-height: 350px;
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
