@@ -16,7 +16,6 @@
 #costCalculator {
 	top: 30%;
 	left: 30px;
-	width: 360px;
 }
 
 #costCalculator #costCalculatorBody {
@@ -84,6 +83,7 @@
 	opacity: 0.5;
 }
 
+/* Todo: tr info-row: Hintergrund blau, strong text nur blau, wenn td class=info */
 #costCalculator #costCalculatorBody strong.info,
 #costCalculator #costCalculatorBody tr.info-row strong {
 	color: #2196f3;
@@ -99,6 +99,33 @@
 
 #costCalculator #costCalculatorBody tr.bg-yellow {
 	background-color: rgba(208, 126, 3, 0.4);
+}
+
+#costCalculatorBody .costFactorWrapper {
+	padding: 5px 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#costCalculatorBody .costFactorWrapper > div:first-child {
+	text-align: center;
+	width: 36%;
+}
+
+#costCalculatorBody .costFactorWrapper > div:first-child span {
+	white-space: nowrap;
+	display: block;
+	margin-top: 6px;
+}
+
+#costCalculatorBody .costFactorWrapper > div:last-child {
+	text-align: center;
+	width: 39%;
+}
+
+#costCalculatorBody .costFactorWrapper .btn-default {
+	padding: 0.2rem 0.4rem;
 }
 
 #costCalculatorBody .costFactorWrapper > span {

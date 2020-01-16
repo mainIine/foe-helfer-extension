@@ -233,6 +233,7 @@ p {
 	top: 360px;
 	padding-top: 24px;
 	padding-bottom: 24px;
+	transition: height 0.2s linear;
 }
 
 #ant-hud::before,
@@ -378,6 +379,10 @@ p {
 
 #technologies-Btn span {
     background-image: url('../images/technologies.png');
+}
+
+#hiddenRewards-Btn span {
+	background-image: url('../images/incident_crates.png');
 }
 
 #campagneMap-Btn span {
