@@ -222,6 +222,7 @@ let i18n = {
 			"FilterAuction" : "Auction",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Message",
+			"FilterGildFights" : "Guild Fights",
 			"FilterTrade" : "Trade",
 			"ResetBox" : "Reset Box",
 			"Messages" : {
@@ -336,6 +337,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info Box",
 			"Desc" : "Shows you all the things that happen in the \"background\"<br><em>Fills up with info ...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards",
+			"Desc": "Overview of hidden rewards"
 		}
 	},
 
@@ -388,6 +393,10 @@ let i18n = {
 			"Title" : "Box coordinates",
 			"Desc" : "Should all box coordinates be reset?",
 			"Button" : "Delete!"
+		},
+		"MenuLength": {
+			"Title" : "Menü Länge",
+			"Desc" : "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe."
 		},
 		"ChangeLanguage": {
 			"Title" : "Change language",
