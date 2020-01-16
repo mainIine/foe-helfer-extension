@@ -17,8 +17,6 @@ let EventQuest = {
     Event: [],
     AllQuests: null,
     CurrentQuestID: 1,
-    PreviousQuestID: null,
-    NextQuestID: 2,
 
     Show: () => {
         let lng = localStorage.getItem('user-language');
@@ -52,15 +50,19 @@ let EventQuest = {
     BuildBox: () => {
         EventQuest.CalcBody();
 
-        $('body').on('click', '.btn-switchage', function () {
-
-            $('.btn-switchage').removeClass('btn-default-active');
-
-            EventQuest.CurrentQuestID = $(this).data('value');
+        
+            for (let i in MainParser.Quests) {
+			let Quest = MainParser.Quests[i];
+			 if(Quest.category === 'event' && !Quest.type.contains('counter')){
+			 let id = Quest.id.toString();
+			 id = id[id.length-2]+id[id.length-1];
+			 EventQuest.CurrentQuestID = int(id);
+			 }
+			}
+            
             EventQuest.CalcBody();
 
-            $(this).addClass('btn-default-active');
-        });
+            
     },
 
 
@@ -73,13 +75,9 @@ let EventQuest = {
             return;
         let div = $('#questlist'),
             h = [];
-        // Filter
+
         h.push('<div class="event-head">');
-        if (EventQuest.CurrentQuestID > 1)
-            h.push('<button class="btn btn-default btn-switchage" data-value="' + EventQuest.PreviousQuestID + '">' + i18n['Boxes']['EventList']['Previous'] + '</button>');
         h.push('<div class="text-center"><strong>' + i18n['Boxes']['EventList']['DescCurrent'] + '</strong></div>');
-        if (EventQuest.CurrentQuestID < EventQuest.AllQuests.length)
-            h.push('<button class="btn btn-default btn-switchage" data-value="' + EventQuest.NextQuestID + '">' + i18n['Boxes']['EventList']['Next'] + '</button>');
         h.push('</div>');
 
         h.push('<table class="foe-table">');
