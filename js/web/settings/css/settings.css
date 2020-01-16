@@ -14,12 +14,11 @@
  */
 
 #SettingsBox {
-	top: 50%;
-	left: 50%;
+	top: calc(50vh - 165px);
+	left: calc(50vw - 305px);
 	width: 610px;
 	height: 330px;
 	font-size: 80%;
-	transform: translate(-50%, -50%);
 }
 
 #SettingsBoxBody {
@@ -99,6 +98,8 @@
 #SettingsBoxBody .item .item-row input[type=number] {
 	width: 152px;
 	padding: 4px 8px;
+	text-align: center;
+	font-weight: 700;
 }
 
 #SettingsBoxBody .item .item-row dl {
