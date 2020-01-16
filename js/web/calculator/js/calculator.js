@@ -551,7 +551,7 @@ let Calculator = {
 				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
 				SnipeGewinn = FPRewards[Rank] - SnipeCosts,
-				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SnipeCosts / FPNettoRewards[Rank] * 100) : 0);
+				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SnipeCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
 
 			if (SnipeStates[Rank] !== 'Self' && Kurs > 0) {
 				if (Kurs < BestKurs) {
