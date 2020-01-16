@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.01.20, 22:44 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:18 Uhr
+ * erstellt am:	              16.01.20, 18:33 Uhr
+ * zuletzt bearbeitet:       16.01.20, 18:27 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2020
  *
  * **************************************************************************************
  */
@@ -256,7 +256,7 @@ let i18n = {
         },
         "Technologies": {
             "Title": "Technologie",
-            "Desc": "Náklady na výzkum"",
+            "Desc": "Náklady na výzkum",
             "Warning": "Nejprve otevřte výzkum technologií"
         },
         "Campagne": {
@@ -361,7 +361,7 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
 				"cs": "Česky"	
 			}
 		}
@@ -393,7 +393,7 @@ let i18n = {
 		"UpdateSuccess" : "Update performed",
 		"GEXPlayer" : "GEX umístění členů bylo updatováno",
 		"GEXChampionship" : "The GEX umístění cechu bylo updatováno",
-		"LGInvest" : "Investice vašich VB bylo posláno,
+		"LGInvest" : "Investice vašich VB bylo posláno",
 		"LGGildMember" : "__player__'s Velkolepé budovy byly poslány"
 	}
 };
