@@ -41,6 +41,17 @@
 	color: #FFB539;
 }
 
+#event #eventBody tr.active-quest td {
+	border-top: 2px solid #FFB539;
+	border-bottom: 2px solid #FFB539;
+}
+#event #eventBody tr.active-quest td:first-child {
+	border-left: 2px solid #FFB539;
+}
+#event #eventBody tr.active-quest td:last-child {
+	border-right: 2px solid #FFB539;
+}
+
 #event #eventBody tr td.nr {
 	color: #FFB539;
 	font-weight: 700;
