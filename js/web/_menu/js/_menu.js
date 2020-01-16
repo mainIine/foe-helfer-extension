@@ -484,7 +484,7 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	questlist_Btn: ()=> {
-        let btn_EventBG = $('<div />').attr('id', 'questlist_Btn').addClass('hud-btn');
+        let btn_EventBG = $('<div />').attr({'id': 'questlist_Btn', 'data-slug': 'questlist'}).addClass('hud-btn');
 
         // Tooltip einbinden
         _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Event']['Desc'], 'questlist_Btn');
