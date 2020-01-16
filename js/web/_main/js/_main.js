@@ -604,7 +604,9 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 		MainParser.Quests = data.responseData;
 		Calculator.RefreshCalculator();
-		EventQuest.Show();
+		let eventQuest = MainParser.Quests.find(q => {q.category === 'events'});
+		if(undefined !== eventQuest)
+			EventQuest.Show();
 	});
 
 
