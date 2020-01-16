@@ -189,7 +189,7 @@ let i18n = {
 			"Number": "Nr.",
 			"Or": " oder ",
 			"And": " und ",
-			"Upcoming": "VORSCHAU AUF DIE NÄCHSTEN QUESTS (Zahlen können variieren)",
+			"Upcoming": "Ungefähre Vorschau <em>(Werte werden bei Aktiverung aktualisiert)</em>",
         },
 
         "Negotiation": {
@@ -223,6 +223,7 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Nachricht",
+			"FilterGildFights" : "Gildengefechte",
 			"FilterTrade" : "Handel",
 			"ResetBox" : "Box leeren",
 			"Messages" : {
