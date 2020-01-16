@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "fr-FR",
 	"DateTime" : "DD.MM.YYYY HH:mm",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Calcul de PFs pour mes GMs",
@@ -51,11 +55,13 @@ let i18n = {
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus d'arche",
-            "Earnings": "Bénéfices",
-            "Rate": "Cours",
+      "Earnings": "Bénéfices",
+      "Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
+			"BPs": "Plan", //Todo: Translate
+			"Meds": "Méds", //Todo: Translate
 			"Commitment": "PFs posés",
 			"Profit": "Profit",
 			"LevelWarning": "ATTENTION: nivelez le bâtiment légendaire!", //Todo: Translate
@@ -105,6 +111,7 @@ let i18n = {
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
 				"residential" : "Bâtiments événementiels",
+				"residential": "residental buildings", // Todo: Translate
 				"decoration": "décorations", //Todo: Translate
 				"street": "Rues", //Todo: Translate
 				"goods": "Bâtiment fret", //Todo: Translate
@@ -174,6 +181,14 @@ let i18n = {
             "DescInStock": "Disponible",
             "DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
         },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 
         "Negotiation": {
             "Title": "Assistant de négociation",
@@ -237,6 +252,14 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
 		}
 	},
 
@@ -312,6 +335,11 @@ let i18n = {
 			"Title" : "Version",
 			"DescDebug" : "Version de l'extension Chrome <strong class='text-danger'>BETA</strong>",
 			"Desc" : "Version de l'extension Chrome"
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Player-Id:",
+			"GuildId": "Gild-Id:",
+			"World": "World:"
 		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
@@ -362,7 +390,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},

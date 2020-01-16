@@ -16,7 +16,11 @@
 let i18n = {
 	"Local" : "es-ES",
 	"DateTime" : "DD.MM.YYYY HH:mm [Uhr]",
-	
+
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Calculator cuata propia",
@@ -56,6 +60,8 @@ let i18n = {
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
 			"Save": "Guardar",
+			"BPs": "Plano",
+			"Meds": "Méds",
 			"Commitment": "Contribucion",
 			"Profit": "Ganancia",
 			"LevelWarning": "ATENCIÓN: nivela el legendario edificio!", //Todo: Translate
@@ -174,6 +180,14 @@ let i18n = {
             "DescInStock": "Vorhanden",
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
         },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 		
         "Negotiation": {
             "Title" : "Ayudante de negociacion",
@@ -237,6 +251,14 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
 		}
 	},
 
@@ -310,8 +332,11 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome Extension Version"
+			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Player-Id:",
+			"GuildId": "Gild-Id:",
+			"World": "World:"
 		},
 		"GlobalSend": {
 			"Title" : "Transmision a foe-rechner.de",
@@ -362,7 +387,8 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
-				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},

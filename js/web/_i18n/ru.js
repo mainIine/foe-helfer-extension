@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "ru-RU",
 	"DateTime" : "DD.MM.YYYY HH:mm",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Калькурятор вложений в свои ВС",
@@ -56,6 +60,8 @@ let i18n = {
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
 			"Save": "Сохранить",
+			"BPs": "СО",
+			"Meds": "Медали",
 			"Commitment": "Вклад",
 			"Profit": "Профит",
 			"LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
@@ -174,6 +180,14 @@ let i18n = {
             "DescInStock": "Доступно",
             "DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
         },
+		},
+
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+			"Previous": "Previous", //Todo: Translate
+			"Next": "Next", //Todo: Translate
+		},
 
         "Negotiation": {
             "Title": "Помощник переговоров",
@@ -237,6 +251,14 @@ let i18n = {
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+		},
+
+		"Gildfights": {
+			"Titel": "Player overview",
+			"Player": "Player",
+			"Negotiations": "Negotiations",
+			"Fights": "Fights",
+			"LastSnapshot": " - last snapshot __time__ ago",
 		}
 	},
 
@@ -312,6 +334,11 @@ let i18n = {
 			"Title" : "Версия",
 			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>БЕТА</strong> Версия",
 			"Desc" : "Версия расширения для Chrome"
+			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Версия расширения для Chrome",
+			"PlayerId": "Player-Id:",
+			"GuildId": "Gild-Id:",
+			"World": "World:"
 		},
 		"GlobalSend": {
 			"Title" : "Передача данных на foe-rechner.de",
@@ -363,6 +390,8 @@ let i18n = {
 				"fr": "Français",
 				"es": "Español",
 				"ru": "Русский"
+				"ru": "Русский",
+				"sv": "Svenska"
 			}
 		}
 	},

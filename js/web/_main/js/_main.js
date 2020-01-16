@@ -573,13 +573,18 @@ const FoEproxy = (function () {
 		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
 
 		// freigeschaltete Erweiterungen sichern
-		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
 	
 	// --------------------------------------------------------------------------------------------------
 	// Bonus notieren, enthält tägliche Rathaus FP
 	FoEproxy.addHandler('BonusService', 'getBonuses', (data, postData) => {
 		MainParser.BonusService = data.responseData;
+	});
+
+	// Limited Bonus (Archenbonus, Kraken etc.)
+	FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
+		Calculator.SetArcBonus(data.responseData);
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -1020,7 +1025,7 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr','es','ru'
+		'de', 'en', 'fr','es','ru','sv'
 	],
 	BonusService: null,
 	EmissaryService: null,

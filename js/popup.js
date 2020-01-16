@@ -34,6 +34,11 @@ let i18n = {
 		'desc' : "Вам нравится это маленькое бесплатное расширение и вы хотите поддержать его, чтобы оно оставалось таким же? <br> Тогда каждое маленькое пожертвование в поддержку проекта всегда приветствуется.",
 		'thanks' : 'Большое спасибо!'
 	},
+	'sv' : {
+		'title' : 'FoE Assistant',
+		'desc' : "Du kommer tycka om detta lilla gratis tillägg och stöd det så det kan fortsätta så? <br> Varje liten donation för support är välkommet.",
+		'thanks' : 'Tack så mucket!'
+	},
 };
 
 $(function(){
