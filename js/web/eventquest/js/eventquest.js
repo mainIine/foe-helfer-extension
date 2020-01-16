@@ -13,9 +13,34 @@
  * **************************************************************************************
  */
 
+FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
+
+	// Nur Events und "active" heraus filtern
+	EventQuest.Quests = data['responseData'].filter(q => (q['category'] === 'events' && q['state'] === 'accepted'));
+
+	if(EventQuest.Quests === undefined){
+		// @ToDo: Menüpunkt entsorgen
+
+		return;
+	}
+
+	if($('#event').length === 0){
+		EventQuest.Show();
+
+	} else if($('#event').length > 0) {
+		EventQuest.BuildBox();
+	}
+});
+
+/**
+ *
+ * @type {{CurrentQuestText: null, QuestId: number, Visible: boolean, Quests: null, Event: [], Show: EventQuest.Show, AllQuests: null, CurrentQuestID: number, BuildBox: EventQuest.BuildBox, CalcBody: EventQuest.CalcBody}}
+ */
 let EventQuest = {
+	Quests: null,
     Event: [],
     AllQuests: null,
+	QuestId: 0,
     CurrentQuestID: 1,
     CurrentQuestText: null,
     Visible: false,
@@ -52,11 +77,11 @@ let EventQuest = {
 	 * @constructor
 	 */
     BuildBox: () => {
-        for (let i in MainParser.Quests) {
+        for (let i in EventQuest.Quests) {
 
-            let Quest = MainParser.Quests[i];
+            let Quest = EventQuest.Quests[i];
 
-            if (Quest.category === 'events' && Quest.type.indexOf('counter') == -1) {
+            if (Quest.type.indexOf('counter') == -1) {
                 let id = Quest.id.toString();
 
                 id = id[id.length - 2] + id[id.length - 1];
