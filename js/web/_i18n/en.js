@@ -179,8 +179,6 @@ let i18n = {
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
-
-        },
 		},
 
 		"EventList": {
