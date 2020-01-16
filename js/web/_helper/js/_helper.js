@@ -316,10 +316,17 @@ let HTML = {
 
 		box.append(grip);
 
-		// Box wird in der GRöße verändert, speichern
+		// Box wird in der Größe verändert, speichern
 		box.resizable({
-			handleSelector: ".window-grippy",
-			onDragEnd: (e, $el, opt)=>{
+			handles: {
+				ne: '.window-grippy',
+				se: '.window-grippy',
+				sw: '.window-grippy',
+				nw: '.window-grippy'
+			},
+			minHeight: 200,
+			minWidth: 250,
+			stop: (e, $el)=>{
 				let size = $el.width() + '|' + $el.height();
 
 				localStorage.setItem(id + 'Size', size);
