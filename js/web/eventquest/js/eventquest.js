@@ -91,6 +91,7 @@ let EventQuest = {
                 break;
             }
         }
+
         EventQuest.CalcBody();
     },
 
@@ -121,20 +122,20 @@ let EventQuest = {
             if (selQuest['id'] === EventQuest.CurrentQuestID) {
 
                 h.push('<tr>');
-                h.push('<td class="nr">' + selQuest['id'] + '</td>');
+                h.push('<td class="nr">' + selQuest['id'] + '.</td>');
                 h.push('<td>' + EventQuest.CurrentQuestText + '</td>');
-                h.push('<td>' + selQuest['reward'] + '</td>');
+                h.push('<td class="text-center">' + selQuest['reward'] + '</td>');
                 h.push('</tr>');
 
                 h.push('<tr>');
-                h.push('<td colspan="3" class="upcoming">'+i18n['Boxes']['EventList']['Upcoming']+'</td>');
+                h.push('<td colspan="3" class="upcoming text-center">'+i18n['Boxes']['EventList']['Upcoming']+'</td>');
                 h.push('</tr>');
 
                 for (let add = 1; add <= 5; add++) {
                     h.push('<tr>');
-                    h.push('<td class="nr">' + EventQuest.AllQuests[i + add]['id'] + '</td>');
+                    h.push('<td class="nr">' + EventQuest.AllQuests[i + add]['id'] + '.</td>');
                     h.push('<td>' + EventQuest.AllQuests[i + add]['quest'] + '</td>');
-                    h.push('<td>' + EventQuest.AllQuests[i + add]['reward'] + '</td>');
+                    h.push('<td class="text-center">' + EventQuest.AllQuests[i + add]['reward'] + '</td>');
                     h.push('</tr>');
                 }
             }
