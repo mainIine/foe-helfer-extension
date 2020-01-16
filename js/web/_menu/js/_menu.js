@@ -31,6 +31,7 @@ let _menu = {
 		'productions',
 		'negotiation',
 		'infobox',
+		'questlist',
 		'technologies',
 		'campagneMap',
 		'unit',
@@ -475,6 +476,30 @@ let _menu = {
         btn_MapBG.append(btn_Map);
 
         return btn_MapBG;
+    },
+
+	/**
+	 * QuestList
+	 *
+	 * @returns {*|jQuery}
+	 */
+	questlist_Btn: ()=> {
+        let btn_EventBG = $('<div />').attr({'id': 'questlist_Btn', 'data-slug': 'questlist'}).addClass('hud-btn');
+
+        // Tooltip einbinden
+        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Event']['Desc'], 'questlist_Btn');
+
+        let btn_Event = $('<span />');
+
+        btn_Event.on('click', function () {
+			EventQuest.Visible = true;
+            EventQuest.Show();
+			EventQuest.Visible = false;
+        });
+
+        btn_EventBG.append(btn_Event);
+
+        return btn_EventBG;
     },
 
 	hiddenRewards_Btn: ()=> {

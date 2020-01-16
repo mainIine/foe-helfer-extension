@@ -55,7 +55,8 @@ let i18n = {
 			"Step": "Niveau ",
 			"AvailableFP": "PFs disponibles",
 			"ArcBonus": "Bonus d'arche",
-            "Rate": "Cours",
+			"Earnings": "Bénéfices",
+			"Rate": "Cours",
 			"Up2LevelUp": "Jusqu'au nivellement",
 			"FP": "PF",
 			"Save": "Sauver",
@@ -90,7 +91,8 @@ let i18n = {
 			"Title" : "PFs - Productions",
 			"TotalFPs": "Total PFs pour tous les batiments: ",
 			"Amount": "Nombre",
-			"FPBar" : "PFs en stock: "
+			"FPBar" : "PFs en stock: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -108,7 +110,7 @@ let i18n = {
 				"greatbuilding" : "Grand monument",
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
-				"residential": "residental buildings", // Todo: Translate
+				"residential" : "Bâtiments événementiels",
 				"decoration": "décorations", //Todo: Translate
 				"street": "Rues", //Todo: Translate
 				"goods": "Bâtiment fret", //Todo: Translate
@@ -181,9 +183,12 @@ let i18n = {
 
 		"EventList": {
 			"Title": "Event quest list for: ", //Todo: Translate
+			"Desc": "Task", //Todo: Translate
 			"Reward": "Reward", //Todo: Translate
-			"Previous": "Previous", //Todo: Translate
-			"Next": "Next", //Todo: Translate
+            "Number": "No.", //Todo: Translate
+			"Or": " or ", //Todo: Translate
+			"And": " and ", //Todo: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
 		},
 
         "Negotiation": {
@@ -284,6 +289,10 @@ let i18n = {
             "Desc": "Übersicht über die benötigten Ressourcen",
         	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
 		},
+        "Event": {
+            "Title": "Event Questlist", //Todo: Translate
+            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
+		},
         "Negotiation": {
             "Title": "Assistant de négociation",
 			"Desc": "Faire des propositions de négociations précises",
@@ -329,8 +338,8 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
-			"Desc" : "Chrome Extension Version",
+			"DescDebug" : "Version de l'extension Chrome <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Version de l'extension Chrome",
 			"PlayerId": "Player-Id:",
 			"GuildId": "Gild-Id:",
 			"World": "World:"

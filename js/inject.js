@@ -77,6 +77,10 @@ if (PossibleLangs.includes(lng) === false)
 if(uLng !== null){
 	lng = uLng;
 }
+else{
+	// damit man die sprache auslesen kann ohne diese über die einstellungen einmal ändern zu müssen
+	localStorage.setItem('user-language', lng);
+}
 
 let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_i18n/' + lng + '.js?v=' + v));
 
@@ -163,6 +167,7 @@ async function InjectCode() {
 			'campagnemap',
 			'technologies',
 			'negotiation',
+			'eventquest',
 			'read-buildings',
 			'settings',
 			'strategy-points',
