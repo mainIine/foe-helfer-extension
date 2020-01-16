@@ -55,6 +55,7 @@ let i18n = {
 			"Step": "Уровень ",
 			"AvailableFP": "Доступные СО",
 			"ArcBonus": "Боунс Арки",
+			"Earnings": "Прибыль",
 			"Rate": "Курс",
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
@@ -90,7 +91,8 @@ let i18n = {
 			"Title" : "СО - Производство",
 			"TotalFPs": "Всего СО со всех построек: ",
 			"Amount": "Количество",
-			"FPBar" : "Кол-во СО в пакетах: "
+			"FPBar" : "Кол-во СО в пакетах: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -108,7 +110,7 @@ let i18n = {
 				"greatbuilding" : "Великие Строения",
 				"production" : "Производственные постройки",
 				"random_production" : "Случайные производственные здания",
-				"residential": "residental buildings", // Todo: Translate
+				"residential" : "Постройки событий",
 				"decoration": "Декор",
 				"street": "Дороги",
 				"goods": "Промышленные постройки",
@@ -177,6 +179,7 @@ let i18n = {
             "DescRequired": "Требуется",
             "DescInStock": "Доступно",
             "DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
+        },
 		},
 
 		"EventList": {
@@ -329,6 +332,8 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Версия",
+			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>БЕТА</strong> Версия",
+			"Desc" : "Версия расширения для Chrome"
 			"DescDebug" : "Расширение для Chrome <strong class='text-danger'>BETA</strong>",
 			"Desc" : "Версия расширения для Chrome",
 			"PlayerId": "Player-Id:",
@@ -384,6 +389,7 @@ let i18n = {
 				"en": "English",
 				"fr": "Français",
 				"es": "Español",
+				"ru": "Русский"
 				"ru": "Русский",
 				"sv": "Svenska"
 			}
