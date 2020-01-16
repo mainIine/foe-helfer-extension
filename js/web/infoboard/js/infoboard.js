@@ -313,9 +313,9 @@ let Info = {
 			msg: HTML.i18nReplacer(
 				i18n['Boxes']['Infobox']['Messages']['LevelUp'],
 				{
-					'player' : d['player']['name'],
+					'player' : d['other_player']['name'],
 					'building': d['great_building_name'],
-					'level': d['attachment']['level'],
+					'level': d['level'],
 					'rank' : d['rank']
 				}
 			)

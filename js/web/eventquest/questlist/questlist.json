@@ -1,0 +1,559 @@
+{
+    "eventname": "Forge Bowl Event 2020",
+    "lang": {
+      "de": [
+        {
+          "id": 1,
+          "quest": "Spende 15 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 2,
+          "quest": "Erhalte einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 3,
+          "quest": "Baue 2 Dekos aus deinem ZA oder 3 aus dem vorherigen ZA und zahle einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 4,
+          "quest": "Vernichte eine kleine Armee oder löse eine einfache Verhandlung und Begeistere deine Leute",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 5,
+          "quest": "Motiviere o Poliere 25 Gebäude und beende 17x eine 5 min Produktion",
+          "reward": "120 Footballs und Olympische Schatzkammer Stufe 1"
+        },
+        {
+          "id": 6,
+          "quest": "Rekrutiere 3 Einheiten aus deinem ZA oder 4 aus dem vorherigen ZA und kaufe 5 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 7,
+          "quest": "Sammel 3 umgebungsobjekte oder Verkause 2 Sachen beim Antiq Händler und zahle einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 8,
+          "quest": "Spende 230 Güter in die Gildenkasse o spende 57 FPs und erhalte einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 9,
+          "quest": "Infiltriere 3 Sectoren oder löse eine einfache Verhandlung und beende 8x eine 4h Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 10,
+          "quest": "Sammel 750 Tavernensilber oder gewinne durchgehend 6 Kämpfe",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 11,
+          "quest": "Verkaufe 3 Gegenstände beim Antiq Händler oder besiege eine kleine Armee und zahle einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 12,
+          "quest": "Gewinne 7 Kämpfe oder spende 38 FPs und erhalte einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 13,
+          "quest": "zahle 30 aktuelle ZA Güter oder 39 aus dem vorherigen ZA",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 14,
+          "quest": "Besiege eine mittlere Armee oder löse eine moderate Verhandlung und Spende 38 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 15,
+          "quest": "Erhalte 180 Güter oder spende 270 Güter in die Gildenkasse und erhalte 5500 Einwohner mehr",
+          "reward": "120 Footballs und Olympische Schatzkammer Upgrade Kit"
+        },
+        {
+          "id": 16,
+          "quest": "Motiviere oder poliere 25 Gebäude oder löse eine einfache Verhandlung und beende 12x eine 5min Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 17,
+          "quest": "Übernehme 2 Sektoren oder beende 12x eine 24h Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 18,
+          "quest": "Baue 1 Kult Gebäude deine sZAs oder 2 aus dem vorherigen ZA und zahle einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 19,
+          "quest": "Sammel 5 Umgebungsobjekte oder beende 10 Produktionen aus dem vorherigen ZA und erhalte + 10.000 Zufriedenheit",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 20,
+          "quest": "Besuche 15 Tavernen oder vernichte 38 Einheiten und erhalte einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 21,
+          "quest": "Baue 7 Dekos und beende 18x eine 15min Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 22,
+          "quest": "Zahle 36 aktuelle ZA Güter oder 45 vorherige ZA Güter und zahle einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 23,
+          "quest": "Aktiviere 2 Tavernenboosts oder gewinne 8 Kämpfe und erhalte einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 24,
+          "quest": "Absolviere 5 Begegnungen in der GE oder löse eine moderate Verhandlung und beende 13x eine 1h Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 25,
+          "quest": "Verkaufe 4 Gegenstände beim Antiq Händler oder beende 12x eine 4h Produktion und erhalte einiges an Münzen",
+          "reward": "120 + 1400 Footballs"
+        },
+        {
+          "id": 26,
+          "quest": "Baue 1 Produktions Gebäude deines ZAs oder 2 aus dem vorherigen ZA und kaufe 5 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 27,
+          "quest": "Erhalte 180 Güter oder spende 150 Güter in die Gildenkasse",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 28,
+          "quest": "Gebe 400 Silber aus oder Infiltriere 4 Sektoren und zahle einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 29,
+          "quest": "Besiege eine mittlere Armee oder löse eine moderate Verhalndlung und beende 17x eine 5min Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 30,
+          "quest": "Sammel 3 Umgebungsobjekte oder spende 95 FPs in ein Legendäres Gebäude und erhalte einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 31,
+          "quest": "Zahle 30 aktuelle ZA Güter oder 39 Güter aus dem vorherigen ZA und spende 49 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 32,
+          "quest": "Besuche 20 Tavernen oder Besiege 38 Einheiten und zahle einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 33,
+          "quest": "Baue 2 Wohngebäude deines ZAs oder 3 aus dem vorherigen ZA",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 34,
+          "quest": "Beende 15x Produktionen aus deinem ZA oder 18 aus dem vorherigen ZA und spende 46 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 35,
+          "quest": "Erhalte 135 Güter oder spende 230 Güter in die Gildenkasse und erhalte einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 36,
+          "quest": "Verkaufe 2 Gegenstände beim Antiq Händler oder beende 24x eine 4h Produktion und zahle einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 37,
+          "quest": "Gewinne 11 Kämpfe oder löse eine moderate Verhandlung und erhöhe deine Einwohner +5500",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 38,
+          "quest": "Motiviere oder poliere 25 Gebäude oder zahle 30 aktuelle ZA Güter und baue 5 Dekos aus deinem ZA oder 6 aus dem vorherigen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 39,
+          "quest": "Besiege eine kleine Armee oder löse eine moderate Verhandlung und beende 14x eine 1h Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 40,
+          "quest": "Gewinne ohne zu verlieren 6 Kämpfe oder erhalte +20.000 Zufriedenheit",
+          "reward": "120 Footballs und Olympische Schatzkammer Upgrade Kit"
+        },
+        {
+          "id": 41,
+          "quest": "Erhalte 300 Güter oder spende 380 Güter in die Gildenkasse und beende 18x eine 5min Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 42,
+          "quest": "Aktiviere 2 Tavernen Boosts oder löse eine moderate Verhandlung",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 43,
+          "quest": "Sammel 3 Umgebungsobjekte oder 20x motivieren o polieren und zahle einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 44,
+          "quest": "Beende die erste Stufe der GE oder vernichte eine grosse Armee",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 45,
+          "quest": "Baue 2 Kult Gebäude deines ZAs oder 3 aus dem vorherigen ZA und kaufe 5 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 46,
+          "quest": "Verkaufe 4x etwas beim Antiq Händler oder beende 17x eine 8h Produktion und zahle einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 47,
+          "quest": "Rekrutiere 5 Einheiten deines ZAs oder zahle 60 aktuelle ZA Güter und erhalte einiges an Vorräten",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 48,
+          "quest": "Gewinne durchgehend 5 Kämpfe oder sammel 1800 Tavernensilber ein und beende 12x eine 8h Produktion",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 49,
+          "quest": "Vernichte eine mittlere Armee oder löse eine moderate Verhandlung und spende 57 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 50,
+          "quest": "Erhalte 270 Güter oder spende 330 Güter in die Gildenkasse",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 51,
+          "quest": "Gebe 450 Tavernen Silber aus oder beende 22x eine 15 min Produktion und zahle einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 52,
+          "quest": "Vernichte 57 Einheiten oder löse eine komplexe Verhandlung und spende 30 FPs",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 53,
+          "quest": "Sammel 3 Umgebungsobjekte oder besuche 15 Tavernen und zahle einiges an Vorräte",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 54,
+          "quest": "Zahle 30 aktuelle ZA Güter oder 39 aus dem vorherigen ZA und erhalte einiges an Münzen",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 55,
+          "quest": "Baue 2 Gütergebäude deines ZAs oder erhalte 150 Güter und beende 14x eine 1h Produktion",
+          "reward": "120 Footballs und Olympische Schatzkammer Upgrade Kit"
+        }
+      ],
+      "en": [
+        {
+          "id": 1,
+          "quest": "Spend some (5 - 17) Forge Points",
+          "reward": "120 Footballs and Olympic Treasury Level 1"
+        },
+        {
+          "id": 2,
+          "quest": "Gather some (400 - 400,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 3,
+          "quest": "Build 2 decorations from your age OR Build 3 decorations from the previous age and Pay some (2,000 - 1,867,200) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 4,
+          "quest": "Defeat this very small army OR Solve this simple negotiation and Make people enthusiastic",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 5,
+          "quest": "Motivate or polish 25 buildings of other players and In a production building, finish a 5-minute production some (3 - 17) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 6,
+          "quest": "Recruit 3 Units from your age OR Recruit 4 Units from the previous age and Buy 5 Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 7,
+          "quest": "Collect 3 incidents OR Exchange 2 items in the Antiques Dealer building and Pay some (1,400 - 960,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 8,
+          "quest": "Donate some (30 - 240) goods to the guild treasury OR Spend some (18 - 63) Forge Points and Gather some (2,000 - 1,700,000) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 9,
+          "quest": "Infiltrate 3 sectors OR Solve this simple negotiation and Finish a 4-hour production some (1 - 8) times in a production building",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 10,
+          "quest": "Collect 750 Tavern Silver OR Win some (3 - 6) battles without losing",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 11,
+          "quest": "Exchange 3 items in the Antiques Dealer building OR Defeat this small army and Pay some (2,400 - 2,240,600) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 12,
+          "quest": "Win some (2 - 8) battles OR Spend some (12 - 42) Forge Points and Gather some (800 - 750,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 13,
+          "quest": "Pay some (5 - 35) selected goods from the previous age",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 14,
+          "quest": "Defeat this medium sized army OR Solve this moderate negotiation and Spend some (12 - 42) Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 15,
+          "quest": "Gather some (24 -240) goods, e.g. from goods production buildings or by trading OR Donate some (40 - 290) goods to the guild treasury and Gain some (30 - 12,000) total population",
+          "reward": "120 Footballs and Olympic Treasury Upgrade Kit"
+        },
+        {
+          "id": 16,
+          "quest": "Motivate or polish 25 buildings of other players OR Solve this simple negotiation and In a production building, finish a 5-minute production some (2 - 12) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 17,
+          "quest": "Acquire some (1 - 2) sectors OR Finish a 24-hour production some (2 - 12) times in a production building",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 18,
+          "quest": "Build 1 cultural building from your age OR Build 2 cultural buildings from the previous age and Pay some (1,700 - 1,152,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 19,
+          "quest": "Collect 5 incidents OR Finish 10 productions inproduction buildings from the previous age and Gain some (230 - 25,000) happiness",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 20,
+          "quest": "Visit 15 Friends Tavern OR Defeat some (10 - 42) units and Gather some (1,000 - 1,000,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 21,
+          "quest": "Build 7 decorations and In a production building, finish a 15-minute production some (3 - 18) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 22,
+          "quest": "Pay some (6 - 42) selected goods from the previous age and Pay some (2,400 - 2,240,600) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 23,
+          "quest": "Activate 2 boosts in Friends Tavern OR Win some (2 - 10) battles and Pay some (500 - 500,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 24,
+          "quest": "Solve 5 encounters in the Guild Expeditions OR Solve this moderate negotiation and In a production building, finish a 1-hour production some (2 - 13) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 25,
+          "quest": "Exchange 4 items in the Antiques Dealer building OR In a production building, finish a 4-hour production some (2 - 12) times and Gather some (1,000 - 850,000) coins",
+          "reward": "120 + 1400 Footballs"
+        },
+        {
+          "id": 26,
+          "quest": "Build 1 production building from your age OR Build 2 production buildings from the previous age and Buy 5 Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 27,
+          "quest": "Gather some (24 -240) goods, e.g. from goods production buildings or by trading OR Donate some (40 - 160) goods to the guild treasury",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 28,
+          "quest": "Spend 400 Tavern Silver in the Friends Tavern OR Infiltrate 4 sectors and Pay some (2,100 - 1,440,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 29,
+          "quest": "Defeat this medium sized army OR Solve this moderate negotiation and In a production building, finish a 5-minute production some (3 - 17) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 30,
+          "quest": "Collect 3 incidents OR Contribute some (30 - 105) Forge Points to Great Buildings and Gather some (1,000 - 850,000) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 31,
+          "quest": "Pay some (5 - 35) selected goods from the previous age and Spend some (16 - 55) Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 32,
+          "quest": "Visit 20 Friends Tavern OR Defeat some (10 - 42) units and Pay some (2,400 - 2,240,600) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 33,
+          "quest": "Build 2 residential buildings from your age OR Build 3 residential buildings from the previous age",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 34,
+          "quest": "Finish 15 productions in production buildings from your age OR Finish 18 productions in production buildings from the previous age and Spend some (14 - 50) Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 35,
+          "quest": "Gather some (18 - 180) goods, e.g. from goods production buildings or by trading OR Donate some (30 - 240) goods to the guild treasury and Gather some (800 - 800,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 36,
+          "quest": "Exchange 2 items in the Antiques Dealer building OR In a production building, finish a 4-hour production some (4 - 24) times and Pay some (1,700 - 1,152,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 37,
+          "quest": "Win some (3 - 12) battles OR Solve this moderate negotiation and Gain some (30 - 12,000) total population",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 38,
+          "quest": "Motivate or polish 25 buildings of other players OR Pay some (5 - 35) selected goods from your age and Build 5 decorations from your age OR Build 6 decorations from the previous age",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 39,
+          "quest": "Defeat this small army OR Solve this moderate negotiation and In a production building, finish a 1-hour production some (2 - 14) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 40,
+          "quest": "Win some (3 - 6) battles without losing OR Gain some (460 - 50,000) happiness",
+          "reward": "120 Footballs and Olympic Treasury Upgrade Kit"
+        },
+        {
+          "id": 41,
+          "quest": "Gather some (40 - 400) goods, e.g. from goods production buildings or by trading OR Donate some (50 - 400) goods to the guild treasury and In a production building, finish a 5-minute production some (3 - 18) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 42,
+          "quest": "Activate 2 boosts in Friends Tavern OR Solve this moderate negotiation",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 43,
+          "quest": "Collect 3 incidents OR Motivate or polish 20 buildings of other players and Pay some (5,000 - 4,668,000) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 44,
+          "quest": "Have the first difficulty in the Guild Expedition solved OR Defeat this large army",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 45,
+          "quest": "Build 2 cultural buildings from your age OR Build 3 cultural buildings from the previous age and Buy 5 Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 46,
+          "quest": "Exchange 4 items in the Antiques Dealer building OR In a production building, finish an 8-hour production some (3 - 17) times and Pay some (2,100 - 1,440,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 47,
+          "quest": "Recruit 5 Units from your age OR Pay some (10 - 70) selected goods from your age and Gather some (900 - 850,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 48,
+          "quest": "Win some (2 - 5) battles without losing OR Collect 1,800 Tavern Silver and In a production building, finish an 8-hour production some (2 - 12) times",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 49,
+          "quest": "Defeat this medium sized army OR Solve this moderate negotiation and Spend some (18 - 63) Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 50,
+          "quest": "Gather some (36 - 360) goods, e.g. from goods production buildings or by trading OR Donate some (40 - 350) goods to the guild treasury",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 51,
+          "quest": "Spend 450 Tavern Silver in the Friends Tavern OR In a production building, finish a 15-minute production some (4 - 22) times and Pay some (2,800 - 2,614,100) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 52,
+          "quest": "Defeat some (15 - 63) units OR Solve this complex negotiation and Spend some (10 - 34) Forge Points",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 53,
+          "quest": "Collect 3 incidents OR Visit 15 Friends Tavern and Pay some (2,200 - 1,536,000) supplies",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 54,
+          "quest": "Pay some (5 - 35) selected goods from the previous age and Gather some (2,000 - 1,700,000) coins",
+          "reward": "120 Footballs"
+        },
+        {
+          "id": 55,
+          "quest": "Build 2 goods buildings from your age OR Gather some (20 - 200) goods, e.g. from goods production buildings or by trading and In a production building, finish a 1-hour production some (2 - 14) times",
+          "reward": "120 Footballs and Olympic Treasury Upgrade Kit"
+        }
+      ]
+    }
+  }
