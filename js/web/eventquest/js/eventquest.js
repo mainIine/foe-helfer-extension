@@ -52,17 +52,31 @@ let EventQuest = {
 	 */
     BuildBox: () => {
         for (let i in MainParser.Quests) {
+
             let Quest = MainParser.Quests[i];
+
             if (Quest.category === 'events' && Quest.type.indexOf('counter') == -1) {
                 let id = Quest.id.toString();
+
                 id = id[id.length - 2] + id[id.length - 1];
                 EventQuest.CurrentQuestID = (parseInt(id)) + 1;
-                var text = "", condition = Quest.successConditions, conditiongroup = Quest.successConditionGroups, conditionText = "";
+
+                let text = "",
+					condition = Quest.successConditions,
+					conditiongroup = Quest.successConditionGroups,
+					conditionText = "";
+
                 for (let g = 0; g < conditiongroup.length; g++) {
                     for (let gi = 0; gi < conditiongroup[g].conditionIds.length; gi++) {
-                        if (conditiongroup[g].type === 'or') conditionText = i18n['Boxes']['EventList']['Or'];
-                        else if (conditiongroup[g].type === 'none') conditionText = i18n['Boxes']['EventList']['And'];
-                        else conditionText = "";
+                        if (conditiongroup[g].type === 'or')
+                        	conditionText = i18n['Boxes']['EventList']['Or'];
+
+                        else if
+							(conditiongroup[g].type === 'none') conditionText = i18n['Boxes']['EventList']['And'];
+
+                        else
+                        	conditionText = "";
+
                         for (let ci = 0; ci < condition.length; ci++) {
                             if (condition[ci].id === conditiongroup[g].conditionIds[gi]) {
                                 text +=  conditionText + condition[ci].description;
@@ -72,7 +86,7 @@ let EventQuest = {
                     }
                 }
                 
-                var re = RegExp("("+i18n['Boxes']['EventList']['And']+"|"+i18n['Boxes']['EventList']['Or']+")(.+)", 'g');
+                let re = RegExp("("+i18n['Boxes']['EventList']['And']+"|"+i18n['Boxes']['EventList']['Or']+")(.+)", 'g');
                 EventQuest.CurrentQuestText = text.replace(re, '$2');
                 break;
             }
@@ -101,16 +115,21 @@ let EventQuest = {
             '</thead>');
 
         for (let i = 0; i < EventQuest.AllQuests.length; i++) {
+
             let selQuest = EventQuest.AllQuests[i];
+
             if (selQuest['id'] === EventQuest.CurrentQuestID) {
+
                 h.push('<tr>');
                 h.push('<td class="nr">' + selQuest['id'] + '</td>');
                 h.push('<td>' + EventQuest.CurrentQuestText + '</td>');
                 h.push('<td>' + selQuest['reward'] + '</td>');
                 h.push('</tr>');
+
                 h.push('<tr>');
                 h.push('<td colspan="3" class="upcoming">'+i18n['Boxes']['EventList']['Upcoming']+'</td>');
                 h.push('</tr>');
+
                 for (let add = 1; add <= 5; add++) {
                     h.push('<tr>');
                     h.push('<td class="nr">' + EventQuest.AllQuests[i + add]['id'] + '</td>');
