@@ -28,6 +28,7 @@ let EventQuest = {
         MainParser.loadJSON(url, (data) => {
             EventQuest.Event = JSON.parse(data);
             EventQuest.AllQuests = EventQuest.Event['lang'][lng];
+
             if ($('#event').length === 0) {
 
                 HTML.Box({
@@ -121,7 +122,7 @@ let EventQuest = {
 
             if (selQuest['id'] === EventQuest.CurrentQuestID) {
 
-                h.push('<tr>');
+                h.push('<tr class="active-quest">');
                 h.push('<td class="nr">' + selQuest['id'] + '.</td>');
                 h.push('<td>' + EventQuest.CurrentQuestText + '</td>');
                 h.push('<td class="text-center">' + selQuest['reward'] + '</td>');
