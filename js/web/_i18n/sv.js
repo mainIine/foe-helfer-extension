@@ -226,10 +226,11 @@ let i18n = {
 			"ResetBox" : "Töm",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> har precis fått __points__ poäng i IE.",
-				"LevelUp" : "__player__'s __building__ byggnad har precis nått en ny nivå __level__.<br>Du tof <strong>__rank__th</strong> placering.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
 				"Auction" : "'<strong>__player__</strong> har precis erbjudit __amount__ mynt.",
 				"Trade" : "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Nivå __level__"
+				"MsgBuilding" : "__building__ - Nivå __level__",
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
 			}
 		},
 
@@ -444,9 +445,11 @@ let i18n = {
 
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "nature", //Todo: Translate
-			"shore": "Shore", //Todo: Translate
-			"cityRoadSmall": "Small Road" //Todo: Translate
+			"nature": "Nature",  //Todo: Translate
+			"shore": "Shore",  //Todo: Translate
+			"water": "in the water",  //Todo: Translate
+			"cityRoadSmall": "small Road",  //Todo: Translate
+			"cityRoadBig": "big Road"  //Todo: Translate
 		},
 		"Table": {
 			"type": "Type", //Todo: Translate

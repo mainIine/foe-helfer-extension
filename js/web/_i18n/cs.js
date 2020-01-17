@@ -181,13 +181,13 @@ let i18n = {
         },
 
 		"EventList": {
-			"Title": "Event quest list for: ", //Todo: Translate
-			"Desc": "Task", //Todo: Translate
-			"Reward": "Reward", //Todo: Translate
-            "Number": "No.", //Todo: Translate
-			"Or": " or ", //Todo: Translate
-			"And": " and ", //Todo: Translate
-			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+			"Title": "Event quest list for: ",  // Todo: Translate: Translate
+			"Desc": "Task",  // Todo: Translate: Translate
+			"Reward": "Reward",  // Todo: Translate: Translate
+            "Number": "No.",  // Todo: Translate: Translate
+			"Or": " or ",  // Todo: Translate: Translate
+			"And": " and ",  // Todo: Translate: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)",  // Todo: Translate: Translate
 		},
 		
         "Negotiation": {
@@ -215,21 +215,22 @@ let i18n = {
 		},
 
 		"Infobox" : {
-			"Title" : "Infobox", //Todo: Translate
-			"Filter" : "Filter", //Todo: Translate
-			"FilterGex" : "GEX", //Todo: Translate
-			"FilterAuction" : "Auction", //Todo: Translate
-			"FilterLevel" : "Level-Up", //Todo: Translate
-			"FilterMessage" : "Message", //Todo: Translate
-			"FilterGildFights" : "Guild Fights", //Todo: Translate
-			"FilterTrade" : "Trade", //Todo: Translate
-			"ResetBox" : "Reset Box", //Todo: Translate
+			"Title" : "Infobox",  // Todo: Translate: Translate
+			"Filter" : "Filter",  // Todo: Translate: Translate
+			"FilterGex" : "GEX",  // Todo: Translate: Translate
+			"FilterAuction" : "Auction",  // Todo: Translate: Translate
+			"FilterLevel" : "Level-Up",  // Todo: Translate: Translate
+			"FilterMessage" : "Message",  // Todo: Translate: Translate
+			"FilterGildFights" : "Guild Fights",  // Todo: Translate: Translate
+			"FilterTrade" : "Trade",  // Todo: Translate: Translate
+			"ResetBox" : "Reset Box",  // Todo: Translate: Translate
 			"Messages" : {
-				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.", //Todo: Translate
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place.", //Todo: Translate
-				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.", //Todo: Translate
-				"Trade" : "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__", //Todo: Translate
-				"MsgBuilding" : "__building__ - Level __level__" //Todo: Translate
+				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",  // Todo: Translate: Translate
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",  // Todo: Translate: Translate
+				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",  // Todo: Translate: Translate
+				"Trade" : "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__",  // Todo: Translate: Translate
+				"MsgBuilding" : "__building__ - Level __level__",  // Todo: Translate: Translate
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
 			}
 		},
 
@@ -256,15 +257,15 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview", //Todo: Translate
-			"Player": "Player", //Todo: Translate
-			"Negotiations": "Negotiations", //Todo: Translate
-			"Fights": "Fights", //Todo: Translate
-			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+			"Titel": "Player overview",  // Todo: Translate: Translate
+			"Player": "Player",  // Todo: Translate: Translate
+			"Negotiations": "Negotiations",  // Todo: Translate: Translate
+			"Fights": "Fights",  // Todo: Translate: Translate
+			"LastSnapshot": " - last snapshot __time__ ago",  // Todo: Translate: Translate
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards" //Todo: Translate
+			"Title": "Hidden Rewards"  // Todo: Translate: Translate
 		}
 	},
 
@@ -294,8 +295,7 @@ let i18n = {
         	"Warning" : "Vyberte nejprve provincii!"
 		},
 		"Event": {
-            "Title": "Event Questlist", //Todo: Translate
-            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
+            "Title": "Event Questlist",  // Todo: Translate: Translate
 		},
         "Negotiation": {
             "Title": "Pomocník s vyjednáváním",
@@ -338,19 +338,19 @@ let i18n = {
 			"Desc" : "Ukazuje co se událo \"background\"<br><em>Fills up with info ...</em>"
 		},
 		"HiddenRewards": {
-			"Title": "Hidden rewards", //Todo: Translate
-			"Desc": "Overview of hidden rewards" //Todo: Translate
+			"Title": "Hidden rewards",  // Todo: Translate: Translate
+			"Desc": "Overview of hidden rewards"  // Todo: Translate: Translate
 		}
 	},
 
 	"Settings" : {
 		"Version": {
 			"Title" : "Verze",
-			"DescDebug" : "Chrome Extension <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome Extension Version"
-			"PlayerId": "Player-Id:", //Todo: Translate
-			"GuildId": "Gild-Id:", //Todo: Translate
-			"World": "World:" //Todo: Translate
+			"DescDebug" : "Chrome Extension <strong class='text-danger'>BETA</strong>",
+			"Desc" : "Chrome Extension Version",
+			"PlayerId": "Player-Id:",  // Todo: Translate: Translate
+			"GuildId": "Gild-Id:",  // Todo: Translate: Translate
+			"World": "World:"  // Todo: Translate: Translate
 		},
 		"GlobalSend": {
 			"Title" : "Přenos dat foe-rechner.de",
@@ -394,8 +394,8 @@ let i18n = {
 			"Button" : "Návrat!"
 		},
 		"MenuLength": {
-			"Title" : "Menu length", //Todo: Translate
-			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height." //Todo: Translate
+			"Title" : "Menu length",  // Todo: Translate: Translate
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height."  // Todo: Translate: Translate
 		},
 		"ChangeLanguage": {
 			"Title" : "Změnit jazyk",
@@ -444,14 +444,16 @@ let i18n = {
 
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "nature", //Todo: Translate
-			"shore": "Shore", //Todo: Translate
-			"cityRoadSmall": "Small Road" //Todo: Translate
+			"nature": "Nature",   // Todo: Translate: Translate
+			"shore": "Shore",   // Todo: Translate: Translate
+			"water": "in the water",   // Todo: Translate: Translate
+			"cityRoadSmall": "small Road",   // Todo: Translate: Translate
+			"cityRoadBig": "big Road"   // Todo: Translate: Translate
 		},
 		"Table": {
-			"type": "Type", //Todo: Translate
-			"position": "Position", //Todo: Translate
-			"expires": "Expires at" //Todo: Translate
+			"type": "Type",  // Todo: Translate: Translate
+			"position": "Position",  // Todo: Translate: Translate
+			"expires": "Expires at"  // Todo: Translate: Translate
 		}
 	}
 };
