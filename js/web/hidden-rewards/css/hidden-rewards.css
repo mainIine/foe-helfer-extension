@@ -1,6 +1,7 @@
 #HiddenRewardBox {
     top: 30%;
     left: 30px;
+	max-height: 400px;
 }
 
 #HiddenRewardBox #HiddenRewardBoxBody {
