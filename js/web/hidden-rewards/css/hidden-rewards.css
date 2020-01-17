@@ -4,11 +4,18 @@
 	max-height: 400px;
 }
 
+#HiddenRewardBox #HiddenRewardBoxBody {
+	max-height: 400px;
+	min-width: 350px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
 #HiddenRewardBox table td.incident {
     display: inline-block;
     background-size: 50px 35px;
     background-repeat: no-repeat;
-    width: 100px;
+    width: 70px;
     height: 30px;
 }
 
