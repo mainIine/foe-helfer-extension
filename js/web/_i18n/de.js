@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
 			"ArcBonus": "Arche Bonus",
-			"Earnings": "Ertrag",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
@@ -92,8 +91,7 @@ let i18n = {
 			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
 			"Amount": "Anzahl",
 			"FPBar" : "FP-Lager: ",
-			"BuyableFP" : "Kaufbar: ",
-			"FPBar" : "FP-Lager: "
+			"BuyableFP" : "Kaufbar: "
 		},
 
 		"Productions" : {
@@ -228,10 +226,11 @@ let i18n = {
 			"ResetBox" : "Box leeren",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
-				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt",
+				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt und erhälst <strong>__fps__</strong>",
 				"Auction" : "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
 				"Trade" : "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
-				"MsgBuilding" : "__building__ - Stufe __level__"
+				"MsgBuilding" : "__building__ - Stufe __level__",
+				"GildFightOccupied": "Provinz <span style=\"color:#ffb539\">__provinceName__</span> wurde von <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> übernommen und ist bis __untilOccupied__ Uhr gesperrt"
 			}
 		},
 
@@ -266,7 +265,7 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Versteckte Belohnungen"
+			"Title": "Ereignisse"
 		}
 	},
 
@@ -340,8 +339,8 @@ let i18n = {
 			"Desc" : "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>"
 		},
 		"HiddenRewards": {
-			"Title": "Versteckte Belohnungen",
-			"Desc": "Übersicht der versteckten Belohnungen"
+			"Title": "Ereignisse",
+			"Desc": "Übersicht der Ereignisse auf der Map"
 		}
 	},
 
@@ -448,12 +447,14 @@ let i18n = {
 		"Positions": {
 			"nature": "Natur",
 			"shore": "Küste",
-			"cityRoadSmall": "Einspurige Strasse"
+			"water": "im Wasser",
+			"cityRoadSmall": "einspurige Strasse",
+			"cityRoadBig": "große Strasse"
 		},
 		"Table": {
 			"type": "Typ",
 			"position": "Position",
-			"expires": "Verschindet am/um"
+			"expires": "Verschwindet am/um"
 		}
 	}
 };

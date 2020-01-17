@@ -65,7 +65,101 @@ input[type=number] {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 }
 
+/**
+	Dropdown
+*/
+.dropdown {
+	position: relative;
+	display: inline-block;
+	font-size: 1rem;
+	width: 9rem;
+	border: 1px solid #4C2F1E;
+	text-shadow: none;
+}
 
+.dropdown input#checkbox-toggle {
+	display: none;
+}
+
+.dropdown label.dropdown-label {
+	box-sizing: border-box;
+	display: inline-block;
+	width: 100%;
+	background-color: #F9EBC6;
+
+	color: #93795D;
+	padding: .4rem;
+
+	text-align: center;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.dropdown span.arrow {
+	border: solid #4C2F1E;
+	border-width: 0 2px 2px 0;
+	display: inline-block !important;
+	padding: 3px;
+	position: absolute;
+	top: 10px;
+	right: -1px;
+	transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+	transition: transform 0.1s linear;
+}
+
+.dropdown ul {
+	position: absolute;
+	list-style: none;
+	text-align: left;
+	width: 100%;
+	z-index: 1;
+	margin:0;
+	padding:0;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+
+	transition: opacity .15s ease-out;
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.dropdown ul li {
+	padding: 0.2rem;
+	background-color: #F9EBC6;
+	color: #93795D;
+	font-size: 0.8rem;
+	text-shadow: unset;
+	border-top: 1px solid #93795D;
+}
+
+.dropdown ul li:hover{
+	background-color: #b3a582;
+	color: #4C2F1E;
+}
+
+.dropdown ul li label {
+	display: flex;
+	align-items: center;
+}
+
+.dropdown input[type=checkbox]:checked ~ ul {
+	opacity: 1;
+	height: auto;
+}
+
+.dropdown input[type=checkbox]:checked ~ span.arrow {
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+}
+
+
+/**
+	Buttons
+*/
 .btn-default {
 	display: inline-block;
 	font-weight: 400;
@@ -153,7 +247,7 @@ table.foe-table tbody tr:nth-child(odd) {
 }
 
 table.foe-table:not(.no-hover) tbody tr:hover {
-	background-color: rgba(243, 214, 160, 0.4);
+	background-color: rgba(243, 214, 160, 0.2);
 }
 
 table.foe-table tr th,

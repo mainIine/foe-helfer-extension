@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Уровень ",
 			"AvailableFP": "Доступные СО",
 			"ArcBonus": "Боунс Арки",
-			"Earnings": "Прибыль",
 			"Rate": "Курс",
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
@@ -222,14 +221,16 @@ let i18n = {
 			"FilterAuction" : "Аукцион",
 			"FilterLevel" : "Поднятие уровня",
 			"FilterMessage" : "Сообщение",
+			"FilterGildFights" : "Guild Fights", //Todo: Translate
 			"FilterTrade" : "Рынок",
 			"ResetBox" : "Сбросить панель",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> получил __points__ очков в ЭГ.",
-				"LevelUp" : "ВС __building__ игрока __player__ только что достигло __level__ уровня.<br>Вы получили <strong>__rank__</strong> место.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
 				"Auction" : "<strong>__player__</strong> только что сделал ставку __amount__ монет.",
 				"Trade" : "<strong>__player__</strong> приянл ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Уровень __level__"
+				"MsgBuilding" : "__building__ - Уровень __level__",
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
 			}
 		},
 
@@ -256,11 +257,15 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",
-			"Player": "Player",
-			"Negotiations": "Negotiations",
-			"Fights": "Fights",
-			"LastSnapshot": " - last snapshot __time__ ago",
+			"Titel": "Player overview", //Todo: Translate
+			"Player": "Player", //Todo: Translate
+			"Negotiations": "Negotiations", //Todo: Translate
+			"Fights": "Fights", //Todo: Translate
+			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards" //Todo: Translate
 		}
 	},
 
@@ -332,6 +337,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Панель информации",
 			"Desc" : "Отображает все события, которые происходяя \"в фоне\"<br><em>Заполняется информацией ...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards", //Todo: Translate
+			"Desc": "Overview of hidden rewards" //Todo: Translate
 		}
 	},
 
@@ -385,6 +394,10 @@ let i18n = {
 			"Desc" : "Сбросить координаты всех панелей?",
 			"Button" : "Удалить!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length", //Todo: Translate
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height." //Todo: Translate
+		},
 		"ChangeLanguage": {
 			"Title" : "Изменить язык",
 			"Desc" : "Какой язык должен быть использван вместо автоматически определенного?",
@@ -428,5 +441,20 @@ let i18n = {
 		"GEXChampionship" : "Обновлена позиция гильдии в ЭГ",
 		"LGInvest" : "Ваши вложения ВС были переданы",
 		"LGGildMember" : " ВС игрока __player__ были обработаны"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "Nature",  //Todo: Translate
+			"shore": "Shore",  //Todo: Translate
+			"water": "in the water",  //Todo: Translate
+			"cityRoadSmall": "small Road",  //Todo: Translate
+			"cityRoadBig": "big Road"  //Todo: Translate
+		},
+		"Table": {
+			"type": "Type", //Todo: Translate
+			"position": "Position", //Todo: Translate
+			"expires": "Expires at" //Todo: Translate
+		}
 	}
 };
