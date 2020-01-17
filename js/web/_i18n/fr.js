@@ -109,7 +109,7 @@ let i18n = {
 				"greatbuilding" : "Grand monument",
 				"production" : "Bâtiment de production",
 				"random_production" : "Productions aléatoires",
-				"residential" : "Bâtiments événementiels",
+				"residential": "Residential buildings", //Todo: Translate
 				"decoration": "décorations", //Todo: Translate
 				"street": "Rues", //Todo: Translate
 				"goods": "Bâtiment fret", //Todo: Translate
