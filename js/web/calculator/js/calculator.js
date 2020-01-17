@@ -551,9 +551,11 @@ let Calculator = {
 			'</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
-			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderRankCosts[Rank]);
+			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderRankCosts[Rank]),
 				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
+
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
+				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0);
 				SnipeGewinn = FPRewards[Rank] - SnipeCosts,
 				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SnipeCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
 
@@ -636,19 +638,19 @@ let Calculator = {
 
 			// Fördern
 			if (ForderStates[Rank] === 'Self') {
-				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderRankCosts[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(ForderRankCosts[Rank]) + '</td>');
+				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderFPRewards[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</td>');
 				hFordern.push('<td class="text-center"><strong class="info">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderRankCosts[Rank]) + '</strong></td>');
+				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
 				hFordern.push('<td class="text-center"><strong class="error">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderRankCosts[Rank]) + '</strong></td>');
+				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
 				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderRankCosts[Rank]) + '</strong></td>');
+				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
 				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else {
@@ -725,6 +727,24 @@ let Calculator = {
 	},
 
 
+	/**
+	 * Formatiert die +/- Anzeige neben dem Ertrag (falls vorhanden)
+	 * *
+	 * *@param ForderRankDiff
+	 * */
+	FormatForderRankDiff: (ForderRankDiff) => {
+		if (ForderRankDiff < 0) {
+			return ' ' + HTML.Format(ForderRankDiff); //Todo: grün machen
+		}
+		else if (ForderRankDiff === 0) {
+			return '';
+		}
+		else { // > 0
+			return ' +' + HTML.Format(ForderRankDiff); //Todo: Rot machen
+		}
+	},
+
+	
 	/**
 	 * Übersicht der LGs scannen
 	 *
