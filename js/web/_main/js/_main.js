@@ -801,7 +801,7 @@ const FoEproxy = (function () {
 			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').is(':visible') || Calculator.AutoOpenKR) {
+			if ($('#costCalculator').is(':visible') || ($('#LGOverviewBox').is(':visible') && Calculator.AutoOpenKR)) {
 				Calculator.Show(Rankings, UpdateEntity.responseData[0]);
 			}
 		}
