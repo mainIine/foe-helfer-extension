@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
 			"ArcBonus": "Arche Bonus",
-			"Earnings": "Ertrag",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
 			"FP": "FP",
@@ -92,8 +91,7 @@ let i18n = {
 			"TotalFPs": "Gesamt FP aus allen Gebäuden: ",
 			"Amount": "Anzahl",
 			"FPBar" : "FP-Lager: ",
-			"BuyableFP" : "Kaufbar: ",
-			"FPBar" : "FP-Lager: "
+			"BuyableFP" : "Kaufbar: "
 		},
 
 		"Productions" : {
@@ -189,7 +187,7 @@ let i18n = {
 			"Number": "Nr.",
 			"Or": " oder ",
 			"And": " und ",
-			"Upcoming": "VORSCHAU AUF DIE NÄCHSTEN QUESTS (Zahlen können variieren)",
+			"Upcoming": "Ungefähre Vorschau <em>(Werte werden bei Aktiverung aktualisiert)</em>",
         },
 
         "Negotiation": {
@@ -223,6 +221,7 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Nachricht",
+			"FilterGildFights" : "Gildengefechte",
 			"FilterTrade" : "Handel",
 			"ResetBox" : "Box leeren",
 			"Messages" : {
@@ -407,7 +406,8 @@ let i18n = {
 				"fr": "Français",
 				"es": "Español",
 				"ru": "Русский",
-				"sv": "Svenska"
+				"sv": "Svenska",
+				"cs": "Český"
 			}
 		}
 	},

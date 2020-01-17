@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Nivel",
 			"AvailableFP": "Disponibles puntos forge",
 			"ArcBonus": "Bonus del Arca",
-			"Earnings": "Rendimiento",
 			"Rate": "Cotizacion",
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
@@ -179,7 +178,6 @@ let i18n = {
             "DescRequired": "Benötigt",
             "DescInStock": "Vorhanden",
             "DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-        },
 		},
 
 		"EventList": {
@@ -223,6 +221,7 @@ let i18n = {
 			"FilterAuction" : "Subasta",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Mensaje",
+			"FilterGildFights" : "Guild Fights", //Todo: Translate
 			"FilterTrade" : "Comercio",
 			"ResetBox" : "Vaciar el box",
 			"Messages" : {
@@ -257,11 +256,15 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",
-			"Player": "Player",
-			"Negotiations": "Negotiations",
-			"Fights": "Fights",
-			"LastSnapshot": " - last snapshot __time__ ago",
+			"Titel": "Player overview", //Todo: Translate
+			"Player": "Player", //Todo: Translate
+			"Negotiations": "Negotiations", //Todo: Translate
+			"Fights": "Fights", //Todo: Translate
+			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards" //Todo: Translate
 		}
 	},
 
@@ -333,6 +336,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info Box",
 			"Desc" : "Te enseña todas las cosas que pasan en el \"fondo \"<br><em>Poco a poco se llena con información...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards", //Todo: Translate
+			"Desc": "Overview of hidden rewards" //Todo: Translate
 		}
 	},
 
@@ -386,6 +393,10 @@ let i18n = {
 			"Desc" : "Quieres que todos los coordenadas sean restablecidos?",
 			"Button" : "Borrar!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length", //Todo: Translate
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height." //Todo: Translate
+		},
 		"ChangeLanguage": {
 			"Title" : "Cambiar idioma",
 			"Desc" : "Que idioma debe usarse en lugar del reconocido?",
@@ -395,7 +406,8 @@ let i18n = {
 				"fr": "Français",
 				"es": "Español",
 				"ru": "Русский",
-				"sv": "Svenska"
+				"sv": "Svenska",
+				"cs": "Český"
 			}
 		}
 	},
@@ -428,5 +440,18 @@ let i18n = {
 		"GEXChampionship" : "Se ha actualizado el puesto del gremio en la EG",
 		"LGInvest" : "Tus inversiones en grandes edifivios han sido transferidos",
 		"LGGildMember" : "__player__'s GEs han sido transferidos"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "nature", //Todo: Translate
+			"shore": "Shore", //Todo: Translate
+			"cityRoadSmall": "Small Road" //Todo: Translate
+		},
+		"Table": {
+			"type": "Type", //Todo: Translate
+			"position": "Position", //Todo: Translate
+			"expires": "Expires at" //Todo: Translate
+		}
 	}
 };

@@ -102,6 +102,7 @@ let Infoboard = {
 		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGex'] + '</label></span>');
 		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterAuction'] + '</label></span>');
 		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterMessage'] + '</label></span>');
+		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGildFights'] + '</label></span>');
 		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterLevel'] + '</label></span>');
 		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterTrade'] + '</label></span>');
 
@@ -241,6 +242,8 @@ let Infoboard = {
 
 let Info = {
 
+	GildPoints: {},
+
 	/**
 	 * Jmd hat in einer Auktion mehr geboten
 	 *
@@ -299,6 +302,77 @@ let Info = {
 		};
 	},
 
+
+	GuildBattlegroundService_getProvinces: (d)=> {
+
+		if(GildFights.SortedColors === null){
+			GildFights.PrepareColors();
+		}
+
+		let data = d[0];
+
+		let bP = GildFights.MapData['battlegroundParticipants'],
+			prov;
+
+		if(data['id'] === 0){
+			prov = GildFights.ProvinceNames[0]['provinces'][0];
+		} else {
+			prov = GildFights.ProvinceNames[0]['provinces'].find(o => (o['id'] === data['id']));
+		}
+
+		if(data['lockedUntil'] !== undefined)
+		{
+			let p = bP.find(o => (o['participantId'] === d['participantId']));
+
+			let tc = GildFights.SortedColors[ p['participantId'] ]['highlight'],
+				ts = GildFights.SortedColors[ p['participantId'] ]['shadow'];
+
+			return {
+				class: 'guildfighs',
+				type: 'Gild-Fights',
+				msg: 'Provinz <span style="color:#ffb539">' + prov['name'] + '</span> wurde von <span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> übernommen und ist bis ' + moment.unix(data['lockedUntil']).format('HH:mm:ss') +  ' Uhr gesperrt'
+			};
+		}
+
+		let t = '';
+
+		// Es wird gerade gekämpft
+		for(let i in data['conquestProgress'])
+		{
+			if(!data['conquestProgress'].hasOwnProperty(i)){
+				break;
+			}
+
+			let d = data['conquestProgress'][i],
+				p = bP.find(o => (o['participantId'] === d['participantId']));
+
+			// es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
+			if(Info.GildPoints[ data['id'] ] !== undefined &&
+				Info.GildPoints[ data['id'] ][ d['participantId'] ] !== undefined &&
+				Info.GildPoints[ data['id'] ][ d['participantId'] ] === d['progress']){
+
+				continue;
+			}
+
+			let tc = GildFights.SortedColors[ p['participantId'] ]['highlight'],
+				ts = GildFights.SortedColors[ p['participantId'] ]['shadow'];
+
+			t += '<span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> hat auf <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong> / <strong>' + d['maxProgress'] + '</strong> Punkte<br>';
+
+			if(Info.GildPoints[ data['id'] ] === undefined){
+				Info.GildPoints[ data['id'] ] = {};
+			}
+
+			// mitschreiben um keine Punkte doppelt auszugeben
+			Info.GildPoints[ data['id'] ][ d['participantId'] ] = d['progress'];
+		}
+
+		return {
+			class: 'guildfighs',
+			type: 'Gild-Fights',
+			msg: t
+		};
+	},
 
 	/**
 	 * LG wurde gelevelt

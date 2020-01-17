@@ -99,9 +99,9 @@ let Settings = {
 			HTML.AddCssFile('settings');
 
 			HTML.Box({
-				'id': 'SettingsBox',
-				'title': i18n['Boxes']['Settings']['Title'],
-				'auto_close': true
+				id: 'SettingsBox',
+				title: i18n['Boxes']['Settings']['Title'],
+				auto_close: true
 			});
 		}
 

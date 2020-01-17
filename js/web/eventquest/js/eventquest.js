@@ -13,9 +13,34 @@
  * **************************************************************************************
  */
 
+FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
+
+	// Nur Events und "active" heraus filtern
+	EventQuest.Quests = data['responseData'].filter(q => (q['category'] === 'events' && q['state'] === 'accepted'));
+
+	if(EventQuest.Quests === undefined){
+		// @ToDo: Menüpunkt entsorgen
+
+		return;
+	}
+
+	if($('#event').length === 0){
+		EventQuest.Show();
+
+	} else if($('#event').length > 0) {
+		EventQuest.BuildBox();
+	}
+});
+
+/**
+ *
+ * @type {{CurrentQuestText: null, QuestId: number, Visible: boolean, Quests: null, Event: [], Show: EventQuest.Show, AllQuests: null, CurrentQuestID: number, BuildBox: EventQuest.BuildBox, CalcBody: EventQuest.CalcBody}}
+ */
 let EventQuest = {
+	Quests: null,
     Event: [],
     AllQuests: null,
+	QuestId: 0,
     CurrentQuestID: 1,
     CurrentQuestText: null,
     Visible: false,
@@ -28,6 +53,7 @@ let EventQuest = {
         MainParser.loadJSON(url, (data) => {
             EventQuest.Event = JSON.parse(data);
             EventQuest.AllQuests = EventQuest.Event['lang'][lng];
+
             if ($('#event').length === 0) {
 
                 HTML.Box({
@@ -51,18 +77,32 @@ let EventQuest = {
 	 * @constructor
 	 */
     BuildBox: () => {
-        for (let i in MainParser.Quests) {
-            let Quest = MainParser.Quests[i];
-            if (Quest.category === 'events' && Quest.type.indexOf('counter') == -1) {
+        for (let i in EventQuest.Quests) {
+
+            let Quest = EventQuest.Quests[i];
+
+            if (Quest.type.indexOf('counter') == -1) {
                 let id = Quest.id.toString();
+
                 id = id[id.length - 2] + id[id.length - 1];
                 EventQuest.CurrentQuestID = (parseInt(id)) + 1;
-                var text = "", condition = Quest.successConditions, conditiongroup = Quest.successConditionGroups, conditionText = "";
+
+                let text = "",
+					condition = Quest.successConditions,
+					conditiongroup = Quest.successConditionGroups,
+					conditionText = "";
+
                 for (let g = 0; g < conditiongroup.length; g++) {
                     for (let gi = 0; gi < conditiongroup[g].conditionIds.length; gi++) {
-                        if (conditiongroup[g].type === 'or') conditionText = i18n['Boxes']['EventList']['Or'];
-                        else if (conditiongroup[g].type === 'none') conditionText = i18n['Boxes']['EventList']['And'];
-                        else conditionText = "";
+                        if (conditiongroup[g].type === 'or')
+                        	conditionText = i18n['Boxes']['EventList']['Or'];
+
+                        else if
+							(conditiongroup[g].type === 'none') conditionText = i18n['Boxes']['EventList']['And'];
+
+                        else
+                        	conditionText = "";
+
                         for (let ci = 0; ci < condition.length; ci++) {
                             if (condition[ci].id === conditiongroup[g].conditionIds[gi]) {
                                 text +=  conditionText + condition[ci].description;
@@ -72,11 +112,12 @@ let EventQuest = {
                     }
                 }
                 
-                var re = RegExp("("+i18n['Boxes']['EventList']['And']+"|"+i18n['Boxes']['EventList']['Or']+")(.+)", 'g');
+                let re = RegExp("("+i18n['Boxes']['EventList']['And']+"|"+i18n['Boxes']['EventList']['Or']+")(.+)", 'g');
                 EventQuest.CurrentQuestText = text.replace(re, '$2');
                 break;
             }
         }
+
         EventQuest.CalcBody();
     },
 
@@ -101,21 +142,26 @@ let EventQuest = {
             '</thead>');
 
         for (let i = 0; i < EventQuest.AllQuests.length; i++) {
+
             let selQuest = EventQuest.AllQuests[i];
+
             if (selQuest['id'] === EventQuest.CurrentQuestID) {
-                h.push('<tr>');
-                h.push('<td class="nr">' + selQuest['id'] + '</td>');
+
+                h.push('<tr class="active-quest">');
+                h.push('<td class="nr">' + selQuest['id'] + '.</td>');
                 h.push('<td>' + EventQuest.CurrentQuestText + '</td>');
-                h.push('<td>' + selQuest['reward'] + '</td>');
+                h.push('<td class="text-center">' + selQuest['reward'] + '</td>');
                 h.push('</tr>');
+
                 h.push('<tr>');
-                h.push('<td colspan="3" class="upcoming">'+i18n['Boxes']['EventList']['Upcoming']+'</td>');
+                h.push('<td colspan="3" class="upcoming text-center">'+i18n['Boxes']['EventList']['Upcoming']+'</td>');
                 h.push('</tr>');
+
                 for (let add = 1; add <= 5; add++) {
                     h.push('<tr>');
-                    h.push('<td class="nr">' + EventQuest.AllQuests[i + add]['id'] + '</td>');
+                    h.push('<td class="nr">' + EventQuest.AllQuests[i + add]['id'] + '.</td>');
                     h.push('<td>' + EventQuest.AllQuests[i + add]['quest'] + '</td>');
-                    h.push('<td>' + EventQuest.AllQuests[i + add]['reward'] + '</td>');
+                    h.push('<td class="text-center">' + EventQuest.AllQuests[i + add]['reward'] + '</td>');
                     h.push('</tr>');
                 }
             }

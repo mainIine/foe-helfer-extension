@@ -90,7 +90,8 @@ let i18n = {
 			"Title" : "FP - Produktion",
 			"TotalFPs": "Totalt FP från alla byggnader: ",
 			"Amount": "Antal",
-			"FPBar" : "FP-bank: "
+			"FPBar" : "FP-bank: ",
+			"BuyableFP" : "Buyable: " //Todo: Translate
 		},
 
 		"Productions" : {
@@ -220,6 +221,7 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Ny nivå",
 			"FilterMessage" : "Meddelanden",
+			"FilterGildFights" : "Guild Fights", //Todo: Translate
 			"FilterTrade" : "Handel",
 			"ResetBox" : "Töm",
 			"Messages" : {
@@ -259,6 +261,10 @@ let i18n = {
 			"Negotiations": "Negotiations", //Todo: Translate
 			"Fights": "Fights", //Todo: Translate
 			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards" //Todo: Translate
 		}
 	},
 
@@ -330,6 +336,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Informationshubb",
 			"Desc" : "Visar allt som händer i \"bakgrunden\"<br><em>Fills up with info ...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards", //Todo: Translate
+			"Desc": "Overview of hidden rewards" //Todo: Translate
 		}
 	},
 
@@ -383,6 +393,10 @@ let i18n = {
 			"Desc" : "Ska alla dialog kordinater bli nollställda?",
 			"Button" : "Ta bort!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length",
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height."
+		},
 		"ChangeLanguage": {
 			"Title" : "Byt språk",
 			"Desc" : "Vilket språk istället för det som hittas automatiskt ska användas?",
@@ -392,7 +406,8 @@ let i18n = {
 				"fr" : "French",
 				"es" : "Spanish",
 				"ru" : "Русский",
-                "sv" : "Svenska"
+                "sv" : "Svenska",
+				"cs": "Český"
 			}
 		}
 	},
@@ -425,5 +440,18 @@ let i18n = {
 		"GEXChampionship" : "IE placering för imperiet har uppdaterats",
 		"LGInvest" : "Dina MB investeringar har överförts",
 		"LGGildMember" : "__player__'s Mäktig byggnad har skickats in"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "nature", //Todo: Translate
+			"shore": "Shore", //Todo: Translate
+			"cityRoadSmall": "Small Road" //Todo: Translate
+		},
+		"Table": {
+			"type": "Type", //Todo: Translate
+			"position": "Position", //Todo: Translate
+			"expires": "Expires at" //Todo: Translate
+		}
 	}
 };

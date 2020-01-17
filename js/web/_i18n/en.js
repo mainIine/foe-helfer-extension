@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
 			"ArcBonus": "Arc bonus",
-			"Earnings": "Earnings",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
 			"FP": "FP",
@@ -92,7 +91,7 @@ let i18n = {
 			"TotalFPs": "Total FPs from all buildings: ",
 			"Amount": "Number",
 			"FPBar" : "FP-Stock: ",
-			"BuyableFP" : "Buyable: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -179,8 +178,6 @@ let i18n = {
             "DescRequired": "Required",
             "DescInStock": "Available",
             "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
-
-        },
 		},
 
 		"EventList": {
@@ -224,6 +221,7 @@ let i18n = {
 			"FilterAuction" : "Auction",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Message",
+			"FilterGildFights" : "Guild Fights",
 			"FilterTrade" : "Trade",
 			"ResetBox" : "Reset Box",
 			"Messages" : {
@@ -338,6 +336,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info Box",
 			"Desc" : "Shows you all the things that happen in the \"background\"<br><em>Fills up with info ...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards",
+			"Desc": "Overview of hidden rewards"
 		}
 	},
 
@@ -391,6 +393,10 @@ let i18n = {
 			"Desc" : "Should all box coordinates be reset?",
 			"Button" : "Delete!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length",
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height."
+		},
 		"ChangeLanguage": {
 			"Title" : "Change language",
 			"Desc" : "Which language, instead of the recognized one, should be used?",
@@ -400,7 +406,8 @@ let i18n = {
 				"fr": "Français",
 				"es": "Español",
 				"ru": "Русский",
-				"sv": "Svenska"
+				"sv": "Svenska",
+				"cs": "Český"
 			}
 		}
 	},
