@@ -109,7 +109,7 @@ let i18n = {
 				"greatbuilding" : "Velkolepé budovy",
 				"production" : "Dílny",
 				"random_production" : "Náhodná produkce",
-				"residential": "Speciální budovy",
+				"residential": "Residential buildings", //Todo: Translate
 				"decoration": "Dekorace",
 				"street": "Ulice",
 				"goods": "Továrny",
