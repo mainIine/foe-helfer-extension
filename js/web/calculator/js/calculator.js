@@ -551,7 +551,7 @@ let Calculator = {
 			'</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
-			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderRankCosts[Rank]),
+			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]),
 				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
 
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
@@ -734,13 +734,13 @@ let Calculator = {
 	 * */
 	FormatForderRankDiff: (ForderRankDiff) => {
 		if (ForderRankDiff < 0) {
-			return ' ' + HTML.Format(ForderRankDiff); //Todo: grün machen
+			return ' <small class="text-success">' + HTML.Format(ForderRankDiff) + '</small>';
 		}
 		else if (ForderRankDiff === 0) {
 			return '';
 		}
 		else { // > 0
-			return ' +' + HTML.Format(ForderRankDiff); //Todo: Rot machen
+			return ' <small class="text-danger">+' + HTML.Format(ForderRankDiff) + '</small>';
 		}
 	},
 
