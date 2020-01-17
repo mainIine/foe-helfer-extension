@@ -577,10 +577,12 @@ let Calculator = {
 				hFordern.push('<tr class="info-row">');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
-				hFordern.push('<tr class="bg-red">');
+				let ToolTip = HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPRequired'], { fpcount: (ForderRankDiff) });
+				hFordern.push('<tr class="bg-red" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				hFordern.push('<tr class="bg-yellow" title="' + i18n['Boxes']['Calculator']['LevelWarning'] + '">');
+				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? ' ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPDontFit'], {fpcount: (0-ForderRankDiff)}) : '');
+				hFordern.push('<tr class="bg-yellow" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
 				hFordern.push('<tr class="bg-green">');

@@ -46,7 +46,7 @@ let i18n = {
             "Auto": "Auto",
             "Place": "Platz",
             "Levels": "Leveln",
-            "NoPlaceSafe": "Kein Platz sicher"
+			"NoPlaceSafe": "Kein Platz sicher"
 		},
 
 		"Calculator": {
@@ -68,7 +68,9 @@ let i18n = {
 			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 			"ActiveRecurringQuest": "Aktiver Schleifenquest:",
-			"Done": "abgeschlossen"
+			"Done": "abgeschlossen",
+			"FPDontFit": "__fpcount__FP passen nicht mehr hinein",
+			"FPRequired": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern zusätzlich gezahlt werden"
 		},
 
 		"LGOverviewBox": {
