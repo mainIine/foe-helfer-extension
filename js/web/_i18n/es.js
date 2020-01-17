@@ -55,7 +55,6 @@ let i18n = {
 			"Step": "Nivel",
 			"AvailableFP": "Disponibles puntos forge",
 			"ArcBonus": "Bonus del Arca",
-			"Earnings": "Rendimiento",
 			"Rate": "Cotizacion",
 			"Up2LevelUp": "Hasta el proximo nivel",
 			"FP": "FP",
@@ -222,14 +221,16 @@ let i18n = {
 			"FilterAuction" : "Subasta",
 			"FilterLevel" : "Level-Up",
 			"FilterMessage" : "Mensaje",
+			"FilterGildFights" : "Guild Fights", //Todo: Translate
 			"FilterTrade" : "Comercio",
 			"ResetBox" : "Vaciar el box",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
-				"LevelUp" : "__player__'s __building__ ha conseguido __level__ .<br>Tu conseguistes el <strong>__rank__</strong> ",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
 				"Auction" : "<strong>__player__</strong> ha pujado ahora mismo__amount__ monedas",
 				"Trade" : "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - nivel __level__"
+				"MsgBuilding" : "__building__ - nivel __level__",
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
 			}
 		},
 
@@ -256,11 +257,15 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",
-			"Player": "Player",
-			"Negotiations": "Negotiations",
-			"Fights": "Fights",
-			"LastSnapshot": " - last snapshot __time__ ago",
+			"Titel": "Player overview", //Todo: Translate
+			"Player": "Player", //Todo: Translate
+			"Negotiations": "Negotiations", //Todo: Translate
+			"Fights": "Fights", //Todo: Translate
+			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards" //Todo: Translate
 		}
 	},
 
@@ -332,6 +337,10 @@ let i18n = {
 		"Info" : {
 			"Title" : "Info Box",
 			"Desc" : "Te enseña todas las cosas que pasan en el \"fondo \"<br><em>Poco a poco se llena con información...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards", //Todo: Translate
+			"Desc": "Overview of hidden rewards" //Todo: Translate
 		}
 	},
 
@@ -385,6 +394,10 @@ let i18n = {
 			"Desc" : "Quieres que todos los coordenadas sean restablecidos?",
 			"Button" : "Borrar!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length", //Todo: Translate
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height." //Todo: Translate
+		},
 		"ChangeLanguage": {
 			"Title" : "Cambiar idioma",
 			"Desc" : "Que idioma debe usarse en lugar del reconocido?",
@@ -428,5 +441,20 @@ let i18n = {
 		"GEXChampionship" : "Se ha actualizado el puesto del gremio en la EG",
 		"LGInvest" : "Tus inversiones en grandes edifivios han sido transferidos",
 		"LGGildMember" : "__player__'s GEs han sido transferidos"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "Nature",  //Todo: Translate
+			"shore": "Shore",  //Todo: Translate
+			"water": "in the water",  //Todo: Translate
+			"cityRoadSmall": "small Road",  //Todo: Translate
+			"cityRoadBig": "big Road"  //Todo: Translate
+		},
+		"Table": {
+			"type": "Type", //Todo: Translate
+			"position": "Position", //Todo: Translate
+			"expires": "Expires at" //Todo: Translate
+		}
 	}
 };

@@ -1,12 +1,23 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = data.responseData.hiddenRewards;
     HiddenRewards.prepareData();
+
+    if ($('#HiddenRewardBox').length >= 1) {
+        HiddenRewards.BuildBox();
+    }
 });
 
+/**
+ *
+ * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, Cache: null}}
+ */
 let HiddenRewards = {
 
     Cache: null,
 
+	/**
+	 * Box in den DOM
+	 */
     init: () => {
         if( $('#HiddenRewardBox').length < 1 ) {
 
@@ -25,7 +36,9 @@ let HiddenRewards = {
         HiddenRewards.BuildBox();
     },
 
-
+	/**
+	 * Daten aufbereiten
+	 */
     prepareData: () => {
         let data = [];
 
@@ -54,6 +67,9 @@ let HiddenRewards = {
     },
 
 
+	/**
+	 * Inhalt der Box in den BoxBody legen
+	 */
     BuildBox:()=> {
         let h = [];
 
