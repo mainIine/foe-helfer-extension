@@ -599,16 +599,6 @@ const FoEproxy = (function () {
 		MainParser.CollectBoosts(data.responseData);
 	});
 
-	// --------------------------------------------------------------------------------------------------
-	// Quests
-	FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
-		MainParser.Quests = data.responseData;
-		Calculator.RefreshCalculator();
-		let eventQuest = MainParser.Quests.find(q => {q.category === 'events'});
-		if(undefined !== eventQuest)
-			EventQuest.Show();
-	});
-
 
 	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten
@@ -811,7 +801,7 @@ const FoEproxy = (function () {
 			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').is(':visible')) {
+			if ($('#costCalculator').is(':visible') || Calculator.AutoOpenKR) {
 				Calculator.Show(Rankings, UpdateEntity.responseData[0]);
 			}
 		}
@@ -1028,7 +1018,7 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr','es','ru','sv'
+		'de', 'en', 'fr', 'es', 'ru', 'sv', 'cs'
 	],
 	BonusService: null,
 	EmissaryService: null,
