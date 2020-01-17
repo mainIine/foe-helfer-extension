@@ -31,6 +31,7 @@ let Calculator = {
 	OpenedFromOverview: undefined,
 	MainListenerRegistered: false,
 	OverviewListenerRegistered: false,
+	AutoOpenKR: false,
 
 
 	/**
@@ -49,6 +50,7 @@ let Calculator = {
 		// Nur Übersicht verfügbar
 		if (Overview !== undefined && UpdateEntity === undefined) {
 			Calculator.ShowOverview(false);
+			Calculator.AutoOpenKR = true;
 		}
 
 		// Nur Detailansicht verfügbar
@@ -75,6 +77,7 @@ let Calculator = {
 				}
 				else {
 					Calculator.ShowOverview();
+					Calculator.AutoOpenKR = true;
 				}
 			}
 		}
@@ -121,7 +124,8 @@ let Calculator = {
 	 * @param UpdateEntity
 	 * @param isOverview
 	 */
-    Show: (Rankings, UpdateEntity) => {
+	Show: (Rankings, UpdateEntity) => {
+		Calculator.AutoOpenKR = false;
 
         // moment.js global setzen
         moment.locale(MainParser.Language);
