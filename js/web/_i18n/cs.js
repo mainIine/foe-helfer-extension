@@ -59,8 +59,8 @@ let i18n = {
 			"Up2LevelUp": "Do nové úrovně",
 			"FP": "BV",
 			"Save": "Uložit",
-			"BPs": "BPs",  // Todo: Translate: Translate
-			"Meds": "Meds",  // Todo: Translate: Translate
+			"BPs": "BPs", //Todo: Translate
+			"Meds": "Meds", //Todo: Translate
 			"Commitment": "Náklady",
 			"Profit": "Zisk",
 			"LevelWarning": "Upozornění! Zvýšení úrovně budovy",
@@ -296,7 +296,6 @@ let i18n = {
 		},
 		"Event": {
             "Title": "Event Questlist",  // Todo: Translate: Translate
-            "Desc": "Overview of the current and upcoming quests"  // Todo: Translate: Translate
 		},
         "Negotiation": {
             "Title": "Pomocník s vyjednáváním",
