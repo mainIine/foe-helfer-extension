@@ -357,7 +357,7 @@ let Calculator = {
 			hSnipen = [],
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
-			BestKursEinsatz = undefined
+			BestKursEinsatz = undefined,
 			arc = 1 + (Calculator.ArcBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
@@ -368,7 +368,7 @@ let Calculator = {
 		for (let i = 0; i < Rankings.length;i++) {
             if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) {
                 EigenPos = i;
-                EigenBetrag = EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']);
+                EigenBetrag = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']);
                 break;
             }
 		}
@@ -555,7 +555,7 @@ let Calculator = {
 				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
 
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
-				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0);
+				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0),
 				SnipeGewinn = FPRewards[Rank] - SnipeCosts,
 				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SnipeCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
 
@@ -578,11 +578,11 @@ let Calculator = {
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
 				let ToolTip = HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPRequired'], { fpcount: (ForderRankDiff) });
-				hFordern.push('<tr class="bg-red" title="' + ToolTip + '">');
+				hFordern.push('<tr class="bg-red tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? ' ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPDontFit'], {fpcount: (0-ForderRankDiff)}) : '');
-				hFordern.push('<tr class="bg-yellow" title="' + ToolTip + '">');
+				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPDontFit'], {fpcount: (0-ForderRankDiff)}) : '');
+				hFordern.push('<tr class="bg-yellow tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
 				hFordern.push('<tr class="bg-green">');
@@ -711,6 +711,11 @@ let Calculator = {
 		// Level/FP/BestKurs/UNIX-Time
 		let StorageValue = UpdateEntity['level'] + '/' + UpdateEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
 		localStorage.setItem(StorageKey, StorageValue);
+
+		$('.tr-tooltip').tooltip({
+			html: true,
+			container: '#costCalculator'
+		});
 	},
 
 
@@ -746,13 +751,12 @@ let Calculator = {
 		}
 	},
 
-	
+
 	/**
 	 * Übersicht der LGs scannen
 	 *
-	 * @param div
-	 * @param arc
 	 * @param d
+	 * @param DisableAudio
 	 */
     ParseOverview: (d, DisableAudio)=> {
 
