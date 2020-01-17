@@ -287,33 +287,42 @@ let GoodsParser = {
 	 * @param d
 	 * @returns {{amount: number, name: (*|string), state: boolean, isImportant: boolean}}
 	 */
-	getProducts: (d)=> {
+	getProducts: (d) => {
 
 		let amount,
 			state = d['state']['__class__'] === 'ProductionFinishedState',
 			isImportant = false
-		let g = [],
+		let g = [];
+
+		let a;
+		if (d['state']['current_product']['product'] !== undefined && d['state']['current_product']['product']['resources'] !== undefined) {
 			a = d['state']['current_product']['product']['resources'];
 
-		for(let k in a) {
-			if(a.hasOwnProperty(k)) {
-				if (!isImportant) 
-					isImportant = !UnimportantProds.includes(k);
-				
-				if(k === 'strategy_points'){
-                    g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
-					
-				} else {
-					if(isImportant) 
-						g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
-                    else 
-						g.push(a[k] + ' ' + GoodsData[k]['name']);
+			for (let k in a) {
+				if (a.hasOwnProperty(k)) {
+					if (!isImportant)
+						isImportant = !UnimportantProds.includes(k);
+
+					if (k === 'strategy_points') {
+						g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
+
+					} else {
+						if (isImportant)
+							g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
+						else
+							g.push(a[k] + ' ' + GoodsData[k]['name']);
+					}
 				}
 			}
 		}
 
-		amount = g.join('<br>');
+		if (d['state']['current_product']['clan_power'] !== undefined) {
+			isImportant = true;
+			g.push(d['state']['current_product']['clan_power'] + ' ' + d['state']['current_product']['name']);
+		}
 
+		amount = g.join('<br>');
+		
 		return {
 			amount: amount,
 			state: state,

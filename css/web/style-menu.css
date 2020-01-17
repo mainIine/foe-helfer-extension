@@ -233,6 +233,7 @@ p {
 	top: 360px;
 	padding-top: 24px;
 	padding-bottom: 24px;
+	transition: height 0.2s linear;
 }
 
 #ant-hud::before,
@@ -380,13 +381,16 @@ p {
     background-image: url('../images/technologies.png');
 }
 
+#hiddenRewards-Btn span {
+	background-image: url('../images/incident_crates.png');
+}
+
 #campagneMap-Btn span {
 	background-image: url('../images/map.png');
-	-webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+}
+
+#questlist_Btn span {
+	background-image: url('../images/quest.png');
 }
 
 #chat-Btn span {

@@ -20,16 +20,18 @@ let _menu = {
 	SlideParts: 0,
 	ActiveSlide: 1,
 	HudCount: 0,
+	HudLength: 0,
 	HudHeight: 0,
 
 	Items : [
+		'hiddenRewards',
 		'calculator',
 		'partCalc',
 		'outpost',
 		'productions',
 		'negotiation',
 		'infobox',
-		'QuestList',
+		'questlist',
 		'technologies',
 		'campagneMap',
 		'unit',
@@ -105,7 +107,15 @@ let _menu = {
 	 */
 	Prepare: ()=> {
 
-		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').position().top) / 55 );
+		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').offset().top) / 55 );
+
+		// hat der Spieler eine LÄnge vorgebeben?
+		let MenuLength = localStorage.getItem('MenuLength');
+
+		if(MenuLength !== null && MenuLength < _menu.HudCount){
+			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
+		}
+
 		_menu.HudHeight = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
 
@@ -123,7 +133,11 @@ let _menu = {
 			StorgedItems = localStorage.getItem('MenuSort');
 
 		if(StorgedItems !== null){
-			_menu.Items = JSON.parse(StorgedItems);
+			let storedItems = JSON.parse(StorgedItems);
+
+			if(_menu.Items.length == storedItems.length) {
+				_menu.Items = JSON.parse(StorgedItems);
+			}
 		}
 
 		// Menüpunkte einbinden
@@ -208,7 +222,7 @@ let _menu = {
 		$('.hud-btn').stop().hover(function() {
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = $this.position().top + 53;
+				y = ($this.offset().top +30);
 
 			$('[data-btn="' + id + '"]').css({'top': y +'px'}).show();
 
@@ -248,7 +262,7 @@ let _menu = {
 
 		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
 
-		$('#ant-hud').append( ToolTipp );
+		$('body').append( ToolTipp );
 	},
 
 	/*----------------------------------------------------------------------------------------------------------------*/
@@ -464,23 +478,23 @@ let _menu = {
         return btn_MapBG;
     },
 
-	
-
 	/**
 	 * QuestList
 	 *
 	 * @returns {*|jQuery}
 	 */
-	QuestList_Btn: ()=> {
-        let btn_EventBG = $('<div />').attr('id', 'Event').addClass('hud-btn');
+	questlist_Btn: ()=> {
+        let btn_EventBG = $('<div />').attr({'id': 'questlist_Btn', 'data-slug': 'questlist'}).addClass('hud-btn');
 
         // Tooltip einbinden
-        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Campagne']['Desc'], 'Event');
+        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Event']['Desc'], 'questlist_Btn');
 
         let btn_Event = $('<span />');
 
         btn_Event.on('click', function () {
+			EventQuest.Visible = true;
             EventQuest.Show();
+			EventQuest.Visible = false;
         });
 
         btn_EventBG.append(btn_Event);
@@ -488,30 +502,22 @@ let _menu = {
         return btn_EventBG;
     },
 
-    /**
-	 * Negotiation
-	 *
-	 * @returns {*|jQuery}
-	 */
-    Negotiation_Btn: () => {
-        let btn_NegotiationBG = $('<div />').attr('id', 'negotationBtn').addClass('hud-btn hud-btn-red');
+	hiddenRewards_Btn: ()=> {
+		let btn_RewardsBG = $('<div />').attr({'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards'}).addClass('hud-btn');
 
-        // Tooltip einbinden
-        _menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], '<em id="negotiation-closed" class="tooltip-error">' + i18n['Menu']['Negotiation']['Warning'] + '<br></em>' + i18n['Menu']['Negotiation']['Desc'], 'negotationBtn');
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n['Menu']['HiddenRewards']['Title'], i18n['Menu']['HiddenRewards']['Desc'], 'hiddenRewards-Btn');
 
-        let btn_Negotiation = $('<span />');
+		let btn_Rewards = $('<span />');
 
-		btn_Negotiation.bind('click', function () {
-			if( $('#negotationBtn').hasClass('hud-btn-red') === false) {
-				Negotiation.Show();
-			}
-		});
+		btn_Rewards.on('click', function () {
+			HiddenRewards.init();
+		})
 
-        btn_NegotiationBG.append(btn_Negotiation);
+		btn_RewardsBG.append(btn_Rewards);
 
-        return btn_NegotiationBG;
-    },
-
+		return btn_RewardsBG;
+	},
 
 	/**
 	 * Armeen
@@ -625,7 +631,6 @@ let _menu = {
 
 		return btn;
 	},
-
 
 	/**
 	 * Chat Button

@@ -16,7 +16,7 @@
  #event {
 	top: 30%;
 	right: 15%;
-	width: 450px;
+	width: 500px;
 }
 
 #event #eventBody {
@@ -41,58 +41,27 @@
 	color: #FFB539;
 }
 
-#event #eventBody tr.total-row td {
-	border-top: 2px solid #efcf9a;
-	font-weight: 700;
+#event #eventBody tr.active-quest td {
+	border-top: 2px solid #FFB539;
+	border-bottom: 2px solid #FFB539;
+}
+#event #eventBody tr.active-quest td:first-child {
+	border-left: 2px solid #FFB539;
+}
+#event #eventBody tr.active-quest td:last-child {
+	border-right: 2px solid #FFB539;
 }
 
-#event #eventBody tr.resource-row td {
+#event #eventBody tr td.nr {
 	color: #FFB539;
 	font-weight: 700;
 }
 
-#event #eventBody .text-danger {
-	color: #ef1616;
-	font-weight: 700;
-}
-
-#event #eventBody .text-success {
-	color: #29b206;
-	font-weight: 700;
-}
-
-#event #eventBody .text-muted {
-	color: #8a8a8a;
+#event #eventBody tr td.upcoming {
+	color: #FFB539;
+	font-weight: 600;
 }
 
 #event #eventBody td {
 	position: relative;
-}
-
-#event #eventBody .diplomacy-ask {
-	font-weight: 700;
-	display: inline-block;
-	margin-left: 6px;
-	background: #2196f3;
-	padding: 0 4px;
-	border-radius: 50%;
-	width: 10px;
-	line-height: 1.3em;
-	z-index: 1;
-}
-
-#event #eventBody .diplomacy-tip {
-	position: absolute;
-	white-space: nowrap;
-	text-align: left;
-	background: rgba(0,0,0, 0.7);
-	padding: 5px;
-	right: 6px;
-	top: 25px;
-	z-index: 1;
-	display: none;
-}
-
-#event #eventBody .diplomacy-ask:hover .diplomacy-tip {
-	display: block;
 }
