@@ -209,8 +209,8 @@
 }
 
 .tooltip.in {
-	opacity: 0.8;
-	filter: alpha(opacity=80);
+	opacity: 0.9;
+	filter: alpha(opacity=90);
 }
 
 .tooltip.top {
