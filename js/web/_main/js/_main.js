@@ -1160,6 +1160,26 @@ let MainParser = {
 		return MainParser.compareTime(a, s);
 	},
 
+	/**
+	 * Fügt einen Wert zu einem FormData Objekt unter dem angegebenen prefix/key hinzu und serialisiert dabei objekte/arrays.
+	 * @param {FormData} formData the formdata to add this data to
+	 * @param {string} prefix the prefix/key for the value to store
+	 * @param {any} value the value to store
+	 */
+	obj2FormData: (() => {// closure
+		// Funktion wird im scope definiert, damit die rekursion direkt darauf zugreifen kann.
+		function obj2FormData(formData, prefix, value) {
+			if (typeof value === 'object') {
+				for (let k in value) {
+					if (!value.hasOwnProperty(k)) continue;
+					obj2FormData(formData, `${prefix}[${k}]`, value[k]);
+				}
+			} else {
+				formData.append(prefix, ''+value);
+			}
+		}
+		return obj2FormData;
+	})(),
 
 	/**
 	 * Daten nach "Hause" schicken
@@ -1170,22 +1190,27 @@ let MainParser = {
 	 */
 	send2Server: (data, ep, successCallback)=> {
 
-		let pID = ExtPlayerID,
-			cW = ExtWorld,
-			gID = ExtGuildID;
+		const pID = ExtPlayerID;
+		const cW = ExtWorld;
+		const gID = ExtGuildID;
+		const formData = new FormData();
 
-		$.ajax({
-			type: 'POST',
-			url: 'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
-			data: {data},
-			dataType: 'json',
-			success: function(r){
-				if(successCallback !== undefined)
-				{
-					successCallback(r);
-				}
+		MainParser.obj2FormData(formData, 'data', data);
+
+		let req = fetch(
+			'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			{
+				method: 'POST',
+				body: formData
 			}
-		});
+		);
+		
+		if (successCallback !== undefined) {
+			req
+			.then(response => response.json())
+			.then(successCallback)
+			;
+		}
 	},
 
 
