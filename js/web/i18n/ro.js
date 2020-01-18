@@ -23,7 +23,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
             "Step": "Nivel",
             "OldLevel": "Nivelul anterior",
-			"PatronPart": "Contribuția donatorilor",
+			"PatronPart": "Contribuția externă",
 			"OwnPart": "Contribuția proprie",
             "LGTotalFP": "Total PF nivel",
             "OwnPartRemaining": "Rest de depus",
@@ -49,11 +49,11 @@ let i18n = {
 			"Title": "Calculator costuri",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivelul ",
-			"AvailableFP": "Puncte forge disponibile",
+			"AvailableFP": "PF disponibile",
 			"ArcBonus": "Bonusul Domului",
 			"Earnings": "Recompensă",
 			"Rate": "Procent",
-			"Up2LevelUp": "PF rămase până la inchidere",
+			"Up2LevelUp": "PF rămase până la închidere",
 			"FP": "PF",
 			"Save": "Salvat",
 			"Commitment": "Cost",
@@ -62,12 +62,12 @@ let i18n = {
 			"NoFPorMedsAvailable": "PF sau planuri indisponibile",
 			"LGNotOpen": "Următorul nivel nu este deblocat",
 			"LGNotConnected": "Clădirea nu este conectată la stradă",
-			"ActiveRecurringQuest": Misiunea repetitivă actuală:",
+			"ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 			"Done": "Terminat"
 		},
 
 		"LGOverviewBox": {
-			"Title": "Controbuții posibile",
+			"Title": "Contribuții posibile",
 			"Tooltip": {
 				"FoundNew": "nou găsit,
 				"FoundAgain": "recunoscut",
@@ -78,7 +78,7 @@ let i18n = {
 			"PayedTotal": "Depus / Total",
 			"Rate": "Procent",
 			"Profit": "Profit",
-			"NothingToGet": "<strong>__player__</strong> nu are nimic de luat"
+			"NothingToGet": "<strong>__player__</strong> nu are nimic de furat"
 		},
 
 		"StrategyPoints" : {
@@ -89,7 +89,7 @@ let i18n = {
 		},
 
 		"Productions" : {
-			"Title" : "Sumarul producției",
+			"Title" : "Prezentarea generală a producției",
 			"SearchInput": "Caută clădirea...",
 			"Total" : "Total: ",
 			"ModeGroups": "Grupare",
@@ -109,7 +109,7 @@ let i18n = {
 				"goods": "Clădiri de bunuri",
 				"culture": "Clădiri culturale",
 				"main_building": "Primărie",
-				"boost": "Boost",
+				"boost": "Boost", // TODO: to be translated
 				"all" : "Total"
 			}
 		},
@@ -127,272 +127,273 @@ let i18n = {
 			"TitleFree" : "Deblocat",
 			"DescRequired" : "Necesar",
 			"DescInStock" : "Disponibil",
-			"DescStillMissing" : "<span style='color:#29b206'>Surplus</span> / <span style='color:#ef1616'>Is missing</span>",
-			"ExpansionsSum" : "Expansiune", // TODO: check translation
-			"nextTile" : "Următoarea expansiune", // TODO: check translation
-			"tileNotPlanned" : "închis", // TODO: check translation
-			"infoLine" : "__runNumber__. run, Bonus x4 Șansă: __chanceX4__%", // TODO: check translation
+			"DescStillMissing" : "<span style='color:#29b206'>Surplus</span> / <span style='color:#ef1616'>Lipsă</span>",
+			"ExpansionsSum" : "Expansiune", 
+			"nextTile" : "Următoarea expansiune", 
+			"tileNotPlanned" : "închis", 
+			"infoLine" : "__runNumber__ așezare, Șansă de bonus x4: __chanceX4__%"  
         },
 
         "Technologies": {
-            "Title": "Costul cercetării pentru",
+            "Title": "Costul de cercetare pentru ",
             "Resource": "Resurse",
             "DescRequired": "Necesar",
             "DescInStock": "Disponibil",
-			"DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ef1616'>Is missing</span>",
+			"DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ef1616'>Lipsă</span>",
 			"NoTechs": "Ai finalizat toate cercetările din era curentă",
             "Eras": {
-                1: "Stone Age",
-                2: "Bronze Age",
-                3: "Iron Age",
-                4: "Early Middle Age",
-                5: "High Middle Age",
-                6: "Late Middle Age",
-                7: "Colonial Age",
-                8: "Industrial Age",
-                9: "Progressive Era",
-                10: "Modern Era",
-                11: "PostModern Era",
-                12: "Contemporary Era",
-                13: "Tomorrow Era",
-                14: "Future Era",
-                15: "Arctic Future",
-                16: "Oceanic Future",
-                17: "Virtual Future",
-                18: "Space Age Mars",
-                19: "Space Age Ceres"
+                1: "Epoca de Piatră",
+                2: "Epoca Bronzului",
+                3: "Epoca Fierului",
+                4: "Evul Mediu Timpuriu",
+                5: "Evul Mediu Mijlociu",
+                6: "Evul Mediu Târziu",
+                7: "Era Colonială",
+                8: "Era Industrială",
+                9: "Era Progresistă",
+                10: "Epoca Modernă",
+                11: "Epoca Postmodernă",
+                12: "Era Contemporană",
+                13: "Mâine",
+                14: "Viitorul",
+                15: "Viitorul Arctic",
+                16: "Viitorul Oceanic",
+                17: "Viitorul Virtual",
+                18: "Marte în Era Spațială",
+                19: "Ceres în Era Spațială"
             }
         },
 
         "Campagne": {
-            "Title": "Conquest costs for ",
-            "Reward": "Total Reward ",
-            "AlreadyDone": " already conquered!",
-            "Resource": "Resource",
-            "DescRequired": "Required",
-            "DescInStock": "Available",
-            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+            "Title": "Costuri de cucerire pentru ",
+            "Reward": "Total recompense",
+            "AlreadyDone": " cucerită deja!",
+            "Resource": "Resurse",
+            "DescRequired": "Necesar",
+            "DescInStock": "Disponibil",
+            "DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ef1616'>Lipsă</span>",
         },
 
         "Negotiation": {
-            "Title": "Negotiation helper",
-            "WrongGoods": "Wrong goods selected, please finish manually",
-            "TryEnd": "No more tries",
-            "Canceled": "Negotiation has been canceled",
-            "Success": "Success",
-            "Chance": "Chance",
-			"Person": "Person",
-			"Average": "Ø Amount",
-			"Costs": "Costs:",
-			"Round": "Round",
-			"Stock": "Stock:",
-			"GoodsLow": "ATTENTION: Good stock is low",
-			"GoodsCritical": "ATTENTION: Good stock is critical",
-			"DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.",
-			"TableLoadError": "Error loading the negotiation table"
+            "Title": "Ajutor pentru negocieri",
+            "WrongGoods": "Bunuri alese greșit. Finalizează manual.",
+            "TryEnd": "Încercări indisponibile",
+            "Canceled": "Negocierea a fost anulată",
+            "Success": "Succes",
+            "Chance": "Șansă",
+			"Person": "Persoană",
+			"Average": "Ø Cantitate",
+			"Costs": "Cost:",
+			"Round": "Rundă",
+			"Stock": "Stoc:",
+			"GoodsLow": "ATENȚIE: Stocul de bunuri este la nivel scăzut!",
+			"GoodsCritical": "ATENȚIE: Stocul de bunuri este la nivel critic!",
+			"DragDrop": "Poți muta pictogramelor bunurilor de mai sus, folosind drag & drop, pentru a stabili ordinea primei încercări.",
+			"TableLoadError": "Eroare la încărcara mesei de negociere."
         },
 
 		"Settings" : {
-			"Title" : "Settings",
-			"Active" : "Active",
-			"Inactive" : "Inactive",
+			"Title" : "Setări",
+			"Active" : "Activ",
+			"Inactive" : "Inactiv",
 		},
 
 		"Infobox" : {
-			"Title" : "Infobox",
-			"Filter" : "Filter",
-			"FilterGex" : "GEX",
-			"FilterAuction" : "Auction",
-			"FilterLevel" : "Level-Up",
-			"FilterMessage" : "Message",
-			"FilterTrade" : "Trade",
-			"ResetBox" : "Reset Box",
+			"Title" : "InfoBox",
+			"Filter" : "Filtre",
+			"FilterGex" : "EG",
+			"FilterAuction" : "Licitație",
+			"FilterLevel" : "Creștere CL",
+			"FilterMessage" : "Centru de mesaje",
+			"FilterTrade" : "Piața",
+			"ResetBox" : "Resetare",
 			"Messages" : {
-				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place.",
-				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",
-				"Trade" : "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Level __level__"
+				"GEX" : "<strong>__player__</strong> tocmai a primit __points__ puncte în EG.",
+				"LevelUp" : "__player__ a ajuns la nivelul __level__ al clădirii __building__. <br>Ai ieșit pe locul <strong>__rank__th</strong>.",
+				"Auction" : "'<strong>__player__</strong> a licitat __amount__ monede.",
+				"Trade" : "<strong>__player__</strong> a acceptat oferta ta.<br>Ai primit __needValue__ __need__ pentru __offerValue__ __offer__",
+				"MsgBuilding" : "__building__ - Nivelul __level__"
 			}
 		},
 
 		"Units" : {
-			"Title": "Army overview",
-			"NextUnitsIn": "The next __count__ units will arrive in <span class=\"alca-countdown\"></span> at __harvest__ Uhr",
-			"ReadyToLoot": "Ready to loot!",
-			"Proportionally": "Proportionally",
-			"Quantity": "Quantity",
-			"Unit": "Unit",
+			"Title": "Prezentare generală a unităților militare",
+			"NextUnitsIn": "Următoarele __count__ unități vor sosi în <span class=\"alca-countdown\"></span>, la ora __harvest__",
+			"ReadyToLoot": "Pregătit să lupte!",
+			"Proportionally": "Proporționalitate",
+			"Quantity": "Cantitate",
+			"Unit": "Unități",
 			"Status": "Status",
-			"Attack": "Attack",
-			"Defend": "Defense",
-			"NotFilled": "not filled",
-			"Bind": "Bound",
-			"Unbind": "Unbound"
+			"Attack": "Atac",
+			"Defend": "Apărare",
+			"NotFilled": "nu este completat",
+			"Bind": "Atașat",
+			"Unbind": "Liber"
 		},
 		
 		"CityMap": {
-			"Title": "Submit data",
-			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
-			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
-			"SubmitSuccess": "Data was transfered successfully... Now visit "
+			"Title": "Transmiteți datale",
+			"Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
+			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum "
 		}
 	},
 
 	"Menu" : {
-		"Productions" : {
-			"Title" : "Production overview",
-			"Desc" : "Displays the current number of all productions."
+		"Producția" : {
+			"Title" : "Prezentarea generală a producției",
+			"Desc" : "Afișează toate producțiile în curs."
 		},
 		"Calculator" : {
-			"Title" : "Cost calculator",
-			"Desc" : "Calculates all seats for you and calculates snipeable FPs",
-			"Warning": "Disabled: Open another player's LG first!"
+			"Title" : "Calculator contribuții externe",
+			"Desc" : "Calculează toate locurile disponibile și punctele care pot fi obținute",
+			"Warning": "Dezactivat: Deschide mai întâi o clădirea a unui jucător!"
 		},
 		"OwnpartCalculator" : {
-			"Title" : "Co-payment calculator",
-			"Desc" : "Create payment plan, calculate external seats and copy values",
-			"Warning": "Disabled: Open one of your Legendary Buildings first!"
+			"Title" : "Calculator contribuție proprie",
+			"Desc" : "Creează un plan de contribuție, calculează locurile disponibile și copiază valorile",
+			"Warning": "Dezactivat: Deschide mai întâi o cladire legendară proprie!"
         },
         "Technologies": {
-            "Title": "Technologies",
-            "Desc": "Calculate cost for research",
-            "Warning": "Disabled: Open the research menu first!"
+            "Title": "Technologii",
+            "Desc": "Calculează costurile pentru cercetarea tehnologiilor noi",
+            "Warning": "Dezactivat: Deschide mai întâi meniul de cercetare a tehnologiilor!"
         },
         "Campagne": {
-            "Title": "Campaign",
-            "Desc": "Overview of the resources required",
-        	"Warning" : "Disabled: Visit a province first!"
+            "Title": "Harta continent",
+            "Desc": "Prezentarea generală a resurselor necesare",
+        	"Warning" : "Dezactivat: Vizitează mai întâi o provincie!"
 		},
         "Negotiation": {
-            "Title": "Negotiation helper",
-			"Desc": "Make precise proposals for negotiations",
-			"Warning": "Disabled: Start a negotiation first!"
+            "Title": "Ajutor pentru negocieri",
+			"Desc": "Face propuneri precise pentru negocieri",
+			"Warning": "Dezactivat: Începe mai întâi o negociere!"
         },
 		"Settings" : {
-			"Title" : "Settings",
-			"Desc" : "Here are some little settings"
+			"Title" : "Setări",
+			"Desc" : "Setări ale aplicației"
 		},
 		"Chat" : {
-			"Title" : "Guild live chat",
-			"Desc" : "Talk in real time with everyone"
+			"Title" : "Mesagerie pentru ghildă",
+			"Desc" : "Discută în timp real cu toată lumea"
 		},
 		"Unit" : {
-			"Title" : "Armies",
-			"Desc": "All your armies at a glance",
-			"Warning": "Open 1x your \"Army Organization\" <br>Button \"U\""
+			"Title" : "Unități militare",
+			"Desc": "Prezentarea generală a unităților tale militare",
+			"Warning": "Deschide 1x \"Gestionarea armatei\" <br>Tasta \"U\""
 		},
 		"Forum" : {
 			"Title" : "Forum",
-			"Desc" : "You have a question? You annoying something? Or just to talk ..."
+			"Desc" : "Ai o întrebare? Te deranjează ceva? Sau doar vrei să discutăm ..."
 		},
 		"Ask" : {
-			"Title" : "Question / Answer",
-			"Desc" : "You do not know how something works?<br>Take a look!"
+			"Title" : "Întrebare / Răspuns",
+			"Desc" : "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!"
 		},
 		"Bugs" : {
-			"Title" : "Mistakes / Wishes",
-			"Desc" : "Something is not how it should or you have an idea?"
+			"Title" : "Greșeli / Propuneri",
+			"Desc" : "Ceva nu este cum trebuie sau ai o idee?"
 		},
 		"OutP" : {
-			"Title" : "Outpost",
-            "Desc": "Overview of the required resources",
-            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start an outpost and reload the game (F5)",
-			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Disabled: check out the outpost first!<br></em>Overview of the required resources"
+			"Title" : "Așezare culturală",
+            "Desc": "Prezentarea generală a resurselor necesare",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Dezactivat: Începe mai întâi construcția unei așezări culturale și reîncarcă pagina (F5)",
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Dezactivat: Deschide mai întâi Așezarea culturală!<br></em>Prezentarea generală a resurselor necesare"
 		},
 		"Info" : {
-			"Title" : "Info Box",
-			"Desc" : "Shows you all the things that happen in the \"background\"<br><em>Fills up with info ...</em>"
+			"Title" : "InfoBox",
+			"Desc" : "Îți arată toate lucrurile care se petrec în \"background\"<br><em>Completează informațiile ...</em>"
 		}
 	},
 
 	"Settings" : {
 		"Version": {
-			"Title" : "Version",
-			"DescDebug" : "Chrome Extension <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Chrome Extension Version"
+			"Title" : "Versiune",
+			"DescDebug" : "Extensie pentru Chrome <strong class='text-danger'>BETA</strong> Version",
+			"Desc" : "Versiunea extensiei pentru Chrome "
 		},
 		"GlobalSend": {
-			"Title" : "Transmission to foe-rechner.de",
-			"Desc" : "If you want to track data with your guild, activate this point. <br> For a self-sufficient extension simply disable."
+			"Title" : "Transmitere către foe-rechner.de",
+			"Desc" : "Dacă dorești să urmărești datele cu ghilda dvs., activează această opțiune. <br> Pentru utilizarea personală, dezactivează opțiunea."
 		},
 		"SendTavernInfo": {
-			"Title" : "Motivation activity",
-			"Desc" : "Should the motivation activities be transferred when the events are called?"
+			"Title" : "Activitatea de motivație",
+			"Desc" : "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?"
 		},
 		"SendGEXInfo": {
-			"Title" : "GEX evaluations",
-			"Desc" : "When clicking in the GEX on placements or rankings the data transmitted"
+			"Title" : "Evaluarea EG",
+			"Desc" : "Datele sunt transmise când accesezi clasamentul EG"
 		},
 		"SendGildMemberLGInfo": {
-			"Title" : "Lb data of other guild members",
-			"Desc" : "When visiting other guild members, all Lb data will be sent to foe-rechner.de when Global activates."
+			"Title" : "Datele clădirilor legendare ale membrilor ghildei",
+			"Desc" : "Când vizitezi colegii de ghildă, toate datele CL vor fi trimise către foe-rechner.de, după ce se revine la Global." //TODO: to be check
 		},
 		"ShowNeighborsGoods": {
-			"Title" : "Neighborhood harvest",
-			"Desc" : "During the visit show what is currently produced"
+			"Title" : "Producția vecinilor",
+			"Desc" : "În timpul vizitării orașului, arată care este producțiile finalizate ale acestuia"
 		},
 		"SendInvestigations": {
-			"Title" : "FP investment",
-			"Desc" : "Entering the 'Town Hall'> 'News'> 'Legendary Buildings' will transmit the Fp investments"
+			"Title" : "PF investite",
+			"Desc" : "Când accesezi 'Town Hall'> 'News'> 'Legendary Buildings' datele despre PF investite vor fi transmise"
 		},
 		"ShowTavernBadge": {
-			"Title" : "Show tavernas badge",
+			"Title" : "Show tavernas badge",  //TODO: to be translated
 			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears."
-		},
+		}, //TODO: to be translated
 		"PreScanLGList": {
-			"Title" : "Preliminary scan of the LG overview",
-			"Desc" : "Scans the overview list of the neighbor when opening and determines possibly fillable LGs. <br> <u> Note: </u> Since the final seats are only transmitted when opening a LG, the result may differ. The scan is saved, however."
+			"Title" : "Citirea preliminară a datelor despre CL",
+			"Desc" : "Citește datele despre toate clădirile legendare ale unui vecin și determină dacă există locuri disponibile. <br> <u> NOTĂ: </u> Deoarece datele exacte sunt transmise doar după deschiderea unei clădiri, rezultatul poate diferi. Citirea este însă salvată." //TODO: to be check
 		},
 		"AutomaticNegotiation": {
-			"Title" : "Negotiation helper",
-			"Desc" : "Should the assistant open automatically with a negotiation and close when canceled?"
+			"Title" : "Ajutor pentru negocieri",
+			"Desc" : "Dorești ca asistentul de negociere să se deschidă automat cu o negociere și să fie închis la anulare?"
 		},
 		"ResetBoxPositions": {
-			"Title" : "Box coordinates",
-			"Desc" : "Should all box coordinates be reset?",
-			"Button" : "Delete!"
+			"Title" : "Coordonatele casetei",
+			"Desc" : "Dorești resetarea tuturor coordonatelor casetei?",
+			"Button" : "Șterge!"
 		},
 		"ChangeLanguage": {
-			"Title" : "Change language",
-			"Desc" : "Which language, instead of the recognized one, should be used?",
+			"Title" : "Schimbă limba",
+			"Desc" : "Care limbă ar trebui folosită?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский"
+				"de": "Germană",
+				"en": "Engleză",
+				"fr": "Franceză",
+				"es": "Spaniolă",
+				"ro": "Română",
+				"ru": "Rusă"
 			}
 		}
 	},
 
 	"Eras": {
-		"NoAge": "Without Age",
-		"StoneAge": "Stone Age",
-		"BronzeAge": "Bronze Age",
-		"IronAge": "Iron Age",
-		"EarlyMiddleAge": "Early Middle Ages",
-		"HighMiddleAge": "High Middle Ages",
-		"LateMiddleAge": "Late Middle Ages",
-		"ColonialAge": "colonial era",
-		"IndustrialAge": "Industrial Age",
-		"ProgressiveEra": "turn of the century",
-		"ModernEra": "Modernity",
-		"PostModernEra": "Postmodernism",
-		"ContemporaryEra": "Present",
-		"TomorrowEra": "Tomorrow",
-		"FutureEra": "Future",
-		"ArcticFuture": "Arctic Future",
-		"OceanicFuture": "Oceanic Future",
-		"VirtualFuture": "Virtual Future",
-		"SpaceAgeMars": "Space: Mars"
+		"NoAge": "Nici o eră",
+		"StoneAge": "Epoca de Piatră",
+		"BronzeAge": "Epoca Bronzului",
+		"IronAge": "Epoca Fierului",
+		"EarlyMiddleAge": "Evul Mediu Timpuriu",
+		"HighMiddleAge": "Evul Mediu Mijlociu",
+		"LateMiddleAge": "Evul Mediu Târziu",
+		"ColonialAge": "Era Colonială",
+		"IndustrialAge": "Era Industrială",
+		"ProgressiveEra": "Era Progresistă",
+		"ModernEra": "Epoca Modernă",
+		"PostModernEra": "Epoca Postmodernă",
+		"ContemporaryEra": "Era Contemporană",
+		"TomorrowEra": "Mâine",
+		"FutureEra": "Viitorul",
+		"ArcticFuture": "Viitorul Arctic",
+		"OceanicFuture": "Viitorul Oceanic",
+		"VirtualFuture": "Viitorul Virtual",
+		"SpaceAgeMars": "Marte în Era Spațială"
 	},
-
+	
 	"API" : {
-		"UpdateSuccess" : "Update performed",
-		"GEXPlayer" : "GEX placements of members have been updated",
-		"GEXChampionship" : "The GEX guild placement has been updated",
-		"LGInvest" : "Your LG investments have been transferred",
-		"LGGildMember" : "__player__'s Legendary buildings have been submitted"
+		"UpdateSuccess" : "Actualizare efectuată",
+		"GEXPlayer" : "Clasamentul EG a fost actualizat",
+		"GEXChampionship" : "Contribuția membrilor ghildei la EG a fost actualizată",
+		"LGInvest" : "Datele despre investițiile tale în CL au fost transmise",
+		"LGGildMember" : "Datele despre clădirile legendare ale lui "__player__'s au fost transmise"
 	}
 };
