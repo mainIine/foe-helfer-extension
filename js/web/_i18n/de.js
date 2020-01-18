@@ -69,8 +69,8 @@ let i18n = {
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 			"ActiveRecurringQuest": "Aktiver Schleifenquest:",
 			"Done": "abgeschlossen",
-			"FPDontFit": "__fpcount__FP passen nicht mehr hinein",
-			"FPRequired": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern zusätzlich gezahlt werden"
+			"LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
+			"NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
 		},
 
 		"LGOverviewBox": {
