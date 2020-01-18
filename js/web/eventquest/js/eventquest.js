@@ -48,7 +48,7 @@ let EventQuest = {
     Show: () => {
         if(EventQuest.Visible === false) return;
         let lng = localStorage.getItem('user-language');
-        let url = extUrl + 'js/web/eventquest/questlist/questlist.json';
+        let url = 'https://cache.foe-rechner.de/quests/quests.json';
 
         MainParser.loadJSON(url, (data) => {
             EventQuest.Event = JSON.parse(data);
