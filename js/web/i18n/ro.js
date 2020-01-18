@@ -69,7 +69,7 @@ let i18n = {
 		"LGOverviewBox": {
 			"Title": "Contribuții posibile",
 			"Tooltip": {
-				"FoundNew": "nou găsit,
+				"FoundNew": "nou găsit",
 				"FoundAgain": "recunoscut",
 				"NoPayment": "nici o contribuție",
 			},
