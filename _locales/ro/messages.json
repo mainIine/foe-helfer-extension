@@ -5,7 +5,7 @@
 		"description": "The title of the application, displayed in the web store."
 	},
 	"appDesc": {
-		"message": "Un mic ajutor pentru o jucătorii de Forge of Empires",
+		"message": "Un mic ajutor pentru jucătorii de Forge of Empires",
 		"description":"The description of the application, displayed in the web store."
 	}
 }
