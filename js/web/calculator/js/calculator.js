@@ -266,7 +266,7 @@ let Calculator = {
 		h.push('</tr></tbody></table>');
 
         // Wieviel fehlt noch bis zum leveln?
-        let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
+		let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
         
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
 
@@ -523,7 +523,8 @@ let Calculator = {
 
 				let CurrentGewinn = FPRewards[Rank] - SnipeRankCosts[Rank];
 				if (CurrentGewinn > BestGewinn) {
-					BestGewinn = CurrentGewinn;
+					if (SnipeStates[Rank] !== 'LevelWarning')
+						BestGewinn = CurrentGewinn;
 				}
 				else {
 					SnipeStates[Rank] = 'WorseProfit';
@@ -577,11 +578,11 @@ let Calculator = {
 				hFordern.push('<tr class="info-row">');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
-				let ToolTip = HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPRequired'], { fpcount: (ForderRankDiff) });
+				let ToolTip = HTML.i18nReplacer(i18n['Boxes']['Calculator']['NegativeProfitTT'], { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] });
 				hFordern.push('<tr class="bg-red tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['FPDontFit'], {fpcount: (0-ForderRankDiff)}) : '');
+				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['LevelWarningTT'], { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank]}) : '');
 				hFordern.push('<tr class="bg-yellow tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
@@ -656,7 +657,7 @@ let Calculator = {
 				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else {
-				hFordern.push('<td class="text-center">' + HTML.Format(ForderFPRewards[Rank]) + '</td>');
+				hFordern.push('<td class="text-center"><strong>' + HTML.Format(ForderFPRewards[Rank]) + '</strong></td>');
 				hFordern.push('<td class="text-center">-</td>');
 			}
 
@@ -747,7 +748,7 @@ let Calculator = {
 			return '';
 		}
 		else { // > 0
-			return ' <small class="text-danger">+' + HTML.Format(ForderRankDiff) + '</small>';
+			return ' <small class="error">+' + HTML.Format(ForderRankDiff) + '</small>';
 		}
 	},
 

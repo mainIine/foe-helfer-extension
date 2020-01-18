@@ -70,7 +70,7 @@
 
 #costCalculator #costCalculatorBody td.error,
 #costCalculator #costCalculatorBody td .error {
-	color: #ef1616;
+	color: #ec4d4d;
 }
 
 #costCalculator #costCalculatorBody strong.success {
@@ -78,9 +78,9 @@
 }
 
 #costCalculator #costCalculatorBody .text-grey,
-#costCalculator #costCalculatorBody .text-grey strong.success {
+#costCalculator #costCalculatorBody .text-grey strong {
 	color: #9a9a9a;
-	opacity: 0.5;
+	opacity: 0.75;
 }
 
 #costCalculator #costCalculatorBody strong.info {
