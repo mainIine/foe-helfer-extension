@@ -253,7 +253,7 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"Title": "Vložit data", 
+			"TitleSend": "Vložit data", 
 			"Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
 			"SubmitSuccess": "Data byla přijata... Nyní navštivte ",
@@ -462,7 +462,8 @@ let i18n = {
 			"shore": "Shore",   // Todo: Translate
 			"water": "in the water",   // Todo: Translate
 			"cityRoadSmall": "small Road",   // Todo: Translate
-			"cityRoadBig": "big Road"   // Todo: Translate
+			"cityRoadBig": "big Road",   // Todo: Translate
+			"guildExpedition": "Guild expedition" //Todo: Translate
 		},
 		"Table": {
 			"type": "Type",  // Todo: Translate

@@ -253,7 +253,7 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"Title": "Submit data",
+			"TitleSend": "Submit data",
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
 			"SubmitSuccess": "Data was transfered successfully... Now visit ",
@@ -462,7 +462,8 @@ let i18n = {
 			"shore": "Shore",
 			"water": "in the water",
 			"cityRoadSmall": "small Road",
-			"cityRoadBig": "big Road"
+			"cityRoadBig": "big Road",
+			"guildExpedition": "Guild expedition"
 		},
 		"Table": {
 			"type": "Type",
