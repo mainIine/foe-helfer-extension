@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivel",
 			"AvailableFP": "Disponibles puntos forge",
+			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Bonus del Arca",
 			"Rate": "Cotizacion",
 			"Up2LevelUp": "Hasta el proximo nivel",

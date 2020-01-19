@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivå ",
 			"AvailableFP": "Tillgängliga FP",
+			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Arkbonus",
 			"Rate": "Kvot",
 			"Up2LevelUp": "Till nästa nivå",

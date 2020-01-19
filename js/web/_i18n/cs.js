@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Úroveň ",
 			"AvailableFP": "Dostupně body výzkumu",
+			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Arc bonus",
 			"Rate": "Rate",
 			"Up2LevelUp": "Do nové úrovně",
