@@ -1,7 +1,7 @@
 /*
  * **************************************************************************************
  *
- * Dateiname:                 en.js
+ * Dateiname:                 ro.js
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
