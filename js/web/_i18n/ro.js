@@ -13,21 +13,6 @@
  * **************************************************************************************
  */
 
-/*
- * **************************************************************************************
- *
- * Dateiname:                 en.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.12.19, 22:44 Uhr
- * zuletzt bearbeitet:       17.12.19, 22:18 Uhr
- *
- * Copyright © 2019
- *
- * **************************************************************************************
- */
-
 let i18n = {
 	"Local" : "ro-RO",
 	"DateTime" : "DD.MM.YY h:mm:ss",
@@ -250,7 +235,9 @@ let i18n = {
 			"Title": "Transmiteți datale",
 			"Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
-			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum "
+			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",
+			"WholeArea": "The whole area: ", // @Todo: Translate
+			"FreeArea": "Free area: " // @Todo: Translate
 		}
 	},
 
@@ -318,6 +305,14 @@ let i18n = {
 		"Info" : {
 			"Title" : "InfoBox",
 			"Desc" : "Îți arată toate lucrurile care se petrec în \"background\"<br><em>Completează informațiile ...</em>"
+		},
+		"HiddenRewards": {
+			"Title": "Hidden rewards", //Todo: Translate
+			"Desc": "Overview of hidden rewards" //Todo: Translate
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 

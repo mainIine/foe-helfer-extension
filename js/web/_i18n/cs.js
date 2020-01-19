@@ -253,7 +253,9 @@ let i18n = {
 			"Title": "Vložit data", 
 			"Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
-			"SubmitSuccess": "Data byla přijata... Nyní navštivte "
+			"SubmitSuccess": "Data byla přijata... Nyní navštivte ",
+			"WholeArea": "The whole area: ", // @Todo: Translate
+			"FreeArea": "Free area: " // @Todo: Translate
 		},
 
 		"Gildfights": {
@@ -340,6 +342,10 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Hidden rewards",  // Todo: Translate: Translate
 			"Desc": "Overview of hidden rewards"  // Todo: Translate: Translate
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 
