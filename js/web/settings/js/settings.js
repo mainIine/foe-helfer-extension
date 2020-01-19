@@ -22,7 +22,7 @@ let Settings = {
 		Version: {
 			callback: 'VersionInfo',
 			title: i18n['Settings']['Version']['Title'],
-			desc: (devMode === true ? i18n['Settings']['Version']['DescDebug'] : i18n['Settings']['Version']['Desc'])
+			desc: (devMode === true ? HTML.i18nReplacer(i18n['Settings']['Version']['DescDebug'], {version: extVersion, language: (GuiLng === 'de' ? 'de' : 'en')}) : i18n['Settings']['Version']['Desc'])
 		},
 		GlobalSend : {
 			status: true,
@@ -75,6 +75,11 @@ let Settings = {
 			title : i18n['Settings']['ResetBoxPositions']['Title'],
 			desc : i18n['Settings']['ResetBoxPositions']['Desc']
 		},
+		MenuLength : {
+			callback: 'MenuInputLength',
+			title : i18n['Settings']['MenuLength']['Title'],
+			desc : i18n['Settings']['MenuLength']['Desc']
+		},
 		ChangeLanguage : {
 			callback: 'LanguageDropdown',
 			title : i18n['Settings']['ChangeLanguage']['Title'],
@@ -90,14 +95,14 @@ let Settings = {
 
 		if( $('#SettingsBox').length < 1 ){
 
-			HTML.Box({
-				'id': 'SettingsBox',
-				'title': i18n['Boxes']['Settings']['Title'],
-				'auto_close': true
-			});
-
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('settings');
+
+			HTML.Box({
+				id: 'SettingsBox',
+				title: i18n['Boxes']['Settings']['Title'],
+				auto_close: true
+			});
 		}
 
 		Settings.BuildBody();
@@ -217,7 +222,12 @@ let Settings = {
 	 * @returns {string}
 	 */
 	VersionInfo: ()=> {
-		return '<div class="text-center" style="width:173px;"><strong>' + extVersion + '</strong></div>';
+		return '<dl>' +
+					'<dt>' + i18n['Settings']['Version']['Title'] + '</dt><dd>' + extVersion + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['PlayerId'] + '</dt><dd>' + ExtPlayerID + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['GuildId'] + '</dt><dd>' + ExtGuildID + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['World'] + '</dt><dd>' + ExtWorld + '</dd>' +
+				'</dl>';
 	},
 
 
@@ -272,5 +282,39 @@ let Settings = {
 		});
 
 		return dp.join('');
+	},
+
+
+	/**
+	 *	Erzeugt in Input Feld
+	 *
+	 * @returns {null|undefined|jQuery}
+	 */
+	MenuInputLength: ()=> {
+		let ip = $('<input />').addClass('setting-input').attr({
+					type: 'number',
+					id: 'menu-input-length',
+					step: 1,
+					min: 2
+				}),
+			value = localStorage.getItem('MenuLength');
+
+		if(null !== value){
+			ip.val(value);
+		}
+
+		$('body').on('keyup', '#menu-input-length', function(){
+			let value = $(this).val();
+
+			if(value > 0){
+				localStorage.setItem('MenuLength', value);
+			} else {
+				localStorage.removeItem('MenuLength');
+			}
+
+			_menu.SetMenuHeight(true);
+		});
+
+		return ip;
 	}
 };
