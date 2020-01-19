@@ -259,7 +259,7 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",
+			"Title": "Player overview",
 			"Player": "Player",
 			"Negotiations": "Negotiations",
 			"Fights": "Fights",
@@ -404,14 +404,14 @@ let i18n = {
 			"Title" : "Changer de langue",
 			"Desc" : "Quelle langue, au lieu de la langue reconnue, devrait être utilisée?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский",
-				"sv": "Svenska",
-				"cs": "Český",
-				"ro": "Română"
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Český", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},

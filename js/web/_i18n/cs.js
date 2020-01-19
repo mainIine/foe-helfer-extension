@@ -259,7 +259,7 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",  // Todo: Translate: Translate
+			"Title": "Player overview",  // Todo: Translate: Translate
 			"Player": "Player",  // Todo: Translate: Translate
 			"Negotiations": "Negotiations",  // Todo: Translate: Translate
 			"Fights": "Fights",  // Todo: Translate: Translate
@@ -404,14 +404,14 @@ let i18n = {
 			"Title" : "Změnit jazyk",
 			"Desc" : "Který jazyk, kromě toho poznaného, má být zvolen?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский",
-				"sv": "Svenska",
-				"cs": "Česky",
-				"ro": "Română"
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Česky", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},
