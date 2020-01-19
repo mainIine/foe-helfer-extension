@@ -456,7 +456,8 @@ let i18n = {
 			"shore": "Shore",  //Todo: Translate
 			"water": "in the water",  //Todo: Translate
 			"cityRoadSmall": "small Road",  //Todo: Translate
-			"cityRoadBig": "big Road"  //Todo: Translate
+			"cityRoadBig": "big Road",   // Todo: Translate
+			"guildExpedition": "Guild expedition" //Todo: Translate
 		},
 		"Table": {
 			"type": "Type", //Todo: Translate
