@@ -247,7 +247,7 @@ let Calculator = {
 
 		h.push('<br>');
 
-		h.push('<span><strong>Fördern mit:</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>'); //Todo: Translate
+		h.push('<span><strong>' + i18n['Boxes']['Calculator']['FriendlyInvestment'] + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>'); //Todo: Translate
 
 		h.push('</div><div>');
 
@@ -271,8 +271,8 @@ let Calculator = {
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
 
 		// Schleifenquest für "Benutze FP" suchen
-		for (let i in MainParser.Quests) {
-			let Quest = MainParser.Quests[i];
+		for (let i in EventQuest.Quests) {
+			let Quest = EventQuest.Quests[i];
 
 			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
 				for (let j in Quest.successConditions) {

@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
+			"FriendlyInvestment": "Friendly invest:",
 			"ArcBonus": "Arc bonus",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
