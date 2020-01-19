@@ -462,7 +462,8 @@ let i18n = {
 			"shore": "Küste",
 			"water": "im Wasser",
 			"cityRoadSmall": "einspurige Strasse",
-			"cityRoadBig": "große Strasse"
+			"cityRoadBig": "große Strasse",
+			"guildExpedition": "Gildenexpedition"
 		},
 		"Table": {
 			"type": "Typ",
