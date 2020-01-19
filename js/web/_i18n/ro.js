@@ -360,7 +360,7 @@ let i18n = {
 		"Version": {
 			"Title" : "Versiune",
 			"DescDebug" : "Extensie pentru Chrome <strong class='text-danger'>BETA</strong> Version",
-			"Desc" : "Versiunea extensiei pentru Chrome "
+			"Desc" : "Versiunea extensiei pentru Chrome ",
 			"PlayerId": "Player-Id:", //Todo: Translate
 			"GuildId": "Gild-Id:", //Todo: Translate
 			"World": "World:" //Todo: Translate
