@@ -17,6 +17,10 @@ let i18n = {
 	"Local" : "ro-RO",
 	"DateTime" : "DD.MM.YY h:mm:ss",
 
+	"Global" : {
+		"BoxTitle": " <small><em>FoE Helper</em></small>"
+	},
+
 	"Boxes" : {
 		"OwnpartCalculator" : {
 			"Title": "Calculator de contribuție proprie",
@@ -50,20 +54,24 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivelul ",
 			"AvailableFP": "PF disponibile",
+			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Bonusul Domului",
-			"Earnings": "Recompensă",
 			"Rate": "Procent",
 			"Up2LevelUp": "PF rămase până la închidere",
 			"FP": "PF",
 			"Save": "Salvat",
+			"BPs": "BPs", //Todo: Translate
+			"Meds": "Meds", //Todo: Translate
 			"Commitment": "Cost",
-			"Profit": "Profit",
+			"Profit": "Profit", //Todo: Translate
 			"LevelWarning": "ATENȚIE! Închide nivelul la CL!",
 			"NoFPorMedsAvailable": "PF sau planuri indisponibile",
 			"LGNotOpen": "Următorul nivel nu este deblocat",
 			"LGNotConnected": "Clădirea nu este conectată la stradă",
 			"ActiveRecurringQuest": "Misiunea repetitivă actuală:",
-			"Done": "Terminat"
+			"Done": "Terminat",
+						"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -85,7 +93,8 @@ let i18n = {
 			"Title" : "Producția de PF-uri",
 			"TotalFPs": "Total PF-uri de la clădiri: ",
 			"Amount": "Număr",
-			"FPBar" : "PF în inventar: "
+			"FPBar" : "PF în inventar: ",
+			"BuyableFP" : "Buyable: "
 		},
 
 		"Productions" : {
@@ -173,6 +182,16 @@ let i18n = {
 			"DescInStock": "Disponibil",
 			"DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ef1616'>Lipsă</span>",
 		},
+		
+		"EventList": {
+			"Title": "Event quest list for: ", //Todo: Translate
+			"Desc": "Task", //Todo: Translate
+			"Reward": "Reward", //Todo: Translate
+            "Number": "No.", //Todo: Translate
+			"Or": " or ", //Todo: Translate
+			"And": " and ", //Todo: Translate
+			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+		},
 
 		"Negotiation": {
 			"Title": "Ajutor pentru negocieri",
@@ -205,6 +224,7 @@ let i18n = {
 			"FilterAuction" : "Licitație",
 			"FilterLevel" : "Creștere CL",
 			"FilterMessage" : "Centru de mesaje",
+			"FilterGildFights" : "Guild Fights", //Todo: Translate
 			"FilterTrade" : "Piața",
 			"ResetBox" : "Resetare",
 			"Messages" : {
@@ -212,7 +232,8 @@ let i18n = {
 				"LevelUp" : "__player__ a ajuns la nivelul __level__ al clădirii __building__. <br>Ai ieșit pe locul <strong>__rank__th</strong>.",
 				"Auction" : "'<strong>__player__</strong> a licitat __amount__ monede.",
 				"Trade" : "<strong>__player__</strong> a acceptat oferta ta.<br>Ai primit __needValue__ __need__ pentru __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Nivelul __level__"
+				"MsgBuilding" : "__building__ - Nivelul __level__",
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
 			}
 		},
 
@@ -238,11 +259,26 @@ let i18n = {
 			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",
 			"WholeArea": "The whole area: ", // @Todo: Translate
 			"FreeArea": "Free area: " // @Todo: Translate
+		},
+
+		"Gildfights": {
+			"Title": "Player overview", //Todo: Translate
+			"Player": "Player", //Todo: Translate
+			"Negotiations": "Negotiations", //Todo: Translate
+			"Fights": "Fights", //Todo: Translate
+			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+		},
+
+		"HiddenRewards": {
+			"Title": "Hidden Rewards",  // Todo: Translate
+			"Appears": "Appears",  // Todo: Translate
+			"Disappears": "Disappears",  // Todo: Translate
+			"NoEvents": "No events presents"  // Todo: Translate
 		}
 	},
 
 	"Menu" : {
-		"Producția" : {
+		"Productions" : {
 			"Title" : "Prezentarea generală a producției",
 			"Desc" : "Afișează toate producțiile în curs."
 		},
@@ -265,6 +301,10 @@ let i18n = {
 			"Title": "Harta continent",
 			"Desc": "Prezentarea generală a resurselor necesare",
 			"Warning" : "Dezactivat: Vizitează mai întâi o provincie!"
+		},
+		"Event": {
+            "Title": "Event Questlist", //Todo: Translate
+            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
 		},
 		"Negotiation": {
 			"Title": "Ajutor pentru negocieri",
@@ -321,6 +361,9 @@ let i18n = {
 			"Title" : "Versiune",
 			"DescDebug" : "Extensie pentru Chrome <strong class='text-danger'>BETA</strong> Version",
 			"Desc" : "Versiunea extensiei pentru Chrome "
+			"PlayerId": "Player-Id:", //Todo: Translate
+			"GuildId": "Gild-Id:", //Todo: Translate
+			"World": "World:" //Todo: Translate
 		},
 		"GlobalSend": {
 			"Title" : "Transmitere către foe-rechner.de",
@@ -347,9 +390,9 @@ let i18n = {
 			"Desc" : "Când accesezi 'Town Hall'> 'News'> 'Legendary Buildings' datele despre PF investite vor fi transmise"
 		},
 		"ShowTavernBadge": {
-			"Title" : "Show tavernas badge",  //TODO: to be translated
-			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears."
-		}, //TODO: to be translated
+			"Title" : "Show tavernas badge",  //Todo: Translate
+			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears." //Todo: Translate
+		},
 		"PreScanLGList": {
 			"Title" : "Citirea preliminară a datelor despre CL",
 			"Desc" : "Citește datele despre toate clădirile legendare ale unui vecin și determină dacă există locuri disponibile. <br> <u> NOTĂ: </u> Deoarece datele exacte sunt transmise doar după deschiderea unei clădiri, rezultatul poate diferi. Citirea este însă salvată." //TODO: to be check
@@ -363,18 +406,22 @@ let i18n = {
 			"Desc" : "Dorești resetarea tuturor coordonatelor casetei?",
 			"Button" : "Șterge!"
 		},
+		"MenuLength": {
+			"Title" : "Menu length",
+			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height."
+		},
 		"ChangeLanguage": {
 			"Title" : "Schimbă limba",
 			"Desc" : "Care limbă ar trebui folosită?",
 			"Dropdown": {
-				"de": "Germană",
-				"en": "Engleză",
-				"fr": "Franceză",
-				"es": "Spaniolă",
-				"ro": "Română",
-				"ru": "Rusă",
-				"cs": "Czech", // @Todo: Translate
-				"se": "Swedish" // @Todo: Translate
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Český", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},
@@ -407,5 +454,20 @@ let i18n = {
 		"GEXChampionship" : "Contribuția membrilor ghildei la EG a fost actualizată",
 		"LGInvest" : "Datele despre investițiile tale în CL au fost transmise",
 		"LGGildMember" : "Datele despre clădirile legendare ale lui _player__\'s au fost transmise"
+	},
+
+	"HiddenRewards": {
+		"Positions": {
+			"nature": "Nature", //Todo: Translate
+			"shore": "Shore", //Todo: Translate
+			"water": "in the water", //Todo: Translate
+			"cityRoadSmall": "small Road", //Todo: Translate
+			"cityRoadBig": "big Road" //Todo: Translate
+		},
+		"Table": {
+			"type": "Type", //Todo: Translate
+			"position": "Position", //Todo: Translate
+			"expires": "Expires at" //Todo: Translate
+		}
 	}
 };

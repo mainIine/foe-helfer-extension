@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
+			"FriendlyInvestment": "Fördern mit:",
 			"ArcBonus": "Arche Bonus",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
@@ -70,7 +71,7 @@ let i18n = {
 			"ActiveRecurringQuest": "Aktiver Schleifenquest:",
 			"Done": "abgeschlossen",
 			"LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
-			"NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
+			"NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {
@@ -269,7 +270,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Ereignisse"
+			"Title": "Ereignisse",
+			"Appears": "Erscheint",
+			"Disappears": "Verschwindet",
+			"NoEvents": "Keine Ereignisse vorhanden"
 		}
 	},
 
@@ -410,14 +414,14 @@ let i18n = {
 			"Title" : "Sprache wechseln",
 			"Desc" : "Welche Sprache, statt der erkannten, soll genutzt werden?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский",
-				"sv": "Svenska",
-				"cs": "Český",
-				"ro": "Română"
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Český", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},
