@@ -256,7 +256,9 @@ let i18n = {
 			"Title": "Submit data", //Todo: Translate
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
+			"WholeArea": "The whole area: ",
+			"FreeArea": "Free area: "
 		},
 
 		"Gildfights": {
@@ -347,6 +349,10 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Hidden rewards", //Todo: Translate
 			"Desc": "Overview of hidden rewards" //Todo: Translate
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 
