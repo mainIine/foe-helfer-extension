@@ -1,5 +1,83 @@
 ##Changelog - Chrome Extension
 
+#####2.4.1
+
+**New**
+- Event list:
+    - [#309](https://github.com/dsiekiera/foe-helfer-extension/issues/309) Events in "raw form" are listed, the current (yellow frame) correct data is filled; auto update
+
+
+- Citymap:
+    - [#249](https://github.com/dsiekiera/foe-helfer-extension/issues/249) 2D overview (schematic) of your own city
+
+
+- Events: 
+    - [#365](https://github.com/dsiekiera/foe-helfer-extension/issues/365) [#378](https://github.com/dsiekiera/foe-helfer-extension/issues/378 ) Are read out and output in a box with start / end time + any location. Thanks to [h3llraz0r](https://github.com/Marcel-Wagner)
+
+**Update**
+
+- Extension:
+    - Writings of the boxes made more readable
+
+
+- Info box:
+    - [#333](https://github.com/dsiekiera/foe-helfer-extension/issues/333) Can be folded in
+    - [#379](https://github.com/dsiekiera/foe-helfer-extension/issues/379) Guild battles are listed in the info box when entering the GG card. Inno will only transmit data; Filter completely revised
+
+
+- Cost calculator:
+    - Extensive update, box is divided into left (convey) and right (snip)
+    - Background colors + tool tips explain when hovering over yellow and red
+    - [#171](https://github.com/dsiekiera/foe-helfer-extension/issues/171) [#353](https://github.com/dsiekiera/foe-helfer-extension/issues/353 ) Show in a small red number behind the patron bonus how much is missing until "save" (left side)
+
+
+- Guild battles:
+    - [#330](https://github.com/dsiekiera/foe-helfer-extension/issues/330) Box can be moved, minimized and remembers last position
+    - [#335](https://github.com/dsiekiera/foe-helfer-extension/issues/335) i18n added
+
+
+- FP bearings:
+    - When you click on buy, information on how many FPs could currently be bought for coins appears at the top right of the warehouse. Thanks to [h3llraz0r](https://github.com/Marcel-Wagner)
+
+
+- Harvesters:
+    - [#333](https://github.com/dsiekiera/foe-helfer-extension/issues/333) Can be folded in
+    - Added mouse drag for the map
+    - New zoom technology installed
+
+
+- Menu:
+    - [#351](https://github.com/dsiekiera/foe-helfer-extension/issues/351) Length can be limited in height using the settings
+
+**BugFix**
+
+- Production overview:
+    - [#126](https://github.com/dsiekiera/foe-helfer-extension/issues/126) [#338](https://github.com/dsiekiera/foe-helfer-extension/issues/338 ) Fixed coin production of wish and fountain of youth
+    - [#349](https://github.com/dsiekiera/foe-helfer-extension/issues/349) Duplicate names in the resources made "packaging" disappear
+
+
+- Info box:
+    - [#203](https://github.com/dsiekiera/foe-helfer-extension/issues/203) Titles are recognized and changed when renaming
+    - [#348](https://github.com/dsiekiera/foe-helfer-extension/issues/348) [#380](https://github.com/dsiekiera/foe-helfer-extension/issues/380 ) Box threw errors at level-up message
+
+
+- Menu:
+    - [#331](https://github.com/dsiekiera/foe-helfer-extension/issues/331) fixed tooltips
+
+
+- duck helper:
+    - [#339](https://github.com/dsiekiera/foe-helfer-extension/issues/339) "Fame" (crowns) is recognized as a resource and spent
+
+
+- Cost calculator:
+    - [#341](https://github.com/dsiekiera/foe-helfer-extension/issues/341) Fixed bug when the 5th place didn't get a "reward" the box crashed
+
+
+- Own contribution calculator:
+    - [#332](https://github.com/dsiekiera/foe-helfer-extension/issues/332) Corrected the height for "Copy values" in the Firefox
+
+---
+
 #####2.4.0.1
 
 **New**
