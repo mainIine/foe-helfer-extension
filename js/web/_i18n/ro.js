@@ -256,7 +256,9 @@ let i18n = {
 			"Title": "Transmiteți datale",
 			"Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
-			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum "
+			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",
+			"WholeArea": "The whole area: ", // @Todo: Translate
+			"FreeArea": "Free area: " // @Todo: Translate
 		},
 
 		"Gildfights": {
@@ -347,6 +349,10 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Hidden rewards", //Todo: Translate
 			"Desc": "Overview of hidden rewards" //Todo: Translate
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 

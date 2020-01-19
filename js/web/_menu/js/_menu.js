@@ -34,6 +34,7 @@ let _menu = {
 		'questlist',
 		'technologies',
 		'campagneMap',
+		'citymap',
 		'unit',
 		'settings',
 		'forum',
@@ -135,8 +136,38 @@ let _menu = {
 		if(StorgedItems !== null){
 			let storedItems = JSON.parse(StorgedItems);
 
-			if(_menu.Items.length == storedItems.length) {
+			// es ist kein neues Item hinzugekommen
+			if(_menu.Items.length === storedItems.length) {
 				_menu.Items = JSON.parse(StorgedItems);
+			}
+
+			// ermitteln in welchem Array was fehlt...
+			else {
+				let missingMenu = storedItems.filter(function(sI){
+					return !_menu.Items.some(function(mI) {
+						return sI === mI;
+					});
+				});
+
+				let missingStored = _menu.Items.filter(function(mI){
+					return !storedItems.some(function(sI) {
+						return sI === mI;
+					});
+				});
+
+				let items = missingMenu.concat(missingStored);
+
+				// es gibt tatsächlich was neues...
+				if( items.length > 0 ){
+					for(let i in items){
+						if(!items.hasOwnProperty(i)){
+							break;
+						}
+
+						// ... neues kommt vorne dran ;-)
+						_menu.Items.unshift(items[i]);
+					}
+				}
 			}
 		}
 
@@ -476,6 +507,28 @@ let _menu = {
         btn_MapBG.append(btn_Map);
 
         return btn_MapBG;
+    },
+
+	/**
+	 * citymap
+	 *
+	 * @returns {*|jQuery}
+	 */
+	citymap_Btn: ()=> {
+        let btn_CityBG = $('<div />').attr({'id': 'citymap-Btn', 'data-slug': 'citymap'}).addClass('hud-btn');
+
+        // Tooltip einbinden
+        _menu.toolTippBox(i18n['Menu']['Citymap']['Title'], i18n['Menu']['Citymap']['Desc'], 'citymap-Btn');
+
+        let btn_City = $('<span />');
+
+		btn_City.on('click', function () {
+            CityMap.init();
+        });
+
+		btn_CityBG.append(btn_City);
+
+        return btn_CityBG;
     },
 
 	/**

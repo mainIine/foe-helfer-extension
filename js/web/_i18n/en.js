@@ -180,7 +180,7 @@ let i18n = {
             "Resource": "Resource",
             "DescRequired": "Required",
             "DescInStock": "Available",
-            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>"
 		},
 
 		"EventList": {
@@ -256,7 +256,9 @@ let i18n = {
 			"Title": "Submit data",
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
-			"SubmitSuccess": "Data was transfered successfully... Now visit "
+			"SubmitSuccess": "Data was transfered successfully... Now visit ",
+			"WholeArea": "The whole area: ",
+			"FreeArea": "Free area: "
 		},
 
 		"Gildfights": {
@@ -347,6 +349,10 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Hidden rewards",
 			"Desc": "Overview of hidden rewards"
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 
