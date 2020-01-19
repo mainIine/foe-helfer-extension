@@ -51,6 +51,11 @@
 	align-items: center;
 }
 
+#SettingsBoxBody .item .item-row a {
+	cursor: pointer;
+	color: #ffcc68;
+}
+
 #SettingsBoxBody .item .item-row .desc {
 	width: 66%;
 	padding: 10px;

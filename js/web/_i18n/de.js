@@ -359,7 +359,7 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 			"Desc" : "Chrome Extension Version",
 			"PlayerId": "Spieler Id:",
 			"GuildId": "Gilden Id:",
