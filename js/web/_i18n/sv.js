@@ -233,7 +233,7 @@ let i18n = {
 				"Auction" : "'<strong>__player__</strong> har precis erbjudit __amount__ mynt.",
 				"Trade" : "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Nivå __level__",
-				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
 			}
 		},
 
@@ -268,7 +268,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards" //Todo: Translate
+			"Title": "Hidden Rewards",  // Todo: Translate
+			"Appears": "Appears",  // Todo: Translate
+			"Disappears": "Disappears",  // Todo: Translate
+			"NoEvents": "No events presents"  // Todo: Translate
 		}
 	},
 

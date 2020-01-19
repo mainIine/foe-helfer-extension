@@ -247,7 +247,7 @@ let Calculator = {
 
 		h.push('<br>');
 
-		h.push('<span><strong>' + i18n['Boxes']['Calculator']['FriendlyInvestment'] + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>'); //Todo: Translate
+		h.push('<span><strong>' + i18n['Boxes']['Calculator']['FriendlyInvestment'] + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 
 		h.push('</div><div>');
 
