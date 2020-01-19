@@ -268,7 +268,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards"
+			"Title": "Hidden Rewards",
+			"Appears": "Appears",
+			"Disappears": "Disappears",
+			"NoEvents": "No events presents"
 		}
 	},
 

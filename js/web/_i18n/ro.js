@@ -268,7 +268,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards" //Todo: Translate
+			"Title": "Hidden Rewards",  // Todo: Translate
+			"Appears": "Appears",  // Todo: Translate
+			"Disappears": "Disappears",  // Todo: Translate
+			"NoEvents": "No events presents"  // Todo: Translate
 		}
 	},
 
