@@ -253,7 +253,7 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"Title": "Transmiteți datale",
+			"TitleSend": "Transmiteți datale",
 			"Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
 			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",

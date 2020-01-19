@@ -253,7 +253,7 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"Title": "Submit data", //Todo: Translate
+			"TitleSend": "Submit data", //Todo: Translate
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 			"SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
