@@ -259,7 +259,7 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Spieler Übersicht",
+			"Title": "Spieler Übersicht",
 			"Player": "Spieler",
 			"Negotiations": "Verhandlungen",
 			"Fights": "Kämpfe",
@@ -410,7 +410,8 @@ let i18n = {
 				"es": "Español",
 				"ru": "Русский",
 				"sv": "Svenska",
-				"cs": "Český"
+				"cs": "Český",
+				"ro": "Română"
 			}
 		}
 	},
