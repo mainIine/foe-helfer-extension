@@ -113,6 +113,7 @@
 #costCalculatorBody .costFactorWrapper > div:first-child {
 	text-align: center;
 	width: 36%;
+	white-space: nowrap;
 }
 
 #costCalculatorBody .costFactorWrapper > div:first-child span {
