@@ -359,7 +359,7 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Versiune",
-			"DescDebug" : "Extensie pentru Chrome <strong class='text-danger'>BETA</strong> Version",
+			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",  // Todo: Translate: Translate
 			"Desc" : "Versiunea extensiei pentru Chrome "
 			"PlayerId": "Player-Id:", //Todo: Translate
 			"GuildId": "Gild-Id:", //Todo: Translate
