@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
+			"FriendlyInvestment": "Friendly invest:",
 			"ArcBonus": "Arc bonus",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
@@ -68,7 +69,9 @@ let i18n = {
 			"LGNotOpen": "The next level is currently not unlocked",
 			"LGNotConnected": "The building is not connected to a street",
 			"ActiveRecurringQuest": "Active recurring quest:",
-			"Done": "done"
+			"Done": "done",
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {
@@ -230,7 +233,7 @@ let i18n = {
 				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",
 				"Trade" : "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Level __level__",
-				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"
 			}
 		},
 
@@ -259,7 +262,7 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",
+			"Title": "Player overview",
 			"Player": "Player",
 			"Negotiations": "Negotiations",
 			"Fights": "Fights",
@@ -267,7 +270,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards"
+			"Title": "Hidden Rewards",
+			"Appears": "Appears",
+			"Disappears": "Disappears",
+			"NoEvents": "No events presents"
 		}
 	},
 
@@ -408,14 +414,14 @@ let i18n = {
 			"Title" : "Change language",
 			"Desc" : "Which language, instead of the recognized one, should be used?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский",
-				"sv": "Svenska",
-				"cs": "Český",
-				"ro": "Română"
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Český", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},

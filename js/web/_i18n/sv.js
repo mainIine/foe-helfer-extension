@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivå ",
 			"AvailableFP": "Tillgängliga FP",
+			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Arkbonus",
 			"Rate": "Kvot",
 			"Up2LevelUp": "Till nästa nivå",
@@ -68,7 +69,9 @@ let i18n = {
 			"LGNotOpen": "Nästa niå är inte upplåst ännu",
 			"LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-			"Done": "done" //Todo: Translate
+			"Done": "done", //Todo: Translate
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -230,7 +233,7 @@ let i18n = {
 				"Auction" : "'<strong>__player__</strong> har precis erbjudit __amount__ mynt.",
 				"Trade" : "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Nivå __level__",
-				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate: Translate
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
 			}
 		},
 
@@ -259,7 +262,7 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview", //Todo: Translate
+			"Title": "Player overview", //Todo: Translate
 			"Player": "Player", //Todo: Translate
 			"Negotiations": "Negotiations", //Todo: Translate
 			"Fights": "Fights", //Todo: Translate
@@ -267,7 +270,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards" //Todo: Translate
+			"Title": "Hidden Rewards",  // Todo: Translate
+			"Appears": "Appears",  // Todo: Translate
+			"Disappears": "Disappears",  // Todo: Translate
+			"NoEvents": "No events presents"  // Todo: Translate
 		}
 	},
 
