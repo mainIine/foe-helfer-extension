@@ -68,7 +68,9 @@ let i18n = {
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
 			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-			"Done": "done" //Todo: Translate
+			"Done": "done", //Todo: Translate
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
 		},
 
 		"LGOverviewBox": {

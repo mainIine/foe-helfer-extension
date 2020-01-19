@@ -68,7 +68,9 @@ let i18n = {
 			"LGNotOpen": "Další úroveň není odemčená",
 			"LGNotConnected": "Budova není připojena",
 			"ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
-			"Done": "Hotovo"
+			"Done": "Hotovo",
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -295,7 +297,8 @@ let i18n = {
         	"Warning" : "Vyberte nejprve provincii!"
 		},
 		"Event": {
-            "Title": "Event Questlist",  // Todo: Translate: Translate
+			"Title": "Event Questlist",  // Todo: Translate
+			"Desc": "Overview of the current and upcoming quests" // Todo: Tranlsate
 		},
         "Negotiation": {
             "Title": "Pomocník s vyjednáváním",
