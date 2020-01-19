@@ -68,7 +68,9 @@ let i18n = {
 			"LGNotOpen": "The next level is currently not unlocked",
 			"LGNotConnected": "The building is not connected to a street",
 			"ActiveRecurringQuest": "Active recurring quest:",
-			"Done": "done"
+			"Done": "done",
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {

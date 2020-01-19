@@ -70,7 +70,7 @@ let i18n = {
 			"ActiveRecurringQuest": "Aktiver Schleifenquest:",
 			"Done": "abgeschlossen",
 			"LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
-			"NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
+			"NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {
