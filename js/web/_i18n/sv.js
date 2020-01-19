@@ -259,7 +259,7 @@ let i18n = {
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview", //Todo: Translate
+			"Title": "Player overview", //Todo: Translate
 			"Player": "Player", //Todo: Translate
 			"Negotiations": "Negotiations", //Todo: Translate
 			"Fights": "Fights", //Todo: Translate
