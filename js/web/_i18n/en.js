@@ -456,7 +456,8 @@ let i18n = {
 			"shore": "Shore",
 			"water": "in the water",
 			"cityRoadSmall": "small Road",
-			"cityRoadBig": "big Road"
+			"cityRoadBig": "big Road",
+			"guildExpedition": "Guild expedition"
 		},
 		"Table": {
 			"type": "Type",
