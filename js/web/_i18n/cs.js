@@ -253,7 +253,7 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"Title": "Vložit data", 
+			"TitleSend": "Vložit data", 
 			"Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
 			"SubmitSuccess": "Data byla přijata... Nyní navštivte ",
