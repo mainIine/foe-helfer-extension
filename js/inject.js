@@ -58,7 +58,7 @@ const jQueryLoading = new Promise(resolve => {
 const v = chrome.runtime.getManifest().version;
 let antLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
 
-const PossibleLangs = ['de','en','fr','es','ru'];
+const PossibleLangs = ['de','en','fr','es','ru','sv','cs','ro'];
 let   lng = chrome.i18n.getUILanguage();
 const uLng = localStorage.getItem('user-language');
 
@@ -77,8 +77,12 @@ if (PossibleLangs.includes(lng) === false)
 if(uLng !== null){
 	lng = uLng;
 }
+else{
+	// damit man die sprache auslesen kann ohne diese über die einstellungen einmal ändern zu müssen
+	localStorage.setItem('user-language', lng);
+}
 
-let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v));
+let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_i18n/' + lng + '.js?v=' + v));
 
 
 InjectCode();
@@ -117,19 +121,20 @@ async function InjectCode() {
 		// warte zunächst, dass ant und i18n geladen sind
 		await Promise.all([antLoadpromise, i18nJSLoadpromise, jQueryLoading]);
 
-		const extURL = chrome.extension.getURL('');
-		const vendorScripts = [
-			'moment/moment-with-locales.min',
-			'CountUp/jquery.easy_number_animate.min',
-			'Tabslet/jquery.tabslet.min',
-			'ScrollTo/jquery.scrollTo.min',
-			'jQuery/jquery-resizable.min',
-			'tooltip/tooltip',
-			'tableSorter/table-sorter',
-			'Sortable/Sortable.min',
-			'jsZip/jszip.min',
-			//'jedParser/jedParser'
-		];
+		const extURL = chrome.extension.getURL(''),
+			vendorScripts = [
+				'moment/moment-with-locales.min',
+				'CountUp/jquery.easy_number_animate.min',
+				'Tabslet/jquery.tabslet.min',
+				'ScrollTo/jquery.scrollTo.min',
+				'jQuery/jquery-resizable.min',
+				'jQuery/jquery-ui.min',
+				'tooltip/tooltip',
+				'tableSorter/table-sorter',
+				'Sortable/Sortable.min',
+				'jsZip/jszip.min',
+				//'jedParser/jedParser'
+			];
 
 		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
 		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
@@ -148,7 +153,7 @@ async function InjectCode() {
 		script.remove();
 
 		const s = [
-			'helper',
+			'_helper',
 			'_menu',
 			'tavern',
 			'outposts',
@@ -162,10 +167,12 @@ async function InjectCode() {
 			'campagnemap',
 			'technologies',
 			'negotiation',
+			'eventquest',
 			'read-buildings',
 			'settings',
 			'strategy-points',
-			'citymap'
+			'citymap',
+			'hidden-rewards'
 		];
 
 		// Scripte laden (nacheinander)

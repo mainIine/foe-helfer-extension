@@ -184,20 +184,27 @@ let Parts = {
             Maezens[Place] = rankings[i]['forge_points'];
             if (Maezens[Place] === undefined) Maezens[Place] = 0;
 
-            if (Place < 5) {
-                let FPCount = (rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[i]['reward']['strategy_point_amount']) : 0);
-                FPRewards[Place] = Math.round(FPCount * arcs[Place]);
-                if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
+			if (Place < 5) {
+				if (rankings[i]['reward'] !== undefined) {
+					let FPCount = (rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[i]['reward']['strategy_point_amount']) : 0);
+					FPRewards[Place] = Math.round(FPCount * arcs[Place]);
+					if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
-                // Medallien berechnen
-                MedalCount = (rankings[i]['reward']['resources'] !== undefined ? parseInt(rankings[i]['reward']['resources']['medals']) : 0);
-                MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
-                if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
+					// Medallien berechnen
+					MedalCount = (rankings[i]['reward']['resources'] !== undefined ? parseInt(rankings[i]['reward']['resources']['medals']) : 0);
+					MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
+					if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
-                // Blaupausen berechnen
-                let BlueprintCount = (rankings[i]['reward']['blueprints'] !== undefined ? parseInt(rankings[i]['reward']['blueprints']) : 0);
-                BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
-                if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
+					// Blaupausen berechnen
+					let BlueprintCount = (rankings[i]['reward']['blueprints'] !== undefined ? parseInt(rankings[i]['reward']['blueprints']) : 0);
+					BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
+					if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
+				}
+				else {
+					FPRewards[Place] = 0;
+					MedalRewards[Place] = 0;
+					BPRewards[Place] = 0;
+				}
             }
         }
 
@@ -669,7 +676,12 @@ let Parts = {
 
 
 		if(show === true){
-			$('.OwnPartBoxBackgroundBody').animate({height: 260, opacity: 1}, 250, function () {
+			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
+			e.style.height = 'auto';
+			let h = e.offsetHeight;
+			e.style.height = '0px';
+
+			$('.OwnPartBoxBackgroundBody').animate({height: h, opacity: 1}, 250, function () {
 				$box.addClass('show');
 				$box.find('.black-bg').show();
 			});

@@ -1,0 +1,157 @@
+#HiddenRewardBox {
+    top: 30%;
+    left: 30px;
+	max-height: 400px;
+}
+
+#HiddenRewardBox #HiddenRewardBoxBody {
+	max-height: 400px;
+	min-width: 350px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+#HiddenRewardBox table td.incident {
+    display: inline-block;
+    background-size: 50px 35px;
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 30px;
+}
+
+#HiddenRewardBox td.warning,
+#HiddenRewardBox td .warning {
+    color: #FF6000;
+}
+
+#HiddenRewardBox table td.incident_broken_cart {
+    background-image: url("../images/incident_broken_cart.png");
+}
+
+#HiddenRewardBox table td.incident_kite {
+    background-image: url("../images/incident_kite.png");
+}
+
+#HiddenRewardBox table td.incident_clothesline {
+    background-image: url("../images/incident_clothesline.png");
+}
+
+#HiddenRewardBox table td.incident_sos {
+    background-image: url("../images/incident_sos.png");
+}
+
+#HiddenRewardBox table td.incident_pothole_1x1 {
+    background-image: url("../images/incident_pothole_1x1.png");
+}
+
+#HiddenRewardBox table td.incident_pothole_2x2 {
+    background-image: url("../images/incident_pothole_2x2.png");
+}
+
+#HiddenRewardBox table td.incident_treasure_chest {
+    background-image: url("../images/incident_treasure_chest.png");
+}
+
+#HiddenRewardBox table td.incident_treasure_chest {
+    background-image: url("../images/incident_beehive.png");
+}
+
+#HiddenRewardBox table td.incident_overgrowth {
+    background-image: url("../images/incident_overgrowth.png");
+}
+
+#HiddenRewardBox table td.incident_flotsam {
+    background-image: url("../images/incident_flotsam.png");
+}
+
+#HiddenRewardBox table td.incident_fisherman {
+    background-image: url("../images/incident_fisherman.png");
+}
+
+#HiddenRewardBox table td.incident_fallen_tree_1x1 {
+    background-image: url("../images/incident_fallen_tree_1x1.png");
+}
+
+#HiddenRewardBox table td.incident_fallen_tree_2x2 {
+    background-image: url("../images/incident_fallen_tree_2x2.png");
+}
+
+#HiddenRewardBox table td.incident_castaway {
+    background-image: url("../images/incident_castaway.png");
+}
+
+#HiddenRewardBox table td.incident_rhino {
+    background-image: url("../images/incident_rhino.png");
+}
+
+#HiddenRewardBox table td.incident_beehive {
+    background-image: url("../images/incident_beehive.png");
+}
+
+#HiddenRewardBox table td.incident_crates {
+    background-image: url("../images/incident_crates.png");
+}
+
+#HiddenRewardBox table td.incident_empty_clothesline {
+    background-image: url("../images/incident_empty_clothesline.png");
+}
+
+#HiddenRewardBox table td.incident_fruit_vendor {
+    background-image: url("../images/incident_fruit_vendor.png");
+}
+
+#HiddenRewardBox table td.incident_shipwreck {
+    background-image: url("../images/incident_shipwreck.png");
+}
+
+#HiddenRewardBox table td.incident_stick_hut {
+    background-image: url("../images/incident_stick_hut.png");
+}
+
+#HiddenRewardBox table td.incident_blocked_road_1x1 {
+    background-image: url("../images/incident_blocked_road_1x1.png");
+}
+
+#HiddenRewardBox table td.incident_blocked_road_2x2 {
+    background-image: url("../images/incident_blocked_road_2x2.png");
+}
+
+#HiddenRewardBox table td.incident_car_accident {
+    background-image: url("../images/incident_car_accident.png");
+}
+
+#HiddenRewardBox table td.incident_beach_gear {
+    background-image: url("../images/incident_beach_gear.png");
+}
+
+#HiddenRewardBox table td.incident_wine_cask {
+    background-image: url("../images/incident_wine_cask.png");
+}
+
+#HiddenRewardBox table td.incident_floating_chest {
+    background-image: url("../images/incident_floating_chest.png");
+}
+
+#HiddenRewardBox table td.incident_quicksand {
+    background-image: url("../images/incident_quicksand.png");
+}
+
+#HiddenRewardBox table td.incident_sculptor {
+    background-image: url("../images/incident_sculptor.png");
+}
+
+#HiddenRewardBox table td.incident_musician {
+    background-image: url("../images/incident_musician.png");
+}
+
+#HiddenRewardBox table td.incident_statue {
+    background-image: url("../images/incident_statue.png");
+}
+
+#HiddenRewardBox table td.incident_mammoth_bones {
+    background-image: url("../images/incident_mammoth_bones.png");
+}
+
+#HiddenRewardBox table td.incident_dinosaur_bones {
+    background-image: url("../images/incident_dinosaur_bones.png");
+}
