@@ -246,37 +246,41 @@ let CityMap = {
 			MapDataSorted = CityMap.CityData;
 		}
 
+		let MinX = 0,
+			MinY = 0,
+			MaxX = 63,
+			MaxY = 59;
 
 		for(let b in MapDataSorted)
 		{
-			if(MapDataSorted.hasOwnProperty(b) && MapDataSorted[b]['type'] !== 'friends_tavern' && MapDataSorted[b]['type'] !== 'off_grid')
+			if (!MapDataSorted.hasOwnProperty(b) || MapDataSorted[b]['x'] < MinX || MapDataSorted[b]['x'] > MaxX || MapDataSorted[b]['y'] < MinY || MapDataSorted[b]['y'] > MaxY)
+				continue;
+			
+			let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
+
+				x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
+				y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
+				w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
+				h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
+
+				f = $('<span />').addClass('entity ' + d['type']).css({
+						width: w + 'em',
+						height: h + 'em',
+						left: x + 'em',
+						top: y + 'em'
+					})
+					.attr('title', d['name'])
+					.attr('data-entityid', MapDataSorted[b]['id']);
+
+			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
+
+			// die Größe wurde geändert, wieder aktivieren
+			if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
 			{
-				let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
-
-					x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
-					y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
-					w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-					h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
-
-					f = $('<span />').addClass('entity ' + d['type']).css({
-							width: w + 'em',
-							height: h + 'em',
-							left: x + 'em',
-							top: y + 'em'
-						})
-						.attr('title', d['name'])
-						.attr('data-entityid', MapDataSorted[b]['id']);
-
-				CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
-
-				// die Größe wurde geändert, wieder aktivieren
-				if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
-				{
-					f.addClass('pulsate');
-				}
-
-				$('#grid-outer').append( f );
+				f.addClass('pulsate');
 			}
+
+			$('#grid-outer').append( f );
 		}
 
 		// Gebäudenamen via Tooltip
