@@ -483,6 +483,10 @@ p {
 	background-image: url('../images/map.png');
 }
 
+#citymap-Btn span {
+	background-image: url('../images/citymap.png');
+}
+
 #questlist_Btn span {
 	background-image: url('../images/quest.png');
 }

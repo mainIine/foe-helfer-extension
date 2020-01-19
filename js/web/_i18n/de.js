@@ -253,10 +253,12 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"Title": "Daten übermitteln",
+			"TitleSend": "Daten übermitteln",
 			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
-			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
+			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu ",
+			"WholeArea": "Gesamte Fläche: ",
+			"FreeArea": "Freie Fläche: "
 		},
 
 		"Gildfights": {
@@ -347,6 +349,10 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Ereignisse",
 			"Desc": "Übersicht der Ereignisse auf der Map"
+		},
+		"Citymap": {
+			"Title": "Stadtübersicht",
+			"Desc": "Zeigt deine Stadt schematisch von oben"
 		}
 	},
 
