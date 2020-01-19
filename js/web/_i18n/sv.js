@@ -410,7 +410,8 @@ let i18n = {
 				"es" : "Spanish",
 				"ru" : "Русский",
                 "sv" : "Svenska",
-				"cs": "Český"
+				"cs": "Český",
+				"ro": "Română"
 			}
 		}
 	},
