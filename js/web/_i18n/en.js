@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Step ",
 			"AvailableFP": "Available Forgepoints",
+			"FriendlyInvestment": "Friendly invest:",
 			"ArcBonus": "Arc bonus",
 			"Rate": "Rate",
 			"Up2LevelUp": "Until leveling",
@@ -68,7 +69,9 @@ let i18n = {
 			"LGNotOpen": "The next level is currently not unlocked",
 			"LGNotConnected": "The building is not connected to a street",
 			"ActiveRecurringQuest": "Active recurring quest:",
-			"Done": "done"
+			"Done": "done",
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {
@@ -109,7 +112,7 @@ let i18n = {
 				"greatbuilding" : "Legendary buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
-				"residential": "Event buildings",
+				"residential": "Residential buildings",
 				"decoration": "Dekorations",
 				"street": "Streets",
 				"goods": "Goods buildings",
@@ -177,7 +180,7 @@ let i18n = {
             "Resource": "Resource",
             "DescRequired": "Required",
             "DescInStock": "Available",
-            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
+            "DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>"
 		},
 
 		"EventList": {
@@ -226,10 +229,11 @@ let i18n = {
 			"ResetBox" : "Reset Box",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
 				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",
 				"Trade" : "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Level __level__"
+				"MsgBuilding" : "__building__ - Level __level__",
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"
 			}
 		},
 
@@ -249,14 +253,16 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"Title": "Submit data",
+			"TitleSend": "Submit data",
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
-			"SubmitSuccess": "Data was transfered successfully... Now visit "
+			"SubmitSuccess": "Data was transfered successfully... Now visit ",
+			"WholeArea": "The whole area: ",
+			"FreeArea": "Free area: "
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview",
+			"Title": "Player overview",
 			"Player": "Player",
 			"Negotiations": "Negotiations",
 			"Fights": "Fights",
@@ -264,7 +270,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards"
+			"Title": "Hidden Rewards",
+			"Appears": "Appears",
+			"Disappears": "Disappears",
+			"NoEvents": "No events presents"
 		}
 	},
 
@@ -340,13 +349,17 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Hidden rewards",
 			"Desc": "Overview of hidden rewards"
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",  // Todo: Translate: Translate
 			"Desc" : "Chrome Extension Version",
 			"PlayerId": "Player-Id:",
 			"GuildId": "Gild-Id:",
@@ -401,13 +414,14 @@ let i18n = {
 			"Title" : "Change language",
 			"Desc" : "Which language, instead of the recognized one, should be used?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский",
-				"sv": "Svenska",
-				"cs": "Český"
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Český", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},
@@ -444,9 +458,12 @@ let i18n = {
 
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "nature",
+			"nature": "Nature",
 			"shore": "Shore",
-			"cityRoadSmall": "Small Road"
+			"water": "in the water",
+			"cityRoadSmall": "small Road",
+			"cityRoadBig": "big Road",
+			"guildExpedition": "Guild expedition"
 		},
 		"Table": {
 			"type": "Type",

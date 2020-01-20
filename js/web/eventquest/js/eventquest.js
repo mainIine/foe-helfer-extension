@@ -45,30 +45,59 @@ let EventQuest = {
     CurrentQuestText: null,
     Visible: false,
 
+
+	/**
+	 * Vorbereitung der DAten
+	 */
     Show: () => {
         if(EventQuest.Visible === false) return;
-        let lng = localStorage.getItem('user-language');
-        let url = extUrl + 'js/web/eventquest/questlist/questlist.json';
+        let lng = MainParser.Language;
+        let url = 'https://cache.foe-rechner.de/quests/quests.json';
 
-        MainParser.loadJSON(url, (data) => {
-            EventQuest.Event = JSON.parse(data);
-            EventQuest.AllQuests = EventQuest.Event['lang'][lng];
+        // es gibt nur 2 Sprachen
+        if(lng !== 'de' && lng !== 'en'){
+        	lng = 'en';
+		}
 
-            if ($('#event').length === 0) {
+        if(null !== EventQuest.AllQuests) {
 
-                HTML.Box({
-                    'id': 'event',
-                    'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
-                    'auto_close': false,
-                    'dragdrop': true,
-                    'minimize': true
-                });
+			if ($('#event').length === 0) {
 
-                // CSS in den DOM prügeln
-                HTML.AddCssFile('eventquest');
-            }
-            EventQuest.BuildBox();
-        });
+				HTML.Box({
+					'id': 'event',
+					'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
+					'auto_close': false,
+					'dragdrop': true,
+					'minimize': true
+				});
+
+				// CSS in den DOM prügeln
+				HTML.AddCssFile('eventquest');
+			}
+
+			EventQuest.BuildBox();
+
+		} else {
+			MainParser.loadJSON(url, (data) => {
+				EventQuest.Event = JSON.parse(data);
+				EventQuest.AllQuests = EventQuest.Event['lang'][lng];
+
+				if ($('#event').length === 0) {
+
+					HTML.Box({
+						'id': 'event',
+						'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
+						'auto_close': false,
+						'dragdrop': true,
+						'minimize': true
+					});
+
+					// CSS in den DOM prügeln
+					HTML.AddCssFile('eventquest');
+				}
+				EventQuest.BuildBox();
+			});
+		}
     },
 
 

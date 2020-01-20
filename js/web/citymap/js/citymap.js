@@ -13,6 +13,11 @@
  * **************************************************************************************
  */
 
+
+/**
+ *
+ * @type {{init: CityMap.init, showSumbitBox: CityMap.showSumbitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
+ */
 let CityMap = {
 
 	CityData: null,
@@ -20,6 +25,8 @@ let CityMap = {
 	CityView: 'skew',
 	UnlockedAreas: null,
 	OccupiedArea: 0,
+	IsExtern: false,
+
 
 	/**
 	 * Zündung...
@@ -66,6 +73,7 @@ let CityMap = {
 
 		setTimeout(()=>{
 
+			// eigene Stadt
 			if(Data === false)
 			{
 				setTimeout(()=>{
@@ -74,6 +82,7 @@ let CityMap = {
 				}, 100);
 
 			} else {
+				CityMap.IsExtern = true;
 				CityMap.SetBuildings(Data);
 			}
 
@@ -90,7 +99,12 @@ let CityMap = {
 		let oB = $('#city-map-overlayBody'),
 			w = $('<div />').attr({'id':'wrapper'});
 
-		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+		if(CityMap.IsExtern === false){
+			w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+		} else {
+			w.append( $('<div />').attr('id', 'map-container').addClass('with-sidebar').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) );
+		}
+
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -174,6 +188,11 @@ let CityMap = {
 						top: y + 'em',
 					});
 
+			// Ist es das Startfeld?
+			if(ua[i]['width'] === 16 && ua[i]['length'] === 16){
+				a.addClass('startmap');
+			}
+
 			G.append(a);
 		}
 	},
@@ -198,8 +217,11 @@ let CityMap = {
 
 		CityMap.OccupiedArea = 0;
 
-		// Unlocked Areas rendern
-		CityMap.BuildGrid();
+		if(CityMap.IsExtern === false) {
+			// Unlocked Areas rendern
+			CityMap.BuildGrid();
+		}
+
 
 		if(CityMap.CityData === null)
 		{
@@ -224,37 +246,41 @@ let CityMap = {
 			MapDataSorted = CityMap.CityData;
 		}
 
+		let MinX = 0,
+			MinY = 0,
+			MaxX = 63,
+			MaxY = 59;
 
 		for(let b in MapDataSorted)
 		{
-			if(MapDataSorted.hasOwnProperty(b) && MapDataSorted[b]['type'] !== 'friends_tavern' && MapDataSorted[b]['type'] !== 'off_grid')
+			if (!MapDataSorted.hasOwnProperty(b) || MapDataSorted[b]['x'] < MinX || MapDataSorted[b]['x'] > MaxX || MapDataSorted[b]['y'] < MinY || MapDataSorted[b]['y'] > MaxY)
+				continue;
+			
+			let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
+
+				x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
+				y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
+				w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
+				h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
+
+				f = $('<span />').addClass('entity ' + d['type']).css({
+						width: w + 'em',
+						height: h + 'em',
+						left: x + 'em',
+						top: y + 'em'
+					})
+					.attr('title', d['name'])
+					.attr('data-entityid', MapDataSorted[b]['id']);
+
+			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
+
+			// die Größe wurde geändert, wieder aktivieren
+			if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
 			{
-				let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
-
-					x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
-					y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
-					w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-					h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
-
-					f = $('<span />').addClass('entity ' + d['type']).css({
-							width: w + 'em',
-							height: h + 'em',
-							left: x + 'em',
-							top: y + 'em'
-						})
-						.attr('title', d['name'])
-						.attr('data-entityid', MapDataSorted[b]['id']);
-
-				CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
-
-				// die Größe wurde geändert, wieder aktivieren
-				if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
-				{
-					f.addClass('pulsate');
-				}
-
-				$('#grid-outer').append( f );
+				f.addClass('pulsate');
 			}
+
+			$('#grid-outer').append( f );
 		}
 
 		// Gebäudenamen via Tooltip
@@ -268,11 +294,14 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Statistiken in die rechte Sidebar
+	 */
 	getAreas: ()=>{
 		let total = ((CityMap.UnlockedAreas.length) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
 			occupied = CityMap.OccupiedArea,
-			txtTotal = 'Gesamte Fläche: ' + total,
-			txtFree = 'Freie Fläche: ' + (total - occupied);
+			txtTotal = i18n['Boxes']['CityMap']['WholeArea'] + total,
+			txtFree = i18n['Boxes']['CityMap']['FreeArea'] + (total - occupied);
 
 		if( $('#area-state').length === 0 ){
 			let aW = $('<div />').attr('id', 'area-state');
@@ -301,12 +330,15 @@ let CityMap = {
 	},
 
 
+	/**
+	 * VERSUCH: Daten zum Server schicken
+	 */
 	showSumbitBox: ()=> {
 		if( $('#city-map-submit').length < 1 )
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
-				'title': i18n['Boxes']['CityMap']['Title'],
+				'title': i18n['Boxes']['CityMap']['TitleSend'],
 				'auto_close': true,
 				'saveCords': false
 			});

@@ -70,7 +70,7 @@
 
 #costCalculator #costCalculatorBody td.error,
 #costCalculator #costCalculatorBody td .error {
-	color: #ef1616;
+	color: #ec4d4d;
 }
 
 #costCalculator #costCalculatorBody strong.success {
@@ -78,15 +78,17 @@
 }
 
 #costCalculator #costCalculatorBody .text-grey,
-#costCalculator #costCalculatorBody .text-grey strong.success {
+#costCalculator #costCalculatorBody .text-grey strong {
 	color: #9a9a9a;
-	opacity: 0.5;
+	opacity: 0.75;
 }
 
-/* Todo: tr info-row: Hintergrund blau, strong text nur blau, wenn td class=info */
-#costCalculator #costCalculatorBody strong.info,
-#costCalculator #costCalculatorBody tr.info-row strong {
+#costCalculator #costCalculatorBody strong.info {
 	color: #2196f3;
+}
+
+#costCalculator #costCalculatorBody tr.info-row {
+	background-color: rgba(33, 150, 243, 0.3);
 }
 
 #costCalculator #costCalculatorBody tr.bg-green {
@@ -111,6 +113,7 @@
 #costCalculatorBody .costFactorWrapper > div:first-child {
 	text-align: center;
 	width: 36%;
+	white-space: nowrap;
 }
 
 #costCalculatorBody .costFactorWrapper > div:first-child span {
@@ -147,7 +150,7 @@
 #LGOverviewBox {
 	top: 30%;
 	right: 15%;
-	width: 460px;
+	width: 480px;
 }
 
 #LGOverviewBox .head-bar {

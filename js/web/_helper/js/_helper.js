@@ -327,7 +327,7 @@ let HTML = {
 			minHeight: 200,
 			minWidth: 250,
 			stop: (e, $el)=>{
-				let size = $el.width() + '|' + $el.height();
+				let size = $el.element.width() + '|' + $el.element.height();
 
 				localStorage.setItem(id + 'Size', size);
 			},
