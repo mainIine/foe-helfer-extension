@@ -191,6 +191,7 @@ let i18n = {
 			"Or": " or ",
 			"And": " and ",
 			"Upcoming": "UPCOMING QUESTS (Numbers may vary)",
+			"Waiting": "No quest available",
 		},
 
         "Negotiation": {
