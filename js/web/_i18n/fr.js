@@ -23,20 +23,20 @@ let i18n = {
 
 	"Boxes" : {
 		"OwnpartCalculator" : {
-			"Title": "Calcul de PFs pour mes GMs",
+			"Title": "Calculs de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
             "Step": "Niveau",
             "OldLevel": "Ancien niveau",
-			"PatronPart": "Contribution externe",
-			"OwnPart": "Contribution personnelle",
-			"LGTotalFP": "Total PFs",
-            "OwnPartRemaining": "Restant",
+			"PatronPart": "Contribution externe ",
+			"OwnPart": "Contribution perso ",
+			"LGTotalFP": "Total PFs ",
+            "OwnPartRemaining": "Restant ",
 			"Done": "Fait",
 			"BPs": "Plans",
-			"Meds": "Méds",
+			"Meds": "Méd.",
 			"Ext": "Ext.",
 			"Arc": "Arche",
-			"Order": "Séquence",
+			"Order": "Ordre",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
 			"Note": "Ne pas oublier",
@@ -50,75 +50,75 @@ let i18n = {
 		},
 
 		"Calculator": {
-			"Title": "Calcul de PFs pour les GMs des autres",
+			"Title": "Calculs GM externes",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Niveau ",
-			"AvailableFP": "PFs disponibles",
-			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
-			"ArcBonus": "Bonus d'arche",
+			"AvailableFP": "PFs disponibles ",
+			"FriendlyInvestment": "Taux amis :",
+			"ArcBonus": "Bonus d'Arche ",
 			"Rate": "Ratio",
-			"Up2LevelUp": "Jusqu'au niveau suivant",
+			"Up2LevelUp": "Jusqu'au niveau suivant ",
 			"FP": "PF",
 			"Save": "Sauver",
 			"BPs": "Plan",
-			"Meds": "Méds",
-			"Commitment": "PFs posés",
-			"Profit": "Profit",
+			"Meds": "Méd.",
+			"Commitment": "Posés",
+			"Profit": "Gain",
 			"LevelWarning": "ATTENTION: faire passer le GM !",
-			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
-			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
-			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
-			"ActiveRecurringQuest": "Quête récurrente active:",
+			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible.",
+			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé.",
+			"LGNotConnected": "Le bâtiment n'est pas relié à une route.",
+			"ActiveRecurringQuest": "Quête récurrente active ",
 			"Done": "Fait",
 			"LevelWarningTT": "__fpcount__ PFs ne rentre pas dedans<br>Investissement maximum : __totalfp__ PFs",
-			"NegativeProfitTT": "Place non sécurisée. __fpcount__ PFs supplémentaires doivent être investis pour le rendre sécurisé<br>Total pour rendre la place sécurisé : __totalfp__ PFs",
+			"NegativeProfitTT": "<b>Place non sécurisée !</b><br><b>__fpcount__</b> PFs supplémentaires à investir pour le sécuriser<br>Total pour rendre la place sécurisé : <b>__totalfp__</> PFs.",
 		},
 
 		"LGOverviewBox": {
 			"Title": "Dépôts possibles",
 			"Tooltip": {
-				"FoundNew": "trouvé nouveau",
-				"FoundAgain": "reconnu",
-				"NoPayment": "jusqu'ici aucun dépôt",
+				"FoundNew": "Nouveauté",
+				"FoundAgain": "Reconnu",
+				"NoPayment": "Aucun dépôt jusqu'ici",
 			},
 			"Building": "Bâtiment",
 			"Level": "Niveau",
 			"PayedTotal": "Payé / Total",
-			"Rate": "Cours",
-			"Profit": "Profit",
-			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer",
+			"Rate": "Ratio",
+			"Profit": "Gain",
+			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer.",
 		},
 
 		"StrategyPoints" : {
 			"Title" : "PFs - Productions",
-			"TotalFPs": "Total PFs pour tous les bâtiments: ",
-			"Amount": "Nombre",
-			"FPBar" : "PFs en stock: ",
-			"BuyableFP" : "Achetable: ",
+			"TotalFPs": "Total PFs pour tous les bâtiments : ",
+			"Amount": "Quantité",
+			"FPBar" : "PFs en stock : ",
+			"BuyableFP" : "Achetable : ",
 		},
 
 		"Productions" : {
 			"Title" : "Vue d'ensemble des productions",
 			"SearchInput": "Chercher un bâtiment...",
-			"Total" : "Total: ",
+			"Total" : "Total : ",
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
 			"Happiness": "satisfaction",
 			"AdjacentBuildings": "bâtiment adjacent",
 			"Headings" : {
-				"number" : "Occurences",
-				"amount" : "Nombre",
+				"number" : "Nombre",
+				"amount" : "Quantité",
 				"earning" : "Récolte",
 				"greatbuilding" : "Grands Monuments",
 				"production" : "Bâtiments de production",
 				"random_production" : "Productions aléatoires",
-				"residential" : "Bâtiments résidentiels",
+				"residential" : "Bâtiments Résidentiels",
 				"decoration": "Décorations",
 				"street": "Routes",
-				"goods": "Bâtiment fret", //Todo: Translate
-				"culture": "Bâtiments culturels",
-				"main_building": "Hôtel de ville",
-				"boost": "Augmentation", //Todo: Translate
+				"goods": "Bâtiments de Marchandises",
+				"culture": "Bâtiments Culturels",
+				"main_building": "Hôtel de Ville",
+				"boost": "Augmentation",
 				"all" : "Tous",
 			}
 		},
@@ -140,7 +140,7 @@ let i18n = {
 			"ExpansionsSum" : "Expansions",
 			"nextTile" : "Prochaine expansion",
 			"tileNotPlanned" : "N/A",
-			"infoLine" : "__runNumber__. en cours, Chance Bonus x4: __chanceX4__%",
+			"infoLine" : "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
         },
 
         "Technologies": {
@@ -149,7 +149,7 @@ let i18n = {
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
 			"DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-			"NoTechs": "Vous avez atteint la fin de cette ère",
+			"NoTechs": "Vous avez atteint la fin de cette ère.",
             "Eras": {
                 1: "Âge de Pierre",
                 2: "Âge du Bronze",
@@ -176,7 +176,7 @@ let i18n = {
         "Campagne": {
             "Title": "Coûts de conquête pour",
             "Reward": "Récompense totale ",
-            "AlreadyDone": " déjà conquis!",
+            "AlreadyDone": " déjà conquis !",
             "Resource": "Ressources",
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
@@ -184,18 +184,18 @@ let i18n = {
 		},
 
 		"EventList": {
-			"Title": "Liste des quêtes événementielles pour : ",
+			"Title": "Quêtes pour ",
 			"Desc": "Tâche",
 			"Reward": "Récompense",
             "Number": "N°",
-			"Or": " ou ",
-			"And": " et ",
-			"Upcoming": "Quêtes à venir (les nombres peuvent varier)",
+			"Or": " OU ",
+			"And": " ET ",
+			"Upcoming": "Quêtes à venir (les montants peuvent varier)",
 			"Waiting": "Aucune quête disponible",
 		},
 
         "Negotiation": {
-            "Title": "Assistant de négociation",
+            "Title": "Assistant de négociations",
             "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
             "TryEnd": "Essayer de finir",
             "Canceled": "La négociation a été annulée",
@@ -205,11 +205,11 @@ let i18n = {
 			"Average": "Ø Coûts", //Todo: Translate
 			"Costs": "Moyens:",
 			"Round": "Tour",
-			"Stock": "Stock:",
-			"GoodsLow": "ATTENTION: le stock de marchandises est faible",
-			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
+			"Stock": "Stock :",
+			"GoodsLow": "ATTENTION : votre stock de marchandises est faible.",
+			"GoodsCritical": "ATTENTION : votre stock de marchandises est critique.",
 			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
-			"TableLoadError": "Erreur de chargement de la table de négociation",
+			"TableLoadError": "Erreur de chargement de la table de négociations",
         },
         
 		"Settings" : {
@@ -223,34 +223,34 @@ let i18n = {
 			"Filter" : "Filtre",
 			"FilterGex" : "GEX",
 			"FilterAuction" : "Enchères",
-			"FilterLevel" : "Niveau supérieur",
-			"FilterMessage" : "Message",
-			"FilterGildFights" : "Batailles de guilde",
+			"FilterLevel" : "Niveaux supérieurs",
+			"FilterMessage" : "Messages",
+			"FilterGildFights" : "Batailles de Guilde",
 			"FilterTrade" : "Commerce",
 			"ResetBox" : "Vider la boîte",
 			"Messages" : {
-				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ Punkte points au GEX.",
+				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ points au GEX.",
 				"LevelUp" : "Le __building__ de __player__ vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__th</strong> place et obtenu <strong>__fps__</strong>PFs en retour.",
 				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
-				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Niveau __level__",
-				"GildFightOccupied": "La province <span style=\"color:#ffb539\">__provinceName__</span> a été prise par <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> et sera vérrouillée jusqu'à __untilOccupied__",
+				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__.",
+				"MsgBuilding" : "<strong>__building__<strong> viens de passer au niveau __level__.",
+				"GildFightOccupied": "La province <span style=\"color:#ffb539\">__provinceName__</span> a été prise par <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> et sera vérrouillée jusqu'à __untilOccupied__.",
 			}
 		},
 
 		"Units" : {
 			"Title": "Aperçu de l'armée",
 			"NextUnitsIn": "Les __count__ prochaines unités arriveront dans <span class=\"alca-countdown\"></span> à __harvest__",
-			"ReadyToLoot": "Prêt à récolter!",
+			"ReadyToLoot": "Prêt à récolter !",
 			"Proportionally": "En proportion",
 			"Quantity": "Nombre",
 			"Unit": "Unité",
-			"Status": "Status",
+			"Status": "Statut",
 			"Attack": "Attaque",
 			"Defend": "Défense",
 			"NotFilled": "non rempli",
-			"Bind": "Liè",
-			"Unbind": "Non liè",
+			"Bind": "Liée",
+			"Unbind": "Non liée",
 		},
 		
 		"CityMap": {
@@ -271,10 +271,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Récompenses cachés",
-			"Appears": "Apparus",
-			"Disappears": "Disparus",
-			"NoEvents": "Pas d'évènements présents",
+			"Title": "Récompenses cachées",
+			"Appears": "Apparues",
+			"Disappears": "Disparues",
+			"NoEvents": "Aucune récompense présente",
 		}
 	},
 
@@ -284,46 +284,46 @@ let i18n = {
 			"Desc" : "Affiche le nombre en cours de toutes les productions.",
 		},
 		"Calculator" : {
-			"Title" : "Calculatrice des coûts",
-			"Desc" : "Calcule toutes les places pour vous et les PFs pour sniper",
-			"Warning": "Désactivé: Ouvre d'abord un GM d'un autre joueur !",
+			"Title" : "Calculatrice GM externe",
+			"Desc" : "Calcule toutes les places pour vous et les PFs pour sniper.",
+			"Warning": "Désactivé : Ouvrez d'abord un GM d'un autre joueur !",
 		},
 		"OwnpartCalculator" : {
-			"Title" : "Calculatrice de up à plusieurs",
-			"Desc" : "Crée un plan de pose de PFs, calcul les coûts et copies les valeurs",
-			"Warning": "Désactivé: Ouvre d'abord un de tes GM !",
+			"Title" : "Calculatrice GM interne",
+			"Desc" : "Crée un plan de pose de PFs, calcule les coûts et copie les valeurs.",
+			"Warning": "Désactivé : Ouvrez d'abord un de tes GM !",
         },
         "Technologies": {
             "Title": "Recherches Technologiques",
-            "Desc": "Calculer les coûts de la recherche",
-            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!",
+            "Desc": "Calcule les coûts de la recherche.",
+            "Warning": "Désactivé : Ouvrez d'abord le menu de Recherche Technologiques !",
         },
         "Campagne": {
             "Title": "Campagne",
             "Desc": "Aperçu des ressources nécessaires",
-            "Warning": "Désactivé: visitez d'abord une province!",
+            "Warning": "Désactivé : Visitez d'abord une province !",
 		},
         "Event": {
             "Title": "Liste des quêtes événementielles",
-            "Desc": "Aperçu des quêtes en cours et à venir",
+            "Desc": "Aperçu des quêtes en cours et à venir.",
 		},
         "Negotiation": {
             "Title": "Assistant de négociation",
-			"Desc": "Faire des propositions de négociations précises",
-			"Warning": "Désactivé: commencez une négociation en premier!",
+			"Desc": "Faites des propositions de négociations précises.",
+			"Warning": "Désactivé : Commencez une négociation en premier !",
         },
 		"Settings" : {
 			"Title" : "Paramètres",
-			"Desc" : "Ici il y a quelques éléments à configurer",
+			"Desc" : "Quelques éléments à configurer.",
 		},
 		"Chat" : {
-			"Title" : "Chat de guilde",
-			"Desc" : "Discute en temps réel avec tout le monde",
+			"Title" : "Chat de Guilde",
+			"Desc" : "Discute en temps réel avec tout le monde.",
 		},
 		"Unit" : {
 			"Title" : "Armées",
-			"Desc": "Toutes vos armées en un coup d'œil",
-			"Warning": "Ouvrez 1x votre \"Organisation de l'Armée\" <br>Bouton \"U\"",
+			"Desc": "Toutes vos armées en un coup d'œil.",
+			"Warning": "Ouvrez 1x votre \"Gestion de l'Armée\" [U]",
 		},
 		"Forum" : {
 			"Title" : "Forum",
@@ -335,25 +335,25 @@ let i18n = {
 		},
 		"Bugs" : {
 			"Title" : "Erreurs / Envies",
-			"Desc" : "Quelque chose n'est pas comme il devrait où vous avez une idée ?",
+			"Desc" : "Quelque chose n'est pas comme il devrait, où vous avez une idée ?",
 		},
 		"OutP" : {
 			"Title" : "Colonie",
-            "Desc": "Vue d'ensemble des ressources nécessaires",
-            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé: Démarrer une colonie et recharger le jeu (F5)",
-			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires",
+            "Desc": "Vue d'ensemble des ressources nécessaires.",
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé : Démarrer une Colonie et recharger le jeu [F5]</em>",
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé : Allez d'abord dans la Colonie !</em>",
 		},
 		"Info" : {
-			"Title" : "Info techniques",
-			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'<br><em>Cela se remplit avec les infos ...</em>",
+			"Title" : "Info Techniques",
+			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
 		},
 		"HiddenRewards": {
-			"Title": "Récompenses cachés",
-			"Desc": "Aperçu des récompenses cachées",
+			"Title": "Récompenses cachées",
+			"Desc": "Aperçu des récompenses cachées.",
 		},
 		"Citymap": {
 			"Title": "Aperçu de la cité",
-			"Desc": "Montre schématiquement votre citée d'en haut",
+			"Desc": "Montre schématiquement votre citée d'en haut.",
 		}
 	},
 
@@ -362,9 +362,9 @@ let i18n = {
 			"Title" : "Version",
 			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 			"Desc" : "Version de l'extension Chrome",
-			"PlayerId": "Identifiant Joueur",
-			"GuildId": "Identifiant Guilde",
-			"World": "Identifiant Monde",
+			"PlayerId": "ID Joueur",
+			"GuildId": "ID Guilde",
+			"World": "ID Monde",
 		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
@@ -376,19 +376,19 @@ let i18n = {
 		},
 		"SendGEXInfo": {
 			"Title" : "Evaluations des expéditions de guildes",
-			"Desc" : "Quand vous cliquez sur l'emplacement des expéditions de guildes ou sur le classement, les infos sont envoyées",
+			"Desc" : "Quand vous cliquez sur l'emplacement des expéditions de guildes ou sur le classement, les infos sont envoyées.",
 		},
 		"SendGildMemberLGInfo": {
-			"Title" : "Info GM des membres de la guilde",
-			"Desc" : "En visitant les autres membres de la guilde, les données des GM seront envoyées à foe-rechner.de quand l'option d'envoi est activé.",
+			"Title" : "Info GMs des membres de la guilde",
+			"Desc" : "En visitant les autres membres de la guilde, les données des GMs seront envoyées à foe-rechner.de quand l'option d'envoi est activé.",
 		},
 		"ShowNeighborsGoods": {
 			"Title" : "Récolte des voisins",
-			"Desc" : "Pendant la visite, montre ce qui est en cours de production",
+			"Desc" : "Pendant la visite, montre ce qui est en cours de production.",
 		},
 		"SendInvestigations": {
 			"Title" : "Investissements des PFs",
-			"Desc" : "Ouvrir l'hôtel de ville> Nouvelles > Grand monuments ; cela enverra l'info des PFs investit",
+			"Desc" : "Ouvrir l'Hôtel de ville > Nouvelles > Grand monuments : cela enverra l'info des PFs investit.",
 		},
 		"ShowTavernBadge": {
 			"Title" : "Affiche un compteur sur la taverne",
@@ -396,7 +396,7 @@ let i18n = {
 		},
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble d'un GM",
-			"Desc" : "Parcours la liste générale du voisin à l'ouverture et détermine les GMs éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l'ouverture d'un GM, le résultat peut être différent. L'analyse est cependant enregistrée.",
+			"Desc" : "Parcours la liste générale du voisin à l'ouverture et détermine les GMs éventuellement remplissables.<br> <u>Remarque :</u> Les dernières places étant uniquement transmises lors de l'ouverture d'un GM, le résultat peut être différent.<br>L'analyse est cependant enregistrée.",
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Assistant de négociation",
@@ -409,7 +409,7 @@ let i18n = {
 		},
 		"MenuLength": {
 			"Title" : "Longueur de menu",
-			"Desc" : "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" signifie hauteur automatique.",
+			"Desc" : "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
 		},
 		"ChangeLanguage": {
 			"Title" : "Changer de langue",
@@ -450,26 +450,26 @@ let i18n = {
 	},
 
 	"API" : {
-		"UpdateSuccess" : "Mise à jour effectuée",
-		"GEXPlayer" : "Les stages GEX des membres ont été mis à jour",
-		"GEXChampionship" : "Le classement de guilde GEX a été mis à jour",
-		"LGInvest" : "Vos investissements GM ont été transférés",
-		"LGGildMember" : "Les GM de __player__ ont été soumis"
+		"UpdateSuccess" : "Mise à jour effectuée.",
+		"GEXPlayer" : "Les stages GEX des membres ont été mis à jour.",
+		"GEXChampionship" : "Le classement de guilde GEX a été mis à jour.",
+		"LGInvest" : "Vos investissements GMs ont été transférés.",
+		"LGGildMember" : "Les GMs de __player__ ont été soumis."
 	},
 	
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "nature",
-			"shore": "rive",
-			"water": "dans l'eau",
-			"cityRoadSmall": "petite route",
-			"cityRoadBig": "grande route",
+			"nature": "Nature",
+			"shore": "Rivage",
+			"water": "Dans l'eau",
+			"cityRoadSmall": "Petite route",
+			"cityRoadBig": "Grande route",
 			"guildExpedition": "Expédition de Guilde"
 		},
 		"Table": {
 			"type": "Type",
-			"position": "Position",
-			"expires": "Expire à"
+			"position": "Où?",
+			"expires": "Quand?"
 		}
 	}
 };
