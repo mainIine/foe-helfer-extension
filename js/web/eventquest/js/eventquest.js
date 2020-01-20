@@ -110,7 +110,7 @@ let EventQuest = {
 
             let Quest = EventQuest.Quests[i];
 
-            if (Quest.type.indexOf('counter') == -1) {
+            if (Quest.type.indexOf('counter') == -1 && Quest.type.indexOf('waiting') == -1) {
                 let id = Quest.id.toString();
 
                 id = id[id.length - 2] + id[id.length - 1];
