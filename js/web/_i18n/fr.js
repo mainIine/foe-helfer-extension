@@ -69,9 +69,9 @@ let i18n = {
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
 			"ActiveRecurringQuest": "Quête récurrente active:",
-			"Done": "Fait"
-			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
-			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
+			"Done": "Fait",
+			"LevelWarningTT": "__fpcount__ PFs ne rentre pas dedans<br>Investissement maximum : __totalfp__ PFs",
+			"NegativeProfitTT": "Place non sécurisée. __fpcount__ PFs supplémentaires doivent être investis pour le rendre sécurisé<br>Total pour rendre la place sécurisé : __totalfp__ PFs"
 		},
 
 		"LGOverviewBox": {
@@ -256,7 +256,7 @@ let i18n = {
 			"TitleSend": "Envoyer les données",
 			"Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
-			"SubmitSuccess": "Données transférées avec succès... Maintenant visitez "
+			"SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 			"WholeArea": "Toute la zone : ",
 			"FreeArea": "Zone libre : "
 		},
@@ -270,7 +270,7 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Récompenses cachés"
+			"Title": "Récompenses cachés",
 			"Appears": "Apparus",
 			"Disappears": "Disparus",
 			"NoEvents": "Pas d'évènements présents"
