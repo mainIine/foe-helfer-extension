@@ -328,7 +328,7 @@ let Calculator = {
 		let h = [];
 
 		// Schleifenquest für "Benutze FP" suchen
-		for (let i in MainParser.Quests) {
+		for (let i = 0; i < MainParser.Quests.length;i++) {
 			let Quest = MainParser.Quests[i];
 
 			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
