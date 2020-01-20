@@ -18,7 +18,7 @@ let i18n = {
 	"DateTime" : "DD.MM.YYYY HH:mm",
 
 	"Global" : {
-		"BoxTitle": " <small><em>FoE Helper</em></small>"
+		"BoxTitle": " <small><em>FoE Assistant</em></small>"
 	},
 
 	"Boxes" : {
@@ -26,16 +26,16 @@ let i18n = {
 			"Title": "Calcul de PFs pour mes GMs",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
             "Step": "Niveau",
-            "OldLevel": "Ancien niveau", //Todo: Translate
+            "OldLevel": "Ancien niveau",
 			"PatronPart": "Contribution externe",
 			"OwnPart": "Contribution personnelle",
 			"LGTotalFP": "Total PFs",
-            "OwnPartRemaining": "Remaining",
-			"Done": "Fini",
-			"BPs": "Plan", //Todo: Translate
-			"Meds": "Méds", //Todo: Translate
-			"Ext": "Ext", //Todo: Translate
-			"Arc": "Arche", //Todo: Translate
+            "OwnPartRemaining": "Restant",
+			"Done": "Fait",
+			"BPs": "Plans",
+			"Meds": "Méds",
+			"Ext": "Ext.",
+			"Arc": "Arche",
 			"Order": "Séquence",
             "Deposit": "A poser",
 			"CopyValues": "Copier les valeurs",
@@ -56,20 +56,20 @@ let i18n = {
 			"AvailableFP": "PFs disponibles",
 			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Bonus d'arche",
-			"Rate": "Cours",
-			"Up2LevelUp": "Jusqu'au nivellement",
+			"Rate": "Ratio",
+			"Up2LevelUp": "Jusqu'au niveau suivant",
 			"FP": "PF",
 			"Save": "Sauver",
-			"BPs": "Plan", //Todo: Translate
-			"Meds": "Méds", //Todo: Translate
+			"BPs": "Plan",
+			"Meds": "Méds",
 			"Commitment": "PFs posés",
 			"Profit": "Profit",
-			"LevelWarning": "ATTENTION: nivelez le bâtiment légendaire!", //Todo: Translate
+			"LevelWarning": "ATTENTION: faire passer le GM !",
 			"NoFPorMedsAvailable": "Pas de PFs ou plans disponible",
 			"LGNotOpen": "Le niveau suivant n'est pas déverrouillé",
 			"LGNotConnected": "Le bâtiment n'est pas relié à une rue",
-			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-			"Done": "done", //Todo: Translate
+			"ActiveRecurringQuest": "Quête récurrente active:",
+			"Done": "Fait"
 			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
 			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
 		},
@@ -91,15 +91,15 @@ let i18n = {
 
 		"StrategyPoints" : {
 			"Title" : "PFs - Productions",
-			"TotalFPs": "Total PFs pour tous les batiments: ",
+			"TotalFPs": "Total PFs pour tous les bâtiments: ",
 			"Amount": "Nombre",
 			"FPBar" : "PFs en stock: ",
-			"BuyableFP" : "Buyable: "
+			"BuyableFP" : "Achetable: "
 		},
 
 		"Productions" : {
 			"Title" : "Vue d'ensemble des productions",
-			"SearchInput": "Chercher un batiment...",
+			"SearchInput": "Chercher un bâtiment...",
 			"Total" : "Total: ",
 			"ModeGroups": "Grouper",
 			"ModeSingle": "Individuel",
@@ -109,23 +109,23 @@ let i18n = {
 				"number" : "Occurences",
 				"amount" : "Nombre",
 				"earning" : "Récolte",
-				"greatbuilding" : "Grand monument",
-				"production" : "Bâtiment de production",
+				"greatbuilding" : "Grands Monuments",
+				"production" : "Bâtiments de production",
 				"random_production" : "Productions aléatoires",
-				"residential": "Residential buildings", //Todo: Translate
-				"decoration": "décorations", //Todo: Translate
-				"street": "Rues", //Todo: Translate
+				"residential" : "Bâtiments résidentiels",
+				"decoration": "Décorations",
+				"street": "Routes",
 				"goods": "Bâtiment fret", //Todo: Translate
 				"culture": "Bâtiments culturels", //Todo: Translate
 				"main_building": "Hôtel de ville",
 				"boost": "Augmentation", //Todo: Translate
-				"all" : "Tout"
+				"all" : "Tous"
 			}
 		},
 
 		"Neighbors" : {
 			"Title" : "Production de ",
-			"ReadyProductions" : "Productions terminée*s",
+			"ReadyProductions" : "Productions terminées",
 			"OngoingProductions" : "Productions en cours"
 		},
 
@@ -137,19 +137,19 @@ let i18n = {
 			"DescRequired" : "Requis",
 			"DescInStock" : "Disponible",
 			"DescStillMissing" : "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-			"ExpansionsSum" : "Expansions", // TODO: translate
-			"nextTile" : "next Expansion", // TODO: translate
-			"tileNotPlanned" : "off", // TODO: translate
-			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: translate
+			"ExpansionsSum" : "Expansions",
+			"nextTile" : "Prochaine expansion",
+			"tileNotPlanned" : "N/A",
+			"infoLine" : "__runNumber__. en cours, Chance Bonus x4: __chanceX4__%",
         },
 
         "Technologies": {
-            "Title": "Les coûts de la recherche pour", //Todo: Translate
-            "Resource": "Ressources", //Todo: Translate
+            "Title": "Les coûts de recherche pour",
+            "Resource": "Ressource",
             "DescRequired": "Requis",
             "DescInStock": "Disponible",
 			"DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-			"NoTechs": "You have reached the end of this era", //Todo: Translate
+			"NoTechs": "Vous avez atteint la fin de cette ère",
             "Eras": {
                 1: "Âge de Pierre",
                 2: "Âge du Bronze",
@@ -169,7 +169,7 @@ let i18n = {
                 16: "Futur Océanique",
                 17: "Futur Virtuel",
                 18: "Ère Spatiale - Mars",
-                19: "Ère Spatiale - Ceres"
+                19: "Ère Spatiale - Cérès"
             }
         },
 
@@ -184,31 +184,31 @@ let i18n = {
 		},
 
 		"EventList": {
-			"Title": "Event quest list for: ", //Todo: Translate
-			"Desc": "Task", //Todo: Translate
-			"Reward": "Reward", //Todo: Translate
-            "Number": "No.", //Todo: Translate
-			"Or": " or ", //Todo: Translate
-			"And": " and ", //Todo: Translate
-			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+			"Title": "Liste des quêtes événementielles pour : ",
+			"Desc": "Tâche",
+			"Reward": "Récompense",
+            "Number": "N°",
+			"Or": " ou ",
+			"And": " et ",
+			"Upcoming": "Quêtes à venir (les nombres peuvent varier)",
 		},
 
         "Negotiation": {
             "Title": "Assistant de négociation",
             "WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
             "TryEnd": "Essayer de finir",
-            "Canceled": "La négociation a été annulée", //Todo: Translate
+            "Canceled": "La négociation a été annulée",
             "Success": "Succès",
             "Chance": "Chance",
 			"Person": "Personne",
 			"Average": "Ø Coûts", //Todo: Translate
 			"Costs": "Moyens:",
-			"Round": "Rond",
+			"Round": "Tour",
 			"Stock": "Stock:",
-			"GoodsLow": "ATTENTION: Un bon stock est faible", //Todo: Translate
+			"GoodsLow": "ATTENTION: le stock de marchandises est faible",
 			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
 			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
-			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
+			"TableLoadError": "Erreur de chargement de la table de négociation"
         },
         
 		"Settings" : {
@@ -224,21 +224,21 @@ let i18n = {
 			"FilterAuction" : "Enchères",
 			"FilterLevel" : "Niveau supérieur",
 			"FilterMessage" : "Message",
-			"FilterGildFights" : "Guild Fights",
+			"FilterGildFights" : "Batailles de guilde",
 			"FilterTrade" : "Commerce",
 			"ResetBox" : "Vider la boîte",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ Punkte points au GEX.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
+				"LevelUp" : "Le __building__ de __player__ vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__th</strong> place et obtenu <strong>__fps__</strong>PFs en retour.",
 				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
-				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez __needValue__ __need__ pour __offerValue__ __offer__",
+				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Niveau __level__",
-				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
+				"GildFightOccupied": "La province <span style=\"color:#ffb539\">__provinceName__</span> a été prise par <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> et sera vérrouillée jusqu'à __untilOccupied__"
 			}
 		},
 
 		"Units" : {
-			"Title": "Army overview",
+			"Title": "Aperçu de l'armée",
 			"NextUnitsIn": "Les __count__ prochaines unités arriveront dans <span class=\"alca-countdown\"></span> à __harvest__",
 			"ReadyToLoot": "Prêt à récolter!",
 			"Proportionally": "En proportion",
@@ -253,27 +253,27 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"TitleSend": "Submit data", //Todo: Translate
-			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
-			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-			"SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
-			"WholeArea": "The whole area: ", // @Todo: Translate
-			"FreeArea": "Free area: " // @Todo: Translate
+			"TitleSend": "Envoyer les données",
+			"Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
+			"SubmitSuccess": "Données transférées avec succès... Maintenant visitez "
+			"WholeArea": "Toute la zone : ",
+			"FreeArea": "Zone libre : "
 		},
 
 		"Gildfights": {
-			"Title": "Player overview",
-			"Player": "Player",
-			"Negotiations": "Negotiations",
-			"Fights": "Fights",
-			"LastSnapshot": " - last snapshot __time__ ago",
+			"Title": "Activité de membre",
+			"Player": "Membre",
+			"Negotiations": "Négotiations",
+			"Fights": "Batailles",
+			"LastSnapshot": " - Dernière capture il y a __time__",
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards",  // Todo: Translate
-			"Appears": "Appears",  // Todo: Translate
-			"Disappears": "Disappears",  // Todo: Translate
-			"NoEvents": "No events presents"  // Todo: Translate
+			"Title": "Récompenses cachés"
+			"Appears": "Apparus",
+			"Disappears": "Disparus",
+			"NoEvents": "Pas d'évènements présents"
 		}
 	},
 
@@ -293,18 +293,18 @@ let i18n = {
 			"Warning": "Désactivé: Ouvre d'abord un de tes GM !"
         },
         "Technologies": {
-            "Title": "Technologies", //Todo: Translate
-            "Desc": "Calculer le coût de la recherche", //Todo: Translate
-            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!" //Todo: Translate
+            "Title": "Recherches Technologiques",
+            "Desc": "Calculer les coûts de la recherche",
+            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!"
         },
         "Campagne": {
-            "Title": "Kampagne",
-            "Desc": "Übersicht über die benötigten Ressourcen",
-        	"Warning" : "Deaktiviert: Besuche zuerst eine Provinz!"
+            "Title": "Campagne",
+            "Desc": "Aperçu des ressources nécessaires",
+            "Warning": "Désactivé: visitez d'abord une province!"
 		},
         "Event": {
-            "Title": "Event Questlist", //Todo: Translate
-            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
+            "Title": "Liste des quêtes événementielles",
+            "Desc": "Aperçu des quêtes en cours et à venir"
 		},
         "Negotiation": {
             "Title": "Assistant de négociation",
@@ -326,7 +326,7 @@ let i18n = {
 		},
 		"Forum" : {
 			"Title" : "Forum",
-			"Desc" : "Vous avez une question? Quelque chose à proposer ? Ou juste pour parler..."
+			"Desc" : "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler..."
 		},
 		"Ask" : {
 			"Title" : "Question / Réponse",
@@ -334,12 +334,12 @@ let i18n = {
 		},
 		"Bugs" : {
 			"Title" : "Erreurs / Envies",
-			"Desc" : "Quelque chose n'est pas comme il devrait où vous avez une idéée ?"
+			"Desc" : "Quelque chose n'est pas comme il devrait où vous avez une idée ?"
 		},
 		"OutP" : {
 			"Title" : "Colonie",
             "Desc": "Vue d'ensemble des ressources nécessaires",
-            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé: Démarrer un avant-poste et recharger le jeu (F5)", //Todo: Translate
+            "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé: Démarrer une colonie et recharger le jeu (F5)",
 			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires"
 		},
 		"Info" : {
@@ -347,8 +347,8 @@ let i18n = {
 			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'<br><em>Cela se remplit avec les infos ...</em>"
 		},
 		"HiddenRewards": {
-			"Title": "Hidden rewards",
-			"Desc": "Overview of hidden rewards"
+			"Title": "Récompenses cachés",
+			"Desc": "Aperçu des récompenses cachées"
 		},
 		"Citymap": {
 			"Title": "City overview",
@@ -359,11 +359,11 @@ let i18n = {
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",  // Todo: Translate: Translate
+			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 			"Desc" : "Version de l'extension Chrome",
-			"PlayerId": "Player-Id:",
-			"GuildId": "Gild-Id:",
-			"World": "World:"
+			"PlayerId": "ID de Joueur :",
+			"GuildId": "ID de guilde :",
+			"World": "Monde :"
 		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
@@ -371,7 +371,7 @@ let i18n = {
 		},
 		"SendTavernInfo": {
 			"Title" : "Activité PO/MO",
-			"Desc" : "Est-ce que les activités de PO/MO doivent être transférer quand les événements ont lieu ?"
+			"Desc" : "Est-ce que les activités de PO/MO doivent être transférées quand les événements ont lieu ?"
 		},
 		"SendGEXInfo": {
 			"Title" : "Evaluations des expéditions de guildes",
@@ -394,25 +394,25 @@ let i18n = {
 			"Desc" : "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît."
 		},
 		"PreScanLGList": {
-			"Title" : "Analyse préliminaire de la vue d'ensemble de LG",
-			"Desc" : "Parcourt la liste générale du voisin à l’ouverture lors de l’ouverture et détermine les LG éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l’ouverture d’un LG, le résultat peut être différent. L'analyse est enregistrée, cependant."
+			"Title" : "Analyse préliminaire de la vue d'ensemble d'un GM",
+			"Desc" : "Parcours la liste générale du voisin à l'ouverture et détermine les GMs éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l'ouverture d'un GM, le résultat peut être différent. L'analyse est cependant enregistrée."
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Assistant de négociation",
-			"Desc" : "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermer en cas d'annulation?"
+			"Desc" : "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermé en cas d'annulation ?"
 		},
 		"ResetBoxPositions": {
 			"Title" : "Coordonnées de la boîte",
-			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées?",
+			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées ?",
 			"Button" : "Supprimer!"
 		},
 		"MenuLength": {
-			"Title" : "Menu length", //Todo: Translate
-			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height." //Todo: Translate
+			"Title" : "Longueur de menu",
+			"Desc" : "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" signifie hauteur automatique."
 		},
 		"ChangeLanguage": {
 			"Title" : "Changer de langue",
-			"Desc" : "Quelle langue, au lieu de la langue reconnue, devrait être utilisée?",
+			"Desc" : "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",
 			"Dropdown": {
 				"de": "Deutsch", // Dont translate!!!
 				"en": "English", // Dont translate!!!
@@ -428,47 +428,47 @@ let i18n = {
 
 	"Eras": {
 		"NoAge": "Sans âge",
-		"StoneAge": "Age de Pierre",
-		"BronzeAge": "l'âge du bronze",
-		"IronAge": "Age du fer",
-		"EarlyMiddleAge": "Early Middle Age",
-		"HighMiddleAge": "Haut Moyen Âge",
-		"LateMiddleAge": "Late Middle Age",
-		"ColonialAge": "l'ère coloniale",
-		"IndustrialAge": "âge industriel",
-		"ProgressiveEra": "tournant du siècle",
-		"ModernEra": "Modernity",
-		"PostModernEra": "Postmodernism",
-		"ContemporaryEra": "Présent",
-		"TomorrowEra": "Demain",
-		"FutureEra": "Future",
-		"ArcticFuture": "Future Arctic",
-		"OceanicFuture": "Oceanic Future",
-		"VirtualFuture": "Virtual Future",
-		"SpaceAgeMars": "Space: Mars"
+		"StoneAge": "Âge de Pierre",
+		"BronzeAge": "Âge du Bronze",
+		"IronAge": "Âge du Fer",
+		"EarlyMiddleAge": "Haut Moyen Âge",
+		"HighMiddleAge": "Moyen Âge Classique",
+		"LateMiddleAge": "Renaissance",
+		"ColonialAge": "Âge Colonial",
+		"IndustrialAge": "Âge Industriel",
+		"ProgressiveEra": "Ère Progressiste",
+		"ModernEra": "Ère Moderne",
+		"PostModernEra": "Ère Postmoderne",
+		"ContemporaryEra": "Ère Contemporaine",
+		"TomorrowEra": "Ère de Demain",
+		"FutureEra": "Ère du Futur",
+		"ArcticFuture": "Futur Arctique",
+		"OceanicFuture": "Futur Océanique",
+		"VirtualFuture": "Futur Virtuel",
+		"SpaceAgeMars": "Ère spatiale - Mars"
 	},
 
 	"API" : {
 		"UpdateSuccess" : "Mise à jour effectuée",
 		"GEXPlayer" : "Les stages GEX des membres ont été mis à jour",
-		"GEXChampionship" : "Le placement de guilde GEX a été mis à jour",
-		"LGInvest" : "Vos investissements LG ont été transférés",
-		"LGGildMember" : "__player__'s bâtiments légendaires ont été soumis"
+		"GEXChampionship" : "Le classement de guilde GEX a été mis à jour",
+		"LGInvest" : "Vos investissements GM ont été transférés",
+		"LGGildMember" : "Les GM de __player__ ont été soumis"
 	},
 	
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "Nature",  //Todo: Translate
-			"shore": "Shore",  //Todo: Translate
-			"water": "in the water",  //Todo: Translate
-			"cityRoadSmall": "small Road",  //Todo: Translate
-			"cityRoadBig": "big Road",   // Todo: Translate
-			"guildExpedition": "Guild expedition" //Todo: Translate
+			"nature": "nature",
+			"shore": "rive",
+			"water": "dans l'eau",
+			"cityRoadSmall": "petite route",
+			"cityRoadBig": "grande route",
+			"guildExpedition": "Expédition de Guilde"
 		},
 		"Table": {
-			"type": "Type", //Todo: Translate
-			"position": "Position", //Todo: Translate
-			"expires": "Expires at" //Todo: Translate
+			"type": "Type",
+			"position": "Position",
+			"expires": "Expire à"
 		}
 	}
 };
