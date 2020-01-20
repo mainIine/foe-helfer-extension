@@ -191,6 +191,7 @@ let i18n = {
 			"Or": " oder ",
 			"And": " und ",
 			"Upcoming": "Ungefähre Vorschau <em>(Werte werden bei Aktiverung aktualisiert)</em>",
+			"Waiting": "Keine Quest vorhanden",
         },
 
         "Negotiation": {
