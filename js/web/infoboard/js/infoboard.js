@@ -26,6 +26,10 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
 	MainParser.setConversations(data.responseData);
 });
 
+/**
+ *
+ * @type {{init: Infoboard.init, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ */
 let Infoboard = {
 
 	InjectionLoaded: false,
@@ -97,16 +101,21 @@ let Infoboard = {
 
 		// Filter
 		h.push('<div class="filter-row">');
-		h.push('<span><strong>' + i18n['Boxes']['Infobox']['Filter'] + ':</strong></span>');
 
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGex'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterAuction'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterMessage'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGildFights'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterLevel'] + '</label></span>');
-		h.push('<span><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterTrade'] + '</label></span>');
+			h.push('<div class="dropdown">');
+				h.push('<input type="checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n['Boxes']['Infobox']['Filter'] + '</label><span class="arrow"></span>');
 
-		h.push('<button class="btn btn-default btn-reset-box">' + i18n['Boxes']['Infobox']['ResetBox'] + '</button>');
+				h.push('<ul>');
+					h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterAuction'] + '</label></li>');
+					h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGex'] + '</label></li>');
+					h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterGildFights'] + '</label></li>');
+					h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterTrade'] + '</label></li>');
+					h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterLevel'] + '</label></li>');
+					h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" checked> ' + i18n['Boxes']['Infobox']['FilterMessage'] + '</label></li>');
+				h.push('</ul>');
+			h.push('</div>');
+
+			h.push('<button class="btn btn-default btn-reset-box">' + i18n['Boxes']['Infobox']['ResetBox'] + '</button>');
 
 		h.push('</div>');
 
@@ -201,7 +210,6 @@ let Infoboard = {
 	 *
 	 */
 	FilterInput: ()=>{
-
 		$('body').on('change', '.filter-msg', function(){
 
 			let active = [];
@@ -242,7 +250,18 @@ let Infoboard = {
 
 let Info = {
 
+	/**
+	 * Cache zum "merken" der kampfenden Gilden
+	 */
 	GildPoints: {},
+
+
+	/**
+	 * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
+	 * und müssen gesammelt werden
+	 */
+	ReturnFPPoints: 0,
+
 
 	/**
 	 * Jmd hat in einer Auktion mehr geboten
@@ -303,6 +322,34 @@ let Info = {
 	},
 
 
+	/**
+	 * FPs nach einem Level-Up notieren
+	 *
+	 * @param d
+	 */
+	NoticeIndicatorService_getPlayerNoticeIndicators: (d)=> {
+
+		for(let i in d){
+			if(!d.hasOwnProperty(i)){
+				break;
+			}
+
+			// FP Typ aus dem Lager ermitteln
+			let factor = parseInt(MainParser.Inventory.find(i => i['id'] === d[i]['itemId'])['item']['resource_package']['gain']),
+				amount = factor * parseInt(d[i]['amount']);
+
+			// ... und sichern
+			Info.ReturnFPPoints += amount;
+		}
+	},
+
+
+	/**
+	 * Auf der GG-Map kämpft jemand
+	 *
+	 * @param d
+	 * @returns {{msg: string, type: string, class: string}}
+	 */
 	GuildBattlegroundService_getProvinces: (d)=> {
 
 		if(GildFights.SortedColors === null){
@@ -322,15 +369,25 @@ let Info = {
 
 		if(data['lockedUntil'] !== undefined)
 		{
-			let p = bP.find(o => (o['participantId'] === d['participantId']));
+			let p = bP.find(o => (o['participantId'] === d[0]['participantId']));
 
 			let tc = GildFights.SortedColors[ p['participantId'] ]['highlight'],
 				ts = GildFights.SortedColors[ p['participantId'] ]['shadow'];
 
+			// 'Provinz <span style="color:#ffb539">' + prov['name'] + '</span> wurde von <span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> übernommen und ist bis ' + moment.unix(data['lockedUntil']).format('HH:mm:ss') +  ' Uhr gesperrt'
+
 			return {
 				class: 'guildfighs',
-				type: 'Gild-Fights',
-				msg: 'Provinz <span style="color:#ffb539">' + prov['name'] + '</span> wurde von <span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> übernommen und ist bis ' + moment.unix(data['lockedUntil']).format('HH:mm:ss') +  ' Uhr gesperrt'
+				type: i18n['Boxes']['Infobox']['FilterGildFights'],
+				msg: HTML.i18nReplacer(
+					i18n['Boxes']['Infobox']['Messages']['GildFightOccupied'],
+					{
+						provinceName: prov['name'],
+						attackerColor: tc,
+						attackerShadow: ts,
+						attackerName: p['clan']['name'],
+						untilOccupied: moment.unix(data['lockedUntil']).format('HH:mm:ss')
+					})
 			};
 		}
 
@@ -357,7 +414,7 @@ let Info = {
 			let tc = GildFights.SortedColors[ p['participantId'] ]['highlight'],
 				ts = GildFights.SortedColors[ p['participantId'] ]['shadow'];
 
-			t += '<span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> hat auf <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong> / <strong>' + d['maxProgress'] + '</strong> Punkte<br>';
+			t += '<span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> = <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
 
 			if(Info.GildPoints[ data['id'] ] === undefined){
 				Info.GildPoints[ data['id'] ] = {};
@@ -369,10 +426,11 @@ let Info = {
 
 		return {
 			class: 'guildfighs',
-			type: 'Gild-Fights',
+			type: i18n['Boxes']['Infobox']['FilterGildFights'],
 			msg: t
 		};
 	},
+
 
 	/**
 	 * LG wurde gelevelt
@@ -381,16 +439,23 @@ let Info = {
 	 * @returns {{class: 'level', msg: string, type: string}}
 	 */
 	OtherPlayerService_newEventgreat_building_contribution: (d)=> {
+
+		let newFP = Info.ReturnFPPoints;
+
+		// zurück setzen
+		Info.ReturnFPPoints = 0;
+
 		return {
 			class: 'level',
 			type: 'Level-Up',
 			msg: HTML.i18nReplacer(
 				i18n['Boxes']['Infobox']['Messages']['LevelUp'],
 				{
-					'player' : d['other_player']['name'],
-					'building': d['great_building_name'],
-					'level': d['level'],
-					'rank' : d['rank']
+					player: d['other_player']['name'],
+					building: d['great_building_name'],
+					level: d['level'],
+					rank: d['rank'],
+					fps : newFP
 				}
 			)
 		};
