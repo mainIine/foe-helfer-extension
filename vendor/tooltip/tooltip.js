@@ -1,18 +1,3 @@
-/*
- * **************************************************************************************
- *
- * Dateiname:                 tooltip.js
- * Projekt:                   foe
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.09.19, 16:31 Uhr
- *
- * Copyright © 2019
- *
- * **************************************************************************************
- */
-
-
 !function ($) {
 
 	"use strict"; // jshint ;_;
@@ -45,11 +30,11 @@
 
 			for (i = triggers.length; i--;) {
 				trigger = triggers[i]
-				if (trigger == 'click') {
+				if (trigger === 'click') {
 					this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-				} else if (trigger != 'manual') {
-					eventIn = trigger == 'hover' ? 'mouseenter' : 'focus'
-					eventOut = trigger == 'hover' ? 'mouseleave' : 'blur'
+				} else if (trigger !== 'manual') {
+					eventIn = trigger === 'hover' ? 'mouseenter' : 'focus'
+					eventOut = trigger === 'hover' ? 'mouseleave' : 'blur'
 					this.$element.on(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
 					this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
 				}
