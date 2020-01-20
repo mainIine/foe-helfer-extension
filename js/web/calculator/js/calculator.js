@@ -270,20 +270,7 @@ let Calculator = {
         
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
 
-		// Schleifenquest für "Benutze FP" suchen
-		for (let i in EventQuest.Quests) {
-			let Quest = EventQuest.Quests[i];
-
-			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
-				for (let j in Quest.successConditions) {
-					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
-					let MaxProgress = Quest.successConditions[j].maxProgress;
-					if (CurrentEraID <= 3 || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
-						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['ActiveRecurringQuest'] + ': <span id="up-to-level-up" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : i18n['Boxes']['Calculator']['Done']) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
-					}
-				}
-			}
-		}
+		h.push(Calculator.GetRecurringQuestsLine());
 		
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
@@ -330,6 +317,32 @@ let Calculator = {
 				}
 			});
 		}
+	},
+
+
+	/**
+	 * Zeile für Schleifenquests generieren
+	 * *
+	 * */
+	GetRecurringQuestsLine: () => {
+		let h = [];
+
+		// Schleifenquest für "Benutze FP" suchen
+		for (let i in MainParser.Quests) {
+			let Quest = MainParser.Quests[i];
+
+			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
+				for (let j in Quest.successConditions) {
+					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
+					let MaxProgress = Quest.successConditions[j].maxProgress;
+					if (CurrentEraID <= 3 || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['ActiveRecurringQuest'] + ': <span id="recurringquests" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : i18n['Boxes']['Calculator']['Done']) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+					}
+				}
+			}
+		}
+
+		return h.join();
 	},
 	
 
