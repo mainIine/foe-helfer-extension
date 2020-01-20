@@ -29,8 +29,8 @@ let i18n = {
             "OwnPartRemaining": "Rest de depus",
 			"Done": "Depus",
 			"BPs": "Planuri",
-			"Meds": "Medalii",
-			"Ext": "Ext",
+			"Meds": "Med.",
+			"Ext": "Ext.",
 			"Arc": "Arc",
 			"Order": "Locuri",
 			"Deposit": "Depozit",
@@ -368,7 +368,7 @@ let i18n = {
 	},
 
 	"Eras": {
-		"NoAge": "Nici o eră",
+		"NoAge": "Nicio eopcă",
 		"StoneAge": "Epoca de Piatră",
 		"BronzeAge": "Epoca Bronzului",
 		"IronAge": "Epoca Fierului",
@@ -394,6 +394,6 @@ let i18n = {
 		"GEXPlayer" : "Clasamentul EG a fost actualizat",
 		"GEXChampionship" : "Contribuția membrilor ghildei la EG a fost actualizată",
 		"LGInvest" : "Datele despre investițiile tale în CL au fost transmise",
-		"LGGildMember" : "Datele despre clădirile legendare ale lui "__player__'s au fost transmise"
+		"LGGildMember" : "Datele despre clădirile legendare ale lui __player__ au fost transmise"
 	}
 };
