@@ -28,11 +28,11 @@ let i18n = {
             "LGTotalFP": "Total PF nivel",
             "OwnPartRemaining": "Rest de depus",
 			"Done": "Depus",
-			"BPs": "BPs",
-			"Meds": "Meds",
+			"BPs": "Planuri",
+			"Meds": "Medalii",
 			"Ext": "Ext",
 			"Arc": "Arc",
-			"Order": "Ordine",
+			"Order": "Locuri",
 			"Deposit": "Depozit",
 			"CopyValues": "Copiază valorile",
 			"Note": "Notă",
@@ -41,14 +41,14 @@ let i18n = {
 			"OutputScheme": "Șablon",
             "Auto": "Auto",
             "Place": "Locul",
-            "Levels": "Niveluri",
+            "Levels": "Toate locurile",
             "NoPlaceSafe": "Nici un loc nu este asigurat"
 		},
 
 		"Calculator": {
 			"Title": "Calculator costuri",
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
-			"Step": "Nivelul ",
+			"Step": "Nivelul",
 			"AvailableFP": "PF disponibile",
 			"ArcBonus": "Bonusul Domului",
 			"Earnings": "Recompensă",
@@ -78,7 +78,7 @@ let i18n = {
 			"PayedTotal": "Depus / Total",
 			"Rate": "Procent",
 			"Profit": "Profit",
-			"NothingToGet": "<strong>__player__</strong> nu are nimic de furat"
+			"NothingToGet": "<strong>__player__</strong> nu are nici o clădire vulnerabilă"
 		},
 
 		"StrategyPoints" : {
@@ -103,7 +103,7 @@ let i18n = {
 				"greatbuilding" : "Clădiri legendare",
 				"production" : "Clădiri de producție",
 				"random_production" : "Producție aleatorie",
-				"residential": "Clădiri de eveniment",
+				"residential": "Clădiri speciale",
 				"decoration": "Decorațiuni",
 				"street": "Străzi",
 				"goods": "Clădiri de bunuri",
@@ -188,7 +188,7 @@ let i18n = {
 			"Stock": "Stoc:",
 			"GoodsLow": "ATENȚIE: Stocul de bunuri este la nivel scăzut!",
 			"GoodsCritical": "ATENȚIE: Stocul de bunuri este la nivel critic!",
-			"DragDrop": "Poți muta pictogramelor bunurilor de mai sus, folosind drag & drop, pentru a stabili ordinea primei încercări.",
+			"DragDrop": "Poți muta pictogramele bunurilor de mai sus, folosind drag & drop, pentru a stabili ordinea primei încercări.",
 			"TableLoadError": "Eroare la încărcara mesei de negociere."
         },
 
@@ -232,10 +232,10 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"Title": "Transmiteți datale",
+			"Title": "Transmite datele",
 			"Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
-			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum "
+			"SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum"
 		}
 	},
 
@@ -314,7 +314,7 @@ let i18n = {
 		},
 		"GlobalSend": {
 			"Title" : "Transmitere către foe-rechner.de",
-			"Desc" : "Dacă dorești să urmărești datele cu ghilda dvs., activează această opțiune. <br> Pentru utilizarea personală, dezactivează opțiunea."
+			"Desc" : "Dacă dorești să urmărești datele cu ghilda ta, activează această opțiune. <br> Pentru utilizarea personală, dezactivează opțiunea."
 		},
 		"SendTavernInfo": {
 			"Title" : "Activitatea de motivație",
@@ -330,11 +330,11 @@ let i18n = {
 		},
 		"ShowNeighborsGoods": {
 			"Title" : "Producția vecinilor",
-			"Desc" : "În timpul vizitării orașului, arată care este producțiile finalizate ale acestuia"
+			"Desc" : "În timpul vizitării orașului unui vecin, vezi care sunt producțiile finalizate ale acestuia"
 		},
 		"SendInvestigations": {
 			"Title" : "PF investite",
-			"Desc" : "Când accesezi 'Town Hall'> 'News'> 'Legendary Buildings' datele despre PF investite vor fi transmise"
+			"Desc" : "Când accesezi 'Primărie'> 'News'> 'Legendary Buildings' datele despre PF investite vor fi transmise"
 		},
 		"ShowTavernBadge": {
 			"Title" : "Show tavernas badge",  //TODO: to be translated
