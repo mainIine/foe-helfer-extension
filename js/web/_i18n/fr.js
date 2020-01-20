@@ -257,14 +257,14 @@ let i18n = {
 			"Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 			"SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
-			"WholeArea": "Toute la zone : ",
-			"FreeArea": "Zone libre : "
+			"WholeArea": "Surface totale : ",
+			"FreeArea": "Surface disponible : "
 		},
 
 		"Gildfights": {
 			"Title": "Activité de membre",
 			"Player": "Membre",
-			"Negotiations": "Négotiations",
+			"Negotiations": "Négociations",
 			"Fights": "Batailles",
 			"LastSnapshot": " - Dernière capture il y a __time__",
 		},
@@ -351,8 +351,8 @@ let i18n = {
 			"Desc": "Aperçu des récompenses cachées"
 		},
 		"Citymap": {
-			"Title": "City overview",
-			"Desc": "Shows your city schematically from above"
+			"Title": "Aperçu de la cité",
+			"Desc": "Montre schématiquement votre citée d'en haut"
 		}
 	},
 
