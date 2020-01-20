@@ -46,7 +46,7 @@ let i18n = {
             "Auto": "Automatique",
             "Place": "Place",
             "Levels": "niveaux",
-            "NoPlaceSafe": "Pas de place à coup sûr"
+            "NoPlaceSafe": "Pas de place à coup sûr",
 		},
 
 		"Calculator": {
@@ -71,7 +71,7 @@ let i18n = {
 			"ActiveRecurringQuest": "Quête récurrente active:",
 			"Done": "Fait",
 			"LevelWarningTT": "__fpcount__ PFs ne rentre pas dedans<br>Investissement maximum : __totalfp__ PFs",
-			"NegativeProfitTT": "Place non sécurisée. __fpcount__ PFs supplémentaires doivent être investis pour le rendre sécurisé<br>Total pour rendre la place sécurisé : __totalfp__ PFs"
+			"NegativeProfitTT": "Place non sécurisée. __fpcount__ PFs supplémentaires doivent être investis pour le rendre sécurisé<br>Total pour rendre la place sécurisé : __totalfp__ PFs",
 		},
 
 		"LGOverviewBox": {
@@ -86,7 +86,7 @@ let i18n = {
 			"PayedTotal": "Payé / Total",
 			"Rate": "Cours",
 			"Profit": "Profit",
-			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer"
+			"NothingToGet": "<strong>__player__</strong> n'a rien à récupérer",
 		},
 
 		"StrategyPoints" : {
@@ -94,7 +94,7 @@ let i18n = {
 			"TotalFPs": "Total PFs pour tous les bâtiments: ",
 			"Amount": "Nombre",
 			"FPBar" : "PFs en stock: ",
-			"BuyableFP" : "Achetable: "
+			"BuyableFP" : "Achetable: ",
 		},
 
 		"Productions" : {
@@ -116,17 +116,17 @@ let i18n = {
 				"decoration": "Décorations",
 				"street": "Routes",
 				"goods": "Bâtiment fret", //Todo: Translate
-				"culture": "Bâtiments culturels", //Todo: Translate
+				"culture": "Bâtiments culturels",
 				"main_building": "Hôtel de ville",
 				"boost": "Augmentation", //Todo: Translate
-				"all" : "Tous"
+				"all" : "Tous",
 			}
 		},
 
 		"Neighbors" : {
 			"Title" : "Production de ",
 			"ReadyProductions" : "Productions terminées",
-			"OngoingProductions" : "Productions en cours"
+			"OngoingProductions" : "Productions en cours",
 		},
 
 		"Outpost" : {
@@ -169,7 +169,7 @@ let i18n = {
                 16: "Futur Océanique",
                 17: "Futur Virtuel",
                 18: "Ère Spatiale - Mars",
-                19: "Ère Spatiale - Cérès"
+                19: "Ère Spatiale - Cérès",
             }
         },
 
@@ -191,6 +191,7 @@ let i18n = {
 			"Or": " ou ",
 			"And": " et ",
 			"Upcoming": "Quêtes à venir (les nombres peuvent varier)",
+			"Waiting": "Aucune quête disponible",
 		},
 
         "Negotiation": {
@@ -208,7 +209,7 @@ let i18n = {
 			"GoodsLow": "ATTENTION: le stock de marchandises est faible",
 			"GoodsCritical": "ATTENTION: le stock de marchandises est critique",
 			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
-			"TableLoadError": "Erreur de chargement de la table de négociation"
+			"TableLoadError": "Erreur de chargement de la table de négociation",
         },
         
 		"Settings" : {
@@ -233,7 +234,7 @@ let i18n = {
 				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
 				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Niveau __level__",
-				"GildFightOccupied": "La province <span style=\"color:#ffb539\">__provinceName__</span> a été prise par <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> et sera vérrouillée jusqu'à __untilOccupied__"
+				"GildFightOccupied": "La province <span style=\"color:#ffb539\">__provinceName__</span> a été prise par <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> et sera vérrouillée jusqu'à __untilOccupied__",
 			}
 		},
 
@@ -249,7 +250,7 @@ let i18n = {
 			"Defend": "Défense",
 			"NotFilled": "non rempli",
 			"Bind": "Liè",
-			"Unbind": "Non liè"
+			"Unbind": "Non liè",
 		},
 		
 		"CityMap": {
@@ -258,7 +259,7 @@ let i18n = {
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 			"SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 			"WholeArea": "Surface totale : ",
-			"FreeArea": "Surface disponible : "
+			"FreeArea": "Surface disponible : ",
 		},
 
 		"Gildfights": {
@@ -273,86 +274,86 @@ let i18n = {
 			"Title": "Récompenses cachés",
 			"Appears": "Apparus",
 			"Disappears": "Disparus",
-			"NoEvents": "Pas d'évènements présents"
+			"NoEvents": "Pas d'évènements présents",
 		}
 	},
 
 	"Menu" : {
 		"Productions" : {
 			"Title" : "Vue d'ensemble des productions",
-			"Desc" : "Affiche le nombre en cours de toutes les productions."
+			"Desc" : "Affiche le nombre en cours de toutes les productions.",
 		},
 		"Calculator" : {
 			"Title" : "Calculatrice des coûts",
 			"Desc" : "Calcule toutes les places pour vous et les PFs pour sniper",
-			"Warning": "Désactivé: Ouvre d'abord un GM d'un autre joueur !"
+			"Warning": "Désactivé: Ouvre d'abord un GM d'un autre joueur !",
 		},
 		"OwnpartCalculator" : {
 			"Title" : "Calculatrice de up à plusieurs",
 			"Desc" : "Crée un plan de pose de PFs, calcul les coûts et copies les valeurs",
-			"Warning": "Désactivé: Ouvre d'abord un de tes GM !"
+			"Warning": "Désactivé: Ouvre d'abord un de tes GM !",
         },
         "Technologies": {
             "Title": "Recherches Technologiques",
             "Desc": "Calculer les coûts de la recherche",
-            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!"
+            "Warning": "Désactivé: ouvrez d'abord le menu de recherche!",
         },
         "Campagne": {
             "Title": "Campagne",
             "Desc": "Aperçu des ressources nécessaires",
-            "Warning": "Désactivé: visitez d'abord une province!"
+            "Warning": "Désactivé: visitez d'abord une province!",
 		},
         "Event": {
             "Title": "Liste des quêtes événementielles",
-            "Desc": "Aperçu des quêtes en cours et à venir"
+            "Desc": "Aperçu des quêtes en cours et à venir",
 		},
         "Negotiation": {
             "Title": "Assistant de négociation",
 			"Desc": "Faire des propositions de négociations précises",
-			"Warning": "Désactivé: commencez une négociation en premier!"
+			"Warning": "Désactivé: commencez une négociation en premier!",
         },
 		"Settings" : {
 			"Title" : "Paramètres",
-			"Desc" : "Ici il y a quelques éléments à configurer"
+			"Desc" : "Ici il y a quelques éléments à configurer",
 		},
 		"Chat" : {
 			"Title" : "Chat de guilde",
-			"Desc" : "Discute en temps réel avec tout le monde"
+			"Desc" : "Discute en temps réel avec tout le monde",
 		},
 		"Unit" : {
 			"Title" : "Armées",
 			"Desc": "Toutes vos armées en un coup d'œil",
-			"Warning": "Ouvrez 1x votre \"Organisation de l'Armée\" <br>Bouton \"U\""
+			"Warning": "Ouvrez 1x votre \"Organisation de l'Armée\" <br>Bouton \"U\"",
 		},
 		"Forum" : {
 			"Title" : "Forum",
-			"Desc" : "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler..."
+			"Desc" : "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
 		},
 		"Ask" : {
 			"Title" : "Question / Réponse",
-			"Desc" : "Vous ne savez pas comment utiliser une fonctionnalité ?<br>Jetez un oeil ici !"
+			"Desc" : "Vous ne savez pas comment utiliser une fonctionnalité ?<br>Jetez un oeil ici !",
 		},
 		"Bugs" : {
 			"Title" : "Erreurs / Envies",
-			"Desc" : "Quelque chose n'est pas comme il devrait où vous avez une idée ?"
+			"Desc" : "Quelque chose n'est pas comme il devrait où vous avez une idée ?",
 		},
 		"OutP" : {
 			"Title" : "Colonie",
             "Desc": "Vue d'ensemble des ressources nécessaires",
             "DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé: Démarrer une colonie et recharger le jeu (F5)",
-			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires"
+			"DescWarningBuildings" : "<em id='outPW' class='tooltip-error'>Désactivé: Allez d'abord dans la colonie !<br></em>Vue d'ensemble des ressources nécessaires",
 		},
 		"Info" : {
 			"Title" : "Info techniques",
-			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'<br><em>Cela se remplit avec les infos ...</em>"
+			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'<br><em>Cela se remplit avec les infos ...</em>",
 		},
 		"HiddenRewards": {
 			"Title": "Récompenses cachés",
-			"Desc": "Aperçu des récompenses cachées"
+			"Desc": "Aperçu des récompenses cachées",
 		},
 		"Citymap": {
 			"Title": "Aperçu de la cité",
-			"Desc": "Montre schématiquement votre citée d'en haut"
+			"Desc": "Montre schématiquement votre citée d'en haut",
 		}
 	},
 
@@ -361,54 +362,54 @@ let i18n = {
 			"Title" : "Version",
 			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 			"Desc" : "Version de l'extension Chrome",
-			"PlayerId": "ID de Joueur :",
-			"GuildId": "ID de guilde :",
-			"World": "Monde :"
+			"PlayerId": "Identifiant Joueur",
+			"GuildId": "Identifiant Guilde",
+			"World": "Identifiant Monde",
 		},
 		"GlobalSend": {
 			"Title" : "Envoi à foe-rechner.de",
-			"Desc" : "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le."
+			"Desc" : "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		},
 		"SendTavernInfo": {
 			"Title" : "Activité PO/MO",
-			"Desc" : "Est-ce que les activités de PO/MO doivent être transférées quand les événements ont lieu ?"
+			"Desc" : "Est-ce que les activités de PO/MO doivent être transférées quand les événements ont lieu ?",
 		},
 		"SendGEXInfo": {
 			"Title" : "Evaluations des expéditions de guildes",
-			"Desc" : "Quand vous cliquez sur l'emplacement des expéditions de guildes ou sur le classement, les infos sont envoyées"
+			"Desc" : "Quand vous cliquez sur l'emplacement des expéditions de guildes ou sur le classement, les infos sont envoyées",
 		},
 		"SendGildMemberLGInfo": {
 			"Title" : "Info GM des membres de la guilde",
-			"Desc" : "En visitant les autres membres de la guilde, les données des GM seront envoyées à foe-rechner.de quand l'option d'envoi est activé."
+			"Desc" : "En visitant les autres membres de la guilde, les données des GM seront envoyées à foe-rechner.de quand l'option d'envoi est activé.",
 		},
 		"ShowNeighborsGoods": {
 			"Title" : "Récolte des voisins",
-			"Desc" : "Pendant la visite, montre ce qui est en cours de production"
+			"Desc" : "Pendant la visite, montre ce qui est en cours de production",
 		},
 		"SendInvestigations": {
 			"Title" : "Investissements des PFs",
-			"Desc" : "Ouvrir l'hôtel de ville> Nouvelles > Grand monuments ; cela enverra l'info des PFs investit"
+			"Desc" : "Ouvrir l'hôtel de ville> Nouvelles > Grand monuments ; cela enverra l'info des PFs investit",
 		},
 		"ShowTavernBadge": {
 			"Title" : "Affiche un compteur sur la taverne",
-			"Desc" : "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît."
+			"Desc" : "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît.",
 		},
 		"PreScanLGList": {
 			"Title" : "Analyse préliminaire de la vue d'ensemble d'un GM",
-			"Desc" : "Parcours la liste générale du voisin à l'ouverture et détermine les GMs éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l'ouverture d'un GM, le résultat peut être différent. L'analyse est cependant enregistrée."
+			"Desc" : "Parcours la liste générale du voisin à l'ouverture et détermine les GMs éventuellement remplissables. <br> <u> Remarque: </u> Les dernières places étant uniquement transmises lors de l'ouverture d'un GM, le résultat peut être différent. L'analyse est cependant enregistrée.",
 		},
 		"AutomaticNegotiation": {
 			"Title" : "Assistant de négociation",
-			"Desc" : "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermé en cas d'annulation ?"
+			"Desc" : "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermé en cas d'annulation ?",
 		},
 		"ResetBoxPositions": {
 			"Title" : "Coordonnées de la boîte",
 			"Desc" : "Toutes les coordonnées de la boîte doivent-elles être réinitialisées ?",
-			"Button" : "Supprimer!"
+			"Button" : "Supprimer !",
 		},
 		"MenuLength": {
 			"Title" : "Longueur de menu",
-			"Desc" : "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" signifie hauteur automatique."
+			"Desc" : "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" signifie hauteur automatique.",
 		},
 		"ChangeLanguage": {
 			"Title" : "Changer de langue",
@@ -421,8 +422,8 @@ let i18n = {
 				"ru": "Русский", // Dont translate!!!
 				"sv": "Svenska", // Dont translate!!!
 				"cs": "Český", // Dont translate!!!
-				"ro": "Română" // Dont translate!!!
-			}
+				"ro": "Română", // Dont translate!!!
+			},
 		}
 	},
 
