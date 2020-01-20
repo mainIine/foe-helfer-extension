@@ -132,7 +132,7 @@ let EventQuest = {
                     }
 
                 } else if (!isWaiting) {
-                    let text = "",
+                    let texts = [],
                         condition = Quest.successConditions,
                         conditiongroup = Quest.successConditionGroups,
                         conditionText = "";
@@ -147,13 +147,14 @@ let EventQuest = {
                             conditionText = "";
                         }
 
-                        text += group.conditionIds
+                        texts.push(
+                            '- ' + group.conditionIds
                             .map(id => condition.find(cond => cond.id === id).description)
                             .join(conditionText)
-                        ;
+                        );
                     }
 
-                    EventQuest.CurrentQuestText = text;
+                    EventQuest.CurrentQuestText = texts.join('<br>');
                 } else {
                     EventQuest.CurrentQuestText = null;
                 }
