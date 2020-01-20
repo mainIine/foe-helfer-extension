@@ -172,13 +172,13 @@ let _menu = {
 		}
 
 		// Dubletten rausfiltern
-		Array.prototype.unique = function() {
-			return this.filter(function (value, index, self) {
+		function unique(arr) {
+			return arr.filter(function (value, index, self) {
 				return self.indexOf(value) === index;
 			});
 		};
 
-		_menu.Items = _menu.Items.unique();
+		_menu.Items = unique(_menu.Items);
 
 		// Menüpunkte einbinden
 		for(let i in _menu.Items){
