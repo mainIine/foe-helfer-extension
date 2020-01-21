@@ -272,8 +272,8 @@ let i18n = {
 
 		"HiddenRewards": {
 			"Title": "Récompenses cachées",
-			"Appears": "Apparues",
-			"Disappears": "Disparues",
+			"Appears": "Apparait",
+			"Disappears": "Disparait",
 			"NoEvents": "Aucune récompense présente",
 		}
 	},
@@ -388,7 +388,7 @@ let i18n = {
 		},
 		"SendInvestigations": {
 			"Title" : "Investissements des PFs",
-			"Desc" : "Ouvrir l'Hôtel de ville > Nouvelles > Grand monuments : cela enverra l'info des PFs investit.",
+			"Desc" : "Ouvrir l'Hôtel de ville > Nouvelles > Grand monuments : cela enverra l'info des PFs investis.",
 		},
 		"ShowTavernBadge": {
 			"Title" : "Affiche un compteur sur la taverne",
