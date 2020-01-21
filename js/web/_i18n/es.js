@@ -191,6 +191,7 @@ let i18n = {
 			"Or": " or ", //Todo: Translate
 			"And": " and ", //Todo: Translate
 			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+			"Waiting": "No quest available",  // Todo: Translate
 		},
 		
         "Negotiation": {
