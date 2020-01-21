@@ -68,6 +68,7 @@
 
 #grid-outer {
 	position: relative;
+	transition: transform .35s linear;
 }
 
 #grid-outer * {

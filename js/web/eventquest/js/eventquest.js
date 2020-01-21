@@ -132,7 +132,7 @@ let EventQuest = {
                     }
 
                 } else if (!isWaiting) {
-                    let text = "",
+                    let texts = [],
                         condition = Quest.successConditions,
                         conditiongroup = Quest.successConditionGroups,
                         conditionText = "";
@@ -147,13 +147,14 @@ let EventQuest = {
                             conditionText = "";
                         }
 
-                        text += group.conditionIds
+                        texts.push(
+                            '- ' + group.conditionIds
                             .map(id => condition.find(cond => cond.id === id).description)
                             .join(conditionText)
-                        ;
+                        );
                     }
 
-                    EventQuest.CurrentQuestText = text;
+                    EventQuest.CurrentQuestText = texts.join('<br>');
                 } else {
                     EventQuest.CurrentQuestText = null;
                 }
@@ -210,7 +211,7 @@ let EventQuest = {
             h.push('<td colspan="3" class="upcoming text-center">' + i18n['Boxes']['EventList']['Upcoming'] + '</td>');
             h.push('</tr>');
 
-            for (let add = 1; add <= 5; add++) {
+            for (let add = (EventQuest.CurrentQuestText === null ? 0 : 1); add <= 5; add++) {
                 if (i + add >= AllQuests.length) break;
 
                 h.push('<tr>');
