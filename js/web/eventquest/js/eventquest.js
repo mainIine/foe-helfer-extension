@@ -211,7 +211,7 @@ let EventQuest = {
             h.push('<td colspan="3" class="upcoming text-center">' + i18n['Boxes']['EventList']['Upcoming'] + '</td>');
             h.push('</tr>');
 
-            for (let add = 1; add <= 5; add++) {
+            for (let add = (EventQuest.CurrentQuestText === null ? 0 : 1); add <= 5; add++) {
                 if (i + add >= AllQuests.length) break;
 
                 h.push('<tr>');
