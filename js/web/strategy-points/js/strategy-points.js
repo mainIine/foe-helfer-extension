@@ -13,10 +13,51 @@
  * **************************************************************************************
  */
 
+FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
+	let offer = data.responseData[0].offers[0];
+	StrategyPoints.RefreshBuyableForgePoints(offer.formula);
+});
+
+FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
+	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
+});
+
 let StrategyPoints = {
     RefreshDone: false,
 	OldStrategyPoints: 0,
 	InventoryFP : 0,
+
+
+	/**
+	 * Kaufbare FP + Formel ermitteln
+	 *
+	 * @param formula
+	 */
+	RefreshBuyableForgePoints: (formula) => {
+
+    	let amount = 0;
+    	let currentlyCosts = formula.baseValue;
+    	let boughtCount = formula.boughtCount;
+    	let factor = formula.factor;
+
+		for(let counter = 1; counter <= boughtCount; counter++) {
+			currentlyCosts += factor;
+		}
+
+    	for(let money = ResourceStock.money; money >= currentlyCosts; money--) {
+    		currentlyCosts += factor;
+			money -= currentlyCosts;
+    		amount++;
+		}
+
+		if($('.buyable-fp').length == 0) {
+			$('#fp-bar').append(' ' + i18n['Boxes']['StrategyPoints']['BuyableFP'] + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
+
+		} else {
+			$('.buyable-fp').text(HTML.Format(amount));
+		}
+	},
+
 
 	/**
 	 * Holt beim Start alle FPs aus dem Lager
@@ -28,16 +69,18 @@ let StrategyPoints = {
 
 		for(let i in d)
 		{
-			if(d.hasOwnProperty(i)){
-				if(d[i]['itemAssetName'] === 'large_forgepoints'){
-					t += (d[i]['inStock'] * 10);
+			if(!d.hasOwnProperty(i)){
+				break;
+			}
 
-				} else if(d[i]['itemAssetName'] === 'medium_forgepoints'){
-					t += (d[i]['inStock'] * 5);
+			if(d[i]['itemAssetName'] === 'large_forgepoints'){
+				t += (d[i]['inStock'] * 10);
 
-				} else if(d[i]['itemAssetName'] === 'small_forgepoints'){
-					t += (d[i]['inStock'] * 2);
-				}
+			} else if(d[i]['itemAssetName'] === 'medium_forgepoints'){
+				t += (d[i]['inStock'] * 5);
+
+			} else if(d[i]['itemAssetName'] === 'small_forgepoints'){
+				t += (d[i]['inStock'] * 2);
 			}
 		}
 

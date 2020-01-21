@@ -573,13 +573,18 @@ const FoEproxy = (function () {
 		MainParser.UpdatePlayerDict(data.responseData, 'StartUpService');
 
 		// freigeschaltete Erweiterungen sichern
-		MainParser.UnlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
 	});
 	
 	// --------------------------------------------------------------------------------------------------
 	// Bonus notieren, enthält tägliche Rathaus FP
 	FoEproxy.addHandler('BonusService', 'getBonuses', (data, postData) => {
 		MainParser.BonusService = data.responseData;
+	});
+
+	// Limited Bonus (Archenbonus, Kraken etc.)
+	FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
+		Calculator.SetArcBonus(data.responseData);
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -592,13 +597,6 @@ const FoEproxy = (function () {
 	// Boosts zusammen tragen
 	FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
 		MainParser.CollectBoosts(data.responseData);
-	});
-
-	// --------------------------------------------------------------------------------------------------
-	// Quests
-	FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
-		MainParser.Quests = data.responseData;
-		Calculator.RefreshCalculator();
 	});
 
 
@@ -656,11 +654,13 @@ const FoEproxy = (function () {
 
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
 		StrategyPoints.GetFromInventory(data.responseData);
+		MainParser.Inventory = data.responseData;
 	});
 
 	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
 		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
 	});
+
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
@@ -803,7 +803,7 @@ const FoEproxy = (function () {
 			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').is(':visible')) {
+			if ($('#costCalculator').is(':visible') || ($('#LGOverviewBox').is(':visible') && Calculator.AutoOpenKR)) {
 				Calculator.Show(Rankings, UpdateEntity.responseData[0]);
 			}
 		}
@@ -1012,7 +1012,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BoostMapper: {supplies_boost: string, happiness: string, money_boost: string, military_boost: string}, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: *, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, BonusService: null, apiCall: MainParser.apiCall, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: *, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, GuildExpedition: MainParser.GuildExpedition, Buildings: null, PossibleLanguages: [string, string, string, string], PlayerPortraits: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PossibleLanguages: string[], PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -1020,7 +1020,7 @@ let MainParser = {
 	Buildings: null,
 	i18n: null,
 	PossibleLanguages: [
-		'de', 'en', 'fr','es','ru'
+		'de', 'en', 'fr', 'es', 'ru', 'sv', 'cs','ro'
 	],
 	BonusService: null,
 	EmissaryService: null,
@@ -1029,6 +1029,7 @@ let MainParser = {
 	CityMapData: null,
 	UnlockedAreas: null,
 	Quests: null,
+	Inventory: null,
 	InnoCDN: 'https://foede.innogamescdn.com/',
 
 	/** @type {Record<string,string>} */
@@ -1051,9 +1052,16 @@ let MainParser = {
 		'supply_production': 0
 	},
 
+
+	/**
+	 * Etwas zur background.js schicken
+	 *
+	 * @param data
+	 */
 	sendExtMessage: (data) => {
 		// @ts-ignore
-		if (typeof chrome !== 'undefined') { chrome.runtime.sendMessage(extID, data);
+		if (typeof chrome !== 'undefined') {
+			chrome.runtime.sendMessage(extID, data);
 		} else {
 			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
 		}
@@ -1161,6 +1169,28 @@ let MainParser = {
 
 
 	/**
+	 * Fügt einen Wert zu einem FormData Objekt unter dem angegebenen prefix/key hinzu und serialisiert dabei objekte/arrays.
+	 * @param {FormData} formData the formdata to add this data to
+	 * @param {string} prefix the prefix/key for the value to store
+	 * @param {any} value the value to store
+	 */
+	obj2FormData: (() => {// closure
+		// Funktion wird im scope definiert, damit die rekursion direkt darauf zugreifen kann.
+		function obj2FormData(formData, prefix, value) {
+			if (typeof value === 'object') {
+				for (let k in value) {
+					if (!value.hasOwnProperty(k)) continue;
+					obj2FormData(formData, `${prefix}[${k}]`, value[k]);
+				}
+			} else {
+				formData.append(prefix, ''+value);
+			}
+		}
+		return obj2FormData;
+	})(),
+
+
+	/**
 	 * Daten nach "Hause" schicken
 	 *
 	 * @param data
@@ -1169,50 +1199,27 @@ let MainParser = {
 	 */
 	send2Server: (data, ep, successCallback)=> {
 
-		let pID = ExtPlayerID,
-			cW = ExtWorld,
-			gID = ExtGuildID;
+		const pID = ExtPlayerID;
+		const cW = ExtWorld;
+		const gID = ExtGuildID;
+		const formData = new FormData();
 
-		$.ajax({
-			type: 'POST',
-			url: 'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
-			data: {data},
-			dataType: 'json',
-			success: function(r){
-				if(successCallback !== undefined)
-				{
-					successCallback(r);
-				}
+		MainParser.obj2FormData(formData, 'data', data);
+
+		let req = fetch(
+			'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			{
+				method: 'POST',
+				body: formData
 			}
-		});
-	},
-
-
-	/**
-	 * Daten an foe-rechner schicken, wenn aktiviert
-	 *
-	 * @param data
-	 * @param ep
-	 * @param successCallback
-	 */
-	apiCall: (data, ep, successCallback)=> {
-
-		let pID = ExtPlayerID,
-			cW = ExtWorld,
-			gID = ExtGuildID;
-
-		$.ajax({
-			type: 'POST',
-			url: ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
-			data: {data},
-			dataType: 'json',
-			success: function(r){
-				if(successCallback !== undefined)
-				{
-					successCallback(r);
-				}
-			}
-		});
+		);
+		
+		if (successCallback !== undefined) {
+			req
+			.then(response => response.json())
+			.then(successCallback)
+			;
+		}
 	},
 
 

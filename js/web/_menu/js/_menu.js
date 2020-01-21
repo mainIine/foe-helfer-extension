@@ -20,17 +20,21 @@ let _menu = {
 	SlideParts: 0,
 	ActiveSlide: 1,
 	HudCount: 0,
+	HudLength: 0,
 	HudHeight: 0,
 
 	Items : [
+		'hiddenRewards',
 		'calculator',
 		'partCalc',
 		'outpost',
 		'productions',
 		'negotiation',
 		'infobox',
+		'questlist',
 		'technologies',
 		'campagneMap',
+		'citymap',
 		'unit',
 		'settings',
 		'forum',
@@ -104,7 +108,15 @@ let _menu = {
 	 */
 	Prepare: ()=> {
 
-		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').position().top) / 55 );
+		_menu.HudCount = Math.floor( (( $(window).outerHeight() - 50 ) - $('#ant-hud').offset().top) / 55 );
+
+		// hat der Spieler eine LÄnge vorgebeben?
+		let MenuLength = localStorage.getItem('MenuLength');
+
+		if(MenuLength !== null && MenuLength < _menu.HudCount){
+			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
+		}
+
 		_menu.HudHeight = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
 
@@ -122,7 +134,41 @@ let _menu = {
 			StorgedItems = localStorage.getItem('MenuSort');
 
 		if(StorgedItems !== null){
-			_menu.Items = JSON.parse(StorgedItems);
+			let storedItems = JSON.parse(StorgedItems);
+
+			// es ist kein neues Item hinzugekommen
+			if(_menu.Items.length === storedItems.length) {
+				_menu.Items = JSON.parse(StorgedItems);
+			}
+
+			// ermitteln in welchem Array was fehlt...
+			else {
+				let missingMenu = storedItems.filter(function(sI){
+					return !_menu.Items.some(function(mI) {
+						return sI === mI;
+					});
+				});
+
+				let missingStored = _menu.Items.filter(function(mI){
+					return !storedItems.some(function(sI) {
+						return sI === mI;
+					});
+				});
+
+				let items = missingMenu.concat(missingStored);
+
+				// es gibt tatsächlich was neues...
+				if( items.length > 0 ){
+					for(let i in items){
+						if(!items.hasOwnProperty(i)){
+							break;
+						}
+
+						// ... neues kommt vorne dran ;-)
+						_menu.Items.unshift(items[i]);
+					}
+				}
+			}
 		}
 
 		// Menüpunkte einbinden
@@ -207,7 +253,7 @@ let _menu = {
 		$('.hud-btn').stop().hover(function() {
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = $this.position().top + 53;
+				y = ($this.offset().top +30);
 
 			$('[data-btn="' + id + '"]').css({'top': y +'px'}).show();
 
@@ -247,7 +293,7 @@ let _menu = {
 
 		ToolTipp.prepend( $('<div />').addClass('toolTipHeader').text(title) );
 
-		$('#ant-hud').append( ToolTipp );
+		$('body').append( ToolTipp );
 	},
 
 	/*----------------------------------------------------------------------------------------------------------------*/
@@ -464,6 +510,69 @@ let _menu = {
     },
 
 	/**
+	 * citymap
+	 *
+	 * @returns {*|jQuery}
+	 */
+	citymap_Btn: ()=> {
+        let btn_CityBG = $('<div />').attr({'id': 'citymap-Btn', 'data-slug': 'citymap'}).addClass('hud-btn');
+
+        // Tooltip einbinden
+        _menu.toolTippBox(i18n['Menu']['Citymap']['Title'], i18n['Menu']['Citymap']['Desc'], 'citymap-Btn');
+
+        let btn_City = $('<span />');
+
+		btn_City.on('click', function () {
+            CityMap.init();
+        });
+
+		btn_CityBG.append(btn_City);
+
+        return btn_CityBG;
+    },
+
+	/**
+	 * QuestList
+	 *
+	 * @returns {*|jQuery}
+	 */
+	questlist_Btn: ()=> {
+        let btn_EventBG = $('<div />').attr({'id': 'questlist_Btn', 'data-slug': 'questlist'}).addClass('hud-btn');
+
+        // Tooltip einbinden
+        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Event']['Desc'], 'questlist_Btn');
+
+        let btn_Event = $('<span />');
+
+        btn_Event.on('click', function () {
+			EventQuest.Visible = true;
+            EventQuest.Show();
+			EventQuest.Visible = false;
+        });
+
+        btn_EventBG.append(btn_Event);
+
+        return btn_EventBG;
+    },
+
+	hiddenRewards_Btn: ()=> {
+		let btn_RewardsBG = $('<div />').attr({'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards'}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n['Menu']['HiddenRewards']['Title'], i18n['Menu']['HiddenRewards']['Desc'], 'hiddenRewards-Btn');
+
+		let btn_Rewards = $('<span />');
+
+		btn_Rewards.on('click', function () {
+			HiddenRewards.init();
+		})
+
+		btn_RewardsBG.append(btn_Rewards);
+
+		return btn_RewardsBG;
+	},
+
+	/**
 	 * Armeen
 	 * @returns {*|jQuery}
 	 */
@@ -575,7 +684,6 @@ let _menu = {
 
 		return btn;
 	},
-
 
 	/**
 	 * Chat Button
