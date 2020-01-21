@@ -249,7 +249,7 @@ let CityMap = {
 		let MinX = 0,
 			MinY = 0,
 			MaxX = 63,
-			MaxY = 59;
+			MaxY = 63;
 
 		for(let b in MapDataSorted)
 		{
