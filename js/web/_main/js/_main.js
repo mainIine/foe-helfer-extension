@@ -968,21 +968,6 @@ const FoEproxy = (function () {
 
 
 	// --------------------------------------------------------------------------------------------------
-	// Negotiation
-
-	FoEproxy.addHandler('all', 'startNegotiation', (data, postData) => {
-		Negotiation.StartNegotiation(data.responseData);
-	});
-
-	FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => {
-		Negotiation.SubmitTurn(data.responseData);
-	});
-
-	FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
-		Negotiation.ExitNegotiation(data.responseData);
-	});
-
-	// --------------------------------------------------------------------------------------------------
 	// GüterUpdate nach angenommenen Handel
 	FoEproxy.addRawWsHandler((data) => {
 		let Msg = data[0];
@@ -996,15 +981,14 @@ const FoEproxy = (function () {
 	});
 
 	// --------------------------------------------------------------------------------------------------
-	// HiddenReward
+	// Quests
 
-	FoEproxy.addHandler('HiddenRewardService','getOverview', (data, postData) => {
-		// console.log("AKTUELLE ZEIT: "+ CurrentTime)
-		// data.responseData.hiddenRewards.forEach(rewards => {
-		// 	if(rewards.startTime < CurrentTime < rewards.expireTime){
-		// 		console.log("ES GIBT EIN "+rewards.rarity+" REWARD IN DER STADT: "+rewards.position.context + " --- ZEIT: " + rewards.startTime + " - "+ rewards.expireTime);
-		// 	}
-		// });
+	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
+		MainParser.Quests = data.responseData;
+
+		if( $('#costCalculator').length > 0 ){
+			Calculator.Show();
+		}
 	});
 
 })();

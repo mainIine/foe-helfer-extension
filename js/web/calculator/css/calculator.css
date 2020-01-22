@@ -68,6 +68,11 @@
 	color: #F3D6A0;
 }
 
+
+#costCalculator #costCalculatorBody .foe-table td {
+	white-space: nowrap;
+}
+
 #costCalculator #costCalculatorBody td.error,
 #costCalculator #costCalculatorBody td .error {
 	color: #ec4d4d;
