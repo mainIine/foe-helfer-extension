@@ -42,6 +42,8 @@ let Negotiation = {
 	MessageClass: 'warning',
 	SortableObj: null,
 
+	ContinueListing: false,
+
 
 
 	/**
@@ -201,9 +203,10 @@ let Negotiation = {
 				let Good = (SlotGuess.good === null ? 'empty' : SlotGuess.good.resourceId);
 				
 				if (Good !== undefined) {
-					let extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
-					let tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
-					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span></td>');
+					const extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
+					const tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
+					const numberIcon = /*SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(SlotGuess.good.id+1)+'</span>' :*/ '';
+					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span>'+numberIcon+'</td>');
 
 				} else {
 					h.push('<td style="width:20%">&nbsp;</td>');
@@ -283,7 +286,7 @@ let Negotiation = {
 		
 		Negotiation.CurrentTry = 1;
 		Negotiation.Message = undefined;
-		let Resources = responseData['possibleCosts']['resources'];
+		let Resources = responseData.possibleCosts.resources;
 
 		const Goods = [];
 		const PlaceCount = Negotiation.PlaceCount;
@@ -322,16 +325,14 @@ let Negotiation = {
 
 			if (moment.unix(Tavern.ExpireTime) > Now) {
 				Negotiation.TryCount = 4;
-			}
-			else {
+			} else {
 				Negotiation.TryCount = 3;
 			}
 		}
 		else {
 			if (Negotiation.GoodCount > 6) {
 				Negotiation.TryCount = 4;
-			}
-			else {
+			} else {
 				Negotiation.TryCount = 3;
 			}
 		}
@@ -392,66 +393,8 @@ let Negotiation = {
 			}
 		}
 
-		if (Result === -1) {
-			const PlaceCount = Negotiation.PlaceCount;
-			const MainTable = Negotiation.Tables[Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount)];
-			let bestDistance = Number.MAX_SAFE_INTEGER;
-			const GoodsOrderedCopy = GoodsOrdered.slice();
-			// Gehe alle Permutationen der Verhandlungspartner durch (120 bei 5 Personen)
-			for (let permutation of helper.permutations([...new Array(PlaceCount).keys()])) {
-				const goodMap = new Array(GoodsOrdered.length).fill(255);
-				let valid = true;
-
-				let table = MainTable;
-				let lastTable = table;
-				let result;
-				// prüfe ob dies eine gültige Permutation wäre
-				for (let round = 0; round < currentTry; round++) {
-					result = 0;
-					for (let place = 0; place < PlaceCount; place++) {
-						const realPlace = permutation[place];
-						const SlotGuess = Guesses[round][realPlace];
-						// result für die verfolgung der weiteren Runden berechnen
-						result = result*4 + SlotGuess.match;
-
-						const usedGood = SlotGuess.good.id;
-						const goodMapped = goodMap[usedGood];
-						const guessGood = table.gu[place];
-
-						if (goodMapped === 255) {
-							// Gut wurde noch nicht zugeordnet
-							goodMap[usedGood] = guessGood;
-						} else if (goodMapped !== guessGood) {
-							// Zuordnung passt nicht zur aktuellen Tabelle
-							valid = false;
-							break;
-						}
-					}
-					if (!valid) break;
-					lastTable = table;
-					table = table.r[result];
-				}
-
-				if (valid) {
-					// Prüfe wie nah, die Güterbelegung am original ist.
-					GoodsOrderedCopy.sort((a,b) => goodMap[a.id] - goodMap[b.id]);
-
-					let distance = 0;
-					for (let i = 0; i<GoodsOrderedCopy.length; i++) {
-						const plannedPos = GoodsOrderedCopy[i].plannedPos;
-						if (plannedPos > i) distance += plannedPos-i;
-					}
-
-					if (bestDistance > distance) {
-						// Übernehme dia aktuell beste Permutation
-						bestDistance = distance;
-						GoodsOrdered.sort((a,b) => goodMap[a.id] - goodMap[b.id]);
-						Negotiation.PlaceMutation = permutation;
-						Result = 0;
-						Negotiation.CurrentTable = lastTable;
-					}
-				}
-			}
+		if (Result === -1 && Negotiation.findMatchingPermutation()) {
+			Result = 0;
 		}
 
 		if (Result === -1) {
@@ -543,6 +486,73 @@ let Negotiation = {
 		Negotiation.Guesses[Negotiation.CurrentTry-1] = Guesses;
 	},
 
+	findMatchingPermutation: () => {
+		const currentTry = Negotiation.CurrentTry;
+		const GoodsOrdered = Negotiation.GoodsOrdered;
+		const PlaceCount = Negotiation.PlaceCount;
+		const Guesses = Negotiation.Guesses;
+		const MainTable = Negotiation.Tables[Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount)];
+		const GoodsOrderedCopy = GoodsOrdered.slice();
+		let bestDistance = Number.MAX_SAFE_INTEGER;
+		let found = false;
+		// Gehe alle Permutationen der Verhandlungspartner durch (120 bei 5 Personen)
+		for (let permutation of helper.permutations([...new Array(PlaceCount).keys()])) {
+			const goodMap = new Array(GoodsOrdered.length).fill(255);
+			let valid = true;
+
+			let table = MainTable;
+			let lastTable = table;
+			let result;
+			// prüfe ob dies eine gültige Permutation wäre
+			for (let round = 0; round < currentTry; round++) {
+				result = 0;
+				for (let place = 0; place < PlaceCount; place++) {
+					const realPlace = permutation[place];
+					const SlotGuess = Guesses[round][realPlace];
+					// result für die verfolgung der weiteren Runden berechnen
+					result = result*4 + SlotGuess.match;
+
+					const usedGood = SlotGuess.good.id;
+					const goodMapped = goodMap[usedGood];
+					const guessGood = table.gu[place];
+
+					if (goodMapped === 255) {
+						// Gut wurde noch nicht zugeordnet
+						goodMap[usedGood] = guessGood;
+					} else if (goodMapped !== guessGood) {
+						// Zuordnung passt nicht zur aktuellen Tabelle
+						valid = false;
+						break;
+					}
+				}
+				if (!valid) break;
+				lastTable = table;
+				table = table.r[result];
+			}
+
+			if (valid) {
+				// Prüfe wie nah, die Güterbelegung am original ist.
+				GoodsOrderedCopy.sort((a,b) => goodMap[a.id] - goodMap[b.id]);
+
+				let distance = 0;
+				for (let i = 0; i<GoodsOrderedCopy.length; i++) {
+					const plannedPos = GoodsOrderedCopy[i].plannedPos;
+					if (plannedPos > i) distance += plannedPos-i;
+				}
+
+				if (bestDistance > distance) {
+					// Übernehme dia aktuell beste Permutation
+					bestDistance = distance;
+					GoodsOrdered.sort((a,b) => goodMap[a.id] - goodMap[b.id]);
+					Negotiation.PlaceMutation = permutation;
+					found = true;
+					Negotiation.CurrentTable = lastTable;
+				}
+			}
+		}
+		return found;
+	},
+
 	/**
 	 * Gut bestimmen
 	 *
@@ -598,7 +608,7 @@ let Negotiation = {
 	 * Läd die Tabelle
 	 *
 	 */
-	GetTable: ()=> {
+	GetTable: () => {
 		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
 
 		// gibt es noch nicht, laden
@@ -623,9 +633,8 @@ let Negotiation = {
 
 					Negotiation.CurrentTable = Negotiation.Tables[TableName];
 
-					const GoodsOrdered = Negotiation.GoodsOrdered;
 					if (Negotiation.CurrentTable !== undefined) {
-						Negotiation.Guesses[0] = Negotiation.CurrentTable.gu.map( idx => ({good: GoodsOrdered[idx], match: 0}) );
+						Negotiation.updateNextGuess();
 					}
 
 					Negotiation.RefreshBox();
@@ -635,12 +644,10 @@ let Negotiation = {
 				})
 				.catch(err => {console.error(err); return null;})
 			;
-		}
-		// bereits geladen
-		else {
+		} else {
+			// bereits geladen
 			Negotiation.CurrentTable = Negotiation.Tables[TableName];
-			const GoodsOrdered = Negotiation.GoodsOrdered;
-			Negotiation.Guesses[0] = Negotiation.CurrentTable.gu.map( idx => ({good: GoodsOrdered[idx], match: 0}) );
+			Negotiation.updateNextGuess();
 			Negotiation.RefreshBox();
 			if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
 				setTimeout(() => {
