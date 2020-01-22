@@ -423,7 +423,7 @@ let Negotiation = {
 					});
 				}
 
-			} else if (currentTry > Negotiation.TryCount) {
+			} else if (currentTry >= Negotiation.TryCount) {
 				// Versuche aufgebraucht
 				Negotiation.CurrentTry = 0;
 				Negotiation.CurrentTable = undefined;
@@ -525,7 +525,7 @@ let Negotiation = {
 						break;
 					}
 				}
-				if (!valid) break;
+				if (!valid || !table.r) break;
 				lastTable = table;
 				table = table.r[result];
 			}
