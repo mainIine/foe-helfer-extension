@@ -230,7 +230,7 @@ let i18n = {
 			"ResetBox" : "Box leeren",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
-				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt und erhälst <strong>__fps__</strong>",
+				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt und erhälst <strong>__fps__ FP</strong>",
 				"Auction" : "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
 				"Trade" : "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 				"MsgBuilding" : "__building__ - Stufe __level__",
