@@ -101,6 +101,24 @@ helper.arr = {
 	}
 };
 
+helper.permutations = (()=>{
+	const permutations = function *(elements) {
+		if (elements.length === 1) {
+			yield elements;
+		} else {
+			let [first, ...rest] = elements;
+			for (let perm of permutations(rest)) {
+				for (let i = 0; i < elements.length; i++) {
+					let start = perm.slice(0, i);
+					let rest = perm.slice(i);
+					yield [...start, first, ...rest];
+				}
+			}
+		}
+	}
+	return permutations;
+})();
+
 
 let HTML = {
 
@@ -327,7 +345,7 @@ let HTML = {
 			minHeight: 200,
 			minWidth: 250,
 			stop: (e, $el)=>{
-				let size = $el.width() + '|' + $el.height();
+				let size = $el.element.width() + '|' + $el.element.height();
 
 				localStorage.setItem(id + 'Size', size);
 			},

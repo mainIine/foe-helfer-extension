@@ -46,7 +46,7 @@ let i18n = {
             "Auto": "Auto",
             "Place": "Platz",
             "Levels": "Leveln",
-            "NoPlaceSafe": "Kein Platz sicher"
+			"NoPlaceSafe": "Kein Platz sicher"
 		},
 
 		"Calculator": {
@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Stufe ",
 			"AvailableFP": "Verfügbare Forgepunkte",
+			"FriendlyInvestment": "Fördern mit:",
 			"ArcBonus": "Arche Bonus",
 			"Rate": "Kurs",
 			"Up2LevelUp": "Bis zum leveln",
@@ -68,7 +69,9 @@ let i18n = {
 			"LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 			"LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 			"ActiveRecurringQuest": "Aktiver Schleifenquest:",
-			"Done": "abgeschlossen"
+			"Done": "abgeschlossen",
+			"LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
+			"NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {
@@ -109,7 +112,7 @@ let i18n = {
 				"greatbuilding" : "Legendäre Gebäude",
 				"production" : "Produktionsgebäude",
 				"random_production" : "Zufalls Produktionen",
-				"residential": "Eventgebäude",
+				"residential": "Wohngebäude",
 				"decoration": "Dekorationen",
 				"street": "Straßen",
 				"goods": "Gütergebäude",
@@ -188,6 +191,7 @@ let i18n = {
 			"Or": " oder ",
 			"And": " und ",
 			"Upcoming": "Ungefähre Vorschau <em>(Werte werden bei Aktiverung aktualisiert)</em>",
+			"Waiting": "Keine Quest vorhanden",
         },
 
         "Negotiation": {
@@ -226,10 +230,11 @@ let i18n = {
 			"ResetBox" : "Box leeren",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
-				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt",
+				"LevelUp" : "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt und erhälst <strong>__fps__ FP</strong>",
 				"Auction" : "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
 				"Trade" : "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
-				"MsgBuilding" : "__building__ - Stufe __level__"
+				"MsgBuilding" : "__building__ - Stufe __level__",
+				"GildFightOccupied": "Provinz <span style=\"color:#ffb539\">__provinceName__</span> wurde von <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> übernommen und ist bis __untilOccupied__ Uhr gesperrt"
 			}
 		},
 
@@ -249,14 +254,16 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"Title": "Daten übermitteln",
+			"TitleSend": "Daten übermitteln",
 			"Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
-			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu "
+			"SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu ",
+			"WholeArea": "Gesamte Fläche: ",
+			"FreeArea": "Freie Fläche: "
 		},
 
 		"Gildfights": {
-			"Titel": "Spieler Übersicht",
+			"Title": "Spieler Übersicht",
 			"Player": "Spieler",
 			"Negotiations": "Verhandlungen",
 			"Fights": "Kämpfe",
@@ -264,7 +271,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Versteckte Belohnungen"
+			"Title": "Ereignisse",
+			"Appears": "Erscheint",
+			"Disappears": "Verschwindet",
+			"NoEvents": "Keine Ereignisse vorhanden"
 		}
 	},
 
@@ -338,15 +348,19 @@ let i18n = {
 			"Desc" : "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>"
 		},
 		"HiddenRewards": {
-			"Title": "Versteckte Belohnungen",
-			"Desc": "Übersicht der versteckten Belohnungen"
+			"Title": "Ereignisse",
+			"Desc": "Übersicht der Ereignisse auf der Map"
+		},
+		"Citymap": {
+			"Title": "Stadtübersicht",
+			"Desc": "Zeigt deine Stadt schematisch von oben"
 		}
 	},
 
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Extension <strong class='text-danger'>BETA</strong>",
+			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 			"Desc" : "Chrome Extension Version",
 			"PlayerId": "Spieler Id:",
 			"GuildId": "Gilden Id:",
@@ -401,13 +415,14 @@ let i18n = {
 			"Title" : "Sprache wechseln",
 			"Desc" : "Welche Sprache, statt der erkannten, soll genutzt werden?",
 			"Dropdown": {
-				"de": "Deutsch",
-				"en": "English",
-				"fr": "Français",
-				"es": "Español",
-				"ru": "Русский",
-				"sv": "Svenska",
-				"cs": "Český"
+				"de": "Deutsch", // Dont translate!!!
+				"en": "English", // Dont translate!!!
+				"fr": "Français", // Dont translate!!!
+				"es": "Español", // Dont translate!!!
+				"ru": "Русский", // Dont translate!!!
+				"sv": "Svenska", // Dont translate!!!
+				"cs": "Český", // Dont translate!!!
+				"ro": "Română" // Dont translate!!!
 			}
 		}
 	},
@@ -446,12 +461,15 @@ let i18n = {
 		"Positions": {
 			"nature": "Natur",
 			"shore": "Küste",
-			"cityRoadSmall": "Einspurige Strasse"
+			"water": "im Wasser",
+			"cityRoadSmall": "einspurige Strasse",
+			"cityRoadBig": "große Strasse",
+			"guildExpedition": "Gildenexpedition"
 		},
 		"Table": {
 			"type": "Typ",
 			"position": "Position",
-			"expires": "Verschindet am/um"
+			"expires": "Verschwindet am/um"
 		}
 	}
 };

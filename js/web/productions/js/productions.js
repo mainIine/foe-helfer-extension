@@ -471,7 +471,7 @@ let Productions = {
 
 						for(let p in buildings[i]['products'])
 						{
-							if(buildings[i]['products'].hasOwnProperty(p) && Productions.Types.includes(p) === false)
+							if(buildings[i]['products'].hasOwnProperty(p) && (Productions.Types.includes(p) === false || p === 'packaging'))
 							{
 								if(countProducts[p] === undefined)
 								{

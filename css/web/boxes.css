@@ -28,6 +28,7 @@
 	font-size: 0.9rem;
 	font-weight: 400;
 	color: #F3D6A0;
+	text-shadow: 0 1px 1px rgba(0,0,0, 0.65);
 	position: absolute;
 	text-align: left;
 	padding: 1px;
@@ -208,8 +209,8 @@
 }
 
 .tooltip.in {
-	opacity: 0.8;
-	filter: alpha(opacity=80);
+	opacity: 0.9;
+	filter: alpha(opacity=90);
 }
 
 .tooltip.top {
