@@ -298,7 +298,7 @@ let CityMap = {
 	 * Statistiken in die rechte Sidebar
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.UnlockedAreas.length) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
+		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
 			occupied = CityMap.OccupiedArea,
 			txtTotal = i18n['Boxes']['CityMap']['WholeArea'] + total,
 			txtFree = i18n['Boxes']['CityMap']['FreeArea'] + (total - occupied);
