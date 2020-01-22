@@ -110,7 +110,7 @@ let Reader = {
 		if ($('#ResultBox').length === 0) {
 			HTML.Box({
 				'id': 'ResultBox',
-				'title': i18n['Boxes']['Neighbors']['Title'] + Reader.player_name,
+				'title': i18n['Boxes']['Neighbors']['Title'] + '<em>' + Reader.player_name + '</em>',
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
