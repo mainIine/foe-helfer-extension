@@ -1,5 +1,35 @@
 ##Changelog - Extension
 
+#####2.4.1.1
+
+**Bugfix**
+- Infobox:
+    - [#380](https://github.com/dsiekiera/foe-helfer-extension/issues/380) [#408](https://github.com/dsiekiera/foe-helfer-extension/issues/408) Level-Up zeigt korrekte FPs an
+
+- Motivationen/Polieren:
+    - [#388](https://github.com/dsiekiera/foe-helfer-extension/issues/388) Infos werden wieder korrekt übertragen
+    
+- Eventliste:
+    - [#405](https://github.com/dsiekiera/foe-helfer-extension/issues/405) [#432](https://github.com/dsiekiera/foe-helfer-extension/issues/432) Beim erreichen der Tagesaufgaben war die Liste komplett leer
+
+- Citymap:
+    - [#412](https://github.com/dsiekiera/foe-helfer-extension/issues/412) Manche Gebäude am linken Rand wurden nicht eingeblendet
+
+- Kostenrechner:
+    - [#416](https://github.com/dsiekiera/foe-helfer-extension/issues/416) Zeile unten am Rand für Schleifenquests war verschwunden
+
+**Update**
+- Infobox:
+    - [#435](https://github.com/dsiekiera/foe-helfer-extension/issues/435) Speichert ab sofort die eingestellten Filter
+
+- Menü:
+    - Hält man ein Menü-Item via Mause-Drag min. 1,5s über einen der aktiven hoch- oder runter Pfeile, scrollt das Menü zur nächsten Ansicht
+
+- Verhandlungsassistent:
+    - [#420](https://github.com/dsiekiera/foe-helfer-extension/issues/420) Erkennt vertauschte Güter und kann damit weiter arbeiten, wenn es noch in die Logik passt
+
+---
+
 #####2.4.1
 
 **Neu**
