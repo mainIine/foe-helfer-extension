@@ -230,7 +230,7 @@ let i18n = {
 			"ResetBox" : "Reset Box",  // Todo: Translate
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> has just received __points__ points in the GEX.",  // Todo: Translate
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",  // Todo: Translate
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.",  // Todo: Translate
 				"Auction" : "'<strong>__player__</strong> has just offered __amount__ coins.",  // Todo: Translate
 				"Trade" : "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__",  // Todo: Translate
 				"MsgBuilding" : "__building__ - Level __level__",  // Todo: Translate
