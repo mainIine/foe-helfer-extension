@@ -230,7 +230,7 @@ let i18n = {
 			"ResetBox" : "Сбросить панель",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> получил __points__ очков в ЭГ.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
 				"Auction" : "<strong>__player__</strong> только что сделал ставку __amount__ монет.",
 				"Trade" : "<strong>__player__</strong> приянл ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Уровень __level__",

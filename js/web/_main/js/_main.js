@@ -968,21 +968,6 @@ const FoEproxy = (function () {
 
 
 	// --------------------------------------------------------------------------------------------------
-	// Negotiation
-
-	FoEproxy.addHandler('all', 'startNegotiation', (data, postData) => {
-		Negotiation.StartNegotiation(data.responseData);
-	});
-
-	FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => {
-		Negotiation.SubmitTurn(data.responseData);
-	});
-
-	FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
-		Negotiation.ExitNegotiation(data.responseData);
-	});
-
-	// --------------------------------------------------------------------------------------------------
 	// GüterUpdate nach angenommenen Handel
 	FoEproxy.addRawWsHandler((data) => {
 		let Msg = data[0];
