@@ -427,6 +427,8 @@ let Parts = {
             h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
         }
 
+		h.push(Calculator.GetRecurringQuestsLine());
+
 		$('#OwnPartBoxBody').html( h.join('') );
 	},
 

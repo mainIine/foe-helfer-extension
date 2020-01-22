@@ -27,6 +27,12 @@ let StrategyPoints = {
 	OldStrategyPoints: 0,
 	InventoryFP : 0,
 
+
+	/**
+	 * Kaufbare FP + Formel ermitteln
+	 *
+	 * @param formula
+	 */
 	RefreshBuyableForgePoints: (formula) => {
 
     	let amount = 0;
@@ -48,7 +54,7 @@ let StrategyPoints = {
 			$('#fp-bar').append(' ' + i18n['Boxes']['StrategyPoints']['BuyableFP'] + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
 
 		} else {
-			$('.buyable-fp').text(amount);
+			$('.buyable-fp').text(HTML.Format(amount));
 		}
 	},
 

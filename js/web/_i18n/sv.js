@@ -54,6 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivå ",
 			"AvailableFP": "Tillgängliga FP",
+			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
 			"ArcBonus": "Arkbonus",
 			"Rate": "Kvot",
 			"Up2LevelUp": "Till nästa nivå",
@@ -68,7 +69,9 @@ let i18n = {
 			"LGNotOpen": "Nästa niå är inte upplåst ännu",
 			"LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-			"Done": "done" //Todo: Translate
+			"Done": "done", //Todo: Translate
+			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
+			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
 		},
 
 		"LGOverviewBox": {
@@ -109,7 +112,7 @@ let i18n = {
 				"greatbuilding" : "Mäktiga byggnader",
 				"production" : "Produktion byggnader",
 				"random_production" : "Slumpmässig produktion",
-				"residential": "Eventbyggnader",
+				"residential": "Residential buildings", //Todo: Translate
 				"decoration": "Dekoration",
 				"street": "Väg",
 				"goods": "Varubyggnader",
@@ -188,6 +191,7 @@ let i18n = {
 			"Or": " or ", //Todo: Translate
 			"And": " and ", //Todo: Translate
 			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+			"Waiting": "No quest available",  // Todo: Translate
 		},
 
         "Negotiation": {
@@ -226,10 +230,11 @@ let i18n = {
 			"ResetBox" : "Töm",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> har precis fått __points__ poäng i IE.",
-				"LevelUp" : "__player__'s __building__ byggnad har precis nått en ny nivå __level__.<br>Du tof <strong>__rank__th</strong> placering.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
 				"Auction" : "'<strong>__player__</strong> har precis erbjudit __amount__ mynt.",
 				"Trade" : "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
-				"MsgBuilding" : "__building__ - Nivå __level__"
+				"MsgBuilding" : "__building__ - Nivå __level__",
+				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
 			}
 		},
 
@@ -249,14 +254,16 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"Title": "Submit data", //Todo: Translate
+			"TitleSend": "Submit data", //Todo: Translate
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-			"SubmitSuccess": "Data was transfered successfully... Now visit " //Todo: Translate
+			"SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
+			"WholeArea": "The whole area: ", // @Todo: Translate
+			"FreeArea": "Free area: " // @Todo: Translate
 		},
 
 		"Gildfights": {
-			"Titel": "Player overview", //Todo: Translate
+			"Title": "Player overview", //Todo: Translate
 			"Player": "Player", //Todo: Translate
 			"Negotiations": "Negotiations", //Todo: Translate
 			"Fights": "Fights", //Todo: Translate
@@ -264,7 +271,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards" //Todo: Translate
+			"Title": "Hidden Rewards",  // Todo: Translate
+			"Appears": "Appears",  // Todo: Translate
+			"Disappears": "Disappears",  // Todo: Translate
+			"NoEvents": "No events presents"  // Todo: Translate
 		}
 	},
 
@@ -340,13 +350,17 @@ let i18n = {
 		"HiddenRewards": {
 			"Title": "Hidden rewards", //Todo: Translate
 			"Desc": "Overview of hidden rewards" //Todo: Translate
+		},
+		"Citymap": {
+			"Title": "City overview",
+			"Desc": "Shows your city schematically from above"
 		}
 	},
 
 	"Settings" : {
 		"Version": {
 			"Title" : "Version",
-			"DescDebug" : "Chrome tillägg  <strong class='text-danger'>BETA</strong>",
+			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",  // Todo: Translate: Translate
 			"Desc" : "Chrome tillägg version",
 			"PlayerId": "Player-Id:",
 			"GuildId": "Gild-Id:",
@@ -407,7 +421,8 @@ let i18n = {
 				"es" : "Spanish",
 				"ru" : "Русский",
                 "sv" : "Svenska",
-				"cs": "Český"
+				"cs": "Český",
+				"ro": "Română"
 			}
 		}
 	},
@@ -444,9 +459,12 @@ let i18n = {
 
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "nature", //Todo: Translate
-			"shore": "Shore", //Todo: Translate
-			"cityRoadSmall": "Small Road" //Todo: Translate
+			"nature": "Nature",  //Todo: Translate
+			"shore": "Shore",  //Todo: Translate
+			"water": "in the water",  //Todo: Translate
+			"cityRoadSmall": "small Road",  //Todo: Translate
+			"cityRoadBig": "big Road",   // Todo: Translate
+			"guildExpedition": "Guild expedition" //Todo: Translate
 		},
 		"Table": {
 			"type": "Type", //Todo: Translate

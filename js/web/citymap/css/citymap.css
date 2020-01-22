@@ -39,6 +39,7 @@
 	height: 30px;
 }
 
+/* eigene Stadt */
 #map-container {
 	overflow: hidden;
 	position: absolute;
@@ -47,6 +48,11 @@
 	bottom: 0;
 	left: 0;
 	border-right: 2px solid #281207;
+}
+
+/* Nachbar */
+#map-container.with-sidebar {
+	right: 0;
 }
 
 #sidebar {
@@ -62,6 +68,7 @@
 
 #grid-outer {
 	position: relative;
+	transition: transform .35s linear;
 }
 
 #grid-outer * {
@@ -89,6 +96,9 @@
 
 .map-bg {
 	background: transparent url('../images/map-bg.png') center / cover no-repeat;
+}
+.map-bg.startmap {
+	background: transparent url('../images/start-map-bg.png') center / cover no-repeat;
 }
 
 /* ------------------------------ */

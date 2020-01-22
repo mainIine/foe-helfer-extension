@@ -247,7 +247,7 @@ let Calculator = {
 
 		h.push('<br>');
 
-		h.push('<span><strong>Fördern mit:</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>'); //Todo: Translate
+		h.push('<span><strong>' + i18n['Boxes']['Calculator']['FriendlyInvestment'] + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 
 		h.push('</div><div>');
 
@@ -266,24 +266,11 @@ let Calculator = {
 		h.push('</tr></tbody></table>');
 
         // Wieviel fehlt noch bis zum leveln?
-        let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
+		let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
         
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
 
-		// Schleifenquest für "Benutze FP" suchen
-		for (let i in MainParser.Quests) {
-			let Quest = MainParser.Quests[i];
-
-			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
-				for (let j in Quest.successConditions) {
-					let CurrentProgress = Quest.successConditions[j].currentProgress !== undefined ? Quest.successConditions[j].currentProgress : 0;
-					let MaxProgress = Quest.successConditions[j].maxProgress;
-					if (CurrentEraID <= 3 || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
-						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['ActiveRecurringQuest'] + ': <span id="up-to-level-up" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : i18n['Boxes']['Calculator']['Done']) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
-					}
-				}
-			}
-		}
+		h.push(Calculator.GetRecurringQuestsLine());
 		
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
@@ -331,6 +318,30 @@ let Calculator = {
 			});
 		}
 	},
+
+
+	/**
+	 * Zeile für Schleifenquests generieren
+	 * *
+	 * */
+	GetRecurringQuestsLine: () => {
+		let h = [];
+
+		// Schleifenquest für "Benutze FP" suchen
+		for (let Quest of MainParser.Quests) {
+			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
+				for (let cond of Quest.successConditions) {
+					let CurrentProgress = cond.currentProgress !== undefined ? cond.currentProgress : 0;
+					let MaxProgress = cond.maxProgress;
+					if (CurrentEraID <= 3 || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['ActiveRecurringQuest'] + ': <span id="recurringquests" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : i18n['Boxes']['Calculator']['Done']) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+					}
+				}
+			}
+		}
+
+		return h.join();
+	},
 	
 
 	/**
@@ -357,7 +368,7 @@ let Calculator = {
 			hSnipen = [],
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
-			BestKursEinsatz = undefined
+			BestKursEinsatz = undefined,
 			arc = 1 + (Calculator.ArcBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
@@ -368,7 +379,7 @@ let Calculator = {
 		for (let i = 0; i < Rankings.length;i++) {
             if (Rankings[i]['player']['player_id'] !== undefined && Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) {
                 EigenPos = i;
-                EigenBetrag = EingezahltAufRang = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']);
+                EigenBetrag = (isNaN(parseInt(Rankings[i]['forge_points']))) ? 0 : parseInt(Rankings[i]['forge_points']);
                 break;
             }
 		}
@@ -523,7 +534,8 @@ let Calculator = {
 
 				let CurrentGewinn = FPRewards[Rank] - SnipeRankCosts[Rank];
 				if (CurrentGewinn > BestGewinn) {
-					BestGewinn = CurrentGewinn;
+					if (SnipeStates[Rank] !== 'LevelWarning')
+						BestGewinn = CurrentGewinn;
 				}
 				else {
 					SnipeStates[Rank] = 'WorseProfit';
@@ -551,9 +563,11 @@ let Calculator = {
 			'</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
-			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderRankCosts[Rank]);
+			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]),
 				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
+
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
+				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0),
 				SnipeGewinn = FPRewards[Rank] - SnipeCosts,
 				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SnipeCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
 
@@ -575,10 +589,12 @@ let Calculator = {
 				hFordern.push('<tr class="info-row">');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
-				hFordern.push('<tr class="bg-red">');
+				let ToolTip = HTML.i18nReplacer(i18n['Boxes']['Calculator']['NegativeProfitTT'], { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] });
+				hFordern.push('<tr class="bg-red tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				hFordern.push('<tr class="bg-yellow" title="' + i18n['Boxes']['Calculator']['LevelWarning'] + '">');
+				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['LevelWarningTT'], { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank]}) : '');
+				hFordern.push('<tr class="bg-yellow tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
 				hFordern.push('<tr class="bg-green">');
@@ -636,23 +652,23 @@ let Calculator = {
 
 			// Fördern
 			if (ForderStates[Rank] === 'Self') {
-				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderRankCosts[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(ForderRankCosts[Rank]) + '</td>');
+				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderFPRewards[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</td>');
 				hFordern.push('<td class="text-center"><strong class="info">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderRankCosts[Rank]) + '</strong></td>');
+				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
 				hFordern.push('<td class="text-center"><strong class="error">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderRankCosts[Rank]) + '</strong></td>');
+				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
 				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderRankCosts[Rank]) + '</strong></td>');
+				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
 				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else {
-				hFordern.push('<td class="text-center">' + HTML.Format(ForderFPRewards[Rank]) + '</td>');
+				hFordern.push('<td class="text-center"><strong>' + HTML.Format(ForderFPRewards[Rank]) + '</strong></td>');
 				hFordern.push('<td class="text-center">-</td>');
 			}
 
@@ -707,6 +723,11 @@ let Calculator = {
 		// Level/FP/BestKurs/UNIX-Time
 		let StorageValue = UpdateEntity['level'] + '/' + UpdateEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
 		localStorage.setItem(StorageKey, StorageValue);
+
+		$('.tr-tooltip').tooltip({
+			html: true,
+			container: '#costCalculator'
+		});
 	},
 
 
@@ -726,11 +747,28 @@ let Calculator = {
 
 
 	/**
+	 * Formatiert die +/- Anzeige neben dem Ertrag (falls vorhanden)
+	 * *
+	 * *@param ForderRankDiff
+	 * */
+	FormatForderRankDiff: (ForderRankDiff) => {
+		if (ForderRankDiff < 0) {
+			return ' <small class="text-success">' + HTML.Format(ForderRankDiff) + '</small>';
+		}
+		else if (ForderRankDiff === 0) {
+			return '';
+		}
+		else { // > 0
+			return ' <small class="error">+' + HTML.Format(ForderRankDiff) + '</small>';
+		}
+	},
+
+
+	/**
 	 * Übersicht der LGs scannen
 	 *
-	 * @param div
-	 * @param arc
 	 * @param d
+	 * @param DisableAudio
 	 */
     ParseOverview: (d, DisableAudio)=> {
 
