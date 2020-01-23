@@ -170,6 +170,7 @@ async function InjectCode() {
 			'eventquest',
 			'read-buildings',
 			'settings',
+			'investment',
 			'strategy-points',
 			'citymap',
 			'hidden-rewards'
