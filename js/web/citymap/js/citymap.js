@@ -289,12 +289,12 @@ let CityMap = {
 		});
 
 		$('#grid-outer').draggable();
-     $('#grid-outer .entity').draggable({
+    $('#grid-outer .entity').draggable({
   grid: [ 14.4, 14.4 ]
-});                            
+});
 		CityMap.getAreas();
 	},
-
+    
 
 	/**
 	 * Statistiken in die rechte Sidebar
