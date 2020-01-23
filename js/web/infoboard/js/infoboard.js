@@ -442,7 +442,6 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
-        debugger;
         let newFP = Info.ReturnFPPoints;
 
         // zurück setzen
