@@ -23,9 +23,9 @@ let Investment = {
     RefreshDone: false,
     OldInvestmentPoints: 0,
     OldRewardPoints: 0,
-    InvestedFP : 0,
-    RewardFP : 0,
-    BonusFP : 0,
+    InvestedFP: 0,
+    RewardFP: 0,
+    BonusFP: 0,
     ArcBonus: 0,
 
     Box: () => {
@@ -45,9 +45,9 @@ let Investment = {
         Investment.InvestmentBar(Investment.InvestedFP);
     },
 
-    CalcBar: (data) =>{
-        if(!data) return;
-        if(data.length <= 0) return;
+    CalcBar: (data) => {
+        if (!data) return;
+        if (data.length <= 0) return;
 
         Investment.ArcBonus = localStorage.getItem('ArcBonus');
         Investment.ArcBonus = ((parseFloat(Investment.ArcBonus) + 100) / 100)
@@ -59,7 +59,7 @@ let Investment = {
         for (let x = 0; x < data.length; x++) {
             const contribution = data[x];
             Investment.InvestedFP += contribution['forge_points'];
-            if(undefined !== contribution['reward'])
+            if (undefined !== contribution['reward'])
                 Investment.RewardFP += (contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] : 0);
         }
     },
@@ -76,36 +76,25 @@ let Investment = {
 
         let div = $('#InvestmentBody');
 
-		// noch nicht im DOM?
-		if( $('#invest-bar').length < 1 && $('#reward-bar').length < 1){
-			let Invest = $('<div />').attr('id', 'invest-bar').text(i18n['Boxes']['Investment']['InvestBar']).append( $('<strong>0</strong>').addClass('invest-storage') );
-			let Reward = $('<div />').attr('id', 'reward-bar').text(i18n['Boxes']['Investment']['CurrReward']).append( $('<strong>0</strong>').addClass('reward-storage') );
+        // noch nicht im DOM?
+        if ($('#invest-bar').length < 1 && $('#reward-bar').length < 1) {
+            let Invest = $('<div />').attr('id', 'invest-bar').text(i18n['Boxes']['Investment']['InvestBar']).append($('<strong>0</strong>').addClass('invest-storage'));
+            let Reward = $('<div />').attr('id', 'reward-bar').text(i18n['Boxes']['Investment']['CurrReward']).append($('<strong>0</strong>').addClass('reward-storage'));
 
-			$(div).append(Invest);
-			$(div).append(Reward);
-		}
+            $(div).append(Invest);
+            $(div).append(Reward);
+        }
+        $('.invest-storage').easy_number_animate({
+            start_value: 0,
+            end_value: _InvestedFP,
+            duration: 750
+        });
 
-		// Update mit Animation, wenn es überhaupt notwendig ist
-        if(!Investment.RefreshDone)
-        {
-			Investment.RefreshDone = true;
-
-			$('.invest-storage').easy_number_animate({
-				start_value: Investment.OldInvestmentPoints,
-				end_value: _InvestedFP,
-				duration: 750
-            });
-            
-            $('.reward-storage').easy_number_animate({
-				start_value: Investment.OldRewardPoints,
-				end_value: Investment.BonusFP,
-				duration: 750
-			});
-
-			Investment.OldInvestmentPoints = _InvestedFP;
-			Investment.OldRewardPoints = Investment.BonusFP;
-			Investment.InvestedFP = _InvestedFP;
-			Investment.RefreshDone = false;
-		}
-	},
+        $('.reward-storage').easy_number_animate({
+            start_value: 0,
+            end_value: Investment.BonusFP,
+            duration: 750
+        });
+        Investment.InvestedFP = _InvestedFP;
+    },
 }
