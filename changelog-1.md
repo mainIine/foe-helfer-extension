@@ -23,7 +23,7 @@
     - [#435](https://github.com/dsiekiera/foe-helfer-extension/issues/435) Speichert ab sofort die eingestellten Filter
 
 - Menü:
-    - Hält man ein Menü-Item via Mause-Drag min. 1,5s über einen der aktiven hoch- oder runter Pfeile, scrollt das Menü zur nächsten Ansicht
+    - Hält man ein Menü-Item via Mouse-Drag min. 1,5s über einen der aktiven hoch- oder runter Pfeile, scrollt das Menü zur nächsten Ansicht
 
 - Verhandlungsassistent:
     - [#420](https://github.com/dsiekiera/foe-helfer-extension/issues/420) Erkennt vertauschte Güter und kann damit weiter arbeiten, wenn es noch in die Logik passt
@@ -34,7 +34,7 @@
 
 **Neu**
 - Eventliste: 
-    - [#309](https://github.com/dsiekiera/foe-helfer-extension/issues/309) Events in "Rohform" werden aufgelistet, das aktuelle (gelber Rahmen) wird korrekten Daten befüllt; Autoupdate
+    - [#309](https://github.com/dsiekiera/foe-helfer-extension/issues/309) Events in "Rohform" werden aufgelistet, das aktuelle (gelber Rahmen) wird korrekten mit Daten befüllt; Autoupdate
 
 
 - Citymap: 
@@ -42,7 +42,7 @@
 
 
 - Ereignisse:
-    - [#365](https://github.com/dsiekiera/foe-helfer-extension/issues/365) [#378](https://github.com/dsiekiera/foe-helfer-extension/issues/378) Werden ausgelesen und in einer Box mit Start-/Endzeit + etwiger Ortsangabe ausgegeben. Danke an [h3llraz0r](https://github.com/Marcel-Wagner)
+    - [#365](https://github.com/dsiekiera/foe-helfer-extension/issues/365) [#378](https://github.com/dsiekiera/foe-helfer-extension/issues/378) Werden ausgelesen und in einer Box mit Start-/Endzeit + einer "etwa" Ortsangabe ausgegeben. Danke an [h3llraz0r](https://github.com/Marcel-Wagner)
 
 **Update**
 - Extension: 
