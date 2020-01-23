@@ -45,6 +45,18 @@ let ApiURL = 'https://api.foe-rechner.de/',
 
 document.addEventListener("DOMContentLoaded", function(){
 
+	/*
+	// @ Todo: Fetch + Exception falls es die Datei nicht gibt. Spart das ausfüllen von möglichen Sprachen
+
+	// Als Text sollte der Box Titel "FoE Helfer geladen werden können"
+
+	$.ajax(extUrl + 'js/web/_i18n/' + MainParser.Language + '.json').done(function(text){
+		const data = JSON.parse(text);
+
+		i18n.translator.add(data);
+	});
+	*/
+
 	// aktuelle Welt notieren
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
