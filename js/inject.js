@@ -123,6 +123,7 @@ async function InjectCode() {
 
 		const extURL = chrome.extension.getURL(''),
 			vendorScripts = [
+				'i18njs/i18njs.min',
 				'moment/moment-with-locales.min',
 				'CountUp/jquery.easy_number_animate.min',
 				'Tabslet/jquery.tabslet.min',
