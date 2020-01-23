@@ -14,8 +14,8 @@
  */
 
 FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
+    Investment.CalcBar(data.responseData);
     Investment.Box();
-	Investment.CalcBar(data.responseData);
 });
 
 
@@ -42,6 +42,7 @@ let Investment = {
             // CSS in den DOM prügeln
             HTML.AddCssFile('investment');
         }
+        Investment.InvestmentBar(Investment.InvestedFP);
     },
 
     CalcBar: (data) =>{
@@ -51,6 +52,7 @@ let Investment = {
         Investment.ArcBonus = localStorage.getItem('ArcBonus');
         Investment.ArcBonus = ((parseFloat(Investment.ArcBonus) + 100) / 100)
 
+        Investment.RewardFP = 0;
         Investment.InvestedFP = 0;
         Investment.BonusFP = 0;
 
@@ -60,7 +62,6 @@ let Investment = {
             if(undefined !== contribution['reward'])
                 Investment.RewardFP += (contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] : 0);
         }
-        Investment.InvestmentBar(Investment.InvestedFP)
     },
 
     /**
@@ -71,7 +72,7 @@ let Investment = {
     InvestmentBar: (_InvestedFP) => {
         if (_InvestedFP === undefined) _InvestedFP = 0;
 
-        Investment.BonusFP = Math.round(_InvestedFP * Investment.ArcBonus) - _InvestedFP;
+        Investment.BonusFP = (Math.round(Investment.RewardFP * Investment.ArcBonus)) - _InvestedFP;
 
         let div = $('#InvestmentBody');
 
@@ -85,11 +86,7 @@ let Investment = {
 		}
 
 		// Update mit Animation, wenn es überhaupt notwendig ist
-        if(Investment.BonusFP < Investment.OldRewardPoints || 
-            Investment.BonusFP > Investment.OldRewardPoints ||
-            _InvestedFP < Investment.OldInvestmentPoints || 
-            _InvestedFP > Investment.OldInvestmentPoints || 
-            !Investment.RefreshDone)
+        if(!Investment.RefreshDone)
         {
 			Investment.RefreshDone = true;
 
@@ -108,6 +105,7 @@ let Investment = {
 			Investment.OldInvestmentPoints = _InvestedFP;
 			Investment.OldRewardPoints = Investment.BonusFP;
 			Investment.InvestedFP = _InvestedFP;
+			Investment.RefreshDone = false;
 		}
 	},
 }
