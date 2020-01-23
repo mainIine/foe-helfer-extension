@@ -97,6 +97,7 @@ let Calculator = {
 		}
 
 		Calculator.ArcBonus = ArcBonus;
+		localStorage.setItem('ArcBonus',ArcBonus);
 	},
 
 
