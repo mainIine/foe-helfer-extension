@@ -13,6 +13,9 @@
  * **************************************************************************************
  */
 
+#grid-outer .entity{opacity: 0.8;}
+.street {opacity: 0.1;}
+
 #city-map-overlay {
 	left: 15px;
 	width: 70em;
