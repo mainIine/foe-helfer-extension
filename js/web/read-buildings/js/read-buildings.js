@@ -110,7 +110,7 @@ let Reader = {
 		if ($('#ResultBox').length === 0) {
 			HTML.Box({
 				'id': 'ResultBox',
-				'title': i18n['Boxes']['Neighbors']['Title'] + Reader.player_name,
+				'title': i18n('Boxes.Neighbors.Title') + '<em>' + Reader.player_name + '</em>',
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -131,7 +131,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.ReadyProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -142,7 +142,7 @@ let Reader = {
 					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -159,7 +159,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.OngoingProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -170,7 +170,7 @@ let Reader = {
 					h.push('<tr>');
 					h.push('<td>' + wk[i]['name'] + '</td>');
 					h.push('<td>' + wk[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
 					h.push('</tr>');
 				}
 			}

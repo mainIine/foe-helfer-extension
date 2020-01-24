@@ -43,8 +43,8 @@ let Parts = {
 		// Box in den DOM
 		HTML.Box({
 			'id': 'OwnPartBox',
-			'title': i18n['Boxes']['OwnpartCalculator']['Title'],
-			'ask': i18n['Boxes']['OwnpartCalculator']['HelpLink'],
+			'title': i18n('Boxes.OwnpartCalculator.Title'),
+			'ask': i18n('Boxes.OwnpartCalculator.HelpLink'),
 			'auto_close': true,
 			'dragdrop': true,
 			'minimize': true
@@ -284,7 +284,7 @@ let Parts = {
         
         // Info-Block
         h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-        h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n['Boxes']['OwnpartCalculator']['OldLevel'] : i18n['Boxes']['OwnpartCalculator']['Step'] + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
+        h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
         h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
@@ -297,17 +297,17 @@ let Parts = {
         h.push('<thead>');
 
         h.push('<tr>');
-        h.push('<th class="text-center" colspan="3" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['PatronPart'] + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></th>');
-        h.push('<th class="text-center" colspan="3">' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + ': <strong class="success">' + EigenTotal + '</strong></th>');
+        h.push('<th class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></th>');
+        h.push('<th class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="success">' + EigenTotal + '</strong></th>');
         h.push('</tr>');
 
         h.push('<tr>');
         if (EigenStart > 0) {
-            h.push('<th colspan="3" class="text-center" style="width: 50%">' + i18n['Boxes']['OwnpartCalculator']['LGTotalFP'] + ': <strong class="normal">' + Total + '</strong></th>');
-            h.push('<th colspan="3" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['OwnPartRemaining'] + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></th>');
+            h.push('<th colspan="3" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
+            h.push('<th colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></th>');
         }
         else {
-            h.push('<th colspan="6" class="text-center">' + i18n['Boxes']['OwnpartCalculator']['LGTotalFP'] + ': <strong class="normal">' + Total + '</strong></th>');
+            h.push('<th colspan="6" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
         }
 
         h.push('</tr>');
@@ -319,13 +319,13 @@ let Parts = {
         h.push('<tbody>');
 
         h.push('<tr>');
-        h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Order'] + '</td>');
-        h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Deposit'] + '</td>');
-        h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Done'] + '</td>');
-		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['BPs'] + '</td>');
-		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Meds'] + '</td>');
-		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Ext'] + '</td>');
-		h.push('<td class="text-center">' + i18n['Boxes']['OwnpartCalculator']['Arc'] + '</td>');
+        h.push('<td>' + i18n('Boxes.OwnpartCalculator.Order') + '</td>');
+        h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Deposit') + '</td>');
+        h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.BPs') + '</td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Meds') + '</td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</td>');
         h.push('</tr>');
 
         for (let i = 0; i < 5; i++) {
@@ -334,7 +334,7 @@ let Parts = {
                 EigenCounter += EigenStart;
 
                 h.push('<tr>');
-                h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
+                h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
                 h.push('<td class="text-center"><strong class="success">' + (Eigens[i]>0 ? Eigens[i] + ' <small>(=' + (Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
                 h.push('<td class="text-center"><strong class="info">' + EigenStart + '</strong></td>');
                 h.push('<td colspan="4"></td>');
@@ -343,7 +343,7 @@ let Parts = {
             else {
                 if (Eigens[i] > 0) {
                     h.push('<tr>');
-                    h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
+                    h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
                     h.push('<td class="text-center"><strong class="success">' + Eigens[i] + (EigenCounter > Eigens[i] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
                     h.push('<td colspan="5"></td>');
                     h.push('</tr>');
@@ -351,7 +351,7 @@ let Parts = {
             }
 
             h.push('<tr>');
-            h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' ' + (i+1) + '</td>');
+            h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
             if (NonExts[i]) {
                 h.push('<td class="text-center"><strong>' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong >' + '</td>');
@@ -398,7 +398,7 @@ let Parts = {
         //Bestehende Einzahlungen, die aus den P5 raus geschoben wurden
         if (MaezenRest > 0) {
             h.push('<tr>');
-            h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 6' + (Maezens.length > 6 ? ('-' + Maezens.length) : '') + '</td>');
+            h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Maezens.length > 6 ? ('-' + Maezens.length) : '') + '</td>');
             h.push('<td class="text-center">-</td>');
             h.push('<td class="text-center"><strong class="info">' + MaezenRest + '</strong></td>');
             h.push('<td colspan="4"></td>');
@@ -410,7 +410,7 @@ let Parts = {
             EigenCounter += Eigens[5];
 
             h.push('<tr>');
-            h.push('<td>' + i18n['Boxes']['OwnpartCalculator']['OwnPart'] + '</td>');
+            h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
             h.push('<td class="text-center"><strong class="success">' + Eigens[5] + (EigenCounter > Eigens[5] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
             h.push('<td colspan="5"></td>');
             h.push('</tr>');
@@ -424,7 +424,7 @@ let Parts = {
         // Wieviel fehlt noch bis zum leveln?
         if (IsPreviousLevel === false) {
             let rest = (d['state']['invested_forge_points'] === undefined ? d['state']['forge_points_for_level_up'] : d['state']['forge_points_for_level_up'] - d['state']['invested_forge_points']);
-            h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+            h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
         }
 
 		h.push(Calculator.GetRecurringQuestsLine());
@@ -447,13 +447,13 @@ let Parts = {
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
-		b.push('<p><span class="header"><strong>' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</strong></span></p>');
+		b.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
-		b.push('<div><span>Spieler:</span><input type="text" id="player-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['YourName'] + '" value="' + (n !== null ? n : m) + '"></div>');
-		b.push('<div><span>Gebäude:</span><input type="text" id="build-name" placeholder="' + i18n['Boxes']['OwnpartCalculator']['IndividualName'] + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]['name']) + '"></div>');
+		b.push('<div><span>Spieler:</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + (n !== null ? n : m) + '"></div>');
+		b.push('<div><span>Gebäude:</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]['name']) + '"></div>');
 
 		let drp = '<div><span>Schema:</span><select id="chain-scheme">' +
-			'<option value="" disabled>-- ' + i18n['Boxes']['OwnpartCalculator']['OutputScheme'] + ' --</option>' +
+			'<option value="" disabled>-- ' + i18n('Boxes.OwnpartCalculator.OutputScheme') + ' --</option>' +
 			'<option value="1"' + (s === '1' ? ' selected' : '') + '>Name LG P5 P4 P3 P2 P1</option>' +
 			'<option value="2"' + (s === '2' ? ' selected' : '') + '>Name LG P1 P2 P3 P4 P5</option>' +
 			'<option value="3"' + (s === '3' ? ' selected' : '') + '>Name LG P5/4/3/2/1</option>' +
@@ -465,26 +465,26 @@ let Parts = {
         b.push(drp);
 
         let cb = '<div class="checkboxes">' +
-            '<label class="form-check-label" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0" checked> ' + i18n['Boxes']['OwnpartCalculator']['Auto'] + '</label>' +
+            '<label class="form-check-label" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
 
-			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 1</label>' +
+			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
 
-			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 2</label>' +
+			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
 
-			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 3</label>' +
+			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
 
-			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 4</label>' +
+			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
 
-			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n['Boxes']['OwnpartCalculator']['Place'] + ' 5</label>' +
+			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
 
-			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n['Boxes']['OwnpartCalculator']['Levels'] + '</label>' +
+			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n('Boxes.OwnpartCalculator.Levels') + '</label>' +
 			'</div>';
 
 		b.push(cb);
 
 		b.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
-				'<span class="btn-default button-own">' + i18n['Boxes']['OwnpartCalculator']['CopyValues'] + '</span> ' +
-				'<span class="btn-default button-save-own">' + i18n['Boxes']['OwnpartCalculator']['Note'] + '</span>' +
+				'<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ' +
+				'<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>' +
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
@@ -635,7 +635,7 @@ let Parts = {
 			}
 		}
 		else {
-			parts.push(i18n['Boxes']['OwnpartCalculator']['NoPlaceSafe']);
+			parts.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
 		}
 
 		if(Parts.SaveCopy.length > 0){
