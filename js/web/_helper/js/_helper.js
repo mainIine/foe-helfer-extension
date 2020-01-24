@@ -101,6 +101,24 @@ helper.arr = {
 	}
 };
 
+helper.permutations = (()=>{
+	const permutations = function *(elements) {
+		if (elements.length === 1) {
+			yield elements;
+		} else {
+			let [first, ...rest] = elements;
+			for (let perm of permutations(rest)) {
+				for (let i = 0; i < elements.length; i++) {
+					let start = perm.slice(0, i);
+					let rest = perm.slice(i);
+					yield [...start, first, ...rest];
+				}
+			}
+		}
+	}
+	return permutations;
+})();
+
 
 let HTML = {
 
@@ -122,7 +140,7 @@ let HTML = {
 	Box: (args)=> {
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').html(args['title'] + i18n['Global']['BoxTitle']),
+			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('FoE Helper') + '</em></small>'),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),

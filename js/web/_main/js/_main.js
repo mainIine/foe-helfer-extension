@@ -45,6 +45,18 @@ let ApiURL = 'https://api.foe-rechner.de/',
 
 document.addEventListener("DOMContentLoaded", function(){
 
+	/*
+	// @ Todo: Fetch + Exception falls es die Datei nicht gibt. Spart das ausfüllen von möglichen Sprachen
+
+	// Als Text sollte der Box Titel "FoE Helfer geladen werden können"
+
+	$.ajax(extUrl + 'js/web/_i18n/' + MainParser.Language + '.json').done(function(text){
+		const data = JSON.parse(text);
+
+		i18n.translator.add(data);
+	});
+	*/
+
 	// aktuelle Welt notieren
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
@@ -968,21 +980,6 @@ const FoEproxy = (function () {
 
 
 	// --------------------------------------------------------------------------------------------------
-	// Negotiation
-
-	FoEproxy.addHandler('all', 'startNegotiation', (data, postData) => {
-		Negotiation.StartNegotiation(data.responseData);
-	});
-
-	FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => {
-		Negotiation.SubmitTurn(data.responseData);
-	});
-
-	FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
-		Negotiation.ExitNegotiation(data.responseData);
-	});
-
-	// --------------------------------------------------------------------------------------------------
 	// GüterUpdate nach angenommenen Handel
 	FoEproxy.addRawWsHandler((data) => {
 		let Msg = data[0];
@@ -1000,6 +997,10 @@ const FoEproxy = (function () {
 
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
 		MainParser.Quests = data.responseData;
+
+		if( $('#costCalculator').length > 0 ){
+			Calculator.Show();
+		}
 	});
 
 })();

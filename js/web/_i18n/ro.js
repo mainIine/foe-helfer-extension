@@ -97,6 +97,12 @@ let i18n = {
 			"BuyableFP" : "Buyable: "
 		},
 
+		"Investment" : {
+			"Title" : "Investment", //Todo: Translate
+			"InvestBar" : "Invested FP: ", //Todo: Translate
+			"CurrReward" : "Current Profit: " //Todo: Translate
+		},
+
 		"Productions" : {
 			"Title" : "Prezentarea generală a producției",
 			"SearchInput": "Caută clădirea...",
@@ -230,7 +236,7 @@ let i18n = {
 			"ResetBox" : "Resetare",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> tocmai a primit __points__ puncte în EG.",
-				"LevelUp" : "__player__ a ajuns la nivelul __level__ al clădirii __building__. <br>Ai ieșit pe locul <strong>__rank__th</strong>.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
 				"Auction" : "'<strong>__player__</strong> a licitat __amount__ monede.",
 				"Trade" : "<strong>__player__</strong> a acceptat oferta ta.<br>Ai primit __needValue__ __need__ pentru __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Nivelul __level__",

@@ -97,6 +97,12 @@ let i18n = {
 			"BuyableFP" : "Achetable : ",
 		},
 
+		"Investment" : {
+			"Title" : "Investment", //Todo: Translate
+			"InvestBar" : "Invested FP: ", //Todo: Translate
+			"CurrReward" : "Current Profit: " //Todo: Translate
+		},
+
 		"Productions" : {
 			"Title" : "Vue d'ensemble des productions",
 			"SearchInput": "Chercher un bâtiment...",
@@ -230,7 +236,7 @@ let i18n = {
 			"ResetBox" : "Vider la boîte",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> vient de recevoir __points__ points au GEX.",
-				"LevelUp" : "Le __building__ de __player__ vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__th</strong> place et obtenu <strong>__fps__</strong>PFs en retour.",
+				"LevelUp" : "Le __building__ de __player__ vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__th</strong> place et obtenu <strong>__fps__</strong> PFs en retour.",
 				"Auction" : "<strong>__player__</strong> vient d'offrir __amount__ pièces.",
 				"Trade" : "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__.",
 				"MsgBuilding" : "<strong>__building__<strong> viens de passer au niveau __level__.",

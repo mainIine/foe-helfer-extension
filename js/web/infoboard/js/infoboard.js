@@ -341,7 +341,7 @@ let Info = {
             }
 
             // FP Typ aus dem Lager ermitteln
-            let factor = parseInt(MainParser.Inventory.find(i => i['id'] === d[i]['itemId'])['item']['resource_package']['gain']),
+            let factor = parseInt(MainParser.Inventory.find(x => x['id'] === d[i]['itemId'])['item']['resource_package']['gain']),
                 amount = factor * parseInt(d[i]['amount']);
 
             // ... und sichern
@@ -442,7 +442,6 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
-        debugger;
         let newFP = Info.ReturnFPPoints;
 
         // zurück setzen
