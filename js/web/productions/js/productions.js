@@ -23,16 +23,16 @@ let Productions = {
 	ActiveTab: 'strategy_points',
 
 	BuildingTypes: {
-		greatbuilding: i18n.Boxes.Productions.Headings.greatbuilding,
-		production : i18n.Boxes.Productions.Headings.production,
-		random_production : i18n.Boxes.Productions.Headings.random_production,
-		residential: i18n.Boxes.Productions.Headings.residential,
-		decoration: i18n.Boxes.Productions.Headings.decoration,
-		street: i18n.Boxes.Productions.Headings.street,
-		goods: i18n.Boxes.Productions.Headings.goods,
-		culture: i18n.Boxes.Productions.Headings.culture,
-		main_building: i18n.Boxes.Productions.Headings.main_building,
-		boost: i18n.Boxes.Productions.Headings.boost,
+		greatbuilding: i18n('Boxes.Productions.Headings.greatbuilding'),
+		production : i18n('Boxes.Productions.Headings.production'),
+		random_production : i18n('Boxes.Productions.Headings.random_production'),
+		residential: i18n('Boxes.Productions.Headings.residential'),
+		decoration: i18n('Boxes.Productions.Headings.decoration'),
+		street: i18n('Boxes.Productions.Headings.street'),
+		goods: i18n('Boxes.Productions.Headings.goods'),
+		culture: i18n('Boxes.Productions.Headings.culture'),
+		main_building: i18n('Boxes.Productions.Headings.main_building'),
+		boost: i18n('Boxes.Productions.Headings.boost'),
 	},
 
 	Tabs: [],
@@ -65,7 +65,7 @@ let Productions = {
 	 */
 	init: ()=> {
 
-		moment.locale(i18n['Local']);
+		moment.locale(i18n('Local'));
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 
@@ -145,7 +145,7 @@ let Productions = {
 		let HappinessBonus = MainParser.AllBoosts['happiness_amount'];
 		if (HappinessBonus !== undefined && HappinessBonus !== 0) {
 			let building = {
-				name: i18n['Boxes']['Productions']['AdjacentBuildings'],
+				name: i18n('Boxes.Productions.AdjacentBuildings'),
 				type: 'boost',
 				products: [],
 				motivatedproducts: [],
@@ -391,7 +391,7 @@ let Productions = {
 
 		HTML.Box({
 			'id': 'Productions',
-			'title': i18n['Boxes']['Productions']['Title'],
+			'title': i18n('Boxes.Productions.Title'),
 			'auto_close': true,
 			'dragdrop': true,
 			'minimize': true
@@ -452,7 +452,7 @@ let Productions = {
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						if (type !== 'population' && type !== 'happiness') {
-							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>');
+							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
 						}
 						else {
@@ -486,7 +486,7 @@ let Productions = {
 						}
 
 						tds +='<td>' + pA.join('<br>') + '</td>' +
-							'<td>' + moment.unix(buildings[i]['at']).format(i18n['DateTime']) + '</td>' +
+							'<td>' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>' +
 							'</tr>';
@@ -552,7 +552,7 @@ let Productions = {
 						break;
 					}
 
-					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n['Eras'][era] + '</strong></th></tr>');
+					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n('Eras')[era] + '</strong></th></tr>');
 
 					table.push('<tr><td colspan="5" class="all-products">');
 
@@ -564,13 +564,13 @@ let Productions = {
 
 				table.push('<tbody>');
 
-				table.push('<tr><td></td><td class="total-products"><strong>' + i18n['Boxes']['Productions']['Total'] + HTML.Format(countAll) + '</strong></td><td colspan="3"></td></tr>');
+				table.push('<tr><td></td><td class="total-products"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td><td colspan="3"></td></tr>');
 			}
 
 			else {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
-				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n['Boxes']['Productions']['ModeGroups'] + '</span></th>');
+				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>');
 				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
 
@@ -580,9 +580,9 @@ let Productions = {
 				// Sortierung - Einzelheader
 				table.push('<tr class="sorter-header">');
 				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">Name</th>');
-				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['amount'] + '</th>');
+				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
-					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n['Boxes']['Productions']['Headings']['earning'] + '</th>');
+					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
 				else {
 					table.push('<th class="no-sort">&nbsp;</th>');
@@ -603,9 +603,9 @@ let Productions = {
 
 				// Sortierung - Gruppiert-Header
 				table.push('<tr class="sorter-header">');
-				table.push('<th class="game-cursor text-right is-number" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['number'] + '</th>');
+				table.push('<th class="game-cursor text-right is-number" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.number') + '</th>');
 				table.push('<th class="ascending game-cursor" colspan="4" data-type="' + type + '-groups">Name</th>');
-				table.push('<th class="is-number game-cursor" data-type="' + type + '-groups">' + i18n['Boxes']['Productions']['Headings']['amount'] + '</th>');
+				table.push('<th class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('</tr>');
 
 				table.push( rowB.join('') );
@@ -665,7 +665,7 @@ let Productions = {
 
 		TableAll.push('<thead>');
 		TableAll.push('<tr>');
-		TableAll.push('<th><input type="text" id="all-search" placeholder="' + i18n['Boxes']['Productions']['SearchInput'] + '" onkeyup="Productions.Filter()"></th>');
+		TableAll.push('<th><input type="text" id="all-search" placeholder="' + i18n('Boxes.Productions.SearchInput') + '" onkeyup="Productions.Filter()"></th>');
 		TableAll.push('<th class="text-right" id="all-dropdown-th"></th>');
 		TableAll.push('</tr>');
 		TableAll.push('</thead>');
@@ -760,9 +760,9 @@ let Productions = {
 				hiddenTb.fadeIn(400);
 
 				if( $('.' + t + '-single').is(':visible') ){
-					btn.text(i18n['Boxes']['Productions']['ModeGroups']);
+					btn.text(i18n('Boxes.Productions.ModeGroups'));
 				} else {
-					btn.text(i18n['Boxes']['Productions']['ModeSingle']);
+					btn.text(i18n('Boxes.Productions.ModeSingle'));
 				}
 			});
 		});
@@ -796,7 +796,7 @@ let Productions = {
 		// Dropdown zum Filtern
 		let drop = $('<select />').attr('id', 'all-drop').addClass('game-cursor');
 
-		drop.append( $('<option />').attr('data-type', 'all').text( i18n['Boxes']['Productions']['Headings']['all'] ) )
+		drop.append( $('<option />').attr('data-type', 'all').text( i18n('Boxes.Productions.Headings.all') ) )
 
 		for(let i in Productions.Buildings)
 		{
@@ -968,7 +968,7 @@ let Productions = {
 	 */
 	GetGoodName: (GoodType)=> {
 		if (GoodType === 'happiness') {
-			return i18n['Boxes']['Productions']['Happiness'];
+			return i18n('Boxes.Productions.Happiness');
 		}
 		else {
 			return GoodsData[GoodType]['name'];

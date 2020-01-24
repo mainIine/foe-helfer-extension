@@ -110,7 +110,7 @@ let Reader = {
 		if ($('#ResultBox').length === 0) {
 			HTML.Box({
 				'id': 'ResultBox',
-				'title': i18n['Boxes']['Neighbors']['Title'] + '<em>' + Reader.player_name + '</em>',
+				'title': i18n('Boxes.Neighbors.Title') + '<em>' + Reader.player_name + '</em>',
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -131,7 +131,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.ReadyProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -159,7 +159,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.OngoingProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
