@@ -200,15 +200,15 @@ let i18n = {
             "TryEnd": "Essayer de finir",
             "Canceled": "La négociation a été annulée",
             "Success": "Succès",
-            "Chance": "Chance",
+            "Chance": "Chance ",
 			"Person": "Personne",
-			"Average": "Ø Coûts", //Todo: Translate
+			"Average": "Ordre préférentiel",
 			"Costs": "Moyens:",
 			"Round": "Tour",
 			"Stock": "Stock :",
 			"GoodsLow": "ATTENTION : votre stock de marchandises est faible.",
 			"GoodsCritical": "ATTENTION : votre stock de marchandises est critique.",
-			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'affichage moyen en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
+			"DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'ordre préférentiel en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
 			"TableLoadError": "Erreur de chargement de la table de négociations",
         },
         
