@@ -51,7 +51,7 @@ let StrategyPoints = {
 		}
 
 		if($('.buyable-fp').length == 0) {
-			$('#fp-bar').append(' ' + i18n['Boxes']['StrategyPoints']['BuyableFP'] + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
+			$('#fp-bar').append(' ' + i18n('Boxes.StrategyPoints.BuyableFP') + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
 
 		} else {
 			$('.buyable-fp').text(HTML.Format(amount));
@@ -101,7 +101,7 @@ let StrategyPoints = {
 
 		// noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			let div = $('<div />').attr('id', 'fp-bar').text(i18n['Boxes']['StrategyPoints']['FPBar']).append( $('<strong>0</strong>').addClass('fp-storage') );
+			let div = $('<div />').attr('id', 'fp-bar').text(i18n('Boxes.StrategyPoints.FPBar')).append( $('<strong>0</strong>').addClass('fp-storage') );
 
 			$('body').append(div);
 		}
