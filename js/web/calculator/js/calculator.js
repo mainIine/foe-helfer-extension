@@ -152,8 +152,8 @@ let Calculator = {
 
             HTML.Box({
 				'id': 'costCalculator',
-				'title': i18n['Boxes']['Calculator']['Title'],
-				'ask': i18n['Boxes']['Calculator']['HelpLink'],
+				'title': i18n('Boxes.Calculator.Title'),
+				'ask': i18n('Boxes.Calculator.HelpLink'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true,
@@ -215,10 +215,10 @@ let Calculator = {
 		if (Calculator.PlayerName !== undefined) {
 			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
 		}
-		h.push('</strong><br>' + i18n['Boxes']['Calculator']['Step'] + '' + Level + ' &rarr; ' + (Level + 1) + '</p>');
+		h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + '</p>');
 
         // FP im Lager
-        h.push('<p>' + i18n['Boxes']['Calculator']['AvailableFP'] + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
+        h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
 
 		h.push('</div>');
 
@@ -248,11 +248,11 @@ let Calculator = {
 
 		h.push('<br>');
 
-		h.push('<span><strong>' + i18n['Boxes']['Calculator']['FriendlyInvestment'] + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
+		h.push('<span><strong>' + i18n('Boxes.Calculator.FriendlyInvestment') + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 
 		h.push('</div><div>');
 
-		h.push(i18n['Boxes']['Calculator']['ArcBonus'] + ': ' + Calculator.ArcBonus + '%<br>');
+		h.push(i18n('Boxes.Calculator.ArcBonus') + ': ' + Calculator.ArcBonus + '%<br>');
 		h.push('<strong>Snipen</strong><br>');
 
         h.push('</div>');
@@ -269,7 +269,7 @@ let Calculator = {
         // Wieviel fehlt noch bis zum leveln?
 		let rest = (UpdateEntity['state']['invested_forge_points'] === undefined ? UpdateEntity['state']['forge_points_for_level_up'] : UpdateEntity['state']['forge_points_for_level_up'] - UpdateEntity['state']['invested_forge_points']);
         
-		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['Up2LevelUp'] + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
 		h.push(Calculator.GetRecurringQuestsLine());
 		
@@ -278,10 +278,10 @@ let Calculator = {
 
         // Stufe ist noch nicht freigeschaltet
         if (UpdateEntity['level'] === UpdateEntity['max_level']) {
-            $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotOpen']));
+            $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotOpen')));
 
         } else if (UpdateEntity['connected'] === undefined) {
-            $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n['Boxes']['Calculator']['LGNotConnected']));
+            $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
         }
  
         Calculator.CalcBody();
@@ -335,7 +335,7 @@ let Calculator = {
 					let CurrentProgress = cond.currentProgress !== undefined ? cond.currentProgress : 0;
 					let MaxProgress = cond.maxProgress;
 					if (CurrentEraID <= 3 || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
-						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n['Boxes']['Calculator']['ActiveRecurringQuest'] + ': <span id="recurringquests" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : i18n['Boxes']['Calculator']['Done']) + '</span> ' + i18n['Boxes']['Calculator']['FP'] + '</em></div>');
+						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ': <span id="recurringquests" style="color:#FFB539">' + (MaxProgress - CurrentProgress !== 0 ? HTML.Format(MaxProgress - CurrentProgress) : i18n('Boxes.Calculator.Done')) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 					}
 				}
 			}
@@ -548,19 +548,19 @@ let Calculator = {
 		// Tabellen ausgeben
 		hFordern.push('<thead>' +
 			'<th>#</th>' +
-			'<th>' + i18n['Boxes']['Calculator']['Commitment'] + '</th>' +
-			'<th>' + i18n['Boxes']['Calculator']['Profit'] + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.Commitment') + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
 			'</thead>');
 
 		hBPMeds.push('<thead>' +
-			'<th>' + i18n['Boxes']['Calculator']['BPs'] + '</th>' +
-			'<th>' + i18n['Boxes']['Calculator']['Meds'] + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.BPs') + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.Meds') + '</th>' +
 			'</thead>');
 
 		hSnipen.push('<thead>' +
-			'<th>' + i18n['Boxes']['Calculator']['Commitment'] + '</th>' +
-			'<th>' + i18n['Boxes']['Calculator']['Profit'] + '</th>' +
-			'<th>' + i18n['Boxes']['Calculator']['Rate'] + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.Commitment') + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
+			'<th>' + i18n('Boxes.Calculator.Rate') + '</th>' +
 			'</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
@@ -590,11 +590,11 @@ let Calculator = {
 				hFordern.push('<tr class="info-row">');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
-				let ToolTip = HTML.i18nReplacer(i18n['Boxes']['Calculator']['NegativeProfitTT'], { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] });
+				let ToolTip = HTML.i18nReplacer(i18n('Boxes.Calculator.NegativeProfitTT'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] });
 				hFordern.push('<tr class="bg-red tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
-				let ToolTip = i18n['Boxes']['Calculator']['LevelWarning'] + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n['Boxes']['Calculator']['LevelWarningTT'], { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank]}) : '');
+				let ToolTip = i18n('Boxes.Calculator.LevelWarning') + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n('Boxes.Calculator.LevelWarningTT'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank]}) : '');
 				hFordern.push('<tr class="bg-yellow tr-tooltip" title="' + ToolTip + '">');
 			}
 			else if (ForderStates[Rank] === 'Profit') {
@@ -617,7 +617,7 @@ let Calculator = {
 				hBPMeds.push('<tr class="bg-red">');
 			}
 			else if (ForderStates[Rank] === 'LevelWarning' && SnipeStates[Rank] === 'LevelWarning') {
-				hBPMeds.push('<tr class="bg-yellow" title="' + i18n['Boxes']['Calculator']['LevelWarning'] + '">');
+				hBPMeds.push('<tr class="bg-yellow" title="' + i18n('Boxes.Calculator.LevelWarning') + '">');
 			}
 			else if (ForderStates[Rank] === 'Profit' && SnipeStates[Rank] === 'Profit') {
 				hBPMeds.push('<tr class="bg-green">');
@@ -639,7 +639,7 @@ let Calculator = {
 				hSnipen.push('<tr class="bg-red">');
 			}
 			else if (SnipeStates[Rank] === 'LevelWarning') {
-				hSnipen.push('<tr class="bg-yellow" title="' + i18n['Boxes']['Calculator']['LevelWarning'] + '">');
+				hSnipen.push('<tr class="bg-yellow" title="' + i18n('Boxes.Calculator.LevelWarning') + '">');
 			}
 			else if (SnipeStates[Rank] === 'Profit') {
 				hSnipen.push('<tr class="bg-green">');
@@ -796,7 +796,7 @@ let Calculator = {
 
 			HTML.Box({
 				'id': 'LGOverviewBox',
-				'title': i18n['Boxes']['LGOverviewBox']['Title'],
+				'title': i18n('Boxes.LGOverviewBox.Title'),
 				'auto_close': true,
 				'dragdrop': true,
 				'speaker': 'CalculatorOverviewTone'
@@ -817,9 +817,9 @@ let Calculator = {
 				'<strong>' + PlayerName + ' </strong>' +
 				'<span class="color-description">?' +
 					'<span>' +
-						'<span style="color:#FFB539">' + i18n['Boxes']['LGOverviewBox']['Tooltip']['FoundNew'] + '</span>' +
-						'<span style="color:#29b206">' + i18n['Boxes']['LGOverviewBox']['Tooltip']['FoundAgain'] + '</span>' +
-						'<span style="color:#FF6000">' + i18n['Boxes']['LGOverviewBox']['Tooltip']['NoPayment'] + '</span>' +
+						'<span style="color:#FFB539">' + i18n('Boxes.LGOverviewBox.Tooltip.FoundNew') + '</span>' +
+						'<span style="color:#29b206">' + i18n('Boxes.LGOverviewBox.Tooltip.FoundAgain') + '</span>' +
+						'<span style="color:#FF6000">' + i18n('Boxes.LGOverviewBox.Tooltip.NoPayment') + '</span>' +
 					'</span>' +
 				'</span>' +
 			'</p>');
@@ -829,11 +829,11 @@ let Calculator = {
 
 		h.push('<thead>' +
 			'<tr>' +
-				'<th>' + i18n['Boxes']['LGOverviewBox']['Building'] + '</th>' +
-				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['Level'] + '</th>' +
-				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['PayedTotal'] + '</th>' +
-				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['Profit'] + '</th>' +
-				'<th class="text-center">' + i18n['Boxes']['LGOverviewBox']['Rate'] + '</th>' +
+				'<th>' + i18n('Boxes.LGOverviewBox.Building') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Level') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.PayedTotal') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Profit') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Rate') + '</th>' +
 			'</tr>' +
 		'</thead>');
 
@@ -946,7 +946,7 @@ let Calculator = {
 			h = [];
 
 			h.push('<div class="text-center yellow-strong nothing-to-get">' + HTML.i18nReplacer(
-				i18n['Boxes']['LGOverviewBox']['NothingToGet'],
+				i18n('Boxes.LGOverviewBox.NothingToGet'),
 				{
 					'player' : PlayerName
 				}
