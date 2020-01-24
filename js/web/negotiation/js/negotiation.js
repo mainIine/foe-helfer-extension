@@ -56,7 +56,7 @@ let Negotiation = {
 			// Box in den DOM
 			HTML.Box({
 				'id': 'negotiationBox',
-				'title': i18n['Boxes']['Negotiation']['Title'],
+				'title': i18n('Boxes.Negotiation.Title'),
 				'auto_close': true,
 				'minimize': true,
 				'dragdrop': true,
@@ -109,13 +109,13 @@ let Negotiation = {
 			h.push('<tbody>');
 
 			h.push('<tr>');
-			h.push('<td colspan="4" class="text-warning"><strong>' + i18n['Boxes']['Negotiation']['Chance'] + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="4" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
 			h.push('</tr>');
 
 			h.push('<tr>');
 
-			h.push('<td class="text-warning">' + i18n['Boxes']['Negotiation']['Average'] + '</td>');
+			h.push('<td class="text-warning">' + i18n('Boxes.Negotiation.Average') + '</td>');
 
 			h.push('<td colspan="4"><div id="good-sort" ' + (CurrentTry === 1 ? '  class="goods-dragable"' : '') + '>');
 
@@ -155,7 +155,7 @@ let Negotiation = {
 					GoodAmount = Math.round(GoodAmount * 10) / 10;
 				}
 
-				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n['Boxes']['Negotiation']['Stock'] + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
+				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
 					'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
 					'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
@@ -167,7 +167,7 @@ let Negotiation = {
 
 			if (Negotiation.CurrentTry === 1) {
 				h.push('<tr>');
-				h.push('<td colspan="5" class="text-center"><small>' + i18n['Boxes']['Negotiation']['DragDrop'] + '</small></td>');
+				h.push('<td colspan="5" class="text-center"><small>' + i18n('Boxes.Negotiation.DragDrop') + '</small></td>');
 				h.push('</tr>');
 			}
 
@@ -175,14 +175,14 @@ let Negotiation = {
 		}
 		else if (Negotiation.CurrentTable === undefined && Negotiation.CurrentTry === 1){
 			Negotiation.MessageClass = 'danger';
-			Negotiation.Message = i18n['Boxes']['Negotiation']['TableLoadError'];
+			Negotiation.Message = i18n('Boxes.Negotiation.TableLoadError');
 		}
 		
 		h.push('<tbody>');
 		h.push('<tr class="thead">');
 
 		for (let i = 0; i < Negotiation.PlaceCount; i++) {
-			h.push('<th class="text-center">' + i18n['Boxes']['Negotiation']['Person'] + ' ' + (i + 1) + '</th>');
+			h.push('<th class="text-center">' + i18n('Boxes.Negotiation.Person') + ' ' + (i + 1) + '</th>');
 		}
 
 		h.push('</tr>');
@@ -228,16 +228,16 @@ let Negotiation = {
 		}
 
 		if (StockState === 1) {
-			h.push('<p class="text-center text-warning"><strong>' + i18n['Boxes']['Negotiation']['GoodsLow'] + '</strong></p>')
+			h.push('<p class="text-center text-warning"><strong>' + i18n('Boxes.Negotiation.GoodsLow') + '</strong></p>')
 		}
 		else if (StockState === 2) {
-			h.push('<p class="text-center text-danger"><strong>' + i18n['Boxes']['Negotiation']['GoodsCritical'] + '</strong></p>')
+			h.push('<p class="text-center text-danger"><strong>' + i18n('Boxes.Negotiation.GoodsCritical') + '</strong></p>')
 		}
 
 		$('#negotiationBoxBody').html(h.join('')).promise().done(function(){
 
 			// Rundenzahl oben rechts
-			$('#round-count').find('strong').text(i18n['Boxes']['Negotiation']['Round'] + ' ' + (cnt + 1) + '/' + (Negotiation.TryCount));
+			$('#round-count').find('strong').text(i18n('Boxes.Negotiation.Round') + ' ' + (cnt + 1) + '/' + (Negotiation.TryCount));
 
 			// Verhandlungen Fertig/abgebrochen/Fehler
 			if(IsEnd === true){
@@ -400,7 +400,7 @@ let Negotiation = {
 		if (Result === -1) {
 			Negotiation.CurrentTry = 0;
 			Negotiation.CurrentTable = undefined;
-			Negotiation.Message = i18n['Boxes']['Negotiation']['WrongGoods'];
+			Negotiation.Message = i18n('Boxes.Negotiation.WrongGoods');
 			Negotiation.MessageClass = 'danger';
 
 		} else {
@@ -414,7 +414,7 @@ let Negotiation = {
 				// Verhandlung erfolgreich abgeschlossen
 				Negotiation.CurrentTry = 0;
 				Negotiation.CurrentTable = undefined;
-				Negotiation.Message = i18n['Boxes']['Negotiation']['Success'];
+				Negotiation.Message = i18n('Boxes.Negotiation.Success');
 				Negotiation.MessageClass = 'success';
 
 				if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length > 0) {
@@ -423,11 +423,11 @@ let Negotiation = {
 					});
 				}
 
-			} else if (currentTry > Negotiation.TryCount) {
+			} else if (currentTry >= Negotiation.TryCount) {
 				// Versuche aufgebraucht
 				Negotiation.CurrentTry = 0;
 				Negotiation.CurrentTable = undefined;
-				Negotiation.Message = i18n['Boxes']['Negotiation']['TryEnd'];
+				Negotiation.Message = i18n('Boxes.Negotiation.TryEnd');
 				Negotiation.MessageClass = 'warning';
 
 			} else {
@@ -449,7 +449,7 @@ let Negotiation = {
 	ExitNegotiation: () => {
 		Negotiation.CurrentTry = 0;
 		Negotiation.CurrentTable = undefined;
-		Negotiation.Message = i18n['Boxes']['Negotiation']['Canceled'];
+		Negotiation.Message = i18n('Boxes.Negotiation.Canceled');
 		Negotiation.MessageClass = 'danger';
 
 		Negotiation.RefreshBox();
@@ -525,7 +525,7 @@ let Negotiation = {
 						break;
 					}
 				}
-				if (!valid) break;
+				if (!valid || !table.r) break;
 				lastTable = table;
 				table = table.r[result];
 			}

@@ -1,5 +1,34 @@
 ##Changelog - Chrome Extension
 
+#####2.4.1.1
+
+**Update**
+- Info box:
+    - [#435](https://github.com/dsiekiera/foe-helfer-extension/issues/435) Now saves the set filters
+
+- Menu:
+    - If you hold a menu item via mouse drag min. 1.5s over one of the active up or down arrows, the menu scrolls to the next view
+
+- Negotiator:
+    - [#420](https://github.com/dsiekiera/foe-helfer-extension/issues/420) Detects exchanged goods and can continue to work with them if it still fits into the logic
+
+**BugFix**
+- Info box:
+    - [#380](https://github.com/dsiekiera/foe-helfer-extension/issues/380) [#408](https://github.com/dsiekiera/foe-helfer-extension/issues/408 ) Level-Up shows correct FPs
+
+- motivations / polishing:
+    - [#388](https://github.com/dsiekiera/foe-helfer-extension/issues/388) Information is transferred correctly again
+    
+- Event list:
+    - [#405](https://github.com/dsiekiera/foe-helfer-extension/issues/405) [#432](https://github.com/dsiekiera/foe-helfer-extension/issues/432 ) When the daily tasks were accomplished, the list was completely empty
+
+- Citymap:
+    - [#412](https://github.com/dsiekiera/foe-helfer-extension/issues/412) Some buildings on the left edge were not shown
+
+- Cost calculator:
+    - [#416](https://github.com/dsiekiera/foe-helfer-extension/issues/416) line at the bottom for loop quests was gone
+
+
 #####2.4.1
 
 **New**
