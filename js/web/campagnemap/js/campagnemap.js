@@ -42,7 +42,7 @@ let KampagneMap = {
 
             HTML.Box({
 				'id': 'campagne',
-				'title': i18n['Boxes']['Campagne']['Title'],
+				'title': i18n('Boxes.Campagne.Title'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': false
@@ -89,7 +89,7 @@ let KampagneMap = {
         if (OffeneProvinzen.length === 0) {
             h.push('<div class="campagne-head">');
             h.push('<div class="text-center"><strong>' + CurrentProvince['name'] + '</strong></div>');
-            h.push('<div><strong>' + i18n['Boxes']['Campagne']['AlreadyDone'] + '</strong></div>');
+            h.push('<div><strong>' + i18n('Boxes.Campagne.AlreadyDone') + '</strong></div>');
             h.push('</div>');
             $('#campagneBody').html(h.join(''));
         }
@@ -122,7 +122,7 @@ let KampagneMap = {
             h.push('</div>');
     
             h.push('<div class="campagne-head">');
-            h.push('<div class="text-center"><strong>' + i18n['Boxes']['Campagne']['Reward'] + ': </strong></div>');
+            h.push('<div class="text-center"><strong>' + i18n('Boxes.Campagne.Reward') + ': </strong></div>');
 
             for (let RewardTyp in Rewards) {
             	if(!Rewards.hasOwnProperty(RewardTyp)){
@@ -136,10 +136,10 @@ let KampagneMap = {
             h.push('<table class="foe-table">');
             h.push('<thead>' +
                 '<tr>' +
-                '<th>' + i18n['Boxes']['Campagne']['Resource'] + '</th>' +
-                '<th>' + i18n['Boxes']['Campagne']['DescRequired'] + '</th>' +
-                '<th>' + i18n['Boxes']['Campagne']['DescInStock'] + '</th>' +
-                '<th class="text-right">' + i18n['Boxes']['Campagne']['DescStillMissing'] + '</th>' +
+                '<th>' + i18n('Boxes.Campagne.Resource') + '</th>' +
+                '<th>' + i18n('Boxes.Campagne.DescRequired') + '</th>' +
+                '<th>' + i18n('Boxes.Campagne.DescInStock') + '</th>' +
+                '<th class="text-right">' + i18n('Boxes.Campagne.DescStillMissing') + '</th>' +
                 '</tr>' +
                 '</thead>');
     
