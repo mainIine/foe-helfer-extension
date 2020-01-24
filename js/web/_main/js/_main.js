@@ -43,20 +43,57 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	UsePartCalcOnAllLGs = false,
 	CurrentTime = 0;
 
+// Übersetzungen laden
+let i18n_loaded = false;
+const i18n_loadPromise = (async() => {
+	const sleep = delay => new Promise(resolve => setTimeout(resolve, delay));
+	const vendorsLoadedPromise = new Promise(resolve =>
+		window.addEventListener('foe-helper#vendors-loaded', resolve, {passive: true, once: true})
+	);
+	
+	try {
+		let languages = [];
+		// Lade Deutsches default falls es nicht auf Deutsch ist
+		if (GuiLng !== 'de') {
+			languages.push('de');
+
+			// Lade auch das Englische default falls es auch nicht auf Englisch ist
+			if (GuiLng !== 'en') {
+				languages.push('en');
+			}
+		}
+
+		languages.push(GuiLng);
+
+		// parrallel mache:
+		const languageDatas = await Promise.all(
+			languages
+			.map(lang =>
+				// frage die Sprachdatei an
+				fetch(extUrl + 'js/web/_i18n/'+lang+'.json')
+				// lade die antwort als JSON
+				.then(response => response.json())
+				// im fehlerfall wird ein leeres Objekt zurück gegeben
+				.catch(()=>({}))
+			)
+		);
+
+		// warte dass i18n geladen ist
+		await vendorsLoadedPromise;
+
+		for (let languageData of languageDatas) {
+			i18n.translator.add(languageData);
+		}
+
+		i18n_loaded = true;
+	} catch (err) {
+		console.error('i18n translation loading error:', err);
+	}
+})();
+
+
+
 document.addEventListener("DOMContentLoaded", function(){
-
-	/*
-	// @ Todo: Fetch + Exception falls es die Datei nicht gibt. Spart das ausfüllen von möglichen Sprachen
-
-	// Als Text sollte der Box Titel "FoE Helfer geladen werden können"
-
-	$.ajax(extUrl + 'js/web/_i18n/' + MainParser.Language + '.json').done(function(text){
-		const data = JSON.parse(text);
-
-		i18n.translator.add(data);
-	});
-	*/
-
 	// aktuelle Welt notieren
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
@@ -1375,7 +1412,7 @@ let MainParser = {
 			MainParser.showInfo(
 				d['other_player']['name'] + ' geupdated',
 				HTML.i18nReplacer(
-					i18n['API']['LGGildMember'],
+					i18n('API.LGGildMember'),
 					{
 						'player' : d['other_player']['name']
 					}
@@ -1404,7 +1441,7 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		MainParser.showInfo(i18n['API']['UpdateSuccess'], i18n['API']['GEXPlayer']);
+		MainParser.showInfo(i18n('API.UpdateSuccess'), i18n('API.GEXPlayer'));
 
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
@@ -1426,7 +1463,7 @@ let MainParser = {
 			data: JSON.stringify(data)
 		});
 
-		MainParser.showInfo(i18n['API']['UpdateSuccess'], i18n['API']['GEXChampionship']);
+		MainParser.showInfo(i18n('API.UpdateSuccess'), i18n('API.GEXChampionship'));
 	},
 
 
@@ -1512,7 +1549,7 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		MainParser.showInfo(i18n['API']['UpdateSuccess'], i18n['API']['LGInvest']);
+		MainParser.showInfo(i18n('API.UpdateSuccess'), i18n('API.LGInvest'));
 	},
 
 

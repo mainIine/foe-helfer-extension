@@ -97,6 +97,12 @@ let i18n = {
 			"BuyableFP" : "Buyable: "
 		},
 
+		"Investment" : {
+			"Title" : "Investment", //Todo: Translate
+			"InvestBar" : "Invested FP: ", //Todo: Translate
+			"CurrReward" : "Current Profit: " //Todo: Translate
+		},
+
 		"Productions" : {
 			"Title" : "Přehled produkce",
 			"SearchInput": "Hledat budovu...",

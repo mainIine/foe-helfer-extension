@@ -97,6 +97,12 @@ let i18n = {
 			"BuyableFP" : "Kaufbar: "
 		},
 
+		"Investment" : {
+			"Title" : "Investitionen",
+			"InvestBar" : "Investierte FP: ",
+			"CurrReward" : "Aktueller Gewinn: "
+		},
+
 		"Productions" : {
 			"Title" : "Produktions Übersicht",
 			"SearchInput": "Gebäude Suche...",
