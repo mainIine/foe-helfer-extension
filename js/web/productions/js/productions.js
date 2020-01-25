@@ -552,7 +552,7 @@ let Productions = {
 						break;
 					}
 
-					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n('Eras')[era] + '</strong></th></tr>');
+					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n('Eras.'+era) + '</strong></th></tr>');
 
 					table.push('<tr><td colspan="5" class="all-products">');
 
