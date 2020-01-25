@@ -327,15 +327,15 @@ let i18n = {
 		},
 		"Forum" : {
 			"Title" : "Forum",
-			"Desc" : "You have a question? You annoying something? Or just to talk ..."
+			"Desc" : "You have a question? Something annoying you? Or just want to talk ..."
 		},
 		"Ask" : {
 			"Title" : "Question / Answer",
-			"Desc" : "You do not know how something works?<br>Take a look!"
+			"Desc" : "You dont know how something works?<br>Take a look!"
 		},
 		"Bugs" : {
 			"Title" : "Mistakes / Wishes",
-			"Desc" : "Something is not how it should or you have an idea?"
+			"Desc" : "Something is not how it should be, or you have an idea?"
 		},
 		"OutP" : {
 			"Title" : "Outpost",
@@ -453,7 +453,7 @@ let i18n = {
 		"UpdateSuccess" : "Update performed",
 		"GEXPlayer" : "GEX placements of members have been updated",
 		"GEXChampionship" : "The GEX guild placement has been updated",
-		"LGInvest" : "Your LG investments have been transferred",
+		"LGInvest" : "Your GB investments have been transferred",
 		"LGGildMember" : "__player__'s Great buildings have been submitted"
 	},
 
