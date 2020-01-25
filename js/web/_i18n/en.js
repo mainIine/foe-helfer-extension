@@ -109,7 +109,7 @@ let i18n = {
 				"number" : "Number",
 				"amount" : "Amount",
 				"earning" : "Earning",
-				"greatbuilding" : "Legendary buildings",
+				"greatbuilding" : "Great buildings",
 				"production" : "Production building",
 				"random_production" : "Random productions",
 				"residential": "Residential buildings",
@@ -291,7 +291,7 @@ let i18n = {
 		"OwnpartCalculator" : {
 			"Title" : "Co-payment calculator",
 			"Desc" : "Create payment plan, calculate external seats and copy values",
-			"Warning": "Disabled: Open one of your Legendary Buildings first!"
+			"Warning": "Disabled: Open one of your Great Buildings first!"
         },
         "Technologies": {
             "Title": "Technologies",
@@ -388,7 +388,7 @@ let i18n = {
 		},
 		"SendInvestigations": {
 			"Title" : "FP investment",
-			"Desc" : "Entering the 'Town Hall'> 'News'> 'Legendary Buildings' will transmit the Fp investments"
+			"Desc" : "Entering the 'Town Hall'> 'News'> 'Great Buildings' will transmit the Fp investments"
 		},
 		"ShowTavernBadge": {
 			"Title" : "Show tavernas badge",
@@ -454,7 +454,7 @@ let i18n = {
 		"GEXPlayer" : "GEX placements of members have been updated",
 		"GEXChampionship" : "The GEX guild placement has been updated",
 		"LGInvest" : "Your LG investments have been transferred",
-		"LGGildMember" : "__player__'s Legendary buildings have been submitted"
+		"LGGildMember" : "__player__'s Great buildings have been submitted"
 	},
 
 	"HiddenRewards": {
