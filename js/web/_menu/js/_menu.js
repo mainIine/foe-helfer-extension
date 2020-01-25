@@ -364,10 +364,6 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	calculator_Btn: ()=> {
-        sessionStorage.removeItem('OtherActiveBuilding');
-        sessionStorage.removeItem('OtherActiveBuildingData');
-        sessionStorage.removeItem('OtherActiveBuildingOverview');
-
 		let btn_CalcBG = $('<div />').attr({'id': 'calculator-Btn', 'data-slug': 'calculator'}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
@@ -390,9 +386,6 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	partCalc_Btn: () => {
-        localStorage.removeItem('OwnCurrentBuildingCity');
-        localStorage.removeItem('OwnCurrentBuildingGreat');
-
 		let btn_OwnBG = $('<div />').attr({'id': 'partCalc-Btn', 'data-slug': 'partCalc'}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
@@ -402,7 +395,7 @@ let _menu = {
 
 		btn_Own.on('click', function() {
 			// nur wenn es für diese Session ein LG gibt zünden
-			if( localStorage.getItem('OwnCurrentBuildingGreat') !== null ){
+			if(Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined){
 				Parts.buildBox();
 			}
 		});
