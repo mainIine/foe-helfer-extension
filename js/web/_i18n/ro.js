@@ -390,8 +390,8 @@ let i18n = {
 			"Desc" : "Când accesezi 'Town Hall'> 'News'> 'Legendary Buildings' datele despre PF investite vor fi transmise"
 		},
 		"ShowTavernBadge": {
-			"Title" : "Show tavernas badge",  //Todo: Translate
-			"Desc" : "As soon as the extra move in the tavern is activated, a globally movable counter appears." //Todo: Translate
+			"Title" : "Arată taverna prietenilor",  //Todo: Translated but must be checked 
+			"Desc" : "Atunci când o mutare este disponibilă, este afișat un contor mobil." //Todo: Translated but must be checked
 		},
 		"PreScanLGList": {
 			"Title" : "Citirea preliminară a datelor despre CL",
