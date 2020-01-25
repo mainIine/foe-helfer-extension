@@ -71,7 +71,7 @@ let i18n = {
 			"ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 			"Done": "Terminat",
 			"LevelWarningTT": "__fpcount__PF nu pot fi donați<br>Investiția maximă: __totalfp__PF", // Translated
-			"NegativeProfitTT": "Locul nu este asigurat. Încă __fpcount__PF trebuie investiți.<br>Total necesar pentru asigurarea locului: __totalfp__PF" // Translated
+			"NegativeProfitTT": "Locul nu este asigurat. Încă __fpcount__PF trebuie investite.<br>Total necesar pentru asigurarea locului: __totalfp__PF" // Translated
 		},
 
 		"LGOverviewBox": {
