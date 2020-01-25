@@ -24,6 +24,8 @@ let Outposts = {
 	
 	/** @type {FoE_JSON_CityMap|null} */
 	CityMap: null,
+
+	CityEntities : null,
 	
 	// display settings
 	/** @type {Record<string, Record<string, FoE_JSON_GoodName>>} */
@@ -123,15 +125,13 @@ let Outposts = {
 
 		const currentRun = OutpostData.playthroughs.find(run => !run.isCompleted);
 
-		const BuildingsData = JSON.parse(sessionStorage.getItem('BuildingsData')||'null');
-
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		/** @type {{name: string, diplomacy: number}[]}} */
 		const UnlockedDiplomacyBuildings =
 			advancements
 			.filter(building => building.isUnlocked && building.rewards[0].toLocaleLowerCase().indexOf('diplomacy') > -1)
 			.map(building => {
-				let BuildingData = BuildingsData.find(obj => (obj.asset_id === building.rewards[0]));
+				let BuildingData = Outpost.CityEntities.find(obj => (obj.asset_id === building.rewards[0]));
 				return {name: building.name, diplomacy: BuildingData.staticResources.resources.diplomacy};
 			})
 			.reverse()
