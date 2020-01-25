@@ -131,7 +131,7 @@ let Outposts = {
 			advancements
 			.filter(building => building.isUnlocked && building.rewards[0].toLocaleLowerCase().indexOf('diplomacy') > -1)
 			.map(building => {
-				let BuildingData = Outpost.CityEntities.find(obj => (obj.asset_id === building.rewards[0]));
+				let BuildingData = Outposts.CityEntities.find(obj => (obj.asset_id === building.rewards[0]));
 				return {name: building.name, diplomacy: BuildingData.staticResources.resources.diplomacy};
 			})
 			.reverse()
