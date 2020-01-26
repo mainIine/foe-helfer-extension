@@ -59,14 +59,14 @@ let Unit = {
 		if ($('#units').length === 0) {
 			let args = {
 				'id': 'units',
-				'title': i18n('Boxes.Units.Title'),
+				'title': i18n['Boxes']['Units']['Title'],
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
 			};
 
 			HTML.Box(args);
-			moment.locale(i18n('Local'));
+			moment.locale(i18n['Local']);
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('unit');
@@ -96,7 +96,7 @@ let Unit = {
 			top.push('<div style="padding: 4px;" class="text-center">');
 
 			let timer = HTML.i18nReplacer(
-				i18n('Boxes.Units.NextUnitsIn'),
+				i18n['Boxes']['Units']['NextUnitsIn'],
 				{
 					count: alca.state.current_product.amount,
 					harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
@@ -121,10 +121,10 @@ let Unit = {
 		attack.push('<thead>');
 			attack.push('<tr>');
 				attack.push('<th></th>');
-				attack.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-				attack.push('<th class="text-center">' + i18n('Boxes.Units.Status') + '</th>');
-				attack.push('<th class="text-center">' + i18n('Boxes.Units.Attack') + '</th>');
-				attack.push('<th class="text-center">' + i18n('Boxes.Units.Defend') + '</th>');
+				attack.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Status'] + '</th>');
+				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Attack'] + '</th>');
+				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Defend'] + '</th>');
 			attack.push('</tr>');
 		attack.push('</thead>');
 
@@ -197,7 +197,7 @@ let Unit = {
     	for(let i = Unit.Attack.length; i < 8; i++)
 	    {
 		    attack.push('<tr>');
-			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
+			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
 			attack.push('</tr>');
 		}
 
@@ -218,10 +218,10 @@ let Unit = {
 		defense.push('<thead>');
 			defense.push('<tr>');
 				defense.push('<th></th>');
-				defense.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-				defense.push('<th>' + i18n('Boxes.Units.Status') + '</th>');
-				defense.push('<th>' + i18n('Boxes.Units.Attack') + '</th>');
-				defense.push('<th>' + i18n('Boxes.Units.Defend') + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Status'] + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Attack'] + '</th>');
+				defense.push('<th>' + i18n['Boxes']['Units']['Defend'] + '</th>');
 			defense.push('</tr>');
 		defense.push('</thead>');
 
@@ -287,7 +287,7 @@ let Unit = {
 		for(let i = Unit.Defense.length; i < 8; i++)
 		{
 			defense.push('<tr>');
-			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
+			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
 			defense.push('</tr>');
 		}
 
@@ -332,9 +332,9 @@ let Unit = {
 		pool.push('<thead>');
 		pool.push('<tr>');
 		pool.push('<th></th>');
-		pool.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-		pool.push('<th class="text-center">' + i18n('Boxes.Units.Bind') + '</th>');
-		pool.push('<th class="text-center">' + i18n('Boxes.Units.Unbind') + '</th>');
+		pool.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+		pool.push('<th class="text-center">' + i18n['Boxes']['Units']['Bind'] + '</th>');
+		pool.push('<th class="text-center">' + i18n['Boxes']['Units']['Unbind'] + '</th>');
 		pool.push('</tr>');
 		pool.push('</thead>');
 
@@ -348,7 +348,7 @@ let Unit = {
 			}
 
 			pool.push('<tr>');
-			pool.push('<th colspan="4">' + i18n('Eras.'+era) + '</th>');
+			pool.push('<th colspan="4">' + i18n['Eras'][era] + '</th>');
 			pool.push('</tr>');
 
 			for(let i in eras[era])
@@ -444,13 +444,13 @@ let Unit = {
 
 			if (diff <= 0) {
 				clearInterval(intervalID);
-				$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
+				$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
 			} else
 				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
 		}
 		else{
 			clearInterval(intervalID);
-			$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
+			$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
 		}
 	},
 
@@ -508,9 +508,9 @@ let Unit = {
 		last.push('<thead>');
 		last.push('<tr>');
 		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
-		last.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-		last.push('<th class="text-center">' + i18n('Boxes.Units.Quantity') + '</th>');
-		last.push('<th class="text-center">' + i18n('Boxes.Units.Proportionally') + '</th>');
+		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Quantity'] + '</th>');
+		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
 		last.push('</tr>');
 		last.push('</thead>');
 

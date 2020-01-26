@@ -21,69 +21,69 @@ let Settings = {
 	Preferences: {
 		Version: {
 			callback: 'VersionInfo',
-			title: i18n('Settings.Version.Title'),
-			desc: (devMode === true ? HTML.i18nReplacer(i18n('Settings.Version.DescDebug'), {version: extVersion, language: (GuiLng === 'de' ? 'de' : 'en')}) : i18n('Settings.Version.Desc'))
+			title: i18n['Settings']['Version']['Title'],
+			desc: (devMode === true ? HTML.i18nReplacer(i18n['Settings']['Version']['DescDebug'], {version: extVersion, language: (GuiLng === 'de' ? 'de' : 'en')}) : i18n['Settings']['Version']['Desc'])
 		},
 		GlobalSend : {
 			status: true,
-			title : i18n('Settings.GlobalSend.Title'),
-			desc : i18n('Settings.GlobalSend.Desc')
+			title : i18n['Settings']['GlobalSend']['Title'],
+			desc : i18n['Settings']['GlobalSend']['Desc']
 		},
 		SendTavernInfo : {
 			status: false,
-			title : i18n('Settings.SendTavernInfo.Title'),
-			desc : i18n('Settings.SendTavernInfo.Desc')
+			title : i18n['Settings']['SendTavernInfo']['Title'],
+			desc : i18n['Settings']['SendTavernInfo']['Desc']
 		},
 		SendGildMemberLGInfo : {
 			status: false,
-			title : i18n('Settings.SendGildMemberLGInfo.Title'),
-			desc : i18n('Settings.SendGildMemberLGInfo.Desc')
+			title : i18n['Settings']['SendGildMemberLGInfo']['Title'],
+			desc : i18n['Settings']['SendGildMemberLGInfo']['Desc']
 		},
 		SendGEXInfo : {
 			status: true,
-			title : i18n('Settings.SendGEXInfo.Title'),
-			desc : i18n('Settings.SendGEXInfo.Desc')
+			title : i18n['Settings']['SendGEXInfo']['Title'],
+			desc : i18n['Settings']['SendGEXInfo']['Desc']
 		},
 		ShowNeighborsGoods : {
 			status: true,
-			title : i18n('Settings.ShowNeighborsGoods.Title'),
-			desc : i18n('Settings.ShowNeighborsGoods.Desc')
+			title : i18n['Settings']['ShowNeighborsGoods']['Title'],
+			desc : i18n['Settings']['ShowNeighborsGoods']['Desc']
 		},
 		SendInvestigations : {
 			status: false,
-			title : i18n('Settings.SendInvestigations.Title'),
-			desc : i18n('Settings.SendInvestigations.Desc')
+			title : i18n['Settings']['SendInvestigations']['Title'],
+			desc : i18n['Settings']['SendInvestigations']['Desc']
 		},
 		ShowTavernBadge : {
 			status: true,
-			title : i18n('Settings.ShowTavernBadge.Title'),
-			desc : i18n('Settings.ShowTavernBadge.Desc')
+			title : i18n['Settings']['ShowTavernBadge']['Title'],
+			desc : i18n['Settings']['ShowTavernBadge']['Desc']
 		},
 		PreScanLGList : {
 			status: true,
-			title : i18n('Settings.PreScanLGList.Title'),
-			desc : i18n('Settings.PreScanLGList.Desc')
+			title : i18n['Settings']['PreScanLGList']['Title'],
+			desc : i18n['Settings']['PreScanLGList']['Desc']
 		},
 		AutomaticNegotiation : {
 			status: true,
-			title : i18n('Settings.AutomaticNegotiation.Title'),
-			desc : i18n('Settings.AutomaticNegotiation.Desc')
+			title : i18n['Settings']['AutomaticNegotiation']['Title'],
+			desc : i18n['Settings']['AutomaticNegotiation']['Desc']
 		},
 		ResetBoxPositions : {
 			button: 'ResetBoxCoords',
-			buttonText: i18n('Settings.ResetBoxPositions.Button'),
-			title : i18n('Settings.ResetBoxPositions.Title'),
-			desc : i18n('Settings.ResetBoxPositions.Desc')
+			buttonText: i18n['Settings']['ResetBoxPositions']['Button'],
+			title : i18n['Settings']['ResetBoxPositions']['Title'],
+			desc : i18n['Settings']['ResetBoxPositions']['Desc']
 		},
 		MenuLength : {
 			callback: 'MenuInputLength',
-			title : i18n('Settings.MenuLength.Title'),
-			desc : i18n('Settings.MenuLength.Desc')
+			title : i18n['Settings']['MenuLength']['Title'],
+			desc : i18n['Settings']['MenuLength']['Desc']
 		},
 		ChangeLanguage : {
 			callback: 'LanguageDropdown',
-			title : i18n('Settings.ChangeLanguage.Title'),
-			desc : i18n('Settings.ChangeLanguage.Desc')
+			title : i18n['Settings']['ChangeLanguage']['Title'],
+			desc : i18n['Settings']['ChangeLanguage']['Desc']
 		}
 	},
 
@@ -100,7 +100,7 @@ let Settings = {
 
 			HTML.Box({
 				id: 'SettingsBox',
-				title: i18n('Boxes.Settings.Title'),
+				title: i18n['Boxes']['Settings']['Title'],
 				auto_close: true
 			});
 		}
@@ -165,7 +165,7 @@ let Settings = {
 			cd.html(d['desc']);
 			cs.find('input.setting-check').attr('data-id', key).prop('checked', status);
 			cs.find('.check').addClass(status === true ? '' : 'unchecked');
-			cs.find('.toogle-word').text( status === true ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive') );
+			cs.find('.toogle-word').text( status === true ? i18n['Boxes']['Settings']['Active'] : i18n['Boxes']['Settings']['Inactive'] );
 
 			$('.SettingsBoxBodyInner').append(
 				c.append(ct).append( cr.append(cd).append(cs) )
@@ -189,7 +189,7 @@ let Settings = {
 
 		localStorage.setItem(id, v);
 
-		$(el).prev().text( v === true ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive') );
+		$(el).prev().text( v === true ? i18n['Boxes']['Settings']['Active'] : i18n['Boxes']['Settings']['Inactive'] );
 
 		if(v === true){
 			$(el).closest('span.check').removeClass('unchecked');
@@ -223,10 +223,10 @@ let Settings = {
 	 */
 	VersionInfo: ()=> {
 		return '<dl>' +
-					'<dt>' + i18n('Settings.Version.Title') + '</dt><dd>' + extVersion + '</dd>' +
-					'<dt>' + i18n('Settings.Version.PlayerId') + '</dt><dd>' + ExtPlayerID + '</dd>' +
-					'<dt>' + i18n('Settings.Version.GuildId') + '</dt><dd>' + ExtGuildID + '</dd>' +
-					'<dt>' + i18n('Settings.Version.World') + '</dt><dd>' + ExtWorld + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['Title'] + '</dt><dd>' + extVersion + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['PlayerId'] + '</dt><dd>' + ExtPlayerID + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['GuildId'] + '</dt><dd>' + ExtGuildID + '</dd>' +
+					'<dt>' + i18n['Settings']['Version']['World'] + '</dt><dd>' + ExtWorld + '</dd>' +
 				'</dl>';
 	},
 
@@ -268,7 +268,7 @@ let Settings = {
 
 			let iso = MainParser.PossibleLanguages[i];
 
-			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + i18n('Settings.ChangeLanguage.Dropdown.'+iso) + '</option>');
+			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + i18n['Settings']['ChangeLanguage']['Dropdown'][iso] + '</option>');
 		}
 
 		dp.push('</select>');

@@ -32,9 +32,11 @@ let Investment = {
         if ($('#Investment').length === 0) {
             HTML.Box({
                 'id': 'Investment',
-                'title': i18n('Boxes.Investment.Title'),
+                'title': i18n['Boxes']['Investment']['Title'],
                 'auto_close': false,
                 'dragdrop': true,
+                'resize': false,
+                'minimize': false
             });
 
             // CSS in den DOM prügeln
@@ -76,8 +78,8 @@ let Investment = {
 
         // noch nicht im DOM?
         if ($('#invest-bar').length < 1 && $('#reward-bar').length < 1) {
-            let Invest = $('<div />').attr('id', 'invest-bar').text(i18n('Boxes.Investment.InvestBar')).append($('<strong>0</strong>').addClass('invest-storage'));
-            let Reward = $('<div />').attr('id', 'reward-bar').text(i18n('Boxes.Investment.CurrReward')).append($('<strong>0</strong>').addClass('reward-storage'));
+            let Invest = $('<div />').attr('id', 'invest-bar').text(i18n['Boxes']['Investment']['InvestBar']).append($('<strong>0</strong>').addClass('invest-storage'));
+            let Reward = $('<div />').attr('id', 'reward-bar').text(i18n['Boxes']['Investment']['CurrReward']).append($('<strong>0</strong>').addClass('reward-storage'));
 
             $(div).append(Invest);
             $(div).append(Reward);
@@ -95,4 +97,4 @@ let Investment = {
         });
         Investment.InvestedFP = _InvestedFP;
     },
-};
+}

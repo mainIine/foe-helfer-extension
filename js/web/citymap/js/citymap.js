@@ -300,8 +300,8 @@ let CityMap = {
 	getAreas: ()=>{
 		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
 			occupied = CityMap.OccupiedArea,
-			txtTotal = i18n('Boxes.CityMap.WholeArea') + total,
-			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied);
+			txtTotal = i18n['Boxes']['CityMap']['WholeArea'] + total,
+			txtFree = i18n['Boxes']['CityMap']['FreeArea'] + (total - occupied);
 
 		if( $('#area-state').length === 0 ){
 			let aW = $('<div />').attr('id', 'area-state');
@@ -338,7 +338,7 @@ let CityMap = {
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
-				'title': i18n('Boxes.CityMap.TitleSend'),
+				'title': i18n['Boxes']['CityMap']['TitleSend'],
 				'auto_close': true,
 				'saveCords': false
 			});
@@ -346,9 +346,9 @@ let CityMap = {
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('citymap');
 
-			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
+			let desc = '<p class="text-center">' + i18n['Boxes']['CityMap']['Desc1'] + '</p>';
 
-			desc += '<p class="text-center" id="msg-line">' + i18n('Boxes.CityMap.Desc2') + '</p>';
+			desc += '<p class="text-center" id="msg-line">' + i18n['Boxes']['CityMap']['Desc2'] + '</p>';
 
 			$('#CityMapSubmitBody').html(desc);
 		}
@@ -372,6 +372,6 @@ let CityMap = {
 			data: JSON.stringify(d)
 		});
 
-		$('#msg-line').html('<span class="text-green">' + i18n('Boxes.CityMap.SubmitSuccess') + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+		$('#msg-line').html('<span class="text-green">' + i18n['Boxes']['CityMap']['SubmitSuccess'] + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 	},
 };
