@@ -23,6 +23,10 @@ FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
 });
 
 FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
+	if (data['responseData']['0']['context'] === 'guildExpedition') {
+		return;
+	}
+
 	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
 });
 
