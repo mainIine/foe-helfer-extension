@@ -44,9 +44,11 @@ let HiddenRewards = {
 
         for(let idx in HiddenRewards.Cache) {
             let position = HiddenRewards.Cache[idx].position.context;
+            const positionI18nLookupKey = 'HiddenRewards.Positions.'+position;
+            const positionI18nLookup = i18n(positionI18nLookupKey);
 
-            if(i18n('HiddenRewards.Positions')[HiddenRewards.Cache[idx].position.context]) {
-                position = i18n('HiddenRewards.Positions')[HiddenRewards.Cache[idx].position.context];
+            if (positionI18nLookupKey !== positionI18nLookup) {
+                position = positionI18nLookup;
             }
 
             data.push({
