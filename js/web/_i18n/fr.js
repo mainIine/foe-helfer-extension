@@ -277,10 +277,10 @@ let i18n = {
 		},
 
 		"HiddenRewards": {
-			"Title": "Récompenses cachés",
-			"Appears": "Apparus",
-			"Disappears": "Disparus",
-			"NoEvents": "Pas d'évènements présents",
+			"Title": "Récompenses cachées",
+			"Appears": "Apparaîtra",
+			"Disappears": "Disparaîtra",
+			"NoEvents": "Aucune récompense présente",
 		}
 	},
 
@@ -354,8 +354,8 @@ let i18n = {
 			"Desc" : "Affiche tous les éléments qui se déroulent en 'arrière plan'<br><em>Cela se remplit avec les infos ...</em>",
 		},
 		"HiddenRewards": {
-			"Title": "Récompenses cachés",
-			"Desc": "Aperçu des récompenses cachées",
+			"Title": "Récompenses cachées",
+			"Desc": "Aperçu des récompenses cachées.",
 		},
 		"Citymap": {
 			"Title": "Aperçu de la cité",
@@ -465,17 +465,17 @@ let i18n = {
 	
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "nature",
-			"shore": "rive",
-			"water": "dans l'eau",
-			"cityRoadSmall": "petite route",
-			"cityRoadBig": "grande route",
+			"nature": "Nature",
+			"shore": "Rivage",
+			"water": "Dans l'eau",
+			"cityRoadSmall": "Petite route",
+			"cityRoadBig": "Grande route",
 			"guildExpedition": "Expédition de Guilde"
 		},
 		"Table": {
 			"type": "Type",
-			"position": "Position",
-			"expires": "Expire à"
+			"position": "Lieu",
+			"expires": "Echéance"
 		}
 	}
 };
