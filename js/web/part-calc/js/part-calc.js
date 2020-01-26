@@ -14,9 +14,12 @@
  */
 
 let Parts = {
+	CityMapEntity: undefined,
+	Rankings: undefined,
+	IsPreviousLevel: false,
 
-	CurrentBuildingID : false,
-	CurrentBuildingStep : false,
+	CurrentBuildingID: false,
+	CurrentBuildingStep: false,
     CurrentBuildingPercents: [90, 90, 90, 90, 90],
     Input: [],
 	SaveCopy: [],
@@ -54,7 +57,7 @@ let Parts = {
 		HTML.AddCssFile('part-calc');
 
 		// Body zusammen fummeln
-		Parts.BoxBody();
+		Parts.Show();
 
 		// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
 		$('body').on('blur', '.arc-percent-input', function(){
@@ -114,9 +117,9 @@ let Parts = {
 		const isAllZero = !Parts.Input.some(el => el.value !== 0);
 
 		if(isAllZero !== true){
-			Parts.BoxBody(Parts.Input);
+			Parts.Show(Parts.Input);
 		} else {
-			Parts.BoxBody();
+			Parts.Show();
 		}
 	},
 
@@ -126,13 +129,10 @@ let Parts = {
 	 *
 	 * @param input
 	 */
-	BoxBody: (input)=> {
+	Show: (input)=> {
 
-        let d = JSON.parse(localStorage.getItem('OwnCurrentBuildingCity')),
-            rankings = JSON.parse(localStorage.getItem('OwnCurrentBuildingGreat')),
-            IsPreviousLevel = (localStorage.getItem('OwnCurrentBuildingPreviousLevel') === "true"),
-            cityentity_id = d['cityentity_id'],
-            level = d['level'],
+        let cityentity_id = Parts.CityMapEntity['cityentity_id'],
+			Level = Parts.CityMapEntity['level'],
             arcs = [],
             FPRewards = [], // FP Maezenboni pro Platz (0 basiertes Array)
             MedalRewards = [], // Medaillen Maezenboni pro Platz (0 basiertes Array)
@@ -143,7 +143,7 @@ let Parts = {
             Dangers = [0, 0, 0, 0, 0], // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
             Maezens = [], // Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
             LeveltLG = [false, false, false, false, false],
-            Total = parseInt(d['state']['forge_points_for_level_up']), // Gesamt FP des aktuellen Levels
+			Total = parseInt(Parts.CityMapEntity['state']['forge_points_for_level_up']), // Gesamt FP des aktuellen Levels
             MaezenTotal = 0, // Summe aller Fremdeinzahlungen
             EigenTotal, // Summe aller Eigenanteile
             ExtTotal = 0, // Summe aller Externen Einzahlungen
@@ -153,17 +153,17 @@ let Parts = {
 
 
         Parts.CurrentBuildingID = cityentity_id;
-        if (IsPreviousLevel) {
+        if (Parts.IsPreviousLevel) {
             Total = 0;
-            for (let i = 0; i < rankings.length; i++) {
-                let ToAdd = rankings[i]['forge_points'];
+            for (let i = 0; i < Parts.Rankings.length; i++) {
+				let ToAdd = Parts.Rankings[i]['forge_points'];
                 if (ToAdd !== undefined) Total += ToAdd;
             }
             Rest = Total;
         }
 
-        if (level === undefined) {
-            level = 0;
+        if (Level === undefined) {
+            Level = 0;
         }
 
         for (let i = 0; i < 5; i++) {
@@ -171,32 +171,32 @@ let Parts = {
         }
         
         // Wenn in Rankings nichts mehr steht, dann abbrechen
-        for (let i = 0; i < rankings.length; i++) {
-            if (rankings[i]['rank'] === undefined || rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
-                EigenStart = rankings[i]['forge_points'];
+		for (let i = 0; i < Parts.Rankings.length; i++) {
+			if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
+				EigenStart = Parts.Rankings[i]['forge_points'];
                 Rest -= EigenStart;
                 continue;
             }
 
-            let Place = rankings[i]['rank'] - 1,
+			let Place = Parts.Rankings[i]['rank'] - 1,
 				MedalCount = 0;
 
-            Maezens[Place] = rankings[i]['forge_points'];
+			Maezens[Place] = Parts.Rankings[i]['forge_points'];
             if (Maezens[Place] === undefined) Maezens[Place] = 0;
 
 			if (Place < 5) {
-				if (rankings[i]['reward'] !== undefined) {
-					let FPCount = (rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(rankings[i]['reward']['strategy_point_amount']) : 0);
+				if (Parts.Rankings[i]['reward'] !== undefined) {
+					let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
 					FPRewards[Place] = Math.round(FPCount * arcs[Place]);
 					if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
 					// Medallien berechnen
-					MedalCount = (rankings[i]['reward']['resources'] !== undefined ? parseInt(rankings[i]['reward']['resources']['medals']) : 0);
+					MedalCount = (Parts.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['resources']['medals']) : 0);
 					MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
 					if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
 					// Blaupausen berechnen
-					let BlueprintCount = (rankings[i]['reward']['blueprints'] !== undefined ? parseInt(rankings[i]['reward']['blueprints']) : 0);
+					let BlueprintCount = (Parts.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['blueprints']) : 0);
 					BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
 					if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
 				}
@@ -284,7 +284,7 @@ let Parts = {
         
         // Info-Block
         h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-        h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + level + ' &rarr; ' + (parseInt(level) + 1)) + '</p>');
+		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
         h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
@@ -422,8 +422,8 @@ let Parts = {
         Parts.BuildBackgroundBody(Maezens, Eigens, NonExts);
 
         // Wieviel fehlt noch bis zum leveln?
-        if (IsPreviousLevel === false) {
-            let rest = (d['state']['invested_forge_points'] === undefined ? d['state']['forge_points_for_level_up'] : d['state']['forge_points_for_level_up'] - d['state']['invested_forge_points']);
+        if (Parts.IsPreviousLevel === false) {
+			let rest = (Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points']);
             h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
         }
 
@@ -694,14 +694,5 @@ let Parts = {
 				$box.find('.black-bg').hide();
 			});
 		}
-	},
-
-
-	/**
-	 * Die Box ist schon offen, Content updaten
-	 *
-	 */
-	RefreshData: ()=> {
-		Parts.BoxBody();
 	},
 };
