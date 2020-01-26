@@ -529,6 +529,7 @@ let Negotiation = {
 		// Gehe alle Permutationen der Verhandlungspartner durch (120 bei 5 Personen)
 		for (let permutation of helper.permutations([...new Array(PlaceCount).keys()])) {
 			const goodMap = new Array(GoodsOrdered.length).fill(255);
+			const tableGoodMapped = new Array(GoodsOrdered.length).fill(false);
 			let valid = true;
 
 			let table = MainTable;
@@ -550,9 +551,10 @@ let Negotiation = {
 					const usedGood = SlotGuess.good.id;
 					const goodMapped = goodMap[usedGood];
 
-					if (goodMapped === 255) {
+					if (goodMapped === 255 && !tableGoodMapped[guessGood]) {
 						// Gut wurde noch nicht zugeordnet
 						goodMap[usedGood] = guessGood;
+						tableGoodMapped[guessGood] = true;
 					} else if (goodMapped !== guessGood) {
 						// Zuordnung passt nicht zur aktuellen Tabelle
 						valid = false;
