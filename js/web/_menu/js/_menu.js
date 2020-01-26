@@ -364,14 +364,10 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	calculator_Btn: ()=> {
-        sessionStorage.removeItem('OtherActiveBuilding');
-        sessionStorage.removeItem('OtherActiveBuildingData');
-        sessionStorage.removeItem('OtherActiveBuildingOverview');
-
 		let btn_CalcBG = $('<div />').attr({'id': 'calculator-Btn', 'data-slug': 'calculator'}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['Calculator']['Title'], '<em id="calculator-Btn-closed" class="tooltip-error">' + i18n['Menu']['Calculator']['Warning'] +  '<br></em>' + i18n['Menu']['Calculator']['Desc'], 'calculator-Btn');
+		_menu.toolTippBox(i18n('Menu.Calculator.Title'), '<em id="calculator-Btn-closed" class="tooltip-error">' + i18n('Menu.Calculator.Warning') +  '<br></em>' + i18n('Menu.Calculator.Desc'), 'calculator-Btn');
 
 		let btn_Calc = $('<span />');
 
@@ -390,19 +386,16 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	partCalc_Btn: () => {
-        localStorage.removeItem('OwnCurrentBuildingCity');
-        localStorage.removeItem('OwnCurrentBuildingGreat');
-
 		let btn_OwnBG = $('<div />').attr({'id': 'partCalc-Btn', 'data-slug': 'partCalc'}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['OwnpartCalculator']['Title'], '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n['Menu']['OwnpartCalculator']['Warning'] +  '<br></em>' + i18n['Menu']['OwnpartCalculator']['Desc'], 'partCalc-Btn');
+		_menu.toolTippBox(i18n('Menu.OwnpartCalculator.Title'), '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') +  '<br></em>' + i18n('Menu.OwnpartCalculator.Desc'), 'partCalc-Btn');
 
 		let btn_Own = $('<span />');
 
 		btn_Own.on('click', function() {
 			// nur wenn es für diese Session ein LG gibt zünden
-			if( localStorage.getItem('OwnCurrentBuildingGreat') !== null ){
+			if(Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined){
 				Parts.buildBox();
 			}
 		});
@@ -420,19 +413,19 @@ let _menu = {
 	outpost_Btn: ()=> {
 
 		let btn_outPBG = $('<div />').attr({'id': 'outpost-Btn', 'data-slug': 'outpost'}).addClass('hud-btn'),
-			desc = i18n['Menu']['OutP']['Desc'];
+			desc = i18n('Menu.OutP.Desc');
 
 		if (Outposts.OutpostData === null) {
 			btn_outPBG.addClass('hud-btn-red');
-			desc = i18n['Menu']['OutP']['DescWarningOutpostData'];
+			desc = i18n('Menu.OutP.DescWarningOutpostData');
 		}
 		if(localStorage.getItem('OutpostBuildings') === null){
 			btn_outPBG.addClass('hud-btn-red');
-			desc = i18n['Menu']['OutP']['DescWarningBuildings'];
+			desc = i18n('Menu.OutP.DescWarningBuildings');
 		}
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['OutP']['Title'], desc, 'outpost-Btn');
+		_menu.toolTippBox(i18n('Menu.OutP.Title'), desc, 'outpost-Btn');
 
 		let btn_outpost = $('<span />');
 
@@ -458,7 +451,7 @@ let _menu = {
 		let btn_FPsBG = $('<div />').attr({'id': 'productions-Btn', 'data-slug': 'productions'}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['Productions']['Title'], i18n['Menu']['Productions']['Desc'], 'productions-Btn');
+		_menu.toolTippBox(i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'), 'productions-Btn');
 
 
 		let btn_FPs = $('<span />');
@@ -481,7 +474,7 @@ let _menu = {
 		let btn_NegotiationBG = $('<div />').attr({'id': 'negotiation-Btn', 'data-slug': 'negotiation'}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['Negotiation']['Title'], '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n['Menu']['Negotiation']['Warning'] + '<br></em>' + i18n['Menu']['Negotiation']['Desc'], 'negotiation-Btn');
+		_menu.toolTippBox(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
 
 		let btn_Negotiation = $('<span />');
 
@@ -506,7 +499,7 @@ let _menu = {
 		let btn_Info = $('<div />').attr({'id': 'infobox-Btn', 'data-slug': 'infobox'}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['Info']['Title'], i18n['Menu']['Info']['Desc'], 'infobox-Btn');
+		_menu.toolTippBox(i18n('Menu.Info.Title'), i18n('Menu.Info.Desc'), 'infobox-Btn');
 
 		let btn_Inf = $('<span />');
 
@@ -530,7 +523,7 @@ let _menu = {
 
         // Tooltip einbinden
 
-        _menu.toolTippBox(i18n['Menu']['Technologies']['Title'], '<em id="technologies-Btn-closed" class="tooltip-error">' + i18n['Menu']['Technologies']['Warning'] + '<br></em>' + i18n['Menu']['Technologies']['Desc'], 'technologies-Btn');
+        _menu.toolTippBox(i18n('Menu.Technologies.Title'), '<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + i18n('Menu.Technologies.Desc'), 'technologies-Btn');
 
         let btn_Tech = $('<span />');
 
@@ -554,7 +547,7 @@ let _menu = {
         let btn_MapBG = $('<div />').attr({'id': 'campagneMap-Btn', 'data-slug': 'campagneMap'}).addClass('hud-btn hud-btn-red');
 
         // Tooltip einbinden
-        _menu.toolTippBox(i18n['Menu']['Campagne']['Title'], '<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n['Menu']['Campagne']['Warning'] + '<br></em>' + i18n['Menu']['Campagne']['Desc'], 'campagneMap-Btn');
+        _menu.toolTippBox(i18n('Menu.Campagne.Title'), '<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n('Menu.Campagne.Warning') + '<br></em>' + i18n('Menu.Campagne.Desc'), 'campagneMap-Btn');
 
         let btn_Map = $('<span />');
 
@@ -578,7 +571,7 @@ let _menu = {
         let btn_CityBG = $('<div />').attr({'id': 'citymap-Btn', 'data-slug': 'citymap'}).addClass('hud-btn');
 
         // Tooltip einbinden
-        _menu.toolTippBox(i18n['Menu']['Citymap']['Title'], i18n['Menu']['Citymap']['Desc'], 'citymap-Btn');
+        _menu.toolTippBox(i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'), 'citymap-Btn');
 
         let btn_City = $('<span />');
 
@@ -600,7 +593,7 @@ let _menu = {
         let btn_EventBG = $('<div />').attr({'id': 'questlist_Btn', 'data-slug': 'questlist'}).addClass('hud-btn');
 
         // Tooltip einbinden
-        _menu.toolTippBox(i18n['Menu']['Event']['Title'], i18n['Menu']['Event']['Desc'], 'questlist_Btn');
+        _menu.toolTippBox(i18n('Menu.Event.Title'), i18n('Menu.Event.Desc'), 'questlist_Btn');
 
         let btn_Event = $('<span />');
 
@@ -619,7 +612,7 @@ let _menu = {
 		let btn_RewardsBG = $('<div />').attr({'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards'}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['HiddenRewards']['Title'], i18n['Menu']['HiddenRewards']['Desc'], 'hiddenRewards-Btn');
+		_menu.toolTippBox(i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'), 'hiddenRewards-Btn');
 
 		let btn_Rewards = $('<span />');
 
@@ -640,7 +633,7 @@ let _menu = {
 		let btn_UnitBG = $('<div />').attr({'id': 'unit-Btn', 'data-slug': 'unit'}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['Unit']['Title'], '<em id="unit-Btn-closed" class="tooltip-error">' + i18n['Menu']['Unit']['Warning'] + '<br></em>' + i18n['Menu']['Unit']['Desc'], 'unit-Btn');
+		_menu.toolTippBox(i18n('Menu.Unit.Title'), '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'), 'unit-Btn');
 
 		let btn_Unit = $('<span />');
 
@@ -663,7 +656,7 @@ let _menu = {
 
 		let btn = $('<div />').attr({'id': 'settings-Btn', 'data-slug': 'settings'}).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n['Menu']['Settings']['Title'], i18n['Menu']['Settings']['Desc'], 'settings-Btn');
+		_menu.toolTippBox(i18n('Menu.Settings.Title'), i18n('Menu.Settings.Desc'), 'settings-Btn');
 
 		let btn_Set = $('<span />');
 
@@ -685,7 +678,7 @@ let _menu = {
 
 		let btn = $('<div />').attr({'id': 'forum-Btn', 'data-slug': 'forum'}).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n['Menu']['Forum']['Title'], i18n['Menu']['Forum']['Desc'], 'forum-Btn');
+		_menu.toolTippBox(i18n('Menu.Forum.Title'), i18n('Menu.Forum.Desc'), 'forum-Btn');
 
 		let btn_Forum = $('<span />');
 
@@ -708,7 +701,7 @@ let _menu = {
 
 		let btn = $('<div />').attr({'id': 'ask-Btn', 'data-slug': 'ask'}).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n['Menu']['Ask']['Title'], i18n['Menu']['Ask']['Desc'], 'ask-Btn');
+		_menu.toolTippBox(i18n('Menu.Ask.Title'), i18n('Menu.Ask.Desc'), 'ask-Btn');
 
 		let btn_Ask = $('<span />');
 
@@ -731,7 +724,7 @@ let _menu = {
 
 		let btn = $('<div />').attr({'id': 'github-Btn', 'data-slug': 'github'}).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n['Menu']['Bugs']['Title'], i18n['Menu']['Bugs']['Desc'], 'github-Btn');
+		_menu.toolTippBox(i18n('Menu.Bugs.Title'), i18n('Menu.Bugs.Desc'), 'github-Btn');
 
 		let btn_Bug = $('<span />');
 
@@ -755,7 +748,7 @@ let _menu = {
 		let btn = $('<div />').attr({'id': 'chat-Btn', 'data-slug': 'chat'}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n['Menu']['Chat']['Title'], i18n['Menu']['Chat']['Desc'], 'chat-Btn');
+		_menu.toolTippBox(i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'), 'chat-Btn');
 
 		let btn_sp = $('<span />');
 
