@@ -35,8 +35,6 @@ let Investment = {
                 'title': i18n('Boxes.Investment.Title'),
                 'auto_close': false,
                 'dragdrop': true,
-                'resize': false,
-                'minimize': false
             });
 
             // CSS in den DOM prügeln
@@ -97,4 +95,4 @@ let Investment = {
         });
         Investment.InvestedFP = _InvestedFP;
     },
-}
+};

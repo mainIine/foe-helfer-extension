@@ -268,7 +268,7 @@ let Settings = {
 
 			let iso = MainParser.PossibleLanguages[i];
 
-			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + i18n('Settings.ChangeLanguage.Dropdown')[iso] + '</option>');
+			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + i18n('Settings.ChangeLanguage.Dropdown.'+iso) + '</option>');
 		}
 
 		dp.push('</select>');
