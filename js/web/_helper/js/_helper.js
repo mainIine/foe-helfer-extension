@@ -387,7 +387,7 @@ let HTML = {
 		if(number === 0){
 			return '-';
 		} else {
-			return Number(number).toLocaleString(i18n('Local'));
+			return Number(number).toLocaleString(i18n['Local']);
 		}
 	},
 

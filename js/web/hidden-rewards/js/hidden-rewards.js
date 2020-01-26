@@ -25,13 +25,13 @@ let HiddenRewards = {
 
 			HTML.Box({
 				'id': 'HiddenRewardBox',
-				'title': i18n('Boxes.HiddenRewards.Title'),
+				'title': i18n.Boxes.HiddenRewards.Title,
 				'auto_close': false,
 				'dragdrop': true,
 				'minimize': true
 			});
 
-			moment.locale(i18n('Local'));
+			moment.locale(i18n['Local']);
 		}
         HiddenRewards.BuildBox();
     },
@@ -44,11 +44,9 @@ let HiddenRewards = {
 
         for(let idx in HiddenRewards.Cache) {
             let position = HiddenRewards.Cache[idx].position.context;
-            const positionI18nLookupKey = 'HiddenRewards.Positions.'+position;
-            const positionI18nLookup = i18n(positionI18nLookupKey);
 
-            if (positionI18nLookupKey !== positionI18nLookup) {
-                position = positionI18nLookup;
+            if(i18n['HiddenRewards']['Positions'][HiddenRewards.Cache[idx].position.context]) {
+                position = i18n['HiddenRewards']['Positions'][HiddenRewards.Cache[idx].position.context];
             }
 
             data.push({
@@ -79,9 +77,9 @@ let HiddenRewards = {
 
         h.push('<thead>');
             h.push('<tr>');
-                h.push('<th>' + i18n('HiddenRewards.Table.type') + '</th>');
-                h.push('<th>' + i18n('HiddenRewards.Table.position') + '</th>');
-                h.push('<th>' + i18n('HiddenRewards.Table.expires') + '</th>');
+                h.push('<th>' + i18n.HiddenRewards.Table.type + '</th>');
+                h.push('<th>' + i18n.HiddenRewards.Table.position + '</th>');
+                h.push('<th>' + i18n.HiddenRewards.Table.expires + '</th>');
             h.push('</tr>');
         h.push('</thead>');
 

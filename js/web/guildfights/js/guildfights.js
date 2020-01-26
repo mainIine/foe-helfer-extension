@@ -143,7 +143,7 @@ let GildFights = {
 
 			HTML.Box({
 				id: 'GildPlayers',
-				title: i18n('Boxes.Gildfights.Title'),
+				title: i18n['Boxes']['Gildfights']['Title'],
 				auto_close: true,
 				dragdrop: true,
 				minimize: true
@@ -170,9 +170,9 @@ let GildFights = {
 
 		t.push('<th>&nbsp;</th>');
 		t.push('<th>&nbsp;</th>');
-		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
-		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Negotiations') + '</th>');
-		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Fights') + '</th>');
+		t.push('<th>' + i18n['Boxes']['Gildfights']['Player'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Negotiations'] + '</th>');
+		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Fights'] + '</th>');
 
 		t.push('</tr>');
 		t.push('</thead>');
@@ -249,7 +249,7 @@ let GildFights = {
 			let time = duration.humanize();
 
 			$('.time-diff').text(
-				HTML.i18nReplacer(i18n('Boxes.Gildfights.LastSnapshot'), {time: time})
+				HTML.i18nReplacer(i18n['Boxes']['Gildfights']['LastSnapshot'], {time: time})
 			);
 		}
 	},

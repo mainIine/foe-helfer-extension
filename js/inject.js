@@ -56,27 +56,34 @@ const jQueryLoading = new Promise(resolve => {
 
 
 const v = chrome.runtime.getManifest().version;
+let antLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
 
 const PossibleLangs = ['de','en','fr','es','ru','sv','cs','ro'];
 let   lng = chrome.i18n.getUILanguage();
 const uLng = localStorage.getItem('user-language');
 
 // wir brauchen nur den ersten Teil
-if (lng.indexOf('-') > 0) {
+if (lng.indexOf('-') > 0)
+{
 	lng = lng.split('-')[0];
 }
 
 // gibt es eine Übersetzung?
-if (PossibleLangs.includes(lng) === false) {
+if (PossibleLangs.includes(lng) === false)
+{
 	lng = 'en';
 }
 
-if (uLng !== null){
+if(uLng !== null){
 	lng = uLng;
-} else {
+}
+else{
 	// damit man die sprache auslesen kann ohne diese über die einstellungen einmal ändern zu müssen
 	localStorage.setItem('user-language', lng);
 }
+
+let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_i18n/' + lng + '.js?v=' + v));
+
 
 InjectCode();
 
@@ -111,25 +118,8 @@ function InjectCSS() {
 
 async function InjectCode() {
 	try {
-		// setze einige globale Variablen
-		let script = document.createElement('script');
-		script.innerText = `
-			const extID='${chrome.runtime.id}',
-				extUrl='${chrome.extension.getURL('')}',
-				GuiLng='${lng}',
-				extVersion='${v}',
-				devMode=${!('update_url' in chrome.runtime.getManifest())};
-		`;
-		(document.head || document.documentElement).appendChild(script);
-		// Das script wurde (angeblich) direkt ausgeführt und kann wieder entfernt werden.
-		script.remove();
-
-		// lade die main
-		await promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
-
 		// warte zunächst, dass ant und i18n geladen sind
-		await jQueryLoading;
-
+		await Promise.all([antLoadpromise, i18nJSLoadpromise, jQueryLoading]);
 
 		const extURL = chrome.extension.getURL(''),
 			vendorScripts = [
@@ -150,7 +140,18 @@ async function InjectCode() {
 		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
 		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
 
-		window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+		// setze einige globale Variablen
+		let script = document.createElement('script');
+		script.innerText = `
+			let extID='${chrome.runtime.id}',
+				extUrl='${chrome.extension.getURL('')}',
+				GuiLng='${lng}',
+				extVersion='${v}',
+				devMode=${!('update_url' in chrome.runtime.getManifest())};
+		`;
+		document.head.appendChild(script);
+		// Das script wurde (angeblich) direkt ausgeführt und kann wieder entfernt werden.
+		script.remove();
 
 		const s = [
 			'_helper',

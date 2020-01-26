@@ -76,7 +76,7 @@ let EventQuest = {
 
                 HTML.Box({
                     'id': 'event',
-                    'title': i18n('Boxes.EventList.Title') + EventQuest.Event['eventname'],
+                    'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
                     'auto_close': false,
                     'dragdrop': true,
                     'minimize': true
@@ -97,7 +97,7 @@ let EventQuest = {
 
                     HTML.Box({
                         'id': 'event',
-                        'title': i18n('Boxes.EventList.Title') + EventQuest.Event['eventname'],
+                        'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
                         'auto_close': false,
                         'dragdrop': true,
                         'minimize': true
@@ -140,9 +140,9 @@ let EventQuest = {
                     for (let group of conditiongroup) {
                         
                         if (group.type === 'or') {
-                            conditionText = i18n('Boxes.EventList.Or');
+                            conditionText = i18n['Boxes']['EventList']['Or'];
                         } else if (group.type === 'none') {
-                            conditionText = i18n('Boxes.EventList.And');
+                            conditionText = i18n['Boxes']['EventList']['And'];
                         } else {
                             conditionText = "";
                         }
@@ -179,9 +179,9 @@ let EventQuest = {
         h.push('<table class="foe-table">');
         h.push('<thead>' +
             '<tr>' +
-            '<th>' + i18n('Boxes.EventList.Number') + '</th>' +
-            '<th>' + i18n('Boxes.EventList.Desc') + '</th>' +
-            '<th>' + i18n('Boxes.EventList.Reward') + '</th>' +
+            '<th>' + i18n['Boxes']['EventList']['Number'] + '</th>' +
+            '<th>' + i18n['Boxes']['EventList']['Desc'] + '</th>' +
+            '<th>' + i18n['Boxes']['EventList']['Reward'] + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -204,11 +204,11 @@ let EventQuest = {
                 h.push('</tr>');
             } else {
                 h.push('<tr class="active-quest">');
-                h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Waiting') + '</td>');
+                h.push('<td colspan="3" class="upcoming text-center">' + i18n['Boxes']['EventList']['Waiting'] + '</td>');
                 h.push('</tr>');
             }
             h.push('<tr>');
-            h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Upcoming') + '</td>');
+            h.push('<td colspan="3" class="upcoming text-center">' + i18n['Boxes']['EventList']['Upcoming'] + '</td>');
             h.push('</tr>');
 
             for (let add = (EventQuest.CurrentQuestText === null ? 0 : 1); add <= 5; add++) {
