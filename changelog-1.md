@@ -1,4 +1,111 @@
-##Changelog - Chrome Extension
+##Changelog - Extension
+
+#####2.4.1.1
+
+**Bugfix**
+- Infobox:
+    - [#380](https://github.com/dsiekiera/foe-helfer-extension/issues/380) [#408](https://github.com/dsiekiera/foe-helfer-extension/issues/408) Level-Up zeigt korrekte FPs an
+
+- Motivationen/Polieren:
+    - [#388](https://github.com/dsiekiera/foe-helfer-extension/issues/388) Infos werden wieder korrekt übertragen
+    
+- Eventliste:
+    - [#405](https://github.com/dsiekiera/foe-helfer-extension/issues/405) [#432](https://github.com/dsiekiera/foe-helfer-extension/issues/432) Beim erreichen der Tagesaufgaben war die Liste komplett leer
+
+- Citymap:
+    - [#412](https://github.com/dsiekiera/foe-helfer-extension/issues/412) Manche Gebäude am linken Rand wurden nicht eingeblendet
+
+- Kostenrechner:
+    - [#416](https://github.com/dsiekiera/foe-helfer-extension/issues/416) Zeile unten am Rand für Schleifenquests war verschwunden
+
+**Update**
+- Infobox:
+    - [#435](https://github.com/dsiekiera/foe-helfer-extension/issues/435) Speichert ab sofort die eingestellten Filter
+
+- Menü:
+    - Hält man ein Menü-Item via Mouse-Drag min. 1,5s über einen der aktiven hoch- oder runter Pfeile, scrollt das Menü zur nächsten Ansicht
+
+- Verhandlungsassistent:
+    - [#420](https://github.com/dsiekiera/foe-helfer-extension/issues/420) Erkennt vertauschte Güter und kann damit weiter arbeiten, wenn es noch in die Logik passt
+
+---
+
+#####2.4.1
+
+**Neu**
+- Eventliste: 
+    - [#309](https://github.com/dsiekiera/foe-helfer-extension/issues/309) Events in "Rohform" werden aufgelistet, das aktuelle (gelber Rahmen) wird korrekten mit Daten befüllt; Autoupdate
+
+
+- Citymap: 
+    - [#249](https://github.com/dsiekiera/foe-helfer-extension/issues/249) 2D Übersicht (schematisch) der eigenen Stadt
+
+
+- Ereignisse:
+    - [#365](https://github.com/dsiekiera/foe-helfer-extension/issues/365) [#378](https://github.com/dsiekiera/foe-helfer-extension/issues/378) Werden ausgelesen und in einer Box mit Start-/Endzeit + einer "etwa" Ortsangabe ausgegeben. Danke an [h3llraz0r](https://github.com/Marcel-Wagner)
+
+**Update**
+- Extension: 
+    - Schriften der Boxen lesbarer gemacht
+
+
+- Infobox: 
+    - [#333](https://github.com/dsiekiera/foe-helfer-extension/issues/333) Lässt sich einklappen
+    - [#379](https://github.com/dsiekiera/foe-helfer-extension/issues/379) Gildengefechte werden in Infobox aufgeführt wenn GG Karte betreten wird. Daten werden von Inno nur dann übermittelt; Filter komplett überarbeitet
+
+
+- Kostenrecher:
+    - Umfangreiches Update, Box ist in linken (Fördern) und rechten Breich (snipern) aufgeteilt
+    - Hintergrundfarben + ToolTipps erklären beim hover über gelb und rot
+    - [#171](https://github.com/dsiekiera/foe-helfer-extension/issues/171) [#353](https://github.com/dsiekiera/foe-helfer-extension/issues/353) Zeig in einer kleiner roten Zahl hinter dem Mäzen Bonus an wie viel bis "save" fehlt (linke Seite)
+
+
+- Gildengefechte:
+    - [#330](https://github.com/dsiekiera/foe-helfer-extension/issues/330) Box lässt sich verschieben, minimieren und merkt sich letzte Position
+    - [#335](https://github.com/dsiekiera/foe-helfer-extension/issues/335) i18n ergänzt 
+
+
+- FP-Lager: 
+    - Bei Klick auf kaufen erscheint oben rechts neben den Lager die Info wie viele FP derzeit für Münzen kaufbar wären. Danke an [h3llraz0r](https://github.com/Marcel-Wagner)
+
+
+- Erntehelfer:
+    - [#333](https://github.com/dsiekiera/foe-helfer-extension/issues/333) Lässt sich einklappen
+    - Mousedrag für die Map hinzugefügt
+    - neue Zoom-Technik verbaut
+
+
+- Menü:
+    - [#351](https://github.com/dsiekiera/foe-helfer-extension/issues/351) Länge lässt sich über die Einstellungen in der Höhe begrenzen
+
+
+**BugFix**
+- Produktionsübersicht:
+    - [#126](https://github.com/dsiekiera/foe-helfer-extension/issues/126) [#338](https://github.com/dsiekiera/foe-helfer-extension/issues/338) Münzproduktion von Wunsch- und Jungbrunnen gefixt
+    - [#349](https://github.com/dsiekiera/foe-helfer-extension/issues/349) Doppelter Name bei den Resourcen ließ "Verpackungen" verschwinden
+
+
+- Infobox: 
+    - [#203](https://github.com/dsiekiera/foe-helfer-extension/issues/203) Titel werden beim umbennen erkannt und geändert
+    - [#348](https://github.com/dsiekiera/foe-helfer-extension/issues/348) [#380](https://github.com/dsiekiera/foe-helfer-extension/issues/380) Box warf bei Level-Up Meldung Fehler
+
+
+- Menü: 
+    - [#331](https://github.com/dsiekiera/foe-helfer-extension/issues/331) Tooltips gefixt
+
+
+- Entehelfer:
+    - [#339](https://github.com/dsiekiera/foe-helfer-extension/issues/339) "Ruhm" (Kronen) wird als Resource erkannt und ausgebeben
+
+
+- Kostenrechner:
+    - [#341](https://github.com/dsiekiera/foe-helfer-extension/issues/341) Fehler behoben wenn der 5 Platz keinen "Reward" bekam stürzte die Box ab
+
+
+- Eigenanteilsrechner:
+    - [#332](https://github.com/dsiekiera/foe-helfer-extension/issues/332) Höhe für "Werte kopieren" im Firefox korrigiert
+
+---
 
 #####2.4.0.1
 

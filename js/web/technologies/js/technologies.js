@@ -60,7 +60,7 @@ let Technologies = {
 
            HTML.Box({
 			   'id': 'technologies',
-			   'title': i18n['Boxes']['Technologies']['Title'],
+			   'title': i18n('Boxes.Technologies.Title'),
 			   'auto_close': true,
 			   'dragdrop': true,
 			   'minimize': true
@@ -155,19 +155,19 @@ let Technologies = {
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeMars']);
 
         h.push('<div class="techno-head">');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n['Boxes']['Technologies']['Eras'][PreviousEraID] + '</button>');
-			h.push('<div class="text-center"><strong>' + i18n['Boxes']['Technologies']['Eras'][Technologies.SelectedEraID] + '</strong></div>');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n['Boxes']['Technologies']['Eras'][NextEraID] + '</button>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Boxes.Technologies.Eras.'+PreviousEraID) + '</button>');
+			h.push('<div class="text-center"><strong>' + i18n('Boxes.Technologies.Eras.'+Technologies.SelectedEraID) + '</strong></div>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Boxes.Technologies.Eras.'+NextEraID) + '</button>');
         h.push('</div>');
 
         h.push('<table class="foe-table">');
 
         h.push('<thead>' +
             '<tr>' +
-            '<th>' + i18n['Boxes']['Technologies']['Resource'] + '</th>' +
-            '<th>' + i18n['Boxes']['Technologies']['DescRequired'] + '</th>' +
-            '<th>' + i18n['Boxes']['Technologies']['DescInStock'] + '</th>' +
-            '<th class="text-right">' + i18n['Boxes']['Technologies']['DescStillMissing'] + '</th>' +
+            '<th>' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th>' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            '<th>' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
+            '<th class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -205,7 +205,7 @@ let Technologies = {
         }
         else {
             h.push('<tr>');
-            h.push('<td colspan="4" class="text-center">' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
+            h.push('<td colspan="4" class="text-center">' + i18n('Boxes.Technologies.NoTechs') + '</td>');
             h.push('</tr>');
         }
         h.push('</table');

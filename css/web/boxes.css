@@ -28,9 +28,12 @@
 	font-size: 0.9rem;
 	font-weight: 400;
 	color: #F3D6A0;
+	text-shadow: 0 1px 1px rgba(0,0,0, 0.65);
 	position: absolute;
 	text-align: left;
 	padding: 1px;
+	top: 30%;
+	left: 40%;
 	border-color: transparent;
 	border-width: 35px 10px 10px 10px;
 	border-style: solid;
@@ -41,6 +44,20 @@
 	border-image-outset: 0.3;
 	border-radius: 20px;
 	user-select: none;
+}
+
+.window-box.closed {
+	border-width: 35px 10px 0 10px;
+	border-style: solid;
+	border-image-source: url('../images/window-closed.png');
+	border-image-slice: 54 28 0 28;
+	border-image-width: 54px 28px 0 28px;
+	border-image-repeat: round;
+	border-image-outset: 0.3;
+	border-radius: 20px;
+	border-bottom: none;
+	background-image: none;
+	height: 3px !important;
 }
 
 .window-head {
@@ -134,6 +151,9 @@
 	height: 100%;
 	overflow: hidden;
 }
+
+.window-body input[type=text],
+.window-body input[type=number],
 .window-body select {
 	background-color: #F9EBC6;
 	color: #93795D;
@@ -145,7 +165,7 @@
 }
 
 .closed .window-body {
-	height: 22px !important;
+	height: 3px !important;
 }
 
 .window-grippy {
@@ -158,10 +178,12 @@
 	cursor: nwse-resize;
 	background: url('../images/wingrip.png') no-repeat;
 }
+.closed .window-grippy {
+	display:none;
+}
 
 
-
-/* ------------------------------------------------------------------------------------------------------------------ */
+	/* ------------------------------------------------------------------------------------------------------------------ */
 
 
 #note-box {
@@ -187,8 +209,8 @@
 }
 
 .tooltip.in {
-	opacity: 0.8;
-	filter: alpha(opacity=80);
+	opacity: 0.9;
+	filter: alpha(opacity=90);
 }
 
 .tooltip.top {
