@@ -306,20 +306,12 @@ let Negotiation = {
 		}));
 		Negotiation.GoodsOrdered = GoodsOrdered;
 
-		const eras = Technologies.Eras;
-		const goodsData = GoodsData;
 		// Sortiere, nach auswahl Knopf reihenfolge
 		GoodsOrdered.sort((a,b) => {
 			if (a === b) return 0;
 			const goodA = a.resourceId;
 			const goodB = b.resourceId;
-			const eraA = eras[goodsData[goodA].era];
-			const eraB = eras[goodsData[goodB].era];
-			if (eraA === eraB) return goodA > goodB ? 1 : -1
-			// Sortiere Zeitalter 'NoAge'(0) ans ende
-			if (eraA === 0) return  1;
-			if (eraB === 0) return -1;
-			return eraA - eraB;
+			return Negotiation.goodButtonCompare(goodA, goodB);
 		});
 		// und weise Knopf-Nummer als id zu
 		GoodsOrdered.forEach((elem, i) => elem.id = i);
@@ -493,17 +485,23 @@ let Negotiation = {
 	},
 
 
-	/**
-	 * Name zusammen setzen
-	 *
-	 * @param TryCount
-	 * @param GoodCount
-	 * @returns {string}
-	 */
-	GetTableName: (TryCount, GoodCount) => {
-		return TryCount + '_' + GoodCount;
-	},
-
+	goodButtonCompare: (()=>{	
+		function goodValue(good) {
+			const data = GoodsData[good];
+			const special = !!data.abilities.specialResource;
+			const era = Technologies.Eras[data.era];
+			return (era === 0 ? 200 : era ) + (special ? 100 : 0);
+		}
+	
+		return function(goodA, goodB) {
+			if (goodA === goodB) return 0;
+			const valA = goodValue(goodA);
+			const valB = goodValue(goodB);
+			
+			if (valA === valB) return goodA > goodB ? 1 : -1
+			return valA - valB;
+		}
+	})(),
 
 	updateNextGuess: () => {
 		const GoodsOrdered = Negotiation.GoodsOrdered;
@@ -587,6 +585,17 @@ let Negotiation = {
 			}
 		}
 		return found;
+	},
+
+	/**
+	 * Name zusammen setzen
+	 *
+	 * @param TryCount
+	 * @param GoodCount
+	 * @returns {string}
+	 */
+	GetTableName: (TryCount, GoodCount) => {
+		return TryCount + '_' + GoodCount;
 	},
 
 	/**
