@@ -56,30 +56,27 @@ const jQueryLoading = new Promise(resolve => {
 
 
 const v = chrome.runtime.getManifest().version;
-let antLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
 
-const PossibleLangs = ['de','en','fr','es','ru'];
+const PossibleLangs = ['de','en','fr','es','ru','sv','cs','ro'];
 let   lng = chrome.i18n.getUILanguage();
 const uLng = localStorage.getItem('user-language');
 
 // wir brauchen nur den ersten Teil
-if (lng.indexOf('-') > 0)
-{
+if (lng.indexOf('-') > 0) {
 	lng = lng.split('-')[0];
 }
 
 // gibt es eine Übersetzung?
-if (PossibleLangs.includes(lng) === false)
-{
+if (PossibleLangs.includes(lng) === false) {
 	lng = 'en';
 }
 
-if(uLng !== null){
+if (uLng !== null){
 	lng = uLng;
+} else {
+	// damit man die sprache auslesen kann ohne diese über die einstellungen einmal ändern zu müssen
+	localStorage.setItem('user-language', lng);
 }
-
-let i18nJSLoadpromise = promisedLoadCode(chrome.extension.getURL('js/web/i18n/' + lng + '.js?v=' + v));
-
 
 InjectCode();
 
@@ -114,41 +111,49 @@ function InjectCSS() {
 
 async function InjectCode() {
 	try {
-		// warte zunächst, dass ant und i18n geladen sind
-		await Promise.all([antLoadpromise, i18nJSLoadpromise, jQueryLoading]);
-
-		const extURL = chrome.extension.getURL('');
-		const vendorScripts = [
-			'moment/moment-with-locales.min',
-			'CountUp/jquery.easy_number_animate.min',
-			'Tabslet/jquery.tabslet.min',
-			'ScrollTo/jquery.scrollTo.min',
-			'jQuery/jquery-resizable.min',
-			'tooltip/tooltip',
-			'tableSorter/table-sorter',
-			'Sortable/Sortable.min',
-			'jsZip/jszip.min',
-			//'jedParser/jedParser'
-		];
-
-		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
-		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
-
 		// setze einige globale Variablen
 		let script = document.createElement('script');
 		script.innerText = `
-			let extID='${chrome.runtime.id}',
+			const extID='${chrome.runtime.id}',
 				extUrl='${chrome.extension.getURL('')}',
 				GuiLng='${lng}',
 				extVersion='${v}',
 				devMode=${!('update_url' in chrome.runtime.getManifest())};
 		`;
-		document.head.appendChild(script);
+		(document.head || document.documentElement).appendChild(script);
 		// Das script wurde (angeblich) direkt ausgeführt und kann wieder entfernt werden.
 		script.remove();
 
+		// lade die main
+		await promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
+
+		// warte zunächst, dass ant und i18n geladen sind
+		await jQueryLoading;
+
+
+		const extURL = chrome.extension.getURL(''),
+			vendorScripts = [
+				'i18njs/i18njs.min',
+				'moment/moment-with-locales.min',
+				'CountUp/jquery.easy_number_animate.min',
+				'Tabslet/jquery.tabslet.min',
+				'ScrollTo/jquery.scrollTo.min',
+				'jQuery/jquery-resizable.min',
+				'jQuery/jquery-ui.min',
+				'tooltip/tooltip',
+				'tableSorter/table-sorter',
+				'Sortable/Sortable.min',
+				'jsZip/jszip.min',
+				//'jedParser/jedParser'
+			];
+
+		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
+		await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
+
+		window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+
 		const s = [
-			'helper',
+			'_helper',
 			'_menu',
 			'tavern',
 			'outposts',
@@ -162,10 +167,13 @@ async function InjectCode() {
 			'campagnemap',
 			'technologies',
 			'negotiation',
+			'eventquest',
 			'read-buildings',
 			'settings',
+			'investment',
 			'strategy-points',
-			'citymap'
+			'citymap',
+			'hidden-rewards'
 		];
 
 		// Scripte laden (nacheinander)

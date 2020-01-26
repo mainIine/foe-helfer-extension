@@ -14,12 +14,11 @@
  */
 
 #SettingsBox {
-	top: 50%;
-	left: 50%;
+	top: calc(50vh - 165px);
+	left: calc(50vw - 305px);
 	width: 610px;
 	height: 330px;
 	font-size: 80%;
-	transform: translate(-50%, -50%);
 }
 
 #SettingsBoxBody {
@@ -50,6 +49,11 @@
 	flex-wrap: nowrap;
 	flex-direction: row;
 	align-items: center;
+}
+
+#SettingsBoxBody .item .item-row a {
+	cursor: pointer;
+	color: #ffcc68;
 }
 
 #SettingsBoxBody .item .item-row .desc {
@@ -94,4 +98,21 @@
 #SettingsBoxBody .item .item-row .setting-dropdown {
 	width: 172px;
 	padding: 4px 0;
+}
+
+#SettingsBoxBody .item .item-row input[type=number] {
+	width: 152px;
+	padding: 4px 8px;
+	text-align: center;
+	font-weight: 700;
+}
+
+#SettingsBoxBody .item .item-row dl {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#SettingsBoxBody .item .item-row dl dt {
+	width: 40%;
 }

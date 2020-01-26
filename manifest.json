@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "2.4.0.1",
+	"version": "2.4.1.1",
   
 	"manifest_version": 2,
 	"permissions": [
@@ -13,8 +13,8 @@
 		"clipboardWrite",
 	  	"management",
 		"https://*.forgeofempires.com/*",
-		"https://foe-rechner.de/",
-		"https://api.foe-rechner.de/"
+		"https://foe-rechner.de/*",
+		"https://*.foe-rechner.de/*"
 	],
 
 	"browser_action": {

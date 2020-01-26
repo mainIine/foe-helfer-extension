@@ -110,7 +110,7 @@ let Reader = {
 		if ($('#ResultBox').length === 0) {
 			HTML.Box({
 				'id': 'ResultBox',
-				'title': i18n['Boxes']['Neighbors']['Title'] + Reader.player_name,
+				'title': i18n('Boxes.Neighbors.Title') + '<em>' + Reader.player_name + '</em>',
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -131,7 +131,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.ReadyProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -142,7 +142,7 @@ let Reader = {
 					h.push('<tr class="success">');
 					h.push('<td>' + rd[i]['name'] + '</td>');
 					h.push('<td>' + rd[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -159,7 +159,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.OngoingProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -170,7 +170,7 @@ let Reader = {
 					h.push('<tr>');
 					h.push('<td>' + wk[i]['name'] + '</td>');
 					h.push('<td>' + wk[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/eye-open.svg"></span></td>');
+					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
 					h.push('</tr>');
 				}
 			}
@@ -287,33 +287,42 @@ let GoodsParser = {
 	 * @param d
 	 * @returns {{amount: number, name: (*|string), state: boolean, isImportant: boolean}}
 	 */
-	getProducts: (d)=> {
+	getProducts: (d) => {
 
 		let amount,
 			state = d['state']['__class__'] === 'ProductionFinishedState',
 			isImportant = false
-		let g = [],
+		let g = [];
+
+		let a;
+		if (d['state']['current_product']['product'] !== undefined && d['state']['current_product']['product']['resources'] !== undefined) {
 			a = d['state']['current_product']['product']['resources'];
 
-		for(let k in a) {
-			if(a.hasOwnProperty(k)) {
-				if (!isImportant) 
-					isImportant = !UnimportantProds.includes(k);
-				
-				if(k === 'strategy_points'){
-                    g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
-					
-				} else {
-					if(isImportant) 
-						g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
-                    else 
-						g.push(a[k] + ' ' + GoodsData[k]['name']);
+			for (let k in a) {
+				if (a.hasOwnProperty(k)) {
+					if (!isImportant)
+						isImportant = !UnimportantProds.includes(k);
+
+					if (k === 'strategy_points') {
+						g.push('<strong>' + a[k] + ' ' + GoodsData[k]['name'] + '</strong>');
+
+					} else {
+						if (isImportant)
+							g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
+						else
+							g.push(a[k] + ' ' + GoodsData[k]['name']);
+					}
 				}
 			}
 		}
 
-		amount = g.join('<br>');
+		if (d['state']['current_product']['clan_power'] !== undefined) {
+			isImportant = true;
+			g.push(d['state']['current_product']['clan_power'] + ' ' + d['state']['current_product']['name']);
+		}
 
+		amount = g.join('<br>');
+		
 		return {
 			amount: amount,
 			state: state,

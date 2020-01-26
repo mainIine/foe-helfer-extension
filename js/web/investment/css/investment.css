@@ -1,0 +1,12 @@
+#Investment {
+	width: 370px !important;
+	height: 27px !important;
+}
+
+#Investment #InvestmentBody {
+	overflow: auto;
+}
+
+#Investment #InvestmentBody strong {
+	color: #ffb539;
+}

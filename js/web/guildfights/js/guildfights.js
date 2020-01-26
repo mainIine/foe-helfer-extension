@@ -143,7 +143,7 @@ let GildFights = {
 
 			HTML.Box({
 				id: 'GildPlayers',
-				title: i18n['Boxes']['Gildfights']['Title'],
+				title: i18n('Boxes.Gildfights.Title'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true
@@ -169,9 +169,10 @@ let GildFights = {
 		t.push('<tr>');
 
 		t.push('<th>&nbsp;</th>');
-		t.push('<th>' + i18n['Boxes']['Gildfights']['Player'] + '</th>');
-		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Negotiations'] + '</th>');
-		t.push('<th class="text-center">' + i18n['Boxes']['Gildfights']['Fights'] + '</th>');
+		t.push('<th>&nbsp;</th>');
+		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
+		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Negotiations') + '</th>');
+		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Fights') + '</th>');
 
 		t.push('</tr>');
 		t.push('</thead>');
@@ -212,6 +213,8 @@ let GildFights = {
 
 			t.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
+			t.push('<td>' + (parseInt(i) +1) + '.</td>');
+
 			t.push('<td><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ playerNew['avatar'] ] + '.jpg" alt=""></td>');
 
 			t.push('<td>' + playerNew['name'] + '</td>');
@@ -246,7 +249,7 @@ let GildFights = {
 			let time = duration.humanize();
 
 			$('.time-diff').text(
-				HTML.i18nReplacer(i18n['Boxes']['Gildfights']['LastSnapshot'], time)
+				HTML.i18nReplacer(i18n('Boxes.Gildfights.LastSnapshot'), {time: time})
 			);
 		}
 	},
@@ -283,7 +286,9 @@ let GildFights = {
 
 			colors[bP[i]['participantId']] = {
 				base: c['base'],
-				main: c['mainColour']
+				main: c['mainColour'],
+				highlight: c['highlight'],
+				shadow: c['shadow'],
 			};
 		}
 

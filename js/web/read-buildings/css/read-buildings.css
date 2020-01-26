@@ -14,9 +14,10 @@
  */
 
 #ResultBox {
-	top: 20%;
-	right: 30px;
-	width: 420px;
+	left: calc(50vw - 250px);
+	top: calc(50vw - 220px);
+	min-width: 500px;
+	max-width: 600px;
 }
 
 #ResultBox #ResultBoxBody {
