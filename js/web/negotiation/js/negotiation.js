@@ -275,9 +275,10 @@ let Negotiation = {
 	/**
 	 * Chancen Berechnung aus den Files
 	 *
-	 * @param {FoE_Class_NegotiationGame} responseData
+	 * @param {FoE_Class_NegotiationGame|{__class__: "Error"}} responseData
 	 */
 	StartNegotiation: (responseData) => {
+		if (responseData.__class__ === "Error") return;
 
 		if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
 			$('#negotiation-Btn').removeClass('hud-btn-red');
@@ -306,20 +307,12 @@ let Negotiation = {
 		}));
 		Negotiation.GoodsOrdered = GoodsOrdered;
 
-		const eras = Technologies.Eras;
-		const goodsData = GoodsData;
 		// Sortiere, nach auswahl Knopf reihenfolge
 		GoodsOrdered.sort((a,b) => {
 			if (a === b) return 0;
 			const goodA = a.resourceId;
 			const goodB = b.resourceId;
-			const eraA = eras[goodsData[goodA].era];
-			const eraB = eras[goodsData[goodB].era];
-			if (eraA === eraB) return goodA > goodB ? 1 : -1
-			// Sortiere Zeitalter 'NoAge'(0) ans ende
-			if (eraA === 0) return  1;
-			if (eraB === 0) return -1;
-			return eraA - eraB;
+			return Negotiation.goodButtonCompare(goodA, goodB);
 		});
 		// und weise Knopf-Nummer als id zu
 		GoodsOrdered.forEach((elem, i) => elem.id = i);
@@ -492,18 +485,22 @@ let Negotiation = {
 		}
 	},
 
+	goodButtonCompare: (goodA, goodB) => {
+		function goodValue(good) {
+			const data = GoodsData[good];
+			if (data.era === 'AllAge') return 100;
+			const special = !!data.abilities.specialResource;
+			const era = Technologies.Eras[data.era];
+			return (era === 0 ? 200 : era ) + (special ? 150 : 0);
+		}
 
-	/**
-	 * Name zusammen setzen
-	 *
-	 * @param TryCount
-	 * @param GoodCount
-	 * @returns {string}
-	 */
-	GetTableName: (TryCount, GoodCount) => {
-		return TryCount + '_' + GoodCount;
+		if (goodA === goodB) return 0;
+		const valA = goodValue(goodA);
+		const valB = goodValue(goodB);
+		
+		if (valA === valB) return goodA > goodB ? 1 : -1
+		return valA - valB;
 	},
-
 
 	updateNextGuess: () => {
 		const GoodsOrdered = Negotiation.GoodsOrdered;
@@ -529,6 +526,7 @@ let Negotiation = {
 		// Gehe alle Permutationen der Verhandlungspartner durch (120 bei 5 Personen)
 		for (let permutation of helper.permutations([...new Array(PlaceCount).keys()])) {
 			const goodMap = new Array(GoodsOrdered.length).fill(255);
+			const tableGoodMapped = new Array(GoodsOrdered.length).fill(false);
 			let valid = true;
 
 			let table = MainTable;
@@ -550,9 +548,10 @@ let Negotiation = {
 					const usedGood = SlotGuess.good.id;
 					const goodMapped = goodMap[usedGood];
 
-					if (goodMapped === 255) {
+					if (goodMapped === 255 && !tableGoodMapped[guessGood]) {
 						// Gut wurde noch nicht zugeordnet
 						goodMap[usedGood] = guessGood;
+						tableGoodMapped[guessGood] = true;
 					} else if (goodMapped !== guessGood) {
 						// Zuordnung passt nicht zur aktuellen Tabelle
 						valid = false;
@@ -585,6 +584,17 @@ let Negotiation = {
 			}
 		}
 		return found;
+	},
+
+	/**
+	 * Name zusammen setzen
+	 *
+	 * @param TryCount
+	 * @param GoodCount
+	 * @returns {string}
+	 */
+	GetTableName: (TryCount, GoodCount) => {
+		return TryCount + '_' + GoodCount;
 	},
 
 	/**

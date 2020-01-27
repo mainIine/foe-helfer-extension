@@ -1440,7 +1440,11 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		MainParser.showInfo(i18n('API.UpdateSuccess'), i18n('API.GEXPlayer'));
+		$.toast({
+			heading: i18n('API.UpdateSuccess'),
+			text: i18n('API.GEXPlayer'),
+			icon: 'success'
+		});
 
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
@@ -1462,7 +1466,11 @@ let MainParser = {
 			data: JSON.stringify(data)
 		});
 
-		MainParser.showInfo(i18n('API.UpdateSuccess'), i18n('API.GEXChampionship'));
+		$.toast({
+			heading: i18n('API.UpdateSuccess'),
+			text: i18n('API.GEXChampionship'),
+			icon: 'success'
+		});
 	},
 
 
@@ -1698,14 +1706,22 @@ let MainParser = {
 				if(r['status'] === 'OK'){
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
-					// Meldung ausgeben
-					MainParser.showInfo('Spieler gefunden', r['msg'], 1600);
+					$.toast({
+						heading: 'Spieler gefunden',
+						text: r['msg'],
+						icon: 'success',
+						hideAfter: 1600
+					});
 
 				} else if (r['status'] === 'NOTICE') {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
-					// Meldung ausgeben
-					MainParser.showInfo('Alles aktuell!', r['msg'], 6000);
+					$.toast({
+						heading: 'Alles aktuell!',
+						text: r['msg'],
+						icon: 'info',
+						hideAfter: 6000
+					});
 				}
 			});
 		}
