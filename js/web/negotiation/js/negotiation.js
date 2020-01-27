@@ -205,7 +205,7 @@ let Negotiation = {
 				if (Good !== undefined) {
 					const extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
 					const tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
-					const numberIcon = /*SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(SlotGuess.good.id+1)+'</span>' :*/ '';
+					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(SlotGuess.good.id+1)+'</span>' : '';
 					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span>'+numberIcon+'</td>');
 
 				} else {
@@ -275,9 +275,10 @@ let Negotiation = {
 	/**
 	 * Chancen Berechnung aus den Files
 	 *
-	 * @param {FoE_Class_NegotiationGame} responseData
+	 * @param {FoE_Class_NegotiationGame|{__class__: "Error"}} responseData
 	 */
 	StartNegotiation: (responseData) => {
+		if (responseData.__class__ === "Error") return;
 
 		if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
 			$('#negotiation-Btn').removeClass('hud-btn-red');
@@ -299,26 +300,46 @@ let Negotiation = {
 
 		const GoodsOrdered = Goods.map((good, idx) => ({
 			resourceId: good,
-			id: idx,
-			plannedPos: -1,
+			id: -1, // wird im nächsten schritt bestimmt
+			plannedPos: -1, // wird im übernächsten schritt bestimmt
 			canOccur: [...new Array(PlaceCount).keys()],
 			hasToOccur: 0
 		}));
 		Negotiation.GoodsOrdered = GoodsOrdered;
+
+		// Sortiere, nach auswahl Knopf reihenfolge
+		GoodsOrdered.sort((a,b) => {
+			if (a === b) return 0;
+			const goodA = a.resourceId;
+			const goodB = b.resourceId;
+			return Negotiation.goodButtonCompare(goodA, goodB);
+		});
+		// und weise Knopf-Nummer als id zu
+		GoodsOrdered.forEach((elem, i) => elem.id = i);
+
+		// Sortiere nun nach Plan reihenfolge
 		GoodsOrdered.sort(function (Good1, Good2) {
 			let Good1Value = Negotiation.GetGoodValue(Good1.resourceId),
 				Good2Value = Negotiation.GetGoodValue(Good2.resourceId);
 
 			return Good1Value - Good2Value;
 		});
+		// und weise die Position als plannedPos zu
 		GoodsOrdered.forEach((elem, i) => elem.plannedPos = i);
 
-		Negotiation.PlaceMutation = [...new Array(PlaceCount).keys()];
-		Negotiation.PlaceMutation.sort((a,b) => {
-			const va = a < GoodsOrdered.length ? GoodsOrdered[a].id : 255;
-			const vb = b < GoodsOrdered.length ? GoodsOrdered[b].id : 255;
-			return va - vb;
-		});
+		Negotiation.PlaceMutation =
+			[...new Array(PlaceCount).keys()]
+			.sort((a,b) => {
+				if (a === b) return 0;
+				const valA = a < GoodsOrdered.length ? GoodsOrdered[a].id : 255;
+				const valB = b < GoodsOrdered.length ? GoodsOrdered[b].id : 255;
+				return valA - valB;
+			})
+			// invertiere das mapping von "Platz zu Tabellenplatz" zu "Tabellenplatz zu Platz"
+			.map((v, i) => [v, i])
+			.sort((a,b) => a[0] - b[0])
+			.map(([v, i]) => i)
+		;
 
 		if (responseData.context === 'guildExpedition') {
 			let Now = new Date().getTime();
@@ -367,8 +388,16 @@ let Negotiation = {
 
 			const goodIdx = GoodsOrdered.findIndex(info => info.resourceId === ResourceId);
 			const goodInfo = GoodsOrdered[goodIdx];
+
+			// wenn die Belegung nicht mit dem Vorschlag übereinstimmt,
+			// wird sie angepasst und eine neue Tabelle muss gesucht werden
+			if (goodInfo !== OldGuess[SlotID].good) {
+				OldGuess[SlotID].good = goodInfo;
+				Result = -1;
+			}
+
 			// Entferne diesen Verhandlungspartner aus der Liste der möglichen plätze für dieses Gut.
-			goodInfo.canOccur = goodInfo.canOccur.filter(elem => elem !== i);
+			goodInfo.canOccur = goodInfo.canOccur.filter(elem => elem !== SlotID);
 
 			if (State === 'correct') {
 				oldSlotGuess.match = 0; /* korrekt */
@@ -376,7 +405,7 @@ let Negotiation = {
 					goodInfo.hasToOccur = 0;
 				}
 				for (let info of GoodsOrdered) {
-					info.canOccur = info.canOccur.filter(elem => elem !== i);
+					info.canOccur = info.canOccur.filter(elem => elem !== SlotID);
 				}
 			} else if (State === 'wrong_person') {
 				oldSlotGuess.match = 1; /* falsche Person */
@@ -385,11 +414,6 @@ let Negotiation = {
 				oldSlotGuess.match = 2; /* ganz falsch */
 				goodInfo.canOccur = [];
 				goodInfo.hasToOccur = 0;
-			}
-
-			if (goodInfo !== OldGuess[SlotID].good) {
-				OldGuess[SlotID].good = GoodsOrdered[goodIdx];
-				Result = -1;
 			}
 		}
 
@@ -461,18 +485,22 @@ let Negotiation = {
 		}
 	},
 
+	goodButtonCompare: (goodA, goodB) => {
+		function goodValue(good) {
+			const data = GoodsData[good];
+			if (data.era === 'AllAge') return 100;
+			const special = !!data.abilities.specialResource;
+			const era = Technologies.Eras[data.era];
+			return (era === 0 ? 200 : era ) + (special ? 150 : 0);
+		}
 
-	/**
-	 * Name zusammen setzen
-	 *
-	 * @param TryCount
-	 * @param GoodCount
-	 * @returns {string}
-	 */
-	GetTableName: (TryCount, GoodCount) => {
-		return TryCount + '_' + GoodCount;
+		if (goodA === goodB) return 0;
+		const valA = goodValue(goodA);
+		const valB = goodValue(goodB);
+		
+		if (valA === valB) return goodA > goodB ? 1 : -1
+		return valA - valB;
 	},
-
 
 	updateNextGuess: () => {
 		const GoodsOrdered = Negotiation.GoodsOrdered;
@@ -498,6 +526,7 @@ let Negotiation = {
 		// Gehe alle Permutationen der Verhandlungspartner durch (120 bei 5 Personen)
 		for (let permutation of helper.permutations([...new Array(PlaceCount).keys()])) {
 			const goodMap = new Array(GoodsOrdered.length).fill(255);
+			const tableGoodMapped = new Array(GoodsOrdered.length).fill(false);
 			let valid = true;
 
 			let table = MainTable;
@@ -512,13 +541,17 @@ let Negotiation = {
 					// result für die verfolgung der weiteren Runden berechnen
 					result = result*4 + SlotGuess.match;
 
+					const guessGood = table.gu[place];
+					// Überspringe den Slot, wenn er bereits erledigt ist
+					if (guessGood === 255) continue;
+
 					const usedGood = SlotGuess.good.id;
 					const goodMapped = goodMap[usedGood];
-					const guessGood = table.gu[place];
 
-					if (goodMapped === 255) {
+					if (goodMapped === 255 && !tableGoodMapped[guessGood]) {
 						// Gut wurde noch nicht zugeordnet
 						goodMap[usedGood] = guessGood;
+						tableGoodMapped[guessGood] = true;
 					} else if (goodMapped !== guessGood) {
 						// Zuordnung passt nicht zur aktuellen Tabelle
 						valid = false;
@@ -551,6 +584,17 @@ let Negotiation = {
 			}
 		}
 		return found;
+	},
+
+	/**
+	 * Name zusammen setzen
+	 *
+	 * @param TryCount
+	 * @param GoodCount
+	 * @returns {string}
+	 */
+	GetTableName: (TryCount, GoodCount) => {
+		return TryCount + '_' + GoodCount;
 	},
 
 	/**
