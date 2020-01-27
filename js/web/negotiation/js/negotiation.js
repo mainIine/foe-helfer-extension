@@ -275,9 +275,10 @@ let Negotiation = {
 	/**
 	 * Chancen Berechnung aus den Files
 	 *
-	 * @param {FoE_Class_NegotiationGame} responseData
+	 * @param {FoE_Class_NegotiationGame|{__class__: "Error"}} responseData
 	 */
 	StartNegotiation: (responseData) => {
+		if (responseData.__class__ === "Error") return;
 
 		if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
 			$('#negotiation-Btn').removeClass('hud-btn-red');
@@ -484,24 +485,22 @@ let Negotiation = {
 		}
 	},
 
-
-	goodButtonCompare: (()=>{	
+	goodButtonCompare: (goodA, goodB) => {
 		function goodValue(good) {
 			const data = GoodsData[good];
+			if (data.era === 'AllAge') return 100;
 			const special = !!data.abilities.specialResource;
 			const era = Technologies.Eras[data.era];
-			return (era === 0 ? 200 : era ) + (special ? 100 : 0);
+			return (era === 0 ? 200 : era ) + (special ? 150 : 0);
 		}
-	
-		return function(goodA, goodB) {
-			if (goodA === goodB) return 0;
-			const valA = goodValue(goodA);
-			const valB = goodValue(goodB);
-			
-			if (valA === valB) return goodA > goodB ? 1 : -1
-			return valA - valB;
-		}
-	})(),
+
+		if (goodA === goodB) return 0;
+		const valA = goodValue(goodA);
+		const valB = goodValue(goodB);
+		
+		if (valA === valB) return goodA > goodB ? 1 : -1
+		return valA - valB;
+	},
 
 	updateNextGuess: () => {
 		const GoodsOrdered = Negotiation.GoodsOrdered;
