@@ -97,12 +97,8 @@ document.addEventListener("DOMContentLoaded", function(){
 	// aktuelle Welt notieren
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
-
-	// Local-Storage leeren
-	localStorage.removeItem('OwnCurrentBuildingCity');
-	localStorage.removeItem('OwnCurrentBuildingGreat');
-
-	// Fullscreen erkennen und verarbeiten
+	
+    // Fullscreen erkennen und verarbeiten
 	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
 		if (!window.screenTop && !window.screenY) {
 			HTML.LeaveFullscreen();
@@ -544,7 +540,7 @@ const FoEproxy = (function () {
 
 		const j = JSON.parse(xhr.responseText);
 
-		sessionStorage.setItem('BuildingsData', JSON.stringify(j));
+		Outposts.CityEntities = j;
 
 		for (let i in j)
 		{
@@ -723,7 +719,7 @@ const FoEproxy = (function () {
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
-		sessionStorage.setItem('OtherActiveBuildingOverview', JSON.stringify(data.responseData));
+		Calculator.Overview = data.responseData;
 		Calculator.DetailViewIsNewer = false;
 
 		$('#calculator-Btn').removeClass('hud-btn-red');
@@ -764,8 +760,8 @@ const FoEproxy = (function () {
 			}
 
 		if (Rankings) {
-			if (!lgUpdateData || !lgUpdateData.UpdateEntity) {
-				lgUpdateData = {Rankings: Rankings, UpdateEntity: null};
+			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
+				lgUpdateData = { Rankings: Rankings, CityMapEntity: null};
 				// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
 				Promise.resolve().then(()=>lgUpdateData = null);
 			} else {
@@ -781,23 +777,23 @@ const FoEproxy = (function () {
 
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
 		if (!lgUpdateData || !lgUpdateData.Rankings) {
-			lgUpdateData = {Rankings: null, UpdateEntity: data};
+			lgUpdateData = { Rankings: null, CityMapEntity: data};
 			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
 			Promise.resolve().then(()=>lgUpdateData = null);
 		} else {
-			lgUpdateData.UpdateEntity = data;
+			lgUpdateData.CityMapEntity = data;
 			lgUpdate();
 		}
 	});
 
 	// Update Funktion, die ausgeführt wird, sobald beide Informationen in lgUpdateData vorhanden sind.
 	function lgUpdate() {
-		const {UpdateEntity, Rankings} = lgUpdateData;
+		const { CityMapEntity, Rankings} = lgUpdateData;
 		lgUpdateData = null;
 		let IsPreviousLevel = false;
 
 		//Eigenes LG
-		if (UpdateEntity.responseData[0].player_id === ExtPlayerID || UsePartCalcOnAllLGs) {
+		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || UsePartCalcOnAllLGs) {
 			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
 			if (IsLevelScroll) {
 				let Medals = 0;
@@ -823,37 +819,37 @@ const FoEproxy = (function () {
 				LGCurrentLevelMedals = Medals;
 			}
 
-			localStorage.setItem('OwnCurrentBuildingCity', JSON.stringify(UpdateEntity.responseData[0]));
-			localStorage.setItem('OwnCurrentBuildingGreat', JSON.stringify(Rankings));
-			localStorage.setItem('OwnCurrentBuildingPreviousLevel', ''+IsPreviousLevel);
-
+			Parts.CityMapEntity = CityMapEntity.responseData[0];
+			Parts.Rankings = Rankings;
+			Parts.IsPreviousLevel = IsPreviousLevel;
+			
 			// das erste LG wurde geladen
 			$('#partCalc-Btn').removeClass('hud-btn-red');
 			$('#partCalc-Btn-closed').remove();
 
 			if ($('#OwnPartBox').length > 0) {
-				Parts.RefreshData();
+				Parts.Show();
 			}
 
 			if (!IsLevelScroll) {
-				MainParser.OwnLG(UpdateEntity.responseData[0], Rankings);
+				MainParser.OwnLG(CityMapEntity.responseData[0], Rankings);
 			}
 		}
 
 		//Fremdes LG
-		if (UpdateEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
+		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
 			LastKostenrechnerOpenTime = new Date().getTime()
 
 			$('#calculator-Btn').removeClass('hud-btn-red');
 			$('#calculator-Btn-closed').remove();
 
-			sessionStorage.setItem('OtherActiveBuilding', JSON.stringify(Rankings));
-			sessionStorage.setItem('OtherActiveBuildingData', JSON.stringify(UpdateEntity['responseData'][0]));
+			Calculator.Rankings = Rankings;
+			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
 			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
 			if ($('#costCalculator').is(':visible') || ($('#LGOverviewBox').is(':visible') && Calculator.AutoOpenKR)) {
-				Calculator.Show(Rankings, UpdateEntity.responseData[0]);
+				Calculator.Show(Rankings, CityMapEntity.responseData[0]);
 			}
 		}
 
@@ -1037,6 +1033,9 @@ const FoEproxy = (function () {
 
 		if( $('#costCalculator').length > 0 ){
 			Calculator.Show();
+		}
+		if ($('#OwnPartBox').length > 0) {
+			Parts.Show();
 		}
 	});
 
