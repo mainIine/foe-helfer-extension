@@ -140,11 +140,11 @@ async function InjectCode() {
 				'ScrollTo/jquery.scrollTo.min',
 				'jQuery/jquery-resizable.min',
 				'jQuery/jquery-ui.min',
+				'jQuery/jquery.toast',
 				'tooltip/tooltip',
 				'tableSorter/table-sorter',
 				'Sortable/Sortable.min',
 				'jsZip/jszip.min',
-				//'jedParser/jedParser'
 			];
 
 		// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
