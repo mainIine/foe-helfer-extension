@@ -629,7 +629,7 @@ const FoEproxy = (function () {
 
 	// Limited Bonus (Archenbonus, Kraken etc.)
 	FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
-		Calculator.SetArcBonus(data.responseData);
+		MainParser.SetArkBonus(data.responseData);
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -1043,8 +1043,7 @@ const FoEproxy = (function () {
 
 
 /**
- *
- * @type {{BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, showInfo: MainParser.showInfo, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PossibleLanguages: string[], PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, SetArcBonus: MainParser.SetArcBonus, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PossibleLanguages: string[], PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -1061,8 +1060,10 @@ let MainParser = {
 	CityMapData: null,
 	UnlockedAreas: null,
 	Quests: null,
+	ArkBonus: 0,
 	Inventory: null,
 	InnoCDN: 'https://foede.innogamescdn.com/',
+
 
 	/** @type {Record<string,string>} */
 	BoostMapper: {
@@ -1256,19 +1257,6 @@ let MainParser = {
 
 
 	/**
-	 * Benachrichtigung zeigen
-	 *
-	 * @param title
-	 * @param msg
-	 * @param time
-	 */
-	showInfo: (title, msg, time)=> {
-		let t = time === undefined ? 4000 : time;
-		MainParser.sendExtMessage({type: 'message', title: title, msg: msg, time: t});
-	},
-
-
-	/**
 	 * Gildenmitglieder durchsteppen
 	 *
 	 * @param d
@@ -1408,15 +1396,16 @@ let MainParser = {
 				data: JSON.stringify(data)
 			});
 
-			MainParser.showInfo(
-				d['other_player']['name'] + ' geupdated',
-				HTML.i18nReplacer(
+			$.toast({
+				heading: d['other_player']['name'] + ' geupdated',
+				text: HTML.i18nReplacer(
 					i18n('API.LGGildMember'),
 					{
 						'player' : d['other_player']['name']
 					}
-				)
-			);
+				),
+				icon: 'success'
+			});
 		}
 	},
 
@@ -1556,7 +1545,11 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		MainParser.showInfo(i18n('API.UpdateSuccess'), i18n('API.LGInvest'));
+		$.toast({
+			heading: i18n('API.UpdateSuccess'),
+			text: i18n('API.LGInvest'),
+			icon: 'success'
+		});
 	},
 
 
@@ -1725,6 +1718,27 @@ let MainParser = {
 				}
 			});
 		}
+	},
+
+
+	/**
+	 * Archenbonus global ermitteln
+	 *
+	 * @param LimitedBonuses
+	 */
+	SetArkBonus: (LimitedBonuses) => {
+		let ArkBonus = 0;
+
+		for (let i in LimitedBonuses) {
+
+			if(!LimitedBonuses.hasOwnProperty(i)){break}
+
+			if (LimitedBonuses[i].type === 'contribution_boost') {
+				ArkBonus += LimitedBonuses[i].value;
+			}
+		}
+
+		MainParser.ArkBonus = ArkBonus;
 	},
 
 
