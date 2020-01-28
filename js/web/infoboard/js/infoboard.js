@@ -340,7 +340,7 @@ let Info = {
                 break;
             }
 
-            if(d[i]['itemId'] !== 12466372 || d[i]['itemId'] !== 12726201 || d[i]['itemId'] !== 12587659) return;
+            if(d[i]['itemId'] !== 12466372 && d[i]['itemId'] !== 12741356 && d[i]['itemId'] !== 12587659) return;
             
             // FP Typ aus dem Lager ermitteln
             let factor = parseInt(MainParser.Inventory.find(x => x['id'] === d[i]['itemId'])['item']['resource_package']['gain']),
