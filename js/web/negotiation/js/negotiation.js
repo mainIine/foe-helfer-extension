@@ -196,7 +196,40 @@ let Negotiation = {
 		for (let i = 0; i < Guesses.length; i++) {
 			const Guess = Guesses[i];
 
-			h.push('<tr' + ((i +1) < Guesses.length ? ' class="goods-opacity"' : '') + '>');
+			let colorStyle = '';
+			if (i+1 === CurrentTry && Negotiation.CurrentTable) {
+				const colors = [
+					[255,   0, 0], // Rot
+					[255, 165, 0], // Orange
+					[  0, 255, 0], // Grün
+				];
+				const c = Negotiation.CurrentTable.c;
+				
+				let mix = c/100*(colors.length-1);
+				const colorIdx = Math.floor(mix);
+				// mix soll ein Wert zwischen 0 und 1 sein
+				mix -= colorIdx;
+
+				let colorVal = '';
+				if (colorIdx+1 < colors.length) {
+					const color1 = colors[colorIdx];
+					const color2 = colors[colorIdx+1];
+					const invMix = 1-mix;
+					// Lineare mischung und auf 0-255 beschrenken
+					const colorR = Math.min(255, Math.max(0, Math.round(color1[0]*invMix + color2[0]*mix)));
+					const colorG = Math.min(255, Math.max(0, Math.round(color1[1]*invMix + color2[1]*mix)));
+					const colorB = Math.min(255, Math.max(0, Math.round(color1[2]*invMix + color2[2]*mix)));
+					
+					colorVal = `rgba(${colorR}, ${colorG}, ${colorB}, 0.3)`;
+				} else {
+					const color = colors[colorIdx];
+					colorVal = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`;
+				}
+
+				colorStyle = ` style="background-image: linear-gradient(transparent, ${colorVal})"`
+			}
+
+			h.push('<tr' + ((i +1) < Guesses.length ? ' class="goods-opacity"' : Negotiation.CurrentTable ? colorStyle : '') + '>');
 
 			for (let place = 0; place < Negotiation.PlaceCount; place++) {
 				let SlotGuess = Guess[place];
@@ -205,7 +238,7 @@ let Negotiation = {
 				if (Good !== undefined) {
 					const extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
 					const tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
-					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(SlotGuess.good.id+1)+'</span>' : '';
+					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(place+1)+'-'+(SlotGuess.good.id+1)+'</span>' : '';
 					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span>'+numberIcon+'</td>');
 
 				} else {
