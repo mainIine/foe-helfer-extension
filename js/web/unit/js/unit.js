@@ -348,7 +348,7 @@ let Unit = {
 			}
 
 			pool.push('<tr>');
-			pool.push('<th colspan="4">' + i18n('Eras')[era] + '</th>');
+			pool.push('<th colspan="4">' + i18n('Eras.'+era) + '</th>');
 			pool.push('</tr>');
 
 			for(let i in eras[era])
