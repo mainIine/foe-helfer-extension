@@ -26,7 +26,8 @@ let Investment = {
     InvestedFP: 0,
     RewardFP: 0,
     BonusFP: 0,
-    ArcBonus: 0,
+	ArkBonus: 0,
+
 
     Box: () => {
         if ($('#Investment').length === 0) {
@@ -40,15 +41,22 @@ let Investment = {
             // CSS in den DOM prügeln
             HTML.AddCssFile('investment');
         }
+        
+        Investment.ArkBonus = MainParser.ArkBonus;
         Investment.InvestmentBar(Investment.InvestedFP);
     },
 
+
+	/**
+	 * Investition errechnen
+	 *
+	 * @param data
+	 */
     CalcBar: (data) => {
         if (!data) return;
         if (data.length <= 0) return;
 
-        Investment.ArcBonus = localStorage.getItem('ArcBonus');
-        Investment.ArcBonus = ((parseFloat(Investment.ArcBonus) + 100) / 100)
+        Investment.ArkBonus = ((parseFloat(Investment.ArkBonus) + 100) / 100)
 
         Investment.RewardFP = 0;
         Investment.InvestedFP = 0;
@@ -56,21 +64,25 @@ let Investment = {
 
         for (let x = 0; x < data.length; x++) {
             const contribution = data[x];
+
             Investment.InvestedFP += contribution['forge_points'];
-            if (undefined !== contribution['reward'])
-                Investment.RewardFP += (contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] : 0);
+
+            if (undefined !== contribution['reward']) {
+				Investment.RewardFP += (contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] : 0);
+			}
         }
     },
+
 
     /**
 	 * Kleine FP-Bar im Header
 	 *
-	 * @param NewFP Die neu zu setzenden FP
+	 * @param _InvestedFP Die neu zu setzenden FP
 	 */
     InvestmentBar: (_InvestedFP) => {
         if (_InvestedFP === undefined) _InvestedFP = 0;
 
-        Investment.BonusFP = (Math.round(Investment.RewardFP * Investment.ArcBonus)) - _InvestedFP;
+        Investment.BonusFP = (Math.round(Investment.RewardFP * Investment.ArkBonus)) - _InvestedFP;
 
         let div = $('#InvestmentBody');
 
