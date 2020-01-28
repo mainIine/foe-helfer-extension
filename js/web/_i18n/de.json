@@ -1,9 +1,11 @@
 {
 	"values":{
-		"FoE Helper": "FoE Helfer",
 		"Local": "de-DE",
+
 		"DateTime": "DD.MM.YYYY HH:mm [Uhr]",
+
 		"Global.BoxTitle": " <small><em> - FoE Helfer</em></small>",
+
 		"Boxes.OwnpartCalculator.Title": "Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.Step": "Stufe",
@@ -28,6 +30,7 @@
 		"Boxes.OwnpartCalculator.Place": "Platz",
 		"Boxes.OwnpartCalculator.Levels": "Leveln",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Kein Platz sicher",
+
 		"Boxes.Calculator.Title": "Kostenrechner",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.Step": "Stufe ",
@@ -50,6 +53,7 @@
 		"Boxes.Calculator.Done": "abgeschlossen",
 		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
 		"Boxes.Calculator.NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
+
 		"Boxes.LGOverviewBox.Title": "Mögliche Einzahlungen",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "neu gefunden",
 		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "wiedererkannt",
@@ -60,14 +64,18 @@
 		"Boxes.LGOverviewBox.Rate": "Kurs",
 		"Boxes.LGOverviewBox.Profit": "Gewinn",
 		"Boxes.LGOverviewBox.NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen",
+
 		"Boxes.StrategyPoints.Title": "FP - Produktionen",
 		"Boxes.StrategyPoints.TotalFPs": "Gesamt FP aus allen Gebäuden: ",
 		"Boxes.StrategyPoints.Amount": "Anzahl",
 		"Boxes.StrategyPoints.FPBar": "FP-Lager: ",
 		"Boxes.StrategyPoints.BuyableFP": "Kaufbar: ",
+
 		"Boxes.Investment.Title": "Investitionen",
 		"Boxes.Investment.InvestBar": "Investierte FP: ",
 		"Boxes.Investment.CurrReward": "Aktueller Gewinn: ",
+		"Boxes.Investment.TotalFP": "Lager + Umlauf + Gewinn: ",
+
 		"Boxes.Productions.Title": "Produktions Übersicht",
 		"Boxes.Productions.SearchInput": "Gebäude Suche...",
 		"Boxes.Productions.Total": "Gesamt: ",
@@ -89,9 +97,11 @@
 		"Boxes.Productions.Headings.main_building": "Rathaus",
 		"Boxes.Productions.Headings.boost": "Boost",
 		"Boxes.Productions.Headings.all": "Alle",
+
 		"Boxes.Neighbors.Title": "Produktionen von ",
 		"Boxes.Neighbors.ReadyProductions": "Fertige Produktionen",
 		"Boxes.Neighbors.OngoingProductions": "Laufende Produktionen",
+
 		"Boxes.Outpost.Title": "Güter des Außenpostens",
 		"Boxes.Outpost.TitleShort": "Güterübersicht - ",
 		"Boxes.Outpost.TitleBuildings": "Gebäude",
@@ -103,6 +113,7 @@
 		"Boxes.Outpost.nextTile": "nächste Erweiterung",
 		"Boxes.Outpost.tileNotPlanned": "off",
 		"Boxes.Outpost.infoLine": "__runNumber__. Durchlauf, Bonus x4 Chance: __chanceX4__%",
+
 		"Boxes.Technologies.Title": "Forschungskosten für",
 		"Boxes.Technologies.Resource": "Ressource",
 		"Boxes.Technologies.DescRequired": "Benötigt",
@@ -128,6 +139,7 @@
 		"Boxes.Technologies.Eras.17": "Virtuelle Zukunft",
 		"Boxes.Technologies.Eras.18": "Raumfahrt: Mars",
 		"Boxes.Technologies.Eras.19": "Raumfahrt: Ceres",
+
 		"Boxes.Campagne.Title": "Eroberungskosten für ",
 		"Boxes.Campagne.Reward": "Gesamtbelohnung ",
 		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
@@ -135,6 +147,7 @@
 		"Boxes.Campagne.DescRequired": "Benötigt",
 		"Boxes.Campagne.DescInStock": "Vorhanden",
 		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
+
 		"Boxes.EventList.Title": "Event-Questliste für: ",
 		"Boxes.EventList.Desc": "Aufgabe",
 		"Boxes.EventList.Reward": "Belohnung",
@@ -143,6 +156,7 @@
 		"Boxes.EventList.And": " und ",
 		"Boxes.EventList.Upcoming": "Ungefähre Vorschau <em>(Werte werden bei Aktiverung aktualisiert)</em>",
 		"Boxes.EventList.Waiting": "Keine Quest vorhanden",
+
 		"Boxes.Negotiation.Title": "Verhandlungassistent",
 		"Boxes.Negotiation.WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
 		"Boxes.Negotiation.TryEnd": "Versuche zu Ende",
@@ -158,9 +172,11 @@
 		"Boxes.Negotiation.GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
 		"Boxes.Negotiation.DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
 		"Boxes.Negotiation.TableLoadError": "Fehler beim Laden der Verhandlungtabelle",
+
 		"Boxes.Settings.Title": "Einstellungen",
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
+
 		"Boxes.Infobox.Title": "Infobox",
 		"Boxes.Infobox.Filter": "Filter",
 		"Boxes.Infobox.FilterGex": "GEX",
@@ -176,6 +192,7 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Stufe __level__",
 		"Boxes.Infobox.Messages.GildFightOccupied": "Provinz <span style=\"color:#ffb539\">__provinceName__</span> wurde von <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> übernommen und ist bis __untilOccupied__ Uhr gesperrt",
+
 		"Boxes.Units.Title": "Armee Übersicht",
 		"Boxes.Units.NextUnitsIn": "Die nächsten __count__ Einheiten kommen in <span class=\"alca-countdown\"></span> um __harvest__ Uhr",
 		"Boxes.Units.ReadyToLoot": "Bereit zur Ernte!",
@@ -188,21 +205,25 @@
 		"Boxes.Units.NotFilled": "nicht gefüllt",
 		"Boxes.Units.Bind": "Gebunden",
 		"Boxes.Units.Unbind": "Ungebunden",
+
 		"Boxes.CityMap.TitleSend": "Daten übermitteln",
 		"Boxes.CityMap.Desc1": "Um deine Stadt planen zu können müssen wir deine Daten zu foe-rechner.de schicken. Dort kannst du dich dann austoben.",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Abschicken</button>",
 		"Boxes.CityMap.SubmitSuccess": "Die Daten wurden übermittelt... Geh nun zu ",
 		"Boxes.CityMap.WholeArea": "Gesamte Fläche: ",
 		"Boxes.CityMap.FreeArea": "Freie Fläche: ",
+
 		"Boxes.Gildfights.Title": "Spieler Übersicht",
 		"Boxes.Gildfights.Player": "Spieler",
 		"Boxes.Gildfights.Negotiations": "Verhandlungen",
 		"Boxes.Gildfights.Fights": "Kämpfe",
 		"Boxes.Gildfights.LastSnapshot": " - letzter Snapshot vor __time__",
+
 		"Boxes.HiddenRewards.Title": "Ereignisse",
 		"Boxes.HiddenRewards.Appears": "Erscheint",
 		"Boxes.HiddenRewards.Disappears": "Verschwindet",
 		"Boxes.HiddenRewards.NoEvents": "Keine Ereignisse vorhanden",
+
 		"Menu.Productions.Title": "Produktions Übersicht",
 		"Menu.Productions.Desc": "Zeigt die derzeitige Anzahl aller Produktionen an.",
 		"Menu.Calculator.Title": "Kostenrechner",
@@ -245,6 +266,7 @@
 		"Menu.HiddenRewards.Desc": "Übersicht der Ereignisse auf der Map",
 		"Menu.Citymap.Title": "Stadtübersicht",
 		"Menu.Citymap.Desc": "Zeigt deine Stadt schematisch von oben",
+
 		"Settings.Version.Title": "Version",
 		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.Desc": "Chrome Extension Version",
@@ -284,6 +306,7 @@
 		"Settings.ChangeLanguage.Dropdown.sv": "Svenska",
 		"Settings.ChangeLanguage.Dropdown.cs": "Český",
 		"Settings.ChangeLanguage.Dropdown.ro": "Română",
+
 		"Eras.NoAge": "Ohne Zeitalter",
 		"Eras.StoneAge": "Steinzeit",
 		"Eras.BronzeAge": "Bronzezeit",
@@ -303,11 +326,13 @@
 		"Eras.OceanicFuture": "Ozeanische Zukunft",
 		"Eras.VirtualFuture": "Virtuelle Zukunft",
 		"Eras.SpaceAgeMars": "Raumfahrt: Mars",
+
 		"API.UpdateSuccess": "Update durchgeführt",
 		"API.GEXPlayer": "Die GEX Platzierungen der Mitglieder wurden geupdatet",
 		"API.GEXChampionship": "Die GEX-Gilden Platzierung wurde geupdatet",
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.LGGildMember": "__player__'s LGs wurden übermittelt",
+
 		"HiddenRewards.Positions.nature": "Natur",
 		"HiddenRewards.Positions.shore": "Küste",
 		"HiddenRewards.Positions.water": "im Wasser",
