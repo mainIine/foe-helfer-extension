@@ -14,7 +14,7 @@
  */
 
 FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
-	if (data['responseData']['0']['context'] === 'guildExpedition') {
+	if (data['responseData']['0']['context'] !== 'forgePoints') {
 		return;
 	}
 
@@ -23,7 +23,7 @@ FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
 });
 
 FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
-	if (data['responseData']['0']['context'] === 'guildExpedition') {
+	if (data['responseData']['gains'] === undefined || data['responseData']['gains']['resources'] === undefined || data['responseData']['gains']['resources']['strategy_points'] === undefined) {
 		return;
 	}
 
