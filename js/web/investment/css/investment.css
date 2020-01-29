@@ -1,6 +1,6 @@
 #Investment {
-	width: 370px !important;
-	height: 27px !important;
+	width: 370px;
+	padding: 10px;
 }
 
 #Investment #InvestmentBody {
@@ -9,4 +9,8 @@
 
 #Investment #InvestmentBody strong {
 	color: #ffb539;
+}
+
+#Investment #InvestmentBody #total-fp {
+	margin-top: 10px;
 }
