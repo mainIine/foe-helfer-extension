@@ -16,7 +16,6 @@
 
 let Calculator = {
 
-	ArcBonus: 0,
 	ForderBonus: 90,
     EntityOverview: [],
     CurrentPlayer: 0,
@@ -40,10 +39,7 @@ let Calculator = {
 	*
 	*/
 	Open: () => {
-
-		// realen Archebonus übernehmen
-		Calculator.ArkBonus = MainParser.ArkBonus;
-
+		
 		// Nur Übersicht verfügbar
 		if (Calculator.Overview !== undefined && Calculator.CityMapEntity === undefined) {
 			Calculator.ShowOverview(false);
@@ -180,22 +176,22 @@ let Calculator = {
 		h.push('<div>');
 
 		// Zusätzliche Buttons für die Standard Prozente
-		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + Calculator.ArkBonus + '">' + Calculator.ArkBonus + '%</button>';
+		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + MainParser.ArkBonus + '">' + MainParser.ArkBonus + '%</button>';
 
 		// ... und korrekt einsortieren
-		if (Calculator.ArkBonus < 85) {
+		if (MainParser.ArkBonus < 85) {
 			h.push(own_arc);
 		}
 
 		h.push('<button class="btn btn-default btn-toggle-arc" data-value="85">85%</button>');
 
-		if (Calculator.ArkBonus > 85 && Calculator.ArkBonus < 90) {
+		if (MainParser.ArkBonus > 85 && MainParser.ArkBonus < 90) {
 			h.push(own_arc);
 		}
 
 		h.push('<button class="btn btn-default btn-toggle-arc" data-value="90">90%</button>');
 
-		if (Calculator.ArkBonus > 90) {
+		if (MainParser.ArkBonus > 90) {
 			h.push(own_arc);
 		}
 
@@ -205,7 +201,7 @@ let Calculator = {
 
 		h.push('</div><div>');
 
-		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + Calculator.ArkBonus + '%<br>');
+		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 		h.push('<strong>Snipen</strong><br>');
 
         h.push('</div>');
@@ -320,7 +316,7 @@ let Calculator = {
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
 			BestKursEinsatz = undefined,
-			arc = 1 + (Calculator.ArkBonus / 100),
+			arc = 1 + (MainParser.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
         let EigenPos,
@@ -722,7 +718,7 @@ let Calculator = {
 	 */
     ShowOverview: (DisableAudio)=> {
 
-		let arc = ((parseFloat(Calculator.ArkBonus) + 100) / 100)
+		let arc = ((parseFloat(MainParser.ArkBonus) + 100) / 100)
 
 		// nix drin, raus
 		if (Calculator.Overview === undefined)
