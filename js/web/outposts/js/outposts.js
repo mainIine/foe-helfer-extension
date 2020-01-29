@@ -756,9 +756,6 @@ FoEproxy.addHandler('CityMapService', 'removeBuilding', (/** @type {FoE_NETWORK_
 					Outposts.RequestGUIUpdate();
 				}
 			});
-			data.responseData.forEach(building => {
-				Outposts.updateBuilding(building);
-			});
 		}
 	}
 });

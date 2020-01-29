@@ -160,35 +160,16 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			attack.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let mb = cache['bonuses'].find(o => (o['type'] === 'military_boost')),
-				at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
-				ab = cache['bonuses'].find(o => (o['type'] === 'attack_boost'));
+			let Boosts = Unit.GetBoostSums(cache['bonuses']);
 
-			if(mb === undefined){
-				mb = 0;
-			} else {
-				mb = mb['value'];
-			}
+			let AttackBoost = Boosts['AttackAttackBoost'],
+				DefenseBoost = Boosts['AttackDefenseBoost']
+			
+			let Attack = Math.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = Math.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
-			if(at === undefined){
-				at = 0;
-			} else {
-				at = at['value'];
-			}
-
-			if(ab === undefined){
-				ab = 0;
-			} else {
-				ab = ab['value'];
-			}
-
-			let ap = (mb + at + ab),
-				a = Math.round(type['baseDamage'] * (ap / 100)) + type['baseDamage'],
-				dp = (mb + at),
-				d = Math.round(type['baseArmor'] * (dp / 100)) + type['baseArmor'];
-
-			attack.push('<td class="text-center"><em><small>+' + ap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
-			attack.push('<td class="text-center"><em><small>+' + dp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
 
 			attack.push('</tr>');
 		}
@@ -251,35 +232,16 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			defense.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
-				fr = cache['bonuses'].find(o => (o['type'] === 'fierce_resistance')),
-				db = cache['bonuses'].find(o => (o['type'] === 'defense_boost'));
+			let Boosts = Unit.GetBoostSums(cache['bonuses']);
 
-			if(at === undefined){
-				at = 0;
-			} else {
-				at = at['value'];
-			}
+			let AttackBoost = Boosts['DefenseAttackBoost'],
+				DefenseBoost = Boosts['DefenseDefenseBoost']
 
-			if(fr === undefined){
-				fr = 0;
-			} else {
-				fr = fr['value'];
-			}
+			let Attack = Math.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = Math.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
-			if(db === undefined){
-				db = 0;
-			} else {
-				db = db['value'];
-			}
-
-			let dap = (fr + at),
-				a = Math.round(type['baseDamage'] * (dap / 100)) + type['baseDamage'],
-				ddp = (fr + at + db),
-				d = Math.round(type['baseArmor'] * (ddp / 100)) + type['baseArmor'];
-
-			defense.push('<td class="text-center"><em><small>+' + dap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
-			defense.push('<td class="text-center"><em><small>+' + ddp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
 
 			defense.push('</tr>');
 		}
@@ -452,6 +414,70 @@ let Unit = {
 			clearInterval(intervalID);
 			$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
 		}
+	},
+
+
+	/**
+	 * Berechnet die summierten Boni
+	 * *
+	 */
+	GetBoostSums: (Boni) => {
+		let Ret = [],
+			CurrentBoost = undefined;
+
+		Ret['AttackAttackBoost'] = 0;
+		Ret['AttackDefenseBoost'] = 0;
+		Ret['DefenseAttackBoost'] = 0;
+		Ret['DefenseDefenseBoost'] = 0;
+
+		// Angriff + Verteidigung der angreifenden Armee (z.B. Zeus)
+		CurrentBoost = Boni.find(o => (o['type'] === 'military_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Angriff + Verteidigung der verteidigenden Armee (z.B. Basilius Kathedrale)
+		CurrentBoost = Boni.find(o => (o['type'] === 'fierce_resistance'));
+		if (CurrentBoost !== undefined) {
+			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Alle Boni (z.B. Terrakotta Armee)
+		CurrentBoost = Boni.find(o => (o['type'] === 'advanced_tactics'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Angriffbonus der angreifenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'attack_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+		}
+
+		// Verteidigungsbonus der angreifenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'attacker_defense_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Angriffbonus der verteidigenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'defender_attack_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+		}
+
+		// Verteidigungsbonus der verteidigenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'defense_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		return Ret;
 	},
 
 
