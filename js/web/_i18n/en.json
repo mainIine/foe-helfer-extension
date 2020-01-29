@@ -1,8 +1,11 @@
 {
 	"values": {
 		"Local": "en-EN",
+
 		"DateTime": "D/M/YY h:mm:ss a",
+
 		"Global.BoxTitle": " <small><em>FoE Helper</em></small>",
+
 		"Boxes.OwnpartCalculator.Title": "Co-payment calculator",
 		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.Step": "Step",
@@ -27,6 +30,7 @@
 		"Boxes.OwnpartCalculator.Place": "Place",
 		"Boxes.OwnpartCalculator.Levels": "levels",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "No place safe",
+
 		"Boxes.Calculator.Title": "Cost calculator",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.Step": "Step ",
@@ -49,6 +53,7 @@
 		"Boxes.Calculator.Done": "done",
 		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
 		"Boxes.Calculator.NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP",
+
 		"Boxes.LGOverviewBox.Title": "Possible deposits",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "found new",
 		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "recognized",
@@ -59,14 +64,18 @@
 		"Boxes.LGOverviewBox.Rate": "Rate",
 		"Boxes.LGOverviewBox.Profit": "Profit",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing to fetch",
+
 		"Boxes.StrategyPoints.Title": "FP - Productions",
 		"Boxes.StrategyPoints.TotalFPs": "Total FPs from all buildings: ",
 		"Boxes.StrategyPoints.Amount": "Number",
 		"Boxes.StrategyPoints.FPBar": "FP-Stock: ",
 		"Boxes.StrategyPoints.BuyableFP": "Buyable: ",
+
 		"Boxes.Investment.Title": "Investment",
 		"Boxes.Investment.InvestBar": "Invested FP: ",
 		"Boxes.Investment.CurrReward": "Current Profit: ",
+		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
+
 		"Boxes.Productions.Title": "Production overview",
 		"Boxes.Productions.SearchInput": "Search building...",
 		"Boxes.Productions.Total": "Total: ",
