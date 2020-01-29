@@ -27,6 +27,7 @@ let Investment = {
     RewardFP: 0,
     BonusFP: 0,
 	ArkBonus: 0,
+	ArkBonusPercent: 0,
 
 
     Box: () => {
@@ -43,6 +44,7 @@ let Investment = {
         }
         
         Investment.ArkBonus = MainParser.ArkBonus;
+		Investment.ArkBonusPercent = ((parseFloat(Investment.ArkBonus) + 100) / 100)
         Investment.InvestmentBar(Investment.InvestedFP);
     },
 
@@ -55,8 +57,6 @@ let Investment = {
     CalcBar: (data) => {
         if (!data) return;
         if (data.length <= 0) return;
-
-        Investment.ArkBonus = ((parseFloat(Investment.ArkBonus) + 100) / 100)
 
         Investment.RewardFP = 0;
         Investment.InvestedFP = 0;
@@ -82,7 +82,7 @@ let Investment = {
     InvestmentBar: (_InvestedFP) => {
         if (_InvestedFP === undefined) _InvestedFP = 0;
 
-        Investment.BonusFP = (Math.round(Investment.RewardFP * Investment.ArkBonus)) - _InvestedFP;
+        Investment.BonusFP = (Math.round(Investment.RewardFP * Investment.ArkBonusPercent)) - _InvestedFP;
 
         let div = $('#InvestmentBody');
 
@@ -106,5 +106,18 @@ let Investment = {
             duration: 750
         });
         Investment.InvestedFP = _InvestedFP;
+
+
+		if ($('#total-fp').length < 1) {
+			let totalAll = $('<div />').attr('id', 'total-fp').addClass('text-center').text(i18n('Boxes.Investment.TotalFP')).append($('<strong>0</strong>').addClass('total-storage-invest'));
+
+			$(div).append(totalAll);
+		}
+
+		$('.total-storage-invest').easy_number_animate({
+			start_value: 0,
+			end_value: (StrategyPoints.InventoryFP + Investment.RewardFP + Investment.BonusFP),
+			duration: 750
+		});
     },
 };
