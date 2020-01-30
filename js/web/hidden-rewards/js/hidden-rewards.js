@@ -104,17 +104,17 @@ let HiddenRewards = {
                 h.push('<td class="incident ' + hiddenReward.type + '" title="' + hiddenReward.type + '">&nbsp;</td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
                 if (StartTime > new Date().getTime()) {
-                    h.push('<td class="warning">' + 'Erscheint ' + moment.unix(hiddenReward.starts).fromNow() + '</td>'); //Todo: Translate
+                    h.push('<td class="warning">' + i18n('Boxes.HiddenRewards.Appears') + ' ' + moment.unix(hiddenReward.starts).fromNow() + '</td>');
                 }
                 else {
-                    h.push('<td class="">' + 'Verschwindet ' + moment.unix(hiddenReward.expires).fromNow() + '</td>'); //Todo: Translate
+                    h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
                 }
                 h.push('</tr>');
                 cnt++;
             }
         }
         if (cnt === 0) {
-            h.push('<td colspan="3">' + 'Keine Ereignisse vorhanden' + '</td>'); //Todo: Translate
+            h.push('<td colspan="3">' + i18n('Boxes.HiddenRewards.NoEvents') + '</td>');
         }
 
         h.push('</tbody>');

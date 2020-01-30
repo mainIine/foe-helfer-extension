@@ -20,14 +20,8 @@ FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
 
 
 let Investment = {
-    RefreshDone: false,
-    OldInvestmentPoints: 0,
-    OldRewardPoints: 0,
-    InvestedFP: 0,
-    RewardFP: 0,
-    BonusFP: 0,
-	ArkBonus: 0,
-
+    Einsatz: 0,
+    Ertrag: 0,
 
     Box: () => {
         if ($('#Investment').length === 0) {
@@ -41,9 +35,8 @@ let Investment = {
             // CSS in den DOM prügeln
             HTML.AddCssFile('investment');
         }
-        
-        Investment.ArkBonus = MainParser.ArkBonus;
-        Investment.InvestmentBar(Investment.InvestedFP);
+
+        Investment.InvestmentBar();
     },
 
 
@@ -56,20 +49,17 @@ let Investment = {
         if (!data) return;
         if (data.length <= 0) return;
 
-        Investment.ArkBonus = ((parseFloat(Investment.ArkBonus) + 100) / 100)
+        Investment.Einsatz = 0;
+        Investment.Ertrag = 0;
 
-        Investment.RewardFP = 0;
-        Investment.InvestedFP = 0;
-        Investment.BonusFP = 0;
+        let arc = 1 + (MainParser.ArkBonus / 100);
 
         for (let x = 0; x < data.length; x++) {
             const contribution = data[x];
 
-            Investment.InvestedFP += contribution['forge_points'];
-
-            if (undefined !== contribution['reward']) {
-				Investment.RewardFP += (contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] : 0);
-			}
+            Investment.Einsatz += contribution['forge_points'];
+            if(undefined !== contribution['reward'])
+                Investment.Ertrag += Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
         }
     },
 
@@ -79,10 +69,8 @@ let Investment = {
 	 *
 	 * @param _InvestedFP Die neu zu setzenden FP
 	 */
-    InvestmentBar: (_InvestedFP) => {
-        if (_InvestedFP === undefined) _InvestedFP = 0;
-
-        Investment.BonusFP = (Math.round(Investment.RewardFP * Investment.ArkBonus)) - _InvestedFP;
+    InvestmentBar: () => {
+        let Gewinn = Investment.Ertrag - Investment.Einsatz;
 
         let div = $('#InvestmentBody');
 
@@ -96,15 +84,26 @@ let Investment = {
         }
         $('.invest-storage').easy_number_animate({
             start_value: 0,
-            end_value: _InvestedFP,
+            end_value: Investment.Einsatz,
             duration: 750
         });
 
         $('.reward-storage').easy_number_animate({
             start_value: 0,
-            end_value: Investment.BonusFP,
+            end_value: Gewinn,
             duration: 750
         });
-        Investment.InvestedFP = _InvestedFP;
+
+		if ($('#total-fp').length < 1) {
+			let totalAll = $('<div />').attr('id', 'total-fp').addClass('text-center').text(i18n('Boxes.Investment.TotalFP')).append($('<strong>0</strong>').addClass('total-storage-invest'));
+
+			$(div).append(totalAll);
+		}
+
+		$('.total-storage-invest').easy_number_animate({
+			start_value: 0,
+			end_value: (StrategyPoints.InventoryFP + Investment.Ertrag),
+			duration: 750
+		});
     },
 };
