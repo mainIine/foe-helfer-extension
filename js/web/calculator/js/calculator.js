@@ -40,6 +40,10 @@ let Calculator = {
 	*
 	*/
 	Open: () => {
+
+		// realen Archebonus übernehmen
+		Calculator.ArkBonus = MainParser.ArkBonus;
+
 		// Nur Übersicht verfügbar
 		if (Calculator.Overview !== undefined && Calculator.CityMapEntity === undefined) {
 			Calculator.ShowOverview(false);
@@ -76,22 +80,6 @@ let Calculator = {
 		}
 	},
 
-
-	/**
-	 * Archenbonus aktualisieren
-	 * 
-	 * */
-	SetArcBonus: (LimitedBonuses) => {
-		let ArcBonus = 0;
-		for (let i in LimitedBonuses) {
-			if (LimitedBonuses[i].type === 'contribution_boost') {
-				ArcBonus += LimitedBonuses[i].value;
-			}
-		}
-
-		Calculator.ArcBonus = ArcBonus;
-	},
-	
 
 	/**
 	 * Kostenrechner anzeigen
@@ -192,22 +180,22 @@ let Calculator = {
 		h.push('<div>');
 
 		// Zusätzliche Buttons für die Standard Prozente
-		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + Calculator.ArcBonus + '">' + Calculator.ArcBonus + '%</button>';
+		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + Calculator.ArkBonus + '">' + Calculator.ArkBonus + '%</button>';
 
 		// ... und korrekt einsortieren
-		if (Calculator.ArcBonus < 85) {
+		if (Calculator.ArkBonus < 85) {
 			h.push(own_arc);
 		}
 
 		h.push('<button class="btn btn-default btn-toggle-arc" data-value="85">85%</button>');
 
-		if (Calculator.ArcBonus > 85 && Calculator.ArcBonus < 90) {
+		if (Calculator.ArkBonus > 85 && Calculator.ArkBonus < 90) {
 			h.push(own_arc);
 		}
 
 		h.push('<button class="btn btn-default btn-toggle-arc" data-value="90">90%</button>');
 
-		if (Calculator.ArcBonus > 90) {
+		if (Calculator.ArkBonus > 90) {
 			h.push(own_arc);
 		}
 
@@ -217,7 +205,7 @@ let Calculator = {
 
 		h.push('</div><div>');
 
-		h.push(i18n('Boxes.Calculator.ArcBonus') + ': ' + Calculator.ArcBonus + '%<br>');
+		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + Calculator.ArkBonus + '%<br>');
 		h.push('<strong>Snipen</strong><br>');
 
         h.push('</div>');
@@ -245,7 +233,10 @@ let Calculator = {
 		if (Calculator.CityMapEntity['level'] === Calculator.CityMapEntity['max_level']) {
             $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotOpen')));
 
-		} else if (Calculator.CityMapEntity['connected'] === undefined) {
+		}
+
+		// es fehlt eine Straßenanbindung
+		else if (Calculator.CityMapEntity['connected'] === undefined) {
             $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
         }
  
@@ -329,7 +320,7 @@ let Calculator = {
 			BestKurs = 999999,
 			BestKursNettoFP = undefined,
 			BestKursEinsatz = undefined,
-			arc = 1 + (Calculator.ArcBonus / 100),
+			arc = 1 + (Calculator.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
         let EigenPos,
@@ -731,7 +722,7 @@ let Calculator = {
 	 */
     ShowOverview: (DisableAudio)=> {
 
-		let arc = ((parseFloat(Calculator.ArcBonus) + 100) / 100)
+		let arc = ((parseFloat(Calculator.ArkBonus) + 100) / 100)
 
 		// nix drin, raus
 		if (Calculator.Overview === undefined)
