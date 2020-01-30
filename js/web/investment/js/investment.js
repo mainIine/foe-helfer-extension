@@ -58,7 +58,8 @@ let Investment = {
             const contribution = data[x];
 
             Investment.Einsatz += contribution['forge_points'];
-            Investment.Ertrag += Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
+            if(undefined !== contribution['reward'])
+                Investment.Ertrag += Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
         }
     },
 
