@@ -40,7 +40,7 @@ let _menu = {
 		'forum',
 		'ask',
 		'github',
-		// 'chat'
+		'chat'
 	],
 
 
