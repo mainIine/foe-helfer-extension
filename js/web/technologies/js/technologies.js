@@ -133,7 +133,7 @@ let Technologies = {
             if (!Tech['isResearched']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
-                if (EraID <= Technologies.SelectedEraID && Tech['childTechnologies'].length > 0) {
+                if (Technologies.SelectedEraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
