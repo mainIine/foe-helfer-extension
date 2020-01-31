@@ -339,11 +339,11 @@ let Info = {
             if (!d.hasOwnProperty(i)) {
                 break;
             }
-
-            if(d[i]['itemId'] !== 12466372 && d[i]['itemId'] !== 12741356 && d[i]['itemId'] !== 12587659) return;
             
             // FP Typ aus dem Lager ermitteln
-            let factor = parseInt(MainParser.Inventory.find(x => x['id'] === d[i]['itemId'])['item']['resource_package']['gain']),
+            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
+            if(undefined === InventoryItem ||null === InventoryItem) return;
+            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
                 amount = factor * parseInt(d[i]['amount']);
 
             // ... und sichern
