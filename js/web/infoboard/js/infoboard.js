@@ -341,7 +341,9 @@ let Info = {
             }
             
             // FP Typ aus dem Lager ermitteln
-            let factor = parseInt(MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("_forgepoints")>=0))['item']['resource_package']['gain']),
+            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
+            if(undefined === InventoryItem ||null === InventoryItem) return;
+            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
                 amount = factor * parseInt(d[i]['amount']);
 
             // ... und sichern
