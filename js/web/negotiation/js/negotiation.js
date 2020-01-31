@@ -238,7 +238,7 @@ let Negotiation = {
 				if (Good !== undefined) {
 					const extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
 					const tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
-					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(place+1)+'-'+(SlotGuess.good.id+1)+'</span>' : '';
+					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(place+1)+'-'+((SlotGuess.good.id+1)%10)+'</span>' : '';
 					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span>'+numberIcon+'</td>');
 
 				} else {
