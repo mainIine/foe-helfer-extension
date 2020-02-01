@@ -524,7 +524,7 @@ let Negotiation = {
 			if (data.era === 'AllAge') return 100;
 			const special = !!data.abilities.specialResource;
 			const era = Technologies.Eras[data.era];
-			return (era === 0 ? 200 : era ) + (special ? 150 : 0);
+			return (era === 0 ? 200 : era ) + (special ? 400 : 0);
 		}
 
 		if (goodA === goodB) return 0;
