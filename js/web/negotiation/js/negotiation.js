@@ -155,7 +155,7 @@ let Negotiation = {
 					GoodAmount = Math.round(GoodAmount * 10) / 10;
 				}
 
-				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
+				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(Stock) + '">' +
 					'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
 					'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
