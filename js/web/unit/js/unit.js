@@ -150,7 +150,7 @@ let Unit = {
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.Attack[i]['unitTypeId'])),
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Attack[i]['unitId'])),
-				era = type['minEra'];
+				era = Technologies.Eras[type['minEra']];
 
 			attack.push('<tr data-era="' + era + '">');
 
@@ -224,7 +224,7 @@ let Unit = {
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.Defense[i]['unitTypeId'])),
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Defense[i]['unitId'])),
-				era = type['minEra'];
+				era = Technologies.Eras[type['minEra']];
 
 			defense.push('<td><span class="units-icon ' + Unit.Defense[i]['unitTypeId'] + '"></span></td>');
 			defense.push('<td>' + type['name'] + '</td>');
@@ -275,11 +275,13 @@ let Unit = {
 
 			let d = Unit.Types.find(obj => (obj['unitTypeId'] === c[i]['unitTypeId']));
 
-			if(eras[d['minEra']] === undefined){
-				eras[d['minEra']] = [];
-			}
+			let era = Technologies.Eras[d['minEra']];
 
-			eras[d['minEra']].push({
+			if(eras[era] === undefined){
+				eras[era] = [];
+			}
+						
+			eras[era].push({
 				id: c[i]['unitTypeId'],
 				name: d['name'],
 				attached: (c[i]['attached'] === undefined ? '-' : c[i]['attached']),
@@ -303,14 +305,14 @@ let Unit = {
 		pool.push('<tbody>');
 
 
-		for(let era in eras)
+		for (let era = eras.length; era >= 0;era--)
 		{
 			if(!eras.hasOwnProperty(era)){
-				break;
+				continue;
 			}
 
 			pool.push('<tr>');
-			pool.push('<th colspan="4">' + i18n('Eras.'+era) + '</th>');
+			pool.push('<th colspan="4">' + i18n('Eras.' + era) + '</th>');
 			pool.push('</tr>');
 
 			for(let i in eras[era])
@@ -512,7 +514,7 @@ let Unit = {
 			}
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === AlcaUnits[i]['unitTypeId'])),
-				era = type['minEra'];
+				era = Technologies.Eras[type['minEra']];
 
 			if(LastAlca[AlcaUnits[i]['unitTypeId']] === undefined){
 				LastAlca[AlcaUnits[i]['unitTypeId']] = {
