@@ -599,7 +599,7 @@ let Calculator = {
 
 			// Fördern
 			if (ForderStates[Rank] === 'Self') {
-				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderFPRewards[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</td>');
+				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderFPRewards[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + (Einzahlungen[Rank] !== ForderFPRewards[Rank] ? '/' + HTML.Format(ForderFPRewards[Rank]) : '') + Calculator.FormatForderRankDiff(ForderRankDiff) + '</td>');
 				hFordern.push('<td class="text-center"><strong class="info">' + HTML.Format(ForderGewinn) + '</strong></td>');
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
@@ -626,7 +626,7 @@ let Calculator = {
 			// Snipen
 			if (SnipeStates[Rank] === 'Self') {
 				// Einsatz/Gewinn/Kurs
-				hSnipen.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < SnipeRankCosts[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(SnipeRankCosts[Rank]) + '</td>');
+				hSnipen.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < SnipeRankCosts[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + (Einzahlungen[Rank] < SnipeRankCosts[Rank] ? '/' + HTML.Format(SnipeRankCosts[Rank]) : '') + '</td>');
 				hSnipen.push('<td class="text-center"><strong class="info">' + HTML.Format(SnipeGewinn) + '</strong></td>');
 				hSnipen.push('<td class="text-center"><strong class="info">' + Calculator.FormatKurs(Kurs) + '</strong></td>');
 			}
