@@ -155,9 +155,9 @@ let Technologies = {
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeMars']);
 
         h.push('<div class="techno-head">');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Boxes.Technologies.Eras.'+PreviousEraID) + '</button>');
-			h.push('<div class="text-center"><strong>' + i18n('Boxes.Technologies.Eras.'+Technologies.SelectedEraID) + '</strong></div>');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Boxes.Technologies.Eras.'+NextEraID) + '</button>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
+			h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
         h.push('</div>');
 
         h.push('<table class="foe-table">');

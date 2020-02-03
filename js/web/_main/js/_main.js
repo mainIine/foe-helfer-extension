@@ -579,6 +579,9 @@ const FoEproxy = (function () {
 		}
 
 		MainParser.Buildings = BuildingNamesi18n;
+		if (!HiddenRewards.IsPrepared) {
+			HiddenRewards.prepareData();
+		}
 	});
 
 	// Portrait-Mapping für Spieler Avatare
