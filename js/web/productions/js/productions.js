@@ -531,13 +531,13 @@ let Productions = {
 				{
 					if(countProducts.hasOwnProperty(ca))
 					{
-						let e = GoodsData[ca]['era'];
+						let era = Technologies.Eras[GoodsData[ca]['era']];
 
-						if(eras[e] === undefined){
-							eras[e] = [];
+						if(eras[era] === undefined){
+							eras[era] = [];
 						}
 
-						eras[e].push('<span>' + Productions.GetGoodName(ca) +' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
+						eras[era].push('<span>' + Productions.GetGoodName(ca) +' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
 					}
 				}
 
@@ -545,14 +545,14 @@ let Productions = {
 				table.push('<thead>');
 
 				// Zeitalterweise in die Tabelle legen
-				for(let era in eras)
+				for (let era = eras.length; era >= 0; era--)
 				{
 					if(!eras.hasOwnProperty(era))
 					{
-						break;
+						continue;
 					}
 
-					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n('Eras.'+era) + '</strong></th></tr>');
+					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th></tr>');
 
 					table.push('<tr><td colspan="5" class="all-products">');
 

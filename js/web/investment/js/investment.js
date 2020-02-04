@@ -58,8 +58,15 @@ let Investment = {
             const contribution = data[x];
 
             Investment.Einsatz += contribution['forge_points'];
-            if(undefined !== contribution['reward'])
-                Investment.Ertrag += Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
+            if (undefined !== contribution['reward']) {
+                let CurrentErtrag = Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
+                if (contribution['forge_points'] >= contribution['max_progress'] - contribution['current_progress']) {
+                    Investment.Ertrag += CurrentErtrag;
+                }
+                else { //Platz kann nicht sicher sein => Nur maximal Einzahlung ansetzen
+                    Investment.Ertrag += Math.min(contribution['forge_points'], CurrentErtrag);
+                }
+            }
         }
     },
 
