@@ -82,15 +82,7 @@ let Reader = {
             }
         }
 
-		// was gefunden?
-		if (Reader.data.ready.length > 0 || Reader.data.work.length > 0) {
-			Reader.showResult();
-
-		} else {
-			if ($('#ResultBox').length > 0) {
-				$('#ResultBox').remove();
-			}
-		}
+		Reader.showResult();
 	},
 
 
@@ -177,6 +169,10 @@ let Reader = {
 
 			h.push('</tbody>');
 			h.push('</table>');
+		}
+
+		if (rd.length === 0 && wk.length === 0) {
+			h.push('<strong>' + i18n('Boxes.Neighbors.NothingToPlunder') + '</strong>');
 		}
 
 		div.find('#ResultBoxBody').html(h.join(''));
