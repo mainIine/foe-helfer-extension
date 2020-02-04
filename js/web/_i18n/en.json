@@ -96,11 +96,12 @@
 		"Boxes.Productions.Headings.main_building": "Town hall",
 		"Boxes.Productions.Headings.boost": "Boost",
 		"Boxes.Productions.Headings.all": "All",
-		
+
 		"Boxes.Neighbors.Title": "Productions of ",
 		"Boxes.Neighbors.ReadyProductions": "Finished productions",
 		"Boxes.Neighbors.OngoingProductions": "Ongoing productions",
-		
+		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder",
+
 		"Boxes.Outpost.Title": "Goods of the outpost",
 		"Boxes.Outpost.TitleShort": "Goods overview - ",
 		"Boxes.Outpost.TitleBuildings": "Building",
@@ -119,7 +120,7 @@
 		"Boxes.Technologies.DescInStock": "Available",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>",
 		"Boxes.Technologies.NoTechs": "You have reached the end of this era",
-		
+
 		"Boxes.Campagne.Title": "Conquest costs for ",
 		"Boxes.Campagne.Reward": "Total Reward ",
 		"Boxes.Campagne.AlreadyDone": " already conquered!",
@@ -185,25 +186,25 @@
 		"Boxes.Units.NotFilled": "not filled",
 		"Boxes.Units.Bind": "Bound",
 		"Boxes.Units.Unbind": "Unbound",
-		
+
 		"Boxes.CityMap.TitleSend": "Submit data",
 		"Boxes.CityMap.Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>",
 		"Boxes.CityMap.SubmitSuccess": "Data was transfered successfully... Now visit ",
 		"Boxes.CityMap.WholeArea": "The whole area: ",
 		"Boxes.CityMap.FreeArea": "Free area: ",
-		
+
 		"Boxes.Gildfights.Title": "Player overview",
 		"Boxes.Gildfights.Player": "Player",
 		"Boxes.Gildfights.Negotiations": "Negotiations",
 		"Boxes.Gildfights.Fights": "Fights",
 		"Boxes.Gildfights.LastSnapshot": " - last snapshot __time__ ago",
-		
+
 		"Boxes.HiddenRewards.Title": "Hidden Rewards",
 		"Boxes.HiddenRewards.Appears": "Appears",
 		"Boxes.HiddenRewards.Disappears": "Disappears",
 		"Boxes.HiddenRewards.NoEvents": "No events presents",
-		
+
 		"Menu.Productions.Title": "Production overview",
 		"Menu.Productions.Desc": "Displays the current number of all productions.",
 		"Menu.Calculator.Title": "Cost calculator",
@@ -313,7 +314,7 @@
 		"API.GEXChampionship": "The GEX guild placement has been updated",
 		"API.LGInvest": "Your LG investments have been transferred",
 		"API.LGGildMember": "__player__'s Legendary buildings have been submitted",
-		
+
 		"HiddenRewards.Positions.nature": "Nature",
 		"HiddenRewards.Positions.shore": "Shore",
 		"HiddenRewards.Positions.water": "in the water",

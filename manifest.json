@@ -41,7 +41,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
-			"include_globs": ["*game*"],
+			"include_globs": [ "*forgeofempires.com/game*" ],
 			"run_at": "document_start",
 			"js": [
 				"js/inject.js"
