@@ -774,7 +774,13 @@ let _menu = {
 		let btn_sp = $('<span />');
 
 		btn_sp.on('click', function () {
-			MainParser.sendExtMessage({ type: 'chat', player: ExtPlayerID, guild: ExtGuildID, world: ExtWorld });
+			MainParser.sendExtMessage({
+				type: 'chat',
+				player: ExtPlayerID,
+				name: localStorage.getItem(ExtPlayerID+'_current_player_name'),
+				guild: ExtGuildID,
+				world: ExtWorld
+			});
 		});
 
 		btn.append(btn_sp);
