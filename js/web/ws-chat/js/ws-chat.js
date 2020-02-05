@@ -17,15 +17,18 @@ let Chat = {
 
 	GildID: 0,
 	PlayerID: 0,
+	PlayerName: null,
+	PlayerPortrait: null,
 	World: '',
 	OtherPlayers: [],
-	PlayersPortraits: [],
+	PlayersPortraits: {},
 	OnlinePlayers: [],
 	OwnName: '',
 	WebsocketChat : null,
 	ReadMode: 'live',
 	Token: '',
 	ConnectionId: '',
+	InnoCDN: '',
 
 	/**
 	 * Holt die Daten für den Chat
@@ -36,40 +39,57 @@ let Chat = {
 
 		Chat.GildID = +data['guild'];
 		Chat.PlayerID = +data['player'];
+		Chat.PlayerName = decodeURI(data['name']);
 		Chat.World = data['world'];
 
-		Chat.loadPortraits();
+		const cdnRecivedPromise =
+			new Promise(resolve =>
+				chrome.runtime.sendMessage(
+					{
+						type: 'getInnoCDN'
+					},
+					resolve
+				)
+			)
+			.then(([cdn, wasSet]) => {
+				Chat.InnoCDN = cdn;
+				Chat.loadPortraits();
+			})
+		;
+		
+		const playerDataRecivedPromise =
+			new Promise(resolve =>
+				chrome.runtime.sendMessage(
+					{
+						type: 'getPlayerData',
+						world: Chat.World,
+						playerId: Chat.PlayerID
+					},
+					resolve
+				)
+			)
+			.then( (data) => {
+				if (!data) return;
+				
+				Chat.PlayerName = data.name;
+				Chat.PlayerPortrait = data.portrait;
+				
+				let Player = Chat.OtherPlayers.find(p => p.player_id === Chat.PlayerID);
+				if (Player) {
+					Player.player_name = data.name;
+					Player.avatar = data.portrait;
+				} else {
+					Chat.OtherPlayers.push({
+						player_id: Chat.PlayerID,
+						player_name: data.name,
+						avatar: data.portrait
+					});
+				}
+			})
+		;
 
-		let pD = localStorage.getItem('PlayersData'),
-			pT = localStorage.getItem('PlayersDataTimestamp');
-
-
-		// prüfen ob es eine gültige Cache Version gibt
-		if(pD === null || pT === null || Chat.compareTime(new Date().getTime(), pT) === false)
-		{
-			console.log('AJAX-getData-Members4Chat')
-			// $.ajax({
-			// 	type: 'POST',
-			// 	url: 'https://api.foe-rechner.de/Members4Chat/?guild_id=' + data['guild'] + '&world=' + data['world'],
-			// 	dataType: 'json',
-			// 	success: function(r){
-
-			// 		localStorage.setItem('PlayersData', JSON.stringify(r['data']));
-			// 		localStorage.setItem('PlayersDataTimestamp', Chat.getTimestamp(12));
-
-			// 		Chat.OtherPlayers = r['data'];
-
-			// 		// alles da, zünden
-			// 		Chat.Init();
-			// 	}
-			// });
-
-		} else {
-			Chat.OtherPlayers = JSON.parse(pD);
-
-			// alles da, zünden
-			Chat.Init();
-		}
+		Promise.all([cdnRecivedPromise, playerDataRecivedPromise])
+		.then(() => Chat.Init());
 	},
 
 
@@ -126,14 +146,24 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		let wsUri = 'ws://localhost:8080/';//'wss://foe-rechner.de:9000/ws-chat.php';
+		let wsUri = 'ws://ws.foe-rechner.de:9000/';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = ()=> {
-			Chat.WebsocketChat.send(JSON.stringify({world: Chat.World, guild: Chat.GildID, player: Chat.PlayerID, connectionId: connectionId, secret:'trust me!'}))
+			Chat.WebsocketChat.send(
+				JSON.stringify({
+					world: Chat.World,
+					guild: Chat.GildID,
+					player: Chat.PlayerID,
+					name: Chat.PlayerName || 'Unknown#'+Chat.PlayerID,
+					portrait: Chat.PlayerPortrait || '',
+					connectionId: connectionId,
+					secret:'trust me!'
+				})
+			);
 			Chat.SystemRow('Verbunden!', 'success');
 
 			// setTimeout(
@@ -323,13 +353,13 @@ let Chat = {
 		 * 
 		 * Server:
 		 * after connection setup message:
-		 *  {type: 'members', members:  {playerId: number, secretsMatch: boolean}[]} // list of playerID's in this chat-room and weather theire 
+		 *  {type: 'members', members:  {playerId: number, name: string, portrait: string, secretsMatch: boolean}[]} // list of playerID's in this chat-room and weather theire 
 		 * on error/ping timeout:
 		 *  {type: 'error', error: string}
 		 * 
 		 * on player join:
-		 *  {type: 'switch', player: number, time: number, secretsMatch: boolean} // player was in room and switched connection
-		 *  {type: 'join', player: number, time: number,secretsMatch: boolean} // player entered room
+		 *  {type: 'switch', player: number, name: string, portrait: string, time: number, secretsMatch: boolean} // player was in room and switched connection
+		 *  {type: 'join', player: number, name: string, portrait: string, time: number,secretsMatch: boolean} // player entered room
 		 * on player leave:
 		 *  {type: 'leave', player: number, time: number}
 		 * on players secretMatching changed:
@@ -344,12 +374,34 @@ let Chat = {
 
 		switch (message.type) {
 			case 'members': {
-				/** @type {{playerId: number, secretsMatch: boolean}[]} */
+				/** @type {{playerId: number, name: string, portrait: string, secretsMatch: boolean}[]} */
 				const members = message.members;
-				// TODO: verwende diese liste von playerID's um die Anzeige zu füllen
+				console.log(message)
 				for (let data of members) {
-					let {playerId: player_id, secretsMatch} = data;
-					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt'+(secretsMatch?'(trusted)':'')+'#'+player_id,player_id};
+					const {playerId: player_id, name, portrait, secretsMatch} = data;
+					let Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
+					if (Player) {
+						Player.player_name = name;
+						Player.avatar = portrait;
+						Player.secretsMatch = secretsMatch;
+					} else {
+						Player = {
+							player_id: player_id,
+							player_name: name,
+							avatar: portrait,
+							secretsMatch: secretsMatch
+						};
+						Chat.OtherPlayers.push(Player);
+					}
+					Chat.UserEnter(Player);
+				}
+				break;
+			}
+			case 'secretChange': {
+				const player_id = message.player;
+				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
+				if (Player) {
+					Player.secretsMatch = message.secretsMatch;
 					Chat.UserEnter(Player);
 				}
 				break;
@@ -367,8 +419,7 @@ let Chat = {
 					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
 		
 					const PlayerName = Player['player_name'];
-					// TODO: fix image url
-					const PlayerImg = '';//MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+					const PlayerImg = Chat.PlayersPortraits[Player.avatar] ? Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg' : '';
 					let TextR = Chat.MakeImage(message.message);
 					TextR = emojify.replace(TextR);
 					TextR = Chat.MakeURL(TextR);
@@ -406,7 +457,10 @@ let Chat = {
 				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
 				break;
 			}
-			case 'disconnect':
+			case 'disconnect': {
+				Chat.SystemRow('Verbindung geschlossen ('+message.reason+')', 'error');
+				break;
+			}
 			case 'error': {
 				break;
 			}
@@ -449,7 +503,7 @@ let Chat = {
 		// 	});
 
 		// 	PlayerName = Player['player_name'];
-		// 	PlayerImg = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		// 	PlayerImg = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 		// 	ExtClass = 'user-other';
 		// 	TextR = Chat.MakeImage(text);
 		// 	TextR = emojify.replace(TextR);
@@ -479,9 +533,10 @@ let Chat = {
 	 */
 	PlaySound: (id, vol = 0.4)=> {
 		// wenn der CHat im Hintergrund liegt, Ping machen
-		if(document.hasFocus() === false){
-			document.getElementById(id).volume = vol;
-			document.getElementById(id).play();
+		if (document.hasFocus() === false){
+			const audio = /** @type {HTMLAudioElement} */(document.getElementById(id));
+			audio.volume = vol;
+			audio.play();
 		}
 	},
 
@@ -502,15 +557,16 @@ let Chat = {
 		d.dataset.id = Player['player_id'];
 
 		const img = document.createElement('img');
-		// TODO: fix url
-		//img.src = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		if (Chat.PlayersPortraits[Player.avatar]) {
+			img.src = Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg';
+		}
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
-		// 	.append( $('<img />').attr('src', MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
+		// 	.append( $('<img />').attr('src', 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
 		// 	.append( $('<span />').text( Player['player_name'] ) );
 
 		document.getElementById('users').appendChild(d);
@@ -933,7 +989,7 @@ let Chat = {
 			console.log('AJAX-Load-Portraits')
 			$.ajax({
 				type: 'GET',
-				url: MainParser.InnoCDN + 'assets/shared/avatars/Portraits.xml',
+				url: Chat.InnoCDN + 'assets/shared/avatars/Portraits.xml',
 				dataType: 'xml',
 				success: function(xml){
 
@@ -942,7 +998,7 @@ let Chat = {
 					});
 
 					localStorage.setItem('PlayersPortraits', JSON.stringify(portraits));
-					localStorage.setItem('PlayersPortraitsTimestamp', Chat.getTimestamp(24));
+					localStorage.setItem('PlayersPortraitsTimestamp', ''+Chat.getTimestamp(24));
 
 					Chat.PlayersPortraits = portraits;
 				}
