@@ -589,6 +589,7 @@ const FoEproxy = (function () {
 		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml")
 		if(idx !== -1) {
 			MainParser.InnoCDN = requestData.url.substring(0, idx+1);
+			MainParser.sendExtMessage({type: 'setInnoCDN', url: MainParser.InnoCDN});
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function(){
@@ -1504,6 +1505,14 @@ let MainParser = {
 			data: d['user_name']
 		});
 		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
+
+		MainParser.sendExtMessage({
+			type: 'setPlayerData',
+			world: ExtWorld,
+			playerId: ExtPlayerID,
+			name: d.user_name,
+			portrait: d.portrait_id
+		});
 	},
 
 
