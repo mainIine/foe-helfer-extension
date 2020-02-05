@@ -27,6 +27,7 @@ let Chat = {
 	ReadMode: 'live',
 	Token: '',
 	ConnectionId: '',
+	InnoCDN: '',
 
 	/**
 	 * Holt die Daten für den Chat
@@ -41,6 +42,24 @@ let Chat = {
 		Chat.World = data['world'];
 
 		Chat.loadPortraits();
+
+		chrome.runtime.sendMessage({
+			type: 'getInnoCDN'
+		}, ([cdn, wasSet]) => Chat.InnoCDN = cdn);
+		
+		chrome.runtime.sendMessage({
+			type: 'getPlayerData'
+		}, (data) => {
+			if(!data) return;
+			let Player = Chat.OtherPlayers.find(p => p.player_id === Chat.PlayerID);
+			if (Player) {
+				Player.player_name = data.name;
+				Player.avatar = data.portrait;
+			} else {
+				Chat.OtherPlayers.push({player_id: Chat.PlayerID, player_name: data.name, avatar: data.portrait});
+			}
+		});
+
 		Chat.Init();
 	},
 
