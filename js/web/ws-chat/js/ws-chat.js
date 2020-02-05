@@ -403,7 +403,10 @@ let Chat = {
 				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
 				break;
 			}
-			case 'disconnect':
+			case 'disconnect': {
+				Chat.SystemRow('Verbindung geschlossen ('+message.reason+')', 'error');
+				break;
+			}
 			case 'error': {
 				break;
 			}
