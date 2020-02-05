@@ -17,6 +17,7 @@ let Chat = {
 
 	GildID: 0,
 	PlayerID: 0,
+	PlayerName: null,
 	World: '',
 	OtherPlayers: [],
 	PlayersPortraits: {},
@@ -35,8 +36,9 @@ let Chat = {
 
 		let data = Object.fromEntries( new URLSearchParams(location.search) );
 
-		Chat.GildID = +data['guild'];
-		Chat.PlayerID = +data['player'];
+		Chat.GildID = data['guild'];
+		Chat.PlayerID = data['player'];
+		Chat.PlayerName = decodeURI(data['name']);
 		Chat.World = data['world'];
 
 		Chat.loadPortraits();
@@ -127,6 +129,7 @@ let Chat = {
 					world: Chat.World,
 					guild: Chat.GildID,
 					player: Chat.PlayerID,
+					name: Chat.PlayerName,
 					connectionId: connectionId,
 					secret:'trust me!'
 				})
