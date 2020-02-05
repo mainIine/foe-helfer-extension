@@ -126,7 +126,7 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		let wsUri = 'ws://localhost:8080/';//'wss://foe-rechner.de:9000/ws-chat.php';
+		let wsUri = 'ws://ws.foe-rechner.de:9000/';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
@@ -479,9 +479,10 @@ let Chat = {
 	 */
 	PlaySound: (id, vol = 0.4)=> {
 		// wenn der CHat im Hintergrund liegt, Ping machen
-		if(document.hasFocus() === false){
-			document.getElementById(id).volume = vol;
-			document.getElementById(id).play();
+		if (document.hasFocus() === false){
+			const audio = /** @type {HTMLAudioElement} */(document.getElementById(id));
+			audio.volume = vol;
+			audio.play();
 		}
 	},
 
@@ -942,7 +943,7 @@ let Chat = {
 					});
 
 					localStorage.setItem('PlayersPortraits', JSON.stringify(portraits));
-					localStorage.setItem('PlayersPortraitsTimestamp', Chat.getTimestamp(24));
+					localStorage.setItem('PlayersPortraitsTimestamp', ''+Chat.getTimestamp(24));
 
 					Chat.PlayersPortraits = portraits;
 				}
