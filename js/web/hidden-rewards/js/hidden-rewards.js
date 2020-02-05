@@ -1,9 +1,8 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = data.responseData.hiddenRewards;
-    HiddenRewards.prepareData();
 
-    if ($('#HiddenRewardBox').length >= 1) {
-        HiddenRewards.BuildBox();
+    if (MainParser.Buildings !== null) {
+        HiddenRewards.prepareData();
     }
 });
 
@@ -14,6 +13,7 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 let HiddenRewards = {
 
     Cache: null,
+    IsPrepared: false,
 
 	/**
 	 * Box in den DOM
@@ -44,6 +44,34 @@ let HiddenRewards = {
 
         for(let idx in HiddenRewards.Cache) {
             let position = HiddenRewards.Cache[idx].position.context;
+
+            let SkipEvent = true;
+            if (position === 'cityRoadSmall') {
+                for (let i in MainParser.Buildings) {
+                    if (!MainParser.Buildings.hasOwnProperty(i)) continue;
+                    if (MainParser.Buildings[i]['type'] === 'street' && MainParser.Buildings[i]['width'] === 2) {
+                        SkipEvent = false;
+                        break;
+                    }
+                }
+            }
+            else if (position === 'cityRoadBit') {
+                for (let i in MainParser.Buildings) {
+                    if (!MainParser.Buildings.hasOwnProperty(i)) continue;
+                    if (MainParser.Buildings[i]['type'] === 'street' && MainParser.Buildings[i]['width'] === 1) {
+                        SkipEvent = false;
+                        break;
+                    }
+                }
+            }
+            else {
+                SkipEvent = false;
+            }
+
+            if (SkipEvent) {
+                continue;
+            }
+            
             const positionI18nLookupKey = 'HiddenRewards.Positions.'+position;
             const positionI18nLookup = i18n(positionI18nLookupKey);
 
@@ -66,8 +94,12 @@ let HiddenRewards = {
         });
 
         HiddenRewards.Cache = data;
-    },
 
+        if ($('#HiddenRewardBox').length >= 1) {
+            HiddenRewards.BuildBox();
+        }
+    },
+       
 
 	/**
 	 * Inhalt der Box in den BoxBody legen

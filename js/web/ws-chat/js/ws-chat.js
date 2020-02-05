@@ -13,11 +13,11 @@
  * **************************************************************************************
  */
 
-Chat = {
+let Chat = {
 
 	GildID: 0,
 	PlayerID: 0,
-	World: 0,
+	World: '',
 	OtherPlayers: [],
 	PlayersPortraits: [],
 	OnlinePlayers: [],
@@ -25,6 +25,7 @@ Chat = {
 	WebsocketChat : null,
 	ReadMode: 'live',
 	Token: '',
+	ConnectionId: '',
 
 	/**
 	 * Holt die Daten für den Chat
@@ -33,8 +34,8 @@ Chat = {
 
 		let data = Object.fromEntries( new URLSearchParams(location.search) );
 
-		Chat.GildID = data['guild'];
-		Chat.PlayerID = data['player'];
+		Chat.GildID = +data['guild'];
+		Chat.PlayerID = +data['player'];
 		Chat.World = data['world'];
 
 		Chat.loadPortraits();
@@ -46,21 +47,22 @@ Chat = {
 		// prüfen ob es eine gültige Cache Version gibt
 		if(pD === null || pT === null || Chat.compareTime(new Date().getTime(), pT) === false)
 		{
-			$.ajax({
-				type: 'POST',
-				url: 'https://api.foe-rechner.de/Members4Chat/?guild_id=' + data['guild'] + '&world=' + data['world'],
-				dataType: 'json',
-				success: function(r){
+			console.log('AJAX-getData-Members4Chat')
+			// $.ajax({
+			// 	type: 'POST',
+			// 	url: 'https://api.foe-rechner.de/Members4Chat/?guild_id=' + data['guild'] + '&world=' + data['world'],
+			// 	dataType: 'json',
+			// 	success: function(r){
 
-					localStorage.setItem('PlayersData', JSON.stringify(r['data']));
-					localStorage.setItem('PlayersDataTimestamp', Chat.getTimestamp(12));
+			// 		localStorage.setItem('PlayersData', JSON.stringify(r['data']));
+			// 		localStorage.setItem('PlayersDataTimestamp', Chat.getTimestamp(12));
 
-					Chat.OtherPlayers = r['data'];
+			// 		Chat.OtherPlayers = r['data'];
 
-					// alles da, zünden
-					Chat.Init();
-				}
-			});
+			// 		// alles da, zünden
+			// 		Chat.Init();
+			// 	}
+			// });
 
 		} else {
 			Chat.OtherPlayers = JSON.parse(pD);
@@ -76,15 +78,20 @@ Chat = {
 	 */
 	Init: ()=> {
 
-		let div = $('<div class="chat-wrapper">' +
-						'<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>' +
-						'<div class="message_box" id="message_box"></div>' +
-					'</div>' +
-					'<div class="chat-panel">' +
-						'<input id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"><button id="send-btn">Senden</button>' +
-					'</div>');
+		const template = document.createElement('template');
+		template.innerHTML = `
+			<div class="chat-wrapper">
+				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
+				<div class="message_box" id="message_box"></div>
+			</div>
+			<div class="chat-panel">
+				<input id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"><button id="send-btn">Senden</button>
+			</div>
+		`;
 
-		$('#ChatBody').append(div);
+		const box = document.getElementById('ChatBody');
+		box.appendChild(template.content);
+		//$('#ChatBody').append(div);
 
 
 		setTimeout(
@@ -93,24 +100,47 @@ Chat = {
 				Chat.Members();
 
 				// alles geladen, Loader entfernen
-				$('#ChatBody').removeClass('loader');
+				document.getElementById('ChatBody').classList.remove('loader');
+				// $('#ChatBody').removeClass('loader');
 			}, 100
 		);
 
-		let wsUri = 'wss://foe-rechner.de:9000/ws-chat.php';
+		// get a random connection id if this tab doesn't already have one
+		let connectionId = sessionStorage.getItem('websocket-connection-id') || '';
+		if (!connectionId) {
+			var randArray = new Uint8Array(24);
+			window.crypto.getRandomValues(randArray);
+			const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!$";
+			let rest = 0;
+			let bits = 0;
+			for (let i = 0; i<24; i++) {
+				rest = rest << 8 | randArray[i];
+				bits += 8;
+				while (bits >= 6) {
+					bits -= 6;
+					let num = (rest >> bits) & 0x3f;
+					connectionId += chars[num];
+				}
+			}
+			sessionStorage.setItem('websocket-connection-id', connectionId);
+		}
+		Chat.ConnectionId = connectionId;
+		
+		let wsUri = 'ws://localhost:8080/';//'wss://foe-rechner.de:9000/ws-chat.php';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = ()=> {
+			Chat.WebsocketChat.send(JSON.stringify({world: Chat.World, guild: Chat.GildID, player: Chat.PlayerID, connectionId: connectionId, secret:'trust me!'}))
 			Chat.SystemRow('Verbunden!', 'success');
 
-			setTimeout(
-				function(){
-					Chat.SendMsg('onlyOthers', 'entered');
-				}, 500
-			);
+			// setTimeout(
+			// 	function(){
+			// 		Chat.SendMsg('onlyOthers', 'entered');
+			// 	}, 500
+			// );
 		};
 
 
@@ -118,7 +148,7 @@ Chat = {
 		Chat.WebsocketChat.onmessage = function(ev) {
 			let msg = JSON.parse(ev.data);
 
-			Chat.TextRow(msg.id, msg.message, msg.time, msg.type);
+			Chat.TextRow(msg);
 		};
 
 
@@ -142,8 +172,7 @@ Chat = {
 	Functions: ()=> {
 
 		// User benutzt [Enter] zum schreiben
-		$('#message-input').on('keydown', function(e) {
-
+		document.getElementById('message-input').addEventListener('keydown', function(e) {
 			if (e.which == 13 || e.keyCode == 13) {
 				e.preventDefault();
 
@@ -151,17 +180,19 @@ Chat = {
 			}
 		});
 
-		$('#send-btn').click(function(){
+		document.getElementById('send-btn').addEventListener('click', function(){
 			Chat.SendMsg()
 		});
 
-		$('#modus').on('click', function(){
+		document.getElementById('modus').addEventListener('click', function(){
 			if( Chat.ReadMode === 'live' ){
 				Chat.ReadMode = 'read';
-				$('.head').find('span').html('<i title="Lesemodus aktivert" class="fa fa-eye" aria-hidden="true"></i>');
+				document.querySelector('.head span').innerHTML = '<i title="Lesemodus aktivert" class="fa fa-eye" aria-hidden="true"></i>';
+				// $('.head').find('span').html('<i title="Lesemodus aktivert" class="fa fa-eye" aria-hidden="true"></i>');
 			} else {
 				Chat.ReadMode = 'live';
-				$('.head').find('span').html('<i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i>');
+				document.querySelector('.head span').innerHTML = '<i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i>';
+				// $('.head').find('span').html('<i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i>');
 			}
 		});
 
@@ -173,20 +204,23 @@ Chat = {
 			img_dir: '../../../../../vendor/emoyify/images/emoji'
 		});
 
-		$('#message-input').focus();
+		document.getElementById('message-input').focus();
+		// $('#message-input').focus();
 
-		$(window).on("beforeunload", function(){
+		window.addEventListener('beforeunload', /*$(window).on("beforeunload",*/ function(){
 
-			$('#ChatBody').addClass('loader');
+			this.document.getElementById('ChatBody').classList.add('loader');
+			// $('#ChatBody').addClass('loader');
 
 			Chat.Close();
 
-			$.ajax({
-				type: 'POST',
-				async: false,
-				data: {room_id: 1, dir: 'leave'},
-				url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World
-			});
+			console.log('AJAX-Functions-BeforeUnload')
+			// $.ajax({
+			// 	type: 'POST',
+			// 	async: false,
+			// 	data: {room_id: 1, dir: 'leave'},
+			// 	url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World
+			// });
 		});
 	},
 
@@ -196,27 +230,28 @@ Chat = {
 	 *
 	 */
 	Members: ()=> {
-		$.ajax({
-			type: 'POST',
-			url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World,
-			data: {room_id: 1, dir: 'enter'},
-			dataType: 'json',
-			success: function(r){
+		console.log('AJAX-Members')
+		// $.ajax({
+		// 	type: 'POST',
+		// 	url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World,
+		// 	data: {room_id: 1, dir: 'enter'},
+		// 	dataType: 'json',
+		// 	success: function(r){
 
-				for(let i in r['data']){
+		// 		for(let i in r['data']){
 
-					let Player = Chat.OtherPlayers.find(obj => {
-						return obj.player_id === r['data'][i];
-					});
+		// 			let Player = Chat.OtherPlayers.find(obj => {
+		// 				return obj.player_id === r['data'][i];
+		// 			});
 
-					if(Player['player_id'] === Chat.PlayerID){
-						Chat.OwnName =  Player['player_name'];
-					}
+		// 			if(Player['player_id'] === Chat.PlayerID){
+		// 				Chat.OwnName =  Player['player_name'];
+		// 			}
 
-					Chat.UserEnter(Player);
-				}
-			}
-		});
+		// 			Chat.UserEnter(Player);
+		// 		}
+		// 	}
+		// });
 	},
 
 
@@ -225,40 +260,42 @@ Chat = {
 	 *
 	 */
 	SendMsg: (type, SystemMsg)=> {
-		let MyMsg = SystemMsg !== undefined ? SystemMsg : $('#message-input').val();
+		let MyMsg = SystemMsg !== undefined ? SystemMsg : /** @type {HTMLInputElement} */(document.getElementById('message-input')).value//$('#message-input').val();
 
 		if(MyMsg === ''){
 			return;
 		}
 
-		$('.emoticon-bar').removeClass('show');
+		// $('.emoticon-bar').removeClass('show');
+		document.querySelector('.emoticon-bar').classList.remove('show');
 
-		let today = new Date(),
-			HH = today.getHours(),
-			ii = today.getMinutes(),
-			ss = today.getSeconds(),
-			dateTime;
+		// let today = new Date(),
+		// 	HH = today.getHours(),
+		// 	ii = today.getMinutes(),
+		// 	ss = today.getSeconds(),
+		// 	dateTime;
 
-		if(HH < 10) HH = '0' + HH;
-		if(ii < 10) ii = '0' + ii;
-		if(ss < 10) ss = '0' + ss;
+		// if(HH < 10) HH = '0' + HH;
+		// if(ii < 10) ii = '0' + ii;
+		// if(ss < 10) ss = '0' + ss;
 
-		dateTime = HH + ':' + ii + ':' + ss;
+		// dateTime = HH + ':' + ii + ':' + ss;
 
 		let msg = {
 			message: MyMsg,
-			id: Chat.PlayerID,
-			time: dateTime,
-			type: type
+			from: Chat.PlayerID,
+			time: Date.now(),
+			type: 'message'
 		};
 
-		Chat.WebsocketChat.send(JSON.stringify(msg));
+		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
 
 		if(type !== 'onlyOthers'){
-			Chat.TextRow(Chat.PlayerID, MyMsg, dateTime, type);
+			Chat.TextRow(msg);
 		}
 
-		$('#message-input').val('');
+		// $('#message-input').val('');
+		/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
 	},
 
 
@@ -269,64 +306,167 @@ Chat = {
 	 * @param text
 	 * @param time
 	 */
-	TextRow: (id, text, time, type)=> {
-		let PlayerName = '',
-			PlayerImg = '',
-			ExtClass = '',
-			TextR = '';
+	TextRow: (message)=> {
+		// let PlayerName = '',
+		// 	PlayerImg = '',
+		// 	ExtClass = '',
+		// 	TextR = '';
 
-		if(id === Chat.PlayerID) {
-			PlayerName = '';
-			ExtClass = 'user-self';
-			TextR = emojify.replace(text);
-			TextR = Chat.MakeImage(TextR);
-			TextR = Chat.MakeURL(TextR);
+		/**
+		 * Communication:
+		 * 
+		 * Client:
+		 * connect setup message:
+		 *  {world: string, guild: number, player: number, connectionId: string, secret?: string}  // limits: world.length<5, guild & player: integer>=0
+		 * For each Message to send:
+		 *  {message: string, secretOnly?: boolean} // limit: message.length < 1024
+		 * 
+		 * Server:
+		 * after connection setup message:
+		 *  {type: 'members', members:  {playerId: number, secretsMatch: boolean}[]} // list of playerID's in this chat-room and weather theire 
+		 * on error/ping timeout:
+		 *  {type: 'error', error: string}
+		 * 
+		 * on player join:
+		 *  {type: 'switch', player: number, time: number, secretsMatch: boolean} // player was in room and switched connection
+		 *  {type: 'join', player: number, time: number,secretsMatch: boolean} // player entered room
+		 * on player leave:
+		 *  {type: 'leave', player: number, time: number}
+		 * on players secretMatching changed:
+		 *  {type: 'secretChange', player: number, secretsMatch: boolean}
+		 * 
+		 * on message:
+		 *  {type: 'message', message: string, from: number, time: number, secretOnly: boolean}
+		 * 
+		 * on connection with other device:
+		 *  {type: 'disconnect', reason: string}
+		 */
 
-			Chat.SmallBox(ExtClass, TextR, PlayerName, time);
-
-		} else if(type === 'onlyOthers'){
-			let Player = Chat.OtherPlayers.find(obj => {
-				return obj.player_id === id;
-			});
-
-			if(text === 'entered'){
-				TextR = '<em>' + Player['player_name'] + ' hat den Chat betreten</em>';
+		switch (message.type) {
+			case 'members': {
+				/** @type {{playerId: number, secretsMatch: boolean}[]} */
+				const members = message.members;
+				// TODO: verwende diese liste von playerID's um die Anzeige zu füllen
+				for (let data of members) {
+					let {playerId: player_id, secretsMatch} = data;
+					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt'+(secretsMatch?'(trusted)':'')+'#'+player_id,player_id};
+					Chat.UserEnter(Player);
+				}
+				break;
+			}
+			case 'message': {
+				const player_id = message.from;
+				if (player_id === Chat.PlayerID) {
+					let TextR = emojify.replace(message.message);
+					TextR = Chat.MakeImage(TextR);
+					TextR = Chat.MakeURL(TextR);
+		
+					Chat.SmallBox('user-self', TextR, '', Chat.timeStr(message.time));
+		
+				} else {
+					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
+		
+					const PlayerName = Player['player_name'];
+					// TODO: fix image url
+					const PlayerImg = '';//MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+					let TextR = Chat.MakeImage(message.message);
+					TextR = emojify.replace(TextR);
+					TextR = Chat.MakeURL(TextR);
+		
+					Chat.BigBox('user-other', TextR, PlayerImg, PlayerName, Chat.timeStr(message.time));
+		
+					Chat.PlaySound('notification-sound');
+				}
+				break;
+			}
+			case 'switch': {
+				const player_id = message.player;
+				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
+				const TextR = '<em>' + Player['player_name'] + ' hat den Chat erneut betreten</em>';
 				Chat.UserEnter(Player);
 				Chat.PlaySound('user-enter');
-
-			} else if(text === 'leaved') {
-				TextR = '<em>' + Player['player_name'] + ' ist gegangen</em>';
+				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
+				break;
+			}
+			case 'join': {
+				const player_id = message.player;
+				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
+				const TextR = '<em>' + Player['player_name'] + ' hat den Chat betreten</em>';
+				Chat.UserEnter(Player);
+				Chat.PlaySound('user-enter');
+				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
+				break;
+			}
+			case 'leave': {
+				const player_id = message.player;
+				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
+				const TextR = '<em>' + Player['player_name'] + ' ist gegangen</em>';
 				Chat.UserLeave(Player);
 				Chat.PlaySound('user-leave');
+				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
+				break;
 			}
-
-			ExtClass = 'user-notification';
-			PlayerName = '';
-
-			Chat.SmallBox(ExtClass, TextR, PlayerName, time);
-
-		} else {
-
-			let Player = Chat.OtherPlayers.find(obj => {
-				return obj.player_id === id;
-			});
-
-			PlayerName = Player['player_name'];
-			PlayerImg = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
-			ExtClass = 'user-other';
-			TextR = Chat.MakeImage(text);
-			TextR = emojify.replace(TextR);
-			TextR = Chat.MakeURL(TextR);
-
-			Chat.BigBox(ExtClass, TextR, PlayerImg, PlayerName, time);
-
-			Chat.PlaySound('notification-sound');
+			case 'disconnect':
+			case 'error': {
+				break;
+			}
 		}
 
+		// if (id === Chat.PlayerID) {
+		// 	PlayerName = '';
+		// 	ExtClass = 'user-self';
+		// 	TextR = emojify.replace(text);
+		// 	TextR = Chat.MakeImage(TextR);
+		// 	TextR = Chat.MakeURL(TextR);
+
+		// 	Chat.SmallBox(ExtClass, TextR, PlayerName, time);
+
+		// } else if(type === 'onlyOthers'){
+		// 	let Player = Chat.OtherPlayers.find(obj => {
+		// 		return obj.player_id === id;
+		// 	});
+
+		// 	if(text === 'entered'){
+		// 		TextR = '<em>' + Player['player_name'] + ' hat den Chat betreten</em>';
+		// 		Chat.UserEnter(Player);
+		// 		Chat.PlaySound('user-enter');
+
+		// 	} else if(text === 'leaved') {
+		// 		TextR = '<em>' + Player['player_name'] + ' ist gegangen</em>';
+		// 		Chat.UserLeave(Player);
+		// 		Chat.PlaySound('user-leave');
+		// 	}
+
+		// 	ExtClass = 'user-notification';
+		// 	PlayerName = '';
+
+		// 	Chat.SmallBox(ExtClass, TextR, PlayerName, time);
+
+		// } else {
+
+		// 	let Player = Chat.OtherPlayers.find(obj => {
+		// 		return obj.player_id === id;
+		// 	});
+
+		// 	PlayerName = Player['player_name'];
+		// 	PlayerImg = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		// 	ExtClass = 'user-other';
+		// 	TextR = Chat.MakeImage(text);
+		// 	TextR = emojify.replace(TextR);
+		// 	TextR = Chat.MakeURL(TextR);
+
+		// 	Chat.BigBox(ExtClass, TextR, PlayerImg, PlayerName, time);
+
+		// 	Chat.PlaySound('notification-sound');
+		// }
+
 		if( Chat.ReadMode === 'live' ){
-			$('#message_box').animate({
-				scrollTop: $('#message_box').prop('scrollHeight')
-			});
+			// TODO: fix animation
+			const box = document.getElementById('message_box');
+			box.scrollTop = box.scrollHeight;
+			// $('#message_box').animate({
+			// 	scrollTop: $('#message_box').prop('scrollHeight')
+			// });
 		}
 	},
 
@@ -354,15 +494,27 @@ Chat = {
 	UserEnter: (Player)=> {
 
 		// Spieler ist bereits in der Liste
-		if( $('[data-id="' + Player['player_id'] +'"]').length > 0 ){
+		if( document.querySelector('[data-id="' + Player['player_id'] +'"]')){
 			return;
 		}
 
-		let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
-			.append( $('<img />').attr('src', MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
-			.append( $('<span />').text( Player['player_name'] ) );
+		const d = document.createElement('div');
+		d.dataset.id = Player['player_id'];
 
-		$('#users').append(pR);
+		const img = document.createElement('img');
+		// TODO: fix url
+		//img.src = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+
+		const s = document.createElement('span');
+		s.innerText = Player['player_name'];
+		d.appendChild(s);
+		
+		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
+		// 	.append( $('<img />').attr('src', MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
+		// 	.append( $('<span />').text( Player['player_name'] ) );
+
+		document.getElementById('users').appendChild(d);
+		// $('#users').append(pR);
 
 		Chat.OnlinePlayers.push(Player['player_name']);
 	},
@@ -374,9 +526,14 @@ Chat = {
 	 * @param Player
 	 */
 	UserLeave: (Player)=> {
-		$('[data-id="' + Player['player_id'] + '"]').fadeToggle(function(){
-			$(this).remove();
-		});
+		if( Chat.ReadMode === 'live' ){
+			// TODO: fix animation
+			const box = document.getElementById('message_box');
+			box.scrollTop = box.scrollHeight;
+			// $('[data-id="' + Player['player_id'] + '"]').fadeToggle(function(){
+			// 	$(this).remove();
+			// });
+		}
 
 		if(Chat.OnlinePlayers[Player['player_name']] !== undefined){
 			delete Chat.OnlinePlayers[Player['player_name']];
@@ -393,8 +550,8 @@ Chat = {
 	 * @param Time
 	 */
 	SmallBox: (Class, Text, Name, Time)=> {
-
-		$('#message_box').append(
+		const template = document.createElement('template');
+		template.innerHTML = 
 			'<div class="' + Class + '">' +
 				'<span class="user-message">' + Text + '</span>' +
 				'<div class="message-data">' +
@@ -402,7 +559,9 @@ Chat = {
 					'<span class="message-time">' + Time + ' Uhr</span>' +
 				'</div>' +
 			'</div>'
-		);
+		;
+
+		document.getElementById('message_box').appendChild(template.content);
 	},
 
 
@@ -415,11 +574,12 @@ Chat = {
 	 * @param Name
 	 * @param Time
 	 */
-	BigBox: (Class, Text, Img, Name, Time)=> {
+	BigBox: (Class, Text, Img, Name, Time) => {
 
 		Text = Chat.MarkUserName(Text);
 
-		$('#message_box').append(
+		const template = document.createElement('template');
+		template.innerHTML =
 			'<div class="big-box ' + Class + '">' +
 				'<div class="image">' +
 					'<img src="' + Img + '" alt="">' +
@@ -432,7 +592,9 @@ Chat = {
 					'</div>' +
 				'</div>' +
 			'</div>'
-		);
+		;
+
+		document.getElementById('message_box').appendChild(template.content);
 	},
 
 
@@ -441,8 +603,8 @@ Chat = {
 	 *
 	 */
 	FindUserName: ()=> {
-		$('#message-input').on('keyup', function(){
-			let t = $(this).val().toLowerCase(),
+		document.getElementById('message-input').addEventListener('keyup', /*$('#message-input').on('keyup',*/ function(e){
+			let t = /** @type {HTMLInputElement} */(e.currentTarget).value/*$(this).val()*/.toLowerCase(),
 				tl = t.slice(1, t.length),
 				found = [];
 
@@ -465,35 +627,60 @@ Chat = {
 				}
 
 				if( found.length > 0){
-					if( $('#player-result').length === 0 ){
-						let d = $('<div />').attr('id', 'player-result').hide().append( $('<ul />') );
+					if( !document.getElementById('player-result')/*$('#player-result').length === 0*/ ){
+						//let d = $('<div />').attr('id', 'player-result').hide().append( $('<ul />') );
+						const d = document.createElement('div');
+						d.id = 'player-result';
+						d.style.display = 'none';
+						d.appendChild(document.createElement('ul'));
 
-						$('.chat-panel').append( d );
+						document.querySelector('.chat-panel').appendChild(d);
+						// $('.chat-panel').append( d );
 					}
 
-					let ul = $('#player-result ul');
+					// let ul = $('#player-result ul');
+					const ul = document.querySelector('#player-result ul');
 
-					ul.html( found.join('') );
-					$('#player-result').show();
+					// ul.html( found.join('') );
+					// $('#player-result').show();
+					ul.innerHTML = found.join();
+					document.getElementById('player-result').style.display = '';
 
 				} else if( $('#player-result').length > 0){
-					$('#player-result').hide();
-					$('#player-result ul').html('');
+					const ul = document.querySelector('#player-result ul');
+					if (ul) ul.innerHTML = '';
+					const result = document.getElementById('player-result');
+					if (result) result.style.display = 'none';
+						// $('#player-result').hide();
+					// $('#player-result ul').html('');
 				}
 
 			} else {
-				$('#player-result').hide();
-				$('#player-result ul').html('');
+				const ul = document.querySelector('#player-result ul');
+				if (ul) ul.innerHTML = '';
+				const result = document.getElementById('player-result');
+				if (result) result.style.display = 'none';
+				// $('#player-result').hide();
+				// $('#player-result ul').html('');
 			}
 		});
 
 		// Treffer wurde angeklickt
-		$('body').on('click', '#player-result ul li', function(){
-			$('#message-input').val( '@' + $(this).text() + ': ' );
+		// $('body').on('click', '#player-result ul li', function(){
+		// 	$('#message-input').val( '@' + $(this).text() + ': ' );
 
-			$('#player-result').hide();
-			$('#player-result ul').html('');
-			$('#message-input').focus();
+		// 	$('#player-result').hide();
+		// 	$('#player-result ul').html('');
+		// 	$('#message-input').focus();
+		// });
+		document.addEventListener('click', e => {
+			if (/** @type {HTMLElement} */(e.target).matches('#player-result ul li')) {
+				const input = /** @type {HTMLInputElement} */(document.getElementById('message-input'));
+				input.value = '@' + $(this).text() + ': ';
+				input.focus();
+				document.querySelector('#player-result ul').innerHTML = '';
+				document.getElementById('player-result').style.display = 'none';
+			}
 		});
 	},
 
@@ -566,15 +753,27 @@ Chat = {
 	 * @param text
 	 */
 	SystemRow: (text, type)=> {
-		$('#message_box').append(
-			'<div class="system-message">' +
-			'<span class="' + type + '">' + text + '</span>' +
-			'</div>'
-		);
+		const box = document.getElementById('message_box');
 
-		$('#message_box').animate({
-			scrollTop: $('#message_box').prop('scrollHeight')
-		});
+		const s = document.createElement('span');
+		s.classList.add(type);
+		s.innerText = text;
+		
+		const d = document.createElement('div');
+		d.classList.add('system-message');
+		d.appendChild(s);
+
+		box.appendChild(d);
+
+		// $('#message_box').append(
+		// 	'<div class="system-message">' +
+		// 	'<span class="' + type + '">' + text + '</span>' +
+		// 	'</div>'
+		// );
+
+		// $('#message_box').animate({
+		// 	scrollTop: $('#message_box').prop('scrollHeight')
+		// });
 	},
 
 
@@ -584,9 +783,10 @@ Chat = {
 	 */
 	Close: ()=> {
 
-		$.post('https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World, {room_id: 1, dir: 'leave'});
+		console.log('AJAX-Close')
+		//$.post('https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World, {room_id: 1, dir: 'leave'});
 
-		Chat.SendMsg('onlyOthers', 'leaved');
+		//Chat.SendMsg('onlyOthers', 'leaved');
 
 		setTimeout(
 			function(){
@@ -601,43 +801,65 @@ Chat = {
 	 */
 	EmoticonBar: ()=> {
 		let icons = Chat.EmoticonBarIcons(),
-			bar = $('<div />').addClass('emoticon-bar');
+			bar = document.createElement('div')//$('<div />').addClass('emoticon-bar');
+		bar.classList.add('emoticon-bar');
 
 		for(let i in icons)
 		{
 			if(icons.hasOwnProperty(i)){
-				bar.append(
-					$('<img />').addClass('add-icon').attr('src', '../vendor/emoyify/images/emoji/'+ icons[i] +'.png').attr('alt', ':'+ icons[i] +':').attr('title', ':'+ icons[i] +':')
-				);
+				const img = document.createElement('img');
+				img.classList.add('add-icon');
+				img.src = '/vendor/emoyify/images/emoji/'+ icons[i] +'.png';
+				img.setAttribute('alt', ':'+ icons[i] +':');
+				img.setAttribute('title', ':'+ icons[i] +':');
+				bar.appendChild(img);
+				// bar.append(
+				// 	$('<img />').addClass('add-icon').attr('src', '../vendor/emoyify/images/emoji/'+ icons[i] +'.png').attr('alt', ':'+ icons[i] +':').attr('title', ':'+ icons[i] +':')
+				// );
 			}
 		}
 
-		$('body').append(bar);
+		document.body.appendChild(bar);
+		//$('body').append(bar);
 
-		let btn = $('<img />').attr('src', '../css/images/face.png').addClass('toggle-emoticon-bar');
+		//let btn = $('<img />').attr('src', '../css/images/face.png').addClass('toggle-emoticon-bar');
+		const btn = document.createElement('img');
+		btn.src = '../images/face.png';
+		btn.classList.add('toggle-emoticon-bar');
 
-		$('.chat-panel').append(btn);
+
+		document.querySelector('.chat-panel').appendChild(btn);
+		//$('.chat-panel').append(btn);
 
 		// Functions
 
-		$('body').on('click', '.toggle-emoticon-bar', function()
+		btn.addEventListener('click', /*$('body').on('click', '.toggle-emoticon-bar',*/ function()
 		{
-			if( $('.emoticon-bar').hasClass('show') ){
-				$('.emoticon-bar').removeClass('show');
+			document.querySelector('.emoticon-bar').classList.toggle('show');
+			// if( $('.emoticon-bar').hasClass('show') ){
+			// 	$('.emoticon-bar').removeClass('show');
 
-			} else {
-				$('.emoticon-bar').addClass('show');
-			}
+			// } else {
+			// 	$('.emoticon-bar').addClass('show');
+			// }
 		});
 
 
-		$('body').on('click', '.add-icon', function()
-		{
-			let ico = $(this).attr('alt'),
-				val = $('#message-input').val();
+		document.body.addEventListener('click', e => {
+			const target = /** @type {HTMLElement} */(e.target);
+			if (target.classList.contains('add-icon')) {
+				const ico = target.getAttribute('alt');
+				const input = /** @type {HTMLInputElement} */(document.getElementById('message-input'))
+				input.value += ' ' + ico;
+			}
+		});
+		// $('body').on('click', '.add-icon', function()
+		// {
+		// 	let ico = $(this).attr('alt'),
+		// 		val = $('#message-input').val();
 
-			$('#message-input').val( val + ' ' + ico);
-		})
+		// 	$('#message-input').val( val + ' ' + ico);
+		// })
 	},
 
 
@@ -654,7 +876,7 @@ Chat = {
 	/**
 	 * Neue Zeit errechnen
 	 *
-	 * @param hrs
+	 * @param {number} hrs
 	 * @returns {number}
 	 */
 	getTimestamp: (hrs)=>{
@@ -708,7 +930,7 @@ Chat = {
 		if(pPortraits === null || Chat.compareTime(new Date().getTime(), pPortraitsTimestamp) === false)
 		{
 			let portraits = {};
-
+			console.log('AJAX-Load-Portraits')
 			$.ajax({
 				type: 'GET',
 				url: MainParser.InnoCDN + 'assets/shared/avatars/Portraits.xml',
@@ -729,6 +951,14 @@ Chat = {
 		} else {
 			Chat.PlayersPortraits = JSON.parse(pPortraits);
 		}
+	},
+
+	timeStr: time => {
+		const date = new Date(time);
+		const h = (''+date.getHours()).padStart(2, '0');
+		const m = (''+date.getMinutes()).padStart(2, '0');
+		const s = (''+date.getSeconds()).padStart(2, '0');
+		return `${h}:${m}:${s}`;
 	}
 };
 
