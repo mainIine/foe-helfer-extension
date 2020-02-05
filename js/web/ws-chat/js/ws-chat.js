@@ -133,7 +133,15 @@ let Chat = {
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = ()=> {
-			Chat.WebsocketChat.send(JSON.stringify({world: Chat.World, guild: Chat.GildID, player: Chat.PlayerID, connectionId: connectionId, secret:'trust me!'}))
+			Chat.WebsocketChat.send(
+				JSON.stringify({
+					world: Chat.World,
+					guild: Chat.GildID,
+					player: Chat.PlayerID,
+					connectionId: connectionId,
+					secret:'trust me!'
+				})
+			);
 			Chat.SystemRow('Verbunden!', 'success');
 
 			// setTimeout(
@@ -368,7 +376,7 @@ let Chat = {
 		
 					const PlayerName = Player['player_name'];
 					// TODO: fix image url
-					const PlayerImg = '';//MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+					const PlayerImg = '';//'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 					let TextR = Chat.MakeImage(message.message);
 					TextR = emojify.replace(TextR);
 					TextR = Chat.MakeURL(TextR);
@@ -449,7 +457,7 @@ let Chat = {
 		// 	});
 
 		// 	PlayerName = Player['player_name'];
-		// 	PlayerImg = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		// 	PlayerImg = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 		// 	ExtClass = 'user-other';
 		// 	TextR = Chat.MakeImage(text);
 		// 	TextR = emojify.replace(TextR);
@@ -504,14 +512,14 @@ let Chat = {
 
 		const img = document.createElement('img');
 		// TODO: fix url
-		//img.src = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		//img.src = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
-		// 	.append( $('<img />').attr('src', MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
+		// 	.append( $('<img />').attr('src', 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
 		// 	.append( $('<span />').text( Player['player_name'] ) );
 
 		document.getElementById('users').appendChild(d);
@@ -934,7 +942,7 @@ let Chat = {
 			console.log('AJAX-Load-Portraits')
 			$.ajax({
 				type: 'GET',
-				url: MainParser.InnoCDN + 'assets/shared/avatars/Portraits.xml',
+				url: 'https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml',
 				dataType: 'xml',
 				success: function(xml){
 
