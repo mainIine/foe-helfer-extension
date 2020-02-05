@@ -18,6 +18,7 @@ let Chat = {
 	GildID: 0,
 	PlayerID: 0,
 	PlayerName: null,
+	PlayerPortrait: null,
 	World: '',
 	OtherPlayers: [],
 	PlayersPortraits: {},
@@ -36,31 +37,59 @@ let Chat = {
 
 		let data = Object.fromEntries( new URLSearchParams(location.search) );
 
-		Chat.GildID = data['guild'];
-		Chat.PlayerID = data['player'];
+		Chat.GildID = +data['guild'];
+		Chat.PlayerID = +data['player'];
 		Chat.PlayerName = decodeURI(data['name']);
 		Chat.World = data['world'];
 
-		Chat.loadPortraits();
-
-		chrome.runtime.sendMessage({
-			type: 'getInnoCDN'
-		}, ([cdn, wasSet]) => Chat.InnoCDN = cdn);
+		const cdnRecivedPromise =
+			new Promise(resolve =>
+				chrome.runtime.sendMessage(
+					{
+						type: 'getInnoCDN'
+					},
+					resolve
+				)
+			)
+			.then(([cdn, wasSet]) => {
+				Chat.InnoCDN = cdn;
+				Chat.loadPortraits();
+			})
+		;
 		
-		chrome.runtime.sendMessage({
-			type: 'getPlayerData'
-		}, (data) => {
-			if(!data) return;
-			let Player = Chat.OtherPlayers.find(p => p.player_id === Chat.PlayerID);
-			if (Player) {
-				Player.player_name = data.name;
-				Player.avatar = data.portrait;
-			} else {
-				Chat.OtherPlayers.push({player_id: Chat.PlayerID, player_name: data.name, avatar: data.portrait});
-			}
-		});
+		const playerDataRecivedPromise =
+			new Promise(resolve =>
+				chrome.runtime.sendMessage(
+					{
+						type: 'getPlayerData',
+						world: Chat.World,
+						playerId: Chat.PlayerID
+					},
+					resolve
+				)
+			)
+			.then( (data) => {
+				if (!data) return;
+				
+				Chat.PlayerName = data.name;
+				Chat.PlayerPortrait = data.portrait;
+				
+				let Player = Chat.OtherPlayers.find(p => p.player_id === Chat.PlayerID);
+				if (Player) {
+					Player.player_name = data.name;
+					Player.avatar = data.portrait;
+				} else {
+					Chat.OtherPlayers.push({
+						player_id: Chat.PlayerID,
+						player_name: data.name,
+						avatar: data.portrait
+					});
+				}
+			})
+		;
 
-		Chat.Init();
+		Promise.all([cdnRecivedPromise, playerDataRecivedPromise])
+		.then(() => Chat.Init());
 	},
 
 
@@ -129,7 +158,8 @@ let Chat = {
 					world: Chat.World,
 					guild: Chat.GildID,
 					player: Chat.PlayerID,
-					name: Chat.PlayerName,
+					name: Chat.PlayerName || 'Unknown#'+Chat.PlayerID,
+					portrait: Chat.PlayerPortrait || '',
 					connectionId: connectionId,
 					secret:'trust me!'
 				})
@@ -323,13 +353,13 @@ let Chat = {
 		 * 
 		 * Server:
 		 * after connection setup message:
-		 *  {type: 'members', members:  {playerId: number, secretsMatch: boolean}[]} // list of playerID's in this chat-room and weather theire 
+		 *  {type: 'members', members:  {playerId: number, name: string, portrait: string, secretsMatch: boolean}[]} // list of playerID's in this chat-room and weather theire 
 		 * on error/ping timeout:
 		 *  {type: 'error', error: string}
 		 * 
 		 * on player join:
-		 *  {type: 'switch', player: number, time: number, secretsMatch: boolean} // player was in room and switched connection
-		 *  {type: 'join', player: number, time: number,secretsMatch: boolean} // player entered room
+		 *  {type: 'switch', player: number, name: string, portrait: string, time: number, secretsMatch: boolean} // player was in room and switched connection
+		 *  {type: 'join', player: number, name: string, portrait: string, time: number,secretsMatch: boolean} // player entered room
 		 * on player leave:
 		 *  {type: 'leave', player: number, time: number}
 		 * on players secretMatching changed:
@@ -344,12 +374,34 @@ let Chat = {
 
 		switch (message.type) {
 			case 'members': {
-				/** @type {{playerId: number, secretsMatch: boolean}[]} */
+				/** @type {{playerId: number, name: string, portrait: string, secretsMatch: boolean}[]} */
 				const members = message.members;
-				// TODO: verwende diese liste von playerID's um die Anzeige zu füllen
+				console.log(message)
 				for (let data of members) {
-					let {playerId: player_id, secretsMatch} = data;
-					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt'+(secretsMatch?'(trusted)':'')+'#'+player_id,player_id};
+					const {playerId: player_id, name, portrait, secretsMatch} = data;
+					let Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
+					if (Player) {
+						Player.player_name = name;
+						Player.avatar = portrait;
+						Player.secretsMatch = secretsMatch;
+					} else {
+						Player = {
+							player_id: player_id,
+							player_name: name,
+							avatar: portrait,
+							secretsMatch: secretsMatch
+						};
+						Chat.OtherPlayers.push(Player);
+					}
+					Chat.UserEnter(Player);
+				}
+				break;
+			}
+			case 'secretChange': {
+				const player_id = message.player;
+				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
+				if (Player) {
+					Player.secretsMatch = message.secretsMatch;
 					Chat.UserEnter(Player);
 				}
 				break;
@@ -367,8 +419,7 @@ let Chat = {
 					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
 		
 					const PlayerName = Player['player_name'];
-					// TODO: fix image url
-					const PlayerImg = '';//'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+					const PlayerImg = Chat.PlayersPortraits[Player.avatar] ? Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg' : '';
 					let TextR = Chat.MakeImage(message.message);
 					TextR = emojify.replace(TextR);
 					TextR = Chat.MakeURL(TextR);
@@ -506,8 +557,9 @@ let Chat = {
 		d.dataset.id = Player['player_id'];
 
 		const img = document.createElement('img');
-		// TODO: fix url
-		//img.src = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		if (Chat.PlayersPortraits[Player.avatar]) {
+			img.src = Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg';
+		}
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
@@ -937,7 +989,7 @@ let Chat = {
 			console.log('AJAX-Load-Portraits')
 			$.ajax({
 				type: 'GET',
-				url: 'https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml',
+				url: Chat.InnoCDN + 'assets/shared/avatars/Portraits.xml',
 				dataType: 'xml',
 				success: function(xml){
 
