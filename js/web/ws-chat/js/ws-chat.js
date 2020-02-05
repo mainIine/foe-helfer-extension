@@ -39,37 +39,7 @@ let Chat = {
 		Chat.World = data['world'];
 
 		Chat.loadPortraits();
-
-		let pD = localStorage.getItem('PlayersData'),
-			pT = localStorage.getItem('PlayersDataTimestamp');
-
-
-		// prüfen ob es eine gültige Cache Version gibt
-		if(pD === null || pT === null || Chat.compareTime(new Date().getTime(), pT) === false)
-		{
-			console.log('AJAX-getData-Members4Chat')
-			// $.ajax({
-			// 	type: 'POST',
-			// 	url: 'https://api.foe-rechner.de/Members4Chat/?guild_id=' + data['guild'] + '&world=' + data['world'],
-			// 	dataType: 'json',
-			// 	success: function(r){
-
-			// 		localStorage.setItem('PlayersData', JSON.stringify(r['data']));
-			// 		localStorage.setItem('PlayersDataTimestamp', Chat.getTimestamp(12));
-
-			// 		Chat.OtherPlayers = r['data'];
-
-			// 		// alles da, zünden
-			// 		Chat.Init();
-			// 	}
-			// });
-
-		} else {
-			Chat.OtherPlayers = JSON.parse(pD);
-
-			// alles da, zünden
-			Chat.Init();
-		}
+		Chat.Init();
 	},
 
 
