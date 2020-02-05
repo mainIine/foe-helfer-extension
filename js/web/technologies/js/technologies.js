@@ -133,7 +133,7 @@ let Technologies = {
             if (!Tech['isResearched']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
-                if (EraID <= Technologies.SelectedEraID && Tech['childTechnologies'].length > 0) {
+                if (Technologies.SelectedEraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
@@ -155,9 +155,9 @@ let Technologies = {
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeMars']);
 
         h.push('<div class="techno-head">');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Boxes.Technologies.Eras.'+PreviousEraID) + '</button>');
-			h.push('<div class="text-center"><strong>' + i18n('Boxes.Technologies.Eras.'+Technologies.SelectedEraID) + '</strong></div>');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Boxes.Technologies.Eras.'+NextEraID) + '</button>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
+			h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
         h.push('</div>');
 
         h.push('<table class="foe-table">');

@@ -155,7 +155,7 @@ let Negotiation = {
 					GoodAmount = Math.round(GoodAmount * 10) / 10;
 				}
 
-				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(ResourceStock[GoodName]) + '">' +
+				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(Stock) + '">' +
 					'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
 					'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
@@ -238,7 +238,7 @@ let Negotiation = {
 				if (Good !== undefined) {
 					const extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
 					const tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
-					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(place+1)+'-'+(SlotGuess.good.id+1)+'</span>' : '';
+					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(place+1)+'-'+((SlotGuess.good.id+1)%10)+'</span>' : '';
 					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span>'+numberIcon+'</td>');
 
 				} else {
@@ -524,7 +524,7 @@ let Negotiation = {
 			if (data.era === 'AllAge') return 100;
 			const special = !!data.abilities.specialResource;
 			const era = Technologies.Eras[data.era];
-			return (era === 0 ? 200 : era ) + (special ? 150 : 0);
+			return (era === 0 ? 200 : era ) + (special ? 400 : 0);
 		}
 
 		if (goodA === goodB) return 0;

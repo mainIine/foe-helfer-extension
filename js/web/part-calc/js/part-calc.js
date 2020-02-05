@@ -63,8 +63,10 @@ let Parts = {
 		$('body').on('blur', '.arc-percent-input', function(){
 			let aprc = [];
 
-			$('.arc-percent-input').each(function(){
-				aprc.push($(this).val() );
+			$('.arc-percent-input').each(function () {
+				let ArkBonus = parseFloat($(this).val());
+				if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
+				aprc.push(ArkBonus);
 			});
 
 			Parts.CurrentBuildingPercents = aprc;
@@ -82,12 +84,13 @@ let Parts = {
 
 		// eine neuer globaler Arche-Satz wird gewählt
 		$('body').on('click', '.btn-set-arc', function(){
-			let a = $(this).data('value');
+			let ArkBonus = parseFloat($(this).data('value'));
+			if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
 
 			for(let i = 0; i < 5; i++)
 			{
-				Parts.CurrentBuildingPercents[i] = a;
-				$('.arc-percent-input').eq(i).val(a);
+				Parts.CurrentBuildingPercents[i] = ArkBonus;
+				$('.arc-percent-input').eq(i).val(ArkBonus);
 			}
 
 			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
