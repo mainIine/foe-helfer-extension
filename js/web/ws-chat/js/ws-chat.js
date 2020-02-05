@@ -19,7 +19,7 @@ let Chat = {
 	PlayerID: 0,
 	World: '',
 	OtherPlayers: [],
-	PlayersPortraits: [],
+	PlayersPortraits: {},
 	OnlinePlayers: [],
 	OwnName: '',
 	WebsocketChat : null,
@@ -67,9 +67,9 @@ let Chat = {
 		} else {
 			Chat.OtherPlayers = JSON.parse(pD);
 
-			// alles da, zünden
-			Chat.Init();
 		}
+		// alles da, zünden
+		Chat.Init();
 	},
 
 
