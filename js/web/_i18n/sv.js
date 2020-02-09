@@ -68,7 +68,7 @@ let i18n = {
 			"NoFPorMedsAvailable": "Inga FP eller ritning tillgängliga",
 			"LGNotOpen": "Nästa nivå är inte upplåst ännu",
 			"LGNotConnected": "Byggnaden är inte inkopplad med en väg",
-			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+			"ActiveRecurringQuest": "Aktiv återkommande uppdrag:",
 			"Done": "Klar", 
 			"LevelWarningTT": "__fpcount__FP får inte plats<br>Max investering: __totalfp__FP",
 			"NegativeProfitTT": "Placering är inte säker. __fpcount__ ytterligare FP måste läggas in för att göra den säker<br>Totalt för att göra den säker: __totalfp__FP"
@@ -254,9 +254,9 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"TitleSend": "SKicka data",
-			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
-			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
+			"TitleSend": "Skicka data",
+			"Desc1": "För att planera din stad behöver we skicka din data till foe-rechner.de",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Skicka</button>",
 			"SubmitSuccess": "Dataöverföring lyckades... Besök nu ",
 			"WholeArea": "Hela ytan: ",
 			"FreeArea": "Ledig yta: "
