@@ -15,7 +15,7 @@
 
 let i18n = {
 	"Local" : "sv-SE",
-	"DateTime" : "YY/M/D h:mm:ss a",
+	"DateTime" : "yy-MM-dd hh:mm",
 
 	"Global" : {
 		"BoxTitle": " <small><em>FoE Helper</em></small>"
@@ -33,10 +33,10 @@ let i18n = {
             "OwnPartRemaining" : "Kvar",
 			"Done" : "Klart",
 			"BPs" : "Ritning",
-			"Meds" : "Medalj",
-			"Ext" : "Ext",
+			"Meds" : "Medaljer",
+			"Ext" : "Extra",
 			"Arc" : "Ark",
-			"Order" : "Order",
+			"Order" : "Ordning",
 			"Deposit" : "Insats",
 			"CopyValues" : "Kopiera värden",
 			"Note" : "Anteckning",
@@ -44,7 +44,7 @@ let i18n = {
 			"IndividualName" : "MB Namn",
 			"OutputScheme" : "Utskrift",
             "Auto" : "Auto",
-            "Place" : "Placering",
+            "Place" : "Plats",
             "Levels" : "Nivåer",
             "NoPlaceSafe" : "Inga säkra platser"
 		},
@@ -54,7 +54,7 @@ let i18n = {
 			"HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 			"Step": "Nivå ",
 			"AvailableFP": "Tillgängliga FP",
-			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
+			"FriendlyInvestment": "Investeringskvot:", 
 			"ArcBonus": "Arkbonus",
 			"Rate": "Kvot",
 			"Up2LevelUp": "Till nästa nivå",
@@ -66,12 +66,12 @@ let i18n = {
 			"Profit": "Vinst",
 			"LevelWarning": "VARNING! Höjer nivå på MB!",
 			"NoFPorMedsAvailable": "Inga FP eller ritning tillgängliga",
-			"LGNotOpen": "Nästa niå är inte upplåst ännu",
+			"LGNotOpen": "Nästa nivå är inte upplåst ännu",
 			"LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-			"Done": "done", //Todo: Translate
-			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
-			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
+			"Done": "Klar", 
+			"LevelWarningTT": "__fpcount__FP får inte plats<br>Max investering: __totalfp__FP",
+			"NegativeProfitTT": "Placering är inte säker. __fpcount__ ytterligare FP måste läggas in för att göra den säker<br>Totalt för att göra den säker: __totalfp__FP"
 		},
 
 		"LGOverviewBox": {
@@ -94,7 +94,7 @@ let i18n = {
 			"TotalFPs": "Totalt FP från alla byggnader: ",
 			"Amount": "Antal",
 			"FPBar" : "FP-bank: ",
-			"BuyableFP" : "Buyable: " //Todo: Translate
+			"BuyableFP" : "Du kan köpa: "
 		},
 
 		"Productions" : {
@@ -112,7 +112,7 @@ let i18n = {
 				"greatbuilding" : "Mäktiga byggnader",
 				"production" : "Produktion byggnader",
 				"random_production" : "Slumpmässig produktion",
-				"residential": "Residential buildings", //Todo: Translate
+				"residential": "Bostadsbyggnad",
 				"decoration": "Dekoration",
 				"street": "Väg",
 				"goods": "Varubyggnader",
@@ -124,7 +124,7 @@ let i18n = {
 		},
 
 		"Neighbors" : {
-			"Title" : "Produktions av ",
+			"Title" : "Produktion av ",
 			"ReadyProductions" : "Slutförd produktion",
 			"OngoingProductions" : "Pågående produktion"
 		},
@@ -133,7 +133,7 @@ let i18n = {
 			"Title" : "Varor från bosättning",
 			"TitleShort" : "Varuöversikt - ",
 			"TitleBuildings" : "Byggnad",
-			"TitleFree" : "Gratis",
+			"TitleFree" : "Tillgänglig",
 			"DescRequired" : "Behov",
 			"DescInStock" : "Tillgängliga",
 			"DescStillMissing" : "<span style='color:#29b206'>Överskott</span> / <span style='color:#ef1616'>Saknas</span>",
@@ -149,7 +149,7 @@ let i18n = {
             "DescRequired": "Behov",
             "DescInStock": "Tillgängligt",
 			"DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ef1616'>Saknas</span>",
-			"NoTechs": "You have reached the end of this era", //Todo: Translate
+			"NoTechs": "Du har nått slutet av denna era",
             "Eras": {
                 1: "Stenåldern",
                 2: "Bronsåldern",
@@ -184,20 +184,20 @@ let i18n = {
 		},
 
 		"EventList": {
-			"Title": "Event quest list for: ", //Todo: Translate
-			"Desc": "Task", //Todo: Translate
-			"Reward": "Reward", //Todo: Translate
-            "Number": "No.", //Todo: Translate
-			"Or": " or ", //Todo: Translate
-			"And": " and ", //Todo: Translate
-			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+			"Title": "Händelseuppdrag för: ",
+			"Desc": "Uppdrag",
+			"Reward": "Belöning",
+            "Number": "Nr",
+			"Or": " eller ",
+			"And": " och ",
+			"Upcoming": "Kommande uppdrag (antal kan variera)",
 		},
 
         "Negotiation": {
-            "Title": "Förhandling hjälp",
-            "WrongGoods": "Fel vara vald, välj manuell för avslut",
+            "Title": "Förhandlingshjälp",
+            "WrongGoods": "Fel vara vald, välj manuellt för avsluta",
             "TryEnd": "Inga fler försök",
-            "Canceled": "Förhandling har avbrytits",
+            "Canceled": "Förhandling har avslutats",
             "Success": "Framgång",
             "Chance": "Chans",
 			"Person": "Person",
@@ -208,7 +208,7 @@ let i18n = {
 			"GoodsLow": "VARNING: Varulager är lågt",
 			"GoodsCritical": "VARNING: Varulager är kritiskt",
 			"DragDrop": "Du kan omorganisera ikonerna på medel via dra & släpp för att välja ordningen för första försöket.",
-			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
+			"TableLoadError": "Fel att ladda förhandlingstabell"
         },
 
 		"Settings" : {
@@ -224,7 +224,7 @@ let i18n = {
 			"FilterAuction" : "Auktion",
 			"FilterLevel" : "Ny nivå",
 			"FilterMessage" : "Meddelanden",
-			"FilterGildFights" : "Guild Fights", //Todo: Translate
+			"FilterGildFights" : "Imperiestrider",
 			"FilterTrade" : "Handel",
 			"ResetBox" : "Töm",
 			"Messages" : {
@@ -233,7 +233,7 @@ let i18n = {
 				"Auction" : "'<strong>__player__</strong> har precis erbjudit __amount__ mynt.",
 				"Trade" : "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Nivå __level__",
-				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
+				"GildFightOccupied": "Provins <span style=\"color:#ffb539\">__provinceName__</span> togs över av <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> och är inte tillgänglig tills __untilOccupied__"
 			}
 		},
 
@@ -253,27 +253,27 @@ let i18n = {
 		},
 
 		"CityMap": {
-			"TitleSend": "Submit data", //Todo: Translate
+			"TitleSend": "SKicka data",
 			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-			"SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
-			"WholeArea": "The whole area: ", // @Todo: Translate
-			"FreeArea": "Free area: " // @Todo: Translate
+			"SubmitSuccess": "Dataöverföring lyckades... Besök nu ",
+			"WholeArea": "Hela ytan: ",
+			"FreeArea": "Ledig yta: "
 		},
 
 		"Gildfights": {
-			"Title": "Player overview", //Todo: Translate
-			"Player": "Player", //Todo: Translate
-			"Negotiations": "Negotiations", //Todo: Translate
-			"Fights": "Fights", //Todo: Translate
-			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+			"Title": "Spelaröversikt",
+			"Player": "Spelare",
+			"Negotiations": "Förhandlingar",
+			"Fights": "Strider",
+			"LastSnapshot": " - Senaste översikt __time__ sen",
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards",  // Todo: Translate
-			"Appears": "Appears",  // Todo: Translate
-			"Disappears": "Disappears",  // Todo: Translate
-			"NoEvents": "No events presents"  // Todo: Translate
+			"Title": "Gömda händelser",
+			"Appears": "Visas",
+			"Disappears": "När",
+			"NoEvents": "Inga händelser"
 		}
 	},
 
@@ -303,8 +303,8 @@ let i18n = {
         	"Warning" : "Inaktiverat: Besök en provins först!"
 		},
         "Event": {
-            "Title": "Event Questlist", //Todo: Translate
-            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
+            "Title": "Event uppdragslista",
+            "Desc": "Översikt av nuvarande och kommande event"
 		},
         "Negotiation": {
             "Title": "Förhandlingshjälp",
@@ -347,12 +347,12 @@ let i18n = {
 			"Desc" : "Visar allt som händer i \"bakgrunden\"<br><em>Fills up with info ...</em>"
 		},
 		"HiddenRewards": {
-			"Title": "Hidden rewards", //Todo: Translate
-			"Desc": "Overview of hidden rewards" //Todo: Translate
+			"Title": "Gömda händelser", 
+			"Desc": "Översikt av händelser" 
 		},
 		"Citymap": {
-			"Title": "City overview",
-			"Desc": "Shows your city schematically from above"
+			"Title": "Stadsöversikt",
+			"Desc": "Visa din stad schematiskt från ovan"
 		}
 	},
 
@@ -361,9 +361,9 @@ let i18n = {
 			"Title" : "Version",
 			"DescDebug" : "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",  // Todo: Translate: Translate
 			"Desc" : "Chrome tillägg version",
-			"PlayerId": "Player-Id:",
-			"GuildId": "Gild-Id:",
-			"World": "World:"
+			"PlayerId": "Spelar id:",
+			"GuildId": "Imperie id:",
+			"World": "Värld:"
 		},
 		"GlobalSend": {
 			"Title" : "Överföring till foe-rechner.de",
@@ -374,16 +374,16 @@ let i18n = {
 			"Desc" : "Ska motiveringsaktivitet skickas när event anropas"
 		},
 		"SendGEXInfo": {
-			"Title" : "IE evaluations",
-			"Desc" : "When clicking in the GEX on placements or rankings the data transmitted."
+			"Title" : "IE utvärdering",
+			"Desc" : "När du är inne i IE placering eller rank överförs data."
 		},
 		"SendGildMemberLGInfo": {
-			"Title" : "MB data av andra imperiemedlemmar",
-			"Desc" : "När du besäker andra imperiemedlemmar kommer MB data skickas till foe-rechner.de vid globala aktiviteter."
+			"Title" : "MB data från andra imperiemedlemmar",
+			"Desc" : "När du besöker andra imperiemedlemmar kommer MB data skickas till foe-rechner.de vid globala aktiviteter."
 		},
 		"ShowNeighborsGoods": {
 			"Title" : "Grannfarmning",
-			"Desc" : "Under besök visa vad som håller på att produceras."
+			"Desc" : "Vid besök visa vad som håller på att produceras."
 		},
 		"SendInvestigations": {
 			"Title" : "FP investering",
@@ -407,8 +407,8 @@ let i18n = {
 			"Button" : "Ta bort!"
 		},
 		"MenuLength": {
-			"Title" : "Menu length",
-			"Desc" : "How many elements high should the menu be?<br> Empty or \"0\" means automatic height."
+			"Title" : "Meny längd",
+			"Desc" : "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd."
 		},
 		"ChangeLanguage": {
 			"Title" : "Byt språk",
@@ -458,17 +458,17 @@ let i18n = {
 
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "Nature",  //Todo: Translate
-			"shore": "Shore",  //Todo: Translate
-			"water": "in the water",  //Todo: Translate
-			"cityRoadSmall": "small Road",  //Todo: Translate
-			"cityRoadBig": "big Road",   // Todo: Translate
-			"guildExpedition": "Guild expedition" //Todo: Translate
+			"nature": "Natur",
+			"shore": "Kust",
+			"water": "i vattnet",
+			"cityRoadSmall": "liten väg",
+			"cityRoadBig": "stor väg",
+			"guildExpedition": "IE"
 		},
 		"Table": {
-			"type": "Type", //Todo: Translate
-			"position": "Position", //Todo: Translate
-			"expires": "Expires at" //Todo: Translate
+			"type": "Typ",
+			"position": "Plats",
+			"expires": "Försvinner vid"
 		}
 	}
 };
