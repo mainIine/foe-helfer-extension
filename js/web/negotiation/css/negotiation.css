@@ -120,3 +120,29 @@
 #negotiationBox #negotiationBoxBody .diplomacy-ask:hover .diplomacy-tip {
 	display: block;
 }
+
+#negotiationBox .guess_wrong_person {
+	background-color: rgba(255,165,0,.2);
+	border: 2px solid rgba(255,165,0,.5);
+}
+#negotiationBox .guess_fail {
+	background-color: rgba(255,0,0,.2);
+	border: 2px solid rgba(255,0,0,.5);
+}
+#negotiationBox .guess_match {
+	background-color: rgba(0,150,0,.2);
+	border: 2px solid rgba(0,150,0,.5);
+}
+
+#negotiationBox .numberIcon {
+    width: 1.5em;
+    height: 1.5em;
+    border: 1px solid rgba(10,10,10,.7);
+    background-color: rgba(200,200,200,.3);
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    transform: translate(10px, 0px);
+    border-radius: 0.75em;
+    color: black;
+}
