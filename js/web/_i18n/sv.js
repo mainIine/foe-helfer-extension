@@ -191,6 +191,7 @@ let i18n = {
 			"Or": " eller ",
 			"And": " och ",
 			"Upcoming": "Kommande uppdrag (antal kan variera)",
+			"Waiting": "Inget uppdrag tillgängligt",
 		},
 
         "Negotiation": {
@@ -229,7 +230,7 @@ let i18n = {
 			"ResetBox" : "Töm",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> har precis fått __points__ poäng i IE.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
 				"Auction" : "'<strong>__player__</strong> har precis erbjudit __amount__ mynt.",
 				"Trade" : "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Nivå __level__",

@@ -249,7 +249,7 @@ let CityMap = {
 		let MinX = 0,
 			MinY = 0,
 			MaxX = 63,
-			MaxY = 59;
+			MaxY = 63;
 
 		for(let b in MapDataSorted)
 		{
@@ -298,7 +298,7 @@ let CityMap = {
 	 * Statistiken in die rechte Sidebar
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.UnlockedAreas.length) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
+		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
 			occupied = CityMap.OccupiedArea,
 			txtTotal = i18n['Boxes']['CityMap']['WholeArea'] + total,
 			txtFree = i18n['Boxes']['CityMap']['FreeArea'] + (total - occupied);

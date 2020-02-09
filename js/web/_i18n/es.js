@@ -191,6 +191,7 @@ let i18n = {
 			"Or": " or ", //Todo: Translate
 			"And": " and ", //Todo: Translate
 			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
+			"Waiting": "No quest available",  // Todo: Translate
 		},
 		
         "Negotiation": {
@@ -229,7 +230,7 @@ let i18n = {
 			"ResetBox" : "Vaciar el box",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong>FPs back.",
+				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.",
 				"Auction" : "<strong>__player__</strong> ha pujado ahora mismo__amount__ monedas",
 				"Trade" : "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - nivel __level__",

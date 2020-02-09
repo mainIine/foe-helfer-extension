@@ -171,6 +171,15 @@ let _menu = {
 			}
 		}
 
+		// Dubletten rausfiltern
+		function unique(arr) {
+			return arr.filter(function (value, index, self) {
+				return self.indexOf(value) === index;
+			});
+		};
+
+		_menu.Items = unique(_menu.Items);
+
 		// Menüpunkte einbinden
 		for(let i in _menu.Items){
 			if(!_menu.Items.hasOwnProperty(i)){
@@ -205,47 +214,13 @@ let _menu = {
 
 		// Klick auf Pfeil nach unten
 		$('body').on('click', '.hud-btn-down-active', function(){
-
-			_menu.ActiveSlide++;
-			_menu.MenuScrollTop -= _menu.HudHeight;
-
-			$('#ant-hud-slider').css({
-				'top': _menu.MenuScrollTop + 'px'
-			});
-
-			if(_menu.ActiveSlide > 1) {
-				$('.hud-btn-up').addClass('hud-btn-up-active');
-			}
-
-			if(_menu.ActiveSlide === _menu.SlideParts){
-				$('.hud-btn-down').removeClass('hud-btn-down-active');
-
-			} else if (_menu.ActiveSlide < _menu.SlideParts) {
-				$('.hud-btn-down').addClass('hud-btn-down-active');
-			}
+			_menu.ClickButtonDown();
 		});
 
 
 		// Klick auf Pfeil nach oben
 		$('body').on('click', '.hud-btn-up-active', function(){
-
-			_menu.ActiveSlide--;
-			_menu.MenuScrollTop += _menu.HudHeight;
-
-			$('#ant-hud-slider').css({
-				'top': _menu.MenuScrollTop + 'px'
-			});
-
-			if(_menu.ActiveSlide === 1){
-				$('.hud-btn-up').removeClass('hud-btn-up-active');
-			}
-
-			if(_menu.ActiveSlide < _menu.SlideParts) {
-				$('.hud-btn-down').addClass('hud-btn-down-active');
-
-			} else if(_menu.ActiveSlide === _menu.SlideParts){
-				$('.hud-btn-down').removeClass('hud-btn-down-active');
-			}
+			_menu.ClickButtonUp();
 		});
 
 
@@ -264,10 +239,41 @@ let _menu = {
 		});
 
 		// Sortierfunktion der Menü-items
-		new Sortable(document.getElementById('ant-hud-slider'), {
-			animation: 150,
-			ghostClass: 'menu-drag',
-			onEnd: function(){
+		$('#ant-hud-slider').sortable({
+			placeholder: 'menu-placeholder',
+			axis: 'y',
+			start: function(){
+				$('#ant-hud').addClass('is--sorting');
+			},
+			sort: function(){
+
+				$('.is--sorting .hud-btn-up-active').mouseenter(function(e) {
+					$('.hud-btn-up-active').stop().addClass('hasFocus');
+
+					setTimeout(()=>{
+						if($('.is--sorting .hud-btn-up-active').hasClass('hasFocus')) {
+							_menu.ClickButtonUp();
+						}
+					}, 1000);
+
+				}).mouseleave(function() {
+					$('.is--sorting .hud-btn-up-active').removeClass('hasFocus');
+				});
+
+				$('.is--sorting .hud-btn-down-active').mouseenter(function(e) {
+					$('.is--sorting .hud-btn-down-active').stop().addClass('hasFocus');
+
+					setTimeout(()=>{
+						if($('.is--sorting .hud-btn-down-active').hasClass('hasFocus')) {
+							_menu.ClickButtonDown();
+						}
+					}, 1000);
+
+				}).mouseleave(function() {
+					$('.is--sorting .hud-btn-down-active').removeClass('hasFocus');
+				});
+			},
+			stop: function(){
 				_menu.Items = [];
 
 				$('.hud-btn').each(function(){
@@ -275,8 +281,62 @@ let _menu = {
 				});
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
+
+				$('#ant-hud').removeClass('is--sorting');
 			}
 		});
+	},
+
+
+	/**
+	 * Klick Funktion
+	 */
+	ClickButtonDown: ()=>{
+		$('.hud-btn-down').removeClass('hasFocus');
+
+		_menu.ActiveSlide++;
+		_menu.MenuScrollTop -= _menu.HudHeight;
+
+		$('#ant-hud-slider').css({
+			'top': _menu.MenuScrollTop + 'px'
+		});
+
+		if(_menu.ActiveSlide > 1) {
+			$('.hud-btn-up').addClass('hud-btn-up-active');
+		}
+
+		if(_menu.ActiveSlide === _menu.SlideParts){
+			$('.hud-btn-down').removeClass('hud-btn-down-active');
+
+		} else if (_menu.ActiveSlide < _menu.SlideParts) {
+			$('.hud-btn-down').addClass('hud-btn-down-active');
+		}
+	},
+
+
+	/**
+	 * Klick Funktion
+	 */
+	ClickButtonUp: ()=> {
+		$('.hud-btn-up').removeClass('hasFocus');
+
+		_menu.ActiveSlide--;
+		_menu.MenuScrollTop += _menu.HudHeight;
+
+		$('#ant-hud-slider').css({
+			'top': _menu.MenuScrollTop + 'px'
+		});
+
+		if(_menu.ActiveSlide === 1){
+			$('.hud-btn-up').removeClass('hud-btn-up-active');
+		}
+
+		if(_menu.ActiveSlide < _menu.SlideParts) {
+			$('.hud-btn-down').addClass('hud-btn-down-active');
+
+		} else if(_menu.ActiveSlide === _menu.SlideParts){
+			$('.hud-btn-down').removeClass('hud-btn-down-active');
+		}
 	},
 
 
