@@ -454,6 +454,12 @@ p {
 	left: 8px;
 }
 
+.menu-placeholder {
+	width: 55px;
+	height: 55px;
+	background: url('../../js/web/_menu/images/menu.png') -122px -90px no-repeat;
+}
+
 
 #productions-Btn span {
 	background-image: url('../images/productions.png');
