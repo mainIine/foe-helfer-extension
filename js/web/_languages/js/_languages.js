@@ -6,6 +6,7 @@
 		es: 'Español',
 		fr: 'Français',
 		nl: 'Nederlands',
+		pt: 'polski',
 		ro: 'Română',
 		ru: 'Русский',
 		sv: 'Svenska'
