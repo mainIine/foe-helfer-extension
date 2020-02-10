@@ -20,6 +20,40 @@ body {
 	overflow: hidden;
 }
 
+.btn-default {
+	display: inline-block;
+	font-weight: 400;
+	text-align: center;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	padding: 0.2rem 1rem;
+	font-size: 0.8rem;
+	line-height: 1.5;
+	background: rgb(183,112,55);
+	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
+	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	border: #000 1px solid;
+	border-radius: 4px;
+	color: #F3D6A0;
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+	outline: none !important;
+	text-decoration: none;
+}
+
+.btn-default:hover,
+.btn-default-active {
+	background: rgb(228,193,75);
+	background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
+	background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+}
+
 #ChatBody,
 .chat-wrapper {
 	height: 100vh;
@@ -95,6 +129,7 @@ body {
 	border-bottom: 1px solid #644c34;
 	padding: 2px 5px;
 	position: relative;
+	line-height: 28px;
 }
 
 .chat-wrapper #users .head span {
@@ -104,7 +139,7 @@ body {
 }
 
 
-#ChatBody #message_box {
+#ChatBody #chat {
 	height: calc(100% - 34px);
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -113,7 +148,22 @@ body {
 	width: 85%;
 }
 
-#ChatBody #message_box .mark-user {
+#ChatBody #chat #top-bar {
+	height: 32px;
+	position: fixed;
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	border-bottom: 1px solid #644c34;
+	background: url('../images/chat-bg.png') center top/contain repeat-y;
+}
+
+#chat #message_box {
+	margin: 0 10px 10px 10px;
+	padding: 36px 8px 4px;
+}
+
+#ChatBody #chat .mark-user {
 	color: #2196f3;
 	font-weight: 500;
 }
@@ -179,62 +229,57 @@ body {
 	cursor: pointer;
 }
 
-#message_box::-webkit-scrollbar {
+#chat::-webkit-scrollbar {
 	width: 8px;
 }
 
-#message_box::-webkit-scrollbar-thumb {
+#chat::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
 }
 
-#message_box .big-box {
+#chat .big-box {
 	display: flex;
 }
 
-#message_box .big-box .image {
+#chat .big-box .image {
 	margin-right: 10px;
 }
 
-#message_box .big-box .image img {
+#chat .big-box .image img {
 	max-width: 30px;
 	border-radius: 50%;
 }
 
-#message_box div.user-self  {
+#chat div.user-self  {
 	background-color: rgba(255, 255,255, 0.15);
 }
-#message_box div.user-self .user-message,
-#message_box div.user-self .message-data {
+#chat div.user-self .user-message,
+#chat div.user-self .message-data {
 	text-align: right;
 	justify-content: flex-end;
 }
 
-#message_box div.user-self .message-data .message-time {
+#chat div.user-self .message-data .message-time {
 	color: #8a572f;
 }
 
-#message_box > div {
-	margin: 0 10px 10px 10px;
-	padding: 4px 8px;
-}
-
-#message_box div span {
+#chat div span {
 	display: inline-block;
 }
 
-#message_box div .user-message {
+#chat div .user-message {
 	width: 100%;
 }
 
-#message_box div .message-data {
+#chat div .message-data {
 	font-size: 0.60rem;
 	display: flex;
 	color: #484a4c;
 	margin-top: 3px;
 }
 
-#message_box div .message-data span:first-child {
+#chat div .message-data span:first-child {
 	font-weight: 700;
 }
 
@@ -269,7 +314,7 @@ body {
 	background-color: rgba(199, 14, 19, 0.4);
 }
 
-#message_box > div.user-notification {
+#chat > div.user-notification {
 	background-color: rgba(255, 165, 0, 0.4);
 }
 
