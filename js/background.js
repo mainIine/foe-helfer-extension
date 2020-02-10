@@ -64,8 +64,14 @@
 
 	let popupWindowId = 0;
 
+	let ChatData = {
+		innoCDNset: false,
+		innoCDN: 'https://foede.innogamescdn.com/',
+		player: /** @type {Record<string, {name: string, portrait: null|string}>} */({})
+	};
 
-	function handleWebpageRequests(request) {
+
+	function handleWebpageRequests(request, sender, callback) {
 		if (request.type === 'message') {
 			let t = request.time,
 				opt = {
@@ -84,7 +90,7 @@
 
 		} else if(request.type === 'chat'){
 
-			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&guild=' + request.guild + '&world=' + request.world,
+			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&name' + encodeURI(request.name) + '&guild=' + request.guild + '&world=' + request.world,
 				popupUrl = chrome.runtime.getURL(url);
 
 			// Prüfen ob ein PopUp mit dieser URL bereits existiert
@@ -123,6 +129,18 @@
 			xhr.open('POST', request.url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.send(request.data);
+		} else if(request.type === 'setInnoCDN') {
+			ChatData.innoCDNset = true;
+			ChatData.innoCDN = request.url;
+		} else if(request.type === 'getInnoCDN') {
+			callback([ChatData.innoCDN, ChatData.innoCDNset]);
+		} else if(request.type === 'setPlayerData') {
+			ChatData.player[request.world+'-'+request.playerId] = {
+				name: request.name,
+				portrait: request.portrait
+			};
+		} else if(request.type === 'getPlayerData') {
+			callback(ChatData.player[request.world+'-'+request.playerId]);
 		}
 	}
 
@@ -133,8 +151,8 @@
 	if (chrome.app) { // Chrome
 		chrome.runtime.onMessageExternal.addListener(handleWebpageRequests);
 	} else { // Firefox
-		chrome.runtime.onMessage.addListener(handleWebpageRequests);
 	}
+	chrome.runtime.onMessage.addListener(handleWebpageRequests);
 
 	// ende der Trennung vom Globalen Scope
 }
