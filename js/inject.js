@@ -57,7 +57,6 @@ const jQueryLoading = new Promise(resolve => {
 
 const v = chrome.runtime.getManifest().version;
 
-const PossibleLangs = ['de','en','fr','es','ru','sv','cs','ro'];
 let   lng = chrome.i18n.getUILanguage();
 const uLng = localStorage.getItem('user-language');
 
@@ -67,7 +66,7 @@ if (lng.indexOf('-') > 0) {
 }
 
 // gibt es eine Übersetzung?
-if (PossibleLangs.includes(lng) === false) {
+if (Languages.PossibleLanguages[lng] === undefined) {
 	lng = 'en';
 }
 
@@ -153,6 +152,7 @@ async function InjectCode() {
 		window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
 		const s = [
+			'_languages',
 			'_helper',
 			'_menu',
 			'tavern',

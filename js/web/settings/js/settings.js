@@ -260,15 +260,13 @@ let Settings = {
 
 		dp.push('<select class="setting-dropdown" id="change-lang">');
 
-		for(let i in MainParser.PossibleLanguages)
+		for(let iso in Languages.PossibleLanguages)
 		{
-			if(!MainParser.PossibleLanguages.hasOwnProperty(i)){
+			if (!Languages.PossibleLanguages.hasOwnProperty(iso)){
 				break;
 			}
-
-			let iso = MainParser.PossibleLanguages[i];
-
-			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + i18n('Settings.ChangeLanguage.Dropdown.'+iso) + '</option>');
+			
+			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + Languages.PossibleLanguages[iso] + '</option>');
 		}
 
 		dp.push('</select>');
