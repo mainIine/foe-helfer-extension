@@ -18,11 +18,9 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     // Nur Events und "active" heraus filtern
     EventQuest.Quests = data['responseData'].filter(q => (q['category'] === 'events' && q['state'] === 'accepted'));
 
-    if (EventQuest.Quests === undefined) {
-        // @ToDo: Menüpunkt entsorgen
+    window.addEventListener('foe-helper#menu_loaded', HideEventQuest, { capture: false, once: true, passive: true });
 
-        return;
-    }
+    _menu.ShowButton("questlist-Btn");
 
     if ($('#event').length === 0) {
         EventQuest.Show();
@@ -31,6 +29,14 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         EventQuest.BuildBox();
     }
 });
+
+const HideEventQuest = () => {
+    if (EventQuest.Quests === undefined || EventQuest.Quests.length <= 0) {
+        _menu.HideButton("questlist-Btn");
+        EventQuest.Visible = false;
+        return;
+    }
+}
 
 /**
  *
@@ -56,12 +62,11 @@ let EventQuest = {
     CurrentQuestText: null,
     Visible: false,
 
-
 	/**
 	 * Vorbereitung der DAten
 	 */
     Show: () => {
-        if (EventQuest.Visible === false) return;
+        if (EventQuest.Visible === false) { _menu.HideButton("questlist-Btn"); return; };
         let lng = MainParser.Language;
         let url = 'https://cache.foe-rechner.de/quests/quests.json';
 
@@ -76,7 +81,7 @@ let EventQuest = {
 
                 HTML.Box({
                     'id': 'event',
-                    'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
+                    'title': i18n('Boxes.EventList.Title') + EventQuest.Event['eventname'],
                     'auto_close': false,
                     'dragdrop': true,
                     'minimize': true
@@ -97,7 +102,7 @@ let EventQuest = {
 
                     HTML.Box({
                         'id': 'event',
-                        'title': i18n['Boxes']['EventList']['Title'] + EventQuest.Event['eventname'],
+                        'title': i18n('Boxes.EventList.Title') + EventQuest.Event['eventname'],
                         'auto_close': false,
                         'dragdrop': true,
                         'minimize': true
@@ -121,14 +126,14 @@ let EventQuest = {
             for (let Quest of Quests) {
                 const isCounter = Quest.type.indexOf('counter') !== -1;
                 const isWaiting = Quest.type.indexOf('waiting') !== -1;
-                
+
                 if (isCounter) {
                     // Sammel die Quest-Nummer aus der "Zähler" Quest
                     const progressCond = Quest.successConditions.find(cond => cond.flags.includes('static_counter'));
                     if (progressCond) {
-                        const id = progressCond.currentProgress + 1; 
+                        const id = progressCond.currentProgress + 1;
                         EventQuest.CurrentQuestID = id;
-                        localStorage.setItem("lastActivQuest", ''+id);
+                        localStorage.setItem("lastActivQuest", '' + id);
                     }
 
                 } else if (!isWaiting) {
@@ -138,19 +143,19 @@ let EventQuest = {
                         conditionText = "";
 
                     for (let group of conditiongroup) {
-                        
+
                         if (group.type === 'or') {
-                            conditionText = i18n['Boxes']['EventList']['Or'];
+                            conditionText = i18n('Boxes.EventList.Or');
                         } else if (group.type === 'none') {
-                            conditionText = i18n['Boxes']['EventList']['And'];
+                            conditionText = i18n('Boxes.EventList.And');
                         } else {
                             conditionText = "";
                         }
 
                         texts.push(
                             '- ' + group.conditionIds
-                            .map(id => condition.find(cond => cond.id === id).description)
-                            .join(conditionText)
+                                .map(id => condition.find(cond => cond.id === id).description)
+                                .join(conditionText)
                         );
                     }
 
@@ -179,9 +184,9 @@ let EventQuest = {
         h.push('<table class="foe-table">');
         h.push('<thead>' +
             '<tr>' +
-            '<th>' + i18n['Boxes']['EventList']['Number'] + '</th>' +
-            '<th>' + i18n['Boxes']['EventList']['Desc'] + '</th>' +
-            '<th>' + i18n['Boxes']['EventList']['Reward'] + '</th>' +
+            '<th>' + i18n('Boxes.EventList.Number') + '</th>' +
+            '<th>' + i18n('Boxes.EventList.Desc') + '</th>' +
+            '<th>' + i18n('Boxes.EventList.Reward') + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -204,11 +209,11 @@ let EventQuest = {
                 h.push('</tr>');
             } else {
                 h.push('<tr class="active-quest">');
-                h.push('<td colspan="3" class="upcoming text-center">' + i18n['Boxes']['EventList']['Waiting'] + '</td>');
+                h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Waiting') + '</td>');
                 h.push('</tr>');
             }
             h.push('<tr>');
-            h.push('<td colspan="3" class="upcoming text-center">' + i18n['Boxes']['EventList']['Upcoming'] + '</td>');
+            h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Upcoming') + '</td>');
             h.push('</tr>');
 
             for (let add = (EventQuest.CurrentQuestText === null ? 0 : 1); add <= 5; add++) {
