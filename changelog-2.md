@@ -17,7 +17,7 @@
     - [#380](https://github.com/dsiekiera/foe-helfer-extension/issues/380) [#408](https://github.com/dsiekiera/foe-helfer-extension/issues/408 ) Level-Up shows correct FPs
 
 - motivations / polishing:
-     - [#388](https://github.com/dsiekiera/foe-helfer-extension/issues/388) Information is transferred correctly again
+    - [#388](https://github.com/dsiekiera/foe-helfer-extension/issues/388) Information is transferred correctly again
     
 - Event list:
     - [#405](https://github.com/dsiekiera/foe-helfer-extension/issues/405) [#432](https://github.com/dsiekiera/foe-helfer-extension/issues/432 ) When the daily tasks were accomplished, the list was completely empty

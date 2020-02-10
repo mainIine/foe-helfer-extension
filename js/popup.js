@@ -52,7 +52,7 @@ $(function(){
 
 	if(lng !== 'de'){
 		$('[data-translate]').each(function(){
-			$(this).html( i18n[lng][$(this).data('translate')] )
+			$(this).html( i18n(lng+'.'+$(this).data('translate') ))
 		});
 	}
 });
