@@ -59,14 +59,14 @@ let Unit = {
 		if ($('#units').length === 0) {
 			let args = {
 				'id': 'units',
-				'title': i18n['Boxes']['Units']['Title'],
+				'title': i18n('Boxes.Units.Title'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
 			};
 
 			HTML.Box(args);
-			moment.locale(i18n['Local']);
+			moment.locale(i18n('Local'));
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('unit');
@@ -96,7 +96,7 @@ let Unit = {
 			top.push('<div style="padding: 4px;" class="text-center">');
 
 			let timer = HTML.i18nReplacer(
-				i18n['Boxes']['Units']['NextUnitsIn'],
+				i18n('Boxes.Units.NextUnitsIn'),
 				{
 					count: alca.state.current_product.amount,
 					harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
@@ -121,10 +121,10 @@ let Unit = {
 		attack.push('<thead>');
 			attack.push('<tr>');
 				attack.push('<th></th>');
-				attack.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Status'] + '</th>');
-				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Attack'] + '</th>');
-				attack.push('<th class="text-center">' + i18n['Boxes']['Units']['Defend'] + '</th>');
+				attack.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+				attack.push('<th class="text-center">' + i18n('Boxes.Units.Status') + '</th>');
+				attack.push('<th class="text-center">' + i18n('Boxes.Units.Attack') + '</th>');
+				attack.push('<th class="text-center">' + i18n('Boxes.Units.Defend') + '</th>');
 			attack.push('</tr>');
 		attack.push('</thead>');
 
@@ -150,7 +150,7 @@ let Unit = {
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.Attack[i]['unitTypeId'])),
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Attack[i]['unitId'])),
-				era = type['minEra'];
+				era = Technologies.Eras[type['minEra']];
 
 			attack.push('<tr data-era="' + era + '">');
 
@@ -160,35 +160,16 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			attack.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let mb = cache['bonuses'].find(o => (o['type'] === 'military_boost')),
-				at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
-				ab = cache['bonuses'].find(o => (o['type'] === 'attack_boost'));
+			let Boosts = Unit.GetBoostSums(cache['bonuses']);
 
-			if(mb === undefined){
-				mb = 0;
-			} else {
-				mb = mb['value'];
-			}
+			let AttackBoost = Boosts['AttackAttackBoost'],
+				DefenseBoost = Boosts['AttackDefenseBoost']
+			
+			let Attack = Math.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = Math.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
-			if(at === undefined){
-				at = 0;
-			} else {
-				at = at['value'];
-			}
-
-			if(ab === undefined){
-				ab = 0;
-			} else {
-				ab = ab['value'];
-			}
-
-			let ap = (mb + at + ab),
-				a = Math.round(type['baseDamage'] * (ap / 100)) + type['baseDamage'],
-				dp = (mb + at),
-				d = Math.round(type['baseArmor'] * (dp / 100)) + type['baseArmor'];
-
-			attack.push('<td class="text-center"><em><small>+' + ap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
-			attack.push('<td class="text-center"><em><small>+' + dp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
 
 			attack.push('</tr>');
 		}
@@ -197,7 +178,7 @@ let Unit = {
     	for(let i = Unit.Attack.length; i < 8; i++)
 	    {
 		    attack.push('<tr>');
-			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
+			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
 			attack.push('</tr>');
 		}
 
@@ -218,10 +199,10 @@ let Unit = {
 		defense.push('<thead>');
 			defense.push('<tr>');
 				defense.push('<th></th>');
-				defense.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-				defense.push('<th>' + i18n['Boxes']['Units']['Status'] + '</th>');
-				defense.push('<th>' + i18n['Boxes']['Units']['Attack'] + '</th>');
-				defense.push('<th>' + i18n['Boxes']['Units']['Defend'] + '</th>');
+				defense.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+				defense.push('<th>' + i18n('Boxes.Units.Status') + '</th>');
+				defense.push('<th>' + i18n('Boxes.Units.Attack') + '</th>');
+				defense.push('<th>' + i18n('Boxes.Units.Defend') + '</th>');
 			defense.push('</tr>');
 		defense.push('</thead>');
 
@@ -243,7 +224,7 @@ let Unit = {
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.Defense[i]['unitTypeId'])),
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Defense[i]['unitId'])),
-				era = type['minEra'];
+				era = Technologies.Eras[type['minEra']];
 
 			defense.push('<td><span class="units-icon ' + Unit.Defense[i]['unitTypeId'] + '"></span></td>');
 			defense.push('<td>' + type['name'] + '</td>');
@@ -251,35 +232,16 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			defense.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let at = cache['bonuses'].find(o => (o['type'] === 'advanced_tactics')),
-				fr = cache['bonuses'].find(o => (o['type'] === 'fierce_resistance')),
-				db = cache['bonuses'].find(o => (o['type'] === 'defense_boost'));
+			let Boosts = Unit.GetBoostSums(cache['bonuses']);
 
-			if(at === undefined){
-				at = 0;
-			} else {
-				at = at['value'];
-			}
+			let AttackBoost = Boosts['DefenseAttackBoost'],
+				DefenseBoost = Boosts['DefenseDefenseBoost']
 
-			if(fr === undefined){
-				fr = 0;
-			} else {
-				fr = fr['value'];
-			}
+			let Attack = Math.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = Math.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
-			if(db === undefined){
-				db = 0;
-			} else {
-				db = db['value'];
-			}
-
-			let dap = (fr + at),
-				a = Math.round(type['baseDamage'] * (dap / 100)) + type['baseDamage'],
-				ddp = (fr + at + db),
-				d = Math.round(type['baseArmor'] * (ddp / 100)) + type['baseArmor'];
-
-			defense.push('<td class="text-center"><em><small>+' + dap + '%</small></em><br><strong class="text-success">= ' + a + '</strong></td>');
-			defense.push('<td class="text-center"><em><small>+' + ddp + '%</small></em><br><strong class="text-success">= ' + d + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
 
 			defense.push('</tr>');
 		}
@@ -287,7 +249,7 @@ let Unit = {
 		for(let i = Unit.Defense.length; i < 8; i++)
 		{
 			defense.push('<tr>');
-			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n['Boxes']['Units']['NotFilled'] + '</em></strong></td>');
+			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
 			defense.push('</tr>');
 		}
 
@@ -313,11 +275,13 @@ let Unit = {
 
 			let d = Unit.Types.find(obj => (obj['unitTypeId'] === c[i]['unitTypeId']));
 
-			if(eras[d['minEra']] === undefined){
-				eras[d['minEra']] = [];
-			}
+			let era = Technologies.Eras[d['minEra']];
 
-			eras[d['minEra']].push({
+			if(eras[era] === undefined){
+				eras[era] = [];
+			}
+						
+			eras[era].push({
 				id: c[i]['unitTypeId'],
 				name: d['name'],
 				attached: (c[i]['attached'] === undefined ? '-' : c[i]['attached']),
@@ -332,23 +296,23 @@ let Unit = {
 		pool.push('<thead>');
 		pool.push('<tr>');
 		pool.push('<th></th>');
-		pool.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-		pool.push('<th class="text-center">' + i18n['Boxes']['Units']['Bind'] + '</th>');
-		pool.push('<th class="text-center">' + i18n['Boxes']['Units']['Unbind'] + '</th>');
+		pool.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+		pool.push('<th class="text-center">' + i18n('Boxes.Units.Bind') + '</th>');
+		pool.push('<th class="text-center">' + i18n('Boxes.Units.Unbind') + '</th>');
 		pool.push('</tr>');
 		pool.push('</thead>');
 
 		pool.push('<tbody>');
 
 
-		for(let era in eras)
+		for (let era = eras.length; era >= 0;era--)
 		{
 			if(!eras.hasOwnProperty(era)){
-				break;
+				continue;
 			}
 
 			pool.push('<tr>');
-			pool.push('<th colspan="4">' + i18n['Eras'][era] + '</th>');
+			pool.push('<th colspan="4">' + i18n('Eras.' + era) + '</th>');
 			pool.push('</tr>');
 
 			for(let i in eras[era])
@@ -444,14 +408,78 @@ let Unit = {
 
 			if (diff <= 0) {
 				clearInterval(intervalID);
-				$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
+				$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
 			} else
 				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
 		}
 		else{
 			clearInterval(intervalID);
-			$('.alca-info').html('<span class="text-danger"><strong>'+i18n['Boxes']['Units']['ReadyToLoot']+'</strong></span>');
+			$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
 		}
+	},
+
+
+	/**
+	 * Berechnet die summierten Boni
+	 * *
+	 */
+	GetBoostSums: (Boni) => {
+		let Ret = [],
+			CurrentBoost = undefined;
+
+		Ret['AttackAttackBoost'] = 0;
+		Ret['AttackDefenseBoost'] = 0;
+		Ret['DefenseAttackBoost'] = 0;
+		Ret['DefenseDefenseBoost'] = 0;
+
+		// Angriff + Verteidigung der angreifenden Armee (z.B. Zeus)
+		CurrentBoost = Boni.find(o => (o['type'] === 'military_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Angriff + Verteidigung der verteidigenden Armee (z.B. Basilius Kathedrale)
+		CurrentBoost = Boni.find(o => (o['type'] === 'fierce_resistance'));
+		if (CurrentBoost !== undefined) {
+			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Alle Boni (z.B. Terrakotta Armee)
+		CurrentBoost = Boni.find(o => (o['type'] === 'advanced_tactics'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Angriffbonus der angreifenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'attack_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+		}
+
+		// Verteidigungsbonus der angreifenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'attacker_defense_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		// Angriffbonus der verteidigenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'defender_attack_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+		}
+
+		// Verteidigungsbonus der verteidigenden Armee
+		CurrentBoost = Boni.find(o => (o['type'] === 'defense_boost'));
+		if (CurrentBoost !== undefined) {
+			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+		}
+
+		return Ret;
 	},
 
 
@@ -486,7 +514,7 @@ let Unit = {
 			}
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === AlcaUnits[i]['unitTypeId'])),
-				era = type['minEra'];
+				era = Technologies.Eras[type['minEra']];
 
 			if(LastAlca[AlcaUnits[i]['unitTypeId']] === undefined){
 				LastAlca[AlcaUnits[i]['unitTypeId']] = {
@@ -508,9 +536,9 @@ let Unit = {
 		last.push('<thead>');
 		last.push('<tr>');
 		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
-		last.push('<th>' + i18n['Boxes']['Units']['Unit'] + '</th>');
-		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Quantity'] + '</th>');
-		last.push('<th class="text-center">' + i18n['Boxes']['Units']['Proportionally'] + '</th>');
+		last.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+		last.push('<th class="text-center">' + i18n('Boxes.Units.Quantity') + '</th>');
+		last.push('<th class="text-center">' + i18n('Boxes.Units.Proportionally') + '</th>');
 		last.push('</tr>');
 		last.push('</thead>');
 
