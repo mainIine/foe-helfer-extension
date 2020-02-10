@@ -1,9 +1,8 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = data.responseData.hiddenRewards;
-    HiddenRewards.prepareData();
 
-    if ($('#HiddenRewardBox').length >= 1) {
-        HiddenRewards.BuildBox();
+    if (MainParser.Buildings !== null) {
+        HiddenRewards.prepareData();
     }
 });
 
@@ -14,6 +13,7 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 let HiddenRewards = {
 
     Cache: null,
+    IsPrepared: false,
 
 	/**
 	 * Box in den DOM
@@ -25,13 +25,13 @@ let HiddenRewards = {
 
 			HTML.Box({
 				'id': 'HiddenRewardBox',
-				'title': i18n.Boxes.HiddenRewards.Title,
+				'title': i18n('Boxes.HiddenRewards.Title'),
 				'auto_close': false,
 				'dragdrop': true,
 				'minimize': true
 			});
 
-			moment.locale(i18n['Local']);
+			moment.locale(i18n('Local'));
 		}
         HiddenRewards.BuildBox();
     },
@@ -45,8 +45,38 @@ let HiddenRewards = {
         for(let idx in HiddenRewards.Cache) {
             let position = HiddenRewards.Cache[idx].position.context;
 
-            if(i18n['HiddenRewards']['Positions'][HiddenRewards.Cache[idx].position.context]) {
-                position = i18n['HiddenRewards']['Positions'][HiddenRewards.Cache[idx].position.context];
+            let SkipEvent = true;
+            if (position === 'cityRoadSmall') {
+                for (let i in MainParser.Buildings) {
+                    if (!MainParser.Buildings.hasOwnProperty(i)) continue;
+                    if (MainParser.Buildings[i]['type'] === 'street' && MainParser.Buildings[i]['width'] === 2) {
+                        SkipEvent = false;
+                        break;
+                    }
+                }
+            }
+            else if (position === 'cityRoadBit') {
+                for (let i in MainParser.Buildings) {
+                    if (!MainParser.Buildings.hasOwnProperty(i)) continue;
+                    if (MainParser.Buildings[i]['type'] === 'street' && MainParser.Buildings[i]['width'] === 1) {
+                        SkipEvent = false;
+                        break;
+                    }
+                }
+            }
+            else {
+                SkipEvent = false;
+            }
+
+            if (SkipEvent) {
+                continue;
+            }
+            
+            const positionI18nLookupKey = 'HiddenRewards.Positions.'+position;
+            const positionI18nLookup = i18n(positionI18nLookupKey);
+
+            if (positionI18nLookupKey !== positionI18nLookup) {
+                position = positionI18nLookup;
             }
 
             data.push({
@@ -64,8 +94,12 @@ let HiddenRewards = {
         });
 
         HiddenRewards.Cache = data;
-    },
 
+        if ($('#HiddenRewardBox').length >= 1) {
+            HiddenRewards.BuildBox();
+        }
+    },
+       
 
 	/**
 	 * Inhalt der Box in den BoxBody legen
@@ -77,9 +111,9 @@ let HiddenRewards = {
 
         h.push('<thead>');
             h.push('<tr>');
-                h.push('<th>' + i18n.HiddenRewards.Table.type + '</th>');
-                h.push('<th>' + i18n.HiddenRewards.Table.position + '</th>');
-                h.push('<th>' + i18n.HiddenRewards.Table.expires + '</th>');
+                h.push('<th>' + i18n('HiddenRewards.Table.type') + '</th>');
+                h.push('<th>' + i18n('HiddenRewards.Table.position') + '</th>');
+                h.push('<th>' + i18n('HiddenRewards.Table.expires') + '</th>');
             h.push('</tr>');
         h.push('</thead>');
 
@@ -102,17 +136,17 @@ let HiddenRewards = {
                 h.push('<td class="incident ' + hiddenReward.type + '" title="' + hiddenReward.type + '">&nbsp;</td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
                 if (StartTime > new Date().getTime()) {
-                    h.push('<td class="warning">' + 'Erscheint ' + moment.unix(hiddenReward.starts).fromNow() + '</td>'); //Todo: Translate
+                    h.push('<td class="warning">' + i18n('Boxes.HiddenRewards.Appears') + ' ' + moment.unix(hiddenReward.starts).fromNow() + '</td>');
                 }
                 else {
-                    h.push('<td class="">' + 'Verschwindet ' + moment.unix(hiddenReward.expires).fromNow() + '</td>'); //Todo: Translate
+                    h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
                 }
                 h.push('</tr>');
                 cnt++;
             }
         }
         if (cnt === 0) {
-            h.push('<td colspan="3">' + 'Keine Ereignisse vorhanden' + '</td>'); //Todo: Translate
+            h.push('<td colspan="3">' + i18n('Boxes.HiddenRewards.NoEvents') + '</td>');
         }
 
         h.push('</tbody>');

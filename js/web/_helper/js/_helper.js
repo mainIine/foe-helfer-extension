@@ -140,7 +140,7 @@ let HTML = {
 	Box: (args)=> {
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').html(args['title'] + i18n['Global']['BoxTitle']),
+			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('FoE Helper') + '</em></small>'),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
@@ -387,7 +387,7 @@ let HTML = {
 		if(number === 0){
 			return '-';
 		} else {
-			return Number(number).toLocaleString(i18n['Local']);
+			return Number(number).toLocaleString(i18n('Local'));
 		}
 	},
 
