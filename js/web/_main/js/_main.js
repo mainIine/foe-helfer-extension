@@ -1243,7 +1243,7 @@ let MainParser = {
 		MainParser.obj2FormData(formData, 'data', data);
 
 		let req = fetch(
-			'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
 			{
 				method: 'POST',
 				body: formData
