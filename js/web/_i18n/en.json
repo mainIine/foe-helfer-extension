@@ -45,13 +45,12 @@
 		"Boxes.Calculator.Commitment": "Costs",
 		"Boxes.Calculator.Profit": "Profit",
 		"Boxes.Calculator.LevelWarning": "ATTENTION! Leveling the GB!",
-		"Boxes.Calculator.NoFPorMedsAvailable": "No FPs or BPs available",
 		"Boxes.Calculator.LGNotOpen": "The next level is currently not unlocked",
 		"Boxes.Calculator.LGNotConnected": "The building is not connected to a street",
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:",
 		"Boxes.Calculator.Done": "done",
-		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
-		"Boxes.Calculator.NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP",
+		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
+		"Boxes.Calculator.TTForderNegativeProfit": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP",
 
 		"Boxes.LGOverviewBox.Title": "Possible deposits",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "found new",
@@ -64,9 +63,6 @@
 		"Boxes.LGOverviewBox.Profit": "Profit",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing to fetch",
 
-		"Boxes.StrategyPoints.Title": "FP - Productions",
-		"Boxes.StrategyPoints.TotalFPs": "Total FPs from all buildings: ",
-		"Boxes.StrategyPoints.Amount": "Number",
 		"Boxes.StrategyPoints.FPBar": "FP-Stock: ",
 		"Boxes.StrategyPoints.BuyableFP": "Buyable: ",
 
@@ -146,7 +142,6 @@
 		"Boxes.Negotiation.Chance": "Chance",
 		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Average": "Ø Amount",
-		"Boxes.Negotiation.Costs": "Costs:",
 		"Boxes.Negotiation.Round": "Round",
 		"Boxes.Negotiation.Stock": "Stock:",
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low",

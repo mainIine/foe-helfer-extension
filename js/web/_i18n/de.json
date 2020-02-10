@@ -50,8 +50,8 @@
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.Done": "abgeschlossen",
-		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
-		"Boxes.Calculator.NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
+		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
+		"Boxes.Calculator.TTForderNegativeProfit": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
 
 		"Boxes.LGOverviewBox.Title": "Mögliche Einzahlungen",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "neu gefunden",
