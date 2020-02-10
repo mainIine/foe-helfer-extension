@@ -17,15 +17,17 @@ let Chat = {
 
 	GildID: 0,
 	PlayerID: 0,
+	PlayerName: null,
 	World: '',
 	OtherPlayers: [],
-	PlayersPortraits: [],
+	PlayersPortraits: {},
 	OnlinePlayers: [],
 	OwnName: '',
 	WebsocketChat : null,
 	ReadMode: 'live',
 	Token: '',
 	ConnectionId: '',
+	InnoCDN: '',
 
 	/**
 	 * Holt die Daten für den Chat
@@ -34,42 +36,31 @@ let Chat = {
 
 		let data = Object.fromEntries( new URLSearchParams(location.search) );
 
-		Chat.GildID = +data['guild'];
-		Chat.PlayerID = +data['player'];
+		Chat.GildID = data['guild'];
+		Chat.PlayerID = data['player'];
+		Chat.PlayerName = decodeURI(data['name']);
 		Chat.World = data['world'];
 
 		Chat.loadPortraits();
 
-		let pD = localStorage.getItem('PlayersData'),
-			pT = localStorage.getItem('PlayersDataTimestamp');
+		chrome.runtime.sendMessage({
+			type: 'getInnoCDN'
+		}, ([cdn, wasSet]) => Chat.InnoCDN = cdn);
+		
+		chrome.runtime.sendMessage({
+			type: 'getPlayerData'
+		}, (data) => {
+			if(!data) return;
+			let Player = Chat.OtherPlayers.find(p => p.player_id === Chat.PlayerID);
+			if (Player) {
+				Player.player_name = data.name;
+				Player.avatar = data.portrait;
+			} else {
+				Chat.OtherPlayers.push({player_id: Chat.PlayerID, player_name: data.name, avatar: data.portrait});
+			}
+		});
 
-
-		// prüfen ob es eine gültige Cache Version gibt
-		if(pD === null || pT === null || Chat.compareTime(new Date().getTime(), pT) === false)
-		{
-			console.log('AJAX-getData-Members4Chat')
-			// $.ajax({
-			// 	type: 'POST',
-			// 	url: 'https://api.foe-rechner.de/Members4Chat/?guild_id=' + data['guild'] + '&world=' + data['world'],
-			// 	dataType: 'json',
-			// 	success: function(r){
-
-			// 		localStorage.setItem('PlayersData', JSON.stringify(r['data']));
-			// 		localStorage.setItem('PlayersDataTimestamp', Chat.getTimestamp(12));
-
-			// 		Chat.OtherPlayers = r['data'];
-
-			// 		// alles da, zünden
-			// 		Chat.Init();
-			// 	}
-			// });
-
-		} else {
-			Chat.OtherPlayers = JSON.parse(pD);
-
-			// alles da, zünden
-			Chat.Init();
-		}
+		Chat.Init();
 	},
 
 
@@ -126,14 +117,23 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		let wsUri = 'ws://localhost:8080/';//'wss://foe-rechner.de:9000/ws-chat.php';
+		let wsUri = 'ws://ws.foe-rechner.de:9000/';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = ()=> {
-			Chat.WebsocketChat.send(JSON.stringify({world: Chat.World, guild: Chat.GildID, player: Chat.PlayerID, connectionId: connectionId, secret:'trust me!'}))
+			Chat.WebsocketChat.send(
+				JSON.stringify({
+					world: Chat.World,
+					guild: Chat.GildID,
+					player: Chat.PlayerID,
+					name: Chat.PlayerName,
+					connectionId: connectionId,
+					secret:'trust me!'
+				})
+			);
 			Chat.SystemRow('Verbunden!', 'success');
 
 			// setTimeout(
@@ -368,7 +368,7 @@ let Chat = {
 		
 					const PlayerName = Player['player_name'];
 					// TODO: fix image url
-					const PlayerImg = '';//MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+					const PlayerImg = '';//'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 					let TextR = Chat.MakeImage(message.message);
 					TextR = emojify.replace(TextR);
 					TextR = Chat.MakeURL(TextR);
@@ -449,7 +449,7 @@ let Chat = {
 		// 	});
 
 		// 	PlayerName = Player['player_name'];
-		// 	PlayerImg = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		// 	PlayerImg = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 		// 	ExtClass = 'user-other';
 		// 	TextR = Chat.MakeImage(text);
 		// 	TextR = emojify.replace(TextR);
@@ -479,9 +479,10 @@ let Chat = {
 	 */
 	PlaySound: (id, vol = 0.4)=> {
 		// wenn der CHat im Hintergrund liegt, Ping machen
-		if(document.hasFocus() === false){
-			document.getElementById(id).volume = vol;
-			document.getElementById(id).play();
+		if (document.hasFocus() === false){
+			const audio = /** @type {HTMLAudioElement} */(document.getElementById(id));
+			audio.volume = vol;
+			audio.play();
 		}
 	},
 
@@ -503,14 +504,14 @@ let Chat = {
 
 		const img = document.createElement('img');
 		// TODO: fix url
-		//img.src = MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
+		//img.src = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
-		// 	.append( $('<img />').attr('src', MainParser.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
+		// 	.append( $('<img />').attr('src', 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
 		// 	.append( $('<span />').text( Player['player_name'] ) );
 
 		document.getElementById('users').appendChild(d);
@@ -933,7 +934,7 @@ let Chat = {
 			console.log('AJAX-Load-Portraits')
 			$.ajax({
 				type: 'GET',
-				url: MainParser.InnoCDN + 'assets/shared/avatars/Portraits.xml',
+				url: 'https://foede.innogamescdn.com/assets/shared/avatars/Portraits.xml',
 				dataType: 'xml',
 				success: function(xml){
 
@@ -942,7 +943,7 @@ let Chat = {
 					});
 
 					localStorage.setItem('PlayersPortraits', JSON.stringify(portraits));
-					localStorage.setItem('PlayersPortraitsTimestamp', Chat.getTimestamp(24));
+					localStorage.setItem('PlayersPortraitsTimestamp', ''+Chat.getTimestamp(24));
 
 					Chat.PlayersPortraits = portraits;
 				}
