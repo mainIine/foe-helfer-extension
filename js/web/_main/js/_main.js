@@ -72,7 +72,7 @@ const i18n_loadPromise = (async() => {
 					// frage die Sprachdatei an
 					fetch(extUrl + 'js/web/_i18n/'+lang+'.json')
 						// lade die antwort als JSON
-						.then(response => response.json())
+						.then(response => response.text())
 						// im fehlerfall wird ein leeres Objekt zurück gegeben
 						.catch(()=>({}))
 				)
@@ -82,7 +82,9 @@ const i18n_loadPromise = (async() => {
 		await vendorsLoadedPromise;
 
 		for (let languageData of languageDatas) {
-			i18n.translator.add(languageData);
+			languageData = languageData.replace(/\/\/Todo: Translate/g, '');
+
+			i18n.translator.add(JSON.parse(languageData));
 		}
 
 		i18n_loaded = true;
