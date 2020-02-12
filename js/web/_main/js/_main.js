@@ -1252,8 +1252,14 @@ let MainParser = {
 
 		if (successCallback !== undefined) {
 			req
-				.then(response => response.json())
-				.then(successCallback)
+				.then(response => {
+					if (response.status === 200) {
+						response
+							.json()
+							.then(successCallback)
+						;
+					}
+				})
 			;
 		}
 	},
