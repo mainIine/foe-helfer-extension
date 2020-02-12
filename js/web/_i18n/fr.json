@@ -65,7 +65,7 @@
 		"Boxes.HiddenRewards.Title": "Récompenses cachées",
 		"Boxes.Infobox.Filter": "Filtre",
 		"Boxes.Infobox.FilterAuction": "Enchères",
-		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
+		"Boxes.Infobox.FilterGex": "GEX",
 		"Boxes.Infobox.FilterGildFights": "Batailles de Guilde",
 		"Boxes.Infobox.FilterLevel": "Niveaux supérieurs",
 		"Boxes.Infobox.FilterMessage": "Messages",
@@ -77,11 +77,11 @@
 		"Boxes.Infobox.Messages.MsgBuilding": "<strong>__building__<strong> viens de passer au niveau __level__.",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__.",
 		"Boxes.Infobox.ResetBox": "Vider la boîte",
-		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
-		"Boxes.Investment.CurrReward": "Gain actuel : ",
+		"Boxes.Infobox.Title": "Infos Techniques",
+		"Boxes.Investment.CurrReward": "Gains PF (actuel) : ",
 		"Boxes.Investment.InvestBar": "PF investis : ",
 		"Boxes.Investment.Title": "Investissements",
-		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
 		"Boxes.LGOverviewBox.Building": "Bâtiment",
 		"Boxes.LGOverviewBox.Level": "Niveau",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> n'a rien à récupérer.",
@@ -113,7 +113,7 @@
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-		"Boxes.Outpost.ExpansionsSum": "Expansions", //Todo: Translate
+		"Boxes.Outpost.ExpansionsSum": "Expansions",
 		"Boxes.Outpost.infoLine": "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Prochaine expansion",
 		"Boxes.Outpost.tileNotPlanned": "N/A",
@@ -122,15 +122,15 @@
 		"Boxes.Outpost.TitleFree": "Gratuit",
 		"Boxes.Outpost.TitleShort": "Vue des ressources - ",
 		"Boxes.OwnpartCalculator.Arc": "Arche",
-		"Boxes.OwnpartCalculator.Auto": "Automatique",
+		"Boxes.OwnpartCalculator.Auto": "Auto.",
 		"Boxes.OwnpartCalculator.BPs": "Plans",
 		"Boxes.OwnpartCalculator.CopyValues": "Copier les valeurs",
 		"Boxes.OwnpartCalculator.Deposit": "A poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
 		"Boxes.OwnpartCalculator.Ext": "Ext.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
-		"Boxes.OwnpartCalculator.Levels": "niveaux",
+		"Boxes.OwnpartCalculator.Levels": "Niveaux",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total PF ",
 		"Boxes.OwnpartCalculator.Meds": "Méd.",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Pas de place à coup sûr",
@@ -141,7 +141,7 @@
 		"Boxes.OwnpartCalculator.OwnPart": "Contribution perso ",
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restant ",
 		"Boxes.OwnpartCalculator.PatronPart": "Contribution externe ",
-		"Boxes.OwnpartCalculator.Place": "Place", //Todo: Translate
+		"Boxes.OwnpartCalculator.Place": "Place",
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
@@ -214,12 +214,12 @@
 		"HiddenRewards.Positions.cityRoadBig": "Grande route",
 		"HiddenRewards.Positions.cityRoadSmall": "Petite route",
 		"HiddenRewards.Positions.guildExpedition": "Expédition de Guilde",
-		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
+		"HiddenRewards.Positions.nature": "Nature",
 		"HiddenRewards.Positions.shore": "Rivage",
 		"HiddenRewards.Positions.water": "Dans l'eau",
 		"HiddenRewards.Table.expires": "Echéance",
-		"HiddenRewards.Table.position": "Position", //Todo: Translate
-		"HiddenRewards.Table.type": "Type", //Todo: Translate
+		"HiddenRewards.Table.position": "Position",
+		"HiddenRewards.Table.type": "Type",
 		"Local": "fr-FR",
 		"Menu.Ask.Desc": "Vous ne savez pas comment utiliser une fonctionnalité ?<br>Jetez un oeil ici !",
 		"Menu.Ask.Title": "Question / Réponse",
@@ -238,7 +238,7 @@
 		"Menu.Event.Desc": "Aperçu des quêtes en cours et à venir.",
 		"Menu.Event.Title": "Liste des quêtes événementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
-		"Menu.Forum.Title": "Forum", //Todo: Translate
+		"Menu.Forum.Title": "Forum",
 		"Menu.HiddenRewards.Desc": "Aperçu des récompenses cachées.",
 		"Menu.HiddenRewards.Title": "Récompenses cachées",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
@@ -289,10 +289,10 @@
 		"Settings.ShowTavernBadge.Desc": "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît.",
 		"Settings.ShowTavernBadge.Title": "Affiche un compteur sur la taverne",
 		"Settings.Version.Desc": "Version de l'extension Chrome",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
+		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Nouveautés</a>",
 		"Settings.Version.GuildId": "Identifiant Guilde",
 		"Settings.Version.PlayerId": "Identifiant Joueur",
-		"Settings.Version.Title": "Version", //Todo: Translate
+		"Settings.Version.Title": "Version",
 		"Settings.Version.World": "Identifiant Monde"
 	}
 }
