@@ -21,6 +21,7 @@
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Profit",
 		"Boxes.Calculator.Rate": "Rate",
+		"Boxes.Calculator.Sniping": "Sniping",
 		"Boxes.Calculator.Step": "Step ",
 		"Boxes.Calculator.Title": "Cost calculator",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__",
@@ -33,7 +34,6 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Until leveling",
-		"Boxes.Calculator.Sniping": "Sniping",
 		"Boxes.Campagne.AlreadyDone": " already conquered!",
 		"Boxes.Campagne.DescInStock": "Available",
 		"Boxes.Campagne.DescRequired": "Required",
@@ -189,10 +189,8 @@
 		"Boxes.Units.Status": "Status",
 		"Boxes.Units.Title": "Army overview",
 		"Boxes.Units.Unbind": "Unbound",
-
 		"Boxes.Units.Unit": "Unit",
 		"DateTime": "D/M/YY h:mm:ss a",
-
 		"Eras.0": "No age",
 		"Eras.1": "Stone Age",
 		"Eras.10": "Modern Era",

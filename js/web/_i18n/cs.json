@@ -21,6 +21,7 @@
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Rate", //Todo: Translate
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
