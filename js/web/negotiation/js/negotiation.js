@@ -288,7 +288,17 @@ let Negotiation = {
 				new Sortable(document.getElementById('good-sort'), {
 					animation: 150,
 					ghostClass: 'good-drag',
-					onEnd: function(){
+					onEnd: function () {
+						//Fix für hängen bleibende Tooltips
+						if ($('#negotiationBox')[0] !== undefined && $('#negotiationBox')[0]['children'] !== undefined) {
+							for (let i = 0; i < $('#negotiationBox')[0]['children'].length;i++) {
+								if ($('#negotiationBox')[0]['children'][i]['className'] === 'tooltip fade top in') {
+									$('#negotiationBox')[0]['children'][i].remove();
+									i--;
+								}
+							}
+						}
+
 						let oldOrdered = Negotiation.GoodsOrdered;
 						Negotiation.GoodsOrdered = [];
 						$('.good').each(function(){

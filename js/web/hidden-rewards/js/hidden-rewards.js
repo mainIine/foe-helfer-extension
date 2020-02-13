@@ -73,7 +73,7 @@ let HiddenRewards = {
             }
             
             const positionI18nLookupKey = 'HiddenRewards.Positions.'+position;
-            const positionI18nLookup = i18n(positionI18nLookupKey);
+            const positionI18nLookup = i18n('HiddenRewards.Positions.'+position);
 
             if (positionI18nLookupKey !== positionI18nLookup) {
                 position = positionI18nLookup;

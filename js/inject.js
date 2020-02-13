@@ -57,19 +57,18 @@
 
 	const v = chrome.runtime.getManifest().version;
 
-	const PossibleLangs = ['de','en','fr','es','ru','sv','cs','ro'];
-	let   lng = chrome.i18n.getUILanguage();
-	const uLng = localStorage.getItem('user-language');
+let   lng = chrome.i18n.getUILanguage();
+const uLng = localStorage.getItem('user-language');
 
 	// wir brauchen nur den ersten Teil
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
 	}
 
-	// gibt es eine Übersetzung?
-	if (PossibleLangs.includes(lng) === false) {
-		lng = 'en';
-	}
+// gibt es eine Übersetzung?
+if (Languages.PossibleLanguages[lng] === undefined) {
+	lng = 'en';
+}
 
 	if (uLng !== null){
 		lng = uLng;
@@ -152,29 +151,30 @@
 
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
-			const s = [
-				'_helper',
-				'_menu',
-				'tavern',
-				'outposts',
-				'calculator',
-				'infoboard',
-				'productions',
-				'part-calc',
-				'unit',
-				'guildfights',
-				'notes',
-				'campagnemap',
-				'technologies',
-				'negotiation',
-				'eventquest',
-				'read-buildings',
-				'settings',
-				'investment',
-				'strategy-points',
-				'citymap',
-				'hidden-rewards'
-			];
+		const s = [
+			'_languages',
+			'_helper',
+			'_menu',
+			'tavern',
+			'outposts',
+			'calculator',
+			'infoboard',
+			'productions',
+			'part-calc',
+			'unit',
+			'guildfights',
+			'notes',
+			'campagnemap',
+			'technologies',
+			'negotiation',
+			'eventquest',
+			'read-buildings',
+			'settings',
+			'investment',
+			'strategy-points',
+			'citymap',
+			'hidden-rewards'
+		];
 
 			// Scripte laden (nacheinander)
 			for (let i = 0; i < s.length; i++) {
