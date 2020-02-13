@@ -89,7 +89,7 @@ let Infoboard = {
 
             HTML.Box({
                 'id': 'BackgroundInfo',
-                'title': i18n('Menu.Info.Title'),
+                'title': i18n('Boxes.Infobox.Title'),
                 'auto_close': true,
                 'dragdrop': true,
                 'resize': true,
