@@ -52,6 +52,7 @@
 		"Boxes.Calculator.Done": "done",
 		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP",
 		"Boxes.Calculator.NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP",
+		"Boxes.Calculator.Sniping": "Sniping",
 
 		"Boxes.LGOverviewBox.Title": "Possible deposits",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "found new",
@@ -200,8 +201,8 @@
 		"Boxes.Gildfights.LastSnapshot": " - last snapshot __time__ ago",
 		
 		"Boxes.HiddenRewards.Title": "Hidden Rewards",
-		"Boxes.HiddenRewards.Appears": "Appears",
-		"Boxes.HiddenRewards.Disappears": "Disappears",
+		"Boxes.HiddenRewards.Appears": "Appears in ",
+		"Boxes.HiddenRewards.Disappears": "Disappears in ",
 		"Boxes.HiddenRewards.NoEvents": "No events presents",
 		
 		"Menu.Productions.Title": "Production overview",

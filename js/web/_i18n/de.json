@@ -52,6 +52,7 @@
 		"Boxes.Calculator.Done": "abgeschlossen",
 		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
 		"Boxes.Calculator.NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
+		"Boxes.Calculator.Sniping": "Snipen",
 
 		"Boxes.LGOverviewBox.Title": "Mögliche Einzahlungen",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "neu gefunden",
