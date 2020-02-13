@@ -1673,51 +1673,34 @@ let MainParser = {
 
 			if (ev.hasOwnProperty(i)) {
 
-				if(ev[i]['type'] === 'social_interaction'){
-					let pd = {
+				let pd = { };
+
+				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || [i]['type'] === 'battle') {
+					pd = {
 						id: ev[i]['id'],
 						date: ev[i]['date'],
-						entity_id: ev[i]['entity_id'] || '',
-						action: ev[i]['interaction_type'] || '',
+						entity_id: '',
 						is_friend: ev[i]['other_player']['is_friend'],
 						is_guild_member: ev[i]['other_player']['is_guild_member'],
 						is_neighbor: ev[i]['other_player']['is_neighbor'],
 						name: ev[i]['other_player']['name'],
 						player_id: ev[i]['other_player']['player_id']
 					};
+				}
 
-					pm.push(pd);
+				if(ev[i]['type'] === 'social_interaction'){
+					pd['entity_id'] = ev[i]['entity_id'] || '';
+					pd['action'] = ev[i]['interaction_type'] || '';
 
 				} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
-
-					let pd = {
-						id: ev[i]['id'],
-						date: ev[i]['date'],
-						entity_id: '',
-						action: 'friend_tavern_sat_down',
-						is_friend: ev[i]['other_player']['is_friend'],
-						is_guild_member: ev[i]['other_player']['is_guild_member'],
-						is_neighbor: ev[i]['other_player']['is_neighbor'],
-						name: ev[i]['other_player']['name'],
-						player_id: ev[i]['other_player']['player_id']
-					};
-
-					pm.push(pd);
+					pd['action'] = 'friend_tavern_sat_down';
 
 				}  else if (ev[i]['type'] === 'battle'){
+					pd['action'] = 'battle|' + ev[i]['status'];
+				}
 
-					let pd = {
-						id: ev[i]['id'],
-						date: ev[i]['date'],
-						entity_id: '',
-						action: ev[i]['status'],
-						is_friend: ev[i]['other_player']['is_friend'],
-						is_guild_member: ev[i]['other_player']['is_guild_member'],
-						is_neighbor: ev[i]['other_player']['is_neighbor'],
-						name: ev[i]['other_player']['name'],
-						player_id: ev[i]['other_player']['player_id']
-					};
 
+				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || [i]['type'] === 'battle') {
 					pm.push(pd);
 				}
 			}
