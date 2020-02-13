@@ -211,7 +211,7 @@
 		"Eras.7": "Колониальный Период",
 		"Eras.8": "Индустриальная Эпоха",
 		"Eras.9": "Эра Прогрессивизма",
-		"Global.BoxTitle": " <small><em>FoE Helper</em></small>", //Todo: Translate
+		"Global.BoxTitle": "FoE Helper", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadBig": "big Road", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadSmall": "small Road", //Todo: Translate
 		"HiddenRewards.Positions.guildExpedition": "Guild expedition", //Todo: Translate
