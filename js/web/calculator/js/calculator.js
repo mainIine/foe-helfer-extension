@@ -202,7 +202,7 @@ let Calculator = {
 		h.push('</div><div>');
 
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
-		h.push('<strong>Snipen</strong><br>');
+		h.push('<strong>' + i18n('Boxes.Calculator.Sniping') + '</strong><br>');
 
         h.push('</div>');
 
