@@ -102,7 +102,14 @@ let Chat = {
 		template.innerHTML = `
 			<div class="chat-wrapper">
 				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
-				<div class="message_box" id="message_box"></div>
+				<div id="chat">
+					<div id="top-bar">
+						<a class="btn-default btn-default-active" href="chat.html?player=` + Chat.PlayerID + `&guild=` + Chat.GildID + `&world=` + Chat.World + `">` + Chat.GildID + `</a>
+						<a class="btn-default" href="chat.html?player=` + Chat.PlayerID + `&guild=0&world=` + Chat.World + `">` + Chat.World + `</a>
+						<a class="btn-default" href="chat.html?player=` + Chat.PlayerID + `&guild=0&world=dev">Entwickler</a>
+					</div>
+					<div class="message_box" id="message_box"></div>
+				</div>
 			</div>
 			<div class="chat-panel">
 				<input id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"><button id="send-btn">Senden</button>

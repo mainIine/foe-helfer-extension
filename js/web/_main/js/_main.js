@@ -1703,6 +1703,22 @@ let MainParser = {
 					};
 
 					pm.push(pd);
+
+				}  else if (ev[i]['type'] === 'battle'){
+
+					let pd = {
+						id: ev[i]['id'],
+						date: ev[i]['date'],
+						entity_id: '',
+						action: ev[i]['status'],
+						is_friend: ev[i]['other_player']['is_friend'],
+						is_guild_member: ev[i]['other_player']['is_guild_member'],
+						is_neighbor: ev[i]['other_player']['is_neighbor'],
+						name: ev[i]['other_player']['name'],
+						player_id: ev[i]['other_player']['player_id']
+					};
+
+					pm.push(pd);
 				}
 			}
 		}
