@@ -21,6 +21,7 @@
 		"Boxes.Calculator.Meds": "Medalj",
 		"Boxes.Calculator.Profit": "Vinst",
 		"Boxes.Calculator.Rate": "Kvot",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Nivå ",
 		"Boxes.Calculator.Title": "Kostnadskalkylator",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate

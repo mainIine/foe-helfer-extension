@@ -21,6 +21,7 @@
 		"Boxes.Calculator.Meds": "Méds",
 		"Boxes.Calculator.Profit": "Ganancia",
 		"Boxes.Calculator.Rate": "Cotizacion",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Nivel",
 		"Boxes.Calculator.Title": "Calculador de costes",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
