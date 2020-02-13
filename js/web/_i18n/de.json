@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s LGs wurden übermittelt",
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.UpdateSuccess": "Update durchgeführt",
+    
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
@@ -33,6 +34,12 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Bis zum leveln",
+		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
+		"Boxes.Calculator.Done": "abgeschlossen",
+		"Boxes.Calculator.LevelWarningTT": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
+		"Boxes.Calculator.NegativeProfitTT": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
+		"Boxes.Calculator.Sniping": "Snipen",
+
 		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
 		"Boxes.Campagne.DescInStock": "Vorhanden",
 		"Boxes.Campagne.DescRequired": "Benötigt",
