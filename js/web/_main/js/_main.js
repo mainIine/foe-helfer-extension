@@ -1516,10 +1516,14 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
-			world: ExtWorld,
-			playerId: ExtPlayerID,
-			name: d.user_name,
-			portrait: d.portrait_id
+			data: {
+				world: ExtWorld,
+				player_id: ExtPlayerID,
+				name: d.user_name,
+				portrait: d.portrait_id,
+				guild_id: d.clan_id,
+				guild_name: d.clan_name
+			}
 		});
 	},
 

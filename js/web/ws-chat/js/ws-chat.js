@@ -15,7 +15,8 @@
 
 let Chat = {
 
-	GildID: 0,
+	GuildID: 0,
+	GuildName: '',
 	PlayerID: 0,
 	PlayerName: null,
 	PlayerPortrait: null,
@@ -29,18 +30,39 @@ let Chat = {
 	Token: '',
 	ConnectionId: '',
 	InnoCDN: '',
+	ChatRoom: '',
 
 	/**
 	 * Holt die Daten für den Chat
 	 */
-	getData: ()=> {
+	getData: () => {
+		const URLdata = Object.fromEntries( new URLSearchParams(location.search) );
 
-		let data = Object.fromEntries( new URLSearchParams(location.search) );
+		let player_id = -1;
+		let world = '';
+		Chat.ChatRoom = URLdata['chat']||'';
 
-		Chat.GildID = +data['guild'];
-		Chat.PlayerID = +data['player'];
-		Chat.PlayerName = decodeURI(data['name']);
-		Chat.World = data['world'];
+		const sessionPlayer = sessionStorage.getItem('ChatPlayer');
+		if (sessionPlayer) {
+			const data = JSON.parse(sessionPlayer);
+			player_id = data.player_id;
+			world = data.world;
+
+		} else {
+
+			player_id = +URLdata['player'];
+			world     = URLdata['world'];
+			if (!/^[a-z]{2}\d{1,2}$/.test(world)) {
+				throw "Invalid World-Name '"+world+"'";
+			}
+
+			sessionStorage.setItem('ChatPlayer', JSON.stringify({player_id, world}));
+		}
+
+		Chat.PlayerID = player_id;
+		Chat.World = world;
+		// Chat.GildID = +data['guild'];
+		// Chat.PlayerName = decodeURI(data['name']);
 
 		const cdnRecivedPromise =
 			new Promise(resolve =>
@@ -56,39 +78,35 @@ let Chat = {
 				Chat.loadPortraits();
 			})
 		;
-		
-		const playerDataRecivedPromise =
-			new Promise(resolve =>
-				chrome.runtime.sendMessage(
-					{
-						type: 'getPlayerData',
-						world: Chat.World,
-						playerId: Chat.PlayerID
-					},
-					resolve
-				)
-			)
-			.then( (data) => {
-				if (!data) return;
-				
-				Chat.PlayerName = data.name;
-				Chat.PlayerPortrait = data.portrait;
-				
-				let Player = Chat.OtherPlayers.find(p => p.player_id === Chat.PlayerID);
-				if (Player) {
-					Player.player_name = data.name;
-					Player.avatar = data.portrait;
-				} else {
-					Chat.OtherPlayers.push({
-						player_id: Chat.PlayerID,
-						player_name: data.name,
-						avatar: data.portrait
-					});
-				}
-			})
-		;
 
-		Promise.all([cdnRecivedPromise, playerDataRecivedPromise])
+
+		const playerIdentities = JSON.parse(localStorage.getItem('PlayerIdentities')||'{}');
+		const playerData = playerIdentities[world+'-'+player_id];
+
+		if (playerData) {
+			Chat.PlayerName = playerData.name;
+			Chat.PlayerPortrait = playerData.portrait;
+
+			Chat.GuildID = playerData.guild_id;
+			Chat.GuildName = playerData.guild_name;
+
+			let playerInfo = Chat.OtherPlayers.find(p => p.player_id === player_id);
+			if (playerInfo) {
+				playerInfo.player_name = Chat.PlayerName;
+				playerInfo.avatar = Chat.PlayerPortrait;
+			} else {
+				Chat.OtherPlayers.push({
+					player_id: player_id,
+					player_name: Chat.PlayerName,
+					avatar: Chat.PlayerPortrait
+				});
+			}
+
+		} else {
+			throw "Missing Player Data";
+		}
+
+		cdnRecivedPromise
 		.then(() => Chat.Init());
 	},
 
@@ -104,9 +122,9 @@ let Chat = {
 				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 				<div id="chat">
 					<div id="top-bar">
-						<a class="btn-default btn-default-active" href="chat.html?player=` + Chat.PlayerID + `&guild=` + Chat.GildID + `&world=` + Chat.World + `">` + Chat.GildID + `</a>
-						<a class="btn-default" href="chat.html?player=` + Chat.PlayerID + `&guild=0&world=` + Chat.World + `">` + Chat.World + `</a>
-						<a class="btn-default" href="chat.html?player=` + Chat.PlayerID + `&guild=0&world=dev">Entwickler</a>
+						<a class="btn-default${Chat.ChatRoom === ''       ? ' btn-default-active':''}" href="chat.html?">Gilde: ${Chat.GuildName}</a>
+						<a class="btn-default${Chat.ChatRoom === 'global' ? ' btn-default-active':''}" href="chat.html?chat=global">Welt: ${Chat.World}</a>
+						<a class="btn-default${Chat.ChatRoom === 'dev'    ? ' btn-default-active':''}" href="chat.html?chat=dev">Entwickler</a>
 					</div>
 					<div class="message_box" id="message_box"></div>
 				</div>
@@ -160,17 +178,16 @@ let Chat = {
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = ()=> {
-			Chat.WebsocketChat.send(
-				JSON.stringify({
-					world: Chat.World,
-					guild: Chat.GildID,
-					player: Chat.PlayerID,
-					name: Chat.PlayerName || 'Unknown#'+Chat.PlayerID,
-					portrait: Chat.PlayerPortrait || '',
-					connectionId: connectionId,
-					secret:'trust me!'
-				})
-			);
+			const setupData = {
+				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
+				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
+				player: Chat.PlayerID,
+				name: Chat.PlayerName || 'Unknown#'+Chat.PlayerID,
+				portrait: Chat.PlayerPortrait || '',
+				connectionId: connectionId
+			};
+			Chat.WebsocketChat.send(JSON.stringify(setupData));
+
 			Chat.SystemRow('Verbunden!', 'success');
 
 			// setTimeout(
