@@ -1246,7 +1246,10 @@ let MainParser = {
 			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
 			{
 				method: 'POST',
-				body: formData
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({data})
 			}
 		);
 

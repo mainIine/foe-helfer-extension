@@ -21,6 +21,7 @@
 		"Boxes.Calculator.Meds": "Med.",
 		"Boxes.Calculator.Profit": "Profit", //Todo: Translate
 		"Boxes.Calculator.Rate": "Procent",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Nivelul",
 		"Boxes.Calculator.Title": "Investiții în alte CL",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
@@ -210,7 +211,7 @@
 		"Eras.7": "Era Colonială",
 		"Eras.8": "Era Industrială",
 		"Eras.9": "Era Progresistă",
-		"Global.BoxTitle": " <small><em>FoE Helper</em></small>", //Todo: Translate
+		"Global.BoxTitle": "FoE Helper", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadBig": "Drum dublu",
 		"HiddenRewards.Positions.cityRoadSmall": "Drum",
 		"HiddenRewards.Positions.guildExpedition": "Expediția ghildei",
