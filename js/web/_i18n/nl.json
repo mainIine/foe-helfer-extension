@@ -21,6 +21,7 @@
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Winst",
 		"Boxes.Calculator.Rate": "Verhouding",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "FP-Calculator",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
@@ -210,7 +211,7 @@
 		"Eras.7": "Koloniale tijdperk",
 		"Eras.8": "Industriële tijdperk",
 		"Eras.9": "Progressieve tijdperk",
-		"Global.BoxTitle": " <small><em>FoE Helper</em></small>",
+		"Global.BoxTitle": "FoE Helper",
 		"HiddenRewards.Positions.cityRoadBig": "grote weg",
 		"HiddenRewards.Positions.cityRoadSmall": "kleine weg",
 		"HiddenRewards.Positions.guildExpedition": "Gilde Expeditie",
