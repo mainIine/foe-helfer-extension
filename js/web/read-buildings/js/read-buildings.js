@@ -74,7 +74,7 @@ let Reader = {
                         if (d[i]['type'] === 'goods') {
                             GoodsParser.readType(d[i]);
                         }
-                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production') && d[i]['state']['is_motivated'] === false) {
+                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production' || d[i]['type'] === 'clan_power_production') && d[i]['state']['is_motivated'] === false) {
                             GoodsParser.readType(d[i]);
                         }
                     }
