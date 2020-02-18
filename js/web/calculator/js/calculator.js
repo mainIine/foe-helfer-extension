@@ -696,7 +696,7 @@ let Calculator = {
 
 				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
 					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
 				}
 				else {
 					EinsatzClass = 'info';
