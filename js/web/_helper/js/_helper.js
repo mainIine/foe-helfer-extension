@@ -140,7 +140,7 @@ let HTML = {
 	Box: (args)=> {
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('FoE Helper') + '</em></small>'),
+			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>'),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
@@ -245,16 +245,16 @@ let HTML = {
 	 */
 	DragBox: (el, save = true)=> {
 
-		document.getElementById(el.id + "Header").removeEventListener("mousedown", dragMouseDown);
+		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
 		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;
 
 		id = el.id;
 
 		if (document.getElementById(el.id + "Header")) {
-			document.getElementById(el.id + "Header").onmousedown = dragMouseDown;
+			document.getElementById(el.id + "Header").onpointerdown = dragMouseDown;
 		} else {
-			el.onmousedown = dragMouseDown;
+			el.onpointerdown = dragMouseDown;
 		}
 
 		function dragMouseDown(e) {
@@ -264,8 +264,8 @@ let HTML = {
 			pos3 = e.clientX;
 			pos4 = e.clientY;
 
-			document.onmouseup = closeDragElement;
-			document.onmousemove = elementDrag;
+			document.onpointerup = closeDragElement;
+			document.onpointermove = elementDrag;
 		}
 
 		function elementDrag(e) {
@@ -284,8 +284,8 @@ let HTML = {
 			if(top < 0) {
 				top = 12;
 
-				document.onmouseup = null;
-				document.onmousemove = null;
+				document.onpointerup = null;
+				document.onpointermove = null;
 			}
 
 			el.style.top = top + "px";
@@ -299,8 +299,8 @@ let HTML = {
 		}
 
 		function closeDragElement() {
-			document.onmouseup = null;
-			document.onmousemove = null;
+			document.onpointerup = null;
+			document.onpointermove = null;
 		}
 	},
 

@@ -64,11 +64,15 @@
 
 	let popupWindowId = 0;
 
-	let ChatData = {
-		innoCDNset: false,
-		innoCDN: 'https://foede.innogamescdn.com/',
-		player: /** @type {Record<string, {name: string, portrait: null|string}>} */({})
-	};
+	const defaultInnoCDN = 'https://foede.innogamescdn.com/';
+
+	// // automatisches Update der lokalen daten
+	// window.addEventListener('storage', evt => {
+	// 	if (!evt.isTrusted) return;
+	// 	if (evt.key === 'PlayerData') {
+	// 		ChatData.player = JSON.parse(evt.newValue);
+	// 	}
+	// });
 
 
 	function handleWebpageRequests(request, sender, callback) {
@@ -124,23 +128,30 @@
 			chrome.storage.local.set({ [request.key] : request.data });
 
 		} else if(request.type === 'send2Api') {
+			console.log("type=send2Api got called!");
 			let xhr = new XMLHttpRequest();
 
 			xhr.open('POST', request.url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.send(request.data);
+
 		} else if(request.type === 'setInnoCDN') {
-			ChatData.innoCDNset = true;
-			ChatData.innoCDN = request.url;
+			localStorage.setItem('InnoCDN', request.url);
+
 		} else if(request.type === 'getInnoCDN') {
-			callback([ChatData.innoCDN, ChatData.innoCDNset]);
+			let cdnUrl = localStorage.getItem('InnoCDN');
+			callback([cdnUrl || defaultInnoCDN, cdnUrl != null]);
+
 		} else if(request.type === 'setPlayerData') {
-			ChatData.player[request.world+'-'+request.playerId] = {
-				name: request.name,
-				portrait: request.portrait
-			};
+			const data = request.data;
+
+			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+			playerdata[data.world+'-'+data.player_id] = data;
+			localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
+
 		} else if(request.type === 'getPlayerData') {
-			callback(ChatData.player[request.world+'-'+request.playerId]);
+			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+			callback(playerdata[request.world+'-'+request.player_id]);
 		}
 	}
 
