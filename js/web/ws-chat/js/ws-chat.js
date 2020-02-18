@@ -21,7 +21,7 @@ let Chat = {
 	PlayerName: null,
 	PlayerPortrait: null,
 	World: '',
-	OtherPlayers: [],
+	OtherPlayers: /** @type {{player_name: string, player_id: Number, avatar: string, secretsMatch: boolean}[]} */([]),
 	PlayersPortraits: {},
 	OnlinePlayers: [],
 	OwnName: '',
@@ -98,7 +98,8 @@ let Chat = {
 				Chat.OtherPlayers.push({
 					player_id: player_id,
 					player_name: Chat.PlayerName,
-					avatar: Chat.PlayerPortrait
+					avatar: Chat.PlayerPortrait,
+					secretsMatch: true
 				});
 			}
 
@@ -440,7 +441,7 @@ let Chat = {
 					Chat.SmallBox('user-self', TextR, '', Chat.timeStr(message.time));
 		
 				} else {
-					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
+					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id,avatar: ''};
 		
 					const PlayerName = Player['player_name'];
 					const PlayerImg = Chat.PlayersPortraits[Player.avatar] ? Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg' : '';
@@ -456,8 +457,22 @@ let Chat = {
 			}
 			case 'switch': {
 				const player_id = message.player;
-				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
-				const TextR = '<em>' + Player['player_name'] + ' hat den Chat erneut betreten</em>';
+				let Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
+				if (Player) {
+					Player.player_name = message.name;
+					Player.player_id = message.player;
+					Player.avatar = player_id.portrait;
+					Player.secretsMatch = message.secretMatch;
+				} else {
+					Player = {
+						player_name: message.name,
+						player_id: message.player,
+						avatar: player_id.portrait,
+						secretsMatch: message.secretMatch
+					};
+					Chat.OtherPlayers.push(Player);
+				}
+				const TextR = '<em>' + Player.player_name + ' hat den Chat erneut betreten</em>';
 				Chat.UserEnter(Player);
 				Chat.PlaySound('user-enter');
 				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
@@ -465,8 +480,22 @@ let Chat = {
 			}
 			case 'join': {
 				const player_id = message.player;
-				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
-				const TextR = '<em>' + Player['player_name'] + ' hat den Chat betreten</em>';
+				let Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
+				if (Player) {
+					Player.player_name = message.name;
+					Player.player_id = message.player;
+					Player.avatar = player_id.portrait;
+					Player.secretsMatch = message.secretMatch;
+				} else {
+					Player = {
+						player_name: message.name,
+						player_id: message.player,
+						avatar: player_id.portrait,
+						secretsMatch: message.secretMatch
+					};
+					Chat.OtherPlayers.push(Player);
+				}
+				const TextR = '<em>' + Player.player_name + ' hat den Chat betreten</em>';
 				Chat.UserEnter(Player);
 				Chat.PlaySound('user-enter');
 				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
@@ -475,7 +504,7 @@ let Chat = {
 			case 'leave': {
 				const player_id = message.player;
 				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
-				const TextR = '<em>' + Player['player_name'] + ' ist gegangen</em>';
+				const TextR = '<em>' + Player.player_name + ' ist gegangen</em>';
 				Chat.UserLeave(Player);
 				Chat.PlaySound('user-leave');
 				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
