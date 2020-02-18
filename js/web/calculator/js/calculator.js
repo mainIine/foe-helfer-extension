@@ -202,7 +202,7 @@ let Calculator = {
 		h.push('</div><div>');
 
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
-		h.push('<strong>Snipen</strong><br>');
+		h.push('<strong>' + i18n('Boxes.Calculator.Sniping') + '</strong><br>');
 
         h.push('</div>');
 
@@ -314,8 +314,8 @@ let Calculator = {
 			hBPMeds = [],
 			hSnipen = [],
 			BestKurs = 999999,
-			BestKursNettoFP = undefined,
-			BestKursEinsatz = undefined,
+			BestKursNettoFP = 0,
+			BestKursEinsatz = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
@@ -525,138 +525,230 @@ let Calculator = {
 					BestKursEinsatz = SnipeRankCosts[Rank];
 				}
 			}
-				
-			if (ForderStates[Rank] === 'NotPossible') {
-				hFordern.push('<tr class="text-grey">');
-			}
-			else if (ForderStates[Rank] === 'WorseProfit') {
-				hFordern.push('<tr class="text-grey">');
-			}
-			else if (ForderStates[Rank] === 'Self') {
-				hFordern.push('<tr class="info-row">');
-			}
-			else if (ForderStates[Rank] === 'NegativeProfit') {
-				let ToolTip = HTML.i18nReplacer(i18n('Boxes.Calculator.NegativeProfitTT'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] });
-				hFordern.push('<tr class="bg-red tr-tooltip" title="' + ToolTip + '">');
-			}
-			else if (ForderStates[Rank] === 'LevelWarning') {
-				let ToolTip = i18n('Boxes.Calculator.LevelWarning') + (ForderRankDiff < 0 ? '<br> ' + HTML.i18nReplacer(i18n('Boxes.Calculator.LevelWarningTT'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank]}) : '');
-				hFordern.push('<tr class="bg-yellow tr-tooltip" title="' + ToolTip + '">');
-			}
-			else if (ForderStates[Rank] === 'Profit') {
-				hFordern.push('<tr class="bg-green">');
-			}
-			else {
-				hFordern.push('<tr>');
-			}
 
-			if (ForderStates[Rank] === 'NotPossible' && SnipeStates[Rank] === 'NotPossible') {
-				hBPMeds.push('<tr class="text-grey">');
-			}
-			else if (ForderStates[Rank] === 'WorseProfit' && SnipeStates[Rank] === 'WorseProfit') {
-				hBPMeds.push('<tr class="text-grey">');
-			}
-			else if (ForderStates[Rank] === 'Self' && SnipeStates[Rank] === 'Self') {
-				hBPMeds.push('<tr class="info-row">');
-			}
-			else if (ForderStates[Rank] === 'NegativeProfit' && SnipeStates[Rank] === 'NegativeProfit') {
-				hBPMeds.push('<tr class="bg-red">');
-			}
-			else if (ForderStates[Rank] === 'LevelWarning' && SnipeStates[Rank] === 'LevelWarning') {
-				hBPMeds.push('<tr class="bg-yellow" title="' + i18n('Boxes.Calculator.LevelWarning') + '">');
-			}
-			else if (ForderStates[Rank] === 'Profit' && SnipeStates[Rank] === 'Profit') {
-				hBPMeds.push('<tr class="bg-green">');
-			}
-			else {
-				hBPMeds.push('<tr>');
-			}
-
-			if (SnipeStates[Rank] === 'NotPossible') {
-				hSnipen.push('<tr class="text-grey">');
-			}
-			else if (SnipeStates[Rank] === 'WorseProfit') {
-				hSnipen.push('<tr class="text-grey">');
-			}
-			else if (SnipeStates[Rank] === 'Self') {
-				hSnipen.push('<tr class="info-row">');
-			}
-			else if (SnipeStates[Rank] === 'NegativeProfit') {
-				hSnipen.push('<tr class="bg-red">');
-			}
-			else if (SnipeStates[Rank] === 'LevelWarning') {
-				hSnipen.push('<tr class="bg-yellow" title="' + i18n('Boxes.Calculator.LevelWarning') + '">');
-			}
-			else if (SnipeStates[Rank] === 'Profit') {
-				hSnipen.push('<tr class="bg-green">');
-			}
-			else {
-				hSnipen.push('<tr>');
-			}	
-
-			//Nummer
-			hFordern.push('<td class="text-center"><strong>' + (Rank + 1) + '</strong></td>')
 
 			// Fördern
-			if (ForderStates[Rank] === 'Self') {
-				hFordern.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < ForderFPRewards[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</td>');
-				hFordern.push('<td class="text-center"><strong class="info">' + HTML.Format(ForderGewinn) + '</strong></td>');
-			}
-			else if (ForderStates[Rank] === 'NegativeProfit') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
-				hFordern.push('<td class="text-center"><strong class="error">' + HTML.Format(ForderGewinn) + '</strong></td>');
-			}
-			else if (ForderStates[Rank] === 'LevelWarning') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
-				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
-			}
-			else if (ForderStates[Rank] === 'Profit') {
-				hFordern.push('<td class="text-center"><strong class="' + (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff) + '</strong></td>');
-				hFordern.push('<td class="text-center"><strong class="' + (ForderGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(ForderGewinn) + '</strong></td>');
+
+			let RowClass,
+				RankClass,
+				RankText = Rank + 1, //Default: Rangnummer
+				RankTooltip = [],
+
+				EinsatzClass = (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : ''), //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
+				EinsatzText = HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff), //Default: Einsatz + ForderRankDiff
+				EinsatzTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': FPNettoRewards[Rank], 'forderfactor': (100 + Calculator.ForderBonus), 'costs': ForderFPRewards[Rank] })],
+
+				GewinnClass = (ForderGewinn >= 0 ? 'success' : 'error'), //Default: Grün wenn >= 0 sonst rot
+				GewinnText = HTML.Format(ForderGewinn), //Default: Gewinn
+				GewinnTooltip,
+				
+				KursClass,
+				KursText,
+				KursTooltip = [];
+
+			if (ForderGewinn > 0) {
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
 			}
 			else {
-				hFordern.push('<td class="text-center"><strong>' + HTML.Format(ForderFPRewards[Rank]) + '</strong></td>');
-				hFordern.push('<td class="text-center">-</td>');
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': ForderFPRewards[Rank], 'loss': 0-ForderGewinn })]
 			}
 
-			//BP/Medaillen
+			if (ForderStates[Rank] === 'Self') {
+				RowClass = 'info-row';
+
+				RankClass = 'info';
+				
+				if (Einzahlungen[Rank] < ForderFPRewards[Rank]) {
+					EinsatzClass = 'error';
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
+				}
+				else if (Einzahlungen[Rank] > ForderFPRewards[Rank]) {
+					EinsatzClass = 'warning';
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooMuch'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'toomuch': Einzahlungen[Rank] - ForderFPRewards[Rank]}));
+				}
+				else {
+					EinsatzClass = 'info';
+				}
+				
+				EinsatzText = HTML.Format(Einzahlungen[Rank]);
+				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) {
+					EinsatzText += '/' + HTML.Format(ForderFPRewards[Rank]);
+				}
+				EinsatzText += Calculator.FormatForderRankDiff(ForderRankDiff);
+				
+				
+				if (ForderRankDiff > 0 && Einzahlungen[Rank] < ForderRankCosts[Rank]) {
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] }));
+				}
+				else if (ForderRankDiff < 0) {
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
+				}
+
+				if (ForderGewinn > 0) {
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': Einzahlungen[Rank], 'profit': ForderGewinn })]
+				}
+				else {
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
+				}
+
+				GewinnClass = 'info';
+			}
+			else if (ForderStates[Rank] === 'NegativeProfit') {
+				RowClass = 'bg-red';
+
+				RankClass = 'error';
+
+				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] }));
+
+				GewinnClass = 'error';
+			}
+			else if (ForderStates[Rank] === 'LevelWarning') {
+				RowClass = 'bg-yellow';
+
+				RankClass = '';
+
+				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
+				if (ForderRankDiff < 0) {
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
+				}
+			}
+			else if (ForderStates[Rank] === 'Profit') {
+				RowClass = 'bg-green';
+
+				RankClass = 'success';
+			}
+			else {
+				RowClass = 'text-grey';
+
+				RankClass = '';
+
+				EinsatzText = HTML.Format(ForderFPRewards[Rank]);
+
+				GewinnText = '-';
+				GewinnTooltip = [];
+			}
+
+			hFordern.push('<tr class="' + RowClass + '">');
+			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + RankTooltip.join('<br>') + '">' + RankText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + EinsatzTooltip.join('<br>') + '">' + EinsatzText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + GewinnTooltip.join('<br>') + '">' + GewinnText + '</strong></td>');
+			hFordern.push('</tr>');
+
+
+			//else if (ForderStates[Rank] === 'LevelWarning') {
+			//	let ToolTip = ;
+			//}
+
+
+
+			// BP+Meds
+
+			RowClass = '';
+					   			 		  		  		 
+			if (ForderStates[Rank] === 'NotPossible' && SnipeStates[Rank] === 'NotPossible') {
+				RowClass = 'text-grey';
+			}
+			else if (ForderStates[Rank] === 'WorseProfit' && SnipeStates[Rank] === 'WorseProfit') {
+				RowClass = 'text-grey';
+			}
+			else if (ForderStates[Rank] === 'Self' && SnipeStates[Rank] === 'Self') {
+				RowClass = 'info-row';
+			}
+			else if (ForderStates[Rank] === 'NegativeProfit' && SnipeStates[Rank] === 'NegativeProfit') {
+				RowClass = 'bg-red';
+			}
+			else if (ForderStates[Rank] === 'LevelWarning' && SnipeStates[Rank] === 'LevelWarning') {
+				RowClass = 'bg-yellow';
+			}
+			else if (ForderStates[Rank] === 'Profit' && SnipeStates[Rank] === 'Profit') {
+				RowClass = 'bg-green';
+			}
+
+			hBPMeds.push('<tr class="' + RowClass + '">');
 			hBPMeds.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hBPMeds.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
+			hBPMeds.push('</tr>');
+
 
 			// Snipen
+
+			EinsatzClass = (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : ''); //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
+			EinsatzText = HTML.Format(SnipeRankCosts[Rank]) //Default: Einsatz
+			EinsatzTooltip = [];
+			GewinnClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn >= 0 sonst rot
+			GewinnText = HTML.Format(SnipeGewinn); //Default: Gewinn
+			GewinnTooltip = [];
+			KursClass = '';
+			KursText = (SnipeGewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-'); //Default: Kurs anzeigen bei Gewinn
+			KursTooltip = [];
+
+			if (SnipeGewinn > 0) {
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': SnipeCosts, 'profit': SnipeGewinn })]
+			}
+			else {
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': SnipeCosts, 'loss': 0-SnipeGewinn })]
+			}
+
 			if (SnipeStates[Rank] === 'Self') {
-				// Einsatz/Gewinn/Kurs
-				hSnipen.push('<td class="text-center"><strong class="' + (Einzahlungen[Rank] < SnipeRankCosts[Rank] ? 'error' : 'info') + '">' + HTML.Format(Einzahlungen[Rank]) + '/' + HTML.Format(SnipeRankCosts[Rank]) + '</td>');
-				hSnipen.push('<td class="text-center"><strong class="info">' + HTML.Format(SnipeGewinn) + '</strong></td>');
-				hSnipen.push('<td class="text-center"><strong class="info">' + Calculator.FormatKurs(Kurs) + '</strong></td>');
+				RowClass = 'info-row';
+
+				RankClass = 'info';
+
+				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
+					EinsatzClass = 'error';
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
+				}
+				else {
+					EinsatzClass = 'info';
+				}
+
+				EinsatzText = HTML.Format(Einzahlungen[Rank]);
+				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
+					EinsatzText += '/' + HTML.Format(SnipeRankCosts[Rank]);
+				}
+
+				GewinnClass = 'info';
+				if (SnipeGewinn > 0) {
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': SnipeCosts, 'profit': SnipeGewinn })]
+				}
+				else {
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': SnipeCosts, 'loss': 0 - SnipeGewinn })]
+				}
+
+				KursClass = 'info';
+				KursText = Calculator.FormatKurs(Kurs);
+				KursTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTRate'), { 'costs': Einzahlungen[Rank], 'nettoreward': FPNettoRewards[Rank], 'rate': Kurs }));
 			}
 			else if (SnipeStates[Rank] === 'NegativeProfit') {
-				// Einsatz/Gewinn/Kurs
-				hSnipen.push('<td class="text-center"><strong class="' + (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(SnipeRankCosts[Rank]) + '</strong></td>');
-				hSnipen.push('<td class="text-center"><strong class="error">' + HTML.Format(SnipeGewinn) + '</strong></td>');
-				hSnipen.push('<td class="text-center">-</td>');
+				RowClass = 'bg-red';
 			}
 			else if (SnipeStates[Rank] === 'LevelWarning') {
-				// Einsatz/Gewinn/Kurs
-				hSnipen.push('<td class="text-center"><strong class="' + (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(SnipeRankCosts[Rank]) + '</strong></td>');
-				hSnipen.push('<td class="text-center"><strong class="' + (SnipeGewinn >= 0 ? 'success' : 'error') + '">' + HTML.Format(SnipeGewinn) + '</strong></td>');
-				hSnipen.push('<td class="text-center"><strong class="warning">' + (SnipeGewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-') + '</strong></td>');
+				RowClass = 'bg-yellow';
+
+				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
 			}
 			else if (SnipeStates[Rank] === 'Profit') {
-				// Einsatz/Gewinn/Kurs
-				hSnipen.push('<td class="text-center"><strong class="' + (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : '') + '">' + HTML.Format(SnipeRankCosts[Rank]) + '</strong></td>');
-				hSnipen.push('<td class="text-center"><strong class="success">' + HTML.Format(SnipeGewinn) + '</strong></td>');
-				hSnipen.push('<td class="text-center"><strong class="success">' + Calculator.FormatKurs(Kurs) + '</strong></td>');
+				RowClass = 'bg-green';
+
+				KursTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTRate'), { 'costs': SnipeRankCosts[Rank], 'nettoreward': FPNettoRewards[Rank], 'rate': Kurs }));
+
 				Calculator.PlaySound();
 			}
 			else { // NotPossible/WorseProfit
-				// Einsatz/Gewinn/Kurs
-				hSnipen.push('<td class="text-center">-</td>');
-				hSnipen.push('<td class="text-center">-</td>');
-				hSnipen.push('<td class="text-center">-</td>');
+				RowClass = 'text-grey';
+
+				EinsatzText = '-';
+
+				GewinnText = '-';
+				GewinnTooltip = [];
+
+				KursText = '-';
 			}
-			hFordern.push('</tr>');
-			hBPMeds.push('</tr>');
+
+			hSnipen.push('<tr class="' + RowClass + '">');
+			hSnipen.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + EinsatzTooltip.join('<br>') + '">' + EinsatzText + '</strong></td>');
+			hSnipen.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + GewinnTooltip.join('<br>') + '">' + GewinnText + '</strong></td>');
+			hSnipen.push('<td class="text-center"><strong class="' + KursClass + ' td-tooltip" title="' + KursTooltip.join('<br>') + '">' + KursText + '</strong></td>');
 			hSnipen.push('</tr>');
 		}
 		
@@ -671,7 +763,7 @@ let Calculator = {
 		let StorageValue = Calculator.CityMapEntity['level'] + '/' + Calculator.CityMapEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
 		localStorage.setItem(StorageKey, StorageValue);
 
-		$('.tr-tooltip').tooltip({
+		$('.td-tooltip').tooltip({
 			html: true,
 			container: '#costCalculator'
 		});

@@ -74,7 +74,7 @@ let Reader = {
                         if (d[i]['type'] === 'goods') {
                             GoodsParser.readType(d[i]);
                         }
-                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production') && d[i]['state']['is_motivated'] === false) {
+                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production' || d[i]['type'] === 'clan_power_production') && d[i]['state']['is_motivated'] === false) {
                             GoodsParser.readType(d[i]);
                         }
                     }
@@ -82,15 +82,7 @@ let Reader = {
             }
         }
 
-		// was gefunden?
-		if (Reader.data.ready.length > 0 || Reader.data.work.length > 0) {
-			Reader.showResult();
-
-		} else {
-			if ($('#ResultBox').length > 0) {
-				$('#ResultBox').remove();
-			}
-		}
+		Reader.showResult();
 	},
 
 
@@ -177,6 +169,10 @@ let Reader = {
 
 			h.push('</tbody>');
 			h.push('</table>');
+		}
+
+		if (rd.length === 0 && wk.length === 0) {
+			h.push('<strong>' + i18n('Boxes.Neighbors.NothingToPlunder') + '</strong>');
 		}
 
 		div.find('#ResultBoxBody').html(h.join(''));

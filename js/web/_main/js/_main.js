@@ -53,14 +53,10 @@ const i18n_loadPromise = (async() => {
 
 	try {
 		let languages = [];
-		// Lade Deutsches default falls es nicht auf Deutsch ist
-		if (GuiLng !== 'de') {
-			languages.push('de');
 
-			// Lade auch das Englische default falls es auch nicht auf Englisch ist
-			if (GuiLng !== 'en') {
-				languages.push('en');
-			}
+		// Englisches Fallback laden
+		if (GuiLng !== 'en') {
+			languages.push('en');
 		}
 
 		languages.push(GuiLng);
@@ -72,7 +68,7 @@ const i18n_loadPromise = (async() => {
 					// frage die Sprachdatei an
 					fetch(extUrl + 'js/web/_i18n/'+lang+'.json')
 						// lade die antwort als JSON
-						.then(response => response.json())
+						.then(response => response.text())
 						// im fehlerfall wird ein leeres Objekt zurück gegeben
 						.catch(()=>({}))
 				)
@@ -82,7 +78,9 @@ const i18n_loadPromise = (async() => {
 		await vendorsLoadedPromise;
 
 		for (let languageData of languageDatas) {
-			i18n.translator.add(languageData);
+			languageData = languageData.replace(/\/\/Todo: Translate/g, '');
+
+			i18n.translator.add(JSON.parse(languageData));
 		}
 
 		i18n_loaded = true;
@@ -1047,16 +1045,13 @@ const FoEproxy = (function () {
 
 
 /**
- * @type {{BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, SetArcBonus: MainParser.SetArcBonus, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PossibleLanguages: string[], PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, SetArcBonus: MainParser.SetArcBonus, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
 	Language: 'en',
 	Buildings: null,
 	i18n: null,
-	PossibleLanguages: [
-		'de', 'en', 'fr', 'es', 'ru', 'sv', 'cs','ro'
-	],
 	BonusService: null,
 	EmissaryService: null,
 	PlayerPortraits: null,
@@ -1244,17 +1239,26 @@ let MainParser = {
 		MainParser.obj2FormData(formData, 'data', data);
 
 		let req = fetch(
-			'https://foe-rechner.de/import/_ajax?ajax=raw&action=' + ep + '&player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
 			{
 				method: 'POST',
-				body: formData
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({data})
 			}
 		);
 
 		if (successCallback !== undefined) {
 			req
-				.then(response => response.json())
-				.then(successCallback)
+				.then(response => {
+					if (response.status === 200) {
+						response
+							.json()
+							.then(successCallback)
+						;
+					}
+				})
 			;
 		}
 	},
@@ -1508,10 +1512,14 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
-			world: ExtWorld,
-			playerId: ExtPlayerID,
-			name: d.user_name,
-			portrait: d.portrait_id
+			data: {
+				world: ExtWorld,
+				player_id: ExtPlayerID,
+				name: d.user_name,
+				portrait: d.portrait_id,
+				guild_id: d.clan_id,
+				guild_name: d.clan_name
+			}
 		});
 	},
 
@@ -1668,35 +1676,34 @@ let MainParser = {
 
 			if (ev.hasOwnProperty(i)) {
 
-				if(ev[i]['type'] === 'social_interaction'){
-					let pd = {
-						id: ev[i]['id'],
-						date: ev[i]['date'],
-						entity_id: ev[i]['entity_id'] || '',
-						action: ev[i]['interaction_type'] || '',
-						is_friend: ev[i]['other_player']['is_friend'],
-						is_guild_member: ev[i]['other_player']['is_guild_member'],
-						is_neighbor: ev[i]['other_player']['is_neighbor'],
-						name: ev[i]['other_player']['name'],
-						player_id: ev[i]['other_player']['player_id']
-					};
+				let pd = { };
 
-					pm.push(pd);
-
-				} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
-
-					let pd = {
+				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || [i]['type'] === 'battle') {
+					pd = {
 						id: ev[i]['id'],
 						date: ev[i]['date'],
 						entity_id: '',
-						action: 'friend_tavern_sat_down',
 						is_friend: ev[i]['other_player']['is_friend'],
 						is_guild_member: ev[i]['other_player']['is_guild_member'],
 						is_neighbor: ev[i]['other_player']['is_neighbor'],
 						name: ev[i]['other_player']['name'],
 						player_id: ev[i]['other_player']['player_id']
 					};
+				}
 
+				if(ev[i]['type'] === 'social_interaction'){
+					pd['entity_id'] = ev[i]['entity_id'] || '';
+					pd['action'] = ev[i]['interaction_type'] || '';
+
+				} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
+					pd['action'] = 'friend_tavern_sat_down';
+
+				}  else if (ev[i]['type'] === 'battle'){
+					pd['action'] = 'battle|' + ev[i]['status'];
+				}
+
+
+				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || [i]['type'] === 'battle') {
 					pm.push(pd);
 				}
 			}
