@@ -314,8 +314,8 @@ let Calculator = {
 			hBPMeds = [],
 			hSnipen = [],
 			BestKurs = 999999,
-			BestKursNettoFP = undefined,
-			BestKursEinsatz = undefined,
+			BestKursNettoFP = 0,
+			BestKursEinsatz = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
