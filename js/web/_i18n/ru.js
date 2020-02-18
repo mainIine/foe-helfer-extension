@@ -23,7 +23,7 @@ let i18n = {
 
 	"Boxes" : {
 		"OwnpartCalculator" : {
-			"Title": "Калькурятор вложений в свои ВС",
+			"Title": "Калькулятор вложений в свои ВС",
 			"HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
             "Step": "Уровень",
             "OldLevel": "Предыдущий уровень",
@@ -55,7 +55,7 @@ let i18n = {
 			"Step": "Уровень ",
 			"AvailableFP": "Доступные СО",
 			"FriendlyInvestment": "Friendly invest:", //Todo: Translate
-			"ArcBonus": "Боунс Арки",
+			"ArcBonus": "Бонус Арки",
 			"Rate": "Курс",
 			"Up2LevelUp": "Осталось до уровня",
 			"FP": "СО",
@@ -68,10 +68,10 @@ let i18n = {
 			"NoFPorMedsAvailable": "Нет СО или доступных ВС",
 			"LGNotOpen": "Следующий уровень еще не открыт",
 			"LGNotConnected": "ВС не соединено с дорогой",
-			"ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-			"Done": "done", //Todo: Translate
-			"LevelWarningTT": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
-			"NegativeProfitTT": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP" //Todo: Translate
+			"ActiveRecurringQuest": "Активный круговой квест:", 
+			"Done": "Готово", 
+			"LevelWarningTT": "__fpcount__FP не вписывается в размер in<br>максимального вклада: __totalfp__FP",
+			"NegativeProfitTT": "Нет гарантии. __fpcount__ дополнительных СО должно быть добавлено для гарантии места: __totalfp__FP" 
 		},
 
 		"LGOverviewBox": {
@@ -94,7 +94,7 @@ let i18n = {
 			"TotalFPs": "Всего СО со всех построек: ",
 			"Amount": "Количество",
 			"FPBar" : "Кол-во СО в пакетах: ",
-			"BuyableFP" : "Buyable: "
+			"BuyableFP" : "можно купить: "
 		},
 
 		"Productions" : {
@@ -112,7 +112,7 @@ let i18n = {
 				"greatbuilding" : "Великие Строения",
 				"production" : "Производственные постройки",
 				"random_production" : "Случайные производственные здания",
-				"residential": "Residential buildings", //Todo: Translate
+				"residential": "Жилые постройки", 
 				"decoration": "Декор",
 				"street": "Дороги",
 				"goods": "Промышленные постройки",
@@ -125,7 +125,7 @@ let i18n = {
 
 		"Neighbors" : {
 			"Title" : "Производство ",
-			"ReadyProductions" : "Завешённое производство",
+			"ReadyProductions" : "Завершённое производство",
 			"OngoingProductions" : "Текущее производство"
 		},
 
@@ -137,8 +137,8 @@ let i18n = {
 			"DescRequired" : "Требуется",
 			"DescInStock" : "Доступно",
 			"DescStillMissing" : "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
-			"ExpansionsSum" : "Expansions", // TODO: translate
-			"nextTile" : "next Expansion", // TODO: translate
+			"ExpansionsSum" : "Расширения", 
+			"nextTile" : "следующее расширение", 
 			"tileNotPlanned" : "off", // TODO: translate
 			"infoLine" : "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", // TODO: translate
         },
@@ -149,7 +149,7 @@ let i18n = {
             "DescRequired": "Требуется",
             "DescInStock": "Доступно",
 			"DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
-			"NoTechs": "You have reached the end of this era", //Todo: Translate
+			"NoTechs": "Вы достигли конца эпохи", 
             "Eras": {
                 1: "Каменный Век",
                 2: "Бронзовый Век",
@@ -169,7 +169,7 @@ let i18n = {
                 16: "Океаническое Будущее",
                 17: "Виртуальное Будущее",
                 18: "Космическая Эра Марса",
-                19: "Космическая Эра Цереры"
+                19: "Космическая Эра Пояса астероидов"
             }
         },
 
@@ -184,14 +184,14 @@ let i18n = {
         },
 
 		"EventList": {
-			"Title": "Event quest list for: ", //Todo: Translate
-			"Desc": "Task", //Todo: Translate
-			"Reward": "Reward", //Todo: Translate
-            "Number": "No.", //Todo: Translate
-			"Or": " or ", //Todo: Translate
-			"And": " and ", //Todo: Translate
-			"Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
-			"Waiting": "No quest available",  // Todo: Translate
+			"Title": "Список заданий события: ", 
+			"Desc": "Задание", 
+			"Reward": "Награда", 
+            "Number": "№", 
+			"Or": " или ", 
+			"And": " и ", 
+			"Upcoming": "БУДУЩИЕ ЗАДАНИЯ (количество может варьироваться)", 
+			"Waiting": "Нет доступных заданий",  
 		},
 
         "Negotiation": {
@@ -208,8 +208,8 @@ let i18n = {
 			"Stock": "Склад:",
 			"GoodsLow": "ВНИМАНИЕ: Мало товара на складе",
 			"GoodsCritical": "ВНИМАНИЕ: Недостаточно товара на складе",
-			"DragDrop": "Вы можете самостоятелько изменить значки используя перетаскивание, чтобы установить последовательность первой попытки.",
-			"TableLoadError": "Error loading the negotiation table" //Todo: Translate
+			"DragDrop": "Вы можете самостоятелько изменить значки, используя перетаскивание, чтобы установить последовательность первой попытки.",
+			"TableLoadError": "Ошибка загрузки модуля переговоров" 
         },
 
 		"Settings" : {
@@ -225,16 +225,16 @@ let i18n = {
 			"FilterAuction" : "Аукцион",
 			"FilterLevel" : "Поднятие уровня",
 			"FilterMessage" : "Сообщение",
-			"FilterGildFights" : "Guild Fights", //Todo: Translate
+			"FilterGildFights" : "Войны ГИ", 
 			"FilterTrade" : "Рынок",
 			"ResetBox" : "Сбросить панель",
 			"Messages" : {
 				"GEX" : "<strong>__player__</strong> получил __points__ очков в ЭГ.",
-				"LevelUp" : "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
+				"LevelUp" : "__player__'s __building__ строение достигло уровня __level__.<br>Вы взяли <strong>__rank__th</strong> место и получили <strong>__fps__</strong> СО.", 
 				"Auction" : "<strong>__player__</strong> только что сделал ставку __amount__ монет.",
-				"Trade" : "<strong>__player__</strong> приянл ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
+				"Trade" : "<strong>__player__</strong> принял ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
 				"MsgBuilding" : "__building__ - Уровень __level__",
-				"GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__"   // Todo: Translate
+				"GildFightOccupied": "Сектор <span style=\"color:#ffb539\">__provinceName__</span> был захвачен <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> и закрыт до __untilOccupied__"   
 			}
 		},
 
@@ -254,27 +254,27 @@ let i18n = {
 		},
 		
 		"CityMap": {
-			"TitleSend": "Submit data", //Todo: Translate
-			"Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
-			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-			"SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
-			"WholeArea": "The whole area: ", // @Todo: Translate
-			"FreeArea": "Free area: " // @Todo: Translate
+			"TitleSend": "Отправить данные", 
+			"Desc1": "Для планирования Вашего города необходимо отправлять данные на сервер foe-rechner.de",
+			"Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Отправить</button>", 
+			"SubmitSuccess": "Данные отправлены успешно... Можете посетить ", 
+			"WholeArea": "Пространство целиком: ", 
+			"FreeArea": "Свободное пространство: " 
 		},
 
 		"Gildfights": {
-			"Title": "Player overview", //Todo: Translate
-			"Player": "Player", //Todo: Translate
-			"Negotiations": "Negotiations", //Todo: Translate
-			"Fights": "Fights", //Todo: Translate
-			"LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
+			"Title": "Обзор игрока", 
+			"Player": "Игрок", 
+			"Negotiations": "Переговоры", 
+			"Fights": "Бои", 
+			"LastSnapshot": " - последняя фиксация __time__ ago", 
 		},
 
 		"HiddenRewards": {
-			"Title": "Hidden Rewards",  // Todo: Translate
-			"Appears": "Appears",  // Todo: Translate
-			"Disappears": "Disappears",  // Todo: Translate
-			"NoEvents": "No events presents"  // Todo: Translate
+			"Title": "Инциденты",  
+			"Appears": "Появятся",  
+			"Disappears": "Исчезнут",  
+			"NoEvents": "Нет инцидентов на карте"  
 		}
 	},
 
@@ -304,8 +304,8 @@ let i18n = {
         	"Warning" : "Отключено: Для включения посетите провинцию!"
 		},
         "Event": {
-            "Title": "Event Questlist", //Todo: Translate
-            "Desc": "Overview of the current and upcoming quests" //Todo: Translate
+            "Title": "Список заданий события", 
+            "Desc": "Обзор текущего и будущих событий" 
 		},
         "Negotiation": {
             "Title": "Помощник переговоров",
@@ -348,8 +348,8 @@ let i18n = {
 			"Desc" : "Отображает все события, которые происходяя \"в фоне\"<br><em>Заполняется информацией ...</em>"
 		},
 		"HiddenRewards": {
-			"Title": "Hidden rewards", //Todo: Translate
-			"Desc": "Overview of hidden rewards" //Todo: Translate
+			"Title": "Инциденты", 
+			"Desc": "Обзор инцидентов" 
 		},
 		"Citymap": {
 			"Title": "City overview",
@@ -459,17 +459,17 @@ let i18n = {
 
 	"HiddenRewards": {
 		"Positions": {
-			"nature": "Nature",  //Todo: Translate
-			"shore": "Shore",  //Todo: Translate
-			"water": "in the water",  //Todo: Translate
-			"cityRoadSmall": "small Road",  //Todo: Translate
-			"cityRoadBig": "big Road",   // Todo: Translate
-			"guildExpedition": "Guild expedition" //Todo: Translate
+			"nature": "Равнина",  
+			"shore": "Берег", 
+			"water": "Море",  
+			"cityRoadSmall": "однополосная дорога",  
+			"cityRoadBig": "двухполосная дорога",
+			"guildExpedition": "Экспедиция ГИ" 
 		},
 		"Table": {
-			"type": "Type", //Todo: Translate
-			"position": "Position", //Todo: Translate
-			"expires": "Expires at" //Todo: Translate
+			"type": "тип", 
+			"position": "расположение", 
+			"expires": "Исчезнет через" 
 		}
 	}
 };
