@@ -37,10 +37,31 @@ let Chat = {
 
 		let data = Object.fromEntries( new URLSearchParams(location.search) );
 
-		Chat.GildID = +data['guild'];
-		Chat.PlayerID = +data['player'];
-		Chat.PlayerName = decodeURI(data['name']);
-		Chat.World = data['world'];
+		// vorhalten um bei einem Raumwechsel die Daten zu behalten
+		// wird beim schliessen geleert
+		let checkData = localStorage.getItem('CurrentPlayerID');
+
+		console.log('checkData: ', checkData);
+
+		if(checkData == null){
+			Chat.GildID = +data['guild'];
+			Chat.PlayerID = +data['player'];
+			Chat.PlayerName = decodeURI(data['name']);
+			Chat.World = data['world'];
+
+			localStorage.setItem('CurrentPlayerID', Chat.PlayerID);
+			localStorage.setItem('CurrentPlayerName', Chat.PlayerName);
+			localStorage.setItem('CurrentGuildID', Chat.GildID);
+			localStorage.setItem('CurrentWorld', Chat.World);
+
+		} else {
+			Chat.GildID = +localStorage.getItem('CurrentGuildID');
+			Chat.PlayerID = +localStorage.getItem('CurrentPlayerID');
+			Chat.PlayerName = localStorage.getItem('CurrentPlayerName');
+			Chat.World = localStorage.getItem('CurrentWorld');
+		}
+
+		console.log('sessionStorage.getItem(\'CurrentGuildID\'): ', localStorage.getItem('CurrentGuildID'));
 
 		const cdnRecivedPromise =
 			new Promise(resolve =>
@@ -98,8 +119,7 @@ let Chat = {
 	 */
 	Init: ()=> {
 
-		const template = document.createElement('template');
-		template.innerHTML = `
+		const div = `
 			<div class="chat-wrapper">
 				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 				<div id="chat">
@@ -116,10 +136,7 @@ let Chat = {
 			</div>
 		`;
 
-		const box = document.getElementById('ChatBody');
-		box.appendChild(template.content);
-		//$('#ChatBody').append(div);
-
+		$('#ChatBody').append( $(div) );
 
 		setTimeout(
 			function(){
@@ -127,8 +144,7 @@ let Chat = {
 				Chat.Members();
 
 				// alles geladen, Loader entfernen
-				document.getElementById('ChatBody').classList.remove('loader');
-				// $('#ChatBody').removeClass('loader');
+				$('#ChatBody').removeClass('loader');
 			}, 100
 		);
 
@@ -246,18 +262,14 @@ let Chat = {
 
 		window.addEventListener('beforeunload', /*$(window).on("beforeunload",*/ function(){
 
-			this.document.getElementById('ChatBody').classList.add('loader');
-			// $('#ChatBody').addClass('loader');
+			$('#ChatBody').addClass('loader');
+
+			localStorage.removeItem('CurrentPlayerID');
+			localStorage.removeItem('CurrentPlayerName');
+			localStorage.removeItem('CurrentGuildID');
+			localStorage.removeItem('CurrentWorld');
 
 			Chat.Close();
-
-			console.log('AJAX-Functions-BeforeUnload')
-			// $.ajax({
-			// 	type: 'POST',
-			// 	async: false,
-			// 	data: {room_id: 1, dir: 'leave'},
-			// 	url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World
-			// });
 		});
 	},
 
