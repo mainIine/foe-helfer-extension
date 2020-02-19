@@ -383,6 +383,8 @@ let Productions = {
 		};
 
 		if( $('#Productions').length > 0 ){
+			HTML.CloseOpenBox('Productions');
+
 			return ;
 		}
 

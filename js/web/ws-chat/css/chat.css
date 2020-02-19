@@ -29,9 +29,8 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	padding: 0.2rem 1rem;
+	padding: 0.3rem 1rem;
 	font-size: 0.8rem;
-	line-height: 1.5;
 	background: rgb(183,112,55);
 	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
 	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
@@ -155,7 +154,11 @@ body {
 	display: flex;
 	flex-wrap: nowrap;
 	border-bottom: 1px solid #644c34;
-	background: url('../images/chat-bg.png') center top/contain repeat-y;
+	background: #f5ebc6;
+}
+
+#ChatBody #chat #top-bar .btn-default:not(:last-child) {
+	margin-right: 0.625rem;
 }
 
 #chat #message_box {
