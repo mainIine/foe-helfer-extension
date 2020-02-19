@@ -168,7 +168,7 @@ let HTML = {
 		// es gibt gespeicherte Koordinaten
 		if(cords !== null){
 			let c = cords.split('|');
-			div.offset({ top: c[0], left: c[1]});
+			div.offset({ top: Math.min(c[0], window.innerHeight - 50), left: Math.min(c[1], window.innerWidth - 100) });  // Verhindere, dass Fenster außerhalb plaziert werden
 		}
 
 		// Ein Link zu einer Seite
