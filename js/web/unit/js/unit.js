@@ -70,6 +70,9 @@ let Unit = {
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('unit');
+
+		} else {
+			HTML.CloseOpenBox('units');
 		}
 
 		Unit.BuildBox();

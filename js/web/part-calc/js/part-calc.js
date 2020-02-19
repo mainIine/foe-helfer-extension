@@ -32,7 +32,9 @@ let Parts = {
 
 		// Gibt es schon? Raus...
 		if( $('#OwnPartBox').length > 0 ){
-			return;
+			HTML.CloseOpenBox('OwnPartBox');
+
+			return ;
 		}
 
 		// prüfen ob es hinterlegte Werte gibt

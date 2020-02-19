@@ -56,23 +56,26 @@ let Technologies = {
 	 * Zeigt
 	 */
     Show: ()=> {
-       if ($('#technologies').length === 0) {
+		if ($('#technologies').length === 0) {
 
-           HTML.Box({
-			   'id': 'technologies',
-			   'title': i18n('Boxes.Technologies.Title'),
-			   'auto_close': true,
-			   'dragdrop': true,
-			   'minimize': true
-		   });
+			HTML.Box({
+			'id': 'technologies',
+			'title': i18n('Boxes.Technologies.Title'),
+			'auto_close': true,
+			'dragdrop': true,
+			'minimize': true
+			});
 
-		   // CSS in den DOM prügeln
-		   HTML.AddCssFile('technologies');
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('technologies');
 
-           Technologies.SelectedEraID = CurrentEraID;
-        }
+			Technologies.SelectedEraID = CurrentEraID;
 
-        Technologies.BuildBox();
+		} else {
+			HTML.CloseOpenBox('technologies');
+		}
+
+		Technologies.BuildBox();
     },
 
 

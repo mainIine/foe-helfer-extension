@@ -103,6 +103,9 @@ let Settings = {
 				title: i18n('Boxes.Settings.Title'),
 				auto_close: true
 			});
+
+		} else {
+			HTML.CloseOpenBox('SettingsBox');
 		}
 
 		Settings.BuildBody();
