@@ -242,7 +242,9 @@ let Parts = {
         
         for (let i = 0; i < 5; i++) {
             if (FPRewards[i] <= Maezens[i] || Rest <= Maezens[i]) {
-                Eigens[i] = 0;
+				Eigens[i] = Math.ceil(Rest + (Maezens[i + 1] !== undefined ? Maezens[i + 1] : 0) - Maezens[i]);
+				Eigens[i] = Math.max(Eigens[i], 0);
+				Rest -= Eigens[i];
                 continue;
             }
 

@@ -14,7 +14,7 @@
 		"Boxes.Calculator.Done": "abgeschlossen",
 		"Boxes.Calculator.FP": "FP",
 		"Boxes.Calculator.FriendlyInvestment": "Fördern mit:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das LG!",
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
@@ -24,15 +24,16 @@
 		"Boxes.Calculator.Sniping": "Snipen",
 		"Boxes.Calculator.Step": "Stufe ",
 		"Boxes.Calculator.Title": "Kostenrechner",
-		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
+		"Boxes.Calculator.TTForderCosts": "Einsatz = __nettoreward__<small>(Netto Mäzen)</small> * __forderfactor__%<small>(Fördern mit)</small> = __costs__",
 		"Boxes.Calculator.TTForderNegativeProfit": "Platz ist nicht sicher. __fpcount__FP müssen zusätzlich zum Absichern gezahlt werden<br>Gesamt zum Absichern: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP passen nicht mehr hinein<br>Maximale Einzahlung: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Loss = __payed__<small>(payed)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You payed __payed__FP instead of __topay__FP. That is __tooless__FP too less.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You payed __payed__FP instead of __topay__FP. That is __toomuch__FP too much.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Einsatz: __costs__<br>Verlust = __costs__<small>(Einsatz)</small> - __bruttoreward__<small>(Ertrag)</small> = __loss__",
+		"Boxes.Calculator.TTLossSelf": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Bezahlt: __payed__<br>Verlust = __payed__<small>(Bezahlt)</small> - __bruttoreward__<small>(Ertrag)</small> = __loss__",
+		"Boxes.Calculator.TTPayedTooLess": "Du hast __payed__FP statt __topay__FP bezahlt. Das sind __tooless__FP zu wenig.",
+		"Boxes.Calculator.TTPayedTooMuch": "Du hast __payed__FP statt __topay__FP bezahlt. Das sind __toomuch__FP zu viel.",
+		"Boxes.Calculator.TTProfit": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Einsatz: __costs__<br>Gewinn = __bruttoreward__<small>(Ertrag)</small> - __costs__<small>(Einsatz)</small> = __profit__",
+		"Boxes.Calculator.TTProfitSelf": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Bezahlt: __payed__<br>Gewinn = __bruttoreward__<small>(Ertrag)</small> - __payed__<small>(Bezahlt)</small> = __profit__",
+		"Boxes.Calculator.TTRate": "Kurs = __costs__<small>(Einsatz)</small> / __nettoreward__<small>(Netto Mäzen)</small> = __rate__%",
 		"Boxes.Calculator.Up2LevelUp": "Bis zum leveln",
 		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
 		"Boxes.Campagne.DescInStock": "Vorhanden",
@@ -129,7 +130,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Einzahlen",
 		"Boxes.OwnpartCalculator.Done": "Erledigt",
 		"Boxes.OwnpartCalculator.Ext": "Ext",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "Individueller LG Name",
 		"Boxes.OwnpartCalculator.Levels": "Leveln",
 		"Boxes.OwnpartCalculator.LGTotalFP": "LG Gesamt-FP",
@@ -290,7 +291,7 @@
 		"Settings.ShowTavernBadge.Desc": "Sobald ein Boost in der Taverne aktiviert wird, erscheint ein global verschiebbarer Counter",
 		"Settings.ShowTavernBadge.Title": "Tavernen Badge anzeigen",
 		"Settings.Version.Desc": "Chrome Extension Version",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
+		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Gilden Id:",
 		"Settings.Version.PlayerId": "Spieler Id:",
 		"Settings.Version.Title": "Version",

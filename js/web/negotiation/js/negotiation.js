@@ -137,7 +137,7 @@ let Negotiation = {
 					Stock = 0;
 
 				if (Stock < GoodAmount) {
-					TextClass = 'error';
+					TextClass = 'danger';
 					StockState = Math.max(StockState, 2);
 				}
 				else if (Stock < maxRequired) {

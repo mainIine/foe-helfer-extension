@@ -21,18 +21,19 @@
 		"Boxes.Calculator.Meds": "Medalj",
 		"Boxes.Calculator.Profit": "Vinst",
 		"Boxes.Calculator.Rate": "Kvot",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
+		"Boxes.Calculator.Sniping": "Stjäla",
 		"Boxes.Calculator.Step": "Nivå ",
 		"Boxes.Calculator.Title": "Kostnadskalkylator",
-		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
+		"Boxes.Calculator.TTForderCosts": "Kostnad = __nettoreward__<small>(netto vinst)</small> * __forderfactor__%<small>(Vänlig investering)</small> = __costs__",
 		"Boxes.Calculator.TTForderNegativeProfit": "Placering är inte säker. __fpcount__ ytterligare FP måste läggas in för att göra den säker<br>Totalt för att göra den säker: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP får inte plats<br>Max investering: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Loss = __payed__<small>(payed)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You payed __payed__FP instead of __topay__FP. That is __tooless__FP too less.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You payed __payed__FP instead of __topay__FP. That is __toomuch__FP too much.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Kostnad: __costs__<br>Förlust = __costs__<small>(kostnader)</small> - __bruttoreward__<small>(belöning)</small> = __loss__",
+		"Boxes.Calculator.TTLossSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __payed__<br>Förlust = __payed__<small>(betalade)</small> - __bruttoreward__<small>(belöning)</small> = __loss__",
+		"Boxes.Calculator.TTPayedTooLess": "Du betalade __payed__FP istället för __topay__FP. Det är __tooless__FP för mycket.",
+		"Boxes.Calculator.TTPayedTooMuch": "Du betalade __payed__FP istället för __topay__FP. Det är __toomuch__FP för lite.",
+		"Boxes.Calculator.TTProfit": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Kostnad: __costs__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __costs__<small>(kostnad)</small> = __profit__", 
+		"Boxes.Calculator.TTProfitSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __payed__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __payed__<small>(betalning)</small> = __profit__",
+		"Boxes.Calculator.TTRate": "Kvot = __costs__<small>(kostnad)</small> / __nettoreward__<small>(netto vinst)</small> = __rate__%", 
 		"Boxes.Calculator.Up2LevelUp": "Till nästa nivå",
 		"Boxes.Campagne.AlreadyDone": " Redan erövrad!",
 		"Boxes.Campagne.DescInStock": "Tillgängliga",
@@ -44,7 +45,7 @@
 		"Boxes.CityMap.Desc1": "För att planera din stad behöver we skicka din data till foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Skicka</button>",
 		"Boxes.CityMap.FreeArea": "Ledig yta: ",
-		"Boxes.CityMap.SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
+		"Boxes.CityMap.SubmitSuccess": "Data skickades utan problem... Besök nu ",
 		"Boxes.CityMap.TitleSend": "Skicka data",
 		"Boxes.CityMap.WholeArea": "Total yta: ",
 		"Boxes.EventList.And": " och ",
@@ -64,7 +65,7 @@
 		"Boxes.HiddenRewards.Disappears": "Försvinner",
 		"Boxes.HiddenRewards.NoEvents": "Inga händelser",
 		"Boxes.HiddenRewards.Title": "Gömda händelser",
-		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
+		"Boxes.Infobox.Filter": "Filter",
 		"Boxes.Infobox.FilterAuction": "Auktion",
 		"Boxes.Infobox.FilterGex": "IE",
 		"Boxes.Infobox.FilterGildFights": "Imperiestrider",
@@ -82,7 +83,7 @@
 		"Boxes.Investment.CurrReward": "Nuvarande vinst: ",
 		"Boxes.Investment.InvestBar": "Investerat FP: ",
 		"Boxes.Investment.Title": "Investera",
-		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Investment.TotalFP": "Bank + cirkulation + vinst: ",
 		"Boxes.LGOverviewBox.Building": "Byggnad",
 		"Boxes.LGOverviewBox.Level": "Nivå",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> har inget att hämta",
@@ -99,7 +100,7 @@
 		"Boxes.Negotiation.DragDrop": "Du kan omorganisera ikonerna på medel via dra & släpp för att välja ordningen för första försöket.",
 		"Boxes.Negotiation.GoodsCritical": "VARNING: Varulager är kritiskt",
 		"Boxes.Negotiation.GoodsLow": "VARNING: Varulager är lågt",
-		"Boxes.Negotiation.Person": "Person", //Todo: Translate
+		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Round": "Omgång",
 		"Boxes.Negotiation.Stock": "Lager:",
 		"Boxes.Negotiation.Success": "Framgång",
@@ -107,7 +108,7 @@
 		"Boxes.Negotiation.Title": "Förhandlingshjälp",
 		"Boxes.Negotiation.TryEnd": "Inga fler försök",
 		"Boxes.Negotiation.WrongGoods": "Fel vara vald, välj manuell för avslut",
-		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", //Todo: Translate
+		"Boxes.Neighbors.NothingToPlunder": "Inget att plundra",
 		"Boxes.Neighbors.OngoingProductions": "Pågående produktion",
 		"Boxes.Neighbors.ReadyProductions": "Slutförd produktion",
 		"Boxes.Neighbors.Title": "Produktions av ",
@@ -123,13 +124,13 @@
 		"Boxes.Outpost.TitleFree": "Tillgänglig",
 		"Boxes.Outpost.TitleShort": "Varuöversikt - ",
 		"Boxes.OwnpartCalculator.Arc": "Ark",
-		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
+		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
 		"Boxes.OwnpartCalculator.CopyValues": "Kopiera värden",
 		"Boxes.OwnpartCalculator.Deposit": "Insats",
 		"Boxes.OwnpartCalculator.Done": "Klart",
-		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.Ext": "Extra",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "MB Namn",
 		"Boxes.OwnpartCalculator.Levels": "Nivåer",
 		"Boxes.OwnpartCalculator.LGTotalFP": "MB Total-FP",
@@ -150,7 +151,7 @@
 		"Boxes.Productions.Happiness": "Glädje",
 		"Boxes.Productions.Headings.all": "Alla",
 		"Boxes.Productions.Headings.amount": "Antal",
-		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
+		"Boxes.Productions.Headings.boost": "Boost",
 		"Boxes.Productions.Headings.culture": "Kulturbyggnad",
 		"Boxes.Productions.Headings.decoration": "Dekoration",
 		"Boxes.Productions.Headings.earning": "Inkomst",
@@ -166,7 +167,7 @@
 		"Boxes.Productions.ModeSingle": "Enkel",
 		"Boxes.Productions.SearchInput": "Sök byggnad...",
 		"Boxes.Productions.Title": "Produktionsöversikt",
-		"Boxes.Productions.Total": "Total: ", //Todo: Translate
+		"Boxes.Productions.Total": "Total: ",
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Inställningar",
@@ -178,7 +179,7 @@
 		"Boxes.Technologies.NoTechs": "Du har nått slutet av denna era",
 		"Boxes.Technologies.Resource": "Resurs",
 		"Boxes.Technologies.Title": "Forskningskostnad för",
-		"Boxes.Units.Attack": "Attack", //Todo: Translate
+		"Boxes.Units.Attack": "Attack",
 		"Boxes.Units.Bind": "Bunden",
 		"Boxes.Units.Defend": "Försvar",
 		"Boxes.Units.NextUnitsIn": "Nästa __count__ enheter kommer om <span class=\"alca-countdown\"></span> vid __harvest__ Uhr",
@@ -186,7 +187,7 @@
 		"Boxes.Units.Proportionally": "Proportionellt",
 		"Boxes.Units.Quantity": "Antal",
 		"Boxes.Units.ReadyToLoot": "Redo att plundra!",
-		"Boxes.Units.Status": "Status", //Todo: Translate
+		"Boxes.Units.Status": "Status",
 		"Boxes.Units.Title": "Arméöversikt",
 		"Boxes.Units.Unbind": "Obunden",
 		"Boxes.Units.Unit": "Trupp",
@@ -239,7 +240,7 @@
 		"Menu.Event.Desc": "Översikt av nuvarande och kommande event",
 		"Menu.Event.Title": "Event uppdragslista",
 		"Menu.Forum.Desc": "Har du en fråga? något som irritera dig? eller bara vill prata ...",
-		"Menu.Forum.Title": "Forum", //Todo: Translate
+		"Menu.Forum.Title": "Forum",
 		"Menu.HiddenRewards.Desc": "Översikt av händelser",
 		"Menu.HiddenRewards.Title": "Gömda händelser",
 		"Menu.Info.Desc": "Visar allt som händer i \"bakgrunden\"<br>",
@@ -290,10 +291,10 @@
 		"Settings.ShowTavernBadge.Desc": "När extra runda i värdshuset aktiverats kommer en ikon visas.",
 		"Settings.ShowTavernBadge.Title": "Visa värdshusprestation",
 		"Settings.Version.Desc": "Chrome tillägg version",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
+		"Settings.Version.DescDebug": "<p>Tillägg <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Imperium id:",
 		"Settings.Version.PlayerId": "Spelar id:",
-		"Settings.Version.Title": "Version", //Todo: Translate
+		"Settings.Version.Title": "Version",
 		"Settings.Version.World": "Värld:"
 	}
 }
