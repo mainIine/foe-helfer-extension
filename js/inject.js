@@ -151,30 +151,30 @@ if (Languages.PossibleLanguages[lng] === undefined) {
 
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
-		const s = [
-			'_languages',
-			'_helper',
-			'_menu',
-			'tavern',
-			'outposts',
-			'calculator',
-			'infoboard',
-			'productions',
-			'part-calc',
-			'unit',
-			'guildfights',
-			'notes',
-			'campagnemap',
-			'technologies',
-			'negotiation',
-			'eventquest',
-			'read-buildings',
-			'settings',
-			'investment',
-			'strategy-points',
-			'citymap',
-			'hidden-rewards'
-		];
+			const s = [
+				'_languages',
+				'_helper',
+				'_menu',
+				'tavern',
+				'outposts',
+				'calculator',
+				'infoboard',
+				'productions',
+				'part-calc',
+				'unit',
+				'guildfights',
+				'notes',
+				'campagnemap',
+				'technologies',
+				'negotiation',
+				'eventquest',
+				'read-buildings',
+				'settings',
+				'investment',
+				'strategy-points',
+				'citymap',
+				'hidden-rewards'
+			];
 
 			// Scripte laden (nacheinander)
 			for (let i = 0; i < s.length; i++) {
