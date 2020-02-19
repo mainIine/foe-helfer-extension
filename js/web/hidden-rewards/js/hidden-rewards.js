@@ -15,6 +15,7 @@ let HiddenRewards = {
     Cache: null,
     IsPrepared: false,
 
+
 	/**
 	 * Box in den DOM
 	 */
@@ -32,9 +33,14 @@ let HiddenRewards = {
 			});
 
 			moment.locale(i18n('Local'));
+
+			HiddenRewards.BuildBox();
+
+		} else {
+			HTML.CloseOpenBox('HiddenRewardBox');
 		}
-        HiddenRewards.BuildBox();
     },
+
 
 	/**
 	 * Daten aufbereiten

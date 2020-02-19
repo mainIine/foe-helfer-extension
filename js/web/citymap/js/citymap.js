@@ -68,8 +68,10 @@ let CityMap = {
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);
 			}, 100);
-		}
 
+		} else {
+			HTML.CloseOpenBox('city-map-overlay');
+		}
 
 		setTimeout(()=>{
 
