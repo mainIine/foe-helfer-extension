@@ -53,14 +53,10 @@ const i18n_loadPromise = (async() => {
 
 	try {
 		let languages = [];
-		// Lade Deutsches default falls es nicht auf Deutsch ist
-		if (GuiLng !== 'de') {
-			languages.push('de');
 
-			// Lade auch das Englische default falls es auch nicht auf Englisch ist
-			if (GuiLng !== 'en') {
-				languages.push('en');
-			}
+		// Englisches Fallback laden
+		if (GuiLng !== 'en') {
+			languages.push('en');
 		}
 
 		languages.push(GuiLng);
@@ -1516,10 +1512,14 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
-			world: ExtWorld,
-			playerId: ExtPlayerID,
-			name: d.user_name,
-			portrait: d.portrait_id
+			data: {
+				world: ExtWorld,
+				player_id: ExtPlayerID,
+				name: d.user_name,
+				portrait: d.portrait_id,
+				guild_id: d.clan_id,
+				guild_name: d.clan_name
+			}
 		});
 	},
 

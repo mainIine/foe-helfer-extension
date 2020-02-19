@@ -6,14 +6,14 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
-		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
-		"Boxes.Calculator.ArkBonus": "Боунс Арки",
+		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
+		"Boxes.Calculator.ArkBonus": "Бонус Арки",
 		"Boxes.Calculator.AvailableFP": "Доступные СО",
 		"Boxes.Calculator.BPs": "СО",
 		"Boxes.Calculator.Commitment": "Вклад",
-		"Boxes.Calculator.Done": "done", //Todo: Translate
+		"Boxes.Calculator.Done": "готово",
 		"Boxes.Calculator.FP": "СО",
-		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
+		"Boxes.Calculator.FriendlyInvestment": "Вложение от друга:",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
@@ -24,15 +24,16 @@
 		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Уровень ",
 		"Boxes.Calculator.Title": "Калькулятор вложений",
-		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
-		"Boxes.Calculator.TTForderNegativeProfit": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP", //Todo: Translate
+		"Boxes.Calculator.TTForderCosts": "Суммарно = __nettoreward__<small>(чистое вложение)</small> * __forderfactor__%<small>(вложение от друга)</small> = __costs__",
+		"Boxes.Calculator.TTForderNegativeProfit": "Нет гарантии. __fpcount__ СО должно быть вложено дополнительно для гарантии места.<br>Всего СО для гарантии: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Loss = __payed__<small>(payed)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You payed __payed__FP instead of __topay__FP. That is __tooless__FP too less.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You payed __payed__FP instead of __topay__FP. That is __toomuch__FP too much.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Откат = __nettoreward__<small>(чистое вложение)</small> * __arcfactor__%<small>(Бонус Арки)</small> = __bruttoreward__<br>Стоимость: __costs__<br>Loss = __costs__<small>(стоимость)</small> - __bruttoreward__<small>(откат)</small> = __loss__",
+		"Boxes.Calculator.TTLossSelf": "Откат = __nettoreward__<small>(чистое вложение)</small> * __arcfactor__%<small>(Бонус Арки)</small> = __bruttoreward__<br>Вложено: __payed__<br>Loss = __payed__<small>(вложено)</small> - __bruttoreward__<small>(откат)</small> = __loss__",
+		"Boxes.Calculator.TTPayedTooLess": "Вы вложили __payed__FP вместо of __topay__FP. Это на __tooless__FP меньше, чем нужно.",
+		"Boxes.Calculator.TTPayedTooMuch": "Вы вложили __payed__FP вместо of __topay__FP. Это на __toomuch__FP больше, чем нужно.",
+		"Boxes.Calculator.TTProfit": "Откат = __nettoreward__<small>(чистый откат)</small> * __arcfactor__%<small>(Бонус Арки)</small> = __bruttoreward__<br>Стоимость: __costs__<br>Профит = __bruttoreward__<small>(откат)</small> - __costs__<small>(стоимость)</small> = __profit__",
+		"Boxes.Calculator.TTProfitSelf": "Откат = __nettoreward__<small>(чистый откат)</small> * __arcfactor__%<small>(Бонус Арки)</small> = __bruttoreward__<br>Вложено: __payed__<br>профит = __bruttoreward__<small>(откат)</small> - __payed__<small>(вложено)</small> = __profit__",
+		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Осталось до уровня",
 		"Boxes.Campagne.AlreadyDone": " уже захвачено!",
 		"Boxes.Campagne.DescInStock": "Доступно",
@@ -41,33 +42,33 @@
 		"Boxes.Campagne.Resource": "Ресурс",
 		"Boxes.Campagne.Reward": "Общая награда ",
 		"Boxes.Campagne.Title": "Стоимость для захвата ",
-		"Boxes.CityMap.Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-		"Boxes.CityMap.FreeArea": "Free area: ", //Todo: Translate
-		"Boxes.CityMap.SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
-		"Boxes.CityMap.TitleSend": "Submit data", //Todo: Translate
-		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
-		"Boxes.EventList.And": " and ", //Todo: Translate
-		"Boxes.EventList.Desc": "Task", //Todo: Translate
-		"Boxes.EventList.Number": "No.", //Todo: Translate
-		"Boxes.EventList.Or": " or ", //Todo: Translate
-		"Boxes.EventList.Reward": "Reward", //Todo: Translate
-		"Boxes.EventList.Title": "Event quest list for: ", //Todo: Translate
-		"Boxes.EventList.Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
-		"Boxes.EventList.Waiting": "No quest available", //Todo: Translate
-		"Boxes.Gildfights.Fights": "Fights", //Todo: Translate
-		"Boxes.Gildfights.LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
-		"Boxes.Gildfights.Negotiations": "Negotiations", //Todo: Translate
-		"Boxes.Gildfights.Player": "Player", //Todo: Translate
-		"Boxes.Gildfights.Title": "Player overview", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Appears", //Todo: Translate
-		"Boxes.HiddenRewards.Disappears": "Disappears", //Todo: Translate
-		"Boxes.HiddenRewards.NoEvents": "No events presents", //Todo: Translate
-		"Boxes.HiddenRewards.Title": "Hidden Rewards", //Todo: Translate
+		"Boxes.CityMap.Desc1": "Для планирования Вашего города необходимо отправлять данные на сервер foe-rechner.de",
+		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Отправить</button>",
+		"Boxes.CityMap.FreeArea": "Свободное пространство: ",
+		"Boxes.CityMap.SubmitSuccess": "Данные отправлены успешно... Можете посетить ",
+		"Boxes.CityMap.TitleSend": "Отправить данные",
+		"Boxes.CityMap.WholeArea": "Пространство целиком: ",
+		"Boxes.EventList.And": " и ",
+		"Boxes.EventList.Desc": "Задача",
+		"Boxes.EventList.Number": "Нет.",
+		"Boxes.EventList.Or": " или ",
+		"Boxes.EventList.Reward": "Откат",
+		"Boxes.EventList.Title": "Список заданий события: ",
+		"Boxes.EventList.Upcoming": "БУДУЩИЕ ЗАДАНИЯ (количество может варьироваться)",
+		"Boxes.EventList.Waiting": "Нет доступных заданий",
+		"Boxes.Gildfights.Fights": "Бои",
+		"Boxes.Gildfights.LastSnapshot": " - последняя фиксация была __time__ назад ",
+		"Boxes.Gildfights.Negotiations": "Переговоры",
+		"Boxes.Gildfights.Player": "Игрок",
+		"Boxes.Gildfights.Title": "Обзор игрока",
+		"Boxes.HiddenRewards.Appears": "Появятся",
+		"Boxes.HiddenRewards.Disappears": "Исчезнут",
+		"Boxes.HiddenRewards.NoEvents": "В данное время нет событий",
+		"Boxes.HiddenRewards.Title": "Инциденты",
 		"Boxes.Infobox.Filter": "Фильтр",
 		"Boxes.Infobox.FilterAuction": "Аукцион",
 		"Boxes.Infobox.FilterGex": "ЭГ",
-		"Boxes.Infobox.FilterGildFights": "Guild Fights", //Todo: Translate
+		"Boxes.Infobox.FilterGildFights": "Битвы ГИ",
 		"Boxes.Infobox.FilterLevel": "Поднятие уровня",
 		"Boxes.Infobox.FilterMessage": "Сообщение",
 		"Boxes.Infobox.FilterTrade": "Рынок",
@@ -79,9 +80,9 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> приянл ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Сбросить панель",
 		"Boxes.Infobox.Title": "Панель информации",
-		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
-		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
-		"Boxes.Investment.Title": "Investment", //Todo: Translate
+		"Boxes.Investment.CurrReward": "Текуший профит: ",
+		"Boxes.Investment.InvestBar": "СО вложено: ",
+		"Boxes.Investment.Title": "Вложение",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Строение",
 		"Boxes.LGOverviewBox.Level": "Уровень",
@@ -93,7 +94,7 @@
 		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "найдено повторное",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "найдено новое",
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "пока нет вложений",
-		"Boxes.Negotiation.Average": "Ø Amount", //Todo: Translate
+		"Boxes.Negotiation.Average": "Ø Количество",
 		"Boxes.Negotiation.Canceled": "Переговоры были отменены",
 		"Boxes.Negotiation.Chance": "Шанс",
 		"Boxes.Negotiation.DragDrop": "Вы можете самостоятелько изменить значки используя перетаскивание, чтобы установить последовательность первой попытки.",
@@ -103,20 +104,20 @@
 		"Boxes.Negotiation.Round": "Раунд",
 		"Boxes.Negotiation.Stock": "Склад:",
 		"Boxes.Negotiation.Success": "Успех",
-		"Boxes.Negotiation.TableLoadError": "Error loading the negotiation table", //Todo: Translate
+		"Boxes.Negotiation.TableLoadError": "Ошибка загрузки модуля переговоров",
 		"Boxes.Negotiation.Title": "Помощник переговоров",
 		"Boxes.Negotiation.TryEnd": "Не осталось ходов",
 		"Boxes.Negotiation.WrongGoods": "Выбран неверный товар, закончите переговоры вручную",
-		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", //Todo: Translate
+		"Boxes.Neighbors.NothingToPlunder": "Нечего грабить",
 		"Boxes.Neighbors.OngoingProductions": "Текущее производство",
 		"Boxes.Neighbors.ReadyProductions": "Завешённое производство",
 		"Boxes.Neighbors.Title": "Производство ",
 		"Boxes.Outpost.DescInStock": "Доступно",
 		"Boxes.Outpost.DescRequired": "Требуется",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
-		"Boxes.Outpost.ExpansionsSum": "Expansions", //Todo: Translate
+		"Boxes.Outpost.ExpansionsSum": "Расширения",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", //Todo: Translate
-		"Boxes.Outpost.nextTile": "next Expansion", //Todo: Translate
+		"Boxes.Outpost.nextTile": "следующее Расширение",
 		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Товары поселения",
 		"Boxes.Outpost.TitleBuildings": "Постройка",
@@ -160,7 +161,7 @@
 		"Boxes.Productions.Headings.number": "Номер",
 		"Boxes.Productions.Headings.production": "Производственные постройки",
 		"Boxes.Productions.Headings.random_production": "Случайные производственные здания",
-		"Boxes.Productions.Headings.residential": "Residential buildings", //Todo: Translate
+		"Boxes.Productions.Headings.residential": "Жилые дома",
 		"Boxes.Productions.Headings.street": "Дороги",
 		"Boxes.Productions.ModeGroups": "Группы",
 		"Boxes.Productions.ModeSingle": "Без группы",
@@ -170,12 +171,12 @@
 		"Boxes.Settings.Active": "Включено",
 		"Boxes.Settings.Inactive": "Выключено",
 		"Boxes.Settings.Title": "Настройки",
-		"Boxes.StrategyPoints.BuyableFP": "Buyable: ", //Todo: Translate
+		"Boxes.StrategyPoints.BuyableFP": "Можно купить за монеты: ",
 		"Boxes.StrategyPoints.FPBar": "Кол-во СО в пакетах: ",
 		"Boxes.Technologies.DescInStock": "Доступно",
 		"Boxes.Technologies.DescRequired": "Требуется",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
-		"Boxes.Technologies.NoTechs": "You have reached the end of this era", //Todo: Translate
+		"Boxes.Technologies.NoTechs": "Вы достигли конца эпохи",
 		"Boxes.Technologies.Resource": "Ресурс",
 		"Boxes.Technologies.Title": "Стоимость исследования",
 		"Boxes.Units.Attack": "Атака",
@@ -212,15 +213,15 @@
 		"Eras.8": "Индустриальная Эпоха",
 		"Eras.9": "Эра Прогрессивизма",
 		"Global.BoxTitle": "FoE Helper", //Todo: Translate
-		"HiddenRewards.Positions.cityRoadBig": "big Road", //Todo: Translate
-		"HiddenRewards.Positions.cityRoadSmall": "small Road", //Todo: Translate
-		"HiddenRewards.Positions.guildExpedition": "Guild expedition", //Todo: Translate
-		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
-		"HiddenRewards.Positions.shore": "Shore", //Todo: Translate
-		"HiddenRewards.Positions.water": "in the water", //Todo: Translate
-		"HiddenRewards.Table.expires": "Expires at", //Todo: Translate
-		"HiddenRewards.Table.position": "Position", //Todo: Translate
-		"HiddenRewards.Table.type": "Type", //Todo: Translate
+		"HiddenRewards.Positions.cityRoadBig": "двухполосная дорога",
+		"HiddenRewards.Positions.cityRoadSmall": "однополсная дорога",
+		"HiddenRewards.Positions.guildExpedition": "Экспедиция ГИ",
+		"HiddenRewards.Positions.nature": "Равнина",
+		"HiddenRewards.Positions.shore": "Берег",
+		"HiddenRewards.Positions.water": "в море",
+		"HiddenRewards.Table.expires": "Исчезнет через",
+		"HiddenRewards.Table.position": "Расположение",
+		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
@@ -234,14 +235,14 @@
 		"Menu.Campagne.Warning": "Отключено: Для включения посетите провинцию!",
 		"Menu.Chat.Desc": "Общайтесь с участниками гильдии в реальном времени",
 		"Menu.Chat.Title": "Чат гильдии",
-		"Menu.Citymap.Desc": "Shows your city schematically from above", //Todo: Translate
-		"Menu.Citymap.Title": "City overview", //Todo: Translate
-		"Menu.Event.Desc": "Overview of the current and upcoming quests", //Todo: Translate
-		"Menu.Event.Title": "Event Questlist", //Todo: Translate
-		"Menu.Forum.Desc": "У вас ест ьвопросы? Вас что-то не устраивает? Или вы просто хотите поговрить ...",
+		"Menu.Citymap.Desc": "Вид города с птичьего полёта",
+		"Menu.Citymap.Title": "Обзор города",
+		"Menu.Event.Desc": "Обзор текущего и будущих событий",
+		"Menu.Event.Title": "Список заданий события",
+		"Menu.Forum.Desc": "У вас есть вопросы? Вас что-то не устраивает? Или вы просто хотите поговрить ...",
 		"Menu.Forum.Title": "Форум",
-		"Menu.HiddenRewards.Desc": "Overview of hidden rewards", //Todo: Translate
-		"Menu.HiddenRewards.Title": "Hidden rewards", //Todo: Translate
+		"Menu.HiddenRewards.Desc": "Обзор инцидентов",
+		"Menu.HiddenRewards.Title": "Инциденты",
 		"Menu.Info.Desc": "Отображает все события, которые происходяя \"в фоне\"<br><em>Заполняется информацией ...</em>",
 		"Menu.Info.Title": "Панель информации",
 		"Menu.Negotiation.Desc": "Предлагает товары для переговоров",
@@ -294,6 +295,6 @@
 		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
 		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
 		"Settings.Version.Title": "Версия",
-		"Settings.Version.World": "World:" //Todo: Translate
+		"Settings.Version.World": "Мир:"
 	}
 }
