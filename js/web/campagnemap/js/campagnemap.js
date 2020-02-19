@@ -50,7 +50,10 @@ let KampagneMap = {
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('campagnemap');
-        }
+
+        } else {
+			HTML.CloseOpenBox('campagne');
+		}
 
         KampagneMap.BuildBox();
     },

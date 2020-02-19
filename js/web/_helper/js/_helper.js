@@ -39,7 +39,7 @@ helper.str = {
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
 	copyToClipboard: function(textToCopy){
-		var copyFrom = $('<textarea/>');
+		let copyFrom = $('<textarea/>');
 		copyFrom.text(textToCopy);
 		$('body').append(copyFrom);
 		copyFrom.select();
@@ -350,6 +350,26 @@ let HTML = {
 				localStorage.setItem(id + 'Size', size);
 			},
 		});
+	},
+
+
+	/**
+	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
+	 *
+	 * @param cssid
+	 * @returns {boolean}
+	 */
+	CloseOpenBox: (cssid)=> {
+
+		let box = $('#' + cssid);
+
+		if( box.length > 0 ){
+			$(box).fadeToggle('fast', function(){
+				$(this).remove();
+			});
+		}
+
+		return false;
 	},
 
 

@@ -14,8 +14,10 @@
  */
 
 let Outposts = {
+
 	/** @type {FoE_JSON_CulturalOutpost[]|null} */
 	OutpostsData: null,
+
 	/** @type {FoE_JSON_CulturalOutpost|null} */
 	OutpostData : null,
 	
@@ -39,27 +41,6 @@ let Outposts = {
 	 * Füg eine Box in den DOM ein
 	 */
 	BuildInfoBox: ()=> {
-
-		if (Outposts.Advancements === null) {
-			let OutpostBuildings = localStorage.getItem('OutpostBuildings');
-
-			if (OutpostBuildings !== null)
-			{
-				Outposts.Advancements = JSON.parse(OutpostBuildings);
-			}
-		}
-
-		if (Outposts.Advancements === null || Outposts.OutpostData === null) {
-			return;
-		}
-
-		{
-			let oldPlannedFormat = Object.values(Outposts.PlannedTiles).find(planned => typeof planned === 'string');
-			if (oldPlannedFormat) {
-				// @ts-ignore
-				Outposts.PlannedTiles = {[Outposts.OutpostData.content]: Outposts.PlannedTiles};
-			}
-		}
 
 		if( $('#outpostConsumables').length === 0 )
 		{
@@ -98,6 +79,29 @@ let Outposts = {
 				}
 			});
 
+		} else {
+			HTML.CloseOpenBox('outpostConsumables');
+		}
+
+		if (Outposts.Advancements === null) {
+			let OutpostBuildings = localStorage.getItem('OutpostBuildings');
+
+			if (OutpostBuildings !== null)
+			{
+				Outposts.Advancements = JSON.parse(OutpostBuildings);
+			}
+		}
+
+		if (Outposts.Advancements === null || Outposts.OutpostData === null) {
+			return;
+		}
+
+		{
+			let oldPlannedFormat = Object.values(Outposts.PlannedTiles).find(planned => typeof planned === 'string');
+			if (oldPlannedFormat) {
+				// @ts-ignore
+				Outposts.PlannedTiles = {[Outposts.OutpostData.content]: Outposts.PlannedTiles};
+			}
 		}
 
 		Outposts.BuildInfoBoxContent();

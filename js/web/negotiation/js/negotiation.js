@@ -65,6 +65,9 @@ let Negotiation = {
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('negotiation');
+
+		} else {
+			HTML.CloseOpenBox('negotiationBox');
 		}
 
 		Negotiation.BuildBox();
