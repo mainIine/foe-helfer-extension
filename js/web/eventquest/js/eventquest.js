@@ -121,6 +121,8 @@ let EventQuest = {
 	 *
 	 */
     BuildBox: () => {
+        if(localStorage.getItem('lastActivQuest') !== null)
+            localStorage.removeItem('lastActivQuest');
         const Quests = EventQuest.Quests;
         if (Quests) {
             for (let Quest of Quests) {
@@ -133,7 +135,6 @@ let EventQuest = {
                     if (progressCond) {
                         const id = progressCond.currentProgress + 1;
                         EventQuest.CurrentQuestID = id;
-                        localStorage.setItem("lastActivQuest", '' + id);
                     }
 
                 } else if (!isWaiting) {
@@ -191,7 +192,7 @@ let EventQuest = {
             '</thead>');
 
         if (EventQuest.CurrentQuestID === null) {
-            EventQuest.CurrentQuestID = parseInt(localStorage.getItem("lastActivQuest"));
+            EventQuest.CurrentQuestID = 1;
         }
         const CurrentQuestID = EventQuest.CurrentQuestID;
 
