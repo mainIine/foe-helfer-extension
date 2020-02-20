@@ -49,26 +49,20 @@ let HiddenRewards = {
         let data = [];
 
         for(let idx in HiddenRewards.Cache) {
+			if (!HiddenRewards.Cache.hasOwnProperty(idx)) continue;
+
             let position = HiddenRewards.Cache[idx].position.context;
 
             let SkipEvent = true;
-            if (position === 'cityRoadSmall') {
-                for (let i in MainParser.Buildings) {
-                    if (!MainParser.Buildings.hasOwnProperty(i)) continue;
-                    if (MainParser.Buildings[i]['type'] === 'street' && MainParser.Buildings[i]['width'] === 2) {
-                        SkipEvent = false;
-                        break;
-                    }
-                }
-            }
-            else if (position === 'cityRoadBit') {
-                for (let i in MainParser.Buildings) {
-                    if (!MainParser.Buildings.hasOwnProperty(i)) continue;
-                    if (MainParser.Buildings[i]['type'] === 'street' && MainParser.Buildings[i]['width'] === 1) {
-                        SkipEvent = false;
-                        break;
-                    }
-                }
+
+            // prüfen ob der Spieler in seiner Stadt eine zweispurige Straße hat
+            if (position === 'cityRoadBig') {
+
+            	let check = MainParser.CityMapData.find(obj => (obj['type'] === 'street' && obj['connected'] === 2));
+
+				if(check !== undefined){
+					SkipEvent = false;
+				}
             }
             else {
                 SkipEvent = false;

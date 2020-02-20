@@ -40,7 +40,7 @@ let _menu = {
 		'forum',
 		'ask',
 		'github',
-		// 'chat'
+		'chat'
 	],
 
 
@@ -784,7 +784,6 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-
-		return btn;
+		// return btn;
 	},
 };
