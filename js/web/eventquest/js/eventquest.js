@@ -18,15 +18,12 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     // Nur Events und "active" heraus filtern
     EventQuest.Quests = data['responseData'].filter(q => (q['category'] === 'events' && q['state'] === 'accepted'));
 
-    if(EventCountdown === false)
+    if (EventCountdown === false)
         window.addEventListener('foe-helper#menu_loaded', HideEventQuest, { capture: false, once: true, passive: true });
 
     _menu.ShowButton("questlist-Btn");
 
-    if ($('#event').length === 0) {
-        EventQuest.Show();
-
-    } else if ($('#event').length > 0) {
+    if ($('#event').length > 0) {
         EventQuest.BuildBox();
     }
 });
@@ -34,7 +31,6 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 const HideEventQuest = () => {
     if (EventQuest.Quests === undefined || EventQuest.Quests.length <= 0) {
         _menu.HideButton("questlist-Btn");
-        EventQuest.Visible = false;
         return;
     }
 }
@@ -61,13 +57,11 @@ let EventQuest = {
     QuestId: 0,
     CurrentQuestID: null,
     CurrentQuestText: null,
-    Visible: false,
 
 	/**
 	 * Vorbereitung der DAten
 	 */
     Show: () => {
-        if (EventQuest.Visible === false) { _menu.HideButton("questlist-Btn"); return; };
         let lng = MainParser.Language;
         let url = 'https://cache.foe-rechner.de/quests/quests.json';
 
@@ -112,11 +106,11 @@ let EventQuest = {
                     // CSS in den DOM prügeln
                     HTML.AddCssFile('eventquest');
 
-					EventQuest.BuildBox();
+                    EventQuest.BuildBox();
 
                 } else {
-					HTML.CloseOpenBox('event');
-				}
+                    HTML.CloseOpenBox('event');
+                }
 
             });
         }
@@ -215,7 +209,7 @@ let EventQuest = {
                 h.push('</tr>');
             } else {
                 h.push('<tr class="active-quest">');
-                h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Waiting') + " ("+EventCountdown+")" + '</td>');
+                h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Waiting') + " (" + EventCountdown + ")" + '</td>');
                 h.push('</tr>');
             }
             h.push('<tr>');
