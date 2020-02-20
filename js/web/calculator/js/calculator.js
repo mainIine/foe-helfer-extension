@@ -121,9 +121,7 @@ let Calculator = {
 
             Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 
-        } else {
-			HTML.CloseOpenBox('costCalculator');
-		}
+        }
 
 		let PlayerID = Calculator.CityMapEntity['player_id'],
             h = [];
