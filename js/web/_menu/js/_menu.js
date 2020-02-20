@@ -24,11 +24,11 @@ let _menu = {
 	HudHeight: 0,
 
 	Items: [
-		'hiddenRewards',
 		'calculator',
 		'partCalc',
 		'outpost',
 		'productions',
+		'hiddenRewards',
 		'negotiation',
 		'infobox',
 		'questlist',
@@ -40,7 +40,7 @@ let _menu = {
 		'forum',
 		'ask',
 		'github',
-		'chat'
+		// 'chat'
 	],
 
 
@@ -68,6 +68,7 @@ let _menu = {
 			// Buttons einfügen
 			_menu.ListLinks();
 
+			// korrekten Platz für das Menu ermitteln
 			_menu.SetMenuHeight();
 		});
 
