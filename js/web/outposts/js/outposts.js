@@ -14,8 +14,10 @@
  */
 
 let Outposts = {
+
 	/** @type {FoE_JSON_CulturalOutpost[]|null} */
 	OutpostsData: null,
+
 	/** @type {FoE_JSON_CulturalOutpost|null} */
 	OutpostData : null,
 	
@@ -24,6 +26,8 @@ let Outposts = {
 	
 	/** @type {FoE_JSON_CityMap|null} */
 	CityMap: null,
+
+	CityEntities : null,
 	
 	// display settings
 	/** @type {Record<string, Record<string, FoE_JSON_GoodName>>} */
@@ -38,32 +42,11 @@ let Outposts = {
 	 */
 	BuildInfoBox: ()=> {
 
-		if (Outposts.Advancements === null) {
-			let OutpostBuildings = localStorage.getItem('OutpostBuildings');
-
-			if (OutpostBuildings !== null)
-			{
-				Outposts.Advancements = JSON.parse(OutpostBuildings);
-			}
-		}
-
-		if (Outposts.Advancements === null || Outposts.OutpostData === null) {
-			return;
-		}
-
-		{
-			let oldPlannedFormat = Object.values(Outposts.PlannedTiles).find(planned => typeof planned === 'string');
-			if (oldPlannedFormat) {
-				// @ts-ignore
-				Outposts.PlannedTiles = {[Outposts.OutpostData.content]: Outposts.PlannedTiles};
-			}
-		}
-
 		if( $('#outpostConsumables').length === 0 )
 		{
 			let args = {
 				'id': 'outpostConsumables',
-				'title': i18n['Boxes']['Outpost']['Title'],
+				'title': i18n('Boxes.Outpost.Title'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -96,6 +79,29 @@ let Outposts = {
 				}
 			});
 
+		} else {
+			HTML.CloseOpenBox('outpostConsumables');
+		}
+
+		if (Outposts.Advancements === null) {
+			let OutpostBuildings = localStorage.getItem('OutpostBuildings');
+
+			if (OutpostBuildings !== null)
+			{
+				Outposts.Advancements = JSON.parse(OutpostBuildings);
+			}
+		}
+
+		if (Outposts.Advancements === null || Outposts.OutpostData === null) {
+			return;
+		}
+
+		{
+			let oldPlannedFormat = Object.values(Outposts.PlannedTiles).find(planned => typeof planned === 'string');
+			if (oldPlannedFormat) {
+				// @ts-ignore
+				Outposts.PlannedTiles = {[Outposts.OutpostData.content]: Outposts.PlannedTiles};
+			}
 		}
 
 		Outposts.BuildInfoBoxContent();
@@ -123,15 +129,13 @@ let Outposts = {
 
 		const currentRun = OutpostData.playthroughs.find(run => !run.isCompleted);
 
-		const BuildingsData = JSON.parse(sessionStorage.getItem('BuildingsData')||'null');
-
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		/** @type {{name: string, diplomacy: number}[]}} */
 		const UnlockedDiplomacyBuildings =
 			advancements
 			.filter(building => building.isUnlocked && building.rewards[0].toLocaleLowerCase().indexOf('diplomacy') > -1)
 			.map(building => {
-				let BuildingData = BuildingsData.find(obj => (obj.asset_id === building.rewards[0]));
+				let BuildingData = Outposts.CityEntities.find(obj => (obj.asset_id === building.rewards[0]));
 				return {name: building.name, diplomacy: BuildingData.staticResources.resources.diplomacy};
 			})
 			.reverse()
@@ -193,7 +197,7 @@ let Outposts = {
 
 		// HTML erstellen
 
-		$('#outpostConsumablesHeader > .title').text(i18n['Boxes']['Outpost']['TitleShort'] + OutpostData.contentName);
+		$('#outpostConsumablesHeader > .title').text(i18n('Boxes.Outpost.TitleShort') + OutpostData.contentName);
 
 		/** output HTML teile-liste
 		 * @type {string[]}
@@ -208,7 +212,7 @@ let Outposts = {
 		// Durchlauf Informationen
 		if (currentRun) {
 			t.push(
-				HTML.i18nReplacer(i18n['Boxes']['Outpost']['infoLine'], {
+				HTML.i18nReplacer(i18n('Boxes.Outpost.infoLine'), {
 					runNumber: (currentRun.id||0)+1,
 					chanceX4: currentRun.productionBonusProbability*100
 				})
@@ -241,7 +245,7 @@ let Outposts = {
 					t.push(
 						'<td>'
 						+ '<input type="checkbox" onclick="Outposts.listAllTiles(this.checked)"'+(displayAllTiles?' checked':'')+'/>'
-						+ i18n['Boxes']['Outpost']['nextTile']
+						+ i18n('Boxes.Outpost.nextTile')
 						+ '</td>'
 					);
 				} else {
@@ -255,7 +259,7 @@ let Outposts = {
 						t.push('<td class="text-center">'
 							+ '<label><input type="radio" value="#off" name="foe_helper_'+tileID+'" '
 							+ (plannedTiles[tileID] == null ? ' checked' : '')
-							+ '/><span class="outpost_tile_off">'+i18n['Boxes']['Outpost']['tileNotPlanned']+'</span></label>'
+							+ '/><span class="outpost_tile_off">'+i18n('Boxes.Outpost.tileNotPlanned')+'</span></label>'
 							+ '</td>'
 						);
 					} else {
@@ -296,8 +300,8 @@ let Outposts = {
 
 		// Überschriften
 		t.push('<tr>');
-		t.push('<th>' + i18n['Boxes']['Outpost']['TitleBuildings'] + '</th>');
-		t.push('<th class="text-center">' + i18n['Boxes']['Outpost']['TitleFree'] + '</th>');
+		t.push('<th>' + i18n('Boxes.Outpost.TitleBuildings') + '</th>');
+		t.push('<th class="text-center">' + i18n('Boxes.Outpost.TitleFree') + '</th>');
 
 		// Güter durchgehen
 		for(let resourceID of resourceIDs){
@@ -410,7 +414,7 @@ let Outposts = {
 			if (found) {
 				t.push('<tr class="total-row">');
 
-				t.push('<td><strong>' + i18n['Boxes']['Outpost']['ExpansionsSum'] + '</strong></td><td></td>');
+				t.push('<td><strong>' + i18n('Boxes.Outpost.ExpansionsSum') + '</strong></td><td></td>');
 
 				for (let resourceID of resourceIDs) {
 					const resourceCost = plannedTilesCostSum[resourceID];
@@ -450,7 +454,7 @@ let Outposts = {
 		// Benötigt
 		t.push('<tr class="total-row">');
 
-		t.push('<td>' + i18n['Boxes']['Outpost']['DescRequired'] + '</td><td></td>');
+		t.push('<td>' + i18n('Boxes.Outpost.DescRequired') + '</td><td></td>');
 
 		for (let resourceID of resourceIDs) {
 			if (resourceID !== 'diplomacy') {
@@ -465,7 +469,7 @@ let Outposts = {
 		// Vorhanden
 		t.push('<tr class="resource-row">');
 
-		t.push('<td>' + i18n['Boxes']['Outpost']['DescInStock'] + '</td><td></td>');
+		t.push('<td>' + i18n('Boxes.Outpost.DescInStock') + '</td><td></td>');
 
 		for (let resourceID of resourceIDs) {
 			t.push('<td class="text-center">' + currStock[resourceID] + '</td>');
@@ -477,7 +481,7 @@ let Outposts = {
 		// Überschuss/Fehlt
 		t.push('<tr class="total-row">');
 
-		t.push('<td><strong>' + i18n['Boxes']['Outpost']['DescStillMissing'] + '</strong></td><td colspan=""></td>');
+		t.push('<td><strong>' + i18n('Boxes.Outpost.DescStillMissing') + '</strong></td><td colspan=""></td>');
 
 		for (let resourceID of resourceIDs) {
 			if (resourceID !== 'diplomacy') {
@@ -755,9 +759,6 @@ FoEproxy.addHandler('CityMapService', 'removeBuilding', (/** @type {FoE_NETWORK_
 					entities.splice(idx, 1);
 					Outposts.RequestGUIUpdate();
 				}
-			});
-			data.responseData.forEach(building => {
-				Outposts.updateBuilding(building);
 			});
 		}
 	}

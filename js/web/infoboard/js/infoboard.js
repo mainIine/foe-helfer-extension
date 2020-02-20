@@ -89,7 +89,7 @@ let Infoboard = {
 
             HTML.Box({
                 'id': 'BackgroundInfo',
-                'title': i18n['Menu']['Info']['Title'],
+                'title': i18n('Boxes.Infobox.Title'),
                 'auto_close': true,
                 'dragdrop': true,
                 'resize': true,
@@ -99,7 +99,10 @@ let Infoboard = {
 
             // CSS in den DOM prügeln
             HTML.AddCssFile('infoboard');
-        }
+
+        } else {
+			HTML.CloseOpenBox('BackgroundInfo');
+		}
 
         let div = $('#BackgroundInfo'),
             h = [];
@@ -108,19 +111,19 @@ let Infoboard = {
         h.push('<div class="filter-row">');
 
         h.push('<div class="dropdown">');
-        h.push('<input type="checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n['Boxes']['Infobox']['Filter'] + '</label><span class="arrow"></span>');
+        h.push('<input type="checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
 
         h.push('<ul>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n['Boxes']['Infobox']['FilterAuction'] + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n['Boxes']['Infobox']['FilterGex'] + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfighs") ? "checked" : "") + '> ' + i18n['Boxes']['Infobox']['FilterGildFights'] + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n['Boxes']['Infobox']['FilterTrade'] + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n['Boxes']['Infobox']['FilterLevel'] + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("message") ? "checked" : "") + '> ' + i18n['Boxes']['Infobox']['FilterMessage'] + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGex') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfighs") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("message") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
         h.push('</ul>');
         h.push('</div>');
 
-        h.push('<button class="btn btn-default btn-reset-box">' + i18n['Boxes']['Infobox']['ResetBox'] + '</button>');
+        h.push('<button class="btn btn-default btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
 
         h.push('</div>');
 
@@ -282,7 +285,7 @@ let Info = {
             class: 'auction',
             type: 'Auktion',
             msg: HTML.i18nReplacer(
-                i18n['Boxes']['Infobox']['Messages']['Auction'], {
+                i18n('Boxes.Infobox.Messages.Auction'), {
                     'player': d['player']['name'],
                     'amount': HTML.Format(d['amount']),
                 }
@@ -308,7 +311,7 @@ let Info = {
             // LG
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
-                    i18n['Boxes']['Infobox']['Messages']['MsgBuilding'], {
+                    i18n('Boxes.Infobox.Messages.MsgBuilding'), {
                         'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
                         'level': d['attachment']['level']
                     }
@@ -339,9 +342,11 @@ let Info = {
             if (!d.hasOwnProperty(i)) {
                 break;
             }
-
+            
             // FP Typ aus dem Lager ermitteln
-            let factor = parseInt(MainParser.Inventory.find(x => x['id'] === d[i]['itemId'])['item']['resource_package']['gain']),
+            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
+            if(undefined === InventoryItem ||null === InventoryItem) return;
+            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
                 amount = factor * parseInt(d[i]['amount']);
 
             // ... und sichern
@@ -383,9 +388,9 @@ let Info = {
 
             return {
                 class: 'guildfighs',
-                type: i18n['Boxes']['Infobox']['FilterGildFights'],
+                type: i18n('Boxes.Infobox.FilterGildFights'),
                 msg: HTML.i18nReplacer(
-                    i18n['Boxes']['Infobox']['Messages']['GildFightOccupied'], {
+                    i18n('Boxes.Infobox.Messages.GildFightOccupied'), {
                         provinceName: prov['name'],
                         attackerColor: tc,
                         attackerShadow: ts,
@@ -429,7 +434,7 @@ let Info = {
 
         return {
             class: 'guildfighs',
-            type: i18n['Boxes']['Infobox']['FilterGildFights'],
+            type: i18n('Boxes.Infobox.FilterGildFights'),
             msg: t
         };
     },
@@ -442,7 +447,6 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
-        debugger;
         let newFP = Info.ReturnFPPoints;
 
         // zurück setzen
@@ -452,7 +456,7 @@ let Info = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
-                i18n['Boxes']['Infobox']['Messages']['LevelUp'], {
+                i18n('Boxes.Infobox.Messages.LevelUp'), {
                     player: d['other_player']['name'],
                     building: d['great_building_name'],
                     level: d['level'],
@@ -473,9 +477,9 @@ let Info = {
     OtherPlayerService_newEventtrade_accepted: (d) => {
         return {
             class: 'trade',
-            type: i18n['Boxes']['Infobox']['FilterTrade'],
+            type: i18n('Boxes.Infobox.FilterTrade'),
             msg: HTML.i18nReplacer(
-                i18n['Boxes']['Infobox']['Messages']['Trade'], {
+                i18n('Boxes.Infobox.Messages.Trade'), {
                     'player': d['other_player']['name'],
                     'offer': GoodsData[d['offer']['good_id']]['name'],
                     'offerValue': d['offer']['value'],
@@ -504,7 +508,7 @@ let Info = {
             class: 'gex',
             type: 'GEX',
             msg: HTML.i18nReplacer(
-                i18n['Boxes']['Infobox']['Messages']['GEX'], {
+                i18n('Boxes.Infobox.Messages.GEX'), {
                     'player': d['player']['name'],
                     'points': HTML.Format(d['expeditionPoints'])
                 }

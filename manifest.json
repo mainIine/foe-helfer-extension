@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "2.4.1.1",
+	"version": "2.4.2",
   
 	"manifest_version": 2,
 	"permissions": [
@@ -41,9 +41,10 @@
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
-			"include_globs": ["*game*"],
+			"include_globs": [ "*forgeofempires.com/game*" ],
 			"run_at": "document_start",
 			"js": [
+				"js/web/_languages/js/_languages.js",
 				"js/inject.js"
 			]
 		}

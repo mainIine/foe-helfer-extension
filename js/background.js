@@ -64,8 +64,18 @@
 
 	let popupWindowId = 0;
 
+	const defaultInnoCDN = 'https://foede.innogamescdn.com/';
 
-	function handleWebpageRequests(request) {
+	// // automatisches Update der lokalen daten
+	// window.addEventListener('storage', evt => {
+	// 	if (!evt.isTrusted) return;
+	// 	if (evt.key === 'PlayerData') {
+	// 		ChatData.player = JSON.parse(evt.newValue);
+	// 	}
+	// });
+
+
+	function handleWebpageRequests(request, sender, callback) {
 		if (request.type === 'message') {
 			let t = request.time,
 				opt = {
@@ -84,7 +94,7 @@
 
 		} else if(request.type === 'chat'){
 
-			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&guild=' + request.guild + '&world=' + request.world,
+			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&world=' + request.world,
 				popupUrl = chrome.runtime.getURL(url);
 
 			// Prüfen ob ein PopUp mit dieser URL bereits existiert
@@ -118,11 +128,30 @@
 			chrome.storage.local.set({ [request.key] : request.data });
 
 		} else if(request.type === 'send2Api') {
+			console.log("type=send2Api got called!");
 			let xhr = new XMLHttpRequest();
 
 			xhr.open('POST', request.url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.send(request.data);
+
+		} else if(request.type === 'setInnoCDN') {
+			localStorage.setItem('InnoCDN', request.url);
+
+		} else if(request.type === 'getInnoCDN') {
+			let cdnUrl = localStorage.getItem('InnoCDN');
+			callback([cdnUrl || defaultInnoCDN, cdnUrl != null]);
+
+		} else if(request.type === 'setPlayerData') {
+			const data = request.data;
+
+			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+			playerdata[data.world+'-'+data.player_id] = data;
+			localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
+
+		} else if(request.type === 'getPlayerData') {
+			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+			callback(playerdata[request.world+'-'+request.player_id]);
 		}
 	}
 
@@ -133,8 +162,8 @@
 	if (chrome.app) { // Chrome
 		chrome.runtime.onMessageExternal.addListener(handleWebpageRequests);
 	} else { // Firefox
-		chrome.runtime.onMessage.addListener(handleWebpageRequests);
 	}
+	chrome.runtime.onMessage.addListener(handleWebpageRequests);
 
 	// ende der Trennung vom Globalen Scope
 }

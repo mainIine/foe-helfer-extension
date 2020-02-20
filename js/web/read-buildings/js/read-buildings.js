@@ -74,7 +74,7 @@ let Reader = {
                         if (d[i]['type'] === 'goods') {
                             GoodsParser.readType(d[i]);
                         }
-                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production') && d[i]['state']['is_motivated'] === false) {
+                        else if ((d[i]['type'] === 'residential' || d[i]['type'] === 'production' || d[i]['type'] === 'clan_power_production') && d[i]['state']['is_motivated'] === false) {
                             GoodsParser.readType(d[i]);
                         }
                     }
@@ -82,15 +82,7 @@ let Reader = {
             }
         }
 
-		// was gefunden?
-		if (Reader.data.ready.length > 0 || Reader.data.work.length > 0) {
-			Reader.showResult();
-
-		} else {
-			if ($('#ResultBox').length > 0) {
-				$('#ResultBox').remove();
-			}
-		}
+		Reader.showResult();
 	},
 
 
@@ -110,7 +102,7 @@ let Reader = {
 		if ($('#ResultBox').length === 0) {
 			HTML.Box({
 				'id': 'ResultBox',
-				'title': i18n['Boxes']['Neighbors']['Title'] + '<em>' + Reader.player_name + '</em>',
+				'title': i18n('Boxes.Neighbors.Title') + '<em>' + Reader.player_name + '</em>',
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -131,7 +123,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['ReadyProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.ReadyProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -159,7 +151,7 @@ let Reader = {
 			h.push('<thead>');
 
 			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n['Boxes']['Neighbors']['OngoingProductions'] + '</strong></th>');
+			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.OngoingProductions') + '</strong></th>');
 			h.push('</tr>');
 
 			h.push('</thead>');
@@ -177,6 +169,10 @@ let Reader = {
 
 			h.push('</tbody>');
 			h.push('</table>');
+		}
+
+		if (rd.length === 0 && wk.length === 0) {
+			h.push('<strong>' + i18n('Boxes.Neighbors.NothingToPlunder') + '</strong>');
 		}
 
 		div.find('#ResultBoxBody').html(h.join(''));
