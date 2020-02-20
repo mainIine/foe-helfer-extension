@@ -1,4 +1,61 @@
-##Changelog - Chrome Extension
+##Changelog - Extension
+
+#####2.4.2
+**New**
+- Investments:
+    - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415 ) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) General overview FP added (City Hall> News> Legendary Buildings)
+
+**Update**
+- Product overview:
+    - [#278](https://github.com/dsiekiera/foe-helfer-extension/issues/278) [#484](https://github.com/dsiekiera/foe-helfer-extension/issues/484 ) Sorting goods by age
+
+- Army overview:
+    - [#434](https://github.com/dsiekiera/foe-helfer-extension/issues/434) [#467](https://github.com/dsiekiera/foe-helfer-extension/issues/467 ) New army bonuses integrated
+    
+- Negotiator:
+    - [#519](https://github.com/dsiekiera/foe-helfer-extension/issues/519) Number keys display and use (first number person, second key good + space bar)
+
+- Menu:
+    - [#561](https://github.com/dsiekiera/foe-helfer-extension/issues/561) Quickly hide the window again by a second click on the bar
+
+**Bugfix**
+- Extension:
+    - [#540](https://github.com/dsiekiera/foe-helfer-extension/issues/540) Extension is active on all forgeofempires.com subpages that contain "game"
+
+- Menu:
+    - [#411](https://github.com/dsiekiera/foe-helfer-extension/issues/411) [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413 ) fixed duplicate entries
+
+- Negotiator:
+    - [#421](https://github.com/dsiekiera/foe-helfer-extension/issues/421) Stock tooltip with the negotiation assistant remained visible
+    - [#459](https://github.com/dsiekiera/foe-helfer-extension/issues/459) showed excluded goods
+    - [#491](https://github.com/dsiekiera/foe-helfer-extension/issues/491) Error in the negotiation assistant
+    
+- FP bearings:
+    - [#424](https://github.com/dsiekiera/foe-helfer-extension/issues/424) Buy a small bug at the FP (coin calculator)
+
+- Invobox:
+    - [#451](https://github.com/dsiekiera/foe-helfer-extension/issues/451) Wrong number of FP at level-up / info box
+    - [#462](https://github.com/dsiekiera/foe-helfer-extension/issues/462) Infobox threw exceptions
+
+- Cost calculator:
+    - [#465](https://github.com/dsiekiera/foe-helfer-extension/issues/465) Display of residual FP active loop quest incorrect
+
+- Own contribution calculator:
+    - [#501](https://github.com/dsiekiera/foe-helfer-extension/issues/501) Own contribution calculator shows no safe places
+
+- Research costs:
+    - [#571](https://github.com/dsiekiera/foe-helfer-extension/issues/571) Research costs for the Martian age added
+
+- events:
+    - [#499](https://github.com/dsiekiera/foe-helfer-extension/issues/499) Large street is hidden if not built
+
+- Army overview:
+    - [#582](https://github.com/dsiekiera/foe-helfer-extension/issues/582) Icons of the arm units were blurry
+
+- Product overview:
+    - [#545](https://github.com/dsiekiera/foe-helfer-extension/issues/545) Hall of Fame was not shown
+
+---
 
 #####2.4.1.1
 

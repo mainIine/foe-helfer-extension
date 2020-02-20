@@ -84,9 +84,11 @@ let EventQuest = {
 
                 // CSS in den DOM prügeln
                 HTML.AddCssFile('eventquest');
-            }
+				EventQuest.BuildBox();
 
-            EventQuest.BuildBox();
+            } else {
+				HTML.CloseOpenBox('event');
+			}
 
         } else {
             MainParser.loadJSON(url, (data) => {
