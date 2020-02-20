@@ -620,9 +620,7 @@ let _menu = {
 		let btn_Event = $('<span />');
 
 		btn_Event.on('click', function () {
-			EventQuest.Visible = true;
 			EventQuest.Show();
-			EventQuest.Visible = false;
 		});
 
 		btn_EventBG.append(btn_Event);
