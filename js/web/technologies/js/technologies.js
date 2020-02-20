@@ -56,23 +56,26 @@ let Technologies = {
 	 * Zeigt
 	 */
     Show: ()=> {
-       if ($('#technologies').length === 0) {
+		if ($('#technologies').length === 0) {
 
-           HTML.Box({
-			   'id': 'technologies',
-			   'title': i18n['Boxes']['Technologies']['Title'],
-			   'auto_close': true,
-			   'dragdrop': true,
-			   'minimize': true
-		   });
+			HTML.Box({
+			'id': 'technologies',
+			'title': i18n('Boxes.Technologies.Title'),
+			'auto_close': true,
+			'dragdrop': true,
+			'minimize': true
+			});
 
-		   // CSS in den DOM prügeln
-		   HTML.AddCssFile('technologies');
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('technologies');
 
-           Technologies.SelectedEraID = CurrentEraID;
-        }
+			Technologies.SelectedEraID = CurrentEraID;
 
-        Technologies.BuildBox();
+		} else {
+			HTML.CloseOpenBox('technologies');
+		}
+
+		Technologies.BuildBox();
     },
 
 
@@ -133,7 +136,7 @@ let Technologies = {
             if (!Tech['isResearched']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
-                if (EraID <= Technologies.SelectedEraID && Tech['childTechnologies'].length > 0) {
+                if (Technologies.SelectedEraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
@@ -155,19 +158,19 @@ let Technologies = {
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeMars']);
 
         h.push('<div class="techno-head">');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n['Boxes']['Technologies']['Eras'][PreviousEraID] + '</button>');
-			h.push('<div class="text-center"><strong>' + i18n['Boxes']['Technologies']['Eras'][Technologies.SelectedEraID] + '</strong></div>');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n['Boxes']['Technologies']['Eras'][NextEraID] + '</button>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
+			h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
+			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
         h.push('</div>');
 
         h.push('<table class="foe-table">');
 
         h.push('<thead>' +
             '<tr>' +
-            '<th>' + i18n['Boxes']['Technologies']['Resource'] + '</th>' +
-            '<th>' + i18n['Boxes']['Technologies']['DescRequired'] + '</th>' +
-            '<th>' + i18n['Boxes']['Technologies']['DescInStock'] + '</th>' +
-            '<th class="text-right">' + i18n['Boxes']['Technologies']['DescStillMissing'] + '</th>' +
+            '<th>' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th>' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            '<th>' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
+            '<th class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -182,10 +185,14 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'orichalcum';
-            for (let i = 75; i < GoodsList.length; i++) {
+            for (let i = 75; i < 80; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
-
+            OutputList[OutputList.length] = 'mars_ore';
+            for (let i = 80; i < GoodsList.length; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+           
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i];
                 if (RequiredResources[ResourceName] !== undefined) {
@@ -205,7 +212,7 @@ let Technologies = {
         }
         else {
             h.push('<tr>');
-            h.push('<td colspan="4" class="text-center">' + i18n['Boxes']['Technologies']['NoTechs'] + '</td>');
+            h.push('<td colspan="4" class="text-center">' + i18n('Boxes.Technologies.NoTechs') + '</td>');
             h.push('</tr>');
         }
         h.push('</table');
