@@ -625,7 +625,7 @@ const FoEproxy = (function () {
 
 		// EventCountdown
 		let eventCountDownFeature = data.responseData.feature_flags.features.filter((v)=>{return (v.feature === "event_start_countdown")});
-		EventCountdown = eventCountDownFeature !== undefined ? eventCountDownFeature[0]["time_string"] : false;
+		EventCountdown = eventCountDownFeature.length > 0 ? eventCountDownFeature[0]["time_string"] : false;
 	});
 
 	// --------------------------------------------------------------------------------------------------
