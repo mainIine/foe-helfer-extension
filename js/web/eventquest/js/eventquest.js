@@ -18,7 +18,8 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     // Nur Events und "active" heraus filtern
     EventQuest.Quests = data['responseData'].filter(q => (q['category'] === 'events' && q['state'] === 'accepted'));
 
-    window.addEventListener('foe-helper#menu_loaded', HideEventQuest, { capture: false, once: true, passive: true });
+    if(EventCountdown === false)
+        window.addEventListener('foe-helper#menu_loaded', HideEventQuest, { capture: false, once: true, passive: true });
 
     _menu.ShowButton("questlist-Btn");
 
@@ -214,7 +215,7 @@ let EventQuest = {
                 h.push('</tr>');
             } else {
                 h.push('<tr class="active-quest">');
-                h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Waiting') + '</td>');
+                h.push('<td colspan="3" class="upcoming text-center">' + i18n('Boxes.EventList.Waiting') + " ("+EventCountdown+")" + '</td>');
                 h.push('</tr>');
             }
             h.push('<tr>');
