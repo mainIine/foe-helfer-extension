@@ -1,5 +1,62 @@
 ##Changelog - Extension
 
+#####2.4.1.2
+**Neu**
+- Investitionen:
+    - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) Gesamtübersicht FP eingefügt (Rathaus > Neuigkeiten > Legendäre Bauwerke)
+
+**Update**
+- Produtkübersicht:
+    - [#278](https://github.com/dsiekiera/foe-helfer-extension/issues/278) [#484](https://github.com/dsiekiera/foe-helfer-extension/issues/484) Güter Sortierung nach Zeitalter
+
+- Armeeübersicht:
+    - [#434](https://github.com/dsiekiera/foe-helfer-extension/issues/434) [#467](https://github.com/dsiekiera/foe-helfer-extension/issues/467) Neue Armee Boni integriert
+    
+- Verhandlungsassitent:    
+    - [#519](https://github.com/dsiekiera/foe-helfer-extension/issues/519) Nummerntasten Anzeige und Benutzung (erste Zahl Person, zweite Taste Gut + Leertaste abschicken)
+
+- Menü:
+    - [#561](https://github.com/dsiekiera/foe-helfer-extension/issues/561) Fenster schnell wieder ausblenden durch zweiten Klick in die Leiste
+
+**Bugfix**
+- Extension: 
+    - [#540](https://github.com/dsiekiera/foe-helfer-extension/issues/540) Extension wird bei allen forgeofempires.com Subseiten aktiv, die "game" enthalten
+
+- Menü:
+    - [#411](https://github.com/dsiekiera/foe-helfer-extension/issues/411) [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) doppelte Einträge gefixt
+
+- Verhandlungsassitent:
+    - [#421](https://github.com/dsiekiera/foe-helfer-extension/issues/421) Vorrats-Tooltip beim Verhandlungsassistent blieb sichtbar
+    - [#459](https://github.com/dsiekiera/foe-helfer-extension/issues/459) zeigte ausgeschlossene Güter
+    - [#491](https://github.com/dsiekiera/foe-helfer-extension/issues/491) Fehler beim Verhandlungsassistent
+    
+- FP-Lager:
+    - [#424](https://github.com/dsiekiera/foe-helfer-extension/issues/424) Kleiner Bug beim FP kaufen (Münzen Rechner)
+
+- Invobox:
+    - [#451](https://github.com/dsiekiera/foe-helfer-extension/issues/451) Falsche Anzahl der FP beim Level-Up/Info Box
+    - [#462](https://github.com/dsiekiera/foe-helfer-extension/issues/462) Infobox warf Exceptions
+
+- Kostenrechner:
+    - [#465](https://github.com/dsiekiera/foe-helfer-extension/issues/465) Anzeige Rest-FP aktive Schleifenquest fehlerhaft
+
+- Eigenanteilsrechner:
+    - [#501](https://github.com/dsiekiera/foe-helfer-extension/issues/501) Eigenanteilsrechner zeigt keine sicheren Plätze an
+
+- Forschungskosten:
+    - [#571](https://github.com/dsiekiera/foe-helfer-extension/issues/571) Forschungskosten für das Marszeitalter ergänzt
+
+- Ereignisse:
+    - [#499](https://github.com/dsiekiera/foe-helfer-extension/issues/499) Große Straße wird ausgeblendet, wenn nicht gebaut
+
+- Armeeübersicht:
+    - [#582](https://github.com/dsiekiera/foe-helfer-extension/issues/582) Icons der Arme-Einheiten waren verschwommen
+
+- Produtkübersicht:
+    - [#545](https://github.com/dsiekiera/foe-helfer-extension/issues/545) Ruhmeshalle wurde nicht dargestellt
+
+---
+
 #####2.4.1.1
 
 **Bugfix**
