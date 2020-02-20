@@ -126,10 +126,7 @@ class Player {
 		return null;
 	}
 
-	/**
-	 * @type {Map<string, Player>}
-	 */
-	static all = new Map();
+
 
 	/**
 	 * @param {string} id 
@@ -157,6 +154,10 @@ class Player {
 	}
 }
 
+/**
+ * @type {Map<string, Player>}
+ */
+Player.all = new Map();
 
 const messageFormatter = (() => {
 	const defaultRules = SimpleMarkdown.defaultRules;
