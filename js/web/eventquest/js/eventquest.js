@@ -135,8 +135,12 @@ let EventQuest = {
                     // Sammel die Quest-Nummer aus der "Zähler" Quest
                     const progressCond = Quest.successConditions.find(cond => cond.flags.includes('static_counter'));
                     if (progressCond) {
-                        const id = progressCond.currentProgress + 1;
-                        EventQuest.CurrentQuestID = id;
+                        if(progressCond.currentProgress !== undefined){
+                            const id = progressCond.currentProgress + 1;
+                            EventQuest.CurrentQuestID = id;
+                        }else{
+                            EventQuest.CurrentQuestID = 1;
+                        }
                     }
 
                 } else if (!isWaiting) {
