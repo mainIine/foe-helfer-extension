@@ -45,7 +45,7 @@
 			}
 
 			chrome.tabs.create({
-				url: 'https://foe-rechner.de/extension/chrome?v=' + version + '&lang=' + lng
+				url: 'https://foe-rechner.de/extension/update?v=' + version + '&lang=' + lng
 			});
 		}
 	});
