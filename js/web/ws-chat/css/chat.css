@@ -216,6 +216,7 @@ body {
 	padding: 4px 4px 4px 24px;
 	border: none;
 	height: 25px;
+	resize: none;
 }
 
 .chat-panel button {
@@ -230,15 +231,6 @@ body {
 	font-weight: 700;
 	border-top-width: 0;
 	cursor: pointer;
-}
-
-#chat::-webkit-scrollbar {
-	width: 8px;
-}
-
-#chat::-webkit-scrollbar-thumb {
-	background: #281207;
-	border-radius: 10px;
 }
 
 #chat .big-box {
@@ -343,15 +335,16 @@ body {
 	max-height: 100px;
 	overflow: hidden;
 	overflow-y: auto;
-	bottom: -101px;
+	top: 0px;
 	left: 0;
 	right: 0;
 	background-color: rgba(0,0,0, 0.3);
-	transition: bottom 0.45s ease-in-out;
+	transition: top 0.45s ease-in-out;
+	z-index: -1;
 }
 
 .emoticon-bar.show {
-	bottom: 34px;
+	top: -101px;
 }
 
 .emoticon-bar img {
@@ -360,11 +353,17 @@ body {
 	cursor: pointer;
 }
 
-.emoticon-bar::-webkit-scrollbar {
+/* Scrollbars */
+
+.emoticon-bar::-webkit-scrollbar,
+#chat::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
 	width: 8px;
 }
 
-.emoticon-bar::-webkit-scrollbar-thumb {
+.emoticon-bar::-webkit-scrollbar-thumb,
+#chat::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
 }
