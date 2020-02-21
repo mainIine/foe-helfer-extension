@@ -1,5 +1,18 @@
 ##Changelog - Extension
 
+#####2.4.2.1
+
+**Update**
+- Mopel activities:
+     - Restructuring of the API + database
+     - Attacks + looting are recorded
+
+**Bugfix**
+- Menu: 
+    - Memory problem when changing via drag & drop fixed
+
+---
+
 #####2.4.2
 **New**
 - Investments:

@@ -54,7 +54,7 @@ $(function(){
 	if(lng !== 'de'){
 		$('[data-translate]').each(function(){
 			let txt = $(this).data('translate');
-			
+
 			if( i18n[lng][txt] !== undefined ){
 				$(this).html( i18n[lng][txt]);
 			} else {
