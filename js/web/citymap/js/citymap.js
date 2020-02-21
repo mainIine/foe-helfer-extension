@@ -69,9 +69,11 @@ let CityMap = {
 				CityMap.PrepareBox(Title);
 			}, 100);
 
-		} else {
-			HTML.CloseOpenBox('city-map-overlay');
 		}
+		// Close temporär deaktivert, bis der Bug mit dem doppelten Handler am Auge Icon gefixed ist
+		//else {
+		//	HTML.CloseOpenBox('city-map-overlay');
+		//}
 
 		setTimeout(()=>{
 
