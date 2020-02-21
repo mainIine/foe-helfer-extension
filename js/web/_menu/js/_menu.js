@@ -158,6 +158,8 @@ let _menu = {
 					});
 				});
 
+				_menu.Items = JSON.parse(StorgedItems);
+
 				let items = missingMenu.concat(missingStored);
 
 				// es gibt tatsächlich was neues...
