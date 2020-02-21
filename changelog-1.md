@@ -1,6 +1,6 @@
 ##Changelog - Extension
 
-#####2.4.1.2
+#####2.4.2
 **Neu**
 - Investitionen:
     - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) Gesamtübersicht FP eingefügt (Rathaus > Neuigkeiten > Legendäre Bauwerke)

@@ -1668,6 +1668,11 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Motivieren Polieren tracken, wenn gewünscht
+	 *
+	 * @param d
+	 */
 	OtherPlayersMotivation: (d)=>{
 
 		let page = d['page'],
@@ -1683,7 +1688,7 @@ let MainParser = {
 
 				let pd = { };
 
-				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || [i]['type'] === 'battle') {
+				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || ev[i]['type'] === 'battle') {
 					pd = {
 						id: ev[i]['id'],
 						date: ev[i]['date'],
@@ -1694,21 +1699,19 @@ let MainParser = {
 						name: ev[i]['other_player']['name'],
 						player_id: ev[i]['other_player']['player_id']
 					};
-				}
 
-				if(ev[i]['type'] === 'social_interaction'){
-					pd['entity_id'] = ev[i]['entity_id'] || '';
-					pd['action'] = ev[i]['interaction_type'] || '';
+					if(ev[i]['type'] === 'social_interaction'){
+						pd['entity_id'] = ev[i]['entity_id'] || '';
+						pd['action'] = ev[i]['interaction_type'] || '';
 
-				} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
-					pd['action'] = 'friend_tavern_sat_down';
+					} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
+						pd['action'] = 'friend_tavern_sat_down';
 
-				}  else if (ev[i]['type'] === 'battle'){
-					pd['action'] = 'battle|' + ev[i]['status'];
-				}
+					}  else if (ev[i]['type'] === 'battle'){
+						pd['action'] = 'battle|' + ev[i]['status'];
+						pd['entity_id'] = ev[i]['entity_id'];
+					}
 
-
-				if(ev[i]['type'] === 'social_interaction' || ev[i]['type'] === 'friend_tavern_sat_down' || [i]['type'] === 'battle') {
 					pm.push(pd);
 				}
 			}
