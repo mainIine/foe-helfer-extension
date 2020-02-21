@@ -126,10 +126,7 @@ class Player {
 		return null;
 	}
 
-	/**
-	 * @type {Map<string, Player>}
-	 */
-	static all = new Map();
+
 
 	/**
 	 * @param {string} id 
@@ -157,6 +154,10 @@ class Player {
 	}
 }
 
+/**
+ * @type {Map<string, Player>}
+ */
+Player.all = new Map();
 
 const messageFormatter = (() => {
 	const defaultRules = SimpleMarkdown.defaultRules;
@@ -710,7 +711,7 @@ let Chat = {
 
 		if( Chat.ReadMode === 'live' ){
 			// TODO: fix animation
-			const box = document.getElementById('message_box');
+			const box = document.getElementById('message_box').parentElement;
 			box.scrollTop = box.scrollHeight;
 			// $('#message_box').animate({
 			// 	scrollTop: $('#message_box').prop('scrollHeight')
@@ -1055,19 +1056,13 @@ let Chat = {
 			bar = document.createElement('div')//$('<div />').addClass('emoticon-bar');
 		bar.classList.add('emoticon-bar');
 
-		for(let i in icons)
-		{
-			if(icons.hasOwnProperty(i)){
-				const img = document.createElement('img');
-				img.classList.add('add-icon');
-				img.src = '/vendor/emoyify/images/emoji/'+ icons[i] +'.png';
-				img.setAttribute('alt', ':'+ icons[i] +':');
-				img.setAttribute('title', ':'+ icons[i] +':');
-				bar.appendChild(img);
-				// bar.append(
-				// 	$('<img />').addClass('add-icon').attr('src', '../vendor/emoyify/images/emoji/'+ icons[i] +'.png').attr('alt', ':'+ icons[i] +':').attr('title', ':'+ icons[i] +':')
-				// );
-			}
+		for(let icon of icons) {
+			const img = document.createElement('img');
+			img.classList.add('add-icon');
+			img.src = '/vendor/emoyify/images/emoji/'+ icon +'.png';
+			img.setAttribute('alt', ':'+ icon +':');
+			img.setAttribute('title', ':'+ icon +':');
+			bar.appendChild(img);
 		}
 
 		document.body.appendChild(bar);
@@ -1079,7 +1074,9 @@ let Chat = {
 		btn.classList.add('toggle-emoticon-bar');
 
 
-		document.querySelector('.chat-panel').appendChild(btn);
+		const panel = document.querySelector('.chat-panel');
+		panel.appendChild(bar);
+		panel.appendChild(btn);
 		//$('.chat-panel').append(btn);
 
 		// Functions
