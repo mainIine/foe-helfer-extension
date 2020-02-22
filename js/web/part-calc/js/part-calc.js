@@ -456,8 +456,8 @@ let Parts = {
 
 		b.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
-		b.push('<div><span>Spieler:</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + (n !== null ? n : m) + '"></div>');
-		b.push('<div><span>Gebäude:</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]['name']) + '"></div>');
+		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + (n !== null ? n : m) + '"></div>');
+		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]['name']) + '"></div>');
 
 		let drp = '<div><span>Schema:</span><select id="chain-scheme">' +
 			'<option value="" disabled>-- ' + i18n('Boxes.OwnpartCalculator.OutputScheme') + ' --</option>' +

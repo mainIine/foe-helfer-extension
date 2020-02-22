@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Bárka",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "T.R.",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Értékek másolása",
 		"Boxes.OwnpartCalculator.Deposit": "Befizetés",
 		"Boxes.OwnpartCalculator.Done": "Kész",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Hátralevő",
 		"Boxes.OwnpartCalculator.PatronPart": "Befektetői pontszám",
 		"Boxes.OwnpartCalculator.Place": "Hely",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Szint",
 		"Boxes.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Boxes.OwnpartCalculator.YourName": "Saját név",

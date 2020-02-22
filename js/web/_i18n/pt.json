@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arca",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Plantas",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copy values",
 		"Boxes.OwnpartCalculator.Deposit": "Depósito",
 		"Boxes.OwnpartCalculator.Done": "Feito",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restante",
 		"Boxes.OwnpartCalculator.PatronPart": "Quota-parte do Proprietário",
 		"Boxes.OwnpartCalculator.Place": "Lugar",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculador de PFs em GE próprio",
 		"Boxes.OwnpartCalculator.YourName": "O seu nome",
