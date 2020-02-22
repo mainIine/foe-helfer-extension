@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arc",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "BD's",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopieer waarden",
 		"Boxes.OwnpartCalculator.Deposit": "Te storten",
 		"Boxes.OwnpartCalculator.Done": "Gereed",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Resterend",
 		"Boxes.OwnpartCalculator.PatronPart": "Externe bijdrage",
 		"Boxes.OwnpartCalculator.Place": "Plaats",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Eigen GG FP-Calculator",
 		"Boxes.OwnpartCalculator.YourName": "Jouw naam",

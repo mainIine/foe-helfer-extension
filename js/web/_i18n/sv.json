@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Ark",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopiera värden",
 		"Boxes.OwnpartCalculator.Deposit": "Insats",
 		"Boxes.OwnpartCalculator.Done": "Klart",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Kvar",
 		"Boxes.OwnpartCalculator.PatronPart": "Andras del",
 		"Boxes.OwnpartCalculator.Place": "Plats",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivå",
 		"Boxes.OwnpartCalculator.Title": "MB kalkylator",
 		"Boxes.OwnpartCalculator.YourName": "Ditt namn",

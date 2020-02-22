@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plánky",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopírovat hodnoty",
 		"Boxes.OwnpartCalculator.Deposit": "Vklad",
 		"Boxes.OwnpartCalculator.Done": "Hotovo",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Zbývající",
 		"Boxes.OwnpartCalculator.PatronPart": "Příspěvek ostatních",
 		"Boxes.OwnpartCalculator.Place": "Místo",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Úroveň",
 		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",

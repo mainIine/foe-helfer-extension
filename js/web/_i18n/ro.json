@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Planuri",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copiază valorile",
 		"Boxes.OwnpartCalculator.Deposit": "Depozit",
 		"Boxes.OwnpartCalculator.Done": "Depus",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Rest de depus",
 		"Boxes.OwnpartCalculator.PatronPart": "Contribuția externă",
 		"Boxes.OwnpartCalculator.Place": "Locul",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Contribuție la CL proprii",
 		"Boxes.OwnpartCalculator.YourName": "Numele tău",

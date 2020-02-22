@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arca",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plano",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copiar valores",
 		"Boxes.OwnpartCalculator.Deposit": "Ingresar",
 		"Boxes.OwnpartCalculator.Done": "Listo",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "quedan",
 		"Boxes.OwnpartCalculator.PatronPart": "Parte del contribuyente",
 		"Boxes.OwnpartCalculator.Place": "Puesto",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculator cuata propia",
 		"Boxes.OwnpartCalculator.YourName": "Tu nombre",

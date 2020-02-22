@@ -126,6 +126,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Арка",
 		"Boxes.OwnpartCalculator.Auto": "Авто",
 		"Boxes.OwnpartCalculator.BPs": "СО",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Копировать значения",
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
@@ -144,6 +145,7 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Осталось",
 		"Boxes.OwnpartCalculator.PatronPart": "Награда вкладчиков",
 		"Boxes.OwnpartCalculator.Place": "Место",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Уровень",
 		"Boxes.OwnpartCalculator.Title": "Калькурятор вложений в свои ВС",
 		"Boxes.OwnpartCalculator.YourName": "Ваше имя",
