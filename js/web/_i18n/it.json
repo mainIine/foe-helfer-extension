@@ -298,7 +298,7 @@
 		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
 		"Settings.Version.Desc": "Versione estensione di Chrome",
-		"Settings.Version.DescDebug": "<p> Estensione <strong class = 'text-danger'> BETA </strong> </p> <a target = '_ blank' href = 'https: // foe-rechner. de / extension / update? v = __ versione __ & lang = __ lingua __ '> Log modifiche </a>",
+		"Settings.Version.DescDebug": "<p> Estensione <strong class = 'text-danger'> BETA </strong> </p> <a target = '_ blank' href = 'https://foe-rechner.de/extension/update?v=__version__&lang=__language__'> Log modifiche </a>",
 		"Settings.Version.GuildId": "Gild-Id:",
 		"Settings.Version.PlayerId": "ID giocatore:",
 		"Settings.Version.Title": "Versione",
