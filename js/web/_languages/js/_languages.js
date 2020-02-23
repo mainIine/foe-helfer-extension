@@ -6,9 +6,9 @@
 		es: 'Español',
 		fr: 'Français',
 		hu: 'Magyar',
-		it: 'italian',
+		it: 'Italian',
 		nl: 'Nederlands',
-		pt: 'polski',
+		pt: 'Português',
 		ro: 'Română',
 		ru: 'Русский',
 		sv: 'Svenska'
