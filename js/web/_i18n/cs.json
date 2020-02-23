@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Zboží",
 		"Boxes.Campagne.Reward": "Celková odměna ",
 		"Boxes.Campagne.Title": "Náklady na dobytí ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 		"Boxes.CityMap.FreeArea": "Free area: ", //Todo: Translate
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Data byla přijata... Nyní navštivte ",
 		"Boxes.CityMap.TitleSend": "Vložit data",
 		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
 		"Boxes.EventList.Desc": "Task", //Todo: Translate
 		"Boxes.EventList.Number": "No.", //Todo: Translate
@@ -146,6 +149,7 @@
 		"Boxes.OwnpartCalculator.PatronPart": "Příspěvek ostatních",
 		"Boxes.OwnpartCalculator.Place": "Místo",
 		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Úroveň",
 		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",
@@ -160,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Továrny",
 		"Boxes.Productions.Headings.greatbuilding": "Velkolepé budovy",
 		"Boxes.Productions.Headings.main_building": "Radnice",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Číslo",
 		"Boxes.Productions.Headings.production": "Dílny",
 		"Boxes.Productions.Headings.random_production": "Náhodná produkce",

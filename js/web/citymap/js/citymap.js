@@ -34,7 +34,7 @@ let CityMap = {
 	 * @param Data
 	 * @param Title
 	 */
-	init: (Data = false, Title = 'Deine Stadt...')=> {
+	init: (Data = false, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
 		let scale = localStorage.getItem('CityMapScale'),
 			view = localStorage.getItem('CityMapView');
@@ -116,8 +116,8 @@ let CityMap = {
 
 		/* Ansicht wechseln */
 		let dropView = $('<select />').attr('id', 'menu-view').addClass('game-cursor')
-			.append( $('<option />').prop('selected', CityMap.CityView === 'normal').attr('data-view', 'normal').text('Normal').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.CityView === 'skew').attr('data-view', 'skew').text('Kavalier Persp.').addClass('game-cursor') );
+			.append($('<option />').prop('selected', CityMap.CityView === 'normal').attr('data-view', 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')).addClass('game-cursor') )
+			.append($('<option />').prop('selected', CityMap.CityView === 'skew').attr('data-view', 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')).addClass('game-cursor') );
 
 		menu.append(dropView);
 
