@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Benodigdheden",
 		"Boxes.Campagne.Reward": "Totale beloning ",
 		"Boxes.Campagne.Title": "Veroveringskosten voor ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Om je stad te kunnen plannen, moeten we je gegevens naar foe-rechner.de versturen",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Verzenden</button>",
 		"Boxes.CityMap.FreeArea": "Beschikbare oppervlakte: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Gegevens zijn succesvol verstuurd ... Bezoek nu ",
 		"Boxes.CityMap.TitleSend": "Gegevens verzenden",
 		"Boxes.CityMap.WholeArea": "Volledige oppervlakte: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": " en ",
 		"Boxes.EventList.Desc": "Missie",
 		"Boxes.EventList.Number": "Nr.",
@@ -126,6 +129,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arc",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "BD's",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopieer waarden",
 		"Boxes.OwnpartCalculator.Deposit": "Zelf te storten",
 		"Boxes.OwnpartCalculator.Done": "Gestort",
@@ -144,6 +148,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Resterend",
 		"Boxes.OwnpartCalculator.PatronPart": "Externe bijdrage",
 		"Boxes.OwnpartCalculator.Place": "Plaats",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Eigen GG FP-calculator",
 		"Boxes.OwnpartCalculator.YourName": "Jouw naam",
@@ -158,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Goederengebouwen",
 		"Boxes.Productions.Headings.greatbuilding": "Grootse gebouwen",
 		"Boxes.Productions.Headings.main_building": "Stadhuis",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Aantal",
 		"Boxes.Productions.Headings.production": "Productiegebouwen",
 		"Boxes.Productions.Headings.random_production": "Willekeurige producties",
