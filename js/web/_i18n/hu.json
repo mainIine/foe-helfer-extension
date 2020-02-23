@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Nyersanyag",
 		"Boxes.Campagne.Reward": "Teljes jutalom ",
 		"Boxes.Campagne.Title": "Hódítási költségek a ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Hogy meg tudjuk tervezni a városod, el kell küldeni az adataid a: foe-rechner.de oldalra",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Elküldés</button>",
 		"Boxes.CityMap.FreeArea": "Szabad terület: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Az adatok el lettek küldve sikeresen... Megtekintés ",
 		"Boxes.CityMap.TitleSend": "Adatok elküldése",
 		"Boxes.CityMap.WholeArea": "Teljes terület: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": " és ",
 		"Boxes.EventList.Desc": "Feladat",
 		"Boxes.EventList.Number": "Sorrend",
@@ -146,6 +149,7 @@
 		"Boxes.OwnpartCalculator.PatronPart": "Befektetői pontszám",
 		"Boxes.OwnpartCalculator.Place": "Hely",
 		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Szint",
 		"Boxes.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Boxes.OwnpartCalculator.YourName": "Saját név",
@@ -160,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Vagyon épületek",
 		"Boxes.Productions.Headings.greatbuilding": "Nevezetes épületek",
 		"Boxes.Productions.Headings.main_building": "Városháza",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Szám",
 		"Boxes.Productions.Headings.production": "Termelő épületek",
 		"Boxes.Productions.Headings.random_production": "Véletlenszerű Termelés",

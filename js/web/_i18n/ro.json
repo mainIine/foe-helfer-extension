@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Resurse",
 		"Boxes.Campagne.Reward": "Total recompense",
 		"Boxes.Campagne.Title": "Cucerirea Hărții continentelor ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
 		"Boxes.CityMap.FreeArea": "Câmpuri neocupate: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",
 		"Boxes.CityMap.TitleSend": "Transmiterea datelor",
 		"Boxes.CityMap.WholeArea": "Toate câmpurile: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": " și ",
 		"Boxes.EventList.Desc": "Misiune",
 		"Boxes.EventList.Number": "Nr.",
@@ -146,6 +149,7 @@
 		"Boxes.OwnpartCalculator.PatronPart": "Contribuția externă",
 		"Boxes.OwnpartCalculator.Place": "Locul",
 		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Contribuție la CL proprii",
 		"Boxes.OwnpartCalculator.YourName": "Numele tău",
@@ -160,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Clădiri de bunuri",
 		"Boxes.Productions.Headings.greatbuilding": "Clădiri legendare",
 		"Boxes.Productions.Headings.main_building": "Primărie",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Număr",
 		"Boxes.Productions.Headings.production": "Clădiri de producție",
 		"Boxes.Productions.Headings.random_production": "Producție aleatorie",
