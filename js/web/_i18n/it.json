@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "italian",
 		"API.GEXChampionship": "Il posizionamento della gilda GEX è stato aggiornato",
@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Risorsa",
 		"Boxes.Campagne.Reward": "Total Reward",
 		"Boxes.Campagne.Title": "Conquest cost for",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Per poter pianificare la tua città dobbiamo trasferire i tuoi dati su foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class = 'btn-default' id = 'submit-data' onclick = 'CityMap.SubmitData ()'> Invia </button>",
 		"Boxes.CityMap.FreeArea": "Area libera:",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "I dati sono stati trasferiti correttamente ... Ora visita",
 		"Boxes.CityMap.TitleSend": "Invia dati",
 		"Boxes.CityMap.WholeArea": "L'intera area:",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": "e",
 		"Boxes.EventList.Desc": "Task",
 		"Boxes.EventList.Number": "No.",
@@ -126,6 +129,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arc",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "BPs",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copia valori",
 		"Boxes.OwnpartCalculator.Deposit": "Deposit",
 		"Boxes.OwnpartCalculator.Done": "Done",
@@ -144,6 +148,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restante",
 		"Boxes.OwnpartCalculator.PatronPart": "Patron share",
 		"Boxes.OwnpartCalculator.Place": "Place",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Step",
 		"Boxes.OwnpartCalculator.Title": "Calcolatore di co-pagamento",
 		"Boxes.OwnpartCalculator.YourName": "Il tuo nome",
@@ -158,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Edifici merci",
 		"Boxes.Productions.Headings.greatbuilding": "Edifici leggendari",
 		"Boxes.Productions.Headings.main_building": "Municipio",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Numero",
 		"Boxes.Productions.Headings.production": "Edificio di produzione",
 		"Boxes.Productions.Headings.random_production": "Produzioni casuali",
