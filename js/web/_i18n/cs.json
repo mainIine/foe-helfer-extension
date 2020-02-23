@@ -83,8 +83,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__", //Todo: Translate
 		"Boxes.Infobox.ResetBox": "Reset Box", //Todo: Translate
 		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Budova",

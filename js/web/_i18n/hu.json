@@ -83,8 +83,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> Elfogadta az ajánlatod.<br>Kaptál ezért: __needValue__ __need__ ennyit: __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Újratöltés",
 		"Boxes.Infobox.Title": "Infó doboz",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Épület",

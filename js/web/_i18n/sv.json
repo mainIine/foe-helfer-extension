@@ -83,8 +83,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Töm",
 		"Boxes.Infobox.Title": "Informationshubb",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Nuvarande vinst: ",
 		"Boxes.Investment.InvestBar": "Investerat FP: ",
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investera",
 		"Boxes.Investment.TotalFP": "Bank + cirkulation + vinst: ",
 		"Boxes.LGOverviewBox.Building": "Byggnad",
