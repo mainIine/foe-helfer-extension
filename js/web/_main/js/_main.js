@@ -1727,7 +1727,7 @@ let MainParser = {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
 					$.toast({
-						heading: 'Spieler gefunden',
+						heading: i18n('Boxes.Investment.PlayerFound'),
 						text: r['msg'],
 						icon: 'success',
 						hideAfter: 1600
@@ -1737,7 +1737,7 @@ let MainParser = {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
 					$.toast({
-						heading: 'Alles aktuell!',
+						heading: i18n('Boxes.Investment.AllUpToDate'),
 						text: r['msg'],
 						icon: 'info',
 						hideAfter: 6000

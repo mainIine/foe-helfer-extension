@@ -83,8 +83,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__.",
 		"Boxes.Infobox.ResetBox": "Vider la boîte",
 		"Boxes.Infobox.Title": "Infos Techniques",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Gains PF (actuel) : ",
 		"Boxes.Investment.InvestBar": "PF investis : ",
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
 		"Boxes.LGOverviewBox.Building": "Bâtiment",

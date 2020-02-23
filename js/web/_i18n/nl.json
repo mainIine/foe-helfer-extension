@@ -83,8 +83,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> heeft je aanbieding geaccepteerd.<br>Je hebt __needValue__ __need__ ontvangen voor __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Venster opschonen",
 		"Boxes.Infobox.Title": "Info-venster",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Huidige winst: ",
 		"Boxes.Investment.InvestBar": "Geïnvesteerde FP: ",
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investering",
 		"Boxes.Investment.TotalFP": "Voorraad + in omloop + winst: ",
 		"Boxes.LGOverviewBox.Building": "Groots gebouw",
