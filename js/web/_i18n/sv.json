@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Resurs",
 		"Boxes.Campagne.Reward": "Total belöning ",
 		"Boxes.Campagne.Title": "Erövringskostnad för ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "För att planera din stad behöver we skicka din data till foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Skicka</button>",
 		"Boxes.CityMap.FreeArea": "Ledig yta: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Data skickades utan problem... Besök nu ",
 		"Boxes.CityMap.TitleSend": "Skicka data",
 		"Boxes.CityMap.WholeArea": "Total yta: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": " och ",
 		"Boxes.EventList.Desc": "Uppdrag",
 		"Boxes.EventList.Number": "Nr",
@@ -126,6 +129,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Ark",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopiera värden",
 		"Boxes.OwnpartCalculator.Deposit": "Insats",
 		"Boxes.OwnpartCalculator.Done": "Klart",
@@ -144,6 +148,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Kvar",
 		"Boxes.OwnpartCalculator.PatronPart": "Andras del",
 		"Boxes.OwnpartCalculator.Place": "Plats",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivå",
 		"Boxes.OwnpartCalculator.Title": "MB kalkylator",
 		"Boxes.OwnpartCalculator.YourName": "Ditt namn",
@@ -158,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Varubyggnader",
 		"Boxes.Productions.Headings.greatbuilding": "Mäktiga byggnader",
 		"Boxes.Productions.Headings.main_building": "Stadshus",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Nummer",
 		"Boxes.Productions.Headings.production": "Produktion byggnader",
 		"Boxes.Productions.Headings.random_production": "Slumpmässig produktion",

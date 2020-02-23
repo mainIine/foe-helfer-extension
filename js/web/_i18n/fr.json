@@ -42,12 +42,15 @@
 		"Boxes.Campagne.Resource": "Ressources",
 		"Boxes.Campagne.Reward": "Récompense totale ",
 		"Boxes.Campagne.Title": "Coûts de conquête pour",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 		"Boxes.CityMap.FreeArea": "Surface disponible : ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
 		"Boxes.EventList.Number": "N°",
@@ -126,6 +129,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arche",
 		"Boxes.OwnpartCalculator.Auto": "Auto.",
 		"Boxes.OwnpartCalculator.BPs": "Plans",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copier les valeurs",
 		"Boxes.OwnpartCalculator.Deposit": "A poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
@@ -144,6 +148,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restant ",
 		"Boxes.OwnpartCalculator.PatronPart": "Contribution externe ",
 		"Boxes.OwnpartCalculator.Place": "Place",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
@@ -158,6 +164,7 @@
 		"Boxes.Productions.Headings.goods": "Bâtiments de Marchandises",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de Ville",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Nombre",
 		"Boxes.Productions.Headings.production": "Bâtiments de production",
 		"Boxes.Productions.Headings.random_production": "Productions aléatoires",
