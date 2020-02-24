@@ -685,7 +685,7 @@ let Calculator = {
 			GewinnText = HTML.Format(SnipeGewinn); //Default: Gewinn
 			GewinnTooltip = [];
 
-			KursClass = '';
+			KursClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn Gewinn sonst rot
 			KursText = (SnipeGewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-'); //Default: Kurs anzeigen bei Gewinn
 			KursTooltip = [];
 
