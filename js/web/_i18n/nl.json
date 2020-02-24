@@ -25,6 +25,7 @@
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "FP-calculator",
 		"Boxes.Calculator.TTForderCosts": "Kosten = __nettoreward__<small>(netto beloning)</small> * __forderfactor__%<small>(investering)</small> = __costs__",
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Plek niet veilig. Er moeten hiervoor nog __fpcount__ extra FP's worden gestort.<br>Totaal voor een veilige plek: __totalfp__FP's",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP's passen er niet in.<br>Maximale storting: __totalfp__FP's",
 		"Boxes.Calculator.TTLoss": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Kosten: __costs__<br>Verlies = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__",
@@ -34,6 +35,7 @@
 		"Boxes.Calculator.TTProfit": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Kosten: __costs__<br>Winst = __bruttoreward__<small>(beloning)</small> - __costs__<small>(kosten)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __payed__<br>Winst = __bruttoreward__<small>(beloning)</small> - __payed__<small>(gestort)</small> = __profit__",
 		"Boxes.Calculator.TTRate": "Verhouding = __costs__<small>(kosten)</small> / __nettoreward__<small>(netto beloning)</small> = __rate__%",
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Nog te storten",
 		"Boxes.Campagne.AlreadyDone": "Alreeds veroverd!",
 		"Boxes.Campagne.DescInStock": "Beschikbaar",
