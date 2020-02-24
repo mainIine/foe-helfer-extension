@@ -367,15 +367,12 @@ let CityMap = {
 
 		let d = {
 			entities: MainParser.CityMapData,
-			areas: MainParser.UnlockedAreas
+			areas: CityMap.UnlockedAreas
 		};
 
-		chrome.runtime.sendMessage(extID, {
-			type: 'send2Api',
-			url: ApiURL + 'CityPlanner/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-			data: JSON.stringify(d)
+		MainParser.send2Server(d, 'CityPlanner', function(){
+			$('#msg-line').html('<span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 		});
 
-		$('#msg-line').html('<span class="text-green">' + i18n('Boxes.CityMap.SubmitSuccess') + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 	},
 };
