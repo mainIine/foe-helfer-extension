@@ -1669,8 +1669,14 @@ let MainParser = {
 						player_id: ev[i]['other_player']['player_id']
 					};
 
+					let entity =  '';
+
+					if(ev[i]['entity_id'] !== undefined){
+						entity = MainParser.Buildings[ev[i]['entity_id']]['name'];
+					}
+
 					if(ev[i]['type'] === 'social_interaction'){
-						pd['entity_id'] = ev[i]['entity_id'] || '';
+						pd['entity_id'] = entity;
 						pd['action'] = ev[i]['interaction_type'] || '';
 
 					} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
@@ -1678,7 +1684,7 @@ let MainParser = {
 
 					}  else if (ev[i]['type'] === 'battle'){
 						pd['action'] = 'battle|' + ev[i]['status'];
-						pd['entity_id'] = ev[i]['entity_id'];
+						pd['entity_id'] = entity;
 					}
 
 					pm.push(pd);
