@@ -20,25 +20,25 @@ let HiddenRewards = {
 	 * Box in den DOM
 	 */
     init: () => {
-        if( $('#HiddenRewardBox').length < 1 ) {
+        if ($('#HiddenRewardBox').length < 1) {
 
-			HTML.AddCssFile('hidden-rewards');
+            HTML.AddCssFile('hidden-rewards');
 
-			HTML.Box({
-				'id': 'HiddenRewardBox',
-				'title': i18n('Boxes.HiddenRewards.Title'),
-				'auto_close': false,
-				'dragdrop': true,
-				'minimize': true
-			});
+            HTML.Box({
+                'id': 'HiddenRewardBox',
+                'title': i18n('Boxes.HiddenRewards.Title'),
+                'auto_close': false,
+                'dragdrop': true,
+                'minimize': true
+            });
 
-			moment.locale(i18n('Local'));
+            moment.locale(i18n('Local'));
 
-			HiddenRewards.BuildBox();
+            HiddenRewards.BuildBox();
 
-		} else {
-			HTML.CloseOpenBox('HiddenRewardBox');
-		}
+        } else {
+            HTML.CloseOpenBox('HiddenRewardBox');
+        }
     },
 
 
@@ -48,8 +48,8 @@ let HiddenRewards = {
     prepareData: () => {
         let data = [];
 
-        for(let idx in HiddenRewards.Cache) {
-			if (!HiddenRewards.Cache.hasOwnProperty(idx)) continue;
+        for (let idx in HiddenRewards.Cache) {
+            if (!HiddenRewards.Cache.hasOwnProperty(idx)) continue;
 
             let position = HiddenRewards.Cache[idx].position.context;
 
@@ -57,12 +57,8 @@ let HiddenRewards = {
 
             // prüfen ob der Spieler in seiner Stadt eine zweispurige Straße hat
             if (position === 'cityRoadBig') {
-
-            	let check = MainParser.CityMapData.find(obj => (obj['type'] === 'street' && obj['connected'] === 2));
-
-				if(check !== undefined){
-					SkipEvent = false;
-				}
+                if (CurrentEraID >= Technologies.Eras.ProgressiveEra)
+                    SkipEvent = false;
             }
             else {
                 SkipEvent = false;
@@ -71,9 +67,9 @@ let HiddenRewards = {
             if (SkipEvent) {
                 continue;
             }
-            
-            const positionI18nLookupKey = 'HiddenRewards.Positions.'+position;
-            const positionI18nLookup = i18n('HiddenRewards.Positions.'+position);
+
+            const positionI18nLookupKey = 'HiddenRewards.Positions.' + position;
+            const positionI18nLookup = i18n('HiddenRewards.Positions.' + position);
 
             if (positionI18nLookupKey !== positionI18nLookup) {
                 position = positionI18nLookup;
@@ -88,8 +84,8 @@ let HiddenRewards = {
         }
 
         data.sort(function (a, b) {
-            if(a.expires < b.expires) return -1;
-            if(a.expires > b.expires) return 1;
+            if (a.expires < b.expires) return -1;
+            if (a.expires > b.expires) return 1;
             return 0;
         });
 
@@ -99,22 +95,22 @@ let HiddenRewards = {
             HiddenRewards.BuildBox();
         }
     },
-       
+
 
 	/**
 	 * Inhalt der Box in den BoxBody legen
 	 */
-    BuildBox:()=> {
+    BuildBox: () => {
         let h = [];
 
         h.push('<table class="foe-table">');
 
         h.push('<thead>');
-            h.push('<tr>');
-                h.push('<th>' + i18n('HiddenRewards.Table.type') + '</th>');
-                h.push('<th>' + i18n('HiddenRewards.Table.position') + '</th>');
-                h.push('<th>' + i18n('HiddenRewards.Table.expires') + '</th>');
-            h.push('</tr>');
+        h.push('<tr>');
+        h.push('<th>' + i18n('HiddenRewards.Table.type') + '</th>');
+        h.push('<th>' + i18n('HiddenRewards.Table.position') + '</th>');
+        h.push('<th>' + i18n('HiddenRewards.Table.expires') + '</th>');
+        h.push('</tr>');
         h.push('</thead>');
 
         h.push('<tbody>');
@@ -122,9 +118,9 @@ let HiddenRewards = {
         let cnt = 0;
         for (let idx in HiddenRewards.Cache) {
 
-        	if(!HiddenRewards.Cache.hasOwnProperty(idx)){
-        		break;
-			}
+            if (!HiddenRewards.Cache.hasOwnProperty(idx)) {
+                break;
+            }
 
             let hiddenReward = HiddenRewards.Cache[idx];
 
