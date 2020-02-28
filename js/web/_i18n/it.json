@@ -151,7 +151,7 @@
 		"Boxes.OwnpartCalculator.PatronPart": "Contributo posizioni",
 		"Boxes.OwnpartCalculator.Place": "Posto",
 		"Boxes.OwnpartCalculator.PlayerName": "Giocatore",
-		"Boxes.OwnpartCalculator.Scheme": "Schema", //Todo: no context
+		"Boxes.OwnpartCalculator.Scheme": "Schema",
 		"Boxes.OwnpartCalculator.Step": "Fase",
 		"Boxes.OwnpartCalculator.Title": "Calcolatore Auto-Up",
 		"Boxes.OwnpartCalculator.YourName": "Il tuo nome",
@@ -200,7 +200,7 @@
 		"Boxes.Units.Title": "Panoramica dell'esercito",
 		"Boxes.Units.Unbind": "Indipendenti",
 		"Boxes.Units.Unit": "Unità",
-		"DateTime": "G / M / AA h: mm: ss a",
+		"DateTime": "D / M / YY h: mm: ss a",
 		"Eras.0": "Nessuna età",
 		"Eras.1": "Età della pietra",
 		"Eras.10": "Età Moderna",
