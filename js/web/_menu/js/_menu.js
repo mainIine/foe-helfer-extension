@@ -181,7 +181,7 @@ let _menu = {
 			return arr.filter(function (value, index, self) {
 				return self.indexOf(value) === index;
 			});
-		};
+		}
 
 		_menu.Items = unique(_menu.Items);
 
@@ -786,6 +786,6 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		// return btn;
+		return btn;
 	},
 };
