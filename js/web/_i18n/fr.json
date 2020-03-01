@@ -6,12 +6,12 @@
 		"API.LGGildMember": "Les GM de __player__ ont été envoyés.",
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
-		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active ",
+		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
 		"Boxes.Calculator.AvailableFP": "PF disponibles",
 		"Boxes.Calculator.BPs": "Plan",
 		"Boxes.Calculator.Commitment": "Posés",
-		"Boxes.Calculator.Done": "Fait",
+		"Boxes.Calculator.Done": "Terminée",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Taux amis :",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
@@ -44,15 +44,15 @@
 		"Boxes.Campagne.Resource": "Ressources",
 		"Boxes.Campagne.Reward": "Récompense totale ",
 		"Boxes.Campagne.Title": "Coûts de conquête pour",
-		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
+		"Boxes.CityMap.CavalierPerspecitve": "Perspective cavalière",
 		"Boxes.CityMap.Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 		"Boxes.CityMap.FreeArea": "Surface disponible : ",
-		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
+		"Boxes.CityMap.NormalPerspecitve": "Standard",
 		"Boxes.CityMap.SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
-		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.CityMap.YourCity": "Votre citée",
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
 		"Boxes.EventList.Number": "N°",
@@ -85,10 +85,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__.",
 		"Boxes.Infobox.ResetBox": "Vider la boîte",
 		"Boxes.Infobox.Title": "Infos Techniques",
-		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Tout est à jour",
 		"Boxes.Investment.CurrReward": "Gains PF (actuel) : ",
 		"Boxes.Investment.InvestBar": "PF investis : ",
-		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFound": "Joueur trouvé",
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
 		"Boxes.LGOverviewBox.Building": "Bâtiment",
@@ -115,7 +115,7 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayer de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", //Todo: Translate
+		"Boxes.Neighbors.NothingToPlunder": "Rien à piller",
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
 		"Boxes.Neighbors.Title": "Production de ",
@@ -133,7 +133,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arche",
 		"Boxes.OwnpartCalculator.Auto": "Auto.",
 		"Boxes.OwnpartCalculator.BPs": "Plans",
-		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
+		"Boxes.OwnpartCalculator.BuildingName": "Batîment ",
 		"Boxes.OwnpartCalculator.CopyValues": "Copier les valeurs",
 		"Boxes.OwnpartCalculator.Deposit": "A poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
@@ -152,8 +152,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restant ",
 		"Boxes.OwnpartCalculator.PatronPart": "Contribution externe ",
 		"Boxes.OwnpartCalculator.Place": "Place",
-		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
-		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
+		"Boxes.OwnpartCalculator.PlayerName": "Joueur ",
+		"Boxes.OwnpartCalculator.Scheme": "Schéma ",
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
@@ -168,7 +168,7 @@
 		"Boxes.Productions.Headings.goods": "Bâtiments de Marchandises",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de Ville",
-		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
+		"Boxes.Productions.Headings.name": "Nom",
 		"Boxes.Productions.Headings.number": "Nombre",
 		"Boxes.Productions.Headings.production": "Bâtiments de production",
 		"Boxes.Productions.Headings.random_production": "Productions aléatoires",
