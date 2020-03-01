@@ -1,5 +1,24 @@
 ##Changelog - Extension
 
+#####2.4.2.2
+
+**Update**
+- Extension:
+    - Added Italian translations
+    - Made in Portuguese
+
+- investments:
+    - new API endpoint + new landing page (history, rank warning, etc.)
+
+**Bugfix**
+- Extension:
+    - [#602](https://github.com/dsiekiera/foe-helfer-extension/issues/602) added missing translations
+
+- Menu:
+    - [#609](https://github.com/dsiekiera/foe-helfer-extension/issues/609) Fixed memory problem when changing via drag & drop
+    
+---
+
 #####2.4.2.1
 
 **Update**
