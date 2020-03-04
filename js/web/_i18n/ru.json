@@ -21,7 +21,7 @@
 		"Boxes.Calculator.Meds": "Медали",
 		"Boxes.Calculator.Profit": "Профит",
 		"Boxes.Calculator.Rate": "Коэф.",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
+		"Boxes.Calculator.Sniping": "Вложения",
 		"Boxes.Calculator.Step": "Уровень ",
 		"Boxes.Calculator.Title": "Калькулятор вложений",
 		"Boxes.Calculator.TTForderCosts": "Суммарно = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __forderfactor__%<small>(вложение от игрока)</small> = __costs__",
