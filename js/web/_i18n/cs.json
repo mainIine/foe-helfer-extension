@@ -3,118 +3,118 @@
 		"_Language": "Český",
 		"API.GEXChampionship": "The GEX umístění cechu bylo updatováno",
 		"API.GEXPlayer": "GEX umístění členů bylo updatováno",
-		"API.LGGildMember": "__player__'s Velkolepé budovy byly poslány",
+		"API.LGGildMember": "Velkolepé budovy uživatele __player__ byly poslány",
 		"API.LGInvest": "Investice vašich VB bylo posláno",
-		"API.UpdateSuccess": "Update performed", //Todo: Translate
+		"API.UpdateSuccess": "Aktualizace dokončena",
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
-		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
-		"Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
+		"Boxes.Calculator.ArkBonus": "Bonus ARCu", 
+		"Boxes.Calculator.AvailableFP": "Dostupné body výzkumu",
 		"Boxes.Calculator.BPs": "BPs",
 		"Boxes.Calculator.Commitment": "Náklady",
 		"Boxes.Calculator.Done": "Hotovo",
 		"Boxes.Calculator.FP": "BV",
-		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
+		"Boxes.Calculator.FriendlyInvestment": "Přátelská investice:",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "Upozornění! Zvýšení úrovně budovy",
 		"Boxes.Calculator.LGNotConnected": "Budova není připojena",
 		"Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Zisk",
-		"Boxes.Calculator.Rate": "Rate", //Todo: Translate
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
+		"Boxes.Calculator.Rate": "Rate", 
+		"Boxes.Calculator.Sniping": "Sniping", 
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
-		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
-		"Boxes.Calculator.TTForderNegativeProfit": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP", //Todo: Translate
-		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Loss = __payed__<small>(payed)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You payed __payed__FP instead of __topay__FP. That is __tooless__FP too less.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You payed __payed__FP instead of __topay__FP. That is __toomuch__FP too much.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
+		"Boxes.Calculator.TTForderCosts": "Náklady = __nettoreward__<small>(netto odměna)</small> * __forderfactor__%<small>(Přátelská investice)</small> = __costs__",
+		"Boxes.Calculator.TTForderNegativeProfit": "Umístění není zajištěno. Pro zajištění pozice musí být investováno dalších __fpcount__ FP<br> Celkem k zajištění pozice: __totalfp__FP", 
+		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP se nevejde <br>Maximální investice: __totalfp__FP", 
+		"Boxes.Calculator.TTLoss": "Odměna = __nettoreward__<small>(netto odměna)</small> * __arcfactor__%<small>(Bonus ARCu)</small> = __bruttoreward__<br>Náklady: __costs__<br>Ztráta = __costs__<small>(náklady)</small> - __bruttoreward__<small>(odměna)</small> = __loss__",
+		"Boxes.Calculator.TTLossSelf": "Odměna = __nettoreward__<small>(netto odměna)</small> * __arcfactor__%<small>(Bonus ARCu)</small> = __bruttoreward__<br>Zaplaceno: __payed__<br>Ztráta = __payed__<small>(zaplaceno)</small> - __bruttoreward__<small>(odměna)</small> = __loss__", 
+		"Boxes.Calculator.TTPayedTooLess": "Zaplatil jsi __payed__FP místo __topay__FP. Což je o __tooless__FP méně.", 
+		"Boxes.Calculator.TTPayedTooMuch": "Zaplatil jsi __payed__FP místo __topay__FP. Což je o __toomuch__FP více.", 
+		"Boxes.Calculator.TTProfit": "Odměna = __nettoreward__<small>(netto odměna)</small> * __arcfactor__%<small>(Bonus ARCu)</small> = __bruttoreward__<br>Náklady: __costs__<br>Zisk = __bruttoreward__<small>(odměna)</small> - __costs__<small>(náklady)</small> = __profit__",
+		"Boxes.Calculator.TTProfitSelf": "Odměna = __nettoreward__<small>(netto odměna)</small> * __arcfactor__%<small>(Bonus ARCu)</small> = __bruttoreward__<br>Zaplaceno: __payed__<br>Zisk = __bruttoreward__<small>(odměna)</small> - __payed__<small>(Payed)</small> = __profit__",
+		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(náklady)</small> / __nettoreward__<small>(netto odměna)</small> = __rate__%", 
 		"Boxes.Calculator.Up2LevelUp": "Do nové úrovně",
 		"Boxes.Campagne.AlreadyDone": " Již dobyto!",
 		"Boxes.Campagne.DescInStock": "K dispozici",
 		"Boxes.Campagne.DescRequired": "Požadováno",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Schází</span>", 
 		"Boxes.Campagne.Resource": "Zboží",
 		"Boxes.Campagne.Reward": "Celková odměna ",
 		"Boxes.Campagne.Title": "Náklady na dobytí ",
 		"Boxes.CityMap.Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-		"Boxes.CityMap.FreeArea": "Free area: ", //Todo: Translate
+		"Boxes.CityMap.FreeArea": "Nevyužitá plocha: ", 
 		"Boxes.CityMap.SubmitSuccess": "Data byla přijata... Nyní navštivte ",
 		"Boxes.CityMap.TitleSend": "Vložit data",
-		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
-		"Boxes.EventList.And": " and ", //Todo: Translate
-		"Boxes.EventList.Desc": "Task", //Todo: Translate
-		"Boxes.EventList.Number": "No.", //Todo: Translate
-		"Boxes.EventList.Or": " or ", //Todo: Translate
-		"Boxes.EventList.Reward": "Reward", //Todo: Translate
-		"Boxes.EventList.Title": "Event quest list for: ", //Todo: Translate
-		"Boxes.EventList.Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
-		"Boxes.EventList.Waiting": "No quest available", //Todo: Translate
-		"Boxes.Gildfights.Fights": "Fights", //Todo: Translate
-		"Boxes.Gildfights.LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
-		"Boxes.Gildfights.Negotiations": "Negotiations", //Todo: Translate
-		"Boxes.Gildfights.Player": "Player", //Todo: Translate
-		"Boxes.Gildfights.Title": "Player overview", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Appears", //Todo: Translate
-		"Boxes.HiddenRewards.Disappears": "Disappears", //Todo: Translate
-		"Boxes.HiddenRewards.NoEvents": "No events presents", //Todo: Translate
-		"Boxes.HiddenRewards.Title": "Hidden Rewards", //Todo: Translate
-		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
-		"Boxes.Infobox.FilterAuction": "Auction", //Todo: Translate
-		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
-		"Boxes.Infobox.FilterGildFights": "Guild Fights", //Todo: Translate
-		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
-		"Boxes.Infobox.FilterMessage": "Message", //Todo: Translate
-		"Boxes.Infobox.FilterTrade": "Trade", //Todo: Translate
-		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> has just offered __amount__ coins.", //Todo: Translate
-		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> has just received __points__ points in the GEX.", //Todo: Translate
-		"Boxes.Infobox.Messages.GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__", //Todo: Translate
-		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
-		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Level __level__", //Todo: Translate
-		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepted your Offer.<br>You got __needValue__ __need__ for __offerValue__ __offer__", //Todo: Translate
-		"Boxes.Infobox.ResetBox": "Reset Box", //Todo: Translate
-		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
-		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
-		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
-		"Boxes.Investment.Title": "Investment", //Todo: Translate
-		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.CityMap.WholeArea": "Celá plocha: ", 
+		"Boxes.EventList.And": " A ",
+		"Boxes.EventList.Desc": "Úkol", 
+		"Boxes.EventList.Number": "Č.", 
+		"Boxes.EventList.Or": " NEBO ", 
+		"Boxes.EventList.Reward": "Odměna", 
+		"Boxes.EventList.Title": "Seznam úloh události: ", 
+		"Boxes.EventList.Upcoming": "Nadcházející úlohy (Čísla se mohou měnit)", 
+		"Boxes.EventList.Waiting": "Úlohy nejsou dostupné", 
+		"Boxes.Gildfights.Fights": "Boje", 
+		"Boxes.Gildfights.LastSnapshot": " - posledni snímek před __time__ ", 
+		"Boxes.Gildfights.Negotiations": "Vyjednávání", 
+		"Boxes.Gildfights.Player": "Hráč", 
+		"Boxes.Gildfights.Title": "Informace o hráči",
+		"Boxes.HiddenRewards.Appears": "Objeví se",
+		"Boxes.HiddenRewards.Disappears": "Zmizí", 
+		"Boxes.HiddenRewards.NoEvents": "Na mapě není žádná událost", 
+		"Boxes.HiddenRewards.Title": "Skryté Odměny", 
+		"Boxes.Infobox.Filter": "Filtr", 
+		"Boxes.Infobox.FilterAuction": "Aukce",
+		"Boxes.Infobox.FilterGex": "Expedice cechu", 
+		"Boxes.Infobox.FilterGildFights": "Cechovní války",
+		"Boxes.Infobox.FilterLevel": "Zvýšení úrovně", 
+		"Boxes.Infobox.FilterMessage": "Zprávy", 
+		"Boxes.Infobox.FilterTrade": "Obchod", 
+		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> právě nabídl __amount__ mincí.", 
+		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> právě získal __points__ bodů v expedici cechu.", 
+		"Boxes.Infobox.Messages.GildFightOccupied": "Provincie <span style=\"color:#ffb539\">__provinceName__</span> byla zabrána <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> a je uzamčena do __untilOccupied__", 
+		"Boxes.Infobox.Messages.LevelUp": "Budova __building__ hráče __player__ dosáhla úrovně __level__.<br>Umístil ses na  <strong>__rank__th</strong> místě a získal jsi <strong>__fps__</strong> FPs zpět.", 
+		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Level __level__", 
+		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> přijal tvou nabídku.<br>Získal jsi __needValue__ __need__ za  __offerValue__ __offer__", 
+		"Boxes.Infobox.ResetBox": "Smazat",
+		"Boxes.Infobox.Title": "Informační tabule", 
+		"Boxes.Investment.CurrReward": "Současný zisk: ",
+		"Boxes.Investment.InvestBar": "Investované FP: ", 
+		"Boxes.Investment.Title": "Investice", 
+		"Boxes.Investment.TotalFP": "Peněženka + investice + zisk: ", 
 		"Boxes.LGOverviewBox.Building": "Budova",
 		"Boxes.LGOverviewBox.Level": "Úroveň",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing to fetch", //Todo: Translate
+		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nemá nic zajímavého", 
 		"Boxes.LGOverviewBox.PayedTotal": "Přidáno / Celkem",
 		"Boxes.LGOverviewBox.Profit": "Zisk",
 		"Boxes.LGOverviewBox.Rate": "Míra",
 		"Boxes.LGOverviewBox.Title": "Možný příspěvek",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "recognized", //Todo: Translate
+		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "Rozpoznáno",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "Nalezen nový",
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Zatím nic",
 		"Boxes.Negotiation.Average": "Ø Množství",
 		"Boxes.Negotiation.Canceled": "Vzdát",
 		"Boxes.Negotiation.Chance": "Šance",
-		"Boxes.Negotiation.DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.", //Todo: Translate
-		"Boxes.Negotiation.GoodsCritical": "ATTENTION: Good stock is critical", //Todo: Translate
-		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low", //Todo: Translate
+		"Boxes.Negotiation.DragDrop": "Můžeš prerovnat ikony v liště pomocí \"drag & drop\" pro změnu pořadí pro první pokus.",
+		"Boxes.Negotiation.GoodsCritical": "POZOR: Kritické množství suroviny na skladě", 
+		"Boxes.Negotiation.GoodsLow": "POZOR: Malé množství surovniny na skladě", 
 		"Boxes.Negotiation.Person": "D",
-		"Boxes.Negotiation.Round": "Round", //Todo: Translate
-		"Boxes.Negotiation.Stock": "Stock:", //Todo: Translate
+		"Boxes.Negotiation.Round": "Vyjednávání", 
+		"Boxes.Negotiation.Stock": "Sklad:",
 		"Boxes.Negotiation.Success": "Úspěch",
 		"Boxes.Negotiation.TableLoadError": "Error loading the negotiation table", //Todo: Translate
 		"Boxes.Negotiation.Title": "Pomocník s vyjednáváním",
 		"Boxes.Negotiation.TryEnd": "Skoro",
 		"Boxes.Negotiation.WrongGoods": "Špatné zboží! Vyberte jiné",
-		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", //Todo: Translate
+		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", 
 		"Boxes.Neighbors.OngoingProductions": "Ve výrobě",
 		"Boxes.Neighbors.ReadyProductions": "Hotové výroby",
 		"Boxes.Neighbors.Title": "Výroby",
 		"Boxes.Outpost.DescInStock": "K dispozici",
 		"Boxes.Outpost.DescRequired": "Vyžadováno",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'> schází</span>", 
 		"Boxes.Outpost.ExpansionsSum": "Rozšíření",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Šance: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Další rozšíření",
@@ -123,8 +123,8 @@
 		"Boxes.Outpost.TitleBuildings": "Budova",
 		"Boxes.Outpost.TitleFree": "Vyzkoumáno",
 		"Boxes.Outpost.TitleShort": "Zboží - ",
-		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
-		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
+		"Boxes.OwnpartCalculator.Arc": "Arc", 
+		"Boxes.OwnpartCalculator.Auto": "Auto", 
 		"Boxes.OwnpartCalculator.BPs": "Plánky",
 		"Boxes.OwnpartCalculator.CopyValues": "Kopírovat hodnoty",
 		"Boxes.OwnpartCalculator.Deposit": "Vklad",
@@ -135,7 +135,7 @@
 		"Boxes.OwnpartCalculator.Levels": "Úrovně",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Body výzkumu celkově",
 		"Boxes.OwnpartCalculator.Meds": "Medaile",
-		"Boxes.OwnpartCalculator.NoPlaceSafe": "No place safe", //Todo: Translate
+		"Boxes.OwnpartCalculator.NoPlaceSafe": "Žádná bezpečná pocice", 
 		"Boxes.OwnpartCalculator.Note": "Poznámka",
 		"Boxes.OwnpartCalculator.OldLevel": "Předchozí úroveň",
 		"Boxes.OwnpartCalculator.Order": "Pořadí",
@@ -161,7 +161,7 @@
 		"Boxes.Productions.Headings.number": "Číslo",
 		"Boxes.Productions.Headings.production": "Dílny",
 		"Boxes.Productions.Headings.random_production": "Náhodná produkce",
-		"Boxes.Productions.Headings.residential": "Residential buildings", //Todo: Translate
+		"Boxes.Productions.Headings.residential": "Obytné budovy", 
 		"Boxes.Productions.Headings.street": "Ulice",
 		"Boxes.Productions.ModeGroups": "Skupiny",
 		"Boxes.Productions.ModeSingle": "Samostatné",
@@ -175,7 +175,7 @@
 		"Boxes.StrategyPoints.FPBar": "Zásoba bodů: ",
 		"Boxes.Technologies.DescInStock": "K dispozici",
 		"Boxes.Technologies.DescRequired": "Požadováno",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>schází</span>",
 		"Boxes.Technologies.NoTechs": "Dokončili jste dobu",
 		"Boxes.Technologies.Resource": "Zdroj",
 		"Boxes.Technologies.Title": "Náklady na výzkum",
@@ -183,15 +183,15 @@
 		"Boxes.Units.Bind": "Závislá",
 		"Boxes.Units.Defend": "Obrana",
 		"Boxes.Units.NextUnitsIn": "Příští(ch) __count__ jednotek se rekrutuje za <span class=\"alca-countdown\"></span> at __harvest__ hodin",
-		"Boxes.Units.NotFilled": "not filled", //Todo: Translate
-		"Boxes.Units.Proportionally": "Proportionally", //Todo: Translate
+		"Boxes.Units.NotFilled": "Prázdné",
+		"Boxes.Units.Proportionally": "Proporčně", 
 		"Boxes.Units.Quantity": "Množství",
-		"Boxes.Units.ReadyToLoot": "Ready to loot!", //Todo: Translate
-		"Boxes.Units.Status": "Status", //Todo: Translate
+		"Boxes.Units.ReadyToLoot": "Ready to loot!", 
+		"Boxes.Units.Status": "Stav", 
 		"Boxes.Units.Title": "Armáda",
 		"Boxes.Units.Unbind": "Nezávislá",
 		"Boxes.Units.Unit": "Jednotka",
-		"DateTime": "D/M/YY h:mm:ss a", //Todo: Translate
+		"DateTime": "D/M/RR h:mm:ss a",
 		"Eras.0": "Bez doby",
 		"Eras.1": "Doba kamenná",
 		"Eras.10": "Moderní doba",
@@ -215,13 +215,13 @@
 		"Global.BoxTitle": "FoE Helfer",
 		"HiddenRewards.Positions.cityRoadBig": "big Road", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadSmall": "small Road", //Todo: Translate
-		"HiddenRewards.Positions.guildExpedition": "Guild expedition", //Todo: Translate
-		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
-		"HiddenRewards.Positions.shore": "Shore", //Todo: Translate
-		"HiddenRewards.Positions.water": "in the water", //Todo: Translate
-		"HiddenRewards.Table.expires": "Expires at", //Todo: Translate
-		"HiddenRewards.Table.position": "Position", //Todo: Translate
-		"HiddenRewards.Table.type": "Type", //Todo: Translate
+		"HiddenRewards.Positions.guildExpedition": "Cechovní Expedice",
+		"HiddenRewards.Positions.nature": "v přírodě",
+		"HiddenRewards.Positions.shore": "na pobřeží", 
+		"HiddenRewards.Positions.water": "ve vodě", 
+		"HiddenRewards.Table.expires": "Expiruje za", 
+		"HiddenRewards.Table.position": "Umístění", 
+		"HiddenRewards.Table.type": "Typ", 
 		"Local": "cs-CZ",
 		"Menu.Ask.Desc": "Máte s něčím problémy?<br>Mrkněte sem!",
 		"Menu.Ask.Title": "Otázky/odpovědi",
@@ -235,16 +235,16 @@
 		"Menu.Campagne.Warning": "Vyberte nejprve provincii!",
 		"Menu.Chat.Desc": "Popovídejte si s kamarády z cechu",
 		"Menu.Chat.Title": "Cechovní chat",
-		"Menu.Citymap.Desc": "Shows your city schematically from above", //Todo: Translate
-		"Menu.Citymap.Title": "City overview", //Todo: Translate
-		"Menu.Event.Desc": "Overview of the current and upcoming quests", //Todo: Translate
-		"Menu.Event.Title": "Event Questlist", //Todo: Translate
+		"Menu.Citymap.Desc": "Zobrazí schématicky tvé města v pohledu zhora",
+		"Menu.Citymap.Title": "Mapa města",
+		"Menu.Event.Desc": "Přehled stavajících a nadcházejících úloh události",
+		"Menu.Event.Title": "Seznam úloh události", 
 		"Menu.Forum.Desc": "Máte otázku, štve vás něco nebo si jen chcete popovídat ...",
 		"Menu.Forum.Title": "Fórum",
-		"Menu.HiddenRewards.Desc": "Overview of hidden rewards", //Todo: Translate
-		"Menu.HiddenRewards.Title": "Hidden rewards", //Todo: Translate
-		"Menu.Info.Desc": "Ukazuje co se událo \"background\"<br><em>Fills up with info ...</em>",
-		"Menu.Info.Title": "Info Box", //Todo: Translate
+		"Menu.HiddenRewards.Desc": "Přehled skrytých událostí",
+		"Menu.HiddenRewards.Title": "Skryté odměny",
+		"Menu.Info.Desc": "Ukazuje co se událo \"na pozadí\"<br><em>Postupně se naplňuje informacemi ...</em>",
+		"Menu.Info.Title": "Informační tabule", 
 		"Menu.Negotiation.Desc": "Zlepšete svoji šanci během vyjednávání",
 		"Menu.Negotiation.Title": "Pomocník s vyjednáváním",
 		"Menu.Negotiation.Warning": "Začněte vyjednávat!",
@@ -271,15 +271,15 @@
 		"Settings.ChangeLanguage.Title": "Změnit jazyk",
 		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte. <br>.",
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
-		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
-		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
+		"Settings.MenuLength.Desc": "Počet elementů v menu <br> prázdné nebo \"0\" znamená automatickou velikost.", 
+		"Settings.MenuLength.Title": "Velikost Menu", 
 		"Settings.PreScanLGList.Desc": "Oskenuje VB a označí možné budovy k investování. <br> <u> Note: </u> Kvůli odezvě a přenosovým problémům se může výsledek lišit. Sken neodporuje pravidlům.",
 		"Settings.PreScanLGList.Title": "Prvotní sken Velkolepých budov",
 		"Settings.ResetBoxPositions.Button": "Návrat!",
 		"Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
 		"Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
 		"Settings.SendGEXInfo.Desc": "When clicking in the GEX on placements or rankings the data transmitted", //Todo: Translate
-		"Settings.SendGEXInfo.Title": "GEX evaluations", //Todo: Translate
+		"Settings.SendGEXInfo.Title": "Vyhodnoceni cechocní expedice", 
 		"Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
 		"Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
 		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' pošle data o investování VB na web",
@@ -290,11 +290,11 @@
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "Chrome Extension Version", //Todo: Translate
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
+		"Settings.Version.Desc": "Verze Chrome Rozšíření", 
+		"Settings.Version.DescDebug": "<p>Rozšíření <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", 
 		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
 		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
 		"Settings.Version.Title": "Verze",
-		"Settings.Version.World": "World:" //Todo: Translate
+		"Settings.Version.World": "Svět:"
 	}
 }
