@@ -25,7 +25,7 @@
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "Calculs GM externes",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
-		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "<b>Place non sécurisée !</b><br><b>__fpcount__</b> PF supplémentaires à investir pour le sécuriser<br>Total pour rendre la place sécurisé : <b>__totalfp__</> PF.",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PF ne rentre pas dedans<br>Investissement maximum : __totalfp__ PF",
 		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
@@ -35,7 +35,7 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Jusqu'au niveau suivant ",
 		"Boxes.Campagne.AlreadyDone": " déjà conquis !",
 		"Boxes.Campagne.DescInStock": "Disponible",
