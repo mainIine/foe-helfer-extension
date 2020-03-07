@@ -25,7 +25,7 @@
 		"Boxes.Calculator.Step": "Step",
 		"Boxes.Calculator.Title": "Calcolatore dei costi",
 		"Boxes.Calculator.TTForderCosts": "Costi = __nettoreward__ <small> (premio netto) </small> * __forderfactor__% <small> (Investimento amichevole) </small> = __costs__",
-		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Il posto non è sicuro. __Fpcount__ FP aggiuntivi devono essere investiti per renderlo sicuro <br> Total per rendere il luogo sicuro: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP non si adatta a <br> Investimento massimo: __totalfp__FP",
 		"Boxes.Calculator.TTLoss": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Costi: __costs__ <br> Loss = __costs__ <small> (costi) </small> - __bruttoreward__ <small> (ricompensa) </small> = __loss__",
@@ -35,7 +35,7 @@
 		"Boxes.Calculator.TTProfit": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Costi: __costs__ <br> Profitto = __bruttoreward__ <small> (ricompensa) </small> - __costs__ <small> (costi) </small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Pagato: __payed__ <br> Profit = __bruttoreward__ <small> (ricompensa) </small> - __payed__ <small> (Pagato) </small> = __profit__",
 		"Boxes.Calculator.TTRate": "Rate = __costs__ <small> (costi) </small> / __nettoreward__ <small> (premio netto) </small> = __rate __%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Fino al livellamento",
 		"Boxes.Campagne.AlreadyDone": "Già conquistato!",
 		"Boxes.Campagne.DescInStock": "Disponibile",
@@ -88,7 +88,7 @@
 		"Boxes.Investment.AllUpToDate": "Tutto è aggiornato",
 		"Boxes.Investment.CurrReward": "Profitto attuale:",
 		"Boxes.Investment.InvestBar": "PF Investiti:",
-		"Boxes.Investment.PlayerFound": "Giocatore trovato", 
+		"Boxes.Investment.PlayerFound": "Giocatore trovato",
 		"Boxes.Investment.Title": "Investimento",
 		"Boxes.Investment.TotalFP": "in cirolazione + + profitto:",
 		"Boxes.LGOverviewBox.Building": "Edificio",
@@ -299,7 +299,7 @@
 		"Settings.SendTavernInfo.Title": "Attività di motivazione",
 		"Settings.ShowNeighborsGoods.Desc": "Durante la visita, mostra ciò che è attualmente prodotto",
 		"Settings.ShowNeighborsGoods.Title": "Raccolta del vicinato",
-		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.", 
+		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
 		"Settings.Version.Desc": "Versione estensione di Chrome",
 		"Settings.Version.DescDebug": "<p>Estensione <strong class='text-danger'>BETA</strong></p><a target='_ blank' href = 'https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Log modifiche</a>",
