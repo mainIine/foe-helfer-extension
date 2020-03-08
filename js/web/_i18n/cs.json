@@ -53,6 +53,12 @@
 		"Boxes.CityMap.TitleSend": "Vložit data",
 		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
+		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
+		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
+		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
 		"Boxes.EventList.Desc": "Task", //Todo: Translate
 		"Boxes.EventList.Number": "No.", //Todo: Translate

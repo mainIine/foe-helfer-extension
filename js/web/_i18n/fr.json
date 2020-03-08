@@ -53,6 +53,12 @@
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
+		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
+		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
+		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
 		"Boxes.EventList.Number": "N°",
