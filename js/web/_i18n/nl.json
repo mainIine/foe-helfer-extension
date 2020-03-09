@@ -120,7 +120,7 @@
 		"Boxes.Negotiation.TableLoadError": "Fout bij het laden van de onderhandelingstabel",
 		"Boxes.Negotiation.Title": "Onderhandelingshulp",
 		"Boxes.Negotiation.TryEnd": "Geen beurten meer",
-		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af",
+		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af!",
 		"Boxes.Neighbors.NothingToPlunder": "Er valt niets te plunderen",
 		"Boxes.Neighbors.OngoingProductions": "Lopende producties",
 		"Boxes.Neighbors.ReadyProductions": "Voltooide producties",
