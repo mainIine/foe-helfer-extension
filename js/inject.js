@@ -154,6 +154,7 @@ if (Languages.PossibleLanguages[lng] === undefined) {
 			const s = [
 				'_languages',
 				'_helper',
+				'_api',
 				'_menu',
 				'tavern',
 				'outposts',
