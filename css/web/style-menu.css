@@ -529,6 +529,10 @@ p {
 	background-image: url('../images/negotation.png');
 }
 
+#api-Btn span {
+	background-image: url('../images/api.png');
+}
+
 /* Tabs */
 
 .window-body .tabs ul {
