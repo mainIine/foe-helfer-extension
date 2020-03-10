@@ -16,7 +16,7 @@
 let Notes = {
 
 	/**
-	 * Erzeugt eine kleine Box in der
+	 * Erzeugt eine kleine Box im DOM
 	 */
 	buildTextBox: ()=>{
 		if ($('#note-box').length === 0) {
@@ -36,16 +36,20 @@ let Notes = {
 
 
 	/**
-	 * Ein frisches iFrame in die Box setzen
+	 * Ein frisches iFrame in eine Box
+	 *
+	 * @param id
+	 * @param callback
 	 */
-	createIframeBox: ()=> {
-		let u =  + '/content/text-box.html?lng=' + MainParser.Language,
+	createIframeBox: (id = '#note-boxBody', callback = 'Notes.saveInfoToUser')=> {
+		let u = extUrl + 'content/text-box.html?lng=' + MainParser.Language,
 			i = $('<iframe />').attr('src', u).css({'width':'100%','height':'100%'}).attr('frameBorder','0');
 
-		$('#note-boxBody').html( i );
+
+		$(id).html( i );
 
 		// hier einen Callback Namen rein, mit dem entsprechenden Ziel
-		Notes.getMessageFromIframe('saveInfoToUser');
+		Notes.getMessageFromIframe(callback);
 	},
 
 
@@ -68,7 +72,7 @@ let Notes = {
 					Notes.closeBox();
 
 				} else {
-					Notes[callback](e.data);
+					callback(e.data);
 				}
 			}
 		});
