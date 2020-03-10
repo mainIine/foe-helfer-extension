@@ -40,7 +40,8 @@ let _menu = {
 		'forum',
 		'ask',
 		'github',
-		'chat'
+		'chat',
+		'api'
 	],
 
 
@@ -630,6 +631,11 @@ let _menu = {
 		return btn_EventBG;
 	},
 
+	/**
+	 * Evente in der Stadt und der Umgebung
+	 *
+	 * @returns {null|undefined|jQuery}
+	 */
 	hiddenRewards_Btn: () => {
 		let btn_RewardsBG = $('<div />').attr({ 'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards' }).addClass('hud-btn');
 
@@ -787,5 +793,29 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
+	},
+
+	/**
+	 * API Funktion für den Spieler
+	 */
+	api_Btn: ()=> {
+
+		let btn = $('<div />').attr({ 'id': 'api-Btn', 'data-slug': 'api' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Api.Title'), i18n('Menu.Api.Desc'), 'api-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function(){
+			API.ShowBox();
+		});
+
+		btn.append(btn_sp);
+
+		// ist die API Funktion aktivert?
+		if(Settings.GetSetting('CustomerApi')){
+			return btn;
+		}
 	},
 };

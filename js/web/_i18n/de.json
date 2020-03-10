@@ -232,6 +232,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "de-DE",
+		"Menu.Api.Desc": "Einstellungen um Daten an deinen eigenen Server zu schicken",
+		"Menu.Api.Title": "Spieler API",
 		"Menu.Ask.Desc": "Du weißt nicht wie etwas funktioniert?<br>Schau nach!",
 		"Menu.Ask.Title": "Frage / Antwort",
 		"Menu.Bugs.Desc": "Etwas geht nicht wie es soll oder du hast eine Idee?",
@@ -304,6 +306,9 @@
 		"Settings.Version.GuildId": "Gilden Id:",
 		"Settings.Version.PlayerId": "Spieler Id:",
 		"Settings.Version.Title": "Version",
-		"Settings.Version.World": "Welt:"
+		"Settings.Version.World": "Welt:",
+
+		"Settings.CustomerApi.Desc": "Du möchtest Daten an deinen eigenen Server einige Daten schicken?<br>Nach dieser Aktivierung wird sich das Spiel neu laden und ein weiterer Menüpunkt erscheint.",
+		"Settings.CustomerApi.Title": "Spieler API"
 	}
 }

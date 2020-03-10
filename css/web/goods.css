@@ -15,107 +15,116 @@
 
 .goods-sprite{display:inline-block;height:3em;position: relative;}
 /* BOF generated */
-.goods-sprite::before{content:"";display:block;background:url('../images/fine_goods_large_0.png') top left no-repeat;background-size:977px 182.14px;position: absolute;top:50%;left:50%;}
-.goods-sprite.goods::before{background-position: 0 0;width:41.4px;height:50px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.corals::before{background-position: 0 -52.1px;width:45.7px;height:45.7px;transform:translate(-50%,-50%)}
-.goods-sprite.orichalcum::before{background-position: -43.6px 0;width:45px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.wire::before{background-position: 0 -99.3px;width:45px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.paintings::before{background-position: 0 -146.4px;width:45px;height:35px;transform:translate(-50%,-50%)}
-.goods-sprite.biolight::before{background-position: -47.1px -99.3px;width:44.3px;height:45.7px;transform:translate(-50%,-50%)}
-.goods-sprite.tar::before{background-position: -47.1px -146.4px;width:43.6px;height:35px;transform:translate(-50%,-50%)}
-.goods-sprite.dye::before{background-position: -92.1px -146.4px;width:38.6px;height:35px;transform:translate(-50%,-50%)}
-.goods-sprite.bionics::before{background-position: -47.9px -47.9px;width:43.6px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.ferroconcrete::before{background-position: -90px 0;width:41.4px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.pearls::before{background-position: -92.9px -47.9px;width:40.7px;height:45.7px;transform:translate(-50%,-50%)}
-.goods-sprite.paper::before{background-position: -132.9px 0;width:40.7px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.nanites::before{background-position: -92.9px -95px;width:40px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.dna_data::before{background-position: -132.1px -142.1px;width:40.7px;height:39.3px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.preservatives::before{background-position: -134.3px -95px;width:38.6px;height:45.7px;transform:translate(-50%,-50%)}
-.goods-sprite.basalt::before{background-position: -135px -47.9px;width:38.6px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.herbs::before{background-position: -174.3px -95px;width:32.1px;height:45.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.bioplastics::before{background-position: -174.3px -142.1px;width:40px;height:39.3px;transform:translate(-50%,-50%)}
-.goods-sprite.machineparts::before{background-position: -175px 0;width:45px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite.wool::before{background-position: -175px -47.1px;width:45px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite.ebony::before{background-position: -207.9px -93.6px;width:44.3px;height:45px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.cryptocash::before{background-position: -215.7px -140px;width:42.1px;height:41.4px;transform:translate(-50%,-50%)}
-.goods-sprite.ropes::before{background-position: -221.4px 0;width:42.1px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite.superconductors::before{background-position: -221.4px -47.1px;width:42.1px;height:45px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.textiles::before{background-position: -253.6px -93.6px;width:38.6px;height:45px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.glass::before{background-position: -259.3px -140px;width:42.1px;height:41.4px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.whaleoil::before{background-position: -265px 0;width:34.3px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite.coffee::before{background-position: -265px -47.1px;width:33.6px;height:45px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.convenience_food::before{background-position: -293.6px -93.6px;width:27.1px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite.limestone::before{background-position: -302.9px -140px;width:40px;height:41.4px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.plastics::before{background-position: -300px -47.1px;width:21.4px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite.asbestos::before{background-position: -322.1px -93.6px;width:44.3px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.gems::before{background-position: -344.3px -139.3px;width:44.3px;height:42.1px;transform:translate(-50%,-50%)}
-.goods-sprite.tea_silk::before{background-position: -300.7px 0;width:44.3px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.mars_microbes::before{background-position: -322.9px -46.4px;width:43.6px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.tinplate::before{background-position: -346.4px 0;width:43.6px;height:44.3px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.mead::before{background-position: -367.9px -46.4px;width:42.9px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.petroleum::before{background-position: -391.4px 0;width:40.7px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.armor::before{background-position: -367.9px -92.1px;width:37.9px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.golden_rice::before{background-position: -390px -137.9px;width:43.6px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.instruments::before{background-position: -407.1px -92.1px;width:37.1px;height:44.3px;transform:translate(-50%,-50%)}
-.goods-sprite.horns::before{background-position: -435px -137.9px;width:42.9px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.superalloys::before{background-position: -412.1px -46.4px;width:32.1px;height:44.3px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.porcelain::before{background-position: -433.6px 0;width:29.3px;height:44.3px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.plankton::before{background-position: -445.7px -46.4px;width:42.9px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.data_crystals::before{background-position: -464.3px 0;width:42.9px;height:43.6px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.brick::before{background-position: -445.7px -91.4px;width:40.7px;height:43.6px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.robots::before{background-position: -479.3px -136.4px;width:40px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.mars_ore::before{background-position: -487.9px -91.4px;width:37.9px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.lead::before{background-position: -490px -45.7px;width:37.1px;height:43.6px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.cypress::before{background-position: -508.6px 0;width:36.4px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.granite::before{background-position: -520.7px -136.4px;width:36.4px;height:43.6px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.biotech_crops::before{background-position: -527.1px -90.7px;width:33.6px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.nutrition_research::before{background-position: -528.6px -45.7px;width:32.9px;height:43.6px;transform:translate(-50%,-50%)}
-.goods-sprite.explosives::before{background-position: -546.4px 0;width:42.9px;height:42.9px;transform:translate(-50%,-50%)}
-.goods-sprite.axes::before{background-position: -558.6px -135.7px;width:42.1px;height:42.9px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.rubber::before{background-position: -562.1px -90.7px;width:42.1px;height:42.9px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.brass::before{background-position: -562.9px -45px;width:40px;height:42.9px;transform:translate(-50%,-50%)}
-.goods-sprite.silk::before{background-position: -590.7px 0;width:37.9px;height:42.9px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.fertilizer::before{background-position: -604.3px -45px;width:36.4px;height:42.9px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.fusion_reactors::before{background-position: -630px 0;width:33.6px;height:42.9px;transform:translate(-50%,-50%)}
-.goods-sprite.luxury_materials::before{background-position: -602.1px -135px;width:32.1px;height:42.9px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.soy::before{background-position: -605.7px -89.3px;width:40.7px;height:42.1px;transform:translate(-50%,-50%)}
-.goods-sprite.lubricants::before{background-position: -642.1px -45px;width:38.6px;height:42.1px;transform:translate(-50%,-50%)}
-.goods-sprite.alabaster::before{background-position: -665px 0;width:27.9px;height:42.1px;transform:translate(-50%,-50%)}
-.goods-sprite.transester_gas::before{background-position: -635.7px -132.9px;width:38.6px;height:41.4px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.honey::before{background-position: -647.9px -88.6px;width:30px;height:41.4px;transform:translate(-50%,-50%)}
-.goods-sprite.sandstone::before{background-position: -675.7px -131.4px;width:30px;height:41.4px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.papercrete::before{background-position: -679.3px -88.6px;width:26.4px;height:41.4px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.algae::before{background-position: -682.1px -44.3px;width:40px;height:40.7px;transform:translate(-50%,-50%)}
-.goods-sprite.paper_batteries::before{background-position: -694.3px 0;width:37.9px;height:40.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.coke::before{background-position: -707.1px -86.4px;width:34.3px;height:40.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.gold::before{background-position: -723.6px -42.9px;width:34.3px;height:40.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.promethium::before{background-position: -733.6px 0;width:33.6px;height:40.7px;transform:translate(-50%,-50%)}
-.goods-sprite.semiconductors::before{background-position: -707.1px -128.6px;width:32.1px;height:40.7px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.filters::before{background-position: -740.7px -128.6px;width:29.3px;height:40.7px;transform:translate(-50%,-50%)}
-.goods-sprite.renewable_resources::before{background-position: -742.9px -85px;width:28.6px;height:40.7px;transform:translate(-50%,-50%)}
-.goods-sprite.biogeochemical_data::before{background-position: -759.3px -42.9px;width:40px;height:40px;transform:translate(-50%,-50%)}
-.goods-sprite.flavorants::before{background-position: -768.6px 0;width:39.3px;height:40px;transform:translate(-50%,-50%)}
-.goods-sprite.steel::before{background-position: -771.4px -127.1px;width:38.6px;height:40px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.bronze::before{background-position: -800.7px -42.1px;width:35.7px;height:40px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.nanoparticles::before{background-position: -809.3px 0;width:33.6px;height:40px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.gas::before{background-position: -810px -83.6px;width:30.7px;height:40px;transform:translate(-50%,-50%)}
-.goods-sprite.wine::before{background-position: -837.9px -42.1px;width:30.7px;height:40px;transform:translate(-50%,-50%)}
-.goods-sprite.artificial_scales::before{background-position: -811.4px -125px;width:39.3px;height:39.3px;transform:translate(-50%,-50%)}
-.goods-sprite.nanowire::before{background-position: -852.1px -124.3px;width:35.7px;height:38.6px;transform:translate(-50%,-50%)}
-.goods-sprite.smart_materials::before{background-position: -870px 0;width:35px;height:38.6px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.gunpowder::before{background-position: -870px -40.7px;width:34.3px;height:37.9px;transform:translate(-50%,-50%)}
-.goods-sprite.purified_water::before{background-position: -905.7px -40.7px;width:28.6px;height:37.9px;transform:translate(-50%,-50%)}
-.goods-sprite.salt::before{background-position: -906.4px 0;width:36.4px;height:37.1px;transform:translate(-50%,-50%)}
-.goods-sprite.talc::before{background-position: -944.3px 0;width:32.9px;height:37.1px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.cloth::before{background-position: -935.7px -39.3px;width:37.1px;height:34.3px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.marble::before{background-position: -935.7px -75px;width:37.1px;height:33.6px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.translucent_concrete::before{background-position: -889.3px -119.3px;width:26.4px;height:37.1px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.packaging::before{background-position: -917.1px -110px;width:35.7px;height:35px;transform:translate(-50%,-50%)}
-.goods-sprite.ai_data::before{background-position: -917.1px -146.4px;width:25px;height:35px;transform:rotate(-90deg) translate(50%, -50%)}
-.goods-sprite.electromagnets::before{background-position: -943.6px -146.4px;width:32.1px;height:34.3px;transform:translate(-50%,-50%)}
+.goods-sprite::before{content:"";display:block;background:url('../images/fine_goods_large_0.png') top left no-repeat;background-size:977px 182.14px}
+.goods-sprite.goods::before{background-position: 0 0;width:41.4px;height:50px;transform:rotate(-90deg)}
+.goods-sprite.corals::before{background-position: 0 -52.1px;width:45.7px;height:45.7px}
+.goods-sprite.orichalcum::before{background-position: -43.6px 0;width:45px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.wire::before{background-position: 0 -99.3px;width:45px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.paintings::before{background-position: 0 -146.4px;width:45px;height:35px}
+.goods-sprite.biolight::before{background-position: -47.1px -99.3px;width:44.3px;height:45.7px}
+.goods-sprite.tar::before{background-position: -47.1px -146.4px;width:43.6px;height:35px}
+.goods-sprite.dye::before{background-position: -92.1px -146.4px;width:38.6px;height:35px}
+.goods-sprite.bionics::before{background-position: -47.9px -47.9px;width:43.6px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.ferroconcrete::before{background-position: -90px 0;width:41.4px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.pearls::before{background-position: -92.9px -47.9px;width:40.7px;height:45.7px}
+.goods-sprite.paper::before{background-position: -132.9px 0;width:40.7px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.nanites::before{background-position: -92.9px -95px;width:40px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.dna_data::before{background-position: -132.1px -142.1px;width:40.7px;height:39.3px;transform:rotate(-90deg)}
+.goods-sprite.preservatives::before{background-position: -134.3px -95px;width:38.6px;height:45.7px}
+.goods-sprite.basalt::before{background-position: -135px -47.9px;width:38.6px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.herbs::before{background-position: -174.3px -95px;width:32.1px;height:45.7px;transform:rotate(-90deg)}
+.goods-sprite.nickel::before{background-position: -174.3px -142.1px;width:40.7px;height:39.3px;transform:rotate(-90deg)}
+.goods-sprite.machineparts::before{background-position: -175px 0;width:45px;height:45px}
+.goods-sprite.wool::before{background-position: -175px -47.1px;width:45px;height:45px}
+.goods-sprite.ebony::before{background-position: -207.9px -93.6px;width:44.3px;height:45px;transform:rotate(-90deg)}
+.goods-sprite.cryptocash::before{background-position: -216.4px -140px;width:42.1px;height:41.4px}
+.goods-sprite.ropes::before{background-position: -221.4px 0;width:42.1px;height:45px}
+.goods-sprite.superconductors::before{background-position: -221.4px -47.1px;width:42.1px;height:45px;transform:rotate(-90deg)}
+.goods-sprite.textiles::before{background-position: -253.6px -93.6px;width:38.6px;height:45px;transform:rotate(-90deg)}
+.goods-sprite.platinum_crystals::before{background-position: -260px -140px;width:42.1px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.whaleoil::before{background-position: -265px 0;width:34.3px;height:45px}
+.goods-sprite.coffee::before{background-position: -265px -47.1px;width:33.6px;height:45px;transform:rotate(-90deg)}
+.goods-sprite.convenience_food::before{background-position: -293.6px -93.6px;width:27.1px;height:45px}
+.goods-sprite.glass::before{background-position: -303.6px -140px;width:42.1px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.plastics::before{background-position: -300px -47.1px;width:21.4px;height:45px}
+.goods-sprite.asbestos::before{background-position: -322.1px -93.6px;width:44.3px;height:44.3px}
+.goods-sprite.gems::before{background-position: -347.1px -139.3px;width:44.3px;height:42.1px}
+.goods-sprite.tea_silk::before{background-position: -300.7px 0;width:44.3px;height:44.3px}
+.goods-sprite.mars_microbes::before{background-position: -322.9px -46.4px;width:43.6px;height:44.3px}
+.goods-sprite.tinplate::before{background-position: -346.4px 0;width:43.6px;height:44.3px;transform:rotate(-90deg)}
+.goods-sprite.mead::before{background-position: -367.9px -46.4px;width:42.9px;height:44.3px}
+.goods-sprite.petroleum::before{background-position: -391.4px 0;width:40.7px;height:44.3px}
+.goods-sprite.armor::before{background-position: -367.9px -92.1px;width:37.9px;height:44.3px}
+.goods-sprite.golden_rice::before{background-position: -392.9px -137.9px;width:43.6px;height:43.6px}
+.goods-sprite.instruments::before{background-position: -407.1px -92.1px;width:37.1px;height:44.3px}
+.goods-sprite.horns::before{background-position: -437.9px -137.9px;width:42.9px;height:43.6px}
+.goods-sprite.superalloys::before{background-position: -412.1px -46.4px;width:32.1px;height:44.3px;transform:rotate(-90deg)}
+.goods-sprite.porcelain::before{background-position: -433.6px 0;width:29.3px;height:44.3px;transform:rotate(-90deg)}
+.goods-sprite.plankton::before{background-position: -445.7px -46.4px;width:42.9px;height:43.6px}
+.goods-sprite.data_crystals::before{background-position: -464.3px 0;width:42.9px;height:43.6px;transform:rotate(-90deg)}
+.goods-sprite.brick::before{background-position: -445.7px -91.4px;width:40.7px;height:43.6px;transform:rotate(-90deg)}
+.goods-sprite.robots::before{background-position: -482.1px -136.4px;width:40px;height:43.6px}
+.goods-sprite.mars_ore::before{background-position: -487.9px -91.4px;width:37.9px;height:43.6px}
+.goods-sprite.lead::before{background-position: -490px -45.7px;width:37.1px;height:43.6px;transform:rotate(-90deg)}
+.goods-sprite.cypress::before{background-position: -508.6px 0;width:36.4px;height:43.6px}
+.goods-sprite.granite::before{background-position: -523.6px -136.4px;width:36.4px;height:43.6px;transform:rotate(-90deg)}
+.goods-sprite.biotech_crops::before{background-position: -527.1px -90.7px;width:33.6px;height:43.6px}
+.goods-sprite.nutrition_research::before{background-position: -528.6px -45.7px;width:32.9px;height:43.6px}
+.goods-sprite.explosives::before{background-position: -546.4px 0;width:42.9px;height:42.9px}
+.goods-sprite.axes::before{background-position: -561.4px -135.7px;width:42.1px;height:42.9px;transform:rotate(-90deg)}
+.goods-sprite.rubber::before{background-position: -562.1px -90.7px;width:42.1px;height:42.9px;transform:rotate(-90deg)}
+.goods-sprite.brass::before{background-position: -562.9px -45px;width:40px;height:42.9px}
+.goods-sprite.silk::before{background-position: -590.7px 0;width:37.9px;height:42.9px;transform:rotate(-90deg)}
+.goods-sprite.fertilizer::before{background-position: -604.3px -45px;width:36.4px;height:42.9px;transform:rotate(-90deg)}
+.goods-sprite.fusion_reactors::before{background-position: -630px 0;width:33.6px;height:42.9px}
+.goods-sprite.luxury_materials::before{background-position: -605px -135px;width:32.1px;height:42.9px;transform:rotate(-90deg)}
+.goods-sprite.soy::before{background-position: -605.7px -89.3px;width:40.7px;height:42.1px}
+.goods-sprite.lubricants::before{background-position: -642.1px -45px;width:38.6px;height:42.1px}
+.goods-sprite.asteroid_ice::before{background-position: -665px 0;width:35.7px;height:42.1px}
+.goods-sprite.alabaster::before{background-position: -638.6px -132.9px;width:27.9px;height:42.1px}
+.goods-sprite.limestone::before{background-position: -647.9px -88.6px;width:40px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.transester_gas::before{background-position: -682.1px -44.3px;width:38.6px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.processed_material::before{background-position: -702.1px 0;width:35.7px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.honey::before{background-position: -667.9px -131.4px;width:30px;height:41.4px}
+.goods-sprite.sandstone::before{background-position: -689.3px -87.1px;width:30px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.papercrete::before{background-position: -699.3px -130px;width:26.4px;height:41.4px;transform:rotate(-90deg)}
+.goods-sprite.algae::before{background-position: -720.7px -87.1px;width:40px;height:40.7px}
+.goods-sprite.paper_batteries::before{background-position: -722.1px -43.6px;width:37.9px;height:40.7px;transform:rotate(-90deg)}
+.goods-sprite.coke::before{background-position: -739.3px 0;width:34.3px;height:40.7px;transform:rotate(-90deg)}
+.goods-sprite.gold::before{background-position: -761.4px -42.9px;width:34.3px;height:40.7px;transform:rotate(-90deg)}
+.goods-sprite.compound_fluid::before{background-position: -775px 0;width:33.6px;height:40.7px}
+.goods-sprite.promethium::before{background-position: -727.1px -129.3px;width:33.6px;height:40.7px}
+.goods-sprite.semiconductors::before{background-position: -762.1px -85px;width:32.1px;height:40.7px;transform:rotate(-90deg)}
+.goods-sprite.filters::before{background-position: -762.1px -127.1px;width:29.3px;height:40.7px}
+.goods-sprite.renewable_resources::before{background-position: -792.9px -127.1px;width:28.6px;height:40.7px}
+.goods-sprite.bromine::before{background-position: -795.7px -85px;width:26.4px;height:40.7px}
+.goods-sprite.biogeochemical_data::before{background-position: -797.1px -42.9px;width:40px;height:40px}
+.goods-sprite.flavorants::before{background-position: -810px 0;width:39.3px;height:40px}
+.goods-sprite.bioplastics::before{background-position: -822.9px -127.1px;width:39.3px;height:40px;transform:rotate(-90deg)}
+.goods-sprite.steel::before{background-position: -823.6px -84.3px;width:38.6px;height:40px;transform:rotate(-90deg)}
+.goods-sprite.bronze::before{background-position: -850.7px 0;width:35.7px;height:40px;transform:rotate(-90deg)}
+.goods-sprite.nanoparticles::before{background-position: -863.6px -83.6px;width:33.6px;height:40px;transform:rotate(-90deg)}
+.goods-sprite.gas::before{background-position: -875.7px -42.1px;width:30.7px;height:40px}
+.goods-sprite.wine::before{background-position: -887.9px 0;width:30.7px;height:40px}
+.goods-sprite.artificial_scales::before{background-position: -889.3px -125px;width:39.3px;height:39.3px}
+.goods-sprite.nanowire::before{background-position: -907.9px -42.1px;width:35.7px;height:38.6px}
+.goods-sprite.smart_materials::before{background-position: -920px 0;width:35px;height:38.6px;transform:rotate(-90deg)}
+.goods-sprite.gunpowder::before{background-position: -930px -124.3px;width:34.3px;height:37.9px}
+.goods-sprite.purified_water::before{background-position: -945px -40.7px;width:28.6px;height:37.9px}
+.goods-sprite.salt::before{background-position: -956.4px 0;width:36.4px;height:37.1px}
+.goods-sprite.cloth::before{background-position: -994.3px 0;width:37.1px;height:34.3px;transform:rotate(-90deg)}
+.goods-sprite.marble::before{background-position: -994.3px -36.4px;width:37.1px;height:33.6px;transform:rotate(-90deg)}
+.goods-sprite.talc::before{background-position: -965.7px -121.4px;width:32.9px;height:37.1px;transform:rotate(-90deg)}
+.goods-sprite.packaging::before{background-position: -1000px -71.4px;width:35px;height:35.7px;transform:rotate(-90deg)}
+.goods-sprite.ai_data::before{background-position: -1000px -108.6px;width:35px;height:25px}
+.goods-sprite.electromagnets::before{background-position: -1000px -135px;width:34.3px;height:32.1px;transform:rotate(-90deg)}
+.goods-sprite.translucent_concrete::before{background-position: -969.3px -80px;width:26.4px;height:37.1px;transform:rotate(-90deg)}
 /* EOF generated */
-.goods-sprite-extra::before{background:url('../images/goods-extra.png') top left no-repeat;background-size:180px 45px;transform:translate(-50%,-50%)}
-.goods-sprite-extra.supplies::before{background-position: 0 0;width:45px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite-extra.money::before{background-position: -45px 0;width:45px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite-extra.medals::before{background-position: -94px 0;width:45px;height:45px;transform:translate(-50%,-50%)}
-.goods-sprite-extra.empty::before {background-position: -138px 0;width: 45px;height: 45px;transform:translate(-50%,-50%)}
+.goods-sprite.supplies::before,
+.goods-sprite.money::before,
+.goods-sprite.medals::before,
+.goods-sprite.empty::before {background:url('../images/goods-extra.png') top left no-repeat;background-size:180px 45px;transform:translate(-50%,-50%);width:45px;height:45px;}
+.goods-sprite.supplies::before{background-position: 0 0;}
+.goods-sprite.money::before{background-position: -45px 0;}
+.goods-sprite.medals::before{background-position: -94px 0;}
+.goods-sprite.empty::before {background-position: -138px 0;}
