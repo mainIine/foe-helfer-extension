@@ -6,6 +6,7 @@
 		"API.LGGildMember": "Informácie o Veľkolepých budovách hráča __player__ boli odoslané",
 		"API.LGInvest": "Údaje o Vašich príspevkoch do VB boli odoslané",
 		"API.UpdateSuccess": "Úspešne aktualizované",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Prebiehajúca výzva:",
 		"Boxes.Calculator.ArkBonus": "Bonus oblúka",
 		"Boxes.Calculator.AvailableFP": "Dostupné body výskumu",
@@ -25,6 +26,7 @@
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "VB kalkulačka",
 		"Boxes.Calculator.TTForderCosts": "Náklady = __nettoreward__<small>(základná odmena)</small> * __forderfactor__%<small>(bonus prispievateľa)</small> = __costs__",
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Pozícia nie je zaistená. Ďalších  __fpcount__ BV je potrebných na zaistenie pozície<br>Celkovo na zaistenie pozície: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__BV sa vložiť nedá<br>Maximálny možný príspevok: __totalfp__FP",
 		"Boxes.Calculator.TTLoss": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Strata = __costs__<small>(náklady)</small> - __bruttoreward__<small>(odmena)</small> = __loss__",
@@ -34,6 +36,7 @@
 		"Boxes.Calculator.TTProfit": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __costs__<small>(náklady)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __payed__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __payed__<small>(Vložené)</small> = __profit__",
 		"Boxes.Calculator.TTRate": "Pomer = __costs__<small>(náklady)</small> / __nettoreward__<small>(základná odmena)</small> = __rate__%",
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Do ukončenia úrovne ostáva",
 		"Boxes.Campagne.AlreadyDone": " už získané!",
 		"Boxes.Campagne.DescInStock": "Dostupné",
@@ -42,12 +45,21 @@
 		"Boxes.Campagne.Resource": "Tovar",
 		"Boxes.Campagne.Reward": "Odmena za získanie ",
 		"Boxes.Campagne.Title": "Náklady na získanie provincie ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Aby bolo možné naplánovať Vaše mesto, potrebujeme nahrať údaje na náš server foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Odoslať</button>",
 		"Boxes.CityMap.FreeArea": "Voľná plocha: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Údaje bole úspešné nahrané... Prezrite si mesto ",
 		"Boxes.CityMap.TitleSend": "Odoslať údaje",
 		"Boxes.CityMap.WholeArea": "Celková plocha: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
+		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
+		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
+		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " A ",
 		"Boxes.EventList.Desc": "Úloha",
 		"Boxes.EventList.Number": "Č.",
@@ -80,8 +92,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> prijal Vašu ponuku.<br>Získali ste __needValue__ __need__ za __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Vymazať",
 		"Boxes.Infobox.Title": "Infobox",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Aktuálny zisk: ",
 		"Boxes.Investment.InvestBar": "Vložené BV: ",
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Vklad",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
 		"Boxes.LGOverviewBox.Building": "Budova",
@@ -126,6 +140,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Oblúk",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Plány",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopírovať hodnoty",
 		"Boxes.OwnpartCalculator.Deposit": "Vložiť",
 		"Boxes.OwnpartCalculator.Done": "Vložené",
@@ -144,6 +159,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Zostávajúce",
 		"Boxes.OwnpartCalculator.PatronPart": "Príspevok iných hráčov",
 		"Boxes.OwnpartCalculator.Place": "Miesto",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Krok",
 		"Boxes.OwnpartCalculator.Title": "Príspevky do vašich VB",
 		"Boxes.OwnpartCalculator.YourName": "Vaše meno",
@@ -158,6 +175,7 @@
 		"Boxes.Productions.Headings.goods": "Budovy s tovarom",
 		"Boxes.Productions.Headings.greatbuilding": "Veľkolepé budovy",
 		"Boxes.Productions.Headings.main_building": "Radnica",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Číslo",
 		"Boxes.Productions.Headings.production": "Výrobné budovy",
 		"Boxes.Productions.Headings.random_production": "Náhodné produkcie",
@@ -223,6 +241,8 @@
 		"HiddenRewards.Table.position": "Umiestnenie",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sk-SK",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Je Vám niečo nejasné?<br>Pozrite sa sem!",
 		"Menu.Ask.Title": "Otázka / Odpoveď",
 		"Menu.Bugs.Desc": "Nie je niečo v poriadku? Alebo máte nápad?",
@@ -269,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník pri vyjednávaní",
 		"Settings.ChangeLanguage.Desc": "Ktorý jazyk sa má použiť namiesto rozpoznaného?",
 		"Settings.ChangeLanguage.Title": "Zmeniť jazyk",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ak chcete povoliť zber údajov, povoľte toto nastavenie. <br> Ak chcete, aby rozšírenie fungovalo samostatne, jednoducho toto nastavenie vypnite.",
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",
