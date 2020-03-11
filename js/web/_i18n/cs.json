@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Velkolepé budovy byly poslány",
 		"API.LGInvest": "Investice vašich VB bylo posláno",
 		"API.UpdateSuccess": "Update performed", //Todo: Translate
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
 		"Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Position", //Todo: Translate
 		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "cs-CZ",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Máte s něčím problémy?<br>Mrkněte sem!",
 		"Menu.Ask.Title": "Otázky/odpovědi",
 		"Menu.Bugs.Desc": "Něco se pokazilo/ chybí vám něco?",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník s vyjednáváním",
 		"Settings.ChangeLanguage.Desc": "Který jazyk, kromě toho poznaného, má být zvolen?",
 		"Settings.ChangeLanguage.Title": "Změnit jazyk",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte. <br>.",
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate

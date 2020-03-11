@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Legendary buildings have been submitted",
 		"API.LGInvest": "Your LG investments have been transferred",
 		"API.UpdateSuccess": "Update performed",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Available Forgepoints",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Type",
 		"Local": "en-EN",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "You do not know how something works?<br>Take a look!",
 		"Menu.Ask.Title": "Question / Answer",
 		"Menu.Bugs.Desc": "Something is not how it should or you have an idea?",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Negotiation helper",
 		"Settings.ChangeLanguage.Desc": "Which language, instead of the recognized one, should be used?",
 		"Settings.ChangeLanguage.Title": "Change language",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "If you want to track data with your guild, activate this point. <br> For a self-sufficient extension simply disable.",
 		"Settings.GlobalSend.Title": "Transmission to foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.",
