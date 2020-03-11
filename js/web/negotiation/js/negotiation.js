@@ -26,9 +26,9 @@
 let Negotiation = {
 	Tables: /** @type {Record<String, Negotiation_GuessTable>} */({}),
 	CurrentTry: 0,
-	TryCount: /** @type {undefined|number} */ (undefined),
-	GoodCount: /** @type {undefined|number} */ (undefined),
-	CurrentTable: /** @type {undefined|Negotiation_GuessTable} */ (undefined),
+	TryCount: /** @type {undefined|number} */ undefined,
+	GoodCount: /** @type {undefined|number} */ undefined,
+	CurrentTable: /** @type {undefined|Negotiation_GuessTable} */ undefined,
 	// Mapt die zuweisung von der Tabellen-Spalte zu den Verhandlungspartnern
 	PlaceMutation: /** @type {number[]} */ ([]),
 	// Liste der Güter für die aktuelle Verhandlung
