@@ -6,6 +6,7 @@
 		"API.LGGildMember": "Datele despre clădirile legendare ale lui _player__'s au fost transmise",
 		"API.LGInvest": "Datele despre investițiile tale în CL au fost transmise",
 		"API.UpdateSuccess": "Actualizare efectuată",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 		"Boxes.Calculator.ArkBonus": "Bonusul Domului",
 		"Boxes.Calculator.AvailableFP": "PF disponibile",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Poziția",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "ro-RO",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!",
 		"Menu.Ask.Title": "Întrebare / Răspuns",
 		"Menu.Bugs.Desc": "Ceva nu este cum trebuie sau ai o idee?",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Ajutor pentru negocieri",
 		"Settings.ChangeLanguage.Desc": "Ce limbă dorești să fie folosită?",
 		"Settings.ChangeLanguage.Title": "Schimbă limba",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Dacă dorești să urmărești datele cu ghilda dvs., activează această opțiune. <br> Pentru utilizarea personală, dezactivează opțiunea.",
 		"Settings.GlobalSend.Title": "Transmitere către foe-rechner.de",
 		"Settings.MenuLength.Desc": "Câte elemente dorești să fie afișate în fereastra aplicației?<br> Nicio valoare sau \"0\" înseamnă lungime prestabilită.",

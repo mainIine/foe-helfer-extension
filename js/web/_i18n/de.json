@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s LGs wurden übermittelt",
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.UpdateSuccess": "Update durchgeführt",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
@@ -288,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassistent",
 		"Settings.ChangeLanguage.Desc": "Welche Sprache, statt der erkannten, soll genutzt werden?",
 		"Settings.ChangeLanguage.Title": "Sprache wechseln",
+		"Settings.CustomerApi.Desc": "Du möchtest Daten an deinen eigenen Server einige Daten schicken?<br>Nach dieser Aktivierung wird sich das Spiel neu laden und ein weiterer Menüpunkt erscheint.",
+		"Settings.CustomerApi.Title": "Spieler API",
 		"Settings.GlobalSend.Desc": "Wenn Du mit deiner Gilde Daten tracken möchtest, aktiviere diesen Punkt.<br>Für eine autarke Extension einfach deaktiveren",
 		"Settings.GlobalSend.Title": "Übermittlung an foe-rechner.de",
 		"Settings.MenuLength.Desc": "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe.",
@@ -314,9 +317,6 @@
 		"Settings.Version.GuildId": "Gilden Id:",
 		"Settings.Version.PlayerId": "Spieler Id:",
 		"Settings.Version.Title": "Version",
-		"Settings.Version.World": "Welt:",
-
-		"Settings.CustomerApi.Desc": "Du möchtest Daten an deinen eigenen Server einige Daten schicken?<br>Nach dieser Aktivierung wird sich das Spiel neu laden und ein weiterer Menüpunkt erscheint.",
-		"Settings.CustomerApi.Title": "Spieler API"
+		"Settings.Version.World": "Welt:"
 	}
 }

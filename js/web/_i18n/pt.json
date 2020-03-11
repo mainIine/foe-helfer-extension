@@ -6,6 +6,7 @@
 		"API.LGGildMember": "Os GEs do jogador __player__ foram transferidos",
 		"API.LGInvest": "Os investimentos dos teus GEs foram transferidos",
 		"API.UpdateSuccess": "Actualização feita",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Desafio recurrente activo:",
 		"Boxes.Calculator.ArkBonus": "Bónus de Arca",
 		"Boxes.Calculator.AvailableFP": "PFs disponiveis",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Posição",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "pt-PT",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Não sabes como algo funciona?<br>Vê aqui como!",
 		"Menu.Ask.Title": "Pergunta / Resposta",
 		"Menu.Bugs.Desc": "Algo não está como deveria ser ou tens uma sugestão?",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Ajudante de negociações",
 		"Settings.ChangeLanguage.Desc": "Que languagem deve ser utilisada, em vez da definida automaticamente?",
 		"Settings.ChangeLanguage.Title": "Mudar linguagem",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se quiseres informações sobre a tua guilda, activa esta opção. <br> Para uma utilização apenas pessoal, desactiva esta opção.",
 		"Settings.GlobalSend.Title": "Transmissão para foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá o menu ter?<br> Vazio ou \"0\" define uma altura automática.",

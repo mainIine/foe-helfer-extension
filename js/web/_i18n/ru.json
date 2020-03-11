@@ -6,6 +6,7 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
 		"Boxes.Calculator.AvailableFP": "Доступные СО",
@@ -25,8 +26,8 @@
 		"Boxes.Calculator.Step": "Уровень ",
 		"Boxes.Calculator.Title": "Калькулятор вложений",
 		"Boxes.Calculator.TTForderCosts": "Суммарно = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __forderfactor__%<small>(вложение от игрока)</small> = __costs__",
-		"Boxes.Calculator.TTForderNegativeProfit": "Нет гаранта. __fpcount__ СО должно быть вложено дополнительно для гаранта места.<br>Всего СО для гаранта: __totalfp__CO",
 		"Boxes.Calculator.TTForderFPStockLow": "ВНИМАНИЕ: На складе слишком мало СО<br>У вас есть всего __fpstock__, а требуется __costs__СО<br>Не хватает __tooless__СО",
+		"Boxes.Calculator.TTForderNegativeProfit": "Нет гаранта. __fpcount__ СО должно быть вложено дополнительно для гаранта места.<br>Всего СО для гаранта: __totalfp__CO",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP не поместятся в<br>Максимальное вложение: __totalfp__FP",
 		"Boxes.Calculator.TTLoss": "Откат = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __arcfactor__%<small>(бонус Арки)</small> = __bruttoreward__<br>Стоимость места: __costs__<br>Потери = __costs__<small>(стоимость места)</small> - __bruttoreward__<small>(откат)</small> = __loss__",
 		"Boxes.Calculator.TTLossSelf": "Откат = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __arcfactor__%<small>(бонус Арки)</small> = __bruttoreward__<br>Вложено: __payed__<br>Потери = __payed__<small>(вложено)</small> - __bruttoreward__<small>(откат)</small> = __loss__",
@@ -143,7 +144,7 @@
 		"Boxes.OwnpartCalculator.CopyValues": "Копировать значения",
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
-		"Boxes.OwnpartCalculator.Ext": "Перелив", 
+		"Boxes.OwnpartCalculator.Ext": "Перелив",
 		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "индивидуальное название ВС",
 		"Boxes.OwnpartCalculator.Levels": "уровни",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
 		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использван вместо автоматически определенного?",
 		"Settings.ChangeLanguage.Title": "Изменить язык",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно бюыть в меню (по высоте)?<br> Пустое значение или \"0\" означает автоматическую высоту.",

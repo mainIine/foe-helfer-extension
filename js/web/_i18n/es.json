@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s GEs han sido transferidos",
 		"API.LGInvest": "Tus inversiones en grandes edifivios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Position", //Todo: Translate
 		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "es-ES",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruebalo!",
 		"Menu.Ask.Title": "Pregunta / Respuesta",
 		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassisten",
 		"Settings.ChangeLanguage.Desc": "Que idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extension autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmision a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate

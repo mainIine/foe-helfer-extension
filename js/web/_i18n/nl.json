@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
 		"API.LGInvest": "Je GG bijdrages zijn verzonden",
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Actieve herhalingsmissie:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Beschikbare forgepunten",
@@ -240,6 +241,8 @@
 		"HiddenRewards.Table.position": "Positie",
 		"HiddenRewards.Table.type": "Soort",
 		"Local": "nl-NL",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Weet je niet hoe iets werkt?<br>Neem een kijkje!",
 		"Menu.Ask.Title": "Vraag / Antwoord",
 		"Menu.Bugs.Desc": "Iets werkt niet zoals het hoort of heb je een idee?",
@@ -286,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
