@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Mäktig byggnad har skickats in",
 		"API.LGInvest": "Dina MB investeringar har överförts",
 		"API.UpdateSuccess": "Uppdatering utförd",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivt återkommande uppdrag:",
 		"Boxes.Calculator.ArkBonus": "Arkbonus",
 		"Boxes.Calculator.AvailableFP": "Tillgängliga FP",
@@ -25,6 +26,7 @@
 		"Boxes.Calculator.Step": "Nivå ",
 		"Boxes.Calculator.Title": "Kostnadskalkylator",
 		"Boxes.Calculator.TTForderCosts": "Kostnad = __nettoreward__<small>(netto vinst)</small> * __forderfactor__%<small>(Vänlig investering)</small> = __costs__",
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Placering är inte säker. __fpcount__ ytterligare FP måste läggas in för att göra den säker<br>Totalt för att göra den säker: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP får inte plats<br>Max investering: __totalfp__FP",
 		"Boxes.Calculator.TTLoss": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Kostnad: __costs__<br>Förlust = __costs__<small>(kostnader)</small> - __bruttoreward__<small>(belöning)</small> = __loss__",
@@ -34,6 +36,7 @@
 		"Boxes.Calculator.TTProfit": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Kostnad: __costs__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __costs__<small>(kostnad)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __payed__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __payed__<small>(betalning)</small> = __profit__",
 		"Boxes.Calculator.TTRate": "Kvot = __costs__<small>(kostnad)</small> / __nettoreward__<small>(netto vinst)</small> = __rate__%",
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Till nästa nivå",
 		"Boxes.Campagne.AlreadyDone": " Redan erövrad!",
 		"Boxes.Campagne.DescInStock": "Tillgängliga",
@@ -42,12 +45,21 @@
 		"Boxes.Campagne.Resource": "Resurs",
 		"Boxes.Campagne.Reward": "Total belöning ",
 		"Boxes.Campagne.Title": "Erövringskostnad för ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "För att planera din stad behöver we skicka din data till foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Skicka</button>",
 		"Boxes.CityMap.FreeArea": "Ledig yta: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Data skickades utan problem... Besök nu ",
 		"Boxes.CityMap.TitleSend": "Skicka data",
 		"Boxes.CityMap.WholeArea": "Total yta: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
+		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
+		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
+		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " och ",
 		"Boxes.EventList.Desc": "Uppdrag",
 		"Boxes.EventList.Number": "Nr",
@@ -80,8 +92,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepterat ditt bud.<br>Du fick __needValue__ __need__ for __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Töm",
 		"Boxes.Infobox.Title": "Informationshubb",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Nuvarande vinst: ",
 		"Boxes.Investment.InvestBar": "Investerat FP: ",
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investera",
 		"Boxes.Investment.TotalFP": "Bank + cirkulation + vinst: ",
 		"Boxes.LGOverviewBox.Building": "Byggnad",
@@ -126,6 +140,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Ark",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopiera värden",
 		"Boxes.OwnpartCalculator.Deposit": "Insats",
 		"Boxes.OwnpartCalculator.Done": "Klart",
@@ -144,6 +159,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Kvar",
 		"Boxes.OwnpartCalculator.PatronPart": "Andras del",
 		"Boxes.OwnpartCalculator.Place": "Plats",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivå",
 		"Boxes.OwnpartCalculator.Title": "MB kalkylator",
 		"Boxes.OwnpartCalculator.YourName": "Ditt namn",
@@ -158,6 +175,7 @@
 		"Boxes.Productions.Headings.goods": "Varubyggnader",
 		"Boxes.Productions.Headings.greatbuilding": "Mäktiga byggnader",
 		"Boxes.Productions.Headings.main_building": "Stadshus",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Nummer",
 		"Boxes.Productions.Headings.production": "Produktion byggnader",
 		"Boxes.Productions.Headings.random_production": "Slumpmässig produktion",
@@ -223,6 +241,8 @@
 		"HiddenRewards.Table.position": "Plats",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sv-SE",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Du vet inte hur något fungerar?<br>Kolla här!",
 		"Menu.Ask.Title": "Frågor / Svar",
 		"Menu.Bugs.Desc": "Något är inte som det borde vara eller du har en idé?",
@@ -269,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
 		"Settings.ChangeLanguage.Title": "Byt språk",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",

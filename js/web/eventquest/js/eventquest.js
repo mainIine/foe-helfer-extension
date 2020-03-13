@@ -18,14 +18,76 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     // Nur Events und "active" heraus filtern
     EventQuest.Quests = data['responseData'].filter(q => (q['category'] === 'events' && q['state'] === 'accepted'));
 
-    if (EventCountdown === false)
-        window.addEventListener('foe-helper#menu_loaded', HideEventQuest, { capture: false, once: true, passive: true });
+    if (EventCountdown === false){
+        window.addEventListener('foe-helper#menu_loaded', HideEventQuest, { capture: false, once: false, passive: true });
+        try{
+            HideEventQuest();
+            return;
+        }catch(e){}
+    }
 
     _menu.ShowButton("questlist-Btn");
 
     if ($('#event').length > 0) {
         EventQuest.BuildBox();
     }
+});
+
+FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
+    let Chests = data.responseData['chests'];
+
+    let ChestData = [];
+    for (let i in Chests) {
+        if (!Chests.hasOwnProperty(i)) continue;
+
+        let CurrentChest = [];
+        if (Chests[i]['cost'] !== undefined && Chests[i]['cost']['resources'] !== undefined) {
+            for (let ResourceName in Chests[i]['cost']['resources']) {
+                if (!Chests[i]['cost']['resources'].hasOwnProperty(ResourceName)) continue;
+
+                CurrentChest['cost'] = Chests[i]['cost']['resources'][ResourceName];
+                break;
+            }
+        }
+        else {
+            continue;
+        }
+
+        if (Chests[i]['grandPrizeContribution'] !== undefined) {
+            CurrentChest['grandPrizeContribution'] = Chests[i]['grandPrizeContribution'];
+        }
+        else {
+            continue;
+        }
+
+        if (Chests[i]['chest'] !== undefined && Chests[i]['chest']['possible_rewards'] !== undefined && Chests[i]['chest']['possible_rewards'][0] !== undefined && Chests[i]['chest']['possible_rewards'][0]['drop_chance'] !== undefined) {
+            CurrentChest['drop_chance'] = Chests[i]['chest']['possible_rewards'][0]['drop_chance']
+        }
+        else {
+            continue;
+        }
+
+        if (Chests[i]['chest'] !== undefined && Chests[i]['chest']['possible_rewards'] !== undefined && Chests[i]['chest']['possible_rewards'][0] !== undefined && Chests[i]['chest']['possible_rewards'][0]['reward'] !== undefined && Chests[i]['chest']['possible_rewards'][0]['reward']['name'] !== undefined) {
+            CurrentChest['dailyprizename'] = Chests[i]['chest']['possible_rewards'][0]['reward']['name'];
+        }
+        else {
+            continue;
+        }
+
+        ChestData[ChestData.length] = CurrentChest;
+    }
+
+    ChestData.sort(function (a, b) {
+        return a['cost'] - b['cost'];
+    });
+
+    // Ungültige Daten => Event wird nicht unterstützt => Fenster nicht anzeigen
+    if (ChestData.length === 0) {
+        return;
+    }
+
+    EventQuest.Chests = ChestData;
+    EventQuest.ShowChests();
 });
 
 const HideEventQuest = () => {
@@ -57,9 +119,10 @@ let EventQuest = {
     QuestId: 0,
     CurrentQuestID: null,
     CurrentQuestText: null,
+    Chests: null,
 
 	/**
-	 * Vorbereitung der DAten
+	 * Vorbereitung der Daten
 	 */
     Show: () => {
         let lng = MainParser.Language;
@@ -84,11 +147,11 @@ let EventQuest = {
 
                 // CSS in den DOM prügeln
                 HTML.AddCssFile('eventquest');
-				EventQuest.BuildBox();
+                EventQuest.BuildBox();
 
             } else {
-				HTML.CloseOpenBox('event');
-			}
+                HTML.CloseOpenBox('event');
+            }
 
         } else {
             MainParser.loadJSON(url, (data) => {
@@ -123,7 +186,7 @@ let EventQuest = {
 	 *
 	 */
     BuildBox: () => {
-        if(localStorage.getItem('lastActivQuest') !== null)
+        if (localStorage.getItem('lastActivQuest') !== null)
             localStorage.removeItem('lastActivQuest');
         const Quests = EventQuest.Quests;
         if (Quests) {
@@ -135,10 +198,10 @@ let EventQuest = {
                     // Sammel die Quest-Nummer aus der "Zähler" Quest
                     const progressCond = Quest.successConditions.find(cond => cond.flags.includes('static_counter'));
                     if (progressCond) {
-                        if(progressCond.currentProgress !== undefined){
+                        if (progressCond.currentProgress !== undefined) {
                             const id = progressCond.currentProgress + 1;
                             EventQuest.CurrentQuestID = id;
-                        }else{
+                        } else {
                             EventQuest.CurrentQuestID = 1;
                         }
                     }
@@ -238,5 +301,67 @@ let EventQuest = {
         h.push('</table>');
 
         $('#eventBody').html(h.join(''));
+    },
+
+
+    /**
+     *
+     */
+    ShowChests: () => {
+        if ($('#eventchests').length === 0) {
+            HTML.Box({
+                'id': 'eventchests',
+                'title': i18n('Boxes.EventChests.Title'),
+                'auto_close': false,
+                'dragdrop': true,
+                'minimize': true
+            });
+
+            // CSS in den DOM prügeln
+            HTML.AddCssFile('eventquest');
+        }
+
+        EventQuest.BuildChestsBox();
+    },
+
+    /**
+    *
+    */
+    BuildChestsBox: () => {
+        EventQuest.CalcChestsBody();
+    },
+
+    /**
+    *
+    */
+    CalcChestsBody: () => {
+        let h = [];
+
+        h.push('<table class="foe-table">');
+        h.push('<thead>' +
+            '<tr>' +
+            '<th>' + i18n('Boxes.EventChests.Cost') + '</th>' +
+            '<th>' + i18n('Boxes.EventChests.MainPrizeSteps') + '</th>' +
+            '<th>' + HTML.i18nReplacer(i18n('Boxes.EventChests.DailyPrizeChance'), { 'dailyprize': EventQuest.Chests[0]['dailyprizename']}) + '</th>' +
+            '<th>' + i18n('Boxes.EventChests.CostPerMainPrizeStep') + '</th>' +
+            '<th>' + HTML.i18nReplacer(i18n('Boxes.EventChests.CostPerDailyPrize'), { 'dailyprize': EventQuest.Chests[0]['dailyprizename'] }) + '</th>' +
+            '</tr>' +
+            '</thead>');
+
+        for (let i in EventQuest.Chests) {
+            if (!EventQuest.Chests.hasOwnProperty(i)) continue;
+
+            h.push('<tr>');
+            h.push('<td>' + EventQuest.Chests[i]['cost'] + '</td>');
+            h.push('<td>' + EventQuest.Chests[i]['grandPrizeContribution'] + '</td>');
+            h.push('<td>' + EventQuest.Chests[i]['drop_chance'] + '%</td>');
+            h.push('<td>' + Math.round(EventQuest.Chests[i]['cost'] / EventQuest.Chests[i]['grandPrizeContribution'] * 10)/10 + '</td>');
+            h.push('<td>' + Math.round(EventQuest.Chests[i]['cost'] * 100 / EventQuest.Chests[i]['drop_chance']) + '</td>');
+            h.push('</tr>');
+        }
+
+        h.push('</table>');
+
+        $('#eventchestsBody').html(h.join(''));
     },
 };

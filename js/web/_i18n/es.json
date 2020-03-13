@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s GEs han sido transferidos",
 		"API.LGInvest": "Tus inversiones en grandes edifivios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
@@ -25,6 +26,7 @@
 		"Boxes.Calculator.Step": "Nivel",
 		"Boxes.Calculator.Title": "Calculador de costes",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP", //Todo: Translate
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
 		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
@@ -34,6 +36,7 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Hasta el proximo nivel",
 		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
 		"Boxes.Campagne.DescInStock": "Vorhanden",
@@ -42,12 +45,21 @@
 		"Boxes.Campagne.Resource": "Ressource",
 		"Boxes.Campagne.Reward": "Gesamtbelohnung ",
 		"Boxes.Campagne.Title": "Eroberungskosten für ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 		"Boxes.CityMap.FreeArea": "Free area: ", //Todo: Translate
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
 		"Boxes.CityMap.TitleSend": "Submit data", //Todo: Translate
 		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
+		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
+		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
+		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
 		"Boxes.EventList.Desc": "Task", //Todo: Translate
 		"Boxes.EventList.Number": "No.", //Todo: Translate
@@ -80,8 +92,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Vaciar el box",
 		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Edificio",
@@ -126,6 +140,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arca",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plano",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copiar valores",
 		"Boxes.OwnpartCalculator.Deposit": "Ingresar",
 		"Boxes.OwnpartCalculator.Done": "Listo",
@@ -144,6 +159,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "quedan",
 		"Boxes.OwnpartCalculator.PatronPart": "Parte del contribuyente",
 		"Boxes.OwnpartCalculator.Place": "Puesto",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculator cuata propia",
 		"Boxes.OwnpartCalculator.YourName": "Tu nombre",
@@ -158,6 +175,7 @@
 		"Boxes.Productions.Headings.goods": "Goods buildings", //Todo: Translate
 		"Boxes.Productions.Headings.greatbuilding": "Grandes Edificio",
 		"Boxes.Productions.Headings.main_building": "Ayuntamiento",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Numero",
 		"Boxes.Productions.Headings.production": "Edificios de produccion",
 		"Boxes.Productions.Headings.random_production": "Produccion casual",
@@ -223,6 +241,8 @@
 		"HiddenRewards.Table.position": "Position", //Todo: Translate
 		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "es-ES",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruebalo!",
 		"Menu.Ask.Title": "Pregunta / Respuesta",
 		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
@@ -269,6 +289,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassisten",
 		"Settings.ChangeLanguage.Desc": "Que idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extension autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmision a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
