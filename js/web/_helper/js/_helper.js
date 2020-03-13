@@ -115,7 +115,7 @@ helper.permutations = (()=>{
 				}
 			}
 		}
-	}
+	};
 	return permutations;
 })();
 
