@@ -924,3 +924,253 @@ FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => 
 FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 	Negotiation.ExitNegotiation();
 });
+
+
+// --------------------------------------------------------------------------------------------------
+// Negotiation DEBUGGER
+
+let NegotiationDebugger = {
+	data: {
+		numGoods: 3,
+		numTries: 3,
+		goods: [],
+		selected: -1,
+		submitGoods: [],
+		submitValue: []
+	},
+
+	Selectables: [
+		{text: 'Match',     value:  0, selectedColor: 'rgba( 50,255, 50, 0.4)'},
+		{text: 'Wrong Pos', value:  1, selectedColor: 'rgba(255,255, 50, 0.4)'},
+		{text: 'Wrong',     value:  2, selectedColor: 'rgba(255, 50, 50, 0.4)'},
+		{text: 'Done',      value: -1, selectedColor: 'none'},
+	],
+
+	Show: function() 	{
+		if ($('#negotiationDebuggerBox').length === 0) {
+
+			// Box in den DOM
+			HTML.Box({
+				'id': 'negotiationDebuggerBox',
+				'title': i18n('Boxes.Negotiation.Title'),
+				'minimize': true,
+				'dragdrop': true,
+				'resize': true,
+				'saveCords': false,
+				'auto_close': true
+			});
+
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('negotiation');
+
+			NegotiationDebugger.BuildBox();
+		} else {
+			HTML.CloseOpenBox('negotiationDebuggerBox');
+		}
+	},
+
+	BuildBox: () => {
+		const Selectables = NegotiationDebugger.Selectables;
+		const h = [];
+		const goodSpriteClass = good_id => {
+			return `goods-sprite ${good_id}`;
+		};
+
+		const data = NegotiationDebugger.data;
+
+		h.push('<label>Num Goods: <select id="NegotiationDebuggerNumGoods" onchange="NegotiationDebugger.updateNumbers()">');
+		for (let i = 3; i <= 10; i++) {
+			h.push(`<option value="${i}"${i===data.numGoods ? ' selected':''}>${i} Goods</option>`);
+		}
+		h.push('</select></label>');
+
+		h.push('<label>Num Tries: <select id="NegotiationDebuggerNumTries" onchange="NegotiationDebugger.updateNumbers()">');
+		for (let i = 3; i <= 4; i++) {
+			h.push(`<option value="${i}"${i===data.numTries ? ' selected':''}>${i} Tries</option>`);
+		}
+		h.push('</select></label>');
+		h.push('<button onclick="NegotiationDebugger.start()">Start</button>');
+		h.push(`Always show Possible Matches: <input type="checkbox" onchange="NegotiationDebugger.changeAlwaysShowPossibleMatch(this)"${Negotiation.ContinueListing?' checked':''} />`);
+		
+
+		h.push('<div style="display:grid; grid-template-columns: repeat(auto-fill, 60px);">');
+		const numGoods = data.numGoods;
+		for (let i = 0; i < numGoods; i++) {
+			let good = data.goods[i] || 'empty';
+			
+			h.push(`<div>Good ${i+1}:<br/><span onclick="NegotiationDebugger.selectGoodFor(${i})" style="box-sizing: border-box;width: 40px${data.selected===i?'; border: 1px solid red':''}" class="${goodSpriteClass(good)}"></span></div>`);
+		}
+		h.push('</div>');
+
+		if (data.selected >= 0) {
+			h.push('<div style="display: grid; grid-template-columns: repeat(auto-fill, 40px);background-color: rgba(200,200,200,0.4);border: 1px solid rgb(243, 214, 160);margin:5px;">');
+			for (let goodData of GoodsList) {
+				let good = goodData.id || 'empty';
+				h.push(`<span onclick="NegotiationDebugger.selectGood('${good}')" style="box-sizing: border-box;width: 40px${data.goods[data.selected]===good?'; border: 1px solid red':''}" class="${goodSpriteClass(good)}"></span>`);
+			}
+			for (let good of ['money', 'supplies','medals']) {
+				h.push(`<span onclick="NegotiationDebugger.selectGood('${good}')" style="box-sizing: border-box;width: 40px${data.goods[data.selected]===good?'; border: 1px solid red':''}" class="${goodSpriteClass(good)}"></span>`);
+			}
+			h.push('</div>');
+		}
+
+		h.push(`<hr/><div style="display:flex;flex-direction:row">`);
+		for (let pos = 0; pos < 5; pos++) {
+			h.push(`<div style="flex-grow:1">`);
+			h.push(`Position ${pos}:<br/>`);
+			
+			h.push(`<div style="display: grid; grid-template-columns: repeat(auto-fill, 40px);">`);
+			for (let i = 0; i < numGoods; i++) {
+				let good = data.goods[i] || 'empty';
+				const selected = good === data.submitGoods[pos];
+	
+				h.push(`<span onclick="NegotiationDebugger.selectGoodForSubmit(${pos}, ${i})" style="box-sizing: border-box;width: 40px${selected?'; border: 1px solid red':''}" class="${goodSpriteClass(good)}"></span> `);
+			}
+			h.push(`</div>`);
+			
+			
+			let selectedValue = data.submitValue[pos]
+			if (selectedValue == null) selectedValue = Selectables[Selectables.length-1].value;
+			for (let selectable of Selectables) {
+				const checked = selectable.value === selectedValue ? ` checked` : '';
+				const checkedStyle = selectable.value === selectedValue ? ` style="background-color: ${selectable.selectedColor};"` : '';
+				h.push(
+					`<label${checkedStyle}>`
+					+ `${selectable.text}: `
+					+ `<input onchange="NegotiationDebugger.selectableValueChange(${pos}, this)" type="radio" name="NegotiationDebugger_Submit${pos}" value="${selectable.value}"${checked}/>`
+					+ `</label><br/>`
+				);
+			}
+			h.push(`</div>`);
+		}
+		h.push(`</div>`);
+		h.push('<button onclick="NegotiationDebugger.submit()">Submit</button>');
+
+		$('#negotiationDebuggerBoxBody').html(h.join(''));
+	},
+
+	/**
+	 * @param {HTMLInputElement} checkbox
+	 */
+	changeAlwaysShowPossibleMatch: (checkbox) => {
+		Negotiation.ContinueListing = checkbox.checked;
+		Negotiation.BuildBox();
+	},
+
+	/**
+	 * @param {number} position
+	 * @param {HTMLInputElement} radioBox
+	 */
+	selectableValueChange: (position, radioBox) => {
+		const values = NegotiationDebugger.data.submitValue;
+		if (radioBox.checked) {
+			values[position] = Number.parseInt(radioBox.value);
+			NegotiationDebugger.BuildBox();
+		}
+	},
+
+	updateNumbers: () => {
+		const data = NegotiationDebugger.data;
+		data.selected = -1;
+		// @ts-ignore
+		data.numGoods = Number.parseInt(document.getElementById('NegotiationDebuggerNumGoods').value);
+		// @ts-ignore
+		data.numTries = Number.parseInt(document.getElementById('NegotiationDebuggerNumTries').value);
+		NegotiationDebugger.BuildBox();
+	},
+
+	selectGoodFor: i => {
+		const data = NegotiationDebugger.data;
+		data.selected = i;
+		NegotiationDebugger.BuildBox();
+	},
+
+	selectGood: id => {
+		const data = NegotiationDebugger.data;
+		if (data.selected < 0) return;
+		data.goods[data.selected] = id;
+		NegotiationDebugger.BuildBox();
+	},
+
+	selectGoodForSubmit: (pos, i) => {
+		const data = NegotiationDebugger.data;
+		data.submitGoods[pos] = data.goods[i];
+		NegotiationDebugger.BuildBox();
+	},
+
+	start: () => {
+
+		const data = NegotiationDebugger.data;
+		data.selected = -1;
+		const goodList = [];
+
+		for (let i = 0; i < data.numGoods; i++) {
+			goodList.push([data.goods[i]||'money', 1]);
+		}
+
+		try {
+			Negotiation.StartNegotiation({
+					"context": "guildExpedition",
+					"possibleCosts": {
+						"resources": Object.fromEntries(goodList.sort((a,b)=>a[0]>b[0]?1:-1)),
+						"__class__": "Resources"
+					},
+					"__class__": "NegotiationGame"
+				},
+				data.numTries
+			);
+		} catch (err) {
+			console.error(err);
+		}
+		NegotiationDebugger.BuildBox();
+	},
+
+	submit: () => {
+
+		const slots = [];
+		const data = NegotiationDebugger.data;
+
+		let won = true;
+
+		for (let pos = 0; pos < 5; pos++) {
+			// @ts-ignore
+			const val = Number.parseInt(document.querySelector('input[name=NegotiationDebugger_Submit'+pos+']:checked').value);
+			if (val >= 0) {
+				if (val !== 0) won = false;
+				/** @type {"correct" | "wrong_person" | "not_needed"} */
+				const state = val === 0 ? 'correct' : val === 1 ? 'wrong_person' : 'not_needed';
+
+				/** @type {FoE_Class_NegotiationGameSlotResult} */
+				const entrie = {
+					"slotId": /** @type{1|2|3|4}*/(pos),
+					"resourceId": data.submitGoods[pos]||'money',
+					"state": state,
+					"__class__": "NegotiationGameSlotResult"
+				};
+
+				if (pos === 0) {
+					delete entrie.slotId;
+				}
+
+				slots.push(entrie);
+			}
+		}
+
+		try {
+			Negotiation.SubmitTurn(/** @type {FoE_Class_NegotiationGameResult}*/({
+				"state": won ? 'won': 'ongoing',
+				"turnResult": {
+					"slots": slots,
+					"__class__": "NegotiationGameTurnResult"
+				}, "__class__": "NegotiationGameResult"
+			}));
+		} catch (err) {
+			console.error(err);
+		}
+
+		data.submitGoods = [];
+		data.submitValue = [];
+
+		NegotiationDebugger.BuildBox();
+	}
+}
