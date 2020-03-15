@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
-/** 
+/**
  * @typedef {Object} Negotiation_GuessTable
  * @property {number} c Wahrscheinlichkeot zu gewinnen in %
  * @property {number[]} go durchschnittlicher Verbrauch pro gut
@@ -23,6 +23,24 @@
  * @property {number} [GoodCount] nur im root
  */
 
+/**
+ * @typedef {Object} Negotiation_GoodData
+ * @property {number} id fixed sequential number for each good of the negotiation starting at 0, sorted by associated hotkey number ('0' = 10)
+ * @property {string} resourceId id der resource aus dem Spiel
+ * @property {number} plannedPos gewünschte Position in der Güterreihenfolge (Permutationen versuchen diese so gut wie möglich zu erhalten)
+ * @property {number[]} canOccur liste der verhandlungspartner (slots) auf denen das Gut noch vorkommen kann.
+ * @property {number} hasToOccur >0 wenn das gut noch auftauchen muss (letzte Rundennummer in der gemeldet wurde dass es noch auftauchen muss, wenn noch aktuell)
+ * @property {number} amount menge des Gutes, die für jedes Angebot gebraucht wird
+ * @property {number} value Wert des Gutes, wird genutzt um die Güter in ihrer Priorität zu sortieren
+ */
+
+ /**
+ * @typedef {Object} Negotiation_SlotGuessInfo
+ * @property {Negotiation_GoodData|null} good Das gut welches angeboten wurde
+ * @property {0|1|2} match Die Antwort auf das Angebot: 0: Korrekt, 1: Falsche Person, 2: Falsch
+ */
+
+
 let Negotiation = {
 	Tables: /** @type {Record<String, Negotiation_GuessTable>} */({}),
 	CurrentTry: 0,
@@ -31,18 +49,18 @@ let Negotiation = {
 	CurrentTable: /** @type {undefined|Negotiation_GuessTable} */ undefined,
 	// Mapt die zuweisung von der Tabellen-Spalte zu den Verhandlungspartnern
 	PlaceMutation: /** @type {number[]} */ ([]),
-	// Liste der Güter für die aktuelle Verhandlung
-	Goods: /** @type {string[]} */ ([]),
 	// Reihenfolgen-Liste der Güter für die Verhandlung
-	GoodsOrdered: /** @type {{resourceId: string, id: number, plannedPos: number, canOccur: number[], hasToOccur: number}[]} */ ([]),
-	GoodAmounts :  /** @type {number[]} */ ([]),
-	Guesses: /** @type {{good: {resourceId: string, id: number, canOccur: number[], hasToOccur: number}|null, match: 0|1|2}[][]} */([]),
+	GoodsOrdered: /** @type {Negotiation_GoodData[]} */ ([]),
+	Guesses: /** @type {Negotiation_SlotGuessInfo[][]} */([]),
+	GuessesSuggestions: /** @type {(Negotiation_GoodData|null)[][]} */([]),
 	PlaceCount: 5,
 	Message: undefined,
 	MessageClass: 'warning',
 	SortableObj: null,
-
+	
+	WrongGoodsSelected: false,
 	ContinueListing: false,
+	NeedGoodMissmatchConfirm: false,
 
 
 
@@ -100,20 +118,22 @@ let Negotiation = {
 	 */
 	CalcBody: () => {
 		const CurrentTry = Negotiation.CurrentTry;
+		const Guesses = Negotiation.Guesses;
 		let h = [],
-			StockState = 0,
-			IsEnd = false;
+			StockState = 0;
 
 		h.push('<table class="foe-table no-hover">');
 
 
-		if (Negotiation.CurrentTable !== undefined) {
+		if (Negotiation.CurrentTable != null) {
 
 			h.push('<tbody>');
 
 			h.push('<tr>');
 			h.push('<td colspan="4" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
-			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong></strong></td>');
+			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
+			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
+			h.push('</strong></td>');
 			h.push('</tr>');
 
 			h.push('<tr>');
@@ -127,8 +147,7 @@ let Negotiation = {
 
 				let GoodInfo = GoodsOrdered[i],
 					GoodName = GoodInfo.resourceId,
-					GoodAmount = Negotiation.GoodAmounts[GoodName],
-					extraGood = (GoodName === 'money' || GoodName === 'supplies' || GoodName === 'medals') ? ' goods-sprite-extra ' : '',
+					GoodAmount = GoodInfo.amount,
 					Stock = ResourceStock[GoodName],
 					TextClass;
 
@@ -159,7 +178,7 @@ let Negotiation = {
 				}
 
 				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(Stock) + '">' +
-					'<span class="goods-sprite ' + extraGood + GoodName + '"></span><br>' +
+					'<span class="goods-sprite ' + GoodName + '"></span><br>' +
 					'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
 			}
@@ -176,11 +195,12 @@ let Negotiation = {
 
 			h.push('</tbody>');
 		}
-		else if (Negotiation.CurrentTable === undefined && Negotiation.CurrentTry === 1){
+		else if (Negotiation.CurrentTable == null && Negotiation.CurrentTry === 1){
 			Negotiation.MessageClass = 'danger';
 			Negotiation.Message = i18n('Boxes.Negotiation.TableLoadError');
 		}
 		
+		// Verhandlungspartner überschrifteh
 		h.push('<tbody>');
 		h.push('<tr class="thead">');
 
@@ -192,15 +212,123 @@ let Negotiation = {
 		h.push('</tbody>');
 
 
-		h.push('<tbody>');
+		if (Negotiation.WrongGoodsSelected) {
+			h.push('<tbody class="wrong-goods">');
+		} else {
+			h.push('<tbody>');
+		}
 
-		let cnt = 0;
+		Negotiation.createGuessLines(h, !Negotiation.NeedGoodMissmatchConfirm);
+
+		if (Negotiation.NeedGoodMissmatchConfirm) {
+			Negotiation.createMissmatchLine(h);
+		} else {
+			Negotiation.createSuggestionLine(h);
+
+			if (Negotiation.ContinueListing || !Negotiation.CurrentTable) {
+				Negotiation.createPossibleItemsLine(h);
+			}
+		}
+
+
+		h.push('</tbody>');
+
+		h.push('</table>');
+
+		if (Negotiation.Message != null) {
+			h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>');
+		}
+
+		if (StockState === 1) {
+			h.push('<p class="text-center text-warning"><strong>' + i18n('Boxes.Negotiation.GoodsLow') + '</strong></p>')
+		}
+		else if (StockState === 2) {
+			h.push('<p class="text-center text-danger"><strong>' + i18n('Boxes.Negotiation.GoodsCritical') + '</strong></p>')
+		}
+
+		$('#negotiationBoxBody').html(h.join('')).promise().done(function(){
+			// Lagerbestand via Tooltip
+			// @ts-ignore
+			$('.good').tooltip({
+				container: '#negotiationBox'
+			});
+
+			if (Negotiation.CurrentTable != null && Negotiation.CurrentTry === 1){
+				// @ts-ignore
+				new Sortable(document.getElementById('good-sort'), {
+					animation: 150,
+					ghostClass: 'good-drag',
+					onEnd: function () {
+						//Fix für hängen bleibende Tooltips
+						if ($('#negotiationBox')[0] !== undefined && $('#negotiationBox')[0]['children'] !== undefined) {
+							for (let i = 0; i < $('#negotiationBox')[0]['children'].length;i++) {
+								if ($('#negotiationBox')[0]['children'][i]['className'] === 'tooltip fade top in') {
+									$('#negotiationBox')[0]['children'][i].remove();
+									i--;
+								}
+							}
+						}
+
+						let oldOrdered = Negotiation.GoodsOrdered;
+						Negotiation.GoodsOrdered = [];
+						$('.good').each(function(){
+							let resourceId = $(this).data('slug');
+							Negotiation.GoodsOrdered.push( oldOrdered.find(info => info.resourceId === resourceId) );
+						});
+						Negotiation.GoodsOrdered.forEach((elem, i) => elem.plannedPos = i);
+						Negotiation.updateInitialPermutation();
+						Negotiation.updateNextGuess();
+						Negotiation.CalcBody();
+					}
+				});
+			}
+		});
+	},
+
+
+	/**
+	 * @param {string[]} h list of html-strings to add new contend to
+	 * @param {boolean} includeLastLine true if the last guess should be included in the output
+	 */
+	createGuessLines: (h, includeLastLine) => {
 		const Guesses = Negotiation.Guesses;
-		for (let i = 0; i < Guesses.length; i++) {
-			const Guess = Guesses[i];
+		const GuessesSuggestions = Negotiation.GuessesSuggestions;
 
+		const limit = Guesses.length - (includeLastLine ? 0 : 1);
+		for (let i = 0; i < limit; i++) {
+			const Guess = Guesses[i];
+			const suggestion = GuessesSuggestions[i];
+			h.push('<tr class="guess goods-opacity">');
+			for (let place = 0; place < Negotiation.PlaceCount; place++) {
+				const SlotGuess = Guess[place];
+				const SlotSugestion = suggestion ? suggestion[place] : null;
+				const good_id = SlotGuess && SlotGuess.good ? SlotGuess.good.resourceId : 'empty';
+				const matchStyleClass = SlotGuess.good !== null ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
+				h.push(`<td class="text-center${matchStyleClass}">`);
+				h.push(`<span class="goods-sprite ${good_id}"></span>`);
+				if (SlotSugestion) {
+					const missmatch = !SlotGuess || SlotSugestion !== SlotGuess.good ? ' missmatch' : '';
+					h.push(`<span class="goods-sprite cornered${missmatch} ${SlotSugestion.resourceId}"></span>`);
+				}
+				h.push('</td>');
+			}
+			h.push('</tr>');
+		}
+	},
+
+	/**
+	 * @param {string[]} h list of html-strings to add new contend to
+	 */
+	createSuggestionLine: (h) => {
+		const Guesses = Negotiation.Guesses;
+		const GuessesSuggestions = Negotiation.GuessesSuggestions;
+
+		const nextRoundSuggestion = GuessesSuggestions[Guesses.length];
+		if (nextRoundSuggestion) {
+
+			// berechne einen Farbwert für die Wahrscheinlichkeit dass man mit dem Gewinnt
 			let colorStyle = '';
-			if (i+1 === CurrentTry && Negotiation.CurrentTable) {
+			if (Negotiation.CurrentTable) {
 				const colors = [
 					[255,   0, 0], // Rot
 					[255, 165, 0], // Orange
@@ -229,92 +357,78 @@ let Negotiation = {
 					colorVal = `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.3)`;
 				}
 
-				colorStyle = ` style="background-image: linear-gradient(transparent, ${colorVal})"`
+				colorStyle = ` style="background-image: linear-gradient(transparent, ${colorVal})"`;
 			}
 
-			h.push('<tr' + ((i +1) < Guesses.length ? ' class="goods-opacity"' : Negotiation.CurrentTable ? colorStyle : '') + '>');
+			h.push(`<tr class="suggestion"${colorStyle}>`);
 
 			for (let place = 0; place < Negotiation.PlaceCount; place++) {
-				let SlotGuess = Guess[place];
-				let Good = (SlotGuess.good === null ? 'empty' : SlotGuess.good.resourceId);
+				const slotSugestion = nextRoundSuggestion[place];
+				const good_id = slotSugestion ? slotSugestion.resourceId : 'empty';
 				
-				if (Good !== undefined) {
-					const extraGood = (Good === 'money' || Good === 'supplies' || Good === 'medals' || Good === 'empty') ? ' goods-sprite-extra ' : '';
-					const tdClass = SlotGuess.good !== null && i+1 !== CurrentTry ? [' guess_match', ' guess_wrong_person', ' guess_fail'][SlotGuess.match] : '';
-					const numberIcon = SlotGuess.good !== null && i+1 === CurrentTry ? '<span class="numberIcon">'+(place+1)+'-'+((SlotGuess.good.id+1)%10)+'</span>' : '';
-					h.push('<td style="width:20%" class="text-center'+tdClass+'"><span class="goods-sprite ' + extraGood + Good + '"></span>'+numberIcon+'</td>');
-
+				if (slotSugestion) {
+					h.push('<td class="text-center">');
+					h.push(`<span class="goods-sprite ${good_id}"></span>`);
+					h.push(`<span class="numberIcon">${place+1}-${(slotSugestion.id+1) % 10}</span>`);
+					h.push('</td>');
 				} else {
-					h.push('<td style="width:20%">&nbsp;</td>');
+					h.push('<td>&nbsp;</td>');
 				}
 			}
+
 			h.push('</tr>');
-
-			cnt = i;
 		}
+	},
 
+	/**
+	 * @param {string[]} h list of html-strings to add new contend to
+	 */
+	createMissmatchLine: (h) => {
+		const Guesses = Negotiation.Guesses;
+		const GuessesSuggestions = Negotiation.GuessesSuggestions;
 
-		h.push('</thead>');
+		const tryNumber = Guesses.length-1;
+		if (tryNumber < 0) return;
 
-		h.push('</table>');
-
-		if (Negotiation.Message !== undefined) {
-			IsEnd = true;
-			h.push('<p class="text-center text-' + Negotiation.MessageClass + '"><strong>' + Negotiation.Message + '</strong></p>');
+		const guess = Guesses[tryNumber];
+		const suggestion = GuessesSuggestions[tryNumber];
+		
+		h.push('<tr class="guess goods-opacity">');
+		for (let place = 0; place < Negotiation.PlaceCount; place++) {
+			const SlotGuess = guess[place];
+			const SlotSugestion = suggestion ? suggestion[place] : null;
+			const missmatch = !SlotGuess || SlotSugestion !== SlotGuess.good ? ' missmatch' : '';
+			const good_id = SlotSugestion ? SlotSugestion.resourceId : 'empty';
+			h.push(`<td class="text-center">`);
+			h.push(`<span class="goods-sprite ${good_id}${missmatch}"></span>`);
+			h.push('</td>');
 		}
+		h.push('</tr>');
+	},
 
-		if (StockState === 1) {
-			h.push('<p class="text-center text-warning"><strong>' + i18n('Boxes.Negotiation.GoodsLow') + '</strong></p>')
-		}
-		else if (StockState === 2) {
-			h.push('<p class="text-center text-danger"><strong>' + i18n('Boxes.Negotiation.GoodsCritical') + '</strong></p>')
-		}
+	createPossibleItemsLine: (h) => {
+		h.push('<tr>');
 
-		$('#negotiationBoxBody').html(h.join('')).promise().done(function(){
+		const GoodsOrdered = Negotiation.GoodsOrdered;
+		for (let place = 0; place < Negotiation.PlaceCount; place++) {
+			h.push('<td class="text-center">');
 
-			// Rundenzahl oben rechts
-			$('#round-count').find('strong').text(i18n('Boxes.Negotiation.Round') + ' ' + (cnt + 1) + '/' + (Negotiation.TryCount));
-
-			// Verhandlungen Fertig/abgebrochen/Fehler
-			if(IsEnd === true){
-				$('.foe-table').find('tr').removeClass('goods-opacity');
+			for (let good of GoodsOrdered) {
+				if (good.canOccur.includes(place)) {
+					const hasToOccurClass = good.hasToOccur > 0 ? ' hasToOccur' : '';
+					h.push(`<span class="goods-sprite ${good.resourceId}${hasToOccurClass}"></span>`);
+				}
 			}
+			h.push('</td>');
+		}
 
-			// Lagerbestand via Tooltip
-			// @ts-ignore
-			$('.good').tooltip({
-				container: '#negotiationBox'
-			});
+		h.push('</tr>');
+	},
 
-			if (Negotiation.CurrentTable !== undefined && Negotiation.CurrentTry === 1){
-				// @ts-ignore
-				new Sortable(document.getElementById('good-sort'), {
-					animation: 150,
-					ghostClass: 'good-drag',
-					onEnd: function () {
-						//Fix für hängen bleibende Tooltips
-						if ($('#negotiationBox')[0] !== undefined && $('#negotiationBox')[0]['children'] !== undefined) {
-							for (let i = 0; i < $('#negotiationBox')[0]['children'].length;i++) {
-								if ($('#negotiationBox')[0]['children'][i]['className'] === 'tooltip fade top in') {
-									$('#negotiationBox')[0]['children'][i].remove();
-									i--;
-								}
-							}
-						}
-
-						let oldOrdered = Negotiation.GoodsOrdered;
-						Negotiation.GoodsOrdered = [];
-						$('.good').each(function(){
-							let resourceId = $(this).data('slug');
-							Negotiation.GoodsOrdered.push( oldOrdered.find(info => info.resourceId === resourceId) );
-						});
-						Negotiation.GoodsOrdered.forEach((elem, i) => elem.plannedPos = i);
-						Negotiation.updateNextGuess();
-						Negotiation.CalcBody();
-					}
-				});
-			}
-		});
+	confirmGoodsMissmatch: () => {
+		Negotiation.Message = null;
+		Negotiation.NeedGoodMissmatchConfirm = false;
+		Negotiation.CalcBody();
 	},
 
 
@@ -322,8 +436,9 @@ let Negotiation = {
 	 * Chancen Berechnung aus den Files
 	 *
 	 * @param {FoE_Class_NegotiationGame|{__class__: "Error"}} responseData
+	 * @param {number} [forcedTryCount]
 	 */
-	StartNegotiation: (responseData) => {
+	StartNegotiation: (responseData, forcedTryCount) => {
 		if (responseData.__class__ === "Error") return;
 
 		if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
@@ -332,80 +447,70 @@ let Negotiation = {
 		}
 		
 		Negotiation.CurrentTry = 1;
-		Negotiation.Message = undefined;
-		let Resources = responseData.possibleCosts.resources;
-
-		const Goods = [];
+		Negotiation.Message = null;
+		Negotiation.WrongGoodsSelected = false;
+		Negotiation.NeedGoodMissmatchConfirm = false;
 		const PlaceCount = Negotiation.PlaceCount;
-		Negotiation.Goods = Goods;
-		for (let ResourceName in Resources) {
-			Goods.push(ResourceName);
-			Negotiation.GoodAmounts[ResourceName] = Resources[ResourceName];
-		}
-		Negotiation.GoodCount = Negotiation.Goods.length;
 
-		const GoodsOrdered = Goods.map((good, idx) => ({
-			resourceId: good,
-			id: -1, // wird im nächsten schritt bestimmt
-			plannedPos: -1, // wird im übernächsten schritt bestimmt
-			canOccur: [...new Array(PlaceCount).keys()],
-			hasToOccur: 0
-		}));
+		let negotiationResources = responseData.possibleCosts.resources;
+
+		const GoodsOrdered = [];
 		Negotiation.GoodsOrdered = GoodsOrdered;
+		
+		for (let good_id in negotiationResources) {
+			if (!negotiationResources.hasOwnProperty(good_id)) continue;
+
+			GoodsOrdered.push({
+				id: -1, // wird im nächsten schritt bestimmt
+				resourceId: good_id,
+				plannedPos: -1, // wird im übernächsten schritt bestimmt
+				canOccur: [...new Array(PlaceCount).keys()], // alle plätze sind noch möglich
+				hasToOccur: 0, // muss momentan nicht auftauchen
+				amount: negotiationResources[good_id], // menge der Resource pro angebot
+				value: Negotiation.GetGoodValue(good_id) // wert für prioritäts-reihenfolge
+			});
+		}
+		Negotiation.GoodCount = GoodsOrdered.length;
 
 		// Sortiere, nach auswahl Knopf reihenfolge
-		GoodsOrdered.sort((a,b) => {
-			if (a === b) return 0;
-			const goodA = a.resourceId;
-			const goodB = b.resourceId;
-			return Negotiation.goodButtonCompare(goodA, goodB);
-		});
+		GoodsOrdered.sort((a,b) => Negotiation.goodButtonCompare(a.resourceId, b.resourceId));
 		// und weise Knopf-Nummer als id zu
 		GoodsOrdered.forEach((elem, i) => elem.id = i);
 
 		// Sortiere nun nach Plan reihenfolge
-		GoodsOrdered.sort(function (Good1, Good2) {
-			let Good1Value = Negotiation.GetGoodValue(Good1.resourceId),
-				Good2Value = Negotiation.GetGoodValue(Good2.resourceId);
-
-			return Good1Value - Good2Value;
-		});
+		GoodsOrdered.sort((goodA, goodB) => goodA.value - goodB.value);
 		// und weise die Position als plannedPos zu
 		GoodsOrdered.forEach((elem, i) => elem.plannedPos = i);
 
-		Negotiation.PlaceMutation =
-			[...new Array(PlaceCount).keys()]
-			.sort((a,b) => {
-				if (a === b) return 0;
-				const valA = a < GoodsOrdered.length ? GoodsOrdered[a].id : 255;
-				const valB = b < GoodsOrdered.length ? GoodsOrdered[b].id : 255;
-				return valA - valB;
-			})
-			// invertiere das mapping von "Platz zu Tabellenplatz" zu "Tabellenplatz zu Platz"
-			.map((v, i) => [v, i])
-			.sort((a,b) => a[0] - b[0])
-			.map(([v, i]) => i)
-		;
+		Negotiation.updateInitialPermutation();
 
-		if (responseData.context === 'guildExpedition') {
-			let Now = new Date().getTime();
-
-			if (moment.unix(Tavern.ExpireTime) > Now) {
-				Negotiation.TryCount = 4;
-			} else {
-				Negotiation.TryCount = 3;
-			}
-		}
-		else {
-			if (Negotiation.GoodCount > 6) {
-				Negotiation.TryCount = 4;
-			} else {
-				Negotiation.TryCount = 3;
-			}
+		// Setze die Korrekte Versuchs-anzahl
+		if (forcedTryCount != null) {
+			Negotiation.TryCount = forcedTryCount;
+		} else if (responseData.context === 'guildExpedition') {
+			Negotiation.TryCount = moment.unix(Tavern.ExpireTime) > Date.now() ? 4 : 3;
+		} else {
+			Negotiation.TryCount = Negotiation.GoodCount > 6 ? 4 : 3;
 		}
 
 		Negotiation.Guesses = [];
-		Negotiation.GetTable();
+		Negotiation.GuessesSuggestions = [];
+
+		let tableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
+		Negotiation.GetTable(tableName)
+			.then(table => {
+				Negotiation.CurrentTable = table;
+				
+				if (table) {
+					Negotiation.updateNextGuess();
+				}
+
+				Negotiation.RefreshBox();
+				if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
+					Negotiation.Show();
+				}
+			})
+		;
 	},
 
 
@@ -420,27 +525,33 @@ let Negotiation = {
 
 		const GoodsOrdered = Negotiation.GoodsOrdered;
 		const SlotData = responseData.turnResult.slots;
-		const Guesses = Negotiation.Guesses;
-		const OldGuess = Guesses[currentTry - 1];
+		// Erstelle eine neue Rate-Zeile default "match": 0(Korrekt)
+		/** @type {Negotiation_SlotGuessInfo[]} */
+		const CurrentGuess = [...new Array(Negotiation.PlaceCount).keys()].map(() => ({good: null, match: 0}));
+		Negotiation.Guesses.push(CurrentGuess);
+		const OldSuggestions = Negotiation.GuessesSuggestions[currentTry - 1];
 		let Result = 0;
 
-		for (let i = 0; i < SlotData.length; i++) {
-			const data = SlotData[i];
-
+		let numFreeSlots = 0;
+		for (let data of SlotData) {
+	
 			const State      = data.state;
 			const ResourceId = data.resourceId;
 			const SlotID     = data.slotId || 0;
-			const oldSlotGuess = OldGuess[SlotID];
+			const oldSlotGuess = CurrentGuess[SlotID];
 
-			const goodIdx = GoodsOrdered.findIndex(info => info.resourceId === ResourceId);
-			const goodInfo = GoodsOrdered[goodIdx];
+			const goodInfo = GoodsOrdered.find(info => info.resourceId === ResourceId);
+			if (goodInfo == null) {
+				console.error(`Invalid good recived for slot ${SlotID}: ${ResourceId}`);
+				continue;
+			};
 
 			// wenn die Belegung nicht mit dem Vorschlag übereinstimmt,
 			// wird sie angepasst und eine neue Tabelle muss gesucht werden
-			if (goodInfo !== OldGuess[SlotID].good) {
-				OldGuess[SlotID].good = goodInfo;
+			if (!OldSuggestions || goodInfo !== OldSuggestions[SlotID]) {
 				Result = -1;
 			}
+			CurrentGuess[SlotID].good = goodInfo;
 
 			// Entferne diesen Verhandlungspartner aus der Liste der möglichen plätze für dieses Gut.
 			goodInfo.canOccur = goodInfo.canOccur.filter(elem => elem !== SlotID);
@@ -456,10 +567,33 @@ let Negotiation = {
 			} else if (State === 'wrong_person') {
 				oldSlotGuess.match = 1; /* falsche Person */
 				goodInfo.hasToOccur = currentTry;
+				numFreeSlots++;
 			} else {
 				oldSlotGuess.match = 2; /* ganz falsch */
 				goodInfo.canOccur = [];
 				goodInfo.hasToOccur = 0;
+				numFreeSlots++;
+			}
+		}
+
+		// Wieviele verschiedene Güter müssen noch auftauchen
+		let numGoodsHaveToOccur = 0;
+		for (let good of GoodsOrdered) {
+			if (good.hasToOccur>0) {
+				numGoodsHaveToOccur++;
+				// wenn der Platz bekannt ist, update diese Information
+				if (good.canOccur.length === 1) {
+					Negotiation.updateKnownPosition(good);
+				}
+			}
+		}
+		// wenn so viele Güter auftauchen müssen, wie Plätze frei sind, können die restlichen Güter nicht mehr auftauchen
+		if (numFreeSlots === numGoodsHaveToOccur) {
+			for (let i = 0; i < GoodsOrdered.length; i++) {
+				const good = GoodsOrdered[i];
+				if (good.hasToOccur === 0) {
+					good.canOccur = [];
+				}
 			}
 		}
 
@@ -467,45 +601,46 @@ let Negotiation = {
 			Result = 0;
 		}
 
-		if (Result === -1) {
+		Negotiation.CurrentTry = currentTry+1;
+
+		if (numFreeSlots === 0) {
+			// Verhandlung erfolgreich abgeschlossen
 			Negotiation.CurrentTry = 0;
-			Negotiation.CurrentTable = undefined;
-			Negotiation.Message = i18n('Boxes.Negotiation.WrongGoods');
-			Negotiation.MessageClass = 'danger';
+			Negotiation.CurrentTable = null;
+			Negotiation.Message = i18n('Boxes.Negotiation.Success');
+			Negotiation.MessageClass = 'success';
 
-		} else {
+			if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length > 0) {
+				$('#negotiationBox').fadeToggle(function () {
+					$(this).remove();
+				});
+			}
+		} else if (Result === -1) {
+			if (Negotiation.CurrentTable) {
+				// keine Tabelle mehr zum abarbeiten da
+				Negotiation.CurrentTable = null;
+				Negotiation.Message = `${i18n('Boxes.Negotiation.WrongGoods')} <button class="btn-default" onclick="Negotiation.confirmGoodsMissmatch()">${i18n('Boxes.Negotiation.confirmGoodsMissmatch')}</button>`;
+				Negotiation.MessageClass = 'danger';
+				Negotiation.WrongGoodsSelected = true;
+				Negotiation.NeedGoodMissmatchConfirm = true;
+			}
+		} else if (currentTry >= Negotiation.TryCount) {
+			// Versuche aufgebraucht
+			Negotiation.CurrentTable = null;
+			Negotiation.Message = i18n('Boxes.Negotiation.TryEnd');
+			Negotiation.MessageClass = 'warning';
+
+		} else if (Negotiation.CurrentTable) {
+			// Verhandlung geht weiter
 			const PlaceMutation = Negotiation.PlaceMutation;
+			let continuationCode = 0;
 			for (let i = 0; i < 5; i++) {
-				Result *= 4;
-				Result += OldGuess[PlaceMutation[i]].match;
+				continuationCode *= 4;
+				continuationCode += CurrentGuess[PlaceMutation[i]].match;
 			}
-
-			if (Result === 0) {
-				// Verhandlung erfolgreich abgeschlossen
-				Negotiation.CurrentTry = 0;
-				Negotiation.CurrentTable = undefined;
-				Negotiation.Message = i18n('Boxes.Negotiation.Success');
-				Negotiation.MessageClass = 'success';
-
-				if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length > 0) {
-					$('#negotiationBox').fadeToggle(function () {
-						$(this).remove();
-					});
-				}
-
-			} else if (currentTry >= Negotiation.TryCount) {
-				// Versuche aufgebraucht
-				Negotiation.CurrentTry = 0;
-				Negotiation.CurrentTable = undefined;
-				Negotiation.Message = i18n('Boxes.Negotiation.TryEnd');
-				Negotiation.MessageClass = 'warning';
-
-			} else {
-				// Verhandlung geht weiter
-				Negotiation.CurrentTable = Negotiation.CurrentTable.r[Result];
-				Negotiation.CurrentTry = currentTry+1;
-				Negotiation.updateNextGuess();
-			}
+			Negotiation.CurrentTable = Negotiation.CurrentTable.r[continuationCode];
+			
+			Negotiation.updateNextGuess();
 		}
 
 		Negotiation.RefreshBox();
@@ -518,7 +653,7 @@ let Negotiation = {
 	 */
 	ExitNegotiation: () => {
 		Negotiation.CurrentTry = 0;
-		Negotiation.CurrentTable = undefined;
+		Negotiation.CurrentTable = null;
 		Negotiation.Message = i18n('Boxes.Negotiation.Canceled');
 		Negotiation.MessageClass = 'danger';
 
@@ -548,16 +683,60 @@ let Negotiation = {
 		return valA - valB;
 	},
 
+	/**
+	 * @param {Negotiation_GoodData} good
+	 */
+	updateKnownPosition: good => {
+		if (good.hasToOccur === 0 || good.canOccur.length !== 1) return;
+		const fixedPlace = good.canOccur[0];
+		for (let otherGood of Negotiation.GoodsOrdered) {
+			if (otherGood !== good) {
+				const oldCanOccurLength = otherGood.canOccur.length;
+				otherGood.canOccur = otherGood.canOccur.filter(place => place !== fixedPlace);
+				// hat sich was geändert?
+				if (oldCanOccurLength != otherGood.canOccur.length) {
+					// Rekursiver aufruf, um alle dadurch eindeutigen Güter zu plazieren
+					Negotiation.updateKnownPosition(otherGood);
+				}
+			}
+		}
+	},
+
 	updateNextGuess: () => {
+		if (!Negotiation.CurrentTable) return;
 		const GoodsOrdered = Negotiation.GoodsOrdered;
 		const PlaceMutation = Negotiation.PlaceMutation;
 		const gu = Negotiation.CurrentTable.gu;
-		/** @type {{good: {resourceId: string, id: number, canOccur: number[], hasToOccur: number}|null, match: 0|1|2}[]} */
-		const Guesses = [];
+		/** @type {(Negotiation_GoodData|null)[]} */
+		const GuessesSuggestion = [];
 		for (let i = 0; i < gu.length; i++) {
-			Guesses[PlaceMutation[i]] = {good: gu[i] === 255 ? null : GoodsOrdered[gu[i]], match: 0};
+			const good = gu[i] === 255 ? null : GoodsOrdered[gu[i]];
+			GuessesSuggestion[PlaceMutation[i]] = good;
 		}
-		Negotiation.Guesses[Negotiation.CurrentTry-1] = Guesses;
+		Negotiation.GuessesSuggestions[Negotiation.CurrentTry-1] = GuessesSuggestion;
+	},
+
+	updateInitialPermutation: () => {
+		if (Negotiation.CurrentTry !== 1) {
+			console.error('ERROR: Negotiation.updateInitialPermutation got called when not in first turn.');
+			return;
+		}
+		const PlaceCount = Negotiation.PlaceCount;
+		const GoodsOrdered = Negotiation.GoodsOrdered;
+
+		Negotiation.PlaceMutation =
+			[...new Array(PlaceCount).keys()]
+			.sort((a,b) => {
+				if (a === b) return 0;
+				const valA = a < GoodsOrdered.length ? GoodsOrdered[a].id : 255;
+				const valB = b < GoodsOrdered.length ? GoodsOrdered[b].id : 255;
+				return valA - valB;
+			})
+			// invertiere das mapping von "Platz zu Tabellenplatz" zu "Tabellenplatz zu Platz"
+			.map((v, i) => [v, i])
+			.sort((a,b) => a[0] - b[0])
+			.map(([v, i]) => i)
+		;
 	},
 
 	findMatchingPermutation: () => {
@@ -696,16 +875,15 @@ let Negotiation = {
 
 	/**
 	 * Läd die Tabelle
-	 *
+	 * @param {string} tableName Name der zu ladenden Tabelle
 	 */
-	GetTable: () => {
-		let TableName = Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount);
+	GetTable: (tableName) => {
 
 		// gibt es noch nicht, laden
-		if (Negotiation.Tables[TableName] === undefined) {
+		if (Negotiation.Tables[tableName] === undefined) {
 			let url = extUrl + 'js/web/negotiation/tables/';
 
-			fetch(url + TableName + '.zip')
+			return fetch(url + tableName + '.zip')
 				.then(function (response) {
 					if (response.status === 200 || response.status === 0) {
 						return Promise.resolve(response.blob());
@@ -716,34 +894,18 @@ let Negotiation = {
 				.then(JSZip.loadAsync)
 				.then(function (zip) {
 					// @ts-ignore
-					return zip.file(TableName + ".json").async("uint8array");
+					return zip.file(tableName + ".json").async("uint8array");
 				})
-				.then((/** @type {Uint8Array} */response) => {
-					Negotiation.Tables[TableName] = JSON.parse(new TextDecoder().decode(response));
-
-					Negotiation.CurrentTable = Negotiation.Tables[TableName];
-
-					if (Negotiation.CurrentTable !== undefined) {
-						Negotiation.updateNextGuess();
-					}
-
-					Negotiation.RefreshBox();
-					if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-						Negotiation.Show();
-					}
+				.then((/** @type {Uint8Array} */content) => {
+					const table = JSON.parse(new TextDecoder().decode(content));
+					Negotiation.Tables[tableName] = table;
+					return table;
 				})
 				.catch(err => {console.error(err); return null;})
 			;
 		} else {
 			// bereits geladen
-			Negotiation.CurrentTable = Negotiation.Tables[TableName];
-			Negotiation.updateNextGuess();
-			Negotiation.RefreshBox();
-			if (Settings.GetSetting('AutomaticNegotiation') && $('#negotiationBox').length === 0) {
-				setTimeout(() => {
-					Negotiation.Show();
-				}, 300);
-			}
+			return Promise.resolve(Negotiation.Tables[tableName]);
 		}
 	}
 };
