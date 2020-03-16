@@ -98,7 +98,7 @@ const HideEventQuest = () => {
         _menu.HideButton("questlist-Btn");
         return;
     }
-}
+};
 
 /**
  *
@@ -334,6 +334,7 @@ let EventQuest = {
         EventQuest.CalcChestsBody();
     },
 
+
     /**
     *
     */
@@ -372,13 +373,13 @@ let EventQuest = {
             if (!EventQuest.Chests.hasOwnProperty(i)) continue;
 
             h.push('<tr>');
-            h.push('<td class="text-center">' + EventQuest.Chests[i]['cost'] + '</td>');
+            h.push('<td class="text-center text-warning text-bold">' + EventQuest.Chests[i]['cost'] + '</td>');
 
             h.push('<td class="text-center">' + EventQuest.Chests[i]['grandPrizeContribution'] + '</td>');
-            h.push('<td class="text-center' + (EventQuest.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? 'success' : '') + '">' + Math.round(EventQuest.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
+            h.push('<td class="text-center' + (EventQuest.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventQuest.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
 
             h.push('<td class="text-center">' + EventQuest.Chests[i]['drop_chance'] + '%</td>');
-            h.push('<td class="text-center' + (EventQuest.Chests[i]['costperdailyprize'] <= BestDailyPrizeCost ? 'success' : '') + '">' + Math.round(EventQuest.Chests[i]['costperdailyprize']) + '</td>');
+            h.push('<td class="text-center' + (EventQuest.Chests[i]['costperdailyprize'] <= BestDailyPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventQuest.Chests[i]['costperdailyprize']) + '</td>');
 
             h.push('</tr>');
         }
