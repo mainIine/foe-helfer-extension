@@ -37,7 +37,7 @@
 		"Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Pagato: __payed__ <br> Profit = __bruttoreward__ <small> (ricompensa) </small> - __payed__ <small> (Pagato) </small> = __profit__",
 		"Boxes.Calculator.TTRate": "Rate = __costs__ <small> (costi) </small> / __nettoreward__ <small> (premio netto) </small> = __rate __%",
 		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
-		"Boxes.Calculator.Up2LevelUp": "Fino al livellamento",
+		"Boxes.Calculator.Up2LevelUp": "Fino al livello successivo",
 		"Boxes.Campagne.AlreadyDone": "Già conquistato!",
 		"Boxes.Campagne.DescInStock": "Disponibile",
 		"Boxes.Campagne.DescRequired": "Obbligatorio",
@@ -54,12 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Invia dati",
 		"Boxes.CityMap.WholeArea": "L'intera area:",
 		"Boxes.CityMap.YourCity": "La tua città",
-		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
-		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costi", 
+		"Boxes.EventChests.CostPerDailyPrize": "Costi/__premio giornaliero__", 
+		"Boxes.EventChests.CostPerMainPrizeStep": "Costi/Premio principale",
+		"Boxes.EventChests.DailyPrizeChance": "__premio giornaliero__ possibile", 
+		"Boxes.EventChests.MainPrizeSteps": "Principali fasi del premio", 
+		"Boxes.EventChests.Title": "Aiuto selezione del forziere dell'evento", 
 		"Boxes.EventList.And": "e",
 		"Boxes.EventList.Desc": "Task",
 		"Boxes.EventList.Number": "N.",
@@ -125,6 +125,7 @@
 		"Boxes.Neighbors.NothingToPlunder": "Nulla da saccheggiare",
 		"Boxes.Neighbors.OngoingProductions": "Produzioni in corso",
 		"Boxes.Neighbors.ReadyProductions": "Produzioni finite",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
 		"Boxes.Neighbors.Title": "Produzioni di",
 		"Boxes.Outpost.DescInStock": "Disponibile",
 		"Boxes.Outpost.DescRequired": "Richiesto",
@@ -241,8 +242,8 @@
 		"HiddenRewards.Table.position": "Posizione",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "it",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Impostazioni per inviare dati al tuo server", 
+		"Menu.Api.Title": "Player API", 
 		"Menu.Ask.Desc": "Non sai come funziona qualcosa? <br> Dai un'occhiata!",
 		"Menu.Ask.Title": "Botta e Risposta",
 		"Menu.Bugs.Desc": "Qualcosa non è come dovrebbe o hai un'idea?",
@@ -289,8 +290,8 @@
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
 		"Settings.ChangeLanguage.Title": "Cambia lingua",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Vuoi inviare alcuni dati al tuo server? <br> Dopo questa attivazione il gioco verrà ricaricato e apparirà un'altra voce di menu. ", 
+		"Settings.CustomerApi.Title": " Player API", 
 		"Settings.GlobalSend.Desc": "Se vuoi tracciare i dati con la tua gilda, attiva questo campo. <br> Per un'estensione autosufficiente, disattivalo.",
 		"Settings.GlobalSend.Title": "Trasmissione a foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quanti elementi (lunghezza) dovrebbe contenere il menu? <br> Campo vuoto o \"0\" sceglierà in automatico.",
