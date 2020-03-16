@@ -54,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
@@ -111,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ordre préférentiel",
 		"Boxes.Negotiation.Canceled": "La négociation a été annulée",
 		"Boxes.Negotiation.Chance": "Chance ",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'ordre préférentiel en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
 		"Boxes.Negotiation.GoodsCritical": "ATTENTION : votre stock de marchandises est critique.",
 		"Boxes.Negotiation.GoodsLow": "ATTENTION : votre stock de marchandises est faible.",

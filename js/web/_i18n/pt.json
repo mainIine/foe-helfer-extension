@@ -54,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Submeter dados",
 		"Boxes.CityMap.WholeArea": "Area completa: ",
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " e ",
 		"Boxes.EventList.Desc": "Missão",
@@ -111,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø quantidade",
 		"Boxes.Negotiation.Canceled": "Negociação anulada",
 		"Boxes.Negotiation.Chance": "Probabilidade",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Pode ordenar as mercadorias e a sua média, arrastando os icones.",
 		"Boxes.Negotiation.GoodsCritical": "ATENÇÃO: Stock critico de mercadoria",
 		"Boxes.Negotiation.GoodsLow": "ATENÇÃO: Stock baixo de mercadoria",

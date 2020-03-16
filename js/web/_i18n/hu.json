@@ -54,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Adatok elküldése",
 		"Boxes.CityMap.WholeArea": "Teljes terület: ",
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " és ",
 		"Boxes.EventList.Desc": "Feladat",
@@ -111,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Mennyiség",
 		"Boxes.Negotiation.Canceled": "Tárgyalás meg lett szakítva",
 		"Boxes.Negotiation.Chance": "Esély",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Az ikonokat átrendezheti drag and drop (bal klikk hosszan tartva) segítségével, hogy meghatározzák a sorrendet az első kísérletből.",
 		"Boxes.Negotiation.GoodsCritical": "FIGYELEM: kritikus az árú készlet",
 		"Boxes.Negotiation.GoodsLow": "FIGYELEM: alacsony az árú készlet",
