@@ -11,6 +11,7 @@
 		pt: 'Português',
 		ro: 'Română',
 		ru: 'Русский',
+		sk: 'Slovenčina',
 		sv: 'Svenska'
 	},
 };

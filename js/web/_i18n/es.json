@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s GEs han sido transferidos",
 		"API.LGInvest": "Tus inversiones en grandes edifivios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Submit data", //Todo: Translate
 		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
 		"Boxes.EventList.Desc": "Task", //Todo: Translate
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Amount", //Todo: Translate
 		"Boxes.Negotiation.Canceled": "Negociacion cancelada",
 		"Boxes.Negotiation.Chance": "Oportunidad",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.", //Todo: Translate
 		"Boxes.Negotiation.GoodsCritical": "ATTENTION: Good stock is critical", //Todo: Translate
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low", //Todo: Translate
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Position", //Todo: Translate
 		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "es-ES",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruebalo!",
 		"Menu.Ask.Title": "Pregunta / Respuesta",
 		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
@@ -286,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassisten",
 		"Settings.ChangeLanguage.Desc": "Que idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extension autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmision a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate

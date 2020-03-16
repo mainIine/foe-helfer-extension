@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Mäktig byggnad har skickats in",
 		"API.LGInvest": "Dina MB investeringar har överförts",
 		"API.UpdateSuccess": "Uppdatering utförd",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivt återkommande uppdrag:",
 		"Boxes.Calculator.ArkBonus": "Arkbonus",
 		"Boxes.Calculator.AvailableFP": "Tillgängliga FP",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Skicka data",
 		"Boxes.CityMap.WholeArea": "Total yta: ",
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " och ",
 		"Boxes.EventList.Desc": "Uppdrag",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø mängd",
 		"Boxes.Negotiation.Canceled": "Förhandling har avbrytits",
 		"Boxes.Negotiation.Chance": "Chans",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Du kan omorganisera ikonerna på medel via dra & släpp för att välja ordningen för första försöket.",
 		"Boxes.Negotiation.GoodsCritical": "VARNING: Varulager är kritiskt",
 		"Boxes.Negotiation.GoodsLow": "VARNING: Varulager är lågt",
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Plats",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sv-SE",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Du vet inte hur något fungerar?<br>Kolla här!",
 		"Menu.Ask.Title": "Frågor / Svar",
 		"Menu.Bugs.Desc": "Något är inte som det borde vara eller du har en idé?",
@@ -286,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
 		"Settings.ChangeLanguage.Title": "Byt språk",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",

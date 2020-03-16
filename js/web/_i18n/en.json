@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Legendary buildings have been submitted",
 		"API.LGInvest": "Your LG investments have been transferred",
 		"API.UpdateSuccess": "Update performed",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Available Forgepoints",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Submit data",
 		"Boxes.CityMap.WholeArea": "The whole area: ",
 		"Boxes.CityMap.YourCity": "Your city",
+		"Boxes.EventChests.Chance": "Chance",
 		"Boxes.EventChests.Cost": "Costs",
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__",
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step",
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance",
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps",
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize",
+		"Boxes.EventChests.CostPerStep": "Cost/Step",
+		"Boxes.EventChests.MainPrize": "Main Prize",
+		"Boxes.EventChests.Steps": "Steps",
 		"Boxes.EventChests.Title": "Event chest selection helper",
 		"Boxes.EventList.And": " and ",
 		"Boxes.EventList.Desc": "Task",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Amount",
 		"Boxes.Negotiation.Canceled": "Negotiation has been canceled",
 		"Boxes.Negotiation.Chance": "Chance",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
 		"Boxes.Negotiation.DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.",
 		"Boxes.Negotiation.GoodsCritical": "ATTENTION: Good stock is critical",
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low",
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Type",
 		"Local": "en-EN",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "You do not know how something works?<br>Take a look!",
 		"Menu.Ask.Title": "Question / Answer",
 		"Menu.Bugs.Desc": "Something is not how it should or you have an idea?",
@@ -286,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Negotiation helper",
 		"Settings.ChangeLanguage.Desc": "Which language, instead of the recognized one, should be used?",
 		"Settings.ChangeLanguage.Title": "Change language",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "If you want to track data with your guild, activate this point. <br> For a self-sufficient extension simply disable.",
 		"Settings.GlobalSend.Title": "Transmission to foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.",

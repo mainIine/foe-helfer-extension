@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s LGs wurden übermittelt",
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.UpdateSuccess": "Update durchgeführt",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Daten übermitteln",
 		"Boxes.CityMap.WholeArea": "Gesamte Fläche: ",
 		"Boxes.CityMap.YourCity": "Deine Stadt",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " und ",
 		"Boxes.EventList.Desc": "Aufgabe",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Menge",
 		"Boxes.Negotiation.Canceled": "Verhandlung wurde abgebrochen",
 		"Boxes.Negotiation.Chance": "Chance",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
 		"Boxes.Negotiation.DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
 		"Boxes.Negotiation.GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
 		"Boxes.Negotiation.GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
@@ -288,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassistent",
 		"Settings.ChangeLanguage.Desc": "Welche Sprache, statt der erkannten, soll genutzt werden?",
 		"Settings.ChangeLanguage.Title": "Sprache wechseln",
+		"Settings.CustomerApi.Desc": "Du möchtest Daten an deinen eigenen Server einige Daten schicken?<br>Nach dieser Aktivierung wird sich das Spiel neu laden und ein weiterer Menüpunkt erscheint.",
+		"Settings.CustomerApi.Title": "Spieler API",
 		"Settings.GlobalSend.Desc": "Wenn Du mit deiner Gilde Daten tracken möchtest, aktiviere diesen Punkt.<br>Für eine autarke Extension einfach deaktiveren",
 		"Settings.GlobalSend.Title": "Übermittlung an foe-rechner.de",
 		"Settings.MenuLength.Desc": "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe.",
@@ -314,9 +319,6 @@
 		"Settings.Version.GuildId": "Gilden Id:",
 		"Settings.Version.PlayerId": "Spieler Id:",
 		"Settings.Version.Title": "Version",
-		"Settings.Version.World": "Welt:",
-
-		"Settings.CustomerApi.Desc": "Du möchtest Daten an deinen eigenen Server einige Daten schicken?<br>Nach dieser Aktivierung wird sich das Spiel neu laden und ein weiterer Menüpunkt erscheint.",
-		"Settings.CustomerApi.Title": "Spieler API"
+		"Settings.Version.World": "Welt:"
 	}
 }

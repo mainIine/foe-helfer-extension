@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
 		"API.LGInvest": "Je GG bijdrages zijn verzonden",
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Actieve herhalingsmissie:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Beschikbare forgepunten",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Gegevens verzenden",
 		"Boxes.CityMap.WholeArea": "Volledige oppervlakte: ",
 		"Boxes.CityMap.YourCity": "Jouw stad",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " en ",
 		"Boxes.EventList.Desc": "Missie",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Voorkeursvolgorde",
 		"Boxes.Negotiation.Canceled": "Onderhandeling is geannuleerd",
 		"Boxes.Negotiation.Chance": "Kans",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "U kunt voorkeursvolgorde van bovenstaande pictogrammen zelf herschikken met 'Drag&Drop' om de volgorde van de eerste poging te bepalen.",
 		"Boxes.Negotiation.GoodsCritical": "OPGELET: De goederenvoorraad is kritiek!",
 		"Boxes.Negotiation.GoodsLow": "OPGELET: De goederenvoorraad is schaars!",
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Positie",
 		"HiddenRewards.Table.type": "Soort",
 		"Local": "nl-NL",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Weet je niet hoe iets werkt?<br>Neem een kijkje!",
 		"Menu.Ask.Title": "Vraag / Antwoord",
 		"Menu.Bugs.Desc": "Iets werkt niet zoals het hoort of heb je een idee?",
@@ -286,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
