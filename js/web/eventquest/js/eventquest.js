@@ -74,6 +74,9 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
             continue;
         }
 
+        CurrentChest['costpermainprizestep'] = CurrentChest['cost'] / CurrentChest['grandPrizeContribution'];
+        CurrentChest['costperdailyprize'] = CurrentChest['cost'] * 100 / CurrentChest['drop_chance'];
+
         ChestData[ChestData.length] = CurrentChest;
     }
 
@@ -84,7 +87,7 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
     // Ungültige Daten => Event wird nicht unterstützt => Fenster nicht anzeigen
     if (ChestData.length === 0) {
         return;
-    }
+    }   
 
     EventQuest.Chests = ChestData;
     EventQuest.ShowChests();
@@ -340,23 +343,43 @@ let EventQuest = {
         h.push('<table class="foe-table">');
         h.push('<thead>' +
             '<tr>' +
-            '<th>' + i18n('Boxes.EventChests.Cost') + '</th>' +
-            '<th>' + i18n('Boxes.EventChests.MainPrizeSteps') + '</th>' +
-            '<th>' + HTML.i18nReplacer(i18n('Boxes.EventChests.DailyPrizeChance'), { 'dailyprize': EventQuest.Chests[0]['dailyprizename']}) + '</th>' +
-            '<th>' + i18n('Boxes.EventChests.CostPerMainPrizeStep') + '</th>' +
-            '<th>' + HTML.i18nReplacer(i18n('Boxes.EventChests.CostPerDailyPrize'), { 'dailyprize': EventQuest.Chests[0]['dailyprizename'] }) + '</th>' +
+            '<th></th>' +
+            '<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPrize') + '</th>' +
+            '<th colspan="2" class="text-center">' + EventQuest.Chests[0]['dailyprizename'] + '</th>' +
             '</tr>' +
+
+            '<tr>' +
+            '<th class="text-center">' + i18n('Boxes.EventChests.Cost') + '</th>' +
+            '<th class="text-center">' + i18n('Boxes.EventChests.Steps') + '</th>' +
+            '<th class="text-center">' + i18n('Boxes.EventChests.CostPerStep') + '</th>' +
+            '<th class="text-center">' + i18n('Boxes.EventChests.Chance') + '</th>' +
+            '<th class="text-center">' + i18n('Boxes.EventChests.CostPerPrize') + '</th>' +
+            '</tr>' +
+
             '</thead>');
+        
+        let BestMainPrizeCost = 999999,
+            BestDailyPrizeCost = 999999;
 
         for (let i in EventQuest.Chests) {
             if (!EventQuest.Chests.hasOwnProperty(i)) continue;
 
+            BestMainPrizeCost = Math.min(BestMainPrizeCost, EventQuest.Chests[i]['costpermainprizestep']);
+            BestDailyPrizeCost = Math.min(BestDailyPrizeCost, EventQuest.Chests[i]['costperdailyprize']);
+        }
+        
+        for (let i in EventQuest.Chests) {
+            if (!EventQuest.Chests.hasOwnProperty(i)) continue;
+
             h.push('<tr>');
-            h.push('<td>' + EventQuest.Chests[i]['cost'] + '</td>');
-            h.push('<td>' + EventQuest.Chests[i]['grandPrizeContribution'] + '</td>');
-            h.push('<td>' + EventQuest.Chests[i]['drop_chance'] + '%</td>');
-            h.push('<td>' + Math.round(EventQuest.Chests[i]['cost'] / EventQuest.Chests[i]['grandPrizeContribution'] * 10)/10 + '</td>');
-            h.push('<td>' + Math.round(EventQuest.Chests[i]['cost'] * 100 / EventQuest.Chests[i]['drop_chance']) + '</td>');
+            h.push('<td class="text-center">' + EventQuest.Chests[i]['cost'] + '</td>');
+
+            h.push('<td class="text-center">' + EventQuest.Chests[i]['grandPrizeContribution'] + '</td>');
+            h.push('<td class="text-center' + (EventQuest.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? 'success' : '') + '">' + Math.round(EventQuest.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
+
+            h.push('<td class="text-center">' + EventQuest.Chests[i]['drop_chance'] + '%</td>');
+            h.push('<td class="text-center' + (EventQuest.Chests[i]['costperdailyprize'] <= BestDailyPrizeCost ? 'success' : '') + '">' + Math.round(EventQuest.Chests[i]['costperdailyprize']) + '</td>');
+
             h.push('</tr>');
         }
 

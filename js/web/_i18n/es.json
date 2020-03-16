@@ -54,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Submit data", //Todo: Translate
 		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
 		"Boxes.EventList.Desc": "Task", //Todo: Translate
@@ -111,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Amount", //Todo: Translate
 		"Boxes.Negotiation.Canceled": "Negociacion cancelada",
 		"Boxes.Negotiation.Chance": "Oportunidad",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.", //Todo: Translate
 		"Boxes.Negotiation.GoodsCritical": "ATTENTION: Good stock is critical", //Todo: Translate
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low", //Todo: Translate

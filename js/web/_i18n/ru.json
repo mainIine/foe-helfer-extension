@@ -54,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Отправить данные",
 		"Boxes.CityMap.WholeArea": "Всего ячеек: ",
 		"Boxes.CityMap.YourCity": "Ваш город",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Стоимость",
-		"Boxes.EventChests.CostPerDailyPrize": "Стоимость/__dailyprize__",
-		"Boxes.EventChests.CostPerMainPrizeStep": "Стоимость/Большой приз",
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ шанс",
-		"Boxes.EventChests.MainPrizeSteps": "Кол-во заданий для большого приза",
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Помощник событий",
 		"Boxes.EventList.And": " и ",
 		"Boxes.EventList.Desc": "Задача",
@@ -92,6 +93,7 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> принял ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Сбросить панель",
 		"Boxes.Infobox.Title": "Панель информации",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Текущая прибыль: ",
 		"Boxes.Investment.InvestBar": "СО вложено: ",
 		"Boxes.Investment.PlayerFound": "Игрок найден",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Количество",
 		"Boxes.Negotiation.Canceled": "Переговоры были отменены",
 		"Boxes.Negotiation.Chance": "Шанс",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Вы можете самостоятелько перетащить значки выше, для изменения последовательности первой попытки.",
 		"Boxes.Negotiation.GoodsCritical": "ВНИМАНИЕ: Недостаточно товара на складе",
 		"Boxes.Negotiation.GoodsLow": "ВНИМАНИЕ: Мало товара на складе",
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
 		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
@@ -291,6 +296,7 @@
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
+		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
 		"Settings.PreScanLGList.Desc": "Сканировать список соседей, когда открывается их ВС и определять возможные вложения в ВС. <br> <u> Примечание: </u> Поскольку итоговые места передаются только при открытии ВС, результат может отличаться. Тем не менее, результаты сканирования будут сохранены.",
 		"Settings.PreScanLGList.Title": "Предварительное сканирование ВС",
 		"Settings.ResetBoxPositions.Button": "Удалить!",

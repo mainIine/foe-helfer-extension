@@ -54,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Odoslať údaje",
 		"Boxes.CityMap.WholeArea": "Celková plocha: ",
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " A ",
 		"Boxes.EventList.Desc": "Úloha",
@@ -111,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø množstvo",
 		"Boxes.Negotiation.Canceled": "Vyjednávanie bolo zrušené",
 		"Boxes.Negotiation.Chance": "Šanca",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "V zobrazení priemerného množstva môžete zmeniť poradie tovarov a určiť tak poradie od prvého pokusu.",
 		"Boxes.Negotiation.GoodsCritical": "POZOR: Zásoby tovaru sú veľmi nízke!",
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Zásoby tovaru sú nízke ",
