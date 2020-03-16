@@ -6,6 +6,7 @@
 		"API.LGGildMember": "I Grandi Edifici di __player__ sono stati inviati",
 		"API.LGInvest": "I tuoi investimenti nei Grandi Edifici sono stati trasferiti",
 		"API.UpdateSuccess": "Aggiornamento eseguito",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Missione ricorrente attiva:",
 		"Boxes.Calculator.ArkBonus": "Bonus Arc",
 		"Boxes.Calculator.AvailableFP": "PF disponibili",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Invia dati",
 		"Boxes.CityMap.WholeArea": "L'intera area:",
 		"Boxes.CityMap.YourCity": "La tua città",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": "e",
 		"Boxes.EventList.Desc": "Task",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Importo",
 		"Boxes.Negotiation.Canceled": "La negoziazione è stata annullata",
 		"Boxes.Negotiation.Chance": "Probabilità",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Puoi riorganizzare le icone usando il trascinamento della selezione per determinare l'ordine dal primo tentativo.",
 		"Boxes.Negotiation.GoodsCritical": "ATTENZIONE: hai bisogno di molti beni",
 		"Boxes.Negotiation.GoodsLow": "ATTENZIONE: i beni stanno per finire",
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Posizione",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "it",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Non sai come funziona qualcosa? <br> Dai un'occhiata!",
 		"Menu.Ask.Title": "Botta e Risposta",
 		"Menu.Bugs.Desc": "Qualcosa non è come dovrebbe o hai un'idea?",
@@ -286,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
 		"Settings.ChangeLanguage.Title": "Cambia lingua",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se vuoi tracciare i dati con la tua gilda, attiva questo campo. <br> Per un'estensione autosufficiente, disattivalo.",
 		"Settings.GlobalSend.Title": "Trasmissione a foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quanti elementi (lunghezza) dovrebbe contenere il menu? <br> Campo vuoto o \"0\" sceglierà in automatico.",

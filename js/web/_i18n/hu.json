@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__ játékos nevezetes épületei elküldésre kerültek",
 		"API.LGInvest": "F.É. befektetéseit elküldésre került",
 		"API.UpdateSuccess": "Frissítés megtörtént",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktív ismétlődő feladatok:",
 		"Boxes.Calculator.ArkBonus": "Bárka bónusz:",
 		"Boxes.Calculator.AvailableFP": "Elérhető FP",
@@ -53,11 +54,12 @@
 		"Boxes.CityMap.TitleSend": "Adatok elküldése",
 		"Boxes.CityMap.WholeArea": "Teljes terület: ",
 		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerDailyPrize": "Cost/__dailyprize__", //Todo: Translate
-		"Boxes.EventChests.CostPerMainPrizeStep": "Cost/Main prize step", //Todo: Translate
-		"Boxes.EventChests.DailyPrizeChance": "__dailyprize__ chance", //Todo: Translate
-		"Boxes.EventChests.MainPrizeSteps": "Main prize steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " és ",
 		"Boxes.EventList.Desc": "Feladat",
@@ -110,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Mennyiség",
 		"Boxes.Negotiation.Canceled": "Tárgyalás meg lett szakítva",
 		"Boxes.Negotiation.Chance": "Esély",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Az ikonokat átrendezheti drag and drop (bal klikk hosszan tartva) segítségével, hogy meghatározzák a sorrendet az első kísérletből.",
 		"Boxes.Negotiation.GoodsCritical": "FIGYELEM: kritikus az árú készlet",
 		"Boxes.Negotiation.GoodsLow": "FIGYELEM: alacsony az árú készlet",
@@ -240,6 +243,8 @@
 		"HiddenRewards.Table.position": "Pozíció",
 		"HiddenRewards.Table.type": "Típus",
 		"Local": "hu-HU",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Nem tudod, hogyan működik valami? <br> Vessen egy pillantást!",
 		"Menu.Ask.Title": "Kérdés / Felelek",
 		"Menu.Bugs.Desc": "Valami nem úgy működik ahogy kellene vagy van ötleted?",
@@ -286,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Tárgyalási segítő",
 		"Settings.ChangeLanguage.Desc": "Melyik nyelv legyen használva a meglévő helyett?",
 		"Settings.ChangeLanguage.Title": "Nyelvváltó",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ha az céhhel szeretné nyomon követni az adatokat, aktiválja ezt a pontot. <br> Az önellátó kiterjesztés érdekében egyszerűen tiltsa le.",
 		"Settings.GlobalSend.Title": "Átvitel a foe-rechner.de -re",
 		"Settings.MenuLength.Desc": "Hány elem legyen a menüben?<br> Üresen hagyás vagy \"0\" automatikus magasságot jelent.",
