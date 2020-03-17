@@ -54,12 +54,13 @@
 		"Boxes.CityMap.TitleSend": "Invia dati",
 		"Boxes.CityMap.WholeArea": "L'intera area:",
 		"Boxes.CityMap.YourCity": "La tua città",
-		"Boxes.EventChests.Cost": "Costi", 
-		"Boxes.EventChests.CostPerDailyPrize": "Costi/__premio giornaliero__", 
-		"Boxes.EventChests.CostPerMainPrizeStep": "Costi/Premio principale",
-		"Boxes.EventChests.DailyPrizeChance": "__premio giornaliero__ possibile", 
-		"Boxes.EventChests.MainPrizeSteps": "Principali fasi del premio", 
-		"Boxes.EventChests.Title": "Aiuto selezione del forziere dell'evento", 
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": "e",
 		"Boxes.EventList.Desc": "Task",
 		"Boxes.EventList.Number": "N.",
