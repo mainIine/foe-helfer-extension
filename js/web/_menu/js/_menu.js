@@ -792,7 +792,7 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		return btn;
+		// return btn;
 	},
 
 	/**
@@ -815,7 +815,7 @@ let _menu = {
 
 		// ist die API Funktion aktivert?
 		if(Settings.GetSetting('CustomerApi')){
-			return btn;
+			// return btn;
 		}
 	},
 };

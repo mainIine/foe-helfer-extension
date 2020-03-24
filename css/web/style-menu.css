@@ -33,13 +33,6 @@ input[type=number] {
 	-moz-appearance:textfield;
 }
 
-.window-head span.window-ask {
-	background-image:  url('https://foede.innogamescdn.com/assets/shared/gui/hud/hud_0.png');
-}
-
-.window-speaker {
-	background-image: url('../images/speaker.png');
-}
 
 .game-cursor,
 .game-cursor option,

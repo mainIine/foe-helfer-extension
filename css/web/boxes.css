@@ -13,10 +13,13 @@
  * **************************************************************************************
  */
 
-.window-head span.window-minimize,
 .OwnPartBoxBackground .outerArrow:before,
-.OwnPartBoxBackground .outerArrow span.arrow {
-	background-image: url('https://foede.innogamescdn.com/assets/shared/gui/itembar/itembar_0.png');
+.OwnPartBoxBackground .outerArrow span.arrow,
+.window-minimize,
+.window-ask,
+.window-speaker,
+.window-close{
+	background-image:  url('../images/buttons.png');
 }
 
 /* ---------------------------------------------------------------------------------------- */
@@ -81,7 +84,7 @@
 
 .window-head span.window-ask {
 	display: inline-block;
-	background-position: -1858px -204px;
+	background-position: -26px -1px;
 	margin-right: 3px;
 	width: 26px;
 	height: 24px;
@@ -89,62 +92,60 @@
 }
 
 .window-head span.window-ask:hover {
-	background-position: -1830px -220px;
+	background-position: -26px -25px;
 }
 
-.window-head span.window-minimize {
-	background-position:-144px -35px;
+.window-head span.window-speaker {
+	height: 24px;
+	display: inline-block;
+	position: relative;
+	background-position: -101px 0;
+	width: 44px;
 	margin-right: 3px;
-	width: 26px;
+}
+
+.window-head span.window-speaker:hover {
+    background-position: -101px -24px;
+}
+
+.window-head span.window-speaker.deactivated {
+	background-position: -146px -24px;
+}
+
+.window-head span.window-speaker.deactivated:hover {
+	background-position: -146px -1px;
+}
+
+
+.window-head span.window-minimize {
+	background-position: -51px -1px;
+	margin-right: 3px;
+	width: 25px;
 	height: 24px;
 	display: inline-block;
 	position: relative;
 }
-
-.window-head span.window-speaker {
-	height: 22px;
-	display: inline-block;
-	position: relative;
-	background-position: 0 0;
-	width: 42px;
-	margin-right: 3px;
-	top: 1px;
-}
-
-.window-head span.window-speaker:hover {
-    background-position: -42px 0;
-}
-
-.window-head span.window-speaker.deactivated {
-	background-position: 42px 22px;
-}
-
-.window-head span.window-speaker.deactivated:hover {
-	background-position: 0 -22px;
-}
-
 .open .window-head span.window-minimize:hover {
-	background-position: -144px -59px;
+	background-position: -51px -25px;
 }
-
 .closed .window-head span.window-minimize {
-	background-position: -168px -35px;
+	background-position: -76px -1px;
+}
+.closed .window-head span.window-minimize:hover {
+	background-position: -76px -25px;
 }
 
-.closed .window-head span.window-minimize:hover {
-	background-position: -168px -59px;
-}
 
 .window-head span.window-close {
+	background-position: 0 -1px;
 	display: inline-block;
-	background: transparent url('../images/close.png') -1px -1px no-repeat;
-	width: 26px;
+	width: 25px;
 	height: 24px;
 	position: relative;
 }
 
 .window-head span.window-close:hover {
-	background-position: -1px -27px;
+	background-position: 0 -25px;
 }
 
 .window-body {
