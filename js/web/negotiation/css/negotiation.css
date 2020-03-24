@@ -15,8 +15,8 @@
 
 #negotiationBox {
 	top: 15%;
-	left: 50%;
-	width: 790px;
+	left: calc(50% + 10px);
+	width: 800px;
 	transform: translateX(-50%);
 }
 #negotiationBox #negotiationBoxBody #good-sort {
