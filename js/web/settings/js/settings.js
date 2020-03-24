@@ -84,6 +84,13 @@ let Settings = {
 			callback: 'LanguageDropdown',
 			title : i18n('Settings.ChangeLanguage.Title'),
 			desc : i18n('Settings.ChangeLanguage.Desc')
+		},
+
+		CustomerApi : {
+			status: false,
+			callback: 'CustomerApiCheck',
+			title : i18n('Settings.CustomerApi.Title'),
+			desc : i18n('Settings.CustomerApi.Desc')
 		}
 	},
 
@@ -143,26 +150,22 @@ let Settings = {
 					)
 				);
 
+			let s = localStorage.getItem(key);
+
+			if(s !== null){
+				status = JSON.parse(s);
+			}
 
 			if(d['callback'] !== undefined) {
 				cs.html( Settings[d['callback']]() );
 
-			} else {
-				let s = localStorage.getItem(key);
+			} else if(status === undefined){
+				let b = $('<span />').addClass('button-wrapper').append(
+					$('<button class="btn-default" id="' + button + '" onclick="Settings.' + button + '()">' + d['buttonText'] + '</button>')
+				);
 
-				if(s !== null){
-					status = JSON.parse(s);
-				}
-
-				if(status === undefined){
-					let b = $('<span />').addClass('button-wrapper').append(
-						$('<button class="btn-default" id="' + button + '" onclick="Settings.' + button + '()">' + d['buttonText'] + '</button>')
-					);
-
-					cs.html(b);
-				}
+				cs.html(b);
 			}
-
 
 			ct.text(d['title']);
 			cd.html(d['desc']);
@@ -283,6 +286,13 @@ let Settings = {
 		});
 
 		return dp.join('');
+	},
+
+
+	CustomerApiCheck: ()=> {
+		$('body').on('change', '[data-id="CustomerApi"]', function(){
+			location.reload();
+		});
 	},
 
 

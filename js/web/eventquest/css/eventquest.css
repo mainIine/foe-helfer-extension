@@ -1,7 +1,7 @@
 /*
  * **************************************************************************************
  *
- * Dateiname:                 eventmap.css
+ * Dateiname:                 eventquest.css
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
@@ -63,5 +63,60 @@
 }
 
 #event #eventBody td {
+	position: relative;
+}
+
+#eventchests {
+	top: 30%;
+	right: 15%;
+	width: 400px;
+}
+
+#eventchests #eventBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+	/* min-height: 100px; */
+	max-height: 500px;
+}
+
+#eventchests #eventBody .event-head {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 5px;
+}
+
+#eventchests #eventBody .event-head > * {
+	width: 100%;
+}
+
+#eventchests #eventBody .event-head strong {
+	color: #FFB539;
+}
+
+#eventchests #eventBody tr.active-quest td {
+	border-top: 2px solid #FFB539;
+	border-bottom: 2px solid #FFB539;
+}
+
+#eventchests #eventBody tr.active-quest td:first-child {
+	border-left: 2px solid #FFB539;
+}
+
+#eventchests #eventBody tr.active-quest td:last-child {
+	border-right: 2px solid #FFB539;
+}
+
+#eventchests #eventBody tr td.nr {
+	color: #FFB539;
+	font-weight: 700;
+}
+
+#eventchests #eventBody tr td.upcoming {
+	color: #FFB539;
+	font-weight: 600;
+}
+
+#eventchests #eventBody td {
 	position: relative;
 }

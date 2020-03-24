@@ -6,6 +6,7 @@
 		"API.LGGildMember": "__player__ játékos nevezetes épületei elküldésre kerültek",
 		"API.LGInvest": "F.É. befektetéseit elküldésre került",
 		"API.UpdateSuccess": "Frissítés megtörtént",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktív ismétlődő feladatok:",
 		"Boxes.Calculator.ArkBonus": "Bárka bónusz:",
 		"Boxes.Calculator.AvailableFP": "Elérhető FP",
@@ -25,6 +26,7 @@
 		"Boxes.Calculator.Step": "Szint",
 		"Boxes.Calculator.Title": "Nevezetes számláló",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Hely nem biztonságos. __fpcount__ További FP szükséges a biztosításához<br>Teljes befektetés a hely biztosításához: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP Nem fér be<br>Maximum befektetés: __totalfp__FP",
 		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
@@ -34,6 +36,7 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Szint lépésig",
 		"Boxes.Campagne.AlreadyDone": " Már meghódított!",
 		"Boxes.Campagne.DescInStock": "Elérhető",
@@ -42,12 +45,22 @@
 		"Boxes.Campagne.Resource": "Nyersanyag",
 		"Boxes.Campagne.Reward": "Teljes jutalom ",
 		"Boxes.Campagne.Title": "Hódítási költségek a ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Hogy meg tudjuk tervezni a városod, el kell küldeni az adataid a: foe-rechner.de oldalra",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Elküldés</button>",
 		"Boxes.CityMap.FreeArea": "Szabad terület: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Az adatok el lettek küldve sikeresen... Megtekintés ",
 		"Boxes.CityMap.TitleSend": "Adatok elküldése",
 		"Boxes.CityMap.WholeArea": "Teljes terület: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " és ",
 		"Boxes.EventList.Desc": "Feladat",
 		"Boxes.EventList.Number": "Sorrend",
@@ -80,8 +93,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> Elfogadta az ajánlatod.<br>Kaptál ezért: __needValue__ __need__ ennyit: __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Újratöltés",
 		"Boxes.Infobox.Title": "Infó doboz",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Épület",
@@ -97,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Mennyiség",
 		"Boxes.Negotiation.Canceled": "Tárgyalás meg lett szakítva",
 		"Boxes.Negotiation.Chance": "Esély",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Az ikonokat átrendezheti drag and drop (bal klikk hosszan tartva) segítségével, hogy meghatározzák a sorrendet az első kísérletből.",
 		"Boxes.Negotiation.GoodsCritical": "FIGYELEM: kritikus az árú készlet",
 		"Boxes.Negotiation.GoodsLow": "FIGYELEM: alacsony az árú készlet",
@@ -126,6 +142,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Bárka",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "T.R.",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Értékek másolása",
 		"Boxes.OwnpartCalculator.Deposit": "Befizetés",
 		"Boxes.OwnpartCalculator.Done": "Kész",
@@ -144,6 +161,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Hátralevő",
 		"Boxes.OwnpartCalculator.PatronPart": "Befektetői pontszám",
 		"Boxes.OwnpartCalculator.Place": "Hely",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Szint",
 		"Boxes.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Boxes.OwnpartCalculator.YourName": "Saját név",
@@ -158,6 +177,7 @@
 		"Boxes.Productions.Headings.goods": "Vagyon épületek",
 		"Boxes.Productions.Headings.greatbuilding": "Nevezetes épületek",
 		"Boxes.Productions.Headings.main_building": "Városháza",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Szám",
 		"Boxes.Productions.Headings.production": "Termelő épületek",
 		"Boxes.Productions.Headings.random_production": "Véletlenszerű Termelés",
@@ -223,6 +243,8 @@
 		"HiddenRewards.Table.position": "Pozíció",
 		"HiddenRewards.Table.type": "Típus",
 		"Local": "hu-HU",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Nem tudod, hogyan működik valami? <br> Vessen egy pillantást!",
 		"Menu.Ask.Title": "Kérdés / Felelek",
 		"Menu.Bugs.Desc": "Valami nem úgy működik ahogy kellene vagy van ötleted?",
@@ -269,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Tárgyalási segítő",
 		"Settings.ChangeLanguage.Desc": "Melyik nyelv legyen használva a meglévő helyett?",
 		"Settings.ChangeLanguage.Title": "Nyelvváltó",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ha az céhhel szeretné nyomon követni az adatokat, aktiválja ezt a pontot. <br> Az önellátó kiterjesztés érdekében egyszerűen tiltsa le.",
 		"Settings.GlobalSend.Title": "Átvitel a foe-rechner.de -re",
 		"Settings.MenuLength.Desc": "Hány elem legyen a menüben?<br> Üresen hagyás vagy \"0\" automatikus magasságot jelent.",

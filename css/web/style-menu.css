@@ -295,6 +295,10 @@ p {
 	color: #2196f3;
 }
 
+.text-bold {
+	font-weight: 700;
+}
+
 /***************************************************************/
 
 .button--lg {
@@ -527,6 +531,10 @@ p {
 
 #negotiation-Btn span {
 	background-image: url('../images/negotation.png');
+}
+
+#api-Btn span {
+	background-image: url('../images/api.png');
 }
 
 /* Tabs */
