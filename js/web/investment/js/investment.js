@@ -13,17 +13,21 @@
  * **************************************************************************************
  */
 
+// LG Investitionen
 FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
-    Investment.CalcBar(data.responseData);
+	Investment.Data = data.responseData;
+    Investment.CalcBar();
     Investment.Box();
+    Investment.SendToServer();
 });
 
 
 let Investment = {
+	Data: null,
     Einsatz: 0,
     Ertrag: 0,
 
-    Box: () => {
+    Box: ()=> {
         if ($('#Investment').length === 0) {
             HTML.Box({
                 'id': 'Investment',
@@ -45,9 +49,13 @@ let Investment = {
 	 *
 	 * @param data
 	 */
-    CalcBar: (data) => {
-        if (!data) return;
-        if (data.length <= 0) return;
+    CalcBar: ()=> {
+
+		if (Investment.Data !== null && Investment.Data.length <= 0){
+			return;
+		}
+
+		let data = Investment.Data;
 
         Investment.Einsatz = 0;
         Investment.Ertrag = 0;
@@ -58,12 +66,16 @@ let Investment = {
             const contribution = data[x];
 
             Investment.Einsatz += contribution['forge_points'];
+
             if (undefined !== contribution['reward']) {
                 let CurrentErtrag = Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
+                
                 if (contribution['forge_points'] >= contribution['max_progress'] - contribution['current_progress']) {
                     Investment.Ertrag += CurrentErtrag;
                 }
-                else { //Platz kann nicht sicher sein => Nur maximal Einzahlung ansetzen
+
+                //Platz kann nicht sicher sein => Nur maximal Einzahlung ansetzen
+                else {
                     Investment.Ertrag += Math.min(contribution['forge_points'], CurrentErtrag);
                 }
             }
@@ -76,7 +88,7 @@ let Investment = {
 	 *
 	 * @param _InvestedFP Die neu zu setzenden FP
 	 */
-    InvestmentBar: () => {
+    InvestmentBar: ()=> {
         let Gewinn = Investment.Ertrag - Investment.Einsatz;
 
         let div = $('#InvestmentBody');
@@ -113,4 +125,37 @@ let Investment = {
 			duration: 750
 		});
     },
+
+
+	/**
+	 * Wenn gewollt, zum Server schicken
+	 */
+	SendToServer: ()=> {
+
+		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendInvestigations')){
+			return;
+		}
+
+		if (MainParser.checkNextUpdate('LGInvestments') !== true){
+			return;
+		}
+
+		if (Investment.Data === null || Investment.Data.length <= 0){
+			return;
+		}
+
+		MainParser.send2Server(Investment.Data, 'LGInvestments', function(r){
+
+
+			if (r['status'] === 'OK'){
+				// localStorage.setItem('LGInvestments', MainParser.getAddedDateTime(0, 5));
+			}
+
+			$.toast({
+				heading: i18n('API.UpdateSuccess'),
+				text: i18n('API.LGInvest'),
+				icon: 'success'
+			});
+		});
+	}
 };
