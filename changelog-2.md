@@ -1,6 +1,38 @@
-##Changelog - Extension
+## Changelog - Extension
 
-#####2.4.2.2
+##### 2.4.3
+
+**Update**
+
+- Negotiator:
+    - Now shows which wrong item was actually clicked on
+    - Now suggests the next one after the last move
+
+- Event tasks:
+    - Helper integrated for "cherry event", suggests either the best way for the daily price or prices
+
+- Languages:
+    - Italian, French and Russian have been adapted by community members
+    - Slovenian added
+
+**Bugfix**
+
+- Extension:
+    - [#654](https://github.com/dsiekiera/foe-helfer-extension/issues/654) missing translations added missing variables for translations added
+    - wrong graphic for "question mark" fixed
+
+- Event tasks:
+    - [#648](https://github.com/dsiekiera/foe-helfer-extension/issues/648) was still displayed incorrectly after the event
+
+- Research costs:
+    - [#638](https://github.com/dsiekiera/foe-helfer-extension/issues/638) Research costs were incorrectly calculated
+
+- Negotiator:
+    - [#617](https://github.com/dsiekiera/foe-helfer-extension/issues/617) [#614](https://github.com/dsiekiera/foe-helfer-extension/issues/614 ) Wrong good identification fixed
+
+---
+
+##### 2.4.2.2
 
 **Update**
 - Extension:
@@ -19,7 +51,7 @@
     
 ---
 
-#####2.4.2.1
+##### 2.4.2.1
 
 **Update**
 - Mopel activities:
@@ -32,7 +64,7 @@
 
 ---
 
-#####2.4.2
+##### 2.4.2
 **New**
 - Investments:
     - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415 ) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) General overview FP added (City Hall> News> Legendary Buildings)
@@ -89,7 +121,7 @@
 
 ---
 
-#####2.4.1.1
+##### 2.4.1.1
 
 **Update**
 - Info box:
@@ -118,7 +150,7 @@
     - [#416](https://github.com/dsiekiera/foe-helfer-extension/issues/416) line at the bottom for loop quests was gone
 
 
-#####2.4.1
+##### 2.4.1
 
 **New**
 - Event list:
@@ -196,7 +228,7 @@
 
 ---
 
-#####2.4.0.1
+##### 2.4.0.1
 
 **New**
 - Extension:
@@ -233,7 +265,7 @@
 
 ---
 
-#####2.4.0
+##### 2.4.0
 
 **BugFix**
 - Extension:
@@ -241,7 +273,7 @@
 
 ---
 
-#####2.3.15.1
+##### 2.3.15.1
 
 **Update**
 - Harvest-helper:
@@ -259,44 +291,44 @@
 
 **New**
 - Guild battles:
-    - [#206] (https://github.com/dsiekiera/foe-helfer-extension/issues/206) - Save the snapshot
+    - [#206](https://github.com/dsiekiera/foe-helfer-extension/issues/206) - Save the snapshot
 
 **Update**
 
 - Productions:
-    - [#140] (https://github.com/dsiekiera/foe-helfer-extension/issues/140) - added population and satisfaction
+    - [#140](https://github.com/dsiekiera/foe-helfer-extension/issues/140) - added population and satisfaction
      
 - Negotiations:
-    - [#215] (https://github.com/dsiekiera/foe-helfer-extension/issues/215) - Default priority of Mars goods reduced
+    - [#215](https://github.com/dsiekiera/foe-helfer-extension/issues/215) - Default priority of Mars goods reduced
      
 - Own contribution calculator:
-    - [#263] (https://github.com/dsiekiera/foe-helfer-extension/issues/263) - activated percent button is highlighted
+    - [#263](https://github.com/dsiekiera/foe-helfer-extension/issues/263) - activated percent button is highlighted
 
 - Outpost:
-    - [#136] (https://github.com/dsiekiera/foe-helfer-extension/issues/136) - Extensions can be planned and total costs are listed
-    - [#240] (https://github.com/dsiekiera/foe-helfer-extension/issues/240) - The cost of the next expansion is displayed, current coin production per 4 hours is displayed
+    - [#136](https://github.com/dsiekiera/foe-helfer-extension/issues/136) - Extensions can be planned and total costs are listed
+    - [#240](https://github.com/dsiekiera/foe-helfer-extension/issues/240) - The cost of the next expansion is displayed, current coin production per 4 hours is displayed
 
 - Menu:
-    - [#196] (https://github.com/dsiekiera/foe-helfer-extension/issues/196) - The menu bar is now dynamically adjusted in height depending on the resolution
+    - [#196](https://github.com/dsiekiera/foe-helfer-extension/issues/196) - The menu bar is now dynamically adjusted in height depending on the resolution
 
 **BugFix**
 
 - Productions:
-    - [#173] (https://github.com/dsiekiera/foe-helfer-extension/issues/173) - Boost due to angry / enthusiastic population added, supply boosts to non-production buildings corrected
-    - [#269] (https://github.com/dsiekiera/foe-helfer-extension/issues/269) - Correct map is loaded by clicking on the eye (building location)
-    - [#246] (https://github.com/dsiekiera/foe-helfer-extension/issues/246) - Fixed an error in the goods overview of the good "packaging".
+    - [#173](https://github.com/dsiekiera/foe-helfer-extension/issues/173) - Boost due to angry / enthusiastic population added, supply boosts to non-production buildings corrected
+    - [#269](https://github.com/dsiekiera/foe-helfer-extension/issues/269) - Correct map is loaded by clicking on the eye (building location)
+    - [#246](https://github.com/dsiekiera/foe-helfer-extension/issues/246) - Fixed an error in the goods overview of the good "packaging".
 
 - Negotiations:
-    - [#268] (https://github.com/dsiekiera/foe-helfer-extension/issues/268) - Fixed an error in the detection of the 4th round in the GEX when the tavern badge was deactivated
-    - [#215] (https://github.com/dsiekiera/foe-helfer-extension/issues/215) - Fixed an error in determining the current stock level when the outpost module was deactivated
+    - [#268](https://github.com/dsiekiera/foe-helfer-extension/issues/268) - Fixed an error in the detection of the 4th round in the GEX when the tavern badge was deactivated
+    - [#215](https://github.com/dsiekiera/foe-helfer-extension/issues/215) - Fixed an error in determining the current stock level when the outpost module was deactivated
 
 - Own contribution calculator:
-    - [#248] (https://github.com/dsiekiera/foe-helfer-extension/issues/248) - Wrong name with multiple accounts per browser
+    - [#248](https://github.com/dsiekiera/foe-helfer-extension/issues/248) - Wrong name with multiple accounts per browser
 
 - Info box:
-    - [#207] (https://github.com/dsiekiera/foe-helfer-extension/issues/207) - Own name no longer appears
-    - [#262] (https://github.com/dsiekiera/foe-helfer-extension/issues/262) - better function for updating the news headlines
-    - [#281] (https://github.com/dsiekiera/foe-helfer-extension/issues/281) - hung up when changing into guild battles
+    - [#207](https://github.com/dsiekiera/foe-helfer-extension/issues/207) - Own name no longer appears
+    - [#262](https://github.com/dsiekiera/foe-helfer-extension/issues/262) - better function for updating the news headlines
+    - [#281](https://github.com/dsiekiera/foe-helfer-extension/issues/281) - hung up when changing into guild battles
 
 ---
 
@@ -307,18 +339,18 @@
     - Spanish added
 
 - Map of the continents:
-    - If you visit a province, all freight costs for this province are displayed on request - thanks to [Th3C0D3R] (https://github.com/Th3C0D3R)
+    - If you visit a province, all freight costs for this province are displayed on request - thanks to [Th3C0D3R](https://github.com/Th3C0D3R)
 
 
 **Update**
 - EA calculator:
-    - the FP up to level of the LG are now displayed [#205] (https://github.com/dsiekiera/foe-helfer-extension/issues/205)
+    - the FP up to level of the LG are now displayed [#205](https://github.com/dsiekiera/foe-helfer-extension/issues/205)
     - It is now possible to use the EA calculator for levels that have already been completed, scroll backwards in the LG
 
 - Product overview:
-    - The total of the goods is grouped according to ages [#228] (https://github.com/dsiekiera/foe-helfer-extension/issues/228)
-    - With the eye icon your own building can be shown on the map [#154] (https://github.com/dsiekiera/foe-helfer-extension/issues/154)
-    - "Daily FP" and all bonuses from ambassadors are inserted and displayed in the town hall [#175] (https://github.com/dsiekiera/foe-helfer-extension/issues/175)
+    - The total of the goods is grouped according to ages [#228](https://github.com/dsiekiera/foe-helfer-extension/issues/228)
+    - With the eye icon your own building can be shown on the map [#154](https://github.com/dsiekiera/foe-helfer-extension/issues/154)
+    - "Daily FP" and all bonuses from ambassadors are inserted and displayed in the town hall [#175](https://github.com/dsiekiera/foe-helfer-extension/issues/175)
 
 - Negotiators:
     - Optimized freight costs
