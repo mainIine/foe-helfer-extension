@@ -583,9 +583,20 @@ const FoEproxy = (function () {
 		}
 	});
 
+	// Updatestufen der Eventgebäude
+	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
+		MainParser.BuildingSelectionKits = JSON.parse(xhr.responseText);
+	});
+
+	// Gebäude-Sets
+	FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
+		MainParser.BuildingSets = JSON.parse(xhr.responseText);
+	});
+
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
-		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml")
+		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml");
+
 		if(idx !== -1) {
 			MainParser.InnoCDN = requestData.url.substring(0, idx+1);
 			MainParser.sendExtMessage({type: 'setInnoCDN', url: MainParser.InnoCDN});
@@ -708,6 +719,7 @@ const FoEproxy = (function () {
 		StrategyPoints.GetFromInventory(data.responseData);
 		MainParser.Inventory = data.responseData;
 	});
+
 
 	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
 		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
@@ -871,10 +883,19 @@ const FoEproxy = (function () {
 	});
 
 
+	// --------------------------------------------------------------------------------------------------
+	// Gilden-GüterLog wird aufgerufen
+
+	FoEproxy.addHandler('ClanService', 'getTreasuryLogs', (data, postData) => {
+		if (Settings.GetSetting('GlobalSend')) {
+			MainParser.SendGoodsLog(data['responseData']['logs']);
+		}
+	});
+
 
 	// --------------------------------------------------------------------------------------------------
-
 	// Ernten anderer Spieler
+
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		if (!Settings.GetSetting('ShowNeighborsGoods')){
 			return;
@@ -960,17 +981,6 @@ const FoEproxy = (function () {
 	});
 
 
-	// LG Investitionen
-	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
-		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendInvestigations')) {
-			return;
-		}
-		if (MainParser.checkNextUpdate('GreatBuildings') !== true) {
-			return;
-		}
-		MainParser.GreatBuildings(data.responseData);
-	});
-
 	//--------------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------------
 
@@ -1050,7 +1060,8 @@ const FoEproxy = (function () {
 
 
 /**
- * @type {{BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, GreatBuildings: MainParser.GreatBuildings, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, SetArcBonus: MainParser.SetArcBonus, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ *
+ * @type {{BuildingSelectionKits: null, BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, SetArkBonus: MainParser.SetArkBonus, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), SendGoodsLog: MainParser.SendGoodsLog, Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -1061,11 +1072,22 @@ let MainParser = {
 	EmissaryService: null,
 	PlayerPortraits: null,
 	Conversations: [],
+
+	// alle Gebäude des Spielers
 	CityMapData: null,
+
+	// freugeschaltete Erweiterungen
 	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
 	Inventory: null,
+
+	// Updatestufen der Eventgebäude
+	BuildingSelectionKits: null,
+
+	// Gebäude Sets
+	BuildingSets: null,
+
 	InnoCDN: 'https://foede.innogamescdn.com/',
 
 
@@ -1558,27 +1580,6 @@ let MainParser = {
 
 
 	/**
-	 * LG Investitionen
-	 *
-	 * @param d
-	 */
-	GreatBuildings: (d)=>{
-
-		MainParser.sendExtMessage({
-			type: 'send2Api',
-			url: ApiURL + 'LGInvest/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-			data: JSON.stringify(d)
-		});
-
-		$.toast({
-			heading: i18n('API.UpdateSuccess'),
-			text: i18n('API.LGInvest'),
-			icon: 'success'
-		});
-	},
-
-
-	/**
 	 * Alle Gebäude sichern,
 	 * Eigene LGs updaten
 	 *
@@ -1669,6 +1670,23 @@ let MainParser = {
 
 
 	/**
+	 * Güter-Log an foe-rechner schicken
+	 *
+	 * @param d
+	 * @constructor
+	 */
+	SendGoodsLog: (d)=>{
+		MainParser.send2Server(d, 'GuildCashBox', function(r){
+			$.toast({
+				heading: 'Erfolg',
+				text: 'Die Güter wurden übertragen',
+				icon: 'success'
+			});
+		});
+	},
+
+
+	/**
 	 * Motivieren Polieren tracken, wenn gewünscht
 	 *
 	 * @param d
@@ -1700,8 +1718,14 @@ let MainParser = {
 						player_id: ev[i]['other_player']['player_id']
 					};
 
+					let entity =  '';
+
+					if(ev[i]['entity_id'] !== undefined){
+						entity = MainParser.Buildings[ev[i]['entity_id']]['name'];
+					}
+
 					if(ev[i]['type'] === 'social_interaction'){
-						pd['entity_id'] = ev[i]['entity_id'] || '';
+						pd['entity_id'] = entity;
 						pd['action'] = ev[i]['interaction_type'] || '';
 
 					} else if (ev[i]['type'] === 'friend_tavern_sat_down'){
@@ -1709,7 +1733,7 @@ let MainParser = {
 
 					}  else if (ev[i]['type'] === 'battle'){
 						pd['action'] = 'battle|' + ev[i]['status'];
-						pd['entity_id'] = ev[i]['entity_id'];
+						pd['entity_id'] = entity;
 					}
 
 					pm.push(pd);
@@ -1727,7 +1751,7 @@ let MainParser = {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
 					$.toast({
-						heading: 'Spieler gefunden',
+						heading: i18n('Boxes.Investment.PlayerFound'),
 						text: r['msg'],
 						icon: 'success',
 						hideAfter: 1600
@@ -1737,7 +1761,7 @@ let MainParser = {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
 					$.toast({
-						heading: 'Alles aktuell!',
+						heading: i18n('Boxes.Investment.AllUpToDate'),
 						text: r['msg'],
 						icon: 'info',
 						hideAfter: 6000

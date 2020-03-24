@@ -1,5 +1,24 @@
 ##Changelog - Extension
 
+#####2.4.2.2
+
+**Update**
+- Extension:
+    - Italienische Übersetzunge hinzugefügt
+    - Portugiesisch abgepasst
+
+- Investitionen:
+    - neuer API Endpunkt + neue Landigpage (History, Rang Warnung, usw.)
+
+**Bugfix**
+- Extension:
+    - [#602](https://github.com/dsiekiera/foe-helfer-extension/issues/602) fehlende Übersetzungen ergänzt
+
+- Menü:
+    - [#609](https://github.com/dsiekiera/foe-helfer-extension/issues/609) Speicherproblem beim verändern via Drag&Drop behoben
+
+---
+
 #####2.4.2.1
 
 **Update**

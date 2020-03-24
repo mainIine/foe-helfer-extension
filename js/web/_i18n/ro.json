@@ -6,6 +6,7 @@
 		"API.LGGildMember": "Datele despre clădirile legendare ale lui _player__'s au fost transmise",
 		"API.LGInvest": "Datele despre investițiile tale în CL au fost transmise",
 		"API.UpdateSuccess": "Actualizare efectuată",
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 		"Boxes.Calculator.ArkBonus": "Bonusul Domului",
 		"Boxes.Calculator.AvailableFP": "PF disponibile",
@@ -25,6 +26,7 @@
 		"Boxes.Calculator.Step": "Nivelul",
 		"Boxes.Calculator.Title": "Investiții în alte CL",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Locul nu este asigurat. Încă __fpcount__PF trebuie depuse pentru a asigura locul.<br>Total pentru asigurarea locului: __totalfp__PF.",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__PF mi pot fi donate.<br>Investiția maximă: __totalfp__PF",
 		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
@@ -34,6 +36,7 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "PF rămase până la închidere",
 		"Boxes.Campagne.AlreadyDone": " cucerită deja!",
 		"Boxes.Campagne.DescInStock": "Disponibil",
@@ -42,12 +45,22 @@
 		"Boxes.Campagne.Resource": "Resurse",
 		"Boxes.Campagne.Reward": "Total recompense",
 		"Boxes.Campagne.Title": "Cucerirea Hărții continentelor ",
+		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
 		"Boxes.CityMap.FreeArea": "Câmpuri neocupate: ",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",
 		"Boxes.CityMap.TitleSend": "Transmiterea datelor",
 		"Boxes.CityMap.WholeArea": "Toate câmpurile: ",
+		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
+		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
+		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
+		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " și ",
 		"Boxes.EventList.Desc": "Misiune",
 		"Boxes.EventList.Number": "Nr.",
@@ -80,8 +93,10 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> a acceptat oferta ta.<br>Ai primit __needValue__ __need__ pentru __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Resetare",
 		"Boxes.Infobox.Title": "InfoBox",
+		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Profitul actual: ",
 		"Boxes.Investment.InvestBar": "PF investite: ",
+		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investiții",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Clădire",
@@ -97,6 +112,7 @@
 		"Boxes.Negotiation.Average": "Ø Cantitate",
 		"Boxes.Negotiation.Canceled": "Negocierea a fost anulată",
 		"Boxes.Negotiation.Chance": "Șansă",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Poți muta pictogramelor bunurilor de mai sus, folosind drag & drop, pentru a stabili ordinea primei încercări.",
 		"Boxes.Negotiation.GoodsCritical": "ATENȚIE: Stocul de bunuri este la nivel critic!",
 		"Boxes.Negotiation.GoodsLow": "ATENȚIE: Stocul de bunuri este la nivel scăzut!",
@@ -126,6 +142,7 @@
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Planuri",
+		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Copiază valorile",
 		"Boxes.OwnpartCalculator.Deposit": "Depozit",
 		"Boxes.OwnpartCalculator.Done": "Depus",
@@ -144,6 +161,8 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Rest de depus",
 		"Boxes.OwnpartCalculator.PatronPart": "Contribuția externă",
 		"Boxes.OwnpartCalculator.Place": "Locul",
+		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
+		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Contribuție la CL proprii",
 		"Boxes.OwnpartCalculator.YourName": "Numele tău",
@@ -158,6 +177,7 @@
 		"Boxes.Productions.Headings.goods": "Clădiri de bunuri",
 		"Boxes.Productions.Headings.greatbuilding": "Clădiri legendare",
 		"Boxes.Productions.Headings.main_building": "Primărie",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Număr",
 		"Boxes.Productions.Headings.production": "Clădiri de producție",
 		"Boxes.Productions.Headings.random_production": "Producție aleatorie",
@@ -223,6 +243,8 @@
 		"HiddenRewards.Table.position": "Poziția",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "ro-RO",
+		"Menu.Api.Desc": "???", //Todo: Translate
+		"Menu.Api.Title": "???", //Todo: Translate
 		"Menu.Ask.Desc": "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!",
 		"Menu.Ask.Title": "Întrebare / Răspuns",
 		"Menu.Bugs.Desc": "Ceva nu este cum trebuie sau ai o idee?",
@@ -269,6 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Ajutor pentru negocieri",
 		"Settings.ChangeLanguage.Desc": "Ce limbă dorești să fie folosită?",
 		"Settings.ChangeLanguage.Title": "Schimbă limba",
+		"Settings.CustomerApi.Desc": "???", //Todo: Translate
+		"Settings.CustomerApi.Title": "???", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Dacă dorești să urmărești datele cu ghilda dvs., activează această opțiune. <br> Pentru utilizarea personală, dezactivează opțiunea.",
 		"Settings.GlobalSend.Title": "Transmitere către foe-rechner.de",
 		"Settings.MenuLength.Desc": "Câte elemente dorești să fie afișate în fereastra aplicației?<br> Nicio valoare sau \"0\" înseamnă lungime prestabilită.",
