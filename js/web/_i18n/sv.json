@@ -291,8 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
 		"Settings.ChangeLanguage.Title": "Byt språk",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",

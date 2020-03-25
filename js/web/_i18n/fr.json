@@ -291,8 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",
 		"Settings.ChangeLanguage.Title": "Changer de langue",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",

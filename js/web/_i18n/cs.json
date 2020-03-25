@@ -291,8 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník s vyjednáváním",
 		"Settings.ChangeLanguage.Desc": "Který jazyk, kromě toho poznaného, má být zvolen?",
 		"Settings.ChangeLanguage.Title": "Změnit jazyk",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte. <br>.",
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate

@@ -291,8 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
