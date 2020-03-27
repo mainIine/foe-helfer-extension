@@ -77,7 +77,7 @@
 		"Boxes.HiddenRewards.Appears": "Appears", //Todo: Translate
 		"Boxes.HiddenRewards.Disappears": "Disappears", //Todo: Translate
 		"Boxes.HiddenRewards.NoEvents": "No events presents", //Todo: Translate
-		"Boxes.HiddenRewards.Title": "Hidden Rewards", //Todo: Translate
+		"Boxes.HiddenRewards.Title": "Skryté příhody", 
 		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Auction", //Todo: Translate
 		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
@@ -233,15 +233,15 @@
 		"Eras.8": "Průmyslový věk",
 		"Eras.9": "Doba pokroku",
 		"Global.BoxTitle": "FoE Helfer",
-		"HiddenRewards.Positions.cityRoadBig": "big Road", //Todo: Translate
-		"HiddenRewards.Positions.cityRoadSmall": "small Road", //Todo: Translate
+		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice", 
+		"HiddenRewards.Positions.cityRoadSmall": "Cesta", 
 		"HiddenRewards.Positions.guildExpedition": "Guild expedition", //Todo: Translate
-		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
-		"HiddenRewards.Positions.shore": "Shore", //Todo: Translate
-		"HiddenRewards.Positions.water": "in the water", //Todo: Translate
-		"HiddenRewards.Table.expires": "Expires at", //Todo: Translate
-		"HiddenRewards.Table.position": "Position", //Todo: Translate
-		"HiddenRewards.Table.type": "Type", //Todo: Translate
+		"HiddenRewards.Positions.nature": "V přírodě", 
+		"HiddenRewards.Positions.shore": "Pobřeží", 
+		"HiddenRewards.Positions.water": "Na hladině", 
+		"HiddenRewards.Table.expires": "Čas obnovení", 
+		"HiddenRewards.Table.position": "Umístění", 
+		"HiddenRewards.Table.type": "Druh",
 		"Local": "cs-CZ",
 		"Menu.Api.Desc": "???", //Todo: Translate
 		"Menu.Api.Title": "???", //Todo: Translate
