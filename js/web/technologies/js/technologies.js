@@ -52,6 +52,30 @@ let Technologies = {
     },
 
 
+    EraNames: {
+        0: NoAge,
+        1: StoneAge,
+        2: BronzeAge,
+        3: IronAge,
+        4: EarlyMiddleAge,
+        5: HighMiddleAge,
+        6: LateMiddleAge ,
+        7: ColonialAge,
+        8: IndustrialAge,
+        9: ProgressiveEra,
+        10: ModernEra,
+        11: PostModernEra,
+        12: ContemporaryEra,
+        13: TomorrowEra,
+        14: FutureEra,
+        15: ArcticFuture,
+        16: OceanicFuture,
+        17: VirtualFuture,
+        18: SpaceAgeMars,
+        19: SpaceAgeCeres
+    },
+
+
 	/**
 	 * Zeigt
 	 */
