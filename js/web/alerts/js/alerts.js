@@ -24,10 +24,19 @@
 // TODO - implement a keyboard shortcut (one which inno will hopefully never use in-game) to pre-fill the New Alert
 //          time based on the most recent time display, e.g. antiques dealer, or when a gbg sector opens, or a
 //          building collection timer expires, etc.
+// TODO - Alerts set up for collection (on GB or other buildings) should reset when the building's resources
 
 let Alerts = {
 
     /* stores alerts data */
-    Model: {}
+    Model: {},
+
+
+    init: ()=> {},
+
+    GetAlerts: ()=> {},
+    SetAlerts: ()=> {},
+
+    Show: ()=> {}
 
 };
