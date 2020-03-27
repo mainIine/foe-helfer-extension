@@ -325,7 +325,7 @@ let Info = {
 
         return {
             class: 'message',
-            type: 'Nachricht',
+            type: i18n('Boxes.Infobox.FilterMessage'),
             msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
         };
     },
