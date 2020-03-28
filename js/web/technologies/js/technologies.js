@@ -48,7 +48,8 @@ let Technologies = {
         OceanicFuture: 16,
         VirtualFuture: 17,
         SpaceAgeMars: 18,
-        SpaceAgeCeres: 19
+        SpaceAgeAsteroidBelt: 19,
+        SpaceAgeVenus: 20
     },
 
 
@@ -72,7 +73,8 @@ let Technologies = {
         16: 'OceanicFuture',
         17: 'VirtualFuture',
         18: 'SpaceAgeMars',
-        19: 'SpaceAgeCeres'
+        19: 'SpaceAgeAsteroidBelt',
+        20: 'SpaceAgeVenus'
     },
 
 
@@ -179,7 +181,7 @@ let Technologies = {
         }
 
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
-            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeMars']);
+            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeAsteroidBelt']);
 
         h.push('<div class="techno-head">');
 			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
