@@ -6,7 +6,7 @@
 		"API.LGGildMember": "Les GM de __player__ ont été envoyés.",
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Serveur API personnel",
 		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
 		"Boxes.Calculator.AvailableFP": "PF disponibles",
@@ -54,13 +54,13 @@
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
-		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
-		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
-		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
-		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance",
+		"Boxes.EventChests.Cost": "Coût",
+		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
+		"Boxes.EventChests.CostPerStep": "Coût / Pas",
+		"Boxes.EventChests.MainPrize": "Prix spécial",
+		"Boxes.EventChests.Steps": "Pas",
+		"Boxes.EventChests.Title": "Aide à la sélection d'un coffre d'événement",
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
 		"Boxes.EventList.Number": "N°",
@@ -243,8 +243,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Type",
 		"Local": "fr-FR",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Configuration de votre serveur personnel.",
+		"Menu.Api.Title": "Serveur API personnel",
 		"Menu.Ask.Desc": "Vous ne savez pas comment utiliser une fonctionnalité ?<br>Jetez un oeil ici !",
 		"Menu.Ask.Title": "Question / Réponse",
 		"Menu.Bugs.Desc": "Quelque chose n'est pas comme il devrait, où vous avez une idée ?",
@@ -291,8 +291,8 @@
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",
 		"Settings.ChangeLanguage.Title": "Changer de langue",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Voulez vous envoyer des données à votre propre serveur ?<br> Après l'activation, le jeu sera relancé et un nouveau menu sera disponible.",
+		"Settings.CustomerApi.Title": "Serveur API personnel",
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
