@@ -225,6 +225,7 @@
 		"Eras.18": "Era Espacial Marte",
 		"Eras.19": "Era Espacial Ceres",
 		"Eras.2": "Idade do Bronze",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Idade do Ferro",
 		"Eras.4": "Início da Idade Média",
 		"Eras.5": "Alta Idade Média",
@@ -291,8 +292,8 @@
 		"Settings.AutomaticNegotiation.Title": "Ajudante de negociações",
 		"Settings.ChangeLanguage.Desc": "Que languagem deve ser utilisada, em vez da definida automaticamente?",
 		"Settings.ChangeLanguage.Title": "Mudar linguagem",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se quiseres informações sobre a tua guilda, activa esta opção. <br> Para uma utilização apenas pessoal, desactiva esta opção.",
 		"Settings.GlobalSend.Title": "Transmissão para foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá o menu ter?<br> Vazio ou \"0\" define uma altura automática.",
