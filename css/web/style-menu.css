@@ -530,6 +530,10 @@ p {
 	background-image: url('../images/api.png');
 }
 
+#kits-Btn span {
+	background-image: url('../images/kits.png');
+}
+
 /* Tabs */
 
 .window-body .tabs ul {
