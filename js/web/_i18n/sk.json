@@ -225,6 +225,7 @@
 		"Eras.18": "Kozmický vek Mars",
 		"Eras.19": "Kozmický vek Pás asteroidov",
 		"Eras.2": "Doba bronzová",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Doba železná",
 		"Eras.4": "Raný stredovek",
 		"Eras.5": "Vrcholný stredovek",
@@ -291,8 +292,8 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník pri vyjednávaní",
 		"Settings.ChangeLanguage.Desc": "Ktorý jazyk sa má použiť namiesto rozpoznaného?",
 		"Settings.ChangeLanguage.Title": "Zmeniť jazyk",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ak chcete povoliť zber údajov, povoľte toto nastavenie. <br> Ak chcete, aby rozšírenie fungovalo samostatne, jednoducho toto nastavenie vypnite.",
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",

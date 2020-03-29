@@ -225,6 +225,7 @@
 		"Eras.18": "Edad Espacial: Marciana",
 		"Eras.19": "Edad Espacial: Ceres",
 		"Eras.2": "Edad de Bronce",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Edad de Hierro",
 		"Eras.4": "Alta Edad Media",
 		"Eras.5": "Plena Edad Media",
@@ -291,8 +292,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassisten",
 		"Settings.ChangeLanguage.Desc": "Que idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extension autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmision a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
