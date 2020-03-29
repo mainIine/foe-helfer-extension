@@ -1,0 +1,56 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 kits.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zuletzt bearbeitet:        27.03.20, 15:44 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+
+/* Box */
+#kits {
+	top: 15%;
+	left: 50%;
+	width: 650px;
+	transform: translateX(-50%);
+}
+
+#kits #kitsBody {
+	overflow: hidden;
+	max-height: 550px;
+	overflow-y: auto;
+}
+
+#kits .kits-image {
+	max-width: 90px;
+	max-height: 70px;
+}
+
+.selection-wrapper {
+	padding: 0.625rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+}
+.selection-wrapper .item-wrap {
+	flex: 0 25%;
+}
+
+.selection-wrapper .item {
+	margin: 10px;
+}
+
+.selection-wrapper .item .item-image,
+.selection-wrapper .item .item-name {
+	text-align: center;
+}
+
+.selection-wrapper .item strong {
+	color: #FFB539;
+}
