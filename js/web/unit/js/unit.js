@@ -88,7 +88,9 @@ let Unit = {
 		let top = [],
 			alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
 
-		if(alca !== undefined){
+		// der Spieler besitzt ein Alca
+		if(alca !== undefined)
+		{
 			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
 
 			let x = setInterval(function() {

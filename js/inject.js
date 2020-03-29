@@ -156,6 +156,7 @@ if (Languages.PossibleLanguages[lng] === undefined) {
 				'_helper',
 				'_api',
 				'_menu',
+				'kits',
 				'tavern',
 				'outposts',
 				'calculator',
