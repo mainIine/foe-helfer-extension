@@ -6,7 +6,7 @@
 		"API.LGGildMember": "Les GM de __player__ ont été envoyés.",
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Serveur API personnel",
 		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
 		"Boxes.Calculator.AvailableFP": "PF disponibles",
@@ -17,26 +17,26 @@
 		"Boxes.Calculator.FriendlyInvestment": "Taux amis :",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
-		"Boxes.Calculator.LGNotConnected": "Le bâtiment n'est pas relié à une route.",
-		"Boxes.Calculator.LGNotOpen": "Le niveau suivant n'est pas déverrouillé.",
+		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
+		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
 		"Boxes.Calculator.Meds": "Méd.",
 		"Boxes.Calculator.Profit": "Gain",
 		"Boxes.Calculator.Rate": "Ratio",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
+		"Boxes.Calculator.Sniping": "Snipe",
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "Calculs GM externes",
-		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
-		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
-		"Boxes.Calculator.TTForderNegativeProfit": "<b>Place non sécurisée !</b><br><b>__fpcount__</b> PF supplémentaires à investir pour le sécuriser<br>Total pour rendre la place sécurisé : <b>__totalfp__</> PF.",
+		"Boxes.Calculator.TTForderCosts": "Coût : <b>__costs__</b> PF<br><i>__nettoreward__ <small>(récompense)</small> * __forderfactor__% <small>(taux amis)</small></i>",
+		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Votre stock de PF est trop bas !<br>Vous avez seulement __fpstock__ sur les __costs__ PF demandés.<br>Il vous manque __tooless__ PF",
+		"Boxes.Calculator.TTForderNegativeProfit": "<br><b>Place non sécurisée !</b><br><br>Manque <b>__fpcount__</b> PF pour la sécuriser<br><br>Total pour sécuriser la place : <b>__totalfp__</b> PF",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PF ne rentre pas dedans<br>Investissement maximum : __totalfp__ PF",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Loss = __payed__<small>(payed)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You payed __payed__FP instead of __topay__FP. That is __tooless__FP too less.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You payed __payed__FP instead of __topay__FP. That is __toomuch__FP too much.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Coût : <b>__costs__</b> PF<br><br>= <b>PERTE de __loss__ PF</b>",
+		"Boxes.Calculator.TTLossSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__payed__</b> PF<br><br>= <b>PERTE de __loss__ PF</b>",
+		"Boxes.Calculator.TTPayedTooLess": "<br>Vous avez payé __payed__ PF au lieu de __topay__ PF<br> Il manque <b>__tooless__</b> PF",
+		"Boxes.Calculator.TTPayedTooMuch": "<br>Vous avez payé __payed__ PF au lieu de __topay__ PF<br> C'est <b>__toomuch__</b> PF de trop",
+		"Boxes.Calculator.TTProfit": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Coût : <b>__costs__</b> PF<br><br>= <b>GAIN de __profit__ PF</b>",
+		"Boxes.Calculator.TTProfitSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__payed__</b> PF<br><br>= <b>GAIN de __profit__ PF</b>",
+		"Boxes.Calculator.TTRate": "Ratio : <b>__rate__</b> %<br><i>__costs__ <small>(coût)</small> / __nettoreward__ <small>(récompense)</small></i>",
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Votre stock de PF est trop bas !<br>Vous avez seulement __fpstock__ sur les __costs__ PF demandés.<br>Il vous manque __tooless__ PF",
 		"Boxes.Calculator.Up2LevelUp": "Jusqu'au niveau suivant ",
 		"Boxes.Campagne.AlreadyDone": " déjà conquis !",
 		"Boxes.Campagne.DescInStock": "Disponible",
@@ -54,13 +54,13 @@
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
-		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
-		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
-		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
-		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance",
+		"Boxes.EventChests.Cost": "Coût",
+		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
+		"Boxes.EventChests.CostPerStep": "Coût / Pas",
+		"Boxes.EventChests.MainPrize": "Prix spécial",
+		"Boxes.EventChests.Steps": "Pas",
+		"Boxes.EventChests.Title": "Aide à la sélection d'un coffre d'événement",
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
 		"Boxes.EventList.Number": "N°",
@@ -112,8 +112,8 @@
 		"Boxes.Negotiation.Average": "Ordre préférentiel",
 		"Boxes.Negotiation.Canceled": "La négociation a été annulée",
 		"Boxes.Negotiation.Chance": "Chance ",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
-		"Boxes.Negotiation.DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'ordre préférentiel en utilisant le glisser-déposer pour déterminer l'ordre dès la première tentative.",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "OK",
+		"Boxes.Negotiation.DragDrop": "Vous pouvez réorganiser vous-même les icônes de l'ordre préférentiel.<br>Utilisez le glisser-déposer pour déterminer l'ordre dès la première tentative.",
 		"Boxes.Negotiation.GoodsCritical": "ATTENTION : votre stock de marchandises est critique.",
 		"Boxes.Negotiation.GoodsLow": "ATTENTION : votre stock de marchandises est faible.",
 		"Boxes.Negotiation.Person": "Personne",
@@ -122,7 +122,7 @@
 		"Boxes.Negotiation.Success": "Succès",
 		"Boxes.Negotiation.TableLoadError": "Erreur de chargement de la table de négociations",
 		"Boxes.Negotiation.Title": "Assistant de négociations",
-		"Boxes.Negotiation.TryEnd": "Essayer de finir",
+		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
 		"Boxes.Neighbors.NothingToPlunder": "Rien à piller",
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
@@ -157,9 +157,9 @@
 		"Boxes.OwnpartCalculator.OldLevel": "Ancien niveau",
 		"Boxes.OwnpartCalculator.Order": "Ordre",
 		"Boxes.OwnpartCalculator.OutputScheme": "Schéma de sortie",
-		"Boxes.OwnpartCalculator.OwnPart": "Contribution perso ",
+		"Boxes.OwnpartCalculator.OwnPart": "Contrib. perso ",
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restant ",
-		"Boxes.OwnpartCalculator.PatronPart": "Contribution externe ",
+		"Boxes.OwnpartCalculator.PatronPart": "Contrib. externe ",
 		"Boxes.OwnpartCalculator.Place": "Place",
 		"Boxes.OwnpartCalculator.PlayerName": "Joueur ",
 		"Boxes.OwnpartCalculator.Scheme": "Schéma ",
@@ -244,8 +244,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Type",
 		"Local": "fr-FR",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Configuration de votre serveur personnel.",
+		"Menu.Api.Title": "Serveur API personnel",
 		"Menu.Ask.Desc": "Vous ne savez pas comment utiliser une fonctionnalité ?<br>Jetez un oeil ici !",
 		"Menu.Ask.Title": "Question / Réponse",
 		"Menu.Bugs.Desc": "Quelque chose n'est pas comme il devrait, où vous avez une idée ?",
@@ -292,8 +292,8 @@
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",
 		"Settings.ChangeLanguage.Title": "Changer de langue",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Voulez vous envoyer des données à votre propre serveur ?<br> Après l'activation, le jeu sera relancé et un nouveau menu sera disponible.",
+		"Settings.CustomerApi.Title": "Serveur API personnel",
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
