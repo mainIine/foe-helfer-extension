@@ -546,17 +546,17 @@ p {
 	margin: 0;
 	padding: 0;
 	display: inline-block;
-	background: transparent url("https://foede.innogamescdn.com/assets/shared/gui/itembar/itembar_0.png") -167px -731px no-repeat;
-	width: 71px;
+	background-position: -3px -125px;
+	width: 72px;
 	height: 31px;
 }
 
 .window-body .tabs ul li:hover {
-	background-position: -167px -765px;
+	background-position: -3px -159px;
 }
 
 .window-body .tabs ul li.active {
-	background-position: -167px -799px;
+	background-position: -3px -193px;
 }
 
 .window-body .tabs ul li a {
@@ -567,6 +567,34 @@ p {
 	position: relative;
 	left: 35px;
 	top: 4px;
+}
+
+.window-body .tabs ul li.long-tab {
+	background-position: -81px -125px;
+	width: 160px;
+}
+
+.window-body .tabs ul li.long-tab:hover {
+	background-position: -81px -159px;
+}
+
+.window-body .tabs ul li.long-tab.active {
+	background-position: -81px -193px;
+}
+
+.window-body .tabs ul li.long-tab a {
+	width: 110px;
+	padding: 2px 0;
+	text-align: center;
+	color: #797a7a;
+}
+
+.window-body .tabs ul li.long-tab:hover a {
+	color: #d1d5d4;
+}
+
+.window-body .tabs ul li.long-tab.active a {
+	color: #d1d5d4;
 }
 
 

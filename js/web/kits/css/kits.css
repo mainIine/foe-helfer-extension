@@ -37,6 +37,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: stretch;
+	background-color: rgba(0,0,0, 0.3);
 }
 .selection-wrapper .item-wrap {
 	flex: 0 25%;
