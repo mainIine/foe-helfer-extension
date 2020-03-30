@@ -62,7 +62,7 @@ let Kits = {
 		{
 			let args = {
 				'id': 'kits',
-				'title': i18n('Menu.Kits.Title'),
+				'title': i18n('Boxes.Kits.Title'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
@@ -315,7 +315,7 @@ let Kits = {
 		Kits.Tabs = [];
 		Kits.TabsContent = [];
 
-		Kits.SetTabs('building-kits');
+		Kits.SetTabs('building-kits', i18n('Boxes.Kits.TabBuildingKits'));
 
 
 		let t = '<table class="foe-table">';
@@ -389,7 +389,7 @@ let Kits = {
 		// -------------------------------------------------------------------------------------------------------------
 
 
-		Kits.SetTabs('selection-kits');
+		Kits.SetTabs('selection-kits', i18n('Boxes.Kits.TabSelectionKits'));
 
 		let ts = '<div class="selection-wrapper">';
 
@@ -443,8 +443,8 @@ let Kits = {
 	 *
 	 * @param id
 	 */
-	SetTabs: (id)=>{
-		Kits.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
+	SetTabs: (id, label)=>{
+		Kits.Tabs.push('<li class="' + id + ' long-tab game-cursor"><a href="#' + id + '" class="game-cursor">' + label + '</a></li>');
 	},
 
 
