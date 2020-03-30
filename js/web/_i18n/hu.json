@@ -225,6 +225,7 @@
 		"Eras.18": "Űrkorszak - Mars",
 		"Eras.19": "Űrkorszak - Aszteroida övezet",
 		"Eras.2": "Bronzkorszak",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Vaskorszak",
 		"Eras.4": "Kora középkor",
 		"Eras.5": "Virágzó középkor",
@@ -291,8 +292,8 @@
 		"Settings.AutomaticNegotiation.Title": "Tárgyalási segítő",
 		"Settings.ChangeLanguage.Desc": "Melyik nyelv legyen használva a meglévő helyett?",
 		"Settings.ChangeLanguage.Title": "Nyelvváltó",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ha az céhhel szeretné nyomon követni az adatokat, aktiválja ezt a pontot. <br> Az önellátó kiterjesztés érdekében egyszerűen tiltsa le.",
 		"Settings.GlobalSend.Title": "Átvitel a foe-rechner.de -re",
 		"Settings.MenuLength.Desc": "Hány elem legyen a menüben?<br> Üresen hagyás vagy \"0\" automatikus magasságot jelent.",
