@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": "e",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Giocatore trovato",
 		"Boxes.Investment.Title": "Investimento",
 		"Boxes.Investment.TotalFP": "in cirolazione + + profitto:",
+		"Boxes.Kits.TabBuildingKits": " Kit di costruzione ",
+		"Boxes.Kits.TabSelectionKits": " selezione-Kit ",
+		"Boxes.Kits.Title": " Kit di costruzione / selezione",
 		"Boxes.LGOverviewBox.Building": "Edificio",
 		"Boxes.LGOverviewBox.Level": "Livello",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nulla da recuperare",
@@ -244,8 +248,8 @@
 		"HiddenRewards.Table.position": "Posizione",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "it",
-		"Menu.Api.Desc": "Impostazioni per inviare dati al tuo server", //Todo: Translate
-		"Menu.Api.Title": "API del giocatore", //Todo: Translate
+		"Menu.Api.Desc": "Impostazioni per inviare dati al tuo server",
+		"Menu.Api.Title": "API del giocatore",
 		"Menu.Ask.Desc": "Non sai come funziona qualcosa? <br> Dai un'occhiata!",
 		"Menu.Ask.Title": "Botta e Risposta",
 		"Menu.Bugs.Desc": "Qualcosa non è come dovrebbe o hai un'idea?",
@@ -268,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Premi nascosti",
 		"Menu.Info.Desc": "Mostra tutto ciò che accade in \"background \"<br> <em> Si riempie di informazioni ... </em>",
 		"Menu.Info.Title": "Riquadro informazioni",
+		"Menu.Kits.Desc": " Elenca tutti i kit di costruzione, aggiornamento e selezione esistenti ",
+		"Menu.Kits.Title": " Kit di costruzione",
 		"Menu.Negotiation.Desc": "Fare proposte precise per le negoziazioni",
 		"Menu.Negotiation.Title": "Aiuto Negoziazione",
 		"Menu.Negotiation.Warning": "Disabilitato: avvia prima una negoziazione!",
@@ -288,17 +294,12 @@
 		"Menu.Unit.Desc": "Tutti i tuoi eserciti a colpo d'occhio",
 		"Menu.Unit.Title": "Esercito",
 		"Menu.Unit.Warning": "Apri la tua 1x \"Organizzazione Army \"<br> pulsante \"U\"",
-		"Menu.Kits.Title " : " Kit di costruzione" ,
-		"Boxes.Kits.Title " : " Kit di costruzione / selezione" ,
-		"Boxes.Kits.TabBuildingKits " : " Kit di costruzione " ,
-		"Boxes.Kits.TabSelectionKits " : " selezione-Kit " ,
-		"Menu.Kits.Desc " : " Elenca tutti i kit di costruzione, aggiornamento e selezione esistenti " ,
 		"Settings.AutomaticNegotiation.Desc": "L'assistente deve aprirsi automaticamente con una negoziazione e chiudersi quando viene completata/annullata?",
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
 		"Settings.ChangeLanguage.Title": "Cambia lingua",
-		"Settings.CustomerApi.Desc": "Vuoi inviare alcuni dati al tuo server? <br> Dopo questa attivazione il gioco verrà ricaricato e verrà visualizzata una nuova voce di menu.", //Todo: Translate
-		"Settings.CustomerApi.Title": "API del giocatore", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se vuoi tracciare i dati con la tua gilda, attiva questo campo. <br> Per un'estensione autosufficiente, disattivalo.",
 		"Settings.GlobalSend.Title": "Trasmissione a foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quanti elementi (lunghezza) dovrebbe contenere il menu? <br> Campo vuoto o \"0\" sceglierà in automatico.",
@@ -321,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
 		"Settings.Version.Desc": "Versione estensione di Chrome",
-		"Settings.Version.DescDebug": "<p>Estensione <strong class='text-danger'>BETA</strong></p><a target='_ blank' href = 'https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Log modifiche</a>",
 		"Settings.Version.GuildId": "ID Gilda:",
 		"Settings.Version.PlayerId": "ID Giocatore:",
 		"Settings.Version.Title": "Versione",

@@ -59,6 +59,7 @@
 		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
 		"Boxes.EventChests.CostPerStep": "Coût / Pas",
 		"Boxes.EventChests.MainPrize": "Prix spécial",
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Pas",
 		"Boxes.EventChests.Title": "Aide à la sélection d'un coffre d'événement",
 		"Boxes.EventList.And": " ET ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Joueur trouvé",
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Bâtiment",
 		"Boxes.LGOverviewBox.Level": "Niveau",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> n'a rien à récupérer.",
@@ -268,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Récompenses cachées",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
 		"Menu.Info.Title": "Info Techniques",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
@@ -316,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "Dès qu'un placement dans la taverne est effectué, un compteur global apparaît.",
 		"Settings.ShowTavernBadge.Title": "Affiche un compteur sur la taverne",
 		"Settings.Version.Desc": "Version de l'extension Chrome",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Nouveautés</a>",
 		"Settings.Version.GuildId": "Identifiant Guilde",
 		"Settings.Version.PlayerId": "Identifiant Joueur",
 		"Settings.Version.Title": "Version",

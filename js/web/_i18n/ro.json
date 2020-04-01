@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " și ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investiții",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Clădire",
 		"Boxes.LGOverviewBox.Level": "Nivel",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nu are nici o clădire vulnerabilă.",
@@ -244,8 +248,8 @@
 		"HiddenRewards.Table.position": "Poziția",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "ro-RO",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!",
 		"Menu.Ask.Title": "Întrebare / Răspuns",
 		"Menu.Bugs.Desc": "Ceva nu este cum trebuie sau ai o idee?",
@@ -268,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Incidente ascunse",
 		"Menu.Info.Desc": "Îți arată toate lucrurile care se petrec în \"background\"<br><em>Completează informațiile ...</em>",
 		"Menu.Info.Title": "InfoBox",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Face propuneri precise pentru negocieri",
 		"Menu.Negotiation.Title": "Ajutor pentru negocieri",
 		"Menu.Negotiation.Warning": "Dezactivat: Începe mai întâi o negociere!",
@@ -316,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "De îndată ce o achiziție este făcută în magazinul tavernei, va fi afișat un contor.",
 		"Settings.ShowTavernBadge.Title": "Arată contorul tavernei prietenilor",
 		"Settings.Version.Desc": "Versiunea extensiei pentru ",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
 		"Settings.Version.GuildId": "ID ghildă:",
 		"Settings.Version.PlayerId": "ID jucător:",
 		"Settings.Version.Title": "Versiune",
