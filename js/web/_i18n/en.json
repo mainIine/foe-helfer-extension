@@ -6,7 +6,7 @@
 		"API.LGGildMember": "__player__'s Legendary buildings have been submitted",
 		"API.LGInvest": "Your LG investments have been transferred",
 		"API.UpdateSuccess": "Update performed",
-		"Boxes.Api.Title": "Extension API Einstellungen", //Todo: Translate
+		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Available Forgepoints",
@@ -58,8 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs",
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize",
 		"Boxes.EventChests.CostPerStep": "Cost/Step",
-		"Boxes.EventChests.MainPrice": "Main Price",
-		"Boxes.EventChests.MainPriceTitle": "Price of the day: ",
+		"Boxes.EventChests.MainPrize": "Main Price",
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ",
 		"Boxes.EventChests.Steps": "Steps",
 		"Boxes.EventChests.Title": "Event chest selection helper",
 		"Boxes.EventList.And": " and ",
@@ -100,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found",
 		"Boxes.Investment.Title": "Investment",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits",
 		"Boxes.LGOverviewBox.Building": "Building",
 		"Boxes.LGOverviewBox.Level": "Level",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing to fetch",
@@ -269,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Hidden rewards",
 		"Menu.Info.Desc": "Shows you all the things that happen in the \"background\"<br><em>Fills up with info ...</em>",
 		"Menu.Info.Title": "Info Box",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits",
+		"Menu.Kits.Title": "Building-Kits",
 		"Menu.Negotiation.Desc": "Make precise proposals for negotiations",
 		"Menu.Negotiation.Title": "Negotiation helper",
 		"Menu.Negotiation.Warning": "Disabled: Start a negotiation first!",
@@ -289,9 +294,6 @@
 		"Menu.Unit.Desc": "All your armies at a glance",
 		"Menu.Unit.Title": "Armies",
 		"Menu.Unit.Warning": "Open 1x your \"Army Organization\" <br>Button \"U\"",
-		"Menu.Kits.Title": "Building-Kits",
-		"Box.Kits.Title": "Building- / Selection-Kits",
-		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits",
 		"Settings.AutomaticNegotiation.Desc": "Should the assistant open automatically with a negotiation and close when canceled?",
 		"Settings.AutomaticNegotiation.Title": "Negotiation helper",
 		"Settings.ChangeLanguage.Desc": "Which language, instead of the recognized one, should be used?",

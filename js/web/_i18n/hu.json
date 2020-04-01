@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " és ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Épület",
 		"Boxes.LGOverviewBox.Level": "Szint",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong>-nek/nak nincs több kínálata",
@@ -244,8 +248,8 @@
 		"HiddenRewards.Table.position": "Pozíció",
 		"HiddenRewards.Table.type": "Típus",
 		"Local": "hu-HU",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Nem tudod, hogyan működik valami? <br> Vessen egy pillantást!",
 		"Menu.Ask.Title": "Kérdés / Felelek",
 		"Menu.Bugs.Desc": "Valami nem úgy működik ahogy kellene vagy van ötleted?",
@@ -268,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Rejtett jutalmak",
 		"Menu.Info.Desc": "Megmutatja mindazt, ami történik a \"háttérben\"<br><em>Információval töltődik fel ...</em>",
 		"Menu.Info.Title": "Infó doboz",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Javaslatokat tegyen a tárgyalásokra",
 		"Menu.Negotiation.Title": "Tárgyalás segítő",
 		"Menu.Negotiation.Warning": "Tiltott: Először kezdjen meg egy tárgyalást!",
@@ -316,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "Amint aktiválódik a kocsmában az extra lépés, megjelenik egy globálisan mozgatható számláló.",
 		"Settings.ShowTavernBadge.Title": "Mutasd meg a fogadó jelképét",
 		"Settings.Version.Desc": "Chrome Bővítmény Verzió",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Céh-Id:",
 		"Settings.Version.PlayerId": "Játékos-Id:",
 		"Settings.Version.Title": "Verzió",
