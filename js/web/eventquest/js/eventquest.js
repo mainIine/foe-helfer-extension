@@ -344,17 +344,17 @@ let EventQuest = {
         h.push('<table class="foe-table">');
         h.push('<thead>' +
             '<tr>' +
-            '<th></th>' +
-            '<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPrize') + '</th>' +
-            '<th colspan="2" class="text-center">' + EventQuest.Chests[0]['dailyprizename'] + '</th>' +
+				'<th></th>' +
+				'<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPrice') + '</th>' +
+				'<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPriceTitle') + EventQuest.Chests[0]['dailyprizename'] + '</th>' +
             '</tr>' +
 
             '<tr>' +
-            '<th class="text-center">' + i18n('Boxes.EventChests.Cost') + '</th>' +
-            '<th class="text-center">' + i18n('Boxes.EventChests.Steps') + '</th>' +
-            '<th class="text-center">' + i18n('Boxes.EventChests.CostPerStep') + '</th>' +
-            '<th class="text-center">' + i18n('Boxes.EventChests.Chance') + '</th>' +
-            '<th class="text-center">' + i18n('Boxes.EventChests.CostPerPrize') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.EventChests.Cost') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.EventChests.Steps') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.EventChests.CostPerStep') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.EventChests.Chance') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.EventChests.CostPerPrize') + '</th>' +
             '</tr>' +
 
             '</thead>');
@@ -376,9 +376,9 @@ let EventQuest = {
             h.push('<td class="text-center text-warning text-bold">' + EventQuest.Chests[i]['cost'] + '</td>');
 
             h.push('<td class="text-center">' + EventQuest.Chests[i]['grandPrizeContribution'] + '</td>');
-            h.push('<td class="text-center' + (EventQuest.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventQuest.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
+            h.push('<td class="text-center border-right' + (EventQuest.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventQuest.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
 
-            h.push('<td class="text-center">' + EventQuest.Chests[i]['drop_chance'] + '%</td>');
+            h.push('<td class="text-center border-left">' + EventQuest.Chests[i]['drop_chance'] + '%</td>');
             h.push('<td class="text-center' + (EventQuest.Chests[i]['costperdailyprize'] <= BestDailyPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventQuest.Chests[i]['costperdailyprize']) + '</td>');
 
             h.push('</tr>');
