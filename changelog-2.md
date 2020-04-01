@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.4.3.2
+
+**Bugfix**
+- Menu:
+    - [#709](https://github.com/dsiekiera/foe-helfer-extension/issues/709) Menibar fixed
+
+---
+
 ##### 2.4.3.1
 **New**
 - Kits:
