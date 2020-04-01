@@ -814,10 +814,12 @@ let _menu = {
 
 		btn.append(btn_sp);
 
+		/*
 		// ist die API Funktion aktivert?
 		if(Settings.GetSetting('CustomerApi')){
 			// return btn;
 		}
+		*/
 	},
 
 	/**
