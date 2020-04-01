@@ -113,14 +113,6 @@
 	white-space: nowrap;
 }
 
-#Productions #ProductionsBody .tabs ul li:hover {
-	background-position: -167px -765px;
-}
-
-#Productions #ProductionsBody .tabs ul li.active {
-	background-position: -167px -799px;
-}
-
 #Productions #ProductionsBody .tabs ul li a {
 	background: transparent url('../images/productions.png') 0 0 no-repeat;
 }

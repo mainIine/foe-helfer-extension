@@ -1,5 +1,31 @@
 ## Changelog - Extension
 
+##### 2.4.3.1
+**New**
+- Kits:
+    - This box shows all sets / selection kits from the inventory
+
+**Update**
+- Extension:
+    - some language adjustments of the translators
+    - [#671](https://github.com/dsiekiera/foe-helfer-extension/issues/671) Changelog link integrated in the English language
+
+- Event tasks:
+    - Chestbox (suggestions for jumps) optically and linguistically adapted
+    
+- Events:
+    - Box graphically adapted
+    - Cherry tree graphics added
+
+**Bugfix**
+- Extension:
+    - [#688](https://github.com/dsiekiera/foe-helfer-extension/issues/688) New age is now recognized
+
+- Own contribution calculator:
+    - [#682](https://github.com/dsiekiera/foe-helfer-extension/issues/682) "Fold-out arrow" corrected
+
+---
+
 ##### 2.4.3
 
 **Update**
