@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " e ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investimento",
 		"Boxes.Investment.TotalFP": "Stock + investidos + lucro: ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Edificio",
 		"Boxes.LGOverviewBox.Level": "Nivel",
 		"Boxes.LGOverviewBox.NothingToGet": "Nada para investir em <strong>__player__</strong>",
@@ -225,6 +229,7 @@
 		"Eras.18": "Era Espacial Marte",
 		"Eras.19": "Era Espacial Ceres",
 		"Eras.2": "Idade do Bronze",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Idade do Ferro",
 		"Eras.4": "Início da Idade Média",
 		"Eras.5": "Alta Idade Média",
@@ -243,8 +248,8 @@
 		"HiddenRewards.Table.position": "Posição",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "pt-PT",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Não sabes como algo funciona?<br>Vê aqui como!",
 		"Menu.Ask.Title": "Pergunta / Resposta",
 		"Menu.Bugs.Desc": "Algo não está como deveria ser ou tens uma sugestão?",
@@ -267,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Incidentes escondidos",
 		"Menu.Info.Desc": "Mostra tudo o que acontece no \"background\"<br><em>Enche com informação...</em>",
 		"Menu.Info.Title": "Informações",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Faz sugestões para negociações",
 		"Menu.Negotiation.Title": "Ajudante de negociações",
 		"Menu.Negotiation.Warning": "Disabled: Começa uma negociação primeiro!",
@@ -291,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Ajudante de negociações",
 		"Settings.ChangeLanguage.Desc": "Que languagem deve ser utilisada, em vez da definida automaticamente?",
 		"Settings.ChangeLanguage.Title": "Mudar linguagem",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se quiseres informações sobre a tua guilda, activa esta opção. <br> Para uma utilização apenas pessoal, desactiva esta opção.",
 		"Settings.GlobalSend.Title": "Transmissão para foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá o menu ter?<br> Vazio ou \"0\" define uma altura automática.",
@@ -315,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "Quando a bonificação da taberna é activada, um contador é visivel.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
 		"Settings.Version.Desc": "Chrome Extension Version",
-		"Settings.Version.DescDebug": "<p>Extensão <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Gild-Id:",
 		"Settings.Version.PlayerId": "Player-Id:",
 		"Settings.Version.Title": "Versão",

@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " en ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Speler gevonden",
 		"Boxes.Investment.Title": "Investering",
 		"Boxes.Investment.TotalFP": "Voorraad + in omloop + winst: ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Groots gebouw",
 		"Boxes.LGOverviewBox.Level": "Level",
 		"Boxes.LGOverviewBox.NothingToGet": "Er valt niets te halen bij <strong>__player__</strong>",
@@ -225,6 +229,7 @@
 		"Eras.18": "Ruimtetijdperk: Mars",
 		"Eras.19": "Asteroïdengordel uit het ruimtetijdperk",
 		"Eras.2": "Bronstijd",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "IJzertijd",
 		"Eras.4": "Vroege middeleeuwen",
 		"Eras.5": "Hoge middeleeuwen",
@@ -243,8 +248,8 @@
 		"HiddenRewards.Table.position": "Positie",
 		"HiddenRewards.Table.type": "Soort",
 		"Local": "nl-NL",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Weet je niet hoe iets werkt?<br>Neem een kijkje!",
 		"Menu.Ask.Title": "Vraag / Antwoord",
 		"Menu.Bugs.Desc": "Iets werkt niet zoals het hoort of heb je een idee?",
@@ -267,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Incidenten",
 		"Menu.Info.Desc": "Toont je alle zaken die gebeuren op de \"achtergrond\"<br><em>Vult zich beetje bij beetje met info ...",
 		"Menu.Info.Title": "Info-venster",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Geeft nauwkeurige voorstellen bij onderhandelingen",
 		"Menu.Negotiation.Title": "Onderhandelingshulp",
 		"Menu.Negotiation.Warning": "Gedeactiveerd: Start eerst een onderhandeling!",
@@ -291,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
@@ -315,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "Zodra een bonus in de taverne wordt geactiveerd, verschijnt een globale, verschuifbare teller.",
 		"Settings.ShowTavernBadge.Title": "Toon teller Taveerne Bonus",
 		"Settings.Version.Desc": "Chrome Extension Version",
-		"Settings.Version.DescDebug": "<p>Extensie <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Gilde-ID:",
 		"Settings.Version.PlayerId": "Speler-ID:",
 		"Settings.Version.Title": "Versie",

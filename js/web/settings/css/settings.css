@@ -52,7 +52,6 @@
 }
 
 #SettingsBoxBody .item .item-row a {
-	cursor: pointer;
 	color: #ffcc68;
 }
 
@@ -111,8 +110,15 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: flex-end;
+	width: 173px;
+	user-select: text;
 }
 
 #SettingsBoxBody .item .item-row dl dt {
-	width: 40%;
+	width: 86px;
+}
+#SettingsBoxBody .item .item-row dl dd {
+	width: 86px;
+	margin-inline-start: 0;
 }

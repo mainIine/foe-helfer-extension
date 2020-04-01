@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Edificio",
 		"Boxes.LGOverviewBox.Level": "Nivel",
 		"Boxes.LGOverviewBox.NothingToGet": "Con <strong>__player__</strong> no hay nada para pillar",
@@ -225,6 +229,7 @@
 		"Eras.18": "Edad Espacial: Marciana",
 		"Eras.19": "Edad Espacial: Ceres",
 		"Eras.2": "Edad de Bronce",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Edad de Hierro",
 		"Eras.4": "Alta Edad Media",
 		"Eras.5": "Plena Edad Media",
@@ -243,8 +248,8 @@
 		"HiddenRewards.Table.position": "Position", //Todo: Translate
 		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "es-ES",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruebalo!",
 		"Menu.Ask.Title": "Pregunta / Respuesta",
 		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
@@ -267,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Hidden rewards", //Todo: Translate
 		"Menu.Info.Desc": "Te enseña todas las cosas que pasan en el \"fondo \"<br><em>Poco a poco se llena con información...</em>",
 		"Menu.Info.Title": "Info Box", //Todo: Translate
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Te da sugerencias precisas para las negociaciones",
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
 		"Menu.Negotiation.Warning": "Deactivado: Comienca primero una nueva negociacion!",
@@ -291,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassisten",
 		"Settings.ChangeLanguage.Desc": "Que idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extension autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmision a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
@@ -314,8 +321,7 @@
 		"Settings.ShowNeighborsGoods.Title": "Cosecha de la vecindad",
 		"Settings.ShowTavernBadge.Desc": "Tan pronto como se activa un boost en la taberna, aparece un contador, globalmente desplazable",
 		"Settings.ShowTavernBadge.Title": "Mostrar placa de tabernas ",
-		"Settings.Version.Desc": "Chrome Extension Version", //Todo: Translate
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
+		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", //Todo: Translate
 		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
 		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
 		"Settings.Version.Title": "Version", //Todo: Translate

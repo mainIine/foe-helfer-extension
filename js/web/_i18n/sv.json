@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " och ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investera",
 		"Boxes.Investment.TotalFP": "Bank + cirkulation + vinst: ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Byggnad",
 		"Boxes.LGOverviewBox.Level": "Nivå",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> har inget att hämta",
@@ -225,6 +229,7 @@
 		"Eras.18": "Rymdålder Mars",
 		"Eras.19": "Rymdålder Ceres",
 		"Eras.2": "Bronsåldern",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Järnåldern",
 		"Eras.4": "Tidig medeltid",
 		"Eras.5": "Högmedeltid",
@@ -243,8 +248,8 @@
 		"HiddenRewards.Table.position": "Plats",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sv-SE",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Du vet inte hur något fungerar?<br>Kolla här!",
 		"Menu.Ask.Title": "Frågor / Svar",
 		"Menu.Bugs.Desc": "Något är inte som det borde vara eller du har en idé?",
@@ -267,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Gömda händelser",
 		"Menu.Info.Desc": "Visar allt som händer i \"bakgrunden\"<br>",
 		"Menu.Info.Title": "Informationshubb",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Gör beräknade förslag till forhandling",
 		"Menu.Negotiation.Title": "Förhandlingshjälp",
 		"Menu.Negotiation.Warning": "Inaktiverat: Starta en förhandling först!",
@@ -291,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
 		"Settings.ChangeLanguage.Title": "Byt språk",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",
@@ -315,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "När extra runda i värdshuset aktiverats kommer en ikon visas.",
 		"Settings.ShowTavernBadge.Title": "Visa värdshusprestation",
 		"Settings.Version.Desc": "Chrome tillägg version",
-		"Settings.Version.DescDebug": "<p>Tillägg <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Imperium id:",
 		"Settings.Version.PlayerId": "Spelar id:",
 		"Settings.Version.Title": "Version",
