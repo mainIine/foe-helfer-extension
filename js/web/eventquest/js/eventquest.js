@@ -345,8 +345,8 @@ let EventQuest = {
         h.push('<thead>' +
             '<tr>' +
 				'<th></th>' +
-				'<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPrice') + '</th>' +
-				'<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPriceTitle') + EventQuest.Chests[0]['dailyprizename'] + '</th>' +
+				'<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPrize') + '</th>' +
+				'<th colspan="2" class="text-center">' + i18n('Boxes.EventChests.MainPrizeTitle') + EventQuest.Chests[0]['dailyprizename'] + '</th>' +
             '</tr>' +
 
             '<tr>' +
