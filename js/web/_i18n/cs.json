@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Budova",
 		"Boxes.LGOverviewBox.Level": "Úroveň",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing to fetch", //Todo: Translate
@@ -225,6 +229,7 @@
 		"Eras.18": "Kolonizace Marsu",
 		"Eras.19": "Kolonizace Ceres",
 		"Eras.2": "Doba bronzová",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Doba železná",
 		"Eras.4": "Raný středověk",
 		"Eras.5": "Vrcholný středověk",
@@ -243,8 +248,8 @@
 		"HiddenRewards.Table.position": "Umístění", 
 		"HiddenRewards.Table.type": "Druh",
 		"Local": "cs-CZ",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Máte s něčím problémy?<br>Mrkněte sem!",
 		"Menu.Ask.Title": "Otázky/odpovědi",
 		"Menu.Bugs.Desc": "Něco se pokazilo/ chybí vám něco?",
@@ -267,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Hidden rewards", //Todo: Translate
 		"Menu.Info.Desc": "Ukazuje co se událo \"background\"<br><em>Fills up with info ...</em>",
 		"Menu.Info.Title": "Info Box", //Todo: Translate
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Zlepšete svoji šanci během vyjednávání",
 		"Menu.Negotiation.Title": "Pomocník s vyjednáváním",
 		"Menu.Negotiation.Warning": "Začněte vyjednávat!",
@@ -291,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník s vyjednáváním",
 		"Settings.ChangeLanguage.Desc": "Který jazyk, kromě toho poznaného, má být zvolen?",
 		"Settings.ChangeLanguage.Title": "Změnit jazyk",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte. <br>.",
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
@@ -314,8 +321,7 @@
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "Chrome Extension Version", //Todo: Translate
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>", //Todo: Translate
+		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", //Todo: Translate
 		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
 		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
 		"Settings.Version.Title": "Verze",
