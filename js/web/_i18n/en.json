@@ -6,7 +6,7 @@
 		"API.LGGildMember": "__player__'s Legendary buildings have been submitted",
 		"API.LGInvest": "Your LG investments have been transferred",
 		"API.UpdateSuccess": "Update performed",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Einstellungen", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Available Forgepoints",
@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs",
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize",
 		"Boxes.EventChests.CostPerStep": "Cost/Step",
-		"Boxes.EventChests.MainPrize": "Main Prize",
+		"Boxes.EventChests.MainPrice": "Main Price",
+		"Boxes.EventChests.MainPriceTitle": "Price of the day: ",
 		"Boxes.EventChests.Steps": "Steps",
 		"Boxes.EventChests.Title": "Event chest selection helper",
 		"Boxes.EventList.And": " and ",
@@ -244,8 +245,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Type",
 		"Local": "en-EN",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server",
+		"Menu.Api.Title": "Extension API",
 		"Menu.Ask.Desc": "You do not know how something works?<br>Take a look!",
 		"Menu.Ask.Title": "Question / Answer",
 		"Menu.Bugs.Desc": "Something is not how it should or you have an idea?",
@@ -318,8 +319,7 @@
 		"Settings.ShowNeighborsGoods.Title": "Neighborhood harvest",
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.",
 		"Settings.ShowTavernBadge.Title": "Show tavernas badge",
-		"Settings.Version.Desc": "Chrome Extension Version",
-		"Settings.Version.DescDebug": "<p>Extension <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
+		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
 		"Settings.Version.GuildId": "Gild-Id:",
 		"Settings.Version.PlayerId": "Player-Id:",
 		"Settings.Version.Title": "Version",
