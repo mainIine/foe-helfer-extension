@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " A ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
 		"Boxes.Investment.Title": "Vklad",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Budova",
 		"Boxes.LGOverviewBox.Level": "Úroveň",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nemá žiadnu VB",
@@ -244,8 +248,8 @@
 		"HiddenRewards.Table.position": "Umiestnenie",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sk-SK",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Je Vám niečo nejasné?<br>Pozrite sa sem!",
 		"Menu.Ask.Title": "Otázka / Odpoveď",
 		"Menu.Bugs.Desc": "Nie je niečo v poriadku? Alebo máte nápad?",
@@ -268,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Incidenty",
 		"Menu.Info.Desc": "Zobrazuje informácie o tom, čo sa deje na  \"pozadí\"<br><em>Plní sa to informáciami ...</em>",
 		"Menu.Info.Title": "Info Box",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Navrhuje presné ponuky pri vyjednávaní",
 		"Menu.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Menu.Negotiation.Warning": "Vypnuté: Najprv spustite vyjednávanie!",
@@ -316,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.",
 		"Settings.ShowTavernBadge.Title": "Show tavernas badge",
 		"Settings.Version.Desc": "Verzia rozšírenia pre Chrome",
-		"Settings.Version.DescDebug": "<p>Rozšírenie <strong class='text-danger'>BETA</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "ID cechu:",
 		"Settings.Version.PlayerId": "ID hráča:",
 		"Settings.Version.Title": "Verzia:",
