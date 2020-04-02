@@ -1,0 +1,10 @@
+{
+	"appName": {
+		"message": "FoE - Helper",
+		"description": "FoE - Helper."
+	},
+	"appDesc": {
+		"message": "Kleine tools en helpers voor een betere speelervaring in Forge of Empires",
+		"description":"Small tools and helpers for a better gaming experience in Forge of Empires."
+	}
+}
