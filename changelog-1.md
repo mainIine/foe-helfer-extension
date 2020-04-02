@@ -1,6 +1,160 @@
-##Changelog - Extension
+## Changelog - Extension
 
-#####2.4.1.1
+##### 2.4.3.2
+
+**Bugfix**
+- Menü:
+    - [#709](https://github.com/dsiekiera/foe-helfer-extension/issues/709) Menüleiste gefixt
+
+---
+
+##### 2.4.3.1
+**Neu**
+- Kits:
+    - Diese Box zeigt alle Sets / Auswahlkits aus dem Inventar an
+
+**Update**
+- Extension:
+    - einige sprachliche Anpassungen der Übersetzer
+    - [#671](https://github.com/dsiekiera/foe-helfer-extension/issues/671) Changelog-Link in der Englischen Sprache integriert
+
+
+- Eventaufgaben:
+    - Chestbox (Vorschläge für Sprünge) optisch und sprachlich angepasst
+    
+- Erreignisse:
+    - Box grafisch angepasst
+    - Kirschbaumgrafik ergänzt
+
+**Bugfix**
+- Extension:
+    - [#688](https://github.com/dsiekiera/foe-helfer-extension/issues/688) Neues Zeitalter wird nun erkannt
+
+- Eigenanteilsrechner:
+    - [#682](https://github.com/dsiekiera/foe-helfer-extension/issues/682) "Ausklappfeil" korrigiert
+    
+---
+
+##### 2.4.3
+
+**Update**
+- Verhandlungsassistent:
+    - Zeigt ab sofort an welches falsche Gut tatsächlich geklickt wurde
+    - Schlägt ab sofort nach dem letzen Zug den nächsten noch vor
+
+- Eventaufgaben:
+    - Helfer für "Kirsch-Event" integriert, schlägt entweder besten Weg für Tagespreis oder Preise vor
+
+- Übersetzungen:
+    - Italienisch, Französisch und Russisch wurde von Community Mitgliedern angepasst
+    - Slovenisch hinzugefügt
+
+**Bugfix**
+- Extension:
+    - [#654](https://github.com/dsiekiera/foe-helfer-extension/issues/654) fehlende Übersetzungen ergänzt fehlende Variablen für Übersetzungen ergänzt
+    - falsche Grafik für "Fragezeichen" am oberen Rand der Boxen gefixt
+
+- Eventaufgaben:
+    - [#648](https://github.com/dsiekiera/foe-helfer-extension/issues/648) wurde nach Abschluß des Events noch fehlerhaft angezeigt
+
+- Forschungskosten:
+    - [#638](https://github.com/dsiekiera/foe-helfer-extension/issues/638) Forschungskosten wurden fehlerhaft berechnet
+
+- Verhandlungsassistent:
+    - [#617](https://github.com/dsiekiera/foe-helfer-extension/issues/617) [#614](https://github.com/dsiekiera/foe-helfer-extension/issues/614) Falsche Guterkennung gefixt
+
+---
+
+##### 2.4.2.2
+
+**Update**
+- Extension:
+    - Italienische Übersetzunge hinzugefügt
+    - Portugiesisch abgepasst
+
+- Investitionen:
+    - neuer API Endpunkt + neue Landigpage (History, Rang Warnung, usw.)
+
+**Bugfix**
+- Extension:
+    - [#602](https://github.com/dsiekiera/foe-helfer-extension/issues/602) fehlende Übersetzungen ergänzt
+
+- Menü:
+    - [#609](https://github.com/dsiekiera/foe-helfer-extension/issues/609) Speicherproblem beim verändern via Drag&Drop behoben
+
+---
+
+##### 2.4.2.1
+
+**Update**
+- Mopelaktivitäten:
+    - Neustrukturierung der API + Datenbank
+    - Angriffe + Plünderungen werden erfasst
+
+**Bugfix**
+- Menü:
+    - Speicherproblem beim verändern via Drag&Drop behoben
+
+---
+
+##### 2.4.2
+**Neu**
+- Investitionen:
+    - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) Gesamtübersicht FP eingefügt (Rathaus > Neuigkeiten > Legendäre Bauwerke)
+
+**Update**
+- Produtkübersicht:
+    - [#278](https://github.com/dsiekiera/foe-helfer-extension/issues/278) [#484](https://github.com/dsiekiera/foe-helfer-extension/issues/484) Güter Sortierung nach Zeitalter
+
+- Armeeübersicht:
+    - [#434](https://github.com/dsiekiera/foe-helfer-extension/issues/434) [#467](https://github.com/dsiekiera/foe-helfer-extension/issues/467) Neue Armee Boni integriert
+    
+- Verhandlungsassitent:    
+    - [#519](https://github.com/dsiekiera/foe-helfer-extension/issues/519) Nummerntasten Anzeige und Benutzung (erste Zahl Person, zweite Taste Gut + Leertaste abschicken)
+
+- Menü:
+    - [#561](https://github.com/dsiekiera/foe-helfer-extension/issues/561) Fenster schnell wieder ausblenden durch zweiten Klick in die Leiste
+
+**Bugfix**
+- Extension: 
+    - [#540](https://github.com/dsiekiera/foe-helfer-extension/issues/540) Extension wird bei allen forgeofempires.com Subseiten aktiv, die "game" enthalten
+
+- Menü:
+    - [#411](https://github.com/dsiekiera/foe-helfer-extension/issues/411) [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) doppelte Einträge gefixt
+
+- Verhandlungsassitent:
+    - [#421](https://github.com/dsiekiera/foe-helfer-extension/issues/421) Vorrats-Tooltip beim Verhandlungsassistent blieb sichtbar
+    - [#459](https://github.com/dsiekiera/foe-helfer-extension/issues/459) zeigte ausgeschlossene Güter
+    - [#491](https://github.com/dsiekiera/foe-helfer-extension/issues/491) Fehler beim Verhandlungsassistent
+    
+- FP-Lager:
+    - [#424](https://github.com/dsiekiera/foe-helfer-extension/issues/424) Kleiner Bug beim FP kaufen (Münzen Rechner)
+
+- Invobox:
+    - [#451](https://github.com/dsiekiera/foe-helfer-extension/issues/451) Falsche Anzahl der FP beim Level-Up/Info Box
+    - [#462](https://github.com/dsiekiera/foe-helfer-extension/issues/462) Infobox warf Exceptions
+
+- Kostenrechner:
+    - [#465](https://github.com/dsiekiera/foe-helfer-extension/issues/465) Anzeige Rest-FP aktive Schleifenquest fehlerhaft
+
+- Eigenanteilsrechner:
+    - [#501](https://github.com/dsiekiera/foe-helfer-extension/issues/501) Eigenanteilsrechner zeigt keine sicheren Plätze an
+
+- Forschungskosten:
+    - [#571](https://github.com/dsiekiera/foe-helfer-extension/issues/571) Forschungskosten für das Marszeitalter ergänzt
+
+- Ereignisse:
+    - [#499](https://github.com/dsiekiera/foe-helfer-extension/issues/499) Große Straße wird ausgeblendet, wenn nicht gebaut
+
+- Armeeübersicht:
+    - [#582](https://github.com/dsiekiera/foe-helfer-extension/issues/582) Icons der Arme-Einheiten waren verschwommen
+
+- Produtkübersicht:
+    - [#545](https://github.com/dsiekiera/foe-helfer-extension/issues/545) Ruhmeshalle wurde nicht dargestellt
+
+---
+
+##### 2.4.1.1
 
 **Bugfix**
 - Infobox:
@@ -30,7 +184,7 @@
 
 ---
 
-#####2.4.1
+##### 2.4.1
 
 **Neu**
 - Eventliste: 
@@ -107,7 +261,7 @@
 
 ---
 
-#####2.4.0.1
+##### 2.4.0.1
 
 **Neu**
 - Extension:
@@ -144,7 +298,7 @@
 
 ---
 
-#####2.4.0
+##### 2.4.0
 
 **BugFix**
 - Extension:
@@ -152,7 +306,7 @@
 
 ---
 
-#####2.3.15.1
+##### 2.3.15.1
 
 **Update**
 - Erntehelfer:
@@ -166,7 +320,7 @@
 
 ---
 
-#####2.3.15
+##### 2.3.15
 
 **Neu**
 - Gildengefechte: 
@@ -211,7 +365,7 @@
 
 ---
 
-#####2.3.14
+##### 2.3.14
 
 **Neu**
 - Extension:
@@ -222,7 +376,7 @@
 
 
 **Update**
-- EA Rechner:	
+- Eigenanteilsrechner:	
     - es werden nun die FP bis leveln des LGs angezeigt [#205](https://github.com/dsiekiera/foe-helfer-extension/issues/205)
     - es ist nun möglich den EA Rechner auch für bereits abgeschlossene Level zu verwenden, im LG rückwärts blättern
 
@@ -249,7 +403,7 @@
 
 ---
 
-#####v2.3.13
+##### v2.3.13
 **Neu**
 - Verhandlungsassistent:
     - schlägt durch berechnete Algorithmen passende Güter für jede Runde vor [#183](https://github.com/dsiekiera/foe-helfer-extension/issues/183)
@@ -265,7 +419,7 @@
 
 ---
 
-#####v2.3.12.5
+##### v2.3.12.5
 **BugFix**
 - Armee Übersicht:
     - Wenn ein Boost-LG fehlte wurde die Box nicht geladen [#185](https://github.com/dsiekiera/foe-helfer-extension/issues/185)
@@ -278,7 +432,7 @@
 
 ---
 
-#####v2.3.12.4
+##### v2.3.12.4
 **Update**
 Neues Tool:
     - Forschungen: 
@@ -296,7 +450,7 @@ Neues Tool:
 ---
 
 
-#####v2.3.12.3
+##### v2.3.12.3
 **Bugfix**
 - Extension:
     - Lautsprecher Icon nachgereicht
@@ -304,7 +458,7 @@ Neues Tool:
     
 ---
 
-#####v2.3.12.2
+##### v2.3.12.2
 **Bugfix**
 - Extension:
     - Spracherkennung für Changelog gefixt
@@ -313,7 +467,7 @@ Neues Tool:
     - Lautsprecher Icon gefixt
 ---
 
-#####v2.3.12.1
+##### v2.3.12.1
 **Update**
 - Extension: 
     - Boxen können nicht mehr "zu hoch" geschoben werden [#129](https://github.com/dsiekiera/foe-helfer-extension/issues/129) [#145](https://github.com/dsiekiera/foe-helfer-extension/issues/145)
@@ -323,7 +477,7 @@ Neues Tool:
     - Boost zu Vorräten hinzugefügt
 ---
 
-#####v2.3.12
+##### v2.3.12
 
 **BugFix**
 - Kostenrechner:
@@ -350,7 +504,7 @@ Neues Tool:
     
 ---
 
-#####v2.3.11.2 
+##### v2.3.11.2 
 
 **BugFix**
 - Extension:
@@ -358,7 +512,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.11.1 
+##### v2.3.11.1 
 
 **Update**
 - Info Box:
@@ -370,7 +524,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.11
+##### v2.3.11
 **Update**
 - Kostenrechner:
     - scannt bereits in der Übersicht ob es Gebäude gibt in die man investieren könnte und mekrt sich diese
@@ -390,7 +544,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.10.2
+##### v2.3.10.2
 
 **Bugfix**
 - Außenposten:
@@ -402,7 +556,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.10.1
+##### v2.3.10.1
 
 **Bugfix**
 - Extension:
@@ -416,7 +570,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.10
+##### v2.3.10
 
 **Update**
 - Kostenrechner:
@@ -434,7 +588,7 @@ Neues Tool:
     - in englischer Sprache brach der Text unschön um [#106](https://github.com/dsiekiera/foe-helfer-extension/issues/106)  
 ---
 
-#####v2.3.9.1
+##### v2.3.9.1
 
 **BugFix**
 - Kostenrechner:
@@ -452,7 +606,7 @@ Neues Tool:
     
 ---
 
-#####v2.3.9
+##### v2.3.9
 
 **Neu**
 - Extension:
@@ -461,7 +615,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.8
+##### v2.3.8
 **Neu**
 - Extension:
     - Englische Übersetzung integriert
@@ -476,7 +630,7 @@ Neues Tool:
 ---
 
 
-#####v2.3.7.1
+##### v2.3.7.1
 
 - Produkt Übersicht:
     - Kopf-Filter angepasst [#92](https://github.com/dsiekiera/foe-helfer-extension/issues/92)
@@ -488,7 +642,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.7
+##### v2.3.7
 
 **BugFix**
 - Außenposten:
@@ -504,7 +658,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.6.1
+##### v2.3.6.1
 
 **BugFix**
 - Erntehelfer (CityMap):
@@ -512,7 +666,7 @@ Neues Tool:
     
 ---
 
-#####v2.3.6
+##### v2.3.6
 
 **Neu**
 - Produkt Übersicht:
@@ -546,7 +700,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.5
+##### v2.3.5
 
 **Update**
 - Außenposten:
@@ -564,7 +718,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.4
+##### v2.3.4
 **Update**
 - FP-Lager Anzeige:
 	- wird nun beim Spielstart ermittelt
@@ -585,7 +739,7 @@ Neues Tool:
 ---
 
 
-#####v2.3.3
+##### v2.3.3
 **BugFix**
 - Kostenrechner:
 	- erkennt nun Besitzer, gelöschte User und P6 ohne Gewinn
@@ -596,7 +750,7 @@ Neues Tool:
 ---
 
 
-#####v2.3.2
+##### v2.3.2
 **BugFix**
 - Menü:
 	- Neue Startup-Prozedur, stabilerer Start der Extension
@@ -607,7 +761,7 @@ Neues Tool:
 ---
 
 
-#####v2.3.1
+##### v2.3.1
 **BugFix**
 - Außenposten:
 	- Erkennung der Güter angepasst, startet nun sauber
@@ -617,7 +771,7 @@ Neues Tool:
 
 ---
 
-#####v2.3.0
+##### v2.3.0
 **BugFix**
 - Extension:
 	- überarbeitet, Cache Problem gelöst
@@ -625,14 +779,14 @@ Neues Tool:
 
 ---
 
-#####v2.2.16
+##### v2.2.16
 **BugFix**
 - Außenposten:
 	- kleiner Logikfehler verhindert den ersten Start des Fensters
 
 ---
 
-#####v2.2.15
+##### v2.2.15
 
 **Neu**
 - TavernenBooster:
@@ -651,7 +805,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.14
+##### v2.2.14
 
 **Update**
 - Live-Chat:
@@ -672,7 +826,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.13
+##### v2.2.13
 
 **Update**
 - Extension:
@@ -686,7 +840,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.12
+##### v2.2.12
 **Update**
 - Kostenrechner:
 	- Erntezeitpunkt des offnen LGs wird dargestellt
@@ -695,7 +849,7 @@ Neues Tool:
 ---
 
 
-#####v2.2.11
+##### v2.2.11
 **Update**
 - Kostenrechner:
 	- eigene Einzahlungen werden blau markiert
@@ -713,7 +867,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.10
+##### v2.2.10
 **Update**
 
 - Eigenanteilsrechner:
@@ -728,7 +882,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.9
+##### v2.2.9
 **Update**
 - Boxen:
 	- Können ab sofort minimiert werden wenn der Platz knapp ist
@@ -741,7 +895,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.8
+##### v2.2.8
 **Bugfix**
 - Eigenanteilsrechner:
 	- Kopierbuttons zeigen falsche Werte, behoben
@@ -749,14 +903,14 @@ Neues Tool:
 
 ---
 
-#####v2.2.7
+##### v2.2.7
 **Bugfix**
 - Eigenanteilsrechner:
 	- Fehlendes Objekt mit den Plätzen für die Kopierbuttons ergänzt
 
 ---
 
-#####v2.2.6
+##### v2.2.6
 **Update**
 - Kostenrechner:
 	- Zeigt an wann die letzte Einzahlung war, so kann geprüft werden ob das LG derzeit überhaupt gelevelt wird
@@ -767,7 +921,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.5
+##### v2.2.5
 **Update**
 - FP Produktion:
 	- Gruppierung und Sortierung integriert
@@ -779,14 +933,14 @@ Neues Tool:
 
 ---
 
-#####v2.2.4
+##### v2.2.4
 **Update**
 - Eigenanteilsrechner:
 	- Archeprozente von den eigenen Arche Werten entkoppelt => eigenes Eingabefeld für Einzahlungen
 
 ---
 
-#####v2.2.3
+##### v2.2.3
 **Update**
 - Eigenanteilsrechner:
 	- Dropdowns entfernt, maximale Stufen aufgehoben
@@ -794,7 +948,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.2
+##### v2.2.2
 **Update**
 - Kostenrechner: 
 	- Zeigt nun an ob ein Platz mit den eingezahlten FP "save" ist. Danke an Lashandan von Rugnir dafür!
@@ -803,7 +957,7 @@ Neues Tool:
 
 ---
 
-#####v2.2.1
+##### v2.2.1
 **Update**
 - Gildenchat: 
 	- Emotes wie im WhatsApp integriert und auswählbar
@@ -811,14 +965,14 @@ Neues Tool:
 	- Strings die als URL erkannt werden, werden zu URLs umgebaut und sind anklickbar
 
 ---
-#####v2.2.0
+##### v2.2.0
 **Update**
 - Gildenchat: - wurde in ein eigenes Fenster verschoben, ebenso wurden Emojis hinzugefügt (Zeichen wie ;) oder :D aber auch named Emoyies wie :beer:, :heart: oder :cat: sind möglich)
 - Extension: - Stylesheet wird ab sofort mit Versionsnummer geladen, sorgt immer für eine aktuelle Ansicht
 
 ---
 
-#####v2.1.1
+##### v2.1.1
 **Update**
 - Extension: Komplette Größe der Extension verkleinert
 
@@ -827,7 +981,7 @@ Neues Tool:
 
 ---
 
-#####v2.1.0
+##### v2.1.0
 **Neu**
 - GildenChat: - BetaPhase _(Funktioniert wirklich nur wenn er offen ist und nur innerhalb der Gilde)_
 
@@ -840,13 +994,13 @@ Neues Tool:
 
 ---
 
-#####v2.0.2
+##### v2.0.2
 **Bugfix**
 - "Erntehelfer": wurde Aufgrund eines Objektfehlers nicht dargestellt
 
 ---
 
-#####v2.0.1
+##### v2.0.1
 **Update**
 - Gebäudenamen sind aktuell
 
@@ -855,7 +1009,7 @@ Neues Tool:
 
 ---
 
-#####v2.0.0
+##### v2.0.0
 **Neu**
 - Menü: neues Menü am rechten Bildrand
 - Kostenrechner: aktiviert sich beim ersten öffnen eines fremden LGs
@@ -864,7 +1018,7 @@ Neues Tool:
 ---
 
 
-#####v1.9.5
+##### v1.9.5
 **Neu**
 - Kostenrechner: die Anzeige im Fenster aktualisiert sich beim einzahlen
 
@@ -875,26 +1029,26 @@ Neues Tool:
 ---
 
 
-#####v1.9.4
+##### v1.9.4
 **Bugfix**
 - Eigenanteilsrechner: Button arbeitet jetzt sauber mit den Tabs
 - Kostenrechner: Button arbeitet jetzt sauber mit den Tabs
 
 ---
 
-#####v1.9.2
+##### v1.9.2
 **Bugfix**
 - Scripte: Versionierung eingefügt
 
 ---
 
-#####v1.9.1
+##### v1.9.1
 **Bugfix**
 - Einstellungen: Bonus ließ sich nicht speichern
 
 ---
 
-#####v1.9.0
+##### v1.9.0
 **Update**
 - Scripte: Performance Schub durch neue Logik
 
@@ -903,7 +1057,7 @@ Neues Tool:
 
 ---
 
-#####v1.8.5
+##### v1.8.5
 **Update**
 - Einstellungen: Es muss keine Player-ID oder Gilden-ID mehr angegeben werden
 
@@ -912,44 +1066,44 @@ Neues Tool:
 
 ---
 
-#####v1.8.4
+##### v1.8.4
 **Bugfix**
 - Eigenanteilsrechner: Button wird wieder korrekt angezeigt
 
 ---
 
-#####v1.8.3
+##### v1.8.3
 **Update**
 - Motivationen: Es wird nun auch der Rang innerhalb der Freundesliste übertragen
 
 ---
 
-#####v1.8.2
+##### v1.8.2
 **Update**
 - Nachbar-Produktionen: Alle Übersetzungen sind Verfügbar
 
 ---
 
-#####v1.8.1
+##### v1.8.1
 **Update**
 - Mutliworld: Extra Kennung für den Chrome Storage ergänzt
 
 ---
 
-#####v1.8.0
+##### v1.8.0
 **Neu**
 - Mutliworld: Ab sofort werden alle Welten eines Spielers unterstützt
 
 ---
 
-#####v1.7.3
+##### v1.7.3
 **Update**
 - Nachbar-Produktionen:
-	- Jede Menge Übersetungen eingefügt
+	- Jede Menge Übersetzungen eingefügt
 
 ---
 
-#####v1.7.2
+##### v1.7.2
 **Update**
 - Benachrichtigungen sind Zeitgesteuert und verschwinden nun schneller, je nach Typ
 - Mit der ESC-Taste können alle Buttons + Overlays geschlossen werden
@@ -961,13 +1115,13 @@ Neues Tool:
 
 ---
 
-#####v1.7.1
+##### v1.7.1
 **Update**
 - Initial-Scripte konnten blockiert werden, geht nun
 
 ---
 
-#####v1.7.0
+##### v1.7.0
 **Neu**
 - Eigenanteilsrechner integriert
 
@@ -978,7 +1132,7 @@ _Hinweis: Beide Rechner reagieren auf den [X]- und [Schliessen]-Button des Haupt
 
 ---
 
-#####v1.6.0
+##### v1.6.0
 **Update**
 - App: Name geändert
 - Benachrichtigung: System eigene Benachrichtigungen, weniger Code, App ist schneller
@@ -989,19 +1143,19 @@ _Hinweis: Beide Rechner reagieren auf den [X]- und [Schliessen]-Button des Haupt
 
 ---
 
-#####v1.5.2
+##### v1.5.2
 **Update**
 - Benachrichtigung: neues Stack-Message System integriert (Nachrichten können sich oben rechts sammeln)
 
 ---
 
-#####v1.5.1
+##### v1.5.1
 **Update**
 - Motivationen: kleine Ergänzung um alle Freunde korrekt zu ermitteln
 
 ---
 
-#####v1.5.0
+##### v1.5.0
 **Neu**
 - Motiviation (Moppeln): Werden aus der Eventübersicht ermittelt und und können in den [Statistiken](/stats/motivations) eingesehen werden => [FAQ / Bedienung](/faq/chrome-extension#motivationskontrolle)
 
@@ -1015,7 +1169,7 @@ _Hinweis: Beide Rechner reagieren auf den [X]- und [Schliessen]-Button des Haupt
 
 ---
 
-#####v1.4.1
+##### v1.4.1
 **Update**
 - Im Einstellungsfenster kann ein eigener Arche Standard Wert hinterlegt werden, für den Kostenrechner
 
@@ -1025,31 +1179,31 @@ _Hinweis: Beide Rechner reagieren auf den [X]- und [Schliessen]-Button des Haupt
 
 ---
 
-#####v1.4.0
+##### v1.4.0
 **Neu**
 - Kostenrechner: zeigt beim öffnen eines nicht eigenen LGs die Plätze und dessen Bonus an
 
 ---
 
-#####v1.3.0
+##### v1.3.0
 **Neu**
 - Freundes Taverne kann ausgewertet auswerten
 
 
 ---
-#####v1.2.0
+##### v1.2.0
 **Neu**
 - LG Investitionen werden übergeben und ausgewertet
 
 
 ---
-#####v1.1.0
+##### v1.1.0
 **Bugfix**
 - das Mitteilungsfenster erschien nicht immer trotz Datenübertragung
 
 ---
 
-#####v1.0.0
+##### v1.0.0
 - Werte der Gildenmitglieder werden übertragen und ausgewertet
 - LGs der Gildenmitglieder werden ausgewertet
 - Plazierung der Gilde in der GEX wird ausgewertet

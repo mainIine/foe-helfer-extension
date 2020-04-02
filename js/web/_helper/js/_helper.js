@@ -39,7 +39,7 @@ helper.str = {
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
 	copyToClipboard: function(textToCopy){
-		var copyFrom = $('<textarea/>');
+		let copyFrom = $('<textarea/>');
 		copyFrom.text(textToCopy);
 		$('body').append(copyFrom);
 		copyFrom.select();
@@ -115,7 +115,7 @@ helper.permutations = (()=>{
 				}
 			}
 		}
-	}
+	};
 	return permutations;
 })();
 
@@ -168,7 +168,7 @@ let HTML = {
 		// es gibt gespeicherte Koordinaten
 		if(cords !== null){
 			let c = cords.split('|');
-			div.offset({ top: c[0], left: c[1]});
+			div.offset({ top: Math.min(c[0], window.innerHeight - 50), left: Math.min(c[1], window.innerWidth - 100) });  // Verhindere, dass Fenster außerhalb plaziert werden
 		}
 
 		// Ein Link zu einer Seite
@@ -350,6 +350,26 @@ let HTML = {
 				localStorage.setItem(id + 'Size', size);
 			},
 		});
+	},
+
+
+	/**
+	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
+	 *
+	 * @param cssid
+	 * @returns {boolean}
+	 */
+	CloseOpenBox: (cssid)=> {
+
+		let box = $('#' + cssid);
+
+		if( box.length > 0 ){
+			$(box).fadeToggle('fast', function(){
+				$(this).remove();
+			});
+		}
+
+		return false;
 	},
 
 

@@ -22,7 +22,10 @@ let Settings = {
 		Version: {
 			callback: 'VersionInfo',
 			title: i18n('Settings.Version.Title'),
-			desc: (devMode === true ? HTML.i18nReplacer(i18n('Settings.Version.DescDebug'), {version: extVersion, language: (GuiLng === 'de' ? 'de' : 'en')}) : i18n('Settings.Version.Desc'))
+			desc: HTML.i18nReplacer(i18n('Settings.Version.Desc'), {
+				version: extVersion,
+				language: (GuiLng === 'de' ? 'de' : 'en')
+			})
 		},
 		GlobalSend : {
 			status: true,
@@ -84,7 +87,15 @@ let Settings = {
 			callback: 'LanguageDropdown',
 			title : i18n('Settings.ChangeLanguage.Title'),
 			desc : i18n('Settings.ChangeLanguage.Desc')
+		},
+		/*
+		CustomerApi : {
+			status: false,
+			callback: 'CustomerApiCheck',
+			title : i18n('Settings.CustomerApi.Title'),
+			desc : i18n('Settings.CustomerApi.Desc')
 		}
+		*/
 	},
 
 
@@ -103,6 +114,9 @@ let Settings = {
 				title: i18n('Boxes.Settings.Title'),
 				auto_close: true
 			});
+
+		} else {
+			HTML.CloseOpenBox('SettingsBox');
 		}
 
 		Settings.BuildBody();
@@ -140,26 +154,22 @@ let Settings = {
 					)
 				);
 
+			let s = localStorage.getItem(key);
+
+			if(s !== null){
+				status = JSON.parse(s);
+			}
 
 			if(d['callback'] !== undefined) {
 				cs.html( Settings[d['callback']]() );
 
-			} else {
-				let s = localStorage.getItem(key);
+			} else if(status === undefined){
+				let b = $('<span />').addClass('button-wrapper').append(
+					$('<button class="btn-default" id="' + button + '" onclick="Settings.' + button + '()">' + d['buttonText'] + '</button>')
+				);
 
-				if(s !== null){
-					status = JSON.parse(s);
-				}
-
-				if(status === undefined){
-					let b = $('<span />').addClass('button-wrapper').append(
-						$('<button class="btn-default" id="' + button + '" onclick="Settings.' + button + '()">' + d['buttonText'] + '</button>')
-					);
-
-					cs.html(b);
-				}
+				cs.html(b);
 			}
-
 
 			ct.text(d['title']);
 			cd.html(d['desc']);
@@ -280,6 +290,13 @@ let Settings = {
 		});
 
 		return dp.join('');
+	},
+
+
+	CustomerApiCheck: ()=> {
+		$('body').on('change', '[data-id="CustomerApi"]', function(){
+			location.reload();
+		});
 	},
 
 

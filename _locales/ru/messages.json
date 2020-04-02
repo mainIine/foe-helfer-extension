@@ -4,7 +4,7 @@
 		"description": "The title of the application, displayed in the web store."
 	},
 	"appDesc": {
-		"message": "Небольшие инструменты и помощники, улучшающие игру Forge of Empires",
+		"message": "Небольшие утилиты и помощники, улучшающие процесс игры Forge of Empires",
 		"description":"The description of the application, displayed in the web store."
 	}
 }

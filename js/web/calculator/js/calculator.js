@@ -120,6 +120,7 @@ let Calculator = {
 			HTML.AddCssFile('calculator');
 
             Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
+
         }
 
 		let PlayerID = Calculator.CityMapEntity['player_id'],
@@ -314,8 +315,8 @@ let Calculator = {
 			hBPMeds = [],
 			hSnipen = [],
 			BestKurs = 999999,
-			BestKursNettoFP = undefined,
-			BestKursEinsatz = undefined,
+			BestKursNettoFP = 0,
+			BestKursEinsatz = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
@@ -537,7 +538,7 @@ let Calculator = {
 				EinsatzClass = (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : ''), //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
 				EinsatzText = HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff), //Default: Einsatz + ForderRankDiff
 				EinsatzTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': FPNettoRewards[Rank], 'forderfactor': (100 + Calculator.ForderBonus), 'costs': ForderFPRewards[Rank] })],
-
+				
 				GewinnClass = (ForderGewinn >= 0 ? 'success' : 'error'), //Default: Grün wenn >= 0 sonst rot
 				GewinnText = HTML.Format(ForderGewinn), //Default: Gewinn
 				GewinnTooltip,
@@ -545,6 +546,10 @@ let Calculator = {
 				KursClass,
 				KursText,
 				KursTooltip = [];
+
+			if (ForderFPRewards[Rank] > StrategyPoints.AvailableFP) {
+				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': ForderFPRewards[Rank], 'tooless': (ForderFPRewards[Rank] - StrategyPoints.AvailableFP) }));
+			}
 
 			if (ForderGewinn > 0) {
 				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
@@ -675,12 +680,18 @@ let Calculator = {
 			EinsatzClass = (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : ''); //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
 			EinsatzText = HTML.Format(SnipeRankCosts[Rank]) //Default: Einsatz
 			EinsatzTooltip = [];
+			
 			GewinnClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn >= 0 sonst rot
 			GewinnText = HTML.Format(SnipeGewinn); //Default: Gewinn
 			GewinnTooltip = [];
-			KursClass = '';
+
+			KursClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn Gewinn sonst rot
 			KursText = (SnipeGewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-'); //Default: Kurs anzeigen bei Gewinn
 			KursTooltip = [];
+
+			if (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP) {
+				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTSnipeFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': SnipeRankCosts[Rank], 'tooless': (SnipeRankCosts[Rank] - StrategyPoints.AvailableFP) }));
+			}
 
 			if (SnipeGewinn > 0) {
 				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': SnipeCosts, 'profit': SnipeGewinn })]
@@ -696,7 +707,7 @@ let Calculator = {
 
 				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
 					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
 				}
 				else {
 					EinsatzClass = 'info';
