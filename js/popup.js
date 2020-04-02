@@ -13,6 +13,7 @@
  */
 
 let lng = window.navigator.language.split('-')[0];
+
 let i18n = {
 	'de' : {
 		'title' : 'FoE Helfer',
@@ -52,7 +53,13 @@ $(function(){
 
 	if(lng !== 'de'){
 		$('[data-translate]').each(function(){
-			$(this).html( i18n(lng+'.'+$(this).data('translate') ))
+			let txt = $(this).data('translate');
+
+			if( i18n[lng][txt] !== undefined ){
+				$(this).html( i18n[lng][txt]);
+			} else {
+				$(this).html( i18n['en'][txt]);
+			}
 		});
 	}
 });

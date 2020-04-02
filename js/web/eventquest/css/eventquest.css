@@ -1,7 +1,7 @@
 /*
  * **************************************************************************************
  *
- * Dateiname:                 eventmap.css
+ * Dateiname:                 eventquest.css
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
@@ -16,7 +16,7 @@
  #event {
 	top: 30%;
 	right: 15%;
-	width: 500px;
+	width: 525px;
 }
 
 #event #eventBody {
@@ -64,4 +64,18 @@
 
 #event #eventBody td {
 	position: relative;
+}
+
+
+
+#eventchests {
+	top: 100px;
+	left: 48%;
+}
+
+#eventchests td.border-right {
+	border-right: 1px solid #3d250f;
+}
+#eventchests td.border-left {
+	border-left: 1px solid #7F5A34;
 }

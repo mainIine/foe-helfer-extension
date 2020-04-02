@@ -45,7 +45,7 @@
 			}
 
 			chrome.tabs.create({
-				url: 'https://foe-rechner.de/extension/chrome?v=' + version + '&lang=' + lng
+				url: 'https://foe-rechner.de/extension/update?v=' + version + '&lang=' + lng
 			});
 		}
 	});
@@ -94,7 +94,7 @@
 
 		} else if(request.type === 'chat'){
 
-			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&name' + encodeURI(request.name) + '&guild=' + request.guild + '&world=' + request.world,
+			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&world=' + request.world,
 				popupUrl = chrome.runtime.getURL(url);
 
 			// Prüfen ob ein PopUp mit dieser URL bereits existiert

@@ -383,6 +383,8 @@ let Productions = {
 		};
 
 		if( $('#Productions').length > 0 ){
+			HTML.CloseOpenBox('Productions');
+
 			return ;
 		}
 
@@ -579,7 +581,7 @@ let Productions = {
 
 				// Sortierung - Einzelheader
 				table.push('<tr class="sorter-header">');
-				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">Name</th>');
+				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');

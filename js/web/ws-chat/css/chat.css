@@ -29,9 +29,8 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	padding: 0.2rem 1rem;
+	padding: 0.3rem 1rem;
 	font-size: 0.8rem;
-	line-height: 1.5;
 	background: rgb(183,112,55);
 	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
 	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
@@ -155,7 +154,11 @@ body {
 	display: flex;
 	flex-wrap: nowrap;
 	border-bottom: 1px solid #644c34;
-	background: url('../images/chat-bg.png') center top/contain repeat-y;
+	background: #f5ebc6;
+}
+
+#ChatBody #chat #top-bar .btn-default:not(:last-child) {
+	margin-right: 0.625rem;
 }
 
 #chat #message_box {
@@ -206,13 +209,14 @@ body {
 	border-bottom-width: 0;
 }
 
-.chat-panel input {
+.chat-panel input, .chat-panel textarea {
 	width: 100%;
 	background-color: #f5ebc6;
 	color: #644c34;
 	padding: 4px 4px 4px 24px;
 	border: none;
 	height: 25px;
+	resize: none;
 }
 
 .chat-panel button {
@@ -227,15 +231,6 @@ body {
 	font-weight: 700;
 	border-top-width: 0;
 	cursor: pointer;
-}
-
-#chat::-webkit-scrollbar {
-	width: 8px;
-}
-
-#chat::-webkit-scrollbar-thumb {
-	background: #281207;
-	border-radius: 10px;
 }
 
 #chat .big-box {
@@ -340,15 +335,16 @@ body {
 	max-height: 100px;
 	overflow: hidden;
 	overflow-y: auto;
-	bottom: -101px;
+	top: 0px;
 	left: 0;
 	right: 0;
 	background-color: rgba(0,0,0, 0.3);
-	transition: bottom 0.45s ease-in-out;
+	transition: top 0.45s ease-in-out;
+	z-index: -1;
 }
 
 .emoticon-bar.show {
-	bottom: 34px;
+	top: -101px;
 }
 
 .emoticon-bar img {
@@ -357,11 +353,17 @@ body {
 	cursor: pointer;
 }
 
-.emoticon-bar::-webkit-scrollbar {
+/* Scrollbars */
+
+.emoticon-bar::-webkit-scrollbar,
+#chat::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
 	width: 8px;
 }
 
-.emoticon-bar::-webkit-scrollbar-thumb {
+.emoticon-bar::-webkit-scrollbar-thumb,
+#chat::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
 }

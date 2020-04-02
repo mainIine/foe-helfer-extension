@@ -13,6 +13,211 @@
  * **************************************************************************************
  */
 
+// @ts-ignore
+const html = litHtml.html;
+// @ts-ignore
+const render = litHtml.render;
+
+class Player {
+
+	/**
+	 * 
+	 * @param {string} id 
+	 * @param {string} name 
+	 * @param {string} portrait 
+	 * @param {boolean} secretsMatch 
+	 */
+	constructor (id, name, portrait, secretsMatch) {
+		this.id = id;
+		this.name = null;
+		this.portrait = null;
+		this.secretsMatch = !secretsMatch;
+		this.elem = document.createElement('div');
+		this.portraitImg = null;
+		this.nameSpan = document.createElement('span');
+
+		this.elem.appendChild(this.nameSpan);
+		document.getElementById('users').appendChild(this.elem);
+		this.update(name, portrait, secretsMatch);
+	}
+
+	/**
+	 * 
+	 * @param {string} name 
+	 * @param {string} portrait 
+	 * @param {boolean} secretsMatch 
+	 */
+	update(name, portrait, secretsMatch) {
+		this.updateName(name);
+		this.updatePortrait(portrait);
+		this.updateSecretsMatch(secretsMatch);
+	}
+
+	/**
+	 * 
+	 * @param {string} name 
+	 */
+	updateName(name) {
+		if (this.name === name) return;
+
+		// update name
+		this.name = name;
+		this.nameSpan.innerText = name;
+	}
+
+	/**
+	 * 
+	 * @param {string} portrait 
+	 */
+	updatePortrait(portrait) {
+		if (this.portrait === portrait) return;
+
+		// update Portrait image
+		this.portrait = portrait;
+		const portraitFile = this.portraitURL;
+		if (portraitFile) {
+			let img = this.portraitImg;
+
+			// create new if needed
+			if (!img) {
+				img = document.createElement('img');
+				this.elem.insertBefore(img, this.nameSpan);
+				this.portraitImg = img;
+			}
+	
+			// update src if needed
+			if (portrait !== this.portrait) {
+				img.src = `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
+			}
+		} else {
+			// remove if needed
+			if (this.portraitImg) {
+				this.portraitImg.remove();
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param {boolean} secretsMatch 
+	 */
+	updateSecretsMatch(secretsMatch) {
+		if (this.secretsMatch === secretsMatch) return;
+		// update "trusted" class
+		this.secretsMatch = secretsMatch;
+		if (secretsMatch) {
+			this.elem.classList.add('trusted');
+		} else {
+			this.elem.classList.remove('trusted');
+		}
+
+	}
+
+	remove() {
+		this.elem.remove();
+		Player.all.delete(this.id);
+	}
+
+	get portraitURL() {
+		const portraitFile = Chat.PlayersPortraits[this.portrait];
+		if (portraitFile) {
+			return `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
+		}
+		return null;
+	}
+
+
+
+	/**
+	 * @param {string} id 
+	 * @param {string} [name] 
+	 * @param {string} [portrait]
+	 * @param {boolean} [secretsMatch] 
+	 * @returns {Player|undefined}
+	 */
+	static get(id, name, portrait, secretsMatch) {
+		let player = Player.all.get(id);
+		if (player == null) {
+			player = new Player(
+				id,
+				name||'Unknown#'+id,
+				portrait || '',
+				secretsMatch || false
+			);
+			Player.all.set(id, player);
+		} else {
+			if (name != null && portrait != null && secretsMatch != null) {
+				player.update(name, portrait, secretsMatch);
+			}
+		}
+		return player;
+	}
+}
+
+/**
+ * @type {Map<string, Player>}
+ */
+Player.all = new Map();
+
+const messageFormatter = (() => {
+	const defaultRules = SimpleMarkdown.defaultRules;
+	
+	/** @type {SimpleMarkdown.ParserRule & SimpleMarkdown.HtmlOutputRule} */
+	const lineRule = {
+		match: SimpleMarkdown.inlineRegex(/^([^\n]*)\n/),
+		order: defaultRules.text.order - 0.5,
+		parse: SimpleMarkdown.defaultRules.strong.parse,
+		html: (node, output, state) => output(node.content, state)+'<br>'
+	};
+
+	/** @type {SimpleMarkdown.ParserRule & SimpleMarkdown.HtmlOutputRule} */
+	const emojiRule = {
+		match: text => {
+			let match = /^:(\S+):/.exec(text);
+			if(match && emojify.emojiNames.indexOf(match[1]) !== -1) {
+				return match;
+			}
+			return null;
+		},
+		order: defaultRules.em.order - 0.5,
+		parse: (capture, parse, state) => ({emoji: capture[1]}),
+		html: (node, output, state) => {
+			console.log(node, output, state);
+			return emojify.replace(`:${node.emoji}:`);
+		}
+	};
+
+	const rules = {
+		Array: defaultRules.Array,
+		list: defaultRules.list,
+		table: defaultRules.table,
+		escape: defaultRules.escape,
+		url: defaultRules.url,
+		emoji: emojiRule,
+		em: defaultRules.em,
+		strong: defaultRules.strong,
+		u: defaultRules.u,
+		inlineCode: defaultRules.inlineCode,
+		line: lineRule,
+		text: defaultRules.text
+	}
+
+	const parser = SimpleMarkdown.parserFor(rules, {inline: true});
+	const renderer = SimpleMarkdown.outputFor(rules, 'html');
+
+	/**
+	 * @param {string} input
+	 * @returns {string}
+	 */
+	function formatter(input) {
+		return renderer(parser(input));
+	}
+
+	return formatter;
+})();
+
+
+
 let Chat = {
 
 	GuildID: 0,
@@ -21,7 +226,7 @@ let Chat = {
 	PlayerName: null,
 	PlayerPortrait: null,
 	World: '',
-	OtherPlayers: [],
+	OtherPlayers: /** @type {{player_name: string, player_id: Number, avatar: string, secretsMatch: boolean}[]} */([]),
 	PlayersPortraits: {},
 	OnlinePlayers: [],
 	OwnName: '',
@@ -79,7 +284,6 @@ let Chat = {
 			})
 		;
 
-
 		const playerIdentities = JSON.parse(localStorage.getItem('PlayerIdentities')||'{}');
 		const playerData = playerIdentities[world+'-'+player_id];
 
@@ -89,19 +293,6 @@ let Chat = {
 
 			Chat.GuildID = playerData.guild_id;
 			Chat.GuildName = playerData.guild_name;
-
-			let playerInfo = Chat.OtherPlayers.find(p => p.player_id === player_id);
-			if (playerInfo) {
-				playerInfo.player_name = Chat.PlayerName;
-				playerInfo.avatar = Chat.PlayerPortrait;
-			} else {
-				Chat.OtherPlayers.push({
-					player_id: player_id,
-					player_name: Chat.PlayerName,
-					avatar: Chat.PlayerPortrait
-				});
-			}
-
 		} else {
 			throw "Missing Player Data";
 		}
@@ -114,10 +305,11 @@ let Chat = {
 	/**
 	 * Zündet die Chatbox und stellt eine Verbindung mit dem WebSocket Server her
 	 */
-	Init: ()=> {
+	Init: () => {
 
-		const template = document.createElement('template');
-		template.innerHTML = `
+		// const template = document.createElement('template');
+		// template.innerHTML
+		const template = html`
 			<div class="chat-wrapper">
 				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 				<div id="chat">
@@ -130,23 +322,22 @@ let Chat = {
 				</div>
 			</div>
 			<div class="chat-panel">
-				<input id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"><button id="send-btn">Senden</button>
+				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">Senden</button>
 			</div>
 		`;
 
 		const box = document.getElementById('ChatBody');
-		box.appendChild(template.content);
+		// box.appendChild(template.content);
+		render(template, box);
 		//$('#ChatBody').append(div);
 
 
 		setTimeout(
 			function(){
 				Chat.Functions();
-				Chat.Members();
 
 				// alles geladen, Loader entfernen
-				document.getElementById('ChatBody').classList.remove('loader');
-				// $('#ChatBody').removeClass('loader');
+				$('#ChatBody').removeClass('loader');
 			}, 100
 		);
 
@@ -171,13 +362,14 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
+		// let wsUri = 'ws://localhost:9000/';
 		let wsUri = 'ws://ws.foe-rechner.de:9000/';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
 
 		// Verbindung wurde hergestellt
-		Chat.WebsocketChat.onopen = ()=> {
+		Chat.WebsocketChat.onopen = () => {
 			const setupData = {
 				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
 				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
@@ -186,15 +378,10 @@ let Chat = {
 				portrait: Chat.PlayerPortrait || '',
 				connectionId: connectionId
 			};
+			console.log('setup', setupData);
 			Chat.WebsocketChat.send(JSON.stringify(setupData));
 
 			Chat.SystemRow('Verbunden!', 'success');
-
-			// setTimeout(
-			// 	function(){
-			// 		Chat.SendMsg('onlyOthers', 'entered');
-			// 	}, 500
-			// );
 		};
 
 
@@ -225,13 +412,34 @@ let Chat = {
 	 */
 	Functions: ()=> {
 
-		// User benutzt [Enter] zum schreiben
-		document.getElementById('message-input').addEventListener('keydown', function(e) {
-			if (e.which == 13 || e.keyCode == 13) {
-				e.preventDefault();
+		function autosize(el) {
+			setTimeout(function() {
+				el.style.cssText = 'height:auto; padding:0';
+				// for box-sizing other than "content-box" use:
+				// el.style.cssText = '-moz-box-sizing:content-box';
+				el.style.cssText = 'height:' + Math.min(el.scrollHeight, 150) + 'px';
+			}, 0);
+		}
 
-				Chat.SendMsg();
+		// User benutzt [Enter] zum schreiben
+		const input = document.getElementById('message-input');
+		input.addEventListener('keydown', function(e) {
+			
+			if (e.which == 13 || e.keyCode == 13) {
+				const shift = e.shiftKey;
+				const kombi = e.ctrlKey || e.altKey || e.metaKey;
+
+				if (!kombi && !shift) {
+					Chat.SendMsg();
+				}
+
+				if (kombi || !shift) {
+					e.preventDefault();
+				}
+
 			}
+
+			autosize(e.currentTarget);
 		});
 
 		document.getElementById('send-btn').addEventListener('click', function(){
@@ -263,51 +471,16 @@ let Chat = {
 
 		window.addEventListener('beforeunload', /*$(window).on("beforeunload",*/ function(){
 
-			this.document.getElementById('ChatBody').classList.add('loader');
-			// $('#ChatBody').addClass('loader');
+			$('#ChatBody').addClass('loader');
+
+			localStorage.removeItem('CurrentPlayerID');
+			localStorage.removeItem('CurrentPlayerName');
+			localStorage.removeItem('CurrentGuildID');
+			localStorage.removeItem('CurrentWorld');
 
 			Chat.Close();
-
-			console.log('AJAX-Functions-BeforeUnload')
-			// $.ajax({
-			// 	type: 'POST',
-			// 	async: false,
-			// 	data: {room_id: 1, dir: 'leave'},
-			// 	url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World
-			// });
 		});
 	},
-
-
-	/**
-	 * Holt alle "anwesenden" aus der DB
-	 *
-	 */
-	Members: ()=> {
-		console.log('AJAX-Members')
-		// $.ajax({
-		// 	type: 'POST',
-		// 	url: 'https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World,
-		// 	data: {room_id: 1, dir: 'enter'},
-		// 	dataType: 'json',
-		// 	success: function(r){
-
-		// 		for(let i in r['data']){
-
-		// 			let Player = Chat.OtherPlayers.find(obj => {
-		// 				return obj.player_id === r['data'][i];
-		// 			});
-
-		// 			if(Player['player_id'] === Chat.PlayerID){
-		// 				Chat.OwnName =  Player['player_name'];
-		// 			}
-
-		// 			Chat.UserEnter(Player);
-		// 		}
-		// 	}
-		// });
-	},
-
 
 	/**
 	 * Nachricht senden
@@ -398,94 +571,92 @@ let Chat = {
 
 		switch (message.type) {
 			case 'members': {
-				/** @type {{playerId: number, name: string, portrait: string, secretsMatch: boolean}[]} */
+				/** @type {{playerId: string, name: string, portrait: string, secretsMatch: boolean}[]} */
 				const members = message.members;
 				console.log(message)
 				for (let data of members) {
-					const {playerId: player_id, name, portrait, secretsMatch} = data;
-					let Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
-					if (Player) {
-						Player.player_name = name;
-						Player.avatar = portrait;
-						Player.secretsMatch = secretsMatch;
-					} else {
-						Player = {
-							player_id: player_id,
-							player_name: name,
-							avatar: portrait,
-							secretsMatch: secretsMatch
-						};
-						Chat.OtherPlayers.push(Player);
-					}
-					Chat.UserEnter(Player);
+					const {playerId, name, portrait, secretsMatch} = data;
+					Player.get(playerId, name, portrait, secretsMatch);
+					//Chat.UserEnter(Player);
 				}
 				break;
 			}
 			case 'secretChange': {
-				const player_id = message.player;
-				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id);
-				if (Player) {
-					Player.secretsMatch = message.secretsMatch;
-					Chat.UserEnter(Player);
-				}
+				const player = Player.get(message.player);
+				player.updateSecretsMatch(message.secretsMatch);
+				// 	Chat.UserEnter(Player);
 				break;
 			}
 			case 'message': {
 				const player_id = message.from;
+
 				if (player_id === Chat.PlayerID) {
-					let TextR = emojify.replace(message.message);
-					TextR = Chat.MakeImage(TextR);
-					TextR = Chat.MakeURL(TextR);
+					const m = messageFormatter(message.message);
+					let TextR = litHtml.unsafeHTML(m);
+					// let TextR = emojify.replace(message.message);
+					// TextR = Chat.MakeImage(TextR);
+					// TextR = Chat.MakeURL(TextR);
 		
-					Chat.SmallBox('user-self', TextR, '', Chat.timeStr(message.time));
+					Chat.SmallBox('user-self', TextR, '', message.time);
 		
 				} else {
-					const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
+					const player = Player.get(player_id);
+
+					// let TextR = Chat.MakeImage(message.message);
+					// TextR = emojify.replace(TextR);
+					// TextR = Chat.MakeURL(TextR);
+					const m = messageFormatter(message.message);
+					let TextR = litHtml.unsafeHTML(m);
 		
-					const PlayerName = Player['player_name'];
-					const PlayerImg = Chat.PlayersPortraits[Player.avatar] ? Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg' : '';
-					let TextR = Chat.MakeImage(message.message);
-					TextR = emojify.replace(TextR);
-					TextR = Chat.MakeURL(TextR);
-		
-					Chat.BigBox('user-other', TextR, PlayerImg, PlayerName, Chat.timeStr(message.time));
-		
+					Chat.BigBox(
+						'user-other',
+						TextR,
+						player.portraitURL||'',
+						player.name,
+						message.time
+					);
+
 					Chat.PlaySound('notification-sound');
 				}
 				break;
 			}
 			case 'switch': {
-				const player_id = message.player;
-				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
-				const TextR = '<em>' + Player['player_name'] + ' hat den Chat erneut betreten</em>';
-				Chat.UserEnter(Player);
+				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
+
+				const TextR = document.createElement('em');
+				TextR.innerText = player.name + ' hat den Chat erneut betreten';
+
 				Chat.PlaySound('user-enter');
-				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
+				Chat.SmallBox('user-notification', TextR, '', message.time);
 				break;
 			}
 			case 'join': {
-				const player_id = message.player;
-				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
-				const TextR = '<em>' + Player['player_name'] + ' hat den Chat betreten</em>';
-				Chat.UserEnter(Player);
+				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
+
+				const TextR = document.createElement('em');
+				TextR.innerText = player.name + ' hat den Chat betreten';
+
 				Chat.PlaySound('user-enter');
-				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
+				Chat.SmallBox('user-notification', TextR, '', message.time);
 				break;
 			}
 			case 'leave': {
-				const player_id = message.player;
-				const Player = Chat.OtherPlayers.find(p => p.player_id === player_id)||{player_name: 'Unbekannt#'+player_id,player_id};
-				const TextR = '<em>' + Player['player_name'] + ' ist gegangen</em>';
-				Chat.UserLeave(Player);
+				const player = Player.get(message.player);
+
+				const TextR = document.createElement('em');
+				TextR.innerText = player.name + ' ist gegangen';
+
+				player.remove();
 				Chat.PlaySound('user-leave');
-				Chat.SmallBox('user-notification', TextR, '', Chat.timeStr(message.time));
+				Chat.SmallBox('user-notification', TextR, '', message.time);
 				break;
 			}
 			case 'disconnect': {
-				Chat.SystemRow('Verbindung geschlossen ('+message.reason+')', 'error');
+				Chat.SystemRow('Verbindung vom Server geschlossen ('+message.reason+')', 'error');
 				break;
 			}
 			case 'error': {
+				Chat.SystemRow('Verbindungs fehler ('+message.error+')', 'error');
 				break;
 			}
 		}
@@ -540,7 +711,7 @@ let Chat = {
 
 		if( Chat.ReadMode === 'live' ){
 			// TODO: fix animation
-			const box = document.getElementById('message_box');
+			const box = document.getElementById('message_box').parentElement;
 			box.scrollTop = box.scrollHeight;
 			// $('#message_box').animate({
 			// 	scrollTop: $('#message_box').prop('scrollHeight')
@@ -624,57 +795,58 @@ let Chat = {
 	/**
 	 * schmale Text-Zeile für Status + eigener Text
 	 *
-	 * @param Class
-	 * @param Text
-	 * @param Name
-	 * @param Time
+	 * @param {string} class_name
+	 * @param {string|HTMLElement} text
+	 * @param {string} name
+	 * @param {number} time
 	 */
-	SmallBox: (Class, Text, Name, Time)=> {
-		const template = document.createElement('template');
-		template.innerHTML = 
-			'<div class="' + Class + '">' +
-				'<span class="user-message">' + Text + '</span>' +
-				'<div class="message-data">' +
-					'<span class="user-name">' + Name + '</span>' +
-					'<span class="message-time">' + Time + ' Uhr</span>' +
-				'</div>' +
-			'</div>'
-		;
+	SmallBox: (class_name, text, name, time)=> {
+		const $container = document.createElement('div');
+		$container.classList.add(class_name);
 
-		document.getElementById('message_box').appendChild(template.content);
+		render(
+			html`<span class="user-message">${text}</span>
+				<div class="message-data">
+					<span class="user-name">${name}</span>
+					<span class="message-time">${Chat.timeStr(time)}</span>
+				</div>`,
+			$container
+		);
+
+		document.getElementById('message_box').appendChild($container);
 	},
 
 
 	/**
 	 * Text-Zeile mit Avatar, Gesprächspartner
 	 *
-	 * @param Class
-	 * @param Text
-	 * @param Img
-	 * @param Name
-	 * @param Time
+	 * @param {string} class_name
+	 * @param {string|HTMLElement} text
+	 * @param {string} img
+	 * @param {string} name
+	 * @param {number} time
 	 */
-	BigBox: (Class, Text, Img, Name, Time) => {
+	BigBox: (class_name, text, img, name, time) => {
+		//text = Chat.MarkUserName(text);
 
-		Text = Chat.MarkUserName(Text);
+		const $container = document.createElement('div');
+		$container.classList.add('big-box', class_name);
 
-		const template = document.createElement('template');
-		template.innerHTML =
-			'<div class="big-box ' + Class + '">' +
-				'<div class="image">' +
-					'<img src="' + Img + '" alt="">' +
-				'</div>' +
-				'<div>' +
-					'<span class="user-message">' + Text + '</span>' +
-					'<div class="message-data">' +
-						'<span class="user-name">' + Name + '</span>' +
-						'<span class="message-time">' + Time + ' Uhr</span>' +
-					'</div>' +
-				'</div>' +
-			'</div>'
-		;
+		render(
+			html`<div class="image">
+					<img src="${img}" alt="">
+				</div>
+				<div>
+					<span class="user-message">${text}</span>
+					<div class="message-data">
+						<span class="user-name">${name}</span>
+						<span class="message-time">${Chat.timeStr(time)}</span>
+					</div>
+				</div>`,
+			$container
+		);
 
-		document.getElementById('message_box').appendChild(template.content);
+		document.getElementById('message_box').appendChild($container);
 	},
 
 
@@ -682,7 +854,7 @@ let Chat = {
 	 * Player vorschlagen die dann farblich markiert werden
 	 *
 	 */
-	FindUserName: ()=> {
+	FindUserName: () => {
 		document.getElementById('message-input').addEventListener('keyup', /*$('#message-input').on('keyup',*/ function(e){
 			let t = /** @type {HTMLInputElement} */(e.currentTarget).value/*$(this).val()*/.toLowerCase(),
 				tl = t.slice(1, t.length),
@@ -811,7 +983,7 @@ let Chat = {
 	 * Wenn der eigenen Namen erwähnt wird, markieren
 	 *
 	 * @param text
-	 * @returns {void | string}
+	 * @returns {string}
 	 */
 	MarkUserName: (text)=> {
 
@@ -884,19 +1056,13 @@ let Chat = {
 			bar = document.createElement('div')//$('<div />').addClass('emoticon-bar');
 		bar.classList.add('emoticon-bar');
 
-		for(let i in icons)
-		{
-			if(icons.hasOwnProperty(i)){
-				const img = document.createElement('img');
-				img.classList.add('add-icon');
-				img.src = '/vendor/emoyify/images/emoji/'+ icons[i] +'.png';
-				img.setAttribute('alt', ':'+ icons[i] +':');
-				img.setAttribute('title', ':'+ icons[i] +':');
-				bar.appendChild(img);
-				// bar.append(
-				// 	$('<img />').addClass('add-icon').attr('src', '../vendor/emoyify/images/emoji/'+ icons[i] +'.png').attr('alt', ':'+ icons[i] +':').attr('title', ':'+ icons[i] +':')
-				// );
-			}
+		for(let icon of icons) {
+			const img = document.createElement('img');
+			img.classList.add('add-icon');
+			img.src = '/vendor/emoyify/images/emoji/'+ icon +'.png';
+			img.setAttribute('alt', ':'+ icon +':');
+			img.setAttribute('title', ':'+ icon +':');
+			bar.appendChild(img);
 		}
 
 		document.body.appendChild(bar);
@@ -908,7 +1074,9 @@ let Chat = {
 		btn.classList.add('toggle-emoticon-bar');
 
 
-		document.querySelector('.chat-panel').appendChild(btn);
+		const panel = document.querySelector('.chat-panel');
+		panel.appendChild(bar);
+		panel.appendChild(btn);
 		//$('.chat-panel').append(btn);
 
 		// Functions
@@ -1007,7 +1175,7 @@ let Chat = {
 		let pPortraits = localStorage.getItem('PlayersPortraits'),
 			pPortraitsTimestamp = localStorage.getItem('PlayersPortraitsTimestamp');
 
-		if(pPortraits === null || Chat.compareTime(new Date().getTime(), pPortraitsTimestamp) === false)
+		if(pPortraits === null || Chat.compareTime(Date.now(), pPortraitsTimestamp) === false)
 		{
 			let portraits = {};
 			console.log('AJAX-Load-Portraits')
@@ -1038,7 +1206,7 @@ let Chat = {
 		const h = (''+date.getHours()).padStart(2, '0');
 		const m = (''+date.getMinutes()).padStart(2, '0');
 		const s = (''+date.getSeconds()).padStart(2, '0');
-		return `${h}:${m}:${s}`;
+		return `${h}:${m}:${s} Uhr`;
 	}
 };
 

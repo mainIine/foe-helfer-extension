@@ -6,10 +6,12 @@
 		es: 'Español',
 		fr: 'Français',
 		hu: 'Magyar',
+		it: 'Italiano',
 		nl: 'Nederlands',
-		pt: 'polski',
+		pt: 'Português',
 		ro: 'Română',
 		ru: 'Русский',
+		sk: 'Slovenčina',
 		sv: 'Svenska'
 	},
 };

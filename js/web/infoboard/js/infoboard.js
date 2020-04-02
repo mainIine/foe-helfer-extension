@@ -99,7 +99,10 @@ let Infoboard = {
 
             // CSS in den DOM prügeln
             HTML.AddCssFile('infoboard');
-        }
+
+        } else {
+			HTML.CloseOpenBox('BackgroundInfo');
+		}
 
         let div = $('#BackgroundInfo'),
             h = [];
