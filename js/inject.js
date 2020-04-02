@@ -57,18 +57,18 @@
 
 	const v = chrome.runtime.getManifest().version;
 
-let   lng = chrome.i18n.getUILanguage();
-const uLng = localStorage.getItem('user-language');
+	let   lng = chrome.i18n.getUILanguage();
+	const uLng = localStorage.getItem('user-language');
 
 	// wir brauchen nur den ersten Teil
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
 	}
 
-// gibt es eine Übersetzung?
-if (Languages.PossibleLanguages[lng] === undefined) {
-	lng = 'en';
-}
+	// gibt es eine Übersetzung?
+	if (Languages.PossibleLanguages[lng] === undefined) {
+		lng = 'en';
+	}
 
 	if (uLng !== null){
 		lng = uLng;
@@ -156,6 +156,7 @@ if (Languages.PossibleLanguages[lng] === undefined) {
 				'_helper',
 				'_api',
 				'_menu',
+				'kits',
 				'tavern',
 				'outposts',
 				'calculator',

@@ -18,7 +18,9 @@
 .window-minimize,
 .window-ask,
 .window-speaker,
-.window-close{
+.window-close,
+.window-body .tabs ul li,
+.window-body .tabs ul li.active {
 	background-image:  url('../images/buttons.png');
 }
 

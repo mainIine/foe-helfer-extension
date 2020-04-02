@@ -1,5 +1,32 @@
 ## Changelog - Extension
 
+##### 2.4.3.1
+**Neu**
+- Kits:
+    - Diese Box zeigt alle Sets / Auswahlkits aus dem Inventar an
+
+**Update**
+- Extension:
+    - einige sprachliche Anpassungen der Übersetzer
+    - [#671](https://github.com/dsiekiera/foe-helfer-extension/issues/671) Changelog-Link in der Englischen Sprache integriert
+
+
+- Eventaufgaben:
+    - Chestbox (Vorschläge für Sprünge) optisch und sprachlich angepasst
+    
+- Erreignisse:
+    - Box grafisch angepasst
+    - Kirschbaumgrafik ergänzt
+
+**Bugfix**
+- Extension:
+    - [#688](https://github.com/dsiekiera/foe-helfer-extension/issues/688) Neues Zeitalter wird nun erkannt
+
+- Eigenanteilsrechner:
+    - [#682](https://github.com/dsiekiera/foe-helfer-extension/issues/682) "Ausklappfeil" korrigiert
+    
+---
+
 ##### 2.4.3
 
 **Update**

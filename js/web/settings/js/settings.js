@@ -22,7 +22,10 @@ let Settings = {
 		Version: {
 			callback: 'VersionInfo',
 			title: i18n('Settings.Version.Title'),
-			desc: (devMode === true ? HTML.i18nReplacer(i18n('Settings.Version.DescDebug'), {version: extVersion, language: (GuiLng === 'de' ? 'de' : 'en')}) : i18n('Settings.Version.Desc'))
+			desc: HTML.i18nReplacer(i18n('Settings.Version.Desc'), {
+				version: extVersion,
+				language: (GuiLng === 'de' ? 'de' : 'en')
+			})
 		},
 		GlobalSend : {
 			status: true,
@@ -85,13 +88,14 @@ let Settings = {
 			title : i18n('Settings.ChangeLanguage.Title'),
 			desc : i18n('Settings.ChangeLanguage.Desc')
 		},
-
+		/*
 		CustomerApi : {
 			status: false,
 			callback: 'CustomerApiCheck',
 			title : i18n('Settings.CustomerApi.Title'),
 			desc : i18n('Settings.CustomerApi.Desc')
 		}
+		*/
 	},
 
 
