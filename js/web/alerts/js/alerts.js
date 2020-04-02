@@ -10,6 +10,8 @@
 /* core */
 // TODO - add main menu icon (hourglass?)
 // TODO - add alerts settings/options box
+//      * alert/notification suggestions (e.g. when the user clicks on a sector in GBG, suggest to create an alert when
+//           the sector unlocks (the unlock time data is available when gbg data is loaded)
 // TODO - add a box to display a list of active (and inactive) alerts --- something similar to gbg stats for example
 // TODO - create a "New Alert" box to create/add a new alert
 //          - fields: recurring (every x hours), notify x minutes before
@@ -26,10 +28,32 @@
 //          building collection timer expires, etc.
 // TODO - Alerts set up for collection (on GB or other buildings) should reset when the building's resources
 
+
+
+// xhr listener: store gbg sector unlock times
+// xhr listener: antique dealer (get the auction timer)
+
 let Alerts = {
 
     /* stores alerts data */
-    Model: {},
+    Model: {
+        // stores the user's alerts
+        Alerts: {},
+        Battleground: {
+            // stores the unlocks times of gbg sectors
+            Sectors: {
+
+            }
+        },
+        // for user defined timers
+        User: {
+
+        }
+    },
+    // pack the model data to save storage
+    _pack: ()=> {},
+    // unpack stored data into the model
+    _unpack: ()=> {},
 
 
     init: ()=> {},
@@ -37,6 +61,11 @@ let Alerts = {
     GetAlerts: ()=> {},
     SetAlerts: ()=> {},
 
-    Show: ()=> {}
+    Show: ()=> {},
+
+    ShowAlertSuggestion: ()=> {
+        // if option is enabled
+            // show an alert suggestion box with a pre-filled timer
+    }
 
 };
