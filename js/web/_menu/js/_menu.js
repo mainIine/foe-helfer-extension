@@ -41,7 +41,8 @@ let _menu = {
 		'ask',
 		'github',
 		'chat',
-		'api'
+		'api',
+		'kits'
 	],
 
 
@@ -817,5 +818,26 @@ let _menu = {
 		if(Settings.GetSetting('CustomerApi')){
 			// return btn;
 		}
+	},
+
+	/**
+	 * Set Übersicht
+	 */
+	kits_Btn: ()=> {
+
+		let btn = $('<div />').attr({ 'id': 'kits-Btn', 'data-slug': 'kits' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Kits.Title'), i18n('Menu.Kits.Desc'), 'kits-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function(){
+			Kits.BuildBox();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
 	},
 };

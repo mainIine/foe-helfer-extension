@@ -304,7 +304,7 @@ let GoodsParser = {
 
 					} else {
 						if (isImportant)
-							g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + ResourceStock[k] + ')');
+							g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + (ResourceStock[k] !== undefined ? ResourceStock[k] : 0) + ')');
 						else
 							g.push(a[k] + ' ' + GoodsData[k]['name']);
 					}

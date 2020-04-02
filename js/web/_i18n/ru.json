@@ -58,7 +58,8 @@
 		"Boxes.EventChests.Cost": "Стоимость",
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Помощник событий",
 		"Boxes.EventList.And": " и ",
@@ -99,6 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Игрок найден",
 		"Boxes.Investment.Title": "Вложение",
 		"Boxes.Investment.TotalFP": "Запас + круговые + прибыль: ",
+		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Строение",
 		"Boxes.LGOverviewBox.Level": "Уровень",
 		"Boxes.LGOverviewBox.NothingToGet": "У <strong>__player__</strong> нечего получить",
@@ -225,6 +229,7 @@
 		"Eras.18": "Космическая Эра Марса",
 		"Eras.19": "Космическая Эра Цереры",
 		"Eras.2": "Бронзовый Век",
+		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Железный Век",
 		"Eras.4": "Раннее Средневековье",
 		"Eras.5": "Высокое Средневековье",
@@ -243,8 +248,8 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
-		"Menu.Api.Desc": "???", //Todo: Translate
-		"Menu.Api.Title": "???", //Todo: Translate
+		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
+		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
 		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
@@ -267,6 +272,8 @@
 		"Menu.HiddenRewards.Title": "Инциденты",
 		"Menu.Info.Desc": "Отображает все события, которые происходят \"в фоне\"<br><em>Заполняется информацией ...</em>",
 		"Menu.Info.Title": "Панель информации",
+		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
+		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Предлагает товары для переговоров",
 		"Menu.Negotiation.Title": "Помощник переговоров",
 		"Menu.Negotiation.Warning": "Отключено: Для влючения начните переговоры!",
@@ -291,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",
 		"Settings.ChangeLanguage.Title": "Изменить язык",
-		"Settings.CustomerApi.Desc": "???", //Todo: Translate
-		"Settings.CustomerApi.Title": "???", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
+		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
@@ -315,7 +322,6 @@
 		"Settings.ShowTavernBadge.Desc": "Как только активирован дополнительный ход в таверне, появится глобальный счетчик.",
 		"Settings.ShowTavernBadge.Title": "Показать значок таверны",
 		"Settings.Version.Desc": "Версия расширения для Chrome",
-		"Settings.Version.DescDebug": "<p>Расширения <strong class='text-danger'>БЕТА</strong></p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Айди гильдии:",
 		"Settings.Version.PlayerId": "Айди игрока:",
 		"Settings.Version.Title": "Версия",

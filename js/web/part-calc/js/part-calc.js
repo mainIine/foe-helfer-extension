@@ -472,19 +472,19 @@ let Parts = {
         b.push(drp);
 
         let cb = '<div class="checkboxes">' +
-            '<label class="form-check-label" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
+            '<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
 
-			'<label class="form-check-label" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
+			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
 
-			'<label class="form-check-label" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
+			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
 
-			'<label class="form-check-label" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
+			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
 
-			'<label class="form-check-label" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
+			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
 
-			'<label class="form-check-label" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
+			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
 
-			'<label class="form-check-label" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n('Boxes.OwnpartCalculator.Levels') + '</label>' +
+			'<label class="form-check-label game-cursor" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n('Boxes.OwnpartCalculator.Levels') + '</label>' +
 			'</div>';
 
 		b.push(cb);
