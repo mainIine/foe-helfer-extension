@@ -1,16 +1,16 @@
 ﻿{
 	"values": {
 		"_Language": "Český",
-		"API.GEXChampionship": "The GEX umístění cechu bylo updatováno",
-		"API.GEXPlayer": "GEX umístění členů bylo updatováno",
+		"API.GEXChampionship": "Umístění cechu v CE bylo updatováno",
+		"API.GEXPlayer": "Umístění členů v CE bylo updatováno",
 		"API.LGGildMember": "__player__'s Velkolepé budovy byly poslány",
 		"API.LGInvest": "Investice vašich VB bylo posláno",
 		"API.UpdateSuccess": "Update performed", //Todo: Translate
 		"Boxes.Api.Title": "???", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
-		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
+		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
-		"Boxes.Calculator.BPs": "BPs",
+		"Boxes.Calculator.BPs": "Plánky",
 		"Boxes.Calculator.Commitment": "Náklady",
 		"Boxes.Calculator.Done": "Hotovo",
 		"Boxes.Calculator.FP": "BV",
@@ -21,8 +21,8 @@
 		"Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Zisk",
-		"Boxes.Calculator.Rate": "Rate", //Todo: Translate
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
+		"Boxes.Calculator.Rate": "Poměr",
+		"Boxes.Calculator.Sniping": "Sniping",
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
@@ -75,9 +75,9 @@
 		"Boxes.Gildfights.Negotiations": "Negotiations", //Todo: Translate
 		"Boxes.Gildfights.Player": "Player", //Todo: Translate
 		"Boxes.Gildfights.Title": "Player overview", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Appears", //Todo: Translate
-		"Boxes.HiddenRewards.Disappears": "Disappears", //Todo: Translate
-		"Boxes.HiddenRewards.NoEvents": "No events presents", //Todo: Translate
+		"Boxes.HiddenRewards.Appears": "Obnoví se",
+		"Boxes.HiddenRewards.Disappears": "Zmizí",
+		"Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
 		"Boxes.HiddenRewards.Title": "Skryté příhody", 
 		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Auction", //Todo: Translate
@@ -240,9 +240,9 @@
 		"Global.BoxTitle": "FoE Helfer",
 		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice", 
 		"HiddenRewards.Positions.cityRoadSmall": "Cesta", 
-		"HiddenRewards.Positions.guildExpedition": "Guild expedition", //Todo: Translate
+		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice", //Todo: Translate
 		"HiddenRewards.Positions.nature": "V přírodě", 
-		"HiddenRewards.Positions.shore": "Pobřeží", 
+		"HiddenRewards.Positions.shore": "Na pobřeží", 
 		"HiddenRewards.Positions.water": "Na hladině", 
 		"HiddenRewards.Table.expires": "Čas obnovení", 
 		"HiddenRewards.Table.position": "Umístění", 
@@ -302,29 +302,29 @@
 		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte. <br>.",
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
-		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
+		"Settings.MenuLength.Desc": "Kolik položek má obsahovat menu?<br> Prázdné okno nebo \"0\" znamená automatickou výšku.",
 		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
 		"Settings.PreScanLGList.Desc": "Oskenuje VB a označí možné budovy k investování. <br> <u> Note: </u> Kvůli odezvě a přenosovým problémům se může výsledek lišit. Sken neodporuje pravidlům.",
 		"Settings.PreScanLGList.Title": "Prvotní sken Velkolepých budov",
 		"Settings.ResetBoxPositions.Button": "Návrat!",
 		"Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
 		"Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
-		"Settings.SendGEXInfo.Desc": "When clicking in the GEX on placements or rankings the data transmitted", //Todo: Translate
-		"Settings.SendGEXInfo.Title": "GEX evaluations", //Todo: Translate
+		"Settings.SendGEXInfo.Desc": "Při otevření umístění cechu a pořadí hráčů se údaje odešlou na foe-rechner.de",
+		"Settings.SendGEXInfo.Title": "Vyhodnocení CE", 
 		"Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
 		"Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
 		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' pošle data o investování VB na web",
 		"Settings.SendInvestigations.Title": "Investování VB",
-		"Settings.SendTavernInfo.Desc": "Mají se záznamy odesílat na web",
+		"Settings.SendTavernInfo.Desc": "Záznamy odesílat na foe-rechner.de",
 		"Settings.SendTavernInfo.Title": "Motivace",
 		"Settings.ShowNeighborsGoods.Desc": "Během návštěvy ukazuje, co sousedé produkují",
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", //Todo: Translate
-		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
-		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
+		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", 
+		"Settings.Version.GuildId": "Id cechu:", 
+		"Settings.Version.PlayerId": "Id hráče:",
 		"Settings.Version.Title": "Verze",
-		"Settings.Version.World": "World:" //Todo: Translate
+		"Settings.Version.World": "Svět:" 
 	}
 }
