@@ -6,7 +6,7 @@
 		"API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
 		"API.LGInvest": "Je GG bijdrages zijn verzonden",
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extensie API Instellingen",
 		"Boxes.Calculator.ActiveRecurringQuest": "Actieve herhalingsmissie:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus",
 		"Boxes.Calculator.AvailableFP": "Beschikbare forgepunten",
@@ -26,7 +26,7 @@
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "FP-calculator",
 		"Boxes.Calculator.TTForderCosts": "Kosten = __nettoreward__<small>(netto beloning)</small> * __forderfactor__%<small>(investering)</small> = __costs__",
-		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTForderFPStockLow": "LET OP: FP voorraad is te laag<br>Je hebt maar __fpstock__ van de __costs__FP<br>Dat zijn __tooless__FP te weinig",
 		"Boxes.Calculator.TTForderNegativeProfit": "Plek niet veilig. Er moeten hiervoor nog __fpcount__ extra FP's worden gestort.<br>Totaal voor een veilige plek: __totalfp__FP's",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP's passen er niet in.<br>Maximale storting: __totalfp__FP's",
 		"Boxes.Calculator.TTLoss": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Kosten: __costs__<br>Verlies = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__",
@@ -36,7 +36,7 @@
 		"Boxes.Calculator.TTProfit": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Kosten: __costs__<br>Winst = __bruttoreward__<small>(beloning)</small> - __costs__<small>(kosten)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __payed__<br>Winst = __bruttoreward__<small>(beloning)</small> - __payed__<small>(gestort)</small> = __profit__",
 		"Boxes.Calculator.TTRate": "Verhouding = __costs__<small>(kosten)</small> / __nettoreward__<small>(netto beloning)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "LET OP: FP voorraad is te laag<br>Je hebt maar __fpstock__ van de __costs__FP<br>Dat zijn __tooless__FP te weinig",
 		"Boxes.Calculator.Up2LevelUp": "Nog te storten",
 		"Boxes.Campagne.AlreadyDone": "Alreeds veroverd!",
 		"Boxes.Campagne.DescInStock": "Beschikbaar",
@@ -54,14 +54,14 @@
 		"Boxes.CityMap.TitleSend": "Gegevens verzenden",
 		"Boxes.CityMap.WholeArea": "Volledige oppervlakte: ",
 		"Boxes.CityMap.YourCity": "Jouw stad",
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
-		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
-		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
-		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
-		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
+		"Boxes.EventChests.Chance": "Kans",
+		"Boxes.EventChests.Cost": "Kosten",
+		"Boxes.EventChests.CostPerPrize": "Kosten/Prijs",
+		"Boxes.EventChests.CostPerStep": "Kosten/Stap",
+		"Boxes.EventChests.MainPrize": "Hoofdprijs",
+		"Boxes.EventChests.MainPrizeTitle": "Dagprijs: ",
+		"Boxes.EventChests.Steps": "Stappen",
+		"Boxes.EventChests.Title": "Event keuze assistent",
 		"Boxes.EventList.And": " en ",
 		"Boxes.EventList.Desc": "Missie",
 		"Boxes.EventList.Number": "Nr.",
@@ -100,9 +100,9 @@
 		"Boxes.Investment.PlayerFound": "Speler gevonden",
 		"Boxes.Investment.Title": "Investering",
 		"Boxes.Investment.TotalFP": "Voorraad + in omloop + winst: ",
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
-		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Gebouw kits",
+		"Boxes.Kits.TabSelectionKits": "Selectie kits",
+		"Boxes.Kits.Title": "Gebouw / Selectie Kits",
 		"Boxes.LGOverviewBox.Building": "Groots gebouw",
 		"Boxes.LGOverviewBox.Level": "Level",
 		"Boxes.LGOverviewBox.NothingToGet": "Er valt niets te halen bij <strong>__player__</strong>",
@@ -116,7 +116,7 @@
 		"Boxes.Negotiation.Average": "Voorkeursvolgorde",
 		"Boxes.Negotiation.Canceled": "Onderhandeling is geannuleerd",
 		"Boxes.Negotiation.Chance": "Kans",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
 		"Boxes.Negotiation.DragDrop": "U kunt voorkeursvolgorde van bovenstaande pictogrammen zelf herschikken met 'Drag&Drop' om de volgorde van de eerste poging te bepalen.",
 		"Boxes.Negotiation.GoodsCritical": "OPGELET: De goederenvoorraad is kritiek!",
 		"Boxes.Negotiation.GoodsLow": "OPGELET: De goederenvoorraad is schaars!",
@@ -229,7 +229,7 @@
 		"Eras.18": "Ruimtetijdperk: Mars",
 		"Eras.19": "Asteroïdengordel uit het ruimtetijdperk",
 		"Eras.2": "Bronstijd",
-		"Eras.20": "Space Age Venus", //Todo: Translate
+		"Eras.20": "Ruimtetijdperk: Venus",
 		"Eras.3": "IJzertijd",
 		"Eras.4": "Vroege middeleeuwen",
 		"Eras.5": "Hoge middeleeuwen",
@@ -248,8 +248,8 @@
 		"HiddenRewards.Table.position": "Positie",
 		"HiddenRewards.Table.type": "Soort",
 		"Local": "nl-NL",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
+		"Menu.Api.Desc": "Instellingen om naar je eigen server te versturen",
+		"Menu.Api.Title": "Extensie API",
 		"Menu.Ask.Desc": "Weet je niet hoe iets werkt?<br>Neem een kijkje!",
 		"Menu.Ask.Title": "Vraag / Antwoord",
 		"Menu.Bugs.Desc": "Iets werkt niet zoals het hoort of heb je een idee?",
@@ -272,8 +272,8 @@
 		"Menu.HiddenRewards.Title": "Incidenten",
 		"Menu.Info.Desc": "Toont je alle zaken die gebeuren op de \"achtergrond\"<br><em>Vult zich beetje bij beetje met info ...",
 		"Menu.Info.Title": "Info-venster",
-		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
-		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
+		"Menu.Kits.Desc": "Toon allen bestaande gebouwen, upgrade en selectie kits",
+		"Menu.Kits.Title": "Gebouw Kits",
 		"Menu.Negotiation.Desc": "Geeft nauwkeurige voorstellen bij onderhandelingen",
 		"Menu.Negotiation.Title": "Onderhandelingshulp",
 		"Menu.Negotiation.Warning": "Gedeactiveerd: Start eerst een onderhandeling!",
@@ -298,8 +298,8 @@
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Wil je wat gegevens naar je eigen server versturen?<br> Na activatie zal het spel herladen en wordt r een nieuw menu getoond.",
+		"Settings.CustomerApi.Title": "Spelers API",
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
