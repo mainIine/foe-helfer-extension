@@ -78,7 +78,7 @@
 		"Boxes.HiddenRewards.Appears": "Obnoví se",
 		"Boxes.HiddenRewards.Disappears": "Zmizí",
 		"Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
-		"Boxes.HiddenRewards.Title": "Skryté příhody", 
+		"Boxes.HiddenRewards.Title": "Skryté příhody",
 		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Auction", //Todo: Translate
 		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
@@ -238,14 +238,14 @@
 		"Eras.8": "Průmyslový věk",
 		"Eras.9": "Doba pokroku",
 		"Global.BoxTitle": "FoE Helfer",
-		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice", 
-		"HiddenRewards.Positions.cityRoadSmall": "Cesta", 
-		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice", //Todo: Translate
-		"HiddenRewards.Positions.nature": "V přírodě", 
-		"HiddenRewards.Positions.shore": "Na pobřeží", 
-		"HiddenRewards.Positions.water": "Na hladině", 
-		"HiddenRewards.Table.expires": "Čas obnovení", 
-		"HiddenRewards.Table.position": "Umístění", 
+		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice",
+		"HiddenRewards.Positions.cityRoadSmall": "Cesta",
+		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice",
+		"HiddenRewards.Positions.nature": "V přírodě",
+		"HiddenRewards.Positions.shore": "Na pobřeží",
+		"HiddenRewards.Positions.water": "Na hladině",
+		"HiddenRewards.Table.expires": "Čas obnovení",
+		"HiddenRewards.Table.position": "Umístění",
 		"HiddenRewards.Table.type": "Druh",
 		"Local": "cs-CZ",
 		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
@@ -310,7 +310,7 @@
 		"Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
 		"Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
 		"Settings.SendGEXInfo.Desc": "Při otevření umístění cechu a pořadí hráčů se údaje odešlou na foe-rechner.de",
-		"Settings.SendGEXInfo.Title": "Vyhodnocení CE", 
+		"Settings.SendGEXInfo.Title": "Vyhodnocení CE",
 		"Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
 		"Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
 		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' pošle data o investování VB na web",
@@ -321,10 +321,10 @@
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", 
-		"Settings.Version.GuildId": "Id cechu:", 
+		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
+		"Settings.Version.GuildId": "Id cechu:",
 		"Settings.Version.PlayerId": "Id hráče:",
 		"Settings.Version.Title": "Verze",
-		"Settings.Version.World": "Svět:" 
+		"Settings.Version.World": "Svět:"
 	}
 }
