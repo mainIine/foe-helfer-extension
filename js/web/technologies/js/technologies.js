@@ -159,7 +159,7 @@ let Technologies = {
             if (Tech['currentSP'] === undefined)
             	Tech['currentSP'] = 0;
 
-            if (!Tech['isResearched']) {
+            if (!Tech['isResearched'] && !Tech['isTeaser']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
                 if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
@@ -218,6 +218,7 @@ let Technologies = {
             for (let i = 80; i < GoodsList.length; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
+            OutputList[OutputList.length] = 'asteroid_ice';
            
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i];
