@@ -522,6 +522,10 @@ p {
 	background-image: url('../images/units.png');
 }
 
+#plunderer-Btn span {
+	  background-image: url('../images/plunderer.png');
+}
+
 #negotiation-Btn span {
 	background-image: url('../images/negotation.png');
 }
