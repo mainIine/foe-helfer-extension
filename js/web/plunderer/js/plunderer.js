@@ -1,3 +1,18 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 plunderer.js
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              07.04.20, 21:58 Uhr
+ * zuletzt bearbeitet:        07.04.20, 15:46 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
 let plunderDB = new Dexie("PlayerDB");
 plunderDB.version(6).stores({
 	players: 'id',
@@ -208,6 +223,24 @@ let Plunderer = {
 	ACTION_TYPE_BATTLE_LOSS: 3,
 	ACTION_TYPE_BATTLE_SURRENDERED: 4,
 
+
+	/**
+	 * Delete data older then 6 weeks
+	 *
+	 * @returns {Promise<void>}
+	 */
+	garbargeCollector:  async ()=> {
+		const sixWeeksAgo = new Date(Date.now() - 60*60*1000*24*7*6);
+
+		await Plunderer.db.actions
+			.where('date').below(sixWeeksAgo)
+			.delete();
+
+		await Plunderer.db.players
+			.where('date').below(sixWeeksAgo)
+			.delete();
+	},
+
 	// Upsert player in db
 	collectPlayer: async (player) => {
 		const otherPlayer = player.other_player;
@@ -399,6 +432,8 @@ let Plunderer = {
 		const date = moment(action.date).format(i18n('DateTime'));
 		const dateFromNow = moment(action.date).fromNow();
 
+		let eraName = i18n('Eras.' + Technologies.Eras[action.playerEra]);
+
 		return `<div class="action-row action-row-type-${action.type}">
 					<div class="avatar select-player" data-value="${action.playerId}">
 						${isSamePlayer ? '' : `<img class="player-avatar" src="${avatar}" alt="${action.playerName}" /><br>`}
@@ -407,15 +442,15 @@ let Plunderer = {
 					<div class="info-column">
 						<div>
 							${date} <br />
-							${dateFromNow}
+							<em>${dateFromNow}</em>
 						</div>
 						<div>
 							${isSamePlayer ? '' : `
-								<div class="era" title="Player Era: ${action.playerEra}">${action.playerEra}</div>
+								<div class="era" title="${i18n('Boxes.Plunderer.PlayersEra')}: ${eraName}">${eraName}</div>
 								${action.playerDate ? `
 									<div class="discovered" title="${i18n('Boxes.Plunderer.visitTitle')}">
 										${i18n('Boxes.Plunderer.visited')}: <br />
-										<span>${moment(action.playerDate).fromNow()}</span>
+										<em>${moment(action.playerDate).fromNow()}</em>
 									</div>`
 								: ''}
 							`}
@@ -424,7 +459,7 @@ let Plunderer = {
 					<div class="action-content">
 						${isSamePlayer ? '' : `
 						<div class="player-name select-player" data-value="${action.playerId}">
-							${action.playerName} | <span class="clan">Clan - ${action.clanName}</span>
+							${action.playerName} <span class="clan">[${action.clanName}]</span>
 						</div>
 						`}
 						<div class="content">${Plunderer.RenderActionContent(action)}</div>
@@ -527,3 +562,5 @@ let Plunderer = {
 				</div>`;
 	}
 };
+
+Plunderer.garbargeCollector();
