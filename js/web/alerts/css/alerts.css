@@ -1,0 +1,39 @@
+/**
+ * Project  foe-chrome
+ * Date     2020-03-27
+ * License  MIT
+ *
+ * @author  Tomas Vorobjov <contact@tomasvorobjov.com>
+ *
+ */
+
+#Alerts {
+    top: 15%;
+    left: 50%;
+    width: 650px;
+}
+
+#Alerts #AlertsBody {
+    overflow: hidden;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+#Alerts #AlertsBody .no-permission {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0, 0.7);
+}
+
+#Alerts #AlertsBody .no-permission::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 240px;
+}
