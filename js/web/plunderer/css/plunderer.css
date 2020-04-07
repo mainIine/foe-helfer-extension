@@ -119,13 +119,10 @@
     padding-left: 10px;
 }
 
-#plunderer .plunder-items.important {
-    color: #1e1;
-}
 
 #plunderer .player-name {
     font-weight: bold;
-    padding: 0 4px
+    color: #FFB539;
 }
 
 #plunderer .army {
