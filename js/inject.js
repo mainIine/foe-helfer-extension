@@ -144,7 +144,7 @@
 					'tableSorter/table-sorter',
 					'Sortable/Sortable.min',
 					'jsZip/jszip.min',
-          'dexie/dexie.min', // indexDB helper lib
+					'dexie/dexie.min', // indexDB helper lib
 				];
 
 			// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
