@@ -678,7 +678,7 @@ let _menu = {
 		return btn_UnitBG;
 	},
 
-  /**
+  	/**
 	 * Plunderer actions
 	 * @returns {*|jQuery}
 	 */
@@ -690,8 +690,8 @@ let _menu = {
 		let btn_Plunderer = $('<span />');
 
 		btn_Plunderer.on('click', function () {
-      Plunderer.page = 1;
-      Plunderer.filterByPlayerId = null;
+      		Plunderer.page = 1;
+      		Plunderer.filterByPlayerId = null;
 			Plunderer.Show();
 		});
 
