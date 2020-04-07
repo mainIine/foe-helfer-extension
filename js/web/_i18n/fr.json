@@ -95,9 +95,12 @@
 		"Boxes.Infobox.ResetBox": "Vider la boîte",
 		"Boxes.Infobox.Title": "Infos Techniques",
 		"Boxes.Investment.AllUpToDate": "Tout est à jour",
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Gains PF (actuel) : ",
 		"Boxes.Investment.InvestBar": "PF investis : ",
 		"Boxes.Investment.PlayerFound": "Joueur trouvé",
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
 		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "???", //Todo: Translate
+		"Boxes.Plunderer.Attack": "???", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "???", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "???", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "???", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.Happiness": "satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Crée un plan de pose de PF, calcule les coûts et copie les valeurs.",
 		"Menu.OwnpartCalculator.Title": "Calculatrice GM interne",
 		"Menu.OwnpartCalculator.Warning": "Désactivé : Ouvrez d'abord un de vos GM !",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Affiche le nombre en cours de toutes les productions.",
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",

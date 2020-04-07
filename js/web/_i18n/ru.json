@@ -95,9 +95,12 @@
 		"Boxes.Infobox.ResetBox": "Сбросить панель",
 		"Boxes.Infobox.Title": "Панель информации",
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Текущая прибыль: ",
 		"Boxes.Investment.InvestBar": "СО вложено: ",
 		"Boxes.Investment.PlayerFound": "Игрок найден",
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Вложение",
 		"Boxes.Investment.TotalFP": "Запас + круговые + прибыль: ",
 		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Уровень",
 		"Boxes.OwnpartCalculator.Title": "Калькулятор вложений в свои ВС",
 		"Boxes.OwnpartCalculator.YourName": "Ваше имя",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "???", //Todo: Translate
+		"Boxes.Plunderer.Attack": "???", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "???", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "???", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "???", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
 		"Boxes.Productions.Happiness": "Уровень счастья",
 		"Boxes.Productions.Headings.all": "Все",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Рассчитывает план вложений, считает внешние вклады и копирует значения для веток",
 		"Menu.OwnpartCalculator.Title": "Калькулятор вложений в свои ВС",
 		"Menu.OwnpartCalculator.Warning": "Отключено: Для включения откройте любое собственное ВС!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Отображает текущее количество всех произодств.",
 		"Menu.Productions.Title": "Обзор производства",
 		"Menu.Settings.Desc": "Здесь находятся настройки",

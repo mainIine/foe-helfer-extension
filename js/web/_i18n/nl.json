@@ -95,9 +95,12 @@
 		"Boxes.Infobox.ResetBox": "Venster opschonen",
 		"Boxes.Infobox.Title": "Info-venster",
 		"Boxes.Investment.AllUpToDate": "Alles is up to date",
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Huidige winst: ",
 		"Boxes.Investment.InvestBar": "Geïnvesteerde FP: ",
 		"Boxes.Investment.PlayerFound": "Speler gevonden",
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investering",
 		"Boxes.Investment.TotalFP": "Voorraad + in omloop + winst: ",
 		"Boxes.Kits.TabBuildingKits": "Gebouw kits",
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Eigen GG FP-calculator",
 		"Boxes.OwnpartCalculator.YourName": "Jouw naam",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "???", //Todo: Translate
+		"Boxes.Plunderer.Attack": "???", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "???", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "???", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "???", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Aangrenzende gebouwen",
 		"Boxes.Productions.Happiness": "Tevredenheid",
 		"Boxes.Productions.Headings.all": "Alle",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Stel een FP-betaalplan op, bereken de kosten en kopieer de waarden",
 		"Menu.OwnpartCalculator.Title": "Eigen GG FP-calculator",
 		"Menu.OwnpartCalculator.Warning": "Gedeactiveerd: open eerst een van je Grootse gebouwen!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Toont het huidige aantal van alle producties",
 		"Menu.Productions.Title": "Productieoverzicht",
 		"Menu.Settings.Desc": "Hier stel je een paar kleinigheden in",
