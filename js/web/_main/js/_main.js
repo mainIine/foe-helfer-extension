@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	// aktuelle Welt notieren
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
-	
+
     // Fullscreen erkennen und verarbeiten
 	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
 		if (!window.screenTop && !window.screenY) {
@@ -832,7 +832,7 @@ const FoEproxy = (function () {
 			Parts.CityMapEntity = CityMapEntity.responseData[0];
 			Parts.Rankings = Rankings;
 			Parts.IsPreviousLevel = IsPreviousLevel;
-			
+
 			// das erste LG wurde geladen
 			$('#partCalc-Btn').removeClass('hud-btn-red');
 			$('#partCalc-Btn-closed').remove();
@@ -1869,12 +1869,13 @@ let MainParser = {
 	 */
 	UpdatePlayerDictCore: (Player) => {
 		let PlayerID = Player['player_id'];
-
 		if (PlayerID !== undefined) {
 			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
 			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
 			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
 			if (Player['clan'] !== undefined) PlayerDict[PlayerID]['ClanName'] = Player['clan']['name'];
+			if (Player['clan_id'] !== undefined) PlayerDict[PlayerID]['ClanId'] = Player['clan_id'];
+			if (Player['avatar'] !== undefined) PlayerDict[PlayerID]['Avatar'] = Player['avatar'];
 			if (Player['is_neighbor'] !== undefined) PlayerDict[PlayerID]['IsNeighbor'] = Player['is_neighbor'];
 			if (Player['is_guild_member'] !== undefined) PlayerDict[PlayerID]['IsGuildMember'] = Player['is_guild_member'];
 			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
