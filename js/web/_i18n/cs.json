@@ -41,7 +41,7 @@
 		"Boxes.Campagne.AlreadyDone": " Již dobyto!",
 		"Boxes.Campagne.DescInStock": "K dispozici",
 		"Boxes.Campagne.DescRequired": "Požadováno",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Přebytek</span> / <span style='color:#ef1616'>Schází</span>", 
 		"Boxes.Campagne.Resource": "Zboží",
 		"Boxes.Campagne.Reward": "Celková odměna ",
 		"Boxes.Campagne.Title": "Náklady na dobytí ",
@@ -134,7 +134,7 @@
 		"Boxes.Neighbors.Title": "Výroby",
 		"Boxes.Outpost.DescInStock": "K dispozici",
 		"Boxes.Outpost.DescRequired": "Vyžadováno",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Přebytek</span> / <span style='color:#ef1616'>Schází</span>",
 		"Boxes.Outpost.ExpansionsSum": "Rozšíření",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Šance: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Další rozšíření",
@@ -199,7 +199,7 @@
 		"Boxes.StrategyPoints.FPBar": "Zásoba bodů: ",
 		"Boxes.Technologies.DescInStock": "K dispozici",
 		"Boxes.Technologies.DescRequired": "Požadováno",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Přebytek</span> / <span style='color:#ef1616'>Schází</span>", //Todo: Translate
 		"Boxes.Technologies.NoTechs": "Dokončili jste dobu",
 		"Boxes.Technologies.Resource": "Zdroj",
 		"Boxes.Technologies.Title": "Náklady na výzkum",
@@ -229,7 +229,7 @@
 		"Eras.18": "Kolonizace Marsu",
 		"Eras.19": "Kolonizace Ceres",
 		"Eras.2": "Doba bronzová",
-		"Eras.20": "Space Age Venus", //Todo: Translate
+		"Eras.20": "Kolonizace pásu planetek", 
 		"Eras.3": "Doba železná",
 		"Eras.4": "Raný středověk",
 		"Eras.5": "Vrcholný středověk",
@@ -240,7 +240,7 @@
 		"Global.BoxTitle": "FoE Helfer",
 		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice", 
 		"HiddenRewards.Positions.cityRoadSmall": "Cesta", 
-		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice", //Todo: Translate
+		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice",
 		"HiddenRewards.Positions.nature": "V přírodě", 
 		"HiddenRewards.Positions.shore": "Na pobřeží", 
 		"HiddenRewards.Positions.water": "Na hladině", 
@@ -321,7 +321,7 @@
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", 
+		"Settings.Version.Desc": "<p>Verze rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", 
 		"Settings.Version.GuildId": "Id cechu:", 
 		"Settings.Version.PlayerId": "Id hráče:",
 		"Settings.Version.Title": "Verze",
