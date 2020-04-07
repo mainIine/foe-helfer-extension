@@ -95,9 +95,12 @@
 		"Boxes.Infobox.ResetBox": "Reset Box",
 		"Boxes.Infobox.Title": "Infobox",
 		"Boxes.Investment.AllUpToDate": "Everything up to date",
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded",
 		"Boxes.Investment.CurrReward": "Current Profit: ",
 		"Boxes.Investment.InvestBar": "Invested FP: ",
 		"Boxes.Investment.PlayerFound": "Player found",
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found",
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found",
 		"Boxes.Investment.Title": "Investment",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
 		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
