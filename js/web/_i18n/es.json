@@ -7,7 +7,7 @@
 		"API.LGInvest": "Tus inversiones en grandes edificios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
 		"Boxes.Api.Title": "???", //Todo: Translate
-		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+		"Boxes.Calculator.ActiveRecurringQuest": "Misión recurrente activa:", 
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
 		"Boxes.Calculator.BPs": "Plano",
@@ -18,8 +18,8 @@
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ATENCIÓN: sube el nivel del gran edificio!",
 		"Boxes.Calculator.LGNotConnected": "El edificio no esta conectado a una carretera",
-		"Boxes.Calculator.LGNotOpen": "El próximo nivel no esta disponible todavia",
-		"Boxes.Calculator.Meds": "Méds",
+		"Boxes.Calculator.LGNotOpen": "El próximo nivel no esta disponible todavía",
+		"Boxes.Calculator.Meds": "Medallas",
 		"Boxes.Calculator.Profit": "Ganancia",
 		"Boxes.Calculator.Rate": "Cotización",
 		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
@@ -39,10 +39,10 @@
 		"Boxes.Calculator.TTSnipeFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Eso son __tooless__FP de menos", 
 		"Boxes.Calculator.Up2LevelUp": "Hasta el proximo nivel",
 		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
-		"Boxes.Campagne.DescInStock": "Vorhanden",
-		"Boxes.Campagne.DescRequired": "Benötigt",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-		"Boxes.Campagne.Resource": "Ressource",
+		"Boxes.Campagne.DescInStock": "Disponible",
+		"Boxes.Campagne.DescRequired": "Requerido",
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ef1616'>Faltan</span>",
+		"Boxes.Campagne.Resource": "Recurso",
 		"Boxes.Campagne.Reward": "Recompensa total ",
 		"Boxes.Campagne.Title": "Coste de conquista para ",
 		"Boxes.CityMap.CavalierPerspecitve": "Perspectiva caballera", 
@@ -100,8 +100,8 @@
 		"Boxes.Investment.PlayerFound": "Encontrado jugador", 
 		"Boxes.Investment.Title": "Inversión", 
 		"Boxes.Investment.TotalFP": "Stock + circulante + beneficio: ", 
-		"Boxes.Kits.TabBuildingKits": "Kits para edificios", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "Kits de selección", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Kits para edificios", 
+		"Boxes.Kits.TabSelectionKits": "Kits de selección", 
 		"Boxes.Kits.Title": "Edificio - / Kits de Selección", 
 		"Boxes.LGOverviewBox.Building": "Edificio",
 		"Boxes.LGOverviewBox.Level": "Nivel",
@@ -134,7 +134,7 @@
 		"Boxes.Neighbors.Title": "Producción de ",
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Necesitado",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ef1616'>Faltan</span>",
 		"Boxes.Outpost.ExpansionsSum": "Expansiones", 
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Probabilidad Bonus x4: __chanceX4__%", //Todo: Translate
 		"Boxes.Outpost.nextTile": "próxima expansión", 
@@ -238,9 +238,9 @@
 		"Eras.8": "Edad Industrial ",
 		"Eras.9": "Edad del Progreso",
 		"Global.BoxTitle": "Ayudante de FoE", 
-		"HiddenRewards.Positions.cityRoadBig": "Carretera grande", //Todo: Translate
-		"HiddenRewards.Positions.cityRoadSmall": "Carretera pequeña", //Todo: Translate
-		"HiddenRewards.Positions.guildExpedition": "Expedición de gremio", //Todo: Translate
+		"HiddenRewards.Positions.cityRoadBig": "Carretera grande", 
+		"HiddenRewards.Positions.cityRoadSmall": "Carretera pequeña", 
+		"HiddenRewards.Positions.guildExpedition": "Expedición de gremio", 
 		"HiddenRewards.Positions.nature": "Naturaleza", 
 		"HiddenRewards.Positions.shore": "Shore", 
 		"HiddenRewards.Positions.water": "en el agua", 
@@ -303,7 +303,7 @@
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extensión autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmisión a foe-rechner.de",
 		"Settings.MenuLength.Desc": "¿De cuántos elementos de alto debe tener el menú?<br> Vacío o \"0\" significa altura automática.", //Todo: Translate
-		"Settings.MenuLength.Title": "Longitud del menú", //Todo: Translate
+		"Settings.MenuLength.Title": "Longitud del menú",
 		"Settings.PreScanLGList.Desc": "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina grandes edificios rellenables.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda.",
 		"Settings.PreScanLGList.Title": "Escanear con antelación los grandes edificios",
 		"Settings.ResetBoxPositions.Button": "Borrar!",
