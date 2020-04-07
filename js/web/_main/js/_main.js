@@ -1745,9 +1745,14 @@ let MainParser = {
 
 					$.toast({
 						heading: i18n('Boxes.Investment.PlayerFound'),
-						text: r['msg'],
+						text: HTML.i18nReplacer(
+							r.new === 1 ? i18n('Boxes.Investment.PlayerFoundCount') : i18n('Boxes.Investment.PlayerFoundCounter'),
+							{
+								count: r.new
+							}
+						),
 						icon: 'success',
-						hideAfter: 1600
+						hideAfter: 2600
 					});
 
 				} else if (r['status'] === 'NOTICE') {
@@ -1755,7 +1760,7 @@ let MainParser = {
 
 					$.toast({
 						heading: i18n('Boxes.Investment.AllUpToDate'),
-						text: r['msg'],
+						text: i18n('Boxes.Investment.AllUpToDateDesc'),
 						icon: 'info',
 						hideAfter: 6000
 					});
