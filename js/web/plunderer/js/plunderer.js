@@ -305,12 +305,16 @@ let Plunderer = {
 				if (Plunderer.loading) {
 					return;
 				}
+
 				const id = $(this).data('value');
+
 				Plunderer.page = 1;
 				Plunderer.filterByPlayerId = id ? +id : null;
 				Plunderer.Show();
+
 				$('#plundererBody').animate({scrollTop: 0}, 'fast');
 			});
+
 			Plunderer.inited = true;
 		}
 	},
@@ -320,8 +324,8 @@ let Plunderer = {
 		const perPage = 20;
 		Plunderer.loading = true;
 
-		const offset = (page - 1) * perPage;
-		const actionsSelect = filterByPlayerId ?
+		const offset = (page - 1) * perPage,
+			actionsSelect = filterByPlayerId ?
 			(Plunderer.db.actions.where('playerId').equals(filterByPlayerId)) :
 			(Plunderer.db.actions.orderBy('date'));
 
@@ -330,6 +334,7 @@ let Plunderer = {
 		const countSelect = filterByPlayerId ?
 			(Plunderer.db.actions.where('playerId').equals(filterByPlayerId)) :
 			(Plunderer.db.actions);
+
 		let pages = Math.ceil((await countSelect.count()) / perPage);
 
 		// enrich actions with player info
@@ -405,9 +410,9 @@ let Plunderer = {
 		});
 
 		$('#plundererBody .strategy-points').html(`
-			${i18n('Boxes.Plunderer.collectedToday')}: <span class="${todaySP ? 'text-success' : ''}">${todaySP}</span> FP,
-			${i18n('Boxes.Plunderer.thisWeek')}: <span class="${thisWeekSP ? 'text-success' : ''}">${thisWeekSP}</span> FP,
-			${i18n('Boxes.Plunderer.total')}:  <span class="${totalSP ? 'text-success' : ''}">${totalSP}</span> FP
+			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> FP,
+			${i18n('Boxes.Plunderer.thisWeek')}: <strong class="${thisWeekSP ? 'text-warning' : ''}">${thisWeekSP}</strong> FP,
+			${i18n('Boxes.Plunderer.total')}:  <strong class="${totalSP ? 'text-warning' : ''}">${totalSP}</strong> FP
 		`);
 	},
 
