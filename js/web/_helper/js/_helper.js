@@ -432,7 +432,6 @@ let HTML = {
 
 			const regExp = new RegExp('__' + key + '__', 'g');
 			string = string.replace(regExp, args[key]);
-
 		}
 		return string;
 	},

@@ -16,33 +16,33 @@
 {
 
 	chrome.runtime.onInstalled.addListener(() => {
-		let version = chrome.runtime.getManifest().version;
+		let version = chrome.runtime.getManifest().version,
+			lng = chrome.i18n.getUILanguage(),
+			ask = {
+				de: 'Es wurde gerade ein Update f%FCr den FoE Helfer installiert.%0A%0ADarf das Spiel jetzt neu geladen werden oder m%F6chtest Du es sp%E4ter selber machen%3F',
+				en: 'An update for the FoE Helper has just been installed.%0A%0ACan the game be reloaded now or do you want to do it yourself later%3F'
+			};
 
-		chrome.tabs.query({active: true, currentWindow: true}, (tabs)=> {
-			// sind wir in FoE?
-			if(tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
+		// is ein "-" drin? ==> en-en, en-us, en-gb usw...
+		if(lng.indexOf('-') > -1){
+			lng = lng.split('-')[0];
+		}
 
-				// ja? dann neu laden
-				if(!isDevMode()){
+		// Fallback auf "en"
+		if(lng !== 'de' && lng !== 'en'){
+			lng = 'en';
+		}
+
+		// Kein Entwickler und Spieler fragen ob das Spiel neu geladen werden darf
+		if(!isDevMode() && confirm(unescape(ask[lng])) === true){
+			chrome.tabs.query({active: true, currentWindow: true}, (tabs)=> {
+				// sind wir in FoE?
+				if(tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
+
+					// ja? dann neu laden
 					chrome.tabs.reload(tabs[0].id);
 				}
-			}
-		});
-
-		if(!isDevMode()){
-
-			// Sprache ermitteln
-			let lng = chrome.i18n.getUILanguage();
-
-			// is ein "-" drin? ==> en-en, en-us, en-gb usw...
-			if(lng.indexOf('-') > -1){
-				lng = lng.split('-')[0];
-			}
-
-			// Fallback auf "en"
-			if(lng !== 'de' && lng !== 'en'){
-				lng = 'en';
-			}
+			});
 
 			chrome.tabs.create({
 				url: 'https://foe-rechner.de/extension/update?v=' + version + '&lang=' + lng
@@ -128,7 +128,8 @@
 			chrome.storage.local.set({ [request.key] : request.data });
 
 		} else if(request.type === 'send2Api') {
-			console.log("type=send2Api got called!");
+
+			// console.log("type=send2Api got called!");
 			let xhr = new XMLHttpRequest();
 
 			xhr.open('POST', request.url);
