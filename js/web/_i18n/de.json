@@ -195,6 +195,7 @@
 		"Boxes.Plunderer.visited": "Besucht",
 		"Boxes.Plunderer.Attack": "Angriff",
 		"Boxes.Plunderer.Defense": "Verteidigung",
+		"Boxes.Plunderer.PlayersEra": "Spieler Zeitalter",
 
 		"Boxes.Productions.AdjacentBuildings": "Angrenzende Gebäude",
 		"Boxes.Productions.Happiness": "Zufriedenheit",
@@ -263,7 +264,7 @@
 		"Eras.7": "Kolonialzeit",
 		"Eras.8": "Industriezeitalter",
 		"Eras.9": "Jahrhundertwende",
-		"Eras.NoAge": "Kein Zeitalter",
+
 		"Global.BoxTitle": "FoE Helfer",
 		"HiddenRewards.Positions.cityRoadBig": "zweispurige Strasse",
 		"HiddenRewards.Positions.cityRoadSmall": "einspurige Strasse",
