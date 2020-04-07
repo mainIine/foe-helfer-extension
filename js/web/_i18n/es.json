@@ -3,141 +3,141 @@
 		"_Language": "Español",
 		"API.GEXChampionship": "Se ha actualizado el puesto del gremio en la EG",
 		"API.GEXPlayer": "Se han actualizado los puestos de los miembros en la EG",
-		"API.LGGildMember": "__player__'s GEs han sido transferidos",
-		"API.LGInvest": "Tus inversiones en grandes edifivios han sido transferidos",
+		"API.LGGildMember": "Los GEs de __player__ han sido transferidos",
+		"API.LGInvest": "Tus inversiones en grandes edificios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
 		"Boxes.Api.Title": "???", //Todo: Translate
-		"Boxes.Calculator.ActiveRecurringQuest": "Active recurring quest:", //Todo: Translate
+		"Boxes.Calculator.ActiveRecurringQuest": "Misión recurrente activa:", 
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
 		"Boxes.Calculator.BPs": "Plano",
-		"Boxes.Calculator.Commitment": "Contribucion",
-		"Boxes.Calculator.Done": "done", //Todo: Translate
+		"Boxes.Calculator.Commitment": "Contribución",
+		"Boxes.Calculator.Done": "Hecho", 
 		"Boxes.Calculator.FP": "FP",
-		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
+		"Boxes.Calculator.FriendlyInvestment": "Inversión amistosa:", 
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
-		"Boxes.Calculator.LevelWarning": "ATENCIÓN: nivela el legendario edificio!",
+		"Boxes.Calculator.LevelWarning": "ATENCIÓN: sube el nivel del gran edificio!",
 		"Boxes.Calculator.LGNotConnected": "El edificio no esta conectado a una carretera",
-		"Boxes.Calculator.LGNotOpen": "El proximo nivel no esta disponible todavia",
-		"Boxes.Calculator.Meds": "Méds",
+		"Boxes.Calculator.LGNotOpen": "El próximo nivel no esta disponible todavía",
+		"Boxes.Calculator.Meds": "Medallas",
 		"Boxes.Calculator.Profit": "Ganancia",
-		"Boxes.Calculator.Rate": "Cotizacion",
+		"Boxes.Calculator.Rate": "Cotización",
 		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Nivel",
 		"Boxes.Calculator.Title": "Calculador de costes",
-		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
-		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
-		"Boxes.Calculator.TTForderNegativeProfit": "Place is not safe. __fpcount__ additional FP must bei invested to make it safe<br>Total to make the place safe: __totalfp__FP", //Todo: Translate
-		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP do not fit in<br>Maximum investment: __totalfp__FP", //Todo: Translate
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Loss = __costs__<small>(costs)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Loss = __payed__<small>(payed)</small> - __bruttoreward__<small>(reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You payed __payed__FP instead of __topay__FP. That is __tooless__FP too less.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You payed __payed__FP instead of __topay__FP. That is __toomuch__FP too much.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__<small>(netto reward)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Payed: __payed__<br>Profit = __bruttoreward__<small>(reward)</small> - __payed__<small>(Payed)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTRate": "Rate = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", //Todo: Translate
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: FP stock is too low<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FP too less", //Todo: Translate
+		"Boxes.Calculator.TTForderCosts": "Costes = __nettoreward__<small>(premio neto)</small> * __forderfactor__%<small>(Inversores amistosos)</small> = __costs__", 
+		"Boxes.Calculator.TTForderFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Esos son __tooless__FP de menos", 
+		"Boxes.Calculator.TTForderNegativeProfit": "El puesto no está asegurado. __fpcount__ FPs adicionales deben invertirse para asegurarlo<br>Total para asegurar el puesto: __totalfp__FP", 
+		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP no entran<br>La inversión máxima es: __totalfp__FP", 
+		"Boxes.Calculator.TTLoss": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Cuesta: __costs__<br>Pérdida = __costs__<small>(cuesta)</small> - __bruttoreward__<small>(premio)</small> = __loss__", 
+		"Boxes.Calculator.TTLossSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __payed__<br>Pérdida = __payed__<small>(pagado)</small> - __bruttoreward__<small>(premio)</small> = __loss__", 
+		"Boxes.Calculator.TTPayedTooLess": "Pagaste __payed__FP en lugar de __topay__FP. Eso son __tooless__FP de menos.", 
+		"Boxes.Calculator.TTPayedTooMuch": "Pagaste __payed__FP en lugar de __topay__FP. Eso son __toomuch__FP de más.", 
+		"Boxes.Calculator.TTProfit": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Cuesta: __costs__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __costs__<small>(cuesta)</small> = __profit__", 
+		"Boxes.Calculator.TTProfitSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __payed__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __payed__<small>(pagado)</small> = __profit__", 
+		"Boxes.Calculator.TTRate": "Porcentaje = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%", 
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Eso son __tooless__FP de menos", 
 		"Boxes.Calculator.Up2LevelUp": "Hasta el proximo nivel",
 		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
-		"Boxes.Campagne.DescInStock": "Vorhanden",
-		"Boxes.Campagne.DescRequired": "Benötigt",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",
-		"Boxes.Campagne.Resource": "Ressource",
-		"Boxes.Campagne.Reward": "Gesamtbelohnung ",
-		"Boxes.Campagne.Title": "Eroberungskosten für ",
-		"Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective", //Todo: Translate
-		"Boxes.CityMap.Desc1": "To be able to plan your city we need to transfer your data to foe-rechner.de", //Todo: Translate
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
-		"Boxes.CityMap.FreeArea": "Free area: ", //Todo: Translate
-		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
-		"Boxes.CityMap.SubmitSuccess": "Data was transfered successfully... Now visit ", //Todo: Translate
-		"Boxes.CityMap.TitleSend": "Submit data", //Todo: Translate
-		"Boxes.CityMap.WholeArea": "The whole area: ", //Todo: Translate
-		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
-		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
-		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
-		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
-		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
-		"Boxes.EventList.And": " and ", //Todo: Translate
-		"Boxes.EventList.Desc": "Task", //Todo: Translate
-		"Boxes.EventList.Number": "No.", //Todo: Translate
-		"Boxes.EventList.Or": " or ", //Todo: Translate
-		"Boxes.EventList.Reward": "Reward", //Todo: Translate
-		"Boxes.EventList.Title": "Event quest list for: ", //Todo: Translate
-		"Boxes.EventList.Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
-		"Boxes.EventList.Waiting": "No quest available", //Todo: Translate
-		"Boxes.Gildfights.Fights": "Fights", //Todo: Translate
-		"Boxes.Gildfights.LastSnapshot": " - last snapshot __time__ ago", //Todo: Translate
-		"Boxes.Gildfights.Negotiations": "Negotiations", //Todo: Translate
-		"Boxes.Gildfights.Player": "Player", //Todo: Translate
-		"Boxes.Gildfights.Title": "Player overview", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Appears", //Todo: Translate
-		"Boxes.HiddenRewards.Disappears": "Disappears", //Todo: Translate
-		"Boxes.HiddenRewards.NoEvents": "No events presents", //Todo: Translate
-		"Boxes.HiddenRewards.Title": "Hidden Rewards", //Todo: Translate
+		"Boxes.Campagne.DescInStock": "Disponible",
+		"Boxes.Campagne.DescRequired": "Requerido",
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ef1616'>Faltan</span>",
+		"Boxes.Campagne.Resource": "Recurso",
+		"Boxes.Campagne.Reward": "Recompensa total ",
+		"Boxes.Campagne.Title": "Coste de conquista para ",
+		"Boxes.CityMap.CavalierPerspecitve": "Perspectiva caballera", 
+		"Boxes.CityMap.Desc1": "Para poder planificar tu ciudad necesitamos transferir tus datos a foe-rechner.de", 
+		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Enviar</button>", 
+		"Boxes.CityMap.FreeArea": "Zonas sin uso: ", 
+		"Boxes.CityMap.NormalPerspecitve": "Estándar", 
+		"Boxes.CityMap.SubmitSuccess": "Los datos fueron transferidos con éxito.... Ahora visita ", 
+		"Boxes.CityMap.TitleSend": "Enviar datos", 
+		"Boxes.CityMap.WholeArea": "Área completa: ", 
+		"Boxes.CityMap.YourCity": "Tu ciudad", 
+		"Boxes.EventChests.Chance": "Probabilidad", 
+		"Boxes.EventChests.Cost": "Coste", 
+		"Boxes.EventChests.CostPerPrize": "Coste/Premio", 
+		"Boxes.EventChests.CostPerStep": "Cost/Paso", 
+		"Boxes.EventChests.MainPrize": "Precio habitual", 
+		"Boxes.EventChests.MainPrizeTitle": "Precio del día: ", 
+		"Boxes.EventChests.Steps": "Pasos", 
+		"Boxes.EventChests.Title": "Ayuda de selección de cofre del evento", 
+		"Boxes.EventList.And": " y ", 
+		"Boxes.EventList.Desc": "Tarea", 
+		"Boxes.EventList.Number": "Número ", 
+		"Boxes.EventList.Or": " o ", 
+		"Boxes.EventList.Reward": "Recompensa", 
+		"Boxes.EventList.Title": "Lista de misiones para el evento: ", 
+		"Boxes.EventList.Upcoming": "PRÓXIMAS MISIONES (Los números pueden variar)", 
+		"Boxes.EventList.Waiting": "No hay misión disponible", 
+		"Boxes.Gildfights.Fights": "Combates",
+		"Boxes.Gildfights.LastSnapshot": " - último snapshot __time__ ago", 
+		"Boxes.Gildfights.Negotiations": "Negociaciones", 
+		"Boxes.Gildfights.Player": "Jugador", 
+		"Boxes.Gildfights.Title": "Sobre el jugador", 
+		"Boxes.HiddenRewards.Appears": "Aparece", 
+		"Boxes.HiddenRewards.Disappears": "Desaparece", 
+		"Boxes.HiddenRewards.NoEvents": "Sin eventos actualmente", 
+		"Boxes.HiddenRewards.Title": "Premios ocultos", 
 		"Boxes.Infobox.Filter": "Filtro",
-		"Boxes.Infobox.FilterAuction": "Subasta",
+		"Boxes.Infobox.FilterAuction": "Subastas",
 		"Boxes.Infobox.FilterGex": "EG",
-		"Boxes.Infobox.FilterGildFights": "Guild Fights", //Todo: Translate
-		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
-		"Boxes.Infobox.FilterMessage": "Mensaje",
+		"Boxes.Infobox.FilterGildFights": "Gremio contra gremio", 
+		"Boxes.Infobox.FilterLevel": "Subidas de nivel", 
+		"Boxes.Infobox.FilterMessage": "Mensajes",
 		"Boxes.Infobox.FilterTrade": "Comercio",
-		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> ha pujado ahora mismo__amount__ monedas",
+		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> ha pujado ahora mismo __amount__ monedas",
 		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
-		"Boxes.Infobox.Messages.GildFightOccupied": "Province <span style=\"color:#ffb539\">__provinceName__</span> was taken over by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is closed until __untilOccupied__", //Todo: Translate
-		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
+		"Boxes.Infobox.Messages.GildFightOccupied": "La provincia <span style=\"color:#ffb539\">__provinceName__</span> fue tomada por <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> y está bloqueada hasta __untilOccupied__", 
+		"Boxes.Infobox.Messages.LevelUp": "El edificio __building__ de __player__ acaba de alcanzar el nivel __level__.<br>Llegas al <strong>__rank__º</strong> puesto y consigues <strong>__fps__</strong> FPs como recompensa.", //Todo: Translate
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - nivel __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
-		"Boxes.Infobox.ResetBox": "Vaciar el box",
-		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
-		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
-		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
-		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
-		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
-		"Boxes.Investment.Title": "Investment", //Todo: Translate
-		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
-		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
+		"Boxes.Infobox.ResetBox": "Limpiar historial de eventos",
+		"Boxes.Infobox.Title": "Información de eventos", 
+		"Boxes.Investment.AllUpToDate": "Todo está actualizado", 
+		"Boxes.Investment.CurrReward": "Ganancia actual: ", 
+		"Boxes.Investment.InvestBar": "FP invertidos: ", 
+		"Boxes.Investment.PlayerFound": "Encontrado jugador", 
+		"Boxes.Investment.Title": "Inversión", 
+		"Boxes.Investment.TotalFP": "Stock + circulante + beneficio: ", 
+		"Boxes.Kits.TabBuildingKits": "Kits para edificios", 
+		"Boxes.Kits.TabSelectionKits": "Kits de selección", 
+		"Boxes.Kits.Title": "Edificio - / Kits de Selección", 
 		"Boxes.LGOverviewBox.Building": "Edificio",
 		"Boxes.LGOverviewBox.Level": "Nivel",
 		"Boxes.LGOverviewBox.NothingToGet": "Con <strong>__player__</strong> no hay nada para pillar",
 		"Boxes.LGOverviewBox.PayedTotal": "Ingresado / Total",
 		"Boxes.LGOverviewBox.Profit": "Ganancia",
-		"Boxes.LGOverviewBox.Rate": "Cotizacion",
+		"Boxes.LGOverviewBox.Rate": "Cotización",
 		"Boxes.LGOverviewBox.Title": "Posibles desembolsos",
 		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "reconocido",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "encontrado nuevo",
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "no hay desembolsos hasta ahora",
 		"Boxes.Negotiation.Average": "Ø Amount", //Todo: Translate
-		"Boxes.Negotiation.Canceled": "Negociacion cancelada",
-		"Boxes.Negotiation.Chance": "Oportunidad",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
+		"Boxes.Negotiation.Canceled": "Negociación cancelada",
+		"Boxes.Negotiation.Chance": "Probabilidad",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "OK", 
 		"Boxes.Negotiation.DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.", //Todo: Translate
-		"Boxes.Negotiation.GoodsCritical": "ATTENTION: Good stock is critical", //Todo: Translate
-		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low", //Todo: Translate
+		"Boxes.Negotiation.GoodsCritical": "ATENCION: El stock de bienes está en estado crítico", 
+		"Boxes.Negotiation.GoodsLow": "ATENCION: El stock de bienes está bajo", 
 		"Boxes.Negotiation.Person": "Persona",
-		"Boxes.Negotiation.Round": "Round", //Todo: Translate
-		"Boxes.Negotiation.Stock": "Stock:", //Todo: Translate
+		"Boxes.Negotiation.Round": "Ronda", 
+		"Boxes.Negotiation.Stock": "Stock:", 
 		"Boxes.Negotiation.Success": "Acierto",
-		"Boxes.Negotiation.TableLoadError": "Error loading the negotiation table", //Todo: Translate
-		"Boxes.Negotiation.Title": "Ayudante de negociacion",
+		"Boxes.Negotiation.TableLoadError": "Error cargando la tabla de negociación", 
+		"Boxes.Negotiation.Title": "Ayudante de negociación",
 		"Boxes.Negotiation.TryEnd": "Se terminaron los intentos",
-		"Boxes.Negotiation.WrongGoods": "Mercancia equivocada, por favor seguir a mano",
-		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Produccion corriente",
+		"Boxes.Negotiation.WrongGoods": "Mercancía equivocada, por favor seguir a mano",
+		"Boxes.Neighbors.NothingToPlunder": "Nada que saquear", 
+		"Boxes.Neighbors.OngoingProductions": "Producción en curso",
 		"Boxes.Neighbors.ReadyProductions": "Produccion terminada",
-		"Boxes.Neighbors.Title": "Produccion de ",
+		"Boxes.Neighbors.Title": "Producción de ",
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Necesitado",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
-		"Boxes.Outpost.ExpansionsSum": "Expansions", //Todo: Translate
-		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", //Todo: Translate
-		"Boxes.Outpost.nextTile": "next Expansion", //Todo: Translate
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ef1616'>Faltan</span>",
+		"Boxes.Outpost.ExpansionsSum": "Expansiones", 
+		"Boxes.Outpost.infoLine": "__runNumber__. run, Probabilidad Bonus x4: __chanceX4__%", //Todo: Translate
+		"Boxes.Outpost.nextTile": "próxima expansión", 
 		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Mercancias de los Asentamientos Culturales",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
@@ -146,17 +146,17 @@
 		"Boxes.OwnpartCalculator.Arc": "Arca",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plano",
-		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
+		"Boxes.OwnpartCalculator.BuildingName": "Edificio", 
 		"Boxes.OwnpartCalculator.CopyValues": "Copiar valores",
 		"Boxes.OwnpartCalculator.Deposit": "Ingresar",
 		"Boxes.OwnpartCalculator.Done": "Listo",
 		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
-		"Boxes.OwnpartCalculator.IndividualName": "Nombre de gran edicio individual",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //No translate
+		"Boxes.OwnpartCalculator.IndividualName": "Nombre de gran edificio individual",
 		"Boxes.OwnpartCalculator.Levels": "Aumentar nivel",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Gran edificio FP en total",
 		"Boxes.OwnpartCalculator.Meds": "Méds",
-		"Boxes.OwnpartCalculator.NoPlaceSafe": "Ningun puesto esta seguro",
+		"Boxes.OwnpartCalculator.NoPlaceSafe": "Ningún puesto está asegurado",
 		"Boxes.OwnpartCalculator.Note": "Guadar",
 		"Boxes.OwnpartCalculator.OldLevel": "Nivel viejo",
 		"Boxes.OwnpartCalculator.Order": "Orden",
@@ -165,58 +165,58 @@
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "quedan",
 		"Boxes.OwnpartCalculator.PatronPart": "Parte del contribuyente",
 		"Boxes.OwnpartCalculator.Place": "Puesto",
-		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
-		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
+		"Boxes.OwnpartCalculator.PlayerName": "Jugador", 
+		"Boxes.OwnpartCalculator.Scheme": "Esquema", 
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculator cuata propia",
 		"Boxes.OwnpartCalculator.YourName": "Tu nombre",
-		"Boxes.Productions.AdjacentBuildings": "Adjacent buildings", //Todo: Translate
-		"Boxes.Productions.Happiness": "Happiness", //Todo: Translate
+		"Boxes.Productions.AdjacentBuildings": "Edificios adyacentes", 
+		"Boxes.Productions.Happiness": "Felicidad", 
 		"Boxes.Productions.Headings.all": "Todos",
 		"Boxes.Productions.Headings.amount": "Cantidad",
 		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
-		"Boxes.Productions.Headings.culture": "Cultural buildings", //Todo: Translate
-		"Boxes.Productions.Headings.decoration": "Decorations",
-		"Boxes.Productions.Headings.earning": "Cosecha",
-		"Boxes.Productions.Headings.goods": "Goods buildings", //Todo: Translate
+		"Boxes.Productions.Headings.culture": "Edificios culturales", 
+		"Boxes.Productions.Headings.decoration": "Decorativos",
+		"Boxes.Productions.Headings.earning": "Recogida disponible a las",
+		"Boxes.Productions.Headings.goods": "Edificios de bienes", 
 		"Boxes.Productions.Headings.greatbuilding": "Grandes Edificio",
 		"Boxes.Productions.Headings.main_building": "Ayuntamiento",
-		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
-		"Boxes.Productions.Headings.number": "Numero",
-		"Boxes.Productions.Headings.production": "Edificios de produccion",
-		"Boxes.Productions.Headings.random_production": "Produccion casual",
-		"Boxes.Productions.Headings.residential": "Residential buildings", //Todo: Translate
-		"Boxes.Productions.Headings.street": "Streets", //Todo: Translate
-		"Boxes.Productions.ModeGroups": "Gruppiert",
-		"Boxes.Productions.ModeSingle": "Einzeln",
-		"Boxes.Productions.SearchInput": "Edificio busqueda...",
-		"Boxes.Productions.Title": "Produktions Übersicht",
-		"Boxes.Productions.Total": "Gesamt: ",
+		"Boxes.Productions.Headings.name": "Nombre", 
+		"Boxes.Productions.Headings.number": "Número",
+		"Boxes.Productions.Headings.production": "Edificios de producción",
+		"Boxes.Productions.Headings.random_production": "Producción casual",
+		"Boxes.Productions.Headings.residential": "Edificios residenciales", 
+		"Boxes.Productions.Headings.street": "Calles", 
+		"Boxes.Productions.ModeGroups": "Agrupar",
+		"Boxes.Productions.ModeSingle": "Uno por uno",
+		"Boxes.Productions.SearchInput": "Edificio búsqueda...",
+		"Boxes.Productions.Title": "Resumen de producción",
+		"Boxes.Productions.Total": "Total: ",
 		"Boxes.Settings.Active": "Activo",
 		"Boxes.Settings.Inactive": "Inactivo",
 		"Boxes.Settings.Title": "Ajustes",
-		"Boxes.StrategyPoints.BuyableFP": "Buyable: ", //Todo: Translate
-		"Boxes.StrategyPoints.FPBar": "FP en almacen: ",
+		"Boxes.StrategyPoints.BuyableFP": "Comprable: ", 
+		"Boxes.StrategyPoints.FPBar": "FP en almacén: ",
 		"Boxes.Technologies.DescInStock": "Disponible",
 		"Boxes.Technologies.DescRequired": "Necesitado",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Fehlt</span>",
-		"Boxes.Technologies.NoTechs": "You have reached the end of this era", //Todo: Translate
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Perdido</span>",
+		"Boxes.Technologies.NoTechs": "Has alcanzado el final de esta era", //Todo: Translate
 		"Boxes.Technologies.Resource": "Recurso",
 		"Boxes.Technologies.Title": "Coste de investigacion por",
 		"Boxes.Units.Attack": "Ataque",
 		"Boxes.Units.Bind": "Atado",
 		"Boxes.Units.Defend": "Defensa",
-		"Boxes.Units.NextUnitsIn": "Las proximas __count__ unidades llegan <span class=\"alca-countdown\"></span> a las __harvest__ horas",
-		"Boxes.Units.NotFilled": "no esta lleno",
+		"Boxes.Units.NextUnitsIn": "Las próximas __count__ unidades llegan <span class=\"alca-countdown\"></span> a las __harvest__ horas",
+		"Boxes.Units.NotFilled": "no está lleno",
 		"Boxes.Units.Proportionally": "En proporción",
 		"Boxes.Units.Quantity": "Cantidad",
-		"Boxes.Units.ReadyToLoot": "Listo para la cosecha!",
+		"Boxes.Units.ReadyToLoot": "Listo para la recogida!",
 		"Boxes.Units.Status": "Estado",
-		"Boxes.Units.Title": "Resumen del ejercito",
+		"Boxes.Units.Title": "Resumen del ejército",
 		"Boxes.Units.Unbind": "libre",
 		"Boxes.Units.Unit": "Unidad",
 		"DateTime": "DD.MM.YYYY HH:mm [Uhr]",
-		"Eras.0": "Sin siglo",
+		"Eras.0": "Sin edad",
 		"Eras.1": "Edad de Piedra",
 		"Eras.10": "Edad Moderna",
 		"Eras.11": "Edad PostModerna",
@@ -229,7 +229,7 @@
 		"Eras.18": "Edad Espacial: Marciana",
 		"Eras.19": "Edad Espacial: Ceres",
 		"Eras.2": "Edad de Bronce",
-		"Eras.20": "Space Age Venus", //Todo: Translate
+		"Eras.20": "Era espacial de Venus", 
 		"Eras.3": "Edad de Hierro",
 		"Eras.4": "Alta Edad Media",
 		"Eras.5": "Plena Edad Media",
@@ -237,94 +237,94 @@
 		"Eras.7": "Edad Colonial",
 		"Eras.8": "Edad Industrial ",
 		"Eras.9": "Edad del Progreso",
-		"Global.BoxTitle": "FoE Helper", //Todo: Translate
-		"HiddenRewards.Positions.cityRoadBig": "big Road", //Todo: Translate
-		"HiddenRewards.Positions.cityRoadSmall": "small Road", //Todo: Translate
-		"HiddenRewards.Positions.guildExpedition": "Guild expedition", //Todo: Translate
-		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
-		"HiddenRewards.Positions.shore": "Shore", //Todo: Translate
-		"HiddenRewards.Positions.water": "in the water", //Todo: Translate
-		"HiddenRewards.Table.expires": "Expires at", //Todo: Translate
-		"HiddenRewards.Table.position": "Position", //Todo: Translate
-		"HiddenRewards.Table.type": "Type", //Todo: Translate
+		"Global.BoxTitle": "Ayudante de FoE", 
+		"HiddenRewards.Positions.cityRoadBig": "Carretera grande", 
+		"HiddenRewards.Positions.cityRoadSmall": "Carretera pequeña", 
+		"HiddenRewards.Positions.guildExpedition": "Expedición de gremio", 
+		"HiddenRewards.Positions.nature": "Naturaleza", 
+		"HiddenRewards.Positions.shore": "Shore", 
+		"HiddenRewards.Positions.water": "en el agua", 
+		"HiddenRewards.Table.expires": "Finaliza a ", 
+		"HiddenRewards.Table.position": "Posición", 
+		"HiddenRewards.Table.type": "Tipo", 
 		"Local": "es-ES",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
-		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruebalo!",
+		"Menu.Api.Desc": "Configuración para enviar datos a tu propio servidor", 
+		"Menu.Api.Title": "API de extensión", 
+		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruébalo!",
 		"Menu.Ask.Title": "Pregunta / Respuesta",
 		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
 		"Menu.Bugs.Title": "Error / Deseo",
-		"Menu.Calculator.Desc": "Calcula todos los puestos para ti y determina si se pueden mangar FPs",
+		"Menu.Calculator.Desc": "Calcula todos los puestos para tí y determina si se pueden conseguir FPs",
 		"Menu.Calculator.Title": "Calculador de costes",
-		"Menu.Calculator.Warning": "Deactivado: Metete primero en un edificio grande de otro jugador!",
-		"Menu.Campagne.Desc": "Overview of the resources required", //Todo: Translate
-		"Menu.Campagne.Title": "Campaign", //Todo: Translate
-		"Menu.Campagne.Warning": "Disabled: Visit a province first!", //Todo: Translate
+		"Menu.Calculator.Warning": "Deshabilitado: Entra primero en un gran edificio de otro jugador!",
+		"Menu.Campagne.Desc": "Vistazo de los recursos requeridos", 
+		"Menu.Campagne.Title": "Campaña", 
+		"Menu.Campagne.Warning": "Deshabilitado: Visita una provincia primero!", 
 		"Menu.Chat.Desc": "Chatea en tiempo real con todos",
 		"Menu.Chat.Title": "Chat en vivo del gremio",
-		"Menu.Citymap.Desc": "Shows your city schematically from above", //Todo: Translate
-		"Menu.Citymap.Title": "City overview", //Todo: Translate
-		"Menu.Event.Desc": "Overview of the current and upcoming quests", //Todo: Translate
+		"Menu.Citymap.Desc": "Muestra tu ciudad esquemáticamente desde arriba", 
+		"Menu.Citymap.Title": "Vista de la ciudad", 
+		"Menu.Event.Desc": "Vistazo de las misiones actuales y próximas", 
 		"Menu.Event.Title": "Event Questlist", //Todo: Translate
 		"Menu.Forum.Desc": "Tienes una pregunta? Estas molesto por algo? O solo para hablar...",
-		"Menu.Forum.Title": "Forum", //Todo: Translate
-		"Menu.HiddenRewards.Desc": "Overview of hidden rewards", //Todo: Translate
-		"Menu.HiddenRewards.Title": "Hidden rewards", //Todo: Translate
+		"Menu.Forum.Title": "Fórum", 
+		"Menu.HiddenRewards.Desc": "Vistazo de premios ocultos", 
+		"Menu.HiddenRewards.Title": "Premios ocultos", 
 		"Menu.Info.Desc": "Te enseña todas las cosas que pasan en el \"fondo \"<br><em>Poco a poco se llena con información...</em>",
 		"Menu.Info.Title": "Info Box", //Todo: Translate
-		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
-		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
+		"Menu.Kits.Desc": "Lista todos los edificios existentes y los kits de selección y actualización", 
+		"Menu.Kits.Title": "Kits para edificios", 
 		"Menu.Negotiation.Desc": "Te da sugerencias precisas para las negociaciones",
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
-		"Menu.Negotiation.Warning": "Deactivado: Comienca primero una nueva negociacion!",
-		"Menu.OutP.Desc": "Resumen de los recursos necesitados",
-		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deactivado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
-		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deactivado: Comienca primero un asentamiento cultural y vualva a cragar el juego (F5)",
+		"Menu.Negotiation.Warning": "Deshabilitado: Comienza primero una nueva negociación!",
+		"Menu.OutP.Desc": "Resumen de los recursos necesarios",
+		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deshabilitado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
+		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deshabilitado: Comienza primero un asentamiento cultural y vuelva a cargar el juego (F5)",
 		"Menu.OutP.Title": "Asentamientos Culturales",
 		"Menu.OwnpartCalculator.Desc": "Crear plan de pago, calcular puestos externos y copiar el valor",
 		"Menu.OwnpartCalculator.Title": "Calculator cuata propia",
-		"Menu.OwnpartCalculator.Warning": "Deactivado: Metete primero en un edificio grande tuyo!",
+		"Menu.OwnpartCalculator.Warning": "Deshabilitado: Entra primero en un gran edificio tuyo!",
 		"Menu.Productions.Desc": "Muestra la cantidad de las producciones actuales.",
-		"Menu.Productions.Title": "Resumen de produccion ",
+		"Menu.Productions.Title": "Resumen de producción ",
 		"Menu.Settings.Desc": "Aquí ajustas algunas cositas",
 		"Menu.Settings.Title": "Ajustes",
-		"Menu.Technologies.Desc": "Calcular costes de investigacion",
-		"Menu.Technologies.Title": "Tecnologia",
-		"Menu.Technologies.Warning": "Deactivado: Abre prinmero el arbol de tecnologias!",
+		"Menu.Technologies.Desc": "Calcular costes de investigación",
+		"Menu.Technologies.Title": "Tecnología",
+		"Menu.Technologies.Warning": "Deshabilitado: Abre primero el árbol de tecnologías!",
 		"Menu.Unit.Desc": "Todas tus tropas a simple vista",
-		"Menu.Unit.Title": "Ejercito",
+		"Menu.Unit.Title": "Ejército",
 		"Menu.Unit.Warning": "Abre primero 1x tu \"Gestión del Ejercito\"<br>tecla \"U\"",
-		"Settings.AutomaticNegotiation.Desc": "Soll der Assistent automatisch mit einer Verhandlung geöffnet und bei Abbruch geschlossen werden?",
-		"Settings.AutomaticNegotiation.Title": "Verhandlungsassisten",
-		"Settings.ChangeLanguage.Desc": "Que idioma debe usarse en lugar del reconocido?",
+		"Settings.AutomaticNegotiation.Desc": "¿Debe el asistente abrir automáticamente con una negociación y cerrar cuando se cancela?",
+		"Settings.AutomaticNegotiation.Title": "Negociadores",
+		"Settings.ChangeLanguage.Desc": "¿Qué idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
-		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extension autosuficiente, simplemente desactiva",
-		"Settings.GlobalSend.Title": "Transmision a foe-rechner.de",
-		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
-		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
-		"Settings.PreScanLGList.Desc": "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina rellenables grandes edificios.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda.",
-		"Settings.PreScanLGList.Title": "Escanear con antelacion los grandes edificios",
+		"Settings.CustomerApi.Desc": "¿Le gustaría enviar algunos datos a su propio servidor?<br> Después de esta activación, el juego se volverá a cargar y aparecerá un nuevo elemento de menú.", 
+		"Settings.CustomerApi.Title": "API de jugadores", 
+		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extensión autosuficiente, simplemente desactiva",
+		"Settings.GlobalSend.Title": "Transmisión a foe-rechner.de",
+		"Settings.MenuLength.Desc": "¿De cuántos elementos de alto debe tener el menú?<br> Vacío o \"0\" significa altura automática.", //Todo: Translate
+		"Settings.MenuLength.Title": "Longitud del menú",
+		"Settings.PreScanLGList.Desc": "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina grandes edificios rellenables.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda.",
+		"Settings.PreScanLGList.Title": "Escanear con antelación los grandes edificios",
 		"Settings.ResetBoxPositions.Button": "Borrar!",
-		"Settings.ResetBoxPositions.Desc": "Quieres que todos los coordenadas sean restablecidos?",
+		"Settings.ResetBoxPositions.Desc": "¿Quieres que todos las coordenadas sean restablecidas?",
 		"Settings.ResetBoxPositions.Title": "Coordenadas del box",
 		"Settings.SendGEXInfo.Desc": "Transmite los datos de EG al hacer clic en rankings o colocaciones",
 		"Settings.SendGEXInfo.Title": "EG evaluaciones",
-		"Settings.SendGildMemberLGInfo.Desc": "Cuando visitas otros miembors del gremium, todos los datos de los edificios grandos son transferidas a foe-rechner.de, si global esta activado",
-		"Settings.SendGildMemberLGInfo.Title": "Datos de edificios grandes de otros mienmbros del gremium",
+		"Settings.SendGildMemberLGInfo.Desc": "Cuando visitas otros miembros del gremio, todos los datos de los grandes edificios son transferidas a foe-rechner.de, si global esta activado",
+		"Settings.SendGildMemberLGInfo.Title": "Datos de grandes edificios de otros miembros del gremio",
 		"Settings.SendInvestigations.Desc": "Al entrar al 'Ayuntamiento' > 'Novedades' > 'Grandes edificios' seran transferidas las inversiones de FP",
 		"Settings.SendInvestigations.Title": "FP inversiones",
-		"Settings.SendTavernInfo.Desc": "Quieres que sean transferidas las actividades de motivar al iniciar?",
+		"Settings.SendTavernInfo.Desc": "¿Quieres que sean transferidas las actividades de motivar al iniciar?",
 		"Settings.SendTavernInfo.Title": "Actividad de motivar",
 		"Settings.ShowNeighborsGoods.Desc": "Mostrar lo que actualmentese se esta produciendo cuando visitas la vecindad",
 		"Settings.ShowNeighborsGoods.Title": "Cosecha de la vecindad",
-		"Settings.ShowTavernBadge.Desc": "Tan pronto como se activa un boost en la taberna, aparece un contador, globalmente desplazable",
+		"Settings.ShowTavernBadge.Desc": "Tan pronto como se activa un potenciador en la taberna, aparece un contador, globalmente desplazable",
 		"Settings.ShowTavernBadge.Title": "Mostrar placa de tabernas ",
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", //Todo: Translate
-		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
-		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
-		"Settings.Version.Title": "Version", //Todo: Translate
-		"Settings.Version.World": "World:" //Todo: Translate
+		"Settings.Version.GuildId": "Id de Gremio:", 
+		"Settings.Version.PlayerId": "Id de jugador:", 
+		"Settings.Version.Title": "Versión", 
+		"Settings.Version.World": "Mundo:" 
 	}
 }

@@ -36,6 +36,7 @@ let _menu = {
 		'campagneMap',
 		'citymap',
 		'unit',
+    'plunderer',
 		'settings',
 		'forum',
 		'ask',
@@ -675,6 +676,28 @@ let _menu = {
 		btn_UnitBG.append(btn_Unit);
 
 		return btn_UnitBG;
+	},
+
+  /**
+	 * Plunderer actions
+	 * @returns {*|jQuery}
+	 */
+	plunderer_Btn: () => {
+		let btn_PlundererBG = $('<div />').attr({ 'id': 'plunderer-Btn', 'data-slug': 'plunderer' }).addClass('hud-btn');
+
+		_menu.toolTippBox(i18n('Menu.Plunderer.Title'), i18n('Menu.Plunderer.Desc'), 'plunderer-Btn');
+
+		let btn_Plunderer = $('<span />');
+
+		btn_Plunderer.on('click', function () {
+      Plunderer.page = 1;
+      Plunderer.filterByPlayerId = null;
+			Plunderer.Show();
+		});
+
+		btn_PlundererBG.append(btn_Plunderer);
+
+		return btn_PlundererBG;
 	},
 
 	/**
