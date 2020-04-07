@@ -1035,7 +1035,6 @@ const FoEproxy = (function () {
 
 	// --------------------------------------------------------------------------------------------------
 	// Quests
-
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
 		MainParser.Quests = data.responseData;
 

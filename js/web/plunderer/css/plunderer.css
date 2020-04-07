@@ -1,6 +1,6 @@
 #plundererBody {
     max-height: 600px;
-    width: 550px;
+    width: 590px;
     padding: 8px 0;
     overflow: scroll;
 }
@@ -28,15 +28,23 @@
     min-height: 90px;
 }
 
-#plunderer .avatar {
-    padding: 2px;
-    min-width: 90px;
+#plunderer .action-row-type-2 {
+	margin-bottom: 6px;
 }
 
-#plunderer .avatar img {
-    margin: 0 0 2px 0;
-    width: 90px;
-    height: 90px;
+#plunderer .avatar {
+    padding: 2px;
+    width: 95px;
+}
+
+#plunderer .info-column {
+	padding: 2px;
+	width: 110px;
+}
+
+#plunderer img.player-avatar {
+	max-width: 40px;
+	border-radius: 50%;
 }
 
 #plunderer .type-1 {
@@ -121,13 +129,15 @@
 }
 
 #plunderer .army {
-    display: flex;
-    flex-wrap: wrap;
 }
 
 #plunderer .versus {
     font-weight: bold;
     padding-left: 20px;
+}
+
+#plunderer .unit-wrap {
+	display: flex;
 }
 
 #plunderer .unit {
@@ -140,8 +150,8 @@
 }
 
 #plunderer .stats-same-for-all {
-    font-size: 12px;
-    min-width: 66px;
+    font-size: 0.75rem;
+	margin: 3px 0;
 }
 
 #plunderer .green {
