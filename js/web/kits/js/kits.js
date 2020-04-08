@@ -14,7 +14,7 @@
  */
 
 /**
- * 
+ *
  * @type {{BuildingSelectionKits: null, GetTabContent: (function(): string), ReadSets: Kits.ReadSets, globCnt: number, SetTabs: Kits.SetTabs, GetTabs: (function(): string), isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], ReadSelectionKits: Kits.ReadSelectionKits, CreateBody: Kits.CreateBody, BuildingSets: null, Tabs: [], ScanInvetory: Kits.ScanInvetory, SetTabContent: Kits.SetTabContent, TabsContent: [], Inventory: null, setSingles: []}}
  */
 let Kits = {
@@ -315,17 +315,17 @@ let Kits = {
 		Kits.Tabs = [];
 		Kits.TabsContent = [];
 
-		Kits.SetTabs('building-kits', i18n('Boxes.Kits.TabBuildingKits'));
+		Kits.SetTabs('building-kits', i18n('Boxes'));
 
 
 		let t = '<table class="foe-table">';
 
 
 		t += '<tr>' +
-				'<th></th>' +
-				'<th>Name</th>' +
-				'<th></th>' +
-				'<th>Kit-Name</th>' +
+			'<th></th>' +
+			'<th>Name</th>' +
+			'<th></th>' +
+			'<th>Kit-Name</th>' +
 			'</tr>';
 
 
@@ -404,15 +404,15 @@ let Kits = {
 				url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 
 			ts += '<div class="item-wrap">' +
-					'<div class="item">' +
-						'<div class="item-image">' +
-							'<img src="' + url + '" alt="' + item['name'] + '">' +
-						'</div>' +
-						'<div class="item-name">' +
-							item['name'] + '<br>' +
-							'Im Lager: <strong>' + item['inStock'] + '</strong>' +
-						'</div>' +
-					'</div>' +
+				'<div class="item">' +
+				'<div class="item-image">' +
+				'<img src="' + url + '" alt="' + item['name'] + '">' +
+				'</div>' +
+				'<div class="item-name">' +
+				item['name'] + '<br>' +
+				'Im Lager: <strong>' + item['inStock'] + '</strong>' +
+				'</div>' +
+				'</div>' +
 				'</div>';
 		}
 

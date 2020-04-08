@@ -6,23 +6,24 @@
 		"API.LGGildMember": "__player__'s Velkolepé budovy byly poslány",
 		"API.LGInvest": "Investice vašich VB bylo posláno",
 		"API.UpdateSuccess": "Update performed", //Todo: Translate
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
-		"Boxes.Calculator.ArkBonus": "Arc bonus",
+		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
 		"Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
 		"Boxes.Calculator.BPs": "Plánky",
 		"Boxes.Calculator.Commitment": "Náklady",
 		"Boxes.Calculator.Done": "Hotovo",
 		"Boxes.Calculator.FP": "BV",
 		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "Upozornění! Zvýšení úrovně budovy",
 		"Boxes.Calculator.LGNotConnected": "Budova není připojena",
 		"Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
-		"Boxes.Calculator.Meds": "Meds",
+		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Poměr",
-		"Boxes.Calculator.Sniping": "Sniping",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
@@ -78,7 +79,7 @@
 		"Boxes.HiddenRewards.Appears": "Obnoví se",
 		"Boxes.HiddenRewards.Disappears": "Zmizí",
 		"Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
-		"Boxes.HiddenRewards.Title": "Skryté příhody", 
+		"Boxes.HiddenRewards.Title": "Skryté příhody",
 		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Auction", //Todo: Translate
 		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
@@ -95,13 +96,16 @@
 		"Boxes.Infobox.ResetBox": "Reset Box", //Todo: Translate
 		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Budova",
 		"Boxes.LGOverviewBox.Level": "Úroveň",
@@ -170,6 +174,32 @@
 		"Boxes.OwnpartCalculator.Step": "Úroveň",
 		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Sousední budovy",
 		"Boxes.Productions.Happiness": "Spokojenost",
 		"Boxes.Productions.Headings.all": "Celkem",
@@ -238,14 +268,14 @@
 		"Eras.8": "Průmyslový věk",
 		"Eras.9": "Doba pokroku",
 		"Global.BoxTitle": "FoE Helfer",
-		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice", 
-		"HiddenRewards.Positions.cityRoadSmall": "Cesta", 
-		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice", //Todo: Translate
-		"HiddenRewards.Positions.nature": "V přírodě", 
-		"HiddenRewards.Positions.shore": "Na pobřeží", 
-		"HiddenRewards.Positions.water": "Na hladině", 
-		"HiddenRewards.Table.expires": "Čas obnovení", 
-		"HiddenRewards.Table.position": "Umístění", 
+		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice",
+		"HiddenRewards.Positions.cityRoadSmall": "Cesta",
+		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice",
+		"HiddenRewards.Positions.nature": "V přírodě",
+		"HiddenRewards.Positions.shore": "Na pobřeží",
+		"HiddenRewards.Positions.water": "Na hladině",
+		"HiddenRewards.Table.expires": "Čas obnovení",
+		"HiddenRewards.Table.position": "Umístění",
 		"HiddenRewards.Table.type": "Druh",
 		"Local": "cs-CZ",
 		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
@@ -284,6 +314,8 @@
 		"Menu.OwnpartCalculator.Desc": "Připravte si plán, kolik Vám kamarádi přispějí do budovy",
 		"Menu.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Menu.OwnpartCalculator.Warning": "Nejprve otevřete jednu svoji velkolepou budovu!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Zobrazuje výroby ve všech dílnách.",
 		"Menu.Productions.Title": "Výroba v dílnách",
 		"Menu.Settings.Desc": "Něco málo z nastavení",
@@ -310,7 +342,7 @@
 		"Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
 		"Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
 		"Settings.SendGEXInfo.Desc": "Při otevření umístění cechu a pořadí hráčů se údaje odešlou na foe-rechner.de",
-		"Settings.SendGEXInfo.Title": "Vyhodnocení CE", 
+		"Settings.SendGEXInfo.Title": "Vyhodnocení CE",
 		"Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
 		"Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
 		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' pošle data o investování VB na web",
@@ -321,10 +353,10 @@
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", 
-		"Settings.Version.GuildId": "Id cechu:", 
+		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
+		"Settings.Version.GuildId": "Id cechu:",
 		"Settings.Version.PlayerId": "Id hráče:",
 		"Settings.Version.Title": "Verze",
-		"Settings.Version.World": "Svět:" 
+		"Settings.Version.World": "Svět:"
 	}
 }
