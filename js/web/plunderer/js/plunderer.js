@@ -230,7 +230,7 @@ let Plunderer = {
 	 * @returns {Promise<void>}
 	 */
 	garbargeCollector:  async ()=> {
-		const sixWeeksAgo = new Date(Date.now() - 60*60*1000*24*7*6);
+		const sixWeeksAgo = moment().subtract(6, 'weeks').toDate();
 
 		await Plunderer.db.actions
 			.where('date').below(sixWeeksAgo)
