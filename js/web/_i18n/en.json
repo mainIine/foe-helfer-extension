@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "English",
 		"API.GEXChampionship": "The GEX guild placement has been updated",
@@ -177,6 +177,7 @@
 		"Boxes.Plundered.actionBattleWon": "Battle Won",
 		"Boxes.Plundered.actionPlundered": "Plundered",
 		"Boxes.Plundered.actionSurrendered": "Surrendered",
+		"Boxes.Plundered.actionShielded": "Shielded",
 		"Boxes.Plunderer.AllPlayers": "All players",
 		"Boxes.Plunderer.Attack": "Attack",
 		"Boxes.Plunderer.autoBattle": "Auto Battle",
@@ -194,6 +195,7 @@
 		"Boxes.Plunderer.Title": "PvP Activity",
 		"Boxes.Plunderer.total": "Total",
 		"Boxes.Plunderer.visited": "Visited",
+		"Boxes.Plunder.shieldProtectetUntil": "Protected until:",
 		"Boxes.Plunderer.visitTitle": "When you visit last time this player",
 		"Boxes.Productions.AdjacentBuildings": "Adjacent buildings",
 		"Boxes.Productions.Happiness": "Happiness",
