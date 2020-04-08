@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.4.4
+
+**New**
+- PvP overview:
+     - [#686](https://github.com/dsiekiera/foe-helfer-extension/issues/686) neighborhood loot database
+     - values of you and the neighbor of the attacking, defending armies are noted
+     - what type of fight you have carried out and whether you won, lost or given up
+     - all times when you attacked, looted or last visited him
+     - what you looted, from which building
+     - shows all active city signs in your neighborhood
+
+**Update**
+- Extension:
+    - [#727](https://github.com/dsiekiera/foe-helfer-extension/issues/727) Missing texts in Mo / Po reports added
+    - [#726](https://github.com/dsiekiera/foe-helfer-extension/issues/726) Extension asks for an update from now on whether it can reload
+    
+- Cost calculator:
+    - [#756](https://github.com/dsiekiera/foe-helfer-extension/issues/756) Numbering integrated in the lists of the pre-scan
+
+**Bugfix**
+- Research cost calculator:
+    - [#718](https://github.com/dsiekiera/foe-helfer-extension/issues/718) "Asteroid ice" was not recognized by the calculator
+
+---
+
 ##### 2.4.3.2
 
 **Bugfix**

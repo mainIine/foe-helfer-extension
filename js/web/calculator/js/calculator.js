@@ -966,7 +966,7 @@ let Calculator = {
 						}
 
 						h.push('<tr>');
-						h.push('<td><strong' + StrongClass + '>' + GBName + '</strong></td>');
+						h.push('<td><strong' + StrongClass + '>' + (i-0+1) + ': ' + GBName + '</strong></td>');
 						h.push('<td class="text-center"><strong' + StrongClass + '>' + GBLevel + '</strong></td>');
 						h.push('<td class="text-center"><strong' + StrongClass + '>' + HTML.Format(CurrentProgress) + ' / ' + HTML.Format(MaxProgress) + '</strong></td>');
 						h.push('<td class="text-center"><strong' + StrongClass + '>' + GewinnString + '</strong></td>');
