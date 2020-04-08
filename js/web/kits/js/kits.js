@@ -315,7 +315,7 @@ let Kits = {
 		Kits.Tabs = [];
 		Kits.TabsContent = [];
 
-		Kits.SetTabs('building-kits', i18n('Boxes'));
+		Kits.SetTabs('building-kits', i18n('Boxes.Kits.TabBuildingKits'));
 
 
 		let t = '<table class="foe-table">';
