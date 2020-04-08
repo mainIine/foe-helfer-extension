@@ -80,25 +80,28 @@ plunderDB.open();
 
 // Detect shield
 FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, postData) => {
-	const r = data.responseData;
-	if (!Array.isArray(r)) { return; }
-	const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
+	// Deffer handling city protection in next tick, to ensure PlayerDict is fetched
+	setTimeout(async () => {
+		const r = data.responseData;
+		if (!Array.isArray(r)) { return; }
+		const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
 
-	for (const shieldInfo of shielded) {
-		const playerId = shieldInfo.playerId;
-		const lastShieldAction = await Plunderer.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
+		for (const shieldInfo of shielded) {
+			const playerId = shieldInfo.playerId;
+			const lastShieldAction = await Plunderer.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
 
-		// If in db already exists actual shield info than skip
-		if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
+			// If in db already exists actual shield info than skip
+			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
 
-		await Plunderer.db.actions.add({
-			type: Plunderer.ACTION_TYPE_SHIELDED,
-			playerId: playerId,
-			date: new Date,
-			expireTime: shieldInfo.expireTime,
-		});
-		await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
-	}
+			await Plunderer.db.actions.add({
+				type: Plunderer.ACTION_TYPE_SHIELDED,
+				playerId: playerId,
+				date: new Date,
+				expireTime: shieldInfo.expireTime,
+			});
+			await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
+		}
+	})
 });
 
 FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
@@ -412,6 +415,8 @@ let Plunderer = {
 		const players = await Plunderer.db.players.where('id').anyOf(actions.map(it => it.playerId)).toArray();
 		actions = actions.map(it => {
 			const player = players.find(p => p.id === it.playerId);
+			const playerFromDict = PlayerDict[it.playerId];
+			// Try get info about player from indexdb, if not possible than from PlayerDict
 			const playerInfo = player ? ({
 				playerName: player.name,
 				avatar: player.avatar,
@@ -419,13 +424,20 @@ let Plunderer = {
 				clanId: player.clanId,
 				clanName: player.clanName || i18n('Boxes.Plunderer.HasNoClan'),
 				playerEra: player.era
+			}) : playerFromDict ? ({
+				playerName: playerFromDict.PlayerName,
+				clanId: playerFromDict.ClanId || 0,
+				clanName: playerFromDict.ClanName || i18n('Boxes.Plunderer.HasNoClan'),
+				avatar: playerFromDict.Avatar,
+				playerEra: 'unknown',
+				playerDate: null,
 			}) : ({
 				playerName: 'Unknown',
-				avatar: '',
+				clanId: 'N/A',
+				clanName: 'Unknown',
+				avatar: null,
+				playerEra: 'unknown',
 				playerDate: null,
-				clanId: 0,
-				clanName: '',
-				playerEra: 'Unknown',
 			});
 			return {
 				...it,
@@ -515,13 +527,13 @@ let Plunderer = {
 			[Plunderer.ACTION_TYPE_SHIELDED]: i18n('Boxes.Plundered.actionShielded'),
 		}[action.type] || 'Unknown';
 
-		const avatar = `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[action.avatar]}.jpg`;
+		const avatar = action.avatar && `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[action.avatar]}.jpg`;
 		const date = moment(action.date).format(i18n('DateTime'));
 		const dateFromNow = moment(action.date).fromNow();
 
 		let era = '';
 
-		if(action.playerEra !== 'unknown'){
+		if(action.playerEra && action.playerEra !== 'unknown'){
 			let eraName = i18n('Eras.' + Technologies.Eras[action.playerEra]);
 
 			era = `<div class="era" title="${i18n('Boxes.Plunderer.PlayersEra')}: ${eraName}"><strong>${eraName}</strong></div>`;
@@ -529,7 +541,7 @@ let Plunderer = {
 
 		return `<div class="action-row action-row-type-${action.type}">
 					<div class="avatar select-player" data-value="${action.playerId}">
-						${isSamePlayer ? '' : `<img class="player-avatar" src="${avatar}" alt="${action.playerName}" /><br>`}
+						${isSamePlayer || !avatar? '' : `<img class="player-avatar" src="${avatar}" alt="${action.playerName}" /><br>`}
 						<span class="type text-${action.type === 1 ? 'success' : (action.type === 3 ? 'danger' : 'success')}">${type}</span>
 					</div>
 					<div class="info-column">
@@ -664,4 +676,7 @@ let Plunderer = {
 	}
 };
 
-Plunderer.garbargeCollector();
+// Lets cleaning after 1min when app is up
+setTimeout(() => {
+	Plunderer.garbargeCollector();
+}, 60 * 1000);
