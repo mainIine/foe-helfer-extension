@@ -107,23 +107,39 @@ let Alerts = {
         Alerts.Tabs = [];
         Alerts.TabsContent = [];
 
+        Alerts.SetTabs('alerts-tab-new', i18n('Boxes.Alerts.Tab.New'));
         Alerts.SetTabs('alerts-tab-list', i18n('Boxes.Alerts.Tab.List'));
         Alerts.SetTabs('alerts-tab-preferences', i18n('Boxes.Alerts.Tab.Preferences'));
 
+        // form to create/add a new alert
+        // show preferences
+        Alerts.SetTabContent('alerts-tab-new', '<p>Add a new alert</p>' );
+
+        // list alerts
         let html = '<table class="foe-table">';
 
-        html += '<thead><tr><th>Expires</th><th colspan="4">Title</th></tr></thead>';
+        html += '<thead><tr><th>Expires</th><th colspan="4">Title</th><th>Countdown</th><th>Preview</th>';
+        html += '<th>&nbsp;</th><th>Edit</th></tr></thead>';
         html += '<tbody>';
 
         for( let id in Alerts.Model.Alerts ){
             let alert = Alerts.Model.Alerts[id];
-            html += '<tr><td>' + alert.expires + '</td><td colspan="4">' + alert.title + '</td></tr>';
+            html += '<tr>';
+            html += '<td>' + alert.expires + '</td>';
+            html += '<td colspan="4">' + alert.title + '</td>';
+            html += '<td>countdown</td><td>preview</td>';
+            html += '<td><div title="Persistent"><input type="checkbox" checked="checked"></div></td>';
+            html += '<td><button>edit</button></td>'
+            html += '</tr>';
         }
         html += '</tbody></table>';
 
         Alerts.SetTabContent('alerts-tab-list', html );
+
+        // show preferences
         Alerts.SetTabContent('alerts-tab-preferences', '<p>preferences</p>' );
 
+        // compile it all into html and inject
         let h = [];
 
         h.push('<div class="alerts-tabs tabs">');
@@ -135,6 +151,25 @@ let Alerts = {
         $('#AlertsBody').html( h.join('') ).promise().done(function(){
             $('.alerts-tabs').tabslet({active: 1});
         });
+
+        $('#AlertsBody').append($('<div />').addClass('no-permission').attr('data-text', i18n('Boxes.Alerts.Disabled.Default')));
+
+        // handle Notification permissions
+        if ( ! NotificationManager.isEnabled ){
+
+            // if the notification permissions have never been given (permission === 'default')
+            if ( Notification.permission === 'default' ){
+                // Enable notifications in your browser to use this feature.
+                $('#AlertsBody').append($('<div />').addClass('no-permission').attr('data-text', i18n('Boxes.Alerts.Disabled.Default')));
+            }
+
+            // if the notification permissions have been denied before (permission === 'denied')
+            if ( Notification.permission === 'denied' ){
+                // Notifications are disabled. You can enable notifications in your browser settings navigate to: chrome://settings/content/notifications
+                $('#AlertsBody').append($('<div />').addClass('no-permission').attr('data-text', i18n('Boxes.Alerts.Disabled.Denied')));
+            }
+
+        }
     },
 
     /**
@@ -259,5 +294,85 @@ let NotificationManager = {
     _log: (o)=> {
         // if at a certain debug level ?!
         console.log(o);
+    }
+}
+
+/**
+ * Observable pattern using subscribe/unsubscribe (instead of add/remove observer). The notify is private
+ * and executes every second after TimeManager.start(). Subscribes should to implement 'update(unix timestamp)'
+ */
+let TimeManager = function(){
+
+    // private
+    let tmp = {
+        interval: null,
+        observers: [],
+        /**
+         * Returns true iff the given object is in the list of observers
+         * @param o
+         * @returns {boolean}
+         */
+        isSubscribed: (o)=> { return ( tmp.observers.filter(observer => observer === o).length == 1 ); },
+        notify: (data) => {
+            tmp.observers.forEach( observer => {
+                if (observer.update){ observer.update(data); }
+                else { /* throw and error */ }
+            });
+        }
+    };
+    // public
+    let pub = {
+
+        /**
+         * Starts the "clock"
+         */
+        start: ()=> {
+            stop();
+            tmp.interval = setInterval( function(){ tmp.notify( new Date().getTime() ); }, 1000 );
+        },
+
+        /**
+         * Stops the "clock"
+         */
+        stop: ()=> {
+            if ( tmp.interval != null ){
+                clearInterval( tmp.interval );
+                tmp.interval = null;
+            }
+        },
+
+        /**
+         * Adds the provided object to the observers of this observable object
+         * @param o
+         */
+        subscribe: (o)=> {
+            if ( !tmp.isSubscribed(o) ){
+                tmp.observers.push(o);
+            }
+        },
+
+        /**
+         * Removes the provided objects from the observers (if it is among them)
+         * @param o
+         */
+        unsubscribe: (o)=> {
+            tmp.observers = tmp.observers.filter(observer => observer !== o);
+        },
+    };
+
+    return pub;
+
+}();
+
+class AlertTimer {
+
+    constructor(date){
+        this.expires = ( date.getTime() / 1000 ) >> 0;
+    }
+
+    update(t) {
+        // The time difference between when the alert expires and the current time (as a unix timestamp) in seconds
+        // with the decimal part removed (that's what the >> 0 does)
+        let dt = ( this.expires - t/1000 ) >> 0;
     }
 }
