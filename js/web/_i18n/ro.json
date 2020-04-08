@@ -6,6 +6,7 @@
 		"API.LGGildMember": "Datele despre clădirile legendare ale lui _player__'s au fost transmise",
 		"API.LGInvest": "Datele despre investițiile tale în CL au fost transmise",
 		"API.UpdateSuccess": "Actualizare efectuată",
+		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 		"Boxes.Calculator.ArkBonus": "Bonusul Domului",
@@ -15,7 +16,7 @@
 		"Boxes.Calculator.Done": "Terminat",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Procent investiții:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATENȚIE! Închide nivelul la CL!",
 		"Boxes.Calculator.LGNotConnected": "Clădirea nu este conectată la stradă!",
 		"Boxes.Calculator.LGNotOpen": "Nivelul nu este deblocat!",
@@ -176,6 +177,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -184,11 +186,14 @@
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
