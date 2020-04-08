@@ -6,7 +6,7 @@
 		"API.LGGildMember": "Datele despre clădirile legendare ale lui _player__'s au fost transmise",
 		"API.LGInvest": "Datele despre investițiile tale în CL au fost transmise",
 		"API.UpdateSuccess": "Actualizare efectuată",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 		"Boxes.Calculator.ArkBonus": "Bonusul Domului",
 		"Boxes.Calculator.AvailableFP": "PF disponibile",
@@ -95,13 +95,16 @@
 		"Boxes.Infobox.ResetBox": "Resetare",
 		"Boxes.Infobox.Title": "InfoBox",
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Profitul actual: ",
 		"Boxes.Investment.InvestBar": "PF investite: ",
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investiții",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Clădire",
 		"Boxes.LGOverviewBox.Level": "Nivel",
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Contribuție la CL proprii",
 		"Boxes.OwnpartCalculator.YourName": "Numele tău",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Clădiri învecinate",
 		"Boxes.Productions.Happiness": "Fericre",
 		"Boxes.Productions.Headings.all": "Total",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Creează un plan de creștere a propriilor CL, calculează locurile disponibile și copiază valorile",
 		"Menu.OwnpartCalculator.Title": "Contribuție CL proprii",
 		"Menu.OwnpartCalculator.Warning": "Dezactivat: Deschide mai întâi o cladire legendară proprie!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Afișează toate producțiile în curs.",
 		"Menu.Productions.Title": "Prezentarea generală a producțiilor",
 		"Menu.Settings.Desc": "Setări ale aplicației",

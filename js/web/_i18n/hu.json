@@ -6,7 +6,7 @@
 		"API.LGGildMember": "__player__ játékos nevezetes épületei elküldésre kerültek",
 		"API.LGInvest": "F.É. befektetéseit elküldésre került",
 		"API.UpdateSuccess": "Frissítés megtörtént",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktív ismétlődő feladatok:",
 		"Boxes.Calculator.ArkBonus": "Bárka bónusz:",
 		"Boxes.Calculator.AvailableFP": "Elérhető FP",
@@ -95,13 +95,16 @@
 		"Boxes.Infobox.ResetBox": "Újratöltés",
 		"Boxes.Infobox.Title": "Infó doboz",
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FP: ", //Todo: Translate
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Épület",
 		"Boxes.LGOverviewBox.Level": "Szint",
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Szint",
 		"Boxes.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Boxes.OwnpartCalculator.YourName": "Saját név",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Szomszédos épületek",
 		"Boxes.Productions.Happiness": "Boldogság",
 		"Boxes.Productions.Headings.all": "Összes",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Készítsen tervet a behelyezett FP-ről az első 5 hely biztosítására",
 		"Menu.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Menu.OwnpartCalculator.Warning": "Tiltott: Először nyissa meg az egyik nevezetes épületét!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Megjeleníti az összes aktuális termelés számát.",
 		"Menu.Productions.Title": "Termelés áttekintése",
 		"Menu.Settings.Desc": "Itt van néhány apró beállítás",
