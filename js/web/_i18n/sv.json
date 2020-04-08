@@ -6,16 +6,17 @@
 		"API.LGGildMember": "__player__'s Mäktig byggnad har skickats in",
 		"API.LGInvest": "Dina MB investeringar har överförts",
 		"API.UpdateSuccess": "Uppdatering utförd",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivt återkommande uppdrag:",
 		"Boxes.Calculator.ArkBonus": "Arkbonus",
 		"Boxes.Calculator.AvailableFP": "Tillgängliga FP",
 		"Boxes.Calculator.BPs": "Ritning",
 		"Boxes.Calculator.Commitment": "Kostnad",
 		"Boxes.Calculator.Done": "Klart",
-		"Boxes.Calculator.FP": "FP",
+		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Investeringskvot:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "VARNING! Höjer nivå på MB!",
 		"Boxes.Calculator.LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 		"Boxes.Calculator.LGNotOpen": "Nästa niå är inte upplåst ännu",
@@ -79,7 +80,7 @@
 		"Boxes.HiddenRewards.Disappears": "Försvinner",
 		"Boxes.HiddenRewards.NoEvents": "Inga händelser",
 		"Boxes.HiddenRewards.Title": "Gömda händelser",
-		"Boxes.Infobox.Filter": "Filter",
+		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Auktion",
 		"Boxes.Infobox.FilterGex": "IE",
 		"Boxes.Infobox.FilterGildFights": "Imperiestrider",
@@ -95,13 +96,16 @@
 		"Boxes.Infobox.ResetBox": "Töm",
 		"Boxes.Infobox.Title": "Informationshubb",
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Nuvarande vinst: ",
 		"Boxes.Investment.InvestBar": "Investerat FP: ",
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investera",
 		"Boxes.Investment.TotalFP": "Bank + cirkulation + vinst: ",
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Byggnad",
 		"Boxes.LGOverviewBox.Level": "Nivå",
@@ -120,7 +124,7 @@
 		"Boxes.Negotiation.DragDrop": "Du kan omorganisera ikonerna på medel via dra & släpp för att välja ordningen för första försöket.",
 		"Boxes.Negotiation.GoodsCritical": "VARNING: Varulager är kritiskt",
 		"Boxes.Negotiation.GoodsLow": "VARNING: Varulager är lågt",
-		"Boxes.Negotiation.Person": "Person",
+		"Boxes.Negotiation.Person": "Person", //Todo: Translate
 		"Boxes.Negotiation.Round": "Omgång",
 		"Boxes.Negotiation.Stock": "Lager:",
 		"Boxes.Negotiation.Success": "Framgång",
@@ -144,14 +148,14 @@
 		"Boxes.Outpost.TitleFree": "Tillgänglig",
 		"Boxes.Outpost.TitleShort": "Varuöversikt - ",
 		"Boxes.OwnpartCalculator.Arc": "Ark",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
 		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopiera värden",
 		"Boxes.OwnpartCalculator.Deposit": "Insats",
 		"Boxes.OwnpartCalculator.Done": "Klart",
 		"Boxes.OwnpartCalculator.Ext": "Extra",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "MB Namn",
 		"Boxes.OwnpartCalculator.Levels": "Nivåer",
 		"Boxes.OwnpartCalculator.LGTotalFP": "MB Total-FP",
@@ -170,11 +174,37 @@
 		"Boxes.OwnpartCalculator.Step": "Nivå",
 		"Boxes.OwnpartCalculator.Title": "MB kalkylator",
 		"Boxes.OwnpartCalculator.YourName": "Ditt namn",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Angränsande byggnad",
 		"Boxes.Productions.Happiness": "Glädje",
 		"Boxes.Productions.Headings.all": "Alla",
 		"Boxes.Productions.Headings.amount": "Antal",
-		"Boxes.Productions.Headings.boost": "Boost",
+		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Kulturbyggnad",
 		"Boxes.Productions.Headings.decoration": "Dekoration",
 		"Boxes.Productions.Headings.earning": "Inkomst",
@@ -191,7 +221,7 @@
 		"Boxes.Productions.ModeSingle": "Enkel",
 		"Boxes.Productions.SearchInput": "Sök byggnad...",
 		"Boxes.Productions.Title": "Produktionsöversikt",
-		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.Total": "Total: ", //Todo: Translate
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Inställningar",
@@ -203,7 +233,7 @@
 		"Boxes.Technologies.NoTechs": "Du har nått slutet av denna era",
 		"Boxes.Technologies.Resource": "Resurs",
 		"Boxes.Technologies.Title": "Forskningskostnad för",
-		"Boxes.Units.Attack": "Attack",
+		"Boxes.Units.Attack": "Attack", //Todo: Translate
 		"Boxes.Units.Bind": "Bunden",
 		"Boxes.Units.Defend": "Försvar",
 		"Boxes.Units.NextUnitsIn": "Nästa __count__ enheter kommer om <span class=\"alca-countdown\"></span> vid __harvest__ Uhr",
@@ -211,7 +241,7 @@
 		"Boxes.Units.Proportionally": "Proportionellt",
 		"Boxes.Units.Quantity": "Antal",
 		"Boxes.Units.ReadyToLoot": "Redo att plundra!",
-		"Boxes.Units.Status": "Status",
+		"Boxes.Units.Status": "Status", //Todo: Translate
 		"Boxes.Units.Title": "Arméöversikt",
 		"Boxes.Units.Unbind": "Obunden",
 		"Boxes.Units.Unit": "Trupp",
@@ -267,7 +297,7 @@
 		"Menu.Event.Desc": "Översikt av nuvarande och kommande event",
 		"Menu.Event.Title": "Event uppdragslista",
 		"Menu.Forum.Desc": "Har du en fråga? något som irritera dig? eller bara vill prata ...",
-		"Menu.Forum.Title": "Forum",
+		"Menu.Forum.Title": "Forum", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Översikt av händelser",
 		"Menu.HiddenRewards.Title": "Gömda händelser",
 		"Menu.Info.Desc": "Visar allt som händer i \"bakgrunden\"<br>",
@@ -284,6 +314,8 @@
 		"Menu.OwnpartCalculator.Desc": "Skapa en betalningsplan, beräkna externa placeringar och kopiera värden",
 		"Menu.OwnpartCalculator.Title": "MB Kalkylator",
 		"Menu.OwnpartCalculator.Warning": "Inaktiverat: Öppna en av dina MB först!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Visar en översikt av all produktion.",
 		"Menu.Productions.Title": "Produktionsöversikt",
 		"Menu.Settings.Desc": "Här finns några inställningar",
@@ -324,7 +356,7 @@
 		"Settings.Version.Desc": "Chrome tillägg version",
 		"Settings.Version.GuildId": "Imperium id:",
 		"Settings.Version.PlayerId": "Spelar id:",
-		"Settings.Version.Title": "Version",
+		"Settings.Version.Title": "Version", //Todo: Translate
 		"Settings.Version.World": "Värld:"
 	}
 }

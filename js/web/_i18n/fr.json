@@ -6,6 +6,7 @@
 		"API.LGGildMember": "Les GM de __player__ ont été envoyés.",
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
+		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Serveur API personnel",
 		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
@@ -15,7 +16,7 @@
 		"Boxes.Calculator.Done": "Terminée",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Taux amis :",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
@@ -49,12 +50,12 @@
 		"Boxes.CityMap.Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 		"Boxes.CityMap.FreeArea": "Surface disponible : ",
-		"Boxes.CityMap.NormalPerspecitve": "Standard",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
-		"Boxes.EventChests.Chance": "Chance",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Coût",
 		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
 		"Boxes.EventChests.CostPerStep": "Coût / Pas",
@@ -81,7 +82,7 @@
 		"Boxes.HiddenRewards.Title": "Récompenses cachées",
 		"Boxes.Infobox.Filter": "Filtre",
 		"Boxes.Infobox.FilterAuction": "Enchères",
-		"Boxes.Infobox.FilterGex": "GEX",
+		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
 		"Boxes.Infobox.FilterGildFights": "Batailles de Guilde",
 		"Boxes.Infobox.FilterLevel": "Niveaux supérieurs",
 		"Boxes.Infobox.FilterMessage": "Messages",
@@ -95,13 +96,16 @@
 		"Boxes.Infobox.ResetBox": "Vider la boîte",
 		"Boxes.Infobox.Title": "Infos Techniques",
 		"Boxes.Investment.AllUpToDate": "Tout est à jour",
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Gains PF (actuel) : ",
 		"Boxes.Investment.InvestBar": "PF investis : ",
 		"Boxes.Investment.PlayerFound": "Joueur trouvé",
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Bâtiment",
 		"Boxes.LGOverviewBox.Level": "Niveau",
@@ -135,7 +139,7 @@
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-		"Boxes.Outpost.ExpansionsSum": "Expansions",
+		"Boxes.Outpost.ExpansionsSum": "Expansions", //Todo: Translate
 		"Boxes.Outpost.infoLine": "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Prochaine expansion",
 		"Boxes.Outpost.tileNotPlanned": "N/A",
@@ -151,7 +155,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "A poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
 		"Boxes.OwnpartCalculator.Ext": "Ext.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
 		"Boxes.OwnpartCalculator.Levels": "Niveaux",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total PF ",
@@ -164,12 +168,38 @@
 		"Boxes.OwnpartCalculator.OwnPart": "Contrib. perso ",
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restant ",
 		"Boxes.OwnpartCalculator.PatronPart": "Contrib. externe ",
-		"Boxes.OwnpartCalculator.Place": "Place",
+		"Boxes.OwnpartCalculator.Place": "Place", //Todo: Translate
 		"Boxes.OwnpartCalculator.PlayerName": "Joueur ",
 		"Boxes.OwnpartCalculator.Scheme": "Schéma ",
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.Happiness": "satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
@@ -241,12 +271,12 @@
 		"HiddenRewards.Positions.cityRoadBig": "Grande route",
 		"HiddenRewards.Positions.cityRoadSmall": "Petite route",
 		"HiddenRewards.Positions.guildExpedition": "Expédition de Guilde",
-		"HiddenRewards.Positions.nature": "Nature",
+		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
 		"HiddenRewards.Positions.shore": "Rivage",
 		"HiddenRewards.Positions.water": "Dans l'eau",
 		"HiddenRewards.Table.expires": "Echéance",
-		"HiddenRewards.Table.position": "Position",
-		"HiddenRewards.Table.type": "Type",
+		"HiddenRewards.Table.position": "Position", //Todo: Translate
+		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "fr-FR",
 		"Menu.Api.Desc": "Configuration de votre serveur personnel.",
 		"Menu.Api.Title": "Serveur API personnel",
@@ -267,7 +297,7 @@
 		"Menu.Event.Desc": "Aperçu des quêtes en cours et à venir.",
 		"Menu.Event.Title": "Liste des quêtes événementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
-		"Menu.Forum.Title": "Forum",
+		"Menu.Forum.Title": "Forum", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Aperçu des récompenses cachées.",
 		"Menu.HiddenRewards.Title": "Récompenses cachées",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
@@ -284,6 +314,8 @@
 		"Menu.OwnpartCalculator.Desc": "Crée un plan de pose de PF, calcule les coûts et copie les valeurs.",
 		"Menu.OwnpartCalculator.Title": "Calculatrice GM interne",
 		"Menu.OwnpartCalculator.Warning": "Désactivé : Ouvrez d'abord un de vos GM !",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Affiche le nombre en cours de toutes les productions.",
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",
@@ -324,7 +356,7 @@
 		"Settings.Version.Desc": "Version de l'extension Chrome",
 		"Settings.Version.GuildId": "Identifiant Guilde",
 		"Settings.Version.PlayerId": "Identifiant Joueur",
-		"Settings.Version.Title": "Version",
+		"Settings.Version.Title": "Version", //Todo: Translate
 		"Settings.Version.World": "Identifiant Monde"
 	}
 }
