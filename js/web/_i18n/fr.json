@@ -54,14 +54,14 @@
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
-		"Boxes.EventChests.Chance": "Chance",
+		"Boxes.EventChests.Chance": "Prix",
 		"Boxes.EventChests.Cost": "Coût",
 		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
 		"Boxes.EventChests.CostPerStep": "Coût / Pas",
 		"Boxes.EventChests.MainPrize": "Prix spécial",
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prix du jour : ",
 		"Boxes.EventChests.Steps": "Pas",
-		"Boxes.EventChests.Title": "Aide à la sélection d'un coffre d'événement",
+		"Boxes.EventChests.Title": "Evénement : Aide à la sélection",
 		"Boxes.EventList.And": " ET ",
 		"Boxes.EventList.Desc": "Tâche",
 		"Boxes.EventList.Number": "N°",
@@ -95,17 +95,17 @@
 		"Boxes.Infobox.ResetBox": "Vider la boîte",
 		"Boxes.Infobox.Title": "Infos Techniques",
 		"Boxes.Investment.AllUpToDate": "Tout est à jour",
-		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "Tous les joueurs de cette page ont déjà été enregistrés",
 		"Boxes.Investment.CurrReward": "Gains PF (actuel) : ",
 		"Boxes.Investment.InvestBar": "PF investis : ",
 		"Boxes.Investment.PlayerFound": "Joueur trouvé",
-		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ nouvel évènement joueur a été trouvé",
+		"Boxes.Investment.PlayerFoundCounter": "__count__ nouveaux évènements joueur ont été trouvés",
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock+investis+gains) : ",
-		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
-		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Améliorations",
+		"Boxes.Kits.TabSelectionKits": "Packs de selection",
+		"Boxes.Kits.Title": "Améliorations et Packs",
 		"Boxes.LGOverviewBox.Building": "Bâtiment",
 		"Boxes.LGOverviewBox.Level": "Niveau",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> n'a rien à récupérer.",
@@ -173,28 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
-		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
+		"Boxes.Plundered.actionBattleLost": "Attaque perdue",
+		"Boxes.Plundered.actionBattleWon": "Attaque réussie",
+		"Boxes.Plundered.actionPlundered": "Pillé",
+		"Boxes.Plundered.actionSurrendered": "Abondonné",
+		"Boxes.Plunderer.AllPlayers": "Tous les joueurs",
+		"Boxes.Plunderer.Attack": "Attaque",
+		"Boxes.Plunderer.autoBattle": "Bataille auto.",
+		"Boxes.Plunderer.collectedToday": "Collecté aujourd'hui",
+		"Boxes.Plunderer.Defense": "Défense",
+		"Boxes.Plunderer.filteredByUser": "Filtré par joueur",
+		"Boxes.Plunderer.goto1stPage": "1ère Page",
+		"Boxes.Plunderer.nextPage": "Page suivante",
+		"Boxes.Plunderer.noData": "Aucune donnée",
+		"Boxes.Plunderer.Page": "Page",
+		"Boxes.Plunderer.PlayersEra": "Ere du joueur",
+		"Boxes.Plunderer.rounds": "Manches",
+		"Boxes.Plunderer.showAllPlayers": "Voir tous les joueurs",
+		"Boxes.Plunderer.thisWeek": "Cette semaine",
+		"Boxes.Plunderer.Title": "Activité PvP",
+		"Boxes.Plunderer.total": "Total",
+		"Boxes.Plunderer.visited": "Visité",
+		"Boxes.Plunderer.visitTitle": "Date de la dernière visite à ce joueur",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.Happiness": "satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
@@ -254,7 +254,7 @@
 		"Eras.18": "Ère Spatiale - Mars",
 		"Eras.19": "Ère Spatiale - Cérès",
 		"Eras.2": "Âge du Bronze",
-		"Eras.20": "Space Age Venus", //Todo: Translate
+		"Eras.20": "Ère Spatiale - Vénus",
 		"Eras.3": "Âge du Fer",
 		"Eras.4": "Haut Moyen Âge",
 		"Eras.5": "Moyen Âge Classique",
@@ -297,8 +297,8 @@
 		"Menu.HiddenRewards.Title": "Récompenses cachées",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
 		"Menu.Info.Title": "Info Techniques",
-		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
-		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
+		"Menu.Kits.Desc": "Liste de tous les batîments, améliorations et packs de sélection de l'inventaire.",
+		"Menu.Kits.Title": "Améliorations et Packs",
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
@@ -309,8 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Crée un plan de pose de PF, calcule les coûts et copie les valeurs.",
 		"Menu.OwnpartCalculator.Title": "Calculatrice GM interne",
 		"Menu.OwnpartCalculator.Warning": "Désactivé : Ouvrez d'abord un de vos GM !",
-		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
-		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
+		"Menu.Plunderer.Desc": "Afficher l'historique de l'activité PvP et de récolte du voisinage.",
+		"Menu.Plunderer.Title": "Activité PvP",
 		"Menu.Productions.Desc": "Affiche le nombre en cours de toutes les productions.",
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",
