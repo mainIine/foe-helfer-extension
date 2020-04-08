@@ -6,7 +6,6 @@
 		"API.LGGildMember": "Informácie o Veľkolepých budovách hráča __player__ boli odoslané",
 		"API.LGInvest": "Údaje o Vašich príspevkoch do VB boli odoslané",
 		"API.UpdateSuccess": "Úspešne aktualizované",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Prebiehajúca výzva:",
 		"Boxes.Calculator.ArkBonus": "Bonus oblúka",
@@ -59,8 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " A ",
@@ -185,6 +184,7 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
 		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
@@ -336,7 +336,7 @@
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",
 		"Settings.MenuLength.Title": "Výška menu",
-		"Settings.PreScanLGList.Desc": "Scans the overview list of the neighbor when opening and determines possibly fillable LGs. <br> <u> Note: </u> Since the final seats are only transmitted when opening a LG, the result may differ. The scan is saved, however.", //Todo: Translate
+		"Settings.PreScanLGList.Desc": "Scans the overview list of the neighbor when opening and determines possibly fillable great buildings. <br> <u> Note: </u> Since the final seats are only transmitted when opening a great building, the result may differ. The scan is saved, however.", //Todo: Translate
 		"Settings.PreScanLGList.Title": "Predbežné načítanie prehľadu VB",
 		"Settings.ResetBoxPositions.Button": "Obnoviť!",
 		"Settings.ResetBoxPositions.Desc": "Obnoviť pozíciu a nastavenie všetkých okien?",

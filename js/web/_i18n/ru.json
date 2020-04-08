@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Русский",
 		"API.GEXChampionship": "Обновлена позиция гильдии в ЭГ",
@@ -6,7 +6,6 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
@@ -185,6 +184,7 @@
 		"Boxes.Plunderer.collectedToday": "Собрано Сегодня",
 		"Boxes.Plunderer.Defense": "Защита",
 		"Boxes.Plunderer.filteredByUser": "Отфильтровано по игроку",
+		"Boxes.Plunderer.FP": "CO",
 		"Boxes.Plunderer.goto1stPage": "1-я Страница",
 		"Boxes.Plunderer.HasNoClan": "<em>без гильдии</em>",
 		"Boxes.Plunderer.nextPage": "След. Страница",
@@ -200,7 +200,6 @@
 		"Boxes.Plunderer.total": "Всего",
 		"Boxes.Plunderer.visited": "Посетили",
 		"Boxes.Plunderer.visitTitle": "Когда было последнее посещение игрока вами",
-		"Boxes.Plunderer.FP": "CO",
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
 		"Boxes.Productions.Happiness": "Уровень счастья",
 		"Boxes.Productions.Headings.all": "Все",
