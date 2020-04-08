@@ -14,6 +14,10 @@
  */
 
 let plunderDB = new Dexie("PlayerDB");
+plunderDB.version(7).stores({
+	players: 'id,date',
+	actions: '++id,playerId,date,type'
+});
 plunderDB.version(6).stores({
 	players: 'id',
 	actions: '++id,playerId,date,type'
