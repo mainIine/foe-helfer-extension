@@ -104,8 +104,6 @@ let Alerts = {
 
     BuildBody: ()=> {
 
-        console.log('======== Build Body =======');
-
         Alerts.Tabs = [];
         Alerts.TabsContent = [];
 
@@ -162,27 +160,6 @@ let Alerts = {
         // remove an overlays currently present (if any)
         $('#AlertsBody .no-permission').remove();
 
-        console.log('======== Build Permissions =======');
-        console.log('    Notification.permission: ', Notification.permission);
-        console.log('    NotificationManager.canBeEnabled: ', NotificationManager.canBeEnabled);
-        console.log('    NotificationManager.isEnabled: ', NotificationManager.isEnabled);
-        //
-        // let html = '<p>' + i18n('Boxes.Alerts.Disabled.Default') + '</p>';
-        // html += '<p><span class="btn-default game-cursor notification-permissions">' + i18n('Boxes.Alerts.Button.Enable') + '</span></p>';
-        //
-        // $('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
-        //     console.log('    Append: click.notification-permissions');
-        //     $('#AlertsBody').on('click', '.notification-permissions', function(){
-        //
-        //         // request permissions and handle the user reply
-        //         console.log('    NotificationManager.enable()');
-        //         // NotificationManager.enable().then( (result) => {
-        //         //     console.log('        NotificationManager.enable().then: ', result);
-        //         //     Alerts.BuildPermissions();
-        //         // });
-        //     });
-        // });
-
         if ( ! NotificationManager.isEnabled ){
 
             let html = '';
@@ -198,9 +175,7 @@ let Alerts = {
                     $('#AlertsBody').on('click', '.notification-permissions', function(){
 
                         // request permissions and handle the user reply
-                        console.log('NotificationManager.enable()');
                         NotificationManager.enable().then( (result) => {
-                            console.log('NotificationManager.enable() result: ', result);
                             Alerts.BuildPermissions();
                         });
                     });
@@ -276,7 +251,6 @@ let NotificationManager = {
     canBeEnabled: null,
 
     init: ()=> {
-        console.log('======== NotificationManager.init =========');
         // Permission can be requested if and only if the original value equals to 'default' and the permission
         // has not been denied. If originally the (permission) value is default, then we request the permission,
         // the user denies it and then resets the browser's settings a page refresh is needed before permissions can be
@@ -285,8 +259,6 @@ let NotificationManager = {
             // set this only once at the beginning, i.e. before the user can change it
             NotificationManager.canBeEnabled = (Notification && Notification.permission === 'default');
         }
-        console.log('    Notification.permission: ', Notification.permission );
-        console.log('    NotificationManager.canBeEnabled: ', NotificationManager.canBeEnabled );
     },
 
     // TODO use Promise to implement notifications
@@ -318,17 +290,14 @@ let NotificationManager = {
      */
     enable: ()=> {
 
-        console.log('======== NotificationManager.enable =========');
         if ( ! NotificationManager.canBeEnabled ){
             // throw an Error saying that permissions cannot be requested
             NotificationManager._log( 'Notification permissions cannot be requested. Reset the browser settings and refresh!' );
             return Promise.resolve( Notification.permission );
         }
-        console.log('    request permission');
 
         let promise = new Promise( (resolve, reject) => {
             const permissionPromise = Notification.requestPermission((result) => {
-                console.log('    request result: ', result);
                 NotificationManager.isEnabled = (result === 'granted');
                 // Once the user grants or denies permissions, it is not longer possible to request permissions again
                 // (until the page is refreshed) even if the browser settings are updated (permission reset to default),
