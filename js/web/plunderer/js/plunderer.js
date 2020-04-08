@@ -489,9 +489,9 @@ let Plunderer = {
 		});
 
 		$('#plundererBody .strategy-points').html(`
-			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> FP,
-			${i18n('Boxes.Plunderer.thisWeek')}: <strong class="${thisWeekSP ? 'text-warning' : ''}">${thisWeekSP}</strong> FP,
-			${i18n('Boxes.Plunderer.total')}:  <strong class="${totalSP ? 'text-warning' : ''}">${totalSP}</strong> FP
+			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> ${i18n('Boxes.Plunderer.FP')},
+			${i18n('Boxes.Plunderer.thisWeek')}: <strong class="${thisWeekSP ? 'text-warning' : ''}">${thisWeekSP}</strong> ${i18n('Boxes.Plunderer.FP')},
+			${i18n('Boxes.Plunderer.total')}:  <strong class="${totalSP ? 'text-warning' : ''}">${totalSP}</strong> ${i18n('Boxes.Plunderer.FP')}
 		`);
 	},
 
@@ -589,7 +589,7 @@ let Plunderer = {
 			case Plunderer.ACTION_TYPE_BATTLE_WIN:
 			case Plunderer.ACTION_TYPE_BATTLE_SURRENDERED:
 				return `<div class="battle">
-							<div><strong>${action.battle.auto ? i18n('Boxes.Plunderer.autoBattle') : `${i18n('Boxes.Plunderer.rounds')}: ${action.battle.round || 'NA'}`}</strong></div>
+							<div><strong>${action.battle.auto ? i18n('Boxes.Plunderer.autoBattle') : `${i18n('Boxes.Plunderer.rounds')}: ${action.battle.round || 'N/A'}`}</strong></div>
 							<div class="army-overview">
 								<div class="army">${Plunderer.RenderArmy(action.battle.myArmy)}</div>
 								<div class="versus">VS</div>
