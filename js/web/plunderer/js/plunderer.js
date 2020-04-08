@@ -14,6 +14,10 @@
  */
 
 let plunderDB = new Dexie("PlayerDB");
+plunderDB.version(7).stores({
+	players: 'id,date',
+	actions: '++id,playerId,date,type'
+});
 plunderDB.version(6).stores({
 	players: 'id',
 	actions: '++id,playerId,date,type'
@@ -44,6 +48,13 @@ plunderDB.open();
 //   entityId: number, // foe city entity Id
 //   buildId: string, // key for BuildingNamesi18n
 // }
+// OR
+// {
+//	 type: Plunderer.ACTION_TYPE_SHIELDED,
+//	 playerId: number,
+//	 date: Date,
+//	 expireTime: number, // timestamp. usage: new Date(expireTime * 1000)
+// }
 // where Unit =
 // {
 //   startHP: number, // usually 10
@@ -64,6 +75,29 @@ plunderDB.open();
 //   era: string | 'unknown',
 //   date: new Date(), // last visit date
 // }
+
+// Detect shield
+FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, postData) => {
+	const r = data.responseData;
+	if (!Array.isArray(r)) { return; }
+	const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
+
+	for (const shieldInfo of shielded) {
+		const playerId = shieldInfo.playerId;
+		const lastShieldAction = await Plunderer.db.actions.where({playerId: playerId}).and(it => it.type == Plunderer.ACTION_TYPE_SHIELDED).last();
+
+		// If in db already exists actual shield info than skip
+		if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
+
+		await Plunderer.db.actions.add({
+			type: Plunderer.ACTION_TYPE_SHIELDED,
+			playerId: playerId,
+			date: new Date,
+			expireTime: shieldInfo.expireTime,
+		});
+		await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
+	}
+});
 
 FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	const isAutoBattle = data.responseData.isAutoBattle; // isAutoBattle is part of BattleRealm only
@@ -96,22 +130,11 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 		return;
 	}
 
+	// Avoid adding defend battles (when view recorded defend battles)
+	if (defenderPlayerId <= ExtPlayerID) { return ; }
+
 	// Ensure user is exists in db already
-	const playerFromDB = await Plunderer.db.players.get(defenderPlayerId);
-	if (!playerFromDB) {
-		let player = PlayerDict[defenderPlayerId];
-		if (player) {
-			await Plunderer.db.players.add({
-				id: defenderPlayerId,
-				name: player.PlayerName,
-				clanId: player.ClanId || 0,
-				clanName: player.ClanName,
-				avatar: player.Avatar,
-				era: 'unknown', // Era can be discovered when user is visited, not now
-				date: new Date(),
-			});
-		}
-	}
+	await Plunderer.addUserFromPlayerDictIfNotExists(defenderPlayerId);
 
 	// Add action
 	await Plunderer.db.actions.add({
@@ -222,7 +245,7 @@ let Plunderer = {
 	ACTION_TYPE_BATTLE_WIN: 2,
 	ACTION_TYPE_BATTLE_LOSS: 3,
 	ACTION_TYPE_BATTLE_SURRENDERED: 4,
-
+	ACTION_TYPE_SHIELDED: 5,
 
 	/**
 	 * Delete data older then 6 weeks
@@ -230,7 +253,7 @@ let Plunderer = {
 	 * @returns {Promise<void>}
 	 */
 	garbargeCollector:  async ()=> {
-		const sixWeeksAgo = new Date(Date.now() - 60*60*1000*24*7*6);
+		const sixWeeksAgo = moment().subtract(6, 'weeks').toDate();
 
 		await Plunderer.db.actions
 			.where('date').below(sixWeeksAgo)
@@ -260,6 +283,25 @@ let Plunderer = {
 	UpdateBoxIfVisible: () => {
 		if ($('#plunderer').length !== 0) {
 			Plunderer.Show();
+		}
+	},
+
+	// Add user from PlayerDict if not added, without era information
+	addUserFromPlayerDictIfNotExists: async(playerId) => {
+		const playerFromDB = await Plunderer.db.players.get(playerId);
+		if (!playerFromDB) {
+			let player = PlayerDict[playerId];
+			if (player) {
+				await Plunderer.db.players.add({
+					id: playerId,
+					name: player.PlayerName,
+					clanId: player.ClanId || 0,
+					clanName: player.ClanName,
+					avatar: player.Avatar,
+					era: 'unknown', // Era can be discovered when user is visited, not now
+					date: new Date(),
+				});
+			}
 		}
 	},
 
@@ -431,6 +473,7 @@ let Plunderer = {
 			[Plunderer.ACTION_TYPE_BATTLE_WIN]: i18n('Boxes.Plundered.actionBattleWon'),
 			[Plunderer.ACTION_TYPE_BATTLE_LOSS]: i18n('Boxes.Plundered.actionBattleLost'),
 			[Plunderer.ACTION_TYPE_BATTLE_SURRENDERED]: i18n('Boxes.Plundered.actionSurrendered'),
+			[Plunderer.ACTION_TYPE_SHIELDED]: i18n('Boxes.Plundered.actionShielded'),
 		}[action.type] || 'Unknown';
 
 		const avatar = `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[action.avatar]}.jpg`;
@@ -508,7 +551,15 @@ let Plunderer = {
 								<div class="army">${Plunderer.RenderArmy(action.battle.otherArmy)}</div>
 							</div>
 						</div>`;
-
+			case Plunderer.ACTION_TYPE_SHIELDED:
+				return `
+<div class="shield-wrap">
+	<div class="shield-explain">
+	 <img class="sabotage" src="${extUrl}js/web/plunderer/images/shield.png">
+${i18n('Boxes.Plunder.shieldProtectetUntil')} ${moment(action.expireTime * 1000).format('dddd HH:MM')}
+	</div>
+</div>
+`;
 			default:
 				return '-';
 		}
