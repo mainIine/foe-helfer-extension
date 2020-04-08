@@ -6,6 +6,7 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
+		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
@@ -15,7 +16,7 @@
 		"Boxes.Calculator.Done": "готово",
 		"Boxes.Calculator.FP": "СО",
 		"Boxes.Calculator.FriendlyInvestment": "Вложение от игрока:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
@@ -154,7 +155,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
 		"Boxes.OwnpartCalculator.Ext": "Расш.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Имя ВС",
 		"Boxes.OwnpartCalculator.Levels": "уровни",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Всего СО ВС",
@@ -176,6 +177,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -184,11 +186,14 @@
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate

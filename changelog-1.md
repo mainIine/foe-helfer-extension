@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.4.4
+
+**Neu**
+- PvP Übersicht:
+    - [#686](https://github.com/dsiekiera/foe-helfer-extension/issues/686) Nachbarschafts - Plünderdatenbank
+    - Werte von Dir und dem Nachbarn der angreifenden, verteidigenden Armeen werden notiert
+    - welche Art von Kampf du durchgeführt hast und ob gewonnen, verloren oder aufgegeben
+    - Sämtliche Zeiten, wann du angegriffen, geplündert oder ihn zuletzt besucht hast
+    - was du geplündert hast, aus welchem Gebäude
+    - zeigt alle aktiven Stadtschilde deiner Nachbarschaft
+
+**Update**
+- Extension:
+    - [#727](https://github.com/dsiekiera/foe-helfer-extension/issues/727) Fehlende Texte bei den Mo/Po Meldungen ergänzt
+    - [#726](https://github.com/dsiekiera/foe-helfer-extension/issues/726) Extension fragt nach einem Update ab sofort nach ob es neu laden darf
+
+- Kostenrechner:
+    - [#756](https://github.com/dsiekiera/foe-helfer-extension/issues/756) Nummerierung in den Listen des Vorabscanns integriert
+
+**Bugfix**
+- Forschungskostenrechner: 
+    - [#718](https://github.com/dsiekiera/foe-helfer-extension/issues/718) "Asteroiden Eis" wurde vom Rechner nicht erkannt
+
+---
+
 ##### 2.4.3.2
 
 **Bugfix**
