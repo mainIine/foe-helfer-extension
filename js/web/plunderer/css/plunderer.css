@@ -43,8 +43,8 @@
 }
 
 #plunderer img.player-avatar {
-	max-width: 40px;
-	border-radius: 50%;
+	max-width: 70px;
+	border: 1px solid black;
 }
 
 #plunderer .type-1 {
@@ -65,6 +65,10 @@
 
 #plunderer .action-row-type-4 {
     background-color: rgba(255, 255, 128, .1);
+}
+
+#plunderer .action-row-type-5 {
+    background-color: rgba(128, 128, 255, .1);
 }
 
 #plunderer .action-content .content {
@@ -89,7 +93,6 @@
 }
 
 #plunderer .info-column .discovered {
-	  white-space: nowrap;
 	  font-size: 10px;
 	  color: #b39690;
 }
