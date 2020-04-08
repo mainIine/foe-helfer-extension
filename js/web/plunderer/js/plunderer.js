@@ -96,6 +96,9 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 		return;
 	}
 
+	// Avoid adding defend battles when view recorded battle
+	if (defenderPlayerId <= ExtPlayerID) { return ; }
+
 	// Ensure user is exists in db already
 	const playerFromDB = await Plunderer.db.players.get(defenderPlayerId);
 	if (!playerFromDB) {
