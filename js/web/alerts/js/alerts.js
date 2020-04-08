@@ -104,6 +104,8 @@ let Alerts = {
 
     BuildBody: ()=> {
 
+        console.log('======== Build Body =======');
+
         Alerts.Tabs = [];
         Alerts.TabsContent = [];
 
@@ -152,23 +154,70 @@ let Alerts = {
             $('.alerts-tabs').tabslet({active: 1});
         });
 
-        $('#AlertsBody').append($('<div />').addClass('no-permission').attr('data-text', i18n('Boxes.Alerts.Disabled.Default')));
+        Alerts.BuildPermissions();
+    },
 
-        // handle Notification permissions
+    BuildPermissions: ()=> {
+
+        // remove an overlays currently present (if any)
+        $('#AlertsBody .no-permission').remove();
+
+        console.log('======== Build Permissions =======');
+        console.log('    Notification.permission: ', Notification.permission);
+        console.log('    NotificationManager.canBeEnabled: ', NotificationManager.canBeEnabled);
+        console.log('    NotificationManager.isEnabled: ', NotificationManager.isEnabled);
+        //
+        // let html = '<p>' + i18n('Boxes.Alerts.Disabled.Default') + '</p>';
+        // html += '<p><span class="btn-default game-cursor notification-permissions">' + i18n('Boxes.Alerts.Button.Enable') + '</span></p>';
+        //
+        // $('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
+        //     console.log('    Append: click.notification-permissions');
+        //     $('#AlertsBody').on('click', '.notification-permissions', function(){
+        //
+        //         // request permissions and handle the user reply
+        //         console.log('    NotificationManager.enable()');
+        //         // NotificationManager.enable().then( (result) => {
+        //         //     console.log('        NotificationManager.enable().then: ', result);
+        //         //     Alerts.BuildPermissions();
+        //         // });
+        //     });
+        // });
+
         if ( ! NotificationManager.isEnabled ){
 
+            let html = '';
+
             // if the notification permissions have never been given (permission === 'default')
-            if ( Notification.permission === 'default' ){
+            if ( NotificationManager.canBeEnabled ){
                 // Enable notifications in your browser to use this feature.
-                $('#AlertsBody').append($('<div />').addClass('no-permission').attr('data-text', i18n('Boxes.Alerts.Disabled.Default')));
-            }
+                html += '<p>' + i18n('Boxes.Alerts.Disabled.Default') + '</p>';
+                // Add a button to request notification permissions
+                html += '<p><span class="btn-default game-cursor notification-permissions">' + i18n('Boxes.Alerts.Button.Enable') + '</span></p>';
 
-            // if the notification permissions have been denied before (permission === 'denied')
-            if ( Notification.permission === 'denied' ){
-                // Notifications are disabled. You can enable notifications in your browser settings navigate to: chrome://settings/content/notifications
-                $('#AlertsBody').append($('<div />').addClass('no-permission').attr('data-text', i18n('Boxes.Alerts.Disabled.Denied')));
-            }
+                $('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
+                    $('#AlertsBody').on('click', '.notification-permissions', function(){
 
+                        // request permissions and handle the user reply
+                        console.log('NotificationManager.enable()');
+                        NotificationManager.enable().then( (result) => {
+                            console.log('NotificationManager.enable() result: ', result);
+                            Alerts.BuildPermissions();
+                        });
+                    });
+                });
+            }
+            else {
+                // Notifications have been disabled. To enable notifications in your browser settings
+                // navigate to chrome://settings/content/notifications and then refresh this page.
+                html += '<p>' + i18n('Boxes.Alerts.Disabled.Denied') + '</p>';
+                html += '<p><span class="btn-default game-cursor notification-refresh">' + i18n('Boxes.Alerts.Button.Refresh') + '</span></p>';
+                $('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
+                    $('#AlertsBody').on('click', '.notification-refresh', function(){
+                        // reload from cache (no need to refresh from the server = reload(true)
+                        window.location.reload(false);
+                    });
+                });
+            }
         }
     },
 
@@ -205,12 +254,11 @@ let Alerts = {
                 dragdrop: true,
                 minimize: true
             });
+            Alerts.BuildBody();
 
         } else {
             HTML.CloseOpenBox('Alerts');
         }
-
-        Alerts.BuildBody();
     },
 
 
@@ -225,9 +273,20 @@ let Alerts = {
 let NotificationManager = {
 
     isEnabled: (Notification && Notification.permission === 'granted' ),
+    canBeEnabled: null,
 
     init: ()=> {
-
+        console.log('======== NotificationManager.init =========');
+        // Permission can be requested if and only if the original value equals to 'default' and the permission
+        // has not been denied. If originally the (permission) value is default, then we request the permission,
+        // the user denies it and then resets the browser's settings a page refresh is needed before permissions can be
+        // requested again
+        if( NotificationManager.canBeEnabled === null ){
+            // set this only once at the beginning, i.e. before the user can change it
+            NotificationManager.canBeEnabled = (Notification && Notification.permission === 'default');
+        }
+        console.log('    Notification.permission: ', Notification.permission );
+        console.log('    NotificationManager.canBeEnabled: ', NotificationManager.canBeEnabled );
     },
 
     // TODO use Promise to implement notifications
@@ -259,15 +318,28 @@ let NotificationManager = {
      */
     enable: ()=> {
 
+        console.log('======== NotificationManager.enable =========');
+        if ( ! NotificationManager.canBeEnabled ){
+            // throw an Error saying that permissions cannot be requested
+            NotificationManager._log( 'Notification permissions cannot be requested. Reset the browser settings and refresh!' );
+            return Promise.resolve( Notification.permission );
+        }
+        console.log('    request permission');
+
         let promise = new Promise( (resolve, reject) => {
             const permissionPromise = Notification.requestPermission((result) => {
-                m.isEnabled = (result === 'granted');
+                console.log('    request result: ', result);
+                NotificationManager.isEnabled = (result === 'granted');
+                // Once the user grants or denies permissions, it is not longer possible to request permissions again
+                // (until the page is refreshed) even if the browser settings are updated (permission reset to default),
+                // the permission popup will not show until the next refresh/reload of the page
+                // NotificationManager.canBeEnabled = (result === 'default');
+                NotificationManager.canBeEnabled = false;
             });
             if (permissionPromise){
-                permissionPromise.then(resolve);
+                permissionPromise.then(resolve, reject);
             }
         });
-
         return promise;
     },
 
@@ -295,7 +367,9 @@ let NotificationManager = {
         // if at a certain debug level ?!
         console.log(o);
     }
-}
+};
+
+NotificationManager.init();
 
 /**
  * Observable pattern using subscribe/unsubscribe (instead of add/remove observer). The notify is private
