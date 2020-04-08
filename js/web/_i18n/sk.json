@@ -6,7 +6,7 @@
 		"API.LGGildMember": "Informácie o Veľkolepých budovách hráča __player__ boli odoslané",
 		"API.LGInvest": "Údaje o Vašich príspevkoch do VB boli odoslané",
 		"API.UpdateSuccess": "Úspešne aktualizované",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Prebiehajúca výzva:",
 		"Boxes.Calculator.ArkBonus": "Bonus oblúka",
 		"Boxes.Calculator.AvailableFP": "Dostupné body výskumu",
@@ -95,13 +95,16 @@
 		"Boxes.Infobox.ResetBox": "Vymazať",
 		"Boxes.Infobox.Title": "Infobox",
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Aktuálny zisk: ",
 		"Boxes.Investment.InvestBar": "Vložené BV: ",
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Vklad",
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Budova",
 		"Boxes.LGOverviewBox.Level": "Úroveň",
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Krok",
 		"Boxes.OwnpartCalculator.Title": "Príspevky do vašich VB",
 		"Boxes.OwnpartCalculator.YourName": "Vaše meno",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Priľahlé budovy",
 		"Boxes.Productions.Happiness": "Spokojnosť",
 		"Boxes.Productions.Headings.all": "Všetky",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Pomáha pri prispievaní do vlastných VB, počíta pozície ostatných prispievateľov, umožňuje kopírovať hodnoty",
 		"Menu.OwnpartCalculator.Title": "VB kalkulačka (vlastné VB)",
 		"Menu.OwnpartCalculator.Warning": "Vypnuté: Najprv otvorte okno niektorej svojej Veľkolepej budovy!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Zobrazuje stav produkcie (tovaru, zásob, mincí, medailí), spokojnosti a obyvateľstva v meste.",
 		"Menu.Productions.Title": "Prehľad produkcie",
 		"Menu.Settings.Desc": "Tu nájdete zopár možností nastavenia doplnku",

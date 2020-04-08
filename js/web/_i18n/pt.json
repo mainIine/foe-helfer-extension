@@ -6,7 +6,7 @@
 		"API.LGGildMember": "Os GEs do jogador __player__ foram transferidos",
 		"API.LGInvest": "Os investimentos dos teus GEs foram transferidos",
 		"API.UpdateSuccess": "Actualização feita",
-		"Boxes.Api.Title": "???", //Todo: Translate
+		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Desafio recurrente activo:",
 		"Boxes.Calculator.ArkBonus": "Bónus de Arca",
 		"Boxes.Calculator.AvailableFP": "PFs disponiveis",
@@ -95,13 +95,16 @@
 		"Boxes.Infobox.ResetBox": "Limpar",
 		"Boxes.Infobox.Title": "Informações",
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Lucro actual: ",
 		"Boxes.Investment.InvestBar": "PFs investidos: ",
 		"Boxes.Investment.PlayerFound": "Player found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investimento",
 		"Boxes.Investment.TotalFP": "Stock + investidos + lucro: ",
-		"Boxes.Kits.TabBuildingKits": "???", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "???", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
+		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
 		"Boxes.LGOverviewBox.Building": "Edificio",
 		"Boxes.LGOverviewBox.Level": "Nivel",
@@ -170,6 +173,28 @@
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculador de PFs em GE próprio",
 		"Boxes.OwnpartCalculator.YourName": "O seu nome",
+		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
+		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
+		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
+		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
+		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
+		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
+		"Boxes.Plunderer.total": "Total", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifios adjacentes",
 		"Boxes.Productions.Happiness": "Felicidade",
 		"Boxes.Productions.Headings.all": "Todos",
@@ -284,6 +309,8 @@
 		"Menu.OwnpartCalculator.Desc": "Simula um plano de investimento, calcula lugares e copia valores",
 		"Menu.OwnpartCalculator.Title": "Calculador de PFs em GE próprio",
 		"Menu.OwnpartCalculator.Warning": "Disabled: Abre primeiro um GE teu!",
+		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
 		"Menu.Productions.Desc": "Mostra o total actual de todas as produções.",
 		"Menu.Productions.Title": "Resumo da Produção",
 		"Menu.Settings.Desc": "Algumas configurações possiveis",
