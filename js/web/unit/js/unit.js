@@ -35,7 +35,10 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 	if (data.responseData.militaryProducts === undefined) {
 		return;
 	}
-	localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+
+	if(data.responseData.militaryProducts.length > 0){
+		localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+	}
 });
 
 let Unit = {
@@ -96,6 +99,7 @@ let Unit = {
 			let x = setInterval(function() {
 				Unit.UpdateAlcaLable(countDownDate,x);
 			}, 1000);
+
 			Unit.UpdateAlcaLable(countDownDate,x);
 
 			top.push('<div style="padding: 4px;" class="text-center">');
@@ -140,7 +144,9 @@ let Unit = {
 
         for (let i in Unit.Cache['units']) {
 
-        	if(!Unit.Cache['units'].hasOwnProperty(i)) break;
+        	if(!Unit.Cache['units'].hasOwnProperty(i)){
+        		break;
+        	}
 
             if (Unit.Cache['units'][i]['is_attacking']) {
                 Unit.Attack[Unit.Attack.length] = Unit.Cache['units'][i];
@@ -342,7 +348,7 @@ let Unit = {
 
 		Unit.SetTabContent('pool', pool.join(''));
 
-		// Evt. gibt es Einheiten?
+		// Evt. gibt es neue Einheiten?
 		Unit.GetLastAlcaUnits();
 
 		// fertige Tabelle zusammen setzten

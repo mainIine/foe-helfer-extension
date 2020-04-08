@@ -1,11 +1,12 @@
 ﻿{
 	"values": {
 		"_Language": "Português",
-		"API.GEXChampionship": "The GEX guild placement has been updated",
-		"API.GEXPlayer": "GEX placements of members have been updated",
+		"API.GEXChampionship": "The GEX guild placement has been updated", //Todo: Translate
+		"API.GEXPlayer": "GEX placements of members have been updated", //Todo: Translate
 		"API.LGGildMember": "Os GEs do jogador __player__ foram transferidos",
 		"API.LGInvest": "Os investimentos dos teus GEs foram transferidos",
 		"API.UpdateSuccess": "Actualização feita",
+		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Desafio recurrente activo:",
 		"Boxes.Calculator.ArkBonus": "Bónus de Arca",
@@ -15,7 +16,7 @@
 		"Boxes.Calculator.Done": "feito",
 		"Boxes.Calculator.FP": "PFs",
 		"Boxes.Calculator.FriendlyInvestment": "Investimentos amigos:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATENÇÃO! Nivel atingido!",
 		"Boxes.Calculator.LGNotConnected": "O GE não está ligado por uma rua",
 		"Boxes.Calculator.LGNotOpen": "O próximo nivel não está ainda aberto",
@@ -81,13 +82,13 @@
 		"Boxes.HiddenRewards.Title": "Incidentes escondidos",
 		"Boxes.Infobox.Filter": "Filtro",
 		"Boxes.Infobox.FilterAuction": "Leilões",
-		"Boxes.Infobox.FilterGex": "GEX",
+		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
 		"Boxes.Infobox.FilterGildFights": "Lutas de guilda",
 		"Boxes.Infobox.FilterLevel": "Subida de nivel",
 		"Boxes.Infobox.FilterMessage": "Mensagens",
 		"Boxes.Infobox.FilterTrade": "Comércio",
-		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> has just offered __amount__ coins.",
-		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> has just received __points__ points in the GEX.",
+		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> has just offered __amount__ coins.", //Todo: Translate
+		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> has just received __points__ points in the GEX.", //Todo: Translate
 		"Boxes.Infobox.Messages.GildFightOccupied": "Provincia <span style=\"color:#ffb539\">__provinceName__</span> foi conquistada por <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> e está fechada até __untilOccupied__",
 		"Boxes.Infobox.Messages.LevelUp": "O edificio __building__ do(a) __player__ atingiu o nivel __level__.<br>Conseguiste a posição <strong>__rank__</strong> e ganhaste <strong>__fps__</strong> PFs.",
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Nivel __level__",
@@ -125,7 +126,7 @@
 		"Boxes.Negotiation.GoodsLow": "ATENÇÃO: Stock baixo de mercadoria",
 		"Boxes.Negotiation.Person": "Pessoa",
 		"Boxes.Negotiation.Round": "Ronda",
-		"Boxes.Negotiation.Stock": "Stock:",
+		"Boxes.Negotiation.Stock": "Stock:", //Todo: Translate
 		"Boxes.Negotiation.Success": "Sucesso",
 		"Boxes.Negotiation.TableLoadError": "Erro a carregar a tabela de negociações",
 		"Boxes.Negotiation.Title": "Ajudante de Negociações",
@@ -141,20 +142,20 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansões",
 		"Boxes.Outpost.infoLine": "__runNumber__. tentativa, probabilidade Bonus x4: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Próxima expansão",
-		"Boxes.Outpost.tileNotPlanned": "off",
+		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Mercadorias da colónia",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
 		"Boxes.Outpost.TitleFree": "Livre",
 		"Boxes.Outpost.TitleShort": "Resumo de mercadorias - ",
 		"Boxes.OwnpartCalculator.Arc": "Arca",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plantas",
 		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
-		"Boxes.OwnpartCalculator.CopyValues": "Copy values",
+		"Boxes.OwnpartCalculator.CopyValues": "Copy values", //Todo: Translate
 		"Boxes.OwnpartCalculator.Deposit": "Depósito",
 		"Boxes.OwnpartCalculator.Done": "Feito",
-		"Boxes.OwnpartCalculator.Ext": "Ext",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Nome Individual",
 		"Boxes.OwnpartCalculator.Levels": "niveis",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total de PFs do GE",
@@ -176,6 +177,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -184,11 +186,14 @@
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
@@ -199,7 +204,7 @@
 		"Boxes.Productions.Happiness": "Felicidade",
 		"Boxes.Productions.Headings.all": "Todos",
 		"Boxes.Productions.Headings.amount": "Quantidade",
-		"Boxes.Productions.Headings.boost": "Boost",
+		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Edificios culturais",
 		"Boxes.Productions.Headings.decoration": "Decorações",
 		"Boxes.Productions.Headings.earning": "Resultados",
@@ -213,14 +218,14 @@
 		"Boxes.Productions.Headings.residential": "Edificios residenciais",
 		"Boxes.Productions.Headings.street": "Ruas",
 		"Boxes.Productions.ModeGroups": "Grupos",
-		"Boxes.Productions.ModeSingle": "Single",
+		"Boxes.Productions.ModeSingle": "Single", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Procurar edificio...",
 		"Boxes.Productions.Title": "Resumo das Produções",
-		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.Total": "Total: ", //Todo: Translate
 		"Boxes.Settings.Active": "Activo",
 		"Boxes.Settings.Inactive": "Desactivo",
 		"Boxes.Settings.Title": "Configurações",
-		"Boxes.StrategyPoints.BuyableFP": "Buyable: ",
+		"Boxes.StrategyPoints.BuyableFP": "Buyable: ", //Todo: Translate
 		"Boxes.StrategyPoints.FPBar": "Stock de PFs: ",
 		"Boxes.Technologies.DescInStock": "Disponivel",
 		"Boxes.Technologies.DescRequired": "Necessário",
@@ -228,19 +233,19 @@
 		"Boxes.Technologies.NoTechs": "Chegou ao final desta era",
 		"Boxes.Technologies.Resource": "Recurso",
 		"Boxes.Technologies.Title": "Custos de pesquisa",
-		"Boxes.Units.Attack": "Attack",
+		"Boxes.Units.Attack": "Attack", //Todo: Translate
 		"Boxes.Units.Bind": "Dependente",
-		"Boxes.Units.Defend": "Defense",
+		"Boxes.Units.Defend": "Defense", //Todo: Translate
 		"Boxes.Units.NextUnitsIn": "As próximas __count__ unidades chegam em <span class=\"alca-countdown\"></span> às __harvest__",
-		"Boxes.Units.NotFilled": "not filled",
+		"Boxes.Units.NotFilled": "not filled", //Todo: Translate
 		"Boxes.Units.Proportionally": "Proporcional",
 		"Boxes.Units.Quantity": "Quantidade",
 		"Boxes.Units.ReadyToLoot": "Pronto a sacar!",
-		"Boxes.Units.Status": "Status",
+		"Boxes.Units.Status": "Status", //Todo: Translate
 		"Boxes.Units.Title": "Resumo do Exército",
 		"Boxes.Units.Unbind": "Independente",
 		"Boxes.Units.Unit": "Unidade",
-		"DateTime": "D/M/YY h:mm:ss a",
+		"DateTime": "D/M/YY h:mm:ss a", //Todo: Translate
 		"Eras.0": "Sem Era",
 		"Eras.1": "Idade da Pedra",
 		"Eras.10": "Era Moderna",
@@ -262,7 +267,7 @@
 		"Eras.7": "Era Colonial",
 		"Eras.8": "Era Industrial",
 		"Eras.9": "EraProgressiva",
-		"Global.BoxTitle": "FoE Helper",
+		"Global.BoxTitle": "FoE Helper", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadBig": "Estrada grande",
 		"HiddenRewards.Positions.cityRoadSmall": "Estrada pequena",
 		"HiddenRewards.Positions.guildExpedition": "Expedição da Guilda",
@@ -286,13 +291,13 @@
 		"Menu.Campagne.Title": "Campanha",
 		"Menu.Campagne.Warning": "Disabled: Abre uma provincia primeiro!",
 		"Menu.Chat.Desc": "Converse em tempo real com todos os membros da guilda",
-		"Menu.Chat.Title": "Guild live chat",
+		"Menu.Chat.Title": "Guild live chat", //Todo: Translate
 		"Menu.Citymap.Desc": "Mostra a tua cidade, num esquema visto de cima",
 		"Menu.Citymap.Title": "Mapa da cidade",
 		"Menu.Event.Desc": "Resumo da missão actual e futuras missões",
 		"Menu.Event.Title": "Lista de missões do Evento",
 		"Menu.Forum.Desc": "Se tens uma questão? Ou algo te incomoda? ou ...",
-		"Menu.Forum.Title": "Forum",
+		"Menu.Forum.Title": "Forum", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Resumo dos incidentes escondidos",
 		"Menu.HiddenRewards.Title": "Incidentes escondidos",
 		"Menu.Info.Desc": "Mostra tudo o que acontece no \"background\"<br><em>Enche com informação...</em>",
@@ -336,8 +341,8 @@
 		"Settings.ResetBoxPositions.Button": "Apagar!",
 		"Settings.ResetBoxPositions.Desc": "Reiniciar todas as coordenadas de todas as janelas?",
 		"Settings.ResetBoxPositions.Title": "Coordenadas da Box",
-		"Settings.SendGEXInfo.Desc": "When clicking in the GEX on placements or rankings the data transmitted",
-		"Settings.SendGEXInfo.Title": "GEX evaluations",
+		"Settings.SendGEXInfo.Desc": "When clicking in the GEX on placements or rankings the data transmitted", //Todo: Translate
+		"Settings.SendGEXInfo.Title": "GEX evaluations", //Todo: Translate
 		"Settings.SendGildMemberLGInfo.Desc": "Quand visitas as cidades de outros membros da guilda, todos os dados dos GEs serã enviados também para foe-rechner.de .",
 		"Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
 		"Settings.SendInvestigations.Desc": "Ao entrar na 'Câmara Municipal'> 'Noticias'> 'Grandes Edificios' vai transmitir os PFs investidos",
@@ -349,9 +354,9 @@
 		"Settings.ShowTavernBadge.Desc": "Quando a bonificação da taberna é activada, um contador é visivel.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
 		"Settings.Version.Desc": "Chrome Extension Version",
-		"Settings.Version.GuildId": "Gild-Id:",
-		"Settings.Version.PlayerId": "Player-Id:",
+		"Settings.Version.GuildId": "Gild-Id:", //Todo: Translate
+		"Settings.Version.PlayerId": "Player-Id:", //Todo: Translate
 		"Settings.Version.Title": "Versão",
-		"Settings.Version.World": "World:"
+		"Settings.Version.World": "World:" //Todo: Translate
 	}
 }
