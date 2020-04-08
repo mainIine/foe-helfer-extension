@@ -16,6 +16,7 @@
 #Alerts #AlertsBody {
     overflow: hidden;
     max-height: 550px;
+    min-height: 160px;
     overflow-y: auto;
 }
 
@@ -26,6 +27,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0,0,0, 0.7);
+    padding: 50px 0;
 }
 
 #Alerts #AlertsBody .no-permission::after {
