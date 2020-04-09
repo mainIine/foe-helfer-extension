@@ -8,21 +8,21 @@
 		"API.UpdateSuccess": "Update performed", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
-		"Boxes.Calculator.ArkBonus": "Arc bonus",
+		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
 		"Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
 		"Boxes.Calculator.BPs": "Plánky",
 		"Boxes.Calculator.Commitment": "Náklady",
 		"Boxes.Calculator.Done": "Hotovo",
 		"Boxes.Calculator.FP": "BV",
 		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "Upozornění! Zvýšení úrovně budovy",
 		"Boxes.Calculator.LGNotConnected": "Budova není připojena",
 		"Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
-		"Boxes.Calculator.Meds": "Meds",
+		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Poměr",
-		"Boxes.Calculator.Sniping": "Sniping",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
 		"Boxes.Calculator.TTForderCosts": "Costs = __nettoreward__<small>(netto reward)</small> * __forderfactor__%<small>(Friendly invest)</small> = __costs__", //Todo: Translate
@@ -58,8 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " and ", //Todo: Translate
@@ -176,6 +176,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -183,12 +184,16 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate

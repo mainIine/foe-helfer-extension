@@ -13,9 +13,9 @@
 		"Boxes.Calculator.BPs": "T.R.",
 		"Boxes.Calculator.Commitment": "Kiadás",
 		"Boxes.Calculator.Done": "Kész",
-		"Boxes.Calculator.FP": "FP",
+		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Befektetői bónusz:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "FIGYELEM! N.É. szintet lép!",
 		"Boxes.Calculator.LGNotConnected": "Az épület nincs úthoz csatolva",
 		"Boxes.Calculator.LGNotOpen": "A következő szint jelenleg zárva van",
@@ -58,8 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " és ",
@@ -81,7 +81,7 @@
 		"Boxes.HiddenRewards.Title": "Rejtett jutalmak",
 		"Boxes.Infobox.Filter": "Szűrő",
 		"Boxes.Infobox.FilterAuction": "Árverés",
-		"Boxes.Infobox.FilterGex": "GEX",
+		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
 		"Boxes.Infobox.FilterGildFights": "Céh harcok",
 		"Boxes.Infobox.FilterLevel": "Szintlépés",
 		"Boxes.Infobox.FilterMessage": "Üzenetek",
@@ -141,20 +141,20 @@
 		"Boxes.Outpost.ExpansionsSum": "Bővítmények",
 		"Boxes.Outpost.infoLine": "__runNumber__. kör, x4 Bónusz Esély: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Következő bővítmény",
-		"Boxes.Outpost.tileNotPlanned": "off",
+		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Kulturális település árui",
 		"Boxes.Outpost.TitleBuildings": "Épület",
 		"Boxes.Outpost.TitleFree": "Ingyenes",
 		"Boxes.Outpost.TitleShort": "Árú áttekintés - ",
 		"Boxes.OwnpartCalculator.Arc": "Bárka",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "T.R.",
 		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Értékek másolása",
 		"Boxes.OwnpartCalculator.Deposit": "Befizetés",
 		"Boxes.OwnpartCalculator.Done": "Kész",
-		"Boxes.OwnpartCalculator.Ext": "Ext",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "egyedi Lb név",
 		"Boxes.OwnpartCalculator.Levels": "Szintek",
 		"Boxes.OwnpartCalculator.LGTotalFP": "N.É. Össz pontszám",
@@ -176,6 +176,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -183,12 +184,16 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
@@ -199,7 +204,7 @@
 		"Boxes.Productions.Happiness": "Boldogság",
 		"Boxes.Productions.Headings.all": "Összes",
 		"Boxes.Productions.Headings.amount": "Mennyiség",
-		"Boxes.Productions.Headings.boost": "Boost",
+		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Kulturális épületek",
 		"Boxes.Productions.Headings.decoration": "Dekorációk",
 		"Boxes.Productions.Headings.earning": "Bevétel",
@@ -229,7 +234,7 @@
 		"Boxes.Technologies.Resource": "Nyersanyag",
 		"Boxes.Technologies.Title": "Kutatási költsége a",
 		"Boxes.Units.Attack": "Támadás",
-		"Boxes.Units.Bind": "Bound",
+		"Boxes.Units.Bind": "Bound", //Todo: Translate
 		"Boxes.Units.Defend": "Védelem",
 		"Boxes.Units.NextUnitsIn": "A következő __count__ db egység <span class=\"alca-countdown\"></span> idő múlva érkezik __harvest__ ",
 		"Boxes.Units.NotFilled": "Nem kitöltött",
@@ -238,7 +243,7 @@
 		"Boxes.Units.ReadyToLoot": "Kész!",
 		"Boxes.Units.Status": "Állapot",
 		"Boxes.Units.Title": "Hadsereg áttekintés",
-		"Boxes.Units.Unbind": "Unbound",
+		"Boxes.Units.Unbind": "Unbound", //Todo: Translate
 		"Boxes.Units.Unit": "Egység",
 		"DateTime": "YY/M/D h:mm:ss a",
 		"Eras.0": "Korszak nélküli",

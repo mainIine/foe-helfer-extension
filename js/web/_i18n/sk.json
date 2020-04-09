@@ -15,14 +15,14 @@
 		"Boxes.Calculator.Done": "vložené",
 		"Boxes.Calculator.FP": "BV",
 		"Boxes.Calculator.FriendlyInvestment": "Bonus prispievateľa:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "POZOR! Dokončujete úroveň VB!",
 		"Boxes.Calculator.LGNotConnected": "Budova nie je prepojená cestou",
 		"Boxes.Calculator.LGNotOpen": "Ďalšia úroveň nebola odomknutá",
 		"Boxes.Calculator.Meds": "Med",
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Pomer",
-		"Boxes.Calculator.Sniping": "Sniping",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "VB kalkulačka",
 		"Boxes.Calculator.TTForderCosts": "Náklady = __nettoreward__<small>(základná odmena)</small> * __forderfactor__%<small>(bonus prispievateľa)</small> = __costs__",
@@ -58,8 +58,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " A ",
@@ -79,7 +79,7 @@
 		"Boxes.HiddenRewards.Disappears": "Zmizne",
 		"Boxes.HiddenRewards.NoEvents": "Nie sú žiadne incidenty",
 		"Boxes.HiddenRewards.Title": "Incidenty",
-		"Boxes.Infobox.Filter": "Filter",
+		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Aukcia",
 		"Boxes.Infobox.FilterGex": "CE",
 		"Boxes.Infobox.FilterGildFights": "Cechové boje",
@@ -93,7 +93,7 @@
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - úroveň __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> prijal Vašu ponuku.<br>Získali ste __needValue__ __need__ za __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Vymazať",
-		"Boxes.Infobox.Title": "Infobox",
+		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
 		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
 		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Aktuálny zisk: ",
@@ -102,7 +102,7 @@
 		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
 		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Vklad",
-		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ",
+		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
 		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
@@ -141,29 +141,29 @@
 		"Boxes.Outpost.ExpansionsSum": "Rozšírenia",
 		"Boxes.Outpost.infoLine": "__runNumber__. beh, Bonus x4 Šanca: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "ďalšie rozšírenie",
-		"Boxes.Outpost.tileNotPlanned": "off",
+		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Kultúrny tovar",
 		"Boxes.Outpost.TitleBuildings": "Budova",
 		"Boxes.Outpost.TitleFree": "Voľné",
 		"Boxes.Outpost.TitleShort": "Prehľad tovaru - ",
 		"Boxes.OwnpartCalculator.Arc": "Oblúk",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plány",
 		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
 		"Boxes.OwnpartCalculator.CopyValues": "Kopírovať hodnoty",
 		"Boxes.OwnpartCalculator.Deposit": "Vložiť",
 		"Boxes.OwnpartCalculator.Done": "Vložené",
-		"Boxes.OwnpartCalculator.Ext": "Ext",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "iný názov VB",
 		"Boxes.OwnpartCalculator.Levels": "úrovne",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Celkovo BV",
 		"Boxes.OwnpartCalculator.Meds": "Medaile",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Žiadna poistená pozícia",
-		"Boxes.OwnpartCalculator.Note": "Note",
+		"Boxes.OwnpartCalculator.Note": "Note", //Todo: Translate
 		"Boxes.OwnpartCalculator.OldLevel": "Predošlá úroveň",
 		"Boxes.OwnpartCalculator.Order": "Poradie",
-		"Boxes.OwnpartCalculator.OutputScheme": "Output scheme",
+		"Boxes.OwnpartCalculator.OutputScheme": "Output scheme", //Todo: Translate
 		"Boxes.OwnpartCalculator.OwnPart": "Váš príspevok",
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Zostávajúce",
 		"Boxes.OwnpartCalculator.PatronPart": "Príspevok iných hráčov",
@@ -176,6 +176,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -183,12 +184,16 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
@@ -240,7 +245,7 @@
 		"Boxes.Units.Title": "Prehľad armády",
 		"Boxes.Units.Unbind": "Nepripojené",
 		"Boxes.Units.Unit": "Jednotka",
-		"DateTime": "D/M/YY h:mm:ss a",
+		"DateTime": "D/M/YY h:mm:ss a", //Todo: Translate
 		"Eras.0": "Všetky éry",
 		"Eras.1": "Doba kamenná",
 		"Eras.10": "Moderná éra",
@@ -262,7 +267,7 @@
 		"Eras.7": "Koloniálny vek",
 		"Eras.8": "Priemyselná éra",
 		"Eras.9": "Progresívna doba",
-		"Global.BoxTitle": "FoE Helper",
+		"Global.BoxTitle": "FoE Helper", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadBig": "dvojprúdová cesta",
 		"HiddenRewards.Positions.cityRoadSmall": "cesta",
 		"HiddenRewards.Positions.guildExpedition": "Cechová expedícia",
@@ -296,7 +301,7 @@
 		"Menu.HiddenRewards.Desc": "Prehľad incidentov",
 		"Menu.HiddenRewards.Title": "Incidenty",
 		"Menu.Info.Desc": "Zobrazuje informácie o tom, čo sa deje na  \"pozadí\"<br><em>Plní sa to informáciami ...</em>",
-		"Menu.Info.Title": "Info Box",
+		"Menu.Info.Title": "Info Box", //Todo: Translate
 		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
 		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
 		"Menu.Negotiation.Desc": "Navrhuje presné ponuky pri vyjednávaní",
@@ -331,7 +336,7 @@
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",
 		"Settings.MenuLength.Title": "Výška menu",
-		"Settings.PreScanLGList.Desc": "Scans the overview list of the neighbor when opening and determines possibly fillable LGs. <br> <u> Note: </u> Since the final seats are only transmitted when opening a LG, the result may differ. The scan is saved, however.",
+		"Settings.PreScanLGList.Desc": "Scans the overview list of the neighbor when opening and determines possibly fillable great buildings. <br> <u> Note: </u> Since the final seats are only transmitted when opening a great building, the result may differ. The scan is saved, however.", //Todo: Translate
 		"Settings.PreScanLGList.Title": "Predbežné načítanie prehľadu VB",
 		"Settings.ResetBoxPositions.Button": "Obnoviť!",
 		"Settings.ResetBoxPositions.Desc": "Obnoviť pozíciu a nastavenie všetkých okien?",
@@ -346,8 +351,8 @@
 		"Settings.SendTavernInfo.Title": "Motivácia (pomoc)",
 		"Settings.ShowNeighborsGoods.Desc": "Počas návštevy suseda zobraziť okno s možnými zbermi po rabovaní",
 		"Settings.ShowNeighborsGoods.Title": "Rabovanie susedov",
-		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.",
-		"Settings.ShowTavernBadge.Title": "Show tavernas badge",
+		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.", //Todo: Translate
+		"Settings.ShowTavernBadge.Title": "Show tavernas badge", //Todo: Translate
 		"Settings.Version.Desc": "Verzia rozšírenia pre Chrome",
 		"Settings.Version.GuildId": "ID cechu:",
 		"Settings.Version.PlayerId": "ID hráča:",

@@ -14,15 +14,15 @@
 		"Boxes.Calculator.Commitment": "Costi",
 		"Boxes.Calculator.Done": "Versato",
 		"Boxes.Calculator.FP": "PF",
-		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATTENZIONE! Il GE avanzerà di livello!",
 		"Boxes.Calculator.LGNotConnected": "L'edificio non è collegato ad una strada",
 		"Boxes.Calculator.LGNotOpen": "Il livello successivo non è attualmente sbloccato",
 		"Boxes.Calculator.Meds": "Medaglie",
 		"Boxes.Calculator.Profit": "Profitto",
 		"Boxes.Calculator.Rate": "Tasso",
-		"Boxes.Calculator.Sniping": "Sniping",
+		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Step",
 		"Boxes.Calculator.Title": "Calcolatore dei costi",
 		"Boxes.Calculator.TTForderCosts": "Costi = __nettoreward__ <small> (premio netto) </small> * __forderfactor__% <small> (Investimento amichevole) </small> = __costs__",
@@ -49,7 +49,7 @@
 		"Boxes.CityMap.Desc1": "Per poter pianificare la tua città dobbiamo trasferire i tuoi dati su foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class = 'btn-default' id = 'submit-data' onclick = 'CityMap.SubmitData()'>Invia</button>",
 		"Boxes.CityMap.FreeArea": "Area libera:",
-		"Boxes.CityMap.NormalPerspecitve": "Standard",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "I dati sono stati trasferiti correttamente ... Ora visita",
 		"Boxes.CityMap.TitleSend": "Invia dati",
 		"Boxes.CityMap.WholeArea": "L'intera area:",
@@ -58,12 +58,12 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": "e",
-		"Boxes.EventList.Desc": "Task",
+		"Boxes.EventList.Desc": "Task", //Todo: Translate
 		"Boxes.EventList.Number": "N.",
 		"Boxes.EventList.Or": "o",
 		"Boxes.EventList.Reward": "Ricompensa",
@@ -83,17 +83,17 @@
 		"Boxes.Infobox.FilterAuction": "Asta",
 		"Boxes.Infobox.FilterGex": "Spedizioni",
 		"Boxes.Infobox.FilterGildFights": "GvG",
-		"Boxes.Infobox.FilterLevel": "Level-Up",
+		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
 		"Boxes.Infobox.FilterMessage": "Messaggio",
 		"Boxes.Infobox.FilterTrade": "Commercio",
 		"Boxes.Infobox.Messages.Auction": "'<strong> __player__ </strong> ha appena offerto __amount__ monete.",
 		"Boxes.Infobox.Messages.GEX": "<strong> __player__ </strong> ha appena ricevuto __points__ punti nelle spedizioni.",
 		"Boxes.Infobox.Messages.GildFightOccupied": "La provincia <span style='color:#ffb539'>__provinceName__</span> è stata conquistata da <span style='color: __attackerColor__;text-shadow: 0 1px 1px __attackerShadow__'>__ attackerName__</span>. Il settore è chiuso fino alle __untilOccupied__",
 		"Boxes.Infobox.Messages.LevelUp": "L' edificio __player__ __building__ ha appena raggiunto il livello __level__. <br> Hai preso <strong>__rank__th</strong> e ottenuto <strong> __fps__ </strong> PF indietro.",
-		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Level __level__",
+		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Level __level__", //Todo: Translate
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> ha accettato la tua offerta. <br> Hai __needValue__ __need__ per __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Reimposta casella",
-		"Boxes.Infobox.Title": "Infobox",
+		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
 		"Boxes.Investment.AllUpToDate": "Tutto è aggiornato",
 		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Profitto attuale:",
@@ -124,7 +124,7 @@
 		"Boxes.Negotiation.GoodsCritical": "ATTENZIONE: hai bisogno di molti beni",
 		"Boxes.Negotiation.GoodsLow": "ATTENZIONE: i beni stanno per finire",
 		"Boxes.Negotiation.Person": "Persona",
-		"Boxes.Negotiation.Round": "Round",
+		"Boxes.Negotiation.Round": "Round", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Magazzino:",
 		"Boxes.Negotiation.Success": "Completato",
 		"Boxes.Negotiation.TableLoadError": "Errore durante il caricamento della tabella di negoziazione",
@@ -141,26 +141,26 @@
 		"Boxes.Outpost.ExpansionsSum": "Espansioni",
 		"Boxes.Outpost.infoLine": "__runNumber__. insediamento, Bonus x4 Probabilità: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "prossima espansione",
-		"Boxes.Outpost.tileNotPlanned": "off",
+		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Beni dell'insediamento",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
 		"Boxes.Outpost.TitleFree": "Gratis",
 		"Boxes.Outpost.TitleShort": "Panoramica dei beni -",
-		"Boxes.OwnpartCalculator.Arc": "Arc",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Progetti",
 		"Boxes.OwnpartCalculator.BuildingName": "Edificio",
 		"Boxes.OwnpartCalculator.CopyValues": "Copia valori",
 		"Boxes.OwnpartCalculator.Deposit": "Deposito",
 		"Boxes.OwnpartCalculator.Done": "Versato",
 		"Boxes.OwnpartCalculator.Ext": "Esterni",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "nome GE individuale",
 		"Boxes.OwnpartCalculator.Levels": "Livelli",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PF totali del GE",
 		"Boxes.OwnpartCalculator.Meds": "Medaglie",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Nessun posto sicuro",
-		"Boxes.OwnpartCalculator.Note": "Note",
+		"Boxes.OwnpartCalculator.Note": "Note", //Todo: Translate
 		"Boxes.OwnpartCalculator.OldLevel": "Vecchio livello",
 		"Boxes.OwnpartCalculator.Order": "Ordine",
 		"Boxes.OwnpartCalculator.OutputScheme": "Schema di output",
@@ -176,6 +176,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -183,12 +184,16 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
@@ -199,7 +204,7 @@
 		"Boxes.Productions.Happiness": "Felicità",
 		"Boxes.Productions.Headings.all": "Tutto",
 		"Boxes.Productions.Headings.amount": "Importo",
-		"Boxes.Productions.Headings.boost": "Boost",
+		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Edifici culturali",
 		"Boxes.Productions.Headings.decoration": "Decorazioni",
 		"Boxes.Productions.Headings.earning": "Guadagno",
@@ -233,10 +238,10 @@
 		"Boxes.Units.Defend": "Difesa",
 		"Boxes.Units.NextUnitsIn": "Le prossime unità __count__ arriveranno in <span class = \"alca-countdown \"> </span> alle ore __harvest__",
 		"Boxes.Units.NotFilled": "Non riempito",
-		"Boxes.Units.Proportionally": "Proportionally",
+		"Boxes.Units.Proportionally": "Proportionally", //Todo: Translate
 		"Boxes.Units.Quantity": "Quantità",
 		"Boxes.Units.ReadyToLoot": "Pronto a saccheggiare!",
-		"Boxes.Units.Status": "Status",
+		"Boxes.Units.Status": "Status", //Todo: Translate
 		"Boxes.Units.Title": "Panoramica dell'esercito",
 		"Boxes.Units.Unbind": "Indipendenti",
 		"Boxes.Units.Unit": "Unità",
@@ -262,7 +267,7 @@
 		"Eras.7": "Età coloniale",
 		"Eras.8": "Età Industriale",
 		"Eras.9": "Età Progressista",
-		"Global.BoxTitle": "FoE Helper",
+		"Global.BoxTitle": "FoE Helper", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadBig": "Strada grande",
 		"HiddenRewards.Positions.cityRoadSmall": "Strada piccola",
 		"HiddenRewards.Positions.guildExpedition": "Spedizione di gilda",
@@ -292,7 +297,7 @@
 		"Menu.Event.Desc": "Panoramica delle missioni attuali e future",
 		"Menu.Event.Title": "Elenco missioni evento",
 		"Menu.Forum.Desc": "Hai una domanda? Ci sono problemi? O solo per parlare ...",
-		"Menu.Forum.Title": "Forum",
+		"Menu.Forum.Title": "Forum", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Panoramica delle ricompense nascoste",
 		"Menu.HiddenRewards.Title": "Premi nascosti",
 		"Menu.Info.Desc": "Mostra tutto ciò che accade in \"background \"<br> <em> Si riempie di informazioni ... </em>",
