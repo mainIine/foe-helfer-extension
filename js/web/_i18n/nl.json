@@ -8,18 +8,18 @@
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
 		"Boxes.Api.Title": "Extensie API Instellingen",
 		"Boxes.Calculator.ActiveRecurringQuest": "Actieve herhalingsmissie:",
-		"Boxes.Calculator.ArkBonus": "Arc bonus",
+		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
 		"Boxes.Calculator.AvailableFP": "Beschikbare forgepunten",
 		"Boxes.Calculator.BPs": "BD's",
 		"Boxes.Calculator.Commitment": "Kosten",
 		"Boxes.Calculator.Done": "Gereed",
-		"Boxes.Calculator.FP": "FP",
+		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Investeren met:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "OPGELET: Dit zal het GG levelen!",
 		"Boxes.Calculator.LGNotConnected": "Het groots gebouw is niet verbonden met een weg",
 		"Boxes.Calculator.LGNotOpen": "Het volgende niveau is momenteel niet ontgrendeld",
-		"Boxes.Calculator.Meds": "Meds",
+		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Winst",
 		"Boxes.Calculator.Rate": "Verhouding",
 		"Boxes.Calculator.Sniping": "Kapen",
@@ -79,11 +79,11 @@
 		"Boxes.HiddenRewards.Disappears": "Verdwijnt",
 		"Boxes.HiddenRewards.NoEvents": "Geen incidenten aanwezig",
 		"Boxes.HiddenRewards.Title": "Incidenten",
-		"Boxes.Infobox.Filter": "Filter",
+		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Veiling",
 		"Boxes.Infobox.FilterGex": "GE",
 		"Boxes.Infobox.FilterGildFights": "Gildegevechten",
-		"Boxes.Infobox.FilterLevel": "Level-Up",
+		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
 		"Boxes.Infobox.FilterMessage": "Bericht",
 		"Boxes.Infobox.FilterTrade": "Handel",
 		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> heeft zonet __amount__ munten geboden.",
@@ -107,7 +107,7 @@
 		"Boxes.Kits.TabSelectionKits": "Selectie kits",
 		"Boxes.Kits.Title": "Gebouw / Selectie Kits",
 		"Boxes.LGOverviewBox.Building": "Groots gebouw",
-		"Boxes.LGOverviewBox.Level": "Level",
+		"Boxes.LGOverviewBox.Level": "Level", //Todo: Translate
 		"Boxes.LGOverviewBox.NothingToGet": "Er valt niets te halen bij <strong>__player__</strong>",
 		"Boxes.LGOverviewBox.PayedTotal": "Betaald / Totaal",
 		"Boxes.LGOverviewBox.Profit": "Winst",
@@ -119,7 +119,7 @@
 		"Boxes.Negotiation.Average": "Voorkeursvolgorde",
 		"Boxes.Negotiation.Canceled": "Onderhandeling is geannuleerd",
 		"Boxes.Negotiation.Chance": "Kans",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "U kunt voorkeursvolgorde van bovenstaande pictogrammen zelf herschikken met 'Drag&Drop' om de volgorde van de eerste poging te bepalen.",
 		"Boxes.Negotiation.GoodsCritical": "OPGELET: De goederenvoorraad is kritiek!",
 		"Boxes.Negotiation.GoodsLow": "OPGELET: De goederenvoorraad is schaars!",
@@ -146,19 +146,19 @@
 		"Boxes.Outpost.TitleBuildings": "Gebouw",
 		"Boxes.Outpost.TitleFree": "Gratis",
 		"Boxes.Outpost.TitleShort": "Goederenoverzicht - ",
-		"Boxes.OwnpartCalculator.Arc": "Arc",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "BD's",
 		"Boxes.OwnpartCalculator.BuildingName": "Gebouw",
 		"Boxes.OwnpartCalculator.CopyValues": "Kopieer waarden",
 		"Boxes.OwnpartCalculator.Deposit": "Zelf te storten",
 		"Boxes.OwnpartCalculator.Done": "Gestort",
 		"Boxes.OwnpartCalculator.Ext": "Extern",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Naam GG individueel",
 		"Boxes.OwnpartCalculator.Levels": "Levels",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Totaal aantal FP",
-		"Boxes.OwnpartCalculator.Meds": "Meds",
+		"Boxes.OwnpartCalculator.Meds": "Meds", //Todo: Translate
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Geen plaats veilig",
 		"Boxes.OwnpartCalculator.Note": "Onthouden",
 		"Boxes.OwnpartCalculator.OldLevel": "Oud niveau",
@@ -176,6 +176,7 @@
 		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
 		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
 		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
@@ -183,12 +184,16 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
+		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
 		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
+		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
 		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
@@ -199,7 +204,7 @@
 		"Boxes.Productions.Happiness": "Tevredenheid",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Hoeveelheid",
-		"Boxes.Productions.Headings.boost": "Boost",
+		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Culturele gebouwen",
 		"Boxes.Productions.Headings.decoration": "Decoraties",
 		"Boxes.Productions.Headings.earning": "Voltooiing productie",
@@ -236,7 +241,7 @@
 		"Boxes.Units.Proportionally": "Evenredig",
 		"Boxes.Units.Quantity": "Aantal",
 		"Boxes.Units.ReadyToLoot": "Klaar om te verzamelen!",
-		"Boxes.Units.Status": "Status",
+		"Boxes.Units.Status": "Status", //Todo: Translate
 		"Boxes.Units.Title": "Eenhedenoverzicht",
 		"Boxes.Units.Unbind": "Onafhankelijk",
 		"Boxes.Units.Unit": "Eenheid",
@@ -262,7 +267,7 @@
 		"Eras.7": "Koloniale tijdperk",
 		"Eras.8": "Industriële tijdperk",
 		"Eras.9": "Progressieve tijdperk",
-		"Global.BoxTitle": "FoE Helper",
+		"Global.BoxTitle": "FoE Helper", //Todo: Translate
 		"HiddenRewards.Positions.cityRoadBig": "Grote Weg",
 		"HiddenRewards.Positions.cityRoadSmall": "Kleine Weg",
 		"HiddenRewards.Positions.guildExpedition": "Gilde Expeditie",
@@ -292,7 +297,7 @@
 		"Menu.Event.Desc": "Overzicht van de huidige en komende missies",
 		"Menu.Event.Title": "Evenement Opdrachtenlijst",
 		"Menu.Forum.Desc": "Heb je een vraag? Zit je iets dwars? Of misschien wil je gewoon praten ...",
-		"Menu.Forum.Title": "Forum",
+		"Menu.Forum.Title": "Forum", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Lijst van incidenten in en rond je stad",
 		"Menu.HiddenRewards.Title": "Incidenten",
 		"Menu.Info.Desc": "Toont je alle zaken die gebeuren op de \"achtergrond\"<br><em>Vult zich beetje bij beetje met info ...",

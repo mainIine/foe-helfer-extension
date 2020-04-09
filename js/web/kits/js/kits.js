@@ -14,7 +14,7 @@
  */
 
 /**
- * 
+ *
  * @type {{BuildingSelectionKits: null, GetTabContent: (function(): string), ReadSets: Kits.ReadSets, globCnt: number, SetTabs: Kits.SetTabs, GetTabs: (function(): string), isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], ReadSelectionKits: Kits.ReadSelectionKits, CreateBody: Kits.CreateBody, BuildingSets: null, Tabs: [], ScanInvetory: Kits.ScanInvetory, SetTabContent: Kits.SetTabContent, TabsContent: [], Inventory: null, setSingles: []}}
  */
 let Kits = {
@@ -113,31 +113,22 @@ let Kits = {
 				// als geprüft "merken"
 				Kits.isChecked.push(eID);
 
-
-				if(Kits.setBuildings[bCnt]['items'][cnt] === undefined)
-				{
-					Kits.setBuildings[bCnt]['items'][cnt] = [];
-					Kits.setBuildings[bCnt]['items'][cnt]['stage'] = [];
-				}
-
 				// checken ob es auch im Inventar des Spielers ist
 				let item = inv.find(b => b['item']['cityEntityId'] === eID);
 
 				// ... ja, ist enthalten
 				if(item !== undefined)
 				{
+					if(Kits.setBuildings[bCnt]['items'][cnt] === undefined)
+					{
+						Kits.setBuildings[bCnt]['items'][cnt] = [];
+						Kits.setBuildings[bCnt]['items'][cnt]['stage'] = [];
+					}
+
 					Kits.setBuildings[bCnt]['items'][cnt]['stage'] = item;
 
-				} else {
-					// Kits.setBuildings[bCnt]['items'][cnt]['stage'] = MainParser.CityEntities.find(b => b['item']['cityEntityId'] === eID);
-
-					let lastChar =  eID[eID.length -1];
-
-					if(lastChar !== 'b'){
-						console.log('Stage - ' + eID + ': ', MainParser.CityEntities.find(b => b['id'] === eID));
-					}
+					Kits.setBuildings[bCnt]['isSize']++;
 				}
-
 
 				// prüfen ob es evt. schon ein Kit gibt
 				for(let e in bsk)
@@ -156,23 +147,18 @@ let Kits = {
 
 						Kits.isChecked.push(ekID);
 
-						if(Kits.setBuildings[bCnt]['items'][cnt] === undefined)
-						{
-							Kits.setBuildings[bCnt]['items'][cnt] = [];
-						}
-
-						if(Kits.setBuildings[bCnt]['items'][cnt]['upgrade'] === undefined)
-						{
-							Kits.setBuildings[bCnt]['items'][cnt]['upgrade'] = null;
-						}
-
 						if(itemKit !== undefined){
+							if(Kits.setBuildings[bCnt]['items'][cnt] === undefined)
+							{
+								Kits.setBuildings[bCnt]['items'][cnt] = [];
+							}
+
+							if(Kits.setBuildings[bCnt]['items'][cnt]['upgrade'] === undefined)
+							{
+								Kits.setBuildings[bCnt]['items'][cnt]['upgrade'] = null;
+							}
+
 							Kits.setBuildings[bCnt]['items'][cnt]['upgrade'] = itemKit;
-						} else {
-							// Kits.setBuildings[bCnt]['items'][cnt]['upgrade'] = MainParser.CityEntities.find(b => b['itemAssetName'] === eID);
-							let new_eID =  [eID.slice(0, eID.length-1), 'b', eID.slice(eID.length)].join('');
-							console.log('new_eID: ', new_eID);
-							console.log('Upgrade - ' + ekID + ': ', MainParser.CityEntities.find(b => b['id'] === new_eID));
 						}
 					}
 				}
@@ -323,9 +309,7 @@ let Kits = {
 	},
 
 
-	/**
-	 * Box-Content zusammensetzen und einfügen
-	 */
+	// Box-Content zusammensetzen und einfügen
 	CreateBody: ()=> {
 
 		Kits.Tabs = [];
@@ -338,10 +322,10 @@ let Kits = {
 
 
 		t += '<tr>' +
-				'<th></th>' +
-				'<th>Name</th>' +
-				'<th></th>' +
-				'<th>Kit-Name</th>' +
+			'<th></th>' +
+			'<th>Name</th>' +
+			'<th></th>' +
+			'<th>Kit-Name</th>' +
 			'</tr>';
 
 
@@ -371,14 +355,7 @@ let Kits = {
 				if(gbs['stage'] !== undefined){
 					let item = gbs['stage'],
 						aName = item['itemAssetName'],
-						url = '';
-
-					console.log('item: ', item);
-
-					if(aName !== undefined){
 						url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
-					}
-
 
 					rowTd += '<td class="text-center"><img class="kits-image" src="' + url + '" alt="' + item['name'] + '" /></td>';
 					rowTd += '<td>' + item['name'] + '<br>Im Lager: <strong class="text-warning">' + item['inStock'] + '</strong></td>';
@@ -427,15 +404,15 @@ let Kits = {
 				url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 
 			ts += '<div class="item-wrap">' +
-					'<div class="item">' +
-						'<div class="item-image">' +
-							'<img src="' + url + '" alt="' + item['name'] + '">' +
-						'</div>' +
-						'<div class="item-name">' +
-							item['name'] + '<br>' +
-							'Im Lager: <strong>' + item['inStock'] + '</strong>' +
-						'</div>' +
-					'</div>' +
+				'<div class="item">' +
+				'<div class="item-image">' +
+				'<img src="' + url + '" alt="' + item['name'] + '">' +
+				'</div>' +
+				'<div class="item-name">' +
+				item['name'] + '<br>' +
+				'Im Lager: <strong>' + item['inStock'] + '</strong>' +
+				'</div>' +
+				'</div>' +
 				'</div>';
 		}
 
