@@ -15,7 +15,7 @@
 		"Boxes.Calculator.Done": "Terminée",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Taux amis :",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
