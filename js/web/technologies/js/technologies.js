@@ -23,6 +23,50 @@ FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
 	Technologies.UnlockedTechologies = data.responseData;
 });
 
+FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
+    let CurrentTech = data.responseData['technology'];
+    if (CurrentTech === undefined) return;
+
+    let ID = CurrentTech['id']
+    if (ID === undefined) return;
+
+    let TechFound = false;
+    for (let i in Technologies.UnlockedTechologies.inProgressTechnologies) {
+        if (!Technologies.UnlockedTechologies.inProgressTechnologies.hasOwnProperty(i)) continue;
+
+        if (Technologies.UnlockedTechologies.inProgressTechnologies[i]['tech_id'] === ID) {
+            TechFound = true;
+            Technologies.UnlockedTechologies.inProgressTechnologies[i]['currentSP'] = CurrentTech['progress']['currentSP'];
+
+            break;
+        }
+    }
+
+    if (!TechFound) {
+        let TechCount = Technologies.UnlockedTechologies.inProgressTechnologies.length;
+        Technologies.UnlockedTechologies.inProgressTechnologies[TechCount] = CurrentTech['progress'];
+    }
+
+    if ($('#technologies').length !== 0) {
+        Technologies.CalcBody();
+    }
+});
+
+FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
+    let CurrentTech = data.responseData['technology'];
+    if (CurrentTech === undefined) return;
+
+    let ID = CurrentTech['id']
+    if (ID === undefined) return;
+
+    let TechCount = Technologies.UnlockedTechologies.unlockedTechnologies.length
+    Technologies.UnlockedTechologies.unlockedTechnologies[TechCount] = ID;
+
+    if ($('#technologies').length !== 0) {
+        Technologies.CalcBody();
+    }
+});
+
 let Technologies = {
     AllTechnologies: null,
     UnlockedTechologies: false,
