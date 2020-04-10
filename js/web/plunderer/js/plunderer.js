@@ -146,7 +146,7 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				'money'
 			];
 			const isImportant = Object.keys(resources).some(it => !unimportantProds.includes(it));
-			await Plunderer.db.actions.add({
+			await IndexDB.db.actions.add({
 				playerId,
 				date: new Date(),
 				type: Plunderer.ACTION_TYPE_PLUNDERED,
