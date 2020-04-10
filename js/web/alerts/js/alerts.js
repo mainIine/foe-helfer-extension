@@ -84,6 +84,44 @@ let Alerts = {
     Tabs: [],
     TabsContent: [],
 
+    forms: {
+        create: function(){
+            let data = {
+                title: $( '#alert-title' ).val(),
+                datetime: $( '#alert-datetime' ).val(),
+                repeat: $( 'input[name=alert-repeat]:checked', '#alert-form' ).val(),
+                persistent: $( 'input[name=alert-persistent]:checked', '#alert-form' ).val()
+            };
+            console.log('create new alert');
+            console.log(data);
+        },
+        initTime: function(id){
+            Alerts.forms.addPreset(0,id);
+        },
+        /**
+         * @param value - the number of seconds (to add)
+         * @param target - the id (including #) of the target DOM element
+         */
+        addPreset: function(value,target){
+            let timestamp = new Date().valueOf() + value * 1000;
+            let dt = Alerts.forms._formatDateTime( new Date( timestamp ) );
+            $(target).val( dt );
+        },
+        _formatDateTime: function(date){
+            if ( date && date.toISOString ){
+                return Alerts.forms._correctTimeZone( date ).toISOString().substring(0,19);
+            }
+            return Alerts.forms._formatDateTime( new Date() );
+        },
+        _correctTimeZone: function(date){
+            if ( date && date.getTimezoneOffset ){
+                let tz = -1 * date.getTimezoneOffset() * 60 * 1000;
+                return new Date( date.valueOf() + tz );
+            }
+            return Alerts.forms._correctTimeZone( new Date() );
+        }
+    },
+
 
     init: ()=> {
         Alerts.Show();
@@ -110,23 +148,73 @@ let Alerts = {
 
         return `
             <div class="box-inner">
-            <!-- title -->
-            <p>
-                <label for="alert-title">${i18n('Boxes.Alerts.Edit.Title')}</label>
-                <input id="alert-title" name="alert-title" type="text">
-            </p>
-            <p>
-                <label for="alert-datetime">${i18n('Boxes.Alerts.Edit.DateTime')}</label>
-                <input id="alert-datetime" name="alert-date" type="datetime-local" value="2020-04-10T05:00">
-            </p>
-                <!-- presets: 5min, 15min, 1h, 4h, 8h, 24h --> 
-            <!-- repeat -->
-                <!-- presets: never, 5min, 15min, 1h, 4h, 8h, 24h, custom -->
-            <!-- persistent notification -->
-                <!-- Notification will remain open until the user dismisses or clicks the notification
-            <!-- description -->
-            <!-- tag -->
-            </div>       
+                <div class="box-inner-content">
+                    <h3>Create a new alert</h3>
+                    <div class="box-inner-form">
+                        <form id="alert-form">
+                            <p class="full-width">
+                                <label for="alert-title">Title</label>
+                                <input type="text" id="alert-title" name="title" placeholder="Title">
+                            </p>
+                                
+                            <p class="full-width extra-vs-8">
+                                <label for="alert-datetime">Date &amp; Time</label>
+                                <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="2020-04-10T16:00" step="1">
+                                
+                                Presets: 
+                                <span class="btn-default datetime-preset" data-time="60">1m</span>
+                                <span class="btn-default datetime-preset" data-time="300">5m</span>
+                                <span class="btn-default datetime-preset" data-time="900">15m</span>
+                                <span class="btn-default datetime-preset" data-time="3600">1h</span>
+                                <span class="btn-default datetime-preset" data-time="14400">4h</span>
+                                <span class="btn-default datetime-preset" data-time="28800">8h</span>
+                                <span class="btn-default datetime-preset" data-time="86400">1d</span>
+                            </p>
+                            
+                            <p class="full-width radio-toolbar extra-vs-8">
+                                Repeat
+                                <input id="alert-repeat-never" type="radio" name="alert-repeat" value="-1" checked="checked">
+                                <label for="alert-repeat-never">never</label>
+                                or every
+                                <input id="alert-repeat-5m" type="radio" name="alert-repeat" value="300">
+                                <label for="alert-repeat-5m">5m</label>
+                                <input id="alert-repeat-15m" type="radio" name="alert-repeat" value="900">
+                                <label for="alert-repeat-15m">15m</label>
+                                <input id="alert-repeat-1h" type="radio" name="alert-repeat" value="3600">
+                                <label for="alert-repeat-1h">1h</label>
+                                <input id="alert-repeat-4h" type="radio" name="alert-repeat" value="14400">
+                                <label for="alert-repeat-4h">4h</label>
+                                <input id="alert-repeat-8h" type="radio" name="alert-repeat" value="28800">
+                                <label for="alert-repeat-8h">8h</label>
+                                <input id="alert-repeat-1d" type="radio" name="alert-repeat" value="86400">
+                                <label for="alert-repeat-1d">1d</label>
+                            </p>
+                            
+                            <p class="full-width radio-toolbar">
+                                Persistent
+                                <input id="alert-persistent-off" type="radio" name="alert-persistent" checked="checked" value="off">
+                                <label for="alert-persistent-off">Off</label>
+                                <input id="alert-persistent-on" type="radio" name="alert-persistent" value="on">
+                                <label for="alert-persistent-on">On</label>
+                                <br><small>Should the notification remain open until the user dismisses or clicks the notification</small>
+                            </p>
+                            
+                            <!--
+                            <p class="full-width">
+                                <label for="tag">Tag</label>
+                                <input type="text" id="tag" name="tag">
+                                <small>Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)</small>
+                            </p>
+                            -->
+                            
+                            <!-- left column -->
+                            <p>&nbsp;</p>
+                            <p class="text-right"><span class="btn-default button-create-alert">Create</span></p>
+                
+                        </form>
+                    </div>
+                </div>
+            </div>
         `;
 
     },
@@ -183,6 +271,17 @@ let Alerts = {
             // disable keydown propagation from the form so that the canvas (the game) is not getting the
             // keyboard shortcuts (otherwise, it's impossible to type into input/textarea without affecting the game)
             $('#AlertsBody input').on('keydown', function(e){e.stopPropagation(); });
+
+            $('#AlertsBody .button-create-alert').on('click', function(){
+                Alerts.forms.create();
+            });
+
+            $('#AlertsBody .datetime-preset').on('click', function(){
+                var value = $(this).attr('data-time');
+                Alerts.forms.addPreset(value,'#alert-datetime');
+            });
+
+            Alerts.forms.initTime('#alert-datetime');
         });
 
         Alerts.BuildPermissions();
