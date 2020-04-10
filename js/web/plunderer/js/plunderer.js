@@ -190,23 +190,6 @@ let Plunderer = {
 	ACTION_TYPE_SHIELDED: 5,
 
 	/**
-	 * Delete data older then 6 weeks
-	 *
-	 * @returns {Promise<void>}
-	 */
-	garbargeCollector:  async ()=> {
-		const sixWeeksAgo = moment().subtract(6, 'weeks').toDate();
-
-		await IndexDB.db.actions
-			.where('date').below(sixWeeksAgo)
-			.delete();
-
-		await IndexDB.db.players
-			.where('date').below(sixWeeksAgo)
-			.delete();
-	},
-
-	/**
 	 * Upsert player in db
 	 *
 	 * @param player
@@ -610,8 +593,3 @@ let Plunderer = {
 				</div>`;
 	}
 };
-
-// Lets cleaning after 1min when app is up
-setTimeout(() => {
-	Plunderer.garbargeCollector();
-}, 60 * 1000);
