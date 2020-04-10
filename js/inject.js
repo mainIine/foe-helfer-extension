@@ -157,6 +157,7 @@
 				'_helper',
 				'_api',
 				'_menu',
+				'indexdb',
 				'kits',
 				'tavern',
 				'outposts',

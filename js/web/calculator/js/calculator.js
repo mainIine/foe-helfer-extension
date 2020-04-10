@@ -18,7 +18,6 @@ let Calculator = {
 
 	ForderBonus: 90,
     EntityOverview: [],
-    CurrentPlayer: 0,
     SoundFile: new Audio(extUrl + 'vendor/sounds/message.mp3'),
     PlayerName: undefined,
     LastPlayerID: 0,
@@ -325,7 +324,7 @@ let Calculator = {
 
         // Ränge durchsteppen, Suche nach Eigeneinzahlung
 		for (let i = 0; i < Calculator.Rankings.length;i++) {
-			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) {
+			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === ExtPlayerID) {
                 EigenPos = i;
 				EigenBetrag = (isNaN(parseInt(Calculator.Rankings[i]['forge_points']))) ? 0 : parseInt(Calculator.Rankings[i]['forge_points']);
                 break;
@@ -392,7 +391,7 @@ let Calculator = {
 				continue;
 			}
 
-			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer)
+			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === ExtPlayerID)
 				IsSelf = true;
 
 			if (Calculator.Rankings[i]['forge_points'] !== undefined)
