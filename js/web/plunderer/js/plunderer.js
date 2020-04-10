@@ -126,8 +126,8 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 		return;
 	}
 
-	const myUnits = unitsOrder.filter(it => it.teamFlag === 1).map(adaptUnit);
-	const otherUnits = unitsOrder.filter(it => it.teamFlag === 2).map(adaptUnit);
+	const myUnits = unitsOrder.filter(it => it.teamFlag === 1).map(adaptUnit(true));
+	const otherUnits = unitsOrder.filter(it => it.teamFlag === 2).map(adaptUnit(false));
 	const defenderPlayerId = data.responseData.defenderPlayerId || otherUnits[0].ownerId;
 
 	// defenderPlayerId = -1 if PVE
@@ -157,19 +157,21 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 
 	Plunderer.UpdateBoxIfVisible();
 
-	function adaptUnit(unit)
+	function adaptUnit(isAttacking)
 	{
-		const bonuses = Unit.GetBoostSums(unit.bonuses);
-		const attBoost = unit.is_attacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
-		const defBoost = unit.is_attacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
+		return function(unit) {
+			const bonuses = Unit.GetBoostSums(unit.bonuses);
+			const attBoost = isAttacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
+			const defBoost = isAttacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
 
-		return {
-			startHP: unit.startHitpoints,
-			endHp: unit.currentHitpoints || 0,
-			attBoost: attBoost || 0,
-			defBoost: defBoost || 0,
-			unitTypeId: unit.unitTypeId,
-			ownerId: unit.ownerId,
+			return {
+				startHP: unit.startHitpoints,
+				endHp: unit.currentHitpoints || 0,
+				attBoost: attBoost || 0,
+				defBoost: defBoost || 0,
+				unitTypeId: unit.unitTypeId,
+				ownerId: unit.ownerId,
+			}
 		}
 	}
 });
