@@ -1515,6 +1515,8 @@ let MainParser = {
 		});
 		localStorage.setItem('current_player_id', ExtPlayerID);
 
+		IndexDB.Init(ExtPlayerID);
+
 		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_world',
