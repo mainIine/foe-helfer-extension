@@ -6,7 +6,6 @@
 		"API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
 		"API.LGInvest": "Je GG bijdrages zijn verzonden",
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extensie API Instellingen",
 		"Boxes.Calculator.ActiveRecurringQuest": "Actieve herhalingsmissie:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
@@ -185,6 +184,7 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
 		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
