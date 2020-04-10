@@ -19,6 +19,7 @@
 
 // TODO - Options:
 //          - checkbox to enable creating a new alert when you bid on an item at the antiques dealer
+//          - checkbox to enable creating a new alert for a plundered neighbor (e.g. from the plunderer box)
 
 /* nice to have */
 
@@ -102,6 +103,34 @@ let Alerts = {
         // }
     },
 
+    AddAlert: ()=> {
+    },
+
+    _constructNewAlertHtml: ()=> {
+
+        return `
+            <div class="box-inner">
+            <!-- title -->
+            <p>
+                <label for="alert-title">${i18n('Boxes.Alerts.Edit.Title')}</label>
+                <input id="alert-title" name="alert-title" type="text">
+            </p>
+            <p>
+                <label for="alert-datetime">${i18n('Boxes.Alerts.Edit.DateTime')}</label>
+                <input id="alert-datetime" name="alert-date" type="datetime-local" value="2020-04-10T05:00">
+            </p>
+                <!-- presets: 5min, 15min, 1h, 4h, 8h, 24h --> 
+            <!-- repeat -->
+                <!-- presets: never, 5min, 15min, 1h, 4h, 8h, 24h, custom -->
+            <!-- persistent notification -->
+                <!-- Notification will remain open until the user dismisses or clicks the notification
+            <!-- description -->
+            <!-- tag -->
+            </div>       
+        `;
+
+    },
+
     BuildBody: ()=> {
 
         Alerts.Tabs = [];
@@ -113,7 +142,7 @@ let Alerts = {
 
         // form to create/add a new alert
         // show preferences
-        Alerts.SetTabContent('alerts-tab-new', '<p>Add a new alert</p>' );
+        Alerts.SetTabContent('alerts-tab-new', Alerts._constructNewAlertHtml() );
 
         // list alerts
         let html = '<table class="foe-table">';
@@ -150,6 +179,10 @@ let Alerts = {
 
         $('#AlertsBody').html( h.join('') ).promise().done(function(){
             $('.alerts-tabs').tabslet({active: 1});
+
+            // disable keydown propagation from the form so that the canvas (the game) is not getting the
+            // keyboard shortcuts (otherwise, it's impossible to type into input/textarea without affecting the game)
+            $('#AlertsBody input').on('keydown', function(e){e.stopPropagation(); });
         });
 
         Alerts.BuildPermissions();
