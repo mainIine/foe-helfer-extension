@@ -39,3 +39,15 @@
     text-align: center;
     width: 240px;
 }
+
+#Alerts #AlertsBody .box-inner { padding: 8px; }
+
+.box-inner input[type=datetime-local] {
+    background-color: #F9EBC6;
+    color: #93795D;
+    background-clip: padding-box;
+    border: 1px solid #4C2F1E;
+    font-size: 0.8rem;
+    line-height: 18px;
+    padding: 2px 5px;
+}
