@@ -79,5 +79,26 @@ let IndexDB = {
         });
 
         IndexDB.db.open();
+
+        setTimeout(() => {
+            IndexDB.GarbageCollector();
+        }, 10 * 1000);
+    },
+
+    /**
+    * Perform garbage collection
+    *
+    * @returns {Promise<void>}
+    */
+    GarbageCollector: async () => {
+        const sixWeeksAgo = moment().subtract(6, 'weeks').toDate();
+
+        await IndexDB.db.actions
+            .where('date').below(sixWeeksAgo)
+            .delete();
+
+        await IndexDB.db.players
+            .where('date').below(sixWeeksAgo)
+            .delete();
     }
-}
+};
