@@ -165,7 +165,7 @@
 				'productions',
 				'part-calc',
 				'unit',
-        'plunderer',
+				'plunderer',
 				'guildfights',
 				'notes',
 				'campagnemap',
@@ -188,8 +188,13 @@
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 
 			// Wenn #content Verfügbar ist, wurde ein Flash-Inhalt geladen...
-			if( document.getElementById('content') ){
-				alert('You installed the FoE Helper but didn\'t switch the game to HTML5. Check that in your game settings!');
+			let IsForum = false;
+			if (window !== undefined && window.location !== undefined && window.location.pathname !== undefined && window.location.pathname.includes('forum')) {
+				IsForum = true;
+            }
+
+			if (document.getElementById('content') && !IsForum ){
+				alert('You installed the FoE Helper but didn\'t switch the game to HTML5. Check that in your game settings!.');
 			}
 
 		} catch (err) {

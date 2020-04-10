@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "Русский",
 		"API.GEXChampionship": "Обновлена позиция гильдии в ЭГ",
@@ -6,7 +6,6 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
@@ -55,13 +54,13 @@
 		"Boxes.CityMap.TitleSend": "Отправить данные",
 		"Boxes.CityMap.WholeArea": "Всего ячеек: ",
 		"Boxes.CityMap.YourCity": "Ваш город",
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
+		"Boxes.EventChests.Chance": "Шанс",
 		"Boxes.EventChests.Cost": "Стоимость",
-		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
-		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
-		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
+		"Boxes.EventChests.CostPerPrize": "Цена/Приз",
+		"Boxes.EventChests.CostPerStep": "Цена/Шаг",
+		"Boxes.EventChests.MainPrize": "Главный приз",
+		"Boxes.EventChests.MainPrizeTitle": "Приз дня: ",
+		"Boxes.EventChests.Steps": "Шаги",
 		"Boxes.EventChests.Title": "Помощник событий",
 		"Boxes.EventList.And": " и ",
 		"Boxes.EventList.Desc": "Задача",
@@ -174,32 +173,33 @@
 		"Boxes.OwnpartCalculator.Step": "Уровень",
 		"Boxes.OwnpartCalculator.Title": "Калькулятор вложений в свои ВС",
 		"Boxes.OwnpartCalculator.YourName": "Ваше имя",
-		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
+		"Boxes.Plundered.actionBattleLost": "Проигранная битва",
+		"Boxes.Plundered.actionBattleWon": "Разбит",
+		"Boxes.Plundered.actionPlundered": "Ограблен",
+		"Boxes.Plundered.actionShielded": "Под щитом",
+		"Boxes.Plundered.actionSurrendered": "Отступили",
+		"Boxes.Plunderer.AllPlayers": "Все игроки",
+		"Boxes.Plunderer.Attack": "Атака",
+		"Boxes.Plunderer.autoBattle": "Автобой",
+		"Boxes.Plunderer.collectedToday": "Собрано Сегодня",
+		"Boxes.Plunderer.Defense": "Защита",
+		"Boxes.Plunderer.filteredByUser": "Отфильтровано по игроку",
+		"Boxes.Plunderer.FP": "CO",
+		"Boxes.Plunderer.goto1stPage": "1-я Страница",
+		"Boxes.Plunderer.HasNoClan": "<em>без гильдии</em>",
+		"Boxes.Plunderer.nextPage": "След. Страница",
+		"Boxes.Plunderer.noData": "Нет Данных",
+		"Boxes.Plunderer.Page": "Страница",
+		"Boxes.Plunderer.PlayersEra": "Ера Игрока",
+		"Boxes.Plunderer.rounds": "Раундов",
+		"Boxes.Plunderer.shieldProtectetUntil": "Защищен до:",
+		"Boxes.Plunderer.shieldUntil": "Заканчивается",
+		"Boxes.Plunderer.showAllPlayers": "Показать всех игроков",
+		"Boxes.Plunderer.thisWeek": "На этой неделе",
+		"Boxes.Plunderer.Title": "PvP Активность",
+		"Boxes.Plunderer.total": "Всего",
+		"Boxes.Plunderer.visited": "Посетили",
+		"Boxes.Plunderer.visitTitle": "Когда было последнее посещение игрока вами",
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
 		"Boxes.Productions.Happiness": "Уровень счастья",
 		"Boxes.Productions.Headings.all": "Все",
@@ -259,7 +259,7 @@
 		"Eras.18": "Космическая Эра Марса",
 		"Eras.19": "Космическая Эра Цереры",
 		"Eras.2": "Бронзовый Век",
-		"Eras.20": "Space Age Venus", //Todo: Translate
+		"Eras.20": "Космическая Эра Венеры",
 		"Eras.3": "Железный Век",
 		"Eras.4": "Раннее Средневековье",
 		"Eras.5": "Высокое Средневековье",
@@ -314,8 +314,8 @@
 		"Menu.OwnpartCalculator.Desc": "Рассчитывает план вложений, считает внешние вклады и копирует значения для веток",
 		"Menu.OwnpartCalculator.Title": "Калькулятор вложений в свои ВС",
 		"Menu.OwnpartCalculator.Warning": "Отключено: Для включения откройте любое собственное ВС!",
-		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
-		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
+		"Menu.Plunderer.Desc": "PvP и история ограбления соседей",
+		"Menu.Plunderer.Title": "PvP активность",
 		"Menu.Productions.Desc": "Отображает текущее количество всех произодств.",
 		"Menu.Productions.Title": "Обзор производства",
 		"Menu.Settings.Desc": "Здесь находятся настройки",

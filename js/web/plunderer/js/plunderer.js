@@ -80,25 +80,28 @@ plunderDB.open();
 
 // Detect shield
 FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, postData) => {
-	const r = data.responseData;
-	if (!Array.isArray(r)) { return; }
-	const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
+	// Deffer handling city protection in next tick, to ensure PlayerDict is fetched
+	setTimeout(async () => {
+		const r = data.responseData;
+		if (!Array.isArray(r)) { return; }
+		const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
 
-	for (const shieldInfo of shielded) {
-		const playerId = shieldInfo.playerId;
-		const lastShieldAction = await Plunderer.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
+		for (const shieldInfo of shielded) {
+			const playerId = shieldInfo.playerId;
+			const lastShieldAction = await Plunderer.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
 
-		// If in db already exists actual shield info than skip
-		if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
+			// If in db already exists actual shield info than skip
+			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
 
-		await Plunderer.db.actions.add({
-			type: Plunderer.ACTION_TYPE_SHIELDED,
-			playerId: playerId,
-			date: new Date,
-			expireTime: shieldInfo.expireTime,
-		});
-		await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
-	}
+			await Plunderer.db.actions.add({
+				type: Plunderer.ACTION_TYPE_SHIELDED,
+				playerId: playerId,
+				date: new Date,
+				expireTime: shieldInfo.expireTime,
+			});
+			await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
+		}
+	})
 });
 
 FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
@@ -123,8 +126,8 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 		return;
 	}
 
-	const myUnits = unitsOrder.filter(it => it.teamFlag === 1).map(adaptUnit);
-	const otherUnits = unitsOrder.filter(it => it.teamFlag === 2).map(adaptUnit);
+	const myUnits = unitsOrder.filter(it => it.teamFlag === 1).map(adaptUnit(true));
+	const otherUnits = unitsOrder.filter(it => it.teamFlag === 2).map(adaptUnit(false));
 	const defenderPlayerId = data.responseData.defenderPlayerId || otherUnits[0].ownerId;
 
 	// defenderPlayerId = -1 if PVE
@@ -133,7 +136,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	}
 
 	// Avoid adding defend battles (when view recorded defend battles)
-	if (defenderPlayerId <= ExtPlayerID) { return ; }
+	if (defenderPlayerId == ExtPlayerID) { return ; }
 
 	// Ensure user is exists in db already
 	await Plunderer.addUserFromPlayerDictIfNotExists(defenderPlayerId);
@@ -154,19 +157,21 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 
 	Plunderer.UpdateBoxIfVisible();
 
-	function adaptUnit(unit)
+	function adaptUnit(isAttacking)
 	{
-		const bonuses = Unit.GetBoostSums(unit.bonuses);
-		const attBoost = unit.is_attacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
-		const defBoost = unit.is_attacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
+		return function(unit) {
+			const bonuses = Unit.GetBoostSums(unit.bonuses);
+			const attBoost = isAttacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
+			const defBoost = isAttacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
 
-		return {
-			startHP: unit.startHitpoints,
-			endHp: unit.currentHitpoints || 0,
-			attBoost: attBoost || 0,
-			defBoost: defBoost || 0,
-			unitTypeId: unit.unitTypeId,
-			ownerId: unit.ownerId,
+			return {
+				startHP: unit.startHitpoints,
+				endHp: unit.currentHitpoints || 0,
+				attBoost: attBoost || 0,
+				defBoost: defBoost || 0,
+				unitTypeId: unit.unitTypeId,
+				ownerId: unit.ownerId,
+			}
 		}
 	}
 });
@@ -412,6 +417,8 @@ let Plunderer = {
 		const players = await Plunderer.db.players.where('id').anyOf(actions.map(it => it.playerId)).toArray();
 		actions = actions.map(it => {
 			const player = players.find(p => p.id === it.playerId);
+			const playerFromDict = PlayerDict[it.playerId];
+			// Try get info about player from indexdb, if not possible than from PlayerDict
 			const playerInfo = player ? ({
 				playerName: player.name,
 				avatar: player.avatar,
@@ -419,13 +426,20 @@ let Plunderer = {
 				clanId: player.clanId,
 				clanName: player.clanName || i18n('Boxes.Plunderer.HasNoClan'),
 				playerEra: player.era
+			}) : playerFromDict ? ({
+				playerName: playerFromDict.PlayerName,
+				clanId: playerFromDict.ClanId || 0,
+				clanName: playerFromDict.ClanName || i18n('Boxes.Plunderer.HasNoClan'),
+				avatar: playerFromDict.Avatar,
+				playerEra: 'unknown',
+				playerDate: null,
 			}) : ({
 				playerName: 'Unknown',
-				avatar: '',
+				clanId: 'N/A',
+				clanName: 'Unknown',
+				avatar: null,
+				playerEra: 'unknown',
 				playerDate: null,
-				clanId: 0,
-				clanName: '',
-				playerEra: 'Unknown',
 			});
 			return {
 				...it,
@@ -489,9 +503,9 @@ let Plunderer = {
 		});
 
 		$('#plundererBody .strategy-points').html(`
-			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> FP,
-			${i18n('Boxes.Plunderer.thisWeek')}: <strong class="${thisWeekSP ? 'text-warning' : ''}">${thisWeekSP}</strong> FP,
-			${i18n('Boxes.Plunderer.total')}:  <strong class="${totalSP ? 'text-warning' : ''}">${totalSP}</strong> FP
+			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> ${i18n('Boxes.Plunderer.FP')},
+			${i18n('Boxes.Plunderer.thisWeek')}: <strong class="${thisWeekSP ? 'text-warning' : ''}">${thisWeekSP}</strong> ${i18n('Boxes.Plunderer.FP')},
+			${i18n('Boxes.Plunderer.total')}:  <strong class="${totalSP ? 'text-warning' : ''}">${totalSP}</strong> ${i18n('Boxes.Plunderer.FP')}
 		`);
 	},
 
@@ -515,13 +529,13 @@ let Plunderer = {
 			[Plunderer.ACTION_TYPE_SHIELDED]: i18n('Boxes.Plundered.actionShielded'),
 		}[action.type] || 'Unknown';
 
-		const avatar = `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[action.avatar]}.jpg`;
+		const avatar = action.avatar && `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[action.avatar]}.jpg`;
 		const date = moment(action.date).format(i18n('DateTime'));
 		const dateFromNow = moment(action.date).fromNow();
 
 		let era = '';
 
-		if(action.playerEra !== 'unknown'){
+		if(action.playerEra && action.playerEra !== 'unknown'){
 			let eraName = i18n('Eras.' + Technologies.Eras[action.playerEra]);
 
 			era = `<div class="era" title="${i18n('Boxes.Plunderer.PlayersEra')}: ${eraName}"><strong>${eraName}</strong></div>`;
@@ -529,7 +543,7 @@ let Plunderer = {
 
 		return `<div class="action-row action-row-type-${action.type}">
 					<div class="avatar select-player" data-value="${action.playerId}">
-						${isSamePlayer ? '' : `<img class="player-avatar" src="${avatar}" alt="${action.playerName}" /><br>`}
+						${isSamePlayer || !avatar? '' : `<img class="player-avatar" src="${avatar}" alt="${action.playerName}" /><br>`}
 						<span class="type text-${action.type === 1 ? 'success' : (action.type === 3 ? 'danger' : 'success')}">${type}</span>
 					</div>
 					<div class="info-column">
@@ -589,7 +603,7 @@ let Plunderer = {
 			case Plunderer.ACTION_TYPE_BATTLE_WIN:
 			case Plunderer.ACTION_TYPE_BATTLE_SURRENDERED:
 				return `<div class="battle">
-							<div><strong>${action.battle.auto ? i18n('Boxes.Plunderer.autoBattle') : `${i18n('Boxes.Plunderer.rounds')}: ${action.battle.round || 'NA'}`}</strong></div>
+							<div><strong>${action.battle.auto ? i18n('Boxes.Plunderer.autoBattle') : `${i18n('Boxes.Plunderer.rounds')}: ${action.battle.round || 'N/A'}`}</strong></div>
 							<div class="army-overview">
 								<div class="army">${Plunderer.RenderArmy(action.battle.myArmy)}</div>
 								<div class="versus">VS</div>
@@ -664,4 +678,7 @@ let Plunderer = {
 	}
 };
 
-Plunderer.garbargeCollector();
+// Lets cleaning after 1min when app is up
+setTimeout(() => {
+	Plunderer.garbargeCollector();
+}, 60 * 1000);

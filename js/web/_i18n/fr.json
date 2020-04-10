@@ -6,7 +6,6 @@
 		"API.LGGildMember": "Les GM de __player__ ont été envoyés.",
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Serveur API personnel",
 		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
@@ -60,7 +59,7 @@
 		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
 		"Boxes.EventChests.CostPerStep": "Coût / Pas",
 		"Boxes.EventChests.MainPrize": "Prix spécial",
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Pas",
 		"Boxes.EventChests.Title": "Aide à la sélection d'un coffre d'événement",
 		"Boxes.EventList.And": " ET ",
@@ -185,6 +184,7 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
 		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
