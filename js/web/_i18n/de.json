@@ -6,7 +6,6 @@
 		"API.LGGildMember": "__player__'s LGs wurden übermittelt",
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.UpdateSuccess": "Update durchgeführt",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Einstellungen",
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
@@ -185,6 +184,7 @@
 		"Boxes.Plunderer.collectedToday": "Heute gesammelt",
 		"Boxes.Plunderer.Defense": "Verteidigung",
 		"Boxes.Plunderer.filteredByUser": "Filter nach Spieler",
+		"Boxes.Plunderer.FP": "FP",
 		"Boxes.Plunderer.goto1stPage": "erste Seite",
 		"Boxes.Plunderer.HasNoClan": "<em>hat keine Gilde</em>",
 		"Boxes.Plunderer.nextPage": "nächste Seite",
