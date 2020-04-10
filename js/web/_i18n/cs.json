@@ -75,7 +75,7 @@
 		"Boxes.Gildfights.Negotiations": "Negotiations", //Todo: Translate
 		"Boxes.Gildfights.Player": "Player", //Todo: Translate
 		"Boxes.Gildfights.Title": "Player overview", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Obnoví se",
+		"Boxes.HiddenRewards.Appears": "Objeví se",
 		"Boxes.HiddenRewards.Disappears": "Zmizí",
 		"Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
 		"Boxes.HiddenRewards.Title": "Skryté příhody",
@@ -111,11 +111,11 @@
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing to fetch", //Todo: Translate
 		"Boxes.LGOverviewBox.PayedTotal": "Přidáno / Celkem",
 		"Boxes.LGOverviewBox.Profit": "Zisk",
-		"Boxes.LGOverviewBox.Rate": "Míra",
+		"Boxes.LGOverviewBox.Rate": "Poměr",
 		"Boxes.LGOverviewBox.Title": "Možný příspěvek",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "recognized", //Todo: Translate
+		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "Lze vložit BV",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "Nalezen nový",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Zatím nic",
+		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Nelze vložit BV",
 		"Boxes.Negotiation.Average": "Ø Množství",
 		"Boxes.Negotiation.Canceled": "Vzdát",
 		"Boxes.Negotiation.Chance": "Šance",
@@ -173,16 +173,16 @@
 		"Boxes.OwnpartCalculator.Step": "Úroveň",
 		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",
-		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
+		"Boxes.Plundered.actionBattleLost": "Porážka",
+		"Boxes.Plundered.actionBattleWon": "Vítězství",
 		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
+		"Boxes.Plundered.actionShielded": "Štít města",
 		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
 		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
+		"Boxes.Plunderer.Attack": "Útok",
+		"Boxes.Plunderer.autoBattle": "Automatická bitva",
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Obrana",
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
 		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
@@ -198,7 +198,7 @@
 		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
 		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
 		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
+		"Boxes.Plunderer.visited": "Navštíveno",
 		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Sousední budovy",
 		"Boxes.Productions.Happiness": "Spokojenost",
@@ -257,7 +257,7 @@
 		"Eras.16": "Oceánská budoucnost",
 		"Eras.17": "Virtuální budoucnost",
 		"Eras.18": "Kolonizace Marsu",
-		"Eras.19": "Kolonizace Ceres",
+		"Eras.19": "Kolonizace pásu planetek",
 		"Eras.2": "Doba bronzová",
 		"Eras.20": "Space Age Venus", //Todo: Translate
 		"Eras.3": "Doba železná",
@@ -298,8 +298,8 @@
 		"Menu.Event.Title": "Event Questlist", //Todo: Translate
 		"Menu.Forum.Desc": "Máte otázku, štve vás něco nebo si jen chcete popovídat ...",
 		"Menu.Forum.Title": "Fórum",
-		"Menu.HiddenRewards.Desc": "Overview of hidden rewards", //Todo: Translate
-		"Menu.HiddenRewards.Title": "Hidden rewards", //Todo: Translate
+		"Menu.HiddenRewards.Desc": "Přehled skrytých odměn",
+		"Menu.HiddenRewards.Title": "Skryté příhody",
 		"Menu.Info.Desc": "Ukazuje co se událo \"background\"<br><em>Fills up with info ...</em>",
 		"Menu.Info.Title": "Info Box", //Todo: Translate
 		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
@@ -332,10 +332,10 @@
 		"Settings.ChangeLanguage.Title": "Změnit jazyk",
 		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
 		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
-		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte. <br>.",
+		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte.",
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
 		"Settings.MenuLength.Desc": "Kolik položek má obsahovat menu?<br> Prázdné okno nebo \"0\" znamená automatickou výšku.",
-		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
+		"Settings.MenuLength.Title": "Výška menu",
 		"Settings.PreScanLGList.Desc": "Oskenuje VB a označí možné budovy k investování. <br> <u> Note: </u> Kvůli odezvě a přenosovým problémům se může výsledek lišit. Sken neodporuje pravidlům.",
 		"Settings.PreScanLGList.Title": "Prvotní sken Velkolepých budov",
 		"Settings.ResetBoxPositions.Button": "Návrat!",
@@ -345,7 +345,7 @@
 		"Settings.SendGEXInfo.Title": "Vyhodnocení CE",
 		"Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
 		"Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
-		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' pošle data o investování VB na web",
+		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' se opošlou data o investování VB na foe-rechner.de",
 		"Settings.SendInvestigations.Title": "Investování VB",
 		"Settings.SendTavernInfo.Desc": "Záznamy odesílat na foe-rechner.de",
 		"Settings.SendTavernInfo.Title": "Motivace",
@@ -353,7 +353,7 @@
 		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
 		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "<p>Verzia rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
+		"Settings.Version.Desc": "<p>Verze rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
 		"Settings.Version.GuildId": "Id cechu:",
 		"Settings.Version.PlayerId": "Id hráče:",
 		"Settings.Version.Title": "Verze",
