@@ -797,7 +797,7 @@ let Calculator = {
 	 * 
 	 * */
 	RefreshGreatBuildingsDB: async(GreatBuilding) => {
-		await IndexDB.addUserFromPlayerDictIfNotExists(GreatBuilding['playerId']);
+		await IndexDB.addUserFromPlayerDictIfNotExists(GreatBuilding['playerId'], true);
 
 		let CurrentGB = await IndexDB.db.greatbuildings
 			.where({ playerId: GreatBuilding['playerId'], name: GreatBuilding['name'] })

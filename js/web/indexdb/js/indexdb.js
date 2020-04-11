@@ -119,6 +119,14 @@ let IndexDB = {
         await IndexDB.db.players
             .where('date').below(sixWeeksAgo)
             .delete();
+
+        let LeftPlayers = await IndexDB.db.players
+            .where('id').above(0)
+            .keys();
+
+        await IndexDB.db.greatbuildings
+            .where('playerId').noneOf(LeftPlayers)
+            .delete();
     },
 
 
@@ -128,7 +136,7 @@ let IndexDB = {
 	 * @param playerId
 	 * @returns {Promise<void>}
 	 */
-    addUserFromPlayerDictIfNotExists: async(playerId) => {
+    addUserFromPlayerDictIfNotExists: async(playerId, updateDate) => {
         const playerFromDB = await IndexDB.db.players.get(playerId);
         if (!playerFromDB) {
             let player = PlayerDict[playerId];
@@ -143,6 +151,11 @@ let IndexDB = {
                     date: new Date(),
                 });
             }
+        }
+        else if (updateDate) {
+            IndexDB.db.players.update(playerId, {
+                date: new Date()
+            });
         }
     },
 };
