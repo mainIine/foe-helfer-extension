@@ -85,40 +85,47 @@ let Alerts = {
     TabsContent: [],
 
     forms: {
-        create: function(){
-            let data = {
+        _getFormData: function(){
+            return {
                 title: $( '#alert-title' ).val(),
                 datetime: $( '#alert-datetime' ).val(),
                 repeat: $( 'input[name=alert-repeat]:checked', '#alert-form' ).val(),
-                persistent: $( 'input[name=alert-persistent]:checked', '#alert-form' ).val()
+                persistent: $( 'input[name=alert-persistent]:checked', '#alert-form' ).val() === 'on'
             };
-            console.log('create new alert');
-            console.log(data);
-        },
-        initTime: function(id){
-            Alerts.forms.addPreset(0,id);
         },
         /**
          * @param value - the number of seconds (to add)
          * @param target - the id (including #) of the target DOM element
          */
         addPreset: function(value,target){
-            let timestamp = new Date().valueOf() + value * 1000;
-            let dt = Alerts.forms._formatDateTime( new Date( timestamp ) );
+            let m = moment().add( value, 'seconds');
+            // timezone corrected ISO string & remove the milliseconds + tz
+            let dt = m.toISOString(true).substring(0,19);
             $(target).val( dt );
         },
-        _formatDateTime: function(date){
-            if ( date && date.toISOString ){
-                return Alerts.forms._correctTimeZone( date ).toISOString().substring(0,19);
-            }
-            return Alerts.forms._formatDateTime( new Date() );
+        create: function(){
+            let data = Alerts.forms._getFormData();
+            console.log(data);
         },
-        _correctTimeZone: function(date){
-            if ( date && date.getTimezoneOffset ){
-                let tz = -1 * date.getTimezoneOffset() * 60 * 1000;
-                return new Date( date.valueOf() + tz );
+        initTime: function(id){
+            Alerts.forms.addPreset(0,id);
+        },
+        preview: function(){
+            let data = Alerts.forms._getFormData();
+            const options = {
+                body: 'Alert body',
+                dir: 'ltr',
+                icon: extUrl + 'images/app48.png',
+                renotify: true,
+                requireInteraction: data.persistent,
+                tag: 'FoE.Alerts.preview'
+            };
+            try {
+                new Notification( data.title, options );
             }
-            return Alerts.forms._correctTimeZone( new Date() );
+            catch (e){
+                console.log(e);
+            }
         }
     },
 
@@ -209,7 +216,10 @@ let Alerts = {
                             
                             <!-- left column -->
                             <p>&nbsp;</p>
-                            <p class="text-right"><span class="btn-default button-create-alert">Create</span></p>
+                            <p class="text-right">
+                                <span class="btn-default button-preview-alert">Preview</span>
+                                <span class="btn-default button-create-alert">Create</span>
+                             </p>
                 
                         </form>
                     </div>
@@ -224,34 +234,37 @@ let Alerts = {
         Alerts.Tabs = [];
         Alerts.TabsContent = [];
 
-        Alerts.SetTabs('alerts-tab-new', i18n('Boxes.Alerts.Tab.New'));
         Alerts.SetTabs('alerts-tab-list', i18n('Boxes.Alerts.Tab.List'));
+        Alerts.SetTabs('alerts-tab-new', i18n('Boxes.Alerts.Tab.New'));
         Alerts.SetTabs('alerts-tab-preferences', i18n('Boxes.Alerts.Tab.Preferences'));
 
-        // form to create/add a new alert
-        // show preferences
-        Alerts.SetTabContent('alerts-tab-new', Alerts._constructNewAlertHtml() );
-
         // list alerts
-        let html = '<table class="foe-table">';
-
-        html += '<thead><tr><th>Expires</th><th colspan="4">Title</th><th>Countdown</th><th>Preview</th>';
-        html += '<th>&nbsp;</th><th>Edit</th></tr></thead>';
-        html += '<tbody>';
+        let html = `<table class="foe-table">
+        <thead>
+            <tr>
+                <th>Expires</th><th colspan="4">Title</th><th>Countdown</th><th>Preview</th>
+                <th>&nbsp;</th><th>Edit</th>
+             </tr>
+        </thead>
+        <tbody>`;
 
         for( let id in Alerts.Model.Alerts ){
             let alert = Alerts.Model.Alerts[id];
-            html += '<tr>';
-            html += '<td>' + alert.expires + '</td>';
-            html += '<td colspan="4">' + alert.title + '</td>';
-            html += '<td>countdown</td><td>preview</td>';
-            html += '<td><div title="Persistent"><input type="checkbox" checked="checked"></div></td>';
-            html += '<td><button>edit</button></td>'
-            html += '</tr>';
+            html += `<tr>
+            <td>${alert.expires}</td>
+            <td colspan="4">${alert.title}</td>
+            <td>countdown</td><td>preview</td>
+            <td><div title="Persistent"><input type="checkbox" checked="checked"></div></td>
+            <td><button>edit</button></td>
+            </tr>`;
         }
         html += '</tbody></table>';
 
         Alerts.SetTabContent('alerts-tab-list', html );
+
+        // form to create/add a new alert
+        // show preferences
+        Alerts.SetTabContent('alerts-tab-new', Alerts._constructNewAlertHtml() );
 
         // show preferences
         Alerts.SetTabContent('alerts-tab-preferences', '<p>preferences</p>' );
@@ -270,13 +283,17 @@ let Alerts = {
 
             // disable keydown propagation from the form so that the canvas (the game) is not getting the
             // keyboard shortcuts (otherwise, it's impossible to type into input/textarea without affecting the game)
-            $('#AlertsBody input').on('keydown', function(e){e.stopPropagation(); });
+            $('#AlertsBody').find('input').on('keydown', function(e){e.stopPropagation(); });
 
-            $('#AlertsBody .button-create-alert').on('click', function(){
+            $('#AlertsBody').find('span.button-create-alert').on('click', function(){
                 Alerts.forms.create();
             });
 
-            $('#AlertsBody .datetime-preset').on('click', function(){
+            $('#AlertsBody').find('span.button-preview-alert').on('click', function(){
+                Alerts.forms.preview();
+            });
+
+            $('#AlertsBody').find('span.datetime-preset').on('click', function(){
                 var value = $(this).attr('data-time');
                 Alerts.forms.addPreset(value,'#alert-datetime');
             });
