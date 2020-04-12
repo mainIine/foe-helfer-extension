@@ -237,7 +237,7 @@
 		"Boxes.Units.Bind": "Gebunden",
 		"Boxes.Units.Defend": "Verteidigung",
 		"Boxes.Units.NextUnitsIn": "Die nächsten __count__ Einheiten kommen in <span class=\"alca-countdown\"></span> um __harvest__ Uhr",
-		"Boxes.Units.AclaHarvest": "Dein Alcatraz ist bereit zur Ernte!",
+		"Boxes.Units.AlcaHarvest": "Dein Alcatraz ist bereit zur Ernte!",
 		"Boxes.Units.NotFilled": "nicht gefüllt",
 		"Boxes.Units.Proportionally": "Anteilig",
 		"Boxes.Units.Quantity": "Anzahl",
