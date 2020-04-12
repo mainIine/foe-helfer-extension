@@ -9,6 +9,7 @@
 		it: 'Italiano',
 		nl: 'Nederlands',
 		pt: 'Português',
+		pl: 'Polski',
 		ro: 'Română',
 		ru: 'Русский',
 		sk: 'Slovenčina',
