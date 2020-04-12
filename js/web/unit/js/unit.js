@@ -19,6 +19,8 @@ FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
 });
 
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
+	Unit.RefreshAlca();
+
 	Unit.Cache = data.responseData;
 
 	if ($('#unit-Btn').hasClass('hud-btn-red')) {
@@ -32,17 +34,21 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 });
 
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-	if (data.responseData.militaryProducts === undefined) {
-		return;
-	}
+	Unit.RefreshAlca();
 
-	if(data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined){
-		Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
-		Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
-	}
+	if (Unit.alca !== null && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] === Unit.alca.id) {
+		if (data.responseData.militaryProducts === undefined) {
+			return;
+		}
 
-	if(data.responseData.militaryProducts.length > 5){
-		localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+		if (data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
+			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
+		}
+
+		if (data.responseData.militaryProducts.length > 0) {
+			localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+		}
 	}
 });
 
@@ -51,6 +57,7 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
+	alca : null,
 
 	Cache : null,
 
@@ -96,17 +103,18 @@ let Unit = {
 	BuildBox:()=> {
 
 		let top = [],
-			text = '',
-			alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+			text = '';
+
+		Unit.RefreshAlca();
 
 		// der Spieler besitzt ein Alca
-		if(alca !== undefined)
+		if (Unit.alca !== undefined)
 		{
 
 			top.push('<div style="padding: 4px;" class="text-center">');
 
-			if(alca['state']['next_state_transition_at'] === undefined) {
-				text = `<strong class="text-warning">${i18n('Boxes.Units.AclaHarvest')}</strong>`;
+			if(Unit.alca['state']['next_state_transition_at'] === undefined) {
+				text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
 
 			}
 			// es gab eine Ernte...
@@ -123,11 +131,11 @@ let Unit = {
 					i18n('Boxes.Units.NextUnitsIn'),
 					{
 						count: Unit.NextAmount,
-						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
 					});
 
 			} else {
-				let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
+				let countDownDate = moment.unix(Unit.alca['state']['next_state_transition_at']);
 
 				let x = setInterval(function() {
 					Unit.UpdateAlcaLable(countDownDate,x);
@@ -138,8 +146,8 @@ let Unit = {
 				text = HTML.i18nReplacer(
 					i18n('Boxes.Units.NextUnitsIn'),
 					{
-						count: alca.state.current_product.amount,
-						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+						count: Unit.alca.state.current_product.amount,
+						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
 					});
 			}
 
@@ -398,6 +406,15 @@ let Unit = {
 			$('.unit-tabs').tabslet({active: 1});
 		});
 	},
+
+
+	/**
+	 * Sucht nach dem Alcatraz
+	 * *
+	 * */
+	RefreshAlca: () => {
+		if (Unit.alca === null) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+    },
 
 
 	/**

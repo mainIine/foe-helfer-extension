@@ -13,71 +13,6 @@
  * **************************************************************************************
  */
 
-let plunderDB = new Dexie("PlayerDB");
-
-plunderDB.version(7).stores({
-	players: 'id,date',
-	actions: '++id,playerId,date,type'
-});
-plunderDB.version(6).stores({
-	players: 'id',
-	actions: '++id,playerId,date,type'
-});
-
-plunderDB.open();
-
-// "actions" structure
-// {
-//   playerId: number,
-//   date: Date,
-//   type: ACTION_TYPE_BATTLE_WIN | ACTION_TYPE_BATTLE_LOSS | ACTION_TYPE_BATTLE_SURRENDERED,
-//   battle: {
-//     myArmy: Unit[],
-//     otherArmy: Unit[],
-//     round: number,
-//     auto: boolean,
-//     era: string,
-//   }
-// }
-// OR
-// {
-//   playerId: number,
-//   date: Date,
-//   type: Plunderer.ACTION_TYPE_PLUNDERED,
-//   resources: Object, //
-//   sp: number, // strategy points
-//   important: boolean, // if not supplies or money only
-//   entityId: number, // foe city entity Id
-//   buildId: string, // key for BuildingNamesi18n
-// }
-// OR
-// {
-//	 type: Plunderer.ACTION_TYPE_SHIELDED,
-//	 playerId: number,
-//	 date: Date,
-//	 expireTime: number, // timestamp. usage: new Date(expireTime * 1000)
-// }
-// where Unit =
-// {
-//   startHP: number, // usually 10
-//   endHp: number,
-//   attBoost: number,
-//   defBoost: number,
-//   unitTypeId: string,
-//   ownerId: number, // other player id
-// }
-
-// "players" structure
-// {
-//   id: number,
-//   name: string,
-//   clanId: number, // 0 if no clan
-//   clanName: string | undefined,
-//   avatar: string,
-//   era: string | 'unknown',
-//   date: new Date(), // last visit date
-// }
-
 // Detect shield
 FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, postData) => {
 	// Deffer handling city protection in next tick, to ensure PlayerDict is fetched
@@ -88,18 +23,18 @@ FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, post
 
 		for (const shieldInfo of shielded) {
 			const playerId = shieldInfo.playerId;
-			const lastShieldAction = await Plunderer.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
+			const lastShieldAction = await IndexDB.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
 
 			// If in db already exists actual shield info than skip
 			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
 
-			await Plunderer.db.actions.add({
+			await IndexDB.db.actions.add({
 				type: Plunderer.ACTION_TYPE_SHIELDED,
 				playerId: playerId,
 				date: new Date,
 				expireTime: shieldInfo.expireTime,
 			});
-			await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
+			await IndexDB.addUserFromPlayerDictIfNotExists(playerId);
 		}
 	})
 });
@@ -139,10 +74,10 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	if (defenderPlayerId == ExtPlayerID) { return ; }
 
 	// Ensure user is exists in db already
-	await Plunderer.addUserFromPlayerDictIfNotExists(defenderPlayerId);
+	await IndexDB.addUserFromPlayerDictIfNotExists(defenderPlayerId);
 
 	// Add action
-	await Plunderer.db.actions.add({
+	await IndexDB.db.actions.add({
 		playerId: defenderPlayerId,
 		date: new Date(),
 		type: actionType,
@@ -211,7 +146,7 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				'money'
 			];
 			const isImportant = Object.keys(resources).some(it => !unimportantProds.includes(it));
-			await Plunderer.db.actions.add({
+			await IndexDB.db.actions.add({
 				playerId,
 				date: new Date(),
 				type: Plunderer.ACTION_TYPE_PLUNDERED,
@@ -239,8 +174,6 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) 
 
 let Plunderer = {
 
-	db: plunderDB,
-
 	// Cached last visited player for getting info about city before plundering
 	// Sadly plunder event have no info about city entity, just collected resources
 	lastVisitedPlayer: null,
@@ -257,23 +190,6 @@ let Plunderer = {
 	ACTION_TYPE_SHIELDED: 5,
 
 	/**
-	 * Delete data older then 6 weeks
-	 *
-	 * @returns {Promise<void>}
-	 */
-	garbargeCollector:  async ()=> {
-		const sixWeeksAgo = moment().subtract(6, 'weeks').toDate();
-
-		await Plunderer.db.actions
-			.where('date').below(sixWeeksAgo)
-			.delete();
-
-		await Plunderer.db.players
-			.where('date').below(sixWeeksAgo)
-			.delete();
-	},
-
-	/**
 	 * Upsert player in db
 	 *
 	 * @param player
@@ -282,7 +198,7 @@ let Plunderer = {
 	collectPlayer: async (player) => {
 		let otherPlayer = player.other_player;
 
-		await Plunderer.db.players.put({
+		await IndexDB.db.players.put({
 			id: otherPlayer.player_id,
 			name: otherPlayer.name,
 			clanId: otherPlayer.clan_id || 0,
@@ -304,30 +220,6 @@ let Plunderer = {
 		}
 	},
 
-
-	/**
-	 * Add user from PlayerDict if not added, without era information
-	 *
-	 * @param playerId
-	 * @returns {Promise<void>}
-	 */
-	addUserFromPlayerDictIfNotExists: async(playerId) => {
-		const playerFromDB = await Plunderer.db.players.get(playerId);
-		if (!playerFromDB) {
-			let player = PlayerDict[playerId];
-			if (player) {
-				await Plunderer.db.players.add({
-					id: playerId,
-					name: player.PlayerName,
-					clanId: player.ClanId || 0,
-					clanName: player.ClanName,
-					avatar: player.Avatar,
-					era: 'unknown', // Era can be discovered when user is visited, not now
-					date: new Date(),
-				});
-			}
-		}
-	},
 
 
 	/**
@@ -402,19 +294,19 @@ let Plunderer = {
 
 		const offset = (page - 1) * perPage,
 			actionsSelect = filterByPlayerId ?
-			(Plunderer.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(Plunderer.db.actions.orderBy('date'));
+				(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
+				(IndexDB.db.actions.orderBy('date'));
 
 		let actions = await actionsSelect.offset(offset).limit(perPage).desc().toArray();
 
 		const countSelect = filterByPlayerId ?
-			(Plunderer.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(Plunderer.db.actions);
+			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.actions);
 
 		let pages = Math.ceil((await countSelect.count()) / perPage);
 
 		// enrich actions with player info
-		const players = await Plunderer.db.players.where('id').anyOf(actions.map(it => it.playerId)).toArray();
+		const players = await IndexDB.db.players.where('id').anyOf(actions.map(it => it.playerId)).toArray();
 		actions = actions.map(it => {
 			const player = players.find(p => p.id === it.playerId);
 			const playerFromDict = PlayerDict[it.playerId];
@@ -485,8 +377,8 @@ let Plunderer = {
 		let todaySP = 0;
 		let thisWeekSP = 0;
 		let totalSPSelect = filterByPlayerId ?
-			(Plunderer.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(Plunderer.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
+			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
 
 		let totalSP = 0;
 
@@ -677,8 +569,3 @@ let Plunderer = {
 				</div>`;
 	}
 };
-
-// Lets cleaning after 1min when app is up
-setTimeout(() => {
-	Plunderer.garbargeCollector();
-}, 60 * 1000);

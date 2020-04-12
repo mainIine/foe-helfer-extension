@@ -18,7 +18,6 @@ let Calculator = {
 
 	ForderBonus: 90,
     EntityOverview: [],
-    CurrentPlayer: 0,
     SoundFile: new Audio(extUrl + 'vendor/sounds/message.mp3'),
     PlayerName: undefined,
     LastPlayerID: 0,
@@ -325,7 +324,7 @@ let Calculator = {
 
         // Ränge durchsteppen, Suche nach Eigeneinzahlung
 		for (let i = 0; i < Calculator.Rankings.length;i++) {
-			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer) {
+			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === ExtPlayerID) {
                 EigenPos = i;
 				EigenBetrag = (isNaN(parseInt(Calculator.Rankings[i]['forge_points']))) ? 0 : parseInt(Calculator.Rankings[i]['forge_points']);
                 break;
@@ -392,7 +391,7 @@ let Calculator = {
 				continue;
 			}
 
-			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === Calculator.CurrentPlayer)
+			if (Calculator.Rankings[i]['player']['player_id'] !== undefined && Calculator.Rankings[i]['player']['player_id'] === ExtPlayerID)
 				IsSelf = true;
 
 			if (Calculator.Rankings[i]['forge_points'] !== undefined)
@@ -767,18 +766,65 @@ let Calculator = {
 		$('#costTableBPMeds').html(hBPMeds.join(''));
 		$('#costTableSnipen').html(hSnipen.join(''));
 
-		//Overview nur im Snipemodus aktualisieren
+		/* Neuer Code: */
+		Calculator.RefreshGreatBuildingsDB({
+			playerId: Calculator.CityMapEntity['player_id'],
+			name: Calculator.CityMapEntity['cityentity_id'],
+			level: Calculator.CityMapEntity['level'],
+			currentFp: Calculator.CityMapEntity['state']['invested_forge_points'],
+			bestRateNettoFp: BestKursNettoFP,
+			bestRateCosts: BestKursEinsatz
+		});
+		/* Ende Neuer Code */
+
+		/* Alter Code: */
 		let StorageKey = 'OV_' + Calculator.CityMapEntity['player_id'] + '/' + Calculator.CityMapEntity['cityentity_id'];
 
-		// Level/FP/BestKurs/UNIX-Time
+		//Level/FP/BestKurs/UNIX-Time
 		let StorageValue = Calculator.CityMapEntity['level'] + '/' + Calculator.CityMapEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
 		localStorage.setItem(StorageKey, StorageValue);
+	    /* Ende alter Code */
 
 		$('.td-tooltip').tooltip({
 			html: true,
 			container: '#costCalculator'
 		});
 	},
+
+
+	/**
+	 * Aktualisiert die GBs in der IndexDB
+	 * 
+	 * */
+	RefreshGreatBuildingsDB: async(GreatBuilding) => {
+		await IndexDB.addUserFromPlayerDictIfNotExists(GreatBuilding['playerId'], true);
+
+		let CurrentGB = await IndexDB.db.greatbuildings
+			.where({ playerId: GreatBuilding['playerId'], name: GreatBuilding['name'] })
+			.first();
+
+		if (CurrentGB === undefined) {
+			await IndexDB.db.greatbuildings.add({
+				playerId: GreatBuilding['playerId'],
+				name: GreatBuilding['name'],
+				level: GreatBuilding['level'],
+				currentFp: GreatBuilding['currentFp'],
+				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
+				bestRateCosts: GreatBuilding['bestRateCosts'],
+				date: new Date()
+			});
+		}
+		else {
+			await IndexDB.db.greatbuildings.update(CurrentGB.id, {
+				level: GreatBuilding['level'],
+				currentFp: GreatBuilding['currentFp'],
+				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
+				bestRateCosts: GreatBuilding['bestRateCosts'],
+				date: new Date()
+			});
+		}
+		/* Ende Neuer Code: */
+    },
 
 
 	/**
@@ -819,7 +865,7 @@ let Calculator = {
 	 *
 	 * @param DisableAudio
 	 */
-    ShowOverview: (DisableAudio)=> {
+    ShowOverview: async(DisableAudio)=> {
 
 		let arc = ((parseFloat(MainParser.ArkBonus) + 100) / 100)
 
@@ -902,11 +948,28 @@ let Calculator = {
 
 				let Gewinn = undefined,
 					BestKurs = undefined,
-					BestKursNettoFP = undefined,
-					BestKursEinsatz = undefined,
-					StorageKey = 'OV_' + PlayerID + "/" + EntityID,
-					StorageValue = localStorage.getItem(StorageKey),
 					StrongClass;
+
+				/* Neuer Code */
+				let CurrentGB = await IndexDB.db.greatbuildings
+					.where({ playerId: PlayerID, name: EntityID })
+					.first();
+
+				// LG gefunden mit selbem Level und investierten FP => Wert bekannt
+				if (CurrentGB != undefined && CurrentGB['level'] === GBLevel && CurrentGB['currentFp'] == CurrentProgress) {
+					BestKursNettoFP = CurrentGB['bestRateNettoFp'];
+					BestKursEinsatz = CurrentGB['bestRateCosts'];
+					BestKurs = Math.round(BestKursEinsatz / BestKursNettoFP * 1000) / 10;
+					Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
+                }
+
+				/* Ende Neuer Code */
+
+				/* Alter Code
+				let StorageKey = 'OV_' + PlayerID + "/" + EntityID,
+					StorageValue = localStorage.getItem(StorageKey),
+					BestKursNettoFP = undefined,
+					BestKursEinsatz = undefined;
 
 				if (StorageValue !== null)
 				{
@@ -922,6 +985,7 @@ let Calculator = {
 						Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
 					}
 				}
+				Ende Alter Code */
 
 				let UnderScorePos = EntityID.indexOf('_');
 				let AgeString = EntityID.substring(UnderScorePos + 1);
