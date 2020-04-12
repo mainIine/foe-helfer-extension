@@ -36,7 +36,12 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 		return;
 	}
 
-	if(data.responseData.militaryProducts.length > 0){
+	if(data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined){
+		Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
+		Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
+	}
+
+	if(data.responseData.militaryProducts.length > 5){
 		localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
 	}
 });
@@ -48,6 +53,9 @@ let Unit = {
 	Defense: null,
 
 	Cache : null,
+
+	NextHarvest: null,
+	NextAmount: null,
 
 	Tabs: [],
 	TabsContent: [],
@@ -84,34 +92,58 @@ let Unit = {
 
 	/**
 	 * Rendern und in den BoxContent
-	 *
 	 */
 	BuildBox:()=> {
 
 		let top = [],
+			text = '',
 			alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
 
 		// der Spieler besitzt ein Alca
 		if(alca !== undefined)
 		{
-			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
-
-			let x = setInterval(function() {
-				Unit.UpdateAlcaLable(countDownDate,x);
-			}, 1000);
-
-			Unit.UpdateAlcaLable(countDownDate,x);
 
 			top.push('<div style="padding: 4px;" class="text-center">');
 
-			let timer = HTML.i18nReplacer(
-				i18n('Boxes.Units.NextUnitsIn'),
-				{
-					count: alca.state.current_product.amount,
-					harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
-				});
+			if(alca['state']['next_state_transition_at'] === undefined) {
+				text = `<strong class="text-warning">${i18n('Boxes.Units.AclaHarvest')}</strong>`;
 
-			top.push('<div class="alca-info text-center">' + timer + '</div>');
+			}
+			// es gab eine Ernte...
+			else if(Unit.NextHarvest !== null){
+				let countDownDate = moment.unix(Unit.NextHarvest);
+
+				let x = setInterval(function() {
+					Unit.UpdateAlcaLable(countDownDate,x);
+				}, 1000);
+
+				Unit.UpdateAlcaLable(countDownDate, x);
+
+				text = HTML.i18nReplacer(
+					i18n('Boxes.Units.NextUnitsIn'),
+					{
+						count: Unit.NextAmount,
+						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+					});
+
+			} else {
+				let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
+
+				let x = setInterval(function() {
+					Unit.UpdateAlcaLable(countDownDate,x);
+				}, 1000);
+
+				Unit.UpdateAlcaLable(countDownDate, x);
+
+				text = HTML.i18nReplacer(
+					i18n('Boxes.Units.NextUnitsIn'),
+					{
+						count: alca.state.current_product.amount,
+						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+					});
+			}
+
+			top.push('<div class="alca-info text-center">' + text + '</div>');
 
 			top.push('</div>');
 		}
