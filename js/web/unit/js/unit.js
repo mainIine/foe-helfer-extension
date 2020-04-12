@@ -41,13 +41,14 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 			return;
 		}
 
-	if(data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined){
-		Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
-		Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
-	}
+		if (data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
+			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
+		}
 
-	if(data.responseData.militaryProducts.length > 0){
-		localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+		if (data.responseData.militaryProducts.length > 0) {
+			localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+		}
 	}
 });
 
@@ -102,7 +103,7 @@ let Unit = {
 	BuildBox:()=> {
 
 		let top = [],
-			text = '',
+			text = '';
 
 		Unit.RefreshAlca();
 
@@ -130,11 +131,11 @@ let Unit = {
 					i18n('Boxes.Units.NextUnitsIn'),
 					{
 						count: Unit.NextAmount,
-						harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
+						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
 					});
 
 			} else {
-				let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
+				let countDownDate = moment.unix(Unit.alca['state']['next_state_transition_at']);
 
 				let x = setInterval(function() {
 					Unit.UpdateAlcaLable(countDownDate,x);
