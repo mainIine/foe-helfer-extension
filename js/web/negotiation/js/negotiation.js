@@ -853,8 +853,8 @@ let Negotiation = {
 			let EraID = Technologies.Eras[Era];
 			if (EraID === undefined) EraID = 20;
 
-			if (Era === 'SpaceAgeMars') { //Marsgüter mit arkt. Gütern gleich setzen
-				EraID -= 3;
+			if (Era === 'SpaceAgeMars') { //Marsgüter mit VZ Gütern gleich setzen => Entscheidung nach Lagerstand
+				EraID -= 1;
 			}
 			Value = EraID * 100;
 
