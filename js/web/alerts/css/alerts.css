@@ -86,15 +86,21 @@
     padding: 4px;
 }
 
+#Alerts #AlertsBody #alert-expires,
+.box-inner select {
+    padding: 7px 4px;
+}
+
 .box-inner input[type="text"],
 .box-inner input[type="number"]{
     font-size: 0.8rem;
 }
 
+.box-inner button,
 .box-inner input[type="text"],
 .box-inner input[type="datetime-local"],
-.box-inner textarea,
-.box-inner button {
+.box-inner select,
+.box-inner textarea {
     width: 100%;
     border: 1px solid #000;
 }
@@ -111,6 +117,9 @@
 
 .box-inner form p {
     margin: 0;
+}
+.box-inner form p.mt--10 {
+    margin-top: -10px;
 }
 
 .box-inner .full-width {

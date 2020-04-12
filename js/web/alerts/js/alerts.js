@@ -101,11 +101,14 @@ let Alerts = {
             let m = moment().add( value, 'seconds');
             // timezone corrected ISO string & remove the milliseconds + tz
             let dt = m.toISOString(true).substring(0,19);
-            $(target).val( dt );
+            $(target).val( dt ).trigger('change');
         },
         create: function(){
             let data = Alerts.forms._getFormData();
             console.log(data);
+
+            // switch the list tab
+            $('.alerts-tab-list').trigger('click');
         },
         initTime: function(id){
             Alerts.forms.addPreset(0,id);
@@ -125,6 +128,23 @@ let Alerts = {
             }
             catch (e){
                 console.log(e);
+            }
+        },
+        update: function(){
+            let data = Alerts.forms._getFormData();
+            let dt = moment(data.datetime);
+            let m = moment();
+            if ( dt >= m ) {
+                // TODO enable i18n
+                // Expires __time__ // e.g. Expires in 10 minutes
+                // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expires', { time: dt.from( m ) } ) );
+                $( '#alert-expires' ).text( 'Expires ' + dt.from( m ) );
+            }
+            else {
+                // TODO enable i18n
+                // Expired __time__ // e.g. Expired 4 hours ago
+                // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expired', { time: dt.from( m ) } ) );
+                $( '#alert-expires' ).text( 'Expired ' + dt.from( m ) );
             }
         }
     },
@@ -164,11 +184,26 @@ let Alerts = {
                                 <input type="text" id="alert-title" name="title" placeholder="Title">
                             </p>
                                 
-                            <p class="full-width extra-vs-8">
+                            <p class="extra-vs-8">
                                 <label for="alert-datetime">Date &amp; Time</label>
                                 <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="2020-04-10T16:00" step="1">
-                                
-                                Presets: 
+                                <span id="alert-expires"></span>
+                            <p>
+                                <label for="alert-auto">Presets</label>
+                                <select id="alert-auto">
+                                    <option value="">Antiques Dealer</option>
+                                    <option value="">Guild Battlegrounds</option>
+                                    <option value="">Neighborhood</option>
+                                </select>
+                                <select>
+                                    <option value="">A1:M</option>
+                                    <option value="">B1:O</option>
+                                    <option value="">C1:N</option>
+                                    <option value="">D1:B</option>
+                                </select>
+                            </p>
+                            
+                            <p class="full-width text-right mt--10">
                                 <span class="btn-default datetime-preset" data-time="60">1m</span>
                                 <span class="btn-default datetime-preset" data-time="300">5m</span>
                                 <span class="btn-default datetime-preset" data-time="900">15m</span>
@@ -296,6 +331,10 @@ let Alerts = {
             $('#AlertsBody').find('span.datetime-preset').on('click', function(){
                 var value = $(this).attr('data-time');
                 Alerts.forms.addPreset(value,'#alert-datetime');
+            });
+
+            $('#alert-datetime').on('change keyup paste', function(){
+                Alerts.forms.update();
             });
 
             Alerts.forms.initTime('#alert-datetime');
