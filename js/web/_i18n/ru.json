@@ -6,7 +6,7 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
-		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
+		"Boxes.Api.Title": "Настройки API расширения",
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
 		"Boxes.Calculator.AvailableFP": "Доступные СО",
@@ -15,12 +15,12 @@
 		"Boxes.Calculator.Done": "готово",
 		"Boxes.Calculator.FP": "СО",
 		"Boxes.Calculator.FriendlyInvestment": "Вложение от игрока:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
 		"Boxes.Calculator.Meds": "Медали",
-		"Boxes.Calculator.Profit": "Профит",
+		"Boxes.Calculator.Profit": "Прибыль", //почему все так любят профит? еврейское слово же, обозначающее прибыль с ростовщичества.
 		"Boxes.Calculator.Rate": "Курс",
 		"Boxes.Calculator.Sniping": "Снайпинг",
 		"Boxes.Calculator.Step": "Уровень ",
@@ -94,18 +94,18 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> принял ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Сбросить панель",
 		"Boxes.Infobox.Title": "Панель информации",
-		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
-		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Все обновлено",
+		"Boxes.Investment.AllUpToDateDesc": "Все игроки на этой странице уже были записаны",
 		"Boxes.Investment.CurrReward": "Текущая прибыль: ",
 		"Boxes.Investment.InvestBar": "СО вложено: ",
 		"Boxes.Investment.PlayerFound": "Игрок найден",
-		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ Были найдены новые события игрока",
+		"Boxes.Investment.PlayerFoundCounter": "__count__ Были найдены новые события игрока",
 		"Boxes.Investment.Title": "Вложение",
-		"Boxes.Investment.TotalFP": "Запас + круговые + прибыль: ",
-		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
-		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
+		"Boxes.Investment.TotalFP": "Пакеты + вложенное + прибыль: ",
+		"Boxes.Kits.TabBuildingKits": "Набор строений",
+		"Boxes.Kits.TabSelectionKits": "Набор выбора",
+		"Boxes.Kits.Title": "Строение- / Набор выбора",
 		"Boxes.LGOverviewBox.Building": "Строение",
 		"Boxes.LGOverviewBox.Level": "Уровень",
 		"Boxes.LGOverviewBox.NothingToGet": "У <strong>__player__</strong> нечего получить",
@@ -119,7 +119,7 @@
 		"Boxes.Negotiation.Average": "Ø Количество",
 		"Boxes.Negotiation.Canceled": "Переговоры были отменены",
 		"Boxes.Negotiation.Chance": "Шанс",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ок",
 		"Boxes.Negotiation.DragDrop": "Вы можете самостоятелько перетащить значки выше, для изменения последовательности первой попытки.",
 		"Boxes.Negotiation.GoodsCritical": "ВНИМАНИЕ: Недостаточно товара на складе",
 		"Boxes.Negotiation.GoodsLow": "ВНИМАНИЕ: Мало товара на складе",
@@ -154,7 +154,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
 		"Boxes.OwnpartCalculator.Ext": "Расш.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "Имя ВС",
 		"Boxes.OwnpartCalculator.Levels": "уровни",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Всего СО ВС",
@@ -190,7 +190,7 @@
 		"Boxes.Plunderer.nextPage": "След. Страница",
 		"Boxes.Plunderer.noData": "Нет Данных",
 		"Boxes.Plunderer.Page": "Страница",
-		"Boxes.Plunderer.PlayersEra": "Ера Игрока",
+		"Boxes.Plunderer.PlayersEra": "Эра Игрока",
 		"Boxes.Plunderer.rounds": "Раундов",
 		"Boxes.Plunderer.shieldProtectetUntil": "Защищен до:",
 		"Boxes.Plunderer.shieldUntil": "Заканчивается",
@@ -233,7 +233,7 @@
 		"Boxes.Technologies.NoTechs": "Вы достигли конца эпохи",
 		"Boxes.Technologies.Resource": "Ресурс",
 		"Boxes.Technologies.Title": "Стоимость исследования",
-		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
+		"Boxes.Units.AlcaHarvest": "Сбор вашего алькатраса готов!", 
 		"Boxes.Units.Attack": "Атака",
 		"Boxes.Units.Bind": "Казарменный",
 		"Boxes.Units.Defend": "Защита",
@@ -279,8 +279,8 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
+		"Menu.Api.Desc": "Настройки для отправки данных на ваш собственный сервер",
+		"Menu.Api.Title": "API расширения", 
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
 		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
@@ -303,8 +303,8 @@
 		"Menu.HiddenRewards.Title": "Инциденты",
 		"Menu.Info.Desc": "Отображает все события, которые происходят \"в фоне\"<br><em>Заполняется информацией ...</em>",
 		"Menu.Info.Title": "Панель информации",
-		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
-		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
+		"Menu.Kits.Desc": "Список всех комплектов строений, модернизации и выбора",
+		"Menu.Kits.Title": "Комплект строений",
 		"Menu.Negotiation.Desc": "Предлагает товары для переговоров",
 		"Menu.Negotiation.Title": "Помощник переговоров",
 		"Menu.Negotiation.Warning": "Отключено: Для влючения начните переговоры!",
@@ -331,12 +331,12 @@
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",
 		"Settings.ChangeLanguage.Title": "Изменить язык",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Вы хотите отправить данные на свой сервер? <br> После этой активации игра перезагрузится и появится новый пункт меню.",
+		"Settings.CustomerApi.Title": "API игроков",
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
-		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
+		"Settings.MenuLength.Title": "Длина меню", 
 		"Settings.PreScanLGList.Desc": "Сканировать список соседей, когда открывается их ВС и определять возможные вложения в ВС. <br> <u> Примечание: </u> Поскольку итоговые места передаются только при открытии ВС, результат может отличаться. Тем не менее, результаты сканирования будут сохранены.",
 		"Settings.PreScanLGList.Title": "Предварительное сканирование ВС",
 		"Settings.ResetBoxPositions.Button": "Удалить!",
