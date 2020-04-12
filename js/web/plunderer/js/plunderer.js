@@ -34,7 +34,7 @@ FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, post
 				date: new Date,
 				expireTime: shieldInfo.expireTime,
 			});
-			await Plunderer.addUserFromPlayerDictIfNotExists(playerId);
+			await IndexDB.addUserFromPlayerDictIfNotExists(playerId);
 		}
 	})
 });
@@ -74,7 +74,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	if (defenderPlayerId == ExtPlayerID) { return ; }
 
 	// Ensure user is exists in db already
-	await Plunderer.addUserFromPlayerDictIfNotExists(defenderPlayerId);
+	await IndexDB.addUserFromPlayerDictIfNotExists(defenderPlayerId);
 
 	// Add action
 	await IndexDB.db.actions.add({
@@ -190,23 +190,6 @@ let Plunderer = {
 	ACTION_TYPE_SHIELDED: 5,
 
 	/**
-	 * Delete data older then 6 weeks
-	 *
-	 * @returns {Promise<void>}
-	 */
-	garbargeCollector:  async ()=> {
-		const sixWeeksAgo = moment().subtract(6, 'weeks').toDate();
-
-		await IndexDB.db.actions
-			.where('date').below(sixWeeksAgo)
-			.delete();
-
-		await IndexDB.db.players
-			.where('date').below(sixWeeksAgo)
-			.delete();
-	},
-
-	/**
 	 * Upsert player in db
 	 *
 	 * @param player
@@ -237,30 +220,6 @@ let Plunderer = {
 		}
 	},
 
-
-	/**
-	 * Add user from PlayerDict if not added, without era information
-	 *
-	 * @param playerId
-	 * @returns {Promise<void>}
-	 */
-	addUserFromPlayerDictIfNotExists: async(playerId) => {
-		const playerFromDB = await IndexDB.db.players.get(playerId);
-		if (!playerFromDB) {
-			let player = PlayerDict[playerId];
-			if (player) {
-				await IndexDB.db.players.add({
-					id: playerId,
-					name: player.PlayerName,
-					clanId: player.ClanId || 0,
-					clanName: player.ClanName,
-					avatar: player.Avatar,
-					era: 'unknown', // Era can be discovered when user is visited, not now
-					date: new Date(),
-				});
-			}
-		}
-	},
 
 
 	/**
@@ -610,8 +569,3 @@ let Plunderer = {
 				</div>`;
 	}
 };
-
-// Lets cleaning after 1min when app is up
-setTimeout(() => {
-	Plunderer.garbargeCollector();
-}, 60 * 1000);

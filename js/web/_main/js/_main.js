@@ -725,10 +725,11 @@ const FoEproxy = (function () {
 	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
-
+		
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
+
 		Calculator.Overview = data.responseData;
 		Calculator.DetailViewIsNewer = false;
 
