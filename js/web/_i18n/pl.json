@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Polski",
 		"API.GEXChampionship": "Postęp wypraw gildyjnych został zaktualizowany",
@@ -184,6 +184,7 @@
 		"Boxes.Plunderer.collectedToday": "Zebrano dzisiaj",
 		"Boxes.Plunderer.Defense": "Obrona",
 		"Boxes.Plunderer.filteredByUser": "Filtrowanie gracza",
+		"Boxes.Plunderer.FP": "PR",
 		"Boxes.Plunderer.goto1stPage": "1. strona",
 		"Boxes.Plunderer.HasNoClan": "<em>brak gildii</em>",
 		"Boxes.Plunderer.nextPage": "Następna strona",
@@ -199,7 +200,6 @@
 		"Boxes.Plunderer.total": "Łącznie",
 		"Boxes.Plunderer.visited": "Odwiedzono",
 		"Boxes.Plunderer.visitTitle": "Kiedy ostatni raz odwiedziłeś gracza",
-		"Boxes.Plunderer.FP": "PR",
 		"Boxes.Productions.AdjacentBuildings": "Pobliskie budynki",
 		"Boxes.Productions.Happiness": "Zadowolenie",
 		"Boxes.Productions.Headings.all": "Wszystkie",
@@ -233,6 +233,7 @@
 		"Boxes.Technologies.NoTechs": "Osiągnąłeś koniec tej epoki",
 		"Boxes.Technologies.Resource": "Zasób",
 		"Boxes.Technologies.Title": "Koszt badań",
+		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
 		"Boxes.Units.Attack": "Atak",
 		"Boxes.Units.Bind": "Zależne",
 		"Boxes.Units.Defend": "Obrona",
