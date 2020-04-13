@@ -6,7 +6,7 @@
 		"API.LGGildMember": "Los GEs de __player__ han sido transferidos",
 		"API.LGInvest": "Tus inversiones en grandes edificios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
-		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
+		"Boxes.Api.Title": "Configuración Extensión API ", 
 		"Boxes.Calculator.ActiveRecurringQuest": "Misión recurrente activa:",
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
@@ -36,9 +36,9 @@
 		"Boxes.Calculator.TTProfit": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Cuesta: __costs__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __costs__<small>(cuesta)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __payed__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __payed__<small>(pagado)</small> = __profit__",
 		"Boxes.Calculator.TTRate": "Porcentaje = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Eso son __tooless__FP de menos",
-		"Boxes.Calculator.Up2LevelUp": "Hasta el proximo nivel",
-		"Boxes.Campagne.AlreadyDone": " bereits erobert!",
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATENCIÓN: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Eso son __tooless__FP de menos",
+		"Boxes.Calculator.Up2LevelUp": "Hasta el próximo nivel",
+		"Boxes.Campagne.AlreadyDone": " Ya conquistado!",
 		"Boxes.Campagne.DescInStock": "Disponible",
 		"Boxes.Campagne.DescRequired": "Requerido",
 		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ef1616'>Faltan</span>",
@@ -95,12 +95,12 @@
 		"Boxes.Infobox.ResetBox": "Limpiar historial de eventos",
 		"Boxes.Infobox.Title": "Información de eventos",
 		"Boxes.Investment.AllUpToDate": "Todo está actualizado",
-		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "Todos los jugadores de esta página ya fueron registrados", 
 		"Boxes.Investment.CurrReward": "Ganancia actual: ",
 		"Boxes.Investment.InvestBar": "FP invertidos: ",
 		"Boxes.Investment.PlayerFound": "Encontrado jugador",
-		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "Se encontraron __count__ nuevos eventos de jugador", 
+		"Boxes.Investment.PlayerFoundCounter": "Se encontraron __count__ nuevos eventos de jugador", 
 		"Boxes.Investment.Title": "Inversión",
 		"Boxes.Investment.TotalFP": "Stock + circulante + beneficio: ",
 		"Boxes.Kits.TabBuildingKits": "Kits para edificios",
@@ -120,12 +120,12 @@
 		"Boxes.Negotiation.Canceled": "Negociación cancelada",
 		"Boxes.Negotiation.Chance": "Probabilidad",
 		"Boxes.Negotiation.confirmGoodsMissmatch": "OK",
-		"Boxes.Negotiation.DragDrop": "You can rearrange the icons of the average display yourself using drag & drop to determine the order from the first attempt.", //Todo: Translate
-		"Boxes.Negotiation.GoodsCritical": "ATENCION: El stock de bienes está en estado crítico",
-		"Boxes.Negotiation.GoodsLow": "ATENCION: El stock de bienes está bajo",
+		"Boxes.Negotiation.DragDrop": "Puedes reordenar los iconos usando drag & drop para determinar el orden del primer intento.", 
+		"Boxes.Negotiation.GoodsCritical": "ATENCIÓN: El stock de bienes está en estado crítico",
+		"Boxes.Negotiation.GoodsLow": "ATENCIÓN: El stock de bienes está bajo",
 		"Boxes.Negotiation.Person": "Persona",
 		"Boxes.Negotiation.Round": "Ronda",
-		"Boxes.Negotiation.Stock": "Stock:", //Todo: Translate
+		"Boxes.Negotiation.Stock": "Almacén:", 
 		"Boxes.Negotiation.Success": "Acierto",
 		"Boxes.Negotiation.TableLoadError": "Error cargando la tabla de negociación",
 		"Boxes.Negotiation.Title": "Ayudante de negociación",
@@ -141,13 +141,13 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansiones",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", //Todo: Translate
 		"Boxes.Outpost.nextTile": "próxima expansión",
-		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
+		"Boxes.Outpost.tileNotPlanned": "off", 
 		"Boxes.Outpost.Title": "Mercancias de los Asentamientos Culturales",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
 		"Boxes.Outpost.TitleFree": "Libre",
 		"Boxes.Outpost.TitleShort": "Resumen de mercancias - ",
 		"Boxes.OwnpartCalculator.Arc": "Arca",
-		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
+		"Boxes.OwnpartCalculator.Auto": "Auto", 
 		"Boxes.OwnpartCalculator.BPs": "Plano",
 		"Boxes.OwnpartCalculator.BuildingName": "Edificio",
 		"Boxes.OwnpartCalculator.CopyValues": "Copiar valores",
@@ -173,38 +173,38 @@
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculator cuata propia",
 		"Boxes.OwnpartCalculator.YourName": "Tu nombre",
-		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.FP": "FP", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
+		"Boxes.Plundered.actionBattleLost": "Batalla perdida",
+		"Boxes.Plundered.actionBattleWon": "Batalla ganada", 
+		"Boxes.Plundered.actionPlundered": "Saqueado", 
+		"Boxes.Plundered.actionShielded": "Con escudo", 
+		"Boxes.Plundered.actionSurrendered": "Rendido", 
+		"Boxes.Plunderer.AllPlayers": "Todos los jugadores", 
+		"Boxes.Plunderer.Attack": "Atacar", 
+		"Boxes.Plunderer.autoBattle": "Batalla automática", 
+		"Boxes.Plunderer.collectedToday": "Recogido hoy", 
+		"Boxes.Plunderer.Defense": "Defensa", 
+		"Boxes.Plunderer.filteredByUser": "Filtrado por usuario", 
+		"Boxes.Plunderer.FP": "FP", 
+		"Boxes.Plunderer.goto1stPage": "1ª página", 
+		"Boxes.Plunderer.HasNoClan": "<em>no tiene gremio</em>", 
+		"Boxes.Plunderer.nextPage": "Siguiente página", 
+		"Boxes.Plunderer.noData": "Sin datos", 
+		"Boxes.Plunderer.Page": "Página", 
+		"Boxes.Plunderer.PlayersEra": "Era del jugador", 
+		"Boxes.Plunderer.rounds": "Rondas", 
+		"Boxes.Plunderer.shieldProtectetUntil": "Protegido hasta:", 
+		"Boxes.Plunderer.shieldUntil": "Finaliza en", 
+		"Boxes.Plunderer.showAllPlayers": "Mostrar todos los jugadores", 
+		"Boxes.Plunderer.thisWeek": "Esta semana", 
+		"Boxes.Plunderer.Title": "Actividad PvP", 
+		"Boxes.Plunderer.total": "Total", 
+		"Boxes.Plunderer.visited": "Visitado", 
+		"Boxes.Plunderer.visitTitle": "Cuando visitaste a este jugador la última vez", 
 		"Boxes.Productions.AdjacentBuildings": "Edificios adyacentes",
 		"Boxes.Productions.Happiness": "Felicidad",
 		"Boxes.Productions.Headings.all": "Todos",
 		"Boxes.Productions.Headings.amount": "Cantidad",
-		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
+		"Boxes.Productions.Headings.boost": "Potenciado", 
 		"Boxes.Productions.Headings.culture": "Edificios culturales",
 		"Boxes.Productions.Headings.decoration": "Decorativos",
 		"Boxes.Productions.Headings.earning": "Recogida disponible a las",
@@ -221,7 +221,7 @@
 		"Boxes.Productions.ModeSingle": "Uno por uno",
 		"Boxes.Productions.SearchInput": "Edificio búsqueda...",
 		"Boxes.Productions.Title": "Resumen de producción",
-		"Boxes.Productions.Total": "Total: ", //Todo: Translate
+		"Boxes.Productions.Total": "Total: ", 
 		"Boxes.Settings.Active": "Activo",
 		"Boxes.Settings.Inactive": "Inactivo",
 		"Boxes.Settings.Title": "Ajustes",
@@ -230,10 +230,10 @@
 		"Boxes.Technologies.DescInStock": "Disponible",
 		"Boxes.Technologies.DescRequired": "Necesitado",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Exceso</span> / <span style='color:#ef1616'>Perdido</span>",
-		"Boxes.Technologies.NoTechs": "You have reached the end of this era", //Todo: Translate
+		"Boxes.Technologies.NoTechs": "Has alcanzado el final de esta era", 
 		"Boxes.Technologies.Resource": "Recurso",
 		"Boxes.Technologies.Title": "Coste de investigacion por",
-		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
+		"Boxes.Units.AlcaHarvest": "Tu Alcatraz está listo para recoger!", 
 		"Boxes.Units.Attack": "Ataque",
 		"Boxes.Units.Bind": "Atado",
 		"Boxes.Units.Defend": "Defensa",
@@ -273,7 +273,7 @@
 		"HiddenRewards.Positions.cityRoadSmall": "Carretera pequeña",
 		"HiddenRewards.Positions.guildExpedition": "Expedición de gremio",
 		"HiddenRewards.Positions.nature": "Naturaleza",
-		"HiddenRewards.Positions.shore": "Shore", //Todo: Translate
+		"HiddenRewards.Positions.shore": "Costa", 
 		"HiddenRewards.Positions.water": "en el agua",
 		"HiddenRewards.Table.expires": "Finaliza a ",
 		"HiddenRewards.Table.position": "Posición",
@@ -316,7 +316,7 @@
 		"Menu.OwnpartCalculator.Title": "Calculator cuata propia",
 		"Menu.OwnpartCalculator.Warning": "Deshabilitado: Entra primero en un gran edificio tuyo!",
 		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
-		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
+		"Menu.Plunderer.Title": "Actividad PvP", 
 		"Menu.Productions.Desc": "Muestra la cantidad de las producciones actuales.",
 		"Menu.Productions.Title": "Resumen de producción ",
 		"Menu.Settings.Desc": "Aquí ajustas algunas cositas",
