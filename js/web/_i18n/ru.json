@@ -65,10 +65,10 @@
 		"Boxes.EventChests.Title": "Помощник событий",
 		"Boxes.EventList.And": " и ",
 		"Boxes.EventList.Desc": "Задача",
-		"Boxes.EventList.Number": "Нет.",
+		"Boxes.EventList.Number": "Номер",
 		"Boxes.EventList.Or": " или ",
-		"Boxes.EventList.Reward": "Откат",
-		"Boxes.EventList.Title": "Список заданий события: ",
+		"Boxes.EventList.Reward": "Награда",
+		"Boxes.EventList.Title": "Список заданий события:",
 		"Boxes.EventList.Upcoming": "БУДУЩИЕ ЗАДАНИЯ (количество может варьироваться)",
 		"Boxes.EventList.Waiting": "Нет доступных заданий",
 		"Boxes.Gildfights.Fights": "Бои",
@@ -104,9 +104,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Вложение",
 		"Boxes.Investment.TotalFP": "Запас + круговые + прибыль: ",
-		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
-		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
+		"Boxes.Kits.TabBuildingKits": "Постройки",
+		"Boxes.Kits.TabSelectionKits": "Наборы выбора",
+		"Boxes.Kits.Title": "Постройки и наборы выбора",
 		"Boxes.LGOverviewBox.Building": "Строение",
 		"Boxes.LGOverviewBox.Level": "Уровень",
 		"Boxes.LGOverviewBox.NothingToGet": "У <strong>__player__</strong> нечего получить",
