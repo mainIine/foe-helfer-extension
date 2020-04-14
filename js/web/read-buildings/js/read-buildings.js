@@ -41,7 +41,8 @@ let Reader = {
 	data: {},
 	player_name: '',
 	CityEntities: [],
-
+	ArmyBoosts: [],
+	
 	/**
 	 * Die Gebäude ermitteln
 	 *
@@ -65,9 +66,63 @@ let Reader = {
 
         Reader.CityEntities = d;      
 
+		let BoostDict = [];
         for (let i in d) {
-            if (d.hasOwnProperty(i)) {
-                let id = d[i]['cityentity_id'];
+			if (d.hasOwnProperty(i)) {
+			let id = d[i]['cityentity_id'];
+
+			/* Test Todo: remove */
+				if (d[i]['bonus'] !== undefined) {
+					let BoostType = d[i]['bonus']['type'];
+					let BoostValue = d[i]['bonus']['value'];
+					if (BoostType !== undefined) {
+						if (BoostDict[BoostType] === undefined)
+						{
+							BoostDict[BoostType] = BoostValue;
+						}
+						else {
+							BoostDict[BoostType] += BoostValue;
+						}
+					}
+				}
+
+				let BuildingData = MainParser.CityEntities[BuildingNamesi18n[id].index];
+				if (d[i]['state'] !== undefined && d[i]['state']['__class__'] !== 'ConstructionState' && d[i]['state']['__class__'] !== 'UnconnectedState') {
+					if (BuildingData['abilities'] !== undefined) {
+						for (let ability in BuildingData['abilities']) {
+							if (!BuildingData['abilities'].hasOwnProperty(ability)) continue;
+							let CurrentAbility = BuildingData['abilities'][ability];
+							if (CurrentAbility['boostHints'] !== undefined) {
+								for (let boostHint in CurrentAbility['boostHints']) {
+									if (!CurrentAbility['boostHints'].hasOwnProperty(boostHint)) continue;
+									let CurrentBoostHint = CurrentAbility['boostHints'][boostHint];
+									if (CurrentBoostHint['boostHintEraMap'] !== undefined) {
+										for (let EraName in CurrentBoostHint['boostHintEraMap']) {
+											if (!CurrentBoostHint['boostHintEraMap'].hasOwnProperty(EraName)) continue;
+											let CurrentEraBoosts = CurrentBoostHint['boostHintEraMap'][EraName];
+											let BuildingEraName = d[i]['level'] !== undefined ? Technologies.EraNames[Math.max(d[i]['level'],2)] : undefined;
+											if (EraName === 'AllAge' || EraName === BuildingEraName) {
+												let BoostType = CurrentEraBoosts['type'];
+												let BoostValue = CurrentEraBoosts['value'];
+
+												if (BoostType !== undefined) {
+													if (BoostDict[BoostType] === undefined) {
+														BoostDict[BoostType] = BoostValue;
+													}
+													else {
+														BoostDict[BoostType] += BoostValue;
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+                        }
+                    }
+				}
+
+			/* Test Ende */
                 
                 if (BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1) {
                     if (d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
@@ -80,7 +135,9 @@ let Reader = {
                     }
                 }
             }
-        }
+		}
+
+		Reader.ArmyBoosts = Unit.GetBoostSums(BoostDict);
 
 		Reader.showResult();
 	},
@@ -90,7 +147,6 @@ let Reader = {
 	 *  HTML Box anzeigen
 	 */
 	showResult: () => {
-
 		// let d = helper.arr.multisort(Reader.data, ['name'], ['ASC']);
 		let rd = helper.arr.multisort(Reader.data.ready, ['name'], ['ASC']);
 		rd = helper.arr.multisort(rd, ['isImportant'], ['DESC']);
@@ -115,9 +171,10 @@ let Reader = {
 		let div = $('#ResultBox'),
 			h = [];
 
+		h.push(i18n('Boxes.Neighbors.AttackingArmy') + '   ' + Reader.ArmyBoosts['AttackAttackBoost'] + '% / ' + Reader.ArmyBoosts['AttackDefenseBoost'] + '%<br>');
+		h.push(i18n('Boxes.Neighbors.DefendingArmy') + '   ' + Reader.ArmyBoosts['DefenseAttackBoost'] + '% / ' + Reader.ArmyBoosts['DefenseDefenseBoost'] + '%<br>');
 
 		if (rd.length > 0) {
-
 			h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
 			h.push('<thead>');
@@ -170,11 +227,7 @@ let Reader = {
 			h.push('</tbody>');
 			h.push('</table>');
 		}
-
-		if (rd.length === 0 && wk.length === 0) {
-			h.push('<strong>' + i18n('Boxes.Neighbors.NothingToPlunder') + '</strong>');
-		}
-
+		
 		div.find('#ResultBoxBody').html(h.join(''));
 		div.show();
 
@@ -304,7 +357,7 @@ let GoodsParser = {
 
 					} else {
 						if (isImportant)
-							g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + (ResourceStock[k] !== undefined ? ResourceStock[k] : 0) + ')');
+							g.push(a[k] + ' ' + GoodsData[k]['name'] + ' (' + (ResourceStock[k] !== undefined && ResourceStock[k] !== 0 ? HTML.Format(ResourceStock[k]) : 0) + ')');
 						else
 							g.push(a[k] + ' ' + GoodsData[k]['name']);
 					}
