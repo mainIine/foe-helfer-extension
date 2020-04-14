@@ -175,21 +175,21 @@
 		"Boxes.OwnpartCalculator.YourName": "Il tuo nome",
 		"Boxes.Plundered.actionBattleLost": "Battaglia persa", 
 		"Boxes.Plundered.actionBattleWon": "Battaglia vinta", 
-		"Boxes.Plundered.actionPlundered": "Saccheggiata", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "Schermata", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Arresa", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "Tutti i giocatori", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attacco", //Todo: Translate
+		"Boxes.Plundered.actionPlundered": "Saccheggiata", 
+		"Boxes.Plundered.actionShielded": "Schermata", 
+		"Boxes.Plundered.actionSurrendered": "Arresa", 
+		"Boxes.Plunderer.AllPlayers": "Tutti i giocatori", 
+		"Boxes.Plunderer.Attack": "Attacco", 
 		"Boxes.Plunderer.autoBattle": "Auto Battaglia", 
 		"Boxes.Plunderer.collectedToday": "Raccolto oggi", 
-		"Boxes.Plunderer.Defense": "Difesa", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtrato per utente", //Todo: Translate
+		"Boxes.Plunderer.Defense": "Difesa", 
+		"Boxes.Plunderer.filteredByUser": "Filtrato per utente", 
 		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1a pagina", 
 		"Boxes.Plunderer.HasNoClan": "<em>non ha gilda</em>", 
-		"Boxes.Plunderer.nextPage": "Prossima Pagina", //Todo: Translate
+		"Boxes.Plunderer.nextPage": "Prossima Pagina", 
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Pagina", //Todo: Translate
+		"Boxes.Plunderer.Page": "Pagina", 
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
 		"Boxes.Plunderer.shieldProtectetUntil": "Protetto fino al:", 
@@ -198,8 +198,8 @@
 		"Boxes.Plunderer.thisWeek": "Questa settimana", 
 		"Boxes.Plunderer.Title": "Attività PvP", 
 		"Boxes.Plunderer.total": "Totale", 
-		"Boxes.Plunderer.visited": "visitatoisitato", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "L'ultima volta che visiti questo giocatore", //Todo: Translate
+		"Boxes.Plunderer.visited": "Visitato", 
+		"Boxes.Plunderer.visitTitle": "L'ultima volta che visiti questo giocatore", 
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
 		"Boxes.Productions.Happiness": "Felicità",
 		"Boxes.Productions.Headings.all": "Tutto",
@@ -237,7 +237,7 @@
 		"Boxes.Units.Attack": "Attacco",
 		"Boxes.Units.Bind": "Caserma",
 		"Boxes.Units.Defend": "Difesa",
-		"Boxes.Units.NextUnitsIn": "Le prossime unità __contare__ arriveranno in <span class = \"alca-conto alla rovescia \"> </span> alle ore __raccogliere__",
+		"Boxes.Units.NextUnitsIn": "Le prossime unità __count__ arriveranno in <span class = \"alca-conto alla rovescia \"> </span> alle ore __raccogliere__",
 		"Boxes.Units.NotFilled": "Non riempito",
 		"Boxes.Units.Proportionally": "Proporzionalmente", 
 		"Boxes.Units.Quantity": "Quantità",
