@@ -36,12 +36,12 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 	Unit.RefreshAlca();
 
-	if (Unit.alca !== null && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] !== undefined && postData[0]['requestData'][0][0] === Unit.alca.id) {
+	if (true || Unit.alca !== null && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] !== undefined && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
 			return;
 		}
 
-		if (data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+		if (data.responseData['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
 			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
 			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
 		}
