@@ -88,23 +88,23 @@ let Alerts = function(){
                     $('#AlertsBody').find('input').on('keydown', function(e){e.stopPropagation(); });
 
                     $('#AlertsBody').find('span.button-create-alert').on('click', function(){
-                        tmp.web.forms.create();
+                        tmp.web.forms.actions.create();
                     });
 
                     $('#AlertsBody').find('span.button-preview-alert').on('click', function(){
-                        tmp.web.forms.preview();
+                        tmp.web.forms.actions.preview();
                     });
 
                     $('#AlertsBody').find('span.datetime-preset').on('click', function(){
                         var value = $(this).attr('data-time');
-                        tmp.web.forms.addPreset(value,'#alert-datetime');
+                        tmp.web.forms.actions.preset(value,'#alert-datetime');
                     });
 
                     $('#alert-datetime').on('change keyup paste', function(){
-                        tmp.web.forms.update();
+                        tmp.web.forms.actions.update();
                     });
 
-                    tmp.web.forms.initTime('#alert-datetime');
+                    tmp.web.forms.actions.init('#alert-datetime');
 
                 });
 
@@ -189,17 +189,19 @@ let Alerts = function(){
                     let html = `<table id="alerts-table" class="foe-table">
                     <thead>
                         <tr>
-                            <th>Expires</th><th colspan="4">Title</th><th>Countdown</th><th>Preview</th>
+                            <th>Expiration</th><th colspan="4">Title</th><th>Countdown</th><th>Preview</th>
                             <th>&nbsp;</th><th>Edit</th>
                          </tr>
                     </thead>
                     <tbody>`;
 
                     // let ts = moment().valueOf() + 5000;
+                    let dt = moment();
                     // tmp.db.alerts.where('expires').above(ts).each(function(alert){
                     tmp.db.alerts.where('expires').above(0).each(function(alert){
+                        console.log(alert);
                         let html = `<tr>
-                            <td>${alert.expires}</td>
+                            <td>${dt.from(moment(alert.expires))}</td>
                             <td colspan="4">${alert.title}</td>
                             <td>countdown</td><td>preview</td>
                             <td><div title="Persistent"><input type="checkbox" checked="checked"></div></td>
@@ -212,90 +214,28 @@ let Alerts = function(){
                     return html;
                 },
 
+                tabAlert: (data) => {
+
+                },
+
                 tabNewContent: () => {
+                    let data = {
+                        id: 0,
+                        expires: Date.now() + 5000,
+                        title: '',
+                        body: '',
+                        repeat: -1,
+                        persistent: false,
+                        tag: '',
+                        action: 'create',
+                        buttonText: 'Create'
+
+                    }
                     return `<div class="box-inner">
                         <div class="box-inner-content">
                             <h3>Create a new alert</h3>
                             <div class="box-inner-form">
-                                <form id="alert-form">
-                                    <p class="full-width">
-                                        <label for="alert-title">Title</label>
-                                        <input type="text" id="alert-title" name="title" placeholder="Title">
-                                    </p>
-                                        
-                                    <p class="extra-vs-8">
-                                        <label for="alert-datetime">Date &amp; Time</label>
-                                        <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="2020-04-10T16:00" step="1">
-                                        <span id="alert-expires"></span>
-                                    <p>
-                                        <label for="alert-auto">Presets</label>
-                                        <select id="alert-auto">
-                                            <option value="">Antiques Dealer</option>
-                                            <option value="">Guild Battlegrounds</option>
-                                            <option value="">Neighborhood</option>
-                                        </select>
-                                        <select>
-                                            <option value="">A1:M</option>
-                                            <option value="">B1:O</option>
-                                            <option value="">C1:N</option>
-                                            <option value="">D1:B</option>
-                                        </select>
-                                    </p>
-                                    
-                                    <p class="full-width text-right mt--10">
-                                        <span class="btn-default datetime-preset" data-time="60">1m</span>
-                                        <span class="btn-default datetime-preset" data-time="300">5m</span>
-                                        <span class="btn-default datetime-preset" data-time="900">15m</span>
-                                        <span class="btn-default datetime-preset" data-time="3600">1h</span>
-                                        <span class="btn-default datetime-preset" data-time="14400">4h</span>
-                                        <span class="btn-default datetime-preset" data-time="28800">8h</span>
-                                        <span class="btn-default datetime-preset" data-time="86400">1d</span>
-                                    </p>
-                                    
-                                    <p class="full-width radio-toolbar extra-vs-8">
-                                        Repeat
-                                        <input id="alert-repeat-never" type="radio" name="alert-repeat" value="-1" checked="checked">
-                                        <label for="alert-repeat-never">never</label>
-                                        or every
-                                        <input id="alert-repeat-5m" type="radio" name="alert-repeat" value="300">
-                                        <label for="alert-repeat-5m">5m</label>
-                                        <input id="alert-repeat-15m" type="radio" name="alert-repeat" value="900">
-                                        <label for="alert-repeat-15m">15m</label>
-                                        <input id="alert-repeat-1h" type="radio" name="alert-repeat" value="3600">
-                                        <label for="alert-repeat-1h">1h</label>
-                                        <input id="alert-repeat-4h" type="radio" name="alert-repeat" value="14400">
-                                        <label for="alert-repeat-4h">4h</label>
-                                        <input id="alert-repeat-8h" type="radio" name="alert-repeat" value="28800">
-                                        <label for="alert-repeat-8h">8h</label>
-                                        <input id="alert-repeat-1d" type="radio" name="alert-repeat" value="86400">
-                                        <label for="alert-repeat-1d">1d</label>
-                                    </p>
-                                    
-                                    <p class="full-width radio-toolbar">
-                                        Persistent
-                                        <input id="alert-persistent-off" type="radio" name="alert-persistent" checked="checked" value="off">
-                                        <label for="alert-persistent-off">Off</label>
-                                        <input id="alert-persistent-on" type="radio" name="alert-persistent" value="on">
-                                        <label for="alert-persistent-on">On</label>
-                                        <br><small>Should the notification remain open until the user dismisses or clicks the notification</small>
-                                    </p>
-                                    
-                                    <!--
-                                    <p class="full-width">
-                                        <label for="tag">Tag</label>
-                                        <input type="text" id="tag" name="tag">
-                                        <small>Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)</small>
-                                    </p>
-                                    -->
-                                    
-                                    <!-- left column -->
-                                    <p>&nbsp;</p>
-                                    <p class="text-right">
-                                        <span class="btn-default button-preview-alert">Preview</span>
-                                        <span class="btn-default button-create-alert">Create</span>
-                                     </p>
-                        
-                                </form>
+                                ${tmp.web.forms.render(data)}
                             </div>
                         </div>
                     </div>`;
@@ -307,6 +247,90 @@ let Alerts = function(){
             },
         },
         forms: {
+            aux:{
+                formatIsoDate: (moment) => {
+                    return moment.toISOString(true).substring(0,19);
+                },
+                repeats: (repeat) => {
+                    let repeats = {
+                        '-1' : '',
+                        '300' : '',
+                        '900' : '',
+                        '3600' : '',
+                        '14400' : '',
+                        '28800' : '',
+                        '86400' : ''
+                    };
+                    repeats[ repeat + '' ] = ' checked="checked"';
+                    return repeats;
+                }
+            },
+            actions: {
+                create: () => {
+                    let data = tmp.web.forms.data();
+
+                    let options = {
+                        id: null,
+                        title: data.title,
+                        expires: moment(data.datetime).valueOf(),
+                        description: data.description,
+                        repeat: data.repeat,
+                        persistent: data.persistent
+                    }
+
+                    console.log(options);
+
+                    // switch the list tab
+                    $('.alerts-tab-list').trigger('click');
+                },
+                init: (id) => {
+                    tmp.web.forms.actions.preset(0,id);
+                },
+                /**
+                 * @param value - the number of seconds (to add)
+                 * @param target - the id (including #) of the target DOM element
+                 */
+                preset: (value, target) => {
+                    let m = moment().add( value, 'seconds');
+                    // timezone corrected ISO string & remove the milliseconds + tz
+                    let dt = tmp.web.forms.aux.formatIsoDate(m);
+                    $(target).val( dt ).trigger('change');
+                },
+                preview: () => {
+                    let data = tmp.web.forms.data();
+                    const options = {
+                        body: 'Alert body',
+                        dir: 'ltr',
+                        icon: extUrl + 'images/app48.png',
+                        renotify: true,
+                        requireInteraction: data.persistent,
+                        tag: 'FoE.Alerts.preview'
+                    };
+                    try {
+                        new Notification( data.title, options );
+                    }
+                    catch (e){
+                        console.log(e);
+                    }
+                },
+                update: () => {
+                    let data = tmp.web.forms.data();
+                    let dt = moment(data.datetime);
+                    let m = moment();
+                    if ( dt >= m ) {
+                        // TODO enable i18n
+                        // Expires __time__ // e.g. Expires in 10 minutes
+                        // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expires', { time: dt.from( m ) } ) );
+                        $( '#alert-expires' ).text( 'Expires ' + dt.from( m ) );
+                    }
+                    else {
+                        // TODO enable i18n
+                        // Expired __time__ // e.g. Expired 4 hours ago
+                        // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expired', { time: dt.from( m ) } ) );
+                        $( '#alert-expires' ).text( 'Expired ' + dt.from( m ) );
+                    }
+                }
+            },
             data: () => {
                 return {
                     title: $( '#alert-title' ).val(),
@@ -316,69 +340,114 @@ let Alerts = function(){
                 };
             },
             /**
-             * @param value - the number of seconds (to add)
-             * @param target - the id (including #) of the target DOM element
+             * The data object should include the following fields:
+             *      data.id         = alert id (0 if creating a new alert)
+             *      data.expires    = the expiration unix timestamp (Date.now() for new alert)
+             *      data.title      = alert title
+             *      data.body       = alert body
+             *      data.repeat     = repeat (-1 or the number of seconds after which to repeat)
+             *      data.persistent = true / false
+             *      data.tag        = alert tag
+             *      data.action     = (create | edit)
+             *      data.buttonText = (Create | Edit)
+             * @param data
+             * @returns {string}
              */
-            addPreset: (value,target) => {
-                let m = moment().add( value, 'seconds');
-                // timezone corrected ISO string & remove the milliseconds + tz
-                let dt = m.toISOString(true).substring(0,19);
-                $(target).val( dt ).trigger('change');
-            },
-            create: () => {
-                let data = tmp.web.forms.data();
+            render: (data) => {
 
-                let options = {
-                    id: null,
-                    title: data.title,
-                    expires: moment(data.datetime).valueOf(),
-                    description: data.description,
-                    repeat: data.repeat,
-                    persistent: data.persistent
+                let id = (data.id) ? data.id : 0;
+                let datetime = tmp.web.forms.aux.formatIsoDate( moment(data.expires) );
+
+                let repeats = tmp.web.forms.aux.repeats(data.repeat);
+
+                let persistent_off = ' checked="checked"';
+                let persistent_on = '';
+                if ( data.persistent ){
+                    persistent_on = ' checked="checked"';
+                    persistent_off = '';
                 }
 
-                console.log(options);
-
-                // switch the list tab
-                $('.alerts-tab-list').trigger('click');
-            },
-            initTime: (id) => {
-                tmp.web.forms.addPreset(0,id);
-            },
-            preview: () => {
-                let data = tmp.web.forms.data();
-                const options = {
-                    body: 'Alert body',
-                    dir: 'ltr',
-                    icon: extUrl + 'images/app48.png',
-                    renotify: true,
-                    requireInteraction: data.persistent,
-                    tag: 'FoE.Alerts.preview'
-                };
-                try {
-                    new Notification( data.title, options );
-                }
-                catch (e){
-                    console.log(e);
-                }
-            },
-            update: () => {
-                let data = tmp.web.forms.data();
-                let dt = moment(data.datetime);
-                let m = moment();
-                if ( dt >= m ) {
-                    // TODO enable i18n
-                    // Expires __time__ // e.g. Expires in 10 minutes
-                    // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expires', { time: dt.from( m ) } ) );
-                    $( '#alert-expires' ).text( 'Expires ' + dt.from( m ) );
-                }
-                else {
-                    // TODO enable i18n
-                    // Expired __time__ // e.g. Expired 4 hours ago
-                    // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expired', { time: dt.from( m ) } ) );
-                    $( '#alert-expires' ).text( 'Expired ' + dt.from( m ) );
-                }
-            },
+                return `<form id="alert-form">
+                    <input type="hidden" id="alert-id" value="${id}"/>
+                    <p class="full-width">
+                        <label for="alert-title">Title</label>
+                        <input type="text" id="alert-title" name="title" placeholder="Title" value="${data.title}">
+                    </p>
+                        
+                    <p class="extra-vs-8">
+                        <label for="alert-datetime">Date &amp; Time</label>
+                        <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${datetime}" step="1">
+                        <span id="alert-expires"></span>
+                    <p>
+                        <label for="alert-auto">Presets</label>
+                        <select id="alert-auto">
+                            <option value="">Antiques Dealer</option>
+                            <option value="">Guild Battlegrounds</option>
+                            <option value="">Neighborhood</option>
+                        </select>
+                        <select>
+                            <option value="">A1:M</option>
+                            <option value="">B1:O</option>
+                            <option value="">C1:N</option>
+                            <option value="">D1:B</option>
+                        </select>
+                    </p>
+                    
+                    <p class="full-width text-right mt--10">
+                        <span class="btn-default datetime-preset" data-time="60">1m</span>
+                        <span class="btn-default datetime-preset" data-time="300">5m</span>
+                        <span class="btn-default datetime-preset" data-time="900">15m</span>
+                        <span class="btn-default datetime-preset" data-time="3600">1h</span>
+                        <span class="btn-default datetime-preset" data-time="14400">4h</span>
+                        <span class="btn-default datetime-preset" data-time="28800">8h</span>
+                        <span class="btn-default datetime-preset" data-time="86400">1d</span>
+                    </p>
+                    
+                    <p class="full-width radio-toolbar extra-vs-8">
+                        Repeat
+                        <input id="alert-repeat-never" type="radio" name="alert-repeat" value="-1"${repeats['-1']}>
+                        <label for="alert-repeat-never">never</label>
+                        or every
+                        <input id="alert-repeat-5m" type="radio" name="alert-repeat" value="300"${repeats['300']}>
+                        <label for="alert-repeat-5m">5m</label>
+                        <input id="alert-repeat-15m" type="radio" name="alert-repeat" value="900"${repeats['900']}>
+                        <label for="alert-repeat-15m">15m</label>
+                        <input id="alert-repeat-1h" type="radio" name="alert-repeat" value="3600"${repeats['3600']}>
+                        <label for="alert-repeat-1h">1h</label>
+                        <input id="alert-repeat-4h" type="radio" name="alert-repeat" value="14400"${repeats['14400']}>
+                        <label for="alert-repeat-4h">4h</label>
+                        <input id="alert-repeat-8h" type="radio" name="alert-repeat" value="28800"${repeats['28800']}>
+                        <label for="alert-repeat-8h">8h</label>
+                        <input id="alert-repeat-1d" type="radio" name="alert-repeat" value="86400"${repeats['86400']}>
+                        <label for="alert-repeat-1d">1d</label>
+                    </p>
+                    
+                    <p class="full-width radio-toolbar">
+                        Persistent
+                        <input id="alert-persistent-off" type="radio" name="alert-persistent"${persistent_off} value="off">
+                        <label for="alert-persistent-off">Off</label>
+                        <input id="alert-persistent-on" type="radio" name="alert-persistent"${persistent_on} value="on">
+                        <label for="alert-persistent-on">On</label>
+                        <br><small>Should the notification remain open until the user dismisses or clicks the notification</small>
+                    </p>
+                    
+                    <!--
+                    <p class="full-width">
+                        <label for="tag">Tag</label>
+                        <input type="text" id="tag" name="tag" value="${data.tag}">
+                        <small>Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)</small>
+                    </p>
+                    -->
+                    
+                    <!-- left column -->
+                    <p>&nbsp;</p>
+                    <p class="text-right">
+                        <span class="btn-default button-preview-alert">Preview</span>
+                        <span class="btn-default button-${data.action}-alert">${data.buttonText}</span>
+                     </p>
+        
+                </form>`;
+            }
         },
         show: () => {
 
