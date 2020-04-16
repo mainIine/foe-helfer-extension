@@ -237,7 +237,7 @@
 		"Boxes.Units.Attack": "Attacco",
 		"Boxes.Units.Bind": "Caserma",
 		"Boxes.Units.Defend": "Difesa",
-		"Boxes.Units.NextUnitsIn": "Le prossime unità __count__ arriveranno in <span class = \"alca-conto alla rovescia \"> </span> alle ore __raccogliere__",
+		"Boxes.Units.NextUnitsIn": "Le prossime unità __count__ arriveranno in <span class = \"alca-countdown \"> </span> alle ore __harvest__",
 		"Boxes.Units.NotFilled": "Non riempito",
 		"Boxes.Units.Proportionally": "Proporzionalmente", 
 		"Boxes.Units.Quantity": "Quantità",
