@@ -257,17 +257,19 @@ let Alerts = function(){
                     // let ts = moment().valueOf() + 5000;
                     let dt = moment();
 
-                    const alerts = tmp.db.alerts.where('expires').above(0);
+                    const alerts = tmp.db.alerts.where('expires').above(0).reverse();
                     // tmp.db.alerts.where('expires').above(ts).each(function(alert){
                     alerts.each(function(alert){
+                        let persist = ( alert.persistent ) ? ' checked="checked"' : '';
                         html += `<tr>
                             <td>${moment(alert.expires).from(dt)}</td>
                             <td class="column-200">${alert.title}</td>
-                            <td>repeat</td>
-                            <td><input type="checkbox" checked="checked"></td>
+                            <td>${alert.repeat}</td>
+                            <td><input type="checkbox"${persist}></td>
                             <td class="text-right">
-                                <span class="btn-default button-preview--">preview</span>
-                                <span class="btn-default button-edit--">edit</span>
+                                <span class="btn-default button-preview" data-id="${alert.id}">preview</span>
+                                <span class="btn-default button-edit" data-id="${alert.id}">edit</span>
+                                <span class="btn-default button-delete" data-id="${alert.id}">delete</span>
                             </td>
                         </tr>`;
                     }).then( () => {
