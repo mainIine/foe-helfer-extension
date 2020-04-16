@@ -35,13 +35,13 @@ AlertsDB.version(1).stores({
     alerts: '++id,expires,tag'
 });
 // TODO remove these tests
-AlertsDB.on('populate', function(){
-    let now = new Date().valueOf();
-    AlertsDB.alerts.add({expires: ( now + 10*1000 ), title: 'Alert #1', repeat: 0, persistent: 0, tag: '', body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', vibrate: 0, actions: null});
-    AlertsDB.alerts.add({expires: ( now + 60*1000 ), title: 'Alert #2', repeat: 0, persistent: 0, tag: '', body: 'Maecenas ut nisi non turpis tincidunt auctor.', vibrate: 0, actions: null});
-    AlertsDB.alerts.add({expires: ( now + 300*1000 ), title: 'Alert #3', repeat: 0, persistent: 0, tag: '', body: 'Duis non lectus risus.', vibrate: 0, actions: null});
-    AlertsDB.alerts.add({expires: ( now + 3600*1000 ), title: 'Alert #4', repeat: 0, persistent: 0, tag: '', body: 'Fusce dictum tempor lorem, sed luctus odio', vibrate: 0, actions: null});
-});
+// AlertsDB.on('populate', function(){
+//     let now = new Date().valueOf();
+//     AlertsDB.alerts.add({expires: ( now + 10*1000 ), title: 'Alert #1', repeat: 0, persistent: 0, tag: '', body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', vibrate: 0, actions: null});
+//     AlertsDB.alerts.add({expires: ( now + 60*1000 ), title: 'Alert #2', repeat: 0, persistent: 0, tag: '', body: 'Maecenas ut nisi non turpis tincidunt auctor.', vibrate: 0, actions: null});
+//     AlertsDB.alerts.add({expires: ( now + 300*1000 ), title: 'Alert #3', repeat: 0, persistent: 0, tag: '', body: 'Duis non lectus risus.', vibrate: 0, actions: null});
+//     AlertsDB.alerts.add({expires: ( now + 3600*1000 ), title: 'Alert #4', repeat: 0, persistent: 0, tag: '', body: 'Fusce dictum tempor lorem, sed luctus odio', vibrate: 0, actions: null});
+// });
 AlertsDB.open();
 // persistent alerts will be stored only once and the expires time will be updated before garbage collection so that
 // all expired alerts can be removed without having to use compound indexes or "compound where = collection filtering)
@@ -55,13 +55,26 @@ let Alerts = function(){
     let tmp = {};
     tmp.db = AlertsDB;
     tmp.data = {
-        add: (options) => {
-
+        add: (alert) => {
+            // lets be explicit about the fields we want to add
+            return tmp.db.alerts.add({
+                title: alert.title,
+                body: alert.body,
+                expires: alert.expires,
+                repeat: alert.repeat,
+                persistent: alert.persistent,
+                tag: '',
+                vibrate: false,
+                actions: null
+            });
         }
     };
     tmp.web = {
         body: {
             build: () => {
+
+                tmp.web.body.tabs.clean();
+                $( '#AlertsBody' ).empty();
 
                 tmp.web.body.tabs.addHead( 'alerts-tab-list', i18n( 'Boxes.Alerts.Tab.List' ) );
                 tmp.web.body.tabs.addHead( 'alerts-tab-new', i18n( 'Boxes.Alerts.Tab.New' ) );
@@ -83,9 +96,17 @@ let Alerts = function(){
                 $( '#AlertsBody' ).html( html.join( '' ) ).promise().done( function () {
                     $( '.alerts-tabs' ).tabslet( {active: 1} );
 
+                    tmp.web.body.tabs.updateAlerts();
+
                     // disable keydown propagation from the form so that the canvas (the game) is not getting the
                     // keyboard shortcuts (otherwise, it's impossible to type into input/textarea without affecting the game)
                     $('#AlertsBody').find('input').on('keydown', function(e){e.stopPropagation(); });
+                    $('#AlertsBody').find('textarea').on('keydown', function(e){e.stopPropagation(); });
+
+                    $('#AlertsBody').find('#alert-body').on('propertychange input', function(){
+                        tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
+                    });
+                    tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
 
                     $('#AlertsBody').find('span.button-create-alert').on('click', function(){
                         tmp.web.forms.actions.create();
@@ -155,6 +176,10 @@ let Alerts = function(){
                 },
             },
             tabs: {
+
+                head: [],
+                content: [],
+
                 /**
                  * @param id
                  * @param label
@@ -173,49 +198,32 @@ let Alerts = function(){
                     tmp.web.body.tabs.content.push( `<div id="${id}">${content}</div>` );
                 },
 
+                clean: () => {
+                    tmp.web.body.tabs.head = [];
+                    tmp.web.body.tabs.content = [];
+                },
                 renderHead: () => {
                     return '<ul class="horizontal">' + tmp.web.body.tabs.head.join( '' ) + '</ul>';
                 },
                 renderContent: () => {
                     return tmp.web.body.tabs.content.join( '' );
                 },
-
-                head: [],
-                content: [],
-
                 tabListContent: () => {
 
                     // list alerts
                     let html = `<table id="alerts-table" class="foe-table">
                     <thead>
                         <tr>
-                            <th>Expiration</th><th colspan="4">Title</th><th>Countdown</th><th>Preview</th>
-                            <th>&nbsp;</th><th>Edit</th>
+                            <th>Expiration</th><th class="column-200">Title</th>
+                            <th>Repeat</th><th>Persistent</th>
+                            <th>&nbsp;</th>
                          </tr>
                     </thead>
                     <tbody>`;
 
-                    // let ts = moment().valueOf() + 5000;
-                    let dt = moment();
-                    // tmp.db.alerts.where('expires').above(ts).each(function(alert){
-                    tmp.db.alerts.where('expires').above(0).each(function(alert){
-                        console.log(alert);
-                        let html = `<tr>
-                            <td>${dt.from(moment(alert.expires))}</td>
-                            <td colspan="4">${alert.title}</td>
-                            <td>countdown</td><td>preview</td>
-                            <td><div title="Persistent"><input type="checkbox" checked="checked"></div></td>
-                            <td><button>edit</button></td>
-                            </tr>`;
-                        $('#alerts-table tbody').append(html);
-                    });
                     html += '</tbody></table>';
 
                     return html;
-                },
-
-                tabAlert: (data) => {
-
                 },
 
                 tabNewContent: () => {
@@ -243,6 +251,30 @@ let Alerts = function(){
 
                 tabPreferencesContent: () => {
                     return '<p>Preferences</p>';
+                },
+                updateAlerts: () => {
+                    let html = '';
+                    // let ts = moment().valueOf() + 5000;
+                    let dt = moment();
+
+                    const alerts = tmp.db.alerts.where('expires').above(0);
+                    // tmp.db.alerts.where('expires').above(ts).each(function(alert){
+                    alerts.each(function(alert){
+                        html += `<tr>
+                            <td>${moment(alert.expires).from(dt)}</td>
+                            <td class="column-200">${alert.title}</td>
+                            <td>repeat</td>
+                            <td><input type="checkbox" checked="checked"></td>
+                            <td class="text-right">
+                                <span class="btn-default button-preview--">preview</span>
+                                <span class="btn-default button-edit--">edit</span>
+                            </td>
+                        </tr>`;
+                    }).then( () => {
+                        $( '#alerts-table tbody' ).empty().append( html ).promise().done( function () {
+
+                        } );
+                    });
                 }
             },
         },
@@ -263,25 +295,58 @@ let Alerts = function(){
                     };
                     repeats[ repeat + '' ] = ' checked="checked"';
                     return repeats;
+                },
+                textareaRoot: null,
+                textareaCounter: null,
+                textareaUpdateCounter: (textarea, counter) => {
+
+                    if ( ! tmp.web.forms.aux.textareaRoot ){
+                        tmp.web.forms.aux.textareaRoot = $(textarea);
+                    }
+                    if ( ! tmp.web.forms.aux.textareaCounter ){
+                        tmp.web.forms.aux.textareaCounter = $(counter);
+                    }
+
+                    let root = tmp.web.forms.aux.textareaRoot;
+
+                    let maxlength = root.prop('maxlength');
+                    let value = root.val();
+                    if ( value.length > maxlength ){
+                        this.val( this.value.substring(0, maxlength) );
+                    }
+                    tmp.web.forms.aux.textareaCounter.text(`(${value.length}/${maxlength})`);
                 }
             },
             actions: {
                 create: () => {
+
+                    if ( ! tmp.web.forms.actions.validate() ){
+                        console.log('tmp.web.forms.actions.create failed validation');
+                        return false;
+                    }
                     let data = tmp.web.forms.data();
 
-                    let options = {
+                    let alert = {
                         id: null,
                         title: data.title,
+                        body: data.body,
                         expires: moment(data.datetime).valueOf(),
-                        description: data.description,
                         repeat: data.repeat,
                         persistent: data.persistent
-                    }
+                    };
 
-                    console.log(options);
+                    console.log(alert);
 
                     // switch the list tab
-                    $('.alerts-tab-list').trigger('click');
+                    tmp.data.add( alert ).then( function( result ){
+
+                        console.log(result);
+                        tmp.web.body.tabs.updateAlerts();
+                        $('.alerts-tab-list').trigger('click');
+
+                    }).catch( function( error ){
+                        console.log(error);
+                    });
                 },
                 init: (id) => {
                     tmp.web.forms.actions.preset(0,id);
@@ -299,7 +364,7 @@ let Alerts = function(){
                 preview: () => {
                     let data = tmp.web.forms.data();
                     const options = {
-                        body: 'Alert body',
+                        body: data.body,
                         dir: 'ltr',
                         icon: extUrl + 'images/app48.png',
                         renotify: true,
@@ -329,11 +394,31 @@ let Alerts = function(){
                         // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expired', { time: dt.from( m ) } ) );
                         $( '#alert-expires' ).text( 'Expired ' + dt.from( m ) );
                     }
+                },
+                validate: () => {
+                    let data = tmp.web.forms.data();
+
+                    if ( !data ){ return false; }
+
+                    let input = $( '#alert-title' );
+                    let label = input.siblings('label');
+                    if ( !data.title ){
+                        input.addClass('error-box');
+                        label.addClass('error-text');
+                        return false;
+                    }
+                    else {
+                        input.removeClass('error-box');
+                        label.removeClass('error-text');
+                    }
+
+                    return true;
                 }
             },
             data: () => {
                 return {
                     title: $( '#alert-title' ).val(),
+                    body: $( '#alert-body' ).val(),
                     datetime: $( '#alert-datetime' ).val(),
                     repeat: $( 'input[name=alert-repeat]:checked', '#alert-form' ).val(),
                     persistent: $( 'input[name=alert-persistent]:checked', '#alert-form' ).val() === 'on'
@@ -373,7 +458,13 @@ let Alerts = function(){
                         <label for="alert-title">Title</label>
                         <input type="text" id="alert-title" name="title" placeholder="Title" value="${data.title}">
                     </p>
-                        
+                    <p class="full-width">
+                        <label for="alert-body">Body</label>
+                        <textarea id="alert-body" name="body" maxlength="176">${data.body}</textarea>
+                    </p>
+                    <p class="full-width text-right mt--10">
+                        <small id="alert-body-counter"></small>
+                    </p>
                     <p class="extra-vs-8">
                         <label for="alert-datetime">Date &amp; Time</label>
                         <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${datetime}" step="1">
