@@ -76,6 +76,7 @@
 .box-inner input[type="text"],
 .box-inner input[type="number"],
 .box-inner input[type="datetime-local"],
+.box-inner textarea,
 .box-inner select {
     background-color: #F9EBC6;
     color: #93795D;
@@ -92,9 +93,13 @@
 }
 
 .box-inner input[type="text"],
-.box-inner input[type="number"]{
+.box-inner input[type="number"] {
     font-size: 0.8rem;
 }
+.box-inner textarea {
+    font-size: 0.9rem;
+}
+
 
 .box-inner button,
 .box-inner input[type="text"],
@@ -103,6 +108,17 @@
 .box-inner textarea {
     width: 100%;
     border: 1px solid #000;
+}
+
+.box-inner .error-text {
+    color: #f87c58;
+}
+
+.box-inner input[type="text"].error-box,
+.box-inner input[type="datetime-local"].error-box,
+.box-inner select.error-box
+.box-inner textarea.error-box {
+    border: 1px solid #d4401f;
 }
 
 .box-inner form {
@@ -133,6 +149,12 @@
 .box-inner input,
 .box-inner textarea {
     padding: 1em;
+}
+.box-inner textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none;
 }
 
 .radio-toolbar label {
@@ -166,4 +188,12 @@
     background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
     background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
     cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+}
+
+.column-200 { max-width: 200px; }
+.column-200 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
 }
