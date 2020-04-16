@@ -79,9 +79,15 @@ let Reader = {
 						if (BoostDict[BoostType] === undefined)
 						{
 							BoostDict[BoostType] = BoostValue;
+							if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+								console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+							}
 						}
 						else {
 							BoostDict[BoostType] += BoostValue;
+							if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+								console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+							}
 						}
 					}
 				}
@@ -100,7 +106,7 @@ let Reader = {
 										for (let EraName in CurrentBoostHint['boostHintEraMap']) {
 											if (!CurrentBoostHint['boostHintEraMap'].hasOwnProperty(EraName)) continue;
 											let CurrentEraBoosts = CurrentBoostHint['boostHintEraMap'][EraName];
-											let BuildingEraName = d[i]['level'] !== undefined ? Technologies.EraNames[Math.max(d[i]['level'],2)] : undefined;
+											let BuildingEraName = d[i]['level'] !== undefined ? Technologies.EraNames[d[i]['level']+1] : undefined;
 											if (EraName === 'AllAge' || EraName === BuildingEraName) {
 												let BoostType = CurrentEraBoosts['type'];
 												let BoostValue = CurrentEraBoosts['value'];
@@ -108,9 +114,51 @@ let Reader = {
 												if (BoostType !== undefined) {
 													if (BoostDict[BoostType] === undefined) {
 														BoostDict[BoostType] = BoostValue;
+														if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+															console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+														}
 													}
 													else {
 														BoostDict[BoostType] += BoostValue;
+														if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+															console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+														}
+
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if (CurrentAbility['bonuses'] !== undefined) {
+								for (let bonus in CurrentAbility['bonuses']) {
+									if (!CurrentAbility['bonuses'].hasOwnProperty(bonus)) continue;
+									let CurrentBonus = CurrentAbility['bonuses'][bonus];
+									if (CurrentBonus['boost'] !== undefined) {
+										for (let EraName in CurrentBonus['boost']) {
+											if (!CurrentBonus['boost'].hasOwnProperty(EraName)) continue;
+											let CurrentEraBoosts = CurrentBonus['boost'][EraName];
+											let BuildingEraName = d[i]['level'] !== undefined ? Technologies.EraNames[d[i]['level']+1] : undefined;
+											if (EraName === 'AllAge' || EraName === BuildingEraName) {
+												let BoostType = CurrentEraBoosts['type'];
+												let BoostValue = CurrentEraBoosts['value'];
+
+												if (BoostType !== undefined) {
+													if (BoostDict[BoostType] === undefined) {
+														BoostDict[BoostType] = BoostValue;
+														if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+															console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+														}
+
+													}
+													else {
+														BoostDict[BoostType] += BoostValue;
+														if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+															console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+														}
+
 													}
 												}
 											}
