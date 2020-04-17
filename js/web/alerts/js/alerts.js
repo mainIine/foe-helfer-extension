@@ -103,11 +103,15 @@ const BattlegroundSectorNames = {
     57: {title: "D4:F", name: "Finnited"},
     58: {title: "D4:G", name: "Guayre Bhugera"},
     59: {title: "D4:H", name: "Honbo"}
-}
+};
 
 let Alerts = function(){
 
     let tmp = {};
+
+    tmp.debug = true;
+    tmp.log = function(o){ if (tmp.debug){ console.log(o); } };
+
     tmp.db = AlertsDB;
     tmp.data = {
         add: (alert) => {
@@ -122,6 +126,15 @@ let Alerts = function(){
                 vibrate: false,
                 actions: null
             });
+        },
+        get: (id) => {
+            return tmp.db.alerts.where('id').equals(id).first();
+        },
+        next: () => {
+            return tmp.db.alerts.where('expires').above(Date.now()).reverse().first();
+        },
+        update: (id, changes) => {
+            return tmp.db.alerts.update( id, changes );
         }
     };
     tmp.model = {
@@ -133,6 +146,67 @@ let Alerts = function(){
             provinces : null
         },
         neighbors: {}
+    },
+    tmp.timer = {
+        nextAlert: null,
+        isUpdating: false,
+        setNext: (alert) => {
+            if ( ! alert ){ alert = null; }
+            tmp.timer.nextAlert = alert;
+        },
+        update: (timestamp) => {
+
+            // make sure that we don't run more than one update on the db
+            // this could happen if the db transaction is taking too long and the tmp.timer.update is executed before
+            // the last update finished
+            if ( !tmp.timer.isUpdating ) {
+
+                tmp.timer.isUpdating = true;
+
+                // get the next notification timestamp
+                // we don't want to run the query every update!
+                if ( tmp.timer.nextAlert === null ) {
+                    tmp.log('tmp.timer.update: requesting the next alert');
+                    tmp.data.next().then( function ( result ) {
+                        tmp.timer.setNext( result );
+                        tmp.timer.isUpdating = false;
+                        tmp.log('tmp.timer.update: the next alert is set');
+                        tmp.log(tmp.timer.nextAlert);
+                    } );
+                }
+                else {
+                    let next = tmp.timer.nextAlert.expires;
+                    tmp.log(timestamp, next);
+                    if ( timestamp > next ) {
+                        // show the notification
+                        tmp.log('--- notification ---');
+                        tmp.log(tmp.timer.nextAlert);
+                        // if the alert has a repeat value set update the alert's expire as old expiration + the repeat value
+                        if ( tmp.timer.nextAlert.repeat > -1 ) {
+
+                            let changes = {};
+                            tmp.data.update( tmp.timer.nextAlert.id, changes ).then( function ( updated ) {
+                                tmp.timer.setNext( null );
+                                tmp.timer.isUpdating = false;
+                            } );
+                        }
+                        else {
+                            // reset the next alert
+                            tmp.timer.setNext( null );
+                            tmp.timer.isUpdating = false;
+                        }
+                    }
+                    else {
+                        tmp.timer.isUpdating = false;
+                    }
+                }
+            }
+
+            // do the visual updates only iff the box is visible
+            if ( $( '#Alerts' ).length > 0 ) {
+                // tmp.log( t );
+            }
+        }
     },
     tmp.web = {
         body: {
@@ -187,7 +261,7 @@ let Alerts = function(){
                     });
 
                     $('#AlertsBody').find('span.button-preview-alert').on('click', function(){
-                        tmp.web.forms.actions.preview();
+                        tmp.web.forms.actions.previewNew();
                     });
 
                     $('#AlertsBody').find('span.datetime-preset').on('click', function(){
@@ -244,8 +318,8 @@ let Alerts = function(){
                                         window.location.reload(false);
                                     });
                                 });
-                            };
-                        };
+                            }
+                        }
                     },
                 },
             },
@@ -312,7 +386,7 @@ let Alerts = function(){
                         action: 'create',
                         buttonText: 'Create'
 
-                    }
+                    };
                     return `<div class="box-inner">
                         <div class="box-inner-content">
                             <h3>Create a new alert</h3>
@@ -341,14 +415,34 @@ let Alerts = function(){
                             <td>${alert.repeat}</td>
                             <td><input type="checkbox"${persist}></td>
                             <td class="text-right">
-                                <span class="btn-default button-preview" data-id="${alert.id}">preview</span>
-                                <span class="btn-default button-edit" data-id="${alert.id}">edit</span>
-                                <span class="btn-default button-delete" data-id="${alert.id}">delete</span>
+                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">preview</span>
+                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">edit</span>
+                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">delete</span>
                             </td>
                         </tr>`;
                     }).then( () => {
                         $( '#alerts-table tbody' ).empty().append( html ).promise().done( function () {
 
+                            $('#alerts-table').find('span.alert-button').on('click', function(){
+                                let id = $(this).data('id');
+                                let action = $(this).data('action');
+                                let p = tmp.data.get(id);
+                                p.then( function(result){
+
+                                    if ( action === 'preview' ){
+                                        tmp.web.forms.actions.preview( result );
+                                        return;
+                                    }
+                                    if ( action === 'edit' ){
+                                        tmp.log(`--- edit (${id}) ---`);
+                                        return;
+                                    }
+                                    if ( action === 'delete' ){
+                                        tmp.log(`--- delete (${id}) ---`);
+
+                                    }
+                                })
+                            });
                         } );
                     });
                 }
@@ -397,7 +491,7 @@ let Alerts = function(){
                 create: () => {
 
                     if ( ! tmp.web.forms.actions.validate() ){
-                        console.log('tmp.web.forms.actions.create failed validation');
+                        tmp.log('tmp.web.forms.actions.create failed validation');
                         return false;
                     }
                     let data = tmp.web.forms.data();
@@ -411,17 +505,15 @@ let Alerts = function(){
                         persistent: data.persistent
                     };
 
-                    console.log(alert);
-
                     // switch the list tab
                     tmp.data.add( alert ).then( function( result ){
 
-                        console.log(result);
                         tmp.web.body.tabs.updateAlerts();
                         $('.alerts-tab-list').trigger('click');
 
                     }).catch( function( error ){
-                        console.log(error);
+                        tmp.log('Alerts.tmp.web.forms.actions.create error');
+                        tmp.log(error);
                     });
                 },
                 init: (id) => {
@@ -450,8 +542,7 @@ let Alerts = function(){
                         $( target ).val( value );
                     }
                 },
-                preview: () => {
-                    let data = tmp.web.forms.data();
+                preview: ( data ) => {
                     const options = {
                         body: data.body,
                         dir: 'ltr',
@@ -464,8 +555,12 @@ let Alerts = function(){
                         new Notification( data.title, options );
                     }
                     catch (e){
-                        console.log(e);
+                        tmp.log(e);
                     }
+                },
+                previewNew: () => {
+                    let data = tmp.web.forms.data();
+                    tmp.web.forms.actions.preview( data );
                 },
                 update: () => {
                     let data = tmp.web.forms.data();
@@ -677,8 +772,13 @@ let Alerts = function(){
     };
 
     let pub = {
-        init: ()=> {
-            // _Alerts.init();
+        init: () => {
+            // TODO
+            // refresh all expired alerts set to repeat before they are removed/garbage-collected
+
+            TimeManager.subscribe( tmp.timer );
+        },
+        show: () => {
             tmp.web.show();
         },
         update: {
@@ -696,12 +796,10 @@ let Alerts = function(){
                         tmp.model.battlegrounds.provinces = provinces;
                     }
                     else {
-                        console.log('Alerts.update.data.battlegrounds - invalid data supplied');
+                        tmp.log('Alerts.update.data.battlegrounds - invalid data supplied');
                     }
                 },
                 timers: (responseData) => {
-                    console.log('--- timers ---');
-                    console.log(tmp.model.antique);
                     if ( responseData && responseData.forEach ){
                         responseData.forEach( function( item, index ){
                             if ( item && item.type ){
@@ -723,9 +821,8 @@ let Alerts = function(){
                         });
                     }
                     else {
-                        console.log('alerts.update.data.timers - invalid data supplied');
+                        tmp.log('Alerts.update.data.timers - invalid data supplied');
                     }
-                    console.log(tmp.model.antique);
                 },
             },
         },
@@ -916,10 +1013,11 @@ class AlertsTimer {
     }
 }
 
-class Timer {
-    constructor(){}
-    update(t){ console.log(t); }
-}
-let timer = new Timer();
-TimeManager.subscribe(timer);
-// TimeManager.start();
+// class Timer {
+//     constructor(){}
+//     update(t){ console.log(t); }
+// }
+// let timer = new Timer();
+// TimeManager.subscribe(timer);
+TimeManager.start();
+Alerts.init();
