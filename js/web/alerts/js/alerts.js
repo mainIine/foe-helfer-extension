@@ -34,14 +34,6 @@ AlertsDB.version(1).stores({
     // [id,expires,title,body,repeat,persistent,tag,vibrate,actions]
     alerts: '++id,expires,tag'
 });
-// TODO remove these tests
-// AlertsDB.on('populate', function(){
-//     let now = new Date().valueOf();
-//     AlertsDB.alerts.add({expires: ( now + 10*1000 ), title: 'Alert #1', repeat: 0, persistent: 0, tag: '', body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', vibrate: 0, actions: null});
-//     AlertsDB.alerts.add({expires: ( now + 60*1000 ), title: 'Alert #2', repeat: 0, persistent: 0, tag: '', body: 'Maecenas ut nisi non turpis tincidunt auctor.', vibrate: 0, actions: null});
-//     AlertsDB.alerts.add({expires: ( now + 300*1000 ), title: 'Alert #3', repeat: 0, persistent: 0, tag: '', body: 'Duis non lectus risus.', vibrate: 0, actions: null});
-//     AlertsDB.alerts.add({expires: ( now + 3600*1000 ), title: 'Alert #4', repeat: 0, persistent: 0, tag: '', body: 'Fusce dictum tempor lorem, sed luctus odio', vibrate: 0, actions: null});
-// });
 AlertsDB.open();
 // persistent alerts will be stored only once and the expires time will be updated before garbage collection so that
 // all expired alerts can be removed without having to use compound indexes or "compound where = collection filtering)
@@ -49,6 +41,69 @@ AlertsDB.open();
 
 // xhr listener: store gbg sector unlock times
 // xhr listener: antique dealer (get the auction timer)
+
+const BattlegroundSectorNames = {
+    0: {title: "A1:M", name: "Mati Tudokk"},
+    1: {title: "B1:O", name: "Ofrus Remyr"},
+    2: {title: "C1:N", name: "Niali Diath"},
+    3: {title: "D1:B", name: "Brurat Andgiry"},
+    4: {title: "A2:S", name: "Sladisk Icro"},
+    5: {title: "A2:T", name: "Tevomospa"},
+    6: {title: "B2:S", name: "Subeblic"},
+    7: {title: "B2:T", name: "Taspac"},
+    8: {title: "C2:S", name: "Shadsterning"},
+    9: {title: "C2:T", name: "Tayencoria"},
+    10: {title: "D2:S", name: "Slandmonii"},
+    11: {title: "D2:T", name: "Tachmazer"},
+    12: {title: "A3:V", name: "Vobolize"},
+    13: {title: "A3:X", name: "Xemga"},
+    14: {title: "A3:Y", name: "Yelili"},
+    15: {title: "A3:Z", name: "Zamva"},
+    16: {title: "B3:V", name: "Vishrain"},
+    17: {title: "B3:X", name: "Xidorpupo"},
+    18: {title: "B3:Y", name: "Yepadlic"},
+    19: {title: "B3:Z", name: "Zilsier"},
+    20: {title: "C3:V", name: "Vilipne"},
+    21: {title: "C3:X", name: "Xistan"},
+    22: {title: "C3:Y", name: "Yeraim"},
+    23: {title: "C3:Z", name: "Zeaslo"},
+    24: {title: "D3:V", name: "Verdebu"},
+    25: {title: "D3:X", name: "Xiwait"},
+    26: {title: "D3:Y", name: "Yerat"},
+    27: {title: "D3:Z", name: "Zilgypt"},
+    28: {title: "A4:A", name: "A"},
+    29: {title: "A4:B", name: "Bangma Mynia"},
+    30: {title: "A4:C", name: "Cuatishca"},
+    31: {title: "A4:D", name: "Dilandmoor"},
+    32: {title: "A4:E", name: "Eda Monwe"},
+    33: {title: "A4:F", name: "Frimoandbada"},
+    34: {title: "A4:G", name: "Gosolastan"},
+    35: {title: "A4:H", name: "Hasaint"},
+    36: {title: "B4:A", name: "Aguime"},
+    37: {title: "B4:B", name: "Bliclatan"},
+    38: {title: "B4:C", name: "Capepesk"},
+    39: {title: "B4:D", name: "Dalomstates"},
+    40: {title: "B4:E", name: "Engthio"},
+    41: {title: "B4:F", name: "Fradistaro"},
+    42: {title: "B4:G", name: "Goima"},
+    43: {title: "B4:H", name: "Hranreka"},
+    44: {title: "C4:A", name: "A"},
+    45: {title: "C4:B", name: "Bangne Casau"},
+    46: {title: "C4:C", name: "Cagalpo"},
+    47: {title: "C4:D", name: "Denwana"},
+    48: {title: "C4:E", name: "Eastkiabumi"},
+    49: {title: "C4:F", name: "Francedian"},
+    50: {title: "C4:G", name: "Guayla"},
+    51: {title: "C4:H", name: "Hoguay"},
+    52: {title: "D4:A", name: "Arasruhana"},
+    53: {title: "D4:B", name: "Basainti"},
+    54: {title: "D4:C", name: "Camehermenle"},
+    55: {title: "D4:D", name: "Dabiala"},
+    56: {title: "D4:E", name: "Enggreboka"},
+    57: {title: "D4:F", name: "Finnited"},
+    58: {title: "D4:G", name: "Guayre Bhugera"},
+    59: {title: "D4:H", name: "Honbo"}
+}
 
 let Alerts = function(){
 
@@ -69,6 +124,16 @@ let Alerts = function(){
             });
         }
     };
+    tmp.model = {
+        antique: {
+            auction: null,
+            exchange: null,
+        },
+        battlegrounds :{
+            provinces : null
+        },
+        neighbors: {}
+    },
     tmp.web = {
         body: {
             build: () => {
@@ -103,9 +168,18 @@ let Alerts = function(){
                     $('#AlertsBody').find('input').on('keydown', function(e){e.stopPropagation(); });
                     $('#AlertsBody').find('textarea').on('keydown', function(e){e.stopPropagation(); });
 
+                    $('#AlertsBody').find('#alert-presets').on('change', function(){
+                        let value = parseInt( $(this).val() );
+                        let title = $('#alert-presets option:selected').text();
+                        tmp.web.forms.actions.preset.set(value, '#alert-datetime');
+                        tmp.web.forms.actions.preset.setTitle(title, '#alert-title');
+                    });
+
                     $('#AlertsBody').find('#alert-body').on('propertychange input', function(){
                         tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
                     });
+
+
                     tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
 
                     $('#AlertsBody').find('span.button-create-alert').on('click', function(){
@@ -117,8 +191,8 @@ let Alerts = function(){
                     });
 
                     $('#AlertsBody').find('span.datetime-preset').on('click', function(){
-                        var value = $(this).attr('data-time');
-                        tmp.web.forms.actions.preset(value,'#alert-datetime');
+                        let value = $(this).attr('data-time');
+                        tmp.web.forms.actions.preset.add(value,'#alert-datetime');
                     });
 
                     $('#alert-datetime').on('change keyup paste', function(){
@@ -351,17 +425,30 @@ let Alerts = function(){
                     });
                 },
                 init: (id) => {
-                    tmp.web.forms.actions.preset(0,id);
+                    tmp.web.forms.actions.preset.add(0,id);
                 },
                 /**
                  * @param value - the number of seconds (to add)
                  * @param target - the id (including #) of the target DOM element
                  */
-                preset: (value, target) => {
-                    let m = moment().add( value, 'seconds');
-                    // timezone corrected ISO string & remove the milliseconds + tz
-                    let dt = tmp.web.forms.aux.formatIsoDate(m);
-                    $(target).val( dt ).trigger('change');
+                preset: {
+                    add: (value, target) => {
+                        let m = moment().add( value, 'seconds' );
+                        // timezone corrected ISO string & remove the milliseconds + tz
+                        let dt = tmp.web.forms.aux.formatIsoDate( m );
+                        $( target ).val( dt ).trigger( 'change' );
+
+                        // tmp.web.forms.actions.preset.set( m.valueOf() );
+                    },
+                    set: (value, target) => {
+                        let m = moment(value);
+                        // timezone corrected ISO string & remove the milliseconds + tz
+                        let dt = tmp.web.forms.aux.formatIsoDate( m );
+                        $( target ).val( dt ).trigger( 'change' );
+                    },
+                    setTitle: (value, target) => {
+                        $( target ).val( value );
+                    }
                 },
                 preview: () => {
                     let data = tmp.web.forms.data();
@@ -454,6 +541,26 @@ let Alerts = function(){
                     persistent_off = '';
                 }
 
+                let antiqueOptions = '';
+                if ( tmp.model.antique.auction ){
+                    antiqueOptions += `<option value="${tmp.model.antique.auction}">Auction</option>`;
+                }
+                if ( tmp.model.antique.exchange ){
+                    antiqueOptions += `<option value="${tmp.model.antique.exchange}">Exchange</option>`;
+                }
+
+                let battlegroundOptions = '';
+                if ( tmp.model.battlegrounds.provinces ) {
+                    tmp.model.battlegrounds.provinces.forEach( function ( province, id ) {
+                        let value = province['lockedUntil'] * 1000;
+                        // if the sector is currently taken
+                        if ( ! isNaN( value ) ) {
+                            let datetime = tmp.web.forms.aux.formatIsoDate( moment( value ) );
+                            let text = `${province.title} (${datetime})`;
+                            battlegroundOptions += `<option value="${value}">${text}</option>`;
+                        }
+                    });
+                }
                 return `<form id="alert-form">
                     <input type="hidden" id="alert-id" value="${id}"/>
                     <p class="full-width">
@@ -473,16 +580,20 @@ let Alerts = function(){
                         <span id="alert-expires"></span>
                     <p>
                         <label for="alert-auto">Presets</label>
-                        <select id="alert-auto">
+<!--                        <select id="alert-presets-categories">
                             <option value="">Antiques Dealer</option>
                             <option value="">Guild Battlegrounds</option>
                             <option value="">Neighborhood</option>
                         </select>
-                        <select>
-                            <option value="">A1:M</option>
-                            <option value="">B1:O</option>
-                            <option value="">C1:N</option>
-                            <option value="">D1:B</option>
+-->
+                        <select id="alert-presets">
+                            <option value="0" disabled selected>&nbsp;</option>
+                            <optgroup label="Antiques Dealer">
+                            ${antiqueOptions}
+                            </optgroup>
+                            <optgroup label="Battleground Provinces">
+                            ${battlegroundOptions}
+                            </optgroup>
                         </select>
                     </p>
                     
@@ -569,12 +680,66 @@ let Alerts = function(){
         init: ()=> {
             // _Alerts.init();
             tmp.web.show();
-        }
+        },
+        update: {
+            data: {
+                battlegrounds: (responseData) => {
+                    if ( responseData && responseData.map && responseData.map.provinces ) {
+                        let provinces = responseData.map.provinces;
+                        // for some reason the returned json doesn't give province id for the 0th index sector
+                        if ( ! provinces[0].id ){ provinces[0].id = 0; }
+                        provinces.forEach( function( province, id ){
+                            let sector = BattlegroundSectorNames[id];
+                            province.title = sector.title;
+                            province.name = sector.name;
+                        });
+                        tmp.model.battlegrounds.provinces = provinces;
+                    }
+                    else {
+                        console.log('Alerts.update.data.battlegrounds - invalid data supplied');
+                    }
+                },
+                timers: (responseData) => {
+                    console.log('--- timers ---');
+                    console.log(tmp.model.antique);
+                    if ( responseData && responseData.forEach ){
+                        responseData.forEach( function( item, index ){
+                            if ( item && item.type ){
+                                switch (item.type) {
+                                    case 'antiquesExchange' : {
+                                        tmp.model.antique.exchange = item.time * 1000;
+                                        break;
+                                    }
+                                    case 'antiquesAuction' : {
+                                        tmp.model.antique.auction = item.time * 1000;
+                                        break;
+                                    }
+                                    case 'battlegroundsAttrition' : {
+                                        // the battleground attrition reset timer
+                                        break;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        console.log('alerts.update.data.timers - invalid data supplied');
+                    }
+                    console.log(tmp.model.antique);
+                },
+            },
+        },
     };
 
     return pub;
 }();
 
+FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+    Alerts.update.data.battlegrounds( data['responseData'] );
+});
+FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
+    Alerts.update.data.timers( data['responseData'] );
+});
 
 
 let NotificationManager = {
