@@ -131,7 +131,8 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-		"Boxes.Neighbors.NothingToPlunder": "Rien à piller",
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
 		"Boxes.Neighbors.Title": "Production de ",
