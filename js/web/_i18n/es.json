@@ -131,7 +131,8 @@
 		"Boxes.Negotiation.Title": "Ayudante de negociación",
 		"Boxes.Negotiation.TryEnd": "Se terminaron los intentos",
 		"Boxes.Negotiation.WrongGoods": "Mercancía equivocada, por favor seguir a mano",
-		"Boxes.Neighbors.NothingToPlunder": "Nada que saquear",
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Producción en curso",
 		"Boxes.Neighbors.ReadyProductions": "Produccion terminada",
 		"Boxes.Neighbors.Title": "Producción de ",

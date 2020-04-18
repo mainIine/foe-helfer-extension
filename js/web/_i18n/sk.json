@@ -131,7 +131,8 @@
 		"Boxes.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Boxes.Negotiation.TryEnd": "Žiadne ďalšie pokusy",
 		"Boxes.Negotiation.WrongGoods": "Zvolený nesprávny tovar, prosím dokončte vyjednávanie manuálne",
-		"Boxes.Neighbors.NothingToPlunder": "Nič na plienenie",
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Prebiehajúce produkcie",
 		"Boxes.Neighbors.ReadyProductions": "Dokončené produkcie",
 		"Boxes.Neighbors.Title": "Produkcie hráča ",
