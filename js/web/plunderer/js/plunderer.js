@@ -155,11 +155,34 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				important: isImportant,
 				entityId: entity.id,
 				buildId: entity.cityentity_id,
+				plunderId: it.id
 			});
 			Plunderer.UpdateBoxIfVisible();
 		}
 	});
 });
+
+// Detect Atlantis Museum *2 bonus
+FoEproxy.addHandler('CityMapService', 'showEntityIcons', async (data, postData) => {
+	const r = data.responseData;
+
+	if (!Array.isArray(r)) {
+		return;
+	}
+
+	// plunder_and_pillage is the name of the bonus given by Atlantis Museum
+	const plunderAndPillages = r.filter(it => it.type === "citymap_icon_plunder_and_pillage");
+	
+	for (const it of plunderAndPillages) {
+		await IndexDB.db.plunderAndPillages.add({
+			plunderId: it.id,
+			date: new Date()
+		});
+	}
+});
+
+
+
 
 FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) => {
 	const playerData = data.responseData;
@@ -351,8 +374,7 @@ let Plunderer = {
 				</div>
 			</div>
 			${actions.length === 0 ? `<div class="no-data"> - ${i18n('Boxes.Plunderer.noData')} - </div>` : ''}
-				${Plunderer.RenderActions(actions)
-			}
+			${await Plunderer.RenderActions(actions)}
 			<div class="pagination">
 				${page > 1 && pages > 1 ? `<button class="btn btn-default load-1st-page">${i18n('Boxes.Plunderer.goto1stPage')}</button>` : ''}
 				${i18n('Boxes.Plunderer.Page')} ${page}/${pages}
@@ -363,6 +385,19 @@ let Plunderer = {
 		Plunderer.loading = false;
 	},
 
+	/**
+	 * Returns factor taking Atlantis Museum Bonus into account
+	 *
+	 * @param action
+	 * @returns {Promise<number>}
+	 */
+	getActionFactor: async (action) => {
+		let factor = 1;
+		if(action.type === Plunderer.ACTION_TYPE_PLUNDERED) {
+			factor = (await IndexDB.db.plunderAndPillages.where('plunderId').equals(action.plunderId).toArray()).length > 0 ? 2 : 1;
+		}
+		return factor;
+	},
 
 	/**
 	 * Calculate the ForgePoints for 1 Week
@@ -376,14 +411,17 @@ let Plunderer = {
 
 		let todaySP = 0;
 		let thisWeekSP = 0;
-		let totalSPSelect = filterByPlayerId ?
-			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
+		let totalSPSelect = await (filterByPlayerId ?
+			IndexDB.db.actions.where('playerId').equals(filterByPlayerId) :
+			IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED)).toArray();
 
 		let totalSP = 0;
 
-		await totalSPSelect.each((it) => {
-			const sp = (it.sp || 0);
+		for(const it of totalSPSelect)
+		{
+			const factor = await Plunderer.getActionFactor(it);
+			const sp = (it.sp || 0) * factor;
+
 			totalSP += sp;
 			if (dateThisWeek < it.date) {
 				thisWeekSP += sp;
@@ -392,7 +430,7 @@ let Plunderer = {
 					todaySP += sp;
 				}
 			}
-		});
+		}	
 
 		$('#plundererBody .strategy-points').html(`
 			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> ${i18n('Boxes.Plunderer.FP')},
@@ -402,17 +440,18 @@ let Plunderer = {
 	},
 
 
-	RenderActions: (actions) => {
+	RenderActions: async (actions) => {
 		let lastPlayerId = null;
-		return actions.map(action => {
+		let actionRenders = await Promise.all(actions.map(async (action) => {
 			const isSamePlayer = action.playerId === lastPlayerId;
 			lastPlayerId = action.playerId;
 			return Plunderer.RenderAction({action, isSamePlayer});
-		}).join('');
+		}));
+		return actionRenders.join('');
 	},
 
 
-	RenderAction: ({action, isSamePlayer}) => {
+	RenderAction: async ({action, isSamePlayer}) => {
 		const type = {
 			[Plunderer.ACTION_TYPE_PLUNDERED]: i18n('Boxes.Plundered.actionPlundered'),
 			[Plunderer.ACTION_TYPE_BATTLE_WIN]: i18n('Boxes.Plundered.actionBattleWon'),
@@ -461,7 +500,7 @@ let Plunderer = {
 							${action.playerName} <span class="clan">[${action.clanName}]</span>
 						</div>
 						`}
-						<div class="content">${Plunderer.RenderActionContent(action)}</div>
+						<div class="content">${await Plunderer.RenderActionContent(action)}</div>
 					</div>
 				</div>`;
 	},
@@ -470,22 +509,24 @@ let Plunderer = {
 	/**
 	 *
 	 * @param action
-	 * @returns {string}
+	 * @returns {Promise<string>}
 	 */
-	RenderActionContent: (action) => {
+	RenderActionContent: async(action) => {
 		switch (action.type) {
 			case Plunderer.ACTION_TYPE_PLUNDERED:
 				const goodsIds = Object.keys(action.resources);
+				const factor = await Plunderer.getActionFactor(action);
 
 				return `<div class="plunder-wrap">
 							<div class="name">
 								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" />
+								${factor === 2 ? `<img class="plunder_and_pillage"  src="${extUrl}js/web/plunderer/images/great_building_bonus_plunder_and_pillage.png" alt="Bonus" />` : ``}
 								${BuildingNamesi18n[action.buildId].name}
 							</div>
 							<div class="plunder-items ${action.important ? 'text-warning' : ''}">
 								${goodsIds.map(id => {
 									const goods = (GoodsData[id] || {name: ''}).name;
-									const str = `${action.resources[id]} ${goods}`;
+									const str = `${action.resources[id] * factor} ${goods}`;
 									return id === 'strategy_points' ? `<strong>${str}</strong>` : `${str}`;
 								}).map(it => `<div>${it}</div>`).join('')}
 							</div>

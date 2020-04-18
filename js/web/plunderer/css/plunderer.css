@@ -114,6 +114,11 @@
     width: auto;
 }
 
+#plunderer .plunder-wrap .plunder_and_pillage {
+    height: 20px;
+    width: auto;
+}
+
 #plunderer .plunder-items {
     display: flex;
     flex-direction: column;

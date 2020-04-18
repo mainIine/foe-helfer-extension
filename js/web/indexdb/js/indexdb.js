@@ -8,7 +8,7 @@
  * erstellt am:	              07.04.20, 21:58 Uhr
  * zuletzt bearbeitet:        07.04.20, 15:46 Uhr
  *
- * Copyright © 2020
+ * Copyright ï¿½ 2020
  *
  * **************************************************************************************
  */
@@ -84,7 +84,14 @@ let IndexDB = {
 
     Init: (playerid) => {
         IndexDB.db = new Dexie("FoeHelper_" + playerid); //Create different IndexDBs if two players are sharing the same PC playing on the same world
-
+        
+        IndexDB.db.version(1).stores({
+            players: 'id,date',
+            actions: '++id,playerId,date,type',
+            greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
+            plunderAndPillages: '++id,plunderId,date',
+        });
+        
         IndexDB.db.version(1).stores({
             players: 'id,date',
             actions: '++id,playerId,date,type',
@@ -122,6 +129,10 @@ let IndexDB = {
 
         await IndexDB.db.greatbuildings
             .where('playerId').noneOf(LeftPlayers)
+            .delete();
+        
+        await IndexDB.db.plunderAndPillages
+            .where('date').below(sixWeeksAgo)
             .delete();
     },
 
