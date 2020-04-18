@@ -10,16 +10,16 @@
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
-		"Boxes.Calculator.BPs": "BPs", //Todo: Translate
+		"Boxes.Calculator.BPs": "BPs",
 		"Boxes.Calculator.Commitment": "Einsatz",
 		"Boxes.Calculator.Done": "abgeschlossen",
-		"Boxes.Calculator.FP": "FP", //Todo: Translate
+		"Boxes.Calculator.FP": "FP",
 		"Boxes.Calculator.FriendlyInvestment": "Fördern mit:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das LG!",
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
-		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
+		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Gewinn",
 		"Boxes.Calculator.Rate": "Kurs",
 		"Boxes.Calculator.Sniping": "Snipen",
@@ -54,7 +54,7 @@
 		"Boxes.CityMap.TitleSend": "Daten übermitteln",
 		"Boxes.CityMap.WholeArea": "Gesamte Fläche: ",
 		"Boxes.CityMap.YourCity": "Deine Stadt",
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance",
 		"Boxes.EventChests.Cost": "Kosten",
 		"Boxes.EventChests.CostPerPrize": "Kosten/Preis",
 		"Boxes.EventChests.CostPerStep": "Kosten/Schritt",
@@ -79,11 +79,11 @@
 		"Boxes.HiddenRewards.Disappears": "Verschwindet",
 		"Boxes.HiddenRewards.NoEvents": "Keine Ereignisse vorhanden",
 		"Boxes.HiddenRewards.Title": "Ereignisse",
-		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
+		"Boxes.Infobox.Filter": "Filter",
 		"Boxes.Infobox.FilterAuction": "Auktion",
-		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
+		"Boxes.Infobox.FilterGex": "GEX",
 		"Boxes.Infobox.FilterGildFights": "Gildengefechte",
-		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
+		"Boxes.Infobox.FilterLevel": "Level-Up",
 		"Boxes.Infobox.FilterMessage": "Nachricht",
 		"Boxes.Infobox.FilterTrade": "Handel",
 		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
@@ -93,7 +93,7 @@
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Stufe __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 		"Boxes.Infobox.ResetBox": "Box leeren",
-		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
+		"Boxes.Infobox.Title": "Infobox",
 		"Boxes.Investment.AllUpToDate": "Alles aktuell",
 		"Boxes.Investment.AllUpToDateDesc": "Alle Spieler dieser Seite wurden bereits erfasst",
 		"Boxes.Investment.CurrReward": "Aktueller Gewinn: ",
@@ -107,7 +107,7 @@
 		"Boxes.Kits.TabSelectionKits": "Auswahl-Kits",
 		"Boxes.Kits.Title": "Gebäude- / Auswahl-Kits",
 		"Boxes.LGOverviewBox.Building": "Gebäude",
-		"Boxes.LGOverviewBox.Level": "Level", //Todo: Translate
+		"Boxes.LGOverviewBox.Level": "Level",
 		"Boxes.LGOverviewBox.NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen",
 		"Boxes.LGOverviewBox.PayedTotal": "Eingez. / Gesamt",
 		"Boxes.LGOverviewBox.Profit": "Gewinn",
@@ -118,12 +118,12 @@
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "bisher keine Einzahlung",
 		"Boxes.Negotiation.Average": "Ø Menge",
 		"Boxes.Negotiation.Canceled": "Verhandlung wurde abgebrochen",
-		"Boxes.Negotiation.Chance": "Chance", //Todo: Translate
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
+		"Boxes.Negotiation.Chance": "Chance",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
 		"Boxes.Negotiation.DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
 		"Boxes.Negotiation.GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
 		"Boxes.Negotiation.GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
-		"Boxes.Negotiation.Person": "Person", //Todo: Translate
+		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Round": "Runde",
 		"Boxes.Negotiation.Stock": "Lager:",
 		"Boxes.Negotiation.Success": "Erfolg",
@@ -131,8 +131,8 @@
 		"Boxes.Negotiation.Title": "Verhandlungassistent",
 		"Boxes.Negotiation.TryEnd": "Versuche zu Ende",
 		"Boxes.Negotiation.WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
-		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.AttackingArmy": "Geschätzer Bonus angreifende Armeen: __attatt__%(ANG) / __attdef__%(VT)",
+		"Boxes.Neighbors.DefendingArmy": "Geschätzer Bonus verteidigende Armeen: __defatt__%(ANG) / __defdef__%(VT)",
 		"Boxes.Neighbors.OngoingProductions": "Laufende Produktionen",
 		"Boxes.Neighbors.ReadyProductions": "Fertige Produktionen",
 		"Boxes.Neighbors.Title": "Produktionen von ",
@@ -148,18 +148,18 @@
 		"Boxes.Outpost.TitleFree": "Frei",
 		"Boxes.Outpost.TitleShort": "Güterübersicht - ",
 		"Boxes.OwnpartCalculator.Arc": "Arche",
-		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
-		"Boxes.OwnpartCalculator.BPs": "BPs", //Todo: Translate
+		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.BPs": "BPs",
 		"Boxes.OwnpartCalculator.BuildingName": "Gebäude",
 		"Boxes.OwnpartCalculator.CopyValues": "Werte kopieren",
 		"Boxes.OwnpartCalculator.Deposit": "Einzahlen",
 		"Boxes.OwnpartCalculator.Done": "Erledigt",
-		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
+		"Boxes.OwnpartCalculator.Ext": "Ext",
 		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Individueller LG Name",
 		"Boxes.OwnpartCalculator.Levels": "Leveln",
 		"Boxes.OwnpartCalculator.LGTotalFP": "LG Gesamt-FP",
-		"Boxes.OwnpartCalculator.Meds": "Meds", //Todo: Translate
+		"Boxes.OwnpartCalculator.Meds": "Meds",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Kein Platz sicher",
 		"Boxes.OwnpartCalculator.Note": "Merken",
 		"Boxes.OwnpartCalculator.OldLevel": "Altes Level",
@@ -205,14 +205,14 @@
 		"Boxes.Productions.Happiness": "Zufriedenheit",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Menge",
-		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
+		"Boxes.Productions.Headings.boost": "Boost",
 		"Boxes.Productions.Headings.culture": "Kulturelle Gebäude",
 		"Boxes.Productions.Headings.decoration": "Dekorationen",
 		"Boxes.Productions.Headings.earning": "Ernte",
 		"Boxes.Productions.Headings.goods": "Gütergebäude",
 		"Boxes.Productions.Headings.greatbuilding": "Legendäre Gebäude",
 		"Boxes.Productions.Headings.main_building": "Rathaus",
-		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
+		"Boxes.Productions.Headings.name": "Name",
 		"Boxes.Productions.Headings.number": "Anzahl",
 		"Boxes.Productions.Headings.production": "Produktionsgebäude",
 		"Boxes.Productions.Headings.random_production": "Zufalls Produktionen",
@@ -243,7 +243,7 @@
 		"Boxes.Units.Proportionally": "Anteilig",
 		"Boxes.Units.Quantity": "Anzahl",
 		"Boxes.Units.ReadyToLoot": "Bereit zur Ernte!",
-		"Boxes.Units.Status": "Status", //Todo: Translate
+		"Boxes.Units.Status": "Status",
 		"Boxes.Units.Title": "Armee Übersicht",
 		"Boxes.Units.Unbind": "Ungebunden",
 		"Boxes.Units.Unit": "Einheit",
@@ -261,7 +261,7 @@
 		"Eras.18": "Raumfahrt: Mars",
 		"Eras.19": "Raumfahrt: Asteroidengürtel",
 		"Eras.2": "Bronzezeit",
-		"Eras.20": "Space Age Venus", //Todo: Translate
+		"Eras.20": "Raumfahrt: Venus",
 		"Eras.3": "Eisenzeit",
 		"Eras.4": "Frühes Mittelalter",
 		"Eras.5": "Hochmittelalter",
@@ -277,11 +277,11 @@
 		"HiddenRewards.Positions.shore": "Küste",
 		"HiddenRewards.Positions.water": "im Wasser",
 		"HiddenRewards.Table.expires": "Verschwindet am/um",
-		"HiddenRewards.Table.position": "Position", //Todo: Translate
+		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "de-DE",
 		"Menu.Api.Desc": "Einstellungen um Daten an deinen eigenen Server zu schicken",
-		"Menu.Api.Title": "Extension API", //Todo: Translate
+		"Menu.Api.Title": "Extension API",
 		"Menu.Ask.Desc": "Du weißt nicht wie etwas funktioniert?<br>Schau nach!",
 		"Menu.Ask.Title": "Frage / Antwort",
 		"Menu.Bugs.Desc": "Etwas geht nicht wie es soll oder du hast eine Idee?",
@@ -299,11 +299,11 @@
 		"Menu.Event.Desc": "Übersicht über die nächsten Event Quests",
 		"Menu.Event.Title": "Event Questliste",
 		"Menu.Forum.Desc": "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum Reden...",
-		"Menu.Forum.Title": "Forum", //Todo: Translate
+		"Menu.Forum.Title": "Forum",
 		"Menu.HiddenRewards.Desc": "Übersicht der Ereignisse auf der Map",
 		"Menu.HiddenRewards.Title": "Ereignisse",
 		"Menu.Info.Desc": "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>",
-		"Menu.Info.Title": "Info Box", //Todo: Translate
+		"Menu.Info.Title": "Info Box",
 		"Menu.Kits.Desc": "Listet alle vorhandenen Gebäude-, Upgrade- und Auswahlkits auf",
 		"Menu.Kits.Title": "Gebäude-Kits",
 		"Menu.Negotiation.Desc": "Macht dir präzise Vorschläge für Verhandlungen",
@@ -358,7 +358,7 @@
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Gilden Id:",
 		"Settings.Version.PlayerId": "Spieler Id:",
-		"Settings.Version.Title": "Version", //Todo: Translate
+		"Settings.Version.Title": "Version",
 		"Settings.Version.World": "Welt:"
 	}
 }
