@@ -8,7 +8,7 @@
  * erstellt am:	              07.04.20, 21:58 Uhr
  * zuletzt bearbeitet:        07.04.20, 15:46 Uhr
  *
- * Copyright © 2020
+ * Copyright 2020
  *
  * **************************************************************************************
  */
@@ -130,10 +130,11 @@ let IndexDB = {
     },
 
 
-    /**
+	/**
 	 * Add user from PlayerDict if not added, without era information
 	 *
 	 * @param playerId
+	 * @param updateDate
 	 * @returns {Promise<void>}
 	 */
     addUserFromPlayerDictIfNotExists: async(playerId, updateDate) => {
