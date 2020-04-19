@@ -766,7 +766,6 @@ let Calculator = {
 		$('#costTableBPMeds').html(hBPMeds.join(''));
 		$('#costTableSnipen').html(hSnipen.join(''));
 
-		/* Neuer Code: */
 		Calculator.RefreshGreatBuildingsDB({
 			playerId: Calculator.CityMapEntity['player_id'],
 			name: Calculator.CityMapEntity['cityentity_id'],
@@ -775,16 +774,7 @@ let Calculator = {
 			bestRateNettoFp: BestKursNettoFP,
 			bestRateCosts: BestKursEinsatz
 		});
-		/* Ende Neuer Code */
-
-		/* Alter Code: */
-		let StorageKey = 'OV_' + Calculator.CityMapEntity['player_id'] + '/' + Calculator.CityMapEntity['cityentity_id'];
-
-		//Level/FP/BestKurs/UNIX-Time
-		let StorageValue = Calculator.CityMapEntity['level'] + '/' + Calculator.CityMapEntity['state']['invested_forge_points'] + '/' + BestKursNettoFP + '/' + BestKursEinsatz + '/' + new Date().getTime();
-		localStorage.setItem(StorageKey, StorageValue);
-	    /* Ende alter Code */
-
+		
 		$('.td-tooltip').tooltip({
 			html: true,
 			container: '#costCalculator'
@@ -950,7 +940,6 @@ let Calculator = {
 					BestKurs = undefined,
 					StrongClass;
 
-				/* Neuer Code */
 				let CurrentGB = await IndexDB.db.greatbuildings
 					.where({ playerId: PlayerID, name: EntityID })
 					.first();
@@ -961,31 +950,7 @@ let Calculator = {
 					BestKursEinsatz = CurrentGB['bestRateCosts'];
 					BestKurs = Math.round(BestKursEinsatz / BestKursNettoFP * 1000) / 10;
 					Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
-                }
-
-				/* Ende Neuer Code */
-
-				/* Alter Code
-				let StorageKey = 'OV_' + PlayerID + "/" + EntityID,
-					StorageValue = localStorage.getItem(StorageKey),
-					BestKursNettoFP = undefined,
-					BestKursEinsatz = undefined;
-
-				if (StorageValue !== null)
-				{
-					let StorageKeyParts = StorageValue.split('/');
-					let Level = parseInt(StorageKeyParts[0]);
-					let FP = parseInt(StorageKeyParts[1]);
-
-					if (Level === GBLevel && FP === CurrentProgress)
-					{
-						BestKursNettoFP = StorageKeyParts[2];
-						BestKursEinsatz = StorageKeyParts[3];
-						BestKurs = Math.round(BestKursEinsatz / BestKursNettoFP * 1000) / 10;
-						Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
-					}
-				}
-				Ende Alter Code */
+                }							
 
 				let UnderScorePos = EntityID.indexOf('_');
 				let AgeString = EntityID.substring(UnderScorePos + 1);
