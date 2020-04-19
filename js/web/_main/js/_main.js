@@ -42,6 +42,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
 	UsePartCalcOnAllLGs = false,
+	UseReaderOnAllPlayers = false,
 	EventCountdown = false,
 	CurrentTime = 0;
 
@@ -553,7 +554,8 @@ const FoEproxy = (function () {
 					type: j[i]['type'],
 					provided_happiness: j[i]['provided_happiness'],
 					population: undefined,
-					entity_levels : j[i]['entity_levels'],
+					entity_levels: j[i]['entity_levels'],
+					index: i
 				};
 
 				if(j[i]['abilities'] !== undefined)
@@ -893,8 +895,11 @@ const FoEproxy = (function () {
 			return;
 		}
 		let OtherPlayer = data.responseData.other_player;
-		if (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member) {
+		if (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member || UseReaderOnAllPlayers) {
 			Reader.OtherPlayersBuildings(data.responseData);
+		}
+		else {
+			$('#ResultBox').remove();
 		}
 	});
 

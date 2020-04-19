@@ -8,6 +8,7 @@
 		hu: 'Magyar',
 		it: 'Italiano',
 		nl: 'Nederlands',
+		pl: 'Polski',
 		pt: 'Português',
 		ro: 'Română',
 		ru: 'Русский',
