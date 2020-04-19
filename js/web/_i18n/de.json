@@ -125,6 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
 		"Boxes.Negotiation.Person": "Person", //Todo: Translate
 		"Boxes.Negotiation.Round": "Runde",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Aktuelle Güter sparen",
+		"Boxes.Negotiation.SaveMedals": "Medaillen sparen",
 		"Boxes.Negotiation.Stock": "Lager:",
 		"Boxes.Negotiation.Success": "Erfolg",
 		"Boxes.Negotiation.TableLoadError": "Fehler beim Laden der Verhandlungtabelle",
@@ -375,8 +377,8 @@
 		"Menu.Productions.Title": "Produktions Übersicht",
 		"Menu.Settings.Desc": "Hier stellst du ein paar Kleinigkeiten ein",
 		"Menu.Settings.Title": "Einstellungen",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground",
-		"Menu.Stats.Title": "Statistics",
+		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Kosten für Forschung berechnen",
 		"Menu.Technologies.Title": "Technologien",
 		"Menu.Technologies.Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!",
