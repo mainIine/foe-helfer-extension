@@ -135,7 +135,6 @@
 		"Boxes.Neighbors.DefendingArmy": "Geschätzer Bonus verteidigende Armeen: __defatt__%(ANG) / __defdef__%(VT)",
 		"Boxes.Neighbors.OngoingProductions": "Laufende Produktionen",
 		"Boxes.Neighbors.ReadyProductions": "Fertige Produktionen",
-		"Boxes.Neighbors.Title": "Produktionen von ",
 		"Boxes.Outpost.DescInStock": "Vorhanden",
 		"Boxes.Outpost.DescRequired": "Benötigt",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ef1616'>Fehlt</span>",

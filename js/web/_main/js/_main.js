@@ -898,6 +898,9 @@ const FoEproxy = (function () {
 		if (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member || UseReaderOnAllPlayers) {
 			Reader.OtherPlayersBuildings(data.responseData);
 		}
+		else {
+			$('#ResultBox').remove();
+		}
 	});
 
 	// Güter des Spielers ermitteln

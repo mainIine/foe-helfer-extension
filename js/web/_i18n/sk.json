@@ -135,7 +135,6 @@
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Prebiehajúce produkcie",
 		"Boxes.Neighbors.ReadyProductions": "Dokončené produkcie",
-		"Boxes.Neighbors.Title": "Produkcie hráča ",
 		"Boxes.Outpost.DescInStock": "Dostupné",
 		"Boxes.Outpost.DescRequired": "Potrebné",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Dostatok</span> / <span style='color:#ef1616'>Nedostatok</span>",

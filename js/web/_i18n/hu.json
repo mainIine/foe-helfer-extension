@@ -135,7 +135,6 @@
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Folyamatban levő termelések",
 		"Boxes.Neighbors.ReadyProductions": "Befejezett termelések",
-		"Boxes.Neighbors.Title": "Termelései a ",
 		"Boxes.Outpost.DescInStock": "Elérhető",
 		"Boxes.Outpost.DescRequired": "Szükséges",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ef1616'>Hiányzó</span>",

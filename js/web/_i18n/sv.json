@@ -135,7 +135,6 @@
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Pågående produktion",
 		"Boxes.Neighbors.ReadyProductions": "Slutförd produktion",
-		"Boxes.Neighbors.Title": "Produktion från ",
 		"Boxes.Outpost.DescInStock": "Tillgängliga",
 		"Boxes.Outpost.DescRequired": "Behov",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ef1616'>Saknas</span>",

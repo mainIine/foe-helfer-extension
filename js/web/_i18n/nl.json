@@ -135,7 +135,6 @@
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Lopende producties",
 		"Boxes.Neighbors.ReadyProductions": "Voltooide producties",
-		"Boxes.Neighbors.Title": "Producties van ",
 		"Boxes.Outpost.DescInStock": "Beschikbaar",
 		"Boxes.Outpost.DescRequired": "Nodig",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ef1616'>Tekort</span>",
