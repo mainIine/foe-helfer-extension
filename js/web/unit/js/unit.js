@@ -37,7 +37,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 	Unit.RefreshAlca();
 
 	if (Unit.alca !== null && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] === Unit.alca.id) {
-		if (data.responseData.militaryProducts === undefined){
+		if (data.responseData.militaryProducts === undefined) {
 			return;
 		}
 
@@ -331,7 +331,7 @@ let Unit = {
 			if(eras[era] === undefined){
 				eras[era] = [];
 			}
-
+						
 			eras[era].push({
 				id: c[i]['unitTypeId'],
 				name: d['name'],
@@ -355,27 +355,8 @@ let Unit = {
 
 		pool.push('<tbody>');
 
-		if( eras[0].length > 0){
-			pool.push('<tr>');
-			pool.push('<th colspan="4">' + i18n('Eras.0') + '</th>');
-			pool.push('</tr>');
 
-			for(let i in eras[0])
-			{
-				if(!eras[0].hasOwnProperty(i)){
-					break;
-				}
-
-				pool.push('<tr>');
-				pool.push('<td><span class="units-icon ' + eras[0][i]['id'] + '"></span></td>');
-				pool.push('<td>' + eras[0][i]['name'] + '</td>');
-				pool.push('<td class="text-center">' + eras[0][i]['attached'] + '</td>');
-				pool.push('<td class="text-center">' + eras[0][i]['unattached'] + '</td>');
-				pool.push('</tr>');
-			}
-		}
-
-		for (let era = eras.length; era > 0;era--)
+		for (let era = eras.length; era >= 0;era--)
 		{
 			if(!eras.hasOwnProperty(era)){
 				continue;

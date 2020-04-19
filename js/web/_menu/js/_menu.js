@@ -38,6 +38,7 @@ let _menu = {
 		'unit',
     'plunderer',
 		'settings',
+		'stats',
 		'forum',
 		'ask',
 		'github',
@@ -719,6 +720,28 @@ let _menu = {
 		btn.append(btn_Set);
 
 		return btn;
+	},
+
+	/**
+	 * Statistic
+	 * @returns {*|jQuery}
+	 */
+	stats_Btn: () => {
+		let btn_StatsBG = $('<div />').attr({ 'id': 'stats-Btn', 'data-slug': 'stats' }).addClass('hud-btn');
+
+		_menu.toolTippBox(i18n('Menu.Stats.Title'), i18n('Menu.Stats.Desc'), 'stats-Btn');
+
+		let btn_Stats = $('<span />');
+
+		btn_Stats.on('click', function () {
+			Stats.page = 1;
+			Stats.filterByPlayerId = null;
+			Stats.Show();
+		});
+
+		btn_StatsBG.append(btn_Stats);
+
+		return btn_StatsBG;
 	},
 
 	/**
