@@ -390,6 +390,10 @@
 		"Settings.ChangeLanguage.Title": "Zmień język",
 		"Settings.CustomerApi.Desc": "Czy chcesz wysyłać dane na własny serwer?<br> Po aktywowaniu gra się przeładuje i pojawi się nowa opcja menu.",
 		"Settings.CustomerApi.Title": "API Graczy",
+		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
+		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
+		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Jeżeli chcesz śledzić postępy wewnątrz swojej gildii możesz aktywować to zaznaczenie. <br> Dla samodzielnego rozszerzenia możesz odznaczyć wybór.",
 		"Settings.GlobalSend.Title": "Wysyłanie danych do foe-rechner.de",
 		"Settings.MenuLength.Desc": "Ile elementów powinno mieścic menu rozszerzenia?<br> Puste lub \"0\" oznacza automatyczną wysokość.",

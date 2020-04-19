@@ -47,6 +47,16 @@ let Settings = {
 			title : i18n('Settings.SendGEXInfo.Title'),
 			desc : i18n('Settings.SendGEXInfo.Desc')
 		},
+		DontSaveMedals : {
+			status: true,
+			title : i18n('Settings.DontSaveMedals.Title'),
+			desc : i18n('Settings.DontSaveMedals.Desc')
+		},
+		DontSaveCurrentEraGoods : {
+			status: true,
+			title : i18n('Settings.DontSaveCurrentEraGoods.Title'),
+			desc : i18n('Settings.DontSaveCurrentEraGoods.Desc')
+		},
 		ShowNeighborsGoods : {
 			status: true,
 			title : i18n('Settings.ShowNeighborsGoods.Title'),

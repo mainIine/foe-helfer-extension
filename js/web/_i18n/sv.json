@@ -390,6 +390,10 @@
 		"Settings.ChangeLanguage.Title": "Byt språk",
 		"Settings.CustomerApi.Desc": "Vill du skicak data till din egen server?<br> Efter detta är aktiverat kommer spelet ladda om och en ny meny alternativ dycker upp.",
 		"Settings.CustomerApi.Title": "Spelares API",
+		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
+		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
+		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",
