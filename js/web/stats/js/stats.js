@@ -441,7 +441,7 @@ ${Stats.RenderOptions()}
 		const btnSelectTwoLastEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnLastEras'),
 			title: i18n('Boxes.Stats.BtnLastErasTitle'),
-			isActive: (selectedEras.length == 2 &&
+			isActive: (selectedEras.length === 2 &&
 								 selectedEras.includes(Technologies.EraNames[CurrentEraID]) &&
 								 selectedEras.includes(Technologies.EraNames[CurrentEraID - 1])),
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
@@ -486,7 +486,7 @@ ${Stats.RenderOptions()}
 		].map(source => Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnSource.' + source),
 			title: i18n('Boxes.Stats.SourceTitle.' + source),
-			isActive: Stats.state.source == source,
+			isActive: Stats.state.source === source,
 			dataType: 'selectSource',
 			value: source
 		}));
@@ -494,7 +494,7 @@ ${Stats.RenderOptions()}
 		const chartTypes = ['line', 'streamgraph', 'delta'].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnChartType.' + it),
 			title: i18n('Boxes.Stats.BtnChartTypeTitle.' + it),
-			isActive: Stats.state.chartType == it,
+			isActive: Stats.state.chartType === it,
 			dataType: 'setChartType',
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
 			value: it
@@ -1127,7 +1127,7 @@ ${Stats.RenderCheckbox({
 			});
 		}
 	},
-}
+};
 
 // Lets cleaning after 2min when app is up
 setTimeout(() => {
