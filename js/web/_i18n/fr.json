@@ -15,7 +15,7 @@
 		"Boxes.Calculator.Done": "Terminée",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Taux amis :",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
@@ -49,12 +49,12 @@
 		"Boxes.CityMap.Desc1": "Pour être capable de cartographier votre citée, nous devons transférer vos données à foe-rechner.de",
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 		"Boxes.CityMap.FreeArea": "Surface disponible : ",
-		"Boxes.CityMap.NormalPerspecitve": "Standard",
+		"Boxes.CityMap.NormalPerspecitve": "Standard", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
 		"Boxes.CityMap.YourCity": "Votre citée",
-		"Boxes.EventChests.Chance": "Chance",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Coût",
 		"Boxes.EventChests.CostPerPrize": "Coût / Prix",
 		"Boxes.EventChests.CostPerStep": "Coût / Pas",
@@ -81,7 +81,7 @@
 		"Boxes.HiddenRewards.Title": "Récompenses cachées",
 		"Boxes.Infobox.Filter": "Filtre",
 		"Boxes.Infobox.FilterAuction": "Enchères",
-		"Boxes.Infobox.FilterGex": "GEX",
+		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
 		"Boxes.Infobox.FilterGildFights": "Batailles de Guilde",
 		"Boxes.Infobox.FilterLevel": "Niveaux supérieurs",
 		"Boxes.Infobox.FilterMessage": "Messages",
@@ -138,7 +138,7 @@
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
-		"Boxes.Outpost.ExpansionsSum": "Expansions",
+		"Boxes.Outpost.ExpansionsSum": "Expansions", //Todo: Translate
 		"Boxes.Outpost.infoLine": "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Prochaine expansion",
 		"Boxes.Outpost.tileNotPlanned": "N/A",
@@ -154,7 +154,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "A poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
 		"Boxes.OwnpartCalculator.Ext": "Ext.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
 		"Boxes.OwnpartCalculator.Levels": "Niveaux",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total PF ",
@@ -167,7 +167,7 @@
 		"Boxes.OwnpartCalculator.OwnPart": "Contrib. perso ",
 		"Boxes.OwnpartCalculator.OwnPartRemaining": "Restant ",
 		"Boxes.OwnpartCalculator.PatronPart": "Contrib. externe ",
-		"Boxes.OwnpartCalculator.Place": "Place",
+		"Boxes.OwnpartCalculator.Place": "Place", //Todo: Translate
 		"Boxes.OwnpartCalculator.PlayerName": "Joueur ",
 		"Boxes.OwnpartCalculator.Scheme": "Schéma ",
 		"Boxes.OwnpartCalculator.Step": "Niveau",
@@ -189,7 +189,7 @@
 		"Boxes.Plunderer.HasNoClan": "<em>n'a pas de guilde</em>",
 		"Boxes.Plunderer.nextPage": "Page suivante",
 		"Boxes.Plunderer.noData": "Aucune donnée",
-		"Boxes.Plunderer.Page": "Page",
+		"Boxes.Plunderer.Page": "Page", //Todo: Translate
 		"Boxes.Plunderer.PlayersEra": "Ere du joueur",
 		"Boxes.Plunderer.rounds": "Manches",
 		"Boxes.Plunderer.shieldProtectetUntil": "Protégé jusqu'à : ",
@@ -225,6 +225,60 @@
 		"Boxes.Settings.Active": "Actif",
 		"Boxes.Settings.Inactive": "Inactif",
 		"Boxes.Settings.Title": "Paramètres",
+		"Boxes.Stats.BtnAll": "All", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
+		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
+		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
+		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
+		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
+		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
+		"Boxes.Stats.BtnNoEraTitle": "No Age", //Todo: Translate
+		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
+		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Period.all": "All", //Todo: Translate
+		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
+		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
+		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
+		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
+		"Boxes.Stats.Period.today": "Today", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
+		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Achetable : ",
 		"Boxes.StrategyPoints.FPBar": "PF en stock : ",
 		"Boxes.Technologies.DescInStock": "Disponible",
@@ -272,12 +326,12 @@
 		"HiddenRewards.Positions.cityRoadBig": "Grande route",
 		"HiddenRewards.Positions.cityRoadSmall": "Petite route",
 		"HiddenRewards.Positions.guildExpedition": "Expédition de Guilde",
-		"HiddenRewards.Positions.nature": "Nature",
+		"HiddenRewards.Positions.nature": "Nature", //Todo: Translate
 		"HiddenRewards.Positions.shore": "Rivage",
 		"HiddenRewards.Positions.water": "Dans l'eau",
 		"HiddenRewards.Table.expires": "Echéance",
-		"HiddenRewards.Table.position": "Position",
-		"HiddenRewards.Table.type": "Type",
+		"HiddenRewards.Table.position": "Position", //Todo: Translate
+		"HiddenRewards.Table.type": "Type", //Todo: Translate
 		"Local": "fr-FR",
 		"Menu.Api.Desc": "Configuration de votre serveur personnel.",
 		"Menu.Api.Title": "Serveur API personnel",
@@ -298,7 +352,7 @@
 		"Menu.Event.Desc": "Aperçu des quêtes en cours et à venir.",
 		"Menu.Event.Title": "Liste des quêtes événementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
-		"Menu.Forum.Title": "Forum",
+		"Menu.Forum.Title": "Forum", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Aperçu des récompenses cachées.",
 		"Menu.HiddenRewards.Title": "Récompenses cachées",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
@@ -321,6 +375,8 @@
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",
 		"Menu.Settings.Title": "Paramètres",
+		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Calcule les coûts de la recherche.",
 		"Menu.Technologies.Title": "Recherches Technologiques",
 		"Menu.Technologies.Warning": "Désactivé : Ouvrez d'abord le menu de Recherche Technologiques !",
@@ -357,7 +413,7 @@
 		"Settings.Version.Desc": "Version de l'extension Chrome",
 		"Settings.Version.GuildId": "ID Guilde",
 		"Settings.Version.PlayerId": "ID Joueur",
-		"Settings.Version.Title": "Version",
+		"Settings.Version.Title": "Version", //Todo: Translate
 		"Settings.Version.World": "ID Monde"
 	}
 }
