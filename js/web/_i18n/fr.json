@@ -390,6 +390,10 @@
 		"Settings.ChangeLanguage.Title": "Changer de langue",
 		"Settings.CustomerApi.Desc": "Voulez vous envoyer des données à votre propre serveur ?<br> Après l'activation, le jeu sera relancé et un nouveau menu sera disponible.",
 		"Settings.CustomerApi.Title": "Serveur API personnel",
+		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
+		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
+		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
