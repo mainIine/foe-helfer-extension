@@ -125,8 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "OPGELET: De goederenvoorraad is schaars!",
 		"Boxes.Negotiation.Person": "Persoon",
 		"Boxes.Negotiation.Round": "Poging",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "???", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "???", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "In voorraad:",
 		"Boxes.Negotiation.Success": "Onderhandeling geslaagd!",
 		"Boxes.Negotiation.TableLoadError": "Fout bij het laden van de onderhandelingstabel",
