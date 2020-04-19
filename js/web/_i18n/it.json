@@ -125,8 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENZIONE: i beni stanno per finire",
 		"Boxes.Negotiation.Person": "Persona",
 		"Boxes.Negotiation.Round": "Round", //Todo: Translate
-		"Boxes.Negotiation.SaveCurrentEraGoods": "???", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "???", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Magazzino:",
 		"Boxes.Negotiation.Success": "Completato",
 		"Boxes.Negotiation.TableLoadError": "Errore durante il caricamento della tabella di negoziazione",

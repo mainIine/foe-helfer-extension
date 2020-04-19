@@ -125,8 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
 		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Round": "Runde",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "???", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "???", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Aktuelle Güter sparen",
+		"Boxes.Negotiation.SaveMedals": "Medaillen sparen",
 		"Boxes.Negotiation.Stock": "Lager:",
 		"Boxes.Negotiation.Success": "Erfolg",
 		"Boxes.Negotiation.TableLoadError": "Fehler beim Laden der Verhandlungtabelle",

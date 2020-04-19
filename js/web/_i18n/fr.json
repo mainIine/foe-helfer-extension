@@ -125,8 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENTION : votre stock de marchandises est faible.",
 		"Boxes.Negotiation.Person": "Personne",
 		"Boxes.Negotiation.Round": "Tour",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "???", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "???", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Stock :",
 		"Boxes.Negotiation.Success": "Succès",
 		"Boxes.Negotiation.TableLoadError": "Erreur de chargement de la table de négociations",
