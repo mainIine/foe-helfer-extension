@@ -121,7 +121,7 @@ let Investment = {
 
 		$('.total-storage-invest').easy_number_animate({
 			start_value: 0,
-			end_value: (StrategyPoints.InventoryFP + Investment.Ertrag),
+			end_value: (StrategyPoints.AvailableFP + Investment.Ertrag),
 			duration: 750
 		});
     },

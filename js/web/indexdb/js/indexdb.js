@@ -85,14 +85,10 @@ let IndexDB = {
     Init: (playerid) => {
         IndexDB.db = new Dexie("FoeHelper_" + playerid); //Create different IndexDBs if two players are sharing the same PC playing on the same world
 
-        IndexDB.db.version(2).stores({
-            players: 'id,date',
-            actions: '++id,playerId,date,type',
-            greatbuildings: '++id,playerId,name,level,currentFp,bestRateNettoFp,bestRateCosts,date',
-        });
         IndexDB.db.version(1).stores({
             players: 'id,date',
             actions: '++id,playerId,date,type',
+            greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
         });
 
         IndexDB.db.open();
