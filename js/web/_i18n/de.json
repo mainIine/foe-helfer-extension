@@ -10,16 +10,16 @@
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
-		"Boxes.Calculator.BPs": "BPs",
+		"Boxes.Calculator.BPs": "BPs", //Todo: Translate
 		"Boxes.Calculator.Commitment": "Einsatz",
 		"Boxes.Calculator.Done": "abgeschlossen",
-		"Boxes.Calculator.FP": "FP",
+		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Fördern mit:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das LG!",
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
-		"Boxes.Calculator.Meds": "Meds",
+		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Gewinn",
 		"Boxes.Calculator.Rate": "Kurs",
 		"Boxes.Calculator.Sniping": "Snipen",
@@ -54,7 +54,7 @@
 		"Boxes.CityMap.TitleSend": "Daten übermitteln",
 		"Boxes.CityMap.WholeArea": "Gesamte Fläche: ",
 		"Boxes.CityMap.YourCity": "Deine Stadt",
-		"Boxes.EventChests.Chance": "Chance",
+		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
 		"Boxes.EventChests.Cost": "Kosten",
 		"Boxes.EventChests.CostPerPrize": "Kosten/Preis",
 		"Boxes.EventChests.CostPerStep": "Kosten/Schritt",
@@ -79,11 +79,11 @@
 		"Boxes.HiddenRewards.Disappears": "Verschwindet",
 		"Boxes.HiddenRewards.NoEvents": "Keine Ereignisse vorhanden",
 		"Boxes.HiddenRewards.Title": "Ereignisse",
-		"Boxes.Infobox.Filter": "Filter",
+		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
 		"Boxes.Infobox.FilterAuction": "Auktion",
-		"Boxes.Infobox.FilterGex": "GEX",
+		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
 		"Boxes.Infobox.FilterGildFights": "Gildengefechte",
-		"Boxes.Infobox.FilterLevel": "Level-Up",
+		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
 		"Boxes.Infobox.FilterMessage": "Nachricht",
 		"Boxes.Infobox.FilterTrade": "Handel",
 		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
@@ -93,7 +93,7 @@
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Stufe __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 		"Boxes.Infobox.ResetBox": "Box leeren",
-		"Boxes.Infobox.Title": "Infobox",
+		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
 		"Boxes.Investment.AllUpToDate": "Alles aktuell",
 		"Boxes.Investment.AllUpToDateDesc": "Alle Spieler dieser Seite wurden bereits erfasst",
 		"Boxes.Investment.CurrReward": "Aktueller Gewinn: ",
@@ -107,7 +107,7 @@
 		"Boxes.Kits.TabSelectionKits": "Auswahl-Kits",
 		"Boxes.Kits.Title": "Gebäude- / Auswahl-Kits",
 		"Boxes.LGOverviewBox.Building": "Gebäude",
-		"Boxes.LGOverviewBox.Level": "Level",
+		"Boxes.LGOverviewBox.Level": "Level", //Todo: Translate
 		"Boxes.LGOverviewBox.NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen",
 		"Boxes.LGOverviewBox.PayedTotal": "Eingez. / Gesamt",
 		"Boxes.LGOverviewBox.Profit": "Gewinn",
@@ -118,12 +118,12 @@
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "bisher keine Einzahlung",
 		"Boxes.Negotiation.Average": "Ø Menge",
 		"Boxes.Negotiation.Canceled": "Verhandlung wurde abgebrochen",
-		"Boxes.Negotiation.Chance": "Chance",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
+		"Boxes.Negotiation.Chance": "Chance", //Todo: Translate
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
 		"Boxes.Negotiation.DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
 		"Boxes.Negotiation.GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
 		"Boxes.Negotiation.GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
-		"Boxes.Negotiation.Person": "Person",
+		"Boxes.Negotiation.Person": "Person", //Todo: Translate
 		"Boxes.Negotiation.Round": "Runde",
 		"Boxes.Negotiation.SaveCurrentEraGoods": "Aktuelle Güter sparen",
 		"Boxes.Negotiation.SaveMedals": "Medaillen sparen",
@@ -149,18 +149,18 @@
 		"Boxes.Outpost.TitleFree": "Frei",
 		"Boxes.Outpost.TitleShort": "Güterübersicht - ",
 		"Boxes.OwnpartCalculator.Arc": "Arche",
-		"Boxes.OwnpartCalculator.Auto": "Auto",
-		"Boxes.OwnpartCalculator.BPs": "BPs",
+		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
+		"Boxes.OwnpartCalculator.BPs": "BPs", //Todo: Translate
 		"Boxes.OwnpartCalculator.BuildingName": "Gebäude",
 		"Boxes.OwnpartCalculator.CopyValues": "Werte kopieren",
 		"Boxes.OwnpartCalculator.Deposit": "Einzahlen",
 		"Boxes.OwnpartCalculator.Done": "Erledigt",
-		"Boxes.OwnpartCalculator.Ext": "Ext",
+		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
 		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Individueller LG Name",
 		"Boxes.OwnpartCalculator.Levels": "Leveln",
 		"Boxes.OwnpartCalculator.LGTotalFP": "LG Gesamt-FP",
-		"Boxes.OwnpartCalculator.Meds": "Meds",
+		"Boxes.OwnpartCalculator.Meds": "Meds", //Todo: Translate
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Kein Platz sicher",
 		"Boxes.OwnpartCalculator.Note": "Merken",
 		"Boxes.OwnpartCalculator.OldLevel": "Altes Level",
@@ -186,7 +186,7 @@
 		"Boxes.Plunderer.collectedToday": "Heute gesammelt",
 		"Boxes.Plunderer.Defense": "Verteidigung",
 		"Boxes.Plunderer.filteredByUser": "Filter nach Spieler",
-		"Boxes.Plunderer.FP": "FP",
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "erste Seite",
 		"Boxes.Plunderer.HasNoClan": "<em>hat keine Gilde</em>",
 		"Boxes.Plunderer.nextPage": "nächste Seite",
@@ -206,14 +206,14 @@
 		"Boxes.Productions.Happiness": "Zufriedenheit",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Menge",
-		"Boxes.Productions.Headings.boost": "Boost",
+		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Kulturelle Gebäude",
 		"Boxes.Productions.Headings.decoration": "Dekorationen",
 		"Boxes.Productions.Headings.earning": "Ernte",
 		"Boxes.Productions.Headings.goods": "Gütergebäude",
 		"Boxes.Productions.Headings.greatbuilding": "Legendäre Gebäude",
 		"Boxes.Productions.Headings.main_building": "Rathaus",
-		"Boxes.Productions.Headings.name": "Name",
+		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
 		"Boxes.Productions.Headings.number": "Anzahl",
 		"Boxes.Productions.Headings.production": "Produktionsgebäude",
 		"Boxes.Productions.Headings.random_production": "Zufalls Produktionen",
@@ -227,59 +227,60 @@
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Einstellungen",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
-		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
-		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
-		"Boxes.Stats.Period.all": "All", //Todo: Translate
-		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
-		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
-		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
-		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
-		"Boxes.Stats.Period.today": "Today", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
-		"Boxes.Stats.Title": "Statistic", //Todo: Translate
+		"Boxes.Stats.BtnAll": "Alle", 
+		"Boxes.Stats.BtnAllPlayableEras": "Alle Zeitalter",
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Wähle alle spielbaren Zeitalter (außer: \"Kein Zeitalter\", Spezielle)",
+		"Boxes.Stats.BtnAllTittle": "Zeitalter + kein Zeitalter + Spezielle",
+		"Boxes.Stats.BtnChartType.delta": "Delta",
+		"Boxes.Stats.BtnChartType.line": "Linien",
+		"Boxes.Stats.BtnChartType.streamgraph": "Stream",
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Diagramm erhöhen / verringern",
+		"Boxes.Stats.BtnChartTypeTitle.line": "Linien diagramm",
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream-Diagramm",
+		"Boxes.Stats.BtnLastEras": "letzten 2 Zeitalter",
+		"Boxes.Stats.BtnLastErasTitle": "Zeige das aktuelle und das vorhergehende Zeitalter",
+		"Boxes.Stats.BtnMyEra": "Mein Zeitalter",
+		"Boxes.Stats.BtnNoEra": "Kein Zeitalter",
+		"Boxes.Stats.BtnNoEraTitle": "Kein Zeitalter",
+		"Boxes.Stats.BtnSource.gbgPlayers": "Gildengefechte",
+		"Boxes.Stats.BtnSource.rewards": "Belohungen",
+		"Boxes.Stats.BtnSource.treasureClan": "Gildenkasse",
+		"Boxes.Stats.BtnSource.treasureClanDaily": "Gildenkasse - täglich",
+		"Boxes.Stats.BtnSource.treasurePlayer": "Güter",
+		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Güter - täglich",
+		"Boxes.Stats.BtnSource.units": "Armeen - stündlich",
+		"Boxes.Stats.BtnSource.unitsDaily": "Armeen - täglich",
+		"Boxes.Stats.BtnToggleAnnotations": "GvG Übersicht",
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Zeigt eine Abnahme der Güter auf der GvG-Karte.",
+		"Boxes.Stats.BtnToggleGroupBy": "Nach Zeitalter sortieren",
+		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Period.all": "Alle",
+		"Boxes.Stats.Period.last30days": "letzten 30 Tage",
+		"Boxes.Stats.Period.last7days": "letzten 7 Tage",
+		"Boxes.Stats.Period.sinceTuesday": "seit Dienstag",
+		"Boxes.Stats.Period.thisMonth": "diesen Monat",
+		"Boxes.Stats.Period.today": "Heute",
+		"Boxes.Stats.PeriodTitle.all": "Gesamter Zeitraum",
+		"Boxes.Stats.PeriodTitle.last30days": "In den letzten 30 Tagen gesammelt",
+		"Boxes.Stats.PeriodTitle.last7days": "In den letzten 7 Tagen gesammelt",
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Seit letzten Dienstag gesammelt (die GEX startet Dienstags)",
+		"Boxes.Stats.PeriodTitle.thisMonth": "Diesen Monat gesammelt",
+		"Boxes.Stats.PeriodTitle.today": "Heute gesammelt",
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Gildengefechte",
+		"Boxes.Stats.Rewards.Source.guildExpedition": "GEX",
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Kriegsbeute",
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Belohnungen von den Gildengefechten",
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Belohnungen von der Gildenexpedition, die vom Relikttempel erzeugt wurden",
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Kriegsbeute durch die Burg Himeji",
+		"Boxes.Stats.SourceTitle.gbgPlayers": "Punktestände der Spieler der Gildengefechte",
+		"Boxes.Stats.SourceTitle.rewards": "Deine Belohnungen der Burg Himej, Relikttempel und Gildengefechten",
+		"Boxes.Stats.SourceTitle.treasureClan": "Gildenkasse - stündlich",
+		"Boxes.Stats.SourceTitle.treasureClanDaily": "Gildenkasse - täglich",
+		"Boxes.Stats.SourceTitle.treasurePlayer": "Deine Güter - stündlich",
+		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Deine Güter - täglich",
+		"Boxes.Stats.SourceTitle.units": "Deine Einheiten - stündlich",
+		"Boxes.Stats.SourceTitle.unitsDaily": "Deine Einheiten - täglich",
+		"Boxes.Stats.Title": "Statistiken",
 		"Boxes.StrategyPoints.BuyableFP": "Kaufbar: ",
 		"Boxes.StrategyPoints.FPBar": "FP-Lager: ",
 		"Boxes.Technologies.DescInStock": "Vorhanden",
