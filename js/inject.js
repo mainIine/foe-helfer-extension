@@ -168,6 +168,7 @@
         'plunderer',
 				'guildfights',
 				'notes',
+				'stats',
 				'campagnemap',
 				'technologies',
 				'negotiation',

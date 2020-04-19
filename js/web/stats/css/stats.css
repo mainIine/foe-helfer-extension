@@ -1,0 +1,113 @@
+#statsBody {
+	width: 1200px;
+	max-height: 800px;
+	padding: 8px 0;
+	overflow: scroll;
+}
+
+#stats #highcharts {
+	height: 670px;
+}
+
+#stats .options {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 4px;
+}
+
+#stats .options-2 {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 4px;
+}
+
+#stats .option-toggle-group {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	max-height: 45px;
+	width: 98px;
+	margin-left: 10px;
+	align-items: baseline;
+	align-content: baseline;
+}
+
+#stats .option-era-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	max-height: 45px;
+	width: 311px;
+	margin-left: 10px;
+	align-items: baseline;
+	align-content: baseline;
+}
+
+#stats .option-chart-type-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	max-height: 45px;
+	width: 210px;
+	justify-content: start;
+	align-items: baseline;
+	align-content: baseline;
+}
+
+#stats .option-source-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	max-height: 45px;
+	align-items: baseline;
+	align-content: baseline;
+}
+
+/* Highcharts table wrapper */
+#stats .highcharts-data-table {
+	overflow: scroll;
+}
+
+#stats .highcharts-data-table caption {
+	font-size: 150%;
+	text-align: left;
+	margin-top: 10px;
+	margin-left: 20px;
+}
+
+/* Highcharts table */
+#stats .highcharts-data-table table {
+	border-spacing: 0;
+	border-collapse: separate;
+	width: 100%;
+	background-color: transparent;
+}
+
+#stats .highcharts-data-table table thead tr th,
+#stats .highcharts-data-table table th,
+.thead th {
+	background-color: rgba(0,0,0, 0.5);
+}
+
+#stats .highcharts-data-table table tbody tr:nth-child(odd) {
+	background-color: rgba(255,255,255, 0.07);
+}
+
+#stats .highcharts-data-table table:not(.no-hover) tbody tr:hover {
+	background-color: rgba(243, 214, 160, 0.2);
+}
+
+#stats .highcharts-data-table table tr th {
+	white-space: nowrap;
+}
+
+#stats .highcharts-data-table table tr th,
+#stats .highcharts-data-table table tr td {
+	padding: 2px 5px;
+}
+
+#stats .highcharts-data-table table tr td {
+	border-top: 1px solid #7F5A34;
+	border-bottom: 1px solid #3D250F;
+}
