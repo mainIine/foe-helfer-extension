@@ -125,6 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "FIGYELEM: alacsony az árú készlet",
 		"Boxes.Negotiation.Person": "Személy",
 		"Boxes.Negotiation.Round": "Kör",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Készlet:",
 		"Boxes.Negotiation.Success": "Siker",
 		"Boxes.Negotiation.TableLoadError": "Hiba a tárgyalás tábla betöltése közben",
@@ -239,7 +241,6 @@
 		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
 		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
 		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEraTitle": "No Age", //Todo: Translate
 		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
 		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
 		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
