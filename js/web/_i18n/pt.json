@@ -135,7 +135,6 @@
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Produções em curso",
 		"Boxes.Neighbors.ReadyProductions": "Produções terminadas",
-		"Boxes.Neighbors.Title": "Produções de ",
 		"Boxes.Outpost.DescInStock": "Disponivel",
 		"Boxes.Outpost.DescRequired": "Necessários",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excesso</span> / <span style='color:#ef1616'>em falta</span>",
