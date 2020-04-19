@@ -71,7 +71,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	}
 
 	// Avoid adding defend battles (when view recorded defend battles)
-	if (defenderPlayerId == ExtPlayerID) { return ; }
+	if (defenderPlayerId === ExtPlayerID) { return ; }
 
 	// Ensure user is exists in db already
 	await IndexDB.addUserFromPlayerDictIfNotExists(defenderPlayerId);
