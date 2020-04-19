@@ -146,18 +146,16 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				'money'
 			];
 			const isImportant = Object.keys(resources).some(it => !unimportantProds.includes(it));
-			await IndexDB.db.actions.add({
-				playerId,
-				date: new Date(),
-				type: Plunderer.ACTION_TYPE_PLUNDERED,
-				resources,
+
+			const plunderData = {	
+				resources: resources,
 				sp: resources.strategy_points || 0,
 				important: isImportant,
 				entityId: entity.id,
-				buildId: entity.cityentity_id,
-				plunderId: it.id
-			});
-			Plunderer.UpdateBoxIfVisible();
+				buildId: entity.cityentity_id,				
+			};
+
+			Plunderer.addPlunderData(playerId, plunderData);		
 		}
 	});
 });
@@ -170,19 +168,20 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', async (data, postData) 
 		return;
 	}
 
+	const lastVisitedPlayer = Plunderer.lastVisitedPlayer;
+	if (!lastVisitedPlayer) {
+		return;
+	}
+	const plunderedPlayerId = lastVisitedPlayer.other_player.player_id;
+
 	// plunder_and_pillage is the name of the bonus given by Atlantis Museum
-	const plunderAndPillages = r.filter(it => it.type === "citymap_icon_plunder_and_pillage");
-	
-	for (const it of plunderAndPillages) {
-		await IndexDB.db.plunderAndPillages.add({
-			plunderId: it.id,
-			date: new Date()
-		});
+	const plunderAndPillages = r.filter(it => it.type === "citymap_icon_plunder_and_pillage");		
+	for (const it of plunderAndPillages) {		
+		const plunderData = {factor: 2};
+		
+		Plunderer.addPlunderData(plunderedPlayerId, plunderData);
 	}
 });
-
-
-
 
 FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) => {
 	const playerData = data.responseData;
@@ -230,6 +229,50 @@ let Plunderer = {
 			era: player.other_player_era,
 			date: new Date(),
 		});
+	},
+
+	/**
+	 * Upsert ACTION_TYPE_PLUNDERED data in db
+	 *
+	 * @param playerId, 
+	 * @param plunderData
+	 * @returns {Promise<void>}
+	 */
+
+	// TODO: Need to do this in a single transaction
+	// Currently, this is just going through add new action all the time, never through the update path.
+	addPlunderData: async (playerId, plunderData) => {
+		// This action might not be the ACTION_TYPE_PLUNDERED one
+		// Shield might happen between ACTION_TYPE_BATTLE_WIN and ACTION_TYPE_PLUNDERED
+		const lastActionForThisPlayer = await IndexDB.db.actions.orderBy('date')
+												.filter(it => it.playerId == playerId && 
+														      it.type != Plunderer.ACTION_TYPE_SHIELDED )
+												.last();
+
+		// Should at least have the ACTION_TYPE_BATTLE_WIN
+		if (!lastActionForThisPlayer) {
+			return;
+		}
+		
+		if(lastActionForThisPlayer.type === Plunderer.ACTION_TYPE_PLUNDERED) {
+			const updatedAction = {
+				...lastActionForThisPlayer,
+				...plunderData,
+			};
+			await IndexDB.db.actions.put(updatedAction);
+		}
+		else {
+			const newAction = {
+				playerId,
+				date: new Date(),
+				type: Plunderer.ACTION_TYPE_PLUNDERED,
+				factor: 1,
+				...plunderData,
+			}
+			await IndexDB.db.actions.add(newAction);
+		}
+
+		Plunderer.UpdateBoxIfVisible();
 	},
 
 	inited: false,
@@ -365,7 +408,7 @@ let Plunderer = {
 		$('#plundererBody').html(`
 			<div class="header">
 				<div class="strategy-points">
-					Caclulating strategy points...
+					Calculating strategy points...
 				</div>
 				<div class="filter">
 					${filterByPlayerId ? `${i18n('Boxes.Plunderer.filteredByUser')}. <button class="btn btn-default select-player" data-value="">
@@ -374,7 +417,7 @@ let Plunderer = {
 				</div>
 			</div>
 			${actions.length === 0 ? `<div class="no-data"> - ${i18n('Boxes.Plunderer.noData')} - </div>` : ''}
-			${await Plunderer.RenderActions(actions)}
+			${Plunderer.RenderActions(actions)}
 			<div class="pagination">
 				${page > 1 && pages > 1 ? `<button class="btn btn-default load-1st-page">${i18n('Boxes.Plunderer.goto1stPage')}</button>` : ''}
 				${i18n('Boxes.Plunderer.Page')} ${page}/${pages}
@@ -385,19 +428,6 @@ let Plunderer = {
 		Plunderer.loading = false;
 	},
 
-	/**
-	 * Returns factor taking Atlantis Museum Bonus into account
-	 *
-	 * @param action
-	 * @returns {Promise<number>}
-	 */
-	getActionFactor: async (action) => {
-		let factor = 1;
-		if(action.type === Plunderer.ACTION_TYPE_PLUNDERED) {
-			factor = (await IndexDB.db.plunderAndPillages.where('plunderId').equals(action.plunderId).toArray()).length > 0 ? 2 : 1;
-		}
-		return factor;
-	},
 
 	/**
 	 * Calculate the ForgePoints for 1 Week
@@ -411,16 +441,14 @@ let Plunderer = {
 
 		let todaySP = 0;
 		let thisWeekSP = 0;
-		let totalSPSelect = await (filterByPlayerId ?
-			IndexDB.db.actions.where('playerId').equals(filterByPlayerId) :
-			IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED)).toArray();
+		let totalSPSelect = filterByPlayerId ?
+			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
 
 		let totalSP = 0;
 
-		for(const it of totalSPSelect)
-		{
-			const factor = await Plunderer.getActionFactor(it);
-			const sp = (it.sp || 0) * factor;
+		await totalSPSelect.each((it) => {
+			const sp = (it.sp || 0) * (it.factor || 1);
 
 			totalSP += sp;
 			if (dateThisWeek < it.date) {
@@ -430,7 +458,7 @@ let Plunderer = {
 					todaySP += sp;
 				}
 			}
-		}	
+		});
 
 		$('#plundererBody .strategy-points').html(`
 			${i18n('Boxes.Plunderer.collectedToday')}: <strong class="${todaySP ? 'text-warning' : ''}">${todaySP}</strong> ${i18n('Boxes.Plunderer.FP')},
@@ -440,18 +468,17 @@ let Plunderer = {
 	},
 
 
-	RenderActions: async (actions) => {
+	RenderActions: (actions) => {
 		let lastPlayerId = null;
-		let actionRenders = await Promise.all(actions.map(async (action) => {
+		return actions.map(action => {
 			const isSamePlayer = action.playerId === lastPlayerId;
 			lastPlayerId = action.playerId;
 			return Plunderer.RenderAction({action, isSamePlayer});
-		}));
-		return actionRenders.join('');
+		}).join('');
 	},
 
 
-	RenderAction: async ({action, isSamePlayer}) => {
+	RenderAction: ({action, isSamePlayer}) => {
 		const type = {
 			[Plunderer.ACTION_TYPE_PLUNDERED]: i18n('Boxes.Plundered.actionPlundered'),
 			[Plunderer.ACTION_TYPE_BATTLE_WIN]: i18n('Boxes.Plundered.actionBattleWon'),
@@ -500,7 +527,7 @@ let Plunderer = {
 							${action.playerName} <span class="clan">[${action.clanName}]</span>
 						</div>
 						`}
-						<div class="content">${await Plunderer.RenderActionContent(action)}</div>
+						<div class="content">${Plunderer.RenderActionContent(action)}</div>
 					</div>
 				</div>`;
 	},
@@ -509,24 +536,23 @@ let Plunderer = {
 	/**
 	 *
 	 * @param action
-	 * @returns {Promise<string>}
+	 * @returns {string}
 	 */
-	RenderActionContent: async(action) => {
+	RenderActionContent: (action) => {
 		switch (action.type) {
 			case Plunderer.ACTION_TYPE_PLUNDERED:
 				const goodsIds = Object.keys(action.resources);
-				const factor = await Plunderer.getActionFactor(action);
 
 				return `<div class="plunder-wrap">
 							<div class="name">
 								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" />
-								${factor === 2 ? `<img class="plunder_and_pillage"  src="${extUrl}js/web/plunderer/images/great_building_bonus_plunder_and_pillage.png" alt="Bonus" />` : ``}
+								${action.factor === 2 ? `<img class="plunder_and_pillage"  src="${extUrl}js/web/plunderer/images/great_building_bonus_plunder_and_pillage.png" alt="Bonus" />` : ``}
 								${BuildingNamesi18n[action.buildId].name}
 							</div>
 							<div class="plunder-items ${action.important ? 'text-warning' : ''}">
 								${goodsIds.map(id => {
 									const goods = (GoodsData[id] || {name: ''}).name;
-									const str = `${action.resources[id] * factor} ${goods}`;
+									const str = `${action.resources[id] * action.factor} ${goods}`;
 									return id === 'strategy_points' ? `<strong>${str}</strong>` : `${str}`;
 								}).map(it => `<div>${it}</div>`).join('')}
 							</div>
