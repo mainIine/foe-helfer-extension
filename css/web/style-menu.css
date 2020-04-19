@@ -70,7 +70,7 @@ input[type=number] {
 	text-shadow: none;
 }
 
-.dropdown input#checkbox-toggle {
+.dropdown input.dropdown-checkbox {
 	display: none;
 }
 
@@ -83,6 +83,9 @@ input[type=number] {
 	color: #93795D;
 	padding: .4rem;
 
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	text-align: center;
 
 	-webkit-user-select: none;
@@ -177,8 +180,16 @@ input[type=number] {
 	outline: none !important;
 }
 
-.btn-default:hover,
-.btn-default-active {
+.btn-default[disabled], .btn-default[disabled]:hover {
+	color: #999;
+	background: rgb(42, 42, 42);
+	background: -moz-linear-gradient(top,  rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+	background: -webkit-linear-gradient(top, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+	background: linear-gradient(to bottom,  rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+}
+
+.btn-default:not([disabled]):hover,
+.btn-default-active:not([disabled]){
 	background: rgb(228,193,75);
 	background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
 	background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
@@ -186,8 +197,22 @@ input[type=number] {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 }
 
-.btn-green,
-.btn-green:hover {
+.btn-tight {
+	margin: 1px;
+	padding: 0 4px;
+	line-height: 1;
+	height: 18px;
+	width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+	font-size: 9pt;
+	font-family: sans-serif;
+}
+
+.btn-green:not([disabled]),
+.btn-green:not([disabled]):hover {
 	background: #6eaa5c;
 	background: -moz-linear-gradient(top,  #6eaa5c 0%, #29931d 100%);
 	background: -webkit-linear-gradient(top,  #6eaa5c 0%,#29931d 100%);
@@ -508,6 +533,10 @@ p {
 
 #settings-Btn span {
 	background-image: url('../images/wrench.png');
+}
+
+#stats-Btn span {
+	  background-image: url('../images/stats.png');
 }
 
 #github-Btn span {
