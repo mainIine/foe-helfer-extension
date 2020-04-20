@@ -125,16 +125,16 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENTION : votre stock de marchandises est faible.",
 		"Boxes.Negotiation.Person": "Personne",
 		"Boxes.Negotiation.Round": "Tour",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Préserver les ressources de l'ère actuelle",
+		"Boxes.Negotiation.SaveMedals": "Préserver les médailles",
 		"Boxes.Negotiation.Stock": "Stock :",
 		"Boxes.Negotiation.Success": "Succès",
 		"Boxes.Negotiation.TableLoadError": "Erreur de chargement de la table de négociations",
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.AttackingArmy": "Estimation du bonus des armées en Attaque : __attatt__% (Att) / __attdef__% (Déf)",
+		"Boxes.Neighbors.DefendingArmy": "Estimation du bonus des armées en Défense : __defatt__% (Att) / __defdef__% (Déf)",
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
 		"Boxes.Outpost.DescInStock": "Disponible",
@@ -288,7 +288,7 @@
 		"Boxes.Technologies.NoTechs": "Vous avez atteint la fin de cette ère.",
 		"Boxes.Technologies.Resource": "Ressource",
 		"Boxes.Technologies.Title": "Les coûts de recherche pour",
-		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
+		"Boxes.Units.AlcaHarvest": "Votre Alcatraz est prêt à être récolté !",
 		"Boxes.Units.Attack": "Attaque",
 		"Boxes.Units.Bind": "Liée",
 		"Boxes.Units.Defend": "Défense",
@@ -370,14 +370,14 @@
 		"Menu.OwnpartCalculator.Desc": "Crée un plan de pose de PF, calcule les coûts et copie les valeurs.",
 		"Menu.OwnpartCalculator.Title": "Calculatrice GM interne",
 		"Menu.OwnpartCalculator.Warning": "Désactivé : Ouvrez d'abord un de vos GM !",
-		"Menu.Plunderer.Desc": "Afficher l'historique de l'activité PvP et de récolte du voisinage.",
+		"Menu.Plunderer.Desc": "Afficher l'historique de l'activité PvP et de pillage du voisinage.",
 		"Menu.Plunderer.Title": "Activité PvP",
 		"Menu.Productions.Desc": "Affiche le nombre en cours de toutes les productions.",
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",
 		"Menu.Settings.Title": "Paramètres",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
+		"Menu.Stats.Desc": "Ressources, Unités, Récompenses, Champ de bataille des guildes",
+		"Menu.Stats.Title": "Statistiques",
 		"Menu.Technologies.Desc": "Calcule les coûts de la recherche.",
 		"Menu.Technologies.Title": "Recherches Technologiques",
 		"Menu.Technologies.Warning": "Désactivé : Ouvrez d'abord le menu de Recherche Technologiques !",
@@ -390,10 +390,10 @@
 		"Settings.ChangeLanguage.Title": "Changer de langue",
 		"Settings.CustomerApi.Desc": "Voulez vous envoyer des données à votre propre serveur ?<br> Après l'activation, le jeu sera relancé et un nouveau menu sera disponible.",
 		"Settings.CustomerApi.Title": "Serveur API personnel",
-		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
-		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
-		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
-		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Desc": "Faut-il préserver les ressources de l'ère actuelle en priorité ?<br>Si coché, les ressources de l'ère actuelle seront les dernières à être incluses dans une négociation.",
+		"Settings.DontSaveCurrentEraGoods.Title": "Négociation - Ressources de l'ère actuelle",
+		"Settings.DontSaveMedals.Desc": "Faut-il préserver les médailles en priorité ?<br>Si coché, les médailles seront les dernières à être incluses dans une négociation.",
+		"Settings.DontSaveMedals.Title": "Négociation - Médailles",
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
