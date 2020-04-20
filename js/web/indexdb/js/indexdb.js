@@ -33,6 +33,8 @@
 *       date: Date,
 *       type: Plunderer.ACTION_TYPE_PLUNDERED,
 *       resources: Object, *
+*       doublePlunder: boolean | undefined, * double plunder bonus is applied or not
+*       doublePlunderApplied: boolean * true when double bonus is applied
 *       sp: number, * strategy points
 *       important: boolean, * if not supplies or money only
 *       entityId: number, * foe city entity Id
@@ -65,7 +67,7 @@
 *       era: string | 'unknown',
 *       date: new Date(), * last visit date
 *   }
-*   
+*
 *   "greatbuildings" structur
 *   {
 *       id: number,

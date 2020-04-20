@@ -146,7 +146,7 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				'money'
 			];
 			const isImportant = Object.keys(resources).some(it => !unimportantProds.includes(it));
-			await IndexDB.db.actions.add({
+			let action = {
 				playerId,
 				date: new Date(),
 				type: Plunderer.ACTION_TYPE_PLUNDERED,
@@ -155,10 +155,42 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				important: isImportant,
 				entityId: entity.id,
 				buildId: entity.cityentity_id,
-			});
-			Plunderer.UpdateBoxIfVisible();
+			};
+
+			await Plunderer.upsertPlunderAction(action);
 		}
 	});
+});
+
+// Handle double plunder bonus (Atlantis Museum). Usually this event come before CityMapService/reset
+FoEproxy.addHandler('CityMapService', 'showEntityIcons', async (data, postData) => {
+	// Typical structure of data:
+	// "responseData": [
+	//	{
+	//		"id": 2440,
+	//		"type": "citymap_icon_plunder_and_pillage",
+	//		"__class__": "CityEntityIcon"
+	//	}
+	// ],
+
+	const r = data.responseData;
+
+	if (!Array.isArray(r)) {
+		return;
+	}
+
+	// In fact this is an array, but only one plunder id will be for sure in this event, so ignore rest array
+	const doublePlunderCityId = r.filter(it => it.type === 'citymap_icon_plunder_and_pillage').map(it => it.id)[0];
+	if (!doublePlunderCityId) { return }
+
+	const playerId = Plunderer.lastVisitedPlayer.other_player.player_id;
+
+	const action = {
+		entityId: doublePlunderCityId,
+		playerId,
+		doublePlunder: true,
+	};
+	await Plunderer.upsertPlunderAction(action);
 });
 
 FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) => {
@@ -189,6 +221,8 @@ let Plunderer = {
 	ACTION_TYPE_BATTLE_SURRENDERED: 4,
 	ACTION_TYPE_SHIELDED: 5,
 
+	inited: false,
+
 	/**
 	 * Upsert player in db
 	 *
@@ -209,7 +243,45 @@ let Plunderer = {
 		});
 	},
 
-	inited: false,
+	// Create or update action, also apply doublePlunder
+	upsertPlunderAction: async (payload) => {
+		const {entityId, playerId} = payload;
+		if (!entityId || !playerId) { return; }
+
+		await IndexDB.db.transaction('rw', IndexDB.db.actions, async () => {
+			// Fetch last plunder action that happen just few seconds ago (1 minute ago)
+			const lastPlunderAction = await IndexDB.db.actions.where({playerId})
+						.filter(it => (it.type == Plunderer.ACTION_TYPE_PLUNDERED &&
+													 it.entityId == entityId &&
+													 it.date > (+new Date() - 60 * 10 * 1000)))
+						.last();
+
+			// Add missing fields if not exists jet to payload:
+			payload = {
+				resources: {},
+				sp: 0,
+				type: Plunderer.ACTION_TYPE_PLUNDERED,
+				...lastPlunderAction,
+				...payload,
+				date: new Date(),
+			}
+
+			if (lastPlunderAction && payload.doublePlunder && !payload.doublePlunderApplied) {
+				payload.sp = payload.sp * 2;
+				payload.doublePlunder = true,
+				payload.doublePlunderApplied = true;
+				Object.keys(payload.resources).forEach(key => payload.resources[key] = payload.resources[key] * 2);
+			}
+
+			if (lastPlunderAction) {
+				await IndexDB.db.actions.put(payload);
+			} else {
+				await IndexDB.db.actions.add(payload);
+			}
+		});
+
+		Plunderer.UpdateBoxIfVisible();
+	},
 
 	/**
 	 * Refresh the Box
@@ -342,7 +414,7 @@ let Plunderer = {
 		$('#plundererBody').html(`
 			<div class="header">
 				<div class="strategy-points">
-					Caclulating strategy points...
+					Calculating strategy points...
 				</div>
 				<div class="filter">
 					${filterByPlayerId ? `${i18n('Boxes.Plunderer.filteredByUser')}. <button class="btn btn-default select-player" data-value="">
@@ -479,8 +551,9 @@ let Plunderer = {
 
 				return `<div class="plunder-wrap">
 							<div class="name">
-								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" />
-								${BuildingNamesi18n[action.buildId].name}
+								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" title="Sabotage" />
+								${action.doublePlunder ? `<img class="doublePlunder" src="${extUrl}js/web/plunderer/images/double_plunder.png" alt="Double Plunder Bonus" title="Double Plunder Bonus"/>` : ''}
+								${(BuildingNamesi18n[action.buildId] || {name: '-'}).name}
 							</div>
 							<div class="plunder-items ${action.important ? 'text-warning' : ''}">
 								${goodsIds.map(id => {
