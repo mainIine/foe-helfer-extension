@@ -120,7 +120,8 @@ let Outposts = {
 		}
 
 		const primaryResourceId = OutpostData.primaryResourceId;
-		const resourceIDs = [...OutpostData.goodsResourceIds, 'diplomacy'];
+		const goodProductionResourceId = (primaryResourceId === 'deben' ? 'egyptians_loot' : primaryResourceId);
+		const resourceIDs = [...OutpostData.goodsResourceIds, 'diplomacy', goodProductionResourceId];
 		const advancements = Outposts.Advancements;
 		const buildings = Outposts.CityMap ? Outposts.CityMap.entities : [];
 		const plannedTiles = Outposts.PlannedTiles[OutpostData.content] || {};
@@ -222,7 +223,7 @@ let Outposts = {
 			  '</span><span><strong>'
 			+ GoodsData[primaryResourceId].name + ': ' + HTML.Format(ResourceStock[primaryResourceId]||0)
 			+ '</strong> (+ '
-			+ (current4HProductionRate > 0 ? HTML.Format(current4HProductionRate) : '???')
+			+ (current4HProductionRate > 0 ? HTML.Format(Math.round(current4HProductionRate)) : '???')
 			+ '/4h)'
 			+ '</span>'
 		);
@@ -308,8 +309,7 @@ let Outposts = {
 
 		t.push('</tr>');
 
-
-		// Freiuschaltungen
+		// Freischaltungen
 		for (let advancement of advancements) {
 			let unlocked = advancement.isUnlocked;
 
@@ -323,38 +323,62 @@ let Outposts = {
 			let cost = advancement.requirements.resources;
 
 			for (let resourceID of resourceIDs) {
-				const resourceCost = cost[resourceID];
+				let resourceCost = 0;
+				if (resourceID !== goodProductionResourceId) { //Normale Resourcen
+					resourceCost = cost[resourceID];
+				}
+				else { //Goldmünzen bzw. Beute => abhängig von anderen Güterkosten
+					for (let CostResourceName in cost) {
+						if (CostResourceName === 'diplomacy') continue;
+
+						resourceCost += Math.ceil((cost[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000);
+                    }
+                }
 				const resourceInStock = currStock[resourceID];
-				
+								
 				if (resourceCost == null || resourceCost <= 0) {
 					t.push('<td></td>');
 					continue;
 				}
 
-				t.push('<td class="text-center">');
+				t.push('<td class="text-center" nowrap="nowrap">');
 				
 				if (unlocked) {
 					// bereits erforscht
-					t.push('<span class="text-muted">' + cost[resourceID] + '</span>');
+					t.push('<span class="text-muted">' + HTML.Format(cost[resourceID]) + '</span>');
 					t.push('</td>');
 					continue;
 				}
 
 				const resourceSumBefore = sums[resourceID];
-				const resourceSumAfter = resourceID === 'diplomacy' ? resourceCost : resourceSumBefore + resourceCost;
+				let resourceSumAfter = 0;
+				if (resourceID === 'diplomacy') {
+					resourceSumAfter = resourceCost;
+				}
+				else if (resourceID === goodProductionResourceId) {
+					for (let CostResource in resourceIDs) {
+						let CostResourceName = resourceIDs[CostResource];
+						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
+
+						resourceSumAfter += Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000);
+					}
+				}
+				else {
+					resourceSumAfter = resourceSumBefore + resourceCost;
+				}
 				sums[resourceID] = resourceSumAfter;
 				
-				const displayVal = displaySums && resourceID !== 'diplomacy' ? resourceSumAfter : resourceCost;
+				const displayVal = HTML.Format(displaySums && resourceID !== 'diplomacy' ? resourceSumAfter : resourceCost);
 				
-				if (resourceInStock < resourceSumBefore) {
-					t.push(""+displayVal);
+				if (!displaySums && resourceInStock < resourceSumBefore) {
+					t.push(displayVal);
 				} else {
 					if (resourceInStock >= resourceSumAfter) {
 						// Es sind genug Güter vorhanden.
 						t.push('<span class="text-success">' +displayVal + '</span>' );
 					} else {
 						// Es sind nicht genug Güter vorhanden.
-						t.push(displayVal + ' <small class="text-danger">' + (resourceInStock - resourceSumAfter) + '</small>' );
+						t.push(displayVal + ' <small class="text-danger">' + HTML.Format(resourceInStock - resourceSumAfter) + '</small>' );
 					}
 
 					// Empfehlung für Diplomatie
@@ -423,18 +447,18 @@ let Outposts = {
 						const resourceSumAfter = resourceID === 'diplomacy' ? resourceCost : resourceSumBefore + resourceCost;
 						sums[resourceID] = resourceSumAfter;
 						
-						const displayVal = displaySums ? resourceSumAfter : resourceCost;
+						const displayVal = HTML.Format(displaySums ? resourceSumAfter : resourceCost);
 						
 						t.push('<td class="text-center">');
 						if (resourceInStock < resourceSumBefore) {
-							t.push(""+displayVal);
+							t.push(displayVal);
 						} else {
 							if (resourceInStock >= resourceSumAfter) {
 								// Es sind genug Güter vorhanden.
 								t.push('<span class="text-success">' +displayVal + '</span>' );
 							} else {
 								// Es sind nicht genug Güter vorhanden.
-								t.push(displayVal + ' <small class="text-danger">' + (resourceInStock - resourceSumAfter) + '</small>' );
+								t.push(displayVal + ' <small class="text-danger">' + HTML.Format(resourceInStock - resourceSumAfter) + '</small>' );
 							}
 						}
 						t.push('</td>');
@@ -470,7 +494,7 @@ let Outposts = {
 		t.push('<td>' + i18n('Boxes.Outpost.DescInStock') + '</td><td></td>');
 
 		for (let resourceID of resourceIDs) {
-			t.push('<td class="text-center">' + currStock[resourceID] + '</td>');
+			t.push('<td class="text-center">' + HTML.Format(currStock[resourceID]) + '</td>');
 		}
 
 		t.push('</tr>');
@@ -483,9 +507,9 @@ let Outposts = {
 
 		for (let resourceID of resourceIDs) {
 			if (resourceID !== 'diplomacy') {
-				let diference = currStock[resourceID] - sums[resourceID];
+				let difference = currStock[resourceID] - sums[resourceID];
 
-				t.push('<td class="text-center text-' + (diference < 0 ? 'danger' : 'success') + '">' + diference + '</td>');
+				t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
 
 			} else {
 				t.push('<td></td>');
