@@ -135,7 +135,7 @@
 		"Boxes.Negotiation.WrongGoods": "Wrong goods selected, please finish manually",
 		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)",
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)",
-		"Boxes.Neighbors.GuildPower": "???", //Todo: Translate
+		"Boxes.Neighbors.GuildPower": "Guild power",
 		"Boxes.Neighbors.OngoingProductions": "Ongoing productions",
 		"Boxes.Neighbors.ReadyProductions": "Finished productions",
 		"Boxes.Outpost.DescInStock": "Available",
