@@ -10,16 +10,16 @@
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
-		"Boxes.Calculator.BPs": "BPs", //Todo: Translate
+		"Boxes.Calculator.BPs": "BPs",
 		"Boxes.Calculator.Commitment": "Einsatz",
 		"Boxes.Calculator.Done": "abgeschlossen",
-		"Boxes.Calculator.FP": "FP", //Todo: Translate
+		"Boxes.Calculator.FP": "FP",
 		"Boxes.Calculator.FriendlyInvestment": "Fördern mit:",
 		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das LG!",
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
-		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
+		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Gewinn",
 		"Boxes.Calculator.Rate": "Kurs",
 		"Boxes.Calculator.Sniping": "Snipen",
@@ -54,7 +54,7 @@
 		"Boxes.CityMap.TitleSend": "Daten übermitteln",
 		"Boxes.CityMap.WholeArea": "Gesamte Fläche: ",
 		"Boxes.CityMap.YourCity": "Deine Stadt",
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
+		"Boxes.EventChests.Chance": "Chance",
 		"Boxes.EventChests.Cost": "Kosten",
 		"Boxes.EventChests.CostPerPrize": "Kosten/Preis",
 		"Boxes.EventChests.CostPerStep": "Kosten/Schritt",
@@ -79,11 +79,11 @@
 		"Boxes.HiddenRewards.Disappears": "Verschwindet",
 		"Boxes.HiddenRewards.NoEvents": "Keine Ereignisse vorhanden",
 		"Boxes.HiddenRewards.Title": "Ereignisse",
-		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
+		"Boxes.Infobox.Filter": "Filter",
 		"Boxes.Infobox.FilterAuction": "Auktion",
-		"Boxes.Infobox.FilterGex": "GEX", //Todo: Translate
+		"Boxes.Infobox.FilterGex": "GEX",
 		"Boxes.Infobox.FilterGildFights": "Gildengefechte",
-		"Boxes.Infobox.FilterLevel": "Level-Up", //Todo: Translate
+		"Boxes.Infobox.FilterLevel": "Level-Up",
 		"Boxes.Infobox.FilterMessage": "Nachricht",
 		"Boxes.Infobox.FilterTrade": "Handel",
 		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> hat gerade __amount__ Münzen geboten",
@@ -93,7 +93,7 @@
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Stufe __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen",
 		"Boxes.Infobox.ResetBox": "Box leeren",
-		"Boxes.Infobox.Title": "Infobox", //Todo: Translate
+		"Boxes.Infobox.Title": "Infobox",
 		"Boxes.Investment.AllUpToDate": "Alles aktuell",
 		"Boxes.Investment.AllUpToDateDesc": "Alle Spieler dieser Seite wurden bereits erfasst",
 		"Boxes.Investment.CurrReward": "Aktueller Gewinn: ",
@@ -107,7 +107,7 @@
 		"Boxes.Kits.TabSelectionKits": "Auswahl-Kits",
 		"Boxes.Kits.Title": "Gebäude- / Auswahl-Kits",
 		"Boxes.LGOverviewBox.Building": "Gebäude",
-		"Boxes.LGOverviewBox.Level": "Level", //Todo: Translate
+		"Boxes.LGOverviewBox.Level": "Level",
 		"Boxes.LGOverviewBox.NothingToGet": "Bei <strong>__player__</strong> gibt es nichts zu holen",
 		"Boxes.LGOverviewBox.PayedTotal": "Eingez. / Gesamt",
 		"Boxes.LGOverviewBox.Profit": "Gewinn",
@@ -118,12 +118,12 @@
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "bisher keine Einzahlung",
 		"Boxes.Negotiation.Average": "Ø Menge",
 		"Boxes.Negotiation.Canceled": "Verhandlung wurde abgebrochen",
-		"Boxes.Negotiation.Chance": "Chance", //Todo: Translate
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
+		"Boxes.Negotiation.Chance": "Chance",
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
 		"Boxes.Negotiation.DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
 		"Boxes.Negotiation.GoodsCritical": "ACHTUNG: Der Gütervorrat ist kritisch",
 		"Boxes.Negotiation.GoodsLow": "ACHTUNG: Der Gütervorrat ist knapp",
-		"Boxes.Negotiation.Person": "Person", //Todo: Translate
+		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Round": "Runde",
 		"Boxes.Negotiation.SaveCurrentEraGoods": "Aktuelle Güter sparen",
 		"Boxes.Negotiation.SaveMedals": "Medaillen sparen",
@@ -135,6 +135,7 @@
 		"Boxes.Negotiation.WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
 		"Boxes.Neighbors.AttackingArmy": "Geschätzer Bonus angreifende Armeen: __attatt__%(ANG) / __attdef__%(VT)",
 		"Boxes.Neighbors.DefendingArmy": "Geschätzer Bonus verteidigende Armeen: __defatt__%(ANG) / __defdef__%(VT)",
+		"Boxes.Neighbors.GuildPower": "Gildenmacht",
 		"Boxes.Neighbors.OngoingProductions": "Laufende Produktionen",
 		"Boxes.Neighbors.ReadyProductions": "Fertige Produktionen",
 		"Boxes.Outpost.DescInStock": "Vorhanden",

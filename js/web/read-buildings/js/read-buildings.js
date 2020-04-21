@@ -397,7 +397,7 @@ let GoodsParser = {
 
 		if (d['state']['current_product']['clan_power'] !== undefined) {
 			isImportant = true;
-			g.push(d['state']['current_product']['clan_power'] + ' ' + d['state']['current_product']['name']);
+			g.push(d['state']['current_product']['clan_power'] + ' ' + i18n('Boxes.Neighbors.GuildPower'));
 		}
 
 		amount = g.join('<br>');
@@ -411,7 +411,7 @@ let GoodsParser = {
 
 
 	/**
-	 * Gebäude mit "Gildenmacht"
+	 * Gebäude mit "GuildPower"
 	 *
 	 * @param d
 	 */
