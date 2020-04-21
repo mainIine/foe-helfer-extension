@@ -125,16 +125,18 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Zásoby tovaru sú nízke ",
 		"Boxes.Negotiation.Person": "Osoba",
 		"Boxes.Negotiation.Round": "Kolo",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Zásoba:",
 		"Boxes.Negotiation.Success": "ÚSpech",
 		"Boxes.Negotiation.TableLoadError": "Chyba pri načítavaní tabuľky s vyjednávaním",
 		"Boxes.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Boxes.Negotiation.TryEnd": "Žiadne ďalšie pokusy",
 		"Boxes.Negotiation.WrongGoods": "Zvolený nesprávny tovar, prosím dokončte vyjednávanie manuálne",
-		"Boxes.Neighbors.NothingToPlunder": "Nič na plienenie",
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Prebiehajúce produkcie",
 		"Boxes.Neighbors.ReadyProductions": "Dokončené produkcie",
-		"Boxes.Neighbors.Title": "Produkcie hráča ",
 		"Boxes.Outpost.DescInStock": "Dostupné",
 		"Boxes.Outpost.DescRequired": "Potrebné",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Dostatok</span> / <span style='color:#ef1616'>Nedostatok</span>",
@@ -225,6 +227,59 @@
 		"Boxes.Settings.Active": "Zapnuté",
 		"Boxes.Settings.Inactive": "Vypnuté",
 		"Boxes.Settings.Title": "Nastavenia",
+		"Boxes.Stats.BtnAll": "All", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
+		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
+		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
+		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
+		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
+		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
+		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
+		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Period.all": "All", //Todo: Translate
+		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
+		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
+		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
+		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
+		"Boxes.Stats.Period.today": "Today", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
+		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Dostupné kúpiť: ",
 		"Boxes.StrategyPoints.FPBar": "V inventári: ",
 		"Boxes.Technologies.DescInStock": "Dostupné",
@@ -233,6 +288,7 @@
 		"Boxes.Technologies.NoTechs": "Dosiahli ste koniec tejto éry",
 		"Boxes.Technologies.Resource": "Prostriedky",
 		"Boxes.Technologies.Title": "Výskum technológií",
+		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
 		"Boxes.Units.Attack": "Útok",
 		"Boxes.Units.Bind": "Pripojené",
 		"Boxes.Units.Defend": "Obrana",
@@ -320,6 +376,8 @@
 		"Menu.Productions.Title": "Prehľad produkcie",
 		"Menu.Settings.Desc": "Tu nájdete zopár možností nastavenia doplnku",
 		"Menu.Settings.Title": "Nastavenia",
+		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Poskytuje informácie o prostriedkoch potrebných na výskum technológií",
 		"Menu.Technologies.Title": "Technológie",
 		"Menu.Technologies.Warning": "Vypnuté: Najprv otvorte okno stromu technológií!",
@@ -332,6 +390,10 @@
 		"Settings.ChangeLanguage.Title": "Zmeniť jazyk",
 		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
 		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
+		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
+		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ak chcete povoliť zber údajov, povoľte toto nastavenie. <br> Ak chcete, aby rozšírenie fungovalo samostatne, jednoducho toto nastavenie vypnite.",
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",

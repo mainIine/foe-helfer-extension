@@ -130,7 +130,9 @@ let Negotiation = {
 			h.push('<tbody>');
 
 			h.push('<tr>');
-			h.push('<td colspan="4" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="1" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="2">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input class="setting-check" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"></td>');
+			h.push('<td colspan="1">' + i18n('Boxes.Negotiation.SaveMedals') + '<input class="setting-check" type="checkbox" data-id="NegotiationSaveMedals"></td>');
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
 			h.push('</strong></td>');
@@ -838,7 +840,14 @@ let Negotiation = {
 			Value = 50;
 		}
 		else if (GoodName === 'medals') {
-			Value = 3000;
+			let SaveMedalSetting = localStorage.getItem('NegotiationDontSaveMedals');
+			if (SaveMedalSetting === 'true') {
+				Value = 75;
+			}
+			else
+			{
+				Value = 3000;
+            }
 		}
 		else if (GoodName === 'promethium') {
 			Value = 3500;
@@ -847,17 +856,20 @@ let Negotiation = {
 			Value = 4000;
 		}
 		else {
-			let Good = GoodsData[GoodName];
-			let Era = Good['era'];
-
-			let EraID = Technologies.Eras[Era];
-			if (EraID === undefined) EraID = 20;
-
-			if (Era === 'SpaceAgeMars') { //Marsgüter mit arkt. Gütern gleich setzen
-				EraID -= 3;
+			let SaveMedalSetting = localStorage.getItem('NegotiationDontSaveCurrentEraGoods');
+			if (SaveMedalSetting === 'true') {
+				Value = 100;
 			}
-			Value = EraID * 100;
+			else {
+				let Good = GoodsData[GoodName];
+				let Era = Good['era'];
 
+				let EraID = Technologies.Eras[Era];
+				if (EraID === undefined) EraID = 20;
+
+				Value = EraID * 100;
+            }
+			
 			let Stock = ResourceStock[GoodName];
 			if (Stock === undefined || Stock === 0)
 			{
