@@ -212,7 +212,7 @@ let Outposts = {
 			t.push(
 				HTML.i18nReplacer(i18n('Boxes.Outpost.infoLine'), {
 					runNumber: (currentRun.id||0)+1,
-					chanceX4: currentRun.productionBonusProbability*100
+					chanceX4: Math.round(currentRun.productionBonusProbability * 100)
 				})
 			);
 		}
