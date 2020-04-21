@@ -36,7 +36,7 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 	Unit.RefreshAlca();
 
-	if (Unit.alca !== null && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] === Unit.alca.id) {
+	if (Unit.alca !== undefined && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] !== undefined && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
 			return;
 		}
@@ -480,10 +480,10 @@ let Unit = {
 
 
 	/**
-	 * Berechnet die summierten Boni
-	 * *
-	 */
-	GetBoostSums: (Boni) => {
+		 * Berechnet die summierten Boni
+		 * *
+		 */
+	GetBoostSums: (Boosts) => {
 		let Ret = [],
 			CurrentBoost = undefined;
 
@@ -493,50 +493,50 @@ let Unit = {
 		Ret['DefenseDefenseBoost'] = 0;
 
 		// Angriff + Verteidigung der angreifenden Armee (z.B. Zeus)
-		CurrentBoost = Boni.find(o => (o['type'] === 'military_boost'));
+		CurrentBoost = Boosts['military_boost'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackAttackBoost'] += CurrentBoost['value'];
-			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+			Ret['AttackAttackBoost'] += CurrentBoost;
+			Ret['AttackDefenseBoost'] += CurrentBoost;
 		}
 
 		// Angriff + Verteidigung der verteidigenden Armee (z.B. Basilius Kathedrale)
-		CurrentBoost = Boni.find(o => (o['type'] === 'fierce_resistance'));
+		CurrentBoost = Boosts['fierce_resistance'];
 		if (CurrentBoost !== undefined) {
-			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
-			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+			Ret['DefenseAttackBoost'] += CurrentBoost;
+			Ret['DefenseDefenseBoost'] += CurrentBoost;
 		}
 
 		// Alle Boni (z.B. Terrakotta Armee)
-		CurrentBoost = Boni.find(o => (o['type'] === 'advanced_tactics'));
+		CurrentBoost = Boosts['advanced_tactics'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackAttackBoost'] += CurrentBoost['value'];
-			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
-			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
-			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+			Ret['AttackAttackBoost'] += CurrentBoost;
+			Ret['AttackDefenseBoost'] += CurrentBoost;
+			Ret['DefenseAttackBoost'] += CurrentBoost;
+			Ret['DefenseDefenseBoost'] += CurrentBoost;
 		}
 
 		// Angriffbonus der angreifenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'attack_boost'));
+		CurrentBoost = Boosts['attack_boost'] || Boosts['att_boost_attacker'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+			Ret['AttackAttackBoost'] += CurrentBoost;
 		}
 
 		// Verteidigungsbonus der angreifenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'attacker_defense_boost'));
+		CurrentBoost = Boosts['attacker_defense_boost'] || Boosts['def_boost_attacker'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+			Ret['AttackDefenseBoost'] += CurrentBoost;
 		}
 
 		// Angriffbonus der verteidigenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'defender_attack_boost'));
+		CurrentBoost = Boosts['defender_attack_boost'] || Boosts['att_boost_defender'];
 		if (CurrentBoost !== undefined) {
-			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+			Ret['DefenseAttackBoost'] += CurrentBoost;
 		}
 
 		// Verteidigungsbonus der verteidigenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'defense_boost'));
+		CurrentBoost = Boosts['defense_boost'] || Boosts['def_boost_defender'];
 		if (CurrentBoost !== undefined) {
-			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+			Ret['DefenseDefenseBoost'] += CurrentBoost;
 		}
 
 		return Ret;
