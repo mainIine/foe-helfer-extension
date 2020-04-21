@@ -135,6 +135,7 @@
 		"Boxes.Negotiation.WrongGoods": "Fel vara vald, välj manuell för avslut",
 		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.GuildPower": "???", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Pågående produktion",
 		"Boxes.Neighbors.ReadyProductions": "Slutförd produktion",
 		"Boxes.Outpost.DescInStock": "Tillgängliga",

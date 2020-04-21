@@ -135,6 +135,7 @@
 		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af!",
 		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.GuildPower": "???", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Lopende producties",
 		"Boxes.Neighbors.ReadyProductions": "Voltooide producties",
 		"Boxes.Outpost.DescInStock": "Beschikbaar",
