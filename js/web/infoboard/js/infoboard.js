@@ -111,7 +111,7 @@ let Infoboard = {
         h.push('<div class="filter-row">');
 
         h.push('<div class="dropdown">');
-        h.push('<input type="checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
+        h.push('<input type="checkbox" class="dropdown-checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
 
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
@@ -342,7 +342,7 @@ let Info = {
             if (!d.hasOwnProperty(i)) {
                 break;
             }
-            
+
             // FP Typ aus dem Lager ermitteln
             let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
             if(undefined === InventoryItem ||null === InventoryItem) return;
@@ -363,7 +363,7 @@ let Info = {
      */
     GuildBattlegroundService_getProvinces: (d) => {
 
-        if (GildFights.SortedColors === null) {
+        if (GildFights.SortedColors === null){
             GildFights.PrepareColors();
         }
 
@@ -379,12 +379,12 @@ let Info = {
         }
 
         if (data['lockedUntil'] !== undefined) {
-            let p = bP.find(o => (o['participantId'] === d[0]['participantId']));
 
-            let tc = GildFights.SortedColors[p['participantId']]['highlight'],
-                ts = GildFights.SortedColors[p['participantId']]['shadow'];
+            let p = bP.find(o => (o['participantId'] === data['ownerId'])),
+				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
-            // 'Provinz <span style="color:#ffb539">' + prov['name'] + '</span> wurde von <span style="color:'+ tc + ';text-shadow: 0 1px 1px ' + ts +'">' + p['clan']['name'] + '</span> übernommen und ist bis ' + moment.unix(data['lockedUntil']).format('HH:mm:ss') +  ' Uhr gesperrt'
+            let tc = colors['highlight'],
+                ts = colors['shadow'];
 
             return {
                 class: 'guildfighs',
@@ -409,7 +409,8 @@ let Info = {
             }
 
             let d = data['conquestProgress'][i],
-                p = bP.find(o => (o['participantId'] === d['participantId']));
+                p = bP.find(o => (o['participantId'] === d['participantId'])),
+				colors = GildFights.SortedColors.find(c => (c['id'] === d['participantId']));
 
             // es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
             if (Info.GildPoints[data['id']] !== undefined &&
@@ -419,8 +420,8 @@ let Info = {
                 continue;
             }
 
-            let tc = GildFights.SortedColors[p['participantId']]['highlight'],
-                ts = GildFights.SortedColors[p['participantId']]['shadow'];
+            let tc = colors['highlight'],
+                ts = colors['shadow'];
 
             t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
 

@@ -19,6 +19,8 @@ FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
 });
 
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
+	Unit.RefreshAlca();
+
 	Unit.Cache = data.responseData;
 
 	if ($('#unit-Btn').hasClass('hud-btn-red')) {
@@ -32,12 +34,21 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 });
 
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-	if (data.responseData.militaryProducts === undefined) {
-		return;
-	}
+	Unit.RefreshAlca();
 
-	if(data.responseData.militaryProducts.length > 0){
-		localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+	if (Unit.alca !== undefined && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] !== undefined && postData[0]['requestData'][0][0] === Unit.alca.id) {
+		if (data.responseData.militaryProducts === undefined) {
+			return;
+		}
+
+		if (data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
+			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
+		}
+
+		if (data.responseData.militaryProducts.length > 0) {
+			localStorage.setItem('LastAlcatrazUnits', JSON.stringify(data.responseData.militaryProducts));
+		}
 	}
 });
 
@@ -46,8 +57,12 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
+	alca : null,
 
 	Cache : null,
+
+	NextHarvest: null,
+	NextAmount: null,
 
 	Tabs: [],
 	TabsContent: [],
@@ -84,34 +99,59 @@ let Unit = {
 
 	/**
 	 * Rendern und in den BoxContent
-	 *
 	 */
 	BuildBox:()=> {
 
 		let top = [],
-			alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+			text = '';
+
+		Unit.RefreshAlca();
 
 		// der Spieler besitzt ein Alca
-		if(alca !== undefined)
+		if (Unit.alca !== undefined)
 		{
-			let countDownDate = moment.unix(alca['state']['next_state_transition_at']);
-
-			let x = setInterval(function() {
-				Unit.UpdateAlcaLable(countDownDate,x);
-			}, 1000);
-
-			Unit.UpdateAlcaLable(countDownDate,x);
 
 			top.push('<div style="padding: 4px;" class="text-center">');
 
-			let timer = HTML.i18nReplacer(
-				i18n('Boxes.Units.NextUnitsIn'),
-				{
-					count: alca.state.current_product.amount,
-					harvest: moment.unix(alca['state']['next_state_transition_at']).format('HH:mm:ss')
-				});
+			if(Unit.alca['state']['next_state_transition_at'] === undefined) {
+				text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
 
-			top.push('<div class="alca-info text-center">' + timer + '</div>');
+			}
+			// es gab eine Ernte...
+			else if(Unit.NextHarvest !== null){
+				let countDownDate = moment.unix(Unit.NextHarvest);
+
+				let x = setInterval(function() {
+					Unit.UpdateAlcaLable(countDownDate,x);
+				}, 1000);
+
+				Unit.UpdateAlcaLable(countDownDate, x);
+
+				text = HTML.i18nReplacer(
+					i18n('Boxes.Units.NextUnitsIn'),
+					{
+						count: Unit.NextAmount,
+						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
+					});
+
+			} else {
+				let countDownDate = moment.unix(Unit.alca['state']['next_state_transition_at']);
+
+				let x = setInterval(function() {
+					Unit.UpdateAlcaLable(countDownDate,x);
+				}, 1000);
+
+				Unit.UpdateAlcaLable(countDownDate, x);
+
+				text = HTML.i18nReplacer(
+					i18n('Boxes.Units.NextUnitsIn'),
+					{
+						count: Unit.alca.state.current_product.amount,
+						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
+					});
+			}
+
+			top.push('<div class="alca-info text-center">' + text + '</div>');
 
 			top.push('</div>');
 		}
@@ -369,6 +409,15 @@ let Unit = {
 
 
 	/**
+	 * Sucht nach dem Alcatraz
+	 * *
+	 * */
+	RefreshAlca: () => {
+		if (Unit.alca === null) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+    },
+
+
+	/**
 	 * Merkt sich alle Tabs
 	 *
 	 * @param id
@@ -431,10 +480,10 @@ let Unit = {
 
 
 	/**
-	 * Berechnet die summierten Boni
-	 * *
-	 */
-	GetBoostSums: (Boni) => {
+		 * Berechnet die summierten Boni
+		 * *
+		 */
+	GetBoostSums: (Boosts) => {
 		let Ret = [],
 			CurrentBoost = undefined;
 
@@ -444,50 +493,50 @@ let Unit = {
 		Ret['DefenseDefenseBoost'] = 0;
 
 		// Angriff + Verteidigung der angreifenden Armee (z.B. Zeus)
-		CurrentBoost = Boni.find(o => (o['type'] === 'military_boost'));
+		CurrentBoost = Boosts['military_boost'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackAttackBoost'] += CurrentBoost['value'];
-			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+			Ret['AttackAttackBoost'] += CurrentBoost;
+			Ret['AttackDefenseBoost'] += CurrentBoost;
 		}
 
 		// Angriff + Verteidigung der verteidigenden Armee (z.B. Basilius Kathedrale)
-		CurrentBoost = Boni.find(o => (o['type'] === 'fierce_resistance'));
+		CurrentBoost = Boosts['fierce_resistance'];
 		if (CurrentBoost !== undefined) {
-			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
-			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+			Ret['DefenseAttackBoost'] += CurrentBoost;
+			Ret['DefenseDefenseBoost'] += CurrentBoost;
 		}
 
 		// Alle Boni (z.B. Terrakotta Armee)
-		CurrentBoost = Boni.find(o => (o['type'] === 'advanced_tactics'));
+		CurrentBoost = Boosts['advanced_tactics'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackAttackBoost'] += CurrentBoost['value'];
-			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
-			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
-			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+			Ret['AttackAttackBoost'] += CurrentBoost;
+			Ret['AttackDefenseBoost'] += CurrentBoost;
+			Ret['DefenseAttackBoost'] += CurrentBoost;
+			Ret['DefenseDefenseBoost'] += CurrentBoost;
 		}
 
 		// Angriffbonus der angreifenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'attack_boost'));
+		CurrentBoost = Boosts['attack_boost'] || Boosts['att_boost_attacker'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackAttackBoost'] += CurrentBoost['value'];
+			Ret['AttackAttackBoost'] += CurrentBoost;
 		}
 
 		// Verteidigungsbonus der angreifenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'attacker_defense_boost'));
+		CurrentBoost = Boosts['attacker_defense_boost'] || Boosts['def_boost_attacker'];
 		if (CurrentBoost !== undefined) {
-			Ret['AttackDefenseBoost'] += CurrentBoost['value'];
+			Ret['AttackDefenseBoost'] += CurrentBoost;
 		}
 
 		// Angriffbonus der verteidigenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'defender_attack_boost'));
+		CurrentBoost = Boosts['defender_attack_boost'] || Boosts['att_boost_defender'];
 		if (CurrentBoost !== undefined) {
-			Ret['DefenseAttackBoost'] += CurrentBoost['value'];
+			Ret['DefenseAttackBoost'] += CurrentBoost;
 		}
 
 		// Verteidigungsbonus der verteidigenden Armee
-		CurrentBoost = Boni.find(o => (o['type'] === 'defense_boost'));
+		CurrentBoost = Boosts['defense_boost'] || Boosts['def_boost_defender'];
 		if (CurrentBoost !== undefined) {
-			Ret['DefenseDefenseBoost'] += CurrentBoost['value'];
+			Ret['DefenseDefenseBoost'] += CurrentBoost;
 		}
 
 		return Ret;

@@ -6,7 +6,7 @@
 		"API.LGGildMember": " ВС игрока __player__ были обработаны",
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
-		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
+		"Boxes.Api.Title": "Настройки API расширения",
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
 		"Boxes.Calculator.AvailableFP": "Доступные СО",
@@ -15,12 +15,12 @@
 		"Boxes.Calculator.Done": "готово",
 		"Boxes.Calculator.FP": "СО",
 		"Boxes.Calculator.FriendlyInvestment": "Вложение от игрока:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
 		"Boxes.Calculator.Meds": "Медали",
-		"Boxes.Calculator.Profit": "Профит",
+		"Boxes.Calculator.Profit": "Прибыль",
 		"Boxes.Calculator.Rate": "Курс",
 		"Boxes.Calculator.Sniping": "Снайпинг",
 		"Boxes.Calculator.Step": "Уровень ",
@@ -64,9 +64,9 @@
 		"Boxes.EventChests.Title": "Помощник событий",
 		"Boxes.EventList.And": " и ",
 		"Boxes.EventList.Desc": "Задача",
-		"Boxes.EventList.Number": "Нет.",
+		"Boxes.EventList.Number": "Номер",
 		"Boxes.EventList.Or": " или ",
-		"Boxes.EventList.Reward": "Откат",
+		"Boxes.EventList.Reward": "Награда",
 		"Boxes.EventList.Title": "Список заданий события: ",
 		"Boxes.EventList.Upcoming": "БУДУЩИЕ ЗАДАНИЯ (количество может варьироваться)",
 		"Boxes.EventList.Waiting": "Нет доступных заданий",
@@ -94,18 +94,18 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> принял ваше предложение.<br>Вы получили __needValue__ __need__ за __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Сбросить панель",
 		"Boxes.Infobox.Title": "Панель информации",
-		"Boxes.Investment.AllUpToDate": "Everything up to date", //Todo: Translate
-		"Boxes.Investment.AllUpToDateDesc": "All players on this page have already been recorded", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Все обновлено",
+		"Boxes.Investment.AllUpToDateDesc": "Все игроки на этой странице уже были записаны",
 		"Boxes.Investment.CurrReward": "Текущая прибыль: ",
 		"Boxes.Investment.InvestBar": "СО вложено: ",
 		"Boxes.Investment.PlayerFound": "Игрок найден",
-		"Boxes.Investment.PlayerFoundCount": "__count__ new player-event were found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ Были найдены новые события игрока",
+		"Boxes.Investment.PlayerFoundCounter": "__count__ Были найдены новые события игрока",
 		"Boxes.Investment.Title": "Вложение",
-		"Boxes.Investment.TotalFP": "Запас + круговые + прибыль: ",
-		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
-		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
+		"Boxes.Investment.TotalFP": "Пакеты + вложенное + прибыль: ",
+		"Boxes.Kits.TabBuildingKits": "Набор строений",
+		"Boxes.Kits.TabSelectionKits": "Набор выбора",
+		"Boxes.Kits.Title": "Строение- / Набор выбора",
 		"Boxes.LGOverviewBox.Building": "Строение",
 		"Boxes.LGOverviewBox.Level": "Уровень",
 		"Boxes.LGOverviewBox.NothingToGet": "У <strong>__player__</strong> нечего получить",
@@ -119,22 +119,24 @@
 		"Boxes.Negotiation.Average": "Ø Количество",
 		"Boxes.Negotiation.Canceled": "Переговоры были отменены",
 		"Boxes.Negotiation.Chance": "Шанс",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
+		"Boxes.Negotiation.confirmGoodsMissmatch": "Ок",
 		"Boxes.Negotiation.DragDrop": "Вы можете самостоятелько перетащить значки выше, для изменения последовательности первой попытки.",
 		"Boxes.Negotiation.GoodsCritical": "ВНИМАНИЕ: Недостаточно товара на складе",
 		"Boxes.Negotiation.GoodsLow": "ВНИМАНИЕ: Мало товара на складе",
 		"Boxes.Negotiation.Person": "Персона",
 		"Boxes.Negotiation.Round": "Раунд",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Склад:",
 		"Boxes.Negotiation.Success": "Успех",
 		"Boxes.Negotiation.TableLoadError": "Ошибка загрузки модуля переговоров",
 		"Boxes.Negotiation.Title": "Помощник переговоров",
 		"Boxes.Negotiation.TryEnd": "Не осталось ходов",
 		"Boxes.Negotiation.WrongGoods": "Выбран неверный товар, закончите переговоры вручную",
-		"Boxes.Neighbors.NothingToPlunder": "Нечего грабить",
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Текущее производство",
 		"Boxes.Neighbors.ReadyProductions": "Завершённое производство",
-		"Boxes.Neighbors.Title": "Производство ",
 		"Boxes.Outpost.DescInStock": "Доступно",
 		"Boxes.Outpost.DescRequired": "Требуется",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ef1616'>Недостаток</span>",
@@ -154,7 +156,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
 		"Boxes.OwnpartCalculator.Ext": "Расш.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "Имя ВС",
 		"Boxes.OwnpartCalculator.Levels": "уровни",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Всего СО ВС",
@@ -190,7 +192,7 @@
 		"Boxes.Plunderer.nextPage": "След. Страница",
 		"Boxes.Plunderer.noData": "Нет Данных",
 		"Boxes.Plunderer.Page": "Страница",
-		"Boxes.Plunderer.PlayersEra": "Ера Игрока",
+		"Boxes.Plunderer.PlayersEra": "Эра Игрока",
 		"Boxes.Plunderer.rounds": "Раундов",
 		"Boxes.Plunderer.shieldProtectetUntil": "Защищен до:",
 		"Boxes.Plunderer.shieldUntil": "Заканчивается",
@@ -225,6 +227,59 @@
 		"Boxes.Settings.Active": "Включено",
 		"Boxes.Settings.Inactive": "Выключено",
 		"Boxes.Settings.Title": "Настройки",
+		"Boxes.Stats.BtnAll": "All", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
+		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
+		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
+		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
+		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
+		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
+		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
+		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Period.all": "All", //Todo: Translate
+		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
+		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
+		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
+		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
+		"Boxes.Stats.Period.today": "Today", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
+		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "монеты/СО:",
 		"Boxes.StrategyPoints.FPBar": "СО в пакетах:",
 		"Boxes.Technologies.DescInStock": "Доступно",
@@ -233,6 +288,7 @@
 		"Boxes.Technologies.NoTechs": "Вы достигли конца эпохи",
 		"Boxes.Technologies.Resource": "Ресурс",
 		"Boxes.Technologies.Title": "Стоимость исследования",
+		"Boxes.Units.AlcaHarvest": "Сбор вашего алькатраса готов!",
 		"Boxes.Units.Attack": "Атака",
 		"Boxes.Units.Bind": "Казарменный",
 		"Boxes.Units.Defend": "Защита",
@@ -278,8 +334,8 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
+		"Menu.Api.Desc": "Настройки для отправки данных на ваш собственный сервер",
+		"Menu.Api.Title": "API расширения",
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
 		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
@@ -302,8 +358,8 @@
 		"Menu.HiddenRewards.Title": "Инциденты",
 		"Menu.Info.Desc": "Отображает все события, которые происходят \"в фоне\"<br><em>Заполняется информацией ...</em>",
 		"Menu.Info.Title": "Панель информации",
-		"Menu.Kits.Desc": "Lists all existing building, upgrade and selection kits", //Todo: Translate
-		"Menu.Kits.Title": "Building-Kits", //Todo: Translate
+		"Menu.Kits.Desc": "Список всех комплектов строений, модернизации и выбора",
+		"Menu.Kits.Title": "Комплект строений",
 		"Menu.Negotiation.Desc": "Предлагает товары для переговоров",
 		"Menu.Negotiation.Title": "Помощник переговоров",
 		"Menu.Negotiation.Warning": "Отключено: Для влючения начните переговоры!",
@@ -320,6 +376,8 @@
 		"Menu.Productions.Title": "Обзор производства",
 		"Menu.Settings.Desc": "Здесь находятся настройки",
 		"Menu.Settings.Title": "Настройки",
+		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Рассчитывает стоимость исследования",
 		"Menu.Technologies.Title": "Технологии",
 		"Menu.Technologies.Warning": "Отключено: Для включения откройте меню исследования новых технологий!",
@@ -330,12 +388,16 @@
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",
 		"Settings.ChangeLanguage.Title": "Изменить язык",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.CustomerApi.Desc": "Вы хотите отправить данные на свой сервер? <br> После этой активации игра перезагрузится и появится новый пункт меню.",
+		"Settings.CustomerApi.Title": "API игроков",
+		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
+		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
+		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
+		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
-		"Settings.MenuLength.Title": "Menu length", //Todo: Translate
+		"Settings.MenuLength.Title": "Длина меню",
 		"Settings.PreScanLGList.Desc": "Сканировать список соседей, когда открывается их ВС и определять возможные вложения в ВС. <br> <u> Примечание: </u> Поскольку итоговые места передаются только при открытии ВС, результат может отличаться. Тем не менее, результаты сканирования будут сохранены.",
 		"Settings.PreScanLGList.Title": "Предварительное сканирование ВС",
 		"Settings.ResetBoxPositions.Button": "Удалить!",
