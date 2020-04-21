@@ -108,7 +108,8 @@
     word-wrap: break-word;
 }
 
-#plunderer .plunder-wrap .sabotage {
+#plunderer .plunder-wrap .sabotage,
+#plunderer .plunder-wrap .doublePlunder {
     /* width: 15px; */
     height: 20px;
     width: auto;
