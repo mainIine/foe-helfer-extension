@@ -4,12 +4,12 @@
 
 **New**
 - PvP overview:
-     - [#686](https://github.com/dsiekiera/foe-helfer-extension/issues/686) neighborhood loot database
-     - values of you and the neighbor of the attacking, defending armies are noted
-     - what type of fight you have carried out and whether you won, lost or given up
-     - all times when you attacked, looted or last visited him
-     - what you looted, from which building
-     - shows all active city signs in your neighborhood
+    - [#686](https://github.com/dsiekiera/foe-helfer-extension/issues/686) neighborhood loot database
+    - values of you and the neighbor of the attacking, defending armies are noted
+    - what type of fight you have carried out and whether you won, lost or given up
+    - all times when you attacked, looted or last visited him
+    - what you looted, from which building
+    - shows all active city signs in your neighborhood
 
 **Update**
 - Extension:
@@ -126,7 +126,7 @@
 ##### 2.4.2
 **New**
 - Investments:
-    - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415 ) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) General overview FP added (City Hall> News> Legendary Buildings)
+    - [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) [#415](https://github.com/dsiekiera/foe-helfer-extension/issues/415 ) [#429](https://github.com/dsiekiera/foe-helfer-extension/issues/413) General overview FP added (City Hall> News> Great Buildings)
 
 **Update**
 - Product overview:
