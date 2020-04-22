@@ -125,8 +125,6 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low",
 		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Round": "Round",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods",
-		"Boxes.Negotiation.SaveMedals": "Save medals",
 		"Boxes.Negotiation.Stock": "Stock:",
 		"Boxes.Negotiation.Success": "Success",
 		"Boxes.Negotiation.TableLoadError": "Error loading the negotiation table",

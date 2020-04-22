@@ -125,8 +125,6 @@
 		"Boxes.Negotiation.GoodsLow": "ATENȚIE: Stocul de bunuri este la nivel scăzut!",
 		"Boxes.Negotiation.Person": "Persoană",
 		"Boxes.Negotiation.Round": "Rundă",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Stoc:",
 		"Boxes.Negotiation.Success": "Succes",
 		"Boxes.Negotiation.TableLoadError": "Eroare la încărcara mesei de negociere.",
