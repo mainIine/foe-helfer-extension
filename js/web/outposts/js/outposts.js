@@ -331,7 +331,7 @@ let Outposts = {
 					for (let CostResourceName in cost) {
 						if (CostResourceName === 'diplomacy') continue;
 
-						resourceCost += Math.ceil((cost[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000);
+						resourceCost += Math.max(Math.ceil((cost[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
                     }
                 }
 				const resourceInStock = currStock[resourceID];
@@ -360,7 +360,7 @@ let Outposts = {
 						let CostResourceName = resourceIDs[CostResource];
 						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
 
-						resourceSumAfter += Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000);
+						resourceSumAfter += Math.max(Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
 					}
 				}
 				else {

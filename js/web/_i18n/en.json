@@ -415,7 +415,7 @@
 		"Settings.ShowNeighborsGoods.Desc": "During the visit show what is currently produced",
 		"Settings.ShowNeighborsGoods.Title": "Neighborhood harvest",
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.",
-		"Settings.ShowTavernBadge.Title": "Show tavernas badge",
+		"Settings.ShowTavernBadge.Title": "Show tavern badge",
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
 		"Settings.Version.GuildId": "Gild-Id:",
 		"Settings.Version.PlayerId": "Player-Id:",
