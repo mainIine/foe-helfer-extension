@@ -36,7 +36,7 @@ FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, post
 			});
 			await IndexDB.addUserFromPlayerDictIfNotExists(playerId);
 		}
-	})
+	}, 1);
 });
 
 FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
@@ -293,7 +293,6 @@ let Plunderer = {
 	},
 
 
-
 	/**
 	 * Create html for DOM and inject
 	 */
@@ -474,6 +473,12 @@ let Plunderer = {
 	},
 
 
+	/**
+	 * Render actions
+	 *
+	 * @param actions
+	 * @returns {string}
+	 */
 	RenderActions: (actions) => {
 		let lastPlayerId = null;
 		return actions.map(action => {
@@ -484,6 +489,13 @@ let Plunderer = {
 	},
 
 
+	/**
+	 * Render action
+	 *
+	 * @param action
+	 * @param isSamePlayer
+	 * @returns {string}
+	 */
 	RenderAction: ({action, isSamePlayer}) => {
 		const type = {
 			[Plunderer.ACTION_TYPE_PLUNDERED]: i18n('Boxes.Plundered.actionPlundered'),
@@ -540,6 +552,7 @@ let Plunderer = {
 
 
 	/**
+	 * Render action content
 	 *
 	 * @param action
 	 * @returns {string}
