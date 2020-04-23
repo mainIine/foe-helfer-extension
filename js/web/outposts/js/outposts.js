@@ -330,8 +330,8 @@ let Outposts = {
 				else { //Goldmünzen bzw. Beute => abhängig von anderen Güterkosten
 					for (let CostResourceName in cost) {
 						if (CostResourceName === 'diplomacy') continue;
-
-						resourceCost += Math.max(Math.ceil((cost[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
+												
+						resourceCost += Math.max(Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName] | 0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
                     }
                 }
 				const resourceInStock = currStock[resourceID];
@@ -368,7 +368,7 @@ let Outposts = {
 				}
 				sums[resourceID] = resourceSumAfter;
 				
-				const displayVal = HTML.Format(displaySums && resourceID !== 'diplomacy' ? resourceSumAfter : resourceCost);
+				const displayVal = HTML.Format(displaySums && resourceID !== 'diplomacy' && resourceID !== goodProductionResourceId ? resourceSumAfter : resourceCost);
 				
 				if (!displaySums && resourceInStock < resourceSumBefore) {
 					t.push(displayVal);

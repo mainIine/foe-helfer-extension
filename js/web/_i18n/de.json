@@ -15,7 +15,7 @@
 		"Boxes.Calculator.Done": "abgeschlossen",
 		"Boxes.Calculator.FP": "FP",
 		"Boxes.Calculator.FriendlyInvestment": "Fördern mit:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
 		"Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das LG!",
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
@@ -144,25 +144,25 @@
 		"Boxes.Outpost.ExpansionsSum": "Erweiterungen",
 		"Boxes.Outpost.infoLine": "__runNumber__. Durchlauf, Bonus x4 Chance: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "nächste Erweiterung",
-		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Summen anzeigen:",
 		"Boxes.Outpost.tileNotPlanned": "aus",
 		"Boxes.Outpost.Title": "Güter des Außenpostens",
 		"Boxes.Outpost.TitleBuildings": "Gebäude",
 		"Boxes.Outpost.TitleFree": "Frei",
 		"Boxes.Outpost.TitleShort": "Güterübersicht - ",
 		"Boxes.OwnpartCalculator.Arc": "Arche",
-		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
-		"Boxes.OwnpartCalculator.BPs": "BPs", //Todo: Translate
+		"Boxes.OwnpartCalculator.Auto": "Auto",
+		"Boxes.OwnpartCalculator.BPs": "BPs",
 		"Boxes.OwnpartCalculator.BuildingName": "Gebäude",
 		"Boxes.OwnpartCalculator.CopyValues": "Werte kopieren",
 		"Boxes.OwnpartCalculator.Deposit": "Einzahlen",
 		"Boxes.OwnpartCalculator.Done": "Erledigt",
-		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.Ext": "Ext",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "Individueller LG Name",
 		"Boxes.OwnpartCalculator.Levels": "Leveln",
 		"Boxes.OwnpartCalculator.LGTotalFP": "LG Gesamt-FP",
-		"Boxes.OwnpartCalculator.Meds": "Meds", //Todo: Translate
+		"Boxes.OwnpartCalculator.Meds": "Meds",
 		"Boxes.OwnpartCalculator.NoPlaceSafe": "Kein Platz sicher",
 		"Boxes.OwnpartCalculator.Note": "Merken",
 		"Boxes.OwnpartCalculator.OldLevel": "Altes Level",
@@ -188,7 +188,7 @@
 		"Boxes.Plunderer.collectedToday": "Heute gesammelt",
 		"Boxes.Plunderer.Defense": "Verteidigung",
 		"Boxes.Plunderer.filteredByUser": "Filter nach Spieler",
-		"Boxes.Plunderer.FP": "FP", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP",
 		"Boxes.Plunderer.goto1stPage": "erste Seite",
 		"Boxes.Plunderer.HasNoClan": "<em>hat keine Gilde</em>",
 		"Boxes.Plunderer.nextPage": "nächste Seite",
@@ -208,14 +208,14 @@
 		"Boxes.Productions.Happiness": "Zufriedenheit",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Menge",
-		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
+		"Boxes.Productions.Headings.boost": "Boost",
 		"Boxes.Productions.Headings.culture": "Kulturelle Gebäude",
 		"Boxes.Productions.Headings.decoration": "Dekorationen",
 		"Boxes.Productions.Headings.earning": "Ernte",
 		"Boxes.Productions.Headings.goods": "Gütergebäude",
 		"Boxes.Productions.Headings.greatbuilding": "Legendäre Gebäude",
 		"Boxes.Productions.Headings.main_building": "Rathaus",
-		"Boxes.Productions.Headings.name": "Name", //Todo: Translate
+		"Boxes.Productions.Headings.name": "Name",
 		"Boxes.Productions.Headings.number": "Anzahl",
 		"Boxes.Productions.Headings.production": "Produktionsgebäude",
 		"Boxes.Productions.Headings.random_production": "Zufalls Produktionen",
@@ -268,11 +268,11 @@
 		"Boxes.Stats.PeriodTitle.thisMonth": "Diesen Monat gesammelt",
 		"Boxes.Stats.PeriodTitle.today": "Heute gesammelt",
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Gildengefechte",
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatische Geschenke",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GEX",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Kriegsbeute",
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Belohnungen von den Gildengefechten",
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Vom Weltfraumfrachter gesammelte diplomatische Geschenke",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Belohnungen von der Gildenexpedition, die vom Relikttempel erzeugt wurden",
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Kriegsbeute durch die Burg Himeji",
 		"Boxes.Stats.SourceTitle.gbgPlayers": "Punktestände der Spieler der Gildengefechte",
@@ -380,8 +380,8 @@
 		"Menu.Productions.Title": "Produktions Übersicht",
 		"Menu.Settings.Desc": "Hier stellst du ein paar Kleinigkeiten ein",
 		"Menu.Settings.Title": "Einstellungen",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
+		"Menu.Stats.Desc": "Güter, Einheiten, Belohnungen, Gildengefechte",
+		"Menu.Stats.Title": "Statistiken",
 		"Menu.Technologies.Desc": "Kosten für Forschung berechnen",
 		"Menu.Technologies.Title": "Technologien",
 		"Menu.Technologies.Warning": "Deaktiviert: Öffne zuerst das Forschungsmenü!",
