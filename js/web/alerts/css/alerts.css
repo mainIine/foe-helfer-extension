@@ -13,11 +13,14 @@
     width: 650px;
 }
 
-#Alerts #AlertsBody {
-    overflow: hidden;
+#Alerts #AlertsBody { min-height: 160px; }
+
+#Alerts #AlertsBody .scrollable{
     max-height: 550px;
     min-height: 160px;
+    overflow: hidden;
     overflow-y: auto;
+    margin: 2px 0 4px 0;
 }
 
 #Alerts #AlertsBody .no-permission {
@@ -40,13 +43,20 @@
     width: 240px;
 }
 
-#Alerts #AlertsBody .box-inner { padding: 8px; }
-#Alerts #AlertsBody .box-inner-content {
+div.alert-popup {
+    left: 50%;
+    max-height: 550px;
+    min-height: 160px;
+    width: 650px;
+}
+
+div.alert-popup .box-inner { padding: 8px; }
+div.alert-popup .box-inner-content {
     border: .5px solid #7f5a34;
     margin-bottom: 15px;
     box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
 }
-#Alerts #AlertsBody .box-inner-content h3 {
+div.alert-popup .box-inner-content h3 {
     background-color: rgba(0,0,0,0.15);
     box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
     border-bottom: 1px solid rgb(65,41,17);
@@ -57,7 +67,7 @@
     margin: 0;
     padding: 4px 10px;
 }
-#Alerts #AlertsBody .box-inner-form {
+div.alert-popup .box-inner-form {
     padding: 10px;
 }
 
@@ -87,7 +97,7 @@
     padding: 4px;
 }
 
-#Alerts #AlertsBody #alert-expires,
+div.alert-popup #alert-expires,
 .box-inner select {
     padding: 7px 4px;
 }
