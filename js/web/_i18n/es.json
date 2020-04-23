@@ -144,6 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansiones",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", //Todo: Translate
 		"Boxes.Outpost.nextTile": "próxima expansión",
+		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "off",
 		"Boxes.Outpost.Title": "Mercancias de los Asentamientos Culturales",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
@@ -267,9 +268,11 @@
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
 		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
@@ -391,10 +394,6 @@
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
 		"Settings.CustomerApi.Desc": "¿Le gustaría enviar algunos datos a su propio servidor?<br> Después de esta activación, el juego se volverá a cargar y aparecerá un nuevo elemento de menú.",
 		"Settings.CustomerApi.Title": "API de jugadores",
-		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
-		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
-		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
-		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extensión autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmisión a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate

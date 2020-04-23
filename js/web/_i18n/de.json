@@ -144,6 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Erweiterungen",
 		"Boxes.Outpost.infoLine": "__runNumber__. Durchlauf, Bonus x4 Chance: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "nächste Erweiterung",
+		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "aus",
 		"Boxes.Outpost.Title": "Güter des Außenpostens",
 		"Boxes.Outpost.TitleBuildings": "Gebäude",
@@ -242,7 +243,6 @@
 		"Boxes.Stats.BtnLastErasTitle": "Zeige das aktuelle und das vorhergehende Zeitalter",
 		"Boxes.Stats.BtnMyEra": "Mein Zeitalter",
 		"Boxes.Stats.BtnNoEra": "Kein Zeitalter",
-		"Boxes.Stats.BtnNoEraTitle": "Kein Zeitalter",
 		"Boxes.Stats.BtnSource.gbgPlayers": "Gildengefechte",
 		"Boxes.Stats.BtnSource.rewards": "Belohungen",
 		"Boxes.Stats.BtnSource.treasureClan": "Gildenkasse",
@@ -268,9 +268,11 @@
 		"Boxes.Stats.PeriodTitle.thisMonth": "Diesen Monat gesammelt",
 		"Boxes.Stats.PeriodTitle.today": "Heute gesammelt",
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Gildengefechte",
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GEX",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Kriegsbeute",
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Belohnungen von den Gildengefechten",
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Belohnungen von der Gildenexpedition, die vom Relikttempel erzeugt wurden",
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Kriegsbeute durch die Burg Himeji",
 		"Boxes.Stats.SourceTitle.gbgPlayers": "Punktestände der Spieler der Gildengefechte",

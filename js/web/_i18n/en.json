@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "English",
 		"API.GEXChampionship": "The GEX guild placement has been updated",
@@ -144,6 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansions",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chance: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "next Expansion",
+		"Boxes.Outpost.ShowSums": "Show sums:",
 		"Boxes.Outpost.tileNotPlanned": "off",
 		"Boxes.Outpost.Title": "Goods of the outpost",
 		"Boxes.Outpost.TitleBuildings": "Building",
@@ -267,13 +268,13 @@
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month",
 		"Boxes.Stats.PeriodTitle.today": "Collected Today",
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds",
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war",
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts",
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds",
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics",
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle",
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier",
 		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds",
 		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground",
 		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly",
