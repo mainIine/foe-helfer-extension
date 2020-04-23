@@ -144,6 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Расширения",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Шанс бонуса Х4: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Следующее расширение",
+		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "Выкл",
 		"Boxes.Outpost.Title": "Товары поселения",
 		"Boxes.Outpost.TitleBuildings": "Постройка",
@@ -267,9 +268,11 @@
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
 		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
@@ -391,10 +394,6 @@
 		"Settings.ChangeLanguage.Title": "Изменить язык",
 		"Settings.CustomerApi.Desc": "Вы хотите отправить данные на свой сервер? <br> После этой активации игра перезагрузится и появится новый пункт меню.",
 		"Settings.CustomerApi.Title": "API игроков",
-		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
-		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
-		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
-		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",

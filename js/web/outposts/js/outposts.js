@@ -206,7 +206,7 @@ let Outposts = {
 		// Kopfzeile
 
 		// summen checkbox
-		t.push('<p class="info-line"><span><label>&sum;<input type="checkbox" onclick="Outposts.asSum(this.checked)"'+(displaySums?' checked':'')+'/></label>');
+		t.push('<p class="info-line"><span><label>' + i18n('Boxes.Outpost.ShowSums') + '<input type="checkbox" onclick="Outposts.asSum(this.checked)"'+(displaySums?' checked':'')+'/></label></span><span>');
 
 		// Durchlauf Informationen
 		if (currentRun) {
@@ -345,7 +345,7 @@ let Outposts = {
 				
 				if (unlocked) {
 					// bereits erforscht
-					t.push('<span class="text-muted">' + HTML.Format(cost[resourceID]) + '</span>');
+					t.push('<span class="text-muted">' + HTML.Format(resourceCost) + '</span>');
 					t.push('</td>');
 					continue;
 				}
