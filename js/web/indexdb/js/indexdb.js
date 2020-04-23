@@ -114,6 +114,12 @@ let IndexDB = {
             .where('date').below(sixWeeksAgo)
             .delete();
 
+        // remove expired city shields
+		await IndexDB.db.actions
+			.where('type').equals(5)
+			.and((item)=>{ return item.expireTime < moment().unix() })
+			.delete();
+
         await IndexDB.db.players
             .where('date').below(sixWeeksAgo)
             .delete();
