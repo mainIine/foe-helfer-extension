@@ -44,7 +44,7 @@ statsDB.open();
 // Structure of `rewards` db
 // {
 //	date: Date,
-//	type: 'battlegrounds_conquest' | 'guildExpedition' | 'spoilsOfWar',
+//	type: 'battlegrounds_conquest' | 'guildExpedition' | 'spoilsOfWar' | 'diplomaticGifts',
 //	amount: number,
 //	reward: string, // eg. resource#strategy_points#10
 // }
@@ -200,6 +200,7 @@ let Stats = {
 
 	// More rewards can be tracked later, but for now lets track few
 	TrackableRewards: [
+		'diplomaticGifts', // Asteroid Age's GB reward
 		'battlegrounds_conquest', // Battle ground
 		'guildExpedition', // Temple of Relics
 		'spoilsOfWar' // Himeji Castle
@@ -225,7 +226,7 @@ let Stats = {
 		OceanicFuture: ['artificial_scales', 'biolight', 'corals', 'pearls', 'plankton'],
 		VirtualFuture: ['cryptocash', 'data_crystals', 'golden_rice', 'nanites', 'tea_silk'],
 		SpaceAgeMars: ['biotech_crops', 'lubricants', 'fusion_reactors', 'mars_microbes', 'superalloys'],
-		SpaceAgeAsteroidBelt: [],
+		SpaceAgeAsteroidBelt: ['bromine', 'compound_fluid', 'processed_material', 'platinum_crystals', 'nickel'],
 		SpaceAgeVenus: [],
 		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice']
 	},
@@ -606,7 +607,8 @@ ${sourceBtns.join('')}
 		const btnsRewardSelect = [
 			'battlegrounds_conquest', // Battle ground
 			'guildExpedition', // Temple of Relics
-			'spoilsOfWar' // Himeji Castle
+			'spoilsOfWar', // Himeji Castle
+			'diplomaticGifts',
 		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Rewards.Source.' + it),
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),
@@ -1165,6 +1167,7 @@ ${sourceBtns.join('')}
 		let data = await Stats.db.rewards.where('date').above(startDate).toArray();
 
 		const rewardTypes = await Stats.db.rewardTypes.toArray();
+		const rewardSources = ['battlegrounds_conquest', 'guildExpedition', 'spoilsOfWar', 'diplomaticGifts'];
 		const groupedByRewardSource = {};
 
 		data.forEach(it => {
