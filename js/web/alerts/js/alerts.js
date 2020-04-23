@@ -32,7 +32,7 @@
 let AlertsDB = new Dexie('foe_helper_alerts_database');
 AlertsDB.version(1).stores({
     // [id,expires,title,body,repeat,persistent,tag,vibrate,actions]
-    alerts: '++id,expires,tag'
+    alerts: '++id,expires,repeat,tag'
 });
 AlertsDB.open();
 // persistent alerts will be stored only once and the expires time will be updated before garbage collection so that
@@ -109,13 +109,39 @@ let Alerts = function(){
 
     let tmp = {};
 
+
     tmp.debug = true;
     tmp.log = function(o){ if (tmp.debug){ console.log(o); } };
 
     tmp.db = AlertsDB;
     tmp.data = {
+        options: {
+            timestamp: {
+                // the next() function will return all alerts set to expires between Date.now() and
+                // the nextTimeStamp value
+                next: null,
+                // we'll fetch data from the db only once in this many milliseconds
+                increment: 5000
+            }
+        },
+        active: () => {
+            const alerts = tmp.db.alerts.where('expires').above(0);
+            // let ts = moment().valueOf() + 5000;
+            // const alerts = tmp.db.alerts.where('expires').above(ts).reverse();
+            return alerts;
+        },
         add: (alert) => {
-            // lets be explicit about the fields we want to add
+
+            // reset the next timestamp if the new alert is set to expires before
+            // this can happen if, for example, currently there are no new alerts in the db and tmp.data.next()
+            // has been just called (so that it will not be called again for the duration
+            // of tmp.data.nextTimestampIncrement) and this new alert is set to expire before tmp.data.next()
+            // is called the next time. In such case, the alert would never be triggered.
+            if ( alert && ( alert.expires < tmp.data.options.timestamp.next ) ) {
+                tmp.data.options.timestamp.next = null;
+            }
+
+            // be explicit about the fields we want to add
             return tmp.db.alerts.add({
                 title: alert.title,
                 body: alert.body,
@@ -128,13 +154,31 @@ let Alerts = function(){
             });
         },
         get: (id) => {
-            return tmp.db.alerts.where('id').equals(id).first();
+            return tmp.db.alerts.where( 'id' ).equals( id ).first();
         },
         next: () => {
-            return tmp.db.alerts.where('expires').above(Date.now()).reverse().first();
+
+            let now = Date.now();
+            if ( now < tmp.data.options.timestamp.next ){ return null; }
+
+            if ( !tmp.data.options.timestamp.next ) { tmp.data.options.timestamp.next = now };
+            let n = tmp.data.options.timestamp.next;
+            tmp.data.options.timestamp.next = now + tmp.data.options.timestamp.increment;
+
+            return tmp.db.alerts.where('expires').between( n, tmp.data.options.timestamp.next );
+        },
+        refresh: () => {
+            let timestamp = Date.now();
+            tmp.db.alerts.where('repeat').above(-1).modify(function(alert){
+                alert.expires = tmp.repeat.nextExpiration( alert.expires, alert.repeat, timestamp );
+            });
         },
         update: (id, changes) => {
-            return tmp.db.alerts.update( id, changes );
+            // @see tmp.data.add
+            if ( changes && ( changes.expires < tmp.data.options.timestamp.next ) ) {
+                tmp.data.options.timestamp.next = null;
+            }
+            return tmp.db.alerts.update( parseInt(id), changes );
         }
     };
     tmp.model = {
@@ -147,12 +191,58 @@ let Alerts = function(){
         },
         neighbors: {}
     },
+    tmp.repeat = {
+        nextExpiration: ( expires, repeat, timestamp ) => {
+            repeat = parseInt( repeat ) * 1000;
+            if ( repeat > -1 ){
+                while( expires < timestamp ){
+                    expires += repeat;
+                }
+            }
+            return expires;
+        },
+        refresh: () => {
+            tmp.data.refresh();
+        },
+        update: ( alert, timestamp ) => {
+
+            // if the alert has a repeat value set, update the alert's expire as old expiration + the repeat value
+            let repeat = parseInt( alert.repeat );
+            if ( repeat > -1 ) {
+                let changes = {
+                    expires: tmp.repeat.nextExpiration( alert.expires, repeat, timestamp )
+                };
+                tmp.data.update( alert.id, changes ).then( function ( updated ){
+                    tmp.web.body.tabs.updateAlerts();
+                });
+            }
+            else {
+                tmp.web.body.tabs.updateAlerts();
+            }
+        }
+    },
     tmp.timer = {
-        nextAlert: null,
+        nextAlerts: {},
         isUpdating: false,
-        setNext: (alert) => {
-            if ( ! alert ){ alert = null; }
-            tmp.timer.nextAlert = alert;
+        addNext: (alert) => {
+            tmp.timer.nextAlerts[ alert.id ] = alert;
+        },
+        process: ( timestamp ) => {
+
+            for ( var id in tmp.timer.nextAlerts ){
+                let alert = tmp.timer.nextAlerts[id];
+                let next = alert.expires;
+                if ( timestamp > next ){
+                    // show the notification
+                    tmp.log('--- notification ---');
+                    tmp.log(alert);
+
+                    tmp.repeat.update(alert, timestamp);
+                    delete tmp.timer.nextAlerts[id];
+
+
+                }
+            }
         },
         update: (timestamp) => {
 
@@ -163,50 +253,30 @@ let Alerts = function(){
 
                 tmp.timer.isUpdating = true;
 
-                // get the next notification timestamp
-                // we don't want to run the query every update!
-                if ( tmp.timer.nextAlert === null ) {
-                    tmp.log('tmp.timer.update: requesting the next alert');
-                    tmp.data.next().then( function ( result ) {
-                        tmp.timer.setNext( result );
-                        tmp.timer.isUpdating = false;
-                        tmp.log('tmp.timer.update: the next alert is set');
-                        tmp.log(tmp.timer.nextAlert);
-                    } );
+                let promise = tmp.data.next();
+                if ( promise == null ) {
+                    tmp.timer.process( timestamp );
+                    tmp.timer.isUpdating = false;
+                    return;
                 }
-                else {
-                    let next = tmp.timer.nextAlert.expires;
-                    tmp.log(timestamp, next);
-                    if ( timestamp > next ) {
-                        // show the notification
-                        tmp.log('--- notification ---');
-                        tmp.log(tmp.timer.nextAlert);
-                        // if the alert has a repeat value set update the alert's expire as old expiration + the repeat value
-                        if ( tmp.timer.nextAlert.repeat > -1 ) {
 
-                            let changes = {};
-                            tmp.data.update( tmp.timer.nextAlert.id, changes ).then( function ( updated ) {
-                                tmp.timer.setNext( null );
-                                tmp.timer.isUpdating = false;
-                            } );
-                        }
-                        else {
-                            // reset the next alert
-                            tmp.timer.setNext( null );
-                            tmp.timer.isUpdating = false;
-                        }
-                    }
-                    else {
-                        tmp.timer.isUpdating = false;
-                    }
-                }
+                promise.each( function ( alert ) {
+                    tmp.timer.addNext( alert );
+                } ).then( function () {
+                    tmp.timer.process( timestamp );
+                    tmp.timer.isUpdating = false;
+                } );
+            }
+            else {
+                // tmp.timer.process( timestamp );
             }
 
             // do the visual updates only iff the box is visible
             if ( $( '#Alerts' ).length > 0 ) {
                 // tmp.log( t );
             }
-        }
+        },
+
     },
     tmp.web = {
         body: {
@@ -215,12 +285,12 @@ let Alerts = function(){
                 tmp.web.body.tabs.clean();
                 $( '#AlertsBody' ).empty();
 
-                tmp.web.body.tabs.addHead( 'alerts-tab-list', i18n( 'Boxes.Alerts.Tab.List' ) );
-                tmp.web.body.tabs.addHead( 'alerts-tab-new', i18n( 'Boxes.Alerts.Tab.New' ) );
-                tmp.web.body.tabs.addHead( 'alerts-tab-preferences', i18n( 'Boxes.Alerts.Tab.Preferences' ) );
+                // tmp.web.body.tabs.addHead( 'alerts-tab-list', i18n( 'Boxes.Alerts.Tab.List' ) );
+                // tmp.web.body.tabs.addHead( 'alerts-tab-preferences', i18n( 'Boxes.Alerts.Tab.Preferences' ) );
+                tmp.web.body.tabs.addHead( 'alerts-tab-list', 'Alerts' );
+                tmp.web.body.tabs.addHead( 'alerts-tab-preferences', 'Preferences' );
 
                 tmp.web.body.tabs.addContent( 'alerts-tab-list', tmp.web.body.tabs.tabListContent() );
-                tmp.web.body.tabs.addContent( 'alerts-tab-new', tmp.web.body.tabs.tabNewContent() );
                 tmp.web.body.tabs.addContent( 'alerts-tab-preferences', tmp.web.body.tabs.tabPreferencesContent() );
 
                 // compile it all into html and inject
@@ -237,43 +307,9 @@ let Alerts = function(){
 
                     tmp.web.body.tabs.updateAlerts();
 
-                    // disable keydown propagation from the form so that the canvas (the game) is not getting the
-                    // keyboard shortcuts (otherwise, it's impossible to type into input/textarea without affecting the game)
-                    $('#AlertsBody').find('input').on('keydown', function(e){e.stopPropagation(); });
-                    $('#AlertsBody').find('textarea').on('keydown', function(e){e.stopPropagation(); });
-
-                    $('#AlertsBody').find('#alert-presets').on('change', function(){
-                        let value = parseInt( $(this).val() );
-                        let title = $('#alert-presets option:selected').text();
-                        tmp.web.forms.actions.preset.set(value, '#alert-datetime');
-                        tmp.web.forms.actions.preset.setTitle(title, '#alert-title');
+                    $('#AlertsBody').find('span.button-alert-popup-new').on('click', function(){
+                        tmp.web.popup.type.create.show();
                     });
-
-                    $('#AlertsBody').find('#alert-body').on('propertychange input', function(){
-                        tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
-                    });
-
-
-                    tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
-
-                    $('#AlertsBody').find('span.button-create-alert').on('click', function(){
-                        tmp.web.forms.actions.create();
-                    });
-
-                    $('#AlertsBody').find('span.button-preview-alert').on('click', function(){
-                        tmp.web.forms.actions.previewNew();
-                    });
-
-                    $('#AlertsBody').find('span.datetime-preset').on('click', function(){
-                        let value = $(this).attr('data-time');
-                        tmp.web.forms.actions.preset.add(value,'#alert-datetime');
-                    });
-
-                    $('#alert-datetime').on('change keyup paste', function(){
-                        tmp.web.forms.actions.update();
-                    });
-
-                    tmp.web.forms.actions.init('#alert-datetime');
 
                 });
 
@@ -358,58 +394,44 @@ let Alerts = function(){
                 },
                 tabListContent: () => {
 
-                    // list alerts
-                    let html = `<table id="alerts-table" class="foe-table">
-                    <thead>
-                        <tr>
-                            <th>Expiration</th><th class="column-200">Title</th>
-                            <th>Repeat</th><th>Persistent</th>
-                            <th>&nbsp;</th>
-                         </tr>
-                    </thead>
-                    <tbody>`;
+                    let labels = {
+                        create: 'Create Alert'
+                    };
 
-                    html += '</tbody></table>';
+                    // list alerts
+                    let html = `<div class="scrollable">
+                        <table id="alerts-table" class="foe-table">
+                            <thead>
+                                <tr>
+                                    <th>Expiration</th><th class="column-200">Title</th>
+                                    <th>Repeat</th><th>Persistent</th>
+                                    <th>&nbsp;</th>
+                                 </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <p class="text-center">
+                        <span class="btn-default button-alert-popup-new">${labels.create}</span>
+                    </p>`;
 
                     return html;
                 },
-
-                tabNewContent: () => {
-                    let data = {
-                        id: 0,
-                        expires: Date.now() + 5000,
-                        title: '',
-                        body: '',
-                        repeat: -1,
-                        persistent: false,
-                        tag: '',
-                        action: 'create',
-                        buttonText: 'Create'
-
-                    };
-                    return `<div class="box-inner">
-                        <div class="box-inner-content">
-                            <h3>Create a new alert</h3>
-                            <div class="box-inner-form">
-                                ${tmp.web.forms.render(data)}
-                            </div>
-                        </div>
-                    </div>`;
-                },
-
                 tabPreferencesContent: () => {
                     return '<p>Preferences</p>';
                 },
                 updateAlerts: () => {
+
+                    // no need to update the alerts list if the alerts box is not shown
+                    if ( ! tmp.web.visible() ) { return; }
+
                     let html = '';
-                    // let ts = moment().valueOf() + 5000;
                     let dt = moment();
 
-                    const alerts = tmp.db.alerts.where('expires').above(0).reverse();
-                    // tmp.db.alerts.where('expires').above(ts).each(function(alert){
+                    const alerts = tmp.data.active();
                     alerts.each(function(alert){
                         let persist = ( alert.persistent ) ? ' checked="checked"' : '';
-                        html += `<tr>
+                        html += `<tr id="alert-id-${alert.id}">
                             <td>${moment(alert.expires).from(dt)}</td>
                             <td class="column-200">${alert.title}</td>
                             <td>${alert.repeat}</td>
@@ -434,7 +456,7 @@ let Alerts = function(){
                                         return;
                                     }
                                     if ( action === 'edit' ){
-                                        tmp.log(`--- edit (${id}) ---`);
+                                        tmp.web.popup.type.edit.show( result );
                                         return;
                                     }
                                     if ( action === 'delete' ){
@@ -505,8 +527,10 @@ let Alerts = function(){
                         persistent: data.persistent
                     };
 
+                    let promise = tmp.data.add( alert );
+
                     // switch the list tab
-                    tmp.data.add( alert ).then( function( result ){
+                    promise.then( function( result ){
 
                         tmp.web.body.tabs.updateAlerts();
                         $('.alerts-tab-list').trigger('click');
@@ -515,9 +539,45 @@ let Alerts = function(){
                         tmp.log('Alerts.tmp.web.forms.actions.create error');
                         tmp.log(error);
                     });
+
+                    return promise;
+
+                },
+                edit: () => {
+
+                    if ( ! tmp.web.forms.actions.validate() ){
+                        tmp.log('tmp.web.forms.actions.edit failed validation');
+                        return false;
+                    }
+
+                    let data = tmp.web.forms.data();
+                    let alert = {
+                        title: data.title,
+                        body: data.body,
+                        expires: moment(data.datetime).valueOf(),
+                        repeat: data.repeat,
+                        persistent: data.persistent
+                    };
+                    let id = data.id;
+                    let promise = tmp.data.update( id, alert );
+
+                    promise.then( function( result ) {
+
+                        tmp.web.body.tabs.updateAlerts();
+                        $('.alerts-tab-list').trigger('click');
+
+                    }).catch( function( error ){
+                        tmp.log('Alerts.tmp.web.forms.actions.edit error');
+                        tmp.log(error);
+                    });
+
+                    return promise;
                 },
                 init: (id) => {
+                    tmp.web.forms.aux.textareaRoot = null;
+                    tmp.web.forms.aux.textareaCounter = null;
                     tmp.web.forms.actions.preset.add(0,id);
+
                 },
                 /**
                  * @param value - the number of seconds (to add)
@@ -543,6 +603,10 @@ let Alerts = function(){
                     }
                 },
                 preview: ( data ) => {
+                    if ( ! data ){
+                        tmp.log('tmp.web.forms.actions.preview: invalid data');
+                        return;
+                    }
                     const options = {
                         body: data.body,
                         dir: 'ltr',
@@ -601,6 +665,7 @@ let Alerts = function(){
             },
             data: () => {
                 return {
+                    id: $( '#alert-id' ).val(),
                     title: $( '#alert-title' ).val(),
                     body: $( '#alert-body' ).val(),
                     datetime: $( '#alert-datetime' ).val(),
@@ -610,38 +675,73 @@ let Alerts = function(){
             },
             /**
              * The data object should include the following fields:
-             *      data.id         = alert id (0 if creating a new alert)
-             *      data.expires    = the expiration unix timestamp (Date.now() for new alert)
-             *      data.title      = alert title
-             *      data.body       = alert body
-             *      data.repeat     = repeat (-1 or the number of seconds after which to repeat)
-             *      data.persistent = true / false
-             *      data.tag        = alert tag
-             *      data.action     = (create | edit)
-             *      data.buttonText = (Create | Edit)
+             *      data.alert                  = alert object data
+             *          data.alert.id           = alert id (0 if creating a new alert)
+             *          data.alert.expires      = the expiration unix timestamp (Date.now() for new alert)
+             *          data.alert.title        = alert title
+             *          data.alert.body         = alert body
+             *          data.alert.repeat       = repeat (-1 or the number of seconds after which to repeat)
+             *          data.alert.persistent   = true / false
+             *          data.alert.tag          = alert tag
+             *      data.form                   = form data
+             *          data.form.header        = the form header (new / edit)
+             *      data.buttons                = buttons object data
+             *          data.buttons.left      = an array of buttons to be shown on the left
+             *          data.buttons.right      = an array of buttons to be shown on the right
              * @param data
              * @returns {string}
              */
             render: (data) => {
 
-                let id = (data.id) ? data.id : 0;
-                let datetime = tmp.web.forms.aux.formatIsoDate( moment(data.expires) );
+                let id = (data.alert.id) ? data.alert.id : 0;
+                let datetime = tmp.web.forms.aux.formatIsoDate( moment(data.alert.expires) );
 
-                let repeats = tmp.web.forms.aux.repeats(data.repeat);
+                let labels = {
+                    title: 'Title',
+                    body: 'Body',
+                    datetime: 'Date &amp; Time',
+                    presets: {
+                        header: 'Presets',
+                        antique: 'Antiques Dealer',
+                            auction: 'Auction',
+                            exchange: 'Exchange',
+                        battlegrounds: 'Battleground Provinces',
+                        neighborhood: 'Neighborhood',
+                    },
+                    repeats: {
+                        repeat: 'Repeat',
+                        never: 'never',
+                        every: 'or every'
+                    },
+                    persist: {
+                        persistence: 'Persistence',
+                        on: 'On',
+                        off: 'Off',
+                        description: 'Should the notification remain open until the user dismisses or clicks the notification'
+                    },
+                    buttons: {
+                        'create': 'Create',
+                        'discard': 'Discard',
+                        'preview': 'Preview',
+                        'save': 'Save'
+                    }
+                }
+
+                let repeats = tmp.web.forms.aux.repeats(data.alert.repeat);
 
                 let persistent_off = ' checked="checked"';
                 let persistent_on = '';
-                if ( data.persistent ){
+                if ( data.alert.persistent ){
                     persistent_on = ' checked="checked"';
                     persistent_off = '';
                 }
 
                 let antiqueOptions = '';
                 if ( tmp.model.antique.auction ){
-                    antiqueOptions += `<option value="${tmp.model.antique.auction}">Auction</option>`;
+                    antiqueOptions += `<option value="${tmp.model.antique.auction}">${labels.presets.auction}</option>`;
                 }
                 if ( tmp.model.antique.exchange ){
-                    antiqueOptions += `<option value="${tmp.model.antique.exchange}">Exchange</option>`;
+                    antiqueOptions += `<option value="${tmp.model.antique.exchange}">${labels.presets.exchange}</option>`;
                 }
 
                 let battlegroundOptions = '';
@@ -656,37 +756,47 @@ let Alerts = function(){
                         }
                     });
                 }
+
+                let buttonsLeft = '';
+                data.buttons.left.forEach( element => {
+                    buttonsLeft += `<span class="btn-default button-${element}-alert">${labels.buttons[element]}</span> `;
+                } );
+                let buttonsRight = '';
+                data.buttons.right.forEach( element => {
+                    buttonsRight += `<span class="btn-default button-${element}-alert">${labels.buttons[element]}</span> `;
+                } );
+
                 return `<form id="alert-form">
                     <input type="hidden" id="alert-id" value="${id}"/>
                     <p class="full-width">
-                        <label for="alert-title">Title</label>
-                        <input type="text" id="alert-title" name="title" placeholder="Title" value="${data.title}">
+                        <label for="alert-title">${labels.title}</label>
+                        <input type="text" id="alert-title" name="title" placeholder="Title" value="${data.alert.title}">
                     </p>
                     <p class="full-width">
-                        <label for="alert-body">Body</label>
-                        <textarea id="alert-body" name="body" maxlength="176">${data.body}</textarea>
+                        <label for="alert-body">${labels.body}</label>
+                        <textarea id="alert-body" name="body" maxlength="176">${data.alert.body}</textarea>
                     </p>
                     <p class="full-width text-right mt--10">
                         <small id="alert-body-counter"></small>
                     </p>
                     <p class="extra-vs-8">
-                        <label for="alert-datetime">Date &amp; Time</label>
+                        <label for="alert-datetime">${labels.datetime}</label>
                         <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${datetime}" step="1">
                         <span id="alert-expires"></span>
                     <p>
-                        <label for="alert-auto">Presets</label>
+                        <label for="alert-auto">${labels.presets.header}</label>
 <!--                        <select id="alert-presets-categories">
-                            <option value="">Antiques Dealer</option>
-                            <option value="">Guild Battlegrounds</option>
-                            <option value="">Neighborhood</option>
+                            <option value="">${labels.presets.antique}</option>
+                            <option value="">${labels.presets.battlegrounds}</option>
+                            <option value="">${labels.presets.neighborhood}</option>
                         </select>
 -->
                         <select id="alert-presets">
                             <option value="0" disabled selected>&nbsp;</option>
-                            <optgroup label="Antiques Dealer">
+                            <optgroup label="${labels.presets.antique}">
                             ${antiqueOptions}
                             </optgroup>
-                            <optgroup label="Battleground Provinces">
+                            <optgroup label="${labels.presets.battlegrounds}">
                             ${battlegroundOptions}
                             </optgroup>
                         </select>
@@ -703,10 +813,10 @@ let Alerts = function(){
                     </p>
                     
                     <p class="full-width radio-toolbar extra-vs-8">
-                        Repeat
+                        ${labels.repeats.repeat}
                         <input id="alert-repeat-never" type="radio" name="alert-repeat" value="-1"${repeats['-1']}>
-                        <label for="alert-repeat-never">never</label>
-                        or every
+                        <label for="alert-repeat-never">${labels.repeats.never}</label>
+                        ${labels.repeats.every}
                         <input id="alert-repeat-5m" type="radio" name="alert-repeat" value="300"${repeats['300']}>
                         <label for="alert-repeat-5m">5m</label>
                         <input id="alert-repeat-15m" type="radio" name="alert-repeat" value="900"${repeats['900']}>
@@ -722,12 +832,12 @@ let Alerts = function(){
                     </p>
                     
                     <p class="full-width radio-toolbar">
-                        Persistent
+                        ${labels.persist.persistence}
                         <input id="alert-persistent-off" type="radio" name="alert-persistent"${persistent_off} value="off">
-                        <label for="alert-persistent-off">Off</label>
+                        <label for="alert-persistent-off">${labels.persist.off}</label>
                         <input id="alert-persistent-on" type="radio" name="alert-persistent"${persistent_on} value="on">
-                        <label for="alert-persistent-on">On</label>
-                        <br><small>Should the notification remain open until the user dismisses or clicks the notification</small>
+                        <label for="alert-persistent-on">${labels.persist.on}</label>
+                        <br><small>${labels.persist.description}</small>
                     </p>
                     
                     <!--
@@ -739,19 +849,192 @@ let Alerts = function(){
                     -->
                     
                     <!-- left column -->
-                    <p>&nbsp;</p>
+                    <p>
+                        ${buttonsLeft}
+                    </p>
                     <p class="text-right">
-                        <span class="btn-default button-preview-alert">Preview</span>
-                        <span class="btn-default button-${data.action}-alert">${data.buttonText}</span>
+                        ${buttonsRight}
                      </p>
         
                 </form>`;
             }
         },
+        popup: {
+
+            options: {
+                create: {
+                    alert: {
+                        id: 0,
+                        expires: Date.now() + 5000,
+                        title: '',
+                        body: '',
+                        repeat: -1,
+                        persistent: false,
+                        tag: ''
+                    },
+                    form: {
+                        header: 'Create Alert'
+                    },
+                    buttons: {
+                        left: [],
+                        right: [ 'preview', 'create' ],
+                    }
+                },
+                edit: {
+                    alert: null,
+                    form: {
+                        header: 'Edit Alert'
+                    },
+                    buttons: {
+                        left: ['discard'],
+                        right: [ 'preview', 'save' ],
+                    }
+                }
+            },
+
+            content: {
+                form: {
+                    render: (options) => {
+                        let form = tmp.web.forms.render(options);
+                        return `<div class="box-inner">
+                            <div class="box-inner-content">
+                                <h3>${options.form.header}</h3>
+                                <div class="box-inner-form">
+                                    ${form}
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                },
+            },
+
+            type: {
+                common: {
+                    boxId: 'AlertsManage',
+                    build: ( options ) => {
+
+                        let boxId = tmp.web.popup.type.common.boxId;
+                        let bodyId = '#' + boxId + 'Body';
+                        $( bodyId ).empty()
+
+                        let html = [];
+
+                        html.push( '<div class="alert-popup">' );
+                        html.push( tmp.web.popup.content.form.render(options) );
+                        html.push( '</div>' );
+
+                        $( bodyId ).html( html.join( '' ) ).promise().done( function () {
+                            tmp.web.popup.type.common.setActions( bodyId );
+                        });
+                    },
+                    setActions: ( parent ) => {
+
+                        // disable keydown propagation from the form so that the canvas (the game) is not getting the
+                        // keyboard shortcuts (otherwise, it's impossible to type into input/textarea without affecting the game)
+                        $( parent ).find('input').on('keydown', function(e){e.stopPropagation(); });
+                        $( parent ).find('textarea').on('keydown', function(e){e.stopPropagation(); });
+
+                        $( parent ).find('#alert-presets').on('change', function(){
+                            let value = parseInt( $(this).val() );
+                            let title = $('#alert-presets option:selected').text();
+                            tmp.web.forms.actions.preset.set(value, '#alert-datetime');
+                            tmp.web.forms.actions.preset.setTitle(title, '#alert-title');
+                        });
+
+                        $( parent ).find('#alert-body').on('propertychange input', function(){
+                            tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
+                        });
+
+                        $( parent ).find('span.button-discard-alert').on('click', function(){
+                            tmp.web.popup.type.edit.close();
+                        });
+
+                        $( parent ).find('span.button-save-alert').on('click', function(){
+                            tmp.web.forms.actions.edit().then(function(){
+                                tmp.web.popup.type.edit.close();
+                            });
+                        });
+
+                        $( parent ).find('span.button-create-alert').on('click', function(){
+                            tmp.web.forms.actions.create().then(function(){
+                                tmp.web.popup.type.create.close();
+                            });
+                        });
+
+                        $( parent ).find('span.button-preview-alert').on('click', function(){
+                            tmp.web.forms.actions.previewNew();
+                        });
+
+                        $( parent ).find('span.datetime-preset').on('click', function(){
+                            let value = $(this).attr('data-time');
+                            tmp.web.forms.actions.preset.add(value,'#alert-datetime');
+                        });
+
+                        $('#alert-datetime').on('change keyup paste', function(){
+                            tmp.web.forms.actions.update();
+                        });
+
+                        tmp.web.forms.actions.init('#alert-datetime');
+                        tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
+
+                    },
+                    close: () => {
+                        let boxId = tmp.web.popup.type.common.boxId;
+                        HTML.CloseOpenBox( boxId );
+                    },
+                    show: ( labels, options ) => {
+                        let boxId = tmp.web.popup.type.common.boxId;
+
+                        if ( $( '#' + boxId ).length < 1 ) {
+                            HTML.Box( {
+                                id: boxId,
+                                title: labels.title,
+                                auto_close: true,
+                                dragdrop: true,
+                                minimize: true
+                            } );
+                            tmp.web.popup.type.common.build( options );
+                        }
+                        else {
+                            tmp.web.popup.type.common.close();
+                        }
+                    }
+                },
+                create: {
+
+                    close: () => {
+                        tmp.web.popup.type.common.close();
+                    },
+                    show: () => {
+                        let labels = {
+                            title: 'Create New Alert'
+                        };
+                        let options = tmp.web.popup.options.create;
+                        tmp.web.popup.type.common.show(labels, options);
+                    },
+                },
+                edit: {
+                    close: () => {
+                        tmp.web.popup.type.common.close();
+                    },
+                    show: ( alert ) => {
+                        let labels = {
+                            title: 'Edit Alert'
+                        };
+                        let options = tmp.web.popup.options.edit;
+                        options.alert = alert;
+                        tmp.web.popup.type.common.show(labels, options);
+                    },
+                },
+            },
+
+        },
         show: () => {
 
-            if ( $( '#Alerts' ).length < 1 ) {
-
+            if ( tmp.web.visible() ) {
+                HTML.CloseOpenBox( 'Alerts' );
+            }
+            else {
                 // override the CSS already in DOM
                 HTML.AddCssFile( 'alerts' );
 
@@ -763,19 +1046,16 @@ let Alerts = function(){
                     minimize: true
                 } );
                 tmp.web.body.build();
-
-            } else {
-                HTML.CloseOpenBox( 'Alerts' );
             }
-
+        },
+        visible: () => {
+            return ( $( '#Alerts' ).length > 0 );
         }
     };
 
     let pub = {
         init: () => {
-            // TODO
-            // refresh all expired alerts set to repeat before they are removed/garbage-collected
-
+            tmp.repeat.refresh();
             TimeManager.subscribe( tmp.timer );
         },
         show: () => {
