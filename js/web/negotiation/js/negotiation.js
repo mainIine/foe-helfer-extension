@@ -130,7 +130,9 @@ let Negotiation = {
 			h.push('<tbody>');
 
 			h.push('<tr>');
-			h.push('<td colspan="4" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="1" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="2">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input class="setting-check" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"></td>');
+			h.push('<td colspan="1">' + i18n('Boxes.Negotiation.SaveMedals') + '<input class="setting-check" type="checkbox" data-id="NegotiationSaveMedals"></td>');
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
 			h.push('</strong></td>');

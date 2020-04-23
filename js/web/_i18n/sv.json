@@ -125,6 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "VARNING: Varulager är lågt",
 		"Boxes.Negotiation.Person": "Person",
 		"Boxes.Negotiation.Round": "Omgång",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Lager:",
 		"Boxes.Negotiation.Success": "Framgång",
 		"Boxes.Negotiation.TableLoadError": "Fel att ladda förhandlingstabell",
