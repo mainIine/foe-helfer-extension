@@ -168,3 +168,26 @@
 
 	// ende der Trennung vom Globalen Scope
 }
+
+
+chrome.runtime.onStartup.addListener(function() {
+
+	// @Todo: Ticker der auf die expireTime runter zählt und dann die Nachricht anzeigt
+
+	let opt = {
+			type: "basic",
+			title: 'Hello World',
+			message: 'Diese Nachricht erscheint wenn der Chrome gestartet wurde...',
+			iconUrl: "images/app48.png",
+			silent: true // stumm ausgeben, aber mp3 abspielen
+		};
+
+	// Desktop Meldung zusammen setzen
+	chrome.notifications.create('', opt, (id)=> {
+		// hier könnte noch mehr gedöhns rein.
+		// man kann auch Buttons in so eine Nachricht einbauen...
+
+		// auf jeden Fall nen Alarm ;-)
+		const sound = new Audio('sound.mp3').play();
+	});
+});
