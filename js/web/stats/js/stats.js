@@ -78,11 +78,13 @@ statsDB.open();
 // }
 
 // Guild Battlegrounds leader board log
-FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async(data, postData) => {
+FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
 	const r = data.responseData;
-	if (!Array.isArray(r)) { return; }
+	if (!Array.isArray(r)) {
+		return;
+	}
 	const players = r.reduce((acc, it) => {
-		acc[it.player.player_id]= {
+		acc[it.player.player_id] = {
 			id: it.player.player_id,
 			n: it.negotiationsWon || 0,
 			b: it.battlesWon || 0,
@@ -106,17 +108,23 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async(da
 });
 
 // Reward log
-FoEproxy.addHandler('RewardService', 'collectReward', async(data, postData) => {
+FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
 	const r = data.responseData;
-	if (!Array.isArray(r)) { return; }
+	if (!Array.isArray(r)) {
+		return;
+	}
 	const [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
 	for (let reward of rewards) {
-		if (!Stats.TrackableRewards.includes(rewardIncidentSource)) {continue;}
+		if (!Stats.TrackableRewards.includes(rewardIncidentSource)) {
+			continue;
+		}
 
 		// Add reward info to the db
 		if (!(await Stats.db.rewardTypes.get(reward.id))) {
 			// Reduce amount of saved data
-			if (reward.unit) { delete reward.unit; }
+			if (reward.unit) {
+				delete reward.unit;
+			}
 			delete reward.__class__;
 			await Stats.db.rewardTypes.put(reward);
 		}
@@ -131,9 +139,11 @@ FoEproxy.addHandler('RewardService', 'collectReward', async(data, postData) => {
 });
 
 // Player treasure log
-FoEproxy.addHandler('ResourceService', 'getPlayerResources', async(data, postData) => {
+FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postData) => {
 	const r = data.responseData;
-	if (!r.resources) { return; }
+	if (!r.resources) {
+		return;
+	}
 
 	await Stats.db.treasurePlayerDaily.put({
 		date: moment().startOf('day').toDate(),
@@ -147,9 +157,11 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async(data, postDat
 });
 
 // Clan Treasure log
-FoEproxy.addHandler('ClanService', 'getTreasury', async(data, postData) => {
+FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 	const r = data.responseData;
-	if (!r.resources) { return; }
+	if (!r.resources) {
+		return;
+	}
 
 	await Stats.db.treasureClanDaily.put({
 		date: moment().startOf('day').toDate(),
@@ -165,7 +177,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async(data, postData) => {
 });
 
 // Player Army log
-FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async(data, postData) => {
+FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
 	const r = data.responseData;
 	// Convert array to hash to be more compact
 	const army = r.counts.reduce((acc, val) => {
@@ -248,11 +260,11 @@ let Stats = {
 		eraSelectOpen: false, // Dropdown
 		isGroupByEra: false,
 		showAnnotations: false, // GvG annotations
-		period: 'sinceTuesday',
+		period: 'today',
 		rewardSource: 'guildExpedition', // filter by type of reward
 	},
 
-	treasureSources: ['treasurePlayer',	'treasurePlayerDaily', 'treasureClan', 'treasureClanDaily'],
+	treasureSources: ['treasurePlayer', 'treasurePlayerDaily', 'treasureClan', 'treasureClanDaily'],
 	unitSources: ['units', 'unitsDaily'],
 	rewardSources: ['rewards'],
 	gbgSources: ['gbgPlayers'],
@@ -261,12 +273,13 @@ let Stats = {
 	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
 	isSelectedGBGSources: () => Stats.gbgSources.includes(Stats.state.source),
 
+
 	/**
 	 * Delete old data
 	 *
 	 * @returns {Promise<void>}
 	 */
-	garbargeCollector:	async ()=> {
+	garbargeCollector: async () => {
 		// Expiry time for db with 1 record per day
 		const daylyExpiryTime = moment().subtract(1, 'years').toDate();
 		// Expiry time for db with 1 record per hour
@@ -287,6 +300,10 @@ let Stats = {
 		}
 	},
 
+
+	/**
+	 * Show Box
+	 */
 	Show: () => {
 		if ($('#stats').length === 0) {
 			let args = {
@@ -309,7 +326,7 @@ let Stats = {
 				[Technologies.EraNames[CurrentEraID]]: true,
 			};
 			if (CurrentEraID > 2) {
-				Stats.state.eras[Technologies.EraNames[CurrentEraID -1]] = true;
+				Stats.state.eras[Technologies.EraNames[CurrentEraID - 1]] = true;
 			}
 		}
 
@@ -319,96 +336,145 @@ let Stats = {
 		$('#statsBody').on('click', '[data-type]', function () {
 			const type = $(this).data('type');
 			const value = $(this).data('value');
-			switch(type) {
-			case 'toggleEra':
-				Stats.state.eras[value] = !Stats.state.eras[value];
-				break;
-			case 'eraSelectOpen':
-				Stats.state.eraSelectOpen = !Stats.state.eraSelectOpen;
-				if (!value) {return;}
-			case 'selectEras':
-				Stats.state.eras = {};
-				const values = (value || '').split(',');
-				values.forEach(it => Stats.state.eras[it] = true);
-				break;
-			case 'groupByToggle':
-				Stats.state.isGroupByEra = !Stats.state.isGroupByEra;
-				break;
-			case 'selectSource':
-				const isChangedToUnit = Stats.unitSources.includes(value) && !Stats.isSelectedUnitSources();
-				const isChangedToMyTreasure = ['treasurePlayer', 'treasurePlayerDaily'].includes(value) && !Stats.isSelectedTreasureSources();
-				const isChangedToClanTreasure = ['treasureClan', 'treasureClanDaily'].includes(value) && !Stats.isSelectedTreasureSources();
-				const isChangedToReward = Stats.rewardSources.includes(value) && !Stats.isSelectedRewardSources();
-				const isChangedToGBG = Stats.gbgSources.includes(value) && !Stats.isSelectedGBGSources();
-				if (isChangedToUnit) {
-					// if Changed to units than select all eras by default
-					Stats.state.eras = {};
-					Object.keys(Stats.ResMap).map(it => Stats.state.eras[it] = true);
-				} else if (isChangedToMyTreasure) {
-					// If changed to player's treasure select 2 last eras
-					Stats.state.eras = {};
-					Stats.state.eras = {
-						[Technologies.EraNames[CurrentEraID]]: true,
-					};
-					if (CurrentEraID > 2) {
-						Stats.state.eras[Technologies.EraNames[CurrentEraID -1]] = true;
+
+			switch (type) {
+
+				case 'toggleEra':
+					Stats.state.eras[value] = !Stats.state.eras[value];
+					break;
+
+				case 'eraSelectOpen':
+					Stats.state.eraSelectOpen = !Stats.state.eraSelectOpen;
+					if (!value) {
+						return;
 					}
-				} else if (isChangedToClanTreasure) {
-					// If changed to treasure select all playable eras
+					break;
+
+				case 'selectEras':
 					Stats.state.eras = {};
-					Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
-				} else if (isChangedToGBG) {
-					Stats.state.chartType = 'delta';
-				} else if (isChangedToReward) {
-					Stats.state.period = 'sinceTuesday';
-					Stats.state.rewardSource = 'guildExpedition';
-				}
-				Stats.state.source = value || 'treasurePlayer';
-				break;
-			case 'setChartType':
-				Stats.state.chartType = value;
-				break;
-			case 'setPeriod':
-				Stats.state.period = value;
-				break;
-			case 'setRewardSource':
-				Stats.state.rewardSource = value;
-				break;
-			case 'toggleAnnotations':
-				Stats.state.showAnnotations = !Stats.state.showAnnotations;
-				break;
-			default:
-				return;
+					const values = (value || '').split(',');
+					values.forEach(it => Stats.state.eras[it] = true);
+					break;
+
+				case 'groupByToggle':
+					Stats.state.isGroupByEra = !Stats.state.isGroupByEra;
+					break;
+
+				case 'selectSource':
+					const isChangedToUnit = Stats.unitSources.includes(value) && !Stats.isSelectedUnitSources();
+					const isChangedToMyTreasure = ['treasurePlayer', 'treasurePlayerDaily'].includes(value) && !Stats.isSelectedTreasureSources();
+					const isChangedToClanTreasure = ['treasureClan', 'treasureClanDaily'].includes(value) && !Stats.isSelectedTreasureSources();
+					const isChangedToReward = Stats.rewardSources.includes(value) && !Stats.isSelectedRewardSources();
+					const isChangedToGBG = Stats.gbgSources.includes(value) && !Stats.isSelectedGBGSources();
+
+					if (isChangedToUnit) {
+						// if Changed to units than select all eras by default
+						Stats.state.eras = {};
+						Object.keys(Stats.ResMap).map(it => Stats.state.eras[it] = true);
+
+					} else
+						if (isChangedToMyTreasure) {
+							// If changed to player's treasure select 2 last eras
+							Stats.state.eras = {};
+							Stats.state.eras = {
+								[Technologies.EraNames[CurrentEraID]]: true,
+							};
+
+							if (CurrentEraID > 2) {
+								Stats.state.eras[Technologies.EraNames[CurrentEraID - 1]] = true;
+							}
+
+						} else
+							if (isChangedToClanTreasure) {
+								// If changed to treasure select all playable eras
+								Stats.state.eras = {};
+								Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
+
+							} else
+								if (isChangedToGBG) {
+									Stats.state.chartType = 'delta';
+
+								} else
+									if (isChangedToReward) {
+										Stats.state.period = 'sinceTuesday';
+										Stats.state.rewardSource = 'guildExpedition';
+									}
+
+					Stats.state.source = value || 'treasurePlayer';
+					break;
+
+				case 'setChartType':
+					Stats.state.chartType = value;
+					break;
+
+				case 'setPeriod':
+					Stats.state.period = value;
+					break;
+
+				case 'setRewardSource':
+					Stats.state.rewardSource = value;
+					Stats.RemoveTable();
+					break;
+
+				case 'toggleAnnotations':
+					Stats.state.showAnnotations = !Stats.state.showAnnotations;
+					break;
+
+				default:
+					return;
 			}
-			Stats.updateOptions()
+
+			Stats.updateOptions();
 			Stats.updateCharts();
 		});
 	},
 
+
+	/**
+	 * Remove previous data-table
+	 */
+	RemoveTable: () => {
+		$('.highcharts-data-table').remove();
+	},
+
+
+	/**
+	 * Render box content
+	 *
+	 * @returns {Promise<void>}
+	 */
 	Render: async () => {
-		$('#statsBody').html(`
-<div class="options">
-${Stats.RenderOptions()}
-</div>
-<div class="options-2">
-</div>
-<div id="highcharts">Loading...</div>
-`);
+		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="highcharts">Loading...</div>`);
 
 		Stats.updateOptions()
 		await Stats.loadHighcharts();
 		await Stats.updateCharts();
 	},
 
+
+	/**
+	 * Update options
+	 */
 	updateOptions: () => {
 		$('#statsBody .options').html(Stats.RenderOptions());
 		const secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
 		$('#statsBody .options-2').html(secondaryOptions);
 	},
 
+
+	/**
+	 * @param x
+	 * @param y
+	 * @returns {boolean}
+	 */
 	equals: (x, y) => JSON.stringify(x) == JSON.stringify(y),
 
-	// Render main options
+
+	/**
+	 * Render main options
+	 *
+	 * @returns {string}
+	 */
 	RenderOptions: () => {
 		const selectedEras = Stats.getSelectedEras().sort();
 
@@ -442,11 +508,11 @@ ${Stats.RenderOptions()}
 			name: i18n('Boxes.Stats.BtnLastEras'),
 			title: i18n('Boxes.Stats.BtnLastErasTitle'),
 			isActive: (selectedEras.length === 2 &&
-								 selectedEras.includes(Technologies.EraNames[CurrentEraID]) &&
-								 selectedEras.includes(Technologies.EraNames[CurrentEraID - 1])),
+				selectedEras.includes(Technologies.EraNames[CurrentEraID]) &&
+				selectedEras.includes(Technologies.EraNames[CurrentEraID - 1])),
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
 			dataType: 'selectEras',
-			value: Technologies.EraNames[CurrentEraID] + ',' + Technologies.EraNames[CurrentEraID -1]
+			value: Technologies.EraNames[CurrentEraID] + ',' + Technologies.EraNames[CurrentEraID - 1]
 		});
 
 		const btnSelectAllEra = Stats.RenderButton({
@@ -523,14 +589,20 @@ ${sourceBtns.join('')}
 `;
 	},
 
+
+	/**
+	 *
+	 * @returns {string}
+	 */
 	RenderSecondaryOptions: () => {
 		const btnsPeriodSelect = ['today', 'sinceTuesday', 'last7days', 'thisMonth', 'last30days', 'all'].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Period.' + it),
 			title: i18n('Boxes.Stats.PeriodTitle.' + it),
-			isActive: Stats.state.period == it,
+			isActive: Stats.state.period === it,
 			dataType: 'setPeriod',
 			value: it,
 		}));
+
 		const btnsRewardSelect = [
 			'battlegrounds_conquest', // Battle ground
 			'guildExpedition', // Temple of Relics
@@ -538,64 +610,98 @@ ${sourceBtns.join('')}
 		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Rewards.Source.' + it),
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),
-			isActive: Stats.state.rewardSource == it,
+			isActive: Stats.state.rewardSource === it,
 			dataType: 'setRewardSource',
 			value: it,
 		}));
-		return `
-<div class="option-2-period">
-	${btnsPeriodSelect.join('')}
-</div>
-<div class="option-2-reward-source">
-	${btnsRewardSelect.join('')}
-</div>
-`;
+
+		return `<div class="option-2-period">
+					${btnsPeriodSelect.join('')}
+				</div>
+				<div class="option-2-reward-source">
+					${btnsRewardSelect.join('')}
+				</div>`;
 	},
 
+
+	/**
+	 * Dropdown for ereas
+	 *
+	 * @returns {string}
+	 */
 	RenderEraSwitchers: () => {
 		const ages = [
 			'NoAge',
 		].concat(Stats.PlayableEras);
 		const selectedErasI18n = Stats.getSelectedEras().map(era => Technologies.Eras.hasOwnProperty(era) ? i18n('Eras.' + Technologies.Eras[era]) : era).join(',');
-		return `
-<div class="dropdown">
-<input type="checkbox" class="dropdown-checkbox" id="toggle-era-dropdown" data-type="eraSelectOpen" data-value="${Stats.state.eraSelectOpen ? 0 : 1}" ${Stats.state.eraSelectOpen ? 'checked' : ''}>
-<label class="dropdown-label game-cursor" for="toggle-era-dropdown" title="${selectedErasI18n}">
-	${selectedErasI18n	|| 'Select Era'}
-</label>
-<span class="arrow"></span>
-<ul>
-${Stats.RenderCheckbox({
-			name: 'Special', // TODO I18n
-			dataType: 'toggleEra',
-			value: 'special',
-			isActive: !!Stats.state.eras.special
-})}
-	${ages.map(it => Stats.RenderCheckbox({
-			name: i18n('Eras.' + Technologies.Eras[it]),
-			dataType: 'toggleEra',
-			value: it,
-			isActive: !!Stats.state.eras[it]
-})).join('')}
-</ul>
-</div>
-`
+
+		return `<div class="dropdown">
+					<input type="checkbox" class="dropdown-checkbox" id="toggle-era-dropdown" data-type="eraSelectOpen" data-value="${Stats.state.eraSelectOpen ? 0 : 1}" ${Stats.state.eraSelectOpen ? ' checked' : ''}>
+					<label class="dropdown-label game-cursor" for="toggle-era-dropdown" title="${selectedErasI18n}">
+						${selectedErasI18n || 'Select Era'}
+					</label>
+					<span class="arrow"></span>
+					<ul>
+						${Stats.RenderCheckbox({
+							name: 'Special', // TODO I18n
+							dataType: 'toggleEra',
+							value: 'special',
+							isActive: !!Stats.state.eras.special
+						})}
+						${ages.map(it => Stats.RenderCheckbox({
+							name: i18n('Eras.' + Technologies.Eras[it]),
+							dataType: 'toggleEra',
+							value: it,
+							isActive: !!Stats.state.eras[it]
+						})).join('')}
+					</ul>
+				</div>`;
 	},
 
+
+	/**
+	 * Render a checkbox
+	 *
+	 * @param name
+	 * @param isActive
+	 * @param dataType
+	 * @param value
+	 * @returns {string}
+	 */
 	RenderCheckbox: ({name, isActive, dataType, value}) => `<li>
-<label class="game-cursor">
-	<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>
-</li>`,
+		<label class="game-cursor">
+			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>
+		</li>`,
 
-	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled? 'disabled' : ''} class="btn btn-default btn-tight btn-set-arc ${!disabled && isActive ? 'btn-green' : '' }" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
 
+	/**
+	 * Render a button
+	 *
+	 * @param name
+	 * @param isActive
+	 * @param dataType
+	 * @param value
+	 * @param title
+	 * @param disabled
+	 * @returns {string}
+	 */
+	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight btn-set-arc ${!disabled && isActive ? 'btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
+
+
+	/**
+	 * Update charts
+	 *
+	 * @returns {Promise<void>}
+	 */
 	updateCharts: async () => {
 		if (Stats.isSelectedGBGSources()) {
 			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries()));
 		}
-		if(Stats.isSelectedUnitSources()) {
+
+		if (Stats.isSelectedUnitSources()) {
 			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createUnitsSeries()));
 		}
+
 		if (Stats.isSelectedTreasureSources()) {
 			if (Stats.state.isGroupByEra) {
 				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureGroupByEraSeries()));
@@ -603,12 +709,18 @@ ${Stats.RenderCheckbox({
 				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureSeries()));
 			}
 		}
+
 		if (Stats.isSelectedRewardSources) {
 			return Stats.updateRewardCharts(await Stats.createRewardSeries());
 		}
 	},
 
-	// Buttlegrounds series for highcharts
+
+	/**
+	 * Battlegrounds series for highcharts
+	 *
+	 * @returns {Promise<{series: {data, avatarUrl: (string|string), name: string}[], pointFormat: string}>}
+	 */
 	createGBGSeries: async () => {
 		const source = Stats.state.source;
 		let data = await Stats.db[source].orderBy('date').toArray();
@@ -623,6 +735,7 @@ ${Stats.RenderCheckbox({
 			Object.keys(row.players).forEach(it => acc[it] = true);
 			return acc;
 		}, {}));
+
 		const series = knownIds.map(playerId => {
 			const playerInfo = playerKV[playerId] || {name: '' + playerId};
 			const avatarUrl = MainParser.PlayerPortraits[playerInfo.avatar] ? `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[playerInfo.avatar]}.jpg` : '#'
@@ -639,22 +752,26 @@ ${Stats.RenderCheckbox({
 
 		return {
 			series,
-			pointFormat: `
-<tr>
-	<td>
-		<img src="{series.options.avatarUrl}" style="width: 45px; height: 45px; border: 1px white solid; margin-right: 4px;"/>
-	</td>
-	<td>
-		<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-	</td>
-	<td align="right">
-		<b>{point.y}</b>
-	</td>
-</tr>
-`,
+			pointFormat: `<tr>
+							<td>
+								<img src="{series.options.avatarUrl}" style="width: 45px; height: 45px; border: 1px white solid; margin-right: 4px;"/>
+							</td>
+							<td>
+								<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
+							</td>
+							<td class="text-right">
+								<b>{point.y}</b>
+							</td>
+						</tr>`,
 		};
 	},
 
+
+	/**
+	 * Unit series
+	 *
+	 * @returns {Promise<{series, pointFormat: string, footerFormat: string}>}
+	 */
 	createUnitsSeries: async () => {
 		const source = Stats.state.source;
 		let data = await Stats.db[source].orderBy('date').toArray();
@@ -688,28 +805,32 @@ ${Stats.RenderCheckbox({
 		});
 		return {
 			series,
-			pointFormat: `
-<tr>
-	<td>
-		<span class="units-icon {series.options.unitId}"></span>
-	</td>
-	<td>
-		<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-	</td>
-	<td align="right">
-		<b>{point.y}</b>
-	</td>
-</tr>
-`,
+			pointFormat: `<tr>
+								<td>
+									<span class="units-icon {series.options.unitId}"></span>
+								</td>
+								<td>
+									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
+								</td>
+								<td class="text-right">
+									<b>{point.y}</b>
+								</td>
+							</tr>`,
 			footerFormat: '</table><br/><small>{series.options.era}</small>'
 		};
 	},
 
+
+	/**
+	 *
+	 * @returns {Promise<{series: {data, name: *}[]}>}
+	 */
 	createTreasureGroupByEraSeries: async () => {
 		const source = Stats.state.source;
 		let data = await Stats.db[source].orderBy('date').toArray();
+
 		if (['treasureClan', 'treasureClanDaily'].includes(source)) {
-			data = data.filter(it => it.clanId == ExtGuildID);
+			data = data.filter(it => it.clanId === ExtGuildID);
 		}
 
 		const series = Stats.getSelectedEras().map(era => {
@@ -725,17 +846,24 @@ ${Stats.RenderCheckbox({
 		return {series};
 	},
 
+
+	/**
+	 *
+	 * @returns {Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>}
+	 */
 	createTreasureSeries: async () => {
 		const source = Stats.state.source;
 		let data = await Stats.db[source].orderBy('date').toArray();
 		const isClanTreasure = ['treasureClan', 'treasureClanDaily'].includes(source);
+
 		if (isClanTreasure) {
-			data = data.filter(it => it.clanId == ExtGuildID);
+			data = data.filter(it => it.clanId === ExtGuildID);
 		}
 
 		const hcColors = Highcharts.getOptions().colors;
 		let colors;
 		const selectedEras = Stats.getSelectedEras();
+
 		// Build color set - brighten each per
 		if (selectedEras.length > 1) {
 			let colorIndex = 0;
@@ -744,14 +872,15 @@ ${Stats.RenderCheckbox({
 				const baseColor = colorIndex % 9; // there is only 9 colors in theme
 				colorIndex++;
 				Stats.ResMap[era].forEach((it, index) => {
-					colors.push(Highcharts.color(hcColors[baseColor]).brighten(0 + index * 0.05).get())
+					colors.push(Highcharts.color(hcColors[baseColor]).brighten(index * 0.05).get())
 				});
 			});
 		}
 
 		const selectedResources = Stats.getSelectedEras()
-					.map(it => Stats.ResMap[it]) // map to arrays of goods of filtered eras
-					.reduce((acc, it) => acc.concat(it), []);// unflat array
+			.map(it => Stats.ResMap[it]) // map to arrays of goods of filtered eras
+			.reduce((acc, it) => acc.concat(it), []);// unflat array
+
 		const series = selectedResources.map(it => {
 			const goodsData = (GoodsData[it] || {name: it})
 			return {
@@ -759,9 +888,7 @@ ${Stats.RenderCheckbox({
 				goodsId: it,
 				name: goodsData.name,
 				data: data.map(({date, resources}) => {
-					const value = resources[it] || 0;
-					date = +date;
-					return [date, resources[it] || 0];
+					return [+date, resources[it] || 0];
 				}),
 			};
 		});
@@ -769,28 +896,34 @@ ${Stats.RenderCheckbox({
 		return {
 			series,
 			colors,
-			pointFormat: `
-<tr>
-	<td>
-		<span class="goods-sprite {series.options.goodsId}"></span>
-	</td>
-	<td>
-		<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-	</td>
-	<td align="right">
-		<b>{point.y}</b>
-	</td>
-</tr>
-`,
+			pointFormat: `<tr>
+								<td>
+									<span class="goods-sprite {series.options.goodsId}"></span>
+								</td>
+								<td>
+									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
+								</td>
+								<td class="text-right">
+									<b>{point.y}</b>
+								</td>
+							</tr>`,
 			footerFormat: '</table><br/><small>{series.options.era}</small>'
 		};
 	},
 
-	// Calculate diff between points and use it as 'y', change chartType to 'line'
+
+	/**
+	 * Calculate diff between points and use it as 'y', change chartType to 'line'
+	 *
+	 * @param series
+	 * @param args
+	 * @returns {{series: *, chartType: (string)}}
+	 */
 	applyDeltaToSeriesIfNeed: ({series, ...args}) => {
 		let chartType = Stats.state.chartType || 'line';
 		const isNegativeValuesAllowed = !Stats.isSelectedGBGSources();
-		if (chartType == 'delta') {
+
+		if (chartType === 'delta') {
 			chartType = 'line';
 			series = series.map(s => {
 				if (isNegativeValuesAllowed) {
@@ -799,8 +932,9 @@ ${Stats.RenderCheckbox({
 					s.data = s.data.map((it, index, array) => [it[0], index > 0 ? Math.max(0, ((it[1] || 0) - (array[index - 1][1] || 0))) : 0]);
 				}
 				return s;
-			})
+			});
 		}
+
 		return {
 			...args,
 			series,
@@ -808,15 +942,35 @@ ${Stats.RenderCheckbox({
 		}
 	},
 
-	// 5123 => 5k, 2123 => 2.1k
+
+	/**
+	 * Human readable
+	 * e.g. 5123 => 5k, 2123 => 2.1k
+	 *
+	 * @param n
+	 * @returns {string}
+	 */
 	kilos: (n) => (n / 1000).toFixed(Math.abs(n) < 5000 ? 1 : 0) + 'k',
 
-	// E.g shortEraName('BronzeAge'); // 'BA'
+
+	/**
+	 * Get shortname
+	 * e.g shortEraName('BronzeAge'); => 'BA'
+	 *
+	 * @param eraId
+	 * @returns {void | string | *}
+	 */
 	shortEraName: (eraId) => eraId.replace(/([^A-Z])/g, ''),
 
+
+	/**
+	 * Get annotations
+	 *
+	 * @returns {Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: [{useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}]}>}
+	 */
 	getAnnotations: async () => {
 		let data = await Stats.db.treasureClan.orderBy('date').toArray();
-		data = data.filter(it => it.clanId == ExtGuildID);
+		data = data.filter(it => it.clanId === ExtGuildID);
 
 		const gvgDates = [];
 		const BASE_LEVEL = -100; // only create annotation when more than 100 goods are lost
@@ -844,8 +998,10 @@ ${Stats.RenderCheckbox({
 						const diffBetween2Goods = Math.abs((a - b) / a);
 						if (diffBetween2Goods < 0.15 && a < BASE_LEVEL) {
 							matchedIndexes.push(i);
-							if (a < decreasedGoods) {decreasedGoods = a;}
-						};
+							if (a < decreasedGoods) {
+								decreasedGoods = a;
+							}
+						}
 					}
 					if (matchedIndexes.length >= 3) {
 						erasGvG[era] = decreasedGoods * goodsDiffs.length;
@@ -902,9 +1058,20 @@ ${Stats.RenderCheckbox({
 		};
 	},
 
+
+	/**
+	 * Update chart
+	 *
+	 * @param series
+	 * @param colors
+	 * @param pointFormat
+	 * @param footerFormat
+	 * @param chartType
+	 * @returns {Promise<void>}
+	 */
 	updateCommonChart: async ({series, colors, pointFormat, footerFormat, chartType}) => {
 		colors = colors || Highcharts.getOptions().colors;
-		pointFormat = pointFormat || '<tr><td><span style="color:{point.color}">●</span> {series.name}:</td><td align="right"><b>{point.y}</b></td></tr>';
+		pointFormat = pointFormat || '<tr><td><span style="color:{point.color}">●</span> {series.name}:</td><td class="text-right"><b>{point.y}</b></td></tr>';
 		footerFormat = footerFormat || '</table>';
 
 		const {annotations, xAxisPlotLines} = Stats.state.showAnnotations ? (await Stats.getAnnotations()) : {};
@@ -940,18 +1107,18 @@ ${Stats.RenderCheckbox({
 			},
 			tooltip: {
 				useHTML: true,
-				shared: series.length <=5,
+				shared: series.length <= 5,
 				headerFormat: '<small>{point.key}</small><br/><table>',
-				borderWidth: series.length <=5 ? 0 : 1,
+				borderWidth: series.length <= 5 ? 0 : 1,
 				pointFormat,
 				footerFormat,
 			},
 			yAxis: {
 				maxPadding: annotations ? 0.2 : 0,
 				title: {text: null},
-				visible: chartType != 'streamgraph',
-				startOnTick: chartType != 'streamgraph',
-				endOnTick: chartType != 'streamgraph',
+				visible: chartType !== 'streamgraph',
+				startOnTick: chartType !== 'streamgraph',
+				endOnTick: chartType !== 'streamgraph',
 			},
 			annotations,
 			legend: {enabled: series.length < 26},
@@ -976,10 +1143,14 @@ ${Stats.RenderCheckbox({
 		});
 	},
 
+
+	/**
+	 * Create series
+	 *
+	 * @returns {Promise<{series: [{data: this, name: string}], title: string}>}
+	 */
 	createRewardSeries: async () => {
 		const {period, rewardSource} = Stats.state;
-		const dateThisWeek = moment().subtract(1, 'weeks').toDate();
-		const dateToday = moment().startOf('day').toDate();
 
 		const startDate = {
 			today: moment().startOf('day').toDate(),
@@ -994,32 +1165,42 @@ ${Stats.RenderCheckbox({
 		let data = await Stats.db.rewards.where('date').above(startDate).toArray();
 
 		const rewardTypes = await Stats.db.rewardTypes.toArray();
-		const rewardSources = ['battlegrounds_conquest', 'guildExpedition', 'spoilsOfWar'];
 		const groupedByRewardSource = {};
+
 		data.forEach(it => {
 			groupedByRewardSource[it.type] = groupedByRewardSource[it.type] || {};
 			groupedByRewardSource[it.type][it.reward] = groupedByRewardSource[it.type][it.reward] || 0;
-			groupedByRewardSource[it.type][it.reward] ++;
+			groupedByRewardSource[it.type][it.reward]++;
 		});
+
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
-			const rewardInfo = (rewardTypes.find(r => r.id == it) || {name: it});
-			const iconClass = rewardInfo.type == 'unit' ? `units-icon ${rewardInfo.subType}` :
-						rewardInfo.type == 'good' ? `goods-sprite ${rewardInfo.subType}` : ''
+			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
+			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` :
+				rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
 			return {
 				iconClass,
 				name: rewardInfo.name,
 				y: seriesMapBySource[it]
 			};
 		}).sort((a, b) => b.y - a.y);
+
 		return {
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + rewardSource) + '. ' + i18n('Boxes.Stats.PeriodTitle.' + period),
 			series: [{
 				name: rewardSource,
 				data: serieData
-			}]}
+			}]
+		}
 	},
 
+
+	/**
+	 * Update reward chart
+	 *
+	 * @param series
+	 * @param title
+	 */
 	updateRewardCharts: ({series, title}) => {
 		Highcharts.chart('highcharts', {
 			chart: {
@@ -1065,23 +1246,36 @@ ${Stats.RenderCheckbox({
 		});
 	},
 
+
+	/**
+	 * Get ereas
+	 *
+	 * @returns {string[]}
+	 */
 	getSelectedEras: () => {
-		const selectedEras = Object.keys(Stats.state.eras).filter(it =>Stats.state.eras[it]);
+		const selectedEras = Object.keys(Stats.state.eras).filter(it => Stats.state.eras[it]);
 		// preserv order or era, filter again using ResMap keys
 		return Object.keys(Stats.ResMap).filter(era => selectedEras.includes(era));
 	},
 
+
+	/**
+	 *
+	 * @param src
+	 * @returns {Promise<unknown>}
+	 */
 	promisedLoadCode: (src) => {
 		return new Promise(async (resolve, reject) => {
 			let sc = document.createElement('script');
 			sc.src = src;
 
-			sc.addEventListener('load', function() {
+			sc.addEventListener('load', function () {
 				this.remove();
 				resolve();
 			});
-			sc.addEventListener('error', function() {
-				console.error('error loading script '+src);
+
+			sc.addEventListener('error', function () {
+				console.error('error loading script ' + src);
 				this.remove();
 				reject();
 			});
@@ -1095,6 +1289,12 @@ ${Stats.RenderCheckbox({
 		});
 	},
 
+
+	/**
+	 * Load Highcharts
+	 *
+	 * @returns {Promise<void>}
+	 */
 	loadHighcharts: function () {
 		if (!Stats._highChartPromise) {
 			Stats._highChartPromise = load();
@@ -1102,7 +1302,8 @@ ${Stats.RenderCheckbox({
 
 		return Stats._highChartPromise;
 
-		async function load() {
+		async function load()
+		{
 			const sources = [
 				'highcharts.js',
 				'modules/streamgraph.js',
@@ -1111,15 +1312,18 @@ ${Stats.RenderCheckbox({
 				'modules/boost.js',
 				'modules/annotations.js',
 			];
+
 			for (const file of sources) {
 				const loadFromLocal = true;
 				const baseUrl = loadFromLocal ? (extUrl + 'vendor/highchart-8.0.4/') : 'https://code.highcharts.com/';
 				await Stats.promisedLoadCode(baseUrl + file);
 			}
+
 			await Stats.promisedLoadCode(extUrl + 'vendor/highchart-8.0.4/foe/foe-theme.js');
 
 			// Use local timezone
-			const timezone = new Date().getTimezoneOffset()
+			const timezone = new Date().getTimezoneOffset();
+
 			Highcharts.setOptions({
 				global: {
 					timezoneOffset: timezone
