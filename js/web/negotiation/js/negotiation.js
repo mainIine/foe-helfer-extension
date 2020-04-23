@@ -62,6 +62,8 @@ let Negotiation = {
 	ContinueListing: false,
 	NeedGoodMissmatchConfirm: false,
 
+	StartNegotiationBackupData: undefined,
+
 
 	/**
 	 * Box in den DOM legen
@@ -91,8 +93,7 @@ let Negotiation = {
 				localStorage.setItem(id, v);
 
 				setTimeout(()=>{
-					// @Todo: passende Funktion zum neu berechnen
-					Negotiation.CalcBody();
+					Negotiation.StartNegotiation(Negotiation.StartNegotiationBackupData);
 				}, 150);
 
 			});
@@ -140,15 +141,17 @@ let Negotiation = {
 
 		if (Negotiation.CurrentTable !== null) {
 
-			let dsceg = localStorage.getItem('NegotiationDontSaveCurrentEraGoods'),
-				dsm = localStorage.getItem('NegotiationDontSaveMedals');
+			let sceg = localStorage.getItem('NegotiationSaveCurrentEraGoods'),
+				sm = localStorage.getItem('NegotiationSaveMedals');
 
 			h.push('<tbody>');
 
 			h.push('<tr>');
-			h.push('<td colspan="1" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
-			h.push('<td colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationDontSaveCurrentEraGoods"' + ((dsceg === null || dsceg === 'true') ? ' checked' : '') + '></label></td>');
-			h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationDontSaveMedals"' + ((dsm === null || dsm === 'true') ? ' checked' : '') + '></label></td>');
+			h.push('<td colspan="' + (CurrentTry === 1 ? '1' : '4') + '" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			if (CurrentTry === 1) {
+				h.push('<td colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"' + ((sceg === null || sceg === 'true') ? ' checked' : '') + '></label></td>');
+				h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></td>');
+			}
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
 			h.push('</strong></td>');
@@ -460,6 +463,8 @@ let Negotiation = {
 	 * @param {number} [forcedTryCount]
 	 */
 	StartNegotiation: (responseData, forcedTryCount) => {
+		Negotiation.StartNegotiationBackupData = responseData;
+
 		if (responseData.__class__ === "Error") return;
 
 		if ($('#negotiation-Btn').hasClass('hud-btn-red')) {
@@ -870,8 +875,8 @@ let Negotiation = {
 			Value = 50;
 		}
 		else if (GoodName === 'medals') {
-			let SaveMedalSetting = localStorage.getItem('NegotiationDontSaveMedals');
-			if (SaveMedalSetting === 'true') {
+			let SaveMedalSetting = localStorage.getItem('NegotiationSaveMedals');
+			if (SaveMedalSetting === 'false') { // default true
 				Value = 75;
 			}
 			else
@@ -886,8 +891,8 @@ let Negotiation = {
 			Value = 4000;
 		}
 		else {
-			let SaveMedalSetting = localStorage.getItem('NegotiationDontSaveCurrentEraGoods');
-			if (SaveMedalSetting === 'true') {
+			let SaveMedalSetting = localStorage.getItem('NegotiationSaveCurrentEraGoods');
+			if (SaveMedalSetting === 'false') { // default true
 				Value = 100;
 			}
 			else {
