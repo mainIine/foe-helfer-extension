@@ -34,9 +34,9 @@
  * @property {number} value Wert des Gutes, wird genutzt um die Güter in ihrer Priorität zu sortieren
  */
 
- /**
+/**
  * @typedef {Object} Negotiation_SlotGuessInfo
- * @property {Negotiation_GoodData|null} good Das gut welches angeboten wurde
+ * @property {Negotiation_GoodData|null} good Das Gut welches angeboten wurde
  * @property {0|1|2} match Die Antwort auf das Angebot: 0: Korrekt, 1: Falsche Person, 2: Falsch
  */
 
@@ -63,7 +63,6 @@ let Negotiation = {
 	NeedGoodMissmatchConfirm: false,
 
 
-
 	/**
 	 * Box in den DOM legen
 	 *
@@ -83,6 +82,20 @@ let Negotiation = {
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('negotiation');
+
+			$('body').on('click', '.negotation-setting', function(){
+				let $this = $(this),
+					id = $this.data('id'),
+					v = $this.prop('checked');
+
+				localStorage.setItem(id, v);
+
+				setTimeout(()=>{
+					// @Todo: passende Funktion zum neu berechnen
+					Negotiation.CalcBody();
+				}, 150);
+
+			});
 
 		} else {
 			HTML.CloseOpenBox('negotiationBox');
@@ -125,14 +138,17 @@ let Negotiation = {
 		h.push('<table class="foe-table no-hover">');
 
 
-		if (Negotiation.CurrentTable != null) {
+		if (Negotiation.CurrentTable !== null) {
+
+			let dsceg = localStorage.getItem('NegotiationDontSaveCurrentEraGoods'),
+				dsm = localStorage.getItem('NegotiationDontSaveMedals');
 
 			h.push('<tbody>');
 
 			h.push('<tr>');
 			h.push('<td colspan="1" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(Math.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
-			h.push('<td colspan="2">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input class="setting-check" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"></td>');
-			h.push('<td colspan="1">' + i18n('Boxes.Negotiation.SaveMedals') + '<input class="setting-check" type="checkbox" data-id="NegotiationSaveMedals"></td>');
+			h.push('<td colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationDontSaveCurrentEraGoods"' + ((dsceg === null || dsceg === 'true') ? ' checked' : '') + '></label></td>');
+			h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationDontSaveMedals"' + ((dsm === null || dsm === 'true') ? ' checked' : '') + '></label></td>');
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
 			h.push('</strong></td>');
@@ -261,7 +277,7 @@ let Negotiation = {
 					animation: 150,
 					ghostClass: 'good-drag',
 					onEnd: function () {
-						//Fix für hängen bleibende Tooltips
+						// Fix für hängen bleibende Tooltips
 						if ($('#negotiationBox')[0] !== undefined && $('#negotiationBox')[0]['children'] !== undefined) {
 							for (let i = 0; i < $('#negotiationBox')[0]['children'].length;i++) {
 								if ($('#negotiationBox')[0]['children'][i]['className'] === 'tooltip fade top in') {
@@ -317,6 +333,7 @@ let Negotiation = {
 			h.push('</tr>');
 		}
 	},
+
 
 	/**
 	 * @param {string[]} h list of html-strings to add new contend to
@@ -408,6 +425,7 @@ let Negotiation = {
 		h.push('</tr>');
 	},
 
+
 	createPossibleItemsLine: (h) => {
 		h.push('<tr>');
 
@@ -426,6 +444,7 @@ let Negotiation = {
 
 		h.push('</tr>');
 	},
+
 
 	confirmGoodsMissmatch: () => {
 		Negotiation.Message = null;
@@ -668,6 +687,7 @@ let Negotiation = {
 		}
 	},
 
+
 	goodButtonCompare: (goodA, goodB) => {
 		function goodValue(good) {
 			const data = GoodsData[good];
@@ -684,6 +704,7 @@ let Negotiation = {
 		if (valA === valB) return goodA > goodB ? 1 : -1
 		return valA - valB;
 	},
+
 
 	/**
 	 * @param {Negotiation_GoodData} good
@@ -704,19 +725,22 @@ let Negotiation = {
 		}
 	},
 
+
 	updateNextGuess: () => {
 		if (!Negotiation.CurrentTable) return;
 		const GoodsOrdered = Negotiation.GoodsOrdered;
 		const PlaceMutation = Negotiation.PlaceMutation;
 		const gu = Negotiation.CurrentTable.gu;
+
 		/** @type {(Negotiation_GoodData|null)[]} */
 		const GuessesSuggestion = [];
+
 		for (let i = 0; i < gu.length; i++) {
-			const good = gu[i] === 255 ? null : GoodsOrdered[gu[i]];
-			GuessesSuggestion[PlaceMutation[i]] = good;
+			GuessesSuggestion[PlaceMutation[i]] = gu[i] === 255 ? null : GoodsOrdered[gu[i]];
 		}
 		Negotiation.GuessesSuggestions[Negotiation.CurrentTry-1] = GuessesSuggestion;
 	},
+
 
 	updateInitialPermutation: () => {
 		if (Negotiation.CurrentTry !== 1) {
@@ -741,6 +765,7 @@ let Negotiation = {
 		;
 	},
 
+
 	findMatchingPermutation: () => {
 		const currentTry = Negotiation.CurrentTry;
 		const GoodsOrdered = Negotiation.GoodsOrdered;
@@ -750,6 +775,7 @@ let Negotiation = {
 		const GoodsOrderedCopy = GoodsOrdered.slice();
 		let bestDistance = Number.MAX_SAFE_INTEGER;
 		let found = false;
+
 		// Gehe alle Permutationen der Verhandlungspartner durch (120 bei 5 Personen)
 		for (let permutation of helper.permutations([...new Array(PlaceCount).keys()])) {
 			const goodMap = new Array(GoodsOrdered.length).fill(255);
@@ -759,13 +785,14 @@ let Negotiation = {
 			let table = MainTable;
 			let lastTable = table;
 			let result;
+
 			// prüfe ob dies eine gültige Permutation wäre
 			for (let round = 0; round < currentTry; round++) {
 				result = 0;
 				for (let place = 0; place < PlaceCount; place++) {
 					const realPlace = permutation[place];
 					const SlotGuess = Guesses[round][realPlace];
-					// result für die verfolgung der weiteren Runden berechnen
+					// result für die Verfolgung der weiteren Runden berechnen
 					result = result*4 + SlotGuess.match;
 
 					const guessGood = table.gu[place];
@@ -779,6 +806,7 @@ let Negotiation = {
 						// Gut wurde noch nicht zugeordnet
 						goodMap[usedGood] = guessGood;
 						tableGoodMapped[guessGood] = true;
+
 					} else if (goodMapped !== guessGood) {
 						// Zuordnung passt nicht zur aktuellen Tabelle
 						valid = false;
@@ -813,6 +841,7 @@ let Negotiation = {
 		return found;
 	},
 
+
 	/**
 	 * Name zusammen setzen
 	 *
@@ -823,6 +852,7 @@ let Negotiation = {
 	GetTableName: (TryCount, GoodCount) => {
 		return TryCount + '_' + GoodCount;
 	},
+
 
 	/**
 	 * Gut bestimmen
@@ -1185,4 +1215,5 @@ let NegotiationDebugger = {
 
 		NegotiationDebugger.BuildBox();
 	}
-}
+};
+
