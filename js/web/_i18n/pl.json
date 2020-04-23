@@ -125,6 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "UWAGA: Zapas towaru na poziomie niskim",
 		"Boxes.Negotiation.Person": "Osoba",
 		"Boxes.Negotiation.Round": "Runda",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Zapas:",
 		"Boxes.Negotiation.Success": "Sukces",
 		"Boxes.Negotiation.TableLoadError": "Błąd przy pobieraniu tablicy negocjacji",

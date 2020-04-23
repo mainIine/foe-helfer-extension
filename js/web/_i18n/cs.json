@@ -125,6 +125,8 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENTION: Good stock is low", //Todo: Translate
 		"Boxes.Negotiation.Person": "D",
 		"Boxes.Negotiation.Round": "Round", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Stock:", //Todo: Translate
 		"Boxes.Negotiation.Success": "Úspěch",
 		"Boxes.Negotiation.TableLoadError": "Error loading the negotiation table", //Todo: Translate
