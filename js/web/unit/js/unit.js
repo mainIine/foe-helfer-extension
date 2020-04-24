@@ -211,7 +211,7 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			attack.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let Boosts = Unit.GetBoostSums(cache['bonuses']);
+			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
 
 			let AttackBoost = Boosts['AttackAttackBoost'],
 				DefenseBoost = Boosts['AttackDefenseBoost']
@@ -283,7 +283,7 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			defense.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let Boosts = Unit.GetBoostSums(cache['bonuses']);
+			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
 
 			let AttackBoost = Boosts['DefenseAttackBoost'],
 				DefenseBoost = Boosts['DefenseDefenseBoost']
@@ -476,6 +476,31 @@ let Unit = {
 			clearInterval(intervalID);
 			$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
 		}
+	},
+
+
+	/**
+	* Wandelt ein Boost Array in ein Dict um
+	* *
+	* */
+	GetBoostDict: (BoostArray) => {
+		let Ret = [];
+
+		for (let i in BoostArray) {
+			if (!BoostArray.hasOwnProperty(i)) continue;
+
+			let BoostType = BoostArray[i]['type'];
+			let BoostValue = BoostArray[i]['value'];
+
+			if (Ret[BoostType] === undefined) {
+				Ret[BoostType] = BoostValue;
+			}
+			else {
+				Ret[BoostType] += BoostValue;
+			}
+		}
+
+		return Ret;
 	},
 
 

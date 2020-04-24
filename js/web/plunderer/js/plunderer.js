@@ -95,7 +95,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	function adaptUnit(isAttacking)
 	{
 		return function(unit) {
-			const bonuses = Unit.GetBoostSums(unit.bonuses);
+			const bonuses = Unit.GetBoostSums(Unit.GetBoostDict(unit.bonuses));
 			const attBoost = isAttacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
 			const defBoost = isAttacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
 
