@@ -93,7 +93,6 @@ const i18n_loadPromise = (async() => {
 })();
 
 
-
 document.addEventListener("DOMContentLoaded", function(){
 	// aktuelle Welt notieren
 	ExtWorld = window.location.hostname.split('.')[0];
@@ -233,7 +232,7 @@ const FoEproxy = (function () {
 		},
 
 		/**
-		 * Fügt einen datenhandler für Nachrichtedn des WebSockets hinzu.
+		 * Fügt einen Datenhandler für Nachrichten des WebSockets hinzu.
 		 * @param {string} service Der Servicewert, der in der Nachricht gesetzt sein soll oder 'all'
 		 * @param {string} method Der Methodenwert, der in der Nachricht gesetzt sein soll oder 'all'
 		 * TODO: Genaueren Typ für den Callback definieren
@@ -486,7 +485,13 @@ const FoEproxy = (function () {
 		const metadataIndex = url.indexOf("metadata?id=");
 		if (metadataIndex > -1) {
 			const metaURLend = metadataIndex + "metadata?id=".length,
-				meta = url.substring(metaURLend).split('-', 1)[0];
+				metaArray = url.substring(metaURLend).split('-', 2),
+				meta = metaArray[0];
+
+			if(meta === 'city_entities'){
+				MainParser.CityMetaId = metaArray[1];
+			}
+
 			const metaHandler = proxyMetaMap[meta];
 
 			if (metaHandler) {
@@ -532,7 +537,7 @@ const FoEproxy = (function () {
 	return proxy;
 })();
 
-(function () {
+(function() {
 
 	// globale Handler
 	// die Gebäudenamen übernehmen
@@ -932,6 +937,14 @@ const FoEproxy = (function () {
 		MainParser.SocialbarList(data.responseData);
 	});
 
+	// Freundesliste
+	FoEproxy.addHandler('OtherPlayerService', 'getFriendsList', (data, postData) => {
+		if (!Settings.GetSetting('GlobalSend')) {
+			return;
+		}
+		MainParser.FriendsList(data.responseData);
+	});
+
 	//--------------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------------
 
@@ -1057,7 +1070,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BuildingSelectionKits: null, BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, SetArkBonus: MainParser.SetArkBonus, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), SendGoodsLog: MainParser.SendGoodsLog, Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, CityEntities: null, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BuildingSelectionKits: null, BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, SetArkBonus: MainParser.SetArkBonus, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), SendGoodsLog: MainParser.SendGoodsLog, Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, CityEntities: null, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, CityMetaId: null, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -1068,6 +1081,7 @@ let MainParser = {
 	EmissaryService: null,
 	PlayerPortraits: null,
 	Conversations: [],
+	CityMetaId: null,
 	CityEntities: null,
 
 	// alle Gebäude des Spielers
