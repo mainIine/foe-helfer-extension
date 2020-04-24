@@ -41,7 +41,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 			return;
 		}
 
-		if (data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+		if (data.responseData['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
 			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
 			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
 		}
@@ -108,8 +108,7 @@ let Unit = {
 		Unit.RefreshAlca();
 
 		// der Spieler besitzt ein Alca
-		if (Unit.alca !== undefined)
-		{
+		if (Unit.alca !== undefined){
 
 			top.push('<div style="padding: 4px;" class="text-center">');
 
@@ -193,8 +192,7 @@ let Unit = {
             }
         }
 
-        for(let i in Unit.Attack)
-		{
+        for(let i in Unit.Attack) {
 			if(!Unit.Attack.hasOwnProperty(i)){
 				break;
 			}
@@ -226,8 +224,7 @@ let Unit = {
 		}
 
 
-    	for(let i = Unit.Attack.length; i < 8; i++)
-	    {
+    	for(let i = Unit.Attack.length; i < 8; i++) {
 		    attack.push('<tr>');
 			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
 			attack.push('</tr>');
@@ -265,8 +262,7 @@ let Unit = {
                 Unit.Defense[Unit.Defense.length] = Unit.Cache['units'][i];
             }
         }
-		for(let i in Unit.Defense)
-		{
+		for(let i in Unit.Defense){
 			if(!Unit.Defense.hasOwnProperty(i)){
 				break;
 			}
@@ -297,8 +293,7 @@ let Unit = {
 			defense.push('</tr>');
 		}
 
-		for(let i = Unit.Defense.length; i < 8; i++)
-		{
+		for(let i = Unit.Defense.length; i < 8; i++){
 			defense.push('<tr>');
 			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
 			defense.push('</tr>');
@@ -318,8 +313,7 @@ let Unit = {
 			c = Unit.Cache['counts'];
 
 		// zuerst Sortieren
-		for(let i in c)
-		{
+		for(let i in c) {
 			if(!c.hasOwnProperty(i)){
 				break;
 			}
@@ -356,8 +350,7 @@ let Unit = {
 		pool.push('<tbody>');
 
 
-		for (let era = eras.length; era >= 0;era--)
-		{
+		for (let era = eras.length; era >= 0;era--){
 			if(!eras.hasOwnProperty(era)){
 				continue;
 			}
@@ -366,8 +359,7 @@ let Unit = {
 			pool.push('<th colspan="4">' + i18n('Eras.' + era) + '</th>');
 			pool.push('</tr>');
 
-			for(let i in eras[era])
-			{
+			for(let i in eras[era]){
 				if(!eras[era].hasOwnProperty(i)){
 					break;
 				}
@@ -592,8 +584,7 @@ let Unit = {
 		let LastAlca = [],
 			LastTotal = AlcaUnits.length;
 
-		for(let i in AlcaUnits)
-		{
+		for(let i in AlcaUnits) {
 			if(!AlcaUnits.hasOwnProperty(i)){
 				break;
 			}
@@ -631,8 +622,7 @@ let Unit = {
 
 		let cnt = 0;
 
-		for(let i in LastAlca)
-		{
+		for(let i in LastAlca) {
 			if(!LastAlca.hasOwnProperty(i)){
 				break;
 			}
