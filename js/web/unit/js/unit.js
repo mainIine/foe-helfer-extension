@@ -36,7 +36,7 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 	Unit.RefreshAlca();
 
-	if (Unit.alca !== undefined && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] !== undefined && postData[0]['requestData'][0][0] === Unit.alca.id) {
+	if (Unit.alca && postData && postData[0] && postData[0]['requestData'] && postData[0]['requestData'][0] && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
 			return;
 		}
@@ -57,7 +57,7 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
-	alca : null,
+	alca : undefined,
 
 	Cache : null,
 
@@ -413,7 +413,7 @@ let Unit = {
 	 * *
 	 * */
 	RefreshAlca: () => {
-		if (Unit.alca === null) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+		if (!Unit.alca) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
     },
 
 
