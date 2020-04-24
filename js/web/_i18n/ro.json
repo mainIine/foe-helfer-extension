@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "Română",
 		"API.GEXChampionship": "Contribuția membrilor ghildei la EG a fost actualizată",
@@ -243,14 +243,14 @@
 		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
 		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
 		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
@@ -275,14 +275,14 @@
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Cumpăr.: ",
 		"Boxes.StrategyPoints.FPBar": "PF în stoc: ",

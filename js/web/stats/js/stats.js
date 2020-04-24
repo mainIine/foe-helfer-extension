@@ -1,82 +1,3 @@
-let statsDB = new Dexie("StatsDb");
-
-statsDB.version(4).stores({
-	// battleground
-	gbgPlayers: 'date', // battleground
-	playerCache: 'id, date', // Cache of players for using in gbgPlayers
-
-	// rewards
-	rewards: 'date', // Collected rewards by Himeji, etc
-	rewardTypes: 'id', // Human readable cache info about rewards
-
-	// units
-	unitsDaily: 'date',
-	units: 'date',
-
-	// treasure player
-	treasurePlayer: 'date',
-	treasurePlayerDaily: 'date',
-
-	// treasure clan
-	treasureClan: 'date, clanId',
-	treasureClanDaily: 'date, clanId',
-});
-
-statsDB.open();
-
-// Structure of `gbgPlayers`, Battle ground leader board
-// {
-//	date: Date,
-//	players: {
-//		id: number, // player id
-//		n: number, // negotiations won
-//		b: number, // battles won,
-//		r: number, // rank
-//	}[]
-// }
-// Structure of `playerCache`. Battle ground player cache
-// {
-//	id: number, // player id
-//	name: string,
-//	avatar: string,
-//	date: Date
-// }
-// Structure of `rewards` db
-// {
-//	date: Date,
-//	type: 'battlegrounds_conquest' | 'guildExpedition' | 'spoilsOfWar' | 'diplomaticGifts',
-//	amount: number,
-//	reward: string, // eg. resource#strategy_points#10
-// }
-// Structure `rewardTypes` db is same FOE "GenericReward" class
-// {
-//	"id": "premium_50",
-//	"name": "50 Бриллиантов",
-//	"description": "",
-//	"iconAssetName": "diamond",
-//	"isHighlighted": true,
-//	"flags": ["rare"], // Note: flag is not rarity of guild expedition reward
-//	"type": "resource",
-//	"subType": "premium",
-//	"amount": 50,
-// }
-// Structure of `units`, `unitsDaily`
-// {
-//	date: Date,
-//	army: Object // key - id of unit, value - number of units
-// }
-// Structure of `treasurePlayer`, `treasurePlayerDaily` DBs
-// {
-//	date: Date,
-//	resources: Object, // key is id of resource
-// }
-// Structure of `treasureClan`, `treasureClanDaily` DBs
-// {
-//	date: Date,
-//	resources: Object,
-//	clandId: number
-// }
-
 // Guild Battlegrounds leader board log
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
 	const r = data.responseData;
@@ -93,7 +14,10 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (d
 		return acc;
 	}, {});
 	const timeNow = new Date();
-	await Stats.db.gbgPlayers.add({
+
+    await IndexDB.getDB();
+
+    await IndexDB.db.statsGBGPlayers.add({
 		date: timeNow,
 		players
 	});
@@ -104,7 +28,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (d
 		avatar: player.avatar,
 		date: timeNow
 	}));
-	await Stats.db.playerCache.bulkPut(playersForCache);
+	await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);
 });
 
 // Reward log
@@ -114,22 +38,25 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 		return;
 	}
 	const [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
+
+    await IndexDB.getDB();
+
 	for (let reward of rewards) {
 		if (!Stats.TrackableRewards.includes(rewardIncidentSource)) {
 			continue;
 		}
 
 		// Add reward info to the db
-		if (!(await Stats.db.rewardTypes.get(reward.id))) {
+		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
 			// Reduce amount of saved data
 			if (reward.unit) {
 				delete reward.unit;
 			}
 			delete reward.__class__;
-			await Stats.db.rewardTypes.put(reward);
+			await IndexDB.db.statsRewardTypes.put(reward);
 		}
 		// Add reward incident record
-		await Stats.db.rewards.add({
+		await IndexDB.db.statsRewards.add({
 			date: new Date(),
 			type: rewardIncidentSource,
 			amount: reward.amount || 0,
@@ -145,12 +72,14 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 		return;
 	}
 
-	await Stats.db.treasurePlayerDaily.put({
+    await IndexDB.getDB();
+
+    await IndexDB.db.statsTreasurePlayerH.put({
 		date: moment().startOf('day').toDate(),
 		resources: r.resources
 	});
 
-	await Stats.db.treasurePlayer.put({
+	await IndexDB.db.statsTreasurePlayerH.put({
 		date: moment().startOf('hour').toDate(),
 		resources: r.resources
 	});
@@ -163,13 +92,15 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 		return;
 	}
 
-	await Stats.db.treasureClanDaily.put({
+    await IndexDB.getDB();
+
+	await IndexDB.db.statsTreasureClanD.put({
 		date: moment().startOf('day').toDate(),
 		clanId: ExtGuildID,
 		resources: r.resources
 	});
 
-	await Stats.db.treasureClan.put({
+	await IndexDB.db.statsTreasureClanH.put({
 		date: moment().startOf('hour').toDate(),
 		clanId: ExtGuildID,
 		resources: r.resources
@@ -185,18 +116,20 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 		return acc;
 	}, {});
 
-	await Stats.db.unitsDaily.put({
+    await IndexDB.getDB();
+
+	await IndexDB.db.statsUnitsD.put({
 		date: moment().startOf('day').toDate(),
 		army
 	});
-	await Stats.db.units.put({
+
+    await IndexDB.db.statsUnitsH.put({
 		date: moment().startOf('hour').toDate(),
 		army
 	});
 });
 
 let Stats = {
-	db: statsDB,
 
 	// More rewards can be tracked later, but for now lets track few
 	TrackableRewards: [
@@ -255,7 +188,7 @@ let Stats = {
 
 	// State for UI
 	state: {
-		source: 'treasurePlayer', // Source of data - indexdb table name
+		source: 'statsTreasurePlayerH', // Source of data - indexdb table name
 		chartType: 'streamgraph', // chart type
 		eras: {}, // Selected era for filtering data,
 		eraSelectOpen: false, // Dropdown
@@ -265,42 +198,14 @@ let Stats = {
 		rewardSource: 'guildExpedition', // filter by type of reward
 	},
 
-	treasureSources: ['treasurePlayer', 'treasurePlayerDaily', 'treasureClan', 'treasureClanDaily'],
-	unitSources: ['units', 'unitsDaily'],
-	rewardSources: ['rewards'],
-	gbgSources: ['gbgPlayers'],
+	treasureSources: ['statsTreasurePlayerH', 'statsTreasurePlayerD', 'statsTreasureClanH', 'statsTreasureClanD'],
+	unitSources: ['statsUnitsH', 'statsUnitsD'],
+	rewardSources: ['statsRewards'],
+	gbgSources: ['statsGBGPlayers'],
 	isSelectedTreasureSources: () => Stats.treasureSources.includes(Stats.state.source),
 	isSelectedUnitSources: () => Stats.unitSources.includes(Stats.state.source),
 	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
 	isSelectedGBGSources: () => Stats.gbgSources.includes(Stats.state.source),
-
-
-	/**
-	 * Delete old data
-	 *
-	 * @returns {Promise<void>}
-	 */
-	garbargeCollector: async () => {
-		// Expiry time for db with 1 record per day
-		const daylyExpiryTime = moment().subtract(1, 'years').toDate();
-		// Expiry time for db with 1 record per hour
-		const hourlyExpiryTime = moment().subtract(8, 'days').toDate();
-		// Keep logs for guild battlegrounds for 2 weeks
-		const gbgExpiryTime = moment().subtract(2, 'weeks').toDate();
-
-		for (const table of ['rewards', 'unitsDaily', 'treasurePlayerDaily', 'treasureClanDaily']) {
-			await Stats.db[table].where('date').below(daylyExpiryTime).delete();
-		}
-
-		for (const table of ['units', 'treasurePlayer', 'treasureClan']) {
-			await Stats.db[table].where('date').below(hourlyExpiryTime).delete();
-		}
-
-		for (const table of ['gbgPlayers', 'playerCache']) {
-			await Stats.db[table].where('date').below(gbgExpiryTime).delete();
-		}
-	},
-
 
 	/**
 	 * Show Box
@@ -363,8 +268,8 @@ let Stats = {
 
 				case 'selectSource':
 					const isChangedToUnit = Stats.unitSources.includes(value) && !Stats.isSelectedUnitSources();
-					const isChangedToMyTreasure = ['treasurePlayer', 'treasurePlayerDaily'].includes(value) && !Stats.isSelectedTreasureSources();
-					const isChangedToClanTreasure = ['treasureClan', 'treasureClanDaily'].includes(value) && !Stats.isSelectedTreasureSources();
+					const isChangedToMyTreasure = ['statsTreasurePlayerH', 'statsTreasurePlayerD'].includes(value) && !Stats.isSelectedTreasureSources();
+					const isChangedToClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(value) && !Stats.isSelectedTreasureSources();
 					const isChangedToReward = Stats.rewardSources.includes(value) && !Stats.isSelectedRewardSources();
 					const isChangedToGBG = Stats.gbgSources.includes(value) && !Stats.isSelectedGBGSources();
 
@@ -401,7 +306,7 @@ let Stats = {
 										Stats.state.rewardSource = 'guildExpedition';
 									}
 
-					Stats.state.source = value || 'treasurePlayer';
+					Stats.state.source = value || 'statsTreasurePlayerH';
 					break;
 
 				case 'setChartType':
@@ -542,14 +447,14 @@ let Stats = {
 		});
 
 		const sourceBtns = [
-			'treasurePlayer',
-			'treasurePlayerDaily',
-			'treasureClan',
-			'treasureClanDaily',
-			'units',
-			'unitsDaily',
-			'rewards',
-			'gbgPlayers'
+			'statsTreasurePlayerH',
+			'statsTreasurePlayerD',
+			'statsTreasureClanH',
+			'statsTreasureClanD',
+			'statsUnitsH',
+			'statsUnitsD',
+			'statsRewards',
+			'statsGBGPlayers'
 		].map(source => Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnSource.' + source),
 			title: i18n('Boxes.Stats.SourceTitle.' + source),
@@ -725,8 +630,8 @@ ${sourceBtns.join('')}
 	 */
 	createGBGSeries: async () => {
 		const source = Stats.state.source;
-		let data = await Stats.db[source].orderBy('date').toArray();
-		const playerCache = await Stats.db.playerCache.toArray();
+		let data = await IndexDB.db[source].orderBy('date').toArray();
+		const playerCache = await IndexDB.db.statsGBGPlayerCache.toArray();
 
 		const playerKV = playerCache.reduce((acc, it) => {
 			acc[it.id] = it;
@@ -776,7 +681,7 @@ ${sourceBtns.join('')}
 	 */
 	createUnitsSeries: async () => {
 		const source = Stats.state.source;
-		let data = await Stats.db[source].orderBy('date').toArray();
+		let data = await IndexDB.db[source].orderBy('date').toArray();
 
 		const unitsTypes = data.reduce((acc, it) => {
 			const unitIds = Object.keys(it.army);
@@ -829,9 +734,9 @@ ${sourceBtns.join('')}
 	 */
 	createTreasureGroupByEraSeries: async () => {
 		const source = Stats.state.source;
-		let data = await Stats.db[source].orderBy('date').toArray();
+		let data = await IndexDB.db[source].orderBy('date').toArray();
 
-		if (['treasureClan', 'treasureClanDaily'].includes(source)) {
+		if (['statsTreasureClanH', 'statsTreasureClanD'].includes(source)) {
 			data = data.filter(it => it.clanId === ExtGuildID);
 		}
 
@@ -855,8 +760,8 @@ ${sourceBtns.join('')}
 	 */
 	createTreasureSeries: async () => {
 		const source = Stats.state.source;
-		let data = await Stats.db[source].orderBy('date').toArray();
-		const isClanTreasure = ['treasureClan', 'treasureClanDaily'].includes(source);
+		let data = await IndexDB.db[source].orderBy('date').toArray();
+		const isClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(source);
 
 		if (isClanTreasure) {
 			data = data.filter(it => it.clanId === ExtGuildID);
@@ -971,7 +876,7 @@ ${sourceBtns.join('')}
 	 * @returns {Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: [{useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}]}>}
 	 */
 	getAnnotations: async () => {
-		let data = await Stats.db.treasureClan.orderBy('date').toArray();
+		let data = await IndexDB.db.statsTreasureClanH.orderBy('date').toArray();
 		data = data.filter(it => it.clanId === ExtGuildID);
 
 		const gvgDates = [];
@@ -1164,9 +1069,9 @@ ${sourceBtns.join('')}
 			all: 0
 		}[period] || 0;
 
-		let data = await Stats.db.rewards.where('date').above(startDate).toArray();
+		let data = await IndexDB.db.statsRewards.where('date').above(startDate).toArray();
 
-		const rewardTypes = await Stats.db.rewardTypes.toArray();
+		const rewardTypes = await IndexDB.db.statsRewardTypes.toArray();
 		const rewardSources = ['battlegrounds_conquest', 'guildExpedition', 'spoilsOfWar', 'diplomaticGifts'];
 		const groupedByRewardSource = {};
 
@@ -1335,8 +1240,3 @@ ${sourceBtns.join('')}
 		}
 	},
 };
-
-// Lets cleaning after 2min when app is up
-setTimeout(() => {
-	Stats.garbargeCollector();
-}, 120 * 1000);
