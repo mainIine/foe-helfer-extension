@@ -47,16 +47,6 @@ let Settings = {
 			title : i18n('Settings.SendGEXInfo.Title'),
 			desc : i18n('Settings.SendGEXInfo.Desc')
 		},
-		DontSaveMedals : {
-			status: true,
-			title : i18n('Settings.DontSaveMedals.Title'),
-			desc : i18n('Settings.DontSaveMedals.Desc')
-		},
-		DontSaveCurrentEraGoods : {
-			status: true,
-			title : i18n('Settings.DontSaveCurrentEraGoods.Title'),
-			desc : i18n('Settings.DontSaveCurrentEraGoods.Desc')
-		},
 		ShowNeighborsGoods : {
 			status: true,
 			title : i18n('Settings.ShowNeighborsGoods.Title'),
@@ -160,7 +150,7 @@ let Settings = {
 					$('<span />').addClass('check').append(
 						$('<span />').addClass('toogle-word')
 					).append(
-						$('<input class="setting-check" type="checkbox" />')
+						$('<input class="setting-check game-cursor" type="checkbox" />')
 					)
 				);
 
@@ -202,12 +192,17 @@ let Settings = {
 	 * Beim Klick speichern
 	 *
 	 * @param el
+	 * @param changeText
 	 */
-	StoreSettings: (el)=> {
+	StoreSettings: (el, changeText = true)=> {
 		let id = $(el).data('id'),
 			v = $(el).prop('checked');
 
 		localStorage.setItem(id, v);
+
+		if(changeText === false){
+			return;
+		}
 
 		$(el).prev().text( v === true ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive') );
 

@@ -1,3 +1,8 @@
+#stats {
+	top: calc(50% - 400px);
+	left: calc(50% - 600px);
+}
+
 #statsBody {
 	width: 1200px;
 	max-height: 800px;

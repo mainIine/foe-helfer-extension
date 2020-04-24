@@ -135,6 +135,7 @@
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
 		"Boxes.Neighbors.AttackingArmy": "Estimation du bonus des armées en Attaque : __attatt__% (Att) / __attdef__% (Déf)",
 		"Boxes.Neighbors.DefendingArmy": "Estimation du bonus des armées en Défense : __defatt__% (Att) / __defdef__% (Déf)",
+		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
 		"Boxes.Outpost.DescInStock": "Disponible",
@@ -143,6 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansions",
 		"Boxes.Outpost.infoLine": "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Prochaine expansion",
+		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "N/A",
 		"Boxes.Outpost.Title": "Ressources de la colonie",
 		"Boxes.Outpost.TitleBuildings": "Bâtiment",
@@ -266,9 +268,11 @@
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
 		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
