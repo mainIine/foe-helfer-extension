@@ -1,8 +1,6 @@
 FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
     HTML.CloseOpenBox('battleAssistStopDialog');
 
-    const isAutoBattle = data.responseData.isAutoBattle; // isAutoBattle is part of BattleRealm only
-    //
     const state = data.responseData.__class__ === 'BattleRealm' ? data.responseData.state : data.responseData;
     if (state.__class__ !== 'BattleRealmState') {
         return;
