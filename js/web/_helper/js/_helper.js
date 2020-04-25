@@ -35,7 +35,7 @@ if( typeof helper == 'undefined' ) {
 helper.str = {
 	/**
 	 * Function to copy string to clipboard
-	 * 
+	 *
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
 	copyToClipboard: function(textToCopy){
@@ -148,13 +148,13 @@ let HTML = {
 			cords = localStorage.getItem(args['id'] + 'Cords');
 
 		// Minimierenbutton
-		if(args['minimize'] !== undefined){
+		if(args['minimize']){
 			let min = $('<span />').addClass('window-minimize');
 			min.insertAfter(title);
 		}
 
 		// Lautsprecher für Töne
-		if(args['speaker'] !== undefined){
+		if(args['speaker']){
 
 			// Click Event grillen...
 			$('body').off('click', '#' + args['speaker']);
@@ -166,19 +166,19 @@ let HTML = {
 		}
 
 		// es gibt gespeicherte Koordinaten
-		if(cords !== null){
+		if(cords){
 			let c = cords.split('|');
 			div.offset({ top: Math.min(c[0], window.innerHeight - 50), left: Math.min(c[1], window.innerWidth - 100) });  // Verhindere, dass Fenster außerhalb plaziert werden
 		}
 
 		// Ein Link zu einer Seite
-		if(args['ask'] !== undefined){
+		if(args['ask']){
 			div.find(title).after( $('<span />').addClass('window-ask').attr('data-url', args['ask']) );
 		}
 
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function() {
-			if(args['auto_close'] !== undefined){
+			if(args['auto_close']){
 				$('body').on('click', '#' + args['id'] + 'close', function(){
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
@@ -186,25 +186,25 @@ let HTML = {
 				});
 			}
 
-			if(args['ask'] !== undefined) {
+			if(args['ask']) {
 				$('body').on('click', '.window-ask', function() {
 					window.open( $(this).data('url'), '_blank');
 				});
 			}
 
-			if(args['dragdrop'] !== undefined) {
+			if(args['dragdrop']) {
 				HTML.DragBox(document.getElementById(args['id']), args['saveCords']);
 			}
 
-			if(args['resize'] !== undefined){
+			if(args['resize']) {
 				HTML.Resizeable(args['id']);
 			}
 
-			if(args['minimize'] !== undefined){
+			if(args['minimize']) {
 				HTML.MinimizeBox(div);
 			}
 
-			if(args['speaker'] !== undefined){
+			if(args['speaker']) {
 				$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
 			}
 
