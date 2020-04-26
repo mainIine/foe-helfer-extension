@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Français",
 		"API.GEXChampionship": "Le classement de guilde GEX a été mis à jour.",
@@ -135,7 +135,7 @@
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
 		"Boxes.Neighbors.AttackingArmy": "Estimation du bonus des armées en Attaque : __attatt__% (Att) / __attdef__% (Déf)",
 		"Boxes.Neighbors.DefendingArmy": "Estimation du bonus des armées en Défense : __defatt__% (Att) / __defdef__% (Déf)",
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
+		"Boxes.Neighbors.GuildPower": "Puissance de guilde",
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
 		"Boxes.Outpost.DescInStock": "Disponible",
@@ -144,7 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansions",
 		"Boxes.Outpost.infoLine": "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Prochaine expansion",
-		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Montrer cumul",
 		"Boxes.Outpost.tileNotPlanned": "N/A",
 		"Boxes.Outpost.Title": "Ressources de la colonie",
 		"Boxes.Outpost.TitleBuildings": "Bâtiment",
@@ -229,61 +229,61 @@
 		"Boxes.Settings.Active": "Actif",
 		"Boxes.Settings.Inactive": "Inactif",
 		"Boxes.Settings.Title": "Paramètres",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
-		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
-		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
-		"Boxes.Stats.Period.all": "All", //Todo: Translate
-		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
-		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
-		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
-		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
-		"Boxes.Stats.Period.today": "Today", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.Title": "Statistic", //Todo: Translate
+		"Boxes.Stats.BtnAll": "Tous",
+		"Boxes.Stats.BtnAllPlayableEras": "Tout âge",
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Selectionner tous les âges jouable (sans Spécial et Sans âge)",
+		"Boxes.Stats.BtnAllTittle": "Âge + Sans âges + Spécial",
+		"Boxes.Stats.BtnChartType.delta": "Variations",
+		"Boxes.Stats.BtnChartType.line": "Lignes",
+		"Boxes.Stats.BtnChartType.streamgraph": "Flux",
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Affichage des variations gains/dépenses",
+		"Boxes.Stats.BtnChartTypeTitle.line": "Affichage en lignes",
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Affichage en flux",
+		"Boxes.Stats.BtnLastEras": "2 derniers âges",
+		"Boxes.Stats.BtnLastErasTitle": "Affichage de l'âge actuel et le précédent",
+		"Boxes.Stats.BtnMyEra": "Âge actuel",
+		"Boxes.Stats.BtnNoEra": "Sans âge",
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Ch. de Batailles",
+		"Boxes.Stats.BtnSource.statsRewards": "Récompenses",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Tréso Guilde / H",
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Tréso Guilde / J",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Tréso Perso / H",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Tréso Perso / J",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Unités / H",
+		"Boxes.Stats.BtnSource.statsUnitsD": "Unités / J",
+		"Boxes.Stats.BtnToggleAnnotations": "GvG",
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Afficher une diminution des ressources sur la carte GvG.",
+		"Boxes.Stats.BtnToggleGroupBy": "Grouper / âges",
+		"Boxes.Stats.BtnToggleGroupByTitle": "Regrouper les ressources par âges",
+		"Boxes.Stats.Period.all": "Toutes date",
+		"Boxes.Stats.Period.last30days": "30 derniers jours",
+		"Boxes.Stats.Period.last7days": "7 derniers jours",
+		"Boxes.Stats.Period.sinceTuesday": "Depuis mardi",
+		"Boxes.Stats.Period.thisMonth": "Ce mois",
+		"Boxes.Stats.Period.today": "Aujourd'hui",
+		"Boxes.Stats.PeriodTitle.all": "Depuis toujours",
+		"Boxes.Stats.PeriodTitle.last30days": "Collectés sur les 30 derniers jours",
+		"Boxes.Stats.PeriodTitle.last7days": "Collectés sur les 7 derniers jours",
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collectés depuis mardi (expéditions de guilde démarrent le mardi)",
+		"Boxes.Stats.PeriodTitle.thisMonth": "Collectés ce mois",
+		"Boxes.Stats.PeriodTitle.today": "Collectés aujourd'hui",
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Champs de bataille",
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Cadeaux diplomatiques",
+		"Boxes.Stats.Rewards.Source.guildExpedition": "Expéditions de guilde",
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Butins de guerre",
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Récompenses du champ de bataille des guildes",
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Récompenses des cadeaux diplomatiques en négociations (Bonus du Transporteur Spatial)",
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Récompenses des reliques en expédition de guilde (Bonus du Temple des reliques)", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Récompenses des butins de guerre (Bonus du Château d'Himeji)",
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Tableau des scores des membres en champs de bataille de guilde",
+		"Boxes.Stats.SourceTitle.statsRewards": "Répartition de vos récompenses : reliques sur les expéditions de guilde (Temple des reliques), butins de guerre (Château d'Himeji), cadeaux diplomatiques (Transporteur Spatial) et sur le champ de bataille des guildes",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Evolution de la trésorerie de guilde par Heure",
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Evolution de la trésorerie de guilde par Jour",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Evolution de votre trésorerie personnelle par Heure",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Evolution de votre trésorerie personnelle par Jour",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Evolution de vos unités par Heure",
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Evolution de vos unités par Jour",
+		"Boxes.Stats.Title": "Statistiques",
 		"Boxes.StrategyPoints.BuyableFP": "Achetable : ",
 		"Boxes.StrategyPoints.FPBar": "PF en stock : ",
 		"Boxes.Technologies.DescInStock": "Disponible",
@@ -380,7 +380,7 @@
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",
 		"Menu.Settings.Title": "Paramètres",
-		"Menu.Stats.Desc": "Ressources, Unités, Récompenses, Champ de bataille des guildes",
+		"Menu.Stats.Desc": "Statistique des Ressources, Unités, Récompenses, Champ de bataille des guildes",
 		"Menu.Stats.Title": "Statistiques",
 		"Menu.Technologies.Desc": "Calcule les coûts de la recherche.",
 		"Menu.Technologies.Title": "Recherches Technologiques",
