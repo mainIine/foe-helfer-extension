@@ -76,54 +76,50 @@ let Reader = {
 			if (d.hasOwnProperty(i)) {
 			let id = d[i]['cityentity_id'];
 
-			/* Test Todo: remove */
-				if (d[i]['bonus'] !== undefined) {
-					let BoostType = d[i]['bonus']['type'];
-					let BoostValue = d[i]['bonus']['value'];
-					if (BoostType !== undefined && BoostValue !== undefined) {
-						BoostDict[BoostType] |= 0;
-						BoostDict[BoostType] += BoostValue;
-						//if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
-						//	console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
-						//}
+			if (d[i]['bonus'] !== undefined) {
+				let BoostType = d[i]['bonus']['type'];
+				let BoostValue = d[i]['bonus']['value'];
+				if (BoostType !== undefined && BoostValue !== undefined) {
+					BoostDict[BoostType] |= 0;
+					BoostDict[BoostType] += BoostValue;
+					//if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
+					//	console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
+					//}
+				}
+			}
+
+			let BuildingData = MainParser.CityEntities[BuildingNamesi18n[id].index];
+			if (d[i]['state'] !== undefined && d[i]['state']['__class__'] !== 'ConstructionState' && d[i]['state']['__class__'] !== 'UnconnectedState') {
+				if (BuildingData['abilities'] !== undefined) {
+					for (let ability in BuildingData['abilities']) {
+						if (!BuildingData['abilities'].hasOwnProperty(ability)) continue;
+							let CurrentAbility = BuildingData['abilities'][ability];
+						if (CurrentAbility['boostHints'] !== undefined) {
+							for (let boostHint in CurrentAbility['boostHints']) {
+								if (!CurrentAbility['boostHints'].hasOwnProperty(boostHint)) continue;
+
+								let CurrentBoostHint = CurrentAbility['boostHints'][boostHint];
+								Reader.HandleBoostEraMap(BoostDict, CurrentBoostHint['boostHintEraMap'], d[i]);
+							}
+						}
+
+						if (CurrentAbility['bonuses'] !== undefined) {
+							for (let bonus in CurrentAbility['bonuses']) {
+								if (!CurrentAbility['bonuses'].hasOwnProperty(bonus)) continue;
+
+								let CurrentBonus = CurrentAbility['bonuses'][bonus];
+								Reader.HandleBoostEraMap(BoostDict, CurrentBonus['boost'], d[i]);
+							}
+						}
+
+						if (CurrentAbility['bonusGiven'] !== undefined) {
+							let CurrentBonus = CurrentAbility['bonusGiven'];
+							Reader.HandleBoostEraMap(BoostDict, CurrentBonus['boost'], d[i]);
+                           }
+                       }
 					}
 				}
-
-				let BuildingData = MainParser.CityEntities[BuildingNamesi18n[id].index];
-				if (d[i]['state'] !== undefined && d[i]['state']['__class__'] !== 'ConstructionState' && d[i]['state']['__class__'] !== 'UnconnectedState') {
-					if (BuildingData['abilities'] !== undefined) {
-						for (let ability in BuildingData['abilities']) {
-							if (!BuildingData['abilities'].hasOwnProperty(ability)) continue;
-
-							let CurrentAbility = BuildingData['abilities'][ability];
-							if (CurrentAbility['boostHints'] !== undefined) {
-								for (let boostHint in CurrentAbility['boostHints']) {
-									if (!CurrentAbility['boostHints'].hasOwnProperty(boostHint)) continue;
-
-									let CurrentBoostHint = CurrentAbility['boostHints'][boostHint];
-									Reader.HandleBoostEraMap(BoostDict, CurrentBoostHint['boostHintEraMap'], d[i]);
-								}
-							}
-
-							if (CurrentAbility['bonuses'] !== undefined) {
-								for (let bonus in CurrentAbility['bonuses']) {
-									if (!CurrentAbility['bonuses'].hasOwnProperty(bonus)) continue;
-
-									let CurrentBonus = CurrentAbility['bonuses'][bonus];
-									Reader.HandleBoostEraMap(BoostDict, CurrentBonus['boost'], d[i]);
-								}
-							}
-
-							if (CurrentAbility['bonusGiven'] !== undefined) {
-								let CurrentBonus = CurrentAbility['bonusGiven'];
-								Reader.HandleBoostEraMap(BoostDict, CurrentBonus['boost'], d[i]);
-                            }
-                        }
-                    }
-				}
-
-			/* Test Ende */
-                
+				                
                 if (BlackListBuildingsArray.includes(id) === false && BlackListBuildingsString.indexOf(id.substring(0, id.length-1)) === -1) {
                     if (d[i]['state'] !== undefined && d[i]['state']['current_product'] !== undefined) {
                         if (d[i]['type'] === 'goods') {
@@ -198,12 +194,19 @@ let Reader = {
 
 		let div = $('#ResultBox'),
 			h = [];
-
-		h.push(HTML.i18nReplacer(i18n('Boxes.Neighbors.AttackingArmy'), { 'attatt': Reader.ArmyBoosts['AttackAttackBoost'], 'attdef': Reader.ArmyBoosts['AttackDefenseBoost'] }));
-		h.push('<br>');
-		h.push(HTML.i18nReplacer(i18n('Boxes.Neighbors.DefendingArmy'), { 'defatt': Reader.ArmyBoosts['DefenseAttackBoost'], 'defdef': Reader.ArmyBoosts['DefenseDefenseBoost'] }));
-		h.push('<br>');
-
+        const boosts = Reader.ArmyBoosts;
+        h.push(`
+<div style="margin: 3px 5px">
+${HTML.i18nReplacer(i18n('Boxes.Neighbors.AttackingArmy'), {
+   attatt: `<b>${boosts.AttackAttackBoost}</b>`,
+   attdef: `<b>${boosts.AttackDefenseBoost}</b>`
+})}
+<br />
+${HTML.i18nReplacer(i18n('Boxes.Neighbors.DefendingArmy'), {
+    defatt: `<b>${boosts.DefenseAttackBoost}</b>`,
+    defdef: `<b>${boosts.DefenseDefenseBoost}</b>`})}
+</div>
+`)
 		if (rd.length > 0) {
 			h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
