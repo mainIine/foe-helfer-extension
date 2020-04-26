@@ -21,14 +21,16 @@ FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, post
 		if (!Array.isArray(r)) { return; }
 		const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
 
+		await IndexDB.getDB();
+
 		for (const shieldInfo of shielded) {
 			const playerId = shieldInfo.playerId;
-			const lastShieldAction = await IndexDB.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
+			const lastShieldAction = await IndexDB.db.pvpActions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
 
 			// If in db already exists actual shield info than skip
 			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
 
-			await IndexDB.db.actions.add({
+			await IndexDB.db.pvpActions.add({
 				type: Plunderer.ACTION_TYPE_SHIELDED,
 				playerId: playerId,
 				date: new Date,
@@ -73,11 +75,13 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	// Avoid adding defend battles (when view recorded defend battles)
 	if (defenderPlayerId === ExtPlayerID) { return ; }
 
+	await IndexDB.getDB();
+
 	// Ensure user is exists in db already
 	await IndexDB.addUserFromPlayerDictIfNotExists(defenderPlayerId);
 
 	// Add action
-	await IndexDB.db.actions.add({
+	await IndexDB.db.pvpActions.add({
 		playerId: defenderPlayerId,
 		date: new Date(),
 		type: actionType,
@@ -95,7 +99,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	function adaptUnit(isAttacking)
 	{
 		return function(unit) {
-			const bonuses = Unit.GetBoostSums(unit.bonuses);
+			const bonuses = Unit.GetBoostSums(Unit.GetBoostDict(unit.bonuses));
 			const attBoost = isAttacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
 			const defBoost = isAttacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
 
@@ -117,6 +121,8 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 	if (!Array.isArray(r)) {
 		return;
 	}
+
+	await IndexDB.getDB();
 
 	r.forEach(async (it) => {
 		const entityId = it.id;
@@ -146,7 +152,7 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				'money'
 			];
 			const isImportant = Object.keys(resources).some(it => !unimportantProds.includes(it));
-			await IndexDB.db.actions.add({
+			let action = {
 				playerId,
 				date: new Date(),
 				type: Plunderer.ACTION_TYPE_PLUNDERED,
@@ -155,10 +161,42 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 				important: isImportant,
 				entityId: entity.id,
 				buildId: entity.cityentity_id,
-			});
-			Plunderer.UpdateBoxIfVisible();
+			};
+
+			await Plunderer.upsertPlunderAction(action);
 		}
 	});
+});
+
+// Handle double plunder bonus (Atlantis Museum). Usually this event come before CityMapService/reset
+FoEproxy.addHandler('CityMapService', 'showEntityIcons', async (data, postData) => {
+	// Typical structure of data:
+	// "responseData": [
+	//	{
+	//		"id": 2440,
+	//		"type": "citymap_icon_plunder_and_pillage",
+	//		"__class__": "CityEntityIcon"
+	//	}
+	// ],
+
+	const r = data.responseData;
+
+	if (!Array.isArray(r)) {
+		return;
+	}
+
+	// In fact this is an array, but only one plunder id will be for sure in this event, so ignore rest array
+	const doublePlunderCityId = r.filter(it => it.type === 'citymap_icon_plunder_and_pillage').map(it => it.id)[0];
+	if (!doublePlunderCityId) { return }
+
+	const playerId = Plunderer.lastVisitedPlayer.other_player.player_id;
+
+	const action = {
+		entityId: doublePlunderCityId,
+		playerId,
+		doublePlunder: true,
+	};
+	await Plunderer.upsertPlunderAction(action);
 });
 
 FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) => {
@@ -189,6 +227,8 @@ let Plunderer = {
 	ACTION_TYPE_BATTLE_SURRENDERED: 4,
 	ACTION_TYPE_SHIELDED: 5,
 
+	inited: false,
+
 	/**
 	 * Upsert player in db
 	 *
@@ -197,6 +237,8 @@ let Plunderer = {
 	 */
 	collectPlayer: async (player) => {
 		let otherPlayer = player.other_player;
+
+		await IndexDB.getDB();
 
 		await IndexDB.db.players.put({
 			id: otherPlayer.player_id,
@@ -209,7 +251,47 @@ let Plunderer = {
 		});
 	},
 
-	inited: false,
+	// Create or update action, also apply doublePlunder
+	upsertPlunderAction: async (payload) => {
+		const {entityId, playerId} = payload;
+		if (!entityId || !playerId) { return; }
+
+    await IndexDB.getDB();
+
+		await IndexDB.db.transaction('rw', IndexDB.db.pvpActions, async () => {
+			// Fetch last plunder action that happen just few seconds ago (1 minute ago)
+			const lastPlunderAction = await IndexDB.db.pvpActions.where({playerId})
+						.filter(it => (it.type == Plunderer.ACTION_TYPE_PLUNDERED &&
+													 it.entityId == entityId &&
+													 it.date > (+new Date() - 60 * 10 * 1000)))
+						.last();
+
+			// Add missing fields if not exists jet to payload:
+			payload = {
+				resources: {},
+				sp: 0,
+				type: Plunderer.ACTION_TYPE_PLUNDERED,
+				...lastPlunderAction,
+				...payload,
+				date: new Date(),
+			}
+
+			if (lastPlunderAction && payload.doublePlunder && !payload.doublePlunderApplied) {
+				payload.sp = payload.sp * 2;
+				payload.doublePlunder = true,
+				payload.doublePlunderApplied = true;
+				Object.keys(payload.resources).forEach(key => payload.resources[key] = payload.resources[key] * 2);
+			}
+
+			if (lastPlunderAction) {
+				await IndexDB.db.pvpActions.put(payload);
+			} else {
+				await IndexDB.db.pvpActions.add(payload);
+			}
+		});
+
+		Plunderer.UpdateBoxIfVisible();
+	},
 
 	/**
 	 * Refresh the Box
@@ -293,14 +375,14 @@ let Plunderer = {
 
 		const offset = (page - 1) * perPage,
 			actionsSelect = filterByPlayerId ?
-				(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-				(IndexDB.db.actions.orderBy('date'));
+				(IndexDB.db.pvpActions.where('playerId').equals(filterByPlayerId)) :
+				(IndexDB.db.pvpActions.orderBy('date'));
 
 		let actions = await actionsSelect.offset(offset).limit(perPage).desc().toArray();
 
 		const countSelect = filterByPlayerId ?
-			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(IndexDB.db.actions);
+			(IndexDB.db.pvpActions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.pvpActions);
 
 		let pages = Math.ceil((await countSelect.count()) / perPage);
 
@@ -341,7 +423,7 @@ let Plunderer = {
 		$('#plundererBody').html(`
 			<div class="header">
 				<div class="strategy-points">
-					Caclulating strategy points...
+					Calculating strategy points...
 				</div>
 				<div class="filter">
 					${filterByPlayerId ? `${i18n('Boxes.Plunderer.filteredByUser')}. <button class="btn btn-default select-player" data-value="">
@@ -376,8 +458,8 @@ let Plunderer = {
 		let todaySP = 0;
 		let thisWeekSP = 0;
 		let totalSPSelect = filterByPlayerId ?
-			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
+			(IndexDB.db.pvpActions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.pvpActions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
 
 		let totalSP = 0;
 
@@ -492,8 +574,9 @@ let Plunderer = {
 
 				return `<div class="plunder-wrap">
 							<div class="name">
-								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" />
-								${BuildingNamesi18n[action.buildId].name}
+								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" title="Sabotage" />
+								${action.doublePlunder ? `<img class="doublePlunder" src="${extUrl}js/web/plunderer/images/double_plunder.png" alt="Double Plunder Bonus" title="Double Plunder Bonus"/>` : ''}
+								${(BuildingNamesi18n[action.buildId] || {name: '-'}).name}
 							</div>
 							<div class="plunder-items ${action.important ? 'text-warning' : ''}">
 								${goodsIds.map(id => {

@@ -178,6 +178,7 @@
 				'settings',
 				'investment',
 				'strategy-points',
+				'battle-assist',
 				'citymap',
 				'hidden-rewards'
 			];

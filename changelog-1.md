@@ -781,7 +781,7 @@ Neues Tool:
 	- Neue Startup-Prozedur, stabilerer Start der Extension
 	
 - Erntehelfer:
-	- Neuer Filter um Gebäude mit "Gildenmacht" (als Produktion) zu erkennen, verhinderte die Darstellung der Box
+	- Neuer Filter um Gebäude mit "GuildPower" (als Produktion) zu erkennen, verhinderte die Darstellung der Box
 
 ---
 
