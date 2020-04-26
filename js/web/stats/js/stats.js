@@ -386,7 +386,6 @@ let Stats = {
 
 		const btnSelectNoEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnNoEra'),
-			title: ('Boxes.Stats.BtnNoEraTitle'),
 			isActive: selectedEras.length == 1 && selectedEras[0] == 'NoAge',
 			dataType: 'selectEras',
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
