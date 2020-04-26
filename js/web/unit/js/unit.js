@@ -36,12 +36,12 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 	Unit.RefreshAlca();
 
-	if (Unit.alca !== undefined && postData !== undefined && postData[0] !== undefined && postData[0]['requestData'] !== undefined && postData[0]['requestData'][0] !== undefined && postData[0]['requestData'][0][0] === Unit.alca.id) {
+	if (Unit.alca && postData && postData[0] && postData[0]['requestData'] && postData[0]['requestData'][0] && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
 			return;
 		}
 
-		if (data['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+		if (data.responseData['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
 			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
 			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
 		}
@@ -57,7 +57,7 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
-	alca : null,
+	alca : undefined,
 
 	Cache : null,
 
@@ -108,8 +108,7 @@ let Unit = {
 		Unit.RefreshAlca();
 
 		// der Spieler besitzt ein Alca
-		if (Unit.alca !== undefined)
-		{
+		if (Unit.alca !== undefined){
 
 			top.push('<div style="padding: 4px;" class="text-center">');
 
@@ -193,8 +192,7 @@ let Unit = {
             }
         }
 
-        for(let i in Unit.Attack)
-		{
+        for(let i in Unit.Attack) {
 			if(!Unit.Attack.hasOwnProperty(i)){
 				break;
 			}
@@ -211,7 +209,7 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			attack.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let Boosts = Unit.GetBoostSums(cache['bonuses']);
+			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
 
 			let AttackBoost = Boosts['AttackAttackBoost'],
 				DefenseBoost = Boosts['AttackDefenseBoost']
@@ -226,8 +224,7 @@ let Unit = {
 		}
 
 
-    	for(let i = Unit.Attack.length; i < 8; i++)
-	    {
+    	for(let i = Unit.Attack.length; i < 8; i++) {
 		    attack.push('<tr>');
 			attack.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
 			attack.push('</tr>');
@@ -265,8 +262,7 @@ let Unit = {
                 Unit.Defense[Unit.Defense.length] = Unit.Cache['units'][i];
             }
         }
-		for(let i in Unit.Defense)
-		{
+		for(let i in Unit.Defense){
 			if(!Unit.Defense.hasOwnProperty(i)){
 				break;
 			}
@@ -283,7 +279,7 @@ let Unit = {
 			let status = cache['currentHitpoints'] * 10;
 			defense.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
 
-			let Boosts = Unit.GetBoostSums(cache['bonuses']);
+			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
 
 			let AttackBoost = Boosts['DefenseAttackBoost'],
 				DefenseBoost = Boosts['DefenseDefenseBoost']
@@ -297,8 +293,7 @@ let Unit = {
 			defense.push('</tr>');
 		}
 
-		for(let i = Unit.Defense.length; i < 8; i++)
-		{
+		for(let i = Unit.Defense.length; i < 8; i++){
 			defense.push('<tr>');
 			defense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
 			defense.push('</tr>');
@@ -318,8 +313,7 @@ let Unit = {
 			c = Unit.Cache['counts'];
 
 		// zuerst Sortieren
-		for(let i in c)
-		{
+		for(let i in c) {
 			if(!c.hasOwnProperty(i)){
 				break;
 			}
@@ -356,8 +350,7 @@ let Unit = {
 		pool.push('<tbody>');
 
 
-		for (let era = eras.length; era >= 0;era--)
-		{
+		for (let era = eras.length; era >= 0;era--){
 			if(!eras.hasOwnProperty(era)){
 				continue;
 			}
@@ -366,8 +359,7 @@ let Unit = {
 			pool.push('<th colspan="4">' + i18n('Eras.' + era) + '</th>');
 			pool.push('</tr>');
 
-			for(let i in eras[era])
-			{
+			for(let i in eras[era]){
 				if(!eras[era].hasOwnProperty(i)){
 					break;
 				}
@@ -413,7 +405,7 @@ let Unit = {
 	 * *
 	 * */
 	RefreshAlca: () => {
-		if (Unit.alca === null) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+		if (!Unit.alca) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
     },
 
 
@@ -476,6 +468,31 @@ let Unit = {
 			clearInterval(intervalID);
 			$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
 		}
+	},
+
+
+	/**
+	* Wandelt ein Boost Array in ein Dict um
+	* *
+	* */
+	GetBoostDict: (BoostArray) => {
+		let Ret = [];
+
+		for (let i in BoostArray) {
+			if (!BoostArray.hasOwnProperty(i)) continue;
+
+			let BoostType = BoostArray[i]['type'];
+			let BoostValue = BoostArray[i]['value'];
+
+			if (Ret[BoostType] === undefined) {
+				Ret[BoostType] = BoostValue;
+			}
+			else {
+				Ret[BoostType] += BoostValue;
+			}
+		}
+
+		return Ret;
 	},
 
 
@@ -567,8 +584,7 @@ let Unit = {
 		let LastAlca = [],
 			LastTotal = AlcaUnits.length;
 
-		for(let i in AlcaUnits)
-		{
+		for(let i in AlcaUnits) {
 			if(!AlcaUnits.hasOwnProperty(i)){
 				break;
 			}
@@ -606,8 +622,7 @@ let Unit = {
 
 		let cnt = 0;
 
-		for(let i in LastAlca)
-		{
+		for(let i in LastAlca) {
 			if(!LastAlca.hasOwnProperty(i)){
 				break;
 			}
