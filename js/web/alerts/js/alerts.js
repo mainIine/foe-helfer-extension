@@ -118,9 +118,6 @@ let Alerts = function(){
     tmp.db = AlertsDB;
     tmp.data = {
         options: {
-            active: {
-                range: 5000
-            },
             timestamp: {
                 // the next() function will return all alerts set to expires between Date.now() and
                 // the nextTimeStamp value
@@ -130,8 +127,8 @@ let Alerts = function(){
             }
         },
         active: () => {
-            let ts = moment().valueOf() + tmp.data.options.active.range;
-            const alerts = tmp.db.alerts.where('expires').above(ts).reverse();
+            let ts = moment().valueOf();
+            const alerts = tmp.db.alerts.where('expires').above(ts);
             return alerts;
         },
         add: (alert) => {
@@ -1058,7 +1055,7 @@ let Alerts = function(){
                             title: 'Create New Alert'
                         };
                         let options = tmp.web.popup.options.create;
-                        options.alert.expires = Date.now() + 5000;
+                        options.alert.expires = Date.now();
                         tmp.web.popup.type.common.show(labels, options);
                     },
                 },
