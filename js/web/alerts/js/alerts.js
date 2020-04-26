@@ -9,8 +9,6 @@
 
 /* core */
 // TODO finish the preferences tab
-// TODO implement garbage collection
-// TODO show only unexpired alerts (expired alerts should be garbage collected)
 // TODO i18n
 // TODO [pref] main menu icon shows countdown to the next alert (hh:mm or mm:ss)
 // TODO [pref] auto create a new alert when the user bids on an auction (Antiques Dealer)
@@ -157,10 +155,16 @@ let Alerts = function(){
         delete: (id) => {
             return tmp.db.alerts.delete( parseInt(id) );
         },
-        deleteExpired: () => {
-            // tmp.data.refresh();
+        garbage: () => {
             let timestamp = Date.now();
-            return tmp.db.alerts.where('expires').below( timestamp ).delete();
+            tmp.data.refresh().then(function(){
+                // TODO modify this to enable the display or alerts which expired while offline
+                // one option ^ is to modify refresh
+                tmp.db.alerts.where('expires').below( timestamp ).delete();
+            }).catch(function(error){
+                tmp.log('Alerts - Garbage collection failed');
+                tmp.log(error);
+            });
         },
         get: (id) => {
             return tmp.db.alerts.where( 'id' ).equals( id ).first();
@@ -178,7 +182,7 @@ let Alerts = function(){
         },
         refresh: () => {
             let timestamp = Date.now();
-            tmp.db.alerts.where('repeat').above(-1).modify(function(alert){
+            return tmp.db.alerts.where('repeat').above(-1).modify(function(alert){
                 alert.expires = tmp.repeat.nextExpiration( alert.expires, alert.repeat, timestamp );
             });
         },
@@ -702,6 +706,19 @@ let Alerts = function(){
                         label.removeClass('error-text');
                     }
 
+                    input = $('#alert-datetime');
+                    label = input.siblings('label');
+                    let expires = moment(data.datetime).valueOf();
+                    if ( expires < Date.now() ){
+                        input.addClass('error-box');
+                        label.addClass('error-text');
+                        return false;
+                    }
+                    else {
+                        input.removeClass('error-box');
+                        label.removeClass('error-text');
+                    }
+
                     return true;
                 }
             },
@@ -1101,7 +1118,7 @@ let Alerts = function(){
 
     let pub = {
         init: () => {
-            tmp.repeat.refresh();
+            tmp.data.garbage();
             TimeManager.subscribe( tmp.timer );
         },
         show: () => {
