@@ -125,16 +125,16 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENTION : votre stock de marchandises est faible.",
 		"Boxes.Negotiation.Person": "Personne",
 		"Boxes.Negotiation.Round": "Tour",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Économiser les ressources de l'âge en cours",
+		"Boxes.Negotiation.SaveMedals": "Économiser les méd.",
 		"Boxes.Negotiation.Stock": "Stock :",
 		"Boxes.Negotiation.Success": "Succès",
 		"Boxes.Negotiation.TableLoadError": "Erreur de chargement de la table de négociations",
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-		"Boxes.Neighbors.AttackingArmy": "Bonus estimé de l'armée d'attaque: __attatt__%(ATT) / __attdef__%(DEF)",
-		"Boxes.Neighbors.DefendingArmy": "Bonus estimé de l'armée de défense: __defatt__%(ATT) / __defdef__%(DEF)",
+		"Boxes.Neighbors.AttackingArmy": "Bonus estimé de l'armée d'attaque : __attatt__%(ATT) / __attdef__%(DEF)",
+		"Boxes.Neighbors.DefendingArmy": "Bonus estimé de l'armée de défense : __defatt__%(ATT) / __defdef__%(DEF)",
 		"Boxes.Neighbors.GuildPower": "Puissance de guilde",
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
@@ -142,13 +142,13 @@
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ef1616'>Manquant</span>",
 		"Boxes.Outpost.ExpansionsSum": "Expansions",
-		"Boxes.Outpost.infoLine": "__runNumber__ en cours, Chance Bonus x4 : __chanceX4__%",
+		"Boxes.Outpost.infoLine": "__runNumber__ productions en cours - Chance Bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Prochaine expansion",
-		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Sommes cumulées :",
 		"Boxes.Outpost.tileNotPlanned": "N/A",
 		"Boxes.Outpost.Title": "Ressources de la colonie",
 		"Boxes.Outpost.TitleBuildings": "Bâtiment",
-		"Boxes.Outpost.TitleFree": "Gratuit",
+		"Boxes.Outpost.TitleFree": "Déloqué",
 		"Boxes.Outpost.TitleShort": "Vue des ressources - ",
 		"Boxes.OwnpartCalculator.Arc": "Arche",
 		"Boxes.OwnpartCalculator.Auto": "Auto.",
@@ -229,61 +229,61 @@
 		"Boxes.Settings.Active": "Actif",
 		"Boxes.Settings.Inactive": "Inactif",
 		"Boxes.Settings.Title": "Paramètres",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
-		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
-		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
-		"Boxes.Stats.Period.all": "All", //Todo: Translate
-		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
-		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
-		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
-		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
-		"Boxes.Stats.Period.today": "Today", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.Title": "Statistic", //Todo: Translate
+		"Boxes.Stats.BtnAll": "Tout",
+		"Boxes.Stats.BtnAllPlayableEras": "Tout âge",
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Sélectionne tous les âges jouables (exclus : Sans âge, Spécial)",
+		"Boxes.Stats.BtnAllTittle": "Tout Âge + Sans âge + Spécial",
+		"Boxes.Stats.BtnChartType.delta": "Différences",
+		"Boxes.Stats.BtnChartType.line": "Lignes",
+		"Boxes.Stats.BtnChartType.streamgraph": "Flux",
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Graphique des différences",
+		"Boxes.Stats.BtnChartTypeTitle.line": " Graphique en lignes",
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Graphique en flux",
+		"Boxes.Stats.BtnLastEras": "2 derniers âges",
+		"Boxes.Stats.BtnLastErasTitle": "Sélectionne l'âge en cours et les 2 âges précédents",
+		"Boxes.Stats.BtnMyEra": "Mon âge",
+		"Boxes.Stats.BtnNoEra": "Sans âge",
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "CBG",
+		"Boxes.Stats.BtnSource.statsRewards": "Récompenses",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Tréso. de G. /H",
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Tréso. de G. /J",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Ressources /H",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Ressources /J",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Unités /H",
+		"Boxes.Stats.BtnSource.statsUnitsD": "Unités /J",
+		"Boxes.Stats.BtnToggleAnnotations": "Indication GcG",
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Montre la diminution des ressources sur la carte GcG",
+		"Boxes.Stats.BtnToggleGroupBy": "Grouper par âge",
+		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Period.all": "Tout",
+		"Boxes.Stats.Period.last30days": "30 derniers jours",
+		"Boxes.Stats.Period.last7days": "7 derniers jours",
+		"Boxes.Stats.Period.sinceTuesday": "Depuis mardi",
+		"Boxes.Stats.Period.thisMonth": "Ce mois-ci",
+		"Boxes.Stats.Period.today": "Aujourd'hui",
+		"Boxes.Stats.PeriodTitle.all": "Sans limite de temps",
+		"Boxes.Stats.PeriodTitle.last30days": "Dans les 30 derniers jours",
+		"Boxes.Stats.PeriodTitle.last7days": "Durant les 7 derniers jours",
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Depuis mardi (début de l'expédition de guilde)",
+		"Boxes.Stats.PeriodTitle.thisMonth": "Ce mois-ci",
+		"Boxes.Stats.PeriodTitle.today": "Aujourd'hui",
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "CBG",
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Transporteur",
+		"Boxes.Stats.Rewards.Source.guildExpedition": "EG",
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Himeji",
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Récompenses des Champs de bataille de guilde",
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Cadeaux diplomatiques octroyés par le Transporteur spatial",
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Reliques de l'expédition de guilde récupérées grâce au Temple des reliques",
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Butins de guerre octroyés par le Château d'Himeji",
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Tableau des scores des joueurs en Champs de bataille de guilde",
+		"Boxes.Stats.SourceTitle.statsRewards": "Vos récompenses obtenues grâce au Château d'Himeji, Transporteur spatial, Champs de bataille de guilde et Temple des reliques",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Trésorerie de guilde par heure",
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Trésorerie de guilde par jour",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Vos ressources par heure",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Vos ressources par jour",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Vos unités par heure",
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Vos unités par jour",
+		"Boxes.Stats.Title": "Statistiques",
 		"Boxes.StrategyPoints.BuyableFP": "Achetable : ",
 		"Boxes.StrategyPoints.FPBar": "PF en stock : ",
 		"Boxes.Technologies.DescInStock": "Disponible",
@@ -358,8 +358,8 @@
 		"Menu.Event.Title": "Liste des quêtes événementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
 		"Menu.Forum.Title": "Forum",
-		"Menu.HiddenRewards.Desc": "Aperçu des récompenses cachées.",
-		"Menu.HiddenRewards.Title": "Récompenses cachées",
+		"Menu.HiddenRewards.Desc": "Aperçu des incidents.",
+		"Menu.HiddenRewards.Title": "Incidents",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
 		"Menu.Info.Title": "Info Techniques",
 		"Menu.Kits.Desc": "Liste de tous les bâtiments, améliorations et packs de sélection de l'inventaire.",
@@ -380,8 +380,8 @@
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",
 		"Menu.Settings.Title": "Paramètres",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
+		"Menu.Stats.Desc": "Statistiques sur les ressources, les unités, les récompenses, les champs de bataille de guilde",
+		"Menu.Stats.Title": "Statistiques",
 		"Menu.Technologies.Desc": "Calcule les coûts de la recherche.",
 		"Menu.Technologies.Title": "Recherches technologiques",
 		"Menu.Technologies.Warning": "Désactivé : Ouvrez d'abord le menu de Recherche Technologiques !",
