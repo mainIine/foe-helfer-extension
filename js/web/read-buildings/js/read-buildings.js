@@ -194,12 +194,19 @@ let Reader = {
 
 		let div = $('#ResultBox'),
 			h = [];
-
-		h.push(HTML.i18nReplacer(i18n('Boxes.Neighbors.AttackingArmy'), { 'attatt': Reader.ArmyBoosts['AttackAttackBoost'], 'attdef': Reader.ArmyBoosts['AttackDefenseBoost'] }));
-		h.push('<br>');
-		h.push(HTML.i18nReplacer(i18n('Boxes.Neighbors.DefendingArmy'), { 'defatt': Reader.ArmyBoosts['DefenseAttackBoost'], 'defdef': Reader.ArmyBoosts['DefenseDefenseBoost'] }));
-		h.push('<br>');
-
+        const boosts = Reader.ArmyBoosts;
+        h.push(`
+<div style="margin: 3px 5px">
+${HTML.i18nReplacer(i18n('Boxes.Neighbors.AttackingArmy'), {
+   attatt: `<b>${boosts.AttackAttackBoost}</b>`,
+   attdef: `<b>${boosts.AttackDefenseBoost}</b>`
+})}
+<br />
+${HTML.i18nReplacer(i18n('Boxes.Neighbors.DefendingArmy'), {
+    defatt: `<b>${boosts.DefenseAttackBoost}</b>`,
+    defdef: `<b>${boosts.DefenseDefenseBoost}</b>`})}
+</div>
+`)
 		if (rd.length > 0) {
 			h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
