@@ -10,12 +10,12 @@
 /* core */
 // TODO finish the preferences tab
 // TODO i18n
+/* nice to have // next release */
+// TODO change the edit buttons from text to icons (eye, pencil, x --- check FoEs icons, e.g. guild management)
+// TODO add a delete confirmation (currently clicking the delete button just deletes the alert)
+// TODO [pref] time offset for pre-populated times, e.g. alert for auction end should be 60 seconds prior?!
 // TODO [pref] main menu icon shows countdown to the next alert (hh:mm or mm:ss)
 // TODO [pref] auto create a new alert when the user bids on an auction (Antiques Dealer)
-// TODO extend the schema to support all TODOs here (without having to migrate in the future)
-    // TODO add 'category' index to support alert categories (e.g. manual, automated, etc)
-/* nice to have // next release */
-// TODO add a delete confirmation
 // TODO [pref] in-game notification instead of Desktop (when the game has focus)
 // TODO [pref] option to create a new alert when plunder (to return in 24 hours)
 // TODO [pref] show expired alerts on-load (alerts which expired since the last login) before they are garbage-collected
@@ -31,8 +31,8 @@
 
 let AlertsDB = new Dexie('foe_helper_alerts_database');
 AlertsDB.version(1).stores({
-    // [id,expires,title,body,repeat,persistent,tag,vibrate,actions]
-    alerts: '++id,expires,repeat,tag'
+    // [id,expires,title,body,repeat,persistent,tag,category,vibrate,actions]
+    alerts: '++id,expires,repeat,tag,category'
 });
 AlertsDB.open();
 // persistent alerts will be stored only once and the expires time will be updated before garbage collection so that
@@ -109,7 +109,6 @@ let Alerts = function(){
 
     let tmp = {};
 
-
     tmp.debug = true;
     tmp.log = function(o){ if (tmp.debug){ console.log(o); } };
 
@@ -148,6 +147,7 @@ let Alerts = function(){
                 repeat: alert.repeat,
                 persistent: alert.persistent,
                 tag: '',
+                category: 'default',
                 vibrate: false,
                 actions: null
             });
@@ -238,6 +238,7 @@ let Alerts = function(){
             }
         }
     },
+    // this object is the Observer for (is subscribed to) the TimeManager
     tmp.timer = {
         nextAlerts: {},
         isUpdating: false,
@@ -324,13 +325,18 @@ let Alerts = function(){
         body: {
             build: () => {
 
+                let labels = {
+                    alerts: 'Alerts',
+                    // alerts: i18n('Boxes.Alerts.Tabs.Alerts'),
+                    preferences: 'Preferences'
+                    // preferences: i18n('Boxes.Alerts.Tabs.Preferences'),
+                }
+
                 tmp.web.body.tabs.clean();
                 $( '#AlertsBody' ).empty();
 
-                // tmp.web.body.tabs.addHead( 'alerts-tab-list', i18n( 'Boxes.Alerts.Tab.List' ) );
-                // tmp.web.body.tabs.addHead( 'alerts-tab-preferences', i18n( 'Boxes.Alerts.Tab.Preferences' ) );
-                tmp.web.body.tabs.addHead( 'alerts-tab-list', 'Alerts' );
-                tmp.web.body.tabs.addHead( 'alerts-tab-preferences', 'Preferences' );
+                tmp.web.body.tabs.addHead( 'alerts-tab-list', labels.alerts );
+                tmp.web.body.tabs.addHead( 'alerts-tab-preferences', labels.preferences );
 
                 tmp.web.body.tabs.addContent( 'alerts-tab-list', tmp.web.body.tabs.tabListContent() );
                 tmp.web.body.tabs.addContent( 'alerts-tab-preferences', tmp.web.body.tabs.tabPreferencesContent() );
@@ -366,14 +372,25 @@ let Alerts = function(){
 
                         if ( ! NotificationManager.isEnabled ){
 
+                            let labels = {
+                                default: 'Enable notifications in your browser to use this feature',
+                                // disabled: i18n('Boxes.Alerts.Permissions.Default'),
+                                denied: 'Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.',
+                                // denied: i18n('Boxes.Alerts.Permissions.Denied'),
+                                enable: 'Enable',
+                                // enable: i18n('Boxes.Alerts.Permissions.Enable'),
+                                refresh: 'Refresh',
+                                // refresh: i18n('Boxes.Alerts.Permissions.Refresh')
+                            };
+
                             let html = '';
 
                             // if the notification permissions have never been given (permission === 'default')
                             if ( NotificationManager.canBeEnabled ){
                                 // Enable notifications in your browser to use this feature.
-                                html += '<p>' + i18n('Boxes.Alerts.Disabled.Default') + '</p>';
+                                html += `<p>${labels.default}</p>`;
                                 // Add a button to request notification permissions
-                                html += '<p><span class="btn-default game-cursor notification-permissions">' + i18n('Boxes.Alerts.Button.Enable') + '</span></p>';
+                                html += `<p><span class="btn-default game-cursor notification-permissions">${labels.enable}</span></p>`;
 
                                 $('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
                                     $('#AlertsBody').on('click', '.notification-permissions', function(){
@@ -386,10 +403,8 @@ let Alerts = function(){
                                 });
                             }
                             else {
-                                // Notifications have been disabled. To enable notifications in your browser settings
-                                // navigate to chrome://settings/content/notifications and then refresh this page.
-                                html += '<p>' + i18n('Boxes.Alerts.Disabled.Denied') + '</p>';
-                                html += '<p><span class="btn-default game-cursor notification-refresh">' + i18n('Boxes.Alerts.Button.Refresh') + '</span></p>';
+                                html += `<p>${labels.denied}</p>`;
+                                html += `<p><span class="btn-default game-cursor notification-refresh">${labels.refresh}</span></p>`;
                                 $('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
                                     $('#AlertsBody').on('click', '.notification-refresh', function(){
                                         // reload from cache (no need to refresh from the server = reload(true)
@@ -437,7 +452,16 @@ let Alerts = function(){
                 tabListContent: () => {
 
                     let labels = {
-                        create: 'Create Alert'
+                        create: 'Create Alert',
+                        // create: i18n('Boxes.Alerts.Form.CreateAlert'),
+                        expiration: 'Expiration',
+                        // expiration: i18n('Boxes.Alerts.Form.Expiration'),
+                        title: 'Title',
+                        // title: i18n('Boxes.Alerts.Form.Title'),
+                        repeat: 'Repeat',
+                        // repeat: i18n('Boxes.Alerts.Form.Repeat'),
+                        persistent: 'Persistent'
+                        // persistent: i18n('Boxes.Alerts.Form.Persistent'),
                     };
 
                     // list alerts
@@ -445,8 +469,8 @@ let Alerts = function(){
                         <table id="alerts-table" class="foe-table">
                             <thead>
                                 <tr>
-                                    <th>Expiration</th><th class="column-160">Title</th>
-                                    <th>Repeat</th><th>Persistent</th>
+                                    <th>${labels.expiration}</th><th class="column-160">${labels.title}</th>
+                                    <th>${labels.repeat}</th><th>${labels.persistent}</th>
                                     <th>&nbsp;</th>
                                  </tr>
                             </thead>
@@ -471,6 +495,15 @@ let Alerts = function(){
                     // no need to update the alerts list if the alerts box is not shown
                     if ( ! tmp.web.visible() ) { return; }
 
+                    let labels = {
+                        preview: 'preview',
+                        // preview: i18n('Boxes.Alerts.Form.Preview'),
+                        edit: 'edit',
+                        // edit: i18n('Boxes.Alerts.Form.Edit'),
+                        delete: 'delete',
+                        // delete: i18n('Boxes.Alerts.Form.Delete'),
+                    };
+
                     let html = '';
                     let dt = moment();
 
@@ -483,9 +516,9 @@ let Alerts = function(){
                             <td>${alert.repeat}</td>
                             <td><input type="checkbox"${persist}></td>
                             <td class="text-right">
-                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">preview</span>
-                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">edit</span>
-                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">delete</span>
+                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
+                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">${labels.edit}</span>
+                                <span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
                             </td>
                         </tr>`;
                     }).then( () => {
@@ -677,8 +710,11 @@ let Alerts = function(){
                 update: () => {
                     let labels = {
                         expires: 'Expires',
-                        expired: 'Expired'
-                    }
+                        // expires: i18n('Boxes.Alerts.Form.Expires'),
+                        expired: 'Expired',
+                        // expired: i18n('Boxes.Alerts.Form.Expired'),
+                    };
+
                     let data = tmp.web.forms.data();
                     let dt = moment(data.datetime);
                     let m = moment();
@@ -757,35 +793,64 @@ let Alerts = function(){
 
                 let labels = {
                     title: 'Title',
+                    // title: i18n('Boxes.Alerts.Form.Title'),
                     body: 'Body',
+                    // body: i18n('Boxes.Alerts.Form.Body'),
                     datetime: 'Date &amp; Time',
+                    // datetime: i18n('Boxes.Alerts.Form.Datetime'),
                     presets: {
                         header: 'Presets',
+                        // header: i18n('Boxes.Alerts.Form.Presets'),
                         antique: 'Antiques Dealer',
+                        // antique: i18n('Boxes.Alerts.Form.Antiques.Dealer'),
                             auction: 'Auction',
+                            // auction: i18n('Boxes.Alerts.Form.Antiques.Auction'),
                             cooldown: 'Auction Cooldown',
+                            // cooldown: i18n('Boxes.Alerts.Form.Antiques.Cooldown'),
                             exchange: 'Exchange',
+                            // exchange: i18n('Boxes.Alerts.Form.Antiques.Exchange'),
                         battlegrounds: 'Battleground Provinces',
+                        // battlegrounds: i18n('Boxes.Alerts.Form.Battleground'),
                         neighborhood: 'Neighborhood',
+                        // neighborhood: i18n('Boxes.Alerts.Form.Neighborhood'),
                     },
                     repeats: {
                         repeat: 'Repeat',
+                        // repeat: i18n('Boxes.Alerts.Form.Repeat'),
                         never: 'never',
+                        // never: i18n('Boxes.Alerts.Form.Repeat.Never'),
                         every: 'or every'
+                        // every: i18n('Boxes.Alerts.Form.Repeat.Every'),
                     },
                     persist: {
                         persistence: 'Persistence',
+                        // persistence: i18n('Boxes.Alerts.Form.Persistence'),
                         on: 'On',
+                        // on: i18n('Boxes.Alerts.Form.Persistence.On'),
                         off: 'Off',
+                        // of: i18n('Boxes.Alerts.Form.Persistence.Off'),
                         description: 'Should the notification remain open until the user dismisses or clicks the notification'
+                        // description: i18n('Boxes.Alerts.Form.Persistence.Description'),
                     },
                     buttons: {
-                        'create': 'Create',
-                        'discard': 'Discard',
-                        'preview': 'Preview',
-                        'save': 'Save'
+                        create: 'Create',
+                        // create: i18n('Boxes.Alerts.Form.Create'),
+                        discard: 'Discard',
+                        // discard: i18n('Boxes.Alerts.Form.Discard'),
+                        preview: 'Preview',
+                        // preview: i18n('Boxes.Alerts.Form.Preview'),
+                        save: 'Save',
+                        // save: i18n('Boxes.Alerts.Form.Save'),
+                    },
+                    tags: {
+                        header: 'Tag',
+                        // header: i18n('Boxes.Alerts.Form.Tag'),
+                        description: 'Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)',
+                        // description: i18n('Boxes.Alerts.Form.Tag.Description'),
                     }
-                }
+                };
+
+
 
                 let repeats = tmp.web.forms.aux.repeats(data.alert.repeat);
 
@@ -833,7 +898,7 @@ let Alerts = function(){
                     <input type="hidden" id="alert-id" value="${id}"/>
                     <p class="full-width">
                         <label for="alert-title">${labels.title}</label>
-                        <input type="text" id="alert-title" name="title" placeholder="Title" value="${data.alert.title}">
+                        <input type="text" id="alert-title" name="title" placeholder="${labels.title}" value="${data.alert.title}">
                     </p>
                     <p class="full-width">
                         <label for="alert-body">${labels.body}</label>
@@ -905,9 +970,9 @@ let Alerts = function(){
                     
                     <!--
                     <p class="full-width">
-                        <label for="tag">Tag</label>
+                        <label for="tag">${labels.tags.header}</label>
                         <input type="text" id="tag" name="tag" value="${data.tag}">
-                        <small>Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)</small>
+                        <small>${labels.tags.description}</small>
                     </p>
                     -->
                     
@@ -936,21 +1001,23 @@ let Alerts = function(){
                         tag: ''
                     },
                     form: {
-                        header: 'Create Alert'
+                        header: 'Create Alert',
+                        // header: i18n('Boxes.Alerts.Form.CreateAlert')
                     },
                     buttons: {
                         left: [],
-                        right: [ 'preview', 'create' ],
+                        right: ['preview', 'create'],
                     }
                 },
                 edit: {
                     alert: null,
                     form: {
-                        header: 'Edit Alert'
+                        header: 'Edit Alert',
+                        // header: i18n('Boxes.Alerts.Form.EditAlert')
                     },
                     buttons: {
                         left: ['discard'],
-                        right: [ 'preview', 'save' ],
+                        right: ['preview', 'save'],
                     }
                 }
             },
@@ -1069,7 +1136,8 @@ let Alerts = function(){
                     },
                     show: () => {
                         let labels = {
-                            title: 'Create New Alert'
+                            title: 'Create New Alert',
+                            // title: i18n('Boxes.Alerts.Form.CreateNewAlert'),
                         };
                         let options = tmp.web.popup.options.create;
                         options.alert.expires = Date.now();
@@ -1082,7 +1150,8 @@ let Alerts = function(){
                     },
                     show: ( alert ) => {
                         let labels = {
-                            title: 'Edit Alert'
+                            title: 'Edit Alert',
+                            // title: i18n('Boxes.Alerts.Form.EditAlert'),
                         };
                         let options = tmp.web.popup.options.edit;
                         options.alert = alert;
@@ -1299,7 +1368,7 @@ NotificationManager.init();
 
 /**
  * Observable pattern using subscribe/unsubscribe (instead of add/remove observer). The notify is private
- * and executes every second after TimeManager.start(). Subscribes should to implement 'update(unix timestamp)'
+ * and executes every second after TimeManager.start(). Subscribers should implement 'update(unix timestamp)'
  */
 let TimeManager = function(){
 
@@ -1313,7 +1382,7 @@ let TimeManager = function(){
          * @param o
          * @returns {boolean}
          */
-        isSubscribed: (o)=> { return ( tmp.observers.filter(observer => observer === o).length == 1 ); },
+        isSubscribed: (o) => { return ( tmp.observers.filter(observer => observer === o).length == 1 ); },
         notify: (data) => {
             tmp.observers.forEach( observer => {
                 if (observer.update){ observer.update(data); }
@@ -1364,17 +1433,6 @@ let TimeManager = function(){
     return pub;
 
 }();
-
-class AlertsTimer {
-
-    constructor(){}
-
-    update(t) {
-        // update alerts in the list
-        // check if any notifications need to be send
-        // re-enable expired alerts with enabled repeat
-    }
-}
 
 // class Timer {
 //     constructor(){}
