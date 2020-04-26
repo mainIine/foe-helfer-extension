@@ -180,7 +180,8 @@
 				'strategy-points',
 				'battle-assist',
 				'citymap',
-				'hidden-rewards'
+				'hidden-rewards',
+				'greatbuildings'
 			];
 
 			// Scripte laden (nacheinander)
