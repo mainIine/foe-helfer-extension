@@ -27,7 +27,7 @@ let HiddenRewards = {
             HTML.Box({
                 'id': 'HiddenRewardBox',
                 'title': i18n('Boxes.HiddenRewards.Title'),
-                'auto_close': false,
+                'auto_close': true,
                 'dragdrop': true,
                 'minimize': true
             });
