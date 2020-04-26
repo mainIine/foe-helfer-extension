@@ -32,7 +32,7 @@ let Investment = {
             HTML.Box({
                 'id': 'Investment',
                 'title': i18n('Boxes.Investment.Title'),
-                'auto_close': false,
+                'auto_close': true,
                 'dragdrop': true,
             });
 

@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "Русский",
 		"API.GEXChampionship": "Обновлена позиция гильдии в ЭГ",
@@ -125,16 +125,17 @@
 		"Boxes.Negotiation.GoodsLow": "ВНИМАНИЕ: Мало товара на складе",
 		"Boxes.Negotiation.Person": "Персона",
 		"Boxes.Negotiation.Round": "Раунд",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Беречь текущие товары",
+		"Boxes.Negotiation.SaveMedals": "Беречь медали",
 		"Boxes.Negotiation.Stock": "Склад:",
 		"Boxes.Negotiation.Success": "Успех",
 		"Boxes.Negotiation.TableLoadError": "Ошибка загрузки модуля переговоров",
 		"Boxes.Negotiation.Title": "Помощник переговоров",
 		"Boxes.Negotiation.TryEnd": "Не осталось ходов",
 		"Boxes.Negotiation.WrongGoods": "Выбран неверный товар, закончите переговоры вручную",
-		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.AttackingArmy": "Расчетный бонус атакующих армий: __attatt__% (Атака) / __attdef__% (Защита)",
+		"Boxes.Neighbors.DefendingArmy": "Расчетный бонус защитной армий: __defatt__% (Атака) / __defdef__% (Защита)",
+		"Boxes.Neighbors.GuildPower": "Влияние гильдии",
 		"Boxes.Neighbors.OngoingProductions": "Текущее производство",
 		"Boxes.Neighbors.ReadyProductions": "Завершённое производство",
 		"Boxes.Outpost.DescInStock": "Доступно",
@@ -143,6 +144,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Расширения",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Шанс бонуса Х4: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Следующее расширение",
+		"Boxes.Outpost.ShowSums": "Показать. суммы:",
 		"Boxes.Outpost.tileNotPlanned": "Выкл",
 		"Boxes.Outpost.Title": "Товары поселения",
 		"Boxes.Outpost.TitleBuildings": "Постройка",
@@ -227,59 +229,61 @@
 		"Boxes.Settings.Active": "Включено",
 		"Boxes.Settings.Inactive": "Выключено",
 		"Boxes.Settings.Title": "Настройки",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
-		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
-		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
-		"Boxes.Stats.Period.all": "All", //Todo: Translate
-		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
-		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
-		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
-		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
-		"Boxes.Stats.Period.today": "Today", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
-		"Boxes.Stats.Title": "Statistic", //Todo: Translate
+		"Boxes.Stats.BtnAll": "Все",
+		"Boxes.Stats.BtnAllPlayableEras": "Все эпохи",
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Выбрать эпохи в которых можна играть (без: Бэз Эпохи, Special)",
+		"Boxes.Stats.BtnAllTittle": "Эпохи + Бэз Эпохи + Special",
+		"Boxes.Stats.BtnChartType.delta": "Дельта",
+		"Boxes.Stats.BtnChartType.line": "Линия",
+		"Boxes.Stats.BtnChartType.streamgraph": "Поток",
+		"Boxes.Stats.BtnChartTypeTitle.delta": "График увеличения/уменьшения",
+		"Boxes.Stats.BtnChartTypeTitle.line": "График линий",
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Потоковый график",
+		"Boxes.Stats.BtnLastEras": "2 послед. эпохи",
+		"Boxes.Stats.BtnLastErasTitle": "Выбрать две последнии эпохи",
+		"Boxes.Stats.BtnMyEra": "Моя эпоха",
+		"Boxes.Stats.BtnNoEra": "Бэз эпохи",
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "ПБГ",
+		"Boxes.Stats.BtnSource.statsRewards": "Награды",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Товары Ч. Гильдии",
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Товары Д. Гильдии",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Товары",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Товары по дням",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Армия Ч.",
+		"Boxes.Stats.BtnSource.statsUnitsD": "Армия Д.",
+		"Boxes.Stats.BtnToggleAnnotations": "ГВГ аннотации",
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.",
+		"Boxes.Stats.BtnToggleGroupBy": "Групп. по Эпохам",
+		"Boxes.Stats.BtnToggleGroupByTitle": "Группировать по эпохам",
+		"Boxes.Stats.Period.all": "Все",
+		"Boxes.Stats.Period.last30days": "Послед. 30 дней",
+		"Boxes.Stats.Period.last7days": "Послед. 7 дней",
+		"Boxes.Stats.Period.sinceTuesday": "Со вторника",
+		"Boxes.Stats.Period.thisMonth": "Этот месяц",
+		"Boxes.Stats.Period.today": "Сегодня",
+		"Boxes.Stats.PeriodTitle.all": "За весь период времени",
+		"Boxes.Stats.PeriodTitle.last30days": "Собранные за 30 последних дней",
+		"Boxes.Stats.PeriodTitle.last7days": "Собранные за 7 последних дней",
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Собранные со Вторника (Экспедиция начинается со вторника)",
+		"Boxes.Stats.PeriodTitle.thisMonth": "Собранные за этот месяц",
+		"Boxes.Stats.PeriodTitle.today": "Собранные за сегодня",
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "ПБГ",
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Диплом. дары",
+		"Boxes.Stats.Rewards.Source.guildExpedition": "Экспедиция ги.",
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Военные трофеи",
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Награды с Полей битв гильдий",
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Дипломатические дары собранные Космическим авианосцем",
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Награды с Экспедици Гильдии собранные Храмом Реликвий",
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Военные трофеи собранные Замком Химедзи",
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Табло очков играков на ПБГ",
+		"Boxes.Stats.SourceTitle.statsRewards": "Ваши награды собранные Замком Химедзи, Храмом Реликвий, ПБГ и тд.",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Товары гильдии часовые",
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Товары гильдии дневные",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Ваши товары часовые",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Ваши товары дневные",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Ваша армия по часам",
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Ваша армия по дням",
+		"Boxes.Stats.Title": "Статистика",
 		"Boxes.StrategyPoints.BuyableFP": "монеты/СО:",
 		"Boxes.StrategyPoints.FPBar": "СО в пакетах:",
 		"Boxes.Technologies.DescInStock": "Доступно",
@@ -376,8 +380,8 @@
 		"Menu.Productions.Title": "Обзор производства",
 		"Menu.Settings.Desc": "Здесь находятся настройки",
 		"Menu.Settings.Title": "Настройки",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
+		"Menu.Stats.Desc": "Товары, армия, награды, ПБГ",
+		"Menu.Stats.Title": "Статистика",
 		"Menu.Technologies.Desc": "Рассчитывает стоимость исследования",
 		"Menu.Technologies.Title": "Технологии",
 		"Menu.Technologies.Warning": "Отключено: Для включения откройте меню исследования новых технологий!",
@@ -390,10 +394,6 @@
 		"Settings.ChangeLanguage.Title": "Изменить язык",
 		"Settings.CustomerApi.Desc": "Вы хотите отправить данные на свой сервер? <br> После этой активации игра перезагрузится и появится новый пункт меню.",
 		"Settings.CustomerApi.Title": "API игроков",
-		"Settings.DontSaveCurrentEraGoods.Desc": "Should the current goods be saved? With the checkmark set, the goods of the previous era are used first.", //Todo: Translate
-		"Settings.DontSaveCurrentEraGoods.Title": "Negotiation - Current era goods", //Todo: Translate
-		"Settings.DontSaveMedals.Desc": "Should medals be saved? With the checkmark set, the medals are the last to be included in the negotiation.", //Todo: Translate
-		"Settings.DontSaveMedals.Title": "Negotiation - Medals", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
