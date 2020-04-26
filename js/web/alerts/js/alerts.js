@@ -8,26 +8,28 @@
  */
 
 /* core */
-// TODO - add main menu icon (hourglass?)
-// TODO - add alerts settings/options box
-//      * alert/notification suggestions (e.g. when the user clicks on a sector in GBG, suggest to create an alert when
-//           the sector unlocks (the unlock time data is available when gbg data is loaded)
-// TODO - add a box to display a list of active (and inactive) alerts --- something similar to gbg stats for example
-// TODO - create a "New Alert" box to create/add a new alert
-//          - fields: recurring (every x hours), notify x minutes before
-// TODO - create an "Edit Alert" box to edit/delete alerts
-
-// TODO - Options:
-//          - checkbox to enable creating a new alert when you bid on an item at the antiques dealer
-//          - checkbox to enable creating a new alert for a plundered neighbor (e.g. from the plunderer box)
-
-/* nice to have */
-
-// TODO - main menu item should show the next alert timer (hh:mm)
+// TODO alert list refresh (every minute?)
+// TODO finish the preferences tab
+// TODO implement garbage collection
+// TODO show only unexpired alerts (expired alerts should be garbage collected)
+// TODO i18n
+// TODO [pref] main menu icon shows countdown to the next alert (hh:mm or mm:ss)
+// TODO [pref] auto create a new alert when the user bids on an auction (Antiques Dealer)
+// TODO extend the schema to support all TODOs here (without having to migrate in the future)
+    // TODO add 'category' index to support alert categories (e.g. manual, automated, etc)
+/* nice to have // next release */
+// TODO [pref] in-game notification instead of Desktop (when the game has focus)
+// TODO [pref] option to create a new alert when plunder (to return in 24 hours)
+// TODO [pref] show expired alerts on-load (alerts which expired since the last login) before they are garbage-collected
+// TODO [pref] send an alert when x fights/negs are made in a sector in within x seconds (requires the gbg to be open)
+// TODO [pref] alert suggestions (e.g. when clicking on a sector in GBG, or collection a building, etc)
+// TODO show alert in an overlay (button on/off next to the edit)
+// TODO automated alerts tab
+    // TODO - enable auto alert for collection [list suitable buildings from the city]
 // TODO - implement a keyboard shortcut (one which inno will hopefully never use in-game) to pre-fill the New Alert
 //          time based on the most recent time display, e.g. antiques dealer, or when a gbg sector opens, or a
 //          building collection timer expires, etc.
-// TODO - Alerts set up for collection (on GB or other buildings) should reset when the building's resources
+// TODO - Alerts set up for collection (on GB or other buildings) should reset on collection (i.e. alert categories)
 
 let AlertsDB = new Dexie('foe_helper_alerts_database');
 AlertsDB.version(1).stores({
@@ -153,6 +155,14 @@ let Alerts = function(){
                 actions: null
             });
         },
+        delete: (id) => {
+            return tmp.db.alerts.delete( parseInt(id) );
+        },
+        deleteExpired: () => {
+            // tmp.data.refresh();
+            let timestamp = Date.now();
+            return tmp.db.alerts.where('expires').below( timestamp ).delete();
+        },
         get: (id) => {
             return tmp.db.alerts.where( 'id' ).equals( id ).first();
         },
@@ -184,6 +194,7 @@ let Alerts = function(){
     tmp.model = {
         antique: {
             auction: null,
+            cooldown: null,
             exchange: null,
         },
         battlegrounds :{
@@ -234,8 +245,24 @@ let Alerts = function(){
                 let next = alert.expires;
                 if ( timestamp > next ){
                     // show the notification
-                    tmp.log('--- notification ---');
-                    tmp.log(alert);
+                    if ( ! alert ){
+                        tmp.log('tmp.timer.process invalid data');
+                        return;
+                    }
+                    const options = {
+                        body: alert.body,
+                        dir: 'ltr',
+                        icon: extUrl + 'images/app48.png',
+                        renotify: ( alert.tag ) ? true : false,
+                        requireInteraction: alert.persistent,
+                        tag: alert.tag
+                    };
+                    try {
+                        new Notification( alert.title, options );
+                    }
+                    catch (e){
+                        tmp.log(e);
+                    }
 
                     tmp.repeat.update(alert, timestamp);
                     delete tmp.timer.nextAlerts[id];
@@ -418,7 +445,11 @@ let Alerts = function(){
                     return html;
                 },
                 tabPreferencesContent: () => {
-                    return '<p>Preferences</p>';
+                    return `<div class="scrollable">
+                        <div class="content">
+                            <p>Preferences</p>
+                        </div>
+                    </div>`;
                 },
                 updateAlerts: () => {
 
@@ -460,8 +491,11 @@ let Alerts = function(){
                                         return;
                                     }
                                     if ( action === 'delete' ){
-                                        tmp.log(`--- delete (${id}) ---`);
-
+                                        tmp.data.delete(id).then(function(){
+                                            tmp.web.body.tabs.updateAlerts();
+                                        }).catch(function(error){
+                                            console.log(error);
+                                        });
                                     }
                                 })
                             });
@@ -627,20 +661,18 @@ let Alerts = function(){
                     tmp.web.forms.actions.preview( data );
                 },
                 update: () => {
+                    let labels = {
+                        expires: 'Expires',
+                        expired: 'Expired'
+                    }
                     let data = tmp.web.forms.data();
                     let dt = moment(data.datetime);
                     let m = moment();
                     if ( dt >= m ) {
-                        // TODO enable i18n
-                        // Expires __time__ // e.g. Expires in 10 minutes
-                        // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expires', { time: dt.from( m ) } ) );
-                        $( '#alert-expires' ).text( 'Expires ' + dt.from( m ) );
+                        $( '#alert-expires' ).text( `${labels.expires} ${dt.from( m )}` );
                     }
                     else {
-                        // TODO enable i18n
-                        // Expired __time__ // e.g. Expired 4 hours ago
-                        // $( '#alert-expires' ).text( i18n('Boxes.Alerts.Form.Expired', { time: dt.from( m ) } ) );
-                        $( '#alert-expires' ).text( 'Expired ' + dt.from( m ) );
+                        $( '#alert-expires' ).text( `${labels.expired} ${dt.from( m )}` );
                     }
                 },
                 validate: () => {
@@ -704,6 +736,7 @@ let Alerts = function(){
                         header: 'Presets',
                         antique: 'Antiques Dealer',
                             auction: 'Auction',
+                            cooldown: 'Auction Cooldown',
                             exchange: 'Exchange',
                         battlegrounds: 'Battleground Provinces',
                         neighborhood: 'Neighborhood',
@@ -739,6 +772,9 @@ let Alerts = function(){
                 let antiqueOptions = '';
                 if ( tmp.model.antique.auction ){
                     antiqueOptions += `<option value="${tmp.model.antique.auction}">${labels.presets.auction}</option>`;
+                }
+                if ( tmp.model.antique.cooldown ){
+                    antiqueOptions += `<option value="${tmp.model.antique.cooldown}">${labels.presets.cooldown}</option>`;
                 }
                 if ( tmp.model.antique.exchange ){
                     antiqueOptions += `<option value="${tmp.model.antique.exchange}">${labels.presets.exchange}</option>`;
@@ -1080,8 +1116,24 @@ let Alerts = function(){
                     }
                 },
                 timers: (responseData) => {
+
+                    console.log('--- update timers: ');
+                    // anqitues dealer reset
+                    tmp.model.antique.auction = null;
+                    tmp.model.antique.cooldown = null;
+                    tmp.model.antique.exchange = null;
+
                     if ( responseData && responseData.forEach ){
                         responseData.forEach( function( item, index ){
+
+                            // TODO remove this debug
+                            // if ( item.time ) {
+                            //     console.log( item.type, ' => ', new Date( item.time * 1000 ).toISOString() );
+                            // }
+                            // else {
+                            //     console.log( item.type, ' => invalid time: ', item.item );
+                            // }
+
                             if ( item && item.type ){
                                 switch (item.type) {
                                     case 'antiquesExchange' : {
@@ -1090,6 +1142,10 @@ let Alerts = function(){
                                     }
                                     case 'antiquesAuction' : {
                                         tmp.model.antique.auction = item.time * 1000;
+                                        break;
+                                    }
+                                    case 'antiquesAuctionCooldown' : {
+                                        tmp.model.antique.cooldown = item.time * 1000;
                                         break;
                                     }
                                     case 'battlegroundsAttrition' : {
@@ -1135,12 +1191,12 @@ let NotificationManager = {
         }
     },
 
-    // TODO use Promise to implement notifications
+    // ----- use Promise to implement notifications
     // https://codeburst.io/a-simple-guide-to-es6-promises-d71bacd2e13a
     // https://web-push-book.gauntface.com/demos/notification-examples/
     // https://web-push-book.gauntface.com/demos/notification-examples/notification-examples.js
 
-    // TODO implement Promise timeout cancellation
+    // ----- implement Promise timeout cancellation
     // Promise timeout cancellation:
     // https://stackoverflow.com/questions/25345701/how-to-cancel-timeout-inside-of-javascript-promise
 

@@ -23,6 +23,10 @@
     margin: 2px 0 4px 0;
 }
 
+#Alerts #AlertsBody .content {
+    padding: 8px;
+}
+
 #Alerts #AlertsBody .no-permission {
     position: absolute;
     top: 0;
