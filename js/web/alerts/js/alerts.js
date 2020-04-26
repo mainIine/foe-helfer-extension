@@ -658,7 +658,7 @@ let Alerts = function(){
                 init: () => {
                     tmp.web.forms.aux.textareaRoot = null;
                     tmp.web.forms.aux.textareaCounter = null;
-                    // tmp.web.forms.actions.preset.add(0,id);
+                    // tmp.web.forms.actions.preset.add(0,id); // this re-sets the datetime value (bad for edits) :(
                 },
                 /**
                  * @param value - the number of seconds (to add)
@@ -704,6 +704,10 @@ let Alerts = function(){
                     }
                 },
                 previewNew: () => {
+                    if ( ! tmp.web.forms.actions.validate() ) {
+                        tmp.log( 'tmp.web.forms.actions.previewNew failed validation' );
+                        return false;
+                    }
                     let data = tmp.web.forms.data();
                     tmp.web.forms.actions.preview( data );
                 },
