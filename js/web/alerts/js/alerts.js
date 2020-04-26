@@ -8,7 +8,6 @@
  */
 
 /* core */
-// TODO alert list refresh (every minute?)
 // TODO finish the preferences tab
 // TODO implement garbage collection
 // TODO show only unexpired alerts (expired alerts should be garbage collected)
@@ -18,6 +17,7 @@
 // TODO extend the schema to support all TODOs here (without having to migrate in the future)
     // TODO add 'category' index to support alert categories (e.g. manual, automated, etc)
 /* nice to have // next release */
+// TODO add a delete confirmation
 // TODO [pref] in-game notification instead of Desktop (when the game has focus)
 // TODO [pref] option to create a new alert when plunder (to return in 24 hours)
 // TODO [pref] show expired alerts on-load (alerts which expired since the last login) before they are garbage-collected
@@ -118,6 +118,9 @@ let Alerts = function(){
     tmp.db = AlertsDB;
     tmp.data = {
         options: {
+            active: {
+                range: 5000
+            },
             timestamp: {
                 // the next() function will return all alerts set to expires between Date.now() and
                 // the nextTimeStamp value
@@ -127,9 +130,8 @@ let Alerts = function(){
             }
         },
         active: () => {
-            const alerts = tmp.db.alerts.where('expires').above(0);
-            // let ts = moment().valueOf() + 5000;
-            // const alerts = tmp.db.alerts.where('expires').above(ts).reverse();
+            let ts = moment().valueOf() + tmp.data.options.active.range;
+            const alerts = tmp.db.alerts.where('expires').above(ts).reverse();
             return alerts;
         },
         add: (alert) => {
@@ -202,6 +204,9 @@ let Alerts = function(){
         },
         neighbors: {}
     },
+    tmp.preferences = {
+        alertsUpdateTime: 60
+    },
     tmp.repeat = {
         nextExpiration: ( expires, repeat, timestamp ) => {
             repeat = parseInt( repeat ) * 1000;
@@ -273,6 +278,20 @@ let Alerts = function(){
         },
         update: (timestamp) => {
 
+            // do the visual updates only iff the box is visible
+            if ( $( '#Alerts' ).length > 0 ) {
+
+                // if the alerts table is visible update it every 60 seconds
+                if ( $('#alerts-tab-list').is(':visible') ){
+                    let s = timestamp / 1000 >> 0;
+                    // console.log('alerts tab list is visible: ', s);
+                    if ( s % tmp.preferences.alertsUpdateTime == 0 ){
+                        // console.log('updating alerts ...');
+                        tmp.web.body.tabs.updateAlerts();
+                    }
+                }
+            }
+
             // make sure that we don't run more than one update on the db
             // this could happen if the db transaction is taking too long and the tmp.timer.update is executed before
             // the last update finished
@@ -295,12 +314,7 @@ let Alerts = function(){
                 } );
             }
             else {
-                // tmp.timer.process( timestamp );
-            }
-
-            // do the visual updates only iff the box is visible
-            if ( $( '#Alerts' ).length > 0 ) {
-                // tmp.log( t );
+                //tmp.timer.process( timestamp );
             }
         },
 
@@ -430,7 +444,7 @@ let Alerts = function(){
                         <table id="alerts-table" class="foe-table">
                             <thead>
                                 <tr>
-                                    <th>Expiration</th><th class="column-200">Title</th>
+                                    <th>Expiration</th><th class="column-160">Title</th>
                                     <th>Repeat</th><th>Persistent</th>
                                     <th>&nbsp;</th>
                                  </tr>
@@ -464,7 +478,7 @@ let Alerts = function(){
                         let persist = ( alert.persistent ) ? ' checked="checked"' : '';
                         html += `<tr id="alert-id-${alert.id}">
                             <td>${moment(alert.expires).from(dt)}</td>
-                            <td class="column-200">${alert.title}</td>
+                            <td class="column-160">${alert.title}</td>
                             <td>${alert.repeat}</td>
                             <td><input type="checkbox"${persist}></td>
                             <td class="text-right">
@@ -607,11 +621,10 @@ let Alerts = function(){
 
                     return promise;
                 },
-                init: (id) => {
+                init: () => {
                     tmp.web.forms.aux.textareaRoot = null;
                     tmp.web.forms.aux.textareaCounter = null;
-                    tmp.web.forms.actions.preset.add(0,id);
-
+                    // tmp.web.forms.actions.preset.add(0,id);
                 },
                 /**
                  * @param value - the number of seconds (to add)
@@ -726,7 +739,7 @@ let Alerts = function(){
             render: (data) => {
 
                 let id = (data.alert.id) ? data.alert.id : 0;
-                let datetime = tmp.web.forms.aux.formatIsoDate( moment(data.alert.expires) );
+                let expires = tmp.web.forms.aux.formatIsoDate( moment(data.alert.expires) );
 
                 let labels = {
                     title: 'Title',
@@ -786,8 +799,8 @@ let Alerts = function(){
                         let value = province['lockedUntil'] * 1000;
                         // if the sector is currently taken
                         if ( ! isNaN( value ) ) {
-                            let datetime = tmp.web.forms.aux.formatIsoDate( moment( value ) );
-                            let text = `${province.title} (${datetime})`;
+                            let expires = tmp.web.forms.aux.formatIsoDate( moment( value ) );
+                            let text = `${province.title} (${expires})`;
                             battlegroundOptions += `<option value="${value}">${text}</option>`;
                         }
                     });
@@ -817,7 +830,7 @@ let Alerts = function(){
                     </p>
                     <p class="extra-vs-8">
                         <label for="alert-datetime">${labels.datetime}</label>
-                        <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${datetime}" step="1">
+                        <input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${expires}" step="1">
                         <span id="alert-expires"></span>
                     <p>
                         <label for="alert-auto">${labels.presets.header}</label>
@@ -901,7 +914,7 @@ let Alerts = function(){
                 create: {
                     alert: {
                         id: 0,
-                        expires: Date.now() + 5000,
+                        expires: null,
                         title: '',
                         body: '',
                         repeat: -1,
@@ -948,7 +961,6 @@ let Alerts = function(){
                 common: {
                     boxId: 'AlertsManage',
                     build: ( options ) => {
-
                         let boxId = tmp.web.popup.type.common.boxId;
                         let bodyId = '#' + boxId + 'Body';
                         $( bodyId ).empty()
@@ -1010,7 +1022,7 @@ let Alerts = function(){
                             tmp.web.forms.actions.update();
                         });
 
-                        tmp.web.forms.actions.init('#alert-datetime');
+                        tmp.web.forms.actions.init();
                         tmp.web.forms.aux.textareaUpdateCounter('#alert-body','#alert-body-counter');
 
                     },
@@ -1046,6 +1058,7 @@ let Alerts = function(){
                             title: 'Create New Alert'
                         };
                         let options = tmp.web.popup.options.create;
+                        options.alert.expires = Date.now() + 5000;
                         tmp.web.popup.type.common.show(labels, options);
                     },
                 },
@@ -1117,7 +1130,7 @@ let Alerts = function(){
                 },
                 timers: (responseData) => {
 
-                    console.log('--- update timers: ');
+                    // console.log('--- update timers: ');
                     // anqitues dealer reset
                     tmp.model.antique.auction = null;
                     tmp.model.antique.cooldown = null;

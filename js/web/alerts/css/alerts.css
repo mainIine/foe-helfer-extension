@@ -204,8 +204,9 @@ div.alert-popup #alert-expires,
     cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 }
 
+.column-160 { max-width: 160px; }
 .column-200 { max-width: 200px; }
-.column-200 {
+.column-160, .column-200 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
