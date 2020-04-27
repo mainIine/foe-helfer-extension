@@ -47,6 +47,7 @@
     width: 240px;
 }
 
+/* Forms */
 div.alert-popup {
     left: 50%;
     max-height: 550px;
@@ -201,7 +202,7 @@ div.alert-popup #alert-expires,
     background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
     background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
     background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-    cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+    cursor: url(https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur), auto;
 }
 
 .column-160 { max-width: 160px; }
@@ -211,4 +212,39 @@ div.alert-popup #alert-expires,
     text-overflow: ellipsis;
     white-space: nowrap;
 
+}
+
+/* Preferences */
+#Alerts #alerts-preferences .item {
+    border: .5px solid #7f5a34;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
+    font-size: 90%;
+}
+
+#Alerts #alerts-preferences .item .title {
+    box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
+    border-bottom: 1px solid rgb(65,41,17);
+    padding: 4px 10px;
+    font-weight: 700;
+    color: #ffcc68;
+    background-color: rgba(0,0,0,0.15);
+}
+
+#Alerts #alerts-preferences .item .item-row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+#Alerts #alerts-preferences .item .item-row .description,
+#Alerts #alerts-preferences .item .item-row .value {
+    padding: 10px;
+}
+#Alerts #alerts-preferences .item .item-row .description {
+    width: 66%;
+}
+#Alerts #alerts-preferences .item .item-row .value {
+    width: 34%;
 }
