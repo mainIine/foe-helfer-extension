@@ -1,0 +1,27 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 greatbuildings.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zuletzt bearbeitet:        26.04.20, 21:24 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+
+/* Box */
+#greatbuildings {
+    top: 30%;
+    right: 15%;
+    width: 1100px;
+}
+
+#greatbuildings #greatbuildingsBody {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 500px;
+}
