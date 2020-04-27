@@ -952,11 +952,7 @@ let Calculator = {
 					Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
                 }							
 
-				let UnderScorePos = EntityID.indexOf('_');
-				let EraName = EntityID.substring(UnderScorePos + 1);
-
-				UnderScorePos = EraName.indexOf('_');
-				EraName = EraName.substring(0, UnderScorePos);
+				let EraName = GreatBuildings.GetEraName(EntityID);
 
 				if (CurrentProgress === undefined)
 				{
