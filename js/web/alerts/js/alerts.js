@@ -205,7 +205,36 @@ let Alerts = function(){
         neighbors: {}
     },
     tmp.preferences = {
-        alertsUpdateTime: 60
+        /*
+         // [pref] time offset for pre-populated times, e.g. alert for auction end should be 60 seconds prior?!
+         // [pref] main menu icon shows countdown to the next alert (hh:mm or mm:ss)
+         // [pref] auto create a new alert when the user bids on an auction (Antiques Dealer)
+         // [pref] option to create a new alert when plunder (to return in 24 hours)
+         // [pref] show expired alerts on-load (alerts which expired since the last login) before they are garbage-collected
+         // [pref] send an alert when x fights/negs are made in a sector in within x seconds (requires the gbg to be open)
+         */
+        alertsUpdateTime: 60,
+        data: {
+
+            ingame: {
+                info: i18n('Boxes.Alerts.Preferences.InGame.Info',
+                    'Show in-game notification instead of the native Desktop notification when the game window is focused'),
+                title: i18n('Boxes.Alerts.Preferences.InGame.Title', 'In-game Notifications'),
+                value: false
+            },
+            suggestions: {
+                info: i18n('Boxes.Alerts.Preferences.Suggestions.Info',
+                    'Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production'),
+                title: i18n('Boxes.Alerts.Preferences.Suggestions.Title', 'Alert Suggestions'),
+                value: false
+            },
+        },
+        load: () => {
+
+        },
+        save: () => {
+
+        },
     },
     tmp.repeat = {
         nextExpiration: ( expires, repeat, timestamp ) => {
@@ -651,7 +680,8 @@ let Alerts = function(){
                  */
                 preset: {
                     add: (value, target) => {
-                        let m = moment().add( value, 'seconds' );
+                        let data = tmp.web.forms.data();
+                        let m = moment( data.datetime ).add( value, 'seconds' );
                         // timezone corrected ISO string & remove the milliseconds + tz
                         let dt = tmp.web.forms.aux.formatIsoDate( m );
                         $( target ).val( dt ).trigger( 'change' );
@@ -775,19 +805,17 @@ let Alerts = function(){
              */
             render: (data) => {
 
-                let id = (data.alert.id) ? data.alert.id : 0;
-                let expires = tmp.web.forms.aux.formatIsoDate( moment(data.alert.expires) );
-
                 let labels = {
                     title: i18n('Boxes.Alerts.Form.Title', 'Title'),
                     body: i18n('Boxes.Alerts.Form.Body', 'Body'),
                     datetime: i18n('Boxes.Alerts.Form.Datetime', 'Date &amp; Time'),
                     presets: {
                         header: i18n('Boxes.Alerts.Form.Presets', 'Presets'),
+                        now: i18n('Boxes.Alerts.Form.Preset.Now', 'Now'),
                         antique: i18n('Boxes.Alerts.Form.Antiques.Dealer', 'Antiques Dealer'),
-                            auction: i18n('Boxes.Alerts.Form.Antiques.Auction', 'Auction'),
-                            cooldown: i18n('Boxes.Alerts.Form.Antiques.Cooldown', 'Auction Cooldown'),
-                            exchange: i18n('Boxes.Alerts.Form.Antiques.Exchange', 'Exchange'),
+                        auction: i18n('Boxes.Alerts.Form.Antiques.Auction', 'Auction'),
+                        cooldown: i18n('Boxes.Alerts.Form.Antiques.Cooldown', 'Auction Cooldown'),
+                        exchange: i18n('Boxes.Alerts.Form.Antiques.Exchange', 'Exchange'),
                         battlegrounds: i18n('Boxes.Alerts.Form.Battleground', 'Battleground Provinces'),
                         neighborhood: i18n('Boxes.Alerts.Form.Neighborhood', 'Neighborhood'),
                     },
@@ -815,8 +843,17 @@ let Alerts = function(){
                             'Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)'),
                     }
                 };
+                let id = (data.alert.id) ? data.alert.id : 0;
 
+                // need to store the data.alert.expires in a variable because javascript passes by reference (not by
+                // value) so setting data.alert.expires directly would overwrite the null value in tmp.web.popup.options.create
+                let timestamp = data.alert.expires;
+                if ( ! timestamp ){ timestamp = Date.now(); }
+                else { labels.presets.now = data.alert.title; }
 
+                let m = moment(timestamp);
+                let expires = tmp.web.forms.aux.formatIsoDate( m );
+                let now = m.valueOf();
 
                 let repeats = tmp.web.forms.aux.repeats(data.alert.repeat);
 
@@ -886,7 +923,7 @@ let Alerts = function(){
                         </select>
 -->
                         <select id="alert-presets">
-                            <option value="0" disabled selected>&nbsp;</option>
+                            <option value="${now}" selected>${labels.presets.now}</option>
                             <optgroup label="${labels.presets.antique}">
                             ${antiqueOptions}
                             </optgroup>
@@ -897,6 +934,7 @@ let Alerts = function(){
                     </p>
                     
                     <p class="full-width text-right mt--10">
+                        <span class="btn-default datetime-preset" data-time="-60">-1m</span>
                         <span class="btn-default datetime-preset" data-time="60">1m</span>
                         <span class="btn-default datetime-preset" data-time="300">5m</span>
                         <span class="btn-default datetime-preset" data-time="900">15m</span>
@@ -1103,7 +1141,6 @@ let Alerts = function(){
                             title: i18n('Boxes.Alerts.Form.CreateNewAlert', 'Create New Alert'),
                         };
                         let options = tmp.web.popup.options.create;
-                        options.alert.expires = Date.now();
                         tmp.web.popup.type.common.show(labels, options);
                     },
                 },
