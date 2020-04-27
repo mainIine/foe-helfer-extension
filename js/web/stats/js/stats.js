@@ -74,7 +74,7 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 
     await IndexDB.getDB();
 
-    await IndexDB.db.statsTreasurePlayerH.put({
+    await IndexDB.db.statsTreasurePlayerD.put({
 		date: moment().startOf('day').toDate(),
 		resources: r.resources
 	});
