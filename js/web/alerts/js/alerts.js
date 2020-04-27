@@ -8,7 +8,6 @@
  */
 
 /* core */
-// TODO finish the preferences tab
 /* nice to have // next release */
 // TODO change the edit buttons from text to icons (eye, pencil, x --- check FoEs icons, e.g. guild management)
 // TODO add a delete confirmation (currently clicking the delete button just deletes the alert)
@@ -215,13 +214,13 @@ let Alerts = function(){
             },
             gbg: {
                 info: i18n('Boxes.Alerts.Preferences.Battlegrounds.Info',
-                    'Send an instant alert when there is a high activity (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!'),
+                    'Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!'),
                 title: i18n('Boxes.Alerts.Preferences.Battlegrounds.Title', 'Guild Battlegrounds Tracker'),
                 value: false
             },
             icon: {
                 info: i18n('Boxes.Alerts.Preferences.MenuIcon.Info',
-                    'Show the next alert countdown as an overlay of the main menu alerts icon'),
+                    'Show the next alert countdown as an overlay of the Main Menu icon'),
                 title: i18n('Boxes.Alerts.Preferences.MenuIcon.Title', 'Main Menu Countdown'),
                 value: false
             },
@@ -233,7 +232,7 @@ let Alerts = function(){
             },
             start: {
                 info: i18n('Boxes.Alerts.Preferences.Start.Info',
-                    'Display a list of alerts which expired while offline (since the game window was closed)'),
+                    'Display a list of Alerts which expired while offline (since the game window was closed)'),
                 title: i18n('Boxes.Alerts.Preferences.Start.Title', 'Expired Alert Summary at Start'),
                 value: false
             },
