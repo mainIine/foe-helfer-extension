@@ -558,6 +558,7 @@ let Alerts = function(){
                     let labels = {
                         active: i18n('Boxes.Settings.Active'),
                         inactive: i18n('Boxes.Settings.Inactive'),
+                        soon: i18n('Boxes.Alerts.Preferences.ComingSoon', 'Coming soon ...')
                     };
 
                     let html = '';
@@ -588,6 +589,7 @@ let Alerts = function(){
                             <form>
                                 ${html}
                             </form>
+                            <div class="overlay-disable text-center"><p>${labels.soon}</p></div>
                         </div>
                     </div>`;
                 },
