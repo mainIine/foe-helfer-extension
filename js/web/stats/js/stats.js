@@ -1061,7 +1061,8 @@ ${sourceBtns.join('')}
 		const startDate = {
 			today: moment().startOf('day').toDate(),
 			yesterday: moment().subtract(1, 'weeks').startOf('day').toDate(),
-			sinceTuesday: moment().startOf('week').add(2, 'days').toDate(),
+			sinceTuesday: ((moment().startOf('week').add(2, 'days').toDate() > new Date()) ?
+                           moment().startOf('week').subtract(1, 'weeks').add(2, 'days').toDate() : moment().startOf('week').add(2, 'days').toDate()),
 			last7days: moment().subtract(1, 'weeks').toDate(),
 			thisMonth: moment().startOf('month').toDate(),
 			last30days: moment().subtract(30, 'days').toDate(),
