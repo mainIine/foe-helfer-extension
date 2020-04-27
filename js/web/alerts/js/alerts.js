@@ -602,18 +602,29 @@ let Alerts = function(){
                         preview: i18n('Boxes.Alerts.Form.Preview', 'preview'),
                         edit: i18n('Boxes.Alerts.Form.Edit', 'edit'),
                         delete: i18n('Boxes.Alerts.Form.Delete', 'delete'),
+                        repeats: {
+                            '-1': '-',
+                            '60': i18n('Boxes.Alerts.Time.1m', '1m'),
+                            '300': i18n('Boxes.Alerts.Time.5m', '5m'),
+                            '900': i18n('Boxes.Alerts.Time.15m', '15m'),
+                            '3600': i18n('Boxes.Alerts.Time.1h', '1h'),
+                            '14400': i18n('Boxes.Alerts.Time.4h', '4h'),
+                            '28800': i18n('Boxes.Alerts.Time.8h', '8h'),
+                            '86400': i18n('Boxes.Alerts.Time.1d', '1d'),
+                        }
                     };
 
                     let html = '';
                     let dt = moment();
 
                     const alerts = tmp.data.active();
+
                     alerts.each(function(alert){
                         let persist = ( alert.persistent ) ? ' checked="checked"' : '';
                         html += `<tr id="alert-id-${alert.id}">
                             <td>${moment(alert.expires).from(dt)}</td>
                             <td class="column-160">${alert.title}</td>
-                            <td>${alert.repeat}</td>
+                            <td>${labels.repeats[alert.repeat+""]}</td>
                             <td><input type="checkbox"${persist}></td>
                             <td class="text-right">
                                 <span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
@@ -923,6 +934,15 @@ let Alerts = function(){
                         preview: i18n('Boxes.Alerts.Form.Preview', 'Preview'),
                         save: i18n('Boxes.Alerts.Form.Save', 'Save'),
                     },
+                    times: {
+                        '1m': i18n('Boxes.Alerts.Time.1m', '1m'),
+                        '5m': i18n('Boxes.Alerts.Time.5m', '5m'),
+                        '15m': i18n('Boxes.Alerts.Time.15m', '15m'),
+                        '1h': i18n('Boxes.Alerts.Time.1h', '1h'),
+                        '4h': i18n('Boxes.Alerts.Time.4h', '4h'),
+                        '8h': i18n('Boxes.Alerts.Time.8h', '8h'),
+                        '1d': i18n('Boxes.Alerts.Time.1d', '1d'),
+                    },
                     tags: {
                         header: i18n('Boxes.Alerts.Form.Tag', 'Tag'),
                         description: i18n('Boxes.Alerts.Form.Tag.Description',
@@ -1020,14 +1040,14 @@ let Alerts = function(){
                     </p>
                     
                     <p class="full-width text-right mt--10">
-                        <span class="btn-default datetime-preset" data-time="-60">-1m</span>
-                        <span class="btn-default datetime-preset" data-time="60">1m</span>
-                        <span class="btn-default datetime-preset" data-time="300">5m</span>
-                        <span class="btn-default datetime-preset" data-time="900">15m</span>
-                        <span class="btn-default datetime-preset" data-time="3600">1h</span>
-                        <span class="btn-default datetime-preset" data-time="14400">4h</span>
-                        <span class="btn-default datetime-preset" data-time="28800">8h</span>
-                        <span class="btn-default datetime-preset" data-time="86400">1d</span>
+                        <span class="btn-default datetime-preset" data-time="-60">-${labels.times['1m']}</span>
+                        <span class="btn-default datetime-preset" data-time="60">${labels.times['1m']}</span>
+                        <span class="btn-default datetime-preset" data-time="300">${labels.times['5m']}</span>
+                        <span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
+                        <span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
+                        <span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
+                        <span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
+                        <span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
                     </p>
                     
                     <p class="full-width radio-toolbar extra-vs-8">
@@ -1036,17 +1056,17 @@ let Alerts = function(){
                         <label for="alert-repeat-never">${labels.repeats.never}</label>
                         ${labels.repeats.every}
                         <input id="alert-repeat-5m" type="radio" name="alert-repeat" value="300"${repeats['300']}>
-                        <label for="alert-repeat-5m">5m</label>
+                        <label for="alert-repeat-5m">${labels.times['5m']}</label>
                         <input id="alert-repeat-15m" type="radio" name="alert-repeat" value="900"${repeats['900']}>
-                        <label for="alert-repeat-15m">15m</label>
+                        <label for="alert-repeat-15m">${labels.times['15m']}</label>
                         <input id="alert-repeat-1h" type="radio" name="alert-repeat" value="3600"${repeats['3600']}>
-                        <label for="alert-repeat-1h">1h</label>
+                        <label for="alert-repeat-1h">${labels.times['1h']}</label>
                         <input id="alert-repeat-4h" type="radio" name="alert-repeat" value="14400"${repeats['14400']}>
-                        <label for="alert-repeat-4h">4h</label>
+                        <label for="alert-repeat-4h">${labels.times['4h']}</label>
                         <input id="alert-repeat-8h" type="radio" name="alert-repeat" value="28800"${repeats['28800']}>
-                        <label for="alert-repeat-8h">8h</label>
+                        <label for="alert-repeat-8h">${labels.times['8h']}</label>
                         <input id="alert-repeat-1d" type="radio" name="alert-repeat" value="86400"${repeats['86400']}>
-                        <label for="alert-repeat-1d">1d</label>
+                        <label for="alert-repeat-1d">${labels.times['1d']}</label>
                     </p>
                     
                     <p class="full-width radio-toolbar">
