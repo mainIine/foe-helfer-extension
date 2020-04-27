@@ -41,7 +41,7 @@
 		"Boxes.Campagne.AlreadyDone": " Již dobyto!",
 		"Boxes.Campagne.DescInStock": "K dispozici",
 		"Boxes.Campagne.DescRequired": "Požadováno",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ff4040'>Is missing</span>", //Todo: Translate
 		"Boxes.Campagne.Resource": "Zboží",
 		"Boxes.Campagne.Reward": "Celková odměna ",
 		"Boxes.Campagne.Title": "Náklady na dobytí ",
@@ -140,7 +140,7 @@
 		"Boxes.Neighbors.ReadyProductions": "Hotové výroby",
 		"Boxes.Outpost.DescInStock": "K dispozici",
 		"Boxes.Outpost.DescRequired": "Vyžadováno",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ff4040'>Is missing</span>", //Todo: Translate
 		"Boxes.Outpost.ExpansionsSum": "Rozšíření",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Šance: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Další rozšíření",
@@ -288,7 +288,7 @@
 		"Boxes.StrategyPoints.FPBar": "Zásoba bodů: ",
 		"Boxes.Technologies.DescInStock": "K dispozici",
 		"Boxes.Technologies.DescRequired": "Požadováno",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ef1616'>Is missing</span>", //Todo: Translate
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excess</span> / <span style='color:#ff4040'>Is missing</span>", //Todo: Translate
 		"Boxes.Technologies.NoTechs": "Dokončili jste dobu",
 		"Boxes.Technologies.Resource": "Zdroj",
 		"Boxes.Technologies.Title": "Náklady na výzkum",

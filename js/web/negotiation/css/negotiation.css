@@ -75,7 +75,7 @@
 }
 
 #negotiationBox #negotiationBoxBody .text-danger {
-	color: #ef1616;
+	color: #ff4040;
 	font-weight: 700;
 }
 
@@ -93,7 +93,7 @@
 }
 
 #negotiationBox #negotiationBoxBody td.error {
-	color: #ef1616;
+	color: #ff4040;
 }
 
 #negotiationBox #negotiationBoxBody .text-muted {
