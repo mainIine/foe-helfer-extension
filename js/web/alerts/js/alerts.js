@@ -12,14 +12,6 @@
 /* nice to have // next release */
 // TODO change the edit buttons from text to icons (eye, pencil, x --- check FoEs icons, e.g. guild management)
 // TODO add a delete confirmation (currently clicking the delete button just deletes the alert)
-// TODO [pref] time offset for pre-populated times, e.g. alert for auction end should be 60 seconds prior?!
-// TODO [pref] main menu icon shows countdown to the next alert (hh:mm or mm:ss)
-// TODO [pref] auto create a new alert when the user bids on an auction (Antiques Dealer)
-// TODO [pref] in-game notification instead of Desktop (when the game has focus)
-// TODO [pref] option to create a new alert when plunder (to return in 24 hours)
-// TODO [pref] show expired alerts on-load (alerts which expired since the last login) before they are garbage-collected
-// TODO [pref] send an alert when x fights/negs are made in a sector in within x seconds (requires the gbg to be open)
-// TODO [pref] alert suggestions (e.g. when clicking on a sector in GBG, or collection a building, etc)
 // TODO show alert in an overlay (button on/off next to the edit)
 // TODO automated alerts tab
     // TODO - enable auto alert for collection [list suitable buildings from the city]
@@ -206,20 +198,43 @@ let Alerts = function(){
     },
     tmp.preferences = {
         /*
-         // [pref] time offset for pre-populated times, e.g. alert for auction end should be 60 seconds prior?!
-         // [pref] main menu icon shows countdown to the next alert (hh:mm or mm:ss)
-         // [pref] auto create a new alert when the user bids on an auction (Antiques Dealer)
-         // [pref] option to create a new alert when plunder (to return in 24 hours)
-         // [pref] show expired alerts on-load (alerts which expired since the last login) before they are garbage-collected
-         // [pref] send an alert when x fights/negs are made in a sector in within x seconds (requires the gbg to be open)
+         // [pref] option to create a new alert when plunder (to return in 24 hours) ?
          */
+        aux: {
+            key: {
+                generate: (key) => { return 'foe-helper-alerts-' + key; }
+            }
+        },
         alertsUpdateTime: 60,
         data: {
-
+            auction: {
+                info: i18n('Boxes.Alerts.Preferences.Auction.Info',
+                    'Automatically create a new alert when I make a bid in the Antiques Dealer Auction'),
+                title: i18n('Boxes.Alerts.Preferences.Auction.Title', 'Antiques Dealer Auction'),
+                value: false
+            },
+            gbg: {
+                info: i18n('Boxes.Alerts.Preferences.Battlegrounds.Info',
+                    'Send an instant alert when there is a high activity (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!'),
+                title: i18n('Boxes.Alerts.Preferences.Battlegrounds.Title', 'Guild Battlegrounds Tracker'),
+                value: false
+            },
+            icon: {
+                info: i18n('Boxes.Alerts.Preferences.MenuIcon.Info',
+                    'Show the next alert countdown as an overlay of the main menu alerts icon'),
+                title: i18n('Boxes.Alerts.Preferences.MenuIcon.Title', 'Main Menu Countdown'),
+                value: false
+            },
             ingame: {
                 info: i18n('Boxes.Alerts.Preferences.InGame.Info',
                     'Show in-game notification instead of the native Desktop notification when the game window is focused'),
                 title: i18n('Boxes.Alerts.Preferences.InGame.Title', 'In-game Notifications'),
+                value: false
+            },
+            start: {
+                info: i18n('Boxes.Alerts.Preferences.Start.Info',
+                    'Display a list of alerts which expired while offline (since the game window was closed)'),
+                title: i18n('Boxes.Alerts.Preferences.Start.Title', 'Expired Alert Summary at Start'),
                 value: false
             },
             suggestions: {
@@ -229,11 +244,37 @@ let Alerts = function(){
                 value: false
             },
         },
-        load: () => {
-
+        init: () => {
+            let keys = Object.keys( tmp.preferences.data );
+            for (const key of keys){
+                tmp.preferences.data[key].value = tmp.preferences.get(key);
+            }
         },
-        save: () => {
+        entry: ( key ) => {
+            if ( tmp.preferences.data[key] ) {
+                tmp.preferences.data[key];
+            }
+            return null;
+        },
+        get: ( key ) => {
+            if ( tmp.preferences.data[key] ) {
+                let id = tmp.preferences.aux.key.generate( key );
+                let value = localStorage.getItem( id );
 
+                if ( value ) {
+                    return JSON.parse( value );
+                }
+                return tmp.preferences.data[key].value;
+            }
+            return null;
+        },
+        set: ( key, value ) => {
+            if ( tmp.preferences.data[key] ){
+                tmp.preferences.data[key].value = value;
+
+                let id = tmp.preferences.aux.key.generate( key );
+                localStorage.setItem( id, value )
+            }
         },
     },
     tmp.repeat = {
@@ -385,6 +426,19 @@ let Alerts = function(){
                         tmp.web.popup.type.create.show();
                     });
 
+                    $('#alerts-preferences').find('input').on('change', function(){
+                        let key = $(this).data('key');
+                        let value = $(this).val() == 'active';
+                        tmp.preferences.set(key, value);
+                    });
+
+                    // $('#AlertsBody').find('span.check input').on('click', function(){
+                    //     let el = $(this);
+                    //     let input = el.find('input');
+                    //     let id = input.prop
+                    //     let checked = $(this).data('action');
+                    // });
+
                 });
 
                 tmp.web.body.overlay.permissions.render();
@@ -501,9 +555,40 @@ let Alerts = function(){
                     return html;
                 },
                 tabPreferencesContent: () => {
+
+                    let labels = {
+                        active: i18n('Boxes.Settings.Active'),
+                        inactive: i18n('Boxes.Settings.Inactive'),
+                    };
+
+                    let html = '';
+
+                    let entries = Object.entries(tmp.preferences.data);
+                    for( const [key, entry] of entries ){
+                        let checked_active = (entry.value === true) ? 'checked="checked"' : '';
+                        let checked_inactive = (entry.value === false) ? 'checked="checked"' : '';
+
+                        html += `<div class="item">
+                            <div class="title">${entry.title}</div>
+                            <div class="item-row">
+                                <div class="description">${entry.info}</div>
+                                <div class="value">
+                                    <p class="text-center radio-toolbar">
+                                        <input id="alert-${key}-inactive" type="radio" name="alert-${key}"${checked_inactive} data-key="${key}" value="inactive">
+                                        <label for="alert-${key}-inactive">${labels.inactive}</label>
+                                        <input id="alert-${key}-active" type="radio" name="alert-${key}"${checked_active} data-key="${key}" value="active">
+                                        <label for="alert-${key}-active">${labels.active}</label>
+                                    </p>
+                                 </div>
+                            </div>
+                        </div>`;
+                    }
+
                     return `<div class="scrollable">
-                        <div class="content">
-                            <p>Preferences</p>
+                        <div id="alerts-preferences" class="content">
+                            <form>
+                                ${html}
+                            </form>
                         </div>
                     </div>`;
                 },
@@ -1186,6 +1271,9 @@ let Alerts = function(){
 
     let pub = {
         init: () => {
+            // the preferences init is assumed to be synchronous (based on localStorage implementation)
+            tmp.preferences.init();
+
             tmp.data.garbage();
             TimeManager.subscribe( tmp.timer );
         },
