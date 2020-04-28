@@ -25,12 +25,9 @@ AlertsDB.version(1).stores({
     alerts: '++id,expires,repeat,tag,category'
 });
 AlertsDB.open();
-// persistent alerts will be stored only once and the expires time will be updated before garbage collection so that
+// repeated alerts will be stored only once and the expires time will be updated before garbage collection so that
 // all expired alerts can be removed without having to use compound indexes or "compound where = collection filtering)
 // e.g. where('expires').above(_current_timestamp_) and where('persistent').equals('1') as that is not supported by Dixie.
-
-// xhr listener: store gbg sector unlock times
-// xhr listener: antique dealer (get the auction timer)
 
 const BattlegroundSectorNames = {
     0: {title: "A1:M", name: "Mati Tudokk"},
@@ -97,6 +94,7 @@ const BattlegroundSectorNames = {
 
 let Alerts = function(){
 
+    // private
     let tmp = {};
 
     tmp.debug = true;
@@ -196,9 +194,6 @@ let Alerts = function(){
         neighbors: {}
     },
     tmp.preferences = {
-        /*
-         // [pref] option to create a new alert when plunder (to return in 24 hours) ?
-         */
         aux: {
             key: {
                 generate: (key) => { return 'foe-helper-alerts-' + key; }
@@ -426,13 +421,6 @@ let Alerts = function(){
                         tmp.preferences.set(key, value);
                     });
 
-                    // $('#AlertsBody').find('span.check input').on('click', function(){
-                    //     let el = $(this);
-                    //     let input = el.find('input');
-                    //     let id = input.prop
-                    //     let checked = $(this).data('action');
-                    // });
-
                 });
 
                 tmp.web.body.overlay.permissions.render();
@@ -648,7 +636,7 @@ let Alerts = function(){
                                         tmp.data.delete(id).then(function(){
                                             tmp.web.body.tabs.updateAlerts();
                                         }).catch(function(error){
-                                            console.log(error);
+                                            tmp.log(error);
                                         });
                                     }
                                 })
@@ -1353,6 +1341,8 @@ let Alerts = function(){
     return pub;
 }();
 
+// xhr listener: store gbg sector unlock times
+// xhr listener: antique dealer (get the auction timer)
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
     Alerts.update.data.battlegrounds( data['responseData'] );
 });
