@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Русский",
 		"API.GEXChampionship": "Обновлена позиция гильдии в ЭГ",
@@ -7,6 +7,8 @@
 		"API.LGInvest": "Ваши вложения ВС были переданы",
 		"API.UpdateSuccess": "Обновление выполнено",
 		"Boxes.Api.Title": "Настройки API расширения",
+		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
 		"Boxes.Calculator.ArkBonus": "Бонус Арки",
 		"Boxes.Calculator.AvailableFP": "Доступные СО",
@@ -103,6 +105,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ Были найдены новые события игрока",
 		"Boxes.Investment.Title": "Вложение",
 		"Boxes.Investment.TotalFP": "Пакеты + вложенное + прибыль: ",
+		"Boxes.Kits.InStock": "In stock", //Todo: Translate
+		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
+		"Boxes.Kits.Name": "Name", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": "Набор строений",
 		"Boxes.Kits.TabSelectionKits": "Набор выбора",
 		"Boxes.Kits.Title": "Строение- / Набор выбора",
@@ -245,12 +250,12 @@
 		"Boxes.Stats.BtnNoEra": "Бэз эпохи",
 		"Boxes.Stats.BtnSource.statsGBGPlayers": "ПБГ",
 		"Boxes.Stats.BtnSource.statsRewards": "Награды",
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Товары Ч. Гильдии",
 		"Boxes.Stats.BtnSource.statsTreasureClanD": "Товары Д. Гильдии",
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Товары",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Товары Ч. Гильдии",
 		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Товары по дням",
-		"Boxes.Stats.BtnSource.statsUnitsH": "Армия Ч.",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Товары",
 		"Boxes.Stats.BtnSource.statsUnitsD": "Армия Д.",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Армия Ч.",
 		"Boxes.Stats.BtnToggleAnnotations": "ГВГ аннотации",
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.",
 		"Boxes.Stats.BtnToggleGroupBy": "Групп. по Эпохам",
@@ -277,12 +282,12 @@
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Военные трофеи собранные Замком Химедзи",
 		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Табло очков играков на ПБГ",
 		"Boxes.Stats.SourceTitle.statsRewards": "Ваши награды собранные Замком Химедзи, Храмом Реликвий, ПБГ и тд.",
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Товары гильдии часовые",
 		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Товары гильдии дневные",
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Ваши товары часовые",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Товары гильдии часовые",
 		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Ваши товары дневные",
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Ваша армия по часам",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Ваши товары часовые",
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Ваша армия по дням",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Ваша армия по часам",
 		"Boxes.Stats.Title": "Статистика",
 		"Boxes.StrategyPoints.BuyableFP": "монеты/СО:",
 		"Boxes.StrategyPoints.FPBar": "СО в пакетах:",
