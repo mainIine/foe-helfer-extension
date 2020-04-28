@@ -44,7 +44,8 @@ let _menu = {
 		'github',
 		'chat',
 		'api',
-		'kits'
+		'kits',
+        'alerts',
 	],
 
 
@@ -888,4 +889,29 @@ let _menu = {
 
 		return btn;
 	},
+
+
+    /**
+     * Alerts/Notifications
+     */
+    alerts_Btn: ()=> {
+
+        let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
+        let labels = {
+            title: i18n('Menu.Alerts.Title', 'FoE Alerts'),
+            info: i18n('Menu.Alerts.Info', 'FoE Alerts'),
+        }
+
+        _menu.toolTippBox( labels.title, labels.info, 'alerts-Btn');
+
+        let btn_sp = $('<span />');
+
+        btn_sp.on('click', function(){
+            Alerts.show();
+        });
+
+        btn.append(btn_sp);
+
+        return btn;
+    },
 };
