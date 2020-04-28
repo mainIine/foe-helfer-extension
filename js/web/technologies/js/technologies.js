@@ -73,6 +73,7 @@ let Technologies = {
     SelectedEraID: undefined,
        
     Eras: {
+        AllAge: 0,
         NoAge: 0,
         StoneAge: 1,
         BronzeAge: 2,
