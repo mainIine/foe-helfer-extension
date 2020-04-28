@@ -169,7 +169,7 @@
 	// ende der Trennung vom Globalen Scope
 }
 
-
+/*
 chrome.runtime.onStartup.addListener(function() {
 
 	// @Todo: Ticker der auf die expireTime runter zählt und dann die Nachricht anzeigt
@@ -191,3 +191,4 @@ chrome.runtime.onStartup.addListener(function() {
 		const sound = new Audio('sound.mp3').play();
 	});
 });
+*/
