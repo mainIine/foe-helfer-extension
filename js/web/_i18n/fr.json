@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Français",
 		"API.GEXChampionship": "Le classement de guilde GEX a été mis à jour.",
@@ -7,6 +7,8 @@
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
 		"Boxes.Api.Title": "Serveur API personnel",
+		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
 		"Boxes.Calculator.AvailableFP": "PF disponibles",
@@ -103,6 +105,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ nouveaux évènements joueur ont été trouvés",
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock + investis + gains) : ",
+		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
+		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
+		"Boxes.Kits.Name": "Name", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": "Améliorations",
 		"Boxes.Kits.TabSelectionKits": "Packs",
 		"Boxes.Kits.Title": "Améliorations et Packs",
@@ -245,12 +250,12 @@
 		"Boxes.Stats.BtnNoEra": "Sans âge",
 		"Boxes.Stats.BtnSource.statsGBGPlayers": "Ch. de bataille",
 		"Boxes.Stats.BtnSource.statsRewards": "Récompenses",
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Tréso Guilde /H",
 		"Boxes.Stats.BtnSource.statsTreasureClanD": "Tréso Guilde /J",
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Ressources /H",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Tréso Guilde /H",
 		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Ressources /J",
-		"Boxes.Stats.BtnSource.statsUnitsH": "Unités /H",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Ressources /H",
 		"Boxes.Stats.BtnSource.statsUnitsD": "Unités /J",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Unités /H",
 		"Boxes.Stats.BtnToggleAnnotations": "Indication GcG",
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Montre la diminution des ressources sur la carte GcG",
 		"Boxes.Stats.BtnToggleGroupBy": "Grouper par âge",
@@ -277,12 +282,12 @@
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Récompenses des butins de guerre octroyés par le Château d'Himeji",
 		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Scores des joueurs en champ de bataille de guilde",
 		"Boxes.Stats.SourceTitle.statsRewards": "Répartition de vos récompenses : reliques sur les expéditions de guilde (Temple des reliques), butins de guerre (Château d'Himeji), cadeaux diplomatiques (Transporteur Spatial) et sur le champ de bataille des guildes",
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Evolution de la trésorerie de guilde par heure",
 		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Evolution de la trésorerie de guilde par jour",
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Evolution de vos ressources par heure",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Evolution de la trésorerie de guilde par heure",
 		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Evolution de vos ressources par jour",
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Evolution de vos unités par heure",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Evolution de vos ressources par heure",
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Evolution de vos unités par jour",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Evolution de vos unités par heure",
 		"Boxes.Stats.Title": "Statistiques",
 		"Boxes.StrategyPoints.BuyableFP": "Achetable : ",
 		"Boxes.StrategyPoints.FPBar": "PF en stock : ",
@@ -394,10 +399,6 @@
 		"Settings.ChangeLanguage.Title": "Changer de langue",
 		"Settings.CustomerApi.Desc": "Voulez vous envoyer des données à votre propre serveur ?<br> Après l'activation, le jeu sera relancé et un nouveau menu sera disponible.",
 		"Settings.CustomerApi.Title": "Serveur API personnel",
-		"Settings.DontSaveCurrentEraGoods.Desc": "Faut-il préserver les ressources de l'ère actuelle en priorité ?<br>Si coché, les ressources de l'ère actuelle seront les dernières à être incluses dans une négociation.",
-		"Settings.DontSaveCurrentEraGoods.Title": "Négociation - Ressources de l'ère actuelle",
-		"Settings.DontSaveMedals.Desc": "Faut-il préserver les médailles en priorité ?<br>Si coché, les médailles seront les dernières à être incluses dans une négociation.",
-		"Settings.DontSaveMedals.Title": "Négociation - Médailles",
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
