@@ -7,6 +7,8 @@
 		"API.LGInvest": "Je GG bijdrages zijn verzonden",
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
 		"Boxes.Api.Title": "Extensie API Instellingen",
+		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Actieve herhalingsmissie:",
 		"Boxes.Calculator.ArkBonus": "Arc bonus", //Todo: Translate
 		"Boxes.Calculator.AvailableFP": "Beschikbare forgepunten",
@@ -41,7 +43,7 @@
 		"Boxes.Campagne.AlreadyDone": "Alreeds veroverd!",
 		"Boxes.Campagne.DescInStock": "Beschikbaar",
 		"Boxes.Campagne.DescRequired": "Aantal",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ef1616'>Tekort</span>",
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
 		"Boxes.Campagne.Resource": "Benodigdheden",
 		"Boxes.Campagne.Reward": "Totale beloning ",
 		"Boxes.Campagne.Title": "Veroveringskosten voor ",
@@ -103,6 +105,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investering",
 		"Boxes.Investment.TotalFP": "Voorraad + in omloop + winst: ",
+		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
+		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
+		"Boxes.Kits.Name": "Name", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": "Gebouw kits",
 		"Boxes.Kits.TabSelectionKits": "Selectie kits",
 		"Boxes.Kits.Title": "Gebouw / Selectie Kits",
@@ -133,14 +138,14 @@
 		"Boxes.Negotiation.Title": "Onderhandelingshulp",
 		"Boxes.Negotiation.TryEnd": "Geen beurten meer",
 		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af!",
-		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__%(ATT) / __attdef__%(DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__%(ATT) / __defdef__%(DEF)", //Todo: Translate
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
 		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Lopende producties",
 		"Boxes.Neighbors.ReadyProductions": "Voltooide producties",
 		"Boxes.Outpost.DescInStock": "Beschikbaar",
 		"Boxes.Outpost.DescRequired": "Nodig",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ef1616'>Tekort</span>",
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
 		"Boxes.Outpost.ExpansionsSum": "Uitbreidingen",
 		"Boxes.Outpost.infoLine": "__runNumber__de run, Bonus x4 Kans: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Volgende uitbreiding",
@@ -243,14 +248,14 @@
 		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
 		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
 		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.gbgPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.rewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClan": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasureClanDaily": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayer": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.treasurePlayerDaily": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.units": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnSource.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
 		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
@@ -275,20 +280,20 @@
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.gbgPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.rewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClan": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasureClanDaily": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayer": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.treasurePlayerDaily": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.units": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.unitsDaily": "Units Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Koopbaar: ",
 		"Boxes.StrategyPoints.FPBar": "FP-Voorraad: ",
 		"Boxes.Technologies.DescInStock": "Beschikbaar",
 		"Boxes.Technologies.DescRequired": "Aantal",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ef1616'>Tekort</span>",
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
 		"Boxes.Technologies.NoTechs": "Je hebt het einde van dit tijdperk bereikt",
 		"Boxes.Technologies.Resource": "Benodigdheden",
 		"Boxes.Technologies.Title": "Onderzoekskosten voor",
