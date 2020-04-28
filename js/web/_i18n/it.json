@@ -6,8 +6,9 @@
 		"API.LGGildMember": "I Grandi Edifici di __player__ sono stati inviati",
 		"API.LGInvest": "I tuoi investimenti nei Grandi Edifici sono stati trasferiti",
 		"API.UpdateSuccess": "Aggiornamento eseguito",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
+		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Missione ricorrente attiva:",
 		"Boxes.Calculator.ArkBonus": "Bonus Arc",
 		"Boxes.Calculator.AvailableFP": "PF disponibili",
@@ -42,7 +43,7 @@
 		"Boxes.Campagne.AlreadyDone": "Già conquistato!",
 		"Boxes.Campagne.DescInStock": "Disponibile",
 		"Boxes.Campagne.DescRequired": "Obbligatorio",
-		"Boxes.Campagne.DescStillMissing": "<span style = 'color: # 29b206'> Eccesso </span> / <span style='color:#ef1616'>Manca</span>",
+		"Boxes.Campagne.DescStillMissing": "<span style = 'color: # 29b206'> Eccesso </span> / <span style='color:#ff4040'>Manca</span>",
 		"Boxes.Campagne.Resource": "Risorsa",
 		"Boxes.Campagne.Reward": "Ricompensa totale",
 		"Boxes.Campagne.Title": "Costo della conquista per",
@@ -59,8 +60,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": "e",
@@ -104,6 +105,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investimento",
 		"Boxes.Investment.TotalFP": "in cirolazione + + profitto:",
+		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
+		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
+		"Boxes.Kits.Name": "Name", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": " Kit di costruzione ",
 		"Boxes.Kits.TabSelectionKits": " selezione-Kit ",
 		"Boxes.Kits.Title": " Kit di costruzione / selezione",
@@ -126,22 +130,26 @@
 		"Boxes.Negotiation.GoodsLow": "ATTENZIONE: i beni stanno per finire",
 		"Boxes.Negotiation.Person": "Persona",
 		"Boxes.Negotiation.Round": "Round", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Magazzino:",
 		"Boxes.Negotiation.Success": "Completato",
 		"Boxes.Negotiation.TableLoadError": "Errore durante il caricamento della tabella di negoziazione",
 		"Boxes.Negotiation.Title": "Aiuto Negoziazione",
 		"Boxes.Negotiation.TryEnd": "Tentativi finiti",
 		"Boxes.Negotiation.WrongGoods": "merce sbagliata selezionata, chiudi manualmente",
-		"Boxes.Neighbors.NothingToPlunder": "Nulla da saccheggiare",
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Produzioni in corso",
 		"Boxes.Neighbors.ReadyProductions": "Produzioni finite",
-		"Boxes.Neighbors.Title": "Produzioni di",
 		"Boxes.Outpost.DescInStock": "Disponibile",
 		"Boxes.Outpost.DescRequired": "Richiesto",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ef1616'>Manca</span>",
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ff4040'>Manca</span>",
 		"Boxes.Outpost.ExpansionsSum": "Espansioni",
 		"Boxes.Outpost.infoLine": "__runNumber__. insediamento, Bonus x4 Probabilità: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "prossima espansione",
+		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Beni dell'insediamento",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
@@ -174,32 +182,33 @@
 		"Boxes.OwnpartCalculator.Step": "Fase",
 		"Boxes.OwnpartCalculator.Title": "Calcolatore Auto-Up",
 		"Boxes.OwnpartCalculator.YourName": "Il tuo nome",
-		"Boxes.Plundered.actionBattleLost": "Lost battle", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "Shielded", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All players", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
+		"Boxes.Plundered.actionBattleLost": "Battaglia persa",
+		"Boxes.Plundered.actionBattleWon": "Battaglia vinta",
+		"Boxes.Plundered.actionPlundered": "Saccheggiata",
+		"Boxes.Plundered.actionShielded": "Schermata",
+		"Boxes.Plundered.actionSurrendered": "Arresa",
+		"Boxes.Plunderer.AllPlayers": "Tutti i giocatori",
+		"Boxes.Plunderer.Attack": "Attacco",
+		"Boxes.Plunderer.autoBattle": "Auto Battaglia",
+		"Boxes.Plunderer.collectedToday": "Raccolto oggi",
+		"Boxes.Plunderer.Defense": "Difesa",
+		"Boxes.Plunderer.filteredByUser": "Filtrato per utente",
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
+		"Boxes.Plunderer.goto1stPage": "1a pagina",
+		"Boxes.Plunderer.HasNoClan": "<em>non ha gilda</em>",
+		"Boxes.Plunderer.nextPage": "Prossima Pagina",
 		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
+		"Boxes.Plunderer.Page": "Pagina",
 		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
 		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "Protected until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Show All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP Activity", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "When you visit last time this player", //Todo: Translate
+		"Boxes.Plunderer.shieldProtectetUntil": "Protetto fino al:",
+		"Boxes.Plunderer.shieldUntil": "Termina tra",
+		"Boxes.Plunderer.showAllPlayers": "Mostra tutti i giocatori",
+		"Boxes.Plunderer.thisWeek": "Questa settimana",
+		"Boxes.Plunderer.Title": "Attività PvP",
+		"Boxes.Plunderer.total": "Totale",
+		"Boxes.Plunderer.visited": "Visitato",
+		"Boxes.Plunderer.visitTitle": "L'ultima volta che visiti questo giocatore",
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
 		"Boxes.Productions.Happiness": "Felicità",
 		"Boxes.Productions.Headings.all": "Tutto",
@@ -225,20 +234,76 @@
 		"Boxes.Settings.Active": "Attivo",
 		"Boxes.Settings.Inactive": "Inattivo",
 		"Boxes.Settings.Title": "Impostazioni",
+		"Boxes.Stats.BtnAll": "All", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
+		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
+		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
+		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
+		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
+		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Period.all": "All", //Todo: Translate
+		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
+		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
+		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
+		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
+		"Boxes.Stats.Period.today": "Today", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
+		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Acquistabile:",
 		"Boxes.StrategyPoints.FPBar": "Magazzino PF:",
 		"Boxes.Technologies.DescInStock": "Disponibile",
 		"Boxes.Technologies.DescRequired": "Richiesto",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ef1616'>Manca</span>",
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ff4040'>Manca</span>",
 		"Boxes.Technologies.NoTechs": "Hai raggiunto la fine di questa era",
 		"Boxes.Technologies.Resource": "Risorsa",
 		"Boxes.Technologies.Title": "Costo della ricerca per",
+		"Boxes.Units.AlcaHarvest": "Il tuo Alcatraz è pronto per essere raccolto!",
 		"Boxes.Units.Attack": "Attacco",
 		"Boxes.Units.Bind": "Caserma",
 		"Boxes.Units.Defend": "Difesa",
 		"Boxes.Units.NextUnitsIn": "Le prossime unità __count__ arriveranno in <span class = \"alca-countdown \"> </span> alle ore __harvest__",
 		"Boxes.Units.NotFilled": "Non riempito",
-		"Boxes.Units.Proportionally": "Proportionally", //Todo: Translate
+		"Boxes.Units.Proportionally": "Proporzionalmente",
 		"Boxes.Units.Quantity": "Quantità",
 		"Boxes.Units.ReadyToLoot": "Pronto a saccheggiare!",
 		"Boxes.Units.Status": "Status", //Todo: Translate
@@ -314,12 +379,14 @@
 		"Menu.OwnpartCalculator.Desc": "Permette di calcolare i PF da investire sui tuoi GE e di copiare le posizioni pronte.",
 		"Menu.OwnpartCalculator.Title": "Calcolatore Auto-uppaggio GE",
 		"Menu.OwnpartCalculator.Warning": "Disabilitato: apri prima uno dei tuoi grandi edifici!",
-		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
-		"Menu.Plunderer.Title": "PvP activity", //Todo: Translate
+		"Menu.Plunderer.Desc": "PvP e storia della raccolta del vicinato",
+		"Menu.Plunderer.Title": "Attività PvP",
 		"Menu.Productions.Desc": "Visualizza tutte le produzioni correnti.",
 		"Menu.Productions.Title": "Panoramica della produzione",
 		"Menu.Settings.Desc": "Ecco alcune piccole impostazioni",
 		"Menu.Settings.Title": "Impostazioni",
+		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Calcola il costo per la ricerca",
 		"Menu.Technologies.Title": "Tecnologie",
 		"Menu.Technologies.Warning": "Disabilitato: apri prima il menu di ricerca!",

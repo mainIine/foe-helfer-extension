@@ -80,7 +80,7 @@ let Kits = {
 
 
 	ReadSets: ()=> {
-		let inv = Kits.Inventory,
+		let inv = MainParser.Inventory,
 			bs = Kits.BuildingSets,
 			bsk = Kits.BuildingSelectionKits;
 
@@ -175,7 +175,7 @@ let Kits = {
 
 
 	ReadSelectionKits: ()=> {
-		let inv = Kits.Inventory,
+		let inv = MainParser.Inventory,
 			bsk = Kits.BuildingSelectionKits;
 
 		// Sets durchsteppen
@@ -290,7 +290,7 @@ let Kits = {
 	 * @constructor
 	 */
 	ScanInvetory: ()=> {
-		let inv = Kits.Inventory;
+		let inv = MainParser.Inventory;
 
 		for(let i in inv)
 		{
@@ -315,7 +315,7 @@ let Kits = {
 		Kits.Tabs = [];
 		Kits.TabsContent = [];
 
-		Kits.SetTabs('building-kits', i18n('Boxes'));
+		Kits.SetTabs('building-kits', i18n('Boxes.Kits.TabBuildingKits'));
 
 
 		let t = '<table class="foe-table">';
@@ -323,9 +323,9 @@ let Kits = {
 
 		t += '<tr>' +
 			'<th></th>' +
-			'<th>Name</th>' +
+			'<th>' + i18n('Boxes.Kits.Name') + '</th>' +
 			'<th></th>' +
-			'<th>Kit-Name</th>' +
+			'<th>' + i18n('Boxes.Kits.KitName') + '</th>' +
 			'</tr>';
 
 
@@ -358,7 +358,7 @@ let Kits = {
 						url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 
 					rowTd += '<td class="text-center"><img class="kits-image" src="' + url + '" alt="' + item['name'] + '" /></td>';
-					rowTd += '<td>' + item['name'] + '<br>Im Lager: <strong class="text-warning">' + item['inStock'] + '</strong></td>';
+					rowTd += '<td>' + item['name'] + '<br>' + i18n('Boxes.Kits.InStock') + ': <strong class="text-warning">' + item['inStock'] + '</strong></td>';
 
 				} else {
 					rowTd += '<td colspan="2"></td>';
@@ -371,7 +371,7 @@ let Kits = {
 						url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 
 					rowTd += '<td><img class="kits-image" src="' + url + '" alt="' + item['name'] + '" /></td>';
-					rowTd += '<td class="text-center">' + item['name'] + '<br>Im Lager: <strong class="text-warning">' + item['inStock'] + '</strong></td>';
+					rowTd += '<td class="text-center">' + item['name'] + '<br>' + i18n('Boxes.Kits.InStock') + ': <strong class="text-warning">' + item['inStock'] + '</strong></td>';
 
 				} else {
 					rowTd += '<td colspan="2"></td>';
@@ -410,7 +410,7 @@ let Kits = {
 				'</div>' +
 				'<div class="item-name">' +
 				item['name'] + '<br>' +
-				'Im Lager: <strong>' + item['inStock'] + '</strong>' +
+				i18n('Boxes.Kits.InStock') + ': <strong>' + item['inStock'] + '</strong>' +
 				'</div>' +
 				'</div>' +
 				'</div>';
@@ -439,9 +439,10 @@ let Kits = {
 
 
 	/**
-	 * Merkt sich alle Tabs
+	 * Note a  tab
 	 *
 	 * @param id
+	 * @param label
 	 */
 	SetTabs: (id, label)=>{
 		Kits.Tabs.push('<li class="' + id + ' long-tab game-cursor"><a href="#' + id + '" class="game-cursor">' + label + '</a></li>');
@@ -484,7 +485,7 @@ FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 	Kits.BuildingSelectionKits = JSON.parse(xhr.responseText);
 });
 
-// Gebäude-Sets
+// Building-Sets
 FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
 	Kits.BuildingSets = JSON.parse(xhr.responseText);
 });

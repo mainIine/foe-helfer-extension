@@ -157,22 +157,22 @@
 .OwnPartBoxBackground .outerArrow span.arrow {
 	width: 24px;
 	height: 24px;
-	background-position: -102px -49px;
+	background-position: -75px -2px;
 	position: absolute;
 	top: -6px;
 	left: -27px;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow:hover {
-	background-position: -102px -73px;
+	background-position: -75px -26px;
 }
 
 .show .OwnPartBoxBackground .outerArrow span.arrow {
-	background-position: -126px -49px;
+	background-position: -52px -2px;
 }
 
 .show .OwnPartBoxBackground .outerArrow span.arrow:hover {
-	background-position: -126px -73px;
+	background-position: -52px -26px;
 }
 
 
