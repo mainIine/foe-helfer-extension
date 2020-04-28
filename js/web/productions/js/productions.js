@@ -653,7 +653,7 @@ let Productions = {
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
 
 				if (ShowTime) {
-					rowC.push('<td>' + moment.unix(building[i]['at']).format('DD.MM.YYYY HH:mm') + ' Uhr</td>');
+					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
 					rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
 				}
 				else {

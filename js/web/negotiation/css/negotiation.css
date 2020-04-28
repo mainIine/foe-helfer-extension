@@ -19,6 +19,14 @@
 	width: 800px;
 	transform: translateX(-50%);
 }
+
+#negotiationBox #negotiationBoxBody .negotation-setting {
+	margin: 0;
+	position: relative;
+	top: 2px;
+	left: 6px;
+}
+
 #negotiationBox #negotiationBoxBody #good-sort {
 	display: flex;
 	margin-right: 15px;
@@ -67,7 +75,7 @@
 }
 
 #negotiationBox #negotiationBoxBody .text-danger {
-	color: #ef1616;
+	color: #ff4040;
 	font-weight: 700;
 }
 
@@ -85,7 +93,7 @@
 }
 
 #negotiationBox #negotiationBoxBody td.error {
-	color: #ef1616;
+	color: #ff4040;
 }
 
 #negotiationBox #negotiationBoxBody .text-muted {

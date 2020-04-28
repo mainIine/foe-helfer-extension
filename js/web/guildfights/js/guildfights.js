@@ -284,12 +284,13 @@ let GildFights = {
 				c = GildFights.Colors.find(o => (o['id'] === bP[i]['colour']));
 			}
 
-			colors[bP[i]['participantId']] = {
+			colors.push({
+				id: bP[i]['participantId'],
 				base: c['base'],
 				main: c['mainColour'],
 				highlight: c['highlight'],
-				shadow: c['shadow'],
-			};
+				shadow: c['shadow']
+			});
 		}
 
 		GildFights.SortedColors = colors;
