@@ -148,7 +148,7 @@ let Alerts = function(){
         garbage: () => {
             let timestamp = Date.now();
             tmp.data.refresh().then(function(){
-                // TODO modify this to enable the display or alerts which expired while offline
+                // TODO modify this to enable the display of alerts which expired while offline
                 // one option ^ is to modify refresh
                 tmp.db.alerts.where('expires').below( timestamp ).delete();
             }).catch(function(error){
@@ -1319,14 +1319,6 @@ let Alerts = function(){
 
                     if ( responseData && responseData.forEach ){
                         responseData.forEach( function( item, index ){
-
-                            // TODO remove this debug
-                            // if ( item.time ) {
-                            //     console.log( item.type, ' => ', new Date( item.time * 1000 ).toISOString() );
-                            // }
-                            // else {
-                            //     console.log( item.type, ' => invalid time: ', item.item );
-                            // }
 
                             if ( item && item.type ){
                                 switch (item.type) {
