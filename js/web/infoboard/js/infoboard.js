@@ -308,7 +308,7 @@ let Info = {
 
         } else if (d['attachment'] !== undefined) {
 
-            // LG
+            // Greatbuilding
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
@@ -317,9 +317,9 @@ let Info = {
                     }
                 )
             }
-            // Handel
+            // Trade
             else if (d['attachment']['type'] === 'trade_offer') {
-                msg = d['attachment']['offeredAmount'] + ' ' + GoodsData[d['attachment']['offeredResource']]['name'] + ' &#187; ' + d['attachment']['neededAmount'] + ' ' + GoodsData[d['attachment']['neededResource']]['name'];
+                msg = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
         }
 
@@ -336,20 +336,23 @@ let Info = {
      *
      * @param d
      */
-    NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
+	NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
 
         for (let i in d) {
             if (!d.hasOwnProperty(i)) {
                 break;
             }
 
-            // FP Typ aus dem Lager ermitteln
+            // get fp type from stock
             let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
-            if(undefined === InventoryItem ||null === InventoryItem) return;
+
+            if(undefined === InventoryItem || null === InventoryItem)
+            	return;
+
             let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
                 amount = factor * parseInt(d[i]['amount']);
 
-            // ... und sichern
+            // ... and save
             Info.ReturnFPPoints += amount;
         }
     },
