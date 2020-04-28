@@ -332,12 +332,7 @@ let Alerts = function(){
                         requireInteraction: alert.persistent,
                         tag: alert.tag
                     };
-                    try {
-                        new Notification( alert.title, options );
-                    }
-                    catch (e){
-                        tmp.log(e);
-                    }
+                    NotificationManager.notify( alert.title, options )
 
                     tmp.repeat.update(alert, timestamp);
                     delete tmp.timer.nextAlerts[id];
@@ -808,12 +803,7 @@ let Alerts = function(){
                         requireInteraction: data.persistent,
                         tag: 'FoE.Alerts.preview'
                     };
-                    try {
-                        new Notification( data.title, options );
-                    }
-                    catch (e){
-                        tmp.log(e);
-                    }
+                    NotificationManager.notify( data.title, options );
                 },
                 previewNew: () => {
                     if ( ! tmp.web.forms.actions.validate() ) {
@@ -1381,6 +1371,7 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 
 let NotificationManager = {
 
+    debug: true,
     isEnabled: (Notification && Notification.permission === 'granted' ),
     canBeEnabled: null,
 
@@ -1446,29 +1437,31 @@ let NotificationManager = {
         return promise;
     },
 
-    notify: (o,ms)=> {
+    notify: (title, options)=> {
         // if FoE is focused, don't show notifications, maybe instead post to the Infobox?
         // https://web-push-book.gauntface.com/demos/notification-examples/
-        if ( o ) {
-            new Notification( o.title, {
-                icon: o.icon,
-                body: o.body,
-                tag: o.tag,
-                vibrate: o.vibrate,
-                actions: o.actions
+        try {
+            new Notification( title, {
+                actions: options.actions,
+                body: options.body,
+                dir: 'ltr',
+                icon: options.icon,
+                renotify: ( options.tag ) ? true : false,
+                requireInteraction: options.persistent,
+                vibrate: options.vibrate,
+                tag: options.tag,
             });
-            NotificationManager._log('NotificationManager.notify:');
-            NotificationManager._log(o);
         }
-        else {
-            // log
-            NotificationManager._log('NotificationManager.notify: missing data');
+        catch( error ){
+            NotificationManager._log('NotificationManager.notify:');
+            NotificationManager._log( error );
         }
     },
 
     _log: (o)=> {
-        // if at a certain debug level ?!
-        console.log(o);
+        if ( NotificationManager.debug ) {
+            console.log( o );
+        }
     }
 };
 
