@@ -6,8 +6,9 @@
 		"API.LGGildMember": "__player__ játékos nevezetes épületei elküldésre kerültek",
 		"API.LGInvest": "F.É. befektetéseit elküldésre került",
 		"API.UpdateSuccess": "Frissítés megtörtént",
-		"Boxes": "???", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
+		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktív ismétlődő feladatok:",
 		"Boxes.Calculator.ArkBonus": "Bárka bónusz:",
 		"Boxes.Calculator.AvailableFP": "Elérhető FP",
@@ -42,7 +43,7 @@
 		"Boxes.Campagne.AlreadyDone": " Már meghódított!",
 		"Boxes.Campagne.DescInStock": "Elérhető",
 		"Boxes.Campagne.DescRequired": "Szükséges",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ef1616'>Hiányzó</span>",
+		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ff4040'>Hiányzó</span>",
 		"Boxes.Campagne.Resource": "Nyersanyag",
 		"Boxes.Campagne.Reward": "Teljes jutalom ",
 		"Boxes.Campagne.Title": "Hódítási költségek a ",
@@ -59,8 +60,8 @@
 		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
 		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
 		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Price", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Price of the day: ", //Todo: Translate
+		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
+		"Boxes.EventChests.MainPrizeTitle": "Prize of the day: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event chest selection helper", //Todo: Translate
 		"Boxes.EventList.And": " és ",
@@ -104,6 +105,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ new player-events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investment", //Todo: Translate
 		"Boxes.Investment.TotalFP": "Stock + circulation + profit: ", //Todo: Translate
+		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
+		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
+		"Boxes.Kits.Name": "Name", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": "Building Kits", //Todo: Translate
 		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "Building- / Selection-Kits", //Todo: Translate
@@ -126,22 +130,26 @@
 		"Boxes.Negotiation.GoodsLow": "FIGYELEM: alacsony az árú készlet",
 		"Boxes.Negotiation.Person": "Személy",
 		"Boxes.Negotiation.Round": "Kör",
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Készlet:",
 		"Boxes.Negotiation.Success": "Siker",
 		"Boxes.Negotiation.TableLoadError": "Hiba a tárgyalás tábla betöltése közben",
 		"Boxes.Negotiation.Title": "Tárgyalás segítő",
 		"Boxes.Negotiation.TryEnd": "Nincs több próbálkozás",
 		"Boxes.Negotiation.WrongGoods": "Rossz árú választva, Kérlek fejezd be manuálisan",
-		"Boxes.Neighbors.NothingToPlunder": "Nothing to plunder", //Todo: Translate
+		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Folyamatban levő termelések",
 		"Boxes.Neighbors.ReadyProductions": "Befejezett termelések",
-		"Boxes.Neighbors.Title": "Termelései a ",
 		"Boxes.Outpost.DescInStock": "Elérhető",
 		"Boxes.Outpost.DescRequired": "Szükséges",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ef1616'>Hiányzó</span>",
+		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ff4040'>Hiányzó</span>",
 		"Boxes.Outpost.ExpansionsSum": "Bővítmények",
 		"Boxes.Outpost.infoLine": "__runNumber__. kör, x4 Bónusz Esély: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Következő bővítmény",
+		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
 		"Boxes.Outpost.Title": "Kulturális település árui",
 		"Boxes.Outpost.TitleBuildings": "Épület",
@@ -185,6 +193,7 @@
 		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
 		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
 		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
+		"Boxes.Plunderer.FP": "FP", //Todo: Translate
 		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
 		"Boxes.Plunderer.HasNoClan": "<em>has no guild</em>", //Todo: Translate
 		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
@@ -225,14 +234,70 @@
 		"Boxes.Settings.Active": "Aktív",
 		"Boxes.Settings.Inactive": "Nem aktív",
 		"Boxes.Settings.Title": "Beállítások",
+		"Boxes.Stats.BtnAll": "All", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
+		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
+		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
+		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
+		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
+		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
+		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Period.all": "All", //Todo: Translate
+		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
+		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
+		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
+		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
+		"Boxes.Stats.Period.today": "Today", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
+		"Boxes.Stats.Title": "Statistic", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Vásárolható: ",
 		"Boxes.StrategyPoints.FPBar": "FP-Készlet: ",
 		"Boxes.Technologies.DescInStock": "Elérhető",
 		"Boxes.Technologies.DescRequired": "Szükséges",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ef1616'>Hiányzó</span>",
+		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ff4040'>Hiányzó</span>",
 		"Boxes.Technologies.NoTechs": "A kornak a végére értél",
 		"Boxes.Technologies.Resource": "Nyersanyag",
 		"Boxes.Technologies.Title": "Kutatási költsége a",
+		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
 		"Boxes.Units.Attack": "Támadás",
 		"Boxes.Units.Bind": "Bound", //Todo: Translate
 		"Boxes.Units.Defend": "Védelem",
@@ -320,6 +385,8 @@
 		"Menu.Productions.Title": "Termelés áttekintése",
 		"Menu.Settings.Desc": "Itt van néhány apró beállítás",
 		"Menu.Settings.Title": "Beállítások",
+		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Számítsa ki a kutatási költségeket",
 		"Menu.Technologies.Title": "Kutatás",
 		"Menu.Technologies.Warning": "Tiltott: Először nyissa meg a kutatási menüt!",

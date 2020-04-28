@@ -52,7 +52,7 @@
 }
 
 #technologies #technologiesBody .text-danger {
-	color: #ef1616;
+	color: #ff4040;
 	font-weight: 700;
 }
 
@@ -67,6 +67,7 @@
 
 #technologies #technologiesBody td {
 	position: relative;
+	font-size: 85%;
 }
 
 #technologies #technologiesBody .diplomacy-ask {

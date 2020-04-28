@@ -1,7 +1,7 @@
 #outpostConsumables {
 	top: 30%;
 	right: 15%;
-	width: 620px;
+	width: 720px;
 }
 
 #outpostConsumables #outpostConsumablesBody tr.total-row td {
@@ -15,7 +15,7 @@
 }
 
 #outpostConsumables #outpostConsumablesBody .text-danger {
-	color: #ef1616;
+	color: #ff4040;
 	font-weight: 700;
 }
 

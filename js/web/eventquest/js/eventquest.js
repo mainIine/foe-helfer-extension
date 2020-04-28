@@ -87,7 +87,7 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
     // Ungültige Daten => Event wird nicht unterstützt => Fenster nicht anzeigen
     if (ChestData.length === 0) {
         return;
-    }   
+    }
 
     EventQuest.Chests = ChestData;
     EventQuest.ShowChests();
@@ -143,7 +143,7 @@ let EventQuest = {
                 HTML.Box({
                     'id': 'event',
                     'title': i18n('Boxes.EventList.Title') + EventQuest.Event['eventname'],
-                    'auto_close': false,
+                    'auto_close': true,
                     'dragdrop': true,
                     'minimize': true
                 });
@@ -166,7 +166,7 @@ let EventQuest = {
                     HTML.Box({
                         'id': 'event',
                         'title': i18n('Boxes.EventList.Title') + EventQuest.Event['eventname'],
-                        'auto_close': false,
+                        'auto_close': true,
                         'dragdrop': true,
                         'minimize': true
                     });
@@ -315,7 +315,7 @@ let EventQuest = {
             HTML.Box({
                 'id': 'eventchests',
                 'title': i18n('Boxes.EventChests.Title'),
-                'auto_close': false,
+                'auto_close': true,
                 'dragdrop': true,
                 'minimize': true
             });
@@ -358,7 +358,7 @@ let EventQuest = {
             '</tr>' +
 
             '</thead>');
-        
+
         let BestMainPrizeCost = 999999,
             BestDailyPrizeCost = 999999;
 
@@ -368,7 +368,7 @@ let EventQuest = {
             BestMainPrizeCost = Math.min(BestMainPrizeCost, EventQuest.Chests[i]['costpermainprizestep']);
             BestDailyPrizeCost = Math.min(BestDailyPrizeCost, EventQuest.Chests[i]['costperdailyprize']);
         }
-        
+
         for (let i in EventQuest.Chests) {
             if (!EventQuest.Chests.hasOwnProperty(i)) continue;
 

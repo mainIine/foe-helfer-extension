@@ -367,12 +367,12 @@ let CityMap = {
 
 		let d = {
 			entities: MainParser.CityMapData,
-			areas: CityMap.UnlockedAreas
+			areas: CityMap.UnlockedAreas,
+			metaid: MainParser.CityMetaId
 		};
 
 		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#msg-line').html('<span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '<a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+			$('#msg-line').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 		});
-
 	},
 };

@@ -32,7 +32,7 @@ let Investment = {
             HTML.Box({
                 'id': 'Investment',
                 'title': i18n('Boxes.Investment.Title'),
-                'auto_close': false,
+                'auto_close': true,
                 'dragdrop': true,
             });
 
@@ -121,7 +121,7 @@ let Investment = {
 
 		$('.total-storage-invest').easy_number_animate({
 			start_value: 0,
-			end_value: (StrategyPoints.InventoryFP + Investment.Ertrag),
+			end_value: (StrategyPoints.AvailableFP + Investment.Ertrag),
 			duration: 750
 		});
     },
