@@ -178,8 +178,11 @@
 				'settings',
 				'investment',
 				'strategy-points',
+				'battle-assist',
 				'citymap',
-				'hidden-rewards'
+				'hidden-rewards',
+				'greatbuildings',
+                'alerts',
 			];
 
 			// Scripte laden (nacheinander)

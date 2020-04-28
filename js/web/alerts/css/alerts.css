@@ -1,0 +1,259 @@
+/**
+ * Project  foe-chrome
+ * Date     2020-03-27
+ * License  MIT
+ *
+ * @author  Tomas Vorobjov <contact@tomasvorobjov.com>
+ *
+ */
+
+#Alerts {
+    top: 15%;
+    left: 50%;
+    width: 650px;
+}
+
+#Alerts #AlertsBody { min-height: 160px; }
+
+#Alerts #AlertsBody .scrollable{
+    max-height: 550px;
+    min-height: 160px;
+    overflow: hidden;
+    overflow-y: auto;
+    margin: 2px 0 4px 0;
+}
+
+#Alerts #AlertsBody .content {
+    padding: 8px;
+}
+
+#Alerts #AlertsBody .no-permission,
+#Alerts #AlertsBody .overlay-disable {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 50px 0;
+}
+#Alerts #AlertsBody .no-permission {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+#Alerts #AlertsBody .overlay-disable {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+#Alerts #AlertsBody #alerts-preferences {
+    position: relative;
+}
+
+#Alerts #AlertsBody .no-permission::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 240px;
+}
+
+/* Forms */
+div.alert-popup {
+    left: 50%;
+    max-height: 550px;
+    min-height: 160px;
+    width: 650px;
+}
+
+div.alert-popup .box-inner { padding: 8px; }
+div.alert-popup .box-inner-content {
+    border: .5px solid #7f5a34;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
+}
+div.alert-popup .box-inner-content h3 {
+    background-color: rgba(0,0,0,0.15);
+    box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
+    border-bottom: 1px solid rgb(65,41,17);
+    color: #ffcc68;
+    display: block;
+    font-weight: 700;
+    font-size: 90%;
+    margin: 0;
+    padding: 4px 10px;
+}
+div.alert-popup .box-inner-form {
+    padding: 10px;
+}
+
+.radio-toolbar input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+.box-inner input { box-sizing: border-box; }
+.box-inner input:focus,
+.box-inner textarea:focus {
+    outline: 3px solid #F3D6A0;
+}
+
+.box-inner input[type="text"],
+.box-inner input[type="number"],
+.box-inner input[type="datetime-local"],
+.box-inner textarea,
+.box-inner select {
+    background-color: #F9EBC6;
+    color: #93795D;
+    background-clip: padding-box;
+    border: 1px solid #4C2F1E;
+    line-height: 18px;
+    margin: 0 0 4px 0;
+    padding: 4px;
+}
+
+div.alert-popup #alert-expires,
+.box-inner select {
+    padding: 7px 4px;
+}
+
+.box-inner input[type="text"],
+.box-inner input[type="number"] {
+    font-size: 0.8rem;
+}
+.box-inner textarea {
+    font-size: 0.9rem;
+}
+
+
+.box-inner button,
+.box-inner input[type="text"],
+.box-inner input[type="datetime-local"],
+.box-inner select,
+.box-inner textarea {
+    width: 100%;
+    border: 1px solid #000;
+}
+
+.box-inner .error-text {
+    color: #f87c58;
+}
+
+.box-inner input[type="text"].error-box,
+.box-inner input[type="datetime-local"].error-box,
+.box-inner select.error-box
+.box-inner textarea.error-box {
+    border: 1px solid #d4401f;
+}
+
+.box-inner form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 12px;
+}
+
+.box-inner form label.block {
+    display: block;
+}
+
+.box-inner form p {
+    margin: 0;
+}
+.box-inner form p.mt--10 {
+    margin-top: -10px;
+}
+
+.box-inner .full-width {
+    grid-column: 1 / 3;
+}
+.box-inner .extra-vs-8 {
+    margin: 0 0 8px 0;
+}
+
+.box-inner button,
+.box-inner input,
+.box-inner textarea {
+    padding: 1em;
+}
+.box-inner textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.radio-toolbar label {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 0.2rem 1rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    background: rgb(183,112,55);
+    background: -moz-linear-gradient(top, rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
+    background: -webkit-linear-gradient(top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+    background: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+    border: #000 1px solid;
+    border-radius: 4px;
+    color: #F3D6A0;
+    cursor: url(https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur), auto;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    outline: none !important;
+}
+
+.radio-toolbar input[type="radio"]:checked + label,
+.radio-toolbar input[type="radio"]:hover + label {
+    background: rgb(228,193,75);
+    background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
+    background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+    background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+    cursor: url(https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur), auto;
+}
+
+.column-160 { max-width: 160px; }
+.column-200 { max-width: 200px; }
+.column-160, .column-200 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+/* Preferences */
+#Alerts #alerts-preferences .item {
+    border: .5px solid #7f5a34;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
+    font-size: 90%;
+}
+
+#Alerts #alerts-preferences .item .title {
+    box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
+    border-bottom: 1px solid rgb(65,41,17);
+    padding: 4px 10px;
+    font-weight: 700;
+    color: #ffcc68;
+    background-color: rgba(0,0,0,0.15);
+}
+
+#Alerts #alerts-preferences .item .item-row {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+#Alerts #alerts-preferences .item .item-row .description,
+#Alerts #alerts-preferences .item .item-row .value {
+    padding: 10px;
+}
+#Alerts #alerts-preferences .item .item-row .description {
+    width: 66%;
+}
+#Alerts #alerts-preferences .item .item-row .value {
+    width: 34%;
+}

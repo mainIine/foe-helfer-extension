@@ -45,7 +45,7 @@ let KampagneMap = {
 				'title': i18n('Boxes.Campagne.Title'),
 				'auto_close': true,
 				'dragdrop': true,
-				'minimize': false
+				'minimize': true
 			});
 
 			// CSS in den DOM prügeln

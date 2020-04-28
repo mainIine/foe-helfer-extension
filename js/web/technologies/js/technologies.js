@@ -73,6 +73,7 @@ let Technologies = {
     SelectedEraID: undefined,
        
     Eras: {
+        AllAge: 0,
         NoAge: 0,
         StoneAge: 1,
         BronzeAge: 2,
@@ -206,7 +207,7 @@ let Technologies = {
             if (!Tech['isResearched'] && !Tech['isTeaser']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
-                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
+                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID && Tech['childTechnologies'].length > 0) { //Alle Technologien voriger ZA und optionale Technologien ausblenden
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 

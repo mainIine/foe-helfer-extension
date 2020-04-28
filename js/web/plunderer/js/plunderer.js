@@ -21,14 +21,16 @@ FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, post
 		if (!Array.isArray(r)) { return; }
 		const shielded = r.filter(it => it.expireTime > 0); // -1 for users that cannot pvp, ignore them
 
+		await IndexDB.getDB();
+
 		for (const shieldInfo of shielded) {
 			const playerId = shieldInfo.playerId;
-			const lastShieldAction = await IndexDB.db.actions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
+			const lastShieldAction = await IndexDB.db.pvpActions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
 
 			// If in db already exists actual shield info than skip
 			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
 
-			await IndexDB.db.actions.add({
+			await IndexDB.db.pvpActions.add({
 				type: Plunderer.ACTION_TYPE_SHIELDED,
 				playerId: playerId,
 				date: new Date,
@@ -73,11 +75,13 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	// Avoid adding defend battles (when view recorded defend battles)
 	if (defenderPlayerId === ExtPlayerID) { return ; }
 
+	await IndexDB.getDB();
+
 	// Ensure user is exists in db already
 	await IndexDB.addUserFromPlayerDictIfNotExists(defenderPlayerId);
 
 	// Add action
-	await IndexDB.db.actions.add({
+	await IndexDB.db.pvpActions.add({
 		playerId: defenderPlayerId,
 		date: new Date(),
 		type: actionType,
@@ -95,7 +99,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	function adaptUnit(isAttacking)
 	{
 		return function(unit) {
-			const bonuses = Unit.GetBoostSums(unit.bonuses);
+			const bonuses = Unit.GetBoostSums(Unit.GetBoostDict(unit.bonuses));
 			const attBoost = isAttacking ? bonuses.AttackAttackBoost : bonuses.DefenseAttackBoost;
 			const defBoost = isAttacking ? bonuses.AttackDefenseBoost : bonuses.DefenseDefenseBoost;
 
@@ -117,6 +121,8 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 	if (!Array.isArray(r)) {
 		return;
 	}
+
+	await IndexDB.getDB();
 
 	r.forEach(async (it) => {
 		const entityId = it.id;
@@ -232,6 +238,8 @@ let Plunderer = {
 	collectPlayer: async (player) => {
 		let otherPlayer = player.other_player;
 
+		await IndexDB.getDB();
+
 		await IndexDB.db.players.put({
 			id: otherPlayer.player_id,
 			name: otherPlayer.name,
@@ -248,9 +256,11 @@ let Plunderer = {
 		const {entityId, playerId} = payload;
 		if (!entityId || !playerId) { return; }
 
-		await IndexDB.db.transaction('rw', IndexDB.db.actions, async () => {
+    await IndexDB.getDB();
+
+		await IndexDB.db.transaction('rw', IndexDB.db.pvpActions, async () => {
 			// Fetch last plunder action that happen just few seconds ago (1 minute ago)
-			const lastPlunderAction = await IndexDB.db.actions.where({playerId})
+			const lastPlunderAction = await IndexDB.db.pvpActions.where({playerId})
 						.filter(it => (it.type == Plunderer.ACTION_TYPE_PLUNDERED &&
 													 it.entityId == entityId &&
 													 it.date > (+new Date() - 60 * 10 * 1000)))
@@ -274,9 +284,9 @@ let Plunderer = {
 			}
 
 			if (lastPlunderAction) {
-				await IndexDB.db.actions.put(payload);
+				await IndexDB.db.pvpActions.put(payload);
 			} else {
-				await IndexDB.db.actions.add(payload);
+				await IndexDB.db.pvpActions.add(payload);
 			}
 		});
 
@@ -365,14 +375,14 @@ let Plunderer = {
 
 		const offset = (page - 1) * perPage,
 			actionsSelect = filterByPlayerId ?
-				(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-				(IndexDB.db.actions.orderBy('date'));
+				(IndexDB.db.pvpActions.where('playerId').equals(filterByPlayerId)) :
+				(IndexDB.db.pvpActions.orderBy('date'));
 
 		let actions = await actionsSelect.offset(offset).limit(perPage).desc().toArray();
 
 		const countSelect = filterByPlayerId ?
-			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(IndexDB.db.actions);
+			(IndexDB.db.pvpActions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.pvpActions);
 
 		let pages = Math.ceil((await countSelect.count()) / perPage);
 
@@ -448,8 +458,8 @@ let Plunderer = {
 		let todaySP = 0;
 		let thisWeekSP = 0;
 		let totalSPSelect = filterByPlayerId ?
-			(IndexDB.db.actions.where('playerId').equals(filterByPlayerId)) :
-			(IndexDB.db.actions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
+			(IndexDB.db.pvpActions.where('playerId').equals(filterByPlayerId)) :
+			(IndexDB.db.pvpActions.where('type').equals(Plunderer.ACTION_TYPE_PLUNDERED));
 
 		let totalSP = 0;
 
