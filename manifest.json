@@ -34,6 +34,7 @@
 		"vendor/*.js",
 		"vendor/sounds/*.mp3",
 		"js/web/*.*",
+		"images/*.*",
 		"css/images/*.*",
 		"content/*.html"
 	],
