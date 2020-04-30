@@ -7,8 +7,8 @@
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
 		"Boxes.Api.Title": "Serveur API personnel",
-		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
+		"Boxes.BattleAssist.Text": "Votre armée est composé uniquement de Voyous. Soignez des unités (avec diamants) ou battez en retraite !",
+		"Boxes.BattleAssist.Title": "Stop !",
 		"Boxes.Calculator.ActiveRecurringQuest": "Quête récurrente active : ",
 		"Boxes.Calculator.ArkBonus": "Bonus d'Arche ",
 		"Boxes.Calculator.AvailableFP": "PF disponibles",
@@ -105,9 +105,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ nouveaux évènements joueur ont été trouvés",
 		"Boxes.Investment.Title": "Investissements",
 		"Boxes.Investment.TotalFP": "Total PF (stock + investis + gains) : ",
-		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
-		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
-		"Boxes.Kits.Name": "Name", //Todo: Translate
+		"Boxes.Kits.InStock": "En stock ",
+		"Boxes.Kits.KitName": "Nom du kit",
+		"Boxes.Kits.Name": "Nom",
 		"Boxes.Kits.TabBuildingKits": "Améliorations",
 		"Boxes.Kits.TabSelectionKits": "Packs",
 		"Boxes.Kits.Title": "Améliorations et Packs",
