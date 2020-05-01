@@ -25,3 +25,7 @@
     overflow-y: auto;
     max-height: 550px;
 }
+
+#greatbuildings #greatbuildingsBody strong.success {
+    color: #29b206;
+}

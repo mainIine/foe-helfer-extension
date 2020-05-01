@@ -139,9 +139,15 @@ let GreatBuildings =
                 '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
             '</tr>' +
         '</thead>');
-        
+
+        let ROIResults = [],
+            ROIResults2 = [],
+            ShowGoodCosts = [];
+
+        let BestGB = undefined,
+            BestROI = 999999;
+
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
-            let GoodCosts = GreatBuildings.FPGreatBuildings[i]['GoodCosts'];
             let index = BuildingNamesi18n[GreatBuildings.FPGreatBuildings[i].ID].index;
             let CityEntity = MainParser.CityEntities[index];
             let OwnGB = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));
@@ -179,7 +185,12 @@ let GreatBuildings =
 
             let Size = CityEntity['length'] * CityEntity['width'];
             let ROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts);
-            
+
+            if (ROIResult['BestLevel'] && ROIResult.ROIValues[ROIResult['BestLevel']] < BestROI) {
+                BestGB = i;
+                BestROI = ROIResult.ROIValues[ROIResult['BestLevel']];
+            }
+
             let ROIResult2;
             if (ROIResult['BestLevel'] < 10) {
                 ROIResult2 = ROIResult;
@@ -191,26 +202,32 @@ let GreatBuildings =
                 ROIResult2 = undefined;
             }
 
+            ROIResults[i] = ROIResult;
+            ROIResults2[i] = ROIResult2;
+            ShowGoodCosts[i] = CurrentLevel === -1;
+        }
+
+        for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             h.push('<tr>');
             h.push('<td>' + BuildingNamesi18n[GreatBuildings.FPGreatBuildings[i].ID]['name'] + '</td>');
-            if (CurrentLevel === -1) {
-                h.push('<td><input type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GoodCosts + '"></td>');
+            if (ShowGoodCosts[i]) {
+                h.push('<td><input type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[i].GoodCosts + '"></td>');
             }
             else {
                 h.push('<td>-</td>');
             }
-            if (ROIResult['BestLevel'] !== undefined) {
-               h.push('<td>' + (ROIResult['BestLevel'] + 1) + '</td>');
-               h.push('<td>' + Math.round(ROIResult['ROIValues'][ROIResult['BestLevel']]) + '</td>');
+            if (ROIResults[i]['BestLevel'] !== undefined) {
+                h.push('<td><strong ' + (BestGB === i ? 'class="success"' : '') + '>' + (ROIResults[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + (BestGB === i ? 'class="success"' : '') + '>' + Math.round(ROIResults[i]['ROIValues'][ROIResults[i]['BestLevel']]) + '</strong></td>');
             }
             else {
                 h.push('<td>-</td>');
                 h.push('<td>-</td>');
             }
 
-            if (ROIResult2 !== undefined && ROIResult2['BestLevel'] !== undefined) {
-                h.push('<td>' + (ROIResult2['BestLevel'] + 1) + '</td>');
-                h.push('<td>' + Math.round(ROIResult['ROIValues'][ROIResult2['BestLevel']]) + '</td>');
+            if (ROIResults2[i] !== undefined && ROIResults2[i]['BestLevel'] !== undefined) {
+                h.push('<td><strong>' + (ROIResults2[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong>' + Math.round(ROIResults[i]['ROIValues'][ROIResults2[i]['BestLevel']]) + '</strong></td>');
             }
             else {
                 h.push('<td>-</td>');
