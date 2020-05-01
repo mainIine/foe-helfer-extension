@@ -39,7 +39,7 @@
 		"Boxes.Alerts.Form.Tag": "Tag",
 		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)",
 		"Boxes.Alerts.Form.Title": "Title",
-		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
+		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature",
 		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.",
 		"Boxes.Alerts.Permissions.Enable": "Enable",
 		"Boxes.Alerts.Permissions.Refresh": "Refresh",
