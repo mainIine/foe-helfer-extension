@@ -323,6 +323,14 @@ let Info = {
             }
         }
 
+        if (undefined === d.sender) {
+            return {
+                class: 'message',
+                type: i18n('Boxes.Infobox.FilterMessage'),
+                msg: Info.GetConversationHeader(d.conversationId, null) + msg
+            };
+        }
+
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
@@ -338,23 +346,19 @@ let Info = {
      */
 	NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
 
-        for (let i in d) {
-            if (!d.hasOwnProperty(i)) {
-                break;
-            }
-
-            // get fp type from stock
-            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
-
-            if(undefined === InventoryItem || null === InventoryItem)
-            	return;
-
-            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
-                amount = factor * parseInt(d[i]['amount']);
+        for (let entry of d) {
+            // FP Typ aus dem Lager ermitteln
+            let InventoryItem = MainParser.Inventory.find(x => x.id === entry.itemId && x.itemAssetName.indexOf("forgepoint") !== -1);
+            if (null == InventoryItem) continue;
+            let factor = parseInt(InventoryItem.item.resource_package.gain),
+                amount = factor * parseInt(entry.amount);
 
             // ... and save
             Info.ReturnFPPoints += amount;
         }
+
+        // Hierfür soll keine Nachricht in der Infobox angezeigt werden
+        return false;
     },
 
 
@@ -529,14 +533,16 @@ let Info = {
      * @returns {string}
      */
     GetConversationHeader: (id, name) => {
-        if (MainParser.Conversations.length > 0) {
-            let header = MainParser.Conversations.find(obj => (obj['id'] === id));
-
-            if (header !== undefined) {
-                return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
-            }
-        } else {
+        let header = MainParser.Conversations.find(obj => obj.id === id);
+        if (header != null && name != null) {
+            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
+        } else if (name != null) {
+            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
             return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
+        } else if (header != null) {
+            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
         }
 
         return '';
