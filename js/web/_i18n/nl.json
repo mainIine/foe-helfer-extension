@@ -3,43 +3,43 @@
 		"_Language": "Nederlands",
 		"API.GEXChampionship": "De Gilde Expeditie ranglijst is bijgewerkt",
 		"API.GEXPlayer": "De Gilde Expeditie bijdragelijst is bijgewerkt",
-		"API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
+		"API.LGGildMember": "__player__'s grootse gebouwen zijn toegevoegd",
 		"API.LGInvest": "Je GG bijdrages zijn verzonden",
 		"API.UpdateSuccess": "Extensie is bijgewerkt",
-		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Exchange": "Exchange", //Todo: Translate
-		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
-		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
-		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
-		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
-		"Boxes.Alerts.Form.Discard": "Discard", //Todo: Translate
-		"Boxes.Alerts.Form.Edit": "Edit", //Todo: Translate
-		"Boxes.Alerts.Form.EditAlert": "Edit Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
-		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
-		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
-		"Boxes.Alerts.Form.Neighborhood": "Neighborhood", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
-		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
-		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
-		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
-		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
-		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
-		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
-		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Auction": "Veiling",
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Veiling cooldown",
+		"Boxes.Alerts.Form.Antiques.Dealer": "Antiquair",
+		"Boxes.Alerts.Form.Antiques.Exchange": "Uitwisseling", //Todo: Translate
+		"Boxes.Alerts.Form.Battleground": "Strijdperk provincies",
+		"Boxes.Alerts.Form.Body": "Lichaam", //Todo: Translate
+		"Boxes.Alerts.Form.Create": "Maak", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAlert": "Zet alarm", //Todo: Translate
+		"Boxes.Alerts.Form.CreateNewAlert": "Zet nieuw alarm", //Todo: Translate
+		"Boxes.Alerts.Form.Datetime": "Datum &amp; Tijd", //Todo: Translate
+		"Boxes.Alerts.Form.Delete": "Verwijderen", //Todo: Translate
+		"Boxes.Alerts.Form.Discard": "Afbreken", //Todo: Translate
+		"Boxes.Alerts.Form.Edit": "Bewerken", //Todo: Translate
+		"Boxes.Alerts.Form.EditAlert": "Bewerk alarm", //Todo: Translate
+		"Boxes.Alerts.Form.Expiration": "Afloop", //Todo: Translate
+		"Boxes.Alerts.Form.Expired": "Afgelopen", //Todo: Translate
+		"Boxes.Alerts.Form.Expires": "Loopt af", //Todo: Translate
+		"Boxes.Alerts.Form.Neighborhood": "Buurt", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence": "Volharding", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Description": "Moet de melding open blijven totdat de gebruiker de melding afwijst of erop klikt", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Off": "Uit", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.On": "Aan", //Todo: Translate
+		"Boxes.Alerts.Form.Persistent": "Blijvend", //Todo: Translate
+		"Boxes.Alerts.Form.Preset.Now": "Nu", //Todo: Translate
+		"Boxes.Alerts.Form.Presets": "Voorinstellingen", //Todo: Translate
+		"Boxes.Alerts.Form.Preview": "Voorvertoning", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat": "Herhaal", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Every": "of alle", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Never": "nooit", //Todo: Translate
+		"Boxes.Alerts.Form.Save": "Opslaan", //Todo: Translate
+		"Boxes.Alerts.Form.Tag": "Labelen", //Todo: Translate
+		"Boxes.Alerts.Form.Tag.Description": "Labels kunnen worden gebruikt om meldingen te groeperen (een nieuwe melding met een bepaald label vervangt een oudere melding met hetzelfde label)", //Todo: Translate
 		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
-		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
+		"Boxes.Alerts.Permissions.Default": "Sta meldingen in uw browser toe om deze functie te gebruiken", //Todo: Translate
 		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
 		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
 		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
