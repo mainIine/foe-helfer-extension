@@ -136,6 +136,15 @@
 		"Boxes.Gildfights.Negotiations": "Verhandlungen",
 		"Boxes.Gildfights.Player": "Spieler",
 		"Boxes.Gildfights.Title": "Spieler Übersicht",
+		"Boxes.GreatBuildings.ArcBonus": "Arc bonus", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
+		"Boxes.GreatBuildings.GreatBulding": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.ProdPerInvest": "Prod/Invest", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion1": "Suggestion 1", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Erscheint",
 		"Boxes.HiddenRewards.Disappears": "Verschwindet",
 		"Boxes.HiddenRewards.NoEvents": "Keine Ereignisse vorhanden",
@@ -402,8 +411,6 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "de-DE",
-		"Menu.Alerts.Info": "???", //Todo: Translate
-		"Menu.Alerts.Title": "???", //Todo: Translate
 		"Menu.Api.Desc": "Einstellungen um Daten an deinen eigenen Server zu schicken",
 		"Menu.Api.Title": "Extension API",
 		"Menu.Ask.Desc": "Du weißt nicht wie etwas funktioniert?<br>Schau nach!",
@@ -424,6 +431,8 @@
 		"Menu.Event.Title": "Event Questliste",
 		"Menu.Forum.Desc": "Du hast eine Frage? Dich nervt etwas? Oder einfach nur zum Reden...",
 		"Menu.Forum.Title": "Forum",
+		"Menu.greatbuildings.Desc": "Which FP producing Great building should you do next?", //Todo: Translate
+		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Übersicht der Ereignisse auf der Map",
 		"Menu.HiddenRewards.Title": "Ereignisse",
 		"Menu.Info.Desc": "Zeigt dir alle Dinge an die im \"Hintergrund passieren\"<br><em>Füllt sich nach und nach mit Infos...</em>",

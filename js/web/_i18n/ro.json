@@ -136,6 +136,15 @@
 		"Boxes.Gildfights.Negotiations": "Negocieri",
 		"Boxes.Gildfights.Player": "Jucător",
 		"Boxes.Gildfights.Title": "Statistica jucătorului",
+		"Boxes.GreatBuildings.ArcBonus": "Arc bonus", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
+		"Boxes.GreatBuildings.GreatBulding": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.ProdPerInvest": "Prod/Invest", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion1": "Suggestion 1", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Apare",
 		"Boxes.HiddenRewards.Disappears": "Dispare",
 		"Boxes.HiddenRewards.NoEvents": "Niciun incident prezent",
@@ -402,8 +411,6 @@
 		"HiddenRewards.Table.position": "Poziția",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "ro-RO",
-		"Menu.Alerts.Info": "???", //Todo: Translate
-		"Menu.Alerts.Title": "???", //Todo: Translate
 		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
 		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!",
@@ -424,6 +431,8 @@
 		"Menu.Event.Title": "Lista misiunilor de eveniment",
 		"Menu.Forum.Desc": "Ai o întrebare? Te deranjează ceva? Sau doar vrei să discutăm ...",
 		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
+		"Menu.greatbuildings.Desc": "Which FP producing Great building should you do next?", //Todo: Translate
+		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Prezentarea incidentelor ascunse în orașul tău",
 		"Menu.HiddenRewards.Title": "Incidente ascunse",
 		"Menu.Info.Desc": "Îți arată toate lucrurile care se petrec în \"background\"<br><em>Completează informațiile ...</em>",
