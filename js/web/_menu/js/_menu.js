@@ -46,7 +46,7 @@ let _menu = {
 		'api',
 		'kits',
 		'alerts',
-		'greatbuildings',
+		'greatbuildings'
 	],
 
 
@@ -884,6 +884,28 @@ let _menu = {
 
 		btn_sp.on('click', function(){
 			Kits.BuildBox();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+
+	/**
+	 * FP Produzierende LGs
+	 */
+	greatbuildings_Btn: () => {
+
+		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'), 'greatbuildings-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			GreatBuildings.Show();
 		});
 
 		btn.append(btn_sp);
