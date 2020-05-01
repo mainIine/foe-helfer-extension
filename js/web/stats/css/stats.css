@@ -1,5 +1,5 @@
 #stats {
-	top: calc(50% - 400px);
+	top: calc(50% - 375px);
 	left: calc(50% - 600px);
 }
 
@@ -67,6 +67,20 @@
 	max-height: 45px;
 	align-items: baseline;
 	align-content: baseline;
+}
+
+@media (max-height: 1080px) {
+    #stats {
+	    top: 0;
+    }
+
+    #statsBody {
+	    max-height: 700px;
+    }
+
+    #stats #highcharts {
+	    height: 570px;
+    }
 }
 
 /* Highcharts table wrapper */
