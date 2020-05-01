@@ -6,65 +6,65 @@
 		"API.LGGildMember": "Informácie o Veľkolepých budovách hráča __player__ boli odoslané",
 		"API.LGInvest": "Údaje o Vašich príspevkoch do VB boli odoslané",
 		"API.UpdateSuccess": "Úspešne aktualizované",
-		"Boxes.Alerts.Form.Antiques.Auction": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Cooldown": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Dealer": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Exchange": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Battleground": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Body": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Create": "???", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAlert": "???", //Todo: Translate
-		"Boxes.Alerts.Form.CreateNewAlert": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Datetime": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Delete": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Discard": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Edit": "???", //Todo: Translate
-		"Boxes.Alerts.Form.EditAlert": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Expiration": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Expired": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Expires": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Neighborhood": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Description": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Off": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.On": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Persistent": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Preset.Now": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Presets": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Preview": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Every": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Never": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Save": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Tag": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Tag.Description": "???", //Todo: Translate
-		"Boxes.Alerts.Form.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Permissions.Default": "???", //Todo: Translate
-		"Boxes.Alerts.Permissions.Denied": "???", //Todo: Translate
-		"Boxes.Alerts.Permissions.Enable": "???", //Todo: Translate
-		"Boxes.Alerts.Permissions.Refresh": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Battlegrounds.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Battlegrounds.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.ComingSoon": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.MenuIcon.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.MenuIcon.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Start.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Start.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Title": "???", //Todo: Translate
-		"Boxes.Alerts.Tabs.Alerts": "???", //Todo: Translate
-		"Boxes.Alerts.Tabs.Preferences": "???", //Todo: Translate
-		"Boxes.Alerts.Time.15m": "???", //Todo: Translate
-		"Boxes.Alerts.Time.1d": "???", //Todo: Translate
-		"Boxes.Alerts.Time.1h": "???", //Todo: Translate
-		"Boxes.Alerts.Time.1m": "???", //Todo: Translate
-		"Boxes.Alerts.Time.4h": "???", //Todo: Translate
-		"Boxes.Alerts.Time.5m": "???", //Todo: Translate
-		"Boxes.Alerts.Time.8h": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Exchange": "Exchange", //Todo: Translate
+		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
+		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
+		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
+		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
+		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
+		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
+		"Boxes.Alerts.Form.Discard": "Discard", //Todo: Translate
+		"Boxes.Alerts.Form.Edit": "Edit", //Todo: Translate
+		"Boxes.Alerts.Form.EditAlert": "Edit Alert", //Todo: Translate
+		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
+		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
+		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
+		"Boxes.Alerts.Form.Neighborhood": "Neighborhood", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
+		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
+		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
+		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
+		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
+		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
+		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
+		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
+		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
+		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
+		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
+		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
+		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Info": "'Automatically create a new alert when I make a bid in the Antiques Dealer Auction'", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
+		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Info": "'Show in-game notification instead of the native Desktop notification when the game window is focused'", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
+		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
+		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
+		"Boxes.Alerts.Time.15m": "15m", //Todo: Translate
+		"Boxes.Alerts.Time.1d": "1d", //Todo: Translate
+		"Boxes.Alerts.Time.1h": "1h", //Todo: Translate
+		"Boxes.Alerts.Time.1m": "1m", //Todo: Translate
+		"Boxes.Alerts.Time.4h": "4h", //Todo: Translate
+		"Boxes.Alerts.Time.5m": "5m", //Todo: Translate
+		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
 		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
