@@ -323,7 +323,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('body').on('keyup', '#menu-input-length', function(){
+		$('#SettingsBox').on('keyup', '#menu-input-length', function(){
 			let value = $(this).val();
 
 			if(value > 0){

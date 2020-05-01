@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Deutsch",
 		"API.GEXChampionship": "Die GEX-Gilden Platzierung wurde geupdatet",
@@ -6,7 +6,68 @@
 		"API.LGGildMember": "__player__'s LGs wurden übermittelt",
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.UpdateSuccess": "Update durchgeführt",
+		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Exchange": "Exchange", //Todo: Translate
+		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
+		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
+		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
+		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
+		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
+		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
+		"Boxes.Alerts.Form.Discard": "Discard", //Todo: Translate
+		"Boxes.Alerts.Form.Edit": "Edit", //Todo: Translate
+		"Boxes.Alerts.Form.EditAlert": "Edit Alert", //Todo: Translate
+		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
+		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
+		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
+		"Boxes.Alerts.Form.Neighborhood": "Neighborhood", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
+		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
+		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
+		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
+		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
+		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
+		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
+		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
+		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
+		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
+		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
+		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
+		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Info": "'Automatically create a new alert when I make a bid in the Antiques Dealer Auction'", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
+		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Info": "'Show in-game notification instead of the native Desktop notification when the game window is focused'", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
+		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
+		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
+		"Boxes.Alerts.Time.15m": "15m", //Todo: Translate
+		"Boxes.Alerts.Time.1d": "1d", //Todo: Translate
+		"Boxes.Alerts.Time.1h": "1h", //Todo: Translate
+		"Boxes.Alerts.Time.1m": "1m", //Todo: Translate
+		"Boxes.Alerts.Time.4h": "4h", //Todo: Translate
+		"Boxes.Alerts.Time.5m": "5m", //Todo: Translate
+		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Einstellungen",
+		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
@@ -103,6 +164,9 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ neue Spieler-Ereignisse wurden gefunden",
 		"Boxes.Investment.Title": "Investitionen",
 		"Boxes.Investment.TotalFP": "Lager + Umlauf + Gewinn: ",
+		"Boxes.Kits.InStock": "Im Lager",
+		"Boxes.Kits.KitName": "Kit-Name",
+		"Boxes.Kits.Name": "Name",
 		"Boxes.Kits.TabBuildingKits": "Gebäude-Kits",
 		"Boxes.Kits.TabSelectionKits": "Auswahl-Kits",
 		"Boxes.Kits.Title": "Gebäude- / Auswahl-Kits",
@@ -245,12 +309,12 @@
 		"Boxes.Stats.BtnNoEra": "Kein Zeitalter",
 		"Boxes.Stats.BtnSource.statsGBGPlayers": "Gildengefechte",
 		"Boxes.Stats.BtnSource.statsRewards": "Belohungen",
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Gildenkasse",
 		"Boxes.Stats.BtnSource.statsTreasureClanD": "Gildenkasse - täglich",
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Güter",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Gildenkasse",
 		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Güter - täglich",
-		"Boxes.Stats.BtnSource.statsUnitsH": "Armeen - stündlich",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Güter",
 		"Boxes.Stats.BtnSource.statsUnitsD": "Armeen - täglich",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Armeen - stündlich",
 		"Boxes.Stats.BtnToggleAnnotations": "GvG Übersicht",
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Zeigt eine Abnahme der Güter auf der GvG-Karte.",
 		"Boxes.Stats.BtnToggleGroupBy": "Nach Zeitalter sortieren",
@@ -277,12 +341,12 @@
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Kriegsbeute durch die Burg Himeji",
 		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Punktestände der Spieler der Gildengefechte",
 		"Boxes.Stats.SourceTitle.statsRewards": "Deine Belohnungen der Burg Himej, Relikttempel und Gildengefechten",
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Gildenkasse - stündlich",
 		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Gildenkasse - täglich",
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Deine Güter - stündlich",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Gildenkasse - stündlich",
 		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Deine Güter - täglich",
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Deine Einheiten - stündlich",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Deine Güter - stündlich",
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Deine Einheiten - täglich",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Deine Einheiten - stündlich",
 		"Boxes.Stats.Title": "Statistiken",
 		"Boxes.StrategyPoints.BuyableFP": "Kaufbar: ",
 		"Boxes.StrategyPoints.FPBar": "FP-Lager: ",
@@ -338,6 +402,8 @@
 		"HiddenRewards.Table.position": "Position",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "de-DE",
+		"Menu.Alerts.Info": "???", //Todo: Translate
+		"Menu.Alerts.Title": "???", //Todo: Translate
 		"Menu.Api.Desc": "Einstellungen um Daten an deinen eigenen Server zu schicken",
 		"Menu.Api.Title": "Extension API",
 		"Menu.Ask.Desc": "Du weißt nicht wie etwas funktioniert?<br>Schau nach!",

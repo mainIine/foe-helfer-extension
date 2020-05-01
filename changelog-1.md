@@ -1,5 +1,68 @@
 ## Changelog - Extension
 
+##### 2.4.5
+
+**Neu**
+- Statistik:
+    - Langzeittracking der Belohungen für GEX, Gildengefechte, Himeji und Frachter
+    - Langzeit-Bestandstracking für eigenen Vorrat, Gildenkassen, eigene Armeen
+    - Langzeittracking für Gildengefechte
+    - Langzeittracking für GvG Güterausgaben [#812](https://github.com/dsiekiera/foe-helfer-extension/issues/812)
+    - verschiedene Darstellungen
+    - verschiedene Exportmöglichkeiten (CSV, XLS)
+    - verschieden Filter (Zeitspannen, Eras)
+
+- Armee-Blocker:
+    - [#866](https://github.com/dsiekiera/foe-helfer-extension/issues/866) sind in der zweiten Angriffswelle nur noch Agenten enthalten, legt sich ein Fenster über den "Angriff"-Button und verhindert die versehendliche Niederlage
+
+**Update**
+- Außenposten:
+    - [#847](https://github.com/dsiekiera/foe-helfer-extension/issues/847) auf Wunsch werden zwischensummen pro Zeile dargestellt
+    - [#672](https://github.com/dsiekiera/foe-helfer-extension/issues/672) zeigt nun die erforderliche Beute bei den Ägyptern an
+
+- Erntehelfer:
+    - [#845](https://github.com/dsiekiera/foe-helfer-extension/issues/845) geschätzer Angriffs- und Verteidigungswert wird angezeigt (Berechnung anhand der Gebäude)
+
+- Verhandlungsassisten:
+    - [#786](https://github.com/dsiekiera/foe-helfer-extension/issues/786) [#694](https://github.com/dsiekiera/foe-helfer-extension/issues/694) [#572](https://github.com/dsiekiera/foe-helfer-extension/issues/572) zwei neue Checkboxen erlauben eine andere Aufteilung der Güter ("Aktuelle Güter sparen", "Medaillen sparen")
+    
+- Armeeübersicht:
+    - [#741](https://github.com/dsiekiera/foe-helfer-extension/issues/741) der vierte Tab der Alcaernte bleibt nun dauerhaft sichtbar
+
+**BugFix**
+- Produktionsübersicht:
+    - [#884](https://github.com/dsiekiera/foe-helfer-extension/issues/884) falsches Zeitformat geändert
+
+- PvP Übersicht:
+    - [#763](https://github.com/dsiekiera/foe-helfer-extension/issues/763) Darstellungsfehler im Stadtschild wenn Nachbar noch nicht bekannt, behoben
+
+- Erntehelfer:
+    - [#844](https://github.com/dsiekiera/foe-helfer-extension/issues/844) es wurde "Apfelsaft" statt "Gildenmacht" ausgegeben
+
+- Einstellungen:
+    - [#851](https://github.com/dsiekiera/foe-helfer-extension/issues/851) Übersetzung korrgiert
+
+- Außenposten:
+    - [#848](https://github.com/dsiekiera/foe-helfer-extension/issues/848) Rundungsfehler bei 4-Ernte gefixt
+    - [#843](https://github.com/dsiekiera/foe-helfer-extension/issues/843) Namen der Agyptischen Gebäude waren zu lang
+
+- PvP Übersicht:
+    - [#805](https://github.com/dsiekiera/foe-helfer-extension/issues/805) [#820](https://github.com/dsiekiera/foe-helfer-extension/issues/820) [#826](https://github.com/dsiekiera/foe-helfer-extension/issues/826) Kämpfen gegen Nachbarn wurden nicht alle erfasst
+
+- Changelog:
+    - [#807](https://github.com/dsiekiera/foe-helfer-extension/issues/807) Englische Darstellung gefixt
+
+- FP-Übersicht:
+    - [#798](https://github.com/dsiekiera/foe-helfer-extension/issues/798) FP-Balken wurde nicht hinzugerechnet
+    
+ - Extension:
+    - [#772](https://github.com/dsiekiera/foe-helfer-extension/issues/772) Meldung beim öffnen des Gildenforums im neuen Fenster entfernt
+    
+- Forschungskosten:
+    - [#769](https://github.com/dsiekiera/foe-helfer-extension/issues/769) nach dem Freischalten wurden die Werte nicht neu berechnet
+    
+---
+
 ##### 2.4.4
 
 **Neu**
@@ -155,7 +218,7 @@
 - FP-Lager:
     - [#424](https://github.com/dsiekiera/foe-helfer-extension/issues/424) Kleiner Bug beim FP kaufen (Münzen Rechner)
 
-- Invobox:
+- Infobox:
     - [#451](https://github.com/dsiekiera/foe-helfer-extension/issues/451) Falsche Anzahl der FP beim Level-Up/Info Box
     - [#462](https://github.com/dsiekiera/foe-helfer-extension/issues/462) Infobox warf Exceptions
 
