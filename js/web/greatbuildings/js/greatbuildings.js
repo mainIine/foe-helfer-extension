@@ -129,14 +129,14 @@ let GreatBuildings =
             '<tr>' +
                 '<th rowspan="2">' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>' +
                 '<th rowspan="2">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>' +
-                '<th colspan="2">' + i18n('Boxes.GreatBuildings.Suggestion1') + '</th>' +
-                '<th colspan="2">' + i18n('Boxes.GreatBuildings.Suggestion2') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Suggestion1') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Suggestion2') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
             '</tr>' +
             '<tr>' +
                 '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
-                '<th>' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
                 '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
-                '<th>' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
             '</tr>' +
         '</thead>');
         
