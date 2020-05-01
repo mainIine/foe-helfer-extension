@@ -16,7 +16,8 @@
 let Notes = {
 
 	/**
-	 * Erzeugt eine kleine Box im DOM
+	 * Creates a small box in the DOM by call from other modules
+	 * like a popup
 	 */
 	buildTextBox: ()=>{
 		if ($('#note-box').length === 0) {
@@ -36,7 +37,9 @@ let Notes = {
 
 
 	/**
-	 * Ein frisches iFrame in eine Box
+	 * A fresh iframe in a box
+	 *
+	 * @Todo: Choice for textarea or input
 	 *
 	 * @param id
 	 * @param callback
@@ -54,7 +57,7 @@ let Notes = {
 
 
 	/**
-	 * Wartet auf eine Info von der iFrame-Textbox
+	 * Waiting for an info from the iFrame text box
 	 *
 	 * @param callback
 	 */
@@ -79,7 +82,11 @@ let Notes = {
 	},
 
 
-	// Beispiel eines Callbacks
+	/**
+	 * Example of a callback
+	 *
+	 * @param text
+	 */
 	saveInfo: (text)=> {
 		console.log('Text vom iFrame: ', text);
 
@@ -89,6 +96,9 @@ let Notes = {
 	},
 
 
+	/**
+	 * Save to external?
+	 */
 	setNote: ()=>{
 
 		let data = {
@@ -108,6 +118,9 @@ let Notes = {
 	},
 
 
+	/**
+	 * Callback for close the Popup
+	 */
 	closeBox: ()=> {
 		$('#note-box').fadeToggle(function(){
 			$(this).remove();

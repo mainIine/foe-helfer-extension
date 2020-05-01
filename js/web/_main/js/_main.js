@@ -715,7 +715,7 @@ const FoEproxy = (function () {
 
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
 		StrategyPoints.GetFromInventory(data.responseData);
-		Kits.Inventory = data.responseData;
+		MainParser.Inventory = data.responseData;
 	});
 
 

@@ -567,6 +567,10 @@ p {
 	background-image: url('../images/kits.png');
 }
 
+#alerts-Btn span {
+	background-image: url('../images/icon-alerts.png');
+}
+
 /* Tabs */
 
 .window-body .tabs ul {

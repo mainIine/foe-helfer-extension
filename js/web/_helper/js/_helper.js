@@ -211,7 +211,7 @@ let HTML = {
 			div.fadeToggle('fast');
 
             // Stop propagation of key event out of inputs in this box to FOE
-            $(`#${args.id}`).on('keydown keyup change', (e) => {
+            $(`#${args.id}`).on('keydown keyup', (e) => {
                 e.stopPropagation();
             });
 		});

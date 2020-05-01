@@ -53,3 +53,22 @@
 #BackgroundInfo #BackgroundInfoBody .filter-row .btn-reset-box {
 	margin-left: auto;
 }
+
+#BackgroundInfo #BackgroundInfoBody .offer {
+	display: flex;
+	align-items: center;
+}
+
+#BackgroundInfo #BackgroundInfoBody .offer span {
+	margin-right: 3px;
+	width: 28px;
+	height: 28px;
+	display: inline-block;
+}
+
+#BackgroundInfo #BackgroundInfoBody .offer span.sign {
+	position: relative;
+	font-size: 1.7rem;
+	line-height: 14px;
+	width: 16px;
+}
