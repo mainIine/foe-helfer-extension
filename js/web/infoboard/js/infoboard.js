@@ -338,20 +338,19 @@ let Info = {
      */
     NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
 
-        for (let i in d) {
-            if (!d.hasOwnProperty(i)) {
-                break;
-            }
-
+        for (let entry of d) {
             // FP Typ aus dem Lager ermitteln
-            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
-            if(undefined === InventoryItem ||null === InventoryItem) return;
-            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
-                amount = factor * parseInt(d[i]['amount']);
+            let InventoryItem = MainParser.Inventory.find(x => x.id === entry.itemId && x.itemAssetName.indexOf("forgepoint") !== -1);
+            if (null == InventoryItem) continue;
+            let factor = parseInt(InventoryItem.item.resource_package.gain),
+                amount = factor * parseInt(entry.amount);
 
             // ... und sichern
             Info.ReturnFPPoints += amount;
         }
+
+        // Hierfür soll keine Nachricht in der Infobox angezeigt werden
+        return false;
     },
 
 
