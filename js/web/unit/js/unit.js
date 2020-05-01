@@ -41,9 +41,9 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 			return;
 		}
 
-		if (data.responseData['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
-			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
-			Unit.NextAmount = data['updatedEntities'][0]['state']['current_product']['amount'];
+		if (data.responseData['updatedEntities'] && data.responseData['updatedEntities'][0] && data.responseData['updatedEntities'][0]['state'] && data.responseData['updatedEntities'][0]['state']['next_state_transition_in'] !== undefined) {
+			Unit.NextHarvest = data.responseData['updatedEntities'][0]['state']['next_state_transition_at'];
+			Unit.NextAmount = data.responseData['updatedEntities'][0]['state']['current_product']['amount'];
 		}
 
 		if (data.responseData.militaryProducts.length > 0) {

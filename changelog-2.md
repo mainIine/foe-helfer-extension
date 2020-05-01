@@ -1,15 +1,79 @@
 ## Changelog - Extension
 
+##### 2.4.5
+
+**New**
+
+- Statistics:
+    - Long-term tracking of rewards for GEX, guild battles, Himeji and freighters
+    - Long-term inventory tracking for own stock, guild registers, own armies
+    - Long-term tracking for guild battles
+    - Long-term tracking for GvG goods expenditure [#812](https://github.com/dsiekiera/foe-helfer-extension/issues/812)
+    - different representations
+    - various export options (CSV, XLS)
+    - different filters (time spans, eras)
+
+- Army blocker:
+    - [#866](https://github.com/dsiekiera/foe-helfer-extension/issues/866) are only agents included in the second wave of attacks, put a window over the "attack" button and prevent it accidental defeat
+
+**Update**
+- Outpost:
+    - [#847](https://github.com/dsiekiera/foe-helfer-extension/issues/847) on request, subtotals are displayed per line
+    - [#672](https://github.com/dsiekiera/foe-helfer-extension/issues/672) now shows the required loot from the Egyptians
+
+- Harvesters:
+    - [#845](https://github.com/dsiekiera/foe-helfer-extension/issues/845) estimated attack and defense value is displayed (calculation based on the buildings)
+
+- Negotiators:
+    - [#786](https://github.com/dsiekiera/foe-helfer-extension/issues/786) [#694](https://github.com/dsiekiera/foe-helfer-extension/issues/694) [#572](https://github.com/dsiekiera/foe-helfer-extension/issues/572) two new checkboxes allow a different division of the goods ("save current goods", "save medals")
+
+- Army overview:
+    - [#741](https://github.com/dsiekiera/foe-helfer-extension/issues/741) the fourth tab of the alpine harvest is now permanently visible
+
+**BugFix**
+- Production overview:
+    - [#884](https://github.com/dsiekiera/foe-helfer-extension/issues/884) wrong time format changed
+
+- PvP overview:
+    - [#763](https://github.com/dsiekiera/foe-helfer-extension/issues/763) display error in the city sign if neighbor not yet known, fixed
+
+- Harvesters:
+    - [#844](https://github.com/dsiekiera/foe-helfer-extension/issues/844) "Apple juice" was issued instead of "guild power"
+
+- Settings:
+    - [#851](https://github.com/dsiekiera/foe-helfer-extension/issues/851) translation corrected
+
+- Outpost:
+    - [#848](https://github.com/dsiekiera/foe-helfer-extension/issues/848) Fixed rounding errors in 4 crop
+    - [#843](https://github.com/dsiekiera/foe-helfer-extension/issues/843) The names of the Egyptian buildings were too long
+
+- PvP overview:
+    - [#805](https://github.com/dsiekiera/foe-helfer-extension/issues/805) [#820](https://github.com/dsiekiera/foe-helfer-extension/issues/820 ) [#826](https://github.com/dsiekiera/foe-helfer-extension/issues/826) Fights against neighbors were not all recorded
+
+- Changelog:
+    - [#807](https://github.com/dsiekiera/foe-helfer-extension/issues/807) English display fixed
+
+- FP overview:
+    - [#798](https://github.com/dsiekiera/foe-helfer-extension/issues/798) FP bar was not included
+
+- Extension:
+    - [#772](https://github.com/dsiekiera/foe-helfer-extension/issues/772) Message removed when opening the guild forum in a new window
+    
+- Research costs:
+    - [#769](https://github.com/dsiekiera/foe-helfer-extension/issues/769) after activation, the values were not recalculated
+
+---
+
 ##### 2.4.4
 
 **New**
 - PvP overview:
-    - [#686](https://github.com/dsiekiera/foe-helfer-extension/issues/686) neighborhood loot database
-    - values of you and the neighbor of the attacking, defending armies are noted
-    - what type of fight you have carried out and whether you won, lost or given up
-    - all times when you attacked, looted or last visited him
-    - what you looted, from which building
-    - shows all active city signs in your neighborhood
+    - [#686](https://github.com/dsiekiera/foe-helfer-extension/issues/686) neighborhood loot database
+    - values of you and the neighbor of the attacking, defending armies are noted
+    - what type of fight you have carried out and whether you won, lost or given up
+    - all times when you attacked, looted or last visited him
+    - what you looted, from which building
+    - shows all active city signs in your neighborhood
 
 **Update**
 - Extension:
