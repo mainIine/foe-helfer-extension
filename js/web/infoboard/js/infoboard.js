@@ -323,6 +323,14 @@ let Info = {
             }
         }
 
+        if (undefined === d.sender) {
+            return {
+                class: 'message',
+                type: i18n('Boxes.Infobox.FilterMessage'),
+                msg: Info.GetConversationHeader(d.conversationId, null) + msg
+            };
+        }
+
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
@@ -525,14 +533,16 @@ let Info = {
      * @returns {string}
      */
     GetConversationHeader: (id, name) => {
-        if (MainParser.Conversations.length > 0) {
-            let header = MainParser.Conversations.find(obj => (obj['id'] === id));
-
-            if (header !== undefined) {
-                return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
-            }
-        } else {
+        let header = MainParser.Conversations.find(obj => obj.id === id);
+        if (header != null && name != null) {
+            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
+        } else if (name != null) {
+            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
             return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
+        } else if (header != null) {
+            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
         }
 
         return '';
