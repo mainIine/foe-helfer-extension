@@ -136,6 +136,15 @@
 		"Boxes.Gildfights.Negotiations": "Tárgyalások",
 		"Boxes.Gildfights.Player": "Játékos",
 		"Boxes.Gildfights.Title": "Játékos áttekintés",
+		"Boxes.GreatBuildings.ArcBonus": "Arc bonus", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
+		"Boxes.GreatBuildings.GreatBulding": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.ProdPerInvest": "Prod/Invest", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion1": "Suggestion 1", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Megjelenik",
 		"Boxes.HiddenRewards.Disappears": "eltűnik",
 		"Boxes.HiddenRewards.NoEvents": "Nincs esemény",
@@ -402,8 +411,6 @@
 		"HiddenRewards.Table.position": "Pozíció",
 		"HiddenRewards.Table.type": "Típus",
 		"Local": "hu-HU",
-		"Menu.Alerts.Info": "???", //Todo: Translate
-		"Menu.Alerts.Title": "???", //Todo: Translate
 		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
 		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Nem tudod, hogyan működik valami? <br> Vessen egy pillantást!",
@@ -424,6 +431,8 @@
 		"Menu.Event.Title": "Esemény Feladat lista",
 		"Menu.Forum.Desc": "Kérdése van? Bosszantja valami? Vagy csak beszélni szeretne...",
 		"Menu.Forum.Title": "Fórum",
+		"Menu.greatbuildings.Desc": "Which FP producing Great building should you do next?", //Todo: Translate
+		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "A rejtett jutalmak áttekintése",
 		"Menu.HiddenRewards.Title": "Rejtett jutalmak",
 		"Menu.Info.Desc": "Megmutatja mindazt, ami történik a \"háttérben\"<br><em>Információval töltődik fel ...</em>",

@@ -136,6 +136,15 @@
 		"Boxes.Gildfights.Negotiations": "Vyjednávania",
 		"Boxes.Gildfights.Player": "Hráč",
 		"Boxes.Gildfights.Title": "Prehľad hráčov",
+		"Boxes.GreatBuildings.ArcBonus": "Arc bonus", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
+		"Boxes.GreatBuildings.GreatBulding": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.ProdPerInvest": "Prod/Invest", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion1": "Suggestion 1", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Objaví sa",
 		"Boxes.HiddenRewards.Disappears": "Zmizne",
 		"Boxes.HiddenRewards.NoEvents": "Nie sú žiadne incidenty",
@@ -402,8 +411,6 @@
 		"HiddenRewards.Table.position": "Umiestnenie",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sk-SK",
-		"Menu.Alerts.Info": "???", //Todo: Translate
-		"Menu.Alerts.Title": "???", //Todo: Translate
 		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
 		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Je Vám niečo nejasné?<br>Pozrite sa sem!",
@@ -424,6 +431,8 @@
 		"Menu.Event.Title": "Výzvy v udalosti",
 		"Menu.Forum.Desc": "Máte otázku? Niečo Vás trápi? Alebo sa chcete len porozprávať...",
 		"Menu.Forum.Title": "Fórum",
+		"Menu.greatbuildings.Desc": "Which FP producing Great building should you do next?", //Todo: Translate
+		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Prehľad incidentov",
 		"Menu.HiddenRewards.Title": "Incidenty",
 		"Menu.Info.Desc": "Zobrazuje informácie o tom, čo sa deje na  \"pozadí\"<br><em>Plní sa to informáciami ...</em>",
