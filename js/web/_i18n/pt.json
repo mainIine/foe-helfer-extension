@@ -9,7 +9,7 @@
 		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
 		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
 		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Exchange": "Exchange", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Exchange": "daily exchange", //Todo: Translate
 		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
 		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
@@ -43,12 +43,12 @@
 		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
 		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
 		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Info": "'Automatically create a new alert when I make a bid in the Antiques Dealer Auction'", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Info": "Automatically create a new alert when I make a bid in the Antiques Dealer Auction", //Todo: Translate
 		"Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Info": "'Show in-game notification instead of the native Desktop notification when the game window is focused'", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
@@ -155,7 +155,7 @@
 		"Boxes.Infobox.FilterLevel": "Subida de nivel",
 		"Boxes.Infobox.FilterMessage": "Mensagens",
 		"Boxes.Infobox.FilterTrade": "Comércio",
-		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> has just offered __amount__ coins.", //Todo: Translate
+		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> has just offered __amount__ coins.", //Todo: Translate
 		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> has just contributed __points__ GE points.", //Todo: Translate
 		"Boxes.Infobox.Messages.GildFightOccupied": "Provincia <span style=\"color:#ffb539\">__provinceName__</span> foi conquistada por <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> e está fechada até __untilOccupied__",
 		"Boxes.Infobox.Messages.LevelUp": "O edificio __building__ do(a) __player__ atingiu o nivel __level__.<br>Conseguiste a posição <strong>__rank__</strong> e ganhaste <strong>__fps__</strong> PFs.",
