@@ -6,6 +6,65 @@
 		"API.LGGildMember": "Los GEs de __player__ han sido transferidos",
 		"API.LGInvest": "Tus inversiones en grandes edificios han sido transferidos",
 		"API.UpdateSuccess": "Actualizacion realizada",
+		"Boxes.Alerts.Form.Antiques.Auction": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Cooldown": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Dealer": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Exchange": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Battleground": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Body": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Create": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAlert": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateNewAlert": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Datetime": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Delete": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Discard": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Edit": "???", //Todo: Translate
+		"Boxes.Alerts.Form.EditAlert": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Expiration": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Expired": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Expires": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Neighborhood": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Description": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Off": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.On": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Persistent": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Preset.Now": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Presets": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Preview": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Every": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Never": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Save": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Tag": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Tag.Description": "???", //Todo: Translate
+		"Boxes.Alerts.Form.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Permissions.Default": "???", //Todo: Translate
+		"Boxes.Alerts.Permissions.Denied": "???", //Todo: Translate
+		"Boxes.Alerts.Permissions.Enable": "???", //Todo: Translate
+		"Boxes.Alerts.Permissions.Refresh": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.ComingSoon": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Tabs.Alerts": "???", //Todo: Translate
+		"Boxes.Alerts.Tabs.Preferences": "???", //Todo: Translate
+		"Boxes.Alerts.Time.15m": "???", //Todo: Translate
+		"Boxes.Alerts.Time.1d": "???", //Todo: Translate
+		"Boxes.Alerts.Time.1h": "???", //Todo: Translate
+		"Boxes.Alerts.Time.1m": "???", //Todo: Translate
+		"Boxes.Alerts.Time.4h": "???", //Todo: Translate
+		"Boxes.Alerts.Time.5m": "???", //Todo: Translate
+		"Boxes.Alerts.Time.8h": "???", //Todo: Translate
 		"Boxes.Api.Title": "Configuración Extensión API ",
 		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
 		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
@@ -91,7 +150,7 @@
 		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> ha pujado ahora mismo __amount__ monedas",
 		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
 		"Boxes.Infobox.Messages.GildFightOccupied": "La provincia <span style=\"color:#ffb539\">__provinceName__</span> fue tomada por <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> y está bloqueada hasta __untilOccupied__",
-		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ building has just reached level __level__.<br>You took <strong>__rank__th</strong> place and got <strong>__fps__</strong> FPs back.", //Todo: Translate
+		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ has just reached level __level__.<br>You took <strong>__rank__th</strong> place and received <strong>__fps__</strong> FPs.", //Todo: Translate
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - nivel __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Limpiar historial de eventos",
@@ -106,8 +165,8 @@
 		"Boxes.Investment.Title": "Inversión",
 		"Boxes.Investment.TotalFP": "Stock + circulante + beneficio: ",
 		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
-		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
-		"Boxes.Kits.Name": "Name", //Todo: Translate
+		"Boxes.Kits.KitName": "Item Type", //Todo: Translate
+		"Boxes.Kits.Name": "Building", //Todo: Translate
 		"Boxes.Kits.TabBuildingKits": "Kits para edificios",
 		"Boxes.Kits.TabSelectionKits": "Kits de selección",
 		"Boxes.Kits.Title": "Edificio - / Kits de Selección",
@@ -121,7 +180,7 @@
 		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "reconocido",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "encontrado nuevo",
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "no hay desembolsos hasta ahora",
-		"Boxes.Negotiation.Average": "Ø Amount", //Todo: Translate
+		"Boxes.Negotiation.Average": "Resource<br><br><span style='color:#29b206'>Cost</span>", //Todo: Translate
 		"Boxes.Negotiation.Canceled": "Negociación cancelada",
 		"Boxes.Negotiation.Chance": "Probabilidad",
 		"Boxes.Negotiation.confirmGoodsMissmatch": "OK",
@@ -130,16 +189,16 @@
 		"Boxes.Negotiation.GoodsLow": "ATENCIÓN: El stock de bienes está bajo",
 		"Boxes.Negotiation.Person": "Persona",
 		"Boxes.Negotiation.Round": "Ronda",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods?", //Todo: Translate
+		"Boxes.Negotiation.SaveMedals": "Save medals?", //Todo: Translate
 		"Boxes.Negotiation.Stock": "Almacén:",
 		"Boxes.Negotiation.Success": "Acierto",
 		"Boxes.Negotiation.TableLoadError": "Error cargando la tabla de negociación",
 		"Boxes.Negotiation.Title": "Ayudante de negociación",
 		"Boxes.Negotiation.TryEnd": "Se terminaron los intentos",
 		"Boxes.Negotiation.WrongGoods": "Mercancía equivocada, por favor seguir a mano",
-		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.AttackingArmy": "Attack Boost (estimated): __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
+		"Boxes.Neighbors.DefendingArmy": "Defensive Boost (estimated): __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
 		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Producción en curso",
 		"Boxes.Neighbors.ReadyProductions": "Produccion terminada",
@@ -147,7 +206,7 @@
 		"Boxes.Outpost.DescRequired": "Necesitado",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ff4040'>Faltan</span>",
 		"Boxes.Outpost.ExpansionsSum": "Expansiones",
-		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chance: __chanceX4__%", //Todo: Translate
+		"Boxes.Outpost.infoLine": "Current LvL = __runNumber__; Bonus Chance (x4) = __chanceX4__%", //Todo: Translate
 		"Boxes.Outpost.nextTile": "próxima expansión",
 		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "off",
@@ -269,17 +328,17 @@
 		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (GE starts on Tuesday)", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "GBG", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.guildExpedition": "GE", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoils of War", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from GBG", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected from Space Carrier", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "GE Relic Rewards (Temple of Relic)", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of War Rewards (Himeji Castle) ", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
@@ -288,7 +347,7 @@
 		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.Title": "Statistic", //Todo: Translate
+		"Boxes.Stats.Title": "Statistics", //Todo: Translate
 		"Boxes.StrategyPoints.BuyableFP": "Comprable: ",
 		"Boxes.StrategyPoints.FPBar": "FP en almacén: ",
 		"Boxes.Technologies.DescInStock": "Disponible",
@@ -343,6 +402,8 @@
 		"HiddenRewards.Table.position": "Posición",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "es-ES",
+		"Menu.Alerts.Info": "???", //Todo: Translate
+		"Menu.Alerts.Title": "???", //Todo: Translate
 		"Menu.Api.Desc": "Configuración para enviar datos a tu propio servidor",
 		"Menu.Api.Title": "API de extensión",
 		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruébalo!",
@@ -379,13 +440,13 @@
 		"Menu.OwnpartCalculator.Desc": "Crear plan de pago, calcular puestos externos y copiar el valor",
 		"Menu.OwnpartCalculator.Title": "Calculator cuata propia",
 		"Menu.OwnpartCalculator.Warning": "Deshabilitado: Entra primero en un gran edificio tuyo!",
-		"Menu.Plunderer.Desc": "PvP and neighborhood harvesting history", //Todo: Translate
+		"Menu.Plunderer.Desc": "Displays your PvP battles and plunder results", //Todo: Translate
 		"Menu.Plunderer.Title": "Actividad PvP",
 		"Menu.Productions.Desc": "Muestra la cantidad de las producciones actuales.",
 		"Menu.Productions.Title": "Resumen de producción ",
 		"Menu.Settings.Desc": "Aquí ajustas algunas cositas",
 		"Menu.Settings.Title": "Ajustes",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
+		"Menu.Stats.Desc": "Displays game stats on goods, units, rewards, GBG", //Todo: Translate
 		"Menu.Stats.Title": "Statistics", //Todo: Translate
 		"Menu.Technologies.Desc": "Calcular costes de investigación",
 		"Menu.Technologies.Title": "Tecnología",
@@ -401,7 +462,7 @@
 		"Settings.CustomerApi.Title": "API de jugadores",
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extensión autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmisión a foe-rechner.de",
-		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br> Empty or \"0\" means automatic height.", //Todo: Translate
+		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br>Empty or \"0\" means automatic height.", //Todo: Translate
 		"Settings.MenuLength.Title": "Longitud del menú",
 		"Settings.PreScanLGList.Desc": "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina grandes edificios rellenables.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda.",
 		"Settings.PreScanLGList.Title": "Escanear con antelación los grandes edificios",
