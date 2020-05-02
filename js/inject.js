@@ -181,7 +181,8 @@
 				'battle-assist',
 				'citymap',
 				'hidden-rewards',
-				'greatbuildings'
+				'greatbuildings',
+                'alerts',
 			];
 
 			// Scripte laden (nacheinander)

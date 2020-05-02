@@ -43,6 +43,7 @@ let Productions = {
 		'money',			// Münzen
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
+		'premium',			// Diamanten
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
