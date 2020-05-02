@@ -54,7 +54,7 @@
 		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
 		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
 		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
 		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
 		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
 		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
@@ -67,7 +67,7 @@
 		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
 		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
 		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Warning!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Misiunea repetitivă actuală:",
 		"Boxes.Calculator.ArkBonus": "Bonusul Domului",
 		"Boxes.Calculator.AvailableFP": "PF disponibile",
@@ -97,7 +97,7 @@
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __payed__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __payed__ <small>(Paid)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__ <small>(Cost)</small> / __nettoreward__ <small>(Net Reward)</small> = __rate__%", //Todo: Translate
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__FPs.<br>That's __tooless__FPs too few", //Todo: Translate
+		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__ FPs.<br>That's __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "PF rămase până la închidere",
 		"Boxes.Campagne.AlreadyDone": " cucerită deja!",
 		"Boxes.Campagne.DescInStock": "Disponibil",
@@ -136,13 +136,13 @@
 		"Boxes.Gildfights.Negotiations": "Negocieri",
 		"Boxes.Gildfights.Player": "Jucător",
 		"Boxes.Gildfights.Title": "Statistica jucătorului",
-		"Boxes.GreatBuildings.ArcBonus": "Arc bonus", //Todo: Translate
-		"Boxes.GreatBuildings.CostPerDailyFP": "Cost/daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion1": "Suggestion 1", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion1": "Suggestion1", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Apare",
 		"Boxes.HiddenRewards.Disappears": "Dispare",
@@ -168,7 +168,7 @@
 		"Boxes.Investment.CurrReward": "Profitul actual: ",
 		"Boxes.Investment.InvestBar": "PF investite: ",
 		"Boxes.Investment.PlayerFound": "New Event History found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCount": "__count__ new player Event were found", //Todo: Translate
+		"Boxes.Investment.PlayerFoundCount": "__count__ new player Events were found", //Todo: Translate
 		"Boxes.Investment.PlayerFoundCounter": "__count__ new player Events were found", //Todo: Translate
 		"Boxes.Investment.Title": "Investiții",
 		"Boxes.Investment.TotalFP": "Stock + Invested + Profit = ", //Todo: Translate
@@ -216,7 +216,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansiune",
 		"Boxes.Outpost.infoLine": "__runNumber__ așezare, Șansă de bonus x4: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "Următoarea expansiune",
-		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Show Sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "închis",
 		"Boxes.Outpost.Title": "Bunurile din așezarea culturală",
 		"Boxes.Outpost.TitleBuildings": "Clădire",
@@ -309,13 +309,13 @@
 		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
 		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
 		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line Chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream Chart", //Todo: Translate
 		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
 		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
 		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
 		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "GBG", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
@@ -343,11 +343,11 @@
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GE", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoils of War", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from GBG", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected from Space Carrier", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "GBG Rewards", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "GE Relic Rewards (Temple of Relic)", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of War Rewards (Himeji Castle) ", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoils of War Rewards (Himeji Castle)", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "GBG players' Scoreboard", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
@@ -430,7 +430,7 @@
 		"Menu.Event.Title": "Lista misiunilor de eveniment",
 		"Menu.Forum.Desc": "Ai o întrebare? Te deranjează ceva? Sau doar vrei să discutăm ...",
 		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
-		"Menu.greatbuildings.Desc": "Which FP producing Great building should you do next?", //Todo: Translate
+		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Prezentarea incidentelor ascunse în orașul tău",
 		"Menu.HiddenRewards.Title": "Incidente ascunse",

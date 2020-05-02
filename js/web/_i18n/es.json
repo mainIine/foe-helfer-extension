@@ -54,7 +54,7 @@
 		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
 		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
 		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
 		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
 		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
 		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
@@ -67,7 +67,7 @@
 		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
 		"Boxes.Api.Title": "Configuración Extensión API ",
 		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Warning!", //Todo: Translate
 		"Boxes.Calculator.ActiveRecurringQuest": "Misión recurrente activa:",
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
@@ -136,13 +136,13 @@
 		"Boxes.Gildfights.Negotiations": "Negociaciones",
 		"Boxes.Gildfights.Player": "Jugador",
 		"Boxes.Gildfights.Title": "Sobre el jugador",
-		"Boxes.GreatBuildings.ArcBonus": "Arc bonus", //Todo: Translate
-		"Boxes.GreatBuildings.CostPerDailyFP": "Cost/daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion1": "Suggestion 1", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion1": "Suggestion1", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Aparece",
 		"Boxes.HiddenRewards.Disappears": "Desaparece",
@@ -158,7 +158,7 @@
 		"Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> ha pujado ahora mismo __amount__ monedas",
 		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> ha conseguido __points__ puntos en la EG.",
 		"Boxes.Infobox.Messages.GildFightOccupied": "La provincia <span style=\"color:#ffb539\">__provinceName__</span> fue tomada por <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> y está bloqueada hasta __untilOccupied__",
-		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ has just reached level __level__.<br>You took <strong>__rank__th</strong> place and received <strong>__fps__</strong> FPs.", //Todo: Translate
+		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ has just reached level __level__.<br>You took <strong>__rank__ </strong> place and received <strong>__fps__</strong> FPs in profit.", //Todo: Translate
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - nivel __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> ha aceptado tu oferta.<br>Tienes __needValue__ __need__ por __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Limpiar historial de eventos",
@@ -188,7 +188,7 @@
 		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "reconocido",
 		"Boxes.LGOverviewBox.Tooltip.FoundNew": "encontrado nuevo",
 		"Boxes.LGOverviewBox.Tooltip.NoPayment": "no hay desembolsos hasta ahora",
-		"Boxes.Negotiation.Average": "Resource<br><br><span style='color:#29b206'>Cost</span>", //Todo: Translate
+		"Boxes.Negotiation.Average": "<strong>Resource<br><br><span style='color:#29b206'>Cost</span></strong>", //Todo: Translate
 		"Boxes.Negotiation.Canceled": "Negociación cancelada",
 		"Boxes.Negotiation.Chance": "Probabilidad",
 		"Boxes.Negotiation.confirmGoodsMissmatch": "OK",
@@ -216,7 +216,7 @@
 		"Boxes.Outpost.ExpansionsSum": "Expansiones",
 		"Boxes.Outpost.infoLine": "Current LvL = __runNumber__; Bonus Chance (x4) = __chanceX4__%", //Todo: Translate
 		"Boxes.Outpost.nextTile": "próxima expansión",
-		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Show Sums:", //Todo: Translate
 		"Boxes.Outpost.tileNotPlanned": "off",
 		"Boxes.Outpost.Title": "Mercancias de los Asentamientos Culturales",
 		"Boxes.Outpost.TitleBuildings": "Edificio",
@@ -309,13 +309,13 @@
 		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
 		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
 		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.line": "Line Chart", //Todo: Translate
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream Chart", //Todo: Translate
 		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
 		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
 		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
 		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "GBG", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
@@ -343,11 +343,11 @@
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GE", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoils of War", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from GBG", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected from Space Carrier", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "GBG Rewards", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "GE Relic Rewards (Temple of Relic)", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of War Rewards (Himeji Castle) ", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoils of War Rewards (Himeji Castle)", //Todo: Translate
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "GBG players' Scoreboard", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
@@ -430,7 +430,7 @@
 		"Menu.Event.Title": "Event Questlist", //Todo: Translate
 		"Menu.Forum.Desc": "Tienes una pregunta? Estas molesto por algo? O solo para hablar...",
 		"Menu.Forum.Title": "Fórum",
-		"Menu.greatbuildings.Desc": "Which FP producing Great building should you do next?", //Todo: Translate
+		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Vistazo de premios ocultos",
 		"Menu.HiddenRewards.Title": "Premios ocultos",
