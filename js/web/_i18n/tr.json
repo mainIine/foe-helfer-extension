@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Rastgele Üretimler",
 		"Boxes.Productions.Headings.residential": "Konut Binaları",
 		"Boxes.Productions.Headings.street": "Yollar",
+		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
+		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Gruplu",
 		"Boxes.Productions.ModeSingle": "Tek",
 		"Boxes.Productions.SearchInput": "Bina Ara...",

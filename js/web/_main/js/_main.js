@@ -621,7 +621,10 @@ const FoEproxy = (function () {
 		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
-		MainParser.SaveBuildings(data.responseData.city_map.entities);
+		MainParser.CityMapData = data.responseData.city_map.entities;
+		if (Settings.GetSetting('GlobalSend')) {
+			MainParser.SendBuildings(MainParser.CityMapData);
+		}
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
@@ -670,9 +673,9 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		if (ActiveMap === 'cultural_outpost') {
-			ActiveMap = 'main';
-		}
+		MainParser.CityMapData = data.responseData;
+
+		ActiveMap = 'main';
 
 		// ErnteBox beim zurückkehren in die Stadt schliessen
 		$('#ResultBox').fadeToggle(function () {
@@ -1599,14 +1602,7 @@ let MainParser = {
 	 *
 	 * @param d
 	 */
-	SaveBuildings: (d)=>{
-		MainParser.CityMapData = d;
-
-		if(Settings.GetSetting('GlobalSend') === false)
-		{
-			return;
-		}
-
+	SendBuildings: (d)=>{
 		let lgs = [];
 
 		for(let i in d)

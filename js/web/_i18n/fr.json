@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Productions aléatoires",
 		"Boxes.Productions.Headings.residential": "Bâtiments résidentiels",
 		"Boxes.Productions.Headings.street": "Routes",
+		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
+		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Grouper",
 		"Boxes.Productions.ModeSingle": "Individuel",
 		"Boxes.Productions.SearchInput": "Chercher un bâtiment...",
