@@ -277,6 +277,7 @@
 		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
 		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Clădiri învecinate",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Fericre",
 		"Boxes.Productions.Headings.all": "Total",
 		"Boxes.Productions.Headings.amount": "Cantitate",
@@ -297,6 +298,8 @@
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Grupare",
 		"Boxes.Productions.ModeSingle": "Extindere",
+		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Caută clădirea...",
 		"Boxes.Productions.Title": "Prezentarea generală a producțiilor",
 		"Boxes.Productions.Total": "Total: ", //Todo: Translate

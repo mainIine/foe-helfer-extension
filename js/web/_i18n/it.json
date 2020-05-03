@@ -277,6 +277,7 @@
 		"Boxes.Plunderer.visited": "Visitato",
 		"Boxes.Plunderer.visitTitle": "L'ultima volta che visiti questo giocatore",
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Felicità",
 		"Boxes.Productions.Headings.all": "Tutto",
 		"Boxes.Productions.Headings.amount": "Importo",
@@ -297,6 +298,8 @@
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Gruppi",
 		"Boxes.Productions.ModeSingle": "Singolo",
+		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Cerca edificio ...",
 		"Boxes.Productions.Title": "Panoramica della produzione",
 		"Boxes.Productions.Total": "Totale:",

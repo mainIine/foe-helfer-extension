@@ -1093,7 +1093,7 @@ let MainParser = {
 
 	// alle Gebäude des Spielers
 	CityMapData: null,
-	CityMapEraOutpostData: [],
+	CityMapEraOutpostData: null,
 
 	// freugeschaltete Erweiterungen
 	UnlockedAreas: null,

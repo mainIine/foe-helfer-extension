@@ -277,6 +277,7 @@
 		"Boxes.Plunderer.visited": "Посетили",
 		"Boxes.Plunderer.visitTitle": "Когда было последнее посещение игрока вами",
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Уровень счастья",
 		"Boxes.Productions.Headings.all": "Все",
 		"Boxes.Productions.Headings.amount": "Количество",
@@ -297,6 +298,8 @@
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Группы",
 		"Boxes.Productions.ModeSingle": "Без группы",
+		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Найти постройку...",
 		"Boxes.Productions.Title": "Обзор производства",
 		"Boxes.Productions.Total": "Всего: ",
