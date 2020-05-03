@@ -759,16 +759,17 @@ ${sourceBtns.join('')}
 	 */
 	createTreasureSeries: async () => {
 		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+		const selectedEras = Stats.getSelectedEras();
 		const isClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(source);
+		const hcColors = Highcharts.getOptions().colors;
+
+		let data = await IndexDB.db[source].orderBy('date').toArray();
 
 		if (isClanTreasure) {
 			data = data.filter(it => it.clanId === ExtGuildID);
 		}
 
-		const hcColors = Highcharts.getOptions().colors;
 		let colors;
-		const selectedEras = Stats.getSelectedEras();
 
 		// Build color set - brighten each per
 		if (selectedEras.length > 1) {
