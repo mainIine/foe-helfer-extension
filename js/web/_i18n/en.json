@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Random Productions",
 		"Boxes.Productions.Headings.residential": "Residential Buildings",
 		"Boxes.Productions.Headings.street": "Roads",
+		"Boxes.Productions.ModeCurrent": "Current",
+		"Boxes.Productions.ModeDaily": "Daily prod.",
 		"Boxes.Productions.ModeGroups": "Group",
 		"Boxes.Productions.ModeSingle": "List",
 		"Boxes.Productions.SearchInput": "Search building...",
@@ -463,7 +465,7 @@
 		"Menu.Unit.Title": "Military Units Overview",
 		"Menu.Unit.Warning": "Disabled: Open your Army Management first (U)!",
 		"Settings.AutomaticNegotiation.Desc": "Automatically Open/Close the Negotiation Helper/Assistant when negotiating?",
-		"Settings.AutomaticNegotiation.Title": "???", //Todo: Translate
+		"Settings.AutomaticNegotiation.Title": "Negotiation helper",
 		"Settings.ChangeLanguage.Desc": "Choose your prefered language from the drop-down list >",
 		"Settings.ChangeLanguage.Title": "Change Language",
 		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.",

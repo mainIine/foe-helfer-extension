@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Véletlenszerű Termelés",
 		"Boxes.Productions.Headings.residential": "Lakó épületek",
 		"Boxes.Productions.Headings.street": "Utcák",
+		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
+		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Csoportok",
 		"Boxes.Productions.ModeSingle": "Egyedülálló",
 		"Boxes.Productions.SearchInput": "Épület keresés...",

@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Случайные производственные здания",
 		"Boxes.Productions.Headings.residential": "Жилые дома",
 		"Boxes.Productions.Headings.street": "Дороги",
+		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
+		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Группы",
 		"Boxes.Productions.ModeSingle": "Без группы",
 		"Boxes.Productions.SearchInput": "Найти постройку...",

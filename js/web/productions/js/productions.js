@@ -19,6 +19,8 @@ let Productions = {
 	BuildingsProducts: [],
 	BuildingsProductsGroups: [],
 	MainBuildingBonusAdded: false,
+	ShowDaily: false,
+	SwitchFunctionsRegistered : false,
 
 	ActiveTab: 'strategy_points',
 
@@ -213,8 +215,9 @@ let Productions = {
 							Productions.BuildingsProductsGroups[x][ni] = [];
 							Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
 							Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
-							Productions.BuildingsProductsGroups[x][ni]['products'] = parseInt(building['products'][x]);
-							Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = parseInt(building['motivatedproducts'][x]);
+							Productions.BuildingsProductsGroups[x][ni]['dailyfactor'] = building['dailyfactor'];
+							Productions.BuildingsProductsGroups[x][ni]['products'] = Productions.GetDaily(parseInt(building['products'][x]), building, x);
+							Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building, x);
 							Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
 
 						} else {
@@ -233,6 +236,7 @@ let Productions = {
 						Productions.BuildingsProducts['packaging'][mId]['id'] = building['id'];
 						Productions.BuildingsProducts['packaging'][mId]['name'] = building['name'];
 						Productions.BuildingsProducts['packaging'][mId]['type'] = building['type'];
+						Productions.BuildingsProducts['packaging'][mId]['dailyfactor'] = building['dailyfactor'];
 						Productions.BuildingsProducts['packaging'][mId]['products'] = [];
 						Productions.BuildingsProducts['packaging'][mId]['motivatedproducts'] = [];
 					}
@@ -365,6 +369,13 @@ let Productions = {
 			console.log('Products: ', Products);
 		}
 
+		if (d['state'] && d['state']['current_product'] && d['state']['current_product']['production_time']) {
+			Ret['dailyfactor'] = 86400 / d['state']['current_product']['production_time'];
+		}
+		else {
+			Ret['dailyfactor'] = 1;
+        }
+
 		if (Object.keys(Ret.motivatedproducts).length > 0) {
 			return Ret;
 		}
@@ -444,12 +455,12 @@ let Productions = {
 				{
 					if(type !== 'packaging')
 					{
-						countAll += parseInt(buildings[i]['products'][type]);
-						countAllMotivated += parseInt(buildings[i]['motivatedproducts'][type]);
-
-						let ProductCount = buildings[i]['products'][type],
-							MotivatedProductCount = buildings[i]['motivatedproducts'][type],
+						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i], type);
+							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i], type);
 							CssClass = '';
+
+						countAll += ProductCount;
+						countAllMotivated += MotivatedProductCount;
 
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
@@ -481,10 +492,11 @@ let Productions = {
 									countProducts[p] = 0;
 								}
 
-								countProducts[p] += buildings[i]['products'][p];
-								countAll += buildings[i]['products'][p];
+								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i], p);
+								countProducts[p] += Amount;
+								countAll += Amount;
 
-								pA.push(HTML.Format(buildings[i]['products'][p]) + ' ' + Productions.GetGoodName(p));
+								pA.push(HTML.Format(Amount) + ' ' + Productions.GetGoodName(p));
 							}
 						}
 
@@ -573,8 +585,16 @@ let Productions = {
 			else {
 				table.push('<thead>');
 				table.push('<tr class="other-header">');
-				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>');
-				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
+				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>'); 
+				if (Productions.ShowDaily) {
+					table.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span></th>');
+				}
+				else {
+					table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span></th>');
+				}
+								
+				table.push('<th colspan="2"></th>');
+				table.push('<th colspan="2" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -644,7 +664,7 @@ let Productions = {
 				{
 					if(prod.hasOwnProperty(p))
 					{
-						pA.push(HTML.Format(prod[p]) + ' ' + Productions.GetGoodName(p));
+						pA.push(HTML.Format(Productions.GetDaily(prod[p], building[i], p)) + ' ' + Productions.GetGoodName(p));
 						if (p !== 'happiness' && p !== 'population') {
 							ShowTime = true;
 						}
@@ -752,8 +772,10 @@ let Productions = {
 	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
 	 *
 	 */
-	SwitchFunction: ()=>{
-		$('body').on('click', '.change-view', function(){
+	SwitchFunction: () => {
+		if (Productions.SwitchFunctionsRegistered) return;
+
+		$('body').on('click', '.change-view', function () {
 			let btn = $(this),
 				t = $(this).data('type'),
 				hiddenTb = $('.' + t + '-mode:hidden'),
@@ -769,6 +791,21 @@ let Productions = {
 				}
 			});
 		});
+
+		//Todo: Unregister Handler
+		$('body').on('click', '.change-daily', function () {
+			Productions.ShowDaily = !Productions.ShowDaily;
+			if (Productions.ShowDaily) {
+				$(this).text(i18n('Boxes.Productions.ModeCurrent'));
+			}
+			else {
+				$(this).text(i18n('Boxes.Productions.ModeDaily'));
+			}
+
+			//Todo: Refresh
+		});
+
+		Productions.SwitchFunctionsRegistered = true;
 	},
 
 
@@ -976,5 +1013,22 @@ let Productions = {
 		else {
 			return GoodsData[GoodType]['name'];
 		}
-	}
+	},
+
+
+	/**
+	 * Ermittelt die täglichen Güter, falls die Option ShowDaily gesetzt ist
+	 * 
+	 * */
+	GetDaily: (Amount, building, type) => {
+		let Factor;
+		if (Productions.ShowDaily && type !== 'happiness' && type !== 'population') {
+			Factor = building['dailyfactor'];
+		}
+		else {
+			Factor = 1;
+		}
+
+		return Amount * Factor;
+    },
 };

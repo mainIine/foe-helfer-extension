@@ -227,8 +227,8 @@ let CityMap = {
 		}
 
 
-		if(CityMap.CityData === null)
-		{
+		//if(CityMap.CityData === null)
+		//{
 			// kommt von extern
 			if(Data !== null)
 			{
@@ -246,9 +246,9 @@ let CityMap = {
 
 			CityMap.CityData = MapDataSorted;
 
-		} else {
-			MapDataSorted = CityMap.CityData;
-		}
+		//} else {
+		//	MapDataSorted = CityMap.CityData;
+		//}
 
 		let MinX = 0,
 			MinY = 0,

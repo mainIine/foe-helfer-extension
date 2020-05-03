@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Produzioni casuali",
 		"Boxes.Productions.Headings.residential": "Edifici residenziali",
 		"Boxes.Productions.Headings.street": "Strade",
+		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
+		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Gruppi",
 		"Boxes.Productions.ModeSingle": "Singolo",
 		"Boxes.Productions.SearchInput": "Cerca edificio ...",

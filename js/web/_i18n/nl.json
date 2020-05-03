@@ -293,6 +293,8 @@
 		"Boxes.Productions.Headings.random_production": "Willekeurige producties",
 		"Boxes.Productions.Headings.residential": "Woongebouwen",
 		"Boxes.Productions.Headings.street": "Wegen",
+		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
+		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Groeperen",
 		"Boxes.Productions.ModeSingle": "Individueel",
 		"Boxes.Productions.SearchInput": "Zoek gebouw...",
