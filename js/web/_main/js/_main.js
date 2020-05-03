@@ -668,6 +668,10 @@ const FoEproxy = (function () {
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
+
+		if (ActiveMap === 'era_outpost') {
+			MainParser.CityMapEraOutpostData = data.responseData['entities'];
+        }
 	});
 
 
@@ -1089,6 +1093,7 @@ let MainParser = {
 
 	// alle Gebäude des Spielers
 	CityMapData: null,
+	CityMapEraOutpostData: [],
 
 	// freugeschaltete Erweiterungen
 	UnlockedAreas: null,

@@ -72,7 +72,7 @@ let Productions = {
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 
-		Productions.entities = Productions.GetSavedData();
+		Productions.entities = MainParser.CityMapData.concat(MainParser.CityMapEraOutpostData);
 
 		// Münzboost ausrechnen und bereitstellen
         Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100);
@@ -93,16 +93,6 @@ let Productions = {
 		}
 
 		Productions.ReadData();
-	},
-
-
-	/**
-	 * ALle Gebäude aus dem Cache holen
-	 *
-	 * @returns {any}
-	 */
-	GetSavedData: ()=> {
-		return MainParser.CityMapData;
 	},
 
 
@@ -287,7 +277,9 @@ let Productions = {
             	break;
 			}
 
-			Products[Resource] = CurrentResources[Resource];
+			if (Resource !== 'credits') { // Marscredits nicht zu den Gütern zählen
+				Products[Resource] = CurrentResources[Resource];
+			}
 		}
 
 		if (d['bonus'] !== undefined) {
