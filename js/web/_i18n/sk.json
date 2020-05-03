@@ -277,6 +277,7 @@
 		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
 		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Priľahlé budovy",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Spokojnosť",
 		"Boxes.Productions.Headings.all": "Všetky",
 		"Boxes.Productions.Headings.amount": "Množstvo",
@@ -297,6 +298,8 @@
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Skupiny",
 		"Boxes.Productions.ModeSingle": "Jednotlivo",
+		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Vyhľadať budovu...",
 		"Boxes.Productions.Title": "Prehľad produkcie",
 		"Boxes.Productions.Total": "Spolu: ",

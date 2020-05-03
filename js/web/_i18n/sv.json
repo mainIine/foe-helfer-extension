@@ -277,6 +277,7 @@
 		"Boxes.Plunderer.visited": "Besökt",
 		"Boxes.Plunderer.visitTitle": "När du sist du besökte denna spelare",
 		"Boxes.Productions.AdjacentBuildings": "Angränsande byggnad",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Glädje",
 		"Boxes.Productions.Headings.all": "Alla",
 		"Boxes.Productions.Headings.amount": "Antal",
@@ -297,6 +298,8 @@
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Gruppera",
 		"Boxes.Productions.ModeSingle": "Enkel",
+		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Sök byggnad...",
 		"Boxes.Productions.Title": "Produktionsöversikt",
 		"Boxes.Productions.Total": "Total: ",

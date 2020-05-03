@@ -20,14 +20,14 @@ let Productions = {
 	BuildingsProductsGroups: [],
 	MainBuildingBonusAdded: false,
 	ShowDaily: false,
-	SwitchFunctionsRegistered : false,
+	SwitchFunctionsRegistered: false,
 
 	ActiveTab: 'strategy_points',
 
 	BuildingTypes: {
 		greatbuilding: i18n('Boxes.Productions.Headings.greatbuilding'),
-		production : i18n('Boxes.Productions.Headings.production'),
-		random_production : i18n('Boxes.Productions.Headings.random_production'),
+		production: i18n('Boxes.Productions.Headings.production'),
+		random_production: i18n('Boxes.Productions.Headings.random_production'),
 		residential: i18n('Boxes.Productions.Headings.residential'),
 		decoration: i18n('Boxes.Productions.Headings.decoration'),
 		street: i18n('Boxes.Productions.Headings.street'),
@@ -66,13 +66,14 @@ let Productions = {
 	/**
 	 *  Start der ganzen Prozedur
 	 */
-	init: ()=> {
+	init: () => {
 
 		moment.locale(i18n('Local'));
-		Productions.Tabs = [];
-		Productions.TabsContent = [];
-
-		Productions.entities = MainParser.CityMapData.concat(MainParser.CityMapEraOutpostData);
+		
+		Productions.entities = MainParser.CityMapData;
+		if (MainParser.CityMapEraOutpostData) {
+			Productions.entities = Productions.entities.concat(MainParser.CityMapEraOutpostData);
+		}		
 
 		// Münzboost ausrechnen und bereitstellen
         Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100);
@@ -380,16 +381,16 @@ let Productions = {
 	/**
 	 * HTML Box erstellen und einblenden
 	 */
-	showBox: ()=> {
+	showBox: () => {
 
-		String.prototype.cleanup = function() {
+		String.prototype.cleanup = function () {
 			return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
 		};
 
-		if( $('#Productions').length > 0 ){
+		if ($('#Productions').length > 0) {
 			HTML.CloseOpenBox('Productions');
 
-			return ;
+			return;
 		}
 
 		// CSS in den DOM prügeln
@@ -402,6 +403,16 @@ let Productions = {
 			'dragdrop': true,
 			'minimize': true
 		});
+
+		Productions.CalcBody();
+	},
+
+	/**
+	 * Aktualisiert den Inhalt
+	 */
+	CalcBody: () => {
+		Productions.Tabs = [];
+		Productions.TabsContent = [];
 
 		let h = [];
 
@@ -531,7 +542,8 @@ let Productions = {
 			// alle Güter nach Zeitalter
 			if(Productions.isEmpty(countProducts) === false)
 			{
-				let eras = [];
+				let eras = [],
+					eraSums = [];
 
 				// nach Zeitalter gruppieren und Array zusammen fumlen
 				for(let ca in countProducts)
@@ -544,12 +556,31 @@ let Productions = {
 							eras[era] = [];
 						}
 
-						eras[era].push('<span>' + Productions.GetGoodName(ca) +' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
+						eras[era].push('<span>' + Productions.GetGoodName(ca) + ' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
+
+						if (!eraSums[era]) {
+							eraSums[era] = 0;
+						}
+						eraSums[era] += countProducts[ca];
 					}
 				}
 
 
 				table.push('<thead>');
+
+				if (Productions.ShowDaily) {
+					table.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+				}
+				else {
+					table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+				}
+
+				if (CurrentEraID == 18 && !MainParser.CityMapEraOutpostData) {
+					table.push('<tr><th colspan="5">' + i18n('Boxes.Productions.NoMarsDataWarning') + '</th></tr>');
+				}
+				if (CurrentEraID == 19 && !MainParser.CityMapEraOutpostData) {
+					table.push('<tr><th colspan="5">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
+				}
 
 				// Zeitalterweise in die Tabelle legen
 				for (let era = eras.length; era >= 0; era--)
@@ -563,7 +594,8 @@ let Productions = {
 
 					table.push('<tr><td colspan="5" class="all-products">');
 
-					table.push( eras[era].join('') );
+					table.push(eras[era].join(''));
+					table.push('<span>' + i18n('Boxes.Productions.GoodEraTotal') + ' <strong>' + HTML.Format(eraSums[era]) + '</strong></span>')
 
 					table.push('</td></tr>');
 				}
@@ -576,15 +608,19 @@ let Productions = {
 
 			else {
 				table.push('<thead>');
+				
 				table.push('<tr class="other-header">');
 				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>'); 
-				if (Productions.ShowDaily) {
-					table.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span></th>');
+
+				if (type !== 'population' && type !== 'happiness') {
+					if (Productions.ShowDaily) {
+						table.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+					}
+					else {
+						table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+					}
 				}
-				else {
-					table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span></th>');
-				}
-								
+				
 				table.push('<th colspan="2"></th>');
 				table.push('<th colspan="2" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
@@ -680,7 +716,17 @@ let Productions = {
 
 		TableAll.push('<thead>');
 		TableAll.push('<tr>');
-		TableAll.push('<th><input type="text" id="all-search" placeholder="' + i18n('Boxes.Productions.SearchInput') + '" onkeyup="Productions.Filter()"></th>');
+		TableAll.push('<th><input type="text" id="all-search" placeholder="' + i18n('Boxes.Productions.SearchInput') + '" onkeyup="Productions.Filter()">');
+
+		if (Productions.ShowDaily) {
+			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+		}
+		else {
+			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+		}
+
+		TableAll.push('</th>');
+
 		TableAll.push('<th class="text-right" id="all-dropdown-th"></th>');
 		TableAll.push('</tr>');
 		TableAll.push('</thead>');
@@ -784,7 +830,6 @@ let Productions = {
 			});
 		});
 
-		//Todo: Unregister Handler
 		$('body').on('click', '.change-daily', function () {
 			Productions.ShowDaily = !Productions.ShowDaily;
 			if (Productions.ShowDaily) {
@@ -795,6 +840,7 @@ let Productions = {
 			}
 
 			//Todo: Refresh
+			Productions.CalcBody();
 		});
 
 		Productions.SwitchFunctionsRegistered = true;

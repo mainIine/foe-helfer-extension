@@ -277,6 +277,7 @@
 		"Boxes.Plunderer.visited": "Ziyeret",
 		"Boxes.Plunderer.visitTitle": "Bu Oyuncuları son Ziyaret",
 		"Boxes.Productions.AdjacentBuildings": "Bitişik Binalar",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Mutluluk",
 		"Boxes.Productions.Headings.all": "Hepsi",
 		"Boxes.Productions.Headings.amount": "Hacim",
@@ -297,6 +298,8 @@
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Gruplu",
 		"Boxes.Productions.ModeSingle": "Tek",
+		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
 		"Boxes.Productions.SearchInput": "Bina Ara...",
 		"Boxes.Productions.Title": "Üretim Genelbakış",
 		"Boxes.Productions.Total": "Toplam: ",
