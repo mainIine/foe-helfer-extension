@@ -203,11 +203,16 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) 
 	const playerData = data.responseData;
 	Plunderer.lastVisitedPlayer = playerData;
 	await Plunderer.collectPlayer(playerData);
-	if ($('#plunderer').length !== 0) {
-		Plunderer.page = 1;
-		Plunderer.filterByPlayerId = playerData.other_player.player_id;
-		Plunderer.Show();
-	}
+	Plunderer.page = 1;
+	Plunderer.filterByPlayerId = playerData.other_player.player_id;
+ 	Plunderer.UpdateBoxIfVisible();
+});
+
+// When you visit your city - remove filter by player
+FoEproxy.addHandler('CityMapService', 'getEntities', async(data, postData) => {
+    Plunderer.page = 1;
+    Plunderer.filterByPlayerId = null;
+ 	Plunderer.UpdateBoxIfVisible();
 });
 
 let Plunderer = {
