@@ -78,6 +78,9 @@
 	font-weight: 700;
 	display: block;
 	font-size: 1rem;
+	overflow: hidden;
+	white-space: pre;
+	text-overflow: ellipsis;
 }
 
 .window-head span:nth-child(2) {
