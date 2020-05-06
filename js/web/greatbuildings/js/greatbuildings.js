@@ -96,22 +96,18 @@ let GreatBuildings =
     BuildBox: () => {
         GreatBuildings.CalcBody();
 
-        if (!GreatBuildings.MainListenerRegistered) {
-            GreatBuildings.MainListenerRegistered = true;
+        $('#greatbuildings').on('blur', '#costFactor', function () {
+            GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
+            localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+            GreatBuildings.CalcBody();
+        });
 
-            $('body').on('blur', '#costFactor', function () {
-                GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
-                localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+        for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+            $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
+                GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
+                localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.FPGreatBuildings[i].GoodCosts);
                 GreatBuildings.CalcBody();
             });
-
-            for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
-                $('body').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
-                    GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
-                    localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.FPGreatBuildings[i].GoodCosts);
-                    GreatBuildings.CalcBody();
-                }); 
-            }
         }
     },
 
