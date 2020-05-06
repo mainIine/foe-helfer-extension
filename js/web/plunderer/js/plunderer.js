@@ -208,13 +208,6 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) 
  	Plunderer.UpdateBoxIfVisible();
 });
 
-// When you visit your city - remove filter by player
-FoEproxy.addHandler('CityMapService', 'getEntities', async(data, postData) => {
-    Plunderer.page = 1;
-    Plunderer.filterByPlayerId = null;
- 	Plunderer.UpdateBoxIfVisible();
-});
-
 let Plunderer = {
 
 	// Cached last visited player for getting info about city before plundering
