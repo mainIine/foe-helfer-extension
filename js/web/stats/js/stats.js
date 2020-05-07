@@ -42,7 +42,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
     await IndexDB.getDB();
 
 	for (let reward of rewards) {
-		if (!Stats.TrackableRewards.includes(rewardIncidentSource)) {
+		// default is incident reward
+		if (rewardIncidentSource == 'default') {
 			continue;
 		}
 
@@ -130,14 +131,6 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 });
 
 let Stats = {
-
-	// More rewards can be tracked later, but for now lets track few
-	TrackableRewards: [
-		'diplomaticGifts', // Asteroid Age's GB reward
-		'battlegrounds_conquest', // Battle ground
-		'guildExpedition', // Temple of Relics
-		'spoilsOfWar' // Himeji Castle
-	],
 
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
@@ -509,6 +502,7 @@ ${sourceBtns.join('')}
 		}));
 
 		const btnsRewardSelect = [
+			'__event',
 			'battlegrounds_conquest', // Battle ground
 			'guildExpedition', // Temple of Relics
 			'spoilsOfWar', // Himeji Castle
@@ -1073,13 +1067,16 @@ ${sourceBtns.join('')}
 		let data = await IndexDB.db.statsRewards.where('date').above(startDate).toArray();
 
 		const rewardTypes = await IndexDB.db.statsRewardTypes.toArray();
-		const rewardSources = ['battlegrounds_conquest', 'guildExpedition', 'spoilsOfWar', 'diplomaticGifts'];
 		const groupedByRewardSource = {};
 
 		data.forEach(it => {
-			groupedByRewardSource[it.type] = groupedByRewardSource[it.type] || {};
-			groupedByRewardSource[it.type][it.reward] = groupedByRewardSource[it.type][it.reward] || 0;
-			groupedByRewardSource[it.type][it.reward]++;
+            let type = it.type;
+            if (/event/i.test(type)) {
+                type = '__event';
+            }
+			groupedByRewardSource[type] = groupedByRewardSource[type] || {};
+			groupedByRewardSource[type][it.reward] = groupedByRewardSource[type][it.reward] || 0;
+			groupedByRewardSource[type][it.reward]++;
 		});
 
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
