@@ -144,6 +144,7 @@
 					'tableSorter/table-sorter',
 					'Sortable/Sortable.min',
 					'jsZip/jszip.min',
+					'date-range/lightpick',
 					'dexie/dexie.min', // indexDB helper lib
 				];
 

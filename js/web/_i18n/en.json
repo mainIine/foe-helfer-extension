@@ -378,6 +378,7 @@
 		"Boxes.Units.Unbind": "Unattached",
 		"Boxes.Units.Unit": "Unit",
 		"DateTime": "DD-MMM-YY @ HH:mm:ss a",
+		"Date": "DD-MMM-YY",
 		"Eras.0": "No age",
 		"Eras.1": "Stone Age",
 		"Eras.10": "Modern Era",
