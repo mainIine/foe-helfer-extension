@@ -203,11 +203,9 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', async (data, postData) 
 	const playerData = data.responseData;
 	Plunderer.lastVisitedPlayer = playerData;
 	await Plunderer.collectPlayer(playerData);
-	if ($('#plunderer').length !== 0) {
-		Plunderer.page = 1;
-		Plunderer.filterByPlayerId = playerData.other_player.player_id;
-		Plunderer.Show();
-	}
+	Plunderer.page = 1;
+	Plunderer.filterByPlayerId = playerData.other_player.player_id;
+ 	Plunderer.UpdateBoxIfVisible();
 });
 
 let Plunderer = {
@@ -325,41 +323,37 @@ let Plunderer = {
 
 		Plunderer.Render();
 
-		if (!Plunderer.inited) {
-			$('body').on('click', '#plundererBody .load-1st-page', function () {
-				if (Plunderer.loading) {
-					return;
-				}
-				Plunderer.page = 1;
-				Plunderer.Show();
-				$('#plundererBody').animate({scrollTop: 0}, 'fast');
-			});
+		$('#plunderer').on('click', '#plundererBody .load-1st-page', function () {
+			if (Plunderer.loading) {
+				return;
+			}
+			Plunderer.page = 1;
+			Plunderer.Show();
+			$('#plundererBody').animate({scrollTop: 0}, 'fast');
+		});
 
-			$('body').on('click', '#plundererBody .load-next-page', function () {
-				if (Plunderer.loading) {
-					return;
-				}
-				Plunderer.page++;
-				Plunderer.Show();
-				$('#plundererBody').animate({scrollTop: 0}, 'fast');
-			});
+		$('#plunderer').on('click', '#plundererBody .load-next-page', function () {
+			if (Plunderer.loading) {
+				return;
+			}
+			Plunderer.page++;
+			Plunderer.Show();
+			$('#plundererBody').animate({scrollTop: 0}, 'fast');
+		});
 
-			$('body').on('click', '#plundererBody .select-player', function () {
-				if (Plunderer.loading) {
-					return;
-				}
+		$('#plunderer').on('click', '#plundererBody .select-player', function () {
+			if (Plunderer.loading) {
+				return;
+			}
 
-				const id = $(this).data('value');
+			const id = $(this).data('value');
 
-				Plunderer.page = 1;
-				Plunderer.filterByPlayerId = id ? +id : null;
-				Plunderer.Show();
+			Plunderer.page = 1;
+			Plunderer.filterByPlayerId = id ? +id : null;
+			Plunderer.Show();
 
-				$('#plundererBody').animate({scrollTop: 0}, 'fast');
-			});
-
-			Plunderer.inited = true;
-		}
+			$('#plundererBody').animate({scrollTop: 0}, 'fast');
+		});
 	},
 
 

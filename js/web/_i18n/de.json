@@ -383,6 +383,7 @@
 		"Boxes.Units.Unbind": "Ungebunden",
 		"Boxes.Units.Unit": "Einheit",
 		"DateTime": "DD.MM.YYYY HH:mm [Uhr]",
+		"Date": "DD.MM.YYYY",
 		"Eras.0": "Kein Zeitalter",
 		"Eras.1": "Steinzeit",
 		"Eras.10": "Moderne",

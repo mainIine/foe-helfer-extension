@@ -108,7 +108,7 @@ let Productions = {
 
 		let PopulationSum = 0,
 			HappinessSum = 0;
-		
+
 		for(let i in d)
 		{
 			if (d.hasOwnProperty(i) && d[i]['id'] < 2000000000)
@@ -170,7 +170,7 @@ let Productions = {
 
 		for (let i in Productions.BuildingsAll) {
 			let building = Productions.BuildingsAll[i];
-			
+
 			if (building['type'] === 'residential' || building['type'] === 'production') {
 				if (building['products']['money'] !== undefined) {
 					building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
@@ -185,7 +185,7 @@ let Productions = {
 				if (building['motivatedproducts']['supplies'] !== undefined) {
 					building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
-			}	
+			}
 
 			// Nach Produkt
 			for (let x in building['products']) {
@@ -304,7 +304,7 @@ let Productions = {
 				Products['happiness'] = BuildingData['provided_happiness'] * Faktor;
 			}
 		}
-	
+
 		if (BuildingData['entity_levels'] !== undefined && BuildingData['entity_levels'][d['level']] !== undefined) {
 			let EntityLevel = BuildingData['entity_levels'][d['level']];
 			if (EntityLevel['provided_population'] !== undefined) {
@@ -318,14 +318,14 @@ let Productions = {
 				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
 			}
 		}
-		
+
         let AdditionalProduct,
 			MotivatedProducts = [];
 
 		for (let ProductName in Products) {
 			MotivatedProducts[ProductName] = Products[ProductName];
 		}
-                
+
         for (let Resource in AdditionalResources) {
 
             if (!AdditionalResources.hasOwnProperty(Resource)) {
@@ -357,7 +357,7 @@ let Productions = {
 
 		Ret.products = Products;
 		Ret.motivatedproducts = MotivatedProducts;
-		
+
         if(d['id'] === '1'){
 			console.log('Products: ', Products);
 		}
@@ -755,7 +755,7 @@ let Productions = {
 			Productions.SortingAllTab();
 
 			// Ein Gebäude soll auf der Karte dargestellt werden
-			$('body').on('click', '.foe-table .show-entity', function () {
+			$('#Productions').on('click', '.foe-table .show-entity', function () {
 				Productions.ShowFunction($(this).data('id'));
 			});
 		});
@@ -810,10 +810,8 @@ let Productions = {
 	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
 	 *
 	 */
-	SwitchFunction: () => {
-		if (Productions.SwitchFunctionsRegistered) return;
-
-		$('body').on('click', '.change-view', function () {
+	SwitchFunction: ()=>{
+		$('#Productions').on('click', '.change-view', function(){
 			let btn = $(this),
 				t = $(this).data('type'),
 				hiddenTb = $('.' + t + '-mode:hidden'),
@@ -830,7 +828,7 @@ let Productions = {
 			});
 		});
 
-		$('body').on('click', '.change-daily', function () {
+		$('#Productions').on('click', '.change-daily', function () {
 			Productions.ShowDaily = !Productions.ShowDaily;
 			if (Productions.ShowDaily) {
 				$(this).text(i18n('Boxes.Productions.ModeCurrent'));
@@ -896,7 +894,7 @@ let Productions = {
 	 * Blendet je nach Dropdown die Typen ein
 	 */
 	Dropdown: ()=>{
-		$('body').on('change', '#all-drop', function() {
+		$('#Productions').on('change', '#all-drop', function() {
 			let t = $('select#all-drop :selected').data('type');
 
 			if(t === 'all')

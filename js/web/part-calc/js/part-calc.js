@@ -62,7 +62,7 @@ let Parts = {
 		Parts.Show();
 
 		// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
-		$('body').on('blur', '.arc-percent-input', function(){
+		$('#OwnPartBox').on('blur', '.arc-percent-input', function(){
 			let aprc = [];
 
 			$('.arc-percent-input').each(function () {
@@ -79,13 +79,13 @@ let Parts = {
 
 
 		// Es wird ein externer Platz eingetragen
-		$('body').on('blur', '.ext-part-input', function(){
+		$('#OwnPartBox').on('blur', '.ext-part-input', function(){
 			Parts.collectExternals();
 		});
 
 
 		// eine neuer globaler Arche-Satz wird gewählt
-		$('body').on('click', '.btn-set-arc', function(){
+		$('#OwnPartBox').on('click', '.btn-set-arc', function(){
 			let ArkBonus = parseFloat($(this).data('value'));
 			if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
 
@@ -114,10 +114,10 @@ let Parts = {
 				$(this).val(0);
 				v = 0;
 			}
-            
+
             Parts.Input[i] = parseInt(v);
 		});
-        
+
 		// Prüfen ob alle "null" sind
 		const isAllZero = !Parts.Input.some(el => el.value !== 0);
 
@@ -174,7 +174,7 @@ let Parts = {
         for (let i = 0; i < 5; i++) {
             arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
         }
-        
+
         // Wenn in Rankings nichts mehr steht, dann abbrechen
 		for (let i = 0; i < Parts.Rankings.length; i++) {
 			if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
@@ -228,7 +228,7 @@ let Parts = {
                 }
             }
         }
-               
+
         Maezens.sort(function (a, b) { return b - a });
 
         for (let i = 0; i < Maezens.length; i++) {
@@ -236,12 +236,12 @@ let Parts = {
                 Maezens.length = Math.max(i, 5);
                 break;
             }
-                        
+
             ExtTotal += Maezens[i];
         }
 
         Rest -= ExtTotal;
-        
+
         for (let i = 0; i < 5; i++) {
             if (FPRewards[i] <= Maezens[i] || Rest <= Maezens[i]) {
 				Eigens[i] = Math.ceil(Rest + (Maezens[i + 1] !== undefined ? Maezens[i + 1] : 0) - Maezens[i]);
@@ -255,7 +255,7 @@ let Parts = {
                 Dangers[i] = Math.floor(0 - Eigens[i]/2);
                 Eigens[i] = 0;
             }
-            
+
             for (let j = Maezens.length - 1; j >= i; j--) {
                 if (Maezens[j] > 0) {
                     Maezens[j + 1] = Maezens[j];
@@ -274,11 +274,11 @@ let Parts = {
         }
 
         if(Rest>0) Eigens[5] = Rest;
-        
+
         EigenTotal = EigenStart;
         for (let i = 0; i < Eigens.length; i++) {
             EigenTotal += Eigens[i];
-        }      
+        }
 
         for (let i = FPRewards.length; i < Maezens; i++)
             FPRewards[i] = 0;
@@ -288,7 +288,7 @@ let Parts = {
 
         for (let i = BPRewards.length; i < Maezens; i++)
             BPRewards[i] = 0;
-        
+
         // Info-Block
         h.push('<table style="width: 100%"><tr><td style="width: 50%">');
 		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
@@ -422,7 +422,7 @@ let Parts = {
             h.push('<td colspan="5"></td>');
             h.push('</tr>');
         }
-        
+
         h.push('<tbody>');
         h.push('</table>');
 
@@ -495,13 +495,13 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-		$('body').off("click",'.button-own');
-		$('body').on('click', '.button-own', function(){
+		$('#OwnPartBox').off("click",'.button-own');
+		$('#OwnPartBox').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
 			helper.str.copyToClipboard(copyParts);
 		});
-		$('body').off("click",'.button-save-own');
-		$('body').on('click', '.button-save-own', function(){
+		$('#OwnPartBox').off("click",'.button-save-own');
+		$('#OwnPartBox').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
 

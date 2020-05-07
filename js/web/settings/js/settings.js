@@ -182,7 +182,7 @@ let Settings = {
 			);
 		}
 
-		$('body').on('click', 'input.setting-check', function(){
+		$('#SettingsBoxBody').on('click', 'input.setting-check', function(){
 			Settings.StoreSettings($(this));
 		});
 	},
@@ -280,13 +280,13 @@ let Settings = {
 			if (!Languages.PossibleLanguages.hasOwnProperty(iso)){
 				break;
 			}
-			
+
 			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + Languages.PossibleLanguages[iso] + '</option>');
 		}
 
 		dp.push('</select>');
 
-		$('body').on('change', '#change-lang', function(){
+		$('#SettingsBoxBody').on('change', '#change-lang', function(){
 			let uLng = $(this).val();
 
 			localStorage.setItem('user-language', uLng);
@@ -299,7 +299,7 @@ let Settings = {
 
 
 	CustomerApiCheck: ()=> {
-		$('body').on('change', '[data-id="CustomerApi"]', function(){
+		$('#SettingsBoxBody').on('change', '[data-id="CustomerApi"]', function(){
 			location.reload();
 		});
 	},
