@@ -142,7 +142,7 @@ let Infoboard = {
         Infoboard.FilterInput();
         Infoboard.ResetBox();
 
-        $('body').on('click', '#infoboxTone', function() {
+        $('#BackgroundInfo').on('click', '#infoboxTone', function() {
 
             let disabled = $(this).hasClass('deactivated');
 
@@ -168,7 +168,7 @@ let Infoboard = {
 
         let Msg = data[0];
 
-        if (Msg === undefined || Msg['requestClass'] === undefined) {
+        if (!Msg || !Msg['requestClass']) {
             return;
         }
 
@@ -178,13 +178,13 @@ let Infoboard = {
             s = c + '_' + m + t;
 
         // Gibt es eine Funktion dafür?
-        if (Info[s] === undefined) {
+        if (!Info[s]) {
             return;
         }
 
         let bd = Info[s](Msg['responseData']);
 
-        if (bd === false) {
+        if (!bd) {
             return;
         }
 
@@ -194,7 +194,7 @@ let Infoboard = {
 
 
         // wenn nicht angezeigt werden soll, direkt versteckeln
-        if (status === false) {
+        if (!status) {
             tr.hide();
         }
 
@@ -205,7 +205,7 @@ let Infoboard = {
 
         $('#BackgroundInfoTable tbody').prepend(tr);
 
-        if (Infoboard.PlayInfoSound && status !== false) {
+        if (Infoboard.PlayInfoSound && status) {
             Infoboard.SoundFile.play();
         }
     },
@@ -216,8 +216,7 @@ let Infoboard = {
      *
      */
     FilterInput: () => {
-        $('body').on('change', '.filter-msg', function() {
-
+        $('#BackgroundInfo').on('change', '.filter-msg', function() {
             let active = [];
 
             $('.filter-msg').each(function() {
@@ -252,7 +251,7 @@ let Infoboard = {
      *
      */
     ResetBox: () => {
-        $('body').on('click', '.btn-reset-box', function() {
+        $('#BackgroundInfo').on('click', '.btn-reset-box', function() {
             $('#BackgroundInfoTable tbody').html('');
         });
     }
