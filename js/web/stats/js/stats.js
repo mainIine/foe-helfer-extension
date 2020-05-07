@@ -42,7 +42,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
     await IndexDB.getDB();
 
 	for (let reward of rewards) {
-		if (!Stats.TrackableRewards.some(it => RegExp(it, 'i').test(rewardIncidentSource))) {
+		// default is incident reward
+		if (rewardIncidentSource == 'default') {
 			continue;
 		}
 
@@ -130,15 +131,6 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 });
 
 let Stats = {
-
-	// More rewards can be tracked later, but for now lets track few
-	TrackableRewards: [
-		'.*event.*', // any seasonal event
-		'diplomaticGifts', // Asteroid Age's GB reward
-		'battlegrounds_conquest', // Battle ground
-		'guildExpedition', // Temple of Relics
-		'spoilsOfWar' // Himeji Castle
-	],
 
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
