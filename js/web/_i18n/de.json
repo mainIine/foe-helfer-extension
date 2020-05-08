@@ -7,8 +7,8 @@
 		"API.LGInvest": "Deine LG Investitionen wurden übertragen",
 		"API.UpdateSuccess": "Update durchgeführt",
 		"Boxes.Api.Title": "Extension API Einstellungen",
-		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
+		"Boxes.BattleAssist.Text": "Deine Armee besteht nur noch aus Agenten. Zieh dich zurück oder verwende Diamanten, um Einheiten zu heilen!",
+		"Boxes.BattleAssist.Title": "Stop!",
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktiver Schleifenquest:",
 		"Boxes.Calculator.ArkBonus": "Arche Bonus",
 		"Boxes.Calculator.AvailableFP": "Verfügbare Forgepunkte",
