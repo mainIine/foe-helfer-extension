@@ -20,7 +20,6 @@ let Productions = {
 	BuildingsProductsGroups: [],
 	MainBuildingBonusAdded: false,
 	ShowDaily: false,
-	SwitchFunctionsRegistered: false,
 
 	ActiveTab: 'strategy_points',
 
@@ -69,11 +68,11 @@ let Productions = {
 	init: () => {
 
 		moment.locale(i18n('Local'));
-		
+
 		Productions.entities = MainParser.CityMapData;
 		if (MainParser.CityMapEraOutpostData) {
 			Productions.entities = Productions.entities.concat(MainParser.CityMapEraOutpostData);
-		}		
+		}
 
 		// Münzboost ausrechnen und bereitstellen
         Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100);
@@ -404,13 +403,26 @@ let Productions = {
 			'minimize': true
 		});
 
-		Productions.CalcBody();
+		Productions.RenderBody();
+
+		setTimeout(() => {
+			// Zusatzfunktionen für die Tabelle
+			$('.production-tabs').tabslet({active: 1});
+			$('.sortable-table').tableSorter();
+			Productions.setupSwitchHandlers();
+			Productions.setupSortingAllTab();
+
+			// Ein Gebäude soll auf der Karte dargestellt werden
+			$('#Productions').on('click', '.foe-table .show-entity', function () {
+				Productions.ShowFunction($(this).data('id'));
+			});
+		});
 	},
 
 	/**
 	 * Aktualisiert den Inhalt
 	 */
-	CalcBody: () => {
+	RenderBody: () => {
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 
@@ -608,9 +620,9 @@ let Productions = {
 
 			else {
 				table.push('<thead>');
-				
+
 				table.push('<tr class="other-header">');
-				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>'); 
+				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>');
 
 				if (type !== 'population' && type !== 'happiness') {
 					if (Productions.ShowDaily) {
@@ -620,7 +632,7 @@ let Productions = {
 						table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 					}
 				}
-				
+
 				table.push('<th colspan="2"></th>');
 				table.push('<th colspan="2" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
@@ -746,19 +758,7 @@ let Productions = {
 
 		h.push('</div>');
 
-		$('#Productions').find('#ProductionsBody').html( h.join('') ).promise().done(function(){
-
-			// Zusatzfunktionen für die Tabelle
-			$('.production-tabs').tabslet({active: 1});
-			$('.sortable-table').tableSorter();
-			Productions.SwitchFunction();
-			Productions.SortingAllTab();
-
-			// Ein Gebäude soll auf der Karte dargestellt werden
-			$('#Productions').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowFunction($(this).data('id'));
-			});
-		});
+		$('#Productions').find('#ProductionsBody').html( h.join('') )
 	},
 
 
@@ -810,7 +810,7 @@ let Productions = {
 	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
 	 *
 	 */
-	SwitchFunction: ()=>{
+	setupSwitchHandlers: ()=>{
 		$('#Productions').on('click', '.change-view', function(){
 			let btn = $(this),
 				t = $(this).data('type'),
@@ -838,10 +838,8 @@ let Productions = {
 			}
 
 			//Todo: Refresh
-			Productions.CalcBody();
+			Productions.RenderBody();
 		});
-
-		Productions.SwitchFunctionsRegistered = true;
 	},
 
 
@@ -849,7 +847,7 @@ let Productions = {
 	 * Sortiert alle Gebäude des letzten Tabs
 	 *
 	 */
-	SortingAllTab: ()=>{
+	setupSortingAllTab: ()=>{
 
 		// Gruppiert die Gebäude
 		$('#all tr').each(function(){
@@ -1054,7 +1052,7 @@ let Productions = {
 
 	/**
 	 * Ermittelt die täglichen Güter, falls die Option ShowDaily gesetzt ist
-	 * 
+	 *
 	 * */
 	GetDaily: (Amount, building, type) => {
 		let Factor;
