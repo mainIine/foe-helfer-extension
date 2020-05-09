@@ -403,6 +403,7 @@ let Productions = {
 			'minimize': true
 		});
 
+		Productions.ActiveTab = 1;
 		Productions.CalcBody();
 
 		Productions.SwitchFunction();
@@ -570,10 +571,10 @@ let Productions = {
 				table.push('<thead>');
 
 				if (Productions.ShowDaily) {
-					table.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
 				}
 				else {
-					table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 				}
 
 				if (CurrentEraID == 18 && !MainParser.CityMapEraOutpostData) {
@@ -615,10 +616,10 @@ let Productions = {
 
 				if (type !== 'population' && type !== 'happiness') {
 					if (Productions.ShowDaily) {
-						table.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+						table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
 					}
 					else {
-						table.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+						table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 					}
 				}
 
@@ -720,10 +721,10 @@ let Productions = {
 		TableAll.push('<th><input type="text" id="all-search" placeholder="' + i18n('Boxes.Productions.SearchInput') + '" onkeyup="Productions.Filter()">');
 
 		if (Productions.ShowDaily) {
-			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="true">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="' + (Productions.Types.length - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
 		}
 		else {
-			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="false">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="' + (Productions.Types.length - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 		}
 
 		TableAll.push('</th>');
@@ -829,6 +830,8 @@ let Productions = {
 		});
 
 		$('#Productions').on('click', '.change-daily', function () {
+			let Tab = $(this).data('value');
+			Productions.ActiveTab = Tab;
 			Productions.ShowDaily = !Productions.ShowDaily;
 			if (Productions.ShowDaily) {
 				$(this).text(i18n('Boxes.Productions.ModeCurrent'));
