@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "English",
 		"API.GEXChampionship": "GE Guild Ranking info has been updated",
@@ -384,8 +384,8 @@
 		"Boxes.Units.Title": "Unit Overview",
 		"Boxes.Units.Unbind": "Unattached",
 		"Boxes.Units.Unit": "Unit",
-		"DateTime": "DD-MMM-YY @ HH:mm:ss a",
 		"Date": "DD-MMM-YY",
+		"DateTime": "DD-MMM-YY @ HH:mm:ss a",
 		"Eras.0": "No age",
 		"Eras.1": "Stone Age",
 		"Eras.10": "Modern Era",

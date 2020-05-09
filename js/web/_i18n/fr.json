@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collectés depuis mardi (début de l'expédition de guilde).",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collectés ce mois-ci.",
 		"Boxes.Stats.PeriodTitle.today": "Collectés aujourd'hui.",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Ch. de bataille",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Transporteur",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "Exp. de guilde",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Himeji",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Récompenses des champs de bataille de guilde",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Récompenses des cadeaux diplomatiques octroyés par le Transporteur spatial",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Récompenses des reliques de l'expédition de guilde récupérées grâce au Temple des reliques",
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Aperçu de l'armée",
 		"Boxes.Units.Unbind": "Non liée",
 		"Boxes.Units.Unit": "Unité",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "DD.MM.YYYY HH:mm",
 		"Eras.0": "Sans âge",
 		"Eras.1": "Âge de Pierre",

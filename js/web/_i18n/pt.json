@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (GE starts on Tuesday)", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
 		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "GBG", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GE", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoils of War", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "GBG Rewards", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "GE Relic Rewards (Temple of Relic)", //Todo: Translate
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Resumo do Exército",
 		"Boxes.Units.Unbind": "Independente",
 		"Boxes.Units.Unit": "Unidade",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "DD-MMM-YY @ HH:mm:ss a", //Todo: Translate
 		"Eras.0": "Sem Era",
 		"Eras.1": "Idade da Pedra",

@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Zebrane od wtorku (od rozpoczęcia wypraw gildyjnych)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Zebrane w tym miesiącu",
 		"Boxes.Stats.PeriodTitle.today": "Zebrane dzisiaj",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Pola Chwały",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Dary dyplomacji",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "Wyprawy",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Łupy wojenne",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Nagrody z Gildyjnych Pól Chwały",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Dary dyplomacji (Kosmiczny Transporter)",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Nagrody za wyprawy (Świątynia Reliktów)",
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Przegląd wojsk",
 		"Boxes.Units.Unbind": "Niezależne",
 		"Boxes.Units.Unit": "Jednostka",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "D/M/YY h:mm:ss a",
 		"Eras.0": "Bez epoki",
 		"Eras.1": "Epoka Kamienia",

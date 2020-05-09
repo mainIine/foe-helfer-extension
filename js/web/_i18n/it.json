@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Raccolto da martedì (la spedizione della gilda inizia martedì)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Raccolto questo mese ",
 		"Boxes.Stats.PeriodTitle.today": "Raccolto Oggi",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Campi di battaglia",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GE", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoils of War", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Premi dai campi di battaglia della Gilda",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "GE Relic Rewards (Temple of Relic)", //Todo: Translate
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Panoramica dell'esercito",
 		"Boxes.Units.Unbind": "Indipendenti",
 		"Boxes.Units.Unit": "Unità",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "D / M / YY h: mm: ss a",
 		"Eras.0": "Nessuna età",
 		"Eras.1": "Età della pietra",

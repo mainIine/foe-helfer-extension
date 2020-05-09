@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Son Salı'dan toplanan (Salı günü Lonca Seferleri Başlıyor)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Bu Ay toplanan",
 		"Boxes.Stats.PeriodTitle.today": "Bugün toplanan",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Lonca Savaşları",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatik Hediyeler",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GEX",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Savaş Ganimeti",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Lonca Seferlerinden Ödüller",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": " Uzay yük gemisi tarafından toplanan diplomatik hediyeler",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Eserler tarafından oluşturulan Lonca Keşif ödülleri",
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Ordu Geneli",
 		"Boxes.Units.Unbind": "Bağlantısız",
 		"Boxes.Units.Unit": "Birim",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "DD.MM.YYYY HH:mm [Uhr]",
 		"Eras.0": "Çağ Yok",
 		"Eras.1": "Taş Devri",
