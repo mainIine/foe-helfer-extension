@@ -21,7 +21,7 @@ let Productions = {
 	MainBuildingBonusAdded: false,
 	ShowDaily: false,
 
-	ActiveTab: 'strategy_points',
+	ActiveTab: 1,
 
 	BuildingTypes: {
 		greatbuilding: i18n('Boxes.Productions.Headings.greatbuilding'),
@@ -403,26 +403,15 @@ let Productions = {
 			'minimize': true
 		});
 
-		Productions.RenderBody();
+		Productions.CalcBody();
 
-		setTimeout(() => {
-			// Zusatzfunktionen für die Tabelle
-			$('.production-tabs').tabslet({active: 1});
-			$('.sortable-table').tableSorter();
-			Productions.setupSwitchHandlers();
-			Productions.setupSortingAllTab();
-
-			// Ein Gebäude soll auf der Karte dargestellt werden
-			$('#Productions').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowFunction($(this).data('id'));
-			});
-		});
+		Productions.SwitchFunction();
 	},
 
 	/**
 	 * Aktualisiert den Inhalt
 	 */
-	RenderBody: () => {
+	CalcBody: () => {
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
 
@@ -758,7 +747,18 @@ let Productions = {
 
 		h.push('</div>');
 
-		$('#Productions').find('#ProductionsBody').html( h.join('') )
+		$('#Productions').find('#ProductionsBody').html(h.join('')).promise().done(function () {
+
+			// Zusatzfunktionen für die Tabelle
+			$('.production-tabs').tabslet({ active: Productions.ActiveTab });
+			$('.sortable-table').tableSorter();
+			Productions.SortingAllTab();
+
+			// Ein Gebäude soll auf der Karte dargestellt werden
+			$('#Productions').on('click', '.foe-table .show-entity', function () {
+				Productions.ShowFunction($(this).data('id'));
+			});
+		});
 	},
 
 
@@ -810,7 +810,7 @@ let Productions = {
 	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
 	 *
 	 */
-	setupSwitchHandlers: ()=>{
+	SwitchFunction: ()=>{
 		$('#Productions').on('click', '.change-view', function(){
 			let btn = $(this),
 				t = $(this).data('type'),
@@ -837,8 +837,7 @@ let Productions = {
 				$(this).text(i18n('Boxes.Productions.ModeDaily'));
 			}
 
-			//Todo: Refresh
-			Productions.RenderBody();
+			Productions.CalcBody();
 		});
 	},
 
@@ -847,7 +846,7 @@ let Productions = {
 	 * Sortiert alle Gebäude des letzten Tabs
 	 *
 	 */
-	setupSortingAllTab: ()=>{
+	SortingAllTab: ()=>{
 
 		// Gruppiert die Gebäude
 		$('#all tr').each(function(){

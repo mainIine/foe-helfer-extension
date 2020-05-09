@@ -564,11 +564,11 @@ let Calculator = {
 
 				if (Einzahlungen[Rank] < ForderFPRewards[Rank]) {
 					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
 				}
 				else if (Einzahlungen[Rank] > ForderFPRewards[Rank]) {
 					EinsatzClass = 'warning';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooMuch'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'toomuch': Einzahlungen[Rank] - ForderFPRewards[Rank]}));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooMuch'), { 'paid': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'toomuch': Einzahlungen[Rank] - ForderFPRewards[Rank]}));
 				}
 				else {
 					EinsatzClass = 'info';
@@ -589,10 +589,10 @@ let Calculator = {
 				}
 
 				if (ForderGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': Einzahlungen[Rank], 'profit': ForderGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn })]
 				}
 				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
 				}
 
 				GewinnClass = 'info';
@@ -706,7 +706,7 @@ let Calculator = {
 
 				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
 					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
 				}
 				else {
 					EinsatzClass = 'info';
@@ -719,10 +719,10 @@ let Calculator = {
 
 				GewinnClass = 'info';
 				if (SnipeGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': SnipeCosts, 'profit': SnipeGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': SnipeCosts, 'profit': SnipeGewinn })]
 				}
 				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': SnipeCosts, 'loss': 0 - SnipeGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': SnipeCosts, 'loss': 0 - SnipeGewinn })]
 				}
 
 				KursClass = 'info';
@@ -914,7 +914,7 @@ let Calculator = {
 			'<tr>' +
 				'<th>' + i18n('Boxes.LGOverviewBox.Building') + '</th>' +
 				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Level') + '</th>' +
-				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.PayedTotal') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.PaidTotal') + '</th>' +
 				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Profit') + '</th>' +
 				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Rate') + '</th>' +
 			'</tr>' +
