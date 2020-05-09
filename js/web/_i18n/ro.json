@@ -91,11 +91,11 @@
 		"Boxes.Calculator.TTForderNegativeProfit": "Locul nu este asigurat. Încă __fpcount__PF trebuie depuse pentru a asigura locul.<br>Total pentru asigurarea locului: __totalfp__PF.",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__PF mi pot fi donate.<br>Investiția maximă: __totalfp__PF",
 		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __payed__<br>Loss = __payed__ <small>(Paid)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooLess": "You paid __payed__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
-		"Boxes.Calculator.TTPayedTooMuch": "You paid __payed__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
+		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Loss = __paid__ <small>(Paid)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
+		"Boxes.Calculator.TTPaidTooLess": "You paid __paid__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
+		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __payed__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __payed__ <small>(Paid)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__ <small>(Cost)</small> / __nettoreward__ <small>(Net Reward)</small> = __rate__%", //Todo: Translate
 		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__ FPs.<br>That's __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "PF rămase până la închidere",
@@ -181,7 +181,7 @@
 		"Boxes.LGOverviewBox.Building": "Clădire",
 		"Boxes.LGOverviewBox.Level": "Nivel",
 		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nu are nici o clădire vulnerabilă.",
-		"Boxes.LGOverviewBox.PayedTotal": "Depus / Total",
+		"Boxes.LGOverviewBox.PaidTotal": "Depus / Total",
 		"Boxes.LGOverviewBox.Profit": "Profit", //Todo: Translate
 		"Boxes.LGOverviewBox.Rate": "Procent",
 		"Boxes.LGOverviewBox.Title": "Contribuții posibile",
