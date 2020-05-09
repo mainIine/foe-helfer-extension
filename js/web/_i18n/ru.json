@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Собранные со Вторника (Экспедиция начинается со вторника)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Собранные за этот месяц",
 		"Boxes.Stats.PeriodTitle.today": "Собранные за сегодня",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "ПБГ",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Диплом. дары",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "Экспедиция ги.",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Военные трофеи",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Награды с Полей битв гильдий",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Дипломатические дары собранные Космическим авианосцем",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Награды с Экспедици Гильдии собранные Храмом Реликвий",
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Обзор армии",
 		"Boxes.Units.Unbind": "Свободный",
 		"Boxes.Units.Unit": "Юнит",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "DD.MM.YYYY HH:mm",
 		"Eras.0": "Без эпохи",
 		"Eras.1": "Каменный Век",

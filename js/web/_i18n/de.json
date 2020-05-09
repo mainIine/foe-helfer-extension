@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Seit letzten Dienstag gesammelt (die GEX startet Dienstags)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Diesen Monat gesammelt",
 		"Boxes.Stats.PeriodTitle.today": "Heute gesammelt",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Gildengefechte",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatische Geschenke",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "GEX",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Kriegsbeute",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Belohnungen von den Gildengefechten",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Vom Weltfraumfrachter gesammelte diplomatische Geschenke",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Belohnungen von der Gildenexpedition, die vom Relikttempel erzeugt wurden",
@@ -382,8 +384,8 @@
 		"Boxes.Units.Title": "Armee Übersicht",
 		"Boxes.Units.Unbind": "Ungebunden",
 		"Boxes.Units.Unit": "Einheit",
-		"DateTime": "DD.MM.YYYY HH:mm [Uhr]",
 		"Date": "DD.MM.YYYY",
+		"DateTime": "DD.MM.YYYY HH:mm [Uhr]",
 		"Eras.0": "Kein Zeitalter",
 		"Eras.1": "Steinzeit",
 		"Eras.10": "Moderne",

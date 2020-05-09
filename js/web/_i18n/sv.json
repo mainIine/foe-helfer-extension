@@ -344,10 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Samlat sedan tisdag (IE startar på tisdag)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Samlat denna månad",
 		"Boxes.Stats.PeriodTitle.today": "Samlat idag",
+		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "ISF",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
 		"Boxes.Stats.Rewards.Source.guildExpedition": "IE",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Krigsbyte",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Belöning från Imperieslagfält",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Belöningar från Imperiexpedition med reliktempel",
@@ -382,6 +384,7 @@
 		"Boxes.Units.Title": "Arméöversikt",
 		"Boxes.Units.Unbind": "Obunden",
 		"Boxes.Units.Unit": "Trupp",
+		"Date": "DD-MMM-YY", //Todo: Translate
 		"DateTime": "YYYY-MM-DD HH:mm",
 		"Eras.0": "Alla eror",
 		"Eras.1": "Stenåldern",
