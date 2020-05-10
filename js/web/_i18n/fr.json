@@ -6,65 +6,65 @@
 		"API.LGGildMember": "Les GM de __player__ ont été envoyés.",
 		"API.LGInvest": "Vos investissements GM ont été transférés.",
 		"API.UpdateSuccess": "Mise à jour effectuée.",
-		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Exchange": "daily exchange", //Todo: Translate
-		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
-		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
-		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
-		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
-		"Boxes.Alerts.Form.Discard": "Discard", //Todo: Translate
-		"Boxes.Alerts.Form.Edit": "Edit", //Todo: Translate
-		"Boxes.Alerts.Form.EditAlert": "Edit Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
-		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
-		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
-		"Boxes.Alerts.Form.Neighborhood": "Neighborhood", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
-		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
-		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
-		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
-		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
-		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
-		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
-		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
-		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
-		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
-		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
-		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
-		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Info": "Automatically create a new alert when I make a bid in the Antiques Dealer Auction", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction", //Todo: Translate
-		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
-		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
-		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
-		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
-		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
-		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
-		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
-		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
-		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
-		"Boxes.Alerts.Time.15m": "15m", //Todo: Translate
-		"Boxes.Alerts.Time.1d": "1d", //Todo: Translate
-		"Boxes.Alerts.Time.1h": "1h", //Todo: Translate
-		"Boxes.Alerts.Time.1m": "1m", //Todo: Translate
-		"Boxes.Alerts.Time.4h": "4h", //Todo: Translate
-		"Boxes.Alerts.Time.5m": "5m", //Todo: Translate
-		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Auction": "Enchère",
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Temps de recharge de l'enchère",
+		"Boxes.Alerts.Form.Antiques.Dealer": "Vendeur d'antiquités",
+		"Boxes.Alerts.Form.Antiques.Exchange": "Échange quotidien",
+		"Boxes.Alerts.Form.Battleground": "Provinces des champs de bataille",
+		"Boxes.Alerts.Form.Body": "Corps",
+		"Boxes.Alerts.Form.Create": "Créer",
+		"Boxes.Alerts.Form.CreateAlert": "Créer une notification",
+		"Boxes.Alerts.Form.CreateNewAlert": "Créer une nouvelle notification",
+		"Boxes.Alerts.Form.Datetime": "Date &amp; Heure",
+		"Boxes.Alerts.Form.Delete": "Supprimer",
+		"Boxes.Alerts.Form.Discard": "Annuler",
+		"Boxes.Alerts.Form.Edit": "Modifier",
+		"Boxes.Alerts.Form.EditAlert": "Modifier la notification",
+		"Boxes.Alerts.Form.Expiration": "Expiration",
+		"Boxes.Alerts.Form.Expired": "Expirée",
+		"Boxes.Alerts.Form.Expires": "Expire",
+		"Boxes.Alerts.Form.Neighborhood": "Voisinage",
+		"Boxes.Alerts.Form.Persistence": "Persistance",
+		"Boxes.Alerts.Form.Persistence.Description": "La notification doit elle rester ouverte jusqu'à ce que l'utilisateur la rejette ou clique sur la notification ?",
+		"Boxes.Alerts.Form.Persistence.Off": "Non",
+		"Boxes.Alerts.Form.Persistence.On": "Oui",
+		"Boxes.Alerts.Form.Persistent": "Persistante",
+		"Boxes.Alerts.Form.Preset.Now": "Maintenant",
+		"Boxes.Alerts.Form.Presets": "Préconfigurations",
+		"Boxes.Alerts.Form.Preview": "Aperçu",
+		"Boxes.Alerts.Form.Repeat": "Répéter",
+		"Boxes.Alerts.Form.Repeat.Every": "ou chaque",
+		"Boxes.Alerts.Form.Repeat.Never": "Jamais",
+		"Boxes.Alerts.Form.Save": "Enregistrer",
+		"Boxes.Alerts.Form.Tag": "Étiquette",
+		"Boxes.Alerts.Form.Tag.Description": "Les étiquettes peuvent être utilisées pour regrouper les notifications (une nouvelle notification avec une étiquette donnée remplacera une notification plus ancienne avec la même étiquette).",
+		"Boxes.Alerts.Form.Title": "Titre",
+		"Boxes.Alerts.Permissions.Default": "Activez les notifications dans votre navigateur pour utiliser cette fonctionnalité",
+		"Boxes.Alerts.Permissions.Denied": "Les notifications ont été désactivées. Pour réactiver les notifications dans les paramètres de votre navigateur, accédez à chrome://settings/content/notifications, puis réactualisez cette page.",
+		"Boxes.Alerts.Permissions.Enable": "Activer",
+		"Boxes.Alerts.Permissions.Refresh": "Actualiser",
+		"Boxes.Alerts.Preferences.Auction.Info": "Créer automatiquement une nouvelle notification lorsque je fais une enchère au vendeur d'antiquités.",
+		"Boxes.Alerts.Preferences.Auction.Title": "Enchère du vendeur d'antiquités",
+		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Envoyez une notification en cas d'activité élevée dans les champs de bataille de guilde (par exemple, 10 combats dans un même secteur en 5 secondes). Veuillez noter que cette fonction ne fonctionne que lorsque les champs de bataille de guilde sont ouverts dans le jeu !",
+		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Suivi du champ de bataille de guilde",
+		"Boxes.Alerts.Preferences.ComingSoon": "Prochainement...",
+		"Boxes.Alerts.Preferences.InGame.Info": "Afficher la notification dans le jeu au lieu de la notification native du bureau lorsque la fenêtre du jeu est active.",
+		"Boxes.Alerts.Preferences.InGame.Title": "Notifications en jeu",
+		"Boxes.Alerts.Preferences.MenuIcon.Info": "Afficher le compte à rebours suivant en superposition de l'icône du menu principal.",
+		"Boxes.Alerts.Preferences.MenuIcon.Title": "Compte à rebours du menu principal",
+		"Boxes.Alerts.Preferences.Start.Info": "Afficher une liste des notifications expirées hors ligne (depuis la fermeture de la fenêtre de jeu).",
+		"Boxes.Alerts.Preferences.Start.Title": "Récapitulatif des notification expirées au démarrage",
+		"Boxes.Alerts.Preferences.Suggestions.Info": "Afficher des suggestions de notification (par exemple, lorsque vous cliquez sur un secteur de champ de bataille ou lorsque vous collectez une production de bâtiment)",
+		"Boxes.Alerts.Preferences.Suggestions.Title": "Suggestions de notifications",
+		"Boxes.Alerts.Tabs.Alerts": "Notifications",
+		"Boxes.Alerts.Tabs.Preferences": "Préférences",
+		"Boxes.Alerts.Time.15m": "15m",
+		"Boxes.Alerts.Time.1d": "1j",
+		"Boxes.Alerts.Time.1h": "1h",
+		"Boxes.Alerts.Time.1m": "1m",
+		"Boxes.Alerts.Time.4h": "4h",
+		"Boxes.Alerts.Time.5m": "5m",
+		"Boxes.Alerts.Time.8h": "8h",
 		"Boxes.Api.Title": "Serveur API personnel",
 		"Boxes.BattleAssist.Text": "Votre armée est composée uniquement de Voyous. Soignez des unités (avec diamants) ou battez en retraite !",
 		"Boxes.BattleAssist.Title": "STOP !",
@@ -136,14 +136,14 @@
 		"Boxes.Gildfights.Negotiations": "Négociations",
 		"Boxes.Gildfights.Player": "Membre",
 		"Boxes.Gildfights.Title": "Activité de membre",
-		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
-		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
-		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion1": "Suggestion1", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
-		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
+		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
+		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
+		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
+		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
+		"Boxes.GreatBuildings.Level": "Niveau",
+		"Boxes.GreatBuildings.Suggestion1": "Sugg. 1",
+		"Boxes.GreatBuildings.Suggestion2": "Sugg. 2",
+		"Boxes.GreatBuildings.Title": "Investissement GM",
 		"Boxes.HiddenRewards.Appears": "Apparaîtra",
 		"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 		"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
@@ -277,7 +277,7 @@
 		"Boxes.Plunderer.visited": "Dernière visite ",
 		"Boxes.Plunderer.visitTitle": "Date de la dernière visite à ce joueur",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
-		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GoodEraTotal": "Total",
 		"Boxes.Productions.Happiness": "Satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
 		"Boxes.Productions.Headings.amount": "Quantité",
@@ -294,12 +294,12 @@
 		"Boxes.Productions.Headings.random_production": "Productions aléatoires",
 		"Boxes.Productions.Headings.residential": "Bâtiments résidentiels",
 		"Boxes.Productions.Headings.street": "Routes",
-		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
-		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
+		"Boxes.Productions.ModeCurrent": "En cours",
+		"Boxes.Productions.ModeDaily": "Du jour",
 		"Boxes.Productions.ModeGroups": "Grouper",
 		"Boxes.Productions.ModeSingle": "Individuel",
-		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
-		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoAsteroidDataWarning": "Les ressources provenant de la ceinture d'astéroïdes ne sont pas incluses. Veuillez visiter votre colonie de la ceinture d'astéroïdes et réessayer.",
+		"Boxes.Productions.NoMarsDataWarning": "Les ressources provenant de mars ne sont pas incluses. Veuillez visiter votre colonie martienne et réessayer.",
 		"Boxes.Productions.SearchInput": "Chercher un bâtiment...",
 		"Boxes.Productions.Title": "Vue d'ensemble des productions",
 		"Boxes.Productions.Total": "Total : ",
@@ -344,12 +344,12 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collectés depuis mardi (début de l'expédition de guilde).",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Collectés ce mois-ci.",
 		"Boxes.Stats.PeriodTitle.today": "Collectés aujourd'hui.",
-		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.__event": "Évènements",
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Ch. de bataille",
 		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Transporteur",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "Exp. de guilde",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Himeji",
-		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Récompenses des évènements spéciaux ou saisonniers",
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Récompenses des champs de bataille de guilde",
 		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Récompenses des cadeaux diplomatiques octroyés par le Transporteur spatial",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Récompenses des reliques de l'expédition de guilde récupérées grâce au Temple des reliques",
@@ -384,7 +384,7 @@
 		"Boxes.Units.Title": "Aperçu de l'armée",
 		"Boxes.Units.Unbind": "Non liée",
 		"Boxes.Units.Unit": "Unité",
-		"Date": "DD-MMM-YY", //Todo: Translate
+		"Date": "DD-MMM-YY",
 		"DateTime": "DD.MM.YYYY HH:mm",
 		"Eras.0": "Sans âge",
 		"Eras.1": "Âge de Pierre",
@@ -438,8 +438,8 @@
 		"Menu.Event.Title": "Liste des quêtes évènementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
 		"Menu.Forum.Title": "Forum",
-		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
-		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
+		"Menu.greatbuildings.Desc": "Quel prochain GM de production de PF devrait être augmenté ?",
+		"Menu.greatbuildings.Title": "Investissement GM",
 		"Menu.HiddenRewards.Desc": "Aperçu des incidents.",
 		"Menu.HiddenRewards.Title": "Incidents",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
