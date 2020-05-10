@@ -113,8 +113,7 @@ let Alerts = function(){
         },
         active: () => {
             let ts = moment().valueOf();
-            const alerts = tmp.db.alerts.where('expires').above(ts);
-            return alerts;
+            return tmp.db.alerts.where('expires').above(ts);
         },
         add: (alert) => {
 
@@ -962,11 +961,12 @@ let Alerts = function(){
                 let battlegroundOptions = '';
                 if ( tmp.model.battlegrounds.provinces ) {
                     tmp.model.battlegrounds.provinces.forEach( function ( province, id ) {
-                        let value = province['lockedUntil'] * 1000;
+                        let value = ( province['lockedUntil'] - 30 ) * 1000;
                         // if the sector is currently taken
                         if ( ! isNaN( value ) ) {
                             let expires = tmp.web.forms.aux.formatIsoDate( moment( value ) );
-                            let text = `${province.title} (${expires})`;
+                            let text = `${province.title}`;
+                            // let text = `${province.title} (${expires})`;
                             battlegroundOptions += `<option value="${value}">${text}</option>`;
                         }
                     });
