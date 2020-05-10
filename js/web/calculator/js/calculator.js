@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * **************************************************************************************
  *
  * Dateiname:                 calculator.js
@@ -38,7 +38,7 @@ let Calculator = {
 	*
 	*/
 	Open: () => {
-		
+
 		// Nur Übersicht verfügbar
 		if (Calculator.Overview !== undefined && Calculator.CityMapEntity === undefined) {
 			Calculator.ShowOverview(false);
@@ -124,7 +124,7 @@ let Calculator = {
 
 		let PlayerID = Calculator.CityMapEntity['player_id'],
             h = [];
-		
+
         // Wenn sich Spieler geändert hat, dann BuildingName/PlayerName zurücksetzen
 		if (Calculator.CityMapEntity['player_id'] !== Calculator.LastPlayerID) {
 			Calculator.PlayerName = undefined;
@@ -156,7 +156,7 @@ let Calculator = {
         // BuildingName konnte nicht aus der BuildingInfo geladen werden
 		let BuildingName = BuildingNamesi18n[Calculator.CityMapEntity['cityentity_id']]['name'];
 		let Level = (Calculator.CityMapEntity['level'] !== undefined ? Calculator.CityMapEntity['level'] : 0);
-        
+
         h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
         // LG - Daten + Spielername
@@ -207,7 +207,7 @@ let Calculator = {
         h.push('</div>');
 
         h.push('</div>');
-        
+
         // Tabelle zusammen fummeln
 		h.push('<table style="width:100%"><tbody><tr>');
 		h.push('<td><table id="costTableFordern" class="foe-table"></table></td>');
@@ -217,11 +217,11 @@ let Calculator = {
 
         // Wieviel fehlt noch bis zum leveln?
 		let rest = (Calculator.CityMapEntity['state']['invested_forge_points'] === undefined ? Calculator.CityMapEntity['state']['forge_points_for_level_up'] : Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.CityMapEntity['state']['invested_forge_points']);
-        
+
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
 		h.push(Calculator.GetRecurringQuestsLine());
-		
+
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
 
@@ -235,28 +235,28 @@ let Calculator = {
 		else if (Calculator.CityMapEntity['connected'] === undefined) {
             $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
         }
- 
+
         Calculator.CalcBody();
-		
+
 		if (!Calculator.MainListenerRegistered) {
 			Calculator.MainListenerRegistered = true;
 
 			// schnell zwischen den Prozenten wechseln
-			$('body').on('click', '.btn-toggle-arc', function () {
+			$('#costCalculator').on('click', '.btn-toggle-arc', function () {
 				Calculator.ForderBonus = parseFloat($(this).data('value'));
 				$('#costFactor').val(Calculator.ForderBonus);
-				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);			
+				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
 				Calculator.CalcBody();
 			});
-			
+
 			// wenn der Wert des Archebonus verändert wird, Event feuern
-			$('body').on('blur', '#costFactor', function () {
+			$('#costCalculator').on('blur', '#costFactor', function () {
 				Calculator.ForderBonus = parseFloat($('#costFactor').val());
 				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
 				Calculator.CalcBody();
 	        });
 
-			$('body').on('click', '#CalculatorTone', function () {
+			$('#costCalculator').on('click', '#CalculatorTone', function () {
 
 				let disabled = $(this).hasClass('deactivated');
 
@@ -303,8 +303,8 @@ let Calculator = {
 
 		return h.join();
 	},
-	
-	   
+
+
 	/**
 	 * Der Tabellen-Körper mit allen Funktionen
 	 *
@@ -349,7 +349,7 @@ let Calculator = {
 				CurrentFP,
 				TotalFP,
 				RestFP,
-				IsSelf = false;			
+				IsSelf = false;
 
 			if (Calculator.Rankings[i]['rank'] === undefined || Calculator.Rankings[i]['rank'] === -1) {
 				continue;
@@ -370,7 +370,7 @@ let Calculator = {
 			ForderRankCosts[Rank] = undefined;
 			SnipeRankCosts[Rank] = undefined;
 			Einzahlungen[Rank] = 0;
-				
+
 			if (Calculator.Rankings[i]['reward']['strategy_point_amount'] !== undefined)
 				FPNettoRewards[Rank] = Math.round(Calculator.Rankings[i]['reward']['strategy_point_amount']);
 
@@ -384,7 +384,7 @@ let Calculator = {
 			BPRewards[Rank] = Math.round(BPRewards[Rank] * arc);
 			MedalRewards[Rank] = Math.round(MedalRewards[Rank] * arc);
 			ForderFPRewards[Rank] = Math.round(FPNettoRewards[Rank] * ForderArc);
-			
+
 			if (EigenPos !== undefined && i > EigenPos) {
 				ForderStates[Rank] = 'NotPossible';
 				SnipeStates[Rank] = 'NotPossible';
@@ -463,7 +463,7 @@ let Calculator = {
 
 				if (ExitLoop)
 					continue;
-				
+
 				// Selbe Kosten wie vorheriger Rang => nicht belegbar
 				if (SnipeLastRankCost !== undefined && SnipeRankCosts[Rank] === SnipeLastRankCost) {
 					ForderStates[Rank] = 'NotPossible';
@@ -537,11 +537,11 @@ let Calculator = {
 				EinsatzClass = (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : ''), //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
 				EinsatzText = HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff), //Default: Einsatz + ForderRankDiff
 				EinsatzTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': FPNettoRewards[Rank], 'forderfactor': (100 + Calculator.ForderBonus), 'costs': ForderFPRewards[Rank] })],
-				
+
 				GewinnClass = (ForderGewinn >= 0 ? 'success' : 'error'), //Default: Grün wenn >= 0 sonst rot
 				GewinnText = HTML.Format(ForderGewinn), //Default: Gewinn
 				GewinnTooltip,
-				
+
 				KursClass,
 				KursText,
 				KursTooltip = [];
@@ -561,26 +561,26 @@ let Calculator = {
 				RowClass = 'info-row';
 
 				RankClass = 'info';
-				
+
 				if (Einzahlungen[Rank] < ForderFPRewards[Rank]) {
 					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
 				}
 				else if (Einzahlungen[Rank] > ForderFPRewards[Rank]) {
 					EinsatzClass = 'warning';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooMuch'), { 'payed': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'toomuch': Einzahlungen[Rank] - ForderFPRewards[Rank]}));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooMuch'), { 'paid': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'toomuch': Einzahlungen[Rank] - ForderFPRewards[Rank]}));
 				}
 				else {
 					EinsatzClass = 'info';
 				}
-				
+
 				EinsatzText = HTML.Format(Einzahlungen[Rank]);
 				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) {
 					EinsatzText += '/' + HTML.Format(ForderFPRewards[Rank]);
 				}
 				EinsatzText += Calculator.FormatForderRankDiff(ForderRankDiff);
-				
-				
+
+
 				if (ForderRankDiff > 0 && Einzahlungen[Rank] < ForderRankCosts[Rank]) {
 					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] }));
 				}
@@ -589,10 +589,10 @@ let Calculator = {
 				}
 
 				if (ForderGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': Einzahlungen[Rank], 'profit': ForderGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn })]
 				}
 				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
 				}
 
 				GewinnClass = 'info';
@@ -648,7 +648,7 @@ let Calculator = {
 			// BP+Meds
 
 			RowClass = '';
-					   			 		  		  		 
+
 			if (ForderStates[Rank] === 'NotPossible' && SnipeStates[Rank] === 'NotPossible') {
 				RowClass = 'text-grey';
 			}
@@ -679,7 +679,7 @@ let Calculator = {
 			EinsatzClass = (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : ''); //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
 			EinsatzText = HTML.Format(SnipeRankCosts[Rank]) //Default: Einsatz
 			EinsatzTooltip = [];
-			
+
 			GewinnClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn >= 0 sonst rot
 			GewinnText = HTML.Format(SnipeGewinn); //Default: Gewinn
 			GewinnTooltip = [];
@@ -706,7 +706,7 @@ let Calculator = {
 
 				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
 					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPayedTooLess'), { 'payed': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
+					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
 				}
 				else {
 					EinsatzClass = 'info';
@@ -719,10 +719,10 @@ let Calculator = {
 
 				GewinnClass = 'info';
 				if (SnipeGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': SnipeCosts, 'profit': SnipeGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': SnipeCosts, 'profit': SnipeGewinn })]
 				}
 				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'payed': SnipeCosts, 'loss': 0 - SnipeGewinn })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': SnipeCosts, 'loss': 0 - SnipeGewinn })]
 				}
 
 				KursClass = 'info';
@@ -761,7 +761,7 @@ let Calculator = {
 			hSnipen.push('<td class="text-center"><strong class="' + KursClass + ' td-tooltip" title="' + KursTooltip.join('<br>') + '">' + KursText + '</strong></td>');
 			hSnipen.push('</tr>');
 		}
-		
+
 		$('#costTableFordern').html(hFordern.join(''));
 		$('#costTableBPMeds').html(hBPMeds.join(''));
 		$('#costTableSnipen').html(hSnipen.join(''));
@@ -774,7 +774,7 @@ let Calculator = {
 			bestRateNettoFp: BestKursNettoFP,
 			bestRateCosts: BestKursEinsatz
 		});
-		
+
 		$('.td-tooltip').tooltip({
 			html: true,
 			container: '#costCalculator'
@@ -784,7 +784,7 @@ let Calculator = {
 
 	/**
 	 * Aktualisiert die GBs in der IndexDB
-	 * 
+	 *
 	 * */
 	RefreshGreatBuildingsDB: async(GreatBuilding) => {
 		await IndexDB.addUserFromPlayerDictIfNotExists(GreatBuilding['playerId'], true);
@@ -914,7 +914,7 @@ let Calculator = {
 			'<tr>' +
 				'<th>' + i18n('Boxes.LGOverviewBox.Building') + '</th>' +
 				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Level') + '</th>' +
-				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.PayedTotal') + '</th>' +
+				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.PaidTotal') + '</th>' +
 				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Profit') + '</th>' +
 				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Rate') + '</th>' +
 			'</tr>' +
@@ -950,13 +950,9 @@ let Calculator = {
 					BestKursEinsatz = CurrentGB['bestRateCosts'];
 					BestKurs = Math.round(BestKursEinsatz / BestKursNettoFP * 1000) / 10;
 					Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
-                }							
+                }
 
-				let UnderScorePos = EntityID.indexOf('_');
-				let EraName = EntityID.substring(UnderScorePos + 1);
-
-				UnderScorePos = EraName.indexOf('_');
-				EraName = EraName.substring(0, UnderScorePos);
+				let EraName = GreatBuildings.GetEraName(EntityID);
 
 				if (CurrentProgress === undefined)
 				{
@@ -1039,7 +1035,7 @@ let Calculator = {
 		if (!Calculator.OverviewListenerRegistered) {
 			Calculator.OverviewListenerRegistered = true;
 
-			$('body').on('click', '#CalculatorOverviewTone', function () {
+			$('#costCalculator').on('click', '#CalculatorOverviewTone', function () {
 
 				let disabled = $(this).hasClass('deactivated');
 

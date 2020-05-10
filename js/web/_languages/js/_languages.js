@@ -1,4 +1,4 @@
-let Languages = {
+﻿let Languages = {
 	PossibleLanguages: {
 		cs: 'Český',
 		de: 'Deutsch',
@@ -14,6 +14,6 @@ let Languages = {
 		ru: 'Русский',
 		sk: 'Slovenčina',
 		sv: 'Svenska',
-        tr: 'Türkçe',
+		tr: 'Türkçe'
 	},
 };
