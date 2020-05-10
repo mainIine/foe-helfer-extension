@@ -42,7 +42,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
     await IndexDB.getDB();
 
 	for (let reward of rewards) {
-		if (!Stats.TrackableRewards.includes(rewardIncidentSource)) {
+		// default is incident reward
+		if (rewardIncidentSource == 'default') {
 			continue;
 		}
 
@@ -110,6 +111,10 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 // Player Army log
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
 	const r = data.responseData;
+	if (Stats.isVisitingCulturalOutpost) {
+		return;
+	}
+
 	// Convert array to hash to be more compact
 	const army = r.counts.reduce((acc, val) => {
 		acc[val.unitTypeId] = (val.attached || 0) + (val.unattached || 0);
@@ -129,15 +134,21 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 	});
 });
 
+FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
+	const r = data.responseData;
+	if (r.gridId == 'cultural_outpost') {
+		Stats.isVisitingCulturalOutpost = true;
+	}
+});
+
+FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
+	const r = data.responseData;
+	Stats.isVisitingCulturalOutpost = false;
+});
+
 let Stats = {
 
-	// More rewards can be tracked later, but for now lets track few
-	TrackableRewards: [
-		'diplomaticGifts', // Asteroid Age's GB reward
-		'battlegrounds_conquest', // Battle ground
-		'guildExpedition', // Temple of Relics
-		'spoilsOfWar' // Himeji Castle
-	],
+	isVisitingCulturalOutpost: false,
 
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
@@ -509,6 +520,7 @@ ${sourceBtns.join('')}
 		}));
 
 		const btnsRewardSelect = [
+			'__event',
 			'battlegrounds_conquest', // Battle ground
 			'guildExpedition', // Temple of Relics
 			'spoilsOfWar', // Himeji Castle
@@ -759,16 +771,17 @@ ${sourceBtns.join('')}
 	 */
 	createTreasureSeries: async () => {
 		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+		const selectedEras = Stats.getSelectedEras();
 		const isClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(source);
+		const hcColors = Highcharts.getOptions().colors;
+
+		let data = await IndexDB.db[source].orderBy('date').toArray();
 
 		if (isClanTreasure) {
 			data = data.filter(it => it.clanId === ExtGuildID);
 		}
 
-		const hcColors = Highcharts.getOptions().colors;
 		let colors;
-		const selectedEras = Stats.getSelectedEras();
 
 		// Build color set - brighten each per
 		if (selectedEras.length > 1) {
@@ -1072,22 +1085,40 @@ ${sourceBtns.join('')}
 		let data = await IndexDB.db.statsRewards.where('date').above(startDate).toArray();
 
 		const rewardTypes = await IndexDB.db.statsRewardTypes.toArray();
-		const rewardSources = ['battlegrounds_conquest', 'guildExpedition', 'spoilsOfWar', 'diplomaticGifts'];
 		const groupedByRewardSource = {};
 
 		data.forEach(it => {
-			groupedByRewardSource[it.type] = groupedByRewardSource[it.type] || {};
-			groupedByRewardSource[it.type][it.reward] = groupedByRewardSource[it.type][it.reward] || 0;
-			groupedByRewardSource[it.type][it.reward]++;
+            let type = it.type;
+            if (/event/i.test(type)) {
+                type = '__event';
+            }
+			groupedByRewardSource[type] = groupedByRewardSource[type] || {};
+			groupedByRewardSource[type][it.reward] = groupedByRewardSource[type][it.reward] || 0;
+			groupedByRewardSource[type][it.reward]++;
 		});
 
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
 			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` :
-				rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
+				  rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
+			// Asset image if not goods or goods sprite
+			let pointImage = '';
+			if (rewardInfo.type != 'good' && rewardInfo.type != 'unit') {
+				let url = '';
+				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
+					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
+					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
+				} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
+					url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+				}
+				if (url) {
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`;
+				}
+			}
 			return {
 				iconClass,
+				pointImage,
 				name: rewardInfo.name,
 				y: seriesMapBySource[it]
 			};
@@ -1123,7 +1154,7 @@ ${sourceBtns.join('')}
 			tooltip: {
 				useHTML: true,
 				headerFormat: '',
-				pointFormat: '<span class="{point.iconClass}"></span> {point.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+				pointFormat: '<span class="{point.iconClass}"></span>{point.pointImage} {point.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
 			},
 			accessibility: {
 				point: {

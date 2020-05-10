@@ -207,39 +207,33 @@ let Alerts = function(){
         alertsUpdateTime: 60,
         data: {
             auction: {
-                info: i18n('Boxes.Alerts.Preferences.Auction.Info',
-                    'Automatically create a new alert when I make a bid in the Antiques Dealer Auction'),
-                title: i18n('Boxes.Alerts.Preferences.Auction.Title', 'Antiques Dealer Auction'),
+                info: i18n('Boxes.Alerts.Preferences.Auction.Info'),
+                title: i18n('Boxes.Alerts.Preferences.Auction.Title'),
                 value: false
             },
             gbg: {
-                info: i18n('Boxes.Alerts.Preferences.Battlegrounds.Info',
-                    'Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!'),
-                title: i18n('Boxes.Alerts.Preferences.Battlegrounds.Title', 'Guild Battlegrounds Tracker'),
+                info: i18n('Boxes.Alerts.Preferences.Battlegrounds.Info'),
+                title: i18n('Boxes.Alerts.Preferences.Battlegrounds.Title'),
                 value: false
             },
             icon: {
-                info: i18n('Boxes.Alerts.Preferences.MenuIcon.Info',
-                    'Show the next alert countdown as an overlay of the Main Menu icon'),
-                title: i18n('Boxes.Alerts.Preferences.MenuIcon.Title', 'Main Menu Countdown'),
+                info: i18n('Boxes.Alerts.Preferences.MenuIcon.Info'),
+                title: i18n('Boxes.Alerts.Preferences.MenuIcon.Title'),
                 value: false
             },
             ingame: {
-                info: i18n('Boxes.Alerts.Preferences.InGame.Info',
-                    'Show in-game notification instead of the native Desktop notification when the game window is focused'),
-                title: i18n('Boxes.Alerts.Preferences.InGame.Title', 'In-game Notifications'),
+                info: i18n('Boxes.Alerts.Preferences.InGame.Info'),
+                title: i18n('Boxes.Alerts.Preferences.InGame.Title'),
                 value: false
             },
             start: {
-                info: i18n('Boxes.Alerts.Preferences.Start.Info',
-                    'Display a list of Alerts which expired while offline (since the game window was closed)'),
-                title: i18n('Boxes.Alerts.Preferences.Start.Title', 'Expired Alert Summary at Start'),
+                info: i18n('Boxes.Alerts.Preferences.Start.Info'),
+                title: i18n('Boxes.Alerts.Preferences.Start.Title'),
                 value: false
             },
             suggestions: {
-                info: i18n('Boxes.Alerts.Preferences.Suggestions.Info',
-                    'Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production'),
-                title: i18n('Boxes.Alerts.Preferences.Suggestions.Title', 'Alert Suggestions'),
+                info: i18n('Boxes.Alerts.Preferences.Suggestions.Info'),
+                title: i18n('Boxes.Alerts.Preferences.Suggestions.Title'),
                 value: false
             },
         },
@@ -389,8 +383,8 @@ let Alerts = function(){
             build: () => {
 
                 let labels = {
-                    alerts: i18n('Boxes.Alerts.Tabs.Alerts', 'Alerts'),
-                    preferences: i18n('Boxes.Alerts.Tabs.Preferences', 'Preferences'),
+                    alerts: i18n('Boxes.Alerts.Tabs.Alerts'),
+                    preferences: i18n('Boxes.Alerts.Tabs.Preferences'),
                 }
 
                 tmp.web.body.tabs.clean();
@@ -447,10 +441,10 @@ let Alerts = function(){
                         if ( ! NotificationManager.isEnabled ){
 
                             let labels = {
-                                default: i18n('Boxes.Alerts.Permissions.Default', 'Enable notifications in your browser to use this feature'),
-                                denied: i18n('Boxes.Alerts.Permissions.Denied', 'Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.'),
-                                enable: i18n('Boxes.Alerts.Permissions.Enable', 'Enable'),
-                                refresh: i18n('Boxes.Alerts.Permissions.Refresh', 'Refresh'),
+                                default: i18n('Boxes.Alerts.Permissions.Default'),
+                                denied: i18n('Boxes.Alerts.Permissions.Denied'), //Todo: Insert link for Firefox
+                                enable: i18n('Boxes.Alerts.Permissions.Enable'),
+                                refresh: i18n('Boxes.Alerts.Permissions.Refresh'),
                             };
 
                             let html = '';
@@ -522,11 +516,11 @@ let Alerts = function(){
                 tabListContent: () => {
 
                     let labels = {
-                        create: i18n('Boxes.Alerts.Form.CreateAlert', 'Create Alert'),
-                        expiration: i18n('Boxes.Alerts.Form.Expiration', 'Expiration'),
-                        title: i18n('Boxes.Alerts.Form.Title', 'Title'),
-                        repeat: i18n('Boxes.Alerts.Form.Repeat', 'Repeat'),
-                        persistent: i18n('Boxes.Alerts.Form.Persistent', 'Persistent'),
+                        create: i18n('Boxes.Alerts.Form.CreateAlert'),
+                        expiration: i18n('Boxes.Alerts.Form.Expiration'),
+                        title: i18n('Boxes.Alerts.Form.Title'),
+                        repeat: i18n('Boxes.Alerts.Form.Repeat'),
+                        persistent: i18n('Boxes.Alerts.Form.Persistent'),
                     };
 
                     // list alerts
@@ -553,7 +547,7 @@ let Alerts = function(){
                     let labels = {
                         active: i18n('Boxes.Settings.Active'),
                         inactive: i18n('Boxes.Settings.Inactive'),
-                        soon: i18n('Boxes.Alerts.Preferences.ComingSoon', 'Coming soon ...')
+                        soon: i18n('Boxes.Alerts.Preferences.ComingSoon')
                     };
 
                     let html = '';
@@ -594,18 +588,18 @@ let Alerts = function(){
                     if ( ! tmp.web.visible() ) { return; }
 
                     let labels = {
-                        preview: i18n('Boxes.Alerts.Form.Preview', 'preview'),
-                        edit: i18n('Boxes.Alerts.Form.Edit', 'edit'),
-                        delete: i18n('Boxes.Alerts.Form.Delete', 'delete'),
+                        preview: i18n('Boxes.Alerts.Form.Preview'),
+                        edit: i18n('Boxes.Alerts.Form.Edit'),
+                        delete: i18n('Boxes.Alerts.Form.Delete'),
                         repeats: {
                             '-1': '-',
-                            '60': i18n('Boxes.Alerts.Time.1m', '1m'),
-                            '300': i18n('Boxes.Alerts.Time.5m', '5m'),
-                            '900': i18n('Boxes.Alerts.Time.15m', '15m'),
-                            '3600': i18n('Boxes.Alerts.Time.1h', '1h'),
-                            '14400': i18n('Boxes.Alerts.Time.4h', '4h'),
-                            '28800': i18n('Boxes.Alerts.Time.8h', '8h'),
-                            '86400': i18n('Boxes.Alerts.Time.1d', '1d'),
+                            '60': i18n('Boxes.Alerts.Time.1m'),
+                            '300': i18n('Boxes.Alerts.Time.5m'),
+                            '900': i18n('Boxes.Alerts.Time.15m'),
+                            '3600': i18n('Boxes.Alerts.Time.1h'),
+                            '14400': i18n('Boxes.Alerts.Time.4h'),
+                            '28800': i18n('Boxes.Alerts.Time.8h'),
+                            '86400': i18n('Boxes.Alerts.Time.1d'),
                         }
                     };
 
@@ -815,8 +809,8 @@ let Alerts = function(){
                 },
                 update: () => {
                     let labels = {
-                        expires: i18n('Boxes.Alerts.Form.Expires', 'Expires'),
-                        expired: i18n('Boxes.Alerts.Form.Expired', 'Expired'),
+                        expires: i18n('Boxes.Alerts.Form.Expires'),
+                        expired: i18n('Boxes.Alerts.Form.Expired'),
                     };
 
                     let data = tmp.web.forms.data();
@@ -893,50 +887,48 @@ let Alerts = function(){
             render: (data) => {
 
                 let labels = {
-                    title: i18n('Boxes.Alerts.Form.Title', 'Title'),
-                    body: i18n('Boxes.Alerts.Form.Body', 'Body'),
-                    datetime: i18n('Boxes.Alerts.Form.Datetime', 'Date &amp; Time'),
+                    title: i18n('Boxes.Alerts.Form.Title'),
+                    body: i18n('Boxes.Alerts.Form.Body'),
+                    datetime: i18n('Boxes.Alerts.Form.Datetime'),
                     presets: {
-                        header: i18n('Boxes.Alerts.Form.Presets', 'Presets'),
-                        now: i18n('Boxes.Alerts.Form.Preset.Now', 'Now'),
-                        antique: i18n('Boxes.Alerts.Form.Antiques.Dealer', 'Antiques Dealer'),
-                        auction: i18n('Boxes.Alerts.Form.Antiques.Auction', 'Auction'),
-                        cooldown: i18n('Boxes.Alerts.Form.Antiques.Cooldown', 'Auction Cooldown'),
-                        exchange: i18n('Boxes.Alerts.Form.Antiques.Exchange', 'Exchange'),
-                        battlegrounds: i18n('Boxes.Alerts.Form.Battleground', 'Battleground Provinces'),
-                        neighborhood: i18n('Boxes.Alerts.Form.Neighborhood', 'Neighborhood'),
+                        header: i18n('Boxes.Alerts.Form.Presets'),
+                        now: i18n('Boxes.Alerts.Form.Preset.Now'),
+                        antique: i18n('Boxes.Alerts.Form.Antiques.Dealer'),
+                        auction: i18n('Boxes.Alerts.Form.Antiques.Auction'),
+                        cooldown: i18n('Boxes.Alerts.Form.Antiques.Cooldown'),
+                        exchange: i18n('Boxes.Alerts.Form.Antiques.Exchange'),
+                        battlegrounds: i18n('Boxes.Alerts.Form.Battleground'),
+                        neighborhood: i18n('Boxes.Alerts.Form.Neighborhood'),
                     },
                     repeats: {
-                        repeat: i18n('Boxes.Alerts.Form.Repeat', 'Repeat'),
-                        never: i18n('Boxes.Alerts.Form.Repeat.Never', 'never'),
-                        every: i18n('Boxes.Alerts.Form.Repeat.Every', 'or every'),
+                        repeat: i18n('Boxes.Alerts.Form.Repeat'),
+                        never: i18n('Boxes.Alerts.Form.Repeat.Never'),
+                        every: i18n('Boxes.Alerts.Form.Repeat.Every'),
                     },
                     persist: {
-                        persistence: i18n('Boxes.Alerts.Form.Persistence', 'Persistence'),
-                        on: i18n('Boxes.Alerts.Form.Persistence.On', 'On'),
-                        off: i18n('Boxes.Alerts.Form.Persistence.Off', 'Off'),
-                        description: i18n('Boxes.Alerts.Form.Persistence.Description',
-                            'Should the notification remain open until the user dismisses or clicks the notification'),
+                        persistence: i18n('Boxes.Alerts.Form.Persistence'),
+                        on: i18n('Boxes.Alerts.Form.Persistence.On'),
+                        off: i18n('Boxes.Alerts.Form.Persistence.Off'),
+                        description: i18n('Boxes.Alerts.Form.Persistence.Description'),
                     },
                     buttons: {
-                        create: i18n('Boxes.Alerts.Form.Create', 'Create'),
-                        discard: i18n('Boxes.Alerts.Form.Discard', 'Discard'),
-                        preview: i18n('Boxes.Alerts.Form.Preview', 'Preview'),
-                        save: i18n('Boxes.Alerts.Form.Save', 'Save'),
+                        create: i18n('Boxes.Alerts.Form.Create'),
+                        discard: i18n('Boxes.Alerts.Form.Discard'),
+                        preview: i18n('Boxes.Alerts.Form.Preview'),
+                        save: i18n('Boxes.Alerts.Form.Save'),
                     },
                     times: {
-                        '1m': i18n('Boxes.Alerts.Time.1m', '1m'),
-                        '5m': i18n('Boxes.Alerts.Time.5m', '5m'),
-                        '15m': i18n('Boxes.Alerts.Time.15m', '15m'),
-                        '1h': i18n('Boxes.Alerts.Time.1h', '1h'),
-                        '4h': i18n('Boxes.Alerts.Time.4h', '4h'),
-                        '8h': i18n('Boxes.Alerts.Time.8h', '8h'),
-                        '1d': i18n('Boxes.Alerts.Time.1d', '1d'),
+                        '1m': i18n('Boxes.Alerts.Time.1m'),
+                        '5m': i18n('Boxes.Alerts.Time.5m'),
+                        '15m': i18n('Boxes.Alerts.Time.15m'),
+                        '1h': i18n('Boxes.Alerts.Time.1h'),
+                        '4h': i18n('Boxes.Alerts.Time.4h'),
+                        '8h': i18n('Boxes.Alerts.Time.8h'),
+                        '1d': i18n('Boxes.Alerts.Time.1d'),
                     },
                     tags: {
-                        header: i18n('Boxes.Alerts.Form.Tag', 'Tag'),
-                        description: i18n('Boxes.Alerts.Form.Tag.Description',
-                            'Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)'),
+                        header: i18n('Boxes.Alerts.Form.Tag'),
+                        description: i18n('Boxes.Alerts.Form.Tag.Description'),
                     }
                 };
                 let id = (data.alert.id) ? data.alert.id : 0;
@@ -1101,7 +1093,7 @@ let Alerts = function(){
                         tag: ''
                     },
                     form: {
-                        header: i18n('Boxes.Alerts.Form.CreateAlert', 'Create Alert')
+                        header: i18n('Boxes.Alerts.Form.CreateAlert')
                     },
                     buttons: {
                         left: [],
@@ -1111,7 +1103,7 @@ let Alerts = function(){
                 edit: {
                     alert: null,
                     form: {
-                        header: i18n('Boxes.Alerts.Form.EditAlert', 'Edit Alert')
+                        header: i18n('Boxes.Alerts.Form.EditAlert')
                     },
                     buttons: {
                         left: ['discard'],
@@ -1234,7 +1226,7 @@ let Alerts = function(){
                     },
                     show: () => {
                         let labels = {
-                            title: i18n('Boxes.Alerts.Form.CreateNewAlert', 'Create New Alert'),
+                            title: i18n('Boxes.Alerts.Form.CreateNewAlert'),
                         };
                         let options = tmp.web.popup.options.create;
                         tmp.web.popup.type.common.show(labels, options);
@@ -1246,7 +1238,7 @@ let Alerts = function(){
                     },
                     show: ( alert ) => {
                         let labels = {
-                            title: i18n('Boxes.Alerts.Form.EditAlert', 'Edit Alert'),
+                            title: i18n('Boxes.Alerts.Form.EditAlert'),
                         };
                         let options = tmp.web.popup.options.edit;
                         options.alert = alert;
