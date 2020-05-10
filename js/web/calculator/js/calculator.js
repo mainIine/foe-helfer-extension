@@ -166,7 +166,7 @@ let Calculator = {
 			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
 		}
 		h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1));
-		h.push('<br>' + i18n('Boxes.Calculator.MaxLevel', 'Max Level: ') + Calculator.CityMapEntity.max_level + '</p>');
+		h.push('<br>' + i18n('Boxes.Calculator.MaxLevel', 'Max Level') + ': ' + MaxLevel + '</p>');
 
         // FP im Lager
         h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
