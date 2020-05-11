@@ -207,7 +207,10 @@ let Stats = {
 		showAnnotations: false, // GvG annotations
 		period: 'today',
 		rewardSource: 'guildExpedition', // filter by type of reward
+		currentType: null
 	},
+
+	DatePickerObj: null,
 
 	treasureSources: ['statsTreasurePlayerH', 'statsTreasurePlayerD', 'statsTreasureClanH', 'statsTreasureClanD'],
 	unitSources: ['statsUnitsH', 'statsUnitsD'],
@@ -250,7 +253,7 @@ let Stats = {
 		Stats.Render();
 
 		// Click action handlers
-		$('#statsBody').on('click', '[data-type]', function () {
+		$('#statsBody').on('click', '[data-type]', function(){
 			const type = $(this).data('type');
 			const value = $(this).data('value');
 
@@ -310,6 +313,7 @@ let Stats = {
 							} else
 								if (isChangedToGBG) {
 									Stats.state.chartType = 'delta';
+									Stats.isGG = true;
 
 								} else
 									if (isChangedToReward) {
@@ -363,7 +367,7 @@ let Stats = {
 	Render: async () => {
 		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="highcharts">Loading...</div>`);
 
-		Stats.updateOptions()
+		Stats.updateOptions();
 		await Stats.loadHighcharts();
 		await Stats.updateCharts();
 	},
@@ -374,8 +378,30 @@ let Stats = {
 	 */
 	updateOptions: () => {
 		$('#statsBody .options').html(Stats.RenderOptions());
-		const secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
-		$('#statsBody .options-2').html(secondaryOptions);
+		let secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
+
+		if(Stats.isSelectedGBGSources() && $('#GVGDatePicker').length === 0){
+			secondaryOptions = `<div></div><input class="" id="GVGDatePicker" type="text">`;
+		}
+
+		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){
+			if(Stats.DatePickerObj === null && $('#GVGDatePicker').length > 0){
+
+				Stats.DatePickerObj = new Litepicker({
+					element: document.getElementById('GVGDatePicker'),
+					format: i18n('Date'),
+					lang: MainParser.Language,
+					singleMode: false,
+					maxDate: new Date(),
+					showWeekNumbers: true,
+					onSelect: async function (start, end) {
+						$('#GVGDatePicker').text(`${start} - ${end}`);
+
+						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({s: start, e: end})));
+					}
+				});
+			}
+		});
 	},
 
 
@@ -397,7 +423,7 @@ let Stats = {
 
 		const btnSelectNoEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnNoEra'),
-			isActive: selectedEras.length == 1 && selectedEras[0] == 'NoAge',
+			isActive: selectedEras.length === 1 && selectedEras[0] === 'NoAge',
 			dataType: 'selectEras',
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
 			value: 'NoAge',
@@ -405,7 +431,7 @@ let Stats = {
 
 		const btnSelectMyEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnMyEra'),
-			isActive: selectedEras.length == 1 && selectedEras[0] == Technologies.EraNames[CurrentEraID],
+			isActive: selectedEras.length === 1 && selectedEras[0] === Technologies.EraNames[CurrentEraID],
 			dataType: 'selectEras',
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
 			value: Technologies.EraNames[CurrentEraID]
@@ -481,28 +507,26 @@ let Stats = {
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
 			value: it
 		}));
-		return `
-<div>
-	${Stats.RenderEraSwitchers()}
-</div>
-<div class="option-toggle-group">
-	${btnGroupByEra}
-	${btnTglAnnotations}
-</div>
-<div class="option-era-wrap">
-	${btnSelectAllEra}
-	${btnSelectAll}
-	${btnSelectMyEra}
-	${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
-	${btnSelectNoEra}
-</div>
-<div class="option-chart-type-wrap">
-${chartTypes.join('')}
-</div>
-<div class="option-source-wrap">
-${sourceBtns.join('')}
-</div>
-`;
+		return `<div>
+					${Stats.RenderEraSwitchers()}
+				</div>
+				<div class="option-toggle-group">
+					${btnGroupByEra}
+					${btnTglAnnotations}
+				</div>
+				<div class="option-era-wrap">
+					${btnSelectAllEra}
+					${btnSelectAll}
+					${btnSelectMyEra}
+					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
+					${btnSelectNoEra}
+				</div>
+				<div class="option-chart-type-wrap">
+					${chartTypes.join('')}
+				</div>
+				<div class="option-source-wrap">
+					${sourceBtns.join('')}
+				</div>`;
 	},
 
 
@@ -511,7 +535,14 @@ ${sourceBtns.join('')}
 	 * @returns {string}
 	 */
 	RenderSecondaryOptions: () => {
-		const btnsPeriodSelect = ['today', 'sinceTuesday', 'last7days', 'thisMonth', 'last30days', 'all'].map(it => Stats.RenderButton({
+		const btnsPeriodSelect = [
+			'today',
+			'sinceTuesday',
+			'last7days',
+			'thisMonth',
+			'last30days',
+			'all'
+		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Period.' + it),
 			title: i18n('Boxes.Stats.PeriodTitle.' + it),
 			isActive: Stats.state.period === it,
@@ -595,15 +626,15 @@ ${sourceBtns.join('')}
 	/**
 	 * Render a button
 	 *
-	 * @param name
-	 * @param isActive
-	 * @param dataType
-	 * @param value
-	 * @param title
-	 * @param disabled
+	 * @param name		Name
+	 * @param isActive	Activated
+	 * @param dataType	Typ
+	 * @param value		Default Value
+	 * @param title		Title for button
+	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight btn-set-arc ${!disabled && isActive ? 'btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
+	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
 
 
 	/**
@@ -637,11 +668,23 @@ ${sourceBtns.join('')}
 	/**
 	 * Battlegrounds series for highcharts
 	 *
+	 * @param dates		Date obj with {start, end}
 	 * @returns {Promise<{series: {data, avatarUrl: (string|string), name: string}[], pointFormat: string}>}
 	 */
-	createGBGSeries: async () => {
-		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+	createGBGSeries: async (dates = null) => {
+		let data;
+
+		if(dates !== null){
+
+			let from = moment(dates.s).toDate(),
+				to = moment(dates.e).toDate();
+
+			data = await IndexDB.db['statsGBGPlayers'].where('date').between(from, to).sortBy('date');
+
+		} else {
+			data = await IndexDB.db['statsGBGPlayers'].orderBy('date').toArray();
+		}
+
 		const playerCache = await IndexDB.db.statsGBGPlayerCache.toArray();
 
 		const playerKV = playerCache.reduce((acc, it) => {
