@@ -694,7 +694,6 @@ let _menu = {
 
 		btn_Plunderer.on('click', function () {
       		Plunderer.page = 1;
-      		Plunderer.filterByPlayerId = null;
 			Plunderer.Show();
 		});
 
