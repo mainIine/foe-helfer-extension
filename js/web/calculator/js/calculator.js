@@ -179,7 +179,13 @@ let Calculator = {
 		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + MainParser.ArkBonus + '">' + MainParser.ArkBonus + '%</button>';
 
 		// ... und korrekt einsortieren
-		if (MainParser.ArkBonus < 85) {
+		if (MainParser.ArkBonus < 80) {
+			h.push(own_arc);
+		}
+
+		h.push('<button class="btn btn-default btn-toggle-arc" data-value="80">80%</button>');
+
+		if (MainParser.ArkBonus > 80 && MainParser.ArkBonus < 85) {
 			h.push(own_arc);
 		}
 
