@@ -109,7 +109,7 @@
 		"Boxes.Campagne.Title": "Veroveringskosten voor ",
 		"Boxes.CityMap.CavalierPerspecitve": "Vogelperspectief",
 		"Boxes.CityMap.Desc1": "Om je stad te kunnen plannen, moeten we je gegevens naar foe-rechner.de versturen",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Verzenden</button>",
+		"Boxes.CityMap.Desc2": "Verzenden",
 		"Boxes.CityMap.FreeArea": "Beschikbare oppervlakte: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standaard",
 		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
