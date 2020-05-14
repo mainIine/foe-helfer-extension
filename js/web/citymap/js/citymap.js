@@ -155,6 +155,9 @@ let CityMap = {
 			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 		});
 
+		// Button for submit Box
+		menu.append( $('<button />').addClass('btn-default ml-auto').attr({id:'show-submit-box', onclick:'CityMap.showSumbitBox()'}).text(i18n('Boxes.CityMap.ShowSubmitBox')) );
+
 
 		/* In das Menü "schieben" */
 		w.prepend(menu);
@@ -352,7 +355,7 @@ let CityMap = {
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
 
-			desc += '<p class="text-center" id="msg-line">' + i18n('Boxes.CityMap.Desc2') + '</p>';
+			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
 		}
@@ -372,7 +375,7 @@ let CityMap = {
 		};
 
 		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#msg-line').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+			$('#CityMapSubmitBody').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 		});
 	},
 };
