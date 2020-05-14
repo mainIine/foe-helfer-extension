@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "VARNING! Höjer nivå på MB!",
 		"Boxes.Calculator.LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 		"Boxes.Calculator.LGNotOpen": "Nästa niå är inte upplåst ännu",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medalj",
 		"Boxes.Calculator.Profit": "Vinst",
 		"Boxes.Calculator.Rate": "Kvot",
@@ -108,9 +109,10 @@
 		"Boxes.Campagne.Title": "Erövringskostnad för ",
 		"Boxes.CityMap.CavalierPerspecitve": "Högpunktsvy",
 		"Boxes.CityMap.Desc1": "För att planera din stad behöver we skicka din data till foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Skicka</button>",
+		"Boxes.CityMap.Desc2": "Skicka",
 		"Boxes.CityMap.FreeArea": "Ledig yta: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standard",
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Data skickades utan problem... Besök nu ",
 		"Boxes.CityMap.TitleSend": "Skicka data",
 		"Boxes.CityMap.WholeArea": "Total yta: ",

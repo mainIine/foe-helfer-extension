@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENCIÓN: sube el nivel del gran edificio!",
 		"Boxes.Calculator.LGNotConnected": "El edificio no esta conectado a una carretera",
 		"Boxes.Calculator.LGNotOpen": "El próximo nivel no esta disponible todavía",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medallas",
 		"Boxes.Calculator.Profit": "Ganancia",
 		"Boxes.Calculator.Rate": "Cotización",
@@ -111,6 +112,7 @@
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Enviar</button>",
 		"Boxes.CityMap.FreeArea": "Zonas sin uso: ",
 		"Boxes.CityMap.NormalPerspecitve": "Estándar",
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Los datos fueron transferidos con éxito.... Ahora visita ",
 		"Boxes.CityMap.TitleSend": "Enviar datos",
 		"Boxes.CityMap.WholeArea": "Área completa: ",

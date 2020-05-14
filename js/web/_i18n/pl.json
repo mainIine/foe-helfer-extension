@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "UWAGA! Perła zostanie zamknięta!",
 		"Boxes.Calculator.LGNotConnected": "Perła nie jest podłączona do drogi",
 		"Boxes.Calculator.LGNotOpen": "Kolejny poziom perły nie jest odblokowany",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medale",
 		"Boxes.Calculator.Profit": "Zysk",
 		"Boxes.Calculator.Rate": "Stosunek",
@@ -108,9 +109,10 @@
 		"Boxes.Campagne.Title": "Koszty wykupu prowincji ",
 		"Boxes.CityMap.CavalierPerspecitve": "Izometryczny",
 		"Boxes.CityMap.Desc1": "Planer miasta wysyła dane na foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Wyślij</button>",
+		"Boxes.CityMap.Desc2": "Wyślij",
 		"Boxes.CityMap.FreeArea": "Wolny obszar: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standardowy",
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Dane wysłano pomyślnie ",
 		"Boxes.CityMap.TitleSend": "Wyślij dane",
 		"Boxes.CityMap.WholeArea": "Całkowita powierzchnia: ",
