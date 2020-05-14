@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "FIGYELEM! N.É. szintet lép!",
 		"Boxes.Calculator.LGNotConnected": "Az épület nincs úthoz csatolva",
 		"Boxes.Calculator.LGNotOpen": "A következő szint jelenleg zárva van",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medál",
 		"Boxes.Calculator.Profit": "Nyereség",
 		"Boxes.Calculator.Rate": "Arány",
@@ -111,6 +112,7 @@
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Elküldés</button>",
 		"Boxes.CityMap.FreeArea": "Szabad terület: ",
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Az adatok el lettek küldve sikeresen... Megtekintés ",
 		"Boxes.CityMap.TitleSend": "Adatok elküldése",
 		"Boxes.CityMap.WholeArea": "Teljes terület: ",
