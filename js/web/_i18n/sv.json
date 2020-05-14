@@ -109,7 +109,7 @@
 		"Boxes.Campagne.Title": "Erövringskostnad för ",
 		"Boxes.CityMap.CavalierPerspecitve": "Högpunktsvy",
 		"Boxes.CityMap.Desc1": "För att planera din stad behöver we skicka din data till foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Skicka</button>",
+		"Boxes.CityMap.Desc2": "Skicka",
 		"Boxes.CityMap.FreeArea": "Ledig yta: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standard",
 		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate

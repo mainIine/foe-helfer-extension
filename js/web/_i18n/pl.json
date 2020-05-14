@@ -109,7 +109,7 @@
 		"Boxes.Campagne.Title": "Koszty wykupu prowincji ",
 		"Boxes.CityMap.CavalierPerspecitve": "Izometryczny",
 		"Boxes.CityMap.Desc1": "Planer miasta wysyła dane na foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Wyślij</button>",
+		"Boxes.CityMap.Desc2": "Wyślij",
 		"Boxes.CityMap.FreeArea": "Wolny obszar: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standardowy",
 		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate

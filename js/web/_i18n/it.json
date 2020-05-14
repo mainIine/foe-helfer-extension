@@ -109,7 +109,7 @@
 		"Boxes.Campagne.Title": "Costo della conquista per",
 		"Boxes.CityMap.CavalierPerspecitve": "Prospettiva cavaliera",
 		"Boxes.CityMap.Desc1": "Per poter pianificare la tua città dobbiamo trasferire i tuoi dati su foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class = 'btn-default' id = 'submit-data' onclick = 'CityMap.SubmitData()'>Invia</button>",
+		"Boxes.CityMap.Desc2": "Invia",
 		"Boxes.CityMap.FreeArea": "Area libera:",
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
 		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate

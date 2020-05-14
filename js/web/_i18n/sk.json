@@ -109,7 +109,7 @@
 		"Boxes.Campagne.Title": "Náklady na získanie provincie ",
 		"Boxes.CityMap.CavalierPerspecitve": "Side View", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Aby bolo možné naplánovať Vaše mesto, potrebujeme nahrať údaje na náš server foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Odoslať</button>",
+		"Boxes.CityMap.Desc2": "Odoslať",
 		"Boxes.CityMap.FreeArea": "Voľná plocha: ",
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
 		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
