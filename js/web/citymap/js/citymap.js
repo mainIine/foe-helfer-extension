@@ -155,6 +155,9 @@ let CityMap = {
 			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 		});
 
+		// Button for submit Box
+		menu.append( $('<button />').addClass('btn-default ml-auto').attr({id:'show-submit-box', onclick:'CityMap.showSumbitBox()'}).text(i18n('Boxes.CityMap.ShowSubmitBox')) );
+
 
 		/* In das Menü "schieben" */
 		w.prepend(menu);
