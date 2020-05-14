@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "POZOR! Dokončujete úroveň VB!",
 		"Boxes.Calculator.LGNotConnected": "Budova nie je prepojená cestou",
 		"Boxes.Calculator.LGNotOpen": "Ďalšia úroveň nebola odomknutá",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Med",
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Pomer",
@@ -111,6 +112,7 @@
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Odoslať</button>",
 		"Boxes.CityMap.FreeArea": "Voľná plocha: ",
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Údaje bole úspešné nahrané... Prezrite si mesto ",
 		"Boxes.CityMap.TitleSend": "Odoslať údaje",
 		"Boxes.CityMap.WholeArea": "Celková plocha: ",

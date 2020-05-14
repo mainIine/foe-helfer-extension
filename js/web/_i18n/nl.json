@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "OPGELET: Dit zal het GG levelen!",
 		"Boxes.Calculator.LGNotConnected": "Het groots gebouw is niet verbonden met een weg",
 		"Boxes.Calculator.LGNotOpen": "Het volgende niveau is momenteel niet ontgrendeld",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Winst",
 		"Boxes.Calculator.Rate": "Verhouding",
@@ -111,6 +112,7 @@
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Verzenden</button>",
 		"Boxes.CityMap.FreeArea": "Beschikbare oppervlakte: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standaard",
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Gegevens zijn succesvol verstuurd ... Bezoek nu ",
 		"Boxes.CityMap.TitleSend": "Gegevens verzenden",
 		"Boxes.CityMap.WholeArea": "Volledige oppervlakte: ",
