@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Медали",
 		"Boxes.Calculator.Profit": "Прибыль",
 		"Boxes.Calculator.Rate": "Курс",
@@ -108,9 +109,10 @@
 		"Boxes.Campagne.Title": "Стоимость для захвата ",
 		"Boxes.CityMap.CavalierPerspecitve": "Кавалерская перспектива",
 		"Boxes.CityMap.Desc1": "Для планирования Вашего города необходимо отправлять данные на сервер foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Отправить</button>",
+		"Boxes.CityMap.Desc2": "Отправить",
 		"Boxes.CityMap.FreeArea": "Свободные ячейки: ",
 		"Boxes.CityMap.NormalPerspecitve": "Вид сверху",
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Данные отправлены успешно... Можете посетить ",
 		"Boxes.CityMap.TitleSend": "Отправить данные",
 		"Boxes.CityMap.WholeArea": "Всего ячеек: ",

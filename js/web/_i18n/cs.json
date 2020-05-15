@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "Upozornění! Zvýšení úrovně budovy",
 		"Boxes.Calculator.LGNotConnected": "Budova není připojena",
 		"Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Poměr",
@@ -111,6 +112,7 @@
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Submit</button>", //Todo: Translate
 		"Boxes.CityMap.FreeArea": "Available Squares: ", //Todo: Translate
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Data byla přijata... Nyní navštivte ",
 		"Boxes.CityMap.TitleSend": "Vložit data",
 		"Boxes.CityMap.WholeArea": "Total Squares: ", //Todo: Translate

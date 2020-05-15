@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATTENZIONE! Il GE avanzerà di livello!",
 		"Boxes.Calculator.LGNotConnected": "L'edificio non è collegato ad una strada",
 		"Boxes.Calculator.LGNotOpen": "Il livello successivo non è attualmente sbloccato",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medaglie",
 		"Boxes.Calculator.Profit": "Profitto",
 		"Boxes.Calculator.Rate": "Tasso",
@@ -108,9 +109,10 @@
 		"Boxes.Campagne.Title": "Costo della conquista per",
 		"Boxes.CityMap.CavalierPerspecitve": "Prospettiva cavaliera",
 		"Boxes.CityMap.Desc1": "Per poter pianificare la tua città dobbiamo trasferire i tuoi dati su foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class = 'btn-default' id = 'submit-data' onclick = 'CityMap.SubmitData()'>Invia</button>",
+		"Boxes.CityMap.Desc2": "Invia",
 		"Boxes.CityMap.FreeArea": "Area libera:",
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "I dati sono stati trasferiti correttamente ... Ora visita",
 		"Boxes.CityMap.TitleSend": "Invia dati",
 		"Boxes.CityMap.WholeArea": "L'intera area:",

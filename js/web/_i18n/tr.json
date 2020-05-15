@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "DİKKAT! Devasa'nın Seviyesi!",
 		"Boxes.Calculator.LGNotConnected": "Bina bir caddeye bağlı değil",
 		"Boxes.Calculator.LGNotOpen": "Bir sonraki seviye henüz aktif değil",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Kar",
 		"Boxes.Calculator.Rate": "Kurs",
@@ -108,9 +109,10 @@
 		"Boxes.Campagne.Title": "Fetih Maliyeti ",
 		"Boxes.CityMap.CavalierPerspecitve": "Kavalier Perspektifi",
 		"Boxes.CityMap.Desc1": "Şehrinizi planlayabilmeniz için verilerinizi foe-rechner.de adresine göndermeliyiz. Orada istediğiniz gibi deneyebilirsiniz.",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Gönder</button>",
+		"Boxes.CityMap.Desc2": "Gönder",
 		"Boxes.CityMap.FreeArea": "Boş Alan: ",
 		"Boxes.CityMap.NormalPerspecitve": "Normal",
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Verileriniz gönderildi... şimdi geçebilirsiniz ",
 		"Boxes.CityMap.TitleSend": "Verileri Gönder",
 		"Boxes.CityMap.WholeArea": "Toplam Alan: ",
