@@ -80,6 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENȚIE! Închide nivelul la CL!",
 		"Boxes.Calculator.LGNotConnected": "Clădirea nu este conectată la stradă!",
 		"Boxes.Calculator.LGNotOpen": "Nivelul nu este deblocat!",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Med.",
 		"Boxes.Calculator.Profit": "Profit", //Todo: Translate
 		"Boxes.Calculator.Rate": "Procent",
@@ -108,9 +109,10 @@
 		"Boxes.Campagne.Title": "Cucerirea Hărții continentelor ",
 		"Boxes.CityMap.CavalierPerspecitve": "Side View", //Todo: Translate
 		"Boxes.CityMap.Desc1": "Pentru a putea planifica orașul, este nevoie să trimitem datele tale către foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Trimite</button>",
+		"Boxes.CityMap.Desc2": "Trimite",
 		"Boxes.CityMap.FreeArea": "Câmpuri neocupate: ",
 		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
 		"Boxes.CityMap.SubmitSuccess": "Datale au fost transmise cu susces... Vizitează acum ",
 		"Boxes.CityMap.TitleSend": "Transmiterea datelor",
 		"Boxes.CityMap.WholeArea": "Toate câmpurile: ",
