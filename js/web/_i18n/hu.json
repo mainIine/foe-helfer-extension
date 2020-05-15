@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "FIGYELEM! N.É. szintet lép!",
 		"Boxes.Calculator.LGNotConnected": "Az épület nincs úthoz csatolva",
 		"Boxes.Calculator.LGNotOpen": "A következő szint jelenleg zárva van",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medál",
 		"Boxes.Calculator.Profit": "Nyereség",
 		"Boxes.Calculator.Rate": "Arány",

@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENÇÃO! Nivel atingido!",
 		"Boxes.Calculator.LGNotConnected": "O GE não está ligado por uma rua",
 		"Boxes.Calculator.LGNotOpen": "O próximo nivel não está ainda aberto",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medalhas",
 		"Boxes.Calculator.Profit": "Lucro",
 		"Boxes.Calculator.Rate": "Racio",

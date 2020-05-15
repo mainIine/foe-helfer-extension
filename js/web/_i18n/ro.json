@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENȚIE! Închide nivelul la CL!",
 		"Boxes.Calculator.LGNotConnected": "Clădirea nu este conectată la stradă!",
 		"Boxes.Calculator.LGNotOpen": "Nivelul nu este deblocat!",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Med.",
 		"Boxes.Calculator.Profit": "Profit", //Todo: Translate
 		"Boxes.Calculator.Rate": "Procent",
