@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "DİKKAT! Devasa'nın Seviyesi!",
 		"Boxes.Calculator.LGNotConnected": "Bina bir caddeye bağlı değil",
 		"Boxes.Calculator.LGNotOpen": "Bir sonraki seviye henüz aktif değil",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Kar",
 		"Boxes.Calculator.Rate": "Kurs",

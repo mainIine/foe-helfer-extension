@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "POZOR! Dokončujete úroveň VB!",
 		"Boxes.Calculator.LGNotConnected": "Budova nie je prepojená cestou",
 		"Boxes.Calculator.LGNotOpen": "Ďalšia úroveň nebola odomknutá",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Med",
 		"Boxes.Calculator.Profit": "Zisk",
 		"Boxes.Calculator.Rate": "Pomer",

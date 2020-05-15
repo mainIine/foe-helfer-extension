@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Méd.",
 		"Boxes.Calculator.Profit": "Gain",
 		"Boxes.Calculator.Rate": "Ratio",

@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "UWAGA! Perła zostanie zamknięta!",
 		"Boxes.Calculator.LGNotConnected": "Perła nie jest podłączona do drogi",
 		"Boxes.Calculator.LGNotOpen": "Kolejny poziom perły nie jest odblokowany",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medale",
 		"Boxes.Calculator.Profit": "Zysk",
 		"Boxes.Calculator.Rate": "Stosunek",
