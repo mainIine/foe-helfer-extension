@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "OPGELET: Dit zal het GG levelen!",
 		"Boxes.Calculator.LGNotConnected": "Het groots gebouw is niet verbonden met een weg",
 		"Boxes.Calculator.LGNotOpen": "Het volgende niveau is momenteel niet ontgrendeld",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Winst",
 		"Boxes.Calculator.Rate": "Verhouding",

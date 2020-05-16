@@ -328,8 +328,8 @@ let Outposts = {
 					resourceCost = cost[resourceID];
 				}
 				else { //Goldmünzen bzw. Beute => abhängig von anderen Güterkosten
-					for (let CostResourceName in cost) {
-						if (CostResourceName === 'diplomacy') continue;
+					for (let CostResourceName in sums) {
+						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
 												
 						resourceCost += Math.max(Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName] | 0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
                     }

@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENCIÓN: sube el nivel del gran edificio!",
 		"Boxes.Calculator.LGNotConnected": "El edificio no esta conectado a una carretera",
 		"Boxes.Calculator.LGNotOpen": "El próximo nivel no esta disponible todavía",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medallas",
 		"Boxes.Calculator.Profit": "Ganancia",
 		"Boxes.Calculator.Rate": "Cotización",
