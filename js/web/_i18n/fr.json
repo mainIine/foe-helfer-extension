@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
-		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Niveau max. ",
 		"Boxes.Calculator.Meds": "Méd.",
 		"Boxes.Calculator.Profit": "Gain",
 		"Boxes.Calculator.Rate": "Ratio",
@@ -112,7 +112,7 @@
 		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
 		"Boxes.CityMap.FreeArea": "Surface disponible : ",
 		"Boxes.CityMap.NormalPerspecitve": "Standard",
-		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Montrer la fenêtre d'envoi",
 		"Boxes.CityMap.SubmitSuccess": "Données transférées avec succès... Maintenant visitez ",
 		"Boxes.CityMap.TitleSend": "Envoyer les données",
 		"Boxes.CityMap.WholeArea": "Surface totale : ",
