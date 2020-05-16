@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das LG!",
 		"Boxes.Calculator.LGNotConnected": "Das Gebäude ist nicht mit einer Straße verbunden",
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level",
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Gewinn",
 		"Boxes.Calculator.Rate": "Kurs",

@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "VARNING! Höjer nivå på MB!",
 		"Boxes.Calculator.LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 		"Boxes.Calculator.LGNotOpen": "Nästa niå är inte upplåst ännu",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medalj",
 		"Boxes.Calculator.Profit": "Vinst",
 		"Boxes.Calculator.Rate": "Kvot",
