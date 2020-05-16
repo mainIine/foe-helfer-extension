@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "FP inversiones",
 		"Settings.SendTavernInfo.Desc": "¿Quieres que sean transferidas las actividades de motivar al iniciar?",
 		"Settings.SendTavernInfo.Title": "Actividad de motivar",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Mostrar lo que actualmentese se esta produciendo cuando visitas la vecindad",
 		"Settings.ShowNeighborsGoods.Title": "Cosecha de la vecindad",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Tan pronto como se activa un potenciador en la taberna, aparece un contador, globalmente desplazable",
 		"Settings.ShowTavernBadge.Title": "Mostrar placa de tabernas ",
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", //Todo: Translate

@@ -41,7 +41,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = false,
 	EventCountdown = false,
 	CurrentTime = 0;
 
@@ -817,7 +816,7 @@ const FoEproxy = (function () {
 		let IsPreviousLevel = false;
 
 		//Eigenes LG
-		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || UsePartCalcOnAllLGs) {
+		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
 			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
 			if (IsLevelScroll) {
 				let Medals = 0;
