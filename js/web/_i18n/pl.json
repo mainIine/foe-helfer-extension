@@ -56,7 +56,7 @@
 		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
 		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
 		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
-		"Boxes.Alerts.Tabs.Alerts": "Powiadomienia", 
+		"Boxes.Alerts.Tabs.Alerts": "Powiadomienia",
 		"Boxes.Alerts.Tabs.Preferences": "Ustawienia",
 		"Boxes.Alerts.Time.15m": "15m",
 		"Boxes.Alerts.Time.1d": "1d",
@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "Zainwestowane PR",
 		"Settings.SendTavernInfo.Desc": "Czy przesyłać dane o motywacjach na zewnętrzny serwer?",
 		"Settings.SendTavernInfo.Title": "Aktywność motywacji",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Podczas wizyty pokaż, co jest obecnie produkowane",
 		"Settings.ShowNeighborsGoods.Title": "Grabież sąsiadów",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Przy aktywacji dodatkowej negocjacji w tawernie pojawia się przesuwalny dymek z odliczaniem.",
 		"Settings.ShowTavernBadge.Title": "Pokaż dymek tawerny",
 		"Settings.Version.Desc": "<p>Wersja rozszerzenia</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",

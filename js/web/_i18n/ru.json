@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "Инвестиции СО",
 		"Settings.SendTavernInfo.Desc": "Нужно ли передавать мероприятия дружбы (мотивирование строений)?",
 		"Settings.SendTavernInfo.Title": "Мероприятия дружбы (мотивирование)",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Отображать, что именно производится в строении во время визита в город",
 		"Settings.ShowNeighborsGoods.Title": "Соседский урожай",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Как только активирован дополнительный ход в таверне, появится глобальный счетчик.",
 		"Settings.ShowTavernBadge.Title": "Показать значок таверны",
 		"Settings.Version.Desc": "Версия расширения для Chrome",

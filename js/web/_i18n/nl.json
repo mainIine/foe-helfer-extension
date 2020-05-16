@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "FP-bijdrages",
 		"Settings.SendTavernInfo.Desc": "Activeer dit onderdeel als motivatie/opknap-gegevens verzonden mogen worden.",
 		"Settings.SendTavernInfo.Title": "M/O activiteit",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Bij het bezoeken weergeven wat er geplunderd kan worden.",
 		"Settings.ShowNeighborsGoods.Title": "Buren plunderen",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Zodra een bonus in de taverne wordt geactiveerd, verschijnt een globale, verschuifbare teller.",
 		"Settings.ShowTavernBadge.Title": "Toon teller Taveerne Bonus",
 		"Settings.Version.Desc": "Chrome Extension Version",

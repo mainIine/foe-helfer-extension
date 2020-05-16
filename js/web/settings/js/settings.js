@@ -57,11 +57,21 @@ let Settings = {
 			title: i18n('Settings.ShowAllPlayerAttDeff.Title'),
 			desc: i18n('Settings.ShowAllPlayerAttDeff.Desc')
 		},
+		ShowOwnPartOnAllGBs: {
+			status: false,
+			title: i18n('Settings.ShowOwnPartOnAllGBs.Title'),
+			desc: i18n('Settings.ShowOwnPartOnAllGBs.Desc')
+		},
 		SendInvestigations : {
 			status: false,
 			title : i18n('Settings.SendInvestigations.Title'),
 			desc : i18n('Settings.SendInvestigations.Desc')
 		},
+		ShowInvestments: {
+			status: true,
+			title: i18n('Settings.ShowInvestments.Title'),
+			desc: i18n('Settings.ShowInvestments.Desc')
+        },
 		ShowTavernBadge : {
 			status: true,
 			title : i18n('Settings.ShowTavernBadge.Title'),
