@@ -52,6 +52,11 @@ let Settings = {
 			title : i18n('Settings.ShowNeighborsGoods.Title'),
 			desc : i18n('Settings.ShowNeighborsGoods.Desc')
 		},
+		ShowAllPlayerAttDeff: {
+			status: true,
+			title: i18n('Settings.ShowAllPlayerAttDeff.Title'),
+			desc: i18n('Settings.ShowAllPlayerAttDeff.Desc')
+		},
 		SendInvestigations : {
 			status: false,
 			title : i18n('Settings.SendInvestigations.Title'),
