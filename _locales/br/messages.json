@@ -1,10 +1,10 @@
 {
     "appName": {
         "message": "FoE - Auxiliar",
-        "description": "O título da aplicação mostrado na loja da web."
+        "description": "O título da aplicação, exibido na loja virtual."
     },
     "appDesc": {
         "message": "Pequenas ferramentas e auxiliares para uma melhor experiência de jogo no Forge of Empires",
-        "description": "The description of the application, displayed in the web store."
+        "description": "A descrição do aplicativo, exibida na loja virtual."
     }
 }
