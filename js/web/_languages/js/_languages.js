@@ -10,7 +10,7 @@
         nl: 'Nederlands',
         pl: 'Polski',
         pt: 'Português',
-        br: 'Português do Brasil'
+        br: 'Português do Brasil',
         ro: 'Română',
         ru: 'Русский',
         sk: 'Slovenčina',
