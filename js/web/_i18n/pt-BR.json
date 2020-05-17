@@ -47,7 +47,7 @@
         "Boxes.Campagne.Resource": "Recurso",
         "Boxes.Campagne.Reward": "Recompensa total ",
         "Boxes.Campagne.Title": "Custos de conquista para ",
-        "Boxes.CityMap.CavalierPerspecitve": "Cavalier perspective",
+        "Boxes.CityMap.CavalierPerspecitve": "Perspectiva cavaleira",
         "Boxes.CityMap.Desc1": "Para poder planejar sua cidade, precisamos transferir seus dados para foe-rechner.de",
         "Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Enviar</button>",
         "Boxes.CityMap.FreeArea": "Área livre: ",
