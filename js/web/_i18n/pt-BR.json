@@ -94,7 +94,7 @@
         "Boxes.Infobox.Messages.LevelUp": "O edificio __building__ do(a) __player__ atingiu o nível __level__.<br>Ficou na posição <strong>__rank__</strong> e ganhou <strong>__fps__</strong> PFs.",
         "Boxes.Infobox.Messages.MsgBuilding": "__building__ - Nível __level__",
         "Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> aceitou a tua oferta.<br>Recebeste __needValue__ __need__ por __offerValue__ __offer__",
-        "Boxes.Infobox.ResetBox": "Limpar",
+        "Boxes.Infobox.ResetBox": "Resetar a Janela",
         "Boxes.Infobox.Title": "Informações",
         "Boxes.Investment.AllUpToDate": "Tudo atualizado",
         "Boxes.Investment.AllUpToDateDesc": "Todos os jogadores nesta página já foram gravados",
