@@ -370,7 +370,7 @@
         "Menu.Kits.Desc": "Listar todas as construções existentes, atualizações e kits de seleção",
         "Menu.Kits.Title": "Kits de Construção",
         "Menu.Negotiation.Desc": "Apresentar propostas precisas para negociações",
-        "Menu.Negotiation.Title": "Ajudante de negociações",
+        "Menu.Negotiation.Title": "Auxiliar de negociações",
         "Menu.Negotiation.Warning": "Desabilitado: Começe uma negociação primeiro!",
         "Menu.OutP.Desc": "Resumo dos recursos necessários",
         "Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Desabilitado: Abra primeiro o acampamento!<br></em>Resumo dos recursos necessários",
