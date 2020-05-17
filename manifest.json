@@ -1,62 +1,60 @@
 {
-	"name": "__MSG_appName__",
-	"description": "__MSG_appDesc__",
-	"default_locale": "en",
-	"version": "2.4.5",
-  
-	"manifest_version": 2,
-	"permissions": [
-		"activeTab",
-		"storage",
-		"tabs",
-	  	"notifications",
-		"clipboardWrite",
-	  	"management",
-		"https://*.forgeofempires.com/*",
-		"https://foe-rechner.de/*",
-		"https://*.foe-rechner.de/*"
-	],
+    "name": "__MSG_appName__",
+    "description": "__MSG_appDesc__",
+    "default_locale": "en",
+    "version": "2.4.5",
 
-	"browser_action": {
-		"default_icon": "images/app16.png",
-		"default_popup": "content/popup.html",
-		"default_title": "__MSG_appName__"
-	},
+    "manifest_version": 2,
+    "permissions": [
+        "activeTab",
+        "storage",
+        "tabs",
+        "notifications",
+        "clipboardWrite",
+        "management",
+        "https://*.forgeofempires.com/*",
+        "https://foe-rechner.de/*",
+        "https://*.foe-rechner.de/*"
+    ],
 
-	"icons": {
-		"16": "images/app16.png",
-		"48": "images/app48.png",
-		"128": "images/app128.png"
-	},
+    "browser_action": {
+        "default_icon": "images/app16.png",
+        "default_popup": "content/popup.html",
+        "default_title": "__MSG_appName__"
+    },
 
-	"web_accessible_resources": [
-		"css/web/*.css",
-		"vendor/*.js",
-		"vendor/sounds/*.mp3",
-		"js/web/*.*",
-		"css/images/*.*",
-		"content/*.html"
-	],
-	
-	"content_scripts": [
-		{
-			"matches": ["https://*.forgeofempires.com/*"],
-			"include_globs": [ "*forgeofempires.com/game*" ],
-			"run_at": "document_start",
-			"js": [
-				"js/web/_languages/js/_languages.js",
-				"js/inject.js"
-			]
-		}
-	],
+    "icons": {
+        "16": "images/app16.png",
+        "48": "images/app48.png",
+        "128": "images/app128.png"
+    },
 
-  	"externally_connectable" : {
-	  	"matches": ["https://*.forgeofempires.com/*"],
-	  	"ids": ["*"]
-	},
+    "web_accessible_resources": [
+        "css/web/*.css",
+        "vendor/*.js",
+        "vendor/sounds/*.mp3",
+        "js/web/*.*",
+        "css/images/*.*",
+        "content/*.html"
+    ],
 
-	"background": {
-	  	"scripts": ["js/background.js"],
-	  	"persistent": true
-	}
+    "content_scripts": [{
+        "matches": ["https://*.forgeofempires.com/*"],
+        "include_globs": ["*forgeofempires.com/game*"],
+        "run_at": "document_start",
+        "js": [
+            "js/web/_languages/js/_languages.js",
+            "js/inject.js"
+        ]
+    }],
+
+    "externally_connectable": {
+        "matches": ["https://*.forgeofempires.com/*"],
+        "ids": ["*"]
+    },
+
+    "background": {
+        "scripts": ["js/background.js"],
+        "persistent": true
+    }
 }
