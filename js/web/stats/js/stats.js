@@ -42,7 +42,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
     await IndexDB.getDB();
 
 	for (let reward of rewards) {
-		if (!Stats.TrackableRewards.includes(rewardIncidentSource)) {
+		// default is incident reward
+		if (rewardIncidentSource == 'default') {
 			continue;
 		}
 
@@ -110,6 +111,10 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 // Player Army log
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
 	const r = data.responseData;
+	if (Stats.isVisitingCulturalOutpost) {
+		return;
+	}
+
 	// Convert array to hash to be more compact
 	const army = r.counts.reduce((acc, val) => {
 		acc[val.unitTypeId] = (val.attached || 0) + (val.unattached || 0);
@@ -129,15 +134,21 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 	});
 });
 
+FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
+	const r = data.responseData;
+	if (r.gridId == 'cultural_outpost') {
+		Stats.isVisitingCulturalOutpost = true;
+	}
+});
+
+FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
+	const r = data.responseData;
+	Stats.isVisitingCulturalOutpost = false;
+});
+
 let Stats = {
 
-	// More rewards can be tracked later, but for now lets track few
-	TrackableRewards: [
-		'diplomaticGifts', // Asteroid Age's GB reward
-		'battlegrounds_conquest', // Battle ground
-		'guildExpedition', // Temple of Relics
-		'spoilsOfWar' // Himeji Castle
-	],
+	isVisitingCulturalOutpost: false,
 
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
@@ -196,7 +207,10 @@ let Stats = {
 		showAnnotations: false, // GvG annotations
 		period: 'today',
 		rewardSource: 'guildExpedition', // filter by type of reward
+		currentType: null
 	},
+
+	DatePickerObj: null,
 
 	treasureSources: ['statsTreasurePlayerH', 'statsTreasurePlayerD', 'statsTreasureClanH', 'statsTreasureClanD'],
 	unitSources: ['statsUnitsH', 'statsUnitsD'],
@@ -239,7 +253,7 @@ let Stats = {
 		Stats.Render();
 
 		// Click action handlers
-		$('#statsBody').on('click', '[data-type]', function () {
+		$('#statsBody').on('click', '[data-type]', function(){
 			const type = $(this).data('type');
 			const value = $(this).data('value');
 
@@ -299,6 +313,7 @@ let Stats = {
 							} else
 								if (isChangedToGBG) {
 									Stats.state.chartType = 'delta';
+									Stats.isGG = true;
 
 								} else
 									if (isChangedToReward) {
@@ -352,7 +367,7 @@ let Stats = {
 	Render: async () => {
 		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="highcharts">Loading...</div>`);
 
-		Stats.updateOptions()
+		Stats.updateOptions();
 		await Stats.loadHighcharts();
 		await Stats.updateCharts();
 	},
@@ -363,8 +378,30 @@ let Stats = {
 	 */
 	updateOptions: () => {
 		$('#statsBody .options').html(Stats.RenderOptions());
-		const secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
-		$('#statsBody .options-2').html(secondaryOptions);
+		let secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
+
+		if(Stats.isSelectedGBGSources() && $('#GVGDatePicker').length === 0){
+			secondaryOptions = `<div></div><input class="" id="GVGDatePicker" type="text">`;
+		}
+
+		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){
+			if(Stats.DatePickerObj === null && $('#GVGDatePicker').length > 0){
+
+				Stats.DatePickerObj = new Litepicker({
+					element: document.getElementById('GVGDatePicker'),
+					format: i18n('Date'),
+					lang: MainParser.Language,
+					singleMode: false,
+					maxDate: new Date(),
+					showWeekNumbers: true,
+					onSelect: async function (start, end) {
+						$('#GVGDatePicker').text(`${start} - ${end}`);
+
+						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({s: start, e: end})));
+					}
+				});
+			}
+		});
 	},
 
 
@@ -386,7 +423,7 @@ let Stats = {
 
 		const btnSelectNoEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnNoEra'),
-			isActive: selectedEras.length == 1 && selectedEras[0] == 'NoAge',
+			isActive: selectedEras.length === 1 && selectedEras[0] === 'NoAge',
 			dataType: 'selectEras',
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
 			value: 'NoAge',
@@ -394,7 +431,7 @@ let Stats = {
 
 		const btnSelectMyEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnMyEra'),
-			isActive: selectedEras.length == 1 && selectedEras[0] == Technologies.EraNames[CurrentEraID],
+			isActive: selectedEras.length === 1 && selectedEras[0] === Technologies.EraNames[CurrentEraID],
 			dataType: 'selectEras',
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
 			value: Technologies.EraNames[CurrentEraID]
@@ -470,28 +507,26 @@ let Stats = {
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
 			value: it
 		}));
-		return `
-<div>
-	${Stats.RenderEraSwitchers()}
-</div>
-<div class="option-toggle-group">
-	${btnGroupByEra}
-	${btnTglAnnotations}
-</div>
-<div class="option-era-wrap">
-	${btnSelectAllEra}
-	${btnSelectAll}
-	${btnSelectMyEra}
-	${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
-	${btnSelectNoEra}
-</div>
-<div class="option-chart-type-wrap">
-${chartTypes.join('')}
-</div>
-<div class="option-source-wrap">
-${sourceBtns.join('')}
-</div>
-`;
+		return `<div>
+					${Stats.RenderEraSwitchers()}
+				</div>
+				<div class="option-toggle-group">
+					${btnGroupByEra}
+					${btnTglAnnotations}
+				</div>
+				<div class="option-era-wrap">
+					${btnSelectAllEra}
+					${btnSelectAll}
+					${btnSelectMyEra}
+					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
+					${btnSelectNoEra}
+				</div>
+				<div class="option-chart-type-wrap">
+					${chartTypes.join('')}
+				</div>
+				<div class="option-source-wrap">
+					${sourceBtns.join('')}
+				</div>`;
 	},
 
 
@@ -500,7 +535,14 @@ ${sourceBtns.join('')}
 	 * @returns {string}
 	 */
 	RenderSecondaryOptions: () => {
-		const btnsPeriodSelect = ['today', 'sinceTuesday', 'last7days', 'thisMonth', 'last30days', 'all'].map(it => Stats.RenderButton({
+		const btnsPeriodSelect = [
+			'today',
+			'sinceTuesday',
+			'last7days',
+			'thisMonth',
+			'last30days',
+			'all'
+		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Period.' + it),
 			title: i18n('Boxes.Stats.PeriodTitle.' + it),
 			isActive: Stats.state.period === it,
@@ -509,6 +551,7 @@ ${sourceBtns.join('')}
 		}));
 
 		const btnsRewardSelect = [
+			'__event',
 			'battlegrounds_conquest', // Battle ground
 			'guildExpedition', // Temple of Relics
 			'spoilsOfWar', // Himeji Castle
@@ -583,15 +626,15 @@ ${sourceBtns.join('')}
 	/**
 	 * Render a button
 	 *
-	 * @param name
-	 * @param isActive
-	 * @param dataType
-	 * @param value
-	 * @param title
-	 * @param disabled
+	 * @param name		Name
+	 * @param isActive	Activated
+	 * @param dataType	Typ
+	 * @param value		Default Value
+	 * @param title		Title for button
+	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight btn-set-arc ${!disabled && isActive ? 'btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
+	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
 
 
 	/**
@@ -625,11 +668,23 @@ ${sourceBtns.join('')}
 	/**
 	 * Battlegrounds series for highcharts
 	 *
+	 * @param dates		Date obj with {start, end}
 	 * @returns {Promise<{series: {data, avatarUrl: (string|string), name: string}[], pointFormat: string}>}
 	 */
-	createGBGSeries: async () => {
-		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+	createGBGSeries: async (dates = null) => {
+		let data;
+
+		if(dates !== null){
+
+			let from = moment(dates.s).toDate(),
+				to = moment(dates.e).toDate();
+
+			data = await IndexDB.db['statsGBGPlayers'].where('date').between(from, to).sortBy('date');
+
+		} else {
+			data = await IndexDB.db['statsGBGPlayers'].orderBy('date').toArray();
+		}
+
 		const playerCache = await IndexDB.db.statsGBGPlayerCache.toArray();
 
 		const playerKV = playerCache.reduce((acc, it) => {
@@ -759,16 +814,17 @@ ${sourceBtns.join('')}
 	 */
 	createTreasureSeries: async () => {
 		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+		const selectedEras = Stats.getSelectedEras();
 		const isClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(source);
+		const hcColors = Highcharts.getOptions().colors;
+
+		let data = await IndexDB.db[source].orderBy('date').toArray();
 
 		if (isClanTreasure) {
 			data = data.filter(it => it.clanId === ExtGuildID);
 		}
 
-		const hcColors = Highcharts.getOptions().colors;
 		let colors;
-		const selectedEras = Stats.getSelectedEras();
 
 		// Build color set - brighten each per
 		if (selectedEras.length > 1) {
@@ -1072,22 +1128,40 @@ ${sourceBtns.join('')}
 		let data = await IndexDB.db.statsRewards.where('date').above(startDate).toArray();
 
 		const rewardTypes = await IndexDB.db.statsRewardTypes.toArray();
-		const rewardSources = ['battlegrounds_conquest', 'guildExpedition', 'spoilsOfWar', 'diplomaticGifts'];
 		const groupedByRewardSource = {};
 
 		data.forEach(it => {
-			groupedByRewardSource[it.type] = groupedByRewardSource[it.type] || {};
-			groupedByRewardSource[it.type][it.reward] = groupedByRewardSource[it.type][it.reward] || 0;
-			groupedByRewardSource[it.type][it.reward]++;
+            let type = it.type;
+            if (/event/i.test(type)) {
+                type = '__event';
+            }
+			groupedByRewardSource[type] = groupedByRewardSource[type] || {};
+			groupedByRewardSource[type][it.reward] = groupedByRewardSource[type][it.reward] || 0;
+			groupedByRewardSource[type][it.reward]++;
 		});
 
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
 			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` :
-				rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
+				  rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
+			// Asset image if not goods or goods sprite
+			let pointImage = '';
+			if (rewardInfo.type != 'good' && rewardInfo.type != 'unit') {
+				let url = '';
+				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
+					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
+					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
+				} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
+					url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+				}
+				if (url) {
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`;
+				}
+			}
 			return {
 				iconClass,
+				pointImage,
 				name: rewardInfo.name,
 				y: seriesMapBySource[it]
 			};
@@ -1123,7 +1197,7 @@ ${sourceBtns.join('')}
 			tooltip: {
 				useHTML: true,
 				headerFormat: '',
-				pointFormat: '<span class="{point.iconClass}"></span> {point.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+				pointFormat: '<span class="{point.iconClass}"></span>{point.pointImage} {point.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
 			},
 			accessibility: {
 				point: {
