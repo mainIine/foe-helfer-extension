@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "English",
 		"API.GEXChampionship": "GE Guild Ranking info has been updated",
@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "Warning! Leveling this GB!",
 		"Boxes.Calculator.LGNotConnected": "This GB is not connected to a road.",
 		"Boxes.Calculator.LGNotOpen": "This GB's next level is currently LOCKED.",
-		"Boxes.Calculator.MaxLevel": "Max. Level",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Profit",
 		"Boxes.Calculator.Rate": "Rate",
@@ -495,14 +495,8 @@
 		"Settings.SendInvestigations.Title": "FP Investments",
 		"Settings.SendTavernInfo.Desc": "Should the motivation activities be transferred when the events are called?",
 		"Settings.SendTavernInfo.Title": "Motivation Activity",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them",
-		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def",
-		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.",
-		"Settings.ShowInvestments.Title": "GB investment summary",
 		"Settings.ShowNeighborsGoods.Desc": "Displays all your neighbour's current productions when visiting their city.",
 		"Settings.ShowNeighborsGoods.Title": "Neighbour's Productions",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players",
-		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'",
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.",
 		"Settings.ShowTavernBadge.Title": "Show tavern badge",
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
