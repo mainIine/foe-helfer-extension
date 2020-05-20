@@ -52,11 +52,26 @@ let Settings = {
 			title : i18n('Settings.ShowNeighborsGoods.Title'),
 			desc : i18n('Settings.ShowNeighborsGoods.Desc')
 		},
+		ShowAllPlayerAttDeff: {
+			status: true,
+			title: i18n('Settings.ShowAllPlayerAttDeff.Title'),
+			desc: i18n('Settings.ShowAllPlayerAttDeff.Desc')
+		},
+		ShowOwnPartOnAllGBs: {
+			status: false,
+			title: i18n('Settings.ShowOwnPartOnAllGBs.Title'),
+			desc: i18n('Settings.ShowOwnPartOnAllGBs.Desc')
+		},
 		SendInvestigations : {
 			status: false,
 			title : i18n('Settings.SendInvestigations.Title'),
 			desc : i18n('Settings.SendInvestigations.Desc')
 		},
+		ShowInvestments: {
+			status: true,
+			title: i18n('Settings.ShowInvestments.Title'),
+			desc: i18n('Settings.ShowInvestments.Desc')
+        },
 		ShowTavernBadge : {
 			status: true,
 			title : i18n('Settings.ShowTavernBadge.Title'),
@@ -182,7 +197,7 @@ let Settings = {
 			);
 		}
 
-		$('body').on('click', 'input.setting-check', function(){
+		$('#SettingsBoxBody').on('click', 'input.setting-check', function(){
 			Settings.StoreSettings($(this));
 		});
 	},
@@ -280,13 +295,13 @@ let Settings = {
 			if (!Languages.PossibleLanguages.hasOwnProperty(iso)){
 				break;
 			}
-			
+
 			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + Languages.PossibleLanguages[iso] + '</option>');
 		}
 
 		dp.push('</select>');
 
-		$('body').on('change', '#change-lang', function(){
+		$('#SettingsBoxBody').on('change', '#change-lang', function(){
 			let uLng = $(this).val();
 
 			localStorage.setItem('user-language', uLng);
@@ -299,7 +314,7 @@ let Settings = {
 
 
 	CustomerApiCheck: ()=> {
-		$('body').on('change', '[data-id="CustomerApi"]', function(){
+		$('#SettingsBoxBody').on('change', '[data-id="CustomerApi"]', function(){
 			location.reload();
 		});
 	},
@@ -323,7 +338,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('body').on('keyup', '#menu-input-length', function(){
+		$('#SettingsBox').on('keyup', '#menu-input-length', function(){
 			let value = $(this).val();
 
 			if(value > 0){
