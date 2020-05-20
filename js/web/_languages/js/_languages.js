@@ -13,6 +13,7 @@
 		ro: 'Română',
 		ru: 'Русский',
 		sk: 'Slovenčina',
-		sv: 'Svenska'
+		sv: 'Svenska',
+		tr: 'Türkçe'
 	},
 };
