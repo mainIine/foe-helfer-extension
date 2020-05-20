@@ -121,7 +121,7 @@ let CityMap = {
 
 		menu.append(dropView);
 
-		$('body').on('change', '#menu-view', function(){
+		$('#city-map-overlay').on('change', '#menu-view', function(){
 			let view = $('#menu-view option:selected').data('view');
 
 			$('#grid-outer').attr('data-view', view);
@@ -142,7 +142,7 @@ let CityMap = {
 
 		menu.append(scaleView);
 
-		$('body').on('change', '#scale-view', function(){
+		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
 
 			CityMap.ScaleUnit = unit;
@@ -154,6 +154,9 @@ let CityMap = {
 
 			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 		});
+
+		// Button for submit Box
+		menu.append( $('<button />').addClass('btn-default ml-auto').attr({id:'show-submit-box', onclick:'CityMap.showSumbitBox()'}).text(i18n('Boxes.CityMap.ShowSubmitBox')) );
 
 
 		/* In das Menü "schieben" */
@@ -227,8 +230,8 @@ let CityMap = {
 		}
 
 
-		if(CityMap.CityData === null)
-		{
+		//if(CityMap.CityData === null)
+		//{
 			// kommt von extern
 			if(Data !== null)
 			{
@@ -246,9 +249,9 @@ let CityMap = {
 
 			CityMap.CityData = MapDataSorted;
 
-		} else {
-			MapDataSorted = CityMap.CityData;
-		}
+		//} else {
+		//	MapDataSorted = CityMap.CityData;
+		//}
 
 		let MinX = 0,
 			MinY = 0,
@@ -259,7 +262,7 @@ let CityMap = {
 		{
 			if (!MapDataSorted.hasOwnProperty(b) || MapDataSorted[b]['x'] < MinX || MapDataSorted[b]['x'] > MaxX || MapDataSorted[b]['y'] < MinY || MapDataSorted[b]['y'] > MaxY)
 				continue;
-			
+
 			let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
 
 				x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
@@ -352,7 +355,7 @@ let CityMap = {
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
 
-			desc += '<p class="text-center" id="msg-line">' + i18n('Boxes.CityMap.Desc2') + '</p>';
+			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
 		}
@@ -372,7 +375,7 @@ let CityMap = {
 		};
 
 		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#msg-line').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+			$('#CityMapSubmitBody').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 		});
 	},
 };
