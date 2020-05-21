@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "PF investite",
 		"Settings.SendTavernInfo.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
 		"Settings.SendTavernInfo.Title": "Activitatea de motivație",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "În timpul vizitării orașului, arată care este producțiile finalizate ale acestuia",
 		"Settings.ShowNeighborsGoods.Title": "Producția vecinilor",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "De îndată ce o achiziție este făcută în magazinul tavernei, va fi afișat un contor.",
 		"Settings.ShowTavernBadge.Title": "Arată contorul tavernei prietenilor",
 		"Settings.Version.Desc": "Versiunea extensiei pentru ",

@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "English",
 		"API.GEXChampionship": "GE Guild Ranking info has been updated",
@@ -80,7 +80,7 @@
 		"Boxes.Calculator.LevelWarning": "Warning! Leveling this GB!",
 		"Boxes.Calculator.LGNotConnected": "This GB is not connected to a road.",
 		"Boxes.Calculator.LGNotOpen": "This GB's next level is currently LOCKED.",
-		"Boxes.Calculator.MaxLevel": "Max. Level",
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Profit",
 		"Boxes.Calculator.Rate": "Rate",

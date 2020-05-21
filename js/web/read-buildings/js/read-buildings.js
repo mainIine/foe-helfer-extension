@@ -47,18 +47,21 @@ let Reader = {
 	player_name: '',
 	CityEntities: [],
 	ArmyBoosts: [],
+	IsPlunderable: false,
 	
 	/**
 	 * Die Gebäude ermitteln
 	 *
 	 * @param dp
 	 */
-	OtherPlayersBuildings: (dp) => {
+	OtherPlayersBuildings: (dp, IsPlunderable) => {
 
 		Reader.data = {
 			ready: [],
 			work: []
 		};
+
+		Reader.IsPlunderable = IsPlunderable;
 
 		// Werte des letzten Nachbarn löschen
 		CityMap.CityData = null;
@@ -207,58 +210,60 @@ ${HTML.i18nReplacer(i18n('Boxes.Neighbors.DefendingArmy'), {
     defdef: `<b>${boosts.DefenseDefenseBoost}</b>`})}
 </div>
 `)
-		if (rd.length > 0) {
-			h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
-			h.push('<thead>');
+		if (Reader.IsPlunderable) {
+			if (rd.length > 0) {
+				h.push('<table class="foe-table" style="margin-bottom: 15px">');
 
-			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.ReadyProductions') + '</strong></th>');
-			h.push('</tr>');
+				h.push('<thead>');
 
-			h.push('</thead>');
-			h.push('<tbody>');
+				h.push('<tr>');
+				h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.ReadyProductions') + '</strong></th>');
+				h.push('</tr>');
 
-			for (let i in rd) {
-				if (rd.hasOwnProperty(i)) {
-					h.push('<tr class="success">');
-					h.push('<td>' + rd[i]['name'] + '</td>');
-					h.push('<td>' + rd[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
-					h.push('</tr>');
+				h.push('</thead>');
+				h.push('<tbody>');
+
+				for (let i in rd) {
+					if (rd.hasOwnProperty(i)) {
+						h.push('<tr class="success">');
+						h.push('<td>' + rd[i]['name'] + '</td>');
+						h.push('<td>' + rd[i]['amount'] + '</td>');
+						h.push('<td><span class="show-entity" data-id="' + rd[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
+						h.push('</tr>');
+					}
 				}
+
+				h.push('</tbody>');
+				h.push('</table>');
 			}
 
-			h.push('</tbody>');
-			h.push('</table>');
-		}
+			if (wk.length > 0) {
 
+				h.push('<table class="foe-table">');
 
-		if (wk.length > 0) {
+				h.push('<thead>');
 
-			h.push('<table class="foe-table">');
+				h.push('<tr>');
+				h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.OngoingProductions') + '</strong></th>');
+				h.push('</tr>');
 
-			h.push('<thead>');
+				h.push('</thead>');
+				h.push('<tbody>');
 
-			h.push('<tr>');
-			h.push('<th colspan="3"><strong>' + i18n('Boxes.Neighbors.OngoingProductions') + '</strong></th>');
-			h.push('</tr>');
-
-			h.push('</thead>');
-			h.push('<tbody>');
-
-			for (let i in wk) {
-				if (wk.hasOwnProperty(i)) {
-					h.push('<tr>');
-					h.push('<td>' + wk[i]['name'] + '</td>');
-					h.push('<td>' + wk[i]['amount'] + '</td>');
-					h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
-					h.push('</tr>');
+				for (let i in wk) {
+					if (wk.hasOwnProperty(i)) {
+						h.push('<tr>');
+						h.push('<td>' + wk[i]['name'] + '</td>');
+						h.push('<td>' + wk[i]['amount'] + '</td>');
+						h.push('<td><span class="show-entity" data-id="' + wk[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
+						h.push('</tr>');
+					}
 				}
-			}
 
-			h.push('</tbody>');
-			h.push('</table>');
+				h.push('</tbody>');
+				h.push('</table>');
+			}
 		}
 		
 		div.find('#ResultBoxBody').html(h.join(''));

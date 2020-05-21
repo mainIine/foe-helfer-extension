@@ -1356,7 +1356,7 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 let NotificationManager = {
 
     debug: true,
-    isEnabled: (Notification && Notification.permission === 'granted' ),
+    isEnabled: true, //(Notification && Notification.permission === 'granted' ),
     canBeEnabled: null,
 
     init: ()=> {
@@ -1422,6 +1422,8 @@ let NotificationManager = {
     },
 
     notify: (title, options)=> {
+        MainParser.sendExtMessage({type: 'showNotification', title, options});
+        return;
         // if FoE is focused, don't show notifications, maybe instead post to the Infobox?
         // https://web-push-book.gauntface.com/demos/notification-examples/
         try {

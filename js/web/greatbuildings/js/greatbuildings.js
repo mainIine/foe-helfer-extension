@@ -51,7 +51,6 @@ let GreatBuildings =
     MaxLevel: 100,
     ForderBonus: 90,
     FPPerTile: 0.2,
-    MainListenerRegistered: false,
     
 	/**
 	 * Zeigt
