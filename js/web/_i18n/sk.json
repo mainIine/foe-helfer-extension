@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "Príspevky do VB",
 		"Settings.SendTavernInfo.Desc": "Odoslať údaje o moticáciách (pomoci)?",
 		"Settings.SendTavernInfo.Title": "Motivácia (pomoc)",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Počas návštevy suseda zobraziť okno s možnými zbermi po rabovaní",
 		"Settings.ShowNeighborsGoods.Title": "Rabovanie susedov",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.", //Todo: Translate
 		"Settings.ShowTavernBadge.Title": "Show tavern badge", //Todo: Translate
 		"Settings.Version.Desc": "Verzia rozšírenia pre Chrome",

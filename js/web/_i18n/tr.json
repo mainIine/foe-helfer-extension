@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "FP Yatırımlar",
 		"Settings.SendTavernInfo.Desc": "Olaylar çağrıldığında Taverna faaliyetleri göz ardı edilmeli midir?",
 		"Settings.SendTavernInfo.Title": "Taverna Faaliyetleri",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Şu anda üretilenleri ziyaret ederken göster",
 		"Settings.ShowNeighborsGoods.Title": "Komşular Hasatı",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Tavernada bir destek etkinleştirilir etkinleştirilmez, küresel olarak kaydırılabilir bir sayaç belirir",
 		"Settings.ShowTavernBadge.Title": "Taverna Rozetini Göster",
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",

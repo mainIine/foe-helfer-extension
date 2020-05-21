@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "Investimentp PFs",
 		"Settings.SendTavernInfo.Desc": "Queres que a actividade de motivação seja enviada juntamente com os eventos?",
 		"Settings.SendTavernInfo.Title": "Actividade da motivação",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Durante a visita, mostrar o que está a ser produzido",
 		"Settings.ShowNeighborsGoods.Title": "Recolha dos vizinhos",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Quando a bonificação da taberna é activada, um contador é visivel.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
 		"Settings.Version.Desc": "Chrome Extension Version",

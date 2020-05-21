@@ -495,8 +495,14 @@
 		"Settings.SendInvestigations.Title": "Investimenti PF",
 		"Settings.SendTavernInfo.Desc": "Le attività di motivazione devono essere trasferite quando vengono chiamati gli eventi?",
 		"Settings.SendTavernInfo.Title": "Attività di motivazione",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Durante la visita, mostra ciò che è attualmente prodotto",
 		"Settings.ShowNeighborsGoods.Title": "Raccolta del vicinato",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
 		"Settings.Version.Desc": "Versione estensione di Chrome",

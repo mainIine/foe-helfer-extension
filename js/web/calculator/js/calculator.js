@@ -25,7 +25,6 @@ let Calculator = {
 	PlayOverviewInfoSound: null,
 	DetailViewIsNewer: false,
 	OpenedFromOverview: undefined,
-	MainListenerRegistered: false,
 	OverviewListenerRegistered: false,
 	AutoOpenKR: false,
 	Rankings : undefined,
@@ -118,7 +117,36 @@ let Calculator = {
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('calculator');
 
-            Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
+			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
+
+			// schnell zwischen den Prozenten wechseln
+			$('#costCalculator').on('click', '.btn-toggle-arc', function () {
+				Calculator.ForderBonus = parseFloat($(this).data('value'));
+				$('#costFactor').val(Calculator.ForderBonus);
+				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
+				Calculator.CalcBody();
+			});
+
+			// wenn der Wert des Archebonus verändert wird, Event feuern
+			$('#costCalculator').on('blur', '#costFactor', function () {
+				Calculator.ForderBonus = parseFloat($('#costFactor').val());
+				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
+				Calculator.CalcBody();
+			});
+
+			$('#costCalculator').on('click', '#CalculatorTone', function () {
+
+				let disabled = $(this).hasClass('deactivated');
+
+				localStorage.setItem('CalculatorTone', (disabled ? '' : 'deactivated'));
+				Calculator.PlayInfoSound = !!disabled;
+
+				if (disabled === true) {
+					$('#CalculatorTone').removeClass('deactivated');
+				} else {
+					$('#CalculatorTone').addClass('deactivated');
+				}
+			});
 
         }
 
@@ -165,8 +193,7 @@ let Calculator = {
 		if (Calculator.PlayerName !== undefined) {
 			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
 		}
-		h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1));
-		h.push('<br>' + i18n('Boxes.Calculator.MaxLevel', 'Max Level') + ': ' + MaxLevel + '</p>');
+		h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
 
         // FP im Lager
         h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
@@ -239,39 +266,6 @@ let Calculator = {
         }
 
         Calculator.CalcBody();
-
-		if (!Calculator.MainListenerRegistered) {
-			Calculator.MainListenerRegistered = true;
-
-			// schnell zwischen den Prozenten wechseln
-			$('#costCalculator').on('click', '.btn-toggle-arc', function () {
-				Calculator.ForderBonus = parseFloat($(this).data('value'));
-				$('#costFactor').val(Calculator.ForderBonus);
-				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
-				Calculator.CalcBody();
-			});
-
-			// wenn der Wert des Archebonus verändert wird, Event feuern
-			$('#costCalculator').on('blur', '#costFactor', function () {
-				Calculator.ForderBonus = parseFloat($('#costFactor').val());
-				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
-				Calculator.CalcBody();
-	        });
-
-			$('#costCalculator').on('click', '#CalculatorTone', function () {
-
-				let disabled = $(this).hasClass('deactivated');
-
-				localStorage.setItem('CalculatorTone', (disabled ? '' : 'deactivated'));
-				Calculator.PlayInfoSound = !!disabled;
-
-				if (disabled === true) {
-					$('#CalculatorTone').removeClass('deactivated');
-				} else {
-					$('#CalculatorTone').addClass('deactivated');
-				}
-			});
-		}
 	},
 
 
