@@ -28,7 +28,7 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
 
 /**
  *
- * @type {{init: Infoboard.init, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
  */
 let Infoboard = {
 
@@ -36,12 +36,23 @@ let Infoboard = {
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    DebugWebSocket: false,
 
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
+     * */
+    Init: () => {
+        FoEproxy.addRawWsHandler(data => {
+            Infoboard.HandleMessage('in', data);
+        });
+    },
+
+
+    /**
+     * Zeigt die InfoBox an
      */
-    init: () => {
+    Show: () => {
 
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
@@ -51,15 +62,6 @@ let Infoboard = {
         }
 
         Infoboard.Box();
-
-        if (Infoboard.InjectionLoaded === false) {
-            FoEproxy.addRawWsHandler(data => {
-                if ($('#BackgroundInfo').length > 0) {
-                    Infoboard.BoxContent('in', data);
-                }
-            });
-            Infoboard.InjectionLoaded = true;
-        }
     },
 
 
@@ -164,7 +166,7 @@ let Infoboard = {
      * @param dir
      * @param data
      */
-    BoxContent: (dir, data) => {
+    HandleMessage: (dir, data) => {
 
         let Msg = data[0];
 
@@ -177,6 +179,10 @@ let Infoboard = {
             t = Msg['responseData']['type'] || '',
             s = c + '_' + m + t;
 
+        if (Infoboard.DebugWebSocket) {
+            console.log(JSON.stringify(data))
+        }
+
         // Gibt es eine Funktion dafür?
         if (!Info[s]) {
             return;
@@ -188,25 +194,26 @@ let Infoboard = {
             return;
         }
 
-        let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
-            tr = $('<tr />').addClass(bd['class']),
-            msg = bd['msg'];
+        if ($('#BackgroundInfo').length > 0) {
+            let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
+                tr = $('<tr />').addClass(bd['class']),
+                msg = bd['msg'];
 
+            // wenn nicht angezeigt werden soll, direkt versteckeln
+            if (!status) {
+                tr.hide();
+            }
 
-        // wenn nicht angezeigt werden soll, direkt versteckeln
-        if (!status) {
-            tr.hide();
-        }
+            tr.append(
+                '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + msg + '</td>'
+            );
 
-        tr.append(
-            '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
-            '<td>' + msg + '</td>'
-        );
+            $('#BackgroundInfoTable tbody').prepend(tr);
 
-        $('#BackgroundInfoTable tbody').prepend(tr);
-
-        if (Infoboard.PlayInfoSound && status) {
-            Infoboard.SoundFile.play();
+            if (Infoboard.PlayInfoSound && status) {
+                Infoboard.SoundFile.play();
+            }
         }
     },
 
@@ -339,25 +346,30 @@ let Info = {
 
 
     /**
-     * FPs nach einem Level-Up notieren
+     * LG Level Up
      *
      * @param d
      */
-	NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
+    NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
+        let OldFPInventory = StrategyPoints.InventoryFP;
 
-        for (let entry of d) {
-            // FP Typ aus dem Lager ermitteln
-            let InventoryItem = MainParser.Inventory.find(x => x.id === entry.itemId && x.itemAssetName.indexOf("forgepoint") !== -1);
-            if (null == InventoryItem) continue;
-            let factor = parseInt(InventoryItem.item.resource_package.gain),
-                amount = factor * parseInt(entry.amount);
+        for (let i in d) {
+            if (!d.hasOwnProperty(i)) continue;
 
-            // ... and save
-            Info.ReturnFPPoints += amount;
+            let Item = d[i];
+            let ID = Item['itemId'];
+            if (!ID) continue;
+
+            let Amount = Item['amount'];
+            if (!Amount) continue;
+
+            if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+            MainParser.Inventory[ID]['new'] = Amount;
         }
 
-        // Hierfür soll keine Nachricht in der Infobox angezeigt werden
-        return false;
+        StrategyPoints.GetFromInventory();
+
+        Info.ReturnFPPoints = StrategyPoints.InventoryFP - OldFPInventory;
     },
 
 

@@ -708,26 +708,38 @@ const FoEproxy = (function () {
 	});
 
 
-	FoEproxy.addHandler('GreatBuildingsService', 'getAvailablePackageForgePoints', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData[0]);
-	});
-
-
-	FoEproxy.addHandler('GreatBuildingsService', 'getConstruction', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData.availablePackagesForgePointSum);
-	});
-
-
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-		StrategyPoints.GetFromInventory(data.responseData);
-		MainParser.Inventory = data.responseData;
+		MainParser.UpdateInventory(data.responseData);
+		StrategyPoints.GetFromInventory();
 	});
 
 
 	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
+		MainParser.UpdateInventory(data.responseData.inventoryItems);
+		StrategyPoints.GetFromInventory();
 	});
 
+
+	FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
+		let ID = data.responseData[0];
+		let Value = data.responseData[1];
+
+		if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+		MainParser.Inventory[ID]['inStock'] = Value;
+		StrategyPoints.GetFromInventory();
+	});
+
+
+	FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
+		for (let i in MainParser.Inventory) {
+			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
+
+			if (MainParser.Inventory[i]['new']) {
+				MainParser.Inventory[i]['inStock'] = (MainParser.Inventory[i]['inStock'] | 0) + MainParser.Inventory[i]['new'];
+				MainParser.Inventory[i]['new'] = 0;
+            }
+        }
+	});
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
@@ -1096,7 +1108,7 @@ let MainParser = {
 	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
-	Inventory: null,
+	Inventory: {},
 
 	// Updatestufen der Eventgebäude
 	BuildingSelectionKits: null,
@@ -1567,6 +1579,8 @@ let MainParser = {
 				guild_name: d.clan_name
 			}
 		});
+
+		Infoboard.Init();
 	},
 
 
@@ -1919,6 +1933,20 @@ let MainParser = {
 			}
 		}
 	},
+
+
+	/**
+	* Aktualisiert das Inventar
+	*
+	* @param Items
+	*/
+	UpdateInventory: (Items) => {
+		MainParser.Inventory = {};
+		for (let i = 0; i < Items.length; i++) {
+			let ID = Items[i]['id'];
+			MainParser.Inventory[ID] = Items[i];
+		}
+    },
 
 
 	/**
