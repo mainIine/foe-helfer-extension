@@ -226,6 +226,8 @@
 		"Boxes.Productions.Headings.random_production": "Producción casual",
 		"Boxes.Productions.Headings.residential": "Edificios residenciales",
 		"Boxes.Productions.Headings.street": "Calles",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Agrupar",
 		"Boxes.Productions.ModeSingle": "Uno por uno",
 		"Boxes.Productions.SearchInput": "Edificio búsqueda...",

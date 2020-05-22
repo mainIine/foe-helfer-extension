@@ -226,6 +226,8 @@
 		"Boxes.Productions.Headings.random_production": "Producție aleatorie",
 		"Boxes.Productions.Headings.residential": "Clădiri speciale",
 		"Boxes.Productions.Headings.street": "Străzi",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Grupare",
 		"Boxes.Productions.ModeSingle": "Extindere",
 		"Boxes.Productions.SearchInput": "Caută clădirea...",

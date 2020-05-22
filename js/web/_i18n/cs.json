@@ -226,6 +226,8 @@
 		"Boxes.Productions.Headings.random_production": "Náhodná produkce",
 		"Boxes.Productions.Headings.residential": "Residential buildings", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Ulice",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Skupiny",
 		"Boxes.Productions.ModeSingle": "Samostatné",
 		"Boxes.Productions.SearchInput": "Hledat budovu...",

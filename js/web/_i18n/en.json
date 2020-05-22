@@ -226,6 +226,8 @@
 		"Boxes.Productions.Headings.random_production": "Random productions",
 		"Boxes.Productions.Headings.residential": "Residential buildings",
 		"Boxes.Productions.Headings.street": "Streets",
+		"Boxes.Productions.Headings.size": "Size",
+		"Boxes.Productions.Headings.efficiency": "Efficiency",
 		"Boxes.Productions.ModeGroups": "Groups",
 		"Boxes.Productions.ModeSingle": "Single",
 		"Boxes.Productions.SearchInput": "Search building...",

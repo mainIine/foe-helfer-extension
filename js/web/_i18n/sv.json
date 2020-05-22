@@ -226,6 +226,8 @@
 		"Boxes.Productions.Headings.random_production": "Slumpmässig produktion",
 		"Boxes.Productions.Headings.residential": "Bostadsbyggnad",
 		"Boxes.Productions.Headings.street": "Väg",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
 		"Boxes.Productions.ModeGroups": "Gruppera",
 		"Boxes.Productions.ModeSingle": "Enkel",
 		"Boxes.Productions.SearchInput": "Sök byggnad...",
