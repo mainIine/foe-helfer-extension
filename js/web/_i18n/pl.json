@@ -498,14 +498,14 @@
 		"Settings.SendInvestigations.Title": "Zainwestowane PR",
 		"Settings.SendTavernInfo.Desc": "Czy przesyłać dane o motywacjach na zewnętrzny serwer?",
 		"Settings.SendTavernInfo.Title": "Aktywność motywacji",
-		"Settings.ShowAllPlayerAttDeff.Desc": "???", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "???", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "???", //Todo: Translate
-		"Settings.ShowInvestments.Title": "???", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Podczas wizyty pokaż, co jest obecnie produkowane",
 		"Settings.ShowNeighborsGoods.Title": "Grabież sąsiadów",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "???", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "???", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Przy aktywacji dodatkowej negocjacji w tawernie pojawia się przesuwalny dymek z odliczaniem.",
 		"Settings.ShowTavernBadge.Title": "Pokaż dymek tawerny",
 		"Settings.Version.Desc": "<p>Wersja rozszerzenia</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",

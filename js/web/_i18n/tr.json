@@ -83,7 +83,7 @@
 		"Boxes.Calculator.LevelWarning": "DİKKAT! Devasa'nın Seviyesi!",
 		"Boxes.Calculator.LGNotConnected": "Bina bir caddeye bağlı değil",
 		"Boxes.Calculator.LGNotOpen": "Bir sonraki seviye henüz aktif değil",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds",
 		"Boxes.Calculator.Profit": "Kar",
 		"Boxes.Calculator.Rate": "Kurs",
@@ -498,14 +498,14 @@
 		"Settings.SendInvestigations.Title": "FP Yatırımlar",
 		"Settings.SendTavernInfo.Desc": "Olaylar çağrıldığında Taverna faaliyetleri göz ardı edilmeli midir?",
 		"Settings.SendTavernInfo.Title": "Taverna Faaliyetleri",
-		"Settings.ShowAllPlayerAttDeff.Desc": "???", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "???", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "???", //Todo: Translate
-		"Settings.ShowInvestments.Title": "???", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Şu anda üretilenleri ziyaret ederken göster",
 		"Settings.ShowNeighborsGoods.Title": "Komşular Hasatı",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "???", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "???", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Tavernada bir destek etkinleştirilir etkinleştirilmez, küresel olarak kaydırılabilir bir sayaç belirir",
 		"Settings.ShowTavernBadge.Title": "Taverna Rozetini Göster",
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",

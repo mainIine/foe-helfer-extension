@@ -83,7 +83,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENȚIE! Închide nivelul la CL!",
 		"Boxes.Calculator.LGNotConnected": "Clădirea nu este conectată la stradă!",
 		"Boxes.Calculator.LGNotOpen": "Nivelul nu este deblocat!",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Med.",
 		"Boxes.Calculator.Profit": "Profit", //Todo: Translate
 		"Boxes.Calculator.Rate": "Procent",
@@ -498,14 +498,14 @@
 		"Settings.SendInvestigations.Title": "PF investite",
 		"Settings.SendTavernInfo.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
 		"Settings.SendTavernInfo.Title": "Activitatea de motivație",
-		"Settings.ShowAllPlayerAttDeff.Desc": "???", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "???", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "???", //Todo: Translate
-		"Settings.ShowInvestments.Title": "???", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "În timpul vizitării orașului, arată care este producțiile finalizate ale acestuia",
 		"Settings.ShowNeighborsGoods.Title": "Producția vecinilor",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "???", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "???", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "De îndată ce o achiziție este făcută în magazinul tavernei, va fi afișat un contor.",
 		"Settings.ShowTavernBadge.Title": "Arată contorul tavernei prietenilor",
 		"Settings.Version.Desc": "Versiunea extensiei pentru ",
