@@ -83,7 +83,7 @@
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Медали",
 		"Boxes.Calculator.Profit": "Прибыль",
 		"Boxes.Calculator.Rate": "Курс",
@@ -498,14 +498,14 @@
 		"Settings.SendInvestigations.Title": "Инвестиции СО",
 		"Settings.SendTavernInfo.Desc": "Нужно ли передавать мероприятия дружбы (мотивирование строений)?",
 		"Settings.SendTavernInfo.Title": "Мероприятия дружбы (мотивирование)",
-		"Settings.ShowAllPlayerAttDeff.Desc": "???", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "???", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "???", //Todo: Translate
-		"Settings.ShowInvestments.Title": "???", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Отображать, что именно производится в строении во время визита в город",
 		"Settings.ShowNeighborsGoods.Title": "Соседский урожай",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "???", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "???", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Как только активирован дополнительный ход в таверне, появится глобальный счетчик.",
 		"Settings.ShowTavernBadge.Title": "Показать значок таверны",
 		"Settings.Version.Desc": "Версия расширения для Chrome",

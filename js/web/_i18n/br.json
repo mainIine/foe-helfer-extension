@@ -83,7 +83,7 @@
 		"Boxes.Calculator.LevelWarning": "ATENÇÃO! Nível atingido!",
 		"Boxes.Calculator.LGNotConnected": "O GE não está ligado por uma estrada",
 		"Boxes.Calculator.LGNotOpen": "O próximo nível não está ainda aberto",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medalhas",
 		"Boxes.Calculator.Profit": "Lucro",
 		"Boxes.Calculator.Rate": "Taxa",
@@ -498,14 +498,14 @@
 		"Settings.SendInvestigations.Title": "Investimento PFs",
 		"Settings.SendTavernInfo.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?",
 		"Settings.SendTavernInfo.Title": "Atividade da motivação",
-		"Settings.ShowAllPlayerAttDeff.Desc": "???", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "???", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "???", //Todo: Translate
-		"Settings.ShowInvestments.Title": "???", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Durante a visita, mostrar o que está a ser produzido",
 		"Settings.ShowNeighborsGoods.Title": "Colheita dos vizinhos",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "???", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "???", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Assim que o movimento extra na taberna é ativado, um contador móvel global aparece.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
 		"Settings.Version.Desc": "Versão da Extensão do Chrome",
