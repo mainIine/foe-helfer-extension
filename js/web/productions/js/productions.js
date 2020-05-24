@@ -450,9 +450,19 @@ let Productions = {
 				rowB = [],
 				countProducts = [],
 				countAll = 0,
-				countAllMotivated = 0;
+				countAllMotivated = 0,
+				sizes = [];
 
 
+				var MapData = MainParser.CityMapData;
+				//Vloxxity
+				for(var index = 0; index < MapData.length; ++index)
+				{
+					var d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ];
+					var width = parseInt(d['width']);
+					var height = parseInt(d['height']);
+					sizes[MapData[index]['cityentity_id']] = width*height;
+				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
 			{
@@ -470,6 +480,12 @@ let Productions = {
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
+									var size = sizes[buildings[i]['eid']];
+						var efficiency = (MotivatedProductCount/size);
+					
+						rowA.push('<td class="text-right is-number" data-number="' + size + '">' + size + '</td>');						
+						rowA.push('<td class="text-right is-number" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
+											
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
@@ -638,6 +654,8 @@ let Productions = {
 				table.push('<tr class="sorter-header">');
 				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
+				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
+				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
