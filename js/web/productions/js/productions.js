@@ -460,8 +460,8 @@ let Productions = {
 				{
 					if(type !== 'packaging')
 					{
-						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type);
-						MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type);
+						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type),
+						MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
 							CssClass = '';
 
 						countAll += ProductCount;
@@ -577,10 +577,10 @@ let Productions = {
 					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
 				}
 
-				if (CurrentEraID == 18 && !MainParser.CityMapEraOutpostData) {
+				if (CurrentEraID === 18 && !MainParser.CityMapEraOutpostData) {
 					table.push('<tr><th colspan="5">' + i18n('Boxes.Productions.NoMarsDataWarning') + '</th></tr>');
 				}
-				if (CurrentEraID == 19 && !MainParser.CityMapEraOutpostData) {
+				if (CurrentEraID === 19 && !MainParser.CityMapEraOutpostData) {
 					table.push('<tr><th colspan="5">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
 				}
 
@@ -592,12 +592,11 @@ let Productions = {
 						continue;
 					}
 
-					table.push('<tr><th colspan="5"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th></tr>');
+					table.push('<tr><th colspan="3"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th><th colspan="2" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong></th></tr>');
 
 					table.push('<tr><td colspan="5" class="all-products">');
 
 					table.push(eras[era].join(''));
-					table.push('<span>' + i18n('Boxes.Productions.GoodEraTotal') + ' <strong>' + HTML.Format(eraSums[era]) + '</strong></span>')
 
 					table.push('</td></tr>');
 				}
@@ -605,7 +604,7 @@ let Productions = {
 
 				table.push('<tbody>');
 
-				table.push('<tr><td></td><td class="total-products"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td><td colspan="3"></td></tr>');
+				table.push('<tr><td class="total-products text-right" colspan="5"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td></tr>');
 			}
 
 			else {
