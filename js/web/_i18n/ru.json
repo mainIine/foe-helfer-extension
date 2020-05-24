@@ -14,6 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
 		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
 		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
 		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
@@ -48,6 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
@@ -80,7 +83,7 @@
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
-		"Boxes.Calculator.MaxLevel": "Max. Level", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
 		"Boxes.Calculator.Meds": "Медали",
 		"Boxes.Calculator.Profit": "Прибыль",
 		"Boxes.Calculator.Rate": "Курс",
@@ -495,14 +498,14 @@
 		"Settings.SendInvestigations.Title": "Инвестиции СО",
 		"Settings.SendTavernInfo.Desc": "Нужно ли передавать мероприятия дружбы (мотивирование строений)?",
 		"Settings.SendTavernInfo.Title": "Мероприятия дружбы (мотивирование)",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Show attack and defense for all players when visiting them", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Always show Att/Def", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "Show the a summary of all FP investments when entering 'Town Hall'> 'News'> 'Great buildings' tab.", //Todo: Translate
-		"Settings.ShowInvestments.Title": "GB investment summary", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "???", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "???", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "???", //Todo: Translate
+		"Settings.ShowInvestments.Title": "???", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Отображать, что именно производится в строении во время визита в город",
 		"Settings.ShowNeighborsGoods.Title": "Соседский урожай",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "Also show the 'Your GB calculator' when opening great buildings of other players", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "Always show 'Your GB calculator'", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "???", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "???", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Как только активирован дополнительный ход в таверне, появится глобальный счетчик.",
 		"Settings.ShowTavernBadge.Title": "Показать значок таверны",
 		"Settings.Version.Desc": "Версия расширения для Chrome",
