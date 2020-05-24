@@ -50,7 +50,7 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker",
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...",
 		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!",
-		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Off-set",
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset",
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused",
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications",
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon",
