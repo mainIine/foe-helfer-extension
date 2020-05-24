@@ -6,6 +6,7 @@
   
 	"manifest_version": 2,
 	"permissions": [
+		"alarms",
 		"activeTab",
 		"storage",
 		"tabs",
