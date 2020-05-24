@@ -14,6 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Corps",
 		"Boxes.Alerts.Form.Create": "Créer",
 		"Boxes.Alerts.Form.CreateAlert": "Créer une notification",
+		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Créer une nouvelle notification",
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Heure",
 		"Boxes.Alerts.Form.Delete": "Supprimer",
@@ -48,6 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Envoyez une notification en cas d'activité élevée dans les champs de bataille de guilde (par exemple, 10 combats dans un même secteur en 5 secondes). Veuillez noter que cette fonction ne fonctionne que lorsque les champs de bataille de guilde sont ouverts dans le jeu !",
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Suivi du champ de bataille de guilde",
 		"Boxes.Alerts.Preferences.ComingSoon": "Prochainement...",
+		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Afficher la notification dans le jeu au lieu de la notification native du bureau lorsque la fenêtre du jeu est active.",
 		"Boxes.Alerts.Preferences.InGame.Title": "Notifications en jeu",
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Afficher le compte à rebours suivant en superposition de l'icône du menu principal.",
@@ -80,7 +83,7 @@
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
-		"Boxes.Calculator.MaxLevel": "???", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Méd.",
 		"Boxes.Calculator.Profit": "Gain",
 		"Boxes.Calculator.Rate": "Ratio",
@@ -495,8 +498,14 @@
 		"Settings.SendInvestigations.Title": "Investissements des PF",
 		"Settings.SendTavernInfo.Desc": "Est-ce que les activités de PO/MO doivent être transférées quand les évènements ont lieu ?",
 		"Settings.SendTavernInfo.Title": "Activité PO/MO",
+		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowNeighborsGoods.Desc": "Pendant la visite, montre ce qui est en cours de production",
 		"Settings.ShowNeighborsGoods.Title": "Récolte des voisins",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Dès qu'une visite dans la taverne est effectuée, un compteur global apparaît.",
 		"Settings.ShowTavernBadge.Title": "Affiche un compteur sur la taverne",
 		"Settings.Version.Desc": "Version de l'extension Chrome",
