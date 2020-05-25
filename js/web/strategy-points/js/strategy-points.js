@@ -30,49 +30,11 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
 	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
 });
 
-FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
-
-	if ( !Technologies ){ return; }
-	let currentSP = Technologies.GetCurrentSp();
-
-	if ( StrategyPoints.OldTechnologySP != 0 ) {
-
-	    // The difference between the number of FPs currently spent on technologies and what was spent before
-        let delta = currentSP - StrategyPoints.OldTechnologySP;
-        // and add the difference between the current FP stock and the stock was before
-        delta += ResourceStock.strategy_points - StrategyPoints.OldResourceStock;
-
-        // if there is a change to the stock FP update the bar
-        if ( delta != 0 ) {
-
-            let NewFP = StrategyPoints.OldStrategyPoints - delta;
-
-            // if a single FP has been added from the stock the 2-pack was actually used
-            if ( delta == 1 ){
-                NewFP = StrategyPoints.OldStrategyPoints - 2;
-            }
-            // else {} otherwise an 5-pack or 10-pack have been used so the delta value matches the actual
-            // change of the FP stock
-            StrategyPoints.ForgePointBar( NewFP );
-        }
-    }
-	StrategyPoints.OldTechnologySP = currentSP;
-
-});
-
-FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-    if( data && data.responseData && data.responseData.resources && data.responseData.resources.strategy_points ) {
-        StrategyPoints.OldResourceStock = data.responseData.resources.strategy_points;
-    }
-});
-
 let StrategyPoints = {
     RefreshDone: false,
 	OldStrategyPoints: 0,
 	InventoryFP : 0,
 
-    OldTechnologySP: 0,
-    OldResourceStock: 0,
 
 	/**
 	 * Kaufbare FP + Formel ermitteln
@@ -134,12 +96,6 @@ let StrategyPoints = {
 			StrategyPoints.ForgePointBar(t);
 			StrategyPoints.InventoryFP = t;
 		}
-		if ( Technologies ) {
-            StrategyPoints.OldTechnologySP = Technologies.GetCurrentSp();
-        }
-        if ( ResourceStock ){
-		    StrategyPoints.OldResourceStock = ResourceStock.strategy_points;
-        }
 	},
 
 
@@ -173,6 +129,7 @@ let StrategyPoints = {
 			StrategyPoints.InventoryFP = NewFP;
 		}
 	},
+
 
 	/**
 	 * Liefert die gesamt verfügbaren FP
