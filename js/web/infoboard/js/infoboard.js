@@ -36,7 +36,7 @@ let Infoboard = {
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
-    DebugWebSocket: false,
+    DebugWebSocket: true,
 
 
     /**
@@ -292,9 +292,9 @@ let Info = {
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    'player': d['player']['name'],
-                    'amount': HTML.Format(d['amount']),
-                }
+                'player': d['player']['name'],
+                'amount': HTML.Format(d['amount']),
+            }
             )
         };
     },
@@ -318,9 +318,9 @@ let Info = {
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                        'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-                        'level': d['attachment']['level']
-                    }
+                    'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+                    'level': d['attachment']['level']
+                }
                 )
             }
             // Trade
@@ -342,6 +342,18 @@ let Info = {
             type: i18n('Boxes.Infobox.FilterMessage'),
             msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
         };
+    },
+
+
+    /**
+    * Neue Item Information
+    *
+    * @param d
+    */
+    InventoryService_getItem: (d) => {
+        if (!d['id']) return;
+
+        MainParser.Inventory[d['id']] = d;
     },
 
 
