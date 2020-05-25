@@ -734,10 +734,7 @@ const FoEproxy = (function () {
 		for (let i in MainParser.Inventory) {
 			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
 
-			if (MainParser.Inventory[i]['new']) {
-				MainParser.Inventory[i]['inStock'] = (MainParser.Inventory[i]['inStock'] | 0) + MainParser.Inventory[i]['new'];
-				MainParser.Inventory[i]['new'] = 0;
-            }
+			MainParser.Inventory[i]['new'] = 0;
         }
 	});
 
