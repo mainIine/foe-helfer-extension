@@ -290,5 +290,19 @@ let Technologies = {
         h.push('</table');
 
         $('#technologiesBody').html(h.join(''));
+    },
+
+    /**
+     * Returns the current technology FP spend
+     * @returns {number}
+     */
+    GetCurrentSp: ()=> {
+        let currentSP = 0;
+        if ( Technologies.UnlockedTechologies && Technologies.UnlockedTechologies['inProgressTechnologies'] ) {
+            for ( let [index, tech] of Technologies.UnlockedTechologies.inProgressTechnologies.entries() ) {
+                currentSP += tech.currentSP;
+            }
+        }
+        return currentSP;
     }
 };
