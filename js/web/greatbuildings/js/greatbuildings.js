@@ -36,4 +36,256 @@ let GreatBuildings =
         18: [10, 15, 25, 40, 55, 70, 80, 95, 115, 125, 145, 160, 175, 195, 210, 230, 245, 265, 280, 300, 320, 335, 355, 375, 395, 415, 435, 455, 470, 490, 510, 535, 550, 575, 595, 615, 635, 655, 675, 700, 720, 740, 760, 785, 805, 825, 850, 870, 890, 915, 935, 960, 980, 1005, 1025, 1050, 1070, 1095, 1115, 1140, 1160, 1185, 1210, 1230, 1255, 1280, 1300, 1325, 1350, 1370, 1395, 1420, 1445, 1470, 1490, 1515, 1540, 1565, 1590, 1615, 1635, 1660, 1685, 1710, 1735, 1760, 1785, 1810, 1835, 1860, 1885, 1910, 1935, 1960, 1985, 2010, 2035, 2060, 2085, 2110, 2135, 2160, 2185, 2215, 2240, 2265, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         19: [10, 15, 30, 40, 55, 70, 85, 100, 115, 130, 150, 165, 185, 200, 220, 235, 255, 275, 295, 310, 330, 350, 370, 390, 410, 430, 450, 470, 490, 510, 530, 550, 575, 595, 615, 635, 660, 680, 700, 725, 745, 770, 790, 810, 835, 855, 880, 905, 925, 950, 970, 995, 1015, 1040, 1065, 1085, 1110, 1135, 1160, 1180, 1205, 1230, 1255, 1275, 1300, 1325, 1350, 1375, 1400, 1425, 1450, 1470, 1500, 1520, 1545, 1570, 1595, 1620, 1650, 1670, 1685, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
+
+    FPGreatBuildings: [
+        { 'ID': 'X_EarlyMiddleAge_Landmark1', 'GoodCosts': 20, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Hagia 
+        { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Castel del Monte
+        { 'ID': 'X_PostModernEra_Landmark1', 'GoodCosts': 75, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10]}, //Cape
+        { 'ID': 'X_ContemporaryEra_Landmark2', 'GoodCosts': 100, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Inno Tower
+        { 'ID': 'X_ArcticFuture_Landmark2', 'GoodCosts': 200, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10]}, //Arctic Orangerie
+        { 'ID': 'X_OceanicFuture_Landmark2', 'GoodCosts': 300, 'Productions': [1, 1, 3, 3, 4, 4, 5, 5, 6, 8]}, //Kraken
+        { 'ID': 'X_VirtualFuture_Landmark2', 'GoodCosts': 500, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825]}, //Himeji
+        { 'ID': 'X_SpaceAgeAsteroidBelt_Landmark1', 'GoodCosts': 1000, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825]}, //Space Carrier
+    ],
+
+    MaxLevel: 100,
+    ForderBonus: 90,
+    FPPerTile: 0.2,
+    
+	/**
+	 * Zeigt
+	 */
+    Show: () => {
+        if ($('#greatbuildings').length === 0) {
+
+            let ForderBonus = localStorage.getItem('GreatBuildingsForderBonus');
+            if (ForderBonus !== null) {
+                GreatBuildings.ForderBonus = parseFloat(ForderBonus);
+            }
+
+            for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+                let GoodCosts = localStorage.getItem('GreatBuildingsGoodCosts' + i);
+                if (GoodCosts !== null) {
+                    GreatBuildings.FPGreatBuildings[i]['GoodCosts'] = parseFloat(GoodCosts);
+                }
+            }
+
+            HTML.Box({
+                'id': 'greatbuildings',
+                'title': i18n('Boxes.GreatBuildings.Title'),
+                'auto_close': true,
+                'dragdrop': true,
+                'minimize': true
+            });
+
+            // CSS in den DOM prügeln
+            HTML.AddCssFile('greatbuildings');
+
+        } else {
+            HTML.CloseOpenBox('greatbuildings');
+        }
+
+        GreatBuildings.BuildBox();
+    },
+
+
+    /**
+	 *
+	 */
+    BuildBox: () => {
+        GreatBuildings.CalcBody();
+
+        $('#greatbuildings').on('blur', '#costFactor', function () {
+            GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
+            localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+            GreatBuildings.CalcBody();
+        });
+
+        for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+            $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
+                GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
+                localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.FPGreatBuildings[i].GoodCosts);
+                GreatBuildings.CalcBody();
+            });
+        }
+    },
+
+
+    CalcBody: () => {
+        let h = [];
+
+        h.push('<strong>' + i18n('Boxes.GreatBuildings.ArcBonus') + '   </strong>');
+
+        h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
+    
+        h.push('<table class="foe-table">');
+
+        h.push('<thead>' +
+            '<tr>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Suggestion1') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Suggestion2') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
+            '</tr>' +
+            '<tr>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
+            '</tr>' +
+        '</thead>');
+
+        let ROIResults = [],
+            ROIResults2 = [],
+            ShowGoodCosts = [];
+
+        let BestGB = undefined,
+            BestROI = 999999;
+
+        for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+            let index = BuildingNamesi18n[GreatBuildings.FPGreatBuildings[i].ID].index;
+            let CityEntity = MainParser.CityEntities[index];
+            let OwnGB = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));
+
+            let BruttoCosts = [];
+            for (let j = 0; j < 10; j++) {
+                BruttoCosts[j] = CityEntity['strategy_points_for_upgrade'][j];
+            }
+            for (let j = 10; j < GreatBuildings.MaxLevel; j++) {
+                BruttoCosts[j] = Math.ceil(BruttoCosts[9] * Math.pow(1.025, j - 9));
+            }
+
+            let NettoCosts = [];
+            for (let j = 0; j < GreatBuildings.MaxLevel; j++) {
+                let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
+                let Era = Technologies.Eras[EraName];
+
+                let P1 = GreatBuildings.Rewards[Era][j];
+                P1 = (P1 !== undefined ? P1 : 0);
+
+                NettoCosts[j] = GreatBuildings.GetNettoCosts(BruttoCosts[j], P1, GreatBuildings.ForderBonus);
+            }
+
+            let Productions = [];
+            for (let j = 0; j < GreatBuildings.MaxLevel; j++) {
+                if (j < GreatBuildings.FPGreatBuildings[i].Productions.length) {
+                    Productions[j] = GreatBuildings.FPGreatBuildings[i].Productions[j]
+                }
+                else {
+                    Productions[j] = Math.floor(GreatBuildings.FPGreatBuildings[i].Productions[9] * (j + 1) / 10);
+                }
+            }
+
+            let CurrentLevel = (OwnGB !== undefined ? OwnGB['level'] : -1);
+
+            let Size = CityEntity['length'] * CityEntity['width'];
+            let ROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts);
+
+            if (ROIResult['BestLevel'] && ROIResult.ROIValues[ROIResult['BestLevel']] < BestROI) {
+                BestGB = i;
+                BestROI = ROIResult.ROIValues[ROIResult['BestLevel']];
+            }
+
+            let ROIResult2;
+            if (ROIResult['BestLevel'] < 10) {
+                ROIResult2 = ROIResult;
+                while (ROIResult2['BestLevel'] < 10) {
+                    ROIResult2 = GreatBuildings.GetROIValues(ROIResult2['BestLevel'] + 1, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts);
+                }
+            }
+            else {
+                ROIResult2 = undefined;
+            }
+
+            ROIResults[i] = ROIResult;
+            ROIResults2[i] = ROIResult2;
+            ShowGoodCosts[i] = CurrentLevel === -1;
+        }
+
+        for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+            h.push('<tr>');
+            h.push('<td>' + BuildingNamesi18n[GreatBuildings.FPGreatBuildings[i].ID]['name'] + '</td>');
+            if (ShowGoodCosts[i]) {
+                h.push('<td><input type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[i].GoodCosts + '"></td>');
+            }
+            else {
+                h.push('<td>-</td>');
+            }
+            if (ROIResults[i]['BestLevel'] !== undefined) {
+                h.push('<td><strong ' + (BestGB === i ? 'class="success"' : '') + '>' + (ROIResults[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + (BestGB === i ? 'class="success"' : '') + '>' + Math.round(ROIResults[i]['ROIValues'][ROIResults[i]['BestLevel']]) + '</strong></td>');
+            }
+            else {
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
+            }
+
+            if (ROIResults2[i] !== undefined && ROIResults2[i]['BestLevel'] !== undefined) {
+                h.push('<td><strong>' + (ROIResults2[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong>' + Math.round(ROIResults[i]['ROIValues'][ROIResults2[i]['BestLevel']]) + '</strong></td>');
+            }
+            else {
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
+            }
+
+            h.push('</tr>');
+        }
+                       
+        h.push('</table');
+
+        $('#greatbuildingsBody').html(h.join(''));
+    },
+
+
+    GetROIValues: (Level, NettoCosts, Productions, BuildDailyCosts, BuildCosts) => {
+        let Ret = { 'BestLevel': undefined, ROIValues: [] };
+
+        let StartProduction = 0,
+            CurrentInvestment=0;
+
+        if (Level === -1) {
+            StartProduction = BuildDailyCosts;
+            CurrentInvestment = BuildCosts;
+        }
+        else if(Level > 0) {
+           StartProduction = Productions[Level - 1];
+        }
+
+        let BestValue = 999999;
+        for (let i = Math.max(Level, 0); i < GreatBuildings.MaxLevel; i++) {
+            CurrentInvestment += NettoCosts[i] - Productions[i]; // Doppelernte abziehen
+            Ret['ROIValues'][i] = CurrentInvestment / (Productions[i] - StartProduction);
+
+            if (Productions[i] > StartProduction) {
+                if (Ret['ROIValues'][i] < BestValue) {
+                    Ret['BestLevel'] = i;
+                    BestValue = Ret['ROIValues'][i];
+                }
+            }
+        }
+
+        return Ret;
+    },
+
+
+    GetEraName: (EntityID) => {
+        let UnderScorePos = EntityID.indexOf('_');
+        let EraName = EntityID.substring(UnderScorePos + 1);
+
+        UnderScorePos = EraName.indexOf('_');
+        return EraName.substring(0, UnderScorePos);
+    },
+
+
+    GetNettoCosts: (BruttoCosts, P1, ForderBonus) => {
+        let arc = 1+(ForderBonus/100);
+
+        let P2 = 5 * Math.round(P1 / 2 / 5);
+        let P3 = 5 * Math.round(P2 / 3 / 5);
+        let P4 = 5 * Math.round(P3 / 4 / 5);
+        let P5 = 5 * Math.round(P4 / 5 / 5);
+
+        return BruttoCosts - Math.round(P1 * arc) - Math.round(P2 * arc) - Math.round(P3 * arc) - Math.round(P4 * arc) - Math.round(P5 * arc);
+    },
 };

@@ -161,23 +161,10 @@ let GildFights = {
 	 * Inhalt des Snapshots darstellen
 	 */
 	BuildPlayerContent: ()=> {
-		let t = [];
-
-		t.push('<table class="foe-table">');
-
-		t.push('<thead>');
-		t.push('<tr>');
-
-		t.push('<th>&nbsp;</th>');
-		t.push('<th>&nbsp;</th>');
-		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
-		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Negotiations') + '</th>');
-		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Fights') + '</th>');
-
-		t.push('</tr>');
-		t.push('</thead>');
-
-		t.push('<tbody>');
+		let t = [],
+			b = [],
+			tN = 0,
+			tF = 0;
 
 		for(let i in GildFights.NewAction)
 		{
@@ -211,24 +198,47 @@ let GildFights = {
 				}
 			}
 
-			t.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
+			tN += playerNew['negotiationsWon'];
+			tF += playerNew['battlesWon'];
 
-			t.push('<td>' + (parseInt(i) +1) + '.</td>');
+			b.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
-			t.push('<td><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ playerNew['avatar'] ] + '.jpg" alt=""></td>');
+			b.push('<td>' + (parseInt(i) +1) + '.</td>');
 
-			t.push('<td>' + playerNew['name'] + '</td>');
+			b.push('<td><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ playerNew['avatar'] ] + '.jpg" alt=""></td>');
 
-			t.push('<td class="text-center">');
-				t.push(playerNew['negotiationsWon'] + negotaionAddOn);
-			t.push('</td>');
+			b.push('<td>' + playerNew['name'] + '</td>');
 
-			t.push('<td class="text-center">');
-				t.push(playerNew['battlesWon'] + fightAddOn);
-			t.push('</td>');
+			b.push('<td class="text-center">');
+			b.push(playerNew['negotiationsWon'] + negotaionAddOn);
+			b.push('</td>');
 
-			t.push('</tr>');
+			b.push('<td class="text-center">');
+			b.push(playerNew['battlesWon'] + fightAddOn);
+			b.push('</td>');
+
+			b.push('</tr>');
 		}
+
+
+
+		t.push('<table class="foe-table">');
+
+		t.push('<thead>');
+		t.push('<tr>');
+
+		t.push('<th>&nbsp;</th>');
+		t.push('<th>&nbsp;</th>');
+		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
+		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Negotiations') + ' <strong class="text-warning"><small>(' + HTML.Format(tN) + ')</small></strong></th>');
+		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Fights') + ' <strong class="text-warning"><small>(' + HTML.Format(tF) + ')</small></strong></th>');
+
+		t.push('</tr>');
+		t.push('</thead>');
+
+		t.push('<tbody>');
+
+		t.push(b.join(''));
 
 		t.push('</tbody>');
 

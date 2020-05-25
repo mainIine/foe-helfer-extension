@@ -144,6 +144,7 @@
 					'tableSorter/table-sorter',
 					'Sortable/Sortable.min',
 					'jsZip/jszip.min',
+					'date-range/lightpick',
 					'dexie/dexie.min', // indexDB helper lib
 				];
 
@@ -181,7 +182,8 @@
 				'battle-assist',
 				'citymap',
 				'hidden-rewards',
-				'greatbuildings'
+				'greatbuildings',
+                'alerts',
 			];
 
 			// Scripte laden (nacheinander)

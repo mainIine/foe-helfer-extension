@@ -71,7 +71,7 @@ let Technologies = {
     AllTechnologies: null,
     UnlockedTechologies: false,
     SelectedEraID: undefined,
-       
+
     Eras: {
         AllAge: 0,
         NoAge: 0,
@@ -157,7 +157,7 @@ let Technologies = {
         Technologies.CalcBody();
 
         // Zeitalter vor und zurück schalten
-        $('body').on('click', '.btn-switchage', function () {
+        $('#technologies').on('click', '.btn-switchage', function () {
 
             $('.btn-switchage').removeClass('btn-default-active');
 
@@ -264,7 +264,7 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'asteroid_ice';
-           
+
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i];
                 if (RequiredResources[ResourceName] !== undefined) {
