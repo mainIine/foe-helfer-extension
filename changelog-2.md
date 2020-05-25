@@ -1,5 +1,40 @@
 ## Changelog - Extension
 
+##### 2.4.6
+
+**New**
+
+- Citymap:
+    - There is a new option for planning a city: [further information](https://foe-rechner.de/docs/2/citymap/)
+
+**Update**
+- Production overview:
+    - [#590](https://github.com/dsiekiera/foe-helfer-extension/issues/590) [#945](https://github.com/dsiekiera/foe-helfer-extension/issues/945 ) Diamond productions, if available, are displayed
+    - [#997](https://github.com/dsiekiera/foe-helfer-extension/issues/997) You can switch between daily and current production
+    - [#999](https://github.com/dsiekiera/foe-helfer-extension/issues/999) Outpost goods (Mars / asteroids) are recorded correctly
+    - [#998](https://github.com/dsiekiera/foe-helfer-extension/issues/998) [#1026](https://github.com/dsiekiera/foe-helfer-extension/issues/1026 ) The goods are summed up per age
+
+- Harvest helper:
+    - [#952](https://github.com/dsiekiera/foe-helfer-extension/issues/952) [#982](https://github.com/dsiekiera/foe-helfer-extension/issues/982) an approximate attack / defense value can be calculated based on the neighbour's buildings
+
+- Settings:
+    - [#987](https://github.com/dsiekiera/foe-helfer-extension/issues/987) Info window for investments can be switched off
+    - [#972](https://github.com/dsiekiera/foe-helfer-extension/issues/972) Own contribution calculator can also be activated for other LGs
+
+**BugFix**
+- Extension:
+    - [#764](https://github.com/dsiekiera/foe-helfer-extension/issues/764) fixed double event handler
+    - [#899](https://github.com/dsiekiera/foe-helfer-extension/issues/899) [#909](https://github.com/dsiekiera/foe-helfer-extension/issues/909 ) [#922](https://github.com/dsiekiera/foe-helfer-extension/issues/922) [#927](https://github.com/dsiekiera/foe-helfer-extension/issues/927) [#937](https://github.com/dsiekiera/foe-helfer-extension/issues/937) [#981](https://github.com/dsiekiera/foe-helfer-extension/issues/981) [#1045](https://github.com/dsiekiera/foe-helfer-extension/issues/1045) [#1053](https://github.com/dsiekiera/foe-helfer-extension/issues/1053) various input and dropdown elements could not be changed
+    - [#993](https://github.com/dsiekiera/foe-helfer-extension/issues/993) translation error corrected
+
+-Statistics module:
+    - [#902](https://github.com/dsiekiera/foe-helfer-extension/issues/902) Box was too big if the resolution was too small
+
+- Outpost:
+    - [#1019](https://github.com/dsiekiera/foe-helfer-extension/issues/1019) Values are calculated correctly again
+
+---
+
 ##### 2.4.5
 
 **New**

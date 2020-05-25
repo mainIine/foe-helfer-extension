@@ -17,7 +17,9 @@
 FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
 	Investment.Data = data.responseData;
     Investment.CalcBar();
-    Investment.Box();
+    if (Settings.GetSetting('ShowInvestments')) {
+        Investment.Box();
+    }
     Investment.SendToServer();
 });
 
