@@ -354,6 +354,7 @@ let Info = {
         if (!d['id']) return;
 
         MainParser.Inventory[d['id']] = d;
+        MainParser.Inventory[d['id']]['inStock'] = 0; //inStock auf 0 setzen, da es gleich darauf in NoticeIndicatorService_getPlayerNoticeIndicators aktualisiert und sonst doppelt gezählt wird
     },
 
 
