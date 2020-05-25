@@ -714,7 +714,9 @@ const FoEproxy = (function () {
 
 
 	FoEproxy.addHandler('GreatBuildingsService', 'getConstruction', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData.availablePackagesForgePointSum);
+        if ( data && data.responseData && data.responseData.availablePackagesForgePointSum ) {
+            StrategyPoints.ForgePointBar( data.responseData.availablePackagesForgePointSum );
+        }
 	});
 
 
@@ -726,6 +728,10 @@ const FoEproxy = (function () {
 
 	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
 		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
+	});
+
+	FoEproxy.addHandler('InventoryService', 'getItemsByType', (data, postData) => {
+		StrategyPoints.GetFromInventory(data.responseData);
 	});
 
 
