@@ -36,7 +36,7 @@ let Infoboard = {
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
-    DebugWebSocket: true,
+    DebugWebSocket: false,
 
 
     /**
