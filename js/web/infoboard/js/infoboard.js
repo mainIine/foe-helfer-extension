@@ -376,7 +376,11 @@ let Info = {
             if (!Amount) continue;
 
             if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+            let OldNew = MainParser.Inventory[ID]['new'] | 0;
             MainParser.Inventory[ID]['new'] = Amount;
+
+            if (!MainParser.Inventory[ID]['inStock']) MainParser.Inventory[ID]['inStock'] = 0;
+            MainParser.Inventory[ID]['inStock'] += Amount - OldNew;
         }
 
         StrategyPoints.GetFromInventory();
