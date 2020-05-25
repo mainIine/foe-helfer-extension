@@ -81,13 +81,13 @@ let StrategyPoints = {
 			}
 
 			if (MainParser.Inventory[i]['itemAssetName'] === 'large_forgepoints'){
-				t += ((MainParser.Inventory[i]['inStock'] + (MainParser.Inventory[i]['new'] | 0)) * 10);
+				t += (MainParser.Inventory[i]['inStock'] * 10);
 
 			} else if (MainParser.Inventory[i]['itemAssetName'] === 'medium_forgepoints'){
-				t += ((MainParser.Inventory[i]['inStock'] + (MainParser.Inventory[i]['new'] | 0)) * 5);
+				t += (MainParser.Inventory[i]['inStock'] * 5);
 
 			} else if (MainParser.Inventory[i]['itemAssetName'] === 'small_forgepoints'){
-				t += ((MainParser.Inventory[i]['inStock'] + (MainParser.Inventory[i]['new'] | 0)) * 2);
+				t += (MainParser.Inventory[i]['inStock'] * 2);
 			}
 		}
 
