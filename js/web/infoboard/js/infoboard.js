@@ -28,7 +28,7 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
 
 /**
  *
- * @type {{init: Infoboard.init, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
  */
 let Infoboard = {
 
@@ -36,12 +36,23 @@ let Infoboard = {
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    DebugWebSocket: false,
 
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
+     * */
+    Init: () => {
+        FoEproxy.addRawWsHandler(data => {
+            Infoboard.HandleMessage('in', data);
+        });
+    },
+
+
+    /**
+     * Zeigt die InfoBox an
      */
-    init: () => {
+    Show: () => {
 
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
@@ -51,15 +62,6 @@ let Infoboard = {
         }
 
         Infoboard.Box();
-
-        if (Infoboard.InjectionLoaded === false) {
-            FoEproxy.addRawWsHandler(data => {
-                if ($('#BackgroundInfo').length > 0) {
-                    Infoboard.BoxContent('in', data);
-                }
-            });
-            Infoboard.InjectionLoaded = true;
-        }
     },
 
 
@@ -142,7 +144,7 @@ let Infoboard = {
         Infoboard.FilterInput();
         Infoboard.ResetBox();
 
-        $('body').on('click', '#infoboxTone', function() {
+        $('#BackgroundInfo').on('click', '#infoboxTone', function() {
 
             let disabled = $(this).hasClass('deactivated');
 
@@ -164,11 +166,11 @@ let Infoboard = {
      * @param dir
      * @param data
      */
-    BoxContent: (dir, data) => {
+    HandleMessage: (dir, data) => {
 
         let Msg = data[0];
 
-        if (Msg === undefined || Msg['requestClass'] === undefined) {
+        if (!Msg || !Msg['requestClass']) {
             return;
         }
 
@@ -177,36 +179,41 @@ let Infoboard = {
             t = Msg['responseData']['type'] || '',
             s = c + '_' + m + t;
 
+        if (Infoboard.DebugWebSocket) {
+            console.log(JSON.stringify(data))
+        }
+
         // Gibt es eine Funktion dafür?
-        if (Info[s] === undefined) {
+        if (!Info[s]) {
             return;
         }
 
         let bd = Info[s](Msg['responseData']);
 
-        if (bd === false) {
+        if (!bd) {
             return;
         }
 
-        let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
-            tr = $('<tr />').addClass(bd['class']),
-            msg = bd['msg'];
+        if ($('#BackgroundInfo').length > 0) {
+            let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
+                tr = $('<tr />').addClass(bd['class']),
+                msg = bd['msg'];
 
+            // wenn nicht angezeigt werden soll, direkt versteckeln
+            if (!status) {
+                tr.hide();
+            }
 
-        // wenn nicht angezeigt werden soll, direkt versteckeln
-        if (status === false) {
-            tr.hide();
-        }
+            tr.append(
+                '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + msg + '</td>'
+            );
 
-        tr.append(
-            '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
-            '<td>' + msg + '</td>'
-        );
+            $('#BackgroundInfoTable tbody').prepend(tr);
 
-        $('#BackgroundInfoTable tbody').prepend(tr);
-
-        if (Infoboard.PlayInfoSound && status !== false) {
-            Infoboard.SoundFile.play();
+            if (Infoboard.PlayInfoSound && status) {
+                Infoboard.SoundFile.play();
+            }
         }
     },
 
@@ -216,8 +223,7 @@ let Infoboard = {
      *
      */
     FilterInput: () => {
-        $('body').on('change', '.filter-msg', function() {
-
+        $('#BackgroundInfo').on('change', '.filter-msg', function() {
             let active = [];
 
             $('.filter-msg').each(function() {
@@ -252,7 +258,7 @@ let Infoboard = {
      *
      */
     ResetBox: () => {
-        $('body').on('click', '.btn-reset-box', function() {
+        $('#BackgroundInfo').on('click', '.btn-reset-box', function() {
             $('#BackgroundInfoTable tbody').html('');
         });
     }
@@ -286,9 +292,9 @@ let Info = {
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    'player': d['player']['name'],
-                    'amount': HTML.Format(d['amount']),
-                }
+                'player': d['player']['name'],
+                'amount': HTML.Format(d['amount']),
+            }
             )
         };
     },
@@ -312,15 +318,23 @@ let Info = {
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                        'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-                        'level': d['attachment']['level']
-                    }
+                    'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+                    'level': d['attachment']['level']
+                }
                 )
             }
             // Trade
             else if (d['attachment']['type'] === 'trade_offer') {
                 msg = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
+        }
+
+        if (undefined === d.sender) {
+            return {
+                class: 'message',
+                type: i18n('Boxes.Infobox.FilterMessage'),
+                msg: Info.GetConversationHeader(d.conversationId, null) + msg
+            };
         }
 
         return {
@@ -332,29 +346,47 @@ let Info = {
 
 
     /**
-     * FPs nach einem Level-Up notieren
+    * Neue Item Information
+    *
+    * @param d
+    */
+    InventoryService_getItem: (d) => {
+        if (!d['id']) return;
+
+        MainParser.Inventory[d['id']] = d;
+        MainParser.Inventory[d['id']]['inStock'] = 0; //inStock auf 0 setzen, da es gleich darauf in NoticeIndicatorService_getPlayerNoticeIndicators aktualisiert und sonst doppelt gezählt wird
+    },
+
+
+    /**
+     * LG Level Up
      *
      * @param d
      */
-	NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
+    NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
+        let OldFPInventory = StrategyPoints.InventoryFP;
 
         for (let i in d) {
-            if (!d.hasOwnProperty(i)) {
-                break;
-            }
+            if (!d.hasOwnProperty(i)) continue;
 
-            // get fp type from stock
-            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
+            let Item = d[i];
+            let ID = Item['itemId'];
+            if (!ID) continue;
 
-            if(undefined === InventoryItem || null === InventoryItem)
-            	return;
+            let Amount = Item['amount'];
+            if (!Amount) continue;
 
-            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
-                amount = factor * parseInt(d[i]['amount']);
+            if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+            let OldNew = MainParser.Inventory[ID]['new'] | 0;
+            MainParser.Inventory[ID]['new'] = Amount;
 
-            // ... and save
-            Info.ReturnFPPoints += amount;
+            if (!MainParser.Inventory[ID]['inStock']) MainParser.Inventory[ID]['inStock'] = 0;
+            MainParser.Inventory[ID]['inStock'] += Amount - OldNew;
         }
+
+        StrategyPoints.GetFromInventory();
+
+        Info.ReturnFPPoints = StrategyPoints.InventoryFP - OldFPInventory;
     },
 
 
@@ -529,14 +561,16 @@ let Info = {
      * @returns {string}
      */
     GetConversationHeader: (id, name) => {
-        if (MainParser.Conversations.length > 0) {
-            let header = MainParser.Conversations.find(obj => (obj['id'] === id));
-
-            if (header !== undefined) {
-                return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
-            }
-        } else {
+        let header = MainParser.Conversations.find(obj => obj.id === id);
+        if (header != null && name != null) {
+            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
+        } else if (name != null) {
+            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
             return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
+        } else if (header != null) {
+            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
         }
 
         return '';

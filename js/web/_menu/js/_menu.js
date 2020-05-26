@@ -36,7 +36,7 @@ let _menu = {
 		'campagneMap',
 		'citymap',
 		'unit',
-    'plunderer',
+		'plunderer',
 		'settings',
 		'stats',
 		'forum',
@@ -45,7 +45,8 @@ let _menu = {
 		'chat',
 		'api',
 		'kits',
-        'alerts',
+		'alerts',
+		'greatbuildings'
 	],
 
 
@@ -533,7 +534,7 @@ let _menu = {
 		let btn_Inf = $('<span />');
 
 		btn_Inf.on('click', function () {
-			Infoboard.init();
+			Infoboard.Show();
 		});
 
 		btn_Info.append(btn_Inf);
@@ -693,7 +694,6 @@ let _menu = {
 
 		btn_Plunderer.on('click', function () {
       		Plunderer.page = 1;
-      		Plunderer.filterByPlayerId = null;
 			Plunderer.Show();
 		});
 
@@ -891,27 +891,24 @@ let _menu = {
 	},
 
 
-    /**
-     * Alerts/Notifications
-     */
-    alerts_Btn: ()=> {
+	/**
+	 * FP Produzierende LGs
+	 */
+	greatbuildings_Btn: () => {
 
-        let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
-        let labels = {
-            title: i18n('Menu.Alerts.Title', 'FoE Alerts'),
-            info: i18n('Menu.Alerts.Info', 'FoE Alerts'),
-        }
+		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
 
-        _menu.toolTippBox( labels.title, labels.info, 'alerts-Btn');
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'), 'greatbuildings-Btn');
 
-        let btn_sp = $('<span />');
+		let btn_sp = $('<span />');
 
-        btn_sp.on('click', function(){
-            Alerts.show();
-        });
+		btn_sp.on('click', function () {
+			GreatBuildings.Show();
+		});
 
-        btn.append(btn_sp);
+		btn.append(btn_sp);
 
-        return btn;
-    },
+		return btn;
+	},
 };

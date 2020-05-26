@@ -41,8 +41,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	MainMenuLoaded = false,
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
-	UsePartCalcOnAllLGs = false,
-	UseReaderOnAllPlayers = false,
 	EventCountdown = false,
 	CurrentTime = 0;
 
@@ -621,7 +619,10 @@ const FoEproxy = (function () {
 		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
-		MainParser.SaveBuildings(data.responseData.city_map.entities);
+		MainParser.CityMapData = data.responseData.city_map.entities;
+		if (Settings.GetSetting('GlobalSend')) {
+			MainParser.SendBuildings(MainParser.CityMapData);
+		}
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
@@ -665,14 +666,18 @@ const FoEproxy = (function () {
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
+
+		if (ActiveMap === 'era_outpost') {
+			MainParser.CityMapEraOutpostData = data.responseData['entities'];
+        }
 	});
 
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		if (ActiveMap === 'cultural_outpost') {
-			ActiveMap = 'main';
-		}
+		MainParser.CityMapData = data.responseData;
+
+		ActiveMap = 'main';
 
 		// ErnteBox beim zurückkehren in die Stadt schliessen
 		$('#ResultBox').fadeToggle(function () {
@@ -703,26 +708,35 @@ const FoEproxy = (function () {
 	});
 
 
-	FoEproxy.addHandler('GreatBuildingsService', 'getAvailablePackageForgePoints', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData[0]);
-	});
-
-
-	FoEproxy.addHandler('GreatBuildingsService', 'getConstruction', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData.availablePackagesForgePointSum);
-	});
-
-
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-		StrategyPoints.GetFromInventory(data.responseData);
-		MainParser.Inventory = data.responseData;
+		MainParser.UpdateInventory(data.responseData);
+		StrategyPoints.GetFromInventory();
 	});
 
 
 	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
+		MainParser.UpdateInventory(data.responseData.inventoryItems);
+		StrategyPoints.GetFromInventory();
 	});
 
+
+	FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
+		let ID = data.responseData[0];
+		let Value = data.responseData[1];
+
+		if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+		MainParser.Inventory[ID]['inStock'] = Value;
+		StrategyPoints.GetFromInventory();
+	});
+
+
+	FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
+		for (let i in MainParser.Inventory) {
+			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
+
+			MainParser.Inventory[i]['new'] = 0;
+        }
+	});
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
@@ -811,7 +825,7 @@ const FoEproxy = (function () {
 		let IsPreviousLevel = false;
 
 		//Eigenes LG
-		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || UsePartCalcOnAllLGs) {
+		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
 			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
 			if (IsLevelScroll) {
 				let Medals = 0;
@@ -896,12 +910,11 @@ const FoEproxy = (function () {
 	// Ernten anderer Spieler
 
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		if (!Settings.GetSetting('ShowNeighborsGoods')){
-			return;
-		}
 		let OtherPlayer = data.responseData.other_player;
-		if (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member || UseReaderOnAllPlayers) {
-			Reader.OtherPlayersBuildings(data.responseData);
+		let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
+				
+		if (Settings.GetSetting('ShowAllPlayerAttDeff') || IsPlunderable && Settings.GetSetting('ShowNeighborsGoods')) {
+			Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
 		}
 		else {
 			$('#ResultBox').remove();
@@ -1086,12 +1099,13 @@ let MainParser = {
 
 	// alle Gebäude des Spielers
 	CityMapData: null,
+	CityMapEraOutpostData: null,
 
 	// freugeschaltete Erweiterungen
 	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
-	Inventory: null,
+	Inventory: {},
 
 	// Updatestufen der Eventgebäude
 	BuildingSelectionKits: null,
@@ -1562,6 +1576,8 @@ let MainParser = {
 				guild_name: d.clan_name
 			}
 		});
+
+		Infoboard.Init();
 	},
 
 
@@ -1599,14 +1615,7 @@ let MainParser = {
 	 *
 	 * @param d
 	 */
-	SaveBuildings: (d)=>{
-		MainParser.CityMapData = d;
-
-		if(Settings.GetSetting('GlobalSend') === false)
-		{
-			return;
-		}
-
+	SendBuildings: (d)=>{
 		let lgs = [];
 
 		for(let i in d)
@@ -1921,6 +1930,20 @@ let MainParser = {
 			}
 		}
 	},
+
+
+	/**
+	* Aktualisiert das Inventar
+	*
+	* @param Items
+	*/
+	UpdateInventory: (Items) => {
+		MainParser.Inventory = {};
+		for (let i = 0; i < Items.length; i++) {
+			let ID = Items[i]['id'];
+			MainParser.Inventory[ID] = Items[i];
+		}
+    },
 
 
 	/**

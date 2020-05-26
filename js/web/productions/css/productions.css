@@ -137,6 +137,9 @@
 #Productions #ProductionsBody .tabs ul li.packaging a {
 	background-position: -103px 0;
 }
+#Productions #ProductionsBody .tabs ul li.premium a {
+	background-position: -207px 0;
+}
 #Productions #ProductionsBody .tabs ul li.all a {
 	background-position: -128px 0;
 }

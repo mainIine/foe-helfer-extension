@@ -2,10 +2,11 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "2.4.5",
+	"version": "2.4.6",
   
 	"manifest_version": 2,
 	"permissions": [
+		"alarms",
 		"activeTab",
 		"storage",
 		"tabs",

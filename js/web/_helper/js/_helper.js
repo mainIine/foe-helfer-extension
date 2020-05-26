@@ -155,10 +155,6 @@ let HTML = {
 
 		// Lautsprecher für Töne
 		if(args['speaker']){
-
-			// Click Event grillen...
-			$('body').off('click', '#' + args['speaker']);
-
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
 			spk.insertAfter(title);
 
@@ -179,7 +175,7 @@ let HTML = {
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function() {
 			if(args['auto_close']){
-				$('body').on('click', '#' + args['id'] + 'close', function(){
+				$(`#${args.id}`).on('click', '#' + args['id'] + 'close', function(){
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
 					});
@@ -187,7 +183,7 @@ let HTML = {
 			}
 
 			if(args['ask']) {
-				$('body').on('click', '.window-ask', function() {
+				$(`#${args.id}`).on('click', '.window-ask', function() {
 					window.open( $(this).data('url'), '_blank');
 				});
 			}
@@ -211,7 +207,7 @@ let HTML = {
 			div.fadeToggle('fast');
 
             // Stop propagation of key event out of inputs in this box to FOE
-            $(`#${args.id}`).on('keydown keyup change', (e) => {
+            $(`#${args.id}`).on('keydown keyup', (e) => {
                 e.stopPropagation();
             });
 		});
