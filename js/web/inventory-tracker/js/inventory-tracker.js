@@ -111,6 +111,13 @@ InventoryTracker = function(){
             tmp.new.init();
         },
         inventory: {
+            addItem: (data) => {
+                if( !data['id'] ){ return; }
+
+                data.inStock = 0;
+                data.new = 0;
+                tmp.inventory[data['id']] = data;
+            },
             resetNew: () => {
                 tmp.new.reset();
                 for ( let [id, item] of Object.entries( tmp.inventory ) ){
@@ -191,7 +198,7 @@ FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
 
 // when a great building where the player hag invested has been levelled
 FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
-    // console.log('BlueprintService.newReward');
+    console.log('BlueprintService.newReward');
     // InventoryTracker.fp.addAfterLeveling( data );
 });
 
@@ -207,10 +214,17 @@ FoEproxy.addRawWsHandler( data => {
     let requestClass = data[0].requestClass;
     let requestMethod = data[0].requestMethod;
     if ( requestClass == 'NoticeIndicatorService' && requestMethod == 'getPlayerNoticeIndicators' ){
-        console.log( `NoticeIndicatorService.getPlayerNoticeIndicators` );
+        console.log( 'NoticeIndicatorService.getPlayerNoticeIndicators' );
         console.log( data[0].responseData );
         if ( data[0].responseData ) {
             InventoryTracker.inventory.updateRewards( data[0].responseData );
+        }
+    }
+    if ( requestClass == 'InventoryService' && requestMethod == 'getItem' ){
+        console.log('InventoryService.getItem');
+        console.log( data[0].responseData );
+        if( data[0].responseData ){
+            InventoryTracker.inventory.addItem( data[0].responseData );
         }
     }
     // else {
