@@ -114,7 +114,7 @@ InventoryTracker = function(){
                 },
             },
         },
-        debug: true,
+        debug: false,
         fp: {
             total: 0
         },

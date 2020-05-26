@@ -708,35 +708,35 @@ const FoEproxy = (function () {
 	});
 
 
-	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-		MainParser.UpdateInventory(data.responseData);
-		StrategyPoints.GetFromInventory();
-	});
+	// FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
+	// 	MainParser.UpdateInventory(data.responseData);
+	// 	StrategyPoints.GetFromInventory();
+	// });
 
 
-	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-		MainParser.UpdateInventory(data.responseData.inventoryItems);
-		StrategyPoints.GetFromInventory();
-	});
+	// FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
+	// 	MainParser.UpdateInventory(data.responseData.inventoryItems);
+	// 	StrategyPoints.GetFromInventory();
+	// });
 
 
-	FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
-		let ID = data.responseData[0];
-		let Value = data.responseData[1];
+	// FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
+	// 	let ID = data.responseData[0];
+	// 	let Value = data.responseData[1];
+    //
+	// 	if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+	// 	MainParser.Inventory[ID]['inStock'] = Value;
+	// 	StrategyPoints.GetFromInventory();
+	// });
 
-		if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
-		MainParser.Inventory[ID]['inStock'] = Value;
-		StrategyPoints.GetFromInventory();
-	});
 
-
-	FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
-		for (let i in MainParser.Inventory) {
-			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
-
-			MainParser.Inventory[i]['new'] = 0;
-        }
-	});
+	// FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
+	// 	for (let i in MainParser.Inventory) {
+	// 		if (!MainParser.Inventory.hasOwnProperty(i)) continue;
+    //
+	// 		MainParser.Inventory[i]['new'] = 0;
+     //    }
+	// });
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
@@ -1937,13 +1937,13 @@ let MainParser = {
 	*
 	* @param Items
 	*/
-	UpdateInventory: (Items) => {
-		MainParser.Inventory = {};
-		for (let i = 0; i < Items.length; i++) {
-			let ID = Items[i]['id'];
-			MainParser.Inventory[ID] = Items[i];
-		}
-    },
+    // UpdateInventory: (Items) => {
+		// MainParser.Inventory = {};
+		// for (let i = 0; i < Items.length; i++) {
+		// 	let ID = Items[i]['id'];
+		// 	MainParser.Inventory[ID] = Items[i];
+		// }
+    // },
 
 
 	/**
