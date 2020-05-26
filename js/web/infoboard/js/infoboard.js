@@ -26,6 +26,26 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
+// when a great building where the player has invested has been levelled
+FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
+    console.log('BlueprintService.newReward');
+
+    if ( data && data['responseData'] && data['responseData']['strategy_point_amount'] ) {
+        // save the number of returned FPs to show in the infoboard message
+        Info.ReturnFPPoints = data.responseData.strategy_point_amount;
+
+        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
+        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
+        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
+        if ( Info.ReturnFPMessageData ){
+            let bd = Info.OtherPlayerService_newEventgreat_building_contribution( Info.ReturnFPMessageData );
+            Info.ReturnFPMessageData = null;
+            Infoboard.PostMessage(bd);
+        }
+    }
+
+});
+
 /**
  *
  * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
@@ -194,6 +214,11 @@ let Infoboard = {
             return;
         }
 
+        Infoboard.PostMessage(bd);
+    },
+
+    PostMessage: (bd) => {
+
         if ($('#BackgroundInfo').length > 0) {
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 tr = $('<tr />').addClass(bd['class']),
@@ -215,8 +240,8 @@ let Infoboard = {
                 Infoboard.SoundFile.play();
             }
         }
-    },
 
+    },
 
     /**
      * Filter für Message Type
@@ -278,7 +303,7 @@ let Info = {
      * und müssen gesammelt werden
      */
     ReturnFPPoints: 0,
-
+    ReturnFPMessageData: null,
 
     /**
      * Jmd hat in einer Auktion mehr geboten
@@ -351,10 +376,10 @@ let Info = {
     * @param d
     */
     InventoryService_getItem: (d) => {
-        if (!d['id']) return;
-
-        MainParser.Inventory[d['id']] = d;
-        MainParser.Inventory[d['id']]['inStock'] = 0; //inStock auf 0 setzen, da es gleich darauf in NoticeIndicatorService_getPlayerNoticeIndicators aktualisiert und sonst doppelt gezählt wird
+    //     if (!d['id']) return;
+    //
+    //     MainParser.Inventory[d['id']] = d;
+    //     MainParser.Inventory[d['id']]['inStock'] = 0; //inStock auf 0 setzen, da es gleich darauf in NoticeIndicatorService_getPlayerNoticeIndicators aktualisiert und sonst doppelt gezählt wird
     },
 
 
@@ -364,29 +389,29 @@ let Info = {
      * @param d
      */
     NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
-        let OldFPInventory = StrategyPoints.InventoryFP;
+        // let OldFPInventory = StrategyPoints.InventoryFP;
+        //
+        // for (let i in d) {
+        //     if (!d.hasOwnProperty(i)) continue;
+        //
+        //     let Item = d[i];
+        //     let ID = Item['itemId'];
+        //     if (!ID) continue;
+        //
+        //     let Amount = Item['amount'];
+        //     if (!Amount) continue;
+        //
+        //     if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+        //     let OldNew = MainParser.Inventory[ID]['new'] | 0;
+        //     MainParser.Inventory[ID]['new'] = Amount;
+        //
+        //     if (!MainParser.Inventory[ID]['inStock']) MainParser.Inventory[ID]['inStock'] = 0;
+        //     MainParser.Inventory[ID]['inStock'] += Amount - OldNew;
+        // }
+        //
+        // StrategyPoints.GetFromInventory();
 
-        for (let i in d) {
-            if (!d.hasOwnProperty(i)) continue;
-
-            let Item = d[i];
-            let ID = Item['itemId'];
-            if (!ID) continue;
-
-            let Amount = Item['amount'];
-            if (!Amount) continue;
-
-            if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
-            let OldNew = MainParser.Inventory[ID]['new'] | 0;
-            MainParser.Inventory[ID]['new'] = Amount;
-
-            if (!MainParser.Inventory[ID]['inStock']) MainParser.Inventory[ID]['inStock'] = 0;
-            MainParser.Inventory[ID]['inStock'] += Amount - OldNew;
-        }
-
-        StrategyPoints.GetFromInventory();
-
-        Info.ReturnFPPoints = StrategyPoints.InventoryFP - OldFPInventory;
+        // Info.ReturnFPPoints = StrategyPoints.InventoryFP - OldFPInventory;
     },
 
 
@@ -483,12 +508,11 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
+
         let newFP = Info.ReturnFPPoints;
+        console.log('OtherPlayerService_newEventgreat_building_contribution');
 
-        // zurück setzen
-        Info.ReturnFPPoints = 0;
-
-        return {
+        let data = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
@@ -501,6 +525,19 @@ let Info = {
                 }
             )
         };
+
+        // If the ReturnFPPoints is 0 the BlueprintService.newReward handler has not run yet
+        // so store the data and post the message from that handler (using the stored data)
+        if ( Info.ReturnFPPoints == 0 ){
+            Info.ReturnFPMessageData = d;
+            return undefined;
+        }
+
+        // zurück setzen
+        Info.ReturnFPPoints = 0;
+        Info.ReturnFPMessageData = null;
+
+        return data;
     },
 
 
@@ -576,3 +613,4 @@ let Info = {
         return '';
     }
 };
+
