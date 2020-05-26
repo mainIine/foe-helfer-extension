@@ -4,14 +4,13 @@ InventoryTracker = function(){
     let tmp = {
         aux: {
             addInventoryAmount: (id, amount) => {
-                if ( !id ){ return; }
 
                 if ( !tmp.inventory[id] ){
                     tmp.aux.setInventoryAmount(id, amount);
                 }
 
-                let old = tmp.inventory[id].new;
-                let newAmount = amount - old;
+                let old = tmp.inventory[id].new | 0;
+                let newAmount = tmp.inventory[id].inStock + amount - old;
                 tmp.inventory[id].new = amount;
                 tmp.aux.setInventoryAmount(id, newAmount);
             },
@@ -19,14 +18,11 @@ InventoryTracker = function(){
                 let total = 0;
 
                 for ( let [id, item] of Object.entries( tmp.inventory ) ){
-                    let gain = item.gain;
-                    if ( gain == 0 ){
-                        switch( item.assetName ){
-                            case 'small_forgepoints' : { gain = 2; break; }
-                            case 'medium_forgepoints' : { gain = 5; break; }
-                            case 'large_forgepoints' : { gain = 10; break; }
-                        }
-                        tmp.inventory[id].gain = gain;
+                    let gain = 0;
+                    switch( item['itemAssetName'] ){
+                        case 'small_forgepoints' : { gain = 2; break; }
+                        case 'medium_forgepoints' : { gain = 5; break; }
+                        case 'large_forgepoints' : { gain = 10; break; }
                     }
                     total += item.inStock * gain;
                 }
@@ -37,7 +33,7 @@ InventoryTracker = function(){
                 if ( !id ){ return; }
 
                 if ( !tmp.inventory[id] ){
-                    tmp.inventory[id] = { inStock: 0, gain: 0, name: '', new: 0, assetName: '' };
+                    tmp.inventory[id] = { inStock: 0 };
                 }
                 tmp.inventory[id].inStock = amount;
             },
@@ -69,13 +65,9 @@ InventoryTracker = function(){
         },
         // fp: {
         //     addAfterLeveling: (data) => {
-        //         tmp.log('pub.fp.addAfterLeveling: ');
-        //         tmp.log(data);
         //
         //         if ( data && data['responseData'] && data['responseData']['strategy_point_amount'] ) {
-        //             // tmp.fp.total = tmp.aux.getInventoryFp() + data.responseData.strategy_point_amount;
-        //             tmp.fp.total = tmp.aux.getInventoryFp();
-        //             tmp.updateFpStockPanel();
+        //             console.log(`Received ${data.responseData.strategy_point_amount} FPs`);
         //         }
         //         else {
         //             tmp.log('Invalid data: data.responseData.strategy_point_amount');
@@ -88,26 +80,34 @@ InventoryTracker = function(){
             // tmp.log('Inventory Tracker');
         },
         inventory: {
+            resetNew: () => {
+                for ( let [id, item] of Object.entries( tmp.inventory ) ){
+                    tmp.inventory[id]['new'] = 0;
+                }
+            },
             set: (data) => {
 
+                tmp.inventory = {};
+
                 if ( !data ){ return; }
-                let total = 0;
                 let items = data.filter( item => item.itemAssetName.indexOf( 'forgepoints' ) > -1 );
                 for ( let [index, item] of items.entries() ) {
-                    let o = {
-                        inStock: item.inStock,
-                        gain: item.item.resource_package.gain,
-                        name: item.name,
-                        new: item.new | 0,
-                        asset: item.itemAssetName,
-                    };
-                    tmp.inventory[ item.id ] = o;
-                    total += o.inStock * o.gain;
+                    tmp.inventory[ item.id ] = item;
                 }
-                tmp.fp.total = total;
+                tmp.fp.total = tmp.aux.getInventoryFp();
                 tmp.updateFpStockPanel();
             },
             update: (data) => {
+
+                /**
+                 let ID = data.responseData[0];
+                 let Value = data.responseData[1];
+
+                 if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
+                 MainParser.Inventory[ID]['inStock'] = Value;
+                 StrategyPoints.GetFromInventory();
+                  */
+
                 if (data && ( data.length % 2 == 0 )){
                     for( var i = 0; i < data.length; i = i+2 ){
                         let id = data[i];
@@ -124,7 +124,9 @@ InventoryTracker = function(){
                     let item = data[i];
                     let id = item['itemId'];
                     let value = item['amount'];
-                    tmp.aux.addInventoryAmount(id, value);
+                    if ( id && value ) {
+                        tmp.aux.addInventoryAmount( id, value );
+                    }
                 }
                 tmp.fp.total = tmp.aux.getInventoryFp();
                 tmp.updateFpStockPanel();
@@ -139,7 +141,7 @@ InventoryTracker = function(){
 FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
     InventoryTracker.init();
     console.log('InventoryService.getItems');
-    InventoryTracker.inventory.set( data.responseData );
+    InventoryTracker.inventory.set(data.responseData);
 });
 
 // inventory update
@@ -167,17 +169,21 @@ FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
     // InventoryTracker.fp.addAfterLeveling( data );
 });
 
+FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
+    console.log('NoticeIndicatorService.removePlayerItemNoticeIndicators');
+    InventoryTracker.inventory.resetNew();
+});
+
 // debug
 FoEproxy.addRawWsHandler( data => {
     if ( !data || !data[0] ){ return; }
     let requestClass = data[0].requestClass;
     let requestMethod = data[0].requestMethod;
-    let responseData = data[0].responseData;
     if ( requestClass == 'NoticeIndicatorService' && requestMethod == 'getPlayerNoticeIndicators' ){
         console.log( `NoticeIndicatorService.getPlayerNoticeIndicators` );
-        console.log( responseData );
-        if ( responseData ) {
-            InventoryTracker.inventory.updateRewards(responseData);
+        console.log( data[0].responseData );
+        if ( data[0].responseData ) {
+            InventoryTracker.inventory.updateRewards( data[0].responseData );
         }
     }
 });
