@@ -7,8 +7,6 @@ InventoryTracker = function(){
     //  Unfortunately, the InventoryService,getItem is not triggered for the reward collection, so there
     //  is no way to correctly initialize the inventory (we don't know that we've received a 5-pf pack)
     //
-    //  -
-
 
     // private
     let tmp = {
@@ -233,69 +231,3 @@ InventoryTracker = function(){
 }();
 
 InventoryTracker.init();
-
-// inventory update
-// FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-//     InventoryTracker.init();
-//     console.log('InventoryService.getItems');
-//     console.log(data.responseData);
-//     InventoryTracker.inventory.set(data.responseData);
-// });
-
-// inventory update
-// FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-//     console.log('InventoryService.getInventory');
-//     console.log(data.responseData.inventoryItems);
-//     InventoryTracker.inventory.set(data.responseData.inventoryItems);
-// });
-
-// inventory update
-// FoEproxy.addHandler('InventoryService', 'getItemsByType', (data, postData) => {
-//     console.log('InventoryService.getItemsByType');
-//     console.log(data.responseData);
-//     InventoryTracker.inventory.set(data.responseData);
-// });
-
-// rewards from quests, FPs are added to a GB, FPs used for research
-// FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
-//     console.log('InventoryService.getItemAmount');
-//     console.log(data.responseData);
-//     InventoryTracker.inventory.update(data.responseData);
-// });
-
-// when a great building where the player hag invested has been levelled
-// FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
-//     console.log('BlueprintService.newReward');
-//     // InventoryTracker.fp.addAfterLeveling( data );
-// });
-
-// FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
-//     console.log('NoticeIndicatorService.removePlayerItemNoticeIndicators');
-//     console.log(data.responseData);
-//     InventoryTracker.inventory.resetNew();
-// });
-
-// debug
-// FoEproxy.addRawWsHandler( data => {
-//     if ( !data || !data[0] ){ return; }
-//     let requestClass = data[0].requestClass;
-//     let requestMethod = data[0].requestMethod;
-//     if ( requestClass == 'NoticeIndicatorService' && requestMethod == 'getPlayerNoticeIndicators' ){
-//         console.log( 'NoticeIndicatorService.getPlayerNoticeIndicators' );
-//         console.log( data[0].responseData );
-//         if ( data[0].responseData ) {
-//             InventoryTracker.inventory.updateRewards( data[0].responseData );
-//         }
-//     }
-//     if ( requestClass == 'InventoryService' && requestMethod == 'getItem' ){
-//         console.log('InventoryService.getItem');
-//         console.log( data[0].responseData );
-//         if( data[0].responseData ){
-//             InventoryTracker.inventory.addItem( data[0].responseData );
-//         }
-//     }
-//     // else {
-//     //     console.log( `NoticeIndicatorService.${requestMethod}` );
-//     //     console.log( data[0].responseData );
-//     // }
-// });
