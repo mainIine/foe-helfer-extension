@@ -37,11 +37,6 @@ InventoryTracker = function(){
                     tmp.inventory[id] = { inStock: 0 };
                 }
                 tmp.inventory[id].inStock = amount;
-                // if ( tmp.inventory[id].new > 0 ){
-                //     // console.log(`Reseting new for [${id}]`);
-                //     // tmp.inventory[id].inStock -= tmp.inventory[id].new;
-                //     // tmp.inventory[id].new = 0;
-                // }
             },
         },
         debug: false,
@@ -133,15 +128,6 @@ InventoryTracker = function(){
                 tmp.updateFpStockPanel();
             },
             update: (data) => {
-
-                /**
-                 let ID = data.responseData[0];
-                 let Value = data.responseData[1];
-
-                 if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
-                 MainParser.Inventory[ID]['inStock'] = Value;
-                 StrategyPoints.GetFromInventory();
-                  */
 
                 if (data && ( data.length % 2 == 0 )){
                     for( var i = 0; i < data.length; i = i+2 ){
