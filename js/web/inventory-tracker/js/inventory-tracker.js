@@ -8,10 +8,11 @@ InventoryTracker = function(){
                 if ( !tmp.inventory[id] ){
                     tmp.aux.setInventoryAmount(id, amount);
                 }
+                let asset = tmp.inventory[id]['itemAssetName'];
 
-                let old = tmp.inventory[id].new | 0;
+                let old = tmp.new.get(asset);
                 let newAmount = tmp.inventory[id].inStock + amount - old;
-                tmp.inventory[id].new = amount;
+                tmp.new.set(asset, amount);
                 tmp.aux.setInventoryAmount(id, newAmount);
             },
             getInventoryFp: () => {
@@ -36,15 +37,46 @@ InventoryTracker = function(){
                     tmp.inventory[id] = { inStock: 0 };
                 }
                 tmp.inventory[id].inStock = amount;
+                // if ( tmp.inventory[id].new > 0 ){
+                //     // console.log(`Reseting new for [${id}]`);
+                //     // tmp.inventory[id].inStock -= tmp.inventory[id].new;
+                //     // tmp.inventory[id].new = 0;
+                // }
             },
         },
-        debug: true,
+        debug: false,
         fp: {
             total: 0
         },
         initialized: false,
         // keep a copy of the inventory while this is work-in-progress
         inventory: {},
+        new: {
+            data: {
+                'small_forgepoints': 0,
+                'medium_forgepoints': 0,
+                'large_forgepoints': 0,
+            },
+            get: (id) => {
+                return tmp.new.data[id] | 0;
+            },
+            init: () => {
+                tmp.new.data['small_forgepoints'] = localStorage.getItem('small_forgepoints') | 0;
+                tmp.new.data['medium_forgepoints'] = localStorage.getItem('medium_forgepoints') | 0;
+                tmp.new.data['large_forgepoints'] = localStorage.getItem('large_forgepoints') | 0;
+            },
+            reset: () => {
+                tmp.new.set('small_forgepoints', 0);
+                tmp.new.set('medium_forgepoints', 0);
+                tmp.new.set('large_forgepoints', 0);
+            },
+            set: (id, value) => {
+                if( tmp.new.data[id] !== undefined ){
+                    tmp.new.data[id] = value;
+                    localStorage.setItem(id, value);
+                }
+            },
+        },
         updateFpStockPanel: () => {
             // StrategyPoints.ForgePointBar( tmp.fp.total );
             tmp.log(`Set ForgePointBar: ${tmp.fp.total} `);
@@ -61,6 +93,7 @@ InventoryTracker = function(){
             return {
                 fp: tmp.fp.total,
                 inventory: tmp.inventory,
+                new: tmp.new.data,
             }
         },
         // fp: {
@@ -77,12 +110,14 @@ InventoryTracker = function(){
         init: () => {
             if ( tmp.initialized ){ return; }
             tmp.initialized = true;
-            // tmp.log('Inventory Tracker');
+
+            // load new values
+            tmp.new.init();
         },
         inventory: {
             resetNew: () => {
                 for ( let [id, item] of Object.entries( tmp.inventory ) ){
-                    tmp.inventory[id]['new'] = 0;
+                    tmp.new.reset();
                 }
             },
             set: (data) => {
@@ -141,18 +176,21 @@ InventoryTracker = function(){
 FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
     InventoryTracker.init();
     console.log('InventoryService.getItems');
+    console.log(data.responseData);
     InventoryTracker.inventory.set(data.responseData);
 });
 
 // inventory update
 FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
     console.log('InventoryService.getInventory');
+    console.log(data.responseData.inventoryItems);
     InventoryTracker.inventory.set(data.responseData.inventoryItems);
 });
 
 // inventory update
 FoEproxy.addHandler('InventoryService', 'getItemsByType', (data, postData) => {
     console.log('InventoryService.getItemsByType');
+    console.log(data.responseData);
     InventoryTracker.inventory.set(data.responseData);
 });
 
@@ -171,6 +209,7 @@ FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
 
 FoEproxy.addHandler('NoticeIndicatorService', 'removePlayerItemNoticeIndicators', (data, postData) => {
     console.log('NoticeIndicatorService.removePlayerItemNoticeIndicators');
+    console.log(data.responseData);
     InventoryTracker.inventory.resetNew();
 });
 
@@ -186,4 +225,8 @@ FoEproxy.addRawWsHandler( data => {
             InventoryTracker.inventory.updateRewards( data[0].responseData );
         }
     }
+    // else {
+    //     console.log( `NoticeIndicatorService.${requestMethod}` );
+    //     console.log( data[0].responseData );
+    // }
 });
