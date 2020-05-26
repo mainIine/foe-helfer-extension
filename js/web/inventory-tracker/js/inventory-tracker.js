@@ -21,11 +21,9 @@ InventoryTracker = function(){
                 if ( !tmp.inventory[id] ){
                     tmp.aux.setInventoryAmount(id, amount);
                 }
-                let asset = tmp.inventory[id]['itemAssetName'];
-
-                let old = tmp.new.get(asset);
+                let old = tmp.new.get(id);
                 let newAmount = tmp.inventory[id].inStock + amount - old;
-                tmp.new.set(asset, amount);
+                tmp.new.set(id, amount);
                 tmp.aux.setInventoryAmount(id, newAmount);
             },
             getInventoryFp: () => {
@@ -57,9 +55,15 @@ InventoryTracker = function(){
             init: () => {
                 if ( tmp.initialized ){ return; }
                 tmp.initialized = true;
-
-                // load new values
-                tmp.new.init();
+            },
+            indicators: {
+                load: (data) => {
+                    for( var i = 0; i < data.length; i++ ){
+                        let item = data[i];
+                        tmp.new.set( item['itemId'], item['amount'] );
+                    }
+                    tmp.new.initialized = true;
+                },
             },
             inventory: {
                 addItem: (data) => {
@@ -114,7 +118,7 @@ InventoryTracker = function(){
                 },
             },
         },
-        debug: false,
+        debug: true,
         fp: {
             total: 0
         },
@@ -126,6 +130,8 @@ InventoryTracker = function(){
                     tmp.log('InventoryService.getItems');
                     tmp.log(data.responseData);
                     tmp.action.inventory.set(data.responseData);
+                    // load new values
+                    tmp.new.init();
                 });
 
                 FoEproxy.addHandler('InventoryService', 'getItemsByType', (data, postData) => {
@@ -152,6 +158,11 @@ InventoryTracker = function(){
                     tmp.log('NoticeIndicatorService.removePlayerItemNoticeIndicators');
                     tmp.log(data.responseData);
                     tmp.action.inventory.resetNew();
+                });
+                FoEproxy.addHandler('NoticeIndicatorService', 'getPlayerNoticeIndicators', (data, postData) => {
+                    tmp.log('NoticeIndicatorService.getPlayerNoticeIndicators');
+                    tmp.log(data.responseData);
+                    tmp.action.indicators.load(data.responseData);
                 });
             },
             addRawHandlers: () => {
@@ -181,29 +192,20 @@ InventoryTracker = function(){
         // keep a copy of the inventory while this is work-in-progress
         inventory: {},
         new: {
-            data: {
-                'small_forgepoints': 0,
-                'medium_forgepoints': 0,
-                'large_forgepoints': 0,
-            },
+            initialized: false,
+            data: {},
             get: (id) => {
                 return tmp.new.data[id] | 0;
             },
             init: () => {
-                tmp.new.data['small_forgepoints'] = localStorage.getItem('small_forgepoints') | 0;
-                tmp.new.data['medium_forgepoints'] = localStorage.getItem('medium_forgepoints') | 0;
-                tmp.new.data['large_forgepoints'] = localStorage.getItem('large_forgepoints') | 0;
+                if ( tmp.new.initialized ){ return; }
+                tmp.new.reset();
             },
             reset: () => {
-                tmp.new.set('small_forgepoints', 0);
-                tmp.new.set('medium_forgepoints', 0);
-                tmp.new.set('large_forgepoints', 0);
+                tmp.new.data = {};
             },
             set: (id, value) => {
-                if( tmp.new.data[id] !== undefined ){
-                    tmp.new.data[id] = value;
-                    localStorage.setItem(id, value);
-                }
+                tmp.new.data[id] = value;
             },
         },
         updateFpStockPanel: () => {
