@@ -78,7 +78,7 @@ let StrategyPoints = {
 
 		if ( isNaN( value ) ){ return; }
 		StrategyPoints.InventoryFP = value;
-		console.log('RefreshBar to: ', value, ' from: ', StrategyPoints.OldStrategyPoints);
+
 		// the animation function checks if start_value != end_value
 		$('.fp-storage').easy_number_animate({
 			start_value: StrategyPoints.OldStrategyPoints,
