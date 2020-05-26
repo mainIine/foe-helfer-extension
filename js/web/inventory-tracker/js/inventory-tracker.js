@@ -25,7 +25,8 @@ InventoryTracker = function(){
                         case 'medium_forgepoints' : { gain = 5; break; }
                         case 'large_forgepoints' : { gain = 10; break; }
                     }
-                    total += item.inStock * gain;
+                    let itemNew = item.new | 0;
+                    total += ( item.inStock - itemNew ) * gain;
                 }
                 return total;
             },
@@ -112,6 +113,9 @@ InventoryTracker = function(){
         inventory: {
             resetNew: () => {
                 tmp.new.reset();
+                for ( let [id, item] of Object.entries( tmp.inventory ) ){
+                    tmp.inventory[id].new = 0;
+                }
             },
             set: (data) => {
 
@@ -120,13 +124,6 @@ InventoryTracker = function(){
                 if ( !data ){ return; }
                 let items = data.filter( item => item.itemAssetName.indexOf( 'forgepoints' ) > -1 );
                 for ( let [index, item] of items.entries() ) {
-
-                    // sometime the inStock value appears to be larger by the new amount
-                    // needs testing
-                    // if ( item['new'] ){
-                    //     console.log(`item[${item.id}] new: ${item['new']}, stock: ${item['inStock']}`);
-                    //     item['inStock'] -= item['new'];
-                    // }
                     tmp.inventory[ item.id ] = item;
                 }
                 tmp.fp.total = tmp.aux.getInventoryFp();
