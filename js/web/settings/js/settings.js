@@ -87,10 +87,10 @@ let Settings = {
 			title : i18n('Settings.AutomaticNegotiation.Title'),
 			desc : i18n('Settings.AutomaticNegotiation.Desc')
 		},
-		AddStreetEfficiency : {
+		AddStreetToEfficiencyCalcSize : {
 			status: true,
-			title : i18n('Settings.AddStreetEfficiency.Title'),
-			desc : i18n('Settings.AddStreetEfficiency.Desc')
+			title : i18n('Settings.AddStreetToEfficiencyCalcSize.Title'),
+			desc : i18n('Settings.AddStreetToEfficiencyCalcSize.Desc')
 		},
 		ResetBoxPositions : {
 			button: 'ResetBoxCoords',
