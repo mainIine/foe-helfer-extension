@@ -26,12 +26,10 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
 	if (data['responseData']['gains'] === undefined || data['responseData']['gains']['resources'] === undefined || data['responseData']['gains']['resources']['strategy_points'] === undefined) {
 		return;
 	}
-
 	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
 });
 
 let StrategyPoints = {
-    RefreshDone: false,
 	OldStrategyPoints: 0,
 	InventoryFP: 0,
 
@@ -66,43 +64,11 @@ let StrategyPoints = {
 		}
 	},
 
-
-	/**
-	 * Holt beim Start alle FPs aus dem Lager
-	 *
-	 */
-	GetFromInventory: ()=> {
-		let t = 0;
-
-		for(let i in MainParser.Inventory)
-		{
-			if (!MainParser.Inventory.hasOwnProperty(i)){
-				break;
-			}
-
-			if (MainParser.Inventory[i]['itemAssetName'] === 'large_forgepoints'){
-				t += (MainParser.Inventory[i]['inStock'] * 10);
-
-			} else if (MainParser.Inventory[i]['itemAssetName'] === 'medium_forgepoints'){
-				t += (MainParser.Inventory[i]['inStock'] * 5);
-
-			} else if (MainParser.Inventory[i]['itemAssetName'] === 'small_forgepoints'){
-				t += (MainParser.Inventory[i]['inStock'] * 2);
-			}
-		}
-
-		if(t > 0){
-			StrategyPoints.InventoryFP = t;
-			StrategyPoints.RefreshBar();
-		}
-	},
-
-
 	/**
 	 * Kleine FP-Bar im Header
 	 *
 	 */
-    RefreshBar: () => {
+    RefreshBar: ( value ) => {
         // noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
 			let div = $('<div />').attr('id', 'fp-bar').text(i18n('Boxes.StrategyPoints.FPBar')).append( $('<strong>0</strong>').addClass('fp-storage') );
@@ -110,19 +76,23 @@ let StrategyPoints = {
 			$('body').append(div);
 		}
 
-		// Update mit Animation, wenn es überhaupt notwendig ist
-		if (StrategyPoints.InventoryFP < StrategyPoints.OldStrategyPoints || StrategyPoints.InventoryFP > StrategyPoints.OldStrategyPoints || !StrategyPoints.RefreshDone)
-        {
-			StrategyPoints.RefreshDone = true;
+		if ( isNaN( value ) ){ return; }
+		StrategyPoints.InventoryFP = value;
 
-			$('.fp-storage').easy_number_animate({
-				start_value: StrategyPoints.OldStrategyPoints,
-				end_value: StrategyPoints.InventoryFP,
-				duration: 750
-			});
+		// the animation function checks if start_value != end_value
+		$('.fp-storage').easy_number_animate({
+			start_value: StrategyPoints.OldStrategyPoints,
+			end_value: StrategyPoints.InventoryFP,
+			duration: 750,
+			after: (el, val) => {
+				// this seems to be necessary due to a bug with the easy_number_animate
+				// jQuery plugin = if many animations run in a quick succession the order
+				// in which they finish is not guaranteed!
+				el.text(StrategyPoints.InventoryFP);
+			}
+		});
 
-			StrategyPoints.OldStrategyPoints = StrategyPoints.InventoryFP;
-		}
+		StrategyPoints.OldStrategyPoints = StrategyPoints.InventoryFP;
 	},
 
 
