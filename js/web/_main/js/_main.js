@@ -707,27 +707,15 @@ const FoEproxy = (function () {
 		MainParser.setGoodsData(data.responseData);
 	});
 
+    // Required by the kits
+    FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
+        MainParser.UpdateInventory(data.responseData);
+    });
 
-	FoEproxy.addHandler('GreatBuildingsService', 'getAvailablePackageForgePoints', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData[0]);
-	});
-
-
-	FoEproxy.addHandler('GreatBuildingsService', 'getConstruction', (data, postData) => {
-		StrategyPoints.ForgePointBar(data.responseData.availablePackagesForgePointSum);
-	});
-
-
-	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-		StrategyPoints.GetFromInventory(data.responseData);
-		MainParser.Inventory = data.responseData;
-	});
-
-
-	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-		StrategyPoints.GetFromInventory(data.responseData.inventoryItems);
-	});
-
+    // Required by the kits
+    FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
+        MainParser.UpdateInventory(data.responseData.inventoryItems);
+    });
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
@@ -737,7 +725,7 @@ const FoEproxy = (function () {
 	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
-		
+
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
@@ -903,7 +891,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		let OtherPlayer = data.responseData.other_player;
 		let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
-				
+
 		if (Settings.GetSetting('ShowAllPlayerAttDeff') || IsPlunderable && Settings.GetSetting('ShowNeighborsGoods')) {
 			Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
 		}
@@ -1096,7 +1084,7 @@ let MainParser = {
 	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
-	Inventory: null,
+	Inventory: {},
 
 	// Updatestufen der Eventgebäude
 	BuildingSelectionKits: null,
@@ -1567,6 +1555,8 @@ let MainParser = {
 				guild_name: d.clan_name
 			}
 		});
+
+		Infoboard.Init();
 	},
 
 
@@ -1919,6 +1909,20 @@ let MainParser = {
 			}
 		}
 	},
+
+
+	/**
+	* Aktualisiert das Inventar
+	*
+	* @param Items
+	*/
+    UpdateInventory: (Items) => {
+		MainParser.Inventory = {};
+		for (let i = 0; i < Items.length; i++) {
+			let ID = Items[i]['id'];
+			MainParser.Inventory[ID] = Items[i];
+		}
+    },
 
 
 	/**
