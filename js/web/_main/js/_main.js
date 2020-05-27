@@ -707,6 +707,16 @@ const FoEproxy = (function () {
 		MainParser.setGoodsData(data.responseData);
 	});
 
+    // Required by the kits
+    FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
+        MainParser.UpdateInventory(data.responseData);
+    });
+
+    // Required by the kits
+    FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
+        MainParser.UpdateInventory(data.responseData.inventoryItems);
+    });
+
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
 	// Es wurde das LG eines Mitspielers angeklickt, bzw davor die Übersicht
@@ -715,7 +725,7 @@ const FoEproxy = (function () {
 	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
-		
+
 		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
 			return;
 		}
@@ -881,7 +891,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		let OtherPlayer = data.responseData.other_player;
 		let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
-				
+
 		if (Settings.GetSetting('ShowAllPlayerAttDeff') || IsPlunderable && Settings.GetSetting('ShowNeighborsGoods')) {
 			Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
 		}
@@ -1906,13 +1916,13 @@ let MainParser = {
 	*
 	* @param Items
 	*/
-    // UpdateInventory: (Items) => {
-		// MainParser.Inventory = {};
-		// for (let i = 0; i < Items.length; i++) {
-		// 	let ID = Items[i]['id'];
-		// 	MainParser.Inventory[ID] = Items[i];
-		// }
-    // },
+    UpdateInventory: (Items) => {
+		MainParser.Inventory = {};
+		for (let i = 0; i < Items.length; i++) {
+			let ID = Items[i]['id'];
+			MainParser.Inventory[ID] = Items[i];
+		}
+    },
 
 
 	/**
