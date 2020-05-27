@@ -15,6 +15,7 @@ InventoryTracker = function(){
 
     // private
     let tmp = {
+        debug: false,
         aux: {
             addInventoryAmount: (id, amount) => {
 
@@ -118,7 +119,6 @@ InventoryTracker = function(){
                 },
             },
         },
-        debug: true,
         fp: {
             total: 0
         },
