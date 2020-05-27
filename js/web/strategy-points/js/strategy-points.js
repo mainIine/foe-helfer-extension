@@ -50,10 +50,10 @@ let StrategyPoints = {
 			currentlyCosts += factor;
 		}
 
-    	for(let money = ResourceStock.money; money >= currentlyCosts; money--) {
-    		currentlyCosts += factor;
+		for(let money = ResourceStock.money; money >= currentlyCosts; money--) {
+			currentlyCosts += factor;
 			money -= currentlyCosts;
-    		amount++;
+			amount++;
 		}
 
 		if($('.buyable-fp').length == 0) {
@@ -85,7 +85,7 @@ let StrategyPoints = {
 		$('.fp-storage').easy_number_animate({
 			start_value: StrategyPoints.OldStrategyPoints,
 			end_value: StrategyPoints.InventoryFP,
-            delimiter: delimiter,
+			delimiter: delimiter,
 			duration: 750,
 			after: (el, val) => {
 				// this seems to be necessary due to a bug with the easy_number_animate
