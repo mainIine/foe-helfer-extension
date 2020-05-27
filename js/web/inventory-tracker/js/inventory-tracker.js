@@ -1,18 +1,5 @@
 InventoryTracker = function(){
 
-    // Known issues:
-    //  - when there are no 5-fp packs in the inventory and the player receives a new 5-fp pack
-    //  from a (recurring) quest, the new pack will not be counted. It is added to the inventory
-    //  and it will be correctly counted when the inventory updates.
-    //  Unfortunately, the InventoryService.getItem is not triggered for the reward collection, so there
-    //  is no way to correctly initialize the inventory (we don't know that we've received a 5-fp pack
-    //  because there is no matching item id in the inventory)
-    //  Maybe we could guess, i.e. if the 10-fp and 2-fp packs are in the inventory and we add an unlabeled
-    //  fp pack with an id different than the other two (10-fp and 2-fp packs) we could guess that a 5-fp
-    //  pack has been added
-    //  - the above (guessing game) works only if the fp pack ids don't change, but I've seen them change
-    //  occasionally
-
     // private
     let tmp = {
         debug: false,
