@@ -87,6 +87,11 @@ let Settings = {
 			title : i18n('Settings.AutomaticNegotiation.Title'),
 			desc : i18n('Settings.AutomaticNegotiation.Desc')
 		},
+		AddStreetEfficiency : {
+			status: true,
+			title : i18n('Settings.AddStreetEfficiency.Title'),
+			desc : i18n('Settings.AddStreetEfficiency.Desc')
+		},
 		ResetBoxPositions : {
 			button: 'ResetBoxCoords',
 			buttonText: i18n('Settings.ResetBoxPositions.Button'),

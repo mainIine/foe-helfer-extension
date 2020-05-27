@@ -474,6 +474,8 @@
 		"Menu.Unit.Warning": "Öffne erst 1x deine \"Armee-Organisation\"<br>Taste \"U\"",
 		"Settings.AutomaticNegotiation.Desc": "Soll der Assistent automatisch mit einer Verhandlung geöffnet und bei Abbruch geschlossen werden?",
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassistent",
+		"Settings.AddStreetEfficiency.Title": "Effiziens: Strassen",
+		"Settings.AddStreetEfficiency.Desc": "Strassen in Effiziens mit einberechnen. Hierzu wird die Hälfte der Länge der kürzesten Seite zur Fläche addiert.",
 		"Settings.ChangeLanguage.Desc": "Welche Sprache, statt der erkannten, soll genutzt werden?",
 		"Settings.ChangeLanguage.Title": "Sprache wechseln",
 		"Settings.CustomerApi.Desc": "Du möchtest Daten an deinen eigenen Server schicken?<br>Nach dieser Aktivierung wird sich das Spiel neu laden und ein weiterer Menüpunkt erscheint rechts im Menü.",

@@ -474,6 +474,8 @@
 		"Menu.Unit.Warning": "Disabled: Open your Army Management first (U)!",
 		"Settings.AutomaticNegotiation.Desc": "Automatically Open/Close the Negotiation Helper/Assistant when negotiating?",
 		"Settings.AutomaticNegotiation.Title": "Negotiation helper",
+		"Settings.AddStreetEfficiency.Title": "Efficiency: Streets",
+		"Settings.AddStreetEfficiency.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.",
 		"Settings.ChangeLanguage.Desc": "Choose your prefered language from the drop-down list >",
 		"Settings.ChangeLanguage.Title": "Change Language",
 		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.",
