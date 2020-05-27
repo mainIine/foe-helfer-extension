@@ -451,10 +451,6 @@ let Productions = {
 				countAll = 0,
 				countAllMotivated = 0;
 
-
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
 			{
@@ -472,11 +468,7 @@ let Productions = {
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
-<<<<<<< Updated upstream
-=======
-						
-											
->>>>>>> Stashed changes
+
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
@@ -533,12 +525,7 @@ let Productions = {
 					if (groups.hasOwnProperty(i)) {
 						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
 							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type);
-<<<<<<< Updated upstream
 
-=======
-					
-									
->>>>>>> Stashed changes
 						let tds = '<tr>' +
 							'<td class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
 							'<td colspan="4" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
