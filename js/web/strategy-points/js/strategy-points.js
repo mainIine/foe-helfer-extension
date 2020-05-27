@@ -79,22 +79,24 @@ let StrategyPoints = {
 		if ( isNaN( value ) ){ return; }
 		StrategyPoints.InventoryFP = value;
 
+		let delimiter = Number(1000).toLocaleString().substring(1,2);
+
 		// the animation function checks if start_value != end_value
 		$('.fp-storage').easy_number_animate({
 			start_value: StrategyPoints.OldStrategyPoints,
 			end_value: StrategyPoints.InventoryFP,
+            delimiter: delimiter,
 			duration: 750,
 			after: (el, val) => {
 				// this seems to be necessary due to a bug with the easy_number_animate
 				// jQuery plugin = if many animations run in a quick succession the order
 				// in which they finish is not guaranteed!
-				el.text(StrategyPoints.InventoryFP);
+				el.text( HTML.Format( StrategyPoints.InventoryFP ) );
 			}
 		});
 
 		StrategyPoints.OldStrategyPoints = StrategyPoints.InventoryFP;
 	},
-
 
 	/**
 	 * Liefert die gesamt verfügbaren FP
