@@ -369,52 +369,6 @@ let Info = {
         };
     },
 
-
-    /**
-    * Neue Item Information
-    *
-    * @param d
-    */
-    InventoryService_getItem: (d) => {
-    //     if (!d['id']) return;
-    //
-    //     MainParser.Inventory[d['id']] = d;
-    //     MainParser.Inventory[d['id']]['inStock'] = 0; //inStock auf 0 setzen, da es gleich darauf in NoticeIndicatorService_getPlayerNoticeIndicators aktualisiert und sonst doppelt gezählt wird
-    },
-
-
-    /**
-     * LG Level Up
-     *
-     * @param d
-     */
-    NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
-        // let OldFPInventory = StrategyPoints.InventoryFP;
-        //
-        // for (let i in d) {
-        //     if (!d.hasOwnProperty(i)) continue;
-        //
-        //     let Item = d[i];
-        //     let ID = Item['itemId'];
-        //     if (!ID) continue;
-        //
-        //     let Amount = Item['amount'];
-        //     if (!Amount) continue;
-        //
-        //     if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
-        //     let OldNew = MainParser.Inventory[ID]['new'] | 0;
-        //     MainParser.Inventory[ID]['new'] = Amount;
-        //
-        //     if (!MainParser.Inventory[ID]['inStock']) MainParser.Inventory[ID]['inStock'] = 0;
-        //     MainParser.Inventory[ID]['inStock'] += Amount - OldNew;
-        // }
-        //
-        // StrategyPoints.GetFromInventory();
-
-        // Info.ReturnFPPoints = StrategyPoints.InventoryFP - OldFPInventory;
-    },
-
-
     /**
      * Auf der GG-Map kämpft jemand
      *
