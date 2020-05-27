@@ -15,18 +15,8 @@ InventoryTracker = function(){
 
     // private
     let tmp = {
-        debug: true,
+        debug: false,
         aux: {
-            decomposeReward: ( value ) => {
-                let fp2s = 0, fp5s = 0;
-                if ( value % 2 == 1 ){ fp5s++; value -= 5;}
-                while ( value % 10 != 0 ){
-                    fp2s++;
-                    value -= 2;
-                }
-                let fp10s = value / 10;
-                return [fp2s, fp5s, fp10s];
-            },
             getInventoryFp: () => {
                 let total = 0;
 
