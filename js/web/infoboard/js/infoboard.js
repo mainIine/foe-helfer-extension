@@ -28,7 +28,6 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
 
 // when a great building where the player has invested has been levelled
 FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
-    console.log('BlueprintService.newReward');
 
     if ( data && data['responseData'] && data['responseData']['strategy_point_amount'] ) {
         // save the number of returned FPs to show in the infoboard message
@@ -464,7 +463,6 @@ let Info = {
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
 
         let newFP = Info.ReturnFPPoints;
-        console.log('OtherPlayerService_newEventgreat_building_contribution');
 
         let data = {
             class: 'level',
