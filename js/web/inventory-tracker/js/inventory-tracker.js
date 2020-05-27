@@ -15,17 +15,17 @@ InventoryTracker = function(){
 
     // private
     let tmp = {
-        debug: false,
+        debug: true,
         aux: {
-            addInventoryAmount: (id, amount) => {
-
-                if ( !tmp.inventory[id] ){
-                    tmp.aux.setInventoryAmount(id, amount);
+            decomposeReward: ( value ) => {
+                let fp2s = 0, fp5s = 0;
+                if ( value % 2 == 1 ){ fp5s++; value -= 5;}
+                while ( value % 10 != 0 ){
+                    fp2s++;
+                    value -= 2;
                 }
-                let old = tmp.new.get(id);
-                let newAmount = tmp.inventory[id].inStock + amount - old;
-                tmp.new.set(id, amount);
-                tmp.aux.setInventoryAmount(id, newAmount);
+                let fp10s = value / 10;
+                return [fp2s, fp5s, fp10s];
             },
             getInventoryFp: () => {
                 let total = 0;
@@ -57,25 +57,18 @@ InventoryTracker = function(){
                 if ( tmp.initialized ){ return; }
                 tmp.initialized = true;
             },
-            indicators: {
-                load: (data) => {
-                    for( var i = 0; i < data.length; i++ ){
-                        let item = data[i];
-                        tmp.new.set( item['itemId'], item['amount'] );
-                    }
-                    tmp.new.initialized = true;
-                },
-            },
             inventory: {
                 addItem: (data) => {
                     if( !data['id'] ){ return; }
 
-                    data.inStock = 0;
-                    data.new = 0;
+                    data.inStock = data.inStock | 0;
+                    data.new = data.new | 0;
                     tmp.inventory[data['id']] = data;
+
+                    tmp.fp.total = tmp.aux.getInventoryFp();
+                    tmp.updateFpStockPanel();
                 },
                 resetNew: () => {
-                    tmp.new.reset();
                     for ( let [id, item] of Object.entries( tmp.inventory ) ){
                         tmp.inventory[id].new = 0;
                     }
@@ -104,19 +97,6 @@ InventoryTracker = function(){
                     tmp.fp.total = tmp.aux.getInventoryFp();
                     tmp.updateFpStockPanel();
                 },
-                updateRewards: (data) => {
-                    if ( !data ){ return };
-                    for ( var i = 0; i < data.length; i++ ){
-                        let item = data[i];
-                        let id = item['itemId'];
-                        let value = item['amount'];
-                        if ( id && value ) {
-                            tmp.aux.addInventoryAmount( id, value );
-                        }
-                    }
-                    tmp.fp.total = tmp.aux.getInventoryFp();
-                    tmp.updateFpStockPanel();
-                },
             },
         },
         fp: {
@@ -125,17 +105,18 @@ InventoryTracker = function(){
         handlers: {
             addInventoryHandlers: () => {
 
+                // an item which is not yet in the inventory is received
+                FoEproxy.addHandler('InventoryService', 'getItem', (data, postData) => {
+                    tmp.log('InventoryService.getItem');
+                    tmp.log( data.responseData );
+                    if( data.responseData ){
+                        tmp.action.inventory.addItem( data.responseData );
+                    }
+                });
+
                 FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
                     tmp.action.init();
                     tmp.log('InventoryService.getItems');
-                    tmp.log(data.responseData);
-                    tmp.action.inventory.set(data.responseData);
-                    // load new values
-                    tmp.new.init();
-                });
-
-                FoEproxy.addHandler('InventoryService', 'getItemsByType', (data, postData) => {
-                    tmp.log('InventoryService.getItemsByType');
                     tmp.log(data.responseData);
                     tmp.action.inventory.set(data.responseData);
                 });
@@ -159,11 +140,7 @@ InventoryTracker = function(){
                     tmp.log(data.responseData);
                     tmp.action.inventory.resetNew();
                 });
-                FoEproxy.addHandler('NoticeIndicatorService', 'getPlayerNoticeIndicators', (data, postData) => {
-                    tmp.log('NoticeIndicatorService.getPlayerNoticeIndicators');
-                    tmp.log(data.responseData);
-                    tmp.action.indicators.load(data.responseData);
-                });
+
             },
             addRawHandlers: () => {
 
@@ -171,18 +148,19 @@ InventoryTracker = function(){
                     if ( !data || !data[0] ){ return; }
                     let requestClass = data[0].requestClass;
                     let requestMethod = data[0].requestMethod;
-                    if ( requestClass == 'NoticeIndicatorService' && requestMethod == 'getPlayerNoticeIndicators' ){
-                        tmp.log( 'NoticeIndicatorService.getPlayerNoticeIndicators' );
-                        tmp.log( data[0].responseData );
-                        if ( data[0].responseData ) {
-                            tmp.action.inventory.updateRewards( data[0].responseData );
-                        }
-                    }
+
                     if ( requestClass == 'InventoryService' && requestMethod == 'getItem' ){
-                        tmp.log('InventoryService.getItem');
+                        tmp.log('WS InventoryService.getItem');
                         tmp.log( data[0].responseData );
                         if( data[0].responseData ){
                             tmp.action.inventory.addItem( data[0].responseData );
+                        }
+                    }
+                    if ( requestClass == 'InventoryService' && requestMethod == 'getItemAmount' ){
+                        tmp.log('WS InventoryService.getItemAmount');
+                        tmp.log( data[0].responseData );
+                        if( data[0].responseData ){
+                            tmp.action.inventory.update( data[0].responseData );
                         }
                     }
                 });
@@ -191,23 +169,6 @@ InventoryTracker = function(){
         initialized: false,
         // keep a copy of the inventory while this is work-in-progress
         inventory: {},
-        new: {
-            initialized: false,
-            data: {},
-            get: (id) => {
-                return tmp.new.data[id] | 0;
-            },
-            init: () => {
-                if ( tmp.new.initialized ){ return; }
-                tmp.new.reset();
-            },
-            reset: () => {
-                tmp.new.data = {};
-            },
-            set: (id, value) => {
-                tmp.new.data[id] = value;
-            },
-        },
         updateFpStockPanel: () => {
             StrategyPoints.RefreshBar( tmp.fp.total );
             tmp.log(`Set ForgePointBar: ${tmp.fp.total} `);
@@ -224,7 +185,7 @@ InventoryTracker = function(){
             return {
                 fp: tmp.fp.total,
                 inventory: tmp.inventory,
-                new: tmp.new.data,
+                // new: tmp.new.data,
             }
         },
         init: () => {
