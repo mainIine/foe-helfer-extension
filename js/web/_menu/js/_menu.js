@@ -890,7 +890,7 @@ let _menu = {
 		return btn;
 	},
 
-
+	/*
 	/**
 	 * FP Produzierende LGs
 	 */
@@ -911,4 +911,5 @@ let _menu = {
 
 		return btn;
 	},
+	*/
 };
