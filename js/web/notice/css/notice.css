@@ -1,0 +1,21 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 notice.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zuletzt bearbeitet:        24.05.20, 14:35 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+#notices {
+	left: calc(50vw - 250px);
+	top: calc(50vw - 220px);
+	min-width: 500px;
+	max-width: 600px;
+}
+
