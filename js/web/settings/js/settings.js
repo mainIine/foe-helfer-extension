@@ -87,11 +87,6 @@ let Settings = {
 			title : i18n('Settings.AutomaticNegotiation.Title'),
 			desc : i18n('Settings.AutomaticNegotiation.Desc')
 		},
-		AddStreetToEfficiencyCalcSize : {
-			status: true,
-			title : i18n('Settings.AddStreetToEfficiencyCalcSize.Title'),
-			desc : i18n('Settings.AddStreetToEfficiencyCalcSize.Desc')
-		},
 		ResetBoxPositions : {
 			button: 'ResetBoxCoords',
 			buttonText: i18n('Settings.ResetBoxPositions.Button'),

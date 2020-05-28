@@ -460,14 +460,7 @@ let Productions = {
 					var d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ];
 					var width = parseInt(d['width']);
 					var height = parseInt(d['height']);
-					if(Settings.GetSetting('AddStreetToEfficiencyCalcSize'))
-					{
-						sizes[MapData[index]['cityentity_id']] = (width*height)+ (Math.min(width,height)/2);
-					}
-					else
-					{
-						sizes[MapData[index]['cityentity_id']] = width*height;
-					}
+					sizes[MapData[index]['cityentity_id']] = (width*height)+ (Math.min(width,height)/2);
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
