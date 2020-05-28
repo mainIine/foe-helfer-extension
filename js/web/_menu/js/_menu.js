@@ -119,7 +119,7 @@ let _menu = {
 
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#ant-hud').offset().top) / 55);
 
-		// hat der Spieler eine LÄnge vorgebeben?
+		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
 		if (MenuLength !== null && MenuLength < _menu.HudCount) {
@@ -701,6 +701,25 @@ let _menu = {
 
 		return btn_PlundererBG;
 	},
+
+
+	notice_Btn: () => {
+		let btn_PlundererBG = $('<div />').attr({ 'id': 'plunderer-Btn', 'data-slug': 'plunderer' }).addClass('hud-btn');
+
+		_menu.toolTippBox(i18n('Menu.Plunderer.Title'), i18n('Menu.Plunderer.Desc'), 'plunderer-Btn');
+
+		let btn_Plunderer = $('<span />');
+
+		btn_Plunderer.on('click', function () {
+			Plunderer.page = 1;
+			Plunderer.Show();
+		});
+
+		btn_PlundererBG.append(btn_Plunderer);
+
+		return btn_PlundererBG;
+	},
+
 
 	/**
 	 * Einstellungen
