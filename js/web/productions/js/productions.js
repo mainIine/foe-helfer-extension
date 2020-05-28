@@ -450,9 +450,17 @@ let Productions = {
 				rowB = [],
 				countProducts = [],
 				countAll = 0,
-				countAllMotivated = 0;
+				countAllMotivated = 0,
+				sizes = [];
 
-
+				var MapData = MainParser.CityMapData;
+				for(var index = 0; index < MapData.length; ++index)
+				{
+					var d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ];
+					var width = parseInt(d['width']);
+					var height = parseInt(d['height']);
+					sizes[MapData[index]['cityentity_id']] = width*height;
+				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
 			{
@@ -470,6 +478,13 @@ let Productions = {
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
+						
+						var size = sizes[buildings[i]['eid']];
+						var efficiency = (MotivatedProductCount/size);
+					
+						rowA.push('<td class="text-right is-number" data-number="' + size + '">' + size + '</td>');						
+						rowA.push('<td class="text-right is-number" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
+											
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
@@ -526,11 +541,17 @@ let Productions = {
 					if (groups.hasOwnProperty(i)) {
 						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
 							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type);
-
+						console.log(groups[i]);
+						var size = sizes[groups[i]['eid']];
+						var efficiency = (MotivatedProductCount/(size*groups[i]['count']));
+					
+									
 						let tds = '<tr>' +
 							'<td class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
-							'<td colspan="4" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
+							'<td colspan="3" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
+							'<td class="text-right is-number" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
+							'<td class="text-right is-number" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
 							'</tr>';
 
 						rowB.push(tds);
@@ -612,7 +633,7 @@ let Productions = {
 
 				table.push('<tr class="other-header">');
 
-				table.push('<th colspan="2">');
+				table.push('<th colspan="3">');
 
 				if (type !== 'population' && type !== 'happiness') {
 					if (Productions.ShowDaily) {
@@ -627,7 +648,7 @@ let Productions = {
 				table.push('</th>');
 
 				table.push('<th colspan="2"></th>');
-				table.push('<th colspan="2" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
+				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -637,6 +658,8 @@ let Productions = {
 				table.push('<tr class="sorter-header">');
 				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
+				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
+				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
@@ -659,9 +682,11 @@ let Productions = {
 
 				// Sortierung - Gruppiert-Header
 				table.push('<tr class="sorter-header">');
-				table.push('<th class="game-cursor text-right is-number" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.number') + '</th>');
-				table.push('<th class="ascending game-cursor" colspan="4" data-type="' + type + '-groups">Name</th>');
-				table.push('<th class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
+				table.push('<th colspan="1" class="game-cursor text-right is-number" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.number') + '</th>');
+				table.push('<th colspan="3" class="ascending game-cursor" data-type="' + type + '-groups">Name</th>');
+				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
+				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.area') + '</th>');
+				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
 				table.push('</tr>');
 
 				table.push( rowB.join('') );
