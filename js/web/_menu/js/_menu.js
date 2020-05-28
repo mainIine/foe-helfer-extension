@@ -534,7 +534,7 @@ let _menu = {
 		let btn_Inf = $('<span />');
 
 		btn_Inf.on('click', function () {
-			Infoboard.init();
+			Infoboard.Show();
 		});
 
 		btn_Info.append(btn_Inf);
@@ -894,7 +894,6 @@ let _menu = {
 	/**
 	 * FP Produzierende LGs
 	 */
-	/*
 	greatbuildings_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
@@ -912,5 +911,4 @@ let _menu = {
 
 		return btn;
 	},
-	*/
 };

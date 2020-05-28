@@ -184,6 +184,7 @@
 				'hidden-rewards',
 				'greatbuildings',
                 'alerts',
+				'inventory-tracker',
 			];
 
 			// Scripte laden (nacheinander)
