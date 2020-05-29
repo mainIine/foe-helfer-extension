@@ -580,6 +580,13 @@ const FoEproxy = (function () {
 				if (j[i]['staticResources'] !== undefined && j[i]['staticResources']['resources'] !== undefined) {
 					BuildingNamesi18n[j[i]['asset_id']]['population'] = j[i]['staticResources']['resources']['population'];
 				}
+
+				if (j[i]['requirements'] && j[i]['requirements']['street_connection_level']) {
+					BuildingNamesi18n[j[i]['asset_id']]['street_connection_level'] = j[i]['requirements']['street_connection_level'];
+				}
+				else {
+					BuildingNamesi18n[j[i]['asset_id']]['street_connection_level'] = 0;
+                }
 			}
 		}
 
