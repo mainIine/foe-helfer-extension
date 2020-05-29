@@ -26,9 +26,28 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
+// when a great building where the player has invested has been levelled
+FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
+
+    if ( data && data['responseData'] && data['responseData']['strategy_point_amount'] ) {
+        // save the number of returned FPs to show in the infoboard message
+        Info.ReturnFPPoints = data.responseData.strategy_point_amount;
+
+        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
+        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
+        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
+        if ( Info.ReturnFPMessageData ){
+            let bd = Info.OtherPlayerService_newEventgreat_building_contribution( Info.ReturnFPMessageData );
+            Info.ReturnFPMessageData = null;
+            Infoboard.PostMessage(bd);
+        }
+    }
+
+});
+
 /**
  *
- * @type {{init: Infoboard.init, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
  */
 let Infoboard = {
 
@@ -36,12 +55,23 @@ let Infoboard = {
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    DebugWebSocket: false,
 
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
+     * */
+    Init: () => {
+        FoEproxy.addRawWsHandler(data => {
+            Infoboard.HandleMessage('in', data);
+        });
+    },
+
+
+    /**
+     * Zeigt die InfoBox an
      */
-    init: () => {
+    Show: () => {
 
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
@@ -51,15 +81,6 @@ let Infoboard = {
         }
 
         Infoboard.Box();
-
-        if (Infoboard.InjectionLoaded === false) {
-            FoEproxy.addRawWsHandler(data => {
-                if ($('#BackgroundInfo').length > 0) {
-                    Infoboard.BoxContent('in', data);
-                }
-            });
-            Infoboard.InjectionLoaded = true;
-        }
     },
 
 
@@ -164,7 +185,7 @@ let Infoboard = {
      * @param dir
      * @param data
      */
-    BoxContent: (dir, data) => {
+    HandleMessage: (dir, data) => {
 
         let Msg = data[0];
 
@@ -177,6 +198,10 @@ let Infoboard = {
             t = Msg['responseData']['type'] || '',
             s = c + '_' + m + t;
 
+        if (Infoboard.DebugWebSocket) {
+            console.log(JSON.stringify(data))
+        }
+
         // Gibt es eine Funktion dafür?
         if (!Info[s]) {
             return;
@@ -188,28 +213,34 @@ let Infoboard = {
             return;
         }
 
-        let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
-            tr = $('<tr />').addClass(bd['class']),
-            msg = bd['msg'];
-
-
-        // wenn nicht angezeigt werden soll, direkt versteckeln
-        if (!status) {
-            tr.hide();
-        }
-
-        tr.append(
-            '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
-            '<td>' + msg + '</td>'
-        );
-
-        $('#BackgroundInfoTable tbody').prepend(tr);
-
-        if (Infoboard.PlayInfoSound && status) {
-            Infoboard.SoundFile.play();
-        }
+        Infoboard.PostMessage(bd);
     },
 
+    PostMessage: (bd) => {
+
+        if ($('#BackgroundInfo').length > 0) {
+            let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
+                tr = $('<tr />').addClass(bd['class']),
+                msg = bd['msg'];
+
+            // wenn nicht angezeigt werden soll, direkt versteckeln
+            if (!status) {
+                tr.hide();
+            }
+
+            tr.append(
+                '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + msg + '</td>'
+            );
+
+            $('#BackgroundInfoTable tbody').prepend(tr);
+
+            if (Infoboard.PlayInfoSound && status) {
+                Infoboard.SoundFile.play();
+            }
+        }
+
+    },
 
     /**
      * Filter für Message Type
@@ -271,7 +302,7 @@ let Info = {
      * und müssen gesammelt werden
      */
     ReturnFPPoints: 0,
-
+    ReturnFPMessageData: null,
 
     /**
      * Jmd hat in einer Auktion mehr geboten
@@ -285,9 +316,9 @@ let Info = {
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    'player': d['player']['name'],
-                    'amount': HTML.Format(d['amount']),
-                }
+                'player': d['player']['name'],
+                'amount': HTML.Format(d['amount']),
+            }
             )
         };
     },
@@ -311,9 +342,9 @@ let Info = {
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                        'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-                        'level': d['attachment']['level']
-                    }
+                    'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+                    'level': d['attachment']['level']
+                }
                 )
             }
             // Trade
@@ -336,30 +367,6 @@ let Info = {
             msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
         };
     },
-
-
-    /**
-     * FPs nach einem Level-Up notieren
-     *
-     * @param d
-     */
-	NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
-
-        for (let entry of d) {
-            // FP Typ aus dem Lager ermitteln
-            let InventoryItem = MainParser.Inventory.find(x => x.id === entry.itemId && x.itemAssetName.indexOf("forgepoint") !== -1);
-            if (null == InventoryItem) continue;
-            let factor = parseInt(InventoryItem.item.resource_package.gain),
-                amount = factor * parseInt(entry.amount);
-
-            // ... and save
-            Info.ReturnFPPoints += amount;
-        }
-
-        // Hierfür soll keine Nachricht in der Infobox angezeigt werden
-        return false;
-    },
-
 
     /**
      * Auf der GG-Map kämpft jemand
@@ -454,12 +461,10 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
+
         let newFP = Info.ReturnFPPoints;
 
-        // zurück setzen
-        Info.ReturnFPPoints = 0;
-
-        return {
+        let data = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
@@ -472,6 +477,19 @@ let Info = {
                 }
             )
         };
+
+        // If the ReturnFPPoints is 0 the BlueprintService.newReward handler has not run yet
+        // so store the data and post the message from that handler (using the stored data)
+        if ( Info.ReturnFPPoints == 0 ){
+            Info.ReturnFPMessageData = d;
+            return undefined;
+        }
+
+        // zurück setzen
+        Info.ReturnFPPoints = 0;
+        Info.ReturnFPMessageData = null;
+
+        return data;
     },
 
 
@@ -547,3 +565,4 @@ let Info = {
         return '';
     }
 };
+
