@@ -357,10 +357,6 @@ let Productions = {
 		Ret.products = Products;
 		Ret.motivatedproducts = MotivatedProducts;
 
-        if(d['id'] === '1'){
-			console.log('Products: ', Products);
-		}
-
 		if (d['state'] && d['state']['current_product'] && d['state']['current_product']['production_time']) {
 			Ret['dailyfactor'] = 86400 / d['state']['current_product']['production_time'];
 		}
@@ -452,14 +448,15 @@ let Productions = {
 				countAll = 0,
 				countAllMotivated = 0,
 				sizes = [];
-
+      
+				// Gebäudegrößen für Effizienzberechnung laden
 				var MapData = MainParser.CityMapData;
 				for(var index = 0; index < MapData.length; ++index)
 				{
 					var d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ];
 					var width = parseInt(d['width']);
 					var height = parseInt(d['height']);
-					sizes[MapData[index]['cityentity_id']] = width*height;
+					sizes[MapData[index]['cityentity_id']] = (width*height)+ (Math.min(width,height) * d['street_connection_level'] / 2);
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -541,7 +538,7 @@ let Productions = {
 					if (groups.hasOwnProperty(i)) {
 						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
 							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type);
-						console.log(groups[i]);
+
 						var size = sizes[groups[i]['eid']];
 						var efficiency = (MotivatedProductCount/(size*groups[i]['count']));
 					

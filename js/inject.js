@@ -184,6 +184,7 @@
 				'hidden-rewards',
 				'greatbuildings',
                 'alerts',
+                'notice',
 				'inventory-tracker',
 			];
 
