@@ -25,7 +25,6 @@ let Calculator = {
 	PlayOverviewInfoSound: null,
 	DetailViewIsNewer: false,
 	OpenedFromOverview: undefined,
-	OverviewListenerRegistered: false,
 	AutoOpenKR: false,
 	Rankings : undefined,
 	CityMapEntity : undefined,
@@ -884,6 +883,20 @@ let Calculator = {
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('calculator');
+
+			$('#LGOverviewBox').on('click', '#CalculatorOverviewTone', function () {
+
+				let disabled = $(this).hasClass('deactivated');
+
+				localStorage.setItem('CalculatorOverviewTone', (disabled ? '' : 'deactivated'));
+				Calculator.PlayOverviewInfoSound = !!disabled;
+
+				if (disabled === true) {
+					$('#CalculatorOverviewTone').removeClass('deactivated');
+				} else {
+					$('#CalculatorOverviewTone').addClass('deactivated');
+				}
+			});
 		}
 
 
@@ -1026,25 +1039,6 @@ let Calculator = {
 		}
 
         $('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));
-
-
-		if (!Calculator.OverviewListenerRegistered) {
-			Calculator.OverviewListenerRegistered = true;
-
-			$('#costCalculator').on('click', '#CalculatorOverviewTone', function () {
-
-				let disabled = $(this).hasClass('deactivated');
-
-				localStorage.setItem('CalculatorOverviewTone', (disabled ? '' : 'deactivated'));
-				Calculator.PlayOverviewInfoSound = !!disabled;
-
-				if (disabled === true) {
-					$('#CalculatorOverviewTone').removeClass('deactivated');
-				} else {
-					$('#CalculatorOverviewTone').addClass('deactivated');
-				}
-			});
-		}
 	},
 
 
