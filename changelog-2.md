@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+
+##### 2.4.6.2
+
+**BugFix**
+- Extension: 
+    - Debug code removed
+
+- Cost calculator:
+    - [#1118](https://github.com/dsiekiera/foe-helfer-extension/issues/1118) [#1124](https://github.com/dsiekiera/foe-helfer-extension/issues/1124) Fixed speaker button
+
+- Production overlap:
+    - two-lane roads are considered for efficiency
+
+---
+
 ##### 2.4.6.1
 
 **BugFix**
