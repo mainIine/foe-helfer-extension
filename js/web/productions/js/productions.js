@@ -357,10 +357,6 @@ let Productions = {
 		Ret.products = Products;
 		Ret.motivatedproducts = MotivatedProducts;
 
-        if(d['id'] === '1'){
-			console.log('Products: ', Products);
-		}
-
 		if (d['state'] && d['state']['current_product'] && d['state']['current_product']['production_time']) {
 			Ret['dailyfactor'] = 86400 / d['state']['current_product']['production_time'];
 		}
@@ -460,7 +456,7 @@ let Productions = {
 					var d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ];
 					var width = parseInt(d['width']);
 					var height = parseInt(d['height']);
-					sizes[MapData[index]['cityentity_id']] = (width*height)+ (Math.min(width,height)/2);
+					sizes[MapData[index]['cityentity_id']] = (width*height)+ (Math.min(width,height) * d['street_connection_level'] / 2);
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
