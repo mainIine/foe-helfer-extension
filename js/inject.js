@@ -185,6 +185,7 @@
 				'greatbuildings',
                 'alerts',
                 'notice',
+				'inventory-tracker',
 			];
 
 			// Scripte laden (nacheinander)

@@ -704,20 +704,19 @@ let _menu = {
 
 
 	notice_Btn: () => {
-		let btn_PlundererBG = $('<div />').attr({ 'id': 'plunderer-Btn', 'data-slug': 'plunderer' }).addClass('hud-btn');
+		let btn_NoticeBG = $('<div />').attr({ 'id': 'notice-Btn', 'data-slug': 'notice' }).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n('Menu.Plunderer.Title'), i18n('Menu.Plunderer.Desc'), 'plunderer-Btn');
+		_menu.toolTippBox(i18n('Menu.Notice.Title'), i18n('Menu.Notice.Desc'), 'notice-Btn');
 
-		let btn_Plunderer = $('<span />');
+		let btn_Notice = $('<span />');
 
-		btn_Plunderer.on('click', function () {
-			Plunderer.page = 1;
-			Plunderer.Show();
+		btn_Notice.on('click', function () {
+			// @Todo: initilize Box
 		});
 
-		btn_PlundererBG.append(btn_Plunderer);
+		btn_NoticeBG.append(btn_Notice);
 
-		return btn_PlundererBG;
+		// return btn_PlundererBG;
 	},
 
 
@@ -909,7 +908,6 @@ let _menu = {
 		return btn;
 	},
 
-
 	/**
 	 * FP Produzierende LGs
 	 */
@@ -928,6 +926,6 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		return btn;
+		// return btn;
 	},
 };
