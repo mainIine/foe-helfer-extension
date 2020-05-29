@@ -1,5 +1,26 @@
 ## Changelog - Extension
 
+##### 2.4.6.1
+
+**BugFix**
+- FP-Bar:
+    - [#836](https://github.com/dsiekiera/foe-helfer-extension/issues/836) [#1025](https://github.com/dsiekiera/foe-helfer-extension/issues/1025) [#1044](https://github.com/dsiekiera/foe-helfer-extension/issues/1044) [#1059](https://github.com/dsiekiera/foe-helfer-extension/issues/1059) [#1075](https://github.com/dsiekiera/foe-helfer-extension/issues/1075) [#1089](https://github.com/dsiekiera/foe-helfer-extension/issues/1089) [#1097](https://github.com/dsiekiera/foe-helfer-extension/issues/1097) [#1098](https://github.com/dsiekiera/foe-helfer-extension/issues/1098) [#1100](https://github.com/dsiekiera/foe-helfer-extension/issues/1100) [#1101](https://github.com/dsiekiera/foe-helfer-extension/issues/1101) [#1108](https://github.com/dsiekiera/foe-helfer-extension/issues/1108) [#1114](https://github.com/dsiekiera/foe-helfer-extension/issues/1114) [#1116](https://github.com/dsiekiera/foe-helfer-extension/issues/1116) [#1117](https://github.com/dsiekiera/foe-helfer-extension/issues/1117) Inno hat eine neue Technik für die Verwaltung und Übertragung der Forgepunkte integriert, wir haben das nun angepasst
+
+- Infobox:
+    - [#555](https://github.com/dsiekiera/foe-helfer-extension/issues/555) [#742](https://github.com/dsiekiera/foe-helfer-extension/issues/742) [#771](https://github.com/dsiekiera/foe-helfer-extension/issues/771) [#939](https://github.com/dsiekiera/foe-helfer-extension/issues/939) [#1080](https://github.com/dsiekiera/foe-helfer-extension/issues/1080) Falsche FP Anzahl beim leveln eines anderen LGs in der Box gefixt
+
+- Erntehelfer:
+    - [#1036](https://github.com/dsiekiera/foe-helfer-extension/issues/1036) [#1110](https://github.com/dsiekiera/foe-helfer-extension/issues/1110) Nicht plünderbares Gebäude wurde als plünderbar angezeigt
+    - [#1058](https://github.com/dsiekiera/foe-helfer-extension/issues/1058) Workaround für verschobenes Fenster außerhalb des Viewports
+
+- Statistik:
+    - [#1077](https://github.com/dsiekiera/foe-helfer-extension/issues/1077) gleiche Einheiten als Belohnung wurden nicht gruppiert
+
+- Kostenrechner:
+    - [#1118](https://github.com/dsiekiera/foe-helfer-extension/issues/1118) The speaker button in the pre-scan box was not working
+
+---
+
 ##### 2.4.6
 
 **Neu**

@@ -1,5 +1,26 @@
 ## Changelog - Extension
 
+##### 2.4.6.1
+
+**BugFix**
+- FP-Bar:
+    - [#836](https://github.com/dsiekiera/foe-helfer-extension/issues/836) [#1025](https://github.com/dsiekiera/foe-helfer-extension/issues/1025) [#1044](https://github.com/dsiekiera/foe-helfer-extension/issues/1044) [#1059](https://github.com/dsiekiera/foe-helfer-extension/issues/1059) [#1075](https://github.com/dsiekiera/foe-helfer-extension/issues/1075) [#1089](https://github.com/dsiekiera/foe-helfer-extension/issues/1089) [#1097](https://github.com/dsiekiera/foe-helfer-extension/issues/1097) [#1098](https://github.com/dsiekiera/foe-helfer-extension/issues/1098) [#1100](https://github.com/dsiekiera/foe-helfer-extension/issues/1100) [#1101](https://github.com/dsiekiera/foe-helfer-extension/issues/1101) [#1108](https://github.com/dsiekiera/foe-helfer-extension/issues/1108) [#1114](https://github.com/dsiekiera/foe-helfer-extension/issues/1114) [#1116](https://github.com/dsiekiera/foe-helfer-extension/issues/1116) [#1117](https://github.com/dsiekiera/foe-helfer-extension/issues/1117) Inno has integrated a new technology for the management and transmission of the Forge points, we have now adapted it
+    
+- Infobox:
+    - [#555](https://github.com/dsiekiera/foe-helfer-extension/issues/555) [#742](https://github.com/dsiekiera/foe-helfer-extension/issues/742) [#771](https://github.com/dsiekiera/foe-helfer-extension/issues/771) [#939](https://github.com/dsiekiera/foe-helfer-extension/issues/939) [#1080](https://github.com/dsiekiera/foe-helfer-extension/issues/1080) Wrong FP number when leveling another LG fixed in the box
+    
+- Harvest helper:
+    - [#1036](https://github.com/dsiekiera/foe-helfer-extension/issues/1036) [#1110](https://github.com/dsiekiera/foe-helfer-extension/issues/1110) Buildings that could not be pillaged were displayed as pillable
+    - [#1058](https://github.com/dsiekiera/foe-helfer-extension/issues/1058) Workaround for moved window outside of the viewport
+
+- Statistics:
+    - [#1077](https://github.com/dsiekiera/foe-helfer-extension/issues/1077) same units as a reward were not grouped
+
+- Cost calculator:
+    - [#1118](https://github.com/dsiekiera/foe-helfer-extension/issues/1118)
+
+---
+
 ##### 2.4.6
 
 **New**
