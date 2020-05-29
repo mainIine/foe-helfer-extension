@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.4.6.2
+
+**BugFix**
+- Extension: 
+    - Debug Code entfernt
+
+- Kostenrechner:
+    - [#1118](https://github.com/dsiekiera/foe-helfer-extension/issues/1118) [#1124](https://github.com/dsiekiera/foe-helfer-extension/issues/1124) Lautsprecher Button gefixt
+
+- Produktionsübersicht:
+    - zweispurige Straßen werden bei der Effizienz beachtet
+
+---
+
 ##### 2.4.6.1
 
 **BugFix**
