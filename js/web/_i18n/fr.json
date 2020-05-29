@@ -14,7 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Corps",
 		"Boxes.Alerts.Form.Create": "Créer",
 		"Boxes.Alerts.Form.CreateAlert": "Créer une notification",
-		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Créer une nouvelle notification",
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Heure",
 		"Boxes.Alerts.Form.Delete": "Supprimer",
@@ -49,8 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Envoyez une notification en cas d'activité élevée dans les champs de bataille de guilde (par exemple, 10 combats dans un même secteur en 5 secondes). Veuillez noter que cette fonction ne fonctionne que lorsque les champs de bataille de guilde sont ouverts dans le jeu !",
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Suivi du champ de bataille de guilde",
 		"Boxes.Alerts.Preferences.ComingSoon": "Prochainement...",
-		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Afficher la notification dans le jeu au lieu de la notification native du bureau lorsque la fenêtre du jeu est active.",
 		"Boxes.Alerts.Preferences.InGame.Title": "Notifications en jeu",
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Afficher le compte à rebours suivant en superposition de l'icône du menu principal.",
@@ -141,6 +141,7 @@
 		"Boxes.Gildfights.Negotiations": "Négociations",
 		"Boxes.Gildfights.Player": "Membre",
 		"Boxes.Gildfights.Title": "Activité de membre",
+		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
 		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
@@ -286,10 +287,12 @@
 		"Boxes.Productions.Happiness": "Satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
 		"Boxes.Productions.Headings.amount": "Quantité",
+		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
 		"Boxes.Productions.Headings.boost": "Augmentation",
 		"Boxes.Productions.Headings.culture": "Bâtiments culturels",
 		"Boxes.Productions.Headings.decoration": "Décorations",
 		"Boxes.Productions.Headings.earning": "Récolte",
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Bâtiments de ressources",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de ville",
@@ -298,6 +301,7 @@
 		"Boxes.Productions.Headings.production": "Bâtiments de production",
 		"Boxes.Productions.Headings.random_production": "Productions aléatoires",
 		"Boxes.Productions.Headings.residential": "Bâtiments résidentiels",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Routes",
 		"Boxes.Productions.ModeCurrent": "En cours",
 		"Boxes.Productions.ModeDaily": "Du jour",
@@ -475,6 +479,8 @@
 		"Menu.Unit.Desc": "Toutes vos armées en un coup d'œil.",
 		"Menu.Unit.Title": "Armées",
 		"Menu.Unit.Warning": "Ouvrez 1x votre \"Gestion de l'Armée\" [U]",
+		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
+		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermé en cas d'annulation ?",
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",

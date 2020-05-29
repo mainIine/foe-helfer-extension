@@ -119,7 +119,7 @@ let _menu = {
 
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#ant-hud').offset().top) / 55);
 
-		// hat der Spieler eine LÄnge vorgebeben?
+		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
 		if (MenuLength !== null && MenuLength < _menu.HudCount) {
@@ -702,6 +702,24 @@ let _menu = {
 		return btn_PlundererBG;
 	},
 
+
+	notice_Btn: () => {
+		let btn_NoticeBG = $('<div />').attr({ 'id': 'notice-Btn', 'data-slug': 'notice' }).addClass('hud-btn');
+
+		_menu.toolTippBox(i18n('Menu.Notice.Title'), i18n('Menu.Notice.Desc'), 'notice-Btn');
+
+		let btn_Notice = $('<span />');
+
+		btn_Notice.on('click', function () {
+			// @Todo: initilize Box
+		});
+
+		btn_NoticeBG.append(btn_Notice);
+
+		// return btn_PlundererBG;
+	},
+
+
 	/**
 	 * Einstellungen
 	 *
@@ -890,10 +908,10 @@ let _menu = {
 		return btn;
 	},
 
-
 	/**
 	 * FP Produzierende LGs
 	 */
+	/*
 	greatbuildings_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
@@ -909,6 +927,7 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		return btn;
+		// return btn;
 	},
+	*/
 };

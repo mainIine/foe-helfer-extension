@@ -18,12 +18,16 @@
 // nicht plünderbare Gebäude
 
 let BlackListBuildingsArray = [
-    
+	'R_MultiAge_CulturalBuilding6b', // Königliches Badehaus lvl2
+	'R_MultiAge_CulturalBuilding6c', // Königliches Badehaus lvl3
+	'R_MultiAge_CulturalBuilding6d', // Königliches Badehaus lvl4
+	'R_MultiAge_CulturalBuilding6e', // Königliches Badehaus lvl5
+	'R_MultiAge_CulturalBuilding6f', // Königliches Badehaus lvl6
 ];
 
 let BlackListBuildingsString = [
 	'R_MultiAge_SummerBonus19', //Großer Leuchtturm
-	'R_MultiAge_Battlegrounds1' //Ehrenstatue
+	'R_MultiAge_Battlegrounds1', //Ehrenstatue
 ];
 
 // grau darzustellende Produktionen

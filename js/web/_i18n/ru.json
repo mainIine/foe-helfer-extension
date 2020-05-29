@@ -14,7 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
 		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
 		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
 		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
@@ -49,8 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
@@ -141,6 +141,7 @@
 		"Boxes.Gildfights.Negotiations": "Переговоры",
 		"Boxes.Gildfights.Player": "Игрок",
 		"Boxes.Gildfights.Title": "Обзор игрока",
+		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
@@ -234,7 +235,7 @@
 		"Boxes.OwnpartCalculator.CopyValues": "Копировать значения",
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
-		"Boxes.OwnpartCalculator.Ext": "Расш.",
+		"Boxes.OwnpartCalculator.Ext": "Внеш.",
 		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.IndividualName": "Имя ВС",
 		"Boxes.OwnpartCalculator.Levels": "уровни",
@@ -286,10 +287,12 @@
 		"Boxes.Productions.Happiness": "Уровень счастья",
 		"Boxes.Productions.Headings.all": "Все",
 		"Boxes.Productions.Headings.amount": "Количество",
+		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
 		"Boxes.Productions.Headings.boost": "Расширения",
 		"Boxes.Productions.Headings.culture": "Общественные постройки",
 		"Boxes.Productions.Headings.decoration": "Декор",
 		"Boxes.Productions.Headings.earning": "Прибыль",
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Промышленные постройки",
 		"Boxes.Productions.Headings.greatbuilding": "Великие Строения",
 		"Boxes.Productions.Headings.main_building": "Ратуша",
@@ -298,6 +301,7 @@
 		"Boxes.Productions.Headings.production": "Производственные постройки",
 		"Boxes.Productions.Headings.random_production": "Случайные производственные здания",
 		"Boxes.Productions.Headings.residential": "Жилые дома",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Дороги",
 		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
@@ -475,6 +479,8 @@
 		"Menu.Unit.Desc": "Все ваши воины в одном месте",
 		"Menu.Unit.Title": "Армия",
 		"Menu.Unit.Warning": "Откройте \"Управление армией\" <br>Клавиша \"U\"",
+		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
+		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Нужно ли открывать помощник переговоров автоматически и закрывать, когда переговоры завершены или отменены?",
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",
