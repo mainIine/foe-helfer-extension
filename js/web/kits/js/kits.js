@@ -80,7 +80,7 @@ let Kits = {
 
 
 	ReadSets: ()=> {
-		let inv = MainParser.Inventory,
+		let inv = Kits.GetInvententoryArray(),
 			bs = Kits.BuildingSets,
 			bsk = Kits.BuildingSelectionKits;
 
@@ -175,7 +175,7 @@ let Kits = {
 
 
 	ReadSelectionKits: ()=> {
-		let inv = MainParser.Inventory,
+		let inv = Kits.GetInvententoryArray(),
 			bsk = Kits.BuildingSelectionKits;
 
 		// Sets durchsteppen
@@ -290,7 +290,7 @@ let Kits = {
 	 * @constructor
 	 */
 	ScanInvetory: ()=> {
-		let inv = MainParser.Inventory;
+		let inv = Kits.GetInvententoryArray();
 
 		for(let i in inv)
 		{
@@ -478,6 +478,23 @@ let Kits = {
 	GetTabContent: ()=> {
 		return Kits.TabsContent.join('');
 	},
+
+
+	/**
+	 * Liefert MainParser.Inventory als Array zurück
+	 * 
+	 * @returns{[]}
+	 * */
+	GetInvententoryArray: () => {
+		let Ret = [];
+		for (let i in MainParser.Inventory) {
+			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
+
+			Ret.push(MainParser.Inventory[i]);
+		}
+
+		return Ret;
+    },
 };
 
 // Updatestufen der Eventgebäude
