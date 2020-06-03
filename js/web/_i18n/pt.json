@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Faz sugestões para negociações",
 		"Menu.Negotiation.Title": "Ajudante de negociações",
 		"Menu.Negotiation.Warning": "Disabled: Começa uma negociação primeiro!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Abre primeiro a colónia!<br></em>Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Começa primeiro uma colónia e relança o jogo (F5)",

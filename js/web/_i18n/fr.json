@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Vue d'ensemble des ressources nécessaires.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Désactivé : Allez d'abord dans la Colonie !",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé : Démarrez une Colonie et rechargez le jeu [F5]",

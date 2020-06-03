@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Müzakereler için kesin önerilerde bulunur",
 		"Menu.Negotiation.Title": "Müzakere Asistanı",
 		"Menu.Negotiation.Warning": "Kapalı: Önce yeni bir Müzakere başlat!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Gerekli kaynaklara genel bakış",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Kapalı: Önce Kültürel Yerleşime git!<br></em>Gerekli kaynakları görmek için",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Kapalı: Önce Kültürel Yerleşim başlat sonra Oyunu (F5) ile yenile",

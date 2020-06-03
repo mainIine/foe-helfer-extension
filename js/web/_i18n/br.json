@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Faz sugestões para negociações",
 		"Menu.Negotiation.Title": "Auxiliar de negociações",
 		"Menu.Negotiation.Warning": "Desabilitado: Começe uma negociação primeiro!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Desabilitado: Abra primeiro o Acampamento!<br></em>Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Desabilitado: Inicie primeiro um Acampamento e atualize a página (F5)",

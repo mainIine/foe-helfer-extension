@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Face propuneri precise pentru negocieri",
 		"Menu.Negotiation.Title": "Ajutor pentru negocieri",
 		"Menu.Negotiation.Warning": "Dezactivat: Începe mai întâi o negociere!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Prezentarea generală a resurselor necesare",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Dezactivat: Deschide mai întâi Așezarea culturală!<br></em>Prezentarea generală a resurselor necesare",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Dezactivat: Începe mai întâi construcția unei așezări culturale și reîncarcă pagina (F5)",
