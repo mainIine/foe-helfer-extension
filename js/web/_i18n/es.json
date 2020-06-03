@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Te da sugerencias precisas para las negociaciones",
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
 		"Menu.Negotiation.Warning": "Deshabilitado: Comienza primero una nueva negociación!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Resumen de los recursos necesarios",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deshabilitado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deshabilitado: Comienza primero un asentamiento cultural y vuelva a cargar el juego (F5)",

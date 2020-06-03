@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Предлагает товары для переговоров",
 		"Menu.Negotiation.Title": "Помощник переговоров",
 		"Menu.Negotiation.Warning": "Отключено: Для влючения начните переговоры!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Обзор необходимых ресурсов",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Отключено: для включения посетите поселение!<br></em>Обзор необходимых ресурсов",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Отключено: Начните поселение и обновите игру (F5)",

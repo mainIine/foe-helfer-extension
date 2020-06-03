@@ -458,6 +458,8 @@
 		"Menu.Negotiation.Desc": "Pomaga dobrać surowce w negocjacjach",
 		"Menu.Negotiation.Title": "Asystent negocjacji",
 		"Menu.Negotiation.Warning": "Niedostępne: Rozpocznij negocjację!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",
