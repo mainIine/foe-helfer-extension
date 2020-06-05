@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Terminat",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Procent investiții:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATENȚIE! Închide nivelul la CL!",
 		"Boxes.Calculator.LGNotConnected": "Clădirea nu este conectată la stradă!",
 		"Boxes.Calculator.LGNotOpen": "Nivelul nu este deblocat!",
@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Depozit",
 		"Boxes.OwnpartCalculator.Done": "Depus",
 		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Denumire CL",
 		"Boxes.OwnpartCalculator.Levels": "Toate locurile",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total PF nivel",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorațiuni",
 		"Boxes.Productions.Headings.earning": "Recoltare",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Clădiri de bunuri",
 		"Boxes.Productions.Headings.greatbuilding": "Clădiri legendare",
 		"Boxes.Productions.Headings.main_building": "Primărie",

@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Versato",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATTENZIONE! Il GE avanzerà di livello!",
 		"Boxes.Calculator.LGNotConnected": "L'edificio non è collegato ad una strada",
 		"Boxes.Calculator.LGNotOpen": "Il livello successivo non è attualmente sbloccato",
@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Deposito",
 		"Boxes.OwnpartCalculator.Done": "Versato",
 		"Boxes.OwnpartCalculator.Ext": "Esterni",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "nome GE individuale",
 		"Boxes.OwnpartCalculator.Levels": "Livelli",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PF totali del GE",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorazioni",
 		"Boxes.Productions.Headings.earning": "Guadagno",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Edifici di beni",
 		"Boxes.Productions.Headings.greatbuilding": "Grandi Edifici",
 		"Boxes.Productions.Headings.main_building": "Municipio",

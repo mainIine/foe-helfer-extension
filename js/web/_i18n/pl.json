@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Gotowe",
 		"Boxes.Calculator.FP": "PR",
 		"Boxes.Calculator.FriendlyInvestment": "Pomoc w budowie:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/",
 		"Boxes.Calculator.LevelWarning": "UWAGA! Perła zostanie zamknięta!",
 		"Boxes.Calculator.LGNotConnected": "Perła nie jest podłączona do drogi",
 		"Boxes.Calculator.LGNotOpen": "Kolejny poziom perły nie jest odblokowany",
@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Wpłata",
 		"Boxes.OwnpartCalculator.Done": "Wpłacone",
 		"Boxes.OwnpartCalculator.Ext": "Wymiana",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "individual GB name",
 		"Boxes.OwnpartCalculator.Levels": "zamknąć",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PR na poziom:",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekoracje",
 		"Boxes.Productions.Headings.earning": "Zbiory",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Budynki towarowe",
 		"Boxes.Productions.Headings.greatbuilding": "Perły architektury",
 		"Boxes.Productions.Headings.main_building": "Ratusz",
