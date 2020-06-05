@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Terminée",
 		"Boxes.Calculator.FP": "PF",
 		"Boxes.Calculator.FriendlyInvestment": "Taux amis :",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/",
 		"Boxes.Calculator.LevelWarning": "ATTENTION: faire passer le GM !",
 		"Boxes.Calculator.LGNotConnected": "Ce GM n'est pas relié à une route.",
 		"Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "À poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
 		"Boxes.OwnpartCalculator.Ext": "Ext.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/"
 		"Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
 		"Boxes.OwnpartCalculator.Levels": "Niveaux",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total PF ",
