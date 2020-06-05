@@ -475,7 +475,7 @@
 		"Menu.Settings.Desc": "Ecco alcune piccole impostazioni",
 		"Menu.Settings.Title": "Impostazioni",
 		"Menu.Stats.Desc": "Displays game stats on goods, units, rewards, GBG", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
+		"Menu.Stats.Title": "Statistica",
 		"Menu.Technologies.Desc": "Calcola il costo per la ricerca",
 		"Menu.Technologies.Title": "Tecnologie",
 		"Menu.Technologies.Warning": "Disabilitato: apri prima il menu di ricerca!",
@@ -483,7 +483,7 @@
 		"Menu.Unit.Title": "Esercito",
 		"Menu.Unit.Warning": "Apri la tua 1x \"Organizzazione Army \"<br> pulsante \"U\"",
 		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
+		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficienza: strade", 
 		"Settings.AutomaticNegotiation.Desc": "L'assistente deve aprirsi automaticamente con una negoziazione e chiudersi quando viene completata/annullata?",
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
@@ -507,14 +507,14 @@
 		"Settings.SendInvestigations.Title": "Investimenti PF",
 		"Settings.SendTavernInfo.Desc": "Le attività di motivazione devono essere trasferite quando vengono chiamati gli eventi?",
 		"Settings.SendTavernInfo.Title": "Attività di motivazione",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
-		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
+		"Settings.ShowAllPlayerAttDeff.Desc": "Attacco e difesa stimati verranno mostrati ogni volta che visiti un giocatore",
+		"Settings.ShowAllPlayerAttDeff.Title": "Mostra attacco e difesa per tutti i giocatoris",
+		"Settings.ShowInvestments.Desc": "Mostra somme dei dati di investimento FP al momento dell'inserimento 'Municipio'> 'Notizie'> 'Grandi edifici' tab.",
+		"Settings.ShowInvestments.Title": "Mostra le somme di investimento FP", 
 		"Settings.ShowNeighborsGoods.Desc": "Durante la visita, mostra ciò che è attualmente prodotto",
 		"Settings.ShowNeighborsGoods.Title": "Raccolta del vicinato",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Mostra la 'Calcolatrice GB' anche per grandi edifici di altri giocatori", 
+		"Settings.ShowOwnPartOnAllGBs.Title": "Mostra 'Calcolatrice GE' per tutti i GE",
 		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
 		"Settings.Version.Desc": "Versione estensione di Chrome",
