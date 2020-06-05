@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Hecho",
 		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Inversión amistosa:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "ATENCIÓN: sube el nivel del gran edificio!",
 		"Boxes.Calculator.LGNotConnected": "El edificio no esta conectado a una carretera",
 		"Boxes.Calculator.LGNotOpen": "El próximo nivel no esta disponible todavía",
@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Ingresar",
 		"Boxes.OwnpartCalculator.Done": "Listo",
 		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/" //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Nombre de gran edificio individual",
 		"Boxes.OwnpartCalculator.Levels": "Aumentar nivel",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Gran edificio FP en total",
