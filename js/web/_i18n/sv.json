@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekoration",
 		"Boxes.Productions.Headings.earning": "Inkomst",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Varubyggnader",
 		"Boxes.Productions.Headings.greatbuilding": "Mäktiga byggnader",
 		"Boxes.Productions.Headings.main_building": "Stadshus",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Gör beräknade förslag till forhandling",
 		"Menu.Negotiation.Title": "Förhandlingshjälp",
 		"Menu.Negotiation.Warning": "Inaktiverat: Starta en förhandling först!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Översikt av de resurser du behöver",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Inaktiverat: kolla i bossättningen först!<br></em>Översikt av de resurser du behöver",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Inaktiverat: Starta en bosättning och ladda om spelet (F5)",

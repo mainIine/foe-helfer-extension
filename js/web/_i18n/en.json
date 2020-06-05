@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "FPs",
 		"Boxes.OwnpartCalculator.Done": "Done",
 		"Boxes.OwnpartCalculator.Ext": "Ext",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/"
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "individual GB name",
 		"Boxes.OwnpartCalculator.Levels": "levels",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total FPs Required",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorations",
 		"Boxes.Productions.Headings.earning": "Earning",
 		"Boxes.Productions.Headings.efficiency": "Efficiency",
+		"Boxes.Productions.Headings.Era": "Era",
 		"Boxes.Productions.Headings.goods": "Goods Buildings",
 		"Boxes.Productions.Headings.greatbuilding": "Great Buildings",
 		"Boxes.Productions.Headings.main_building": "Town Hall",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Select resources for successful negotiations.",
 		"Menu.Negotiation.Title": "Negotiation Helper",
 		"Menu.Negotiation.Warning": "Disabled: Start a negotiation first!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Displays the resources required (by item) for your Settlement.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement first!<br></em>Displays the resources required (by item) for your Settlement.",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement and reload the game (F5)",

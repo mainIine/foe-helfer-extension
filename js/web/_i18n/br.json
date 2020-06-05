@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Depósito",
 		"Boxes.OwnpartCalculator.Done": "Concluído",
 		"Boxes.OwnpartCalculator.Ext": "Ext",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/"
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "Nome Individual",
 		"Boxes.OwnpartCalculator.Levels": "níveis",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total de PFs do GE",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorações",
 		"Boxes.Productions.Headings.earning": "Resultados",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Edifícios de mercadorias",
 		"Boxes.Productions.Headings.greatbuilding": "Grande Edifícios",
 		"Boxes.Productions.Headings.main_building": "Prefeitura",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Faz sugestões para negociações",
 		"Menu.Negotiation.Title": "Auxiliar de negociações",
 		"Menu.Negotiation.Warning": "Desabilitado: Começe uma negociação primeiro!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Desabilitado: Abra primeiro o Acampamento!<br></em>Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Desabilitado: Inicie primeiro um Acampamento e atualize a página (F5)",

@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "À poser",
 		"Boxes.OwnpartCalculator.Done": "Fait",
 		"Boxes.OwnpartCalculator.Ext": "Ext.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/"
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
 		"Boxes.OwnpartCalculator.Levels": "Niveaux",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Total PF ",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Décorations",
 		"Boxes.Productions.Headings.earning": "Récolte",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Bâtiments de marchandises",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de ville",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Vue d'ensemble des ressources nécessaires.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Désactivé : Allez d'abord dans la Colonie !",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé : Démarrez une Colonie et rechargez le jeu [F5]",

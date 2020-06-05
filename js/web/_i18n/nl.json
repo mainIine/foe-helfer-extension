@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Zelf te storten",
 		"Boxes.OwnpartCalculator.Done": "Gestort",
 		"Boxes.OwnpartCalculator.Ext": "Extern",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/" //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Naam GG individueel",
 		"Boxes.OwnpartCalculator.Levels": "Levels",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Totaal aantal FP",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decoraties",
 		"Boxes.Productions.Headings.earning": "Voltooiing productie",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Goederengebouwen",
 		"Boxes.Productions.Headings.greatbuilding": "Grootse gebouwen",
 		"Boxes.Productions.Headings.main_building": "Stadhuis",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Geeft nauwkeurige voorstellen bij onderhandelingen",
 		"Menu.Negotiation.Title": "Onderhandelingshulp",
 		"Menu.Negotiation.Warning": "Gedeactiveerd: Start eerst een onderhandeling!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Overzicht van de benodigde goederen",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Bezoek eerst je nederzetting!<br></em>Overzicht van de benodigde grondstoffen",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Begin een nederzetting en herlaad het spel (F5)",

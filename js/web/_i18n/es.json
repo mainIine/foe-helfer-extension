@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Ingresar",
 		"Boxes.OwnpartCalculator.Done": "Listo",
 		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/" //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Nombre de gran edificio individual",
 		"Boxes.OwnpartCalculator.Levels": "Aumentar nivel",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Gran edificio FP en total",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorativos",
 		"Boxes.Productions.Headings.earning": "Recogida disponible a las",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Edificios de bienes",
 		"Boxes.Productions.Headings.greatbuilding": "Grandes Edificio",
 		"Boxes.Productions.Headings.main_building": "Ayuntamiento",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Te da sugerencias precisas para las negociaciones",
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
 		"Menu.Negotiation.Warning": "Deshabilitado: Comienza primero una nueva negociación!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Resumen de los recursos necesarios",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deshabilitado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deshabilitado: Comienza primero un asentamiento cultural y vuelva a cargar el juego (F5)",
