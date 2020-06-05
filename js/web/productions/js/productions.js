@@ -117,6 +117,7 @@ let Productions = {
 					d[i] = Productions.prepareMainBuilding(d[i]);
 				}
 
+
 				// jede einzelne Produktart holen
 				let building = Productions.readType(d[i]);
 
@@ -168,6 +169,10 @@ let Productions = {
 		Productions.Boosts['supplies'] += ProdBonus;
 
 		for (let i in Productions.BuildingsAll) {
+			if (!Productions.BuildingsAll.hasOwnProperty(i)) {
+				break;
+			}
+
 			let building = Productions.BuildingsAll[i];
 
 			if (building['type'] === 'residential' || building['type'] === 'production') {
@@ -205,6 +210,7 @@ let Productions = {
 							Productions.BuildingsProductsGroups[x][ni] = [];
 							Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
 							Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
+							Productions.BuildingsProductsGroups[x][ni]['era'] = building['era'];
 							Productions.BuildingsProductsGroups[x][ni]['dailyfactor'] = building['dailyfactor'];
 							Productions.BuildingsProductsGroups[x][ni]['products'] = Productions.GetDaily(parseInt(building['products'][x]), building['dailyfactor'], x);
 							Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building['dailyfactor'], x);
@@ -224,6 +230,7 @@ let Productions = {
 						Productions.BuildingsProducts['packaging'][mId] = [];
 						Productions.BuildingsProducts['packaging'][mId]['at'] = building['at'];
 						Productions.BuildingsProducts['packaging'][mId]['id'] = building['id'];
+						Productions.BuildingsProducts['packaging'][mId]['era'] = building['era'];
 						Productions.BuildingsProducts['packaging'][mId]['name'] = building['name'];
 						Productions.BuildingsProducts['packaging'][mId]['type'] = building['type'];
 						Productions.BuildingsProducts['packaging'][mId]['dailyfactor'] = building['dailyfactor'];
@@ -250,20 +257,34 @@ let Productions = {
 	readType: (d) => {
 		let Products = [],
 			CurrentResources = undefined,
-			EntityID = d['cityentity_id'];
+			EntityID = d['cityentity_id'],
+			BuildingData = BuildingNamesi18n[EntityID],
+			AdditionalResources = BuildingData['additionalResources'],
+			era;
 
-		let BuildingData = BuildingNamesi18n[EntityID];
+		// Zeitalter suchen
+		if(d['level'] !== undefined){
+			era = i18n('Eras.' + Technologies.Eras[ Technologies.EraNames[ d['level'] ] ]);
 
-		let AdditionalResources = BuildingData['additionalResources'];
+		} else {
+			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
+				testEra = regExString.exec(d['cityentity_id']);
+
+			if (testEra && testEra.length > 1)
+			{
+				era = i18n('Eras.' + Technologies.Eras[ testEra[1] ]);
+			}
+		}
 
 		let Ret = {
 			name: BuildingData['name'],
 			id: d['id'],
 			eid: d['cityentity_id'],
 			type: d['type'],
+			era: era,
 			at: (new Date().getTime()) / 1000,
 			in: 0
-		}
+		};
 
 		if (d.state !== undefined && d.state.current_product !== undefined && d.state.current_product.product !== undefined) {
 			if (d.state.current_product.product.resources !== undefined) {
@@ -450,13 +471,14 @@ let Productions = {
 				sizes = [];
       
 				// Gebäudegrößen für Effizienzberechnung laden
-				var MapData = MainParser.CityMapData;
-				for(var index = 0; index < MapData.length; ++index)
+				let MapData = MainParser.CityMapData;
+				for(let index = 0; index < MapData.length; ++index)
 				{
-					var d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ];
-					var width = parseInt(d['width']);
-					var height = parseInt(d['height']);
-					sizes[MapData[index]['cityentity_id']] = (width*height)+ (Math.min(width,height) * d['street_connection_level'] / 2);
+					let d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ],
+					 	width = parseInt(d['width']),
+					 	height = parseInt(d['height']);
+
+					sizes[MapData[index]['cityentity_id']] = (width*height) + (Math.min(width, height) * d['street_connection_level'] / 2);
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -476,12 +498,13 @@ let Productions = {
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
-						var size = sizes[buildings[i]['eid']];
-						var efficiency = (MotivatedProductCount/size);
+						let size = sizes[buildings[i]['eid']],
+							efficiency = (MotivatedProductCount/size);
 					
-						rowA.push('<td class="text-right is-number" data-number="' + size + '">' + size + '</td>');						
-						rowA.push('<td class="text-right is-number" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
-											
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '">' + size + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
+						rowA.push('<td class="addon-info" data-text="' + buildings[i]['era'].cleanup() + '">' + buildings[i]['era'] + '</td>');
+
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
@@ -489,6 +512,7 @@ let Productions = {
 						else {
 							rowA.push('<td><td>');
 						}
+
 						rowA.push('<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>');
 						rowA.push('</tr>');
 					}
@@ -536,19 +560,19 @@ let Productions = {
 
 				for (let i in groups) {
 					if (groups.hasOwnProperty(i)) {
-						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
-							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type);
 
-						var size = sizes[groups[i]['eid']];
-						var efficiency = (MotivatedProductCount/(size*groups[i]['count']));
-					
+						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
+							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type),
+							size = sizes[groups[i]['eid']],
+							efficiency = (MotivatedProductCount/(size*groups[i]['count']));
 									
 						let tds = '<tr>' +
 							'<td class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
 							'<td colspan="3" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
-							'<td class="text-right is-number" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
-							'<td class="text-right is-number" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
+							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
+							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
+							'<td class="addon-info" data-text="' + groups[i]['era'].cleanup() + '">' + groups[i]['era'] + '</td>'+
 							'</tr>';
 
 						rowB.push(tds);
@@ -657,6 +681,7 @@ let Productions = {
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
+				table.push('<th class="game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
@@ -727,6 +752,8 @@ let Productions = {
 				}
 
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
+
+				rowC.push('<td>' + building[i]['era'] + '</td>');
 
 				if (ShowTime) {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
@@ -886,7 +913,7 @@ let Productions = {
 			{
 				if(!$('#parent-' + matches[0]).length)
 				{
-					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="4">' + Productions.BuildingTypes[matches[0]] + '</th></tr></tbody>').appendTo('.all-mode');
+					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="5">' + Productions.BuildingTypes[matches[0]] + '</th></tr></tbody>').appendTo('.all-mode');
 				}
 
 				$(this).appendTo( $('#parent-' + matches[0]) );

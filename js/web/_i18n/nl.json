@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Gereed",
 		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Investeren met:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "OPGELET: Dit zal het GG levelen!",
 		"Boxes.Calculator.LGNotConnected": "Het groots gebouw is niet verbonden met een weg",
 		"Boxes.Calculator.LGNotOpen": "Het volgende niveau is momenteel niet ontgrendeld",
@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Zelf te storten",
 		"Boxes.OwnpartCalculator.Done": "Gestort",
 		"Boxes.OwnpartCalculator.Ext": "Extern",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Naam GG individueel",
 		"Boxes.OwnpartCalculator.Levels": "Levels",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Totaal aantal FP",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decoraties",
 		"Boxes.Productions.Headings.earning": "Voltooiing productie",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Goederengebouwen",
 		"Boxes.Productions.Headings.greatbuilding": "Grootse gebouwen",
 		"Boxes.Productions.Headings.main_building": "Stadhuis",
