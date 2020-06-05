@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Wpłata",
 		"Boxes.OwnpartCalculator.Done": "Wpłacone",
 		"Boxes.OwnpartCalculator.Ext": "Wymiana",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/"
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "individual GB name",
 		"Boxes.OwnpartCalculator.Levels": "zamknąć",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PR na poziom:",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekoracje",
 		"Boxes.Productions.Headings.earning": "Zbiory",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Budynki towarowe",
 		"Boxes.Productions.Headings.greatbuilding": "Perły architektury",
 		"Boxes.Productions.Headings.main_building": "Ratusz",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Pomaga dobrać surowce w negocjacjach",
 		"Menu.Negotiation.Title": "Asystent negocjacji",
 		"Menu.Negotiation.Warning": "Niedostępne: Rozpocznij negocjację!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",

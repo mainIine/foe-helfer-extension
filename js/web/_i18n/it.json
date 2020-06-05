@@ -236,7 +236,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Deposito",
 		"Boxes.OwnpartCalculator.Done": "Versato",
 		"Boxes.OwnpartCalculator.Ext": "Esterni",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/" //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "nome GE individuale",
 		"Boxes.OwnpartCalculator.Levels": "Livelli",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PF totali del GE",
@@ -293,6 +293,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorazioni",
 		"Boxes.Productions.Headings.earning": "Guadagno",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Edifici di beni",
 		"Boxes.Productions.Headings.greatbuilding": "Grandi Edifici",
 		"Boxes.Productions.Headings.main_building": "Municipio",
@@ -458,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Fare proposte precise per le negoziazioni",
 		"Menu.Negotiation.Title": "Aiuto Negoziazione",
 		"Menu.Negotiation.Warning": "Disabilitato: avvia prima una negoziazione!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabilitato: controlla prima l'avamposto!</em><br> Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabilitato: avvia un avamposto e ricarica il gioco (F5)",
