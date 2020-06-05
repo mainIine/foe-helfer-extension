@@ -144,6 +144,7 @@ let Productions = {
 				products: [],
 				motivatedproducts: [],
 				at: (new Date().getTime()) / 1000,
+				era: 0,
 				in: 0
 			}
 			building.products['happiness'] = HappinessBonus;
@@ -264,7 +265,7 @@ let Productions = {
 
 		// Zeitalter suchen
 		if(d['level'] !== undefined){
-			era = i18n('Eras.' + Technologies.Eras[ Technologies.EraNames[ d['level'] ] ]);
+			era = d['level'];
 
 		} else {
 			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
@@ -272,7 +273,7 @@ let Productions = {
 
 			if (testEra && testEra.length > 1)
 			{
-				era = i18n('Eras.' + Technologies.Eras[ testEra[1] ]);
+				era = Technologies.Eras[testEra[1]];
 			}
 		}
 
@@ -503,7 +504,7 @@ let Productions = {
 					
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
-						rowA.push('<td class="addon-info" data-text="' + buildings[i]['era'].cleanup() + '">' + buildings[i]['era'] + '</td>');
+						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
@@ -572,7 +573,7 @@ let Productions = {
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
 							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
-							'<td class="addon-info" data-text="' + groups[i]['era'].cleanup() + '">' + groups[i]['era'] + '</td>'+
+							'<td class="addon-info is-number" data-number="' + groups[i]['era'] + '">' + i18n('Eras.' + groups[i]['era']) + '</td>'+
 							'</tr>';
 
 						rowB.push(tds);
@@ -681,7 +682,7 @@ let Productions = {
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('<th class="game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
+				table.push('<th class="is-number game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
