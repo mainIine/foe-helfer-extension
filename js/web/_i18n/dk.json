@@ -479,8 +479,6 @@
         "Menu.Unit.Desc": "Se oversigten over hele din hær.",
         "Menu.Unit.Title": "Hæren",
         "Menu.Unit.Warning": "Åbn først din \"Hærstyring\"<br>Tryk på \"U\"",
-        "Settings.AddStreetToEfficiencyCalcSize.Desc": "Indberegn veje i efficiensen. Hertil bliver halvdelen af længden af den korteste side til området lagt til.",
-        "Settings.AddStreetToEfficiencyCalcSize.Title": "Efficienz: Veje",
         "Settings.AutomaticNegotiation.Desc": "Skal forhandlingsassistenten automatisk åbnes ved en ny forhandling og lukkes ved afslutning?",
         "Settings.AutomaticNegotiation.Title": "Forhandlingsassistent",
         "Settings.ChangeLanguage.Desc": "Hvilket sprog skal bruges i stedet for det automatisk genkendte?",

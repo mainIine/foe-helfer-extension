@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Všechny vaše armády na jednom místě",
 		"Menu.Unit.Title": "Armády",
 		"Menu.Unit.Warning": "Otevřete vaši \"Army Organization\" <br>Button \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Má být pomocník otvírán automaticky po zahájení vyjednávání a poté automaticky zavírán?",
 		"Settings.AutomaticNegotiation.Title": "Pomocník s vyjednáváním",
 		"Settings.ChangeLanguage.Desc": "Který jazyk, kromě toho poznaného, má být zvolen?",

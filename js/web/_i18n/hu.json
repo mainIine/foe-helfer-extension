@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Az összes sereg",
 		"Menu.Unit.Title": "Sereg",
 		"Menu.Unit.Warning": "Legalább 1x nyisd meg a Hadsereg organizátort",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Az asszisztens automatikusan megnyíljon tárgyalás indításakor, és bezáruljon, ha visszavonják?",
 		"Settings.AutomaticNegotiation.Title": "Tárgyalási segítő",
 		"Settings.ChangeLanguage.Desc": "Melyik nyelv legyen használva a meglévő helyett?",

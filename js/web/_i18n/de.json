@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Alle deine Armeen auf einen Blick",
 		"Menu.Unit.Title": "Armeen",
 		"Menu.Unit.Warning": "Öffne erst 1x deine \"Armee-Organisation\"<br>Taste \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Straßen in Effizienz mit einberechnen. Hierzu wird die Hälfte der Länge der kürzesten Seite zur Fläche addiert.",
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Effizienz: Straßen",
 		"Settings.AutomaticNegotiation.Desc": "Soll der Assistent automatisch mit einer Verhandlung geöffnet und bei Abbruch geschlossen werden?",
 		"Settings.AutomaticNegotiation.Title": "Verhandlungsassistent",
 		"Settings.ChangeLanguage.Desc": "Welche Sprache, statt der erkannten, soll genutzt werden?",

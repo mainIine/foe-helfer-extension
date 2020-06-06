@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Al jouw eenheden in een oogopslag",
 		"Menu.Unit.Title": "Eenhedenoverzicht",
 		"Menu.Unit.Warning": "Druk eerst 1x op je \"Legerbeheer\" <br>knop \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Moet de onderhandelingshulp automatisch openen tijdens het onderhandelen en sluiten bij het annuleren?",
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",

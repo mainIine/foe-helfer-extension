@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Tutti i tuoi eserciti a colpo d'occhio",
 		"Menu.Unit.Title": "Esercito",
 		"Menu.Unit.Warning": "Apri la tua 1x \"Organizzazione Army \"<br> pulsante \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficienza: strade",
 		"Settings.AutomaticNegotiation.Desc": "L'assistente deve aprirsi automaticamente con una negoziazione e chiudersi quando viene completata/annullata?",
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
