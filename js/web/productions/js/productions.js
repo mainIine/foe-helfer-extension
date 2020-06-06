@@ -771,7 +771,7 @@ let Productions = {
 
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
 
-				rowC.push('<td>' + building[i]['era'] + '</td>');
+				rowC.push('<td>' + i18n('Eras.' + building[i]['era']) + '</td>');
 
 				if (ShowTime) {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
