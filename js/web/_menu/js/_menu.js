@@ -928,5 +928,5 @@ let _menu = {
 
 		return btn;
 	},
-	
+
 };

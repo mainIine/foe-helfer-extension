@@ -697,22 +697,52 @@ p {
 
 
 #fp-bar {
-	position: fixed;
-	top: 6px;
-	left: calc(50vW + 106px);
-	width: calc(50vw - 106px - 405px);
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	color: #F3D6A0;
-	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
-	user-select: text;
-	white-space: nowrap;
+	position: fixed;
+	top: 2px;
+	left: 416px;
+	width: calc(100% - 818px);
 }
 
-#fp-bar strong {
-	color: #FFB539;
+.fp-storage,
+.buyable-fp {
+	width: 89px;
+	height: 28px;
+	margin: 1px 1px 0 0;
 }
+
+.fp-storage {
+	background: url('../images/fp-bar-storage-bg.png') 0 0 no-repeat;
+	float: right;
+}
+.buyable-fp {
+	background: url('../images/fp-bar-buyable-bg.png') 0 0 no-repeat;
+	float: right;
+}
+
+.fp-storage div, .buyable-fp div {
+	margin: 5px 0 0 30px;
+}
+
+#fp-bar.medium-screen {
+}
+#fp-bar.medium-screen .buyable-fp {
+	float: left;
+}
+
+
+#fp-bar.small-screen {
+	top: 36px;
+	left: 2px;
+}
+
+#fp-bar.small-screen .fp-storage, #fp-bar.small-screen .buyable-fp {
+	float: left;
+}
+
 
 /*******************************************************************************/
 
