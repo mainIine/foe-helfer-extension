@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Всего",
 		"Boxes.Plunderer.visited": "Посетили",
 		"Boxes.Plunderer.visitTitle": "Когда было последнее посещение игрока вами",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Уровень счастья",

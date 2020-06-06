@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Totalt",
 		"Boxes.Plunderer.visited": "Besökt",
 		"Boxes.Plunderer.visitTitle": "När du sist du besökte denna spelare",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Angränsande byggnad",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Glädje",
