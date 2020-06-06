@@ -187,7 +187,7 @@
         "Boxes.LGOverviewBox.Building": "Bygning",
         "Boxes.LGOverviewBox.Level": "Niveau",
         "Boxes.LGOverviewBox.NothingToGet": "Hos <strong>__player__</strong> er der intet at hente",
-        "Boxes.LGOverviewBox.PayedTotal": "Betalt / I alt",
+        "Boxes.LGOverviewBox.PaidTotal": "Betalt / I alt",
         "Boxes.LGOverviewBox.Profit": "Gevinst",
         "Boxes.LGOverviewBox.Rate": "Kurs",
         "Boxes.LGOverviewBox.Title": "Mulige investeringer",
