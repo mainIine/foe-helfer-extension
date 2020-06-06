@@ -209,7 +209,8 @@ let Alerts = function(){
             exchange: null,
         },
         battlegrounds :{
-            provinces : null
+            participants: null,
+            provinces : null,
         },
         neighbors: {}
     },
@@ -758,7 +759,7 @@ let Alerts = function(){
                                 if ( ! isNaN( expires ) ) {
                                     let alert = {
                                         id: null,
-                                        title: province.title,
+                                        title: `${province.title} (${province.owner})`,
                                         body: '',
                                         expires: expires,
                                         repeat: -1,
@@ -1058,7 +1059,7 @@ let Alerts = function(){
                             let value = ( province['lockedUntil'] - tmp.preferences.data.early.value ) * 1000;
                             // if the sector is currently taken
                             if ( ! isNaN( value ) ) {
-                                let text = `${province.title}`;
+                                let text = `${province.title} (${province.owner})`;
                                 battlegroundOptions += `<option value="${value}">${text}</option>`;
                             }
                         });
@@ -1361,6 +1362,11 @@ let Alerts = function(){
         };
 
     let pub = {
+        debug: () => {
+            return {
+                model: tmp.model,
+            }
+        },
         init: () => {
             // the preferences init is assumed to be synchronous (based on localStorage implementation)
             tmp.preferences.init();
@@ -1375,6 +1381,15 @@ let Alerts = function(){
             data: {
                 battlegrounds: (responseData) => {
                     if ( responseData && responseData.map && responseData.map.provinces ) {
+
+                        let participants = {};
+                        if ( responseData.battlegroundParticipants ) {
+                            responseData.battlegroundParticipants.forEach( function ( participant, id ){
+                                participants[ participant.participantId ] = participant;
+                            });
+                            tmp.model.battlegrounds.participants = participants;
+                        }
+
                         let provinces = responseData.map.provinces;
                         // for some reason the returned json doesn't give province id for the 0th index sector
                         if ( ! provinces[0].id ){ provinces[0].id = 0; }
@@ -1382,6 +1397,9 @@ let Alerts = function(){
                             let sector = BattlegroundSectorNames[id];
                             province.title = sector.title;
                             province.name = sector.name;
+                            if ( participants[province.ownerId] && participants[province.ownerId].clan ) {
+                                province.owner = participants[province.ownerId].clan.name;
+                            }
                         });
                         tmp.model.battlegrounds.provinces = provinces;
                     }
