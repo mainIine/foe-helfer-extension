@@ -317,7 +317,7 @@
 		"Boxes.Settings.Title": "Indstillinger",
 		"Boxes.Stats.BtnAll": "Alle",
 		"Boxes.Stats.BtnAllPlayableEras": "Alle tidsaldre",
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Vølg alle spilbare tidsladre (på nær af: \"Ingen tidsalder\", specielle)",
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Vælg alle spilbare tidsladre (på nær af: \"Ingen tidsalder\", specielle)",
 		"Boxes.Stats.BtnAllTittle": "Tidslader + ingen tidsalder + specielle",
 		"Boxes.Stats.BtnChartType.delta": "Delta",
 		"Boxes.Stats.BtnChartType.line": "Linier",
