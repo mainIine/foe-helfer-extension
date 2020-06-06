@@ -29,9 +29,9 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
 // when a great building where the player has invested has been levelled
 FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
 
-    if ( data && data['responseData'] && data['responseData']['strategy_point_amount'] ) {
+    if ( data && data['responseData'] && data['responseData'] ) {
         // save the number of returned FPs to show in the infoboard message
-        Info.ReturnFPPoints = data.responseData.strategy_point_amount;
+        Info.ReturnFPPoints = ( data['responseData']['strategy_point_amount'] ) ? data.responseData.strategy_point_amount : 0;
 
         // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
         // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
@@ -301,7 +301,7 @@ let Info = {
      * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
      * und müssen gesammelt werden
      */
-    ReturnFPPoints: 0,
+    ReturnFPPoints: -1,
     ReturnFPMessageData: null,
 
     /**
@@ -478,15 +478,15 @@ let Info = {
             )
         };
 
-        // If the ReturnFPPoints is 0 the BlueprintService.newReward handler has not run yet
+        // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
         // so store the data and post the message from that handler (using the stored data)
-        if ( Info.ReturnFPPoints == 0 ){
+        if ( Info.ReturnFPPoints == -1 ){
             Info.ReturnFPMessageData = d;
             return undefined;
         }
 
         // zurück setzen
-        Info.ReturnFPPoints = 0;
+        Info.ReturnFPPoints = -1;
         Info.ReturnFPMessageData = null;
 
         return data;
