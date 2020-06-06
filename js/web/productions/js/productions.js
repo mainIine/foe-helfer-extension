@@ -474,17 +474,19 @@ let Productions = {
 				countProducts = [],
 				countAll = 0,
 				countAllMotivated = 0,
-				sizes = [];
+				sizes = [],
+				sizetooltips = [];
       
 				// Gebäudegrößen für Effizienzberechnung laden
 				let MapData = MainParser.CityMapData;
 				for(let index = 0; index < MapData.length; ++index)
 				{
-					let d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ],
-					 	width = parseInt(d['width']),
-					 	height = parseInt(d['height']);
-
-					sizes[MapData[index]['cityentity_id']] = (width*height) + (Math.min(width, height) * d['street_connection_level'] / 2);
+					let d = BuildingNamesi18n[MapData[index]['cityentity_id']],
+						width = parseInt(d['width']),
+						height = parseInt(d['height']);
+						
+					sizes[MapData[index]['cityentity_id']] = (width * height) + (Math.min(width, height) * d['street_connection_level'] / 2);
+					sizetooltips[MapData[index]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), {'streetnettosize': (Math.min(width, height) * d['street_connection_level'] / 2) });
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -505,6 +507,7 @@ let Productions = {
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
 						let size = sizes[buildings[i]['eid']],
+							SizeToolTip = sizetooltips[buildings[i]['eid']];
 							efficiency = (MotivatedProductCount / size);
 
 						let EffiencyString;
@@ -515,7 +518,7 @@ let Productions = {
 							EffiencyString = HTML.Format(Math.round(efficiency));
                         }
 					
-						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '">' + size + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 

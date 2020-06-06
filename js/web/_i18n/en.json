@@ -311,6 +311,7 @@
 		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again",
 		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again",
 		"Boxes.Productions.SearchInput": "Search building...",
+		"Boxes.Production.SizeTT": "Building size including average street size requirements of __streetnettosize__",
 		"Boxes.Productions.Title": "Current Production Overview (daily)",
 		"Boxes.Productions.Total": "Total: ",
 		"Boxes.Settings.Active": "Active",
