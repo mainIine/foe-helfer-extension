@@ -3,6 +3,7 @@
 		br: 'Português do Brasil',
 		cs: 'Český',
 		de: 'Deutsch',
+		dk: 'Dansk',
 		en: 'English',
 		es: 'Español',
 		fr: 'Français',

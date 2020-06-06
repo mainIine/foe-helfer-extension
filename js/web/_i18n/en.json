@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Display current status of all your military units",
 		"Menu.Unit.Title": "Military Units Overview",
 		"Menu.Unit.Warning": "Disabled: Open your Army Management first (U)!",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.",
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets",
 		"Settings.AutomaticNegotiation.Desc": "Automatically Open/Close the Negotiation Helper/Assistant when negotiating?",
 		"Settings.AutomaticNegotiation.Title": "Negotiation helper",
 		"Settings.ChangeLanguage.Desc": "Choose your prefered language from the drop-down list >",
