@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "I alt",
 		"Boxes.Plunderer.visited": "Besøgt",
 		"Boxes.Plunderer.visitTitle": "Sidste besøg hos denne spiller",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
 		"Boxes.Productions.Happiness": "Glæde",

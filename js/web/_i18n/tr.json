@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Toplam",
 		"Boxes.Plunderer.visited": "Ziyeret",
 		"Boxes.Plunderer.visitTitle": "Bu Oyuncuları son Ziyaret",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Bitişik Binalar",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Mutluluk",

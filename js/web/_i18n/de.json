@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Gesamt",
 		"Boxes.Plunderer.visited": "Besucht",
 		"Boxes.Plunderer.visitTitle": "Diesen Spieler das letzte mal besucht",
+		"Boxes.Production.SizeTT": "Größe enthält den durchschnittlichen Platzbedarf von __streetnettosize__ Feldern",
 		"Boxes.Productions.AdjacentBuildings": "Angrenzende Gebäude",
 		"Boxes.Productions.GoodEraTotal": "Gesamt",
 		"Boxes.Productions.Happiness": "Zufriedenheit",
