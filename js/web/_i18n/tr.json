@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Tüm Birimler Tek bakışta",
 		"Menu.Unit.Title": "Birimler",
 		"Menu.Unit.Warning": "Önce Ordu Teşkilatını aç \"Ordu Teşkilatı\"<br>Tuş \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Asistan bir müzakerede otomatik olarak açılmalı ve iptal edildiğinde kapanmalı mıdır?",
 		"Settings.AutomaticNegotiation.Title": "Müzakere Asistanı",
 		"Settings.ChangeLanguage.Desc": "Tanınan Hangi Dil Kullanılsın?",

@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "Toutes vos armées en un coup d'œil.",
 		"Menu.Unit.Title": "Armées",
 		"Menu.Unit.Warning": "Ouvrez 1x votre \"Gestion de l'Armée\" [U]",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Prendre en compte les routes dans le calcul de l'efficacité. Nous ajoutons la moitié de la longueur du plus petit côté à la zone.",
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficacité: Routes",
 		"Settings.AutomaticNegotiation.Desc": "L'assistant doit-il s'ouvrir automatiquement avec une négociation et fermé en cas d'annulation ?",
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",

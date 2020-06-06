@@ -482,8 +482,6 @@
 		"Menu.Unit.Desc": "En översikt av dina enheter",
 		"Menu.Unit.Title": "Arméer",
 		"Menu.Unit.Warning": "Öppna din \"Arméhantering\" <br>knapp \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Ska vi automatiskt hjälpa med förhandling och stänga vid avbryt?",
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
