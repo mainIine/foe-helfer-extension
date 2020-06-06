@@ -276,9 +276,9 @@ let Productions = {
 			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
 				testEra = regExString.exec(d['cityentity_id']);
 
-			if (testEra && testEra.length > 1)
-			{
+			if (testEra && testEra.length > 1) {
 				era = Technologies.Eras[testEra[1]];
+				if (era === 0) era = CurrentEraID; //AllAge => Current era
 			}
 		}
 
