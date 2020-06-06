@@ -260,14 +260,19 @@ let Productions = {
 			CurrentResources = undefined,
 			EntityID = d['cityentity_id'],
 			BuildingData = BuildingNamesi18n[EntityID],
+			CityEntity = MainParser.CityEntities[BuildingData.index],
 			AdditionalResources = BuildingData['additionalResources'],
 			era;
 
 		// Zeitalter suchen
-		if(d['level'] !== undefined){
+		if (CityEntity['is_multi_age'] && d['level'] !== undefined) {
 			era = d['level'];
 
-		} else {
+		}
+		else if (CityEntity['strategy_points_for_upgrade']) { //Great building
+			era = CurrentEraID;
+		}
+		else {
 			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
 				testEra = regExString.exec(d['cityentity_id']);
 
@@ -500,10 +505,18 @@ let Productions = {
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
 						let size = sizes[buildings[i]['eid']],
-							efficiency = (MotivatedProductCount/size);
+							efficiency = (MotivatedProductCount / size);
+
+						let EffiencyString;
+						if (type === 'strategy_points') {
+							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+						}
+						else {
+							EffiencyString = HTML.Format(Math.round(efficiency));
+                        }
 					
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '">' + size + '</td>');
-						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
@@ -710,6 +723,7 @@ let Productions = {
 				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.area') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
+				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
 				table.push('</tr>');
 
 				table.push( rowB.join('') );
