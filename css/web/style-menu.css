@@ -707,8 +707,8 @@ p {
 	width: calc(100% - 818px);
 }
 
-.fp-storage,
-.buyable-fp {
+#fp-bar .fp-storage,
+#fp-bar .buyable-fp {
 	border: 1px solid rgba(243, 214, 160, 0.65);
 	border-radius: 4px;
 	margin: 1px 1px 0 0;
@@ -716,16 +716,16 @@ p {
 	height: 26px;
 }
 
-.fp-storage {
+#fp-bar .fp-storage {
 	background: rgba(0, 0, 0, 0.75) url('../images/fp-bar-storage-bg.png') 0 0 no-repeat;
 	float: right;
 }
-.buyable-fp {
+#fp-bar .buyable-fp {
 	background: rgba(0, 0, 0, 0.75) url('../images/fp-bar-buyable-bg.png') 0 0 no-repeat;
 	float: right;
 }
 
-.fp-storage div, .buyable-fp div {
+#fp-bar .fp-storage div, #fp-bar .buyable-fp div {
 	margin: 5px 0 0 30px;
 }
 
