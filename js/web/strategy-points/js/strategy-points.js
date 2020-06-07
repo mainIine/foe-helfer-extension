@@ -76,12 +76,12 @@ let StrategyPoints = {
 			amount++;
 		}
 
-		if($('#fb-bar div.buyable-fp').length == 0) {
+		if($('div.buyable-fp').length == 0) {
 			// $('#fp-bar').append(' ' + i18n('Boxes.StrategyPoints.BuyableFP') + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
 			$('#fp-bar').append(`<div class="buyable-fp"><div>${ HTML.Format(amount)}</div></div>`);
 
 		} else {
-			$('#fb-bar div.buyable-fp div').text(HTML.Format(amount));
+			$('div.buyable-fp div').text(HTML.Format(amount));
 		}
 	},
 
