@@ -709,17 +709,19 @@ p {
 
 .fp-storage,
 .buyable-fp {
-	width: 89px;
-	height: 28px;
+	border: 1px solid rgba(243, 214, 160, 0.65);
+	border-radius: 4px;
 	margin: 1px 1px 0 0;
+	width: 87px;
+	height: 26px;
 }
 
 .fp-storage {
-	background: url('../images/fp-bar-storage-bg.png') 0 0 no-repeat;
+	background: rgba(0, 0, 0, 0.75) url('../images/fp-bar-storage-bg.png') 0 0 no-repeat;
 	float: right;
 }
 .buyable-fp {
-	background: url('../images/fp-bar-buyable-bg.png') 0 0 no-repeat;
+	background: rgba(0, 0, 0, 0.75) url('../images/fp-bar-buyable-bg.png') 0 0 no-repeat;
 	float: right;
 }
 
