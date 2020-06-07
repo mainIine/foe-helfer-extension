@@ -266,7 +266,7 @@ let Productions = {
 
 		// Zeitalter suchen
 		if (CityEntity['is_multi_age'] && d['level'] !== undefined) {
-			era = d['level'];
+			era = d['level'] + 1;
 
 		}
 		else if (CityEntity['strategy_points_for_upgrade']) { //Great building
