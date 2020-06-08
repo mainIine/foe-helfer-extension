@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Total", //Todo: Translate
 		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
 		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Clădiri învecinate",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Fericre",
@@ -482,8 +483,6 @@
 		"Menu.Unit.Desc": "Prezentarea generală a unităților tale militare",
 		"Menu.Unit.Title": "Unități militare",
 		"Menu.Unit.Warning": "Deschide \"Gestionarea armatei\" <br>Tasta \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Dorești ca asistentul de negociere să se deschidă automat cu o negociere și să fie închis la anulare?",
 		"Settings.AutomaticNegotiation.Title": "Ajutor pentru negocieri",
 		"Settings.ChangeLanguage.Desc": "Ce limbă dorești să fie folosită?",
