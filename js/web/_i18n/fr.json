@@ -374,8 +374,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Evolution de vos unités par jour",
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Evolution de vos unités par heure",
 		"Boxes.Stats.Title": "Statistiques",
-		"Boxes.StrategyPoints.BuyableFP": "Achetable : ",
-		"Boxes.StrategyPoints.FPBar": "PF en stock : ",
 		"Boxes.Technologies.DescInStock": "Disponible",
 		"Boxes.Technologies.DescRequired": "Requis",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
