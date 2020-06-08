@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Всего",
 		"Boxes.Plunderer.visited": "Посетили",
 		"Boxes.Plunderer.visitTitle": "Когда было последнее посещение игрока вами",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Уровень счастья",
@@ -482,8 +483,6 @@
 		"Menu.Unit.Desc": "Все ваши воины в одном месте",
 		"Menu.Unit.Title": "Армия",
 		"Menu.Unit.Warning": "Откройте \"Управление армией\" <br>Клавиша \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Нужно ли открывать помощник переговоров автоматически и закрывать, когда переговоры завершены или отменены?",
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",

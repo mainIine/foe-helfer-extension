@@ -1514,7 +1514,9 @@ let MainParser = {
 	 *
 	 * @param d
 	 */
-	StartUp: (d)=> {
+	StartUp: (d) => {
+		Settings.InitPreferences();
+
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era']['era'],

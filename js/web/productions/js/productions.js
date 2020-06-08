@@ -144,6 +144,7 @@ let Productions = {
 				products: [],
 				motivatedproducts: [],
 				at: (new Date().getTime()) / 1000,
+				era: 0,
 				in: 0
 			}
 			building.products['happiness'] = HappinessBonus;
@@ -259,20 +260,25 @@ let Productions = {
 			CurrentResources = undefined,
 			EntityID = d['cityentity_id'],
 			BuildingData = BuildingNamesi18n[EntityID],
+			CityEntity = MainParser.CityEntities[BuildingData.index],
 			AdditionalResources = BuildingData['additionalResources'],
 			era;
 
 		// Zeitalter suchen
-		if(d['level'] !== undefined){
-			era = i18n('Eras.' + Technologies.Eras[ Technologies.EraNames[ d['level'] ] ]);
+		if (CityEntity['is_multi_age'] && d['level'] !== undefined) {
+			era = d['level'];
 
-		} else {
+		}
+		else if (CityEntity['strategy_points_for_upgrade']) { //Great building
+			era = CurrentEraID;
+		}
+		else {
 			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
 				testEra = regExString.exec(d['cityentity_id']);
 
-			if (testEra && testEra.length > 1)
-			{
-				era = i18n('Eras.' + Technologies.Eras[ testEra[1] ]);
+			if (testEra && testEra.length > 1) {
+				era = Technologies.Eras[testEra[1]];
+				if (era === 0) era = CurrentEraID; //AllAge => Current era
 			}
 		}
 
@@ -468,17 +474,19 @@ let Productions = {
 				countProducts = [],
 				countAll = 0,
 				countAllMotivated = 0,
-				sizes = [];
+				sizes = [],
+				sizetooltips = [];
       
 				// Gebäudegrößen für Effizienzberechnung laden
 				let MapData = MainParser.CityMapData;
 				for(let index = 0; index < MapData.length; ++index)
 				{
-					let d = BuildingNamesi18n[ MapData[index]['cityentity_id'] ],
-					 	width = parseInt(d['width']),
-					 	height = parseInt(d['height']);
-
-					sizes[MapData[index]['cityentity_id']] = (width*height) + (Math.min(width, height) * d['street_connection_level'] / 2);
+					let d = BuildingNamesi18n[MapData[index]['cityentity_id']],
+						width = parseInt(d['width']),
+						height = parseInt(d['height']);
+						
+					sizes[MapData[index]['cityentity_id']] = (width * height) + (Math.min(width, height) * d['street_connection_level'] / 2);
+					sizetooltips[MapData[index]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), {'streetnettosize': (Math.min(width, height) * d['street_connection_level'] / 2) });
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -499,11 +507,20 @@ let Productions = {
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
 						let size = sizes[buildings[i]['eid']],
-							efficiency = (MotivatedProductCount/size);
+							SizeToolTip = sizetooltips[buildings[i]['eid']];
+							efficiency = (MotivatedProductCount / size);
+
+						let EffiencyString;
+						if (type === 'strategy_points') {
+							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+						}
+						else {
+							EffiencyString = HTML.Format(Math.round(efficiency));
+                        }
 					
-						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '">' + size + '</td>');
-						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
-						rowA.push('<td class="addon-info" data-text="' + buildings[i]['era'].cleanup() + '">' + buildings[i]['era'] + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>');
+						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
@@ -572,7 +589,7 @@ let Productions = {
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
 							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
-							'<td class="addon-info" data-text="' + groups[i]['era'].cleanup() + '">' + groups[i]['era'] + '</td>'+
+							'<td class="addon-info is-number" data-number="' + groups[i]['era'] + '">' + i18n('Eras.' + groups[i]['era']) + '</td>'+
 							'</tr>';
 
 						rowB.push(tds);
@@ -681,7 +698,7 @@ let Productions = {
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('<th class="game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
+				table.push('<th class="is-number game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
@@ -709,6 +726,7 @@ let Productions = {
 				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.area') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
+				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
 				table.push('</tr>');
 
 				table.push( rowB.join('') );
@@ -753,7 +771,7 @@ let Productions = {
 
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
 
-				rowC.push('<td>' + building[i]['era'] + '</td>');
+				rowC.push('<td>' + i18n('Eras.' + building[i]['era']) + '</td>');
 
 				if (ShowTime) {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');

@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Totale",
 		"Boxes.Plunderer.visited": "Visitato",
 		"Boxes.Plunderer.visitTitle": "L'ultima volta che visiti questo giocatore",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Felicità",
@@ -482,8 +483,6 @@
 		"Menu.Unit.Desc": "Tutti i tuoi eserciti a colpo d'occhio",
 		"Menu.Unit.Title": "Esercito",
 		"Menu.Unit.Warning": "Apri la tua 1x \"Organizzazione Army \"<br> pulsante \"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficienza: strade", 
 		"Settings.AutomaticNegotiation.Desc": "L'assistente deve aprirsi automaticamente con una negoziazione e chiudersi quando viene completata/annullata?",
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
@@ -510,10 +509,10 @@
 		"Settings.ShowAllPlayerAttDeff.Desc": "Attacco e difesa stimati verranno mostrati ogni volta che visiti un giocatore",
 		"Settings.ShowAllPlayerAttDeff.Title": "Mostra attacco e difesa per tutti i giocatoris",
 		"Settings.ShowInvestments.Desc": "Mostra somme dei dati di investimento FP al momento dell'inserimento 'Municipio'> 'Notizie'> 'Grandi edifici' tab.",
-		"Settings.ShowInvestments.Title": "Mostra le somme di investimento FP", 
+		"Settings.ShowInvestments.Title": "Mostra le somme di investimento FP",
 		"Settings.ShowNeighborsGoods.Desc": "Durante la visita, mostra ciò che è attualmente prodotto",
 		"Settings.ShowNeighborsGoods.Title": "Raccolta del vicinato",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "Mostra la 'Calcolatrice GB' anche per grandi edifici di altri giocatori", 
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Mostra la 'Calcolatrice GB' anche per grandi edifici di altri giocatori",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Mostra 'Calcolatrice GE' per tutti i GE",
 		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
