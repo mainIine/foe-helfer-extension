@@ -263,15 +263,17 @@ let Productions = {
 			era;
 
 		// Zeitalter suchen
+		// Eventgebäude mit verschiendenen ZAs
 		if(d['level'] !== undefined){
 			era = i18n('Eras.' + Technologies.Eras[ Technologies.EraNames[ d['level'] ] ]);
+		}
 
-		} else {
-			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
+		// Zeitalterspezifisch
+		else {
+			let regExString = new RegExp('(?:_)(.*)(?:_)', 'g'),
 				testEra = regExString.exec(d['cityentity_id']);
 
-			if (testEra && testEra.length > 1)
-			{
+			if (testEra && testEra.length > 0) {
 				era = i18n('Eras.' + Technologies.Eras[ testEra[1] ]);
 			}
 		}
@@ -503,7 +505,7 @@ let Productions = {
 					
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>');
-						rowA.push('<td class="addon-info" data-text="' + buildings[i]['era'].cleanup() + '">' + buildings[i]['era'] + '</td>');
+						rowA.push('<td class="addon-info" data-text="' + (buildings[i]['era'] ? buildings[i]['era'].cleanup() : '') + '">' + buildings[i]['era'] + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
@@ -572,7 +574,7 @@ let Productions = {
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
 							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
-							'<td class="addon-info" data-text="' + groups[i]['era'].cleanup() + '">' + groups[i]['era'] + '</td>'+
+							'<td class="addon-info" data-text="' + (groups[i]['era'] ? groups[i]['era'].cleanup() : '') + '">' + groups[i]['era'] + '</td>'+
 							'</tr>';
 
 						rowB.push(tds);
