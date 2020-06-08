@@ -463,6 +463,7 @@ let Info = {
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
 
         let newFP = Info.ReturnFPPoints;
+        if ( d['rank'] >= 6 ){ newFP = 0; }
 
         let data = {
             class: 'level',
@@ -480,7 +481,9 @@ let Info = {
 
         // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
         // so store the data and post the message from that handler (using the stored data)
-        if ( Info.ReturnFPPoints == -1 ){
+        // ... but only if the rank is 5 and higher (1-5), otherwise, there is no reward
+        // (and BlueprintService.newReward is not triggered)
+        if ( d['rank'] < 6 && Info.ReturnFPPoints == -1 ){
             Info.ReturnFPMessageData = d;
             return undefined;
         }
