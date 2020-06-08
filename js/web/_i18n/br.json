@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Total",
 		"Boxes.Plunderer.visited": "Visitado",
 		"Boxes.Plunderer.visitTitle": "Quando você visitou a última vez este jogador",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifícios vizinhos",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Felicidade",
@@ -482,8 +483,6 @@
 		"Menu.Unit.Desc": "Resumo das suas tropas",
 		"Menu.Unit.Title": "Exército",
 		"Menu.Unit.Warning": "Abra 1x sua \"Organização do Exército\"<br>Botão\"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "O assistente deve abrir automaticamente com uma negociação e fechar quando cancelado?",
 		"Settings.AutomaticNegotiation.Title": "Auxiliar de negociações",
 		"Settings.ChangeLanguage.Desc": "Que idioma deve ser utilizado, em vez do definido automaticamente?",

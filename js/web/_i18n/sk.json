@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Total", //Todo: Translate
 		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
 		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Priľahlé budovy",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Spokojnosť",
@@ -482,8 +483,6 @@
 		"Menu.Unit.Desc": "Celá Vaša armáda pokope",
 		"Menu.Unit.Title": "Armáda",
 		"Menu.Unit.Warning": "Kliknite na tlačidlo \"Správa armády\" <br>\"U\"",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Má sa pomocník otvárať automaticky pri spustení vyjednávania a zatvárať po zrušení vyjednávania?",
 		"Settings.AutomaticNegotiation.Title": "Pomocník pri vyjednávaní",
 		"Settings.ChangeLanguage.Desc": "Ktorý jazyk sa má použiť namiesto rozpoznaného?",
