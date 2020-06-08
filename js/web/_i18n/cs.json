@@ -374,8 +374,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "Can Buy: ", //Todo: Translate
-		"Boxes.StrategyPoints.FPBar": "Zásoba bodů: ",
 		"Boxes.Technologies.DescInStock": "K dispozici",
 		"Boxes.Technologies.DescRequired": "Požadováno",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Remaining</span> / <span style='color:#ff4040'>Needed</span>", //Todo: Translate
