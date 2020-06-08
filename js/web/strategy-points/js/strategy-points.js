@@ -29,9 +29,29 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
 	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
 });
 
+window.addEventListener('resize', function(){
+    StrategyPoints.HandleWindowResize();
+});
+
 let StrategyPoints = {
 	OldStrategyPoints: 0,
 	InventoryFP: 0,
+
+	HandleWindowResize: () => {
+
+        if ( window.innerWidth < 1250 ){
+            $('#fp-bar').removeClass('medium-screen');
+            $('#fp-bar').addClass('small-screen');
+        }
+        else if ( window.innerWidth < 1400 ){
+            $('#fp-bar').removeClass('small-screen');
+            $('#fp-bar').addClass('medium-screen');
+		}
+        else {
+            $('#fp-bar').removeClass('small-screen');
+            $('#fp-bar').removeClass('medium-screen');
+        }
+	},
 
 
 	/**
@@ -56,11 +76,12 @@ let StrategyPoints = {
 			amount++;
 		}
 
-		if($('.buyable-fp').length == 0) {
-			$('#fp-bar').append(' ' + i18n('Boxes.StrategyPoints.BuyableFP') + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
+		if($('div.buyable-fp').length == 0) {
+			// $('#fp-bar').append(' ' + i18n('Boxes.StrategyPoints.BuyableFP') + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
+			$('#fp-bar').append(`<div class="buyable-fp"><div>${ HTML.Format(amount)}</div></div>`);
 
 		} else {
-			$('.buyable-fp').text(HTML.Format(amount));
+			$('div.buyable-fp div').text(HTML.Format(amount));
 		}
 	},
 
@@ -71,9 +92,11 @@ let StrategyPoints = {
     RefreshBar: ( value ) => {
         // noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			let div = $('<div />').attr('id', 'fp-bar').text(i18n('Boxes.StrategyPoints.FPBar')).append( $('<strong>0</strong>').addClass('fp-storage') );
+			// let div = $('<div />').attr('id', 'fp-bar').text(i18n('Boxes.StrategyPoints.FPBar')).append( $('<strong>0</strong>').addClass('fp-storage') );
+			let div = $('<div />').attr('id', 'fp-bar').append( `<div class="fp-storage"><div>0</div></div>` );
 
 			$('body').append(div);
+            StrategyPoints.HandleWindowResize();
 		}
 
 		if ( isNaN( value ) ){ return; }
@@ -82,7 +105,7 @@ let StrategyPoints = {
 		let delimiter = Number(1000).toLocaleString().substring(1,2);
 
 		// the animation function checks if start_value != end_value
-		$('.fp-storage').easy_number_animate({
+		$('#fp-bar div.fp-storage div').easy_number_animate({
 			start_value: StrategyPoints.OldStrategyPoints,
 			end_value: StrategyPoints.InventoryFP,
 			delimiter: delimiter,
