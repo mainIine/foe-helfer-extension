@@ -296,7 +296,7 @@ let Calculator = {
 			}
 		}
 
-		return h.join();
+		return h.join('');
 	},
 
 
