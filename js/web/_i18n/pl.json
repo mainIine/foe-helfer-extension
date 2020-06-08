@@ -282,6 +282,7 @@
 		"Boxes.Plunderer.total": "Łącznie",
 		"Boxes.Plunderer.visited": "Odwiedzono",
 		"Boxes.Plunderer.visitTitle": "Kiedy ostatni raz odwiedziłeś gracza",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Pobliskie budynki",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Zadowolenie",
@@ -482,8 +483,6 @@
 		"Menu.Unit.Desc": "Przegląd wojsk",
 		"Menu.Unit.Title": "Armia",
 		"Menu.Unit.Warning": "Otwórz 1x \"Zarządzanie Armią\" <br><em>[U]</em>",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Czy asystent powinien otwierać się automatycznie wraz z nową negocjacją i zamykać z jej zakończeniem?",
 		"Settings.AutomaticNegotiation.Title": "Asystent negocjacji",
 		"Settings.ChangeLanguage.Desc": "Jaki język powinien zostać użyty zamiast automatycznie wykrytego?",

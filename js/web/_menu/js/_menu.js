@@ -911,7 +911,6 @@ let _menu = {
 	/**
 	 * FP Produzierende LGs
 	 */
-	/*
 	greatbuildings_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
@@ -927,7 +926,7 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		// return btn;
+		return btn;
 	},
-	*/
+
 };
