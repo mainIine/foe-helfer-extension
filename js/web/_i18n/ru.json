@@ -374,8 +374,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Ваша армия по дням",
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Ваша армия по часам",
 		"Boxes.Stats.Title": "Статистика",
-		"Boxes.StrategyPoints.BuyableFP": "монеты/СО:",
-		"Boxes.StrategyPoints.FPBar": "СО в пакетах:",
 		"Boxes.Technologies.DescInStock": "Доступно",
 		"Boxes.Technologies.DescRequired": "Требуется",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ff4040'>Недостаток</span>",
