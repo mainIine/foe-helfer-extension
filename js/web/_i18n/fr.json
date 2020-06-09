@@ -282,7 +282,7 @@
 		"Boxes.Plunderer.total": "total ",
 		"Boxes.Plunderer.visited": "Dernière visite ",
 		"Boxes.Plunderer.visitTitle": "Date de la dernière visite à ce joueur",
-		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
+		"Boxes.Production.SizeTT": "Taille, y compris l'espace moyen requis pour la route sur __streetnettosize__ cases",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.GoodEraTotal": "Total",
 		"Boxes.Productions.Happiness": "Satisfaction",
@@ -293,8 +293,8 @@
 		"Boxes.Productions.Headings.culture": "Bâtiments culturels",
 		"Boxes.Productions.Headings.decoration": "Décorations",
 		"Boxes.Productions.Headings.earning": "Récolte",
-		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Efficacité",
+		"Boxes.Productions.Headings.Era": "Ère",
 		"Boxes.Productions.Headings.goods": "Bâtiments de marchandises",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de ville",
