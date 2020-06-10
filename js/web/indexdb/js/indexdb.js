@@ -65,7 +65,7 @@
 *       clanName: string | undefined,
 *       avatar: string,
 *       era: string | 'unknown',
-*       date: new Date(), // last visit date
+*       date: MainParser.getCurrentDate(), // last visit date
 *   }
 *
 *   "greatbuildings" structure
@@ -77,7 +77,7 @@
 *       currentfp: number,
 *       bestratenettofp: number
 *       bestratecosts: number,
-*       date: new Date(), // last visit date
+*       date: MainParser.getCurrentDate(), // last visit date
 *   }
 *  "statsGBGPlayers", Battle ground leader board
 * {
@@ -464,13 +464,13 @@ let IndexDB = {
                     clanName: player.ClanName,
                     avatar: player.Avatar,
                     era: 'unknown', // Era can be discovered when user is visited, not now
-                    date: new Date(),
+                    date: MainParser.getCurrentDate(),
                 });
             }
         }
         else if (updateDate) {
             IndexDB.db.players.update(playerId, {
-                date: new Date()
+                date: MainParser.getCurrentDate()
             });
         }
     },
