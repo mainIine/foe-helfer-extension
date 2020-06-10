@@ -125,10 +125,10 @@ let Productions = {
 				if(building !== false){
 					Productions.BuildingsAll.push(building);
 
-					if (building['products']['population'] !== undefined) {
+					if (building['products']['population']) {
 						PopulationSum += building['products']['population'];
 					}
-					if (building['products']['happiness'] !== undefined) {
+					if (building['products']['happiness']) {
 						HappinessSum += building['products']['happiness'];
 					}
 
@@ -137,7 +137,7 @@ let Productions = {
 		}
 
 		let HappinessBonus = MainParser.AllBoosts['happiness_amount'];
-		if (HappinessBonus !== undefined && HappinessBonus !== 0) {
+		if (HappinessBonus && HappinessBonus !== 0) {
 			let building = {
 				name: i18n('Boxes.Productions.AdjacentBuildings'),
 				type: 'boost',
@@ -177,17 +177,17 @@ let Productions = {
 			let building = Productions.BuildingsAll[i];
 
 			if (building['type'] === 'residential' || building['type'] === 'production') {
-				if (building['products']['money'] !== undefined) {
+				if (building['products']['money']) {
 					building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
 				}
-				if (building['motivatedproducts']['money'] !== undefined) {
+				if (building['motivatedproducts']['money']) {
 					building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
 				}
 
-				if (building['products']['supplies'] !== undefined) {
+				if (building['products']['supplies']) {
 				building['products']['supplies'] = Math.round(building['products']['supplies'] * Productions.Boosts['supplies']);
 				}
-				if (building['motivatedproducts']['supplies'] !== undefined) {
+				if (building['motivatedproducts']['supplies']) {
 					building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
 			}
@@ -259,13 +259,23 @@ let Productions = {
 		let Products = [],
 			CurrentResources = undefined,
 			EntityID = d['cityentity_id'],
-			BuildingData = BuildingNamesi18n[EntityID],
-			CityEntity = MainParser.CityEntities[BuildingData.index],
-			AdditionalResources = BuildingData['additionalResources'],
+			CityEntity = MainParser.CityEntities[EntityID],
+			AdditionalResources = [],
 			era;
 
+		if (CityEntity['abilities']) {
+			for (let AbilityIndex in CityEntity['abilities']) {
+				if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex)) continue
+
+				let Ability = CityEntity['abilities'][AbilityIndex];
+				if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
+					AdditionalResources = Ability['additionalResources']['AllAge']['resources'];
+				}
+            }
+        }
+
 		// Zeitalter suchen
-		if (CityEntity['is_multi_age'] && d['level'] !== undefined) {
+		if (CityEntity['is_multi_age'] && d['level']) {
 			era = d['level'] + 1;
 
 		}
@@ -283,7 +293,7 @@ let Productions = {
 		}
 
 		let Ret = {
-			name: BuildingData['name'],
+			name: CityEntity['name'],
 			id: d['id'],
 			eid: d['cityentity_id'],
 			type: d['type'],
@@ -292,8 +302,8 @@ let Productions = {
 			in: 0
 		};
 
-		if (d.state !== undefined && d.state.current_product !== undefined && d.state.current_product.product !== undefined) {
-			if (d.state.current_product.product.resources !== undefined) {
+		if (d.state && d.state.current_product && d.state.current_product.product) {
+			if (d.state.current_product.product.resources) {
 				CurrentResources = d['state']['current_product']['product']['resources'];
 			}
 		}
@@ -309,39 +319,43 @@ let Productions = {
 			}
 		}
 
-		if (d['bonus'] !== undefined) {
+		if (d['bonus']) {
 			if (d['bonus']['type'] === 'population') {
-				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + d['bonus']['value'];
+				Products['population'] = (Products['population'] ? Products['population'] : 0) + d['bonus']['value'];
 			}
 			else if (d['bonus']['type'] === 'happiness') {
-				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + d['bonus']['value'];
+				Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + d['bonus']['value'];
 			}
 		}
 
-		if (d['state'] !== undefined && d['state']['__class__'] !== 'ConstructionState' && d['state']['__class__'] !== 'UnconnectedState') {
-			if (BuildingData['population'] !== undefined) {
-				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + BuildingData['population'];
+		if (CityEntity['staticResources'] && CityEntity['staticResources']['resources']) {
+			CityEntity['staticResources']['resources']['population'];
+		}
+
+		if (d['state'] && d['state']['__class__'] !== 'ConstructionState' && d['state']['__class__'] !== 'UnconnectedState') {
+			if (CityEntity['staticResources'] && CityEntity['staticResources']['resources'] && CityEntity['staticResources']['resources']['population']) {
+				Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
 			}
-			if (BuildingData['provided_happiness'] !== undefined) {
+			if (CityEntity['provided_happiness']) {
 				let Faktor = 1;
 				if (d['state']['__class__'] === 'PolishedState') {
 					Faktor = 2;
 				}
-				Products['happiness'] = BuildingData['provided_happiness'] * Faktor;
+				Products['happiness'] = CityEntity['provided_happiness'] * Faktor;
 			}
 		}
 
-		if (BuildingData['entity_levels'] !== undefined && BuildingData['entity_levels'][d['level']] !== undefined) {
-			let EntityLevel = BuildingData['entity_levels'][d['level']];
-			if (EntityLevel['provided_population'] !== undefined) {
-				Products['population'] = (Products['population'] !== undefined ? Products['population'] : 0) + EntityLevel['provided_population'];
+		if (CityEntity['entity_levels'] && CityEntity['entity_levels'][d['level']]) {
+			let EntityLevel = CityEntity['entity_levels'][d['level']];
+			if (EntityLevel['provided_population']) {
+				Products['population'] = (Products['population'] ? Products['population'] : 0) + EntityLevel['provided_population'];
 			}
-			if (EntityLevel['provided_happiness'] !== undefined) {
+			if (EntityLevel['provided_happiness']) {
 				let Faktor = 1;
 				if (d['state']['__class__'] === 'PolishedState') {
 					Faktor = 2;
 				}
-				Products['happiness'] = (Products['happiness'] !== undefined ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
+				Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
 			}
 		}
 
@@ -373,12 +387,12 @@ let Productions = {
 			}
 		}
 
-		if (d['state'] !== undefined) {
+		if (d['state'] ) {
 			let At = d['state']['next_state_transition_at'],
 				In = d['state']['next_state_transition_in'];
 
-			if (At !== undefined) Ret.at = At;
-			if (In !== undefined) Ret.in = In;
+			if (At) Ret.at = At;
+			if (In) Ret.in = In;
 		}
 
 		Ret.products = Products;
@@ -478,15 +492,15 @@ let Productions = {
 				sizetooltips = [];
       
 				// Gebäudegrößen für Effizienzberechnung laden
-				let MapData = MainParser.CityMapData;
-				for(let index = 0; index < MapData.length; ++index)
+				for(let index = 0; index < MainParser.CityMapData.length; ++index)
 				{
-					let d = BuildingNamesi18n[MapData[index]['cityentity_id']],
+					let d = MainParser.CityEntities[MainParser.CityMapData[index]['cityentity_id']],
 						width = parseInt(d['width']),
-						height = parseInt(d['height']);
+						length = parseInt(d['length']),
+						RequiredStreet = d['requirements']['street_connection_level'] | 0;
 						
-					sizes[MapData[index]['cityentity_id']] = (width * height) + (Math.min(width, height) * d['street_connection_level'] / 2);
-					sizetooltips[MapData[index]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), {'streetnettosize': (Math.min(width, height) * d['street_connection_level'] / 2) });
+					sizes[MainParser.CityMapData[index]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
+					sizetooltips[MainParser.CityMapData[index]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) });
 				}
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -1069,7 +1083,7 @@ let Productions = {
 			let dailyFP = MainParser.BonusService.find(o => (o['type'] === 'daily_strategypoint'));
 
 			// tägliche FP ans Rathaus übergeben
-			if(dailyFP !== undefined && dailyFP['value'] !== undefined)
+			if(dailyFP && dailyFP['value'] )
 			{
 				if(d['state']['current_product']['product']['resources']['strategy_points'] === undefined){
 					d['state']['current_product']['product']['resources']['strategy_points'] = 0;

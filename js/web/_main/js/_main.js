@@ -33,7 +33,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtWorld = '',
 	CurrentEra = null,
 	CurrentEraID = null,
-	BuildingNamesi18n = false,
 	GoodsData = [],
 	GoodsList = [],
 	PlayerDict = {},
@@ -540,57 +539,9 @@ const FoEproxy = (function () {
 	// globale Handler
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		BuildingNamesi18n = {};
+		let EntityArray = JSON.parse(xhr.responseText);
+		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));;
 
-		const j = JSON.parse(xhr.responseText);
-
-		MainParser.CityEntities = j;
-
-		for (let i in j)
-		{
-			if (j.hasOwnProperty(i))
-			{
-				BuildingNamesi18n[j[i]['asset_id']] = {
-					name: j[i]['name'],
-					width: j[i]['width'],
-					height: j[i]['length'],
-					type: j[i]['type'],
-					provided_happiness: j[i]['provided_happiness'],
-					population: undefined,
-					entity_levels: j[i]['entity_levels'],
-					index: i
-				};
-
-				if(j[i]['abilities'] !== undefined)
-				{
-					for(let x in j[i]['abilities'])
-					{
-						if (j[i]['abilities'].hasOwnProperty(x))
-						{
-							let ar = j[i]['abilities'][x];
-
-							if(ar['additionalResources'] !== undefined && ar['additionalResources']['AllAge'] !== undefined && ar['additionalResources']['AllAge']['resources'] !== undefined)
-							{
-								BuildingNamesi18n[j[i]['asset_id']]['additionalResources'] = ar['additionalResources']['AllAge']['resources'];
-							}
-						}
-					}
-				}
-
-				if (j[i]['staticResources'] !== undefined && j[i]['staticResources']['resources'] !== undefined) {
-					BuildingNamesi18n[j[i]['asset_id']]['population'] = j[i]['staticResources']['resources']['population'];
-				}
-
-				if (j[i]['requirements'] && j[i]['requirements']['street_connection_level']) {
-					BuildingNamesi18n[j[i]['asset_id']]['street_connection_level'] = j[i]['requirements']['street_connection_level'];
-				}
-				else {
-					BuildingNamesi18n[j[i]['asset_id']]['street_connection_level'] = 0;
-                }
-			}
-		}
-
-		MainParser.Buildings = BuildingNamesi18n;
 		if (!HiddenRewards.IsPrepared) {
 			HiddenRewards.prepareData();
 		}
@@ -1074,7 +1025,6 @@ const FoEproxy = (function () {
 let MainParser = {
 
 	Language: 'en',
-	Buildings: null,
 	i18n: null,
 	BonusService: null,
 	EmissaryService: null,
@@ -1742,7 +1692,7 @@ let MainParser = {
 					let entity =  '';
 
 					if(ev[i]['entity_id'] !== undefined){
-						entity = MainParser.Buildings[ev[i]['entity_id']]['name'];
+						entity = MainParser.CityEntities[ev[i]['entity_id']]['name'];
 					}
 
 					if(ev[i]['type'] === 'social_interaction'){
