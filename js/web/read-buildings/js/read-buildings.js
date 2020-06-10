@@ -40,6 +40,18 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 	$('#ResultBox').remove();
 });
 
+FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
+	let OtherPlayer = data.responseData.other_player;
+	let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
+
+	if (Settings.GetSetting('ShowAllPlayerAttDeff') || IsPlunderable && Settings.GetSetting('ShowNeighborsGoods')) {
+		Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
+	}
+	else {
+		$('#ResultBox').remove();
+	}
+});
+
 
 /**
  *
@@ -49,7 +61,7 @@ let Reader = {
 
 	data: {},
 	player_name: '',
-	CityEntities: [],
+	CityMapData: [],
 	ArmyBoosts: [],
 	IsPlunderable: false,
 	
@@ -76,7 +88,7 @@ let Reader = {
 
 		let d = dp['city_map']['entities'];
 
-        Reader.CityEntities = d;      
+		Reader.CityMapData = d;      
 
 		let BoostDict = [];
         for (let i in d) {
@@ -287,7 +299,7 @@ ${HTML.i18nReplacer(i18n('Boxes.Neighbors.DefendingArmy'), {
 		HTML.AddCssFile('citymap');
 
 		if ($('#map' + h).length < 1) {
-			CityMap.init(Reader.CityEntities, Reader.player_name);
+			CityMap.init(Reader.CityMapData, Reader.player_name);
 		}
 
 		$('[data-entityid]').removeClass('pulsate');

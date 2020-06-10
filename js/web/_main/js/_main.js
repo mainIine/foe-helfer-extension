@@ -843,21 +843,6 @@ const FoEproxy = (function () {
 	});
 
 
-	// --------------------------------------------------------------------------------------------------
-	// Ernten anderer Spieler
-
-	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		let OtherPlayer = data.responseData.other_player;
-		let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
-
-		if (Settings.GetSetting('ShowAllPlayerAttDeff') || IsPlunderable && Settings.GetSetting('ShowNeighborsGoods')) {
-			Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
-		}
-		else {
-			$('#ResultBox').remove();
-		}
-	});
-
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
 		ResourceStock = data.responseData.resources; // Lagerbestand immer aktulisieren. Betrifft auch andere Module wie Technologies oder Negotiation
