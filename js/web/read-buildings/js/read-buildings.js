@@ -89,18 +89,15 @@ let Reader = {
 				if (BoostType !== undefined && BoostValue !== undefined) {
 					BoostDict[BoostType] |= 0;
 					BoostDict[BoostType] += BoostValue;
-					//if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') { // || BoostType === 'def_boost_attacker' || BoostType === 'att_boost_defender' || BoostType === 'def_boost_defender') {
-					//	console.log(BuildingNamesi18n[id].name + ' ' + BoostType + '_ ' + BoostValue + '%');
-					//}
 				}
 			}
 
-			let BuildingData = MainParser.CityEntities[BuildingNamesi18n[id].index];
+			let CityEntity = MainParser.CityEntities[id];
 			if (d[i]['state'] !== undefined && d[i]['state']['__class__'] !== 'ConstructionState' && d[i]['state']['__class__'] !== 'UnconnectedState') {
-				if (BuildingData['abilities'] !== undefined) {
-					for (let ability in BuildingData['abilities']) {
-						if (!BuildingData['abilities'].hasOwnProperty(ability)) continue;
-							let CurrentAbility = BuildingData['abilities'][ability];
+				if (CityEntity['abilities'] !== undefined) {
+					for (let ability in CityEntity['abilities']) {
+						if (!CityEntity['abilities'].hasOwnProperty(ability)) continue;
+						let CurrentAbility = CityEntity['abilities'][ability];
 						if (CurrentAbility['boostHints'] !== undefined) {
 							for (let boostHint in CurrentAbility['boostHints']) {
 								if (!CurrentAbility['boostHints'].hasOwnProperty(boostHint)) continue;
@@ -165,9 +162,6 @@ let Reader = {
 				if (BoostType !== undefined && BoostValue !== undefined) {
 					BoostDict[BoostType] |= 0;
 					BoostDict[BoostType] += BoostValue;
-					//if (BoostType === 'att_boost_attacker' || BoostType === 'military_boost' || BoostType === 'advanced_tactics') {
-					//	console.log(BuildingNamesi18n[Building['cityentity_id']].name + ' ' + BoostType + '_ ' + BoostValue + '%');
-					//}
 				}
 			}
 		}
@@ -350,7 +344,7 @@ let GoodsParser = {
 
 			if(p['amount'] !== undefined){
 				let entry = {
-					name: BuildingNamesi18n[d['cityentity_id']]['name'],
+					name: MainParser.CityEntities[d['cityentity_id']]['name'],
 					amount: p['amount'],
 					state: p['state'],
 					id: d['id'],
@@ -358,7 +352,7 @@ let GoodsParser = {
 				};
 				
 				if (p['isImportant'] === false ) {
-					entry.name = '<spark style="color:grey;">' + BuildingNamesi18n[d['cityentity_id']]['name'] + '</spark>';
+					entry.name = '<spark style="color:grey;">' + MainParser.CityEntities[d['cityentity_id']]['name'] + '</spark>';
 					entry.amount = '<spark style="color:grey;">' + p['amount'] + '</spark>';
 				}
 
@@ -468,7 +462,7 @@ let GoodsParser = {
 	 */
 	emptyGoods: (d)=> {
 		let data = {
-			name: BuildingNamesi18n[d['cityentity_id']]['name'],
+			name: MainParser.CityEntities[d['cityentity_id']]['name'],
 			fp: '-',
 			product: 'unbenutzt',
 			// cords: {x: d[i]['x'], y: d[i]['y']}

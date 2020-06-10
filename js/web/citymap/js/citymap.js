@@ -263,12 +263,12 @@ let CityMap = {
 			if (!MapDataSorted.hasOwnProperty(b) || MapDataSorted[b]['x'] < MinX || MapDataSorted[b]['x'] > MaxX || MapDataSorted[b]['y'] < MinY || MapDataSorted[b]['y'] > MaxY)
 				continue;
 
-			let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
+			let d = MainParser.CityEntities[ MapDataSorted[b]['cityentity_id'] ],
 
 				x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
 				y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
-				w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-				h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
+				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
+				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
 
 				f = $('<span />').addClass('entity ' + d['type']).css({
 						width: w + 'em',
@@ -279,7 +279,7 @@ let CityMap = {
 					.attr('title', d['name'])
 					.attr('data-entityid', MapDataSorted[b]['id']);
 
-			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
+			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['length']));
 
 			// die Größe wurde geändert, wieder aktivieren
 			if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
