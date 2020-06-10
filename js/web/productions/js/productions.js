@@ -143,7 +143,7 @@ let Productions = {
 				type: 'boost',
 				products: [],
 				motivatedproducts: [],
-				at: (new Date().getTime()) / 1000,
+				at: (MainParser.getCurrentDate().getTime()) / 1000,
 				era: 0,
 				in: 0
 			}
@@ -288,7 +288,7 @@ let Productions = {
 			eid: d['cityentity_id'],
 			type: d['type'],
 			era: era,
-			at: (new Date().getTime()) / 1000,
+			at: (MainParser.getCurrentDate().getTime()) / 1000,
 			in: 0
 		};
 
