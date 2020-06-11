@@ -647,25 +647,41 @@ const FoEproxy = (function () {
 		});
 	});
 
-	// Gebäude verschoben
-	FoEproxy.addHandler('CityMapService', 'moveEntity', (data, postData) => {
-		MainParser.UpdateCityMap(data.responseData);
+	FoEproxy.addHandler('CityMapService', (data, postData) => {
+		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
+			MainParser.UpdateCityMap(data.responseData);
+		}
+		else if (data.requestMethod === 'placeBuilding') {
+			let Building = data.responseData[0];
+			if (Building && Building['id']) {
+				MainParser.CityMapData[Building['id']] = Building;
+			}
+		}
+		else if (data.requestMethod === 'removeBuilding') {
+			let ID = postData[0].requestData[0];
+			if (ID && MainParser.CityMapData[ID]) {
+				delete MainParser.CityMapData[ID];
+            }
+        }
 	});
 
-	// Mehrere Gebäude verschoben (Umbaumodus)
-	FoEproxy.addHandler('CityMapService', 'moveEntities', (data, postData) => {
-		MainParser.UpdateCityMap(data.responseData);
+	// Gebäude verschoben (einzeln oder Umbaumodus), FP eingezahlt etc.
+	FoEproxy.addHandler('CityMapService', (data, postData) => {
+		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
+			MainParser.UpdateCityMap(data.responseData);
+		}
 	});
 
-	// Produktion wird eingesammelt
-	FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-		let Buildings = data.responseData['updatedEntities'];
-		if (!Buildings) return;
+	// Produktion wird eingesammelt/gestartet/abgebrochen
+	FoEproxy.addHandler('CityProductionService', (data, postData) => {
+		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
+			let Buildings = data.responseData['updatedEntities'];
+			if (!Buildings) return;
 
-		MainParser.UpdateCityMap(Buildings)
+			MainParser.UpdateCityMap(Buildings)
+		}
 	});
-
-
+	
 	// Nachricht geöffnet
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
