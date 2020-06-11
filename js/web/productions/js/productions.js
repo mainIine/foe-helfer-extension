@@ -525,16 +525,16 @@ let Productions = {
 							SizeToolTip = sizetooltips[buildings[i]['eid']];
 							efficiency = (MotivatedProductCount / size);
 
-						let EffiencyString;
+						let EfficiencyString;
 						if (type === 'strategy_points') {
-							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
 						}
 						else {
-							EffiencyString = HTML.Format(Math.round(efficiency));
+							EfficiencyString = HTML.Format(Math.round(efficiency));
                         }
 					
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
-						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
@@ -598,12 +598,12 @@ let Productions = {
 							size = sizes[groups[i]['eid']],
 							efficiency = (MotivatedProductCount / (size * groups[i]['count']));
 
-						let EffiencyString;
+						let EfficiencyString;
 						if (type === 'strategy_points') {
-							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
 						}
 						else {
-							EffiencyString = HTML.Format(Math.round(efficiency));
+							EfficiencyString = HTML.Format(Math.round(efficiency));
 						}
 									
 						let tds = '<tr>' +
@@ -611,7 +611,7 @@ let Productions = {
 							'<td colspan="3" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
-							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>'+
+							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>'+
 							'<td class="addon-info is-number" data-number="' + groups[i]['era'] + '">' + i18n('Eras.' + groups[i]['era']) + '</td>'+
 							'</tr>';
 
