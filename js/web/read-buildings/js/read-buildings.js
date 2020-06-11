@@ -72,6 +72,8 @@ let Reader = {
 	 */
 	OtherPlayersBuildings: (dp, IsPlunderable) => {
 
+		GildFights.InitBonus();
+
 		Reader.data = {
 			ready: [],
 			work: []
