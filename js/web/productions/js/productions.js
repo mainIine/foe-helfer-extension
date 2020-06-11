@@ -596,14 +596,22 @@ let Productions = {
 						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
 							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type),
 							size = sizes[groups[i]['eid']],
-							efficiency = (MotivatedProductCount/(size*groups[i]['count']));
+							efficiency = (MotivatedProductCount / (size * groups[i]['count']));
+
+						let EffiencyString;
+						if (type === 'strategy_points') {
+							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+						}
+						else {
+							EffiencyString = HTML.Format(Math.round(efficiency));
+						}
 									
 						let tds = '<tr>' +
 							'<td class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
 							'<td colspan="3" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
-							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + efficiency.toFixed(3) + '</td>'+
+							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>'+
 							'<td class="addon-info is-number" data-number="' + groups[i]['era'] + '">' + i18n('Eras.' + groups[i]['era']) + '</td>'+
 							'</tr>';
 
