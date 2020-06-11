@@ -374,8 +374,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "Koopbaar: ",
-		"Boxes.StrategyPoints.FPBar": "FP-Voorraad: ",
 		"Boxes.Technologies.DescInStock": "Beschikbaar",
 		"Boxes.Technologies.DescRequired": "Aantal",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
