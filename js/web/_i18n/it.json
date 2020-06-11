@@ -374,8 +374,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "Acquistabile:",
-		"Boxes.StrategyPoints.FPBar": "Magazzino PF:",
 		"Boxes.Technologies.DescInStock": "Disponibile",
 		"Boxes.Technologies.DescRequired": "Richiesto",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ff4040'>Manca</span>",
