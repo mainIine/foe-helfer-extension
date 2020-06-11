@@ -656,7 +656,12 @@ const FoEproxy = (function () {
 			if (!Entities.hasOwnProperty(i)) continue;
 
 			let ID = Entities[i]['id'];
-			MainParser.CityMapData[ID] = Entities[i];
+			if (MainParser.CityMapData[ID]) {
+				MainParser.CityMapData[ID] = Entities[i];
+			}
+			if (MainParser.CityMapEraOutpostData && MainParser.CityMapEraOutpostData[ID]) {
+				MainParser.CityMapEraOutpostData[ID] = Entities[i];
+            }
         }
 	});
 
