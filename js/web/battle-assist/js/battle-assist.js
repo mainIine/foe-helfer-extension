@@ -29,10 +29,6 @@ let BattleAssist = {
 			'dragdrop': false,
 			'minimize': false
 		});
-        $('#battleAssistStopDialogBody').html(`
-<div class="blink">
-${i18n('Boxes.BattleAssist.Text')}
-</div>
-`);
+        $('#battleAssistStopDialogBody').html(`<div class="blink">${i18n('Boxes.BattleAssist.Text')}</div>`);
     },
-}
+};
