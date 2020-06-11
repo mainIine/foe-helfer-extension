@@ -577,7 +577,7 @@ const FoEproxy = (function () {
 		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
-		MainParser.CityMapData = data.responseData.city_map.entities;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
 		if (Settings.GetSetting('GlobalSend')) {
 			MainParser.SendBuildings(MainParser.CityMapData);
 		}
@@ -626,14 +626,14 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = data.responseData['entities'];
+			MainParser.CityMapEraOutpostData = Object.assign({}, ...data['entities'].map((x) => ({ [x.id]: x })));;
         }
 	});
 
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		MainParser.CityMapData = data.responseData;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
 
@@ -646,6 +646,20 @@ const FoEproxy = (function () {
 			$(this).remove();
 		});
 	});
+
+	// Produktion wird eingesammelt
+	FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
+		let Entities = data.responseData['updatedEntities'];
+		if (!Entities) return;
+
+		for (let i in Entities) {
+			if (!Entities.hasOwnProperty(i)) continue;
+
+			let ID = Entities[i]['id'];
+			MainParser.CityMapData[ID] = Entities[i];
+        }
+	});
+
 
 	// Nachricht geöffnet
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
@@ -1019,7 +1033,7 @@ let MainParser = {
 	CityEntities: null,
 
 	// alle Gebäude des Spielers
-	CityMapData: null,
+	CityMapData: {},
 	CityMapEraOutpostData: null,
 
 	// freugeschaltete Erweiterungen
@@ -1553,24 +1567,23 @@ let MainParser = {
 
 		for(let i in d)
 		{
-			if(d.hasOwnProperty(i))
-			{
-				if(d[i]['type'] === 'greatbuilding'){
-					let b = {
-						cityentity_id: d[i]['cityentity_id'],
-						level: d[i]['level'],
-						max_level: d[i]['max_level'],
-						invested_forge_points: d[i]['state']['invested_forge_points'] || 0,
-						forge_points_for_level_up: d[i]['state']['forge_points_for_level_up']
-					};
+			if (!d.hasOwnProperty(i)) continue;
 
-					lgs.push(b);
+			if (d[i]['type'] === 'greatbuilding') {
+				let b = {
+					cityentity_id: d[i]['cityentity_id'],
+					level: d[i]['level'],
+					max_level: d[i]['max_level'],
+					invested_forge_points: d[i]['state']['invested_forge_points'] || 0,
+					forge_points_for_level_up: d[i]['state']['forge_points_for_level_up']
+				};
 
-					if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
-					{
-						if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
-							MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
-						}
+				lgs.push(b);
+
+				if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
+				{
+					if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
+						MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
 					}
 				}
 			}

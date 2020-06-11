@@ -405,7 +405,7 @@ let Unit = {
 	 * *
 	 * */
 	RefreshAlca: () => {
-		if (!Unit.alca) Unit.alca = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+		if (!Unit.alca) Unit.alca = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
     },
 
 

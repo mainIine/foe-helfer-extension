@@ -144,7 +144,7 @@ let GreatBuildings =
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             let CityEntity = MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID];
-            let OwnGB = MainParser.CityMapData.find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));
+            let OwnGB = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));
 
             let BruttoCosts = [];
             for (let j = 0; j < 10; j++) {
@@ -203,7 +203,7 @@ let GreatBuildings =
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             h.push('<tr>');
-            h.push('<td>' + MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID] + '</td>');
+            h.push('<td>' + MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID]['name'] + '</td>');
             if (ShowGoodCosts[i]) {
                 h.push('<td><input type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[i].GoodCosts + '"></td>');
             }
