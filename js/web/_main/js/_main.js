@@ -626,7 +626,7 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = Object.assign({}, ...data['entities'].map((x) => ({ [x.id]: x })));;
+			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
         }
 	});
 
@@ -647,22 +647,22 @@ const FoEproxy = (function () {
 		});
 	});
 
+	// Gebäude verschoben
+	FoEproxy.addHandler('CityMapService', 'moveEntity', (data, postData) => {
+		MainParser.UpdateCityMap(data.responseData);
+	});
+
+	// Mehrere Gebäude verschoben (Umbaumodus)
+	FoEproxy.addHandler('CityMapService', 'moveEntities', (data, postData) => {
+		MainParser.UpdateCityMap(data.responseData);
+	});
+
 	// Produktion wird eingesammelt
 	FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-		let Entities = data.responseData['updatedEntities'];
-		if (!Entities) return;
+		let Buildings = data.responseData['updatedEntities'];
+		if (!Buildings) return;
 
-		for (let i in Entities) {
-			if (!Entities.hasOwnProperty(i)) continue;
-
-			let ID = Entities[i]['id'];
-			if (MainParser.CityMapData[ID]) {
-				MainParser.CityMapData[ID] = Entities[i];
-			}
-			if (MainParser.CityMapEraOutpostData && MainParser.CityMapEraOutpostData[ID]) {
-				MainParser.CityMapEraOutpostData[ID] = Entities[i];
-            }
-        }
+		MainParser.UpdateCityMap(Buildings)
 	});
 
 
@@ -1893,6 +1893,26 @@ let MainParser = {
 		for (let i = 0; i < Items.length; i++) {
 			let ID = Items[i]['id'];
 			MainParser.Inventory[ID] = Items[i];
+		}
+	},
+
+
+	/**
+	 * Aktualisiert ein Gebäude von CityMapData oder CityMapEraOutpost
+	 * 
+	 * @param Buildings
+	 * */
+	UpdateCityMap: (Buildings) => {
+		for (let i in Buildings) {
+			if (!Buildings.hasOwnProperty(i)) continue;
+
+			let ID = Buildings[i]['id'];
+			if (MainParser.CityMapData[ID]) {
+				MainParser.CityMapData[ID] = Buildings[i];
+			}
+			if (MainParser.CityMapEraOutpostData && MainParser.CityMapEraOutpostData[ID]) {
+				MainParser.CityMapEraOutpostData[ID] = Buildings[i];
+			}
 		}
     },
 
