@@ -28,7 +28,7 @@ FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', async(data, post
 			const lastShieldAction = await IndexDB.db.pvpActions.where({playerId: playerId}).and(it => it.type === Plunderer.ACTION_TYPE_SHIELDED).last();
 
 			// If in db already exists actual shield info than skip
-			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= new Date()) {continue;}
+			if (lastShieldAction && new Date(lastShieldAction.expireTime * 1000) >= MainParser.getCurrentDate()) {continue;}
 
 			await IndexDB.db.pvpActions.add({
 				type: Plunderer.ACTION_TYPE_SHIELDED,
@@ -83,7 +83,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', async (data, postData) => {
 	// Add action
 	await IndexDB.db.pvpActions.add({
 		playerId: defenderPlayerId,
-		date: new Date(),
+		date: MainParser.getCurrentDate(),
 		type: actionType,
 		battle: {
 			myArmy: myUnits,
@@ -154,7 +154,7 @@ FoEproxy.addHandler('CityMapService', 'reset', async (data, postData) => {
 			const isImportant = Object.keys(resources).some(it => !unimportantProds.includes(it));
 			let action = {
 				playerId,
-				date: new Date(),
+				date: MainParser.getCurrentDate(),
 				type: Plunderer.ACTION_TYPE_PLUNDERED,
 				resources,
 				sp: resources.strategy_points || 0,
@@ -245,7 +245,7 @@ let Plunderer = {
 			clanName: otherPlayer.clan && otherPlayer.clan.name,
 			avatar: otherPlayer.avatar,
 			era: player.other_player_era,
-			date: new Date(),
+			date: MainParser.getCurrentDate(),
 		});
 	},
 
@@ -260,8 +260,8 @@ let Plunderer = {
 			// Fetch last plunder action that happen just few seconds ago (1 minute ago)
 			const lastPlunderAction = await IndexDB.db.pvpActions.where({playerId})
 						.filter(it => (it.type == Plunderer.ACTION_TYPE_PLUNDERED &&
-													 it.entityId == entityId &&
-													 it.date > (+new Date() - 60 * 10 * 1000)))
+							it.entityId == entityId &&
+							it.date > (+MainParser.getCurrentDate() - 60 * 10 * 1000)))
 						.last();
 
 			// Add missing fields if not exists jet to payload:
@@ -271,7 +271,7 @@ let Plunderer = {
 				type: Plunderer.ACTION_TYPE_PLUNDERED,
 				...lastPlunderAction,
 				...payload,
-				date: new Date(),
+				date: MainParser.getCurrentDate(),
 			}
 
 			if (lastPlunderAction && payload.doublePlunder && !payload.doublePlunderApplied) {

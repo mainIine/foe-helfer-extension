@@ -143,7 +143,7 @@ let Productions = {
 				type: 'boost',
 				products: [],
 				motivatedproducts: [],
-				at: (new Date().getTime()) / 1000,
+				at: (MainParser.getCurrentDate().getTime()) / 1000,
 				era: 0,
 				in: 0
 			}
@@ -266,7 +266,7 @@ let Productions = {
 
 		// Zeitalter suchen
 		if (CityEntity['is_multi_age'] && d['level'] !== undefined) {
-			era = d['level'];
+			era = d['level'] + 1;
 
 		}
 		else if (CityEntity['strategy_points_for_upgrade']) { //Great building
@@ -288,7 +288,7 @@ let Productions = {
 			eid: d['cityentity_id'],
 			type: d['type'],
 			era: era,
-			at: (new Date().getTime()) / 1000,
+			at: (MainParser.getCurrentDate().getTime()) / 1000,
 			in: 0
 		};
 
