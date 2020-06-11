@@ -42,7 +42,7 @@ let CityMap = {
 			CityMap.IsExtern = true;
 		}
 
-		CityMap.CityData = Data.sort(function (X1, X2) {
+		CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
 			if (X1.x < X2.x) return -1;
 			if (X1.x > X2.x) return 1;
 		});

@@ -15,6 +15,7 @@
 
 let Productions = {
 
+	CombinedCityMapData: {},
 	BuildingsAll: [],
 	BuildingsProducts: [],
 	BuildingsProductsGroups: [],
@@ -69,9 +70,9 @@ let Productions = {
 
 		moment.locale(i18n('Local'));
 
-		Productions.entities = MainParser.CityMapData;
+		Productions.CombinedCityMapData = MainParser.CityMapData;
 		if (MainParser.CityMapEraOutpostData) {
-			Productions.entities = Productions.entities.concat(MainParser.CityMapEraOutpostData);
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, MainParser.CityMapEraOutpostData);
 		}
 
 		// Münzboost ausrechnen und bereitstellen
@@ -102,7 +103,7 @@ let Productions = {
 	 */
 	ReadData: ()=> {
 
-		let d = Productions.entities;
+		let d = Productions.CombinedCityMapData;
 		Productions.BuildingsAll = [];
 
 		let PopulationSum = 0,
@@ -110,28 +111,27 @@ let Productions = {
 
 		for(let i in d)
 		{
-			if (d.hasOwnProperty(i) && d[i]['id'] < 2000000000)
-			{
-				// dem Rathaus evt Boosts hinzufügen (tägliche FP, Botschafter Bonus)
-				if(d[i]['id'] === 1){
-					d[i] = Productions.prepareMainBuilding(d[i]);
+			if (!d.hasOwnProperty(i)) continue;
+
+			if (d[i]['id'] >= 2000000000) continue;
+
+			// dem Rathaus evt Boosts hinzufügen (tägliche FP, Botschafter Bonus)
+			if(d[i]['id'] === 1){
+				d[i] = Productions.prepareMainBuilding(d[i]);
+			}
+
+			// jede einzelne Produktart holen
+			let building = Productions.readType(d[i]);
+
+			// das Gebäude produziert etwas?
+			if(building !== false){
+				Productions.BuildingsAll.push(building);
+
+				if (building['products']['population']) {
+					PopulationSum += building['products']['population'];
 				}
-
-
-				// jede einzelne Produktart holen
-				let building = Productions.readType(d[i]);
-
-				// das Gebäude produziert etwas?
-				if(building !== false){
-					Productions.BuildingsAll.push(building);
-
-					if (building['products']['population']) {
-						PopulationSum += building['products']['population'];
-					}
-					if (building['products']['happiness']) {
-						HappinessSum += building['products']['happiness'];
-					}
-
+				if (building['products']['happiness']) {
+					HappinessSum += building['products']['happiness'];
 				}
 			}
 		}
@@ -225,7 +225,7 @@ let Productions = {
 				}
 
 				else {
-					let mId = d[i]['cityentity_id'] + '_' + d[i]['id'];
+					let mId = Productions.BuildingsAll[i]['eid'] + '_' + Productions.BuildingsAll[i]['id'];
 
 					if (Array.isArray(Productions.BuildingsProducts['packaging'][mId]) === false) {
 						Productions.BuildingsProducts['packaging'][mId] = [];
@@ -492,16 +492,17 @@ let Productions = {
 				sizetooltips = [];
       
 				// Gebäudegrößen für Effizienzberechnung laden
-				for(let index = 0; index < MainParser.CityMapData.length; ++index)
-				{
-					let d = MainParser.CityEntities[MainParser.CityMapData[index]['cityentity_id']],
-						width = parseInt(d['width']),
-						length = parseInt(d['length']),
-						RequiredStreet = d['requirements']['street_connection_level'] | 0;
-						
-					sizes[MainParser.CityMapData[index]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[index]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) });
-				}
+				for (let i in MainParser.CityMapData) {
+					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
+
+					let Entity = MainParser.CityEntities[MainParser.CityMapData[i]['cityentity_id']],
+						width = parseInt(Entity['width']),
+						length = parseInt(Entity['length']),
+						RequiredStreet = Entity['requirements']['street_connection_level'] | 0;
+
+					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) });
+	            }
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
 			{
