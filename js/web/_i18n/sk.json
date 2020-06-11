@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Budova",
 		"Boxes.Outpost.TitleFree": "Voľné",
 		"Boxes.Outpost.TitleShort": "Prehľad tovaru - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Oblúk",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plány",
