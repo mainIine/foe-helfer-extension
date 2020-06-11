@@ -29,6 +29,7 @@
 let ApiURL = 'https://api.foe-rechner.de/',
 	ActiveMap = 'main',
 	ExtPlayerID = 0,
+	ExtPlayerName = null,
 	ExtGuildID = 0,
 	ExtWorld = '',
 	CurrentEra = null,
@@ -1526,13 +1527,13 @@ let MainParser = {
 		});
 		localStorage.setItem('current_world', ExtWorld);
 
+		ExtPlayerName = d['user_name'];
 		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_name',
-			data: d['user_name']
+			data: ExtPlayerName
 		});
-		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
-
+		
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
 			data: {

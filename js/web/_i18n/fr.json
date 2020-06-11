@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Bâtiment",
 		"Boxes.Outpost.TitleFree": "Etat",
 		"Boxes.Outpost.TitleShort": "Vue des ressources - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arche",
 		"Boxes.OwnpartCalculator.Auto": "Auto.",
 		"Boxes.OwnpartCalculator.BPs": "Plans",

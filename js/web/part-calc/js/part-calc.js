@@ -287,11 +287,20 @@ let Parts = {
             MedalRewards[i] = 0;
 
         for (let i = BPRewards.length; i < Maezens; i++)
-            BPRewards[i] = 0;
+			BPRewards[i] = 0;
 
+		let PlayerName = undefined,
+			PlayerID = Parts.CityMapEntity['player_id'];
+
+		if (PlayerID !== ExtPlayerID) { //LG eines anderen Spielers
+			PlayerName = PlayerDict[PlayerID]['PlayerName'];
+		}
+		
         // Info-Block
         h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-		h.push('<p class="lg-info text-center"><strong>' + MainParser.CityEntities[cityentity_id]['name'] + ' </strong><br>' + (Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
+		h.push('<p class="lg-info text-center"><strong>' + MainParser.CityEntities[cityentity_id]['name'] + ' </strong><br>');
+		if(PlayerName) h.push(PlayerName + '<br>');
+		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
         h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
@@ -450,7 +459,7 @@ let Parts = {
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
 			n = localStorage.getItem(ExtPlayerID+'_PlayerCopyName'),
-			m = localStorage.getItem(ExtPlayerID+'_current_player_name'),
+			m = (Parts.CityMapEntity['player_id'] === ExtPlayerID ? ExtPlayerName : PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName'])
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
@@ -484,6 +493,8 @@ let Parts = {
 
 			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
 
+			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input chain-place" id="chain-all" data-place="all"> ' + i18n('Boxes.OwnpartCalculator.All') + '</label>' +
+
 			'<label class="form-check-label game-cursor" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n('Boxes.OwnpartCalculator.Levels') + '</label>' +
 			'</div>';
 
@@ -504,7 +515,6 @@ let Parts = {
 		$('#OwnPartBox').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
-
 
 		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
@@ -550,8 +560,10 @@ let Parts = {
 			bn = $('#build-name').val(),
 			cs = $('#chain-scheme').val();
 
-		localStorage.setItem(ExtPlayerID+'_PlayerCopyName', pn);
-		localStorage.setItem(Parts.CurrentBuildingID, bn);
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID){
+			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', pn);
+			localStorage.setItem(Parts.CurrentBuildingID, bn);
+		}
 
 		// Schema speichern
 		localStorage.setItem('DropdownScheme', cs);
@@ -612,6 +624,11 @@ let Parts = {
 				}
 			}
 		}
+		else if ($('#chain-all').prop('checked')){
+			for (let i = 0; i < 5; i++){
+				PrintPlace[i] = true;
+            }
+        }
 		// einzelne Plätze wurde angehakt
 		else {
 			for (let i = 0; i < 5; i++) {
