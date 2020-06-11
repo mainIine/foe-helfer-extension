@@ -42,7 +42,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
 	EventCountdown = false,
-	CurrentTime = 0;
+	GameTimeOffset = 0;
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -745,7 +745,7 @@ const FoEproxy = (function () {
 
 		// wenn schon offen, den Inhalt updaten
 		if ($('#LGOverviewBox').is(':visible')) {
-			let CurrentTime = new Date().getTime()
+			let CurrentTime = MainParser.getCurrentDateTime()
 			if (CurrentTime < LastKostenrechnerOpenTime + 1000)
 				Calculator.ShowOverview(true);
 			else
@@ -856,7 +856,7 @@ const FoEproxy = (function () {
 
 		//Fremdes LG
 		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
-			LastKostenrechnerOpenTime = new Date().getTime()
+			LastKostenrechnerOpenTime = MainParser.getCurrentDateTime()
 
 			$('#calculator-Btn').removeClass('hud-btn-red');
 			$('#calculator-Btn-closed').remove();
@@ -1034,7 +1034,7 @@ const FoEproxy = (function () {
 
 			MainParser.setLanguage();
 		}
-		CurrentTime = data.responseData.time;
+		GameTimeOffset = data.responseData.time*1000 - new Date().getTime();
 	});
 
 
@@ -1069,7 +1069,7 @@ const FoEproxy = (function () {
 
 /**
  *
- * @type {{BuildingSelectionKits: null, BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, SetArkBonus: MainParser.SetArkBonus, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), SendGoodsLog: MainParser.SendGoodsLog, Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, CityEntities: null, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, CityMetaId: null, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
+ * @type {{BuildingSelectionKits: null, BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, FriendsList: MainParser.FriendsList, CollectBoosts: MainParser.CollectBoosts, SetArkBonus: MainParser.SetArkBonus, sendExtMessage: MainParser.sendExtMessage, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], checkNextUpdate: (function(*=): string|boolean), SendGoodsLog: MainParser.SendGoodsLog, Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, CityEntities: null, BonusService: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: MainParser.OtherPlayersLGs, CityMapData: null, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, obj2FormData: obj2FormData, GuildExpedition: MainParser.GuildExpedition, CityMetaId: null, Buildings: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), getCurrentDateTime: (function(): number), getCurrentDate: (function(): number), OwnLG: MainParser.OwnLG, loadJSON: MainParser.loadJSON, SocialbarList: MainParser.SocialbarList, Championship: MainParser.Championship, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server, Inventory: null, compareTime: MainParser.compareTime, EmissaryService: null, setLanguage: MainParser.setLanguage}}
  */
 let MainParser = {
 
@@ -1156,7 +1156,7 @@ let MainParser = {
 	 */
 	getAddedDateTime: (hrs, min = 0)=> {
 
-		let time = new Date().getTime(),
+		let time = MainParser.getCurrentDateTime(),
 			h = hrs || 0,
 			m = min || 0,
 
@@ -1175,8 +1175,18 @@ let MainParser = {
 	 *
 	 * @returns {number}
 	 */
-	getCurrentDateTime: ()=> {
-		return new Date().getTime();
+	getCurrentDateTime: () => {
+		return MainParser.getCurrentDate().getTime();
+	},
+
+
+	/**
+	* Gibt das aktuelle Datum in Spielzeit zurück
+	*
+	* @returns {number}
+	*/
+	getCurrentDate: () => {
+		return new Date(Date.now() + GameTimeOffset);
 	},
 
 

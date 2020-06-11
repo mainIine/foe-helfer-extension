@@ -296,7 +296,7 @@ let Calculator = {
 			}
 		}
 
-		return h.join();
+		return h.join('');
 	},
 
 
@@ -796,7 +796,7 @@ let Calculator = {
 				currentFp: GreatBuilding['currentFp'],
 				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
 				bestRateCosts: GreatBuilding['bestRateCosts'],
-				date: new Date()
+				date: MainParser.getCurrentDate()
 			});
 		}
 		else {
@@ -805,7 +805,7 @@ let Calculator = {
 				currentFp: GreatBuilding['currentFp'],
 				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
 				bestRateCosts: GreatBuilding['bestRateCosts'],
-				date: new Date()
+				date: MainParser.getCurrentDate()
 			});
 		}
 		/* Ende Neuer Code: */
