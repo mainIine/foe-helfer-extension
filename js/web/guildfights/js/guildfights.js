@@ -406,7 +406,6 @@ let GildFights = {
 
 			tN += playerNew['negotiationsWon'];
 			tF += playerNew['battlesWon'];
-			// let tNF = (tN*2)+tF;
 
 			b.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
@@ -432,9 +431,9 @@ let GildFights = {
 			b.push('</tr>');
 		}
 
+        let tNF = (tN*2)+tF;
 
-
-		t.push('<table class="foe-table">');
+        t.push('<table class="foe-table">');
 
 		t.push('<thead>');
 		t.push('<tr>');

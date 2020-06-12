@@ -850,7 +850,7 @@ let _menu = {
 			MainParser.sendExtMessage({
 				type: 'chat',
 				player: ExtPlayerID,
-				name: localStorage.getItem(ExtPlayerID+'_current_player_name'),
+				name: ExtPlayerName,
 				guild: ExtGuildID,
 				world: ExtWorld
 			});

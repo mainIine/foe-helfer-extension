@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Budova",
 		"Boxes.Outpost.TitleFree": "Vyzkoumáno",
 		"Boxes.Outpost.TitleShort": "Zboží - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plánky",
