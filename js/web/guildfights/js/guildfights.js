@@ -90,11 +90,7 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 	GildFights.HideBonusSidebar();
 });
-/*
-FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-	GildFights.HideBonusSidebar();
-});
-*/
+
 
 /**
  * GuildFights Class
@@ -152,6 +148,29 @@ let GildFights = {
 	 * @constructor
 	 */
 	InitBonus: (isGex = false)=> {
+		let bt = GildFights.BonusTypes,
+			exist = false;
+
+		// check if player has some of these 4 bonuses
+		for(let i in bt)
+		{
+			if(!bt.hasOwnProperty(i)) break;
+
+			GildFights.Bonuses.forEach((arr)=>{
+				if(arr['type'].includes(bt[i])){
+					exist = true;
+					return false;
+				}
+			});
+
+			if(exist === true) break;
+		}
+
+		// no? exit...
+		if(exist === false){
+			return;
+		}
+
 		if($('#bonus-hud').length === 0){
 			HTML.AddCssFile('guildfights');
 
@@ -170,6 +189,7 @@ let GildFights = {
 	 * @constructor
 	 */
 	ShowBonusSidebar: (isGex)=> {
+
 		let div = $('<div />');
 
 		div.attr({
