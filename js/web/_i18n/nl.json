@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Gebouw",
 		"Boxes.Outpost.TitleFree": "Gratis",
 		"Boxes.Outpost.TitleShort": "Goederenoverzicht - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "BD's",

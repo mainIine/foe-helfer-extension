@@ -570,7 +570,7 @@ let Plunderer = {
 							<div class="name">
 								<img class="sabotage" src="${extUrl}js/web/plunderer/images/sabotage.png" alt="Sabotage" title="Sabotage" />
 								${action.doublePlunder ? `<img class="doublePlunder" src="${extUrl}js/web/plunderer/images/double_plunder.png" alt="Double Plunder Bonus" title="Double Plunder Bonus"/>` : ''}
-								${(BuildingNamesi18n[action.buildId] || {name: '-'}).name}
+								${(MainParser.CityEntities[action.buildId] || {name: '-'}).name}
 							</div>
 							<div class="plunder-items ${action.important ? 'text-warning' : ''}">
 								${goodsIds.map(id => {

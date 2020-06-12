@@ -38,7 +38,7 @@
 *       sp: number, * strategy points
 *       important: boolean, // if not supplies or money only
 *       entityId: number, // foe city entity Id
-*       buildId: string, // key for BuildingNamesi18n
+*       buildId: string, // key for MainParser.CityEntities
 *   }
 *   OR
 *   {

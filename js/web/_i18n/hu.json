@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Épület",
 		"Boxes.Outpost.TitleFree": "Ingyenes",
 		"Boxes.Outpost.TitleShort": "Árú áttekintés - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Bárka",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "T.R.",

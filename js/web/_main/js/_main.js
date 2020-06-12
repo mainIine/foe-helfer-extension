@@ -29,11 +29,11 @@
 let ApiURL = 'https://api.foe-rechner.de/',
 	ActiveMap = 'main',
 	ExtPlayerID = 0,
+	ExtPlayerName = null,
 	ExtGuildID = 0,
 	ExtWorld = '',
 	CurrentEra = null,
 	CurrentEraID = null,
-	BuildingNamesi18n = false,
 	GoodsData = [],
 	GoodsList = [],
 	PlayerDict = {},
@@ -540,57 +540,9 @@ const FoEproxy = (function () {
 	// globale Handler
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		BuildingNamesi18n = {};
+		let EntityArray = JSON.parse(xhr.responseText);
+		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));;
 
-		const j = JSON.parse(xhr.responseText);
-
-		MainParser.CityEntities = j;
-
-		for (let i in j)
-		{
-			if (j.hasOwnProperty(i))
-			{
-				BuildingNamesi18n[j[i]['asset_id']] = {
-					name: j[i]['name'],
-					width: j[i]['width'],
-					height: j[i]['length'],
-					type: j[i]['type'],
-					provided_happiness: j[i]['provided_happiness'],
-					population: undefined,
-					entity_levels: j[i]['entity_levels'],
-					index: i
-				};
-
-				if(j[i]['abilities'] !== undefined)
-				{
-					for(let x in j[i]['abilities'])
-					{
-						if (j[i]['abilities'].hasOwnProperty(x))
-						{
-							let ar = j[i]['abilities'][x];
-
-							if(ar['additionalResources'] !== undefined && ar['additionalResources']['AllAge'] !== undefined && ar['additionalResources']['AllAge']['resources'] !== undefined)
-							{
-								BuildingNamesi18n[j[i]['asset_id']]['additionalResources'] = ar['additionalResources']['AllAge']['resources'];
-							}
-						}
-					}
-				}
-
-				if (j[i]['staticResources'] !== undefined && j[i]['staticResources']['resources'] !== undefined) {
-					BuildingNamesi18n[j[i]['asset_id']]['population'] = j[i]['staticResources']['resources']['population'];
-				}
-
-				if (j[i]['requirements'] && j[i]['requirements']['street_connection_level']) {
-					BuildingNamesi18n[j[i]['asset_id']]['street_connection_level'] = j[i]['requirements']['street_connection_level'];
-				}
-				else {
-					BuildingNamesi18n[j[i]['asset_id']]['street_connection_level'] = 0;
-                }
-			}
-		}
-
-		MainParser.Buildings = BuildingNamesi18n;
 		if (!HiddenRewards.IsPrepared) {
 			HiddenRewards.prepareData();
 		}
@@ -626,7 +578,7 @@ const FoEproxy = (function () {
 		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
-		MainParser.CityMapData = data.responseData.city_map.entities;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
 		if (Settings.GetSetting('GlobalSend')) {
 			MainParser.SendBuildings(MainParser.CityMapData);
 		}
@@ -675,14 +627,14 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = data.responseData['entities'];
+			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
         }
 	});
 
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		MainParser.CityMapData = data.responseData;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
 
@@ -696,6 +648,41 @@ const FoEproxy = (function () {
 		});
 	});
 
+	FoEproxy.addHandler('CityMapService', (data, postData) => {
+		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
+			MainParser.UpdateCityMap(data.responseData);
+		}
+		else if (data.requestMethod === 'placeBuilding') {
+			let Building = data.responseData[0];
+			if (Building && Building['id']) {
+				MainParser.CityMapData[Building['id']] = Building;
+			}
+		}
+		else if (data.requestMethod === 'removeBuilding') {
+			let ID = postData[0].requestData[0];
+			if (ID && MainParser.CityMapData[ID]) {
+				delete MainParser.CityMapData[ID];
+            }
+        }
+	});
+
+	// Gebäude verschoben (einzeln oder Umbaumodus), FP eingezahlt etc.
+	FoEproxy.addHandler('CityMapService', (data, postData) => {
+		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
+			MainParser.UpdateCityMap(data.responseData);
+		}
+	});
+
+	// Produktion wird eingesammelt/gestartet/abgebrochen
+	FoEproxy.addHandler('CityProductionService', (data, postData) => {
+		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
+			let Buildings = data.responseData['updatedEntities'];
+			if (!Buildings) return;
+
+			MainParser.UpdateCityMap(Buildings)
+		}
+	});
+	
 	// Nachricht geöffnet
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
@@ -892,21 +879,6 @@ const FoEproxy = (function () {
 	});
 
 
-	// --------------------------------------------------------------------------------------------------
-	// Ernten anderer Spieler
-
-	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		let OtherPlayer = data.responseData.other_player;
-		let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
-
-		if (Settings.GetSetting('ShowAllPlayerAttDeff') || IsPlunderable && Settings.GetSetting('ShowNeighborsGoods')) {
-			Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
-		}
-		else {
-			$('#ResultBox').remove();
-		}
-	});
-
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
 		ResourceStock = data.responseData.resources; // Lagerbestand immer aktulisieren. Betrifft auch andere Module wie Technologies oder Negotiation
@@ -1074,7 +1046,6 @@ const FoEproxy = (function () {
 let MainParser = {
 
 	Language: 'en',
-	Buildings: null,
 	i18n: null,
 	BonusService: null,
 	EmissaryService: null,
@@ -1084,7 +1055,7 @@ let MainParser = {
 	CityEntities: null,
 
 	// alle Gebäude des Spielers
-	CityMapData: null,
+	CityMapData: {},
 	CityMapEraOutpostData: null,
 
 	// freugeschaltete Erweiterungen
@@ -1556,13 +1527,13 @@ let MainParser = {
 		});
 		localStorage.setItem('current_world', ExtWorld);
 
+		ExtPlayerName = d['user_name'];
 		MainParser.sendExtMessage({
 			type: 'storeData',
 			key: 'current_player_name',
-			data: d['user_name']
+			data: ExtPlayerName
 		});
-		localStorage.setItem(ExtPlayerID+'_current_player_name', d['user_name']);
-
+		
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
 			data: {
@@ -1618,24 +1589,23 @@ let MainParser = {
 
 		for(let i in d)
 		{
-			if(d.hasOwnProperty(i))
-			{
-				if(d[i]['type'] === 'greatbuilding'){
-					let b = {
-						cityentity_id: d[i]['cityentity_id'],
-						level: d[i]['level'],
-						max_level: d[i]['max_level'],
-						invested_forge_points: d[i]['state']['invested_forge_points'] || 0,
-						forge_points_for_level_up: d[i]['state']['forge_points_for_level_up']
-					};
+			if (!d.hasOwnProperty(i)) continue;
 
-					lgs.push(b);
+			if (d[i]['type'] === 'greatbuilding') {
+				let b = {
+					cityentity_id: d[i]['cityentity_id'],
+					level: d[i]['level'],
+					max_level: d[i]['max_level'],
+					invested_forge_points: d[i]['state']['invested_forge_points'] || 0,
+					forge_points_for_level_up: d[i]['state']['forge_points_for_level_up']
+				};
 
-					if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
-					{
-						if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
-							MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
-						}
+				lgs.push(b);
+
+				if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
+				{
+					if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
+						MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
 					}
 				}
 			}
@@ -1742,7 +1712,7 @@ let MainParser = {
 					let entity =  '';
 
 					if(ev[i]['entity_id'] !== undefined){
-						entity = MainParser.Buildings[ev[i]['entity_id']]['name'];
+						entity = MainParser.CityEntities[ev[i]['entity_id']]['name'];
 					}
 
 					if(ev[i]['type'] === 'social_interaction'){
@@ -1940,6 +1910,26 @@ let MainParser = {
 		for (let i = 0; i < Items.length; i++) {
 			let ID = Items[i]['id'];
 			MainParser.Inventory[ID] = Items[i];
+		}
+	},
+
+
+	/**
+	 * Aktualisiert ein Gebäude von CityMapData oder CityMapEraOutpost
+	 * 
+	 * @param Buildings
+	 * */
+	UpdateCityMap: (Buildings) => {
+		for (let i in Buildings) {
+			if (!Buildings.hasOwnProperty(i)) continue;
+
+			let ID = Buildings[i]['id'];
+			if (MainParser.CityMapData[ID]) {
+				MainParser.CityMapData[ID] = Buildings[i];
+			}
+			if (MainParser.CityMapEraOutpostData && MainParser.CityMapEraOutpostData[ID]) {
+				MainParser.CityMapEraOutpostData[ID] = Buildings[i];
+			}
 		}
     },
 
