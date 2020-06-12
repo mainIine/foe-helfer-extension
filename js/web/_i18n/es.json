@@ -234,22 +234,22 @@
         "Boxes.Settings.Active": "Activo",
         "Boxes.Settings.Inactive": "Inactivo",
         "Boxes.Settings.Title": "Ajustes",
-        "Boxes.Stats.BtnAll": "All", //Todo: Translate
-        "Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
+        "Boxes.Stats.BtnAll": "Todas",
+        "Boxes.Stats.BtnAllPlayableEras": "Todas las edades", //Todo: Translate
         "Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-        "Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-        "Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-        "Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+        "Boxes.Stats.BtnAllTittle": "Edades + Sin edades + Especial",
+        "Boxes.Stats.BtnChartType.delta": "Delta",
+        "Boxes.Stats.BtnChartType.line": "Líneas",
         "Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
         "Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
         "Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
         "Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
-        "Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+        "Boxes.Stats.BtnLastEras": "Últimas 2 edades",
         "Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-        "Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-        "Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-        "Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
-        "Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
+        "Boxes.Stats.BtnMyEra": "Mi Edad",
+        "Boxes.Stats.BtnNoEra": "No Edad",
+        "Boxes.Stats.BtnSource.statsGBGPlayers": "Campos de batalla",
+        "Boxes.Stats.BtnSource.statsRewards": "Recompensas",
         "Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
         "Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
         "Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
