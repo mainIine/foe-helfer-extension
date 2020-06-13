@@ -498,10 +498,10 @@ let Productions = {
 					let Entity = MainParser.CityEntities[MainParser.CityMapData[i]['cityentity_id']],
 						width = parseInt(Entity['width']),
 						length = parseInt(Entity['length']),
-						RequiredStreet = Entity['requirements']['street_connection_level'] | 0;
+						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0);
 
 					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) });
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
 	            }
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -521,17 +521,23 @@ let Productions = {
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
-						let size = sizes[buildings[i]['eid']],
+						let size = sizes[buildings[i]['eid']] | 0,
 							SizeToolTip = sizetooltips[buildings[i]['eid']];
 							efficiency = (MotivatedProductCount / size);
 
 						let EfficiencyString;
-						if (type === 'strategy_points') {
-							EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+
+						if (size !== 0) {
+							if (type === 'strategy_points') {
+								EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							}
+							else {
+								EfficiencyString = HTML.Format(Math.round(efficiency));
+							}
 						}
 						else {
-							EfficiencyString = HTML.Format(Math.round(efficiency));
-                        }
+							EfficiencyString = 'N/A';
+						}
 					
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
