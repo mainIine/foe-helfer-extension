@@ -90,11 +90,7 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 	GildFights.HideBonusSidebar();
 });
-/*
-FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-	GildFights.HideBonusSidebar();
-});
-*/
+
 
 /**
  * GuildFights Class
@@ -152,6 +148,29 @@ let GildFights = {
 	 * @constructor
 	 */
 	InitBonus: (isGex = false)=> {
+		let bt = GildFights.BonusTypes,
+			exist = false;
+
+		// check if player has some of these 4 bonuses
+		for(let i in bt)
+		{
+			if(!bt.hasOwnProperty(i)) break;
+
+			GildFights.Bonuses.forEach((arr)=>{
+				if(arr['type'].includes(bt[i])){
+					exist = true;
+					return false;
+				}
+			});
+
+			if(exist === true) break;
+		}
+
+		// no? exit...
+		if(exist === false){
+			return;
+		}
+
 		if($('#bonus-hud').length === 0){
 			HTML.AddCssFile('guildfights');
 
@@ -170,6 +189,7 @@ let GildFights = {
 	 * @constructor
 	 */
 	ShowBonusSidebar: (isGex)=> {
+
 		let div = $('<div />');
 
 		div.attr({
@@ -386,7 +406,6 @@ let GildFights = {
 
 			tN += playerNew['negotiationsWon'];
 			tF += playerNew['battlesWon'];
-			// let tNF = (tN*2)+tF;
 
 			b.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
@@ -412,9 +431,9 @@ let GildFights = {
 			b.push('</tr>');
 		}
 
+        let tNF = (tN*2)+tF;
 
-
-		t.push('<table class="foe-table">');
+        t.push('<table class="foe-table">');
 
 		t.push('<thead>');
 		t.push('<tr>');
