@@ -72,9 +72,19 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	GildFights.MapData = data['responseData'];
 });
 
-// GEX wird gestartet
+// GEX started
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	GildFights.InitBonus(true);
+});
+
+// World map
+FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
+	GildFights.InitBonus();
+});
+
+// GvG Map is opend
+FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
+	GildFights.InitBonus();
 });
 
 // Bonus get updated
