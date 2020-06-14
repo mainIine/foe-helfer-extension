@@ -498,10 +498,10 @@ let Productions = {
 					let Entity = MainParser.CityEntities[MainParser.CityMapData[i]['cityentity_id']],
 						width = parseInt(Entity['width']),
 						length = parseInt(Entity['length']),
-						RequiredStreet = Entity['requirements']['street_connection_level'] | 0;
+						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0);
 
 					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) });
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
 	            }
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
@@ -521,20 +521,26 @@ let Productions = {
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
-						let size = sizes[buildings[i]['eid']],
+						let size = sizes[buildings[i]['eid']] | 0,
 							SizeToolTip = sizetooltips[buildings[i]['eid']];
 							efficiency = (MotivatedProductCount / size);
 
-						let EffiencyString;
-						if (type === 'strategy_points') {
-							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+						let EfficiencyString;
+
+						if (size !== 0) {
+							if (type === 'strategy_points') {
+								EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							}
+							else {
+								EfficiencyString = HTML.Format(Math.round(efficiency));
+							}
 						}
 						else {
-							EffiencyString = HTML.Format(Math.round(efficiency));
-                        }
+							EfficiencyString = 'N/A';
+						}
 					
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
-						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>');
+						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
@@ -552,9 +558,10 @@ let Productions = {
 					// nur Gebäude mit Gütern
 					else {
 
-						let tds = '<tr><td>' + buildings[i]['name'] + '</td>';
+						let tds = '<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>';
 
-						let pA = [];
+						let pA = [],
+							CurrentBuildingCount = 0;
 
 						for(let p in buildings[i]['products'])
 						{
@@ -567,14 +574,16 @@ let Productions = {
 
 								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i]['dailyfactor'], p);
 								countProducts[p] += Amount;
+								CurrentBuildingCount += Amount;
 								countAll += Amount;
 
 								pA.push(HTML.Format(Amount) + ' ' + Productions.GetGoodName(p));
 							}
 						}
 
-						tds +='<td>' + pA.join('<br>') + '</td>' +
-							'<td>' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>' +
+						tds += '<td class="is-number" data-number="' + CurrentBuildingCount + '">' + pA.join('<br>') + '</td>' +
+							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
+							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/open-eye.png"></span></td>' +
 							'</tr>';
@@ -598,12 +607,12 @@ let Productions = {
 							size = sizes[groups[i]['eid']],
 							efficiency = (MotivatedProductCount / (size * groups[i]['count']));
 
-						let EffiencyString;
+						let EfficiencyString;
 						if (type === 'strategy_points') {
-							EffiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
 						}
 						else {
-							EffiencyString = HTML.Format(Math.round(efficiency));
+							EfficiencyString = HTML.Format(Math.round(efficiency));
 						}
 									
 						let tds = '<tr>' +
@@ -611,7 +620,7 @@ let Productions = {
 							'<td colspan="3" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
-							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EffiencyString + '</td>'+
+							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>'+
 							'<td class="addon-info is-number" data-number="' + groups[i]['era'] + '">' + i18n('Eras.' + groups[i]['era']) + '</td>'+
 							'</tr>';
 
@@ -660,10 +669,10 @@ let Productions = {
 				}
 
 				if (CurrentEraID === 18 && !MainParser.CityMapEraOutpostData) {
-					table.push('<tr><th colspan="5">' + i18n('Boxes.Productions.NoMarsDataWarning') + '</th></tr>');
+					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoMarsDataWarning') + '</th></tr>');
 				}
 				if (CurrentEraID === 19 && !MainParser.CityMapEraOutpostData) {
-					table.push('<tr><th colspan="5">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
+					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
 				}
 
 				// Zeitalterweise in die Tabelle legen
@@ -674,9 +683,9 @@ let Productions = {
 						continue;
 					}
 
-					table.push('<tr><th colspan="3"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th><th colspan="2" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong></th></tr>');
+					table.push('<tr><th colspan="4"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th><th colspan="2" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong></th></tr>');
 
-					table.push('<tr><td colspan="5" class="all-products">');
+					table.push('<tr><td colspan="6" class="all-products">');
 
 					table.push(eras[era].join(''));
 
@@ -684,9 +693,18 @@ let Productions = {
 				}
 				table.push('</thead>');
 
-				table.push('<tbody>');
+				table.push('<tbody class="packaging-mode packaging-single">');
 
-				table.push('<tr><td class="total-products text-right" colspan="5"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td></tr>');
+				table.push('<tr class="other-header"><td class="total-products text-right" colspan="6"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td></tr>');
+
+				table.push('<tr class="sorter-header">');
+				table.push('<th class="ascending game-cursor" data-type="packaging-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
+				table.push('<th class="is-number game-cursor" data-type="packaging-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
+				table.push('<th class="is-number game-cursor" data-type="packaging-single">' + i18n('Boxes.Productions.Headings.era') + '</th>');
+				table.push('<th class="is-date game-cursor" data-type="packaging-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
+				table.push('<th class="no-sort">&nbsp;</th>');
+				table.push('<th class="no-sort">&nbsp;</th>');
+				table.push('</tr>');
 			}
 
 			else {
@@ -721,7 +739,7 @@ let Productions = {
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('<th class="is-number game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
+				table.push('<th class="is-number game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.era') + '</th>');
 				if (type !== 'population' && type !== 'happiness') {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
@@ -749,7 +767,7 @@ let Productions = {
 				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.area') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.Era') + '</th>');
+				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.era') + '</th>');
 				table.push('</tr>');
 
 				table.push( rowB.join('') );

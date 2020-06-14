@@ -23,6 +23,7 @@ let Parts = {
     CurrentBuildingPercents: [90, 90, 90, 90, 90],
     Input: [],
 	SaveCopy: [],
+	PlayInfoSound: null,
 
 
 	/**
@@ -34,7 +35,17 @@ let Parts = {
 		if( $('#OwnPartBox').length > 0 ){
 			HTML.CloseOpenBox('OwnPartBox');
 
-			return ;
+			return;
+		}
+
+		let spk = localStorage.getItem('CalculatorTone');
+
+		if (spk === null) {
+			localStorage.setItem('CalculatorTone', 'deactivated');
+			Calculator.PlayInfoSound = false;
+		}
+		else {
+			Calculator.PlayInfoSound = (spk !== 'deactivated');
 		}
 
 		// prüfen ob es hinterlegte Werte gibt
@@ -52,7 +63,8 @@ let Parts = {
 			'ask': i18n('Boxes.OwnpartCalculator.HelpLink'),
 			'auto_close': true,
 			'dragdrop': true,
-			'minimize': true
+			'minimize': true,
+			'speaker': 'PartsTone'
 		});
 
 		// CSS in den DOM prügeln
@@ -98,6 +110,20 @@ let Parts = {
 			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
 
 			Parts.collectExternals();
+		});
+
+		$('#OwnPartBox').on('click', '#PartsTone', function () {
+
+			let disabled = $(this).hasClass('deactivated');
+
+			localStorage.setItem('PartsTone', (disabled ? '' : 'deactivated'));
+			Parts.PlayInfoSound = !!disabled;
+
+			if (disabled === true) {
+				$('#PartsTone').removeClass('deactivated');
+			} else {
+				$('#PartsTone').addClass('deactivated');
+			}
 		});
 	},
 
@@ -443,7 +469,7 @@ let Parts = {
             h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
         }
 
-		h.push(Calculator.GetRecurringQuestsLine());
+		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
 		$('#OwnPartBoxBody').html( h.join('') );
 	},
