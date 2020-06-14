@@ -28,7 +28,8 @@ let Calculator = {
 	AutoOpenKR: false,
 	Rankings : undefined,
 	CityMapEntity : undefined,
-	Overview : undefined,
+	Overview: undefined,
+	LastRecurringQuests: undefined,
 
 
 	/**
@@ -248,7 +249,7 @@ let Calculator = {
 
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
-		h.push(Calculator.GetRecurringQuestsLine());
+		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
@@ -272,8 +273,9 @@ let Calculator = {
 	 * Zeile für Schleifenquests generieren
 	 * *
 	 * */
-	GetRecurringQuestsLine: () => {
-		let h = [];
+	GetRecurringQuestsLine: (PlaySound) => {
+		let h = [],
+			RecurringQuests = 0;
 
 		// Schleifenquest für "Benutze FP" suchen
 		for (let Quest of MainParser.Quests) {
@@ -285,6 +287,7 @@ let Calculator = {
 						let RecurringQuestString;
 						if (MaxProgress - CurrentProgress !== 0) {
 							RecurringQuestString = HTML.Format(MaxProgress - CurrentProgress) + i18n('Boxes.Calculator.FP');
+							RecurringQuests += 1;
 						}
 						else {
 							RecurringQuestString = i18n('Boxes.Calculator.Done');
@@ -295,6 +298,14 @@ let Calculator = {
 				}
 			}
 		}
+
+		if (Calculator.LastRecurringQuests && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
+			if (PlaySound) {
+				Calculator.SoundFile.play();
+			}
+        }
+
+		Calculator.LastRecurringQuests = RecurringQuests;
 
 		return h.join('');
 	},
