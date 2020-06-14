@@ -1028,7 +1028,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
 		MainParser.Quests = data.responseData;
 
-		if( $('#costCalculator').length > 0 ){
+		if($('#costCalculator').length > 0){
 			Calculator.Show();
 		}
 		if ($('#OwnPartBox').length > 0) {

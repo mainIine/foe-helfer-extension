@@ -166,7 +166,9 @@ let CityMap = {
 		});
 
 		// Button for submit Box
-		menu.append( $('<button />').addClass('btn-default ml-auto').attr({id:'show-submit-box', onclick:'CityMap.showSumbitBox()'}).text(i18n('Boxes.CityMap.ShowSubmitBox')) );
+		if (CityMap.IsExtern === false) {
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+		}
 
 
 		/* In das Menü "schieben" */
