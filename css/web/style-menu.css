@@ -494,6 +494,10 @@ p {
 }
 
 
+#greatbuildings-Btn span {
+	background-image: url('../images/greatbuildings.png');
+}
+
 #productions-Btn span {
 	background-image: url('../images/productions.png');
 }
