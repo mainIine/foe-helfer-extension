@@ -78,9 +78,9 @@ input[type=number] {
 	box-sizing: border-box;
 	display: inline-block;
 	width: 100%;
-	background-color: #F9EBC6;
+	background-color: var(--background-light);
 
-	color: #93795D;
+	color: var(--text-medium);
 	padding: .4rem;
 
 	white-space: nowrap;
@@ -125,15 +125,15 @@ input[type=number] {
 
 .dropdown ul li {
 	padding: 0.2rem;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	font-size: 0.8rem;
 	text-shadow: unset;
-	border-top: 1px solid #93795D;
+	border-top: 1px solid var(--text-medium);
 }
 
 .dropdown ul li:hover{
-	background-color: #b3a582;
+	background-color: var(--background-medium);
 	color: #4C2F1E;
 }
 
@@ -174,7 +174,7 @@ input[type=number] {
 	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	border: #000 1px solid;
 	border-radius: 4px;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	outline: none !important;
@@ -311,7 +311,7 @@ p {
 }
 
 .text-warning {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 .text-danger,
@@ -338,7 +338,7 @@ p {
 	color: #efcf9a;
 	line-height: 24px;
 	font-family: Arial,Verdana;
-	background-image: url('../images/btn-bg.png');
+	background-image: url('../images/hud/btn-bg.png');
 	font-size: 13px;
 	font-weight: 700;
 	background-position: -1px -2px;
@@ -370,7 +370,7 @@ p {
 .hud-btn-up-active::before,
 .hud-btn-down::before,
 .hud-btn-down-active::before {
-	background: url('../../js/web/_menu/images/menu.png') top left no-repeat;
+	background: url('../images/hud/menu.png') top left no-repeat;
 }
 
 #ant-hud::before {
@@ -400,7 +400,7 @@ p {
 	right: 0;
 	top: 26px;
 	overflow: hidden;
-	background: url('../../js/web/_menu/images/menu-bg.png') top left repeat-y
+	background: url('../images/hud/menu-bg.png') top left repeat-y
 }
 
 #ant-hud-slider {
@@ -490,7 +490,7 @@ p {
 .menu-placeholder {
 	width: 55px;
 	height: 55px;
-	background: url('../../js/web/_menu/images/menu.png') -122px -90px no-repeat;
+	background: url('../images/hud/menu.png') -122px -90px no-repeat;
 }
 
 
@@ -660,7 +660,7 @@ p {
 	top: 50%;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
-	border-image: url('../images/tooltip_bg.png') 10 round;
+	border-image: url('../images/hud/tooltip_bg.png') 10 round;
 	z-index: 999;
 	transform: translateY(-50%);
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -681,7 +681,7 @@ p {
 	top: 50%;
 	transform: translateY(-50%);
 	right: -22px;
-	background: url('../images/tooltip_bg_arrow.png') center center no-repeat;
+	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
 }
 
 .toolTipWrapper .tooltip-error {
@@ -704,7 +704,7 @@ p {
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.8rem;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	position: fixed;
 	top: 2px;
 	left: 416px;
@@ -762,7 +762,7 @@ p {
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
 	user-select: text;
 }
@@ -773,16 +773,16 @@ p {
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
 	user-select: text;
 }
 
 #invest-bar strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 #reward-bar strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 /*******************************************************************************/
