@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Bygning",
 		"Boxes.Outpost.TitleFree": "Fri",
 		"Boxes.Outpost.TitleShort": "Oversigt over kuturvarer - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Ark bonus %",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "BPer",
@@ -294,7 +295,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekorationer",
 		"Boxes.Productions.Headings.earning": "Høst",
 		"Boxes.Productions.Headings.efficiency": "Efficiens",
-		"Boxes.Productions.Headings.Era": "Tidsalder",
+		"Boxes.Productions.Headings.era": "Tidsalder",
 		"Boxes.Productions.Headings.goods": "Varebygninger",
 		"Boxes.Productions.Headings.greatbuilding": "Storslåede bygninger",
 		"Boxes.Productions.Headings.main_building": "Rådhus",

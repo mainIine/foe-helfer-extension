@@ -127,14 +127,14 @@ let HiddenRewards = {
             let StartTime = moment.unix(hiddenReward.starts),
                 EndTime = moment.unix(hiddenReward.expires);
 
-            if (EndTime > new Date().getTime()) {
+            if (EndTime > MainParser.getCurrentDateTime()) {
                 h.push('<tr>');
 				
                 h.push('<td class="incident" title="' + hiddenReward.type + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
 				
                 h.push('<td>' + hiddenReward.position + '</td>');
 				
-                if (StartTime > new Date().getTime()) {
+                if (StartTime > MainParser.getCurrentDateTime()) {
                     h.push('<td class="warning">' + i18n('Boxes.HiddenRewards.Appears') + ' ' + moment.unix(hiddenReward.starts).fromNow() + '</td>');
                 }
                 else {

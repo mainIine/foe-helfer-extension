@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Budynek",
 		"Boxes.Outpost.TitleFree": "Odblokowany",
 		"Boxes.Outpost.TitleShort": "Przegląd towarów - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arka",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Plany",
@@ -294,7 +295,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekoracje",
 		"Boxes.Productions.Headings.earning": "Zbiory",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Budynki towarowe",
 		"Boxes.Productions.Headings.greatbuilding": "Perły architektury",
 		"Boxes.Productions.Headings.main_building": "Ratusz",

@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Bâtiment",
 		"Boxes.Outpost.TitleFree": "Etat",
 		"Boxes.Outpost.TitleShort": "Vue des ressources - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arche",
 		"Boxes.OwnpartCalculator.Auto": "Auto.",
 		"Boxes.OwnpartCalculator.BPs": "Plans",
@@ -294,7 +295,7 @@
 		"Boxes.Productions.Headings.decoration": "Décorations",
 		"Boxes.Productions.Headings.earning": "Récolte",
 		"Boxes.Productions.Headings.efficiency": "Efficacité",
-		"Boxes.Productions.Headings.Era": "Ère",
+		"Boxes.Productions.Headings.era": "Ère",
 		"Boxes.Productions.Headings.goods": "Bâtiments de marchandises",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de ville",
