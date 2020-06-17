@@ -342,7 +342,7 @@ let Info = {
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                    'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+                    'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
                     'level': d['attachment']['level']
                 }
                 )

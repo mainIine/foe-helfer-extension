@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Clădire",
 		"Boxes.Outpost.TitleFree": "Deblocat",
 		"Boxes.Outpost.TitleShort": "Sumar bunuri - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Planuri",
@@ -294,7 +295,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorațiuni",
 		"Boxes.Productions.Headings.earning": "Recoltare",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Clădiri de bunuri",
 		"Boxes.Productions.Headings.greatbuilding": "Clădiri legendare",
 		"Boxes.Productions.Headings.main_building": "Primărie",

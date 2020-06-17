@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Постройка",
 		"Boxes.Outpost.TitleFree": "Открыто",
 		"Boxes.Outpost.TitleShort": "Обзор товаров - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Арка",
 		"Boxes.OwnpartCalculator.Auto": "Авто",
 		"Boxes.OwnpartCalculator.BPs": "Чертежи",
@@ -294,7 +295,7 @@
 		"Boxes.Productions.Headings.decoration": "Декор",
 		"Boxes.Productions.Headings.earning": "Прибыль",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Промышленные постройки",
 		"Boxes.Productions.Headings.greatbuilding": "Великие Строения",
 		"Boxes.Productions.Headings.main_building": "Ратуша",

@@ -228,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Byggnad",
 		"Boxes.Outpost.TitleFree": "Tillgänglig",
 		"Boxes.Outpost.TitleShort": "Varuöversikt - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Ark",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
@@ -294,7 +295,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekoration",
 		"Boxes.Productions.Headings.earning": "Inkomst",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.Era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Varubyggnader",
 		"Boxes.Productions.Headings.greatbuilding": "Mäktiga byggnader",
 		"Boxes.Productions.Headings.main_building": "Stadshus",
