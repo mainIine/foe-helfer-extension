@@ -14,7 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
 		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
 		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
 		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
@@ -49,8 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "vložené",
 		"Boxes.Calculator.FP": "BV",
 		"Boxes.Calculator.FriendlyInvestment": "Bonus prispievateľa:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "POZOR! Dokončujete úroveň VB!",
 		"Boxes.Calculator.LGNotConnected": "Budova nie je prepojená cestou",
 		"Boxes.Calculator.LGNotOpen": "Ďalšia úroveň nebola odomknutá",
@@ -141,6 +141,7 @@
 		"Boxes.Gildfights.Negotiations": "Vyjednávania",
 		"Boxes.Gildfights.Player": "Hráč",
 		"Boxes.Gildfights.Title": "Prehľad hráčov",
+		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
@@ -227,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Budova",
 		"Boxes.Outpost.TitleFree": "Voľné",
 		"Boxes.Outpost.TitleShort": "Prehľad tovaru - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Oblúk",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "Plány",
@@ -235,7 +237,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Vložiť",
 		"Boxes.OwnpartCalculator.Done": "Vložené",
 		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "iný názov VB",
 		"Boxes.OwnpartCalculator.Levels": "úrovne",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Celkovo BV",
@@ -281,15 +283,19 @@
 		"Boxes.Plunderer.total": "Total", //Todo: Translate
 		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
 		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Priľahlé budovy",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Spokojnosť",
 		"Boxes.Productions.Headings.all": "Všetky",
 		"Boxes.Productions.Headings.amount": "Množstvo",
+		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
 		"Boxes.Productions.Headings.boost": "Motivácia",
 		"Boxes.Productions.Headings.culture": "Kultúrne budovy",
 		"Boxes.Productions.Headings.decoration": "Dekorácie",
 		"Boxes.Productions.Headings.earning": "Získanie",
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Budovy s tovarom",
 		"Boxes.Productions.Headings.greatbuilding": "Veľkolepé budovy",
 		"Boxes.Productions.Headings.main_building": "Radnica",
@@ -298,6 +304,7 @@
 		"Boxes.Productions.Headings.production": "Výrobné budovy",
 		"Boxes.Productions.Headings.random_production": "Náhodné produkcie",
 		"Boxes.Productions.Headings.residential": "Obytné budovy",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Ulice",
 		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
@@ -368,8 +375,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "Dostupné kúpiť: ",
-		"Boxes.StrategyPoints.FPBar": "V inventári: ",
 		"Boxes.Technologies.DescInStock": "Dostupné",
 		"Boxes.Technologies.DescRequired": "Potrebné",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Dostatok</span> / <span style='color:#ff4040'>Nedostatok</span>",
@@ -454,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Navrhuje presné ponuky pri vyjednávaní",
 		"Menu.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Menu.Negotiation.Warning": "Vypnuté: Najprv spustite vyjednávanie!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Prehľad prostriedkov potrebných na dokončenie usadlosti",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Vypnuté: najprv navštívte usadlosť!<br></em>Prehľad prostriedkov potrebných na dokončenie usadlosti",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Vypnuté: Spustite usadlosť a obnovte hru (F5)",

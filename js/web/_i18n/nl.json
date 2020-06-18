@@ -14,7 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
 		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
 		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
 		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
@@ -49,8 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "Gereed",
 		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Investeren met:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "OPGELET: Dit zal het GG levelen!",
 		"Boxes.Calculator.LGNotConnected": "Het groots gebouw is niet verbonden met een weg",
 		"Boxes.Calculator.LGNotOpen": "Het volgende niveau is momenteel niet ontgrendeld",
@@ -141,6 +141,7 @@
 		"Boxes.Gildfights.Negotiations": "Onderhandelingen",
 		"Boxes.Gildfights.Player": "Speler",
 		"Boxes.Gildfights.Title": "Spelersoverzicht",
+		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
@@ -227,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Gebouw",
 		"Boxes.Outpost.TitleFree": "Gratis",
 		"Boxes.Outpost.TitleShort": "Goederenoverzicht - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "BD's",
@@ -235,7 +237,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Zelf te storten",
 		"Boxes.OwnpartCalculator.Done": "Gestort",
 		"Boxes.OwnpartCalculator.Ext": "Extern",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "Naam GG individueel",
 		"Boxes.OwnpartCalculator.Levels": "Levels",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Totaal aantal FP",
@@ -281,15 +283,19 @@
 		"Boxes.Plunderer.total": "Total", //Todo: Translate
 		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
 		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Aangrenzende gebouwen",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Tevredenheid",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Hoeveelheid",
+		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
 		"Boxes.Productions.Headings.boost": "Boost", //Todo: Translate
 		"Boxes.Productions.Headings.culture": "Culturele gebouwen",
 		"Boxes.Productions.Headings.decoration": "Decoraties",
 		"Boxes.Productions.Headings.earning": "Voltooiing productie",
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Goederengebouwen",
 		"Boxes.Productions.Headings.greatbuilding": "Grootse gebouwen",
 		"Boxes.Productions.Headings.main_building": "Stadhuis",
@@ -298,6 +304,7 @@
 		"Boxes.Productions.Headings.production": "Productiegebouwen",
 		"Boxes.Productions.Headings.random_production": "Willekeurige producties",
 		"Boxes.Productions.Headings.residential": "Woongebouwen",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Wegen",
 		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
@@ -368,8 +375,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "Koopbaar: ",
-		"Boxes.StrategyPoints.FPBar": "FP-Voorraad: ",
 		"Boxes.Technologies.DescInStock": "Beschikbaar",
 		"Boxes.Technologies.DescRequired": "Aantal",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
@@ -454,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Geeft nauwkeurige voorstellen bij onderhandelingen",
 		"Menu.Negotiation.Title": "Onderhandelingshulp",
 		"Menu.Negotiation.Warning": "Gedeactiveerd: Start eerst een onderhandeling!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Overzicht van de benodigde goederen",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Bezoek eerst je nederzetting!<br></em>Overzicht van de benodigde grondstoffen",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Begin een nederzetting en herlaad het spel (F5)",

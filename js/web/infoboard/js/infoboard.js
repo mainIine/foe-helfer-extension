@@ -26,6 +26,25 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
+// when a great building where the player has invested has been levelled
+FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
+
+    if ( data && data['responseData'] && data['responseData'] ) {
+        // save the number of returned FPs to show in the infoboard message
+        Info.ReturnFPPoints = ( data['responseData']['strategy_point_amount'] ) ? data.responseData.strategy_point_amount : 0;
+
+        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
+        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
+        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
+        if ( Info.ReturnFPMessageData ){
+            let bd = Info.OtherPlayerService_newEventgreat_building_contribution( Info.ReturnFPMessageData );
+            Info.ReturnFPMessageData = null;
+            Infoboard.PostMessage(bd);
+        }
+    }
+
+});
+
 /**
  *
  * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
@@ -194,6 +213,11 @@ let Infoboard = {
             return;
         }
 
+        Infoboard.PostMessage(bd);
+    },
+
+    PostMessage: (bd) => {
+
         if ($('#BackgroundInfo').length > 0) {
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 tr = $('<tr />').addClass(bd['class']),
@@ -215,8 +239,8 @@ let Infoboard = {
                 Infoboard.SoundFile.play();
             }
         }
-    },
 
+    },
 
     /**
      * Filter für Message Type
@@ -277,8 +301,8 @@ let Info = {
      * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
      * und müssen gesammelt werden
      */
-    ReturnFPPoints: 0,
-
+    ReturnFPPoints: -1,
+    ReturnFPMessageData: null,
 
     /**
      * Jmd hat in einer Auktion mehr geboten
@@ -318,7 +342,7 @@ let Info = {
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                    'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
+                    'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
                     'level': d['attachment']['level']
                 }
                 )
@@ -343,52 +367,6 @@ let Info = {
             msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
         };
     },
-
-
-    /**
-    * Neue Item Information
-    *
-    * @param d
-    */
-    InventoryService_getItem: (d) => {
-        if (!d['id']) return;
-
-        MainParser.Inventory[d['id']] = d;
-        MainParser.Inventory[d['id']]['inStock'] = 0; //inStock auf 0 setzen, da es gleich darauf in NoticeIndicatorService_getPlayerNoticeIndicators aktualisiert und sonst doppelt gezählt wird
-    },
-
-
-    /**
-     * LG Level Up
-     *
-     * @param d
-     */
-    NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
-        let OldFPInventory = StrategyPoints.InventoryFP;
-
-        for (let i in d) {
-            if (!d.hasOwnProperty(i)) continue;
-
-            let Item = d[i];
-            let ID = Item['itemId'];
-            if (!ID) continue;
-
-            let Amount = Item['amount'];
-            if (!Amount) continue;
-
-            if (!MainParser.Inventory[ID]) MainParser.Inventory[ID] = [];
-            let OldNew = MainParser.Inventory[ID]['new'] | 0;
-            MainParser.Inventory[ID]['new'] = Amount;
-
-            if (!MainParser.Inventory[ID]['inStock']) MainParser.Inventory[ID]['inStock'] = 0;
-            MainParser.Inventory[ID]['inStock'] += Amount - OldNew;
-        }
-
-        StrategyPoints.GetFromInventory();
-
-        Info.ReturnFPPoints = StrategyPoints.InventoryFP - OldFPInventory;
-    },
-
 
     /**
      * Auf der GG-Map kämpft jemand
@@ -483,12 +461,11 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
+
         let newFP = Info.ReturnFPPoints;
+        if ( d['rank'] >= 6 ){ newFP = 0; }
 
-        // zurück setzen
-        Info.ReturnFPPoints = 0;
-
-        return {
+        let data = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
@@ -501,6 +478,21 @@ let Info = {
                 }
             )
         };
+
+        // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
+        // so store the data and post the message from that handler (using the stored data)
+        // ... but only if the rank is 5 and higher (1-5), otherwise, there is no reward
+        // (and BlueprintService.newReward is not triggered)
+        if ( d['rank'] < 6 && Info.ReturnFPPoints == -1 ){
+            Info.ReturnFPMessageData = d;
+            return undefined;
+        }
+
+        // zurück setzen
+        Info.ReturnFPPoints = -1;
+        Info.ReturnFPMessageData = null;
+
+        return data;
     },
 
 
@@ -576,3 +568,4 @@ let Info = {
         return '';
     }
 };
+

@@ -19,7 +19,6 @@
  * @type {{init: CityMap.init, showSumbitBox: CityMap.showSumbitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
  */
 let CityMap = {
-
 	CityData: null,
 	ScaleUnit: 100,
 	CityView: 'skew',
@@ -34,7 +33,19 @@ let CityMap = {
 	 * @param Data
 	 * @param Title
 	 */
-	init: (Data = false, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+		if (Data === null) { // Keine Daten => eigene Stadt
+			CityMap.IsExtern = false;
+			Data = MainParser.CityMapData;
+		}
+		else { //Fremde Stadt
+			CityMap.IsExtern = true;
+		}
+
+		CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
+			if (X1.x < X2.x) return -1;
+			if (X1.x > X2.x) return 1;
+		});
 
 		let scale = localStorage.getItem('CityMapScale'),
 			view = localStorage.getItem('CityMapView');
@@ -86,7 +97,6 @@ let CityMap = {
 				}, 100);
 
 			} else {
-				CityMap.IsExtern = true;
 				CityMap.SetBuildings(Data);
 			}
 
@@ -156,7 +166,9 @@ let CityMap = {
 		});
 
 		// Button for submit Box
-		menu.append( $('<button />').addClass('btn-default ml-auto').attr({id:'show-submit-box', onclick:'CityMap.showSumbitBox()'}).text(i18n('Boxes.CityMap.ShowSubmitBox')) );
+		if (CityMap.IsExtern === false) {
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+		}
 
 
 		/* In das Menü "schieben" */
@@ -214,9 +226,7 @@ let CityMap = {
 
 		// https://foede.innogamescdn.com/assets/city/buildings/R_SS_MultiAge_SportBonus18i.png
 
-		let MapData,
-			MapDataSorted,
-			ActiveId = $('#grid-outer').find('.pulsate').data('entityid') || null;
+		let ActiveId = $('#grid-outer').find('.pulsate').data('entityid') || null;
 
 		// einmal komplett leer machen, wenn gewünscht
 		$('#grid-outer').find('.map-bg').remove();
@@ -228,47 +238,23 @@ let CityMap = {
 			// Unlocked Areas rendern
 			CityMap.BuildGrid();
 		}
-
-
-		//if(CityMap.CityData === null)
-		//{
-			// kommt von extern
-			if(Data !== null)
-			{
-				MapData = Data;
-			}
-			// eigene Stadt
-			else {
-				MapData = MainParser.CityMapData;
-			}
-
-			MapDataSorted = MapData.sort( function(X1, X2) {
-				if (X1.x < X2.x) return -1;
-				if (X1.x > X2.x) return 1;
-			});
-
-			CityMap.CityData = MapDataSorted;
-
-		//} else {
-		//	MapDataSorted = CityMap.CityData;
-		//}
-
+		
 		let MinX = 0,
 			MinY = 0,
 			MaxX = 63,
 			MaxY = 63;
 
-		for(let b in MapDataSorted)
+		for (let b in CityMap.CityData)
 		{
-			if (!MapDataSorted.hasOwnProperty(b) || MapDataSorted[b]['x'] < MinX || MapDataSorted[b]['x'] > MaxX || MapDataSorted[b]['y'] < MinY || MapDataSorted[b]['y'] > MaxY)
+			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY)
 				continue;
 
-			let d = BuildingNamesi18n[ MapDataSorted[b]['cityentity_id'] ],
+			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id'] ],
 
-				x = (MapDataSorted[b]['x']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['x']) * CityMap.ScaleUnit) / 100 )),
-				y = (MapDataSorted[b]['y']=== undefined ? 0 : ( (parseInt(MapDataSorted[b]['y']) * CityMap.ScaleUnit) / 100 )),
-				w = ( (parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-				h = ( (parseInt(d['height']) * CityMap.ScaleUnit) / 100),
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
+				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
+				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
+				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
 
 				f = $('<span />').addClass('entity ' + d['type']).css({
 						width: w + 'em',
@@ -277,12 +263,12 @@ let CityMap = {
 						top: y + 'em'
 					})
 					.attr('title', d['name'])
-					.attr('data-entityid', MapDataSorted[b]['id']);
+					.attr('data-entityid', CityMap.CityData[b]['id']);
 
-			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['height']));
+			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['length']));
 
 			// die Größe wurde geändert, wieder aktivieren
-			if(ActiveId !== null && ActiveId === MapDataSorted[b]['id'])
+			if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
 			{
 				f.addClass('pulsate');
 			}
