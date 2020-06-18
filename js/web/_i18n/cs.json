@@ -86,8 +86,6 @@
 		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Zisk",
-		"Boxes.Calculator.Rate": "Poměr",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
 		"Boxes.Calculator.TTForderCosts": "Cost = __nettoreward__<small>(Net Reward)</small> X __forderfactor__%<small>(Friendly invest??)</small> = __costs__", //Todo: Translate
@@ -100,8 +98,6 @@
 		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
 		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTRate": "Rate = __costs__ <small>(Cost)</small> / __nettoreward__ <small>(Net Reward)</small> = __rate__%", //Todo: Translate
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__ FPs.<br>That's __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Do nové úrovně",
 		"Boxes.Campagne.AlreadyDone": " Již dobyto!",
 		"Boxes.Campagne.DescInStock": "K dispozici",
@@ -184,16 +180,6 @@
 		"Boxes.Kits.TabBuildingKits": "Sets/Upgrades", //Todo: Translate
 		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "In Stock Sets, Upgrades and Kits", //Todo: Translate
-		"Boxes.LGOverviewBox.Building": "Budova",
-		"Boxes.LGOverviewBox.Level": "Úroveň",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> has nothing available", //Todo: Translate
-		"Boxes.LGOverviewBox.PaidTotal": "Přidáno / Celkem",
-		"Boxes.LGOverviewBox.Profit": "Zisk",
-		"Boxes.LGOverviewBox.Rate": "Poměr",
-		"Boxes.LGOverviewBox.Title": "Možný příspěvek",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "Lze vložit BV",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "Nalezen nový",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Nelze vložit BV",
 		"Boxes.Negotiation.Average": "Ø Množství",
 		"Boxes.Negotiation.Canceled": "Vzdát",
 		"Boxes.Negotiation.Chance": "Šance",
@@ -211,11 +197,6 @@
 		"Boxes.Negotiation.Title": "Pomocník s vyjednáváním",
 		"Boxes.Negotiation.TryEnd": "Skoro",
 		"Boxes.Negotiation.WrongGoods": "Špatné zboží! Vyberte jiné",
-		"Boxes.Neighbors.AttackingArmy": "Attack Boost (estimated): __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Defensive Boost (estimated): __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Ve výrobě",
-		"Boxes.Neighbors.ReadyProductions": "Hotové výroby",
 		"Boxes.Outpost.DescInStock": "K dispozici",
 		"Boxes.Outpost.DescRequired": "Vyžadováno",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ff4040'>Needed</span>", //Todo: Translate
@@ -256,33 +237,7 @@
 		"Boxes.OwnpartCalculator.Step": "Úroveň",
 		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",
-		"Boxes.Plundered.actionBattleLost": "Porážka",
-		"Boxes.Plundered.actionBattleWon": "Vítězství",
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "Štít města",
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All Players Displayed (Click on a Player's name to display Player's info)", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Útok",
-		"Boxes.Plunderer.autoBattle": "Automatická bitva",
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Obrana",
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.FP": "FPs", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>Has NO guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "City Shielded until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Shield Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Display All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP/Plunder Activities", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Navštíveno",
-		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Overview", //Todo: Translate
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Sousední budovy",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -492,8 +447,6 @@
 		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
 		"Settings.MenuLength.Desc": "Kolik položek má obsahovat menu?<br> Prázdné okno nebo \"0\" znamená automatickou výšku.",
 		"Settings.MenuLength.Title": "Výška menu",
-		"Settings.PreScanLGList.Desc": "Oskenuje VB a označí možné budovy k investování. <br> <u> Note: </u> Kvůli odezvě a přenosovým problémům se může výsledek lišit. Sken neodporuje pravidlům.",
-		"Settings.PreScanLGList.Title": "Prvotní sken Velkolepých budov",
 		"Settings.ResetBoxPositions.Button": "Návrat!",
 		"Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
 		"Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
@@ -505,12 +458,8 @@
 		"Settings.SendInvestigations.Title": "Investování VB",
 		"Settings.SendTavernInfo.Desc": "Záznamy odesílat na foe-rechner.de",
 		"Settings.SendTavernInfo.Title": "Motivace",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Během návštěvy ukazuje, co sousedé produkují",
-		"Settings.ShowNeighborsGoods.Title": "Sousedstvít",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",

@@ -86,8 +86,6 @@
 		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medallas",
 		"Boxes.Calculator.Profit": "Ganancia",
-		"Boxes.Calculator.Rate": "Cotización",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Nivel",
 		"Boxes.Calculator.Title": "Calculador de costes",
 		"Boxes.Calculator.TTForderCosts": "Costes = __nettoreward__<small>(premio neto)</small> * __forderfactor__%<small>(Inversores amistosos)</small> = __costs__",
@@ -100,8 +98,6 @@
 		"Boxes.Calculator.TTPaidTooMuch": "Pagaste __paid__FP en lugar de __topay__FP. Eso son __toomuch__FP de más.",
 		"Boxes.Calculator.TTProfit": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Cuesta: __costs__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __costs__<small>(cuesta)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __paid__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __paid__<small>(pagado)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Porcentaje = __costs__<small>(costs)</small> / __nettoreward__<small>(netto reward)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATENCIÓN: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Eso son __tooless__FP de menos",
 		"Boxes.Calculator.Up2LevelUp": "Hasta el próximo nivel",
 		"Boxes.Campagne.AlreadyDone": " Ya conquistado!",
 		"Boxes.Campagne.DescInStock": "Disponible",
@@ -184,16 +180,6 @@
 		"Boxes.Kits.TabBuildingKits": "Kits para edificios",
 		"Boxes.Kits.TabSelectionKits": "Kits de selección",
 		"Boxes.Kits.Title": "Edificio - / Kits de Selección",
-		"Boxes.LGOverviewBox.Building": "Edificio",
-		"Boxes.LGOverviewBox.Level": "Nivel",
-		"Boxes.LGOverviewBox.NothingToGet": "Con <strong>__player__</strong> no hay nada para pillar",
-		"Boxes.LGOverviewBox.PaidTotal": "Ingresado / Total",
-		"Boxes.LGOverviewBox.Profit": "Ganancia",
-		"Boxes.LGOverviewBox.Rate": "Cotización",
-		"Boxes.LGOverviewBox.Title": "Posibles desembolsos",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "reconocido",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "encontrado nuevo",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "no hay desembolsos hasta ahora",
 		"Boxes.Negotiation.Average": "<strong>Resource<br><br><span style='color:#29b206'>Cost</span></strong>", //Todo: Translate
 		"Boxes.Negotiation.Canceled": "Negociación cancelada",
 		"Boxes.Negotiation.Chance": "Probabilidad",
@@ -211,11 +197,6 @@
 		"Boxes.Negotiation.Title": "Ayudante de negociación",
 		"Boxes.Negotiation.TryEnd": "Se terminaron los intentos",
 		"Boxes.Negotiation.WrongGoods": "Mercancía equivocada, por favor seguir a mano",
-		"Boxes.Neighbors.AttackingArmy": "Attack Boost (estimated): __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Defensive Boost (estimated): __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Producción en curso",
-		"Boxes.Neighbors.ReadyProductions": "Produccion terminada",
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Necesitado",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ff4040'>Faltan</span>",
@@ -256,33 +237,7 @@
 		"Boxes.OwnpartCalculator.Step": "Nivel",
 		"Boxes.OwnpartCalculator.Title": "Calculadora de cuota propia",
 		"Boxes.OwnpartCalculator.YourName": "Tu nombre",
-		"Boxes.Plundered.actionBattleLost": "Batalla perdida",
-		"Boxes.Plundered.actionBattleWon": "Batalla ganada",
-		"Boxes.Plundered.actionPlundered": "Saqueado",
-		"Boxes.Plundered.actionShielded": "Con escudo",
-		"Boxes.Plundered.actionSurrendered": "Rendido",
-		"Boxes.Plunderer.AllPlayers": "Todos los jugadores",
-		"Boxes.Plunderer.Attack": "Atacar",
-		"Boxes.Plunderer.autoBattle": "Batalla automática",
-		"Boxes.Plunderer.collectedToday": "Recogido hoy",
-		"Boxes.Plunderer.Defense": "Defensa",
-		"Boxes.Plunderer.filteredByUser": "Filtrado por usuario",
-		"Boxes.Plunderer.FP": "FP",
-		"Boxes.Plunderer.goto1stPage": "1ª página",
-		"Boxes.Plunderer.HasNoClan": "<em>no tiene gremio</em>",
-		"Boxes.Plunderer.nextPage": "Siguiente página",
-		"Boxes.Plunderer.noData": "Sin datos",
-		"Boxes.Plunderer.Page": "Página",
-		"Boxes.Plunderer.PlayersEra": "Era del jugador",
-		"Boxes.Plunderer.rounds": "Rondas",
-		"Boxes.Plunderer.shieldProtectetUntil": "Protegido hasta:",
-		"Boxes.Plunderer.shieldUntil": "Finaliza en",
-		"Boxes.Plunderer.showAllPlayers": "Mostrar todos los jugadores",
-		"Boxes.Plunderer.thisWeek": "Esta semana",
 		"Boxes.Plunderer.Title": "Actividad PvP",
-		"Boxes.Plunderer.total": "Total",
-		"Boxes.Plunderer.visited": "Visitado",
-		"Boxes.Plunderer.visitTitle": "Cuando visitaste a este jugador la última vez",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edificios adyacentes",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -492,8 +447,6 @@
 		"Settings.GlobalSend.Title": "Transmisión a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br>Empty or \"0\" means automatic height.", //Todo: Translate
 		"Settings.MenuLength.Title": "Longitud del menú",
-		"Settings.PreScanLGList.Desc": "Escanea la lista de resumen de grandes edificios del vecino cuando se abre y, determina grandes edificios rellenables.<br><u>Nota:</u> Dado que los puestos finales solo se transmiten cuando se abre un edificio grande, puede que el resultado sea diferente. Sin embargo, el escaneo se guarda.",
-		"Settings.PreScanLGList.Title": "Escanear con antelación los grandes edificios",
 		"Settings.ResetBoxPositions.Button": "Borrar!",
 		"Settings.ResetBoxPositions.Desc": "¿Quieres que todos las coordenadas sean restablecidas?",
 		"Settings.ResetBoxPositions.Title": "Coordenadas del box",
@@ -505,12 +458,8 @@
 		"Settings.SendInvestigations.Title": "FP inversiones",
 		"Settings.SendTavernInfo.Desc": "¿Quieres que sean transferidas las actividades de motivar al iniciar?",
 		"Settings.SendTavernInfo.Title": "Actividad de motivar",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Mostrar lo que actualmentese se esta produciendo cuando visitas la vecindad",
-		"Settings.ShowNeighborsGoods.Title": "Cosecha de la vecindad",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Tan pronto como se activa un potenciador en la taberna, aparece un contador, globalmente desplazable",
