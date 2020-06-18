@@ -124,10 +124,13 @@ let Calculator = {
 
         // LG - Daten + Spielername
 		h.push('<p class="header"><strong><span>' + BuildingName + '</span>');
-		if (Calculator.PlayerName !== undefined) {
-			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
+		if (Calculator.PlayerName) {
+			h.push('<br>' + Calculator.PlayerName);
 		}
-        h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+		if (Calculator.ClanName) {
+			h.push('<br>' + Calculator.ClanName);
+        }
+        h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + '<br>' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
 
         // FP im Lager
         h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
@@ -138,11 +141,19 @@ let Calculator = {
 
 		h.push('<div>');
 
+		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
+
 		// Zusätzliche Buttons für die Standard Prozente
 		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + MainParser.ArkBonus + '">' + MainParser.ArkBonus + '%</button>';
 
 		// ... und korrekt einsortieren
-		if (MainParser.ArkBonus < 85) {
+		if (MainParser.ArkBonus < 80) {
+			h.push(own_arc);
+		}
+
+		h.push('<button class="btn btn-default btn-toggle-arc" data-value="80">80%</button>');
+
+		if (MainParser.ArkBonus > 80 && MainParser.ArkBonus < 85) {
 			h.push(own_arc);
 		}
 
@@ -159,13 +170,10 @@ let Calculator = {
 		}
 
 		h.push('<br>');
-
+		
 		h.push('<span><strong>' + i18n('Boxes.Calculator.FriendlyInvestment') + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 
 		h.push('</div><div>');
-
-		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
-		h.push('<strong>' + i18n('Boxes.Calculator.Sniping') + '</strong><br>');
 
         h.push('</div>');
 
@@ -175,7 +183,6 @@ let Calculator = {
 		h.push('<table style="width:100%"><tbody><tr>');
 		h.push('<td><table id="costTableFordern" class="foe-table"></table></td>');
 		h.push('<td><table id="costTableBPMeds" class="foe-table"></table></td>');
-		h.push('<td><table id="costTableSnipen" class="foe-table"></table></td>');
 		h.push('</tr></tbody></table>');
 
         // Wieviel fehlt noch bis zum leveln?
@@ -252,7 +259,6 @@ let Calculator = {
 	CalcBody: ()=> {
 		let hFordern = [],
 			hBPMeds = [],
-			hSnipen = [],
 			BestKurs = 999999,
 			BestKursNettoFP = 0,
 			BestKursEinsatz = 999999,
@@ -443,12 +449,6 @@ let Calculator = {
 			'<th>' + i18n('Boxes.Calculator.Meds') + '</th>' +
 			'</thead>');
 
-		hSnipen.push('<thead>' +
-			'<th>' + i18n('Boxes.Calculator.Commitment') + '</th>' +
-			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
-			'<th>' + i18n('Boxes.Calculator.Rate') + '</th>' +
-			'</thead>');
-
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
 			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]),
 				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
@@ -480,11 +480,7 @@ let Calculator = {
 
 				GewinnClass = (ForderGewinn >= 0 ? 'success' : 'error'), //Default: Grün wenn >= 0 sonst rot
 				GewinnText = HTML.Format(ForderGewinn), //Default: Gewinn
-				GewinnTooltip,
-
-				KursClass,
-				KursText,
-				KursTooltip = [];
+				GewinnTooltip;
 
 			if (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP) {
 				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': ForderFPRewards[Rank] - EigenBetrag, 'tooless': (ForderFPRewards[Rank] - EigenBetrag - StrategyPoints.AvailableFP) }));
@@ -612,150 +608,17 @@ let Calculator = {
 			hBPMeds.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hBPMeds.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
 			hBPMeds.push('</tr>');
-
-
-			// Snipen
-
-			EinsatzClass = (SnipeRankCosts[Rank] - EigenBetrag > StrategyPoints.AvailableFP ? 'error' : ''); //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
-			EinsatzText = HTML.Format(SnipeRankCosts[Rank]) //Default: Einsatz
-			EinsatzTooltip = [];
-
-			GewinnClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn >= 0 sonst rot
-			GewinnText = HTML.Format(SnipeGewinn); //Default: Gewinn
-			GewinnTooltip = [];
-
-			KursClass = (SnipeGewinn >= 0 ? 'success' : 'error'); //Default: Grün wenn Gewinn sonst rot
-			KursText = (SnipeGewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-'); //Default: Kurs anzeigen bei Gewinn
-			KursTooltip = [];
-
-			if (SnipeRankCosts[Rank] - EigenBetrag > StrategyPoints.AvailableFP) {
-				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTSnipeFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': SnipeRankCosts[Rank] - EigenBetrag, 'tooless': (SnipeRankCosts[Rank] - EigenBetrag - StrategyPoints.AvailableFP) }));
-			}
-
-			if (SnipeGewinn > 0) {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': SnipeCosts, 'profit': SnipeGewinn })]
-			}
-			else {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': SnipeCosts, 'loss': 0-SnipeGewinn })]
-			}
-
-			if (SnipeStates[Rank] === 'Self') {
-				RowClass = 'info-row';
-
-				RankClass = 'info';
-
-				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
-					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': Einzahlungen[Rank], 'topay': SnipeRankCosts[Rank], 'tooless': SnipeRankCosts[Rank] - Einzahlungen[Rank] }));
-				}
-				else {
-					EinsatzClass = 'info';
-				}
-
-				EinsatzText = HTML.Format(Einzahlungen[Rank]);
-				if (Einzahlungen[Rank] < SnipeRankCosts[Rank]) {
-					EinsatzText += '/' + HTML.Format(SnipeRankCosts[Rank]);
-				}
-
-				GewinnClass = 'info';
-				if (SnipeGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': SnipeCosts, 'profit': SnipeGewinn })]
-				}
-				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': SnipeCosts, 'loss': 0 - SnipeGewinn })]
-				}
-
-				KursClass = 'info';
-				KursText = Calculator.FormatKurs(Kurs);
-				KursTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTRate'), { 'costs': Einzahlungen[Rank], 'nettoreward': FPNettoRewards[Rank], 'rate': Kurs }));
-			}
-			else if (SnipeStates[Rank] === 'NegativeProfit') {
-				RowClass = 'bg-red';
-			}
-			else if (SnipeStates[Rank] === 'LevelWarning') {
-				RowClass = 'bg-yellow';
-
-				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
-			}
-			else if (SnipeStates[Rank] === 'Profit') {
-				RowClass = 'bg-green';
-
-				KursTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTRate'), { 'costs': SnipeRankCosts[Rank], 'nettoreward': FPNettoRewards[Rank], 'rate': Kurs }));
-
-				Calculator.PlaySound();
-			}
-			else { // NotPossible/WorseProfit
-				RowClass = 'text-grey';
-
-				EinsatzText = '-';
-
-				GewinnText = '-';
-				GewinnTooltip = [];
-
-				KursText = '-';
-			}
-
-			hSnipen.push('<tr class="' + RowClass + '">');
-			hSnipen.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + EinsatzTooltip.join('<br>') + '">' + EinsatzText + '</strong></td>');
-			hSnipen.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + GewinnTooltip.join('<br>') + '">' + GewinnText + '</strong></td>');
-			hSnipen.push('<td class="text-center"><strong class="' + KursClass + ' td-tooltip" title="' + KursTooltip.join('<br>') + '">' + KursText + '</strong></td>');
-			hSnipen.push('</tr>');
 		}
 
 		$('#costTableFordern').html(hFordern.join(''));
 		$('#costTableBPMeds').html(hBPMeds.join(''));
-		$('#costTableSnipen').html(hSnipen.join(''));
-
-		Calculator.RefreshGreatBuildingsDB({
-			playerId: Calculator.CityMapEntity['player_id'],
-			name: Calculator.CityMapEntity['cityentity_id'],
-			level: Calculator.CityMapEntity['level'],
-			currentFp: Calculator.CityMapEntity['state']['invested_forge_points'],
-			bestRateNettoFp: BestKursNettoFP,
-			bestRateCosts: BestKursEinsatz
-		});
 
 		$('.td-tooltip').tooltip({
 			html: true,
 			container: '#costCalculator'
 		});
 	},
-
-
-	/**
-	 * Aktualisiert die GBs in der IndexDB
-	 *
-	 * */
-	RefreshGreatBuildingsDB: async(GreatBuilding) => {
-		await IndexDB.addUserFromPlayerDictIfNotExists(GreatBuilding['playerId'], true);
-
-		let CurrentGB = await IndexDB.db.greatbuildings
-			.where({ playerId: GreatBuilding['playerId'], name: GreatBuilding['name'] })
-			.first();
-
-		if (CurrentGB === undefined) {
-			await IndexDB.db.greatbuildings.add({
-				playerId: GreatBuilding['playerId'],
-				name: GreatBuilding['name'],
-				level: GreatBuilding['level'],
-				currentFp: GreatBuilding['currentFp'],
-				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
-				bestRateCosts: GreatBuilding['bestRateCosts'],
-				date: MainParser.getCurrentDate()
-			});
-		}
-		else {
-			await IndexDB.db.greatbuildings.update(CurrentGB.id, {
-				level: GreatBuilding['level'],
-				currentFp: GreatBuilding['currentFp'],
-				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
-				bestRateCosts: GreatBuilding['bestRateCosts'],
-				date: MainParser.getCurrentDate()
-			});
-		}
-		/* Ende Neuer Code: */
-    },
-
+		
 
 	/**
 	 * Formatiert den Kurs
