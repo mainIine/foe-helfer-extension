@@ -14,7 +14,7 @@
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
 		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
 		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAllSectors": "???", //Todo: Translate
+		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
 		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
 		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
 		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
@@ -49,8 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Info": "???", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "???", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
@@ -79,7 +79,7 @@
 		"Boxes.Calculator.Done": "готово",
 		"Boxes.Calculator.FP": "СО",
 		"Boxes.Calculator.FriendlyInvestment": "Вложение от игрока:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/",
 		"Boxes.Calculator.LevelWarning": "ВНИМАНИЕ! Повышение уровня ВС!",
 		"Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой",
 		"Boxes.Calculator.LGNotOpen": "Следующий уровень еще не открыт",
@@ -141,6 +141,7 @@
 		"Boxes.Gildfights.Negotiations": "Переговоры",
 		"Boxes.Gildfights.Player": "Игрок",
 		"Boxes.Gildfights.Title": "Обзор игрока",
+		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
@@ -227,6 +228,7 @@
 		"Boxes.Outpost.TitleBuildings": "Постройка",
 		"Boxes.Outpost.TitleFree": "Открыто",
 		"Boxes.Outpost.TitleShort": "Обзор товаров - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Арка",
 		"Boxes.OwnpartCalculator.Auto": "Авто",
 		"Boxes.OwnpartCalculator.BPs": "Чертежи",
@@ -234,8 +236,8 @@
 		"Boxes.OwnpartCalculator.CopyValues": "Копировать значения",
 		"Boxes.OwnpartCalculator.Deposit": "Вклад",
 		"Boxes.OwnpartCalculator.Done": "Вложено",
-		"Boxes.OwnpartCalculator.Ext": "Расш.",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.Ext": "Внеш.",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "Имя ВС",
 		"Boxes.OwnpartCalculator.Levels": "уровни",
 		"Boxes.OwnpartCalculator.LGTotalFP": "Всего СО ВС",
@@ -281,15 +283,19 @@
 		"Boxes.Plunderer.total": "Всего",
 		"Boxes.Plunderer.visited": "Посетили",
 		"Boxes.Plunderer.visitTitle": "Когда было последнее посещение игрока вами",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Смежные здания",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Уровень счастья",
 		"Boxes.Productions.Headings.all": "Все",
 		"Boxes.Productions.Headings.amount": "Количество",
+		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
 		"Boxes.Productions.Headings.boost": "Расширения",
 		"Boxes.Productions.Headings.culture": "Общественные постройки",
 		"Boxes.Productions.Headings.decoration": "Декор",
 		"Boxes.Productions.Headings.earning": "Прибыль",
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Промышленные постройки",
 		"Boxes.Productions.Headings.greatbuilding": "Великие Строения",
 		"Boxes.Productions.Headings.main_building": "Ратуша",
@@ -298,6 +304,7 @@
 		"Boxes.Productions.Headings.production": "Производственные постройки",
 		"Boxes.Productions.Headings.random_production": "Случайные производственные здания",
 		"Boxes.Productions.Headings.residential": "Жилые дома",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Дороги",
 		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
 		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
@@ -368,8 +375,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Ваша армия по дням",
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Ваша армия по часам",
 		"Boxes.Stats.Title": "Статистика",
-		"Boxes.StrategyPoints.BuyableFP": "монеты/СО:",
-		"Boxes.StrategyPoints.FPBar": "СО в пакетах:",
 		"Boxes.Technologies.DescInStock": "Доступно",
 		"Boxes.Technologies.DescRequired": "Требуется",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ff4040'>Недостаток</span>",
@@ -454,6 +459,8 @@
 		"Menu.Negotiation.Desc": "Предлагает товары для переговоров",
 		"Menu.Negotiation.Title": "Помощник переговоров",
 		"Menu.Negotiation.Warning": "Отключено: Для влючения начните переговоры!",
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Обзор необходимых ресурсов",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Отключено: для включения посетите поселение!<br></em>Обзор необходимых ресурсов",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Отключено: Начните поселение и обновите игру (F5)",

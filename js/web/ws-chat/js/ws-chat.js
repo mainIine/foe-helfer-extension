@@ -496,7 +496,7 @@ let Chat = {
 		// $('.emoticon-bar').removeClass('show');
 		document.querySelector('.emoticon-bar').classList.remove('show');
 
-		// let today = new Date(),
+		// let today = MainParser.getCurrentDate(),
 		// 	HH = today.getHours(),
 		// 	ii = today.getMinutes(),
 		// 	ss = today.getSeconds(),
@@ -1129,7 +1129,7 @@ let Chat = {
 	 */
 	getTimestamp: (hrs)=>{
 
-		let time = new Date().getTime(),
+		let time = MainParser.getCurrentDateTime(),
 			h = hrs || 0,
 			m = 0,
 

@@ -25,11 +25,11 @@ let Calculator = {
 	PlayOverviewInfoSound: null,
 	DetailViewIsNewer: false,
 	OpenedFromOverview: undefined,
-	OverviewListenerRegistered: false,
 	AutoOpenKR: false,
 	Rankings : undefined,
 	CityMapEntity : undefined,
-	Overview : undefined,
+	Overview: undefined,
+	LastRecurringQuests: undefined,
 
 
 	/**
@@ -182,7 +182,7 @@ let Calculator = {
 		}
 
         // BuildingName konnte nicht aus der BuildingInfo geladen werden
-		let BuildingName = BuildingNamesi18n[Calculator.CityMapEntity['cityentity_id']]['name'];
+		let BuildingName = MainParser.CityEntities[Calculator.CityMapEntity['cityentity_id']]['name'];
 		let Level = (Calculator.CityMapEntity['level'] !== undefined ? Calculator.CityMapEntity['level'] : 0);
 		let MaxLevel = (Calculator.CityMapEntity['max_level'] !== undefined ? Calculator.CityMapEntity['max_level'] : 0);
 
@@ -193,7 +193,7 @@ let Calculator = {
 		if (Calculator.PlayerName !== undefined) {
 			h.push('<br>' + Calculator.PlayerName + (Calculator.ClanName !== undefined ? ' - ' + Calculator.ClanName : ''));
 		}
-		h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+        h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
 
         // FP im Lager
         h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
@@ -249,7 +249,7 @@ let Calculator = {
 
 		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
-		h.push(Calculator.GetRecurringQuestsLine());
+		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
@@ -273,8 +273,9 @@ let Calculator = {
 	 * Zeile für Schleifenquests generieren
 	 * *
 	 * */
-	GetRecurringQuestsLine: () => {
-		let h = [];
+	GetRecurringQuestsLine: (PlaySound) => {
+		let h = [],
+			RecurringQuests = 0;
 
 		// Schleifenquest für "Benutze FP" suchen
 		for (let Quest of MainParser.Quests) {
@@ -286,6 +287,7 @@ let Calculator = {
 						let RecurringQuestString;
 						if (MaxProgress - CurrentProgress !== 0) {
 							RecurringQuestString = HTML.Format(MaxProgress - CurrentProgress) + i18n('Boxes.Calculator.FP');
+							RecurringQuests += 1;
 						}
 						else {
 							RecurringQuestString = i18n('Boxes.Calculator.Done');
@@ -297,7 +299,15 @@ let Calculator = {
 			}
 		}
 
-		return h.join();
+		if (Calculator.LastRecurringQuests && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
+			if (PlaySound) {
+				Calculator.SoundFile.play();
+			}
+        }
+
+		Calculator.LastRecurringQuests = RecurringQuests;
+
+		return h.join('');
 	},
 
 
@@ -530,7 +540,7 @@ let Calculator = {
 				RankText = Rank + 1, //Default: Rangnummer
 				RankTooltip = [],
 
-				EinsatzClass = (ForderFPRewards[Rank] > StrategyPoints.AvailableFP ? 'error' : ''), //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
+				EinsatzClass = (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP ? 'error' : ''), //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
 				EinsatzText = HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff), //Default: Einsatz + ForderRankDiff
 				EinsatzTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': FPNettoRewards[Rank], 'forderfactor': (100 + Calculator.ForderBonus), 'costs': ForderFPRewards[Rank] })],
 
@@ -542,8 +552,8 @@ let Calculator = {
 				KursText,
 				KursTooltip = [];
 
-			if (ForderFPRewards[Rank] > StrategyPoints.AvailableFP) {
-				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': ForderFPRewards[Rank], 'tooless': (ForderFPRewards[Rank] - StrategyPoints.AvailableFP) }));
+			if (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP) {
+				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': ForderFPRewards[Rank] - EigenBetrag, 'tooless': (ForderFPRewards[Rank] - EigenBetrag - StrategyPoints.AvailableFP) }));
 			}
 
 			if (ForderGewinn > 0) {
@@ -672,7 +682,7 @@ let Calculator = {
 
 			// Snipen
 
-			EinsatzClass = (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP ? 'error' : ''); //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
+			EinsatzClass = (SnipeRankCosts[Rank] - EigenBetrag > StrategyPoints.AvailableFP ? 'error' : ''); //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
 			EinsatzText = HTML.Format(SnipeRankCosts[Rank]) //Default: Einsatz
 			EinsatzTooltip = [];
 
@@ -684,8 +694,8 @@ let Calculator = {
 			KursText = (SnipeGewinn >= 0 ? Calculator.FormatKurs(Kurs) : '-'); //Default: Kurs anzeigen bei Gewinn
 			KursTooltip = [];
 
-			if (SnipeRankCosts[Rank] > StrategyPoints.AvailableFP) {
-				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTSnipeFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': SnipeRankCosts[Rank], 'tooless': (SnipeRankCosts[Rank] - StrategyPoints.AvailableFP) }));
+			if (SnipeRankCosts[Rank] - EigenBetrag > StrategyPoints.AvailableFP) {
+				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTSnipeFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': SnipeRankCosts[Rank] - EigenBetrag, 'tooless': (SnipeRankCosts[Rank] - EigenBetrag - StrategyPoints.AvailableFP) }));
 			}
 
 			if (SnipeGewinn > 0) {
@@ -797,7 +807,7 @@ let Calculator = {
 				currentFp: GreatBuilding['currentFp'],
 				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
 				bestRateCosts: GreatBuilding['bestRateCosts'],
-				date: new Date()
+				date: MainParser.getCurrentDate()
 			});
 		}
 		else {
@@ -806,7 +816,7 @@ let Calculator = {
 				currentFp: GreatBuilding['currentFp'],
 				bestRateNettoFp: GreatBuilding['bestRateNettoFp'],
 				bestRateCosts: GreatBuilding['bestRateCosts'],
-				date: new Date()
+				date: MainParser.getCurrentDate()
 			});
 		}
 		/* Ende Neuer Code: */
@@ -884,6 +894,20 @@ let Calculator = {
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('calculator');
+
+			$('#LGOverviewBox').on('click', '#CalculatorOverviewTone', function () {
+
+				let disabled = $(this).hasClass('deactivated');
+
+				localStorage.setItem('CalculatorOverviewTone', (disabled ? '' : 'deactivated'));
+				Calculator.PlayOverviewInfoSound = !!disabled;
+
+				if (disabled === true) {
+					$('#CalculatorOverviewTone').removeClass('deactivated');
+				} else {
+					$('#CalculatorOverviewTone').addClass('deactivated');
+				}
+			});
 		}
 
 
@@ -1026,25 +1050,6 @@ let Calculator = {
 		}
 
         $('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));
-
-
-		if (!Calculator.OverviewListenerRegistered) {
-			Calculator.OverviewListenerRegistered = true;
-
-			$('#costCalculator').on('click', '#CalculatorOverviewTone', function () {
-
-				let disabled = $(this).hasClass('deactivated');
-
-				localStorage.setItem('CalculatorOverviewTone', (disabled ? '' : 'deactivated'));
-				Calculator.PlayOverviewInfoSound = !!disabled;
-
-				if (disabled === true) {
-					$('#CalculatorOverviewTone').removeClass('deactivated');
-				} else {
-					$('#CalculatorOverviewTone').addClass('deactivated');
-				}
-			});
-		}
 	},
 
 
