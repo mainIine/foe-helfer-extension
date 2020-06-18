@@ -402,7 +402,9 @@ let _menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function () {
-			Calculator.Open();
+			if (Calculator.CityMapEntity) {
+				Calculator.Show();
+			}
 		});
 
 		btn_CalcBG.append(btn_Calc);

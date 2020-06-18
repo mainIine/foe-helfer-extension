@@ -17,62 +17,13 @@
 let Calculator = {
 
 	ForderBonus: 90,
-    EntityOverview: [],
     SoundFile: new Audio(extUrl + 'vendor/sounds/message.mp3'),
     PlayerName: undefined,
     LastPlayerID: 0,
     PlayInfoSound: null,
-	PlayOverviewInfoSound: null,
-	DetailViewIsNewer: false,
-	OpenedFromOverview: undefined,
-	AutoOpenKR: false,
 	Rankings : undefined,
 	CityMapEntity : undefined,
-	Overview: undefined,
 	LastRecurringQuests: undefined,
-
-
-	/**
-	* Kostenrechner öffnen
-	*
-	*/
-	Open: () => {
-
-		// Nur Übersicht verfügbar
-		if (Calculator.Overview !== undefined && Calculator.CityMapEntity === undefined) {
-			Calculator.ShowOverview(false);
-			Calculator.AutoOpenKR = true;
-		}
-
-		// Nur Detailansicht verfügbar
-		else if (Calculator.CityMapEntity !== undefined && Calculator.Overview === undefined) {
-			Calculator.Show();
-		}
-
-		// Beide verfügbar
-		else if (Calculator.CityMapEntity !== undefined && Calculator.Overview !== undefined) {
-			let BuildingInfo = Calculator.Overview.find(obj => {
-				return obj['city_entity_id'] === Calculator.CityMapEntity['cityentity_id'] && obj['player']['player_id'] === Calculator.CityMapEntity['player_id'];
-			});
-
-			// Beide gehören zum selben Spieler => beide anzeigen
-			if (BuildingInfo !== undefined) {
-				Calculator.ShowOverview();
-				Calculator.Show();
-			}
-
-			// Unterschiedliche Spieler => Öffne die neuere Ansicht
-			else {
-				if (Calculator.DetailViewIsNewer) {
-					Calculator.Show();
-				}
-				else {
-					Calculator.ShowOverview();
-					Calculator.AutoOpenKR = true;
-				}
-			}
-		}
-	},
 
 
 	/**
@@ -80,8 +31,6 @@ let Calculator = {
 	 *
 	 */
 	Show: () => {
-		Calculator.AutoOpenKR = false;
-
         // moment.js global setzen
         moment.locale(MainParser.Language);
 
@@ -158,21 +107,6 @@ let Calculator = {
 			Calculator.PlayerName = undefined;
 			Calculator.ClanName = undefined;
 		}
-
-		Calculator.OpenedFromOverview = false;
-        // Übersicht vorhanden
-		if (Calculator.Overview !== undefined) {
-            // Übersicht laden + passendes LG
-            let BuildingInfo = Calculator.Overview.find(obj => {
-				return obj['city_entity_id'] === Calculator.CityMapEntity['cityentity_id'];
-            });
-
-            // Übersicht vom richtigen Spieler vorhanden => Spielername auslesen
-			if (BuildingInfo !== undefined && BuildingInfo['player']['player_id'] === PlayerID) {
-				Calculator.OpenedFromOverview = true;
-				Calculator.PlayerName = BuildingInfo['player']['name'];
-			}
-        }
 
 		if (Calculator.PlayerName === undefined && PlayerDict[Calculator.CityMapEntity['player_id']] !== undefined) {
 			Calculator.PlayerName = PlayerDict[PlayerID]['PlayerName'];
@@ -855,204 +789,7 @@ let Calculator = {
 		}
 	},
 
-
-	/**
-	 * Übersicht der LGs scannen
-	 *
-	 * @param DisableAudio
-	 */
-    ShowOverview: async(DisableAudio)=> {
-
-		let arc = ((parseFloat(MainParser.ArkBonus) + 100) / 100)
-
-		// nix drin, raus
-		if (Calculator.Overview === undefined)
-		{
-			return;
-		}
-
-		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#LGOverviewBox').length === 0 )
-        {
-            let spk = localStorage.getItem('CalculatorOverviewTone');
-
-            if (spk === null) {
-                localStorage.setItem('CalculatorOverviewTone', 'deactivated');
-                Calculator.PlayOverviewInfoSound = false;
-
-            } else {
-                Calculator.PlayOverviewInfoSound = (spk !== 'deactivated');
-            }
-
-			HTML.Box({
-				'id': 'LGOverviewBox',
-				'title': i18n('Boxes.LGOverviewBox.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'speaker': 'CalculatorOverviewTone'
-			});
-
-			// CSS in den DOM prügeln
-			HTML.AddCssFile('calculator');
-
-			$('#LGOverviewBox').on('click', '#CalculatorOverviewTone', function () {
-
-				let disabled = $(this).hasClass('deactivated');
-
-				localStorage.setItem('CalculatorOverviewTone', (disabled ? '' : 'deactivated'));
-				Calculator.PlayOverviewInfoSound = !!disabled;
-
-				if (disabled === true) {
-					$('#CalculatorOverviewTone').removeClass('deactivated');
-				} else {
-					$('#CalculatorOverviewTone').addClass('deactivated');
-				}
-			});
-		}
-
-
-		let h = [],
-			PlayerName = Calculator.Overview['0']['player']['name'];
-
-		h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
-
-		h.push('<p class="head-bar">' +
-				'<strong>' + PlayerName + ' </strong>' +
-				'<span class="color-description">?' +
-					'<span>' +
-						'<span style="color:#FFB539">' + i18n('Boxes.LGOverviewBox.Tooltip.FoundNew') + '</span>' +
-						'<span style="color:#29b206">' + i18n('Boxes.LGOverviewBox.Tooltip.FoundAgain') + '</span>' +
-						'<span style="color:#FF6000">' + i18n('Boxes.LGOverviewBox.Tooltip.NoPayment') + '</span>' +
-					'</span>' +
-				'</span>' +
-			'</p>');
-
-		h.push('</div>');
-		h.push('<table id="OverviewTable" class="foe-table">');
-
-		h.push('<thead>' +
-			'<tr>' +
-				'<th>' + i18n('Boxes.LGOverviewBox.Building') + '</th>' +
-				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Level') + '</th>' +
-				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.PaidTotal') + '</th>' +
-				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Profit') + '</th>' +
-				'<th class="text-center">' + i18n('Boxes.LGOverviewBox.Rate') + '</th>' +
-			'</tr>' +
-		'</thead>');
-
-		let PlayAudio = false,
-			LGFound = false;
-
-		// alle LGs der Übersicht durchsteppen
-		for (let i in Calculator.Overview)
-		{
-			if (Calculator.Overview.hasOwnProperty(i))
-			{
-				let PlayerID = Calculator.Overview[i]['player']['player_id'],
-					EntityID = Calculator.Overview[i]['city_entity_id'],
-					GBName = Calculator.Overview[i]['name'],
-					GBLevel = Calculator.Overview[i]['level'],
-					CurrentProgress = Calculator.Overview[i]['current_progress'],
-					MaxProgress = Calculator.Overview[i]['max_progress'],
-					Rank = Calculator.Overview[i]['rank'];
-
-				let Gewinn = undefined,
-					BestKurs = undefined,
-					StrongClass;
-
-				let CurrentGB = await IndexDB.db.greatbuildings
-					.where({ playerId: PlayerID, name: EntityID })
-					.first();
-
-				// LG gefunden mit selbem Level und investierten FP => Wert bekannt
-				if (CurrentGB != undefined && CurrentGB['level'] === GBLevel && CurrentGB['currentFp'] == CurrentProgress) {
-					BestKursNettoFP = CurrentGB['bestRateNettoFp'];
-					BestKursEinsatz = CurrentGB['bestRateCosts'];
-					BestKurs = Math.round(BestKursEinsatz / BestKursNettoFP * 1000) / 10;
-					Gewinn = Math.round(BestKursNettoFP * arc) - BestKursEinsatz;
-                }
-
-				let EraName = GreatBuildings.GetEraName(EntityID);
-
-				if (CurrentProgress === undefined)
-				{
-					CurrentProgress = 0;
-				}
-
-				let Era = Technologies.Eras[EraName];
-				let P1 = 0;
-				if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][GBLevel]) {
-					P1 = GreatBuildings.Rewards[Era][GBLevel];
-                }
-
-				if (Rank === undefined && P1 * arc >= (MaxProgress - CurrentProgress) / 2) // Noch nicht eingezahlt und Gewinn theoretisch noch möglich
-				{
-					if (Gewinn === undefined || Gewinn >= 0)
-					{
-						LGFound = true;
-						let GewinnString = undefined,
-							KursString = undefined;
-
-						if (CurrentProgress === 0)
-						{
-							StrongClass = ' class="warning"'; // Möglicherweise nicht freigeschaltet
-							GewinnString = HTML.Format(Math.round(P1 * arc) - Math.ceil((MaxProgress - CurrentProgress) / 2));
-							KursString = Calculator.FormatKurs(Math.round(MaxProgress / P1 / 2 * 1000) / 10);
-						}
-						else if (Gewinn === undefined)
-						{
-							StrongClass = '';
-							PlayAudio = true;
-							GewinnString = '???';
-							KursString = '???%';
-						}
-						else
-						{
-							StrongClass = ' class="success"';
-							PlayAudio = true;
-							GewinnString = HTML.Format(Gewinn);
-							KursString = Calculator.FormatKurs(BestKurs);
-						}
-
-						h.push('<tr>');
-						h.push('<td><strong' + StrongClass + '>' + (i-0+1) + ': ' + GBName + '</strong></td>');
-						h.push('<td class="text-center"><strong' + StrongClass + '>' + GBLevel + '</strong></td>');
-						h.push('<td class="text-center"><strong' + StrongClass + '>' + HTML.Format(CurrentProgress) + ' / ' + HTML.Format(MaxProgress) + '</strong></td>');
-						h.push('<td class="text-center"><strong' + StrongClass + '>' + GewinnString + '</strong></td>');
-						h.push('<td class="text-center"><strong' + StrongClass + '>' + KursString + '</strong></td>');
-						h.push('</tr>');
-					}
-				}
-			}
-		}
-
-		h.push('</table>');
-
-		// Gibt was zu holen
-		if (LGFound)
-		{
-            if (PlayAudio && !DisableAudio)
-			{
-				Calculator.PlayOverviewSound();
-			}
-		}
-
-		// gibt nichts zu holen
-		else {
-			h = [];
-
-			h.push('<div class="text-center yellow-strong nothing-to-get">' + HTML.i18nReplacer(
-				i18n('Boxes.LGOverviewBox.NothingToGet'),
-				{
-					'player' : PlayerName
-				}
-			) + '</div>');
-		}
-
-        $('#LGOverviewBox').find('#LGOverviewBoxBody').html(h.join(''));
-	},
-
-
+		
 	/**
 	 * Spielt einen Sound im Calculator ab
 	 *
@@ -1060,18 +797,6 @@ let Calculator = {
 	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
-            Calculator.SoundFile.play();
-        }
-    },
-
-
-    /**
-    * Spielt einen Sound in der Overview ab
-    *
-    * @returns {string}
-    */
-    PlayOverviewSound: () => {
-        if (Calculator.PlayOverviewInfoSound) {
             Calculator.SoundFile.play();
         }
     },
