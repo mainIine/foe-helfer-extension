@@ -86,8 +86,6 @@
 		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
 		"Boxes.Calculator.Profit": "Winst",
-		"Boxes.Calculator.Rate": "Verhouding",
-		"Boxes.Calculator.Sniping": "Kapen",
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "FP-calculator",
 		"Boxes.Calculator.TTForderCosts": "Kosten = __nettoreward__<small>(netto beloning)</small> * __forderfactor__%<small>(investering)</small> = __costs__",
@@ -100,8 +98,6 @@
 		"Boxes.Calculator.TTPaidTooMuch": "Je hebt __paid__FP gestort i.p.v. __topay__FP. Dat is __toomuch__FP te veel.",
 		"Boxes.Calculator.TTProfit": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Kosten: __costs__<br>Winst = __bruttoreward__<small>(beloning)</small> - __costs__<small>(kosten)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __paid__<br>Winst = __bruttoreward__<small>(beloning)</small> - __paid__<small>(gestort)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Verhouding = __costs__<small>(kosten)</small> / __nettoreward__<small>(netto beloning)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "LET OP: FP voorraad is te laag<br>Je hebt maar __fpstock__ van de __costs__FP<br>Dat zijn __tooless__FP te weinig",
 		"Boxes.Calculator.Up2LevelUp": "Nog te storten",
 		"Boxes.Campagne.AlreadyDone": "Alreeds veroverd!",
 		"Boxes.Campagne.DescInStock": "Beschikbaar",
@@ -184,16 +180,6 @@
 		"Boxes.Kits.TabBuildingKits": "Gebouw kits",
 		"Boxes.Kits.TabSelectionKits": "Selectie kits",
 		"Boxes.Kits.Title": "Gebouw / Selectie Kits",
-		"Boxes.LGOverviewBox.Building": "Groots gebouw",
-		"Boxes.LGOverviewBox.Level": "Level", //Todo: Translate
-		"Boxes.LGOverviewBox.NothingToGet": "Er valt niets te halen bij <strong>__player__</strong>",
-		"Boxes.LGOverviewBox.PaidTotal": "Betaald / Totaal",
-		"Boxes.LGOverviewBox.Profit": "Winst",
-		"Boxes.LGOverviewBox.Rate": "Verhouding",
-		"Boxes.LGOverviewBox.Title": "Mogelijke investeringen",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "herkend",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "nieuw gevonden",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "tot nu toe geen bijdrage",
 		"Boxes.Negotiation.Average": "Voorkeursvolgorde",
 		"Boxes.Negotiation.Canceled": "Onderhandeling is geannuleerd",
 		"Boxes.Negotiation.Chance": "Kans",
@@ -211,11 +197,6 @@
 		"Boxes.Negotiation.Title": "Onderhandelingshulp",
 		"Boxes.Negotiation.TryEnd": "Geen beurten meer",
 		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af!",
-		"Boxes.Neighbors.AttackingArmy": "Attack Boost (estimated): __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Defensive Boost (estimated): __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Lopende producties",
-		"Boxes.Neighbors.ReadyProductions": "Voltooide producties",
 		"Boxes.Outpost.DescInStock": "Beschikbaar",
 		"Boxes.Outpost.DescRequired": "Nodig",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
@@ -256,33 +237,7 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Eigen GG FP-calculator",
 		"Boxes.OwnpartCalculator.YourName": "Jouw naam",
-		"Boxes.Plundered.actionBattleLost": "Battle Lost", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "City Shield Activated", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All Players Displayed (Click on a Player's name to display Player's info)", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.FP": "FPs", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>Has NO guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "City Shielded until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Shield Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Display All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP/Plunder Activities", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Overview", //Todo: Translate
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Aangrenzende gebouwen",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -492,8 +447,6 @@
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
 		"Settings.MenuLength.Title": "Menu lengte",
-		"Settings.PreScanLGList.Desc": "Scant bij het openen van het GG-overzicht van een buur de Grootse gebouwen en bepaalt welke GG's gevuld kunnen worden. <br> <u> Opmerking: </u> Aangezien alleen de laatste plaatsen worden verzonden wanneer een GG wordt geopend, kan het resultaat dus verschillen. De scan is echter opgeslagen.",
-		"Settings.PreScanLGList.Title": "Voorafgaande scan van het GG-overzicht",
 		"Settings.ResetBoxPositions.Button": "Verwijderen",
 		"Settings.ResetBoxPositions.Desc": "Moeten de coördinaten van alle vensters verwijderd worden?",
 		"Settings.ResetBoxPositions.Title": "Coördinaten vensters",
@@ -505,12 +458,8 @@
 		"Settings.SendInvestigations.Title": "FP-bijdrages",
 		"Settings.SendTavernInfo.Desc": "Activeer dit onderdeel als motivatie/opknap-gegevens verzonden mogen worden.",
 		"Settings.SendTavernInfo.Title": "M/O activiteit",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Bij het bezoeken weergeven wat er geplunderd kan worden.",
-		"Settings.ShowNeighborsGoods.Title": "Buren plunderen",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Zodra een bonus in de taverne wordt geactiveerd, verschijnt een globale, verschuifbare teller.",
