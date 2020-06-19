@@ -86,8 +86,6 @@
 		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Med",
 		"Boxes.Calculator.Profit": "Zisk",
-		"Boxes.Calculator.Rate": "Pomer",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Úroveň ",
 		"Boxes.Calculator.Title": "VB kalkulačka",
 		"Boxes.Calculator.TTForderCosts": "Náklady = __nettoreward__<small>(základná odmena)</small> * __forderfactor__%<small>(bonus prispievateľa)</small> = __costs__",
@@ -100,8 +98,6 @@
 		"Boxes.Calculator.TTPaidTooMuch": "Vložili ste __paid__BV namiesto __topay__FP. Je to o __toomuch__FP viac.",
 		"Boxes.Calculator.TTProfit": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __costs__<small>(náklady)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __paid__<small>(Vložené)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Pomer = __costs__<small>(náklady)</small> / __nettoreward__<small>(základná odmena)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__ FPs.<br>That's __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Do ukončenia úrovne ostáva",
 		"Boxes.Campagne.AlreadyDone": " už získané!",
 		"Boxes.Campagne.DescInStock": "Dostupné",
@@ -169,8 +165,8 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> prijal Vašu ponuku.<br>Získali ste __needValue__ __need__ za __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Vymazať",
 		"Boxes.Infobox.Title": "Infobox Overview Window", //Todo: Translate
-		"Boxes.Investment.AllUpToDate": "Event History page previously updated", //Todo: Translate
-		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previously updated", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Event History page previoulsy updated", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previoulsy updated", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Aktuálny zisk: ",
 		"Boxes.Investment.InvestBar": "Vložené BV: ",
 		"Boxes.Investment.PlayerFound": "New Event History found", //Todo: Translate
@@ -184,16 +180,6 @@
 		"Boxes.Kits.TabBuildingKits": "Sets/Upgrades", //Todo: Translate
 		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "In Stock Sets, Upgrades and Kits", //Todo: Translate
-		"Boxes.LGOverviewBox.Building": "Budova",
-		"Boxes.LGOverviewBox.Level": "Úroveň",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nemá žiadnu VB",
-		"Boxes.LGOverviewBox.PaidTotal": "Vložené / Celkovo",
-		"Boxes.LGOverviewBox.Profit": "Zisk",
-		"Boxes.LGOverviewBox.Rate": "Pomer",
-		"Boxes.LGOverviewBox.Title": "Možné vklady",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "už zistené",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "nové",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "zatiaľ žiadny vklad",
 		"Boxes.Negotiation.Average": "Ø množstvo",
 		"Boxes.Negotiation.Canceled": "Vyjednávanie bolo zrušené",
 		"Boxes.Negotiation.Chance": "Šanca",
@@ -211,21 +197,6 @@
 		"Boxes.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Boxes.Negotiation.TryEnd": "Žiadne ďalšie pokusy",
 		"Boxes.Negotiation.WrongGoods": "Zvolený nesprávny tovar, prosím dokončte vyjednávanie manuálne",
-		"Boxes.Neighbors.AttackingArmy": "Attack Boost (estimated): __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Defensive Boost (estimated): __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Prebiehajúce produkcie",
-		"Boxes.Neighbors.ReadyProductions": "Dokončené produkcie",
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "New side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Dostupné",
 		"Boxes.Outpost.DescRequired": "Potrebné",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Dostatok</span> / <span style='color:#ff4040'>Nedostatok</span>",
@@ -266,33 +237,7 @@
 		"Boxes.OwnpartCalculator.Step": "Krok",
 		"Boxes.OwnpartCalculator.Title": "Príspevky do vašich VB",
 		"Boxes.OwnpartCalculator.YourName": "Vaše meno",
-		"Boxes.Plundered.actionBattleLost": "Battle Lost", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "City Shield Activated", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All Players Displayed (Click on a Player's name to display Player's info)", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.FP": "FPs", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>Has NO guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "City Shielded until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Shield Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Display All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP/Plunder Activities", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Plunderer.Title": "PvP Overview", //Todo: Translate
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Priľahlé budovy",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -469,8 +414,8 @@
 		"Menu.Negotiation.Desc": "Navrhuje presné ponuky pri vyjednávaní",
 		"Menu.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Menu.Negotiation.Warning": "Vypnuté: Najprv spustite vyjednávanie!",
-		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notices", //Todo: Translate
+		"Menu.Notice.Desc": "???", //Todo: Translate
+		"Menu.Notice.Title": "???", //Todo: Translate
 		"Menu.OutP.Desc": "Prehľad prostriedkov potrebných na dokončenie usadlosti",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Vypnuté: najprv navštívte usadlosť!<br></em>Prehľad prostriedkov potrebných na dokončenie usadlosti",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Vypnuté: Spustite usadlosť a obnovte hru (F5)",
@@ -502,8 +447,6 @@
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",
 		"Settings.MenuLength.Title": "Výška menu",
-		"Settings.PreScanLGList.Desc": "Scans the overview list of the neighbor when opening and determines possibly fillable great buildings. <br> <u> Note: </u> Since the final seats are only transmitted when opening a great building, the result may differ. The scan is saved, however.", //Todo: Translate
-		"Settings.PreScanLGList.Title": "Predbežné načítanie prehľadu VB",
 		"Settings.ResetBoxPositions.Button": "Obnoviť!",
 		"Settings.ResetBoxPositions.Desc": "Obnoviť pozíciu a nastavenie všetkých okien?",
 		"Settings.ResetBoxPositions.Title": "Pozícia okien",
@@ -515,12 +458,8 @@
 		"Settings.SendInvestigations.Title": "Príspevky do VB",
 		"Settings.SendTavernInfo.Desc": "Odoslať údaje o moticáciách (pomoci)?",
 		"Settings.SendTavernInfo.Title": "Motivácia (pomoc)",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Počas návštevy suseda zobraziť okno s možnými zbermi po rabovaní",
-		"Settings.ShowNeighborsGoods.Title": "Rabovanie susedov",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.", //Todo: Translate

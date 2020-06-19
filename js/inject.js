@@ -176,7 +176,6 @@
 				'technologies',
 				'negotiation',
 				'eventquest',
-				'read-buildings',
 				'settings',
 				'investment',
 				'strategy-points',
