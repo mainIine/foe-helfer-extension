@@ -216,6 +216,16 @@
 		"Boxes.Neighbors.GuildPower": "Puissance de guilde",
 		"Boxes.Neighbors.OngoingProductions": "Productions en cours",
 		"Boxes.Neighbors.ReadyProductions": "Productions terminées",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "New side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
@@ -459,8 +469,8 @@
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Vue d'ensemble des ressources nécessaires.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Désactivé : Allez d'abord dans la Colonie !",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé : Démarrez une Colonie et rechargez le jeu [F5]",

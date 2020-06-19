@@ -216,6 +216,16 @@
 		"Boxes.Neighbors.GuildPower": "Poder da Guilda",
 		"Boxes.Neighbors.OngoingProductions": "Produções em curso",
 		"Boxes.Neighbors.ReadyProductions": "Produções terminadas",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "New side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponível",
 		"Boxes.Outpost.DescRequired": "Necessários",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excesso</span> / <span style='color:#ff4040'>em falta</span>",
@@ -459,8 +469,8 @@
 		"Menu.Negotiation.Desc": "Faz sugestões para negociações",
 		"Menu.Negotiation.Title": "Auxiliar de negociações",
 		"Menu.Negotiation.Warning": "Desabilitado: Começe uma negociação primeiro!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Desabilitado: Abra primeiro o Acampamento!<br></em>Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Desabilitado: Inicie primeiro um Acampamento e atualize a página (F5)",
