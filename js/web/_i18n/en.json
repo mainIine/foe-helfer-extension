@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Negotiation Table",
 		"Boxes.Negotiation.TryEnd": "No more attempts",
 		"Boxes.Negotiation.WrongGoods": "Wrong goods selected, please finish manually",
+		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
+		"Boxes.Notice.Edit": "???", //Todo: Translate
+		"Boxes.Notice.GroupName": "???", //Todo: Translate
+		"Boxes.Notice.NewGroup": "???", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
+		"Boxes.Notice.NewSide": "???", //Todo: Translate
+		"Boxes.Notice.Save": "???", //Todo: Translate
+		"Boxes.Notice.SideName": "???", //Todo: Translate
+		"Boxes.Notice.Sorting": "???", //Todo: Translate
+		"Boxes.Notice.Title": "???", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Current Stock",
 		"Boxes.Outpost.DescRequired": "Total",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ff4040'>Needed</span>",

@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Onderhandelingshulp",
 		"Boxes.Negotiation.TryEnd": "Geen beurten meer",
 		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af!",
+		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
+		"Boxes.Notice.Edit": "???", //Todo: Translate
+		"Boxes.Notice.GroupName": "???", //Todo: Translate
+		"Boxes.Notice.NewGroup": "???", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
+		"Boxes.Notice.NewSide": "???", //Todo: Translate
+		"Boxes.Notice.Save": "???", //Todo: Translate
+		"Boxes.Notice.SideName": "???", //Todo: Translate
+		"Boxes.Notice.Sorting": "???", //Todo: Translate
+		"Boxes.Notice.Title": "???", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Beschikbaar",
 		"Boxes.Outpost.DescRequired": "Nodig",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
