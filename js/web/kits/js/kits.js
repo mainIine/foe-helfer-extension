@@ -445,7 +445,7 @@ let Kits = {
 	 * @param label
 	 */
 	SetTabs: (id, label)=>{
-		Kits.Tabs.push('<li class="' + id + ' long-tab game-cursor"><a href="#' + id + '" class="game-cursor">' + label + '</a></li>');
+		Kits.Tabs.push(`<li class="${id} long-tab game-cursor"><a href="#${id}" class="game-cursor"><span>${label}</span></a></li>`);
 	},
 
 
