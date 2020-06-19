@@ -170,7 +170,7 @@
 		"Boxes.Infobox.ResetBox": "Reimposta casella",
 		"Boxes.Infobox.Title": "Infobox Overview Window", //Todo: Translate
 		"Boxes.Investment.AllUpToDate": "Tutto è aggiornato",
-		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previoulsy updated", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previously updated", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Profitto attuale:",
 		"Boxes.Investment.InvestBar": "PF Investiti:",
 		"Boxes.Investment.PlayerFound": "Giocatore trovato",
@@ -216,6 +216,16 @@
 		"Boxes.Neighbors.GuildPower": "Potere gilda",
 		"Boxes.Neighbors.OngoingProductions": "Produzioni in corso",
 		"Boxes.Neighbors.ReadyProductions": "Produzioni finite",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "New side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponibile",
 		"Boxes.Outpost.DescRequired": "Richiesto",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ff4040'>Manca</span>",
@@ -459,8 +469,8 @@
 		"Menu.Negotiation.Desc": "Fare proposte precise per le negoziazioni",
 		"Menu.Negotiation.Title": "Aiuto Negoziazione",
 		"Menu.Negotiation.Warning": "Disabilitato: avvia prima una negoziazione!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabilitato: controlla prima l'avamposto!</em><br> Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabilitato: avvia un avamposto e ricarica il gioco (F5)",

@@ -98,7 +98,7 @@
 		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Loss = __paid__ <small>(Paid)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTPaidTooLess": "You paid __paid__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
 		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ | Save off: __save__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTRate": "Rate = __costs__ <small>(Cost)</small> / __nettoreward__ <small>(Net Reward)</small> = __rate__%", //Todo: Translate
 		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__ FPs.<br>That's __tooless__FPs too few", //Todo: Translate
@@ -169,8 +169,8 @@
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> Elfogadta az ajánlatod.<br>Kaptál ezért: __needValue__ __need__ ennyit: __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Újratöltés",
 		"Boxes.Infobox.Title": "Infó doboz",
-		"Boxes.Investment.AllUpToDate": "Event History page previoulsy updated", //Todo: Translate
-		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previoulsy updated", //Todo: Translate
+		"Boxes.Investment.AllUpToDate": "Event History page previously updated", //Todo: Translate
+		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previously updated", //Todo: Translate
 		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
 		"Boxes.Investment.InvestBar": "Invested FPs: ", //Todo: Translate
 		"Boxes.Investment.PlayerFound": "New Event History found", //Todo: Translate
@@ -216,6 +216,16 @@
 		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Folyamatban levő termelések",
 		"Boxes.Neighbors.ReadyProductions": "Befejezett termelések",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "New side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Elérhető",
 		"Boxes.Outpost.DescRequired": "Szükséges",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ff4040'>Hiányzó</span>",
@@ -459,8 +469,8 @@
 		"Menu.Negotiation.Desc": "Javaslatokat tegyen a tárgyalásokra",
 		"Menu.Negotiation.Title": "Tárgyalás segítő",
 		"Menu.Negotiation.Warning": "Tiltott: Először kezdjen meg egy tárgyalást!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "A szükséges források áttekintése",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Tiltott: először nézd meg a kulturális településnél: <br></em> A szükséges források áttekintését",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Tiltott: Indítson el egy kulturális települést és töltse be újra a játékot (F5)",
