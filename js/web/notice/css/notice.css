@@ -43,11 +43,11 @@
 	z-index: 10;
 }
 
-.window-body .tabs ul.horizontal {
+#noticesBody .tabs ul.horizontal {
 	padding-left: 120px;
 }
 
-.window-body .notices ul.vertical {
+#noticesBody .notices ul.vertical {
 	padding-top: 39px;
 }
 
