@@ -46,7 +46,8 @@ let _menu = {
 		'api',
 		'kits',
 		'alerts',
-		'greatbuildings'
+		'greatbuildings',
+		'notice'
 	],
 
 
@@ -711,12 +712,12 @@ let _menu = {
 		let btn_Notice = $('<span />');
 
 		btn_Notice.on('click', function () {
-			// @Todo: initilize Box
+			Notice.init();
 		});
 
 		btn_NoticeBG.append(btn_Notice);
 
-		// return btn_PlundererBG;
+		return btn_NoticeBG;
 	},
 
 
