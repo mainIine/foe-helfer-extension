@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Boxes.Negotiation.TryEnd": "Žiadne ďalšie pokusy",
 		"Boxes.Negotiation.WrongGoods": "Zvolený nesprávny tovar, prosím dokončte vyjednávanie manuálne",
+		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
+		"Boxes.Notice.Edit": "???", //Todo: Translate
+		"Boxes.Notice.GroupName": "???", //Todo: Translate
+		"Boxes.Notice.NewGroup": "???", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
+		"Boxes.Notice.NewSide": "???", //Todo: Translate
+		"Boxes.Notice.Save": "???", //Todo: Translate
+		"Boxes.Notice.SideName": "???", //Todo: Translate
+		"Boxes.Notice.Sorting": "???", //Todo: Translate
+		"Boxes.Notice.Title": "???", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Dostupné",
 		"Boxes.Outpost.DescRequired": "Potrebné",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Dostatok</span> / <span style='color:#ff4040'>Nedostatok</span>",

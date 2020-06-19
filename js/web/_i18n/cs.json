@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Pomocník s vyjednáváním",
 		"Boxes.Negotiation.TryEnd": "Skoro",
 		"Boxes.Negotiation.WrongGoods": "Špatné zboží! Vyberte jiné",
+		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
+		"Boxes.Notice.Edit": "???", //Todo: Translate
+		"Boxes.Notice.GroupName": "???", //Todo: Translate
+		"Boxes.Notice.NewGroup": "???", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
+		"Boxes.Notice.NewSide": "???", //Todo: Translate
+		"Boxes.Notice.Save": "???", //Todo: Translate
+		"Boxes.Notice.SideName": "???", //Todo: Translate
+		"Boxes.Notice.Sorting": "???", //Todo: Translate
+		"Boxes.Notice.Title": "???", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "K dispozici",
 		"Boxes.Outpost.DescRequired": "Vyžadováno",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ff4040'>Needed</span>", //Todo: Translate

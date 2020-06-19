@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
+		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
+		"Boxes.Notice.Edit": "???", //Todo: Translate
+		"Boxes.Notice.GroupName": "???", //Todo: Translate
+		"Boxes.Notice.NewGroup": "???", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
+		"Boxes.Notice.NewSide": "???", //Todo: Translate
+		"Boxes.Notice.Save": "???", //Todo: Translate
+		"Boxes.Notice.SideName": "???", //Todo: Translate
+		"Boxes.Notice.Sorting": "???", //Todo: Translate
+		"Boxes.Notice.Title": "???", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
