@@ -216,6 +216,16 @@
 		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Neighbors.OngoingProductions": "Producción en curso",
 		"Boxes.Neighbors.ReadyProductions": "Produccion terminada",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "New side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Necesitado",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ff4040'>Faltan</span>",
@@ -459,8 +469,8 @@
 		"Menu.Negotiation.Desc": "Te da sugerencias precisas para las negociaciones",
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
 		"Menu.Negotiation.Warning": "Deshabilitado: Comienza primero una nueva negociación!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Resumen de los recursos necesarios",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deshabilitado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deshabilitado: Comienza primero un asentamiento cultural y vuelva a cargar el juego (F5)",

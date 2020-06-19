@@ -216,6 +216,16 @@
 		"Boxes.Neighbors.GuildPower": "Klanstyrke",
 		"Boxes.Neighbors.OngoingProductions": "Igangværende produktioner",
 		"Boxes.Neighbors.ReadyProductions": "Færdige produktioner",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "New group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "New side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "På lager",
 		"Boxes.Outpost.DescRequired": "Påkrævet",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overskud</span> / <span style='color:#ff4040'>Mangler</span>",
@@ -459,8 +469,8 @@
 		"Menu.Negotiation.Desc": "Giver dig præcise forslag til fohandlinger",
 		"Menu.Negotiation.Title": "Forhandlingsassistent",
 		"Menu.Negotiation.Warning": "Deaktiveret: Start først en ny forhandling!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deaktiveret: Besøg først bosættelsen!<br></em>Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiveret: Start først en bosættelse og genindlæs spillet (F5)",
