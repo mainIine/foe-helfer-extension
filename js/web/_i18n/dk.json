@@ -197,16 +197,16 @@
 		"Boxes.Negotiation.Title": "Forhandlingsassistent",
 		"Boxes.Negotiation.TryEnd": "Ikke flere forsøg",
 		"Boxes.Negotiation.WrongGoods": "Du har valgt nogle forkerte varer, færdiggør derfor forhandlingerne manuel",
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "Side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Din overskrift",
+		"Boxes.Notice.Edit": "Redigér",
+		"Boxes.Notice.GroupName": "Gruppenavn",
+		"Boxes.Notice.NewGroup": "Gruppe",
+		"Boxes.Notice.NewGroupDesc": "Opret først en ny gruppe...",
+		"Boxes.Notice.NewSide": "Side",
+		"Boxes.Notice.Save": "Gem",
+		"Boxes.Notice.SideName": "Sidenavn",
+		"Boxes.Notice.Sorting": "Sortering",
+		"Boxes.Notice.Title": "Bemærkninger",
 		"Boxes.Outpost.DescInStock": "På lager",
 		"Boxes.Outpost.DescRequired": "Påkrævet",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overskud</span> / <span style='color:#ff4040'>Mangler</span>",
