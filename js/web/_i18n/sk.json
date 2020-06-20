@@ -92,11 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Not enough FP Packs in stock!<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Pozícia nie je zaistená. Ďalších  __fpcount__ BV je potrebných na zaistenie pozície<br>Celkovo na zaistenie pozície: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__BV sa vložiť nedá<br>Maximálny možný príspevok: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Strata = __costs__<small>(náklady)</small> - __bruttoreward__<small>(odmena)</small> = __loss__",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Strata = __paid__<small>(vložené)</small> - __bruttoreward__<small>(odmena)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Vložili ste __paid__BV namiesto __topay__BV. Je to o __tooless__FP menej.",
 		"Boxes.Calculator.TTPaidTooMuch": "Vložili ste __paid__BV namiesto __topay__FP. Je to o __toomuch__FP viac.",
-		"Boxes.Calculator.TTProfit": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __costs__<small>(náklady)</small> = __profit__",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __paid__<small>(Vložené)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Do ukončenia úrovne ostáva",
 		"Boxes.Campagne.AlreadyDone": " už získané!",
@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Boxes.Negotiation.TryEnd": "Žiadne ďalšie pokusy",
 		"Boxes.Negotiation.WrongGoods": "Zvolený nesprávny tovar, prosím dokončte vyjednávanie manuálne",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Dostupné",
 		"Boxes.Outpost.DescRequired": "Potrebné",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Dostatok</span> / <span style='color:#ff4040'>Nedostatok</span>",

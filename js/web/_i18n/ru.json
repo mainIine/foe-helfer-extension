@@ -92,11 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ВНИМАНИЕ: На складе слишком мало СО<br>У вас есть всего __fpstock__, а требуется __costs__СО<br>Не хватает __tooless__СО",
 		"Boxes.Calculator.TTForderNegativeProfit": "Нет гаранта. __fpcount__ СО должно быть вложено дополнительно для гаранта места.<br>Всего СО для гаранта: __totalfp__CO",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP не поместятся в<br>Максимальное вложение: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Откат = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __arcfactor__%<small>(бонус Арки)</small> = __bruttoreward__<br>Стоимость места: __costs__<br>Потери = __costs__<small>(стоимость места)</small> - __bruttoreward__<small>(откат)</small> = __loss__",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Откат = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __arcfactor__%<small>(бонус Арки)</small> = __bruttoreward__<br>Вложено: __paid__<br>Потери = __paid__<small>(вложено)</small> - __bruttoreward__<small>(откат)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Вы вложили __paid__FP вместо __topay__FP. Это на __tooless__FP меньше, чем нужно.",
 		"Boxes.Calculator.TTPaidTooMuch": "Вы вложили __paid__FP вместо __topay__FP. Это на __toomuch__FP больше, чем нужно.",
-		"Boxes.Calculator.TTProfit": "Откат = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __arcfactor__%<small>(бонус Арки)</small> = __bruttoreward__<br>Стоимость: __costs__<br>Профит = __bruttoreward__<small>(откат)</small> - __costs__<small>(стоимость)</small> = __profit__",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Откат = __nettoreward__<small>(награда за помощь в сроительстве)</small> * __arcfactor__%<small>(бонус Арки)</small> = __bruttoreward__<br>Вложено: __paid__<br>профит = __bruttoreward__<small>(откат)</small> - __paid__<small>(вложено)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Осталось до уровня",
 		"Boxes.Campagne.AlreadyDone": " Уже захвачено!",
@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Помощник переговоров",
 		"Boxes.Negotiation.TryEnd": "Не осталось ходов",
 		"Boxes.Negotiation.WrongGoods": "Выбран неверный товар, закончите переговоры вручную",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Доступно",
 		"Boxes.Outpost.DescRequired": "Требуется",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Превышение</span> / <span style='color:#ff4040'>Недостаток</span>",
