@@ -123,14 +123,19 @@ let Calculator = {
         h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
         // LG - Daten + Spielername
-		h.push('<p class="header"><strong><span>' + BuildingName + '</span>');
+		h.push('<p class="header"><strong><span class="building-name">' + BuildingName + '</span>');
+
 		if (Calculator.PlayerName) {
-			h.push('<br>' + Calculator.PlayerName);
+			h.push('<span class="player-name">' + Calculator.PlayerName);
+
+			if (Calculator.ClanName) {
+				h.push(` [${Calculator.ClanName}]`);
+			}
+
+			h.push('</span>');
 		}
-		if (Calculator.ClanName) {
-			h.push('<br>' + Calculator.ClanName);
-        }
-        h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + '<br>' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+
+        h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' | ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
 
         // FP im Lager
         h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
@@ -139,7 +144,6 @@ let Calculator = {
 
 		h.push('<div class="dark-bg costFactorWrapper">');
 
-		h.push('<div>');
 
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
@@ -172,10 +176,6 @@ let Calculator = {
 		h.push('<br>');
 		
 		h.push('<span><strong>' + i18n('Boxes.Calculator.FriendlyInvestment') + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
-
-		h.push('</div><div>');
-
-        h.push('</div>');
 
         h.push('</div>');
 
@@ -278,17 +278,17 @@ let Calculator = {
 		}
 
 		let ForderStates = [],
-			SnipeStates = [],
+			SaveStates = [],
 			FPNettoRewards = [],
 			FPRewards = [],
 			BPRewards = [],
 			MedalRewards = [],
 			ForderFPRewards = [],
 			ForderRankCosts = [],
-			SnipeRankCosts = [],
+			SaveRankCosts = [],
 			Einzahlungen = [],
 			BestGewinn = -999999,
-			SnipeLastRankCost = undefined;
+			SaveLastRankCost = undefined;
 
 		for (let i = 0; i < Calculator.Rankings.length; i++) {
 			let Rank,
@@ -307,14 +307,14 @@ let Calculator = {
 			if (Calculator.Rankings[i]['reward'] === undefined) break; // Ende der Belohnungsränge => raus
 
 			ForderStates[Rank] = undefined; // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
-			SnipeStates[Rank] = undefined; // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
+			SaveStates[Rank] = undefined; // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
 			FPNettoRewards[Rank] = 0;
 			FPRewards[Rank] = 0;
 			BPRewards[Rank] = 0;
 			MedalRewards[Rank] = 0;
 			ForderFPRewards[Rank] = 0;
 			ForderRankCosts[Rank] = undefined;
-			SnipeRankCosts[Rank] = undefined;
+			SaveRankCosts[Rank] = undefined;
 			Einzahlungen[Rank] = 0;
 
 			if (Calculator.Rankings[i]['reward']['strategy_point_amount'] !== undefined)
@@ -333,7 +333,7 @@ let Calculator = {
 
 			if (EigenPos !== undefined && i > EigenPos) {
 				ForderStates[Rank] = 'NotPossible';
-				SnipeStates[Rank] = 'NotPossible';
+				SaveStates[Rank] = 'NotPossible';
 				continue;
 			}
 
@@ -349,30 +349,30 @@ let Calculator = {
 
 			if (IsSelf) {
 				ForderStates[Rank] = 'Self';
-				SnipeStates[Rank] = 'Self';
+				SaveStates[Rank] = 'Self';
 
 				for (let j = i + 1; j < Calculator.Rankings.length; j++) {
 					//Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
 					if (Calculator.Rankings[j]['rank'] !== undefined && Calculator.Rankings[j]['rank'] !== -1 && Calculator.Rankings[j]['forge_points'] !== undefined) {
-						SnipeRankCosts[Rank] = Math.round((Calculator.Rankings[j]['forge_points'] + RestFP) / 2);
+						SaveRankCosts[Rank] = Math.round((Calculator.Rankings[j]['forge_points'] + RestFP) / 2);
 						break;
 					}
 				}
 
-				if (SnipeRankCosts[Rank] === undefined)
-					SnipeRankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
+				if (SaveRankCosts[Rank] === undefined)
+					SaveRankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
 
-				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SnipeRankCosts[Rank]);
+				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SaveRankCosts[Rank]);
 			}
 			else {
-				SnipeRankCosts[Rank] = Math.round((Einzahlungen[Rank] + RestFP) / 2);
-				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SnipeRankCosts[Rank]);
+				SaveRankCosts[Rank] = Math.round((Einzahlungen[Rank] + RestFP) / 2);
+				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SaveRankCosts[Rank]);
 				ForderRankCosts[Rank] = Math.min(ForderRankCosts[Rank], RestFP);
 
 				let ExitLoop = false;
 
 				// Platz schon vergeben
-				if (SnipeRankCosts[Rank] <= Einzahlungen[Rank]) {
+				if (SaveRankCosts[Rank] <= Einzahlungen[Rank]) {
 					ForderRankCosts[Rank] = 0;
 					ForderStates[Rank] = 'NotPossible';
 					ExitLoop = true;
@@ -390,20 +390,20 @@ let Calculator = {
 				}
 
 				// Platz schon vergeben
-				if (SnipeRankCosts[Rank] <= Einzahlungen[Rank]) {
-					SnipeRankCosts[Rank] = 0;
-					SnipeStates[Rank] = 'NotPossible';
+				if (SaveRankCosts[Rank] <= Einzahlungen[Rank]) {
+					SaveRankCosts[Rank] = 0;
+					SaveStates[Rank] = 'NotPossible';
 					ExitLoop = true;
 				}
 				else {
-					if (SnipeRankCosts[Rank] === RestFP) {
-						SnipeStates[Rank] = 'LevelWarning';
+					if (SaveRankCosts[Rank] === RestFP) {
+						SaveStates[Rank] = 'LevelWarning';
 					}
-					else if (FPRewards[Rank] < SnipeRankCosts[Rank]) {
-						SnipeStates[Rank] = 'NegativeProfit';
+					else if (FPRewards[Rank] < SaveRankCosts[Rank]) {
+						SaveStates[Rank] = 'NegativeProfit';
 					}
 					else {
-						SnipeStates[Rank] = 'Profit';
+						SaveStates[Rank] = 'Profit';
 					}
 				}
 
@@ -411,27 +411,27 @@ let Calculator = {
 					continue;
 
 				// Selbe Kosten wie vorheriger Rang => nicht belegbar
-				if (SnipeLastRankCost !== undefined && SnipeRankCosts[Rank] === SnipeLastRankCost) {
+				if (SaveLastRankCost !== undefined && SaveRankCosts[Rank] === SaveLastRankCost) {
 					ForderStates[Rank] = 'NotPossible';
 					ForderRankCosts[Rank] = undefined;
-					SnipeStates[Rank] = 'NotPossible';
-					SnipeRankCosts[Rank] = undefined;
+					SaveStates[Rank] = 'NotPossible';
+					SaveRankCosts[Rank] = undefined;
 					ExitLoop = true;
 				}
 				else {
-					SnipeLastRankCost = SnipeRankCosts[Rank];
+					SaveLastRankCost = SaveRankCosts[Rank];
 				}
 
 				if (ExitLoop)
 					continue;
 
-				let CurrentGewinn = FPRewards[Rank] - SnipeRankCosts[Rank];
+				let CurrentGewinn = FPRewards[Rank] - SaveRankCosts[Rank];
 				if (CurrentGewinn > BestGewinn) {
-					if (SnipeStates[Rank] !== 'LevelWarning')
+					if (SaveStates[Rank] !== 'LevelWarning')
 						BestGewinn = CurrentGewinn;
 				}
 				else {
-					SnipeStates[Rank] = 'WorseProfit';
+					SaveStates[Rank] = 'WorseProfit';
 					ForderStates[Rank] = 'WorseProfit';
 				}
 			}
@@ -451,18 +451,18 @@ let Calculator = {
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
 			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]),
-				SnipeCosts = (SnipeStates[Rank] === 'Self' ? Einzahlungen[Rank] : SnipeRankCosts[Rank]);
+				SaveCosts = (SaveStates[Rank] === 'Self' ? Einzahlungen[Rank] : SaveRankCosts[Rank]);
 
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
 				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0),
-				SnipeGewinn = FPRewards[Rank] - SnipeCosts,
-				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SnipeCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
+				SaveGewinn = FPRewards[Rank] - SaveCosts,
+				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SaveCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
 
-			if (SnipeStates[Rank] !== 'Self' && Kurs > 0) {
+			if (SaveStates[Rank] !== 'Self' && Kurs > 0) {
 				if (Kurs < BestKurs) {
 					BestKurs = Kurs;
 					BestKursNettoFP = FPNettoRewards[Rank];
-					BestKursEinsatz = SnipeRankCosts[Rank];
+					BestKursEinsatz = SaveRankCosts[Rank];
 				}
 			}
 
@@ -487,10 +487,10 @@ let Calculator = {
 			}
 
 			if (ForderGewinn > 0) {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn, 'safe': SnipeRankCosts[Rank] })]
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
 			}
 			else {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': ForderFPRewards[Rank], 'loss': 0 - ForderGewinn, 'safe': SnipeRankCosts[Rank] })]
+				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'costs': ForderFPRewards[Rank], 'loss': 0-ForderGewinn })]
 			}
 
 			if (ForderStates[Rank] === 'Self') {
@@ -585,22 +585,22 @@ let Calculator = {
 
 			RowClass = '';
 
-			if (ForderStates[Rank] === 'NotPossible' && SnipeStates[Rank] === 'NotPossible') {
+			if (ForderStates[Rank] === 'NotPossible' && SaveStates[Rank] === 'NotPossible') {
 				RowClass = 'text-grey';
 			}
-			else if (ForderStates[Rank] === 'WorseProfit' && SnipeStates[Rank] === 'WorseProfit') {
+			else if (ForderStates[Rank] === 'WorseProfit' && SaveStates[Rank] === 'WorseProfit') {
 				RowClass = 'text-grey';
 			}
-			else if (ForderStates[Rank] === 'Self' && SnipeStates[Rank] === 'Self') {
+			else if (ForderStates[Rank] === 'Self' && SaveStates[Rank] === 'Self') {
 				RowClass = 'info-row';
 			}
-			else if (ForderStates[Rank] === 'NegativeProfit' && SnipeStates[Rank] === 'NegativeProfit') {
+			else if (ForderStates[Rank] === 'NegativeProfit' && SaveStates[Rank] === 'NegativeProfit') {
 				RowClass = 'bg-red';
 			}
-			else if (ForderStates[Rank] === 'LevelWarning' && SnipeStates[Rank] === 'LevelWarning') {
+			else if (ForderStates[Rank] === 'LevelWarning' && SaveStates[Rank] === 'LevelWarning') {
 				RowClass = 'bg-yellow';
 			}
-			else if (ForderStates[Rank] === 'Profit' && SnipeStates[Rank] === 'Profit') {
+			else if (ForderStates[Rank] === 'Profit' && SaveStates[Rank] === 'Profit') {
 				RowClass = 'bg-green';
 			}
 
