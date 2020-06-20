@@ -20,6 +20,7 @@
 
 #costCalculator #costCalculatorBody {
 	position: relative;
+	min-width: 320px;
 }
 
 #costCalculator #costCalculatorBody .lg-not-possible {
@@ -55,7 +56,7 @@
 }
 
 #costCalculator #costCalculatorBody strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 #costCalculator #costCalculatorBody p.header {
@@ -68,6 +69,16 @@
 	color: #F3D6A0;
 }
 
+#costCalculator #costCalculatorBody p.header .building-name {
+	font-size: 115%;
+}
+
+#costCalculator #costCalculatorBody p.header .player-name {
+	display: block;
+	white-space: nowrap;
+	color: var(--text-bright);
+	margin: 0 10px;
+}
 
 #costCalculator #costCalculatorBody .foe-table td {
 	white-space: nowrap;
@@ -110,9 +121,7 @@
 
 #costCalculatorBody .costFactorWrapper {
 	padding: 5px 10px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	text-align: center;
 }
 
 #costCalculatorBody .costFactorWrapper > div:first-child {
