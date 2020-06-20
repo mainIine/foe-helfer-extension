@@ -92,11 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Votre stock de PF est trop bas !<br>Vous avez seulement __fpstock__ sur les __costs__ PF demandés.<br>Il vous manque __tooless__ PF",
 		"Boxes.Calculator.TTForderNegativeProfit": "<br><b>Place non sécurisée !</b><br><br>Manque <b>__fpcount__</b> PF pour la sécuriser<br><br>Total pour sécuriser la place : <b>__totalfp__</b> PF",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PF ne rentre pas dedans<br>Investissement maximum : __totalfp__ PF",
-		"Boxes.Calculator.TTLoss": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Coût : <b>__costs__</b> PF<br><br>= <b>PERTE de __loss__ PF</b>",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__paid__</b> PF<br><br>= <b>PERTE de __loss__ PF</b>",
 		"Boxes.Calculator.TTPaidTooLess": "<br>Vous avez payé __paid__ PF au lieu de __topay__ PF<br> Il manque <b>__tooless__</b> PF",
 		"Boxes.Calculator.TTPaidTooMuch": "<br>Vous avez payé __paid__ PF au lieu de __topay__ PF<br> C'est <b>__toomuch__</b> PF de trop",
-		"Boxes.Calculator.TTProfit": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Coût : <b>__costs__</b> PF<br><br>= <b>GAIN de __profit__ PF</b>",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__paid__</b> PF<br><br>= <b>GAIN de __profit__ PF</b>",
 		"Boxes.Calculator.Up2LevelUp": "Jusqu'au niveau suivant ",
 		"Boxes.Campagne.AlreadyDone": " déjà conquis !",
@@ -197,6 +197,16 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
