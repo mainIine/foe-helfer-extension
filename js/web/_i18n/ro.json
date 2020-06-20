@@ -92,11 +92,9 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Not enough FP Packs in stock!<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Locul nu este asigurat. Încă __fpcount__PF trebuie depuse pentru a asigura locul.<br>Total pentru asigurarea locului: __totalfp__PF.",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__PF mi pot fi donate.<br>Investiția maximă: __totalfp__PF",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Loss = __paid__ <small>(Paid)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTPaidTooLess": "You paid __paid__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
 		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "PF rămase până la închidere",
 		"Boxes.Campagne.AlreadyDone": " cucerită deja!",
