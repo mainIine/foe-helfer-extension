@@ -92,11 +92,9 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Not enough FP Packs in stock!<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Il posto non è sicuro. __Fpcount__ FP aggiuntivi devono essere investiti per renderlo sicuro <br> Total per rendere il luogo sicuro: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP non si adatta a <br> Investimento massimo: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Costi: __costs__ <br> Loss = __costs__ <small> (costi) </small> - __bruttoreward__ <small> (ricompensa) </small> = __loss__",
 		"Boxes.Calculator.TTLossSelf": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Loss = __paid__ <small> (pagato) </small> - __bruttoreward__ <small> (ricompensa) </small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Hai pagato __paid__PF anziché __topay__PF. __tooless__PF in meno.",
 		"Boxes.Calculator.TTPaidTooMuch": "Hai pagato __paid__PF invece di __topay__PF. __toomuch__PF in più.",
-		"Boxes.Calculator.TTProfit": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Costi: __costs__ <br> Profitto = __bruttoreward__ <small> (ricompensa) </small> - __costs__ <small> (costi) </small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Profit = __bruttoreward__ <small> (ricompensa) </small> - __paid__ <small> (Pagato) </small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Fino al livello successivo",
 		"Boxes.Campagne.AlreadyDone": "Già conquistato!",

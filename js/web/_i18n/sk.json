@@ -92,11 +92,9 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Not enough FP Packs in stock!<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Pozícia nie je zaistená. Ďalších  __fpcount__ BV je potrebných na zaistenie pozície<br>Celkovo na zaistenie pozície: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__BV sa vložiť nedá<br>Maximálny možný príspevok: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Strata = __costs__<small>(náklady)</small> - __bruttoreward__<small>(odmena)</small> = __loss__",
 		"Boxes.Calculator.TTLossSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Strata = __paid__<small>(vložené)</small> - __bruttoreward__<small>(odmena)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Vložili ste __paid__BV namiesto __topay__BV. Je to o __tooless__FP menej.",
 		"Boxes.Calculator.TTPaidTooMuch": "Vložili ste __paid__BV namiesto __topay__FP. Je to o __toomuch__FP viac.",
-		"Boxes.Calculator.TTProfit": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Náklady: __costs__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __costs__<small>(náklady)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __paid__<small>(Vložené)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Do ukončenia úrovne ostáva",
 		"Boxes.Campagne.AlreadyDone": " už získané!",
