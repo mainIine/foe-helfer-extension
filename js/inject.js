@@ -168,7 +168,6 @@
 				'productions',
 				'part-calc',
 				'unit',
-				'plunderer',
 				'guildfights',
 				'notes',
 				'stats',

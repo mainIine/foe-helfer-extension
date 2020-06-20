@@ -85,7 +85,7 @@
 		"Boxes.Calculator.LGNotOpen": "Die nächste Stufe ist derzeit noch nicht freigeschaltet",
 		"Boxes.Calculator.MaxLevel": "Max. Level",
 		"Boxes.Calculator.Meds": "Meds",
-		"Boxes.Calculator.Profit": "Difference",
+		"Boxes.Calculator.Profit": "Differenz",
 		"Boxes.Calculator.Step": "Stufe ",
 		"Boxes.Calculator.Title": "Kostenrechner",
 		"Boxes.Calculator.TTForderCosts": "Einsatz = __nettoreward__<small>(Netto Mäzen)</small> * __forderfactor__%<small>(Fördern mit)</small> = __costs__",
