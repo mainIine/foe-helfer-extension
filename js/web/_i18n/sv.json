@@ -92,9 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "VARNING: FP bank är för liten<br>Du har bara __fpstock__ of __costs__FP<br>Det är __tooless__FP för lite",
 		"Boxes.Calculator.TTForderNegativeProfit": "Placering är inte säker. __fpcount__ ytterligare FP måste läggas in för att göra den säker<br>Totalt för att göra den säker: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP får inte plats<br>Max investering: __totalfp__FP",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __paid__<br>Förlust = __paid__<small>(betalade)</small> - __bruttoreward__<small>(belöning)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Du betalade __paid__FP istället för __topay__FP. Det är __tooless__FP för mycket.",
 		"Boxes.Calculator.TTPaidTooMuch": "Du betalade __paid__FP istället för __topay__FP. Det är __toomuch__FP för lite.",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __paid__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __paid__<small>(betalning)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Till nästa nivå",
 		"Boxes.Campagne.AlreadyDone": " Redan erövrad!",
@@ -195,16 +197,16 @@
 		"Boxes.Negotiation.Title": "Förhandlingshjälp",
 		"Boxes.Negotiation.TryEnd": "Inga fler försök",
 		"Boxes.Negotiation.WrongGoods": "Fel vara vald, välj manuell för avslut",
-		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
-		"Boxes.Notice.Edit": "???", //Todo: Translate
-		"Boxes.Notice.GroupName": "???", //Todo: Translate
-		"Boxes.Notice.NewGroup": "???", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
-		"Boxes.Notice.NewSide": "???", //Todo: Translate
-		"Boxes.Notice.Save": "???", //Todo: Translate
-		"Boxes.Notice.SideName": "???", //Todo: Translate
-		"Boxes.Notice.Sorting": "???", //Todo: Translate
-		"Boxes.Notice.Title": "???", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Tillgängliga",
 		"Boxes.Outpost.DescRequired": "Behov",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ff4040'>Saknas</span>",

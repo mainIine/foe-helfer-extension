@@ -92,9 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Esos son __tooless__FP de menos",
 		"Boxes.Calculator.TTForderNegativeProfit": "El puesto no está asegurado. __fpcount__ FPs adicionales deben invertirse para asegurarlo<br>Total para asegurar el puesto: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP no entran<br>La inversión máxima es: __totalfp__FP",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __paid__<br>Pérdida = __paid__<small>(pagado)</small> - __bruttoreward__<small>(premio)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Pagaste __paid__FP en lugar de __topay__FP. Eso son __tooless__FP de menos.",
 		"Boxes.Calculator.TTPaidTooMuch": "Pagaste __paid__FP en lugar de __topay__FP. Eso son __toomuch__FP de más.",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __paid__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __paid__<small>(pagado)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Hasta el próximo nivel",
 		"Boxes.Campagne.AlreadyDone": " Ya conquistado!",
@@ -195,16 +197,16 @@
 		"Boxes.Negotiation.Title": "Ayudante de negociación",
 		"Boxes.Negotiation.TryEnd": "Se terminaron los intentos",
 		"Boxes.Negotiation.WrongGoods": "Mercancía equivocada, por favor seguir a mano",
-		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
-		"Boxes.Notice.Edit": "???", //Todo: Translate
-		"Boxes.Notice.GroupName": "???", //Todo: Translate
-		"Boxes.Notice.NewGroup": "???", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
-		"Boxes.Notice.NewSide": "???", //Todo: Translate
-		"Boxes.Notice.Save": "???", //Todo: Translate
-		"Boxes.Notice.SideName": "???", //Todo: Translate
-		"Boxes.Notice.Sorting": "???", //Todo: Translate
-		"Boxes.Notice.Title": "???", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Necesitado",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Sobrante</span> / <span style='color:#ff4040'>Faltan</span>",
