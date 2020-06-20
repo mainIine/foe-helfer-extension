@@ -92,9 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "UWAGA: posiadasz za mało PR<br>masz __fpstock__ z __costs__ PR<br>za mało o  __tooless__ PR",
 		"Boxes.Calculator.TTForderNegativeProfit": "Miejsce nie jest zabezpieczone. należy wpłacić __fpcount__ dodatkowych PR w celu zabezpieczenia<br>Całkowita wpłata: __totalfp__ PR",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PR nie zmieści się<br>Maksymalna możliwa wpłata: __totalfp__ PR",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Strata = __paid__<small>(wpłata)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __tooless__ PR za mało.",
 		"Boxes.Calculator.TTPaidTooMuch": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __toomuch__ PR za dużo.",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Zysk = __bruttoreward__<small>(zwrot)</small> - __paid__<small>(wpłata)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Do zamknięcia",
 		"Boxes.Campagne.AlreadyDone": " już zdobyte!",
@@ -195,16 +197,16 @@
 		"Boxes.Negotiation.Title": "Asystent negocjacji",
 		"Boxes.Negotiation.TryEnd": "Brak kolejnych podejść",
 		"Boxes.Negotiation.WrongGoods": "Wybrano niewłaściwe towary, proszę skończyć ręcznie",
-		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
-		"Boxes.Notice.Edit": "???", //Todo: Translate
-		"Boxes.Notice.GroupName": "???", //Todo: Translate
-		"Boxes.Notice.NewGroup": "???", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
-		"Boxes.Notice.NewSide": "???", //Todo: Translate
-		"Boxes.Notice.Save": "???", //Todo: Translate
-		"Boxes.Notice.SideName": "???", //Todo: Translate
-		"Boxes.Notice.Sorting": "???", //Todo: Translate
-		"Boxes.Notice.Title": "???", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Dostepne",
 		"Boxes.Outpost.DescRequired": "Wymagane",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Nadmiar</span> / <span style='color:#ff4040'>Brak</span>",

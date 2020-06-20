@@ -92,9 +92,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "LET OP: FP voorraad is te laag<br>Je hebt maar __fpstock__ van de __costs__FP<br>Dat zijn __tooless__FP te weinig",
 		"Boxes.Calculator.TTForderNegativeProfit": "Plek niet veilig. Er moeten hiervoor nog __fpcount__ extra FP's worden gestort.<br>Totaal voor een veilige plek: __totalfp__FP's",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP's passen er niet in.<br>Maximale storting: __totalfp__FP's",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __paid__<br>Verlies = __paid__<small>(paid)</small> - __bruttoreward__<small>(reward)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Je hebt __paid__FP gestort i.p.v. __topay__FP. Dat is __tooless__FP te weinig.",
 		"Boxes.Calculator.TTPaidTooMuch": "Je hebt __paid__FP gestort i.p.v. __topay__FP. Dat is __toomuch__FP te veel.",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __paid__<br>Winst = __bruttoreward__<small>(beloning)</small> - __paid__<small>(gestort)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Nog te storten",
 		"Boxes.Campagne.AlreadyDone": "Alreeds veroverd!",
@@ -195,16 +197,16 @@
 		"Boxes.Negotiation.Title": "Onderhandelingshulp",
 		"Boxes.Negotiation.TryEnd": "Geen beurten meer",
 		"Boxes.Negotiation.WrongGoods": "Verkeerde goederen geselecteerd, maak de onderhandeling handmatig af!",
-		"Boxes.Notice.DummyHeading": "???", //Todo: Translate
-		"Boxes.Notice.Edit": "???", //Todo: Translate
-		"Boxes.Notice.GroupName": "???", //Todo: Translate
-		"Boxes.Notice.NewGroup": "???", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "???", //Todo: Translate
-		"Boxes.Notice.NewSide": "???", //Todo: Translate
-		"Boxes.Notice.Save": "???", //Todo: Translate
-		"Boxes.Notice.SideName": "???", //Todo: Translate
-		"Boxes.Notice.Sorting": "???", //Todo: Translate
-		"Boxes.Notice.Title": "???", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Beschikbaar",
 		"Boxes.Outpost.DescRequired": "Nodig",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Overschot</span> / <span style='color:#ff4040'>Tekort</span>",
