@@ -53,7 +53,7 @@ let GreatBuildings =
     FPPerTile: 0.2,
     
 	/**
-	 * Zeigt
+	 * Zeigt die Box an oder schließt sie
 	 */
     Show: () => {
         if ($('#greatbuildings').length === 0) {
@@ -90,7 +90,7 @@ let GreatBuildings =
 
 
     /**
-	 *
+	 * Box zusammen bauen
 	 */
     BuildBox: () => {
         GreatBuildings.CalcBody();
@@ -124,14 +124,10 @@ let GreatBuildings =
             '<tr>' +
                 '<th rowspan="2">' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>' +
                 '<th rowspan="2">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>' +
-                '<th>' + i18n('Boxes.GreatBuildings.Suggestion1') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.Cost') + '</th>' +
+                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.DailyFP') + '</th>' +
                 '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
-                '<th>' + i18n('Boxes.GreatBuildings.Suggestion2') + '</th>' +
-                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
-            '</tr>' +
-            '<tr>' +
-                '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
-                '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
             '</tr>' +
         '</thead>');
 
@@ -203,31 +199,42 @@ let GreatBuildings =
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             h.push('<tr>');
-            h.push('<td>' + MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID]['name'] + '</td>');
+            h.push('<td rowspan="2">' + MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID]['name'] + '</td>');
             if (ShowGoodCosts[i]) {
-                h.push('<td><input type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[i].GoodCosts + '"></td>');
+                h.push('<td rowspan="2"><input type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[i].GoodCosts + '"></td>');
             }
             else {
-                h.push('<td>-</td>');
+                h.push('<td rowspan="2">-</td>');
             }
             if (ROIResults[i]['BestLevel'] !== undefined) {
-                h.push('<td><strong ' + (BestGB === i ? 'class="success"' : '') + '>' + (ROIResults[i]['BestLevel'] + 1) + '</strong></td>');
-                h.push('<td><strong ' + (BestGB === i ? 'class="success"' : '') + '>' + Math.round(ROIResults[i]['ROIValues'][ROIResults[i]['BestLevel']]) + '</strong></td>');
+                let StrongClass = (BestGB === i ? 'class="success"' : '');
+
+                h.push('<td><strong ' + StrongClass + '>' + (ROIResults[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + (ROIResults[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + (ROIResults[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + Math.round(ROIResults[i]['ROIValues'][ROIResults[i]['BestLevel']]) + '</strong></td>');
             }
             else {
                 h.push('<td>-</td>');
                 h.push('<td>-</td>');
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
             }
+            h.push('</tr>');
 
+            h.push('<tr>');
             if (ROIResults2[i] !== undefined && ROIResults2[i]['BestLevel'] !== undefined) {
-                h.push('<td><strong>' + (ROIResults2[i]['BestLevel'] + 1) + '</strong></td>');
-                h.push('<td><strong>' + Math.round(ROIResults[i]['ROIValues'][ROIResults2[i]['BestLevel']]) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + (ROIResults2[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + (ROIResults2[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + (ROIResults2[i]['BestLevel'] + 1) + '</strong></td>');
+                h.push('<td><strong ' + StrongClass + '>' + Math.round(ROIResults2[i]['ROIValues'][ROIResults2[i]['BestLevel']]) + '</strong></td>');
             }
             else {
                 h.push('<td>-</td>');
                 h.push('<td>-</td>');
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
             }
-
             h.push('</tr>');
         }
                        

@@ -139,7 +139,9 @@
 		"Boxes.Gildfights.Title": "Przegląd aktywności graczy",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Bonus wpłacających",
+		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Koszt / PR dziennie",
+		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "Koszt towarów (PR)",
 		"Boxes.GreatBuildings.GreatBulding": "Perła Architektury",
 		"Boxes.GreatBuildings.Level": "Poziom",
