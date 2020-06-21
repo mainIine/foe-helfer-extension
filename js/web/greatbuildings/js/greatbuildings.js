@@ -240,7 +240,7 @@ let GreatBuildings =
                 let BestLevel = ROIResults2[Index]['BestLevel'];
 
                 h.push('<tr>');
-                h.push('<td colspan="2" class="text-right">' + i18n('Boxes.GreatBuildings.Suggestion2') + ':</td>');
+                h.push('<td colspan="2" class="text-right">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + ':</td>');
                 h.push('<td><strong>' + (BestLevel + 1) + '</strong></td>');
                 h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</strong></td>');
                 h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</strong></td>');
