@@ -86,22 +86,18 @@
 		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medalhas",
 		"Boxes.Calculator.Profit": "Lucro",
-		"Boxes.Calculator.Rate": "Taxa",
-		"Boxes.Calculator.Sniping": "Perdidos",
 		"Boxes.Calculator.Step": "Nível ",
 		"Boxes.Calculator.Title": "Calculadora de PFs em GE",
 		"Boxes.Calculator.TTForderCosts": "Custos = __nettoreward__ < small > (recompensa líquida)</small> * __forderfactor __%<small>(investimento amigável)</small> = __costs__ ",
 		"Boxes.Calculator.TTForderFPStockLow": "ATENÇÃO: O estoque de PF está muito baixo<br>Você tem apenas __fpstock__ de __costs__PF<br>Isso é __tooless__PF",
 		"Boxes.Calculator.TTForderNegativeProfit": "O lugar não está seguro. É necessário investir mais __fpcount__ PFs.<br>Total para segurar o lugar: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__PF não cabem em <br>Investimento máximo: __totalfp__PF",
-		"Boxes.Calculator.TTLoss": "Recompensa = __nettoreward__ < small > (recompensa líquida)</small> * __arcfactor __%<small>(Bônus de Arco)</small> = __bruttoreward__<br>Custos: __costs__ - Perda = __costs__<small>(custos)</small> - __bruttoreward__<small>(recompensa)</small> = __loss__ ",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Recompensa = __nettoreward__<small>(recompensa líquida)</small> * __arcfactor __%<small>(Bônus de Arco)</small> = __bruttoreward__<br>Pago: __paid__<br>Perda = __paid__<small>(pago)</small> - __bruttoreward__<small>(recompensa)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Você pagou __paid__FP em vez de __topay__FP. Isso são __tooless__PF a menos.",
 		"Boxes.Calculator.TTPaidTooMuch": "Você pagou __paid__FP em vez de __topay__FP. Isso são __toomuch__PF a mais.",
-		"Boxes.Calculator.TTProfit": "Recompensa = __nettoreward__<small>(recompensa líquida)</small> * __arcfactor__%<small>(Bônus do Arco)</small> = __bruttoreward__<br>Costs: __costs__<br>Profit = __bruttoreward__<small>(reward)</small> - __costs__<small>(costs)</small> = __profit__",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Recompensa = __nettoreward__<small>(recompensa líquida)</small> * __arcfactor__%<small>(Bônus do Arco)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__<small>(reward)</small> - __paid__<small>(Paid)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Taxa = __costs__<small>(costs)</small> / __nettoreward__<small>(recompensa líquida)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATENÇÃO: O estoque de PF está muito baixo<br>Você tem apenas __fpstock__ de __costs__PF<br>São __tooless__PF",
 		"Boxes.Calculator.Up2LevelUp": "Até nivelar",
 		"Boxes.Campagne.AlreadyDone": " já conquistado!",
 		"Boxes.Campagne.DescInStock": "Disponível",
@@ -184,16 +180,6 @@
 		"Boxes.Kits.TabBuildingKits": "Kits de construção",
 		"Boxes.Kits.TabSelectionKits": "Kits de seleção",
 		"Boxes.Kits.Title": "Kits de construção / seleção",
-		"Boxes.LGOverviewBox.Building": "Edifício",
-		"Boxes.LGOverviewBox.Level": "Nível",
-		"Boxes.LGOverviewBox.NothingToGet": "Nada para investir em <strong>__player__</strong>",
-		"Boxes.LGOverviewBox.PaidTotal": "Pago / Total",
-		"Boxes.LGOverviewBox.Profit": "Lucro",
-		"Boxes.LGOverviewBox.Rate": "Taxa",
-		"Boxes.LGOverviewBox.Title": "Investimentos possíveis",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "encontrado novamente",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "encontrado novo",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Nenhum investimento até agora",
 		"Boxes.Negotiation.Average": "Ø quantidade",
 		"Boxes.Negotiation.Canceled": "Negociação cancelada",
 		"Boxes.Negotiation.Chance": "Probabilidade",
@@ -211,11 +197,16 @@
 		"Boxes.Negotiation.Title": "Auxiliar de Negociações",
 		"Boxes.Negotiation.TryEnd": "Não há mais tentativas",
 		"Boxes.Negotiation.WrongGoods": "Escolha mal feita! Por favor, continue manualmente",
-		"Boxes.Neighbors.AttackingArmy": "Bônus estimado do exército de ataque: __attatt__% (ATT) / __attdef__% (DEF)",
-		"Boxes.Neighbors.DefendingArmy": "Bônus estimado do exército de defesa: __defatt__% (ATT) / __defdef__% (DEF)",
-		"Boxes.Neighbors.GuildPower": "Poder da Guilda",
-		"Boxes.Neighbors.OngoingProductions": "Produções em curso",
-		"Boxes.Neighbors.ReadyProductions": "Produções terminadas",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponível",
 		"Boxes.Outpost.DescRequired": "Necessários",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excesso</span> / <span style='color:#ff4040'>em falta</span>",
@@ -256,33 +247,7 @@
 		"Boxes.OwnpartCalculator.Step": "Nível",
 		"Boxes.OwnpartCalculator.Title": "Calculadora de PFs em seu GE",
 		"Boxes.OwnpartCalculator.YourName": "O seu nome",
-		"Boxes.Plundered.actionBattleLost": "Batalha(s) Perdida(s)",
-		"Boxes.Plundered.actionBattleWon": "Batalha(s) Ganha(s)",
-		"Boxes.Plundered.actionPlundered": "Saqueado(a)",
-		"Boxes.Plundered.actionShielded": "Protegido(a)",
-		"Boxes.Plundered.actionSurrendered": "Entregue",
-		"Boxes.Plunderer.AllPlayers": "Todos os jogadores",
-		"Boxes.Plunderer.Attack": "Ataque",
-		"Boxes.Plunderer.autoBattle": "Batalha Automática",
-		"Boxes.Plunderer.collectedToday": "Coletados Hoje",
-		"Boxes.Plunderer.Defense": "Defesa",
-		"Boxes.Plunderer.filteredByUser": "Ordenado por usuário",
-		"Boxes.Plunderer.FP": "PF",
-		"Boxes.Plunderer.goto1stPage": "Primeira Página",
-		"Boxes.Plunderer.HasNoClan": "<em>sem guilda</em>",
-		"Boxes.Plunderer.nextPage": "Próxima Página",
-		"Boxes.Plunderer.noData": "Sem Dados",
-		"Boxes.Plunderer.Page": "Página",
-		"Boxes.Plunderer.PlayersEra": "Era do Jogador",
-		"Boxes.Plunderer.rounds": "Rounds",
-		"Boxes.Plunderer.shieldProtectetUntil": "Protegido até:",
-		"Boxes.Plunderer.shieldUntil": "Termina em",
-		"Boxes.Plunderer.showAllPlayers": "Mostrar todos os jogadores",
-		"Boxes.Plunderer.thisWeek": "Esta Semana",
 		"Boxes.Plunderer.Title": "Atividade de PvP",
-		"Boxes.Plunderer.total": "Total",
-		"Boxes.Plunderer.visited": "Visitado",
-		"Boxes.Plunderer.visitTitle": "Quando você visitou a última vez este jogador",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifícios vizinhos",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -492,8 +457,6 @@
 		"Settings.GlobalSend.Title": "Envio para foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá ter o menu?<br> Sem nada ou \"0\" definir uma altura automática.",
 		"Settings.MenuLength.Title": "Altura do Menu",
-		"Settings.PreScanLGList.Desc": "Faz uma digitalização dos GEs dos vizinhos, quando a cidade é aberta e determina possíveis ganhos/perdas em PFs.<br><u> Nota: </u> É apenas atualizado quando se abre o GE, por isso o resultado nem sempre corresponde.",
-		"Settings.PreScanLGList.Title": "Digitalização preliminar dos GEs",
 		"Settings.ResetBoxPositions.Button": "Apagar!",
 		"Settings.ResetBoxPositions.Desc": "Reiniciar todas as coordenadas de todas as janelas?",
 		"Settings.ResetBoxPositions.Title": "Coordenadas da Box",
@@ -505,12 +468,8 @@
 		"Settings.SendInvestigations.Title": "Investimento PFs",
 		"Settings.SendTavernInfo.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?",
 		"Settings.SendTavernInfo.Title": "Atividade da motivação",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Durante a visita, mostrar o que está a ser produzido",
-		"Settings.ShowNeighborsGoods.Title": "Colheita dos vizinhos",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Assim que o movimento extra na taberna é ativado, um contador móvel global aparece.",
