@@ -139,7 +139,9 @@
 		"Boxes.Gildfights.Title": "Spiller oversigt",
 		"Boxes.Gildfights.Total": "I alt",
 		"Boxes.GreatBuildings.ArcBonus": "Bidrag med",
+		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Pris / dagl. FP",
+		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP pris varer",
 		"Boxes.GreatBuildings.GreatBulding": "Storslåede bygninger",
 		"Boxes.GreatBuildings.Level": "Niveau",

@@ -139,7 +139,9 @@
 		"Boxes.Gildfights.Title": "Spieler Übersicht",
 		"Boxes.Gildfights.Total": "Gesamt",
 		"Boxes.GreatBuildings.ArcBonus": "Fördern mit",
+		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Kosten / tgl. FP",
+		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP Kosten Güter",
 		"Boxes.GreatBuildings.GreatBulding": "Legend. Gebäude",
 		"Boxes.GreatBuildings.Level": "Level",

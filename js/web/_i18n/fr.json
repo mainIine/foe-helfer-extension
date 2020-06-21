@@ -139,7 +139,9 @@
 		"Boxes.Gildfights.Title": "Activité de membre",
 		"Boxes.Gildfights.Total": "Total",
 		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
+		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
+		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
 		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
 		"Boxes.GreatBuildings.Level": "Niveau",
