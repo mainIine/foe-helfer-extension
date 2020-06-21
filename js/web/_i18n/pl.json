@@ -138,6 +138,7 @@
 		"Boxes.Gildfights.Player": "Gracz",
 		"Boxes.Gildfights.Title": "Przegląd aktywności graczy",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
+		"Boxes.GreatBuidlings.Suggestion2": "Suggestion2", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Bonus wpłacających",
 		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Koszt / PR dziennie",
@@ -145,7 +146,11 @@
 		"Boxes.GreatBuildings.FPCostGoods": "Koszt towarów (PR)",
 		"Boxes.GreatBuildings.GreatBulding": "Perła Architektury",
 		"Boxes.GreatBuildings.Level": "Poziom",
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP producing GBs: Top Buildings are better", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "Budowa Pereł Architektury",
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Pojawia się",
 		"Boxes.HiddenRewards.Disappears": "Znika",
 		"Boxes.HiddenRewards.NoEvents": "Brak zdarzeń losowych",
