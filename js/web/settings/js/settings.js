@@ -18,84 +18,93 @@ let Settings = {
 	/**
 	 * Einstellungspunkte
 	 */
-	Preferences: {
-		Version: {
-			callback: 'VersionInfo',
-			title: i18n('Settings.Version.Title'),
-			desc: HTML.i18nReplacer(i18n('Settings.Version.Desc'), {
-				version: extVersion,
-				language: (GuiLng === 'de' ? 'de' : 'en')
-			})
-		},
-		GlobalSend : {
-			status: true,
-			title : i18n('Settings.GlobalSend.Title'),
-			desc : i18n('Settings.GlobalSend.Desc')
-		},
-		SendTavernInfo : {
-			status: false,
-			title : i18n('Settings.SendTavernInfo.Title'),
-			desc : i18n('Settings.SendTavernInfo.Desc')
-		},
-		SendGildMemberLGInfo : {
-			status: false,
-			title : i18n('Settings.SendGildMemberLGInfo.Title'),
-			desc : i18n('Settings.SendGildMemberLGInfo.Desc')
-		},
-		SendGEXInfo : {
-			status: true,
-			title : i18n('Settings.SendGEXInfo.Title'),
-			desc : i18n('Settings.SendGEXInfo.Desc')
-		},
-		ShowNeighborsGoods : {
-			status: true,
-			title : i18n('Settings.ShowNeighborsGoods.Title'),
-			desc : i18n('Settings.ShowNeighborsGoods.Desc')
-		},
-		SendInvestigations : {
-			status: false,
-			title : i18n('Settings.SendInvestigations.Title'),
-			desc : i18n('Settings.SendInvestigations.Desc')
-		},
-		ShowTavernBadge : {
-			status: true,
-			title : i18n('Settings.ShowTavernBadge.Title'),
-			desc : i18n('Settings.ShowTavernBadge.Desc')
-		},
-		PreScanLGList : {
-			status: true,
-			title : i18n('Settings.PreScanLGList.Title'),
-			desc : i18n('Settings.PreScanLGList.Desc')
-		},
-		AutomaticNegotiation : {
-			status: true,
-			title : i18n('Settings.AutomaticNegotiation.Title'),
-			desc : i18n('Settings.AutomaticNegotiation.Desc')
-		},
-		ResetBoxPositions : {
-			button: 'ResetBoxCoords',
-			buttonText: i18n('Settings.ResetBoxPositions.Button'),
-			title : i18n('Settings.ResetBoxPositions.Title'),
-			desc : i18n('Settings.ResetBoxPositions.Desc')
-		},
-		MenuLength : {
-			callback: 'MenuInputLength',
-			title : i18n('Settings.MenuLength.Title'),
-			desc : i18n('Settings.MenuLength.Desc')
-		},
-		ChangeLanguage : {
-			callback: 'LanguageDropdown',
-			title : i18n('Settings.ChangeLanguage.Title'),
-			desc : i18n('Settings.ChangeLanguage.Desc')
-		},
-		/*
-		CustomerApi : {
-			status: false,
-			callback: 'CustomerApiCheck',
-			title : i18n('Settings.CustomerApi.Title'),
-			desc : i18n('Settings.CustomerApi.Desc')
-		}
-		*/
+	Preferences: undefined,
+
+
+	/**
+ * Initialisiert das Preferences Dict
+ * 
+ * */
+	InitPreferences: () => {
+		Settings.Preferences = {
+			Version: {
+				callback: 'VersionInfo',
+				title: i18n('Settings.Version.Title'),
+				desc: HTML.i18nReplacer(i18n('Settings.Version.Desc'), {
+					version: extVersion,
+					language: (GuiLng === 'de' ? 'de' : 'en')
+				})
+			},
+			GlobalSend: {
+				status: true,
+				title: i18n('Settings.GlobalSend.Title'),
+				desc: i18n('Settings.GlobalSend.Desc')
+			},
+			SendTavernInfo: {
+				status: false,
+				title: i18n('Settings.SendTavernInfo.Title'),
+				desc: i18n('Settings.SendTavernInfo.Desc')
+			},
+			SendGildMemberLGInfo: {
+				status: false,
+				title: i18n('Settings.SendGildMemberLGInfo.Title'),
+				desc: i18n('Settings.SendGildMemberLGInfo.Desc')
+			},
+			SendGEXInfo: {
+				status: true,
+				title: i18n('Settings.SendGEXInfo.Title'),
+				desc: i18n('Settings.SendGEXInfo.Desc')
+			},
+			ShowOwnPartOnAllGBs: {
+				status: false,
+				title: i18n('Settings.ShowOwnPartOnAllGBs.Title'),
+				desc: i18n('Settings.ShowOwnPartOnAllGBs.Desc')
+			},
+			SendInvestigations: {
+				status: false,
+				title: i18n('Settings.SendInvestigations.Title'),
+				desc: i18n('Settings.SendInvestigations.Desc')
+			},
+			ShowInvestments: {
+				status: true,
+				title: i18n('Settings.ShowInvestments.Title'),
+				desc: i18n('Settings.ShowInvestments.Desc')
+			},
+			ShowTavernBadge: {
+				status: true,
+				title: i18n('Settings.ShowTavernBadge.Title'),
+				desc: i18n('Settings.ShowTavernBadge.Desc')
+			},
+			AutomaticNegotiation: {
+				status: true,
+				title: i18n('Settings.AutomaticNegotiation.Title'),
+				desc: i18n('Settings.AutomaticNegotiation.Desc')
+			},
+			ResetBoxPositions: {
+				button: 'ResetBoxCoords',
+				buttonText: i18n('Settings.ResetBoxPositions.Button'),
+				title: i18n('Settings.ResetBoxPositions.Title'),
+				desc: i18n('Settings.ResetBoxPositions.Desc')
+			},
+			MenuLength: {
+				callback: 'MenuInputLength',
+				title: i18n('Settings.MenuLength.Title'),
+				desc: i18n('Settings.MenuLength.Desc')
+			},
+			ChangeLanguage: {
+				callback: 'LanguageDropdown',
+				title: i18n('Settings.ChangeLanguage.Title'),
+				desc: i18n('Settings.ChangeLanguage.Desc')
+			},
+			/*
+			CustomerApi : {
+				status: false,
+				callback: 'CustomerApiCheck',
+				title : i18n('Settings.CustomerApi.Title'),
+				desc : i18n('Settings.CustomerApi.Desc')
+			}
+			*/
+		};
 	},
 
 
@@ -103,7 +112,6 @@ let Settings = {
 	 * Box initiieren
 	 */
 	init: ()=> {
-
 		if( $('#SettingsBox').length < 1 ){
 
 			// CSS in den DOM prügeln
@@ -182,7 +190,7 @@ let Settings = {
 			);
 		}
 
-		$('body').on('click', 'input.setting-check', function(){
+		$('#SettingsBoxBody').on('click', 'input.setting-check', function(){
 			Settings.StoreSettings($(this));
 		});
 	},
@@ -280,13 +288,13 @@ let Settings = {
 			if (!Languages.PossibleLanguages.hasOwnProperty(iso)){
 				break;
 			}
-			
+
 			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected': '') + '>' + Languages.PossibleLanguages[iso] + '</option>');
 		}
 
 		dp.push('</select>');
 
-		$('body').on('change', '#change-lang', function(){
+		$('#SettingsBoxBody').on('change', '#change-lang', function(){
 			let uLng = $(this).val();
 
 			localStorage.setItem('user-language', uLng);
@@ -299,7 +307,7 @@ let Settings = {
 
 
 	CustomerApiCheck: ()=> {
-		$('body').on('change', '[data-id="CustomerApi"]', function(){
+		$('#SettingsBoxBody').on('change', '[data-id="CustomerApi"]', function(){
 			location.reload();
 		});
 	},
@@ -323,7 +331,7 @@ let Settings = {
 			ip.val(value);
 		}
 
-		$('body').on('keyup', '#menu-input-length', function(){
+		$('#SettingsBox').on('keyup', '#menu-input-length', function(){
 			let value = $(this).val();
 
 			if(value > 0){

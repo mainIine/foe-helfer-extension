@@ -1,7 +1,9 @@
 ﻿let Languages = {
 	PossibleLanguages: {
+		br: 'Português do Brasil',
 		cs: 'Český',
 		de: 'Deutsch',
+		dk: 'Dansk',
 		en: 'English',
 		es: 'Español',
 		fr: 'Français',
@@ -13,6 +15,7 @@
 		ro: 'Română',
 		ru: 'Русский',
 		sk: 'Slovenčina',
-		sv: 'Svenska'
+		sv: 'Svenska',
+		tr: 'Türkçe'
 	},
 };

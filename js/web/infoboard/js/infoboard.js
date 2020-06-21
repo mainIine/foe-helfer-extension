@@ -26,9 +26,28 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
+// when a great building where the player has invested has been levelled
+FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
+
+    if ( data && data['responseData'] && data['responseData'] ) {
+        // save the number of returned FPs to show in the infoboard message
+        Info.ReturnFPPoints = ( data['responseData']['strategy_point_amount'] ) ? data.responseData.strategy_point_amount : 0;
+
+        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
+        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
+        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
+        if ( Info.ReturnFPMessageData ){
+            let bd = Info.OtherPlayerService_newEventgreat_building_contribution( Info.ReturnFPMessageData );
+            Info.ReturnFPMessageData = null;
+            Infoboard.PostMessage(bd);
+        }
+    }
+
+});
+
 /**
  *
- * @type {{init: Infoboard.init, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
  */
 let Infoboard = {
 
@@ -36,12 +55,23 @@ let Infoboard = {
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    DebugWebSocket: false,
 
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
+     * */
+    Init: () => {
+        FoEproxy.addRawWsHandler(data => {
+            Infoboard.HandleMessage('in', data);
+        });
+    },
+
+
+    /**
+     * Zeigt die InfoBox an
      */
-    init: () => {
+    Show: () => {
 
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
@@ -51,15 +81,6 @@ let Infoboard = {
         }
 
         Infoboard.Box();
-
-        if (Infoboard.InjectionLoaded === false) {
-            FoEproxy.addRawWsHandler(data => {
-                if ($('#BackgroundInfo').length > 0) {
-                    Infoboard.BoxContent('in', data);
-                }
-            });
-            Infoboard.InjectionLoaded = true;
-        }
     },
 
 
@@ -142,7 +163,7 @@ let Infoboard = {
         Infoboard.FilterInput();
         Infoboard.ResetBox();
 
-        $('body').on('click', '#infoboxTone', function() {
+        $('#BackgroundInfo').on('click', '#infoboxTone', function() {
 
             let disabled = $(this).hasClass('deactivated');
 
@@ -164,11 +185,11 @@ let Infoboard = {
      * @param dir
      * @param data
      */
-    BoxContent: (dir, data) => {
+    HandleMessage: (dir, data) => {
 
         let Msg = data[0];
 
-        if (Msg === undefined || Msg['requestClass'] === undefined) {
+        if (!Msg || !Msg['requestClass']) {
             return;
         }
 
@@ -177,47 +198,56 @@ let Infoboard = {
             t = Msg['responseData']['type'] || '',
             s = c + '_' + m + t;
 
+        if (Infoboard.DebugWebSocket) {
+            console.log(JSON.stringify(data))
+        }
+
         // Gibt es eine Funktion dafür?
-        if (Info[s] === undefined) {
+        if (!Info[s]) {
             return;
         }
 
         let bd = Info[s](Msg['responseData']);
 
-        if (bd === false) {
+        if (!bd) {
             return;
         }
 
-        let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
-            tr = $('<tr />').addClass(bd['class']),
-            msg = bd['msg'];
-
-
-        // wenn nicht angezeigt werden soll, direkt versteckeln
-        if (status === false) {
-            tr.hide();
-        }
-
-        tr.append(
-            '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
-            '<td>' + msg + '</td>'
-        );
-
-        $('#BackgroundInfoTable tbody').prepend(tr);
-
-        if (Infoboard.PlayInfoSound && status !== false) {
-            Infoboard.SoundFile.play();
-        }
+        Infoboard.PostMessage(bd);
     },
 
+    PostMessage: (bd) => {
+
+        if ($('#BackgroundInfo').length > 0) {
+            let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
+                tr = $('<tr />').addClass(bd['class']),
+                msg = bd['msg'];
+
+            // wenn nicht angezeigt werden soll, direkt versteckeln
+            if (!status) {
+                tr.hide();
+            }
+
+            tr.append(
+                '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + msg + '</td>'
+            );
+
+            $('#BackgroundInfoTable tbody').prepend(tr);
+
+            if (Infoboard.PlayInfoSound && status) {
+                Infoboard.SoundFile.play();
+            }
+        }
+
+    },
 
     /**
      * Filter für Message Type
      *
      */
     FilterInput: () => {
-        $('body').on('change', '.filter-msg', function() {
-
+        $('#BackgroundInfo').on('change', '.filter-msg', function() {
             let active = [];
 
             $('.filter-msg').each(function() {
@@ -252,7 +282,7 @@ let Infoboard = {
      *
      */
     ResetBox: () => {
-        $('body').on('click', '.btn-reset-box', function() {
+        $('#BackgroundInfo').on('click', '.btn-reset-box', function() {
             $('#BackgroundInfoTable tbody').html('');
         });
     }
@@ -271,8 +301,8 @@ let Info = {
      * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
      * und müssen gesammelt werden
      */
-    ReturnFPPoints: 0,
-
+    ReturnFPPoints: -1,
+    ReturnFPMessageData: null,
 
     /**
      * Jmd hat in einer Auktion mehr geboten
@@ -286,9 +316,9 @@ let Info = {
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    'player': d['player']['name'],
-                    'amount': HTML.Format(d['amount']),
-                }
+                'player': d['player']['name'],
+                'amount': HTML.Format(d['amount']),
+            }
             )
         };
     },
@@ -312,9 +342,9 @@ let Info = {
             if (d['attachment']['type'] === 'great_building') {
                 msg = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                        'building': BuildingNamesi18n[d['attachment']['cityEntityId']]['name'],
-                        'level': d['attachment']['level']
-                    }
+                    'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
+                    'level': d['attachment']['level']
+                }
                 )
             }
             // Trade
@@ -323,40 +353,20 @@ let Info = {
             }
         }
 
+        if (undefined === d.sender) {
+            return {
+                class: 'message',
+                type: i18n('Boxes.Infobox.FilterMessage'),
+                msg: Info.GetConversationHeader(d.conversationId, null) + msg
+            };
+        }
+
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
             msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
         };
     },
-
-
-    /**
-     * FPs nach einem Level-Up notieren
-     *
-     * @param d
-     */
-	NoticeIndicatorService_getPlayerNoticeIndicators: (d) => {
-
-        for (let i in d) {
-            if (!d.hasOwnProperty(i)) {
-                break;
-            }
-
-            // get fp type from stock
-            let InventoryItem = MainParser.Inventory.find(x => (x['id'] === d[i]['itemId'] && x["itemAssetName"].indexOf("forgepoint") !== -1));
-
-            if(undefined === InventoryItem || null === InventoryItem)
-            	return;
-
-            let factor = parseInt(InventoryItem['item']['resource_package']['gain']),
-                amount = factor * parseInt(d[i]['amount']);
-
-            // ... and save
-            Info.ReturnFPPoints += amount;
-        }
-    },
-
 
     /**
      * Auf der GG-Map kämpft jemand
@@ -451,12 +461,11 @@ let Info = {
      * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
+
         let newFP = Info.ReturnFPPoints;
+        if ( d['rank'] >= 6 ){ newFP = 0; }
 
-        // zurück setzen
-        Info.ReturnFPPoints = 0;
-
-        return {
+        let data = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
@@ -469,6 +478,21 @@ let Info = {
                 }
             )
         };
+
+        // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
+        // so store the data and post the message from that handler (using the stored data)
+        // ... but only if the rank is 5 and higher (1-5), otherwise, there is no reward
+        // (and BlueprintService.newReward is not triggered)
+        if ( d['rank'] < 6 && Info.ReturnFPPoints == -1 ){
+            Info.ReturnFPMessageData = d;
+            return undefined;
+        }
+
+        // zurück setzen
+        Info.ReturnFPPoints = -1;
+        Info.ReturnFPMessageData = null;
+
+        return data;
     },
 
 
@@ -529,16 +553,19 @@ let Info = {
      * @returns {string}
      */
     GetConversationHeader: (id, name) => {
-        if (MainParser.Conversations.length > 0) {
-            let header = MainParser.Conversations.find(obj => (obj['id'] === id));
-
-            if (header !== undefined) {
-                return '<div><strong style="color:#ffb539">' + header['title'] + '</strong> - <em>' + name + '</em></div>';
-            }
-        } else {
+        let header = MainParser.Conversations.find(obj => obj.id === id);
+        if (header != null && name != null) {
+            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
+        } else if (name != null) {
+            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
             return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
+        } else if (header != null) {
+            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
+            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
         }
 
         return '';
     }
 };
+

@@ -36,7 +36,6 @@ let _menu = {
 		'campagneMap',
 		'citymap',
 		'unit',
-    'plunderer',
 		'settings',
 		'stats',
 		'forum',
@@ -44,7 +43,10 @@ let _menu = {
 		'github',
 		'chat',
 		'api',
-		'kits'
+		'kits',
+		'alerts',
+		'greatbuildings',
+		'notice'
 	],
 
 
@@ -117,7 +119,7 @@ let _menu = {
 
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#ant-hud').offset().top) / 55);
 
-		// hat der Spieler eine LÄnge vorgebeben?
+		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
 		if (MenuLength !== null && MenuLength < _menu.HudCount) {
@@ -400,7 +402,9 @@ let _menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function () {
-			Calculator.Open();
+			if (Calculator.CityMapEntity) {
+				Calculator.Show();
+			}
 		});
 
 		btn_CalcBG.append(btn_Calc);
@@ -532,7 +536,7 @@ let _menu = {
 		let btn_Inf = $('<span />');
 
 		btn_Inf.on('click', function () {
-			Infoboard.init();
+			Infoboard.Show();
 		});
 
 		btn_Info.append(btn_Inf);
@@ -679,26 +683,25 @@ let _menu = {
 		return btn_UnitBG;
 	},
 
-  	/**
-	 * Plunderer actions
-	 * @returns {*|jQuery}
+	/**
+	 * Notice function
+	 *
+	 * @returns {null|undefined|jQuery|HTMLElement|void}
 	 */
-	plunderer_Btn: () => {
-		let btn_PlundererBG = $('<div />').attr({ 'id': 'plunderer-Btn', 'data-slug': 'plunderer' }).addClass('hud-btn');
+	notice_Btn: () => {
+		let btn_NoticeBG = $('<div />').attr({ 'id': 'notice-Btn', 'data-slug': 'notice' }).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n('Menu.Plunderer.Title'), i18n('Menu.Plunderer.Desc'), 'plunderer-Btn');
+		_menu.toolTippBox(i18n('Menu.Notice.Title'), i18n('Menu.Notice.Desc'), 'notice-Btn');
 
-		let btn_Plunderer = $('<span />');
+		let btn_Notice = $('<span />');
 
-		btn_Plunderer.on('click', function () {
-      		Plunderer.page = 1;
-      		Plunderer.filterByPlayerId = null;
-			Plunderer.Show();
+		btn_Notice.on('click', function () {
+			Notice.init();
 		});
 
-		btn_PlundererBG.append(btn_Plunderer);
+		btn_NoticeBG.append(btn_Notice);
 
-		return btn_PlundererBG;
+		return btn_NoticeBG;
 	},
 
 	/**
@@ -831,7 +834,7 @@ let _menu = {
 			MainParser.sendExtMessage({
 				type: 'chat',
 				player: ExtPlayerID,
-				name: localStorage.getItem(ExtPlayerID+'_current_player_name'),
+				name: ExtPlayerName,
 				guild: ExtGuildID,
 				world: ExtWorld
 			});
@@ -888,4 +891,26 @@ let _menu = {
 
 		return btn;
 	},
+
+	/**
+	 * FP Produzierende LGs
+	 */
+	greatbuildings_Btn: () => {
+
+		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'), 'greatbuildings-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			GreatBuildings.Show();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
 };

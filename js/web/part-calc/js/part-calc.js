@@ -23,6 +23,7 @@ let Parts = {
     CurrentBuildingPercents: [90, 90, 90, 90, 90],
     Input: [],
 	SaveCopy: [],
+	PlayInfoSound: null,
 
 
 	/**
@@ -34,7 +35,17 @@ let Parts = {
 		if( $('#OwnPartBox').length > 0 ){
 			HTML.CloseOpenBox('OwnPartBox');
 
-			return ;
+			return;
+		}
+
+		let spk = localStorage.getItem('CalculatorTone');
+
+		if (spk === null) {
+			localStorage.setItem('CalculatorTone', 'deactivated');
+			Calculator.PlayInfoSound = false;
+		}
+		else {
+			Calculator.PlayInfoSound = (spk !== 'deactivated');
 		}
 
 		// prüfen ob es hinterlegte Werte gibt
@@ -52,7 +63,8 @@ let Parts = {
 			'ask': i18n('Boxes.OwnpartCalculator.HelpLink'),
 			'auto_close': true,
 			'dragdrop': true,
-			'minimize': true
+			'minimize': true,
+			'speaker': 'PartsTone'
 		});
 
 		// CSS in den DOM prügeln
@@ -62,7 +74,7 @@ let Parts = {
 		Parts.Show();
 
 		// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
-		$('body').on('blur', '.arc-percent-input', function(){
+		$('#OwnPartBox').on('blur', '.arc-percent-input', function(){
 			let aprc = [];
 
 			$('.arc-percent-input').each(function () {
@@ -79,13 +91,13 @@ let Parts = {
 
 
 		// Es wird ein externer Platz eingetragen
-		$('body').on('blur', '.ext-part-input', function(){
+		$('#OwnPartBox').on('blur', '.ext-part-input', function(){
 			Parts.collectExternals();
 		});
 
 
 		// eine neuer globaler Arche-Satz wird gewählt
-		$('body').on('click', '.btn-set-arc', function(){
+		$('#OwnPartBox').on('click', '.btn-set-arc', function(){
 			let ArkBonus = parseFloat($(this).data('value'));
 			if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
 
@@ -98,6 +110,20 @@ let Parts = {
 			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
 
 			Parts.collectExternals();
+		});
+
+		$('#OwnPartBox').on('click', '#PartsTone', function () {
+
+			let disabled = $(this).hasClass('deactivated');
+
+			localStorage.setItem('PartsTone', (disabled ? '' : 'deactivated'));
+			Parts.PlayInfoSound = !!disabled;
+
+			if (disabled === true) {
+				$('#PartsTone').removeClass('deactivated');
+			} else {
+				$('#PartsTone').addClass('deactivated');
+			}
 		});
 	},
 
@@ -114,10 +140,10 @@ let Parts = {
 				$(this).val(0);
 				v = 0;
 			}
-            
+
             Parts.Input[i] = parseInt(v);
 		});
-        
+
 		// Prüfen ob alle "null" sind
 		const isAllZero = !Parts.Input.some(el => el.value !== 0);
 
@@ -174,7 +200,7 @@ let Parts = {
         for (let i = 0; i < 5; i++) {
             arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
         }
-        
+
         // Wenn in Rankings nichts mehr steht, dann abbrechen
 		for (let i = 0; i < Parts.Rankings.length; i++) {
 			if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
@@ -228,7 +254,7 @@ let Parts = {
                 }
             }
         }
-               
+
         Maezens.sort(function (a, b) { return b - a });
 
         for (let i = 0; i < Maezens.length; i++) {
@@ -236,12 +262,12 @@ let Parts = {
                 Maezens.length = Math.max(i, 5);
                 break;
             }
-                        
+
             ExtTotal += Maezens[i];
         }
 
         Rest -= ExtTotal;
-        
+
         for (let i = 0; i < 5; i++) {
             if (FPRewards[i] <= Maezens[i] || Rest <= Maezens[i]) {
 				Eigens[i] = Math.ceil(Rest + (Maezens[i + 1] !== undefined ? Maezens[i + 1] : 0) - Maezens[i]);
@@ -255,7 +281,7 @@ let Parts = {
                 Dangers[i] = Math.floor(0 - Eigens[i]/2);
                 Eigens[i] = 0;
             }
-            
+
             for (let j = Maezens.length - 1; j >= i; j--) {
                 if (Maezens[j] > 0) {
                     Maezens[j + 1] = Maezens[j];
@@ -274,11 +300,11 @@ let Parts = {
         }
 
         if(Rest>0) Eigens[5] = Rest;
-        
+
         EigenTotal = EigenStart;
         for (let i = 0; i < Eigens.length; i++) {
             EigenTotal += Eigens[i];
-        }      
+        }
 
         for (let i = FPRewards.length; i < Maezens; i++)
             FPRewards[i] = 0;
@@ -287,11 +313,20 @@ let Parts = {
             MedalRewards[i] = 0;
 
         for (let i = BPRewards.length; i < Maezens; i++)
-            BPRewards[i] = 0;
-        
+			BPRewards[i] = 0;
+
+		let PlayerName = undefined,
+			PlayerID = Parts.CityMapEntity['player_id'];
+
+		if (PlayerID !== ExtPlayerID) { //LG eines anderen Spielers
+			PlayerName = PlayerDict[PlayerID]['PlayerName'];
+		}
+		
         // Info-Block
         h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-		h.push('<p class="lg-info text-center"><strong>' + BuildingNamesi18n[cityentity_id]['name'] + ' </strong><br>' + (Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
+		h.push('<p class="lg-info text-center"><strong>' + MainParser.CityEntities[cityentity_id]['name'] + ' </strong><br>');
+		if(PlayerName) h.push(PlayerName + '<br>');
+		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
         h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
@@ -422,7 +457,7 @@ let Parts = {
             h.push('<td colspan="5"></td>');
             h.push('</tr>');
         }
-        
+
         h.push('<tbody>');
         h.push('</table>');
 
@@ -434,7 +469,7 @@ let Parts = {
             h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
         }
 
-		h.push(Calculator.GetRecurringQuestsLine());
+		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
 		$('#OwnPartBoxBody').html( h.join('') );
 	},
@@ -450,14 +485,14 @@ let Parts = {
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
 			n = localStorage.getItem(ExtPlayerID+'_PlayerCopyName'),
-			m = localStorage.getItem(ExtPlayerID+'_current_player_name'),
+			m = (Parts.CityMapEntity['player_id'] === ExtPlayerID ? ExtPlayerName : PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName'])
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
 		b.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
 		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + (n !== null ? n : m) + '"></div>');
-		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : BuildingNamesi18n[ Parts.CurrentBuildingID ]['name']) + '"></div>');
+		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
 
 		let drp = '<div><span>' + i18n('Boxes.OwnpartCalculator.Scheme') + ':</span><select id="chain-scheme">' +
 			'<option value="" disabled>-- ' + i18n('Boxes.OwnpartCalculator.OutputScheme') + ' --</option>' +
@@ -484,6 +519,8 @@ let Parts = {
 
 			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
 
+			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input chain-place" id="chain-all" data-place="all"> ' + i18n('Boxes.OwnpartCalculator.All') + '</label>' +
+
 			'<label class="form-check-label game-cursor" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n('Boxes.OwnpartCalculator.Levels') + '</label>' +
 			'</div>';
 
@@ -495,16 +532,15 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-		$('body').off("click",'.button-own');
-		$('body').on('click', '.button-own', function(){
+		$('#OwnPartBox').off("click",'.button-own');
+		$('#OwnPartBox').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
 			helper.str.copyToClipboard(copyParts);
 		});
-		$('body').off("click",'.button-save-own');
-		$('body').on('click', '.button-save-own', function(){
+		$('#OwnPartBox').off("click",'.button-save-own');
+		$('#OwnPartBox').on('click', '.button-save-own', function(){
 			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
 		});
-
 
 		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
@@ -550,8 +586,10 @@ let Parts = {
 			bn = $('#build-name').val(),
 			cs = $('#chain-scheme').val();
 
-		localStorage.setItem(ExtPlayerID+'_PlayerCopyName', pn);
-		localStorage.setItem(Parts.CurrentBuildingID, bn);
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID){
+			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', pn);
+			localStorage.setItem(Parts.CurrentBuildingID, bn);
+		}
 
 		// Schema speichern
 		localStorage.setItem('DropdownScheme', cs);
@@ -612,6 +650,11 @@ let Parts = {
 				}
 			}
 		}
+		else if ($('#chain-all').prop('checked')){
+			for (let i = 0; i < 5; i++){
+				PrintPlace[i] = true;
+            }
+        }
 		// einzelne Plätze wurde angehakt
 		else {
 			for (let i = 0; i < 5; i++) {

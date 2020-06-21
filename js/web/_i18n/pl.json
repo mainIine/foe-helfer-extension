@@ -6,9 +6,71 @@
 		"API.LGGildMember": "Zaktualizowano perły architektury gracza __player__",
 		"API.LGInvest": "Przesłano Twoje wpłaty w perły architektury",
 		"API.UpdateSuccess": "Wykonano aktualizację",
-		"Boxes.Api.Title": "Extension API Settings",
-		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Stop!", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Auction": "Aukcja",
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Czas pomiędzy aukcjami",
+		"Boxes.Alerts.Form.Antiques.Dealer": "Handlarz antykami",
+		"Boxes.Alerts.Form.Antiques.Exchange": "codzienna wymiana",
+		"Boxes.Alerts.Form.Battleground": "Sektory Pól Chwały",
+		"Boxes.Alerts.Form.Body": "Treść",
+		"Boxes.Alerts.Form.Create": "Utwórz",
+		"Boxes.Alerts.Form.CreateAlert": "Utwórz powiadomienie",
+		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
+		"Boxes.Alerts.Form.CreateNewAlert": "Tworzy nowe powiadomienie",
+		"Boxes.Alerts.Form.Datetime": "Data i czas",
+		"Boxes.Alerts.Form.Delete": "Usuń",
+		"Boxes.Alerts.Form.Discard": "Odrzuć",
+		"Boxes.Alerts.Form.Edit": "Edytuj",
+		"Boxes.Alerts.Form.EditAlert": "Edytuj powiadomienie",
+		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
+		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
+		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
+		"Boxes.Alerts.Form.Neighborhood": "Sąsiedztwo",
+		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
+		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
+		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
+		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
+		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
+		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
+		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
+		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
+		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
+		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
+		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
+		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
+		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
+		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Info": "Automatically create a new alert when I make a bid in the Antiques Dealer Auction", //Todo: Translate
+		"Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
+		"Boxes.Alerts.Preferences.ComingSoon": "Już niedługo...",
+		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
+		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
+		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
+		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
+		"Boxes.Alerts.Tabs.Alerts": "Powiadomienia",
+		"Boxes.Alerts.Tabs.Preferences": "Ustawienia",
+		"Boxes.Alerts.Time.15m": "15m",
+		"Boxes.Alerts.Time.1d": "1d",
+		"Boxes.Alerts.Time.1h": "1h",
+		"Boxes.Alerts.Time.1m": "1m",
+		"Boxes.Alerts.Time.4h": "4h",
+		"Boxes.Alerts.Time.5m": "5m",
+		"Boxes.Alerts.Time.8h": "8h",
+		"Boxes.Api.Title": "Ustawienia API rozszerzenia",
+		"Boxes.BattleAssist.Text": "Twoja armia składa się z samych łotrów. Wylecz jednostki z użyciem diamentów lub poddaj się!",
+		"Boxes.BattleAssist.Title": "Stop!",
 		"Boxes.Calculator.ActiveRecurringQuest": "Bieżące zadanie powtarzalne:",
 		"Boxes.Calculator.ArkBonus": "Bonus Arki",
 		"Boxes.Calculator.AvailableFP": "Dostępne punkty rozwoju",
@@ -17,28 +79,25 @@
 		"Boxes.Calculator.Done": "Gotowe",
 		"Boxes.Calculator.FP": "PR",
 		"Boxes.Calculator.FriendlyInvestment": "Pomoc w budowie:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/",
 		"Boxes.Calculator.LevelWarning": "UWAGA! Perła zostanie zamknięta!",
 		"Boxes.Calculator.LGNotConnected": "Perła nie jest podłączona do drogi",
 		"Boxes.Calculator.LGNotOpen": "Kolejny poziom perły nie jest odblokowany",
+		"Boxes.Calculator.MaxLevel": "Odblokowany poziom",
 		"Boxes.Calculator.Meds": "Medale",
 		"Boxes.Calculator.Profit": "Zysk",
-		"Boxes.Calculator.Rate": "Stosunek",
-		"Boxes.Calculator.Sniping": "Zarobek",
 		"Boxes.Calculator.Step": "Poziom ",
 		"Boxes.Calculator.Title": "Kalkulator kosztów",
 		"Boxes.Calculator.TTForderCosts": "Koszty = __nettoreward__<small>(bazowy zwrot)</small> * __forderfactor__%<small>(Pomoc)</small> = __costs__",
 		"Boxes.Calculator.TTForderFPStockLow": "UWAGA: posiadasz za mało PR<br>masz __fpstock__ z __costs__ PR<br>za mało o  __tooless__ PR",
 		"Boxes.Calculator.TTForderNegativeProfit": "Miejsce nie jest zabezpieczone. należy wpłacić __fpcount__ dodatkowych PR w celu zabezpieczenia<br>Całkowita wpłata: __totalfp__ PR",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PR nie zmieści się<br>Maksymalna możliwa wpłata: __totalfp__ PR",
-		"Boxes.Calculator.TTLoss": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Koszt: __costs__<br>Strata = __costs__<small>(koszt)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",
-		"Boxes.Calculator.TTLossSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __payed__<br>Strata = __payed__<small>(wpłata)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",
-		"Boxes.Calculator.TTPayedTooLess": "Wpłaciłeś __payed__ PR zamiast __topay__ PR, tzn. __tooless__ PR za mało.",
-		"Boxes.Calculator.TTPayedTooMuch": "Wpłaciłeś __payed__ PR zamiast __topay__ PR, tzn. __toomuch__ PR za dużo.",
-		"Boxes.Calculator.TTProfit": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Koszt: __costs__<br>Zysk = __bruttoreward__<small>(zwrot)</small> - __costs__<small>(koszt)</small> = __profit__",
-		"Boxes.Calculator.TTProfitSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __payed__<br>Zysk = __bruttoreward__<small>(zwrot)</small> - __payed__<small>(wpłata)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Stosunek = __costs__<small>(koszt)</small> / __nettoreward__<small>(bazowy zwrot)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "UWAGA: za mały zapas PR!<br>Masz __fpstock__ z __costs__ PR<br>To __tooless__ PR za mało",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
+		"Boxes.Calculator.TTLossSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Strata = __paid__<small>(wpłata)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",
+		"Boxes.Calculator.TTPaidTooLess": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __tooless__ PR za mało.",
+		"Boxes.Calculator.TTPaidTooMuch": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __toomuch__ PR za dużo.",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTProfitSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Zysk = __bruttoreward__<small>(zwrot)</small> - __paid__<small>(wpłata)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Do zamknięcia",
 		"Boxes.Campagne.AlreadyDone": " już zdobyte!",
 		"Boxes.Campagne.DescInStock": "Dostępne",
@@ -49,9 +108,10 @@
 		"Boxes.Campagne.Title": "Koszty wykupu prowincji ",
 		"Boxes.CityMap.CavalierPerspecitve": "Izometryczny",
 		"Boxes.CityMap.Desc1": "Planer miasta wysyła dane na foe-rechner.de",
-		"Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Wyślij</button>",
+		"Boxes.CityMap.Desc2": "Wyślij",
 		"Boxes.CityMap.FreeArea": "Wolny obszar: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standardowy",
+		"Boxes.CityMap.ShowSubmitBox": "Pokaż przycisk wysyłania",
 		"Boxes.CityMap.SubmitSuccess": "Dane wysłano pomyślnie ",
 		"Boxes.CityMap.TitleSend": "Wyślij dane",
 		"Boxes.CityMap.WholeArea": "Całkowita powierzchnia: ",
@@ -77,6 +137,21 @@
 		"Boxes.Gildfights.Negotiations": "Negocjacje",
 		"Boxes.Gildfights.Player": "Gracz",
 		"Boxes.Gildfights.Title": "Przegląd aktywności graczy",
+		"Boxes.Gildfights.Total": "Total", //Todo: Translate
+		"Boxes.GreatBuildings.ArcBonus": "Bonus wpłacających",
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "Koszt / PR dziennie",
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "Koszt towarów (PR)",
+		"Boxes.GreatBuildings.GreatBulding": "Perła Architektury",
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
+		"Boxes.GreatBuildings.Level": "Poziom",
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
+		"Boxes.GreatBuildings.Title": "Budowa Pereł Architektury",
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Pojawia się",
 		"Boxes.HiddenRewards.Disappears": "Znika",
 		"Boxes.HiddenRewards.NoEvents": "Brak zdarzeń losowych",
@@ -105,22 +180,12 @@
 		"Boxes.Investment.PlayerFoundCounter": "znaleziono __count__ nowych zdarzeń dotyczących graczy",
 		"Boxes.Investment.Title": "Inwestycje",
 		"Boxes.Investment.TotalFP": "Zapas + wpłaty + zysk: ",
-		"Boxes.Kits.InStock": "In stock", //Todo: Translate
-		"Boxes.Kits.KitName": "Kit-Name", //Todo: Translate
-		"Boxes.Kits.Name": "Name", //Todo: Translate
+		"Boxes.Kits.InStock": "W inwentarzu",
+		"Boxes.Kits.KitName": "Nazwa zestawu",
+		"Boxes.Kits.Name": "Nazwa",
 		"Boxes.Kits.TabBuildingKits": "Zestawy budynków",
 		"Boxes.Kits.TabSelectionKits": "Zestawy wyboru",
 		"Boxes.Kits.Title": "Zestawy budynków/wyboru",
-		"Boxes.LGOverviewBox.Building": "Perła architektury",
-		"Boxes.LGOverviewBox.Level": "Poziom",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nie ma nic do pobrania",
-		"Boxes.LGOverviewBox.PayedTotal": "Wpłacone / Całość",
-		"Boxes.LGOverviewBox.Profit": "Zysk",
-		"Boxes.LGOverviewBox.Rate": "Stosunek",
-		"Boxes.LGOverviewBox.Title": "Możliwe wpłaty",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "Rozpoznana",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "Nowa",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Brak możłiwości wpłaty",
 		"Boxes.Negotiation.Average": "Ø ilość",
 		"Boxes.Negotiation.Canceled": "Negocjacja została przerwana",
 		"Boxes.Negotiation.Chance": "Szansa",
@@ -130,31 +195,37 @@
 		"Boxes.Negotiation.GoodsLow": "UWAGA: Zapas towaru na poziomie niskim",
 		"Boxes.Negotiation.Person": "Osoba",
 		"Boxes.Negotiation.Round": "Runda",
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals", //Todo: Translate
+		"Boxes.Negotiation.SaveCurrentEraGoods": "Oszczędzaj towary z bieżącej epoki",
+		"Boxes.Negotiation.SaveMedals": "Oszczędzaj medale",
 		"Boxes.Negotiation.Stock": "Zapas:",
 		"Boxes.Negotiation.Success": "Sukces",
 		"Boxes.Negotiation.TableLoadError": "Błąd przy pobieraniu tablicy negocjacji",
 		"Boxes.Negotiation.Title": "Asystent negocjacji",
 		"Boxes.Negotiation.TryEnd": "Brak kolejnych podejść",
 		"Boxes.Negotiation.WrongGoods": "Wybrano niewłaściwe towary, proszę skończyć ręcznie",
-		"Boxes.Neighbors.AttackingArmy": "Estimated bonus attacking armies: __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus defending armies: __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Trwające produkcje",
-		"Boxes.Neighbors.ReadyProductions": "Skończone produkcje",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Dostepne",
 		"Boxes.Outpost.DescRequired": "Wymagane",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Nadmiar</span> / <span style='color:#ff4040'>Brak</span>",
 		"Boxes.Outpost.ExpansionsSum": "Rozszerzenia",
 		"Boxes.Outpost.infoLine": "__runNumber__. osada, szansa na bonus x4 : __chanceX4__%",
 		"Boxes.Outpost.nextTile": "kolejne rozszerzenia",
-		"Boxes.Outpost.ShowSums": "Show sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Pokaż sumy:",
 		"Boxes.Outpost.tileNotPlanned": "n/a",
 		"Boxes.Outpost.Title": "Towary z osady",
 		"Boxes.Outpost.TitleBuildings": "Budynek",
 		"Boxes.Outpost.TitleFree": "Odblokowany",
 		"Boxes.Outpost.TitleShort": "Przegląd towarów - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Arka",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Plany",
@@ -163,7 +234,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Wpłata",
 		"Boxes.OwnpartCalculator.Done": "Wpłacone",
 		"Boxes.OwnpartCalculator.Ext": "Wymiana",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner",
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "individual GB name",
 		"Boxes.OwnpartCalculator.Levels": "zamknąć",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PR na poziom:",
@@ -182,41 +253,19 @@
 		"Boxes.OwnpartCalculator.Step": "Poziom",
 		"Boxes.OwnpartCalculator.Title": "Kalkulator budowy pereł",
 		"Boxes.OwnpartCalculator.YourName": "Your name",
-		"Boxes.Plundered.actionBattleLost": "Przegrano bitwę",
-		"Boxes.Plundered.actionBattleWon": "Wygrano bitwę",
-		"Boxes.Plundered.actionPlundered": "Ograbiony",
-		"Boxes.Plundered.actionShielded": "Chroniony",
-		"Boxes.Plundered.actionSurrendered": "Poddano bitwę",
-		"Boxes.Plunderer.AllPlayers": "Wszyscy gracze",
-		"Boxes.Plunderer.Attack": "Atak",
-		"Boxes.Plunderer.autoBattle": "Autobitwa",
-		"Boxes.Plunderer.collectedToday": "Zebrano dzisiaj",
-		"Boxes.Plunderer.Defense": "Obrona",
-		"Boxes.Plunderer.filteredByUser": "Filtrowanie gracza",
-		"Boxes.Plunderer.FP": "PR",
-		"Boxes.Plunderer.goto1stPage": "1. strona",
-		"Boxes.Plunderer.HasNoClan": "<em>brak gildii</em>",
-		"Boxes.Plunderer.nextPage": "Następna strona",
-		"Boxes.Plunderer.noData": "Brak danych",
-		"Boxes.Plunderer.Page": "Strona",
-		"Boxes.Plunderer.PlayersEra": "Epoka gracza",
-		"Boxes.Plunderer.rounds": "Rounds",
-		"Boxes.Plunderer.shieldProtectetUntil": "Chroniony do:",
-		"Boxes.Plunderer.shieldUntil": "Koniec za",
-		"Boxes.Plunderer.showAllPlayers": "Pokaż wszystkich graczy",
-		"Boxes.Plunderer.thisWeek": "w tym tygodniu",
-		"Boxes.Plunderer.Title": "Aktywność PvP",
-		"Boxes.Plunderer.total": "Łącznie",
-		"Boxes.Plunderer.visited": "Odwiedzono",
-		"Boxes.Plunderer.visitTitle": "Kiedy ostatni raz odwiedziłeś gracza",
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Pobliskie budynki",
+		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
 		"Boxes.Productions.Happiness": "Zadowolenie",
 		"Boxes.Productions.Headings.all": "Wszystkie",
 		"Boxes.Productions.Headings.amount": "Ilość",
+		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
 		"Boxes.Productions.Headings.boost": "Bonus",
 		"Boxes.Productions.Headings.culture": "Budynki kulturowe",
 		"Boxes.Productions.Headings.decoration": "Dekoracje",
 		"Boxes.Productions.Headings.earning": "Zbiory",
+		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Budynki towarowe",
 		"Boxes.Productions.Headings.greatbuilding": "Perły architektury",
 		"Boxes.Productions.Headings.main_building": "Ratusz",
@@ -225,79 +274,84 @@
 		"Boxes.Productions.Headings.production": "Budynki produkcyjne",
 		"Boxes.Productions.Headings.random_production": "Losowe produkcje",
 		"Boxes.Productions.Headings.residential": "Budynki mieszkalne",
+		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
 		"Boxes.Productions.Headings.street": "Ulice",
+		"Boxes.Productions.ModeCurrent": "Obecnie",
+		"Boxes.Productions.ModeDaily": "Dziennie",
 		"Boxes.Productions.ModeGroups": "Grupuj",
 		"Boxes.Productions.ModeSingle": "Pojedyncze",
+		"Boxes.Productions.NoAsteroidDataWarning": "Towary z Pasa Asteroid nie są uwzględnione. Odwiedź kolonię na Pasie Asteroid i otwórz okno ponownie",
+		"Boxes.Productions.NoMarsDataWarning": "Towary z Marsa nie są uwzględnione. Odwiedź kolonię na Marsie i otwórz okno ponownie",
 		"Boxes.Productions.SearchInput": "Szukaj budynku...",
 		"Boxes.Productions.Title": "Przegląd produkcji",
 		"Boxes.Productions.Total": "Total: ",
 		"Boxes.Settings.Active": "Aktywne",
 		"Boxes.Settings.Inactive": "Nieaktywne",
 		"Boxes.Settings.Title": "Ustawienia",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
-		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
-		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
-		"Boxes.Stats.Period.all": "All", //Todo: Translate
-		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
-		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
-		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
-		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
-		"Boxes.Stats.Period.today": "Today", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (Guild Expedition starts on Tuesday)", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "G. Expedition", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoil of war", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Rewards from Guild battlegrounds", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts collected by Space Carrier", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Rewards from Guild Expedition collected using by Temple of Relics", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoil of war reward by using Himeji Castle", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Score board of players of Guild Battlegrounds", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.Title": "Statistic", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "za monety: ",
-		"Boxes.StrategyPoints.FPBar": "zapas PR: ",
+		"Boxes.Stats.BtnAll": "Wszystkie",
+		"Boxes.Stats.BtnAllPlayableEras": "Wszystkie epoki",
+		"Boxes.Stats.BtnAllPlayableErasTitle": "Wybiera wszystkie grywalne epoki (bez: \"bez epoki\", specjalnych)",
+		"Boxes.Stats.BtnAllTittle": "Epoki + \"bez epoki\" + specjalne",
+		"Boxes.Stats.BtnChartType.delta": "Róznice",
+		"Boxes.Stats.BtnChartType.line": "Liniowy",
+		"Boxes.Stats.BtnChartType.streamgraph": "Złożony",
+		"Boxes.Stats.BtnChartTypeTitle.delta": "wykres przychodów i wydatków",
+		"Boxes.Stats.BtnChartTypeTitle.line": "Wykres liniowy",
+		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Wykres złożony",
+		"Boxes.Stats.BtnLastEras": "Ostatnie 2 epoki",
+		"Boxes.Stats.BtnLastErasTitle": "Wybiera obecną i poprzednią epokę",
+		"Boxes.Stats.BtnMyEra": "Moja epoka",
+		"Boxes.Stats.BtnNoEra": "Bez epoki",
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Pola Chwały",
+		"Boxes.Stats.BtnSource.statsRewards": "Nagrody",
+		"Boxes.Stats.BtnSource.statsTreasureClanD": "Skarbiec 24h",
+		"Boxes.Stats.BtnSource.statsTreasureClanH": "Skarbiec 1h",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Inwentarz 24h",
+		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Inwentarz 1h",
+		"Boxes.Stats.BtnSource.statsUnitsD": "Jednostki 24h",
+		"Boxes.Stats.BtnSource.statsUnitsH": "Jednostki 1h",
+		"Boxes.Stats.BtnToggleAnnotations": "GvG",
+		"Boxes.Stats.BtnToggleAnnotationsTitle": "Pokazuje wydatki towaru na mapie GvG.",
+		"Boxes.Stats.BtnToggleGroupBy": "Grupuj epokami",
+		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Period.all": "Wszystkie",
+		"Boxes.Stats.Period.last30days": "Ostatnie 30 dni",
+		"Boxes.Stats.Period.last7days": "Ostatnie 7 dni",
+		"Boxes.Stats.Period.sinceTuesday": "Od wtorku",
+		"Boxes.Stats.Period.thisMonth": "Ten miesiąc",
+		"Boxes.Stats.Period.today": "Dzisiaj",
+		"Boxes.Stats.PeriodTitle.all": "Od początku",
+		"Boxes.Stats.PeriodTitle.last30days": "Zebrane w ciągu ostatnich 30. dni",
+		"Boxes.Stats.PeriodTitle.last7days": "Zebrane w ciągu ostatnich 7. dni",
+		"Boxes.Stats.PeriodTitle.sinceTuesday": "Zebrane od wtorku (od rozpoczęcia wypraw gildyjnych)",
+		"Boxes.Stats.PeriodTitle.thisMonth": "Zebrane w tym miesiącu",
+		"Boxes.Stats.PeriodTitle.today": "Zebrane dzisiaj",
+		"Boxes.Stats.Rewards.Source.__event": "Event",
+		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Pola Chwały",
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Dary dyplomacji",
+		"Boxes.Stats.Rewards.Source.guildExpedition": "Wyprawy",
+		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Łupy wojenne",
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Nagrody z eventów (okresowych i specjalnych)",
+		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Nagrody z Gildyjnych Pól Chwały",
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Dary dyplomacji (Kosmiczny Transporter)",
+		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Nagrody za wyprawy (Świątynia Reliktów)",
+		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Łupy wojenne (Zamek Himeji)",
+		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Tablica wyników graczy na Gildyjnych Polach Chwały",
+		"Boxes.Stats.SourceTitle.statsRewards": "Twoje nagrody z Zamku Himeji, Kosmicznego Transportera, Świątyni Reliktów, Pól Chwały",
+		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Skarbiec - dziennie",
+		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Skarbiec - godzinowo",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Inwentarz - dziennie",
+		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Inwentarz - godzinowo",
+		"Boxes.Stats.SourceTitle.statsUnitsD": "Jednostki - dziennie",
+		"Boxes.Stats.SourceTitle.statsUnitsH": "Jednostki - godzinowo",
+		"Boxes.Stats.Title": "Statystyki",
 		"Boxes.Technologies.DescInStock": "Dostępne",
 		"Boxes.Technologies.DescRequired": "Wymagane",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Nadmiar</span> / <span style='color:#ff4040'>Brak</span>",
 		"Boxes.Technologies.NoTechs": "Osiągnąłeś koniec tej epoki",
 		"Boxes.Technologies.Resource": "Zasób",
 		"Boxes.Technologies.Title": "Koszt badań",
-		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to harvest!", //Todo: Translate
+		"Boxes.Units.AlcaHarvest": "Alcatraz gotowy do zbioru!",
 		"Boxes.Units.Attack": "Atak",
 		"Boxes.Units.Bind": "Zależne",
 		"Boxes.Units.Defend": "Obrona",
@@ -310,6 +364,7 @@
 		"Boxes.Units.Title": "Przegląd wojsk",
 		"Boxes.Units.Unbind": "Niezależne",
 		"Boxes.Units.Unit": "Jednostka",
+		"Date": "DD-MMM-YY",
 		"DateTime": "D/M/YY h:mm:ss a",
 		"Eras.0": "Bez epoki",
 		"Eras.1": "Epoka Kamienia",
@@ -333,7 +388,7 @@
 		"Eras.8": "Epoka Przemysłowa",
 		"Eras.9": "Epoka Postępowa",
 		"Global.BoxTitle": "FoE Helper",
-		"HiddenRewards.Positions.cityRoadBig": "Na jezdnia",
+		"HiddenRewards.Positions.cityRoadBig": "Na jezdni",
 		"HiddenRewards.Positions.cityRoadSmall": "Na drodze",
 		"HiddenRewards.Positions.guildExpedition": "Wyprawa gildyjna",
 		"HiddenRewards.Positions.nature": "W dziczy",
@@ -363,6 +418,8 @@
 		"Menu.Event.Title": "Zadania eventowe",
 		"Menu.Forum.Desc": "Masz pytania? Coś Cię drażni? Chcesz porozmawiać? ...",
 		"Menu.Forum.Title": "Forum",
+		"Menu.greatbuildings.Desc": "Podpowiada, którą Perłę Architektury ze zbiorem PR opłaca się rozbudować",
+		"Menu.greatbuildings.Title": "Budowa Pereł Architektury",
 		"Menu.HiddenRewards.Desc": "Przegląd zdarzeń losowych",
 		"Menu.HiddenRewards.Title": "Zdarzenia losowe",
 		"Menu.Info.Desc": "Informacja o wszystkich zdarzeniach \"w tle\"<br><em>Aktualizuje się na bieżąco ...</em>",
@@ -372,6 +429,8 @@
 		"Menu.Negotiation.Desc": "Pomaga dobrać surowce w negocjacjach",
 		"Menu.Negotiation.Title": "Asystent negocjacji",
 		"Menu.Negotiation.Warning": "Niedostępne: Rozpocznij negocjację!",
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",
@@ -379,14 +438,12 @@
 		"Menu.OwnpartCalculator.Desc": "Tworzy plan budowy własnej perły, pomaga obliczyć miejsca z wymian i pozwala generować wiadomości ogłaszające",
 		"Menu.OwnpartCalculator.Title": "Kalkulator budowy",
 		"Menu.OwnpartCalculator.Warning": "Niedostępne: Otwórz swoją perłę architektury!",
-		"Menu.Plunderer.Desc": "Historia PvP i grabienia sąsiadów",
-		"Menu.Plunderer.Title": "Aktywność PvP",
 		"Menu.Productions.Desc": "Wyświetla wszystkie aktywne produkcje w Twoim mieście.",
 		"Menu.Productions.Title": "Przegląd produkcji",
 		"Menu.Settings.Desc": "Kilka podstawowych ustawień",
 		"Menu.Settings.Title": "Ustawienia",
-		"Menu.Stats.Desc": "Goods, units, rewards, guild battleground", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
+		"Menu.Stats.Desc": "Towary, jednostki, nagrody, GPC",
+		"Menu.Stats.Title": "Statystyki",
 		"Menu.Technologies.Desc": "Oblicza koszt badań",
 		"Menu.Technologies.Title": "Badania",
 		"Menu.Technologies.Warning": "Niedostępne: otwórz menu badań <em>[R]</em>!",
@@ -403,8 +460,6 @@
 		"Settings.GlobalSend.Title": "Wysyłanie danych do foe-rechner.de",
 		"Settings.MenuLength.Desc": "Ile elementów powinno mieścic menu rozszerzenia?<br> Puste lub \"0\" oznacza automatyczną wysokość.",
 		"Settings.MenuLength.Title": "Wysokość menu",
-		"Settings.PreScanLGList.Desc": "Skanuje przegląd pereł gracza i wyszukuje potencjalne miejsca wpłat. <br> <u> Uwaga: </u> Ponieważ konkretne miejsca są przesyłane tylko przy otwarciu perły, nie wszystkie możliwości wpłat zostaną wykryte. Skan zostaje jednak zapisany.",
-		"Settings.PreScanLGList.Title": "Wstępny skan przeglądu Pereł Architektury",
 		"Settings.ResetBoxPositions.Button": "Reset!",
 		"Settings.ResetBoxPositions.Desc": "Zresetować ustawienie przycisków menu?",
 		"Settings.ResetBoxPositions.Title": "Ustawienie przycisków",
@@ -416,8 +471,10 @@
 		"Settings.SendInvestigations.Title": "Zainwestowane PR",
 		"Settings.SendTavernInfo.Desc": "Czy przesyłać dane o motywacjach na zewnętrzny serwer?",
 		"Settings.SendTavernInfo.Title": "Aktywność motywacji",
-		"Settings.ShowNeighborsGoods.Desc": "Podczas wizyty pokaż, co jest obecnie produkowane",
-		"Settings.ShowNeighborsGoods.Title": "Grabież sąsiadów",
+		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
+		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
+		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Przy aktywacji dodatkowej negocjacji w tawernie pojawia się przesuwalny dymek z odliczaniem.",
 		"Settings.ShowTavernBadge.Title": "Pokaż dymek tawerny",
 		"Settings.Version.Desc": "<p>Wersja rozszerzenia</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",

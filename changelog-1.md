@@ -1,5 +1,74 @@
 ## Changelog - Extension
 
+##### 2.4.6.2
+
+**BugFix**
+- Extension: 
+    - Debug Code entfernt
+
+- Kostenrechner:
+    - [#1118](https://github.com/dsiekiera/foe-helfer-extension/issues/1118) [#1124](https://github.com/dsiekiera/foe-helfer-extension/issues/1124) Lautsprecher Button gefixt
+
+- Produktionsübersicht:
+    - zweispurige Straßen werden bei der Effizienz beachtet
+
+---
+
+##### 2.4.6.1
+
+**BugFix**
+- FP-Bar:
+    - [#836](https://github.com/dsiekiera/foe-helfer-extension/issues/836) [#1025](https://github.com/dsiekiera/foe-helfer-extension/issues/1025) [#1044](https://github.com/dsiekiera/foe-helfer-extension/issues/1044) [#1059](https://github.com/dsiekiera/foe-helfer-extension/issues/1059) [#1075](https://github.com/dsiekiera/foe-helfer-extension/issues/1075) [#1089](https://github.com/dsiekiera/foe-helfer-extension/issues/1089) [#1097](https://github.com/dsiekiera/foe-helfer-extension/issues/1097) [#1098](https://github.com/dsiekiera/foe-helfer-extension/issues/1098) [#1100](https://github.com/dsiekiera/foe-helfer-extension/issues/1100) [#1101](https://github.com/dsiekiera/foe-helfer-extension/issues/1101) [#1108](https://github.com/dsiekiera/foe-helfer-extension/issues/1108) [#1114](https://github.com/dsiekiera/foe-helfer-extension/issues/1114) [#1116](https://github.com/dsiekiera/foe-helfer-extension/issues/1116) [#1117](https://github.com/dsiekiera/foe-helfer-extension/issues/1117) Inno hat eine neue Technik für die Verwaltung und Übertragung der Forgepunkte integriert, wir haben das nun angepasst
+
+- Infobox:
+    - [#555](https://github.com/dsiekiera/foe-helfer-extension/issues/555) [#742](https://github.com/dsiekiera/foe-helfer-extension/issues/742) [#771](https://github.com/dsiekiera/foe-helfer-extension/issues/771) [#939](https://github.com/dsiekiera/foe-helfer-extension/issues/939) [#1080](https://github.com/dsiekiera/foe-helfer-extension/issues/1080) Falsche FP Anzahl beim leveln eines anderen LGs in der Box gefixt
+
+- Erntehelfer:
+    - [#1036](https://github.com/dsiekiera/foe-helfer-extension/issues/1036) [#1110](https://github.com/dsiekiera/foe-helfer-extension/issues/1110) Nicht plünderbares Gebäude wurde als plünderbar angezeigt
+    - [#1058](https://github.com/dsiekiera/foe-helfer-extension/issues/1058) Workaround für verschobenes Fenster außerhalb des Viewports
+
+- Statistik:
+    - [#1077](https://github.com/dsiekiera/foe-helfer-extension/issues/1077) gleiche Einheiten als Belohnung wurden nicht gruppiert
+
+- Kostenrechner:
+    - [#1118](https://github.com/dsiekiera/foe-helfer-extension/issues/1118) The speaker button in the pre-scan box was not working
+
+---
+
+##### 2.4.6
+
+**Neu**
+- Citymap:
+    - Es gibt eine neue Option zum planen einer Stadt: [weitere Infos](https://foe-rechner.de/docs/1/stadtplaner/)
+
+**Update**
+- Produktionsübersicht:
+    - [#590](https://github.com/dsiekiera/foe-helfer-extension/issues/590) [#945](https://github.com/dsiekiera/foe-helfer-extension/issues/945) Diamantproduktionen werden, wenn vorhanden, angezeigt
+    - [#997](https://github.com/dsiekiera/foe-helfer-extension/issues/997) Es kann umgeschaltet werden zwischen Tages- und aktueller Produktion
+    - [#999](https://github.com/dsiekiera/foe-helfer-extension/issues/999) Außenposten Güter (Mars/Asteroiden) werden korrekt erfasst
+    - [#998](https://github.com/dsiekiera/foe-helfer-extension/issues/998) [#1026](https://github.com/dsiekiera/foe-helfer-extension/issues/1026) Die Güter werden pro Zeitalter summiert
+
+- Ernte-Helfer:
+    - [#952](https://github.com/dsiekiera/foe-helfer-extension/issues/952) [#982](https://github.com/dsiekiera/foe-helfer-extension/issues/982) basierend auf den Gebäuden des Nachbarn kann ein ca. Angriff/Verteidigungswert berechnet werden
+
+- Einstellungen:
+    - [#987](https://github.com/dsiekiera/foe-helfer-extension/issues/987) Infofenster für Investitionen ist abschaltbar
+    - [#972](https://github.com/dsiekiera/foe-helfer-extension/issues/972) Eigenanteilsrechner ist auch für andere LGs zuschaltbar
+
+**BugFix**
+- Extension:
+    - [#764](https://github.com/dsiekiera/foe-helfer-extension/issues/764) doppelten Eventhandler gefixt
+    - [#899](https://github.com/dsiekiera/foe-helfer-extension/issues/899) [#909](https://github.com/dsiekiera/foe-helfer-extension/issues/909) [#922](https://github.com/dsiekiera/foe-helfer-extension/issues/922) [#927](https://github.com/dsiekiera/foe-helfer-extension/issues/927) [#937](https://github.com/dsiekiera/foe-helfer-extension/issues/937) [#981](https://github.com/dsiekiera/foe-helfer-extension/issues/981) [#1045](https://github.com/dsiekiera/foe-helfer-extension/issues/1045) [#1053](https://github.com/dsiekiera/foe-helfer-extension/issues/1053) diverse Eingabe- und Dropdownelemente konnten nicht geändert werden
+    - [#993](https://github.com/dsiekiera/foe-helfer-extension/issues/993) Übersetzungsfehler korrgiert
+
+- Statistikmodul:
+    - [#902](https://github.com/dsiekiera/foe-helfer-extension/issues/902) Box war bei zu kleiner Auflösung zu groß
+
+- Außenposten:
+    - [#1019](https://github.com/dsiekiera/foe-helfer-extension/issues/1019) Werte werden wieder korrekt berechnet
+
+---
+
 ##### 2.4.5
 
 **Neu**

@@ -87,7 +87,7 @@ let Tavern = {
 
 		let Timer = setInterval(function(){
 
-			let now = new Date().getTime();
+			let now = MainParser.getCurrentDateTime();
 			let t = endDate - now;
 
 			if (t >= 0) {
