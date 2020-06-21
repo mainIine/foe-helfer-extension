@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Giver dig præcise forslag til fohandlinger",
 		"Menu.Negotiation.Title": "Forhandlingsassistent",
 		"Menu.Negotiation.Warning": "Deaktiveret: Start først en ny forhandling!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deaktiveret: Besøg først bosættelsen!<br></em>Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiveret: Start først en bosættelse og genindlæs spillet (F5)",

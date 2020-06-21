@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Fare proposte precise per le negoziazioni",
 		"Menu.Negotiation.Title": "Aiuto Negoziazione",
 		"Menu.Negotiation.Warning": "Disabilitato: avvia prima una negoziazione!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabilitato: controlla prima l'avamposto!</em><br> Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabilitato: avvia un avamposto e ricarica il gioco (F5)",

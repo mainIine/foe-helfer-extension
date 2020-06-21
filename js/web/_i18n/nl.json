@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Geeft nauwkeurige voorstellen bij onderhandelingen",
 		"Menu.Negotiation.Title": "Onderhandelingshulp",
 		"Menu.Negotiation.Warning": "Gedeactiveerd: Start eerst een onderhandeling!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Overzicht van de benodigde goederen",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Bezoek eerst je nederzetting!<br></em>Overzicht van de benodigde grondstoffen",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Begin een nederzetting en herlaad het spel (F5)",

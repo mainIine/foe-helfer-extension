@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Select resources for successful negotiations.",
 		"Menu.Negotiation.Title": "Negotiation Helper",
 		"Menu.Negotiation.Warning": "Disabled: Start a negotiation first!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.",
+		"Menu.Notice.Title": "Notes",
 		"Menu.OutP.Desc": "Displays the resources required (by item) for your Settlement.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement first!<br></em>Displays the resources required (by item) for your Settlement.",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement and reload the game (F5)",
