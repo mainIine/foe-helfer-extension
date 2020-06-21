@@ -139,13 +139,18 @@
 		"Boxes.Gildfights.Title": "GBG Overview", //Todo: Translate
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion1": "Suggestion1", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Objeví se",
 		"Boxes.HiddenRewards.Disappears": "Zmizí",
 		"Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
@@ -247,7 +252,6 @@
 		"Boxes.OwnpartCalculator.Step": "Úroveň",
 		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",
-		"Boxes.Plunderer.Title": "PvP Overview", //Todo: Translate
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Sousední budovy",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -433,8 +437,6 @@
 		"Menu.OwnpartCalculator.Desc": "Připravte si plán, kolik Vám kamarádi přispějí do budovy",
 		"Menu.OwnpartCalculator.Title": "Kalkulačka spolupráce",
 		"Menu.OwnpartCalculator.Warning": "Nejprve otevřete jednu svoji velkolepou budovu!",
-		"Menu.Plunderer.Desc": "Displays your PvP battles and plunder results", //Todo: Translate
-		"Menu.Plunderer.Title": "PvP Activity", //Todo: Translate
 		"Menu.Productions.Desc": "Zobrazuje výroby ve všech dílnách.",
 		"Menu.Productions.Title": "Výroba v dílnách",
 		"Menu.Settings.Desc": "Něco málo z nastavení",
