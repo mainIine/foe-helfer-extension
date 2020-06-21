@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Navrhuje presné ponuky pri vyjednávaní",
 		"Menu.Negotiation.Title": "Pomocník pri vyjednávaní",
 		"Menu.Negotiation.Warning": "Vypnuté: Najprv spustite vyjednávanie!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Prehľad prostriedkov potrebných na dokončenie usadlosti",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Vypnuté: najprv navštívte usadlosť!<br></em>Prehľad prostriedkov potrebných na dokončenie usadlosti",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Vypnuté: Spustite usadlosť a obnovte hru (F5)",

@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Zlepšete svoji šanci během vyjednávání",
 		"Menu.Negotiation.Title": "Pomocník s vyjednáváním",
 		"Menu.Negotiation.Warning": "Začněte vyjednávat!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Přehled potřebných surovin",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Otevřete osadu first!<br></em>Overview of the required resources",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Začněte osadu a aktualizujte hru (F5)",

@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Macht dir präzise Vorschläge für Verhandlungen",
 		"Menu.Negotiation.Title": "Verhandlungassistent",
 		"Menu.Negotiation.Warning": "Deaktiviert: Starte zuerst eine neue Verhandlung!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Mach dir Notizen für alles, was du nicht vergessen willst.",
+		"Menu.Notice.Title": "Notizen",
 		"Menu.OutP.Desc": "Übersicht über die benötigten Ressourcen",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deaktiviert: Besuche zuerst den Außenposten!<br></em>Übersicht über die benötigten Ressourcen",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiviert: Starte zuerst einen Außenposten und lade das Spiel neu (F5)",

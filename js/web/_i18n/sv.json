@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Gör beräknade förslag till forhandling",
 		"Menu.Negotiation.Title": "Förhandlingshjälp",
 		"Menu.Negotiation.Warning": "Inaktiverat: Starta en förhandling först!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Översikt av de resurser du behöver",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Inaktiverat: kolla i bossättningen först!<br></em>Översikt av de resurser du behöver",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Inaktiverat: Starta en bosättning och ladda om spelet (F5)",
