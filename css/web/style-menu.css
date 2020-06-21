@@ -634,7 +634,7 @@ Tabs */
 	position: absolute;
 	background-image:  url('../images/hud/box-sprite.png');
 	background-repeat: no-repeat;
-	background-position: -141px -162px;
+	background-position: -230px -162px;
 	width: 12px;
 	height: 33px;
 	z-index: 1;
@@ -652,7 +652,7 @@ Tabs */
 .window-body .tabs ul.horizontal li:hover a:after,
 .window-body .tabs ul.horizontal li.active a:after,
 .window-body .tabs ul.horizontal li.active:hover a:after {
-	background-position: -141px -126px;
+	background-position: -230px -126px;
 }
 
 .window-body .tabs > div {
