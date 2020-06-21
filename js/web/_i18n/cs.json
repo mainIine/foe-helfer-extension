@@ -138,16 +138,15 @@
 		"Boxes.Gildfights.Player": "Guild Member", //Todo: Translate
 		"Boxes.Gildfights.Title": "GBG Overview", //Todo: Translate
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
-		"Boxes.GreatBuidlings.Suggestion2": "Suggestion2", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
 		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "FP producing GBs: Top Buildings are better", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
