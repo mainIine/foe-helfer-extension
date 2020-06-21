@@ -213,6 +213,8 @@ let GreatBuildings =
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             let Index = ROIResultMap[i]['index'];
+            let OwnGB = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[Index].ID));
+            let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
 
             if (GreatBuildings.HideNewGBs && ShowGoodCosts[Index]) continue;
 
@@ -221,7 +223,7 @@ let GreatBuildings =
             if (ROIResults[Index]['BestLevel'] !== undefined) {
                 let BestLevel = ROIResults[Index]['BestLevel'];
 
-                h.push('<td>' + (BestLevel + 1) + '</td>');
+                h.push('<td>' + CurrentLevel + '=>' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
@@ -236,7 +238,7 @@ let GreatBuildings =
                 h.push('<td><input title="' + i18n('Boxes.GreatBuildings.TTGoodCosts') + '" type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[Index].GoodCosts + '"></td>');
             }
             else {
-                h.push('<td>-</td>');
+                h.push('<td class="text-center">-</td>');
             }
             h.push('</tr>');
 
@@ -245,11 +247,11 @@ let GreatBuildings =
 
                 h.push('<tr>');
                 h.push('<td class="text-right">' + i18n('Boxes.GreatBuildings.Suggestion2') + ':</td>');
-                h.push('<td><strong>' + (BestLevel + 1) + '</strong></td>');
-                h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</strong></td>');
-                h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</strong></td>');
+                h.push('<td>' + CurrentLevel + '=>' + (BestLevel + 1) + '</td>');
+                h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');
+                h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
-                h.push('<td>-</td>');
+                h.push('<td class="text-center">-</td>');
                 h.push('</tr>');
             }
         }
