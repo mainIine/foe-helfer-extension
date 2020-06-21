@@ -382,11 +382,6 @@ let IndexDB = {
     * @returns {Promise<void>}
     */
     GarbageCollector: async () => {
-        await IndexDB.getDB();
-
-        // TODO: make dates configurable
-
-        const pvpActionExpiryTime = moment().subtract(6, 'weeks').toDate();
         // Expiry time for db with 1 record per day
         const daylyExpiryTime = moment().subtract(1, 'years').toDate();
         // Expiry time for db with 1 record per hour
@@ -394,27 +389,10 @@ let IndexDB = {
         // Keep logs for guild battlegrounds for 2 weeks
         const gbgExpiryTime = moment().subtract(2, 'weeks').toDate();
 
-        await IndexDB.db.pvpActions
-            .where('date').below(pvpActionExpiryTime)
-            .delete();
-
-        // Remove expired city shields
-        await IndexDB.db.pvpActions
-            .where('type').equals(5)
-            .and((item)=>{ return item.expireTime < moment().unix() })
-            .delete();
-
-        await IndexDB.db.players
-            .where('date').below(pvpActionExpiryTime)
-            .delete();
-
-        let LeftPlayers = await IndexDB.db.players
-            .where('id').above(0)
-            .keys();
-
-        await IndexDB.db.greatbuildings
-            .where('playerId').noneOf(LeftPlayers)
-            .delete();
+        await IndexDB.getDB();
+        await IndexDB.db.pvpActions.clear();
+        await IndexDB.db.players.clear();
+        await IndexDB.db.greatbuildings.clear();
 
         for (const table of ['statsRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
             await IndexDB.db[table].where('date').below(daylyExpiryTime).delete();
