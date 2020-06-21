@@ -139,13 +139,18 @@
 		"Boxes.Gildfights.Title": "Activité de membre",
 		"Boxes.Gildfights.Total": "Total",
 		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
 		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Niveau",
-		"Boxes.GreatBuildings.Suggestion1": "Sugg. 1",
-		"Boxes.GreatBuildings.Suggestion2": "Sugg. 2",
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "Investissement GM",
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Apparaîtra",
 		"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 		"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
@@ -247,7 +252,6 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
-		"Boxes.Plunderer.Title": "Activité JcJ",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.GoodEraTotal": "Total",
@@ -433,8 +437,6 @@
 		"Menu.OwnpartCalculator.Desc": "Crée un plan de pose de PF, calcule les coûts et copie les valeurs.",
 		"Menu.OwnpartCalculator.Title": "Calculatrice GM interne",
 		"Menu.OwnpartCalculator.Warning": "Désactivé : Ouvrez d'abord un de vos GM !",
-		"Menu.Plunderer.Desc": "Afficher l'historique de l'activité JcJ et de pillage du voisinage.",
-		"Menu.Plunderer.Title": "Activité JcJ",
 		"Menu.Productions.Desc": "Affiche le nombre en cours de toutes les productions.",
 		"Menu.Productions.Title": "Vue d'ensemble des productions",
 		"Menu.Settings.Desc": "Quelques éléments à configurer.",

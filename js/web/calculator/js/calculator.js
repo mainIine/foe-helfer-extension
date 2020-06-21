@@ -545,7 +545,9 @@ let Calculator = {
 
 				RankClass = '';
 
-				Calculator.PlaySound();
+				if (ForderRankDiff < 0) {
+					Calculator.PlaySound();
+				}
 
 				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
 				if (ForderRankDiff < 0) {
