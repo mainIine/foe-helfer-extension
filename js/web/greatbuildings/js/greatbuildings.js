@@ -51,6 +51,7 @@ let GreatBuildings =
     MaxLevel: 100,
     ForderBonus: 90,
     FPPerTile: 0.2,
+    HideNewGBs: false,
     
 	/**
 	 * Zeigt die Box an oder schließt sie
@@ -81,33 +82,35 @@ let GreatBuildings =
             // CSS in den DOM prügeln
             HTML.AddCssFile('greatbuildings');
 
+            $('#greatbuildings').on('click', '.hidenewgbs', function () {
+                let $this = $(this),
+                    id = $this.data('id'),
+                    v = $this.prop('checked');
+
+                GreatBuildings.HideNewGBs = v;
+                               
+                GreatBuildings.CalcBody();
+            });
+
+            $('#greatbuildings').on('blur', '#costFactor', function () {
+                GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
+                localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+                GreatBuildings.CalcBody();
+            });
+
+            for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+                $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
+                    GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
+                    localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.FPGreatBuildings[i].GoodCosts);
+                    GreatBuildings.CalcBody();
+                });
+            }
+
         } else {
             HTML.CloseOpenBox('greatbuildings');
         }
 
-        GreatBuildings.BuildBox();
-    },
-
-
-    /**
-	 * Box zusammen bauen
-	 */
-    BuildBox: () => {
         GreatBuildings.CalcBody();
-
-        $('#greatbuildings').on('blur', '#costFactor', function () {
-            GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
-            localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
-            GreatBuildings.CalcBody();
-        });
-
-        for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
-            $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
-                GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
-                localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.FPGreatBuildings[i].GoodCosts);
-                GreatBuildings.CalcBody();
-            });
-        }
     },
 
 
@@ -115,11 +118,10 @@ let GreatBuildings =
         let h = [];
 
         h.push('<strong>' + i18n('Boxes.GreatBuildings.ArcBonus') + '   </strong>');
-
         h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
-
+        h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">')
+        h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
         h.push('<br><br>')
-
         h.push('<strong>' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong>');
     
         h.push('<table class="foe-table">');
@@ -207,6 +209,8 @@ let GreatBuildings =
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             let Index = ROIResultMap[i]['index'];
+
+            if (GreatBuildings.HideNewGBs && ShowGoodCosts[Index]) continue;
 
             h.push('<tr>');
             h.push('<td>' + MainParser.CityEntities[GreatBuildings.FPGreatBuildings[Index].ID]['name'] + '</td>');
