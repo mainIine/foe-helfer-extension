@@ -240,8 +240,8 @@ let Calculator = {
 			}
 		}
 
-		if (Calculator.LastRecurringQuests && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
-			if (PlaySound) {
+		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
+			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
 				Calculator.SoundFile.play();
 			}
         }
@@ -260,8 +260,6 @@ let Calculator = {
 		let hFordern = [],
 			hBPMeds = [],
 			BestKurs = 999999,
-			BestKursNettoFP = 0,
-			BestKursEinsatz = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
 
@@ -486,7 +484,7 @@ let Calculator = {
 				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': ForderFPRewards[Rank] - EigenBetrag, 'tooless': (ForderFPRewards[Rank] - EigenBetrag - StrategyPoints.AvailableFP) }));
 			}
 
-			if (ForderGewinn > 0) {
+			if (ForderGewinn >= 0) {
 				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
 			}
 			else {
@@ -547,6 +545,10 @@ let Calculator = {
 
 				RankClass = '';
 
+				if (ForderRankDiff < 0) {
+					Calculator.PlaySound();
+				}
+
 				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
 				if (ForderRankDiff < 0) {
 					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
@@ -556,6 +558,8 @@ let Calculator = {
 				RowClass = 'bg-green';
 
 				RankClass = 'success';
+
+				Calculator.PlaySound();
 			}
 			else {
 				RowClass = 'text-grey';
