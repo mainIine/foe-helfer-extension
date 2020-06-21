@@ -55,16 +55,6 @@ let Settings = {
 				title: i18n('Settings.SendGEXInfo.Title'),
 				desc: i18n('Settings.SendGEXInfo.Desc')
 			},
-			ShowNeighborsGoods: {
-				status: true,
-				title: i18n('Settings.ShowNeighborsGoods.Title'),
-				desc: i18n('Settings.ShowNeighborsGoods.Desc')
-			},
-			ShowAllPlayerAttDeff: {
-				status: true,
-				title: i18n('Settings.ShowAllPlayerAttDeff.Title'),
-				desc: i18n('Settings.ShowAllPlayerAttDeff.Desc')
-			},
 			ShowOwnPartOnAllGBs: {
 				status: false,
 				title: i18n('Settings.ShowOwnPartOnAllGBs.Title'),
@@ -84,11 +74,6 @@ let Settings = {
 				status: true,
 				title: i18n('Settings.ShowTavernBadge.Title'),
 				desc: i18n('Settings.ShowTavernBadge.Desc')
-			},
-			PreScanLGList: {
-				status: true,
-				title: i18n('Settings.PreScanLGList.Title'),
-				desc: i18n('Settings.PreScanLGList.Desc')
 			},
 			AutomaticNegotiation: {
 				status: true,

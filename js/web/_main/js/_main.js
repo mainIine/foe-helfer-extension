@@ -716,28 +716,8 @@ const FoEproxy = (function () {
 	// Es wurde das LG eines Mitspielers angeklickt, bzw davor die Übersicht
 
 	// Übersicht der LGs eines Nachbarn
-	let LastKostenrechnerOpenTime = 0;
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
-
-		if (data.responseData[0].player.player_id === ExtPlayerID || !Settings.GetSetting('PreScanLGList')) {
-			return;
-		}
-
-		Calculator.Overview = data.responseData;
-		Calculator.DetailViewIsNewer = false;
-
-		$('#calculator-Btn').removeClass('hud-btn-red');
-		$('#calculator-Btn-closed').remove();
-
-		// wenn schon offen, den Inhalt updaten
-		if ($('#LGOverviewBox').is(':visible')) {
-			let CurrentTime = MainParser.getCurrentDateTime()
-			if (CurrentTime < LastKostenrechnerOpenTime + 1000)
-				Calculator.ShowOverview(true);
-			else
-				Calculator.ShowOverview(false);
-		}
 	});
 
 	// es wird ein LG eines Spielers geöffnet
@@ -850,10 +830,9 @@ const FoEproxy = (function () {
 
 			Calculator.Rankings = Rankings;
 			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
-			Calculator.DetailViewIsNewer = true;
 
 			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').is(':visible') || ($('#LGOverviewBox').is(':visible') && Calculator.AutoOpenKR)) {
+			if ($('#costCalculator').is(':visible')) {
 				Calculator.Show(Rankings, CityMapEntity.responseData[0]);
 			}
 		}
