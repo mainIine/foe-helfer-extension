@@ -19,10 +19,8 @@
 .window-minimize,
 .window-ask,
 .window-speaker,
-.window-close,
-.window-body .tabs ul li,
-.window-body .tabs ul li.active {
-	background-image:  url('../images/hud/buttons.png');
+.window-close {
+	background-image:  url('../images/hud/box-sprite.png');
 }
 
 /* ---------------------------------------------------------------------------------------- */
@@ -290,8 +288,6 @@
 	border-width: 0 5px 5px;
 }
 
-/*--------------------------------------------------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 .jq-toast-wrap { display: block; position: fixed; /*width: 250px*/;  pointer-events: none !important; margin: 0; padding: 0; letter-spacing: normal; z-index: 9000 !important; }

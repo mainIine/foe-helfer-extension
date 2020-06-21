@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
-// Armee Typen
+// Army types
 FoEproxy.addMetaHandler('unit_types', (xhr, postData) => {
 	Unit.Types = JSON.parse(xhr.responseText);
 });
@@ -415,7 +415,7 @@ let Unit = {
 	 * @param id
 	 */
 	SetTabs: (id)=>{
-		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
+		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
 	},
 
 
