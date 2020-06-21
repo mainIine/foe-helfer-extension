@@ -139,9 +139,9 @@
 		"Boxes.Gildfights.Title": "Resumo do jogador",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
@@ -249,7 +249,6 @@
 		"Boxes.OwnpartCalculator.Step": "Nível",
 		"Boxes.OwnpartCalculator.Title": "Calculadora de PFs em seu GE",
 		"Boxes.OwnpartCalculator.YourName": "O seu nome",
-		"Boxes.Plunderer.Title": "Atividade de PvP",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifícios vizinhos",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -435,8 +434,6 @@
 		"Menu.OwnpartCalculator.Desc": "Simula um plano de investimento, calcula lugares e copia valores",
 		"Menu.OwnpartCalculator.Title": "Calculadora de PFs em GE próprio",
 		"Menu.OwnpartCalculator.Warning": "Desabilitado: Abra um de seus GEs!",
-		"Menu.Plunderer.Desc": "PvP e histórico de colheita na vizinhaça",
-		"Menu.Plunderer.Title": "Atividade de PvP",
 		"Menu.Productions.Desc": "Mostra o total atual de todas as produções.",
 		"Menu.Productions.Title": "Resumo da Produção",
 		"Menu.Settings.Desc": "Algumas configurações possíveis",

@@ -139,9 +139,9 @@
 		"Boxes.Gildfights.Title": "Przegląd aktywności graczy",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Bonus wpłacających",
-		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Koszt / PR dziennie",
-		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "Koszt towarów (PR)",
 		"Boxes.GreatBuildings.GreatBulding": "Perła Architektury",
 		"Boxes.GreatBuildings.Level": "Poziom",
@@ -249,7 +249,6 @@
 		"Boxes.OwnpartCalculator.Step": "Poziom",
 		"Boxes.OwnpartCalculator.Title": "Kalkulator budowy pereł",
 		"Boxes.OwnpartCalculator.YourName": "Your name",
-		"Boxes.Plunderer.Title": "Aktywność PvP",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Pobliskie budynki",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -435,8 +434,6 @@
 		"Menu.OwnpartCalculator.Desc": "Tworzy plan budowy własnej perły, pomaga obliczyć miejsca z wymian i pozwala generować wiadomości ogłaszające",
 		"Menu.OwnpartCalculator.Title": "Kalkulator budowy",
 		"Menu.OwnpartCalculator.Warning": "Niedostępne: Otwórz swoją perłę architektury!",
-		"Menu.Plunderer.Desc": "Historia PvP i grabienia sąsiadów",
-		"Menu.Plunderer.Title": "Aktywność PvP",
 		"Menu.Productions.Desc": "Wyświetla wszystkie aktywne produkcje w Twoim mieście.",
 		"Menu.Productions.Title": "Przegląd produkcji",
 		"Menu.Settings.Desc": "Kilka podstawowych ustawień",

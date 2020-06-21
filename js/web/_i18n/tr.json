@@ -139,9 +139,9 @@
 		"Boxes.Gildfights.Title": "Oyuncular Genelbakış",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
@@ -249,7 +249,6 @@
 		"Boxes.OwnpartCalculator.Step": "Seviye",
 		"Boxes.OwnpartCalculator.Title": "Kendi Katkı Hesaplayıcı",
 		"Boxes.OwnpartCalculator.YourName": "Senin İsmin",
-		"Boxes.Plunderer.Title": "PvP Aktiviteleri",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Bitişik Binalar",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -435,8 +434,6 @@
 		"Menu.OwnpartCalculator.Desc": "Ödeme planı oluşturun, harici yerleri hesaplayın ve değerleri kopyalayın",
 		"Menu.OwnpartCalculator.Title": "Kendi katkı hesaplayıcısı",
 		"Menu.OwnpartCalculator.Warning": "Kapalı: Önce Kendi devasa Binanı açmalısın!",
-		"Menu.Plunderer.Desc": "Uzun bir süre boyunca mücadeleleri ve hasatın seyrini gösterir",
-		"Menu.Plunderer.Title": "PvP genel bakış",
 		"Menu.Productions.Desc": "Tüm Üretimin mevcut sayısını gösterir.",
 		"Menu.Productions.Title": "Üretim genel bakış",
 		"Menu.Settings.Desc": "Burada küçük şeyler ayarlayabilirsin",
