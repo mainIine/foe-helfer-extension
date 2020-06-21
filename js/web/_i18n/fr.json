@@ -147,7 +147,8 @@
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Niveau",
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "Investissement GM",
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
