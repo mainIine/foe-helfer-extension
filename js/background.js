@@ -153,6 +153,25 @@
 		} else if(request.type === 'getPlayerData') {
 			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
 			callback(playerdata[request.world+'-'+request.player_id]);
+		} else if(request.type === 'showNotification') {
+			try {
+				const title = request.title;
+				const options = request.options;
+				new Notification( title, {
+					actions: options.actions,
+					body: options.body,
+					dir: 'ltr',
+					icon: options.icon,
+					renotify: ( options.tag ) ? true : false,
+					requireInteraction: options.persistent,
+					vibrate: options.vibrate,
+					tag: options.tag,
+				});
+			}
+			catch( error ){
+				console.error('NotificationManager.notify:');
+				console.error( error );
+			}
 		}
 	}
 

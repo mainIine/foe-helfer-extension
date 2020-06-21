@@ -57,7 +57,7 @@ let Negotiation = {
 	Message: undefined,
 	MessageClass: 'warning',
 	SortableObj: null,
-	
+
 	WrongGoodsSelected: false,
 	ContinueListing: false,
 	NeedGoodMissmatchConfirm: false,
@@ -85,7 +85,7 @@ let Negotiation = {
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('negotiation');
 
-			$('body').on('click', '.negotation-setting', function(){
+			$('#negotiationBox').on('click', '.negotation-setting', function(){
 				let $this = $(this),
 					id = $this.data('id'),
 					v = $this.prop('checked');
@@ -125,7 +125,7 @@ let Negotiation = {
 		}
 	},
 
-	
+
 	/**
 	 * Berechnungen durchführen
 	 *
@@ -173,7 +173,7 @@ let Negotiation = {
 					TextClass;
 
 				let maxRequired = GoodInfo.canOccur.length * GoodAmount;
-				
+
 				GoodAmount *= Negotiation.CurrentTable.go[i];
 
 				if (Stock === undefined)
@@ -220,7 +220,7 @@ let Negotiation = {
 			Negotiation.MessageClass = 'danger';
 			Negotiation.Message = i18n('Boxes.Negotiation.TableLoadError');
 		}
-		
+
 		// Verhandlungspartner überschrifteh
 		h.push('<tbody>');
 		h.push('<tr class="thead">');
@@ -357,7 +357,7 @@ let Negotiation = {
 					[  0, 255, 0], // Grün
 				];
 				const c = Negotiation.CurrentTable.c;
-				
+
 				let mix = c/100*(colors.length-1);
 				const colorIdx = Math.floor(mix);
 				// mix soll ein Wert zwischen 0 und 1 sein
@@ -372,7 +372,7 @@ let Negotiation = {
 					const colorR = Math.min(255, Math.max(0, Math.round(color1[0]*invMix + color2[0]*mix)));
 					const colorG = Math.min(255, Math.max(0, Math.round(color1[1]*invMix + color2[1]*mix)));
 					const colorB = Math.min(255, Math.max(0, Math.round(color1[2]*invMix + color2[2]*mix)));
-					
+
 					colorVal = `rgba(${colorR}, ${colorG}, ${colorB}, 0.3)`;
 				} else {
 					const color = colors[colorIdx];
@@ -387,7 +387,7 @@ let Negotiation = {
 			for (let place = 0; place < Negotiation.PlaceCount; place++) {
 				const slotSugestion = nextRoundSuggestion[place];
 				const good_id = slotSugestion ? slotSugestion.resourceId : 'empty';
-				
+
 				if (slotSugestion) {
 					h.push('<td class="text-center">');
 					h.push(`<span class="goods-sprite ${good_id}"></span>`);
@@ -414,7 +414,7 @@ let Negotiation = {
 
 		const guess = Guesses[tryNumber];
 		const suggestion = GuessesSuggestions[tryNumber];
-		
+
 		h.push('<tr class="guess goods-opacity">');
 		for (let place = 0; place < Negotiation.PlaceCount; place++) {
 			const SlotGuess = guess[place];
@@ -463,6 +463,8 @@ let Negotiation = {
 	 * @param {number} [forcedTryCount]
 	 */
 	StartNegotiation: (responseData, forcedTryCount) => {
+		if (responseData.context === 'guildBattleground') return; //No Negotiation helper for GBG
+
 		Negotiation.StartNegotiationBackupData = responseData;
 
 		if (responseData.__class__ === "Error") return;
@@ -471,7 +473,7 @@ let Negotiation = {
 			$('#negotiation-Btn').removeClass('hud-btn-red');
 			$('#negotiation-Btn-closed').remove();
 		}
-		
+
 		Negotiation.CurrentTry = 1;
 		Negotiation.Message = null;
 		Negotiation.WrongGoodsSelected = false;
@@ -482,7 +484,7 @@ let Negotiation = {
 
 		const GoodsOrdered = [];
 		Negotiation.GoodsOrdered = GoodsOrdered;
-		
+
 		for (let good_id in negotiationResources) {
 			if (!negotiationResources.hasOwnProperty(good_id)) continue;
 
@@ -526,7 +528,7 @@ let Negotiation = {
 		Negotiation.GetTable(tableName)
 			.then(table => {
 				Negotiation.CurrentTable = table;
-				
+
 				if (table) {
 					Negotiation.updateNextGuess();
 				}
@@ -560,7 +562,7 @@ let Negotiation = {
 
 		let numFreeSlots = 0;
 		for (let data of SlotData) {
-	
+
 			const State      = data.state;
 			const ResourceId = data.resourceId;
 			const SlotID     = data.slotId || 0;
@@ -665,7 +667,7 @@ let Negotiation = {
 				continuationCode += CurrentGuess[PlaceMutation[i]].match;
 			}
 			Negotiation.CurrentTable = Negotiation.CurrentTable.r[continuationCode];
-			
+
 			Negotiation.updateNextGuess();
 		}
 
@@ -705,7 +707,7 @@ let Negotiation = {
 		if (goodA === goodB) return 0;
 		const valA = goodValue(goodA);
 		const valB = goodValue(goodB);
-		
+
 		if (valA === valB) return goodA > goodB ? 1 : -1
 		return valA - valB;
 	},
@@ -904,7 +906,7 @@ let Negotiation = {
 
 				Value = EraID * 100;
             }
-			
+
 			let Stock = ResourceStock[GoodName];
 			if (Stock === undefined || Stock === 0)
 			{
@@ -1038,13 +1040,13 @@ let NegotiationDebugger = {
 		h.push('</select></label>');
 		h.push('<button onclick="NegotiationDebugger.start()">Start</button>');
 		h.push(`Always show Possible Matches: <input type="checkbox" onchange="NegotiationDebugger.changeAlwaysShowPossibleMatch(this)"${Negotiation.ContinueListing?' checked':''} />`);
-		
+
 
 		h.push('<div style="display:grid; grid-template-columns: repeat(auto-fill, 60px);">');
 		const numGoods = data.numGoods;
 		for (let i = 0; i < numGoods; i++) {
 			let good = data.goods[i] || 'empty';
-			
+
 			h.push(`<div>Good ${i+1}:<br/><span onclick="NegotiationDebugger.selectGoodFor(${i})" style="box-sizing: border-box;width: 40px${data.selected===i?'; border: 1px solid red':''}" class="${goodSpriteClass(good)}"></span></div>`);
 		}
 		h.push('</div>');
@@ -1065,17 +1067,17 @@ let NegotiationDebugger = {
 		for (let pos = 0; pos < 5; pos++) {
 			h.push(`<div style="flex-grow:1">`);
 			h.push(`Position ${pos}:<br/>`);
-			
+
 			h.push(`<div style="display: grid; grid-template-columns: repeat(auto-fill, 40px);">`);
 			for (let i = 0; i < numGoods; i++) {
 				let good = data.goods[i] || 'empty';
 				const selected = good === data.submitGoods[pos];
-	
+
 				h.push(`<span onclick="NegotiationDebugger.selectGoodForSubmit(${pos}, ${i})" style="box-sizing: border-box;width: 40px${selected?'; border: 1px solid red':''}" class="${goodSpriteClass(good)}"></span> `);
 			}
 			h.push(`</div>`);
-			
-			
+
+
 			let selectedValue = data.submitValue[pos]
 			if (selectedValue == null) selectedValue = Selectables[Selectables.length-1].value;
 			for (let selectable of Selectables) {
@@ -1221,4 +1223,3 @@ let NegotiationDebugger = {
 		NegotiationDebugger.BuildBox();
 	}
 };
-

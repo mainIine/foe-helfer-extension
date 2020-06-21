@@ -134,7 +134,7 @@ let Outposts = {
 			advancements
 			.filter(building => building.isUnlocked && building.rewards[0].toLocaleLowerCase().indexOf('diplomacy') > -1)
 			.map(building => {
-				let BuildingData = MainParser.CityEntities.find(obj => (obj.asset_id === building.rewards[0]));
+				let BuildingData = MainParser.CityEntities[building.rewards[0]];
 				return {name: building.name, diplomacy: BuildingData.staticResources.resources.diplomacy};
 			})
 			.reverse()
@@ -328,8 +328,8 @@ let Outposts = {
 					resourceCost = cost[resourceID];
 				}
 				else { //Goldmünzen bzw. Beute => abhängig von anderen Güterkosten
-					for (let CostResourceName in cost) {
-						if (CostResourceName === 'diplomacy') continue;
+					for (let CostResourceName in sums) {
+						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
 												
 						resourceCost += Math.max(Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName] | 0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
                     }

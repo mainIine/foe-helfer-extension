@@ -86,6 +86,7 @@
 		if(document.head !== null){
 
 			let cssFiles = [
+				'colors',
 				'goods',
 				'style-menu',
 				'boxes'
@@ -144,6 +145,7 @@
 					'tableSorter/table-sorter',
 					'Sortable/Sortable.min',
 					'jsZip/jszip.min',
+					'date-range/lightpick',
 					'dexie/dexie.min', // indexDB helper lib
 				];
 
@@ -166,7 +168,6 @@
 				'productions',
 				'part-calc',
 				'unit',
-				'plunderer',
 				'guildfights',
 				'notes',
 				'stats',
@@ -174,14 +175,16 @@
 				'technologies',
 				'negotiation',
 				'eventquest',
-				'read-buildings',
 				'settings',
 				'investment',
 				'strategy-points',
 				'battle-assist',
 				'citymap',
 				'hidden-rewards',
-				'greatbuildings'
+				'greatbuildings',
+                'alerts',
+                'notice',
+				'inventory-tracker',
 			];
 
 			// Scripte laden (nacheinander)
