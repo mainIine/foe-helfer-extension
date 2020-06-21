@@ -139,9 +139,9 @@
 		"Boxes.Gildfights.Title": "Panoramica del giocatore",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
@@ -249,7 +249,6 @@
 		"Boxes.OwnpartCalculator.Step": "Fase",
 		"Boxes.OwnpartCalculator.Title": "Calcolatore Auto-Up",
 		"Boxes.OwnpartCalculator.YourName": "Il tuo nome",
-		"Boxes.Plunderer.Title": "Attività PvP",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -435,8 +434,6 @@
 		"Menu.OwnpartCalculator.Desc": "Permette di calcolare i PF da investire sui tuoi GE e di copiare le posizioni pronte.",
 		"Menu.OwnpartCalculator.Title": "Calcolatore Auto-uppaggio GE",
 		"Menu.OwnpartCalculator.Warning": "Disabilitato: apri prima uno dei tuoi grandi edifici!",
-		"Menu.Plunderer.Desc": "PvP e storia della raccolta del vicinato",
-		"Menu.Plunderer.Title": "Attività PvP",
 		"Menu.Productions.Desc": "Visualizza tutte le produzioni correnti.",
 		"Menu.Productions.Title": "Panoramica della produzione",
 		"Menu.Settings.Desc": "Ecco alcune piccole impostazioni",

@@ -139,9 +139,9 @@
 		"Boxes.Gildfights.Title": "Spieler Übersicht",
 		"Boxes.Gildfights.Total": "Gesamt",
 		"Boxes.GreatBuildings.ArcBonus": "Fördern mit",
-		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Kosten / tgl. FP",
-		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP Kosten Güter",
 		"Boxes.GreatBuildings.GreatBulding": "Legend. Gebäude",
 		"Boxes.GreatBuildings.Level": "Level",
@@ -249,7 +249,6 @@
 		"Boxes.OwnpartCalculator.Step": "Stufe",
 		"Boxes.OwnpartCalculator.Title": "Eigenanteilsrechner",
 		"Boxes.OwnpartCalculator.YourName": "Dein Name",
-		"Boxes.Plunderer.Title": "PvP Aktivitäten",
 		"Boxes.Production.SizeTT": "Größe enthält den durchschnittlichen Platzbedarf für Straßen von __streetnettosize__ Feldern",
 		"Boxes.Productions.AdjacentBuildings": "Angrenzende Gebäude",
 		"Boxes.Productions.GoodEraTotal": "Gesamt",
@@ -435,8 +434,6 @@
 		"Menu.OwnpartCalculator.Desc": "Zahlplan erstellen, externe Plätze berechnen und Werte kopieren",
 		"Menu.OwnpartCalculator.Title": "Eigenanteilsrechner",
 		"Menu.OwnpartCalculator.Warning": "Deaktiviert: Öffne zuerst eines deiner Legendären Gebäude!",
-		"Menu.Plunderer.Desc": "Zeigt die Kämpfe und den Ernteverlauf über längere Zeit an",
-		"Menu.Plunderer.Title": "PvP Übersicht - entfernt",
 		"Menu.Productions.Desc": "Zeigt die derzeitige Anzahl aller Produktionen an.",
 		"Menu.Productions.Title": "Produktions Übersicht",
 		"Menu.Settings.Desc": "Hier stellst du ein paar Kleinigkeiten ein",

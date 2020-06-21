@@ -139,9 +139,9 @@
 		"Boxes.Gildfights.Title": "Spiller oversigt",
 		"Boxes.Gildfights.Total": "I alt",
 		"Boxes.GreatBuildings.ArcBonus": "Bidrag med",
-		"Boxes.GreatBuildings.Cost": "???", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Pris / dagl. FP",
-		"Boxes.GreatBuildings.DailyFP": "???", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP pris varer",
 		"Boxes.GreatBuildings.GreatBulding": "Storslåede bygninger",
 		"Boxes.GreatBuildings.Level": "Niveau",
@@ -249,7 +249,6 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Egenandelsberegner",
 		"Boxes.OwnpartCalculator.YourName": "Dit navn",
-		"Boxes.Plunderer.Title": "PvP aktiviteter",
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
@@ -435,8 +434,6 @@
 		"Menu.OwnpartCalculator.Desc": "Generér betalingsplan, beregn eksterne pladser og kopiér værdier",
 		"Menu.OwnpartCalculator.Title": "Egenandelsberegner",
 		"Menu.OwnpartCalculator.Warning": "Deaktiveret: Åbn først en af dine egne storslåede bygninger!",
-		"Menu.Plunderer.Desc": "Viser dine PvP kampe og plyndringsforløbet over en længere periode",
-		"Menu.Plunderer.Title": "PvP Oversigt",
 		"Menu.Productions.Desc": "Viser en oversigt over alle nuværende produktioner.",
 		"Menu.Productions.Title": "Produktionsoversigt",
 		"Menu.Settings.Desc": "Her indstiller du et par ting.",
