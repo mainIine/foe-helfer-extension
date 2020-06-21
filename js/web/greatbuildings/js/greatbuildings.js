@@ -116,24 +116,28 @@ let GreatBuildings =
 
     CalcBody: () => {
         let h = [];
-
-        h.push('<strong>' + i18n('Boxes.GreatBuildings.ArcBonus') + '   </strong>');
-        h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
-        h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">')
+        h.push('<div class="text-center dark-bg header">');
+        h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong>');
+        h.push('<br><br>')
+        h.push(i18n('Boxes.GreatBuildings.ArcBonus'));
+        h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
+        h.push('<br>')
+        h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">');
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
         h.push('<br><br>')
-        h.push('<strong>' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong>');
+        h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
+        h.push('</div>');
     
         h.push('<table class="foe-table">');
 
         h.push('<thead>' +
             '<tr>' +
-                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>' +
-                '<th rowspan="2" title="' + i18n('Boxes.GreatBuildings.TTGoodCostsColumn') + '">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>' +
-                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
-                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.Cost') + '</th>' +
-                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.DailyFP') + '</th>' +
-                '<th rowspan="2">' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.Cost') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.DailyFP') + '</th>' +
+                '<th>' + i18n('Boxes.GreatBuildings.CostPerDailyFP') + '</th>' +
+                '<th title="' + i18n('Boxes.GreatBuildings.TTGoodCostsColumn') + '">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>' +
             '</tr>' +
         '</thead>');
 
@@ -214,24 +218,24 @@ let GreatBuildings =
 
             h.push('<tr>');
             h.push('<td>' + MainParser.CityEntities[GreatBuildings.FPGreatBuildings[Index].ID]['name'] + '</td>');
+            if (ROIResults[Index]['BestLevel'] !== undefined) {
+                let BestLevel = ROIResults[Index]['BestLevel'];
+
+                h.push('<td>' + (BestLevel + 1) + '</td>');
+                h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');
+                h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
+                h.push('<td><strong class="text-bright">' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
+            }
+            else {
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
+                h.push('<td>-</td>');
+            }
             if (ShowGoodCosts[Index]) {
                 h.push('<td><input title="' + i18n('Boxes.GreatBuildings.TTGoodCosts') + '" type="number" id="GreatBuildingsGoodCosts' + i + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[Index].GoodCosts + '"></td>');
             }
             else {
-                h.push('<td>-</td>');
-            }
-            if (ROIResults[Index]['BestLevel'] !== undefined) {
-                let BestLevel = ROIResults[Index]['BestLevel'];
-
-                h.push('<td><strong>' + (BestLevel + 1) + '</strong></td>');
-                h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</strong></td>');
-                h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</strong></td>');
-                h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
-            }
-            else {
-                h.push('<td>-</td>');
-                h.push('<td>-</td>');
-                h.push('<td>-</td>');
                 h.push('<td>-</td>');
             }
             h.push('</tr>');
@@ -240,11 +244,12 @@ let GreatBuildings =
                 let BestLevel = ROIResults2[Index]['BestLevel'];
 
                 h.push('<tr>');
-                h.push('<td colspan="2" class="text-right">' + i18n('Boxes.GreatBuildings.Suggestion2') + ':</td>');
+                h.push('<td class="text-right">' + i18n('Boxes.GreatBuildings.Suggestion2') + ':</td>');
                 h.push('<td><strong>' + (BestLevel + 1) + '</strong></td>');
                 h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</strong></td>');
                 h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</strong></td>');
-                h.push('<td><strong>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
+                h.push('<td><strong class="text-bright">' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
+                h.push('<td>-</td>');
                 h.push('</tr>');
             }
         }
