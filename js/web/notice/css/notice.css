@@ -36,11 +36,16 @@
 	top: 2px;
 	z-index: 10;
 }
+
 .window-body .notices .itm-btn {
 	margin-top: 5px;
 	margin-left: 5px;
 	position: absolute;
 	z-index: 10;
+}
+
+#noticesBody .empty-notice {
+	padding-left: 120px;
 }
 
 #noticesBody .tabs ul.horizontal {
@@ -69,8 +74,8 @@
 
 /*******************************************************************************/
 #notices-modal {
-	left: calc(50vw - 150px);
-	top: calc(50vw - 180px);
+	left: calc(50% - 150px);
+	top: calc(50% - 50px);
 	width: 300px;
 	min-height: 30px;
 	z-index: 300;

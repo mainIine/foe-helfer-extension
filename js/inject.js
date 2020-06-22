@@ -169,7 +169,6 @@
 				'part-calc',
 				'unit',
 				'guildfights',
-				'notes',
 				'stats',
 				'campagnemap',
 				'technologies',
