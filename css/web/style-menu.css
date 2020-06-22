@@ -618,10 +618,10 @@ Tabs */
 .window-body .tabs ul.horizontal li a:before {
 	content: '';
 	position: absolute;
-	background-image:  url('../images/hud/box-sprite.png');
+	background-image:  url('../images/hud/tab.png');
 	background-repeat: no-repeat;
-	background-position: -1px -162px;
-	width: 86%;
+	background-position: center left;
+	width: 50%;
 	height: 33px;
 	z-index: 1;
 	left: 0;
@@ -632,9 +632,9 @@ Tabs */
 .window-body .tabs ul.horizontal li a:after {
 	content: '';
 	position: absolute;
-	background-image:  url('../images/hud/box-sprite.png');
+	background-image:  url('../images/hud/tab.png');
 	background-repeat: no-repeat;
-	background-position: -230px -162px;
+	background-position: center right;
 	width: 50%;
 	height: 33px;
 	z-index: 1;
@@ -645,14 +645,19 @@ Tabs */
 
 .window-body .tabs ul.horizontal li:hover a:before,
 .window-body .tabs ul.horizontal li.active a:before,
-.window-body .tabs ul.horizontal li.active:hover a:before {
-	background-position: 0 -126px;
+.window-body .tabs ul.horizontal li.active:hover a:before,
+.window-body .tabs ul.horizontal li:hover a:after,
+.window-body .tabs ul.horizontal li.active a:after,
+.window-body .tabs ul.horizontal li.active:hover a:after {
+	background-image:  url('../images/hud/tab-active.png');
+	background-repeat: no-repeat;
+	background-position: center left;
 }
 
 .window-body .tabs ul.horizontal li:hover a:after,
 .window-body .tabs ul.horizontal li.active a:after,
 .window-body .tabs ul.horizontal li.active:hover a:after {
-	background-position: -230px -126px;
+	background-position: center right;
 }
 
 .window-body .tabs > div {

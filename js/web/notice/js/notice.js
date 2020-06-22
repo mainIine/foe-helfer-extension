@@ -142,7 +142,7 @@ let Notice = {
 
 
 	Listener: ()=> {
-		
+
 		$('#noticesBody').on('click', '.grp-btn', function(){
 			Notice.ShowModal('grp', $(this).data('id'));
 		});
