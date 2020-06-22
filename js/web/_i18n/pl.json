@@ -147,7 +147,8 @@
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Poziom",
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "Budowa Pereł Architektury",
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
@@ -428,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Pomaga dobrać surowce w negocjacjach",
 		"Menu.Negotiation.Title": "Asystent negocjacji",
 		"Menu.Negotiation.Warning": "Niedostępne: Rozpocznij negocjację!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",

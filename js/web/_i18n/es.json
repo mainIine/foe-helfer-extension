@@ -70,7 +70,7 @@
 		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
 		"Boxes.Api.Title": "Configuración Extensión API ",
 		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Warning!", //Todo: Translate
+		"Boxes.BattleAssist.Title": "Pare!",
 		"Boxes.Calculator.ActiveRecurringQuest": "Misión recurrente activa:",
 		"Boxes.Calculator.ArkBonus": "Bonus del Arca",
 		"Boxes.Calculator.AvailableFP": "Disponibles puntos forge",
@@ -92,12 +92,12 @@
 		"Boxes.Calculator.TTForderFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Esos son __tooless__FP de menos",
 		"Boxes.Calculator.TTForderNegativeProfit": "El puesto no está asegurado. __fpcount__ FPs adicionales deben invertirse para asegurarlo<br>Total para asegurar el puesto: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP no entran<br>La inversión máxima es: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __paid__<br>Pérdida = __paid__<small>(pagado)</small> - __bruttoreward__<small>(premio)</small> = __loss__",
-		"Boxes.Calculator.TTPaidTooLess": "Pagaste __paid__FP en lugar de __topay__FP. Eso son __tooless__FP de menos.",
-		"Boxes.Calculator.TTPaidTooMuch": "Pagaste __paid__FP en lugar de __topay__FP. Eso son __toomuch__FP de más.",
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __paid__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __paid__<small>(pagado)</small> = __profit__",
+		"Boxes.Calculator.TTLoss": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Cuesta: __costs__<br>Pérdida = __costs__<small>(cuesta)</small> - __bruttoreward__<small>(premio)</small> = __loss__",
+		"Boxes.Calculator.TTLossSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __payed__<br>Pérdida = __payed__<small>(pagado)</small> - __bruttoreward__<small>(premio)</small> = __loss__",
+		"Boxes.Calculator.TTPaidTooLess": "You paid __paid__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
+		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
+		"Boxes.Calculator.TTProfit": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Cuesta: __costs__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __costs__<small>(cuesta)</small> = __profit__",
+		"Boxes.Calculator.TTProfitSelf": "Premio = __nettoreward__<small>(premio neto)</small> * __arcfactor__%<small>(Bonus del Arca)</small> = __bruttoreward__<br>Pagado: __payed__<br>Beneficio = __bruttoreward__<small>(premio)</small> - __payed__<small>(pagado)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Hasta el próximo nivel",
 		"Boxes.Campagne.AlreadyDone": " Ya conquistado!",
 		"Boxes.Campagne.DescInStock": "Disponible",
@@ -142,12 +142,13 @@
 		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs for goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
@@ -287,22 +288,22 @@
 		"Boxes.Settings.Active": "Activo",
 		"Boxes.Settings.Inactive": "Inactivo",
 		"Boxes.Settings.Title": "Ajustes",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
+		"Boxes.Stats.BtnAll": "Todas",
 		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
 		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
+		"Boxes.Stats.BtnAllTittle": "Edades + Sin edades + Especial",
+		"Boxes.Stats.BtnChartType.delta": "Delta",
+		"Boxes.Stats.BtnChartType.line": "Líneas",
 		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
 		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
 		"Boxes.Stats.BtnChartTypeTitle.line": "Line Chart", //Todo: Translate
 		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream Chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
+		"Boxes.Stats.BtnLastEras": "Últimas 2 edades",
 		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "GBG", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
+		"Boxes.Stats.BtnMyEra": "Mi Edad",
+		"Boxes.Stats.BtnNoEra": "No Edad",
+		"Boxes.Stats.BtnSource.statsGBGPlayers": "Campos de batalla",
+		"Boxes.Stats.BtnSource.statsRewards": "Recompensas",
 		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
 		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
@@ -428,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Te da sugerencias precisas para las negociaciones",
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
 		"Menu.Negotiation.Warning": "Deshabilitado: Comienza primero una nueva negociación!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Resumen de los recursos necesarios",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deshabilitado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deshabilitado: Comienza primero un asentamiento cultural y vuelva a cargar el juego (F5)",
