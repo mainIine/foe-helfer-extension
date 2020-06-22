@@ -54,7 +54,7 @@ let GreatBuildings =
     HideNewGBs: false,
     
 	/**
-	 * Zeigt die Box an oder schließt sie
+	 * Zeigt die Box an oder schlieÃŸt sie
 	 */
     Show: () => {
         if ($('#greatbuildings').length === 0) {
@@ -79,7 +79,7 @@ let GreatBuildings =
                 'minimize': true
             });
 
-            // CSS in den DOM prügeln
+            // CSS in den DOM prÃ¼geln
             HTML.AddCssFile('greatbuildings');
 
             $('#greatbuildings').on('click', '.hidenewgbs', function () {

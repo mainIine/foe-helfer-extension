@@ -635,7 +635,7 @@ Tabs */
 	background-image:  url('../images/hud/box-sprite.png');
 	background-repeat: no-repeat;
 	background-position: -230px -162px;
-	width: 12px;
+	width: 50%;
 	height: 33px;
 	z-index: 1;
 	right: 0;
