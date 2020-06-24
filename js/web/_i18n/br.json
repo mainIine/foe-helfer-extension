@@ -255,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifícios vizinhos",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Poder da Guilda",
 		"Boxes.Productions.Happiness": "Felicidade",
 		"Boxes.Productions.Headings.all": "Todos",
 		"Boxes.Productions.Headings.amount": "Quantidade",

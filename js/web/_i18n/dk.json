@@ -255,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Glæde",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Mængde",
