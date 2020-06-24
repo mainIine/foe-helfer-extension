@@ -86,6 +86,7 @@
 		if(document.head !== null){
 
 			let cssFiles = [
+				'colors',
 				'goods',
 				'style-menu',
 				'boxes'
@@ -167,15 +168,12 @@
 				'productions',
 				'part-calc',
 				'unit',
-				'plunderer',
 				'guildfights',
-				'notes',
 				'stats',
 				'campagnemap',
 				'technologies',
 				'negotiation',
 				'eventquest',
-				'read-buildings',
 				'settings',
 				'investment',
 				'strategy-points',

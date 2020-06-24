@@ -13,27 +13,26 @@
  * **************************************************************************************
  */
 
+
 .OwnPartBoxBackground .outerArrow:before,
 .OwnPartBoxBackground .outerArrow span.arrow,
 .window-minimize,
 .window-ask,
 .window-speaker,
-.window-close,
-.window-body .tabs ul li,
-.window-body .tabs ul li.active {
-	background-image:  url('../images/buttons.png');
+.window-close {
+	background-image:  url('../images/hud/box-sprite.png');
 }
 
 /* ---------------------------------------------------------------------------------------- */
 
 .window-box {
-	background: url('../images/box-bg.png') center center repeat;
+	background: url('../images/hud/box-bg.png') center center repeat;
 	z-index: 100;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
 	font-weight: 400;
-	color: #F3D6A0;
-	text-shadow: 0 1px 1px rgba(0,0,0, 0.65);
+	color: var(--text-normal);
+	text-shadow: 0 1px 1px var(--65-black);
 	position: absolute;
 	text-align: left;
 	padding: 1px;
@@ -42,7 +41,7 @@
 	border-color: transparent;
 	border-width: 35px 10px 10px 10px;
 	border-style: solid;
-	border-image-source: url('../images/window.png');
+	border-image-source: url('../images/hud/window.png');
 	border-image-slice: 54 28 28;
 	border-image-width: 54px 28px 28px;
 	border-image-repeat: round;
@@ -54,7 +53,7 @@
 .window-box.closed {
 	border-width: 35px 10px 0 10px;
 	border-style: solid;
-	border-image-source: url('../images/window-closed.png');
+	border-image-source: url('../images/hud/window-closed.png');
 	border-image-slice: 54 28 0 28;
 	border-image-width: 54px 28px 0 28px;
 	border-image-repeat: round;
@@ -161,10 +160,10 @@
 .window-body input[type=text],
 .window-body input[type=number],
 .window-body select {
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	font-size: 0.8rem;
 	line-height: 18px;
 	padding: 2px 5px;
@@ -182,7 +181,7 @@
 	bottom: -8px;
 	right: -7px;
 	cursor: nwse-resize;
-	background: url('../images/wingrip.png') no-repeat;
+	background: url('../images/hud/wingrip.png') no-repeat;
 }
 .closed .window-grippy {
 	display:none;
@@ -290,8 +289,6 @@
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------------------------------------------*/
-/*--------------------------------------------------------------------------------------------------------------------*/
 
 .jq-toast-wrap { display: block; position: fixed; /*width: 250px*/;  pointer-events: none !important; margin: 0; padding: 0; letter-spacing: normal; z-index: 9000 !important; }
 .jq-toast-wrap * { margin: 0; padding: 0; }
@@ -316,7 +313,7 @@
 .jq-has-icon { padding: 10px 10px 10px 50px; background-repeat: no-repeat; background-position: 10px; }
 
 .jq-icon-info {
-	background-image: url('../images/info-icon.png'), url('../images/box-bg.png');
+	background-image: url('../images/hud/info-icon.png'), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
 	background-repeat: no-repeat, repeat;
 	background-color: #31708f;
@@ -325,7 +322,7 @@
 }
 
 .jq-icon-warning {
-	background-image: url('../images/warning-icon.png'), url('../images/box-bg.png');
+	background-image: url('../images/hud/warning-icon.png'), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
 	background-repeat: no-repeat, repeat;
 	background-color: #8a6d3b;
@@ -334,7 +331,7 @@
 }
 
 .jq-icon-error {
-	background-image: url('../images/error-icon.png'), url('../images/box-bg.png');
+	background-image: url('../images/hud/error-icon.png'), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
 	background-repeat: no-repeat, repeat;
 	background-color: #a94442;
@@ -343,7 +340,7 @@
 }
 
 .jq-icon-success {
-	background-image: url('../images/success-icon.png'), url('../images/box-bg.png');
+	background-image: url('../images/hud/success-icon.png'), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
 	background-repeat: no-repeat, repeat;
 	color: #dff0d8;

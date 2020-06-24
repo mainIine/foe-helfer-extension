@@ -14,71 +14,6 @@
  */
 
 /*
-*   "pvpActions" structure
-*   {
-*      playerId: number,
-*       date: Date,
-*       type: ACTION_TYPE_BATTLE_WIN | ACTION_TYPE_BATTLE_LOSS | ACTION_TYPE_BATTLE_SURRENDERED,
-*       battle: {
-*           myArmy: Unit[],
-*           otherArmy: Unit[],
-*           round: number,
-*           auto: boolean,
-*           era: string,
-*       }
-*   }
-*   OR
-*   {
-*       playerId: number,
-*       date: Date,
-*       type: Plunderer.ACTION_TYPE_PLUNDERED,
-*       resources: Object, //
-*       doublePlunder: boolean | undefined, // double plunder bonus is applied or not
-*       doublePlunderApplied: boolean // true when double bonus is applied
-*       sp: number, * strategy points
-*       important: boolean, // if not supplies or money only
-*       entityId: number, // foe city entity Id
-*       buildId: string, // key for BuildingNamesi18n
-*   }
-*   OR
-*   {
-*       type: Plunderer.ACTION_TYPE_SHIELDED,
-*       playerId: number,
-*       date: Date,
-*       expireTime: number, // timestamp. usage: new Date(expireTime * 1000)
-*   }
-*   where Unit =
-*   {
-*       startHP: number, // usually 10
-*       endHp: number,
-*       attBoost: number,
-*       defBoost: number,
-*       unitTypeId: string,
-*       ownerId: number, // other player id
-*   }
-*
-*   "players" structure
-*   {
-*       id: number,
-*       name: string,
-*       clanId: number, // 0 if no clan
-*       clanName: string | undefined,
-*       avatar: string,
-*       era: string | 'unknown',
-*       date: new Date(), // last visit date
-*   }
-*
-*   "greatbuildings" structure
-*   {
-*       id: number,
-*       playerid: number,
-*       name: string,
-*       level: number,
-*       currentfp: number,
-*       bestratenettofp: number
-*       bestratecosts: number,
-*       date: new Date(), // last visit date
-*   }
 *  "statsGBGPlayers", Battle ground leader board
 * {
 *   date: Date,
@@ -382,11 +317,6 @@ let IndexDB = {
     * @returns {Promise<void>}
     */
     GarbageCollector: async () => {
-        await IndexDB.getDB();
-
-        // TODO: make dates configurable
-
-        const pvpActionExpiryTime = moment().subtract(6, 'weeks').toDate();
         // Expiry time for db with 1 record per day
         const daylyExpiryTime = moment().subtract(1, 'years').toDate();
         // Expiry time for db with 1 record per hour
@@ -394,27 +324,10 @@ let IndexDB = {
         // Keep logs for guild battlegrounds for 2 weeks
         const gbgExpiryTime = moment().subtract(2, 'weeks').toDate();
 
-        await IndexDB.db.pvpActions
-            .where('date').below(pvpActionExpiryTime)
-            .delete();
-
-        // Remove expired city shields
-        await IndexDB.db.pvpActions
-            .where('type').equals(5)
-            .and((item)=>{ return item.expireTime < moment().unix() })
-            .delete();
-
-        await IndexDB.db.players
-            .where('date').below(pvpActionExpiryTime)
-            .delete();
-
-        let LeftPlayers = await IndexDB.db.players
-            .where('id').above(0)
-            .keys();
-
-        await IndexDB.db.greatbuildings
-            .where('playerId').noneOf(LeftPlayers)
-            .delete();
+        await IndexDB.getDB();
+        await IndexDB.db.pvpActions.clear();
+        await IndexDB.db.players.clear();
+        await IndexDB.db.greatbuildings.clear();
 
         for (const table of ['statsRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
             await IndexDB.db[table].where('date').below(daylyExpiryTime).delete();
@@ -464,13 +377,13 @@ let IndexDB = {
                     clanName: player.ClanName,
                     avatar: player.Avatar,
                     era: 'unknown', // Era can be discovered when user is visited, not now
-                    date: new Date(),
+                    date: MainParser.getCurrentDate(),
                 });
             }
         }
         else if (updateDate) {
             IndexDB.db.players.update(playerId, {
-                date: new Date()
+                date: MainParser.getCurrentDate()
             });
         }
     },
