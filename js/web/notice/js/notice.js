@@ -45,6 +45,8 @@ let Notice = {
 				resize: true,
 				minimize : true
 			});
+
+			Notice.Listener();
 		}
 
 		Notice.prepareContent();
@@ -136,22 +138,17 @@ let Notice = {
 				}, 150);
 			}
 		});
+	},
 
-		$('body').on('click', '.grp-btn', function(){
+
+	Listener: ()=> {
+
+		$('#noticesBody').on('click', '.grp-btn', function(){
 			Notice.ShowModal('grp', $(this).data('id'));
 		});
 
-		$('body').on('click', '.itm-btn', function(){
+		$('#noticesBody').on('click', '.itm-btn', function(){
 			Notice.ShowModal('itm', $(this).data('id'));
-		});
-
-
-		$('body').on('click', '.save-grp-name', function(){
-			Notice.SaveModal($(this).data('type'), $(this).data('id'));
-		});
-
-		$('body').on('click', '.save-itm-name', function(){
-			Notice.SaveItemModal($(this).data('id'));
 		});
 
 
@@ -160,7 +157,7 @@ let Notice = {
 		});
 
 
-		$('body').on('blur', '[contenteditable="true"]', function(){
+		$('#noticesBody').on('blur', '[contenteditable="true"]', function(){
 			let id = $(this).closest('.sub-tab');
 
 			Notice.SaveContent(id);
@@ -170,10 +167,15 @@ let Notice = {
 		// check if user changes the box size
 		let id;
 
-		$('body').on('resize', '#notices', function(){
+		$('#noticesBody').on('resize', '#notices', function(){
 			clearTimeout(id);
 			id = setTimeout(Notice.SetHeights(), 150);
 		});
+	},
+
+
+	CloseModal: ()=>{
+
 	},
 
 
@@ -213,7 +215,8 @@ let Notice = {
 				class: `btn-default save-${type}-name`,
 				'data-id': id,
 				'data-type': type,
-				style: 'margin-left: 10px'
+				style: 'margin-left: 10px',
+
 			})
 			.text(i18n('Boxes.Notice.Save'));
 
@@ -227,7 +230,18 @@ let Notice = {
 			});
 
 			sort.wrap('<div />').insertAfter(`.inp-${type}-name`);
+
+			btn.attr({
+				onclick: `Notice.SaveItemModal(${(id === 'new' ? "'new'" : id)})`
+			});
+
+		} else {
+			btn.attr({
+				onclick: `Notice.SaveModal('${type}', ${(id === 'new' ? "'new'" : id)})`
+			});
 		}
+
+		$(`.inp-${type}-name`).focus();
 	},
 
 
