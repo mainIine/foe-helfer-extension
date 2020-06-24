@@ -503,6 +503,7 @@ let Productions = {
 					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
 					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
 	            }
+
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
 			for(let i in buildings)
 			{
@@ -522,7 +523,7 @@ let Productions = {
 						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
 						let size = sizes[buildings[i]['eid']] | 0,
-							SizeToolTip = sizetooltips[buildings[i]['eid']];
+							SizeToolTip = sizetooltips[buildings[i]['eid']],
 							efficiency = (MotivatedProductCount / size);
 
 						let EfficiencyString;
@@ -621,7 +622,6 @@ let Productions = {
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
 							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>'+
-							'<td class="addon-info is-number" data-number="' + groups[i]['era'] + '">' + i18n('Eras.' + groups[i]['era']) + '</td>'+
 							'</tr>';
 
 						rowB.push(tds);
@@ -767,7 +767,6 @@ let Productions = {
 				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.area') + '</th>');
 				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.era') + '</th>');
 				table.push('</tr>');
 
 				table.push( rowB.join('') );
@@ -880,7 +879,7 @@ let Productions = {
 	 * @param id
 	 */
 	SetTabs: (id)=> {
-		Productions.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor">&nbsp;</a></li>');
+		Productions.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
 	},
 
 
