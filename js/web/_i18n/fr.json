@@ -139,19 +139,19 @@
 		"Boxes.Gildfights.Title": "Activité de membre",
 		"Boxes.Gildfights.Total": "Total",
 		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
-		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Coûts",
 		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
-		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "PF journalier",
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
 		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
-		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Masquer les GMs non construis",
 		"Boxes.GreatBuildings.Level": "Niveau",
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2",
+		"Boxes.GreatBuildings.SuggestionDescription": "Les bâtiments en haut de la liste sont les meilleurs",
+		"Boxes.GreatBuildings.SuggestionTitle": "Comparaison GM PF RoI",
 		"Boxes.GreatBuildings.Title": "Investissement GM",
-		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
-		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCosts": "Vous n'avez pas encore construit ce GM. Ce sont les coûts en PF pour l'achat des ressources nécessaires",
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Répertorie les coûts en PF pour l'achat des ressources nécessaires (s'applique uniquement aux GMs que vous n'avez pas encore construits)",
 		"Boxes.HiddenRewards.Appears": "Apparaîtra",
 		"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 		"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
@@ -203,16 +203,16 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "Side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Votre titre",
+		"Boxes.Notice.Edit": "Editer",
+		"Boxes.Notice.GroupName": "Nom du groupe",
+		"Boxes.Notice.NewGroup": "Groupe",
+		"Boxes.Notice.NewGroupDesc": "Créez d'abord un groupe...",
+		"Boxes.Notice.NewSide": "Côté",
+		"Boxes.Notice.Save": "Sauver",
+		"Boxes.Notice.SideName": "Nom du côté",
+		"Boxes.Notice.Sorting": "Tri",
+		"Boxes.Notice.Title": "Notes",
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
@@ -429,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
-		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Desc": "Prenez des notes sur tout ce que vous ne voulez pas oublier.",
+		"Menu.Notice.Title": "Notes",
 		"Menu.OutP.Desc": "Vue d'ensemble des ressources nécessaires.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Désactivé : Allez d'abord dans la Colonie !",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé : Démarrez une Colonie et rechargez le jeu [F5]",
