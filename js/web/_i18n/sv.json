@@ -255,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Storlek inkluderar genomsnitts gatutrymme behov för __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Angränsande byggnad",
 		"Boxes.Productions.GoodEraTotal": "Total",
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Glädje",
 		"Boxes.Productions.Headings.all": "Alla",
 		"Boxes.Productions.Headings.amount": "Antal",
