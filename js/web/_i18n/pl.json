@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "Budowa Pereł Architektury",
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Pojawia się",
 		"Boxes.HiddenRewards.Disappears": "Znika",
 		"Boxes.HiddenRewards.NoEvents": "Brak zdarzeń losowych",
 		"Boxes.HiddenRewards.Title": "Zdarzenia losowe",
@@ -430,7 +429,7 @@
 		"Menu.Negotiation.Title": "Asystent negocjacji",
 		"Menu.Negotiation.Warning": "Niedostępne: Rozpocznij negocjację!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",

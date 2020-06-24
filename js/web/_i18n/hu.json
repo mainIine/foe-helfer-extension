@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Megjelenik",
 		"Boxes.HiddenRewards.Disappears": "eltűnik",
 		"Boxes.HiddenRewards.NoEvents": "Nincs esemény",
 		"Boxes.HiddenRewards.Title": "Rejtett jutalmak",
@@ -430,7 +429,7 @@
 		"Menu.Negotiation.Title": "Tárgyalás segítő",
 		"Menu.Negotiation.Warning": "Tiltott: Először kezdjen meg egy tárgyalást!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "A szükséges források áttekintése",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Tiltott: először nézd meg a kulturális településnél: <br></em> A szükséges források áttekintését",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Tiltott: Indítson el egy kulturális települést és töltse be újra a játékot (F5)",

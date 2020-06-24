@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Verschijnt",
 		"Boxes.HiddenRewards.Disappears": "Verdwijnt",
 		"Boxes.HiddenRewards.NoEvents": "Geen incidenten aanwezig",
 		"Boxes.HiddenRewards.Title": "Incidenten",
@@ -430,7 +429,7 @@
 		"Menu.Negotiation.Title": "Onderhandelingshulp",
 		"Menu.Negotiation.Warning": "Gedeactiveerd: Start eerst een onderhandeling!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Overzicht van de benodigde goederen",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Bezoek eerst je nederzetting!<br></em>Overzicht van de benodigde grondstoffen",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Gedeactiveerd: Begin een nederzetting en herlaad het spel (F5)",
