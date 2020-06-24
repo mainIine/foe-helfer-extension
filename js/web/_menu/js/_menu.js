@@ -31,6 +31,7 @@ let _menu = {
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
+		'notice',
 		'questlist',
 		'technologies',
 		'campagneMap',
@@ -46,7 +47,6 @@ let _menu = {
 		'kits',
 		'alerts',
 		'greatbuildings',
-		'notice'
 	],
 
 
