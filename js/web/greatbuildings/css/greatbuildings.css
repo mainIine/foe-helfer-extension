@@ -7,7 +7,7 @@
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * zuletzt bearbeitet:        26.04.20, 21:24 Uhr
  *
- * Copyright © 2020
+ * Copyright 2020
  *
  * **************************************************************************************
  */
@@ -17,7 +17,7 @@
 #greatbuildings {
     top: 30%;
     right: 15%;
-    width: 550px;
+    width: 470px;
 }
 
 #greatbuildings #greatbuildingsBody {
@@ -28,4 +28,21 @@
 
 #greatbuildings #greatbuildingsBody strong.success {
     color: #29b206;
+}
+
+.text-bright {
+	color: var(--text-bright);
+}
+
+#greatbuildings .title {
+	font-size: 115%;
+}
+
+#greatbuildings .header {
+	margin-bottom: 2px;
+	padding: 1em 0;
+}
+
+#greatbuildings #greatbuildingsBody .foe-table tr:first-child td:nth-child(5) strong {
+	color: var(--text-success);
 }

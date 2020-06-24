@@ -6,40 +6,40 @@
 		"API.LGGildMember": "__player__'s Mäktig byggnad har skickats in",
 		"API.LGInvest": "Dina MB investeringar har överförts",
 		"API.UpdateSuccess": "Uppdatering utförd",
-		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Exchange": "daily exchange", //Todo: Translate
-		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Auction": "Auktion",
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Auktion svalning",
+		"Boxes.Alerts.Form.Antiques.Dealer": "Antitikhandlare",
+		"Boxes.Alerts.Form.Antiques.Exchange": "dagligt utbyte",
+		"Boxes.Alerts.Form.Battleground": "Imperieslagfält provinser",
 		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
-		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
+		"Boxes.Alerts.Form.Create": "Skapa",
+		"Boxes.Alerts.Form.CreateAlert": "Skapa alarm",
 		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
-		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
-		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
-		"Boxes.Alerts.Form.Discard": "Discard", //Todo: Translate
-		"Boxes.Alerts.Form.Edit": "Edit", //Todo: Translate
-		"Boxes.Alerts.Form.EditAlert": "Edit Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
-		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
-		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
-		"Boxes.Alerts.Form.Neighborhood": "Neighborhood", //Todo: Translate
+		"Boxes.Alerts.Form.CreateNewAlert": "Skapa nytt alarm",
+		"Boxes.Alerts.Form.Datetime": "Datum &amp; Tid",
+		"Boxes.Alerts.Form.Delete": "Ta bort",
+		"Boxes.Alerts.Form.Discard": "Kasta",
+		"Boxes.Alerts.Form.Edit": "Ändra",
+		"Boxes.Alerts.Form.EditAlert": "Ändra alarm",
+		"Boxes.Alerts.Form.Expiration": "Utgå",
+		"Boxes.Alerts.Form.Expired": "Utgått",
+		"Boxes.Alerts.Form.Expires": "Utgår",
+		"Boxes.Alerts.Form.Neighborhood": "Granskap",
 		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
 		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
+		"Boxes.Alerts.Form.Persistence.Off": "Av",
+		"Boxes.Alerts.Form.Persistence.On": "På",
 		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
-		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
+		"Boxes.Alerts.Form.Preset.Now": "Nu",
 		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
-		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
-		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
+		"Boxes.Alerts.Form.Preview": "Förhandsvisning",
+		"Boxes.Alerts.Form.Repeat": "Repeterbar",
+		"Boxes.Alerts.Form.Repeat.Every": "eller varje",
+		"Boxes.Alerts.Form.Repeat.Never": "aldrig",
+		"Boxes.Alerts.Form.Save": "Spara",
 		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
 		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
-		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
+		"Boxes.Alerts.Form.Title": "Titel",
 		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
 		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
 		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
@@ -49,8 +49,8 @@
 		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
 		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
 		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
+		"Boxes.Alerts.Preferences.Early.Info": "Automatiskt genererade alarm tider (Antikhandlare, Imperieslagfält osv) kommer använda denna offset för att skicka notifieringar före en händelse faktist händer. Till exempel, om du ställer detta till 30 (sekunder), Aktion alarm kommer visa 30s flre auktionen går ut!",
+		"Boxes.Alerts.Preferences.Early.Title": "Notifiera tidigare offset",
 		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
 		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
 		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
@@ -58,19 +58,19 @@
 		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
 		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
 		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
-		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
-		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
-		"Boxes.Alerts.Time.15m": "15m", //Todo: Translate
-		"Boxes.Alerts.Time.1d": "1d", //Todo: Translate
-		"Boxes.Alerts.Time.1h": "1h", //Todo: Translate
-		"Boxes.Alerts.Time.1m": "1m", //Todo: Translate
-		"Boxes.Alerts.Time.4h": "4h", //Todo: Translate
-		"Boxes.Alerts.Time.5m": "5m", //Todo: Translate
-		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
+		"Boxes.Alerts.Preferences.Suggestions.Title": "Alarm förslag",
+		"Boxes.Alerts.Tabs.Alerts": "Alarm",
+		"Boxes.Alerts.Tabs.Preferences": "Inställningar",
+		"Boxes.Alerts.Time.15m": "15m",
+		"Boxes.Alerts.Time.1d": "1d",
+		"Boxes.Alerts.Time.1h": "1h",
+		"Boxes.Alerts.Time.1m": "1m",
+		"Boxes.Alerts.Time.4h": "4h",
+		"Boxes.Alerts.Time.5m": "5m",
+		"Boxes.Alerts.Time.8h": "8h",
 		"Boxes.Api.Title": "Tillägg API Inställningar",
-		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Warning!", //Todo: Translate
+		"Boxes.BattleAssist.Text": "Din arme har bara skurkar. Läk dina enheter med diamanter eller gör reträtt!",
+		"Boxes.BattleAssist.Title": "Stop!",
 		"Boxes.Calculator.ActiveRecurringQuest": "Aktivt återkommande uppdrag:",
 		"Boxes.Calculator.ArkBonus": "Arkbonus",
 		"Boxes.Calculator.AvailableFP": "Tillgängliga FP",
@@ -83,11 +83,9 @@
 		"Boxes.Calculator.LevelWarning": "VARNING! Höjer nivå på MB!",
 		"Boxes.Calculator.LGNotConnected": "Byggnaden är inte inkopplad med en väg",
 		"Boxes.Calculator.LGNotOpen": "Nästa niå är inte upplåst ännu",
-		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
+		"Boxes.Calculator.MaxLevel": "Max nivå",
 		"Boxes.Calculator.Meds": "Medalj",
 		"Boxes.Calculator.Profit": "Vinst",
-		"Boxes.Calculator.Rate": "Kvot",
-		"Boxes.Calculator.Sniping": "Stjäla",
 		"Boxes.Calculator.Step": "Nivå ",
 		"Boxes.Calculator.Title": "Kostnadskalkylator",
 		"Boxes.Calculator.TTForderCosts": "Kostnad = __nettoreward__<small>(netto vinst)</small> * __forderfactor__%<small>(Vänlig investering)</small> = __costs__",
@@ -100,8 +98,6 @@
 		"Boxes.Calculator.TTPaidTooMuch": "Du betalade __paid__FP istället för __topay__FP. Det är __toomuch__FP för lite.",
 		"Boxes.Calculator.TTProfit": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Kostnad: __costs__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __costs__<small>(kostnad)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __paid__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __paid__<small>(betalning)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Kvot = __costs__<small>(kostnad)</small> / __nettoreward__<small>(netto vinst)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "VARNING: FP bank är för liten<br>Du har bara __fpstock__ of __costs__FP<br>Det __tooless__FP för lite",
 		"Boxes.Calculator.Up2LevelUp": "Till nästa nivå",
 		"Boxes.Campagne.AlreadyDone": " Redan erövrad!",
 		"Boxes.Campagne.DescInStock": "Tillgängliga",
@@ -115,7 +111,7 @@
 		"Boxes.CityMap.Desc2": "Skicka",
 		"Boxes.CityMap.FreeArea": "Ledig yta: ",
 		"Boxes.CityMap.NormalPerspecitve": "Standard",
-		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
+		"Boxes.CityMap.ShowSubmitBox": "Visa skicka box",
 		"Boxes.CityMap.SubmitSuccess": "Data skickades utan problem... Besök nu ",
 		"Boxes.CityMap.TitleSend": "Skicka data",
 		"Boxes.CityMap.WholeArea": "Total yta: ",
@@ -141,21 +137,27 @@
 		"Boxes.Gildfights.Negotiations": "Förhandlingar",
 		"Boxes.Gildfights.Player": "Spelare",
 		"Boxes.Gildfights.Title": "Spelaröversikt",
-		"Boxes.Gildfights.Total": "Total", //Todo: Translate
-		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
-		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
-		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion1": "Suggestion1", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
-		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
+		"Boxes.Gildfights.Total": "Total",
+		"Boxes.GreatBuildings.ArcBonus": "Vänlig investering",
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
+		"Boxes.GreatBuildings.CostPerDailyFP": "Kostnad / daglig FP",
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs for goods", //Todo: Translate
+		"Boxes.GreatBuildings.GreatBulding": "Mäktig byggnad",
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
+		"Boxes.GreatBuildings.Level": "Nivå",
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
+		"Boxes.GreatBuildings.Title": "MB investering",
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Visas",
 		"Boxes.HiddenRewards.Disappears": "Försvinner",
 		"Boxes.HiddenRewards.NoEvents": "Inga händelser",
 		"Boxes.HiddenRewards.Title": "Gömda händelser",
 		"Boxes.Infobox.Filter": "Filter",
-		"Boxes.Infobox.FilterAuction": "Auktion",
+		"Boxes.Infobox.FilterAuction": "Auktiongit st",
 		"Boxes.Infobox.FilterGex": "IE",
 		"Boxes.Infobox.FilterGildFights": "Imperiestrider",
 		"Boxes.Infobox.FilterLevel": "Ny nivå",
@@ -178,22 +180,12 @@
 		"Boxes.Investment.PlayerFoundCounter": "__count__ nya spelar händelser hittades",
 		"Boxes.Investment.Title": "Investera",
 		"Boxes.Investment.TotalFP": "Bank + cirkulation + vinst: ",
-		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
-		"Boxes.Kits.KitName": "Item Type", //Todo: Translate
-		"Boxes.Kits.Name": "Building", //Todo: Translate
+		"Boxes.Kits.InStock": "I lager",
+		"Boxes.Kits.KitName": "Kit-Namn",
+		"Boxes.Kits.Name": "Namn",
 		"Boxes.Kits.TabBuildingKits": "Byggnadskit",
 		"Boxes.Kits.TabSelectionKits": "Väljarkit",
 		"Boxes.Kits.Title": "Byggnads- / väljar-kit",
-		"Boxes.LGOverviewBox.Building": "Byggnad",
-		"Boxes.LGOverviewBox.Level": "Nivå",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> har inget att hämta",
-		"Boxes.LGOverviewBox.PaidTotal": "Betalt / Total",
-		"Boxes.LGOverviewBox.Profit": "Vinst",
-		"Boxes.LGOverviewBox.Rate": "Kvot",
-		"Boxes.LGOverviewBox.Title": "Möjliga insättningar",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "hittad igen",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "ny",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "ingen har lagt in",
 		"Boxes.Negotiation.Average": "Ø mängd",
 		"Boxes.Negotiation.Canceled": "Förhandling har avbrytits",
 		"Boxes.Negotiation.Chance": "Chans",
@@ -211,24 +203,29 @@
 		"Boxes.Negotiation.Title": "Förhandlingshjälp",
 		"Boxes.Negotiation.TryEnd": "Inga fler försök",
 		"Boxes.Negotiation.WrongGoods": "Fel vara vald, välj manuell för avslut",
-		"Boxes.Neighbors.AttackingArmy": "Estimerad bonus attackerande armé: __attatt__%(ATT) / __attdef__%(DEF)",
-		"Boxes.Neighbors.DefendingArmy": "Estimated bonus försvarande armé: __defatt__%(ATT) / __defdef__%(DEF)",
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Pågående produktion",
-		"Boxes.Neighbors.ReadyProductions": "Slutförd produktion",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Tillgängliga",
 		"Boxes.Outpost.DescRequired": "Behov",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Överskott</span> / <span style='color:#ff4040'>Saknas</span>",
 		"Boxes.Outpost.ExpansionsSum": "Expansion",
 		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Chans: __chanceX4__%",
 		"Boxes.Outpost.nextTile": "nästa expansion",
-		"Boxes.Outpost.ShowSums": "Show Sums:", //Todo: Translate
+		"Boxes.Outpost.ShowSums": "Visa summa:",
 		"Boxes.Outpost.tileNotPlanned": "av",
 		"Boxes.Outpost.Title": "Varor från bosättning",
 		"Boxes.Outpost.TitleBuildings": "Byggnad",
 		"Boxes.Outpost.TitleFree": "Tillgänglig",
 		"Boxes.Outpost.TitleShort": "Varuöversikt - ",
-		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
+		"Boxes.OwnpartCalculator.All": "Alla",
 		"Boxes.OwnpartCalculator.Arc": "Ark",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Ritning",
@@ -256,46 +253,19 @@
 		"Boxes.OwnpartCalculator.Step": "Nivå",
 		"Boxes.OwnpartCalculator.Title": "MB kalkylator",
 		"Boxes.OwnpartCalculator.YourName": "Ditt namn",
-		"Boxes.Plundered.actionBattleLost": "Förlorad strid",
-		"Boxes.Plundered.actionBattleWon": "Vunna strider",
-		"Boxes.Plundered.actionPlundered": "Plundrade",
-		"Boxes.Plundered.actionShielded": "Sköldad",
-		"Boxes.Plundered.actionSurrendered": "Retirerade",
-		"Boxes.Plunderer.AllPlayers": "Alla spelare",
-		"Boxes.Plunderer.Attack": "Attack",
-		"Boxes.Plunderer.autoBattle": "Auto strid",
-		"Boxes.Plunderer.collectedToday": "Insamlat idag",
-		"Boxes.Plunderer.Defense": "Försvar",
-		"Boxes.Plunderer.filteredByUser": "Filtera på spelare",
-		"Boxes.Plunderer.FP": "FP",
-		"Boxes.Plunderer.goto1stPage": "Första sidan",
-		"Boxes.Plunderer.HasNoClan": "<em>är inte med i ett imperium</em>",
-		"Boxes.Plunderer.nextPage": "Nästa sida",
-		"Boxes.Plunderer.noData": "Ingen data",
-		"Boxes.Plunderer.Page": "Sida",
-		"Boxes.Plunderer.PlayersEra": "Spelares era",
-		"Boxes.Plunderer.rounds": "Rundor",
-		"Boxes.Plunderer.shieldProtectetUntil": "Skyddad tills:",
-		"Boxes.Plunderer.shieldUntil": "Slutar om",
-		"Boxes.Plunderer.showAllPlayers": "Visa alla spelare",
-		"Boxes.Plunderer.thisWeek": "Denna vecka",
-		"Boxes.Plunderer.Title": "PvP aktivitet",
-		"Boxes.Plunderer.total": "Totalt",
-		"Boxes.Plunderer.visited": "Besökt",
-		"Boxes.Plunderer.visitTitle": "När du sist du besökte denna spelare",
-		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
+		"Boxes.Production.SizeTT": "Storlek inkluderar genomsnitts gatutrymme behov för __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Angränsande byggnad",
-		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GoodEraTotal": "Total",
 		"Boxes.Productions.Happiness": "Glädje",
 		"Boxes.Productions.Headings.all": "Alla",
 		"Boxes.Productions.Headings.amount": "Antal",
-		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
+		"Boxes.Productions.Headings.area": "Area",
 		"Boxes.Productions.Headings.boost": "Boost",
 		"Boxes.Productions.Headings.culture": "Kulturbyggnad",
 		"Boxes.Productions.Headings.decoration": "Dekoration",
 		"Boxes.Productions.Headings.earning": "Inkomst",
-		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Effiktivitet",
+		"Boxes.Productions.Headings.era": "Era",
 		"Boxes.Productions.Headings.goods": "Varubyggnader",
 		"Boxes.Productions.Headings.greatbuilding": "Mäktiga byggnader",
 		"Boxes.Productions.Headings.main_building": "Stadshus",
@@ -304,14 +274,14 @@
 		"Boxes.Productions.Headings.production": "Produktion byggnader",
 		"Boxes.Productions.Headings.random_production": "Slumpmässig produktion",
 		"Boxes.Productions.Headings.residential": "Bostadsbyggnad",
-		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
+		"Boxes.Productions.Headings.size": "Storlek",
 		"Boxes.Productions.Headings.street": "Väg",
-		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
-		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
+		"Boxes.Productions.ModeCurrent": "Nuvarande",
+		"Boxes.Productions.ModeDaily": "Daglig prod.",
 		"Boxes.Productions.ModeGroups": "Gruppera",
 		"Boxes.Productions.ModeSingle": "Enkel",
-		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
-		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
+		"Boxes.Productions.NoAsteroidDataWarning": "Varor från asteriodbältet är inte inkluderade. Besök din asteriodbältes koloni och öppna igen",
+		"Boxes.Productions.NoMarsDataWarning": "Varor från mars är inte inkluderade. Besök din mars koloni och öppna igen",
 		"Boxes.Productions.SearchInput": "Sök byggnad...",
 		"Boxes.Productions.Title": "Produktionsöversikt",
 		"Boxes.Productions.Total": "Total: ",
@@ -356,14 +326,14 @@
 		"Boxes.Stats.PeriodTitle.sinceTuesday": "Samlat sedan tisdag (IE startar på tisdag)",
 		"Boxes.Stats.PeriodTitle.thisMonth": "Samlat denna månad",
 		"Boxes.Stats.PeriodTitle.today": "Samlat idag",
-		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.__event": "Event",
 		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "ISF",
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
+		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatgåvor",
 		"Boxes.Stats.Rewards.Source.guildExpedition": "IE",
 		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Krigsbyte",
-		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.__event": "Belöning från säsong eller special event",
 		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "Belöning från Imperieslagfält",
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
+		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatgåvor insamlade av rymdtransportör",
 		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "Belöningar från Imperiexpedition med reliktempel",
 		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Belöningar från Himeji-slott",
 		"Boxes.Stats.SourceTitle.statsGBGPlayers": "Poäng för spelare i imperieslagfält",
@@ -448,8 +418,8 @@
 		"Menu.Event.Title": "Event uppdragslista",
 		"Menu.Forum.Desc": "Har du en fråga? något som irritera dig? eller bara vill prata ...",
 		"Menu.Forum.Title": "Forum",
-		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
-		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
+		"Menu.greatbuildings.Desc": "Vilken FP producerande mäktig byggnad ska jag uppgradera härnäst?",
+		"Menu.greatbuildings.Title": "MB Investering",
 		"Menu.HiddenRewards.Desc": "Översikt av händelser",
 		"Menu.HiddenRewards.Title": "Gömda händelser",
 		"Menu.Info.Desc": "Visar allt som händer i \"bakgrunden\"<br>",
@@ -459,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Gör beräknade förslag till forhandling",
 		"Menu.Negotiation.Title": "Förhandlingshjälp",
 		"Menu.Negotiation.Warning": "Inaktiverat: Starta en förhandling först!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Översikt av de resurser du behöver",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Inaktiverat: kolla i bossättningen först!<br></em>Översikt av de resurser du behöver",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Inaktiverat: Starta en bosättning och ladda om spelet (F5)",
@@ -468,8 +438,6 @@
 		"Menu.OwnpartCalculator.Desc": "Skapa en betalningsplan, beräkna externa placeringar och kopiera värden",
 		"Menu.OwnpartCalculator.Title": "MB Kalkylator",
 		"Menu.OwnpartCalculator.Warning": "Inaktiverat: Öppna en av dina MB först!",
-		"Menu.Plunderer.Desc": "PvP och granskapets farmninghistoria",
-		"Menu.Plunderer.Title": "PvP aktivitet",
 		"Menu.Productions.Desc": "Visar en översikt av all produktion.",
 		"Menu.Productions.Title": "Produktionsöversikt",
 		"Menu.Settings.Desc": "Här finns några inställningar",
@@ -492,8 +460,6 @@
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",
 		"Settings.MenuLength.Title": "Meny längd",
-		"Settings.PreScanLGList.Desc": "Kontrollera listan av MB och visar om det finns MB placeringar att ta. <br> <u> Notering: </u> Eftersom sista platsen bara skickas om man öppnar MB kan resltatet skifta. Kontrollen sparas.",
-		"Settings.PreScanLGList.Title": "Preliminär kontroll av MB översikt",
 		"Settings.ResetBoxPositions.Button": "Ta bort!",
 		"Settings.ResetBoxPositions.Desc": "Ska alla dialog kordinater bli nollställda?",
 		"Settings.ResetBoxPositions.Title": "Dialog kordinater",
@@ -505,14 +471,10 @@
 		"Settings.SendInvestigations.Title": "FP investering",
 		"Settings.SendTavernInfo.Desc": "Ska motiveringsaktivitet skickas när du kollar på händelsehistorik",
 		"Settings.SendTavernInfo.Title": "Motiveringsaktivitet",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
-		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
-		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Under besök visa vad som håller på att produceras.",
-		"Settings.ShowNeighborsGoods.Title": "Grannskapsfarmning",
-		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
+		"Settings.ShowInvestments.Desc": "Visar summan av dina FP investeringar när du går in i 'Stadshuset'> 'Nyheter'> 'Mäktiga byggnader' flik.",
+		"Settings.ShowInvestments.Title": "Visa FP Investerings summering",
+		"Settings.ShowOwnPartOnAllGBs.Desc": "Visa MB kalkylator för mäktiga byggnader för andara spelare",
+		"Settings.ShowOwnPartOnAllGBs.Title": "Visa MB kalkylator för alla MBs",
 		"Settings.ShowTavernBadge.Desc": "När extra runda i värdshuset aktiverats kommer en ikon visas.",
 		"Settings.ShowTavernBadge.Title": "Visa värdshusprestation",
 		"Settings.Version.Desc": "Chrome tillägg version",

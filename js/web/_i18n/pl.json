@@ -86,22 +86,18 @@
 		"Boxes.Calculator.MaxLevel": "Odblokowany poziom",
 		"Boxes.Calculator.Meds": "Medale",
 		"Boxes.Calculator.Profit": "Zysk",
-		"Boxes.Calculator.Rate": "Stosunek",
-		"Boxes.Calculator.Sniping": "Zarobek",
 		"Boxes.Calculator.Step": "Poziom ",
 		"Boxes.Calculator.Title": "Kalkulator kosztów",
 		"Boxes.Calculator.TTForderCosts": "Koszty = __nettoreward__<small>(bazowy zwrot)</small> * __forderfactor__%<small>(Pomoc)</small> = __costs__",
 		"Boxes.Calculator.TTForderFPStockLow": "UWAGA: posiadasz za mało PR<br>masz __fpstock__ z __costs__ PR<br>za mało o  __tooless__ PR",
 		"Boxes.Calculator.TTForderNegativeProfit": "Miejsce nie jest zabezpieczone. należy wpłacić __fpcount__ dodatkowych PR w celu zabezpieczenia<br>Całkowita wpłata: __totalfp__ PR",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PR nie zmieści się<br>Maksymalna możliwa wpłata: __totalfp__ PR",
-		"Boxes.Calculator.TTLoss": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Koszt: __costs__<br>Strata = __costs__<small>(koszt)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Strata = __paid__<small>(wpłata)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __tooless__ PR za mało.",
 		"Boxes.Calculator.TTPaidTooMuch": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __toomuch__ PR za dużo.",
-		"Boxes.Calculator.TTProfit": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Koszt: __costs__<br>Zysk = __bruttoreward__<small>(zwrot)</small> - __costs__<small>(koszt)</small> = __profit__",
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Zysk = __bruttoreward__<small>(zwrot)</small> - __paid__<small>(wpłata)</small> = __profit__",
-		"Boxes.Calculator.TTRate": "Stosunek = __costs__<small>(koszt)</small> / __nettoreward__<small>(bazowy zwrot)</small> = __rate__%",
-		"Boxes.Calculator.TTSnipeFPStockLow": "UWAGA: za mały zapas PR!<br>Masz __fpstock__ z __costs__ PR<br>To __tooless__ PR za mało",
 		"Boxes.Calculator.Up2LevelUp": "Do zamknięcia",
 		"Boxes.Campagne.AlreadyDone": " już zdobyte!",
 		"Boxes.Campagne.DescInStock": "Dostępne",
@@ -143,13 +139,19 @@
 		"Boxes.Gildfights.Title": "Przegląd aktywności graczy",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Bonus wpłacających",
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Koszt / PR dziennie",
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "Koszt towarów (PR)",
 		"Boxes.GreatBuildings.GreatBulding": "Perła Architektury",
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Poziom",
-		"Boxes.GreatBuildings.Suggestion1": "Sugestia 1",
-		"Boxes.GreatBuildings.Suggestion2": "Sugestia 2",
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "Budowa Pereł Architektury",
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Appears": "Pojawia się",
 		"Boxes.HiddenRewards.Disappears": "Znika",
 		"Boxes.HiddenRewards.NoEvents": "Brak zdarzeń losowych",
@@ -184,16 +186,6 @@
 		"Boxes.Kits.TabBuildingKits": "Zestawy budynków",
 		"Boxes.Kits.TabSelectionKits": "Zestawy wyboru",
 		"Boxes.Kits.Title": "Zestawy budynków/wyboru",
-		"Boxes.LGOverviewBox.Building": "Perła architektury",
-		"Boxes.LGOverviewBox.Level": "Poziom",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong> nie ma nic do pobrania",
-		"Boxes.LGOverviewBox.PaidTotal": "Wpłacone / Całość",
-		"Boxes.LGOverviewBox.Profit": "Zysk",
-		"Boxes.LGOverviewBox.Rate": "Stosunek",
-		"Boxes.LGOverviewBox.Title": "Możliwe wpłaty",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "Rozpoznana",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "Nowa",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Brak możłiwości wpłaty",
 		"Boxes.Negotiation.Average": "Ø ilość",
 		"Boxes.Negotiation.Canceled": "Negocjacja została przerwana",
 		"Boxes.Negotiation.Chance": "Szansa",
@@ -211,11 +203,16 @@
 		"Boxes.Negotiation.Title": "Asystent negocjacji",
 		"Boxes.Negotiation.TryEnd": "Brak kolejnych podejść",
 		"Boxes.Negotiation.WrongGoods": "Wybrano niewłaściwe towary, proszę skończyć ręcznie",
-		"Boxes.Neighbors.AttackingArmy": "Szacunkowe bonusy w ataku: __attatt__% (atak) / __attdef__% (obrona)",
-		"Boxes.Neighbors.DefendingArmy": "Szacunkowe bonusy w obronie: __defatt__% (atak) / __defdef__% (obrona)",
-		"Boxes.Neighbors.GuildPower": "Potencjał gildii",
-		"Boxes.Neighbors.OngoingProductions": "Trwające produkcje",
-		"Boxes.Neighbors.ReadyProductions": "Skończone produkcje",
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Dostepne",
 		"Boxes.Outpost.DescRequired": "Wymagane",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Nadmiar</span> / <span style='color:#ff4040'>Brak</span>",
@@ -256,33 +253,6 @@
 		"Boxes.OwnpartCalculator.Step": "Poziom",
 		"Boxes.OwnpartCalculator.Title": "Kalkulator budowy pereł",
 		"Boxes.OwnpartCalculator.YourName": "Your name",
-		"Boxes.Plundered.actionBattleLost": "Przegrano bitwę",
-		"Boxes.Plundered.actionBattleWon": "Wygrano bitwę",
-		"Boxes.Plundered.actionPlundered": "Ograbiony",
-		"Boxes.Plundered.actionShielded": "Chroniony",
-		"Boxes.Plundered.actionSurrendered": "Poddano bitwę",
-		"Boxes.Plunderer.AllPlayers": "Wszyscy gracze",
-		"Boxes.Plunderer.Attack": "Atak",
-		"Boxes.Plunderer.autoBattle": "Autobitwa",
-		"Boxes.Plunderer.collectedToday": "Zebrano dzisiaj",
-		"Boxes.Plunderer.Defense": "Obrona",
-		"Boxes.Plunderer.filteredByUser": "Filtrowanie gracza",
-		"Boxes.Plunderer.FP": "PR",
-		"Boxes.Plunderer.goto1stPage": "1. strona",
-		"Boxes.Plunderer.HasNoClan": "<em>brak gildii</em>",
-		"Boxes.Plunderer.nextPage": "Następna strona",
-		"Boxes.Plunderer.noData": "Brak danych",
-		"Boxes.Plunderer.Page": "Strona",
-		"Boxes.Plunderer.PlayersEra": "Epoka gracza",
-		"Boxes.Plunderer.rounds": "Rounds",
-		"Boxes.Plunderer.shieldProtectetUntil": "Chroniony do:",
-		"Boxes.Plunderer.shieldUntil": "Koniec za",
-		"Boxes.Plunderer.showAllPlayers": "Pokaż wszystkich graczy",
-		"Boxes.Plunderer.thisWeek": "w tym tygodniu",
-		"Boxes.Plunderer.Title": "Aktywność PvP",
-		"Boxes.Plunderer.total": "Łącznie",
-		"Boxes.Plunderer.visited": "Odwiedzono",
-		"Boxes.Plunderer.visitTitle": "Kiedy ostatni raz odwiedziłeś gracza",
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Pobliskie budynki",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
@@ -459,8 +429,8 @@
 		"Menu.Negotiation.Desc": "Pomaga dobrać surowce w negocjacjach",
 		"Menu.Negotiation.Title": "Asystent negocjacji",
 		"Menu.Negotiation.Warning": "Niedostępne: Rozpocznij negocjację!",
-		"Menu.Notice.Desc": "???", //Todo: Translate
-		"Menu.Notice.Title": "???", //Todo: Translate
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notes", //Todo: Translate
 		"Menu.OutP.Desc": "Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",
@@ -468,8 +438,6 @@
 		"Menu.OwnpartCalculator.Desc": "Tworzy plan budowy własnej perły, pomaga obliczyć miejsca z wymian i pozwala generować wiadomości ogłaszające",
 		"Menu.OwnpartCalculator.Title": "Kalkulator budowy",
 		"Menu.OwnpartCalculator.Warning": "Niedostępne: Otwórz swoją perłę architektury!",
-		"Menu.Plunderer.Desc": "Historia PvP i grabienia sąsiadów",
-		"Menu.Plunderer.Title": "Aktywność PvP",
 		"Menu.Productions.Desc": "Wyświetla wszystkie aktywne produkcje w Twoim mieście.",
 		"Menu.Productions.Title": "Przegląd produkcji",
 		"Menu.Settings.Desc": "Kilka podstawowych ustawień",
@@ -492,8 +460,6 @@
 		"Settings.GlobalSend.Title": "Wysyłanie danych do foe-rechner.de",
 		"Settings.MenuLength.Desc": "Ile elementów powinno mieścic menu rozszerzenia?<br> Puste lub \"0\" oznacza automatyczną wysokość.",
 		"Settings.MenuLength.Title": "Wysokość menu",
-		"Settings.PreScanLGList.Desc": "Skanuje przegląd pereł gracza i wyszukuje potencjalne miejsca wpłat. <br> <u> Uwaga: </u> Ponieważ konkretne miejsca są przesyłane tylko przy otwarciu perły, nie wszystkie możliwości wpłat zostaną wykryte. Skan zostaje jednak zapisany.",
-		"Settings.PreScanLGList.Title": "Wstępny skan przeglądu Pereł Architektury",
 		"Settings.ResetBoxPositions.Button": "Reset!",
 		"Settings.ResetBoxPositions.Desc": "Zresetować ustawienie przycisków menu?",
 		"Settings.ResetBoxPositions.Title": "Ustawienie przycisków",
@@ -505,12 +471,8 @@
 		"Settings.SendInvestigations.Title": "Zainwestowane PR",
 		"Settings.SendTavernInfo.Desc": "Czy przesyłać dane o motywacjach na zewnętrzny serwer?",
 		"Settings.SendTavernInfo.Title": "Aktywność motywacji",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "Podczas wizyty pokaż, co jest obecnie produkowane",
-		"Settings.ShowNeighborsGoods.Title": "Grabież sąsiadów",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Przy aktywacji dodatkowej negocjacji w tawernie pojawia się przesuwalny dymek z odliczaniem.",
