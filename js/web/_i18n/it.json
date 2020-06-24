@@ -446,7 +446,7 @@
 		"Menu.Event.Desc": "Panoramica delle missioni attuali e future",
 		"Menu.Event.Title": "Elenco missioni evento",
 		"Menu.Forum.Desc": "Hai una domanda? Ci sono problemi? O solo per parlare ...",
-		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
+		"Menu.Forum.Title": "Forum FoE Helper",
 		"Menu.greatbuildings.Desc": "Quale GE per la produzione di PF dovresti aggiornare dopo?",
 		"Menu.greatbuildings.Title": "Investimenti GE",
 		"Menu.HiddenRewards.Desc": "Panoramica delle ricompense nascoste",
@@ -478,7 +478,7 @@
 		"Menu.Technologies.Warning": "Disabilitato: apri prima il menu di ricerca!",
 		"Menu.Unit.Desc": "Tutti i tuoi eserciti a colpo d'occhio",
 		"Menu.Unit.Title": "Esercito",
-		"Menu.Unit.Warning": "Apri la tua 1x \"Organizzazione Army \"<br> pulsante \"U\"",
+		"Menu.Unit.Warning": "Apri la tua 1x \"Gestione esercito \"<br> pulsante \"U\"",
 		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
 		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficienza: Strade",
 		"Settings.AutomaticNegotiation.Desc": "L'assistente deve aprirsi automaticamente con una negoziazione e chiudersi quando viene completata/annullata?",
