@@ -163,11 +163,21 @@ let Notice = {
 			Notice.SaveContent(id);
 		});
 
+		// enter is pressed
+		$('#noticesBody').on('keydown', '[contenteditable="true"]', function(e){
+
+			if (e.keyCode === 13) {
+				// prevent to enter a div instad a <br>
+				document.execCommand('insertHTML', false, '<br><br>');
+				// prevent the default behaviour of return key pressed
+				return false;
+			}
+		});
 
 		// check if user changes the box size
 		let id;
 
-		$('#noticesBody').on('resize', '#notices', function(){
+		$('body').on('resize', '#notices', function(){
 			clearTimeout(id);
 			id = setTimeout(Notice.SetHeights(), 150);
 		});
