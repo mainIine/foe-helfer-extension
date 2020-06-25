@@ -335,6 +335,10 @@ let Notice = {
 		const nN = $(`.inp-${type}-name`).val(),
 			name = nN.trim();
 
+		if(nN === ''){
+			return;
+		}
+
 		MainParser.send2Server({id:id,type:type,name:name}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
@@ -361,6 +365,10 @@ let Notice = {
 			name = nN.trim(),
 			grp = parseInt($('ul.horizontal').find('li.active a').data('id')),
 			sortVal = !$(`inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
+
+		if(nN === ''){
+			return;
+		}
 
 		MainParser.send2Server({id:id,type:'itm',name:name,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
