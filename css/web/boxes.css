@@ -17,6 +17,7 @@
 .OwnPartBoxBackground .outerArrow:before,
 .OwnPartBoxBackground .outerArrow span.arrow,
 .window-minimize,
+.window-settings,
 .window-ask,
 .window-speaker,
 .window-close {
@@ -137,6 +138,20 @@
 }
 .closed .window-head span.window-minimize:hover {
 	background-position: -76px -25px;
+}
+
+
+.window-head span.window-settings {
+	background-position: -191px -1px;
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	position: relative;
+	margin-right: 2px;
+}
+
+.window-head span.window-settings:hover {
+	background-position: -191px -25px;
 }
 
 

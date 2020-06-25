@@ -202,6 +202,8 @@
 		"Boxes.Negotiation.Title": "Negotiation Table",
 		"Boxes.Negotiation.TryEnd": "No more attempts",
 		"Boxes.Negotiation.WrongGoods": "Wrong goods selected, please finish manually",
+		"Boxes.Notice.DeleteGroup": "Delete group and sites",
+		"Boxes.Notice.DeleteItem": "Delete site",
 		"Boxes.Notice.DummyHeading": "Your headline",
 		"Boxes.Notice.Edit": "Edit",
 		"Boxes.Notice.GroupName": "Group name",
