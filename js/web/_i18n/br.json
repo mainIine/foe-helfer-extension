@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Aparece",
 		"Boxes.HiddenRewards.Disappears": "Desaparece",
 		"Boxes.HiddenRewards.NoEvents": "Não há incidentes",
 		"Boxes.HiddenRewards.Title": "Incidentes escondidos",
@@ -256,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edifícios vizinhos",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Poder da Guilda",
 		"Boxes.Productions.Happiness": "Felicidade",
 		"Boxes.Productions.Headings.all": "Todos",
 		"Boxes.Productions.Headings.amount": "Quantidade",
@@ -430,7 +430,7 @@
 		"Menu.Negotiation.Title": "Auxiliar de negociações",
 		"Menu.Negotiation.Warning": "Desabilitado: Começe uma negociação primeiro!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Desabilitado: Abra primeiro o Acampamento!<br></em>Resumo dos recursos necessários",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Desabilitado: Inicie primeiro um Acampamento e atualize a página (F5)",
