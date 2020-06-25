@@ -1,5 +1,6 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = HiddenRewards.prepareData(data.responseData.hiddenRewards);
+	HiddenRewards.SetCounter();
 
     if ($('#HiddenRewardBox').length >= 1) {
         HiddenRewards.BuildBox();
@@ -143,5 +144,27 @@ let HiddenRewards = {
         h.push('</table>');
 
         $('#HiddenRewardBoxBody').html(h.join(''));
-    }
+    },
+
+
+	SetCounter: ()=> {
+
+    	let cnt = 0;
+
+		for (let idx in HiddenRewards.Cache) {
+
+			if (!HiddenRewards.Cache.hasOwnProperty(idx)) {
+				break;
+			}
+
+			let hiddenReward = HiddenRewards.Cache[idx],
+				StartTime = moment.unix(hiddenReward.starts)
+
+			if (StartTime < MainParser.getCurrentDateTime()){
+				cnt++;
+			}
+		}
+
+		$('#hidden-reward-count').text(cnt);
+	}
 };

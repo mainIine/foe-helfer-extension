@@ -296,6 +296,10 @@ let _menu = {
 				$('#ant-hud').removeClass('is--sorting');
 			}
 		});
+
+		HiddenRewards.SetCounter();
+
+		MainParser.ShowDisclaimer();
 	},
 
 
@@ -655,7 +659,7 @@ let _menu = {
 			HiddenRewards.init();
 		})
 
-		btn_RewardsBG.append(btn_Rewards);
+		btn_RewardsBG.append(btn_Rewards, $('<span id="hidden-reward-count" class="hud-counter">0</span>'));
 
 		return btn_RewardsBG;
 	},
