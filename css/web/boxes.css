@@ -104,17 +104,17 @@
 	height: 24px;
 	display: inline-block;
 	position: relative;
-	background-position: -101px 0;
+	background-position: -101px -1px;
 	width: 44px;
 	margin-right: 3px;
 }
 
 .window-head span.window-speaker:hover {
-    background-position: -101px -24px;
+    background-position: -101px -25px;
 }
 
 .window-head span.window-speaker.deactivated {
-	background-position: -146px -24px;
+	background-position: -146px -25px;
 }
 
 .window-head span.window-speaker.deactivated:hover {
