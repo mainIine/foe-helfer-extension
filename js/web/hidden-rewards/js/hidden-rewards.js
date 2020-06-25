@@ -1,8 +1,8 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
-    HiddenRewards.Cache = data.responseData.hiddenRewards;
+    HiddenRewards.Cache = HiddenRewards.prepareData(data.responseData.hiddenRewards);
 
-    if (MainParser.Buildings) {
-        HiddenRewards.prepareData();
+    if ($('#HiddenRewardBox').length >= 1) {
+        HiddenRewards.BuildBox();
     }
 });
 
@@ -13,8 +13,6 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 let HiddenRewards = {
 
     Cache: null,
-    IsPrepared: false,
-
 
 	/**
 	 * Box in den DOM
@@ -45,13 +43,13 @@ let HiddenRewards = {
 	/**
 	 * Daten aufbereiten
 	 */
-    prepareData: () => {
+    prepareData: (Rewards) => {
         let data = [];
 
-        for (let idx in HiddenRewards.Cache) {
-            if (!HiddenRewards.Cache.hasOwnProperty(idx)) continue;
+        for (let idx in Rewards) {
+            if (!Rewards.hasOwnProperty(idx)) continue;
 
-            let position = HiddenRewards.Cache[idx].position.context;
+            let position = Rewards[idx].position.context;
 
             let SkipEvent = true;
 
@@ -76,10 +74,10 @@ let HiddenRewards = {
             }
 
             data.push({
-                type: HiddenRewards.Cache[idx].type,
+                type: Rewards[idx].type,
                 position: position,
-                starts: HiddenRewards.Cache[idx].startTime,
-                expires: HiddenRewards.Cache[idx].expireTime,
+                starts: Rewards[idx].startTime,
+                expires: Rewards[idx].expireTime,
             });
         }
 
@@ -89,11 +87,7 @@ let HiddenRewards = {
             return 0;
         });
 
-        HiddenRewards.Cache = data;
-
-        if ($('#HiddenRewardBox').length >= 1) {
-            HiddenRewards.BuildBox();
-        }
+        return data;        
     },
 
 
