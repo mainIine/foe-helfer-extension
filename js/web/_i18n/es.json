@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Aparece",
 		"Boxes.HiddenRewards.Disappears": "Desaparece",
 		"Boxes.HiddenRewards.NoEvents": "Sin eventos actualmente",
 		"Boxes.HiddenRewards.Title": "Premios ocultos",
@@ -256,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Edificios adyacentes",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Felicidad",
 		"Boxes.Productions.Headings.all": "Todos",
 		"Boxes.Productions.Headings.amount": "Cantidad",
@@ -430,7 +430,7 @@
 		"Menu.Negotiation.Title": "Asistente de negociaciones",
 		"Menu.Negotiation.Warning": "Deshabilitado: Comienza primero una nueva negociación!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Resumen de los recursos necesarios",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deshabilitado: Primero visita el asentamiento cultural!<br></em>Resumen de los recursos necesitados",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deshabilitado: Comienza primero un asentamiento cultural y vuelva a cargar el juego (F5)",

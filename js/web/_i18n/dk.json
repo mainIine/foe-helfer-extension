@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "SB investitioner",
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Dukker op",
 		"Boxes.HiddenRewards.Disappears": "Forsvinder",
 		"Boxes.HiddenRewards.NoEvents": "Ingen hændelser tilgændelige",
 		"Boxes.HiddenRewards.Title": "Hændelser",
@@ -256,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Glæde",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Mængde",
@@ -430,7 +430,7 @@
 		"Menu.Negotiation.Title": "Forhandlingsassistent",
 		"Menu.Negotiation.Warning": "Deaktiveret: Start først en ny forhandling!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deaktiveret: Besøg først bosættelsen!<br></em>Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiveret: Start først en bosættelse og genindlæs spillet (F5)",
