@@ -37,6 +37,7 @@ input[type=number] {
 .game-cursor,
 .game-cursor option,
 .window-minimize,
+.window-settings,
 .window-close,
 .window-head:not(span),
 .button-own,
@@ -51,6 +52,7 @@ input[type=number] {
 .game-cursor:hover,
 .game-cursor option:hover,
 .window-minimize:hover,
+.window-settings:hover,
 .window-close:hover,
 .window-head:not(span):hover,
 .button-own:hover,
@@ -342,6 +344,9 @@ p {
 	padding-top: 24px;
 	padding-bottom: 24px;
 	transition: height 0.2s linear;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
 }
 
 #ant-hud::before,
@@ -456,7 +461,7 @@ p {
 	background-position: -65px -33px;
 }
 
-.hud-btn span {
+.hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
 	display: block;
@@ -474,6 +479,20 @@ p {
 	background: url('../images/hud/menu.png') -122px -90px no-repeat;
 }
 
+.hud-btn span.hud-counter {
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	bottom: 4px;
+	top: unset;
+	left: 5px;
+	background-color: #4682b4;
+	border-radius: 50%;
+	border: 1px solid #fff;
+	line-height: 20px;
+	text-align: center;
+	box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+}
 
 #greatbuildings-Btn span {
 	background-image: url('../images/greatbuildings.png');
@@ -499,7 +518,7 @@ p {
     background-image: url('../images/technologies.png');
 }
 
-#hiddenRewards-Btn span {
+#hiddenRewards-Btn span:first-child {
 	background-image: url('../images/incident_crates.png');
 }
 
@@ -547,10 +566,6 @@ p {
 	background-image: url('../images/units.png');
 }
 
-#plunderer-Btn span {
-	  background-image: url('../images/plunderer.png');
-}
-
 #negotiation-Btn span {
 	background-image: url('../images/negotation.png');
 }
@@ -585,6 +600,7 @@ Tabs */
 	padding: 0;
 	display: inline-block;
 	line-height: 33px;
+	position: relative;
 }
 
 .window-body .tabs ul.horizontal li:hover {
@@ -701,6 +717,7 @@ Tabs */
 	padding: 3px 5px;
 	display: block;
 	color: var(--text-normal);
+	position: relative;
 }
 
 .window-body .tabs ul.vertical li.active,
@@ -860,3 +877,27 @@ Tooltip */
 	color: var(--text-bright);
 }
 /*******************************************************************************/
+
+#disclaimer {
+	width: 750px;
+	height: 500px;
+	left: calc(50% - 375px);
+	top: 15%;
+	z-index: 300;
+}
+.disclaimer-body {
+	padding: 10px;
+	overflow: hidden;
+	overflow-y: auto;
+	height: 100%;
+}
+
+.disclaimer-body a {
+	color: var(--text-bright);
+}
+
+.disclaimer-body p.text-right {
+	border-top: 1px solid var(--text-normal);
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

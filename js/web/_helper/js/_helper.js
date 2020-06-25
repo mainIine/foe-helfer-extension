@@ -142,10 +142,14 @@ let HTML = {
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
 			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>'),
 
-			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title).append(close),
+			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
+
+		if(args['auto_close'] !== false){
+			head.append(close);
+		}
 
 		// Minimierenbutton
 		if(args['minimize']){
@@ -161,10 +165,19 @@ let HTML = {
 			$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
 		}
 
+		// insert a wrench icon
+		// set a click event on it
+		if(args['settings']){
+			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
+			set.insertAfter(title);
+		}
+
 		// es gibt gespeicherte Koordinaten
 		if(cords){
 			let c = cords.split('|');
-			div.offset({ top: Math.min(c[0], window.innerHeight - 50), left: Math.min(c[1], window.innerWidth - 100) });  // Verhindere, dass Fenster außerhalb plaziert werden
+
+			// Verhindere, dass Fenster außerhalb plaziert werden
+			div.offset({ top: Math.min(parseInt(c[0]), window.innerHeight - 50), left: Math.min(parseInt(c[1]), window.innerWidth - 100) });
 		}
 
 		// Ein Link zu einer Seite

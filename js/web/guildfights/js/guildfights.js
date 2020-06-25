@@ -87,6 +87,16 @@ FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 	GildFights.InitBonus();
 });
 
+// neihbor is visit
+FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
+	let OtherPlayer = data.responseData.other_player;
+	let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
+
+	if (IsPlunderable) {
+		GildFights.InitBonus();
+	}
+});
+
 // Bonus get updated
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	GildFights.Bonuses = data['responseData'];
