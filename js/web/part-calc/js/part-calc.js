@@ -507,7 +507,7 @@ let Parts = {
         b.push(drp);
 
         let cb = '<div class="checkboxes">' +
-            '<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="0" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
+            '<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
 
 			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input chain-place" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
 
@@ -568,8 +568,34 @@ let Parts = {
 			}
 		});
 
-		// Place 1-5 must be checked
 		$('#OwnPartBox').on('click', '.form-check-input', function(){
+			let Name = $(this).data('place');
+
+			if (Name === 'auto') { //auto: all und P1-5 deaktivieren, auto aktivieren
+				$('#chain-auto').prop('checked', true);
+				$('#chain-all').prop('checked', false);
+
+				for (let i = 0; i < 5; i++) {
+					$('#chain-p' + (i + 1)).prop('checked', false);
+                }
+			}
+			else if (Name === 'all') { //all: auto und P1-5 deaktivieren, all aktivieren
+				$('#chain-auto').prop('checked', false);
+				$('#chain-all').prop('checked', true);
+
+				for (let i = 0; i < 5; i++) {
+					$('#chain-P' + (i + 1)).prop('checked', false);
+				}
+			}
+			else if (Name === 'level') { 
+				; //Do nothing
+			}
+			else { //P1-5: auto und all deaktivieren
+				$('#chain-auto').prop('checked', false);
+				$('#chain-all').prop('checked', false);
+            }
+
+			/*
 			$('.form-check-input').prop('checked', false);
 
 			$('.form-check-input').each(function(){
@@ -580,6 +606,7 @@ let Parts = {
 					$this.prop('checked', true);
 				}
 			});
+			*/
 		});
 	},
 
