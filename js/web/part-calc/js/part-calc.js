@@ -584,7 +584,7 @@ let Parts = {
 				$('#chain-all').prop('checked', true);
 
 				for (let i = 0; i < 5; i++) {
-					$('#chain-P' + (i + 1)).prop('checked', false);
+					$('#chain-p' + (i + 1)).prop('checked', true);
 				}
 			}
 			else if (Name === 'level') { 
