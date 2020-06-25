@@ -308,8 +308,14 @@ let Productions = {
 				CurrentResources = d['state']['current_product']['product']['resources'];
 			}
 			if (d.state.current_product['clan_power']) {
-				CurrentResources['clan_power'] = d.state.current_product['clan_power'];
-            }
+				CurrentResources['clan_power'] = d.state.current_product['clan_power']; // z.B. Ruhmeshalle
+			}
+
+			if (d.state.current_product.guildProduct && d.state.current_product.guildProduct.resources) {
+				if (d.state.current_product['guildProduct']['resources']['clan_power']) { // z.B. Ehrenstatue
+					CurrentResources['clan_power'] = d.state.current_product['guildProduct']['resources']['clan_power'];
+				}
+			}
 		}
 
         for (let Resource in CurrentResources) {
