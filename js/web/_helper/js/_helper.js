@@ -161,10 +161,19 @@ let HTML = {
 			$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
 		}
 
+		// insert a wrench icon
+		// set a click event on it
+		if(args['settings']){
+			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
+			set.insertAfter(title);
+		}
+
 		// es gibt gespeicherte Koordinaten
 		if(cords){
 			let c = cords.split('|');
-			div.offset({ top: Math.min(c[0], window.innerHeight - 50), left: Math.min(c[1], window.innerWidth - 100) });  // Verhindere, dass Fenster außerhalb plaziert werden
+
+			// Verhindere, dass Fenster außerhalb plaziert werden
+			div.offset({ top: Math.min(parseInt(c[0]), window.innerHeight - 50), left: Math.min(parseInt(c[1]), window.innerWidth - 100) });
 		}
 
 		// Ein Link zu einer Seite

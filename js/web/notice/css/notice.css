@@ -49,6 +49,27 @@
 	padding-left: 120px;
 }
 
+#noticesBody .tabs ul.horizontal li a span {
+	white-space: nowrap;
+}
+
+#noticesBody .tab-edit,
+#noticesBody .sub-tab-edit {
+	width: 24px;
+	height: 24px;
+	background: rgba(255,255,255,0.2) url('../../../../css/images/hud/edit.png') center center no-repeat;
+	position: absolute;
+	background-size: 80%;
+	border: 1px solid #f3D6A0;
+	border-radius: 3px;
+	z-index: 50;
+}
+
+#noticesBody .tab-edit:hover,
+#noticesBody .sub-tab-edit:hover {
+	border-color: #ffB539;
+}
+
 #noticesBody .tabs ul.horizontal {
 	padding-left: 120px;
 }

@@ -202,6 +202,8 @@
 		"Boxes.Negotiation.Title": "Verhandlungassistent",
 		"Boxes.Negotiation.TryEnd": "Versuche zu Ende",
 		"Boxes.Negotiation.WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
+		"Boxes.Notice.DeleteGroup": "Gruppe und Seiten löschen",
+		"Boxes.Notice.DeleteItem": "Seite löschen",
 		"Boxes.Notice.DummyHeading": "Deine Überschrift",
 		"Boxes.Notice.Edit": "Bearbeiten",
 		"Boxes.Notice.GroupName": "Gruppenname",
