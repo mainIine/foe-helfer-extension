@@ -15,6 +15,7 @@
 let Notice = {
 
 	notes: null,
+	EditMode: false,
 
 	init: ()=> {
 
@@ -43,7 +44,8 @@ let Notice = {
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
-				minimize : true
+				minimize: true,
+				settings: true
 			});
 
 			Notice.Listener();
@@ -125,7 +127,7 @@ let Notice = {
 
 
 		// wait for html in the DOM
-		$('#notices').find('#noticesBody').html(content).promise().done(function () {
+		$('#notices').find('#noticesBody').html(content).promise().done(function(){
 
 			// init Tabslet
 			$('.notices').tabslet();
@@ -141,6 +143,11 @@ let Notice = {
 	},
 
 
+	/**
+	 * DOM listeners
+	 *
+	 * @constructor
+	 */
 	Listener: ()=> {
 
 		$('#noticesBody').on('click', '.grp-btn', function(){
@@ -151,9 +158,32 @@ let Notice = {
 			Notice.ShowModal('itm', $(this).data('id'));
 		});
 
+		$('#noticesBody').on('click', '.tab-edit', function(){
+			Notice.ShowModal('grp', $(this).data('id'));
+		});
+
+		$('#noticesBody').on('click', '.sub-tab-edit', function(){
+			Notice.ShowModal('itm', $(this).data('id'));
+		});
+
+		$('body').on('click', '.delete-btn', function(){
+			Notice.DeleteElement($(this).data('type'), $(this).data('id'));
+		});
+
 
 		$('body').on('click', '#notices-modalclose', function(){
 			$('.foe-helper-overlay').remove();
+		});
+
+		// toggle edit buttons
+		$('body').on('click', '#notices-settings', function(){
+			if(!Notice.EditMode){
+				Notice.BuildSettingButtons();
+			} else {
+				$('.tab-edit, .sub-tab-edit').remove();
+			}
+
+			Notice.EditMode = !Notice.EditMode;
 		});
 
 
@@ -184,38 +214,45 @@ let Notice = {
 	},
 
 
-	CloseModal: ()=>{
+	/**
+	 * Show a tiny modal for create, edit or delete a group or item
+	 *
+	 * @param type
+	 * @param id
+	 * @param action
+	 * @constructor
+	 */
+	ShowModal:(type, id, action = '')=> {
 
-	},
+		let title = type === 'grp' ? i18n('Boxes.Notice.NewGroup') : i18n('Boxes.Notice.NewSide'),
+			txt;
 
+		if(id !== 'new'){
 
-	ShowModal:(type, id)=> {
-
-		if( $('#notices-modal').length === 0 ){
-			let title = type === 'grp' ? i18n('Boxes.Notice.NewGroup') : i18n('Boxes.Notice.NewSide');
-
-			if(id !== 'new'){
-				title = i18n('Boxes.Notice.Edit');
+			if(type === 'grp'){
+				txt = $('.horizontal').find(`[data-id="${id}"]`).text();
+			} else {
+				txt = $('.vertical').find(`[data-id="${id}"]`).text();
 			}
 
-			HTML.Box({
-				id: 'notices-modal',
-				title: title,
-				auto_close: true,
-			});
-
-			$('body').prepend( $('<div class="foe-helper-overlay" />') );
-
-		} else {
-			$('#notices-modalBody').html('');
+			title = txt + ' - ' + i18n('Boxes.Notice.Edit');
 		}
+
+		HTML.Box({
+			id: 'notices-modal',
+			title: title,
+			auto_close: true,
+		});
+
+		$('body').prepend( $('<div class="foe-helper-overlay" />') );
+
 
 		let inp = $('<input />'),
 			btn = $('<span />');
 
 		inp.attr({
 			type: 'text',
-			value: '',
+			value: txt,
 			placeholder: type === 'grp' ? i18n('Boxes.Notice.GroupName') : i18n('Boxes.Notice.SideName'),
 			class: `inp-${type}-name`
 		});
@@ -233,13 +270,6 @@ let Notice = {
 		$('#notices-modalBody').append(inp, btn);
 
 		if(type === 'itm'){
-			let sort = $('<input />').attr({
-				type: 'number',
-				class: 'inp-itm-sort',
-				placeholder: i18n('Boxes.Notice.Sorting')
-			});
-
-			sort.wrap('<div />').insertAfter(`.inp-${type}-name`);
 
 			btn.attr({
 				onclick: `Notice.SaveItemModal(${(id === 'new' ? "'new'" : id)})`
@@ -250,6 +280,35 @@ let Notice = {
 				onclick: `Notice.SaveModal('${type}', ${(id === 'new' ? "'new'" : id)})`
 			});
 		}
+
+		if(id !== 'new'){
+			let delBtn = $('<span />');
+
+			delBtn
+				.attr({
+					role: 'button',
+					class: `btn-default delete-btn`,
+					'data-id': id,
+					'data-type': type
+				})
+				.text(type === 'grp' ? i18n('Boxes.Notice.DeleteGroup') : i18n('Boxes.Notice.DeleteItem'))
+				.css({
+					'margin-top': 10
+				})
+			;
+
+			$('#notices-modalBody').append(delBtn);
+
+		} else{
+			let sort = $('<input />').attr({
+				type: 'number',
+				class: `inp-${type}-sort`,
+				placeholder: i18n('Boxes.Notice.Sorting'),
+			});
+
+			sort.wrap('<div />').insertAfter(`.inp-${type}-name`);
+		}
+
 
 		$(`.inp-${type}-name`).focus();
 	},
@@ -268,6 +327,7 @@ let Notice = {
 				$('.foe-helper-overlay').remove();
 			});
 
+			Notice.EditMode = false;
 			Notice.buildBox();
 		});
 	},
@@ -276,9 +336,10 @@ let Notice = {
 	SaveItemModal: (id)=> {
 		const nN = $('.inp-itm-name').val(),
 			name = nN.trim(),
-			grp = parseInt($('ul.horizontal').find('li.active a').data('id'));
+			grp = parseInt($('ul.horizontal').find('li.active a').data('id')),
+			sortVal = !$(`inp-${type}-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
 
-		MainParser.send2Server({id:id,type:'itm',name:name,grp:grp}, 'Notice/set', (resp)=>{
+		MainParser.send2Server({id:id,type:'itm',name:name,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
 			$('#notices-modal').fadeToggle('fast', function(){
@@ -287,17 +348,23 @@ let Notice = {
 				$('.foe-helper-overlay').remove();
 			});
 
+			Notice.EditMode = false;
 			Notice.buildBox();
 		});
 	},
 
 
+	/**
+	 * Save the content-head and -text into the database
+	 *
+	 * @param $this
+	 * @constructor
+	 */
 	SaveContent: ($this)=> {
 		let itmID = parseInt($this.data('id')),
 			grpID = parseInt($this.data('parent')),
 			head = $this.find('.content-head').html(),
 			cont = $this.find('.content-text').html();
-
 
 		// send content changes to server und change local object
 		MainParser.send2Server({id:itmID,type:'cnt',head:head,cont:cont}, 'Notice/set', (resp)=>{
@@ -311,6 +378,136 @@ let Notice = {
 	},
 
 
+	/**
+	 * Create "Edit" buttons for the DOM
+	 *
+	 * @constructor
+	 */
+	BuildSettingButtons: ()=> {
+
+		$('.tab-edit, .sub-tab-edit').remove();
+
+		// Sortfunction for horizontal + Stop event
+		$('ul.horizontal').sortable({
+			axis: 'x',
+			stop: function() {
+				let grps = [];
+
+				$('ul.horizontal li').each(function(idx){
+					let id = $(this).find('a').data('id');
+
+					grps.push({
+						id: id,
+						sort: idx
+					});
+				});
+
+				MainParser.send2Server({type:'grp',grps:grps}, 'Notice/sort', (resp)=>{
+					Notice.notes = resp['notice'];
+
+					$('.notices').tabslet();
+					Notice.BuildSettingButtons();
+				});
+			}
+		});
+
+
+		$('ul.horizontal li').each(function(){
+			let $this = $(this),
+				id = $this.find('a').data('id'),
+				left = $this.position().left,
+				width = $this.width(),
+				btn = $('<span />');
+
+			btn.attr({
+				class: 'tab-edit',
+				'data-id': id
+			}).css({
+				left: ((left + width) - 31),
+				top: 5
+			});
+
+			$('.tabs').append(btn);
+		});
+
+		$('.notice-wrapper').each(function(){
+			let div = $(this),
+				top = 43;
+
+			// Sortfunction for vertical + Stop event
+			div.find('ul.vertical').sortable({
+				axis: 'y',
+				stop: function(e, ui) {
+					let itms = [],
+						ul = $(ui.item).closest('ul');
+
+					ul.find('li').each(function(idx){
+						let id = $(this).find('a').data('id');
+
+						itms.push({
+							id: id,
+							sort: idx
+						});
+					});
+
+					MainParser.send2Server({type:'itm',itms:itms}, 'Notice/sort', (resp)=>{
+						Notice.notes = resp['notice'];
+
+						$('.tabs-sub').tabslet();
+						Notice.BuildSettingButtons();
+					});
+				}
+			});
+
+			div.find('ul.vertical li').each(function(){
+				let $this = $(this),
+					id = $this.find('a').data('id'),
+					btn = $('<span />');
+
+				btn.attr({
+					class: 'sub-tab-edit',
+					'data-id': id
+				}).css({
+					top: top,
+					left: 90
+				});
+
+				top += 32;
+
+				div.append(btn);
+			});
+		});
+	},
+
+
+	/**
+	 * Delete a group or item from the database
+	 *
+	 * @param type
+	 * @param id
+	 * @constructor
+	 */
+	DeleteElement: (type, id)=> {
+		MainParser.send2Server({type:type,id:id}, 'Notice/del', (resp)=>{
+			Notice.notes = resp['notice'];
+
+			$('#notices-modal').fadeToggle('fast', function(){
+				$(this).remove();
+
+				$('.foe-helper-overlay').remove();
+			});
+
+			Notice.EditMode = false;
+			Notice.buildBox();
+		});
+	},
+
+
+	/**
+	 * Set the heigh from left ul li & content body at the resize
+	 *
+	 * @constructor
+	 */
 	SetHeights: ()=> {
 		let h = $('#noticesBody').outerHeight() - 35;
 
