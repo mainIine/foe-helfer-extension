@@ -17,6 +17,10 @@ let Notice = {
 	notes: null,
 	EditMode: false,
 
+
+	/**
+	 * On init get the content
+	 */
 	init: ()=> {
 
 		if(Notice.notes === null){
@@ -32,6 +36,9 @@ let Notice = {
 	},
 
 
+	/**
+	 * Put a empty box into the DOM
+	 */
 	buildBox: ()=> {
 		if( $('#notices').length < 1 )
 		{
@@ -55,6 +62,9 @@ let Notice = {
 	},
 
 
+	/**
+	 * Build the tabs
+	 */
 	prepareContent: ()=> {
 		let tab = [],
 			div = [],
@@ -176,7 +186,7 @@ let Notice = {
 		});
 
 		// toggle edit buttons
-		$('body').on('click', '#notices-settings', function(){
+		$('#notices').on('click', '#notices-settings', function(){
 			if(!Notice.EditMode){
 				Notice.BuildSettingButtons();
 			} else {
@@ -314,6 +324,13 @@ let Notice = {
 	},
 
 
+	/**
+	 * Function to save a group
+	 *
+	 * @param type
+	 * @param id
+	 * @constructor
+	 */
 	SaveModal: (type, id)=> {
 		const nN = $(`.inp-${type}-name`).val(),
 			name = nN.trim();
@@ -333,11 +350,17 @@ let Notice = {
 	},
 
 
+	/**
+	 * Function to save a item
+	 *
+	 * @param id
+	 * @constructor
+	 */
 	SaveItemModal: (id)=> {
 		const nN = $('.inp-itm-name').val(),
 			name = nN.trim(),
 			grp = parseInt($('ul.horizontal').find('li.active a').data('id')),
-			sortVal = !$(`inp-${type}-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
+			sortVal = !$(`inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
 
 		MainParser.send2Server({id:id,type:'itm',name:name,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
