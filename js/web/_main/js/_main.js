@@ -542,10 +542,6 @@ const FoEproxy = (function () {
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));;
-
-		if (!HiddenRewards.IsPrepared) {
-			HiddenRewards.prepareData();
-		}
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -2028,4 +2024,54 @@ let MainParser = {
 		xhr.send();
 
 	},
+
+
+	ShowDisclaimer: ()=> {
+		let timeCheck = localStorage.getItem('DisclaimerReaded');
+
+		if(timeCheck === null){
+			HTML.Box({
+				id: 'disclaimer',
+				title: i18n('_Disclaimer.Title'),
+				auto_close: false
+			});
+
+			$('body').prepend( $('<div class="foe-helper-overlay" />') );
+
+			let b = i18n('_Disclaimer.Body'),
+				div = $('<div class="disclaimer-body" />'),
+				p = $('<p class="text-right" />'),
+				label = $('<label for="disclaimer-check" />').text(i18n('_Disclaimer.Label')).css({float: 'left'}),
+				inp = $('<input />'),
+				btn = $('<span />');
+
+			inp.attr({
+				id: 'disclaimer-check',
+				type: 'checkbox'
+			});
+
+			label.prepend(inp);
+
+			btn
+				.attr({
+					class: 'btn-default',
+					id: 'btn-disclaimer-save',
+					onclick: 'MainParser.SaveDisclaimer()',
+				})
+				.text(i18n('_Disclaimer.Button'));
+
+			$('#disclaimerBody').append(div.append(b, p.append(label, btn)));
+		}
+	},
+
+
+	SaveDisclaimer: ()=> {
+		if( $('#disclaimer-check').is(':checked') ){
+			localStorage.setItem('DisclaimerReaded', moment().unix());
+		}
+
+		$('#disclaimer, .foe-helper-overlay').fadeToggle(function(){
+			$(this).remove();
+		});
+	}
 };

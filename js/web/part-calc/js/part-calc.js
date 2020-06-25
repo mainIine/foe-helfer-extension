@@ -485,7 +485,7 @@ let Parts = {
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
 			n = localStorage.getItem(ExtPlayerID+'_PlayerCopyName'),
-			m = (Parts.CityMapEntity['player_id'] === ExtPlayerID ? ExtPlayerName : PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName'])
+			m = (Parts.CityMapEntity['player_id'] === ExtPlayerID ? ExtPlayerName : PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName']),
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
@@ -507,9 +507,9 @@ let Parts = {
         b.push(drp);
 
         let cb = '<div class="checkboxes">' +
-            '<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" id="chain-auto" data-place="0" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
+            '<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
 
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
+			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input chain-place" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
 
 			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
 
@@ -568,8 +568,45 @@ let Parts = {
 			}
 		});
 
-		$('#OwnPartBoxBackground').on('click', '.form-check-input', function () {
-			let Dummy = 1;
+		$('#OwnPartBox').on('click', '.form-check-input', function(){
+			let Name = $(this).data('place');
+
+			if (Name === 'auto') { //auto: all und P1-5 deaktivieren, auto aktivieren
+				$('#chain-auto').prop('checked', true);
+				$('#chain-all').prop('checked', false);
+
+				for (let i = 0; i < 5; i++) {
+					$('#chain-p' + (i + 1)).prop('checked', false);
+                }
+			}
+			else if (Name === 'all') { //all: auto und P1-5 deaktivieren, all aktivieren
+				$('#chain-auto').prop('checked', false);
+				$('#chain-all').prop('checked', true);
+
+				for (let i = 0; i < 5; i++) {
+					$('#chain-p' + (i + 1)).prop('checked', true);
+				}
+			}
+			else if (Name === 'level') { 
+				; //Do nothing
+			}
+			else { //P1-5: auto und all deaktivieren
+				$('#chain-auto').prop('checked', false);
+				$('#chain-all').prop('checked', false);
+            }
+
+			/*
+			$('.form-check-input').prop('checked', false);
+
+			$('.form-check-input').each(function(){
+				let $this = $(this),
+					val = $this.data('place');
+
+				if( Number.isInteger(val) && val > 0 ){
+					$this.prop('checked', true);
+				}
+			});
+			*/
 		});
 	},
 
