@@ -567,6 +567,10 @@ let Parts = {
 				Parts.BackGroundBoxAnimation(true);
 			}
 		});
+
+		$('#OwnPartBoxBackground').on('click', '.form-check-input', function () {
+			let Dummy = 1;
+		});
 	},
 
 

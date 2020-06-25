@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "Investissement GM",
 		"Boxes.GreatBuildings.TTGoodCosts": "Vous n'avez pas encore construit ce GM. Ce sont les coûts en PF pour l'achat des ressources nécessaires",
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Répertorie les coûts en PF pour l'achat des ressources nécessaires (s'applique uniquement aux GMs que vous n'avez pas encore construits)",
-		"Boxes.HiddenRewards.Appears": "Apparaîtra",
 		"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 		"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
 		"Boxes.HiddenRewards.Title": "Récompenses cachées",
@@ -256,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Taille, y compris l'espace moyen requis pour la route sur __streetnettosize__ cases",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.GoodEraTotal": "Total",
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
 		"Boxes.Productions.Headings.amount": "Quantité",

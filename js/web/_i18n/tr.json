@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Görünecek",
 		"Boxes.HiddenRewards.Disappears": "Kaybolacak",
 		"Boxes.HiddenRewards.NoEvents": "Etkinlik yok",
 		"Boxes.HiddenRewards.Title": "Etkinlikler",
@@ -256,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Bitişik Binalar",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Mutluluk",
 		"Boxes.Productions.Headings.all": "Hepsi",
 		"Boxes.Productions.Headings.amount": "Hacim",
@@ -430,7 +430,7 @@
 		"Menu.Negotiation.Title": "Müzakere Asistanı",
 		"Menu.Negotiation.Warning": "Kapalı: Önce yeni bir Müzakere başlat!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Gerekli kaynaklara genel bakış",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Kapalı: Önce Kültürel Yerleşime git!<br></em>Gerekli kaynakları görmek için",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Kapalı: Önce Kültürel Yerleşim başlat sonra Oyunu (F5) ile yenile",

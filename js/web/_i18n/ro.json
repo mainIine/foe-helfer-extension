@@ -152,7 +152,6 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Apare",
 		"Boxes.HiddenRewards.Disappears": "Dispare",
 		"Boxes.HiddenRewards.NoEvents": "Niciun incident prezent",
 		"Boxes.HiddenRewards.Title": "Incidente ascunse",
@@ -256,6 +255,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Clădiri învecinate",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Fericre",
 		"Boxes.Productions.Headings.all": "Total",
 		"Boxes.Productions.Headings.amount": "Cantitate",
@@ -430,7 +430,7 @@
 		"Menu.Negotiation.Title": "Ajutor pentru negocieri",
 		"Menu.Negotiation.Warning": "Dezactivat: Începe mai întâi o negociere!",
 		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notes", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "Prezentarea generală a resurselor necesare",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Dezactivat: Deschide mai întâi Așezarea culturală!<br></em>Prezentarea generală a resurselor necesare",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Dezactivat: Începe mai întâi construcția unei așezări culturale și reîncarcă pagina (F5)",

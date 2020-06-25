@@ -48,6 +48,7 @@ let Productions = {
 		'premium',			// Diamanten
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
+		'clan_power',		// Macht der Gilde
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
@@ -257,7 +258,7 @@ let Productions = {
 	 */
 	readType: (d) => {
 		let Products = [],
-			CurrentResources = undefined,
+			CurrentResources = [],
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			AdditionalResources = [],
@@ -302,10 +303,13 @@ let Productions = {
 			in: 0
 		};
 
-		if (d.state && d.state.current_product && d.state.current_product.product) {
-			if (d.state.current_product.product.resources) {
+		if (d.state && d.state.current_product) {
+			if (d.state.current_product.product && d.state.current_product.product.resources) {
 				CurrentResources = d['state']['current_product']['product']['resources'];
 			}
+			if (d.state.current_product['clan_power']) {
+				CurrentResources['clan_power'] = d.state.current_product['clan_power'];
+            }
 		}
 
         for (let Resource in CurrentResources) {
@@ -1156,6 +1160,9 @@ let Productions = {
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
 		}
+		else if (GoodType === 'clan_power') {
+			return i18n('Boxes.Productions.GuildPower');
+        }
 		else {
 			return GoodsData[GoodType]['name'];
 		}
