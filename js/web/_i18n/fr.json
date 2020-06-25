@@ -202,6 +202,8 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
+		"Boxes.Notice.DeleteGroup": "Supprimer onglet",
+		"Boxes.Notice.DeleteItem": "Supprimer page",
 		"Boxes.Notice.DummyHeading": "Votre titre",
 		"Boxes.Notice.Edit": "Editer",
 		"Boxes.Notice.GroupName": "Nom d'onglet",
@@ -212,18 +214,6 @@
 		"Boxes.Notice.SideName": "Nom de page",
 		"Boxes.Notice.Sorting": "Tri",
 		"Boxes.Notice.Title": "Notes",
-		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
-		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "Side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
