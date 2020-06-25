@@ -12,6 +12,10 @@
  * **************************************************************************************
  */
 
+/**
+ *
+ * @type {{init: Notice.init, notes: null, Listener: Notice.Listener, SetHeights: Notice.SetHeights, buildBox: Notice.buildBox, BuildSettingButtons: Notice.BuildSettingButtons, prepareContent: Notice.prepareContent, ShowModal: Notice.ShowModal, SaveContent: Notice.SaveContent, EditMode: boolean, SaveModal: Notice.SaveModal, SaveItemModal: Notice.SaveItemModal, DeleteElement: Notice.DeleteElement}}
+ */
 let Notice = {
 
 	notes: null,
