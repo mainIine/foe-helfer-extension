@@ -202,6 +202,8 @@
 		"Boxes.Negotiation.Title": "Asystent negocjacji",
 		"Boxes.Negotiation.TryEnd": "Brak kolejnych podejść",
 		"Boxes.Negotiation.WrongGoods": "Wybrano niewłaściwe towary, proszę skończyć ręcznie",
+		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
+		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
@@ -255,7 +257,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Pobliskie budynki",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
-		"Boxes.Productions.GuildPower": "???", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Productions.Happiness": "Zadowolenie",
 		"Boxes.Productions.Headings.all": "Wszystkie",
 		"Boxes.Productions.Headings.amount": "Ilość",

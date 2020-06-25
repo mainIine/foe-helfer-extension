@@ -202,6 +202,8 @@
 		"Boxes.Negotiation.Title": "Forhandlingsassistent",
 		"Boxes.Negotiation.TryEnd": "Ikke flere forsøg",
 		"Boxes.Negotiation.WrongGoods": "Du har valgt nogle forkerte varer, færdiggør derfor forhandlingerne manuel",
+		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
+		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
 		"Boxes.Notice.GroupName": "Gruppenavn",
@@ -255,7 +257,7 @@
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
-		"Boxes.Productions.GuildPower": "???", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Productions.Happiness": "Glæde",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Mængde",
