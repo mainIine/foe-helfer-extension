@@ -542,10 +542,6 @@ const FoEproxy = (function () {
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));;
-
-		if (!HiddenRewards.IsPrepared) {
-			HiddenRewards.prepareData();
-		}
 	});
 
 	// Portrait-Mapping für Spieler Avatare
