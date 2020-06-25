@@ -13,8 +13,9 @@
  */
 
 #notices {
-	left: calc(50vw - 250px);
+	left: calc(50% - 200px);
 	top: 30%;
+	min-width: 400px;
 }
 
 #noticesBody {
