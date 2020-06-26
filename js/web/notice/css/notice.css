@@ -13,9 +13,96 @@
  */
 
 #notices {
-	left: calc(50vw - 250px);
-	top: calc(50vw - 220px);
-	min-width: 500px;
-	max-width: 600px;
+	left: calc(50% - 200px);
+	top: 30%;
+	min-width: 400px;
 }
 
+#noticesBody {
+	min-height: 200px;
+	min-width: 500px;
+}
+
+.window-body .notices {
+	position: relative;
+}
+
+.window-body .empty-notice {
+	padding: 10px;
+}
+
+.window-body .notices .grp-btn {
+	position: absolute;
+	left: 4px;
+	top: 2px;
+	z-index: 10;
+}
+
+.window-body .notices .itm-btn {
+	margin-top: 5px;
+	margin-left: 5px;
+	position: absolute;
+	z-index: 10;
+}
+
+#noticesBody .empty-notice {
+	padding-left: 120px;
+}
+
+#noticesBody .tabs ul.horizontal li a span {
+	white-space: nowrap;
+}
+
+#noticesBody .tab-edit,
+#noticesBody .sub-tab-edit {
+	width: 24px;
+	height: 24px;
+	background: rgba(255,255,255,0.2) url('../../../../css/images/hud/edit.png') center center no-repeat;
+	position: absolute;
+	background-size: 80%;
+	border: 1px solid #f3D6A0;
+	border-radius: 3px;
+	z-index: 50;
+}
+
+#noticesBody .tab-edit:hover,
+#noticesBody .sub-tab-edit:hover {
+	border-color: #ffB539;
+}
+
+#noticesBody .tabs ul.horizontal {
+	padding-left: 120px;
+}
+
+#noticesBody .notices ul.vertical {
+	padding-top: 39px;
+}
+
+#noticesBody ::-webkit-scrollbar-thumb {
+	background: #7b3f20;
+}
+
+#noticesBody .content-head {
+	font-size: 110%;
+	font-weight: 700;
+	color: var(--text-bright);
+	margin-bottom: 5px;
+}
+
+#noticesBody .content-text {
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+/*******************************************************************************/
+#notices-modal {
+	left: calc(50% - 150px);
+	top: calc(50% - 50px);
+	width: 300px;
+	min-height: 30px;
+	z-index: 300;
+}
+
+#notices-modalBody {
+	padding: 10px;
+}

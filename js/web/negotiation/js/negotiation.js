@@ -463,6 +463,8 @@ let Negotiation = {
 	 * @param {number} [forcedTryCount]
 	 */
 	StartNegotiation: (responseData, forcedTryCount) => {
+		if (responseData.context === 'guildBattleground') return; //No Negotiation helper for GBG
+
 		Negotiation.StartNegotiationBackupData = responseData;
 
 		if (responseData.__class__ === "Error") return;

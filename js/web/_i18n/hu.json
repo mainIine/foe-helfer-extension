@@ -79,29 +79,25 @@
 		"Boxes.Calculator.Done": "Kész",
 		"Boxes.Calculator.FP": "FP", //Todo: Translate
 		"Boxes.Calculator.FriendlyInvestment": "Befektetői bónusz:",
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/extension/index#Kostenrechner", //Todo: Translate
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
 		"Boxes.Calculator.LevelWarning": "FIGYELEM! N.É. szintet lép!",
 		"Boxes.Calculator.LGNotConnected": "Az épület nincs úthoz csatolva",
 		"Boxes.Calculator.LGNotOpen": "A következő szint jelenleg zárva van",
 		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
 		"Boxes.Calculator.Meds": "Medál",
 		"Boxes.Calculator.Profit": "Nyereség",
-		"Boxes.Calculator.Rate": "Arány",
-		"Boxes.Calculator.Sniping": "Sniping", //Todo: Translate
 		"Boxes.Calculator.Step": "Szint",
 		"Boxes.Calculator.Title": "Nevezetes számláló",
 		"Boxes.Calculator.TTForderCosts": "Cost = __nettoreward__<small>(Net Reward)</small> X __forderfactor__%<small>(Friendly invest??)</small> = __costs__", //Todo: Translate
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Not enough FP Packs in stock!<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.TTForderNegativeProfit": "Hely nem biztonságos. __fpcount__ További FP szükséges a biztosításához<br>Teljes befektetés a hely biztosításához: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP Nem fér be<br>Maximum befektetés: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Loss = __paid__ <small>(Paid)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
 		"Boxes.Calculator.TTPaidTooLess": "You paid __paid__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
 		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
 		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTRate": "Rate = __costs__ <small>(Cost)</small> / __nettoreward__ <small>(Net Reward)</small> = __rate__%", //Todo: Translate
-		"Boxes.Calculator.TTSnipeFPStockLow": "ATTENTION: Not enough FP packs in stock to snipe!<br>You only have __fpstock__ of __costs__ FPs.<br>That's __tooless__FPs too few", //Todo: Translate
 		"Boxes.Calculator.Up2LevelUp": "Szint lépésig",
 		"Boxes.Campagne.AlreadyDone": " Már meghódított!",
 		"Boxes.Campagne.DescInStock": "Elérhető",
@@ -143,14 +139,19 @@
 		"Boxes.Gildfights.Title": "Játékos áttekintés",
 		"Boxes.Gildfights.Total": "Total", //Todo: Translate
 		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
 		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.FPCostGoods": "FP costs goods", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.FPCostGoods": "FP costs for goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion1": "Suggestion1", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion2", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
-		"Boxes.HiddenRewards.Appears": "Megjelenik",
+		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
 		"Boxes.HiddenRewards.Disappears": "eltűnik",
 		"Boxes.HiddenRewards.NoEvents": "Nincs esemény",
 		"Boxes.HiddenRewards.Title": "Rejtett jutalmak",
@@ -184,16 +185,6 @@
 		"Boxes.Kits.TabBuildingKits": "Sets/Upgrades", //Todo: Translate
 		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
 		"Boxes.Kits.Title": "In Stock Sets, Upgrades and Kits", //Todo: Translate
-		"Boxes.LGOverviewBox.Building": "Épület",
-		"Boxes.LGOverviewBox.Level": "Szint",
-		"Boxes.LGOverviewBox.NothingToGet": "<strong>__player__</strong>-nek/nak nincs több kínálata",
-		"Boxes.LGOverviewBox.PaidTotal": "Fizetett / Teljes",
-		"Boxes.LGOverviewBox.Profit": "Nyereség",
-		"Boxes.LGOverviewBox.Rate": "Arány",
-		"Boxes.LGOverviewBox.Title": "Lehetséges befektetések",
-		"Boxes.LGOverviewBox.Tooltip.FoundAgain": "Felismert",
-		"Boxes.LGOverviewBox.Tooltip.FoundNew": "Új találat",
-		"Boxes.LGOverviewBox.Tooltip.NoPayment": "Eddig nincs befektetés",
 		"Boxes.Negotiation.Average": "Ø Mennyiség",
 		"Boxes.Negotiation.Canceled": "Tárgyalás meg lett szakítva",
 		"Boxes.Negotiation.Chance": "Esély",
@@ -211,11 +202,18 @@
 		"Boxes.Negotiation.Title": "Tárgyalás segítő",
 		"Boxes.Negotiation.TryEnd": "Nincs több próbálkozás",
 		"Boxes.Negotiation.WrongGoods": "Rossz árú választva, Kérlek fejezd be manuálisan",
-		"Boxes.Neighbors.AttackingArmy": "Attack Boost (estimated): __attatt__% (ATT) / __attdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.DefendingArmy": "Defensive Boost (estimated): __defatt__% (ATT) / __defdef__% (DEF)", //Todo: Translate
-		"Boxes.Neighbors.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Neighbors.OngoingProductions": "Folyamatban levő termelések",
-		"Boxes.Neighbors.ReadyProductions": "Befejezett termelések",
+		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
+		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
+		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
+		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
+		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
+		"Boxes.Notice.NewSide": "Side", //Todo: Translate
+		"Boxes.Notice.Save": "Save", //Todo: Translate
+		"Boxes.Notice.SideName": "Side name", //Todo: Translate
+		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
+		"Boxes.Notice.Title": "Notices", //Todo: Translate
 		"Boxes.Outpost.DescInStock": "Elérhető",
 		"Boxes.Outpost.DescRequired": "Szükséges",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ff4040'>Hiányzó</span>",
@@ -228,6 +226,7 @@
 		"Boxes.Outpost.TitleBuildings": "Épület",
 		"Boxes.Outpost.TitleFree": "Ingyenes",
 		"Boxes.Outpost.TitleShort": "Árú áttekintés - ",
+		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
 		"Boxes.OwnpartCalculator.Arc": "Bárka",
 		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
 		"Boxes.OwnpartCalculator.BPs": "T.R.",
@@ -236,7 +235,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Befizetés",
 		"Boxes.OwnpartCalculator.Done": "Kész",
 		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/extension/index#Eigenanteilsrechner", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
 		"Boxes.OwnpartCalculator.IndividualName": "egyedi Lb név",
 		"Boxes.OwnpartCalculator.Levels": "Szintek",
 		"Boxes.OwnpartCalculator.LGTotalFP": "N.É. Össz pontszám",
@@ -255,35 +254,10 @@
 		"Boxes.OwnpartCalculator.Step": "Szint",
 		"Boxes.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Boxes.OwnpartCalculator.YourName": "Saját név",
-		"Boxes.Plundered.actionBattleLost": "Battle Lost", //Todo: Translate
-		"Boxes.Plundered.actionBattleWon": "Battle Won", //Todo: Translate
-		"Boxes.Plundered.actionPlundered": "Plundered", //Todo: Translate
-		"Boxes.Plundered.actionShielded": "City Shield Activated", //Todo: Translate
-		"Boxes.Plundered.actionSurrendered": "Surrendered", //Todo: Translate
-		"Boxes.Plunderer.AllPlayers": "All Players Displayed (Click on a Player's name to display Player's info)", //Todo: Translate
-		"Boxes.Plunderer.Attack": "Attack", //Todo: Translate
-		"Boxes.Plunderer.autoBattle": "Auto Battle", //Todo: Translate
-		"Boxes.Plunderer.collectedToday": "Collected Today", //Todo: Translate
-		"Boxes.Plunderer.Defense": "Defense", //Todo: Translate
-		"Boxes.Plunderer.filteredByUser": "Filtered by user", //Todo: Translate
-		"Boxes.Plunderer.FP": "FPs", //Todo: Translate
-		"Boxes.Plunderer.goto1stPage": "1st Page", //Todo: Translate
-		"Boxes.Plunderer.HasNoClan": "<em>Has NO guild</em>", //Todo: Translate
-		"Boxes.Plunderer.nextPage": "Next Page", //Todo: Translate
-		"Boxes.Plunderer.noData": "No Data", //Todo: Translate
-		"Boxes.Plunderer.Page": "Page", //Todo: Translate
-		"Boxes.Plunderer.PlayersEra": "Player Era", //Todo: Translate
-		"Boxes.Plunderer.rounds": "Rounds", //Todo: Translate
-		"Boxes.Plunderer.shieldProtectetUntil": "City Shielded until:", //Todo: Translate
-		"Boxes.Plunderer.shieldUntil": "Shield Ends in", //Todo: Translate
-		"Boxes.Plunderer.showAllPlayers": "Display All Players", //Todo: Translate
-		"Boxes.Plunderer.thisWeek": "This Week", //Todo: Translate
-		"Boxes.Plunderer.Title": "PvP/Plunder Activities", //Todo: Translate
-		"Boxes.Plunderer.total": "Total", //Todo: Translate
-		"Boxes.Plunderer.visited": "Visited", //Todo: Translate
-		"Boxes.Plunderer.visitTitle": "Last Visited", //Todo: Translate
+		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Szomszédos épületek",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Productions.Happiness": "Boldogság",
 		"Boxes.Productions.Headings.all": "Összes",
 		"Boxes.Productions.Headings.amount": "Mennyiség",
@@ -293,6 +267,7 @@
 		"Boxes.Productions.Headings.decoration": "Dekorációk",
 		"Boxes.Productions.Headings.earning": "Bevétel",
 		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
 		"Boxes.Productions.Headings.goods": "Vagyon épületek",
 		"Boxes.Productions.Headings.greatbuilding": "Nevezetes épületek",
 		"Boxes.Productions.Headings.main_building": "Városháza",
@@ -372,8 +347,6 @@
 		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
 		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
 		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.StrategyPoints.BuyableFP": "Vásárolható: ",
-		"Boxes.StrategyPoints.FPBar": "FP-Készlet: ",
 		"Boxes.Technologies.DescInStock": "Elérhető",
 		"Boxes.Technologies.DescRequired": "Szükséges",
 		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Többlet</span> / <span style='color:#ff4040'>Hiányzó</span>",
@@ -458,6 +431,8 @@
 		"Menu.Negotiation.Desc": "Javaslatokat tegyen a tárgyalásokra",
 		"Menu.Negotiation.Title": "Tárgyalás segítő",
 		"Menu.Negotiation.Warning": "Tiltott: Először kezdjen meg egy tárgyalást!",
+		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
+		"Menu.Notice.Title": "Notices", //Todo: Translate
 		"Menu.OutP.Desc": "A szükséges források áttekintése",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Tiltott: először nézd meg a kulturális településnél: <br></em> A szükséges források áttekintését",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Tiltott: Indítson el egy kulturális települést és töltse be újra a játékot (F5)",
@@ -465,8 +440,6 @@
 		"Menu.OwnpartCalculator.Desc": "Készítsen tervet a behelyezett FP-ről az első 5 hely biztosítására",
 		"Menu.OwnpartCalculator.Title": "Saját nevezetes számláló",
 		"Menu.OwnpartCalculator.Warning": "Tiltott: Először nyissa meg az egyik nevezetes épületét!",
-		"Menu.Plunderer.Desc": "Displays your PvP battles and plunder results", //Todo: Translate
-		"Menu.Plunderer.Title": "PvP Activity", //Todo: Translate
 		"Menu.Productions.Desc": "Megjeleníti az összes aktuális termelés számát.",
 		"Menu.Productions.Title": "Termelés áttekintése",
 		"Menu.Settings.Desc": "Itt van néhány apró beállítás",
@@ -479,8 +452,6 @@
 		"Menu.Unit.Desc": "Az összes sereg",
 		"Menu.Unit.Title": "Sereg",
 		"Menu.Unit.Warning": "Legalább 1x nyisd meg a Hadsereg organizátort",
-		"Settings.AddStreetToEfficiencyCalcSize.Desc": "Include Streets in efficiency-calculation. We are adding the half of the lenght of the smallest side to the area.", //Todo: Translate
-		"Settings.AddStreetToEfficiencyCalcSize.Title": "Efficiency: Streets", //Todo: Translate
 		"Settings.AutomaticNegotiation.Desc": "Az asszisztens automatikusan megnyíljon tárgyalás indításakor, és bezáruljon, ha visszavonják?",
 		"Settings.AutomaticNegotiation.Title": "Tárgyalási segítő",
 		"Settings.ChangeLanguage.Desc": "Melyik nyelv legyen használva a meglévő helyett?",
@@ -491,8 +462,6 @@
 		"Settings.GlobalSend.Title": "Átvitel a foe-rechner.de -re",
 		"Settings.MenuLength.Desc": "Hány elem legyen a menüben?<br> Üresen hagyás vagy \"0\" automatikus magasságot jelent.",
 		"Settings.MenuLength.Title": "Menü hossza",
-		"Settings.PreScanLGList.Desc": "Megvizsgálja a szomszéd áttekintő listáját, amikor kinyitja, és meghatározza az esetleges F.É.-ket (Fosztható Épület). <br> <u> Megjegyzés: </u> Mivel a végső helyeket csak egy F.É. megnyitásakor továbbítják, az eredmény eltérő lehet. A beolvasás azonban mentésre kerül.",
-		"Settings.PreScanLGList.Title": "Az F.É. előzetes áttekintése",
 		"Settings.ResetBoxPositions.Button": "Töröl!",
 		"Settings.ResetBoxPositions.Desc": "Minden doboz koordinátáját vissza kell állítani?",
 		"Settings.ResetBoxPositions.Title": "Doboz koordinátái",
@@ -504,12 +473,8 @@
 		"Settings.SendInvestigations.Title": "FP befektetés",
 		"Settings.SendTavernInfo.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",
 		"Settings.SendTavernInfo.Title": "Motivációs tevékenység",
-		"Settings.ShowAllPlayerAttDeff.Desc": "Estimated Attack and defense will be shown every time you visit a player", //Todo: Translate
-		"Settings.ShowAllPlayerAttDeff.Title": "Show attack and defense for all players", //Todo: Translate
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowNeighborsGoods.Desc": "A látogatás során mutassa meg, milyen termelés van folyamatban",
-		"Settings.ShowNeighborsGoods.Title": "A szomszédság termelése",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Amint aktiválódik a kocsmában az extra lépés, megjelenik egy globálisan mozgatható számláló.",

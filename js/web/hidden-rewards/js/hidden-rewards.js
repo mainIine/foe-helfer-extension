@@ -1,8 +1,9 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
-    HiddenRewards.Cache = data.responseData.hiddenRewards;
+    HiddenRewards.Cache = HiddenRewards.prepareData(data.responseData.hiddenRewards);
+	HiddenRewards.SetCounter();
 
-    if (MainParser.Buildings !== null) {
-        HiddenRewards.prepareData();
+    if ($('#HiddenRewardBox').length >= 1) {
+        HiddenRewards.BuildBox();
     }
 });
 
@@ -13,8 +14,6 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 let HiddenRewards = {
 
     Cache: null,
-    IsPrepared: false,
-
 
 	/**
 	 * Box in den DOM
@@ -45,13 +44,13 @@ let HiddenRewards = {
 	/**
 	 * Daten aufbereiten
 	 */
-    prepareData: () => {
+    prepareData: (Rewards) => {
         let data = [];
 
-        for (let idx in HiddenRewards.Cache) {
-            if (!HiddenRewards.Cache.hasOwnProperty(idx)) continue;
+        for (let idx in Rewards) {
+            if (!Rewards.hasOwnProperty(idx)) continue;
 
-            let position = HiddenRewards.Cache[idx].position.context;
+            let position = Rewards[idx].position.context;
 
             let SkipEvent = true;
 
@@ -76,10 +75,10 @@ let HiddenRewards = {
             }
 
             data.push({
-                type: HiddenRewards.Cache[idx].type,
+                type: Rewards[idx].type,
                 position: position,
-                starts: HiddenRewards.Cache[idx].startTime,
-                expires: HiddenRewards.Cache[idx].expireTime,
+                starts: Rewards[idx].startTime,
+                expires: Rewards[idx].expireTime,
             });
         }
 
@@ -89,11 +88,7 @@ let HiddenRewards = {
             return 0;
         });
 
-        HiddenRewards.Cache = data;
-
-        if ($('#HiddenRewardBox').length >= 1) {
-            HiddenRewards.BuildBox();
-        }
+        return data;        
     },
 
 
@@ -127,20 +122,15 @@ let HiddenRewards = {
             let StartTime = moment.unix(hiddenReward.starts),
                 EndTime = moment.unix(hiddenReward.expires);
 
-            if (EndTime > new Date().getTime()) {
+            if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
                 h.push('<tr>');
-				
+
                 h.push('<td class="incident" title="' + hiddenReward.type + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
-				
+
                 h.push('<td>' + hiddenReward.position + '</td>');
-				
-                if (StartTime > new Date().getTime()) {
-                    h.push('<td class="warning">' + i18n('Boxes.HiddenRewards.Appears') + ' ' + moment.unix(hiddenReward.starts).fromNow() + '</td>');
-                }
-                else {
-                    h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
-                }
-				
+
+                h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
+
                 h.push('</tr>');
                 cnt++;
             }
@@ -154,5 +144,27 @@ let HiddenRewards = {
         h.push('</table>');
 
         $('#HiddenRewardBoxBody').html(h.join(''));
-    }
+    },
+
+
+	SetCounter: ()=> {
+
+    	let cnt = 0;
+
+		for (let idx in HiddenRewards.Cache) {
+
+			if (!HiddenRewards.Cache.hasOwnProperty(idx)) {
+				break;
+			}
+
+			let hiddenReward = HiddenRewards.Cache[idx],
+				StartTime = moment.unix(hiddenReward.starts)
+
+			if (StartTime < MainParser.getCurrentDateTime()){
+				cnt++;
+			}
+		}
+
+		$('#hidden-reward-count').text(cnt);
+	}
 };

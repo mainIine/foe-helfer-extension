@@ -113,33 +113,40 @@
 	white-space: nowrap;
 }
 
-#Productions #ProductionsBody .tabs ul li a {
-	background: transparent url('../images/productions.png') 0 0 no-repeat;
+#Productions #ProductionsBody .tabs ul li a span {
+	width: 27px;
 }
-#Productions #ProductionsBody .tabs ul li.strategy_points a {
-	background-position: 0 0;
+
+#Productions #ProductionsBody .tabs ul li a span {
+	background: transparent url('../images/productions.png') -233px 5px no-repeat;
 }
-#Productions #ProductionsBody .tabs ul li.money a {
-	background-position: -26px 0;
+#Productions #ProductionsBody .tabs ul li.strategy_points a span {
+	background-position: 0 4px;
 }
-#Productions #ProductionsBody .tabs ul li.supplies a {
-	background-position: -51px 0;
+#Productions #ProductionsBody .tabs ul li.money a span {
+	background-position: -26px 5px;
 }
-#Productions #ProductionsBody .tabs ul li.medals a {
-	background-position: -78px 0;
+#Productions #ProductionsBody .tabs ul li.supplies a span {
+	background-position: -51px 5px;
 }
-#Productions #ProductionsBody .tabs ul li.population a {
-	background-position: -183px 0;
+#Productions #ProductionsBody .tabs ul li.medals a span {
+	background-position: -78px 5px;
 }
-#Productions #ProductionsBody .tabs ul li.happiness a {
-	background-position: -156px 0;
+#Productions #ProductionsBody .tabs ul li.population a span {
+	background-position: -183px 6px;
 }
-#Productions #ProductionsBody .tabs ul li.packaging a {
-	background-position: -103px 0;
+#Productions #ProductionsBody .tabs ul li.happiness a span {
+	background-position: -156px 6px;
 }
-#Productions #ProductionsBody .tabs ul li.premium a {
-	background-position: -207px 0;
+#Productions #ProductionsBody .tabs ul li.packaging a span {
+	background-position: -103px 6px;
 }
-#Productions #ProductionsBody .tabs ul li.all a {
-	background-position: -128px 0;
+#Productions #ProductionsBody .tabs ul li.premium a span {
+	background-position: -209px 5px;
+}
+#Productions #ProductionsBody .tabs ul li.all a span {
+	background-position: -129px 5px;
+}
+#Productions #ProductionsBody .tabs ul li.clan_power a span {
+	background-position: -262px 5px;
 }

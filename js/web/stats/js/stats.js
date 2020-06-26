@@ -13,7 +13,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (d
 		};
 		return acc;
 	}, {});
-	const timeNow = new Date();
+	const timeNow = MainParser.getCurrentDate();
 
     await IndexDB.getDB();
 
@@ -58,7 +58,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 		}
 		// Add reward incident record
 		await IndexDB.db.statsRewards.add({
-			date: new Date(),
+			date: MainParser.getCurrentDate(),
 			type: rewardIncidentSource,
 			amount: reward.amount || 0,
 			reward: reward.id
@@ -392,7 +392,7 @@ let Stats = {
 					format: i18n('Date'),
 					lang: MainParser.Language,
 					singleMode: false,
-					maxDate: new Date(),
+					maxDate: MainParser.getCurrentDate(),
 					showWeekNumbers: true,
 					onSelect: async function (start, end) {
 						$('#GVGDatePicker').text(`${start} - ${end}`);
@@ -1117,7 +1117,7 @@ let Stats = {
 		const startDate = {
 			today: moment().startOf('day').toDate(),
 			yesterday: moment().subtract(1, 'weeks').startOf('day').toDate(),
-			sinceTuesday: ((moment().startOf('week').add(2, 'days').toDate() > new Date()) ?
+			sinceTuesday: ((moment().startOf('week').add(2, 'days').toDate() > MainParser.getCurrentDate()) ?
                            moment().startOf('week').subtract(1, 'weeks').add(2, 'days').toDate() : moment().startOf('week').add(2, 'days').toDate()),
 			last7days: moment().subtract(1, 'weeks').toDate(),
 			thisMonth: moment().startOf('month').toDate(),
