@@ -18,99 +18,93 @@ let Settings = {
 	/**
 	 * Einstellungspunkte
 	 */
-	Preferences: {
-		Version: {
-			callback: 'VersionInfo',
-			title: i18n('Settings.Version.Title'),
-			desc: HTML.i18nReplacer(i18n('Settings.Version.Desc'), {
-				version: extVersion,
-				language: (GuiLng === 'de' ? 'de' : 'en')
-			})
-		},
-		GlobalSend : {
-			status: true,
-			title : i18n('Settings.GlobalSend.Title'),
-			desc : i18n('Settings.GlobalSend.Desc')
-		},
-		SendTavernInfo : {
-			status: false,
-			title : i18n('Settings.SendTavernInfo.Title'),
-			desc : i18n('Settings.SendTavernInfo.Desc')
-		},
-		SendGildMemberLGInfo : {
-			status: false,
-			title : i18n('Settings.SendGildMemberLGInfo.Title'),
-			desc : i18n('Settings.SendGildMemberLGInfo.Desc')
-		},
-		SendGEXInfo : {
-			status: true,
-			title : i18n('Settings.SendGEXInfo.Title'),
-			desc : i18n('Settings.SendGEXInfo.Desc')
-		},
-		ShowNeighborsGoods : {
-			status: true,
-			title : i18n('Settings.ShowNeighborsGoods.Title'),
-			desc : i18n('Settings.ShowNeighborsGoods.Desc')
-		},
-		ShowAllPlayerAttDeff: {
-			status: true,
-			title: i18n('Settings.ShowAllPlayerAttDeff.Title'),
-			desc: i18n('Settings.ShowAllPlayerAttDeff.Desc')
-		},
-		ShowOwnPartOnAllGBs: {
-			status: false,
-			title: i18n('Settings.ShowOwnPartOnAllGBs.Title'),
-			desc: i18n('Settings.ShowOwnPartOnAllGBs.Desc')
-		},
-		SendInvestigations : {
-			status: false,
-			title : i18n('Settings.SendInvestigations.Title'),
-			desc : i18n('Settings.SendInvestigations.Desc')
-		},
-		ShowInvestments: {
-			status: true,
-			title: i18n('Settings.ShowInvestments.Title'),
-			desc: i18n('Settings.ShowInvestments.Desc')
-        },
-		ShowTavernBadge : {
-			status: true,
-			title : i18n('Settings.ShowTavernBadge.Title'),
-			desc : i18n('Settings.ShowTavernBadge.Desc')
-		},
-		PreScanLGList : {
-			status: true,
-			title : i18n('Settings.PreScanLGList.Title'),
-			desc : i18n('Settings.PreScanLGList.Desc')
-		},
-		AutomaticNegotiation : {
-			status: true,
-			title : i18n('Settings.AutomaticNegotiation.Title'),
-			desc : i18n('Settings.AutomaticNegotiation.Desc')
-		},
-		ResetBoxPositions : {
-			button: 'ResetBoxCoords',
-			buttonText: i18n('Settings.ResetBoxPositions.Button'),
-			title : i18n('Settings.ResetBoxPositions.Title'),
-			desc : i18n('Settings.ResetBoxPositions.Desc')
-		},
-		MenuLength : {
-			callback: 'MenuInputLength',
-			title : i18n('Settings.MenuLength.Title'),
-			desc : i18n('Settings.MenuLength.Desc')
-		},
-		ChangeLanguage : {
-			callback: 'LanguageDropdown',
-			title : i18n('Settings.ChangeLanguage.Title'),
-			desc : i18n('Settings.ChangeLanguage.Desc')
-		},
-		/*
-		CustomerApi : {
-			status: false,
-			callback: 'CustomerApiCheck',
-			title : i18n('Settings.CustomerApi.Title'),
-			desc : i18n('Settings.CustomerApi.Desc')
-		}
-		*/
+	Preferences: undefined,
+
+
+	/**
+ * Initialisiert das Preferences Dict
+ * 
+ * */
+	InitPreferences: () => {
+		Settings.Preferences = {
+			Version: {
+				callback: 'VersionInfo',
+				title: i18n('Settings.Version.Title'),
+				desc: HTML.i18nReplacer(i18n('Settings.Version.Desc'), {
+					version: extVersion,
+					language: (GuiLng === 'de' ? 'de' : 'en')
+				})
+			},
+			GlobalSend: {
+				status: true,
+				title: i18n('Settings.GlobalSend.Title'),
+				desc: i18n('Settings.GlobalSend.Desc')
+			},
+			SendTavernInfo: {
+				status: false,
+				title: i18n('Settings.SendTavernInfo.Title'),
+				desc: i18n('Settings.SendTavernInfo.Desc')
+			},
+			SendGildMemberLGInfo: {
+				status: false,
+				title: i18n('Settings.SendGildMemberLGInfo.Title'),
+				desc: i18n('Settings.SendGildMemberLGInfo.Desc')
+			},
+			SendGEXInfo: {
+				status: true,
+				title: i18n('Settings.SendGEXInfo.Title'),
+				desc: i18n('Settings.SendGEXInfo.Desc')
+			},
+			ShowOwnPartOnAllGBs: {
+				status: false,
+				title: i18n('Settings.ShowOwnPartOnAllGBs.Title'),
+				desc: i18n('Settings.ShowOwnPartOnAllGBs.Desc')
+			},
+			SendInvestigations: {
+				status: false,
+				title: i18n('Settings.SendInvestigations.Title'),
+				desc: i18n('Settings.SendInvestigations.Desc')
+			},
+			ShowInvestments: {
+				status: true,
+				title: i18n('Settings.ShowInvestments.Title'),
+				desc: i18n('Settings.ShowInvestments.Desc')
+			},
+			ShowTavernBadge: {
+				status: true,
+				title: i18n('Settings.ShowTavernBadge.Title'),
+				desc: i18n('Settings.ShowTavernBadge.Desc')
+			},
+			AutomaticNegotiation: {
+				status: true,
+				title: i18n('Settings.AutomaticNegotiation.Title'),
+				desc: i18n('Settings.AutomaticNegotiation.Desc')
+			},
+			ResetBoxPositions: {
+				button: 'ResetBoxCoords',
+				buttonText: i18n('Settings.ResetBoxPositions.Button'),
+				title: i18n('Settings.ResetBoxPositions.Title'),
+				desc: i18n('Settings.ResetBoxPositions.Desc')
+			},
+			MenuLength: {
+				callback: 'MenuInputLength',
+				title: i18n('Settings.MenuLength.Title'),
+				desc: i18n('Settings.MenuLength.Desc')
+			},
+			ChangeLanguage: {
+				callback: 'LanguageDropdown',
+				title: i18n('Settings.ChangeLanguage.Title'),
+				desc: i18n('Settings.ChangeLanguage.Desc')
+			},
+			/*
+			CustomerApi : {
+				status: false,
+				callback: 'CustomerApiCheck',
+				title : i18n('Settings.CustomerApi.Title'),
+				desc : i18n('Settings.CustomerApi.Desc')
+			}
+			*/
+		};
 	},
 
 
@@ -118,7 +112,6 @@ let Settings = {
 	 * Box initiieren
 	 */
 	init: ()=> {
-
 		if( $('#SettingsBox').length < 1 ){
 
 			// CSS in den DOM prügeln

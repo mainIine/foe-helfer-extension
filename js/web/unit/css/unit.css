@@ -54,22 +54,22 @@
 	border-radius: 10px;
 }
 
-#units #unitsBody .tabs ul li a {
+#units #unitsBody .tabs ul li a span {
 	width: 21px;
-	left: 37px;
+	top: 6px;
 	background: transparent url('../images/unit-icons.png') 0 3px no-repeat;
 	background-size: 90px 20px;
 }
 
-#units #unitsBody .tabs ul li.defense a {
+#units #unitsBody .tabs ul li.defense a span {
 	background-position: -21px 3px;
 }
 
-#units #unitsBody .tabs ul li.pool a {
+#units #unitsBody .tabs ul li.pool a span {
 	background-position: -41px 3px;
 }
 
-#units #unitsBody .tabs ul li.alca a {
+#units #unitsBody .tabs ul li.alca a span {
 	background-position: -67px 3px;
 }
 
