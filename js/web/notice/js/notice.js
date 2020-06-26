@@ -336,14 +336,17 @@ let Notice = {
 	 * @constructor
 	 */
 	SaveModal: (type, id)=> {
-		const nN = $(`.inp-${type}-name`).val(),
-			name = nN.trim();
+		let nN = $(`.inp-${type}-name`).val(),
+			txt = nN.trim();
 
-		if(nN === ''){
+		if(txt === ''){
 			return;
 		}
 
-		MainParser.send2Server({id:id,type:type,name:name}, 'Notice/set', (resp)=>{
+		// filter <script> Tags
+		txt = MainParser.ClearText(txt);
+
+		MainParser.send2Server({id:id,type:type,name:txt}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
 			$('#notices-modal').fadeToggle('fast', function(){
@@ -365,16 +368,18 @@ let Notice = {
 	 * @constructor
 	 */
 	SaveItemModal: (id)=> {
-		const nN = $('.inp-itm-name').val(),
-			name = nN.trim(),
+		let nN = $('.inp-itm-name').val(),
+			txt = nN.trim(),
 			grp = parseInt($('ul.horizontal').find('li.active a').data('id')),
 			sortVal = !$(`inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
 
-		if(nN === ''){
+		if(txt === ''){
 			return;
 		}
 
-		MainParser.send2Server({id:id,type:'itm',name:name,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
+		txt = MainParser.ClearText(txt);
+
+		MainParser.send2Server({id:id,type:'itm',name:txt,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
 			$('#notices-modal').fadeToggle('fast', function(){

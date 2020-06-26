@@ -2073,5 +2073,12 @@ let MainParser = {
 		$('#disclaimer, .foe-helper-overlay').fadeToggle(function(){
 			$(this).remove();
 		});
+	},
+
+
+	ClearText: (text)=> {
+		let RegEx = new RegExp(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi);
+
+		return text.replace(RegEx, '');
 	}
 };
