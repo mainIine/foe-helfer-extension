@@ -634,7 +634,8 @@ let _menu = {
 		let btn_Event = $('<span />');
 
 		btn_Event.on('click', function () {
-			EventQuest.Show();
+			let win = window.open('https://foe-rechner.de/events/overview', '_blank');
+			win.focus();
 		});
 
 		btn_EventBG.append(btn_Event);
