@@ -88,16 +88,16 @@
 		"Boxes.Calculator.Profit": "Gain",
 		"Boxes.Calculator.Step": "Niveau ",
 		"Boxes.Calculator.Title": "Calculs GM externes",
-		"Boxes.Calculator.TTForderCosts": "Coût : <b>__costs__</b> PF<br><i>__nettoreward__ <small>(récompense)</small> * __forderfactor__% <small>(taux amis)</small></i>",
+		"Boxes.Calculator.TTForderCosts": "Coût : <b>__costs__</b> PF<br><i>__nettoreward__ <small>(récompense)</small> x __forderfactor__% <small>(taux amis)</small></i>",
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Votre stock de PF est trop bas !<br>Vous avez seulement __fpstock__ sur les __costs__ PF demandés.<br>Il vous manque __tooless__ PF",
 		"Boxes.Calculator.TTForderNegativeProfit": "<br><b>Place non sécurisée !</b><br><br>Manque <b>__fpcount__</b> PF pour la sécuriser<br><br>Total pour sécuriser la place : <b>__totalfp__</b> PF",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__ PF ne rentre pas dedans<br>Investissement maximum : __totalfp__ PF",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__paid__</b> PF<br><br>= <b>PERTE de __loss__ PF</b>",
+		"Boxes.Calculator.TTLoss": "Récompense = __nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small> = __bruttoreward__ PF<br>Coût : __costs__ - Place sécurisée à : __safe__ PF<br>Perte : __costs__ <small>(Coût)</small> - __bruttoreward__ <small>(Récompense)</small> = __loss__ PF",
+		"Boxes.Calculator.TTLossSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__paid__</b> PF<br><br>= <b>PERTE de __loss__ PF</b>",
 		"Boxes.Calculator.TTPaidTooLess": "<br>Vous avez payé __paid__ PF au lieu de __topay__ PF<br> Il manque <b>__tooless__</b> PF",
 		"Boxes.Calculator.TTPaidTooMuch": "<br>Vous avez payé __paid__ PF au lieu de __topay__ PF<br> C'est <b>__toomuch__</b> PF de trop",
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> * __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__paid__</b> PF<br><br>= <b>GAIN de __profit__ PF</b>",
+		"Boxes.Calculator.TTProfit": "Récompense = __nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small> = __bruttoreward__ PF<br>Coût : __costs__ - Place sécurisée à : __safe__ PF<br>Gain : __bruttoreward__ <small>(récompense)</small> - __costs__ <small>(Coût)</small> = __profit__ PF",
+		"Boxes.Calculator.TTProfitSelf": "Récompense : <b>__bruttoreward__</b> PF<br><i>__nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small></i><br><br>− Payé : <b>__paid__</b> PF<br><br>= <b>GAIN de __profit__ PF</b>",
 		"Boxes.Calculator.Up2LevelUp": "Jusqu'au niveau suivant ",
 		"Boxes.Campagne.AlreadyDone": " déjà conquis !",
 		"Boxes.Campagne.DescInStock": "Disponible",
@@ -139,19 +139,19 @@
 		"Boxes.Gildfights.Title": "Activité de membre",
 		"Boxes.Gildfights.Total": "Total",
 		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
-		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Coûts",
 		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
-		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "PF journalier",
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
 		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
-		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Masquer les GMs non construits",
 		"Boxes.GreatBuildings.Level": "Niveau",
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2",
+		"Boxes.GreatBuildings.SuggestionDescription": "Les bâtiments en haut de la liste sont les meilleurs",
+		"Boxes.GreatBuildings.SuggestionTitle": "Comparaison GM PF RoI",
 		"Boxes.GreatBuildings.Title": "Investissement GM",
-		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
-		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCosts": "Vous n'avez pas encore construit ce GM. Ce sont les coûts en PF pour l'achat des ressources nécessaires",
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Répertorie les coûts en PF pour l'achat des ressources nécessaires (s'applique uniquement aux GMs que vous n'avez pas encore construits)",
 		"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 		"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
 		"Boxes.HiddenRewards.Title": "Récompenses cachées",
@@ -202,18 +202,18 @@
 		"Boxes.Negotiation.Title": "Assistant de négociations",
 		"Boxes.Negotiation.TryEnd": "Essayez de finir",
 		"Boxes.Negotiation.WrongGoods": "Mauvais produits sélectionnés, veuillez terminer manuellement",
-		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
-		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "Side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
+		"Boxes.Notice.DeleteGroup": "Supprimer onglet",
+		"Boxes.Notice.DeleteItem": "Supprimer page",
+		"Boxes.Notice.DummyHeading": "Votre titre",
+		"Boxes.Notice.Edit": "Editer",
+		"Boxes.Notice.GroupName": "Nom d'onglet",
+		"Boxes.Notice.NewGroup": "Onglet",
+		"Boxes.Notice.NewGroupDesc": "Créez d'abord un onglet...",
+		"Boxes.Notice.NewSide": "Page",
+		"Boxes.Notice.Save": "Sauver",
+		"Boxes.Notice.SideName": "Nom de page",
+		"Boxes.Notice.Sorting": "Tri",
+		"Boxes.Notice.Title": "Notes",
 		"Boxes.Outpost.DescInStock": "Disponible",
 		"Boxes.Outpost.DescRequired": "Requis",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Excès</span> / <span style='color:#ff4040'>Manquant</span>",
@@ -226,7 +226,7 @@
 		"Boxes.Outpost.TitleBuildings": "Bâtiment",
 		"Boxes.Outpost.TitleFree": "Etat",
 		"Boxes.Outpost.TitleShort": "Vue des ressources - ",
-		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
+		"Boxes.OwnpartCalculator.All": "Tous",
 		"Boxes.OwnpartCalculator.Arc": "Arche",
 		"Boxes.OwnpartCalculator.Auto": "Auto.",
 		"Boxes.OwnpartCalculator.BPs": "Plans",
@@ -254,10 +254,10 @@
 		"Boxes.OwnpartCalculator.Step": "Niveau",
 		"Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GM",
 		"Boxes.OwnpartCalculator.YourName": "Votre nom",
-		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
+		"Boxes.Production.SizeTT": "Taille, y compris l'espace moyen requis pour la route sur __streetnettosize__ cases",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.GoodEraTotal": "Total",
-		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Puissance de guilde",
 		"Boxes.Productions.Happiness": "Satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
 		"Boxes.Productions.Headings.amount": "Quantité",
@@ -266,8 +266,8 @@
 		"Boxes.Productions.Headings.culture": "Bâtiments culturels",
 		"Boxes.Productions.Headings.decoration": "Décorations",
 		"Boxes.Productions.Headings.earning": "Récolte",
-		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.efficiency": "Efficacité",
+		"Boxes.Productions.Headings.era": "Ère",
 		"Boxes.Productions.Headings.goods": "Bâtiments de marchandises",
 		"Boxes.Productions.Headings.greatbuilding": "Grands Monuments",
 		"Boxes.Productions.Headings.main_building": "Hôtel de ville",
@@ -431,8 +431,8 @@
 		"Menu.Negotiation.Desc": "Faites des propositions de négociations précises.",
 		"Menu.Negotiation.Title": "Assistant de négociation",
 		"Menu.Negotiation.Warning": "Désactivé : Commencez une négociation en premier !",
-		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notices", //Todo: Translate
+		"Menu.Notice.Desc": "Prenez des notes sur tout ce que vous ne voulez pas oublier.",
+		"Menu.Notice.Title": "Notes",
 		"Menu.OutP.Desc": "Vue d'ensemble des ressources nécessaires.",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Désactivé : Allez d'abord dans la Colonie !",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Désactivé : Démarrez une Colonie et rechargez le jeu [F5]",
