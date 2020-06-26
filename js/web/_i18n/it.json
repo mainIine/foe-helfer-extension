@@ -1,4 +1,4 @@
-﻿{
+{
 	"values": {
 		"_Language": "Italiano",
 		"API.GEXChampionship": "Il posizionamento della gilda (Spedizione) è stato aggiornato",
@@ -7,7 +7,7 @@
 		"API.LGInvest": "I tuoi investimenti nei Grandi Edifici sono stati trasferiti",
 		"API.UpdateSuccess": "Aggiornamento eseguito",
 		"Boxes.Alerts.Form.Antiques.Auction": "Asta",
-		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
+		"Boxes.Alerts.Form.Antiques.Cooldown": "Cooldown asta",
 		"Boxes.Alerts.Form.Antiques.Dealer": "Rivenditore di oggetti d'antiquariato",
 		"Boxes.Alerts.Form.Antiques.Exchange": "scambio giornaliero",
 		"Boxes.Alerts.Form.Battleground": "Province dei campi di battaglia",
@@ -78,8 +78,8 @@
 		"Boxes.Calculator.Commitment": "Costi",
 		"Boxes.Calculator.Done": "Versato",
 		"Boxes.Calculator.FP": "PF",
-		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
+		"Boxes.Calculator.FriendlyInvestment": "Investimento amichevole:",
+		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/",
 		"Boxes.Calculator.LevelWarning": "ATTENZIONE! Il GE avanzerà di livello!",
 		"Boxes.Calculator.LGNotConnected": "L'edificio non è collegato ad una strada",
 		"Boxes.Calculator.LGNotOpen": "Il livello successivo non è attualmente sbloccato",
@@ -88,16 +88,16 @@
 		"Boxes.Calculator.Profit": "Profitto",
 		"Boxes.Calculator.Step": "Step",
 		"Boxes.Calculator.Title": "Calcolatore dei costi",
-		"Boxes.Calculator.TTForderCosts": "Costi = __nettoreward__ <small> (premio netto) </small> * __forderfactor__% <small> (Investimento amichevole) </small> = __costs__",
+		"Boxes.Calculator.TTForderCosts": "Costi = __nettoreward__ <small> (Ricompensa Netta) </small> * __forderfactor__% <small> (Investimento amichevole) </small> = __costs__",
 		"Boxes.Calculator.TTForderFPStockLow": "ATTENZIONE: Non hai abbastanza PF!<br>Hai solo __fpstock__ su __costs__PF<br>__tooless__PF in meno",
 		"Boxes.Calculator.TTForderNegativeProfit": "Il posto non è sicuro. __Fpcount__ FP aggiuntivi devono essere investiti per renderlo sicuro <br> Total per rendere il luogo sicuro: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP non si adatta a <br> Investimento massimo: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Loss = __paid__ <small> (pagato) </small> - __bruttoreward__ <small> (ricompensa) </small> = __loss__",
+		"Boxes.Calculator.TTLoss": "Ricompensa = __nettoreward__ <small>(Ricompensa Netta)</small> * __arcfactor__% <small>(Bonus Arc)</small> = __bruttoreward__<br>Costo: __costs__ - Posizione bloccata: __safe__<br>Perdita = __costs__ <small>(Costo)</small> - __bruttoreward__ <small>(Ricompensa)</small> = __loss__",
+		"Boxes.Calculator.TTLossSelf": "Ricompensa = __nettoreward__ <small> (Ricompensa Netta) </small> * __arcfactor__% <small> (Bonus Arc) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Loss = __paid__ <small> (pagato) </small> - __bruttoreward__ <small> (Ricompensa) </small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Hai pagato __paid__PF anziché __topay__PF. __tooless__PF in meno.",
 		"Boxes.Calculator.TTPaidTooMuch": "Hai pagato __paid__PF invece di __topay__PF. __toomuch__PF in più.",
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (premio netto) </small> * __arcfactor__% <small> (Bonus arco) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Profit = __bruttoreward__ <small> (ricompensa) </small> - __paid__ <small> (Pagato) </small> = __profit__",
+		"Boxes.Calculator.TTProfit": "Ricompensa = __nettoreward__ <small>(Ricompensa Netta)</small> * __arcfactor__% <small>(Bonus Arc)</small> = __bruttoreward__<br>Costo: __costs__ - Posizione bloccata: __safe__<br>Profitto = __bruttoreward__ <small>(Ricompensa)</small> - __costs__ <small>(Costo)</small> = __profit__",
+		"Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (Ricompensa Netta) </small> * __arcfactor__% <small> (Bonus Arc) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Profitto = __bruttoreward__ <small> (Ricompensa) </small> - __paid__ <small> (Pagato) </small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Fino al livello successivo",
 		"Boxes.Campagne.AlreadyDone": "Già conquistato!",
 		"Boxes.Campagne.DescInStock": "Disponibile",
@@ -138,20 +138,20 @@
 		"Boxes.Gildfights.Player": "Giocatore",
 		"Boxes.Gildfights.Title": "Panoramica del giocatore",
 		"Boxes.Gildfights.Total": "Totale",
-		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
-		"Boxes.GreatBuildings.CostPerDailyFP": "Costo / giornaliero PF",
-		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.FPCostGoods": "FP costs for goods", //Todo: Translate
+		"Boxes.GreatBuildings.ArcBonus": "Investimento amichevole",
+		"Boxes.GreatBuildings.Cost": "Costi",
+		"Boxes.GreatBuildings.CostPerDailyFP": "Costo / PF giornalieri",
+		"Boxes.GreatBuildings.DailyFP": "PF giornalieri",
+		"Boxes.GreatBuildings.FPCostGoods": "Costo PF per beni",
 		"Boxes.GreatBuildings.GreatBulding": "Grande edificio",
-		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Nascondi i GE non costruiti",
 		"Boxes.GreatBuildings.Level": "Livello",
 		"Boxes.GreatBuildings.Suggestion2": "Suggerimento2",
-		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
+		"Boxes.GreatBuildings.SuggestionDescription": "Gli edifici in cima alla lista sono i migliori",
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
 		"Boxes.GreatBuildings.Title": "Investimenti GE",
-		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
-		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCosts": "Non hai ancora costruito questo grande edificio. Questi sono i PF necessari a comprare i beni richiesti",
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Elenca i costi in PF necessari a comprare i beni (Si applica solo ai grandi edifici che non hai ancora costruito)",
 		"Boxes.HiddenRewards.Disappears": "Scompare",
 		"Boxes.HiddenRewards.NoEvents": "Nessun evento presente",
 		"Boxes.HiddenRewards.Title": "Ricompense nascoste",
@@ -169,7 +169,7 @@
 		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Livello __level__",
 		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> ha accettato la tua offerta. <br> Hai __needValue__ __need__ per __offerValue__ __offer__",
 		"Boxes.Infobox.ResetBox": "Reimposta casella",
-		"Boxes.Infobox.Title": "Infobox Overview Window", //Todo: Translate
+		"Boxes.Infobox.Title": "Riquadro informazioni",
 		"Boxes.Investment.AllUpToDate": "Tutto è aggiornato",
 		"Boxes.Investment.AllUpToDateDesc": "Tutti gli eventi / interazioni dei giocatori su questa pagina sono stati precedentemente aggiornati",
 		"Boxes.Investment.CurrReward": "Profitto attuale:",
@@ -202,18 +202,18 @@
 		"Boxes.Negotiation.Title": "Aiuto Negoziazione",
 		"Boxes.Negotiation.TryEnd": "Tentativi finiti",
 		"Boxes.Negotiation.WrongGoods": "merce sbagliata selezionata, chiudi manualmente",
-		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
-		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "Side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
+		"Boxes.Notice.DeleteGroup": "Elimina gruppo",
+		"Boxes.Notice.DeleteItem": "Elimina voce",
+		"Boxes.Notice.DummyHeading": "Il tuo titolo",
+		"Boxes.Notice.Edit": "Modifica",
+		"Boxes.Notice.GroupName": "Nome gruppo",
+		"Boxes.Notice.NewGroup": "Gruppo",
+		"Boxes.Notice.NewGroupDesc": "Prima crea un gruppo...",
+		"Boxes.Notice.NewSide": "Lato",
+		"Boxes.Notice.Save": "Salva",
+		"Boxes.Notice.SideName": "Nome lato",
+		"Boxes.Notice.Sorting": "Ordinamento",
+		"Boxes.Notice.Title": "Note",
 		"Boxes.Outpost.DescInStock": "Disponibile",
 		"Boxes.Outpost.DescRequired": "Richiesto",
 		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Eccesso</span> / <span style='color:#ff4040'>Manca</span>",
@@ -226,7 +226,7 @@
 		"Boxes.Outpost.TitleBuildings": "Edificio",
 		"Boxes.Outpost.TitleFree": "Gratis",
 		"Boxes.Outpost.TitleShort": "Panoramica dei beni -",
-		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
+		"Boxes.OwnpartCalculator.All": "Tutto",
 		"Boxes.OwnpartCalculator.Arc": "Arc",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "Progetti",
@@ -235,7 +235,7 @@
 		"Boxes.OwnpartCalculator.Deposit": "Deposito",
 		"Boxes.OwnpartCalculator.Done": "Versato",
 		"Boxes.OwnpartCalculator.Ext": "Esterni",
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
+		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/",
 		"Boxes.OwnpartCalculator.IndividualName": "nome GE individuale",
 		"Boxes.OwnpartCalculator.Levels": "Livelli",
 		"Boxes.OwnpartCalculator.LGTotalFP": "PF totali del GE",
@@ -254,10 +254,10 @@
 		"Boxes.OwnpartCalculator.Step": "Fase",
 		"Boxes.OwnpartCalculator.Title": "Calcolatore Auto-Up",
 		"Boxes.OwnpartCalculator.YourName": "Il tuo nome",
-		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
+		"Boxes.Production.SizeTT": "Dimensioni compreso lo spazio medio richiesto dalle strade di __streetnettosize__ quadratini",
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
 		"Boxes.Productions.GoodEraTotal": "Totale",
-		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
+		"Boxes.Productions.GuildPower": "???", //Todo: Translate
 		"Boxes.Productions.Happiness": "Felicità",
 		"Boxes.Productions.Headings.all": "Tutto",
 		"Boxes.Productions.Headings.amount": "Importo",
@@ -267,7 +267,7 @@
 		"Boxes.Productions.Headings.decoration": "Decorazioni",
 		"Boxes.Productions.Headings.earning": "Guadagno",
 		"Boxes.Productions.Headings.efficiency": "Efficienza",
-		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
+		"Boxes.Productions.Headings.era": "Era",
 		"Boxes.Productions.Headings.goods": "Edifici di beni",
 		"Boxes.Productions.Headings.greatbuilding": "Grandi Edifici",
 		"Boxes.Productions.Headings.main_building": "Municipio",
@@ -431,8 +431,8 @@
 		"Menu.Negotiation.Desc": "Fare proposte precise per le negoziazioni",
 		"Menu.Negotiation.Title": "Aiuto Negoziazione",
 		"Menu.Negotiation.Warning": "Disabilitato: avvia prima una negoziazione!",
-		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notices", //Todo: Translate
+		"Menu.Notice.Desc": "Prendi appunti su tutto ciò che non vuoi dimenticare.",
+		"Menu.Notice.Title": "Note",
 		"Menu.OutP.Desc": "Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabilitato: controlla prima l'avamposto!</em><br> Panoramica delle risorse richieste",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabilitato: avvia un avamposto e ricarica il gioco (F5)",
