@@ -71,7 +71,7 @@
 	position: absolute;
 	top: -30px;
 	left: 7px;
-	right: 1px;
+	right: 3px;
 }
 
 .window-head span.title {
@@ -105,7 +105,7 @@
 	display: inline-block;
 	position: relative;
 	background-position: -101px -1px;
-	width: 44px;
+	width: 35px;
 	margin-right: 3px;
 }
 
@@ -170,6 +170,11 @@
 .window-body {
 	height: 100%;
 	overflow: hidden;
+}
+
+.window-body h1 {
+	font-size: 135%;
+	margin: 0.25em 0 0;
 }
 
 .window-body input[type=text],
@@ -371,9 +376,52 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: rgba(255,255,255,0.09);
+	background-color: var(--50-black);
 	width: 100%;
 	height: 100%;
 	z-index: 250;
 	backdrop-filter: blur(5px);
 }
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
+#disclaimer {
+	width: 750px;
+	height: 530px;
+	left: calc(50% - 375px);
+	top: 10%;
+	z-index: 300;
+}
+.disclaimer-body {
+	padding: 0.5em 3em;
+	overflow: hidden;
+	overflow-y: auto;
+	height: 100%;
+	background-color: var(--50-black);
+}
+
+.disclaimer-body a {
+	color: var(--text-bright);
+}
+
+.disclaimer-body p.text-right {
+	border-top: 1px solid var(--text-dark);
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.disclaimer-body h1 {
+	margin-top: 0;
+	margin-bottom: 0.5em;
+	font-size: 1.5em;
+}
+
+.disclaimer-body h2 {
+	margin: 0.75em 0 0.25em;
+	font-size: 1.2em;
+	font-weight: normal;
+}
+
+.disclaimer-body h1, .disclaimer-body h2, .disclaimer-body h3 {
+	color: var(--text-light);
+} 
