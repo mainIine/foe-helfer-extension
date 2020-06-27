@@ -139,19 +139,19 @@
 		"Boxes.Gildfights.Title": "Spiller oversigt",
 		"Boxes.Gildfights.Total": "I alt",
 		"Boxes.GreatBuildings.ArcBonus": "Bidrag med",
-		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
+		"Boxes.GreatBuildings.Cost": "Pris",
 		"Boxes.GreatBuildings.CostPerDailyFP": "Pris / dagl. FP",
-		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
+		"Boxes.GreatBuildings.DailyFP": "Daglig FP",
 		"Boxes.GreatBuildings.FPCostGoods": "FP pris varer",
 		"Boxes.GreatBuildings.GreatBulding": "Storslåede bygninger",
-		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
+		"Boxes.GreatBuildings.HideNewGBs": "Skjul ikke-byggede SBer",
 		"Boxes.GreatBuildings.Level": "Niveau",
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
+		"Boxes.GreatBuildings.Suggestion2": "Forslag 2",
+		"Boxes.GreatBuildings.SuggestionDescription": "Bygningerne i toppen af listen er bedst",
+		"Boxes.GreatBuildings.SuggestionTitle": "FP SB ROI sammenlignet",
 		"Boxes.GreatBuildings.Title": "SB investitioner",
-		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
-		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
+		"Boxes.GreatBuildings.TTGoodCosts": "Du har endnu ikke bygget denne storslåede bygning. Dette er FP-udgifterne for at købe de nødvendige varer",
+		"Boxes.GreatBuildings.TTGoodCostsColumn": "Viser FP-udgifterne ved at købe de nødvendige varer (gælder kun for storslåede bygninger, som du endnu ikke har bygget)",
 		"Boxes.HiddenRewards.Disappears": "Forsvinder",
 		"Boxes.HiddenRewards.NoEvents": "Ingen hændelser tilgændelige",
 		"Boxes.HiddenRewards.Title": "Hændelser",
@@ -202,8 +202,8 @@
 		"Boxes.Negotiation.Title": "Forhandlingsassistent",
 		"Boxes.Negotiation.TryEnd": "Ikke flere forsøg",
 		"Boxes.Negotiation.WrongGoods": "Du har valgt nogle forkerte varer, færdiggør derfor forhandlingerne manuel",
-		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
-		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
+		"Boxes.Notice.DeleteGroup": "Slet gruppe",
+		"Boxes.Notice.DeleteItem": "Slet side",
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
 		"Boxes.Notice.GroupName": "Gruppenavn",
@@ -226,7 +226,7 @@
 		"Boxes.Outpost.TitleBuildings": "Bygning",
 		"Boxes.Outpost.TitleFree": "Fri",
 		"Boxes.Outpost.TitleShort": "Oversigt over kuturvarer - ",
-		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
+		"Boxes.OwnpartCalculator.All": "Alle",
 		"Boxes.OwnpartCalculator.Arc": "Ark bonus %",
 		"Boxes.OwnpartCalculator.Auto": "Auto",
 		"Boxes.OwnpartCalculator.BPs": "BPer",
@@ -257,7 +257,7 @@
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
-		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Klanstyrke",
 		"Boxes.Productions.Happiness": "Glæde",
 		"Boxes.Productions.Headings.all": "Alle",
 		"Boxes.Productions.Headings.amount": "Mængde",
@@ -431,8 +431,8 @@
 		"Menu.Negotiation.Desc": "Giver dig præcise forslag til fohandlinger",
 		"Menu.Negotiation.Title": "Forhandlingsassistent",
 		"Menu.Negotiation.Warning": "Deaktiveret: Start først en ny forhandling!",
-		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notices", //Todo: Translate
+		"Menu.Notice.Desc": "Tag noter på det, du ikke vil glemme.",
+		"Menu.Notice.Title": "Noter",
 		"Menu.OutP.Desc": "Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Deaktiveret: Besøg først bosættelsen!<br></em>Oversigt over de påkrævede ressourcer",
 		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Deaktiveret: Start først en bosættelse og genindlæs spillet (F5)",
