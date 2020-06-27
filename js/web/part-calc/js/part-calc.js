@@ -329,6 +329,7 @@ let Parts = {
 		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
+        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 80 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="80">80%</button>');
         h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
 		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
         h.push('</td>');
