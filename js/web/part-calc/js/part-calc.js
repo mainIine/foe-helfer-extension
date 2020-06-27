@@ -323,9 +323,10 @@ let Parts = {
 		}
 		
         // Info-Block
-        h.push('<table style="width: 100%"><tr><td style="width: 50%">');
-		h.push('<p class="lg-info text-center"><strong>' + MainParser.CityEntities[cityentity_id]['name'] + ' </strong><br>');
-		if(PlayerName) h.push(PlayerName + '<br>');
+        h.push('<div class="dark-bg">');
+        h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
+		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
+		if(PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
 		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
@@ -335,41 +336,40 @@ let Parts = {
         h.push('</td>');
         h.push('</tr></table>');
 
-        h.push('<table class="foe-table" style="margin-bottom: 10px;">');
-
-        h.push('<thead>');
+        h.push('<table style="margin-bottom: 3px; width: 100%">');
 
         h.push('<tr>');
-        h.push('<th class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></th>');
-        h.push('<th class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="success">' + EigenTotal + '</strong></th>');
+        h.push('<td class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></td>');
+        h.push('<td class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="success">' + EigenTotal + '</strong></td>');
         h.push('</tr>');
 
         h.push('<tr>');
         if (EigenStart > 0) {
-            h.push('<th colspan="3" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
-            h.push('<th colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></th>');
+            h.push('<td colspan="3" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></td>');
+            h.push('<td colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></td>');
         }
         else {
-            h.push('<th colspan="6" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
+            h.push('<td colspan="6" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
         }
-
         h.push('</tr>');
 
-        h.push('</thead>');
         h.push('</table>');
+        h.push('</div>');
 
         h.push('<table id="OwnPartTable" class="foe-table">');
-        h.push('<tbody>');
+        h.push('<thead>');
 
         h.push('<tr>');
-        h.push('<td>' + i18n('Boxes.OwnpartCalculator.Order') + '</td>');
-        h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Deposit') + '</td>');
-        h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</td>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.BPs') + '</td>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Meds') + '</td>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</td>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</td>');
+        h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
+        h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Deposit') + '</th>');
+        h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
+		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.BPs') + '</th>');
+		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Meds') + '</th>');
+		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
+		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
         h.push('</tr>');
+        h.push('</thead>');
+        h.push('<tbody>');
 
         for (let i = 0; i < 5; i++) {
             EigenCounter += Eigens[i];

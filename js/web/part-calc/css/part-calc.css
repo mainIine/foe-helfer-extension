@@ -118,6 +118,10 @@
 	margin: 0 5px;
 }
 
+#OwnPartBox .btn-default {
+	padding: 0.2rem 0.4rem;
+}
+
 #OwnPartBox .black-bg {
 	position: absolute;
 	background-color: rgba(0,0,0, 0.65);
