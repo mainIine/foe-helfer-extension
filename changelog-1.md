@@ -4,13 +4,13 @@
 
 **Neu**
 - Boost-Box:
-    - eine kleine Box die in der GEX, GG, GvG und bei den Nachbarn eingeblendet wird zeigt an, wie viele Versuche für Kriegsbeute oder Verändlungen verbleiben
+    - eine kleine Box, die in der GEX, GG, GvG und bei den Nachbarn eingeblendet wird zeigt an, wie viele Versuche für Kriegsbeute oder Verhandlungen verbleiben
     
 - Legendäre Bauwerke:
-    - diese Box errechnet welches FP produzierende Gebäude das nächste kostengünstigeste wäre
+    - diese Box errechnet, welches FP produzierende Gebäude das nächste kostengünstigeste wäre
     
 - Notizen:
-    - Gruppiert und Sortiert Notizen aller Art ablegen. Diese Funktion arbeite mit dem Server und ist Geräteübergreifend
+    - gruppiert und sortiert Notizen aller Art ablegen. Diese Funktion arbeite mit dem Server und ist geräteübergreifend
 
 **Update**
 - Gemäß Innos Wünschen haben wir folgende Elemente entfernt oder abgeändert: [https://foe-rechner.de/news/aenderungen-am-foe-helfer](https://foe-rechner.de/news/aenderungen-am-foe-helfer)
@@ -18,7 +18,7 @@
     - PvP Aktivitäten entfernt
     - "Plünderhilfe" + Angriff und Verteidigungswerte entfernt
     - Event-Quest wird nur noch verlinkt
-    - Verhandlungsassisten wird in den Gildengefechten ausgeblendet
+    - Verhandlungsassistent wird in den Gildengefechten ausgeblendet
     - versteckte Ereignisse werden ohne Ablaufdatum dargestellt
 
 - Hidden Rewards:
