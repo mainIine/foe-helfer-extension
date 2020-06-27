@@ -38,14 +38,14 @@ let Parts = {
 			return;
 		}
 
-		let spk = localStorage.getItem('CalculatorTone');
+		let spk = localStorage.getItem('PartsTone');
 
 		if (spk === null) {
-			localStorage.setItem('CalculatorTone', 'deactivated');
-			Calculator.PlayInfoSound = false;
+			localStorage.setItem('PartsTone', 'deactivated');
+			Parts.PlayInfoSound = false;
 		}
 		else {
-			Calculator.PlayInfoSound = (spk !== 'deactivated');
+			Parts.PlayInfoSound = (spk !== 'deactivated');
 		}
 
 		// prüfen ob es hinterlegte Werte gibt
