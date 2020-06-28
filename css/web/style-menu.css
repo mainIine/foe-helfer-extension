@@ -491,99 +491,97 @@ p {
 	border-radius: 50%;
 	line-height: 16px;
 	text-align: center;
-	box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    pointer-events: none;
 }
 
 #greatbuildings-Btn span {
-	background-image: url('../images/greatbuildings.png');
+	background-image: url('../images/menu/greatbuildings.png');
 }
 
 #productions-Btn span {
-	background-image: url('../images/productions.png');
+	background-image: url('../images/menu/productions.png');
 }
 
 #calculator-Btn span {
-	background-image: url('../images/calculator.png');
+	background-image: url('../images/menu/calculator.png');
 }
 
 #outpost-Btn span {
-	background-image: url('../images/vikings_ship.png');
+	background-image: url('../images/menu/vikings_ship.png');
 }
 
 #partCalc-Btn span {
-	background-image: url('../images/part-calc.png');
+	background-image: url('../images/menu/part-calc.png');
 }
 
 #technologies-Btn span {
-    background-image: url('../images/technologies.png');
+    background-image: url('../images/menu/technologies.png');
 }
 
 #hiddenRewards-Btn span:first-child {
-	background-image: url('../images/incident_crates.png');
+	background-image: url('../images/menu/incident_crates.png');
 }
 
 #campagneMap-Btn span {
-	background-image: url('../images/map.png');
+	background-image: url('../images/menu/map.png');
 }
 
 #citymap-Btn span {
-	background-image: url('../images/citymap.png');
+	background-image: url('../images/menu/citymap.png');
 }
 
 #questlist-Btn span {
-	background-image: url('../images/quest.png');
+	background-image: url('../images/menu/quest.png');
 }
 
 #chat-Btn span {
-	background-image: url('../images/chat.png');
+	background-image: url('../images/menu/chat.png');
 }
 
 #forum-Btn span {
-	background-image: url('../images/forum.png');
+	background-image: url('../images/menu/forum.png');
 }
 
 #ask-Btn span {
-	background-image: url('../images/ask.png');
+	background-image: url('../images/menu/ask.png');
 }
 
 #settings-Btn span {
-	background-image: url('../images/wrench.png');
+	background-image: url('../images/menu/wrench.png');
 }
 
 #stats-Btn span {
-	  background-image: url('../images/stats.png');
+	  background-image: url('../images/menu/stats.png');
 }
 
 #github-Btn span {
-	background-image: url('../images/bug.png');
+	background-image: url('../images/menu/bug.png');
 }
 
 #infobox-Btn span {
-	background-image: url('../images/info.png');
+	background-image: url('../images/menu/info.png');
 }
 
 #unit-Btn span {
-	background-image: url('../images/units.png');
+	background-image: url('../images/menu/units.png');
 }
 
 #negotiation-Btn span {
-	background-image: url('../images/negotation.png');
+	background-image: url('../images/menu/negotation.png');
 }
 
-#api-Btn span {
-	background-image: url('../images/api.png');
-}
 
 #kits-Btn span {
-	background-image: url('../images/kits.png');
+	background-image: url('../images/menu/kits.png');
 }
 
 #alerts-Btn span {
-	background-image: url('../images/icon-alerts.png');
+	background-image: url('../images/menu/icon-alerts.png');
 }
 
 #notice-Btn span {
-	background-image: url('../images/notices.png');
+	background-image: url('../images/menu/notices.png');
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------
