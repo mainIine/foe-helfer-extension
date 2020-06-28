@@ -262,6 +262,7 @@
 		"Boxes.Production.SizeTT": "Taille, y compris l'espace moyen requis pour la route sur __streetnettosize__ cases",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.GoodEraTotal": "Total",
+		"Boxes.Productions.GuildGoods": "Guild goods", //Todo: Translate
 		"Boxes.Productions.GuildPower": "Puissance de guilde",
 		"Boxes.Productions.Happiness": "Satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",

@@ -262,6 +262,7 @@
 		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
 		"Boxes.Productions.AdjacentBuildings": "Priľahlé budovy",
 		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
+		"Boxes.Productions.GuildGoods": "Guild goods", //Todo: Translate
 		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Productions.Happiness": "Spokojnosť",
 		"Boxes.Productions.Headings.all": "Všetky",
