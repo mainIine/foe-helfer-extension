@@ -491,7 +491,7 @@ let Stats = {
 			'statsUnitsD',
 			'statsRewards',
 			'statsGBGPlayers'
-		].map(source => Stats.RenderButton({
+		].map(source => Stats.RenderTab({
 			name: i18n('Boxes.Stats.BtnSource.' + source),
 			title: i18n('Boxes.Stats.SourceTitle.' + source),
 			isActive: Stats.state.source === source,
@@ -499,7 +499,7 @@ let Stats = {
 			value: source
 		}));
 
-		const chartTypes = ['line', 'streamgraph', 'delta'].map(it => Stats.RenderButton({
+		const chartTypes = ['line', 'streamgraph', 'delta'].map(it => Stats.RenderSpan({
 			name: i18n('Boxes.Stats.BtnChartType.' + it),
 			title: i18n('Boxes.Stats.BtnChartTypeTitle.' + it),
 			isActive: Stats.state.chartType === it,
@@ -521,11 +521,13 @@ let Stats = {
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
 					${btnSelectNoEra}
 				</div>
+				<div class="tabs">
+					<ul class="horizontal">
+					${sourceBtns.join('')}
+					</ul>
+				</div>
 				<div class="option-chart-type-wrap">
 					${chartTypes.join('')}
-				</div>
-				<div class="option-source-wrap">
-					${sourceBtns.join('')}
 				</div>`;
 	},
 
@@ -574,7 +576,7 @@ let Stats = {
 
 
 	/**
-	 * Dropdown for ereas
+	 * Dropdown for eras
 	 *
 	 * @returns {string}
 	 */
@@ -623,6 +625,18 @@ let Stats = {
 		</li>`,
 
 
+
+	/**
+	 * Render an option
+	 *
+	 * @param name
+	 * @param isActive
+	 * @param dataType
+	 * @param value
+	 * @returns {string}
+	 */
+	RenderSpan: ({name, isActive, dataType, value, title, disabled}) => `<span data-type="${dataType}" data-value="${value}" class="${dataType} game-cursor ${isActive ? 'active' : ''}" title="${title || ''}">${name}</span>`,
+
 	/**
 	 * Render a button
 	 *
@@ -635,6 +649,19 @@ let Stats = {
 	 * @returns {string}
 	 */
 	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
+
+	/**
+	 * Render a button
+	 *
+	 * @param name		Name
+	 * @param isActive	Activated
+	 * @param dataType	Typ
+	 * @param value		Default Value
+	 * @param title		Title for button
+	 * @param disabled	Disabled button
+	 * @returns {string}
+	 */
+	RenderTab: ({name, isActive, dataType, value, title, disabled}) => `<li ${disabled ? 'disabled' : ''} class="${value} ${!disabled && isActive ? 'active' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}"><a><span>&nbsp;</span></a></li>`,
 
 
 	/**

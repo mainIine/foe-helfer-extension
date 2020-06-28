@@ -18,6 +18,8 @@
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 4px;
+	justify-content: space-between;
+	align-items: flex-end;
 }
 
 #stats .options-2 {
@@ -28,36 +30,27 @@
 }
 
 #stats .option-toggle-group {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
 	max-height: 45px;
-	width: 98px;
-	margin-left: 10px;
-	align-items: baseline;
-	align-content: baseline;
+	width: 145px;
 }
 
 #stats .option-era-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
 	max-height: 45px;
-	width: 311px;
-	margin-left: 10px;
-	align-items: baseline;
-	align-content: baseline;
+	width: 350px;
 }
 
 #stats .option-chart-type-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	max-height: 45px;
-	width: 210px;
-	justify-content: start;
-	align-items: baseline;
-	align-content: baseline;
+	width: 80px;
+}
+
+#stats .option-chart-type-wrap span {
+	text-align: right;
+	display: block;
+	font-size: 80%;
+}
+
+#stats .option-chart-type-wrap span.active {
+	color: var(--text-bright);
 }
 
 #stats .option-source-wrap {
@@ -129,4 +122,25 @@
 #stats .highcharts-data-table table tr td {
 	border-top: 1px solid #7F5A34;
 	border-bottom: 1px solid #3D250F;
+}
+
+#stats .tabs  {
+	width: 462px;
+}
+
+#stats .tabs ul li a span {
+	background: transparent url('../images/tabs.png') -233px 5px no-repeat;
+	width: 27px;
+}
+#stats .tabs ul li.statsTreasurePlayerD a span, #stats .tabs ul li.statsTreasurePlayerH a span {
+	background-position: -103px 6px;
+}
+#stats .tabs ul li.statsGBGPlayers a span {
+	background-position: -287px 4px;
+}
+#stats .tabs ul li.statsUnitsD a span, #stats .tabs ul li.statsUnitsH a span {
+	background-position: -344px 6px;
+}
+#stats .tabs ul li.statsRewards a span {
+	background-position: -316px 4px;
 }
