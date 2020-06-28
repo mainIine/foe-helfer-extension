@@ -345,7 +345,7 @@ p {
 	padding-bottom: 24px;
 	transition: height 0.2s linear;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
+	font-size: 0.75rem;
 	font-weight: 400;
 }
 
@@ -480,16 +480,16 @@ p {
 }
 
 .hud-btn span.hud-counter {
-	width: 22px;
-	height: 22px;
+	width: 17px;
+	height: 17px;
 	position: absolute;
+	padding: 2px;
 	bottom: 4px;
 	top: unset;
 	left: 5px;
-	background-color: #4682b4;
+	background-color: #3180bf;
 	border-radius: 50%;
-	border: 1px solid #fff;
-	line-height: 20px;
+	line-height: 16px;
 	text-align: center;
 	box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
 }
@@ -876,45 +876,3 @@ Tooltip */
 #reward-bar strong {
 	color: var(--text-bright);
 }
-/*******************************************************************************/
-
-#disclaimer {
-	width: 750px;
-	height: 530px;
-	left: calc(50% - 375px);
-	top: 10%;
-	z-index: 300;
-}
-.disclaimer-body {
-	padding: 0.5em 3em;
-	overflow: hidden;
-	overflow-y: auto;
-	height: 100%;
-	background-color: var(--50-black);
-}
-
-.disclaimer-body a {
-	color: var(--text-bright);
-}
-
-.disclaimer-body p.text-right {
-	border-top: 1px solid var(--text-dark);
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-.disclaimer-body h1 {
-	margin-top: 0;
-	margin-bottom: 0.5em;
-	font-size: 1.5em;
-}
-
-.disclaimer-body h2 {
-	margin: 0.75em 0 0.25em;
-	font-size: 1.2em;
-	font-weight: normal;
-}
-
-.disclaimer-body h1, .disclaimer-body h2, .disclaimer-body h3 {
-	color: var(--text-light);
-} 
