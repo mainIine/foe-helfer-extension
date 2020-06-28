@@ -345,7 +345,7 @@ p {
 	padding-bottom: 24px;
 	transition: height 0.2s linear;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
+	font-size: 0.75rem;
 	font-weight: 400;
 }
 
@@ -480,16 +480,16 @@ p {
 }
 
 .hud-btn span.hud-counter {
-	width: 22px;
-	height: 22px;
+	width: 17px;
+	height: 17px;
 	position: absolute;
+	padding: 2px;
 	bottom: 4px;
 	top: unset;
 	left: 5px;
-	background-color: #4682b4;
+	background-color: #3180bf;
 	border-radius: 50%;
-	border: 1px solid #fff;
-	line-height: 20px;
+	line-height: 16px;
 	text-align: center;
 	box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
 }
