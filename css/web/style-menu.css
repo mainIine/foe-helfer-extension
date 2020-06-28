@@ -491,7 +491,8 @@ p {
 	border-radius: 50%;
 	line-height: 16px;
 	text-align: center;
-	box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    pointer-events: none;
 }
 
 #greatbuildings-Btn span {
