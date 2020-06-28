@@ -204,9 +204,14 @@ input[type=number] {
 .btn-tight {
 	margin: 1px;
 	padding: 0 4px;
+	line-height: 1;
+	height: 18px;
+	width: 100px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	text-align: center;
+	font-size: 9pt;
 	font-family: sans-serif;
 }
 
