@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.5.0.1
+
+**Update**
+- Kostenrechner:
+    - [#550](https://github.com/dsiekiera/foe-helfer-extension/issues/550) 80% Button hinzugefügt
+    
+**BugFix**
+
+- Eigenanteilsrechner:
+    - [#1317](https://github.com/dsiekiera/foe-helfer-extension/issues/1317) Sound beim Wechseln einer wiederholbaren "gib X FP aus" Quest wird nicht zuverlässig wiedergegeben
+    - [#1318](https://github.com/dsiekiera/foe-helfer-extension/issues/1318) Ton im Kostenrechner komm in Bronzezeit bis FMA auch bei der Quest "erforsche 2 Technologien"
+
+- versteckte Ereignisse:
+    - [#1295](https://github.com/dsiekiera/foe-helfer-extension/issues/1295) blaues Zählericon verhinderte Klick
+    - [#1314](https://github.com/dsiekiera/foe-helfer-extension/issues/1314) doppelte Straßen wurden nicht angezeigt
+    
+- Legendäre Bauwerke:
+    - [#1305](https://github.com/dsiekiera/foe-helfer-extension/issues/1305) die Eingabe der FP Kosten verschwand in ein anderes Feld
+    - [#1315](https://github.com/dsiekiera/foe-helfer-extension/issues/1315) Fehler wenn eines der FP produzierenden LG über lvl100 oder höher ist
+    
+- Verhandlungsassistent:
+    - [#1342](https://github.com/dsiekiera/foe-helfer-extension/issues/1342) auf dem Beta Server konnte man den Helfer in der GG manuell starten (Inno Games möchte das aber nicht)
+
+---
+
 ##### 2.5.0.0
 
 **Neu**
