@@ -203,10 +203,8 @@ input[type=number] {
 
 .btn-tight {
 	margin: 1px;
-	padding: 0 4px;
-	line-height: 1;
-	height: 18px;
-	width: 100px;
+	padding: 1px 4px;
+	max-width: 100px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;

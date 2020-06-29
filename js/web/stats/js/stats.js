@@ -466,7 +466,7 @@ let Stats = {
 			value: Stats.PlayableEras.join(',')
 		});
 
-		const btnGroupByEra = Stats.RenderButton({
+		const btnGroupByEra = Stats.RenderBox({
 			name: i18n('Boxes.Stats.BtnToggleGroupBy'),
 			title: i18n('Boxes.Stats.BtnToggleGroupByTitle'),
 			disabled: !Stats.isSelectedTreasureSources(),
@@ -474,7 +474,7 @@ let Stats = {
 			dataType: 'groupByToggle',
 		});
 
-		const btnTglAnnotations = Stats.RenderButton({
+		const btnTglAnnotations = Stats.RenderBox({
 			name: i18n('Boxes.Stats.BtnToggleAnnotations'),
 			title: i18n('Boxes.Stats.BtnToggleAnnotationsTitle'),
 			disabled: Stats.isSelectedRewardSources(),
@@ -510,16 +510,16 @@ let Stats = {
 		return `<div>
 					${Stats.RenderEraSwitchers()}
 				</div>
-				<div class="option-toggle-group">
-					${btnGroupByEra}
-					${btnTglAnnotations}
-				</div>
 				<div class="option-era-wrap">
+					Zeitalter: ${btnGroupByEra}<br>
 					${btnSelectAllEra}
-					${btnSelectAll}
 					${btnSelectMyEra}
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
+					${btnSelectAll}
 					${btnSelectNoEra}
+				</div>
+				<div class="option-toggle-group">
+					${btnTglAnnotations}
 				</div>
 				<div class="tabs">
 					<ul class="horizontal">
@@ -623,6 +623,18 @@ let Stats = {
 		<label class="game-cursor">
 			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>
 		</li>`,
+
+	/**
+	 * Render a checkbox
+	 *
+	 * @param name
+	 * @param isActive
+	 * @param dataType
+	 * @param value
+	 * @returns {string}
+	 */
+	RenderBox: ({name, isActive, dataType, value}) => `<label class="game-cursor">
+			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>`,
 
 
 
