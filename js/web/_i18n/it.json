@@ -1,4 +1,4 @@
-{
+﻿{
 	"values": {
 		"_Language": "Italiano",
 		"API.GEXChampionship": "Il posizionamento della gilda (Spedizione) è stato aggiornato",
@@ -144,6 +144,7 @@
 		"Boxes.GreatBuildings.DailyFP": "PF giornalieri",
 		"Boxes.GreatBuildings.FPCostGoods": "Costo PF per beni",
 		"Boxes.GreatBuildings.GreatBulding": "Grande edificio",
+		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Nascondi i GE non costruiti",
 		"Boxes.GreatBuildings.Level": "Livello",
 		"Boxes.GreatBuildings.Suggestion2": "Suggerimento2",
@@ -207,6 +208,7 @@
 		"Boxes.Notice.DummyHeading": "Il tuo titolo",
 		"Boxes.Notice.Edit": "Modifica",
 		"Boxes.Notice.GroupName": "Nome gruppo",
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Gruppo",
 		"Boxes.Notice.NewGroupDesc": "Prima crea un gruppo...",
 		"Boxes.Notice.NewSide": "Nota",
@@ -257,7 +259,7 @@
 		"Boxes.Production.SizeTT": "Dimensioni compreso lo spazio medio richiesto dalle strade di __streetnettosize__ quadratini",
 		"Boxes.Productions.AdjacentBuildings": "Edifici adiacenti",
 		"Boxes.Productions.GoodEraTotal": "Totale",
-		"Boxes.Productions.GuildPower": "???", //Todo: Translate
+		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
 		"Boxes.Productions.Happiness": "Felicità",
 		"Boxes.Productions.Headings.all": "Tutto",
 		"Boxes.Productions.Headings.amount": "Importo",
