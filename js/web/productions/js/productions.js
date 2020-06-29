@@ -49,6 +49,7 @@ let Productions = {
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
 		'clan_power',		// Macht der Gilde
+		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
@@ -307,13 +308,37 @@ let Productions = {
 			if (d.state.current_product.product && d.state.current_product.product.resources) {
 				CurrentResources = d['state']['current_product']['product']['resources'];
 			}
+
 			if (d.state.current_product['clan_power']) {
 				CurrentResources['clan_power'] = d.state.current_product['clan_power']; // z.B. Ruhmeshalle
 			}
 
+			if (d.state.current_product['name'] === 'clan_goods' && d.state.current_product['goods']) {
+				let GoodSum = 0;
+				for (let i = 0; i < d.state.current_product['goods'].length; i++) {
+					GoodSum += d.state.current_product['goods'][i]['value'];
+				}
+
+				if (GoodSum > 0) {
+					CurrentResources['clan_goods'] = GoodSum;
+                }
+            }
+
 			if (d.state.current_product.guildProduct && d.state.current_product.guildProduct.resources) {
-				if (d.state.current_product['guildProduct']['resources']['clan_power']) { // z.B. Ehrenstatue
-					CurrentResources['clan_power'] = d.state.current_product['guildProduct']['resources']['clan_power'];
+				let GoodSum = 0;
+
+				for (let ResourceName in d.state.current_product['guildProduct']['resources']) {
+					if(!d.state.current_product['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
+
+					if (ResourceName === 'clan_power') {
+						CurrentResources['clan_power'] = d.state.current_product['guildProduct']['resources']['clan_power'];
+					}
+					else {
+						GoodSum += d.state.current_product['guildProduct']['resources'][ResourceName];
+                    }
+				}
+				if (GoodSum > 0) {
+					CurrentResources['clan_goods'] = GoodSum;
 				}
 			}
 		}
@@ -1168,6 +1193,9 @@ let Productions = {
 		}
 		else if (GoodType === 'clan_power') {
 			return i18n('Boxes.Productions.GuildPower');
+		}
+		else if (GoodType === 'clan_goods') {
+			return i18n('Boxes.Productions.GuildGoods');
         }
 		else {
 			return GoodsData[GoodType]['name'];
