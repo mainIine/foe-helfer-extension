@@ -345,7 +345,7 @@ p {
 	padding-bottom: 24px;
 	transition: height 0.2s linear;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
+	font-size: 0.75rem;
 	font-weight: 400;
 }
 
@@ -480,110 +480,108 @@ p {
 }
 
 .hud-btn span.hud-counter {
-	width: 22px;
-	height: 22px;
+	width: 17px;
+	height: 17px;
 	position: absolute;
+	padding: 2px;
 	bottom: 4px;
 	top: unset;
 	left: 5px;
-	background-color: #4682b4;
+	background-color: #3180bf;
 	border-radius: 50%;
-	border: 1px solid #fff;
-	line-height: 20px;
+	line-height: 16px;
 	text-align: center;
-	box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    pointer-events: none;
 }
 
 #greatbuildings-Btn span {
-	background-image: url('../images/greatbuildings.png');
+	background-image: url('../images/menu/greatbuildings.png');
 }
 
 #productions-Btn span {
-	background-image: url('../images/productions.png');
+	background-image: url('../images/menu/productions.png');
 }
 
 #calculator-Btn span {
-	background-image: url('../images/calculator.png');
+	background-image: url('../images/menu/calculator.png');
 }
 
 #outpost-Btn span {
-	background-image: url('../images/vikings_ship.png');
+	background-image: url('../images/menu/vikings_ship.png');
 }
 
 #partCalc-Btn span {
-	background-image: url('../images/part-calc.png');
+	background-image: url('../images/menu/part-calc.png');
 }
 
 #technologies-Btn span {
-    background-image: url('../images/technologies.png');
+    background-image: url('../images/menu/technologies.png');
 }
 
 #hiddenRewards-Btn span:first-child {
-	background-image: url('../images/incident_crates.png');
+	background-image: url('../images/menu/incident_crates.png');
 }
 
 #campagneMap-Btn span {
-	background-image: url('../images/map.png');
+	background-image: url('../images/menu/map.png');
 }
 
 #citymap-Btn span {
-	background-image: url('../images/citymap.png');
+	background-image: url('../images/menu/citymap.png');
 }
 
 #questlist-Btn span {
-	background-image: url('../images/quest.png');
+	background-image: url('../images/menu/quest.png');
 }
 
 #chat-Btn span {
-	background-image: url('../images/chat.png');
+	background-image: url('../images/menu/chat.png');
 }
 
 #forum-Btn span {
-	background-image: url('../images/forum.png');
+	background-image: url('../images/menu/forum.png');
 }
 
 #ask-Btn span {
-	background-image: url('../images/ask.png');
+	background-image: url('../images/menu/ask.png');
 }
 
 #settings-Btn span {
-	background-image: url('../images/wrench.png');
+	background-image: url('../images/menu/wrench.png');
 }
 
 #stats-Btn span {
-	  background-image: url('../images/stats.png');
+	  background-image: url('../images/menu/stats.png');
 }
 
 #github-Btn span {
-	background-image: url('../images/bug.png');
+	background-image: url('../images/menu/bug.png');
 }
 
 #infobox-Btn span {
-	background-image: url('../images/info.png');
+	background-image: url('../images/menu/info.png');
 }
 
 #unit-Btn span {
-	background-image: url('../images/units.png');
+	background-image: url('../images/menu/units.png');
 }
 
 #negotiation-Btn span {
-	background-image: url('../images/negotation.png');
+	background-image: url('../images/menu/negotation.png');
 }
 
-#api-Btn span {
-	background-image: url('../images/api.png');
-}
 
 #kits-Btn span {
-	background-image: url('../images/kits.png');
+	background-image: url('../images/menu/kits.png');
 }
 
 #alerts-Btn span {
-	background-image: url('../images/icon-alerts.png');
+	background-image: url('../images/menu/icon-alerts.png');
 }
 
 #notice-Btn span {
-	background-image: url('../images/notices.png');
+	background-image: url('../images/menu/notices.png');
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------
@@ -876,45 +874,3 @@ Tooltip */
 #reward-bar strong {
 	color: var(--text-bright);
 }
-/*******************************************************************************/
-
-#disclaimer {
-	width: 750px;
-	height: 530px;
-	left: calc(50% - 375px);
-	top: 10%;
-	z-index: 300;
-}
-.disclaimer-body {
-	padding: 0.5em 3em;
-	overflow: hidden;
-	overflow-y: auto;
-	height: 100%;
-	background-color: var(--50-black);
-}
-
-.disclaimer-body a {
-	color: var(--text-bright);
-}
-
-.disclaimer-body p.text-right {
-	border-top: 1px solid var(--text-dark);
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-.disclaimer-body h1 {
-	margin-top: 0;
-	margin-bottom: 0.5em;
-	font-size: 1.5em;
-}
-
-.disclaimer-body h2 {
-	margin: 0.75em 0 0.25em;
-	font-size: 1.2em;
-	font-weight: normal;
-}
-
-.disclaimer-body h1, .disclaimer-body h2, .disclaimer-body h3 {
-	color: var(--text-light);
-} 
