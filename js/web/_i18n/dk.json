@@ -212,6 +212,7 @@
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
 		"Boxes.Notice.GroupName": "Gruppenavn",
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Gruppe",
 		"Boxes.Notice.NewGroupDesc": "Opret først en ny gruppe...",
 		"Boxes.Notice.NewSide": "Side",
