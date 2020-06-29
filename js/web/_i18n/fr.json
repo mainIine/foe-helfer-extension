@@ -212,6 +212,7 @@
 		"Boxes.Notice.DummyHeading": "Votre titre",
 		"Boxes.Notice.Edit": "Editer",
 		"Boxes.Notice.GroupName": "Nom d'onglet",
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Onglet",
 		"Boxes.Notice.NewGroupDesc": "Créez d'abord un onglet...",
 		"Boxes.Notice.NewSide": "Page",

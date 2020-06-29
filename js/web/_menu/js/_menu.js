@@ -32,7 +32,6 @@ let _menu = {
 		'negotiation',
 		'infobox',
 		'notice',
-		'questlist',
 		'technologies',
 		'campagneMap',
 		'citymap',
@@ -43,7 +42,6 @@ let _menu = {
 		'ask',
 		'github',
 		'chat',
-		'api',
 		'kits',
 		'alerts',
 		'greatbuildings',
@@ -298,8 +296,6 @@ let _menu = {
 		});
 
 		HiddenRewards.SetCounter();
-
-		MainParser.ShowDisclaimer();
 	},
 
 
@@ -618,29 +614,6 @@ let _menu = {
 		btn_CityBG.append(btn_City);
 
 		return btn_CityBG;
-	},
-
-	/**
-	 * QuestList
-	 *
-	 * @returns {*|jQuery}
-	 */
-	questlist_Btn: () => {
-		let btn_EventBG = $('<div />').attr({ 'id': 'questlist-Btn', 'data-slug': 'questlist' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Event.Title'), i18n('Menu.Event.Desc'), 'questlist-Btn');
-
-		let btn_Event = $('<span />');
-
-		btn_Event.on('click', function () {
-			let win = window.open('https://foe-rechner.de/events/overview', '_blank');
-			win.focus();
-		});
-
-		btn_EventBG.append(btn_Event);
-
-		return btn_EventBG;
 	},
 
 	/**
