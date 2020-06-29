@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.5.0.1
+
+**Update**
+- Cost Accountant:
+    - [#550](https://github.com/dsiekiera/foe-helfer-extension/issues/550) 80% button added
+    
+**BugFix**
+
+- Own contribution calculator:
+    - [#1317](https://github.com/dsiekiera/foe-helfer-extension/issues/1317) Sound when switching a repeatable "output X FP" quest does not play reliably
+    - [#1318](https://github.com/dsiekiera/foe-helfer-extension/issues/1318) Sound in the cost calculator comes in Bronze Age until FMA also at the quest "explore 2 technologies
+
+- hidden events:
+    - [#1295](https://github.com/dsiekiera/foe-helfer-extension/issues/1295) blue counter icon prevented click
+    - [#1314](https://github.com/dsiekiera/foe-helfer-extension/issues/1314) duplicate streets were not displayed
+    
+- Legendary buildings:
+    - [#1305](https://github.com/dsiekiera/foe-helfer-extension/issues/1305) the input of FP costs disappeared into another field
+    - [#1315](https://github.com/dsiekiera/foe-helfer-extension/issues/1315) Error when one of the FP producing LG is above lvl100 or higher
+    
+- Negotiating assistant:
+    - [#1342](https://github.com/dsiekiera/foe-helfer-extension/issues/1342) on the beta server you could start the assistant in the GG manually (Inno Games doesn't want to do that)
+
+---
+
 ##### 2.5.0.0
 
 **New**

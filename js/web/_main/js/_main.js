@@ -515,8 +515,17 @@ const FoEproxy = (function () {
 				console.log('Can\'t parse postData: ', postData);
 			}
 
+			//StartUp Service zuerst behandeln
 			for (let entry of d) {
-				proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+				if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
+					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+				}
+			}
+
+			for (let entry of d) {
+				if (entry['requestClass'] !== 'StartupService' || entry['requestMethod'] == 'getData') {
+					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+				}
 			}
 		}
 	}
@@ -2023,56 +2032,6 @@ let MainParser = {
 		};
 		xhr.send();
 
-	},
-
-
-	ShowDisclaimer: ()=> {
-		let timeCheck = localStorage.getItem('DisclaimerReaded');
-
-		if(timeCheck === null){
-			HTML.Box({
-				id: 'disclaimer',
-				title: i18n('_Disclaimer.Title'),
-				auto_close: false
-			});
-
-			$('body').prepend( $('<div class="foe-helper-overlay" />') );
-
-			let b = i18n('_Disclaimer.Body'),
-				div = $('<div class="disclaimer-body" />'),
-				p = $('<p class="text-right" />'),
-				label = $('<label for="disclaimer-check" />').text(i18n('_Disclaimer.Label')).css({float: 'left'}),
-				inp = $('<input />'),
-				btn = $('<span />');
-
-			inp.attr({
-				id: 'disclaimer-check',
-				type: 'checkbox'
-			});
-
-			label.prepend(inp);
-
-			btn
-				.attr({
-					class: 'btn-default',
-					id: 'btn-disclaimer-save',
-					onclick: 'MainParser.SaveDisclaimer()',
-				})
-				.text(i18n('_Disclaimer.Button'));
-
-			$('#disclaimerBody').append(div.append(b, p.append(label, btn)));
-		}
-	},
-
-
-	SaveDisclaimer: ()=> {
-		if( $('#disclaimer-check').is(':checked') ){
-			localStorage.setItem('DisclaimerReaded', moment().unix());
-		}
-
-		$('#disclaimer, .foe-helper-overlay').fadeToggle(function(){
-			$(this).remove();
-		});
 	},
 
 
