@@ -45,7 +45,7 @@
 			});
 
 			chrome.tabs.create({
-				url: 'https://foe-rechner.de/extension/update?v=' + version + '&lang=' + lng
+				url: `https://foe-rechner.de/extension/update?v=${version}&lang=${lng}`
 			});
 		}
 	});
@@ -153,6 +153,7 @@
 		} else if(request.type === 'getPlayerData') {
 			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
 			callback(playerdata[request.world+'-'+request.player_id]);
+
 		} else if(request.type === 'showNotification') {
 			try {
 				const title = request.title;
@@ -162,7 +163,7 @@
 					body: options.body,
 					dir: 'ltr',
 					icon: options.icon,
-					renotify: ( options.tag ) ? true : false,
+					renotify: !!(options.tag),
 					requireInteraction: options.persistent,
 					vibrate: options.vibrate,
 					tag: options.tag,
@@ -176,7 +177,7 @@
 	}
 
 	/**
-	 * Auf einen response von ant.js lauschen
+	 * Auf einen response von _main.js lauschen
 	 */
 	// @ts-ignore
 	if (chrome.app) { // Chrome
