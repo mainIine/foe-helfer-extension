@@ -165,6 +165,10 @@ let HiddenRewards = {
 			}
 		}
 
-		$('#hidden-reward-count').text(cnt);
+		if(cnt > 0){
+			$('#hidden-reward-count').text(cnt).show();
+		} else {
+			$('#hidden-reward-count').hide();
+		}
 	}
 };
