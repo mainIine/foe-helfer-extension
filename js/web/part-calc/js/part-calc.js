@@ -330,9 +330,15 @@ let Parts = {
 		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
-        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 80 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="80">80%</button>');
-        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
-		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
+
+		// different arc bonus-buttons
+		let investmentSteps = [80,85,90];
+
+		investmentSteps.sort((a, b) => a - b);
+		investmentSteps.forEach(bonus => {
+			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+		});
+
         h.push('</td>');
         h.push('</tr></table>');
 

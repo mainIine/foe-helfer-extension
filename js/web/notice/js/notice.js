@@ -190,6 +190,13 @@ let Notice = {
 			$('.foe-helper-overlay').remove();
 		});
 
+		// save content when close box
+		$('body').on('click', '#noticesclose', function(){
+			let $this = $('.sub-tab:visible');
+
+			Notice.SaveContent($this);
+		});
+
 		// toggle edit buttons
 		$('#notices').on('click', '#notices-settings', function(){
 			if(!Notice.EditMode){
@@ -203,9 +210,9 @@ let Notice = {
 
 
 		$('#noticesBody').on('blur', '[contenteditable="true"]', function(){
-			let id = $(this).closest('.sub-tab');
+			let $this = $(this).closest('.sub-tab');
 
-			Notice.SaveContent(id);
+			Notice.SaveContent($this);
 		});
 
 		// enter is pressed
