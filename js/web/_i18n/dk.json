@@ -144,6 +144,7 @@
 		"Boxes.GreatBuildings.DailyFP": "Daglig FP",
 		"Boxes.GreatBuildings.FPCostGoods": "FP pris varer",
 		"Boxes.GreatBuildings.GreatBulding": "Storslåede bygninger",
+		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Skjul ikke-byggede SBer",
 		"Boxes.GreatBuildings.Level": "Niveau",
 		"Boxes.GreatBuildings.Suggestion2": "Forslag 2",
@@ -207,6 +208,7 @@
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
 		"Boxes.Notice.GroupName": "Gruppenavn",
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Gruppe",
 		"Boxes.Notice.NewGroupDesc": "Opret først en ny gruppe...",
 		"Boxes.Notice.NewSide": "Side",

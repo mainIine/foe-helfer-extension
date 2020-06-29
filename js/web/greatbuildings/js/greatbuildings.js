@@ -71,12 +71,12 @@ let GreatBuildings =
             }
 
             HTML.Box({
-                'id': 'greatbuildings',
-                'title': i18n('Boxes.GreatBuildings.Title'),
-                'ask': i18n('Boxes.GreatBuildings.HelpLink'),
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': true
+                id: 'greatbuildings',
+                title: i18n('Boxes.GreatBuildings.Title'),
+                ask: i18n('Boxes.GreatBuildings.HelpLink'),
+                auto_close: true,
+                dragdrop: true,
+                minimize: true
             });
 
             // CSS in den DOM prügeln

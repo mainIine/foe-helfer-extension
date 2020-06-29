@@ -52,6 +52,7 @@ let Notice = {
 			HTML.Box({
 				id: 'notices',
 				title: i18n('Boxes.Notice.Title'),
+				ask: i18n('Boxes.Notice.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				resize: true,

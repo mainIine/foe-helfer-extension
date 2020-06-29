@@ -144,6 +144,7 @@
 		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
 		"Boxes.GreatBuildings.FPCostGoods": "FP costs for goods", //Todo: Translate
 		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
+		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
@@ -202,11 +203,12 @@
 		"Boxes.Negotiation.Title": "Müzakere Asistanı",
 		"Boxes.Negotiation.TryEnd": "Deneme bitti",
 		"Boxes.Negotiation.WrongGoods": "Yanlış Ürün seçtiniz, Lütfen manuell  bitiriniz",
-		"Boxes.Notice.DeleteGroup": "Gruppe löschen", //Todo: Translate
-		"Boxes.Notice.DeleteItem": "Seite löschen", //Todo: Translate
+		"Boxes.Notice.DeleteGroup": "Delete group and sites", //Todo: Translate
+		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
 		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
 		"Boxes.Notice.NewSide": "Side", //Todo: Translate
