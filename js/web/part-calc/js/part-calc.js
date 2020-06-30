@@ -345,14 +345,14 @@ let Parts = {
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
         h.push('<tr>');
-        h.push('<td class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></td>');
-        h.push('<td class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="success">' + EigenTotal + '</strong></td>');
+		h.push('<td class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + EigenTotal + '</strong></td>');
         h.push('</tr>');
 
         h.push('<tr>');
         if (EigenStart > 0) {
             h.push('<td colspan="3" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></td>');
-            h.push('<td colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></td>');
+			h.push('<td colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (EigenTotal - EigenStart) + '</strong></td>');
         }
         else {
             h.push('<td colspan="6" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
@@ -384,7 +384,7 @@ let Parts = {
 
                 h.push('<tr>');
                 h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-                h.push('<td class="text-center"><strong class="success">' + (Eigens[i]>0 ? Eigens[i] + ' <small>(=' + (Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i]>0 ? Eigens[i] + ' <small>(=' + (Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
                 h.push('<td class="text-center"><strong class="info">' + EigenStart + '</strong></td>');
                 h.push('<td colspan="4"></td>');
                 h.push('</tr>');
@@ -393,7 +393,7 @@ let Parts = {
                 if (Eigens[i] > 0) {
                     h.push('<tr>');
                     h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-                    h.push('<td class="text-center"><strong class="success">' + Eigens[i] + (EigenCounter > Eigens[i] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
+					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + Eigens[i] + (EigenCounter > Eigens[i] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
                     h.push('<td colspan="5"></td>');
                     h.push('</tr>');
                 }
@@ -403,7 +403,7 @@ let Parts = {
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
             if (NonExts[i]) {
-                h.push('<td class="text-center"><strong>' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong >' + '</td>');
                 if (LeveltLG[i]) {
                     h.push('<td class="text-center"><strong class="error">levelt</strong></td>');
                 }
