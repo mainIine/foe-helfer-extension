@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Szukaj budynku...",
 		"Boxes.Productions.Title": "Przegląd produkcji",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktywne",
 		"Boxes.Settings.Inactive": "Nieaktywne",
 		"Boxes.Settings.Title": "Ustawienia",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Czat gildyjny",
 		"Menu.Citymap.Desc": "Pokazuje miasto w rzucie z góry",
 		"Menu.Citymap.Title": "Przegląd miasta",
-		"Menu.Event.Desc": "Lista bieżących i nadchodzących zadań",
-		"Menu.Event.Title": "Zadania eventowe",
 		"Menu.Forum.Desc": "Masz pytania? Coś Cię drażni? Chcesz porozmawiać? ...",
 		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Podpowiada, którą Perłę Architektury ze zbiorem PR opłaca się rozbudować",

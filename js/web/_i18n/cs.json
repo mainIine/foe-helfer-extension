@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Hledat budovu...",
 		"Boxes.Productions.Title": "Přehled produkce",
 		"Boxes.Productions.Total": "Celkem: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktivováno",
 		"Boxes.Settings.Inactive": "Deaktivováno",
 		"Boxes.Settings.Title": "Nastavení",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Cechovní chat",
 		"Menu.Citymap.Desc": "Displays a schematics of your city", //Todo: Translate
 		"Menu.Citymap.Title": "City Overview", //Todo: Translate
-		"Menu.Event.Desc": "Displays today's and upcoming Quests", //Todo: Translate
-		"Menu.Event.Title": "Event Questlist", //Todo: Translate
 		"Menu.Forum.Desc": "Máte otázku, štve vás něco nebo si jen chcete popovídat ...",
 		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate

@@ -144,7 +144,7 @@
 		"Boxes.GreatBuildings.DailyFP": "PF journalier",
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
 		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
-		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
+		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/",
 		"Boxes.GreatBuildings.HideNewGBs": "Masquer les GMs non construits",
 		"Boxes.GreatBuildings.Level": "Niveau",
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2",
@@ -260,7 +260,7 @@
 		"Boxes.Production.SizeTT": "Taille, y compris l'espace moyen requis pour la route sur __streetnettosize__ cases",
 		"Boxes.Productions.AdjacentBuildings": "bâtiment adjacent",
 		"Boxes.Productions.GoodEraTotal": "Total",
-		"Boxes.Productions.GuildGoods": "Guild goods", //Todo: Translate
+		"Boxes.Productions.GuildGoods": "Trésorerie de guilde",
 		"Boxes.Productions.GuildPower": "Puissance de guilde",
 		"Boxes.Productions.Happiness": "Satisfaction",
 		"Boxes.Productions.Headings.all": "Tous",
@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Chercher un bâtiment...",
 		"Boxes.Productions.Title": "Vue d'ensemble des productions",
 		"Boxes.Productions.Total": "Total : ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Actif",
 		"Boxes.Settings.Inactive": "Inactif",
 		"Boxes.Settings.Title": "Paramètres",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Chat de guilde",
 		"Menu.Citymap.Desc": "Montre un schéma de votre cité vue du dessus.",
 		"Menu.Citymap.Title": "Aperçu de la cité",
-		"Menu.Event.Desc": "Aperçu des quêtes en cours et à venir.",
-		"Menu.Event.Title": "Liste des quêtes évènementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
 		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Quel prochain GM de production de PF devrait être augmenté ?",

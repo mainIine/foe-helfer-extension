@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Vyhľadať budovu...",
 		"Boxes.Productions.Title": "Prehľad produkcie",
 		"Boxes.Productions.Total": "Spolu: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Zapnuté",
 		"Boxes.Settings.Inactive": "Vypnuté",
 		"Boxes.Settings.Title": "Nastavenia",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Cechový rozhovor",
 		"Menu.Citymap.Desc": "Zobrazuje rozloženie Vášho mesta pohľadom zhora",
 		"Menu.Citymap.Title": "Náhľad mesta",
-		"Menu.Event.Desc": "Prehľad aktuálnych alebo nadchádzajúcich výziev",
-		"Menu.Event.Title": "Výzvy v udalosti",
 		"Menu.Forum.Desc": "Máte otázku? Niečo Vás trápi? Alebo sa chcete len porozprávať...",
 		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate

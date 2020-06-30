@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Caută clădirea...",
 		"Boxes.Productions.Title": "Prezentarea generală a producțiilor",
 		"Boxes.Productions.Total": "Total: ", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Activ",
 		"Boxes.Settings.Inactive": "Inactiv",
 		"Boxes.Settings.Title": "Setări",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Mesagerie pentru ghildă",
 		"Menu.Citymap.Desc": "Vezi schema orașului tău",
 		"Menu.Citymap.Title": "Schema orașului",
-		"Menu.Event.Desc": "Prezentarea misiunilor pentru evenimentul în curs",
-		"Menu.Event.Title": "Lista misiunilor de eveniment",
 		"Menu.Forum.Desc": "Ai o întrebare? Te deranjează ceva? Sau doar vrei să discutăm ...",
 		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
