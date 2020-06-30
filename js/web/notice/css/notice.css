@@ -106,3 +106,19 @@
 #notices-modalBody {
 	padding: 10px;
 }
+
+/******************************************************************************/
+.global-send-required-bg {
+	background-color: rgba(0,0,0, 0.5);
+	position: relative;
+}
+
+.global-send-required {
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	width: 70%;
+	text-align: center;
+}
