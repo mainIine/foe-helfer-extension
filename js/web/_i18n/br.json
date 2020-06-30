@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Procurar edifício...",
 		"Boxes.Productions.Title": "Resumo das Produções",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Ativado",
 		"Boxes.Settings.Inactive": "Desativado",
 		"Boxes.Settings.Title": "Configurações",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Chat ao vivo da guilda",
 		"Menu.Citymap.Desc": "Mostra a cidade vista de cima",
 		"Menu.Citymap.Title": "Mapa da cidade",
-		"Menu.Event.Desc": "Resumo da missão atual e futuras missões",
-		"Menu.Event.Title": "Lista de missões do Evento",
 		"Menu.Forum.Desc": "Você tem uma pergunta? Algo incomonda? Ou apenas para conversar ...",
 		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate

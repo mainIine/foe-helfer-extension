@@ -291,6 +291,7 @@
 		"Boxes.Productions.SearchInput": "Найти постройку...",
 		"Boxes.Productions.Title": "Обзор производства",
 		"Boxes.Productions.Total": "Всего: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Включено",
 		"Boxes.Settings.Inactive": "Выключено",
 		"Boxes.Settings.Title": "Настройки",
@@ -420,8 +421,6 @@
 		"Menu.Chat.Title": "Чат гильдии",
 		"Menu.Citymap.Desc": "Обзор города с высоты птичьего полета",
 		"Menu.Citymap.Title": "Обзор города",
-		"Menu.Event.Desc": "Обзор текущего и будущих событий",
-		"Menu.Event.Title": "Список заданий события",
 		"Menu.Forum.Desc": "У вас есть вопросы? Вас что-то не устраивает? Или вы просто хотите поговорить ...",
 		"Menu.Forum.Title": "Форум",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
