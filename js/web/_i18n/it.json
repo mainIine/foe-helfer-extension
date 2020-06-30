@@ -290,6 +290,7 @@
 		"Boxes.Productions.SearchInput": "Cerca edificio ...",
 		"Boxes.Productions.Title": "Panoramica della produzione",
 		"Boxes.Productions.Total": "Totale:",
+		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
 		"Boxes.Settings.Active": "Attivo",
 		"Boxes.Settings.Inactive": "Inattivo",
 		"Boxes.Settings.Title": "Impostazioni",
@@ -419,8 +420,6 @@
 		"Menu.Chat.Title": "Chat live della gilda",
 		"Menu.Citymap.Desc": "Mostra lo schema della tua città",
 		"Menu.Citymap.Title": "Panoramica della città",
-		"Menu.Event.Desc": "Panoramica delle missioni attuali e future",
-		"Menu.Event.Title": "Elenco missioni evento",
 		"Menu.Forum.Desc": "Hai una domanda? Ci sono problemi? O solo per parlare ...",
 		"Menu.Forum.Title": "Forum FoE Helper",
 		"Menu.greatbuildings.Desc": "Quale GE per la produzione di PF dovresti aggiornare dopo?",

@@ -290,6 +290,7 @@
 		"Boxes.Productions.SearchInput": "Search building...",
 		"Boxes.Productions.Title": "Current Production Overview (daily)",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
 		"Boxes.Settings.Active": "Active",
 		"Boxes.Settings.Inactive": "Inactive",
 		"Boxes.Settings.Title": "Settings",
@@ -419,8 +420,6 @@
 		"Menu.Chat.Title": "Guild live chat",
 		"Menu.Citymap.Desc": "Displays a schematics of your city",
 		"Menu.Citymap.Title": "City Overview",
-		"Menu.Event.Desc": "Displays today's and upcoming Quests",
-		"Menu.Event.Title": "Event Questlist",
 		"Menu.Forum.Desc": "Have a question? Something annoying you? just want to talk ...",
 		"Menu.Forum.Title": "FoE Helper Forum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?",

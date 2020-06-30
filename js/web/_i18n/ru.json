@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Русский",
 		"API.GEXChampionship": "Обновлена позиция гильдии в ЭГ",
 		"API.GEXPlayer": "Обновлены места участников ЭГ",
@@ -294,6 +290,7 @@
 		"Boxes.Productions.SearchInput": "Найти постройку...",
 		"Boxes.Productions.Title": "Обзор производства",
 		"Boxes.Productions.Total": "Всего: ",
+		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
 		"Boxes.Settings.Active": "Включено",
 		"Boxes.Settings.Inactive": "Выключено",
 		"Boxes.Settings.Title": "Настройки",
@@ -423,8 +420,6 @@
 		"Menu.Chat.Title": "Чат гильдии",
 		"Menu.Citymap.Desc": "Обзор города с высоты птичьего полета",
 		"Menu.Citymap.Title": "Обзор города",
-		"Menu.Event.Desc": "Обзор текущего и будущих событий",
-		"Menu.Event.Title": "Список заданий события",
 		"Menu.Forum.Desc": "У вас есть вопросы? Вас что-то не устраивает? Или вы просто хотите поговорить ...",
 		"Menu.Forum.Title": "Форум",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
