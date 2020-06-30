@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changements avec cette mise à jour de l'assistant FoE</h1><p>Dans cette mise à jour, certaines fonctionnalités ont été modifiées ou supprimées. Vous pouvez lire les détails sur notre site Web <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. Calcul de PF pour GM</h2><p>La vue \"Snipe\" et la fenêtre \"d'investissements potentiels\" ont été retirés.</p><h2>2. Incidents</h2><p>Cette fonctionnalité affiche uniquement les incidents en cours dans la ville.</p><h2>3. Assistant de négociation</h2><p>Cette fonctionnalité n'est plus disponible sur les champs de bataille de guilde. Il reste disponible partout ailleur.</p><h2>4. Quêtes d'évènement</h2><p>Ces données ne sont désormais disponibles que sur notres (ou autres) sites Web. Veuillez noter que les quêtes proviennent du serveur bêta et ne sont donc pas toujours exactes à 100%.</p><h2>5. Activités PvP</h2><p>La fonctionnalité a été supprimée.</p><h2>6. Voisinage et Productions</h2><p>Les productions et les valeurs militaires des voisins ne sont plus affichées.</p>",
-		"_Disclaimer.Button": "Compris",
-		"_Disclaimer.Label": "J'ai lu et compris cette déclaration.",
-		"_Disclaimer.Title": "Mise à jour",
 		"_Language": "Français",
 		"API.GEXChampionship": "Le classement de guilde GEX a été mis à jour.",
 		"API.GEXPlayer": "Les stages GEX des membres ont été mis à jour.",
@@ -294,6 +290,7 @@
 		"Boxes.Productions.SearchInput": "Chercher un bâtiment...",
 		"Boxes.Productions.Title": "Vue d'ensemble des productions",
 		"Boxes.Productions.Total": "Total : ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Actif",
 		"Boxes.Settings.Inactive": "Inactif",
 		"Boxes.Settings.Title": "Paramètres",
@@ -423,8 +420,6 @@
 		"Menu.Chat.Title": "Chat de guilde",
 		"Menu.Citymap.Desc": "Montre un schéma de votre cité vue du dessus.",
 		"Menu.Citymap.Title": "Aperçu de la cité",
-		"Menu.Event.Desc": "Aperçu des quêtes en cours et à venir.",
-		"Menu.Event.Title": "Liste des quêtes évènementielles",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
 		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Quel prochain GM de production de PF devrait être augmenté ?",
