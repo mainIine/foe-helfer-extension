@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Zoek gebouw...",
 		"Boxes.Productions.Title": "Productieoverzicht",
 		"Boxes.Productions.Total": "Totaal: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Geactiveerd",
 		"Boxes.Settings.Inactive": "Gedeactiveerd",
 		"Boxes.Settings.Title": "Instellingen",

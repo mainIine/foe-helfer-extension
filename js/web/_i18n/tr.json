@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Bina Ara...",
 		"Boxes.Productions.Title": "Üretim Genelbakış",
 		"Boxes.Productions.Total": "Toplam: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Ayarlar",

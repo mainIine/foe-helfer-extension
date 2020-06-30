@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Search building...",
 		"Boxes.Productions.Title": "Current Production Overview (daily)",
 		"Boxes.Productions.Total": "Total: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods",
 		"Boxes.Settings.Active": "Active",
 		"Boxes.Settings.Inactive": "Inactive",
 		"Boxes.Settings.Title": "Settings",

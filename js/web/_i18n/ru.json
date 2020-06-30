@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Найти постройку...",
 		"Boxes.Productions.Title": "Обзор производства",
 		"Boxes.Productions.Total": "Всего: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Включено",
 		"Boxes.Settings.Inactive": "Выключено",
 		"Boxes.Settings.Title": "Настройки",
