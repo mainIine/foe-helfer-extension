@@ -63,7 +63,15 @@ let Notice = {
 			Notice.Listener();
 		}
 
-		Notice.prepareContent();
+		if(Settings.GetSetting('GlobalSend')){
+			Notice.prepareContent();
+
+		}
+
+		// global send is deactivated
+		else {
+			$('#noticesBody').addClass('global-send-required-bg').append( $('<span />').addClass('global-send-required').html(i18n('Boxes.Notice.GlobalSendRequired')) );
+		}
 	},
 
 
