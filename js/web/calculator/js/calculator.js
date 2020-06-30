@@ -197,13 +197,13 @@ let Calculator = {
 		let h = [],
 			RecurringQuests = 0;
 
-		// Schleifenquest für "Benutze FP" suchen
+		// Schleifenquest "Forge-Punkte ausgeben" suchen
 		for (let Quest of MainParser.Quests) {
 			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
 				for (let cond of Quest.successConditions) {
 					let CurrentProgress = cond.currentProgress !== undefined ? cond.currentProgress : 0;
 					let MaxProgress = cond.maxProgress;
-					if ((CurrentEraID <= 3 && MaxProgress >= 3) || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+					if (MaxProgress == 8 || MaxProgress == 15 || MaxProgress > 20) { // nur die Schleifenquest erkennen
 						let RecurringQuestString;
 						if (MaxProgress - CurrentProgress !== 0) {
 							RecurringQuestString = HTML.Format(MaxProgress - CurrentProgress) + i18n('Boxes.Calculator.FP');
