@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Søg bygning...",
 		"Boxes.Productions.Title": "Produktionsoversigt",
 		"Boxes.Productions.Total": "I alt: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Indstillinger",

@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Caută clădirea...",
 		"Boxes.Productions.Title": "Prezentarea generală a producțiilor",
 		"Boxes.Productions.Total": "Total: ", //Todo: Translate
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Activ",
 		"Boxes.Settings.Inactive": "Inactiv",
 		"Boxes.Settings.Title": "Setări",

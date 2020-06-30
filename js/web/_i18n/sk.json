@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Vyhľadať budovu...",
 		"Boxes.Productions.Title": "Prehľad produkcie",
 		"Boxes.Productions.Total": "Spolu: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Zapnuté",
 		"Boxes.Settings.Inactive": "Vypnuté",
 		"Boxes.Settings.Title": "Nastavenia",

@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Épület keresés...",
 		"Boxes.Productions.Title": "Termelés áttekintése",
 		"Boxes.Productions.Total": "Teljes: ",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktív",
 		"Boxes.Settings.Inactive": "Nem aktív",
 		"Boxes.Settings.Title": "Beállítások",

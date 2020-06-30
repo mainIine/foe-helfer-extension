@@ -290,7 +290,7 @@
 		"Boxes.Productions.SearchInput": "Cerca edificio ...",
 		"Boxes.Productions.Title": "Panoramica della produzione",
 		"Boxes.Productions.Total": "Totale:",
-		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Attivo",
 		"Boxes.Settings.Inactive": "Inattivo",
 		"Boxes.Settings.Title": "Impostazioni",
