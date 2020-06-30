@@ -515,15 +515,17 @@ const FoEproxy = (function () {
 				console.log('Can\'t parse postData: ', postData);
 			}
 
-			//StartUp Service zuerst behandeln
+			// StartUp Service zuerst behandeln
+            const startup = entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData';
+
 			for (let entry of d) {
-				if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
+				if (startup) {
 					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 				}
 			}
 
 			for (let entry of d) {
-				if (entry['requestClass'] !== 'StartupService' || entry['requestMethod'] == 'getData') {
+				if (!startup) {
 					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 				}
 			}
