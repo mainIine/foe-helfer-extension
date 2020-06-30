@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Polski",
 		"API.GEXChampionship": "Postęp wypraw gildyjnych został zaktualizowany",
 		"API.GEXPlayer": "Zaktualizowano ranking graczy w wyprawie gildyjnej",
@@ -294,6 +290,7 @@
 		"Boxes.Productions.SearchInput": "Szukaj budynku...",
 		"Boxes.Productions.Title": "Przegląd produkcji",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "???", //Todo: Translate
 		"Boxes.Settings.Active": "Aktywne",
 		"Boxes.Settings.Inactive": "Nieaktywne",
 		"Boxes.Settings.Title": "Ustawienia",
@@ -423,8 +420,6 @@
 		"Menu.Chat.Title": "Czat gildyjny",
 		"Menu.Citymap.Desc": "Pokazuje miasto w rzucie z góry",
 		"Menu.Citymap.Title": "Przegląd miasta",
-		"Menu.Event.Desc": "Lista bieżących i nadchodzących zadań",
-		"Menu.Event.Title": "Zadania eventowe",
 		"Menu.Forum.Desc": "Masz pytania? Coś Cię drażni? Chcesz porozmawiać? ...",
 		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Podpowiada, którą Perłę Architektury ze zbiorem PR opłaca się rozbudować",

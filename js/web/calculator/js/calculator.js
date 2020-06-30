@@ -144,9 +144,11 @@ let Calculator = {
 
 		h.push('<div class="dark-bg costFactorWrapper">');
 
-		// different arc bonus-buttons
-		let investmentSteps = [80,85,90,MainParser.ArkBonus];
+		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
+		// different arc bonus-buttons
+		let investmentSteps = [80, 85, 90, MainParser.ArkBonus];
+		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
 			h.push(`<button class="btn btn-default btn-toggle-arc" data-value="${bonus}">${bonus}%</button>`);
