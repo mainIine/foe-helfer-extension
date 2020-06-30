@@ -173,7 +173,6 @@
 				'campagnemap',
 				'technologies',
 				'negotiation',
-				'eventquest',
 				'settings',
 				'investment',
 				'strategy-points',
