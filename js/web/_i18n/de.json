@@ -207,6 +207,7 @@
 		"Boxes.Notice.DeleteItem": "Seite löschen",
 		"Boxes.Notice.DummyHeading": "Deine Überschrift",
 		"Boxes.Notice.Edit": "Bearbeiten",
+		"Boxes.Notice.GlobalSendRequired": "Dieses Modul funktioniert nur mit eingeschalteter Option \"Übermittlung an foe-rechner.de\".<br>Bitte aktivere diese Option um die Notizen benutzen zu können.",
 		"Boxes.Notice.GroupName": "Gruppenname",
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/1/notizen/",
 		"Boxes.Notice.NewGroup": "Gruppe",
