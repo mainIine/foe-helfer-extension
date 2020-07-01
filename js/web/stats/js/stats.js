@@ -1116,7 +1116,7 @@ let Stats = {
 
 		const startDate = {
 			today: moment().startOf('day').toDate(),
-			yesterday: moment().subtract(1, 'weeks').startOf('day').toDate(),
+			yesterday: moment().startOf('day').subtract(1,'days').toDate(),
 			sinceTuesday: ((moment().startOf('isoWeek').add(1, 'days').toDate() > MainParser.getCurrentDate()) ?
                            moment().startOf('isoWeek').subtract(1, 'weeks').add(1, 'days').toDate() : moment().startOf('isoWeek').add(1, 'days').toDate()),
 			last7days: moment().subtract(1, 'weeks').toDate(),
