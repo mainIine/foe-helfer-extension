@@ -1,13 +1,12 @@
 #stats {
 	top: calc(50% - 375px);
-	left: calc(50% - 600px);
+	left: calc(50% - 550px);
 }
 
 #statsBody {
-	width: 1200px;
+	width: 1100px;
 	max-height: 800px;
-	padding: 8px 0;
-	overflow: scroll;
+	overflow: hidden;
 }
 
 #stats #highcharts {
@@ -17,36 +16,42 @@
 #stats .options {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 4px;
-	justify-content: space-between;
-	align-items: flex-end;
+	justify-content: space-around;
+	align-items: center;
+	background-color: var(--50-black);
+	height: 50px;
+	border-bottom: 2px solid #864c1e;
 }
 
 #stats .options-2 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-bottom: 4px;
+}
+
+#stats .options-2 .btn-tight {
+	margin: 2px 1px;
+}
+
+#stats .option-era-dropdown {
+	width: 146px;
 }
 
 #stats .option-toggle-group {
-	max-height: 45px;
 	width: 145px;
 }
 
 #stats .option-era-wrap {
-	max-height: 45px;
-	width: 350px;
+	width: 330px;
 }
 
 #stats .option-chart-type-wrap {
-	width: 80px;
+	width: 130px;
+	font-size: 85%;
 }
 
 #stats .option-chart-type-wrap span {
-	text-align: right;
-	display: block;
-	font-size: 80%;
+	padding: 2px;
 }
 
 #stats .option-chart-type-wrap span.active {
@@ -57,7 +62,6 @@
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
-	max-height: 45px;
 	align-items: baseline;
 	align-content: baseline;
 }
@@ -125,22 +129,43 @@
 }
 
 #stats .tabs  {
-	width: 462px;
+	width: 406px;
+	align-self: flex-end;
+}
+
+#stats .tabs .horizontal {
+	border-bottom: none;
+}
+
+#stats .window-body .tabs ul.horizontal li {
+	margin-right: 2px;
 }
 
 #stats .tabs ul li a span {
 	background: transparent url('../images/tabs.png') -233px 5px no-repeat;
-	width: 27px;
+	width: 24px;
 }
-#stats .tabs ul li.statsTreasurePlayerD a span, #stats .tabs ul li.statsTreasurePlayerH a span {
-	background-position: -103px 6px;
+#stats .tabs ul li.statsTreasurePlayerD a span {
+	background-position: 0 4px;
 }
-#stats .tabs ul li.statsGBGPlayers a span {
-	background-position: -287px 4px;
+#stats .tabs ul li.statsTreasurePlayerH a span {
+	background-position: -40px 4px;
 }
-#stats .tabs ul li.statsUnitsD a span, #stats .tabs ul li.statsUnitsH a span {
-	background-position: -344px 6px;
+#stats .tabs ul li.statsTreasureClanD a span {
+	background-position: -80px 6px;
+}
+#stats .tabs ul li.statsTreasureClanH a span {
+	background-position: -120px 6px;
+}
+#stats .tabs ul li.statsUnitsD a span {
+	background-position: -160px 6px;
+}
+#stats .tabs ul li.statsUnitsH a span {
+	background-position: -200px 6px;
 }
 #stats .tabs ul li.statsRewards a span {
-	background-position: -316px 4px;
+	background-position: -280px 4px;
+}
+#stats .tabs ul li.statsGBGPlayers a span {
+	background-position: -237px 4px;
 }
