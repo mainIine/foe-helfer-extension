@@ -207,6 +207,7 @@
 		"Boxes.Notice.DeleteItem": "Slet side",
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Gruppenavn",
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Gruppe",
