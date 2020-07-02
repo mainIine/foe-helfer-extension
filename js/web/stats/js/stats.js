@@ -385,7 +385,7 @@ let Stats = {
 		}
 
 		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){
-			if(Stats.DatePickerObj === null && $('#GVGDatePicker').length > 0){
+			if ($('#GVGDatePicker').length > 0) {
 
 				Stats.DatePickerObj = new Litepicker({
 					element: document.getElementById('GVGDatePicker'),
@@ -397,10 +397,13 @@ let Stats = {
 					onSelect: async function (start, end) {
 						$('#GVGDatePicker').text(`${start} - ${end}`);
 
-						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({s: start, e: end})));
+						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({ s: start, e: end })));
 					}
 				});
 			}
+			else {
+				Stats.DatePickerObj = null;
+            }
 		});
 	},
 
