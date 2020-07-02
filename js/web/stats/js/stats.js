@@ -507,26 +507,24 @@ let Stats = {
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
 			value: it
 		}));
-		return `<div>
+		return `<div class="option-era-dropdown">
 					${Stats.RenderEraSwitchers()}
 				</div>
-				<div class="option-era-wrap">
-					Zeitalter: ${btnGroupByEra}<br>
+				<div class="option-era-wrap text-center">
+					<strong>Zeitalter:</strong> ${btnGroupByEra}<br>
 					${btnSelectAllEra}
 					${btnSelectMyEra}
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
 					${btnSelectAll}
 					${btnSelectNoEra}
 				</div>
-				<div class="option-toggle-group">
-					${btnTglAnnotations}
-				</div>
 				<div class="tabs">
 					<ul class="horizontal">
 					${sourceBtns.join('')}
 					</ul>
 				</div>
-				<div class="option-chart-type-wrap">
+				<div class="option-chart-type-wrap text-center">
+					${btnTglAnnotations}
 					${chartTypes.join('')}
 				</div>`;
 	},
