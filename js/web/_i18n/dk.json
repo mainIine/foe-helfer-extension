@@ -459,8 +459,19 @@
 		"Settings.AutomaticNegotiation.Title": "Forhandlingsassistent",
 		"Settings.ChangeLanguage.Desc": "Hvilket sprog skal bruges i stedet for det automatisk genkendte?",
 		"Settings.ChangeLanguage.Title": "Skift sprog",
-		"Settings.CustomerApi.Desc": "Du vil sende data til din egen server?<br>Efter aktivering vil spillet genindlæse og et nyt menupunkt vil kunne findes i menuen til højre.",
-		"Settings.CustomerApi.Title": "Spiller API",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Hvis du vil samle data sammen med din klan, så aktivér dette punkt.<br>For en selvførende udvidelse uden foe-rechner.de kan dette deaktiveres.",
 		"Settings.GlobalSend.Title": "Overførelse af data til foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hvor mange elementer høj skal menuen til højre være?<br> Tom eller \"0\" er den automatiske højde.",
@@ -474,14 +485,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Klanmedlemmernes SB data",
 		"Settings.SendInvestigations.Desc": "Overfører FP investeringerne ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i'.",
 		"Settings.SendInvestigations.Title": "FP investeringer",
-		"Settings.SendTavernInfo.Desc": "Skal MoPo aktiviteterne overføres, når begivenhedshistorikken åbnes?",
-		"Settings.SendTavernInfo.Title": "MoPo aktivitet",
+		"Settings.SendPlayersMotivation.Desc": "Skal MoPo aktiviteterne overføres, når begivenhedshistorikken åbnes?",
+		"Settings.SendPlayersMotivation.Title": "MoPo aktivitet",
 		"Settings.ShowInvestments.Desc": "Ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i' vises en oversigt over investeringer i andre spillers SBer.",
 		"Settings.ShowInvestments.Title": "Vis oversigt over investeringer i SBer",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Vis også egenandelsberegneren ved SBer, der tilhører andre spillere.",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Vis altid EA-beregneren",
 		"Settings.ShowTavernBadge.Desc": "Så snart der aktiveres en \"Ekstra\" tur fra krobutikken, vises en flytbar nedtælling",
 		"Settings.ShowTavernBadge.Title": "Vis kro badge",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "<p>Udvidelsesversion</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Klan Id:",
 		"Settings.Version.PlayerId": "Spiller Id:",

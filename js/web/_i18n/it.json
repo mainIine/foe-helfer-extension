@@ -459,8 +459,19 @@
 		"Settings.AutomaticNegotiation.Title": "Assistente di negoziazione",
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
 		"Settings.ChangeLanguage.Title": "Cambia lingua",
-		"Settings.CustomerApi.Desc": "Vuoi inviare alcuni dati al tuo server?<br> Dopo l'attivazione il gioco verrà ricaricato e apparirà una nuova voce nel menu.",
-		"Settings.CustomerApi.Title": "API giocatore",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se vuoi tracciare i dati con la tua gilda, attiva questo campo. <br> Per un'estensione autosufficiente, disattivalo.",
 		"Settings.GlobalSend.Title": "Trasmissione a foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quanti elementi (lunghezza) dovrebbe contenere il menu? <br> Campo vuoto o \"0\" sceglierà in automatico.",
@@ -474,14 +485,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Dati GE di altri membri della gilda",
 		"Settings.SendInvestigations.Desc": "L' azione \"Municipio\">\"Notizie\">\"Grandi Edifici\"trasmetterà gli investimenti in PF",
 		"Settings.SendInvestigations.Title": "Investimenti PF",
-		"Settings.SendTavernInfo.Desc": "Le attività di motivazione devono essere trasferite quando vengono chiamati gli eventi?",
-		"Settings.SendTavernInfo.Title": "Attività di motivazione",
+		"Settings.SendPlayersMotivation.Desc": "Le attività di motivazione devono essere trasferite quando vengono chiamati gli eventi?",
+		"Settings.SendPlayersMotivation.Title": "Attività di motivazione",
 		"Settings.ShowInvestments.Desc": "Mostra le somme dei tuoi investimenti di PF quando apri la scheda 'Municipio'> 'Novità'> 'Grandi edifici'.",
 		"Settings.ShowInvestments.Title": "Mostra le somme degli investimenti di PF",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Mostra la 'Calcolatrice GE' anche per grandi edifici degli altri giocatori",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Mostra la 'Calcolatrice GE' per tutti i GE",
 		"Settings.ShowTavernBadge.Desc": "Non appena viene attivata la mossa extra nella taverna, appare un contatore mobile a livello globale.",
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Versione estensione di Chrome",
 		"Settings.Version.GuildId": "ID Gilda:",
 		"Settings.Version.PlayerId": "ID Giocatore:",

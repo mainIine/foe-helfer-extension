@@ -331,7 +331,7 @@ p {
 
 /***************************************************************/
 
-#ant-hud {
+#foe-helper-hud {
 	position: absolute;
 	right: 0;
 	z-index: 150;
@@ -346,8 +346,8 @@ p {
 	font-weight: 400;
 }
 
-#ant-hud::before,
-#ant-hud::after,
+#foe-helper-hud::before,
+#foe-helper-hud::after,
 .hud-btn,
 .hud-btn-up::before,
 .hud-btn-up-active::before,
@@ -356,7 +356,7 @@ p {
 	background: url('../images/hud/menu.png') top left no-repeat;
 }
 
-#ant-hud::before {
+#foe-helper-hud::before {
 	content: '';
 	width: 64px;
 	height: 26px;
@@ -365,7 +365,7 @@ p {
 	left: 0;
 }
 
-#ant-hud::after {
+#foe-helper-hud::after {
 	content: '';
 	width: 64px;
 	height: 24px;
@@ -376,7 +376,7 @@ p {
 }
 
 
-#ant-hud-wrapper {
+#foe-helper-hud-wrapper {
 	width: 64px;
 	height: 220px;
 	position: absolute;
@@ -386,7 +386,7 @@ p {
 	background: url('../images/hud/menu-bg.png') top left repeat-y
 }
 
-#ant-hud-slider {
+#foe-helper-hud-slider {
 	position: absolute;
 	top: 0;
 	right: 3px;
