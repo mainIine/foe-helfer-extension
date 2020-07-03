@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.",
 		"Boxes.Stats.BtnToggleGroupBy": "Групп. по Эпохам",
 		"Boxes.Stats.BtnToggleGroupByTitle": "Группировать по эпохам",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Все",
 		"Boxes.Stats.Period.last30days": "Послед. 30 дней",
 		"Boxes.Stats.Period.last7days": "Послед. 7 дней",

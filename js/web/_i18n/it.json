@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Mostra una diminuzione dei beni sulla mappa GvG.",
 		"Boxes.Stats.BtnToggleGroupBy": "Raggruppa per Era",
 		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Tutto",
 		"Boxes.Stats.Period.last30days": "Ultimi 30 giorni ",
 		"Boxes.Stats.Period.last7days": "Ultimi 7 giorni",
