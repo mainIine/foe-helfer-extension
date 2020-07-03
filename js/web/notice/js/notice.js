@@ -65,7 +65,6 @@ let Notice = {
 
 		if(Settings.GetSetting('GlobalSend')){
 			Notice.prepareContent();
-
 		}
 
 		// global send is deactivated

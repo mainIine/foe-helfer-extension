@@ -459,8 +459,19 @@
 		"Settings.AutomaticNegotiation.Title": "Negociadores",
 		"Settings.ChangeLanguage.Desc": "¿Qué idioma debe usarse en lugar del reconocido?",
 		"Settings.ChangeLanguage.Title": "Cambiar idioma",
-		"Settings.CustomerApi.Desc": "¿Le gustaría enviar algunos datos a su propio servidor?<br> Después de esta activación, el juego se volverá a cargar y aparecerá un nuevo elemento de menú.",
-		"Settings.CustomerApi.Title": "API de jugadores",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si deseas realizar un seguimiento de datos con tu gremio, activa este punto.<br>Para una extensión autosuficiente, simplemente desactiva",
 		"Settings.GlobalSend.Title": "Transmisión a foe-rechner.de",
 		"Settings.MenuLength.Desc": "How many elements high should the menu be?<br>Empty or \"0\" means automatic height.", //Todo: Translate
@@ -474,14 +485,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Datos de grandes edificios de otros miembros del gremio",
 		"Settings.SendInvestigations.Desc": "Al entrar al 'Ayuntamiento' > 'Novedades' > 'Grandes edificios' seran transferidas las inversiones de FP",
 		"Settings.SendInvestigations.Title": "FP inversiones",
-		"Settings.SendTavernInfo.Desc": "¿Quieres que sean transferidas las actividades de motivar al iniciar?",
-		"Settings.SendTavernInfo.Title": "Actividad de motivar",
+		"Settings.SendPlayersMotivation.Desc": "¿Quieres que sean transferidas las actividades de motivar al iniciar?",
+		"Settings.SendPlayersMotivation.Title": "Actividad de motivar",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Tan pronto como se activa un potenciador en la taberna, aparece un contador, globalmente desplazable",
 		"Settings.ShowTavernBadge.Title": "Mostrar placa de tabernas ",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>", //Todo: Translate
 		"Settings.Version.GuildId": "Id de Gremio:",
 		"Settings.Version.PlayerId": "Id de jugador:",
