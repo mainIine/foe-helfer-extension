@@ -964,7 +964,7 @@ const FoEproxy = (function () {
 
 	// Moppel Aktivitäten
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
-		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendTavernInfo')) {
+		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendPlayersMotivation')) {
 			return;
 		}
 		let page = data.responseData.page,
@@ -1480,7 +1480,7 @@ let MainParser = {
 	 * @param d
 	 */
 	StartUp: (d) => {
-		Settings.InitPreferences();
+		Settings.Init(false);
 
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];

@@ -459,8 +459,19 @@
 		"Settings.AutomaticNegotiation.Title": "Помощник переговоров",
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",
 		"Settings.ChangeLanguage.Title": "Изменить язык",
-		"Settings.CustomerApi.Desc": "Вы хотите отправить данные на свой сервер? <br> После этой активации игра перезагрузится и появится новый пункт меню.",
-		"Settings.CustomerApi.Title": "API игроков",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
@@ -474,14 +485,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Данные о ВС других участников гильдии",
 		"Settings.SendInvestigations.Desc": "Во время открытия 'Ратуша'> 'Новости'> 'Великие Строения' будут передаваться инвестиции СО",
 		"Settings.SendInvestigations.Title": "Инвестиции СО",
-		"Settings.SendTavernInfo.Desc": "Нужно ли передавать мероприятия дружбы (мотивирование строений)?",
-		"Settings.SendTavernInfo.Title": "Мероприятия дружбы (мотивирование)",
+		"Settings.SendPlayersMotivation.Desc": "Нужно ли передавать мероприятия дружбы (мотивирование строений)?",
+		"Settings.SendPlayersMotivation.Title": "Мероприятия дружбы (мотивирование)",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Как только активирован дополнительный ход в таверне, появится глобальный счетчик.",
 		"Settings.ShowTavernBadge.Title": "Показать значок таверны",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Версия расширения для Chrome",
 		"Settings.Version.GuildId": "Айди гильдии:",
 		"Settings.Version.PlayerId": "Айди игрока:",
