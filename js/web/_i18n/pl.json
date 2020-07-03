@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Pokazuje wydatki towaru na mapie GvG.",
 		"Boxes.Stats.BtnToggleGroupBy": "Grupuj epokami",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Wszystkie",
 		"Boxes.Stats.Period.last30days": "Ostatnie 30 dni",
 		"Boxes.Stats.Period.last7days": "Ostatnie 7 dni",

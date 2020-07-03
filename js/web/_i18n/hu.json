@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "All", //Todo: Translate
 		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
 		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate

@@ -469,7 +469,7 @@ let Stats = {
 			value: Stats.PlayableEras.join(',')
 		});
 
-		const btnGroupByEra = Stats.RenderButton({
+		const btnGroupByEra = Stats.RenderBox({
 			name: i18n('Boxes.Stats.BtnToggleGroupBy'),
 			title: i18n('Boxes.Stats.BtnToggleGroupByTitle'),
 			disabled: !Stats.isSelectedTreasureSources(),
@@ -477,7 +477,7 @@ let Stats = {
 			dataType: 'groupByToggle',
 		});
 
-		const btnTglAnnotations = Stats.RenderButton({
+		const btnTglAnnotations = Stats.RenderBox({
 			name: i18n('Boxes.Stats.BtnToggleAnnotations'),
 			title: i18n('Boxes.Stats.BtnToggleAnnotationsTitle'),
 			disabled: Stats.isSelectedRewardSources(),
@@ -494,7 +494,7 @@ let Stats = {
 			'statsUnitsD',
 			'statsRewards',
 			'statsGBGPlayers'
-		].map(source => Stats.RenderButton({
+		].map(source => Stats.RenderTab({
 			name: i18n('Boxes.Stats.BtnSource.' + source),
 			title: i18n('Boxes.Stats.SourceTitle.' + source),
 			isActive: Stats.state.source === source,
@@ -510,25 +510,25 @@ let Stats = {
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
 			value: it
 		}));
-		return `<div>
+		return `<div class="option-era-dropdown">
 					${Stats.RenderEraSwitchers()}
 				</div>
-				<div class="option-toggle-group">
-					${btnGroupByEra}
-					${btnTglAnnotations}
-				</div>
-				<div class="option-era-wrap">
+				<div class="option-era-wrap text-center">
+					<strong>${i18n('Boxes.Stats.Era')}:</strong> ${btnGroupByEra}<br>
 					${btnSelectAllEra}
-					${btnSelectAll}
 					${btnSelectMyEra}
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
+					${btnSelectAll}
 					${btnSelectNoEra}
 				</div>
-				<div class="option-chart-type-wrap">
-					${chartTypes.join('')}
-				</div>
-				<div class="option-source-wrap">
+				<div class="tabs">
+					<ul class="horizontal">
 					${sourceBtns.join('')}
+					</ul>
+				</div>
+				<div class="option-chart-type-wrap text-center">
+					${btnTglAnnotations}<br>
+					${chartTypes.join('')}
 				</div>`;
 	},
 
@@ -577,7 +577,7 @@ let Stats = {
 
 
 	/**
-	 * Dropdown for ereas
+	 * Dropdown for eras
 	 *
 	 * @returns {string}
 	 */
@@ -625,6 +625,18 @@ let Stats = {
 			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>
 		</li>`,
 
+	/**
+	 * Render a checkbox (without list)
+	 *
+	 * @param name
+	 * @param isActive
+	 * @param dataType
+	 * @param value
+	 * @returns {string}
+	 */
+	RenderBox: ({name, isActive, disabled, dataType, value}) => `<label class="game-cursor${disabled ? ' hidden' : ''}">
+			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>`,
+
 
 	/**
 	 * Render a button
@@ -638,6 +650,19 @@ let Stats = {
 	 * @returns {string}
 	 */
 	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
+
+	/**
+	 * Render a tab
+	 *
+	 * @param name		Name
+	 * @param isActive	Activated
+	 * @param dataType	Typ
+	 * @param value		Default Value
+	 * @param title		Title for button
+	 * @param disabled	Disabled button
+	 * @returns {string}
+	 */
+	RenderTab: ({name, isActive, dataType, value, title, disabled}) => `<li ${disabled ? 'disabled' : ''} class="${value} ${!disabled && isActive ? 'active' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}"><a><span>&nbsp;</span></a></li>`,
 
 
 	/**

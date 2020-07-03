@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "GvG Haritasındaki mallarda azalmayı gösterir..",
 		"Boxes.Stats.BtnToggleGroupBy": "Çağlara göre Sırala",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Hepsi",
 		"Boxes.Stats.Period.last30days": "son 30 gün",
 		"Boxes.Stats.Period.last7days": "son 7 gün",
