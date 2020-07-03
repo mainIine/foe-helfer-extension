@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Visar kostnad av varor på GvG karta.",
 		"Boxes.Stats.BtnToggleGroupBy": "Gruppera på era",
 		"Boxes.Stats.BtnToggleGroupByTitle": "Gruppera på titel",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Alla",
 		"Boxes.Stats.Period.last30days": "Sista 30 dagar",
 		"Boxes.Stats.Period.last7days": "Sista 7 dagar",

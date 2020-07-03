@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Viser forbruget af varer på GvG-kortet.",
 		"Boxes.Stats.BtnToggleGroupBy": "Sortér efter tidsalder",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Alle",
 		"Boxes.Stats.Period.last30days": "sidste 30 dage",
 		"Boxes.Stats.Period.last7days": "sidste 7 dage",
