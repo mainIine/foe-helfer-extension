@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Daily Special: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event Chest Selection Helper", //Todo: Translate
-		"Boxes.EventList.And": " A ",
-		"Boxes.EventList.Desc": "Úloha",
-		"Boxes.EventList.Number": "Č.",
-		"Boxes.EventList.Or": " ALEBO ",
-		"Boxes.EventList.Reward": "Odmena",
-		"Boxes.EventList.Title": "Zoznam úloh v udalosti: ",
-		"Boxes.EventList.Upcoming": "NADCHÁDZAJÚCE VÝZVY (Hodnoty sa môžu líšiť)",
-		"Boxes.EventList.Waiting": "Žiadna ďalšia výzva",
 		"Boxes.Gildfights.Fights": "Boje",
 		"Boxes.Gildfights.LastSnapshot": " - naposledy načítané pred __time__",
 		"Boxes.Gildfights.Negotiations": "Vyjednávania",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,8 +399,6 @@
 		"HiddenRewards.Table.position": "Umiestnenie",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sk-SK",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Je Vám niečo nejasné?<br>Pozrite sa sem!",
 		"Menu.Ask.Title": "Otázka / Odpoveď",
 		"Menu.Bugs.Desc": "Nie je niečo v poriadku? Alebo máte nápad?",

@@ -175,6 +175,7 @@
 				'campagnemap',
 				'technologies',
 				'negotiation',
+				'eventchests',
 				'settings',
 				'investment',
 				'strategy-points',

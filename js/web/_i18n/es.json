@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Precio del día: ",
 		"Boxes.EventChests.Steps": "Pasos",
 		"Boxes.EventChests.Title": "Ayuda de selección de cofre del evento",
-		"Boxes.EventList.And": " y ",
-		"Boxes.EventList.Desc": "Tarea",
-		"Boxes.EventList.Number": "Número ",
-		"Boxes.EventList.Or": " o ",
-		"Boxes.EventList.Reward": "Recompensa",
-		"Boxes.EventList.Title": "Lista de misiones para el evento: ",
-		"Boxes.EventList.Upcoming": "PRÓXIMAS MISIONES (Los números pueden variar)",
-		"Boxes.EventList.Waiting": "No hay misión disponible",
 		"Boxes.Gildfights.Fights": "Combates",
 		"Boxes.Gildfights.LastSnapshot": " - último snapshot __time__ ago",
 		"Boxes.Gildfights.Negotiations": "Negociaciones",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,8 +399,6 @@
 		"HiddenRewards.Table.position": "Posición",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "es-ES",
-		"Menu.Api.Desc": "Configuración para enviar datos a tu propio servidor",
-		"Menu.Api.Title": "API de extensión",
 		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruébalo!",
 		"Menu.Ask.Title": "Pregunta / Respuesta",
 		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
