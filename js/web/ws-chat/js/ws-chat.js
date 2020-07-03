@@ -363,7 +363,7 @@ let Chat = {
 		Chat.ConnectionId = connectionId;
 		
 		// let wsUri = 'ws://localhost:9000/';
-		let wsUri = 'ws://ws.foe-rechner.de:9000/';
+		let wsUri = 'ws://ws.foe-helper.com:9000/';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
