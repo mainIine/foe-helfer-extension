@@ -459,8 +459,18 @@
 		"Settings.AutomaticNegotiation.Title": "Auxiliar de negociações",
 		"Settings.ChangeLanguage.Desc": "Que idioma deve ser utilizado, em vez do definido automaticamente?",
 		"Settings.ChangeLanguage.Title": "Mudar idioma",
-		"Settings.CustomerApi.Desc": "Deseja enviar alguns dados para o seu próprio servidor?<br>Após essa ativação, o jogo será recarregado e um novo item de menu será exibido.",
-		"Settings.CustomerApi.Title": "API dos jogadores",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se você deseja rastrear dados com sua guilda, ative essa opção. <br> Para uma utilização apenas pessoal, desativa esta opção.",
 		"Settings.GlobalSend.Title": "Envio para foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá ter o menu?<br> Sem nada ou \"0\" definir uma altura automática.",
@@ -474,14 +484,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
 		"Settings.SendInvestigations.Desc": "Ao entrar na 'Prefeitura'> 'Notícias'> 'Grandes Edifícios' vai exibir os PFs investidos",
 		"Settings.SendInvestigations.Title": "Investimento PFs",
-		"Settings.SendTavernInfo.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?",
-		"Settings.SendTavernInfo.Title": "Atividade da motivação",
+		"Settings.SendPlayersMotivation.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?",
+		"Settings.SendPlayersMotivation.Title": "Atividade da motivação",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Assim que o movimento extra na taberna é ativado, um contador móvel global aparece.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Versão da Extensão do Chrome",
 		"Settings.Version.GuildId": "ID da guilda:",
 		"Settings.Version.PlayerId": "ID do jogador:",

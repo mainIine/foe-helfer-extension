@@ -1001,7 +1001,7 @@ let NegotiationDebugger = {
 		{text: 'Done',      value: -1, selectedColor: 'none'},
 	],
 
-	Show: function() 	{
+	Show: function() {
 		if ($('#negotiationDebuggerBox').length === 0) {
 
 			// Box in den DOM

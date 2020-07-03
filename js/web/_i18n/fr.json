@@ -459,8 +459,18 @@
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",
 		"Settings.ChangeLanguage.Title": "Changer de langue",
-		"Settings.CustomerApi.Desc": "Voulez vous envoyer des données à votre propre serveur ?<br> Après l'activation, le jeu sera relancé et un nouveau menu sera disponible.",
-		"Settings.CustomerApi.Title": "Serveur API personnel",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
@@ -474,14 +484,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Info GM des membres de la guilde",
 		"Settings.SendInvestigations.Desc": "Ouvrir l'Hôtel de ville > Nouvelles > Grand monuments : cela enverra l'info des PF investis.",
 		"Settings.SendInvestigations.Title": "Envoi investissements des PF",
-		"Settings.SendTavernInfo.Desc": "Est-ce que les activités de PO/MO doivent être transférées quand les évènements ont lieu ?",
-		"Settings.SendTavernInfo.Title": "Activité PO/MO",
+		"Settings.SendPlayersMotivation.Desc": "Est-ce que les activités de PO/MO doivent être transférées quand les évènements ont lieu ?",
+		"Settings.SendPlayersMotivation.Title": "Activité PO/MO",
 		"Settings.ShowInvestments.Desc": "Afficher le résumé de tous les investissements PF quand vous entrez sur 'Hotel de ville' > 'Nouvelles' > 'Grands Monuments'.",
 		"Settings.ShowInvestments.Title": "Résumé investissements des PF",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Ouvrir la 'Calculatrice GM externe' à l'ouverture d'un grand monument d'un autre joueur.",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Calcultrice GM externe",
 		"Settings.ShowTavernBadge.Desc": "Dès qu'une visite dans la taverne est effectuée, un compteur global apparaît.",
 		"Settings.ShowTavernBadge.Title": "Affiche un compteur sur la taverne",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Version de l'extension Chrome",
 		"Settings.Version.GuildId": "ID Guilde",
 		"Settings.Version.PlayerId": "ID Joueur",

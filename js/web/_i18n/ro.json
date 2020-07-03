@@ -459,8 +459,18 @@
 		"Settings.AutomaticNegotiation.Title": "Ajutor pentru negocieri",
 		"Settings.ChangeLanguage.Desc": "Ce limbă dorești să fie folosită?",
 		"Settings.ChangeLanguage.Title": "Schimbă limba",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Dacă dorești să urmărești datele cu ghilda dvs., activează această opțiune. <br> Pentru utilizarea personală, dezactivează opțiunea.",
 		"Settings.GlobalSend.Title": "Transmitere către foe-rechner.de",
 		"Settings.MenuLength.Desc": "Câte elemente dorești să fie afișate în fereastra aplicației?<br> Nicio valoare sau \"0\" înseamnă lungime prestabilită.",
@@ -474,14 +484,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Datele clădirilor legendare ale membrilor ghildei",
 		"Settings.SendInvestigations.Desc": "Când accesezi 'Primărie'> 'Noutăți'> 'Clădiri legendare' datele despre PF investite vor fi transmise",
 		"Settings.SendInvestigations.Title": "PF investite",
-		"Settings.SendTavernInfo.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
-		"Settings.SendTavernInfo.Title": "Activitatea de motivație",
+		"Settings.SendPlayersMotivation.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
+		"Settings.SendPlayersMotivation.Title": "Activitatea de motivație",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "De îndată ce o achiziție este făcută în magazinul tavernei, va fi afișat un contor.",
 		"Settings.ShowTavernBadge.Title": "Arată contorul tavernei prietenilor",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Versiunea extensiei pentru ",
 		"Settings.Version.GuildId": "ID ghildă:",
 		"Settings.Version.PlayerId": "ID jucător:",

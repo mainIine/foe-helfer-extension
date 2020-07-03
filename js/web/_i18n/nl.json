@@ -459,8 +459,18 @@
 		"Settings.AutomaticNegotiation.Title": "Onderhandelingshulp",
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
-		"Settings.CustomerApi.Desc": "Wil je wat gegevens naar je eigen server versturen?<br> Na activatie zal het spel herladen en wordt r een nieuw menu getoond.",
-		"Settings.CustomerApi.Title": "Spelers API",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
@@ -474,14 +484,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "GG-data van andere gildeleden",
 		"Settings.SendInvestigations.Desc": "Bij het betreden van het 'Stadhuis'> 'Nieuws'> 'Grootse gebouwen' worden de FP-bijdrages verzonden.",
 		"Settings.SendInvestigations.Title": "FP-bijdrages",
-		"Settings.SendTavernInfo.Desc": "Activeer dit onderdeel als motivatie/opknap-gegevens verzonden mogen worden.",
-		"Settings.SendTavernInfo.Title": "M/O activiteit",
+		"Settings.SendPlayersMotivation.Desc": "Activeer dit onderdeel als motivatie/opknap-gegevens verzonden mogen worden.",
+		"Settings.SendPlayersMotivation.Title": "M/O activiteit",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Zodra een bonus in de taverne wordt geactiveerd, verschijnt een globale, verschuifbare teller.",
 		"Settings.ShowTavernBadge.Title": "Toon teller Taveerne Bonus",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Chrome Extension Version",
 		"Settings.Version.GuildId": "Gilde-ID:",
 		"Settings.Version.PlayerId": "Speler-ID:",

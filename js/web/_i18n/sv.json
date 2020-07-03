@@ -459,8 +459,18 @@
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
 		"Settings.ChangeLanguage.Title": "Byt språk",
-		"Settings.CustomerApi.Desc": "Vill du skicak data till din egen server?<br> Efter detta är aktiverat kommer spelet ladda om och en ny meny alternativ dycker upp.",
-		"Settings.CustomerApi.Title": "Spelares API",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",
@@ -474,14 +484,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "MB data av andra imperiemedlemmar",
 		"Settings.SendInvestigations.Desc": "Gå in i 'Stadshuset'> 'Nyheter'> 'Mäktiga byggnader' kommer skicka dina FP investeringar.",
 		"Settings.SendInvestigations.Title": "FP investering",
-		"Settings.SendTavernInfo.Desc": "Ska motiveringsaktivitet skickas när du kollar på händelsehistorik",
-		"Settings.SendTavernInfo.Title": "Motiveringsaktivitet",
+		"Settings.SendPlayersMotivation.Desc": "Ska motiveringsaktivitet skickas när du kollar på händelsehistorik",
+		"Settings.SendPlayersMotivation.Title": "Motiveringsaktivitet",
 		"Settings.ShowInvestments.Desc": "Visar summan av dina FP investeringar när du går in i 'Stadshuset'> 'Nyheter'> 'Mäktiga byggnader' flik.",
 		"Settings.ShowInvestments.Title": "Visa FP Investerings summering",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Visa MB kalkylator för mäktiga byggnader för andara spelare",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Visa MB kalkylator för alla MBs",
 		"Settings.ShowTavernBadge.Desc": "När extra runda i värdshuset aktiverats kommer en ikon visas.",
 		"Settings.ShowTavernBadge.Title": "Visa värdshusprestation",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Chrome tillägg version",
 		"Settings.Version.GuildId": "Imperium id:",
 		"Settings.Version.PlayerId": "Spelar id:",
