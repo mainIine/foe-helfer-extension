@@ -461,6 +461,7 @@
 		"Settings.ChangeLanguage.Title": "Sprache wechseln",
 		"Settings.Entry.AutomaticNegotiation": "Verhandlungsassitent",
 		"Settings.Entry.ChangeLanguage": "Sprache wechseln",
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menü Länge",
 		"Settings.Entry.ResetBoxPositions": "Boxen Koordinaten",
 		"Settings.Entry.SendGEXInfo": "GEX Stände",

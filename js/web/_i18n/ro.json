@@ -461,6 +461,7 @@
 		"Settings.ChangeLanguage.Title": "Schimbă limba",
 		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
 		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
 		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
 		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
