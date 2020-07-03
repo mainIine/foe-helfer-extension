@@ -131,18 +131,18 @@
 		"Boxes.Gildfights.Title": "Activité de membre",
 		"Boxes.Gildfights.Total": "Total",
 		"Boxes.GreatBuildings.ArcBonus": "Taux amis : ",
-		"Boxes.GreatBuildings.Cost": "Coûts",
-		"Boxes.GreatBuildings.CostPerDailyFP": "Coût / PF journalier",
-		"Boxes.GreatBuildings.DailyFP": "PF journalier",
+		"Boxes.GreatBuildings.Cost": "Coût en PF",
+		"Boxes.GreatBuildings.CostPerDailyFP": "Ratio",
+		"Boxes.GreatBuildings.DailyFP": "Gain PF/jour",
 		"Boxes.GreatBuildings.FPCostGoods": "Coût PF en ressources",
 		"Boxes.GreatBuildings.GreatBulding": "Grand Monument",
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/",
 		"Boxes.GreatBuildings.HideNewGBs": "Masquer les GMs non construits",
 		"Boxes.GreatBuildings.Level": "Niveau",
-		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "Gains PF / jour de la part des autres joueurs",
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2",
-		"Boxes.GreatBuildings.SuggestionDescription": "Les bâtiments en haut de la liste sont les meilleurs",
-		"Boxes.GreatBuildings.SuggestionTitle": "Comparaison GM PF RoI",
+		"Boxes.GreatBuildings.SuggestionDescription": "Les GM en haut de la liste sont les plus intéressants",
+		"Boxes.GreatBuildings.SuggestionTitle": "Suggestion GM à PF suivant",
 		"Boxes.GreatBuildings.Title": "Investissement GM",
 		"Boxes.GreatBuildings.TTGoodCosts": "Vous n'avez pas encore construit ce GM. Ce sont les coûts en PF pour l'achat des ressources nécessaires",
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Répertorie les coûts en PF pour l'achat des ressources nécessaires (s'applique uniquement aux GMs que vous n'avez pas encore construits)",
@@ -314,7 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Montre la diminution des ressources sur la carte GcG",
 		"Boxes.Stats.BtnToggleGroupBy": "Grouper par âge",
 		"Boxes.Stats.BtnToggleGroupByTitle": "Regrouper les ressources par âge",
-		"Boxes.Stats.Era": "Era", //Todo: Translate
+		"Boxes.Stats.Era": "Ère",
 		"Boxes.Stats.Period.all": "Toutes dates",
 		"Boxes.Stats.Period.last30days": "30 derniers jours",
 		"Boxes.Stats.Period.last7days": "7 derniers jours",
@@ -415,8 +415,8 @@
 		"Menu.Citymap.Title": "Aperçu de la cité",
 		"Menu.Forum.Desc": "Vous avez une question ? Quelque chose à proposer ? Ou juste pour parler...",
 		"Menu.Forum.Title": "Forum",
-		"Menu.greatbuildings.Desc": "Quel prochain GM de production de PF devrait être augmenté ?",
-		"Menu.greatbuildings.Title": "Investissement GM",
+		"Menu.greatbuildings.Desc": "Quel GM de production de PF devrait être augmenté en suivant ?",
+		"Menu.greatbuildings.Title": "Suggestion GM suivant",
 		"Menu.HiddenRewards.Desc": "Aperçu des incidents.",
 		"Menu.HiddenRewards.Title": "Incidents",
 		"Menu.Info.Desc": "Affiche tous les éléments qui se déroulent en 'arrière plan'.",
@@ -451,26 +451,26 @@
 		"Settings.AutomaticNegotiation.Title": "Assistant de négociation",
 		"Settings.ChangeLanguage.Desc": "Quelle langue, au lieu de la langue reconnue, devrait être utilisée ?",
 		"Settings.ChangeLanguage.Title": "Changer de langue",
-		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
-		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
-		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
-		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
-		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
-		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
-		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
-		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
-		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
-		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
-		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
-		"Settings.Entry.Version": "Version", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Négociations",
+		"Settings.Entry.ChangeLanguage": "Langue",
+		"Settings.Entry.GlobalSend": "Général",
+		"Settings.Entry.MenuLength": "Menu",
+		"Settings.Entry.ResetBoxPositions": "Fenêtres",
+		"Settings.Entry.SendGEXInfo": "Expéditions de guilde",
+		"Settings.Entry.SendGildMemberLGInfo": "GM de la guilde",
+		"Settings.Entry.SendInvestigations": "Investissements PF",
+		"Settings.Entry.SendPlayersMotivation": "Activité PO/MO",
+		"Settings.Entry.ShowInvestments": "Investissements",
+		"Settings.Entry.ShowOwnPartOnAllGBs": "Calculatrice GM",
+		"Settings.Entry.ShowTavernBadge": "Taverne des amis",
+		"Settings.Entry.Version": "Version",
 		"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 		"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
 		"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
-		"Settings.MenuLength.Title": "Longueur de menu",
+		"Settings.MenuLength.Title": "Hauteur du menu",
 		"Settings.ResetBoxPositions.Button": "Supprimer !",
-		"Settings.ResetBoxPositions.Desc": "Toutes les coordonnées de la boîte doivent-elles être réinitialisées ?",
-		"Settings.ResetBoxPositions.Title": "Coordonnées de la boîte",
+		"Settings.ResetBoxPositions.Desc": "Toutes les positions des fenêtres doivent-elles être réinitialisées ?",
+		"Settings.ResetBoxPositions.Title": "Positionnement des fenêtres",
 		"Settings.SendGEXInfo.Desc": "Quand vous cliquez sur l'emplacement des expéditions de guildes ou sur le classement, les infos sont envoyées.",
 		"Settings.SendGEXInfo.Title": "Evaluations des expéditions de guildes",
 		"Settings.SendGildMemberLGInfo.Desc": "En visitant les autres membres de la guilde, les données des GM seront envoyées à foe-rechner.de quand l'option d'envoi est activé.",
@@ -482,13 +482,13 @@
 		"Settings.ShowInvestments.Desc": "Afficher le résumé de tous les investissements PF quand vous entrez sur 'Hotel de ville' > 'Nouvelles' > 'Grands Monuments'.",
 		"Settings.ShowInvestments.Title": "Résumé investissements des PF",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Ouvrir la 'Calculatrice GM externe' à l'ouverture d'un grand monument d'un autre joueur.",
-		"Settings.ShowOwnPartOnAllGBs.Title": "Calcultrice GM externe",
+		"Settings.ShowOwnPartOnAllGBs.Title": "Calculatrice GM externe",
 		"Settings.ShowTavernBadge.Desc": "Dès qu'une visite dans la taverne est effectuée, un compteur global apparaît.",
 		"Settings.ShowTavernBadge.Title": "Affiche un compteur sur la taverne",
-		"Settings.Tab.About": "About", //Todo: Translate
-		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "Extension", //Todo: Translate
-		"Settings.Tab.Sending": "Sending", //Todo: Translate
+		"Settings.Tab.About": "À propos",
+		"Settings.Tab.Boxes": "Fenêtres",
+		"Settings.Tab.Extension": "Interface",
+		"Settings.Tab.Sending": "Envois",
 		"Settings.Version.Desc": "Version de l'extension Chrome",
 		"Settings.Version.GuildId": "ID Guilde",
 		"Settings.Version.PlayerId": "ID Joueur",
