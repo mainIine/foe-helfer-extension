@@ -459,8 +459,18 @@
 		"Settings.AutomaticNegotiation.Title": "Müzakere Asistanı",
 		"Settings.ChangeLanguage.Desc": "Tanınan Hangi Dil Kullanılsın?",
 		"Settings.ChangeLanguage.Title": "Dil Değiştir",
-		"Settings.CustomerApi.Desc": "Kendi sunucunuza veri göndermek ister misiniz?<br>Bu aktivasyondan sonra oyun yeniden yüklenecek ve sağ menüde başka bir menü öğesi görüntülenecektir.",
-		"Settings.CustomerApi.Title": "Oyuncular API",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Loncanızla veri izlemek istiyorsanız, bu noktayı etkinleştirin.<br>Kendi kendine yeterli bir uzantı için devre dışı bırakmanız yeterlidir.",
 		"Settings.GlobalSend.Title": "foe-rechner.de gönderiliyor",
 		"Settings.MenuLength.Desc": "Menü kaç Öğe yüksek olmalı?<br> boş yada \"0\" otomatik yükseklik.",
@@ -474,14 +484,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Diğer lonca üyelerinden Devasa verileri",
 		"Settings.SendInvestigations.Desc": "'Yönetim Binası '> 'Haberler'> 'Devasa Binalar' a girilirken FP yatırımları iletiliyor",
 		"Settings.SendInvestigations.Title": "FP Yatırımlar",
-		"Settings.SendTavernInfo.Desc": "Olaylar çağrıldığında Taverna faaliyetleri göz ardı edilmeli midir?",
-		"Settings.SendTavernInfo.Title": "Taverna Faaliyetleri",
+		"Settings.SendPlayersMotivation.Desc": "Olaylar çağrıldığında Taverna faaliyetleri göz ardı edilmeli midir?",
+		"Settings.SendPlayersMotivation.Title": "Taverna Faaliyetleri",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Tavernada bir destek etkinleştirilir etkinleştirilmez, küresel olarak kaydırılabilir bir sayaç belirir",
 		"Settings.ShowTavernBadge.Title": "Taverna Rozetini Göster",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Lonca Id:",
 		"Settings.Version.PlayerId": "Oyuncular Id:",
