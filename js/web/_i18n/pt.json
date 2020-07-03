@@ -459,8 +459,19 @@
 		"Settings.AutomaticNegotiation.Title": "Ajudante de negociações",
 		"Settings.ChangeLanguage.Desc": "Que languagem deve ser utilisada, em vez da definida automaticamente?",
 		"Settings.ChangeLanguage.Title": "Mudar linguagem",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se quiseres informações sobre a tua guilda, activa esta opção. <br> Para uma utilização apenas pessoal, desactiva esta opção.",
 		"Settings.GlobalSend.Title": "Transmissão para foe-rechner.de",
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá o menu ter?<br> Vazio ou \"0\" define uma altura automática.",
@@ -474,14 +485,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
 		"Settings.SendInvestigations.Desc": "Ao entrar na 'Câmara Municipal'> 'Noticias'> 'Grandes Edificios' vai transmitir os PFs investidos",
 		"Settings.SendInvestigations.Title": "Investimentp PFs",
-		"Settings.SendTavernInfo.Desc": "Queres que a actividade de motivação seja enviada juntamente com os eventos?",
-		"Settings.SendTavernInfo.Title": "Actividade da motivação",
+		"Settings.SendPlayersMotivation.Desc": "Queres que a actividade de motivação seja enviada juntamente com os eventos?",
+		"Settings.SendPlayersMotivation.Title": "Actividade da motivação",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Quando a bonificação da taberna é activada, um contador é visivel.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Chrome Extension Version",
 		"Settings.Version.GuildId": "Guild ID:", //Todo: Translate
 		"Settings.Version.PlayerId": "Player ID:", //Todo: Translate

@@ -459,8 +459,19 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník pri vyjednávaní",
 		"Settings.ChangeLanguage.Desc": "Ktorý jazyk sa má použiť namiesto rozpoznaného?",
 		"Settings.ChangeLanguage.Title": "Zmeniť jazyk",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ak chcete povoliť zber údajov, povoľte toto nastavenie. <br> Ak chcete, aby rozšírenie fungovalo samostatne, jednoducho toto nastavenie vypnite.",
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",
@@ -474,14 +485,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Údaje o VB iných členov cechu",
 		"Settings.SendInvestigations.Desc": "Vstupom do  'Radnica'> 'Novinky'> 'Veľkolepé budovy' sa odošlú údaje o príspevkoch BV",
 		"Settings.SendInvestigations.Title": "Príspevky do VB",
-		"Settings.SendTavernInfo.Desc": "Odoslať údaje o moticáciách (pomoci)?",
-		"Settings.SendTavernInfo.Title": "Motivácia (pomoc)",
+		"Settings.SendPlayersMotivation.Desc": "Odoslať údaje o moticáciách (pomoci)?",
+		"Settings.SendPlayersMotivation.Title": "Motivácia (pomoc)",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.", //Todo: Translate
 		"Settings.ShowTavernBadge.Title": "Show tavern badge", //Todo: Translate
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "Extension", //Todo: Translate
+		"Settings.Tab.Sending": "Sending", //Todo: Translate
 		"Settings.Version.Desc": "Verzia rozšírenia pre Chrome",
 		"Settings.Version.GuildId": "ID cechu:",
 		"Settings.Version.PlayerId": "ID hráča:",

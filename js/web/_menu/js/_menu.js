@@ -53,9 +53,9 @@ let _menu = {
 	 */
 	BuildOverlayMenu: () => {
 
-		let hud = $('<div />').attr('id', 'ant-hud').addClass('game-cursor'),
-			hudWrapper = $('<div />').attr('id', 'ant-hud-wrapper'),
-			hudInner = $('<div />').attr('id', 'ant-hud-slider');
+		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
+			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
+			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
 
 		hudWrapper.append(hudInner);
 
@@ -96,7 +96,7 @@ let _menu = {
 
 		if (reset) {
 			// Slider nach oben resetten
-			$('#ant-hud-slider').css({
+			$('#foe-helper-hud-slider').css({
 				'top': '0'
 			});
 
@@ -115,7 +115,7 @@ let _menu = {
 	 */
 	Prepare: () => {
 
-		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#ant-hud').offset().top) / 55);
+		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -125,10 +125,10 @@ let _menu = {
 		}
 
 		_menu.HudHeight = (_menu.HudCount * 55);
-		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
+		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
 
-		$('#ant-hud').height(_menu.HudHeight + 2);
-		$('#ant-hud-wrapper').height(_menu.HudHeight);
+		$('#foe-helper-hud').height(_menu.HudHeight + 2);
+		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
 	},
 
 
@@ -137,7 +137,7 @@ let _menu = {
 	 *
 	 */
 	ListLinks: () => {
-		let hudSlider = $('#ant-hud-slider'),
+		let hudSlider = $('#foe-helper-hud-slider'),
 			StorgedItems = localStorage.getItem('MenuSort');
 
 		if (StorgedItems !== null) {
@@ -248,11 +248,11 @@ let _menu = {
 		});
 
 		// Sortierfunktion der Menü-items
-		$('#ant-hud-slider').sortable({
+		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
 			start: function () {
-				$('#ant-hud').addClass('is--sorting');
+				$('#foe-helper-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
@@ -291,7 +291,7 @@ let _menu = {
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
-				$('#ant-hud').removeClass('is--sorting');
+				$('#foe-helper-hud').removeClass('is--sorting');
 			}
 		});
 
@@ -308,7 +308,7 @@ let _menu = {
 		_menu.ActiveSlide++;
 		_menu.MenuScrollTop -= _menu.HudHeight;
 
-		$('#ant-hud-slider').css({
+		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
@@ -334,7 +334,7 @@ let _menu = {
 		_menu.ActiveSlide--;
 		_menu.MenuScrollTop += _menu.HudHeight;
 
-		$('#ant-hud-slider').css({
+		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
@@ -357,8 +357,8 @@ let _menu = {
      * @returns {{msg: string, type: string, class: string}}
      */
 	HideButton: (buttonId) => {
-		if ($('#ant-hud-slider').has(`div#${buttonId}`).length > 0)
-			$($('#ant-hud-slider').children(`div#${buttonId}`)[0]).hide();
+		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
+			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
 
 	},
 
@@ -366,8 +366,8 @@ let _menu = {
 	 * Zeigt ein versteckten Button wieder.
 	 */
 	ShowButton: (buttonId) => {
-		if ($('#ant-hud-slider').has(`div#${buttonId}`))
-			$($('#ant-hud-slider').children(`div#${buttonId}`)[0]).show();
+		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
+			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
 	},
 
 	/**
@@ -695,7 +695,7 @@ let _menu = {
 		let btn_Set = $('<span />');
 
 		btn_Set.on('click', function () {
-			Settings.init();
+			Settings.BuildBox();
 		});
 
 		btn.append(btn_Set);
@@ -821,32 +821,6 @@ let _menu = {
 		btn.append(btn_sp);
 
 		// return btn;
-	},
-
-	/**
-	 * API Funktion für den Spieler
-	 */
-	api_Btn: ()=> {
-
-		let btn = $('<div />').attr({ 'id': 'api-Btn', 'data-slug': 'api' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Api.Title'), i18n('Menu.Api.Desc'), 'api-Btn');
-
-		let btn_sp = $('<span />');
-
-		btn_sp.on('click', function(){
-			API.ShowBox();
-		});
-
-		btn.append(btn_sp);
-
-		/*
-		// ist die API Funktion aktivert?
-		if(Settings.GetSetting('CustomerApi')){
-			// return btn;
-		}
-		*/
 	},
 
 	/**
