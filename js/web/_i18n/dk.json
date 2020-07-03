@@ -307,7 +307,7 @@
 		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Strømdiagramm",
 		"Boxes.Stats.BtnLastEras": "Sidste to tidsaldre",
 		"Boxes.Stats.BtnLastErasTitle": "Vis nuværende og forrige tidsalder",
-		"Boxes.Stats.BtnMyEra": "Min tidsalder",
+		"Boxes.Stats.BtnMyEra": "Min",
 		"Boxes.Stats.BtnNoEra": "Inten tidalder",
 		"Boxes.Stats.BtnSource.statsGBGPlayers": "Klanslagmarker",
 		"Boxes.Stats.BtnSource.statsRewards": "Belønninger",
@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Viser forbruget af varer på GvG-kortet.",
 		"Boxes.Stats.BtnToggleGroupBy": "Sortér efter tidsalder",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Alle",
 		"Boxes.Stats.Period.last30days": "sidste 30 dage",
 		"Boxes.Stats.Period.last7days": "sidste 7 dage",

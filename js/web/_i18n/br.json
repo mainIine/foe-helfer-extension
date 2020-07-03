@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Mostrar uma diminuição de mercadorias no mapa GvG.",
 		"Boxes.Stats.BtnToggleGroupBy": "Agrupar por Eras",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Todo",
 		"Boxes.Stats.Period.last30days": "Últimos 30 dias",
 		"Boxes.Stats.Period.last7days": "Últimos 7 duas",
