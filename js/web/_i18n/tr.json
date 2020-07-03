@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Günün Fiyatı: ",
 		"Boxes.EventChests.Steps": "Adımlar",
 		"Boxes.EventChests.Title": "Etkinlik yardımcısı",
-		"Boxes.EventList.And": " ve ",
-		"Boxes.EventList.Desc": "Görev",
-		"Boxes.EventList.Number": "Nr.",
-		"Boxes.EventList.Or": " yada ",
-		"Boxes.EventList.Reward": "Ödül",
-		"Boxes.EventList.Title": "Etkinlik Görev Listesi: ",
-		"Boxes.EventList.Upcoming": "Yaklaşık önizleme  <em>(değerler etkinleştirildiğinde güncellenecektir)</em>",
-		"Boxes.EventList.Waiting": "Görev yok",
 		"Boxes.Gildfights.Fights": "Savaşlar",
 		"Boxes.Gildfights.LastSnapshot": " - dan önceki son anlık görüntü  __time__",
 		"Boxes.Gildfights.Negotiations": "Müzakereler",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,8 +399,6 @@
 		"HiddenRewards.Table.position": "Pozisyon",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "tr-TR",
-		"Menu.Api.Desc": "Kendi sunucunuza veri gönderme ayarları",
-		"Menu.Api.Title": "Extension API",
 		"Menu.Ask.Desc": "Bir şeyin nasıl çalıştığını bilmiyor musun?<br>Buraya bak!",
 		"Menu.Ask.Title": "Soru / Cevap",
 		"Menu.Bugs.Desc": "Bir şey olması gerektiği gibi gitmiyor bir Fikir?",

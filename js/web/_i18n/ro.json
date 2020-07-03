@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Daily Special: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event Chest Selection Helper", //Todo: Translate
-		"Boxes.EventList.And": " și ",
-		"Boxes.EventList.Desc": "Misiune",
-		"Boxes.EventList.Number": "Nr.",
-		"Boxes.EventList.Or": " sau ",
-		"Boxes.EventList.Reward": "Recompensă",
-		"Boxes.EventList.Title": "Lista misiunilor pentru: ",
-		"Boxes.EventList.Upcoming": "URMĂTOARELE MISIUNI (Numărul poate fi deferit)",
-		"Boxes.EventList.Waiting": "Nici o misiune disponibilă",
 		"Boxes.Gildfights.Fights": "Lupte",
 		"Boxes.Gildfights.LastSnapshot": " - Ultima înregistrare __time__ ago",
 		"Boxes.Gildfights.Negotiations": "Negocieri",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,8 +399,6 @@
 		"HiddenRewards.Table.position": "Poziția",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "ro-RO",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
 		"Menu.Ask.Desc": "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!",
 		"Menu.Ask.Title": "Întrebare / Răspuns",
 		"Menu.Bugs.Desc": "Ceva nu este cum trebuie sau ai o idee?",
