@@ -321,6 +321,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Montre la diminution des ressources sur la carte GcG",
 		"Boxes.Stats.BtnToggleGroupBy": "Grouper par âge",
 		"Boxes.Stats.BtnToggleGroupByTitle": "Regrouper les ressources par âge",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Toutes dates",
 		"Boxes.Stats.Period.last30days": "30 derniers jours",
 		"Boxes.Stats.Period.last7days": "7 derniers jours",
