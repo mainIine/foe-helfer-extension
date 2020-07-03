@@ -502,7 +502,7 @@ let Stats = {
 			value: source
 		}));
 
-		const chartTypes = ['line', 'streamgraph', 'delta'].map(it => Stats.RenderSpan({
+		const chartTypes = ['line', 'streamgraph', 'delta'].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnChartType.' + it),
 			title: i18n('Boxes.Stats.BtnChartTypeTitle.' + it),
 			isActive: Stats.state.chartType === it,
@@ -514,7 +514,7 @@ let Stats = {
 					${Stats.RenderEraSwitchers()}
 				</div>
 				<div class="option-era-wrap text-center">
-					<strong>Zeitalter:</strong> ${btnGroupByEra}<br>
+					<strong>${i18n('Boxes.Stats.Era')}:</strong> ${btnGroupByEra}<br>
 					${btnSelectAllEra}
 					${btnSelectMyEra}
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
@@ -527,7 +527,7 @@ let Stats = {
 					</ul>
 				</div>
 				<div class="option-chart-type-wrap text-center">
-					${btnTglAnnotations}
+					${btnTglAnnotations}<br>
 					${chartTypes.join('')}
 				</div>`;
 	},
@@ -626,7 +626,7 @@ let Stats = {
 		</li>`,
 
 	/**
-	 * Render a checkbox
+	 * Render a checkbox (without list)
 	 *
 	 * @param name
 	 * @param isActive
@@ -634,21 +634,9 @@ let Stats = {
 	 * @param value
 	 * @returns {string}
 	 */
-	RenderBox: ({name, isActive, dataType, value}) => `<label class="game-cursor">
+	RenderBox: ({name, isActive, disabled, dataType, value}) => `<label class="game-cursor${disabled ? ' hidden' : ''}">
 			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>`,
 
-
-
-	/**
-	 * Render an option
-	 *
-	 * @param name
-	 * @param isActive
-	 * @param dataType
-	 * @param value
-	 * @returns {string}
-	 */
-	RenderSpan: ({name, isActive, dataType, value, title, disabled}) => `<span data-type="${dataType}" data-value="${value}" class="${dataType} game-cursor ${isActive ? 'active' : ''}" title="${title || ''}">${name}</span>`,
 
 	/**
 	 * Render a button
@@ -664,7 +652,7 @@ let Stats = {
 	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
 
 	/**
-	 * Render a button
+	 * Render a tab
 	 *
 	 * @param name		Name
 	 * @param isActive	Activated

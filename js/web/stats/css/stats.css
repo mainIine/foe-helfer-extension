@@ -37,16 +37,17 @@
 	width: 146px;
 }
 
-#stats .option-toggle-group {
-	width: 145px;
+#stats .option-era-wrap {
+	width: 370px;
 }
 
-#stats .option-era-wrap {
-	width: 330px;
+#stats .tabs  {
+	width: 406px;
+	align-self: flex-end;
 }
 
 #stats .option-chart-type-wrap {
-	width: 130px;
+	width: 170px;
 	font-size: 85%;
 }
 
@@ -64,6 +65,10 @@
 	flex-direction: column;
 	align-items: baseline;
 	align-content: baseline;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 @media (max-height: 1080px) {
@@ -126,11 +131,6 @@
 #stats .highcharts-data-table table tr td {
 	border-top: 1px solid #7F5A34;
 	border-bottom: 1px solid #3D250F;
-}
-
-#stats .tabs  {
-	width: 406px;
-	align-self: flex-end;
 }
 
 #stats .tabs .horizontal {
