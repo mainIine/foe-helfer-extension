@@ -385,7 +385,7 @@ let Stats = {
 		}
 
 		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){
-			if(Stats.DatePickerObj === null && $('#GVGDatePicker').length > 0){
+			if ($('#GVGDatePicker').length > 0) {
 
 				Stats.DatePickerObj = new Litepicker({
 					element: document.getElementById('GVGDatePicker'),
@@ -397,10 +397,13 @@ let Stats = {
 					onSelect: async function (start, end) {
 						$('#GVGDatePicker').text(`${start} - ${end}`);
 
-						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({s: start, e: end})));
+						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({ s: start, e: end })));
 					}
 				});
 			}
+			else {
+				Stats.DatePickerObj = null;
+            }
 		});
 	},
 
@@ -1116,9 +1119,9 @@ let Stats = {
 
 		const startDate = {
 			today: moment().startOf('day').toDate(),
-			yesterday: moment().subtract(1, 'weeks').startOf('day').toDate(),
-			sinceTuesday: ((moment().startOf('isoWeek').add(2, 'days').toDate() > MainParser.getCurrentDate()) ?
-                           moment().startOf('isoWeek').subtract(1, 'weeks').add(2, 'days').toDate() : moment().startOf('isoWeek').add(2, 'days').toDate()),
+			yesterday: moment().startOf('day').subtract(1,'days').toDate(),
+			sinceTuesday: ((moment().startOf('isoWeek').add(1, 'days').toDate() > MainParser.getCurrentDate()) ?
+                           moment().startOf('isoWeek').subtract(1, 'weeks').add(1, 'days').toDate() : moment().startOf('isoWeek').add(1, 'days').toDate()),
 			last7days: moment().subtract(1, 'weeks').toDate(),
 			thisMonth: moment().startOf('month').toDate(),
 			last30days: moment().subtract(30, 'days').toDate(),
