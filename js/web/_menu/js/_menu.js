@@ -820,7 +820,7 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		// return btn;
+		return btn;
 	},
 
 	/**
