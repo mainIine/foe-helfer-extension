@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Dagens pris: ",
 		"Boxes.EventChests.Steps": "Steg",
 		"Boxes.EventChests.Title": "Assistent till händelsekista",
-		"Boxes.EventList.And": " och ",
-		"Boxes.EventList.Desc": "Uppdrag",
-		"Boxes.EventList.Number": "Nr",
-		"Boxes.EventList.Or": " eller ",
-		"Boxes.EventList.Reward": "Belöning",
-		"Boxes.EventList.Title": "Händelseuppdrag för: ",
-		"Boxes.EventList.Upcoming": "Kommande uppdrag (antal kan variera)",
-		"Boxes.EventList.Waiting": "Inget uppdrag tillgängligt",
 		"Boxes.Gildfights.Fights": "Strider",
 		"Boxes.Gildfights.LastSnapshot": " - senaste översikt __time__ sen",
 		"Boxes.Gildfights.Negotiations": "Förhandlingar",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Nivå",
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,8 +399,6 @@
 		"HiddenRewards.Table.position": "Plats",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sv-SE",
-		"Menu.Api.Desc": "Inställningar att skicka data till din egen server",
-		"Menu.Api.Title": "Tillägets API",
 		"Menu.Ask.Desc": "Du vet inte hur något fungerar?<br>Kolla här!",
 		"Menu.Ask.Title": "Frågor / Svar",
 		"Menu.Bugs.Desc": "Något är inte som det borde vara eller du har en idé?",
