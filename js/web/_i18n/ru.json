@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Приз дня: ",
 		"Boxes.EventChests.Steps": "Шаги",
 		"Boxes.EventChests.Title": "Помощник событий",
-		"Boxes.EventList.And": " и ",
-		"Boxes.EventList.Desc": "Задача",
-		"Boxes.EventList.Number": "Номер",
-		"Boxes.EventList.Or": " или ",
-		"Boxes.EventList.Reward": "Награда",
-		"Boxes.EventList.Title": "Список заданий события: ",
-		"Boxes.EventList.Upcoming": "БУДУЩИЕ ЗАДАНИЯ (количество может варьироваться)",
-		"Boxes.EventList.Waiting": "Нет доступных заданий",
 		"Boxes.Gildfights.Fights": "Бои",
 		"Boxes.Gildfights.LastSnapshot": " - последняя фиксация была __time__ назад ",
 		"Boxes.Gildfights.Negotiations": "Переговоры",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,8 +399,6 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
-		"Menu.Api.Desc": "Настройки для отправки данных на ваш собственный сервер",
-		"Menu.Api.Title": "API расширения",
 		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
 		"Menu.Ask.Title": "Вопрос / Ответ",
 		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
