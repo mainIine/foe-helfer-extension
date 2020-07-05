@@ -381,7 +381,7 @@ let Stats = {
 		let secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
 
 		if(Stats.isSelectedGBGSources() && $('#GVGDatePicker').length === 0){
-			secondaryOptions = `<div></div><input class="" id="GVGDatePicker" type="text">`;
+			secondaryOptions = `<div></div><input class="game-cursor" id="GVGDatePicker" type="text">`;
 		}
 
 		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){

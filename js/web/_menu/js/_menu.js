@@ -38,9 +38,6 @@ let _menu = {
 		'unit',
 		'settings',
 		'stats',
-		'forum',
-		'ask',
-		'github',
 		'chat',
 		'kits',
 		'alerts',
@@ -723,75 +720,6 @@ let _menu = {
 		btn_StatsBG.append(btn_Stats);
 
 		return btn_StatsBG;
-	},
-
-	/**
-	 * Forum
-	 *
-	 * @returns {*|jQuery}
-	 */
-	forum_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'forum-Btn', 'data-slug': 'forum' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Forum.Title'), i18n('Menu.Forum.Desc'), 'forum-Btn');
-
-		let btn_Forum = $('<span />');
-
-		btn_Forum.on('click', function () {
-			let win = window.open('https://forum.foe-rechner.de', '_blank');
-			win.focus();
-		});
-
-		btn.append(btn_Forum);
-
-		return btn;
-	},
-
-	/**
-	 * Frage/Antwort
-	 *
-	 * @returns {*|jQuery}
-	 */
-	ask_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'ask-Btn', 'data-slug': 'ask' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Ask.Title'), i18n('Menu.Ask.Desc'), 'ask-Btn');
-
-		let btn_Ask = $('<span />');
-
-		btn_Ask.on('click', function () {
-			let win = window.open('https://foe-rechner.de/extension/index', '_blank');
-			win.focus();
-		});
-
-		btn.append(btn_Ask);
-
-		return btn;
-	},
-
-	/**
-	 * Github-Link
-	 *
-	 * @returns {*|jQuery}
-	 */
-	github_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'github-Btn', 'data-slug': 'github' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Bugs.Title'), i18n('Menu.Bugs.Desc'), 'github-Btn');
-
-		let btn_Bug = $('<span />');
-
-		btn_Bug.on('click', function () {
-			let win = window.open('https://github.com/dsiekiera/foe-helfer-extension/issues', '_blank');
-			win.focus();
-		});
-
-		btn.append(btn_Bug);
-
-		return btn;
 	},
 
 	/**
