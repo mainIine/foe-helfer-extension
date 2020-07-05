@@ -1,9 +1,9 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
+		"_Disclaimer.Body": "<h1>Ændringer i denne opdatering af FoE Hjælper</h1><p>I denne opdatering er nogle funktioner blevet ændret eller fjernet. Du kan læse om detaljerne på vores hjemmeside <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. SB investitionsberegner</h2><p> \"Snipe\"-visningen og \"Potentiel investering\"-vinduet er blevet fjernet.</p><h2>2. Hændelser</h2><p>Denne funktion viser kun de aktuelle hændelser i og omkring byen.</p><h2>3. Forhandlingsassistent</h2><p>Denne funktion er ikke længere tilgængelig i klanslagmarker. I de øvrige områder forbliver den tilgængelig.</p><h2>4. Eventopgaver</h2><p>Disse er fremover kun tilgængelige på vores (eller andre) hjemmesider. Venligst bemærk, at opgaverne og rækkefølgen kommer fra beta serveren og derfor er de ikke altid 100% nøjagtige.</p><h2>5. PvP aktiviteter</h2><p>Denne funktion er blevet fjernet.</p><h2>6. Naboernes høst og hærstyrke</h2><p>Færdige produktioner samt naboens angrebs- og forsvarsprocenter bliver ikke længere vist.</p>",
+		"_Disclaimer.Button": "Forstået",
+		"_Disclaimer.Label": "Jeg har læst og forstået denne udmelding.",
+		"_Disclaimer.Title": "Opdatering",
 		"_Language": "Dansk",
 		"API.GEXChampionship": "KE placeringen er blevet opdateret",
 		"API.GEXPlayer": "Klanmedlemmernes KE placeringer er blevet opdateret",
@@ -96,11 +96,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "PAS PÅ: FP lager er for lav<br>Du har kun __fpstock__ ud af __costs__FP<br>Det er __tooless__FP for lidt",
 		"Boxes.Calculator.TTForderNegativeProfit": "Pladsen er ikke sikker. __fpcount__FP skal lægges for at sikre pladsen<br>I alt for at sikre: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP er er der ikke plads til<br>Maksimal indbetaling: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Gevinst = __nettoreward__ <small>(Netto gevinst)</small> X __arcfactor__% <small>(Ark Bonus)</small> = __bruttoreward__<br>Pris: __costs__ - Placering sikret ved: __safe__<br>Loss = __costs__ <small>(Pris)</small> - __bruttoreward__ <small>(Gevinst)</small> = __loss__",
 		"Boxes.Calculator.TTLossSelf": "Gevinst = __nettoreward__<small>(Netto investor)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalt: __paid__<br>Tab = __paid__<small>(Betalt)</small> - __bruttoreward__<small>(Gevinst)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Du har betalt __paid__FP i stedet for __topay__FP. Det er __tooless__FP for lidt.",
 		"Boxes.Calculator.TTPaidTooMuch": "Du har betalt __paid__FP i stedet for __topay__FP. Det er __toomuch__FP for meget.",
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTProfit": "Gevinst = __nettoreward__ <small>(Netto Gevinst)</small> X __arcfactor__% <small>(Ark Bonus)</small> = __bruttoreward__<br>Pris: __costs__ - Placering sikret ved: __safe__<br>Profit = __bruttoreward__ <small>(Gevinst)</small> - __costs__ <small>(Pris)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Gevinst = __nettoreward__<small>(Netto investor)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalt: __paid__<br>Gevinst = __bruttoreward__<small>(Gevinst)</small> - __paid__<small>(Betalt)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Til næste niveau",
 		"Boxes.Campagne.AlreadyDone": " allerede erobret!",
@@ -148,7 +148,7 @@
 		"Boxes.GreatBuildings.DailyFP": "Daglig FP",
 		"Boxes.GreatBuildings.FPCostGoods": "FP pris varer",
 		"Boxes.GreatBuildings.GreatBulding": "Storslåede bygninger",
-		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
+		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/",
 		"Boxes.GreatBuildings.HideNewGBs": "Skjul ikke-byggede SBer",
 		"Boxes.GreatBuildings.Level": "Niveau",
 		"Boxes.GreatBuildings.Suggestion2": "Forslag 2",
@@ -212,7 +212,7 @@
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
 		"Boxes.Notice.GroupName": "Gruppenavn",
-		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/",
 		"Boxes.Notice.NewGroup": "Gruppe",
 		"Boxes.Notice.NewGroupDesc": "Opret først en ny gruppe...",
 		"Boxes.Notice.NewSide": "Side",
@@ -263,7 +263,7 @@
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
-		"Boxes.Productions.GuildGoods": "Guild goods", //Todo: Translate
+		"Boxes.Productions.GuildGoods": "Klanvarer",
 		"Boxes.Productions.GuildPower": "Klanstyrke",
 		"Boxes.Productions.Happiness": "Glæde",
 		"Boxes.Productions.Headings.all": "Alle",
