@@ -19,7 +19,6 @@ let Productions = {
 	BuildingsAll: [],
 	BuildingsProducts: [],
 	BuildingsProductsGroups: [],
-	MainBuildingBonusAdded: false,
 	ShowDaily: false,
 
 	ActiveTab: 1,
@@ -1104,10 +1103,6 @@ let Productions = {
 	 * @returns {*}
 	 */
 	prepareMainBuilding: (d)=>{
-
-		if(Productions.MainBuildingBonusAdded === true){
-			return d;
-		}
 
 		// Botschafter durchsteppen
 		if(MainParser.EmissaryService !== null)
