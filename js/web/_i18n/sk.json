@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Umiestnenie",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sk-SK",
-		"Menu.Ask.Desc": "Je Vám niečo nejasné?<br>Pozrite sa sem!",
-		"Menu.Ask.Title": "Otázka / Odpoveď",
-		"Menu.Bugs.Desc": "Nie je niečo v poriadku? Alebo máte nápad?",
-		"Menu.Bugs.Title": "Chyby / Želania",
 		"Menu.Calculator.Desc": "Tento nástroj počíta potrebné BV na obsadenie pozície vo VB iných hráčov.",
 		"Menu.Calculator.Title": "VB Kalkulačka",
 		"Menu.Calculator.Warning": "Vypnuté: Najprv otvorte okno VB iného hráča!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Cechový rozhovor",
 		"Menu.Citymap.Desc": "Zobrazuje rozloženie Vášho mesta pohľadom zhora",
 		"Menu.Citymap.Title": "Náhľad mesta",
-		"Menu.Forum.Desc": "Máte otázku? Niečo Vás trápi? Alebo sa chcete len porozprávať...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Prehľad incidentov",

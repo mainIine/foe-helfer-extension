@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Posição",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "pt-PT",
-		"Menu.Ask.Desc": "Não sabes como algo funciona?<br>Vê aqui como!",
-		"Menu.Ask.Title": "Pergunta / Resposta",
-		"Menu.Bugs.Desc": "Algo não está como deveria ser ou tens uma sugestão?",
-		"Menu.Bugs.Title": "Erros / Desejos",
 		"Menu.Calculator.Desc": "Calcula todos os lugares e possiveis snipes",
 		"Menu.Calculator.Title": "Calculador de custos",
 		"Menu.Calculator.Warning": "Disabled: Abre primeiro o GE de outro jogador!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Guild live chat", //Todo: Translate
 		"Menu.Citymap.Desc": "Mostra a tua cidade, num esquema visto de cima",
 		"Menu.Citymap.Title": "Mapa da cidade",
-		"Menu.Forum.Desc": "Se tens uma questão? Ou algo te incomoda? ou ...",
-		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Resumo dos incidentes escondidos",

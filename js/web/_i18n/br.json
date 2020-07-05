@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Posição",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "pt-BR",
-		"Menu.Ask.Desc": "Você não sabe como algo funciona?<br>Dê uma olhada!",
-		"Menu.Ask.Title": "Pergunta / Resposta",
-		"Menu.Bugs.Desc": "Algo não está como dever ser ou tem sugestões?",
-		"Menu.Bugs.Title": "Erros / Desejos",
 		"Menu.Calculator.Desc": "Calcular todos os lugares e possíveis recortes",
 		"Menu.Calculator.Title": "Calculadora de custos",
 		"Menu.Calculator.Warning": "Desabilitado: Abra primeiro o GE de outro jogador!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Chat ao vivo da guilda",
 		"Menu.Citymap.Desc": "Mostra a cidade vista de cima",
 		"Menu.Citymap.Title": "Mapa da cidade",
-		"Menu.Forum.Desc": "Você tem uma pergunta? Algo incomonda? Ou apenas para conversar ...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Resumo dos incidentes escondidos",
