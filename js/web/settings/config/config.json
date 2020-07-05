@@ -76,8 +76,13 @@
 	{
 		"name" : "Version",
 		"callback": "VersionInfo",
-		"Level": 1,
 		"group": "About",
 		"sort": 0
+	},
+	{
+		"name" : "Help",
+		"callback": "Help",
+		"group": "About",
+		"sort": 1
 	}
 ]
