@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Posición",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "es-ES",
-		"Menu.Ask.Desc": "No sabes como funciona algo?<br>Compruébalo!",
-		"Menu.Ask.Title": "Pregunta / Respuesta",
-		"Menu.Bugs.Desc": "Algo no funciona como debería o tienes una idea??",
-		"Menu.Bugs.Title": "Error / Deseo",
 		"Menu.Calculator.Desc": "Calcula todos los puestos para tí y determina si se pueden conseguir FPs",
 		"Menu.Calculator.Title": "Calculador de costes",
 		"Menu.Calculator.Warning": "Deshabilitado: Entra primero en un gran edificio de otro jugador!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Chat en vivo del gremio",
 		"Menu.Citymap.Desc": "Muestra tu ciudad esquemáticamente desde arriba",
 		"Menu.Citymap.Title": "Vista de la ciudad",
-		"Menu.Forum.Desc": "Tienes una pregunta? Estas molesto por algo? O solo para hablar...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Vistazo de premios ocultos",

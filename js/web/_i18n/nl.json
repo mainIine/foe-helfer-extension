@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Positie",
 		"HiddenRewards.Table.type": "Soort",
 		"Local": "nl-NL",
-		"Menu.Ask.Desc": "Weet je niet hoe iets werkt?<br>Neem een kijkje!",
-		"Menu.Ask.Title": "Vraag / Antwoord",
-		"Menu.Bugs.Desc": "Iets werkt niet zoals het hoort of heb je een idee?",
-		"Menu.Bugs.Title": "Fouten / Wensen",
 		"Menu.Calculator.Desc": "Berekent voor jou alle plaatsen en zoekt naar snipe-bare forgepunten",
 		"Menu.Calculator.Title": "FP-calculator",
 		"Menu.Calculator.Warning": "Gedeactiveerd: Open eerst een groots gebouw van een andere speler!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Gilde Live-Chat",
 		"Menu.Citymap.Desc": "Een schematische weergave van je stad in bovenaanzicht",
 		"Menu.Citymap.Title": "Stadsoverzicht",
-		"Menu.Forum.Desc": "Heb je een vraag? Zit je iets dwars? Of misschien wil je gewoon praten ...",
-		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Lijst van incidenten in en rond je stad",

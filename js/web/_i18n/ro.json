@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Poziția",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "ro-RO",
-		"Menu.Ask.Desc": "Nu știi cum funcționează ceva din cadrul aplicație?<br>Aruncă o privire aici!",
-		"Menu.Ask.Title": "Întrebare / Răspuns",
-		"Menu.Bugs.Desc": "Ceva nu este cum trebuie sau ai o idee?",
-		"Menu.Bugs.Title": "Greșeli / Propuneri",
 		"Menu.Calculator.Desc": "Calculează toate locurile disponibile și punctele care pot fi obținute prin donarea la CL ale altor jucători",
 		"Menu.Calculator.Title": "Investiții în alte CL",
 		"Menu.Calculator.Warning": "Dezactivat: Deschide mai întâi o clădirea a unui jucător!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Mesagerie pentru ghildă",
 		"Menu.Citymap.Desc": "Vezi schema orașului tău",
 		"Menu.Citymap.Title": "Schema orașului",
-		"Menu.Forum.Desc": "Ai o întrebare? Te deranjează ceva? Sau doar vrei să discutăm ...",
-		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Prezentarea incidentelor ascunse în orașul tău",

@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
-		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
-		"Menu.Ask.Title": "Вопрос / Ответ",
-		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
-		"Menu.Bugs.Title": "Ошибки / Пожелания",
 		"Menu.Calculator.Desc": "Рассчитывает места, которые можно занять в ВС и количество СО",
 		"Menu.Calculator.Title": "Калькулятор вложений",
 		"Menu.Calculator.Warning": "Отключено: Для включения откройте ВС любого игрока!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Чат гильдии",
 		"Menu.Citymap.Desc": "Обзор города с высоты птичьего полета",
 		"Menu.Citymap.Title": "Обзор города",
-		"Menu.Forum.Desc": "У вас есть вопросы? Вас что-то не устраивает? Или вы просто хотите поговорить ...",
-		"Menu.Forum.Title": "Форум",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Обзор проишествий",

@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Pozisyon",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "tr-TR",
-		"Menu.Ask.Desc": "Bir şeyin nasıl çalıştığını bilmiyor musun?<br>Buraya bak!",
-		"Menu.Ask.Title": "Soru / Cevap",
-		"Menu.Bugs.Desc": "Bir şey olması gerektiği gibi gitmiyor bir Fikir?",
-		"Menu.Bugs.Title": "hata / İstek",
 		"Menu.Calculator.Desc": "Sizin için tüm sıraları hesaplar karlı FP oranını",
 		"Menu.Calculator.Title": "Maliyet hesaplama",
 		"Menu.Calculator.Warning": "Kapalı: Önce Oyuncuların Devasal binasını açmalısın!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Lonca Live-Chat",
 		"Menu.Citymap.Desc": "Şehrinizi yukarıdan şematik olarak gösterir",
 		"Menu.Citymap.Title": "Şehre genel bakış",
-		"Menu.Forum.Desc": "Bir Sorun mu var? Bir şeyden rahatsız mısın? Veya sadece konuşmak için ...",
-		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Haritada üzerinde Etkinlik genel bakışı",

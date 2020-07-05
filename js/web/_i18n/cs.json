@@ -399,10 +399,6 @@
 		"HiddenRewards.Table.position": "Umístění",
 		"HiddenRewards.Table.type": "Druh",
 		"Local": "cs-CZ",
-		"Menu.Ask.Desc": "Máte s něčím problémy?<br>Mrkněte sem!",
-		"Menu.Ask.Title": "Otázky/odpovědi",
-		"Menu.Bugs.Desc": "Něco se pokazilo/ chybí vám něco?",
-		"Menu.Bugs.Title": "Chyby/přání",
 		"Menu.Calculator.Desc": "Počítá odměny za přispívání bodů výzkumu.",
 		"Menu.Calculator.Title": "Kalkulačka bodů výzkumu",
 		"Menu.Calculator.Warning": "Nejprve přispějte do něčí velkolepé budovy!",
@@ -413,8 +409,6 @@
 		"Menu.Chat.Title": "Cechovní chat",
 		"Menu.Citymap.Desc": "Displays a schematics of your city", //Todo: Translate
 		"Menu.Citymap.Title": "City Overview", //Todo: Translate
-		"Menu.Forum.Desc": "Máte otázku, štve vás něco nebo si jen chcete popovídat ...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Přehled skrytých odměn",
