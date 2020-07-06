@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Slovenčina",
 		"API.GEXChampionship": "Umiestnenie cechov v CE bolo aktualizované",
 		"API.GEXPlayer": "Umiestnenie hráčov v CE bolo aktualizované",
@@ -128,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Daily Special: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event Chest Selection Helper", //Todo: Translate
-		"Boxes.EventList.And": " A ",
-		"Boxes.EventList.Desc": "Úloha",
-		"Boxes.EventList.Number": "Č.",
-		"Boxes.EventList.Or": " ALEBO ",
-		"Boxes.EventList.Reward": "Odmena",
-		"Boxes.EventList.Title": "Zoznam úloh v udalosti: ",
-		"Boxes.EventList.Upcoming": "NADCHÁDZAJÚCE VÝZVY (Hodnoty sa môžu líšiť)",
-		"Boxes.EventList.Waiting": "Žiadna ďalšia výzva",
 		"Boxes.Gildfights.Fights": "Boje",
 		"Boxes.Gildfights.LastSnapshot": " - naposledy načítané pred __time__",
 		"Boxes.Gildfights.Negotiations": "Vyjednávania",
@@ -151,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -211,6 +200,7 @@
 		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
@@ -294,6 +284,7 @@
 		"Boxes.Productions.SearchInput": "Vyhľadať budovu...",
 		"Boxes.Productions.Title": "Prehľad produkcie",
 		"Boxes.Productions.Total": "Spolu: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Zapnuté",
 		"Boxes.Settings.Inactive": "Vypnuté",
 		"Boxes.Settings.Title": "Nastavenia",
@@ -323,6 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "All", //Todo: Translate
 		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
 		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
@@ -407,12 +399,6 @@
 		"HiddenRewards.Table.position": "Umiestnenie",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sk-SK",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
-		"Menu.Ask.Desc": "Je Vám niečo nejasné?<br>Pozrite sa sem!",
-		"Menu.Ask.Title": "Otázka / Odpoveď",
-		"Menu.Bugs.Desc": "Nie je niečo v poriadku? Alebo máte nápad?",
-		"Menu.Bugs.Title": "Chyby / Želania",
 		"Menu.Calculator.Desc": "Tento nástroj počíta potrebné BV na obsadenie pozície vo VB iných hráčov.",
 		"Menu.Calculator.Title": "VB Kalkulačka",
 		"Menu.Calculator.Warning": "Vypnuté: Najprv otvorte okno VB iného hráča!",
@@ -423,10 +409,6 @@
 		"Menu.Chat.Title": "Cechový rozhovor",
 		"Menu.Citymap.Desc": "Zobrazuje rozloženie Vášho mesta pohľadom zhora",
 		"Menu.Citymap.Title": "Náhľad mesta",
-		"Menu.Event.Desc": "Prehľad aktuálnych alebo nadchádzajúcich výziev",
-		"Menu.Event.Title": "Výzvy v udalosti",
-		"Menu.Forum.Desc": "Máte otázku? Niečo Vás trápi? Alebo sa chcete len porozprávať...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Prehľad incidentov",
@@ -463,10 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Pomocník pri vyjednávaní",
 		"Settings.ChangeLanguage.Desc": "Ktorý jazyk sa má použiť namiesto rozpoznaného?",
 		"Settings.ChangeLanguage.Title": "Zmeniť jazyk",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ak chcete povoliť zber údajov, povoľte toto nastavenie. <br> Ak chcete, aby rozšírenie fungovalo samostatne, jednoducho toto nastavenie vypnite.",
 		"Settings.GlobalSend.Title": "Prenos na server foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Koľko položiek má obsahovať menu?<br> Prázdne okno alebo \"0\" znamená automatickú výšku.",
 		"Settings.MenuLength.Title": "Výška menu",
 		"Settings.ResetBoxPositions.Button": "Obnoviť!",
@@ -478,14 +478,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Údaje o VB iných členov cechu",
 		"Settings.SendInvestigations.Desc": "Vstupom do  'Radnica'> 'Novinky'> 'Veľkolepé budovy' sa odošlú údaje o príspevkoch BV",
 		"Settings.SendInvestigations.Title": "Príspevky do VB",
-		"Settings.SendTavernInfo.Desc": "Odoslať údaje o moticáciách (pomoci)?",
-		"Settings.SendTavernInfo.Title": "Motivácia (pomoc)",
+		"Settings.SendPlayersMotivation.Desc": "Odoslať údaje o moticáciách (pomoci)?",
+		"Settings.SendPlayersMotivation.Title": "Motivácia (pomoc)",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.", //Todo: Translate
 		"Settings.ShowTavernBadge.Title": "Show tavern badge", //Todo: Translate
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Verzia rozšírenia pre Chrome",
 		"Settings.Version.GuildId": "ID cechu:",
 		"Settings.Version.PlayerId": "ID hráča:",

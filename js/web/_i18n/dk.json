@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Dansk",
 		"API.GEXChampionship": "KE placeringen er blevet opdateret",
 		"API.GEXPlayer": "Klanmedlemmernes KE placeringer er blevet opdateret",
@@ -128,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Dagens præmie: ",
 		"Boxes.EventChests.Steps": "Skridt",
 		"Boxes.EventChests.Title": "Event assistent",
-		"Boxes.EventList.And": " og ",
-		"Boxes.EventList.Desc": "Opgave",
-		"Boxes.EventList.Number": "Nr.",
-		"Boxes.EventList.Or": " eller ",
-		"Boxes.EventList.Reward": "Belønning",
-		"Boxes.EventList.Title": "Event opgaverække for: ",
-		"Boxes.EventList.Upcoming": "Ca. forhåndsvisning <em>(Værdierne bliver opdateret ved aktivering)</em>",
-		"Boxes.EventList.Waiting": "Ingen opgave tilgængelig",
 		"Boxes.Gildfights.Fights": "Kampe",
 		"Boxes.Gildfights.LastSnapshot": " - sidste skærmbillede __time__",
 		"Boxes.Gildfights.Negotiations": "Forhandlinger",
@@ -151,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Skjul ikke-byggede SBer",
 		"Boxes.GreatBuildings.Level": "Niveau",
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Forslag 2",
 		"Boxes.GreatBuildings.SuggestionDescription": "Bygningerne i toppen af listen er bedst",
 		"Boxes.GreatBuildings.SuggestionTitle": "FP SB ROI sammenlignet",
@@ -211,6 +200,7 @@
 		"Boxes.Notice.DeleteItem": "Slet side",
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Gruppenavn",
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Gruppe",
@@ -294,6 +284,7 @@
 		"Boxes.Productions.SearchInput": "Søg bygning...",
 		"Boxes.Productions.Title": "Produktionsoversigt",
 		"Boxes.Productions.Total": "I alt: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Indstillinger",
@@ -309,7 +300,7 @@
 		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Strømdiagramm",
 		"Boxes.Stats.BtnLastEras": "Sidste to tidsaldre",
 		"Boxes.Stats.BtnLastErasTitle": "Vis nuværende og forrige tidsalder",
-		"Boxes.Stats.BtnMyEra": "Min tidsalder",
+		"Boxes.Stats.BtnMyEra": "Min",
 		"Boxes.Stats.BtnNoEra": "Inten tidalder",
 		"Boxes.Stats.BtnSource.statsGBGPlayers": "Klanslagmarker",
 		"Boxes.Stats.BtnSource.statsRewards": "Belønninger",
@@ -323,6 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Viser forbruget af varer på GvG-kortet.",
 		"Boxes.Stats.BtnToggleGroupBy": "Sortér efter tidsalder",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Alle",
 		"Boxes.Stats.Period.last30days": "sidste 30 dage",
 		"Boxes.Stats.Period.last7days": "sidste 7 dage",
@@ -407,12 +399,6 @@
 		"HiddenRewards.Table.position": "Hvor?",
 		"HiddenRewards.Table.type": "Hvad?",
 		"Local": "dk-DK",
-		"Menu.Api.Desc": "Indstillinger for at sende data til din egen server",
-		"Menu.Api.Title": "Udvidelsens API",
-		"Menu.Ask.Desc": "Du ved ikke, hvordan noget noget fungerer?<br>Se her!",
-		"Menu.Ask.Title": "Spørgsmål / Svar",
-		"Menu.Bugs.Desc": "Noget fungerer ikke som det skal eller du har en idé?",
-		"Menu.Bugs.Title": "Fejl / Ønsker",
 		"Menu.Calculator.Desc": "Regner pladserne i SBerne ud for dig og finder frem til SBer, der kan snipes.",
 		"Menu.Calculator.Title": "Investitionsberegner",
 		"Menu.Calculator.Warning": "Deaktiveret: Åbn først en anden spillers SB!",
@@ -423,10 +409,6 @@
 		"Menu.Chat.Title": "Klan live chat",
 		"Menu.Citymap.Desc": "Viser din by oppefra.",
 		"Menu.Citymap.Title": "Byoversigt",
-		"Menu.Event.Desc": "Videresender dig https://foe-rechner.de/events/overview for at vise dig en oversigt over kommende eventopgaver.",
-		"Menu.Event.Title": "Event opgaverække",
-		"Menu.Forum.Desc": "Du har et spørgsmål? Du er irriteret over noget? Eller du vil bare snakke...",
-		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Hvilken FP-producerende SB brude du udvide som den næste?",
 		"Menu.greatbuildings.Title": "SB investeringer",
 		"Menu.HiddenRewards.Desc": "Oversigt over hændelser i og omkring din by.",
@@ -463,10 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Forhandlingsassistent",
 		"Settings.ChangeLanguage.Desc": "Hvilket sprog skal bruges i stedet for det automatisk genkendte?",
 		"Settings.ChangeLanguage.Title": "Skift sprog",
-		"Settings.CustomerApi.Desc": "Du vil sende data til din egen server?<br>Efter aktivering vil spillet genindlæse og et nyt menupunkt vil kunne findes i menuen til højre.",
-		"Settings.CustomerApi.Title": "Spiller API",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Hvis du vil samle data sammen med din klan, så aktivér dette punkt.<br>For en selvførende udvidelse uden foe-rechner.de kan dette deaktiveres.",
 		"Settings.GlobalSend.Title": "Overførelse af data til foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Hvor mange elementer høj skal menuen til højre være?<br> Tom eller \"0\" er den automatiske højde.",
 		"Settings.MenuLength.Title": "Menuhøjde",
 		"Settings.ResetBoxPositions.Button": "Slet!",
@@ -478,14 +478,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Klanmedlemmernes SB data",
 		"Settings.SendInvestigations.Desc": "Overfører FP investeringerne ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i'.",
 		"Settings.SendInvestigations.Title": "FP investeringer",
-		"Settings.SendTavernInfo.Desc": "Skal MoPo aktiviteterne overføres, når begivenhedshistorikken åbnes?",
-		"Settings.SendTavernInfo.Title": "MoPo aktivitet",
+		"Settings.SendPlayersMotivation.Desc": "Skal MoPo aktiviteterne overføres, når begivenhedshistorikken åbnes?",
+		"Settings.SendPlayersMotivation.Title": "MoPo aktivitet",
 		"Settings.ShowInvestments.Desc": "Ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i' vises en oversigt over investeringer i andre spillers SBer.",
 		"Settings.ShowInvestments.Title": "Vis oversigt over investeringer i SBer",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Vis også egenandelsberegneren ved SBer, der tilhører andre spillere.",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Vis altid EA-beregneren",
 		"Settings.ShowTavernBadge.Desc": "Så snart der aktiveres en \"Ekstra\" tur fra krobutikken, vises en flytbar nedtælling",
 		"Settings.ShowTavernBadge.Title": "Vis kro badge",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "<p>Udvidelsesversion</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Klan Id:",
 		"Settings.Version.PlayerId": "Spiller Id:",

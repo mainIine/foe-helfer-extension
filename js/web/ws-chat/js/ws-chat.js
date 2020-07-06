@@ -86,8 +86,8 @@ class Player {
 			}
 	
 			// update src if needed
-			if (portrait !== this.portrait) {
-				img.src = `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
+			if (portrait !== this.portrait || img.src.length <=0 || img.src !== `${portraitFile}`) {
+				img.src = `${portraitFile}`;
 			}
 		} else {
 			// remove if needed
@@ -363,7 +363,7 @@ let Chat = {
 		Chat.ConnectionId = connectionId;
 		
 		// let wsUri = 'ws://localhost:9000/';
-		let wsUri = 'ws://ws.foe-rechner.de:9000/';
+		let wsUri = 'ws://ws.foe-helper.com:9000/';
 
 		Chat.WebsocketChat = new WebSocket(wsUri);
 
@@ -753,7 +753,7 @@ let Chat = {
 
 		const img = document.createElement('img');
 		if (Chat.PlayersPortraits[Player.avatar]) {
-			img.src = Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg';
+			img.src = img.src = Chat.PlayersPortraits[Player.avatar];
 		}
 
 		const s = document.createElement('span');

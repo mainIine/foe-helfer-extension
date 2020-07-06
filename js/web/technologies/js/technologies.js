@@ -105,7 +105,7 @@ let Technologies = {
         3: 'IronAge',
         4: 'EarlyMiddleAge',
         5: 'HighMiddleAge',
-        6: 'LateMiddleAge ',
+        6: 'LateMiddleAge',
         7: 'ColonialAge',
         8: 'IndustrialAge',
         9: 'ProgressiveEra',
