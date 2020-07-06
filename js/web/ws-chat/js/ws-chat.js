@@ -86,7 +86,7 @@ class Player {
 			}
 	
 			// update src if needed
-			if (portrait !== this.portrait) {
+			if (portrait !== this.portrait || img.src.length <=0 || img.src !== `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`) {
 				img.src = `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
 			}
 		} else {

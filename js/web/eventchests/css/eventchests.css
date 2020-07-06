@@ -1,0 +1,28 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 eventchests.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              27.12.19, 12:31 Uhr
+ * zuletzt bearbeitet:       27.12.19, 12:31 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+
+#eventchests {
+    top: 100px;
+    left: 48%;
+}
+
+#eventchests td.border-right {
+    border-right: 1px solid #3d250f;
+}
+
+#eventchests td.border-left {
+    border-left: 1px solid #7F5A34;
+}

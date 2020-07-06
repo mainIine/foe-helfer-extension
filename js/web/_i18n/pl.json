@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Nagroda dnia: ",
 		"Boxes.EventChests.Steps": "Skoki",
 		"Boxes.EventChests.Title": "Asystent wyboru skrzyń eventowych",
-		"Boxes.EventList.And": " oraz ",
-		"Boxes.EventList.Desc": "Zadanie",
-		"Boxes.EventList.Number": "Nr",
-		"Boxes.EventList.Or": " lub ",
-		"Boxes.EventList.Reward": "Nagroda",
-		"Boxes.EventList.Title": "Lista zadań dla eventu: ",
-		"Boxes.EventList.Upcoming": "Nadchodzące zadania (Liczby mogą się różnić)",
-		"Boxes.EventList.Waiting": "Brak aktywnych zadań",
 		"Boxes.Gildfights.Fights": "Walki",
 		"Boxes.Gildfights.LastSnapshot": " - ostatni snapshot sprzed __time__",
 		"Boxes.Gildfights.Negotiations": "Negocjacje",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Poziom",
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,12 +399,6 @@
 		"HiddenRewards.Table.position": "umiejscowienie",
 		"HiddenRewards.Table.type": "Rodzaj",
 		"Local": "pl-PL",
-		"Menu.Api.Desc": "Ustawienia przesyłu danych na własny serwer",
-		"Menu.Api.Title": "Extension API",
-		"Menu.Ask.Desc": "Nie wiesz jak coś działa?<br>Sprawdź!",
-		"Menu.Ask.Title": "FAQ",
-		"Menu.Bugs.Desc": "Coś działa nieprawidłowo? Masz jakiś pomysł?",
-		"Menu.Bugs.Title": "Błędy i pomysły",
 		"Menu.Calculator.Desc": "Oblicza koszty zajęcia miejsc przy pomocy i wpłatach zarobkowych",
 		"Menu.Calculator.Title": "Kalkulator kosztów",
 		"Menu.Calculator.Warning": "Niedostępne: Otwórz perłę architektury innego gracza!",
@@ -422,8 +409,6 @@
 		"Menu.Chat.Title": "Czat gildyjny",
 		"Menu.Citymap.Desc": "Pokazuje miasto w rzucie z góry",
 		"Menu.Citymap.Title": "Przegląd miasta",
-		"Menu.Forum.Desc": "Masz pytania? Coś Cię drażni? Chcesz porozmawiać? ...",
-		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Podpowiada, którą Perłę Architektury ze zbiorem PR opłaca się rozbudować",
 		"Menu.greatbuildings.Title": "Budowa Pereł Architektury",
 		"Menu.HiddenRewards.Desc": "Przegląd zdarzeń losowych",
@@ -461,8 +446,9 @@
 		"Settings.ChangeLanguage.Desc": "Jaki język powinien zostać użyty zamiast automatycznie wykrytego?",
 		"Settings.ChangeLanguage.Title": "Zmień język",
 		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
 		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
 		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
 		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
@@ -475,6 +461,12 @@
 		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Jeżeli chcesz śledzić postępy wewnątrz swojej gildii możesz aktywować to zaznaczenie. <br> Dla samodzielnego rozszerzenia możesz odznaczyć wybór.",
 		"Settings.GlobalSend.Title": "Wysyłanie danych do foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Ile elementów powinno mieścic menu rozszerzenia?<br> Puste lub \"0\" oznacza automatyczną wysokość.",
 		"Settings.MenuLength.Title": "Wysokość menu",
 		"Settings.ResetBoxPositions.Button": "Reset!",
@@ -496,8 +488,8 @@
 		"Settings.ShowTavernBadge.Title": "Pokaż dymek tawerny",
 		"Settings.Tab.About": "About", //Todo: Translate
 		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "Extension", //Todo: Translate
-		"Settings.Tab.Sending": "Sending", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "<p>Wersja rozszerzenia</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
 		"Settings.Version.GuildId": "ID Gildii:",
 		"Settings.Version.PlayerId": "ID Gracza:",

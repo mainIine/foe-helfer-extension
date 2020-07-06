@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Dagprijs: ",
 		"Boxes.EventChests.Steps": "Stappen",
 		"Boxes.EventChests.Title": "Event keuze assistent",
-		"Boxes.EventList.And": " en ",
-		"Boxes.EventList.Desc": "Missie",
-		"Boxes.EventList.Number": "Nr.",
-		"Boxes.EventList.Or": " of ",
-		"Boxes.EventList.Reward": "Beloning",
-		"Boxes.EventList.Title": "Opdrachtenlijst: ",
-		"Boxes.EventList.Upcoming": "Komende missies (aantal kan variëren)",
-		"Boxes.EventList.Waiting": "Geen missies beschikbaar",
 		"Boxes.Gildfights.Fights": "Gevechten",
 		"Boxes.Gildfights.LastSnapshot": " - Laatste snapshot sinds __time__ ago",
 		"Boxes.Gildfights.Negotiations": "Onderhandelingen",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,12 +399,6 @@
 		"HiddenRewards.Table.position": "Positie",
 		"HiddenRewards.Table.type": "Soort",
 		"Local": "nl-NL",
-		"Menu.Api.Desc": "Instellingen om naar je eigen server te versturen",
-		"Menu.Api.Title": "Extensie API",
-		"Menu.Ask.Desc": "Weet je niet hoe iets werkt?<br>Neem een kijkje!",
-		"Menu.Ask.Title": "Vraag / Antwoord",
-		"Menu.Bugs.Desc": "Iets werkt niet zoals het hoort of heb je een idee?",
-		"Menu.Bugs.Title": "Fouten / Wensen",
 		"Menu.Calculator.Desc": "Berekent voor jou alle plaatsen en zoekt naar snipe-bare forgepunten",
 		"Menu.Calculator.Title": "FP-calculator",
 		"Menu.Calculator.Warning": "Gedeactiveerd: Open eerst een groots gebouw van een andere speler!",
@@ -422,8 +409,6 @@
 		"Menu.Chat.Title": "Gilde Live-Chat",
 		"Menu.Citymap.Desc": "Een schematische weergave van je stad in bovenaanzicht",
 		"Menu.Citymap.Title": "Stadsoverzicht",
-		"Menu.Forum.Desc": "Heb je een vraag? Zit je iets dwars? Of misschien wil je gewoon praten ...",
-		"Menu.Forum.Title": "FoE Helper Forum", //Todo: Translate
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Lijst van incidenten in en rond je stad",
@@ -461,8 +446,9 @@
 		"Settings.ChangeLanguage.Desc": "Welke taal, in plaats van de herkende, moet worden gebruikt?",
 		"Settings.ChangeLanguage.Title": "Verander de taal",
 		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
 		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
 		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
 		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
@@ -475,6 +461,12 @@
 		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Activeer dit onderdeel als je gegevens met je gilde wilt bijhouden. <br> Deactiveer het voor persoonlijk gebruik.",
 		"Settings.GlobalSend.Title": "Gegevensoverdracht naar foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Hoeveel pictogrammen mag het menu weergeven?<br> Leeg of \"0\" betekent maximaal aantal.",
 		"Settings.MenuLength.Title": "Menu lengte",
 		"Settings.ResetBoxPositions.Button": "Verwijderen",
@@ -496,8 +488,8 @@
 		"Settings.ShowTavernBadge.Title": "Toon teller Taveerne Bonus",
 		"Settings.Tab.About": "About", //Todo: Translate
 		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "Extension", //Todo: Translate
-		"Settings.Tab.Sending": "Sending", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Chrome Extension Version",
 		"Settings.Version.GuildId": "Gilde-ID:",
 		"Settings.Version.PlayerId": "Speler-ID:",

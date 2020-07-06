@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Speciale giornaliero: ",
 		"Boxes.EventChests.Steps": "Steps",
 		"Boxes.EventChests.Title": "Event Chest Selection Helper", //Todo: Translate
-		"Boxes.EventList.And": "e",
-		"Boxes.EventList.Desc": "Compito",
-		"Boxes.EventList.Number": "N.",
-		"Boxes.EventList.Or": "o",
-		"Boxes.EventList.Reward": "Ricompensa",
-		"Boxes.EventList.Title": "Elenco missioni evento per:",
-		"Boxes.EventList.Upcoming": "PROSSIME MISSIONI (i valori possono variare)",
-		"Boxes.EventList.Waiting": "Nessuna ricerca disponibile",
 		"Boxes.Gildfights.Fights": "Combattimenti",
 		"Boxes.Gildfights.LastSnapshot": "- ultimo screen __time__ fa",
 		"Boxes.Gildfights.Negotiations": "Negoziazioni",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Nascondi i GE non costruiti",
 		"Boxes.GreatBuildings.Level": "Livello",
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggerimento2",
 		"Boxes.GreatBuildings.SuggestionDescription": "Gli edifici in cima alla lista sono i migliori",
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,12 +399,6 @@
 		"HiddenRewards.Table.position": "Posizione",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "it",
-		"Menu.Api.Desc": "Impostazioni per inviare dati al tuo server",
-		"Menu.Api.Title": "API del giocatore",
-		"Menu.Ask.Desc": "Non sai come funziona qualcosa? <br> Dai un'occhiata!",
-		"Menu.Ask.Title": "Botta e Risposta",
-		"Menu.Bugs.Desc": "Qualcosa non è come dovrebbe o hai un'idea?",
-		"Menu.Bugs.Title": "Errori / Desideri",
 		"Menu.Calculator.Desc": "Calcola tutti i posti per te e calcola i PF acquisibili",
 		"Menu.Calculator.Title": "Calcolatore posizioni GE altrui",
 		"Menu.Calculator.Warning": "Disabilitato: apri prima il GE di un altro giocatore!",
@@ -422,8 +409,6 @@
 		"Menu.Chat.Title": "Chat live della gilda",
 		"Menu.Citymap.Desc": "Mostra lo schema della tua città",
 		"Menu.Citymap.Title": "Panoramica della città",
-		"Menu.Forum.Desc": "Hai una domanda? Ci sono problemi? O solo per parlare ...",
-		"Menu.Forum.Title": "Forum FoE Helper",
 		"Menu.greatbuildings.Desc": "Quale GE per la produzione di PF dovresti aggiornare dopo?",
 		"Menu.greatbuildings.Title": "Investimenti GE",
 		"Menu.HiddenRewards.Desc": "Panoramica delle ricompense nascoste",
@@ -461,8 +446,9 @@
 		"Settings.ChangeLanguage.Desc": "Quale lingua, anziché quella riconosciuta, dovrebbe essere utilizzata?",
 		"Settings.ChangeLanguage.Title": "Cambia lingua",
 		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
 		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
 		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
 		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
@@ -475,6 +461,12 @@
 		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se vuoi tracciare i dati con la tua gilda, attiva questo campo. <br> Per un'estensione autosufficiente, disattivalo.",
 		"Settings.GlobalSend.Title": "Trasmissione a foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Quanti elementi (lunghezza) dovrebbe contenere il menu? <br> Campo vuoto o \"0\" sceglierà in automatico.",
 		"Settings.MenuLength.Title": "Lunghezza menu",
 		"Settings.ResetBoxPositions.Button": "Elimina!",
@@ -496,8 +488,8 @@
 		"Settings.ShowTavernBadge.Title": "Mostra badge taverne",
 		"Settings.Tab.About": "About", //Todo: Translate
 		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "Extension", //Todo: Translate
-		"Settings.Tab.Sending": "Sending", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Versione estensione di Chrome",
 		"Settings.Version.GuildId": "ID Gilda:",
 		"Settings.Version.PlayerId": "ID Giocatore:",
