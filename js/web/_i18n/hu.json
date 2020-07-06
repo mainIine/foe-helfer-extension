@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Magyar",
 		"API.GEXChampionship": "A C.E. céh elhelyezése frissült",
 		"API.GEXPlayer": "C.E. tagok elhelyezése frissült",
@@ -128,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Daily Special: ", //Todo: Translate
 		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
 		"Boxes.EventChests.Title": "Event Chest Selection Helper", //Todo: Translate
-		"Boxes.EventList.And": " és ",
-		"Boxes.EventList.Desc": "Feladat",
-		"Boxes.EventList.Number": "Sorrend",
-		"Boxes.EventList.Or": " vagy ",
-		"Boxes.EventList.Reward": "Jutalom",
-		"Boxes.EventList.Title": "Esemény feladat listája a: ",
-		"Boxes.EventList.Upcoming": "Közelgő feladatok (A számok változhatnak)",
-		"Boxes.EventList.Waiting": "Nincs elérhető feladat",
 		"Boxes.Gildfights.Fights": "Csaták",
 		"Boxes.Gildfights.LastSnapshot": "__time__ telt el az utolsó megtekintés óta",
 		"Boxes.Gildfights.Negotiations": "Tárgyalások",
@@ -151,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -211,6 +200,7 @@
 		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
@@ -294,6 +284,7 @@
 		"Boxes.Productions.SearchInput": "Épület keresés...",
 		"Boxes.Productions.Title": "Termelés áttekintése",
 		"Boxes.Productions.Total": "Teljes: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktív",
 		"Boxes.Settings.Inactive": "Nem aktív",
 		"Boxes.Settings.Title": "Beállítások",
@@ -323,6 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
 		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "All", //Todo: Translate
 		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
 		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
@@ -407,12 +399,6 @@
 		"HiddenRewards.Table.position": "Pozíció",
 		"HiddenRewards.Table.type": "Típus",
 		"Local": "hu-HU",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
-		"Menu.Ask.Desc": "Nem tudod, hogyan működik valami? <br> Vessen egy pillantást!",
-		"Menu.Ask.Title": "Kérdés / Felelek",
-		"Menu.Bugs.Desc": "Valami nem úgy működik ahogy kellene vagy van ötleted?",
-		"Menu.Bugs.Title": "Hibák / kívánságok",
 		"Menu.Calculator.Desc": "Kiszámítja az összes elérhető helyet az Ön számára, és kiszámítja az FP-ket",
 		"Menu.Calculator.Title": "Nevezetes számláló",
 		"Menu.Calculator.Warning": "Tiltott: Először nyissa meg egy másik játékos Nevezetes épületét!",
@@ -423,10 +409,6 @@
 		"Menu.Chat.Title": "Céh élő chat",
 		"Menu.Citymap.Desc": "Megmutatja városát felülről",
 		"Menu.Citymap.Title": "Város térkép",
-		"Menu.Event.Desc": "A jelenlegi és a közelgő események áttekintése",
-		"Menu.Event.Title": "Esemény Feladat lista",
-		"Menu.Forum.Desc": "Kérdése van? Bosszantja valami? Vagy csak beszélni szeretne...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "A rejtett jutalmak áttekintése",
@@ -463,10 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Tárgyalási segítő",
 		"Settings.ChangeLanguage.Desc": "Melyik nyelv legyen használva a meglévő helyett?",
 		"Settings.ChangeLanguage.Title": "Nyelvváltó",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Ha az céhhel szeretné nyomon követni az adatokat, aktiválja ezt a pontot. <br> Az önellátó kiterjesztés érdekében egyszerűen tiltsa le.",
 		"Settings.GlobalSend.Title": "Átvitel a foe-rechner.de -re",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Hány elem legyen a menüben?<br> Üresen hagyás vagy \"0\" automatikus magasságot jelent.",
 		"Settings.MenuLength.Title": "Menü hossza",
 		"Settings.ResetBoxPositions.Button": "Töröl!",
@@ -478,14 +478,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Más céhtagok Lb adatai",
 		"Settings.SendInvestigations.Desc": "Belépés a „Városháza”> „Hírek”> „Nevezetes épületek” elküldi az FP beruházásait",
 		"Settings.SendInvestigations.Title": "FP befektetés",
-		"Settings.SendTavernInfo.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",
-		"Settings.SendTavernInfo.Title": "Motivációs tevékenység",
+		"Settings.SendPlayersMotivation.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",
+		"Settings.SendPlayersMotivation.Title": "Motivációs tevékenység",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Amint aktiválódik a kocsmában az extra lépés, megjelenik egy globálisan mozgatható számláló.",
 		"Settings.ShowTavernBadge.Title": "Mutasd meg a fogadó jelképét",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Chrome Bővítmény Verzió",
 		"Settings.Version.GuildId": "Céh-Id:",
 		"Settings.Version.PlayerId": "Játékos-Id:",

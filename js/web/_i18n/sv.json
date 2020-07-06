@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Svenska",
 		"API.GEXChampionship": "IE placering för imperiet har uppdaterats",
 		"API.GEXPlayer": "IE placering för medlemmar har uppdaterats",
@@ -128,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Dagens pris: ",
 		"Boxes.EventChests.Steps": "Steg",
 		"Boxes.EventChests.Title": "Assistent till händelsekista",
-		"Boxes.EventList.And": " och ",
-		"Boxes.EventList.Desc": "Uppdrag",
-		"Boxes.EventList.Number": "Nr",
-		"Boxes.EventList.Or": " eller ",
-		"Boxes.EventList.Reward": "Belöning",
-		"Boxes.EventList.Title": "Händelseuppdrag för: ",
-		"Boxes.EventList.Upcoming": "Kommande uppdrag (antal kan variera)",
-		"Boxes.EventList.Waiting": "Inget uppdrag tillgängligt",
 		"Boxes.Gildfights.Fights": "Strider",
 		"Boxes.Gildfights.LastSnapshot": " - senaste översikt __time__ sen",
 		"Boxes.Gildfights.Negotiations": "Förhandlingar",
@@ -151,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Nivå",
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -211,6 +200,7 @@
 		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
@@ -294,6 +284,7 @@
 		"Boxes.Productions.SearchInput": "Sök byggnad...",
 		"Boxes.Productions.Title": "Produktionsöversikt",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Inställningar",
@@ -323,6 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Visar kostnad av varor på GvG karta.",
 		"Boxes.Stats.BtnToggleGroupBy": "Gruppera på era",
 		"Boxes.Stats.BtnToggleGroupByTitle": "Gruppera på titel",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Alla",
 		"Boxes.Stats.Period.last30days": "Sista 30 dagar",
 		"Boxes.Stats.Period.last7days": "Sista 7 dagar",
@@ -407,12 +399,6 @@
 		"HiddenRewards.Table.position": "Plats",
 		"HiddenRewards.Table.type": "Typ",
 		"Local": "sv-SE",
-		"Menu.Api.Desc": "Inställningar att skicka data till din egen server",
-		"Menu.Api.Title": "Tillägets API",
-		"Menu.Ask.Desc": "Du vet inte hur något fungerar?<br>Kolla här!",
-		"Menu.Ask.Title": "Frågor / Svar",
-		"Menu.Bugs.Desc": "Något är inte som det borde vara eller du har en idé?",
-		"Menu.Bugs.Title": "Misstag / Önskemål",
 		"Menu.Calculator.Desc": "Räkna alla placeringar för dig och FP som du kan stjäla",
 		"Menu.Calculator.Title": "Kostnadskalkylator",
 		"Menu.Calculator.Warning": "Inaktiverat: Öppna en annan spelares MB först!",
@@ -423,10 +409,6 @@
 		"Menu.Chat.Title": "Imperium realtidschat",
 		"Menu.Citymap.Desc": "Visa din stad schematiskt från ovan",
 		"Menu.Citymap.Title": "Stadsöversikt",
-		"Menu.Event.Desc": "Översikt av nuvarande och kommande event",
-		"Menu.Event.Title": "Event uppdragslista",
-		"Menu.Forum.Desc": "Har du en fråga? något som irritera dig? eller bara vill prata ...",
-		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Vilken FP producerande mäktig byggnad ska jag uppgradera härnäst?",
 		"Menu.greatbuildings.Title": "MB Investering",
 		"Menu.HiddenRewards.Desc": "Översikt av händelser",
@@ -463,10 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Förhandlingshjälp",
 		"Settings.ChangeLanguage.Desc": "Vilket språk istället för det som hittas automatiskt ska användas?",
 		"Settings.ChangeLanguage.Title": "Byt språk",
-		"Settings.CustomerApi.Desc": "Vill du skicak data till din egen server?<br> Efter detta är aktiverat kommer spelet ladda om och en ny meny alternativ dycker upp.",
-		"Settings.CustomerApi.Title": "Spelares API",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Om du vill spåra och dela data med ditt imperium, aktivera detta. <br> Om du inte vill dela data inaktivera.",
 		"Settings.GlobalSend.Title": "Överföring till foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Hur många element högt ska menyn vara?<br> Tom eller \"0\" betyder automatisk höjd.",
 		"Settings.MenuLength.Title": "Meny längd",
 		"Settings.ResetBoxPositions.Button": "Ta bort!",
@@ -478,14 +478,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "MB data av andra imperiemedlemmar",
 		"Settings.SendInvestigations.Desc": "Gå in i 'Stadshuset'> 'Nyheter'> 'Mäktiga byggnader' kommer skicka dina FP investeringar.",
 		"Settings.SendInvestigations.Title": "FP investering",
-		"Settings.SendTavernInfo.Desc": "Ska motiveringsaktivitet skickas när du kollar på händelsehistorik",
-		"Settings.SendTavernInfo.Title": "Motiveringsaktivitet",
+		"Settings.SendPlayersMotivation.Desc": "Ska motiveringsaktivitet skickas när du kollar på händelsehistorik",
+		"Settings.SendPlayersMotivation.Title": "Motiveringsaktivitet",
 		"Settings.ShowInvestments.Desc": "Visar summan av dina FP investeringar när du går in i 'Stadshuset'> 'Nyheter'> 'Mäktiga byggnader' flik.",
 		"Settings.ShowInvestments.Title": "Visa FP Investerings summering",
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Visa MB kalkylator för mäktiga byggnader för andara spelare",
 		"Settings.ShowOwnPartOnAllGBs.Title": "Visa MB kalkylator för alla MBs",
 		"Settings.ShowTavernBadge.Desc": "När extra runda i värdshuset aktiverats kommer en ikon visas.",
 		"Settings.ShowTavernBadge.Title": "Visa värdshusprestation",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Chrome tillägg version",
 		"Settings.Version.GuildId": "Imperium id:",
 		"Settings.Version.PlayerId": "Spelar id:",

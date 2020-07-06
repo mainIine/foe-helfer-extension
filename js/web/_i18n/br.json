@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Português do Brasil",
 		"API.GEXChampionship": "Posicionamento da guilda na expedição foi atualizado",
 		"API.GEXPlayer": "Posicionamentos dos membros na expedição da guilda foram atualizados",
@@ -128,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Preço do dia: ",
 		"Boxes.EventChests.Steps": "Passos",
 		"Boxes.EventChests.Title": "Auxiliar de seleção de baú de eventos",
-		"Boxes.EventList.And": " e ",
-		"Boxes.EventList.Desc": "Missão",
-		"Boxes.EventList.Number": "Nr.",
-		"Boxes.EventList.Or": " ou ",
-		"Boxes.EventList.Reward": "Recompensa",
-		"Boxes.EventList.Title": "Lista de missões para evento: ",
-		"Boxes.EventList.Upcoming": "Missões futuras (Números podem variar)",
-		"Boxes.EventList.Waiting": "Não há missões disponíveis",
 		"Boxes.Gildfights.Fights": "Lutas",
 		"Boxes.Gildfights.LastSnapshot": " - última captura à __time__",
 		"Boxes.Gildfights.Negotiations": "Negociações",
@@ -151,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -211,6 +200,7 @@
 		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
@@ -294,6 +284,7 @@
 		"Boxes.Productions.SearchInput": "Procurar edifício...",
 		"Boxes.Productions.Title": "Resumo das Produções",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Ativado",
 		"Boxes.Settings.Inactive": "Desativado",
 		"Boxes.Settings.Title": "Configurações",
@@ -323,6 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Mostrar uma diminuição de mercadorias no mapa GvG.",
 		"Boxes.Stats.BtnToggleGroupBy": "Agrupar por Eras",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Todo",
 		"Boxes.Stats.Period.last30days": "Últimos 30 dias",
 		"Boxes.Stats.Period.last7days": "Últimos 7 duas",
@@ -407,12 +399,6 @@
 		"HiddenRewards.Table.position": "Posição",
 		"HiddenRewards.Table.type": "Tipo",
 		"Local": "pt-BR",
-		"Menu.Api.Desc": "Configurações para enviar dados para seu próprio servidor",
-		"Menu.Api.Title": "API de extensão",
-		"Menu.Ask.Desc": "Você não sabe como algo funciona?<br>Dê uma olhada!",
-		"Menu.Ask.Title": "Pergunta / Resposta",
-		"Menu.Bugs.Desc": "Algo não está como dever ser ou tem sugestões?",
-		"Menu.Bugs.Title": "Erros / Desejos",
 		"Menu.Calculator.Desc": "Calcular todos os lugares e possíveis recortes",
 		"Menu.Calculator.Title": "Calculadora de custos",
 		"Menu.Calculator.Warning": "Desabilitado: Abra primeiro o GE de outro jogador!",
@@ -423,10 +409,6 @@
 		"Menu.Chat.Title": "Chat ao vivo da guilda",
 		"Menu.Citymap.Desc": "Mostra a cidade vista de cima",
 		"Menu.Citymap.Title": "Mapa da cidade",
-		"Menu.Event.Desc": "Resumo da missão atual e futuras missões",
-		"Menu.Event.Title": "Lista de missões do Evento",
-		"Menu.Forum.Desc": "Você tem uma pergunta? Algo incomonda? Ou apenas para conversar ...",
-		"Menu.Forum.Title": "Fórum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Resumo dos incidentes escondidos",
@@ -463,10 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Auxiliar de negociações",
 		"Settings.ChangeLanguage.Desc": "Que idioma deve ser utilizado, em vez do definido automaticamente?",
 		"Settings.ChangeLanguage.Title": "Mudar idioma",
-		"Settings.CustomerApi.Desc": "Deseja enviar alguns dados para o seu próprio servidor?<br>Após essa ativação, o jogo será recarregado e um novo item de menu será exibido.",
-		"Settings.CustomerApi.Title": "API dos jogadores",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Se você deseja rastrear dados com sua guilda, ative essa opção. <br> Para uma utilização apenas pessoal, desativa esta opção.",
 		"Settings.GlobalSend.Title": "Envio para foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá ter o menu?<br> Sem nada ou \"0\" definir uma altura automática.",
 		"Settings.MenuLength.Title": "Altura do Menu",
 		"Settings.ResetBoxPositions.Button": "Apagar!",
@@ -478,14 +478,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
 		"Settings.SendInvestigations.Desc": "Ao entrar na 'Prefeitura'> 'Notícias'> 'Grandes Edifícios' vai exibir os PFs investidos",
 		"Settings.SendInvestigations.Title": "Investimento PFs",
-		"Settings.SendTavernInfo.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?",
-		"Settings.SendTavernInfo.Title": "Atividade da motivação",
+		"Settings.SendPlayersMotivation.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?",
+		"Settings.SendPlayersMotivation.Title": "Atividade da motivação",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Assim que o movimento extra na taberna é ativado, um contador móvel global aparece.",
 		"Settings.ShowTavernBadge.Title": "Mostra o estado da bonificação da taberna",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Versão da Extensão do Chrome",
 		"Settings.Version.GuildId": "ID da guilda:",
 		"Settings.Version.PlayerId": "ID do jogador:",

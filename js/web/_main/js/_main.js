@@ -515,7 +515,7 @@ const FoEproxy = (function () {
 				console.log('Can\'t parse postData: ', postData);
 			}
 
-			//StartUp Service zuerst behandeln
+			// StartUp Service zuerst behandeln
 			for (let entry of d) {
 				if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
 					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
@@ -523,7 +523,7 @@ const FoEproxy = (function () {
 			}
 
 			for (let entry of d) {
-				if (entry['requestClass'] !== 'StartupService' || entry['requestMethod'] == 'getData') {
+				if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
 					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 				}
 			}
@@ -964,7 +964,7 @@ const FoEproxy = (function () {
 
 	// Moppel Aktivitäten
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
-		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendTavernInfo')) {
+		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendPlayersMotivation')) {
 			return;
 		}
 		let page = data.responseData.page,
@@ -1480,7 +1480,7 @@ let MainParser = {
 	 * @param d
 	 */
 	StartUp: (d) => {
-		Settings.InitPreferences();
+		Settings.Init(false);
 
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];

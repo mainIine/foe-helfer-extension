@@ -1,9 +1,5 @@
 ﻿{
 	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
 		"_Language": "Polski",
 		"API.GEXChampionship": "Postęp wypraw gildyjnych został zaktualizowany",
 		"API.GEXPlayer": "Zaktualizowano ranking graczy w wyprawie gildyjnej",
@@ -128,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Nagroda dnia: ",
 		"Boxes.EventChests.Steps": "Skoki",
 		"Boxes.EventChests.Title": "Asystent wyboru skrzyń eventowych",
-		"Boxes.EventList.And": " oraz ",
-		"Boxes.EventList.Desc": "Zadanie",
-		"Boxes.EventList.Number": "Nr",
-		"Boxes.EventList.Or": " lub ",
-		"Boxes.EventList.Reward": "Nagroda",
-		"Boxes.EventList.Title": "Lista zadań dla eventu: ",
-		"Boxes.EventList.Upcoming": "Nadchodzące zadania (Liczby mogą się różnić)",
-		"Boxes.EventList.Waiting": "Brak aktywnych zadań",
 		"Boxes.Gildfights.Fights": "Walki",
 		"Boxes.Gildfights.LastSnapshot": " - ostatni snapshot sprzed __time__",
 		"Boxes.Gildfights.Negotiations": "Negocjacje",
@@ -151,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Poziom",
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -211,6 +200,7 @@
 		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
 		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
 		"Boxes.Notice.Edit": "Edit", //Todo: Translate
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
 		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
 		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
 		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
@@ -294,6 +284,7 @@
 		"Boxes.Productions.SearchInput": "Szukaj budynku...",
 		"Boxes.Productions.Title": "Przegląd produkcji",
 		"Boxes.Productions.Total": "Total: ",
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
 		"Boxes.Settings.Active": "Aktywne",
 		"Boxes.Settings.Inactive": "Nieaktywne",
 		"Boxes.Settings.Title": "Ustawienia",
@@ -323,6 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Pokazuje wydatki towaru na mapie GvG.",
 		"Boxes.Stats.BtnToggleGroupBy": "Grupuj epokami",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
+		"Boxes.Stats.Era": "Era", //Todo: Translate
 		"Boxes.Stats.Period.all": "Wszystkie",
 		"Boxes.Stats.Period.last30days": "Ostatnie 30 dni",
 		"Boxes.Stats.Period.last7days": "Ostatnie 7 dni",
@@ -407,12 +399,6 @@
 		"HiddenRewards.Table.position": "umiejscowienie",
 		"HiddenRewards.Table.type": "Rodzaj",
 		"Local": "pl-PL",
-		"Menu.Api.Desc": "Ustawienia przesyłu danych na własny serwer",
-		"Menu.Api.Title": "Extension API",
-		"Menu.Ask.Desc": "Nie wiesz jak coś działa?<br>Sprawdź!",
-		"Menu.Ask.Title": "FAQ",
-		"Menu.Bugs.Desc": "Coś działa nieprawidłowo? Masz jakiś pomysł?",
-		"Menu.Bugs.Title": "Błędy i pomysły",
 		"Menu.Calculator.Desc": "Oblicza koszty zajęcia miejsc przy pomocy i wpłatach zarobkowych",
 		"Menu.Calculator.Title": "Kalkulator kosztów",
 		"Menu.Calculator.Warning": "Niedostępne: Otwórz perłę architektury innego gracza!",
@@ -423,10 +409,6 @@
 		"Menu.Chat.Title": "Czat gildyjny",
 		"Menu.Citymap.Desc": "Pokazuje miasto w rzucie z góry",
 		"Menu.Citymap.Title": "Przegląd miasta",
-		"Menu.Event.Desc": "Lista bieżących i nadchodzących zadań",
-		"Menu.Event.Title": "Zadania eventowe",
-		"Menu.Forum.Desc": "Masz pytania? Coś Cię drażni? Chcesz porozmawiać? ...",
-		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Podpowiada, którą Perłę Architektury ze zbiorem PR opłaca się rozbudować",
 		"Menu.greatbuildings.Title": "Budowa Pereł Architektury",
 		"Menu.HiddenRewards.Desc": "Przegląd zdarzeń losowych",
@@ -463,10 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Asystent negocjacji",
 		"Settings.ChangeLanguage.Desc": "Jaki język powinien zostać użyty zamiast automatycznie wykrytego?",
 		"Settings.ChangeLanguage.Title": "Zmień język",
-		"Settings.CustomerApi.Desc": "Czy chcesz wysyłać dane na własny serwer?<br> Po aktywowaniu gra się przeładuje i pojawi się nowa opcja menu.",
-		"Settings.CustomerApi.Title": "API Graczy",
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
+		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
+		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
+		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
+		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
+		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
+		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
+		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Jeżeli chcesz śledzić postępy wewnątrz swojej gildii możesz aktywować to zaznaczenie. <br> Dla samodzielnego rozszerzenia możesz odznaczyć wybór.",
 		"Settings.GlobalSend.Title": "Wysyłanie danych do foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Ile elementów powinno mieścic menu rozszerzenia?<br> Puste lub \"0\" oznacza automatyczną wysokość.",
 		"Settings.MenuLength.Title": "Wysokość menu",
 		"Settings.ResetBoxPositions.Button": "Reset!",
@@ -478,14 +478,18 @@
 		"Settings.SendGildMemberLGInfo.Title": "Aktualizuj dane o perłach członków gildii",
 		"Settings.SendInvestigations.Desc": "Wejście w 'Ratusz'> 'Wiadomości'> 'Perły architektury' prześle informacje o zainwestowanych PRach",
 		"Settings.SendInvestigations.Title": "Zainwestowane PR",
-		"Settings.SendTavernInfo.Desc": "Czy przesyłać dane o motywacjach na zewnętrzny serwer?",
-		"Settings.SendTavernInfo.Title": "Aktywność motywacji",
+		"Settings.SendPlayersMotivation.Desc": "Czy przesyłać dane o motywacjach na zewnętrzny serwer?",
+		"Settings.SendPlayersMotivation.Title": "Aktywność motywacji",
 		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
 		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
 		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
 		"Settings.ShowTavernBadge.Desc": "Przy aktywacji dodatkowej negocjacji w tawernie pojawia się przesuwalny dymek z odliczaniem.",
 		"Settings.ShowTavernBadge.Title": "Pokaż dymek tawerny",
+		"Settings.Tab.About": "About", //Todo: Translate
+		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "<p>Wersja rozszerzenia</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
 		"Settings.Version.GuildId": "ID Gildii:",
 		"Settings.Version.PlayerId": "ID Gracza:",
