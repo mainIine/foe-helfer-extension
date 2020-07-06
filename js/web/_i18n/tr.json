@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Günün Fiyatı: ",
 		"Boxes.EventChests.Steps": "Adımlar",
 		"Boxes.EventChests.Title": "Etkinlik yardımcısı",
-		"Boxes.EventList.And": " ve ",
-		"Boxes.EventList.Desc": "Görev",
-		"Boxes.EventList.Number": "Nr.",
-		"Boxes.EventList.Or": " yada ",
-		"Boxes.EventList.Reward": "Ödül",
-		"Boxes.EventList.Title": "Etkinlik Görev Listesi: ",
-		"Boxes.EventList.Upcoming": "Yaklaşık önizleme  <em>(değerler etkinleştirildiğinde güncellenecektir)</em>",
-		"Boxes.EventList.Waiting": "Görev yok",
 		"Boxes.Gildfights.Fights": "Savaşlar",
 		"Boxes.Gildfights.LastSnapshot": " - dan önceki son anlık görüntü  __time__",
 		"Boxes.Gildfights.Negotiations": "Müzakereler",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,12 +399,6 @@
 		"HiddenRewards.Table.position": "Pozisyon",
 		"HiddenRewards.Table.type": "Tip",
 		"Local": "tr-TR",
-		"Menu.Api.Desc": "Kendi sunucunuza veri gönderme ayarları",
-		"Menu.Api.Title": "Extension API",
-		"Menu.Ask.Desc": "Bir şeyin nasıl çalıştığını bilmiyor musun?<br>Buraya bak!",
-		"Menu.Ask.Title": "Soru / Cevap",
-		"Menu.Bugs.Desc": "Bir şey olması gerektiği gibi gitmiyor bir Fikir?",
-		"Menu.Bugs.Title": "hata / İstek",
 		"Menu.Calculator.Desc": "Sizin için tüm sıraları hesaplar karlı FP oranını",
 		"Menu.Calculator.Title": "Maliyet hesaplama",
 		"Menu.Calculator.Warning": "Kapalı: Önce Oyuncuların Devasal binasını açmalısın!",
@@ -422,8 +409,6 @@
 		"Menu.Chat.Title": "Lonca Live-Chat",
 		"Menu.Citymap.Desc": "Şehrinizi yukarıdan şematik olarak gösterir",
 		"Menu.Citymap.Title": "Şehre genel bakış",
-		"Menu.Forum.Desc": "Bir Sorun mu var? Bir şeyden rahatsız mısın? Veya sadece konuşmak için ...",
-		"Menu.Forum.Title": "Forum",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Haritada üzerinde Etkinlik genel bakışı",
@@ -461,8 +446,9 @@
 		"Settings.ChangeLanguage.Desc": "Tanınan Hangi Dil Kullanılsın?",
 		"Settings.ChangeLanguage.Title": "Dil Değiştir",
 		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
 		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
 		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
 		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
@@ -475,6 +461,12 @@
 		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Loncanızla veri izlemek istiyorsanız, bu noktayı etkinleştirin.<br>Kendi kendine yeterli bir uzantı için devre dışı bırakmanız yeterlidir.",
 		"Settings.GlobalSend.Title": "foe-rechner.de gönderiliyor",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Menü kaç Öğe yüksek olmalı?<br> boş yada \"0\" otomatik yükseklik.",
 		"Settings.MenuLength.Title": "Menü uzunluğu",
 		"Settings.ResetBoxPositions.Button": "Sil!",
@@ -496,8 +488,8 @@
 		"Settings.ShowTavernBadge.Title": "Taverna Rozetini Göster",
 		"Settings.Tab.About": "About", //Todo: Translate
 		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "Extension", //Todo: Translate
-		"Settings.Tab.Sending": "Sending", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Lonca Id:",
 		"Settings.Version.PlayerId": "Oyuncular Id:",

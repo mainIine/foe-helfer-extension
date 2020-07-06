@@ -124,14 +124,6 @@
 		"Boxes.EventChests.MainPrizeTitle": "Приз дня: ",
 		"Boxes.EventChests.Steps": "Шаги",
 		"Boxes.EventChests.Title": "Помощник событий",
-		"Boxes.EventList.And": " и ",
-		"Boxes.EventList.Desc": "Задача",
-		"Boxes.EventList.Number": "Номер",
-		"Boxes.EventList.Or": " или ",
-		"Boxes.EventList.Reward": "Награда",
-		"Boxes.EventList.Title": "Список заданий события: ",
-		"Boxes.EventList.Upcoming": "БУДУЩИЕ ЗАДАНИЯ (количество может варьироваться)",
-		"Boxes.EventList.Waiting": "Нет доступных заданий",
 		"Boxes.Gildfights.Fights": "Бои",
 		"Boxes.Gildfights.LastSnapshot": " - последняя фиксация была __time__ назад ",
 		"Boxes.Gildfights.Negotiations": "Переговоры",
@@ -147,6 +139,7 @@
 		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
 		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
 		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
 		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
 		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
@@ -406,12 +399,6 @@
 		"HiddenRewards.Table.position": "Расположение",
 		"HiddenRewards.Table.type": "Тип",
 		"Local": "ru-RU",
-		"Menu.Api.Desc": "Настройки для отправки данных на ваш собственный сервер",
-		"Menu.Api.Title": "API расширения",
-		"Menu.Ask.Desc": "Вы не понимаете как что-то работает?<br>Ознакомьтесь!",
-		"Menu.Ask.Title": "Вопрос / Ответ",
-		"Menu.Bugs.Desc": "Что-то работает не так, как должно, или у вас есть предложение?",
-		"Menu.Bugs.Title": "Ошибки / Пожелания",
 		"Menu.Calculator.Desc": "Рассчитывает места, которые можно занять в ВС и количество СО",
 		"Menu.Calculator.Title": "Калькулятор вложений",
 		"Menu.Calculator.Warning": "Отключено: Для включения откройте ВС любого игрока!",
@@ -422,8 +409,6 @@
 		"Menu.Chat.Title": "Чат гильдии",
 		"Menu.Citymap.Desc": "Обзор города с высоты птичьего полета",
 		"Menu.Citymap.Title": "Обзор города",
-		"Menu.Forum.Desc": "У вас есть вопросы? Вас что-то не устраивает? Или вы просто хотите поговорить ...",
-		"Menu.Forum.Title": "Форум",
 		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
 		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
 		"Menu.HiddenRewards.Desc": "Обзор проишествий",
@@ -461,8 +446,9 @@
 		"Settings.ChangeLanguage.Desc": "Какой язык должен быть использован вместо автоматически определенного?",
 		"Settings.ChangeLanguage.Title": "Изменить язык",
 		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Change Language", //Todo: Translate
+		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
 		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
+		"Settings.Entry.Help": "Help", //Todo: Translate
 		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
 		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
 		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
@@ -475,6 +461,12 @@
 		"Settings.Entry.Version": "Version", //Todo: Translate
 		"Settings.GlobalSend.Desc": "Если вы хотите отслеживать данные вашей гильдии, включите этот пункт. <br> Для самостоятельного отслеживания просто отключите.",
 		"Settings.GlobalSend.Title": "Передача данных на foe-rechner.de",
+		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
+		"Settings.Help.Title": "Help and Community", //Todo: Translate
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 		"Settings.MenuLength.Desc": "Сколько элементов должно быть в меню?<br> Пусто или \"0\" означает автоматическую высоту.",
 		"Settings.MenuLength.Title": "Длина меню",
 		"Settings.ResetBoxPositions.Button": "Удалить!",
@@ -496,8 +488,8 @@
 		"Settings.ShowTavernBadge.Title": "Показать значок таверны",
 		"Settings.Tab.About": "About", //Todo: Translate
 		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "Extension", //Todo: Translate
-		"Settings.Tab.Sending": "Sending", //Todo: Translate
+		"Settings.Tab.Extension": "General", //Todo: Translate
+		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
 		"Settings.Version.Desc": "Версия расширения для Chrome",
 		"Settings.Version.GuildId": "Айди гильдии:",
 		"Settings.Version.PlayerId": "Айди игрока:",
