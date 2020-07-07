@@ -168,7 +168,7 @@ body {
 }
 
 #chat #message_box {
-	margin: 0 10px 10px 10px;
+	margin: 42px 10px 10px 10px;
 	padding: 10px;
 }
 
@@ -259,7 +259,7 @@ body {
 }
 
 #chat div.user-self  {
-	background-color: rgba(255, 255,255, 0.15);
+	background-color: rgba(255, 255,255, 0.25);
 }
 #chat div.user-self .user-message,
 #chat div.user-self .message-data {
@@ -275,7 +275,7 @@ body {
 }
 
 #chat div .user-message {
-	padding: 4px;
+	padding: 2px 4px;
 	font-size: 1em;
 	display: block;
 }
@@ -284,7 +284,8 @@ body {
 	font-size: 0.6rem;
 	display: block;
 	color: #484a4c;
-	margin-top: 3px;
+	margin: 0 0 7px;
+	padding: 2px 4px;
 }
 
 #chat div .message-data span:first-child {
@@ -384,7 +385,10 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 
-
+.window-body .tabs {
+	position: fixed;
+    width: 85%;
+}
 
 .window-body .tabs ul.horizontal {
 	margin: 0;
