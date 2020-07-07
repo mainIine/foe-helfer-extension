@@ -280,7 +280,8 @@ let Productions = {
 			era = d['level'] + 1;
 
 		}
-		else if (CityEntity['strategy_points_for_upgrade']) { //Great building
+		// Great building
+		else if (CityEntity['strategy_points_for_upgrade']) {
 			era = CurrentEraID;
 		}
 		else {

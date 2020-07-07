@@ -20,6 +20,7 @@
  */
 let CityMap = {
 	CityData: null,
+	CityEntities: null,
 	ScaleUnit: 100,
 	CityView: 'skew',
 	UnlockedAreas: null,
@@ -34,11 +35,13 @@ let CityMap = {
 	 * @param Title
 	 */
 	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
-		if (Data === null) { // Keine Daten => eigene Stadt
+
+		if (Data === null) { // No data => own city
 			CityMap.IsExtern = false;
 			Data = MainParser.CityMapData;
 		}
-		else { //Fremde Stadt
+		// Neighbour
+		else {
 			CityMap.IsExtern = true;
 		}
 
@@ -249,7 +252,7 @@ let CityMap = {
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY)
 				continue;
 
-			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id'] ],
+			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
 
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
@@ -263,9 +266,39 @@ let CityMap = {
 						top: y + 'em'
 					})
 					.attr('title', d['name'])
-					.attr('data-entityid', CityMap.CityData[b]['id']);
+					.attr('data-entityid', CityMap.CityData[b]['id']),
+				era;
 
 			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['length']));
+
+			// Search age
+			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
+				era = CityMap.CityData[b]['level'] + 1;
+
+			}
+			// Great building
+			else if (d['strategy_points_for_upgrade']) {
+				era = CurrentEraID;
+			}
+			else {
+				let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
+					testEra = regExString.exec(d['id']);
+
+				if (testEra && testEra.length > 1) {
+					era = Technologies.Eras[testEra[1]];
+
+					// AllAge => Current era
+					if (era === 0) {
+						era = CurrentEraID;
+					}
+				}
+			}
+
+			if(era){
+				f.attr({
+					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
+				})
+			}
 
 			// die Größe wurde geändert, wieder aktivieren
 			if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
@@ -278,7 +311,8 @@ let CityMap = {
 
 		// Gebäudenamen via Tooltip
 		$('.entity').tooltip({
-			container: '#city-map-overlayBody'
+			container: '#city-map-overlayBody',
+			html: true
 		});
 
 		$('#grid-outer').draggable();
@@ -324,7 +358,7 @@ let CityMap = {
 
 
 	/**
-	 * VERSUCH: Daten zum Server schicken
+	 * Show the submit box
 	 */
 	showSumbitBox: ()=> {
 		if( $('#city-map-submit').length < 1 )
@@ -349,7 +383,7 @@ let CityMap = {
 
 
 	/**
-	 * Areas und Stadtinfos zu foe-rechner.de schicken
+	 * Send citydata to the server
 	 *
 	 */
 	SubmitData: ()=> {
