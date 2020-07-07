@@ -671,13 +671,6 @@ const FoEproxy = (function () {
         }
 	});
 
-	// Gebäude verschoben (einzeln oder Umbaumodus), FP eingezahlt etc.
-	FoEproxy.addHandler('CityMapService', (data, postData) => {
-		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
-			MainParser.UpdateCityMap(data.responseData);
-		}
-	});
-
 	// Produktion wird eingesammelt/gestartet/abgebrochen
 	FoEproxy.addHandler('CityProductionService', (data, postData) => {
 		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
@@ -1906,6 +1899,8 @@ let MainParser = {
 	UpdateCityMap: (Buildings) => {
 		for (let i in Buildings) {
 			if (!Buildings.hasOwnProperty(i)) continue;
+
+			if (Buildings[i]['player_id'] !== ExtPlayerID) continue; //Fremdes Gebäude (z.B. Nachbarn besuchen und LG öffnen)
 
 			let ID = Buildings[i]['id'];
 			if (MainParser.CityMapData[ID]) {
