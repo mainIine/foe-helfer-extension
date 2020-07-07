@@ -110,6 +110,8 @@ body {
 	border-bottom: 1px solid rgba(0,0,0,0.2);
 	border-top: 1px solid rgba(255,255,255, 0.1);
 	background-color: rgba(0,0,0,0.1);
+	display: flex;
+	align-items: center;
 }
 
 .chat-wrapper #users div:not(.header) span {
@@ -118,7 +120,6 @@ body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	vertical-align: middle;
 }
 
 .chat-wrapper #users img {
