@@ -311,15 +311,17 @@ let Chat = {
 		// template.innerHTML
 		const template = html`
 			<div class="chat-wrapper">
-				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 				<div id="chat">
-					<div id="top-bar">
-						<a class="btn-default${Chat.ChatRoom === ''       ? ' btn-default-active':''}" href="chat.html?">Gilde: ${Chat.GuildName}</a>
-						<a class="btn-default${Chat.ChatRoom === 'global' ? ' btn-default-active':''}" href="chat.html?chat=global">Welt: ${Chat.World}</a>
-						<a class="btn-default${Chat.ChatRoom === 'dev'    ? ' btn-default-active':''}" href="chat.html?chat=dev">Entwickler</a>
+					<div class="tabs">
+					<ul id="top-bar" class="horizontal">
+						<li class="${Chat.ChatRoom === ''       ? ' active':''}"><a href="chat.html?"><span>Gilde: ${Chat.GuildName}</span></a></li>
+						<li class="${Chat.ChatRoom === 'global' ? ' active':''}"><a href="chat.html?chat=global"><span>Welt: ${Chat.World}</span></a></li>
+						<li class="${Chat.ChatRoom === 'dev'    ? ' active':''}"><a href="chat.html?chat=dev"><span>Entwickler</span></a></li>
+					</ul>
 					</div>
 					<div class="message_box" id="message_box"></div>
 				</div>
+				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 			</div>
 			<div class="chat-panel">
 				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">Senden</button>
