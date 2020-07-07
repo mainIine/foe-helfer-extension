@@ -225,8 +225,8 @@ let GreatBuildings =
             let Levela = a['ROIResults']['BestLevel'],
                 Levelb = b['ROIResults']['BestLevel'];
 
-            if (!Levela) return 999999;
-            if (!Levelb) return -999999;
+            if (Levela === undefined) return 999999;
+            if (Levelb === undefined) return -999999;
 
             return a['ROIResults']['ROIValues'][Levela]['ROI'] - b['ROIResults']['ROIValues'][Levelb]['ROI'];
         });
@@ -237,7 +237,7 @@ let GreatBuildings =
             let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
             let IsRandomFP = (GreatBuildings.FPGreatBuildings[Index].ID === 'X_VirtualFuture_Landmark2' || GreatBuildings.FPGreatBuildings[Index].ID === 'X_SpaceAgeAsteroidBelt_Landmark1');
 
-            if (!ROIResults[Index]['BestLevel']) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
+            if (ROIResults[Index]['BestLevel'] === undefined) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
             if (GreatBuildings.HideNewGBs && ShowGoodCosts[Index]) continue;
 
             h.push('<tr>');
