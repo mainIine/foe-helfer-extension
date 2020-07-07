@@ -647,7 +647,7 @@ let Stats = {
 	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({name, isActive, dataType, value, title, disabled}) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}">${name}</button>`,
+	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}">${name}</button>`,
 
 	/**
 	 * Render a tab
@@ -660,7 +660,7 @@ let Stats = {
 	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderTab: ({name, isActive, dataType, value, title, disabled}) => `<li ${disabled ? 'disabled' : ''} class="${value} ${!disabled && isActive ? 'active' : ''}" data-type="${dataType}" data-value="${value}" title="${title || ''}"><a><span>&nbsp;</span></a></li>`,
+	RenderTab: ({ name, isActive, dataType, value, title, disabled }) => `<li ${disabled ? 'disabled' : ''} class="${value} ${!disabled && isActive ? 'active' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g, '&quot;')}"><a><span>&nbsp;</span></a></li>`,
 
 
 	/**
