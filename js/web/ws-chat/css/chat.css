@@ -108,6 +108,8 @@ body {
 	white-space: nowrap;
 	padding: 2px;
 	border-bottom: 1px solid rgba(0,0,0,0.2);
+	border-top: 1px solid rgba(255,255,255, 0.1);
+	background-color: rgba(0,0,0,0.1);
 }
 
 .chat-wrapper #users div:not(.header) span {
@@ -256,6 +258,7 @@ body {
 #chat .big-box .image img {
 	max-width: 30px;
 	border-radius: 50%;
+	margin-top: 5px;
 }
 
 #chat div.user-self  {
@@ -387,7 +390,8 @@ textarea::-webkit-scrollbar-thumb {
 
 .window-body .tabs {
 	position: fixed;
-    width: 85%;
+	left: 0;
+	right: 0;
 }
 
 .window-body .tabs ul.horizontal {

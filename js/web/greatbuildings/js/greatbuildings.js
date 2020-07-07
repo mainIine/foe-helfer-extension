@@ -225,8 +225,8 @@ let GreatBuildings =
             let Levela = a['ROIResults']['BestLevel'],
                 Levelb = b['ROIResults']['BestLevel'];
 
-            if (!Levela) return 999999;
-            if (!Levelb) return -999999;
+            if (Levela === undefined) return 999999;
+            if (Levelb === undefined) return -999999;
 
             return a['ROIResults']['ROIValues'][Levela]['ROI'] - b['ROIResults']['ROIValues'][Levelb]['ROI'];
         });
@@ -237,7 +237,7 @@ let GreatBuildings =
             let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
             let IsRandomFP = (GreatBuildings.FPGreatBuildings[Index].ID === 'X_VirtualFuture_Landmark2' || GreatBuildings.FPGreatBuildings[Index].ID === 'X_SpaceAgeAsteroidBelt_Landmark1');
 
-            if (!ROIResults[Index]['BestLevel']) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
+            if (ROIResults[Index]['BestLevel'] === undefined) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
             if (GreatBuildings.HideNewGBs && ShowGoodCosts[Index]) continue;
 
             h.push('<tr>');
@@ -245,7 +245,7 @@ let GreatBuildings =
             if (ROIResults[Index]['BestLevel'] !== undefined) {
                 let BestLevel = ROIResults[Index]['BestLevel'];
 
-                h.push('<td>' + CurrentLevel + '=>' + (BestLevel + 1) + '</td>');
+                h.push('<td style="white-space:nowrap">' + CurrentLevel + '->' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
                 h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
