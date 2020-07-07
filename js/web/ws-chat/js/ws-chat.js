@@ -592,7 +592,7 @@ let Chat = {
 			case 'members': {
 				/** @type {{playerId: string, name: string, portrait: string, secretsMatch: boolean}[]} */
 				const members = message.members;
-				console.log(message)
+				// console.log(message)
 				for (let data of members) {
 					const {playerId, name, portrait, secretsMatch} = data;
 					Player.get(playerId, name, portrait, secretsMatch);
@@ -610,22 +610,22 @@ let Chat = {
 				const player_id = message.from;
 
 				if (player_id === Chat.PlayerID) {
-					const m = messageFormatter(message.message);
-					let TextR = litHtml.unsafeHTML(m);
-					// let TextR = emojify.replace(message.message);
-					// TextR = Chat.MakeImage(TextR);
-					// TextR = Chat.MakeURL(TextR);
+					//const m = messageFormatter(message.message);
+					//let TextR = litHtml.unsafeHTML(m);
+					let TextR = emojify.replace(message.message);
+					TextR = Chat.MakeImage(TextR);
+					TextR = Chat.MakeURL(TextR);
 		
 					Chat.SmallBox('user-self', TextR, '', message.time);
 		
 				} else {
 					const player = Player.get(player_id);
 
-					// let TextR = Chat.MakeImage(message.message);
-					// TextR = emojify.replace(TextR);
-					// TextR = Chat.MakeURL(TextR);
-					const m = messageFormatter(message.message);
-					let TextR = litHtml.unsafeHTML(m);
+					let TextR = Chat.MakeImage(message.message);
+					TextR = emojify.replace(TextR);
+					TextR = Chat.MakeURL(TextR);
+					//const m = messageFormatter(message.message);
+					//let TextR = litHtml.unsafeHTML(m);
 		
 					Chat.BigBox(
 						'user-other',
@@ -823,6 +823,12 @@ let Chat = {
 		const $container = document.createElement('div');
 		$container.classList.add(class_name);
 
+		$container.innerHTML = `<span class="user-message">${text}</span>
+				<div class="message-data">
+					<span class="user-name">${name}</span>
+					<span class="message-time">${Chat.timeStr(time)}</span>
+				</div>`;
+		/*
 		render(
 			html`<span class="user-message">${text}</span>
 				<div class="message-data">
@@ -831,6 +837,7 @@ let Chat = {
 				</div>`,
 			$container
 		);
+		*/
 
 		document.getElementById('message_box').appendChild($container);
 	},
@@ -851,6 +858,18 @@ let Chat = {
 		const $container = document.createElement('div');
 		$container.classList.add('big-box', class_name);
 
+		$container.innerHTML = `<div class="image">
+					<img src="${img}" alt="">
+				</div>
+				<div>
+					<span class="user-message">${text}</span>
+					<div class="message-data">
+						<span class="user-name">${name}</span>
+						<span class="message-time">${Chat.timeStr(time)}</span>
+					</div>
+				</div>`;
+
+		/*
 		render(
 			html`<div class="image">
 					<img src="${img}" alt="">
@@ -864,6 +883,7 @@ let Chat = {
 				</div>`,
 			$container
 		);
+		*/
 
 		document.getElementById('message_box').appendChild($container);
 	},
@@ -1219,6 +1239,7 @@ let Chat = {
 			Chat.PlayersPortraits = JSON.parse(pPortraits);
 		}
 	},
+
 
 	timeStr: time => {
 		const date = new Date(time);
