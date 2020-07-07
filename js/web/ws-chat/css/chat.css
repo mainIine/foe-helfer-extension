@@ -256,6 +256,7 @@ body {
 #chat .big-box .image img {
 	max-width: 30px;
 	border-radius: 50%;
+	margin-top: 5px;
 }
 
 #chat div.user-self  {
@@ -387,7 +388,8 @@ textarea::-webkit-scrollbar-thumb {
 
 .window-body .tabs {
 	position: fixed;
-    width: 85%;
+	left: 0;
+	right: 0;
 }
 
 .window-body .tabs ul.horizontal {
