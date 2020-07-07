@@ -116,6 +116,7 @@ body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	vertical-align: middle;
 }
 
 .chat-wrapper #users img {
