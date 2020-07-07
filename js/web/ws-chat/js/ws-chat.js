@@ -187,12 +187,29 @@ const messageFormatter = (() => {
 		}
 	};
 
+	/** @type {SimpleMarkdown.ParserRule & SimpleMarkdown.HtmlOutputRule} */
+	const imageRule = {
+		match: text => {
+			let match = /(?:(https:\/\/)|(http:\/\/))(.*?)\/(.+?)(?:\/|\?|\#|$|\n).*.(jpg|png|jpeg)/.exec(text);
+			if(match) {
+				return match;
+			}
+			return null;
+		},
+		order: defaultRules.em.order - 0.5,
+		parse: (capture, parse, state) => ({image: capture[0]}),
+		html: (node, output, state) => {
+			return `${node.image}`;
+		}
+	};
+
 	const rules = {
 		Array: defaultRules.Array,
 		list: defaultRules.list,
 		table: defaultRules.table,
 		escape: defaultRules.escape,
 		url: defaultRules.url,
+		link: defaultRules.link,
 		emoji: emojiRule,
 		em: defaultRules.em,
 		strong: defaultRules.strong,
