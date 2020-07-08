@@ -146,6 +146,7 @@
 		"Boxes.GreatBuildings.Title": "Investimenti GE",
 		"Boxes.GreatBuildings.TTGoodCosts": "Non hai ancora costruito questo grande edificio. Questi sono i PF necessari a comprare i beni richiesti",
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Elenca i costi in PF necessari a comprare i beni (Si applica solo ai grandi edifici che non hai ancora costruito)",
+		"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels", //Todo: Translate
 		"Boxes.HiddenRewards.Disappears": "Scompare",
 		"Boxes.HiddenRewards.NoEvents": "Nessun evento presente",
 		"Boxes.HiddenRewards.Title": "Ricompense nascoste",
