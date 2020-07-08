@@ -27,18 +27,18 @@ class Player {
 	 * @param {string} portrait 
 	 * @param {boolean} secretsMatch 
 	 */
-	constructor (id, name, portrait, secretsMatch) {
+	constructor (id, name, portrait, isdev, secretsMatch) {
 		this.id = id;
 		this.name = null;
 		this.portrait = null;
+		this.isdev = isdev || false;
 		this.secretsMatch = !secretsMatch;
 		this.elem = document.createElement('div');
 		this.portraitImg = null;
 		this.nameSpan = document.createElement('span');
-
 		this.elem.appendChild(this.nameSpan);
 		document.getElementById('users').appendChild(this.elem);
-		this.update(name, portrait, secretsMatch);
+		this.update(name, portrait,isdev, secretsMatch);
 	}
 
 	/**
@@ -47,10 +47,11 @@ class Player {
 	 * @param {string} portrait 
 	 * @param {boolean} secretsMatch 
 	 */
-	update(name, portrait, secretsMatch) {
+	update(name, portrait, isDev, secretsMatch) {
 		this.updateName(name);
 		this.updatePortrait(portrait);
 		this.updateSecretsMatch(secretsMatch);
+		this.updateIsDev(isDev);
 	}
 
 	/**
@@ -63,6 +64,21 @@ class Player {
 		// update name
 		this.name = name;
 		this.nameSpan.innerText = name;
+	}
+
+	/**
+	 * 
+	 * @param {boolean} isdev 
+	 */
+	updateIsDev(isdev) {
+		// update isdev
+		if(isdev){
+			this.nameSpan.className = "dev";
+			this.nameSpan.innerText = this.nameSpan.innerText + " (DEV)";
+		}else{
+			this.nameSpan.className = "";
+			this.nameSpan.innerText = this.nameSpan.innerText;
+		}
 	}
 
 	/**
@@ -135,19 +151,20 @@ class Player {
 	 * @param {boolean} [secretsMatch] 
 	 * @returns {Player|undefined}
 	 */
-	static get(id, name, portrait, secretsMatch) {
+	static get(id, name, portrait, isDev, secretsMatch) {
 		let player = Player.all.get(id);
 		if (player == null) {
 			player = new Player(
 				id,
 				name||'Unknown#'+id,
 				portrait || '',
+				isDev || false,
 				secretsMatch || false
 			);
 			Player.all.set(id, player);
 		} else {
 			if (name != null && portrait != null && secretsMatch != null) {
-				player.update(name, portrait, secretsMatch);
+				player.update(name, portrait, isDev, secretsMatch);
 			}
 		}
 		return player;
@@ -237,6 +254,8 @@ const messageFormatter = (() => {
 
 let Chat = {
 
+	wsUri: 'ws://ws.foe-helper.com:9000/',
+	//wsUri: 'ws://127.0.0.1:9000/',
 	GuildID: 0,
 	GuildName: '',
 	PlayerID: 0,
@@ -381,18 +400,17 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		// let wsUri = 'ws://localhost:9000/';
-		let wsUri = 'ws://ws.foe-helper.com:9000/';
-
-		Chat.WebsocketChat = new WebSocket(wsUri);
+		Chat.WebsocketChat = new WebSocket(Chat.wsUri);
 
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = () => {
+			debugger;
 			const setupData = {
 				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
 				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
 				player: Chat.PlayerID,
+				isDev: false,
 				name: Chat.PlayerName || 'Unknown#'+Chat.PlayerID,
 				portrait: Chat.PlayerPortrait || '',
 				connectionId: connectionId
@@ -536,10 +554,6 @@ let Chat = {
 
 		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
 
-		if(type !== 'onlyOthers'){
-			Chat.TextRow(msg);
-		}
-
 		// $('#message-input').val('');
 		/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
 	},
@@ -594,8 +608,8 @@ let Chat = {
 				const members = message.members;
 				// console.log(message)
 				for (let data of members) {
-					const {playerId, name, portrait, secretsMatch} = data;
-					Player.get(playerId, name, portrait, secretsMatch);
+					const {playerId, name, portrait, isDev, secretsMatch} = data;
+					Player.get(playerId, name, portrait, isDev, secretsMatch);
 					//Chat.UserEnter(Player);
 				}
 				break;
@@ -777,6 +791,10 @@ let Chat = {
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
+		if(Player.isdev){
+			s.classList = "dev";
+			s.innerText += " (DEV)";
+		}
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
