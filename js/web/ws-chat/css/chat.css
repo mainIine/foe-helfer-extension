@@ -123,6 +123,23 @@ body {
 	white-space: nowrap;
 }
 
+.chat-wrapper #users div:not(.head) span.dev {
+   font-weight: bold;
+   color: #ffb539;
+}
+
+.chat-wrapper #users div:not(.head) span.dev:after {
+    content: 'DEV';
+    vertical-align: middle;
+    font-size: 70%;
+    display: inline-block;
+    padding: 1px 2px;
+    background-color: rgba(0,0,0,0.5);
+    font-weight: bold;
+    color: #fff;
+    margin-left: 5px;
+}
+
 .chat-wrapper #users img {
 	width: 25px;
 	border-radius: 2px;
@@ -325,8 +342,9 @@ body {
 }
 
 .system-message .error {
-	background: linear-gradient(45deg, #e8616100 20%,#cc3636 50%,#e8616100 80%);
-	color: #fff;
+	background: linear-gradient(-45deg, #e8616100 10%,#ffb19a 50%,#e8616100 90%);
+    color: #b30000;
+    font-weight: bold;
 }
 
 #chat > div.user-notification {
