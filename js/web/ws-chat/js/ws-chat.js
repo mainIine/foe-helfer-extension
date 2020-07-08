@@ -405,7 +405,6 @@ let Chat = {
 
 		// Verbindung wurde hergestellt
 		Chat.WebsocketChat.onopen = () => {
-			debugger;
 			const setupData = {
 				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
 				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
