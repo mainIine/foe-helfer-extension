@@ -381,6 +381,7 @@ let Stats = {
 		let secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
 
 		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){
+			/*
 			if ($('#GVGDatePicker').length > 0) {
 
 				Stats.DatePickerObj = new Litepicker({
@@ -400,6 +401,7 @@ let Stats = {
 			else {
 				Stats.DatePickerObj = null;
             }
+			*/
 		});
 	},
 
@@ -549,7 +551,7 @@ let Stats = {
 			value: it,
 		}));
 
-		btnsPeriodSelect.push('<input class="game-cursor" id="GVGDatePicker" type="text">');
+		//btnsPeriodSelect.push('<input class="game-cursor" id="GVGDatePicker" type="text">');
 
 		const btnsRewardSelect = [
 			'__event',
