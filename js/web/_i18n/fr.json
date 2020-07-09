@@ -145,7 +145,6 @@
 	"Boxes.GreatBuildings.Title": "Investissement GM",
 	"Boxes.GreatBuildings.TTGoodCosts": "Vous n'avez pas encore construit ce GM. Ce sont les coûts en PF pour l'achat des ressources nécessaires",
 	"Boxes.GreatBuildings.TTGoodCostsColumn": "Répertorie les coûts en PF pour l'achat des ressources nécessaires (s'applique uniquement aux GMs que vous n'avez pas encore construits)",
-	"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels", //Todo: Translate
 	"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 	"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
 	"Boxes.HiddenRewards.Title": "Récompenses cachées",
@@ -448,7 +447,6 @@
 	"Settings.Entry.AutomaticNegotiation": "Négociations",
 	"Settings.Entry.ChangeLanguage": "Langue",
 	"Settings.Entry.GlobalSend": "Général",
-	"Settings.Entry.Help": "Help", //Todo: Translate
 	"Settings.Entry.MenuLength": "Menu",
 	"Settings.Entry.ResetBoxPositions": "Fenêtres",
 	"Settings.Entry.SendGEXInfo": "Expéditions de guilde",
@@ -461,12 +459,6 @@
 	"Settings.Entry.Version": "Version",
 	"Settings.GlobalSend.Desc": "Si vous voulez suivre les données avec votre guilde, activez cet élément. <br> Pour une utilisation personnelle, désactivez le.",
 	"Settings.GlobalSend.Title": "Envoi à foe-rechner.de",
-	"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
-	"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
-	"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
-	"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
-	"Settings.Help.Title": "Help and Community", //Todo: Translate
-	"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
 	"Settings.MenuLength.Desc": "Combien d'éléments le menu devrait-il avoir ?<br> Vide ou \"0\" pour une hauteur automatique.",
 	"Settings.MenuLength.Title": "Hauteur du menu",
 	"Settings.ResetBoxPositions.Button": "Supprimer !",
