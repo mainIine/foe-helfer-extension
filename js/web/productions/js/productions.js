@@ -117,7 +117,7 @@ let Productions = {
 			if (d[i]['id'] >= 2000000000) continue;
 
 			// dem Rathaus evt Boosts hinzufügen (tägliche FP, Botschafter Bonus)
-			if(d[i]['id'] === 1){
+			if(d[i]['id'] === 1 && !d[i]['mainBuildingPrepared']){
 				d[i] = Productions.prepareMainBuilding(d[i]);
 			}
 
@@ -1150,7 +1150,7 @@ let Productions = {
 			}
 		}
 
-		Productions.MainBuildingBonusAdded = true;
+		d['mainBuildingPrepared'] = true;
 
 		return d;
 	},
