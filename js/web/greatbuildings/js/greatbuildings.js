@@ -134,7 +134,7 @@ let GreatBuildings =
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
-        h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '">');
+        h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + i18n('Boxes.GreatBuildings.TTRewardPerDay') + '">');
         h.push('<br><br>');
         h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
         h.push('</div>');

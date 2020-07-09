@@ -146,6 +146,7 @@
 		"Boxes.GreatBuildings.Title": "SB investitioner",
 		"Boxes.GreatBuildings.TTGoodCosts": "Du har endnu ikke bygget denne storslåede bygning. Dette er FP-udgifterne for at købe de nødvendige varer",
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Viser FP-udgifterne ved at købe de nødvendige varer (gælder kun for storslåede bygninger, som du endnu ikke har bygget)",
+		"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels", //Todo: Translate
 		"Boxes.HiddenRewards.Disappears": "Forsvinder",
 		"Boxes.HiddenRewards.NoEvents": "Ingen hændelser tilgængelige",
 		"Boxes.HiddenRewards.Title": "Hændelser",
