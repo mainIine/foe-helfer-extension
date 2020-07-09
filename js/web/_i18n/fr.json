@@ -146,6 +146,7 @@
 		"Boxes.GreatBuildings.Title": "Investissement GM",
 		"Boxes.GreatBuildings.TTGoodCosts": "Vous n'avez pas encore construit ce GM. Ce sont les coûts en PF pour l'achat des ressources nécessaires",
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Répertorie les coûts en PF pour l'achat des ressources nécessaires (s'applique uniquement aux GMs que vous n'avez pas encore construits)",
+		"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels", //Todo: Translate
 		"Boxes.HiddenRewards.Disappears": "Disparaîtra",
 		"Boxes.HiddenRewards.NoEvents": "Aucune récompense présente",
 		"Boxes.HiddenRewards.Title": "Récompenses cachées",

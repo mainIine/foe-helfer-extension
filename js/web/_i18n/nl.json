@@ -146,6 +146,7 @@
 		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
+		"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels", //Todo: Translate
 		"Boxes.HiddenRewards.Disappears": "Verdwijnt",
 		"Boxes.HiddenRewards.NoEvents": "Geen incidenten aanwezig",
 		"Boxes.HiddenRewards.Title": "Incidenten",
