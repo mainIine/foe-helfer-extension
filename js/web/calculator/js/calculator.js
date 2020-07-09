@@ -175,6 +175,7 @@ let Calculator = {
 
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
+        $('#costCalculator').find('.tooltip').remove();
 
         // Stufe ist noch nicht freigeschaltet
 		if (Calculator.CityMapEntity['level'] === Calculator.CityMapEntity['max_level']) {
