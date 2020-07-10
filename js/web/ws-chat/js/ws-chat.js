@@ -72,13 +72,7 @@ class Player {
 	 */
 	updateIsDev(isdev) {
 		// update isdev
-		if(isdev){
-			this.nameSpan.className = "dev";
-			this.nameSpan.innerText = this.nameSpan.innerText + " (DEV)";
-		}else{
-			this.nameSpan.className = "";
-			this.nameSpan.innerText = this.nameSpan.innerText;
-		}
+		isdev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
 	}
 
 	/**
@@ -790,10 +784,8 @@ let Chat = {
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
-		if(Player.isdev){
-			s.classList = "dev";
-			s.innerText += " (DEV)";
-		}
+		Player.isdev ? 	s.classList = "dev" : s.classList = "";
+		
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])

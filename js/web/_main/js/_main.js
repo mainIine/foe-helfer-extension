@@ -80,8 +80,10 @@ const i18n_loadPromise = (async() => {
 
 		for (let languageData of languageDatas) {
 			languageData = languageData.replace(/\/\/Todo: Translate/g, '');
+			let i18nValues = JSON.parse(languageData);
+			let i18nDict = { 'values': i18nValues };
 
-			i18n.translator.add(JSON.parse(languageData));
+			i18n.translator.add(i18nDict);
 		}
 
 		i18n_loaded = true;
