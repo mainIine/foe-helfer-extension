@@ -1,5 +1,4 @@
 ﻿{
-	"values": {
 		"_Language": "Deutsch",
 		"API.GEXChampionship": "Die GEX-Gilden Platzierung wurde geupdatet",
 		"API.GEXPlayer": "Die GEX Platzierungen der Mitglieder wurden geupdatet",
@@ -496,5 +495,4 @@
 		"Settings.Version.PlayerId": "Spieler Id:",
 		"Settings.Version.Title": "Version",
 		"Settings.Version.World": "Welt:"
-	}
 }

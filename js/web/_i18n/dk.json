@@ -1,5 +1,4 @@
 ﻿{
-	"values": {
 		"_Language": "Dansk",
 		"API.GEXChampionship": "KE placeringen er blevet opdateret",
 		"API.GEXPlayer": "Klanmedlemmernes KE placeringer er blevet opdateret",
@@ -92,11 +91,11 @@
 		"Boxes.Calculator.TTForderFPStockLow": "PAS PÅ: FP lager er for lav<br>Du har kun __fpstock__ ud af __costs__FP<br>Det er __tooless__FP for lidt",
 		"Boxes.Calculator.TTForderNegativeProfit": "Pladsen er ikke sikker. __fpcount__FP skal lægges for at sikre pladsen<br>I alt for at sikre: __totalfp__FP",
 		"Boxes.Calculator.TTLevelWarning": "__fpcount__FP er er der ikke plads til<br>Maksimal indbetaling: __totalfp__FP",
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
+		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__",
 		"Boxes.Calculator.TTLossSelf": "Gevinst = __nettoreward__<small>(Netto investor)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalt: __paid__<br>Tab = __paid__<small>(Betalt)</small> - __bruttoreward__<small>(Gevinst)</small> = __loss__",
 		"Boxes.Calculator.TTPaidTooLess": "Du har betalt __paid__FP i stedet for __topay__FP. Det er __tooless__FP for lidt.",
 		"Boxes.Calculator.TTPaidTooMuch": "Du har betalt __paid__FP i stedet for __topay__FP. Det er __toomuch__FP for meget.",
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
+		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__",
 		"Boxes.Calculator.TTProfitSelf": "Gevinst = __nettoreward__<small>(Netto investor)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalt: __paid__<br>Gevinst = __bruttoreward__<small>(Gevinst)</small> - __paid__<small>(Betalt)</small> = __profit__",
 		"Boxes.Calculator.Up2LevelUp": "Til næste niveau",
 		"Boxes.Campagne.AlreadyDone": " allerede erobret!",
@@ -136,17 +135,17 @@
 		"Boxes.GreatBuildings.DailyFP": "Daglig FP",
 		"Boxes.GreatBuildings.FPCostGoods": "FP pris varer",
 		"Boxes.GreatBuildings.GreatBulding": "Storslåede bygninger",
-		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
+		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/",
 		"Boxes.GreatBuildings.HideNewGBs": "Skjul ikke-byggede SBer",
 		"Boxes.GreatBuildings.Level": "Niveau",
-		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players", //Todo: Translate
+		"Boxes.GreatBuildings.RewardPerDay": "FP Rewards/day from other players",
 		"Boxes.GreatBuildings.Suggestion2": "Forslag 2",
 		"Boxes.GreatBuildings.SuggestionDescription": "Bygningerne i toppen af listen er bedst",
 		"Boxes.GreatBuildings.SuggestionTitle": "FP SB ROI sammenlignet",
 		"Boxes.GreatBuildings.Title": "SB investitioner",
 		"Boxes.GreatBuildings.TTGoodCosts": "Du har endnu ikke bygget denne storslåede bygning. Dette er FP-udgifterne for at købe de nødvendige varer",
 		"Boxes.GreatBuildings.TTGoodCostsColumn": "Viser FP-udgifterne ved at købe de nødvendige varer (gælder kun for storslåede bygninger, som du endnu ikke har bygget)",
-		"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels", //Todo: Translate
+		"Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels",
 		"Boxes.HiddenRewards.Disappears": "Forsvinder",
 		"Boxes.HiddenRewards.NoEvents": "Ingen hændelser tilgængelige",
 		"Boxes.HiddenRewards.Title": "Hændelser",
@@ -201,9 +200,9 @@
 		"Boxes.Notice.DeleteItem": "Slet side",
 		"Boxes.Notice.DummyHeading": "Din overskrift",
 		"Boxes.Notice.Edit": "Redigér",
-		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.", //Todo: Translate
+		"Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.",
 		"Boxes.Notice.GroupName": "Gruppenavn",
-		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
+		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/",
 		"Boxes.Notice.NewGroup": "Gruppe",
 		"Boxes.Notice.NewGroupDesc": "Opret først en ny gruppe...",
 		"Boxes.Notice.NewSide": "Side",
@@ -254,7 +253,7 @@
 		"Boxes.Production.SizeTT": "Størrelse inklusiv det gennemsnitlige pladsbehov for veje på __streetnettosize__ tiles",
 		"Boxes.Productions.AdjacentBuildings": "Tilstødende bygninger",
 		"Boxes.Productions.GoodEraTotal": "I alt",
-		"Boxes.Productions.GuildGoods": "Guild goods", //Todo: Translate
+		"Boxes.Productions.GuildGoods": "Guild goods",
 		"Boxes.Productions.GuildPower": "Klanstyrke",
 		"Boxes.Productions.Happiness": "Glæde",
 		"Boxes.Productions.Headings.all": "Alle",
@@ -285,7 +284,7 @@
 		"Boxes.Productions.SearchInput": "Søg bygning...",
 		"Boxes.Productions.Title": "Produktionsoversigt",
 		"Boxes.Productions.Total": "I alt: ",
-		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods", //Todo: Translate
+		"Boxes.Productions.TTGoodsEra": "This column shows the era of the building, not the era of the produced goods",
 		"Boxes.Settings.Active": "Aktiv",
 		"Boxes.Settings.Inactive": "Inaktiv",
 		"Boxes.Settings.Title": "Indstillinger",
@@ -315,7 +314,7 @@
 		"Boxes.Stats.BtnToggleAnnotationsTitle": "Viser forbruget af varer på GvG-kortet.",
 		"Boxes.Stats.BtnToggleGroupBy": "Sortér efter tidsalder",
 		"Boxes.Stats.BtnToggleGroupByTitle": "",
-		"Boxes.Stats.Era": "Era", //Todo: Translate
+		"Boxes.Stats.Era": "Era",
 		"Boxes.Stats.Period.all": "Alle",
 		"Boxes.Stats.Period.last30days": "sidste 30 dage",
 		"Boxes.Stats.Period.last7days": "sidste 7 dage",
@@ -446,28 +445,28 @@
 		"Settings.AutomaticNegotiation.Title": "Forhandlingsassistent",
 		"Settings.ChangeLanguage.Desc": "Hvilket sprog skal bruges i stedet for det automatisk genkendte?",
 		"Settings.ChangeLanguage.Title": "Skift sprog",
-		"Settings.Entry.AutomaticNegotiation": "Negotiation helper", //Todo: Translate
-		"Settings.Entry.ChangeLanguage": "Language", //Todo: Translate
-		"Settings.Entry.GlobalSend": "Übermittlungen", //Todo: Translate
-		"Settings.Entry.Help": "Help", //Todo: Translate
-		"Settings.Entry.MenuLength": "Menu Length", //Todo: Translate
-		"Settings.Entry.ResetBoxPositions": "Box Coordinates", //Todo: Translate
-		"Settings.Entry.SendGEXInfo": "GE evaluations", //Todo: Translate
-		"Settings.Entry.SendGildMemberLGInfo": "Guild members building", //Todo: Translate
-		"Settings.Entry.SendInvestigations": "FP Investments", //Todo: Translate
-		"Settings.Entry.SendPlayersMotivation": "Motivation Activity", //Todo: Translate
-		"Settings.Entry.ShowInvestments": "FP Investment", //Todo: Translate
-		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator", //Todo: Translate
-		"Settings.Entry.ShowTavernBadge": "Tavern badge", //Todo: Translate
-		"Settings.Entry.Version": "Version", //Todo: Translate
+		"Settings.Entry.AutomaticNegotiation": "Negotiation helper",
+		"Settings.Entry.ChangeLanguage": "Language",
+		"Settings.Entry.GlobalSend": "Übermittlungen",
+		"Settings.Entry.Help": "Help",
+		"Settings.Entry.MenuLength": "Menu Length",
+		"Settings.Entry.ResetBoxPositions": "Box Coordinates",
+		"Settings.Entry.SendGEXInfo": "GE evaluations",
+		"Settings.Entry.SendGildMemberLGInfo": "Guild members building",
+		"Settings.Entry.SendInvestigations": "FP Investments",
+		"Settings.Entry.SendPlayersMotivation": "Motivation Activity",
+		"Settings.Entry.ShowInvestments": "FP Investment",
+		"Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator",
+		"Settings.Entry.ShowTavernBadge": "Tavern badge",
+		"Settings.Entry.Version": "Version",
 		"Settings.GlobalSend.Desc": "Hvis du vil samle data sammen med din klan, så aktivér dette punkt.<br>For en selvførende udvidelse uden foe-rechner.de kan dette deaktiveres.",
 		"Settings.GlobalSend.Title": "Overførelse af data til foe-rechner.de",
-		"Settings.Help.Desc": "There are several ways to get support:", //Todo: Translate
-		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.", //Todo: Translate
-		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.", //Todo: Translate
-		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.", //Todo: Translate
-		"Settings.Help.Title": "Help and Community", //Todo: Translate
-		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.", //Todo: Translate
+		"Settings.Help.Desc": "There are several ways to get support:",
+		"Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.",
+		"Settings.Help.Forums": "Forums: go here for support and submitting ideas, aswell as bug reports.",
+		"Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.",
+		"Settings.Help.Title": "Help and Community",
+		"Settings.Help.Website": "Website: information on the extension and a documentation of it's features.",
 		"Settings.MenuLength.Desc": "Hvor mange elementer høj skal menuen til højre være?<br> Tom eller \"0\" er den automatiske højde.",
 		"Settings.MenuLength.Title": "Menuhøjde",
 		"Settings.ResetBoxPositions.Button": "Slet!",
@@ -487,14 +486,13 @@
 		"Settings.ShowOwnPartOnAllGBs.Title": "Vis altid EA-beregneren",
 		"Settings.ShowTavernBadge.Desc": "Så snart der aktiveres en \"Ekstra\" tur fra krobutikken, vises en flytbar nedtælling",
 		"Settings.ShowTavernBadge.Title": "Vis kro badge",
-		"Settings.Tab.About": "About", //Todo: Translate
-		"Settings.Tab.Boxes": "Boxes", //Todo: Translate
-		"Settings.Tab.Extension": "General", //Todo: Translate
-		"Settings.Tab.Sending": "Data transmission", //Todo: Translate
+		"Settings.Tab.About": "About",
+		"Settings.Tab.Boxes": "Boxes",
+		"Settings.Tab.Extension": "General",
+		"Settings.Tab.Sending": "Data transmission",
 		"Settings.Version.Desc": "<p>Udvidelsesversion</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
 		"Settings.Version.GuildId": "Klan Id:",
 		"Settings.Version.PlayerId": "Spiller Id:",
 		"Settings.Version.Title": "Version",
 		"Settings.Version.World": "Verden:"
-	}
 }
