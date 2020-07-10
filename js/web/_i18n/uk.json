@@ -1,0 +1,681 @@
+﻿{
+    "_Language": "",
+    "API": {
+        "GEXChampionship": "",
+        "GEXPlayer": "",
+        "LGGildMember": "",
+        "LGInvest": "",
+        "UpdateSuccess": ""
+    },
+    "Boxes": {
+        "Alerts": {
+            "Form": {
+                "Antiques": {
+                    "Auction": "",
+                    "Cooldown": "",
+                    "Dealer": "",
+                    "Exchange": ""
+                },
+                "Battleground": "",
+                "Body": "",
+                "Create": "",
+                "CreateAlert": "",
+                "CreateAllSectors": "",
+                "CreateNewAlert": "",
+                "Datetime": "",
+                "Delete": "",
+                "Discard": "",
+                "Edit": "",
+                "EditAlert": "",
+                "Expiration": "",
+                "Expired": "",
+                "Expires": "",
+                "Neighborhood": "",
+                "Persistence": {
+                    "Description": "",
+                    "Off": "",
+                    "On": ""
+                },
+                "Persistent": "",
+                "Preset": {
+                    "Now": ""
+                },
+                "Presets": "",
+                "Preview": "",
+                "Repeat": {
+                    "Every": "",
+                    "Never": ""
+                },
+                "Save": "",
+                "Tag": {
+                    "Description": ""
+                },
+                "Title": ""
+            },
+            "Permissions": {
+                "Default": "",
+                "Denied": "",
+                "Enable": "",
+                "Refresh": ""
+            },
+            "Preferences": {
+                "Auction": {
+                    "Info": "",
+                    "Title": ""
+                },
+                "Battlegrounds": {
+                    "Info": "",
+                    "Title": ""
+                },
+                "ComingSoon": "",
+                "Early": {
+                    "Info": "",
+                    "Title": ""
+                },
+                "InGame": {
+                    "Info": "",
+                    "Title": ""
+                },
+                "MenuIcon": {
+                    "Info": "",
+                    "Title": ""
+                },
+                "Start": {
+                    "Info": "",
+                    "Title": ""
+                },
+                "Suggestions": {
+                    "Info": "",
+                    "Title": ""
+                }
+            },
+            "Tabs": {
+                "Alerts": "",
+                "Preferences": ""
+            },
+            "Time": {
+                "15m": "",
+                "1d": "",
+                "1h": "",
+                "1m": "",
+                "4h": "",
+                "5m": "",
+                "8h": ""
+            }
+        },
+        "Api": {
+            "Title": ""
+        },
+        "BattleAssist": {
+            "Text": "",
+            "Title": ""
+        },
+        "Calculator": {
+            "ActiveRecurringQuest": "",
+            "ArkBonus": "",
+            "AvailableFP": "",
+            "BPs": "",
+            "Commitment": "",
+            "Done": "",
+            "FP": "",
+            "FriendlyInvestment": "",
+            "HelpLink": "",
+            "LevelWarning": "",
+            "LGNotConnected": "",
+            "LGNotOpen": "",
+            "MaxLevel": "",
+            "Meds": "",
+            "Profit": "",
+            "Step": "",
+            "Title": "",
+            "TTForderCosts": "",
+            "TTForderFPStockLow": "",
+            "TTForderNegativeProfit": "",
+            "TTLevelWarning": "",
+            "TTLoss": "",
+            "TTLossSelf": "",
+            "TTPaidTooLess": "",
+            "TTPaidTooMuch": "",
+            "TTProfit": "",
+            "TTProfitSelf": "",
+            "Up2LevelUp": ""
+        },
+        "Campagne": {
+            "AlreadyDone": "",
+            "DescInStock": "",
+            "DescRequired": "",
+            "DescStillMissing": "",
+            "Resource": "",
+            "Reward": "",
+            "Title": ""
+        },
+        "CityMap": {
+            "CavalierPerspecitve": "",
+            "Desc1": "",
+            "Desc2": "",
+            "FreeArea": "",
+            "NormalPerspecitve": "",
+            "ShowSubmitBox": "",
+            "SubmitSuccess": "",
+            "TitleSend": "",
+            "WholeArea": "",
+            "YourCity": ""
+        },
+        "EventChests": {
+            "Chance": "",
+            "Cost": "",
+            "CostPerPrize": "",
+            "CostPerStep": "",
+            "MainPrize": "",
+            "MainPrizeTitle": "",
+            "Steps": "",
+            "Title": ""
+        },
+        "Gildfights": {
+            "Fights": "",
+            "LastSnapshot": "",
+            "Negotiations": "",
+            "Player": "",
+            "Title": "",
+            "Total": ""
+        },
+        "GreatBuildings": {
+            "ArcBonus": "",
+            "Cost": "",
+            "CostPerDailyFP": "",
+            "DailyFP": "",
+            "FPCostGoods": "",
+            "GreatBulding": "",
+            "HelpLink": "",
+            "HideNewGBs": "",
+            "Level": "",
+            "RewardPerDay": "",
+            "Suggestion2": "",
+            "SuggestionDescription": "",
+            "SuggestionTitle": "",
+            "Title": "",
+            "TTGoodCosts": "",
+            "TTGoodCostsColumn": "",
+            "TTRewardPerDay": ""
+        },
+        "HiddenRewards": {
+            "Disappears": "",
+            "NoEvents": "",
+            "Title": ""
+        },
+        "Infobox": {
+            "Filter": "",
+            "FilterAuction": "",
+            "FilterGex": "",
+            "FilterGildFights": "",
+            "FilterLevel": "",
+            "FilterMessage": "",
+            "FilterTrade": "",
+            "Messages": {
+                "Auction": "",
+                "GEX": "",
+                "GildFightOccupied": "",
+                "LevelUp": "",
+                "MsgBuilding": "",
+                "Trade": ""
+            },
+            "ResetBox": "",
+            "Title": ""
+        },
+        "Investment": {
+            "AllUpToDate": "",
+            "AllUpToDateDesc": "",
+            "CurrReward": "",
+            "InvestBar": "",
+            "PlayerFound": "",
+            "PlayerFoundCount": "",
+            "PlayerFoundCounter": "",
+            "Title": "",
+            "TotalFP": ""
+        },
+        "Kits": {
+            "InStock": "",
+            "KitName": "",
+            "Name": "",
+            "TabBuildingKits": "",
+            "TabSelectionKits": "",
+            "Title": ""
+        },
+        "Negotiation": {
+            "Average": "",
+            "Canceled": "",
+            "Chance": "",
+            "confirmGoodsMissmatch": "",
+            "DragDrop": "",
+            "GoodsCritical": "",
+            "GoodsLow": "",
+            "Person": "",
+            "Round": "",
+            "SaveCurrentEraGoods": "",
+            "SaveMedals": "",
+            "Stock": "",
+            "Success": "",
+            "TableLoadError": "",
+            "Title": "",
+            "TryEnd": "",
+            "WrongGoods": ""
+        },
+        "Notice": {
+            "DeleteGroup": "",
+            "DeleteItem": "",
+            "DummyHeading": "",
+            "Edit": "",
+            "GlobalSendRequired": "",
+            "GroupName": "",
+            "HelpLink": "",
+            "NewGroup": "",
+            "NewGroupDesc": "",
+            "NewSide": "",
+            "Save": "",
+            "SideName": "",
+            "Sorting": "",
+            "Title": ""
+        },
+        "Outpost": {
+            "DescInStock": "",
+            "DescRequired": "",
+            "DescStillMissing": "",
+            "ExpansionsSum": "",
+            "infoLine": "",
+            "nextTile": "",
+            "ShowSums": "",
+            "tileNotPlanned": "",
+            "Title": "",
+            "TitleBuildings": "",
+            "TitleFree": "",
+            "TitleShort": ""
+        },
+        "OwnpartCalculator": {
+            "All": "",
+            "Arc": "",
+            "Auto": "",
+            "BPs": "",
+            "BuildingName": "",
+            "CopyValues": "",
+            "Deposit": "",
+            "Done": "",
+            "Ext": "",
+            "HelpLink": "",
+            "IndividualName": "",
+            "Levels": "",
+            "LGTotalFP": "",
+            "Meds": "",
+            "NoPlaceSafe": "",
+            "Note": "",
+            "OldLevel": "",
+            "Order": "",
+            "OutputScheme": "",
+            "OwnPart": "",
+            "OwnPartRemaining": "",
+            "PatronPart": "",
+            "Place": "",
+            "PlayerName": "",
+            "Scheme": "",
+            "Step": "",
+            "Title": "",
+            "YourName": ""
+        },
+        "Production": {
+            "SizeTT": ""
+        },
+        "Productions": {
+            "AdjacentBuildings": "",
+            "GoodEraTotal": "",
+            "GuildGoods": "",
+            "GuildPower": "",
+            "Happiness": "",
+            "Headings": {
+                "all": "",
+                "amount": "",
+                "area": "",
+                "boost": "",
+                "culture": "",
+                "decoration": "",
+                "earning": "",
+                "efficiency": "",
+                "era": "",
+                "goods": "",
+                "greatbuilding": "",
+                "main_building": "",
+                "name": "",
+                "number": "",
+                "production": "",
+                "random_production": "",
+                "residential": "",
+                "size": "",
+                "street": ""
+            },
+            "ModeCurrent": "",
+            "ModeDaily": "",
+            "ModeGroups": "",
+            "ModeSingle": "",
+            "NoAsteroidDataWarning": "",
+            "NoMarsDataWarning": "",
+            "SearchInput": "",
+            "Title": "",
+            "Total": "",
+            "TTGoodsEra": ""
+        },
+        "Settings": {
+            "Active": "",
+            "Inactive": "",
+            "Title": ""
+        },
+        "Stats": {
+            "BtnAll": "",
+            "BtnAllPlayableEras": "",
+            "BtnAllPlayableErasTitle": "",
+            "BtnAllTittle": "",
+            "BtnChartType": {
+                "delta": "",
+                "line": "",
+                "streamgraph": ""
+            },
+            "BtnChartTypeTitle": {
+                "delta": "",
+                "line": "",
+                "streamgraph": ""
+            },
+            "BtnLastEras": "",
+            "BtnLastErasTitle": "",
+            "BtnMyEra": "",
+            "BtnNoEra": "",
+            "BtnSource": {
+                "statsGBGPlayers": "",
+                "statsRewards": "",
+                "statsTreasureClanD": "",
+                "statsTreasureClanH": "",
+                "statsTreasurePlayerD": "",
+                "statsTreasurePlayerH": "",
+                "statsUnitsD": "",
+                "statsUnitsH": ""
+            },
+            "BtnToggleAnnotations": "",
+            "BtnToggleAnnotationsTitle": "",
+            "BtnToggleGroupBy": "",
+            "BtnToggleGroupByTitle": "",
+            "Era": "",
+            "Period": {
+                "all": "",
+                "last30days": "",
+                "last7days": "",
+                "sinceTuesday": "",
+                "thisMonth": "",
+                "today": ""
+            },
+            "PeriodTitle": {
+                "all": "",
+                "last30days": "",
+                "last7days": "",
+                "sinceTuesday": "",
+                "thisMonth": "",
+                "today": ""
+            },
+            "Rewards": {
+                "Source": {
+                    "__event": "",
+                    "battlegrounds_conquest": "",
+                    "diplomaticGifts": "",
+                    "guildExpedition": "",
+                    "spoilsOfWar": ""
+                },
+                "SourceTitle": {
+                    "__event": "",
+                    "battlegrounds_conquest": "",
+                    "diplomaticGifts": "",
+                    "guildExpedition": "",
+                    "spoilsOfWar": ""
+                }
+            },
+            "SourceTitle": {
+                "statsGBGPlayers": "",
+                "statsRewards": "",
+                "statsTreasureClanD": "",
+                "statsTreasureClanH": "",
+                "statsTreasurePlayerD": "",
+                "statsTreasurePlayerH": "",
+                "statsUnitsD": "",
+                "statsUnitsH": ""
+            },
+            "Title": ""
+        },
+        "Technologies": {
+            "DescInStock": "",
+            "DescRequired": "",
+            "DescStillMissing": "",
+            "NoTechs": "",
+            "Resource": "",
+            "Title": ""
+        },
+        "Units": {
+            "AlcaHarvest": "",
+            "Attack": "",
+            "Bind": "",
+            "Defend": "",
+            "NextUnitsIn": "",
+            "NotFilled": "",
+            "Proportionally": "",
+            "Quantity": "",
+            "ReadyToLoot": "",
+            "Status": "",
+            "Title": "",
+            "Unbind": "",
+            "Unit": ""
+        }
+    },
+    "Date": "",
+    "DateTime": "",
+    "Eras": {
+        "0": "",
+        "1": "",
+        "10": "",
+        "11": "",
+        "12": "",
+        "13": "",
+        "14": "",
+        "15": "",
+        "16": "",
+        "17": "",
+        "18": "",
+        "19": "",
+        "2": "",
+        "20": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "",
+        "7": "",
+        "8": "",
+        "9": ""
+    },
+    "Global": {
+        "BoxTitle": ""
+    },
+    "HiddenRewards": {
+        "Positions": {
+            "cityRoadBig": "",
+            "cityRoadSmall": "",
+            "guildExpedition": "",
+            "nature": "",
+            "shore": "",
+            "water": ""
+        },
+        "Table": {
+            "expires": "",
+            "position": "",
+            "type": ""
+        }
+    },
+    "Local": "",
+    "Menu": {
+        "Calculator": {
+            "Desc": "",
+            "Title": "",
+            "Warning": ""
+        },
+        "Campagne": {
+            "Desc": "",
+            "Title": "",
+            "Warning": ""
+        },
+        "Chat": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Citymap": {
+            "Desc": "",
+            "Title": ""
+        },
+        "greatbuildings": {
+            "Desc": "",
+            "Title": ""
+        },
+        "HiddenRewards": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Info": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Kits": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Negotiation": {
+            "Desc": "",
+            "Title": "",
+            "Warning": ""
+        },
+        "Notice": {
+            "Desc": "",
+            "Title": ""
+        },
+        "OutP": {
+            "Desc": "",
+            "DescWarningBuildings": "",
+            "DescWarningOutpostData": "",
+            "Title": ""
+        },
+        "OwnpartCalculator": {
+            "Desc": "",
+            "Title": "",
+            "Warning": ""
+        },
+        "Productions": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Settings": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Stats": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Technologies": {
+            "Desc": "",
+            "Title": "",
+            "Warning": ""
+        },
+        "Unit": {
+            "Desc": "",
+            "Title": "",
+            "Warning": ""
+        }
+    },
+    "Settings": {
+        "AutomaticNegotiation": {
+            "Desc": "",
+            "Title": ""
+        },
+        "ChangeLanguage": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Entry": {
+            "AutomaticNegotiation": "",
+            "ChangeLanguage": "",
+            "GlobalSend": "",
+            "Help": "",
+            "MenuLength": "",
+            "ResetBoxPositions": "",
+            "SendGEXInfo": "",
+            "SendGildMemberLGInfo": "",
+            "SendInvestigations": "",
+            "SendPlayersMotivation": "",
+            "ShowInvestments": "",
+            "ShowOwnPartOnAllGBs": "",
+            "ShowTavernBadge": "",
+            "Version": ""
+        },
+        "GlobalSend": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Help": {
+            "Desc": "",
+            "Discord": "",
+            "Forums": "",
+            "Github": "",
+            "Title": "",
+            "Website": ""
+        },
+        "MenuLength": {
+            "Desc": "",
+            "Title": ""
+        },
+        "ResetBoxPositions": {
+            "Button": "",
+            "Desc": "",
+            "Title": ""
+        },
+        "SendGEXInfo": {
+            "Desc": "",
+            "Title": ""
+        },
+        "SendGildMemberLGInfo": {
+            "Desc": "",
+            "Title": ""
+        },
+        "SendInvestigations": {
+            "Desc": "",
+            "Title": ""
+        },
+        "SendPlayersMotivation": {
+            "Desc": "",
+            "Title": ""
+        },
+        "ShowInvestments": {
+            "Desc": "",
+            "Title": ""
+        },
+        "ShowOwnPartOnAllGBs": {
+            "Desc": "",
+            "Title": ""
+        },
+        "ShowTavernBadge": {
+            "Desc": "",
+            "Title": ""
+        },
+        "Tab": {
+            "About": "",
+            "Boxes": "",
+            "Extension": "",
+            "Sending": ""
+        },
+        "Version": {
+            "Desc": "",
+            "GuildId": "",
+            "PlayerId": "",
+            "Title": "",
+            "World": ""
+        }
+    }
+}
