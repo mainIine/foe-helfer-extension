@@ -1,5 +1,4 @@
 ﻿{
-	"values": {
 		"_Language": "English",
 		"API.GEXChampionship": "GE Guild Ranking info has been updated",
 		"API.GEXPlayer": "GE Members Ranking info has been updated",
@@ -496,5 +495,4 @@
 		"Settings.Version.PlayerId": "Player ID:",
 		"Settings.Version.Title": "Version",
 		"Settings.Version.World": "World:"
-	}
 }
