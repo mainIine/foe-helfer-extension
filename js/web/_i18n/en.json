@@ -202,7 +202,7 @@
     "Boxes.Notice.Edit": "Edit",
     "Boxes.Notice.GlobalSendRequired": "This module only works with \"Transmission to foe-rechner.de\" switched on.<br>Please activate this option to use the notes.",
     "Boxes.Notice.GroupName": "Group name",
-    "Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/",
+    "Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/notes",
     "Boxes.Notice.NewGroup": "Group",
     "Boxes.Notice.NewGroupDesc": "Create a group first...",
     "Boxes.Notice.NewSide": "Side",
