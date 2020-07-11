@@ -459,6 +459,7 @@
     "Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator",
     "Settings.Entry.ShowTavernBadge": "Tavern badge",
     "Settings.Entry.Version": "Version",
+    "Settings.Entry.About": "About",
     "Settings.GlobalSend.Desc": "If you want to track data with your guild, activate this point.<br>For a self-sufficient extension simply disable.",
     "Settings.GlobalSend.Title": "Upload/Send data to foe-rechner.de",
     "Settings.Help.Desc": "There are several ways to get support:",
@@ -490,9 +491,16 @@
     "Settings.Tab.Boxes": "Boxes",
     "Settings.Tab.Extension": "General",
     "Settings.Tab.Sending": "Data transmission",
-    "Settings.Version.Desc": "<p>FoE Helper is a free inofficial browser AddOn for Forge of Empires developed by players for players.</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
+    "Settings.Version.Desc": "<a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
     "Settings.Version.GuildId": "Guild ID:",
     "Settings.Version.PlayerId": "Player ID:",
     "Settings.Version.Title": "Version",
-    "Settings.Version.World": "World:"
+    "Settings.Version.World": "World:",
+    "Settings.About.Title": "About FoE Helper",
+    "Settings.About.Desc": "The FoE Helper is a free browser extension for Forge of Empires developed for players by players. The tool is not affiliated with InnoGames.",
+    "Settings.About.TranslateTitle": "Translation",
+    "Settings.About.TranslateDesc": "You can help translating the extension by signing up for our translation tool: ",
+    "Settings.About.RatingTitle": "Rate the Extension",
+    "Settings.About.RatingDesc": "If you like what you see and what we do, please leave a good review in the Store!"
+
 }
