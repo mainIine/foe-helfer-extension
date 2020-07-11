@@ -74,15 +74,21 @@
 
 
 	{
+		"name" : "About",
+		"callback": "About",
+		"group": "About",
+		"sort": 0
+	},
+	{
 		"name" : "Version",
 		"callback": "VersionInfo",
 		"group": "About",
-		"sort": 0
+		"sort": 1
 	},
 	{
 		"name" : "Help",
 		"callback": "Help",
 		"group": "About",
-		"sort": 1
+		"sort": 2
 	}
 ]

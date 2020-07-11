@@ -26,11 +26,11 @@
 }
 
 
-#SettingsBoxBody .title {
+#SettingsBoxBody h2 {
 	font-size: 110%;
-	padding: 10px 0;
 	font-weight: 700;
 	color: var(--text-bright);
+	margin: 10px 0 5px;
 }
 
 #SettingsBoxBody .item-row a {
@@ -197,4 +197,18 @@
 #SettingsBoxBody .helplist .website {
 	background-position: -97px 0;
 	width: 32px;
+}
+
+#SettingsBoxBody .info-box {
+	border: 1px solid var(--text-dark);
+	padding: 5px;
+}
+
+#SettingsBoxBody .info-box dt {
+	color: var(--text-bright);
+	font-weight: bold;
+}
+
+#SettingsBoxBody hr {
+	border: 1px solid var(--text-dark);
 }
