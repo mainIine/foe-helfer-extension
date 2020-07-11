@@ -105,7 +105,7 @@ let Technologies = {
         3: 'IronAge',
         4: 'EarlyMiddleAge',
         5: 'HighMiddleAge',
-        6: 'LateMiddleAge ',
+        6: 'LateMiddleAge',
         7: 'ColonialAge',
         8: 'IndustrialAge',
         9: 'ProgressiveEra',
@@ -260,10 +260,13 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'mars_ore';
-            for (let i = 80; i < GoodsList.length; i++) {
+            for (let i = 80; i < 85; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'asteroid_ice';
+            for (let i = 85; i < GoodsList.length; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
 
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i];

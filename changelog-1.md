@@ -1,5 +1,81 @@
 ## Changelog - Extension
 
+##### 2.5.0.1
+
+**Update**
+- Kostenrechner:
+    - [#550](https://github.com/dsiekiera/foe-helfer-extension/issues/550) 80% Button hinzugefügt
+    
+**BugFix**
+
+- Eigenanteilsrechner:
+    - [#1317](https://github.com/dsiekiera/foe-helfer-extension/issues/1317) Sound beim Wechseln einer wiederholbaren "gib X FP aus" Quest wird nicht zuverlässig wiedergegeben
+    - [#1318](https://github.com/dsiekiera/foe-helfer-extension/issues/1318) Ton im Kostenrechner komm in Bronzezeit bis FMA auch bei der Quest "erforsche 2 Technologien"
+
+- versteckte Ereignisse:
+    - [#1295](https://github.com/dsiekiera/foe-helfer-extension/issues/1295) blaues Zählericon verhinderte Klick
+    - [#1314](https://github.com/dsiekiera/foe-helfer-extension/issues/1314) doppelte Straßen wurden nicht angezeigt
+    
+- Legendäre Bauwerke:
+    - [#1305](https://github.com/dsiekiera/foe-helfer-extension/issues/1305) die Eingabe der FP Kosten verschwand in ein anderes Feld
+    - [#1315](https://github.com/dsiekiera/foe-helfer-extension/issues/1315) Fehler wenn eines der FP produzierenden LG über lvl100 oder höher ist
+    
+- Verhandlungsassistent:
+    - [#1342](https://github.com/dsiekiera/foe-helfer-extension/issues/1342) auf dem Beta Server konnte man den Helfer in der GG manuell starten (Inno Games möchte das aber nicht)
+
+---
+
+##### 2.5.0.0
+
+**Neu**
+- Boost-Box:
+    - eine kleine Box, die in der GEX, GG, GvG und bei den Nachbarn eingeblendet wird zeigt an, wie viele Versuche für Kriegsbeute oder Verhandlungen verbleiben
+    
+- Legendäre Bauwerke:
+    - diese Box errechnet, welches FP produzierende Gebäude das nächste kostengünstigeste wäre
+    
+- Notizen:
+    - gruppiert und sortiert Notizen aller Art ablegen. Diese Funktion arbeite mit dem Server und ist geräteübergreifend
+
+**Update**
+- Gemäß Innos Wünschen haben wir folgende Elemente entfernt oder abgeändert: [https://foe-rechner.de/news/aenderungen-am-foe-helfer](https://foe-rechner.de/news/aenderungen-am-foe-helfer)
+    - Snipe Spalte im Kostenrechner entfernt
+    - PvP Aktivitäten entfernt
+    - "Plünderhilfe" + Angriff und Verteidigungswerte entfernt
+    - Event-Quest wird nur noch verlinkt
+    - Verhandlungsassistent wird in den Gildengefechten ausgeblendet
+    - versteckte Ereignisse werden ohne Ablaufdatum dargestellt
+
+- Hidden Rewards:
+    - ein Zähler zeigt an wie viele Ereignisse noch irgend wo auf der Map liegen
+
+- Produktionsübersicht:
+    - [#1185](https://github.com/dsiekiera/foe-helfer-extension/issues/1185) Zeitalter wird mit ausgegeben
+    - Gildenmacht als neuer Tab Verfügbar
+    - [#1205](https://github.com/dsiekiera/foe-helfer-extension/issues/1205) Sortierfunktion für Güter
+    
+- Kostenrechner:
+    - [#1168](https://github.com/dsiekiera/foe-helfer-extension/issues/1186) neue Checkbox "Alle", damit werden ohne Abhängkeiten alle Plätze 1-5 ausgegeben
+    
+- Enstellungen:
+    - [#1169](https://github.com/dsiekiera/foe-helfer-extension/issues/1189) Firefox: Einstellungsmenü zeigt sporadisch keine übersetzten Texte
+
+**BugFixes**
+- Kostenrechner:
+    - [#1153](https://github.com/dsiekiera/foe-helfer-extension/issues/1153) bereits eingzahlte FP wurden nicht korrekt erkannt
+
+- Tavernenbadge:
+    - [#1182](https://github.com/dsiekiera/foe-helfer-extension/issues/1182) Counter für 4. Versuch stimmt nicht, Zeiten werden ab sofort vom Spiel übernommen    
+
+- CityMap (intern): 
+    - [#1184](https://github.com/dsiekiera/foe-helfer-extension/issues/1184) Fehlerhafte Anzeige der freien Fläche
+    - [#1204](https://github.com/dsiekiera/foe-helfer-extension/issues/1204) Übermittlungsbox wird nicht mehr bim Nachbarn angezeigt
+
+- Produtkionsübersicht:
+    - [#1201](https://github.com/dsiekiera/foe-helfer-extension/issues/1201) Straße mit "Zufriedenheit" werden nicht mehr mit Straßenbindung berechnet
+
+---
+
 ##### 2.4.6.2
 
 **BugFix**

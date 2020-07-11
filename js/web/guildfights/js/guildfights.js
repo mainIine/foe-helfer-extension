@@ -72,7 +72,51 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	GildFights.MapData = data['responseData'];
 });
 
+// GEX started
+FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+	GildFights.InitBonus(true);
+});
 
+// World map
+FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
+	GildFights.InitBonus();
+});
+
+// GvG Map is opend
+FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
+	GildFights.InitBonus();
+});
+
+// neihbor is visit
+FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
+	let OtherPlayer = data.responseData.other_player;
+	let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
+
+	if (IsPlunderable) {
+		GildFights.InitBonus();
+	}
+});
+
+// Bonus get updated
+FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
+	GildFights.Bonuses = data['responseData'];
+
+	if($('#bonus-hud').length > 0){
+		GildFights.CalcBonusData();
+	}
+});
+
+// Guildfights would leave
+FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
+	GildFights.HideBonusSidebar();
+});
+
+
+/**
+ * GuildFights Class
+ *
+ * @type {{init: GildFights.init, SetBonusTypes: GildFights.SetBonusTypes, PrepareColors: GildFights.PrepareColors, ShowPlayerBox: GildFights.ShowPlayerBox, ProvinceNames: null, Bonuses: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowBonusSidebar: GildFights.ShowBonusSidebar, ShowGildBox: GildFights.ShowGildBox, BonusTypes: [string, string, string, string], HideBonusSidebar: GildFights.HideBonusSidebar, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: GildFights.RefreshTable, MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, CalcBonusData: GildFights.CalcBonusData, NewAction: null, PlayersPortraits: null, PrevAction: null}}
+ */
 let GildFights = {
 
 	PrevAction: null,
@@ -86,6 +130,13 @@ let GildFights = {
 	ProvinceNames : null,
 	InjectionLoaded: false,
 
+	Bonuses: [],
+	BonusTypes: [
+		'first_strike',
+		'spoils_of_war',
+		'diplomatic_gifts',
+		'missile_launch'
+	],
 
 	/**
 	 * Zündung
@@ -104,6 +155,181 @@ let GildFights = {
 			});
 
 			GildFights.InjectionLoaded = true;
+		}
+
+		GildFights.InitBonus();
+	},
+
+
+	/**
+	 * InitBonus with offset for GEX
+	 *
+	 * @param isGex
+	 * @constructor
+	 */
+	InitBonus: (isGex = false)=> {
+		let bt = GildFights.BonusTypes,
+			exist = false;
+
+		// check if player has some of these 4 bonuses
+		for(let i in bt)
+		{
+			if(!bt.hasOwnProperty(i)) break;
+
+			GildFights.Bonuses.forEach((arr)=>{
+				if(arr['type'].includes(bt[i])){
+					exist = true;
+					return false;
+				}
+			});
+
+			if(exist === true) break;
+		}
+
+		// no? exit...
+		if(exist === false){
+			return;
+		}
+
+		if($('#bonus-hud').length === 0){
+			HTML.AddCssFile('guildfights');
+
+			// wait 2s
+			setTimeout(()=>{
+				GildFights.ShowBonusSidebar(isGex);
+			},2000);
+		}
+	},
+
+
+	/**
+	 * Create a wrapper "hud" for the icons
+	 *
+	 * @param offset
+	 * @constructor
+	 */
+	ShowBonusSidebar: (isGex)=> {
+
+		let div = $('<div />');
+
+		div.attr({
+			id: 'bonus-hud',
+			class: 'game-cursor'
+		});
+
+		if(isGex){
+			div.css({
+				top: 382,
+				right: 62
+			});
+		}
+
+		$('body').append(div).promise().done(function(){
+			GildFights.SetBonusTypes();
+		});
+	},
+
+
+	/**
+	 * Removes the bonus-Hud
+	 */
+	HideBonusSidebar: ()=> {
+		if($('#bonus-hud').length > 0){
+			$('#bonus-hud').fadeToggle(function(){
+				$(this).remove();
+			});
+		}
+	},
+
+
+	/**
+	 * Box content
+	 */
+	SetBonusTypes: ()=> {
+		const bt = GildFights.BonusTypes,
+			d = GildFights.Bonuses,
+			hud = $('#bonus-hud');
+
+		for(let i in bt)
+		{
+			if(!bt.hasOwnProperty(i)){
+				break;
+			}
+
+			let b = d.find(e => (e['type'] === bt[i]));
+
+			if(b !== undefined){
+				let sp = $('<div />'),
+					sb = $('<span />'),
+					si = $('<span />');
+
+				sp.attr({
+					class: `hud-btn`
+				});
+
+				sb.attr({
+					class: `${bt[i]}-icon icon`
+				});
+
+				si.attr({
+					id: `${bt[i]}-bonus`,
+					class: 'bonus'
+				});
+
+				if(b['amount'] === undefined || b['amount'] === -1){
+					sp.addClass('hud-btn-red');
+					si.css({
+						display: 'none'
+					});
+
+				} else {
+					si.text(b['amount']);
+				}
+
+				hud.append( sp.append(sb).append(si) );
+			}
+		}
+	},
+
+
+	/**
+	 * Show the bonus amount
+	 */
+	CalcBonusData: ()=> {
+		const bt = GildFights.BonusTypes,
+			d = GildFights.Bonuses,
+			hud = $('#bonus-hud');
+
+		for(let i in bt)
+		{
+			if(!bt.hasOwnProperty(i)){
+				break;
+			}
+
+			let b = d.find(e => (e['type'] === bt[i]));
+
+			if(b !== undefined){
+
+				let si = hud.find(`#${b['type']}-bonus`),
+					a = parseInt(si.text());
+
+				// Bonus is empty
+				if(b['amount'] === undefined || b['amount'] === -1){
+					si.closest('.hud-btn').addClass('hud-btn-red');
+					si.hide();
+				}
+
+				// Bonus ticker down, when changed
+				else if(a !== b['amount']) {
+					si.text(b['amount']);
+
+					si.addClass('bonus-blink');
+
+					setTimeout(()=>{
+						si.removeClass('bonus-blink');
+					}, 3500);
+				}
+			}
 		}
 	},
 
@@ -200,7 +426,6 @@ let GildFights = {
 
 			tN += playerNew['negotiationsWon'];
 			tF += playerNew['battlesWon'];
-			tNF = (tN*2)+tF;
 
 			b.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
 
@@ -219,16 +444,16 @@ let GildFights = {
 			b.push('</td>');
 			
 			b.push('<td class="text-center">');
-			var both = playerNew['battlesWon'] + (playerNew['negotiationsWon']*2);
+			let both = playerNew['battlesWon'] + (playerNew['negotiationsWon']*2);
 			b.push(both);
 			b.push('</td>');
 
 			b.push('</tr>');
 		}
 
+        let tNF = (tN*2)+tF;
 
-
-		t.push('<table class="foe-table">');
+        t.push('<table class="foe-table">');
 
 		t.push('<thead>');
 		t.push('<tr>');

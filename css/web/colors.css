@@ -1,0 +1,17 @@
+:root {
+	--text-light: #fff;
+	--text-normal: #f3D6A0;
+	--text-bright: #ffB539;
+	--text-medium: #93795D;
+	--text-dark: #4c2f1e;
+
+	--background-light: #F9EBC6;
+	--background-medium: #b3a582;
+
+	--grey: #444;
+	--black: #000;
+	--50-black: rgba(0, 0, 0, 0.5);
+	--65-black: rgba(0,0,0, 0.65);
+
+	--text-success: #29b206;
+}

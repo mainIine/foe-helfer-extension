@@ -16,10 +16,12 @@
 #costCalculator {
 	top: 30%;
 	left: 30px;
+	min-width: 350px;
 }
 
 #costCalculator #costCalculatorBody {
 	position: relative;
+	min-width: 320px;
 }
 
 #costCalculator #costCalculatorBody .lg-not-possible {
@@ -55,7 +57,7 @@
 }
 
 #costCalculator #costCalculatorBody strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 #costCalculator #costCalculatorBody p.header {
@@ -68,6 +70,16 @@
 	color: #F3D6A0;
 }
 
+#costCalculator #costCalculatorBody p.header .building-name {
+	font-size: 115%;
+}
+
+#costCalculator #costCalculatorBody p.header .player-name {
+	display: block;
+	white-space: nowrap;
+	color: var(--text-bright);
+	margin: 0 10px;
+}
 
 #costCalculator #costCalculatorBody .foe-table td {
 	white-space: nowrap;
@@ -110,9 +122,7 @@
 
 #costCalculatorBody .costFactorWrapper {
 	padding: 5px 10px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	text-align: center;
 }
 
 #costCalculatorBody .costFactorWrapper > div:first-child {
@@ -148,73 +158,4 @@
 
 #costCalculatorBody #costTable {
 	user-select: text;
-}
-
-
-
-#LGOverviewBox {
-	top: 30%;
-	right: 15%;
-	width: 500px;
-}
-
-#LGOverviewBox .head-bar {
-	display: flex;
-	justify-content: space-between;
-	padding: 0 5px;
-}
-
-#LGOverviewBox .head-bar .color-description {
-	display: inline-block;
-	margin-left: auto;
-}
-
-#LGOverviewBox .head-bar .color-description span {
-	display: block;
-}
-
-#LGOverviewBox strong,
-#LGOverviewBox .head-bar strong {
-	color: #FFB539;
-}
-
-#LGOverviewBox strong.warning {
-	color: #FF6000;
-}
-
-#LGOverviewBox strong.success {
-	color: #29b206;
-}
-
-#LGOverviewBox #LGOverviewBoxBody .nothing-to-get {
-	line-height: 50px;
-}
-
-#LGOverviewBox #LGOverviewBoxBody .color-description {
-	font-weight: 700;
-	display: inline-block;
-	margin-left: 6px;
-	background: #2196f3;
-	padding: 0 4px;
-	border-radius: 50%;
-	width: 10px;
-	line-height: 1.3em;
-	z-index: 1;
-}
-
-#LGOverviewBox #LGOverviewBoxBody .color-description > span {
-	position: absolute;
-	white-space: nowrap;
-	text-align: left;
-	background: rgba(0,0,0, 0.8);
-	padding: 10px;
-	right: 33px;
-	top: 14px;
-	z-index: 1;
-	display: none;
-	transition: all 0.2s linear;
-}
-
-#LGOverviewBox #LGOverviewBoxBody .color-description:hover > span {
-	display: block;
 }

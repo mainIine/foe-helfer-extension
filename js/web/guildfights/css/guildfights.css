@@ -103,3 +103,100 @@
 	height: 5px;
 	display: block;
 }
+
+
+/*******************************************************************************************************/
+/* BonusHud */
+
+#bonus-hud {
+	position: absolute;
+	right: 0;
+	z-index: 999;
+	width: 50px;
+	top: 60px;
+
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.75rem;
+	font-weight: 400;
+}
+
+#bonus-hud .hud-btn {
+	left: 5px;
+	width: 43px;
+	height: 43px;
+	background-image: none;
+	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 no-repeat;
+	border-radius: 50% 0 0 50%;
+	border: 2px solid #93c554;
+	border-right: none;
+	margin: 2px 0;
+	box-shadow: 1px -1px 1px var(--50-black);
+}
+
+#bonus-hud .hud-btn.hud-btn-red {
+	border-color: #9c2d18;
+	opacity: 0.9;
+}
+
+#bonus-hud .hud-btn:first-child {
+	margin-top: 5px;
+}
+
+#bonus-hud .hud-btn span.icon {
+	background-size: contain;
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 35px;
+	height: 35px;
+	left: 7px;
+	top: 3px;
+}
+
+#bonus-hud .hud-btn span.bonus {
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	padding: 2px;
+	bottom: 0;
+	top: unset;
+	left: 0;
+	background-color: #497b0b;
+	border-radius: 50%;
+	line-height: 16px;
+	text-align: center;
+	box-shadow: 0 1px 1px 1px rgba(0,0,0,0.5);
+	text-shadow: 0 1px 1px #000;
+	font-weight: bold;
+}
+
+#bonus-hud .first_strike-icon {
+	background-image: url('../images/first_strike.png');
+}
+
+#bonus-hud .spoils_of_war-icon {
+	background-image: url('../images/spoils_of_war.png');
+}
+
+#bonus-hud .diplomatic_gifts-icon {
+	background-image: url('../images/diplomatic_gifts.png');
+}
+
+#bonus-hud .missile_launch-icon {
+	background-image: url('../images/missile_launch.png');
+}
+
+
+.bonus-blink {
+	-webkit-animation: bgblink 1.2s;
+	-webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes bgblink {
+	from {background-color: #4682b4;}
+	50% {color:#b20000}
+	to {background-color: #4682b4;}
+}
+@keyframes bgblink {
+	from {background-color: #4682b4;}
+	50% {background-color:#b20000}
+	to {background-color: #4682b4;}
+}
