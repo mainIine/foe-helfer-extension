@@ -109,7 +109,7 @@ let Settings = {
 					button = d['button'],
 					c = $('<div />').addClass('item'),
 					cr = $('<div />').addClass('item-row'),
-					ct = $('<div />').addClass('title'),
+					ct = $('<h2 />'),
 					cd = $('<div />').addClass('desc'),
 					cs = $('<div />').addClass('setting').append(
 						$('<span />').addClass('check').append(
@@ -237,12 +237,12 @@ let Settings = {
 
 
 	/**
-	 * Versionsnummer ausgeben
+	 * Version number and Player Info 
 	 *
 	 * @returns {string}
 	 */
 	VersionInfo: ()=> {
-		return '<dl>' +
+		return '<dl class="info-box">' +
 					'<dt>' + i18n('Settings.Version.Title') + '</dt><dd>' + extVersion + '</dd>' +
 					'<dt>' + i18n('Settings.Version.PlayerId') + '</dt><dd>' + ExtPlayerID + '</dd>' +
 					'<dt>' + i18n('Settings.Version.GuildId') + '</dt><dd>' + ExtGuildID + '</dd>' +
@@ -252,20 +252,37 @@ let Settings = {
 
 
 	/**
-	 * Versionsnummer ausgeben
+	 * General Information	 
 	 *
 	 * @returns {string}
 	 */
-	Help: ()=> {
-		return '<ul class="helplist"><li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
-				'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' +	i18n('Settings.Help.Forums') + '</a></li>' +
-				'<li><a href="https://discord.gg/ba5RBb" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-				'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' +	i18n('Settings.Help.Github') + '</a></li></ul>';
+	About: ()=> {
+		return  '<hr>'+
+				'<h2>'+i18n('Settings.About.TranslateTitle')+'</h2>'+
+				'<p>'+i18n('Settings.About.TranslateDesc')+' <a href="http://i18n.foe-helper.com/" target="_blank">Weblate</a></p>'+
+				'<hr>'+
+				'<h2>'+i18n('Settings.About.RatingTitle')+'</h2>'+
+				'<p>'+i18n('Settings.About.RatingDesc')+'</p>';
 	},
 
 
 	/**
-	 * Funktion zum zurücksetzten aller Box-Koordiniaten
+	 * Help list
+	 *
+	 * @returns {string}
+	 */
+	Help: ()=> {
+		return '<ul class="helplist">' + 
+					'<li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
+					'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' +	i18n('Settings.Help.Forums') + '</a></li>' +
+					'<li><a href="https://discord.gg/ba5RBb" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
+					'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' +	i18n('Settings.Help.Github') + '</a></li>' +
+				'</ul>';
+	},
+
+
+	/**
+	 * Resets all Box Coordinated to the default values
 	 *
 	 */
 	ResetBoxCoords: ()=>{
@@ -284,7 +301,7 @@ let Settings = {
 
 
 	/**
-	 * Sprachwechsler
+	 * Language switcher
 	 *
 	 * @returns {string}
 	 */
