@@ -490,9 +490,16 @@
     "Settings.Tab.Boxes": "Boxen",
     "Settings.Tab.Extension": "Erweiterung",
     "Settings.Tab.Sending": "Übermittlung",
-    "Settings.Version.Desc": "<a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
+    "Settings.Version.Desc": "<a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=de'>Changelog</a>",
     "Settings.Version.GuildId": "Gilden Id:",
     "Settings.Version.PlayerId": "Spieler Id:",
     "Settings.Version.Title": "Version",
-    "Settings.Version.World": "Welt:"
+    "Settings.Version.World": "Welt:",
+    "Settings.About.RatingDesc": "Wenn Ihnen gefällt, was Sie sehen und was wir tun, hinterlassen Sie bitte eine gute Rezension im Store!",
+    "Settings.About.RatingTitle": "Bewerte die Extension",
+    "Settings.About.TranslateDesc": "Sie können bei der Übersetzung der Erweiterung helfen, indem Sie sich für unser Übersetzungstool anmelden: ",
+    "Settings.About.TranslateTitle": "Übersetzungen",
+    "Settings.About.Desc": "Der FoE Helper ist eine kostenlose Browser-Erweiterung für Forge of Empires, die von Spielern für Spieler entwickelt wurde. Das Tool ist nicht mit InnoGames verbunden.",
+    "Settings.About.Title": "Über FoE Helfer",
+    "Settings.Entry.About": "Über uns"
 }
