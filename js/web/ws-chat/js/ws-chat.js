@@ -537,6 +537,11 @@ let Chat = {
 		// if(ss < 10) ss = '0' + ss;
 
 		// dateTime = HH + ':' + ii + ':' + ss;
+		if(type !== 'onlyOthers'){
+			Chat.TextRow(msg);
+		}
+
+
 
 		let msg = {
 			message: MyMsg,
