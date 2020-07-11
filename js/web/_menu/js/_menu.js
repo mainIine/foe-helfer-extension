@@ -31,22 +31,17 @@ let _menu = {
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
-		'questlist',
+		'notice',
 		'technologies',
 		'campagneMap',
 		'citymap',
 		'unit',
-		'plunderer',
 		'settings',
 		'stats',
-		'forum',
-		'ask',
-		'github',
 		'chat',
-		'api',
 		'kits',
 		'alerts',
-		'greatbuildings'
+		'greatbuildings',
 	],
 
 
@@ -55,9 +50,9 @@ let _menu = {
 	 */
 	BuildOverlayMenu: () => {
 
-		let hud = $('<div />').attr('id', 'ant-hud').addClass('game-cursor'),
-			hudWrapper = $('<div />').attr('id', 'ant-hud-wrapper'),
-			hudInner = $('<div />').attr('id', 'ant-hud-slider');
+		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
+			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
+			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
 
 		hudWrapper.append(hudInner);
 
@@ -98,7 +93,7 @@ let _menu = {
 
 		if (reset) {
 			// Slider nach oben resetten
-			$('#ant-hud-slider').css({
+			$('#foe-helper-hud-slider').css({
 				'top': '0'
 			});
 
@@ -117,7 +112,7 @@ let _menu = {
 	 */
 	Prepare: () => {
 
-		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#ant-hud').offset().top) / 55);
+		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -127,10 +122,10 @@ let _menu = {
 		}
 
 		_menu.HudHeight = (_menu.HudCount * 55);
-		_menu.SlideParts = Math.ceil($("#ant-hud-slider").children().length / _menu.HudCount);
+		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
 
-		$('#ant-hud').height(_menu.HudHeight + 2);
-		$('#ant-hud-wrapper').height(_menu.HudHeight);
+		$('#foe-helper-hud').height(_menu.HudHeight + 2);
+		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
 	},
 
 
@@ -139,7 +134,7 @@ let _menu = {
 	 *
 	 */
 	ListLinks: () => {
-		let hudSlider = $('#ant-hud-slider'),
+		let hudSlider = $('#foe-helper-hud-slider'),
 			StorgedItems = localStorage.getItem('MenuSort');
 
 		if (StorgedItems !== null) {
@@ -250,11 +245,11 @@ let _menu = {
 		});
 
 		// Sortierfunktion der Menü-items
-		$('#ant-hud-slider').sortable({
+		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
 			start: function () {
-				$('#ant-hud').addClass('is--sorting');
+				$('#foe-helper-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
@@ -293,9 +288,11 @@ let _menu = {
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
-				$('#ant-hud').removeClass('is--sorting');
+				$('#foe-helper-hud').removeClass('is--sorting');
 			}
 		});
+
+		HiddenRewards.SetCounter();
 	},
 
 
@@ -308,7 +305,7 @@ let _menu = {
 		_menu.ActiveSlide++;
 		_menu.MenuScrollTop -= _menu.HudHeight;
 
-		$('#ant-hud-slider').css({
+		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
@@ -334,7 +331,7 @@ let _menu = {
 		_menu.ActiveSlide--;
 		_menu.MenuScrollTop += _menu.HudHeight;
 
-		$('#ant-hud-slider').css({
+		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
@@ -357,8 +354,8 @@ let _menu = {
      * @returns {{msg: string, type: string, class: string}}
      */
 	HideButton: (buttonId) => {
-		if ($('#ant-hud-slider').has(`div#${buttonId}`).length > 0)
-			$($('#ant-hud-slider').children(`div#${buttonId}`)[0]).hide();
+		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
+			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
 
 	},
 
@@ -366,8 +363,8 @@ let _menu = {
 	 * Zeigt ein versteckten Button wieder.
 	 */
 	ShowButton: (buttonId) => {
-		if ($('#ant-hud-slider').has(`div#${buttonId}`))
-			$($('#ant-hud-slider').children(`div#${buttonId}`)[0]).show();
+		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
+			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
 	},
 
 	/**
@@ -402,7 +399,9 @@ let _menu = {
 		let btn_Calc = $('<span />');
 
 		btn_Calc.bind('click', function () {
-			Calculator.Open();
+			if (Calculator.CityMapEntity) {
+				Calculator.Show();
+			}
 		});
 
 		btn_CalcBG.append(btn_Calc);
@@ -615,28 +614,6 @@ let _menu = {
 	},
 
 	/**
-	 * QuestList
-	 *
-	 * @returns {*|jQuery}
-	 */
-	questlist_Btn: () => {
-		let btn_EventBG = $('<div />').attr({ 'id': 'questlist-Btn', 'data-slug': 'questlist' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Event.Title'), i18n('Menu.Event.Desc'), 'questlist-Btn');
-
-		let btn_Event = $('<span />');
-
-		btn_Event.on('click', function () {
-			EventQuest.Show();
-		});
-
-		btn_EventBG.append(btn_Event);
-
-		return btn_EventBG;
-	},
-
-	/**
 	 * Evente in der Stadt und der Umgebung
 	 *
 	 * @returns {null|undefined|jQuery}
@@ -653,7 +630,7 @@ let _menu = {
 			HiddenRewards.init();
 		})
 
-		btn_RewardsBG.append(btn_Rewards);
+		btn_RewardsBG.append(btn_Rewards, $('<span id="hidden-reward-count" class="hud-counter">0</span>'));
 
 		return btn_RewardsBG;
 	},
@@ -681,28 +658,11 @@ let _menu = {
 		return btn_UnitBG;
 	},
 
-  	/**
-	 * Plunderer actions
-	 * @returns {*|jQuery}
+	/**
+	 * Notice function
+	 *
+	 * @returns {null|undefined|jQuery|HTMLElement|void}
 	 */
-	plunderer_Btn: () => {
-		let btn_PlundererBG = $('<div />').attr({ 'id': 'plunderer-Btn', 'data-slug': 'plunderer' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Plunderer.Title'), i18n('Menu.Plunderer.Desc'), 'plunderer-Btn');
-
-		let btn_Plunderer = $('<span />');
-
-		btn_Plunderer.on('click', function () {
-      		Plunderer.page = 1;
-			Plunderer.Show();
-		});
-
-		btn_PlundererBG.append(btn_Plunderer);
-
-		return btn_PlundererBG;
-	},
-
-
 	notice_Btn: () => {
 		let btn_NoticeBG = $('<div />').attr({ 'id': 'notice-Btn', 'data-slug': 'notice' }).addClass('hud-btn');
 
@@ -711,14 +671,13 @@ let _menu = {
 		let btn_Notice = $('<span />');
 
 		btn_Notice.on('click', function () {
-			// @Todo: initilize Box
+			Notice.init();
 		});
 
 		btn_NoticeBG.append(btn_Notice);
 
-		// return btn_PlundererBG;
+		return btn_NoticeBG;
 	},
-
 
 	/**
 	 * Einstellungen
@@ -733,7 +692,7 @@ let _menu = {
 		let btn_Set = $('<span />');
 
 		btn_Set.on('click', function () {
-			Settings.init();
+			Settings.BuildBox();
 		});
 
 		btn.append(btn_Set);
@@ -764,75 +723,6 @@ let _menu = {
 	},
 
 	/**
-	 * Forum
-	 *
-	 * @returns {*|jQuery}
-	 */
-	forum_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'forum-Btn', 'data-slug': 'forum' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Forum.Title'), i18n('Menu.Forum.Desc'), 'forum-Btn');
-
-		let btn_Forum = $('<span />');
-
-		btn_Forum.on('click', function () {
-			let win = window.open('https://forum.foe-rechner.de', '_blank');
-			win.focus();
-		});
-
-		btn.append(btn_Forum);
-
-		return btn;
-	},
-
-	/**
-	 * Frage/Antwort
-	 *
-	 * @returns {*|jQuery}
-	 */
-	ask_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'ask-Btn', 'data-slug': 'ask' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Ask.Title'), i18n('Menu.Ask.Desc'), 'ask-Btn');
-
-		let btn_Ask = $('<span />');
-
-		btn_Ask.on('click', function () {
-			let win = window.open('https://foe-rechner.de/extension/index', '_blank');
-			win.focus();
-		});
-
-		btn.append(btn_Ask);
-
-		return btn;
-	},
-
-	/**
-	 * Github-Link
-	 *
-	 * @returns {*|jQuery}
-	 */
-	github_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'github-Btn', 'data-slug': 'github' }).addClass('hud-btn');
-
-		_menu.toolTippBox(i18n('Menu.Bugs.Title'), i18n('Menu.Bugs.Desc'), 'github-Btn');
-
-		let btn_Bug = $('<span />');
-
-		btn_Bug.on('click', function () {
-			let win = window.open('https://github.com/dsiekiera/foe-helfer-extension/issues', '_blank');
-			win.focus();
-		});
-
-		btn.append(btn_Bug);
-
-		return btn;
-	},
-
-	/**
 	 * Chat Button
 	 *
 	 * @returns {*|jQuery}
@@ -850,7 +740,7 @@ let _menu = {
 			MainParser.sendExtMessage({
 				type: 'chat',
 				player: ExtPlayerID,
-				name: localStorage.getItem(ExtPlayerID+'_current_player_name'),
+				name: ExtPlayerName,
 				guild: ExtGuildID,
 				world: ExtWorld
 			});
@@ -858,33 +748,7 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		// return btn;
-	},
-
-	/**
-	 * API Funktion für den Spieler
-	 */
-	api_Btn: ()=> {
-
-		let btn = $('<div />').attr({ 'id': 'api-Btn', 'data-slug': 'api' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Api.Title'), i18n('Menu.Api.Desc'), 'api-Btn');
-
-		let btn_sp = $('<span />');
-
-		btn_sp.on('click', function(){
-			API.ShowBox();
-		});
-
-		btn.append(btn_sp);
-
-		/*
-		// ist die API Funktion aktivert?
-		if(Settings.GetSetting('CustomerApi')){
-			// return btn;
-		}
-		*/
+		return btn;
 	},
 
 	/**
@@ -911,7 +775,6 @@ let _menu = {
 	/**
 	 * FP Produzierende LGs
 	 */
-	/*
 	greatbuildings_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
@@ -927,7 +790,7 @@ let _menu = {
 
 		btn.append(btn_sp);
 
-		// return btn;
+		return btn;
 	},
-	*/
+
 };

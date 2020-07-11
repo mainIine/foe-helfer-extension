@@ -37,24 +37,28 @@ input[type=number] {
 .game-cursor,
 .game-cursor option,
 .window-minimize,
+.window-settings,
 .window-close,
 .window-head:not(span),
 .button-own,
 .window-box,
 .cursor-default,
 .button--lg,
-.hud-btn {
+.hud-btn,
+.tabs a {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
 }
 
 .game-cursor:hover,
 .game-cursor option:hover,
 .window-minimize:hover,
+.window-settings:hover,
 .window-close:hover,
 .window-head:not(span):hover,
 .button-own:hover,
 .button--lg:hover,
-.hud-btn:hover {
+.hud-btn:hover,
+.tabs a:hover {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 }
 
@@ -78,9 +82,9 @@ input[type=number] {
 	box-sizing: border-box;
 	display: inline-block;
 	width: 100%;
-	background-color: #F9EBC6;
+	background-color: var(--background-light);
 
-	color: #93795D;
+	color: var(--text-medium);
 	padding: .4rem;
 
 	white-space: nowrap;
@@ -125,15 +129,15 @@ input[type=number] {
 
 .dropdown ul li {
 	padding: 0.2rem;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	font-size: 0.8rem;
 	text-shadow: unset;
-	border-top: 1px solid #93795D;
+	border-top: 1px solid var(--text-medium);
 }
 
 .dropdown ul li:hover{
-	background-color: #b3a582;
+	background-color: var(--background-medium);
 	color: #4C2F1E;
 }
 
@@ -174,7 +178,7 @@ input[type=number] {
 	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	border: #000 1px solid;
 	border-radius: 4px;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	outline: none !important;
@@ -199,10 +203,8 @@ input[type=number] {
 
 .btn-tight {
 	margin: 1px;
-	padding: 0 4px;
-	line-height: 1;
-	height: 18px;
-	width: 100px;
+	padding: 1px 4px;
+	max-width: 100px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -214,10 +216,9 @@ input[type=number] {
 .btn-green:not([disabled]),
 .btn-green:not([disabled]):hover {
 	background: #6eaa5c;
-	background: -moz-linear-gradient(top,  #6eaa5c 0%, #29931d 100%);
-	background: -webkit-linear-gradient(top,  #6eaa5c 0%,#29931d 100%);
-	background: linear-gradient(to bottom,  #6eaa5c 0%,#29931d 100%);
-	border: #106000 1px solid;
+	background: -moz-linear-gradient(top, #469e2b 0%, #1f6517 100%);
+	background: -webkit-linear-gradient(top, #469e2b 0%,#1f6517 100%);
+	background: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
 }
 
 .ml-auto {
@@ -311,7 +312,7 @@ p {
 }
 
 .text-warning {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 .text-danger,
@@ -330,50 +331,32 @@ p {
 
 /***************************************************************/
 
-.button--lg {
-	position: absolute;
-	display: none;
-	width: 194px;
-	z-index: 999;
-	color: #efcf9a;
-	line-height: 24px;
-	font-family: Arial,Verdana;
-	background-image: url('../images/btn-bg.png');
-	font-size: 13px;
-	font-weight: 700;
-	background-position: -1px -2px;
-	background-size: 196px 53px;
-}
-
-.button--lg:hover {
-	background-position: -1px -29px;
-}
-
-/***************************************************************/
-
-#ant-hud {
+#foe-helper-hud {
 	position: absolute;
 	right: 0;
-	z-index: 999;
+	z-index: 150;
 	width: 64px;
 	height: 270px;
 	top: 360px;
 	padding-top: 24px;
 	padding-bottom: 24px;
 	transition: height 0.2s linear;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.75rem;
+	font-weight: 400;
 }
 
-#ant-hud::before,
-#ant-hud::after,
+#foe-helper-hud::before,
+#foe-helper-hud::after,
 .hud-btn,
 .hud-btn-up::before,
 .hud-btn-up-active::before,
 .hud-btn-down::before,
 .hud-btn-down-active::before {
-	background: url('../../js/web/_menu/images/menu.png') top left no-repeat;
+	background: url('../images/hud/menu.png') top left no-repeat;
 }
 
-#ant-hud::before {
+#foe-helper-hud::before {
 	content: '';
 	width: 64px;
 	height: 26px;
@@ -382,7 +365,7 @@ p {
 	left: 0;
 }
 
-#ant-hud::after {
+#foe-helper-hud::after {
 	content: '';
 	width: 64px;
 	height: 24px;
@@ -393,17 +376,17 @@ p {
 }
 
 
-#ant-hud-wrapper {
+#foe-helper-hud-wrapper {
 	width: 64px;
 	height: 220px;
 	position: absolute;
 	right: 0;
 	top: 26px;
 	overflow: hidden;
-	background: url('../../js/web/_menu/images/menu-bg.png') top left repeat-y
+	background: url('../images/hud/menu-bg.png') top left repeat-y
 }
 
-#ant-hud-slider {
+#foe-helper-hud-slider {
 	position: absolute;
 	top: 0;
 	right: 3px;
@@ -475,7 +458,7 @@ p {
 	background-position: -65px -33px;
 }
 
-.hud-btn span {
+.hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
 	display: block;
@@ -490,163 +473,270 @@ p {
 .menu-placeholder {
 	width: 55px;
 	height: 55px;
-	background: url('../../js/web/_menu/images/menu.png') -122px -90px no-repeat;
+	background: url('../images/hud/menu.png') -122px -90px no-repeat;
 }
 
+.hud-btn span.hud-counter {
+	width: 17px;
+	height: 17px;
+	position: absolute;
+	padding: 2px;
+	bottom: 4px;
+	top: unset;
+	left: 5px;
+	background-color: #3180bf;
+	border-radius: 50%;
+	line-height: 16px;
+	text-align: center;
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    pointer-events: none;
+}
+
+#greatbuildings-Btn span {
+	background-image: url('../images/menu/greatbuildings.png');
+}
 
 #productions-Btn span {
-	background-image: url('../images/productions.png');
+	background-image: url('../images/menu/productions.png');
 }
 
 #calculator-Btn span {
-	background-image: url('../images/calculator.png');
+	background-image: url('../images/menu/calculator.png');
 }
 
 #outpost-Btn span {
-	background-image: url('../images/vikings_ship.png');
+	background-image: url('../images/menu/vikings_ship.png');
 }
 
 #partCalc-Btn span {
-	background-image: url('../images/part-calc.png');
+	background-image: url('../images/menu/part-calc.png');
 }
 
 #technologies-Btn span {
-    background-image: url('../images/technologies.png');
+    background-image: url('../images/menu/technologies.png');
 }
 
-#hiddenRewards-Btn span {
-	background-image: url('../images/incident_crates.png');
+#hiddenRewards-Btn span:first-child {
+	background-image: url('../images/menu/incident_crates.png');
 }
 
 #campagneMap-Btn span {
-	background-image: url('../images/map.png');
+	background-image: url('../images/menu/map.png');
 }
 
 #citymap-Btn span {
-	background-image: url('../images/citymap.png');
+	background-image: url('../images/menu/citymap.png');
 }
 
 #questlist-Btn span {
-	background-image: url('../images/quest.png');
+	background-image: url('../images/menu/quest.png');
 }
 
 #chat-Btn span {
-	background-image: url('../images/chat.png');
+	background-image: url('../images/menu/chat.png');
 }
 
 #forum-Btn span {
-	background-image: url('../images/forum.png');
+	background-image: url('../images/menu/forum.png');
 }
 
 #ask-Btn span {
-	background-image: url('../images/ask.png');
+	background-image: url('../images/menu/ask.png');
 }
 
 #settings-Btn span {
-	background-image: url('../images/wrench.png');
+	background-image: url('../images/menu/wrench.png');
 }
 
 #stats-Btn span {
-	  background-image: url('../images/stats.png');
+	  background-image: url('../images/menu/stats.png');
 }
 
 #github-Btn span {
-	background-image: url('../images/bug.png');
+	background-image: url('../images/menu/bug.png');
 }
 
 #infobox-Btn span {
-	background-image: url('../images/info.png');
+	background-image: url('../images/menu/info.png');
 }
 
 #unit-Btn span {
-	background-image: url('../images/units.png');
-}
-
-#plunderer-Btn span {
-	  background-image: url('../images/plunderer.png');
+	background-image: url('../images/menu/units.png');
 }
 
 #negotiation-Btn span {
-	background-image: url('../images/negotation.png');
+	background-image: url('../images/menu/negotation.png');
 }
 
-#api-Btn span {
-	background-image: url('../images/api.png');
-}
 
 #kits-Btn span {
-	background-image: url('../images/kits.png');
+	background-image: url('../images/menu/kits.png');
 }
 
 #alerts-Btn span {
-	background-image: url('../images/icon-alerts.png');
+	background-image: url('../images/menu/icon-alerts.png');
 }
 
-/* Tabs */
+#notice-Btn span {
+	background-image: url('../images/menu/notices.png');
+}
 
-.window-body .tabs ul {
+/* ---------------------------------------------------------------------------------------------------------------------
+Tabs */
+
+.window-body .tabs ul.horizontal {
 	margin: 5px 0 0 0;
-	padding: 0;
-	border-bottom: 2px solid rgb(101, 61, 20);
+	padding: 0 0 0 6px;
+	border-bottom: 2px solid #864c1e;
 }
 
-.window-body .tabs ul li {
-	margin: 0;
+.window-body .tabs ul.horizontal li {
+	margin: 0 6px 0 0;
 	padding: 0;
 	display: inline-block;
-	background-position: -3px -125px;
-	width: 72px;
-	height: 31px;
+	line-height: 33px;
+	position: relative;
 }
 
-.window-body .tabs ul li:hover {
-	background-position: -3px -159px;
+.window-body .tabs ul.horizontal li:hover {
+	background-position: 0 -126px;
 }
 
-.window-body .tabs ul li.active {
-	background-position: -3px -193px;
+.window-body .tabs ul.horizontal li.active {
+	background-position: 0 -126px
 }
 
-.window-body .tabs ul li a {
+.window-body .tabs ul.horizontal li a {
 	text-decoration: none;
 	display: block;
-	width: 26px;
-	height: 26px;
 	position: relative;
-	left: 35px;
-	top: 4px;
+	padding: 0 12px;
+	color: #9c9c9c;
 }
 
-.window-body .tabs ul li.long-tab {
-	background-position: -81px -125px;
-	width: 160px;
+.window-body .tabs ul.horizontal li:hover a,
+.window-body .tabs ul.horizontal li.active a {
+	color: #e2e2e2;
 }
 
-.window-body .tabs ul li.long-tab:hover {
-	background-position: -81px -159px;
+.window-body .tabs ul.horizontal li a span {
+	display: inline-block;
+	z-index: 20;
+	position: relative;
+	top: 1px;
 }
 
-.window-body .tabs ul li.long-tab.active {
-	background-position: -81px -193px;
+.window-body .tabs ul.horizontal li a:before {
+	content: '';
+	position: absolute;
+	background-image:  url('../images/hud/tab.png');
+	background-repeat: no-repeat;
+	background-position: center left;
+	width: 50%;
+	height: 33px;
+	z-index: 1;
+	left: 0;
+	bottom: 0;
+	top: 0;
 }
 
-.window-body .tabs ul li.long-tab a {
-	width: 110px;
-	padding: 2px 0;
-	text-align: center;
-	color: #797a7a;
+.window-body .tabs ul.horizontal li a:after {
+	content: '';
+	position: absolute;
+	background-image:  url('../images/hud/tab.png');
+	background-repeat: no-repeat;
+	background-position: center right;
+	width: 50%;
+	height: 33px;
+	z-index: 1;
+	right: 0;
+	top: 0;
+	bottom: 0;
 }
 
-.window-body .tabs ul li.long-tab:hover a {
-	color: #d1d5d4;
+.window-body .tabs ul.horizontal li:hover a:before,
+.window-body .tabs ul.horizontal li.active a:before,
+.window-body .tabs ul.horizontal li.active:hover a:before,
+.window-body .tabs ul.horizontal li:hover a:after,
+.window-body .tabs ul.horizontal li.active a:after,
+.window-body .tabs ul.horizontal li.active:hover a:after {
+	background-image:  url('../images/hud/tab-active.png');
+	background-repeat: no-repeat;
+	background-position: center left;
 }
 
-.window-body .tabs ul li.long-tab.active a {
-	color: #d1d5d4;
+.window-body .tabs ul.horizontal li:hover a:after,
+.window-body .tabs ul.horizontal li.active a:after,
+.window-body .tabs ul.horizontal li.active:hover a:after {
+	background-position: center right;
 }
 
+.window-body .tabs > div {
+	position: relative;
+}
 
-/* Tooltip */
+/* vertical Tabs */
+.window-body .tabs ul.vertical {
+	width: 120px;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	border-right: 2px solid #864c1e;
+}
+
+.window-body .tabs ul.vertical li {
+	display: block;
+	margin: 0;
+	padding: 0;
+	border-style: solid;
+	border-width: 2px 0 2px 2px;
+	border-color: transparent;
+	line-height: 24px;
+	position: relative;
+	right: -2px;
+}
+
+.window-body .tabs ul.vertical li:not(:first-child) {
+	top: -2px;
+}
+
+.window-body .tabs ul.vertical li a {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-decoration: none;
+	padding: 3px 5px;
+	display: block;
+	color: var(--text-normal);
+	position: relative;
+}
+
+.window-body .tabs ul.vertical li.active,
+.window-body .tabs ul.vertical li:hover {
+	border-color: #864c1e;
+	border-radius: 3px 0 0 3px;
+}
+
+.window-body .tabs ul.vertical li.active a,
+.window-body .tabs ul.vertical li:hover a {
+	background-color: rgba(40, 18, 7, 0.8);
+	color: var(--text-bright);
+}
+
+.window-body .tabs .sub-tab {
+	margin-left: 120px;
+	border-left: 2px solid #864c1e;
+	padding: 10px;
+	background-color: rgba(40, 18, 7, 0.8);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------
+Tooltip */
+
 .toolTipWrapper {
 	text-align: left;
 	display: none;
@@ -656,7 +746,7 @@ p {
 	top: 50%;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
-	border-image: url('../images/tooltip_bg.png') 10 round;
+	border-image: url('../images/hud/tooltip_bg.png') 10 round;
 	z-index: 999;
 	transform: translateY(-50%);
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -677,7 +767,7 @@ p {
 	top: 50%;
 	transform: translateY(-50%);
 	right: -22px;
-	background: url('../images/tooltip_bg_arrow.png') center center no-repeat;
+	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
 }
 
 .toolTipWrapper .tooltip-error {
@@ -697,21 +787,56 @@ p {
 
 
 #fp-bar {
-	position: fixed;
-	top: 6px;
-	left: calc(50vW + 106px);
-	width: calc(50vw - 106px - 405px);
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
-	color: #F3D6A0;
-	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
-	user-select: text;
-	white-space: nowrap;
+	font-size: 0.8rem;
+	color: var(--text-normal);
+	position: fixed;
+	top: 2px;
+	left: 416px;
+	width: calc(100% - 818px);
 }
 
-#fp-bar strong {
-	color: #FFB539;
+#fp-bar .fp-storage,
+#fp-bar .buyable-fp {
+	float: right;
+	margin: 1px 1px 0 0;
+	width: 87px;
+	height: 26px;
+}
+
+#fp-bar .fp-storage {
+	background: url('../images/fp-bar-storage-bg.png') 0 0 no-repeat;
+}
+#fp-bar .buyable-fp {
+	background: url('../images/fp-bar-buyable-bg.png') 0 0 no-repeat;
+}
+
+#fp-bar .fp-storage div, #fp-bar .buyable-fp div {
+	margin: 5px 0 0 30px;
+}
+
+#fp-bar.medium-screen {}
+#fp-bar.medium-screen .buyable-fp {
+	float: left;
+}
+
+#fp-bar.small-screen {
+	top: 36px;
+	left: 2px;
+}
+
+#fp-bar.small-screen .fp-storage, #fp-bar.small-screen .buyable-fp {
+	border: 1px solid rgba(243, 214, 160, 0.65);
+	border-radius: 4px;
+	float: left;
+}
+
+#fp-bar.small-screen .fp-storage {
+	background: rgba(0, 0, 0, 0.75) url('../images/fp-bar-storage-bg.png') 0 0 no-repeat;
+}
+#fp-bar.small-screen .buyable-fp {
+	background: rgba(0, 0, 0, 0.75) url('../images/fp-bar-buyable-bg.png') 0 0 no-repeat;
 }
 
 /*******************************************************************************/
@@ -723,7 +848,7 @@ p {
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
 	user-select: text;
 }
@@ -734,16 +859,15 @@ p {
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
-	color: #F3D6A0;
+	color: var(--text-normal);
 	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
 	user-select: text;
 }
 
 #invest-bar strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 #reward-bar strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
-/*******************************************************************************/

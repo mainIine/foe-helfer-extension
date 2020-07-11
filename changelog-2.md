@@ -1,5 +1,81 @@
 ## Changelog - Extension
 
+##### 2.5.0.1
+
+**Update**
+- Cost Accountant:
+    - [#550](https://github.com/dsiekiera/foe-helfer-extension/issues/550) 80% button added
+    
+**BugFix**
+
+- Own contribution calculator:
+    - [#1317](https://github.com/dsiekiera/foe-helfer-extension/issues/1317) Sound when switching a repeatable "output X FP" quest does not play reliably
+    - [#1318](https://github.com/dsiekiera/foe-helfer-extension/issues/1318) Sound in the cost calculator comes in Bronze Age until FMA also at the quest "explore 2 technologies
+
+- hidden events:
+    - [#1295](https://github.com/dsiekiera/foe-helfer-extension/issues/1295) blue counter icon prevented click
+    - [#1314](https://github.com/dsiekiera/foe-helfer-extension/issues/1314) duplicate streets were not displayed
+    
+- Legendary buildings:
+    - [#1305](https://github.com/dsiekiera/foe-helfer-extension/issues/1305) the input of FP costs disappeared into another field
+    - [#1315](https://github.com/dsiekiera/foe-helfer-extension/issues/1315) Error when one of the FP producing LG is above lvl100 or higher
+    
+- Negotiating assistant:
+    - [#1342](https://github.com/dsiekiera/foe-helfer-extension/issues/1342) on the beta server you could start the assistant in the GG manually (Inno Games doesn't want to do that)
+
+---
+
+##### 2.5.0.0
+
+**New**
+- Boost box:
+    - a small box that is displayed in the GEX, GG, GvG and the neighbors shows how many attempts remain for spoils of war or changes
+    
+- Legendary buildings:
+    - this box calculates which FP producing building would be the next cheapest
+    
+- Notes:
+    - Groups and sorts notes of all kinds. This function works with the server and is device independent.
+
+**Update**
+- According to Inno's wishes we have removed or modified the following elements: [https://foe-rechner.de/news/changes-to-the-foe-helper](https://foe-rechner.de/news/changes-to-the-foe-helper)
+    - Snipe column in the cost calculator removed
+    - PvP activities removed
+    - "Looting assistance" + attack and defense values removed
+    - Event-Quest will only be linked
+    - Negotiation assistants are hidden in the guild battles
+    - Hidden events are displayed without expiration date
+
+- Hidden rewards:
+    - a counter shows how many events are still somewhere on the map
+
+- Production overview:
+    - [#1185](https://github.com/dsiekiera/foe-helfer-extension/issues/1185) Age is also output
+    - Guild power as new tab available
+    - [#1205](https://github.com/dsiekiera/foe-helfer-extension/issues/1205) Sorting function for goods
+    
+- Cost caclculator:
+    - [#1168](https://github.com/dsiekiera/foe-helfer-extension/issues/1186) new checkbox "All", so all places 1-5 are displayed without dependencies
+    
+- Settings:
+    - [#1169](https://github.com/dsiekiera/foe-helfer-extension/issues/1189) Firefox: Settings menu sporadically shows no translated texts
+
+
+**BugFixes**
+- Cost caclculator:
+    - [#1153](https://github.com/dsiekiera/foe-helfer-extension/issues/1153) already deposited FP were not recognized correctly
+
+- Tavernbadge:
+    - [#1182](https://github.com/dsiekiera/foe-helfer-extension/issues/1182) Counter for 4th try is wrong, times are taken over from now on    
+
+- CityMap (internal): 
+    - [#1184](https://github.com/dsiekiera/foe-helfer-extension/issues/1184) Incorrect display of free space
+    - [#1204](https://github.com/dsiekiera/foe-helfer-extension/issues/1204) Transmission box is no longer displayed in the neighbourhood
+
+- Product overview:
+    - [#1201](https://github.com/dsiekiera/foe-helfer-extension/issues/1201) Street with "satisfaction" are no longer calculated with street binding
+
+---
 
 ##### 2.4.6.2
 

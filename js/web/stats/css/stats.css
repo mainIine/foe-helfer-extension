@@ -1,12 +1,11 @@
 #stats {
 	top: calc(50% - 375px);
-	left: calc(50% - 600px);
+	left: calc(50% - 550px);
 }
 
 #statsBody {
-	width: 1200px;
+	width: 1100px;
 	max-height: 800px;
-	padding: 8px 0;
 	overflow: scroll;
 }
 
@@ -17,56 +16,59 @@
 #stats .options {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 4px;
+	justify-content: space-around;
+	align-items: center;
+	background-color: var(--50-black);
+	height: 50px;
+	border-bottom: 2px solid #864c1e;
 }
 
 #stats .options-2 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-bottom: 4px;
 }
 
-#stats .option-toggle-group {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	max-height: 45px;
-	width: 98px;
-	margin-left: 10px;
-	align-items: baseline;
-	align-content: baseline;
+#stats .options-2 .btn-tight {
+	margin: 2px 1px;
+}
+
+#stats .option-era-dropdown {
+	width: 146px;
 }
 
 #stats .option-era-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	max-height: 45px;
-	width: 311px;
-	margin-left: 10px;
-	align-items: baseline;
-	align-content: baseline;
+	width: 370px;
+}
+
+#stats .tabs  {
+	width: 406px;
+	align-self: flex-end;
 }
 
 #stats .option-chart-type-wrap {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	max-height: 45px;
-	width: 210px;
-	justify-content: start;
-	align-items: baseline;
-	align-content: baseline;
+	width: 170px;
+	font-size: 85%;
+}
+
+#stats .option-chart-type-wrap span {
+	padding: 2px;
+}
+
+#stats .option-chart-type-wrap span.active {
+	color: var(--text-bright);
 }
 
 #stats .option-source-wrap {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
-	max-height: 45px;
 	align-items: baseline;
 	align-content: baseline;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 @media (max-height: 1080px) {
@@ -129,4 +131,75 @@
 #stats .highcharts-data-table table tr td {
 	border-top: 1px solid #7F5A34;
 	border-bottom: 1px solid #3D250F;
+}
+
+#stats .tabs .horizontal {
+	border-bottom: none;
+}
+
+#stats .window-body .tabs ul.horizontal li {
+	margin-right: 2px;
+}
+
+#stats .tabs ul li a span {
+	background: transparent url('../images/tabs.png') -233px 5px no-repeat;
+	width: 24px;
+}
+#stats .tabs ul li.statsTreasurePlayerD a span {
+	background-position: 0 4px;
+}
+#stats .tabs ul li.statsTreasurePlayerH a span {
+	background-position: -40px 4px;
+}
+#stats .tabs ul li.statsTreasureClanD a span {
+	background-position: -80px 6px;
+}
+#stats .tabs ul li.statsTreasureClanH a span {
+	background-position: -120px 6px;
+}
+#stats .tabs ul li.statsUnitsD a span {
+	background-position: -160px 6px;
+}
+#stats .tabs ul li.statsUnitsH a span {
+	background-position: -200px 6px;
+}
+#stats .tabs ul li.statsRewards a span {
+	background-position: -280px 4px;
+}
+#stats .tabs ul li.statsGBGPlayers a span {
+	background-position: -237px 4px;
+}
+/* date picker overwrite */
+
+:root{
+	--litepickerBgColor: var(--text-dark);
+	--litepickerMonthHeaderTextColor: var(--text-normal);
+	--litepickerMonthButton: var(--text-medium);
+	--litepickerMonthButtonHover: var(--text-bright);
+	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);
+	--litepickerMonthWeekdayColor: var(--text-medium);
+	--litepickerDayColor: var(--text-normal);
+	--litepickerDayColorHover: var(--text-bright);
+	--litepickerDayIsTodayColor: #f44336;
+	--litepickerDayIsInRange: var(--50-black);
+	--litepickerDayIsLockedColor: var(--text-medium);
+	--litepickerDayIsBookedColor: var(--text-medium);
+	--litepickerDayIsStartColor: var(--text-dark);
+	--litepickerDayIsStartBg: var(--text-bright);
+	--litepickerDayIsEndColor: var(--text-dark);
+	--litepickerDayIsEndBg: var(--text-bright);
+	--litepickerDayWidth: 33px;
+	--litepickerButtonCancelColor: var(--text-dark);
+	--litepickerButtonCancelBg: var(--text-medium);
+	--litepickerButtonApplyColor: var(--text-dark);
+	--litepickerButtonApplyBg: var(--text-bright);
+	--litepickerButtonResetBtn: #909090;
+	--litepickerButtonResetBtnHover: var(--text-bright);
+	--litepickerHighlightedDayColor: #333;
+	--litepickerHighlightedDayBg: #ffeb3b
+}
+
+.litepicker .container__months {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 repeat;
+    box-shadow: 0 0 5px var(--50-black);
 }

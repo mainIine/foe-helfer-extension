@@ -29,7 +29,8 @@ td[title="incident_fallen_tree_1x1"], td[title="incident_blocked_road_1x1"], td[
 	background-color: #818272;
 }
 
-td[title="incident_sculptor"], td[title="incident_beehive"], td[title="incidents_crate"], td[title="incident_broken_cart"], td[title="incident_car_accident"], td[title="incident_clothesline"], td[title="incident_dinosaur_bones"], td[title="incident_empty_clothesline"], td[title="incident_fruit_vendor"], td[title="incident_kite"], td[title="incident_mammoth_bones"], td[title="incident_musician"], td[title="incident_overgrowth"], td[title="incident_quicksand"], td[title="incident_statue"], td[title="incident_stick_hut"], td[title="incident_treasure_chest"], td[title="incident_wine_cask"], td[title="spring_cherry_tree"] {
+
+td[title="incident_sculptor"], td[title="incident_beehive"], td[title="incident_crates"], td[title="incident_broken_cart"], td[title="incident_car_accident"], td[title="incident_clothesline"], td[title="incident_dinosaur_bones"], td[title="incident_empty_clothesline"], td[title="incident_fruit_vendor"], td[title="incident_kite"], td[title="incident_mammoth_bones"], td[title="incident_musician"], td[title="incident_overgrowth"], td[title="incident_quicksand"], td[title="incident_statue"], td[title="incident_stick_hut"], td[title="incident_treasure_chest"], td[title="incident_wine_cask"], td[title="spring_cherry_tree"] {
 	background-color: #5d6324;
 }
 
