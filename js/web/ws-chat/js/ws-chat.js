@@ -1157,7 +1157,7 @@ let Chat = {
 	 */
 	getTimestamp: (hrs)=>{
 
-		let time = MainParser.getCurrentDateTime(),
+		let time = new Date(Date.now() + GameTimeOffset).getTime(),
 			h = hrs || 0,
 			m = 0,
 
