@@ -20,3 +20,20 @@
 #HiddenRewardBox td .warning {
     color: #FFB539;
 }
+
+td[title="incident_sos"], td[title="incident_beach_gear"], td[title="incident_shipwreck"] {
+	background-color: #d4ab70;
+}
+
+td[title="incident_fallen_tree_1x1"], td[title="incident_blocked_road_1x1"], td[title="incident_blocked_road_2x2"], td[title="incident_fallen_tree_2x2"], td[title="incident_pothole_1x1"], td[title="incident_pothole_2x2"] {
+	background-color: #818272;
+}
+
+
+td[title="incident_sculptor"], td[title="incident_beehive"], td[title="incident_crates"], td[title="incident_broken_cart"], td[title="incident_car_accident"], td[title="incident_clothesline"], td[title="incident_dinosaur_bones"], td[title="incident_empty_clothesline"], td[title="incident_fruit_vendor"], td[title="incident_kite"], td[title="incident_mammoth_bones"], td[title="incident_musician"], td[title="incident_overgrowth"], td[title="incident_quicksand"], td[title="incident_statue"], td[title="incident_stick_hut"], td[title="incident_treasure_chest"], td[title="incident_wine_cask"], td[title="spring_cherry_tree"] {
+	background-color: #5d6324;
+}
+
+td[title="incident_rhino"], td[title="incident_castaway"], td[title="incident_fisherman"], td[title="incident_floating_chest"], td[title="incident_flotsam"] {
+	background-color: #20423f;
+}

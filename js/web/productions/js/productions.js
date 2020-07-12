@@ -19,7 +19,6 @@ let Productions = {
 	BuildingsAll: [],
 	BuildingsProducts: [],
 	BuildingsProductsGroups: [],
-	MainBuildingBonusAdded: false,
 	ShowDaily: false,
 
 	ActiveTab: 1,
@@ -118,7 +117,7 @@ let Productions = {
 			if (d[i]['id'] >= 2000000000) continue;
 
 			// dem Rathaus evt Boosts hinzufügen (tägliche FP, Botschafter Bonus)
-			if(d[i]['id'] === 1){
+			if(d[i]['id'] === 1 && !d[i]['mainBuildingPrepared']){
 				d[i] = Productions.prepareMainBuilding(d[i]);
 			}
 
@@ -281,7 +280,8 @@ let Productions = {
 			era = d['level'] + 1;
 
 		}
-		else if (CityEntity['strategy_points_for_upgrade']) { //Great building
+		// Great building
+		else if (CityEntity['strategy_points_for_upgrade']) {
 			era = CurrentEraID;
 		}
 		else {
@@ -618,7 +618,7 @@ let Productions = {
 						}
 
 						tds += '<td class="is-number" data-number="' + CurrentBuildingCount + '">' + pA.join('<br>') + '</td>' +
-							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
+							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + i18n('Boxes.Productions.TTGoodsEra')  + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
 							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>' +
 							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
 							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
@@ -1105,10 +1105,6 @@ let Productions = {
 	 */
 	prepareMainBuilding: (d)=>{
 
-		if(Productions.MainBuildingBonusAdded === true){
-			return d;
-		}
-
 		// Botschafter durchsteppen
 		if(MainParser.EmissaryService !== null)
 		{
@@ -1154,7 +1150,7 @@ let Productions = {
 			}
 		}
 
-		Productions.MainBuildingBonusAdded = true;
+		d['mainBuildingPrepared'] = true;
 
 		return d;
 	},

@@ -144,34 +144,15 @@ let Calculator = {
 
 		h.push('<div class="dark-bg costFactorWrapper">');
 
-
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
-		// Zusätzliche Buttons für die Standard Prozente
-		let own_arc = '<button class="btn btn-default btn-toggle-arc" data-value="' + MainParser.ArkBonus + '">' + MainParser.ArkBonus + '%</button>';
-
-		// ... und korrekt einsortieren
-		if (MainParser.ArkBonus < 80) {
-			h.push(own_arc);
-		}
-
-		h.push('<button class="btn btn-default btn-toggle-arc" data-value="80">80%</button>');
-
-		if (MainParser.ArkBonus > 80 && MainParser.ArkBonus < 85) {
-			h.push(own_arc);
-		}
-
-		h.push('<button class="btn btn-default btn-toggle-arc" data-value="85">85%</button>');
-
-		if (MainParser.ArkBonus > 85 && MainParser.ArkBonus < 90) {
-			h.push(own_arc);
-		}
-
-		h.push('<button class="btn btn-default btn-toggle-arc" data-value="90">90%</button>');
-
-		if (MainParser.ArkBonus > 90) {
-			h.push(own_arc);
-		}
+		// different arc bonus-buttons
+		let investmentSteps = [80, 85, 90, MainParser.ArkBonus];
+		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
+		investmentSteps.sort((a, b) => a - b);
+		investmentSteps.forEach(bonus => {
+			h.push(`<button class="btn btn-default btn-toggle-arc" data-value="${bonus}">${bonus}%</button>`);
+		});
 
 		h.push('<br>');
 		
@@ -194,6 +175,7 @@ let Calculator = {
 
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
+        $('#costCalculator').find('.tooltip').remove();
 
         // Stufe ist noch nicht freigeschaltet
 		if (Calculator.CityMapEntity['level'] === Calculator.CityMapEntity['max_level']) {
