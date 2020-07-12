@@ -1,20 +1,24 @@
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = HiddenRewards.prepareData(data.responseData.hiddenRewards);
-	HiddenRewards.SetCounter();
+    
+    HiddenRewards.RefreshGui();
+    if (HiddenRewards.FirstCycle) { //Alle 60 Sekunden aktualisieren (Startbeginn des Ereignisses könnte erreicht worden sein)
+        HiddenRewards.FirstCycle = false;
 
-    if ($('#HiddenRewardBox').length >= 1) {
-        HiddenRewards.BuildBox();
+        setInterval(HiddenRewards.RefreshGui, 60000);
     }
 });
 
 /**
  *
- * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, Cache: null}}
+ * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : null, FirstCycle : true}}
  */
 let HiddenRewards = {
 
     Cache: null,
-
+    FilteredCache : null,
+    FirstCycle: true,
+    
 	/**
 	 * Box in den DOM
 	 */
@@ -33,7 +37,7 @@ let HiddenRewards = {
 
             moment.locale(i18n('Local'));
 
-            HiddenRewards.BuildBox();
+            HiddenRewards.RefreshGui();
 
         } else {
             HTML.CloseOpenBox('HiddenRewardBox');
@@ -91,6 +95,28 @@ let HiddenRewards = {
         return data;        
     },
 
+    /**
+     * Filtert den Cache erneut basierend auf aktueller Zeit + aktualisiert Counter/Liste falls nötig
+     * 
+     */
+    RefreshGui: () => {       
+        HiddenRewards.FilteredCache = [];
+        for (let i = 0; i < HiddenRewards.Cache.length; i++) {
+            let StartTime = moment.unix(HiddenRewards.Cache[i].starts),
+                EndTime = moment.unix(HiddenRewards.Cache[i].expires);
+
+            if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
+                HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
+            }
+        }
+
+        HiddenRewards.SetCounter();
+
+        if ($('#HiddenRewardBox').length >= 1) {
+            HiddenRewards.BuildBox();
+        }  
+    },
+
 
 	/**
 	 * Inhalt der Box in den BoxBody legen
@@ -110,32 +136,23 @@ let HiddenRewards = {
 
         h.push('<tbody>');
 
-        let cnt = 0;
-        for (let idx in HiddenRewards.Cache) {
+        if (HiddenRewards.FilteredCache.length > 0) {
+            for (let idx in HiddenRewards.FilteredCache) {
 
-            if (!HiddenRewards.Cache.hasOwnProperty(idx)) {
-                break;
-            }
+                if (!HiddenRewards.FilteredCache.hasOwnProperty(idx)) {
+                    break;
+                }
 
-            let hiddenReward = HiddenRewards.Cache[idx];
+                let hiddenReward = HiddenRewards.FilteredCache[idx];
 
-            let StartTime = moment.unix(hiddenReward.starts),
-                EndTime = moment.unix(hiddenReward.expires);
-
-            if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
                 h.push('<tr>');
-
                 h.push('<td class="incident" title="' + hiddenReward.type + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
-
                 h.push('<td>' + hiddenReward.position + '</td>');
-
                 h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
-
                 h.push('</tr>');
-                cnt++;
             }
         }
-        if (cnt === 0) {
+        else {
             h.push('<td colspan="3">' + i18n('Boxes.HiddenRewards.NoEvents') + '</td>');
         }
 
@@ -148,23 +165,10 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-
-    	let cnt = 0;
-
-		for (let idx in HiddenRewards.Cache) {
-
-			if (!HiddenRewards.Cache.hasOwnProperty(idx)) {
-				break;
-			}
-
-			let hiddenReward = HiddenRewards.Cache[idx],
-				StartTime = moment.unix(hiddenReward.starts)
-
-			if (StartTime < MainParser.getCurrentDateTime()){
-				cnt++;
-			}
+		if(HiddenRewards.FilteredCache.length > 0){
+			$('#hidden-reward-count').text(HiddenRewards.FilteredCache.length).show();
+		} else {
+			$('#hidden-reward-count').hide();
 		}
-
-		$('#hidden-reward-count').text(cnt);
 	}
 };

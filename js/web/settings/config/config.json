@@ -1,0 +1,94 @@
+[
+	{
+		"name": "GlobalSend",
+		"status": true,
+		"group": "Sending",
+		"sort": 0
+	},
+	{
+		"name": "SendGEXInfo",
+		"status": true,
+		"group" : "Sending",
+		"sort": 1
+	},
+	{
+		"name" : "SendGildMemberLGInfo",
+		"status": false,
+		"group": "Sending",
+		"sort": 2
+	},
+	{
+		"name" : "SendInvestigations",
+		"status": false,
+		"group": "Sending",
+		"sort": 3
+	},
+	{
+		"name" : "SendPlayersMotivation",
+		"status": false,
+		"group" : "Sending",
+		"sort": 4
+	},
+	{
+		"name" : "AutomaticNegotiation",
+		"status": true,
+		"group": "Boxes",
+		"sort" : 0
+	},
+	{
+		"name" : "ShowTavernBadge",
+		"status": true,
+		"group": "Boxes",
+		"sort": 1
+	},
+	{
+		"name" : "ShowInvestments",
+		"status": true,
+		"group": "Boxes",
+		"sort": 2
+	},
+	{
+		"name" : "ShowOwnPartOnAllGBs",
+		"status": false,
+		"group": "Boxes",
+		"sort": 3
+	},
+	{
+		"name" : "ChangeLanguage",
+		"callback": "LanguageDropdown",
+		"group" : "Extension",
+		"sort": 0
+	},
+	{
+		"name" : "MenuLength",
+		"callback" : "MenuInputLength",
+		"group" : "Extension",
+		"sort" : 1
+	},
+	{
+		"name" : "ResetBoxPositions",
+		"button": "ResetBoxCoords",
+		"group": "Extension",
+		"sort": 2
+	},
+
+
+	{
+		"name" : "About",
+		"callback": "About",
+		"group": "About",
+		"sort": 0
+	},
+	{
+		"name" : "Version",
+		"callback": "VersionInfo",
+		"group": "About",
+		"sort": 1
+	},
+	{
+		"name" : "Help",
+		"callback": "Help",
+		"group": "About",
+		"sort": 2
+	}
+]

@@ -27,18 +27,18 @@ class Player {
 	 * @param {string} portrait 
 	 * @param {boolean} secretsMatch 
 	 */
-	constructor (id, name, portrait, secretsMatch) {
+	constructor (id, name, portrait, isdev, secretsMatch) {
 		this.id = id;
 		this.name = null;
 		this.portrait = null;
+		this.isdev = isdev || false;
 		this.secretsMatch = !secretsMatch;
 		this.elem = document.createElement('div');
 		this.portraitImg = null;
 		this.nameSpan = document.createElement('span');
-
 		this.elem.appendChild(this.nameSpan);
 		document.getElementById('users').appendChild(this.elem);
-		this.update(name, portrait, secretsMatch);
+		this.update(name, portrait,isdev, secretsMatch);
 	}
 
 	/**
@@ -47,10 +47,11 @@ class Player {
 	 * @param {string} portrait 
 	 * @param {boolean} secretsMatch 
 	 */
-	update(name, portrait, secretsMatch) {
+	update(name, portrait, isDev, secretsMatch) {
 		this.updateName(name);
 		this.updatePortrait(portrait);
 		this.updateSecretsMatch(secretsMatch);
+		this.updateIsDev(isDev);
 	}
 
 	/**
@@ -63,6 +64,15 @@ class Player {
 		// update name
 		this.name = name;
 		this.nameSpan.innerText = name;
+	}
+
+	/**
+	 * 
+	 * @param {boolean} isdev 
+	 */
+	updateIsDev(isdev) {
+		// update isdev
+		isdev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
 	}
 
 	/**
@@ -86,8 +96,8 @@ class Player {
 			}
 	
 			// update src if needed
-			if (portrait !== this.portrait) {
-				img.src = `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
+			if (portrait !== this.portrait || img.src.length <=0 || img.src !== `${portraitFile}`) {
+				img.src = `${portraitFile}`;
 			}
 		} else {
 			// remove if needed
@@ -135,19 +145,20 @@ class Player {
 	 * @param {boolean} [secretsMatch] 
 	 * @returns {Player|undefined}
 	 */
-	static get(id, name, portrait, secretsMatch) {
+	static get(id, name, portrait, isDev, secretsMatch) {
 		let player = Player.all.get(id);
 		if (player == null) {
 			player = new Player(
 				id,
 				name||'Unknown#'+id,
 				portrait || '',
+				isDev || false,
 				secretsMatch || false
 			);
 			Player.all.set(id, player);
 		} else {
 			if (name != null && portrait != null && secretsMatch != null) {
-				player.update(name, portrait, secretsMatch);
+				player.update(name, portrait, isDev, secretsMatch);
 			}
 		}
 		return player;
@@ -187,12 +198,29 @@ const messageFormatter = (() => {
 		}
 	};
 
+	/** @type {SimpleMarkdown.ParserRule & SimpleMarkdown.HtmlOutputRule} */
+	const imageRule = {
+		match: text => {
+			let match = /(?:(https:\/\/)|(http:\/\/))(.*?)\/(.+?)(?:\/|\?|\#|$|\n).*.(jpg|png|jpeg)/.exec(text);
+			if(match) {
+				return match;
+			}
+			return null;
+		},
+		order: defaultRules.em.order - 0.5,
+		parse: (capture, parse, state) => ({image: capture[0]}),
+		html: (node, output, state) => {
+			return `${node.image}`;
+		}
+	};
+
 	const rules = {
 		Array: defaultRules.Array,
 		list: defaultRules.list,
 		table: defaultRules.table,
 		escape: defaultRules.escape,
 		url: defaultRules.url,
+		link: defaultRules.link,
 		emoji: emojiRule,
 		em: defaultRules.em,
 		strong: defaultRules.strong,
@@ -220,6 +248,8 @@ const messageFormatter = (() => {
 
 let Chat = {
 
+	wsUri: 'ws://ws.foe-helper.com:9000/',
+	//wsUri: 'ws://127.0.0.1:9000/',
 	GuildID: 0,
 	GuildName: '',
 	PlayerID: 0,
@@ -311,15 +341,17 @@ let Chat = {
 		// template.innerHTML
 		const template = html`
 			<div class="chat-wrapper">
-				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 				<div id="chat">
-					<div id="top-bar">
-						<a class="btn-default${Chat.ChatRoom === ''       ? ' btn-default-active':''}" href="chat.html?">Gilde: ${Chat.GuildName}</a>
-						<a class="btn-default${Chat.ChatRoom === 'global' ? ' btn-default-active':''}" href="chat.html?chat=global">Welt: ${Chat.World}</a>
-						<a class="btn-default${Chat.ChatRoom === 'dev'    ? ' btn-default-active':''}" href="chat.html?chat=dev">Entwickler</a>
+					<div class="tabs">
+					<ul id="top-bar" class="horizontal">
+						<li class="${Chat.ChatRoom === ''       ? ' active':''}"><a href="chat.html?"><span>Gilde: ${Chat.GuildName}</span></a></li>
+						<li class="${Chat.ChatRoom === 'global' ? ' active':''}"><a href="chat.html?chat=global"><span>Welt: ${Chat.World}</span></a></li>
+						<li class="${Chat.ChatRoom === 'dev'    ? ' active':''}"><a href="chat.html?chat=dev"><span>Entwickler</span></a></li>
+					</ul>
 					</div>
 					<div class="message_box" id="message_box"></div>
 				</div>
+				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 			</div>
 			<div class="chat-panel">
 				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">Senden</button>
@@ -362,10 +394,7 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		// let wsUri = 'ws://localhost:9000/';
-		let wsUri = 'ws://ws.foe-rechner.de:9000/';
-
-		Chat.WebsocketChat = new WebSocket(wsUri);
+		Chat.WebsocketChat = new WebSocket(Chat.wsUri);
 
 
 		// Verbindung wurde hergestellt
@@ -374,6 +403,7 @@ let Chat = {
 				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
 				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
 				player: Chat.PlayerID,
+				isDev: false,
 				name: Chat.PlayerName || 'Unknown#'+Chat.PlayerID,
 				portrait: Chat.PlayerPortrait || '',
 				connectionId: connectionId
@@ -515,11 +545,11 @@ let Chat = {
 			type: 'message'
 		};
 
-		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
-
 		if(type !== 'onlyOthers'){
 			Chat.TextRow(msg);
 		}
+
+		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
 
 		// $('#message-input').val('');
 		/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
@@ -573,10 +603,10 @@ let Chat = {
 			case 'members': {
 				/** @type {{playerId: string, name: string, portrait: string, secretsMatch: boolean}[]} */
 				const members = message.members;
-				console.log(message)
+				// console.log(message)
 				for (let data of members) {
-					const {playerId, name, portrait, secretsMatch} = data;
-					Player.get(playerId, name, portrait, secretsMatch);
+					const {playerId, name, portrait, isDev, secretsMatch} = data;
+					Player.get(playerId, name, portrait, isDev, secretsMatch);
 					//Chat.UserEnter(Player);
 				}
 				break;
@@ -753,11 +783,13 @@ let Chat = {
 
 		const img = document.createElement('img');
 		if (Chat.PlayersPortraits[Player.avatar]) {
-			img.src = Chat.InnoCDN + 'assets/shared/avatars/' + Chat.PlayersPortraits[Player.avatar] + '.jpg';
+			img.src = img.src = Chat.PlayersPortraits[Player.avatar];
 		}
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
+		Player.isdev ? 	s.classList = "dev" : s.classList = "";
+		
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
@@ -1129,7 +1161,7 @@ let Chat = {
 	 */
 	getTimestamp: (hrs)=>{
 
-		let time = MainParser.getCurrentDateTime(),
+		let time = new Date(Date.now() + GameTimeOffset).getTime(),
 			h = hrs || 0,
 			m = 0,
 

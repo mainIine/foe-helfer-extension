@@ -29,7 +29,7 @@ let GreatBuildings =
         11: [10, 10, 20, 30, 40, 50, 60, 75, 85, 95, 110, 120, 130, 145, 155, 170, 185, 195, 210, 225, 235, 250, 265, 280, 295, 305, 320, 335, 350, 365, 380, 395, 410, 425, 440, 455, 470, 485, 500, 515, 535, 550, 565, 580, 595, 615, 630, 645, 660, 675, 695, 710, 725, 745, 760, 775, 795, 810, 830, 845, 860, 880, 895, 915, 930, 945, 965, 985, 1000, 1020, 1035, 1050, 1070, 1090, 1105, 1125, 1140, 1160, 1175, 1195, 1215, 1230, 1250, 1265, 1285, 1305, 1320, 1340, 1360, 1375, 1395, 1415, 1435, 1450, 1470, 1490, 1510, 1525, 1545, 1565, 1585, 1600, 1620, 1640, 1660, 1680, 1695, 1715, 1735, 1755, 1775, 1790, 1810, 1830, 1850, 1870, 1890, 1910, 1930, 1950, 1965, 1985, 2005, 2025, 2045, 2065, 2085, 2105, 2125, 2145, 2165, 2185, 2205, 2225, 2245, 2265, 2285, 2305],
         12: [10, 15, 20, 30, 40, 55, 65, 75, 85, 100, 115, 125, 140, 150, 165, 180, 190, 205, 220, 235, 250, 265, 280, 290, 305, 320, 335, 355, 365, 385, 400, 415, 430, 445, 460, 480, 495, 510, 525, 545, 560, 575, 590, 610, 625, 645, 660, 675, 695, 710, 730, 745, 765, 780, 800, 815, 835, 850, 870, 885, 905, 920, 940, 960, 975, 995, 1015, 1030, 1050, 1070, 1085, 1105, 1125, 1140, 1160, 1180, 1200, 1215, 1235, 1255, 1275, 1290, 1310, 1330, 1350, 1370, 1390, 1410, 1425, 1445, 1465, 1485, 1505, 1525, 1545, 1565, 1580, 1600, 1625, 1640, 1660, 1680, 1700, 1720, 1740, 1760, 1780, 1800, 1820, 1840, 1860, 1880, 1900, 1920, 1945, 1965, 1985, 2005, 2025, 2045, 2065, 2085, 2105, 2125, 2150, 2170, 2190, 2210],
         13: [10, 15, 20, 35, 45, 55, 65, 80, 90, 105, 120, 130, 145, 160, 175, 185, 200, 215, 230, 245, 260, 275, 290, 305, 320, 335, 355, 370, 385, 400, 420, 435, 450, 465, 485, 500, 515, 535, 550, 570, 585, 605, 620, 640, 655, 675, 690, 710, 730, 745, 765, 780, 800, 820, 835, 855, 875, 890, 910, 930, 945, 965, 985, 1005, 1025, 1040, 1060, 1080, 1100, 1120, 1140, 1155, 1175, 1195, 1215, 1235, 1255, 1275, 1295, 1315, 1335, 1355, 1375, 1395, 1415, 1435, 1455, 1475, 1495, 1515, 1535, 1555, 1575, 1595, 1615, 1640, 1660, 1680, 1700, 1720, 1740, 1760, 1780, 1805],
-        14: [10, 15, 25, 35, 45, 60, 70, 85, 95, 110, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 290, 305, 320, 335, 355, 370, 385, 405, 420, 435, 455, 470, 490, 505, 525, 540, 560, 575, 595, 615, 630, 650, 670, 685, 705, 725, 740, 760, 780, 800, 815, 835, 855, 875, 895, 915, 930, 950, 970, 990, 1010, 1030, 1050, 1070, 1090, 1110, 1130, 1150, 1170, 1190, 1210, 1230, 1250, 1270, 1290, 1310, 1335, 1355, 1375, 1395, 1415, 1435, 1455, 1480, 1500, 1520, 1540, 1560, 1585, 1605, 1625, 1645, 1670, 1690, 1710, 1735, 1755, 1775, 1800, 1820, 1840, 1865, 1885, 1905, 1930, 1950, 1975, 1995, 2015, 2040, 2060, 2085, 2105, 2130, 2150, 2170, 2195, 2215, 2240, 2260, 2285, 2305, 2330, 2350, 2375, 2395, 2420, 2445, 2465, 2490, 2510, 2535, 2555, 2580, 2605, 2625, 2650, 2675, 2695, 2720, 2740, 2765, 2790, 2810, 2835, 2860, 2880, 2905, 2930, 2950, 2975, 3000, 3025, 3050, 3070, 3095, 3120, 3140, 3165, 3190, 3215, 3235, 3260, 3285, 3310, 3335, 3355, 3380, 3405, 3430, 3455, 3480, 3500, 3525, 3550, 3575, 3600, 3625, 3650, 3670, 3695, 3720],
+        14: [10, 15, 25, 35, 45, 60, 70, 85, 95, 110, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 290, 305, 320, 335, 355, 370, 385, 405, 420, 435, 455, 470, 490, 505, 525, 540, 560, 575, 595, 615, 630, 650, 670, 685, 705, 725, 740, 760, 780, 800, 815, 835, 855, 875, 895, 915, 930, 950, 970, 990, 1010, 1030, 1050, 1070, 1090, 1110, 1130, 1150, 1170, 1190, 1210, 1230, 1250, 1270, 1290, 1310, 1335, 1355, 1375, 1395, 1415, 1435, 1455, 1480, 1500, 1520, 1540, 1560, 1585, 1605, 1625, 1645, 1670, 1690, 1710, 1735, 1755, 1775, 1800, 1820, 1840, 1865, 1885, 1905, 1930, 1950, 1975, 1995, 2015, 2040, 2060, 2085, 2105, 2130, 2150, 2170, 2195, 2215, 2240, 2260, 2285, 2305, 2330, 2350, 2375, 2395, 2420, 2445, 2465, 2490, 2510, 2535, 2555, 2580, 2605, 2625, 2650, 2675, 2695, 2720, 2740, 2765, 2790, 2810, 2835, 2860, 2880, 2905, 2930, 2950, 2975, 3000, 3025, 3050, 3070, 3095, 3120, 3140, 3165, 3190, 3215, 3235, 3260, 3285, 3310, 3335, 3355, 3380, 3405, 3430, 3455, 3480, 3500, 3525, 3550, 3575, 3600, 3625, 3650, 3670],
         15: [10, 15, 25, 35, 45, 60, 75, 85, 100, 115, 130, 145, 160, 170, 190, 205, 220, 235, 250, 265, 285, 300, 315, 335, 350, 370, 385, 400, 420, 440, 455, 475, 490, 510, 525, 545, 565, 585, 600, 620, 640, 660, 675, 695, 715, 735, 755, 775, 795, 815, 830, 850, 870, 895, 910, 930, 950, 970, 995, 1015, 1035, 1055, 1075, 1095, 1115, 1135, 1155, 1180, 1200, 1220, 1240, 1260, 1285, 1305, 1325, 1350, 1370, 1390, 1410, 1435, 1455, 1475, 1500, 1520, 1545, 1565, 1585, 1610, 1630, 1650, 1675, 1695, 1720, 1740, 1765, 1785, 1810, 1830, 1855, 1875, 1900, 1920, 1945, 1965, 1990, 2015, 2035, 2060, 2080, 2105, 2125, 2150, 2175, 2195, 2220, 2245, 2265, 2290, 2315, 2335, 2360, 2385, 2405, 2430, 2455, 2480, 2500, 2525, 2550, 2575, 2595, 2620, 2645, 2670, 2690, 2715, 2740, 2765, 2790, 2815, 2835, 2860, 2885, 2910, 2935, 2960, 2985, 3010, 3030, 3055, 3080, 3105, 3130, 3155, 3180, 3205],
         16: [10, 15, 25, 35, 50, 65, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 230, 245, 260, 280, 295, 310, 330, 350, 365, 385, 400, 420, 440, 455, 475, 495, 510, 530, 550, 570, 590, 605, 625, 645, 665, 685, 705, 725, 745, 765, 785, 805, 825, 845, 865, 890, 910, 930, 950, 970, 990, 1015, 1035, 1055, 1075, 1100, 1120, 1140, 1160, 1185, 1205, 1225, 1250, 1270, 1295, 1315, 1335, 1360, 1380, 1405, 1425, 1450, 1470, 1495, 1515, 1540, 1560, 1585, 1605, 1630, 1650, 1675, 1700, 1720, 1745, 1770, 1790, 1815, 1835, 1860, 1885, 1905, 1930, 1955, 1980, 2000, 2025, 2050, 2070, 2095, 2120, 2145, 2170, 2190, 2215, 2240, 2265, 2290, 2310, 2335],
         17: [10, 15, 25, 40, 50, 65, 80, 95, 110, 125, 140, 155, 170, 185, 205, 220, 235, 255, 270, 290, 305, 325, 345, 360, 380, 400, 415, 435, 455, 475, 495, 510, 530, 550, 570, 590, 610, 630, 650, 670, 690, 715, 735, 755, 775, 795, 815, 840, 860, 880, 900, 925, 945, 965, 990, 1010, 1030, 1055, 1075, 1095, 1120, 1140, 1165, 1185, 1210, 1230, 1255, 1275, 1300, 1320, 1345, 1365, 1390, 1415, 1435, 1460, 1485, 1505, 1530, 1555, 1575, 1600, 1625, 1645, 1670, 1695, 1720, 1745, 1765, 1790, 1815, 1840, 1860, 1885, 1910, 1935, 1960, 1985, 2010, 2030, 2055, 2080, 2105, 2130, 2155, 2180, 2205, 2230, 2255, 2280, 2305, 2330, 2355, 2380, 2405, 2430, 2455, 2480, 2505, 2530, 2555, 2580, 2610, 2635, 2660, 2685, 2710],
@@ -42,13 +42,15 @@ let GreatBuildings =
         { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Castel del Monte
         { 'ID': 'X_PostModernEra_Landmark1', 'GoodCosts': 75, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10]}, //Cape
         { 'ID': 'X_ContemporaryEra_Landmark2', 'GoodCosts': 100, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Inno Tower
-        { 'ID': 'X_ArcticFuture_Landmark2', 'GoodCosts': 200, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10]}, //Arctic Orangerie
+        { 'ID': 'X_FutureEra_Landmark1', 'GoodCosts': 150, 'Productions': [0.1, 0.12, 0.14, 0.17, 0.19, 0.22, 0.24, 0.26, 0.28, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.6, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.7, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.795, 0.8, 0.805, 0.81, 0.815, 0.82, 0.825, 0.83, 0.835, 0.84, 0.845, 0.85, 0.855, 0.86, 0.865, 0.87, 0.875, 0.88, 0.885, 0.89, 0.895, 0.9, 0.901, 0.902, 0.903, 0.904, 0.905, 0.906, 0.907, 0.908, 0.909, 0.91, 0.911, 0.912, 0.913, 0.914, 0.915, 0.916, 0.917, 0.918, 0.919, 0.92, 0.921, 0.922, 0.923, 0.924, 0.925, 0.926, 0.927, 0.928, 0.929, 0.93, 0.931, 0.932, 0.933, 0.934, 0.935, 0.936, 0.937, 0.938, 0.939, 0.94, 0.941, 0.942, 0.943, 0.944, 0.945, 0.946, 0.947, 0.948, 0.949, 0.95, 0.951, 0.952, 0.953, 0.954, 0.955, 0.956, 0.957, 0.958, 0.959, 0.96, 0.961, 0.962, 0.963, 0.964, 0.965, 0.966, 0.967, 0.968, 0.969, 0.97, 0.971, 0.972, 0.973, 0.974, 0.975, 0.976, 0.977, 0.978, 0.979, 0.98, 0.981, 0.982, 0.983, 0.984, 0.985, 0.986, 0.987, 0.988, 0.989, 0.99, 0.991, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 1, 1] }, //Arche
+        { 'ID': 'X_ArcticFuture_Landmark2', 'GoodCosts': 200, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10] }, //Arctic Orangerie
         { 'ID': 'X_OceanicFuture_Landmark2', 'GoodCosts': 300, 'Productions': [1, 1, 3, 3, 4, 4, 5, 5, 6, 8]}, //Kraken
         { 'ID': 'X_VirtualFuture_Landmark2', 'GoodCosts': 500, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825, 91.538, 91.575, 91.6305, 91.6675, 91.7045, 91.7415, 91.7785, 91.8155, 91.8525, 91.8895, 91.908, 91.945, 91.9635, 92.0005, 92.019, 92.0375, 92.056, 92.093, 92.1115, 92.13, 92.1485, 92.167, 92.167, 92.1855, 92.204, 92.2225, 92.241]}, //Himeji
         { 'ID': 'X_SpaceAgeAsteroidBelt_Landmark1', 'GoodCosts': 1000, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825, 91.538, 91.575, 91.6305, 91.6675, 91.7045, 91.7415, 91.7785, 91.8155, 91.8525, 91.8895, 91.908, 91.945, 91.9635, 92.0005, 92.019, 92.0375, 92.056, 92.093, 92.1115, 92.13, 92.1485, 92.167, 92.167, 92.1855, 92.204, 92.2225, 92.241] }, //Space Carrier
     ],
 
     ForderBonus: 90,
+    RewardPerDay: 0,
     FPPerTile: 0.2,
     HideNewGBs: false,
     
@@ -98,6 +100,12 @@ let GreatBuildings =
                 GreatBuildings.CalcBody();
             });
 
+            $('#greatbuildings').on('blur', '#rewardPerDay', function () {
+                GreatBuildings.RewardPerDay = parseFloat($('#rewardPerDay').val());
+                localStorage.setItem('GreatBuildingsRewardPerDay', GreatBuildings.RewardPerDay);
+                GreatBuildings.CalcBody();
+            });
+
             for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
                 $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
                     GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
@@ -119,12 +127,15 @@ let GreatBuildings =
         h.push('<div class="text-center dark-bg header">');
         h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong>');
         h.push('<br><br>')
-        h.push(i18n('Boxes.GreatBuildings.ArcBonus'));
+        h.push(i18n('Boxes.GreatBuildings.ArcBonus') + ' ');
         h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
         h.push('<br>')
         h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">');
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
-        h.push('<br><br>')
+        h.push('<br>');
+        h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
+        h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + i18n('Boxes.GreatBuildings.TTRewardPerDay') + '">');
+        h.push('<br><br>');
         h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
         h.push('</div>');
     
@@ -150,6 +161,7 @@ let GreatBuildings =
             let OwnGB = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
             let Era = Technologies.Eras[EraName];
+            let DoubleCollection = (GreatBuildings.FPGreatBuildings[i].ID === 'X_FutureEra_Landmark1' ? false : true);
 
             let BruttoCosts = [];
             for (let j = 0; j < 10; j++) {
@@ -170,7 +182,13 @@ let GreatBuildings =
             let Productions = [];
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
                 if (j < GreatBuildings.FPGreatBuildings[i].Productions.length) {
-                    Productions[j] = GreatBuildings.FPGreatBuildings[i].Productions[j]
+                    if (GreatBuildings.FPGreatBuildings[i].ID === 'X_FutureEra_Landmark1') { // Arche
+                        let arc = 1 + MainParser.ArkBonus / 100;
+                        Productions[j] = GreatBuildings.FPGreatBuildings[i].Productions[j] * GreatBuildings.RewardPerDay / arc;
+                    }
+                    else {
+                        Productions[j] = GreatBuildings.FPGreatBuildings[i].Productions[j];
+                    }
                 }
                 else {
                     Productions[j] = Math.floor(GreatBuildings.FPGreatBuildings[i].Productions[9] * (j + 1) / 10);
@@ -180,13 +198,13 @@ let GreatBuildings =
             let CurrentLevel = (OwnGB !== undefined ? OwnGB['level'] : -1);
 
             let Size = CityEntity['length'] * CityEntity['width'];
-            let ROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts);    
+            let ROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts, DoubleCollection);    
 
             let ROIResult2;
             if (ROIResult['BestLevel'] < 10) {
                 ROIResult2 = ROIResult;
                 while (ROIResult2['BestLevel'] < 10) {
-                    ROIResult2 = GreatBuildings.GetROIValues(ROIResult2['BestLevel'] + 1, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts);
+                    ROIResult2 = GreatBuildings.GetROIValues(ROIResult2['BestLevel'] + 1, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCostsm, DoubleCollection);
                 }
             }
             else {
@@ -207,8 +225,8 @@ let GreatBuildings =
             let Levela = a['ROIResults']['BestLevel'],
                 Levelb = b['ROIResults']['BestLevel'];
 
-            if (!Levela) return 999999;
-            if (!Levelb) return -999999;
+            if (Levela === undefined) return 999999;
+            if (Levelb === undefined) return -999999;
 
             return a['ROIResults']['ROIValues'][Levela]['ROI'] - b['ROIResults']['ROIValues'][Levelb]['ROI'];
         });
@@ -219,7 +237,7 @@ let GreatBuildings =
             let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
             let IsRandomFP = (GreatBuildings.FPGreatBuildings[Index].ID === 'X_VirtualFuture_Landmark2' || GreatBuildings.FPGreatBuildings[Index].ID === 'X_SpaceAgeAsteroidBelt_Landmark1');
 
-            if (!ROIResults[Index]['BestLevel']) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
+            if (ROIResults[Index]['BestLevel'] === undefined) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
             if (GreatBuildings.HideNewGBs && ShowGoodCosts[Index]) continue;
 
             h.push('<tr>');
@@ -227,7 +245,7 @@ let GreatBuildings =
             if (ROIResults[Index]['BestLevel'] !== undefined) {
                 let BestLevel = ROIResults[Index]['BestLevel'];
 
-                h.push('<td>' + CurrentLevel + '=>' + (BestLevel + 1) + '</td>');
+                h.push('<td style="white-space:nowrap">' + CurrentLevel + '->' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
                 h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
@@ -266,7 +284,7 @@ let GreatBuildings =
     },
 
 
-    GetROIValues: (Level, NettoCosts, Productions, BuildDailyCosts, BuildCosts) => {
+    GetROIValues: (Level, NettoCosts, Productions, BuildDailyCosts, BuildCosts, DoubleCollection) => {
         let Ret = { 'BestLevel': undefined, ROIValues: [] };
 
         let StartProduction = 0,
@@ -282,8 +300,13 @@ let GreatBuildings =
 
         let BestValue = 999999;
         for (let i = Math.max(Level, 0); i < NettoCosts.length; i++) {
-            CurrentInvestment += NettoCosts[i] - Productions[i]; // Doppelernte abziehen
-            Ret['ROIValues'][i] = { 'Cost': CurrentInvestment, 'FP': Productions[i] - StartProduction, 'ROI': CurrentInvestment / (Productions[i] - StartProduction)};
+
+            CurrentInvestment += NettoCosts[i];
+            if (DoubleCollection) {
+                CurrentInvestment -= Productions[i];
+            }
+
+            Ret['ROIValues'][i] = { 'Cost': CurrentInvestment, 'FP': Productions[i] - StartProduction, 'ROI': CurrentInvestment / (Productions[i] - StartProduction) };
 
             if (Productions[i] > StartProduction) {
                 if (Ret['ROIValues'][i]['ROI'] < BestValue) {
