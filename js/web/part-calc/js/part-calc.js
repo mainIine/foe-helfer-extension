@@ -959,7 +959,7 @@ let Parts = {
 		h.push('<tbody>');
         for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
-			h.push('<td style="white-space:nowrap">' + i + '->' + (i+1) + '</td>');
+			h.push('<td style="white-space:nowrap">' + i + '&rarr;' + (i+1) + '</td>');
 			h.push('<td>' + HTML.Format(P1s[i]) + '</td>');
 			h.push('<td>' + HTML.Format(P2s[i]) + '</td>');
 			h.push('<td>' + HTML.Format(P3s[i]) + '</td>');
