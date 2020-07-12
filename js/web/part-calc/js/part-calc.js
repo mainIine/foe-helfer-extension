@@ -25,6 +25,10 @@ let Parts = {
 	SaveCopy: [],
 	PlayInfoSound: null,
 
+	CurrentMaezens: [],
+	RemainingOwnPart : null,
+
+	PowerLevelingMaxLevel: 999999,
 
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
@@ -124,6 +128,10 @@ let Parts = {
 			} else {
 				$('#PartsTone').addClass('deactivated');
 			}
+		});
+
+		$('#OwnPartBox').on('click', '.button-powerleveling', function () {
+			Parts.ShowPowerLeveling();
 		});
 	},
 
@@ -321,7 +329,12 @@ let Parts = {
 		if (PlayerID !== ExtPlayerID) { //LG eines anderen Spielers
 			PlayerName = PlayerDict[PlayerID]['PlayerName'];
 		}
-		
+
+		for (let i = 0; i < 5; i++) {
+			Parts.CurrentMaezens[i] = Maezens[i] | 0;
+		}
+		Parts.RemainingOwnPart = EigenTotal - EigenStart;
+				
         // Info-Block
         h.push('<div class="dark-bg">');
         h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
@@ -345,17 +358,20 @@ let Parts = {
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
         h.push('<tr>');
-		h.push('<td class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-		h.push('<td class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		h.push('<td class="text-center" colspan="2" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		if (! Parts.IsPreviousLevel) {
+			h.push('<td colspan="2" rowspan="2"><span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span></td>')
+		}
         h.push('</tr>');
 
         h.push('<tr>');
         if (EigenStart > 0) {
-            h.push('<td colspan="3" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + HTML.Format(Total) + '</strong></td>');
-			h.push('<td colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+            h.push('<td colspan="2" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + HTML.Format(Total) + '</strong></td>');
+			h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
         }
         else {
-            h.push('<td colspan="6" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + HTML.Format(Total) + '</strong></th>');
+            h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + HTML.Format(Total) + '</strong></th>');
         }
         h.push('</tr>');
 
@@ -806,4 +822,161 @@ let Parts = {
 			});
 		}
 	},
+
+
+	ShowPowerLeveling: () => {
+		// Gibt es schon? Raus...
+		if ($('#PowerLevelingBox').length > 0) {
+			return;
+		}
+
+		Parts.BuildBoxPowerLeveling();
+	},
+
+	
+	BuildBoxPowerLeveling: () => {
+		// Box in den DOM
+		HTML.Box({
+			'id': 'PowerLevelingBox',
+			'title': i18n('Boxes.PowerLeveling.Title'),
+			'auto_close': true,
+			'dragdrop': true,
+			'minimize': true,
+		});
+
+		$('#PowerLevelingBox').on('blur', '#maxlevel', function () {
+			Parts.PowerLevelingMaxLevel = parseFloat($('#maxlevel').val());
+			Parts.CalcBodyPowerLeveling();
+		});
+
+		// Body zusammen fummeln
+		Parts.CalcBodyPowerLeveling();
+	},
+
+	CalcBodyPowerLeveling: () => {
+		let EntityID = Parts.CityMapEntity['cityentity_id'],
+			CityEntity = MainParser.CityEntities[EntityID],
+			EraName = GreatBuildings.GetEraName(EntityID),
+			Era = Technologies.Eras[EraName],
+			MinLevel = Parts.CityMapEntity['level'],
+			MaxLevel = Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length);
+
+		let Totals = [],
+			P1s = [],
+			P2s = [],
+			P3s = [],
+			P4s = [],
+			P5s = [],
+			EigenBruttos = [],
+			DoubleCollections = [],
+			EigenNettos = [];
+
+		let OwnPartSum = 0;
+
+		for (let i = MinLevel; i < MaxLevel; i++) {
+			if (i < 10) {
+				Totals[i] = CityEntity['strategy_points_for_upgrade'][i];
+			}
+			else {
+				Totals[i] = Math.ceil(CityEntity['strategy_points_for_upgrade'][9] * Math.pow(1.025, i - 9));
+            }
+
+			if (i > MinLevel) {
+				P1s[i] = GreatBuildings.Rewards[Era][i];
+				P2s[i] = 5 * Math.round(P1s[i] / 2 / 5);
+				P3s[i] = 5 * Math.round(P2s[i] / 3 / 5);
+				P4s[i] = 5 * Math.round(P3s[i] / 4 / 5);
+				P5s[i] = 5 * Math.round(P4s[i] / 5 / 5);
+
+				P1s[i] = Math.round(P1s[i] * (100 + Parts.CurrentBuildingPercents[0]) / 100);
+				P2s[i] = Math.round(P2s[i] * (100 + Parts.CurrentBuildingPercents[1]) / 100);
+				P3s[i] = Math.round(P3s[i] * (100 + Parts.CurrentBuildingPercents[2]) / 100);
+				P4s[i] = Math.round(P4s[i] * (100 + Parts.CurrentBuildingPercents[3]) / 100);
+				P5s[i] = Math.round(P5s[i] * (100 + Parts.CurrentBuildingPercents[4]) / 100);
+
+				EigenBruttos[i] = Totals[i] - P1s[i] - P2s[i] - P3s[i] - P4s[i] - P5s[i];
+			}
+			else {
+				P1s[i] = Parts.CurrentMaezens[0];
+				P2s[i] = Parts.CurrentMaezens[1];
+				P3s[i] = Parts.CurrentMaezens[2];
+				P4s[i] = Parts.CurrentMaezens[3];
+				P5s[i] = Parts.CurrentMaezens[4];
+
+				EigenBruttos[i] = Parts.RemainingOwnPart;
+            }
+			
+			let FPGreatBuilding = GreatBuildings.FPGreatBuildings.find(obj => (obj.ID === EntityID));
+			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
+				if (i < FPGreatBuilding.Productions.length) {
+					DoubleCollections[i] = FPGreatBuilding.Productions[i];
+				}
+				else {
+					DoubleCollections[i] = Math.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
+                }
+			}
+			else {
+				DoubleCollections[i] = 0;
+			}
+
+			EigenNettos[i] = EigenBruttos[i] - DoubleCollections[i];
+			OwnPartSum += EigenNettos[i];
+        }
+
+		let h = [];
+
+		h.push('<table>');
+
+		h.push('<tr>');
+		h.push('<td>' + i18n('Boxes.PowerLeveling.MaxLevel') + ':</td>');
+		h.push('<td><input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></td>');
+		h.push('<td colspan="2" rowspan="2"><strong>' + CityEntity['name'] + '</strong></td>')
+		h.push('</tr>');
+
+		h.push('<tr>');
+		h.push('<td>' + i18n('Boxes.PowerLeveling.OwnPartSum') + ':</td>');
+		h.push('<td>' + HTML.Format(Math.round(OwnPartSum)) + '</td>')
+		h.push('</tr>');
+		h.push('</table>');
+
+
+		h.push('<table class="foe-table">');
+
+		h.push('<thead>');
+		h.push('<tr>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.Level') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P1') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P2') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P3') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P4') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P5') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</strong></td>');
+		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</strong></td>');
+		h.push('</tr>');
+		h.push('</thead>');
+
+		h.push('<tbody>');
+        for (let i = MinLevel; i < MaxLevel; i++) {
+			h.push('<tr>');
+			h.push('<td style="white-space:nowrap">' + i + '->' + (i+1) + '</td>');
+			h.push('<td>' + HTML.Format(P1s[i]) + '</td>');
+			h.push('<td>' + HTML.Format(P2s[i]) + '</td>');
+			h.push('<td>' + HTML.Format(P3s[i]) + '</td>');
+			h.push('<td>' + HTML.Format(P4s[i]) + '</td>');
+			h.push('<td>' + HTML.Format(P5s[i]) + '</td>');
+			h.push('<td>' + HTML.Format(EigenBruttos[i]) + '</td>');
+			h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
+			h.push('<td><strong>' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
+			h.push('</tr>');
+        }
+		h.push('</tbody>');
+
+		h.push('</table>');
+
+		$('#PowerLevelingBoxBody').html(h.join(''));
+
+    },
 };
+
+
