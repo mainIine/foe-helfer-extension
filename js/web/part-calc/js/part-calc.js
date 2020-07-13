@@ -364,11 +364,11 @@ let Parts = {
 
         h.push('<tr>');
         if (EigenStart > 0) {
-            h.push('<td colspan="2" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + HTML.Format(Total) + '</strong></td>');
+            h.push('<td colspan="2" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
 			h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
         }
         else {
-            h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + HTML.Format(Total) + '</strong></th>');
+            h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></th>');
         }
         h.push('</tr>');
 
@@ -930,8 +930,8 @@ let Parts = {
 		h.push('<h1 class="text-center">' + CityEntity['name'] + '</h1>')
 
 		h.push('<div class="d-flex justify-content-center">');
-		h.push('<div style="margin-right: 10px;">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></div>');
-		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong>'+ HTML.Format(Math.round(OwnPartSum)) + '</strong></div>')
+		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></div>');
+		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info">'+ HTML.Format(Math.round(OwnPartSum)) + '</strong></div>')
 		h.push('</div>');
 		h.push('</div>');
 
