@@ -244,14 +244,13 @@
 
 #PowerLevelingBox {
 	top: 30%;
-	right: 15%;
-	max-width: 600px;
+	left: 100px;
+	max-width: 700px;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	/* min-height: 300px; */
 	max-height: 500px;
 }
 
@@ -263,7 +262,7 @@
 	border-right: 1px solid var(--text-dark);
 }
 
-#PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright {
+#PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
 	color: var(--text-bright);
 	font-weight: bold;
 }
