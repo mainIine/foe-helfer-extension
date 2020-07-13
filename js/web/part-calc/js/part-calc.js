@@ -869,6 +869,7 @@ let Parts = {
 			P4s = [],
 			P5s = [],
 			EigenBruttos = [],
+			HasDoubleCollection = false,
 			DoubleCollections = [],
 			EigenNettos = [];
 
@@ -909,6 +910,7 @@ let Parts = {
 			
 			let FPGreatBuilding = GreatBuildings.FPGreatBuildings.find(obj => (obj.ID === EntityID));
 			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
+				HasDoubleCollection = true;
 				if (i < FPGreatBuilding.Productions.length) {
 					DoubleCollections[i] = FPGreatBuilding.Productions[i];
 				}
@@ -917,6 +919,7 @@ let Parts = {
                 }
 			}
 			else {
+				HasDoubleCollection = false;
 				DoubleCollections[i] = 0;
 			}
 
@@ -946,8 +949,10 @@ let Parts = {
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P3') + '</th>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
+		if (HasDoubleCollection) {
+			h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
+			h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
+		}
 		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
 		h.push('</tr>');
 		h.push('</thead>');
@@ -961,8 +966,10 @@ let Parts = {
 			h.push('<td class="bright">' + HTML.Format(P3s[i]) + '</td>');
 			h.push('<td class="bright">' + HTML.Format(P4s[i]) + '</td>');
 			h.push('<td class="bright">' + HTML.Format(P5s[i]) + '</td>');
-			h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
-			h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
+			if (HasDoubleCollection) {
+				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
+				h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
+			}
 			h.push('<td><strong class="info">' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
 			h.push('</tr>');
         }
