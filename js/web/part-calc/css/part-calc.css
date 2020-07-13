@@ -17,6 +17,9 @@
 	top: 100px;
 	right: 100px;
 	width: 440px;
+}
+
+#OwnPartBox, #PowerLevelingBox {
 	font-size: 80%;
 }
 
@@ -86,19 +89,19 @@
 	color: #F3D6A0;
 }
 
-#OwnPartBox #OwnPartBoxBody strong.success {
-	color: #29b206;
+.success {
+	color: #29b206 !important;
 }
 
-#OwnPartBox #OwnPartBoxBody strong.info {
-	color: #2196f3;
+.info {
+	color: #2196f3 !important;
 }
 
 #OwnPartBox #OwnPartTable .error {
 	color: #ec4d4d;
 }
 
-#OwnPartBox #OwnPartTable input {
+#OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
 	line-height: 1.5;
 	background-color: #F9EBC6;
 	color: #93795D;
@@ -246,7 +249,7 @@
 #PowerLevelingBox {
 	top: 30%;
 	right: 15%;
-	width: 550px;
+	width: 580px;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody {

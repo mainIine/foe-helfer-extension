@@ -925,49 +925,49 @@ let Parts = {
 
 		let h = [];
 
-		h.push('<table>');
+		h.push('<div class="dark-bg">');
+		h.push('<table style="width:100%;margin-bottom:3px;">');
 
 		h.push('<tr>');
-		h.push('<td>' + i18n('Boxes.PowerLeveling.MaxLevel') + ':</td>');
-		h.push('<td><input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></td>');
-		h.push('<td colspan="2" rowspan="2"><strong>' + CityEntity['name'] + '</strong></td>')
+		h.push('<td colspan="2" rowspan="2" class="text-center"><h1>' + CityEntity['name'] + '</h1></td>')
+		h.push('<td class="text-right">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></td>');
 		h.push('</tr>');
 
 		h.push('<tr>');
-		h.push('<td>' + i18n('Boxes.PowerLeveling.OwnPartSum') + ':</td>');
-		h.push('<td>' + HTML.Format(Math.round(OwnPartSum)) + '</td>')
+		h.push('<td class="text-right" style="width:200px">' + i18n('Boxes.PowerLeveling.OwnPartSum') +': '+ HTML.Format(Math.round(OwnPartSum)) + '</td>')
 		h.push('</tr>');
 		h.push('</table>');
+		h.push('</div>');
 
 
 		h.push('<table class="foe-table">');
 
 		h.push('<thead>');
 		h.push('<tr>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.Level') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P1') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P2') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P3') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P4') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.P5') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</strong></td>');
-		h.push('<td><strong>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</strong></td>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.Level') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P1') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P2') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P3') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
 		h.push('</tr>');
 		h.push('</thead>');
 
 		h.push('<tbody>');
         for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
-			h.push('<td style="white-space:nowrap">' + i + '->' + (i+1) + '</td>');
+			h.push('<td style="white-space:nowrap"><strong>' + i + ' → ' + (i+1) + '</strong></td>');
 			h.push('<td>' + HTML.Format(P1s[i]) + '</td>');
 			h.push('<td>' + HTML.Format(P2s[i]) + '</td>');
 			h.push('<td>' + HTML.Format(P3s[i]) + '</td>');
 			h.push('<td>' + HTML.Format(P4s[i]) + '</td>');
 			h.push('<td>' + HTML.Format(P5s[i]) + '</td>');
-			h.push('<td>' + HTML.Format(EigenBruttos[i]) + '</td>');
+			h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
 			h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
-			h.push('<td><strong>' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
+			h.push('<td><strong class="info">' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
 			h.push('</tr>');
         }
 		h.push('</tbody>');
