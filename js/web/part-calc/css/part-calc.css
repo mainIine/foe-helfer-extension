@@ -19,10 +19,6 @@
 	width: 440px;
 }
 
-#OwnPartBox, #PowerLevelingBox {
-	font-size: 80%;
-}
-
 #OwnPartBox.closed .OwnPartBoxBackground {
 	display: none;
 }
@@ -249,7 +245,7 @@
 #PowerLevelingBox {
 	top: 30%;
 	right: 15%;
-	width: 580px;
+	max-width: 600px;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody {
@@ -257,4 +253,17 @@
 	overflow-y: auto;
 	/* min-height: 300px; */
 	max-height: 500px;
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .foe-table td, #PowerLevelingBox #PowerLevelingBoxBody .foe-table th {
+	text-align: center;
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .foe-table td:first-child, #PowerLevelingBox #PowerLevelingBoxBody .foe-table td:nth-child(6) {
+	border-right: 1px solid var(--text-dark);
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright {
+	color: var(--text-bright);
+	font-weight: bold;
 }
