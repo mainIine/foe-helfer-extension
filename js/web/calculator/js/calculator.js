@@ -535,6 +535,8 @@ let Calculator = {
 				if (ForderRankDiff < 0) {
 					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
 				}
+
+				GewinnClass = '';
 			}
 			else if (ForderStates[Rank] === 'Profit') {
 				RowClass = 'bg-green';
