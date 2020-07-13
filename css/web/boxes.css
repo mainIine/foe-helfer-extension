@@ -174,7 +174,8 @@
 
 .window-body h1 {
 	font-size: 135%;
-	margin: 0.25em 0 0;
+	margin: 0;
+	padding: 0.25em 0 0;
 }
 
 .window-body input[type=text],
@@ -381,4 +382,16 @@
 	height: 100%;
 	z-index: 250;
 	backdrop-filter: blur(5px);
+}
+
+/*--- UTILITIES -----------------------------------------------------------------------------------------------------------------*/
+
+.d-flex {
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.justify-content-center {
+	justify-content: center;
 }
