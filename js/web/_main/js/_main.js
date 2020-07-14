@@ -28,6 +28,7 @@
 
 let ApiURL = 'https://api.foe-rechner.de/',
 	ActiveMap = 'main',
+	LastMapPlayerID = null,
 	ExtPlayerID = 0,
 	ExtPlayerName = null,
 	ExtGuildID = 0,
@@ -585,6 +586,7 @@ const FoEproxy = (function () {
 		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
+		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
 		if (Settings.GetSetting('GlobalSend')) {
 			MainParser.SendBuildings(MainParser.CityMapData);
@@ -641,7 +643,8 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
+		LastMapPlayerID = ExtPlayerID;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
 
 		ActiveMap = 'main';
 
@@ -653,6 +656,12 @@ const FoEproxy = (function () {
 		$('#city-map-overlay').fadeToggle(function () {
 			$(this).remove();
 		});
+	});
+
+	// Besuche anderen Spieler
+	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
+		LastMapPlayerID = data.responseData['other_player']['player_id'];
+		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })));
 	});
 
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
@@ -1038,6 +1047,7 @@ let MainParser = {
 	// alle Gebäude des Spielers
 	CityMapData: {},
 	CityMapEraOutpostData: null,
+	OtherPlayerCityMapData: {},
 
 	// freugeschaltete Erweiterungen
 	UnlockedAreas: null,
