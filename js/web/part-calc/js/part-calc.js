@@ -131,6 +131,7 @@ let Parts = {
 		});
 
 		$('#OwnPartBox').on('click', '.button-powerleveling', function () {
+			Parts.PowerLevelingMaxLevel = 999999;
 			Parts.ShowPowerLeveling();
 		});
 	},
@@ -495,7 +496,11 @@ let Parts = {
 
 		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
-		$('#OwnPartBoxBody').html( h.join('') );
+		$('#OwnPartBoxBody').html(h.join(''));
+
+		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
+			Parts.CalcBodyPowerLeveling();
+		}
 	},
 
 
@@ -826,29 +831,27 @@ let Parts = {
 
 
 	ShowPowerLeveling: () => {
-		// Gibt es schon? Raus...
-		if ($('#PowerLevelingBox').length > 0) {
-			return;
-		}
-
 		Parts.BuildBoxPowerLeveling();
 	},
 
 	
 	BuildBoxPowerLeveling: () => {
-		// Box in den DOM
-		HTML.Box({
-			'id': 'PowerLevelingBox',
-			'title': i18n('Boxes.PowerLeveling.Title'),
-			'auto_close': true,
-			'dragdrop': true,
-			'minimize': true,
-		});
+		// Gibt es schon? Raus...
+		if ($('#PowerLevelingBox').length === 0) {
+			// Box in den DOM
+			HTML.Box({
+				'id': 'PowerLevelingBox',
+				'title': i18n('Boxes.PowerLeveling.Title'),
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': true,
+			});
 
-		$('#PowerLevelingBox').on('blur', '#maxlevel', function () {
-			Parts.PowerLevelingMaxLevel = parseFloat($('#maxlevel').val());
-			Parts.CalcBodyPowerLeveling();
-		});
+			$('#PowerLevelingBox').on('blur', '#maxlevel', function () {
+				Parts.PowerLevelingMaxLevel = parseFloat($('#maxlevel').val());
+				Parts.CalcBodyPowerLeveling();
+			});			
+		}
 
 		// Body zusammen fummeln
 		Parts.CalcBodyPowerLeveling();
