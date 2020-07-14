@@ -80,10 +80,8 @@ const i18n_loadPromise = (async() => {
 
 		for (let languageData of languageDatas) {
 			languageData = languageData.replace(/\/\/Todo: Translate/g, '');
-			let i18nValues = JSON.parse(languageData);
-			let i18nDict = { 'values': i18nValues };
 
-			i18n.translator.add(i18nDict);
+			i18n.translator.add({ 'values': JSON.parse(languageData) });
 		}
 
 		i18n_loaded = true;
@@ -1276,7 +1274,7 @@ let MainParser = {
 			return ;
 		}
 
-		if(MainParser.checkNextUpdate('OtherPlayers') === true)
+		if(MainParser.checkNextUpdate('OtherPlayers'))
 		{
 			let player = [];
 
