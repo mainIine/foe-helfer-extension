@@ -25,6 +25,10 @@ let Parts = {
 	SaveCopy: [],
 	PlayInfoSound: null,
 
+	CurrentMaezens: [],
+	RemainingOwnPart : null,
+
+	PowerLevelingMaxLevel: 999999,
 
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
@@ -124,6 +128,11 @@ let Parts = {
 			} else {
 				$('#PartsTone').addClass('deactivated');
 			}
+		});
+
+		$('#OwnPartBox').on('click', '.button-powerleveling', function () {
+			Parts.PowerLevelingMaxLevel = 999999;
+			Parts.ShowPowerLeveling();
 		});
 	},
 
@@ -321,7 +330,12 @@ let Parts = {
 		if (PlayerID !== ExtPlayerID) { //LG eines anderen Spielers
 			PlayerName = PlayerDict[PlayerID]['PlayerName'];
 		}
-		
+
+		for (let i = 0; i < 5; i++) {
+			Parts.CurrentMaezens[i] = Maezens[i] | 0;
+		}
+		Parts.RemainingOwnPart = EigenTotal - EigenStart;
+				
         // Info-Block
         h.push('<div class="dark-bg">');
         h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
@@ -330,26 +344,32 @@ let Parts = {
 		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
         h.push('</td>');
         h.push('<td class="text-right">');
-        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 80 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="80">80%</button>');
-        h.push('<button class="btn btn-default' + ( Parts.CurrentBuildingPercents[0] === 85 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="85">85%</button>');
-		h.push('<button class="btn btn-default' + (Parts.CurrentBuildingPercents[0] === 90 ? ' btn-default-active' : '') + ' btn-set-arc" data-value="90">90%</button>');
+
+		// different arc bonus-buttons
+		let investmentSteps = [80,85,90];
+
+		investmentSteps.sort((a, b) => a - b);
+		investmentSteps.forEach(bonus => {
+			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+		});
+
         h.push('</td>');
         h.push('</tr></table>');
 
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
         h.push('<tr>');
-        h.push('<td class="text-center" colspan="3" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong>' + (MaezenTotal + ExtTotal) + '</strong></td>');
-        h.push('<td class="text-center" colspan="3">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="success">' + EigenTotal + '</strong></td>');
+		h.push('<td class="text-center" colspan="2" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
         h.push('</tr>');
 
         h.push('<tr>');
         if (EigenStart > 0) {
-            h.push('<td colspan="3" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></td>');
-            h.push('<td colspan="3" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="success">' + (EigenTotal - EigenStart) + '</strong></td>');
+            h.push('<td colspan="2" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+			h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
         }
         else {
-            h.push('<td colspan="6" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong class="normal">' + Total + '</strong></th>');
+            h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></th>');
         }
         h.push('</tr>');
 
@@ -378,8 +398,8 @@ let Parts = {
 
                 h.push('<tr>');
                 h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-                h.push('<td class="text-center"><strong class="success">' + (Eigens[i]>0 ? Eigens[i] + ' <small>(=' + (Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
-                h.push('<td class="text-center"><strong class="info">' + EigenStart + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i] > 0 ? HTML.Format(Eigens[i]) + ' <small>(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
+				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
                 h.push('<td colspan="4"></td>');
                 h.push('</tr>');
             }
@@ -387,7 +407,7 @@ let Parts = {
                 if (Eigens[i] > 0) {
                     h.push('<tr>');
                     h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-                    h.push('<td class="text-center"><strong class="success">' + Eigens[i] + (EigenCounter > Eigens[i] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
+					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
                     h.push('<td colspan="5"></td>');
                     h.push('</tr>');
                 }
@@ -397,12 +417,12 @@ let Parts = {
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
             if (NonExts[i]) {
-                h.push('<td class="text-center"><strong>' + (Maezens[i] > 0 ? Maezens[i] : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Maezens[i] > 0 ? HTML.Format(Maezens[i]) : '-') + '</strong >' + '</td>');
                 if (LeveltLG[i]) {
                     h.push('<td class="text-center"><strong class="error">levelt</strong></td>');
                 }
                 else if (Dangers[i] > 5) {
-                    h.push('<td class="text-center"><strong class="error">danger (' + (Dangers[i]) + 'FP)</strong></td>');
+					h.push('<td class="text-center"><strong class="error">danger (' + HTML.Format(Dangers[i]) + 'FP)</strong></td>');
                 }
                 else {
                     h.push('<td class="text-center"><strong class="info">-</strong></td>');
@@ -410,22 +430,22 @@ let Parts = {
             }
             else {
                 h.push('<td class="text-center"><strong>-</strong></td>');
-                let MaezenString = Maezens[i] > 0 ? Maezens[i] : '-';
+				let MaezenString = Maezens[i] > 0 ? HTML.Format(Maezens[i]) : '-';
                 let MaezenDiff = Maezens[i] - FPRewards[i];
                 let MaezenDiffString = '';
                 if (Maezens[i] > 0) {
                     if (MaezenDiff > 0) {
-                        MaezenDiffString = ' <strong class="success"><small>(+' + MaezenDiff + ')</small></strong>';
+						MaezenDiffString = ' <strong class="success"><small>(+' + HTML.Format(MaezenDiff) + ')</small></strong>';
                     }
                     else if (MaezenDiff < 0) {
-                        MaezenDiffString = ' <strong class="error"><small>(' + MaezenDiff + ')</small></strong>';
+						MaezenDiffString = ' <strong class="error"><small>(' + HTML.Format(MaezenDiff) + ')</small></strong>';
                     }
                 }
 
                 h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
             }
 
-            h.push('<td class="text-center">' + BPRewards[i] + '</td>');
+			h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
             h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
             h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.Input[i] : 0) + '"></td>');
             h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.CurrentBuildingPercents[i] + '"></td>');
@@ -443,7 +463,7 @@ let Parts = {
             h.push('<tr>');
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Maezens.length > 6 ? ('-' + Maezens.length) : '') + '</td>');
             h.push('<td class="text-center">-</td>');
-            h.push('<td class="text-center"><strong class="info">' + MaezenRest + '</strong></td>');
+			h.push('<td class="text-center"><strong class="info">' + HTML.Format(MaezenRest) + '</strong></td>');
             h.push('<td colspan="4"></td>');
             h.push('</tr>');
         }
@@ -454,7 +474,7 @@ let Parts = {
 
             h.push('<tr>');
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-            h.push('<td class="text-center"><strong class="success">' + Eigens[5] + (EigenCounter > Eigens[5] ? ' <small>(=' + EigenCounter + ')</small>' : '') + '</strong></td>');
+			h.push('<td class="text-center"><strong class="success">' + Eigens[5] + (EigenCounter > HTML.Format(Eigens[5]) ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
             h.push('<td colspan="5"></td>');
             h.push('</tr>');
         }
@@ -467,12 +487,20 @@ let Parts = {
         // Wieviel fehlt noch bis zum leveln?
         if (Parts.IsPreviousLevel === false) {
 			let rest = (Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points']);
-            h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
+            h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
+            h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+
+			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('</div>');
         }
 
 		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
-		$('#OwnPartBoxBody').html( h.join('') );
+		$('#OwnPartBoxBody').html(h.join(''));
+
+		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
+			Parts.CalcBodyPowerLeveling();
+		}
 	},
 
 
@@ -485,14 +513,27 @@ let Parts = {
 	 */
 	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
 		let b = [],
-			n = localStorage.getItem(ExtPlayerID+'_PlayerCopyName'),
-			m = (Parts.CityMapEntity['player_id'] === ExtPlayerID ? ExtPlayerName : PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName']),
+			PlayerName,
 			s = localStorage.getItem('DropdownScheme'),
 			bn = localStorage.getItem(Parts.CurrentBuildingID);
 
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) { //Eigenes LG
+			let CopyName = localStorage.getItem(ExtPlayerID + '_PlayerCopyName');
+			if (CopyName) {
+				PlayerName = CopyName;
+			}
+			else {
+				PlayerName = ExtPlayerName;
+			}
+
+		}
+		else { //fremdes LG
+			PlayerName = PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName'];
+        }
+
 		b.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
-		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + (n !== null ? n : m) + '"></div>');
+		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + PlayerName + '"></div>');
 		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
 
 		let drp = '<div><span>' + i18n('Boxes.OwnpartCalculator.Scheme') + ':</span><select id="chain-scheme">' +
@@ -787,4 +828,161 @@ let Parts = {
 			});
 		}
 	},
+
+
+	ShowPowerLeveling: () => {
+		Parts.BuildBoxPowerLeveling();
+	},
+
+	
+	BuildBoxPowerLeveling: () => {
+		// Gibt es schon? Raus...
+		if ($('#PowerLevelingBox').length === 0) {
+			// Box in den DOM
+			HTML.Box({
+				'id': 'PowerLevelingBox',
+				'title': i18n('Boxes.PowerLeveling.Title'),
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': true,
+			});
+
+			$('#PowerLevelingBox').on('blur', '#maxlevel', function () {
+				Parts.PowerLevelingMaxLevel = parseFloat($('#maxlevel').val());
+				Parts.CalcBodyPowerLeveling();
+			});			
+		}
+
+		// Body zusammen fummeln
+		Parts.CalcBodyPowerLeveling();
+	},
+
+	CalcBodyPowerLeveling: () => {
+		let EntityID = Parts.CityMapEntity['cityentity_id'],
+			CityEntity = MainParser.CityEntities[EntityID],
+			EraName = GreatBuildings.GetEraName(EntityID),
+			Era = Technologies.Eras[EraName],
+			MinLevel = Parts.CityMapEntity['level'],
+			MaxLevel = Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length);
+
+		let Totals = [],
+			P1s = [],
+			P2s = [],
+			P3s = [],
+			P4s = [],
+			P5s = [],
+			EigenBruttos = [],
+			HasDoubleCollection = false,
+			DoubleCollections = [],
+			EigenNettos = [];
+
+		let OwnPartSum = 0;
+
+		for (let i = MinLevel; i < MaxLevel; i++) {
+			if (i < 10) {
+				Totals[i] = CityEntity['strategy_points_for_upgrade'][i];
+			}
+			else {
+				Totals[i] = Math.ceil(CityEntity['strategy_points_for_upgrade'][9] * Math.pow(1.025, i - 9));
+            }
+
+			if (i > MinLevel) {
+				P1s[i] = GreatBuildings.Rewards[Era][i];
+				P2s[i] = 5 * Math.round(P1s[i] / 2 / 5);
+				P3s[i] = 5 * Math.round(P2s[i] / 3 / 5);
+				P4s[i] = 5 * Math.round(P3s[i] / 4 / 5);
+				P5s[i] = 5 * Math.round(P4s[i] / 5 / 5);
+
+				P1s[i] = Math.round(P1s[i] * (100 + Parts.CurrentBuildingPercents[0]) / 100);
+				P2s[i] = Math.round(P2s[i] * (100 + Parts.CurrentBuildingPercents[1]) / 100);
+				P3s[i] = Math.round(P3s[i] * (100 + Parts.CurrentBuildingPercents[2]) / 100);
+				P4s[i] = Math.round(P4s[i] * (100 + Parts.CurrentBuildingPercents[3]) / 100);
+				P5s[i] = Math.round(P5s[i] * (100 + Parts.CurrentBuildingPercents[4]) / 100);
+
+				EigenBruttos[i] = Totals[i] - P1s[i] - P2s[i] - P3s[i] - P4s[i] - P5s[i];
+			}
+			else {
+				P1s[i] = Parts.CurrentMaezens[0];
+				P2s[i] = Parts.CurrentMaezens[1];
+				P3s[i] = Parts.CurrentMaezens[2];
+				P4s[i] = Parts.CurrentMaezens[3];
+				P5s[i] = Parts.CurrentMaezens[4];
+
+				EigenBruttos[i] = Parts.RemainingOwnPart;
+            }
+			
+			let FPGreatBuilding = GreatBuildings.FPGreatBuildings.find(obj => (obj.ID === EntityID));
+			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
+				HasDoubleCollection = true;
+				if (i < FPGreatBuilding.Productions.length) {
+					DoubleCollections[i] = FPGreatBuilding.Productions[i];
+				}
+				else {
+					DoubleCollections[i] = Math.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
+                }
+			}
+			else {
+				HasDoubleCollection = false;
+				DoubleCollections[i] = 0;
+			}
+
+			EigenNettos[i] = EigenBruttos[i] - DoubleCollections[i];
+			OwnPartSum += EigenNettos[i];
+        }
+
+		let h = [];
+
+		h.push('<div class="dark-bg" style="margin-bottom:3px;padding: 5px;">');
+		h.push('<h1 class="text-center">' + CityEntity['name'] + '</h1>')
+
+		h.push('<div class="d-flex justify-content-center">');
+		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></div>');
+		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info">'+ HTML.Format(Math.round(OwnPartSum)) + '</strong></div>')
+		h.push('</div>');
+		h.push('</div>');
+
+
+		h.push('<table class="foe-table">');
+
+		h.push('<thead>');
+		h.push('<tr>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.Level') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P1') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P2') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P3') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
+		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
+		if (HasDoubleCollection) {
+			h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
+			h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
+		}
+		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
+		h.push('</tr>');
+		h.push('</thead>');
+
+		h.push('<tbody>');
+        for (let i = MinLevel; i < MaxLevel; i++) {
+			h.push('<tr>');
+			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i+1) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(P1s[i]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(P2s[i]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(P3s[i]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(P4s[i]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(P5s[i]) + '</td>');
+			if (HasDoubleCollection) {
+				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
+				h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
+			}
+			h.push('<td><strong class="info">' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
+			h.push('</tr>');
+        }
+		h.push('</tbody>');
+
+		h.push('</table>');
+
+		$('#PowerLevelingBoxBody').html(h.join(''));
+
+    },
 };
+
+

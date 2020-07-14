@@ -25,57 +25,38 @@
 	overflow-y: auto;
 }
 
-#SettingsBoxBody .SettingsBoxBodyInner {
-	padding: 8px;
-}
 
-#SettingsBoxBody .item {
-	border: .5px solid #7f5a34;
-	margin-bottom: 15px;
-	box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
-}
-
-#SettingsBoxBody .item .title {
-	box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
-	border-bottom: 1px solid rgb(65,41,17);
-	padding: 4px 10px;
+#SettingsBoxBody h2 {
+	font-size: 110%;
 	font-weight: 700;
-	color: #ffcc68;
-	background-color: rgba(0,0,0,0.15);
+	color: var(--text-bright);
+	margin: 10px 0 5px;
 }
 
-#SettingsBoxBody .item .item-row {
-	display: flex;
-	flex-wrap: nowrap;
-	flex-direction: row;
-	align-items: center;
-}
-
-#SettingsBoxBody .item .item-row a {
+#SettingsBoxBody .item-row a {
 	color: #ffcc68;
 }
 
-#SettingsBoxBody .item .item-row .desc {
-	width: 66%;
-	padding: 10px;
+#SettingsBoxBody .item-row .desc {
+	margin: 10px 0 20px;
 }
 
-#SettingsBoxBody .item .item-row .check {
-	background-image: url('../../../../css/images/hud/setting-cb.png');
+#SettingsBoxBody .item-row .check {
+	background-image: url('../images/setting-cb.png');
 }
 
-#SettingsBoxBody .item .item-row .check {
+#SettingsBoxBody .item-row .check {
 	position: relative;
 	display: inline-block;
 	width: 173px;
 	height: 32px;
 }
 
-#SettingsBoxBody .item .item-row .unchecked {
+#SettingsBoxBody .item-row .unchecked {
 	background-position: 0 -32px;
 }
 
-#SettingsBoxBody .item .item-row .check input.setting-check {
+#SettingsBoxBody .item-row .check input.setting-check {
 	position: absolute;
 	right: 3px;
 	top: 7px;
@@ -83,7 +64,7 @@
 	transform: scale(1.5, 1.5);
 }
 
-#SettingsBoxBody .item .item-row .check span.toogle-word {
+#SettingsBoxBody .item-row .check span.toogle-word {
 	display: block;
 	width: 141px;
 	text-align: center;
@@ -93,20 +74,20 @@
 	font-weight: 700;
 }
 
-#SettingsBoxBody .item .item-row .btn-default,
-#SettingsBoxBody .item .item-row .setting-dropdown {
+#SettingsBoxBody .item-row .btn-default,
+#SettingsBoxBody .item-row .setting-dropdown {
 	width: 172px;
 	padding: 4px 0;
 }
 
-#SettingsBoxBody .item .item-row input[type=number] {
+#SettingsBoxBody .item-row input[type=number] {
 	width: 152px;
 	padding: 4px 8px;
 	text-align: center;
 	font-weight: 700;
 }
 
-#SettingsBoxBody .item .item-row dl {
+#SettingsBoxBody .item-row dl {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -115,10 +96,119 @@
 	user-select: text;
 }
 
-#SettingsBoxBody .item .item-row dl dt {
+#SettingsBoxBody .item-row dl dt {
 	width: 86px;
 }
-#SettingsBoxBody .item .item-row dl dd {
+#SettingsBoxBody .item-row dl dd {
 	width: 86px;
 	margin-inline-start: 0;
+}
+
+.settings-sub {
+	display: flex;
+	-ms-flex-align: stretch!important;
+	align-items: stretch!important;
+	height: 100%;
+}
+
+#SettingsBoxBody .settings-wrapper {
+	position: absolute;
+	top: 41px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#SettingsBoxBody .tabs ul.horizontal {
+	display: flex;
+	justify-content: space-around;
+}
+
+#SettingsBoxBody .tabs ul.horizontal li {
+	width: 25%;
+	text-align: center;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-height: 35px;
+}
+
+#SettingsBoxBody .tabs ul.vertical {
+	position: static;
+	width: 200px;
+	padding-top: 5px;
+}
+
+#SettingsBoxBody .tabs ul.vertical li {
+	margin-bottom: 2px;
+}
+
+#SettingsBoxBody .tabs .sub-tab {
+	margin-left: 0;
+	border-left: 0;
+	width: 100%;
+}
+
+#SettingsBoxBody .helplist {
+	margin: 0;
+	list-style: none;
+	padding: 0;
+}
+
+#SettingsBoxBody .helplist li {
+	clear: left;
+	margin: 0;
+}
+
+#SettingsBoxBody .helplist a {
+	text-decoration: none;
+	display: block;
+	overflow: hidden;
+	border-top: 1px solid #7F5A34;
+	border-bottom: 1px solid #3D250F;
+	padding: 5px;
+	color: var(--text-normal);
+}
+
+#SettingsBoxBody .helplist a:hover {
+	background-color: rgba(243, 214, 160, 0.2);
+}
+
+#SettingsBoxBody .helplist li span {
+	display: inline-block;
+	background-color: #000;
+	width: 30px;
+	height: 32px;
+	margin-right: 7px;
+	background: url('../images/help.png') 0 0 no-repeat;
+	text-decoration: none;
+	float: left;
+}
+
+#SettingsBoxBody .helplist .discord {
+	background-position: -33px 0;
+}
+
+#SettingsBoxBody .helplist .forums {
+	background-position: -63px 0;
+	width: 34px;
+	margin-right: 4px;
+}
+
+#SettingsBoxBody .helplist .website {
+	background-position: -97px 0;
+	width: 32px;
+}
+
+#SettingsBoxBody .info-box {
+	border: 1px solid var(--text-dark);
+	padding: 5px;
+}
+
+#SettingsBoxBody .info-box dt {
+	color: var(--text-bright);
+	font-weight: bold;
+}
+
+#SettingsBoxBody hr {
+	border: 1px solid var(--text-dark);
 }

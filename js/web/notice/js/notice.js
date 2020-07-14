@@ -63,7 +63,14 @@ let Notice = {
 			Notice.Listener();
 		}
 
-		Notice.prepareContent();
+		if(Settings.GetSetting('GlobalSend')){
+			Notice.prepareContent();
+		}
+
+		// global send is deactivated
+		else {
+			$('#noticesBody').addClass('global-send-required-bg').append( $('<span />').addClass('global-send-required').html(i18n('Boxes.Notice.GlobalSendRequired')) );
+		}
 	},
 
 
@@ -190,6 +197,13 @@ let Notice = {
 			$('.foe-helper-overlay').remove();
 		});
 
+		// save content when close box
+		$('body').on('click', '#noticesclose', function(){
+			let $this = $('.sub-tab:visible');
+
+			Notice.SaveContent($this);
+		});
+
 		// toggle edit buttons
 		$('#notices').on('click', '#notices-settings', function(){
 			if(!Notice.EditMode){
@@ -203,9 +217,9 @@ let Notice = {
 
 
 		$('#noticesBody').on('blur', '[contenteditable="true"]', function(){
-			let id = $(this).closest('.sub-tab');
+			let $this = $(this).closest('.sub-tab');
 
-			Notice.SaveContent(id);
+			Notice.SaveContent($this);
 		});
 
 		// enter is pressed

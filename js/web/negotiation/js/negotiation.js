@@ -64,6 +64,9 @@ let Negotiation = {
 
 	StartNegotiationBackupData: undefined,
 
+	CONST_Context_GE: 'guildExpedition',
+	CONST_Context_GBG: 'guildBattleground',
+
 
 	/**
 	 * Box in den DOM legen
@@ -463,7 +466,7 @@ let Negotiation = {
 	 * @param {number} [forcedTryCount]
 	 */
 	StartNegotiation: (responseData, forcedTryCount) => {
-		if (responseData.context === 'guildBattleground') {
+		if (responseData.context === Negotiation.CONST_Context_GBG) {
 			if (! $('#negotiation-Btn').hasClass('hud-btn-red')) {
 				$('#negotiation-Btn').addClass('hud-btn-red');
 				_menu.toolTippBox(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
@@ -521,7 +524,7 @@ let Negotiation = {
 		// Setze die Korrekte Versuchs-anzahl
 		if (forcedTryCount != null) {
 			Negotiation.TryCount = forcedTryCount;
-		} else if (responseData.context === 'guildExpedition') {
+		} else if (responseData.context === Negotiation.CONST_Context_GE) {
 			Negotiation.TryCount = moment.unix(Tavern.ExpireTime) > Date.now() ? 4 : 3;
 		} else {
 			Negotiation.TryCount = Negotiation.GoodCount > 6 ? 4 : 3;
@@ -1001,7 +1004,7 @@ let NegotiationDebugger = {
 		{text: 'Done',      value: -1, selectedColor: 'none'},
 	],
 
-	Show: function() 	{
+	Show: function() {
 		if ($('#negotiationDebuggerBox').length === 0) {
 
 			// Box in den DOM
@@ -1165,7 +1168,7 @@ let NegotiationDebugger = {
 
 		try {
 			Negotiation.StartNegotiation({
-					"context": "guildExpedition",
+					"context": Negotiation.CONST_Context_GE,
 					"possibleCosts": {
 						"resources": Object.fromEntries(goodList.sort((a,b)=>a[0]>b[0]?1:-1)),
 						"__class__": "Resources"

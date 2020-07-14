@@ -95,40 +95,67 @@ body {
 
 .chat-wrapper #users {
 	width: 180px;
-	background: url('../images/chat-bg.png') center top/contain repeat-y;
-	height: calc(100% - 34px);
+	background: url('../../../../css/images/hud/box-bg.png') center top/contain repeat-y;
+	height: calc(100% - 40px);
 	overflow-x: hidden;
 	overflow-y: auto;
-	color: #644c34;
+	color: #f3D6A0;
 	user-select: none;
+	z-index: 100;
 }
 
-.chat-wrapper #users .player {
+.chat-wrapper #users div:not(.header) {
+	overflow: hidden;
+	white-space: nowrap;
+	padding: 2px;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+	border-top: 1px solid rgba(255,255,255, 0.1);
+	background-color: rgba(0,0,0,0.1);
 	display: flex;
-	align-items: center!important;
-	padding: 4px;
+	align-items: center;
 }
 
-.chat-wrapper #users .player span {
+.chat-wrapper #users div:not(.header) span {
 	font-weight: 500;
-	display: block;
+	display: inline-block;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
+.chat-wrapper #users div:not(.head) span.dev {
+   font-weight: bold;
+   color: #ffb539;
+}
+
+.chat-wrapper #users div:not(.head) span.dev:after {
+    content: 'DEV';
+    vertical-align: middle;
+    font-size: 70%;
+    display: inline-block;
+    padding: 1px 2px;
+    background-color: rgba(0,0,0,0.5);
+    font-weight: bold;
+    color: #fff;
+    margin-left: 5px;
+}
+
 .chat-wrapper #users img {
 	width: 25px;
-	border-radius: 50%;
-	margin-right: 10px;
+	border-radius: 2px;
+	margin-right: 5px;
+	vertical-align: middle;
 }
 
 .chat-wrapper #users .head {
 	font-weight: bold;
-	border-bottom: 1px solid #644c34;
+	border-bottom: 2px solid #864c1f;
+	border-left: 1px dotted #f6e9c663;
 	padding: 2px 5px;
 	position: relative;
-	line-height: 28px;
+	line-height: 35px;
+	background-color: rgba(0,0,0,0.4);
+
 }
 
 .chat-wrapper #users .head span {
@@ -146,7 +173,7 @@ body {
 	color: #644c34;
 	width: 85%;
 }
-
+/*
 #ChatBody #chat #top-bar {
 	height: 32px;
 	position: fixed;
@@ -155,15 +182,15 @@ body {
 	flex-wrap: nowrap;
 	border-bottom: 1px solid #644c34;
 	background: #f5ebc6;
-}
+}*/
 
 #ChatBody #chat #top-bar .btn-default:not(:last-child) {
 	margin-right: 0.625rem;
 }
 
 #chat #message_box {
-	margin: 0 10px 10px 10px;
-	padding: 36px 8px 4px;
+	margin: 42px 10px 10px 10px;
+	padding: 10px;
 }
 
 #ChatBody #chat .mark-user {
@@ -173,7 +200,7 @@ body {
 
 .chat-panel {
 	display: flex;
-	border-top: 1px solid #281207;
+	border-top: 2px solid #281207;
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -210,13 +237,18 @@ body {
 }
 
 .chat-panel input, .chat-panel textarea {
-	width: 100%;
+	width: 85%;
 	background-color: #f5ebc6;
 	color: #644c34;
 	padding: 4px 4px 4px 24px;
 	border: none;
 	height: 25px;
 	resize: none;
+	font: inherit;
+}
+
+.chat-panel input:focus, .chat-panel textarea:focus, button:focus {
+	outline: none;
 }
 
 .chat-panel button {
@@ -225,12 +257,13 @@ body {
 	background: -webkit-linear-gradient(top, #d6a23c 0%,#ba732e 16%,#94501e 100%);
 	background: linear-gradient(to bottom, #d6a23c 0%,#ba732e 16%,#94501e 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d6a23c', endColorstr='#94501e',GradientType=0 );
-	border: 1px solid #222;
-	border-radius: 3px;
+	border: 1px solid #d6a23c;
+	border-radius: 0;
 	color: #fbe1d1;
 	font-weight: 700;
 	border-top-width: 0;
 	cursor: pointer;
+	width: 187px;
 }
 
 #chat .big-box {
@@ -244,15 +277,15 @@ body {
 #chat .big-box .image img {
 	max-width: 30px;
 	border-radius: 50%;
+	margin-top: 5px;
 }
 
 #chat div.user-self  {
-	background-color: rgba(255, 255,255, 0.15);
+	background-color: rgba(255, 255,255, 0.25);
 }
 #chat div.user-self .user-message,
 #chat div.user-self .message-data {
 	text-align: right;
-	justify-content: flex-end;
 }
 
 #chat div.user-self .message-data .message-time {
@@ -264,14 +297,17 @@ body {
 }
 
 #chat div .user-message {
-	width: 100%;
+	padding: 2px 4px;
+	font-size: 1em;
+	display: block;
 }
 
 #chat div .message-data {
-	font-size: 0.60rem;
-	display: flex;
+	font-size: 0.6rem;
+	display: block;
 	color: #484a4c;
-	margin-top: 3px;
+	margin: 0 0 7px;
+	padding: 2px 4px;
 }
 
 #chat div .message-data span:first-child {
@@ -302,11 +338,13 @@ body {
 }
 
 .system-message .success {
-	background-color: rgba(133, 199, 57, 0.3);
+	background: linear-gradient(45deg, #d5e09e00 20%,#d5e09e 50%,#d5e09e00 80%);
 }
 
 .system-message .error {
-	background-color: rgba(199, 14, 19, 0.4);
+	background: linear-gradient(-45deg, #e8616100 10%,#ffb19a 50%,#e8616100 90%);
+    color: #b30000;
+    font-weight: bold;
 }
 
 #chat > div.user-notification {
@@ -335,10 +373,11 @@ body {
 	max-height: 100px;
 	overflow: hidden;
 	overflow-y: auto;
+	padding: 2px 0;
 	top: 0px;
 	left: 0;
 	right: 0;
-	background-color: rgba(0,0,0, 0.3);
+	background-color: rgba(0,0,0, 0.65);
 	transition: top 0.45s ease-in-out;
 	z-index: -1;
 }
@@ -366,4 +405,104 @@ textarea::-webkit-scrollbar {
 textarea::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
+}
+
+
+.window-body .tabs {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 20;
+}
+
+.window-body .tabs ul.horizontal {
+	margin: 0;
+	padding: 6px 0 0 6px;
+	border-bottom: 2px solid #864c1e;
+	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 repeat;
+}
+
+.window-body .tabs ul.horizontal li {
+	margin: 0 6px 0 0;
+	padding: 0;
+	display: inline-block;
+	line-height: 33px;
+	position: relative;
+}
+
+.window-body .tabs ul.horizontal li:hover {
+	background-position: 0 -126px;
+}
+
+.window-body .tabs ul.horizontal li.active {
+	background-position: 0 -126px
+}
+
+.window-body .tabs ul.horizontal li a {
+	text-decoration: none;
+	display: block;
+	position: relative;
+	padding: 0 12px;
+	color: #9c9c9c;
+}
+
+.window-body .tabs ul.horizontal li:hover a,
+.window-body .tabs ul.horizontal li.active a {
+	color: #e2e2e2;
+}
+
+.window-body .tabs ul.horizontal li a span {
+	display: inline-block;
+	z-index: 20;
+	position: relative;
+	top: 1px;
+}
+
+.window-body .tabs ul.horizontal li a:before {
+	content: '';
+	position: absolute;
+	background-image:  url('../../../../css/images/hud/tab.png');
+	background-repeat: no-repeat;
+	background-position: center left;
+	width: 50%;
+	height: 33px;
+	z-index: 1;
+	left: 0;
+	bottom: 0;
+	top: 0;
+}
+
+.window-body .tabs ul.horizontal li a:after {
+	content: '';
+	position: absolute;
+	background-image:  url('../../../../css/images/hud/tab.png');
+	background-repeat: no-repeat;
+	background-position: center right;
+	width: 50%;
+	height: 33px;
+	z-index: 1;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.window-body .tabs ul.horizontal li:hover a:before,
+.window-body .tabs ul.horizontal li.active a:before,
+.window-body .tabs ul.horizontal li.active:hover a:before,
+.window-body .tabs ul.horizontal li:hover a:after,
+.window-body .tabs ul.horizontal li.active a:after,
+.window-body .tabs ul.horizontal li.active:hover a:after {
+	background-image:  url('../../../../css/images/hud/tab-active.png');
+	background-repeat: no-repeat;
+	background-position: center left;
+}
+
+.window-body .tabs ul.horizontal li:hover a:after,
+.window-body .tabs ul.horizontal li.active a:after,
+.window-body .tabs ul.horizontal li.active:hover a:after {
+	background-position: center right;
+}
+
+.window-body .tabs > div {
+	position: relative;
 }
