@@ -727,7 +727,7 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	chat_Btn: () => {
+	/* @TODO chat_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
 
@@ -749,7 +749,7 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
-	},
+	},*/
 
 	/**
 	 * Set Übersicht

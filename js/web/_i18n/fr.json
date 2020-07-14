@@ -1,8 +1,8 @@
 ﻿{
     "API.GEXChampionship": "Le classement de guilde GEX a été mis à jour.",
     "API.GEXPlayer": "Les stages GEX des membres ont été mis à jour.",
-    "API.LGGildMember": "Les GM de __player__ ont été envoyés.",
-    "API.LGInvest": "Vos investissements GM ont été transférés.",
+    "API.LGGildMember": "Les informations à propos des GMs de __player__ ont été envoyées.",
+    "API.LGInvest": "Vos investissements GMs ont été mis à jour.",
     "API.UpdateSuccess": "Mise à jour effectuée.",
     "Boxes.Alerts.Form.Antiques.Auction": "Enchère",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Temps de recharge de l'enchère",
