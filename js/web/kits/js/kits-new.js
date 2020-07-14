@@ -49,6 +49,35 @@ let Kits = {
 	TabsContent: [],
 
 
+	/**
+	 * Get all sets from the server
+	 */
+	init: ()=>{
+
+		let data = localStorage.getItem('KnownKitsData');
+
+		if(data === null || MainParser.checkNextUpdate('KnownKitsDate')){
+			MainParser.loadJSON('https://cache.foe-rechner.de/kits/sets.json', (data)=>{
+
+				localStorage.setItem('KnownKitsData', data);
+				localStorage.setItem('KnownKitsDate', MainParser.getAddedDateTime(48));
+
+				Kits.KnownKits = JSON.parse(data);
+				Kits.BuildBox();
+			});
+
+		} else {
+			Kits.KnownKits = JSON.parse(data);
+			Kits.BuildBox();
+		}
+	},
+
+
+	/**
+	 * Create the box
+	 *
+	 * @constructor
+	 */
 	BuildBox: ()=> {
 
 		// zurück setzen

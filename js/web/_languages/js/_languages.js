@@ -4,6 +4,7 @@
 		'de': 'Deutsch',
 		'dk': 'Dansk',
 		'en': 'English',
+		'el': 'Ελληνικά',
 		'es': 'Español',
 		'fr': 'Français',
 		'hu': 'Magyar',
