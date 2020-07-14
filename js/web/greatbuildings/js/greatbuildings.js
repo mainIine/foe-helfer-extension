@@ -127,7 +127,7 @@ let GreatBuildings =
         h.push('<div class="text-center dark-bg header">');
         h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong><br>');
         if (LastMapPlayerID !== ExtPlayerID) {
-            h.push('<span class="player-name">' + PlayerDict[LastMapPlayerID]['PlayerName'] + '</span>');
+            h.push('<strong class="player-name"><span>' + PlayerDict[LastMapPlayerID]['PlayerName'] + '</span></strong>');
         }
         h.push('<br>')
         h.push(i18n('Boxes.GreatBuildings.ArcBonus') + ' ');
