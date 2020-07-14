@@ -1,5 +1,58 @@
 ## Changelog - Extension
 
+##### 2.5.1.0
+
+**Neu**
+- Eigenanteilsrechner:
+    - Powerleveln hinzugefügt: 
+        - ein neuer Button, unten rechts, startet diese Funktion in einer extra Box
+        - Stufen bis > 100 Verfügbar
+        - Gebäude mit Doppelernten werden berücksichtigt
+
+**Update**
+- Notizen:
+    - [#1300](https://github.com/dsiekiera/foe-helfer-extension/issues/1300) Notizen werden beim schliessen der Box gespeichert
+
+- Einstellungen:
+    - [#1413](https://github.com/dsiekiera/foe-helfer-extension/issues/1413) Buttons aus dem Menü in die neue Einstellungsbox verschoben
+    
+- Produktionsübersicht:
+    - [#1424](https://github.com/dsiekiera/foe-helfer-extension/issues/1424) Bonus von Botschaftern und Gildenboni wurde bei der Rückkehr beim Rathaus nicht angezeigt
+
+- Kostenrechner:
+    - [#1433](https://github.com/dsiekiera/foe-helfer-extension/issues/1433) korrekte Formatierung ergänzt
+    
+- Stadtübersicht:
+    - [#1438](https://github.com/dsiekiera/foe-helfer-extension/issues/1438) auf der Map werden beim Mouseover die Zeitalter angezeigt
+
+**BugFix**
+- Infobox:
+    - [#1375](https://github.com/dsiekiera/foe-helfer-extension/issues/1375) doppelte Einträge gefixt
+
+- Statistiken:
+    - [#917](https://github.com/dsiekiera/foe-helfer-extension/issues/917) "seit Dienstag" gefixt
+
+- Übersetzungen:
+    - [#924](https://github.com/dsiekiera/foe-helfer-extension/issues/924) String gefixt
+
+- Ereignisse:
+    - [#1321](https://github.com/dsiekiera/foe-helfer-extension/issues/1324) Counter im Menü zählt nun korrekt
+
+- Produktionsübersicht:
+    - [#1343](https://github.com/dsiekiera/foe-helfer-extension/issues/1343) Produktionen konnten doppelt erscheinen
+
+- Eigenanteilsrechner:
+    - [#1378](https://github.com/dsiekiera/foe-helfer-extension/issues/1378) beim Öffnen fremder LGs wurde der eigene Spielernamen angezeigt
+
+- Notizen:
+    - [#1454](https://github.com/dsiekiera/foe-helfer-extension/issues/1454) Content wurde zu breit angezeigt
+
+- Kostenrechner:
+    - [#1471](https://github.com/dsiekiera/foe-helfer-extension/issues/1471) Tooltip bliebt manchmal hängen
+    - [#1495](https://github.com/dsiekiera/foe-helfer-extension/issues/1495) Farben der Level-Warnung angepasst
+
+---
+
 ##### 2.5.0.1
 
 **Update**
