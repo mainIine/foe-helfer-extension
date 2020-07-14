@@ -15,9 +15,12 @@
 
 /**
  *
- * @type {{BuildingSelectionKits: null, GetTabContent: (function(): string), ReadSets: Kits.ReadSets, globCnt: number, SetTabs: Kits.SetTabs, GetTabs: (function(): string), isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], ReadSelectionKits: Kits.ReadSelectionKits, CreateBody: Kits.CreateBody, BuildingSets: null, Tabs: [], ScanInvetory: Kits.ScanInvetory, SetTabContent: Kits.SetTabContent, TabsContent: [], Inventory: null, setSingles: []}}
+ * @type {{BuildingSelectionKits: null, init: Kits.init, GetTabContent: (function(): string), KnownKits: null, ReadSets: Kits.ReadSets, GetInvententoryArray: (function(): []), globCnt: number, SetTabs: Kits.SetTabs, GetTabs: (function(): string), isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], ReadSelectionKits: Kits.ReadSelectionKits, CreateBody: Kits.CreateBody, BuildingSets: null, Tabs: [], ScanInvetory: Kits.ScanInvetory, SetTabContent: Kits.SetTabContent, TabsContent: [], Inventory: null, setSingles: []}}
  */
 let Kits = {
+
+	//
+	KnownKits: null,
 
 	// Lager
 	Inventory: null,
@@ -45,6 +48,7 @@ let Kits = {
 	Tabs: [],
 	TabsContent: [],
 
+
 	BuildBox: ()=> {
 
 		// zurück setzen
@@ -60,16 +64,15 @@ let Kits = {
 
 		if( $('#kits').length === 0 )
 		{
-			let args = {
+			HTML.AddCssFile('kits');
+
+			HTML.Box({
 				'id': 'kits',
 				'title': i18n('Boxes.Kits.Title'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
-			};
-
-			HTML.Box(args);
-			HTML.AddCssFile('kits');
+			});
 
 		} else {
 			HTML.CloseOpenBox('kits');
@@ -196,6 +199,7 @@ let Kits = {
 				items: []
 			};
 
+
 			for(let i = 0; i < eraItems.length; i++)
 			{
 				let aName = eraItems[i]['itemAssetName'],
@@ -203,7 +207,7 @@ let Kits = {
 
 				if(aName !== '' && Kits.isChecked.includes(aName) === false){
 
-					// Es ist ein Upgrade Kit, also Stufe 1
+					// Es ist kein Upgrade Kit, also Stufe 1
 					if(aName.includes('upgrade_kit') === false)
 					{
 						let iItem = inv.find(obj => (obj['item']['cityEntityId'] === aName));

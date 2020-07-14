@@ -1,495 +1,192 @@
 ﻿{
-	"values": {
-		"_Disclaimer.Body": "<h1>Changes with this update of FoE helper</h1><p>In this update some functionality has been modified or removed. You can read the details on our website <a href=\"https://foe-rechner.de/news/changes-to-the-foe-helper\">https://foe-rechner.de/news/changes-to-the-foe-helper</a>.</p><h2>1. GB Cost Calculator</h2><p>The \"Snipe\" display and the \"Potential Investments\" window have been removed.</p><h2>2. Incidents</h2><p>This feature only shows all current incidents in the city.</p><h2>3. Negotiation Assistant</h2><p>This feature is no longer available in guild battlegrounds. In all other areas it remains.</p><h2>4. Event Quests</h2><p>This data is now only available on our (or other) websites. Please note that the quests come from the beta server and therefore are not always 100% accurate.</p><h2>5. PvP Activities</h2><p>The feature has been removed.</p><h2>6. Neighbors Productions</h2><p>The productions and army values of neighbors are no longer displayed.</p>", //Todo: Translate
-		"_Disclaimer.Button": "Understood", //Todo: Translate
-		"_Disclaimer.Label": "I have read and understood this statement.", //Todo: Translate
-		"_Disclaimer.Title": "Update", //Todo: Translate
-		"_Language": "Český",
-		"API.GEXChampionship": "Umístění cechu v CE bylo updatováno",
-		"API.GEXPlayer": "Umístění členů v CE bylo updatováno",
-		"API.LGGildMember": "__player__'s Velkolepé budovy byly poslány",
-		"API.LGInvest": "Investice vašich VB bylo posláno",
-		"API.UpdateSuccess": "Info Updated Successfully!", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Auction": "Auction", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cooldown", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer", //Todo: Translate
-		"Boxes.Alerts.Form.Antiques.Exchange": "daily exchange", //Todo: Translate
-		"Boxes.Alerts.Form.Battleground": "Battleground Provinces", //Todo: Translate
-		"Boxes.Alerts.Form.Body": "Body", //Todo: Translate
-		"Boxes.Alerts.Form.Create": "Create", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAlert": "Create Alert", //Todo: Translate
-		"Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors", //Todo: Translate
-		"Boxes.Alerts.Form.CreateNewAlert": "Create New Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Datetime": "Date &amp; Time", //Todo: Translate
-		"Boxes.Alerts.Form.Delete": "Delete", //Todo: Translate
-		"Boxes.Alerts.Form.Discard": "Discard", //Todo: Translate
-		"Boxes.Alerts.Form.Edit": "Edit", //Todo: Translate
-		"Boxes.Alerts.Form.EditAlert": "Edit Alert", //Todo: Translate
-		"Boxes.Alerts.Form.Expiration": "Expiration", //Todo: Translate
-		"Boxes.Alerts.Form.Expired": "Expired", //Todo: Translate
-		"Boxes.Alerts.Form.Expires": "Expires", //Todo: Translate
-		"Boxes.Alerts.Form.Neighborhood": "Neighborhood", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence": "Persistence", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Description": "Should the notification remain open until the user dismisses or clicks the notification", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.Off": "Off", //Todo: Translate
-		"Boxes.Alerts.Form.Persistence.On": "On", //Todo: Translate
-		"Boxes.Alerts.Form.Persistent": "Persistent", //Todo: Translate
-		"Boxes.Alerts.Form.Preset.Now": "Now", //Todo: Translate
-		"Boxes.Alerts.Form.Presets": "Presets", //Todo: Translate
-		"Boxes.Alerts.Form.Preview": "Preview", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat": "Repeat", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Every": "or every", //Todo: Translate
-		"Boxes.Alerts.Form.Repeat.Never": "never", //Todo: Translate
-		"Boxes.Alerts.Form.Save": "Save", //Todo: Translate
-		"Boxes.Alerts.Form.Tag": "Tag", //Todo: Translate
-		"Boxes.Alerts.Form.Tag.Description": "Tags can be used to group notifications (a new notification with a given tag will replace an older notification with the same tag)", //Todo: Translate
-		"Boxes.Alerts.Form.Title": "Title", //Todo: Translate
-		"Boxes.Alerts.Permissions.Default": "Enable notifications in your browser to use this feature", //Todo: Translate
-		"Boxes.Alerts.Permissions.Denied": "Notifications have been disabled. To enable notifications in your browser settings navigate to chrome://settings/content/notifications and then refresh this page.", //Todo: Translate
-		"Boxes.Alerts.Permissions.Enable": "Enable", //Todo: Translate
-		"Boxes.Alerts.Permissions.Refresh": "Refresh", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Info": "Automatically create a new alert when I make a bid in the Antiques Dealer Auction", //Todo: Translate
-		"Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction", //Todo: Translate
-		"Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant alert when there is a high activity in the Guild Battlegrounds (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the Guild Battlegrounds are open in game!", //Todo: Translate
-		"Boxes.Alerts.Preferences.Battlegrounds.Title": "Guild Battlegrounds Tracker", //Todo: Translate
-		"Boxes.Alerts.Preferences.ComingSoon": "Coming soon...", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Info": "Automatically generated alert times (Antiques Dealer, Guild Battlegrounds etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction alerts will be displayed 30s before the auction actually ends!", //Todo: Translate
-		"Boxes.Alerts.Preferences.Early.Title": "Notify Early Offset", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Info": "Show in-game notification instead of the native Desktop notification when the game window is focused", //Todo: Translate
-		"Boxes.Alerts.Preferences.InGame.Title": "In-game Notifications", //Todo: Translate
-		"Boxes.Alerts.Preferences.MenuIcon.Info": "Show the next alert countdown as an overlay of the Main Menu icon", //Todo: Translate
-		"Boxes.Alerts.Preferences.MenuIcon.Title": "Main Menu Countdown", //Todo: Translate
-		"Boxes.Alerts.Preferences.Start.Info": "Display a list of Alerts which expired while offline (since the game window was closed)", //Todo: Translate
-		"Boxes.Alerts.Preferences.Start.Title": "Expired Alert Summary at Start", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Info": "Display alert suggestions (for example, when clicking on a Battleground sector, or collecting a building production)", //Todo: Translate
-		"Boxes.Alerts.Preferences.Suggestions.Title": "Alert Suggestions", //Todo: Translate
-		"Boxes.Alerts.Tabs.Alerts": "Alerts", //Todo: Translate
-		"Boxes.Alerts.Tabs.Preferences": "Preferences", //Todo: Translate
-		"Boxes.Alerts.Time.15m": "15m", //Todo: Translate
-		"Boxes.Alerts.Time.1d": "1d", //Todo: Translate
-		"Boxes.Alerts.Time.1h": "1h", //Todo: Translate
-		"Boxes.Alerts.Time.1m": "1m", //Todo: Translate
-		"Boxes.Alerts.Time.4h": "4h", //Todo: Translate
-		"Boxes.Alerts.Time.5m": "5m", //Todo: Translate
-		"Boxes.Alerts.Time.8h": "8h", //Todo: Translate
-		"Boxes.Api.Title": "Extension API Settings", //Todo: Translate
-		"Boxes.BattleAssist.Text": "Your army has only Rogues. Either heal units using diamonds or retreat!", //Todo: Translate
-		"Boxes.BattleAssist.Title": "Warning!", //Todo: Translate
-		"Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
-		"Boxes.Calculator.ArkBonus": "Your Arc Bonus", //Todo: Translate
-		"Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
-		"Boxes.Calculator.BPs": "Plánky",
-		"Boxes.Calculator.Commitment": "Náklady",
-		"Boxes.Calculator.Done": "Hotovo",
-		"Boxes.Calculator.FP": "BV",
-		"Boxes.Calculator.FriendlyInvestment": "Friendly invest:", //Todo: Translate
-		"Boxes.Calculator.HelpLink": "https://foe-rechner.de/docs/2/cost-calculator/", //Todo: Translate
-		"Boxes.Calculator.LevelWarning": "Upozornění! Zvýšení úrovně budovy",
-		"Boxes.Calculator.LGNotConnected": "Budova není připojena",
-		"Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
-		"Boxes.Calculator.MaxLevel": "Max level", //Todo: Translate
-		"Boxes.Calculator.Meds": "Meds", //Todo: Translate
-		"Boxes.Calculator.Profit": "Zisk",
-		"Boxes.Calculator.Step": "Úroveň ",
-		"Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
-		"Boxes.Calculator.TTForderCosts": "Cost = __nettoreward__<small>(Net Reward)</small> X __forderfactor__%<small>(Friendly invest??)</small> = __costs__", //Todo: Translate
-		"Boxes.Calculator.TTForderFPStockLow": "ATTENTION: Not enough FP Packs in stock!<br>You only have __fpstock__ of __costs__FP<br>That is __tooless__FPs too few", //Todo: Translate
-		"Boxes.Calculator.TTForderNegativeProfit": "Spot is not safe. __fpcount__ additional FPs must be added.<br>Total to make spot safe: __totalfp__FPs", //Todo: Translate
-		"Boxes.Calculator.TTLevelWarning": "Adding __fpcount__ FP(s) too many!<br>Maximum investment: __totalfp__ FPs", //Todo: Translate
-		"Boxes.Calculator.TTLoss": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Loss = __costs__ <small>(Cost)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTLossSelf": "Reward = __nettoreward__<small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Loss = __paid__ <small>(Paid)</small> - __bruttoreward__ <small>(Reward)</small> = __loss__", //Todo: Translate
-		"Boxes.Calculator.TTPaidTooLess": "You paid __paid__ FPs instead of __topay__ FPs. That is __tooless__FPs too few.", //Todo: Translate
-		"Boxes.Calculator.TTPaidTooMuch": "You paid __paid__ FPs instead of __topay__ FPs. That is __toomuch__FP too many.", //Todo: Translate
-		"Boxes.Calculator.TTProfit": "Reward = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.TTProfitSelf": "Reward = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__", //Todo: Translate
-		"Boxes.Calculator.Up2LevelUp": "Do nové úrovně",
-		"Boxes.Campagne.AlreadyDone": " Již dobyto!",
-		"Boxes.Campagne.DescInStock": "K dispozici",
-		"Boxes.Campagne.DescRequired": "Požadováno",
-		"Boxes.Campagne.DescStillMissing": "<span style='color:#29b206'>Remaining</span> / <span style='color:#ff4040'>Needed</span>", //Todo: Translate
-		"Boxes.Campagne.Resource": "Zboží",
-		"Boxes.Campagne.Reward": "Celková odměna ",
-		"Boxes.Campagne.Title": "Náklady na dobytí ",
-		"Boxes.CityMap.CavalierPerspecitve": "Side View", //Todo: Translate
-		"Boxes.CityMap.Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
-		"Boxes.CityMap.Desc2": "Submit", //Todo: Translate
-		"Boxes.CityMap.FreeArea": "Available Squares: ", //Todo: Translate
-		"Boxes.CityMap.NormalPerspecitve": "Top View", //Todo: Translate
-		"Boxes.CityMap.ShowSubmitBox": "Show submit box", //Todo: Translate
-		"Boxes.CityMap.SubmitSuccess": "Data byla přijata... Nyní navštivte ",
-		"Boxes.CityMap.TitleSend": "Vložit data",
-		"Boxes.CityMap.WholeArea": "Total Squares: ", //Todo: Translate
-		"Boxes.CityMap.YourCity": "Your city", //Todo: Translate
-		"Boxes.EventChests.Chance": "Chance", //Todo: Translate
-		"Boxes.EventChests.Cost": "Costs", //Todo: Translate
-		"Boxes.EventChests.CostPerPrize": "Cost/Prize", //Todo: Translate
-		"Boxes.EventChests.CostPerStep": "Cost/Step", //Todo: Translate
-		"Boxes.EventChests.MainPrize": "Main Prize", //Todo: Translate
-		"Boxes.EventChests.MainPrizeTitle": "Daily Special: ", //Todo: Translate
-		"Boxes.EventChests.Steps": "Steps", //Todo: Translate
-		"Boxes.EventChests.Title": "Event Chest Selection Helper", //Todo: Translate
-		"Boxes.EventList.And": " and ", //Todo: Translate
-		"Boxes.EventList.Desc": "Task", //Todo: Translate
-		"Boxes.EventList.Number": "Ser", //Todo: Translate
-		"Boxes.EventList.Or": " or ", //Todo: Translate
-		"Boxes.EventList.Reward": "Reward", //Todo: Translate
-		"Boxes.EventList.Title": "Event Questlines for: ", //Todo: Translate
-		"Boxes.EventList.Upcoming": "UPCOMING QUESTS (Numbers may vary)", //Todo: Translate
-		"Boxes.EventList.Waiting": "No Quests available", //Todo: Translate
-		"Boxes.Gildfights.Fights": "Fights", //Todo: Translate
-		"Boxes.Gildfights.LastSnapshot": " - Last snapshot: __time__ ago", //Todo: Translate
-		"Boxes.Gildfights.Negotiations": "Negotiations", //Todo: Translate
-		"Boxes.Gildfights.Player": "Guild Member", //Todo: Translate
-		"Boxes.Gildfights.Title": "GBG Overview", //Todo: Translate
-		"Boxes.Gildfights.Total": "Total", //Todo: Translate
-		"Boxes.GreatBuildings.ArcBonus": "Friendly invest", //Todo: Translate
-		"Boxes.GreatBuildings.Cost": "Costs", //Todo: Translate
-		"Boxes.GreatBuildings.CostPerDailyFP": "Cost / daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.DailyFP": "Daily FP", //Todo: Translate
-		"Boxes.GreatBuildings.FPCostGoods": "FP costs for goods", //Todo: Translate
-		"Boxes.GreatBuildings.GreatBulding": "Great building", //Todo: Translate
-		"Boxes.GreatBuildings.HelpLink": "https://foe-rechner.de/docs/2/gb-investments/", //Todo: Translate
-		"Boxes.GreatBuildings.HideNewGBs": "Hide not built GBs", //Todo: Translate
-		"Boxes.GreatBuildings.Level": "Level", //Todo: Translate
-		"Boxes.GreatBuildings.Suggestion2": "Suggestion 2", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionDescription": "Buildings at the top of the list are best", //Todo: Translate
-		"Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared", //Todo: Translate
-		"Boxes.GreatBuildings.Title": "GB investment", //Todo: Translate
-		"Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods", //Todo: Translate
-		"Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)", //Todo: Translate
-		"Boxes.HiddenRewards.Disappears": "Zmizí",
-		"Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
-		"Boxes.HiddenRewards.Title": "Skryté příhody",
-		"Boxes.Infobox.Filter": "Filter", //Todo: Translate
-		"Boxes.Infobox.FilterAuction": "Auction", //Todo: Translate
-		"Boxes.Infobox.FilterGex": "GE", //Todo: Translate
-		"Boxes.Infobox.FilterGildFights": "GBG", //Todo: Translate
-		"Boxes.Infobox.FilterLevel": "GB", //Todo: Translate
-		"Boxes.Infobox.FilterMessage": "Message", //Todo: Translate
-		"Boxes.Infobox.FilterTrade": "Trade", //Todo: Translate
-		"Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> has just placed a bid for __amount__ Trade Coins.", //Todo: Translate
-		"Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> has just contributed __points__ GE points.", //Todo: Translate
-		"Boxes.Infobox.Messages.GildFightOccupied": "<span style=\"color:#ffb539\">__provinceName__</span> was captured by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is locked until __untilOccupied__.", //Todo: Translate
-		"Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ has just reached level __level__.<br>You took <strong>__rank__ </strong> place and received <strong>__fps__</strong> FPs in profit.", //Todo: Translate
-		"Boxes.Infobox.Messages.MsgBuilding": "__building__ - Level __level__", //Todo: Translate
-		"Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepted your trade of __offerValue__ __offer__ for __needValue__ __need__.", //Todo: Translate
-		"Boxes.Infobox.ResetBox": "Clear All", //Todo: Translate
-		"Boxes.Infobox.Title": "Infobox Overview Window", //Todo: Translate
-		"Boxes.Investment.AllUpToDate": "Event History page previoulsy updated", //Todo: Translate
-		"Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previoulsy updated", //Todo: Translate
-		"Boxes.Investment.CurrReward": "Current Profit: ", //Todo: Translate
-		"Boxes.Investment.InvestBar": "Invested FPs: ", //Todo: Translate
-		"Boxes.Investment.PlayerFound": "New Event History found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCount": "__count__ new player Events were found", //Todo: Translate
-		"Boxes.Investment.PlayerFoundCounter": "__count__ new player Events were found", //Todo: Translate
-		"Boxes.Investment.Title": "Your FP Investments Summary", //Todo: Translate
-		"Boxes.Investment.TotalFP": "Stock + Invested + Profit = ", //Todo: Translate
-		"Boxes.Kits.InStock": "In Stock", //Todo: Translate
-		"Boxes.Kits.KitName": "Item Type", //Todo: Translate
-		"Boxes.Kits.Name": "Building", //Todo: Translate
-		"Boxes.Kits.TabBuildingKits": "Sets/Upgrades", //Todo: Translate
-		"Boxes.Kits.TabSelectionKits": "Selection Kits", //Todo: Translate
-		"Boxes.Kits.Title": "In Stock Sets, Upgrades and Kits", //Todo: Translate
-		"Boxes.Negotiation.Average": "Ø Množství",
-		"Boxes.Negotiation.Canceled": "Vzdát",
-		"Boxes.Negotiation.Chance": "Šance",
-		"Boxes.Negotiation.confirmGoodsMissmatch": "Ok", //Todo: Translate
-		"Boxes.Negotiation.DragDrop": "Drag & Drop the resource icons above to rearrange the average display yourself to determine a new sequences from the first attempt.", //Todo: Translate
-		"Boxes.Negotiation.GoodsCritical": "WARNING!: Goods stock at CRITICAL level!", //Todo: Translate
-		"Boxes.Negotiation.GoodsLow": "ATTENTION: Goods stock is LOW!", //Todo: Translate
-		"Boxes.Negotiation.Person": "D",
-		"Boxes.Negotiation.Round": "Round", //Todo: Translate
-		"Boxes.Negotiation.SaveCurrentEraGoods": "Save current goods?", //Todo: Translate
-		"Boxes.Negotiation.SaveMedals": "Save medals?", //Todo: Translate
-		"Boxes.Negotiation.Stock": "Stock:", //Todo: Translate
-		"Boxes.Negotiation.Success": "Úspěch",
-		"Boxes.Negotiation.TableLoadError": "Error loading the Negotiation Table", //Todo: Translate
-		"Boxes.Negotiation.Title": "Pomocník s vyjednáváním",
-		"Boxes.Negotiation.TryEnd": "Skoro",
-		"Boxes.Negotiation.WrongGoods": "Špatné zboží! Vyberte jiné",
-		"Boxes.Notice.DeleteGroup": "Delete group and sites", //Todo: Translate
-		"Boxes.Notice.DeleteItem": "Delete site", //Todo: Translate
-		"Boxes.Notice.DummyHeading": "Your headline", //Todo: Translate
-		"Boxes.Notice.Edit": "Edit", //Todo: Translate
-		"Boxes.Notice.GroupName": "Group name", //Todo: Translate
-		"Boxes.Notice.HelpLink": "https://foe-rechner.de/docs/2/noticies/", //Todo: Translate
-		"Boxes.Notice.NewGroup": "Group", //Todo: Translate
-		"Boxes.Notice.NewGroupDesc": "Create a group first...", //Todo: Translate
-		"Boxes.Notice.NewSide": "Side", //Todo: Translate
-		"Boxes.Notice.Save": "Save", //Todo: Translate
-		"Boxes.Notice.SideName": "Side name", //Todo: Translate
-		"Boxes.Notice.Sorting": "Sorting", //Todo: Translate
-		"Boxes.Notice.Title": "Notices", //Todo: Translate
-		"Boxes.Outpost.DescInStock": "K dispozici",
-		"Boxes.Outpost.DescRequired": "Vyžadováno",
-		"Boxes.Outpost.DescStillMissing": "<span style='color:#29b206'>Surplus</span> / <span style='color:#ff4040'>Needed</span>", //Todo: Translate
-		"Boxes.Outpost.ExpansionsSum": "Rozšíření",
-		"Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Šance: __chanceX4__%",
-		"Boxes.Outpost.nextTile": "Další rozšíření",
-		"Boxes.Outpost.ShowSums": "Show Sums:", //Todo: Translate
-		"Boxes.Outpost.tileNotPlanned": "off", //Todo: Translate
-		"Boxes.Outpost.Title": "Kulturní továrny",
-		"Boxes.Outpost.TitleBuildings": "Budova",
-		"Boxes.Outpost.TitleFree": "Vyzkoumáno",
-		"Boxes.Outpost.TitleShort": "Zboží - ",
-		"Boxes.OwnpartCalculator.All": "All", //Todo: Translate
-		"Boxes.OwnpartCalculator.Arc": "Arc", //Todo: Translate
-		"Boxes.OwnpartCalculator.Auto": "Auto", //Todo: Translate
-		"Boxes.OwnpartCalculator.BPs": "Plánky",
-		"Boxes.OwnpartCalculator.BuildingName": "Building", //Todo: Translate
-		"Boxes.OwnpartCalculator.CopyValues": "Kopírovat hodnoty",
-		"Boxes.OwnpartCalculator.Deposit": "Vklad",
-		"Boxes.OwnpartCalculator.Done": "Hotovo",
-		"Boxes.OwnpartCalculator.Ext": "Ext", //Todo: Translate
-		"Boxes.OwnpartCalculator.HelpLink": "https://foe-rechner.de/docs/2/gb-calculator/", //Todo: Translate
-		"Boxes.OwnpartCalculator.IndividualName": "Jméno přispěvatele",
-		"Boxes.OwnpartCalculator.Levels": "Úrovně",
-		"Boxes.OwnpartCalculator.LGTotalFP": "Body výzkumu celkově",
-		"Boxes.OwnpartCalculator.Meds": "Medaile",
-		"Boxes.OwnpartCalculator.NoPlaceSafe": "No spot safe", //Todo: Translate
-		"Boxes.OwnpartCalculator.Note": "Poznámka",
-		"Boxes.OwnpartCalculator.OldLevel": "Předchozí úroveň",
-		"Boxes.OwnpartCalculator.Order": "Pořadí",
-		"Boxes.OwnpartCalculator.OutputScheme": "Výstup",
-		"Boxes.OwnpartCalculator.OwnPart": "Vlastní příspěvek",
-		"Boxes.OwnpartCalculator.OwnPartRemaining": "Zbývající",
-		"Boxes.OwnpartCalculator.PatronPart": "Příspěvek ostatních",
-		"Boxes.OwnpartCalculator.Place": "Místo",
-		"Boxes.OwnpartCalculator.PlayerName": "Player", //Todo: Translate
-		"Boxes.OwnpartCalculator.Scheme": "Scheme", //Todo: Translate
-		"Boxes.OwnpartCalculator.Step": "Úroveň",
-		"Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
-		"Boxes.OwnpartCalculator.YourName": "Vaše jméno",
-		"Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles", //Todo: Translate
-		"Boxes.Productions.AdjacentBuildings": "Sousední budovy",
-		"Boxes.Productions.GoodEraTotal": "Total", //Todo: Translate
-		"Boxes.Productions.GuildGoods": "Guild goods", //Todo: Translate
-		"Boxes.Productions.GuildPower": "Guild power", //Todo: Translate
-		"Boxes.Productions.Happiness": "Spokojenost",
-		"Boxes.Productions.Headings.all": "Celkem",
-		"Boxes.Productions.Headings.amount": "Množství",
-		"Boxes.Productions.Headings.area": "Area", //Todo: Translate
-		"Boxes.Productions.Headings.boost": "Bonus",
-		"Boxes.Productions.Headings.culture": "Kulturní budovy",
-		"Boxes.Productions.Headings.decoration": "Dekorace",
-		"Boxes.Productions.Headings.earning": "Příjem",
-		"Boxes.Productions.Headings.efficiency": "Efficiency", //Todo: Translate
-		"Boxes.Productions.Headings.era": "Era", //Todo: Translate
-		"Boxes.Productions.Headings.goods": "Továrny",
-		"Boxes.Productions.Headings.greatbuilding": "Velkolepé budovy",
-		"Boxes.Productions.Headings.main_building": "Radnice",
-		"Boxes.Productions.Headings.name": "Item", //Todo: Translate
-		"Boxes.Productions.Headings.number": "Číslo",
-		"Boxes.Productions.Headings.production": "Dílny",
-		"Boxes.Productions.Headings.random_production": "Náhodná produkce",
-		"Boxes.Productions.Headings.residential": "Residential Buildings", //Todo: Translate
-		"Boxes.Productions.Headings.size": "Size", //Todo: Translate
-		"Boxes.Productions.Headings.street": "Ulice",
-		"Boxes.Productions.ModeCurrent": "Current", //Todo: Translate
-		"Boxes.Productions.ModeDaily": "Daily prod.", //Todo: Translate
-		"Boxes.Productions.ModeGroups": "Skupiny",
-		"Boxes.Productions.ModeSingle": "Samostatné",
-		"Boxes.Productions.NoAsteroidDataWarning": "Goods from asteroid belt are not included. Please visit your asteroid belt outpost and open the box again", //Todo: Translate
-		"Boxes.Productions.NoMarsDataWarning": "Goods from mars are not included. Please visit your mars outpost and open the box again", //Todo: Translate
-		"Boxes.Productions.SearchInput": "Hledat budovu...",
-		"Boxes.Productions.Title": "Přehled produkce",
-		"Boxes.Productions.Total": "Celkem: ",
-		"Boxes.Settings.Active": "Aktivováno",
-		"Boxes.Settings.Inactive": "Deaktivováno",
-		"Boxes.Settings.Title": "Nastavení",
-		"Boxes.Stats.BtnAll": "All", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableEras": "All Ages", //Todo: Translate
-		"Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)", //Todo: Translate
-		"Boxes.Stats.BtnAllTittle": "Ages + No ages + Special", //Todo: Translate
-		"Boxes.Stats.BtnChartType.delta": "Delta", //Todo: Translate
-		"Boxes.Stats.BtnChartType.line": "Lines", //Todo: Translate
-		"Boxes.Stats.BtnChartType.streamgraph": "Stream", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.delta": "Increase/decrease graph", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.line": "Line Chart", //Todo: Translate
-		"Boxes.Stats.BtnChartTypeTitle.streamgraph": "Stream Chart", //Todo: Translate
-		"Boxes.Stats.BtnLastEras": "Last 2 Ages", //Todo: Translate
-		"Boxes.Stats.BtnLastErasTitle": "Select current and previous ages", //Todo: Translate
-		"Boxes.Stats.BtnMyEra": "My Age", //Todo: Translate
-		"Boxes.Stats.BtnNoEra": "No Age", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsGBGPlayers": "GBG", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsRewards": "Rewards", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanD": "Clan D. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasureClanH": "Clan H. Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerD": "Treasure Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsTreasurePlayerH": "Treasure", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.BtnSource.statsUnitsH": "Units Hourly", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotations": "GvG Annotations", //Todo: Translate
-		"Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupBy": "Group by Ages", //Todo: Translate
-		"Boxes.Stats.BtnToggleGroupByTitle": "", //Todo: Translate
-		"Boxes.Stats.Period.all": "All", //Todo: Translate
-		"Boxes.Stats.Period.last30days": "Last 30 days", //Todo: Translate
-		"Boxes.Stats.Period.last7days": "Last 7 days", //Todo: Translate
-		"Boxes.Stats.Period.sinceTuesday": "Since Tuesday", //Todo: Translate
-		"Boxes.Stats.Period.thisMonth": "This Month", //Todo: Translate
-		"Boxes.Stats.Period.today": "Today", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.all": "During all the time", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last30days": "Collected last 30 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.last7days": "Collected last 7 days", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.sinceTuesday": "Collected since Tuesday (GE starts on Tuesday)", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.thisMonth": "Collected this month", //Todo: Translate
-		"Boxes.Stats.PeriodTitle.today": "Collected Today", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.__event": "Event", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.battlegrounds_conquest": "GBG", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomatic Gifts", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.guildExpedition": "GE", //Todo: Translate
-		"Boxes.Stats.Rewards.Source.spoilsOfWar": "Spoils of War", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.__event": "Rewards from Seasonal or Special Events", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.battlegrounds_conquest": "GBG Rewards", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.diplomaticGifts": "Diplomatic Gifts (Space Carrier)", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.guildExpedition": "GE Relic Rewards (Temple of Relic)", //Todo: Translate
-		"Boxes.Stats.Rewards.SourceTitle.spoilsOfWar": "Spoils of War Rewards (Himeji Castle)", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsGBGPlayers": "GBG players' Scoreboard", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsRewards": "Your Rewards from Himeji Castle, Temple of Relics, Guild Battleground", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanD": "Clan's Daily Treasure", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasureClanH": "Clan's Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerD": "Your Treasure Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsTreasurePlayerH": "Your Treasure Hourly", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily", //Todo: Translate
-		"Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly", //Todo: Translate
-		"Boxes.Stats.Title": "Statistics", //Todo: Translate
-		"Boxes.Technologies.DescInStock": "K dispozici",
-		"Boxes.Technologies.DescRequired": "Požadováno",
-		"Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Remaining</span> / <span style='color:#ff4040'>Needed</span>", //Todo: Translate
-		"Boxes.Technologies.NoTechs": "Dokončili jste dobu",
-		"Boxes.Technologies.Resource": "Zdroj",
-		"Boxes.Technologies.Title": "Náklady na výzkum",
-		"Boxes.Units.AlcaHarvest": "Your Alcatraz is ready to collect!", //Todo: Translate
-		"Boxes.Units.Attack": "Útok",
-		"Boxes.Units.Bind": "Závislá",
-		"Boxes.Units.Defend": "Obrana",
-		"Boxes.Units.NextUnitsIn": "Příští(ch) __count__ jednotek se rekrutuje za <span class=\"alca-countdown\"></span> at __harvest__ hodin",
-		"Boxes.Units.NotFilled": "Slot Empty", //Todo: Translate
-		"Boxes.Units.Proportionally": "Percentage", //Todo: Translate
-		"Boxes.Units.Quantity": "Množství",
-		"Boxes.Units.ReadyToLoot": "Ready to loot!", //Todo: Translate
-		"Boxes.Units.Status": "Status", //Todo: Translate
-		"Boxes.Units.Title": "Armáda",
-		"Boxes.Units.Unbind": "Nezávislá",
-		"Boxes.Units.Unit": "Jednotka",
-		"Date": "DD-MMM-YY", //Todo: Translate
-		"DateTime": "DD-MMM-YY @ HH:mm:ss a", //Todo: Translate
-		"Eras.0": "Bez doby",
-		"Eras.1": "Doba kamenná",
-		"Eras.10": "Moderní doba",
-		"Eras.11": "Postmoderní doba",
-		"Eras.12": "Současnost",
-		"Eras.13": "Zítra",
-		"Eras.14": "Budoucnost",
-		"Eras.15": "Ledová budoucnost",
-		"Eras.16": "Oceánská budoucnost",
-		"Eras.17": "Virtuální budoucnost",
-		"Eras.18": "Kolonizace Marsu",
-		"Eras.19": "Kolonizace pásu planetek",
-		"Eras.2": "Doba bronzová",
-		"Eras.20": "Space Age Venus", //Todo: Translate
-		"Eras.3": "Doba železná",
-		"Eras.4": "Raný středověk",
-		"Eras.5": "Vrcholný středověk",
-		"Eras.6": "Pozdní středověk",
-		"Eras.7": "Koloniální doba",
-		"Eras.8": "Průmyslový věk",
-		"Eras.9": "Doba pokroku",
-		"Global.BoxTitle": "FoE Helfer",
-		"HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice",
-		"HiddenRewards.Positions.cityRoadSmall": "Cesta",
-		"HiddenRewards.Positions.guildExpedition": "Cechovní expedice",
-		"HiddenRewards.Positions.nature": "V přírodě",
-		"HiddenRewards.Positions.shore": "Na pobřeží",
-		"HiddenRewards.Positions.water": "Na hladině",
-		"HiddenRewards.Table.expires": "Čas obnovení",
-		"HiddenRewards.Table.position": "Umístění",
-		"HiddenRewards.Table.type": "Druh",
-		"Local": "cs-CZ",
-		"Menu.Api.Desc": "Settings to send data to your own server", //Todo: Translate
-		"Menu.Api.Title": "Extension API", //Todo: Translate
-		"Menu.Ask.Desc": "Máte s něčím problémy?<br>Mrkněte sem!",
-		"Menu.Ask.Title": "Otázky/odpovědi",
-		"Menu.Bugs.Desc": "Něco se pokazilo/ chybí vám něco?",
-		"Menu.Bugs.Title": "Chyby/přání",
-		"Menu.Calculator.Desc": "Počítá odměny za přispívání bodů výzkumu.",
-		"Menu.Calculator.Title": "Kalkulačka bodů výzkumu",
-		"Menu.Calculator.Warning": "Nejprve přispějte do něčí velkolepé budovy!",
-		"Menu.Campagne.Desc": "Přehled potřebných surovin na vyjednávání",
-		"Menu.Campagne.Title": "Mapa území",
-		"Menu.Campagne.Warning": "Vyberte nejprve provincii!",
-		"Menu.Chat.Desc": "Popovídejte si s kamarády z cechu",
-		"Menu.Chat.Title": "Cechovní chat",
-		"Menu.Citymap.Desc": "Displays a schematics of your city", //Todo: Translate
-		"Menu.Citymap.Title": "City Overview", //Todo: Translate
-		"Menu.Event.Desc": "Displays today's and upcoming Quests", //Todo: Translate
-		"Menu.Event.Title": "Event Questlist", //Todo: Translate
-		"Menu.Forum.Desc": "Máte otázku, štve vás něco nebo si jen chcete popovídat ...",
-		"Menu.Forum.Title": "Fórum",
-		"Menu.greatbuildings.Desc": "Which FP producing Great building should you upgrade next?", //Todo: Translate
-		"Menu.greatbuildings.Title": "GB Investment", //Todo: Translate
-		"Menu.HiddenRewards.Desc": "Přehled skrytých odměn",
-		"Menu.HiddenRewards.Title": "Skryté příhody",
-		"Menu.Info.Desc": "Ukazuje co se událo \"background\"<br><em>Fills up with info ...</em>",
-		"Menu.Info.Title": "Info Box", //Todo: Translate
-		"Menu.Kits.Desc": "Displays all your in-stock building Sets, Upgrades and Selection Kits.", //Todo: Translate
-		"Menu.Kits.Title": "Sets, Upgrades & Kits", //Todo: Translate
-		"Menu.Negotiation.Desc": "Zlepšete svoji šanci během vyjednávání",
-		"Menu.Negotiation.Title": "Pomocník s vyjednáváním",
-		"Menu.Negotiation.Warning": "Začněte vyjednávat!",
-		"Menu.Notice.Desc": "Take notes on anything you don't want to forget.", //Todo: Translate
-		"Menu.Notice.Title": "Notices", //Todo: Translate
-		"Menu.OutP.Desc": "Přehled potřebných surovin",
-		"Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Otevřete osadu first!<br></em>Overview of the required resources",
-		"Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Začněte osadu a aktualizujte hru (F5)",
-		"Menu.OutP.Title": "Osada",
-		"Menu.OwnpartCalculator.Desc": "Připravte si plán, kolik Vám kamarádi přispějí do budovy",
-		"Menu.OwnpartCalculator.Title": "Kalkulačka spolupráce",
-		"Menu.OwnpartCalculator.Warning": "Nejprve otevřete jednu svoji velkolepou budovu!",
-		"Menu.Productions.Desc": "Zobrazuje výroby ve všech dílnách.",
-		"Menu.Productions.Title": "Výroba v dílnách",
-		"Menu.Settings.Desc": "Něco málo z nastavení",
-		"Menu.Settings.Title": "Nastavení",
-		"Menu.Stats.Desc": "Displays game stats on goods, units, rewards, GBG", //Todo: Translate
-		"Menu.Stats.Title": "Statistics", //Todo: Translate
-		"Menu.Technologies.Desc": "Náklady na výzkum",
-		"Menu.Technologies.Title": "Technologie",
-		"Menu.Technologies.Warning": "Nejprve otevřte výzkum technologií",
-		"Menu.Unit.Desc": "Všechny vaše armády na jednom místě",
-		"Menu.Unit.Title": "Armády",
-		"Menu.Unit.Warning": "Otevřete vaši \"Army Organization\" <br>Button \"U\"",
-		"Settings.AutomaticNegotiation.Desc": "Má být pomocník otvírán automaticky po zahájení vyjednávání a poté automaticky zavírán?",
-		"Settings.AutomaticNegotiation.Title": "Pomocník s vyjednáváním",
-		"Settings.ChangeLanguage.Desc": "Který jazyk, kromě toho poznaného, má být zvolen?",
-		"Settings.ChangeLanguage.Title": "Změnit jazyk",
-		"Settings.CustomerApi.Desc": "Would you like to send some data to your own server?<br> After this activation the game will reload and a new menu item appears.", //Todo: Translate
-		"Settings.CustomerApi.Title": "Players API", //Todo: Translate
-		"Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte.",
-		"Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
-		"Settings.MenuLength.Desc": "Kolik položek má obsahovat menu?<br> Prázdné okno nebo \"0\" znamená automatickou výšku.",
-		"Settings.MenuLength.Title": "Výška menu",
-		"Settings.ResetBoxPositions.Button": "Návrat!",
-		"Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
-		"Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
-		"Settings.SendGEXInfo.Desc": "Při otevření umístění cechu a pořadí hráčů se údaje odešlou na foe-rechner.de",
-		"Settings.SendGEXInfo.Title": "Vyhodnocení CE",
-		"Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
-		"Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
-		"Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' se opošlou data o investování VB na foe-rechner.de",
-		"Settings.SendInvestigations.Title": "Investování VB",
-		"Settings.SendTavernInfo.Desc": "Záznamy odesílat na foe-rechner.de",
-		"Settings.SendTavernInfo.Title": "Motivace",
-		"Settings.ShowInvestments.Desc": "Show sums of your FP investment data when entering 'Town Hall'> 'News'> 'Great Buildings' tab.", //Todo: Translate
-		"Settings.ShowInvestments.Title": "Show FP Investment sums", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players", //Todo: Translate
-		"Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs", //Todo: Translate
-		"Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
-		"Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
-		"Settings.Version.Desc": "<p>Verze rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
-		"Settings.Version.GuildId": "Id cechu:",
-		"Settings.Version.PlayerId": "Id hráče:",
-		"Settings.Version.Title": "Verze",
-		"Settings.Version.World": "Svět:"
-	}
+    "API.GEXChampionship": "Umístění cechu v CE bylo updatováno",
+    "API.GEXPlayer": "Umístění členů v CE bylo updatováno",
+    "API.LGGildMember": "__player__'s Velkolepé budovy byly poslány",
+    "API.LGInvest": "Investice vašich VB bylo posláno",
+    "Boxes.Calculator.ActiveRecurringQuest": "Aktivovaný opakujicí se úkol:",
+    "Boxes.Calculator.AvailableFP": "Dostupně body výzkumu",
+    "Boxes.Calculator.BPs": "Plánky",
+    "Boxes.Calculator.Commitment": "Náklady",
+    "Boxes.Calculator.Done": "Hotovo",
+    "Boxes.Calculator.FP": "BV",
+    "Boxes.Calculator.LGNotConnected": "Budova není připojena",
+    "Boxes.Calculator.LGNotOpen": "Další úroveň není odemčená",
+    "Boxes.Calculator.LevelWarning": "Upozornění! Zvýšení úrovně budovy",
+    "Boxes.Calculator.Profit": "Zisk",
+    "Boxes.Calculator.Step": "Úroveň ",
+    "Boxes.Calculator.Title": "Kalkulačka bodů výzkumu",
+    "Boxes.Calculator.Up2LevelUp": "Do nové úrovně",
+    "Boxes.Campagne.AlreadyDone": " Již dobyto!",
+    "Boxes.Campagne.DescInStock": "K dispozici",
+    "Boxes.Campagne.DescRequired": "Požadováno",
+    "Boxes.Campagne.Resource": "Zboží",
+    "Boxes.Campagne.Reward": "Celková odměna ",
+    "Boxes.Campagne.Title": "Náklady na dobytí ",
+    "Boxes.CityMap.Desc1": "K naplánování vašeho města potřebujeme poslat data na foe-rechner.de",
+    "Boxes.CityMap.SubmitSuccess": "Data byla přijata... Nyní navštivte ",
+    "Boxes.CityMap.TitleSend": "Vložit data",
+    "Boxes.HiddenRewards.Disappears": "Zmizí",
+    "Boxes.HiddenRewards.NoEvents": "Nejsou žádné příhody",
+    "Boxes.HiddenRewards.Title": "Skryté příhody",
+    "Boxes.Negotiation.Average": "Ø Množství",
+    "Boxes.Negotiation.Canceled": "Vzdát",
+    "Boxes.Negotiation.Chance": "Šance",
+    "Boxes.Negotiation.Person": "D",
+    "Boxes.Negotiation.Success": "Úspěch",
+    "Boxes.Negotiation.Title": "Pomocník s vyjednáváním",
+    "Boxes.Negotiation.TryEnd": "Skoro",
+    "Boxes.Negotiation.WrongGoods": "Špatné zboží! Vyberte jiné",
+    "Boxes.Outpost.DescInStock": "K dispozici",
+    "Boxes.Outpost.DescRequired": "Vyžadováno",
+    "Boxes.Outpost.ExpansionsSum": "Rozšíření",
+    "Boxes.Outpost.Title": "Kulturní továrny",
+    "Boxes.Outpost.TitleBuildings": "Budova",
+    "Boxes.Outpost.TitleFree": "Vyzkoumáno",
+    "Boxes.Outpost.TitleShort": "Zboží - ",
+    "Boxes.Outpost.infoLine": "__runNumber__. run, Bonus x4 Šance: __chanceX4__%",
+    "Boxes.Outpost.nextTile": "Další rozšíření",
+    "Boxes.OwnpartCalculator.BPs": "Plánky",
+    "Boxes.OwnpartCalculator.CopyValues": "Kopírovat hodnoty",
+    "Boxes.OwnpartCalculator.Deposit": "Vklad",
+    "Boxes.OwnpartCalculator.Done": "Hotovo",
+    "Boxes.OwnpartCalculator.IndividualName": "Jméno přispěvatele",
+    "Boxes.OwnpartCalculator.LGTotalFP": "Body výzkumu celkově",
+    "Boxes.OwnpartCalculator.Levels": "Úrovně",
+    "Boxes.OwnpartCalculator.Meds": "Medaile",
+    "Boxes.OwnpartCalculator.Note": "Poznámka",
+    "Boxes.OwnpartCalculator.OldLevel": "Předchozí úroveň",
+    "Boxes.OwnpartCalculator.Order": "Pořadí",
+    "Boxes.OwnpartCalculator.OutputScheme": "Výstup",
+    "Boxes.OwnpartCalculator.OwnPart": "Vlastní příspěvek",
+    "Boxes.OwnpartCalculator.OwnPartRemaining": "Zbývající",
+    "Boxes.OwnpartCalculator.PatronPart": "Příspěvek ostatních",
+    "Boxes.OwnpartCalculator.Place": "Místo",
+    "Boxes.OwnpartCalculator.Step": "Úroveň",
+    "Boxes.OwnpartCalculator.Title": "Kalkulačka spolupráce",
+    "Boxes.OwnpartCalculator.YourName": "Vaše jméno",
+    "Boxes.Productions.AdjacentBuildings": "Sousední budovy",
+    "Boxes.Productions.Happiness": "Spokojenost",
+    "Boxes.Productions.Headings.all": "Celkem",
+    "Boxes.Productions.Headings.amount": "Množství",
+    "Boxes.Productions.Headings.boost": "Bonus",
+    "Boxes.Productions.Headings.culture": "Kulturní budovy",
+    "Boxes.Productions.Headings.decoration": "Dekorace",
+    "Boxes.Productions.Headings.earning": "Příjem",
+    "Boxes.Productions.Headings.goods": "Továrny",
+    "Boxes.Productions.Headings.greatbuilding": "Velkolepé budovy",
+    "Boxes.Productions.Headings.main_building": "Radnice",
+    "Boxes.Productions.Headings.number": "Číslo",
+    "Boxes.Productions.Headings.production": "Dílny",
+    "Boxes.Productions.Headings.random_production": "Náhodná produkce",
+    "Boxes.Productions.Headings.street": "Ulice",
+    "Boxes.Productions.ModeGroups": "Skupiny",
+    "Boxes.Productions.ModeSingle": "Samostatné",
+    "Boxes.Productions.SearchInput": "Hledat budovu...",
+    "Boxes.Productions.Title": "Přehled produkce",
+    "Boxes.Productions.Total": "Celkem: ",
+    "Boxes.Settings.Active": "Aktivováno",
+    "Boxes.Settings.Inactive": "Deaktivováno",
+    "Boxes.Settings.Title": "Nastavení",
+    "Boxes.Technologies.DescInStock": "K dispozici",
+    "Boxes.Technologies.DescRequired": "Požadováno",
+    "Boxes.Technologies.NoTechs": "Dokončili jste dobu",
+    "Boxes.Technologies.Resource": "Zdroj",
+    "Boxes.Technologies.Title": "Náklady na výzkum",
+    "Boxes.Units.Attack": "Útok",
+    "Boxes.Units.Bind": "Závislá",
+    "Boxes.Units.Defend": "Obrana",
+    "Boxes.Units.NextUnitsIn": "Příští(ch) __count__ jednotek se rekrutuje za <span class=\"alca-countdown\"></span> at __harvest__ hodin",
+    "Boxes.Units.Quantity": "Množství",
+    "Boxes.Units.Title": "Armáda",
+    "Boxes.Units.Unbind": "Nezávislá",
+    "Boxes.Units.Unit": "Jednotka",
+    "Eras.0": "Bez doby",
+    "Eras.1": "Doba kamenná",
+    "Eras.10": "Moderní doba",
+    "Eras.11": "Postmoderní doba",
+    "Eras.12": "Současnost",
+    "Eras.13": "Zítra",
+    "Eras.14": "Budoucnost",
+    "Eras.15": "Ledová budoucnost",
+    "Eras.16": "Oceánská budoucnost",
+    "Eras.17": "Virtuální budoucnost",
+    "Eras.18": "Kolonizace Marsu",
+    "Eras.19": "Kolonizace pásu planetek",
+    "Eras.2": "Doba bronzová",
+    "Eras.3": "Doba železná",
+    "Eras.4": "Raný středověk",
+    "Eras.5": "Vrcholný středověk",
+    "Eras.6": "Pozdní středověk",
+    "Eras.7": "Koloniální doba",
+    "Eras.8": "Průmyslový věk",
+    "Eras.9": "Doba pokroku",
+    "Global.BoxTitle": "FoE Helfer",
+    "HiddenRewards.Positions.cityRoadBig": "Dvouproudá silnice",
+    "HiddenRewards.Positions.cityRoadSmall": "Cesta",
+    "HiddenRewards.Positions.guildExpedition": "Cechovní expedice",
+    "HiddenRewards.Positions.nature": "V přírodě",
+    "HiddenRewards.Positions.shore": "Na pobřeží",
+    "HiddenRewards.Positions.water": "Na hladině",
+    "HiddenRewards.Table.expires": "Čas obnovení",
+    "HiddenRewards.Table.position": "Umístění",
+    "HiddenRewards.Table.type": "Druh",
+    "Local": "cs-CZ",
+    "Menu.Calculator.Desc": "Počítá odměny za přispívání bodů výzkumu.",
+    "Menu.Calculator.Title": "Kalkulačka bodů výzkumu",
+    "Menu.Calculator.Warning": "Nejprve přispějte do něčí velkolepé budovy!",
+    "Menu.Campagne.Desc": "Přehled potřebných surovin na vyjednávání",
+    "Menu.Campagne.Title": "Mapa území",
+    "Menu.Campagne.Warning": "Vyberte nejprve provincii!",
+    "Menu.Chat.Desc": "Popovídejte si s kamarády z cechu",
+    "Menu.Chat.Title": "Cechovní chat",
+    "Menu.HiddenRewards.Desc": "Přehled skrytých odměn",
+    "Menu.HiddenRewards.Title": "Skryté příhody",
+    "Menu.Info.Desc": "Ukazuje co se událo \"background\"<br><em>Fills up with info ...</em>",
+    "Menu.Negotiation.Desc": "Zlepšete svoji šanci během vyjednávání",
+    "Menu.Negotiation.Title": "Pomocník s vyjednáváním",
+    "Menu.Negotiation.Warning": "Začněte vyjednávat!",
+    "Menu.OutP.Desc": "Přehled potřebných surovin",
+    "Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Otevřete osadu first!<br></em>Overview of the required resources",
+    "Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Začněte osadu a aktualizujte hru (F5)",
+    "Menu.OutP.Title": "Osada",
+    "Menu.OwnpartCalculator.Desc": "Připravte si plán, kolik Vám kamarádi přispějí do budovy",
+    "Menu.OwnpartCalculator.Title": "Kalkulačka spolupráce",
+    "Menu.OwnpartCalculator.Warning": "Nejprve otevřete jednu svoji velkolepou budovu!",
+    "Menu.Productions.Desc": "Zobrazuje výroby ve všech dílnách.",
+    "Menu.Productions.Title": "Výroba v dílnách",
+    "Menu.Settings.Desc": "Něco málo z nastavení",
+    "Menu.Settings.Title": "Nastavení",
+    "Menu.Technologies.Desc": "Náklady na výzkum",
+    "Menu.Technologies.Title": "Technologie",
+    "Menu.Technologies.Warning": "Nejprve otevřte výzkum technologií",
+    "Menu.Unit.Desc": "Všechny vaše armády na jednom místě",
+    "Menu.Unit.Title": "Armády",
+    "Menu.Unit.Warning": "Otevřete vaši \"Army Organization\" <br>Button \"U\"",
+    "Settings.AutomaticNegotiation.Desc": "Má být pomocník otvírán automaticky po zahájení vyjednávání a poté automaticky zavírán?",
+    "Settings.AutomaticNegotiation.Title": "Pomocník s vyjednáváním",
+    "Settings.ChangeLanguage.Desc": "Který jazyk, kromě toho poznaného, má být zvolen?",
+    "Settings.ChangeLanguage.Title": "Změnit jazyk",
+    "Settings.GlobalSend.Desc": "Pokud chcete dlouhodobě sledovat vaše data zapněte.",
+    "Settings.GlobalSend.Title": "Přenos dat foe-rechner.de",
+    "Settings.MenuLength.Desc": "Kolik položek má obsahovat menu?<br> Prázdné okno nebo \"0\" znamená automatickou výšku.",
+    "Settings.MenuLength.Title": "Výška menu",
+    "Settings.ResetBoxPositions.Button": "Návrat!",
+    "Settings.ResetBoxPositions.Desc": "Má se nastavení vrátit na původní?",
+    "Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
+    "Settings.SendGEXInfo.Desc": "Při otevření umístění cechu a pořadí hráčů se údaje odešlou na foe-rechner.de",
+    "Settings.SendGEXInfo.Title": "Vyhodnocení CE",
+    "Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
+    "Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
+    "Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' se opošlou data o investování VB na foe-rechner.de",
+    "Settings.SendInvestigations.Title": "Investování VB",
+    "Settings.SendPlayersMotivation.Desc": "Záznamy odesílat na foe-rechner.de",
+    "Settings.SendPlayersMotivation.Title": "Motivace",
+    "Settings.ShowTavernBadge.Desc": "Notifikace když přítel odemkne nové vylepšení krčmy.",
+    "Settings.ShowTavernBadge.Title": "Ukázat odznaky krčmy",
+    "Settings.Version.Desc": "<p>Verze rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
+    "Settings.Version.GuildId": "Id cechu:",
+    "Settings.Version.PlayerId": "Id hráče:",
+    "Settings.Version.Title": "Verze",
+    "Settings.Version.World": "Svět:",
+    "_Language": "Český"
 }

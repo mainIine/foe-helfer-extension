@@ -1,5 +1,59 @@
 ## Changelog - Extension
 
+##### 2.5.1.0
+
+**New**
+- Own contribution calculator:
+    - Power levels added: 
+        - a new button, bottom right, starts this function in an extra box
+        - Levels up to > 100 Available
+        - Buildings with double harvests are considered
+
+**Update**
+- Notes:
+    - [#1300](https://github.com/dsiekiera/foe-helfer-extension/issues/1300) Notes are saved when closing the box
+
+- Settings:
+    - [#1413](https://github.com/dsiekiera/foe-helfer-extension/issues/1413) Moved buttons from menu to new settings box
+    
+- Production overview:
+    - [#1424](https://github.com/dsiekiera/foe-helfer-extension/issues/1424) Bonus from ambassadors and guild bonuses didn't show up at city hall when returning
+
+- Costcalculator:
+    - [#1433](https://github.com/dsiekiera/foe-helfer-extension/issues/1433) correct formatting added
+    
+- City map:
+    - [#1438](https://github.com/dsiekiera/foe-helfer-extension/issues/1438) on the map the ages are shown by mouseover
+
+**BugFix**
+- Infobox:
+    - [#1375](https://github.com/dsiekiera/foe-helfer-extension/issues/1375) double entries fixed
+
+- Statistics:
+    - [#917](https://github.com/dsiekiera/foe-helfer-extension/issues/917) "since Tuesday" fixed
+
+- Translations:
+    - [#924](https://github.com/dsiekiera/foe-helfer-extension/issues/924) String fixed
+
+- Events:
+    - [#1321](https://github.com/dsiekiera/foe-helfer-extension/issues/1324) Counter in menu now counts correctly
+
+- Production overview:
+    - [#1343](https://github.com/dsiekiera/foe-helfer-extension/issues/1343) Productions could appear twice
+
+- Own contribution calculator:
+    - [#1378](https://github.com/dsiekiera/foe-helfer-extension/issues/1378) when opening other LGs the own player name was displayed
+
+- Notes:
+    - [#1454](https://github.com/dsiekiera/foe-helfer-extension/issues/1454) Content displayed too wide
+
+- Costcalculator:
+    - [#1471](https://github.com/dsiekiera/foe-helfer-extension/issues/1471) Tooltip sometimes hangs
+    - [#1495](https://github.com/dsiekiera/foe-helfer-extension/issues/1495) Colors of the level warning adapted
+
+---
+
+
 ##### 2.5.0.1
 
 **Update**
