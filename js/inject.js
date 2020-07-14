@@ -173,6 +173,7 @@
 				'guildfights',
 				'stats',
 				'campagnemap',
+				'bonus-service',
 				'technologies',
 				'negotiation',
 				'eventchests',
