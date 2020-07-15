@@ -514,6 +514,7 @@ const FoEproxy = (function () {
 				requestData = JSON.parse(new TextDecoder().decode(postData));
 			} catch (e) {
 				console.log('Can\'t parse postData: ', postData);
+				return;
 			}
 
 			// StartUp Service zuerst behandeln
