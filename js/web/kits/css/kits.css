@@ -12,7 +12,6 @@
  * **************************************************************************************
  */
 
-
 /* Box */
 #kits {
 	top: 15%;
@@ -27,9 +26,36 @@
 	overflow-y: auto;
 }
 
-#kits .kits-image {
+#kits #kitsBody table.foe-table tr th,
+#kits #kitsBody table.foe-table tr td {
+	padding: 5px;
+}
+
+#kits table.foe-table th {
+	color: var(--text-bright);
+}
+
+#kits table.foe-table th.head {
+	order-top: 1px solid var(--text-bright);
+}
+
+
+#kits .kits-image,
+#kits .asset-image {
 	max-width: 90px;
 	max-height: 70px;
+}
+
+#kits td div.assets-row {
+	display: flex;
+}
+
+#kits td div.assets-row .item-asset:not(:first-child) {
+	margin-left: 10px;
+}
+
+#kits td.assets-header {
+	background-color: rgba(0,0,0, 0.3);
 }
 
 .selection-wrapper {
