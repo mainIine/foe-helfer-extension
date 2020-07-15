@@ -512,23 +512,22 @@ const FoEproxy = (function () {
 			let requestData = postData;
 			try {
 				requestData = JSON.parse(new TextDecoder().decode(postData));
+				// StartUp Service zuerst behandeln
+				for (let entry of d) {
+					if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
+						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+					}
+				}
+	
+				for (let entry of d) {
+					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
+						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+					}
+				}
 			} catch (e) {
 				console.log('Can\'t parse postData: ', postData);
-				return;
 			}
 
-			// StartUp Service zuerst behandeln
-			for (let entry of d) {
-				if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
-					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
-				}
-			}
-
-			for (let entry of d) {
-				if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
-					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
-				}
-			}
 		}
 	}
 
