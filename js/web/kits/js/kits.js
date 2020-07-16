@@ -13,8 +13,7 @@
  */
 
 /**
- *
- * @type {{BuildingSelectionKits: null, init: Kits.init, GetTabContent: (function(): string), ReadSets: Kits.ReadSets, GetInvententoryArray: (function(): []), globCnt: number, SetTabs: Kits.SetTabs, GetTabs: (function(): string), isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], ReadSelectionKits: Kits.ReadSelectionKits, CreateBody: Kits.CreateBody, BuildingSets: null, Tabs: [], ScanInvetory: Kits.ScanInvetory, SetTabContent: Kits.SetTabContent, KitsjSON: null, TabsContent: [], Inventory: null, setSingles: []}}
+ * @type {{BuildingSelectionKits: null, ItemTd: (function(*): string), init: Kits.init, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), globCnt: number, isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], BuildingSets: null, Tabs: [], KitsjSON: null, TabsContent: [], Inventory: null, setSingles: []}}
  */
 let Kits = {
 
@@ -98,6 +97,8 @@ let Kits = {
 				'minimize': true
 			});
 
+			$('#kitsBody').append( $('<div />').attr('id', 'kitsBodyTopbar'), $('<div />').attr('id', 'kitsBodyInner') );
+
 		} else {
 			HTML.CloseOpenBox('kits');
 		}
@@ -108,6 +109,11 @@ let Kits = {
 	},
 
 
+	/**
+	 * Compare
+	 *
+	 * @constructor
+	 */
 	ReadSets: ()=> {
 		let inv = Kits.GetInvententoryArray(),
 			kits = Kits.KitsjSON;
@@ -273,7 +279,7 @@ let Kits = {
 
 		t += '</table>';
 
-		$('#kitsBody').html(t);
+		$('#kitsBodyInner').html(t);
 	},
 
 
@@ -342,11 +348,15 @@ let Kits = {
 };
 
 // Updatestufen der Eventgebäude
+/*
 FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 	Kits.BuildingSelectionKits = JSON.parse(xhr.responseText);
 });
+*/
 
 // Building-Sets
+/*
 FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
 	Kits.BuildingSets = JSON.parse(xhr.responseText);
 });
+*/
