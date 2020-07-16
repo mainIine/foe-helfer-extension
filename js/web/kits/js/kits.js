@@ -216,7 +216,7 @@ let Kits = {
 
 			if(show)
 			{
-				t += `<tr><th colspan="4" class="head">${kits[set]['name']}</th></tr>`;
+				t += `<tr><th colspan="4" class="head">${i18n('Kits.Sets.' + kits[set]['name'])}</th></tr>`;
 
 				if(buildings)
 				{
