@@ -223,6 +223,15 @@ let HTML = {
             $(`#${args.id}`).on('keydown keyup', (e) => {
                 e.stopPropagation();
             });
+
+            // Brings the clicked window to the front
+            $('body').on('click', '.window-box', function() {
+				let $this = $(this);
+
+				$('.window-box').removeClass('on-top');
+
+				$this.addClass('on-top');
+			});
 		});
 	},
 
