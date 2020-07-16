@@ -13,39 +13,13 @@
  */
 
 /**
- * @type {{BuildingSelectionKits: null, ItemTd: (function(*): string), init: Kits.init, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), globCnt: number, isChecked: [], BuildBox: Kits.BuildBox, setBuildings: [], BuildingSets: null, Tabs: [], KitsjSON: null, TabsContent: [], Inventory: null, setSingles: []}}
+ * @type {{ItemTd: Kits.ItemTd, init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
-	//
 	KitsjSON: null,
-
-	// Lager
+	ShowMissing: false,
 	Inventory: null,
-
-	// Updatestufen der Eventgebäude
-	BuildingSelectionKits: null,
-
-	// Gebäude Sets
-	BuildingSets: null,
-
-	// für die interne Verarbeitung
-	setBuildings: [],
-
-	// einzelne Selection-Kits
-	setSingles: [],
-
-	// vormerken welches Gebäude schon aufgenommen wurde
-	// da es zwei Objecte sind, ist das notwendig
-	isChecked: [],
-
-	// gleicher Zähler für alle Funktionen
-	globCnt: 0,
-
-	// Tabs
-	Tabs: [],
-	TabsContent: [],
-
 
 	/**
 	 * Get all sets from the server
@@ -67,7 +41,6 @@ let Kits = {
 		} else {
 			Kits.KitsjSON = JSON.parse(data);
 			Kits.BuildBox();
-			//Kits.ReadSets();
 		}
 	},
 
@@ -79,11 +52,6 @@ let Kits = {
 	 */
 	BuildBox: ()=> {
 
-		// zurück setzen
-		Kits.isChecked = [];
-		Kits.setBuildings = [];
-		Kits.setSingles = [];
-		Kits.globCnt = 0;
 
 		if( $('#kits').length === 0 )
 		{
@@ -99,13 +67,19 @@ let Kits = {
 
 			$('#kitsBody').append( $('<div />').attr('id', 'kitsBodyTopbar'), $('<div />').attr('id', 'kitsBodyInner') );
 
+			$('#kitsBodyTopbar').append(
+				$('<span />').attr({
+					id: 'kits-toggle-button',
+					class: 'btn-default',
+					onclick: 'Kits.ToggleView()'
+				}).text(Kits.ShowMissing ? i18n('Boxes.Kits.ToggleButtonActive') : i18n('Boxes.Kits.ToggleButtonInActive'))
+			);
+
 		} else {
 			HTML.CloseOpenBox('kits');
 		}
 
 		Kits.ReadSets();
-
-		// Kits.CreateBody();
 	},
 
 
@@ -116,6 +90,7 @@ let Kits = {
 	 */
 	ReadSets: ()=> {
 		let inv = Kits.GetInvententoryArray(),
+			entities = MainParser.CityEntities,
 			kits = Kits.KitsjSON;
 
 		let t = '<table class="foe-table">';
@@ -136,8 +111,10 @@ let Kits = {
 
 			let buildings = [],
 				assetRow = [],
-				show = false;
+				show = false,
+				missings = [];
 
+			// step buildings in a set
 			for(let i in kits[set]['buildings'])
 			{
 				if(!kits[set]['buildings'].hasOwnProperty(i)){
@@ -148,33 +125,75 @@ let Kits = {
 				let itemRow = [];
 
 				// Level 1
-				let itemL1 = inv.find(el => el['item']['cityEntityId'] === building['first']);
-
-				if(itemL1)
-				{
-					itemRow.push({
-						type: 'first',
-						item: itemL1
-					})
-				}
+				let itemL1 = inv.find(el => el['item']['cityEntityId'] === building['first']),
+					itemUgr = false;
 
 				// Upgrade Kit
-				if(building['update'])
-				{
-					let itemUgr = inv.find(el => el['itemAssetName'] === building['update']);
+				if(building['update']) {
+					itemUgr = inv.find(el => el['itemAssetName'] === building['update']);
+				}
 
-					if(itemUgr)
-					{
+				if(itemL1){
+					itemRow.push({
+						type: 'first',
+						item: itemL1,
+						missing: false
+					});
+
+					show = true;
+
+					if(!itemUgr && Kits.ShowMissing){
+
 						itemRow.push({
 							type: 'update',
-							item: itemUgr
-						})
+							item: building['update'],
+							missing: true
+						});
+					}
+				}
+
+				if(itemUgr){
+
+					if(!itemL1 && Kits.ShowMissing){
+						itemRow.push({
+							type: 'first',
+							item: entities[building['first']],
+							missing: true
+						});
+					}
+
+					itemRow.push({
+						type: 'update',
+						item: itemUgr,
+						missing: false
+					});
+
+					show = true;
+				}
+
+				// both not in invetory, holdback
+				if(!itemL1 && !itemUgr && Kits.ShowMissing){
+					itemRow.push({
+						type: 'first',
+						item: entities[building['first']],
+						missing: true
+					});
+
+					missings.push(itemRow);
+
+					if(building['update']){
+						itemRow.push({
+							type: 'update',
+							item: building['update'],
+							missing: true
+						});
+
+						missings.push(itemRow);
 					}
 				}
 
 				if(itemRow.length){
 					buildings.push(itemRow);
-					show = true;
 				}
 			}
 
@@ -193,8 +212,17 @@ let Kits = {
 					if(asset) {
 						assetRow.push({
 							element: 'asset',
-							item: asset
-						})
+							item: asset,
+							missing: false
+						});
+
+					} else if(show && Kits.ShowMissing){
+
+						assetRow.push({
+							element: 'asset',
+							item: entities[kits[set]['assets'][a]],
+							missing: true
+						});
 					}
 				}
 			}
@@ -208,11 +236,18 @@ let Kits = {
 			if(kits[set]['kit']){
 				let k = inv.find(el => el['itemAssetName'] === kits[set]['kit']);
 
+				// selection kit exist
 				if(k){
+
+					if(!buildings && Kits.ShowMissing){
+						buildings = missings;
+					}
+
 					kitRow.push({
-						type: 'update',
-						item: k
-					})
+						type: 'kit',
+						item: k,
+						show: true
+					});
 				}
 			}
 
@@ -234,15 +269,27 @@ let Kits = {
 							rowTd += Kits.ItemTd(e[0]);
 
 							if(e[1] === undefined){
-								rowTd += '<td colspan="2"></td>';
+								if(Kits.ShowMissing && e[1]){
+									rowTd += Kits.ItemTd(e[1]);
+
+								} else {
+									rowTd += '<td colspan="2"></td>';
+								}
 
 							} else {
 								rowTd += Kits.ItemTd(e[1]);
 							}
 
 						} else if(e[0]['type'] === 'update') {
-							rowTd += '<td colspan="2"></td>';
-							rowTd += Kits.ItemTd(e[0]);
+							if(Kits.ShowMissing){
+								rowTd += Kits.ItemTd(e[0]);
+								rowTd += Kits.ItemTd(e[1]);
+
+							} else {
+								rowTd += '<td colspan="2"></td>';
+								rowTd += Kits.ItemTd(e[0]);
+							}
+
 						}
 
 						t += '<tr>' + rowTd + '</tr>';
@@ -291,20 +338,37 @@ let Kits = {
 	 * @constructor
 	 */
 	ItemTd: (el)=> {
+
+		if(!el){
+			return '';
+		}
+
 		let item = el['item'],
-			aName = item['itemAssetName'],
+			aName,
 			td = '',
 			url;
 
 		if(el['type'] === 'first'){
+
+			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'];
+
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 
-		} else if (el['type'] === 'update') {
+		} else if (el['type'] === 'update' || el['type'] === 'kit') {
+			aName = el['missing'] ? item : item['itemAssetName'];
+
 			url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 		}
 
-		td += '<td class="text-center"><img class="kits-image" src="' + url + '" alt="' + item['name'] + '" /></td>';
-		td += '<td>' + item['name'] + '<br>' + i18n('Boxes.Kits.InStock') + ': <strong class="text-warning">' + item['inStock'] + '</strong></td>';
+		if(el['missing']){
+
+			td += `<td class="text-center is-missing"><img class="kits-image" src="${url}" alt="${item['name']}" /></td>`;
+			td += `<td class="is-missing">${el['type'] === 'first' ? item['name'] : i18n('Boxes.Kits.UpgradeKit')}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
+
+		} else {
+			td += `<td class="text-center"><img class="kits-image" src="${url}" alt="${item['name']}" /></td>`;
+			td += `<td>${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${item['inStock']}</strong></td>`;
+		}
 
 		return td;
 	},
@@ -314,17 +378,19 @@ let Kits = {
 	 * Create a div-row for assets of a set
 	 *
 	 * @param el
+	 * @param mark
 	 * @returns {string}
 	 * @constructor
 	 */
 	ItemDiv: (el)=> {
+
 		let item = el['item'],
-			aName = item['itemAssetName'],
+			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'],
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 
-		return 	`<div class="item-asset">
+		return 	`<div class="item-asset${(el['missing'] ? ' is-missing' : '')}">
 					<img class="asset-image" src="${url}" alt="${item['name']}" /><br>
-					${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${item['inStock']}</strong>
+					${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${ (item['inStock'] ? item['inStock'] : '-' ) }</strong>
 				</div>`;
 	},
 
@@ -344,7 +410,22 @@ let Kits = {
 		}
 
 		return Ret;
-    }
+    },
+
+
+	/**
+	 * Toggle view
+	 *
+	 * @constructor
+	 */
+	ToggleView: ()=> {
+		Kits.ShowMissing = !Kits.ShowMissing;
+
+		$('#kitsBodyInner').html('');
+		Kits.ReadSets();
+
+		$('#kits-toggle-button').text(Kits.ShowMissing ? i18n('Boxes.Kits.ToggleButtonActive') : i18n('Boxes.Kits.ToggleButtonInActive'))
+	}
 };
 
 // Updatestufen der Eventgebäude
