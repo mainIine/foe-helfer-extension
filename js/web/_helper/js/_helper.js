@@ -187,6 +187,13 @@ let HTML = {
 
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function() {
+
+			// necessary delay hack
+			setTimeout(()=>{
+				HTML.BringToFront(div);
+			},300);
+
+
 			if(args['auto_close']){
 				$(`#${args.id}`).on('click', '#' + args['id'] + 'close', function(){
 					$('#' + args['id']).fadeToggle('fast', function(){
@@ -223,6 +230,11 @@ let HTML = {
             $(`#${args.id}`).on('keydown keyup', (e) => {
                 e.stopPropagation();
             });
+
+            // Brings the clicked window to the front
+            $('body').on('click', '.window-box', function() {
+				HTML.BringToFront($(this));
+			});
 		});
 	},
 
@@ -448,6 +460,13 @@ let HTML = {
 			string = string.replace(regExp, args[key]);
 		}
 		return string;
+	},
+
+
+	BringToFront: ($this)=> {
+		$('.window-box').removeClass('on-top');
+
+		$this.addClass('on-top');
 	},
 
 
