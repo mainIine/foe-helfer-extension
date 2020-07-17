@@ -298,23 +298,7 @@ let Settings = {
 			blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
 			file = `${ExtWorld}-${ExtPlayerID}.json`;
 
-		// Browsercheck
-		let isIE = !!document.documentMode;
-
-		if (isIE) {
-			window.navigator.msSaveBlob(blob1, file);
-
-		} else {
-			let url = window.URL || window.webkitURL,
-				link = url.createObjectURL(blob1),
-				a = document.createElement('a');
-
-			a.download = file;
-			a.href = link;
-			document.body.appendChild(a);
-			a.click();
-			document.body.removeChild(a);
-		}
+		MainParser.ExportFile(blob1, file);
 	},
 
 
