@@ -188,7 +188,11 @@ let HTML = {
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function() {
 
-			HTML.BringToFront(div);
+			// necessary delay hack
+			setTimeout(()=>{
+				HTML.BringToFront(div);
+			},300);
+
 
 			if(args['auto_close']){
 				$(`#${args.id}`).on('click', '#' + args['id'] + 'close', function(){
