@@ -12,7 +12,6 @@
  * **************************************************************************************
  */
 
-
 /* Box */
 #kits {
 	top: 15%;
@@ -27,31 +26,49 @@
 	overflow-y: auto;
 }
 
-#kits .kits-image {
+#kits #kitsBody table.foe-table tr th,
+#kits #kitsBody table.foe-table tr td {
+	padding: 5px;
+}
+
+#kits #kitsBodyTopbar {
+	padding: 3px;
+	text-align: right;
+}
+
+#kits table.foe-table th {
+	color: var(--text-bright);
+}
+
+#kits table.foe-table th.head {
+	order-top: 1px solid var(--text-bright);
+}
+
+#kits .item-asset {
+	padding: 5px;
+}
+
+#kits .kits-image,
+#kits .asset-image {
 	max-width: 90px;
 	max-height: 70px;
 }
 
-.selection-wrapper {
-	padding: 0.625rem;
+#kits td div.assets-row {
 	display: flex;
-	flex-wrap: wrap;
-	align-items: stretch;
+}
+
+#kits td div.assets-row .item-asset:not(:first-child) {
+	margin-left: 10px;
+}
+
+#kits td.assets-header {
 	background-color: rgba(0,0,0, 0.3);
-}
-.selection-wrapper .item-wrap {
-	flex: 0 25%;
+	padding: 0 5px !important;
 }
 
-.selection-wrapper .item {
-	margin: 10px;
-}
-
-.selection-wrapper .item .item-image,
-.selection-wrapper .item .item-name {
-	text-align: center;
-}
-
-.selection-wrapper .item strong {
-	color: #FFB539;
+#kits td.is-missing,
+#kits .item-asset.is-missing {
+	background-color: rgba(140, 0, 0, 0.5);
+	opacity: 0.7;
 }

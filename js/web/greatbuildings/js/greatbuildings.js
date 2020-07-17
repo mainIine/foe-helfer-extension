@@ -125,8 +125,11 @@ let GreatBuildings =
     CalcBody: () => {
         let h = [];
         h.push('<div class="text-center dark-bg header">');
-        h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong>');
-        h.push('<br><br>')
+        h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong><br>');
+        if (LastMapPlayerID !== ExtPlayerID) {
+            h.push('<strong class="player-name"><span>' + PlayerDict[LastMapPlayerID]['PlayerName'] + '</span></strong>');
+        }
+        h.push('<br>')
         h.push(i18n('Boxes.GreatBuildings.ArcBonus') + ' ');
         h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
         h.push('<br>')
@@ -134,7 +137,7 @@ let GreatBuildings =
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
-        h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '">');
+        h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + i18n('Boxes.GreatBuildings.TTRewardPerDay') + '">');
         h.push('<br><br>');
         h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
         h.push('</div>');
@@ -152,13 +155,15 @@ let GreatBuildings =
             '</tr>' +
         '</thead>');
 
+        let CurrentCityMapData = (LastMapPlayerID === ExtPlayerID ? MainParser.CityMapData : MainParser.OtherPlayerCityMapData);
+
         let ROIResults = [],
             ROIResults2 = [],
             ShowGoodCosts = [];
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
             let CityEntity = MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID];
-            let OwnGB = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));
+            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));;          
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
             let Era = Technologies.Eras[EraName];
             let DoubleCollection = (GreatBuildings.FPGreatBuildings[i].ID === 'X_FutureEra_Landmark1' ? false : true);
@@ -232,8 +237,8 @@ let GreatBuildings =
         });
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
-            let Index = ROIResultMap[i]['index'];
-            let OwnGB = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[Index].ID));
+            let Index = ROIResultMap[i]['index'];            
+            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[Index].ID));;   
             let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
             let IsRandomFP = (GreatBuildings.FPGreatBuildings[Index].ID === 'X_VirtualFuture_Landmark2' || GreatBuildings.FPGreatBuildings[Index].ID === 'X_SpaceAgeAsteroidBelt_Landmark1');
 
@@ -245,7 +250,7 @@ let GreatBuildings =
             if (ROIResults[Index]['BestLevel'] !== undefined) {
                 let BestLevel = ROIResults[Index]['BestLevel'];
 
-                h.push('<td style="white-space:nowrap">' + CurrentLevel + '->' + (BestLevel + 1) + '</td>');
+                h.push('<td style="white-space:nowrap">' + CurrentLevel + '&rarr;' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
                 h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');

@@ -13,7 +13,13 @@
  * **************************************************************************************
  */
 
-// Chat-Titel notieren
+// neues Postfach
+FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
+
+
+// altes Postfach
 FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
@@ -393,6 +399,9 @@ let Info = {
 
         if (data['lockedUntil'] !== undefined) {
 
+            // keine Übernahme
+            if (data['lockedUntil'] < Date.now() + 14390) return undefined;
+
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
 				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
@@ -413,9 +422,11 @@ let Info = {
             };
         }
 
-        let t = '';
+        // kein aktiver Kampf
+        if (!data['conquestProgress'][0]) return undefined;
 
         // Es wird gerade gekämpft
+        let t = '';
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
                 break;

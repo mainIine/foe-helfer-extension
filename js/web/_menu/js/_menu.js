@@ -727,7 +727,7 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	chat_Btn: () => {
+	/* @TODO chat_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
 
@@ -749,7 +749,7 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
-	},
+	},*/
 
 	/**
 	 * Set Übersicht
@@ -764,7 +764,7 @@ let _menu = {
 		let btn_sp = $('<span />');
 
 		btn_sp.on('click', function(){
-			Kits.BuildBox();
+			Kits.init();
 		});
 
 		btn.append(btn_sp);
