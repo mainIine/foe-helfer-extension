@@ -43,6 +43,12 @@ let Settings = {
 	},
 
 
+	/**
+	 * Load config from config file
+	 *
+	 * @param callback
+	 * @constructor
+	 */
 	LoadConfig: (callback)=> {
 		fetch(
 			`${extUrl}js/web/settings/config/config.json`
@@ -109,7 +115,7 @@ let Settings = {
 					button = d['button'],
 					c = $('<div />').addClass('item'),
 					cr = $('<div />').addClass('item-row'),
-					ct = $('<div />').addClass('title'),
+					ct = $('<h2 />'),
 					cd = $('<div />').addClass('desc'),
 					cs = $('<div />').addClass('setting').append(
 						$('<span />').addClass('check').append(
@@ -237,35 +243,144 @@ let Settings = {
 
 
 	/**
-	 * Versionsnummer ausgeben
+	 * Version number and Player Info 
 	 *
 	 * @returns {string}
 	 */
 	VersionInfo: ()=> {
-		return '<dl>' +
-					'<dt>' + i18n('Settings.Version.Title') + '</dt><dd>' + extVersion + '</dd>' +
-					'<dt>' + i18n('Settings.Version.PlayerId') + '</dt><dd>' + ExtPlayerID + '</dd>' +
-					'<dt>' + i18n('Settings.Version.GuildId') + '</dt><dd>' + ExtGuildID + '</dd>' +
-					'<dt>' + i18n('Settings.Version.World') + '</dt><dd>' + ExtWorld + '</dd>' +
-				'</dl>';
+
+		return `<p>${i18n('Settings.Version.Link').replace('__version__', extVersion)}</p>
+				<dl class="info-box">
+					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
+					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
+					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${ExtGuildID}</dd>
+					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
+				</dl>`;
 	},
 
 
 	/**
-	 * Versionsnummer ausgeben
+	 * View for Export-Import
+	 *
+	 * @returns {string}
+	 * @constructor
+	 */
+	ExportView: ()=> {
+		return `<p>${i18n('Settings.ExportSettings.ViewExport')} <button class="btn-default" id="export-settings" onclick="Settings.ExportSettings()">${i18n('Settings.ExportSettings.Button')}</button></p>
+				<hr>
+				<p>${i18n('Settings.ExportSettings.ViewImport')} <input type="file" id="import-settings" onchange="Settings.ImportSettings()" accept="application/json"></p>`;
+	},
+
+
+	/**
+	 * Export extension settigns
+	 *
+	 * @constructor
+	 */
+	ExportSettings: ()=> {
+		let settings = {};
+
+		Object.keys(localStorage).forEach((key)=>{
+
+			if(
+				key.indexOf('Cords') > -1 ||
+				key.indexOf('Size') > -1 ||
+				key.indexOf('CopyName') > -1 ||
+				key.indexOf('MenuSort') > -1 ||
+				key.indexOf('Tone') > -1 ||
+				key.indexOf('ForderBonus') > -1
+			){
+				settings[key] = localStorage.getItem(key);
+			}
+		});
+
+		let json = JSON.stringify(settings),
+			blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
+			file = `${ExtWorld}-${ExtPlayerID}.json`;
+
+		// Browsercheck
+		let isIE = !!document.documentMode;
+
+		if (isIE) {
+			window.navigator.msSaveBlob(blob1, file);
+
+		} else {
+			let url = window.URL || window.webkitURL,
+				link = url.createObjectURL(blob1),
+				a = document.createElement('a');
+
+			a.download = file;
+			a.href = link;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		}
+	},
+
+
+	/**
+	 * Import saved settigns
+	 *
+	 * @constructor
+	 */
+	ImportSettings: ()=> {
+		let file = document.getElementById("import-settings").files[0];
+
+		if (file) {
+			let reader = new FileReader();
+			reader.readAsText(file, "UTF-8");
+
+			reader.onload = function (evt) {
+
+				const parts = JSON.parse(evt.target.result);
+
+				Object.keys(parts).forEach((key)=> {
+					localStorage.setItem(key, parts[key]);
+				});
+
+				alert(i18n('Settings.ExportImport.Reload'));
+				location.reload();
+			}
+
+			reader.onerror = function (evt) {
+				alert(i18n('Settings.ExportImport.Error'));
+			}
+		}
+	},
+
+
+	/**
+	 * General Information	 
+	 *
+	 * @returns {string}
+	 */
+	About: ()=> {
+		return  '<hr>'+
+				'<h2>'+i18n('Settings.About.TranslateTitle')+'</h2>'+
+				'<p>'+i18n('Settings.About.TranslateDesc')+' <a href="http://i18n.foe-helper.com/" target="_blank">Weblate</a></p>'+
+				'<hr>'+
+				'<h2>'+i18n('Settings.About.RatingTitle')+'</h2>'+
+				'<p>'+i18n('Settings.About.RatingDesc')+'</p>';
+	},
+
+
+	/**
+	 * Help list
 	 *
 	 * @returns {string}
 	 */
 	Help: ()=> {
-		return '<ul class="helplist"><li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
-				'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' +	i18n('Settings.Help.Forums') + '</a></li>' +
-				'<li><a href="https://discord.gg/ba5RBb" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-				'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' +	i18n('Settings.Help.Github') + '</a></li></ul>';
+		return '<ul class="helplist">' + 
+					'<li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
+					'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' +	i18n('Settings.Help.Forums') + '</a></li>' +
+					'<li><a href="https://discord.gg/ba5RBb" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
+					'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' +	i18n('Settings.Help.Github') + '</a></li>' +
+				'</ul>';
 	},
 
 
 	/**
-	 * Funktion zum zurücksetzten aller Box-Koordiniaten
+	 * Resets all Box Coordinated to the default values
 	 *
 	 */
 	ResetBoxCoords: ()=>{
@@ -284,7 +399,7 @@ let Settings = {
 
 
 	/**
-	 * Sprachwechsler
+	 * Language switcher
 	 *
 	 * @returns {string}
 	 */

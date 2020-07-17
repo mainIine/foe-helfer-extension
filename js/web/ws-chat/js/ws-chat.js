@@ -72,13 +72,7 @@ class Player {
 	 */
 	updateIsDev(isdev) {
 		// update isdev
-		if(isdev){
-			this.nameSpan.className = "dev";
-			this.nameSpan.innerText = this.nameSpan.innerText + " (DEV)";
-		}else{
-			this.nameSpan.className = "";
-			this.nameSpan.innerText = this.nameSpan.innerText;
-		}
+		isdev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
 	}
 
 	/**
@@ -551,6 +545,10 @@ let Chat = {
 			type: 'message'
 		};
 
+		if(type !== 'onlyOthers'){
+			Chat.TextRow(msg);
+		}
+
 		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
 
 		// $('#message-input').val('');
@@ -790,10 +788,8 @@ let Chat = {
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
-		if(Player.isdev){
-			s.classList = "dev";
-			s.innerText += " (DEV)";
-		}
+		Player.isdev ? 	s.classList = "dev" : s.classList = "";
+		
 		d.appendChild(s);
 		
 		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
@@ -1165,7 +1161,7 @@ let Chat = {
 	 */
 	getTimestamp: (hrs)=>{
 
-		let time = MainParser.getCurrentDateTime(),
+		let time = new Date(Date.now() + GameTimeOffset).getTime(),
 			h = hrs || 0,
 			m = 0,
 

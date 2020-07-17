@@ -175,6 +175,7 @@ let Calculator = {
 
         // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
+        $('#costCalculator').find('.tooltip').remove();
 
         // Stufe ist noch nicht freigeschaltet
 		if (Calculator.CityMapEntity['level'] === Calculator.CityMapEntity['max_level']) {
@@ -534,6 +535,8 @@ let Calculator = {
 				if (ForderRankDiff < 0) {
 					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
 				}
+
+				GewinnClass = '';
 			}
 			else if (ForderStates[Rank] === 'Profit') {
 				RowClass = 'bg-green';
