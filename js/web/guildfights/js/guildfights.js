@@ -339,7 +339,9 @@ let GildFights = {
 				break;
 			}
 
-			t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + GildFights.SortedColors[bP[x]['participantId']]['main'] + '"></span></th>');
+			let color = GildFights.SortedColors.find(e => e['id'] === bP[x]['participantId']);
+
+			t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + color['main'] + '"></span></th>');
 		}
 
 
@@ -386,8 +388,10 @@ let GildFights = {
 								break;
 							}
 
-							let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId']));
-							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ GildFights.SortedColors[p['participantId']]['main'] +';width:' + cP[y]['progress'] + '%"></span></span>');
+							let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
+								color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+
+							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + cP[y]['progress'] + '%"></span></span>');
 						}
 					}
 
@@ -450,7 +454,8 @@ let GildFights = {
 			}
 			// neuen "Balken" einfügen
 			else {
-				cell.append($('<span class="attack attacker-' + d['participantId'] + '"><span style="background-color:'+ GildFights.SortedColors[p['participantId']]['main'] +';width:' + d['progress'] + '%"></span></span>'));
+				let color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+				cell.append($('<span class="attack attacker-' + d['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + d['progress'] + '%"></span></span>'));
 			}
 
 			cell.addClass('red-pulse');
