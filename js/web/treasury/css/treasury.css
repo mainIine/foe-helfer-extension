@@ -1,0 +1,23 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 treasury.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              17.07.20, 12:29 Uhr
+ * zuletzt bearbeitet:       17.07.20, 12:29 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+#treasury {
+    width: 370px;
+    padding: 10px;
+}
+
+#treasury #treasuryBody {
+    overflow: auto;
+}
