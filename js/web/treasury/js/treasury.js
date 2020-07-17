@@ -75,9 +75,10 @@ let Treasury = {
 
         CurrentLine.push(i18n('Boxes.Treasury.PlayerID'));
         CurrentLine.push(i18n('Boxes.Treasury.PlayerName'));
+        CurrentLine.push(i18n('Boxes.Treasury.Era'));
         CurrentLine.push(i18n('Boxes.Treasury.Resource'));
         CurrentLine.push(i18n('Boxes.Treasury.Amount'));
-        CurrentLine.push(i18n('Boxes.Treasury.Message'));
+        CurrentLine.push(i18n('Boxes.Treasury.Action'));
         CurrentLine.push(i18n('Boxes.Treasury.DateTime'));
 
         h.push(CurrentLine.join(';'));
@@ -89,6 +90,9 @@ let Treasury = {
             CurrentLine.push(CurrentLog['player']['player_id']);
             CurrentLine.push(CurrentLog['player']['name'].replace(/;/g, ''));
             let GoodID = CurrentLog['resource'];
+            let EraName = GoodsData[GoodID]['era'];
+            let EraID = Technologies.Eras[EraName];
+            CurrentLine.push((EraID + '').padStart(2, '0') + ' - ' + i18n('Eras.' + EraID).replace(/;/g, ''));
             CurrentLine.push(GoodsData[GoodID]['name'].replace(/;/g, ''));
             CurrentLine.push(CurrentLog['amount']);
             CurrentLine.push(CurrentLog['action'].replace(/;/g, ''));
@@ -98,7 +102,8 @@ let Treasury = {
         }
 
         let ExportString = h.join('\n');
-        let Blob1 = new Blob([ExportString], { type: "application/octet-binary;charset=ANSI" });
+        let BOM = "\uFEFF";
+        let Blob1 = new Blob([BOM + ExportString], { type: "application/octet-binary;charset=ANSI" });
         MainParser.ExportFile(Blob1, 'GBG-export.csv');
     }
 };
