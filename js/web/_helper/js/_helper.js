@@ -187,6 +187,9 @@ let HTML = {
 
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function() {
+
+			HTML.BringToFront(div);
+
 			if(args['auto_close']){
 				$(`#${args.id}`).on('click', '#' + args['id'] + 'close', function(){
 					$('#' + args['id']).fadeToggle('fast', function(){
@@ -226,11 +229,7 @@ let HTML = {
 
             // Brings the clicked window to the front
             $('body').on('click', '.window-box', function() {
-				let $this = $(this);
-
-				$('.window-box').removeClass('on-top');
-
-				$this.addClass('on-top');
+				HTML.BringToFront($(this));
 			});
 		});
 	},
@@ -457,6 +456,13 @@ let HTML = {
 			string = string.replace(regExp, args[key]);
 		}
 		return string;
+	},
+
+
+	BringToFront: ($this)=> {
+		$('.window-box').removeClass('on-top');
+
+		$this.addClass('on-top');
 	},
 
 
