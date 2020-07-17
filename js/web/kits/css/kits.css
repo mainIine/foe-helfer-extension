@@ -64,6 +64,7 @@
 
 #kits td.assets-header {
 	background-color: rgba(0,0,0, 0.3);
+	padding: 0 5px !important;
 }
 
 #kits td.is-missing,
