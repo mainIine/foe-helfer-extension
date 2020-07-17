@@ -189,6 +189,7 @@
 				'inventory-tracker',
 				'ws-chat',
 				'treasury',
+				'market',
 			];
 
 			// Scripte laden (nacheinander)

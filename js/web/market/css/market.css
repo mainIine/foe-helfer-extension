@@ -1,0 +1,25 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 market.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              17.07.20, 23:50 Uhr
+ * zuletzt bearbeitet:       17.07.20, 23:50 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+#MarketBox {
+    top: 100px;
+    right: 100px;
+    width: 600px;
+}
+
+#MarketBox #MarketBoxBody {
+    position: relative;
+    margin-left: 0;
+}
