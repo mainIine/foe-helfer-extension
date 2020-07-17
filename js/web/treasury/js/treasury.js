@@ -21,7 +21,6 @@ FoEproxy.addHandler('ClanService', 'getTreasuryLogs', (data) => {
 
 let Treasury = {
     Logs: [],
-    LogDict: {},
     LastNewLogs: undefined,
 
     HandleNewLogs: (Logs) => {
@@ -40,7 +39,6 @@ let Treasury = {
 
             $('#treasury').on('click', '.button-reset', function () {
                 Treasury.Logs = [];
-                Treasury.LogDict = {};
 
                 Treasury.HandleNewLogs(Treasury.LastNewLogs); //Logs der aktuellen Seite erneut verabeiten
             });
@@ -52,13 +50,7 @@ let Treasury = {
 
         let LogArray = Logs['responseData']['logs'];
         for (let i = 0; i < LogArray.length; i++) {
-            let Log = LogArray[i];
-            let LogKey = JSON.stringify(Log);
-
-            if (!Treasury.LogDict[LogKey]) {
-                Treasury.LogDict[LogKey] = Log;
-                Treasury.Logs[Treasury.Logs.length] = Log;
-            }            
+            Treasury.Logs[Treasury.Logs.length] = LogArray[i];           
         }
         
         Treasury.CalcBody();
@@ -81,12 +73,12 @@ let Treasury = {
         let h = [],
             CurrentLine = [];
 
-        CurrentLine.push('Boxes.Treasury.PlayerID');
-        CurrentLine.push('Boxes.Treasury.PlayerName');
-        CurrentLine.push('Boxes.Treasury.Resource');
-        CurrentLine.push('Boxes.Treasury.Amount');
-        CurrentLine.push('Boxes.Treasury.Message');
-        CurrentLine.push('Boxes.Treasury.DateTime');
+        CurrentLine.push(i18n('Boxes.Treasury.PlayerID'));
+        CurrentLine.push(i18n('Boxes.Treasury.PlayerName'));
+        CurrentLine.push(i18n('Boxes.Treasury.Resource'));
+        CurrentLine.push(i18n('Boxes.Treasury.Amount'));
+        CurrentLine.push(i18n('Boxes.Treasury.Message'));
+        CurrentLine.push(i18n('Boxes.Treasury.DateTime'));
 
         h.push(CurrentLine.join(';'));
 
@@ -106,7 +98,7 @@ let Treasury = {
         }
 
         let ExportString = h.join('\n');
-        let Blob1 = new Blob([ExportString], { type: "application/octet-binary" });
+        let Blob1 = new Blob([ExportString], { type: "application/octet-binary;charset=ANSI" });
         MainParser.ExportFile(Blob1, 'GBG-export.csv');
     }
 };
