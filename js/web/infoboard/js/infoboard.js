@@ -13,7 +13,13 @@
  * **************************************************************************************
  */
 
-// Chat-Titel notieren
+// neues Postfach
+FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
+
+
+// altes Postfach
 FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
