@@ -184,10 +184,11 @@
 				'citymap',
 				'hidden-rewards',
 				'greatbuildings',
-                'alerts',
-                'notice',
+				'alerts',
+				'notice',
 				'inventory-tracker',
 				'ws-chat',
+				'treasury',
 			];
 
 			// Scripte laden (nacheinander)
