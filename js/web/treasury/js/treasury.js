@@ -22,8 +22,11 @@ FoEproxy.addHandler('ClanService', 'getTreasuryLogs', (data) => {
 let Treasury = {
     Logs: [],
     LogDict: {},
+    LastNewLogs: undefined,
 
     HandleNewLogs: (Logs) => {
+        Treasury.LastNewLogs = Logs;
+
         if ($('#treasury').length === 0) {
             HTML.Box({
                 'id': 'treasury',
@@ -34,6 +37,13 @@ let Treasury = {
 
             // CSS in den DOM prügeln
             HTML.AddCssFile('treasury');
+
+            $('#treasury').on('click', '.button-reset', function () {
+                Treasury.Logs = [];
+                Treasury.LogDict = {};
+
+                Treasury.HandleNewLogs(Treasury.LastNewLogs); //Logs der aktuellen Seite erneut verabeiten
+            });
 
             $('#treasury').on('click', '.button-export', function () {
                 Treasury.Export();
@@ -60,6 +70,7 @@ let Treasury = {
 
         h.push('<strong>' + i18n('Boxes.Treasury.Message') + '</strong><br>');
         h.push(i18n('Boxes.Treasury.RowNumber') + ': ' + HTML.Format(Treasury.Logs.length) + '<br>');
+        h.push('<span class="btn-default button-reset">' + i18n('Boxes.Treasury.Reset') + '</span>');
         h.push('<span class="btn-default button-export">' + i18n('Boxes.Treasury.Export') + '</span>');
 
         $('#treasuryBody').html(h.join(''));
