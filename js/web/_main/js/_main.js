@@ -2048,5 +2048,26 @@ let MainParser = {
 		let RegEx = new RegExp(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi);
 
 		return text.replace(RegEx, '');
-	}
+	},
+
+
+	ExportFile: (Blob, FileName) => {
+		// Browsercheck
+		let isIE = !!document.documentMode;
+
+		if (isIE) {
+			window.navigator.msSaveBlob(Blob, FileName);
+
+		} else {
+			let url = window.URL || window.webkitURL,
+				link = url.createObjectURL(Blob),
+				a = document.createElement('a');
+
+			a.download = FileName;
+			a.href = link;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		}
+    }
 };
