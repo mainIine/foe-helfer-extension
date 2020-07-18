@@ -27,7 +27,7 @@
 }
 
 #greatbuildings #greatbuildingsBody strong.success {
-    color: #29b206;
+    color: var(--text-success);
 }
 
 .text-bright {

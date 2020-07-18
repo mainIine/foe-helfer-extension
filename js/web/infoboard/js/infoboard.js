@@ -60,7 +60,7 @@ let Infoboard = {
     InjectionLoaded: false,
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
-    SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    SavedFilter: ["auction", "gex", "guildfights", "trade", "level", "message"],
     DebugWebSocket: false,
 
 
@@ -143,7 +143,7 @@ let Infoboard = {
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGex') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfighs") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfights" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfights") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("message") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
@@ -235,6 +235,7 @@ let Infoboard = {
             }
 
             tr.append(
+                '<td></td>' +
                 '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
@@ -337,40 +338,55 @@ let Info = {
      * @returns {{class: 'message', msg: string, type: string}}
      */
     ConversationService_getNewMessage: (d) => {
-        let msg;
+        let header; let message; let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        if (chat && chat['hidden']) return undefined;
 
         if (d['text'] !== '') {
-            msg = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
+            // normale Nachricht
+            message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
 
         } else if (d['attachment'] !== undefined) {
-
-            // Greatbuilding
+            // legendäres Bauwerk
             if (d['attachment']['type'] === 'great_building') {
-                msg = HTML.i18nReplacer(
+                message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
                     'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
                     'level': d['attachment']['level']
-                }
-                )
+                });
             }
-            // Trade
+            // Handelsangebot
             else if (d['attachment']['type'] === 'trade_offer') {
-                msg = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
+                message = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
+        } else {
+            return undefined;
         }
 
-        if (undefined === d.sender) {
-            return {
-                class: 'message',
-                type: i18n('Boxes.Infobox.FilterMessage'),
-                msg: Info.GetConversationHeader(d.conversationId, null) + msg
-            };
+        if (chat != null) {
+            if (d['sender']['name'] != null) {
+                // normale Chatnachricht (bekannte ID)
+                if (chat['important']) {
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⚠️</div>';
+                } else if (chat['favorite']) {
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⭐</div>';
+                } else {
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
+                }
+            } else {
+                // Chatnachricht vom System (Betreten/Verlassen)
+                header = '<div><strong class="bright">' + header.title + '</strong></div>';
+            }
+        } else if (d['sender']['name'] != null) {
+            // normale Chatnachricht (unbekannte ID)
+            header = '<div><strong class="bright">' + name + '</strong></div>';
+        } else {
+            header = ''
         }
 
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
-            msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
+            msg: header + message
         };
     },
 
@@ -400,7 +416,7 @@ let Info = {
         if (data['lockedUntil'] !== undefined) {
 
             // keine Übernahme
-            if (data['lockedUntil'] < Date.now() + 14390) return undefined;
+            if (data['lockedUntil'] < Math.floor(Date.now() / 1000) + 14390) return undefined;
 
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
 				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
@@ -409,7 +425,7 @@ let Info = {
                 ts = colors['shadow'];
 
             return {
-                class: 'guildfighs',
+                class: 'guildfights',
                 type: i18n('Boxes.Infobox.FilterGildFights'),
                 msg: HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.GildFightOccupied'), {
@@ -447,7 +463,7 @@ let Info = {
             let tc = colors['highlight'],
                 ts = colors['shadow'];
 
-            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
+            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span class="bright">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
 
             if (Info.GildPoints[data['id']] === undefined) {
                 Info.GildPoints[data['id']] = {};
@@ -458,7 +474,7 @@ let Info = {
         }
 
         return {
-            class: 'guildfighs',
+            class: 'guildfights',
             type: i18n('Boxes.Infobox.FilterGildFights'),
             msg: t
         };
@@ -553,30 +569,5 @@ let Info = {
                 }
             )
         };
-    },
-
-
-    /**
-     * Sucht den Titel einer Nachricht heraus
-     *
-     * @param id
-     * @param {string} name
-     * @returns {string}
-     */
-    GetConversationHeader: (id, name) => {
-        let header = MainParser.Conversations.find(obj => obj.id === id);
-        if (header != null && name != null) {
-            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
-            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
-        } else if (name != null) {
-            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
-            return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
-        } else if (header != null) {
-            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
-            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
-        }
-
-        return '';
     }
 };
-
