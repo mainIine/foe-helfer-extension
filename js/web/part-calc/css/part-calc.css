@@ -85,11 +85,11 @@
 	color: #F3D6A0;
 }
 
-.success {
+#OwnPartBox #OwnPartBoxBody .success {
 	color: #29b206 !important;
 }
 
-.info {
+#OwnPartBox #OwnPartBoxBody .info {
 	color: #2196f3 !important;
 }
 
@@ -265,4 +265,8 @@
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
 	color: var(--text-bright);
 	font-weight: bold;
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .success {
+	color: #29b206;
 }

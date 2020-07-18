@@ -28,6 +28,7 @@
 
 let ApiURL = 'https://api.foe-rechner.de/',
 	ActiveMap = 'main',
+	LastMapPlayerID = null,
 	ExtPlayerID = 0,
 	ExtPlayerName = null,
 	ExtGuildID = 0,
@@ -511,22 +512,22 @@ const FoEproxy = (function () {
 			let requestData = postData;
 			try {
 				requestData = JSON.parse(new TextDecoder().decode(postData));
+				// StartUp Service zuerst behandeln
+				for (let entry of d) {
+					if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
+						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+					}
+				}
+	
+				for (let entry of d) {
+					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
+						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+					}
+				}
 			} catch (e) {
 				console.log('Can\'t parse postData: ', postData);
 			}
 
-			// StartUp Service zuerst behandeln
-			for (let entry of d) {
-				if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
-					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
-				}
-			}
-
-			for (let entry of d) {
-				if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
-					proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
-				}
-			}
 		}
 	}
 
@@ -583,6 +584,7 @@ const FoEproxy = (function () {
 		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
+		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
 		if (Settings.GetSetting('GlobalSend')) {
 			MainParser.SendBuildings(MainParser.CityMapData);
@@ -639,7 +641,8 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
+		LastMapPlayerID = ExtPlayerID;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
 
 		ActiveMap = 'main';
 
@@ -651,6 +654,12 @@ const FoEproxy = (function () {
 		$('#city-map-overlay').fadeToggle(function () {
 			$(this).remove();
 		});
+	});
+
+	// Besuche anderen Spieler
+	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
+		LastMapPlayerID = data.responseData['other_player']['player_id'];
+		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })));
 	});
 
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
@@ -1036,6 +1045,7 @@ let MainParser = {
 	// alle Gebäude des Spielers
 	CityMapData: {},
 	CityMapEraOutpostData: null,
+	OtherPlayerCityMapData: {},
 
 	// freugeschaltete Erweiterungen
 	UnlockedAreas: null,
@@ -1924,72 +1934,96 @@ let MainParser = {
 	 */
 	setConversations: (d)=> {
 
-		let StorageHeader = localStorage.getItem('ConversationsHeaders');
-
-		// wenn noch nichts drin , aber im LocalStorage vorhanden, laden
-		if(MainParser.Conversations.length === 0 && StorageHeader !== null){
-			MainParser.Conversations = JSON.parse(StorageHeader);
+		// Falls der Cache leer ist den Speicher auslesen
+		if (MainParser.Conversations.length === 0) {
+			let StorageHeader = localStorage.getItem('ConversationsHeaders');
+			if (StorageHeader !== null) {
+				MainParser.Conversations = JSON.parse(StorageHeader);
+			}
 		}
 
-		// GildenChat
-		if(d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
-			MainParser.Conversations.push({
-				id: d['clanTeaser']['id'],
-				title: d['clanTeaser']['title']
-			});
-		}
-
-		//
-		if(d['teasers'] !== undefined){
-			// die anderen Chats
-			for(let k in d['teasers']){
-
-				if(!d['teasers'].hasOwnProperty(k)){
+		// neues Postfach
+		if (d['category'] && d['category']['teasers']) {
+			for (let k in d['category']['teasers']) {
+				if (!d['category']['teasers'].hasOwnProperty(k)) {
 					continue;
 				}
 
-				// prüfen ob es zur ID einen key gibt
-				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
-
-				// Konversation gibt es schon
-				if(key !== -1){
-					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['category']['teasers'][k]['id']));
+				// Ist bereits ein Key vorhanden?
+				if (key !== -1) {
+					MainParser.Conversations[key]['type'] = d['category']['type'];
+					MainParser.Conversations[key]['title'] = d['category']['teasers'][k]['title'];
+					MainParser.Conversations[key]['hidden'] = d['category']['teasers'][k]['isHidden'];
+					MainParser.Conversations[key]['favorite'] = d['category']['teasers'][k]['isFavorite'];
+					MainParser.Conversations[key]['important'] = d['category']['teasers'][k]['isImportant'];
 				}
-				// ... gibt es noch nicht
+				// → Key erstellen
 				else {
 					MainParser.Conversations.push({
-						id: d['teasers'][k]['id'],
-						title: d['teasers'][k]['title']
+						type: d['category']['type'],
+						id: d['category']['teasers'][k]['id'],
+						title: d['category']['teasers'][k]['title'],
+						hidden: d['category']['teasers'][k]['isHidden'],
+						favorite: d['category']['teasers'][k]['isFavorite'],
+						favorite: d['category']['teasers'][k]['isImportant']
 					});
+				}
+
+			}
+		}
+		// altes Postfach
+		else {
+			// Gildenchat
+			if (d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
+				MainParser.Conversations.push({
+					id: d['clanTeaser']['id'],
+					title: d['clanTeaser']['title']
+				});
+			}
+			//
+			if (d['teasers'] !== undefined){
+				// die anderen Chats
+				for(let k in d['teasers']){
+					if (!d['teasers'].hasOwnProperty(k)){
+						continue;
+					}
+					// prüfen ob es zur ID einen key gibt
+					let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
+					// Konversation gibt es schon
+					if (key !== -1){
+						MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+					}
+					// ... gibt es noch nicht
+					else {
+						MainParser.Conversations.push({
+							id: d['teasers'][k]['id'],
+							title: d['teasers'][k]['title']
+						});
+					}
+				}
+			}
+			if (d[0] !== undefined && d[0].length > 0){
+				for(let k in d){
+					if (!d.hasOwnProperty(k)){
+						continue;
+					}
+					let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
+					if (key !== -1) {
+						MainParser.Conversations[key]['title'] = d[k]['title'];
+					} else {
+						MainParser.Conversations.push({
+							id: d[k]['id'],
+							title: d[k]['title']
+						});
+					}
 				}
 			}
 		}
 
-		if(d[0] !== undefined && d[0].length > 0){
-
-			for(let k in d){
-				if(!d.hasOwnProperty(k)){
-					continue;
-				}
-
-				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
-
-				if(key !== -1) {
-					MainParser.Conversations[key]['title'] = d[k]['title'];
-
-				} else {
-					MainParser.Conversations.push({
-						id: d[k]['id'],
-						title: d[k]['title']
-					});
-				}
-			}
-		}
-
-		if(MainParser.Conversations.length > 0){
-			// Dupletten entfernen
+		if (MainParser.Conversations.length > 0) {
+			// Dopplungen entfernen und Daten lokal abspeichern
 			MainParser.Conversations = [...new Set(MainParser.Conversations.map(s => JSON.stringify(s)))].map(s => JSON.parse(s));
-
 			localStorage.setItem('ConversationsHeaders', JSON.stringify(MainParser.Conversations));
 		}
 	},
@@ -2038,5 +2072,26 @@ let MainParser = {
 		let RegEx = new RegExp(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi);
 
 		return text.replace(RegEx, '');
-	}
+	},
+
+
+	ExportFile: (Blob, FileName) => {
+		// Browsercheck
+		let isIE = !!document.documentMode;
+
+		if (isIE) {
+			window.navigator.msSaveBlob(Blob, FileName);
+
+		} else {
+			let url = window.URL || window.webkitURL,
+				link = url.createObjectURL(Blob),
+				a = document.createElement('a');
+
+			a.download = FileName;
+			a.href = link;
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		}
+    }
 };
