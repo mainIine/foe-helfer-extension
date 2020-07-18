@@ -13,7 +13,13 @@
  * **************************************************************************************
  */
 
-// Chat-Titel notieren
+// neues Postfach
+FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
+
+
+// altes Postfach
 FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
@@ -331,40 +337,55 @@ let Info = {
      * @returns {{class: 'message', msg: string, type: string}}
      */
     ConversationService_getNewMessage: (d) => {
-        let msg;
+        let header; let message; let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        if (chat && chat['hidden']) return undefined;
 
         if (d['text'] !== '') {
-            msg = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
+            // normale Nachricht
+            message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
 
         } else if (d['attachment'] !== undefined) {
-
-            // Greatbuilding
+            // legendäres Bauwerk
             if (d['attachment']['type'] === 'great_building') {
-                msg = HTML.i18nReplacer(
+                message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
                     'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
                     'level': d['attachment']['level']
-                }
-                )
+                });
             }
-            // Trade
+            // Handelsangebot
             else if (d['attachment']['type'] === 'trade_offer') {
-                msg = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
+                message = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
+        } else {
+            return undefined;
         }
 
-        if (undefined === d.sender) {
-            return {
-                class: 'message',
-                type: i18n('Boxes.Infobox.FilterMessage'),
-                msg: Info.GetConversationHeader(d.conversationId, null) + msg
-            };
+        if (chat != null) {
+            if (d['sender']['name'] != null) {
+                // normale Chatnachricht (bekannte ID)
+                if (chat['important']) {
+                    header = '<div><strong style="color:#ffb539">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⚠️</div>';
+                } else if (chat['favorite']) {
+                    header = '<div><strong style="color:#ffb539">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⭐</div>';
+                } else {
+                    header = '<div><strong style="color:#ffb539">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
+                }
+            } else {
+                // Chatnachricht vom System (Betreten/Verlassen)
+                header = '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
+            }
+        } else if (d['sender']['name'] != null) {
+            // normale Chatnachricht (unbekannte ID)
+            header = '<div><strong style="color:#ffb539">' + name + '</strong></div>';
+        } else {
+            header = ''
         }
 
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
-            msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
+            msg: header + message
         };
     },
 
@@ -393,6 +414,9 @@ let Info = {
 
         if (data['lockedUntil'] !== undefined) {
 
+            // keine Übernahme
+            if (data['lockedUntil'] < Math.floor(Date.now() / 1000) + 14390) return undefined;
+
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
 				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
@@ -413,9 +437,11 @@ let Info = {
             };
         }
 
-        let t = '';
+        // kein aktiver Kampf
+        if (!data['conquestProgress'][0]) return undefined;
 
         // Es wird gerade gekämpft
+        let t = '';
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
                 break;
@@ -542,30 +568,5 @@ let Info = {
                 }
             )
         };
-    },
-
-
-    /**
-     * Sucht den Titel einer Nachricht heraus
-     *
-     * @param id
-     * @param {string} name
-     * @returns {string}
-     */
-    GetConversationHeader: (id, name) => {
-        let header = MainParser.Conversations.find(obj => obj.id === id);
-        if (header != null && name != null) {
-            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
-            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
-        } else if (name != null) {
-            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
-            return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
-        } else if (header != null) {
-            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
-            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
-        }
-
-        return '';
     }
 };
-

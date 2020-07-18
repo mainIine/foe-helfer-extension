@@ -764,7 +764,7 @@ let _menu = {
 		let btn_sp = $('<span />');
 
 		btn_sp.on('click', function(){
-			Kits.BuildBox();
+			Kits.init();
 		});
 
 		btn.append(btn_sp);
