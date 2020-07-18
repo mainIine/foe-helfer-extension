@@ -60,7 +60,7 @@ let Infoboard = {
     InjectionLoaded: false,
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
-    SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    SavedFilter: ["auction", "gex", "guildfights", "trade", "level", "message"],
     DebugWebSocket: false,
 
 
@@ -143,7 +143,7 @@ let Infoboard = {
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGex') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfighs") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfights" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfights") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("message") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
@@ -235,6 +235,7 @@ let Infoboard = {
             }
 
             tr.append(
+                '<td></td>' +
                 '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
@@ -365,19 +366,19 @@ let Info = {
             if (d['sender']['name'] != null) {
                 // normale Chatnachricht (bekannte ID)
                 if (chat['important']) {
-                    header = '<div><strong style="color:#ffb539">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⚠️</div>';
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⚠️</div>';
                 } else if (chat['favorite']) {
-                    header = '<div><strong style="color:#ffb539">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⭐</div>';
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⭐</div>';
                 } else {
-                    header = '<div><strong style="color:#ffb539">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
                 }
             } else {
                 // Chatnachricht vom System (Betreten/Verlassen)
-                header = '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
+                header = '<div><strong class="bright">' + header.title + '</strong></div>';
             }
         } else if (d['sender']['name'] != null) {
             // normale Chatnachricht (unbekannte ID)
-            header = '<div><strong style="color:#ffb539">' + name + '</strong></div>';
+            header = '<div><strong class="bright">' + name + '</strong></div>';
         } else {
             header = ''
         }
@@ -424,7 +425,7 @@ let Info = {
                 ts = colors['shadow'];
 
             return {
-                class: 'guildfighs',
+                class: 'guildfights',
                 type: i18n('Boxes.Infobox.FilterGildFights'),
                 msg: HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.GildFightOccupied'), {
@@ -462,7 +463,7 @@ let Info = {
             let tc = colors['highlight'],
                 ts = colors['shadow'];
 
-            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
+            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span class="bright">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
 
             if (Info.GildPoints[data['id']] === undefined) {
                 Info.GildPoints[data['id']] = {};
@@ -473,7 +474,7 @@ let Info = {
         }
 
         return {
-            class: 'guildfighs',
+            class: 'guildfights',
             type: i18n('Boxes.Infobox.FilterGildFights'),
             msg: t
         };
