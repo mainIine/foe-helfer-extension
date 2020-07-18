@@ -24,8 +24,9 @@ let Market = {
     Offer: 0,
     Need: 0,
     MinQuantity: 1,
+    MaxResults: 100,
 
-    TradePartnerNeighbour : true,
+    TradePartnerNeighbor : true,
     TradePartnerGuild : true,
     TradePartnerFriend: true,
 
@@ -44,6 +45,7 @@ let Market = {
                 'title': i18n('Boxes.Market.Title'),
                 'auto_close': true,
                 'dragdrop': true,
+                'minimize': true
             });
 
             // CSS in den DOM prügeln
@@ -66,8 +68,8 @@ let Market = {
                 GreatBuildings.CalcBody();
             });
 
-            $('#Market').on('click', '.tradepartnerneighbour', function () {
-                Market.TradePartnerNeighbour = !Market.TradePartnerNeighbour;
+            $('#Market').on('click', '.tradepartnerneighbor', function () {
+                Market.TradePartnerNeighbor = !Market.TradePartnerNeighbor;
                 Market.CalcBody();
             });
 
@@ -144,7 +146,7 @@ let Market = {
         }
         h.push('</select></td>');
 
-        h.push('<td><input class="tradepartnerneighbour game-cursor" ' + (Market.TradePartnerNeighbour ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerNeighbour') + '</td>');
+        h.push('<td><input class="tradepartnerneighbor game-cursor" ' + (Market.TradePartnerNeighbor ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerNeighbor') + '</td>');
         h.push('<td><input class="tradeforhigher game-cursor" ' + (Market.TradeForHigher ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForHigher') + '</td>');
         h.push('<td><input class="tradeadvantage game-cursor" ' + (Market.TradeAdvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeAdvantage') + '</td>');
         h.push('</tr>');
@@ -172,7 +174,7 @@ let Market = {
 
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.MinQuantity') + '</td>');
-        h.push('<td><input type="number" id="MinQuantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
+        h.push('<td><input type="number" id="minquantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
         h.push('<td><input class="tradepartnerfriend game-cursor" ' + (Market.TradePartnerFriend ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerFriend') + '</td>');
         h.push('<td><input class="tradeforlower game-cursor" ' + (Market.TradeForLower ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForLower') + '</td>');
         h.push('<td><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</td>');
@@ -192,18 +194,28 @@ let Market = {
         h.push('</tr>');
         h.push('</thead>');
 
+        let Counter = 0;
+        let Pos = 0;
         for (let i = 0; i < Market.Trades.length; i++) {
+            if (Counter >= Market.MaxResults) break;
+
             let Trade = Market.Trades[i];
-            if (Market.ApplyFilter(Trade)) {
+            if (Market.TestFilter(Trade)) {
                 h.push('<tr>');
-                h.push('<td>' + Trade['offer']['good_id'] + '</td>');
+                h.push('<td>' + GoodsData[Trade['offer']['good_id']]['name'] + '</td>');
                 h.push('<td>' + Trade['offer']['value'] + '</td>');
-                h.push('<td>' + Trade['need']['good_id'] + '</td>');
+                h.push('<td>' + GoodsData[Trade['need']['good_id']]['name'] + '</td>');
                 h.push('<td>' + Trade['need']['value'] + '</td>');
-                h.push('<td>' + HTML.Format(Math.round(Trade['need']['value'] / Trade['offer']['value'] * 100) / 100) + '</td>');
+                h.push('<td>' + HTML.Format(Math.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
-                h.push('<td>' + HTML.Format(Math.floor(i / 10 + 1)) + HTML.Format(i % 10 + 1) + '</td>');
+                h.push('<td>' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
                 h.push('</tr>');
+
+                Counter += 1;
+            }
+
+            if (!Trade['merchant']['is_self']) { //Eigene Handel rausfiltern
+                Pos += 1;
             }
         }
 
@@ -213,7 +225,86 @@ let Market = {
     },
 
 
-    ApplyFilter: (Trade) => {
+    TestFilter: (Trade) => {
+        if (Trade['id'] < 0) { // 10:1 Händler immer ausblenden
+            return false;
+        }
+
+        if (Trade['merchant']['is_self']) {
+            return false;
+        }
+
+        //Offer
+        if (!Market.TestGoodFilter(Trade['offer']['good_id'], Market.Offer)) {
+            return false;
+        }
+
+        //Need
+        if (!Market.TestGoodFilter(Trade['need']['good_id'], Market.Need)) {
+            return false;
+        }
+
+        //MinQuantity
+        if(!(Trade['merchant']['is_guild_member'] || Trade['offer']['value'] >= Market.MinQuantity)) { //ignore MinQuanity for guild members
+            return false;
+        }
+
+        //Tradepartner
+        if (!((Market.TradePartnerNeighbor && Trade['merchant']['is_neighbor']) || (Market.TradePartnerGuild && Trade['merchant']['is_guild_member']) || (Market.TradePartnerFriend && Trade['merchant']['is_friend']))) {
+            return false;
+        }
+
+        let OfferEra = Technologies.Eras[GoodsData[Trade['offer']['good_id']]['era']],
+            NeedEra = Technologies.Eras[GoodsData[Trade['need']['good_id']]['era']],
+            EraDiff = OfferEra - NeedEra;
+
+        if (EraDiff > 0 && !Market.TradeForHigher) {
+            return false;
+        }
+        if (EraDiff === 0 && !Market.TradeForEqual) {
+            return false;
+        }
+        if (EraDiff < 0 && !Market.TradeForLower) {
+            return false;
+        }
+
+        let Rate = Trade['offer']['value'] / Trade['need']['value'];
+        let Rating = Rate * Math.pow(2, EraDiff);
+
+        if (Rating > 1 && !Market.TradeAdvantage) {
+            return false;
+        }
+        if (Rating === 1 && !Market.TradeFair) {
+            return false;
+        }
+        if (Rating < 1 && !Market.TradeDisadvantage) {
+            return false;
+        }
+
         return true;
-    }
+    },
+
+    TestGoodFilter: (TradeGood, GoodCode) => {
+        if (GoodCode === 0) return true;
+
+        GoodCode -= 1;
+
+        let EraIndex = Math.floor(GoodCode / 6);
+        let ID = GoodCode % 6;
+
+        let AllowedGoods = [];
+        if (ID === 0) {
+            for (let i = 0; i < 5; i++) {
+                AllowedGoods.push(GoodsList[EraIndex * 5 + i]['id']);
+            }
+        }
+        else {
+            AllowedGoods.push(GoodsList[EraIndex * 5 + ID - 1]['id']);
+        }
+
+        for (let i = 0; i < AllowedGoods.length; i++) {
+            if (TradeGood === AllowedGoods[i]) return true;
+        }
+        return false
+    },
 };
