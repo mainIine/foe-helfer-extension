@@ -47,7 +47,69 @@ let Market = {
             });
 
             // CSS in den DOM prügeln
-            HTML.AddCssFile('market');                       
+            HTML.AddCssFile('market');
+
+            $('#Market').on('change', '#change-offer', function () {
+                let OfferString = $(this).val();
+                Market.Offer = parseInt(OfferString);
+                Market.CalcBody();
+            });
+
+            $('#Market').on('change', '#change-need', function () {
+                let NeedString = $(this).val();
+                Market.Need = parseInt(NeedString);
+                Market.CalcBody();
+            });
+
+            $('#Market').on('blur', '#minquantity', function () {
+                Market.MinQuantity = parseFloat($('#minquantity').val());              
+                GreatBuildings.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradepartnerneighbour', function () {
+                Market.TradePartnerNeighbour = !Market.TradePartnerNeighbour;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradepartnerguild', function () {
+                Market.TradePartnerGuild = !Market.TradePartnerGuild;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradepartnerfriend', function () {
+                Market.TradePartnerFriend = !Market.TradePartnerFriend;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradeforhigher', function () {
+                Market.TradeForHigher = !Market.TradeForHigher;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradeforequal', function () {
+                Market.TradeForEqual = !Market.TradeForEqual;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradeforlower', function () {
+                Market.TradeForLower = !Market.TradeForLower;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradeadvantage', function () {
+                Market.TradeAdvantage = !Market.TradeAdvantage;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradefair', function () {
+                Market.TradeFair = !Market.TradeFair;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradedisadvantage', function () {
+                Market.TradeDisadvantage = !Market.TradeDisadvantage;
+                Market.CalcBody();
+            });
         }
 
         Market.CalcBody();
@@ -56,6 +118,7 @@ let Market = {
     CalcBody: () => {
         let h = [];
 
+        //Filters
         h.push('<table class="foe-table">');
         h.push('<tr>');
         h.push('<td></td>');
@@ -68,7 +131,7 @@ let Market = {
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.Offer') + '</td>');
 
-        h.push('<td><select class="market-dropdown" id="change-offer">');
+        h.push('<td><select class="setting-dropdown" id="change-offer">');
         let ID = 0;
         h.push('<option value="' + ID + '" ' + (Market.Offer === ID ? 'selected' : '') + '>' + i18n('Boxes.Market.AllGoods') + '</option>');
         for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++) {
@@ -81,15 +144,15 @@ let Market = {
         }
         h.push('</select></td>');
 
-        h.push('<td>' + i18n('Boxes.Market.TradePartnerNeighbour') + '<input id="tradepartnerneighbour" class="game-cursor" ' + (Market.TradePartnerNeighbour ? 'checked' : '') + ' type="checkbox"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeForHigher') + '<input id="tradeforhigher" class="game-cursor" ' + (Market.TradeForHigher ? 'checked' : '') + ' type="checkbox"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeAdvantage') + '<input id="tradeadvantage" class="game-cursor" ' + (Market.TradeAdvantage ? 'checked' : '') + ' type="checkbox"></td>');
+        h.push('<td><input class="tradepartnerneighbour game-cursor" ' + (Market.TradePartnerNeighbour ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerNeighbour') + '</td>');
+        h.push('<td><input class="tradeforhigher game-cursor" ' + (Market.TradeForHigher ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForHigher') + '</td>');
+        h.push('<td><input class="tradeadvantage game-cursor" ' + (Market.TradeAdvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeAdvantage') + '</td>');
         h.push('</tr>');
 
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.Need') + '</td>');
 
-        h.push('<td><select class="market-dropdown" id="change-need">');
+        h.push('<td><select class="setting-dropdown" id="change-need">');
         ID = 0;
         h.push('´<option value="' + ID + '" ' + (Market.Need === ID ? 'selected' : '') + '>' + i18n('Boxes.Market.AllGoods') + '</option>');
         for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++) {
@@ -102,18 +165,33 @@ let Market = {
         }
         h.push('</select></td>');
 
-        h.push('<td>' + i18n('Boxes.Market.TradePartnerGuild') + '<input id="tradepartnerguild" class="game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeForEqual') + '<input id="tradeforequal" class="game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeFair') + '<input id="tradeadvantage" class="game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox"></td>');
+        h.push('<td><input class="tradepartnerguild game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerGuild') + '</td>');
+        h.push('<td><input class="tradeforequal game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForEqual') + '</td>');
+        h.push('<td><input class="tradefair game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFair') + '</td>');
         h.push('</tr>');
 
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.MinQuantity') + '</td>');
         h.push('<td><input type="number" id="MinQuantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradePartnerFriend') + '<input id="tradepartnerfriend" class="game-cursor" ' + (Market.TradePartnerFriend ? 'checked' : '') + ' type="checkbox"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeForLower') + '<input id="tradeforlower" class="game-cursor" ' + (Market.TradeForLower ? 'checked' : '') + ' type="checkbox"></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeDisadvantage') + '<input id="tradedisadvantage" class="game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox"></td>');
+        h.push('<td><input class="tradepartnerfriend game-cursor" ' + (Market.TradePartnerFriend ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerFriend') + '</td>');
+        h.push('<td><input class="tradeforlower game-cursor" ' + (Market.TradeForLower ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForLower') + '</td>');
+        h.push('<td><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</td>');
         h.push('</tr>');
+        h.push('</table>');
+
+        // Table
+        h.push('<table class="foe-table">');
+
+        h.push('<tr>');
+        h.push('<thead>');
+        h.push('<th>' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th>' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th>' + i18n('Boxes.Market.RateColumn') + '</th>');
+        h.push('<th>' + i18n('Boxes.Market.PlayerColumn') + '</th>');
+        h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');
+        h.push('</thread>');
+        h.push('</tr>');
+
         h.push('</table>');
 
         $('#MarketBody').html(h.join(''));
