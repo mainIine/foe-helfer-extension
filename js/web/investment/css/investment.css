@@ -8,7 +8,7 @@
 }
 
 #Investment #InvestmentBody strong {
-	color: #ffb539;
+	color: var(--text-bright);
 }
 
 #Investment #InvestmentBody #total-fp {

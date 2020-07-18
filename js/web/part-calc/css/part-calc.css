@@ -44,10 +44,10 @@
 
 #OwnPartBox .OwnPartDrops .inputWrapper input {
 	max-width: 45px;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	text-align: right;
 	margin: 0;
 	font-size: 0.8rem;
@@ -56,10 +56,10 @@
 
 #OwnPartBox .OwnPartDrops div select {
 	line-height: 1.5;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	max-width: 160px;
 }
 
@@ -78,19 +78,19 @@
 
 
 #OwnPartBox #OwnPartBoxBody strong {
-	color: #ffb539;
+	color: var(--text-normal);
 }
 
 #OwnPartBox #OwnPartBoxBody strong.normal {
-	color: #F3D6A0;
+	color: var(--text-normal);
 }
 
 #OwnPartBox #OwnPartBoxBody .success {
-	color: #29b206 !important;
+	color: var(--text-success) !important;
 }
 
 #OwnPartBox #OwnPartBoxBody .info {
-	color: #2196f3 !important;
+	color: var(--text-info) !important;
 }
 
 #OwnPartBox #OwnPartTable .error {
@@ -99,19 +99,19 @@
 
 #OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
 	line-height: 1.5;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	width: 35px;
 	text-align: center;
 }
 
 #OwnPartBox #arc-percent {
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	text-align: center;
 	width: 30px;
 	margin: 0 5px;
@@ -205,10 +205,10 @@
 
 .OwnPartBoxBackground input[type=text],
 .OwnPartBoxBackground select {
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	font-size: 0.8rem;
 	height: 18px;
 	width: 164px;
@@ -268,5 +268,5 @@
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .success {
-	color: #29b206;
+	color: var(--text-success);
 }
