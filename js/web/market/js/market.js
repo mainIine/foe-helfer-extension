@@ -15,7 +15,7 @@
 
 // Markt
 FoEproxy.addHandler('TradeService', 'getTradeOffers', (data) => {
-    Market.Trades = data;
+    Market.Trades = data.responseData;
     Market.Show();
 });
 
@@ -182,18 +182,38 @@ let Market = {
         // Table
         h.push('<table class="foe-table">');
 
-        h.push('<tr>');
         h.push('<thead>');
-        h.push('<th>' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<tr>');
+        h.push('<th colspan="2">' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th colspan="2">' + i18n('Boxes.Market.NeedColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.RateColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');
-        h.push('</thread>');
         h.push('</tr>');
+        h.push('</thead>');
+
+        for (let i = 0; i < Market.Trades.length; i++) {
+            let Trade = Market.Trades[i];
+            if (Market.ApplyFilter(Trade)) {
+                h.push('<tr>');
+                h.push('<td>' + Trade['offer']['good_id'] + '</td>');
+                h.push('<td>' + Trade['offer']['value'] + '</td>');
+                h.push('<td>' + Trade['need']['good_id'] + '</td>');
+                h.push('<td>' + Trade['need']['value'] + '</td>');
+                h.push('<td>' + HTML.Format(Math.round(Trade['need']['value'] / Trade['offer']['value'] * 100) / 100) + '</td>');
+                h.push('<td>' + Trade['merchant']['name'] + '</td>');
+                h.push('<td>' + HTML.Format(Math.floor(i / 10 + 1)) + HTML.Format(i % 10 + 1) + '</td>');
+                h.push('</tr>');
+            }
+        }
 
         h.push('</table>');
 
         $('#MarketBody').html(h.join(''));
+    },
+
+
+    ApplyFilter: (Trade) => {
+        return true;
     }
 };
