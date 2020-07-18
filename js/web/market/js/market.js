@@ -35,8 +35,9 @@ let Market = {
     TradeForLower: true,
 
     TradeAdvantage: true,
+    TradeFairStock: true,
     TradeFair: true,
-    TradeDisadvantage: true,
+    TradeDisadvantage: false,
 
     Show: () => {
         if ($('#Market').length === 0) {
@@ -65,7 +66,7 @@ let Market = {
 
             $('#Market').on('blur', '#minquantity', function () {
                 Market.MinQuantity = parseFloat($('#minquantity').val());              
-                GreatBuildings.CalcBody();
+                Market.CalcBody();
             });
 
             $('#Market').on('click', '.tradepartnerneighbor', function () {
@@ -100,6 +101,11 @@ let Market = {
 
             $('#Market').on('click', '.tradeadvantage', function () {
                 Market.TradeAdvantage = !Market.TradeAdvantage;
+                Market.CalcBody();
+            });
+
+            $('#Market').on('click', '.tradefairstock', function () {
+                Market.TradeFairStock = !Market.TradeFairStock;
                 Market.CalcBody();
             });
 
@@ -169,14 +175,22 @@ let Market = {
 
         h.push('<td><input class="tradepartnerguild game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerGuild') + '</td>');
         h.push('<td><input class="tradeforequal game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForEqual') + '</td>');
-        h.push('<td><input class="tradefair game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFair') + '</td>');
+        h.push('<td><input class="tradefairstock game-cursor" ' + (Market.TradeFairStock ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFairStock') + '</td>');
         h.push('</tr>');
 
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.MinQuantity') + '</td>');
-        h.push('<td><input type="number" id="minquantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
+        h.push('<td title="' + i18n('Boxes.Market.TTMinQuantity') + '"><input type="number" id="minquantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
         h.push('<td><input class="tradepartnerfriend game-cursor" ' + (Market.TradePartnerFriend ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerFriend') + '</td>');
         h.push('<td><input class="tradeforlower game-cursor" ' + (Market.TradeForLower ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForLower') + '</td>');
+        h.push('<td><input class="tradefair game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFair') + '</td>');
+        h.push('</tr>');
+
+        h.push('<tr>');
+        h.push('<td></td>');
+        h.push('<td></td>');
+        h.push('<td></td>');
+        h.push('<td></td>');
         h.push('<td><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</td>');
         h.push('</tr>');
         h.push('</table>');
@@ -254,8 +268,10 @@ let Market = {
             return false;
         }
 
-        let OfferEra = Technologies.Eras[GoodsData[Trade['offer']['good_id']]['era']],
-            NeedEra = Technologies.Eras[GoodsData[Trade['need']['good_id']]['era']],
+        let OfferGoodID = Trade['offer']['good_id'],
+            NeedGoodID = Trade['need']['good_id'],
+            OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],
+            NeedEra = Technologies.Eras[GoodsData[NeedGoodID]['era']],
             EraDiff = OfferEra - NeedEra;
 
         if (EraDiff > 0 && !Market.TradeForHigher) {
@@ -274,8 +290,17 @@ let Market = {
         if (Rating > 1 && !Market.TradeAdvantage) {
             return false;
         }
-        if (Rating === 1 && !Market.TradeFair) {
-            return false;
+        if (Rating === 1) { // Fair
+            if (ResourceStock[OfferGoodID] < ResourceStock[NeedGoodID]) { //Stock is higher
+                if (!Market.TradeFairStock) {
+                    return false;
+                }
+            }
+            else { // Stock is lower or equal
+                if (!Market.TradeFair) {
+                    return false;
+                }
+            }
         }
         if (Rating < 1 && !Market.TradeDisadvantage) {
             return false;
