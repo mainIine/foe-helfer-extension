@@ -1935,7 +1935,7 @@ let MainParser = {
 	setConversations: (d)=> {
 
 		// Falls der Cache leer ist den Speicher auslesen
-		if (MainParser.Conversations.length === 0){
+		if (MainParser.Conversations.length === 0) {
 			let StorageHeader = localStorage.getItem('ConversationsHeaders');
 			if (StorageHeader !== null) {
 				MainParser.Conversations = JSON.parse(StorageHeader);
@@ -1944,14 +1944,14 @@ let MainParser = {
 
 		// neues Postfach
 		if (d['category'] && d['category']['teasers']) {
-			for(let k in d['category']['teasers']){
-				if (!d['category']['teasers'].hasOwnProperty(k)){
+			for (let k in d['category']['teasers']) {
+				if (!d['category']['teasers'].hasOwnProperty(k)) {
 					continue;
 				}
 
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['category']['teasers'][k]['id']));
 				// Ist bereits ein Key vorhanden?
-				if (key !== -1){
+				if (key !== -1) {
 					MainParser.Conversations[key]['type'] = d['category']['type'];
 					MainParser.Conversations[key]['title'] = d['category']['teasers'][k]['title'];
 					MainParser.Conversations[key]['hidden'] = d['category']['teasers'][k]['isHidden'];
@@ -2021,7 +2021,7 @@ let MainParser = {
 			}
 		}
 
-		if (MainParser.Conversations.length > 0){
+		if (MainParser.Conversations.length > 0) {
 			// Dopplungen entfernen und Daten lokal abspeichern
 			MainParser.Conversations = [...new Set(MainParser.Conversations.map(s => JSON.stringify(s)))].map(s => JSON.parse(s));
 			localStorage.setItem('ConversationsHeaders', JSON.stringify(MainParser.Conversations));
