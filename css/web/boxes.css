@@ -266,7 +266,7 @@
 	color: #ffffff;
 	text-align: center;
 	text-decoration: none;
-	background-color: #000000;
+	background-color: var(--black);
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -284,7 +284,7 @@
 	bottom: 0;
 	left: 50%;
 	margin-left: -5px;
-	border-top-color: #000000;
+	border-top-color: var(--black);
 	border-width: 5px 5px 0;
 }
 
@@ -292,7 +292,7 @@
 	top: 50%;
 	left: 0;
 	margin-top: -5px;
-	border-right-color: #000000;
+	border-right-color: var(--black);
 	border-width: 5px 5px 5px 0;
 }
 
@@ -300,7 +300,7 @@
 	top: 50%;
 	right: 0;
 	margin-top: -5px;
-	border-left-color: #000000;
+	border-left-color: var(--black);
 	border-width: 5px 0 5px 5px;
 }
 
@@ -308,7 +308,7 @@
 	top: 0;
 	left: 50%;
 	margin-left: -5px;
-	border-bottom-color: #000000;
+	border-bottom-color: var(--black);
 	border-width: 0 5px 5px;
 }
 
