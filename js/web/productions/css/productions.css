@@ -44,7 +44,7 @@
 }
 
 #Productions #ProductionsBody strong {
-	color: #ffb539;
+	color: var(--text-bright);
 }
 
 #Productions #ProductionsBody table .sorter-header th {
@@ -53,7 +53,7 @@
 
 #Productions #ProductionsBody table .sorter-header .ascending:after,
 #Productions #ProductionsBody table .sorter-header .descending:after {
-	color: #ffb539;
+	color: var(--text-bright);
 	position: absolute;
 	top: -3px;
 	font-size: 20px;
@@ -72,7 +72,7 @@
 
 #Productions #ProductionsBody table tbody.parent th {
 	background-color: #3f2a1b;
-	color: #ffb539;
+	color: var(--text-bright);
 	padding-top: 15px;
 	position: sticky;
 	top: 0;
@@ -80,14 +80,14 @@
 
 #Productions #ProductionsBody table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: #ffb539;
+	color: var(--text-bright);
 }
 
 #Productions #ProductionsBody table #all-search {
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	line-height: 18px;
 }
 
@@ -109,7 +109,7 @@
 #Productions #ProductionsBody table td.total-products span {
 	display: inline-block;
 	padding: 2px 4px;
-	color: #ffb539;
+	color: var(--text-bright);
 	white-space: nowrap;
 }
 

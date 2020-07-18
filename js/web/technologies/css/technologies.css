@@ -38,7 +38,7 @@
 }
 
 #technologies #technologiesBody .techno-head strong {
-	color: #FFB539;
+	color: var(--text-bright);
 }
 
 #technologies #technologiesBody tr.total-row td {
@@ -47,7 +47,7 @@
 }
 
 #technologies #technologiesBody tr.resource-row td {
-	color: #FFB539;
+	color: var(--text-bright);
 	font-weight: 700;
 }
 
@@ -57,7 +57,7 @@
 }
 
 #technologies #technologiesBody .text-success {
-	color: #29b206;
+	color: var(--text-success);
 	font-weight: 700;
 }
 
@@ -74,7 +74,7 @@
 	font-weight: 700;
 	display: inline-block;
 	margin-left: 6px;
-	background: #2196f3;
+	background: var(--text-info);
 	padding: 0 4px;
 	border-radius: 50%;
 	width: 10px;
