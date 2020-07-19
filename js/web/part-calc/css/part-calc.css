@@ -78,11 +78,11 @@
 
 
 #OwnPartBox #OwnPartBoxBody strong {
-	color: var(--text-normal);
+	color: var(--text-bright);
 }
 
 #OwnPartBox #OwnPartBoxBody strong.normal {
-	color: var(--text-normal);
+	color: var(--text-bright);
 }
 
 #OwnPartBox #OwnPartBoxBody .success {
