@@ -152,6 +152,10 @@
 	background-image: url(../images/gbg-pink.png);
 }
 
+#BackgroundInfoTable .gbg-lock td:first-child {
+	background-image: url(../images/gbg-lock.png);
+}
+
 #BackgroundInfoTable .gbg-undefined td:first-child {
 	background-image: url(../images/gbg-undefined.png);
 }
