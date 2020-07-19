@@ -73,6 +73,11 @@ let Market = {
                 Market.CalcBody();
             });
 
+            $('#Market').on('blur', '#maxresults', function () {
+                Market.MaxResults = parseFloat($('#maxresults').val());
+                Market.CalcBody();
+            });
+
             $('#Market').on('click', '.tradepartnerneighbor', function () {
                 Market.TradePartnerNeighbor = !Market.TradePartnerNeighbor;
                 Market.CalcBody();
@@ -193,8 +198,8 @@ let Market = {
         h.push('</tr>');
 
         h.push('<tr>');
-        h.push('<td></td>');
-        h.push('<td></td>');
+        h.push('<td>' + i18n('Boxes.Market.MaxResults') + '</td>');
+        h.push('<td><input type="number" id="maxresults" step="1" min="1" max="1000000" value="' + Market.MaxResults + '"></td>');
         h.push('<td></td>');
         h.push('<td></td>');
         h.push('<td><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</td>');
