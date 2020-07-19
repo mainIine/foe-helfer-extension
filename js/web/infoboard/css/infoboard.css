@@ -94,6 +94,14 @@
 	background-size: 25px;
 }
 
+#BackgroundInfoTable .message.important td:first-child {
+	background-image: url(images/msg-important.png);
+}
+
+#BackgroundInfoTable .message.favorite td:first-child {
+	background-image: url(images/msg-favorite.png);
+}
+
 #BackgroundInfoTable .auction td:first-child {
 	background-image: url(../images/ant.png);
 }
