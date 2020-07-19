@@ -37,6 +37,7 @@
 	position: sticky;
 	top: 0;
 	padding: 5px;
+	z-index: 100;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span {
@@ -74,29 +75,47 @@
 }
 
 #BackgroundInfoTable td:first-child {
-	background: url(images/gbg-grey.png) center center no-repeat;
+	background: url(../images/gbg-grey.png) center center no-repeat;
 	background-size: contain;
 	width: 30px;
 }
 
 #BackgroundInfoTable .message td:first-child {
-	background-image: url(images/msg.png);
+	background-image: url(../images/msg.png);
 	background-size: 25px;
 }
 
+#BackgroundInfoTable .msg-important td:first-child {
+	background-image: url(../images/msg-important.png);
+	background-size: 25px;
+}
+
+#BackgroundInfoTable .msg-favorite td:first-child {
+	background-image: url(../images/msg-favorite.png);
+	background-size: 25px;
+}
+
+#BackgroundInfoTable .message.important td:first-child {
+	background-image: url(images/msg-important.png);
+}
+
+#BackgroundInfoTable .message.favorite td:first-child {
+	background-image: url(images/msg-favorite.png);
+}
+
 #BackgroundInfoTable .auction td:first-child {
-	background-image: url(images/ant.png);
+	background-image: url(../images/ant.png);
 }
 
 #BackgroundInfoTable .gex td:first-child {
-	background-image: url(images/ge.png);
+	background-image: url(../images/ge.png);
 }
 
 #BackgroundInfoTable .level td:first-child {
-	background-image: url(images/gb.png);
+	background-image: url(../images/gb.png);
 }
 
 #BackgroundInfoTable .trade td:first-child {
-	background-image: url(images/trade.png);
+	background-image: url(../images/trade.png);
 	background-size: 25px;
 }

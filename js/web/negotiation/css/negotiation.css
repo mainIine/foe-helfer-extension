@@ -97,7 +97,7 @@
 }
 
 #negotiationBox #negotiationBoxBody .text-muted {
-	color: #8a8a8a;
+	color: var(--text-muted);
 }
 
 #negotiationBox #negotiationBoxBody td {

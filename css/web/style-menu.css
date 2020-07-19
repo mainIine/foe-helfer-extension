@@ -172,32 +172,32 @@ input[type=number] {
 	padding: 0.2rem 1rem;
 	font-size: 0.8rem;
 	line-height: 1.5;
-	background: rgb(183,112,55);
-	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
-	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	background: var(--background-btn-fallback);
+	background: var(--background-btn-moz);
+	background: var(--background-btn-webkit);
+	background: var(--background-btn);
 	border: var(--black) 1px solid;
 	border-radius: 4px;
-	color: var(--text-normal);
+	color: var(--text-btn);
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	outline: none !important;
 }
 
 .btn-default[disabled], .btn-default[disabled]:hover {
-	color: #999;
-	background: rgb(42, 42, 42);
-	background: -moz-linear-gradient(top,  rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
-	background: -webkit-linear-gradient(top, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
-	background: linear-gradient(to bottom,  rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+	color: var(--text-btn-disabled);
+	background: var(--background-btn-disabled-fallback);
+	background: var(--background-btn-disabled-moz);
+	background: var(--background-btn-disabled-webkit);
+	background: var(--background-btn-disabled);
 }
 
 .btn-default:not([disabled]):hover,
 .btn-default-active:not([disabled]){
-	background: rgb(228,193,75);
-	background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
-	background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-	background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	background: var(--background-btn-active-fallback);
+	background: var(--background-btn-active-moz);
+	background: var(--background-btn-active-webkit);
+	background: var(--background-btn-active);
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
 }
 
@@ -215,10 +215,10 @@ input[type=number] {
 
 .btn-green:not([disabled]),
 .btn-green:not([disabled]):hover {
-	background: #6eaa5c;
-	background: -moz-linear-gradient(top, #469e2b 0%, #1f6517 100%);
-	background: -webkit-linear-gradient(top, #469e2b 0%,#1f6517 100%);
-	background: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	background: var(--background-btn-green-fallback);
+	background: var(--background-btn-green-moz);
+	background: var(--background-btn-green-webkit);
+	background: var(--background-btn-green);
 }
 
 .ml-auto {
@@ -269,15 +269,15 @@ table.foe-table thead tr th,
 table.foe-table th,
 .dark-bg,
 .thead th {
-	background-color: rgba(0,0,0, 0.5);
+	background-color: var(--50-black);
 }
 
 table.foe-table tbody tr:nth-child(odd) {
-	background-color: rgba(255,255,255, 0.07);
+	background-color: var(--background-table-odd);
 }
 
 table.foe-table:not(.no-hover) tbody tr:hover {
-	background-color: rgba(243, 214, 160, 0.2);
+	background-color: var(--background-table-hover);
 }
 
 table.foe-table tr th,
@@ -286,15 +286,14 @@ table.foe-table tr td {
 }
 
 table.foe-table tr td {
-	border-top: 1px solid #7F5A34;
-	border-bottom: 1px solid #3D250F;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid (--border-table-bottom);
 }
 
 table.foe-table tr.success td,
 .text-success {
 	color: var(--text-success);
 }
-
 
 p {
 	margin: 0 0 10px 0;
@@ -484,7 +483,7 @@ p {
 	bottom: 4px;
 	top: unset;
 	left: 5px;
-	background-color: #3180bf;
+	background-color: var(--hud-counter);
 	border-radius: 50%;
 	line-height: 16px;
 	text-align: center;
@@ -587,7 +586,7 @@ Tabs */
 .window-body .tabs ul.horizontal {
 	margin: 5px 0 0 0;
 	padding: 0 0 0 6px;
-	border-bottom: 2px solid #864c1e;
+	border-bottom: 2px solid var(--border-tab);
 }
 
 .window-body .tabs ul.horizontal li {
@@ -611,12 +610,12 @@ Tabs */
 	display: block;
 	position: relative;
 	padding: 0 12px;
-	color: #9c9c9c;
+	color: var(--text-tab);
 }
 
 .window-body .tabs ul.horizontal li:hover a,
 .window-body .tabs ul.horizontal li.active a {
-	color: #e2e2e2;
+	color: var(--text-tab-active);
 }
 
 .window-body .tabs ul.horizontal li a span {
@@ -685,7 +684,7 @@ Tabs */
 	left: 0;
 	top: 0;
 	bottom: 0;
-	border-right: 2px solid #864c1e;
+	border-right: 2px solid var(--border-tab);
 }
 
 .window-body .tabs ul.vertical li {
@@ -717,7 +716,7 @@ Tabs */
 
 .window-body .tabs ul.vertical li.active,
 .window-body .tabs ul.vertical li:hover {
-	border-color: #864c1e;
+	border-color: var(--border-tab);
 	border-radius: 3px 0 0 3px;
 }
 

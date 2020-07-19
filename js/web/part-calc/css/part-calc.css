@@ -121,9 +121,13 @@
 	padding: 0.2rem 0.4rem;
 }
 
+#OwnPartBox #up-to-level-up {
+	color: var(--text-bright);
+}
+
 #OwnPartBox .black-bg {
 	position: absolute;
-	background-color: rgba(0,0,0, 0.65);
+	background-color: var(--65-black);
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -142,7 +146,7 @@
 	height: 0;
 	margin: 10px auto;
 	width: 80%;
-	border-top: 1px solid #7b5730;
+	border-top: 1px solid var(--text-medium2);
 	border-bottom: 1px solid #9e774e;
 }
 

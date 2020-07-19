@@ -155,6 +155,7 @@
     "Boxes.Infobox.FilterLevel": "GB",
     "Boxes.Infobox.FilterMessage": "Message",
     "Boxes.Infobox.FilterTrade": "Trade",
+    "Boxes.Infobox.UnknownConversation": "Unknown Conversation",
     "Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> has just placed a bid for __amount__ Trade Coins.",
     "Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> has just contributed __points__ GE points.",
     "Boxes.Infobox.Messages.GildFightOccupied": "<span style=\"color:#ffb539\">__provinceName__</span> was captured by <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> and is locked until __untilOccupied__.",
