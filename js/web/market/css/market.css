@@ -27,4 +27,31 @@
 #Market #MarketBody td {
     position: relative;
     font-size: 85%;
+    vertical-align: middle;
+}
+
+#Market #MarketBody .filters th {
+    text-align: center;
+}
+
+#Market #MarketBody .filters select {
+    width: 160px;
+}
+
+#Market #MarketBody td.goods-image { 
+	padding: 0;
+	background-color: var(--50-black);
+}
+
+#Market #MarketBody .goods-sprite-50.sm {
+	width: 25px;
+	height: 25px;
+	text-align: center;
+}
+
+#Market #MarketBody .goods-sprite-50.sm::before { 
+	zoom: 0.7; 
+	overflow: hidden;
+	position: static;
+	display: inline-block;
 }
