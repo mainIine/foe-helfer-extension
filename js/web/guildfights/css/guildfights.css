@@ -59,7 +59,7 @@
 
 
 #GildPlayersBody tr.bg-green td {
-	background-color: rgba(18, 125, 9, 0.2);
+	background-color: var(--background-table-success);
 }
 
 #LiveGildFighting {

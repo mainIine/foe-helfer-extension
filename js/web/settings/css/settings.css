@@ -170,7 +170,7 @@
 }
 
 #SettingsBoxBody .helplist a:hover {
-	background-color: rgba(243, 214, 160, 0.2);
+	background-color: var(--background-table-hover);
 }
 
 #SettingsBoxBody .helplist li span {

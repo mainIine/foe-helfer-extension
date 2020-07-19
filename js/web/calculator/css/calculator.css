@@ -105,19 +105,19 @@
 }
 
 #costCalculator #costCalculatorBody tr.info-row {
-	background-color: rgba(33, 150, 243, 0.3);
+	background-color: var(--background-table-info);
 }
 
 #costCalculator #costCalculatorBody tr.bg-green {
-	background-color: rgba(18, 125, 9, 0.3);
+	background-color: var(--background-table-success);
 }
 
 #costCalculator #costCalculatorBody tr.bg-red {
-	background-color: rgba(121, 8, 8, 0.3);
+	background-color: var(--background-table-error);
 }
 
 #costCalculator #costCalculatorBody tr.bg-yellow {
-	background-color: rgba(208, 126, 3, 0.4);
+	background-color: var(--background-table-bright);
 }
 
 #costCalculatorBody .costFactorWrapper {

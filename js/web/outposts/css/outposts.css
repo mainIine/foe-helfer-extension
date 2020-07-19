@@ -25,7 +25,7 @@
 }
 
 #outpostConsumables #outpostConsumablesBody .text-muted {
-	color: #8a8a8a;
+	color: var(--text-muted);
 }
 
 #outpostConsumables #outpostConsumablesBody td {

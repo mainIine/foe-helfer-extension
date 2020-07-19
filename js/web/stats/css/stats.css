@@ -116,7 +116,7 @@
 }
 
 #stats .highcharts-data-table table:not(.no-hover) tbody tr:hover {
-	background-color: rgba(243, 214, 160, 0.2);
+	background-color: var(--background-table-hover);
 }
 
 #stats .highcharts-data-table table tr th {
