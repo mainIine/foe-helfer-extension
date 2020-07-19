@@ -304,6 +304,7 @@ let GildFights = {
 
 			colors.push({
 				id: bP[i]['participantId'],
+				cid: c['id'],
 				base: c['base'],
 				main: c['mainColour'],
 				highlight: c['highlight'],
