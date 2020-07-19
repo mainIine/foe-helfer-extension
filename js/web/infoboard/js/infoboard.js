@@ -446,7 +446,7 @@ let Info = {
         if (data['lockedUntil'] !== undefined) {
 
             // keine Übernahme
-            if (data['lockedUntil'] < Math.floor(Date.now() / 1000) + 14390) return undefined;
+            if (data['lockedUntil'] < Math.floor(MainParser.getCurrentDateTime() / 1000) + 14390) return undefined;
 
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
 				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
