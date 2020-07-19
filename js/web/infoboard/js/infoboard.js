@@ -18,6 +18,9 @@ FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, post
     MainParser.setConversations(data.responseData);
 });
 
+FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
 
 // altes Postfach
 FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
@@ -338,7 +341,7 @@ let Info = {
 
 
     /**
-     * Nachricht von jemandem
+     * Nachricht in einem bekannten Chat
      *
      * @param d
      * @returns {class: 'message', msg: string, type: string, img: string | undefined}
@@ -383,13 +386,10 @@ let Info = {
                 }
             } else {
                 // Chatnachricht vom System (Betreten/Verlassen)
-                header = '<div><strong class="bright">' + header['title'] + '</strong></div>';
+                header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
             }
-        } else if (d['sender'] && d['sender']['name']) {
-            // normale Chatnachricht (unbekannte ID)
-            header = '<div><strong class="bright">' + d['sender']['name'] + '</strong></div>';
         } else {
-            header = ''
+            return undefined;
         }
 
         return {
@@ -399,6 +399,26 @@ let Info = {
             img: image
         };
     },
+
+
+    /**
+     * Nachricht in einem unbekannten Chat
+     *
+     * @param d
+     * @returns {class: 'message', msg: string, type: string}
+     */
+    ConversationService_getConversationUpdate: (d) => {
+        let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        if (chat) return undefined;
+
+        let message = '<div><strong class="bright">' + i18n('Boxes.Infobox.UnknownConversation') + '</strong></div>';
+        return {
+            class: 'message',
+            type: i18n('Boxes.Infobox.FilterMessage'),
+            msg: message
+        };
+    },
+
 
     /**
      * Auf der GG-Map kämpft jemand
