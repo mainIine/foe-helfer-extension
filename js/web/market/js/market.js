@@ -5,7 +5,7 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.07.20, 23:50 Uhr
+ * erstellt am:               17.07.20, 23:50 Uhr
  * zuletzt bearbeitet:       17.07.20, 23:50 Uhr
  *
  * Copyright © 2020
@@ -127,14 +127,16 @@ let Market = {
         let h = [];
 
         //Filters
-        h.push('<table class="foe-table">');
+        h.push('<div class="dark-bg" style="margin-bottom: 3px;">');
+        h.push('<table class="filters">');
+        h.push('<thead>');
         h.push('<tr>');
-        h.push('<td></td>');
-        h.push('<td></td>');
-        h.push('<td>' + i18n('Boxes.Market.TradePartner') + '</td>');
-        h.push('<td>' + i18n('Boxes.Market.TradeForGoods') + '</td>');
-        h.push('<td>' + i18n('Boxes.Market.Rating') + '</td>');
+        h.push('<th colspan="2"></td>');
+        h.push('<th>' + i18n('Boxes.Market.TradePartner') + '</th>');
+        h.push('<th>' + i18n('Boxes.Market.TradeForGoods') + '</th>');
+        h.push('<th>' + i18n('Boxes.Market.Rating') + '</th>');
         h.push('</tr>');
+        h.push('</thead>');
 
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.Offer') + '</td>');
@@ -194,14 +196,15 @@ let Market = {
         h.push('<td><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</td>');
         h.push('</tr>');
         h.push('</table>');
+        h.push('</div>');
 
         // Table
         h.push('<table class="foe-table">');
 
         h.push('<thead>');
         h.push('<tr>');
-        h.push('<th colspan="2">' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th colspan="2">' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.RateColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');
@@ -216,13 +219,15 @@ let Market = {
             let Trade = Market.Trades[i];
             if (Market.TestFilter(Trade)) {
                 h.push('<tr>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['offer']['good_id']]['id'] +'"></span></td>'); 
                 h.push('<td>' + GoodsData[Trade['offer']['good_id']]['name'] + '</td>');
                 h.push('<td>' + Trade['offer']['value'] + '</td>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['need']['good_id']]['id'] +'"></span></td>'); 
                 h.push('<td>' + GoodsData[Trade['need']['good_id']]['name'] + '</td>');
                 h.push('<td>' + Trade['need']['value'] + '</td>');
-                h.push('<td>' + HTML.Format(Math.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
+                h.push('<td class="text-center">' + HTML.Format(Math.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
-                h.push('<td>' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
+                h.push('<td class="text-center">' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
                 h.push('</tr>');
 
                 Counter += 1;
