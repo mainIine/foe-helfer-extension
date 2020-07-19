@@ -37,6 +37,7 @@
 	position: sticky;
 	top: 0;
 	padding: 5px;
+	z-index: 100;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span {
