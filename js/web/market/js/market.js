@@ -15,7 +15,9 @@
 
 // Markt
 FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
-    if (postData[0]['requestMethod'] === 'getTradeOffers') {
+    let requestMethod = postData[0]['requestMethod'];
+
+    if (requestMethod === 'getTradeOffers' || requestMethod === 'acceptOfferById') {
         Market.Trades = data.responseData;
         Market.Show();
     }
