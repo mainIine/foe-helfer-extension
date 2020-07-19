@@ -20,9 +20,9 @@
 }
 
 #eventchests td.border-right {
-    border-right: 1px solid #3d250f;
+    border-right: 1px solid var(--border-table-bottom);
 }
 
 #eventchests td.border-left {
-    border-left: 1px solid #7F5A34;
+    border-left: 1px solid var(--border-table-top);
 }

@@ -269,15 +269,15 @@ table.foe-table thead tr th,
 table.foe-table th,
 .dark-bg,
 .thead th {
-	background-color: rgba(0,0,0, 0.5);
+	background-color: var(--50-black);
 }
 
 table.foe-table tbody tr:nth-child(odd) {
-	background-color: rgba(255,255,255, 0.07);
+	background-color: var(--background-table-odd);
 }
 
 table.foe-table:not(.no-hover) tbody tr:hover {
-	background-color: rgba(243, 214, 160, 0.2);
+	background-color: var(--background-table-hover);
 }
 
 table.foe-table tr th,
@@ -286,15 +286,14 @@ table.foe-table tr td {
 }
 
 table.foe-table tr td {
-	border-top: 1px solid #7F5A34;
-	border-bottom: 1px solid #3D250F;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid (--border-table-bottom);
 }
 
 table.foe-table tr.success td,
 .text-success {
 	color: var(--text-success);
 }
-
 
 p {
 	margin: 0 0 10px 0;
@@ -685,7 +684,7 @@ Tabs */
 	left: 0;
 	top: 0;
 	bottom: 0;
-	border-right: 2px solid #864c1e;
+	border-right: 2px solid var(--border-tab);
 }
 
 .window-body .tabs ul.vertical li {
@@ -717,7 +716,7 @@ Tabs */
 
 .window-body .tabs ul.vertical li.active,
 .window-body .tabs ul.vertical li:hover {
-	border-color: #864c1e;
+	border-color: var(--border-tab);
 	border-radius: 3px 0 0 3px;
 }
 
