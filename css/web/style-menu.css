@@ -70,7 +70,7 @@ input[type=number] {
 	display: inline-block;
 	font-size: 1rem;
 	width: 9rem;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	text-shadow: none;
 }
 
@@ -99,7 +99,7 @@ input[type=number] {
 }
 
 .dropdown span.arrow {
-	border: solid #4C2F1E;
+	border: solid var(--text-dark);
 	border-width: 0 2px 2px 0;
 	display: inline-block !important;
 	padding: 3px;
@@ -119,7 +119,7 @@ input[type=number] {
 	z-index: 1;
 	margin:0;
 	padding:0;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 1px var(--50-black);
 
 	transition: opacity .15s ease-out;
 	opacity: 0;
@@ -138,7 +138,7 @@ input[type=number] {
 
 .dropdown ul li:hover{
 	background-color: var(--background-medium);
-	color: #4C2F1E;
+	color: var(--text-dark);
 }
 
 .dropdown ul li label {
@@ -176,7 +176,7 @@ input[type=number] {
 	background: -moz-linear-gradient(top,  rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
 	background: -webkit-linear-gradient(top,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	background: linear-gradient(to bottom,  rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-	border: #000 1px solid;
+	border: var(--black) 1px solid;
 	border-radius: 4px;
 	color: var(--text-normal);
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
@@ -292,7 +292,7 @@ table.foe-table tr td {
 
 table.foe-table tr.success td,
 .text-success {
-	color: #29b206;
+	color: var(--text-success);
 }
 
 
@@ -322,7 +322,7 @@ p {
 
 .text-info,
 .info {
-	color: #2196f3;
+	color: var(--text-info);
 }
 
 .text-bold {
@@ -777,7 +777,7 @@ Tooltip */
 .toolTipWrapper .toolTipHeader {
 	color: #bdc5cb;
 	background-color: #313d45;
-	box-shadow: inset 0 0 2px #000;
+	box-shadow: inset 0 0 2px var(--black);
 	margin: -7px -7px 2px -7px;
 	padding: 0 5px 1.3px;
 }

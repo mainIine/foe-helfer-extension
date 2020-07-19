@@ -1,0 +1,30 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 market.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              17.07.20, 23:50 Uhr
+ * zuletzt bearbeitet:       17.07.20, 23:50 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+#Market {
+    top: 100px;
+    right: 100px;
+    width: 600px;
+}
+
+#Market #MarketBody {
+    overflow-y: auto;
+    max-height: 750px;
+}
+
+#Market #MarketBody td {
+    position: relative;
+    font-size: 85%;
+}

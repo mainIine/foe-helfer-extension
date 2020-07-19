@@ -71,7 +71,12 @@
 		"group": "Extension",
 		"sort": 2
 	},
-
+	{
+		"name" : "ExportSettings",
+		"callback": "ExportView",
+		"group": "Extension",
+		"sort": 3
+	},
 
 	{
 		"name" : "About",

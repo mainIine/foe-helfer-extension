@@ -40,7 +40,7 @@ let CityMap = {
 			CityMap.IsExtern = false;
 			Data = MainParser.CityMapData;
 		}
-		// Neighbour
+		// Neighbor
 		else {
 			CityMap.IsExtern = true;
 		}
