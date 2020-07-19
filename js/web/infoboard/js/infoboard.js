@@ -392,7 +392,7 @@ let Info = {
         }
 
         return {
-            class: 'message',
+            class: 'msg',
             type: i18n('Boxes.Infobox.FilterMessage'),
             msg: header + message,
             img: image
