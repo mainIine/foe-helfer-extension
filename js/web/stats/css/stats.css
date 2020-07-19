@@ -116,7 +116,7 @@
 }
 
 #stats .highcharts-data-table table:not(.no-hover) tbody tr:hover {
-	background-color: rgba(243, 214, 160, 0.2);
+	background-color: var(--background-table-hover);
 }
 
 #stats .highcharts-data-table table tr th {
@@ -129,8 +129,8 @@
 }
 
 #stats .highcharts-data-table table tr td {
-	border-top: 1px solid #7F5A34;
-	border-bottom: 1px solid #3D250F;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
 }
 
 #stats .tabs .horizontal {

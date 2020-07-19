@@ -96,12 +96,14 @@ let GreatBuildings =
 
             $('#greatbuildings').on('blur', '#costFactor', function () {
                 GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
+                if (isNaN(GreatBuildings.ForderBonus)) GreatBuildings.ForderBonus = 0;
                 localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
                 GreatBuildings.CalcBody();
             });
 
             $('#greatbuildings').on('blur', '#rewardPerDay', function () {
                 GreatBuildings.RewardPerDay = parseFloat($('#rewardPerDay').val());
+                if (isNaN(GreatBuildings.RewardPerDay)) GreatBuildings.RewardPerDay = 0;
                 localStorage.setItem('GreatBuildingsRewardPerDay', GreatBuildings.RewardPerDay);
                 GreatBuildings.CalcBody();
             });
@@ -109,6 +111,7 @@ let GreatBuildings =
             for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
                 $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
                     GreatBuildings.FPGreatBuildings[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
+                    if (isNaN(GreatBuildings.FPGreatBuildings[i].GoodCosts)) GreatBuildings.FPGreatBuildings[i].GoodCosts = 0;
                     localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.FPGreatBuildings[i].GoodCosts);
                     GreatBuildings.CalcBody();
                 });

@@ -62,7 +62,7 @@
 }
 
 #technologies #technologiesBody .text-muted {
-	color: #8a8a8a;
+	color: var(--text-muted);
 }
 
 #technologies #technologiesBody td {

@@ -1,0 +1,63 @@
+:root {
+	--text-light: #fff;
+	--text-normal: #f3D6A0;
+	--text-bright: #ffB539;
+	--text-medium: #93795D;
+	--text-medium2: #7b5730;
+	--text-dark: #4c2f1e;
+	--text-muted: #8a8a8a;
+
+	--text-tab-active: #e2e2e2;
+	--text-tab: #9c9c9c;
+
+	--text-btn-disabled: #999;
+	--text-btn: #f3D6A0;
+
+	--background-light: #F9EBC6;
+	--background-medium: #b3a582;
+
+	--background-btn: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	--background-btn-webkit: -webkit-linear-gradient(top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	--background-btn-moz: -moz-linear-gradient(top, rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
+	--background-btn-fallback: rgb(183,112,55);
+
+	--background-btn-disabled: linear-gradient(to bottom, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+	--background-btn-disabled-webkit: -webkit-linear-gradient(top, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+	--background-btn-disabled-moz: -moz-linear-gradient(top, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
+	--background-btn-disabled-fallback: rgb(42, 42, 42);
+
+	--background-btn-active: linear-gradient(to bottom, rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	--background-btn-active-webkit: -webkit-linear-gradient(top, rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+	--background-btn-active-moz: -moz-linear-gradient(top, rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
+	--background-btn-active-fallback: rgb(228,193,75);
+
+	--background-btn-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	--background-btn-green-webkit: -webkit-linear-gradient(top, #469e2b 0%,#1f6517 100%);
+	--background-btn-green-moz: -moz-linear-gradient(top, #469e2b 0%, #1f6517 100%);
+	--background-btn-green-fallback: #6eaa5c;
+
+	--background-table-hover: rgba(243, 214, 160, 0.2);
+	--background-table-odd: rgba(255,255,255, 0.07);
+	--background-table-info: rgba(33, 150, 243, 0.3);
+	--background-table-success: rgba(18, 125, 9, 0.3);
+	--background-table-error: rgba(121, 8, 8, 0.3);
+	--background-table-bright: rgba(208, 126, 3, 0.4);
+
+	--hud-border-error: #9c2d18;
+	--hud-border-success: #93c554;
+
+	--border-tab: #864c1e;
+	--border-table-top: #7F5A34;
+	--border-table-bottom: #3D250F;
+
+	--hud-counter: #3180bf;
+	--hud-counter-success: #497b0b;
+
+	--grey: #444;
+	--black: #000;
+	--50-black: rgba(0, 0, 0, 0.5);
+	--65-black: rgba(0,0,0, 0.65);
+
+	--text-success: #29b206;
+	--text-info: #2196f3;
+}

@@ -18,6 +18,9 @@ FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, post
     MainParser.setConversations(data.responseData);
 });
 
+FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
 
 // altes Postfach
 FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
@@ -226,17 +229,23 @@ let Infoboard = {
 
         if ($('#BackgroundInfo').length > 0) {
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
-                tr = $('<tr />').addClass(bd['class']),
-                msg = bd['msg'];
+                msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
 
             // wenn nicht angezeigt werden soll, direkt versteckeln
             if (!status) {
                 tr.hide();
             }
 
+            if (img) {
+                tr.addClass(bd['img']);
+            } else {
+                tr.addClass(bd['class']);
+
+            }
+
             tr.append(
                 '<td></td>' +
-                '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + type + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
 
@@ -332,63 +341,84 @@ let Info = {
 
 
     /**
-     * Nachricht von jemandem
+     * Nachricht in einem bekannten Chat
      *
      * @param d
-     * @returns {{class: 'message', msg: string, type: string}}
+     * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
-        let header; let message; let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        let header; let message; let image; let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
         if (chat && chat['hidden']) return undefined;
 
         if (d['text'] !== '') {
             // normale Nachricht
             message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
 
-        } else if (d['attachment'] !== undefined) {
-            // legendäres Bauwerk
+        } else if (d['attachment']) {
             if (d['attachment']['type'] === 'great_building') {
+                // legendäres Bauwerk
                 message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
                     'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
                     'level': d['attachment']['level']
                 });
             }
-            // Handelsangebot
             else if (d['attachment']['type'] === 'trade_offer') {
+                // Handelsangebot
                 message = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
-        } else {
-            return undefined;
         }
 
-        if (chat != null) {
-            if (d['sender']['name'] != null) {
+        if (chat) {
+            // passendes Bildchen wählen
+            if (chat['important']) {
+                image = 'msg-important';
+            } else if (chat['favorite']) {
+                image = 'msg-favorite';
+            }
+
+            if (d['sender'] && d['sender']['name']) {
                 // normale Chatnachricht (bekannte ID)
-                if (chat['important']) {
-                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⚠️</div>';
-                } else if (chat['favorite']) {
-                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em> ⭐</div>';
+                if (d['sender']['name'] === chat['title']) {
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
                 } else {
                     header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
                 }
             } else {
                 // Chatnachricht vom System (Betreten/Verlassen)
-                header = '<div><strong class="bright">' + header.title + '</strong></div>';
+                header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
             }
-        } else if (d['sender']['name'] != null) {
-            // normale Chatnachricht (unbekannte ID)
-            header = '<div><strong class="bright">' + name + '</strong></div>';
         } else {
-            header = ''
+            return undefined;
         }
 
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
-            msg: header + message
+            msg: header + message,
+            img: image
         };
     },
+
+
+    /**
+     * Nachricht in einem unbekannten Chat
+     *
+     * @param d
+     * @returns {class: 'message', msg: string, type: string}
+     */
+    ConversationService_getConversationUpdate: (d) => {
+        let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        if (chat) return undefined;
+
+        let message = '<div><strong class="bright">' + i18n('Boxes.Infobox.UnknownConversation') + '</strong></div>';
+        return {
+            class: 'message',
+            type: i18n('Boxes.Infobox.FilterMessage'),
+            msg: message
+        };
+    },
+
 
     /**
      * Auf der GG-Map kämpft jemand
@@ -401,7 +431,7 @@ let Info = {
         if (GildFights.SortedColors === null){
             GildFights.PrepareColors();
         }
-
+        
         let data = d[0];
 
         let bP = GildFights.MapData['battlegroundParticipants'],

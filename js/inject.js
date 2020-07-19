@@ -86,7 +86,7 @@
 		if(document.head !== null){
 
 			let cssFiles = [
-				'colors',
+				'variables',
 				'goods',
 				'style-menu',
 				'boxes'

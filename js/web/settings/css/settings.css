@@ -163,14 +163,14 @@
 	text-decoration: none;
 	display: block;
 	overflow: hidden;
-	border-top: 1px solid #7F5A34;
-	border-bottom: 1px solid #3D250F;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 5px;
 	color: var(--text-normal);
 }
 
 #SettingsBoxBody .helplist a:hover {
-	background-color: rgba(243, 214, 160, 0.2);
+	background-color: var(--background-table-hover);
 }
 
 #SettingsBoxBody .helplist li span {
