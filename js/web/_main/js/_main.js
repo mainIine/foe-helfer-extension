@@ -586,10 +586,8 @@ const FoEproxy = (function () {
 		// Alle Gebäude sichern
 		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
-		if (Settings.GetSetting('GlobalSend')) {
-			MainParser.SendBuildings(MainParser.CityMapData);
-		}
-
+		MainParser.SaveBuildings(MainParser.CityMapData);
+		
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
 
@@ -1573,7 +1571,7 @@ let MainParser = {
 	 *
 	 * @param d
 	 */
-	SendBuildings: (d)=>{
+	SaveBuildings: (d)=>{
 		let lgs = [];
 
 		for(let i in d)
@@ -1600,15 +1598,16 @@ let MainParser = {
 			}
 		}
 
-		if(lgs.length > 0)
-		{
-			// ab zum Server
-			MainParser.sendExtMessage({
-				type: 'send2Api',
-				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-				data: JSON.stringify(lgs)
-			});
-		}
+		if (Settings.GetSetting('GlobalSend')) {
+			if (lgs.length > 0) {
+				// ab zum Server
+				MainParser.sendExtMessage({
+					type: 'send2Api',
+					url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+					data: JSON.stringify(lgs)
+				});
+			}
+        }
 	},
 
 

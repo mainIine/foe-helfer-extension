@@ -15,7 +15,9 @@
 
 // LG Investitionen
 FoEproxy.addHandler('ClanService', 'getTreasuryLogs', (data) => {
-    Treasury.HandleNewLogs(data);
+    if (GetSetting('ShowGuildTreasuryLogExport')) {
+        Treasury.HandleNewLogs(data);
+    }
 });
 
 

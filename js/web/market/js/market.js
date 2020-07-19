@@ -19,7 +19,15 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
 
     if (requestMethod === 'getTradeOffers' || requestMethod === 'acceptOfferById') {
         Market.Trades = data.responseData;
-        Market.Show();
+
+        if ($('#market-Btn').hasClass('hud-btn-red')) {
+            $('#market-Btn').removeClass('hud-btn-red');
+            $('#market-Btn-closed').remove();
+        }
+
+        if (GetSetting('ShowMarketFilter')) {
+            Market.Show();
+        }
     }
 });
 

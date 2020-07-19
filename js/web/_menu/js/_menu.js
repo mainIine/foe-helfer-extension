@@ -42,6 +42,7 @@ let _menu = {
 		'kits',
 		'alerts',
 		'greatbuildings',
+		'market',
 	],
 
 
@@ -792,5 +793,28 @@ let _menu = {
 
 		return btn;
 	},
+
+
+	/**
+	 * Marktplatz Filter
+	 */
+	market_Btn: () => {
+		let btn_MarketBG = $('<div />').attr({ 'id': 'market-Btn', 'data-slug': 'market' }).addClass('hud-btn hud-btn-red');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Market.Title'), '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' + i18n('Menu.Market.Desc'), 'market-Btn');
+
+		let btn_Market = $('<span />');
+
+		btn_Market.bind('click', function () {
+			if ($('#market-Btn').hasClass('hud-btn-red') === false) {
+				Market.Show();
+			}
+		});
+
+		btn_MarketBG.append(btn_Market);
+
+		return btn_MarketBG;
+    }
 
 };
