@@ -94,7 +94,7 @@ div.alert-popup .box-inner-form {
 .box-inner input { box-sizing: border-box; }
 .box-inner input:focus,
 .box-inner textarea:focus {
-    outline: 3px solid #F3D6A0;
+    outline: 3px solid var(--text-normal);
 }
 
 .box-inner input[type="text"],
@@ -102,10 +102,10 @@ div.alert-popup .box-inner-form {
 .box-inner input[type="datetime-local"],
 .box-inner textarea,
 .box-inner select {
-    background-color: #F9EBC6;
-    color: #93795D;
+    background-color: var(--background-light);
+    color: var(--text-medium);
     background-clip: padding-box;
-    border: 1px solid #4C2F1E;
+    border: 1px solid var(--text-dark);
     line-height: 18px;
     margin: 0 0 4px 0;
     padding: 4px;
@@ -199,7 +199,7 @@ div.alert-popup #alert-expires,
     background: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
     border: #000 1px solid;
     border-radius: 4px;
-    color: #F3D6A0;
+    color: var(--text-normal);
     cursor: url(https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur), auto;
     transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     outline: none !important;
