@@ -14,9 +14,11 @@
  */
 
 // Markt
-FoEproxy.addHandler('TradeService', 'getTradeOffers', (data) => {
-    Market.Trades = data.responseData;
-    Market.Show();
+FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
+    if (postData[0]['requestMethod'] === 'getTradeOffers') {
+        Market.Trades = data.responseData;
+        Market.Show();
+    }
 });
 
 let Market = {
