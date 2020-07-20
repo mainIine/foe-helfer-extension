@@ -162,6 +162,7 @@
     "Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ has just reached level __level__.<br>You took <strong>__rank__ </strong> place and received <strong>__fps__</strong> FPs in profit.",
     "Boxes.Infobox.Messages.MsgBuilding": "__building__ - Level __level__",
     "Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepted your trade of __offerValue__ __offer__ for __needValue__ __need__.",
+    "Boxes.Infobox.Messages.Welcome": "Welcome message (work in progress)",
     "Boxes.Infobox.ResetBox": "Clear All",
     "Boxes.Infobox.Title": "Infobox Overview Window",
     "Boxes.Investment.AllUpToDate": "Event History page previoulsy updated",
