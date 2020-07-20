@@ -75,7 +75,7 @@
 }
 
 #BackgroundInfoTable td:first-child {
-	background: url(../images/gbg-grey.png) center center no-repeat;
+	background: url(../images/gbg-gray.png) center center no-repeat;
 	background-size: contain;
 	width: 30px;
 }
@@ -118,4 +118,44 @@
 #BackgroundInfoTable .trade td:first-child {
 	background-image: url(../images/trade.png);
 	background-size: 25px;
+}
+
+#BackgroundInfoTable .gbg-red td:first-child {
+	background-image: url(../images/gbg-red.png);
+}
+
+#BackgroundInfoTable .gbg-green td:first-child {
+	background-image: url(../images/gbg-green.png);
+}
+
+#BackgroundInfoTable .gbg-yellow td:first-child {
+	background-image: url(../images/gbg-yellow.png);
+}
+
+#BackgroundInfoTable .gbg-teal td:first-child {
+	background-image: url(../images/gbg-teal.png);
+}
+
+#BackgroundInfoTable .gbg-orange td:first-child {
+	background-image: url(../images/gbg-orange.png);
+}
+
+#BackgroundInfoTable .gbg-blue td:first-child {
+	background-image: url(../images/gbg-blue.png);
+}
+
+#BackgroundInfoTable .gbg-purple td:first-child {
+	background-image: url(../images/gbg-purple.png);
+}
+
+#BackgroundInfoTable .gbg-pink td:first-child {
+	background-image: url(../images/gbg-pink.png);
+}
+
+#BackgroundInfoTable .gbg-lock td:first-child {
+	background-image: url(../images/gbg-lock.png);
+}
+
+#BackgroundInfoTable .gbg-undefined td:first-child {
+	background-image: url(../images/gbg-undefined.png);
 }
