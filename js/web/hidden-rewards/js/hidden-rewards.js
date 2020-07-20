@@ -30,6 +30,7 @@ let HiddenRewards = {
             HTML.Box({
                 'id': 'HiddenRewardBox',
                 'title': i18n('Boxes.HiddenRewards.Title'),
+                'ask': i18n('Boxes.HiddenRewards.HelpLink'),
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true
