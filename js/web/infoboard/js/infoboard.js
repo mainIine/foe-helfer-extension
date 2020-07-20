@@ -131,7 +131,7 @@ let Infoboard = {
             HTML.AddCssFile('infoboard');
 
         } else {
-			HTML.CloseOpenBox('BackgroundInfo');
+            return HTML.CloseOpenBox('BackgroundInfo');
 		}
 
         let div = $('#BackgroundInfo'),
@@ -171,6 +171,12 @@ let Infoboard = {
 
         Infoboard.FilterInput();
         Infoboard.ResetBox();
+
+        Infoboard.PostMessage({
+            class: 'welcome',
+            type: i18n('Menu.Info.Title'),
+            msg: i18n('Boxes.Infobox.Messages.Welcome'),
+        });
 
         $('#BackgroundInfo').on('click', '#infoboxTone', function() {
 
@@ -232,7 +238,7 @@ let Infoboard = {
                 msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
 
             // wenn nicht angezeigt werden soll, direkt versteckeln
-            if (!status) {
+            if (!status && bd.class !== 'welcome') {
                 tr.hide();
             }
 
@@ -282,7 +288,7 @@ let Infoboard = {
                 let tr = $(this);
                 type = tr.attr('class');
 
-                if (active.some(e => type.startsWith(e))) {
+                if (active.some(e => type.startsWith(e)) || type === 'welcome') {
                     tr.show();
                 } else {
                     tr.hide();
@@ -299,6 +305,11 @@ let Infoboard = {
     ResetBox: () => {
         $('#BackgroundInfo').on('click', '.btn-reset-box', function() {
             $('#BackgroundInfoTable tbody').html('');
+            Infoboard.PostMessage({
+                class: 'welcome',
+                type: i18n('Menu.Info.Title'),
+                msg: i18n('Boxes.Infobox.Messages.Welcome'),
+            });
         });
     }
 };
@@ -490,11 +501,18 @@ let Info = {
                 continue;
             }
 
-            let tc = colors['highlight'], sc = color['highlight'],
-                ts = colors['shadow'], ss = color['shadow'];
+            if (color) {
+                let tc = colors['highlight'], sc = color['highlight'],
+                    ts = colors['shadow'], ss = color['shadow'];
+    
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';    
+            } else {
+                let tc = colors['highlight'],
+                    ts = colors['shadow'];
 
-            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
-
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';    
+            
+            }
             if (image) {
                 image = 'gbg-undefined';
             } else {
