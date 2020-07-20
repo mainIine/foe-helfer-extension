@@ -15,8 +15,6 @@
 
 #OwnPartBox {
 	top: 100px;
-	right: 100px;
-	width: 440px;
 }
 
 #OwnPartBox.closed .OwnPartBoxBackground {
@@ -70,6 +68,7 @@
 #OwnPartBox #OwnPartBoxBody {
 	position: relative;
 	margin-left: 0;
+	font-size: 85%;
 }
 
 #OwnPartBox #OwnPartBoxBody .btn-set-arc {
