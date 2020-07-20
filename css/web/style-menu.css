@@ -491,6 +491,10 @@ p {
     pointer-events: none;
 }
 
+#market-Btn span {
+	background-image: url('../images/menu/market.png');
+}
+
 #greatbuildings-Btn span {
 	background-image: url('../images/menu/greatbuildings.png');
 }

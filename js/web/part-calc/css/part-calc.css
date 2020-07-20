@@ -68,6 +68,7 @@
 #OwnPartBox #OwnPartBoxBody {
 	position: relative;
 	margin-left: 0;
+	font-size: 85%;
 }
 
 #OwnPartBox #OwnPartBoxBody .btn-set-arc {
