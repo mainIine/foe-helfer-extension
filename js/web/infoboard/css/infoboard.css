@@ -80,7 +80,12 @@
 	width: 30px;
 }
 
-#BackgroundInfoTable .message td:first-child {
+#BackgroundInfoTable .welcome td:first-child {
+	background-image: url(../../../../css/images/menu/info.png);
+	background-size: 30px;
+}
+
+#BackgroundInfoTable .msg td:first-child {
 	background-image: url(../images/msg.png);
 	background-size: 25px;
 }
@@ -93,14 +98,6 @@
 #BackgroundInfoTable .msg-favorite td:first-child {
 	background-image: url(../images/msg-favorite.png);
 	background-size: 25px;
-}
-
-#BackgroundInfoTable .message.important td:first-child {
-	background-image: url(images/msg-important.png);
-}
-
-#BackgroundInfoTable .message.favorite td:first-child {
-	background-image: url(images/msg-favorite.png);
 }
 
 #BackgroundInfoTable .auction td:first-child {
@@ -154,6 +151,7 @@
 
 #BackgroundInfoTable .gbg-lock td:first-child {
 	background-image: url(../images/gbg-lock.png);
+	background-size: 30px;
 }
 
 #BackgroundInfoTable .gbg-undefined td:first-child {
