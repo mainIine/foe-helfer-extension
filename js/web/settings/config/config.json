@@ -8,90 +8,102 @@
 	{
 		"name": "SendGEXInfo",
 		"status": true,
-		"group" : "Sending",
+		"group": "Sending",
 		"sort": 1
 	},
 	{
-		"name" : "SendGildMemberLGInfo",
+		"name": "SendGildMemberLGInfo",
 		"status": false,
 		"group": "Sending",
 		"sort": 2
 	},
 	{
-		"name" : "SendInvestigations",
+		"name": "SendInvestigations",
 		"status": false,
 		"group": "Sending",
 		"sort": 3
 	},
 	{
-		"name" : "SendPlayersMotivation",
+		"name": "SendPlayersMotivation",
 		"status": false,
-		"group" : "Sending",
+		"group": "Sending",
 		"sort": 4
 	},
 	{
-		"name" : "AutomaticNegotiation",
+		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
-		"sort" : 0
+		"sort": 0
 	},
 	{
-		"name" : "ShowTavernBadge",
+		"name": "ShowTavernBadge",
 		"status": true,
 		"group": "Boxes",
 		"sort": 1
 	},
 	{
-		"name" : "ShowInvestments",
+		"name": "ShowInvestments",
 		"status": true,
 		"group": "Boxes",
 		"sort": 2
 	},
 	{
-		"name" : "ShowOwnPartOnAllGBs",
-		"status": false,
+		"name": "ShowGuildTreasuryLogExport",
+		"status": true,
 		"group": "Boxes",
 		"sort": 3
 	},
 	{
-		"name" : "ChangeLanguage",
+		"name": "ShowMarketFilter",
+		"status": true,
+		"group": "Boxes",
+		"sort": 4
+	},
+	{
+		"name": "ShowOwnPartOnAllGBs",
+		"status": false,
+		"group": "Boxes",
+		"sort": 5
+	},
+	{
+		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
-		"group" : "Extension",
+		"group": "Extension",
 		"sort": 0
 	},
 	{
-		"name" : "MenuLength",
-		"callback" : "MenuInputLength",
-		"group" : "Extension",
-		"sort" : 1
+		"name": "MenuLength",
+		"callback": "MenuInputLength",
+		"group": "Extension",
+		"sort": 1
 	},
 	{
-		"name" : "ResetBoxPositions",
+		"name": "ResetBoxPositions",
 		"button": "ResetBoxCoords",
 		"group": "Extension",
 		"sort": 2
 	},
 	{
-		"name" : "ExportSettings",
+		"name": "ExportSettings",
 		"callback": "ExportView",
 		"group": "Extension",
 		"sort": 3
 	},
 
 	{
-		"name" : "About",
+		"name": "About",
 		"callback": "About",
 		"group": "About",
 		"sort": 0
 	},
 	{
-		"name" : "Version",
+		"name": "Version",
 		"callback": "VersionInfo",
 		"group": "About",
 		"sort": 1
 	},
 	{
-		"name" : "Help",
+		"name": "Help",
 		"callback": "Help",
 		"group": "About",
 		"sort": 2

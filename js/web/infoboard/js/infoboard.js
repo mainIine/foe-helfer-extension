@@ -63,7 +63,7 @@ let Infoboard = {
     InjectionLoaded: false,
     PlayInfoSound: null,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
-    SavedFilter: ["auction", "gex", "guildfights", "trade", "level", "message"],
+    SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg"],
     DebugWebSocket: false,
 
 
@@ -146,10 +146,10 @@ let Infoboard = {
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGex') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfights" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfights") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gbg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("message") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("msg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
         h.push('</ul>');
         h.push('</div>');
 
@@ -240,7 +240,6 @@ let Infoboard = {
                 tr.addClass(bd['img']);
             } else {
                 tr.addClass(bd['class']);
-
             }
 
             tr.append(
@@ -259,7 +258,7 @@ let Infoboard = {
     },
 
     /**
-     * Filter für Message Type
+     * Filter für Message Type (TODO @GeniusTimo)
      *
      */
     FilterInput: () => {
@@ -283,7 +282,7 @@ let Infoboard = {
                 let tr = $(this);
                 type = tr.attr('class');
 
-                if (active.includes(type)) {
+                if (active.some(e => type.startsWith(e))) {
                     tr.show();
                 } else {
                     tr.hide();
@@ -347,7 +346,7 @@ let Info = {
      * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
-        let header; let message; let image; let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        let header, message, image, chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
         if (chat && chat['hidden']) return undefined;
 
         if (d['text'] !== '') {
@@ -393,7 +392,7 @@ let Info = {
         }
 
         return {
-            class: 'message',
+            class: 'msg',
             type: i18n('Boxes.Infobox.FilterMessage'),
             msg: header + message,
             img: image
@@ -446,16 +445,16 @@ let Info = {
         if (data['lockedUntil'] !== undefined) {
 
             // keine Übernahme
-            if (data['lockedUntil'] < Math.floor(Date.now() / 1000) + 14390) return undefined;
+            if (data['lockedUntil'] < Math.floor(MainParser.getCurrentDateTime() / 1000) + 14390) return undefined;
 
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
-				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
+                colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
             let tc = colors['highlight'],
                 ts = colors['shadow'];
 
             return {
-                class: 'guildfights',
+                class: 'gbg',
                 type: i18n('Boxes.Infobox.FilterGildFights'),
                 msg: HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.GildFightOccupied'), {
@@ -464,7 +463,8 @@ let Info = {
                         attackerShadow: ts,
                         attackerName: p['clan']['name'],
                         untilOccupied: moment.unix(data['lockedUntil']).format('HH:mm:ss')
-                    })
+                    }),
+                img: 'gbg-lock'
             };
         }
 
@@ -472,7 +472,7 @@ let Info = {
         if (!data['conquestProgress'][0]) return undefined;
 
         // Es wird gerade gekämpft
-        let t = '';
+        let color = GildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
                 break;
@@ -480,7 +480,7 @@ let Info = {
 
             let d = data['conquestProgress'][i],
                 p = bP.find(o => (o['participantId'] === d['participantId'])),
-				colors = GildFights.SortedColors.find(c => (c['id'] === d['participantId']));
+                colors = GildFights.SortedColors.find(c => (c['id'] === d['participantId']));
 
             // es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
             if (Info.GildPoints[data['id']] !== undefined &&
@@ -490,11 +490,16 @@ let Info = {
                 continue;
             }
 
-            let tc = colors['highlight'],
-                ts = colors['shadow'];
+            let tc = colors['highlight'], sc = color['highlight'],
+                ts = colors['shadow'], ss = color['shadow'];
 
-            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span class="bright">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
+            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
 
+            if (image) {
+                image = 'gbg-undefined';
+            } else {
+                image = 'gbg-' + colors['cid'];
+            }
             if (Info.GildPoints[data['id']] === undefined) {
                 Info.GildPoints[data['id']] = {};
             }
@@ -504,9 +509,10 @@ let Info = {
         }
 
         return {
-            class: 'guildfights',
+            class: 'gbg',
             type: i18n('Boxes.Infobox.FilterGildFights'),
-            msg: t
+            msg: t,
+            img: image
         };
     },
 
