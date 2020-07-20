@@ -15,8 +15,6 @@
 
 #OwnPartBox {
 	top: 100px;
-	right: 100px;
-	width: 440px;
 }
 
 #OwnPartBox.closed .OwnPartBoxBackground {
