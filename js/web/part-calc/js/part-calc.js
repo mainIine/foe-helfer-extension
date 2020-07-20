@@ -946,8 +946,8 @@ let Parts = {
 		//Button um alle aktuellen Levels in die zwischenablage kopieren zu können.
 		h.push('</div>');
 		h.push('<div class="d-flex justify-content-center" style="margin: 5px 0 5px 0;">');
-		h.push('<div>Klicke auf eine Zeile, um diese in die Zwischenablage zu kopieren oder: </div>');
-		h.push('<button style="margin: 0 0 0 10px;" type="button" onclick="Parts.CopyPowerlevelsToClipboard(' + MinLevel + ',' + MaxLevel + ')">Alles Kopieren</button>');
+		h.push('<div>'+ i18n("Boxes.PowerLeveling.CopyHint") + '</div>');
+		h.push('<button class="btn btn-default" style="margin: 0 0 0 10px;" type="button" onclick="Parts.CopyPowerlevelsToClipboard(' + MinLevel + ',' + MaxLevel + ')">' + i18n("Boxes.PowerLeveling.CopyButton") + '</button>');
 		h.push('</div>');
 		h.push('</div>');
 
@@ -972,7 +972,7 @@ let Parts = {
 
 		h.push('<tbody>');
 		for (let i = MinLevel; i < MaxLevel; i++) {
-			//OnClick für alle Zeilen um eine Einzelne zeile in die Zwischenablage kopieren zu können.
+			//OnClick für alle Zeilen um eine einzelne zeile in die Zwischenablage kopieren zu können.
 			h.push('<tr onclick="Parts.CopyPowerlevelsToClipboard(' + i + ',' + (i + 1) + ')">');
 			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
 			h.push('<td class="bright">' + HTML.Format(P1s[i]) + '</td>');
@@ -995,7 +995,7 @@ let Parts = {
 
 	},
 
-	//Kopiert die übergebenen Levels vom Poverlevling in dei Zwischenablagen
+	//Kopiert die übergebenen Levels vom Poverlevling in die Zwischenablagen
 	CopyPowerlevelsToClipboard: (MinLevel, MaxLevel) => {
 
 		let copyString = "";

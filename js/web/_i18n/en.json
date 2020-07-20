@@ -290,6 +290,8 @@
     "Boxes.PowerLeveling.P4": "Place4",
     "Boxes.PowerLeveling.P5": "Place5",
     "Boxes.PowerLeveling.Title": "Power leveling",
+    "Boxes.PowerLeveling.CopyHint": "Click on a Line, to copy the line to the clipboard or:",
+    "Boxes.PowerLeveling.CopyButton": "copy all",
     "Boxes.Production.SizeTT": "Size including average street space requirement of __streetnettosize__ tiles",
     "Boxes.Productions.AdjacentBuildings": "Adjacent Buildings",
     "Boxes.Productions.GoodEraTotal": "Total",
