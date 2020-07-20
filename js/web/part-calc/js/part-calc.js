@@ -1000,8 +1000,6 @@ let Parts = {
 
 		let copyString = "";
 
-		//console.log("Kopieren");
-		//console.log(MinLevel + "->" + MaxLevel);
 		for (let i = MinLevel; i < MaxLevel; i++) {
 			copyString += Parts.PowerLevelingPlaces[i] + "\n";
 		}
