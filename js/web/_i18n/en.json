@@ -387,6 +387,7 @@
     "Boxes.Stats.SourceTitle.statsUnitsD": "Units Daily",
     "Boxes.Stats.SourceTitle.statsUnitsH": "Your Units Hourly",
     "Boxes.Stats.Title": "Statistics",
+    "Boxes.Stats.HelpLink": "https://foe-rechner.de/docs/2/statistics/",
     "Boxes.Technologies.DescInStock": "Available",
     "Boxes.Technologies.DescRequired": "Required",
     "Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Remaining</span> / <span style='color:#ff4040'>Needed</span>",

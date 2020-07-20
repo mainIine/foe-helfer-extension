@@ -229,6 +229,7 @@ let Stats = {
 			let args = {
 				'id': 'stats',
 				'title': i18n('Boxes.Stats.Title'),
+				'ask': i18n('Boxes.Stats.HelpLink'),
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true
