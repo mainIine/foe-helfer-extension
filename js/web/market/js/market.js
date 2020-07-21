@@ -6,7 +6,6 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:               17.07.20, 23:50 Uhr
- * zuletzt bearbeitet:       17.07.20, 23:50 Uhr
  *
  * Copyright © 2020
  *
@@ -64,17 +63,14 @@ let Market = {
             // CSS in den DOM prügeln
             HTML.AddCssFile('market');
 
-            $('#Market').on('change', '#change-offer', function () {
-                let OfferString = $(this).val();
-                Market.Offer = parseInt(OfferString);
+            $('#Market').on('click', '.custom-option', function(){
+                let func = $(this).closest('.custom-options').data('function'),
+					val = $(this).data('value');
+
+                Market[func] = parseInt(val);
                 Market.CalcBody();
             });
 
-            $('#Market').on('change', '#change-need', function () {
-                let NeedString = $(this).val();
-                Market.Need = parseInt(NeedString);
-                Market.CalcBody();
-            });
 
             $('#Market').on('blur', '#minquantity', function () {
                 Market.MinQuantity = parseFloat($('#minquantity').val());              
@@ -140,6 +136,7 @@ let Market = {
         Market.CalcBody();
     },
 
+
     CalcBody: () => {
         let h = [];
 
@@ -158,18 +155,39 @@ let Market = {
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.Offer') + '</td>');
 
-        h.push('<td><select class="setting-dropdown" id="change-offer">');
-        let ID = 0;
-        h.push('<option value="' + ID + '" ' + (Market.Offer === ID ? 'selected' : '') + '>' + i18n('Boxes.Market.AllGoods') + '</option>');
-        for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++) {
-            ID += 1;
-            h.push('<option value="' + ID + '" ' + (Market.Offer === ID ? 'selected' : '') + '>' + i18n('Eras.' + (era + Technologies.Eras.BronzeAge)) + '</option>');
-            for (let i = 0; i < 5; i++) {
-                ID += 1;
-                h.push('<option value="' + ID + '" ' + (Market.Offer === ID ? 'selected' : '') + '>' + GoodsList[5*era + i]['name'] + '</option>');
-            }
-        }
-        h.push('</select></td>');
+        h.push('<td>');
+
+		let ID = 0;
+		h.push(`<div class="custom-select-wrapper">
+					<div class="custom-select">
+						<div class="custom-select__trigger">
+							<span class="trigger">${i18n('Boxes.Market.AllGoods')}</span>
+							<div class="arrow"></div>
+						</div>
+						<div class="custom-options" data-function="Offer">
+							<span class="custom-option${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Boxes.Market.AllGoods')}</span>`);
+
+							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							{
+								ID += 1;
+
+								h.push(`<span class="custom-option era${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">
+											${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}
+										</span>`);
+
+								for (let i = 0; i < 5; i++) {
+									ID += 1;
+									h.push(`<span class="custom-option${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">
+												${GoodsList[5*era + i]['name']}
+											</span>`);
+								}
+							}
+
+		h.push(			`</div>
+					</div>
+				</div>`);
+
+        h.push('</td>');
 
         h.push('<td><input class="tradepartnerneighbor game-cursor" ' + (Market.TradePartnerNeighbor ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerNeighbor') + '</td>');
         h.push('<td><input class="tradeforhigher game-cursor" ' + (Market.TradeForHigher ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForHigher') + '</td>');
@@ -179,18 +197,38 @@ let Market = {
         h.push('<tr>');
         h.push('<td>' + i18n('Boxes.Market.Need') + '</td>');
 
-        h.push('<td><select class="setting-dropdown" id="change-need">');
-        ID = 0;
-        h.push('´<option value="' + ID + '" ' + (Market.Need === ID ? 'selected' : '') + '>' + i18n('Boxes.Market.AllGoods') + '</option>');
-        for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++) {
-            ID += 1;
-            h.push('<option value="' + ID + '">' + i18n('Eras.' + (era + Technologies.Eras.BronzeAge)) + '</option>');
-            for (let i = 0; i < 5; i++) {
-                ID += 1;
-                h.push('<option value="' + ID + '">' + GoodsList[5 * era + i]['name'] + '</option>');
-            }
-        }
-        h.push('</select></td>');
+        h.push('<td>');
+
+		ID = 0;
+		h.push(`<div class="custom-select-wrapper">
+					<div class="custom-select">
+						<div class="custom-select__trigger">
+							<span class="trigger">${i18n('Boxes.Market.AllGoods')}</span>
+							<div class="arrow"></div>
+						</div>
+						<div class="custom-options" data-function="Need">
+							<span class="custom-option${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Boxes.Market.AllGoods')}</span>`);
+
+							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							{
+								ID += 1;
+
+								h.push(`<span class="custom-option era${(Market.Need === ID ? 'selected' : '')}" data-value="${ID}">
+											${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}
+										</span>`);
+
+								for (let i = 0; i < 5; i++) {
+									ID += 1;
+									h.push(`<span class="custom-option${(Market.Need === ID ? 'selected' : '')}" data-value="${ID}">
+												${GoodsList[5*era + i]['name']}
+											</span>`);
+								}
+							}
+
+		h.push(			`</div>
+					</div>
+				</div>`);
+        h.push('</td>');
 
         h.push('<td><input class="tradepartnerguild game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerGuild') + '</td>');
         h.push('<td><input class="tradeforequal game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForEqual') + '</td>');
@@ -230,7 +268,8 @@ let Market = {
 
         let Counter = 0;
         let Pos = 0;
-        for (let i = 0; i < Market.Trades.length; i++) {
+        for (let i = 0; i < Market.Trades.length; i++)
+        {
             if (Counter >= Market.MaxResults) break;
 
             let Trade = Market.Trades[i];
@@ -257,7 +296,10 @@ let Market = {
 
         h.push('</table>');
 
-        $('#MarketBody').html(h.join(''));
+        $('#MarketBody').html(h.join('')).promise().done(function(){
+			HTML.Dropdown();
+		});
+
     },
 
 
@@ -330,6 +372,7 @@ let Market = {
 
         return true;
     },
+
 
     TestGoodFilter: (TradeGood, GoodCode) => {
         if (GoodCode === 0) return true;
