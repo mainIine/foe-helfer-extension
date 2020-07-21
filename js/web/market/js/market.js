@@ -195,7 +195,7 @@ let Market = {
         h.push('</tr>');
 
         h.push('<tr>');
-        h.push('<td>' + i18n('Boxes.Market.Need') + '</td>');
+        h.push(`<td>${i18n('Boxes.Market.Need')}</td>`);
 
         h.push('<td>');
 

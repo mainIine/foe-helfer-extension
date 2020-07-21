@@ -412,6 +412,9 @@
 	visibility: hidden;
 	pointer-events: none;
 	z-index: 2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .custom-select.dd-open .custom-options {
 	opacity: 1;
