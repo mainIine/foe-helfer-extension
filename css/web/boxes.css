@@ -413,7 +413,7 @@
 	pointer-events: none;
 	z-index: 2;
 }
-.custom-select.open .custom-options {
+.custom-select.dd-open .custom-options {
 	opacity: 1;
 	visibility: visible;
 	pointer-events: all;
@@ -454,7 +454,7 @@
 	transition: all 0.5s;
 }
 .arrow::before {
-	left: -5px;
+	left: 0;
 	transform: rotate(45deg);
 	background-color: #394a6d;
 }
@@ -463,11 +463,11 @@
 	transform: rotate(-45deg);
 	background-color: #394a6d;
 }
-.open .arrow::before {
+.dd-open .arrow::before {
 	left: 0;
 	transform: rotate(-45deg);
 }
-.open .arrow::after {
+.dd-open .arrow::after {
 	left: 5px;
 	transform: rotate(45deg);
 }
