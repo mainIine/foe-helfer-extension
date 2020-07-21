@@ -213,13 +213,13 @@ let Market = {
 							{
 								ID += 1;
 
-								h.push(`<span class="custom-option era${(Market.Need === ID ? 'selected' : '')}" data-value="${ID}">
+								h.push(`<span class="custom-option era${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">
 											${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}
 										</span>`);
 
 								for (let i = 0; i < 5; i++) {
 									ID += 1;
-									h.push(`<span class="custom-option${(Market.Need === ID ? 'selected' : '')}" data-value="${ID}">
+									h.push(`<span class="custom-option${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">
 												${GoodsList[5*era + i]['name']}
 											</span>`);
 								}

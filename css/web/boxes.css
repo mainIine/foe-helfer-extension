@@ -415,14 +415,14 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	overflow: hidden;
+	overflow-y: auto;
+	max-height: 400px;
 }
 .custom-select.dd-open .custom-options {
 	opacity: 1;
 	visibility: visible;
 	pointer-events: all;
-	overflow: hidden;
-	overflow-y: auto;
-	max-height: 400px;
 }
 .custom-option {
 	position: relative;
