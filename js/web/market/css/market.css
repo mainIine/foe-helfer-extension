@@ -6,9 +6,8 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              17.07.20, 23:50 Uhr
- * zuletzt bearbeitet:       17.07.20, 23:50 Uhr
  *
- * Copyright © 2020
+ * Copyright 2020
  *
  * **************************************************************************************
  */
@@ -21,6 +20,7 @@
 
 #Market #MarketBody {
     overflow-y: auto;
+	min-height: 400px;
     max-height: 750px;
 }
 
@@ -28,6 +28,15 @@
     position: relative;
     font-size: 85%;
     vertical-align: middle;
+}
+
+#Market #MarketBody td span.custom-option.era {
+	font-weight: bold;
+	font-size: 0.9rem;
+}
+
+#Market #MarketBody td span.custom-option:not(.era) {
+	padding-left: 20px;
 }
 
 #Market #MarketBody .filters th {
