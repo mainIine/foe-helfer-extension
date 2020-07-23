@@ -184,6 +184,7 @@
     "Boxes.Kits.UpgradeKit": "Upgrade-Kit",
     "Boxes.Market.AllGoods": "Alle Güter",
     "Boxes.Market.MinQuantity": "min. Menge",
+    "Boxes.Market.OnlyAffordable": "Nur akzeptierbare Angebote",
     "Boxes.Market.Need": "Bedarf",
     "Boxes.Market.NeedColumn": "Bedarf",
     "Boxes.Market.Offer": "Angebot",
