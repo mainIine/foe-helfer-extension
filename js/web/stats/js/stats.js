@@ -6,7 +6,9 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (d
 
 // Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, postData) => {
-	Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
+	if (data.responseData['stateId'] !== 'participating') {
+		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
+	}
 });
 
 // Reward log
