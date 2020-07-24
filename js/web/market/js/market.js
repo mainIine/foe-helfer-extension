@@ -12,7 +12,7 @@
  * **************************************************************************************
  */
 
-// Markt
+// Market
 FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
     let requestMethod = postData[0]['requestMethod'];
 
@@ -30,6 +30,12 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
     }
 });
 
+
+/**
+ * Market function
+ *
+ * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: Market.TestGoodFilter, TestFilter: Market.TestFilter, TradeFairStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, CalcBody: Market.CalcBody, TradeForLower: boolean}}
+ */
 let Market = {
     Trades: [],
     Offer: 0,
@@ -51,7 +57,14 @@ let Market = {
     TradeFair: true,
     TradeDisadvantage: false,
 
-    Show: () => {
+	OfferSelect: null,
+	NeedSelect: null,
+
+
+	/**
+	 * Create a div-box for the DOM + Eventlistener
+	 */
+    Show: ()=> {
         if ($('#Market').length === 0) {
             HTML.Box({
                 'id': 'Market',
@@ -64,9 +77,15 @@ let Market = {
             // CSS in den DOM prügeln
             HTML.AddCssFile('market');
 
+
             $('#Market').on('click', '.custom-option', function(){
                 let func = $(this).closest('.custom-options').data('function'),
-					val = $(this).data('value');
+					val = $(this).data('value'),
+					txt = $(this).text().trim();
+
+                Market[`${func}Select`] = txt;
+
+				console.log(`${func}Select: `, txt);
 
                 Market[func] = parseInt(val);
                 Market.CalcBody();
@@ -143,6 +162,9 @@ let Market = {
     },
 
 
+	/**
+	 * Main function for all the data
+	 */
     CalcBody: () => {
         let h = [];
 
@@ -167,25 +189,24 @@ let Market = {
 		h.push(`<div class="custom-select-wrapper">
 					<div class="custom-select">
 						<div class="custom-select__trigger">
-							<span class="trigger">${i18n('Boxes.Market.AllGoods')}</span>
+							<span class="trigger">${(Market.OfferSelect ? Market.OfferSelect : i18n('Boxes.Market.AllGoods'))}</span>
 							<div class="arrow"></div>
 						</div>
 						<div class="custom-options" data-function="Offer">
-							<span class="custom-option${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Boxes.Market.AllGoods')}</span>`);
+							<span class="custom-option${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">
+								${i18n('Boxes.Market.AllGoods')}
+							</span>`);
 
 							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
-								h.push(`<span class="custom-option era${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">
-											${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}
-										</span>`);
+								h.push(`<span class="custom-option era${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}</span>`);
 
-								for (let i = 0; i < 5; i++) {
+								for (let i = 0; i < 5; i++)
+								{
 									ID += 1;
-									h.push(`<span class="custom-option${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">
-												${GoodsList[5*era + i]['name']}
-											</span>`);
+									h.push(`<span class="custom-option${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">${GoodsList[5*era + i]['name']}</span>`);
 								}
 							}
 
@@ -209,11 +230,13 @@ let Market = {
 		h.push(`<div class="custom-select-wrapper">
 					<div class="custom-select">
 						<div class="custom-select__trigger">
-							<span class="trigger">${i18n('Boxes.Market.AllGoods')}</span>
+							<span class="trigger">${(Market.NeedSelect ? Market.NeedSelect : i18n('Boxes.Market.AllGoods'))}</span>
 							<div class="arrow"></div>
 						</div>
 						<div class="custom-options" data-function="Need">
-							<span class="custom-option${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Boxes.Market.AllGoods')}</span>`);
+							<span class="custom-option${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">
+								${i18n('Boxes.Market.AllGoods')}
+							</span>`);
 
 							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
 							{
@@ -317,6 +340,12 @@ let Market = {
     },
 
 
+	/**
+	 * Filter function
+	 *
+	 * @param Trade
+	 * @returns {boolean}
+	 */
     TestFilter: (Trade) => {
         if (Trade['id'] < 0) { // 10:1 Händler immer ausblenden
             return false;
@@ -393,6 +422,13 @@ let Market = {
     },
 
 
+	/**
+	 * Filter function
+	 *
+	 * @param TradeGood
+	 * @param GoodCode
+	 * @returns {boolean}
+	 */
     TestGoodFilter: (TradeGood, GoodCode) => {
         if (GoodCode === 0) return true;
 

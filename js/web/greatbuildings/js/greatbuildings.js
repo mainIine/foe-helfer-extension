@@ -169,7 +169,7 @@ let GreatBuildings =
             let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));;          
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
             let Era = Technologies.Eras[EraName];
-            let DoubleCollection = (GreatBuildings.FPGreatBuildings[i].ID === 'X_FutureEra_Landmark1' ? false : true);
+            let DoubleCollection = (GreatBuildings.FPGreatBuildings[i].ID !== 'X_FutureEra_Landmark1');
 
             let BruttoCosts = [];
             for (let j = 0; j < 10; j++) {
@@ -253,7 +253,7 @@ let GreatBuildings =
             if (ROIResults[Index]['BestLevel'] !== undefined) {
                 let BestLevel = ROIResults[Index]['BestLevel'];
 
-                h.push('<td style="white-space:nowrap">' + CurrentLevel + '&rarr;' + (BestLevel + 1) + '</td>');
+                h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
                 h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
@@ -277,7 +277,7 @@ let GreatBuildings =
 
                 h.push('<tr>');
                 h.push('<td class="text-right">' + i18n('Boxes.GreatBuildings.Suggestion2') + ':</td>');
-                h.push('<td>' + CurrentLevel + '=>' + (BestLevel + 1) + '</td>');
+                h.push('<td>' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');
                 h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
