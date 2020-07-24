@@ -1,5 +1,46 @@
 ## Changelog - Extension
 
+##### 2.5.2.0
+
+**Neu**
+- Gildenkassen Export:
+    - [#670](https://github.com/dsiekiera/foe-helfer-extension/issues/670) [#926](https://github.com/dsiekiera/foe-helfer-extension/issues/926) [#1042](https://github.com/dsiekiera/foe-helfer-extension/issues/1042) klick alle Seiten durch bis zum gewünschten Datum, dann exportiere dir eine CSV; daraus kannst Du dir eine Excel Pivot Tabelle erstellen; einstellbar in den Einstellungen
+
+- Marktplatz Filter:
+    - beim betreten des Marktplatzes öffnet sich ein Fenster in dem alle Einträge nach belieben gefiltert werden können, die Seitenzahl zeigt sofort an wo im Spiel das Angebot anschließend zu finden ist; einstellbar in den Einstellungen
+
+**Update**
+- Legendäre Bauwerke:
+    - [#1501](https://github.com/dsiekiera/foe-helfer-extension/issues/1501) can be calculated for a friend/guild member after a visit
+
+- Infobox:
+    - [#1509](https://github.com/dsiekiera/foe-helfer-extension/issues/1509) [#1515](https://github.com/dsiekiera/foe-helfer-extension/issues/1515) Style überarbeitet, für die neue Version (aktiv auf der Beta) angepasst
+
+- Extension:
+    - [#1514](https://github.com/dsiekiera/foe-helfer-extension/issues/1514) Boxen können durch anklicken in den Vordergrund geholt werden
+
+- Event/Schrittrechner:
+    - [#1532](https://github.com/dsiekiera/foe-helfer-extension/issues/1532) ab sofort werden auch Zutaten des Herbstevents korrekt erkannt
+
+**BugFix**
+- Infobox:
+     - [#1439](https://github.com/dsiekiera/foe-helfer-extension/issues/1439) vierfach Einträge gefixt
+
+- Kostenrechner:
+    - [#1503](https://github.com/dsiekiera/foe-helfer-extension/issues/1503) falsche Farbe in der Differenz Spalte führte zu irretationen
+
+- Infobox:
+    - [#1506](https://github.com/dsiekiera/foe-helfer-extension/issues/1506) wenn eine Provinz in der GG eingenommen wurde diese Meldung doppelt mit einem anderern Event angezeigt
+    - [#1520](https://github.com/dsiekiera/foe-helfer-extension/issues/1520) das löschen eines Gebäudes auf der GG Map erzeugte einen leeren Eintrag
+
+- Legendäre Bauwerke:
+    - [#1525](https://github.com/dsiekiera/foe-helfer-extension/issues/1525) wenn man die Kosten auf 0 stellte verschwand das LG
+    
+- Produktionsübersicht:
+    - [#1528](https://github.com/dsiekiera/foe-helfer-extension/issues/1528) Boosts von Markusdom. Leuchtturm etc. wurden bei deaktivierter Übermittlung an foe-rechner.de ignoriert
+
+---
+
 ##### 2.5.1.0
 
 **Neu**

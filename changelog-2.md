@@ -1,5 +1,46 @@
 ## Changelog - Extension
 
+##### 2.5.2.0
+
+**New **
+- Guild cashbox export:
+    - [#670](https://github.com/dsiekiera/foe-helfer-extension/issues/670) [#926](https://github.com/dsiekiera/foe-helfer-extension/issues/926) [#1042](https://github.com/dsiekiera/foe-helfer-extension/issues/1042) click through all pages until the desired date, then export an CSV; you can create an Excel Pivot Table from this; adjustable in the settings
+
+- Marketplace Filter:
+    - when entering the marketplace, a window opens in which all entries can be filtered as desired, the page number immediately shows where in the game the offer can be found afterwards; adjustable in the settings
+
+**Update**
+- Legendary buildings:
+    - [#1501](https://github.com/dsiekiera/foe-helfer-extension/issues/1501) can be calculated for a friend/guild member after a visit
+
+- Infobox:
+    - [#1509](https://github.com/dsiekiera/foe-helfer-extension/issues/1509) [#1515](https://github.com/dsiekiera/foe-helfer-extension/issues/1515) Style revised, adapted for the new version (active on the beta)
+
+- Extension:
+    - [#1514](https://github.com/dsiekiera/foe-helfer-extension/issues/1514) Boxes can be brought into the foreground by clicking on them
+
+- Event/step calculator:
+    - [#1532](https://github.com/dsiekiera/foe-helfer-extension/issues/1532) from now on ingredients of the autumn event are also recognized correctly
+
+**BugFix**
+- Infobox:
+     - [#1439](https://github.com/dsiekiera/foe-helfer-extension/issues/1439) quadruple entries fixed
+
+- Cost calculator:
+    - [#1503](https://github.com/dsiekiera/foe-helfer-extension/issues/1503) Wrong color in the difference column led to irrations
+
+- Infobox:
+    - [#1506](https://github.com/dsiekiera/foe-helfer-extension/issues/1506) if a province was captured in the GG this message is displayed twice with another event
+    - [#1520](https://github.com/dsiekiera/foe-helfer-extension/issues/1520) deleting a building on the GG Map created an empty entry
+
+- Legendary buildings:
+    - [#1525](https://github.com/dsiekiera/foe-helfer-extension/issues/1525) if you set the cost to 0 the LG disappeared
+    
+- Production overview:
+    - [#1528](https://github.com/dsiekiera/foe-helfer-extension/issues/1528) Boosts from St. Mark's. lighthouse etc. were ignored when sending to foe-rechner.de
+
+---
+
 ##### 2.5.1.0
 
 **New**
