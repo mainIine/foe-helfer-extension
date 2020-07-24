@@ -161,6 +161,7 @@
     "Boxes.Infobox.Messages.LevelUp": "__player__'s __building__ hat gerade Stufe __level__ erreicht.<br>Du hast Platz <strong>__rank__</strong> belegt und erhältst <strong>__fps__ FP</strong>.",
     "Boxes.Infobox.Messages.MsgBuilding": "__building__ - Stufe __level__",
     "Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen.",
+    "Boxes.Infobox.Messages.Welcome": "Herzlich willkommen in der <strong>Infobox</strong>! Solange du dieses Fenster geöffnet hast, wird es nach und nach mit Ereignissen gefüllt, die im Hintergrund ablaufen (unter anderem Chatnachrichten, GG-Angriffe und Auktionsgebote beim Antiquitätenhändler)",
     "Boxes.Infobox.ResetBox": "Box leeren",
     "Boxes.Infobox.Title": "Infobox",
     "Boxes.Infobox.UnknownConversation": "Unbekannte Unterhaltung",
