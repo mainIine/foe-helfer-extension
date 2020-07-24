@@ -6,15 +6,16 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              17.07.20, 18:30 Uhr
+ * zuletzt bearbeitet:       17.07.20, 18:30 Uhr
  *
- * Copyright 2020
+ * Copyright © 2020
  *
  * **************************************************************************************
  */
 
 // LG Investitionen
 FoEproxy.addHandler('ClanService', 'getTreasuryLogs', (data) => {
-    if (GetSetting('ShowGuildTreasuryLogExport')) {
+    if (Settings.GetSetting('ShowGuildTreasuryLogExport')) {
         Treasury.HandleNewLogs(data);
     }
 });
@@ -104,13 +105,7 @@ let Treasury = {
 
         let ExportString = h.join('\n');
         let BOM = "\uFEFF";
-        let Blob1 = new Blob(
-        	[BOM + ExportString],
-			{
-        			type: "application/octet-binary;charset=ANSI"
-        		}
-        	);
-
+        let Blob1 = new Blob([BOM + ExportString], { type: "application/octet-binary;charset=ANSI" });
         MainParser.ExportFile(Blob1, 'GBG-export.csv');
     }
 };
