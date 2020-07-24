@@ -161,7 +161,7 @@
     "Boxes.Infobox.Messages.LevelUp": "Le __building__ de __player__ vient juste d'atteindre le niveau __level__.<br>Tu as pris la <strong>__rank__th</strong> place et obtenu <strong>__fps__</strong> PF en retour.",
     "Boxes.Infobox.Messages.MsgBuilding": "<strong>__building__<strong> viens de passer au niveau __level__.",
     "Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> a accepté votre offre.<br>Vous avez obtenu __needValue__ __need__ contre __offerValue__ __offer__.",
-    "Boxes.Infobox.Messages.Welcome": "Message d'accueil (en cours)",
+    "Boxes.Infobox.Messages.Welcome": "",
     "Boxes.Infobox.ResetBox": "Vider la boîte",
     "Boxes.Infobox.Title": "Infos Techniques",
     "Boxes.Infobox.UnknownConversation": "Conversation inconnue",
