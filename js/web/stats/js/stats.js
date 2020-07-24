@@ -1,34 +1,14 @@
 // Guild Battlegrounds leader board log
+// Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
-	const r = data.responseData;
-	if (!Array.isArray(r)) {
-		return;
+	Stats.HandlePlayerLeaderboard(data.responseData);
+});
+
+// Gildengefechte
+FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, postData) => {
+	if (data.responseData['stateId'] !== 'participating') {
+		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 	}
-	const players = r.reduce((acc, it) => {
-		acc[it.player.player_id] = {
-			id: it.player.player_id,
-			n: it.negotiationsWon || 0,
-			b: it.battlesWon || 0,
-			r: it.rank || 1
-		};
-		return acc;
-	}, {});
-	const timeNow = MainParser.getCurrentDate();
-
-    await IndexDB.getDB();
-
-    await IndexDB.db.statsGBGPlayers.add({
-		date: timeNow,
-		players
-	});
-
-	const playersForCache = r.map(({player}) => ({
-		id: player.player_id,
-		name: player.name,
-		avatar: player.avatar,
-		date: timeNow
-	}));
-	await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);
 });
 
 // Reward log
@@ -1342,4 +1322,36 @@ let Stats = {
 			});
 		}
 	},
+
+	/* Handlers */
+	HandlePlayerLeaderboard: async (r) => {
+		if (!Array.isArray(r)) {
+			return;
+		}
+		const players = r.reduce((acc, it) => {
+			acc[it.player.player_id] = {
+				id: it.player.player_id,
+				n: it.negotiationsWon || 0,
+				b: it.battlesWon || 0,
+				r: it.rank || 1
+			};
+			return acc;
+		}, {});
+		const timeNow = MainParser.getCurrentDate();
+
+		await IndexDB.getDB();
+
+		await IndexDB.db.statsGBGPlayers.add({
+			date: timeNow,
+			players
+		});
+
+		const playersForCache = r.map(({ player }) => ({
+			id: player.player_id,
+			name: player.name,
+			avatar: player.avatar,
+			date: timeNow
+		}));
+		await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);		
+    },
 };

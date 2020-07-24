@@ -21,6 +21,27 @@
 	padding: 2px;
 }
 
+.info-table {
+	border-spacing: 0;
+	border-collapse: separate;
+	width: 100%;
+	background-color: transparent;
+}
+
+table.info-table:not(.no-hover) tbody tr:hover {
+	background-color: var(--background-table-hover) !important;
+}
+
+table.info-table tr th,
+table.info-table tr td {
+	padding: 2px 5px;
+}
+
+table.info-table tr td {
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
 #BackgroundInfo #BackgroundInfoBody {
 	overflow: auto;
 }
@@ -78,6 +99,10 @@
 	background: url(../images/gbg-gray.png) center center no-repeat;
 	background-size: contain;
 	width: 30px;
+}
+
+#BackgroundInfoTable .welcome {
+	background-color: var(--background-table-odd);
 }
 
 #BackgroundInfoTable .welcome td:first-child {
