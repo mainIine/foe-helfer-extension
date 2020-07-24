@@ -13,7 +13,16 @@
  * **************************************************************************************
  */
 
-// Chat-Titel notieren
+// neues Postfach
+FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
+
+FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
+    MainParser.setConversations(data.responseData);
+});
+
+// altes Postfach
 FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
@@ -52,9 +61,9 @@ FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
 let Infoboard = {
 
     InjectionLoaded: false,
-    PlayInfoSound: null,
+    PlayInfoSound: true,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
-    SavedFilter: ["auction", "gex", "guildfighs", "trade", "level", "message"],
+    SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg"],
     DebugWebSocket: false,
 
 
@@ -122,7 +131,7 @@ let Infoboard = {
             HTML.AddCssFile('infoboard');
 
         } else {
-			HTML.CloseOpenBox('BackgroundInfo');
+            return HTML.CloseOpenBox('BackgroundInfo');
 		}
 
         let div = $('#BackgroundInfo'),
@@ -137,10 +146,10 @@ let Infoboard = {
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGex') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="guildfighs" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("guildfighs") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gbg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="message" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("message") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("msg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
         h.push('</ul>');
         h.push('</div>');
 
@@ -150,7 +159,7 @@ let Infoboard = {
 
 
         // Tabelle
-        h.push('<table id="BackgroundInfoTable" class="foe-table">');
+        h.push('<table id="BackgroundInfoTable" class="info-table">');
 
         h.push('<tbody></tbody>');
 
@@ -162,6 +171,12 @@ let Infoboard = {
 
         Infoboard.FilterInput();
         Infoboard.ResetBox();
+
+        Infoboard.PostMessage({
+            class: 'welcome',
+            type: i18n('Menu.Info.Title'),
+            msg: i18n('Boxes.Infobox.Messages.Welcome'),
+        });
 
         $('#BackgroundInfo').on('click', '#infoboxTone', function() {
 
@@ -216,20 +231,27 @@ let Infoboard = {
         Infoboard.PostMessage(bd);
     },
 
+
     PostMessage: (bd) => {
 
         if ($('#BackgroundInfo').length > 0) {
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
-                tr = $('<tr />').addClass(bd['class']),
-                msg = bd['msg'];
+                msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
 
-            // wenn nicht angezeigt werden soll, direkt versteckeln
-            if (!status) {
+            // wenn nicht angezeigt werden soll, direkt verstecken
+            if (!status && bd.class !== 'welcome') {
                 tr.hide();
             }
 
+            if (img) {
+                tr.addClass(bd['img']);
+            } else {
+                tr.addClass(bd['class']);
+            }
+
             tr.append(
-                '<td>' + bd['type'] + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td></td>' +
+                '<td>' + type + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
 
@@ -239,8 +261,8 @@ let Infoboard = {
                 Infoboard.SoundFile.play();
             }
         }
-
     },
+
 
     /**
      * Filter für Message Type
@@ -264,10 +286,9 @@ let Infoboard = {
             localStorage.setItem("infoboxSavedFilter", JSON.stringify(Infoboard.SavedFilter));
 
             $('#BackgroundInfoTable tbody tr').each(function() {
-                let tr = $(this);
-                type = tr.attr('class');
+                let tr = $(this), type = tr.attr('class');
 
-                if (active.includes(type)) {
+                if (active.some(e => type.startsWith(e)) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
                     tr.hide();
@@ -284,6 +305,11 @@ let Infoboard = {
     ResetBox: () => {
         $('#BackgroundInfo').on('click', '.btn-reset-box', function() {
             $('#BackgroundInfoTable tbody').html('');
+            Infoboard.PostMessage({
+                class: 'welcome',
+                type: i18n('Menu.Info.Title'),
+                msg: i18n('Boxes.Infobox.Messages.Welcome'),
+            });
         });
     }
 };
@@ -325,48 +351,84 @@ let Info = {
 
 
     /**
-     * Nachricht von jemandem
+     * Nachricht in einem bekannten Chat
      *
      * @param d
-     * @returns {{class: 'message', msg: string, type: string}}
+     * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
-        let msg;
+        let header, message, image, chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        if (chat && chat['hidden']) return undefined;
 
         if (d['text'] !== '') {
-            msg = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
+            // normale Nachricht
+            message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
 
-        } else if (d['attachment'] !== undefined) {
-
-            // Greatbuilding
+        } else if (d['attachment']) {
             if (d['attachment']['type'] === 'great_building') {
-                msg = HTML.i18nReplacer(
+                // legendäres Bauwerk
+                message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
                     'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
                     'level': d['attachment']['level']
-                }
-                )
+                });
             }
-            // Trade
             else if (d['attachment']['type'] === 'trade_offer') {
-                msg = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
+                // Handelsangebot
+                message = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
         }
 
-        if (undefined === d.sender) {
-            return {
-                class: 'message',
-                type: i18n('Boxes.Infobox.FilterMessage'),
-                msg: Info.GetConversationHeader(d.conversationId, null) + msg
-            };
+        if (chat) {
+            // passendes Bildchen wählen
+            if (chat['important']) {
+                image = 'msg-important';
+            } else if (chat['favorite']) {
+                image = 'msg-favorite';
+            }
+
+            if (d['sender'] && d['sender']['name']) {
+                // normale Chatnachricht (bekannte ID)
+                if (d['sender']['name'] === chat['title']) {
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
+                } else {
+                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
+                }
+            } else {
+                // Chatnachricht vom System (Betreten/Verlassen)
+                header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
+            }
+        } else {
+            return undefined;
         }
 
         return {
-            class: 'message',
+            class: 'msg',
             type: i18n('Boxes.Infobox.FilterMessage'),
-            msg: Info.GetConversationHeader(d['conversationId'], d['sender']['name']) + msg
+            msg: header + message,
+            img: image
         };
     },
+
+
+    /**
+     * Nachricht in einem unbekannten Chat
+     *
+     * @param d
+     * @returns {class: 'message', msg: string, type: string}
+     */
+    ConversationService_getConversationUpdate: (d) => {
+        let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
+        if (chat) return undefined;
+
+        let message = '<div><strong class="bright">' + i18n('Boxes.Infobox.UnknownConversation') + '</strong></div>';
+        return {
+            class: 'message',
+            type: i18n('Boxes.Infobox.FilterMessage'),
+            msg: message
+        };
+    },
+
 
     /**
      * Auf der GG-Map kämpft jemand
@@ -379,7 +441,7 @@ let Info = {
         if (GildFights.SortedColors === null){
             GildFights.PrepareColors();
         }
-
+        
         let data = d[0];
 
         let bP = GildFights.MapData['battlegroundParticipants'],
@@ -393,14 +455,17 @@ let Info = {
 
         if (data['lockedUntil'] !== undefined) {
 
+            // keine Übernahme
+            if (data['lockedUntil'] < Math.floor(MainParser.getCurrentDateTime() / 1000) + 14390) return undefined;
+
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
-				colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
+                colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
             let tc = colors['highlight'],
                 ts = colors['shadow'];
 
             return {
-                class: 'guildfighs',
+                class: 'gbg',
                 type: i18n('Boxes.Infobox.FilterGildFights'),
                 msg: HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.GildFightOccupied'), {
@@ -409,13 +474,16 @@ let Info = {
                         attackerShadow: ts,
                         attackerName: p['clan']['name'],
                         untilOccupied: moment.unix(data['lockedUntil']).format('HH:mm:ss')
-                    })
+                    }),
+                img: 'gbg-lock'
             };
         }
 
-        let t = '';
+        // kein aktiver Kampf
+        if (!data['conquestProgress'][0]) return undefined;
 
         // Es wird gerade gekämpft
+        let color = GildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
                 break;
@@ -423,7 +491,7 @@ let Info = {
 
             let d = data['conquestProgress'][i],
                 p = bP.find(o => (o['participantId'] === d['participantId'])),
-				colors = GildFights.SortedColors.find(c => (c['id'] === d['participantId']));
+                colors = GildFights.SortedColors.find(c => (c['id'] === d['participantId']));
 
             // es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
             if (Info.GildPoints[data['id']] !== undefined &&
@@ -433,11 +501,23 @@ let Info = {
                 continue;
             }
 
-            let tc = colors['highlight'],
-                ts = colors['shadow'];
+            if (color) {
+                let tc = colors['highlight'], sc = color['highlight'],
+                    ts = colors['shadow'], ss = color['shadow'];
+    
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';    
+            } else {
+                let tc = colors['highlight'],
+                    ts = colors['shadow'];
 
-            t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> = <span style="color:#ffb539">' + prov['name'] + '</span> - <strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong><br>';
-
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';    
+            
+            }
+            if (image) {
+                image = 'gbg-undefined';
+            } else {
+                image = 'gbg-' + colors['cid'];
+            }
             if (Info.GildPoints[data['id']] === undefined) {
                 Info.GildPoints[data['id']] = {};
             }
@@ -447,9 +527,10 @@ let Info = {
         }
 
         return {
-            class: 'guildfighs',
+            class: 'gbg',
             type: i18n('Boxes.Infobox.FilterGildFights'),
-            msg: t
+            msg: t,
+            img: image
         };
     },
 
@@ -542,30 +623,5 @@ let Info = {
                 }
             )
         };
-    },
-
-
-    /**
-     * Sucht den Titel einer Nachricht heraus
-     *
-     * @param id
-     * @param {string} name
-     * @returns {string}
-     */
-    GetConversationHeader: (id, name) => {
-        let header = MainParser.Conversations.find(obj => obj.id === id);
-        if (header != null && name != null) {
-            // z.B. normale Chat-Nachricht mit bekannter Chat-ID
-            return '<div><strong style="color:#ffb539">' + header.title + '</strong> - <em>' + name + '</em></div>';
-        } else if (name != null) {
-            // z.B. normale Chat-Nachricht mit unbekannter Chat-ID
-            return '<div><strong style="color:#ffb539">' + name + '</strong></div>';
-        } else if (header != null) {
-            // z.B. normale Chat-ereignis-Nachricht mit bekannter Chat-ID (xyz wurde hinzugefügt/hat chat verlassen)
-            return '<div><strong style="color:#ffb539">' + header.title + '</strong></div>';
-        }
-
-        return '';
     }
 };
-

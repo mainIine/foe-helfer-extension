@@ -15,8 +15,6 @@
 
 #OwnPartBox {
 	top: 100px;
-	right: 100px;
-	width: 440px;
 }
 
 #OwnPartBox.closed .OwnPartBoxBackground {
@@ -44,10 +42,10 @@
 
 #OwnPartBox .OwnPartDrops .inputWrapper input {
 	max-width: 45px;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	text-align: right;
 	margin: 0;
 	font-size: 0.8rem;
@@ -56,10 +54,10 @@
 
 #OwnPartBox .OwnPartDrops div select {
 	line-height: 1.5;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	max-width: 160px;
 }
 
@@ -70,6 +68,7 @@
 #OwnPartBox #OwnPartBoxBody {
 	position: relative;
 	margin-left: 0;
+	font-size: 85%;
 }
 
 #OwnPartBox #OwnPartBoxBody .btn-set-arc {
@@ -78,19 +77,19 @@
 
 
 #OwnPartBox #OwnPartBoxBody strong {
-	color: #ffb539;
+	color: var(--text-bright);
 }
 
 #OwnPartBox #OwnPartBoxBody strong.normal {
-	color: #F3D6A0;
+	color: var(--text-bright);
 }
 
-.success {
-	color: #29b206 !important;
+#OwnPartBox #OwnPartBoxBody .success {
+	color: var(--text-success) !important;
 }
 
-.info {
-	color: #2196f3 !important;
+#OwnPartBox #OwnPartBoxBody .info {
+	color: var(--text-info) !important;
 }
 
 #OwnPartBox #OwnPartTable .error {
@@ -99,19 +98,19 @@
 
 #OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
 	line-height: 1.5;
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	width: 35px;
 	text-align: center;
 }
 
 #OwnPartBox #arc-percent {
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	text-align: center;
 	width: 30px;
 	margin: 0 5px;
@@ -121,9 +120,13 @@
 	padding: 0.2rem 0.4rem;
 }
 
+#OwnPartBox #up-to-level-up {
+	color: var(--text-bright);
+}
+
 #OwnPartBox .black-bg {
 	position: absolute;
-	background-color: rgba(0,0,0, 0.65);
+	background-color: var(--65-black);
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -142,7 +145,7 @@
 	height: 0;
 	margin: 10px auto;
 	width: 80%;
-	border-top: 1px solid #7b5730;
+	border-top: 1px solid var(--text-medium2);
 	border-bottom: 1px solid #9e774e;
 }
 
@@ -205,10 +208,10 @@
 
 .OwnPartBoxBackground input[type=text],
 .OwnPartBoxBackground select {
-	background-color: #F9EBC6;
-	color: #93795D;
+	background-color: var(--background-light);
+	color: var(--text-medium);
 	background-clip: padding-box;
-	border: 1px solid #4C2F1E;
+	border: 1px solid var(--text-dark);
 	font-size: 0.8rem;
 	height: 18px;
 	width: 164px;
@@ -265,4 +268,8 @@
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
 	color: var(--text-bright);
 	font-weight: bold;
+}
+
+#PowerLevelingBox #PowerLevelingBoxBody .success {
+	color: var(--text-success);
 }

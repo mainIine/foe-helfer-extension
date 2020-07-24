@@ -19,9 +19,8 @@ let Parts = {
 	IsPreviousLevel: false,
 
 	CurrentBuildingID: false,
-	CurrentBuildingStep: false,
     CurrentBuildingPercents: [90, 90, 90, 90, 90],
-    Input: [],
+    Exts: [0, 0, 0, 0, 0],
 	SaveCopy: [],
 	PlayInfoSound: null,
 
@@ -150,26 +149,18 @@ let Parts = {
 				v = 0;
 			}
 
-            Parts.Input[i] = parseInt(v);
+			Parts.Exts[i] = parseInt(v);
 		});
 
-		// Prüfen ob alle "null" sind
-		const isAllZero = !Parts.Input.some(el => el.value !== 0);
-
-		if(isAllZero !== true){
-			Parts.Show(Parts.Input);
-		} else {
-			Parts.Show();
-		}
+		Parts.Show();
 	},
 
 
 	/**
 	 * Sichtbarer Teil
 	 *
-	 * @param input
 	 */
-	Show: (input)=> {
+	Show: ()=> {
 
         let cityentity_id = Parts.CityMapEntity['cityentity_id'],
 			Level = Parts.CityMapEntity['level'],
@@ -256,11 +247,9 @@ let Parts = {
 			BPRewards[i] = 0;
         }
 
-        if (input !== undefined) {
-            for (let i = 0; i < input.length; i++) {
-                if (input[i] > 0) {
-                    Maezens[Maezens.length] = input[i];
-                }
+		for (let i = 0; i < Parts.Exts.length; i++) {
+			if (Parts.Exts[i] > 0) {
+				Maezens[Maezens.length] = Parts.Exts[i];
             }
         }
 
@@ -447,7 +436,7 @@ let Parts = {
 
 			h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
             h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
-            h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + (input !== undefined ? Parts.Input[i] : 0) + '"></td>');
+			h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + Parts.Exts[i] + '"></td>');
             h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.CurrentBuildingPercents[i] + '"></td>');
 
             h.push('</tr>');
@@ -488,7 +477,7 @@ let Parts = {
         if (Parts.IsPreviousLevel === false) {
 			let rest = (Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points']);
             h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
-            h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+            h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 
 			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');

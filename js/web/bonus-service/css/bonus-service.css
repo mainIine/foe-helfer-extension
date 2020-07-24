@@ -32,14 +32,14 @@
 	background-image: none;
 	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 no-repeat;
 	border-radius: 50% 0 0 50%;
-	border: 2px solid #93c554;
+	border: 2px solid var(--hud-border-success);
 	border-right: none;
 	margin: 2px 0;
 	box-shadow: 1px -1px 1px var(--50-black);
 }
 
 #bonus-hud .hud-btn.hud-btn-red {
-	border-color: #9c2d18;
+	border-color: var(--hud-border-error);
 	opacity: 0.9;
 }
 
@@ -65,12 +65,12 @@
 	bottom: 0;
 	top: unset;
 	left: 0;
-	background-color: #497b0b;
+	background-color: var(--hud-counter-success);
 	border-radius: 50%;
 	line-height: 16px;
 	text-align: center;
-	box-shadow: 0 1px 1px 1px rgba(0,0,0,0.5);
-	text-shadow: 0 1px 1px #000;
+	box-shadow: 0 1px 1px 1px var(--50-black);
+	text-shadow: 0 1px 1px var(--black);
 	font-weight: bold;
 }
 
@@ -90,7 +90,6 @@
 	background-image: url('../images/missile_launch.png');
 }
 
-
 #bonus-hud .aid_goods-icon {
 	background-image: url('../images/aid_goods.png');
 }
@@ -101,12 +100,12 @@
 	-webkit-animation-iteration-count: infinite;
 }
 @-webkit-keyframes bgblink {
-	from {background-color: #4682b4;}
-	50% {color:#b20000}
-	to {background-color: #4682b4;}
+	from {background-color: var(--hud-counter-success);}
+	50% {background-color: var(--text-info)}
+	to {background-color: var(--hud-counter-success);}
 }
 @keyframes bgblink {
-	from {background-color: #4682b4;}
-	50% {background-color:#b20000}
-	to {background-color: #4682b4;}
+	from {background-color: var(--hud-counter-success);}
+	50% {background-color: var(--text-info)}
+	to {background-color: var(--hud-counter-success);}
 }

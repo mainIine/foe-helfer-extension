@@ -18,7 +18,7 @@
 
 #HiddenRewardBox td.warning,
 #HiddenRewardBox td .warning {
-    color: #FFB539;
+    color: var(--text-bright);
 }
 
 td[title="incident_sos"], td[title="incident_beach_gear"], td[title="incident_shipwreck"] {
