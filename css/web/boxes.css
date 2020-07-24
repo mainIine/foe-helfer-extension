@@ -415,7 +415,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	overflow: hidden;
 	overflow-y: auto;
 	max-height: 400px;
 }
@@ -431,24 +430,23 @@
 	font-size: 0.8rem;
 	color: var(--text-medium);
 	line-height: 24px;
-	cursor: pointer;
 	transition: all 0.5s;
 }
 .custom-option:hover {
 	cursor: pointer;
-	background-color: #b2b2b2;
+	background-color: var(--text-normal);
 }
 .custom-option.selected {
-	color: #ffffff;
-	background-color: #305c91;
+	color: var(--text-bright);
+	background-color: var(--text-dark);
 }
 
-.arrow {
+.custom-select .arrow {
 	position: relative;
 	height: 15px;
 	width: 15px;
 }
-.arrow::before, .arrow::after {
+.custom-select .arrow::before, .custom-select .arrow::after {
 	content: "";
 	position: absolute;
 	bottom: 3px;
@@ -456,21 +454,21 @@
 	height: 50%;
 	transition: all 0.5s;
 }
-.arrow::before {
+.custom-select .arrow::before {
 	left: 0;
 	transform: rotate(45deg);
-	background-color: #394a6d;
+	background-color: var(--text-dark);
 }
-.arrow::after {
+.custom-select .arrow::after {
 	left: 5px;
 	transform: rotate(-45deg);
-	background-color: #394a6d;
+	background-color: var(--text-dark);
 }
-.dd-open .arrow::before {
+.custom-select.dd-open .arrow::before {
 	left: 0;
 	transform: rotate(-45deg);
 }
-.dd-open .arrow::after {
+.custom-select.dd-open .arrow::after {
 	left: 5px;
 	transform: rotate(45deg);
 }
