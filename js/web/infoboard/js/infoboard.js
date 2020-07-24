@@ -61,7 +61,7 @@ FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
 let Infoboard = {
 
     InjectionLoaded: false,
-    PlayInfoSound: null,
+    PlayInfoSound: true,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg"],
     DebugWebSocket: false,
@@ -231,6 +231,7 @@ let Infoboard = {
         Infoboard.PostMessage(bd);
     },
 
+
     PostMessage: (bd) => {
 
         if ($('#BackgroundInfo').length > 0) {
@@ -260,8 +261,8 @@ let Infoboard = {
                 Infoboard.SoundFile.play();
             }
         }
-
     },
+
 
     /**
      * Filter für Message Type (TODO @GeniusTimo)
