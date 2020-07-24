@@ -470,6 +470,40 @@ let HTML = {
 	},
 
 
+	Dropdown: ()=> {
+
+		for (const option of document.querySelectorAll(".custom-option")) {
+			option.addEventListener('click', function(){
+				if (!this.classList.contains('selected')) {
+					let $this = $(this),
+						txt = $this.text();
+
+					$this.parent().find('.custom-option.selected').removeClass('selected');
+					$this.addClass('selected');
+
+					setTimeout(()=>{
+						$this.closest('.custom-select-wrapper').find('.trigger').text(txt);
+					},150);
+				}
+			})
+		}
+
+		for (const dropdown of document.querySelectorAll(".custom-select-wrapper")) {
+			dropdown.addEventListener('click', function() {
+				this.querySelector('.custom-select').classList.toggle('dd-open');
+			})
+		}
+
+		window.addEventListener('click', function(e) {
+			for (const select of document.querySelectorAll('.custom-select')) {
+				if (!select.contains(e.target)) {
+					select.classList.remove('dd-open');
+				}
+			}
+		});
+	},
+
+
 	EnterFullscreen: ()=> {
 
 	},

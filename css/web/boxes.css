@@ -374,6 +374,107 @@
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+.custom-select-wrapper {
+	position: relative;
+	user-select: none;
+	width: 100%;
+	text-shadow: none;
+}
+.custom-select {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
+.custom-select__trigger {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	font-size: 0.8rem;
+	height: 24px;
+	line-height: 24px;
+	background-color: var(--background-light);
+	color: var(--text-medium);
+	cursor: pointer;
+	width: 130px;
+}
+.custom-options {
+	position: absolute;
+	display: block;
+	top: 100%;
+	left: 0;
+	right: 0;
+	border-top: 0;
+	background-color: var(--background-light);
+	transition: all 0.5s;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	z-index: 2;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	overflow-y: auto;
+	max-height: 400px;
+}
+.custom-select.dd-open .custom-options {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: all;
+}
+.custom-option {
+	position: relative;
+	display: block;
+	padding: 0 10px;
+	font-size: 0.8rem;
+	color: var(--text-medium);
+	line-height: 24px;
+	transition: all 0.5s;
+}
+.custom-option:hover {
+	cursor: pointer;
+	background-color: var(--text-normal);
+}
+.custom-option.selected {
+	color: var(--text-bright);
+	background-color: var(--text-dark);
+}
+
+.custom-select .arrow {
+	position: relative;
+	height: 15px;
+	width: 15px;
+}
+.custom-select .arrow::before, .custom-select .arrow::after {
+	content: "";
+	position: absolute;
+	bottom: 3px;
+	width: 1px;
+	height: 50%;
+	transition: all 0.5s;
+}
+.custom-select .arrow::before {
+	left: 0;
+	transform: rotate(45deg);
+	background-color: var(--text-dark);
+}
+.custom-select .arrow::after {
+	left: 5px;
+	transform: rotate(-45deg);
+	background-color: var(--text-dark);
+}
+.custom-select.dd-open .arrow::before {
+	left: 0;
+	transform: rotate(-45deg);
+}
+.custom-select.dd-open .arrow::after {
+	left: 5px;
+	transform: rotate(45deg);
+}
+
+/*--------------------------------------------------------------------------------------------------------------------*/
+
 .foe-helper-overlay {
 	position: absolute;
 	top: 0;
@@ -387,7 +488,7 @@
 	backdrop-filter: blur(5px);
 }
 
-/*--- UTILITIES -----------------------------------------------------------------------------------------------------------------*/
+/*--- UTILITIES ------------------------------------------------------------------------------------------------------*/
 
 .d-flex {
 	display: flex;

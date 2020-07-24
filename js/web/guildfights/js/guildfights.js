@@ -30,7 +30,9 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 
 // Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
-	GildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
+	if (data.responseData['stateId'] !== 'participating') {
+		GildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
+	}
 });
 
 // Gildengefechte - Map, Gilden

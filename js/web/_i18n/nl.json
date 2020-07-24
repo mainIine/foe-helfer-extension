@@ -127,6 +127,7 @@
     "Boxes.Negotiation.DragDrop": "U kunt voorkeursvolgorde van bovenstaande pictogrammen zelf herschikken met 'Drag&Drop' om de volgorde van de eerste poging te bepalen.",
     "Boxes.Negotiation.GoodsCritical": "OPGELET: De goederenvoorraad is kritiek!",
     "Boxes.Negotiation.GoodsLow": "OPGELET: De goederenvoorraad is schaars!",
+    "Boxes.Negotiation.HelpLink": "https://foe-rechner.de/docs/2/negotioation-helper",
     "Boxes.Negotiation.Person": "Persoon",
     "Boxes.Negotiation.Round": "Poging",
     "Boxes.Negotiation.SaveCurrentEraGoods": "Huidige goederen besparen?",
