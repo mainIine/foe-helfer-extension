@@ -61,7 +61,7 @@ FoEproxy.addHandler('BlueprintService','newReward', (data, postData) => {
 let Infoboard = {
 
     InjectionLoaded: false,
-    PlayInfoSound: null,
+    PlayInfoSound: true,
     SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg"],
     DebugWebSocket: false,
@@ -159,7 +159,7 @@ let Infoboard = {
 
 
         // Tabelle
-        h.push('<table id="BackgroundInfoTable" class="foe-table">');
+        h.push('<table id="BackgroundInfoTable" class="info-table">');
 
         h.push('<tbody></tbody>');
 
@@ -231,13 +231,14 @@ let Infoboard = {
         Infoboard.PostMessage(bd);
     },
 
+
     PostMessage: (bd) => {
 
         if ($('#BackgroundInfo').length > 0) {
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
 
-            // wenn nicht angezeigt werden soll, direkt versteckeln
+            // wenn nicht angezeigt werden soll, direkt verstecken
             if (!status && bd.class !== 'welcome') {
                 tr.hide();
             }
@@ -260,11 +261,11 @@ let Infoboard = {
                 Infoboard.SoundFile.play();
             }
         }
-
     },
 
+
     /**
-     * Filter für Message Type (TODO @GeniusTimo)
+     * Filter für Message Type
      *
      */
     FilterInput: () => {
@@ -285,10 +286,9 @@ let Infoboard = {
             localStorage.setItem("infoboxSavedFilter", JSON.stringify(Infoboard.SavedFilter));
 
             $('#BackgroundInfoTable tbody tr').each(function() {
-                let tr = $(this);
-                type = tr.attr('class');
+                let tr = $(this), type = tr.attr('class');
 
-                if (active.some(e => type.startsWith(e)) || type === 'welcome') {
+                if (active.some(e => type.startsWith(e)) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
                     tr.hide();

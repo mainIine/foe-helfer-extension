@@ -45,6 +45,7 @@ input[type=number] {
 .window-box,
 .cursor-default,
 .button--lg,
+.custom-option,
 .hud-btn,
 .tabs a {
 	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur'), auto;
@@ -288,7 +289,7 @@ table.foe-table tr td {
 
 table.foe-table tr td {
 	border-top: 1px solid var(--border-table-top);
-	border-bottom: 1px solid (--border-table-bottom);
+	border-bottom: 1px solid var(--border-table-bottom);
 }
 
 table.foe-table tr.success td,

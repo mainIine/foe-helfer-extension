@@ -8,14 +8,14 @@
  * erstellt am:	              17.07.20, 18:30 Uhr
  * zuletzt bearbeitet:       17.07.20, 18:30 Uhr
  *
- * Copyright © 2020
+ * Copyright Â© 2020
  *
  * **************************************************************************************
  */
 
 // LG Investitionen
 FoEproxy.addHandler('ClanService', 'getTreasuryLogs', (data) => {
-    if (GetSetting('ShowGuildTreasuryLogExport')) {
+    if (Settings.GetSetting('ShowGuildTreasuryLogExport')) {
         Treasury.HandleNewLogs(data);
     }
 });
@@ -36,7 +36,7 @@ let Treasury = {
                 'dragdrop': true,
             });
 
-            // CSS in den DOM prügeln
+            // CSS in den DOM prÃ¼geln
             HTML.AddCssFile('treasury');
 
             $('#treasury').on('click', '.button-reset', function () {
