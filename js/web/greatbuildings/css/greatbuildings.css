@@ -27,7 +27,7 @@
 }
 
 #greatbuildings #greatbuildingsBody strong.success {
-    color: #29b206;
+    color: var(--text-success);
 }
 
 .text-bright {
@@ -45,4 +45,11 @@
 
 #greatbuildings #greatbuildingsBody .foe-table tr:first-child td:nth-child(5) strong {
 	color: var(--text-success);
+}
+
+#greatbuildings #greatbuildingsBody strong.player-name {
+    display: block;
+    white-space: nowrap;
+    color: var(--text-bright);
+    margin: 0 10px;
 }

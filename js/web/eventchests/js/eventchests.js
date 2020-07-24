@@ -22,11 +22,11 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
 
         let CurrentChest = [];
         if (Chests[i]['cost'] !== undefined && Chests[i]['cost']['resources'] !== undefined) {
+            CurrentChest['cost'] = 0;
             for (let ResourceName in Chests[i]['cost']['resources']) {
                 if (!Chests[i]['cost']['resources'].hasOwnProperty(ResourceName)) continue;
 
-                CurrentChest['cost'] = Chests[i]['cost']['resources'][ResourceName];
-                break;
+                CurrentChest['cost'] += Chests[i]['cost']['resources'][ResourceName];
             }
         }
         else {
@@ -60,9 +60,11 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
         ChestData[ChestData.length] = CurrentChest;
     }
 
+    /*
     ChestData.sort(function (a, b) {
         return a['cost'] - b['cost'];
     });
+    */
 
     // Ungültige Daten => Event wird nicht unterstützt => Fenster nicht anzeigen
     if (ChestData.length === 0) {

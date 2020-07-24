@@ -47,19 +47,19 @@
 }
 
 #GildPlayersBody tr.mark-player td {
-	border-top: 1px solid #FFB539;
-	border-bottom: 1px solid #FFB539;
+	border-top: 1px solid var(--text-bright);
+	border-bottom: 1px solid var(--text-bright);
 }
 #GildPlayersBody tr.mark-player td:first-child {
-	border-left: 1px solid #FFB539;
+	border-left: 1px solid var(--text-bright);
 }
 #GildPlayersBody tr.mark-player td:last-child {
-	border-right: 1px solid #FFB539;
+	border-right: 1px solid var(--text-bright);
 }
 
 
 #GildPlayersBody tr.bg-green td {
-	background-color: rgba(18, 125, 9, 0.2);
+	background-color: var(--background-table-success);
 }
 
 #LiveGildFighting {

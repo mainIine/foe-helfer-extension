@@ -21,12 +21,33 @@
 	padding: 2px;
 }
 
+.info-table {
+	border-spacing: 0;
+	border-collapse: separate;
+	width: 100%;
+	background-color: transparent;
+}
+
+table.info-table:not(.no-hover) tbody tr:hover {
+	background-color: var(--background-table-hover) !important;
+}
+
+table.info-table tr th,
+table.info-table tr td {
+	padding: 2px 5px;
+}
+
+table.info-table tr td {
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
 #BackgroundInfo #BackgroundInfoBody {
 	overflow: auto;
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
-	color: #ffb539;
+	color: var(--text-bright);
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row {
@@ -37,6 +58,7 @@
 	position: sticky;
 	top: 0;
 	padding: 5px;
+	z-index: 100;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span {
@@ -71,4 +93,92 @@
 	font-size: 1.7rem;
 	line-height: 14px;
 	width: 16px;
+}
+
+#BackgroundInfoTable td:first-child {
+	background: url(../images/gbg-gray.png) center center no-repeat;
+	background-size: contain;
+	width: 30px;
+}
+
+#BackgroundInfoTable .welcome {
+	background-color: var(--background-table-odd);
+}
+
+#BackgroundInfoTable .welcome td:first-child {
+	background-image: url(../../../../css/images/menu/info.png);
+	background-size: 30px;
+}
+
+#BackgroundInfoTable .msg td:first-child {
+	background-image: url(../images/msg.png);
+	background-size: 25px;
+}
+
+#BackgroundInfoTable .msg-important td:first-child {
+	background-image: url(../images/msg-important.png);
+	background-size: 25px;
+}
+
+#BackgroundInfoTable .msg-favorite td:first-child {
+	background-image: url(../images/msg-favorite.png);
+	background-size: 25px;
+}
+
+#BackgroundInfoTable .auction td:first-child {
+	background-image: url(../images/ant.png);
+}
+
+#BackgroundInfoTable .gex td:first-child {
+	background-image: url(../images/ge.png);
+}
+
+#BackgroundInfoTable .level td:first-child {
+	background-image: url(../images/gb.png);
+}
+
+#BackgroundInfoTable .trade td:first-child {
+	background-image: url(../images/trade.png);
+	background-size: 25px;
+}
+
+#BackgroundInfoTable .gbg-red td:first-child {
+	background-image: url(../images/gbg-red.png);
+}
+
+#BackgroundInfoTable .gbg-green td:first-child {
+	background-image: url(../images/gbg-green.png);
+}
+
+#BackgroundInfoTable .gbg-yellow td:first-child {
+	background-image: url(../images/gbg-yellow.png);
+}
+
+#BackgroundInfoTable .gbg-teal td:first-child {
+	background-image: url(../images/gbg-teal.png);
+}
+
+#BackgroundInfoTable .gbg-orange td:first-child {
+	background-image: url(../images/gbg-orange.png);
+}
+
+#BackgroundInfoTable .gbg-blue td:first-child {
+	background-image: url(../images/gbg-blue.png);
+}
+
+#BackgroundInfoTable .gbg-purple td:first-child {
+	background-image: url(../images/gbg-purple.png);
+}
+
+#BackgroundInfoTable .gbg-pink td:first-child {
+	background-image: url(../images/gbg-pink.png);
+}
+
+#BackgroundInfoTable .gbg-lock td:first-child {
+	background-image: url(../images/gbg-lock.png);
+	background-size: 30px;
+}
+
+#BackgroundInfoTable .gbg-undefined td:first-child {
+	background-image: url(../images/gbg-undefined.png);
 }

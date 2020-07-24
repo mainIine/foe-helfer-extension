@@ -60,14 +60,14 @@
 	background: rgba(255,255,255,0.2) url('../../../../css/images/hud/edit.png') center center no-repeat;
 	position: absolute;
 	background-size: 80%;
-	border: 1px solid #f3D6A0;
+	border: 1px solid var(--text-normal);
 	border-radius: 3px;
 	z-index: 50;
 }
 
 #noticesBody .tab-edit:hover,
 #noticesBody .sub-tab-edit:hover {
-	border-color: #ffB539;
+	border-color: var(--text-bright);
 }
 
 #noticesBody .tabs ul.horizontal {
