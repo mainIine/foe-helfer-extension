@@ -24,7 +24,7 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
             $('#market-Btn-closed').remove();
         }
 
-        if (Settings.GetSetting('ShowMarketFilter')) {
+        if (Settings.GetSetting('ShowMarketFilter') || $('#Market').length > 0) {
             Market.Show();
         }
     }
