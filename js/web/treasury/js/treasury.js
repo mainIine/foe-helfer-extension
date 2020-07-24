@@ -8,7 +8,7 @@
  * erstellt am:	              17.07.20, 18:30 Uhr
  * zuletzt bearbeitet:       17.07.20, 18:30 Uhr
  *
- * Copyright � 2020
+ * Copyright © 2020
  *
  * **************************************************************************************
  */
@@ -36,7 +36,7 @@ let Treasury = {
                 'dragdrop': true,
             });
 
-            // CSS in den DOM pr�geln
+            // CSS in den DOM prügeln
             HTML.AddCssFile('treasury');
 
             $('#treasury').on('click', '.button-reset', function () {
