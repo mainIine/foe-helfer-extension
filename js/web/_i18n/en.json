@@ -560,6 +560,8 @@
     "Settings.Entry.SendGEXInfo": "GE evaluations",
     "Settings.Entry.SendGildMemberLGInfo": "Guild members building",
     "Settings.Entry.SendInvestigations": "FP Investments",
+	"Settings.Entry.ShowMarketFilter": "Marktplatz Filter",
+	"Settings.Entry.ShowGuildTreasuryLogExport": "Gildenkassen Export",
     "Settings.Entry.SendPlayersMotivation": "Motivation Activity",
     "Settings.Entry.ShowInvestments": "FP Investment",
     "Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator",
