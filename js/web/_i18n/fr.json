@@ -611,7 +611,7 @@
     "Settings.Tab.Sending": "Envois",
     "Settings.Version.Desc": "Les données ci-dessous peuvent être sélectionnées pour les copier.",
     "Settings.Version.GuildId": "ID Guilde :",
-    "Settings.Version.Link": "<a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=fr'  class='game-cursor'>Nouveautés de cette version</a>",
+    "Settings.Version.Link": "<a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=en'  class='game-cursor'>Nouveautés de cette version</a>",
     "Settings.Version.PlayerId": "ID Joueur :",
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "ID Monde :",
