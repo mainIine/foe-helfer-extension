@@ -85,8 +85,6 @@ let Market = {
 
                 Market[`${func}Select`] = txt;
 
-				console.log(`${func}Select: `, txt);
-
                 Market[func] = parseInt(val);
                 Market.CalcBody();
             });
