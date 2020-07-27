@@ -545,7 +545,7 @@
     "Settings.About.Title": "Σχετικά με το FoE Helper",
     "Settings.About.TranslateDesc": "Μπορείτε να βοηθήσετε στη μετάφραση της επέκτασης εγγραφείτε στο εργαλείο μετάφρασης: ",
     "Settings.About.TranslateTitle": "Μετάφραση",
-    "Settings.AutomaticNegotiation.Desc": "Αυτόματο Άνοιγμα/Κλείσιμο του Βοηθού Διαπραγμάτευσης κατά τη διαπραγμάτευση;",
+    "Settings.AutomaticNegotiation.Desc": "Αυτόματο Άνοιγμα/Κλείσιμο του Βοηθού Διαπραγμάτευσης κατά τη διαπραγμάτευση; Δεν είναι διαθέσιμο στις Μάχες Συντεχνίας.",
     "Settings.AutomaticNegotiation.Title": "Βοηθός διαπραγματεύσεων",
     "Settings.ChangeLanguage.Desc": "Επιλέξτε τη γλώσσα που προτιμάτε από την αναπτυσσόμενη λίστα>",
     "Settings.ChangeLanguage.Title": "Αλλαγή Γλώσσας",
