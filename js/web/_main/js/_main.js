@@ -964,6 +964,10 @@ const FoEproxy = (function () {
 
 	// Moppel Aktivitäten
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
+		if (data.responseData['events']) {
+			GreatBuildings.HandleEventPage(data.responseData['events']);
+		}
+
 		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendPlayersMotivation')) {
 			return;
 		}
