@@ -855,11 +855,7 @@ let Parts = {
 			MaxLevel = Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length);
 
 		let Totals = [],
-			P1s = [],
-			P2s = [],
-			P3s = [],
-			P4s = [],
-			P5s = [],
+			Places = [],			
 			EigenBruttos = [],
 			HasDoubleCollection = false,
 			DoubleCollections = [],
@@ -876,27 +872,13 @@ let Parts = {
             }
 
 			if (i > MinLevel) {
-				P1s[i] = GreatBuildings.Rewards[Era][i];
-				P2s[i] = 5 * Math.round(P1s[i] / 2 / 5);
-				P3s[i] = 5 * Math.round(P2s[i] / 3 / 5);
-				P4s[i] = 5 * Math.round(P3s[i] / 4 / 5);
-				P5s[i] = 5 * Math.round(P4s[i] / 5 / 5);
+				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.CurrentBuildingPercents)
 
-				P1s[i] = Math.round(P1s[i] * (100 + Parts.CurrentBuildingPercents[0]) / 100);
-				P2s[i] = Math.round(P2s[i] * (100 + Parts.CurrentBuildingPercents[1]) / 100);
-				P3s[i] = Math.round(P3s[i] * (100 + Parts.CurrentBuildingPercents[2]) / 100);
-				P4s[i] = Math.round(P4s[i] * (100 + Parts.CurrentBuildingPercents[3]) / 100);
-				P5s[i] = Math.round(P5s[i] * (100 + Parts.CurrentBuildingPercents[4]) / 100);
-
-				EigenBruttos[i] = Totals[i] - P1s[i] - P2s[i] - P3s[i] - P4s[i] - P5s[i];
+				EigenBruttos[i] = Totals[i] - Places[i][0] - Places[i][1] - Places[i][2] - Places[i][3] - Places[i][4]
 			}
 			else {
-				P1s[i] = Parts.CurrentMaezens[0];
-				P2s[i] = Parts.CurrentMaezens[1];
-				P3s[i] = Parts.CurrentMaezens[2];
-				P4s[i] = Parts.CurrentMaezens[3];
-				P5s[i] = Parts.CurrentMaezens[4];
-
+				Places[i] = Parts.CurrentMaezens;
+				
 				EigenBruttos[i] = Parts.RemainingOwnPart;
             }
 			
@@ -950,14 +932,14 @@ let Parts = {
 		h.push('</thead>');
 
 		h.push('<tbody>');
-        for (let i = MinLevel; i < MaxLevel; i++) {
+		for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
-			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i+1) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(P1s[i]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(P2s[i]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(P3s[i]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(P4s[i]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(P5s[i]) + '</td>');
+			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][0]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][1]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][2]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][3]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][4]) + '</td>');
 			if (HasDoubleCollection) {
 				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
 				h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
