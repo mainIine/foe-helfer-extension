@@ -38,7 +38,6 @@
 	position: sticky;
 	top: 0;
 	background-color: rgba(0,0,0, 0.45);
-	white-space: nowrap;
 }
 
 #GildPlayersBody tr td img {

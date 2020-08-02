@@ -638,7 +638,26 @@ const FoEproxy = (function () {
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
 		LastMapPlayerID = ExtPlayerID;
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
+
+		let FirstEntity = MainParser.CityEntities[data.responseData[0]['cityentity_id']];
+		
+
+		let MainGrid = false;
+
+		if (FirstEntity && FirstEntity['abilities']) {
+			for (let i = 0; i < FirstEntity['abilities'].length; i++) {
+				let Ability = FirstEntity['abilities'][i];
+
+				if (Ability['gridId'] === 'main') {
+					MainGrid = true;
+					break;
+				}
+			}
+		}
+
+		if (!MainGrid) return;
+
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
 
