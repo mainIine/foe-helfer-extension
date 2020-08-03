@@ -257,7 +257,7 @@ let Market = {
 
         h.push('<td><label class="game-cursor"><input class="tradepartnerguild game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerGuild') + '</label></td>');
         h.push('<td><label class="game-cursor"><input class="tradeforequal game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForEqual') + '</label></td>');
-        h.push('<td><label class="game-cursor"><input class="tradefairstock game-cursor" ' + (Market.TradeFairStock ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFairStock') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="tradefairstock game-cursor" ' + (Market.TradeFairStock ? 'checked' : '') + ' type="checkbox" title="' + i18n('Boxes.Market.TradeFairStockTT') + '">' + i18n('Boxes.Market.TradeFairStock') + '</label></td>');
         h.push('</tr>');
 
         h.push('<tr>');
@@ -399,7 +399,7 @@ let Market = {
             return false;
         }
         if (Rating === 1) { // Fair
-            if (ResourceStock[OfferGoodID] < ResourceStock[NeedGoodID]) { //Stock is higher
+            if (ResourceStock[OfferGoodID] + Trade['offer']['value']/2 < ResourceStock[NeedGoodID] - Trade['need']['value']/2) { //Stock is higher
                 if (!Market.TradeFairStock) {
                     return false;
                 }

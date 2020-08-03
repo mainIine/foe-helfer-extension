@@ -91,7 +91,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 // Player Army log
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
 	const r = data.responseData;
-	if (Stats.isVisitingCulturalOutpost) {
+	if (ActiveMap !== 'main') {
 		return;
 	}
 
@@ -112,18 +112,6 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 		date: moment().startOf('hour').toDate(),
 		army
 	});
-});
-
-FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
-	const r = data.responseData;
-	if (r.gridId == 'cultural_outpost') {
-		Stats.isVisitingCulturalOutpost = true;
-	}
-});
-
-FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
-	const r = data.responseData;
-	Stats.isVisitingCulturalOutpost = false;
 });
 
 let Stats = {
