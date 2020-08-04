@@ -656,15 +656,6 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-
-		// ErnteBox beim zurückkehren in die Stadt schliessen
-		$('#ResultBox').fadeToggle(function () {
-			$(this).remove();
-		});
-
-		$('#city-map-overlay').fadeToggle(function () {
-			$(this).remove();
-		});
 	});
 
 	// Besuche anderen Spieler
@@ -1299,35 +1290,36 @@ let MainParser = {
 			return ;
 		}
 
-		if(MainParser.checkNextUpdate('OtherPlayers'))
-		{
-			let player = [];
+		let player = [];
 
-			for(let k in d){
-				if(d.hasOwnProperty(k)){
+		// guild members on website
+		for(let k in d){
+			if(d.hasOwnProperty(k)){
 
-					// wenn die Gilden-ID eine andere ist, abbrechen
-					if(ExtGuildID !== d[k]['clan_id'] || d[k]['clan_id'] === ''){
-						break;
-					}
+				const p = d[k];
 
+				// if is a guild member, update data
+				if(ExtGuildID === p['clan_id']){
 					let info = {
-						avatar: d[k]['avatar'],
-						city_name: d[k]['city_name'],
-						clan_id: d[k]['clan_id'],
-						name: d[k]['name'],
-						player_id: d[k]['player_id'],
-						rank: d[k]['rank'],
-						title: d[k]['title'],
-						won_battles: d[k]['won_battles'],
-						score: d[k]['score'],
-						profile_text: d[k]['profile_text'],
+						avatar: p['avatar'],
+						city_name: p['city_name'],
+						clan_id: p['clan_id'],
+						name: p['name'],
+						player_id: p['player_id'],
+						rank: p['rank'],
+						title: p['title'],
+						won_battles: p['won_battles'],
+						score: p['score'],
+						profile_text: p['profile_text'],
 					};
 
 					player.push(info);
 				}
 			}
+		}
 
+		if(MainParser.checkNextUpdate('OtherPlayers'))
+		{
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
 				MainParser.sendExtMessage({

@@ -79,13 +79,11 @@ let Market = {
 
 
             $('#Market').on('click', '.custom-option', function(){
-                let func = $(this).closest('.custom-options').data('function'),
-					val = $(this).data('value'),
-					txt = $(this).text().trim();
+                let func = $(this).closest('.custom-options').data('function');
 
-                Market[`${func}Select`] = txt;
+                Market[`${func}Select`] = $(this).text().trim();
 
-                Market[func] = parseInt(val);
+                Market[func] = parseInt($(this).data('value'));
                 Market.CalcBody();
             });
 
