@@ -309,13 +309,20 @@ let Market = {
 
             let Trade = Market.Trades[i];
             if (Market.TestFilter(Trade)) {
+                let OfferGoodID = Trade['offer']['good_id'],
+                    NeedGoodID = Trade['need']['good_id'],
+                    OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],
+                    NeedEra = Technologies.Eras[GoodsData[NeedGoodID]['era']],
+                    OfferTT = HTML.i18nReplacer(i18n('Boxes.Market.OfferTT'), { 'era': i18n('Eras.' + OfferEra), 'stock': HTML.Format(ResourceStock[OfferGoodID]) });
+                    NeedTT = HTML.i18nReplacer(i18n('Boxes.Market.NeedTT'), { 'era': i18n('Eras.' + NeedEra), 'stock': HTML.Format(ResourceStock[NeedGoodID]) });
+
                 h.push('<tr>');
                 h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['offer']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td>' + GoodsData[Trade['offer']['good_id']]['name'] + '</td>');
-                h.push('<td>' + Trade['offer']['value'] + '</td>');
-                h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['need']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td>' + GoodsData[Trade['need']['good_id']]['name'] + '</td>');
-                h.push('<td>' + Trade['need']['value'] + '</td>');
+                h.push('<td><strong class="td-tooltip" title="' + OfferTT + '">' + GoodsData[Trade['offer']['good_id']]['name'] + '</strong></td>');
+                h.push('<td><strong class="td-tooltip" title="' + OfferTT + '">' + Trade['offer']['value'] + '</strong></td>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[Trade['need']['good_id']]['id'] +'"></span></td>'); 
+                h.push('<td><strong class="td-tooltip" title="' + NeedTT + '">' + GoodsData[Trade['need']['good_id']]['name'] + '</strong></td>');
+                h.push('<td><strong class="td-tooltip" title="' + NeedTT + '">' + Trade['need']['value'] + '</strong></td>');
                 h.push('<td class="text-center">' + HTML.Format(Math.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
                 h.push('<td class="text-center">' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
@@ -333,7 +340,12 @@ let Market = {
 
         $('#MarketBody').html(h.join('')).promise().done(function(){
 			HTML.Dropdown();
-		});
+        });
+
+        $('.td-tooltip').tooltip({
+            html: true,
+            container: '#Market'
+        });
 
     },
 
