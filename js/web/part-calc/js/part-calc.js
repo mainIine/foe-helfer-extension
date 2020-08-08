@@ -17,25 +17,27 @@ let Parts = {
 	CityMapEntity: undefined,
 	Rankings: undefined,
 	IsPreviousLevel: false,
+	IsNextLevel: false,
+	Level : undefined,
 
 	CurrentBuildingID: false,
-    CurrentBuildingPercents: [90, 90, 90, 90, 90],
-    Exts: [0, 0, 0, 0, 0],
+	CurrentBuildingPercents: [90, 90, 90, 90, 90],
+	Exts: [0, 0, 0, 0, 0],
 	SaveCopy: [],
 	PlayInfoSound: null,
 
 	CurrentMaezens: [],
-	RemainingOwnPart : null,
+	RemainingOwnPart: null,
 
 	PowerLevelingMaxLevel: 999999,
 
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
 	 */
-	buildBox: ()=> {
+	buildBox: () => {
 
 		// Gibt es schon? Raus...
-		if( $('#OwnPartBox').length > 0 ){
+		if ($('#OwnPartBox').length > 0) {
 			HTML.CloseOpenBox('OwnPartBox');
 
 			return;
@@ -55,7 +57,7 @@ let Parts = {
 		let perc = localStorage.getItem('CurrentBuildingPercentArray');
 
 		// Array zurück holen
-		if(perc !== null){
+		if (perc !== null) {
 			Parts.CurrentBuildingPercents = JSON.parse(perc);
 		}
 
@@ -77,7 +79,7 @@ let Parts = {
 		Parts.Show();
 
 		// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
-		$('#OwnPartBox').on('blur', '.arc-percent-input', function(){
+		$('#OwnPartBox').on('blur', '.arc-percent-input', function () {
 			let aprc = [];
 
 			$('.arc-percent-input').each(function () {
@@ -87,25 +89,24 @@ let Parts = {
 			});
 
 			Parts.CurrentBuildingPercents = aprc;
-            localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(aprc));
+			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(aprc));
 
-            Parts.collectExternals();
+			Parts.collectExternals();
 		});
 
 
 		// Es wird ein externer Platz eingetragen
-		$('#OwnPartBox').on('blur', '.ext-part-input', function(){
+		$('#OwnPartBox').on('blur', '.ext-part-input', function () {
 			Parts.collectExternals();
 		});
 
 
 		// eine neuer globaler Arche-Satz wird gewählt
-		$('#OwnPartBox').on('click', '.btn-set-arc', function(){
+		$('#OwnPartBox').on('click', '.btn-set-arc', function () {
 			let ArkBonus = parseFloat($(this).data('value'));
 			if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
 
-			for(let i = 0; i < 5; i++)
-			{
+			for (let i = 0; i < 5; i++) {
 				Parts.CurrentBuildingPercents[i] = ArkBonus;
 				$('.arc-percent-input').eq(i).val(ArkBonus);
 			}
@@ -113,6 +114,13 @@ let Parts = {
 			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
 
 			Parts.collectExternals();
+		});
+
+		// Next/Previous level
+		$('#OwnPartBox').on('click', '.btn-set-level', function () {
+			let Level = parseFloat($(this).data('value'));
+			if (Level !== Level) Level = 0; //NaN => 0
+			Parts.Show(Level);
 		});
 
 		$('#OwnPartBox').on('click', '#PartsTone', function () {
@@ -139,12 +147,12 @@ let Parts = {
 	/**
 	 * Externe Plätze einsammeln und ggf. übergeben
 	 */
-	collectExternals: ()=> {
-        $('.ext-part-input').each(function(i){
+	collectExternals: () => {
+		$('.ext-part-input').each(function (i) {
 
 			let v = $(this).val();
 
-            if (v === '') {
+			if (v === '') {
 				$(this).val(0);
 				v = 0;
 			}
@@ -160,92 +168,121 @@ let Parts = {
 	 * Sichtbarer Teil
 	 *
 	 */
-	Show: ()=> {
+	Show: (NextLevel) => {
+		if (Parts.CityMapEntity['level'] === NextLevel) {		
+			NextLevel = 0;
+		}
+		
+		let cityentity_id = Parts.CityMapEntity['cityentity_id'];
+		let CityEntity = MainParser.CityEntities[cityentity_id];
+		let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
+		let Era = Technologies.Eras[EraName];
 
-        let cityentity_id = Parts.CityMapEntity['cityentity_id'],
-			Level = Parts.CityMapEntity['level'],
-            arcs = [],
-            FPRewards = [], // FP Maezenboni pro Platz (0 basiertes Array)
-            MedalRewards = [], // Medaillen Maezenboni pro Platz (0 basiertes Array)
-            BPRewards = [], // Blaupause Maezenboni pro Platz (0 basiertes Array)
-            h = [],
-            EigenStart = 0, // Bereits eingezahlter Eigenanteil (wird ausgelesen)
-            Eigens = [], // Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
-            Dangers = [0, 0, 0, 0, 0], // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
-            Maezens = [], // Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
-            LeveltLG = [false, false, false, false, false],
-			Total = parseInt(Parts.CityMapEntity['state']['forge_points_for_level_up']), // Gesamt FP des aktuellen Levels
-            MaezenTotal = 0, // Summe aller Fremdeinzahlungen
-            EigenTotal, // Summe aller Eigenanteile
-            ExtTotal = 0, // Summe aller Externen Einzahlungen
-            EigenCounter = 0, // Eigenanteile Counter während Tabellenerstellung
-            Rest = Total, // Verbleibende FP: Counter während Berechnung
-            NonExts = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
+		let Total; // Gesamt FP des aktuellen Levels
+
+		if (NextLevel) {		
+			Parts.IsPreviousLevel = false;
+			Parts.IsNextLevel = true;
+			Parts.Level = NextLevel;
+			Total = GreatBuildings.GetBruttoCosts(cityentity_id, NextLevel);
+		}
+		else {
+			Parts.IsNextLevel = false;
+			Parts.Level = Parts.CityMapEntity['level'];
+			Total = parseInt(Parts.CityMapEntity['state']['forge_points_for_level_up']);
+		}
+
+		let arcs = [],
+			FPRewards = [], // FP Maezenboni pro Platz (0 basiertes Array)
+			MedalRewards = [], // Medaillen Maezenboni pro Platz (0 basiertes Array)
+			BPRewards = [], // Blaupause Maezenboni pro Platz (0 basiertes Array)
+			h = [],
+			EigenStart = 0, // Bereits eingezahlter Eigenanteil (wird ausgelesen)
+			Eigens = [], // Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
+			Dangers = [0, 0, 0, 0, 0], // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
+			Maezens = [], // Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
+			LeveltLG = [false, false, false, false, false],
+			MaezenTotal = 0, // Summe aller Fremdeinzahlungen
+			EigenTotal, // Summe aller Eigenanteile
+			ExtTotal = 0, // Summe aller Externen Einzahlungen
+			EigenCounter = 0, // Eigenanteile Counter während Tabellenerstellung
+			Rest = Total, // Verbleibende FP: Counter während Berechnung
+			NonExts = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
 
 
-        Parts.CurrentBuildingID = cityentity_id;
-        if (Parts.IsPreviousLevel) {
-            Total = 0;
-            for (let i = 0; i < Parts.Rankings.length; i++) {
+		Parts.CurrentBuildingID = cityentity_id;
+		if (Parts.IsPreviousLevel) {
+			Total = 0;
+			for (let i = 0; i < Parts.Rankings.length; i++) {
 				let ToAdd = Parts.Rankings[i]['forge_points'];
-                if (ToAdd !== undefined) Total += ToAdd;
-            }
-            Rest = Total;
-        }
+				if (ToAdd !== undefined) Total += ToAdd;
+			}
+			Rest = Total;
+		}
 
-        if (Level === undefined) {
-            Level = 0;
-        }
+		if (Parts.Level === undefined) {
+			Parts.Level = 0;
+		}
 
-        for (let i = 0; i < 5; i++) {
-            arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
-        }
+		for (let i = 0; i < 5; i++) {
+			arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
+		}
 
-        // Wenn in Rankings nichts mehr steht, dann abbrechen
-		for (let i = 0; i < Parts.Rankings.length; i++) {
-			if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
-				EigenStart = Parts.Rankings[i]['forge_points'];
-                Rest -= EigenStart;
-                continue;
-            }
-
-			let Place = Parts.Rankings[i]['rank'] - 1,
-				MedalCount = 0;
-
-			Maezens[Place] = Parts.Rankings[i]['forge_points'];
-            if (Maezens[Place] === undefined) Maezens[Place] = 0;
-
-			if (Place < 5) {
-				if (Parts.Rankings[i]['reward'] !== undefined) {
-					let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
-					FPRewards[Place] = Math.round(FPCount * arcs[Place]);
-					if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
-
-					// Medallien berechnen
-					MedalCount = (Parts.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['resources']['medals']) : 0);
-					MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
-					if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
-
-					// Blaupausen berechnen
-					let BlueprintCount = (Parts.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['blueprints']) : 0);
-					BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
-					if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
+		// Wenn in Rankings nichts mehr steht, dann abbrechen
+		if (! Parts.IsNextLevel) {
+			for (let i = 0; i < Parts.Rankings.length; i++) {
+				if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
+					EigenStart = Parts.Rankings[i]['forge_points'];
+					Rest -= EigenStart;
+					continue;
 				}
-				else {
-					FPRewards[Place] = 0;
-					MedalRewards[Place] = 0;
-					BPRewards[Place] = 0;
-				}
-            }
-        }
 
-        //Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
-        for (let i = Maezens.length; i < 5; i++) {
-			Maezens[i] = 0;
-			FPRewards[i] = 0;
-			MedalRewards[i] = 0;
-			BPRewards[i] = 0;
-        }
+				let Place = Parts.Rankings[i]['rank'] - 1,
+					MedalCount = 0;
+
+				Maezens[Place] = Parts.Rankings[i]['forge_points'];
+				if (Maezens[Place] === undefined) Maezens[Place] = 0;
+
+				if (Place < 5) {
+					if (Parts.Rankings[i]['reward'] !== undefined) {
+						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
+						FPRewards[Place] = Math.round(FPCount * arcs[Place]);
+						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
+
+						// Medallien berechnen
+						MedalCount = (Parts.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['resources']['medals']) : 0);
+						MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
+						if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
+
+						// Blaupausen berechnen
+						let BlueprintCount = (Parts.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['blueprints']) : 0);
+						BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
+						if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
+					}
+					else {
+						FPRewards[Place] = 0;
+						MedalRewards[Place] = 0;
+						BPRewards[Place] = 0;
+					}
+				}
+			}
+
+			//Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
+			for (let i = Maezens.length; i < 5; i++) {
+				Maezens[i] = 0;
+				FPRewards[i] = 0;
+				MedalRewards[i] = 0;
+				BPRewards[i] = 0;
+			}
+		}
+		else {
+			let P1 = GreatBuildings.Rewards[Era][Parts.Level];
+
+			Maezens = [0, 0, 0, 0, 0];
+			FPRewards = GreatBuildings.GetMaezen(P1, Parts.CurrentBuildingPercents)
+			MedalRewards = [0, 0, 0, 0, 0];
+			BPRewards = [0, 0, 0, 0, 0];
+		}
 
 		for (let i = 0; i < Parts.Exts.length; i++) {
 			if (Parts.Exts[i] > 0) {
@@ -329,8 +366,22 @@ let Parts = {
         h.push('<div class="dark-bg">');
         h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
-		if(PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
-		h.push((Parts.IsPreviousLevel ? i18n('Boxes.OwnpartCalculator.OldLevel') : i18n('Boxes.OwnpartCalculator.Step') + ' ' + Level + ' &rarr; ' + (parseInt(Level) + 1)) + '</p>');
+		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
+		if (Parts.IsPreviousLevel) {
+			h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+		}
+		else {
+			if (Parts.IsNextLevel) {
+				h.push('<button class="btn btn-default btn-set-level" data-value="' + (Parts.Level - 1) + '">&lt;</button> ');
+			}
+			h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + Parts.Level + ' &rarr; ' + (parseInt(Parts.Level) + 1));
+			if (GreatBuildings.Rewards[Era][Parts.Level + 1]) {
+				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
+			}
+			h.push('</p>');
+		}
+		
+
         h.push('</td>');
         h.push('<td class="text-right">');
 
@@ -474,7 +525,7 @@ let Parts = {
         Parts.BuildBackgroundBody(Maezens, Eigens, NonExts);
 
         // Wieviel fehlt noch bis zum leveln?
-        if (Parts.IsPreviousLevel === false) {
+		if (Parts.IsPreviousLevel === false && !Parts.IsNextLevel) {
 			let rest = (Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points']);
             h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
             h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
@@ -500,11 +551,10 @@ let Parts = {
 	 * @param Eigens
 	 * @param NonExts
 	 */
-	BuildBackgroundBody: (Maezens, Eigens, NonExts)=>{
-		let b = [],
+	BuildBackgroundBody: (Maezens, Eigens, NonExts) => {
+		let h = [],
 			PlayerName,
-			s = localStorage.getItem('DropdownScheme'),
-			bn = localStorage.getItem(Parts.CurrentBuildingID);
+			BuildingName = localStorage.getItem(Parts.CurrentBuildingID);
 
 		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) { //Eigenes LG
 			let CopyName = localStorage.getItem(ExtPlayerID + '_PlayerCopyName');
@@ -520,44 +570,46 @@ let Parts = {
 			PlayerName = PlayerDict[Parts.CityMapEntity['player_id']]['PlayerName'];
         }
 
-		b.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
+		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
-		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + PlayerName + '"></div>');
-		b.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (bn !== null ? bn : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
+		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + PlayerName + '"></div>');
+		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
 
-		let drp = '<div><span>' + i18n('Boxes.OwnpartCalculator.Scheme') + ':</span><select id="chain-scheme">' +
-			'<option value="" disabled>-- ' + i18n('Boxes.OwnpartCalculator.OutputScheme') + ' --</option>' +
-			'<option value="1"' + (s === '1' ? ' selected' : '') + '>Name LG P5 P4 P3 P2 P1</option>' +
-			'<option value="2"' + (s === '2' ? ' selected' : '') + '>Name LG P1 P2 P3 P4 P5</option>' +
-			'<option value="3"' + (s === '3' ? ' selected' : '') + '>Name LG P5/4/3/2/1</option>' +
-			'<option value="4"' + (s === '4' ? ' selected' : '') + '>Name LG P1/2/3/4/5</option>' +
-            '<option value="5"' + (s === '5' ? ' selected' : (s === null ? ' selected' : '')) + '>Name LG P5(FP) P4(FP) P3(FP) P2(FP) P1(FP)</option>' +
-            '<option value="6"' + (s === '6' ? ' selected' : '' ) + '>Name LG P1(FP) P2(FP) P3(FP) P4(FP) P5(FP)</option>' +
-            '</select></div>';
+		let Options = '<div class="checkboxes">' +
+			'<label class="form-check-label game-cursor" for="options-name"><input type="checkbox" class="form-check-input" id="options-auto" data-options="name" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsName') + '</label>' +
 
-        b.push(drp);
+			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-p2" data-options="gb" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</label>' +
 
-        let cb = '<div class="checkboxes">' +
-            '<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" checked> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-p3" data-options="level" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</label>' +
 
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input chain-place" id="chain-p1" data-place="1"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
+			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-p4" data-options="fp" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</label>' +
 
-			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input chain-place" id="chain-p2" data-place="2"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
+			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</label>' +
 
-			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input chain-place" id="chain-p3" data-place="3"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
-
-			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input chain-place" id="chain-p4" data-place="4"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
-
-			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input chain-place" id="chain-p5" data-place="5"> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
-
-			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input chain-place" id="chain-all" data-place="all"> ' + i18n('Boxes.OwnpartCalculator.All') + '</label>' +
-
-			'<label class="form-check-label game-cursor" for="chain-level"><input type="checkbox" class="form-check-input chain-place" id="chain-level" data-place="level"> ' + i18n('Boxes.OwnpartCalculator.Levels') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level"> ' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</label>' +
 			'</div>';
 
-		b.push(cb);
+		h.push(Options)
 
-		b.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
+        let cb = '<div class="checkboxes">' +
+			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
+
+			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
+
+			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
+
+			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
+
+			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
+
+			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
+
+			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.All') + '</label>' +
+			'</div>';
+
+		h.push(cb);
+
+		h.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
 				'<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ' +
 				'<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>' +
 			'</div>');
@@ -575,7 +627,7 @@ let Parts = {
 
 		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
-			$('.OwnPartBoxBackgroundBody').html( b.join('') );
+			$('.OwnPartBoxBackgroundBody').html( h.join('') );
 
 			// und raus...
 			return;
@@ -583,7 +635,7 @@ let Parts = {
 
 		// Container zusammen setzen
 		let div = $('<div />').addClass('OwnPartBoxBackground'),
-			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(b.join('')) );
+			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(h.join('')) );
 
 		$('#OwnPartBox').append( div.append(a) );
 
@@ -600,44 +652,36 @@ let Parts = {
 		});
 
 		$('#OwnPartBox').on('click', '.form-check-input', function(){
-			let Name = $(this).data('place');
+			let PlaceName = $(this).data('place');
 
-			if (Name === 'auto') { //auto: all und P1-5 deaktivieren, auto aktivieren
-				$('#chain-auto').prop('checked', true);
-				$('#chain-all').prop('checked', false);
+			if (PlaceName) {
+				if (PlaceName === 'auto') { //auto: all und P1-5 deaktivieren, auto aktivieren
+					$('#chain-auto').prop('checked', true);
+					$('#chain-all').prop('checked', false);
 
-				for (let i = 0; i < 5; i++) {
-					$('#chain-p' + (i + 1)).prop('checked', false);
-                }
-			}
-			else if (Name === 'all') { //all: auto und P1-5 deaktivieren, all aktivieren
-				$('#chain-auto').prop('checked', false);
-				$('#chain-all').prop('checked', true);
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', false);
+					}
+				}
+				else if (PlaceName === 'all') { //all: auto und P1-5 deaktivieren, all aktivieren
+					$('#chain-auto').prop('checked', false);
+					$('#chain-all').prop('checked', true);
 
-				for (let i = 0; i < 5; i++) {
-					$('#chain-p' + (i + 1)).prop('checked', true);
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', true);
+					}
+				}
+				else { //P1-5: auto und all deaktivieren
+					$('#chain-auto').prop('checked', false);
+					$('#chain-all').prop('checked', false);
 				}
 			}
-			else if (Name === 'level') { 
-				; //Do nothing
-			}
-			else { //P1-5: auto und all deaktivieren
-				$('#chain-auto').prop('checked', false);
-				$('#chain-all').prop('checked', false);
+
+			let OptionsName = $(this).data('options');
+
+			if (OptionsName) {
+				;
             }
-
-			/*
-			$('.form-check-input').prop('checked', false);
-
-			$('.form-check-input').each(function(){
-				let $this = $(this),
-					val = $this.data('place');
-
-				if( Number.isInteger(val) && val > 0 ){
-					$this.prop('checked', true);
-				}
-			});
-			*/
 		});
 	},
 
@@ -655,16 +699,12 @@ let Parts = {
 	CopyFunction: (Maezens, Eigens, NonExts, Event, Action)=> {
 
 		let pn = $('#player-name').val(),
-			bn = $('#build-name').val(),
-			cs = $('#chain-scheme').val();
+			bn = $('#build-name').val();
 
 		if (Parts.CityMapEntity['player_id'] === ExtPlayerID){
 			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', pn);
 			localStorage.setItem(Parts.CurrentBuildingID, bn);
 		}
-
-		// Schema speichern
-		localStorage.setItem('DropdownScheme', cs);
 
 		$(Event).addClass('btn-green');
 
