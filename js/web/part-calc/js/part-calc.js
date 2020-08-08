@@ -18,7 +18,10 @@ let Parts = {
 	Rankings: undefined,
 	IsPreviousLevel: false,
 	IsNextLevel: false,
-	Level : undefined,
+
+	Level: undefined,
+	SafePlaces: undefined,
+	Maezens: [],
 
 	CurrentBuildingID: false,
 	CurrentBuildingPercents: [90, 90, 90, 90, 90],
@@ -200,7 +203,6 @@ let Parts = {
 			EigenStart = 0, // Bereits eingezahlter Eigenanteil (wird ausgelesen)
 			Eigens = [], // Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
 			Dangers = [0, 0, 0, 0, 0], // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
-			Maezens = [], // Feld aller Fremdeinzahlungen pro Platz (0 basiertes Array)
 			LeveltLG = [false, false, false, false, false],
 			MaezenTotal = 0, // Summe aller Fremdeinzahlungen
 			EigenTotal, // Summe aller Eigenanteile
@@ -209,6 +211,7 @@ let Parts = {
 			Rest = Total, // Verbleibende FP: Counter während Berechnung
 			NonExts = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
 
+		Parts.Maezens = [];
 
 		Parts.CurrentBuildingID = cityentity_id;
 		if (Parts.IsPreviousLevel) {
@@ -240,8 +243,8 @@ let Parts = {
 				let Place = Parts.Rankings[i]['rank'] - 1,
 					MedalCount = 0;
 
-				Maezens[Place] = Parts.Rankings[i]['forge_points'];
-				if (Maezens[Place] === undefined) Maezens[Place] = 0;
+				Parts.Maezens[Place] = Parts.Rankings[i]['forge_points'];
+				if (Parts.Maezens[Place] === undefined) Parts.Maezens[Place] = 0;
 
 				if (Place < 5) {
 					if (Parts.Rankings[i]['reward'] !== undefined) {
@@ -268,8 +271,8 @@ let Parts = {
 			}
 
 			//Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
-			for (let i = Maezens.length; i < 5; i++) {
-				Maezens[i] = 0;
+			for (let i = Parts.Maezens.length; i < 5; i++) {
+				Parts.Maezens[i] = 0;
 				FPRewards[i] = 0;
 				MedalRewards[i] = 0;
 				BPRewards[i] = 0;
@@ -278,7 +281,7 @@ let Parts = {
 		else {
 			let P1 = GreatBuildings.Rewards[Era][Parts.Level];
 
-			Maezens = [0, 0, 0, 0, 0];
+			Parts.Maezens = [0, 0, 0, 0, 0];
 			FPRewards = GreatBuildings.GetMaezen(P1, Parts.CurrentBuildingPercents)
 			MedalRewards = [0, 0, 0, 0, 0];
 			BPRewards = [0, 0, 0, 0, 0];
@@ -286,52 +289,52 @@ let Parts = {
 
 		for (let i = 0; i < Parts.Exts.length; i++) {
 			if (Parts.Exts[i] > 0) {
-				Maezens[Maezens.length] = Parts.Exts[i];
+				Parts.Maezens[Parts.aezens.length] = Parts.Exts[i];
             }
         }
 
-        Maezens.sort(function (a, b) { return b - a });
+		Parts.Maezens.sort(function (a, b) { return b - a });
 
-        for (let i = 0; i < Maezens.length; i++) {
-            if (Maezens[i] === 0) {
-                Maezens.length = Math.max(i, 5);
+		for (let i = 0; i < Parts.Maezens.length; i++) {
+			if(Parts.Maezens[i] === 0) {
+				Parts.Maezens.length = Math.max(i, 5);
                 break;
             }
 
-            ExtTotal += Maezens[i];
+			ExtTotal += Parts.Maezens[i];
         }
 
         Rest -= ExtTotal;
 
         for (let i = 0; i < 5; i++) {
-            if (FPRewards[i] <= Maezens[i] || Rest <= Maezens[i]) {
-				Eigens[i] = Math.ceil(Rest + (Maezens[i + 1] !== undefined ? Maezens[i + 1] : 0) - Maezens[i]);
+			if (FPRewards[i] <= Parts.Maezens[i] || Rest <= Parts.Maezens[i]) {
+				Eigens[i] = Math.ceil(Rest + (Parts.Maezens[i + 1] !== undefined ? Parts.Maezens[i + 1] : 0) - Parts.Maezens[i]);
 				Eigens[i] = Math.max(Eigens[i], 0);
 				Rest -= Eigens[i];
                 continue;
             }
 
-            Eigens[i] = Math.ceil(Rest + Maezens[i] - 2 * FPRewards[i]);
+			Eigens[i] = Math.ceil(Rest + Parts.Maezens[i] - 2 * FPRewards[i]);
             if (Eigens[i] < 0) {
                 Dangers[i] = Math.floor(0 - Eigens[i]/2);
                 Eigens[i] = 0;
             }
 
-            for (let j = Maezens.length - 1; j >= i; j--) {
-                if (Maezens[j] > 0) {
-                    Maezens[j + 1] = Maezens[j];
+			for (let j = Parts.Maezens.length - 1; j >= i; j--) {
+				if (Parts.Maezens[j] > 0) {
+					Parts.Maezens[j + 1] = Parts.Maezens[j];
                 }
             }
-            Maezens[i] = FPRewards[i];
-            if (Maezens[i] >= Rest) {
+			Parts.Maezens[i] = FPRewards[i];
+			if (Parts.Maezens[i] >= Rest) {
                 LeveltLG[i] = true;
                 if (Dangers[i] > 0)
-                    Dangers[i] -= Maezens[i] - Rest;
-                Maezens[i] = Rest;
+					Dangers[i] -= Parts.Maezens[i] - Rest;
+				Parts.Maezens[i] = Rest;
             }
             NonExts[i] = true;
-            MaezenTotal += Maezens[i];
-            Rest -= Eigens[i] + Maezens[i];
+			MaezenTotal += Parts.Maezens[i];
+			Rest -= Eigens[i] + Parts.Maezens[i];
         }
 
         if(Rest>0) Eigens[5] = Rest;
@@ -341,13 +344,13 @@ let Parts = {
             EigenTotal += Eigens[i];
         }
 
-        for (let i = FPRewards.length; i < Maezens; i++)
+		for (let i = FPRewards.length; i < Parts.Maezens; i++)
             FPRewards[i] = 0;
 
-        for (let i = MedalRewards.length; i < Maezens; i++)
+		for (let i = MedalRewards.length; i < Parts.Maezens; i++)
             MedalRewards[i] = 0;
 
-        for (let i = BPRewards.length; i < Maezens; i++)
+		for (let i = BPRewards.length; i < Parts.Maezens; i++)
 			BPRewards[i] = 0;
 
 		let PlayerName = undefined,
@@ -358,13 +361,22 @@ let Parts = {
 		}
 
 		for (let i = 0; i < 5; i++) {
-			Parts.CurrentMaezens[i] = Maezens[i] | 0;
+			Parts.CurrentMaezens[i] = Parts.Maezens[i] | 0;
 		}
 		Parts.RemainingOwnPart = EigenTotal - EigenStart;
+
+		Parts.SafePlaces = [];
+		for (let i = 0; i < 5; i++) {
+			if (Eigens[i] > 0) break;
+				
+			if (NonExts[i]) {
+				Parts.SafePlaces.push(i);
+			}
+		}
 				
         // Info-Block
         h.push('<div class="dark-bg">');
-        h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
+        h.push('<table style="width: 1&"><tr><td style="width: 65%" class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
 		if (Parts.IsPreviousLevel) {
@@ -457,7 +469,7 @@ let Parts = {
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
             if (NonExts[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Maezens[i] > 0 ? HTML.Format(Maezens[i]) : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
                 if (LeveltLG[i]) {
                     h.push('<td class="text-center"><strong class="error">levelt</strong></td>');
                 }
@@ -470,10 +482,10 @@ let Parts = {
             }
             else {
                 h.push('<td class="text-center"><strong>-</strong></td>');
-				let MaezenString = Maezens[i] > 0 ? HTML.Format(Maezens[i]) : '-';
-                let MaezenDiff = Maezens[i] - FPRewards[i];
+				let MaezenString = Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-';
+				let MaezenDiff = Parts.Maezens[i] - FPRewards[i];
                 let MaezenDiffString = '';
-                if (Maezens[i] > 0) {
+				if (Parts.Maezens[i] > 0) {
                     if (MaezenDiff > 0) {
 						MaezenDiffString = ' <strong class="success"><small>(+' + HTML.Format(MaezenDiff) + ')</small></strong>';
                     }
@@ -494,14 +506,14 @@ let Parts = {
         }
 
         let MaezenRest = 0;
-        for (let i = 5; i < Maezens.length; i++) {
-            MaezenRest += Maezens[i];
+		for (let i = 5; i < Parts.Maezens.length; i++) {
+			MaezenRest += Parts.Maezens[i];
         }
 
         //Bestehende Einzahlungen, die aus den P5 raus geschoben wurden
         if (MaezenRest > 0) {
             h.push('<tr>');
-            h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Maezens.length > 6 ? ('-' + Maezens.length) : '') + '</td>');
+			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Parts.Maezens.length > 6 ? ('-' + Parts.Maezens.length) : '') + '</td>');
             h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + HTML.Format(MaezenRest) + '</strong></td>');
             h.push('<td colspan="4"></td>');
@@ -522,7 +534,7 @@ let Parts = {
         h.push('<tbody>');
         h.push('</table>');
 
-        Parts.BuildBackgroundBody(Maezens, Eigens, NonExts);
+		Parts.BuildBackgroundBody(Parts.Maezens, Eigens, NonExts);
 
         // Wieviel fehlt noch bis zum leveln?
 		if (Parts.IsPreviousLevel === false && !Parts.IsNextLevel) {
@@ -547,11 +559,8 @@ let Parts = {
 	/**
 	 * Daten für die Kopierbuttons
 	 *
-	 * @param Maezens
-	 * @param Eigens
-	 * @param NonExts
 	 */
-	BuildBackgroundBody: (Maezens, Eigens, NonExts) => {
+	BuildBackgroundBody: () => {
 		let h = [],
 			PlayerName,
 			BuildingName = localStorage.getItem(Parts.CurrentBuildingID);
@@ -575,40 +584,38 @@ let Parts = {
 		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + PlayerName + '"></div>');
 		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
 
+		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong></span></p>');
+
 		let Options = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="options-name"><input type="checkbox" class="form-check-input" id="options-auto" data-options="name" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</label>' +
-
-			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-p2" data-options="gb" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</label>' +
-
-			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-p3" data-options="level" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</label>' +
-
-			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-p4" data-options="fp" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</label>' +
-
+			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</label>' +
 			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</label>' +
-
-			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level"> ' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup"> ' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</label>' +
 			'</div>';
 
 		h.push(Options)
 
+		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong></span></p>');
+
         let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
-
 			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
-
 			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
-
 			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
-
 			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
-
 			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
-
+			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
 			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.All') + '</label>' +
 			'</div>';
 
 		h.push(cb);
 
+		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong></span></p>');
+
+		let CopyString = Parts.GetCopyString();
+		h.push('<input type="text" id="copystring" value="' + CopyString + '">');
+		
 		h.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
 				'<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ' +
 				'<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>' +
@@ -617,12 +624,12 @@ let Parts = {
 		// ---------------------------------------------------------------------------------------------
 		$('#OwnPartBox').off("click",'.button-own');
 		$('#OwnPartBox').on('click', '.button-own', function(){
-			let copyParts = Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'copy');
+			let copyParts = Parts.CopyFunction($(this), 'copy');
 			helper.str.copyToClipboard(copyParts);
 		});
 		$('#OwnPartBox').off("click",'.button-save-own');
 		$('#OwnPartBox').on('click', '.button-save-own', function(){
-			Parts.CopyFunction(Maezens, Eigens, NonExts, $(this), 'save');
+			Parts.CopyFunction($(this), 'save');
 		});
 
 		// Box wurde schon in den DOM gelegt?
@@ -680,30 +687,81 @@ let Parts = {
 			let OptionsName = $(this).data('options');
 
 			if (OptionsName) {
-				;
-            }
+				//Todo: Save Options
+			}
+
+			let CopyString = Parts.GetCopyString();
+			$('#copystring').val(CopyString);
 		});
 	},
+
+
+	GetCopyString: () => {
+		let PlayerName = $('#player-name').val(),
+			BuildingName = $('#build-name').val();
+
+		let IncludePlayerName = $('#options-player').prop('checked'),
+			IncludeBuildingName = $('#options-gb').prop('checked'),
+			IncludeLevel = $('#options-level').prop('checked'),
+			IncludeFP = $('#options-fp').prop('checked'),
+			Descending = $('#options-descending').prop('checked'),
+			LevelUp = $('#options-levelup').prop('checked');
+
+		let PlaceAuto = $('#chain-auto').prop('checked');
+		let PlaceAll = $('#chain-all').prop('checked');
+		let Ps = [$('#chain-p1').prop('checked'), $('#chain-p2').prop('checked'), $('#chain-p3').prop('checked'), $('#chain-p4').prop('checked'), $('#chain-p5').prop('checked')];
+
+		let Places = [];
+		if (PlaceAuto) {
+			Places.push(Parts.SafePlaces)
+		}
+		else if (PlaceAll) {
+			for (let i = 0; i < 5; i++) {
+				Places.push(i);
+			}
+		}
+		else {
+			for (let i = 0; i < 5; i++) {
+				if (Ps[i]) Places.push(i);
+            }
+		}
+
+		if (Descending) Places.reverse();
+
+		let Ret = [];
+		if (IncludePlayerName) Ret.push(PlayerName);
+		if (IncludeBuildingName) Ret.push(BuildingName);
+		if (IncludeLevel) Ret.push(Parts.Level + '->' + (Parts.Level + 1));
+		for (let i = 0; i < Places.length; i++) {
+			let Place = Places[i];
+
+			if (IncludeFP) {
+				Ret.push('P' + (Place + 1) + '(' + Parts.Maezens[Place] + ')');
+			}
+			else {
+				Ret.push('P' + (Place + 1));
+            }
+        }
+		if (LevelUp) Ret.push(i18n('Boxes.OwnPart.OptionsLevelUp'));
+
+		return Ret.join(' ');
+    },
 
 
 	/**
 	 * Ausgeben oder Merken
 	 *
-	 * @param Maezens
-	 * @param Eigens
-	 * @param NonExts
 	 * @param Event
 	 * @param Action
 	 * @returns {string}
 	 */
-	CopyFunction: (Maezens, Eigens, NonExts, Event, Action)=> {
-
-		let pn = $('#player-name').val(),
-			bn = $('#build-name').val();
+	CopyFunction: (Event, Action)=> {
+		let PlayerName = $('#player-name').val(),
+			BuildingName = $('#build-name').val();
 
 		if (Parts.CityMapEntity['player_id'] === ExtPlayerID){
-			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', pn);
-			localStorage.setItem(Parts.CurrentBuildingID, bn);
+			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', PlayerName);
+			localStorage.setItem(Parts.CurrentBuildingID, BuildingName);
 		}
 
 		$(Event).addClass('btn-green');
@@ -737,10 +795,10 @@ let Parts = {
 		let parts = [];
 
 		// Spieler Name
-		parts.push(pn);
+		parts.push(PlayerName);
 
 		// LG Name
-		parts.push(bn);
+		parts.push(BuildingName);
 
 		if( $('#chain-level').prop('checked') ){
 			parts.push('Bitte Leveln');
@@ -837,7 +895,6 @@ let Parts = {
 	 */
 	BackGroundBoxAnimation: (show)=> {
 		let $box = $('#OwnPartBox');
-
 
 		if(show === true){
 			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
