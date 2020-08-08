@@ -576,7 +576,7 @@ let Parts = {
 		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
 
 		let Options = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="options-name"><input type="checkbox" class="form-check-input" id="options-auto" data-options="name" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsName') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-name"><input type="checkbox" class="form-check-input" id="options-auto" data-options="name" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</label>' +
 
 			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-p2" data-options="gb" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</label>' +
 
