@@ -779,9 +779,9 @@ let Parts = {
 			}
 		}
 		else {
-			if (PlaceAuto) Ret.push(i18n('Boxes.OwnPart.NoPlaceSafe'));
+			if (PlaceAuto) Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
         }
-		if (LevelUp) Ret.push(i18n('Boxes.OwnPart.OptionsLevelUp'));
+		if (LevelUp) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
 
 		let CopyString = Ret.join(' ');
 		$('#copystring').val(CopyString);
