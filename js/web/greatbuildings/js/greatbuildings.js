@@ -53,6 +53,10 @@ let GreatBuildings =
     RewardPerDay: 0,
     FPPerTile: 0.2,
     HideNewGBs: false,
+
+    GreatBuildingEntityCache: null,
+    FPRewards: 0,
+    EventDict: {},
     
 	/**
 	 * Zeigt die Box an oder schließt sie
@@ -71,6 +75,8 @@ let GreatBuildings =
                     GreatBuildings.FPGreatBuildings[i]['GoodCosts'] = parseFloat(GoodCosts);
                 }
             }
+
+            GreatBuildings.RewardPerDay = Math.round(GreatBuildings.FPRewards / 6);
 
             HTML.Box({
                 id: 'greatbuildings',
@@ -104,7 +110,6 @@ let GreatBuildings =
             $('#greatbuildings').on('blur', '#rewardPerDay', function () {
                 GreatBuildings.RewardPerDay = parseFloat($('#rewardPerDay').val());
                 if (isNaN(GreatBuildings.RewardPerDay)) GreatBuildings.RewardPerDay = 0;
-                localStorage.setItem('GreatBuildingsRewardPerDay', GreatBuildings.RewardPerDay);
                 GreatBuildings.CalcBody();
             });
 
@@ -171,20 +176,13 @@ let GreatBuildings =
             let Era = Technologies.Eras[EraName];
             let DoubleCollection = (GreatBuildings.FPGreatBuildings[i].ID !== 'X_FutureEra_Landmark1');
 
-            let BruttoCosts = [];
-            for (let j = 0; j < 10; j++) {
-                BruttoCosts[j] = CityEntity['strategy_points_for_upgrade'][j];
-            }
-            for (let j = 10; j < GreatBuildings.Rewards[Era].length; j++) {
-                BruttoCosts[j] = Math.ceil(BruttoCosts[9] * Math.pow(1.025, j - 9));
-            }
-
             let NettoCosts = [];
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
                 let P1 = GreatBuildings.Rewards[Era][j];
                 P1 = (P1 !== undefined ? P1 : 0);
 
-                NettoCosts[j] = GreatBuildings.GetNettoCosts(BruttoCosts[j], P1, GreatBuildings.ForderBonus);
+                let Maezen = GreatBuildings.GetMaezen(P1, GreatBuildings.ForderBonus);
+                NettoCosts[j] = GreatBuildings.GetBruttoCosts(GreatBuildings.FPGreatBuildings[i].ID, j) - Maezen[0] - Maezen[1] - Maezen[2] - Maezen[3] - Maezen[4];
             }
 
             let Productions = [];
@@ -337,14 +335,73 @@ let GreatBuildings =
     },
 
 
-    GetNettoCosts: (BruttoCosts, P1, ForderBonus) => {
-        let arc = 1+(ForderBonus/100);
+    GetBruttoCosts: (EntityID, Level) => {
+        let CityEntity = MainParser.CityEntities[EntityID];
 
-        let P2 = 5 * Math.round(P1 / 2 / 5);
-        let P3 = 5 * Math.round(P2 / 3 / 5);
-        let P4 = 5 * Math.round(P3 / 4 / 5);
-        let P5 = 5 * Math.round(P4 / 5 / 5);
+        if (Level < 10) {
+            return CityEntity['strategy_points_for_upgrade'][Level];
+        }
+        else {
+            return Math.ceil(CityEntity['strategy_points_for_upgrade'][9] * Math.pow(1.025, Level - 9));
+        }
+    },
 
-        return BruttoCosts - Math.round(P1 * arc) - Math.round(P2 * arc) - Math.round(P3 * arc) - Math.round(P4 * arc) - Math.round(P5 * arc);
+
+    GetMaezen: (P1, ArcBoni) => {
+        let Ret = [];
+
+        let arcs = [];
+        for (let i = 0; i < 5; i++) {
+            if (ArcBoni.length) { //Array
+                arcs[i] = 1 + (ArcBoni[i] / 100);
+            }
+            else {
+                arcs[i] = 1 + (ArcBoni / 100);
+            }
+        }
+
+        Ret[0] = P1;
+        for (let i = 1; i < 5; i++) {
+            Ret[i] = Math.round(Ret[i - 1] / (i + 1) / 5) * 5;
+        }
+
+        for (let i = 0; i < 5; i++) {
+            Ret[i] = Math.round(Ret[i] * arcs[i]);
+        }
+
+        return Ret;
+    },
+
+
+    HandleEventPage: (Events) => {
+        for (let i = 0; i < Events.length; i++) {
+            let Event = Events[i];
+            let ID = Event['id'];
+
+            if (GreatBuildings.EventDict[ID]) continue; //Event schon behandelt
+            GreatBuildings.EventDict[ID] = Event;
+
+            if (Event['type'] !== 'great_building_contribution') continue;
+
+            if (!GreatBuildings.GreatBuildingEntityCache) {
+                GreatBuildings.GreatBuildingEntityCache = Object.values(MainParser.CityEntities).filter(obj => (obj['strategy_points_for_upgrade'] !== undefined));
+            }
+
+            let Entity = GreatBuildings.GreatBuildingEntityCache.find(obj => (obj['name'] === Event['great_building_name']))
+            if (!Entity) continue;
+
+            let EraName = GreatBuildings.GetEraName(Entity['asset_id']),
+                Era = Technologies.Eras[EraName],
+                Rank = Event['rank'],
+                Level = Event['level'] - 1,
+                Reward = GreatBuildings.Rewards[Era][Level];
+
+            if (Rank > 5) continue;
+
+            let Maezen = GreatBuildings.GetMaezen(Reward, MainParser.ArkBonus);
+            let FPReward = Maezen[Rank-1];
+
+            GreatBuildings.FPRewards += FPReward;
+        }
     },
 };
