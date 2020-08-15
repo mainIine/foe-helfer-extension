@@ -238,7 +238,7 @@ let Technologies = {
 
         h.push('<thead>' +
             '<tr>' +
-            '<th>' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th colspan="2">' + i18n('Boxes.Technologies.Resource') + '</th>' +
             '<th>' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
             '<th>' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
             '<th class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
@@ -277,6 +277,7 @@ let Technologies = {
                     let Diff = Stock - Required;
 
                     h.push('<tr>');
+                    h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[ResourceName]['id'] +'"></span></td>'); 
                     h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td>' + HTML.Format(Required) + '</td>');
                     h.push('<td>' + HTML.Format(Stock) + '</td>');
