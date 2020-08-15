@@ -73,14 +73,14 @@ let Calculator = {
 				Calculator.ForderBonus = parseFloat($(this).data('value'));
 				$('#costFactor').val(Calculator.ForderBonus);
 				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
-				Calculator.CalcBody();
+				Calculator.Show();
 			});
 
 			// wenn der Wert des Archebonus verändert wird, Event feuern
 			$('#costCalculator').on('blur', '#costFactor', function () {
 				Calculator.ForderBonus = parseFloat($('#costFactor').val());
 				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
-				Calculator.CalcBody();
+				Calculator.Show();
 			});
 
 			$('#costCalculator').on('click', '#CalculatorTone', function () {
@@ -151,7 +151,7 @@ let Calculator = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-toggle-arc" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-default btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
 		h.push('<br>');

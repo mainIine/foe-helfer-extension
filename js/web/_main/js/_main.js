@@ -637,19 +637,25 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
+		let MainGrid = false;
+		for (let i = 0; i < postData.length; i++) {
+			let postDataItem = postData[i];
+
+			if (postDataItem['requestClass'] === 'CityMapService' && postDataItem['requestMethod'] === 'getEntities') {
+				if (postDataItem['requestData'][0] === 'main') {
+					MainGrid = true;
+                }
+				break;
+            }
+		}
+
+		if (!MainGrid) return;
+
 		LastMapPlayerID = ExtPlayerID;
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
+
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-
-		// ErnteBox beim zurückkehren in die Stadt schliessen
-		$('#ResultBox').fadeToggle(function () {
-			$(this).remove();
-		});
-
-		$('#city-map-overlay').fadeToggle(function () {
-			$(this).remove();
-		});
 	});
 
 	// Besuche anderen Spieler
@@ -964,6 +970,10 @@ const FoEproxy = (function () {
 
 	// Moppel Aktivitäten
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
+		if (data.responseData['events']) {
+			GreatBuildings.HandleEventPage(data.responseData['events']);
+		}
+
 		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendPlayersMotivation')) {
 			return;
 		}
@@ -1280,35 +1290,36 @@ let MainParser = {
 			return ;
 		}
 
-		if(MainParser.checkNextUpdate('OtherPlayers'))
-		{
-			let player = [];
+		let player = [];
 
-			for(let k in d){
-				if(d.hasOwnProperty(k)){
+		// guild members on website
+		for(let k in d){
+			if(d.hasOwnProperty(k)){
 
-					// wenn die Gilden-ID eine andere ist, abbrechen
-					if(ExtGuildID !== d[k]['clan_id'] || d[k]['clan_id'] === ''){
-						break;
-					}
+				const p = d[k];
 
+				// if is a guild member, update data
+				if(ExtGuildID === p['clan_id']){
 					let info = {
-						avatar: d[k]['avatar'],
-						city_name: d[k]['city_name'],
-						clan_id: d[k]['clan_id'],
-						name: d[k]['name'],
-						player_id: d[k]['player_id'],
-						rank: d[k]['rank'],
-						title: d[k]['title'],
-						won_battles: d[k]['won_battles'],
-						score: d[k]['score'],
-						profile_text: d[k]['profile_text'],
+						avatar: p['avatar'],
+						city_name: p['city_name'],
+						clan_id: p['clan_id'],
+						name: p['name'],
+						player_id: p['player_id'],
+						rank: p['rank'],
+						title: p['title'],
+						won_battles: p['won_battles'],
+						score: p['score'],
+						profile_text: p['profile_text'],
 					};
 
 					player.push(info);
 				}
 			}
+		}
 
+		if(MainParser.checkNextUpdate('OtherPlayers'))
+		{
 			// wenn es nicht leer ist, abschicken
 			if(player.length > 0){
 				MainParser.sendExtMessage({
@@ -1939,8 +1950,35 @@ let MainParser = {
 			}
 		}
 
-		// neues Postfach
-		if (d['category'] && d['category']['teasers']) {
+		if (d['teasers']) {
+			for (let k in d['teasers']) {
+				if (!d['teasers'].hasOwnProperty(k)) {
+					continue;
+				}
+
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
+				// Ist bereits ein Key vorhanden?
+				if (key !== -1) {
+					MainParser.Conversations[key]['type'] = d['type'];
+					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+					MainParser.Conversations[key]['hidden'] = d['teasers'][k]['isHidden'];
+					MainParser.Conversations[key]['favorite'] = d['teasers'][k]['isFavorite'];
+					MainParser.Conversations[key]['important'] = d['teasers'][k]['isImportant'];
+				}
+				// → Key erstellen
+				else {
+					MainParser.Conversations.push({
+						type: d['type'],
+						id: d['teasers'][k]['id'],
+						title: d['teasers'][k]['title'],
+						hidden: d['teasers'][k]['isHidden'],
+						favorite: d['teasers'][k]['isFavorite'],
+						favorite: d['teasers'][k]['isImportant']
+					});
+				}
+
+			}
+		} else if (d['category'] && d['category']['teasers']) {
 			for (let k in d['category']['teasers']) {
 				if (!d['category']['teasers'].hasOwnProperty(k)) {
 					continue;
@@ -1967,54 +2005,6 @@ let MainParser = {
 					});
 				}
 
-			}
-		}
-		// altes Postfach
-		else {
-			// Gildenchat
-			if (d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
-				MainParser.Conversations.push({
-					id: d['clanTeaser']['id'],
-					title: d['clanTeaser']['title']
-				});
-			}
-			//
-			if (d['teasers'] !== undefined){
-				// die anderen Chats
-				for(let k in d['teasers']){
-					if (!d['teasers'].hasOwnProperty(k)){
-						continue;
-					}
-					// prüfen ob es zur ID einen key gibt
-					let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
-					// Konversation gibt es schon
-					if (key !== -1){
-						MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
-					}
-					// ... gibt es noch nicht
-					else {
-						MainParser.Conversations.push({
-							id: d['teasers'][k]['id'],
-							title: d['teasers'][k]['title']
-						});
-					}
-				}
-			}
-			if (d[0] !== undefined && d[0].length > 0){
-				for(let k in d){
-					if (!d.hasOwnProperty(k)){
-						continue;
-					}
-					let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
-					if (key !== -1) {
-						MainParser.Conversations[key]['title'] = d[k]['title'];
-					} else {
-						MainParser.Conversations.push({
-							id: d[k]['id'],
-							title: d[k]['title']
-						});
-					}
-				}
 			}
 		}
 
