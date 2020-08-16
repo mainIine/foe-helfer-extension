@@ -16,7 +16,7 @@
 #bonus-hud {
 	position: absolute;
 	right: 0;
-	z-index: 999;
+	z-index: 750;
 	width: 50px;
 	top: 60px;
 

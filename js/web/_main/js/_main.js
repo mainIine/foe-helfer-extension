@@ -635,13 +635,6 @@ const FoEproxy = (function () {
 	});
 
 
-	// GEX started
-	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-		ActiveMap = 'gex';
-		StrategyPoints.HandleWindowResize();
-	});
-
-
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
 		let MainGrid = false;
@@ -664,6 +657,7 @@ const FoEproxy = (function () {
 
 		ActiveMap = 'main';
 		StrategyPoints.HandleWindowResize();
+		StrategyPoints.HideFPBarInGex();
 	});
 
 	// Besuche anderen Spieler
