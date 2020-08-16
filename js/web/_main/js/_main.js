@@ -657,7 +657,6 @@ const FoEproxy = (function () {
 
 		ActiveMap = 'main';
 		StrategyPoints.HandleWindowResize();
-		StrategyPoints.HideFPBarInGex();
 	});
 
 	// Besuche anderen Spieler
