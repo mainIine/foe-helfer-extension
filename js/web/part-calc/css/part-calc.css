@@ -183,13 +183,13 @@
 
 
 .OwnPartBoxBackground .OwnPartBoxBackgroundBody {
-	width: 252px;
+	width: 312px;
 	height: 0;
 	position: absolute;
 	overflow: hidden;
 	overflow-y: auto;
 	top: 0;
-	left: 70px;
+	left: 55px;
 	padding: 0 15px;
 	border-width: 0 10px 10px 10px;
 	border-image-width: 0 28px 28px;
@@ -206,7 +206,7 @@
 	margin-bottom: 6px;
 }
 
-.OwnPartBoxBackground input[type=text],
+.OwnPartBoxBackground input[id=player-name],
 .OwnPartBoxBackground select {
 	background-color: var(--background-light);
 	color: var(--text-medium);
@@ -215,6 +215,33 @@
 	font-size: 0.8rem;
 	height: 18px;
 	width: 164px;
+	margin-bottom: 10px;
+	padding: 2px 5px;
+}
+
+.OwnPartBoxBackground input[id=build-name],
+.OwnPartBoxBackground select {
+	background-color: var(--background-light);
+	color: var(--text-medium);
+	background-clip: padding-box;
+	border: 1px solid var(--text-dark);
+	font-size: 0.8rem;
+	height: 18px;
+	width: 164px;
+	margin-bottom: 10px;
+	padding: 2px 5px;
+}
+
+.OwnPartBoxBackground input[id=copystring],
+.OwnPartBoxBackground select {
+	background-color: var(--background-light);
+	color: var(--text-medium);
+	background-clip: padding-box;
+	border: 1px solid var(--text-dark);
+	font-size: 0.6rem;
+	font-weight: bold;
+	height: 18px;
+	width: 300px;
 	margin-bottom: 10px;
 	padding: 2px 5px;
 }
@@ -235,7 +262,7 @@
 	line-height: 1.4rem;
 	margin-bottom: 5px;
 	background-color: rgba(255,255,255, 0.07);
-	width: 75px;
+	width: 100px;
 	vertical-align: middle;
 	transition: background-color 0.3s linear;
 }
