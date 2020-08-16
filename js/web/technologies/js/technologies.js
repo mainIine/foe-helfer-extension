@@ -72,6 +72,9 @@ let Technologies = {
     UnlockedTechologies: false,
     SelectedEraID: undefined,
 
+    IgnorePrevEra: null,
+    IgnoreCurrentEraOptional: null,
+
     Eras: {
         AllAge: 0,
         NoAge: 0,
@@ -144,17 +147,29 @@ let Technologies = {
 
 		} else {
 			HTML.CloseOpenBox('technologies');
-		}
+        }
 
-		Technologies.BuildBox();
-    },
+        $('#technologies').on('click', '.ignoreprevera', function () {
+            let $this = $(this),
+                v = $this.prop('checked');
 
+            Technologies.IgnorePrevEra = v;
 
-	/**
-	 *
-	 */
-    BuildBox: ()=> {
-        Technologies.CalcBody();
+            localStorage.setItem('TechnologiesIgnorePrevEra', Technologies.IgnorePrevEra);
+
+            Technologies.CalcBody();
+        });
+
+        $('#technologies').on('click', '.ignorecurrenteraoptional', function () {
+            let $this = $(this),
+                v = $this.prop('checked');
+
+            Technologies.IgnoreCurrentEraOptional = v;
+
+            localStorage.setItem('TechnologiesIgnoreCurrentEraOptional', Technologies.IgnoreCurrentEraOptional);
+
+            Technologies.CalcBody();
+        });
 
         // Zeitalter vor und zurück schalten
         $('#technologies').on('click', '.btn-switchage', function () {
@@ -166,6 +181,19 @@ let Technologies = {
 
             $(this).addClass('btn-default-active');
         });
+
+		Technologies.BuildBox();
+    },
+
+
+	/**
+	 *
+	 */
+    BuildBox: () => {
+        Technologies.IgnorePrevEra = (localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false' ? 'true' : 'false')
+        Technologies.IgnoreCurrentEraOptional = (localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false' ? 'true' : 'false')
+
+        Technologies.CalcBody();
     },
 
 
@@ -207,7 +235,10 @@ let Technologies = {
             if (!Tech['isResearched'] && !Tech['isTeaser']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
-                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID && Tech['childTechnologies'].length > 0) { //Alle Technologien voriger ZA und optionale Technologien ausblenden
+                if (EraID < CurrentEraID && Technologies.IgnorePrevEra) continue; // Vorherige ZA ausblenden
+                if (EraID >= CurrentEraID && Tech['childTechnologies'].length === 0 && Technologies.IgnoreCurrentEraOptional) continue; // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
+
+                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) { // && ) { //Alle Technologien voriger ZA und optionale Technologien ausblenden
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
@@ -227,6 +258,9 @@ let Technologies = {
 
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeAsteroidBelt']);
+
+        h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
+        h.push('<input id="IgnoreCurrentEraOptional" class="ignorecurrenteraoptional game-cursor" ' + (Technologies.IgnoreCurrentEraOptional ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnoreCurrentEraOptional') + '<br>');
 
         h.push('<div class="techno-head">');
 			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
