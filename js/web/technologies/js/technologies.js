@@ -259,13 +259,16 @@ let Technologies = {
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeAsteroidBelt']);
 
-        h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
-        h.push('<input id="IgnoreCurrentEraOptional" class="ignorecurrenteraoptional game-cursor" ' + (Technologies.IgnoreCurrentEraOptional ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnoreCurrentEraOptional') + '<br>');
-
-        h.push('<div class="techno-head">');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
-			h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
-			h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
+        h.push('<div class="dark-bg" style="margin-bottom: 3px">');
+	        h.push('<div class="techno-head">');
+				h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
+				h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
+				h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
+	        h.push('</div>');
+	        h.push('<div class="text-small">');
+            h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
+            h.push('<input id="IgnoreCurrentEraOptional" class="ignorecurrenteraoptional game-cursor" ' + (Technologies.IgnoreCurrentEraOptional ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnoreCurrentEraOptional') + '<br>');
+        	h.push('</div>');
         h.push('</div>');
 
         h.push('<table class="foe-table">');
@@ -322,7 +325,7 @@ let Technologies = {
         }
         else {
             h.push('<tr>');
-            h.push('<td colspan="4" class="text-center">' + i18n('Boxes.Technologies.NoTechs') + '</td>');
+            	h.push('<td colspan="5" class="text-center">' + i18n('Boxes.Technologies.NoTechs') + '</td>');
             h.push('</tr>');
         }
         h.push('</table');
