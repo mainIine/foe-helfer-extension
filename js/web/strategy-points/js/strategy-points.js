@@ -39,11 +39,11 @@ let StrategyPoints = {
 
 	HandleWindowResize: () => {
 
-        if ( window.innerWidth < 1250 ){
+        if ( window.innerWidth < 1250 && ActiveMap !== 'gex'){
             $('#fp-bar').removeClass('medium-screen');
             $('#fp-bar').addClass('small-screen');
         }
-        else if ( window.innerWidth < 1400 ){
+        else if ( window.innerWidth < 1400 && ActiveMap !== 'gex'){
             $('#fp-bar').removeClass('small-screen');
             $('#fp-bar').addClass('medium-screen');
 		}
@@ -77,7 +77,6 @@ let StrategyPoints = {
 		}
 
 		if($('div.buyable-fp').length == 0) {
-			// $('#fp-bar').append(' ' + i18n('Boxes.StrategyPoints.BuyableFP') + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
 			$('#fp-bar').append(`<div class="buyable-fp"><div>${ HTML.Format(amount)}</div></div>`);
 
 		} else {
@@ -92,7 +91,6 @@ let StrategyPoints = {
     RefreshBar: ( value ) => {
         // noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			// let div = $('<div />').attr('id', 'fp-bar').text(i18n('Boxes.StrategyPoints.FPBar')).append( $('<strong>0</strong>').addClass('fp-storage') );
 			let div = $('<div />').attr('id', 'fp-bar').append( `<div class="fp-storage"><div>0</div></div>` );
 
 			$('body').append(div);
