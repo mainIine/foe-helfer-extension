@@ -85,6 +85,11 @@ let StrategyPoints = {
 
 
 	ShowFPBarInGex: ()=>{
+
+		if(ActiveMap === 'main'){
+			return ;
+		}
+
 		if( $('.fp-bar-main').length === 0){
 			$('#fp-bar').append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
 
