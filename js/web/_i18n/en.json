@@ -414,6 +414,8 @@
     "Boxes.Technologies.DescInStock": "Available",
     "Boxes.Technologies.DescRequired": "Required",
     "Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Remaining</span> / <span style='color:#ff4040'>Needed</span>",
+    "Boxes.Technologies.IgnoreCurrentEraOptional": "Ignore optional technologies of current/future eras",
+    "Boxes.Technologies.IgnorePrevEra": "Ignore optional technologies of previous eras",
     "Boxes.Technologies.NoTechs": "You have reached the end of this era",
     "Boxes.Technologies.Resource": "Resource",
     "Boxes.Technologies.Title": "Tech Tree Research Costs",
