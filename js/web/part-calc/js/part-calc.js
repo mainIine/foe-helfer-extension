@@ -565,7 +565,7 @@ let Parts = {
 	BuildBackgroundBody: () => {
 		let h = [],
 			PlayerName,
-			BuildingName = localStorage.getItem(Parts.CurrentBuildingID);
+			BuildingName = localStorage.getItem("OwnPartBuildingName" + Parts.CityMapEntity['cityentity_id']);
 
 		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) { //Eigenes LG
 			let CopyName = localStorage.getItem(ExtPlayerID + '_PlayerCopyName');
@@ -698,34 +698,57 @@ let Parts = {
 			let OptionsName = $(this).data('options');
 
 			if (OptionsName) {
-				let KeyPart2;
-				if (Parts.CityMapEntity['player_id'] !== ExtPlayerID) {
-					KeyPart2 = '';
-				}
-				else {
-					KeyPart2 = Parts.CityMapEntity['cityentity_id'];
-                }
+				let StoragePreamble = Parts.GetStoragePreamble();
 
 				if (OptionsName === 'player') {
-					localStorage.setItem('OwnPartIncludePlayer' + KeyPart2, $('#options-player').prop('checked'));
+					localStorage.setItem('OwnPartIncludePlayer' + StoragePreamble, $('#options-player').prop('checked'));
 				}
 				else if (OptionsName === 'gb') {
-					localStorage.setItem('OwnPartIncludeGB' + KeyPart2, $('#options-gb').prop('checked'));
+					localStorage.setItem('OwnPartIncludeGB' + StoragePreamble, $('#options-gb').prop('checked'));
                 }
 				else if (OptionsName === 'level') {
-					localStorage.setItem('OwnPartIncludeLevel' + KeyPart2, $('#options-level').prop('checked'));
+					localStorage.setItem('OwnPartIncludeLevel' + StoragePreamble, $('#options-level').prop('checked'));
 				}
 				else if (OptionsName === 'fp') {
-					localStorage.setItem('OwnPartIncludeFP' + KeyPart2, $('#options-fp').prop('checked'));
+					localStorage.setItem('OwnPartIncludeFP' + StoragePreamble, $('#options-fp').prop('checked'));
 				}
 				else if (OptionsName === 'descending') {
-					localStorage.setItem('OwnPartDescending' + KeyPart2, $('#options-descending').prop('checked'));
+					localStorage.setItem('OwnPartDescending' + StoragePreamble, $('#options-descending').prop('checked'));
 				}
 			}
 
 			Parts.RefreshCopyString();
 		});
+
+		$('#OwnPartBox').on('blur', '#player-name', function () {
+			let PlayerName = $('#player-name').val();
+
+			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', PlayerName);
+
+			Parts.RefreshCopyString();
+		});
+
+		$('#OwnPartBox').on('blur', '#build-name', function () {
+			let BuildingName = $('#build-name').val();
+
+			localStorage.setItem("OwnPartBuildingName" + Parts.CityMapEntity['cityentity_id'], BuildingName);
+
+			Parts.RefreshCopyString();
+		});
 	},
+
+
+	GetStoragePreamble: () => {
+		let Ret;
+		if (Parts.CityMapEntity['player_id'] !== ExtPlayerID) {
+			Ret = '';
+		}
+		else {
+			Ret = Parts.CityMapEntity['cityentity_id'];
+		}
+
+		return Ret;
+    },
 
 
 	RefreshCopyString: () => {
