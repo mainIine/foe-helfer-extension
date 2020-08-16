@@ -644,25 +644,21 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		LastMapPlayerID = ExtPlayerID;
-
-		let FirstEntity = MainParser.CityEntities[data.responseData[0]['cityentity_id']];
-		
-
 		let MainGrid = false;
+		for (let i = 0; i < postData.length; i++) {
+			let postDataItem = postData[i];
 
-		if (FirstEntity && FirstEntity['abilities']) {
-			for (let i = 0; i < FirstEntity['abilities'].length; i++) {
-				let Ability = FirstEntity['abilities'][i];
-
-				if (Ability['gridId'] === 'main') {
+			if (postDataItem['requestClass'] === 'CityMapService' && postDataItem['requestMethod'] === 'getEntities') {
+				if (postDataItem['requestData'][0] === 'main') {
 					MainGrid = true;
-					break;
-				}
-			}
+                }
+				break;
+            }
 		}
 
 		if (!MainGrid) return;
+
+		LastMapPlayerID = ExtPlayerID;
 
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
@@ -1962,8 +1958,35 @@ let MainParser = {
 			}
 		}
 
-		// neues Postfach
-		if (d['category'] && d['category']['teasers']) {
+		if (d['teasers']) {
+			for (let k in d['teasers']) {
+				if (!d['teasers'].hasOwnProperty(k)) {
+					continue;
+				}
+
+				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
+				// Ist bereits ein Key vorhanden?
+				if (key !== -1) {
+					MainParser.Conversations[key]['type'] = d['type'];
+					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
+					MainParser.Conversations[key]['hidden'] = d['teasers'][k]['isHidden'];
+					MainParser.Conversations[key]['favorite'] = d['teasers'][k]['isFavorite'];
+					MainParser.Conversations[key]['important'] = d['teasers'][k]['isImportant'];
+				}
+				// → Key erstellen
+				else {
+					MainParser.Conversations.push({
+						type: d['type'],
+						id: d['teasers'][k]['id'],
+						title: d['teasers'][k]['title'],
+						hidden: d['teasers'][k]['isHidden'],
+						favorite: d['teasers'][k]['isFavorite'],
+						favorite: d['teasers'][k]['isImportant']
+					});
+				}
+
+			}
+		} else if (d['category'] && d['category']['teasers']) {
 			for (let k in d['category']['teasers']) {
 				if (!d['category']['teasers'].hasOwnProperty(k)) {
 					continue;
@@ -1990,54 +2013,6 @@ let MainParser = {
 					});
 				}
 
-			}
-		}
-		// altes Postfach
-		else {
-			// Gildenchat
-			if (d['clanTeaser'] !== undefined && MainParser.Conversations.filter((obj)=> (obj.id === d['clanTeaser']['id'])).length === 0){
-				MainParser.Conversations.push({
-					id: d['clanTeaser']['id'],
-					title: d['clanTeaser']['title']
-				});
-			}
-			//
-			if (d['teasers'] !== undefined){
-				// die anderen Chats
-				for(let k in d['teasers']){
-					if (!d['teasers'].hasOwnProperty(k)){
-						continue;
-					}
-					// prüfen ob es zur ID einen key gibt
-					let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
-					// Konversation gibt es schon
-					if (key !== -1){
-						MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
-					}
-					// ... gibt es noch nicht
-					else {
-						MainParser.Conversations.push({
-							id: d['teasers'][k]['id'],
-							title: d['teasers'][k]['title']
-						});
-					}
-				}
-			}
-			if (d[0] !== undefined && d[0].length > 0){
-				for(let k in d){
-					if (!d.hasOwnProperty(k)){
-						continue;
-					}
-					let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d[k]['id']));
-					if (key !== -1) {
-						MainParser.Conversations[key]['title'] = d[k]['title'];
-					} else {
-						MainParser.Conversations.push({
-							id: d[k]['id'],
-							title: d[k]['title']
-						});
-					}
-				}
 			}
 		}
 
