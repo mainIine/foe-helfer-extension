@@ -37,7 +37,21 @@ window.addEventListener('resize', ()=>{
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	ActiveMap = 'gex';
 	StrategyPoints.ShowFPBarInGex();
-	StrategyPoints.HandleWindowResize();
+});
+
+// Guildfights enter
+FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+	StrategyPoints.ShowFPBarInGex();
+});
+
+// main is entered
+FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
+	StrategyPoints.HideFPBarInGex();
+});
+
+// Update the FP Bar
+FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
+	StrategyPoints.ShowFPBarInGex();
 });
 
 /**
@@ -72,12 +86,32 @@ let StrategyPoints = {
 
 	ShowFPBarInGex: ()=>{
 		if( $('.fp-bar-main').length === 0){
-			$('#fb-bar').append(`<div class="fp-bar-main"><span class="number"></span><span class="bars"></span></div>`);
+			$('#fp-bar').append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
 
-			console.log('appended!');
+		} else {
+			$('.fp-bar-main').show();
 		}
 
+		const avialableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
 
+		$('.fp-bar-main').find('.number').text(avialableFPs);
+
+		if(avialableFPs > 0){
+
+			const $bar = $('.fp-bar-main').find('.bars');
+
+			// make empty
+			$bar.find('span').remove();
+
+			for(let i = 0; i < avialableFPs; i++)
+			{
+				$bar.append(`<span />`);
+
+				if(i === 9){
+					return false;
+				}
+			}
+		}
 	},
 
 
@@ -127,7 +161,10 @@ let StrategyPoints = {
     RefreshBar: ( value ) => {
         // noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			let div = $('<div />').attr('id', 'fp-bar').append( `<div class="fp-storage"><div>0</div></div>` );
+			let div = $('<div />').attr({
+				id: 'fp-bar',
+				class: 'game-cursor'
+			}).append( `<div class="fp-storage"><div>0</div></div>` );
 
 			$('body').append(div);
             StrategyPoints.HandleWindowResize();

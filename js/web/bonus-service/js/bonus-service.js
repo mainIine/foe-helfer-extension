@@ -51,7 +51,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	BonusService.InitBonus();
 });
 
-// Guildfights would leave
+// main is entered
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 	BonusService.HideBonusSidebar();
 });
@@ -115,7 +115,7 @@ let BonusService = {
 
 	/**
 	 * Create a wrapper "hud" for the icons
-	 * 
+	 *
 	 * @param isGex
 	 * @constructor
 	 */
@@ -155,6 +155,9 @@ let BonusService = {
 
 	/**
 	 * Box content
+	 *
+	 * @param isGex
+	 * @constructor
 	 */
 	SetBonusTypes: (isGex)=> {
 		const bt = BonusService.BonusTypes,

@@ -828,6 +828,7 @@ Tooltip */
 }
 
 #fp-bar.small-screen {
+	justify-content: flex-start;
 	top: 36px;
 	left: 2px;
 }
@@ -844,6 +845,41 @@ Tooltip */
 
 #fp-bar.small-screen .buyable-fp {
 	background-color: rgba(0, 0, 0, 0.75);
+}
+
+#fp-bar .fp-bar-main {
+	height: 18px;
+	width: 111px;
+	background: transparent url('../../js/web/strategy-points/images/fp-bar-bg.png') center left no-repeat;
+	position: relative;
+	top: 7px;
+	text-align: left;
+	display: flex;
+}
+
+#fp-bar .fp-bar-main .number {
+	width: 26px;
+	text-align: center;
+	margin-left: 2px;
+	margin-top: -2px;
+}
+
+#fp-bar .fp-bar-main .bars {
+	width: 82px;
+}
+
+#fp-bar .fp-bar-main .bars span {
+	width: 8px;
+	height: 14px;
+	display: inline-block;
+	background: transparent url('../../js/web/strategy-points/images/fp-bar.png') center left;
+	background-size: contain;
+	position: relative;
+	top: 1px;
+}
+
+#fp-bar .fp-bar-main .bars span:first-child {
+	margin-left: 2px;
 }
 
 /*******************************************************************************/
