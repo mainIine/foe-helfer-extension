@@ -635,6 +635,13 @@ const FoEproxy = (function () {
 	});
 
 
+	// GEX started
+	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+		ActiveMap = 'gex';
+		StrategyPoints.HandleWindowResize();
+	});
+
+
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
 		LastMapPlayerID = ExtPlayerID;
@@ -660,6 +667,7 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
+		StrategyPoints.HandleWindowResize();
 	});
 
 	// Besuche anderen Spieler

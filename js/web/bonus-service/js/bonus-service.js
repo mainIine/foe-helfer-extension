@@ -136,7 +136,7 @@ let BonusService = {
 		}
 
 		$('body').append(div).promise().done(function(){
-			BonusService.SetBonusTypes();
+			BonusService.SetBonusTypes(isGex);
 		});
 	},
 
@@ -156,7 +156,7 @@ let BonusService = {
 	/**
 	 * Box content
 	 */
-	SetBonusTypes: ()=> {
+	SetBonusTypes: (isGex)=> {
 		const bt = BonusService.BonusTypes,
 			d = BonusService.Bonuses,
 			hud = $('#bonus-hud');
@@ -165,6 +165,11 @@ let BonusService = {
 		{
 			if(!bt.hasOwnProperty(i)){
 				break;
+			}
+
+			// skip aid goods in gex
+			if(isGex && bt[i] === 'aid_goods'){
+				continue;
 			}
 
 			let b = d.find(e => (e['type'] === bt[i]));
