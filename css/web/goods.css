@@ -124,7 +124,7 @@
 .goods-sprite.money::before,
 .goods-sprite.medals::before,
 .goods-sprite.empty::before,
-.goods-sprite.strategy_points::before {background:url('../images/goods-extra.png') top left no-repeat;background-size:180px 45px;width:45px;height:45px;}
+.goods-sprite.strategy_points::before {background:url('../images/goods-extra.png') top left no-repeat;background-size:225px 45px;width:45px;height:45px;}
 .goods-sprite.supplies::before{background-position: 0 0;}
 .goods-sprite.money::before{background-position: -45px 0;}
 .goods-sprite.medals::before{background-position: -94px 0;}
