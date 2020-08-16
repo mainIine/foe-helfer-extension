@@ -97,26 +97,30 @@ let StrategyPoints = {
 			$('.fp-bar-main').show();
 		}
 
-		const avialableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
+		// necessary to wait for gift in gg + diplomatic gift
+		setTimeout(()=>{
+			const avialableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
 
-		$('.fp-bar-main').find('.number').text(avialableFPs);
+			$('.fp-bar-main').find('.number').text(avialableFPs);
 
-		if(avialableFPs > 0){
+			if(avialableFPs > 0){
 
-			const $bar = $('.fp-bar-main').find('.bars');
+				const $bar = $('.fp-bar-main').find('.bars');
 
-			// make empty
-			$bar.find('span').remove();
+				// make empty
+				$bar.find('span').remove();
 
-			for(let i = 0; i < avialableFPs; i++)
-			{
-				$bar.append(`<span />`);
+				for(let i = 0; i < avialableFPs; i++)
+				{
+					$bar.append(`<span />`);
 
-				if(i === 9){
-					return false;
+					if(i === 9){
+						return false;
+					}
 				}
 			}
-		}
+		}, 800);
+
 	},
 
 
