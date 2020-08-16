@@ -39,6 +39,7 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 	GildFights.init();
 	GildFights.MapData = data['responseData'];
+	ActiveMap = 'gg';
 });
 
 
