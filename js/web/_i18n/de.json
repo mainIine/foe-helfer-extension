@@ -1,6 +1,6 @@
 ﻿{
-    "API.GEXChampionship": "Die GEX-Gilden Platzierung wurde aktualisiert",
-    "API.GEXPlayer": "Die GE Platzierungen der Mitglieder wurden aktualisiert",
+    "API.GEXChampionship": "Die GEX-Gildenplatzierung wurde aktualisiert",
+    "API.GEXPlayer": "Die GEX-Platzierungen der Mitglieder wurden aktualisiert",
     "API.LGGildMember": "__player__'s LG wurden übermittelt",
     "API.LGInvest": "Deine LG Investitionen wurden aktualisiert",
     "API.UpdateSuccess": "Update durchgeführt!",
