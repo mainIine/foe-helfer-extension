@@ -145,7 +145,7 @@
     "Boxes.GreatBuildings.TTFPPerTile": "How many daily FP per tile do you loose for making space for new great buildings? Example: You are removing some shrines of knowledge to build a great building => 1FP/5 tiles = 0.2FP/tile",
     "Boxes.GreatBuildings.TTGoodCosts": "You have not built this great building yet. This are the FP costs for buying the needed goods",
     "Boxes.GreatBuildings.TTGoodCostsColumn": "Lists the FP costs for buying the needed goods (applies only to great buildings you have not built yet)",
-    "Boxes.GreatBuildings.TTRewardPerDay": "\"Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels. To get a suggestion go to 'Town Hall'> 'News'> 'Event History' and scroll through alle pages",
+    "Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitablity for further arc levels. To get a suggestion go to Town Hall > News > Event History and scroll through alle pages",
     "Boxes.GreatBuildings.Title": "GB investment",
     "Boxes.HiddenRewards.Disappears": "Disappears",
     "Boxes.HiddenRewards.HelpLink": "https://foe-rechner.de/docs/2/incidents",
