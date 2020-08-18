@@ -635,5 +635,21 @@
     "Settings.Version.PlayerId": "Player ID:",
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
-    "_Language": "English"
+    "_Language": "English",
+	"Time": "HH:mm:ss a",
+	"WsChat.SendBtn": "Send",
+	"WsChat.InRoom": "In room",
+	"WsChat.ReadmodeActivated": "Readmode activated",
+	"WsChat.ReadmodeDeactivated": "Readmode deactivated",
+	"WsChat.Guild": "Guild - ",
+	"WsChat.World": "World - ",
+	"WsChat.Developer": "Developer",
+	"WsChat.Connected": "Connected!",
+	"WsChat.ErrorOccurred": "An error has occurred - ",
+	"WsChat.ConnectionClosed": "Connection closed!",
+	"WsChat.UserReEnter": " has entered the room again.",
+	"WsChat.UserEnter": " has entered the room.",
+	"WsChat.UserLeave": " has gone.",
+	"WsChat.DisconnectError": "Connection from server closed",
+	"WsChat.ConnectionError": "Connection error"
 }
