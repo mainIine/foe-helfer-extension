@@ -636,12 +636,17 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "Welt:",
     "Time": "HH:mm:ss",
+    "WsChat.Connected": "Verbunden!",
+    "WsChat.ConnectionClosed": "Verbindung geschlossen!",
     "WsChat.Developer": "Entwickler",
+    "WsChat.ErrorOccurred": "Es ist ein Fehler aufgetreten: ",
     "WsChat.Guild": "Gilde - ",
     "WsChat.InRoom": "Im Raum",
     "WsChat.ReadmodeActivated": "Lesemodus aktiviert",
     "WsChat.ReadmodeDeactivated": "Lesemodus deaktiviert",
     "WsChat.SendBtn": "Senden",
+    "WsChat.UserEnter": " hat den Raum betreten.",
+    "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
     "_Language": "Deutsch"
 }
