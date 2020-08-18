@@ -152,12 +152,12 @@ let GreatBuildings =
         h.push('<br>')
         h.push(i18n('Boxes.GreatBuildings.ArcBonus') + ' ');
         h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
-        h.push('<br>')
+        h.push('<br><br>')
         h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">');
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.FPPerTile') + ' ');
-        h.push('<input type="number" id="fpPerTile" step="0.01" min="0" max="1000" value="' + GreatBuildings.FPPerTile + '" title="' + i18n('Boxes.GreatBuildings.TTFPPerTile') + '">');
+        h.push('<input type="number" id="FPPerTile" step="0.01" min="0" max="1000" value="' + GreatBuildings.FPPerTile + '" title="' + i18n('Boxes.GreatBuildings.TTFPPerTile') + '">');
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
         h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + i18n('Boxes.GreatBuildings.TTRewardPerDay') + '">');
