@@ -84,6 +84,7 @@ const i18n_loadPromise = (async() => {
 		}
 
 		i18n_loaded = true;
+
 	} catch (err) {
 		console.error('i18n translation loading error:', err);
 	}
@@ -659,11 +660,19 @@ const FoEproxy = (function () {
 		StrategyPoints.HandleWindowResize();
 	});
 
+
+	// main is entered
+	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
+		ActiveMap = 'main';
+	});
+
+
 	// Besuche anderen Spieler
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		LastMapPlayerID = data.responseData['other_player']['player_id'];
 		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })));
 	});
+
 
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
 		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
@@ -683,6 +692,7 @@ const FoEproxy = (function () {
         }
 	});
 
+
 	// Produktion wird eingesammelt/gestartet/abgebrochen
 	FoEproxy.addHandler('CityProductionService', (data, postData) => {
 		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
@@ -692,11 +702,13 @@ const FoEproxy = (function () {
 			MainParser.UpdateCityMap(Buildings)
 		}
 	});
-	
+
+
 	// Nachricht geöffnet
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
 	});
+
 
 	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
 	FoEproxy.addHandler('OtherPlayerService', 'all', (data, postData) => {
@@ -705,21 +717,25 @@ const FoEproxy = (function () {
 		}
 	});
 
+
 	// --------------------------------------------------------------------------------------------------
 	// Übersetzungen der Güter
 	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
 		MainParser.setGoodsData(data.responseData);
 	});
 
+
     // Required by the kits
     FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
         MainParser.UpdateInventory(data.responseData);
     });
 
+
     // Required by the kits
     FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
         MainParser.UpdateInventory(data.responseData.inventoryItems);
     });
+
 
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
