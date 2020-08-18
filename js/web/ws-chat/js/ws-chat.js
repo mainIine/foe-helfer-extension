@@ -276,7 +276,7 @@ let Chat = {
 	/**
 	 * Get the datas for the chat
 	 */
-	getData: () => {
+	getData: async () => {
 
 		const URLdata = Object.fromEntries( new URLSearchParams(location.search) );
 
@@ -319,15 +319,18 @@ let Chat = {
 			languages.push('en');
 		}
 
-		languages.push(Chat.Lang);
+		if (Chat.Lang) languages.push(Chat.Lang);
 
-		const languageDatas = languages.map(lang =>
-			// frage die Sprachdatei an
-			fetch('/js/web/_i18n/'+lang+'.json')
-				// lade die antwort als JSON
-				.then(response => response.text())
-				// im fehlerfall wird ein leeres Objekt zurück gegeben
-				.catch(()=>({}))
+		const languageDatas = await Promise.all(
+			languages
+				.map(lang =>
+					// frage die Sprachdatei an
+					fetch('/js/web/_i18n/'+lang+'.json')
+						// lade die antwort als JSON
+						.then(response => response.text())
+						// im fehlerfall wird ein leeres Objekt zurück gegeben
+						.catch(()=>({}))
+				)
 		);
 
 		// @Todo: wieder entfernen
