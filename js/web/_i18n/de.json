@@ -143,7 +143,7 @@
     "Boxes.GreatBuildings.SuggestionTitle": "FP produzierende legendäre Bauwerke im Vergleich",
     "Boxes.GreatBuildings.TTGoodCosts": "Du hast dieses legendäre Bauwerk noch nicht gebaut. Dies sind die FP Kosten für den Kauf der benötigten Güter",
     "Boxes.GreatBuildings.TTGoodCostsColumn": "Diese Spalte enthält die FP Kosten zum Kaufen der jeweiligen Gütersets (betrifft nur legendäre Bauwerk, die du noch nicht errichtet hast)",
-    "Boxes.GreatBuildings.TTRewardPerDay": "Optional: Wie viele FP bekommst du per Tag als Mäzenbelohnungen? Diese Information wird benutzt um die Rentabilität von weiteren Archelveln zu berechnen",
+    "Boxes.GreatBuildings.TTRewardPerDay": "Optional: Wie viele FP bekommst du per Tag als Mäzenbelohnungen? Diese Information wird benutzt um die Rentabilität von weiteren Archelveln zu berechnen. Um diesen Wert automatisch zu berechnen gehe zu 'Rathaus'> 'Neuigkeiten'> 'Ereignisübersicht' und scrolle alle Seiten durch",
     "Boxes.GreatBuildings.Title": "LG Investitionen",
     "Boxes.HiddenRewards.Disappears": "Verschwindet",
     "Boxes.HiddenRewards.HelpLink": "https://foe-rechner.de/docs/2/incidents",

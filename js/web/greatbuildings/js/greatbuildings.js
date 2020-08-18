@@ -76,6 +76,11 @@ let GreatBuildings =
                 }
             }
 
+            let FPPerTile = localStorage.getItem('GreatBuildingsFPPerTile');
+            if (FPPerTile != null) {
+                GreatBuildings.FPPerTile = parseFloat(FPPerTile);
+            }
+
             GreatBuildings.RewardPerDay = Math.round(GreatBuildings.FPRewards / 6);
 
             HTML.Box({
@@ -104,6 +109,13 @@ let GreatBuildings =
                 GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
                 if (isNaN(GreatBuildings.ForderBonus)) GreatBuildings.ForderBonus = 0;
                 localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+                GreatBuildings.CalcBody();
+            });
+
+            $('#greatbuildings').on('blur', '#fpPerTile', function () {
+                GreatBuildings.FPPerTile = parseFloat($('#fpPerTile').val());
+                if (isNaN(GreatBuildings.FPPerTile)) GreatBuildings.FPPerTile = 0;
+                localStorage.setItem('GreatBuildingsFPPerTile', GreatBuildings.FPPerTile);
                 GreatBuildings.CalcBody();
             });
 
@@ -143,6 +155,9 @@ let GreatBuildings =
         h.push('<br>')
         h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">');
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
+        h.push('<br>');
+        h.push(i18n('Boxes.GreatBuildings.FPPerTile') + ' ');
+        h.push('<input type="number" id="fpPerTile" step="0.01" min="0" max="1000" value="' + GreatBuildings.FPPerTile + '" title="' + i18n('Boxes.GreatBuildings.TTFPPerTile') + '">');
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
         h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + i18n('Boxes.GreatBuildings.TTRewardPerDay') + '">');
