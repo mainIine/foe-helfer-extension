@@ -635,5 +635,13 @@
     "Settings.Version.PlayerId": "Spieler Id:",
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "Welt:",
+    "Time": "HH:mm:ss",
+    "WsChat.Developer": "Entwickler",
+    "WsChat.Guild": "Gilde - ",
+    "WsChat.InRoom": "Im Raum",
+    "WsChat.ReadmodeActivated": "Lesemodus aktiviert",
+    "WsChat.ReadmodeDeactivated": "Lesemodus deaktiviert",
+    "WsChat.SendBtn": "Senden",
+    "WsChat.World": "Welt - ",
     "_Language": "Deutsch"
 }
