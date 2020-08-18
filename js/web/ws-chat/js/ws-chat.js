@@ -319,7 +319,7 @@ let Chat = {
 			languages.push('en');
 		}
 
-		if (Chat.Lang) languages.push(Chat.Lang);
+		languages.push(Chat.Lang);
 
 		const languageDatas = await Promise.all(
 			languages
@@ -332,9 +332,6 @@ let Chat = {
 						.catch(()=>({}))
 				)
 		);
-
-		// @Todo: wieder entfernen
-		console.log('languageDatas: ', languageDatas);
 
 		for (let languageData of languageDatas) {
 			i18n.translator.add({ 'values': JSON.parse(languageData) });
@@ -374,8 +371,9 @@ let Chat = {
 			throw "Missing Player Data";
 		}
 
-		cdnRecivedPromise
-		.then(() => Chat.Init());
+		moment.locale(Chat.Lang);
+
+		cdnRecivedPromise.then(() => Chat.Init());
 	},
 
 
@@ -391,17 +389,17 @@ let Chat = {
 				<div id="chat">
 					<div class="tabs">
 					<ul id="top-bar" class="horizontal">
-						<li class="${Chat.ChatRoom === ''       ? ' active':''}"><a href="chat.html?"><span>Gilde: ${Chat.GuildName}</span></a></li>
-						<li class="${Chat.ChatRoom === 'global' ? ' active':''}"><a href="chat.html?chat=global"><span>Welt: ${Chat.World}</span></a></li>
-						<li class="${Chat.ChatRoom === 'dev'    ? ' active':''}"><a href="chat.html?chat=dev"><span>Entwickler</span></a></li>
+						<li class="${Chat.ChatRoom === ''       ? ' active':''}"><a href="chat.html?"><span>${i18n('WsChat.Guild')} ${Chat.GuildName}</span></a></li>
+						<li class="${Chat.ChatRoom === 'global' ? ' active':''}"><a href="chat.html?chat=global"><span>${i18n('WsChat.World')} ${Chat.World}</span></a></li>
+						<li class="${Chat.ChatRoom === 'dev'    ? ' active':''}"><a href="chat.html?chat=dev"><span>${i18n('WsChat.Developer')}</span></a></li>
 					</ul>
 					</div>
 					<div class="message_box" id="message_box"></div>
 				</div>
-				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
+				<div id="users"><div class="head">${i18n('WsChat.InRoom')} <span id="modus"><i title="${i18n('WsChat.ReadmodeDeactivated')}" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 			</div>
 			<div class="chat-panel">
-				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">${i18n('Settings.Entry.GlobalSend')}</button>
+				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">${i18n('WsChat.SendBtn')}</button>
 			</div>
 		`;
 
@@ -455,10 +453,10 @@ let Chat = {
 				portrait: Chat.PlayerPortrait || '',
 				connectionId: connectionId
 			};
-			console.log('setup', setupData);
+			// console.log('setup', setupData);
 			Chat.WebsocketChat.send(JSON.stringify(setupData));
 
-			Chat.SystemRow('Verbunden!', 'success');
+			Chat.SystemRow(i18n('WsChat.Connected'), 'success');
 		};
 
 
@@ -472,13 +470,13 @@ let Chat = {
 
 		// Error, da geht was nicht
 		Chat.WebsocketChat.onerror	= function(ev){
-			Chat.SystemRow('Es ist ein Fehler aufgetreten - ' + ev.data, 'error');
+			Chat.SystemRow(i18n('WsChat.ErrorOccurred') + ev.data, 'error');
 		};
 
 
 		// User hat das [X] geklickt
 		Chat.WebsocketChat.onclose 	= function(){
-			Chat.SystemRow('Verbindung geschlossen', 'error');
+			Chat.SystemRow(i18n('WsChat.ConnectionClosed'), 'error');
 		};
 	},
 
@@ -526,11 +524,11 @@ let Chat = {
 		document.getElementById('modus').addEventListener('click', function(){
 			if( Chat.ReadMode === 'live' ){
 				Chat.ReadMode = 'read';
-				document.querySelector('.head span').innerHTML = '<i title="Lesemodus aktivert" class="fa fa-eye" aria-hidden="true"></i>';
+				document.querySelector('.head span').innerHTML = `<i title="${i18n('WsChat.ReadmodeActivated')}" class="fa fa-eye" aria-hidden="true"></i>`;
 				// $('.head').find('span').html('<i title="Lesemodus aktivert" class="fa fa-eye" aria-hidden="true"></i>');
 			} else {
 				Chat.ReadMode = 'live';
-				document.querySelector('.head span').innerHTML = '<i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i>';
+				document.querySelector('.head span').innerHTML = `<i title="${i18n('WsChat.ReadmodeDeactivated')}" class="fa fa-eye-slash" aria-hidden="true"></i>`;
 				// $('.head').find('span').html('<i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i>');
 			}
 		});
@@ -700,7 +698,7 @@ let Chat = {
 				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
 
 				const TextR = document.createElement('em');
-				TextR.innerText = player.name + ' hat den Chat erneut betreten';
+				TextR.innerText = `${player.name} ${i18n('WsChat.UserReEnter')}`;
 
 				Chat.PlaySound('user-enter');
 				Chat.SmallBox('user-notification', TextR, '', message.time);
@@ -710,7 +708,7 @@ let Chat = {
 				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
 
 				const TextR = document.createElement('em');
-				TextR.innerText = player.name + ' hat den Chat betreten';
+				TextR.innerText = `${player.name} ${i18n('WsChat.UserEnter')}`;
 
 				Chat.PlaySound('user-enter');
 				Chat.SmallBox('user-notification', TextR, '', message.time);
@@ -720,7 +718,7 @@ let Chat = {
 				const player = Player.get(message.player);
 
 				const TextR = document.createElement('em');
-				TextR.innerText = player.name + ' ist gegangen';
+				TextR.innerText = `${player.name} ${i18n('WsChat.UserLeave')}`;
 
 				player.remove();
 				Chat.PlaySound('user-leave');
@@ -728,11 +726,11 @@ let Chat = {
 				break;
 			}
 			case 'disconnect': {
-				Chat.SystemRow('Verbindung vom Server geschlossen ('+message.reason+')', 'error');
+				Chat.SystemRow(i18n('WsChat.DisconnectError') + '(' + message.reason + ')', 'error');
 				break;
 			}
 			case 'error': {
-				Chat.SystemRow('Verbindungs fehler ('+message.error+')', 'error');
+				Chat.SystemRow(i18n('WsChat.ConnectionError') + '('+message.error+')', 'error');
 				break;
 			}
 		}
@@ -742,9 +740,6 @@ let Chat = {
 			// TODO: fix animation
 			const box = document.getElementById('message_box').parentElement;
 			box.scrollTop = box.scrollHeight;
-			// $('#message_box').animate({
-			// 	scrollTop: $('#message_box').prop('scrollHeight')
-			// });
 		}
 	},
 
@@ -940,14 +935,6 @@ let Chat = {
 			}
 		});
 
-		// Treffer wurde angeklickt
-		// $('body').on('click', '#player-result ul li', function(){
-		// 	$('#message-input').val( '@' + $(this).text() + ': ' );
-
-		// 	$('#player-result').hide();
-		// 	$('#player-result ul').html('');
-		// 	$('#message-input').focus();
-		// });
 		document.addEventListener('click', e => {
 			if (/** @type {HTMLElement} */(e.target).matches('#player-result ul li')) {
 				const input = /** @type {HTMLInputElement} */(document.getElementById('message-input'));
@@ -1040,12 +1027,6 @@ let Chat = {
 
 		box.appendChild(d);
 
-		// $('#message_box').append(
-		// 	'<div class="system-message">' +
-		// 	'<span class="' + type + '">' + text + '</span>' +
-		// 	'</div>'
-		// );
-
 		// $('#message_box').animate({
 		// 	scrollTop: $('#message_box').prop('scrollHeight')
 		// });
@@ -1058,7 +1039,7 @@ let Chat = {
 	 */
 	Close: ()=> {
 
-		console.log('AJAX-Close')
+		// console.log('AJAX-Close')
 		//$.post('https://api.foe-rechner.de/GuildChat/?guild_id=' + Chat.GildID + '&player_id=' + Chat.PlayerID + '&world=' + Chat.World, {room_id: 1, dir: 'leave'});
 
 		//Chat.SendMsg('onlyOthers', 'leaved');
@@ -1089,9 +1070,7 @@ let Chat = {
 		}
 
 		document.body.appendChild(bar);
-		//$('body').append(bar);
 
-		//let btn = $('<img />').attr('src', '../css/images/face.png').addClass('toggle-emoticon-bar');
 		const btn = document.createElement('img');
 		btn.src = '../images/face.png';
 		btn.classList.add('toggle-emoticon-bar');
@@ -1100,19 +1079,11 @@ let Chat = {
 		const panel = document.querySelector('.chat-panel');
 		panel.appendChild(bar);
 		panel.appendChild(btn);
-		//$('.chat-panel').append(btn);
 
 		// Functions
-
-		btn.addEventListener('click', /*$('body').on('click', '.toggle-emoticon-bar',*/ function()
+		btn.addEventListener('click', function()
 		{
 			document.querySelector('.emoticon-bar').classList.toggle('show');
-			// if( $('.emoticon-bar').hasClass('show') ){
-			// 	$('.emoticon-bar').removeClass('show');
-
-			// } else {
-			// 	$('.emoticon-bar').addClass('show');
-			// }
 		});
 
 
@@ -1124,13 +1095,6 @@ let Chat = {
 				input.value += ' ' + ico;
 			}
 		});
-		// $('body').on('click', '.add-icon', function()
-		// {
-		// 	let ico = $(this).attr('alt'),
-		// 		val = $('#message-input').val();
-
-		// 	$('#message-input').val( val + ' ' + ico);
-		// })
 	},
 
 
@@ -1201,7 +1165,7 @@ let Chat = {
 		if(pPortraits === null || Chat.compareTime(Date.now(), pPortraitsTimestamp) === false)
 		{
 			let portraits = {};
-			console.log('AJAX-Load-Portraits')
+			// console.log('AJAX-Load-Portraits')
 			$.ajax({
 				type: 'GET',
 				url: Chat.InnoCDN + 'assets/shared/avatars/Portraits.xml',
@@ -1226,11 +1190,7 @@ let Chat = {
 
 
 	timeStr: time => {
-		const date = new Date(time);
-		const h = (''+date.getHours()).padStart(2, '0');
-		const m = (''+date.getMinutes()).padStart(2, '0');
-		const s = (''+date.getSeconds()).padStart(2, '0');
-		return `${h}:${m}:${s} Uhr`;
+		return moment(time).format(i18n('Time'));
 	}
 };
 
