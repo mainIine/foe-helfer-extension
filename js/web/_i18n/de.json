@@ -638,7 +638,9 @@
     "Time": "HH:mm:ss",
     "WsChat.Connected": "Verbunden!",
     "WsChat.ConnectionClosed": "Verbindung geschlossen!",
+    "WsChat.ConnectionError": "Verbindungsfehler",
     "WsChat.Developer": "Entwickler",
+    "WsChat.DisconnectError": "Verbindung wurde vom Server geschlossen.",
     "WsChat.ErrorOccurred": "Es ist ein Fehler aufgetreten: ",
     "WsChat.Guild": "Gilde - ",
     "WsChat.InRoom": "Im Raum",
@@ -646,6 +648,7 @@
     "WsChat.ReadmodeDeactivated": "Lesemodus deaktiviert",
     "WsChat.SendBtn": "Senden",
     "WsChat.UserEnter": " hat den Raum betreten.",
+    "WsChat.UserLeave": " ist gegangen.",
     "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
     "_Language": "Deutsch"
