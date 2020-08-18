@@ -13,10 +13,12 @@
  * **************************************************************************************
  */
 
+
 // @ts-ignore
 const html = litHtml.html;
 // @ts-ignore
 const render = litHtml.render;
+
 
 class Player {
 
@@ -38,7 +40,7 @@ class Player {
 		this.nameSpan = document.createElement('span');
 		this.elem.appendChild(this.nameSpan);
 		document.getElementById('users').appendChild(this.elem);
-		this.update(name, portrait,isdev, secretsMatch);
+		this.update(name, portrait, isdev, secretsMatch);
 	}
 
 	/**
@@ -156,6 +158,7 @@ class Player {
 				secretsMatch || false
 			);
 			Player.all.set(id, player);
+
 		} else {
 			if (name != null && portrait != null && secretsMatch != null) {
 				player.update(name, portrait, isDev, secretsMatch);
@@ -170,6 +173,10 @@ class Player {
  */
 Player.all = new Map();
 
+
+/**
+ * @type {function(string): any}
+ */
 const messageFormatter = (() => {
 	const defaultRules = SimpleMarkdown.defaultRules;
 	
@@ -245,17 +252,16 @@ const messageFormatter = (() => {
 })();
 
 
-
 let Chat = {
 
 	wsUri: 'ws://ws.foe-helper.com:9000/',
-	//wsUri: 'ws://127.0.0.1:9000/',
 	GuildID: 0,
 	GuildName: '',
 	PlayerID: 0,
 	PlayerName: null,
 	PlayerPortrait: null,
 	World: '',
+	Lang: 'en',
 	OtherPlayers: /** @type {{player_name: string, player_id: Number, avatar: string, secretsMatch: boolean}[]} */([]),
 	PlayersPortraits: {},
 	OnlinePlayers: [],
@@ -268,16 +274,19 @@ let Chat = {
 	ChatRoom: '',
 
 	/**
-	 * Holt die Daten für den Chat
+	 * Get the datas for the chat
 	 */
 	getData: () => {
+
 		const URLdata = Object.fromEntries( new URLSearchParams(location.search) );
 
 		let player_id = -1;
 		let world = '';
-		Chat.ChatRoom = URLdata['chat']||'';
+		Chat.ChatRoom = URLdata['chat'] || '';
+		Chat.Lang = URLdata['lang'] || '';
 
 		const sessionPlayer = sessionStorage.getItem('ChatPlayer');
+
 		if (sessionPlayer) {
 			const data = JSON.parse(sessionPlayer);
 			player_id = data.player_id;
@@ -287,11 +296,45 @@ let Chat = {
 
 			player_id = +URLdata['player'];
 			world     = URLdata['world'];
+
 			if (!/^[a-z]{2}\d{1,2}$/.test(world)) {
 				throw "Invalid World-Name '"+world+"'";
 			}
 
 			sessionStorage.setItem('ChatPlayer', JSON.stringify({player_id, world}));
+		}
+
+		if(Chat.Lang === ''){
+			Chat.Lang = sessionStorage.getItem('ChatLang');
+
+		} else {
+			Chat.Lang = URLdata['lang'];
+			sessionStorage.setItem('ChatLang', URLdata['lang']);
+		}
+
+		let languages = [];
+
+		// Englisches Fallback laden
+		if (Chat.Lang !== 'en') {
+			languages.push('en');
+		}
+
+		languages.push(Chat.Lang);
+
+		const languageDatas = languages.map(lang =>
+			// frage die Sprachdatei an
+			fetch('/js/web/_i18n/'+lang+'.json')
+				// lade die antwort als JSON
+				.then(response => response.text())
+				// im fehlerfall wird ein leeres Objekt zurück gegeben
+				.catch(()=>({}))
+		);
+
+		// @Todo: wieder entfernen
+		console.log('languageDatas: ', languageDatas);
+
+		for (let languageData of languageDatas) {
+			i18n.translator.add({ 'values': JSON.parse(languageData) });
 		}
 
 		Chat.PlayerID = player_id;
@@ -323,6 +366,7 @@ let Chat = {
 
 			Chat.GuildID = playerData.guild_id;
 			Chat.GuildName = playerData.guild_name;
+
 		} else {
 			throw "Missing Player Data";
 		}
@@ -354,7 +398,7 @@ let Chat = {
 				<div id="users"><div class="head">Im Raum <span id="modus"><i title="Lesemodus deaktiviert" class="fa fa-eye-slash" aria-hidden="true"></i></span></div></div>
 			</div>
 			<div class="chat-panel">
-				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">Senden</button>
+				<textarea id="message-input" autocomplete="off" spellcheck="false" aria-autocomplete="none"></textarea><button id="send-btn">${i18n('Settings.Entry.GlobalSend')}</button>
 			</div>
 		`;
 
@@ -376,7 +420,7 @@ let Chat = {
 		// get a random connection id if this tab doesn't already have one
 		let connectionId = sessionStorage.getItem('websocket-connection-id') || '';
 		if (!connectionId) {
-			var randArray = new Uint8Array(24);
+			let randArray = new Uint8Array(24);
 			window.crypto.getRandomValues(randArray);
 			const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!$";
 			let rest = 0;
@@ -557,11 +601,10 @@ let Chat = {
 
 
 	/**
-	 * Setzt einen Nachrichtenzeile für die Chatbox zusammen
+	 * The message for the textbox
 	 *
-	 * @param id
-	 * @param text
-	 * @param time
+	 * @param message
+	 * @constructor
 	 */
 	TextRow: (message)=> {
 		// let PlayerName = '',
@@ -691,53 +734,6 @@ let Chat = {
 			}
 		}
 
-		// if (id === Chat.PlayerID) {
-		// 	PlayerName = '';
-		// 	ExtClass = 'user-self';
-		// 	TextR = emojify.replace(text);
-		// 	TextR = Chat.MakeImage(TextR);
-		// 	TextR = Chat.MakeURL(TextR);
-
-		// 	Chat.SmallBox(ExtClass, TextR, PlayerName, time);
-
-		// } else if(type === 'onlyOthers'){
-		// 	let Player = Chat.OtherPlayers.find(obj => {
-		// 		return obj.player_id === id;
-		// 	});
-
-		// 	if(text === 'entered'){
-		// 		TextR = '<em>' + Player['player_name'] + ' hat den Chat betreten</em>';
-		// 		Chat.UserEnter(Player);
-		// 		Chat.PlaySound('user-enter');
-
-		// 	} else if(text === 'leaved') {
-		// 		TextR = '<em>' + Player['player_name'] + ' ist gegangen</em>';
-		// 		Chat.UserLeave(Player);
-		// 		Chat.PlaySound('user-leave');
-		// 	}
-
-		// 	ExtClass = 'user-notification';
-		// 	PlayerName = '';
-
-		// 	Chat.SmallBox(ExtClass, TextR, PlayerName, time);
-
-		// } else {
-
-		// 	let Player = Chat.OtherPlayers.find(obj => {
-		// 		return obj.player_id === id;
-		// 	});
-
-		// 	PlayerName = Player['player_name'];
-		// 	PlayerImg = 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg';
-		// 	ExtClass = 'user-other';
-		// 	TextR = Chat.MakeImage(text);
-		// 	TextR = emojify.replace(TextR);
-		// 	TextR = Chat.MakeURL(TextR);
-
-		// 	Chat.BigBox(ExtClass, TextR, PlayerImg, PlayerName, time);
-
-		// 	Chat.PlaySound('notification-sound');
-		// }
 
 		if( Chat.ReadMode === 'live' ){
 			// TODO: fix animation
@@ -788,16 +784,11 @@ let Chat = {
 
 		const s = document.createElement('span');
 		s.innerText = Player['player_name'];
-		Player.isdev ? 	s.classList = "dev" : s.classList = "";
+		Player.isdev ? s.classList = "dev" : s.classList = "";
 		
 		d.appendChild(s);
-		
-		// let pR = $('<div />').addClass('player').attr('data-id', Player['player_id'])
-		// 	.append( $('<img />').attr('src', 'https://foede.innogamescdn.com/assets/shared/avatars/' + Chat.PlayersPortraits[Player['avatar']] + '.jpg') )
-		// 	.append( $('<span />').text( Player['player_name'] ) );
 
 		document.getElementById('users').appendChild(d);
-		// $('#users').append(pR);
 
 		Chat.OnlinePlayers.push(Player['player_name']);
 	},
@@ -813,9 +804,6 @@ let Chat = {
 			// TODO: fix animation
 			const box = document.getElementById('message_box');
 			box.scrollTop = box.scrollHeight;
-			// $('[data-id="' + Player['player_id'] + '"]').fadeToggle(function(){
-			// 	$(this).remove();
-			// });
 		}
 
 		if(Chat.OnlinePlayers[Player['player_name']] !== undefined){
@@ -1222,7 +1210,7 @@ let Chat = {
 					});
 
 					localStorage.setItem('PlayersPortraits', JSON.stringify(portraits));
-					localStorage.setItem('PlayersPortraitsTimestamp', ''+Chat.getTimestamp(24));
+					localStorage.setItem('PlayersPortraitsTimestamp', '' + Chat.getTimestamp(24));
 
 					Chat.PlayersPortraits = portraits;
 				}
@@ -1232,6 +1220,7 @@ let Chat = {
 			Chat.PlayersPortraits = JSON.parse(pPortraits);
 		}
 	},
+
 
 	timeStr: time => {
 		const date = new Date(time);
