@@ -157,7 +157,7 @@ let GreatBuildings =
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.FPPerTile') + ' ');
-        h.push('<input type="number" id="FPPerTile" step="0.01" min="0" max="1000" value="' + GreatBuildings.FPPerTile + '" title="' + i18n('Boxes.GreatBuildings.TTFPPerTile') + '">');
+        h.push('<input type="number" id="fpPerTile" step="0.01" min="0" max="1000" value="' + GreatBuildings.FPPerTile + '" title="' + i18n('Boxes.GreatBuildings.TTFPPerTile') + '">');
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
         h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + i18n('Boxes.GreatBuildings.TTRewardPerDay') + '">');
@@ -258,7 +258,6 @@ let GreatBuildings =
             let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
             let IsRandomFP = (GreatBuildings.FPGreatBuildings[Index].ID === 'X_VirtualFuture_Landmark2' || GreatBuildings.FPGreatBuildings[Index].ID === 'X_SpaceAgeAsteroidBelt_Landmark1');
 
-            if (ROIResults[Index]['BestLevel'] === undefined) continue; //LG zu hoch, keine weiteren Daten mehr verfügbar
             if (GreatBuildings.HideNewGBs && ShowGoodCosts[Index]) continue;
 
             h.push('<tr>');
@@ -271,7 +270,7 @@ let GreatBuildings =
                 h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
             }
-            else {
+            else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
                 h.push('<td>-</td>');
                 h.push('<td>-</td>');
                 h.push('<td>-</td>');
