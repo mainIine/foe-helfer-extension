@@ -304,7 +304,7 @@ let Outposts = {
 
 		// Güter durchgehen
 		for(let resourceID of resourceIDs){
-			t.push('<th class="text-center">' + GoodsData[resourceID].name + '</th>');
+			t.push('<th class="text-center goods-image"><span class="goods-sprite-50 sm ' + resourceID + '"></span></th>');
 		}
 
 		t.push('</tr>');
@@ -370,48 +370,45 @@ let Outposts = {
 				
 				const displayVal = HTML.Format(displaySums && resourceID !== 'diplomacy' && resourceID !== goodProductionResourceId ? resourceSumAfter : resourceCost);
 				
-				if (!displaySums && resourceInStock < resourceSumBefore) {
-					t.push(displayVal);
-				} else {
-					if (resourceInStock >= resourceSumAfter) {
-						// Es sind genug Güter vorhanden.
-						t.push('<span class="text-success">' +displayVal + '</span>' );
-					} else {
-						// Es sind nicht genug Güter vorhanden.
-						t.push(displayVal + ' <small class="text-danger">' + HTML.Format(resourceInStock - resourceSumAfter) + '</small>' );
-					}
+				if (resourceInStock >= resourceSumAfter) {
+					// Es sind genug Güter vorhanden.
+					t.push('<span class="text-success">' +displayVal + '</span>' );
+				}
+				else {
+					// Es sind nicht genug Güter vorhanden.
+					t.push(displayVal + ' <small class="text-danger">' + HTML.Format(resourceInStock - resourceSumAfter) + '</small>' );
+				}
 
-					// Empfehlung für Diplomatie
-					if (resourceID === 'diplomacy') {
-						/** @type {string[]} */
-						let content = [];
-						/** @type {number} */
-						let rest = resourceSumAfter - resourceInStock;
+				// Empfehlung für Diplomatie
+				if (resourceID === 'diplomacy') {
+					/** @type {string[]} */
+					let content = [];
+					/** @type {number} */
+					let rest = resourceSumAfter - resourceInStock;
 
-						if (rest > 0) {
-							UnlockedDiplomacyBuildings.forEach((item, i)=> {
+					if (rest > 0) {
+						UnlockedDiplomacyBuildings.forEach((item, i)=> {
 
-								// letzte Element des Arrays
-								if (i === UnlockedDiplomacyBuildings.length-1 && rest > 0){
-									let c = Math.ceil(rest / item['diplomacy']);
+							// letzte Element des Arrays
+							if (i === UnlockedDiplomacyBuildings.length-1 && rest > 0){
+								let c = Math.ceil(rest / item['diplomacy']);
+								content.push(c + 'x ' + item['name']);
+							}
+							else {
+								let c = Math.floor(rest / item['diplomacy']);
+
+								// passt in den Rest
+								if(c > 0) {
+									rest -= (item['diplomacy'] * c);
 									content.push(c + 'x ' + item['name']);
-
-								} else {
-									let c = Math.floor(rest / item['diplomacy']);
-
-									// passt in den Rest
-									if(c > 0) {
-										rest -= (item['diplomacy'] * c);
-										content.push(c + 'x ' + item['name']);
-									}
 								}
-							});
+							}
+						});
 
-							t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
-						}
+						t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
 					}
 				}
-				
+			
 				t.push('</td>');
 			}
 
@@ -479,11 +476,7 @@ let Outposts = {
 		t.push('<td>' + i18n('Boxes.Outpost.DescRequired') + '</td><td></td>');
 
 		for (let resourceID of resourceIDs) {
-			if (resourceID !== 'diplomacy') {
-				t.push('<td class="text-center">' + HTML.Format(sums[resourceID]) + '</td>');
-			} else {
-				t.push('<td></td>');
-			}
+			t.push('<td class="text-center">' + HTML.Format(sums[resourceID]) + '</td>');
 		}
 
 		t.push('</tr>');
@@ -506,14 +499,8 @@ let Outposts = {
 		t.push('<td><strong>' + i18n('Boxes.Outpost.DescStillMissing') + '</strong></td><td colspan=""></td>');
 
 		for (let resourceID of resourceIDs) {
-			if (resourceID !== 'diplomacy') {
-				let difference = currStock[resourceID] - sums[resourceID];
-
-				t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
-
-			} else {
-				t.push('<td></td>');
-			}
+			let difference = currStock[resourceID] - sums[resourceID];
+			t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
 		}
 
 		t.push('</tr>');
