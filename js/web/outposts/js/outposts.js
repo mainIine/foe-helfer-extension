@@ -336,10 +336,7 @@ let Outposts = {
                 }
 				const resourceInStock = currStock[resourceID];
 								
-				if (resourceCost == null || resourceCost <= 0) {
-					t.push('<td></td>');
-					continue;
-				}
+				if (!resourceCost) resourceCost = 0;
 
 				t.push('<td class="text-center" nowrap="nowrap">');
 				
