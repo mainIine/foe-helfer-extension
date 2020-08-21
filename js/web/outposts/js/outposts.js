@@ -304,7 +304,7 @@ let Outposts = {
 
 		// Güter durchgehen
 		for(let resourceID of resourceIDs){
-			t.push('<th class="text-center goods-image"><span class="goods-sprite-50 sm ' + resourceID + '"></span></th>');
+			t.push(`<th class="text-center"><span class="goods-sprite-50 ${resourceID } goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
 		}
 
 		t.push('</tr>');
@@ -506,7 +506,12 @@ let Outposts = {
 		t.push('</table>');
 
 
-		$('#outpostConsumablesBody').html(t.join(''));
+		$('#outpostConsumablesBody').html(t.join('')).promise().done(function(){
+			// Goodname via tooltip
+			$('.goods-name').tooltip({
+				container: '#outpostConsumables'
+			});
+		});
 	},
 
 
