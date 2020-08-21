@@ -44,8 +44,16 @@
 	position: static;
 }
 
+#negotiationBox #negotiationBoxBody .goods-sprite.cornered {
+	position: absolute;
+}
+
 #negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
 	bottom: auto;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
+
 }
 
 #negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
@@ -188,10 +196,10 @@
 
 #negotiationBox .cornered {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: -8px;
+	right: 26px;
 	display: none;
-	transform: scale(0.5) translate(50%,-50%);
+	transform: scale(0.5);
 }
 
 /*#negotiationBox .wrong-goods .cornered,*/
