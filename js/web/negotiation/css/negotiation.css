@@ -37,6 +37,15 @@
 	width: 4em;
 	padding: 2px;
 	border-radius: 3px;
+	position: relative;
+}
+
+#negotiationBox #negotiationBoxBody .goods-sprite {
+	position: static;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
+	bottom: auto;
 }
 
 #negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
