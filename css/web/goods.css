@@ -15,7 +15,7 @@
 
 /* BOF generated */
 .goods-sprite {display:inline-block;height:3em;position: relative;}
-.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:1207px 200px;position:absolute;}
+.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:1207px 200px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
 .goods-sprite.goods::before{background-position:0 0;width:46px;height:56px;transform:rotate(-90deg)}
 .goods-sprite.corals::before{background-position:0 -58px;width:51px;height:51px}
 .goods-sprite.orichalcum::before{background-position:-49px 0;width:50px;height:51px;transform:rotate(-90deg)}
@@ -125,7 +125,7 @@
 .goods-sprite.money::before,
 .goods-sprite.medals::before,
 .goods-sprite.empty::before,
-.goods-sprite.strategy_points::before {background:url('../images/goods/goods-extra.png') top left no-repeat;background-size:225px 45px;width:45px;height:45px;}
+.goods-sprite.strategy_points::before {background:url('../images/goods/goods-extra.png') top left no-repeat;background-size:225px 90px;width:45px;height:45px;}
 .goods-sprite.supplies::before{background-position: 0 0;}
 .goods-sprite.money::before{background-position: -45px 0;}
 .goods-sprite.medals::before{background-position: -94px 0;}
@@ -134,7 +134,7 @@
 /* BOF generated */
 /* 50% Version */
 .goods-sprite-50 {display:inline-block;height:3em;position: relative;}
-.goods-sprite-50::before{content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:755px 125px;position:absolute;}
+.goods-sprite-50::before{content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:755px 125px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
 .goods-sprite-50.goods::before{background-position:0 0;width:29px;height:35px;transform:rotate(-90deg)}
 .goods-sprite-50.corals::before{background-position:0 -37px;width:32px;height:32px}
 .goods-sprite-50.orichalcum::before{background-position:-31px 0;width:32px;height:32px;transform:rotate(-90deg)}
@@ -244,9 +244,18 @@
 .goods-sprite-50.money::before,
 .goods-sprite-50.medals::before,
 .goods-sprite-50.empty::before,
-.goods-sprite-50.strategy_points::before {background:url('../images/goods/goods-extra.png') top left no-repeat;background-size:120px 24px;width:24px;height:24px;}
+.goods-sprite-50.copper_coins::before,
+.goods-sprite-50.koban_coins::before,
+.goods-sprite-50.deben::before,
+.goods-sprite-50.diplomacy::before,
+.goods-sprite-50.strategy_points::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 112.5px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
+
 .goods-sprite-50.supplies::before{background-position: 0 0;}
 .goods-sprite-50.money::before{background-position: -22px 0;}
 .goods-sprite-50.medals::before{background-position: -47px 0;}
 .goods-sprite-50.empty::before {background-position: -69px 0;}
-.goods-sprite-50.strategy_points::before {background-position: -96px 0;}
+.goods-sprite-50.strategy_points::before{background-position: -96px 0;}
+.goods-sprite-50.copper_coins::before{background-position:-45px -43px;background-size:180px 72px;width: 26px;}
+.goods-sprite-50.koban_coins::before{background-position:-21px -41px;background-size:180px 72px;}
+.goods-sprite-50.deben::before{background-position:0 -42px;background-size:180px 72px;}
+.goods-sprite-50.diplomacy::before{background-position:-74px -44px;background-size:180px 72px;width:40px;}
