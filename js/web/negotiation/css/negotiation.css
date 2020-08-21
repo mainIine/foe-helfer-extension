@@ -15,8 +15,8 @@
 
 #negotiationBox {
 	top: 15%;
-	left: calc(50% + 10px);
-	width: 800px;
+	left: calc(50% + 15px);
+	width: 810px;
 	transform: translateX(-50%);
 }
 
