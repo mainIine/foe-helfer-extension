@@ -38,16 +38,28 @@ let GreatBuildings =
     },
 
     FPGreatBuildings: [
-        { 'ID': 'X_EarlyMiddleAge_Landmark1', 'GoodCosts': 20, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Hagia 
-        { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Castel del Monte
-        { 'ID': 'X_PostModernEra_Landmark1', 'GoodCosts': 75, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10]}, //Cape
-        { 'ID': 'X_ContemporaryEra_Landmark2', 'GoodCosts': 100, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6]}, //Inno Tower
+        { 'ID': 'X_EarlyMiddleAge_Landmark1', 'GoodCosts': 20, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Hagia 
+        { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Castel del Monte
+        { 'ID': 'X_PostModernEra_Landmark1', 'GoodCosts': 75, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10] }, //Cape
+        { 'ID': 'X_ContemporaryEra_Landmark2', 'GoodCosts': 100, 'Productions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Inno Tower
         { 'ID': 'X_FutureEra_Landmark1', 'GoodCosts': 150, 'Productions': [0.1, 0.12, 0.14, 0.17, 0.19, 0.22, 0.24, 0.26, 0.28, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.6, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.7, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.795, 0.8, 0.805, 0.81, 0.815, 0.82, 0.825, 0.83, 0.835, 0.84, 0.845, 0.85, 0.855, 0.86, 0.865, 0.87, 0.875, 0.88, 0.885, 0.89, 0.895, 0.9, 0.901, 0.902, 0.903, 0.904, 0.905, 0.906, 0.907, 0.908, 0.909, 0.91, 0.911, 0.912, 0.913, 0.914, 0.915, 0.916, 0.917, 0.918, 0.919, 0.92, 0.921, 0.922, 0.923, 0.924, 0.925, 0.926, 0.927, 0.928, 0.929, 0.93, 0.931, 0.932, 0.933, 0.934, 0.935, 0.936, 0.937, 0.938, 0.939, 0.94, 0.941, 0.942, 0.943, 0.944, 0.945, 0.946, 0.947, 0.948, 0.949, 0.95, 0.951, 0.952, 0.953, 0.954, 0.955, 0.956, 0.957, 0.958, 0.959, 0.96, 0.961, 0.962, 0.963, 0.964, 0.965, 0.966, 0.967, 0.968, 0.969, 0.97, 0.971, 0.972, 0.973, 0.974, 0.975, 0.976, 0.977, 0.978, 0.979, 0.98, 0.981, 0.982, 0.983, 0.984, 0.985, 0.986, 0.987, 0.988, 0.989, 0.99, 0.991, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 1, 1] }, //Arche
         { 'ID': 'X_ArcticFuture_Landmark2', 'GoodCosts': 200, 'Productions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10] }, //Arctic Orangerie
-        { 'ID': 'X_OceanicFuture_Landmark2', 'GoodCosts': 300, 'Productions': [1, 1, 3, 3, 4, 4, 5, 5, 6, 8]}, //Kraken
-        { 'ID': 'X_VirtualFuture_Landmark2', 'GoodCosts': 500, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825, 91.538, 91.575, 91.6305, 91.6675, 91.7045, 91.7415, 91.7785, 91.8155, 91.8525, 91.8895, 91.908, 91.945, 91.9635, 92.0005, 92.019, 92.0375, 92.056, 92.093, 92.1115, 92.13, 92.1485, 92.167, 92.167, 92.1855, 92.204, 92.2225, 92.241]}, //Himeji
+        { 'ID': 'X_OceanicFuture_Landmark2', 'GoodCosts': 300, 'Productions': [1, 1, 3, 3, 4, 4, 5, 5, 6, 8] }, //Kraken
+        { 'ID': 'X_VirtualFuture_Landmark2', 'GoodCosts': 500, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825, 91.538, 91.575, 91.6305, 91.6675, 91.7045, 91.7415, 91.7785, 91.8155, 91.8525, 91.8895, 91.908, 91.945, 91.9635, 92.0005, 92.019, 92.0375, 92.056, 92.093, 92.1115, 92.13, 92.1485, 92.167, 92.167, 92.1855, 92.204, 92.2225, 92.241] }, //Himeji
         { 'ID': 'X_SpaceAgeAsteroidBelt_Landmark1', 'GoodCosts': 1000, 'Productions': [5.18, 6.66, 8.14, 9.62, 13.875, 15.725, 17.575, 19.425, 21.275, 23.125, 23.6985, 24.28125, 24.85475, 25.42825, 26.00175, 31.8792, 32.5563, 33.2223, 33.8883, 34.5432, 35.1981, 35.8308, 36.4635, 37.0851, 37.6956, 38.295, 38.8833, 46.03725, 46.6977, 47.33225, 47.9668, 48.57545, 49.1841, 49.76685, 50.3237, 50.88055, 51.42445, 51.94245, 52.4475, 52.9396, 61.05, 61.568, 62.0712, 62.5744, 63.048, 63.5068, 63.9508, 64.3652, 64.7796, 65.1792, 65.564, 65.934, 66.2744, 66.6148, 66.9404, 67.2512, 67.562, 76.3236, 76.63995, 76.93965, 77.2227, 77.4891, 77.7555, 78.00525, 78.255, 78.47145, 78.70455, 78.90435, 79.10415, 79.30395, 79.4871, 79.6536, 79.83675, 79.9866, 80.13645, 80.2863, 80.43615, 80.56935, 80.6859, 80.80245, 80.919, 81.03555, 81.13545, 79.57035, 81.33525, 81.43515, 81.5184, 81.60165, 81.6849, 81.7515, 90.909, 90.983, 91.057, 91.131, 91.205, 91.2605, 91.316, 91.3715, 91.427, 91.4825, 91.538, 91.575, 91.6305, 91.6675, 91.7045, 91.7415, 91.7785, 91.8155, 91.8525, 91.8895, 91.908, 91.945, 91.9635, 92.0005, 92.019, 92.0375, 92.056, 92.093, 92.1115, 92.13, 92.1485, 92.167, 92.167, 92.1855, 92.204, 92.2225, 92.241] }, //Space Carrier
+        { 'ID': 'X_OceanicFuture_Landmark3', 'GoodCosts': 300, 'Productions': [0.17, 0.19, 0.21, 0.23, 0.25, 0.27, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.35, 0.36, 0.37, 0.38, 0.38, 0.39, 0.4, 0.4, 0.41, 0.42, 0.42, 0.43, 0.43, 0.44, 0.45, 0.45, 0.46, 0.47, 0.47, 0.48, 0.49, 0.49, 0.5, 0.5, 0.51, 0.52, 0.52, 0.53, 0.53, 0.54, 0.54, 0.55, 0.55, 0.56, 0.56, 0.57, 0.57, 0.58, 0.58, 0.59, 0.59, 0.6, 0.6, 0.61, 0.61, 0.61, 0.62, 0.62, 0.62, 0.63, 0.63, 0.64, 0.64, 0.64, 0.65, 0.65, 0.65, 0.65, 0.66, 0.66, 0.66, 0.67, 0.67, 0.67, 0.67, 0.68, 0.68, 0.68, 0.68, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.7, 0.7, 0.7], Charges: [4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15]}, // Blue Galaxy
     ],
+
+    BlueGalaxyStaticFPs: { // Durchschnitts FP pro Tag für großen Leuchtturm
+        'R_MultiAge_SummerBonus19a': 0.2,
+        'R_MultiAge_SummerBonus19b': 1.4,
+        'R_MultiAge_SummerBonus19c': 2.75,
+        'R_MultiAge_SummerBonus19d': 4,
+        'R_MultiAge_SummerBonus19e': 6.1,
+        'R_MultiAge_SummerBonus19f': 7.8,
+        'R_MultiAge_SummerBonus19g': 10,
+        'R_MultiAge_SummerBonus19h': 12.8,
+    },
 
     ForderBonus: 90,
     RewardPerDay: 0,
@@ -57,6 +69,7 @@ let GreatBuildings =
     GreatBuildingEntityCache: null,
     FPRewards: 0,
     EventDict: {},
+    FPBuildings: [],
     
 	/**
 	 * Zeigt die Box an oder schließt sie
@@ -185,6 +198,15 @@ let GreatBuildings =
             ShowGoodCosts = [];
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+            if (GreatBuildings.FPGreatBuildings[i].ID === 'X_OceanicFuture_Landmark3') {
+                if (LastMapPlayerID == ExtPlayerID) {
+                    GreatBuildings.RefreshFPBuildings();
+                }
+                else { // Keine Galaxy für andere Spieler weil keine FP Daten vorhanden sind
+                    continue;
+                }                                  
+            }
+
             let CityEntity = MainParser.CityEntities[GreatBuildings.FPGreatBuildings[i].ID];
             let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[i].ID));;          
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
@@ -202,7 +224,7 @@ let GreatBuildings =
 
             let Productions = [];
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
-                if (j < GreatBuildings.FPGreatBuildings[i].Productions.length) {
+                if (GreatBuildings.FPGreatBuildings[i].Productions.length > 10 || j < 0) {
                     if (GreatBuildings.FPGreatBuildings[i].ID === 'X_FutureEra_Landmark1') { // Arche
                         let arc = 1 + MainParser.ArkBonus / 100;
                         Productions[j] = GreatBuildings.FPGreatBuildings[i].Productions[j] * GreatBuildings.RewardPerDay / arc;
@@ -216,16 +238,18 @@ let GreatBuildings =
                 }
             }
 
+            let Charges = GreatBuildings.FPGreatBuildings[i].ID === 'X_OceanicFuture_Landmark3' ? GreatBuildings.FPGreatBuildings[i].Charges : undefined;
+
             let CurrentLevel = (OwnGB !== undefined ? OwnGB['level'] : -1);
 
             let Size = CityEntity['length'] * CityEntity['width'];
-            let ROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts, DoubleCollection);    
+            let ROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCosts, DoubleCollection, Charges);    
 
             let ROIResult2;
             if (ROIResult['BestLevel'] < 10) {
                 ROIResult2 = ROIResult;
                 while (ROIResult2['BestLevel'] < 10) {
-                    ROIResult2 = GreatBuildings.GetROIValues(ROIResult2['BestLevel'] + 1, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCostsm, DoubleCollection);
+                    ROIResult2 = GreatBuildings.GetROIValues(ROIResult2['BestLevel'] + 1, NettoCosts, Productions, Size * GreatBuildings.FPPerTile, GreatBuildings.FPGreatBuildings[i].GoodCostsm, DoubleCollection, Charges);
                 }
             }
             else {
@@ -243,6 +267,9 @@ let GreatBuildings =
         }
 
         ROIResultMap = ROIResultMap.sort(function (a, b) {
+            if (a['ROIResults'] === undefined) return 999999;
+            if (b['ROIResults'] === undefined) return -999999;
+
             let Levela = a['ROIResults']['BestLevel'],
                 Levelb = b['ROIResults']['BestLevel'];
 
@@ -253,6 +280,8 @@ let GreatBuildings =
         });
 
         for (let i = 0; i < GreatBuildings.FPGreatBuildings.length; i++) {
+            if (!ROIResultMap[i]['ROIResults']) continue;
+
             let Index = ROIResultMap[i]['index'];            
             let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GreatBuildings.FPGreatBuildings[Index].ID));;   
             let CurrentLevel = (OwnGB && OwnGB['level'] ? OwnGB['level'] : 0);
@@ -304,8 +333,63 @@ let GreatBuildings =
     },
 
 
-    GetROIValues: (Level, NettoCosts, Productions, BuildDailyCosts, BuildCosts, DoubleCollection) => {
+    RefreshFPBuildings: () => {
+        GreatBuildings.FPBuildings = [];
+
+        let CityMap = Object.values(MainParser.CityMapData);
+
+        for (let i = 0; i < CityMap.length; i++) {
+            let ID = CityMap[i]['id']
+            EntityID = CityMap[i]['cityentity_id'],
+                CityEntity = MainParser.CityEntities[EntityID];
+
+            if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
+
+            if (GreatBuildings.BlueGalaxyStaticFPs[EntityID]) {
+                GreatBuildings.FPBuildings.push({ ID: ID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID] });
+            }
+            else {
+                let Production = Productions.readType(CityMap[i]);
+                if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
+                    let FP = Production['motivatedproducts']['strategy_points'];
+                    GreatBuildings.FPBuildings.push({ ID: ID, FP: FP });
+                }
+            }
+        }
+
+        GreatBuildings.FPBuildings = GreatBuildings.FPBuildings.sort(function (a, b) {
+            return b['FP'] - a['FP'];
+        });
+    },
+
+
+    GetGalaxyProduction: (Productions, Charges, Level, IsDoubleCollection) => {
+        let StartIndex = 0;
+        if (IsDoubleCollection && Level > 1) {
+            StartIndex = Charges[Level - 1];
+        }
+
+        let FPSum = 0;
+        for (let i = StartIndex; i < StartIndex + Charges[Level]; i++) {
+            if (i >= GreatBuildings.FPBuildings.length) break; // Nicht genug Gebäude vorhanden
+
+            FPSum += GreatBuildings.FPBuildings[i]['FP'];
+        }
+
+        return Productions[Level] * FPSum;
+    },
+
+
+    GetROIValues: (Level, NettoCosts, Productions, BuildDailyCosts, BuildCosts, DoubleCollection, Charges) => {
         let Ret = { 'BestLevel': undefined, ROIValues: [] };
+
+        let DoubleCollections = [];
+        if (Charges) {
+          
+            for (let i = 0; i < 100; i++) {
+                DoubleCollections[i] = GreatBuildings.GetGalaxyProduction(Productions, Charges, Level, true);
+            }
+        }
 
         let StartProduction = 0,
             CurrentInvestment=0;
@@ -314,21 +398,38 @@ let GreatBuildings =
             StartProduction = BuildDailyCosts;
             CurrentInvestment = BuildCosts;
         }
-        else if(Level > 0) {
-           StartProduction = Productions[Level - 1];
+        else if (Level > 0) {
+            if (Charges) { // Blaue Galaxie
+                 StartProduction = GreatBuildings.GetGalaxyProduction(Productions, Charges, Level, false);
+            }
+            else {
+                StartProduction = Productions[Level - 1];
+            }
         }
 
         let BestValue = 999999;
         for (let i = Math.max(Level, 0); i < NettoCosts.length; i++) {
-
             CurrentInvestment += NettoCosts[i];
             if (DoubleCollection) {
-                CurrentInvestment -= Productions[i];
+                if (Charges) { // Blaue Galaxie
+                    CurrentInvestment -= GreatBuildings.GetGalaxyProduction(Productions, Charges, i, true);
+                }
+                else {
+                    CurrentInvestment -= Productions[i];
+                }
             }
 
-            Ret['ROIValues'][i] = { 'Cost': CurrentInvestment, 'FP': Productions[i] - StartProduction, 'ROI': CurrentInvestment / (Productions[i] - StartProduction) };
+            let CurrentProduction;
+            if (Charges) { // Blaue Galaxie
+                CurrentProduction = GreatBuildings.GetGalaxyProduction(Productions, Charges, i, false);
+            }
+            else {
+                CurrentProduction = Productions[i];
+            }
 
-            if (Productions[i] > StartProduction) {
+            Ret['ROIValues'][i] = { 'Cost': CurrentInvestment, 'FP': CurrentProduction - StartProduction, 'ROI': CurrentInvestment / (CurrentProduction - StartProduction) };
+
+            if (CurrentProduction > StartProduction) {
                 if (Ret['ROIValues'][i]['ROI'] < BestValue) {
                     Ret['BestLevel'] = i;
                     BestValue = Ret['ROIValues'][i]['ROI'];
