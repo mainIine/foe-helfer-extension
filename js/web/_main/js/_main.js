@@ -1637,12 +1637,15 @@ let MainParser = {
 	CollectBoosts: (d)=>{
 		for(let i in d)
 		{
-			if(d.hasOwnProperty(i))
+			if (!d.hasOwnProperty(i)) continue;
+
+			if (MainParser.AllBoosts[d[i]['type']] !== undefined)
 			{
-				if(MainParser.AllBoosts[d[i]['type']] !== undefined)
-				{
-					MainParser.AllBoosts[d[i]['type']] += d[i]['value']
-				}
+				MainParser.AllBoosts[d[i]['type']] += d[i]['value']
+			}
+
+			if (d[i]['type'] === 'extra_negotiation_turn') {
+				Negotiation.TavernBoostExpireTime = d[i]['expireTime'];
 			}
 		}
 	},
