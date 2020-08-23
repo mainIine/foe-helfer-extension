@@ -128,7 +128,7 @@
 .goods-sprite.strategy_points::before {background:url('../images/goods/goods-extra.png') top left no-repeat;background-size:225px 90px;width:45px;height:45px;}
 .goods-sprite.supplies::before{background-position: 0 0;}
 .goods-sprite.money::before{background-position: -45px 0;}
-.goods-sprite.medals::before{background-position: -94px 0;}
+.goods-sprite.medals::before{background-position: -94px 0;width:40px;}
 .goods-sprite.empty::before {background-position: -138px 0;}
 
 /* BOF generated */
