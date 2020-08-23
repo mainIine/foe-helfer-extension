@@ -625,8 +625,6 @@
     "Settings.ShowMarketFilter.Title": "Show market filter tool",
     "Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players",
     "Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs",
-    "Settings.ShowTavernBadge.Desc": "As soon as the extra move in the tavern is activated, a globally movable counter appears.",
-    "Settings.ShowTavernBadge.Title": "Show tavern badge",
     "Settings.Tab.About": "About",
     "Settings.Tab.Boxes": "Boxes",
     "Settings.Tab.Extension": "General",
