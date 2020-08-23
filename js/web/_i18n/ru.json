@@ -20,6 +20,8 @@
     "Boxes.Alerts.Form.Expires": "Истекает",
     "Boxes.Alerts.Form.Neighborhood": "Соседство",
     "Boxes.Alerts.Form.Persistence": "Упорство",
+    "Boxes.Alerts.Preferences.Auction.Info": "Автоматически создавать новое оповещение, когда я делаю ставку на аукционе антиквара",
+    "Boxes.Alerts.Preferences.Auction.Title": "Аукцион антиквара",
     "Boxes.Api.Title": "Настройки API расширения",
     "Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
     "Boxes.Calculator.ArkBonus": "Бонус Арки",
