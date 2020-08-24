@@ -176,21 +176,13 @@ let GreatBuildings =
             let Era = Technologies.Eras[EraName];
             let DoubleCollection = (GreatBuildings.FPGreatBuildings[i].ID !== 'X_FutureEra_Landmark1');
 
-            let BruttoCosts = [];
-            for (let j = 0; j < 10; j++) {
-                BruttoCosts[j] = CityEntity['strategy_points_for_upgrade'][j];
-            }
-            for (let j = 10; j < GreatBuildings.Rewards[Era].length; j++) {
-                BruttoCosts[j] = Math.ceil(BruttoCosts[9] * Math.pow(1.025, j - 9));
-            }
-
             let NettoCosts = [];
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
                 let P1 = GreatBuildings.Rewards[Era][j];
                 P1 = (P1 !== undefined ? P1 : 0);
 
                 let Maezen = GreatBuildings.GetMaezen(P1, GreatBuildings.ForderBonus);
-                NettoCosts[j] = BruttoCosts[j] - Maezen[0] - Maezen[1] - Maezen[2] - Maezen[3] - Maezen[4];
+                NettoCosts[j] = GreatBuildings.GetBruttoCosts(GreatBuildings.FPGreatBuildings[i].ID, j) - Maezen[0] - Maezen[1] - Maezen[2] - Maezen[3] - Maezen[4];
             }
 
             let Productions = [];
@@ -340,6 +332,18 @@ let GreatBuildings =
 
         UnderScorePos = EraName.indexOf('_');
         return EraName.substring(0, UnderScorePos);
+    },
+
+
+    GetBruttoCosts: (EntityID, Level) => {
+        let CityEntity = MainParser.CityEntities[EntityID];
+
+        if (Level < 10) {
+            return CityEntity['strategy_points_for_upgrade'][Level];
+        }
+        else {
+            return Math.ceil(CityEntity['strategy_points_for_upgrade'][9] * Math.pow(1.025, Level - 9));
+        }
     },
 
 

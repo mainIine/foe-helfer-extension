@@ -123,7 +123,8 @@
 .goods-sprite.supplies::before,
 .goods-sprite.money::before,
 .goods-sprite.medals::before,
-.goods-sprite.empty::before {background:url('../images/goods-extra.png') top left no-repeat;background-size:180px 45px;width:45px;height:45px;}
+.goods-sprite.empty::before,
+.goods-sprite.strategy_points::before {background:url('../images/goods-extra.png') top left no-repeat;background-size:225px 45px;width:45px;height:45px;}
 .goods-sprite.supplies::before{background-position: 0 0;}
 .goods-sprite.money::before{background-position: -45px 0;}
 .goods-sprite.medals::before{background-position: -94px 0;}
@@ -235,3 +236,14 @@
 .goods-sprite-50.ai_data::before{background-position: -700px -76px;width:25px;height:18px}
 .goods-sprite-50.electromagnets::before{background-position: -700px -95px;width:24px;height:23px;transform:rotate(-90deg)}
 .goods-sprite-50.translucent_concrete::before{background-position: -679px -56px;width:19px;height:26px;transform:rotate(-90deg)}
+
+.goods-sprite-50.supplies::before,
+.goods-sprite-50.money::before,
+.goods-sprite-50.medals::before,
+.goods-sprite-50.empty::before,
+.goods-sprite-50.strategy_points::before {background:url('../images/goods-extra.png') top left no-repeat;background-size:120px 24px;width:24px;height:24px;}
+.goods-sprite-50.supplies::before{background-position: 0 0;}
+.goods-sprite-50.money::before{background-position: -22px 0;}
+.goods-sprite-50.medals::before{background-position: -47px 0;}
+.goods-sprite-50.empty::before {background-position: -69px 0;}
+.goods-sprite-50.strategy_points::before {background-position: -96px 0;}
