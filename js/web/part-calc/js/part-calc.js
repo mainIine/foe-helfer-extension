@@ -599,7 +599,7 @@ let Parts = {
 		let Options = '<div class="checkboxes">' +
 			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (localStorage.getItem('OwnPartIncludePlayer' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</label>' +
 			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (localStorage.getItem('OwnPartIncludeGB' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</label>' +
-			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (localStorage.getItem('OwnPartIncludeLevel' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (localStorage.getItem('OwnPartIncludeLevel' + KeyPart2) === "true" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</label>' +
 			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (localStorage.getItem('OwnPartIncludeFP' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</label>' +
 			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (localStorage.getItem('OwnPartDescending' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</label>' +
 			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup"> ' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</label>' +
@@ -787,8 +787,13 @@ let Parts = {
 
 		let Ret = [];
 		if (IncludePlayerName) Ret.push(PlayerName);
+
 		if (IncludeBuildingName) Ret.push(BuildingName);
+
+		if (LevelUp) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
+
 		if (IncludeLevel) Ret.push(Parts.Level + '->' + (Parts.Level + 1));
+
 		if (Places.length > 0) {
 			for (let i = 0; i < Places.length; i++) {
 				let Place = Places[i];
@@ -804,7 +809,6 @@ let Parts = {
 		else {
 			if (PlaceAuto) Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
         }
-		if (LevelUp) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
 
 		let CopyString = Ret.join(' ');
 		$('#copystring').val(CopyString);
