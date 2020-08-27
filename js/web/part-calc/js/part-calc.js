@@ -289,7 +289,7 @@ let Parts = {
 
 		for (let i = 0; i < Parts.Exts.length; i++) {
 			if (Parts.Exts[i] > 0) {
-				Parts.Maezens[Parts.aezens.length] = Parts.Exts[i];
+				Parts.Maezens[Parts.Maezens.length] = Parts.Exts[i];
             }
         }
 
