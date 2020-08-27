@@ -15,7 +15,7 @@
 
 /* BOF generated */
 .goods-sprite {display:inline-block;height:3em;position: relative;}
-.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:1207px 200px;position:absolute;}
+.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:1207px 200px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
 .goods-sprite.goods::before{background-position:0 0;width:46px;height:56px;transform:rotate(-90deg)}
 .goods-sprite.corals::before{background-position:0 -58px;width:51px;height:51px}
 .goods-sprite.fine_corals::before{background-position:0 -58px;width:51px;height:51px}
@@ -245,7 +245,7 @@
 /* BOF generated */
 /* 50% Version */
 .goods-sprite-50 {display:inline-block;height:3em;position: relative;}
-.goods-sprite-50::before{content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:755px 125px;position:absolute;}
+.goods-sprite-50::before{content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:755px 125px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
 .goods-sprite-50.goods::before{background-position:0 0;width:29px;height:35px;transform:rotate(-90deg)}
 .goods-sprite-50.corals::before{background-position:0 -37px;width:32px;height:32px}
 .goods-sprite-50.fine_corals::before{background-position:0 -37px;width:32px;height:32px}
