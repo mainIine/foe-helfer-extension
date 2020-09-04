@@ -51,7 +51,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	BonusService.InitBonus();
 });
 
-// Guildfights would leave
+// main is entered
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 	BonusService.HideBonusSidebar();
 });
@@ -115,7 +115,7 @@ let BonusService = {
 
 	/**
 	 * Create a wrapper "hud" for the icons
-	 * 
+	 *
 	 * @param isGex
 	 * @constructor
 	 */
@@ -136,7 +136,7 @@ let BonusService = {
 		}
 
 		$('body').append(div).promise().done(function(){
-			BonusService.SetBonusTypes();
+			BonusService.SetBonusTypes(isGex);
 		});
 	},
 
@@ -155,8 +155,11 @@ let BonusService = {
 
 	/**
 	 * Box content
+	 *
+	 * @param isGex
+	 * @constructor
 	 */
-	SetBonusTypes: ()=> {
+	SetBonusTypes: (isGex)=> {
 		const bt = BonusService.BonusTypes,
 			d = BonusService.Bonuses,
 			hud = $('#bonus-hud');
@@ -165,6 +168,11 @@ let BonusService = {
 		{
 			if(!bt.hasOwnProperty(i)){
 				break;
+			}
+
+			// skip aid goods in gex
+			if(isGex && bt[i] === 'aid_goods'){
+				continue;
 			}
 
 			let b = d.find(e => (e['type'] === bt[i]));

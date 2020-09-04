@@ -89,13 +89,43 @@
 	margin-bottom: 5px;
 }
 
+#noticesBody .content-head-player {
+	display: flex;
+	color: var(--text-bright);
+	margin-bottom: 15px;
+}
+
+#noticesBody .content-head-player span.avatar {
+	display: inline-block;
+	width: 65px;
+	height: 65px;
+	background-size: contain;
+	margin-right: 15px;
+}
+
+#noticesBody .content-head-player span.name {
+	font-size: 110%;
+	font-weight: 700;
+	display: block;
+	margin-bottom: 15px;
+}
+
+#noticesBody .content-head-player span.clan-name {
+
+}
+
+#noticesBody .content-head-player div.info-text {
+	margin-left: auto;
+}
+
 #noticesBody .content-text {
 	overflow: hidden;
 	overflow-y: auto;
 }
 
 /*******************************************************************************/
-#notices-modal {
+#notices-modal,
+#notices-modal-players {
 	left: calc(50% - 150px);
 	top: calc(50% - 50px);
 	width: 300px;
@@ -103,11 +133,30 @@
 	z-index: 300;
 }
 
-#notices-modalBody {
+#notices-modalBody,
+#notices-modal-playersBody {
 	padding: 10px;
 }
 
-/******************************************************************************/
+#notices-modal-playersBody {
+	overflow: unset;
+}
+
+#notices-modal-playersBody .custom-option {
+	display: flex;
+	border-bottom: 1px solid var(--text-normal);
+}
+
+#notices-modal-playersBody .custom-option .avatar {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	margin-right: 10px;
+}
+
+	/******************************************************************************/
 .global-send-required-bg {
 	background-color: rgba(0,0,0, 0.5);
 	position: relative;

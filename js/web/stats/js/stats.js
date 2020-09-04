@@ -91,7 +91,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 // Player Army log
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
 	const r = data.responseData;
-	if (Stats.isVisitingCulturalOutpost) {
+	if (ActiveMap !== 'main') {
 		return;
 	}
 
@@ -112,18 +112,6 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 		date: moment().startOf('hour').toDate(),
 		army
 	});
-});
-
-FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
-	const r = data.responseData;
-	if (r.gridId == 'cultural_outpost') {
-		Stats.isVisitingCulturalOutpost = true;
-	}
-});
-
-FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
-	const r = data.responseData;
-	Stats.isVisitingCulturalOutpost = false;
 });
 
 let Stats = {
@@ -869,7 +857,7 @@ let Stats = {
 			colors,
 			pointFormat: `<tr>
 								<td>
-									<span class="goods-sprite {series.options.goodsId}"></span>
+									<span class="goods-sprite-50 {series.options.goodsId}"></span>
 								</td>
 								<td>
 									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>

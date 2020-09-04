@@ -36,12 +36,6 @@
 		"sort": 0
 	},
 	{
-		"name": "ShowTavernBadge",
-		"status": true,
-		"group": "Boxes",
-		"sort": 1
-	},
-	{
 		"name": "ShowInvestments",
 		"status": true,
 		"group": "Boxes",
@@ -55,7 +49,7 @@
 	},
 	{
 		"name": "ShowMarketFilter",
-		"status": true,
+		"status": false,
 		"group": "Boxes",
 		"sort": 4
 	},
