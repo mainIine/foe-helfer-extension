@@ -44,6 +44,11 @@
 	position: static;
 }
 
+#negotiationBox #negotiationBoxBody .goods-sprite.multiple {
+	position: relative;
+	min-width: 50px;
+}
+
 #negotiationBox #negotiationBoxBody .goods-sprite.cornered {
 	position: absolute;
 }
