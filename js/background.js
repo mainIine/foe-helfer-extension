@@ -94,7 +94,7 @@
 
 		} else if(request.type === 'chat'){
 
-			let url = 'js/web/ws-chat/html/chat.html?player=' + request.player + '&world=' + request.world,
+			let url = `js/web/ws-chat/html/chat.html?player=${request.player}&world=${request.world}&lang=${request.lang}`,
 				popupUrl = chrome.runtime.getURL(url);
 
 			// Prüfen ob ein PopUp mit dieser URL bereits existiert

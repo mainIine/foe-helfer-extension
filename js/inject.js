@@ -163,7 +163,6 @@
 				'_menu',
 				'indexdb',
 				'kits',
-				'tavern',
 				'outposts',
 				'calculator',
 				'infoboard',

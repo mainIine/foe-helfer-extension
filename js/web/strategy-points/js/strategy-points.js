@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
-FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
+FoEproxy.addHandler('ResourceShopService', 'getContexts', (data)=> {
 	if (data['responseData']['0']['context'] !== 'forgePoints') {
 		return;
 	}
@@ -22,28 +22,58 @@ FoEproxy.addHandler('ResourceShopService', 'getContexts', (data) => {
 	StrategyPoints.RefreshBuyableForgePoints(offer.formula);
 });
 
-FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data) => {
+FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 	if (data['responseData']['gains'] === undefined || data['responseData']['gains']['resources'] === undefined || data['responseData']['gains']['resources']['strategy_points'] === undefined) {
 		return;
 	}
 	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
 });
 
-window.addEventListener('resize', function(){
+window.addEventListener('resize', ()=>{
     StrategyPoints.HandleWindowResize();
 });
 
+// GEX started
+FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+	ActiveMap = 'gex';
+	StrategyPoints.ShowFPBarInGex();
+});
+
+// Guildfights enter
+FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+	StrategyPoints.ShowFPBarInGex();
+});
+
+// main is entered
+FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
+	StrategyPoints.HideFPBarInGex();
+});
+
+// Update the FP Bar
+FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
+	StrategyPoints.ShowFPBarInGex();
+});
+
+/**
+ * @type {{readonly AvailableFP: *|number, OldStrategyPoints: number, HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: StrategyPoints.RefreshBar, InventoryFP: number}}
+ */
 let StrategyPoints = {
 	OldStrategyPoints: 0,
 	InventoryFP: 0,
 
+
+	/**
+	 * Screen-size hax
+	 *
+	 * @constructor
+	 */
 	HandleWindowResize: () => {
 
-        if ( window.innerWidth < 1250 ){
+        if ( window.innerWidth < 1250 && ActiveMap !== 'gex'){
             $('#fp-bar').removeClass('medium-screen');
             $('#fp-bar').addClass('small-screen');
         }
-        else if ( window.innerWidth < 1400 ){
+        else if ( window.innerWidth < 1400 && ActiveMap !== 'gex'){
             $('#fp-bar').removeClass('small-screen');
             $('#fp-bar').addClass('medium-screen');
 		}
@@ -54,10 +84,56 @@ let StrategyPoints = {
 	},
 
 
+	ShowFPBarInGex: ()=>{
+
+		if(ActiveMap === 'main'){
+			return ;
+		}
+
+		if( $('.fp-bar-main').length === 0){
+			$('#fp-bar').append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
+
+		} else {
+			$('.fp-bar-main').show();
+		}
+
+		// necessary to wait for gift in gg + diplomatic gift
+		setTimeout(()=>{
+			const avialableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
+
+			$('.fp-bar-main').find('.number').text(avialableFPs);
+
+			if(avialableFPs > 0){
+
+				const $bar = $('.fp-bar-main').find('.bars');
+
+				// make empty
+				$bar.find('span').remove();
+
+				for(let i = 0; i < avialableFPs; i++)
+				{
+					$bar.append(`<span />`);
+
+					if(i === 9){
+						return false;
+					}
+				}
+			}
+		}, 800);
+
+	},
+
+
+	HideFPBarInGex: ()=> {
+		$('.fp-bar-main').hide();
+	},
+
+
 	/**
-	 * Kaufbare FP + Formel ermitteln
+	 * Buyable FPs + formula
 	 *
 	 * @param formula
+	 * @constructor
 	 */
 	RefreshBuyableForgePoints: (formula) => {
 
@@ -76,8 +152,7 @@ let StrategyPoints = {
 			amount++;
 		}
 
-		if($('div.buyable-fp').length == 0) {
-			// $('#fp-bar').append(' ' + i18n('Boxes.StrategyPoints.BuyableFP') + ' <strong class="buyable-fp">' + HTML.Format(amount) + '</strong>');
+		if($('div.buyable-fp').length === 0) {
 			$('#fp-bar').append(`<div class="buyable-fp"><div>${ HTML.Format(amount)}</div></div>`);
 
 		} else {
@@ -85,15 +160,20 @@ let StrategyPoints = {
 		}
 	},
 
+
 	/**
-	 * Kleine FP-Bar im Header
+	 * Tiny FP bar on top of the screen
 	 *
+	 * @param value
+	 * @constructor
 	 */
     RefreshBar: ( value ) => {
         // noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
-			// let div = $('<div />').attr('id', 'fp-bar').text(i18n('Boxes.StrategyPoints.FPBar')).append( $('<strong>0</strong>').addClass('fp-storage') );
-			let div = $('<div />').attr('id', 'fp-bar').append( `<div class="fp-storage"><div>0</div></div>` );
+			let div = $('<div />').attr({
+				id: 'fp-bar',
+				class: 'game-cursor'
+			}).append( `<div class="fp-storage"><div>0</div></div>` );
 
 			$('body').append(div);
             StrategyPoints.HandleWindowResize();
@@ -121,9 +201,12 @@ let StrategyPoints = {
 		StrategyPoints.OldStrategyPoints = StrategyPoints.InventoryFP;
 	},
 
+
 	/**
-	 * Liefert die gesamt verfügbaren FP
+	 * Returns the stock and the bar FPs
 	 *
+	 * @returns {*|number}
+	 * @constructor
 	 */
 	get AvailableFP() {
 		let Ret = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);

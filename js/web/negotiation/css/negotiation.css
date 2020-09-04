@@ -15,8 +15,8 @@
 
 #negotiationBox {
 	top: 15%;
-	left: calc(50% + 10px);
-	width: 800px;
+	left: calc(50% + 15px);
+	width: 810px;
 	transform: translateX(-50%);
 }
 
@@ -37,6 +37,28 @@
 	width: 4em;
 	padding: 2px;
 	border-radius: 3px;
+	position: relative;
+}
+
+#negotiationBox #negotiationBoxBody .goods-sprite {
+	position: static;
+}
+
+#negotiationBox #negotiationBoxBody .goods-sprite.multiple {
+	position: relative;
+	min-width: 50px;
+}
+
+#negotiationBox #negotiationBoxBody .goods-sprite.cornered {
+	position: absolute;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
+	bottom: auto;
+}
+
+#negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
+
 }
 
 #negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
@@ -179,10 +201,10 @@
 
 #negotiationBox .cornered {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: -8px;
+	right: 26px;
 	display: none;
-	transform: scale(0.5) translate(50%,-50%);
+	transform: scale(0.5);
 }
 
 /*#negotiationBox .wrong-goods .cornered,*/
