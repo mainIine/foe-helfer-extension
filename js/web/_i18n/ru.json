@@ -5,6 +5,7 @@
     "API.LGInvest": "Ваши вложения ВС были переданы",
     "API.UpdateSuccess": "Обновление выполнено!",
     "Boxes.Alerts.Form.Antiques.Auction": "Аукцион",
+    "Boxes.Alerts.Form.Antiques.Cooldown": "Перезагрузка аукциона",
     "Boxes.Alerts.Form.Antiques.Dealer": "Антиквар",
     "Boxes.Alerts.Form.Antiques.Exchange": "Обмен",
     "Boxes.Alerts.Form.Battleground": "ПБГ",
