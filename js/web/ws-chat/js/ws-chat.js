@@ -23,70 +23,102 @@ const render = litHtml.render;
 class Player {
 
 	/**
-	 * 
-	 * @param {string} id 
-	 * @param {string} name 
-	 * @param {string} portrait 
-	 * @param {boolean} secretsMatch 
+	 * @param {{id: string, name: string, portrait: string, isDev?: boolean, secretsMatch?: boolean}} data
 	 */
-	constructor (id, name, portrait, isdev, secretsMatch) {
+	constructor ({id: id, name: name, portrait: portrait, isDev: isDev, secretsMatch: secretsMatch}) {
 		this.id = id;
-		this.name = null;
-		this.portrait = null;
-		this.isdev = isdev || false;
-		this.secretsMatch = !secretsMatch;
+		/** @type {string} */
+		this.name = name;
+		/** @type {string} */
+		this.portrait = portrait;
+		/** @type {boolean} */
+		this.isDev = isDev || false;
+		/** @type {boolean} */
+		this.secretsMatch = secretsMatch || false;
+		/** @type {HTMLElement} */
 		this.elem = document.createElement('div');
+		/** @type {HTMLImageElement?} */
 		this.portraitImg = null;
+		/** @type {HTMLElement} */
 		this.nameSpan = document.createElement('span');
+		
 		this.elem.appendChild(this.nameSpan);
-		document.getElementById('users').appendChild(this.elem);
-		this.update(name, portrait, isdev, secretsMatch);
+		const usersElem = document.getElementById('users');
+		if (usersElem) usersElem.appendChild(this.elem);
+		// make sure all DOM-values are set according
+		this.setName(this.name);
+		this.setPortrait(this.portrait);
+		this.setIsDev(this.isDev);
+		this.setSecretsMatch(this.secretsMatch);
 	}
 
 	/**
-	 * 
-	 * @param {string} name 
-	 * @param {string} portrait 
-	 * @param {boolean} secretsMatch 
+	 * @param {{name?: string, portrait?: string, isDev?: boolean, secretsMatch?: boolean}} data
 	 */
-	update(name, portrait, isDev, secretsMatch) {
-		this.updateName(name);
-		this.updatePortrait(portrait);
-		this.updateSecretsMatch(secretsMatch);
-		this.updateIsDev(isDev);
+	update({name: name, portrait: portrait, isDev: isDev, secretsMatch: secretsMatch}) {
+		if (name != null) {
+			this.updateName(name);
+		}
+		if (portrait != null) {
+			this.updatePortrait(portrait);
+		}
+		if (secretsMatch != null) {
+			this.updateSecretsMatch(secretsMatch);
+		}
+		if (isDev != null) {
+			this.updateIsDev(isDev);
+		}
 	}
 
 	/**
-	 * 
-	 * @param {string} name 
+	 * @param {string} name
 	 */
 	updateName(name) {
 		if (this.name === name) return;
+		this.setName(name);
+	}
 
+	/**
+	 * @param {string} name
+	 */
+	setName(name) {
 		// update name
 		this.name = name;
 		this.nameSpan.innerText = name;
 	}
 
 	/**
-	 * 
-	 * @param {boolean} isdev 
+	 * @param {boolean} isDev
 	 */
-	updateIsDev(isdev) {
-		// update isdev
-		isdev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
+	updateIsDev(isDev) {
+		if (this.isDev === isDev) return;
+		this.setIsDev(isDev);
 	}
 
 	/**
-	 * 
-	 * @param {string} portrait 
+	 * @param {boolean} isDev
+	 */
+	setIsDev(isDev) {
+		// update isdev
+		this.isDev = isDev;
+		isDev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
+	}
+
+	/**
+	 * @param {string} portrait
 	 */
 	updatePortrait(portrait) {
 		if (this.portrait === portrait) return;
+		this.setPortrait(portrait);
+	}
 
+	/**
+	 * @param {string} portrait
+	 */
+	setPortrait(portrait) {
 		// update Portrait image
 		this.portrait = portrait;
-		const portraitFile = this.portraitURL;
+		const portraitFile = this.getPortraitURL();
 		if (portraitFile) {
 			let img = this.portraitImg;
 
@@ -110,19 +142,24 @@ class Player {
 	}
 
 	/**
-	 * 
-	 * @param {boolean} secretsMatch 
+	 * @param {boolean} secretsMatch
 	 */
 	updateSecretsMatch(secretsMatch) {
 		if (this.secretsMatch === secretsMatch) return;
-		// update "trusted" class
+		this.setSecretsMatch(secretsMatch);
+	}
+
+	/**
+	 * @param {boolean} secretsMatch
+	 */
+	setSecretsMatch(secretsMatch) {
 		this.secretsMatch = secretsMatch;
+		// update "trusted" class
 		if (secretsMatch) {
 			this.elem.classList.add('trusted');
 		} else {
 			this.elem.classList.remove('trusted');
 		}
-
 	}
 
 	remove() {
@@ -130,7 +167,7 @@ class Player {
 		Player.all.delete(this.id);
 	}
 
-	get portraitURL() {
+	getPortraitURL() {
 		const portraitFile = Chat.PlayersPortraits[this.portrait];
 		if (portraitFile) {
 			return `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
@@ -141,35 +178,31 @@ class Player {
 
 
 	/**
-	 * @param {string} id 
-	 * @param {string} [name] 
-	 * @param {string} [portrait]
-	 * @param {boolean} [secretsMatch] 
-	 * @returns {Player|undefined}
+	 *
+	 * @param {{id: string, name?: string, portrait?: string, isDev?: boolean, secretsMatch?: boolean}} data
+	 * @returns {Player}
 	 */
-	static get(id, name, portrait, isDev, secretsMatch) {
-		let player = Player.all.get(id);
+	static get(data) {
+		let player = Player.all.get(data.id);
 		if (player == null) {
-			player = new Player(
-				id,
-				name||'Unknown#'+id,
-				portrait || '',
-				isDev || false,
-				secretsMatch || false
-			);
-			Player.all.set(id, player);
+			player = new Player({
+				id: data.id,
+				name: data.name||'Unknown#'+data.id,
+				portrait: data.portrait || '',
+				isDev: data.isDev || false,
+				secretsMatch: data.secretsMatch || false
+			});
+			Player.all.set(data.id, player);
 
 		} else {
-			if (name != null && portrait != null && secretsMatch != null) {
-				player.update(name, portrait, isDev, secretsMatch);
-			}
+			player.update(data);
 		}
 		return player;
 	}
 }
 
 /**
- * @type {Map<string, Player>}
+ * @type {Map<string, Player|undefined>}
  */
 Player.all = new Map();
 
@@ -263,7 +296,7 @@ let Chat = {
 	World: '',
 	Lang: 'en',
 	OtherPlayers: /** @type {{player_name: string, player_id: Number, avatar: string, secretsMatch: boolean}[]} */([]),
-	PlayersPortraits: {},
+	PlayersPortraits: /** @type {Record<string, string|undefined>} */({}),
 	OnlinePlayers: [],
 	OwnName: '',
 	WebsocketChat : null,
@@ -604,8 +637,7 @@ let Chat = {
 	/**
 	 * The message for the textbox
 	 *
-	 * @param message
-	 * @constructor
+	 * @param {any} message
 	 */
 	TextRow: (message)=> {
 		// let PlayerName = '',
@@ -645,18 +677,18 @@ let Chat = {
 
 		switch (message.type) {
 			case 'members': {
-				/** @type {{playerId: string, name: string, portrait: string, secretsMatch: boolean}[]} */
+				/** @type {{playerId: string, name: string, portrait: string, isDev: boolean, secretsMatch: boolean}[]} */
 				const members = message.members;
 				// console.log(message)
 				for (let data of members) {
 					const {playerId, name, portrait, isDev, secretsMatch} = data;
-					Player.get(playerId, name, portrait, isDev, secretsMatch);
+					Player.get({id: playerId, name, portrait, isDev, secretsMatch});
 					//Chat.UserEnter(Player);
 				}
 				break;
 			}
 			case 'secretChange': {
-				const player = Player.get(message.player);
+				const player = Player.get({id: message.player});
 				player.updateSecretsMatch(message.secretsMatch);
 				// 	Chat.UserEnter(Player);
 				break;
@@ -674,7 +706,7 @@ let Chat = {
 					Chat.SmallBox('user-self', TextR, '', message.time);
 		
 				} else {
-					const player = Player.get(player_id);
+					const player = Player.get({id: player_id});
 
 					// let TextR = Chat.MakeImage(message.message);
 					// TextR = emojify.replace(TextR);
@@ -695,7 +727,13 @@ let Chat = {
 				break;
 			}
 			case 'switch': {
-				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
+				const player = Player.get({
+					id: message.player,
+					name: message.name,
+					portrait: message.portrait,
+					isDev: message.isDev,
+					secretsMatch: message.secretsMatch
+				});
 
 				const TextR = document.createElement('em');
 				TextR.innerText = `${player.name} ${i18n('WsChat.UserReEnter')}`;
@@ -705,7 +743,13 @@ let Chat = {
 				break;
 			}
 			case 'join': {
-				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
+				const player = Player.get({
+					id: message.player,
+					name: message.name,
+					portrait: message.portrait,
+					isDev: message.isDev,
+					secretsMatch: message.secretsMatch
+				});
 
 				const TextR = document.createElement('em');
 				TextR.innerText = `${player.name} ${i18n('WsChat.UserEnter')}`;
@@ -715,7 +759,7 @@ let Chat = {
 				break;
 			}
 			case 'leave': {
-				const player = Player.get(message.player);
+				const player = Player.get({id: message.player});
 
 				const TextR = document.createElement('em');
 				TextR.innerText = `${player.name} ${i18n('WsChat.UserLeave')}`;
