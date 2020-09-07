@@ -408,6 +408,7 @@ let Negotiation = {
 		}
 	},
 
+
 	/**
 	 * @param {string[]} h list of html-strings to add new contend to
 	 */
@@ -439,13 +440,14 @@ let Negotiation = {
 		h.push('<tr>');
 
 		const GoodsOrdered = Negotiation.GoodsOrdered;
+
 		for (let place = 0; place < Negotiation.PlaceCount; place++) {
 			h.push('<td class="text-center">');
 
 			for (let good of GoodsOrdered) {
 				if (good.canOccur.includes(place)) {
 					const hasToOccurClass = good.hasToOccur > 0 ? ' hasToOccur' : '';
-					h.push(`<span class="goods-sprite ${good.resourceId}${hasToOccurClass}"></span>`);
+					h.push(`<span class="goods-sprite multiple ${good.resourceId}${hasToOccurClass}"></span>`);
 				}
 			}
 			h.push('</td>');
