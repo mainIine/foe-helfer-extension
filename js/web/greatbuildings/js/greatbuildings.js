@@ -224,7 +224,7 @@ let GreatBuildings =
 
             let Productions = [];
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
-                if (GreatBuildings.FPGreatBuildings[i].Productions.length > 10 || j < 0) {
+                if (GreatBuildings.FPGreatBuildings[i].Productions.length > 10 || j < 10) {
                     if (GreatBuildings.FPGreatBuildings[i].ID === 'X_FutureEra_Landmark1') { // Arche
                         let arc = 1 + MainParser.ArkBonus / 100;
                         Productions[j] = GreatBuildings.FPGreatBuildings[i].Productions[j] * GreatBuildings.RewardPerDay / arc;
