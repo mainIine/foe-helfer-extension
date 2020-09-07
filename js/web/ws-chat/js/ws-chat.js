@@ -807,9 +807,11 @@ let Chat = {
 	PlaySound: (id, vol = 0.4)=> {
 		// wenn der CHat im Hintergrund liegt, Ping machen
 		if (document.hasFocus() === false){
-			const audio = /** @type {HTMLAudioElement} */(document.getElementById(id));
-			audio.volume = vol;
-			audio.play();
+			const audio = /** @type {HTMLAudioElement|undefined} */(document.getElementById(id));
+			if (audio) {
+				audio.volume = vol;
+				audio.play();
+			}
 		}
 	},
 
