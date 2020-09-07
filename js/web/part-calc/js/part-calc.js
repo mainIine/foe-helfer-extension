@@ -163,7 +163,7 @@ let Parts = {
 			Parts.Exts[i] = parseInt(v);
 		});
 
-		Parts.Show();
+		Parts.Show(Parts.Level);
 	},
 
 
