@@ -103,21 +103,13 @@ let StrategyPoints = {
 
 			$('.fp-bar-main').find('.number').text(avialableFPs);
 
-			if(avialableFPs > 0){
+			const $bar = $('.fp-bar-main').find('.bars');
 
-				const $bar = $('.fp-bar-main').find('.bars');
-
-				// make empty
-				$bar.find('span').remove();
-
-				for(let i = 0; i < avialableFPs; i++)
-				{
-					$bar.append(`<span />`);
-
-					if(i === 9){
-						return false;
-					}
-				}
+			// make empty
+			$bar.find('span').remove();
+			for (let i = 0; i < avialableFPs; i++) {
+				$bar.append(`<span />`);
+				if (i === 9) { break; }
 			}
 		}, 800);
 
