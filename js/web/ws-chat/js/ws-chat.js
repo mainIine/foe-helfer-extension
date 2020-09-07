@@ -18,7 +18,8 @@
 const html = litHtml.html;
 // @ts-ignore
 const render = litHtml.render;
-
+/** @type {any} */
+var emojify;
 
 class Player {
 
@@ -299,7 +300,7 @@ let Chat = {
 	PlayersPortraits: /** @type {Record<string, string|undefined>} */({}),
 	OnlinePlayers: [],
 	OwnName: '',
-	WebsocketChat : null,
+	WebsocketChat : /** @type {WebSocket|null} */(null),
 	ReadMode: 'live',
 	Token: '',
 	ConnectionId: '',
@@ -360,14 +361,14 @@ let Chat = {
 					// frage die Sprachdatei an
 					fetch('/js/web/_i18n/'+lang+'.json')
 						// lade die antwort als JSON
-						.then(response => response.text())
+						.then(response => response.json())
 						// im fehlerfall wird ein leeres Objekt zurück gegeben
 						.catch(()=>({}))
 				)
 		);
 
 		for (let languageData of languageDatas) {
-			i18n.translator.add({ 'values': JSON.parse(languageData) });
+			i18n.translator.add({ 'values': languageData });
 		}
 
 		Chat.PlayerID = player_id;
@@ -451,6 +452,10 @@ let Chat = {
 			}, 100
 		);
 
+		Chat.connectWebSocket();
+	},
+
+	connectWebSocket: () => {
 		// get a random connection id if this tab doesn't already have one
 		let connectionId = sessionStorage.getItem('websocket-connection-id') || '';
 		if (!connectionId) {
@@ -472,11 +477,13 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		Chat.WebsocketChat = new WebSocket(Chat.wsUri);
+		if (Chat.WebsocketChat) Chat.WebsocketChat.close();
+		const websocket = new WebSocket(Chat.wsUri);
+		Chat.WebsocketChat = websocket;
 
 
 		// Verbindung wurde hergestellt
-		Chat.WebsocketChat.onopen = () => {
+		websocket.onopen = () => {
 			const setupData = {
 				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
 				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
@@ -487,28 +494,30 @@ let Chat = {
 				connectionId: connectionId
 			};
 			// console.log('setup', setupData);
-			Chat.WebsocketChat.send(JSON.stringify(setupData));
+			websocket.send(JSON.stringify(setupData));
 
 			Chat.SystemRow(i18n('WsChat.Connected'), 'success');
 		};
 
 
 		// jemand anderes hat etwas geschrieben
-		Chat.WebsocketChat.onmessage = function(ev) {
+		websocket.onmessage = function(ev) {
 			let msg = JSON.parse(ev.data);
+			if (typeof msg !== 'object') return;
+			if (typeof msg.type !== 'string') return;
 
 			Chat.TextRow(msg);
 		};
 
 
 		// Error, da geht was nicht
-		Chat.WebsocketChat.onerror	= function(ev){
+		websocket.onerror	= function(ev){
 			Chat.SystemRow(i18n('WsChat.ErrorOccurred') + ev.data, 'error');
 		};
 
 
 		// User hat das [X] geklickt
-		Chat.WebsocketChat.onclose 	= function(){
+		websocket.onclose 	= function(){
 			Chat.SystemRow(i18n('WsChat.ConnectionClosed'), 'error');
 		};
 	},
@@ -623,14 +632,15 @@ let Chat = {
 			type: 'message'
 		};
 
-		if(type !== 'onlyOthers'){
-			Chat.TextRow(msg);
+		if (Chat.WebsocketChat) {
+			if (type !== 'onlyOthers'){
+				Chat.TextRow(msg);
+			}
+			
+			Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
+			// $('#message-input').val('');
+			/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
 		}
-
-		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
-
-		// $('#message-input').val('');
-		/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
 	},
 
 
@@ -1090,7 +1100,7 @@ let Chat = {
 
 		setTimeout(
 			function(){
-				Chat.WebsocketChat.close();
+				if (Chat.WebsocketChat) Chat.WebsocketChat.close();
 			}, 500
 		);
 	},
