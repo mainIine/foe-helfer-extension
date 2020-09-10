@@ -60,6 +60,12 @@
 		"sort": 5
 	},
 	{
+		"name": "ShowEventChest",
+		"status": true,
+		"group": "Boxes",
+		"sort": 6
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
