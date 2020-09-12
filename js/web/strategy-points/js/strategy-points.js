@@ -49,11 +49,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 	StrategyPoints.HideFPBarInGex();
 });
 
-// Update the FP Bar
-FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-	StrategyPoints.ShowFPBarInGex();
-});
-
 /**
  * @type {{readonly AvailableFP: *|number, OldStrategyPoints: number, HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: StrategyPoints.RefreshBar, InventoryFP: number}}
  */
@@ -99,15 +94,15 @@ let StrategyPoints = {
 
 		// necessary to wait for gift in gg + diplomatic gift
 		setTimeout(()=>{
-			const avialableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
+			const availableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
 
-			$('.fp-bar-main').find('.number').text(avialableFPs);
+			$('.fp-bar-main').find('.number').text(availableFPs);
 
 			const $bar = $('.fp-bar-main').find('.bars');
 
 			// make empty
 			$bar.find('span').remove();
-			for (let i = 0; i < avialableFPs; i++) {
+			for (let i = 0; i < availableFPs; i++) {
 				$bar.append(`<span />`);
 				if (i === 9) { break; }
 			}
