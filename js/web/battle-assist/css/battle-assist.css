@@ -1,9 +1,25 @@
-#battleAssistStopDialog {
+#battleAssistNextEraDialog {
+    top: calc(50vh + 230px);
+    left: calc(50vw - 298px);
+}
+
+#battleAssistNextEraDialogBody {
+    width: 576px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 120%;
+    background: #800;
+}
+
+#battleAssistRogueDialog {
     top: calc(50vh + 230px);
     left: calc(50vw - 92px);
 }
 
-#battleAssistStopDialogBody {
+#battleAssistRogueDialogBody {
     width: 360px;
     height: 100px;
     display: flex;
@@ -14,7 +30,7 @@
     background: #800;
 }
 
-#battleAssistStopDialogBody .blink {
+#battleAssistRogueDialogBody .blink {
     animation: battleAssistBlink 1s linear infinite;
 }
 
