@@ -36,17 +36,17 @@ window.addEventListener('resize', ()=>{
 // GEX started
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	ActiveMap = 'gex';
-	StrategyPoints.ShowFPBarInGex();
+	StrategyPoints.ShowFPBar();
 });
 
 // Guildfights enter
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-	StrategyPoints.ShowFPBarInGex();
+	StrategyPoints.ShowFPBar();
 });
 
 // main is entered
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-	StrategyPoints.HideFPBarInGex();
+	StrategyPoints.HideFPBar();
 });
 
 /**
@@ -79,7 +79,7 @@ let StrategyPoints = {
 	},
 
 
-	ShowFPBarInGex: ()=>{
+	ShowFPBar: ()=>{
 
 		if(ActiveMap === 'main'){
 			return ;
@@ -111,7 +111,7 @@ let StrategyPoints = {
 	},
 
 
-	HideFPBarInGex: ()=> {
+	HideFPBar: ()=> {
 		$('.fp-bar-main').hide();
 	},
 

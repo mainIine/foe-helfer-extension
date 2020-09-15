@@ -884,7 +884,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
 		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
 		Outposts.CollectResources();
-		StrategyPoints.ShowFPBarInGex();
+		StrategyPoints.ShowFPBar();
 	});
 
 
