@@ -11,7 +11,7 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background: #800;
+    background-color: rgba(103, 1, 1, 0.5);
 }
 
 #battleAssistRogueDialog {
@@ -27,17 +27,18 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background: #800;
+	background-color: rgba(103, 1, 1, 0.5);
 }
 
-#battleAssistRogueDialogBody .blink {
-    animation: battleAssistBlink 1s linear infinite;
+#battleAssistRogueDialogBody,
+#battleAssistNextEraDialogBody {
+    animation: battleAssistBlink 2s linear infinite;
 }
 
 @keyframes battleAssistBlink {
-    0%{     color: #ff0;    }
-    49%{    color: #ff0; }
-    60%{    color: transparent; }
-    99%{    color:transparent;  }
-    100%{   color: #ff0;    }
+    0% {color: #fafa6c;}
+    25% {color: #fcfcb2;}
+    50% {color: transparent;}
+    75% {color: #fcfcb2;}
+    100% {color: #fafa6c;}
 }
