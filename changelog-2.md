@@ -6,6 +6,9 @@
 - Event/Step calculator:
     - [#1592](https://github.com/dsiekiera/foe-helfer-extension/issues/1592) Added setting to disable the Box
 
+- Battle Assistant:
+    - From now on a warning is also given when a rare unit of the next Era has died => possibility to heal
+
 **BugFix**
 - Own contribution calculator:
     - [#1586](https://github.com/dsiekiera/foe-helfer-extension/issues/1586) When changing archefactor or external values, the EA calculator jumped back to the current level if scrolling to a higher level was done
