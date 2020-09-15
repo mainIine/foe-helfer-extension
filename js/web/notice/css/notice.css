@@ -136,6 +136,8 @@
 #notices-modalBody,
 #notices-modal-playersBody {
 	padding: 10px;
+	display: flex;
+	flex-direction: column;
 }
 
 #notices-modal-playersBody {
