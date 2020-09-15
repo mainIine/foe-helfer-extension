@@ -505,11 +505,13 @@ let ProvinceMap = {
 
 		if( !$('#ProvinceMap').length ){
 			HTML.Box({
-				'id': 'ProvinceMap',
-				'title': i18n('Boxes.ProvinceMap.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true
+				id: 'ProvinceMap',
+				title: i18n('Boxes.ProvinceMap.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true,
+				keepRatio: true
 			});
 
 			// add css to the dom
