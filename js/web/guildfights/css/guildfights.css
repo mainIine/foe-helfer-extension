@@ -102,3 +102,16 @@
 	height: 5px;
 	display: block;
 }
+
+/*************************************************************************************************************/
+
+#ProvinceMap {
+	width: 790px;
+	height: 620px;
+}
+
+#ProvinceMap #province-map {
+	height: 100%;
+	background: transparent url('../images/volcano_archipelago_bg.png');
+	background-size: 100%;
+}
