@@ -6,6 +6,9 @@
 - Event/Schrittrechner:
     - [#1592](https://github.com/dsiekiera/foe-helfer-extension/issues/1592) Einstellung zum deaktivieren der Box hinzugefügt
 
+- Gefechtsassistent:
+    - Ab sofort wird auch einen Warnung ausgegeben wenn eine seltene Einheit des nächsten ZAs gestorben ist => Möglichkeit zu heilen
+
 **BugFix**
 - Eigenanteilsrechner:
     - [#1586](https://github.com/dsiekiera/foe-helfer-extension/issues/1586) Beim Ändern von Archefaktor oder externen Werten sprang der EA-Rechner auf das aktuelle Level zurück, falls zu einem höheren Level weitergescrollt wurde
