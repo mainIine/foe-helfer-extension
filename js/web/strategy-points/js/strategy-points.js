@@ -36,22 +36,17 @@ window.addEventListener('resize', ()=>{
 // GEX started
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	ActiveMap = 'gex';
-	StrategyPoints.ShowFPBarInGex();
+	StrategyPoints.ShowFPBar();
 });
 
 // Guildfights enter
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-	StrategyPoints.ShowFPBarInGex();
+	StrategyPoints.ShowFPBar();
 });
 
 // main is entered
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-	StrategyPoints.HideFPBarInGex();
-});
-
-// Update the FP Bar
-FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-	StrategyPoints.ShowFPBarInGex();
+	StrategyPoints.HideFPBar();
 });
 
 /**
@@ -84,7 +79,7 @@ let StrategyPoints = {
 	},
 
 
-	ShowFPBarInGex: ()=>{
+	ShowFPBar: ()=>{
 
 		if(ActiveMap === 'main'){
 			return ;
@@ -99,32 +94,24 @@ let StrategyPoints = {
 
 		// necessary to wait for gift in gg + diplomatic gift
 		setTimeout(()=>{
-			const avialableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
+			const availableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
 
-			$('.fp-bar-main').find('.number').text(avialableFPs);
+			$('.fp-bar-main').find('.number').text(availableFPs);
 
-			if(avialableFPs > 0){
+			const $bar = $('.fp-bar-main').find('.bars');
 
-				const $bar = $('.fp-bar-main').find('.bars');
-
-				// make empty
-				$bar.find('span').remove();
-
-				for(let i = 0; i < avialableFPs; i++)
-				{
-					$bar.append(`<span />`);
-
-					if(i === 9){
-						return false;
-					}
-				}
+			// make empty
+			$bar.find('span').remove();
+			for (let i = 0; i < availableFPs; i++) {
+				$bar.append(`<span />`);
+				if (i === 9) { break; }
 			}
 		}, 800);
 
 	},
 
 
-	HideFPBarInGex: ()=> {
+	HideFPBar: ()=> {
 		$('.fp-bar-main').hide();
 	},
 

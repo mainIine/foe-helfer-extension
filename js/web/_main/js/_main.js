@@ -638,6 +638,8 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
+		if (ActiveMap === 'gg') return; //getEntities wurde in den GG ausgelöst => Map nicht ändern
+
 		let MainGrid = false;
 		for (let i = 0; i < postData.length; i++) {
 			let postDataItem = postData[i];
@@ -650,7 +652,7 @@ const FoEproxy = (function () {
             }
 		}
 
-		if (!MainGrid) return;
+		if (!MainGrid) return; // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
 
 		LastMapPlayerID = ExtPlayerID;
 
@@ -880,8 +882,9 @@ const FoEproxy = (function () {
 
 	// Güter des Spielers ermitteln
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-		ResourceStock = data.responseData.resources; // Lagerbestand immer aktulisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
 		Outposts.CollectResources();
+		StrategyPoints.ShowFPBar();
 	});
 
 
