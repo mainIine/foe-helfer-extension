@@ -1,5 +1,26 @@
 ## Changelog - Extension
 
+##### 2.5.2.2
+
+**Update**
+- Event/Schrittrechner:
+    - [#1592](https://github.com/dsiekiera/foe-helfer-extension/issues/1592) Einstellung zum deaktivieren der Box hinzugefügt
+
+**BugFix**
+- Eigenanteilsrechner:
+    - [#1586](https://github.com/dsiekiera/foe-helfer-extension/issues/1586) Beim Ändern von Archefaktor oder externen Werten sprang der EA-Rechner auf das aktuelle Level zurück, falls zu einem höheren Level weitergescrollt wurde
+    - [#1588](https://github.com/dsiekiera/foe-helfer-extension/issues/1588) EA Rechner ludt nicht bzw. aktualisierte sich, wenn externe Spalten befüllt wurden
+
+- Legendäre Bauwerke:
+    - [#1587](https://github.com/dsiekiera/foe-helfer-extension/issues/1587) LG-Investitionen Innovation Tower waren unterhalb von Level 10 verrutscht
+
+- Forgepunkte Balken:
+    - [#1589](https://github.com/dsiekiera/foe-helfer-extension/issues/1589) FP-Counter in GG zählte nicht hoch
+
+- Notizen:
+    - fehlenden "Speicher"-Button ergänzt
+
+---
 ##### 2.5.2.1
 
 **Neu**
