@@ -1,9 +1,27 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 battle-assist.js
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              15.09.20, 09:21 Uhr
+ * zuletzt bearbeitet:        15.09.20, 09:18 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
 FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
     HTML.CloseOpenBox('battleAssistNextEraDialog'); HTML.CloseOpenBox('battleAssistRogueDialog');
     const state = data.responseData.__class__ === 'BattleRealm' ? data.responseData.state : data.responseData;
     if (state.__class__ !== 'BattleRealmState') return;
+
     const { winnerBit, unitsOrder, ranking_data } = state;
+
     let alive = [], nextEraUnitDead = false;
+
     for (const unit of unitsOrder.filter(e => e.teamFlag === 1)) {
         if (unit.currentHitpoints) {
             alive.push(unit.unitTypeId);
@@ -12,12 +30,24 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
             if (Technologies.Eras[unitEra] > CurrentEraID) nextEraUnitDead = true;
         }
     }
+
     if (nextEraUnitDead) return BattleAssist.ShowNextEraDialog();
+
     if (winnerBit !== 1 || !ranking_data.nextArmy) return;
+
     if (alive.filter(e => e !== 'rogue')) return BattleAssist.ShowRogueDialog();
 });
 
+/**
+ * @type {{ShowRogueDialog: BattleAssist.ShowRogueDialog, ShowNextEraDialog: BattleAssist.ShowNextEraDialog}}
+ */
 let BattleAssist = {
+
+	/**
+	 * Shows a User Box when an army unit of the next age has died
+	 *
+	 * @constructor
+	 */
     ShowNextEraDialog: () => {
         HTML.AddCssFile('battle-assist');
         
@@ -31,6 +61,11 @@ let BattleAssist = {
         $('#battleAssistNextEraDialogBody').html(`${i18n('Boxes.BattleAssist.Text.NextEra')}`);
     },
 
+	/**
+	 * Shows a box warning when only agents are left after a fight
+	 *
+	 * @constructor
+	 */
     ShowRogueDialog: () => {
         HTML.AddCssFile('battle-assist');
 
@@ -41,6 +76,6 @@ let BattleAssist = {
             'dragdrop': false,
             'minimize': false
         });
-        $('#battleAssistRogueDialogBody').html(`<div class="blink">${i18n('Boxes.BattleAssist.Text.Rogue')}</div>`);
+        $('#battleAssistRogueDialogBody').html(`${i18n('Boxes.BattleAssist.Text.Rogue')}`);
     },
 };
