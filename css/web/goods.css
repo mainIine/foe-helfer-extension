@@ -470,6 +470,7 @@
 .goods-sprite-50.koban_coins::before,
 .goods-sprite-50.deben::before,
 .goods-sprite-50.diplomacy::before,
+.goods-sprite-50.egyptians_loot::before,
 .goods-sprite-50.strategy_points::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 112.5px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
 
 .goods-sprite-50.supplies::before{background-position: 0 0;}
@@ -481,3 +482,4 @@
 .goods-sprite-50.koban_coins::before{background-position:-21px -41px;background-size:180px 72px;}
 .goods-sprite-50.deben::before{background-position:0 -42px;background-size:180px 72px;}
 .goods-sprite-50.diplomacy::before{background-position:-74px -44px;background-size:180px 72px;width:40px;}
+.goods-sprite-50.egyptians_loot::before{background-position:-114px -37px;background-size:181px 72px;width:28px;height:35px;}
