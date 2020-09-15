@@ -348,10 +348,11 @@ let Notice = {
 				class: `btn-default save-${type}-name`,
 				'data-id': id,
 				'data-type': type,
-				style: 'margin-left: 10px',
-
+				onclick: (type === 'itm' ? `Notice.SaveItemModal(${(id === 'new' ? "'new'" : id)})` : `Notice.SaveModal('${type}', ${(id === 'new' ? "'new'" : id)})`)
 			})
-			.text(i18n('Boxes.Notice.Save'));
+			.text(i18n('Boxes.Notice.Save'))
+			.wrap('<div class="text-right" />');
+
 
 		$('#notices-modalBody').append(inp);
 
@@ -409,23 +410,7 @@ let Notice = {
 			);
 		}
 
-		if(id === 'new'){
-			if(type === 'itm'){
-
-				btn.attr({
-					onclick: `Notice.SaveItemModal(${(id === 'new' ? "'new'" : id)})`
-				});
-
-			} else {
-				btn.attr({
-					onclick: `Notice.SaveModal('${type}', ${(id === 'new' ? "'new'" : id)})`
-				});
-
-				btn.wrap('<div class="text-right" />');
-			}
-
-			$('#notices-modalBody').append(btn);
-		}
+		$('#notices-modalBody').append(btn);
 
 		$(`.inp-${type}-name`).focus();
 	},
