@@ -33,9 +33,9 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 
     if (nextEraUnitDead) return BattleAssist.ShowNextEraDialog();
 
-    if (winnerBit !== 1 || !ranking_data.nextArmy) return;
+    if (winnerBit !== 1 || !ranking_data?.nextArmy) return;
 
-    if (!alive.filter(e => e !== 'rogue')) return BattleAssist.ShowRogueDialog();
+    if (alive.filter(e => e !== 'rogue').length === 0) return BattleAssist.ShowRogueDialog();
 });
 
 /**
