@@ -898,25 +898,6 @@ const FoEproxy = (function () {
 		MainParser.SaveLGInventory(data.responseData);
 	});
 
-	//--------------------------------------------------------------------------------------------------
-	//--------------------------------------------------------------------------------------------------
-
-
-	// Liste der Gildenmitglieder
-	FoEproxy.addHandler('OtherPlayerService', 'getClanMemberList', (data, postData) => {
-		if (!Settings.GetSetting('GlobalSend')) {
-			return;
-		}
-		MainParser.SocialbarList(data.responseData);
-	});
-
-	// Freundesliste
-	FoEproxy.addHandler('OtherPlayerService', 'getFriendsList', (data, postData) => {
-		if (!Settings.GetSetting('GlobalSend')) {
-			return;
-		}
-		MainParser.FriendsList(data.responseData);
-	});
 
 	//--------------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------------
@@ -963,18 +944,6 @@ const FoEproxy = (function () {
 		MainParser.Championship(data.responseData);
 	});
 
-
-	//--------------------------------------------------------------------------------------------------
-	//--------------------------------------------------------------------------------------------------
-
-
-	// LG Freundesliste
-	FoEproxy.addHandler('OtherPlayerService', 'getFriendsList', (data, postData) => {
-		if (!Settings.GetSetting('GlobalSend')) {
-			return;
-		}
-		MainParser.FriendsList(data.responseData);
-	});
 
 	//--------------------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------------------
@@ -1297,7 +1266,7 @@ let MainParser = {
 	 */
 	SocialbarList: (d)=> {
 
-		if(Settings.GetSetting('GlobalSend') === false)
+		if(!Settings.GetSetting('GlobalSend') || !MainParser.checkNextUpdate('OtherPlayers'))
 		{
 			return ;
 		}
@@ -1330,16 +1299,14 @@ let MainParser = {
 			}
 		}
 
-		if(MainParser.checkNextUpdate('OtherPlayers'))
-		{
-			// wenn es nicht leer ist, abschicken
-			if(player.length > 0){
-				MainParser.sendExtMessage({
-					type: 'send2Api',
-					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-					data: JSON.stringify(player)
-				});
-			}
+
+		// not empty, send it
+		if(player.length > 0){
+			MainParser.sendExtMessage({
+				type: 'send2Api',
+				url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(player)
+			});
 		}
 	},
 
@@ -1800,47 +1767,7 @@ let MainParser = {
 
 
 	/**
-	 * Übermittelt die Freundesliste beim betreten des Spieles
-	 * oder wenn nicht aktivert wenn der Tab ausgewählt wurde
-	 *
-	 * @param d
-	 */
-	FriendsList: (d)=>{
-		let data = [];
-
-		for(let i in d){
-			if (!d.hasOwnProperty(i)) {
-				break;
-			}
-
-			// nicht selbst mitschicken
-			if(d[i]['player_id'] !== ExtPlayerID){
-				let pl = {
-					avatar: d[i]['avatar'],
-					city_name: d[i]['city_name'],
-					player_id: d[i]['player_id'],
-					clan_id: d[i]['clan_id'] || '',
-					name: d[i]['name'],
-					score: d[i]['score'],
-					rank: d[i]['rank']
-				};
-
-				data.push(pl);
-			}
-		}
-
-		if(data.length > 0){
-			MainParser.sendExtMessage({
-				type: 'send2Api',
-				url: ApiURL + 'FriendsList/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-				data: JSON.stringify(d)
-			});
-		}
-	},
-
-
-	/**
-	 * Spielerinfos Updaten von Nachrichtenliste
+	 * Player information Updating message list & Website data
 	 *
 	 * @param d
 	 * @param Source
@@ -1854,29 +1781,39 @@ let MainParser = {
 				}
 			}
 		}
+
 		else if (Source === 'LGOverview') {
 			MainParser.UpdatePlayerDictCore(d[0].player);
 		}
+
 		else if (Source === 'LGContributions') {
-				for (let i in d) {
-					MainParser.UpdatePlayerDictCore(d[i].player);
-				}
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i].player);
 			}
-			else if (Source === 'StartUpService') {
-					for (let i in d.socialbar_list) {
-						MainParser.UpdatePlayerDictCore(d.socialbar_list[i]);
-					}
-				}
-				else if (Source === 'PlayerList') {
-						for (let i in d) {
-							MainParser.UpdatePlayerDictCore(d[i]);
-						}
-					}
+		}
+
+		else if (Source === 'StartUpService') {
+			for (let i in d.socialbar_list) {
+				MainParser.UpdatePlayerDictCore(d.socialbar_list[i]);
+			}
+		}
+
+		else if (Source === 'PlayerList') {
+			for (let i in d) {
+				MainParser.UpdatePlayerDictCore(d[i]);
+			}
+
+			MainParser.sendExtMessage({
+				type: 'send2Api',
+				url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(d)
+			});
+		}
 	},
 
 
 	/**
-	 * Spielerinfos Updaten
+	 * Update player information
 	 *
 	 * @param d
 	 */
