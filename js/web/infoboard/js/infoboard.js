@@ -433,9 +433,7 @@ let Info = {
      */
     GuildBattlegroundService_getProvinces: (d) => {
 
-        if (GildFights.SortedColors === null){
-            GildFights.PrepareColors();
-        }
+    	GildFights.PrepareColors();
         
         let data = d[0];
 
