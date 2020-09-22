@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.2.3
+
+**Update**
+- Motivate/Polish:
+    - Transmission to foe-rechner.de revised
+
+---
+
 ##### 2.5.2.2
 
 **Update**

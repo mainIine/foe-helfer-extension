@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.2.3
+
+**Update**
+- Motivieren/Polieren:
+    - Übermittlung an foe-rechner.de überarbeitet
+
+---
+
 ##### 2.5.2.2
 
 **Update**

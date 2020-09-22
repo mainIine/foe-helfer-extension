@@ -558,11 +558,12 @@ let ProvinceMap = {
 			oY: undefined
 		}
 
-		ProvinceMap.Map.addEventListener('mousemove', e => {
-			handleMouseMove(e);
+		ProvinceMap.Map.addEventListener('mousedown', e => {
+			handleMouseDown(e);
 		});
 
-		function handleMouseMove(e){
+		// get the mouse-cords relativ the the minified canvas
+		function handleMouseDown(e){
 			e.preventDefault();
 			e.stopPropagation();
 
@@ -570,6 +571,17 @@ let ProvinceMap = {
 				canvasOffset = $canvas.offset(),
 				offsetX = canvasOffset.left,
 				offsetY = canvasOffset.top;
+
+			const canvas = ProvinceMap.Map;
+			const imgSize = {
+				width: 600,
+				height: 400
+			};
+			const canvasSize = canvas.getBoundingClientRect();
+			const canvasX = e.ClientX - canvasSize.x;
+			const canvasY = e.ClientY - canvasSize.x;
+			const imageX = canvasX / canvasSize.width * imgSize.width;
+			const imageY = canvasY / canvasSize.height * imgSize.height;
 
 			mouse.x = parseInt(e.clientX - offsetX);
 			mouse.y = parseInt(e.clientY - offsetY);
@@ -702,7 +714,6 @@ let ProvinceMap = {
 		init();
 		refresh();
 	},
-
 
 
 	DrawProvinces: ()=> {
