@@ -20,6 +20,8 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 
     const { winnerBit, unitsOrder, ranking_data } = state;
 
+    if (!winnerBit) return;
+
     let alive = [], nextEraUnitDead = false;
 
     for (const unit of unitsOrder.filter(e => e.teamFlag === 1)) {
@@ -31,10 +33,12 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
         }
     }
 
+    // Eine Einheit aus einem zukünftigen Zeitalter ist gestorben
     if (nextEraUnitDead) return BattleAssist.ShowNextEraDialog();
 
+    // Es gibt keine weiteren Gegner
     if (winnerBit !== 1 || !ranking_data?.nextArmy) return;
-
+    // Es sind nur noch Agenten am Leben
     if (alive.filter(e => e !== 'rogue').length === 0) return BattleAssist.ShowRogueDialog();
 });
 
