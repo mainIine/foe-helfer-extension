@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 2.5.2.4
+
+**BugFix**
+- negotiation assistants:
+    - red frame fixed when selecting a good incorrectly
+
+- Battle Assistant:
+    - The window when losing a unit from the next Era can now be clicked away "normally
+
+---
+
 ##### 2.5.2.3
 
 **Update**

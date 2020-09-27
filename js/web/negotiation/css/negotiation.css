@@ -208,7 +208,6 @@
 	transform: scale(0.5);
 }
 
-/*#negotiationBox .wrong-goods .cornered,*/
 #negotiationBox td .cornered.missmatch,
 #negotiationBox td:hover .cornered {
 	display: block;

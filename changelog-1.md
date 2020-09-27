@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 2.5.2.4
+
+**BugFix**
+- Verhandlungsassisten:
+    - roten Rahmen beim falschen Auswählen eines Gutes gefixt
+
+- Gefechtsassistent:
+    - Das Fenster beim Verlieren einer Einheit aus dem nächsten ZA lässt sich nun "normal" wegklicken
+
+---
+
 ##### 2.5.2.3
 
 **Update**
