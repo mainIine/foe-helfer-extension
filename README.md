@@ -1,5 +1,5 @@
 ## FoE Helper
-#### A small extension for all Chromium based Browsers like Google Chrome, Opera, Chromium or Microsoft Edge and FireFox
+##### A small extension for the Online Browser-Game Forge of Empire to install in all Chromium based Browsers like Google Chrome, Opera, Chromium or Microsoft Edge and FireFox
 
 You can install it from here: [Chrome Store](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf) or [Firefox Add-Ons](https://addons.mozilla.org/addon/foe-helper/).
 
