@@ -47,6 +47,7 @@
 #negotiationBox #negotiationBoxBody .goods-sprite.multiple {
 	position: relative;
 	min-width: 50px;
+	display: inline-block;
 }
 
 #negotiationBox #negotiationBoxBody .goods-sprite.cornered {
@@ -63,7 +64,7 @@
 
 #negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
 	background-color: rgba(255,255,255, 0.33);
-	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
 }
 
 #negotiationBox #negotiationBoxBody #good-sort .good-drag {
@@ -207,10 +208,11 @@
 	transform: scale(0.5);
 }
 
-/*#negotiationBox .wrong-goods .cornered,*/
 #negotiationBox td .cornered.missmatch,
 #negotiationBox td:hover .cornered {
 	display: block;
 	border: none;
+	border-radius: 25%;
+	margin: auto;
 }
 

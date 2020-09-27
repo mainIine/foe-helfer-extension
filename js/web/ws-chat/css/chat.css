@@ -50,7 +50,7 @@ body {
 	background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
 	background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
 	background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-	cursor: url('https://foede.innogamescdn.com/assets/shared/cursors/cursor_hover.cur'), auto;
+	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
 }
 
 #ChatBody,
