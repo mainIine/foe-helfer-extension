@@ -85,7 +85,7 @@
     "Boxes.Calculator.Meds": "Medalhas",
     "Boxes.Calculator.Profit": "Lucro",
     "Boxes.Calculator.Step": "Nível ",
-    "Boxes.Calculator.TTForderCosts": "Custos = __nettoreward__ < small > (recompensa líquida)</small> * __forderfactor __%<small>(investimento amigável)</small> = __costs__ ",
+    "Boxes.Calculator.TTForderCosts": "Custos = __nettoreward__<small>(recompensa líquida)</small> Χ __forderfactor __%<small>(investimento amigável)</small> = __costs__",
     "Boxes.Calculator.TTForderFPStockLow": "ATENÇÃO: O estoque de PF está muito baixo<br>Você tem apenas __fpstock__ de __costs__PF<br>Isso é __tooless__PF",
     "Boxes.Calculator.TTForderNegativeProfit": "O lugar não está seguro. É necessário investir mais __fpcount__ PFs.<br>Total para segurar o lugar: __totalfp__FP",
     "Boxes.Calculator.TTLevelWarning": "__fpcount__PF não cabem em <br>Investimento máximo: __totalfp__PF",
