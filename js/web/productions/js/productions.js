@@ -179,17 +179,17 @@ let Productions = {
 
 			if (building['type'] === 'residential' || building['type'] === 'production') {
 				if (building['products']['money']) {
-					building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
+					building['products']['money'] = MainParser.round(building['products']['money'] * Productions.Boosts['money']);
 				}
 				if (building['motivatedproducts']['money']) {
-					building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
+					building['motivatedproducts']['money'] = MainParser.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
 				}
 
 				if (building['products']['supplies']) {
-				building['products']['supplies'] = Math.round(building['products']['supplies'] * Productions.Boosts['supplies']);
+					building['products']['supplies'] = MainParser.round(building['products']['supplies'] * Productions.Boosts['supplies']);
 				}
 				if (building['motivatedproducts']['supplies']) {
-					building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
+					building['motivatedproducts']['supplies'] = MainParser.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
 			}
 
@@ -565,10 +565,10 @@ let Productions = {
 
 						if (size !== 0) {
 							if (type === 'strategy_points') {
-								EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 							}
 							else {
-								EfficiencyString = HTML.Format(Math.round(efficiency));
+								EfficiencyString = HTML.Format(MainParser.round(efficiency));
 							}
 						}
 						else {
@@ -645,10 +645,10 @@ let Productions = {
 
 						let EfficiencyString;
 						if (type === 'strategy_points') {
-							EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 						}
 						else {
-							EfficiencyString = HTML.Format(Math.round(efficiency));
+							EfficiencyString = HTML.Format(MainParser.round(efficiency));
 						}
 									
 						let tds = '<tr>' +

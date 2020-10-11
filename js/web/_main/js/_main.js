@@ -1138,6 +1138,24 @@ let MainParser = {
 
 
 	/**
+	* Führt eine Rundung unter Berücksichtigung der Fließkomma Ungenauigkeit durch
+	*
+    * @param value
+	* @returns {number}
+	*/
+	round: (value) => {
+		let Epsilon = 0.000001;
+
+		if (value >= 0) {
+			return Math.round(value + Epsilon);
+		}
+		else {
+			return Math.round(value - Epsilon);
+        }
+	},
+
+
+	/**
 	 * Der Storage hat immer schon einen Zeitaufschlag
 	 *
 	 * @param actual
