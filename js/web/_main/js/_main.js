@@ -779,6 +779,11 @@ const FoEproxy = (function () {
 				Promise.resolve().then(()=>lgUpdateData = null);
 			} else {
 				lgUpdateData.Rankings = Rankings;
+
+				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
+					MainParser.OwnLGData(lgUpdateData);
+				}
+
 				lgUpdate();
 			}
 		}
@@ -1332,6 +1337,40 @@ let MainParser = {
 		MainParser.send2Server(d, 'OwnLG', function (r) {
 
 			// nach Erfolg, Zeitstempel in den LocalStorage
+			if (r['status'] === 'OK') {
+				localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
+			}
+		});
+	},
+
+
+	/**
+	 * Collect some stats
+	 *
+	 * @param d
+	 * @returns {boolean}
+	 * @constructor
+	 */
+	OwnLGData: (d)=> {
+		// shorter
+		const dataEntity = d['CityMapEntity']['responseData'][0],
+			realData = {
+				'entity': dataEntity,
+				'ranking' : d['Rankings']
+			}
+
+		if (dataEntity['player_id'] !== ExtPlayerID) {
+			return false;
+		}
+
+		let lg_name = 'LGData-' + dataEntity['cityentity_id'] + '-' + ExtPlayerID,
+			time = MainParser.checkNextUpdate(lg_name);
+
+		if(time !== true){
+			return false;
+		}
+
+		MainParser.send2Server(realData, 'OwnLGData', function (r) {
 			if (r['status'] === 'OK') {
 				localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
 			}
