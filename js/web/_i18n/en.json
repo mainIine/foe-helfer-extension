@@ -589,6 +589,7 @@
     "Settings.Entry.ShowMarketFilter": "Market filter",
     "Settings.Entry.ShowOwnPartOnAllGBs": "GB calculator",
 	"Settings.Entry.ShowEventChest": "Eventchest",
+	"Settings.Entry.ShowRougeUnitWarning": "Battle assistant",
     "Settings.Entry.ShowTavernBadge": "Tavern badge",
     "Settings.Entry.Version": "Version",
     "Settings.ExportImport.Error": "This is not a valid settings file!",
@@ -629,6 +630,10 @@
     "Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs",
 	"Settings.ShowEventChest.Desc": "Shows the box for the best prices for an event.",
 	"Settings.ShowEventChest.Title": "Show eventchest box",
+
+	"Settings.ShowRougeUnitWarning.Desc": "Put a box over the button \"Attack\" or \"Autocombat\" to prevent a defeat if only agents are left after the first wave.<br>If precious units of the next age have been killed, this box gives you the possibility to heal them with diamonds.",
+	"Settings.ShowRougeUnitWarning.Title": "Show battle assists",
+
     "Settings.Tab.About": "About",
     "Settings.Tab.Boxes": "Boxes",
     "Settings.Tab.Extension": "General",
