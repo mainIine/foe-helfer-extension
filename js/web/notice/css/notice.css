@@ -147,6 +147,7 @@
 #notices-modal-playersBody .custom-option {
 	display: flex;
 	border-bottom: 1px solid var(--text-normal);
+	align-items: center;
 }
 
 #notices-modal-playersBody .custom-option .avatar {
@@ -156,6 +157,7 @@
 	background-size: contain;
 	background-repeat: no-repeat;
 	margin-right: 10px;
+	border-radius: 20%;
 }
 
 	/******************************************************************************/

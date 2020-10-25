@@ -13,7 +13,7 @@
  */
 
 /**
- * @type {{init: Notice.init, notes: null, Listener: Notice.Listener, SetHeights: Notice.SetHeights, buildBox: Notice.buildBox, BuildSettingButtons: Notice.BuildSettingButtons, prepareContent: Notice.prepareContent, ShowModal: Notice.ShowModal, ShowPlayerModal: Notice.ShowPlayerModal, SaveContent: Notice.SaveContent, EditMode: boolean, SaveModal: Notice.SaveModal, SaveItemModal: Notice.SaveItemModal, DeleteElement: Notice.DeleteElement, Players: {}}}
+ * @type {{ActualGrp: number, init: Notice.init, notes: null, Listener: Notice.Listener, SetHeights: Notice.SetHeights, buildBox: Notice.buildBox, BuildSettingButtons: Notice.BuildSettingButtons, prepareContent: Notice.prepareContent, ActiveTab: number, ShowModal: Notice.ShowModal, ShowPlayerModal: Notice.ShowPlayerModal, SavePlayerToGroup: (function(*): (undefined)), SaveContent: Notice.SaveContent, EditMode: boolean, SaveModal: (function(*=, *=): (undefined)), SaveItemModal: (function(*=): (undefined)), DeleteElement: Notice.DeleteElement, ActiveSubTab: number, Players: {}}}
  */
 let Notice = {
 
@@ -30,6 +30,9 @@ let Notice = {
 	Players: {},
 
 	ActualGrp: 0,
+
+	ActiveTab: 1,
+	ActiveSubTab: 1,
 
 	/**
 	 * On init get the content
@@ -199,7 +202,9 @@ let Notice = {
 		$('#notices').find('#noticesBody').html(content).promise().done(function(){
 
 			// init Tabslet
-			$('.notices').tabslet();
+			$('.notices').tabslet({
+				active: Notice.ActiveTab
+			});
 
 			if( $('.tabs-sub').length > 0 ){
 				$('.tabs-sub').tabslet();
@@ -447,6 +452,13 @@ let Notice = {
 		MainParser.send2Server(data, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
+			if(id === 'new'){
+				Notice.ActiveTab = Notice.notes[Notice.notes.length -1];
+
+			} else {
+				Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === id)) +1;
+			}
+
 			$('#notices-modal').fadeToggle('fast', function(){
 				$(this).remove();
 
@@ -480,6 +492,16 @@ let Notice = {
 		MainParser.send2Server({id:id,type:'itm',name:txt,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
+			const group = Notice.notes.find(e => (e.id === grp));
+			Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === grp)) +1;
+
+			if(id === 'new'){
+				Notice.ActiveSubTab = group.items.length +1;
+
+			} else {
+				Notice.ActiveSubTab = group.items.findIndex(i => (i.id === id)) +1;
+			}
+
 			$('#notices-modal').fadeToggle('fast', function(){
 				$(this).remove();
 
@@ -512,6 +534,9 @@ let Notice = {
 
 			Notice.notes[grpIdx].items[itmIdx]['title'] = head;
 			Notice.notes[grpIdx].items[itmIdx]['content'] = cont;
+
+			Notice.ActiveTab = (grpIdx + 1);
+			Notice.ActiveSubTab = (itmIdx + 1);
 		});
 	},
 
@@ -575,13 +600,25 @@ let Notice = {
 
 
 	SavePlayerToGroup: (id)=> {
-		let data = {
+		const data = {
 			id: 'new',
 			type: 'itm',
 			name: PlayerDict[id]['PlayerName'],
 			grp: Notice.ActualGrp,
 			player: JSON.stringify(PlayerDict[id])
 		};
+
+		// check if not double
+		const group = Notice.notes.find(e => (e.id === Notice.ActualGrp));
+		const player = group.items.find(e => (e.tab === PlayerDict[id]['PlayerName']));
+
+		// Player is allways added
+		if(player){
+			return ;
+		}
+
+		// set the active Tab for reload
+		Notice.ActiveTab = Notice.notes.findIndex(idx => idx.id === Notice.ActualGrp) + 1;
 
 		MainParser.send2Server(data, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
