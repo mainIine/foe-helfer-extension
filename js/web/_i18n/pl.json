@@ -49,7 +49,7 @@
     "Boxes.Calculator.Profit": "Zysk",
     "Boxes.Calculator.Step": "Poziom ",
     "Boxes.Calculator.TTForderCosts": "Koszty = __nettoreward__<small>(bazowy zwrot)</small> * __forderfactor__%<small>(Pomoc)</small> = __costs__",
-    "Boxes.Calculator.TTForderFPStockLow": "UWAGA: posiadasz za mało PR<br>masz __fpstock__ z __costs__ PR<br>za mało o  __tooless__ PR",
+    "Boxes.Calculator.TTForderFPStockLow": "UWAGA: posiadasz za mało PR<br>masz __fpstock__ z __costs__ PR<br>za mało o__tooless__ PR",
     "Boxes.Calculator.TTForderNegativeProfit": "Miejsce nie jest zabezpieczone. należy wpłacić __fpcount__ dodatkowych PR w celu zabezpieczenia<br>Całkowita wpłata: __totalfp__ PR",
     "Boxes.Calculator.TTLevelWarning": "__fpcount__ PR nie zmieści się<br>Maksymalna możliwa wpłata: __totalfp__ PR",
     "Boxes.Calculator.TTLossSelf": "Zwrot = __nettoreward__<small>(bazowy zwrot)</small> * __arcfactor__%<small>(bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Strata = __paid__<small>(wpłata)</small> - __bruttoreward__<small>(zwrot)</small> = __loss__",

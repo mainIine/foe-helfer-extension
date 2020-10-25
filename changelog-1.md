@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.5.2.6
+
+**Update**
+- Extension:
+    - viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
+
+**Bgufix**
+    - Motivieren/Polieren angepasst, API neu gestaltet
+
+---
+
+##### 2.5.2.5
+
+**Update**
+- Extension:
+    - viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
+
+- Notizen:
+    - der letzte Tab wird "gemerkt" wenn neue Seiten angelegt werden
+
+**Bgufix**
+    - Optische Korrekturen am Verhandlungsassistenen
+
+---
+
 ##### 2.5.2.4
 
 **BugFix**
