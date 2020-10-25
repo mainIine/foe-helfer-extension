@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 2.5.2.6
+
+**Update**
+- Extension:
+    - many translations imported from [i18n.foe-helper.com](https://i18n.foe-helper.com)
+
+**Bugfix**
+    - Motivieren/Polishing adapted, API redesigned
+
+---
+
 ##### 2.5.2.5
 
 **Update**
@@ -9,7 +20,7 @@
 - Notes:
     - the last tab is "remembered" when new pages are created
 
-**Bgufix**
+**Bugfix**
     - Visual corrections to the negotiation assistant
 
 ---
