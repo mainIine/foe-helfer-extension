@@ -14,13 +14,24 @@
  */
 
 FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
-    HTML.CloseOpenBox('battleAssistNextEraDialog'); HTML.CloseOpenBox('battleAssistRogueDialog');
+
+	// if setting is true?
+	if(!Settings.GetSetting('ShowRougeUnitWarning')){
+		return;
+	}
+
+	HTML.CloseOpenBox('battleAssistNextEraDialog');
+    HTML.CloseOpenBox('battleAssistRogueDialog');
+
     const state = data.responseData.__class__ === 'BattleRealm' ? data.responseData.state : data.responseData;
-    if (state.__class__ !== 'BattleRealmState') return;
+
+    if (state.__class__ !== 'BattleRealmState')
+    	return;
 
     const { winnerBit, unitsOrder, ranking_data } = state;
 
-    if (!winnerBit) return;
+    if (!winnerBit)
+    	return;
 
     let alive = [], nextEraUnitDead = false;
 
@@ -29,17 +40,22 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
             alive.push(unit.unitTypeId);
         } else {
             const unitEra = Unit.Types.find(e => e.unitTypeId === unit.unitTypeId)?.minEra;
-            if (Technologies.Eras[unitEra] > CurrentEraID) nextEraUnitDead = true;
+            if (Technologies.Eras[unitEra] > CurrentEraID)
+            	nextEraUnitDead = true;
         }
     }
 
-    // Eine Einheit aus einem zukünftigen Zeitalter ist gestorben
-    if (nextEraUnitDead) return BattleAssist.ShowNextEraDialog();
+    // A unit from a future age has died
+    if (nextEraUnitDead)
+    	return BattleAssist.ShowNextEraDialog();
 
-    // Es gibt keine weiteren Gegner
-    if (winnerBit !== 1 || !ranking_data?.nextArmy) return;
-    // Es sind nur noch Agenten am Leben
-    if (alive.filter(e => e !== 'rogue').length === 0) return BattleAssist.ShowRogueDialog();
+    // There are no other opponents
+    if (winnerBit !== 1 || !ranking_data?.nextArmy)
+    	return;
+
+    // Only agents are still alive
+    if (alive.filter(e => e !== 'rogue').length === 0)
+    	return BattleAssist.ShowRogueDialog();
 });
 
 /**
