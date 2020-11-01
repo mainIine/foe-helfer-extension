@@ -1641,16 +1641,14 @@ let MainParser = {
 			}
 		}
 
-		if (Settings.GetSetting('GlobalSend')) {
-			if (lgs.length > 0) {
-				// ab zum Server
-				MainParser.sendExtMessage({
-					type: 'send2Api',
-					url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-					data: JSON.stringify(lgs)
-				});
-			}
-        }
+		if (lgs.length > 0) {
+			// ab zum Server
+			MainParser.sendExtMessage({
+				type: 'send2Api',
+				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(lgs)
+			});
+		}
 	},
 
 
