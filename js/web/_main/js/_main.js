@@ -865,14 +865,6 @@ const FoEproxy = (function () {
 
 	}
 
-	// --------------------------------------------------------------------------------------------------
-	// Tavernenboost wurde gekauft
-	FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
-		if (data.responseData['type'] === 'extra_negotiation_turn') {
-			Tavern.SetExpireTime(data.responseData['expireTime']);
-		}
-	});
-
 
 	FoEproxy.addHandler('BattlefieldService','getArmyPreview',(data,postData) =>{
 		if(!MainParser.activateDownload) return;
@@ -1734,16 +1726,15 @@ let MainParser = {
 	CollectBoosts: (d)=>{
 		for(let i in d)
 		{
-			if(d.hasOwnProperty(i))
-			{
-				if(MainParser.AllBoosts[d[i]['type']] !== undefined)
-				{
-					MainParser.AllBoosts[d[i]['type']] += d[i]['value']
-				}
+			if (!d.hasOwnProperty(i)) continue;
 
-				if (d[i]['type'] === 'extra_negotiation_turn') {
-					Tavern.SetExpireTime(d[i]['expireTime']);
-				}
+			if (MainParser.AllBoosts[d[i]['type']] !== undefined)
+			{
+				MainParser.AllBoosts[d[i]['type']] += d[i]['value']
+			}
+
+			if (d[i]['type'] === 'extra_negotiation_turn') {
+				Negotiation.TavernBoostExpireTime = d[i]['expireTime'];
 			}
 		}
 	},

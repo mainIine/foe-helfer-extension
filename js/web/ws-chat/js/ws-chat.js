@@ -18,75 +18,108 @@
 const html = litHtml.html;
 // @ts-ignore
 const render = litHtml.render;
-
+/** @type {any} */
+var emojify;
 
 class Player {
 
 	/**
-	 * 
-	 * @param {string} id 
-	 * @param {string} name 
-	 * @param {string} portrait 
-	 * @param {boolean} secretsMatch 
+	 * @param {{id: string, name: string, portrait: string, isDev?: boolean, secretsMatch?: boolean}} data
 	 */
-	constructor (id, name, portrait, isdev, secretsMatch) {
+	constructor ({id: id, name: name, portrait: portrait, isDev: isDev, secretsMatch: secretsMatch}) {
 		this.id = id;
-		this.name = null;
-		this.portrait = null;
-		this.isdev = isdev || false;
-		this.secretsMatch = !secretsMatch;
+		/** @type {string} */
+		this.name = name;
+		/** @type {string} */
+		this.portrait = portrait;
+		/** @type {boolean} */
+		this.isDev = isDev || false;
+		/** @type {boolean} */
+		this.secretsMatch = secretsMatch || false;
+		/** @type {HTMLElement} */
 		this.elem = document.createElement('div');
+		/** @type {HTMLImageElement?} */
 		this.portraitImg = null;
+		/** @type {HTMLElement} */
 		this.nameSpan = document.createElement('span');
+		
 		this.elem.appendChild(this.nameSpan);
-		document.getElementById('users').appendChild(this.elem);
-		this.update(name, portrait, isdev, secretsMatch);
+		const usersElem = document.getElementById('users');
+		if (usersElem) usersElem.appendChild(this.elem);
+		// make sure all DOM-values are set according
+		this.setName(this.name);
+		this.setPortrait(this.portrait);
+		this.setIsDev(this.isDev);
+		this.setSecretsMatch(this.secretsMatch);
 	}
 
 	/**
-	 * 
-	 * @param {string} name 
-	 * @param {string} portrait 
-	 * @param {boolean} secretsMatch 
+	 * @param {{name?: string, portrait?: string, isDev?: boolean, secretsMatch?: boolean}} data
 	 */
-	update(name, portrait, isDev, secretsMatch) {
-		this.updateName(name);
-		this.updatePortrait(portrait);
-		this.updateSecretsMatch(secretsMatch);
-		this.updateIsDev(isDev);
+	update({name: name, portrait: portrait, isDev: isDev, secretsMatch: secretsMatch}) {
+		if (name != null) {
+			this.updateName(name);
+		}
+		if (portrait != null) {
+			this.updatePortrait(portrait);
+		}
+		if (secretsMatch != null) {
+			this.updateSecretsMatch(secretsMatch);
+		}
+		if (isDev != null) {
+			this.updateIsDev(isDev);
+		}
 	}
 
 	/**
-	 * 
-	 * @param {string} name 
+	 * @param {string} name
 	 */
 	updateName(name) {
 		if (this.name === name) return;
+		this.setName(name);
+	}
 
+	/**
+	 * @param {string} name
+	 */
+	setName(name) {
 		// update name
 		this.name = name;
 		this.nameSpan.innerText = name;
 	}
 
 	/**
-	 * 
-	 * @param {boolean} isdev 
+	 * @param {boolean} isDev
 	 */
-	updateIsDev(isdev) {
-		// update isdev
-		isdev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
+	updateIsDev(isDev) {
+		if (this.isDev === isDev) return;
+		this.setIsDev(isDev);
 	}
 
 	/**
-	 * 
-	 * @param {string} portrait 
+	 * @param {boolean} isDev
+	 */
+	setIsDev(isDev) {
+		// update isdev
+		this.isDev = isDev;
+		isDev ? this.nameSpan.className = "dev" : this.nameSpan.className = "";
+	}
+
+	/**
+	 * @param {string} portrait
 	 */
 	updatePortrait(portrait) {
 		if (this.portrait === portrait) return;
+		this.setPortrait(portrait);
+	}
 
+	/**
+	 * @param {string} portrait
+	 */
+	setPortrait(portrait) {
 		// update Portrait image
 		this.portrait = portrait;
-		const portraitFile = this.portraitURL;
+		const portraitFile = this.getPortraitURL();
 		if (portraitFile) {
 			let img = this.portraitImg;
 
@@ -110,19 +143,24 @@ class Player {
 	}
 
 	/**
-	 * 
-	 * @param {boolean} secretsMatch 
+	 * @param {boolean} secretsMatch
 	 */
 	updateSecretsMatch(secretsMatch) {
 		if (this.secretsMatch === secretsMatch) return;
-		// update "trusted" class
+		this.setSecretsMatch(secretsMatch);
+	}
+
+	/**
+	 * @param {boolean} secretsMatch
+	 */
+	setSecretsMatch(secretsMatch) {
 		this.secretsMatch = secretsMatch;
+		// update "trusted" class
 		if (secretsMatch) {
 			this.elem.classList.add('trusted');
 		} else {
 			this.elem.classList.remove('trusted');
 		}
-
 	}
 
 	remove() {
@@ -130,7 +168,7 @@ class Player {
 		Player.all.delete(this.id);
 	}
 
-	get portraitURL() {
+	getPortraitURL() {
 		const portraitFile = Chat.PlayersPortraits[this.portrait];
 		if (portraitFile) {
 			return `${Chat.InnoCDN}assets/shared/avatars/${portraitFile}.jpg`;
@@ -141,35 +179,31 @@ class Player {
 
 
 	/**
-	 * @param {string} id 
-	 * @param {string} [name] 
-	 * @param {string} [portrait]
-	 * @param {boolean} [secretsMatch] 
-	 * @returns {Player|undefined}
+	 *
+	 * @param {{id: string, name?: string, portrait?: string, isDev?: boolean, secretsMatch?: boolean}} data
+	 * @returns {Player}
 	 */
-	static get(id, name, portrait, isDev, secretsMatch) {
-		let player = Player.all.get(id);
+	static get(data) {
+		let player = Player.all.get(data.id);
 		if (player == null) {
-			player = new Player(
-				id,
-				name||'Unknown#'+id,
-				portrait || '',
-				isDev || false,
-				secretsMatch || false
-			);
-			Player.all.set(id, player);
+			player = new Player({
+				id: data.id,
+				name: data.name||'Unknown#'+data.id,
+				portrait: data.portrait || '',
+				isDev: data.isDev || false,
+				secretsMatch: data.secretsMatch || false
+			});
+			Player.all.set(data.id, player);
 
 		} else {
-			if (name != null && portrait != null && secretsMatch != null) {
-				player.update(name, portrait, isDev, secretsMatch);
-			}
+			player.update(data);
 		}
 		return player;
 	}
 }
 
 /**
- * @type {Map<string, Player>}
+ * @type {Map<string, Player|undefined>}
  */
 Player.all = new Map();
 
@@ -263,10 +297,10 @@ let Chat = {
 	World: '',
 	Lang: 'en',
 	OtherPlayers: /** @type {{player_name: string, player_id: Number, avatar: string, secretsMatch: boolean}[]} */([]),
-	PlayersPortraits: {},
+	PlayersPortraits: /** @type {Record<string, string|undefined>} */({}),
 	OnlinePlayers: [],
 	OwnName: '',
-	WebsocketChat : null,
+	WebsocketChat : /** @type {WebSocket|null} */(null),
 	ReadMode: 'live',
 	Token: '',
 	ConnectionId: '',
@@ -327,14 +361,14 @@ let Chat = {
 					// frage die Sprachdatei an
 					fetch('/js/web/_i18n/'+lang+'.json')
 						// lade die antwort als JSON
-						.then(response => response.text())
+						.then(response => response.json())
 						// im fehlerfall wird ein leeres Objekt zurück gegeben
 						.catch(()=>({}))
 				)
 		);
 
 		for (let languageData of languageDatas) {
-			i18n.translator.add({ 'values': JSON.parse(languageData) });
+			i18n.translator.add({ 'values': languageData });
 		}
 
 		Chat.PlayerID = player_id;
@@ -418,6 +452,10 @@ let Chat = {
 			}, 100
 		);
 
+		Chat.connectWebSocket();
+	},
+
+	connectWebSocket: () => {
 		// get a random connection id if this tab doesn't already have one
 		let connectionId = sessionStorage.getItem('websocket-connection-id') || '';
 		if (!connectionId) {
@@ -439,11 +477,13 @@ let Chat = {
 		}
 		Chat.ConnectionId = connectionId;
 		
-		Chat.WebsocketChat = new WebSocket(Chat.wsUri);
+		if (Chat.WebsocketChat) Chat.WebsocketChat.close();
+		const websocket = new WebSocket(Chat.wsUri);
+		Chat.WebsocketChat = websocket;
 
 
 		// Verbindung wurde hergestellt
-		Chat.WebsocketChat.onopen = () => {
+		websocket.onopen = () => {
 			const setupData = {
 				world: Chat.ChatRoom === 'dev' ? 'dev' : Chat.World,
 				guild: Chat.ChatRoom !== '' ? 0 : Chat.GuildID,
@@ -454,28 +494,30 @@ let Chat = {
 				connectionId: connectionId
 			};
 			// console.log('setup', setupData);
-			Chat.WebsocketChat.send(JSON.stringify(setupData));
+			websocket.send(JSON.stringify(setupData));
 
 			Chat.SystemRow(i18n('WsChat.Connected'), 'success');
 		};
 
 
 		// jemand anderes hat etwas geschrieben
-		Chat.WebsocketChat.onmessage = function(ev) {
+		websocket.onmessage = function(ev) {
 			let msg = JSON.parse(ev.data);
+			if (typeof msg !== 'object') return;
+			if (typeof msg.type !== 'string') return;
 
 			Chat.TextRow(msg);
 		};
 
 
 		// Error, da geht was nicht
-		Chat.WebsocketChat.onerror	= function(ev){
+		websocket.onerror	= function(ev){
 			Chat.SystemRow(i18n('WsChat.ErrorOccurred') + ev.data, 'error');
 		};
 
 
 		// User hat das [X] geklickt
-		Chat.WebsocketChat.onclose 	= function(){
+		websocket.onclose 	= function(){
 			Chat.SystemRow(i18n('WsChat.ConnectionClosed'), 'error');
 		};
 	},
@@ -590,22 +632,22 @@ let Chat = {
 			type: 'message'
 		};
 
-		if(type !== 'onlyOthers'){
-			Chat.TextRow(msg);
+		if (Chat.WebsocketChat) {
+			if (type !== 'onlyOthers'){
+				Chat.TextRow(msg);
+			}
+			
+			Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
+			// $('#message-input').val('');
+			/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
 		}
-
-		Chat.WebsocketChat.send(JSON.stringify({message: MyMsg}));
-
-		// $('#message-input').val('');
-		/** @type {HTMLInputElement} */(document.getElementById('message-input')).value = '';
 	},
 
 
 	/**
 	 * The message for the textbox
 	 *
-	 * @param message
-	 * @constructor
+	 * @param {any} message
 	 */
 	TextRow: (message)=> {
 		// let PlayerName = '',
@@ -645,18 +687,18 @@ let Chat = {
 
 		switch (message.type) {
 			case 'members': {
-				/** @type {{playerId: string, name: string, portrait: string, secretsMatch: boolean}[]} */
+				/** @type {{playerId: string, name: string, portrait: string, isDev: boolean, secretsMatch: boolean}[]} */
 				const members = message.members;
 				// console.log(message)
 				for (let data of members) {
 					const {playerId, name, portrait, isDev, secretsMatch} = data;
-					Player.get(playerId, name, portrait, isDev, secretsMatch);
+					Player.get({id: playerId, name, portrait, isDev, secretsMatch});
 					//Chat.UserEnter(Player);
 				}
 				break;
 			}
 			case 'secretChange': {
-				const player = Player.get(message.player);
+				const player = Player.get({id: message.player});
 				player.updateSecretsMatch(message.secretsMatch);
 				// 	Chat.UserEnter(Player);
 				break;
@@ -674,7 +716,7 @@ let Chat = {
 					Chat.SmallBox('user-self', TextR, '', message.time);
 		
 				} else {
-					const player = Player.get(player_id);
+					const player = Player.get({id: player_id});
 
 					// let TextR = Chat.MakeImage(message.message);
 					// TextR = emojify.replace(TextR);
@@ -695,7 +737,13 @@ let Chat = {
 				break;
 			}
 			case 'switch': {
-				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
+				const player = Player.get({
+					id: message.player,
+					name: message.name,
+					portrait: message.portrait,
+					isDev: message.isDev,
+					secretsMatch: message.secretsMatch
+				});
 
 				const TextR = document.createElement('em');
 				TextR.innerText = `${player.name} ${i18n('WsChat.UserReEnter')}`;
@@ -705,7 +753,13 @@ let Chat = {
 				break;
 			}
 			case 'join': {
-				const player = Player.get(message.player,  message.name, message.portrait, message.secretsMatch);
+				const player = Player.get({
+					id: message.player,
+					name: message.name,
+					portrait: message.portrait,
+					isDev: message.isDev,
+					secretsMatch: message.secretsMatch
+				});
 
 				const TextR = document.createElement('em');
 				TextR.innerText = `${player.name} ${i18n('WsChat.UserEnter')}`;
@@ -715,7 +769,7 @@ let Chat = {
 				break;
 			}
 			case 'leave': {
-				const player = Player.get(message.player);
+				const player = Player.get({id: message.player});
 
 				const TextR = document.createElement('em');
 				TextR.innerText = `${player.name} ${i18n('WsChat.UserLeave')}`;
@@ -753,9 +807,11 @@ let Chat = {
 	PlaySound: (id, vol = 0.4)=> {
 		// wenn der CHat im Hintergrund liegt, Ping machen
 		if (document.hasFocus() === false){
-			const audio = /** @type {HTMLAudioElement} */(document.getElementById(id));
-			audio.volume = vol;
-			audio.play();
+			const audio = /** @type {HTMLAudioElement|undefined} */(document.getElementById(id));
+			if (audio) {
+				audio.volume = vol;
+				audio.play();
+			}
 		}
 	},
 
@@ -1046,7 +1102,7 @@ let Chat = {
 
 		setTimeout(
 			function(){
-				Chat.WebsocketChat.close();
+				if (Chat.WebsocketChat) Chat.WebsocketChat.close();
 			}, 500
 		);
 	},
@@ -1116,7 +1172,7 @@ let Chat = {
 	 */
 	getTimestamp: (hrs)=>{
 
-		let time = new Date(Date.now() + GameTimeOffset).getTime(),
+		let time = new Date(Date.now()).getTime(),
 			h = hrs || 0,
 			m = 0,
 

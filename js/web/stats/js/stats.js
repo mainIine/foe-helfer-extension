@@ -857,7 +857,7 @@ let Stats = {
 			colors,
 			pointFormat: `<tr>
 								<td>
-									<span class="goods-sprite {series.options.goodsId}"></span>
+									<span class="goods-sprite-50 {series.options.goodsId}"></span>
 								</td>
 								<td>
 									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
