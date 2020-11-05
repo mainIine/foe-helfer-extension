@@ -303,8 +303,10 @@ let Outposts = {
 		t.push('<th class="text-center">' + i18n('Boxes.Outpost.TitleFree') + '</th>');
 
 		// Güter durchgehen
-		for(let resourceID of resourceIDs){
-			t.push('<th class="text-center">' + GoodsData[resourceID].name + '</th>');
+		for (let resourceID of resourceIDs) {
+			let IconID = resourceID;
+			if (resourceID === 'barley' || resourceID === 'pottery' || resourceID === 'flowers' || resourceID === 'sacrificial_offerings') IconID = 'fine_' + IconID;
+			t.push(`<th class="text-center"><span class="goods-sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
 		}
 
 		t.push('</tr>');
@@ -336,10 +338,7 @@ let Outposts = {
                 }
 				const resourceInStock = currStock[resourceID];
 								
-				if (resourceCost == null || resourceCost <= 0) {
-					t.push('<td></td>');
-					continue;
-				}
+				if (!resourceCost) resourceCost = 0;
 
 				t.push('<td class="text-center" nowrap="nowrap">');
 				
@@ -370,48 +369,45 @@ let Outposts = {
 				
 				const displayVal = HTML.Format(displaySums && resourceID !== 'diplomacy' && resourceID !== goodProductionResourceId ? resourceSumAfter : resourceCost);
 				
-				if (!displaySums && resourceInStock < resourceSumBefore) {
-					t.push(displayVal);
-				} else {
-					if (resourceInStock >= resourceSumAfter) {
-						// Es sind genug Güter vorhanden.
-						t.push('<span class="text-success">' +displayVal + '</span>' );
-					} else {
-						// Es sind nicht genug Güter vorhanden.
-						t.push(displayVal + ' <small class="text-danger">' + HTML.Format(resourceInStock - resourceSumAfter) + '</small>' );
-					}
+				if (resourceInStock >= resourceSumAfter) {
+					// Es sind genug Güter vorhanden.
+					t.push('<span class="text-success">' +displayVal + '</span>' );
+				}
+				else {
+					// Es sind nicht genug Güter vorhanden.
+					t.push(displayVal + ' <small class="text-danger">' + HTML.Format(resourceInStock - resourceSumAfter) + '</small>' );
+				}
 
-					// Empfehlung für Diplomatie
-					if (resourceID === 'diplomacy') {
-						/** @type {string[]} */
-						let content = [];
-						/** @type {number} */
-						let rest = resourceSumAfter - resourceInStock;
+				// Empfehlung für Diplomatie
+				if (resourceID === 'diplomacy') {
+					/** @type {string[]} */
+					let content = [];
+					/** @type {number} */
+					let rest = resourceSumAfter - resourceInStock;
 
-						if (rest > 0) {
-							UnlockedDiplomacyBuildings.forEach((item, i)=> {
+					if (rest > 0) {
+						UnlockedDiplomacyBuildings.forEach((item, i)=> {
 
-								// letzte Element des Arrays
-								if (i === UnlockedDiplomacyBuildings.length-1 && rest > 0){
-									let c = Math.ceil(rest / item['diplomacy']);
+							// letzte Element des Arrays
+							if (i === UnlockedDiplomacyBuildings.length-1 && rest > 0){
+								let c = Math.ceil(rest / item['diplomacy']);
+								content.push(c + 'x ' + item['name']);
+							}
+							else {
+								let c = Math.floor(rest / item['diplomacy']);
+
+								// passt in den Rest
+								if(c > 0) {
+									rest -= (item['diplomacy'] * c);
 									content.push(c + 'x ' + item['name']);
-
-								} else {
-									let c = Math.floor(rest / item['diplomacy']);
-
-									// passt in den Rest
-									if(c > 0) {
-										rest -= (item['diplomacy'] * c);
-										content.push(c + 'x ' + item['name']);
-									}
 								}
-							});
+							}
+						});
 
-							t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
-						}
+						t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
 					}
 				}
-				
+			
 				t.push('</td>');
 			}
 
@@ -479,11 +475,7 @@ let Outposts = {
 		t.push('<td>' + i18n('Boxes.Outpost.DescRequired') + '</td><td></td>');
 
 		for (let resourceID of resourceIDs) {
-			if (resourceID !== 'diplomacy') {
-				t.push('<td class="text-center">' + HTML.Format(sums[resourceID]) + '</td>');
-			} else {
-				t.push('<td></td>');
-			}
+			t.push('<td class="text-center">' + HTML.Format(sums[resourceID]) + '</td>');
 		}
 
 		t.push('</tr>');
@@ -506,14 +498,8 @@ let Outposts = {
 		t.push('<td><strong>' + i18n('Boxes.Outpost.DescStillMissing') + '</strong></td><td colspan=""></td>');
 
 		for (let resourceID of resourceIDs) {
-			if (resourceID !== 'diplomacy') {
-				let difference = currStock[resourceID] - sums[resourceID];
-
-				t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
-
-			} else {
-				t.push('<td></td>');
-			}
+			let difference = currStock[resourceID] - sums[resourceID];
+			t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
 		}
 
 		t.push('</tr>');
@@ -522,7 +508,12 @@ let Outposts = {
 		t.push('</table>');
 
 
-		$('#outpostConsumablesBody').html(t.join(''));
+		$('#outpostConsumablesBody').html(t.join('')).promise().done(function(){
+			// Goodname via tooltip
+			$('.goods-name').tooltip({
+				container: '#outpostConsumables'
+			});
+		});
 	},
 
 

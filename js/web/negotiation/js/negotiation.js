@@ -67,6 +67,8 @@ let Negotiation = {
 	CONST_Context_GE: 'guildExpedition',
 	CONST_Context_GBG: 'guildBattleground',
 
+	TavernBoostExpireTime : undefined,
+
 
 	/**
 	 * Box in den DOM legen
@@ -406,6 +408,7 @@ let Negotiation = {
 		}
 	},
 
+
 	/**
 	 * @param {string[]} h list of html-strings to add new contend to
 	 */
@@ -437,13 +440,14 @@ let Negotiation = {
 		h.push('<tr>');
 
 		const GoodsOrdered = Negotiation.GoodsOrdered;
+
 		for (let place = 0; place < Negotiation.PlaceCount; place++) {
 			h.push('<td class="text-center">');
 
 			for (let good of GoodsOrdered) {
 				if (good.canOccur.includes(place)) {
 					const hasToOccurClass = good.hasToOccur > 0 ? ' hasToOccur' : '';
-					h.push(`<span class="goods-sprite ${good.resourceId}${hasToOccurClass}"></span>`);
+					h.push(`<span class="goods-sprite multiple ${good.resourceId}${hasToOccurClass}"></span>`);
 				}
 			}
 			h.push('</td>');
@@ -526,7 +530,7 @@ let Negotiation = {
 		if (forcedTryCount != null) {
 			Negotiation.TryCount = forcedTryCount;
 		} else if (responseData.context === Negotiation.CONST_Context_GE) {
-			Negotiation.TryCount = moment.unix(Tavern.ExpireTime) > Date.now() ? 4 : 3;
+			Negotiation.TryCount = moment.unix(Negotiation.TavernBoostExpireTime) > Date.now() ? 4 : 3;
 		} else {
 			Negotiation.TryCount = Negotiation.GoodCount > 6 ? 4 : 3;
 		}
@@ -982,6 +986,12 @@ FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => 
 
 FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 	Negotiation.ExitNegotiation();
+});
+
+FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
+	if (data.responseData['type'] === 'extra_negotiation_turn') {
+		Negotiation.TavernBoostExpireTime = data.responseData['expireTime'];
+	}
 });
 
 

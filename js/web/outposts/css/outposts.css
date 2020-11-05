@@ -60,7 +60,11 @@
 	display: block;
 }
 
-
+#outpostConsumables #outpostConsumablesBody .goods-sprite-50 {
+	width: 34px;
+	height: 34px;
+	vertical-align: center;
+}
 
 #outpostConsumables .info-line {
 	display: flex;
