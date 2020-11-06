@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.2.8
+
+**Bugfix**
+
+- Kostenrechner:
+    - beim Öffnen eines anderen LGs schloss sich die Box
+
+---
+
 ##### 2.5.2.7
 
 **Update**
