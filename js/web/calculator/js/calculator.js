@@ -27,15 +27,17 @@ let Calculator = {
 
 
 	/**
-	 * Kostenrechner anzeigen
+	 * Show calculator
 	 *
+	 * @param action
+	 * @constructor
 	 */
-	Show: () => {
+	Show: (action = '') => {
         // moment.js global setzen
         moment.locale(MainParser.Language);
 
         // close at the second click
-		if ($('#costCalculator').length > 0) {
+		if ($('#costCalculator').length > 0 && action === 'menu') {
 			HTML.CloseOpenBox('costCalculator');
 
 			return;
