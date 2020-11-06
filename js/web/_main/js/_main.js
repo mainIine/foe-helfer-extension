@@ -773,10 +773,12 @@ const FoEproxy = (function () {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
+		let Rankings, Bonus = {};
 
-		let Rankings;
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
+			Bonus['passive'] = getConstruction.responseData.next_passive_bonus;
+			Bonus['production'] = getConstruction.responseData.next_production_bonus;
 			IsLevelScroll = false;
 		}
 		else if (getConstructionRanking != null) {
@@ -784,17 +786,19 @@ const FoEproxy = (function () {
 			IsLevelScroll = true;
 		}
 		else if (contributeForgePoints != null) {
-				Rankings = contributeForgePoints.responseData;
-				IsLevelScroll = false;
-			}
+			Rankings = contributeForgePoints.responseData;
+			IsLevelScroll = false;
+		}
 
 		if (Rankings) {
 			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
-				lgUpdateData = { Rankings: Rankings, CityMapEntity: null};
+				lgUpdateData = { Rankings: Rankings, CityMapEntity: null, Bonus: null};
 				// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
 				Promise.resolve().then(()=>lgUpdateData = null);
+
 			} else {
 				lgUpdateData.Rankings = Rankings;
+				lgUpdateData.Bonus = Bonus;
 
 				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
 					MainParser.OwnLGData(lgUpdateData);
@@ -821,8 +825,9 @@ const FoEproxy = (function () {
 	});
 
 	// Update Funktion, die ausgeführt wird, sobald beide Informationen in lgUpdateData vorhanden sind.
-	function lgUpdate() {
-		const { CityMapEntity, Rankings} = lgUpdateData;
+	function lgUpdate()
+	{
+		const { CityMapEntity, Rankings, Bonus} = lgUpdateData;
 		lgUpdateData = null;
 		let IsPreviousLevel = false;
 
@@ -866,12 +871,13 @@ const FoEproxy = (function () {
 			}
 
 			if (!IsLevelScroll) {
-				MainParser.OwnLG(CityMapEntity.responseData[0], Rankings);
+				MainParser.OwnLG(CityMapEntity.responseData[0]);
 			}
 		}
 
 		//Fremdes LG
-		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
+		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll)
+		{
 			LastKostenrechnerOpenTime = MainParser.getCurrentDateTime()
 
 			$('#calculator-Btn').removeClass('hud-btn-red');
@@ -1340,8 +1346,8 @@ let MainParser = {
 	 * @param e
 	 * @returns {boolean}
 	 */
-	OwnLG: (d, e)=> {
-		// ist es schon wieder so weit?
+	OwnLG: (d)=> {
+
 		let lg_name = 'LG-' + d['cityentity_id'] + '-' + ExtPlayerID,
 			time = MainParser.checkNextUpdate(lg_name);
 
@@ -1368,28 +1374,22 @@ let MainParser = {
 	 * @constructor
 	 */
 	OwnLGData: (d)=> {
-		// shorter
+
 		const dataEntity = d['CityMapEntity']['responseData'][0],
 			realData = {
 				'entity': dataEntity,
-				'ranking' : d['Rankings']
+				'ranking': d['Rankings'],
+				'bonus': d['Bonus']
 			}
 
 		if (dataEntity['player_id'] !== ExtPlayerID) {
 			return false;
 		}
 
-		let lg_name = 'LGData-' + dataEntity['cityentity_id'] + '-' + ExtPlayerID,
-			time = MainParser.checkNextUpdate(lg_name);
-
-		if(time !== true){
-			return false;
-		}
-
-		MainParser.send2Server(realData, 'OwnLGData', function (r) {
-			if (r['status'] === 'OK') {
-				localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
-			}
+		MainParser.sendExtMessage({
+			type: 'send2Api',
+			url: `${ApiURL}OwnLGData`,
+			data: JSON.stringify(realData)
 		});
 	},
 
@@ -1599,10 +1599,9 @@ let MainParser = {
 			clan_id: d['clan_id'],
 		};
 
-		// ab zum Server
 		MainParser.sendExtMessage({
 			type: 'send2Api',
-			url: ApiURL + 'SelfPlayer/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+			url: `${ApiURL}SelfPlayer/?player_id=${ExtPlayerID}&guild_id=${ExtGuildID}&world=${ExtWorld}&v=${extVersion}`,
 			data: JSON.stringify(data)
 		});
 	},
@@ -1641,16 +1640,14 @@ let MainParser = {
 			}
 		}
 
-		if (Settings.GetSetting('GlobalSend')) {
-			if (lgs.length > 0) {
-				// ab zum Server
-				MainParser.sendExtMessage({
-					type: 'send2Api',
-					url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-					data: JSON.stringify(lgs)
-				});
-			}
-        }
+		if (lgs.length > 0) {
+			// ab zum Server
+			MainParser.sendExtMessage({
+				type: 'send2Api',
+				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
+				data: JSON.stringify(lgs)
+			});
+		}
 	},
 
 
