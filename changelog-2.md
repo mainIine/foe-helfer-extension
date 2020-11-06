@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.2.8
+
+**Bugfix**
+
+- Cost calculator:
+    - when opening another LG the box closed
+
+---
+
 ##### 2.5.2.7
 
 **Update**

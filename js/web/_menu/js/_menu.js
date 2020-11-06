@@ -401,7 +401,7 @@ let _menu = {
 
 		btn_Calc.bind('click', function () {
 			if (Calculator.CityMapEntity) {
-				Calculator.Show();
+				Calculator.Show('menu');
 			}
 		});
 
