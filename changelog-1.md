@@ -1,12 +1,31 @@
 ## Changelog - Extension
 
+##### 2.5.2.7
+
+**Update**
+- Forschungskosten:
+    - [#1622](https://github.com/dsiekiera/foe-helfer-extension/issues/1622) Das Fenster lässt sich nun individuell in der Größe verändern
+
+- Kostenrechner:
+    - [#1590](https://github.com/dsiekiera/foe-helfer-extension/issues/1590) Die Box schliesst sich beim zweiten Klick im Menü
+
+**Bugfix**
+- Notizen:
+    - [#1627](https://github.com/dsiekiera/foe-helfer-extension/issues/1627) Es konnte keine neue Seite angelegt werden
+
+- Kostenrechner:
+    - [#1619](https://github.com/dsiekiera/foe-helfer-extension/issues/1619) Rundungsfehlern bei manchen Archefaktoren behoben
+
+---
+
 ##### 2.5.2.6
 
 **Update**
 - Extension:
     - viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
 
-**Bgufix**
+**Bugfix**
+- Extension:
     - Motivieren/Polieren angepasst, API neu gestaltet
 
 ---
@@ -20,7 +39,8 @@
 - Notizen:
     - der letzte Tab wird "gemerkt" wenn neue Seiten angelegt werden
 
-**Bgufix**
+**Bugfix**
+- Verhandlungsassistenen:
     - Optische Korrekturen am Verhandlungsassistenen
 
 ---

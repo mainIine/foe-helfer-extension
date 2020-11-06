@@ -22,7 +22,6 @@
 #technologies #technologiesBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	/* min-height: 300px; */
 	max-height: 500px;
 }
 

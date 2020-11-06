@@ -133,11 +133,12 @@ let Technologies = {
 		if ($('#technologies').length === 0) {
 
 			HTML.Box({
-			'id': 'technologies',
-			'title': i18n('Boxes.Technologies.Title'),
-			'auto_close': true,
-			'dragdrop': true,
-			'minimize': true
+				'id': 'technologies',
+				'title': i18n('Boxes.Technologies.Title'),
+				'auto_close': true,
+				'dragdrop': true,
+				'minimize': true,
+				'resize': true
 			});
 
 			// CSS in den DOM prügeln
