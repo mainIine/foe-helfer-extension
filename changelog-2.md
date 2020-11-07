@@ -1,5 +1,41 @@
 ## Changelog - Extension
 
+##### 2.5.2.9
+
+**Bugfix**
+
+- Extension:
+    - small bug when addressing the API
+
+---
+
+##### 2.5.2.8
+
+**Bugfix**
+
+- Cost calculator:
+    - when opening another LG the box closed
+
+---
+
+##### 2.5.2.7
+
+**Update**
+- Research costs:
+    - [#1622](https://github.com/dsiekiera/foe-helfer-extension/issues/1622) The window can now be resized individually
+
+- Cost calculator:
+    - [#1590](https://github.com/dsiekiera/foe-helfer-extension/issues/1590) The User Box closes the second click in the menu
+
+**Bugfix**
+- Notes:
+    - [#1627](https://github.com/dsiekiera/foe-helfer-extension/issues/1627) No new page could be created
+
+- Cost calculator:
+    - [#1619](https://github.com/dsiekiera/foe-helfer-extension/issues/1619) Rounding errors for some arch factors fixed
+
+---
+
 ##### 2.5.2.6
 
 **Update**
