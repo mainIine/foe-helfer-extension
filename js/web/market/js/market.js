@@ -164,15 +164,15 @@ let Market = {
     CalcBody: () => {
         let h = [];
 
-        //Filters
+        // Filters
         h.push('<div class="dark-bg" style="margin-bottom: 3px;">');
         h.push('<table class="filters">');
         h.push('<thead>');
         h.push('<tr>');
         h.push('<th colspan="2"></td>');
-        h.push('<th>' + i18n('Boxes.Market.TradePartner') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.TradeForGoods') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.Rating') + '</th>');
+        h.push('<th class="text-left">' + i18n('Boxes.Market.TradePartner') + '</th>');
+        h.push('<th class="text-left">' + i18n('Boxes.Market.TradeForGoods') + '</th>');
+        h.push('<th class="text-left">' + i18n('Boxes.Market.Rating') + '</th>');
         h.push('</tr>');
         h.push('</thead>');
 
