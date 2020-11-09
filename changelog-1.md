@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.2.9
+
+**Bugfix**
+
+- Extension:
+    - kleiner Bug beim Ansprechen der API
+
+---
+
 ##### 2.5.2.8
 
 **Bugfix**
