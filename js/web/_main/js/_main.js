@@ -1388,7 +1388,7 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'send2Api',
-			url: `${ApiURL}OwnLGData`,
+			url: `${ApiURL}OwnLGData/?world=${ExtWorld}`,
 			data: JSON.stringify(realData)
 		});
 	},
