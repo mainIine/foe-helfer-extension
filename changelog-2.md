@@ -1,5 +1,110 @@
 ## Changelog - Extension
 
+##### 2.5.2.9
+
+**Bugfix**
+
+- Extension:
+    - small bug when addressing the API
+
+---
+
+##### 2.5.2.8
+
+**Bugfix**
+
+- Cost calculator:
+    - when opening another LG the box closed
+
+---
+
+##### 2.5.2.7
+
+**Update**
+- Research costs:
+    - [#1622](https://github.com/dsiekiera/foe-helfer-extension/issues/1622) The window can now be resized individually
+
+- Cost calculator:
+    - [#1590](https://github.com/dsiekiera/foe-helfer-extension/issues/1590) The User Box closes the second click in the menu
+
+**Bugfix**
+- Notes:
+    - [#1627](https://github.com/dsiekiera/foe-helfer-extension/issues/1627) No new page could be created
+
+- Cost calculator:
+    - [#1619](https://github.com/dsiekiera/foe-helfer-extension/issues/1619) Rounding errors for some arch factors fixed
+
+---
+
+##### 2.5.2.6
+
+**Update**
+- Extension:
+    - many translations imported from [i18n.foe-helper.com](https://i18n.foe-helper.com)
+
+**Bugfix**
+    - Motivieren/Polishing adapted, API redesigned
+
+---
+
+##### 2.5.2.5
+
+**Update**
+- Extension:
+    - many translations imported from [i18n.foe-helper.com](https://i18n.foe-helper.com)
+
+- Notes:
+    - the last tab is "remembered" when new pages are created
+
+**Bugfix**
+    - Visual corrections to the negotiation assistant
+
+---
+
+##### 2.5.2.4
+
+**BugFix**
+- negotiation assistants:
+    - red frame fixed when selecting a good incorrectly
+
+- Battle Assistant:
+    - The window when losing a unit from the next Era can now be clicked away "normally
+
+---
+
+##### 2.5.2.3
+
+**Update**
+- Motivate/Polish:
+    - Transmission to foe-rechner.de revised
+
+---
+
+##### 2.5.2.2
+
+**Update**
+- Event/Step calculator:
+    - [#1592](https://github.com/dsiekiera/foe-helfer-extension/issues/1592) Added setting to disable the Box
+
+- Battle Assistant:
+    - From now on a warning is also given when a rare unit of the next Era has died => possibility to heal
+
+**BugFix**
+- Own contribution calculator:
+    - [#1586](https://github.com/dsiekiera/foe-helfer-extension/issues/1586) When changing archefactor or external values, the EA calculator jumped back to the current level if scrolling to a higher level was done
+    - [#1588](https://github.com/dsiekiera/foe-helfer-extension/issues/1588) EA Calculator does not load or update when external columns are filled
+
+- Legendary buildings:
+    - [#1587](https://github.com/dsiekiera/foe-helfer-extension/issues/1587) LG-Investitionen Innovation Tower had slipped below level 10
+
+- Forge points bars:
+    - [#1589](https://github.com/dsiekiera/foe-helfer-extension/issues/1589) FP counter in GG did not count up
+
+- Notes:
+    - Missing "save" button added
+
+---
+
 ##### 2.5.2.1
 
 **New**
