@@ -20,6 +20,8 @@ let Kits = {
 	KitsjSON: null,
 	ShowMissing: false,
 	Inventory: null,
+	BuildingSelectionKits: null,
+	BuildingSets: null,
 
 	/**
 	 * Get all sets from the server
@@ -429,15 +431,14 @@ let Kits = {
 };
 
 // Updatestufen der Eventgebäude
-/*
+
 FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 	Kits.BuildingSelectionKits = JSON.parse(xhr.responseText);
 });
-*/
+
 
 // Building-Sets
-/*
+
 FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
 	Kits.BuildingSets = JSON.parse(xhr.responseText);
 });
-*/
