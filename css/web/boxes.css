@@ -416,7 +416,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	overflow-y: auto;
-	max-height: 400px;
+	max-height: 165px;
 }
 .custom-select.dd-open .custom-options {
 	opacity: 1;

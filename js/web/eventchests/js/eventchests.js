@@ -8,12 +8,18 @@
  * erstellt am:	              07.01.2020, 13:06 Uhr
  * zuletzt bearbeitet:       07.01.2020, 13:06 Uhr
  *
- * Copyright © 2019
+ * Copyright 2019
  *
  * **************************************************************************************
  */
 
 FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
+
+	// is activated?
+	if(!Settings.GetSetting('ShowEventChest')){
+		return;
+	}
+
     let Chests = data.responseData['chests'];
 
     let ChestData = [];
@@ -66,7 +72,7 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
     });
     */
 
-    // Ungültige Daten => Event wird nicht unterstützt => Fenster nicht anzeigen
+    // UngÃ¼ltige Daten => Event wird nicht unterstÃ¼tzt => Fenster nicht anzeigen
     if (ChestData.length === 0) {
         return;
     }
@@ -77,11 +83,7 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
 
 /**
  *
- * @type {{
- * Show: ()=>void,
- * BuildBox: ()=>void,
- * CalcBody: ()=>void,
- * }}
+ * @type {{Show: EventChests.Show, BuildBox: EventChests.BuildBox, CalcBody: EventChests.CalcBody, Chests: null}}
  */
 let EventChests = {
     Chests: null,
@@ -90,6 +92,8 @@ let EventChests = {
      *
      */
     Show: () => {
+
+
         if ($('#eventchests').length === 0) {
             HTML.Box({
                 'id': 'eventchests',
@@ -99,7 +103,7 @@ let EventChests = {
                 'minimize': true
             });
 
-            // CSS in den DOM prügeln
+            // add CSS tot the DOM
             HTML.AddCssFile('eventchests');
         }
 
