@@ -1,9 +1,25 @@
-#battleAssistStopDialog {
+#battleAssistNextEraDialog {
+    top: calc(50vh + 230px);
+    left: calc(50vw - 298px);
+}
+
+#battleAssistNextEraDialogBody {
+    width: 576px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 120%;
+    background-color: rgba(103, 1, 1, 0.5);
+}
+
+#battleAssistRogueDialog {
     top: calc(50vh + 230px);
     left: calc(50vw - 92px);
 }
 
-#battleAssistStopDialogBody {
+#battleAssistRogueDialogBody {
     width: 360px;
     height: 100px;
     display: flex;
@@ -11,17 +27,18 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background: #800;
+	background-color: rgba(103, 1, 1, 0.5);
 }
 
-#battleAssistStopDialogBody .blink {
-    animation: battleAssistBlink 1s linear infinite;
+#battleAssistRogueDialogBody,
+#battleAssistNextEraDialogBody {
+    animation: battleAssistBlink 2s linear infinite;
 }
 
 @keyframes battleAssistBlink {
-    0%{     color: #ff0;    }
-    49%{    color: #ff0; }
-    60%{    color: transparent; }
-    99%{    color:transparent;  }
-    100%{   color: #ff0;    }
+    0% {color: #fafa6c;}
+    25% {color: #fcfcb2;}
+    50% {color: transparent;}
+    75% {color: #fcfcb2;}
+    100% {color: #fafa6c;}
 }
