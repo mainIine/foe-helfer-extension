@@ -1,5 +1,111 @@
 ## Changelog - Extension
 
+##### 2.5.2.9
+
+**Bugfix**
+
+- Extension:
+    - kleiner Bug beim Ansprechen der API
+
+---
+
+##### 2.5.2.8
+
+**Bugfix**
+
+- Kostenrechner:
+    - beim Öffnen eines anderen LGs schloss sich die Box
+
+---
+
+##### 2.5.2.7
+
+**Update**
+- Forschungskosten:
+    - [#1622](https://github.com/dsiekiera/foe-helfer-extension/issues/1622) Das Fenster lässt sich nun individuell in der Größe verändern
+
+- Kostenrechner:
+    - [#1590](https://github.com/dsiekiera/foe-helfer-extension/issues/1590) Die Box schliesst sich beim zweiten Klick im Menü
+
+**Bugfix**
+- Notizen:
+    - [#1627](https://github.com/dsiekiera/foe-helfer-extension/issues/1627) Es konnte keine neue Seite angelegt werden
+
+- Kostenrechner:
+    - [#1619](https://github.com/dsiekiera/foe-helfer-extension/issues/1619) Rundungsfehlern bei manchen Archefaktoren behoben
+
+---
+
+##### 2.5.2.6
+
+**Update**
+- Extension:
+    - viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
+
+**Bugfix**
+- Extension:
+    - Motivieren/Polieren angepasst, API neu gestaltet
+
+---
+
+##### 2.5.2.5
+
+**Update**
+- Extension:
+    - viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
+
+- Notizen:
+    - der letzte Tab wird "gemerkt" wenn neue Seiten angelegt werden
+
+**Bugfix**
+- Verhandlungsassistenen:
+    - Optische Korrekturen am Verhandlungsassistenen
+
+---
+
+##### 2.5.2.4
+
+**BugFix**
+- Verhandlungsassisten:
+    - roten Rahmen beim falschen Auswählen eines Gutes gefixt
+
+- Gefechtsassistent:
+    - Das Fenster beim Verlieren einer Einheit aus dem nächsten ZA lässt sich nun "normal" wegklicken
+
+---
+
+##### 2.5.2.3
+
+**Update**
+- Motivieren/Polieren:
+    - Übermittlung an foe-rechner.de überarbeitet
+
+---
+
+##### 2.5.2.2
+
+**Update**
+- Event/Schrittrechner:
+    - [#1592](https://github.com/dsiekiera/foe-helfer-extension/issues/1592) Einstellung zum deaktivieren der Box hinzugefügt
+
+- Gefechtsassistent:
+    - Ab sofort wird auch einen Warnung ausgegeben wenn eine seltene Einheit des nächsten ZAs gestorben ist => Möglichkeit zu heilen
+
+**BugFix**
+- Eigenanteilsrechner:
+    - [#1586](https://github.com/dsiekiera/foe-helfer-extension/issues/1586) Beim Ändern von Archefaktor oder externen Werten sprang der EA-Rechner auf das aktuelle Level zurück, falls zu einem höheren Level weitergescrollt wurde
+    - [#1588](https://github.com/dsiekiera/foe-helfer-extension/issues/1588) EA Rechner ludt nicht bzw. aktualisierte sich, wenn externe Spalten befüllt wurden
+
+- Legendäre Bauwerke:
+    - [#1587](https://github.com/dsiekiera/foe-helfer-extension/issues/1587) LG-Investitionen Innovation Tower waren unterhalb von Level 10 verrutscht
+
+- Forgepunkte Balken:
+    - [#1589](https://github.com/dsiekiera/foe-helfer-extension/issues/1589) FP-Counter in GG zählte nicht hoch
+
+- Notizen:
+    - fehlenden "Speicher"-Button ergänzt
+
+---
 ##### 2.5.2.1
 
 **Neu**
