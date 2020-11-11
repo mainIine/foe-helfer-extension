@@ -68,8 +68,8 @@ let BlueGalaxy =
 
             h.push('<thead>' +
                 '<tr>' +
-                '<th>' + i18n('Boxes.GreatBuildings.Building') + '</th>' +
-                '<th>' + i18n('Boxes.GreatBuildings.FP') + '</th>' +
+                '<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+                '<th>' + i18n('Boxes.BlueGalaxy.FP') + '</th>' +
                 '</tr>' +
                 '</thead>');
 
