@@ -60,16 +60,27 @@ let BlueGalaxy =
 
         let h = [];
         h.push('<div class="text-center dark-bg header">');
-        h.push('<strong class="title">' + (DoubleCollections > 0 ? i18n('Boxes.BlueGalaxy.DoneProductionsTitle') : i18n('Boxes.BlueGalaxy.NoChargesLeft')) + '</strong><br>');
+        let Title;
+        if (DoubleCollections === 0) {
+            i18n('Boxes.BlueGalaxy.NoChargesLeft')
+        }
+        else if (FPBuildings.length === 0) {
+            Title = i18n('Boxes.BlueGalaxy.NoProductionsDone');
+        }
+        else {
+            Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
+        }
+        h.push('<strong class="title">' + Title + '</strong><br>');
         h.push('</div>');       
 
-        if (DoubleCollections > 0) {
+        if (DoubleCollections > 0 && FPBuildings.length > 0) {
             h.push('<table class="foe-table">');
 
             h.push('<thead>' +
                 '<tr>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.FP') + '</th>' +
+                '<th></th>' +
                 '</tr>' +
                 '</thead>');
 
@@ -79,7 +90,10 @@ let BlueGalaxy =
                 h.push('<tr>');
                 h.push('<td>' + BuildingName + '</td>');
                 h.push('<td>' + FPBuildings[i]['CurrentFP'] + '</td>');
+                h.push('<td class="text-right"><span class="show-entity" data-id="' + FPBuildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
                 h.push('</tr>');
+
+                
             }
 
             h.push('</table');

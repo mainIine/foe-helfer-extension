@@ -345,17 +345,15 @@ let GreatBuildings =
 
             if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
 
+            let Production = Productions.readType(CityMap[i]);
+            let Done = (Production['in'] === 0);
             if (GreatBuildings.BlueGalaxyStaticFPs[EntityID]) {
-                GreatBuildings.FPBuildings.push({ ID: ID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID] });
+                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], CurrentFP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], Done: Done});
             }
-            else {
-                let Production = Productions.readType(CityMap[i]);
-                if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
+            else if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
                     let FP = Production['motivatedproducts']['strategy_points'];
                     let CurrentFP = Production['products']['strategy_points'];
-                    let Done = (Production['in'] === 0);
                     GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: FP, CurrentFP: CurrentFP, Done: Done});
-                }
             }
         }
 

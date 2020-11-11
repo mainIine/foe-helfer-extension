@@ -830,7 +830,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.bluegalaxy.Title'), i18n('Menu.bluegalaxy.Desc'), 'bluegalaxy-Btn');
+		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'), 'bluegalaxy-Btn');
 
 		let btn_sp = $('<span />');
 
