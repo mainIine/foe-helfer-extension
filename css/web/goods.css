@@ -190,7 +190,7 @@
 .goods-sprite.fine_bioplastics::before{background-position:-946px -48px;width:44px;height:45px;transform:rotate(-90deg)}
 .goods-sprite.fine_steel::before{background-position:-952px 0;width:43px;height:45px;transform:rotate(-90deg)}
 .goods-sprite.steel::before{background-position:-952px 0;width:43px;height:45px;transform:rotate(-90deg)}
-.goods-sprite.fine_headdress::before{background-position:-962px -142px;width:42px;height:45px}
+.goods-sprite.headdress::before{background-position:-962px -142px;width:42px;height:45px}
 .goods-sprite.fine_flowers::before{background-position:-986px -94px;width:40px;height:45px}
 .goods-sprite.bronze::before{background-position:-991px -47px;width:40px;height:45px;transform:rotate(-90deg)}
 .goods-sprite.icon_fine_bronze_ore::before{background-position:-991px -47px;width:40px;height:45px;transform:rotate(-90deg)}
@@ -200,8 +200,8 @@
 .goods-sprite.artificial_scales::before{background-position:-1027px -94px;width:44px;height:44px}
 .goods-sprite.fine_artificial_scales::before{background-position:-1027px -94px;width:44px;height:44px}
 .goods-sprite.fine_barley::before{background-position:-1033px -47px;width:41px;height:44px}
-.goods-sprite.fine_maize::before{background-position:-1036px 0;width:41px;height:44px;transform:rotate(-90deg)}
-.goods-sprite.fine_stone_figures::before{background-position:-1034px -139px;width:30px;height:44px}
+.goods-sprite.maize::before{background-position:-1036px 0;width:41px;height:44px;transform:rotate(-90deg)}
+.goods-sprite.stone_figures::before{background-position:-1034px -139px;width:30px;height:44px}
 .goods-sprite.fine_nanowire::before{background-position:-1066px -139px;width:40px;height:43px}
 .goods-sprite.fine_nanowires::before{background-position:-1066px -139px;width:40px;height:43px}
 .goods-sprite.nanowire::before{background-position:-1066px -139px;width:40px;height:43px}
@@ -217,7 +217,7 @@
 .goods-sprite.salt::before{background-position:-1114px -91px;width:41px;height:42px}
 .goods-sprite.cloth::before{background-position:-1116px -45px;width:38px;height:42px}
 .goods-sprite.icon_fine_wool::before{background-position:-1116px -45px;width:38px;height:42px}
-.goods-sprite.fine_vegetables::before{background-position:-1118px 0;width:38px;height:42px}
+.goods-sprite.vegetables::before{background-position:-1118px 0;width:38px;height:42px}
 .goods-sprite.icon_fine_marble::before{background-position:-1158px 0;width:42px;height:38px;transform:rotate(-90deg)}
 .goods-sprite.marble::before{background-position:-1158px 0;width:42px;height:38px;transform:rotate(-90deg)}
 .goods-sprite.icon_fine_talc::before{background-position:-1158px -40px;width:42px;height:37px}
@@ -420,7 +420,7 @@
 .goods-sprite-50.fine_bioplastics::before{background-position:-591px -30px;width:28px;height:28px;transform:rotate(-90deg)}
 .goods-sprite-50.fine_steel::before{background-position:-595px 0;width:27px;height:28px;transform:rotate(-90deg)}
 .goods-sprite-50.steel::before{background-position:-595px 0;width:27px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_headdress::before{background-position:-601px -89px;width:26px;height:28px}
+.goods-sprite-50.headdress::before{background-position:-601px -89px;width:26px;height:28px}
 .goods-sprite-50.fine_flowers::before{background-position:-616px -59px;width:25px;height:28px}
 .goods-sprite-50.bronze::before{background-position:-620px -30px;width:25px;height:28px;transform:rotate(-90deg)}
 .goods-sprite-50.icon_fine_bronze_ore::before{background-position:-620px -30px;width:25px;height:28px;transform:rotate(-90deg)}
@@ -430,8 +430,8 @@
 .goods-sprite-50.artificial_scales::before{background-position:-642px -59px;width:28px;height:28px}
 .goods-sprite-50.fine_artificial_scales::before{background-position:-642px -59px;width:28px;height:28px}
 .goods-sprite-50.fine_barley::before{background-position:-646px -30px;width:26px;height:28px}
-.goods-sprite-50.fine_maize::before{background-position:-648px 0;width:26px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_stone_figures::before{background-position:-646px -87px;width:19px;height:28px}
+.goods-sprite-50.maize::before{background-position:-648px 0;width:26px;height:28px;transform:rotate(-90deg)}
+.goods-sprite-50.stone_figures::before{background-position:-646px -87px;width:19px;height:28px}
 .goods-sprite-50.fine_nanowire::before{background-position:-666px -87px;width:25px;height:27px}
 .goods-sprite-50.fine_nanowires::before{background-position:-666px -87px;width:25px;height:27px}
 .goods-sprite-50.nanowire::before{background-position:-666px -87px;width:25px;height:27px}
@@ -447,7 +447,7 @@
 .goods-sprite-50.salt::before{background-position:-696px -57px;width:26px;height:26px}
 .goods-sprite-50.cloth::before{background-position:-698px -28px;width:24px;height:26px}
 .goods-sprite-50.icon_fine_wool::before{background-position:-698px -28px;width:24px;height:26px}
-.goods-sprite-50.fine_vegetables::before{background-position:-699px 0;width:24px;height:26px}
+.goods-sprite-50.vegetables::before{background-position:-699px 0;width:24px;height:26px}
 .goods-sprite-50.icon_fine_marble::before{background-position:-724px 0;width:26px;height:24px;transform:rotate(-90deg)}
 .goods-sprite-50.marble::before{background-position:-724px 0;width:26px;height:24px;transform:rotate(-90deg)}
 .goods-sprite-50.icon_fine_talc::before{background-position:-724px -25px;width:26px;height:23px}
@@ -471,7 +471,8 @@
 .goods-sprite-50.deben::before,
 .goods-sprite-50.diplomacy::before,
 .goods-sprite-50.egyptians_loot::before,
-.goods-sprite-50.strategy_points::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 112.5px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
+.goods-sprite-50.strategy_points::before,
+.goods-sprite-50.cocoa_beans::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 112.5px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
 
 .goods-sprite-50.supplies::before{background-position: 0 0;}
 .goods-sprite-50.money::before{background-position: -22px 0;}
@@ -483,3 +484,4 @@
 .goods-sprite-50.deben::before{background-position:0 -42px;background-size:180px 72px;}
 .goods-sprite-50.diplomacy::before{background-position:-74px -44px;background-size:180px 72px;width:40px;}
 .goods-sprite-50.egyptians_loot::before{background-position:-114px -37px;background-size:181px 72px;width:28px;height:35px;}
+.goods-sprite-50.cocoa_beans::before{background-position:-147px -37px;background-size:181px 72px;width:28px;height:35px;}
