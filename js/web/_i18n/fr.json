@@ -352,6 +352,7 @@
     "Boxes.Productions.TTGoodsEra": "Cette colonne affiche l'ère du bâtiment, pas de la ressource produite",
     "Boxes.Productions.Title": "Vue d'ensemble des productions",
     "Boxes.Productions.Total": "Total : ",
+    "Boxes.Productions.Units": "Unités",
     "Boxes.Settings.Active": "Actif",
     "Boxes.Settings.Inactive": "Inactif",
     "Boxes.Settings.Title": "Paramètres",
