@@ -1951,6 +1951,10 @@ let MainParser = {
 				MainParser.CityMapEraOutpostData[ID] = Buildings[i];
 			}
 		}
+
+		if ($('#bluegalaxy').length > 0) {
+			BlueGalaxy.CalcBody();
+		}
     },
 
 
