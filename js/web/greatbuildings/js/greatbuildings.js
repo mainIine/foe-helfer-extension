@@ -340,7 +340,7 @@ let GreatBuildings =
 
         for (let i = 0; i < CityMap.length; i++) {
             let ID = CityMap[i]['id']
-            EntityID = CityMap[i]['cityentity_id'],
+                EntityID = CityMap[i]['cityentity_id'],
                 CityEntity = MainParser.CityEntities[EntityID];
 
             if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
@@ -352,7 +352,9 @@ let GreatBuildings =
                 let Production = Productions.readType(CityMap[i]);
                 if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
                     let FP = Production['motivatedproducts']['strategy_points'];
-                    GreatBuildings.FPBuildings.push({ ID: ID, FP: FP });
+                    let CurrentFP = Production['products']['strategy_points'];
+                    let Done = (Production['in'] === 0);
+                    GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: FP, CurrentFP: CurrentFP, Done: Done});
                 }
             }
         }
