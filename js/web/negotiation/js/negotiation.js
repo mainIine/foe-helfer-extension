@@ -84,8 +84,7 @@ let Negotiation = {
 				'ask': i18n('Boxes.Negotiation.HelpLink'),
 				'auto_close': true,
 				'minimize': true,
-				'dragdrop': true,
-				'saveCords': false
+				'dragdrop': true
 			});
 
 			// CSS in den DOM prügeln
