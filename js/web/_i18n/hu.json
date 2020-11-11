@@ -223,8 +223,6 @@
     "Settings.SendInvestigations.Title": "FP befektetés",
     "Settings.SendPlayersMotivation.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",
     "Settings.SendPlayersMotivation.Title": "Motivációs tevékenység",
-    "Settings.ShowTavernBadge.Desc": "Amint aktiválódik a kocsmában az extra lépés, megjelenik egy globálisan mozgatható számláló.",
-    "Settings.ShowTavernBadge.Title": "Mutasd meg a fogadó jelképét",
     "Settings.Version.Desc": "Chrome Bővítmény Verzió",
     "Settings.Version.GuildId": "Céh-Id:",
     "Settings.Version.PlayerId": "Játékos-Id:",

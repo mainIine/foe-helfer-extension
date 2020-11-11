@@ -431,8 +431,6 @@
     "Settings.ShowMarketFilter.Title": "Показывать инструмент фильтра для рынка",
     "Settings.ShowOwnPartOnAllGBs.Desc": "Показывать калькулятор также для ВС других игроков",
     "Settings.ShowOwnPartOnAllGBs.Title": "Показывать калькулятор для всех ВС",
-    "Settings.ShowTavernBadge.Desc": "Как только активирован дополнительный ход в таверне, появится глобальный счетчик.",
-    "Settings.ShowTavernBadge.Title": "Показать значок таверны",
     "Settings.Version.Desc": "Приведенные ниже данные можно пометить для их копирования.",
     "Settings.Version.GuildId": "Айди гильдии:",
     "Settings.Version.Link": "<a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=en'  class='game-cursor'>Последнии изменения</a>",
