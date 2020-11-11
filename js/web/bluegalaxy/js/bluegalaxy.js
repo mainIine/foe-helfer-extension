@@ -33,6 +33,11 @@ let BlueGalaxy =
             // CSS in den DOM prügeln
             HTML.AddCssFile('bluegalaxy');
 
+            // Ein Gebäude soll auf der Karte dargestellt werden
+            $('#bluegalaxy').on('click', '.foe-table .show-entity', function () {
+                Productions.ShowFunction($(this).data('id'));
+            });
+
         } else {
             HTML.CloseOpenBox('greatbuildings');
         }
@@ -62,7 +67,7 @@ let BlueGalaxy =
         h.push('<div class="text-center dark-bg header">');
         let Title;
         if (DoubleCollections === 0) {
-            i18n('Boxes.BlueGalaxy.NoChargesLeft')
+            Title = i18n('Boxes.BlueGalaxy.NoChargesLeft');
         }
         else if (FPBuildings.length === 0) {
             Title = i18n('Boxes.BlueGalaxy.NoProductionsDone');
