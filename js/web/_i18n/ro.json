@@ -246,8 +246,6 @@
     "Settings.SendInvestigations.Title": "PF investite",
     "Settings.SendPlayersMotivation.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
     "Settings.SendPlayersMotivation.Title": "Activitatea de motivație",
-    "Settings.ShowTavernBadge.Desc": "De îndată ce o achiziție este făcută în magazinul tavernei, va fi afișat un contor.",
-    "Settings.ShowTavernBadge.Title": "Arată contorul tavernei prietenilor",
     "Settings.Version.Desc": "Versiunea extensiei pentru ",
     "Settings.Version.GuildId": "ID ghildă:",
     "Settings.Version.PlayerId": "ID jucător:",
