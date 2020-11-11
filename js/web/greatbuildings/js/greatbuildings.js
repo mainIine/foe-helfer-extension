@@ -348,7 +348,7 @@ let GreatBuildings =
             let Production = Productions.readType(CityMap[i]);
             let Done = (Production['in'] === 0);
             if (GreatBuildings.BlueGalaxyStaticFPs[EntityID]) {
-                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], CurrentFP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], Done: Done});
+                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], CurrentFP: Production['products']['strategy_points'], Done: Done});
             }
             else if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
                     let FP = Production['motivatedproducts']['strategy_points'];
