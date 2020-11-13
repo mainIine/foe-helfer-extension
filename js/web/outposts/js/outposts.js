@@ -213,7 +213,7 @@ let Outposts = {
 			t.push(
 				HTML.i18nReplacer(i18n('Boxes.Outpost.infoLine'), {
 					runNumber: (currentRun.id||0)+1,
-					chanceX4: Math.round(currentRun.productionBonusProbability * 100)
+					chanceX4: MainParser.round(currentRun.productionBonusProbability * 100)
 				})
 			);
 		}
@@ -223,7 +223,7 @@ let Outposts = {
 			  '</span><span><strong>'
 			+ GoodsData[primaryResourceId].name + ': ' + HTML.Format(ResourceStock[primaryResourceId]||0)
 			+ '</strong> (+ '
-			+ (current4HProductionRate > 0 ? HTML.Format(Math.round(current4HProductionRate)) : '???')
+			+ (current4HProductionRate > 0 ? HTML.Format(MainParser.round(current4HProductionRate)) : '???')
 			+ '/4h)'
 			+ '</span>'
 		);
