@@ -6,19 +6,21 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              09.11.20, 15:37 Uhr
- * zuletzt bearbeitet:       09.11.20, 15:32 Uhr
+ * zuletzt bearbeitet:        09.11.20, 15:32 Uhr
  *
  * Copyright 2020
  *
  * **************************************************************************************
  */
 
-let BlueGalaxy =
-{
-    /**
-	 * Zeigt die Box an oder schließt sie
+let BlueGalaxy = {
+
+	/**
+	 * Show or hide the box
+	 *
+	 * @constructor
 	 */
-    Show: () => {
+	Show: () => {
         if ($('#bluegalaxy').length === 0) {
 
             HTML.Box({
@@ -30,22 +32,26 @@ let BlueGalaxy =
                 minimize: true
             });
 
-            // CSS in den DOM prügeln
             HTML.AddCssFile('bluegalaxy');
 
-            // Ein Gebäude soll auf der Karte dargestellt werden
+            // A building should be shown on the map
             $('#bluegalaxy').on('click', '.foe-table .show-entity', function () {
                 Productions.ShowFunction($(this).data('id'));
             });
 
         } else {
-            HTML.CloseOpenBox('greatbuildings');
+            HTML.CloseOpenBox('bluegalaxy');
         }
 
         BlueGalaxy.CalcBody();
     },
 
 
+	/**
+	 * Builds the body
+	 *
+	 * @constructor
+	 */
     CalcBody: () => {
         GreatBuildings.RefreshFPBuildings();
 
@@ -65,6 +71,7 @@ let BlueGalaxy =
 
         let h = [];
         h.push('<div class="text-center dark-bg header">');
+
         let Title;
         if (DoubleCollections === 0) {
             Title = i18n('Boxes.BlueGalaxy.NoChargesLeft');
@@ -97,8 +104,6 @@ let BlueGalaxy =
                 h.push('<td>' + FPBuildings[i]['CurrentFP'] + '</td>');
                 h.push('<td class="text-right"><span class="show-entity" data-id="' + FPBuildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
                 h.push('</tr>');
-
-                
             }
 
             h.push('</table');
