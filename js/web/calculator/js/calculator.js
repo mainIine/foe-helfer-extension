@@ -307,18 +307,18 @@ let Calculator = {
 			Einzahlungen[Rank] = 0;
 
 			if (Calculator.Rankings[i]['reward']['strategy_point_amount'] !== undefined)
-				FPNettoRewards[Rank] = Math.round(Calculator.Rankings[i]['reward']['strategy_point_amount']);
+				FPNettoRewards[Rank] = MainParser.round(Calculator.Rankings[i]['reward']['strategy_point_amount']);
 
 			if (Calculator.Rankings[i]['reward']['blueprints'] !== undefined)
-				BPRewards[Rank] = Math.round(Calculator.Rankings[i]['reward']['blueprints']);
+				BPRewards[Rank] = MainParser.round(Calculator.Rankings[i]['reward']['blueprints']);
 
 			if (Calculator.Rankings[i]['reward']['resources']['medals'] !== undefined)
-				MedalRewards[Rank] = Math.round(Calculator.Rankings[i]['reward']['resources']['medals']);
+				MedalRewards[Rank] = MainParser.round(Calculator.Rankings[i]['reward']['resources']['medals']);
 
-			FPRewards[Rank] = Math.round(FPNettoRewards[Rank] * arc);
-			BPRewards[Rank] = Math.round(BPRewards[Rank] * arc);
-			MedalRewards[Rank] = Math.round(MedalRewards[Rank] * arc);
-			ForderFPRewards[Rank] = Math.round(FPNettoRewards[Rank] * ForderArc);
+			FPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * arc);
+			BPRewards[Rank] = MainParser.round(BPRewards[Rank] * arc);
+			MedalRewards[Rank] = MainParser.round(MedalRewards[Rank] * arc);
+			ForderFPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * ForderArc);
 
 			if (EigenPos !== undefined && i > EigenPos) {
 				ForderStates[Rank] = 'NotPossible';
@@ -343,18 +343,18 @@ let Calculator = {
 				for (let j = i + 1; j < Calculator.Rankings.length; j++) {
 					//Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
 					if (Calculator.Rankings[j]['rank'] !== undefined && Calculator.Rankings[j]['rank'] !== -1 && Calculator.Rankings[j]['forge_points'] !== undefined) {
-						SaveRankCosts[Rank] = Math.round((Calculator.Rankings[j]['forge_points'] + RestFP) / 2);
+						SaveRankCosts[Rank] = MainParser.round((Calculator.Rankings[j]['forge_points'] + RestFP) / 2);
 						break;
 					}
 				}
 
 				if (SaveRankCosts[Rank] === undefined)
-					SaveRankCosts[Rank] = Math.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
+					SaveRankCosts[Rank] = MainParser.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
 
 				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SaveRankCosts[Rank]);
 			}
 			else {
-				SaveRankCosts[Rank] = Math.round((Einzahlungen[Rank] + RestFP) / 2);
+				SaveRankCosts[Rank] = MainParser.round((Einzahlungen[Rank] + RestFP) / 2);
 				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SaveRankCosts[Rank]);
 				ForderRankCosts[Rank] = Math.min(ForderRankCosts[Rank], RestFP);
 
@@ -445,7 +445,7 @@ let Calculator = {
 			let ForderGewinn = FPRewards[Rank] - ForderCosts,
 				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0),
 				SaveGewinn = FPRewards[Rank] - SaveCosts,
-				Kurs = (FPNettoRewards[Rank] > 0 ? Math.round(SaveCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
+				Kurs = (FPNettoRewards[Rank] > 0 ? MainParser.round(SaveCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
 
 			if (SaveStates[Rank] !== 'Self' && Kurs > 0) {
 				if (Kurs < BestKurs) {

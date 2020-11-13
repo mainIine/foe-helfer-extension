@@ -70,7 +70,7 @@ let Investment = {
             Investment.Einsatz += contribution['forge_points'];
 
             if (undefined !== contribution['reward']) {
-                let CurrentErtrag = Math.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
+                let CurrentErtrag = MainParser.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
                 
                 if (contribution['forge_points'] >= contribution['max_progress'] - contribution['current_progress']) {
                     Investment.Ertrag += CurrentErtrag;

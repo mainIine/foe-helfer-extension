@@ -44,6 +44,10 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	if($('#bonus-hud').length > 0){
 		BonusService.CalcBonusData();
 	}
+
+	if ($('#bluegalaxy').length > 0) {
+		BlueGalaxy.CalcBody();
+    }
 });
 
 // Guildfights enter

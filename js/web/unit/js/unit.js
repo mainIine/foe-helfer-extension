@@ -214,8 +214,8 @@ let Unit = {
 			let AttackBoost = Boosts['AttackAttackBoost'],
 				DefenseBoost = Boosts['AttackDefenseBoost']
 			
-			let Attack = Math.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
-				Defense = Math.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
+			let Attack = MainParser.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = MainParser.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
 			attack.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
 			attack.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
@@ -284,8 +284,8 @@ let Unit = {
 			let AttackBoost = Boosts['DefenseAttackBoost'],
 				DefenseBoost = Boosts['DefenseDefenseBoost']
 
-			let Attack = Math.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
-				Defense = Math.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
+			let Attack = MainParser.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = MainParser.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
 			defense.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
 			defense.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
@@ -633,7 +633,7 @@ let Unit = {
 			last.push('<td>' + LastAlca[i]['name'] + '</td>');
 
 			last.push('<td class="text-center">' + LastAlca[i]['count'] + 'x</td>');
-			last.push('<td class="text-center">' + Math.round((LastAlca[i]['count'] * 100 ) / LastTotal) + '%</td>');
+			last.push('<td class="text-center">' + MainParser.round((LastAlca[i]['count'] * 100 ) / LastTotal) + '%</td>');
 
 			last.push('</tr>');
 

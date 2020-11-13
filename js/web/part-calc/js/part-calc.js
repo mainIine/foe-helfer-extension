@@ -249,17 +249,17 @@ let Parts = {
 				if (Place < 5) {
 					if (Parts.Rankings[i]['reward'] !== undefined) {
 						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
-						FPRewards[Place] = Math.round(FPCount * arcs[Place]);
+						FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
 						// Medallien berechnen
 						MedalCount = (Parts.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['resources']['medals']) : 0);
-						MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
+						MedalRewards[Place] = MainParser.round(MedalCount * arcs[Place]);
 						if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
 						// Blaupausen berechnen
 						let BlueprintCount = (Parts.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['blueprints']) : 0);
-						BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
+						BPRewards[Place] = MainParser.round(BlueprintCount * arcs[Place]);
 						if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
 					}
 					else {
@@ -965,7 +965,7 @@ let Parts = {
 					DoubleCollections[i] = FPGreatBuilding.Productions[i];
 				}
 				else {
-					DoubleCollections[i] = Math.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
+					DoubleCollections[i] = MainParser.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
                 }
 			}
 			else {
@@ -984,7 +984,7 @@ let Parts = {
 
 		h.push('<div class="d-flex justify-content-center">');
 		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></div>');
-		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info">'+ HTML.Format(Math.round(OwnPartSum)) + '</strong></div>')
+		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') + ': <strong class="info">' + HTML.Format(MainParser.round(OwnPartSum)) + '</strong></div>')
 		h.push('</div>');
 		h.push('</div>');
 
@@ -1018,9 +1018,9 @@ let Parts = {
 			h.push('<td class="bright">' + HTML.Format(Places[i][4]) + '</td>');
 			if (HasDoubleCollection) {
 				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
-				h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
+				h.push('<td>' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
-			h.push('<td><strong class="info">' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
+			h.push('<td><strong class="info">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
 			h.push('</tr>');
         }
 		h.push('</tbody>');
