@@ -798,6 +798,10 @@ let Parts = {
 			for (let i = 0; i < Places.length; i++) {
 				let Place = Places[i];
 
+				if(Parts.Maezens[Place] === 0){
+					continue;
+				}
+
 				if (IncludeFP) {
 					Ret.push('P' + (Place + 1) + '(' + Parts.Maezens[Place] + ')');
 				}
@@ -806,8 +810,8 @@ let Parts = {
 				}
 			}
 		}
-		else {
-			if (PlaceAuto) Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
+		else if (PlaceAuto) {
+			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
         }
 
 		let CopyString = Ret.join(' ');
@@ -875,18 +879,29 @@ let Parts = {
 	BackGroundBoxAnimation: (show)=> {
 		let $box = $('#OwnPartBox');
 
-		if(show === true){
-			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
-			e.style.height = 'auto';
-			let h = e.offsetHeight;
-			e.style.height = '0px';
+		if(show === true)
+		{
+			let $bgBody = $('.OwnPartBoxBackgroundBody');
+			$bgBody.style.height = 'auto';
+			let h = $bgBody.offsetHeight;
+			$bgBody.style.height = '0px';
 
-			$('.OwnPartBoxBackgroundBody').animate({height: h, opacity: 1}, 250, function () {
+			// center overlay to parent box
+			let $boxWidth = $('#OwnPartBox').outerWidth(),
+				$bgBodyWidth = $bgBody.outerWidth();
+
+			$bgBody.css({
+				left: Math.round( ($boxWidth - $bgBodyWidth) / 2 )
+			})
+
+			// animation
+			$bgBody.animate({height: h, opacity: 1}, 250, function () {
 				$box.addClass('show');
 				$box.find('.black-bg').show();
 			});
+		}
 
-		} else {
+		else {
 			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
 				$box.removeClass('show');
 				$box.find('.black-bg').hide();
@@ -921,6 +936,7 @@ let Parts = {
 		// Body zusammen fummeln
 		Parts.CalcBodyPowerLeveling();
 	},
+
 
 	CalcBodyPowerLeveling: () => {
 		let EntityID = Parts.CityMapEntity['cityentity_id'],
