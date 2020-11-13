@@ -39,11 +39,11 @@ let BlueGalaxy = {
                 Productions.ShowFunction($(this).data('id'));
             });
 
+			BlueGalaxy.CalcBody();
+
         } else {
             HTML.CloseOpenBox('bluegalaxy');
         }
-
-        BlueGalaxy.CalcBody();
     },
 
 
