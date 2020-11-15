@@ -17,7 +17,7 @@
 #bluegalaxy {
     top: 30%;
     right: 15%;
-    width: 470px;
+    width: 400px;
 }
 
     #bluegalaxy #bluegalaxyBody {
@@ -28,6 +28,10 @@
 
         #bluegalaxy #bluegalaxyBody strong.success {
             color: var(--text-success);
+        }
+
+        #bluegalaxy #bluegalaxyBody strong.error {
+            color: #ec4d4d;
         }
 
 .text-bright {
@@ -45,16 +49,9 @@
 
 #bluegalaxy #bluegalaxyBody td {
     position: relative;
-    font-size: 85%;
+    font-size: 100%;
 }
 
 #bluegalaxy #bluegalaxyBody .foe-table tr:first-child td:nth-child(5) strong {
     color: var(--text-success);
-}
-
-#bluegalaxy #bluegalaxyBody strong.player-name {
-    display: block;
-    white-space: nowrap;
-    color: var(--text-bright);
-    margin: 0 10px;
 }
