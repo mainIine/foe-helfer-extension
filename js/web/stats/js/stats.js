@@ -195,6 +195,7 @@ let Stats = {
 	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
 	isSelectedGBGSources: () => Stats.gbgSources.includes(Stats.state.source),
 
+
 	/**
 	 * Show Box
 	 */
@@ -625,6 +626,7 @@ let Stats = {
 	 * @returns {string}
 	 */
 	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-green' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}">${name}</button>`,
+
 
 	/**
 	 * Render a tab
