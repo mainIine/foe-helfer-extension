@@ -397,12 +397,5 @@ let IndexDB = {
                 date: MainParser.getCurrentDate()
             });
         }
-    },
-
-
-	extendSchema: async (extendedSchema) => {
-		IndexDB.db.close();
-		IndexDB.db.version(Math.round(IndexDB.db.verno + 1)).stores(extendedSchema);
-		return await IndexDB.db.open();
-	}
+    }
 };
