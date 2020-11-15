@@ -49,27 +49,71 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 	StrategyPoints.HideFPBar();
 });
 
+// FP Collector
+// GG reward after fight
+FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
+
+	console.log('data.responseData: ', data.responseData);
+
+	const d = data.responseData[0][0];
+
+	if(d['subType'] !== 'strategy_points'){
+		return;
+	}
+
+	StrategyPoints.insertIntoDB({
+		place: 'Guildfights',
+		event: ( data['responseData'][1] ? data['responseData'][1] : 'reward'),
+		amount: d['amount'],
+		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+	});
+});
+
+// GEX FP from chest
+FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
+	const d = data['responseData'];
+
+	if(d['subType'] !== 'strategy_points'){
+		return;
+	}
+
+	StrategyPoints.insertIntoDB({
+		place: 'Guildexpedition',
+		event: 'chest',
+		amount: d['amount'],
+		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+	});
+});
+
+
 /**
- *
- * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number}}
+ * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(): Promise<void>), HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
  */
 let StrategyPoints = {
 	OldStrategyPoints: 0,
 	InventoryFP: 0,
 
+	db: null,
 
 	/**
 	 *
 	 * @returns {Promise<void>}
 	 */
-	checkForDB: async ()=> {
-		/*
-		if(await IndexDB.db['forgeStats'] === false){
-			await IndexDB.extendSchema({
-				forgeStats: '++id,type,amount,date'
-			})
-		}
-		*/
+	checkForDB: async (playerID)=> {
+		const FP_DBName = `FoeHelperDB_FPCollector_${playerID}`;
+
+		StrategyPoints.db = new Dexie(FP_DBName);
+
+		StrategyPoints.db.version(1).stores({
+			ForgePointsStats: '++id,place,event,amount,date'
+		});
+
+		StrategyPoints.db.open();
+	},
+
+
+	insertIntoDB: async (data)=>  {
+		await StrategyPoints.db.ForgePointsStats.put(data);
 	},
 
 
