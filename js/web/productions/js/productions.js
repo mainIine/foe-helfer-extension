@@ -1230,7 +1230,7 @@ let Productions = {
 	 * @returns {*|string}
 	 */
 	GetGoodName: (GoodType)=> {
-		console.log('GoodType: ', GoodType);
+
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
 
