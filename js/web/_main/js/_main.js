@@ -573,6 +573,9 @@ const FoEproxy = (function () {
 	// --------------------------------------------------------------------------------------------------
 	// Player- und Gilden-ID setzen
 	FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
+
+		StrategyPoints.checkForDB();
+
 		// Player-ID, Gilden-ID und Name setzten
 		MainParser.StartUp(data.responseData.user_data);
 

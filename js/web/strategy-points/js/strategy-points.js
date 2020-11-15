@@ -50,11 +50,27 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 });
 
 /**
- * @type {{readonly AvailableFP: *|number, OldStrategyPoints: number, HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: StrategyPoints.RefreshBar, InventoryFP: number}}
+ *
+ * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number}}
  */
 let StrategyPoints = {
 	OldStrategyPoints: 0,
 	InventoryFP: 0,
+
+
+	/**
+	 *
+	 * @returns {Promise<void>}
+	 */
+	checkForDB: async ()=> {
+		/*
+		if(await IndexDB.db['forgeStats'] === false){
+			await IndexDB.extendSchema({
+				forgeStats: '++id,type,amount,date'
+			})
+		}
+		*/
+	},
 
 
 	/**

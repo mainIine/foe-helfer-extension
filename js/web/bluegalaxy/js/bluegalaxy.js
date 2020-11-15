@@ -6,17 +6,19 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              09.11.20, 15:37 Uhr
- * zuletzt bearbeitet:       09.11.20, 15:32 Uhr
+ * zuletzt bearbeitet:        09.11.20, 15:32 Uhr
  *
  * Copyright 2020
  *
  * **************************************************************************************
  */
 
-let BlueGalaxy =
-{
-    /**
-	 * Zeigt die Box an oder schließt sie
+let BlueGalaxy = {
+
+	/**
+	 * Show or hide the box
+	 *
+	 * @constructor
 	 */
     Show: () => {
         moment.locale(i18n('Local'));
@@ -32,22 +34,26 @@ let BlueGalaxy =
                 minimize: true
             });
 
-            // CSS in den DOM prügeln
             HTML.AddCssFile('bluegalaxy');
 
-            // Ein Gebäude soll auf der Karte dargestellt werden
+            // A building should be shown on the map
             $('#bluegalaxy').on('click', '.foe-table .show-entity', function () {
                 Productions.ShowFunction($(this).data('id'));
             });
 
-        } else {
-            HTML.CloseOpenBox('greatbuildings');
-        }
+			BlueGalaxy.CalcBody();
 
-        BlueGalaxy.CalcBody();
+        } else {
+            HTML.CloseOpenBox('bluegalaxy');
+        }
     },
 
 
+	/**
+	 * Builds the body
+	 *
+	 * @constructor
+	 */
     CalcBody: () => {
         GreatBuildings.RefreshFPBuildings();
 
@@ -67,6 +73,7 @@ let BlueGalaxy =
 
         let h = [];
         h.push('<div class="text-center dark-bg header">');
+
         let Title;
         if (DoubleCollections === 0) {
             Title = i18n('Boxes.BlueGalaxy.NoChargesLeft');
