@@ -51,7 +51,7 @@ let BlueGalaxy =
     CalcBody: () => {
         GreatBuildings.RefreshFPBuildings();
 
-        let FPBuildings = GreatBuildings.FPBuildings.filter(obj => (obj['CurrentFP'] > 0 && obj['In'] < 3600));
+        let FPBuildings = GreatBuildings.FPBuildings.filter(obj => (obj['CurrentFP'] > 0));
 
         FPBuildings = FPBuildings.sort(function (a, b) {
             return b['CurrentFP'] - a['CurrentFP'];
