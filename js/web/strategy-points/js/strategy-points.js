@@ -85,6 +85,34 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 	});
 });
 
+// double Collection by Blue Galaxy
+FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
+	const d = data['responseData'];
+
+	for(let i in d)
+	{
+		if(!d.hasOwnProperty(i)) continue;
+
+		if(d[i]['type'] === 'citymap_icon_double_collection'){
+
+			let building = MainParser.CityMapData[d[i]['id']],
+				id = building['cityentity_id'],
+				level = building['level'],
+				name = MainParser.CityEntities[id]['name'],
+				products = MainParser.CityEntities[id]['entity_levels'][level]['production_values'];
+
+			const product = Object.values(products).filter((f) => f['type'] === 'strategy_points');
+
+			StrategyPoints.insertIntoDB({
+				place: 'pickupProduction',
+				event: 'double_collection',
+				notes: name,
+				amount: product['value'],
+				date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+			});
+		}
+	}
+});
 
 /**
  * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(): Promise<void>), HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
@@ -105,7 +133,7 @@ let StrategyPoints = {
 		StrategyPoints.db = new Dexie(FP_DBName);
 
 		StrategyPoints.db.version(1).stores({
-			ForgePointsStats: '++id,place,event,amount,date'
+			ForgePointsStats: '++id,place,event,notes,amount,date'
 		});
 
 		StrategyPoints.db.open();
