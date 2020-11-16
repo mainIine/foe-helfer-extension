@@ -72,6 +72,12 @@
 		"sort": 7
 	},
 	{
+		"name": "ShowBlueGalaxyHelper",
+		"status": true,
+		"group": "Boxes",
+		"sort": 8
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",

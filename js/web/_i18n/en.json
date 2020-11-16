@@ -634,6 +634,8 @@
     "Settings.SendInvestigations.Title": "Send FP Investments",
     "Settings.SendPlayersMotivation.Desc": "Should the motivation activities be transferred when the events are called?",
     "Settings.SendPlayersMotivation.Title": "Motivation Activity",
+    "Settings.ShowBlueGalaxyHelper.Desc": "Shows a tool suggesting buildings to collect after collecting the blue galaxy",
+    "Settings.ShowBlueGalaxyHelper.Title": "Show blue galaxy helper",
     "Settings.ShowEventChest.Desc": "Shows the box for the best prices for an event.",
     "Settings.ShowEventChest.Title": "Show eventchest box",
     "Settings.ShowGuildTreasuryLogExport.Desc": "Shows a tool for exporting guild treasury logs into a .csv file when opening the guild treasury log window",
