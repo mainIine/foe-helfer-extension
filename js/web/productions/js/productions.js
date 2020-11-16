@@ -287,7 +287,6 @@ let Productions = {
 
 				if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
 					AdditionalResources = Ability['additionalResources']['AllAge']['resources'];
-
 				}
 
 				// this buildung produces random units
