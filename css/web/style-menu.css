@@ -573,7 +573,6 @@ p {
 	background-image: url('../images/menu/negotation.png');
 }
 
-
 #kits-Btn span {
 	background-image: url('../images/menu/kits.png');
 }
@@ -584,6 +583,10 @@ p {
 
 #notice-Btn span {
 	background-image: url('../images/menu/notices.png');
+}
+
+#bluegalaxy-Btn span {
+	background-image: url('../images/menu/BlueGalaxy.png');
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------

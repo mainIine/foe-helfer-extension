@@ -73,6 +73,7 @@ let IndexDB = {
 
     _dbPromise: new Promise(resolveCb => window._dbPromiseResolver = resolveCb),
 
+
     /**
      * Resolve db when ready for using.
      * SHOULD be always used in FoEproxy.addHandler.
@@ -82,6 +83,7 @@ let IndexDB = {
     getDB: () => {
         return IndexDB._dbPromise;
     },
+
 
     Init: async (playerId) => {
         const primaryDBName = 'FoeHelperDB_' + playerId; //Create different IndexDBs if two players are sharing the same PC playing on the same world
@@ -111,7 +113,7 @@ let IndexDB = {
             players: 'id,date',
             pvpActions: '++id,playerId,date,type',
             greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
-
+			forgeStats: '++id,type,amount,date', // FP Collector
             statsGBGPlayers: 'date', // battleground
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
             statsRewards: 'date', // Collected rewards by Himeji, etc
@@ -133,7 +135,7 @@ let IndexDB = {
         if (await IndexDB.db.players.count()) { return; }
         clearLog();
 
-        log('Looks like your db is empty, trying to populate db using old databases');
+        //log('Looks like your db is empty, trying to populate db using old databases');
 
         let betaDB = null;
         let masterDB = null;
@@ -200,14 +202,14 @@ let IndexDB = {
         }
 
         if (betaDB) {
-            log(`Found DB "${betaDBName}"`)
+            //log(`Found DB "${betaDBName}"`)
             await cloneTables(betaDB, {
                 players: 'players',
                 pvpActions: 'actions',
                 greatbuildings: 'greatbuildings'
             });
         } else if (masterDB) {
-            log(`Found DB "${masterDBName}"`)
+            //log(`Found DB "${masterDBName}"`)
             await cloneTables(masterDB, {
                 players: 'players',
                 pvpActions: 'actions',
@@ -228,11 +230,14 @@ let IndexDB = {
                 statsTreasureClanD: 'treasureClanDaily',
             });
         }
-        log('Deleting old databases');
+
+
+
+        // log('Deleting old databases');
         await Dexie.delete(betaDBName);
         await Dexie.delete(masterDBName);
         await Dexie.delete(statsDBName);
-        log('Done.');
+        //log('Done.');
 
         // Copy tables.
         // Basicly this is not transaction safe to bulkAdd, but we can ignore it because
@@ -259,6 +264,7 @@ let IndexDB = {
         }
     },
 
+
     /**
      * Util function for making backup of db easier
      * @example
@@ -282,11 +288,11 @@ let IndexDB = {
         return sdb.open().then(() => {
             // Clone scheme
             version = version || sdb.verno;
-            console.log(`Cloning DB "${srcName}" v${sdb.verno} => "${dstName}" v${version}`);
+            // console.log(`Cloning DB "${srcName}" v${sdb.verno} => "${dstName}" v${version}`);
 
-            console.log('Dumping schema...');
+            // console.log('Dumping schema...');
             const schema = sdb.tables.reduce((result, table) => {
-                console.log(` => ${table.name}...`);
+                // console.log(` => ${table.name}...`);
                 result[table.name] = (
                     [table.schema.primKey]
                         .concat(table.schema.indexes)
@@ -294,22 +300,23 @@ let IndexDB = {
                 ).toString();
                 return result;
             }, {});
-            console.log('Schema:', schema);
+            // console.log('Schema:', schema);
             ddb.version(version).stores(schema);
 
             return sdb.tables.reduce(
                 (result, table) => result
-                    .then(() => console.log(`Cloning table ${table.name}...`))
+                    // .then(() => console.log(`Cloning table ${table.name}...`))
                     .then(() => table.toArray())
                     .then(rows => ddb.table(table.name).bulkAdd(rows) ),
                 Promise.resolve()
             ).then((x) => {
                 sdb.close();
                 ddb.close();
-                console.log(`Clonning DB is finished, created "${dstName}"`);
+               // console.log(`Clonning DB is finished, created "${dstName}"`);
             })
         });
     },
+
 
     /**
     * Remove old records from db to avoid overflow
@@ -319,8 +326,10 @@ let IndexDB = {
     GarbageCollector: async () => {
         // Expiry time for db with 1 record per day
         const daylyExpiryTime = moment().subtract(1, 'years').toDate();
+
         // Expiry time for db with 1 record per hour
         const hourlyExpiryTime = moment().subtract(8, 'days').toDate();
+
         // Keep logs for guild battlegrounds for 2 weeks
         const gbgExpiryTime = moment().subtract(2, 'weeks').toDate();
 
@@ -342,6 +351,7 @@ let IndexDB = {
         }
     },
 
+
     /**
      * Calculate estimated space used in db
      * In fact db is more compact than returned value because this is not json
@@ -357,6 +367,7 @@ let IndexDB = {
         }
         return parseInt(totalSize);
     },
+
 
     /**
      * Add user from PlayerDict if not added, without era information
@@ -386,5 +397,5 @@ let IndexDB = {
                 date: MainParser.getCurrentDate()
             });
         }
-    },
+    }
 };

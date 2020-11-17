@@ -818,19 +818,19 @@ let _menu = {
 		return btn_MarketBG;
 	},
 
-
 	/**
 	 * Helfer Blaue Galaxie
 	 */
 	bluegalaxy_Btn: () => {
-		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;          
+		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
 
-//		if (!OwnGalaxy) return; //Keine BG => Button ausblenden
+		// no BG => display none
+		if (!OwnGalaxy) return;
 
 		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'), 'bluegalaxy-Btn');
+		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Desc'), i18n('Menu.Bluegalaxy.Title'), 'bluegalaxy-Btn');
 
 		let btn_sp = $('<span />');
 
@@ -842,5 +842,4 @@ let _menu = {
 
 		return btn;
     }
-
 };
