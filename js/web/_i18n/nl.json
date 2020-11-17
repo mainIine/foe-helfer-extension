@@ -630,8 +630,6 @@
     "Settings.ShowOwnPartOnAllGBs.Title": "Toon 'GG rekenmachine' voor alle GG's",
     "Settings.ShowRougeUnitWarning.Desc": "Blokkeer de knoppen \"Aanvallen\" cq. \"Automatisch vechten\" om nederlagen te voorkomen als er na de eerste golf slechts Struikrovers over zijn.<br>Als waardevolle eenheden uit een hoger tijdperk werden vernietigd, geeft de dialoog de mogelijkheid om deze met diamanten te herstellen.",
     "Settings.ShowRougeUnitWarning.Title": "Aanvalsassistent weergeven",
-    "Settings.ShowTavernBadge.Desc": "Zodra een bonus in de taverne wordt geactiveerd, verschijnt een globale, verschuifbare teller.",
-    "Settings.ShowTavernBadge.Title": "Toon teller Taveerne Bonus",
     "Settings.Tab.About": "Over",
     "Settings.Tab.Boxes": "Vensters",
     "Settings.Tab.Extension": "Algemeen",

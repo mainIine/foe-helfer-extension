@@ -287,7 +287,6 @@ let Productions = {
 
 				if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
 					AdditionalResources = Ability['additionalResources']['AllAge']['resources'];
-
 				}
 
 				// this buildung produces random units
@@ -1230,7 +1229,7 @@ let Productions = {
 	 * @returns {*|string}
 	 */
 	GetGoodName: (GoodType)=> {
-		console.log('GoodType: ', GoodType);
+
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
 
