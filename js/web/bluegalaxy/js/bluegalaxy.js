@@ -123,7 +123,7 @@ let BlueGalaxy = {
                 h.push('<tr>');
                 h.push('<td>' + BuildingName + '</td>');
                 h.push('<td>' + FPBuildings[i]['CurrentFP'] + '</td>');
-                if (FPBuildings[i]['In'] <= 0) {
+                if (FPBuildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
                     h.push('<td><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
                 }
