@@ -579,6 +579,7 @@ const FoEproxy = (function () {
 
 		// check if FP Db exists
 		StrategyPoints.checkForDB(ExtPlayerID);
+		EventHandler.checkForDB(ExtPlayerID);
 
 		// wich tab is active in StartUp Object?
 		let vals = {
@@ -984,16 +985,6 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
 		if (data.responseData['events']) {
 			GreatBuildings.HandleEventPage(data.responseData['events']);
-		}
-
-		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendPlayersMotivation')) {
-			return;
-		}
-		let page = data.responseData.page,
-			time = MainParser.checkNextUpdate('OtherPlayersMotivation-' + page);
-
-		if(time === true){
-			MainParser.OtherPlayersMotivation(data.responseData);
 		}
 	});
 
