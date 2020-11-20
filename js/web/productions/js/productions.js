@@ -361,7 +361,7 @@ let Productions = {
 						for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
 							if (!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
 
-							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'];
+							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources']['ResourceName'];
                         }
 											
 					} else {
