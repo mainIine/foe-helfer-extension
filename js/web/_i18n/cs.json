@@ -92,6 +92,7 @@
     "Boxes.CityMap.Desc2": "Odeslat",
     "Boxes.CityMap.FreeArea": "Volná plocha ",
     "Boxes.CityMap.NormalPerspecitve": "Vrchní pohled",
+    "Boxes.CityMap.ShowSubmitBox": "Odeslat data",
     "Boxes.CityMap.SubmitSuccess": "Data byla přijata... Nyní navštivte ",
     "Boxes.CityMap.TitleSend": "Vložit data",
     "Boxes.CityMap.WholeArea": "Celková plocha: ",
