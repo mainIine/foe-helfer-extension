@@ -1033,6 +1033,20 @@ const FoEproxy = (function () {
 		}
 	});
 
+
+	// Alte, nich mehr benötigte localStorage einträge löschen (in 2 min)
+	setTimeout(()=>{
+		const keys = Object.keys(localStorage);
+		for (let k of keys) {
+			if (/^(OV_)?[0-9]+\/X_[A-Za-z_]+[0-9]*$/.test(k)) {
+				localStorage.removeItem(k);
+			} else if (/^OtherPlayersMotivation-[0-9]+$/.test(k)) {
+				localStorage.removeItem(k);
+			}
+		}
+	}, 1000*60*2);
+
+
 })();
 
 
