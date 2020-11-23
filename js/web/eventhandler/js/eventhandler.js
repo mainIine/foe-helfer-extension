@@ -92,8 +92,9 @@ let EventHandler = {
 
 
 	ShowMoppelHelper: () => {
-		if ($('#moppelhelper').length === 0) {
+		moment.locale(i18n('Local'));
 
+		if ($('#moppelhelper').length === 0) {
 			HTML.Box({
 				id: 'moppelhelper',
 				title: i18n('Boxes.MoppelHelper.Title'),
@@ -120,7 +121,7 @@ let EventHandler = {
 	},
 
 
-	CalcMoppelHelperBody: () => {
+	CalcMoppelHelperBody: async () => {
 		let MaxVisitCount = 7;
 
 		let h = [];
@@ -168,17 +169,32 @@ let EventHandler = {
 		h.push('<th>' + i18n('Boxes.MoppelHelper.Name') + '</th>');
 		h.push('<th>' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 		for (let i = 0; i < MaxVisitCount; i++) {
-			h.push('<th>' + i18n('Boxes.MoppelHelper.Visit') + i + '</th>');
+			h.push('<th>' + i18n('Boxes.MoppelHelper.Visit') + (i+1) + '</th>');
 		}
 		h.push('</thead>');
 
 		for (let i = 0; i < PlayerList.length; i++) {
-			if (PlayerList[i]['IsSelf']) continue;
+			let Player = PlayerList[i];
+
+			if (Player['IsSelf']) continue;
+
+			let Visits = await EventHandler.db['Events'].where('playerid').equals(Player['PlayerID']).toArray();
+			Visits = Visits.sort(function (a, b) {
+				return b['date'] - a['date'];
+			});
 
 			h.push('<tr>');
 			h.push('<td>#' + (i + 1) + '</td>');
-			h.push('<td>' + HTML.Format(PlayerList[i]['Score']) + '</td>');
-			h.push('<td>' + PlayerList[i]['PlayerName'] + '</td>');
+			h.push('<td>' + Player['PlayerName'] + '</td>');
+			h.push('<td>' + HTML.Format(Player['Score']) + '</td>');
+			for (let j = 0; j < MaxVisitCount; j++) {
+				if (j < Visits.length) {
+					h.push('<td>' + moment(Visits[j]['date']).fromNow() + '</td>');
+				}
+				else {
+					h.push('<td></td>');
+                }
+            }
 			h.push('</tr>');
         }
 
