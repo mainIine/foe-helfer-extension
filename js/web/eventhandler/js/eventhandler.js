@@ -22,7 +22,9 @@ FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData)
 let EventHandler = {
 	EventIDs: {},
 
-	db : null,
+	db: null,
+
+	CurrentPlayerGroup: null,
 
 	/**
 	*
@@ -82,8 +84,106 @@ let EventHandler = {
 		}
 	},
 
+
 	ParseDate: (DateString) => {
 		// Todo: Datums Parsefunktion einfügen
 		return MainParser.getCurrentDate();
-    }
+	},
+
+
+	ShowMoppelHelper: () => {
+		if ($('#moppelhelper').length === 0) {
+
+			HTML.Box({
+				id: 'moppelhelper',
+				title: i18n('Boxes.MoppelHelper.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true
+			});
+
+			HTML.AddCssFile('eventhandler');
+
+			// Choose Neighbors/Guildmembers/Friends
+			$('#moppelhelper').on('click', '.btn-toggle-players', function () {
+				EventHandler.CurrentPlayerGroup = $(this).data('value');
+				
+				EventHandler.CalcMoppelHelperBody();
+			});
+						
+			EventHandler.CalcMoppelHelperBody();
+
+		} else {
+			HTML.CloseOpenBox('moppelhelper');
+			EventHandler.CurrentPlayerGroup = null;
+		}
+	},
+
+
+	CalcMoppelHelperBody: () => {
+		let MaxVisitCount = 7;
+
+		let h = [];
+
+		if (!EventHandler.CurrentPlayerGroup) {
+			if (PlayerDictFriendsUpdated) {
+				EventHandler.CurrentPlayerGroup = 'Friends';
+			}
+			else if (PlayerDictGuildUpdated) {
+				EventHandler.CurrentPlayerGroup = 'Guild';
+			}
+			else if (PlayerDictNeighborsUpdated) {
+				EventHandler.CurrentPlayerGroup = 'Neighbors';
+			}
+			else {
+				EventHandler.CurrentPlayerGroup = null;
+			}
+		}
+
+		let PlayerList = [];
+		if(EventHandler.CurrentPlayerGroup === 'Friends') {
+			PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsFriend'] === true));
+		}
+		else if(EventHandler.CurrentPlayerGroup === 'Guild') {
+			PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsGuildMember'] === true));
+		}
+		else if(EventHandler.CurrentPlayerGroup === 'Neighbors') {
+			PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsNeighbor'] === true));
+		}
+
+		PlayerList = PlayerList.sort(function (a, b) {
+			return b['Score'] - a['Score'];
+		});
+
+		h.push('<div class="dark-bg">');
+		if(PlayerDictNeighborsUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'btn-default-active' : '') + '" data-value="Neighbors">' + i18n('Boxes.MoppelHelper.Neighbors') + '</button>');
+		if(PlayerDictGuildUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'btn-default-active' : '') + '" data-value="Guild">' + i18n('Boxes.MoppelHelper.GuildMembers') + '</button>');
+		if(PlayerDictFriendsUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'btn-default-active' : '') + '" data-value="Friends">' + i18n('Boxes.MoppelHelper.Friends') + '</button>');
+		h.push('</div>');
+
+		h.push('<table class="foe-table"');
+
+		h.push('<thead>');
+		h.push('<th>' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
+		h.push('<th>' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+		h.push('<th>' + i18n('Boxes.MoppelHelper.Points') + '</th>');
+		for (let i = 0; i < MaxVisitCount; i++) {
+			h.push('<th>' + i18n('Boxes.MoppelHelper.Visit') + i + '</th>');
+		}
+		h.push('</thead>');
+
+		for (let i = 0; i < PlayerList.length; i++) {
+			if (PlayerList[i]['IsSelf']) continue;
+
+			h.push('<tr>');
+			h.push('<td>#' + (i + 1) + '</td>');
+			h.push('<td>' + HTML.Format(PlayerList[i]['Score']) + '</td>');
+			h.push('<td>' + PlayerList[i]['PlayerName'] + '</td>');
+			h.push('</tr>');
+        }
+
+		h.push('</table>');	
+
+		$('#moppelhelperBody').html(h.join(''));
+	},
 };
