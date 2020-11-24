@@ -28,6 +28,10 @@
 	margin-top: 2px;
 }
 
+#Productions #ProductionsBody strong.success {
+	color: var(--text-success);
+}
+
 #Productions #ProductionsBody .show-entity {
 	display: inline-block;
 	width: 20px;
