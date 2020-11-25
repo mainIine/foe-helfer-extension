@@ -361,7 +361,7 @@ let Productions = {
 						for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
 							if (!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
 
-							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'];
+							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources']['ResourceName'];
                         }
 											
 					} else {
@@ -627,10 +627,15 @@ let Productions = {
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
+						rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
-							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
-							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
+							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+								rowA.push('<td><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+							}
+							else {
+								rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
+							}
 						}
 						else {
 							rowA.push('<td><td>');
@@ -667,10 +672,17 @@ let Productions = {
 						}
 
 						tds += '<td class="is-number" data-number="' + CurrentBuildingCount + '">' + pA.join('<br>') + '</td>' +
-							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + i18n('Boxes.Productions.TTGoodsEra')  + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
-							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>' +
-							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
-							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
+							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + i18n('Boxes.Productions.TTGoodsEra') + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
+							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>';
+
+						if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+							tds += '<td><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>';
+						}
+						else {
+							tds += '<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
+						}
+
+						tds += '<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
 							'</tr>';
 
 						rowA.push(tds);
@@ -899,7 +911,13 @@ let Productions = {
 
 				if (ShowTime) {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
-					rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+
+					if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+						rowC.push('<td><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+					}
+					else {
+						rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+					}
 				}
 				else {
 					rowC.push('<td></td><td colspan="2"></td>');
