@@ -44,6 +44,7 @@ let _menu = {
 		'greatbuildings',
 		'market',
 		'bluegalaxy',
+		'moppelhelper',
 	],
 
 
@@ -836,6 +837,26 @@ let _menu = {
 
 		btn_sp.on('click', function () {
 			BlueGalaxy.Show();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+	/**
+	 * Moppelassistent
+	 * */
+	moppelhelper_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'moppelhelper-Btn', 'data-slug': 'moppelhelper' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Moppelhelper.Desc'), i18n('Menu.Moppelhelper.Title'), 'moppelhelper-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			EventHandler.ShowMoppelHelper();
 		});
 
 		btn.append(btn_sp);
