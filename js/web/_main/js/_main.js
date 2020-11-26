@@ -1716,25 +1716,6 @@ let MainParser = {
 
 
 	/**
-	 * Güter-Log an foe-rechner schicken
-	 *
-	 * @param d
-	 * @constructor
-	 */
-	/*
-	SendGoodsLog: (d)=>{
-		MainParser.send2Server(d, 'GuildCashBox', function(r){
-			$.toast({
-				heading: 'Erfolg',
-				text: 'Die Güter wurden übertragen',
-				icon: 'success'
-			});
-		});
-	},
-	*/
-
-
-	/**
 	 * Motivieren Polieren tracken, wenn gewünscht
 	 *
 	 * @param d
