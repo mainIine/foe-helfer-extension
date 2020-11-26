@@ -328,7 +328,7 @@ let Productions = {
 		if (d.state && d['state']['current_product'])
 		{
 			if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
-				CurrentResources = d['state']['current_product']['product']['resources'];
+				CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
 			}
 
 			if (d['state']['current_product']['clan_power']) {
@@ -361,7 +361,7 @@ let Productions = {
 						for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
 							if (!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
 
-							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources']['ResourceName'];
+							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'][ResourceName];
                         }
 											
 					} else {
