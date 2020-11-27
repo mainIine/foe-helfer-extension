@@ -35,6 +35,9 @@ let EventHandler = {
 
 		EventHandler.db = new Dexie(DBName);
 
+		EventHandler.db.version(2).stores({
+			Events: 'eventid,date,eventtype,interactiontype,playerid,entityid,isneighbor,isguildmember,isfriend'
+		});
 		EventHandler.db.version(1).stores({
 			Events: 'eventid,date,eventtype,playerid,entityid,isneighbor,isguildmember,isfriend'
 		});
@@ -59,9 +62,8 @@ let EventHandler = {
 
 			let Date = EventHandler.ParseDate(Event['date']),
 				EventType = Event['type'],
+				InteractionType = Event['interaction_type'];
 				EntityID = Event['entity_id'];
-
-			console.log('Date: ', Date);
 
 			let PlayerID = null,
 				IsNeighbor = 0,
@@ -79,12 +81,17 @@ let EventHandler = {
 				eventid: ID,
 				date: Date,
 				eventtype: EventType,
+				interactiontype: InteractionType,
 				playerid: PlayerID,
 				entityid: EntityID,
 				isneighbor: IsNeighbor,
 				isguildmember: IsGuildMember,
 				isfriend: IsFriend
 			});
+		}
+
+		if ($('#moppelhelper').length > 0) {
+			EventHandler.CalcMoppelHelperBody();
 		}
 	},
 
@@ -250,6 +257,8 @@ let EventHandler = {
 			if (Player['IsSelf']) continue;
 
 			let Visits = await EventHandler.db['Events'].where('playerid').equals(Player['PlayerID']).toArray();
+			Visits = Visits.filter(obj => (obj['eventtype'] === 'social_interaction'));
+
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
 			});
