@@ -900,6 +900,93 @@ const FoEproxy = (function () {
 	}
 
 
+	FoEproxy.addHandler('BattlefieldService','getArmyPreview',(data,postData) =>{
+		if(!MainParser.activateDownload) return;
+		debugger;
+		if(MainParser.savedFight === null) MainParser.savedFight = new Map();
+		if(data.responseData.length > 1)
+		{
+			if(data.responseData[0]["__class__"] === "Army"){
+				/** @type {prev1,prev2,fight1,fight2} */
+				var x = {
+					prev1:null,
+					prev2: null,
+					fight1: null,
+					fight2:null
+				};
+				x.prev1 = data.responseData[0];
+				x.prev2 = data.responseData[1];
+				var sfSize = MainParser.savedFight.size;
+				MainParser.savedFight.set(sfSize,x);	
+			}
+		}
+		else if(data.responseData.length == 1){
+			if(data.responseData[0]["__class__"] === "Army"){
+				/** @type {prev1,prev2,fight1,fight2} */
+				var x = {
+					prev1:null,
+					prev2: null,
+					fight1: null,
+					fight2:null
+				};
+				x.prev1 = data.responseData[0];
+				var sfSize = MainParser.savedFight.size;
+				MainParser.savedFight.set(sfSize,x);
+				/* let json = JSON.stringify(data.responseData[0]),
+					blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
+					file = `prev_${data.responseData[0]["id"]}.json`;
+
+				MainParser.ExportFile(blob1, file); */
+			}
+		}
+	});
+
+	FoEproxy.addHandler('GuildExpeditionService','getEncounter',(data,postData) =>{
+		if(!MainParser.activateDownload) return;
+		debugger;
+		if(data.responseData.length == 1){
+			/** @type {prev1,prev2,fight1,fight2} */
+			var x = {
+				prev1:null,
+				prev2: null,
+				fight1: null,
+				fight2:null
+			};
+			x.prev1 = data.responseData["armyWaves"][0];
+			x.prev2 = data.responseData["armyWaves"][1];
+			var sfSize = MainParser.savedFight.size;
+			MainParser.savedFight.set(sfSize,x);	
+		}
+	});
+
+	FoEproxy.addHandler('BattlefieldService','startByBattleType',(data,postData) =>{
+		if(!MainParser.activateDownload) return;
+		debugger;
+		if(data.responseData["isAutoBattle"]){
+			if(data.responseData["__class__"] === "BattleRealm"){
+				//Two Wave Battle -> second wave won
+				if(data.responseData["armyId"]){
+					var sfSize= MainParser.savedFight.size;
+					if(sfSize > 0){
+						/** @type {{prev1,prev2,fight1,fight2}} */
+						var x = MainParser.savedFight.get(sfSize-1);
+						if(x.prev2 !== null && x.fight2 === null) x.fight2 = data.responseData;
+						MainParser.savedFight.set(sfSize-1,x);
+					}
+				}//first wave -> maybe second wave but not
+				else{
+					var sfSize= MainParser.savedFight.size;
+					if(sfSize > 0){
+						/** @type {prev1,prev2,fight1,fight2} */
+						var x = MainParser.savedFight.get(sfSize-1);
+						if(x.prev1 !== null && x.fight2 === null) x.fight1 = data.responseData;
+						MainParser.savedFight.set(sfSize-1,x);
+					}
+				}
+			}
+		}
+	});
+
 	// --------------------------------------------------------------------------------------------------
 	// Gilden-GüterLog wird aufgerufen
 
@@ -1057,6 +1144,8 @@ const FoEproxy = (function () {
  */
 let MainParser = {
 
+	activateDownload: false,
+	savedFight:null,
 	Language: 'en',
 	i18n: null,
 	BonusService: null,
@@ -1714,6 +1803,18 @@ let MainParser = {
 		});
 	},
 
+	/**
+	 * Export Fight Log
+	 *
+	 * @constructor
+	 */
+	ExportFight:()=>{
+		let json = JSON.stringify(Array.from(MainParser.savedFight.entries())),
+		blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
+		file = `${Date.now()}.json`;
+
+		MainParser.ExportFile(blob1, file);
+	},
 
 	/**
 	 * Motivieren Polieren tracken, wenn gewünscht
