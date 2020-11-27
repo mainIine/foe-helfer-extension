@@ -497,6 +497,10 @@ p {
 	background-image: url('../images/menu/market.png');
 }
 
+#moppelhelper-Btn span {
+	background-image: url('../images/menu/polivation.png');
+}
+
 #greatbuildings-Btn span {
 	background-image: url('../images/menu/greatbuildings.png');
 }
