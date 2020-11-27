@@ -13,6 +13,21 @@
  * **************************************************************************************
  */
 
+/*
+Integriert:
+- der Wert einer doppelten Ernte
+- diplomatische Geschenke / Kriegsbeute
+- Relikte in der GEX
+- die FPs zwischen den Kämpfen der GG
+- Tavernenbesuch
+
+Fehlt noch:
+- Event-Quests Belohnungen
+- Tägliche Herausforderung
+- geplünderte FP
+- Schleifenquests (response von Yvi oder Andreas?)
+*/
+
 FoEproxy.addHandler('ResourceShopService', 'getContexts', (data)=> {
 	if (data['responseData']['0']['context'] !== 'forgePoints') {
 		return;
@@ -50,10 +65,9 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 });
 
 // FP Collector
-// GG reward after fight
+// - GG reward after fight [2,5,10]FP or
+// - diplomaticGift or spoilsOfWar
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
-
-	console.log('data.responseData: ', data.responseData);
 
 	const d = data.responseData[0][0];
 
@@ -85,41 +99,97 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 	});
 });
 
+// Visit other tavern
+FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
+	const d = data['responseData'];
+
+	if(!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points']){
+		return;
+	}
+
+	StrategyPoints.insertIntoDB({
+		place: 'FriendsTavern',
+		event: 'satDown',
+		amount: d['rewardResources']['resources']['strategy_points'],
+		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+	});
+});
+
 // double Collection by Blue Galaxy
 FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
-	const d = data['responseData'];
+
+	if(data['responseData'][0]['type'] !== 'citymap_icon_double_collection'){
+		return;
+	}
+
+	StrategyPoints.pickupProductionId = data['responseData'][0]['id'];
+});
+
+
+FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
+
+	if(!StrategyPoints.pickupProductionId){
+		return;
+	}
+
+	const pickUpID = StrategyPoints.pickupProductionId;
+	const d = data['responseData']['updatedEntities'];
 
 	for(let i in d)
 	{
 		if(!d.hasOwnProperty(i)) continue;
 
-		if(d[i]['type'] === 'citymap_icon_double_collection'){
+		if(pickUpID !== d[i]['id']){
+			return ;
+		}
 
-			let building = MainParser.CityMapData[d[i]['id']],
-				id = building['cityentity_id'],
-				level = building['level'],
-				name = MainParser.CityEntities[id]['name'],
+		let id = d[i]['cityentity_id'],
+			name = MainParser.CityEntities[id]['name'],
+			amount;
+
+		// Eventbuildings
+		if(d[i]['type'] === 'residential')
+		{
+			// has this building forge points?
+			if(!d[i]['state']['current_product']['product']['resources']['strategy_points']){
+				return;
+			}
+
+			amount = d[i]['state']['current_product']['product']['resources']['strategy_points'];
+		}
+
+		// Production building like Terrace fields
+		else {
+			let level = d[i]['level'],
 				products = MainParser.CityEntities[id]['entity_levels'][level]['production_values'];
 
-			const product = Object.values(products).filter((f) => f['type'] === 'strategy_points');
+			const product = Object.values(products).filter(f => f['type'] === 'strategy_points');
 
-			StrategyPoints.insertIntoDB({
-				place: 'pickupProduction',
-				event: 'double_collection',
-				notes: name,
-				amount: product['value'],
-				date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
-			});
+			amount = product[0]['value'];
 		}
+
+		StrategyPoints.insertIntoDB({
+			place: 'pickupProduction',
+			event: 'double_collection',
+			notes: name,
+			amount: amount,
+			date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+		});
 	}
+
+	// reset
+	StrategyPoints.pickupProductionId = null;
 });
 
 /**
- * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(): Promise<void>), HandleWindowResize: StrategyPoints.HandleWindowResize, RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
+ * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(*): Promise<void>), pickupProductionId: null, pickupProductionBuilding: null, HandleWindowResize: StrategyPoints.HandleWindowResize, insertIntoDB: (function(*=): Promise<void>), RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
  */
 let StrategyPoints = {
 	OldStrategyPoints: 0,
 	InventoryFP: 0,
+
+	pickupProductionId: null,
+	pickupProductionBuilding: null,
 
 	db: null,
 

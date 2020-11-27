@@ -481,11 +481,8 @@ let GildFights = {
 };
 
 
-
 /**
- * ProvinceMap Class
- *
- * @type {{MapMerged: [], ParseNumber: (function(*=, *): {num: number, index: *}), MapCTX: null, ParseMove: (function(*=, *=): *), ParseCurve: (function(*=, *=): *), StrokeColor: string, MapSize: {width: number, height: number}, ParsePathToCanvas: ProvinceMap.ParsePathToCanvas, StrokeWidth: number, buildMap: ProvinceMap.buildMap, DrawProvinces: ProvinceMap.DrawProvinces, ProvinceData: (function(): ({flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]})[]), SVGPaths: (function(): ({path: string}|{path: string}|{path: string}|{path: string}|{path: string})[]), Map: null}}
+ * @type {{ProvinceObject: {}, FrameSize: number, prepare: ProvinceMap.prepare, MapMerged: [], ParseNumber: (function(*=, *): {num: number, index: *}), MapCTX: null, ParseMove: (function(*=, *=): *), ParseCurve: (function(*=, *=): *), StrokeColor: string, MapSize: {width: number, height: number}, ParsePathToCanvas: (function(*=): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, DrawProvinces: ProvinceMap.DrawProvinces, ProvinceData: (function(): *), SVGPaths: (function(): *), Map: null, hexToRgb: (function(*=, *=): string)}}
  */
 let ProvinceMap = {
 
