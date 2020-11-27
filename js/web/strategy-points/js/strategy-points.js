@@ -21,10 +21,12 @@ Integriert:
 - die FPs zwischen den Kämpfen der GG
 - Tavernenbesuch
 
+Bitte testen:
+- geplünderte FP
+
 Fehlt noch:
 - Event-Quests Belohnungen
 - Tägliche Herausforderung
-- geplünderte FP
 - Schleifenquests (response von Yvi oder Andreas?)
 */
 
@@ -123,6 +125,24 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 	}
 
 	StrategyPoints.pickupProductionId = data['responseData'][0]['id'];
+});
+
+
+FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
+	for (let i = 0; i < data.responseData.length; i++) {
+		let PlunderReward = data.responseData[i];
+
+		if (PlunderReward['product'] && PlunderReward['product']['resources'] && PlunderReward['product']['resources']['strategy_points']) {
+			let PlunderedFP = PlunderReward['product']['resources']['strategy_points'];
+
+			StrategyPoints.insertIntoDB({
+				place: 'OtherPlayer',
+				event: 'plunderReward',
+				amount: PlunderedFP,
+				date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+			});
+        }
+    }
 });
 
 
