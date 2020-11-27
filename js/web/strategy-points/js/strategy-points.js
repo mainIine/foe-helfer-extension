@@ -368,6 +368,35 @@ let StrategyPoints = {
 
 
 	/**
+	 * Handles FP collected from Quests
+	 * 
+	 */
+
+	HandleAdvanceQuest: (PostData) => {
+		if (PostData['requestData'] && PostData['requestData'][0]) {
+			let QuestID = PostData['requestData'][0];
+
+			for (let i = 0; i < MainParser.Quests.length; i++) {
+				let Quest = MainParser.Quests[i];
+				if (Quest['id'] !== QuestID) continue;
+				if (Quest['state'] === 'collectReward' && Quest['genericRewards']) {
+					for (let j = 0; j < Quest['genericRewards'].length; j++) {
+						let Reward = Quest['genericRewards'][j];
+						if (Reward['subType'] === 'strategy_points') {
+							StrategyPoints.insertIntoDB({
+								place: 'Quest',
+								event: 'collectReward',
+								amount: Reward['amount'],
+								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+							});
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+	/**
 	 * Returns the stock and the bar FPs
 	 *
 	 * @returns {*|number}
