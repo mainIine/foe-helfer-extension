@@ -62,7 +62,7 @@ let EventHandler = {
 
 			let Date = EventHandler.ParseDate(Event['date']),
 				EventType = Event['type'],
-				InteractionType = Event['interaction_type'];
+				InteractionType = Event['interaction_type'],
 				EntityID = Event['entity_id'];
 
 			let PlayerID = null,
@@ -240,7 +240,7 @@ let EventHandler = {
 		if(PlayerDictFriendsUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'btn-default-active' : '') + '" data-value="Friends">' + i18n('Boxes.MoppelHelper.Friends') + '</button>');
 		h.push('</div>');
 
-		h.push('<table class="foe-table"');
+		h.push('<table class="foe-table">');
 
 		h.push('<thead>');
 		h.push('<th>' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
