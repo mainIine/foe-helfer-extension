@@ -1,0 +1,29 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 fp-collector.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              28.11.20, 21:25 Uhr
+ * zuletzt bearbeitet:       28.11.20, 21:25 Uhr
+ *
+ * Copyright © 2020
+ *
+ * **************************************************************************************
+ */
+
+#fp-collector {
+	width: 620px;
+	height: 400px;
+	top: calc(50vh - 200px);
+	left: calc(50vw - 310px);
+}
+
+#fp-collectorBody .head {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 5px 10px;
+	margin-bottom: 2px;
+}
