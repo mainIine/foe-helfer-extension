@@ -62,7 +62,7 @@ let EventHandler = {
 
 			let Date = EventHandler.ParseDate(Event['date']),
 				EventType = Event['type'],
-				InteractionType = Event['interaction_type'];
+				InteractionType = Event['interaction_type'],
 				EntityID = Event['entity_id'];
 
 			let PlayerID = null,
