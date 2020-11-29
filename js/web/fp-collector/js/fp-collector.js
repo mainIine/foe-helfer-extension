@@ -15,17 +15,33 @@
 
 // - GG reward after fight [2,5,10]FP or
 // - diplomaticGift or spoilsOfWar
+// - hiddenreward from mainmap
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 
 	const d = data.responseData[0][0];
+
+	let place = 'Guildfights',
+		event = data.responseData[1];
 
 	if(d['subType'] !== 'strategy_points'){
 		return;
 	}
 
+	if(event === 'guildExpedition')
+	{
+		place = 'Guildexpedition';
+	}
+
+	// default is hiddenreward
+	else if(event === 'default')
+	{
+		place = 'Mainmap';
+		event = 'hiddenReward';
+	}
+
 	StrategyPoints.insertIntoDB({
-		place: 'Guildfights',
-		event: ( data['responseData'][1] ? data['responseData'][1] : 'reward'),
+		place: place,
+		event: event,
 		amount: d['amount'],
 		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
 	});
@@ -254,9 +270,11 @@ let FPCollector = {
 
 		tr.push(`<tbody>`);
 
-		if(!entries)
+		if(entries.length === 0)
 		{
-			tr.push(`<tr><td colspan="2" class="text-center"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></td></tr>`);
+			tr.push(`<tr><td colspan="4" class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></td></tr>`);
+
+			$('#FPCollectorPicker').hide();
 		}
 		else {
 
