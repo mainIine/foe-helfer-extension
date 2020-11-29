@@ -45,6 +45,7 @@ let _menu = {
 		'market',
 		'bluegalaxy',
 		'moppelhelper',
+		'fpCollector',
 	],
 
 
@@ -862,5 +863,25 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
-    }
+    },
+
+	/**
+	 * FP Collector box
+	 */
+	fpCollector_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'fpCollector-Btn', 'data-slug': 'fpCollector' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'), 'fpCollector-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			FPCollector.ShowFPCollectorBox();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	}
 };
