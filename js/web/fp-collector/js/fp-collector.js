@@ -73,7 +73,7 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 	StrategyPoints.pickupProductionId = data['responseData'][0]['id'];
 });
 
-
+// Plunder reward
 FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 	for (let i = 0; i < data.responseData.length; i++) {
 		let PlunderReward = data.responseData[i];
@@ -91,7 +91,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 	}
 });
 
-
+// BlueGalaxy event (double PickUp)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 
 	if(!StrategyPoints.pickupProductionId){
@@ -149,8 +149,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 
 
 /**
- *
- * @type {{maxDateFilter: Date, buildBody: (function(): Promise<void>), caclculateTotal: (function(*=): Promise<number>), iniatateDatePicker: (function(): Promise<undefined>), currentDateFilter: Date, DatePicker: null, ShowFPCollectorBox: FPCollector.ShowFPCollectorBox, minDateFilter: null}}
+ * @type {{maxDateFilter: Date, lockDates: [], buildBody: (function(): Promise<void>), caclculateTotal: (function(*=): Promise<number>), intiateDatePicker: (function(): Promise<void>), currentDateFilter: Date, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
  */
 let FPCollector = {
 
@@ -158,12 +157,23 @@ let FPCollector = {
 	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
 	currentDateFilter: moment(MainParser.getCurrentDate()).startOf('day').toDate(),
 
+	lockDates: [],
+
 	DatePicker: null,
 
-	ShowFPCollectorBox: ()=> {
+
+	/**
+	 * Create the box and wrappers for the content
+	 *
+	 * @returns {Promise<void>}
+	 * @constructor
+	 */
+	ShowFPCollectorBox: async ()=> {
 
 		if( $('#fp-collector').length < 1 )
 		{
+			FPCollector.DatePicker = null;
+
 			// CSS into the DOM
 			HTML.AddCssFile('fp-collector');
 
@@ -176,17 +186,39 @@ let FPCollector = {
 				minimize: true
 			});
 
+			let startMoment = null,
+				endMoment = null;
+
 			// set the first possible date for date picker
-			StrategyPoints.db['ForgePointsStats'].orderBy('id').first().then((resp) => {
+			await StrategyPoints.db['ForgePointsStats'].orderBy('id').first().then((resp) => {
+				startMoment = moment(resp.date).startOf('day');
 				FPCollector.minDateFilter = moment(resp.date).subtract(1, 'minute').toDate();
 			});
 
-			// max Date
-			FPCollector.maxDateFilter = moment(MainParser.getCurrentDate()).add(1, 'day').toDate();
+			// set the last known date
+			await StrategyPoints.db['ForgePointsStats'].orderBy('id').last().then((resp) => {
+				endMoment = moment(resp.date).add(1, 'day'); // neccesary to include the current day
+				FPCollector.maxDateFilter = moment(resp.date).endOf('day').toDate();
+			});
+
+			// get all days without entries and block them in the Litepicker
+			if(startMoment && endMoment)
+			{
+				while (startMoment.isBefore(endMoment, 'day'))
+				{
+					let checkDate = await StrategyPoints.db['ForgePointsStats'].where('date').equals(moment(startMoment).toDate()).toArray();
+
+					if(checkDate.length === 0){
+						FPCollector.lockDates.push(moment(startMoment).format('YYYY-MM-DD'));
+					}
+					startMoment.add(1, 'days');
+				}
+			}
+
 
 			$('#fp-collectorBody').append(
 				`<div class="dark-bg head">
-					<div class="text-warning"><strong>${i18n('Boxes.FPCollector.TotalFP')}: <span id="fp-collector-total-fp"></span></strong></div>
+					<div class="text-warning"><strong>${i18n('Boxes.FPCollector.TotalFP')} <span id="fp-collector-total-fp"></span></strong></div>
 					<div class="text-right"><button class="btn btn-default" id="FPCollectorPicker">${moment(FPCollector.currentDateFilter).format(i18n('Date'))}</button></div>
 				</div>`,
 				`<div id="fp-collectorBodyInner"></div>`
@@ -197,6 +229,11 @@ let FPCollector = {
 	},
 
 
+	/**
+	 * Create the box content
+	 *
+	 * @returns {Promise<void>}
+	 */
 	buildBody: async ()=> {
 
 		let tr = [],
@@ -241,11 +278,17 @@ let FPCollector = {
 		tr.push(`</table>`);
 
 		$('#fp-collectorBodyInner').html(tr.join('')).promise().done(function(){
-			FPCollector.iniatateDatePicker();
+			FPCollector.intiateDatePicker();
 		});
 	},
 
 
+	/**
+	 * Get Total fps from one specific day
+	 *
+	 * @param date
+	 * @returns {Promise<number>}
+	 */
 	caclculateTotal: async (date)=> {
 		let totalFP = 0;
 
@@ -258,7 +301,12 @@ let FPCollector = {
 	},
 
 
-	iniatateDatePicker: async () => {
+	/**
+	 * Initatite the Litepicker object
+	 *
+	 * @returns {Promise<void>}
+	 */
+	intiateDatePicker: async () => {
 
 		if(FPCollector.DatePicker !== null){
 			return ;
@@ -273,6 +321,7 @@ let FPCollector = {
 			numberOfMonths: 1,
 			numberOfColumns: 1,
 			autoRefresh: true,
+			lockDays: FPCollector.lockDates,
 			minDate: FPCollector.minDateFilter,
 			maxDate: FPCollector.maxDateFilter,
 			showWeekNumbers: true,

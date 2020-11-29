@@ -1,5 +1,9 @@
 ## Changelog - Extension
 
+
+- Eigenanteilsrechner: overlay zentriert, neue Checkbox integriert
+
+
 ##### 2.5.2.9
 
 **Bugfix**
