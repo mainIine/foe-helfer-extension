@@ -189,7 +189,7 @@ let EventHandler = {
 			HTML.AddCssFile('eventhandler');
 
 			// Choose Neighbors/Guildmembers/Friends
-			$('#moppelhelper').on('click', '.btn-toggle-players', function () {
+			$('#moppelhelper').on('click', '.toggle-players', function () {
 				EventHandler.CurrentPlayerGroup = $(this).data('value');
 				
 				EventHandler.CalcMoppelHelperBody();
@@ -239,11 +239,20 @@ let EventHandler = {
 			return b['Score'] - a['Score'];
 		});
 
-		h.push('<div class="dark-bg">');
-		if(PlayerDictNeighborsUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'btn-default-active' : '') + '" data-value="Neighbors">' + i18n('Boxes.MoppelHelper.Neighbors') + '</button>');
-		if(PlayerDictGuildUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'btn-default-active' : '') + '" data-value="Guild">' + i18n('Boxes.MoppelHelper.GuildMembers') + '</button>');
-		if(PlayerDictFriendsUpdated) h.push('<button class="btn btn-default btn-toggle-players ' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'btn-default-active' : '') + '" data-value="Friends">' + i18n('Boxes.MoppelHelper.Friends') + '</button>');
-		h.push('</div>');
+		h.push('<div class="dark-bg"><div class="tabs"><ul class="horizontal">');
+		if(PlayerDictNeighborsUpdated) 
+			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+		else
+			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+		if(PlayerDictGuildUpdated) 
+			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+		else
+			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+		if(PlayerDictFriendsUpdated) 
+			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+		else
+			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+		h.push('</ul></div></div>');
 
 		h.push('<table class="foe-table sortable-table">');
 		h.push('<tbody class="moppelhelper">');
