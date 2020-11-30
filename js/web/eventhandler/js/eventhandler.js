@@ -258,6 +258,7 @@ let EventHandler = {
 		h.push('<tbody class="moppelhelper">');
 		h.push('<tr class="sorter-header">');
 		h.push('<th class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
+		h.push('<th></th>');
 		h.push('<th data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
 		h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 		for (let i = 0; i < MaxVisitCount; i++) {
@@ -279,6 +280,7 @@ let EventHandler = {
 
 			h.push('<tr>');
 			h.push('<td class="is-number" data-number="' + (i+1) + '">#' + (i+1) + '</td>');
+			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ Player['Avatar'] ]}.jpg" alt="${Player['PlayerName']}"></td>`);
 			h.push('<td data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 			for (let j = 0; j < MaxVisitCount; j++) {
@@ -304,6 +306,7 @@ let EventHandler = {
 		});
 	},
 
+
 	/**
 	* Returns strong class for formating mopppel date
 	*
@@ -320,6 +323,7 @@ let EventHandler = {
 			return 'error';
 		}
     },
+
 
 	/**
 	 * Returns the shapes for regex function
