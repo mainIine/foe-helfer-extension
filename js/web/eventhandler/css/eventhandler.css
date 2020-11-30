@@ -41,9 +41,29 @@
 
 #moppelhelper #moppelhelperBody td {
     position: relative;
-    font-size: 100%;
+    font-size: 85%;
 }
 
 #moppelhelper #moppelhelperBody .foe-table tr:first-child td:nth-child(5) strong {
     color: var(--text-success);
+}
+
+#moppelhelper #moppelhelperBody strong.success {
+    color: var(--text-success);
+}
+
+#moppelhelper #moppelhelperBody strong {
+    color: var(--text-bright);
+}
+
+#moppelhelper #moppelhelperBody strong.error {
+    color: #ec4d4d;
+}
+
+#moppelhelper #moppelhelperBody table .sorter-header .ascending:after {
+    content: "↑";
+}
+
+#moppelhelper #moppelhelperBody table .sorter-header .descending:after {
+    content: "↓";
 }
