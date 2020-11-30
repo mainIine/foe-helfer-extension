@@ -191,6 +191,7 @@
 				'market',
 				'bluegalaxy',
 				'eventhandler',
+				'fp-collector',
 			];
 
 			// Scripte laden (nacheinander)

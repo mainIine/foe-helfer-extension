@@ -45,6 +45,7 @@ let _menu = {
 		'market',
 		'bluegalaxy',
 		'moppelhelper',
+		'fpCollector',
 	],
 
 
@@ -831,7 +832,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Desc'), i18n('Menu.Bluegalaxy.Title'), 'bluegalaxy-Btn');
+		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'), 'bluegalaxy-Btn');
 
 		let btn_sp = $('<span />');
 
@@ -851,7 +852,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'moppelhelper-Btn', 'data-slug': 'moppelhelper' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Moppelhelper.Desc'), i18n('Menu.Moppelhelper.Title'), 'moppelhelper-Btn');
+		_menu.toolTippBox(i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'), 'moppelhelper-Btn');
 
 		let btn_sp = $('<span />');
 
@@ -862,5 +863,25 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
-    }
+    },
+
+	/**
+	 * FP Collector box
+	 */
+	fpCollector_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'fpCollector-Btn', 'data-slug': 'fpCollector' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'), 'fpCollector-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			FPCollector.ShowFPCollectorBox();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	}
 };

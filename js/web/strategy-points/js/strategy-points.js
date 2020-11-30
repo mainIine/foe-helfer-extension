@@ -21,10 +21,12 @@ Integriert:
 - die FPs zwischen den Kämpfen der GG
 - Tavernenbesuch
 
+Bitte testen:
+- geplünderte FP
+
 Fehlt noch:
 - Event-Quests Belohnungen
 - Tägliche Herausforderung
-- geplünderte FP
 - Schleifenquests (response von Yvi oder Andreas?)
 */
 
@@ -64,122 +66,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 	StrategyPoints.HideFPBar();
 });
 
-// FP Collector
-// - GG reward after fight [2,5,10]FP or
-// - diplomaticGift or spoilsOfWar
-FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
-
-	const d = data.responseData[0][0];
-
-	if(d['subType'] !== 'strategy_points'){
-		return;
-	}
-
-	StrategyPoints.insertIntoDB({
-		place: 'Guildfights',
-		event: ( data['responseData'][1] ? data['responseData'][1] : 'reward'),
-		amount: d['amount'],
-		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
-	});
-});
-
-// GEX FP from chest
-FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
-	const d = data['responseData'];
-
-	if(d['subType'] !== 'strategy_points'){
-		return;
-	}
-
-	StrategyPoints.insertIntoDB({
-		place: 'Guildexpedition',
-		event: 'chest',
-		amount: d['amount'],
-		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
-	});
-});
-
-// Visit other tavern
-FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
-	const d = data['responseData'];
-
-	if(!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points']){
-		return;
-	}
-
-	StrategyPoints.insertIntoDB({
-		place: 'FriendsTavern',
-		event: 'satDown',
-		amount: d['rewardResources']['resources']['strategy_points'],
-		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
-	});
-});
-
-// double Collection by Blue Galaxy
-FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
-
-	if(data['responseData'][0]['type'] !== 'citymap_icon_double_collection'){
-		return;
-	}
-
-	StrategyPoints.pickupProductionId = data['responseData'][0]['id'];
-});
-
-
-FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-
-	if(!StrategyPoints.pickupProductionId){
-		return;
-	}
-
-	const pickUpID = StrategyPoints.pickupProductionId;
-	const d = data['responseData']['updatedEntities'];
-
-	for(let i in d)
-	{
-		if(!d.hasOwnProperty(i)) continue;
-
-		if(pickUpID !== d[i]['id']){
-			return ;
-		}
-
-		let id = d[i]['cityentity_id'],
-			name = MainParser.CityEntities[id]['name'],
-			amount;
-
-		// Eventbuildings
-		if(d[i]['type'] === 'residential')
-		{
-			// has this building forge points?
-			if(!d[i]['state']['current_product']['product']['resources']['strategy_points']){
-				return;
-			}
-
-			amount = d[i]['state']['current_product']['product']['resources']['strategy_points'];
-		}
-
-		// Production building like Terrace fields
-		else {
-			let level = d[i]['level'],
-				products = MainParser.CityEntities[id]['entity_levels'][level]['production_values'];
-
-			const product = Object.values(products).filter(f => f['type'] === 'strategy_points');
-
-			amount = product[0]['value'];
-		}
-
-		StrategyPoints.insertIntoDB({
-			place: 'pickupProduction',
-			event: 'double_collection',
-			notes: name,
-			amount: amount,
-			date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
-		});
-	}
-
-	// reset
-	StrategyPoints.pickupProductionId = null;
-});
 
 /**
  * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(*): Promise<void>), pickupProductionId: null, pickupProductionBuilding: null, HandleWindowResize: StrategyPoints.HandleWindowResize, insertIntoDB: (function(*=): Promise<void>), RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
@@ -345,6 +231,43 @@ let StrategyPoints = {
 
 		StrategyPoints.OldStrategyPoints = StrategyPoints.InventoryFP;
 	},
+
+
+	/**
+	 * Handles FP collected from Quests
+	 * 
+	 */
+	HandleAdvanceQuest: (PostData) => {
+		if (PostData['requestData'] && PostData['requestData'][0])
+		{
+			let QuestID = PostData['requestData'][0];
+
+			for (let i = 0; i < MainParser.Quests.length; i++)
+			{
+				let Quest = MainParser.Quests[i];
+
+				if (Quest['id'] !== QuestID) continue;
+
+				if (Quest['state'] === 'collectReward' && Quest['genericRewards'])
+				{
+					for (let j = 0; j < Quest['genericRewards'].length; j++)
+					{
+						let Reward = Quest['genericRewards'][j];
+
+						if (Reward['subType'] === 'strategy_points')
+						{
+							StrategyPoints.insertIntoDB({
+								place: 'Quest',
+								event: 'collectReward',
+								amount: Reward['amount'],
+								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+							});
+                        }
+                    }
+                }
+            }
+        }
+    },
 
 
 	/**

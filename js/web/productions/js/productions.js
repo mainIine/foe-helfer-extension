@@ -631,10 +631,10 @@ let Productions = {
 
 						if (type !== 'population' && type !== 'happiness') {
 							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-								rowA.push('<td><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
 							}
 							else {
-								rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
+								rowA.push('<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
 							}
 						}
 						else {
@@ -676,10 +676,10 @@ let Productions = {
 							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>';
 
 						if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-							tds += '<td><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>';
+							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>';
 						}
 						else {
-							tds += '<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
+							tds += '<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
 						}
 
 						tds += '<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
@@ -913,10 +913,10 @@ let Productions = {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
 
 					if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-						rowC.push('<td><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
 					}
 					else {
-						rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+						rowC.push('<td style="white-space:nowrap" colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
 					}
 				}
 				else {
