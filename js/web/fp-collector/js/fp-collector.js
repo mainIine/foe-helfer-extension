@@ -230,7 +230,16 @@ let FPCollector = {
 					startMoment.add(1, 'days');
 				}
 			}
+			else {
+				// is any entry present?
+				let checkPresent = await StrategyPoints.db['ForgePointsStats'].toArray();
 
+				// no? hide the datepicker button
+				if(checkPresent.length === 0)
+				{
+					$('#FPCollectorPicker').hide();
+				}
+			}
 
 			$('#fp-collectorBody').append(
 				`<div class="dark-bg head">
@@ -273,11 +282,8 @@ let FPCollector = {
 		if(entries.length === 0)
 		{
 			tr.push(`<tr><td colspan="4" class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></td></tr>`);
-
-			$('#FPCollectorPicker').hide();
 		}
 		else {
-
 			entries.forEach(e => {
 
 				tr.push(`<tr>
