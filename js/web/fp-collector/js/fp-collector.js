@@ -198,7 +198,7 @@ let FPCollector = {
 				title: i18n('Menu.fpCollector.Title'),
 				auto_close: true,
 				dragdrop: true,
-				resize: true,
+				resize: false,
 				minimize: true
 			});
 
@@ -286,11 +286,12 @@ let FPCollector = {
 		else {
 			entries.forEach(e => {
 
-				tr.push(`<tr>
+				tr.push(`<tr class="${e.place} ${e.event}">
 					<td>
 						<strong class="text-warning">${e.amount}</strong>
 					</td>
-					<td>${i18n('Boxes.FPCollector.' + e.place)}</td>
+					<td></td>
+					<!-- <td>${i18n('Boxes.FPCollector.' + e.place)}</td> -->
 					<td>${i18n('Boxes.FPCollector.' + e.event)}</td>
 					<td>${e.notes ? e.notes : ''}</td>
 				</tr>`);
@@ -348,7 +349,7 @@ let FPCollector = {
 			lockDays: FPCollector.lockDates,
 			minDate: FPCollector.minDateFilter,
 			maxDate: FPCollector.maxDateFilter,
-			showWeekNumbers: true,
+			showWeekNumbers: false,
 			onSelect: async (date)=> {
 				$('#FPCollectorPicker').text(`${moment(date).format(i18n('Date'))}`);
 
