@@ -169,37 +169,3 @@
 #stats .tabs ul li.statsGBGPlayers a span {
 	background-position: -237px 4px;
 }
-/* date picker overwrite */
-
-:root{
-	--litepickerBgColor: var(--text-dark);
-	--litepickerMonthHeaderTextColor: var(--text-normal);
-	--litepickerMonthButton: var(--text-medium);
-	--litepickerMonthButtonHover: var(--text-bright);
-	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7);
-	--litepickerMonthWeekdayColor: var(--text-medium);
-	--litepickerDayColor: var(--text-normal);
-	--litepickerDayColorHover: var(--text-bright);
-	--litepickerDayIsTodayColor: #f44336;
-	--litepickerDayIsInRange: var(--50-black);
-	--litepickerDayIsLockedColor: var(--text-medium);
-	--litepickerDayIsBookedColor: var(--text-medium);
-	--litepickerDayIsStartColor: var(--text-dark);
-	--litepickerDayIsStartBg: var(--text-bright);
-	--litepickerDayIsEndColor: var(--text-dark);
-	--litepickerDayIsEndBg: var(--text-bright);
-	--litepickerDayWidth: 33px;
-	--litepickerButtonCancelColor: var(--text-dark);
-	--litepickerButtonCancelBg: var(--text-medium);
-	--litepickerButtonApplyColor: var(--text-dark);
-	--litepickerButtonApplyBg: var(--text-bright);
-	--litepickerButtonResetBtn: #909090;
-	--litepickerButtonResetBtnHover: var(--text-bright);
-	--litepickerHighlightedDayColor: #333;
-	--litepickerHighlightedDayBg: #ffeb3b
-}
-
-.litepicker .container__months {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 repeat;
-    box-shadow: 0 0 5px var(--50-black);
-}
