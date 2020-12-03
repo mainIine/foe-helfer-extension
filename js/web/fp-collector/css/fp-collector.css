@@ -78,6 +78,10 @@
 	background-image: url(../images/diplomatic_gifts.png);
 }
 
+#fp-collectorBody .antiquesDealer td:nth-child(2) {
+	background-image: url(../images/ant.png);
+}
+
 #fp-collectorBody .dailyChallenges td:nth-child(2) {
 	background-image: url(../images/dailyChallenges.png) !important;
 }
