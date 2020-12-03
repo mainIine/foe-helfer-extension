@@ -46,11 +46,11 @@
 	background-position: center;
 }
 
-#fp-collectorBody .Mainmap.hiddenReward td:nth-child(2) {
+#fp-collectorBody .hiddenReward td:nth-child(2) {
 	background-image: url(../images/incident.png);
 }
 
-#fp-collectorBody .Guildexpedition.chest td:nth-child(2) {
+#fp-collectorBody .chest td:nth-child(2) {
 	background-image: url(../images/expedition.png);
 }
 
@@ -62,7 +62,7 @@
 	background-image: url(../images/gbg-gray.png);
 }
 
-#fp-collectorBody .FriendsTavern td:nth-child(2) {
+#fp-collectorBody .satDown td:nth-child(2) {
 	background-image: url(../images/tavern.png);
 }
 
