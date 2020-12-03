@@ -1140,6 +1140,21 @@ const FoEproxy = (function () {
 
 })();
 
+let HelperBeta = {
+	load: (active) => {
+		if (active !== false) active = true;
+		localStorage.setItem('HelperBetaActive', active);
+		location.reload();
+	},
+	menu: [
+		// 'alerts',
+		// 'bluegalaxy',
+		'fpCollector',
+		'moppelhelper'
+	],
+	active: true
+	// active: JSON.parse(localStorage.getItem('HelperBetaActive'))
+};
 
 /**
  *
