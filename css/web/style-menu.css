@@ -868,8 +868,8 @@ Tooltip */
 }
 
 #fp-bar .fp-bar-main {
-	height: 18px;
-	width: 111px;
+	height: 16px;
+	width: 109px;
 	background: transparent url('../../js/web/strategy-points/images/fp-bar-bg.png') center left no-repeat;
 	position: relative;
 	top: 7px;
@@ -878,9 +878,8 @@ Tooltip */
 }
 
 #fp-bar .fp-bar-main .number {
-	width: 26px;
+	width: 27px;
 	text-align: center;
-	margin-left: 2px;
 	margin-top: -2px;
 }
 

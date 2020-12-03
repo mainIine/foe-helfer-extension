@@ -54,7 +54,7 @@
 	background-image: url(../images/expedition.png);
 }
 
-#fp-collectorBody .Guildfights td:nth-child(2) {
+#fp-collectorBody .battlegrounds_conquest td:nth-child(2) {
 	background-image: url(../images/gbg-gray.png);
 }
 
@@ -66,10 +66,18 @@
 	background-image: url(../images/quest.png);
 }
 
+#fp-collectorBody [class$=Event] td:nth-child(2) {
+	background-image: url(../images/event.png) !important;
+}
+
 #fp-collectorBody .spoilsOfWar td:nth-child(2) {
 	background-image: url(../images/spoils_of_war.png);
 }
 
 #fp-collectorBody .diplomaticGifts td:nth-child(2) {
 	background-image: url(../images/diplomatic_gifts.png);
+}
+
+#fp-collectorBody .dailyChallenges td:nth-child(2) {
+	background-image: url(../images/dailyChallenges.png) !important;
 }

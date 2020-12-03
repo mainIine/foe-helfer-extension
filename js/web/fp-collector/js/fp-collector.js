@@ -271,7 +271,7 @@ let FPCollector = {
 		tr.push(`<thead>
 			<tr>
 				<th>FPs</th>
-				<th>${i18n('Boxes.FPCollector.Where')}</th>
+				<th></th>
 				<th>${i18n('Boxes.FPCollector.Who')}</th>
 				<th>${i18n('Boxes.FPCollector.What')}</th>
 			</tr>
