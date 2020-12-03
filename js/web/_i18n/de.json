@@ -139,6 +139,8 @@
     "Boxes.FPCollector.What": "Was?",
     "Boxes.FPCollector.Where": "Wo?",
     "Boxes.FPCollector.Who": "Wer?",
+	"Boxes.FPCollector.winterEvent": "Winterevent",
+	"Boxes.FPCollector.antiquesDealer": "Antiquitätenhändler",
     "Boxes.FPCollector.battlegrounds_conquest": "GG Belohung nach Verhandlung oder Kampf",
     "Boxes.FPCollector.chest": "Begegnungsbelohung",
     "Boxes.FPCollector.diplomaticGifts": "diplomatisches Geschenk",
