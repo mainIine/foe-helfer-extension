@@ -50,8 +50,12 @@
 	background-image: url(../images/incident.png);
 }
 
-#fp-collectorBody .Guildexpedition td:nth-child(2) {
+#fp-collectorBody .Guildexpedition.chest td:nth-child(2) {
 	background-image: url(../images/expedition.png);
+}
+
+#fp-collectorBody .GuildexpeditionguildExpedition td:nth-child(2) {
+	background-image: url(../images/relic.png);
 }
 
 #fp-collectorBody .battlegrounds_conquest td:nth-child(2) {
@@ -80,6 +84,10 @@
 
 #fp-collectorBody .antiquesDealer td:nth-child(2) {
 	background-image: url(../images/ant.png);
+}
+
+#fp-collectorBody .double_collection td:nth-child(2) {
+	background-image: url(../../../../css/images/menu/BlueGalaxy.png);
 }
 
 #fp-collectorBody .dailyChallenges td:nth-child(2) {
