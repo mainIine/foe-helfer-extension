@@ -166,7 +166,7 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-		if(HiddenRewards.FilteredCache.length > 0){
+        if (HiddenRewards.FilteredCache && HiddenRewards.FilteredCache.length > 0){
 			$('#hidden-reward-count').text(HiddenRewards.FilteredCache.length).show();
 		} else {
 			$('#hidden-reward-count').hide();
