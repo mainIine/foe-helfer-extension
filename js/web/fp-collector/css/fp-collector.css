@@ -71,7 +71,7 @@
 	background-image: url('../images/quest.png');
 }
 
-#fp-collectorBody [class$=Event] td:nth-child(3) {
+#fp-collectorBody [class*=Event] td:nth-child(3) {
 	background-image: url('../images/event.png') !important;
 }
 
