@@ -1077,14 +1077,12 @@ const FoEproxy = (function () {
 
 	// ende der Verarbeiter von data für foe-rechner.de
 
-
+	let countTimeResponse = 0;
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
-		// erste Runde
-		if(MainMenuLoaded === false){
-			MainMenuLoaded = data.responseData.time;
-		}
-		// zweite Runde
-		else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
+
+		countTimeResponse++;
+
+		if (countTimeResponse > 4 && MainMenuLoaded !== true){
 			_menu.BuildOverlayMenu();
 			MainMenuLoaded = true;
 
