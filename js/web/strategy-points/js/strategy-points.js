@@ -99,26 +99,14 @@ let StrategyPoints = {
 	},
 
 
-	insertIntoDB: async (data)=>  {
+	insertIntoDB: async (data)=> {
 
-		// check for given entry
-		let check = await StrategyPoints.db['ForgePointsStats'].where({
-			date: data['date'],
-			event: data['event']
-		}).toArray();
+		await StrategyPoints.db.ForgePointsStats.put(data);
 
-		// found? update
-		if(check.length > 0)
+		// if fp-collector box is open, update
+		if( $('#fp-collectorBodyInner').length > 0 )
 		{
-			data['id'] = check[0]['id'];
-			data['amount'] += check[0]['amount'];
-			data['counter'] = (parseInt(check[0]['counter']) + 1);
-
-			await StrategyPoints.db.ForgePointsStats.put(data);
-		}
-		else {
-			data['counter'] = 1;
-			await StrategyPoints.db.ForgePointsStats.put(data);
+			await FPCollector.buildBody();
 		}
 	},
 
@@ -274,7 +262,7 @@ let StrategyPoints = {
 								place: 'Quest',
 								event: 'collectReward',
 								amount: Reward['amount'],
-								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
 						}
 					}
@@ -288,7 +276,7 @@ let StrategyPoints = {
 								place: 'Quest',
 								event: 'collectReward',
 								amount: Number(Reward['subType']),
-								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
 						}
 					}

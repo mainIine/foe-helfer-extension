@@ -24,12 +24,6 @@
 		"sort": 3
 	},
 	{
-		"name": "SendPlayersMotivation",
-		"status": false,
-		"group": "Sending",
-		"sort": 4
-	},
-	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
@@ -76,6 +70,12 @@
 		"status": true,
 		"group": "Boxes",
 		"sort": 8
+	},
+	{
+		"name": "ShowPlayersMotivation",
+		"status": true,
+		"group": "Boxes",
+		"sort": 9
 	},
 	{
 		"name": "ChangeLanguage",
