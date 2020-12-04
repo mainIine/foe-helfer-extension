@@ -26,6 +26,14 @@ let EventHandler = {
 
 	CurrentPlayerGroup: null,
 
+	FilterMoppelEvents: true,
+	FilterTavernVisits: false,
+	FilterAttacks: false,
+	FilterPlunders: false,
+	FilterTrades: false,
+	FilterGBs: false,
+	FilterOthers: false,
+
 	/**
 	*
 	* @returns {Promise<void>}
@@ -188,6 +196,41 @@ let EventHandler = {
 
 			HTML.AddCssFile('eventhandler');
 
+			$('#moppelhelper').on('click', '.filtermoppelevents', function () {
+				EventHandler.FilterMoppelEvents = !EventHandler.FilterMoppelEvents;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filtertavernvisits', function () {
+				EventHandler.FilterTavernVisits = !EventHandler.FilterTavernVisits;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filterattacks', function () {
+				EventHandler.FilterAttacks = !EventHandler.FilterAttacks;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filterplunders', function () {
+				EventHandler.FilterPlunders = !EventHandler.FilterPlunders;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filtertrades', function () {
+				EventHandler.FilterTrades = !EventHandler.FilterTrades;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filtergbs', function () {
+				EventHandler.FilterGBs = !EventHandler.FilterGBs;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filterothers', function () {
+				EventHandler.FilterOthers = !EventHandler.FilterOthers;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
 			// Choose Neighbors/Guildmembers/Friends
 			$('#moppelhelper').on('click', '.toggle-players', function () {
 				EventHandler.CurrentPlayerGroup = $(this).data('value');
@@ -209,6 +252,7 @@ let EventHandler = {
 
 		let h = [];
 
+		/* Calculation */
 		if (!EventHandler.CurrentPlayerGroup) {
 			if (PlayerDictFriendsUpdated) {
 				EventHandler.CurrentPlayerGroup = 'Friends';
@@ -239,6 +283,24 @@ let EventHandler = {
 			return b['Score'] - a['Score'];
 		});
 
+		/* Filters */
+		h.push('<table class="filters">');
+		h.push('<tbody>');
+		h.push('<tr>');
+
+		h.push('<td><label class="game-cursor"><input class="filtermoppelevents game-cursor" ' + (EventHandler.FilterMoppelEvents ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtertavernvisits game-cursor" ' + (EventHandler.FilterTavernVisits ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterattacks game-cursor" ' + (EventHandler.FilterAttacks ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Attacks') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterplunders game-cursor" ' + (EventHandler.FilterPlunders ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Plunders') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtertrades game-cursor" ' + (EventHandler.FilterTrades ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Trades') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtergbs game-cursor" ' + (EventHandler.FilterGBs ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.GBs') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterothers game-cursor" ' + (EventHandler.FilterOthers ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Others') + '</label></td>');
+
+		h.push('</tr>');
+		h.push('</tbody>');
+		h.push('</table>');
+
+		/* Body */
 		h.push('<div class="dark-bg"><div class="tabs"><ul class="horizontal">');
 		if(PlayerDictNeighborsUpdated) 
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
@@ -272,7 +334,30 @@ let EventHandler = {
 			if (Player['IsSelf']) continue;
 
 			let Visits = await EventHandler.db['Events'].where('playerid').equals(Player['PlayerID']).toArray();
-			Visits = Visits.filter(obj => (obj['eventtype'] === 'social_interaction'));
+			Visits = Visits.filter(function (obj) {
+				let EventType = EventHandler.GetEventType(obj);
+				if (EventType === 'MoppelEvent') {
+					return EventHandler.FilterMoppelEvents;
+				}
+				else if (EventType === 'TavernVisit') {
+					return EventHandler.FilterTavernVisits;
+				}
+				else if (EventType === 'Attack') {
+					return EventHandler.FilterAttacks;
+				}
+				else if (EventType === 'Plunder') {
+					return EventHandler.FilterPlunders;
+				}
+				else if (EventType === 'Trade') {
+					return EventHandler.FilterTrades;
+				}
+				else if (EventType === 'GB') {
+					return EventHandler.FilterGBs;
+				}
+				else {
+					return EventHandler.FilterOthers;
+				}
+			});
 
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
@@ -305,6 +390,22 @@ let EventHandler = {
 			$('.sortable-table').tableSorter();
 		});
 	},
+
+
+	/*
+	 * Return the Type of the Event
+	 * 
+	 * @param Event
+	 * */
+	GetEventType: (Event) => {
+		if (Event['eventtype'] === 'social_interaction' && (Event['interactiontype'] === 'motivate' || Event['interactiontype'] === 'polish' || Event['interactiontype'] === 'polivate_failed')) return 'MoppelEvent';
+		if (Event['eventtype'] === 'friend_tavern_sat_down') return 'TavernVisit';
+		if (Event['eventtype'] === 'battle') return 'Attack';
+		if (Event['eventtype'] === 'social_interaction' && Event['interactiontype'] === 'plunder') return 'Plunder';
+		if (Event['eventtype'] === 'trade_accepted') return 'Trade';
+		if (Event['eventtype'] === 'great_building_built' || Event['eventtype'] === 'great_building_contribution') return 'GB';
+		return 'Other';
+    },
 
 
 	/**
