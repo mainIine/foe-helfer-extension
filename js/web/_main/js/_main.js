@@ -46,7 +46,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
 	EventCountdown = false,
-	GameTimeOffset = 0;
+	GameTimeOffset = 0,
+	StartUpDone = false;
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -584,7 +585,7 @@ const FoEproxy = (function () {
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
 
-		// wich tab is active in StartUp Object?
+		// which tab is active in StartUp Object?
 		let vals = {
 			getNeighborList: 0,
 			getFriendsList: 0,
@@ -1079,6 +1080,8 @@ const FoEproxy = (function () {
 
 
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
+		if (!StartUpDone) return;
+
 		// erste Runde
 		if(MainMenuLoaded === false){
 			MainMenuLoaded = data.responseData.time;
@@ -1664,6 +1667,7 @@ let MainParser = {
 	StartUp: (d) => {
 		Settings.Init(false);
 
+		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era']['era'],
