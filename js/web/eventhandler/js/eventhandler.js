@@ -26,6 +26,14 @@ let EventHandler = {
 
 	CurrentPlayerGroup: null,
 
+	FilterMoppelEvents: true,
+	FilterTavernVisits: false,
+	FilterAttacks: false,
+	FilterPlunders: false,
+	FilterTrades: false,
+	FilterGBs: false,
+	FilterOthers: false,
+
 	/**
 	*
 	* @returns {Promise<void>}
@@ -209,6 +217,7 @@ let EventHandler = {
 
 		let h = [];
 
+		/* Calculation */
 		if (!EventHandler.CurrentPlayerGroup) {
 			if (PlayerDictFriendsUpdated) {
 				EventHandler.CurrentPlayerGroup = 'Friends';
@@ -239,6 +248,24 @@ let EventHandler = {
 			return b['Score'] - a['Score'];
 		});
 
+		/* Filters */
+		h.push('<table class="filters">');
+		h.push('<tbody>');
+		h.push('<tr>');
+
+		h.push('<td><label class="game-cursor"><input class="filtermoppelevents game-cursor" checked="' + EventHandler.FilterMoppelEvents + '" type="checkbox">' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtertavernvisits game-cursor" checked="' + EventHandler.FilterTavernVisits + '" type="checkbox">' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterattacks game-cursor" checked="' + EventHandler.FilterAttacks + '" type="checkbox">' + i18n('Boxes.MoppelHelper.Attacks') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterplunders game-cursor" checked="' + EventHandler.FilterPlunders + '" type="checkbox">' + i18n('Boxes.MoppelHelper.Plunders') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtertrades game-cursor" checked="' + EventHandler.FilterTrades + '" type="checkbox">' + i18n('Boxes.MoppelHelper.Trades') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtergbs game-cursor" checked="' + EventHandler.FilterGBs + '" type="checkbox">' + i18n('Boxes.MoppelHelper.GBs') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterothers game-cursor" checked="' + EventHandler.FilterOthers + '" type="checkbox">' + i18n('Boxes.MoppelHelper.Others') + '</label></td>');
+
+		h.push('</tr>');
+		h.push('</tbody>');
+		h.push('</table>');
+
+		/* Body */
 		h.push('<div class="dark-bg"><div class="tabs"><ul class="horizontal">');
 		if(PlayerDictNeighborsUpdated) 
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
