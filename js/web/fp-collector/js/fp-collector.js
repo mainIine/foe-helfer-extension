@@ -216,6 +216,7 @@ let FPCollector = {
 			});
 
 			// get all days without entries and block them in the Litepicker
+			let hidePicker = false;
 			if(startMoment && endMoment)
 			{
 				while (startMoment.isBefore(endMoment, 'day'))
@@ -233,10 +234,7 @@ let FPCollector = {
 				let checkPresent = await StrategyPoints.db['ForgePointsStats'].toArray();
 
 				// no? hide the datepicker button
-				if(checkPresent.length === 0)
-				{
-					$('#FPCollectorPicker').hide();
-				}
+				if (checkPresent.length === 0) hidePicker = true;
 			}
 
 			$('#fp-collectorBody').append(
@@ -246,6 +244,8 @@ let FPCollector = {
 				</div>`,
 				`<div id="fp-collectorBodyInner"></div>`
 			);
+
+			if (hidePicker) $('#FPCollectorPicker').hide();
 		}
 
 		FPCollector.buildBody();
