@@ -20,27 +20,19 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 
 	const d = data.responseData[0][0];
 
-	let place = 'Guildfights',
-		event = data.responseData[1];
+	let event = data.responseData[1];
 
 	if(d['subType'] !== 'strategy_points'){
 		return;
 	}
 
-	if(event === 'guildExpedition')
-	{
-		place = 'Guildexpedition';
-	}
-
 	// default is hiddenreward
 	else if(event === 'default')
 	{
-		place = 'Mainmap';
 		event = 'hiddenReward';
 	}
 
 	StrategyPoints.insertIntoDB({
-		place: place,
 		event: event,
 		amount: d['amount'],
 		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
@@ -209,12 +201,18 @@ let FPCollector = {
 			await StrategyPoints.db['ForgePointsStats'].orderBy('id').first().then((resp) => {
 				startMoment = moment(resp.date).startOf('day');
 				FPCollector.minDateFilter = moment(resp.date).subtract(1, 'minute').toDate();
+
+			}).catch(() => {
+				FPCollector.minDateFilter = moment(MainParser.getCurrentDate()).toDate();
 			});
 
 			// set the last known date
 			await StrategyPoints.db['ForgePointsStats'].orderBy('id').last().then((resp) => {
 				endMoment = moment(resp.date).add(1, 'day'); // neccesary to include the current day
 				FPCollector.maxDateFilter = moment(resp.date).endOf('day').toDate();
+
+			}).catch(() => {
+
 			});
 
 			// get all days without entries and block them in the Litepicker
@@ -270,7 +268,8 @@ let FPCollector = {
 
 		tr.push(`<thead>
 			<tr>
-				<th>FPs</th>
+				<th width="1">FPs</th>
+				<th width="1"></th>
 				<th></th>
 				<th>${i18n('Boxes.FPCollector.Who')}</th>
 				<th>${i18n('Boxes.FPCollector.What')}</th>
@@ -281,7 +280,7 @@ let FPCollector = {
 
 		if(entries.length === 0)
 		{
-			tr.push(`<tr><td colspan="4" class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></td></tr>`);
+			tr.push(`<tr><td colspan="5" class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></td></tr>`);
 		}
 		else {
 			entries.forEach(e => {
@@ -290,8 +289,8 @@ let FPCollector = {
 					<td>
 						<strong class="text-warning">${e.amount}</strong>
 					</td>
+					<td>${e.counter}x</td>
 					<td></td>
-					<!-- <td>${i18n('Boxes.FPCollector.' + e.place)}</td> -->
 					<td>${i18n('Boxes.FPCollector.' + e.event)}</td>
 					<td>${e.notes ? e.notes : ''}</td>
 				</tr>`);
