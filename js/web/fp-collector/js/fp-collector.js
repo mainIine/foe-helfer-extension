@@ -157,7 +157,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 
 
 /**
- * @type {{maxDateFilter: Date, lockDates: [], buildBody: (function(): Promise<void>), caclculateTotal: (function(*=): Promise<number>), intiateDatePicker: (function(): Promise<void>), currentDateFilter: Date, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
+ * @type {{maxDateFilter, lockDates: [], buildBody: (function(): Promise<void>), caclculateTotal: (function(*=): number), intiateDatePicker: (function(): Promise<void>), currentDateFilter, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
  */
 let FPCollector = {
 
@@ -190,7 +190,7 @@ let FPCollector = {
 				title: i18n('Menu.fpCollector.Title'),
 				auto_close: true,
 				dragdrop: true,
-				resize: false,
+				resize: true,
 				minimize: true
 			});
 
@@ -262,16 +262,16 @@ let FPCollector = {
 		let tr = [],
 			entries = await StrategyPoints.db['ForgePointsStats'].where('date').equals(FPCollector.currentDateFilter).toArray();
 
-		$('#fp-collector-total-fp').text(await FPCollector.caclculateTotal(FPCollector.currentDateFilter));
+		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal(FPCollector.currentDateFilter));
 
 		tr.push('<table class="foe-table">');
 
 		tr.push(`<thead>
 			<tr>
-				<th width="1">FPs</th>
 				<th width="1"></th>
+				<th width="1">FPs</th>
 				<th></th>
-				<th>${i18n('Boxes.FPCollector.Who')}</th>
+				<th width="1">${i18n('Boxes.FPCollector.Who')}</th>
 				<th>${i18n('Boxes.FPCollector.What')}</th>
 			</tr>
 		</thead>`);
@@ -286,13 +286,19 @@ let FPCollector = {
 			entries.forEach(e => {
 
 				tr.push(`<tr class="${e.place} ${e.event}">
+					<td class="wsnw">
+						${e.counter}x ${(e.amount / e.counter)}
+					</td>
 					<td>
 						<strong class="text-warning">${e.amount}</strong>
 					</td>
-					<td>${e.counter}x</td>
-					<td></td>
-					<td>${i18n('Boxes.FPCollector.' + e.event)}</td>
-					<td>${e.notes ? e.notes : ''}</td>
+					<td><!-- Image --></td>
+					<td class="wsnw">
+						${i18n('Boxes.FPCollector.' + e.event)}
+					</td>
+					<td>
+						${e.notes ? e.notes : ''}
+					</td>
 				</tr>`);
 
 			});
@@ -313,13 +319,13 @@ let FPCollector = {
 	 * @param date
 	 * @returns {Promise<number>}
 	 */
-	caclculateTotal: async (date)=> {
+	calculateTotal: async (date)=> {
 		let totalFP = 0;
 
 		await StrategyPoints.db['ForgePointsStats']
 			.where('date')
 			.equals(date)
-			.each (entry => totalFP += entry.amount);
+			.each (entry => totalFP += (entry.amount * entry.counter));
 
 		return totalFP;
 	},

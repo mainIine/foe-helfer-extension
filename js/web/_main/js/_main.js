@@ -1150,13 +1150,10 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		// 'alerts',
-		// 'bluegalaxy',
-		'fpCollector',
-		'moppelhelper'
+		'alerts',
+		'fpCollector'
 	],
-	active: true
-	// active: JSON.parse(localStorage.getItem('HelperBetaActive'))
+	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
 
 /**

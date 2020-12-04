@@ -136,6 +136,7 @@
 	position: static;
 	width: 200px;
 	padding-top: 5px;
+	overflow-y: auto;
 }
 
 #SettingsBoxBody .tabs ul.vertical li {

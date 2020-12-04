@@ -94,34 +94,19 @@ let StrategyPoints = {
 		StrategyPoints.db.version(2).stores({
 			ForgePointsStats: '++id,counter,event,notes,amount,date'
 		});
-		StrategyPoints.db.version(3).stores({
-			ForgePointsStats: '++id,counter,[event+date],notes,amount'
-		});
 
 		StrategyPoints.db.open();
 	},
 
 
-	insertIntoDB: async (data)=>  {
+	insertIntoDB: async (data)=> {
 
-		// check for given entry
-		let check = await StrategyPoints.db['ForgePointsStats'].where({
-			date: data['date'],
-			event: data['event']
-		}).toArray();
+		await StrategyPoints.db.ForgePointsStats.put(data);
 
-		// found? update
-		if(check.length > 0)
+		// if fp-collector box is open, update
+		if( $('#fp-collectorBodyInner').length > 0 )
 		{
-			data['id'] = check[0]['id'];
-			data['amount'] += check[0]['amount'];
-			data['counter'] = (parseInt(check[0]['counter']) + 1);
-
-			await StrategyPoints.db.ForgePointsStats.put(data);
-		}
-		else {
-			data['counter'] = 1;
-			await StrategyPoints.db.ForgePointsStats.put(data);
+			await FPCollector.buildBody();
 		}
 	},
 

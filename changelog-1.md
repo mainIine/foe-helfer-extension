@@ -1,8 +1,37 @@
 ## Changelog - Extension
 
+##### 2.5.3.0
 
-- Eigenanteilsrechner: overlay zentriert, neue Checkbox integriert
+**Neu**
 
+- Blaue Galaxy Helfer:
+    - Wenn in den "Einstellungen > Boxen > Blaue Galaxy" aktivert (default "an") wird beim Klick auf die erntbare Blaue Galaxy eine Box geöffnet die die FP stärksten verdoppelbaren Gebäude mit der korrekten Versuchanzahl darstellt 
+
+- Moppelhelfer ****BETA****:
+    - Wenn in den "Einstellungen > Boxen > Motivationen" aktivert (default = "an") werden sämtliche Ereignisse im Rathaus notiert und können über den Button im Menü geöffnet werden.
+    Sollte ein Tab durchgestrichen sein, bitte unten die Tabs des Spieles entsprechend anklicken.
+
+**Update**
+- Extension:
+    - Icons überarbeitet
+
+- Eigenanteilsrechner:
+    - [#1638](https://github.com/dsiekiera/foe-helfer-extension/issues/1638) Kopier-Overlay zentriert und neue Checkbox integriert
+
+- Kampfassistent:
+    - [#903](https://github.com/dsiekiera/foe-helfer-extension/issues/903) Das Warnfenster lässt sich nun in den Einstellungen deaktiveren
+
+- Produktüberischt:
+    - [#1629](https://github.com/dsiekiera/foe-helfer-extension/issues/1629) Ein weiterer Tab zeigt an wie viele Einheiten in nicht militärischen Gebäuden produziert werden
+
+**Bugfix**
+- Extension:
+    - [#1649](https://github.com/dsiekiera/foe-helfer-extension/issues/1649) Innogames hat etwas im Code umgestellt was das Menü zerschossen hatte
+
+- Produktüberischt:
+    - [#1640](https://github.com/dsiekiera/foe-helfer-extension/issues/1640) Produzierte FP der Ehrenstatue wurden nicht dargestellt
+
+---
 
 ##### 2.5.2.9
 
