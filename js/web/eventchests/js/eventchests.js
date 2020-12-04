@@ -159,10 +159,10 @@ let EventChests = {
             h.push('<td class="text-center text-warning text-bold">' + EventChests.Chests[i]['cost'] + '</td>');
 
             h.push('<td class="text-center">' + EventChests.Chests[i]['grandPrizeContribution'] + '</td>');
-            h.push('<td class="text-center border-right' + (EventChests.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventChests.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
+            h.push('<td class="text-center border-right' + (EventChests.Chests[i]['costpermainprizestep'] <= BestMainPrizeCost ? ' text-success text-bold' : '') + '">' + MainParser.round(EventChests.Chests[i]['costpermainprizestep'] * 10) / 10 + '</td>');
 
             h.push('<td class="text-center border-left">' + EventChests.Chests[i]['drop_chance'] + '%</td>');
-            h.push('<td class="text-center' + (EventChests.Chests[i]['costperdailyprize'] <= BestDailyPrizeCost ? ' text-success text-bold' : '') + '">' + Math.round(EventChests.Chests[i]['costperdailyprize']) + '</td>');
+            h.push('<td class="text-center' + (EventChests.Chests[i]['costperdailyprize'] <= BestDailyPrizeCost ? ' text-success text-bold' : '') + '">' + MainParser.round(EventChests.Chests[i]['costperdailyprize']) + '</td>');
 
             h.push('</tr>');
         }

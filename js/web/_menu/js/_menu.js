@@ -40,9 +40,10 @@ let _menu = {
 		'stats',
 		'chat',
 		'kits',
-		'alerts',
 		'greatbuildings',
 		'market',
+		'bluegalaxy',
+		'moppelhelper'
 	],
 
 
@@ -138,6 +139,11 @@ let _menu = {
 		let hudSlider = $('#foe-helper-hud-slider'),
 			StorgedItems = localStorage.getItem('MenuSort');
 
+		// Beta-Funktionen
+		if (HelperBeta.active) {
+			_menu.Items.unshift(...HelperBeta.menu);
+		}
+
 		if (StorgedItems !== null) {
 			let storedItems = JSON.parse(StorgedItems);
 
@@ -177,6 +183,13 @@ let _menu = {
 				}
 			}
 		}
+
+		// Beta-Funktionen rausfiltern
+		_menu.Items = _menu.Items.filter(e => {
+			if (HelperBeta.active) return true;
+			if (HelperBeta.menu.includes(e)) return false;
+			return true;
+		});
 
 		// Dubletten rausfiltern
 		function unique(arr) {
@@ -336,29 +349,31 @@ let _menu = {
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
-		if (_menu.ActiveSlide === 1) {
+		if (_menu.ActiveSlide === 1){
 			$('.hud-btn-up').removeClass('hud-btn-up-active');
 		}
 
-		if (_menu.ActiveSlide < _menu.SlideParts) {
+		if (_menu.ActiveSlide < _menu.SlideParts){
 			$('.hud-btn-down').addClass('hud-btn-down-active');
 
-		} else if (_menu.ActiveSlide === _menu.SlideParts) {
+		} else if (_menu.ActiveSlide === _menu.SlideParts){
 			$('.hud-btn-down').removeClass('hud-btn-down-active');
 		}
 	},
 
+
 	/**
-     * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
-     *
-     * @param d
-     * @returns {{msg: string, type: string, class: string}}
-     */
+	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
+	 *
+	 * @param buttonId
+	 * @constructor
+	 */
 	HideButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
 
 	},
+
 
 	/**
 	 * Zeigt ein versteckten Button wieder.
@@ -367,6 +382,7 @@ let _menu = {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
 	},
+
 
 	/**
 	 * Tooltip Box
@@ -815,6 +831,75 @@ let _menu = {
 		btn_MarketBG.append(btn_Market);
 
 		return btn_MarketBG;
-    }
+	},
 
+	/**
+	 * Helfer Blaue Galaxie
+	 */
+	bluegalaxy_Btn: () => {
+		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
+
+		// no BG => display none
+		if (!OwnGalaxy) return;
+
+		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'), 'bluegalaxy-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			BlueGalaxy.Show();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+	/**
+	 * Moppelassistent
+	 * */
+	moppelhelper_Btn: () => {
+		// active?
+		if(!Settings.GetSetting('ShowPlayersMotivation')){
+			return;
+		}
+
+		let btn = $('<div />').attr({ 'id': 'moppelhelper-Btn', 'data-slug': 'moppelhelper' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'), 'moppelhelper-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			EventHandler.ShowMoppelHelper();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+    },
+
+	/**
+	 * FP Collector box
+	 */
+	fpCollector_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'fpCollector-Btn', 'data-slug': 'fpCollector' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'), 'fpCollector-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			FPCollector.ShowFPCollectorBox();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	}
 };

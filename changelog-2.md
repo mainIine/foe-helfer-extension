@@ -1,5 +1,38 @@
 ## Changelog - Extension
 
+##### 2.5.3.0
+
+**New**
+
+- Blue Galaxy helpers:
+    - If activated in "Settings > Boxes > Blue Galaxy" (default "on"), clicking on the harvestable Blue Galaxy will open a box that shows the FP strongest doublable buildings with the correct number of trials
+
+- Motivation helper ****BETA****:
+    - If activated in "Settings > Boxes > Motivations" (default = "on") all events in the town hall are noted down and can be opened by clicking on the button in the menu.
+      If a tab is crossed out, please click on the tabs of the game below accordingly.
+
+**Update**
+- extension:
+    - Icons revised
+
+- Own contribution calculator:
+    - [#1638](https://github.com/dsiekiera/foe-helfer-extension/issues/1638) Copy overlay centred and new checkbox integrated
+
+- Combat assistant:
+    - [#903](https://github.com/dsiekiera/foe-helfer-extension/issues/903) The warning window can now be disabled in the settings
+
+- Product overview:
+    - [#1629](https://github.com/dsiekiera/foe-helfer-extension/issues/1629) Another tab shows how many units are produced in non military buildings
+
+**Bugfix**
+- Extension:
+    - [#1649](https://github.com/dsiekiera/foe-helfer-extension/issues/1649) Innogames has changed something in the code that had broken the menu
+
+- Product overview:
+    - [#1640](https://github.com/dsiekiera/foe-helfer-extension/issues/1640) Produced FP of the statue of honour were not shown
+
+---
+
 ##### 2.5.2.9
 
 **Bugfix**
