@@ -221,8 +221,8 @@ let FPCollector = {
 			{
 				while (startMoment.isBefore(endMoment, 'day'))
 				{
-					let checkDate = await StrategyPoints.db['ForgePointsStats'].where('date').equals(moment(startMoment).toDate()).toArray();
-
+					let checkDate = await StrategyPoints.db['ForgePointsStats'].where('date').equals(moment(startMoment).format('YYYY-MM-DD')).toArray();
+					
 					if(checkDate.length === 0){
 						FPCollector.lockDates.push(moment(startMoment).format('YYYY-MM-DD'));
 					}
@@ -260,9 +260,9 @@ let FPCollector = {
 	buildBody: async ()=> {
 
 		let tr = [],
-			entries = await StrategyPoints.db['ForgePointsStats'].where('date').equals(FPCollector.currentDateFilter).toArray();
+			entries = await StrategyPoints.db['ForgePointsStats'].where('date').equals(moment(FPCollector.currentDateFilter).format('YYYY-MM-DD')).toArray();
 
-		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal(FPCollector.currentDateFilter));
+		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal(moment(FPCollector.currentDateFilter).format('YYYY-MM-DD')));
 
 		tr.push('<table class="foe-table">');
 
