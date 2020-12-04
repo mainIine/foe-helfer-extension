@@ -73,6 +73,8 @@ let EventHandler = {
 				InteractionType = Event['interaction_type'],
 				EntityID = Event['entity_id'];
 
+			if (!Date) continue; //Datum nicht parsebar => überspringen
+
 			let PlayerID = null,
 				IsNeighbor = 0,
 				IsGuildMember = 0,
@@ -118,7 +120,7 @@ let EventHandler = {
 
 		// Fallback @Todo: Was könnte dann passieren?
 		if(!matcher){
-			return MainParser.getCurrentDate();
+			return undefined;
 		}
 
 		for(let day in matcher)
@@ -179,6 +181,8 @@ let EventHandler = {
 				return moment( refDate, moment.defaultFormat).toDate();
 			}
 		}
+
+		return undefined;
 	},
 
 
@@ -335,6 +339,8 @@ let EventHandler = {
 
 			let Visits = await EventHandler.db['Events'].where('playerid').equals(Player['PlayerID']).toArray();
 			Visits = Visits.filter(function (obj) {
+				if (!obj['date']) return false; //Corrupt values in DB => skip
+
 				let EventType = EventHandler.GetEventType(obj);
 				if (EventType === 'MoppelEvent') {
 					return EventHandler.FilterMoppelEvents;
