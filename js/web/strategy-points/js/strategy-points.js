@@ -94,6 +94,9 @@ let StrategyPoints = {
 		StrategyPoints.db.version(2).stores({
 			ForgePointsStats: '++id,counter,event,notes,amount,date'
 		});
+		StrategyPoints.db.version(3).stores({
+			ForgePointsStats: '++id,counter,[event+date],notes,amount'
+		});
 
 		StrategyPoints.db.open();
 	},
