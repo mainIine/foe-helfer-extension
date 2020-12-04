@@ -34,11 +34,12 @@
 	max-height: 360px;
 }
 
-#fp-collectorBody th:nth-child(1), #fp-collectorBody td:nth-child(1) {
+#fp-collectorBody th:nth-child(1), #fp-collectorBody td:nth-child(1),
+#fp-collectorBody th:nth-child(2), #fp-collectorBody td:nth-child(2) {
 	text-align: center;
 }
 
-#fp-collectorBody td:nth-child(2) {
+#fp-collectorBody td:nth-child(3) {
 	width: 30px;
 	height: 22px;
 	background-size: 20px auto;
@@ -46,50 +47,50 @@
 	background-position: center;
 }
 
-#fp-collectorBody .hiddenReward td:nth-child(2) {
-	background-image: url(../images/incident.png);
+#fp-collectorBody .hiddenReward td:nth-child(3) {
+	background-image: url('../images/incident.png');
 }
 
 #fp-collectorBody .chest td:nth-child(2) {
-	background-image: url(../images/expedition.png);
+	background-image: url('../images/expedition.png');
 }
 
-#fp-collectorBody .guildExpedition td:nth-child(2) {
-	background-image: url(../images/relic.png);
+#fp-collectorBody .guildExpedition td:nth-child(3) {
+	background-image: url('../images/relic.png');
 }
 
-#fp-collectorBody .battlegrounds_conquest td:nth-child(2) {
-	background-image: url(../images/gbg-gray.png);
+#fp-collectorBody .battlegrounds_conquest td:nth-child(3) {
+	background-image: url('../images/gbg-gray.png');
 }
 
-#fp-collectorBody .satDown td:nth-child(2) {
-	background-image: url(../images/tavern.png);
+#fp-collectorBody .satDown td:nth-child(3) {
+	background-image: url('../images/tavern.png');
 }
 
-#fp-collectorBody .Quest td:nth-child(2) {
-	background-image: url(../images/quest.png);
+#fp-collectorBody .Quest td:nth-child(3) {
+	background-image: url('../images/quest.png');
 }
 
-#fp-collectorBody [class$=Event] td:nth-child(2) {
-	background-image: url(../images/event.png) !important;
+#fp-collectorBody [class$=Event] td:nth-child(3) {
+	background-image: url('../images/event.png') !important;
 }
 
-#fp-collectorBody .spoilsOfWar td:nth-child(2) {
-	background-image: url(../images/spoils_of_war.png);
+#fp-collectorBody .spoilsOfWar td:nth-child(3) {
+	background-image: url('../images/spoils_of_war.png');
 }
 
-#fp-collectorBody .diplomaticGifts td:nth-child(2) {
-	background-image: url(../images/diplomatic_gifts.png);
+#fp-collectorBody .diplomaticGifts td:nth-child(3) {
+	background-image: url('../images/diplomatic_gifts.png');
 }
 
-#fp-collectorBody .antiquesDealer td:nth-child(2) {
-	background-image: url(../images/ant.png);
+#fp-collectorBody .antiquesDealer td:nth-child(3) {
+	background-image: url('../images/ant.png');
 }
 
-#fp-collectorBody .double_collection td:nth-child(2) {
-	background-image: url(../../../../css/images/menu/BlueGalaxy.png);
+#fp-collectorBody .double_collection td:nth-child(3) {
+	background-image: url('../../../../css/images/menu/BlueGalaxy.png');
 }
 
-#fp-collectorBody .dailyChallenges td:nth-child(2) {
-	background-image: url(../images/dailyChallenges.png) !important;
+#fp-collectorBody .dailyChallenges td:nth-child(3) {
+	background-image: url('../images/dailyChallenges.png') !important;
 }
