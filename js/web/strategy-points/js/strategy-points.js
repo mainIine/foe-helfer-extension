@@ -277,7 +277,7 @@ let StrategyPoints = {
 								place: 'Quest',
 								event: 'collectReward',
 								amount: Reward['amount'],
-								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
 						}
 					}
@@ -291,7 +291,7 @@ let StrategyPoints = {
 								place: 'Quest',
 								event: 'collectReward',
 								amount: Number(Reward['subType']),
-								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
 						}
 					}

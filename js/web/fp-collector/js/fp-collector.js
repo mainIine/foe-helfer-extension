@@ -35,7 +35,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 	StrategyPoints.insertIntoDB({
 		event: event,
 		amount: d['amount'],
-		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
 });
 
@@ -51,7 +51,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 		place: 'Guildexpedition',
 		event: 'chest',
 		amount: d['amount'],
-		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
 });
 
@@ -67,7 +67,7 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 		place: 'FriendsTavern',
 		event: 'satDown',
 		amount: d['rewardResources']['resources']['strategy_points'],
-		date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
 });
 
@@ -93,7 +93,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 				place: 'OtherPlayer',
 				event: 'plunderReward',
 				amount: PlunderedFP,
-				date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+				date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 			});
 		}
 	}
@@ -147,7 +147,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 			event: 'double_collection',
 			notes: name,
 			amount: amount,
-			date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 		});
 	}
 
