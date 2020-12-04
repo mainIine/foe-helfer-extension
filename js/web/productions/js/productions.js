@@ -49,6 +49,7 @@ let Productions = {
 		'happiness',		// Zufriedenheit
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
+		'units',			// Einheiten
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
@@ -170,59 +171,70 @@ let Productions = {
 		Productions.Boosts['money'] += ProdBonus;
 		Productions.Boosts['supplies'] += ProdBonus;
 
-		for (let i in Productions.BuildingsAll) {
-			if (!Productions.BuildingsAll.hasOwnProperty(i)) {
+		for(let i in Productions.BuildingsAll)
+		{
+			if(!Productions.BuildingsAll.hasOwnProperty(i))
+			{
 				break;
 			}
 
 			let building = Productions.BuildingsAll[i];
 
-			if (building['type'] === 'residential' || building['type'] === 'production') {
+			if (building['type'] === 'residential' || building['type'] === 'production')
+			{
 				if (building['products']['money']) {
-					building['products']['money'] = Math.round(building['products']['money'] * Productions.Boosts['money']);
+					building['products']['money'] = MainParser.round(building['products']['money'] * Productions.Boosts['money']);
 				}
+
 				if (building['motivatedproducts']['money']) {
-					building['motivatedproducts']['money'] = Math.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
+					building['motivatedproducts']['money'] = MainParser.round(building['motivatedproducts']['money'] * Productions.Boosts['money']);
 				}
 
 				if (building['products']['supplies']) {
-				building['products']['supplies'] = Math.round(building['products']['supplies'] * Productions.Boosts['supplies']);
+					building['products']['supplies'] = MainParser.round(building['products']['supplies'] * Productions.Boosts['supplies']);
 				}
+
 				if (building['motivatedproducts']['supplies']) {
-					building['motivatedproducts']['supplies'] = Math.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
+					building['motivatedproducts']['supplies'] = MainParser.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
 			}
 
 			// Nach Produkt
-			for (let x in building['products']) {
-				if (!building['products'].hasOwnProperty(x)) {
+			for (let x in building['products'])
+			{
+				if (!building['products'].hasOwnProperty(x))
+				{
 					break;
 				}
 
-				if (Productions.Types.includes(x) && x !== 'packaging') {
+				if (Productions.Types.includes(x) && x !== 'packaging')
+				{
 					// Alle Gebäude einzeln auflisten, nach Produkt sortiert
 					Productions.BuildingsProducts[x].push(building);
 
-						let index = Productions.BuildingsProductsGroups[x].map((el) => el.eid).indexOf(building['eid']);
+					let index = Productions.BuildingsProductsGroups[x].map((el) => el.eid).indexOf(building['eid']);
 
-						// Alle Gebäude gruppieren und
-						if (index === -1) {
-							let ni = Productions.BuildingsProductsGroups[x].length + 1;
+					// Alle Gebäude gruppieren und
+					if (index === -1)
+					{
+						let ni = Productions.BuildingsProductsGroups[x].length + 1;
 
-							Productions.BuildingsProductsGroups[x][ni] = [];
-							Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
-							Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
-							Productions.BuildingsProductsGroups[x][ni]['era'] = building['era'];
-							Productions.BuildingsProductsGroups[x][ni]['dailyfactor'] = building['dailyfactor'];
-							Productions.BuildingsProductsGroups[x][ni]['products'] = Productions.GetDaily(parseInt(building['products'][x]), building['dailyfactor'], x);
-							Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building['dailyfactor'], x);
-							Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
+						Productions.BuildingsProductsGroups[x][ni] = [];
+						Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
+						Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
+						Productions.BuildingsProductsGroups[x][ni]['era'] = building['era'];
+						Productions.BuildingsProductsGroups[x][ni]['dailyfactor'] = building['dailyfactor'];
+						Productions.BuildingsProductsGroups[x][ni]['units'] = building['units'];
+						Productions.BuildingsProductsGroups[x][ni]['products'] = Productions.GetDaily(parseInt(building['products'][x]), building['dailyfactor'], x);
+						Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building['dailyfactor'], x);
+						Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
 
-						} else {
-							Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
-							Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
-							Productions.BuildingsProductsGroups[x][index]['count']++;
-						}
+					} else {
+
+						Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
+						Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
+						Productions.BuildingsProductsGroups[x][index]['count']++;
+					}
 				}
 
 				else {
@@ -262,15 +274,24 @@ let Productions = {
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			AdditionalResources = [],
+			Units,
 			era;
 
-		if (CityEntity['abilities']) {
-			for (let AbilityIndex in CityEntity['abilities']) {
+		if (CityEntity['abilities'])
+		{
+			for (let AbilityIndex in CityEntity['abilities'])
+			{
 				if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex)) continue
 
 				let Ability = CityEntity['abilities'][AbilityIndex];
+
 				if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
 					AdditionalResources = Ability['additionalResources']['AllAge']['resources'];
+				}
+
+				// this buildung produces random units
+				else if(Ability['__class__'] === 'RandomUnitOfAgeWhenMotivatedAbility') {
+					Units = Ability['amount'];
 				}
             }
         }
@@ -304,19 +325,25 @@ let Productions = {
 			in: 0
 		};
 
-		if (d.state && d.state.current_product) {
-			if (d.state.current_product.product && d.state.current_product.product.resources) {
-				CurrentResources = d['state']['current_product']['product']['resources'];
+		if (d.state && d['state']['current_product'])
+		{
+			if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
+				CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
 			}
 
-			if (d.state.current_product['clan_power']) {
-				CurrentResources['clan_power'] = d.state.current_product['clan_power']; // z.B. Ruhmeshalle
+			if (d['state']['current_product']['clan_power']) {
+				CurrentResources['clan_power'] = d['state']['current_product']['clan_power']; // z.B. Ruhmeshalle
+			}
+			
+			if (d['state']['current_product']['units']) {
+				CurrentResources['units'] = d['state']['current_product']['units'];
 			}
 
-			if (d.state.current_product['name'] === 'clan_goods' && d.state.current_product['goods']) {
+			if (d['state']['current_product']['name'] === 'clan_goods' && d['state']['current_product']['goods']) {
 				let GoodSum = 0;
-				for (let i = 0; i < d.state.current_product['goods'].length; i++) {
-					GoodSum += d.state.current_product['goods'][i]['value'];
+
+				for (let i = 0; i < d['state']['current_product']['goods'].length; i++) {
+					GoodSum += d['state']['current_product']['goods'][i]['value'];
 				}
 
 				if (GoodSum > 0) {
@@ -324,28 +351,40 @@ let Productions = {
                 }
             }
 
-			if (d.state.current_product.guildProduct && d.state.current_product.guildProduct.resources) {
+			if (d['state']['current_product']['guildProduct'] && d['state']['current_product']['guildProduct']['resources']) {
 				let GoodSum = 0;
 
-				for (let ResourceName in d.state.current_product['guildProduct']['resources']) {
-					if(!d.state.current_product['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
+				for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
+					if(!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
 
 					if (ResourceName === 'clan_power') {
-						CurrentResources['clan_power'] = d.state.current_product['guildProduct']['resources']['clan_power'];
-					}
-					else {
-						GoodSum += d.state.current_product['guildProduct']['resources'][ResourceName];
+						for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
+							if (!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
+
+							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'][ResourceName];
+                        }
+											
+					} else {
+						GoodSum += d['state']['current_product']['guildProduct']['resources'][ResourceName];
                     }
 				}
+
 				if (GoodSum > 0) {
 					CurrentResources['clan_goods'] = GoodSum;
 				}
 			}
 		}
 
-        for (let Resource in CurrentResources) {
+		// Units filled?
+		if(Units)
+		{
+			CurrentResources['units'] = Units;
+		}
 
-            if(!CurrentResources.hasOwnProperty(Resource)) {
+        for (let Resource in CurrentResources)
+        {
+            if(!CurrentResources.hasOwnProperty(Resource))
+            {
             	break;
 			}
 
@@ -368,28 +407,36 @@ let Productions = {
 		}
 
 		if (d['state'] && d['state']['__class__'] !== 'ConstructionState' && d['state']['__class__'] !== 'UnconnectedState') {
+
 			if (CityEntity['staticResources'] && CityEntity['staticResources']['resources'] && CityEntity['staticResources']['resources']['population']) {
 				Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
 			}
+
 			if (CityEntity['provided_happiness']) {
 				let Faktor = 1;
+
 				if (d['state']['__class__'] === 'PolishedState') {
 					Faktor = 2;
 				}
+
 				Products['happiness'] = CityEntity['provided_happiness'] * Faktor;
 			}
 		}
 
 		if (CityEntity['entity_levels'] && CityEntity['entity_levels'][d['level']]) {
 			let EntityLevel = CityEntity['entity_levels'][d['level']];
+
 			if (EntityLevel['provided_population']) {
 				Products['population'] = (Products['population'] ? Products['population'] : 0) + EntityLevel['provided_population'];
 			}
+
 			if (EntityLevel['provided_happiness']) {
 				let Faktor = 1;
+
 				if (d['state']['__class__'] === 'PolishedState') {
 					Faktor = 2;
 				}
+
 				Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
 			}
 		}
@@ -458,7 +505,7 @@ let Productions = {
 			return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
 		};
 
-		if ($('#Productions').length > 0) {
+		if ($('#Productions').length > 0){
 			HTML.CloseOpenBox('Productions');
 
 			return;
@@ -481,6 +528,7 @@ let Productions = {
 		Productions.SwitchFunction();
 	},
 
+
 	/**
 	 * Aktualisiert den Inhalt
 	 */
@@ -492,19 +540,21 @@ let Productions = {
 
 		h.push('<div class="production-tabs tabs">');
 
-
 		// einzelne Güterarten durchsteppen
 		for(let pt in Productions.Types)
 		{
-			if(!Productions.Types.hasOwnProperty(pt)){
+			if(!Productions.Types.hasOwnProperty(pt))
+			{
 				break;
 			}
 
 			let type = Productions.Types[pt];
 
-			if(!Productions.BuildingsProducts.hasOwnProperty(type)){
+			if(!Productions.BuildingsProducts.hasOwnProperty(type))
+			{
 				break;
 			}
+
 			Productions.SetTabs(type);
 
 			Productions.BuildingsProducts[type] = helper.arr.multisort(Productions.BuildingsProducts[type], ['name'], ['ASC']);
@@ -513,7 +563,6 @@ let Productions = {
 			{
 				Productions.BuildingsProductsGroups[type] = helper.arr.multisort(Productions.BuildingsProductsGroups[type], ['name'], ['ASC']);
 			}
-
 
 			let buildings = Productions.BuildingsProducts[type],
 				groups = Productions.BuildingsProductsGroups[type],
@@ -565,10 +614,10 @@ let Productions = {
 
 						if (size !== 0) {
 							if (type === 'strategy_points') {
-								EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 							}
 							else {
-								EfficiencyString = HTML.Format(Math.round(efficiency));
+								EfficiencyString = HTML.Format(MainParser.round(efficiency));
 							}
 						}
 						else {
@@ -578,10 +627,15 @@ let Productions = {
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
+						rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 
 						if (type !== 'population' && type !== 'happiness') {
-							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
-							rowA.push('<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
+							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+							}
+							else {
+								rowA.push('<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
+							}
 						}
 						else {
 							rowA.push('<td><td>');
@@ -618,10 +672,17 @@ let Productions = {
 						}
 
 						tds += '<td class="is-number" data-number="' + CurrentBuildingCount + '">' + pA.join('<br>') + '</td>' +
-							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + i18n('Boxes.Productions.TTGoodsEra')  + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
-							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>' +
-							'<td>' + moment.unix(buildings[i]['at']).fromNow() + '</td>' +
-							'<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
+							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + i18n('Boxes.Productions.TTGoodsEra') + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
+							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>';
+
+						if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>';
+						}
+						else {
+							tds += '<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
+						}
+
+						tds += '<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
 							'</tr>';
 
 						rowA.push(tds);
@@ -645,10 +706,10 @@ let Productions = {
 
 						let EfficiencyString;
 						if (type === 'strategy_points') {
-							EfficiencyString = HTML.Format(Math.round(efficiency * 100) / 100);
+							EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 						}
 						else {
-							EfficiencyString = HTML.Format(Math.round(efficiency));
+							EfficiencyString = HTML.Format(MainParser.round(efficiency));
 						}
 									
 						let tds = '<tr>' +
@@ -673,7 +734,7 @@ let Productions = {
 				let eras = [],
 					eraSums = [];
 
-				// nach Zeitalter gruppieren und Array zusammen fumlen
+				// nach Zeitalter gruppieren und Array zusammen fummlen
 				for(let ca in countProducts)
 				{
 					if(countProducts.hasOwnProperty(ca))
@@ -850,7 +911,13 @@ let Productions = {
 
 				if (ShowTime) {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
-					rowC.push('<td colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+
+					if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+					}
+					else {
+						rowC.push('<td style="white-space:nowrap" colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
+					}
 				}
 				else {
 					rowC.push('<td></td><td colspan="2"></td>');
@@ -1117,14 +1184,14 @@ let Productions = {
 
 				let em = MainParser.EmissaryService[i];
 
-				// Armee-Einheiten ausgrenzen
-				if(em['bonus']['type'] === 'unit') {
-					continue;
-				}
+				if(em['bonus']['type'] === 'unit'){
+					if(d['state']['current_product']['product']['resources']['units'] === undefined){
+						d['state']['current_product']['product']['resources']['units'] = 0;
+					}
 
-				// alle anderen
-				else {
+					d['state']['current_product']['product']['resources']['units'] += em['bonus']['amount'];
 
+				} else {
 					if(d['state']['current_product']['product']['resources'][ em['bonus']['subType'] ] === undefined){
 						d['state']['current_product']['product']['resources'][ em['bonus']['subType'] ] = 0;
 					}
@@ -1184,17 +1251,29 @@ let Productions = {
 	 * @returns {*|string}
 	 */
 	GetGoodName: (GoodType)=> {
+
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
+
 		}
 		else if (GoodType === 'clan_power') {
 			return i18n('Boxes.Productions.GuildPower');
+
 		}
 		else if (GoodType === 'clan_goods') {
 			return i18n('Boxes.Productions.GuildGoods');
+
         }
-		else {
-			return GoodsData[GoodType]['name'];
+		else if (GoodType === 'units'){
+			return i18n('Boxes.Productions.Units');
+
+		} else {
+			if(GoodType && GoodsData[GoodType]){
+				return GoodsData[GoodType]['name'];
+
+			} else {
+				return GoodType;
+			}
 		}
 	},
 

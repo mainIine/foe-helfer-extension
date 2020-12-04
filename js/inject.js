@@ -100,7 +100,7 @@
 				}
 
 				let css = document.createElement('link');
-				css.href = chrome.extension.getURL('css/web/' + cssFiles[i] + '.css?v=' + v);
+				css.href = chrome.extension.getURL(`css/web/${cssFiles[i]}.css?v=${v}`);
 				css.rel = 'stylesheet';
 				document.head.appendChild(css);
 			}
@@ -125,7 +125,7 @@
 			script.remove();
 
 			// lade die main
-			await promisedLoadCode(chrome.extension.getURL('js/web/_main/js/_main.js?v=' + v));
+			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
 
 			// warte zunächst, dass ant und i18n geladen sind
 			await jQueryLoading;
@@ -152,7 +152,7 @@
 				];
 
 			// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
-			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(extURL + 'vendor/' + vendorScript + '.js?v=' + v)));
+			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
 
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
@@ -189,11 +189,15 @@
 				'ws-chat',
 				'treasury',
 				'market',
+				'bluegalaxy',
+				'eventhandler',
+				'fp-collector',
 			];
 
 			// Scripte laden (nacheinander)
-			for (let i = 0; i < s.length; i++) {
-				await promisedLoadCode(extURL + 'js/web/' + s[i] + '/js/' + s[i] + '.js?v=' + v);
+			for (let i = 0; i < s.length; i++)
+			{
+				await promisedLoadCode(`${extURL}js/web/${s[i]}/js/${s[i]}.js?v=${v}`);
 			}
 
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
@@ -205,7 +209,7 @@
             }
 
 			if (document.getElementById('content') && !IsForum ){
-				alert('You installed the FoE Helper but didn\'t switch the game to HTML5. Check that in your game settings!.');
+				alert('You installed the FoE Helper but didn\'t switch the game to HTML5. Check that in your game settings!');
 			}
 
 		} catch (err) {

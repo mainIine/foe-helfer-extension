@@ -1,0 +1,57 @@
+﻿/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 bluegalaxy.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zuletzt bearbeitet:        09.11.20, 21:24 Uhr
+ *
+ * Copyright 2020
+ *
+ * **************************************************************************************
+ */
+
+
+/* Box */
+#bluegalaxy {
+    top: 30%;
+    right: 15%;
+    width: 400px;
+}
+
+    #bluegalaxy #bluegalaxyBody {
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 600px;
+    }
+
+        #bluegalaxy #bluegalaxyBody strong.success {
+            color: var(--text-success);
+        }
+
+        #bluegalaxy #bluegalaxyBody strong.error {
+            color: #ec4d4d;
+        }
+
+.text-bright {
+    color: var(--text-bright);
+}
+
+#bluegalaxy .title {
+    font-size: 115%;
+}
+
+#bluegalaxy .header {
+    margin-bottom: 2px;
+    padding: 1em 0;
+}
+
+#bluegalaxy #bluegalaxyBody td {
+    position: relative;
+    font-size: 100%;
+}
+
+#bluegalaxy #bluegalaxyBody .foe-table tr:first-child td:nth-child(5) strong {
+    color: var(--text-success);
+}

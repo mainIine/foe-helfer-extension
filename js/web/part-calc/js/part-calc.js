@@ -249,17 +249,17 @@ let Parts = {
 				if (Place < 5) {
 					if (Parts.Rankings[i]['reward'] !== undefined) {
 						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
-						FPRewards[Place] = Math.round(FPCount * arcs[Place]);
+						FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
 						// Medallien berechnen
 						MedalCount = (Parts.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['resources']['medals']) : 0);
-						MedalRewards[Place] = Math.round(MedalCount * arcs[Place]);
+						MedalRewards[Place] = MainParser.round(MedalCount * arcs[Place]);
 						if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
 						// Blaupausen berechnen
 						let BlueprintCount = (Parts.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['blueprints']) : 0);
-						BPRewards[Place] = Math.round(BlueprintCount * arcs[Place]);
+						BPRewards[Place] = MainParser.round(BlueprintCount * arcs[Place]);
 						if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
 					}
 					else {
@@ -597,12 +597,12 @@ let Parts = {
 		}
 
 		let Options = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (localStorage.getItem('OwnPartIncludePlayer' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</label>' +
-			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (localStorage.getItem('OwnPartIncludeGB' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</label>' +
-			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (localStorage.getItem('OwnPartIncludeLevel' + KeyPart2) === "true" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</label>' +
-			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (localStorage.getItem('OwnPartIncludeFP' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</label>' +
-			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (localStorage.getItem('OwnPartDescending' + KeyPart2) !== "false" ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</label>' +
-			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup"> ' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</label>' +
+			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (localStorage.getItem('OwnPartIncludePlayer' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (localStorage.getItem('OwnPartIncludeGB' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (localStorage.getItem('OwnPartIncludeLevel' + KeyPart2) === "true" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (localStorage.getItem('OwnPartIncludeFP' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (localStorage.getItem('OwnPartDescending' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup"> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
 			'</div>';
 
 		h.push(Options)
@@ -610,14 +610,15 @@ let Parts = {
 		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong></span></p>');
 
         let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</label>' +
-			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</label>' +
-			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</label>' +
-			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</label>' +
-			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</label>' +
-			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> ' + i18n('Boxes.OwnpartCalculator.Auto') + '</label>' +
-			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.IsNextLevel ? 'checked' : '') + '> ' + i18n('Boxes.OwnpartCalculator.All') + '</label>' +
-			'</div>';
+			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> <span>' + i18n('Boxes.OwnpartCalculator.Auto') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.All') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-all-withempty"><input type="checkbox" class="form-check-input" id="chain-all-withempty" data-place="all-withempty"> <span>' + i18n('Boxes.OwnpartCalculator.AllWithEmpty') + '</span></label>' +
+		'</div>';
 
 		h.push(cb);
 
@@ -676,6 +677,7 @@ let Parts = {
 				if (PlaceName === 'auto') { //auto: all und P1-5 deaktivieren, auto aktivieren
 					$('#chain-auto').prop('checked', true);
 					$('#chain-all').prop('checked', false);
+					$('#chain-all-withempty').prop('checked', false);
 
 					for (let i = 0; i < 5; i++) {
 						$('#chain-p' + (i + 1)).prop('checked', false);
@@ -684,14 +686,25 @@ let Parts = {
 				else if (PlaceName === 'all') { //all: auto und P1-5 deaktivieren, all aktivieren
 					$('#chain-auto').prop('checked', false);
 					$('#chain-all').prop('checked', true);
+					$('#chain-all-withempty').prop('checked', false);
 
 					for (let i = 0; i < 5; i++) {
 						$('#chain-p' + (i + 1)).prop('checked', true);
 					}
 				}
+				else if (PlaceName === 'all-withempty') { //all: auto und P1-5 deaktivieren, all aktivieren
+						$('#chain-auto').prop('checked', false);
+						$('#chain-all').prop('checked', false);
+						$('#chain-all-withempty').prop('checked', true);
+
+						for (let i = 0; i < 5; i++) {
+							$('#chain-p' + (i + 1)).prop('checked', true);
+						}
+					}
 				else { //P1-5: auto und all deaktivieren
 					$('#chain-auto').prop('checked', false);
 					$('#chain-all').prop('checked', false);
+					$('#chain-all-withempty').prop('checked', false);
 				}
 			}
 
@@ -738,6 +751,47 @@ let Parts = {
 	},
 
 
+	/**
+	 * Lecker Animation für das Anzeigen der Kopieren Buttons
+	 *
+	 * @param show
+	 */
+	BackGroundBoxAnimation: (show)=> {
+		let $box = $('#OwnPartBox'),
+			$boxBg = $('.OwnPartBoxBackgroundBody');
+
+		if(show === true)
+		{
+			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
+
+			e.style.height = 'auto';
+			let h = e.offsetHeight;
+			e.style.height = '0px';
+
+			// center overlay to parent box
+			let $boxWidth = $('#OwnPartBox').outerWidth() - 10,
+				$bgBodyWidth = $boxBg.outerWidth();
+
+			$boxBg.css({
+				left: Math.round( ($boxWidth - $bgBodyWidth) / 2 )
+			})
+
+			// animation
+			$boxBg.animate({height: h, opacity: 1}, 250, function () {
+				$box.addClass('show');
+				$box.find('.black-bg').show();
+			});
+		}
+
+		else {
+			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
+				$box.removeClass('show');
+				$box.find('.black-bg').hide();
+			});
+		}
+	},
+
+
 	GetStoragePreamble: () => {
 		let Ret;
 		if (Parts.CityMapEntity['player_id'] !== ExtPlayerID) {
@@ -762,17 +816,24 @@ let Parts = {
 			Descending = $('#options-descending').prop('checked'),
 			LevelUp = $('#options-levelup').prop('checked');
 
-		let PlaceAuto = $('#chain-auto').prop('checked');
-		let PlaceAll = $('#chain-all').prop('checked');
-		let Ps = [$('#chain-p1').prop('checked'), $('#chain-p2').prop('checked'), $('#chain-p3').prop('checked'), $('#chain-p4').prop('checked'), $('#chain-p5').prop('checked')];
+		let PlaceAuto = $('#chain-auto').prop('checked'),
+			PlaceAll = $('#chain-all').prop('checked'),
+			PlaceAllWithEmpty = $('#chain-all-withempty').prop('checked'),
+			Ps = [
+				$('#chain-p1').prop('checked'),
+				$('#chain-p2').prop('checked'),
+				$('#chain-p3').prop('checked'),
+				$('#chain-p4').prop('checked'),
+				$('#chain-p5').prop('checked')
+			],
+			Places = [];
 
-		let Places = [];
 		if (PlaceAuto) {
 			for (let i = 0; i < Parts.SafePlaces.length; i++) {
 				Places.push(Parts.SafePlaces[i]);
 			}
 		}
-		else if (PlaceAll) {
+		else if (PlaceAll || PlaceAllWithEmpty) {
 			for (let i = 0; i < 5; i++) {
 				Places.push(i);
 			}
@@ -798,6 +859,10 @@ let Parts = {
 			for (let i = 0; i < Places.length; i++) {
 				let Place = Places[i];
 
+				if(PlaceAll && Parts.Maezens[Place] === 0){
+					continue;
+				}
+
 				if (IncludeFP) {
 					Ret.push('P' + (Place + 1) + '(' + Parts.Maezens[Place] + ')');
 				}
@@ -806,8 +871,8 @@ let Parts = {
 				}
 			}
 		}
-		else {
-			if (PlaceAuto) Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
+		else if (PlaceAuto) {
+			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
         }
 
 		let CopyString = Ret.join(' ');
@@ -867,34 +932,6 @@ let Parts = {
 	},
 
 
-	/**
-	 * Lecker Animation für das Anzeigen der Kopieren Buttons
-	 *
-	 * @param show
-	 */
-	BackGroundBoxAnimation: (show)=> {
-		let $box = $('#OwnPartBox');
-
-		if(show === true){
-			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
-			e.style.height = 'auto';
-			let h = e.offsetHeight;
-			e.style.height = '0px';
-
-			$('.OwnPartBoxBackgroundBody').animate({height: h, opacity: 1}, 250, function () {
-				$box.addClass('show');
-				$box.find('.black-bg').show();
-			});
-
-		} else {
-			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
-				$box.removeClass('show');
-				$box.find('.black-bg').hide();
-			});
-		}
-	},
-
-
 	ShowPowerLeveling: () => {
 		Parts.BuildBoxPowerLeveling();
 	},
@@ -921,6 +958,7 @@ let Parts = {
 		// Body zusammen fummeln
 		Parts.CalcBodyPowerLeveling();
 	},
+
 
 	CalcBodyPowerLeveling: () => {
 		let EntityID = Parts.CityMapEntity['cityentity_id'],
@@ -965,7 +1003,7 @@ let Parts = {
 					DoubleCollections[i] = FPGreatBuilding.Productions[i];
 				}
 				else {
-					DoubleCollections[i] = Math.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
+					DoubleCollections[i] = MainParser.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
                 }
 			}
 			else {
@@ -984,7 +1022,7 @@ let Parts = {
 
 		h.push('<div class="d-flex justify-content-center">');
 		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></div>');
-		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info">'+ HTML.Format(Math.round(OwnPartSum)) + '</strong></div>')
+		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') + ': <strong class="info">' + HTML.Format(MainParser.round(OwnPartSum)) + '</strong></div>')
 		h.push('</div>');
 		h.push('</div>');
 
@@ -1018,9 +1056,9 @@ let Parts = {
 			h.push('<td class="bright">' + HTML.Format(Places[i][4]) + '</td>');
 			if (HasDoubleCollection) {
 				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
-				h.push('<td>' + HTML.Format(Math.round(DoubleCollections[i])) + '</td>');
+				h.push('<td>' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
-			h.push('<td><strong class="info">' + HTML.Format(Math.round(EigenNettos[i])) + '</strong></td>');
+			h.push('<td><strong class="info">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
 			h.push('</tr>');
         }
 		h.push('</tbody>');

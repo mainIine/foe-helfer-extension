@@ -28,6 +28,10 @@
 	margin-top: 2px;
 }
 
+#Productions #ProductionsBody strong.success {
+	color: var(--text-success);
+}
+
 #Productions #ProductionsBody .show-entity {
 	display: inline-block;
 	width: 20px;
@@ -149,4 +153,7 @@
 }
 #Productions #ProductionsBody .tabs ul li.clan_power a span {
 	background-position: -262px 5px;
+}
+#Productions #ProductionsBody .tabs ul li.units a span {
+	background-position: -287px 6px;
 }

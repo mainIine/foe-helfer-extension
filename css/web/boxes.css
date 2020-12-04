@@ -499,3 +499,46 @@
 .justify-content-center {
 	justify-content: center;
 }
+
+/* date picker overwrite */
+
+:root{
+	--litepickerBgColor: var(--text-dark) !important;
+	--litepickerMonthHeaderTextColor: var(--text-normal) !important;
+	--litepickerMonthButton: var(--text-medium) !important;
+	--litepickerMonthButtonHover: var(--text-bright) !important;
+	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7) !important;
+	--litepickerMonthWeekdayColor: var(--text-medium) !important;
+	--litepickerDayColor: var(--text-normal) !important;
+	--litepickerDayColorHover: var(--text-bright) !important;
+	--litepickerDayIsTodayColor: var(--text-bright) !important;
+	--litepickerDayIsInRange: var(--50-black) !important;
+	--litepickerDayIsLockedColor: var(--text-medium) !important;
+	--litepickerDayIsBookedColor: var(--text-medium) !important;
+	--litepickerDayIsStartColor: var(--text-dark) !important;
+	--litepickerDayIsStartBg: var(--text-bright) !important;
+	--litepickerDayIsEndColor: var(--text-dark) !important;
+	--litepickerDayIsEndBg: var(--text-bright) !important;
+	--litepickerDayWidth: 33px !important;
+	--litepickerButtonCancelColor: var(--text-dark) !important;
+	--litepickerButtonCancelBg: var(--text-medium) !important;
+	--litepickerButtonApplyColor: var(--text-dark) !important;
+	--litepickerButtonApplyBg: var(--text-bright) !important;
+	--litepickerButtonResetBtn: #909090 !important;
+	--litepickerButtonResetBtnHover: var(--text-bright) !important;
+	--litepickerHighlightedDayColor: #333 !important;
+	--litepickerHighlightedDayBg: #ffeb3b !important
+}
+
+.litepicker .container__months {
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 repeat;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
+	box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
+	border: 1px solid #000;
+}
+
+.litepicker .container__months .month-item-header {
+	margin: -5px -5px 0;
+	background-color: var(--background-table-odd);
+	border-radius: 3px;
+}

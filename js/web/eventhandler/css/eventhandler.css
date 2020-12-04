@@ -1,0 +1,69 @@
+﻿/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 eventhandler.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * zuletzt bearbeitet:        09.11.20, 21:24 Uhr
+ *
+ * Copyright 2020
+ *
+ * **************************************************************************************
+ */
+
+
+/* Box */
+#moppelhelper {
+    top: 30%;
+    right: 15%;
+    width: 900px;
+}
+
+#moppelhelper #moppelhelperBody {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.text-bright {
+    color: var(--text-bright);
+}
+
+#moppelhelper .title {
+    font-size: 115%;
+}
+
+#moppelhelper .header {
+    margin-bottom: 2px;
+    padding: 1em 0;
+}
+
+#moppelhelper #moppelhelperBody td {
+    position: relative;
+    font-size: 85%;
+}
+
+#moppelhelper #moppelhelperBody .foe-table tr:first-child td:nth-child(5) strong {
+    color: var(--text-success);
+}
+
+#moppelhelper #moppelhelperBody strong.success {
+    color: var(--text-success);
+}
+
+#moppelhelper #moppelhelperBody strong {
+    color: var(--text-bright);
+}
+
+#moppelhelper #moppelhelperBody strong.error {
+    color: #ec4d4d;
+}
+
+#moppelhelper #moppelhelperBody table .sorter-header .ascending:after {
+    content: "↑";
+}
+
+#moppelhelper #moppelhelperBody table .sorter-header .descending:after {
+    content: "↓";
+}

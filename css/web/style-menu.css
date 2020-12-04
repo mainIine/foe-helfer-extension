@@ -468,7 +468,7 @@ p {
 	background-size: contain;
 	position: absolute;
 	top: 8px;
-	left: 8px;
+	left: 9px;
 }
 
 .menu-placeholder {
@@ -478,8 +478,8 @@ p {
 }
 
 .hud-btn span.hud-counter {
-	width: 17px;
-	height: 17px;
+	width: 16px;
+	height: 16px;
 	position: absolute;
 	padding: 2px;
 	bottom: 4px;
@@ -495,6 +495,14 @@ p {
 
 #market-Btn span {
 	background-image: url('../images/menu/market.png');
+}
+
+#moppelhelper-Btn span {
+	background-image: url('../images/menu/polivation.png');
+}
+
+#fpCollector-Btn span {
+	background-image: url('../images/menu/forgepoints.png');
 }
 
 #greatbuildings-Btn span {
@@ -573,7 +581,6 @@ p {
 	background-image: url('../images/menu/negotation.png');
 }
 
-
 #kits-Btn span {
 	background-image: url('../images/menu/kits.png');
 }
@@ -586,6 +593,10 @@ p {
 	background-image: url('../images/menu/notices.png');
 }
 
+#bluegalaxy-Btn span {
+	background-image: url('../images/menu/BlueGalaxy.png');
+}
+
 /* ---------------------------------------------------------------------------------------------------------------------
 Tabs */
 
@@ -593,6 +604,11 @@ Tabs */
 	margin: 5px 0 0 0;
 	padding: 0 0 0 6px;
 	border-bottom: 2px solid var(--border-tab);
+}
+
+.window-body .dark-bg .tabs ul.horizontal {
+	padding: 5px 0 0 6px;
+	margin: 0;
 }
 
 .window-body .tabs ul.horizontal li {
@@ -629,6 +645,10 @@ Tabs */
 	z-index: 20;
 	position: relative;
 	top: 1px;
+}
+
+.window-body .tabs ul.horizontal li.disabled a span {
+	text-decoration: line-through;
 }
 
 .window-body .tabs ul.horizontal li a:before {
@@ -848,8 +868,8 @@ Tooltip */
 }
 
 #fp-bar .fp-bar-main {
-	height: 18px;
-	width: 111px;
+	height: 16px;
+	width: 109px;
 	background: transparent url('../../js/web/strategy-points/images/fp-bar-bg.png') center left no-repeat;
 	position: relative;
 	top: 7px;
@@ -858,9 +878,8 @@ Tooltip */
 }
 
 #fp-bar .fp-bar-main .number {
-	width: 26px;
+	width: 27px;
 	text-align: center;
-	margin-left: 2px;
 	margin-top: -2px;
 }
 

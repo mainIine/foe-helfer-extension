@@ -94,7 +94,7 @@ let GreatBuildings =
                 GreatBuildings.FPPerTile = parseFloat(FPPerTile);
             }
 
-            GreatBuildings.RewardPerDay = Math.round(GreatBuildings.FPRewards / 6);
+            GreatBuildings.RewardPerDay = MainParser.round(GreatBuildings.FPRewards / 6);
 
             HTML.Box({
                 id: 'greatbuildings',
@@ -295,9 +295,9 @@ let GreatBuildings =
                 let BestLevel = ROIResults[Index]['BestLevel'];
 
                 h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
-                h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
-                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
-                h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
+                h.push('<td>' + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
+                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
+                h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
             }
             else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
                 h.push('<td>-</td>');
@@ -319,9 +319,9 @@ let GreatBuildings =
                 h.push('<tr>');
                 h.push('<td class="text-right">' + i18n('Boxes.GreatBuildings.Suggestion2') + ':</td>');
                 h.push('<td>' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
-                h.push('<td>' + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');
-                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
-                h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(Math.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
+                h.push('<td>' + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');
+                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
+                h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
                 h.push('<td class="text-center">-</td>');
                 h.push('</tr>');
             }
@@ -340,20 +340,19 @@ let GreatBuildings =
 
         for (let i = 0; i < CityMap.length; i++) {
             let ID = CityMap[i]['id']
-            EntityID = CityMap[i]['cityentity_id'],
+                EntityID = CityMap[i]['cityentity_id'],
                 CityEntity = MainParser.CityEntities[EntityID];
 
             if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
 
+            let Production = Productions.readType(CityMap[i]);
             if (GreatBuildings.BlueGalaxyStaticFPs[EntityID]) {
-                GreatBuildings.FPBuildings.push({ ID: ID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID] });
+                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], CurrentFP: Production['products']['strategy_points'], In: Production['in'], At: Production['at']});
             }
-            else {
-                let Production = Productions.readType(CityMap[i]);
-                if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
+            else if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
                     let FP = Production['motivatedproducts']['strategy_points'];
-                    GreatBuildings.FPBuildings.push({ ID: ID, FP: FP });
-                }
+                    let CurrentFP = Production['products']['strategy_points'];
+                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: FP, CurrentFP: CurrentFP, In: Production['in'], At: Production['at']});
             }
         }
 
@@ -477,11 +476,11 @@ let GreatBuildings =
 
         Ret[0] = P1;
         for (let i = 1; i < 5; i++) {
-            Ret[i] = Math.round(Ret[i - 1] / (i + 1) / 5) * 5;
+            Ret[i] = MainParser.round(Ret[i - 1] / (i + 1) / 5) * 5;
         }
 
         for (let i = 0; i < 5; i++) {
-            Ret[i] = Math.round(Ret[i] * arcs[i]);
+            Ret[i] = MainParser.round(Ret[i] * arcs[i]);
         }
 
         return Ret;
