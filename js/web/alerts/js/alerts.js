@@ -1479,6 +1479,7 @@ let Alerts = function(){
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
     Alerts.update.data.battlegrounds( data['responseData'] );
 });
+
 FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
     Alerts.update.data.timers( data['responseData'] );
 });
@@ -1600,7 +1601,7 @@ let TimeManager = function(){
          * @param o
          * @returns {boolean}
          */
-        isSubscribed: (o) => { return ( tmp.observers.filter(observer => observer === o).length == 1 ); },
+        isSubscribed: (o) => { return ( tmp.observers.filter(observer => observer === o).length === 1 ); },
         notify: (data) => {
             tmp.observers.forEach( observer => {
                 if (observer.update){ observer.update(data); }

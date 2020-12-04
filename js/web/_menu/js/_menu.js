@@ -41,7 +41,9 @@ let _menu = {
 		'chat',
 		'kits',
 		'greatbuildings',
-		'market'
+		'market',
+		'bluegalaxy',
+		'moppelhelper'
 	],
 
 
@@ -347,29 +349,31 @@ let _menu = {
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
-		if (_menu.ActiveSlide === 1) {
+		if (_menu.ActiveSlide === 1){
 			$('.hud-btn-up').removeClass('hud-btn-up-active');
 		}
 
-		if (_menu.ActiveSlide < _menu.SlideParts) {
+		if (_menu.ActiveSlide < _menu.SlideParts){
 			$('.hud-btn-down').addClass('hud-btn-down-active');
 
-		} else if (_menu.ActiveSlide === _menu.SlideParts) {
+		} else if (_menu.ActiveSlide === _menu.SlideParts){
 			$('.hud-btn-down').removeClass('hud-btn-down-active');
 		}
 	},
 
+
 	/**
-     * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
-     *
-     * @param d
-     * @returns {{msg: string, type: string, class: string}}
-     */
+	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
+	 *
+	 * @param buttonId
+	 * @constructor
+	 */
 	HideButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
 
 	},
+
 
 	/**
 	 * Zeigt ein versteckten Button wieder.
@@ -378,6 +382,7 @@ let _menu = {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
 	},
+
 
 	/**
 	 * Tooltip Box
@@ -857,6 +862,11 @@ let _menu = {
 	 * Moppelassistent
 	 * */
 	moppelhelper_Btn: () => {
+		// active?
+		if(!Settings.GetSetting('ShowPlayersMotivation')){
+			return;
+		}
+
 		let btn = $('<div />').attr({ 'id': 'moppelhelper-Btn', 'data-slug': 'moppelhelper' }).addClass('hud-btn');
 
 		// Tooltip einbinden
