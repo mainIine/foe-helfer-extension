@@ -480,7 +480,7 @@ let EventHandler = {
 				sunday    : /Domingo às (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 			},
 			fr: {
-				today     : /aujourd\\hui à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
+				today     : /aujourd\'hui à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				yesterday : /hier à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				monday    : /Lundi à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				tuesday   : /Mardi à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
