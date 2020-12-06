@@ -328,6 +328,8 @@
     "Boxes.PowerLeveling.Level": "Nivel",
     "Boxes.PowerLeveling.MaxLevel": "Nivel maxim",
     "Boxes.PowerLeveling.OwnPartBrutto": "Piesa proprie brută",
+    "Boxes.PowerLeveling.OwnPartNetto": "Piesa proprie net",
+    "Boxes.PowerLeveling.OwnPartSum": "Suma părții proprii",
     "Boxes.Productions.AdjacentBuildings": "Clădiri învecinate",
     "Boxes.Productions.Happiness": "Fericre",
     "Boxes.Productions.Headings.all": "Total",
