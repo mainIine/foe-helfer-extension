@@ -59,13 +59,16 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
 	const d = data['responseData'];
 
-	if(!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points']){
+	if(!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points'] || !postData[0] || !postData[0]['requestData'] || !postData[0]['requestData'][0]){
 		return;
 	}
 
+	const player = PlayerDict[postData[0]['requestData'][0]];
+	console.log(player)
 	StrategyPoints.insertIntoDB({
 		place: 'FriendsTavern',
 		event: 'satDown',
+		notes: player ? player.PlayerName : undefined,
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
