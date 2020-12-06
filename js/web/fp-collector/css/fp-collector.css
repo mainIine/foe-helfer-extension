@@ -133,7 +133,11 @@
 	background-image: url('../images/dailyChallenges.png') !important;
 }
 
+.fpcollector-head.plunderReward-head span.image {
+	background-image: url('../images/plunder.png') !important;
+}
+
 /* Events */
-.fpcollector-head.winterevent-head span.image {
+.fpcollector-head.winterEvent-head span.image {
 	background-image: url('../images/event.png') !important;
 }
