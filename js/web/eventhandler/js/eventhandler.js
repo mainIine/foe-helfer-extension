@@ -54,12 +54,24 @@ let EventHandler = {
 	},
 
 
+	/**
+	 * @param data the data to add to the events database
+	 * @returns {boolean} true if the data is new in the database
+	 */
 	insertIntoDB: async (data) => {
-		await EventHandler.db.Events.put(data);
+		const db = EventHandler.db;
+		const eventsDB = db.Events;
+		const id = data.eventid;
+		return db.transaction('rw', eventsDB, async () => {
+			let isNew = undefined === await eventsDB.get(id);
+			await db.Events.put(data);
+			return isNew;
+		});
 	},
 
 
 	HandleEvents: (Events) => {
+		const inserts = [];
 		for (let i = 0; i < Events.length; i++) {
 			let Event = Events[i];
 
@@ -87,7 +99,7 @@ let EventHandler = {
 				if (Event['other_player']['is_friend']) IsFriend = 1;
 			}
 
-			EventHandler.insertIntoDB({
+			inserts.push(EventHandler.insertIntoDB({
 				eventid: ID,
 				date: Date,
 				eventtype: EventType,
@@ -97,8 +109,33 @@ let EventHandler = {
 				isneighbor: IsNeighbor,
 				isguildmember: IsGuildMember,
 				isfriend: IsFriend
-			});
+			}));
 		}
+
+		Promise.all(inserts).then(insertIsNewArr => {
+			let count = 0;
+			for (let isNew of insertIsNewArr) {
+				if (isNew) count++;
+			}
+			if (count === 0) {
+				$.toast({
+					heading: i18n('Boxes.Investment.AllUpToDate'),
+					text: i18n('Boxes.Investment.AllUpToDateDesc'),
+					icon: 'info',
+					hideAfter: 6000
+				});
+			} else {
+				$.toast({
+					heading: i18n('Boxes.Investment.PlayerFound'),
+					text: HTML.i18nReplacer(
+						count === 1 ? i18n('Boxes.Investment.PlayerFoundCount') : i18n('Boxes.Investment.PlayerFoundCounter'),
+						{count: count}
+					),
+					icon: 'success',
+					hideAfter: 2600
+				});
+			}
+		});
 
 		if ($('#moppelhelper').length > 0) {
 			EventHandler.CalcMoppelHelperBody();
