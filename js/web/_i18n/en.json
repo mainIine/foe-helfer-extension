@@ -200,7 +200,7 @@
     "Boxes.Investment.AllUpToDateDesc": "All player events/intertactions on this page have been previoulsy updated",
     "Boxes.Investment.CurrReward": "Current Profit: ",
     "Boxes.Investment.DateParseError": "Error parsing date",
-    "Boxes.Investment.DateParseErrorDesc": "The Date value __InvalidDate__ could not be parsed",
+    "Boxes.Investment.DateParseErrorDesc": "The Date value \"__InvalidDate__\" could not be parsed",
     "Boxes.Investment.InvestBar": "Invested FPs: ",
     "Boxes.Investment.PlayerFound": "New Event History found",
     "Boxes.Investment.PlayerFoundCount": "__count__ new player Events were found",

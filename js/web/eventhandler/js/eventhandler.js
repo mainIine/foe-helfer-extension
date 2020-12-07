@@ -34,6 +34,8 @@ let EventHandler = {
 	FilterGBs: false,
 	FilterOthers: false,
 
+	AllInvalidDates: [],
+
 	/**
 	*
 	* @returns {Promise<void>}
@@ -88,6 +90,7 @@ let EventHandler = {
 
 			if (!Date) { //Datum nicht parsebar => überspringen
 				InvalidDates.push(Event['date']);
+				EventHandler.AllInvalidDates.push(Event['date']);
 				continue;
 			}
 
