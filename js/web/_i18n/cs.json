@@ -353,7 +353,6 @@
     "Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' se opošlou data o investování VB na foe-rechner.de",
     "Settings.SendInvestigations.Title": "Investování VB",
     "Settings.SendPlayersMotivation.Desc": "Záznamy odesílat na foe-rechner.de",
-    "Settings.SendPlayersMotivation.Title": "Motivace",
     "Settings.Version.Desc": "<p>Verze rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
     "Settings.Version.GuildId": "Id cechu:",
     "Settings.Version.PlayerId": "Id hráče:",

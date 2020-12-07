@@ -453,7 +453,6 @@
     "Settings.SendInvestigations.Desc": "Când accesezi 'Primărie'> 'Noutăți'> 'Clădiri legendare' datele despre PF investite vor fi transmise",
     "Settings.SendInvestigations.Title": "PF investite",
     "Settings.SendPlayersMotivation.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
-    "Settings.SendPlayersMotivation.Title": "Activitatea de motivație",
     "Settings.Version.Desc": "Versiunea extensiei pentru ",
     "Settings.Version.GuildId": "ID ghildă:",
     "Settings.Version.PlayerId": "ID jucător:",
