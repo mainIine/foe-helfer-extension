@@ -236,6 +236,7 @@ let CityMap = {
 		$('#grid-outer').find('.entity').remove();
 
 		CityMap.OccupiedArea = 0;
+        	CityMap.OccupiedArea2 = [];
 
 		if(CityMap.IsExtern === false) {
 			// Unlocked Areas rendern
@@ -270,6 +271,9 @@ let CityMap = {
 				era;
 
 			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['length']));
+            
+		        if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+		        CityMap.OccupiedArea2[d.type] += (parseInt(d['width']) * parseInt(d['length']));
 
 			// Search age
 			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
@@ -335,13 +339,31 @@ let CityMap = {
 
 			aW.append( $('<p />').addClass('total-area') );
 			aW.append( $('<p />').addClass('occupied-area') );
-
+			aW.append( $('<br />'));
+			aW.append( $('<br />'));
+			aW.append( $('<p />').addClass('building-count-area') );
+            
 			$('#sidebar').append(aW);
 
 		}
 
 		$('.total-area').html(txtTotal);
 		$('.occupied-area').html(txtFree);
+        
+        
+		sortable = [];
+		for( x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
+		sortable.sort((a, b) => a[1] - b[1]);
+		sortable.reverse();
+
+		for( x in sortable ){
+		    const type =  sortable[x][0], 
+			  count = sortable[x][1];
+		    const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+		    const str = `${type} : <br> &nbsp;&nbsp; ${count} (${pct}%)`;
+		    console.log(str);
+		    $('.building-count-area').append("<br>"+str);
+		}
 
 	},
 
