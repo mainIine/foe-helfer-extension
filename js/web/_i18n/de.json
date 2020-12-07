@@ -200,7 +200,7 @@
     "Boxes.Investment.AllUpToDateDesc": "Alle Spieler dieser Seite wurden bereits erfasst",
     "Boxes.Investment.CurrReward": "Aktueller Gewinn: ",
     "Boxes.Investment.DateParseError": "Fehler beim Parsen eines Datums",
-    "Boxes.Investment.DateParseErrorDesc": "Das Datum __InvalidDate__ konnte nicht geparsed werden",
+    "Boxes.Investment.DateParseErrorDesc": "Das Datum \"__InvalidDate__\" konnte nicht geparsed werden",
     "Boxes.Investment.InvestBar": "Investierte FP: ",
     "Boxes.Investment.PlayerFound": "Spieler gefunden",
     "Boxes.Investment.PlayerFoundCount": "__count__ neues Spieler-Ereigniss wurden gefunden",
