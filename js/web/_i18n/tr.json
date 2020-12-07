@@ -331,7 +331,6 @@
     "Settings.SendInvestigations.Desc": "'Yönetim Binası '> 'Haberler'> 'Devasa Binalar' a girilirken FP yatırımları iletiliyor",
     "Settings.SendInvestigations.Title": "FP Yatırımlar",
     "Settings.SendPlayersMotivation.Desc": "Olaylar çağrıldığında Taverna faaliyetleri göz ardı edilmeli midir?",
-    "Settings.SendPlayersMotivation.Title": "Taverna Faaliyetleri",
     "Settings.Version.Desc": "<p>Extension Version</p><a target='_blank' class='game-cursor' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'>Changelog</a>",
     "Settings.Version.GuildId": "Lonca Id:",
     "Settings.Version.PlayerId": "Oyuncular Id:",

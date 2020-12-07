@@ -34,6 +34,8 @@ let EventHandler = {
 	FilterGBs: false,
 	FilterOthers: false,
 
+	AllInvalidDates: [],
+
 	/**
 	*
 	* @returns {Promise<void>}
@@ -72,6 +74,7 @@ let EventHandler = {
 
 	HandleEvents: (Events) => {
 		const inserts = [];
+		let InvalidDates = [];
 		for (let i = 0; i < Events.length; i++) {
 			let Event = Events[i];
 
@@ -85,7 +88,11 @@ let EventHandler = {
 				InteractionType = Event['interaction_type'],
 				EntityID = Event['entity_id'];
 
-			if (!Date) continue; //Datum nicht parsebar => überspringen
+			if (!Date) { //Datum nicht parsebar => überspringen
+				InvalidDates.push(Event['date']);
+				EventHandler.AllInvalidDates.push(Event['date']);
+				continue;
+			}
 
 			let PlayerID = null,
 				IsNeighbor = 0,
@@ -117,14 +124,24 @@ let EventHandler = {
 			for (let isNew of insertIsNewArr) {
 				if (isNew) count++;
 			}
-			if (count === 0) {
+
+			if (InvalidDates.length > 0) {
+				$.toast({
+					heading: i18n('Boxes.Investment.DateParseError'),
+					text: HTML.i18nReplacer(i18n('Boxes.Investment.DateParseErrorDesc'), { InvalidDate: InvalidDates[0]}),
+					icon: 'error',
+					hideAfter: 6000
+				});
+            }
+			else if (count === 0) {
 				$.toast({
 					heading: i18n('Boxes.Investment.AllUpToDate'),
 					text: i18n('Boxes.Investment.AllUpToDateDesc'),
 					icon: 'info',
 					hideAfter: 6000
 				});
-			} else {
+			}
+			else {
 				$.toast({
 					heading: i18n('Boxes.Investment.PlayerFound'),
 					text: HTML.i18nReplacer(
