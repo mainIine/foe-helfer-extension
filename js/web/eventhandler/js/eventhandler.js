@@ -382,7 +382,7 @@ let EventHandler = {
 		h.push('<th data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
 		h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 		for (let i = 0; i < MaxVisitCount; i++) {
-			h.push('<th class="is-date" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Visit') + (i+1) + '</th>');
+			h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i+1) + '</th>');
 		}
 		h.push('</tr>');
 
@@ -430,14 +430,15 @@ let EventHandler = {
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 			for (let j = 0; j < MaxVisitCount; j++) {
 				if (j < Visits.length) {
-					let Days = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 86400000; //24*3600*1000
-					let StrongClass = EventHandler.GetMoppelDateStrongClass(Days);
+					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
+					let Days = Seconds / 86400; //24*3600
+					let StrongColor = EventHandler.GetMoppelDateColor(Days);
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 
-					h.push('<td style="white-space:nowrap" class="is-date" data-date="' + Visits[j]['date'].getTime() + '"><strong class="' + StrongClass + '">' + FormatedDays + '</strong></td>');
+					h.push('<td style="white-space:nowrap" class="is-number" data-number="' + Seconds + '"><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
-					h.push('<td class="is-date" data-date="0"><strong class="error">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
+					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
                 }
             }
 			h.push('</tr>');
@@ -473,16 +474,23 @@ let EventHandler = {
 	*
 	* @param Days
 	*/
-	GetMoppelDateStrongClass: (Days) => {
-		if (Days < 3) {
-			return 'success';
-		}
-		else if (Days < 7) {
-			return '';
+	GetMoppelDateColor: (Days) => {
+		let Maximum = 7;
+		let StepSize = Maximum / 256 / 2;
+		let Steps = Math.round(Days / StepSize);
+
+		Steps = Math.min(Math.max(Steps, 0), 511);
+
+		if (Steps < 256) {
+			let StepString = Steps.toString(16);
+			if (StepString.length < 2) StepString = "0" + StepString;
+			return StepString + "ff00";
 		}
 		else {
-			return 'error';
-		}
+			let StepString = (511-Steps).toString(16);
+			if (StepString.length < 2) StepString = "0" + StepString;
+			return "ff" + StepString + "00";
+        }
     },
 
 
