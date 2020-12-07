@@ -777,9 +777,9 @@ Tooltip */
 	height: 31px;
 	display: inline-block;
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: -22px;
+	bottom: -28px;
+	transform: translateX(-50%);
+	left: 50%;
 	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
 }
 
