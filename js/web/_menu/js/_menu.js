@@ -43,7 +43,8 @@ let _menu = {
 		'greatbuildings',
 		'market',
 		'bluegalaxy',
-		'moppelhelper'
+		'moppelhelper',
+		'fp-collector'
 	],
 
 
@@ -307,6 +308,13 @@ let _menu = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
+
+				$.toast({
+					heading: i18n('Menu.SaveMessage.Title'),
+					text: i18n('Menu.SaveMessage.Desc'),
+					icon: 'success',
+					hideAfter: 5000
+				});
 			}
 		});
 
