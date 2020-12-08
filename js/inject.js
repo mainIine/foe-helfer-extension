@@ -88,6 +88,7 @@
 			let cssFiles = [
 				'variables',
 				'goods',
+				'events',
 				'style-menu',
 				'boxes'
 			];
