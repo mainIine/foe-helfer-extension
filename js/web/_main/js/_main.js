@@ -1150,8 +1150,7 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'alerts',
-		'fpCollector'
+		'alerts'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
