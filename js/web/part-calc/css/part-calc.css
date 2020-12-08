@@ -326,3 +326,8 @@
 #PowerLevelingBox #PowerLevelingBoxBody .success {
 	color: var(--text-success);
 }
+
+#PowerLevelingBox table.foe-table th {
+	position: sticky;
+	top: 0;
+}

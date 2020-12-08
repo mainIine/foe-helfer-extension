@@ -358,13 +358,9 @@ let Productions = {
 					if(!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
 
 					if (ResourceName === 'clan_power') {
-						for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
-							if (!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
-
-							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'][ResourceName];
-                        }
-											
-					} else {
+						CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'][ResourceName];					
+					}
+					else {
 						GoodSum += d['state']['current_product']['guildProduct']['resources'][ResourceName];
                     }
 				}

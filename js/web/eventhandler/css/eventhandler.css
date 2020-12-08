@@ -18,12 +18,12 @@
     top: 30%;
     right: 15%;
     width: 900px;
+    height: 600px;
 }
 
 #moppelhelper #moppelhelperBody {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 600px;
 }
 
 .text-bright {
@@ -42,28 +42,78 @@
 #moppelhelper #moppelhelperBody td {
     position: relative;
     font-size: 85%;
+    text-align: center;
+}
+
+#moppelhelper #moppelhelperBody .dropdown span.arrow {
+	top: 14px;
+	right: 8px;
+}
+
+#moppelhelper #moppelhelperBody .dropdown input[type=checkbox]:checked ~ span.arrow {
+	top: 11px;
 }
 
 #moppelhelper #moppelhelperBody .foe-table tr:first-child td:nth-child(5) strong {
     color: var(--text-success);
 }
 
-#moppelhelper #moppelhelperBody strong.success {
-    color: var(--text-success);
-}
-
-#moppelhelper #moppelhelperBody strong {
-    color: var(--text-bright);
-}
-
-#moppelhelper #moppelhelperBody strong.error {
-    color: #ec4d4d;
-}
-
 #moppelhelper #moppelhelperBody table .sorter-header .ascending:after {
     content: "↑";
+	color: var(--text-bright);
+	left: 4px;
+	position: relative;
 }
 
 #moppelhelper #moppelhelperBody table .sorter-header .descending:after {
     content: "↓";
+	color: var(--text-bright);
+	left: 4px;
+	position: relative;
+}
+
+#moppelhelper #moppelhelperBody .events-sprite-50.sm {
+    text-align: center;
+	display: inline-block;
+	margin-right: 2px;
+}
+
+#moppelhelper #moppelhelperBody .events-sprite-50.sm::before {
+    zoom: 0.7;
+    overflow: hidden;
+    position: static;
+    display: inline-block;
+    content: '';
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    vertical-align: bottom;
+}
+
+#moppelhelper span.MoppelEvent::before {
+    background: url('../images/mopo.png') no-repeat center center;
+}
+
+#moppelhelper span.TavernVisit::before {
+    background: url('../images/tavern.png') no-repeat center center;
+}
+
+#moppelhelper span.Attack::before {
+    background: url('../images/attack.png') no-repeat center center;
+}
+
+#moppelhelper span.Plunder::before {
+    background: url('../images/plunder.png') no-repeat center center;
+}
+
+#moppelhelper span.GB::before {
+    background: url('../images/gb.png') no-repeat center center;
+}
+
+#moppelhelper span.Other::before {
+    background: url('../images/other.png') no-repeat center center;
+}
+
+#moppelhelper span.Trade::before {
+    background: url('../images/trade.png') no-repeat center center;
 }

@@ -949,10 +949,28 @@ let Parts = {
 				'minimize': true,
 			});
 
-			$('#PowerLevelingBox').on('blur', '#maxlevel', function () {
+			const box = $('#PowerLevelingBox');
+			box.on('blur', '#maxlevel', function () {
 				Parts.PowerLevelingMaxLevel = parseFloat($('#maxlevel').val());
-				Parts.CalcBodyPowerLeveling();
-			});			
+				Parts.UpdateTableBodyPowerLeveling();
+				//Parts.CalcBodyPowerLeveling();
+			});
+			box.on('keydown', '#maxlevel', function (e) {
+				const key = e.key;
+				const input = e.target;
+				if (key === "ArrowUp") {
+					Parts.PowerLevelingMaxLevel = Number.parseInt(input.value) + 1;
+					Parts.UpdateTableBodyPowerLeveling();
+					e.preventDefault();
+				} else if (key === "ArrowDown") {
+					Parts.PowerLevelingMaxLevel = Number.parseInt(input.value) - 1;
+					Parts.UpdateTableBodyPowerLeveling();
+					e.preventDefault();
+				} else if (key === "Enter") {
+					Parts.PowerLevelingMaxLevel = Number.parseInt(input.value);
+					Parts.UpdateTableBodyPowerLeveling();
+				}
+			});
 		}
 
 		// Body zusammen fummeln
@@ -960,7 +978,7 @@ let Parts = {
 	},
 
 
-	CalcBodyPowerLeveling: () => {
+	CalcBodyPowerLevelingData: () => {
 		let EntityID = Parts.CityMapEntity['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			EraName = GreatBuildings.GetEraName(EntityID),
@@ -1013,7 +1031,81 @@ let Parts = {
 
 			EigenNettos[i] = EigenBruttos[i] - DoubleCollections[i];
 			OwnPartSum += EigenNettos[i];
+		}
+
+		return {
+			HasDoubleCollection,
+			Places,
+			CityEntity,
+			OwnPartSum,
+			MinLevel,
+			MaxLevel,
+			EigenBruttos,
+			DoubleCollections,
+			EigenNettos
+		};
+	},
+
+	CalcTableBodyPowerLeveling: (h, data) => {
+		const {
+			HasDoubleCollection,
+			Places,
+			MinLevel,
+			MaxLevel,
+			EigenBruttos,
+			DoubleCollections,
+			EigenNettos
+		} = data;
+
+		for (let i = MinLevel; i < MaxLevel; i++) {
+			h.push('<tr>');
+			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][0]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][1]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][2]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][3]) + '</td>');
+			h.push('<td class="bright">' + HTML.Format(Places[i][4]) + '</td>');
+			if (HasDoubleCollection) {
+				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
+				h.push('<td>' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
+			}
+			h.push('<td><strong class="info">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
+			h.push('</tr>');
         }
+	},
+
+	UpdateTableBodyPowerLeveling: () => {
+		const tableBody = document.getElementById('PowerLevelingBoxTableBody');
+		if (tableBody) {
+			const data = Parts.CalcBodyPowerLevelingData();
+			/** @type {string[]} */
+			const h = [];
+			
+			Parts.CalcTableBodyPowerLeveling(h, data);
+
+			tableBody.innerHTML = h.join('');
+
+			const maxlevel = /** @type {HTMLInputElement} */(document.getElementById('maxlevel'));
+			if (maxlevel.value != ''+data.MaxLevel) {
+				maxlevel.value = ''+data.MaxLevel;
+			}
+			Parts.PowerLevelingMaxLevel = data.MaxLevel;
+
+			const ownPartSum = /** @type {HTMLElement} */(document.getElementById('PowerLevelingBoxOwnPartSum'));
+			ownPartSum.innerText = HTML.Format(MainParser.round(data.OwnPartSum));
+		}
+
+	},
+
+	CalcBodyPowerLeveling: () => {
+		const data = Parts.CalcBodyPowerLevelingData();
+
+		const {
+			HasDoubleCollection,
+			CityEntity,
+			OwnPartSum,
+			MaxLevel,
+		} = data;
 
 		let h = [];
 
@@ -1022,7 +1114,7 @@ let Parts = {
 
 		h.push('<div class="d-flex justify-content-center">');
 		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.MaxLevel') + ': <input type="number" id="maxlevel" step="1" min=10" max="1000" value="' + MaxLevel + '""></div>');
-		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') + ': <strong class="info">' + HTML.Format(MainParser.round(OwnPartSum)) + '</strong></div>')
+		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info" id="PowerLevelingBoxOwnPartSum">'+ HTML.Format(MainParser.round(OwnPartSum)) + '</strong></div>')
 		h.push('</div>');
 		h.push('</div>');
 
@@ -1045,22 +1137,8 @@ let Parts = {
 		h.push('</tr>');
 		h.push('</thead>');
 
-		h.push('<tbody>');
-		for (let i = MinLevel; i < MaxLevel; i++) {
-			h.push('<tr>');
-			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][0]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][1]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][2]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][3]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][4]) + '</td>');
-			if (HasDoubleCollection) {
-				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
-				h.push('<td>' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
-			}
-			h.push('<td><strong class="info">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
-			h.push('</tr>');
-        }
+		h.push('<tbody id="PowerLevelingBoxTableBody">');
+		Parts.CalcTableBodyPowerLeveling(h, data);
 		h.push('</tbody>');
 
 		h.push('</table>');

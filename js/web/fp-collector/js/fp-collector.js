@@ -59,13 +59,16 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
 	const d = data['responseData'];
 
-	if(!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points']){
+	if(!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points'] || !postData[0] || !postData[0]['requestData'] || !postData[0]['requestData'][0]){
 		return;
 	}
 
+	const player = PlayerDict[postData[0]['requestData'][0]];
+	console.log(player)
 	StrategyPoints.insertIntoDB({
 		place: 'FriendsTavern',
 		event: 'satDown',
+		notes: player ? player.PlayerName : undefined,
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
@@ -157,15 +160,16 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 
 
 /**
- * @type {{maxDateFilter, lockDates: [], buildBody: (function(): Promise<void>), caclculateTotal: (function(*=): number), intiateDatePicker: (function(): Promise<void>), currentDateFilter, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
+ * @type {{calculateTotal: (function(*=): number), maxDateFilter, TodayEntries: null, lockDates: [], buildBody: (function(): Promise<void>), intiateDatePicker: (function(): Promise<void>), getPossibleEventsByDate: (function(): []), currentDateFilter, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
  */
 let FPCollector = {
 
 	minDateFilter: null,
 	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
-	currentDateFilter: moment(MainParser.getCurrentDate()).startOf('day').toDate(),
+	currentDateFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
 
 	lockDates: [],
+	TodayEntries: null,
 
 	DatePicker: null,
 
@@ -222,7 +226,7 @@ let FPCollector = {
 				while (startMoment.isBefore(endMoment, 'day'))
 				{
 					let checkDate = await StrategyPoints.db['ForgePointsStats'].where('date').equals(moment(startMoment).format('YYYY-MM-DD')).toArray();
-					
+
 					if(checkDate.length === 0){
 						FPCollector.lockDates.push(moment(startMoment).format('YYYY-MM-DD'));
 					}
@@ -259,53 +263,50 @@ let FPCollector = {
 	 */
 	buildBody: async ()=> {
 
-		let tr = [],
-			entries = await StrategyPoints.db['ForgePointsStats'].where('date').equals(moment(FPCollector.currentDateFilter).format('YYYY-MM-DD')).toArray();
+		let tr = [];
+		FPCollector.TodayEntries = await StrategyPoints.db['ForgePointsStats'].where('date').equals(FPCollector.currentDateFilter).toArray();
 
-		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal(moment(FPCollector.currentDateFilter).format('YYYY-MM-DD')));
+		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal());
 
-		tr.push('<table class="foe-table">');
+		// ${i18n('Boxes.FPCollector.Who')} ${i18n('Boxes.FPCollector.What')}
 
-		tr.push(`<thead>
-			<tr>
-				<th width="1"></th>
-				<th width="1">FPs</th>
-				<th></th>
-				<th width="1">${i18n('Boxes.FPCollector.Who')}</th>
-				<th>${i18n('Boxes.FPCollector.What')}</th>
-			</tr>
-		</thead>`);
 
-		tr.push(`<tbody>`);
-
-		if(entries.length === 0)
+		if(FPCollector.TodayEntries.length === 0)
 		{
-			tr.push(`<tr><td colspan="5" class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></td></tr>`);
+			tr.push(`<div class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></div>`);
 		}
 		else {
-			entries.forEach(e => {
 
-				tr.push(`<tr class="${e.place} ${e.event}">
-					<td class="wsnw">
-						${e.counter}x ${(e.amount / e.counter)}
-					</td>
-					<td>
-						<strong class="text-warning">${e.amount}</strong>
-					</td>
-					<td><!-- Image --></td>
-					<td class="wsnw">
-						${i18n('Boxes.FPCollector.' + e.event)}
-					</td>
-					<td>
-						${e.notes ? e.notes : ''}
-					</td>
-				</tr>`);
+			const events = FPCollector.getPossibleEventsByDate();
 
-			});
+			for (const event of events)
+			{
+				const sumTotal = await FPCollector.calculateTotalByType(event);
+				const entriesEvent = await StrategyPoints.db['ForgePointsStats'].where({date: FPCollector.currentDateFilter, event: event}).toArray();
+
+				tr.push(`<div class="fpcollector-accordion ${event}">`);
+
+				tr.push(	`<div class="fpcollector-head game-cursor dark-bg ${event}-head" onclick="FPCollector.ToggleHeader('${event}')">
+								<span class="image"></span>
+								<strong class="text-warning">${sumTotal}</strong>
+								<span>${i18n('Boxes.FPCollector.' + event)}</span>
+							</div>`);
+
+				tr.push(	`<div class="fpcollector-body ${event}-body">`);
+
+				 entriesEvent.forEach(e => {
+					 tr.push(`<div>
+								<span class="fps">${e.amount}</span>
+								<span class="desc">${i18n('Boxes.FPCollector.' + e.event)}</span>
+								<span class="building">${e.notes ? e.notes : ''}</span>
+						</div>`);
+				 });
+
+				tr.push(	`</div>`);
+				tr.push(`</div>`);
+			}
 		}
 
-		tr.push(`</tbody>`);
-		tr.push(`</table>`);
 
 		$('#fp-collectorBodyInner').html(tr.join('')).promise().done(function(){
 			FPCollector.intiateDatePicker();
@@ -319,15 +320,30 @@ let FPCollector = {
 	 * @param date
 	 * @returns {Promise<number>}
 	 */
-	calculateTotal: async (date)=> {
+	calculateTotal: async ()=> {
 		let totalFP = 0;
 
 		await StrategyPoints.db['ForgePointsStats']
 			.where('date')
-			.equals(date)
-			.each (entry => totalFP += (entry.amount * entry.counter));
+			.equals(FPCollector.currentDateFilter)
+			.each (entry => totalFP += entry.amount);
 
 		return totalFP;
+	},
+
+
+	calculateTotalByType: async (event)=> {
+		let totalFPByType = 0;
+
+		await StrategyPoints.db['ForgePointsStats']
+			.where({
+				date: FPCollector.currentDateFilter,
+				event: event
+			})
+			.each(entry => totalFPByType += entry.amount)
+		;
+
+		return totalFPByType;
 	},
 
 
@@ -358,9 +374,35 @@ let FPCollector = {
 			onSelect: async (date)=> {
 				$('#FPCollectorPicker').text(`${moment(date).format(i18n('Date'))}`);
 
-				FPCollector.currentDateFilter = moment(date).toDate();
+				FPCollector.currentDateFilter = moment(date).format('YYYY-MM-DD');
 				await FPCollector.buildBody();
 			}
 		});
+	},
+
+
+	getPossibleEventsByDate: ()=> {
+		let available = [];
+
+		FPCollector.TodayEntries.forEach(e => {
+			if(!available.includes(e['event']))
+			{
+				available.push(e['event'])
+			}
+		});
+
+		return available;
+	},
+
+
+	ToggleHeader: (event)=> {
+		let $this = $(`.${event}`),
+			isOpen = $this.hasClass('open');
+
+		$('.fpcollector-accordion').removeClass('open');
+
+		if(!isOpen){
+			$this.addClass('open');
+		}
 	}
 };

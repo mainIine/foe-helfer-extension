@@ -13,13 +13,13 @@
  * **************************************************************************************
  */
 
-#units {
+#UnitOverview {
 	top: 30%;
 	right: 15%;
 	width: 490px;
 }
 
-#units .window-body {
+#UnitOverview .window-body {
 	max-height: 450px;
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -32,14 +32,14 @@
 	height: 30px;
 }
 
-#units .health {
+#UnitOverview .health {
 	display: block;
 	background-color: #ff5026;
 	height: 5px;
 	position: relative;
 }
 
-#units .health span {
+#UnitOverview .health span {
 	position: relative;
 	background-color: #1e7e34;
 	height: 5px;
@@ -47,29 +47,29 @@
 	border-radius: 10px;
 }
 
-#units span.percent {
+#UnitOverview span.percent {
 	display: block;
 	text-align: center;
 	font-size: 75%;
 	border-radius: 10px;
 }
 
-#units #unitsBody .tabs ul li a span {
+#UnitOverview #UnitOverviewBody .tabs ul li a span {
 	width: 21px;
 	top: 6px;
 	background: transparent url('../images/unit-icons.png') 0 3px no-repeat;
 	background-size: 90px 20px;
 }
 
-#units #unitsBody .tabs ul li.defense a span {
+#UnitOverview #UnitOverviewBody .tabs ul li.defense a span {
 	background-position: -21px 3px;
 }
 
-#units #unitsBody .tabs ul li.pool a span {
+#UnitOverview #UnitOverviewBody .tabs ul li.pool a span {
 	background-position: -41px 3px;
 }
 
-#units #unitsBody .tabs ul li.alca a span {
+#UnitOverview #UnitOverviewBody .tabs ul li.alca a span {
 	background-position: -67px 3px;
 }
 

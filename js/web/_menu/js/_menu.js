@@ -16,12 +16,12 @@
 let _menu = {
 
 	isBottom: false,
-	MenuScrollTop: 0,
+	MenuScrollLeft: 0,
 	SlideParts: 0,
 	ActiveSlide: 1,
 	HudCount: 0,
 	HudLength: 0,
-	HudHeight: 0,
+	HudWidth: 0,
 
 	Items: [
 		'calculator',
@@ -43,12 +43,15 @@ let _menu = {
 		'greatbuildings',
 		'market',
 		'bluegalaxy',
-		'moppelhelper'
+		'moppelhelper',
+		'fp-collector'
 	],
 
 
 	/**
+	 * Create the div holders and put them to the DOM
 	 *
+	 * @constructor
 	 */
 	BuildOverlayMenu: () => {
 
@@ -59,27 +62,27 @@ let _menu = {
 		hudWrapper.append(hudInner);
 
 
-		let btnUp = $('<span />').addClass('hud-btn-up'),
-			btnDown = $('<span />').addClass('hud-btn-down hud-btn-down-active');
+		let btnUp = $('<span />').addClass('hud-btn-left'),
+			btnDown = $('<span />').addClass('hud-btn-right hud-btn-right-active');
 
 		hud.append(btnUp);
 		hud.append(hudWrapper)
 		hud.append(btnDown);
 
-		$('body').append(hud).ready(function () {
+		$('body').append(hud).promise().done(function(){
 
 			// Buttons einfügen
 			_menu.ListLinks();
 
 			// korrekten Platz für das Menu ermitteln
-			_menu.SetMenuHeight();
-		});
+			_menu.SetMenuWidth();
 
-		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+		});
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function (event) {
-			_menu.SetMenuHeight(true);
+			_menu.SetMenuWidth(true);
 		};
 	},
 
@@ -89,21 +92,21 @@ let _menu = {
 	 *
 	 * @param reset
 	 */
-	SetMenuHeight: (reset = true) => {
-		// Höhe ermitteln und setzten
+	SetMenuWidth: (reset = true) => {
+		// Breite ermitteln und setzten
 		_menu.Prepare();
 
 		if (reset) {
-			// Slider nach oben resetten
+			// Slider nach links resetten
 			$('#foe-helper-hud-slider').css({
-				'top': '0'
+				left: 0
 			});
 
-			_menu.MenuScrollTop = 0;
+			_menu.MenuScrollLeft = 0;
 			_menu.ActiveSlide = 1;
 
-			$('.hud-btn-up').removeClass('hud-btn-up-active');
-			$('.hud-btn-down').addClass('hud-btn-down-active');
+			$('.hud-btn-left').removeClass('hud-btn-left-active');
+			$('.hud-btn-right').addClass('hud-btn-right-active');
 		}
 	},
 
@@ -114,20 +117,22 @@ let _menu = {
 	 */
 	Prepare: () => {
 
-		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
+		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / 55);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
-		if (MenuLength !== null && MenuLength < _menu.HudCount) {
+		if (MenuLength !== null && MenuLength < _menu.HudCount)
+		{
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
-		_menu.HudHeight = (_menu.HudCount * 55);
+		_menu.HudWidth = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
 
-		$('#foe-helper-hud').height(_menu.HudHeight + 2);
-		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
+		$('#foe-helper-hud').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55));
 	},
 
 
@@ -233,26 +238,26 @@ let _menu = {
 
 
 		// Klick auf Pfeil nach unten
-		$('body').on('click', '.hud-btn-down-active', function () {
-			_menu.ClickButtonDown();
+		$('body').on('click', '.hud-btn-right-active', function () {
+			_menu.ClickButtonRight();
 		});
 
 
 		// Klick auf Pfeil nach oben
-		$('body').on('click', '.hud-btn-up-active', function () {
-			_menu.ClickButtonUp();
+		$('body').on('click', '.hud-btn-left-active', function () {
+			_menu.ClickButtonLeft();
 		});
 
 
 		// Tooltipp top ermitteln und einblenden
-		$('.hud-btn').stop().hover(function () {
+		$('.hud-btn').stop().hover(function(){
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = ($this.offset().top + 30);
+				x = ($this.offset().left + 30);
 
-			$('[data-btn="' + id + '"]').css({ 'top': y + 'px' }).show();
+			$('[data-btn="' + id + '"]').css({ left: x + 'px' }).show();
 
-		}, function () {
+		}, function(){
 			let id = $(this).attr('id');
 
 			$('[data-btn="' + id + '"]').hide();
@@ -261,36 +266,36 @@ let _menu = {
 		// Sortierfunktion der Menü-items
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
-			axis: 'y',
+			axis: 'x',
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
-				$('.is--sorting .hud-btn-up-active').mouseenter(function (e) {
-					$('.hud-btn-up-active').stop().addClass('hasFocus');
+				$('.is--sorting .hud-btn-left-active').mouseenter(function (e) {
+					$('.hud-btn-left-active').stop().addClass('hasFocus');
 
 					setTimeout(() => {
-						if ($('.is--sorting .hud-btn-up-active').hasClass('hasFocus')) {
-							_menu.ClickButtonUp();
+						if ($('.is--sorting .hud-btn-left-active').hasClass('hasFocus')) {
+							_menu.ClickButtonLeft();
 						}
 					}, 1000);
 
 				}).mouseleave(function () {
-					$('.is--sorting .hud-btn-up-active').removeClass('hasFocus');
+					$('.is--sorting .hud-btn-left-active').removeClass('hasFocus');
 				});
 
-				$('.is--sorting .hud-btn-down-active').mouseenter(function (e) {
-					$('.is--sorting .hud-btn-down-active').stop().addClass('hasFocus');
+				$('.is--sorting .hud-btn-right-active').mouseenter(function (e) {
+					$('.is--sorting .hud-btn-right-active').stop().addClass('hasFocus');
 
 					setTimeout(() => {
-						if ($('.is--sorting .hud-btn-down-active').hasClass('hasFocus')) {
-							_menu.ClickButtonDown();
+						if ($('.is--sorting .hud-btn-right-active').hasClass('hasFocus')) {
+							_menu.ClickButtonRight();
 						}
 					}, 1000);
 
 				}).mouseleave(function () {
-					$('.is--sorting .hud-btn-down-active').removeClass('hasFocus');
+					$('.is--sorting .hud-btn-right-active').removeClass('hasFocus');
 				});
 			},
 			stop: function () {
@@ -303,6 +308,13 @@ let _menu = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
+
+				$.toast({
+					heading: i18n('Menu.SaveMessage.Title'),
+					text: i18n('Menu.SaveMessage.Desc'),
+					icon: 'success',
+					hideAfter: 5000
+				});
 			}
 		});
 
@@ -313,25 +325,25 @@ let _menu = {
 	/**
 	 * Klick Funktion
 	 */
-	ClickButtonDown: () => {
-		$('.hud-btn-down').removeClass('hasFocus');
+	ClickButtonRight: () => {
+		$('.hud-btn-right').removeClass('hasFocus');
 
 		_menu.ActiveSlide++;
-		_menu.MenuScrollTop -= _menu.HudHeight;
+		_menu.MenuScrollLeft -= _menu.HudWidth;
 
 		$('#foe-helper-hud-slider').css({
-			'top': _menu.MenuScrollTop + 'px'
+			left: _menu.MenuScrollLeft + 'px'
 		});
 
 		if (_menu.ActiveSlide > 1) {
-			$('.hud-btn-up').addClass('hud-btn-up-active');
+			$('.hud-btn-left').addClass('hud-btn-left-active');
 		}
 
 		if (_menu.ActiveSlide === _menu.SlideParts) {
-			$('.hud-btn-down').removeClass('hud-btn-down-active');
+			$('.hud-btn-right').removeClass('hud-btn-right-active');
 
 		} else if (_menu.ActiveSlide < _menu.SlideParts) {
-			$('.hud-btn-down').addClass('hud-btn-down-active');
+			$('.hud-btn-right').addClass('hud-btn-right-active');
 		}
 	},
 
@@ -339,25 +351,25 @@ let _menu = {
 	/**
 	 * Klick Funktion
 	 */
-	ClickButtonUp: () => {
-		$('.hud-btn-up').removeClass('hasFocus');
+	ClickButtonLeft: () => {
+		$('.hud-btn-left').removeClass('hasFocus');
 
 		_menu.ActiveSlide--;
-		_menu.MenuScrollTop += _menu.HudHeight;
+		_menu.MenuScrollLeft += _menu.HudWidth;
 
 		$('#foe-helper-hud-slider').css({
-			'top': _menu.MenuScrollTop + 'px'
+			left: _menu.MenuScrollLeft + 'px'
 		});
 
 		if (_menu.ActiveSlide === 1){
-			$('.hud-btn-up').removeClass('hud-btn-up-active');
+			$('.hud-btn-left').removeClass('hud-btn-left-active');
 		}
 
 		if (_menu.ActiveSlide < _menu.SlideParts){
-			$('.hud-btn-down').addClass('hud-btn-down-active');
+			$('.hud-btn-right').addClass('hud-btn-right-active');
 
 		} else if (_menu.ActiveSlide === _menu.SlideParts){
-			$('.hud-btn-down').removeClass('hud-btn-down-active');
+			$('.hud-btn-right').removeClass('hud-btn-right-active');
 		}
 	},
 
