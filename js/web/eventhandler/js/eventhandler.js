@@ -249,7 +249,8 @@ let EventHandler = {
 				title: i18n('Boxes.MoppelHelper.Title'),
 				auto_close: true,
 				dragdrop: true,
-				minimize: true
+				minimize: true,
+				resize: true
 			});
 
 			HTML.AddCssFile('eventhandler');

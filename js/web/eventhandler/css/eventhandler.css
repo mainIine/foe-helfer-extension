@@ -23,7 +23,6 @@
 #moppelhelper #moppelhelperBody {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 600px;
 }
 
 .text-bright {
