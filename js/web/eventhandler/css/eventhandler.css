@@ -48,18 +48,6 @@
     color: var(--text-success);
 }
 
-#moppelhelper #moppelhelperBody strong.success {
-    color: var(--text-success);
-}
-
-#moppelhelper #moppelhelperBody strong {
-    color: var(--text-bright);
-}
-
-#moppelhelper #moppelhelperBody strong.error {
-    color: #ec4d4d;
-}
-
 #moppelhelper #moppelhelperBody table .sorter-header .ascending:after {
     content: "↑";
 }
