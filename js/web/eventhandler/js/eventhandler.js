@@ -343,24 +343,23 @@ let EventHandler = {
 		});
 
 		/* Filters */
-		h.push('<table class="filters">');
-		h.push('<tbody>');
-		h.push('<tr>');
-
-		h.push('<td><label class="game-cursor"><input class="filtermoppelevents game-cursor" ' + (EventHandler.FilterMoppelEvents ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></td>');
-		h.push('<td><label class="game-cursor"><input class="filtertavernvisits game-cursor" ' + (EventHandler.FilterTavernVisits ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></td>');
-		h.push('<td><label class="game-cursor"><input class="filterattacks game-cursor" ' + (EventHandler.FilterAttacks ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Attacks') + '</label></td>');
-		h.push('<td><label class="game-cursor"><input class="filterplunders game-cursor" ' + (EventHandler.FilterPlunders ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Plunders') + '</label></td>');
-		h.push('<td><label class="game-cursor"><input class="filtertrades game-cursor" ' + (EventHandler.FilterTrades ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Trades') + '</label></td>');
-		h.push('<td><label class="game-cursor"><input class="filtergbs game-cursor" ' + (EventHandler.FilterGBs ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.GBs') + '</label></td>');
-		h.push('<td><label class="game-cursor"><input class="filterothers game-cursor" ' + (EventHandler.FilterOthers ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Others') + '</label></td>');
-
-		h.push('</tr>');
-		h.push('</tbody>');
-		h.push('</table>');
 
 		/* Body */
-		h.push('<div class="dark-bg"><div class="tabs"><ul class="horizontal">');
+
+		h.push('<div class="dark-bg"><div class="dropdown" style="float:right">');
+        h.push('<input type="checkbox" class="dropdown-checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
+        h.push('<ul>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filtermoppelevents game-cursor" ' + (EventHandler.FilterMoppelEvents ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filtertavernvisits game-cursor" ' + (EventHandler.FilterTavernVisits ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filterattacks game-cursor" ' + (EventHandler.FilterAttacks ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Attacks') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filterplunders game-cursor" ' + (EventHandler.FilterPlunders ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Plunders') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filtertrades game-cursor" ' + (EventHandler.FilterTrades ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Trades') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filtergbs game-cursor" ' + (EventHandler.FilterGBs ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.GBs') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filterothers game-cursor" ' + (EventHandler.FilterOthers ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Others') + '</label></li>');
+        h.push('</ul>');
+		h.push('</div>');
+		
+		h.push('<div class="tabs"><ul class="horizontal">');
 		if(PlayerDictNeighborsUpdated) 
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
 		else
@@ -374,6 +373,8 @@ let EventHandler = {
 		else
 			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
 		h.push('</ul></div></div>');
+
+
 
 		h.push('<table class="foe-table sortable-table">');
 		h.push('<tbody class="moppelhelper">');
@@ -485,13 +486,13 @@ let EventHandler = {
 
 		if (Steps < 256) {
 			let StepString = Steps.toString(16);
-			if (StepString.length < 2) StepString = "0" + StepString;
-			return StepString + "ff00";
+			if (StepString.length < 2) StepString = "3" + StepString;
+			return StepString + "ee33";
 		}
 		else {
 			let StepString = (511-Steps).toString(16);
-			if (StepString.length < 2) StepString = "0" + StepString;
-			return "ff" + StepString + "00";
+			if (StepString.length < 2) StepString = "3" + StepString;
+			return "ee" + StepString + "33";
         }
     },
 
