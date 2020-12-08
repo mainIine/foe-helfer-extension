@@ -150,6 +150,8 @@
     "Boxes.FPCollector.satDown": "set in a friends' tavern",
     "Boxes.FPCollector.spoilsOfWar": "Burg Himeji - Kriegsbeute",
     "Boxes.FPCollector.winterEvent": "Winterevent",
+	"Boxes.FPCollector.dailyChallenges": "Tägliche Herausforderung",
+	"Boxes.FPCollector.collectReward": "Außenposten",
     "Boxes.Gildfights.Fights": "Kämpfe",
     "Boxes.Gildfights.LastSnapshot": " - letzter Snapshot vor __time__",
     "Boxes.Gildfights.Negotiations": "Verhandlungen",
