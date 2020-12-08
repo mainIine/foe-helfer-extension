@@ -28,7 +28,7 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 		$('#unit-Btn-closed').remove();
 	}
 
-	if ($('#units').length > 0) {
+	if ($('#UnitOverview').length > 0) {
 		Unit.BuildBox();
 	}
 });
@@ -74,9 +74,9 @@ let Unit = {
 	 */
 	Show: ()=> {
 
-		if ($('#units').length === 0) {
+		if ($('#UnitOverview').length === 0) {
 			let args = {
-				'id': 'units',
+				'id': 'UnitOverview',
 				'title': i18n('Boxes.Units.Title'),
 				'auto_close': true,
 				'dragdrop': true,
@@ -90,7 +90,7 @@ let Unit = {
 			HTML.AddCssFile('unit');
 
 		} else {
-			HTML.CloseOpenBox('units');
+			HTML.CloseOpenBox('UnitOverview');
 		}
 
 		Unit.BuildBox();
@@ -394,7 +394,7 @@ let Unit = {
 		h.push('</div>');
 		
 
-		$('#units').find('#unitsBody').html( h.join('') ).promise().done(function(){
+		$('#UnitOverview').find('#UnitOverviewBody').html( h.join('') ).promise().done(function(){
 			$('.unit-tabs').tabslet({active: 1});
 		});
 	},

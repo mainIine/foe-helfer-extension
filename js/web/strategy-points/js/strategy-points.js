@@ -20,6 +20,7 @@ Integriert:
 - Relikte in der GEX
 - die FPs zwischen den Kämpfen der GG
 - Tavernenbesuch
+- Schleifenquests
 
 Bitte testen:
 - geplünderte FP
@@ -27,7 +28,6 @@ Bitte testen:
 Fehlt noch:
 - Event-Quests Belohnungen
 - Tägliche Herausforderung
-- Schleifenquests (response von Yvi oder Andreas?)
 */
 
 FoEproxy.addHandler('ResourceShopService', 'getContexts', (data)=> {
@@ -47,7 +47,7 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 });
 
 window.addEventListener('resize', ()=>{
-    StrategyPoints.HandleWindowResize();
+	StrategyPoints.HandleWindowResize();
 });
 
 // GEX started
@@ -91,13 +91,23 @@ let StrategyPoints = {
 		StrategyPoints.db.version(1).stores({
 			ForgePointsStats: '++id,place,event,notes,amount,date'
 		});
+		StrategyPoints.db.version(2).stores({
+			ForgePointsStats: '++id,counter,event,notes,amount,date'
+		});
 
 		StrategyPoints.db.open();
 	},
 
 
-	insertIntoDB: async (data)=>  {
+	insertIntoDB: async (data)=> {
+
 		await StrategyPoints.db.ForgePointsStats.put(data);
+
+		// if fp-collector box is open, update
+		if( $('#fp-collectorBodyInner').length > 0 )
+		{
+			await FPCollector.buildBody();
+		}
 	},
 
 
@@ -108,18 +118,18 @@ let StrategyPoints = {
 	 */
 	HandleWindowResize: () => {
 
-        if ( window.innerWidth < 1250 && ActiveMap !== 'gex'){
-            $('#fp-bar').removeClass('medium-screen');
-            $('#fp-bar').addClass('small-screen');
-        }
-        else if ( window.innerWidth < 1400 && ActiveMap !== 'gex'){
-            $('#fp-bar').removeClass('small-screen');
-            $('#fp-bar').addClass('medium-screen');
+		if ( window.innerWidth < 1250 && ActiveMap !== 'gex'){
+			$('#fp-bar').removeClass('medium-screen');
+			$('#fp-bar').addClass('small-screen');
 		}
-        else {
-            $('#fp-bar').removeClass('small-screen');
-            $('#fp-bar').removeClass('medium-screen');
-        }
+		else if ( window.innerWidth < 1400 && ActiveMap !== 'gex'){
+			$('#fp-bar').removeClass('small-screen');
+			$('#fp-bar').addClass('medium-screen');
+		}
+		else {
+			$('#fp-bar').removeClass('small-screen');
+			$('#fp-bar').removeClass('medium-screen');
+		}
 	},
 
 
@@ -168,10 +178,10 @@ let StrategyPoints = {
 	 */
 	RefreshBuyableForgePoints: (formula) => {
 
-    	let amount = 0;
-    	let currentlyCosts = formula.baseValue;
-    	let boughtCount = formula.boughtCount;
-    	let factor = formula.factor;
+		let amount = 0;
+		let currentlyCosts = formula.baseValue;
+		let boughtCount = formula.boughtCount;
+		let factor = formula.factor;
 
 		for(let counter = 1; counter <= boughtCount; counter++) {
 			currentlyCosts += factor;
@@ -198,8 +208,8 @@ let StrategyPoints = {
 	 * @param value
 	 * @constructor
 	 */
-    RefreshBar: ( value ) => {
-        // noch nicht im DOM?
+	RefreshBar: ( value ) => {
+		// noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
 			let div = $('<div />').attr({
 				id: 'fp-bar',
@@ -207,7 +217,7 @@ let StrategyPoints = {
 			}).append( `<div class="fp-storage"><div>0</div></div>` );
 
 			$('body').append(div);
-            StrategyPoints.HandleWindowResize();
+			StrategyPoints.HandleWindowResize();
 		}
 
 		if ( isNaN( value ) ){ return; }
@@ -238,36 +248,42 @@ let StrategyPoints = {
 	 * 
 	 */
 	HandleAdvanceQuest: (PostData) => {
-		if (PostData['requestData'] && PostData['requestData'][0])
-		{
+		if (PostData['requestData'] && PostData['requestData'][0]) {
 			let QuestID = PostData['requestData'][0];
 
-			for (let i = 0; i < MainParser.Quests.length; i++)
-			{
-				let Quest = MainParser.Quests[i];
+			for (let Quest of MainParser.Quests) {
+				if (Quest['id'] !== QuestID || Quest['state'] !== 'collectReward') continue;
 
-				if (Quest['id'] !== QuestID) continue;
-
-				if (Quest['state'] === 'collectReward' && Quest['genericRewards'])
-				{
-					for (let j = 0; j < Quest['genericRewards'].length; j++)
-					{
-						let Reward = Quest['genericRewards'][j];
-
-						if (Reward['subType'] === 'strategy_points')
-						{
+				// normale Quest-Belohnung
+				if (Quest['genericRewards']) {
+					for (let Reward of Quest['genericRewards']) {
+						if (Reward['subType'] === 'strategy_points') {
 							StrategyPoints.insertIntoDB({
 								place: 'Quest',
 								event: 'collectReward',
 								amount: Reward['amount'],
-								date: moment(MainParser.getCurrentDate()).startOf('day').toDate()
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
-                        }
-                    }
-                }
-            }
-        }
-    },
+						}
+					}
+				}
+
+				// Belohnung einer Schleifenquest
+				if (Quest['rewards']) {
+					for (let Reward of Quest['rewards']) {
+						if (Reward['type'] === 'forgepoint_package') {
+							StrategyPoints.insertIntoDB({
+								place: 'Quest',
+								event: 'collectReward',
+								amount: Number(Reward['subType']),
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+							});
+						}
+					}
+				}
+			}
+		}
+	},
 
 
 	/**

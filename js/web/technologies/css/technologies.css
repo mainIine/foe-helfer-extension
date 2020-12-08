@@ -22,7 +22,6 @@
 #technologies #technologiesBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	max-height: 500px;
 }
 
 #technologies #technologiesBody .techno-head {

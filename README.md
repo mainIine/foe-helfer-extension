@@ -7,6 +7,8 @@ You can install it from here: [Chrome Store](https://chrome.google.com/webstore/
 
 A complete manual for installing in Opera or Mircosoft Edge Chromium can be found here: [foe-rechner.de/docs/](https://foe-rechner.de/docs/)
 
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J52SY3V)
+
 ###### FAQ
 
 For questions and answers please use our [forum](https://forum.foe-rechner.de/) or discus with us on our [Discord](https://discord.gg/z97KZq4) server.

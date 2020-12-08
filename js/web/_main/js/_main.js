@@ -46,7 +46,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
 	EventCountdown = false,
-	GameTimeOffset = 0;
+	GameTimeOffset = 0,
+	StartUpDone = false;
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
 
-    // Fullscreen erkennen und verarbeiten
+	// Fullscreen erkennen und verarbeiten
 	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
 		if (!window.screenTop && !window.screenY) {
 			HTML.LeaveFullscreen();
@@ -520,7 +521,7 @@ const FoEproxy = (function () {
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 					}
 				}
-	
+
 				for (let entry of d) {
 					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
@@ -584,7 +585,7 @@ const FoEproxy = (function () {
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
 
-		// wich tab is active in StartUp Object?
+		// which tab is active in StartUp Object?
 		let vals = {
 			getNeighborList: 0,
 			getFriendsList: 0,
@@ -610,7 +611,7 @@ const FoEproxy = (function () {
 		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
 		MainParser.SaveBuildings(MainParser.CityMapData);
-		
+
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
 
@@ -653,7 +654,7 @@ const FoEproxy = (function () {
 
 		if (ActiveMap === 'era_outpost') {
 			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
-        }
+		}
 	});
 
 
@@ -668,9 +669,9 @@ const FoEproxy = (function () {
 			if (postDataItem['requestClass'] === 'CityMapService' && postDataItem['requestMethod'] === 'getEntities') {
 				if (postDataItem['requestData'][0] === 'main') {
 					MainGrid = true;
-                }
+				}
 				break;
-            }
+			}
 		}
 
 		if (!MainGrid) return; // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
@@ -708,11 +709,11 @@ const FoEproxy = (function () {
 			}
 		}
 		else if (data.requestMethod === 'removeBuilding') {
-			let ID = postData[0].requestData[0];
-			if (ID && MainParser.CityMapData[ID]) {
-				delete MainParser.CityMapData[ID];
-            }
-        }
+				let ID = postData[0].requestData[0];
+				if (ID && MainParser.CityMapData[ID]) {
+					delete MainParser.CityMapData[ID];
+				}
+			}
 	});
 
 
@@ -748,16 +749,16 @@ const FoEproxy = (function () {
 	});
 
 
-    // Required by the kits
-    FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
-        MainParser.UpdateInventory(data.responseData);
-    });
+	// Required by the kits
+	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
+		MainParser.UpdateInventory(data.responseData);
+	});
 
 
-    // Required by the kits
-    FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-        MainParser.UpdateInventory(data.responseData.inventoryItems);
-    });
+	// Required by the kits
+	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
+		MainParser.UpdateInventory(data.responseData.inventoryItems);
+	});
 
 
 	// --------------------------------------------------------------------------------------------------
@@ -791,9 +792,9 @@ const FoEproxy = (function () {
 			IsLevelScroll = true;
 		}
 		else if (contributeForgePoints != null) {
-			Rankings = contributeForgePoints.responseData;
-			IsLevelScroll = false;
-		}
+				Rankings = contributeForgePoints.responseData;
+				IsLevelScroll = false;
+			}
 
 		if (Rankings) {
 			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
@@ -917,7 +918,7 @@ const FoEproxy = (function () {
 				x.prev1 = data.responseData[0];
 				x.prev2 = data.responseData[1];
 				var sfSize = MainParser.savedFight.size;
-				MainParser.savedFight.set(sfSize,x);	
+				MainParser.savedFight.set(sfSize,x);
 			}
 		}
 		else if(data.responseData.length == 1){
@@ -955,7 +956,7 @@ const FoEproxy = (function () {
 			x.prev1 = data.responseData["armyWaves"][0];
 			x.prev2 = data.responseData["armyWaves"][1];
 			var sfSize = MainParser.savedFight.size;
-			MainParser.savedFight.set(sfSize,x);	
+			MainParser.savedFight.set(sfSize,x);
 		}
 	});
 
@@ -1079,6 +1080,8 @@ const FoEproxy = (function () {
 
 
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
+		if (!StartUpDone) return;
+
 		// erste Runde
 		if(MainMenuLoaded === false){
 			MainMenuLoaded = data.responseData.time;
@@ -1112,7 +1115,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
 		if (PostData[0].requestClass === 'QuestService' && PostData[0].requestMethod === 'advanceQuest') {
 			StrategyPoints.HandleAdvanceQuest(PostData[0]);
-        }
+		}
 
 		MainParser.Quests = data.responseData;
 
@@ -1140,6 +1143,18 @@ const FoEproxy = (function () {
 
 })();
 
+let HelperBeta = {
+	load: (active) => {
+		if (active !== false) active = true;
+		localStorage.setItem('HelperBetaActive', active);
+		location.reload();
+	},
+	menu: [
+		'alerts',
+		'fpCollector'
+	],
+	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
+};
 
 /**
  *
@@ -1258,21 +1273,21 @@ let MainParser = {
 
 
 	/**
-	* Gibt das aktuelle Datum in Spielzeit zurück
-	*
-	* @returns {number}
-	*/
+	 * Gibt das aktuelle Datum in Spielzeit zurück
+	 *
+	 * @returns {number}
+	 */
 	getCurrentDate: () => {
 		return new Date(Date.now() + GameTimeOffset);
 	},
 
 
 	/**
-	* Führt eine Rundung unter Berücksichtigung der Fließkomma Ungenauigkeit durch
-	*
-    * @param value
-	* @returns {number}
-	*/
+	 * Führt eine Rundung unter Berücksichtigung der Fließkomma Ungenauigkeit durch
+	 *
+	 * @param value
+	 * @returns {number}
+	 */
 	round: (value) => {
 		let Epsilon = 0.000001;
 
@@ -1281,7 +1296,7 @@ let MainParser = {
 		}
 		else {
 			return Math.round(value - Epsilon);
-        }
+		}
 	},
 
 
@@ -1649,10 +1664,11 @@ let MainParser = {
 	StartUp: (d) => {
 		Settings.Init(false);
 
+		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era']['era'],
-		CurrentEraID = Technologies.Eras[CurrentEra];
+			CurrentEraID = Technologies.Eras[CurrentEra];
 
 		MainParser.sendExtMessage({
 			type: 'storeData',
@@ -1684,7 +1700,7 @@ let MainParser = {
 			key: 'current_player_name',
 			data: ExtPlayerName
 		});
-		
+
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
 			data: {
@@ -1814,8 +1830,8 @@ let MainParser = {
 	 */
 	ExportFight:()=>{
 		let json = JSON.stringify(Array.from(MainParser.savedFight.entries())),
-		blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
-		file = `${Date.now()}.json`;
+			blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
+			file = `${Date.now()}.json`;
 
 		MainParser.ExportFile(blob1, file);
 	},
@@ -1953,39 +1969,39 @@ let MainParser = {
 		}
 
 		else if (Source === 'LGContributions') {
-			for (let i in d) {
-				MainParser.UpdatePlayerDictCore(d[i].player);
-			}
-		}
-
-		else if (Source === 'PlayerList') {
-			for (let i in d) {
-				MainParser.UpdatePlayerDictCore(d[i]);
+				for (let i in d) {
+					MainParser.UpdatePlayerDictCore(d[i].player);
+				}
 			}
 
-			if (ListType === 'getNeighborList') {
-				PlayerDictNeighborsUpdated = true;
-			}
-			else if (ListType === 'getClanMemberList') {
-				PlayerDictGuildUpdated = true;
-			}
-			else if (ListType === 'getFriendsList') {
-				PlayerDictFriendsUpdated = true;
-			}
+			else if (Source === 'PlayerList') {
+					for (let i in d) {
+						MainParser.UpdatePlayerDictCore(d[i]);
+					}
 
-			if ($('#moppelhelper').length > 0) {
-				EventHandler.CalcMoppelHelperBody();
-            }
+					if (ListType === 'getNeighborList') {
+						PlayerDictNeighborsUpdated = true;
+					}
+					else if (ListType === 'getClanMemberList') {
+						PlayerDictGuildUpdated = true;
+					}
+					else if (ListType === 'getFriendsList') {
+							PlayerDictFriendsUpdated = true;
+						}
 
-			// Todo: Welcher Typ es ist muss mitgesendet werden [Nachbar,Gildi,Freund]
-			if (Settings.GetSetting('GlobalSend')) {
-				MainParser.sendExtMessage({
-					type: 'send2Api',
-					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld + '&type=' + ListType,
-					data: JSON.stringify(d)
-				});
-			}
-		}
+					if ($('#moppelhelper').length > 0) {
+						EventHandler.CalcMoppelHelperBody();
+					}
+
+					// Todo: Welcher Typ es ist muss mitgesendet werden [Nachbar,Gildi,Freund]
+					if (Settings.GetSetting('GlobalSend')) {
+						MainParser.sendExtMessage({
+							type: 'send2Api',
+							url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld + '&type=' + ListType,
+							data: JSON.stringify(d)
+						});
+					}
+				}
 	},
 
 
@@ -2027,11 +2043,11 @@ let MainParser = {
 
 
 	/**
-	* Aktualisiert das Inventar
-	*
-	* @param Items
-	*/
-    UpdateInventory: (Items) => {
+	 * Aktualisiert das Inventar
+	 *
+	 * @param Items
+	 */
+	UpdateInventory: (Items) => {
 		MainParser.Inventory = {};
 		for (let i = 0; i < Items.length; i++) {
 			let ID = Items[i]['id'];
@@ -2042,7 +2058,7 @@ let MainParser = {
 
 	/**
 	 * Aktualisiert ein Gebäude von CityMapData oder CityMapEraOutpost
-	 * 
+	 *
 	 * @param Buildings
 	 * */
 	UpdateCityMap: (Buildings) => {
@@ -2063,7 +2079,7 @@ let MainParser = {
 		if ($('#bluegalaxy').length > 0) {
 			BlueGalaxy.CalcBody();
 		}
-    },
+	},
 
 
 	/**
@@ -2211,5 +2227,5 @@ let MainParser = {
 			a.click();
 			document.body.removeChild(a);
 		}
-    }
+	}
 };

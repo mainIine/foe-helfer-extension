@@ -14,7 +14,7 @@
  */
 
 FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
-    if (data.responseData['events']) {
+    if (data.responseData['events'] && Settings.GetSetting('ShowPlayersMotivation')) {
         EventHandler.HandleEvents(data.responseData['events']);
     }
 });
@@ -25,6 +25,16 @@ let EventHandler = {
 	db: null,
 
 	CurrentPlayerGroup: null,
+
+	FilterMoppelEvents: true,
+	FilterTavernVisits: false,
+	FilterAttacks: false,
+	FilterPlunders: false,
+	FilterTrades: false,
+	FilterGBs: false,
+	FilterOthers: false,
+
+	AllInvalidDates: [],
 
 	/**
 	*
@@ -46,12 +56,25 @@ let EventHandler = {
 	},
 
 
+	/**
+	 * @param data the data to add to the events database
+	 * @returns {boolean} true if the data is new in the database
+	 */
 	insertIntoDB: async (data) => {
-		await EventHandler.db.Events.put(data);
+		const db = EventHandler.db;
+		const eventsDB = db.Events;
+		const id = data.eventid;
+		return db.transaction('rw', eventsDB, async () => {
+			let isNew = undefined === await eventsDB.get(id);
+			await db.Events.put(data);
+			return isNew;
+		});
 	},
 
 
 	HandleEvents: (Events) => {
+		const inserts = [];
+		let InvalidDates = [];
 		for (let i = 0; i < Events.length; i++) {
 			let Event = Events[i];
 
@@ -65,6 +88,12 @@ let EventHandler = {
 				InteractionType = Event['interaction_type'],
 				EntityID = Event['entity_id'];
 
+			if (!Date) { //Datum nicht parsebar => überspringen
+				InvalidDates.push(Event['date']);
+				EventHandler.AllInvalidDates.push(Event['date']);
+				continue;
+			}
+
 			let PlayerID = null,
 				IsNeighbor = 0,
 				IsGuildMember = 0,
@@ -77,7 +106,7 @@ let EventHandler = {
 				if (Event['other_player']['is_friend']) IsFriend = 1;
 			}
 
-			EventHandler.insertIntoDB({
+			inserts.push(EventHandler.insertIntoDB({
 				eventid: ID,
 				date: Date,
 				eventtype: EventType,
@@ -87,8 +116,43 @@ let EventHandler = {
 				isneighbor: IsNeighbor,
 				isguildmember: IsGuildMember,
 				isfriend: IsFriend
-			});
+			}));
 		}
+
+		Promise.all(inserts).then(insertIsNewArr => {
+			let count = 0;
+			for (let isNew of insertIsNewArr) {
+				if (isNew) count++;
+			}
+
+			if (InvalidDates.length > 0) {
+				$.toast({
+					heading: i18n('Boxes.Investment.DateParseError'),
+					text: HTML.i18nReplacer(i18n('Boxes.Investment.DateParseErrorDesc'), { InvalidDate: InvalidDates[0]}),
+					icon: 'error',
+					hideAfter: 6000
+				});
+            }
+			else if (count === 0) {
+				$.toast({
+					heading: i18n('Boxes.Investment.AllUpToDate'),
+					text: i18n('Boxes.Investment.AllUpToDateDesc'),
+					icon: 'info',
+					hideAfter: 6000
+				});
+			}
+			else {
+				$.toast({
+					heading: i18n('Boxes.Investment.PlayerFound'),
+					text: HTML.i18nReplacer(
+						count === 1 ? i18n('Boxes.Investment.PlayerFoundCount') : i18n('Boxes.Investment.PlayerFoundCounter'),
+						{count: count}
+					),
+					icon: 'success',
+					hideAfter: 2600
+				});
+			}
+		});
 
 		if ($('#moppelhelper').length > 0) {
 			EventHandler.CalcMoppelHelperBody();
@@ -110,7 +174,7 @@ let EventHandler = {
 
 		// Fallback @Todo: Was könnte dann passieren?
 		if(!matcher){
-			return MainParser.getCurrentDate();
+			return undefined;
 		}
 
 		for(let day in matcher)
@@ -171,6 +235,8 @@ let EventHandler = {
 				return moment( refDate, moment.defaultFormat).toDate();
 			}
 		}
+
+		return undefined;
 	},
 
 
@@ -187,6 +253,41 @@ let EventHandler = {
 			});
 
 			HTML.AddCssFile('eventhandler');
+
+			$('#moppelhelper').on('click', '.filtermoppelevents', function () {
+				EventHandler.FilterMoppelEvents = !EventHandler.FilterMoppelEvents;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filtertavernvisits', function () {
+				EventHandler.FilterTavernVisits = !EventHandler.FilterTavernVisits;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filterattacks', function () {
+				EventHandler.FilterAttacks = !EventHandler.FilterAttacks;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filterplunders', function () {
+				EventHandler.FilterPlunders = !EventHandler.FilterPlunders;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filtertrades', function () {
+				EventHandler.FilterTrades = !EventHandler.FilterTrades;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filtergbs', function () {
+				EventHandler.FilterGBs = !EventHandler.FilterGBs;
+				EventHandler.CalcMoppelHelperBody();
+			});
+
+			$('#moppelhelper').on('click', '.filterothers', function () {
+				EventHandler.FilterOthers = !EventHandler.FilterOthers;
+				EventHandler.CalcMoppelHelperBody();
+			});
 
 			// Choose Neighbors/Guildmembers/Friends
 			$('#moppelhelper').on('click', '.toggle-players', function () {
@@ -209,6 +310,7 @@ let EventHandler = {
 
 		let h = [];
 
+		/* Calculation */
 		if (!EventHandler.CurrentPlayerGroup) {
 			if (PlayerDictFriendsUpdated) {
 				EventHandler.CurrentPlayerGroup = 'Friends';
@@ -239,6 +341,24 @@ let EventHandler = {
 			return b['Score'] - a['Score'];
 		});
 
+		/* Filters */
+		h.push('<table class="filters">');
+		h.push('<tbody>');
+		h.push('<tr>');
+
+		h.push('<td><label class="game-cursor"><input class="filtermoppelevents game-cursor" ' + (EventHandler.FilterMoppelEvents ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtertavernvisits game-cursor" ' + (EventHandler.FilterTavernVisits ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterattacks game-cursor" ' + (EventHandler.FilterAttacks ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Attacks') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterplunders game-cursor" ' + (EventHandler.FilterPlunders ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Plunders') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtertrades game-cursor" ' + (EventHandler.FilterTrades ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Trades') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filtergbs game-cursor" ' + (EventHandler.FilterGBs ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.GBs') + '</label></td>');
+		h.push('<td><label class="game-cursor"><input class="filterothers game-cursor" ' + (EventHandler.FilterOthers ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.MoppelHelper.Others') + '</label></td>');
+
+		h.push('</tr>');
+		h.push('</tbody>');
+		h.push('</table>');
+
+		/* Body */
 		h.push('<div class="dark-bg"><div class="tabs"><ul class="horizontal">');
 		if(PlayerDictNeighborsUpdated) 
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
@@ -262,7 +382,7 @@ let EventHandler = {
 		h.push('<th data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
 		h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 		for (let i = 0; i < MaxVisitCount; i++) {
-			h.push('<th class="is-date" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Visit') + (i+1) + '</th>');
+			h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i+1) + '</th>');
 		}
 		h.push('</tr>');
 
@@ -272,7 +392,32 @@ let EventHandler = {
 			if (Player['IsSelf']) continue;
 
 			let Visits = await EventHandler.db['Events'].where('playerid').equals(Player['PlayerID']).toArray();
-			Visits = Visits.filter(obj => (obj['eventtype'] === 'social_interaction'));
+			Visits = Visits.filter(function (obj) {
+				if (!obj['date']) return false; //Corrupt values in DB => skip
+
+				let EventType = EventHandler.GetEventType(obj);
+				if (EventType === 'MoppelEvent') {
+					return EventHandler.FilterMoppelEvents;
+				}
+				else if (EventType === 'TavernVisit') {
+					return EventHandler.FilterTavernVisits;
+				}
+				else if (EventType === 'Attack') {
+					return EventHandler.FilterAttacks;
+				}
+				else if (EventType === 'Plunder') {
+					return EventHandler.FilterPlunders;
+				}
+				else if (EventType === 'Trade') {
+					return EventHandler.FilterTrades;
+				}
+				else if (EventType === 'GB') {
+					return EventHandler.FilterGBs;
+				}
+				else {
+					return EventHandler.FilterOthers;
+				}
+			});
 
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
@@ -285,14 +430,15 @@ let EventHandler = {
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 			for (let j = 0; j < MaxVisitCount; j++) {
 				if (j < Visits.length) {
-					let Days = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 86400000; //24*3600*1000
-					let StrongClass = EventHandler.GetMoppelDateStrongClass(Days);
+					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
+					let Days = Seconds / 86400; //24*3600
+					let StrongColor = EventHandler.GetMoppelDateColor(Days);
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 
-					h.push('<td style="white-space:nowrap" class="is-date" data-date="' + Visits[j]['date'].getTime() + '"><strong class="' + StrongClass + '">' + FormatedDays + '</strong></td>');
+					h.push('<td style="white-space:nowrap" class="is-number" data-number="' + Seconds + '"><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
-					h.push('<td class="is-date" data-date="0"><strong class="error">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
+					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
                 }
             }
 			h.push('</tr>');
@@ -307,21 +453,44 @@ let EventHandler = {
 	},
 
 
+	/*
+	 * Return the Type of the Event
+	 * 
+	 * @param Event
+	 * */
+	GetEventType: (Event) => {
+		if (Event['eventtype'] === 'social_interaction' && (Event['interactiontype'] === 'motivate' || Event['interactiontype'] === 'polish' || Event['interactiontype'] === 'polivate_failed')) return 'MoppelEvent';
+		if (Event['eventtype'] === 'friend_tavern_sat_down') return 'TavernVisit';
+		if (Event['eventtype'] === 'battle') return 'Attack';
+		if (Event['eventtype'] === 'social_interaction' && Event['interactiontype'] === 'plunder') return 'Plunder';
+		if (Event['eventtype'] === 'trade_accepted') return 'Trade';
+		if (Event['eventtype'] === 'great_building_built' || Event['eventtype'] === 'great_building_contribution') return 'GB';
+		return 'Other';
+    },
+
+
 	/**
 	* Returns strong class for formating mopppel date
 	*
 	* @param Days
 	*/
-	GetMoppelDateStrongClass: (Days) => {
-		if (Days < 3) {
-			return 'success';
-		}
-		else if (Days < 7) {
-			return '';
+	GetMoppelDateColor: (Days) => {
+		let Maximum = 7;
+		let StepSize = Maximum / 256 / 2;
+		let Steps = Math.round(Days / StepSize);
+
+		Steps = Math.min(Math.max(Steps, 0), 511);
+
+		if (Steps < 256) {
+			let StepString = Steps.toString(16);
+			if (StepString.length < 2) StepString = "0" + StepString;
+			return StepString + "ff00";
 		}
 		else {
-			return 'error';
-		}
+			let StepString = (511-Steps).toString(16);
+			if (StepString.length < 2) StepString = "0" + StepString;
+			return "ff" + StepString + "00";
+        }
     },
 
 
@@ -379,7 +548,7 @@ let EventHandler = {
 				sunday    : /Domingo às (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 			},
 			fr: {
-				today     : /aujourd\\hui à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
+				today     : /aujourd\'hui à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				yesterday : /hier à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				monday    : /Lundi à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				tuesday   : /Mardi à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
