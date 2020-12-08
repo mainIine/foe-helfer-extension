@@ -434,8 +434,9 @@ let EventHandler = {
 					let Days = Seconds / 86400; //24*3600
 					let StrongColor = EventHandler.GetMoppelDateColor(Days);
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
+					let EventType = EventHandler.GetEventType(Visits[j]);
 
-					h.push('<td style="white-space:nowrap" class="is-number" data-number="' + Seconds + '"><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
+					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>'); 
 				}
 				else {
 					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
