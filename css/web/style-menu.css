@@ -398,9 +398,10 @@ p {
 .hud-btn-left,
 .hud-btn-right{
 	position: absolute;
-	height: 64px;
+	height: 63px;
 	width: 20px;
 	right: 2px;
+	bottom: 0;
 	display: block;
 	z-index: 1;
 }
@@ -416,7 +417,7 @@ p {
 .hud-btn-left::before,
 .hud-btn-right::before {
 	content: '';
-	height: 59px;
+	height: 58px;
 	width: 16px;
 	display: block;
 	position: absolute;
@@ -425,27 +426,27 @@ p {
 }
 
 .hud-btn-left::before {
-	background-position: -255px -64px;
+	background-position: -255px -65px;
 	transform: scaleX(-1);
 }
 
 .hud-btn-right::before {
-	background-position: -256px -63px;
+	background-position: -256px -65px;
 }
 
 .hud-btn-left-active::before {
-	background-position: -255px -122px;
+	background-position: -255px -123px;
 }
 .hud-btn-left-active:hover::before {
-	background-position: -240px -64px;
+	background-position: -239px -65px;
 }
 
 .hud-btn-right-active::before {
-	background-position: -256px -121px;
+	background-position: -256px -123px;
 }
 
 .hud-btn-right-active:hover::before {
-	background-position: -240px -63px;
+	background-position: -240px -65px;
 }
 
 .hud-btn {
