@@ -134,8 +134,8 @@ let BonusService = {
 
 		if(isGex){
 			div.css({
-				top: 382,
-				right: 62
+				top: 182,
+				right: 0
 			});
 		}
 

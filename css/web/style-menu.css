@@ -334,13 +334,13 @@ p {
 
 #foe-helper-hud {
 	position: absolute;
-	right: 0;
+	left: 1000px;
 	z-index: 150;
-	width: 64px;
-	height: 270px;
-	top: 360px;
-	padding-top: 24px;
-	padding-bottom: 24px;
+	width: 270px;
+	height: 64px;
+	bottom: 0;
+	padding-left: 20px;
+	padding-right: 28px;
 	transition: height 0.2s linear;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.75rem;
@@ -350,113 +350,118 @@ p {
 #foe-helper-hud::before,
 #foe-helper-hud::after,
 .hud-btn,
-.hud-btn-up::before,
-.hud-btn-up-active::before,
-.hud-btn-down::before,
-.hud-btn-down-active::before {
+.hud-btn-left::before,
+.hud-btn-left-active::before,
+.hud-btn-right::before,
+.hud-btn-right-active::before {
 	background: url('../images/hud/menu.png') top left no-repeat;
 }
 
 #foe-helper-hud::before {
 	content: '';
-	width: 64px;
-	height: 26px;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-#foe-helper-hud::after {
-	content: '';
-	width: 64px;
-	height: 24px;
-	background-position: bottom left;
+	height: 64px;
+	width: 26px;
 	position: absolute;
 	bottom: 0;
 	left: 0;
 }
 
+#foe-helper-hud::after {
+	content: '';
+	height: 64px;
+	width: 24px;
+	background-position: -246px 0;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
 
 #foe-helper-hud-wrapper {
-	width: 64px;
-	height: 220px;
+	width: 220px;
+	height: 64px;
 	position: absolute;
-	right: 0;
-	top: 26px;
+	bottom: 0;
+	left: 26px;
 	overflow: hidden;
-	background: url('../images/hud/menu-bg.png') top left repeat-y
+	background: url('../images/hud/menu-bg.png') top left repeat-x;
 }
 
 #foe-helper-hud-slider {
 	position: absolute;
-	top: 0;
-	right: 3px;
-	transition: top 0.7s ease-in-out;
+	left: 0;
+	bottom: 1px;
+	transition: left 0.7s ease-in-out;
+	height: 59px;
 }
 
-.hud-btn-up,
-.hud-btn-down {
+.hud-btn-left,
+.hud-btn-right{
 	position: absolute;
-	width: 56px;
-	height: 15px;
+	height: 63px;
+	width: 20px;
 	right: 2px;
+	bottom: 0;
 	display: block;
 	z-index: 1;
 }
 
-.hud-btn-up {
-	top: 5px;
+.hud-btn-left {
+	left: 1px;
 }
 
-.hud-btn-down {
-	bottom: 4px;
+.hud-btn-right {
+
 }
 
-.hud-btn-up::before,
-.hud-btn-down::before {
+.hud-btn-left::before,
+.hud-btn-right::before {
 	content: '';
-	width: 56px;
-	height: 16px;
+	height: 58px;
+	width: 16px;
 	display: block;
 	position: absolute;
 	right: 1px;
-}
-
-.hud-btn-up::before {
-	background-position: -65px 0;
-}
-
-.hud-btn-down::before {
 	bottom: 1px;
-	transform: scaleY(-1);
-	background-position: -65px 0;
 }
 
-.hud-btn-up-active::before {
-	background-position: -124px 0;
-}
-.hud-btn-up-active:hover::before {
-	background-position: -66px -16px;
+.hud-btn-left::before {
+	background-position: -255px -65px;
+	transform: scaleX(-1);
 }
 
-.hud-btn-down-active::before {
-	background-position: -124px 0;
+.hud-btn-right::before {
+	background-position: -256px -65px;
 }
 
-.hud-btn-down-active:hover::before {
-	background-position: -124px -16px;
+.hud-btn-left-active::before {
+	background-position: -255px -123px;
+}
+.hud-btn-left-active:hover::before {
+	background-position: -239px -65px;
+}
+
+.hud-btn-right-active::before {
+	background-position: -256px -123px;
+}
+
+.hud-btn-right-active:hover::before {
+	background-position: -240px -65px;
 }
 
 .hud-btn {
 	display: block;
-	background-position: -122px -33px;
+	background-position: -183px -123px;
 	width: 55px;
 	height: 55px;
 	position: relative;
+	margin-bottom: 2px;
+	float: left;
+	top: 2px;
 }
 
 .hud-btn-red {
-	background-position: -65px -33px;
+	background-position: -183px -66px;
 }
 
 .hud-btn span:first-child {
@@ -473,8 +478,9 @@ p {
 
 .menu-placeholder {
 	width: 55px;
-	height: 55px;
-	background: url('../images/hud/menu.png') -122px -90px no-repeat;
+	height: 56px;
+	background: url('../images/hud/menu.png') -126px -64px no-repeat;
+	float: left;
 }
 
 .hud-btn span.hud-counter {
@@ -541,20 +547,8 @@ p {
 	background-image: url('../images/menu/citymap.png');
 }
 
-#questlist-Btn span {
-	background-image: url('../images/menu/quest.png');
-}
-
 #chat-Btn span {
 	background-image: url('../images/menu/chat.png');
-}
-
-#forum-Btn span {
-	background-image: url('../images/menu/forum.png');
-}
-
-#ask-Btn span {
-	background-image: url('../images/menu/ask.png');
 }
 
 #settings-Btn span {
@@ -563,10 +557,6 @@ p {
 
 #stats-Btn span {
 	  background-image: url('../images/menu/stats.png');
-}
-
-#github-Btn span {
-	background-image: url('../images/menu/bug.png');
 }
 
 #infobox-Btn span {
@@ -767,13 +757,13 @@ Tooltip */
 	display: none;
 	position: absolute;
 	width: 180px;
-	right: 67px;
-	top: 50%;
+	right: 0;
+	bottom: 70px;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
 	border-image: url('../images/hud/tooltip_bg.png') 10 round;
 	z-index: 999;
-	transform: translateY(-50%);
+	transform: translateX(-50%);
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
 	font-weight: 400;
@@ -789,9 +779,9 @@ Tooltip */
 	height: 31px;
 	display: inline-block;
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	right: -22px;
+	bottom: -26px;
+	transform: translateX(-50%);
+	left: 50%;
 	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
 }
 

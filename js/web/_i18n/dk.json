@@ -442,7 +442,6 @@
     "Settings.SendInvestigations.Desc": "Overfører FP investeringerne ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i'.",
     "Settings.SendInvestigations.Title": "FP investeringer",
     "Settings.SendPlayersMotivation.Desc": "Skal MoPo aktiviteterne overføres, når begivenhedshistorikken åbnes?",
-    "Settings.SendPlayersMotivation.Title": "MoPo aktivitet",
     "Settings.ShowInvestments.Desc": "Ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i' vises en oversigt over investeringer i andre spillers SBer.",
     "Settings.ShowInvestments.Title": "Vis oversigt over investeringer i SBer",
     "Settings.ShowOwnPartOnAllGBs.Desc": "Vis også egenandelsberegneren ved SB'er, der tilhører andre spillere",

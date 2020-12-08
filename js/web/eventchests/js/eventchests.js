@@ -27,37 +27,27 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
         if (!Chests.hasOwnProperty(i)) continue;
 
         let CurrentChest = [];
-        if (Chests[i]['cost'] !== undefined && Chests[i]['cost']['resources'] !== undefined) {
-            CurrentChest['cost'] = 0;
-            for (let ResourceName in Chests[i]['cost']['resources']) {
-                if (!Chests[i]['cost']['resources'].hasOwnProperty(ResourceName)) continue;
+        if (!Chests[i]['cost'] || !Chests[i]['cost']['resources']) continue;
+        CurrentChest['cost'] = 0;
 
-                CurrentChest['cost'] += Chests[i]['cost']['resources'][ResourceName];
+        for (let ResourceName in Chests[i]['cost']['resources']) {
+            if (!Chests[i]['cost']['resources'].hasOwnProperty(ResourceName)) continue;
+            CurrentChest['cost'] += Chests[i]['cost']['resources'][ResourceName];
+        }
+
+        if (!Chests[i]['grandPrizeContribution']) continue;
+        CurrentChest['grandPrizeContribution'] = Chests[i]['grandPrizeContribution'];
+
+        if (!Chests[i]['chest'] || !Chests[i]['chest']['possible_rewards']) continue;
+        let PossibleRewards = Chests[i]['chest']['possible_rewards'];
+
+        for (let j = 0; j < PossibleRewards.length; j++) {
+            if (!PossibleRewards[j]['reward'] || !PossibleRewards[j]['reward']['flags']) continue;
+            if (PossibleRewards[j]['reward']['flags'].includes('timedSpecial')) {
+                CurrentChest['dailyprizename'] = PossibleRewards[j]['reward']['name'];
+                if (!CurrentChest['drop_chance']) CurrentChest['drop_chance'] = 0;
+                CurrentChest['drop_chance'] += PossibleRewards[j]['drop_chance'];
             }
-        }
-        else {
-            continue;
-        }
-
-        if (Chests[i]['grandPrizeContribution'] !== undefined) {
-            CurrentChest['grandPrizeContribution'] = Chests[i]['grandPrizeContribution'];
-        }
-        else {
-            continue;
-        }
-
-        if (Chests[i]['chest'] !== undefined && Chests[i]['chest']['possible_rewards'] !== undefined && Chests[i]['chest']['possible_rewards'][0] !== undefined && Chests[i]['chest']['possible_rewards'][0]['drop_chance'] !== undefined) {
-            CurrentChest['drop_chance'] = Chests[i]['chest']['possible_rewards'][0]['drop_chance']
-        }
-        else {
-            continue;
-        }
-
-        if (Chests[i]['chest'] !== undefined && Chests[i]['chest']['possible_rewards'] !== undefined && Chests[i]['chest']['possible_rewards'][0] !== undefined && Chests[i]['chest']['possible_rewards'][0]['reward'] !== undefined && Chests[i]['chest']['possible_rewards'][0]['reward']['name'] !== undefined) {
-            CurrentChest['dailyprizename'] = Chests[i]['chest']['possible_rewards'][0]['reward']['name'];
-        }
-        else {
-            continue;
         }
 
         CurrentChest['costpermainprizestep'] = CurrentChest['cost'] / CurrentChest['grandPrizeContribution'];
@@ -66,16 +56,8 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
         ChestData[ChestData.length] = CurrentChest;
     }
 
-    /*
-    ChestData.sort(function (a, b) {
-        return a['cost'] - b['cost'];
-    });
-    */
-
     // Ungültige Daten => Event wird nicht unterstützt => Fenster nicht anzeigen
-    if (ChestData.length === 0) {
-        return;
-    }
+    if (ChestData.length === 0) return;
 
     EventChests.Chests = ChestData;
     EventChests.Show();
