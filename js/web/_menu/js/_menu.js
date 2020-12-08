@@ -48,7 +48,9 @@ let _menu = {
 
 
 	/**
+	 * Create the div holders and put them to the DOM
 	 *
+	 * @constructor
 	 */
 	BuildOverlayMenu: () => {
 
@@ -73,9 +75,9 @@ let _menu = {
 
 			// korrekten Platz für das Menu ermitteln
 			_menu.SetMenuWidth();
-		});
 
-		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+		});
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function (event) {
@@ -119,7 +121,8 @@ let _menu = {
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
-		if (MenuLength !== null && MenuLength < _menu.HudCount) {
+		if (MenuLength !== null && MenuLength < _menu.HudCount)
+		{
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
@@ -128,6 +131,7 @@ let _menu = {
 
 		$('#foe-helper-hud').width(_menu.HudWidth + 4);
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 4);
+		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55) + 55);
 	},
 
 

@@ -478,8 +478,9 @@ p {
 
 .menu-placeholder {
 	width: 55px;
-	height: 55px;
-	background: url('../images/hud/menu.png') -122px -90px no-repeat;
+	height: 56px;
+	background: url('../images/hud/menu.png') -126px -64px no-repeat;
+	float: left;
 }
 
 .hud-btn span.hud-counter {
