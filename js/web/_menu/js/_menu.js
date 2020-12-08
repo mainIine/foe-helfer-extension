@@ -129,9 +129,9 @@ let _menu = {
 		_menu.HudWidth = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
 
-		$('#foe-helper-hud').width(_menu.HudWidth + 4);
-		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 4);
-		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55) + 55);
+		$('#foe-helper-hud').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55));
 	},
 
 
