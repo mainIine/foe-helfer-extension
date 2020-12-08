@@ -416,12 +416,12 @@ p {
 .hud-btn-left::before,
 .hud-btn-right::before {
 	content: '';
-	height: 60px;
+	height: 59px;
 	width: 16px;
 	display: block;
 	position: absolute;
 	right: 1px;
-	bottom: 0;
+	bottom: 1px;
 }
 
 .hud-btn-left::before {
@@ -430,7 +430,6 @@ p {
 }
 
 .hud-btn-right::before {
-	bottom: 1px;
 	background-position: -256px -63px;
 }
 
@@ -451,16 +450,17 @@ p {
 
 .hud-btn {
 	display: block;
-	background-position: -183px -122px;
+	background-position: -183px -123px;
 	width: 55px;
 	height: 55px;
 	position: relative;
+	margin-bottom: 2px;
 	float: left;
 	top: 2px;
 }
 
 .hud-btn-red {
-	background-position: -183px -65px;
+	background-position: -183px -66px;
 }
 
 .hud-btn span:first-child {
