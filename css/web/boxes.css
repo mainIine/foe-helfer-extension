@@ -318,7 +318,7 @@
 .jq-toast-wrap * { margin: 0; padding: 0; }
 
 .jq-toast-wrap.bottom-left { bottom: 20px; left: 20px; }
-.jq-toast-wrap.bottom-right { bottom: 20px; right: 40px; }
+.jq-toast-wrap.bottom-right { bottom: 70px; right: 26px; }
 .jq-toast-wrap.top-left { top: 20px; left: 20px; }
 .jq-toast-wrap.top-right { top: 20px; right: 40px; }
 
@@ -334,42 +334,38 @@
 
 .jq-toast-loader { display: block; position: absolute; top: -2px; height: 5px; width: 0; left: 0; border-radius: 5px; background: red; }
 .jq-toast-loaded { width: 100%; }
-.jq-has-icon { padding: 10px 10px 10px 50px; background-repeat: no-repeat; background-position: 10px; }
+.jq-has-icon { padding: 10px 10px 10px 50px; background-repeat: no-repeat; background-position: 10px; box-shadow: 0 1px 3px black; }
 
 .jq-icon-info {
-	background-image: url('../images/hud/info-icon.png'), url('../images/hud/box-bg.png');
+	background-image: url('../images/hud/info-icon.png'), linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.2)), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat;
-	background-color: #31708f;
+	background-repeat: no-repeat, repeat, repeat;
 	color: #d9edf7;
-	border-color: #bce8f1;
+}
+
+.jq-icon-info .jq-toast-heading {
+	color: #d9edf7;
 }
 
 .jq-icon-warning {
-	background-image: url('../images/hud/warning-icon.png'), url('../images/hud/box-bg.png');
+	background-image: url('../images/hud/warning-icon.png'), linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.2)), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat;
-	background-color: #8a6d3b;
+	background-repeat: no-repeat, repeat, repeat;
 	color: #fcf8e3;
-	border-color: #faebcc;
 }
 
 .jq-icon-error {
-	background-image: url('../images/hud/error-icon.png'), url('../images/hud/box-bg.png');
+	background-image: url('../images/hud/error-icon.png'), linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.2)), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat;
-	background-color: #a94442;
+	background-repeat: no-repeat, repeat, repeat;
 	color: #f2dede;
-	border-color: #ebccd1;
 }
 
 .jq-icon-success {
-	background-image: url('../images/hud/success-icon.png'), url('../images/hud/box-bg.png');
+	background-image: url('../images/hud/success-icon.png'), linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.2)), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat;
+	background-repeat: no-repeat, repeat, repeat;
 	color: #dff0d8;
-	background-color: #3c763d;
-	border-color: #d6e9c6;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

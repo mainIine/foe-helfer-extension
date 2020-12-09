@@ -398,9 +398,10 @@ p {
 .hud-btn-left,
 .hud-btn-right{
 	position: absolute;
-	height: 64px;
+	height: 63px;
 	width: 20px;
 	right: 2px;
+	bottom: 0;
 	display: block;
 	z-index: 1;
 }
@@ -416,51 +417,51 @@ p {
 .hud-btn-left::before,
 .hud-btn-right::before {
 	content: '';
-	height: 60px;
+	height: 58px;
 	width: 16px;
 	display: block;
 	position: absolute;
 	right: 1px;
-	bottom: 0;
+	bottom: 1px;
 }
 
 .hud-btn-left::before {
-	background-position: -255px -64px;
+	background-position: -255px -65px;
 	transform: scaleX(-1);
 }
 
 .hud-btn-right::before {
-	bottom: 1px;
-	background-position: -256px -63px;
+	background-position: -256px -65px;
 }
 
 .hud-btn-left-active::before {
-	background-position: -255px -122px;
+	background-position: -255px -123px;
 }
 .hud-btn-left-active:hover::before {
-	background-position: -240px -64px;
+	background-position: -239px -65px;
 }
 
 .hud-btn-right-active::before {
-	background-position: -256px -121px;
+	background-position: -256px -123px;
 }
 
 .hud-btn-right-active:hover::before {
-	background-position: -240px -63px;
+	background-position: -240px -65px;
 }
 
 .hud-btn {
 	display: block;
-	background-position: -183px -122px;
+	background-position: -183px -123px;
 	width: 55px;
 	height: 55px;
 	position: relative;
+	margin-bottom: 2px;
 	float: left;
 	top: 2px;
 }
 
 .hud-btn-red {
-	background-position: -183px -65px;
+	background-position: -183px -66px;
 }
 
 .hud-btn span:first-child {
@@ -477,8 +478,9 @@ p {
 
 .menu-placeholder {
 	width: 55px;
-	height: 55px;
-	background: url('../images/hud/menu.png') -122px -90px no-repeat;
+	height: 56px;
+	background: url('../images/hud/menu.png') -126px -64px no-repeat;
+	float: left;
 }
 
 .hud-btn span.hud-counter {
@@ -777,7 +779,7 @@ Tooltip */
 	height: 31px;
 	display: inline-block;
 	position: absolute;
-	bottom: -28px;
+	bottom: -26px;
 	transform: translateX(-50%);
 	left: 50%;
 	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;

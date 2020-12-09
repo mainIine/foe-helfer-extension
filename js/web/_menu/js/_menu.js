@@ -43,12 +43,15 @@ let _menu = {
 		'greatbuildings',
 		'market',
 		'bluegalaxy',
-		'moppelhelper'
+		'moppelhelper',
+		'fp-collector'
 	],
 
 
 	/**
+	 * Create the div holders and put them to the DOM
 	 *
+	 * @constructor
 	 */
 	BuildOverlayMenu: () => {
 
@@ -73,9 +76,9 @@ let _menu = {
 
 			// korrekten Platz für das Menu ermitteln
 			_menu.SetMenuWidth();
-		});
 
-		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+		});
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function (event) {
@@ -119,15 +122,17 @@ let _menu = {
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
-		if (MenuLength !== null && MenuLength < _menu.HudCount) {
+		if (MenuLength !== null && MenuLength < _menu.HudCount)
+		{
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
 		_menu.HudWidth = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
 
-		$('#foe-helper-hud').width(_menu.HudWidth + 4);
-		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 4);
+		$('#foe-helper-hud').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55));
 	},
 
 
@@ -303,6 +308,13 @@ let _menu = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
+
+				$.toast({
+					heading: i18n('Menu.SaveMessage.Title'),
+					text: i18n('Menu.SaveMessage.Desc'),
+					icon: 'success',
+					hideAfter: 5000
+				});
 			}
 		});
 
