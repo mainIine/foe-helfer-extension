@@ -147,17 +147,11 @@
     "Boxes.FPCollector.guildExpedition": "Relikt",
     "Boxes.FPCollector.hiddenReward": "Ereignis",
     "Boxes.FPCollector.pickupProduction": "Gebäude Ernte",
-<<<<<<< HEAD
-    "Boxes.FPCollector.satDown": "set in a friends' tavern",
+    "Boxes.FPCollector.satDown": "Tavernenbesuch",
     "Boxes.FPCollector.spoilsOfWar": "Burg Himeji - Kriegsbeute",
     "Boxes.FPCollector.winterEvent": "Winterevent",
 	"Boxes.FPCollector.dailyChallenges": "Tägliche Herausforderung",
 	"Boxes.FPCollector.collectReward": "Belohung",
-=======
-    "Boxes.FPCollector.satDown": "Tavernenbesuch",
-    "Boxes.FPCollector.spoilsOfWar": "Burg Himeji - Kriegsbeute",
-    "Boxes.FPCollector.winterEvent": "Winterevent",
->>>>>>> weblate/beta
     "Boxes.Gildfights.Fights": "Kämpfe",
     "Boxes.Gildfights.LastSnapshot": " - letzter Snapshot vor __time__",
     "Boxes.Gildfights.Negotiations": "Verhandlungen",
@@ -685,11 +679,7 @@
     "Settings.SendGildMemberLGInfo.Title": "LG Daten anderer Gildenmitglieder",
     "Settings.SendInvestigations.Desc": "Beim Betreten des 'Rathauses' > 'Neuigkeiten' > 'Legendäre Bauwerke' werden die FP Investionen übermittelt",
     "Settings.SendInvestigations.Title": "FP Investitionen",
-<<<<<<< HEAD
-    "Settings.SendPlayersMotivation.Desc": "???",
-=======
     "Settings.SendPlayersMotivation.Desc": "Sollen die Aktivitäten aus der Ereignisliste erfasst werden?<br><br><em>Startet das Spiel neu</em>",
->>>>>>> weblate/beta
     "Settings.ShowBlueGalaxyHelper.Desc": "Zeigt sobald die blaue Galaxie eingesammelt wurde ein Tool an, das vorschlägt, welche Gebäude als nächstes eingesammelt werden sollten",
     "Settings.ShowBlueGalaxyHelper.Title": "Blaue Galaxie: Helfer anzeigen",
     "Settings.ShowEventChest.Desc": "Zeigt das Kästchen mit den besten Preisen für eine Veranstaltung an.",
