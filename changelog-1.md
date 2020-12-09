@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+
+##### 2.5.3.2
+
+**BugFix**
+- FP Collector:
+    - A small bug prevented the menu button
+
+---
+
 ##### 2.5.3.1
 
 **Neu**
