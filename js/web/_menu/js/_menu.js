@@ -44,7 +44,7 @@ let _menu = {
 		'market',
 		'bluegalaxy',
 		'moppelhelper',
-		'fp-collector'
+		'fpCollector'
 	],
 
 
