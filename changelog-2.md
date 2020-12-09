@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+
+##### 2.5.3.1
+
+**New**
+
+- FP Collector:
+    - Collects by day and by type all FPs you collect in the whole game to create a complete overview of your "by the way" FPs
+
+**Update**
+
+- Menu:
+    - [#1661](https://github.com/dsiekiera/foe-helfer-extension/issues/1661) [#1657](https://github.com/dsiekiera/foe-helfer-extension/issues/1657) Because of the new dynamic menu, the helper's menu moves to the bottom
+
+- Motivation Helper:
+    - The values can be sorted via the tab head
+    - Filter for various events [#1652](https://github.com/dsiekiera/foe-helfer-extension/issues/1652)
+    - Coloured values for better differentiation
+
+**BugFix**
+
+- Event helper:
+    - [#1655](https://github.com/dsiekiera/foe-helfer-extension/issues/1655) Incorrect recognition of the daily price Football Event 2021
+
+---
+
 ##### 2.5.3.0
 
 **New**

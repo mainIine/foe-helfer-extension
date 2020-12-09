@@ -1,5 +1,29 @@
 ## Changelog - Extension
 
+##### 2.5.3.1
+
+**Neu**
+
+- FP-Collector:
+    - Sammelt tagesweise und nach Art sortiert alle FPs ein die Du im kompletten Spiel sammelst um so eine Gesamtübersicht deiner "nebenbei" FPs zu erstellen
+
+**Update**
+
+- Menü:
+    - [#1661](https://github.com/dsiekiera/foe-helfer-extension/issues/1661) [#1657](https://github.com/dsiekiera/foe-helfer-extension/issues/1657) wegen dem neuen dynamischen Menü weicht das Menü des Helfers an den unteren Rand aus
+
+- Moppelhelfer:
+    - Über den Tabbelkopf können die Werte sortiert werden
+    - Filter für verschiedene Ereignisse [#1652](https://github.com/dsiekiera/foe-helfer-extension/issues/1652)
+    - Farbige Werte für besseres unterscheiden
+
+**BugFix**
+
+- Eventhelfer:
+    - [#1655](https://github.com/dsiekiera/foe-helfer-extension/issues/1655) Fehlerhafte Erkennung des Tagespreises Football Event 2021
+
+---
+
 ##### 2.5.3.0
 
 **Neu**
