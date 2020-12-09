@@ -1,11 +1,12 @@
 ## Changelog - Extension
 
 
+
 ##### 2.5.3.2
 
 **BugFix**
-- FP Collector:
-    - A small bug prevented the menu button
+- FP-Collector:
+    - Ein kleiner Bug verhinderte das Anzeigen des Menübuttons
 
 ---
 
