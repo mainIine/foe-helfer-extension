@@ -147,17 +147,11 @@
     "Boxes.FPCollector.guildExpedition": "Relict",
     "Boxes.FPCollector.hiddenReward": "Hidden reward",
     "Boxes.FPCollector.pickupProduction": "Building harvest",
-<<<<<<< HEAD
-    "Boxes.FPCollector.satDown": "set in a friends' tavern",
+    "Boxes.FPCollector.satDown": "Tavern visit",
     "Boxes.FPCollector.spoilsOfWar": "Castle Himeji - Spoils of war",
     "Boxes.FPCollector.winterEvent": "Winterevent",
 	"Boxes.FPCollector.dailyChallenges": "Daily challenge",
 	"Boxes.FPCollector.collectReward": "Reward",
-=======
-    "Boxes.FPCollector.satDown": "Tavern visit",
-    "Boxes.FPCollector.spoilsOfWar": "Castle Himeji - Spoils of war",
-    "Boxes.FPCollector.winterEvent": "Winterevent",
->>>>>>> weblate/beta
     "Boxes.Gildfights.Fights": "Fights",
     "Boxes.Gildfights.LastSnapshot": " - Last snapshot: __time__ ago",
     "Boxes.Gildfights.Negotiations": "Negotiations",
@@ -698,10 +692,7 @@
     "Settings.ShowMarketFilter.Title": "Show market filter tool",
     "Settings.ShowOwnPartOnAllGBs.Desc": "Shows the 'GB calculator' also for great buildings of other players",
     "Settings.ShowOwnPartOnAllGBs.Title": "Show 'GB calculator' for all GBs",
-<<<<<<< HEAD
     "Settings.ShowPlayersMotivation.Desc": "???",
-=======
->>>>>>> weblate/beta
     "Settings.ShowPlayersMotivation.Title": "Motivation Activity",
     "Settings.ShowRougeUnitWarning.Desc": "Put a box over the button \"Attack\" or \"Autocombat\" to prevent a defeat if only agents are left after the first wave.<br>If precious units of the next age have been killed, this box gives you the possibility to heal them with diamonds.",
     "Settings.ShowRougeUnitWarning.Title": "Show battle assists",
