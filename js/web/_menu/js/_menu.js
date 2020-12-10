@@ -29,7 +29,7 @@ let _menu = {
 		{'BottomBar':"_menu_bottom.BuildOverlayMenu()"},
 		{'RightBar':"_menu_right.BuildOverlayMenu()"},
 		{'Box':"_menu_box.BuildBoxMenu()"},
-		{'Dropdown':"alert('hello')"}
+		// {'Dropdown':"alert('hello')"}
 	],
 
 	Items: [
