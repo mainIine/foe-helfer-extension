@@ -981,7 +981,7 @@ const FoEproxy = (function () {
 	//--------------------------------------------------------------------------------------------------
 
 
-	// Moppel Aktivitäten
+	// Greatbuildings: LG Belohnungen von Arche in Events zählen
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
 		if (data.responseData['events']) {
 			GreatBuildings.HandleEventPage(data.responseData['events']);
