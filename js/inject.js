@@ -84,11 +84,14 @@
 	function InjectCSS() {
 		// Dokument geladen
 		if(document.head !== null){
+			let MenuSetting = localStorage.getItem('SelectedMenu');
+			MenuSetting = MenuSetting ?? 'BottomBar';
+			let cssname = "_menu_"+MenuSetting.toLowerCase().replace("bar","");
 
 			let cssFiles = [
 				'variables',
 				'goods',
-				'style-menu',
+				cssname,
 				'boxes'
 			];
 
@@ -161,6 +164,9 @@
 				'_helper',
 				'_api',
 				'_menu',
+				'_menu_bottom',
+				'_menu_right',
+				'_menu_box',
 				'indexdb',
 				'kits',
 				'outposts',

@@ -129,6 +129,7 @@ let HTML = {
 	 * title
 	 * ask = null
 	 * auto_close = true
+	 * onlyTitle = title
 	 * dragdrop = true
 	 * resize = false
 	 * speaker = false
@@ -139,13 +140,19 @@ let HTML = {
 	 */
 	Box: (args)=> {
 
+		let title = $('<span />').addClass('title').html(args['title']);
+
+		if(args['onlyTitle'] !== true){
+			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+		}
+
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>'),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
+
 
 		if(args['auto_close'] !== false){
 			head.append(close);
@@ -369,8 +376,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: 200,
-			minWidth: 250,
+			minHeight: $(box).css("min-width") || 200,
+			minWidth: $(box).css("min-height") || 250,
 			stop: (e, $el)=>{
 				let size = $el.element.width() + '|' + $el.element.height();
 
