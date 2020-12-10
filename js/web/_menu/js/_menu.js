@@ -72,15 +72,18 @@ let _menu = {
 		$('body').append(hud).promise().done(function(){
 
 			// Buttons einfügen
+			// insert buttons
 			_menu.ListLinks();
 
 			// korrekten Platz für das Menu ermitteln
+			// Determine the correct place for the menu
 			_menu.SetMenuWidth();
 
 			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
+		// If you change the window size, recalculate
 		window.onresize = function (event) {
 			_menu.SetMenuWidth(true);
 		};
@@ -89,15 +92,17 @@ let _menu = {
 
 	/**
 	 * Sammelfunktion
-	 *
+	 * Collecting function
 	 * @param reset
 	 */
 	SetMenuWidth: (reset = true) => {
 		// Breite ermitteln und setzten
+		// Determine and set the width
 		_menu.Prepare();
 
 		if (reset) {
 			// Slider nach links resetten
+			// Reset slider to the left
 			$('#foe-helper-hud-slider').css({
 				left: 0
 			});
@@ -113,13 +118,14 @@ let _menu = {
 
 	/**
 	 * Ermittelt die Fensterhöhe und ermittelt die passende Höhe
-	 *
+	 * Determines the window height and determines the appropriate height
 	 */
 	Prepare: () => {
 
 		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / 55);
 
 		// hat der Spieler eine Länge vorgebeben?
+		// did the player specify a length?
 		let MenuLength = localStorage.getItem('MenuLength');
 
 		if (MenuLength !== null && MenuLength < _menu.HudCount)
@@ -138,13 +144,14 @@ let _menu = {
 
 	/**
 	 * Bindet alle benötigten Button ein
-	 *
+	 * Include all required buttons
 	 */
 	ListLinks: () => {
 		let hudSlider = $('#foe-helper-hud-slider'),
 			StorgedItems = localStorage.getItem('MenuSort');
 
 		// Beta-Funktionen
+		// beta functions
 		if (HelperBeta.active) {
 			_menu.Items.unshift(...HelperBeta.menu);
 		}
@@ -153,11 +160,13 @@ let _menu = {
 			let storedItems = JSON.parse(StorgedItems);
 
 			// es ist kein neues Item hinzugekommen
+			// no new item has been added
 			if (_menu.Items.length === storedItems.length) {
 				_menu.Items = JSON.parse(StorgedItems);
 			}
 
 			// ermitteln in welchem Array was fehlt...
+			// determine in which array what is missing ...
 			else {
 				let missingMenu = storedItems.filter(function (sI) {
 					return !_menu.Items.some(function (mI) {
@@ -176,6 +185,7 @@ let _menu = {
 				let items = missingMenu.concat(missingStored);
 
 				// es gibt tatsächlich was neues...
+				// there is actually something new ...
 				if (items.length > 0) {
 					for (let i in items) {
 						if (!items.hasOwnProperty(i)) {
@@ -183,6 +193,7 @@ let _menu = {
 						}
 
 						// ... neues kommt vorne dran ;-)
+						// ... new things come up front ;-)
 						_menu.Items.unshift(items[i]);
 					}
 				}
@@ -190,6 +201,7 @@ let _menu = {
 		}
 
 		// Beta-Funktionen rausfiltern
+		// Filter out beta functions
 		_menu.Items = _menu.Items.filter(e => {
 			if (HelperBeta.active) return true;
 			if (HelperBeta.menu.includes(e)) return false;
@@ -197,6 +209,7 @@ let _menu = {
 		});
 
 		// Dubletten rausfiltern
+		// Filter out duplicates
 		function unique(arr) {
 			return arr.filter(function (value, index, self) {
 				return self.indexOf(value) === index;
@@ -206,6 +219,7 @@ let _menu = {
 		_menu.Items = unique(_menu.Items);
 
 		// Menüpunkte einbinden
+		// Include menu items
 		for (let i in _menu.Items) {
 			if (!_menu.Items.hasOwnProperty(i)) {
 				break;
@@ -214,6 +228,7 @@ let _menu = {
 			const name = _menu.Items[i] + '_Btn';
 
 			// gibt es eine Funktion?
+			// is there a function?
 			if (_menu[name] !== undefined) {
 				hudSlider.append(_menu[name]());
 			}
@@ -225,7 +240,7 @@ let _menu = {
 
 	/**
 	 * Panel scrollbar machen
-	 *
+	 * Make the panel scrollable
 	 */
 	CheckButtons: () => {
 
@@ -238,18 +253,21 @@ let _menu = {
 
 
 		// Klick auf Pfeil nach unten
+		// Click the down arrow
 		$('body').on('click', '.hud-btn-right-active', function () {
 			_menu.ClickButtonRight();
 		});
 
 
 		// Klick auf Pfeil nach oben
+		// Click on the up arrow
 		$('body').on('click', '.hud-btn-left-active', function () {
 			_menu.ClickButtonLeft();
 		});
 
 
 		// Tooltipp top ermitteln und einblenden
+		// Determine tooltip top and show it
 		$('.hud-btn').stop().hover(function(){
 			let $this = $(this),
 				id = $this.attr('id'),
@@ -264,6 +282,7 @@ let _menu = {
 		});
 
 		// Sortierfunktion der Menü-items
+		// Sorting function of the menu items
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'x',
@@ -324,6 +343,7 @@ let _menu = {
 
 	/**
 	 * Klick Funktion
+	 * Click function
 	 */
 	ClickButtonRight: () => {
 		$('.hud-btn-right').removeClass('hasFocus');
@@ -350,6 +370,7 @@ let _menu = {
 
 	/**
 	 * Klick Funktion
+	 * Click function
 	 */
 	ClickButtonLeft: () => {
 		$('.hud-btn-left').removeClass('hasFocus');
@@ -376,7 +397,7 @@ let _menu = {
 
 	/**
 	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
-	 *
+	 * Hides a button. The HUD slider must already be filled for this
 	 * @param buttonId
 	 * @constructor
 	 */
@@ -389,6 +410,7 @@ let _menu = {
 
 	/**
 	 * Zeigt ein versteckten Button wieder.
+	 * Shows a hidden button again.
 	 */
 	ShowButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
@@ -398,7 +420,7 @@ let _menu = {
 
 	/**
 	 * Tooltip Box
-	 *
+	 * Tooltip Box
 	 * @param {string} title
 	 * @param {string} desc
 	 * @param {string} id
@@ -416,7 +438,7 @@ let _menu = {
 
 	/**
 	 * Kostenrechner Button
-	 *
+	 * Cost calculator button
 	 * @returns {*|jQuery}
 	 */
 	calculator_Btn: () => {
@@ -440,19 +462,21 @@ let _menu = {
 
 	/**
 	 * Eigenanteilsrechner Button
-	 *
+	 * Own share calculator button
 	 * @returns {*|jQuery}
 	 */
 	partCalc_Btn: () => {
 		let btn_OwnBG = $('<div />').attr({ 'id': 'partCalc-Btn', 'data-slug': 'partCalc' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.OwnpartCalculator.Title'), '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>' + i18n('Menu.OwnpartCalculator.Desc'), 'partCalc-Btn');
 
 		let btn_Own = $('<span />');
 
 		btn_Own.on('click', function () {
 			// nur wenn es für diese Session ein LG gibt zünden
+			// only ignite if there is a LG for this session
 			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) {
 				Parts.buildBox();
 			}
@@ -465,7 +489,7 @@ let _menu = {
 
 	/**
 	 * Outpost Button
-	 *
+	 * Outpost button
 	 * @returns {*|jQuery}
 	 */
 	outpost_Btn: () => {
@@ -483,6 +507,7 @@ let _menu = {
 		}
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.OutP.Title'), desc, 'outpost-Btn');
 
 		let btn_outpost = $('<span />');
@@ -502,13 +527,14 @@ let _menu = {
 
 	/**
 	 * FP Gesamtanzahl Button
-	 *
+	 * FP total button
 	 * @returns {*|jQuery}
 	 */
 	productions_Btn: () => {
 		let btn_FPsBG = $('<div />').attr({ 'id': 'productions-Btn', 'data-slug': 'productions' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'), 'productions-Btn');
 
 
@@ -525,13 +551,14 @@ let _menu = {
 
 	/**
 	 * Negotiation
-	 *
+	 * Negotiation
 	 * @returns {*|jQuery}
 	 */
 	negotiation_Btn: () => {
 		let btn_NegotiationBG = $('<div />').attr({ 'id': 'negotiation-Btn', 'data-slug': 'negotiation' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
 
 		let btn_Negotiation = $('<span />');
@@ -549,7 +576,7 @@ let _menu = {
 
 	/**
 	 * InfoBox für den Hintergrund "Verkehr"
-	 *
+	 * InfoBox for the background "traffic"
 	 * @returns {*|jQuery}
 	 */
 	infobox_Btn: () => {
@@ -557,6 +584,7 @@ let _menu = {
 		let btn_Info = $('<div />').attr({ 'id': 'infobox-Btn', 'data-slug': 'infobox' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Info.Title'), i18n('Menu.Info.Desc'), 'infobox-Btn');
 
 		let btn_Inf = $('<span />');
@@ -573,13 +601,14 @@ let _menu = {
 
 	/**
 	 * Technologien
-	 *
+	 * Technologies
 	 * @returns {*|jQuery}
 	 */
 	technologies_Btn: () => {
 		let btn_TechBG = $('<div />').attr({ 'id': 'technologies-Btn', 'data-slug': 'technologies' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
+		// Include tooltip
 
 		_menu.toolTippBox(i18n('Menu.Technologies.Title'), '<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + i18n('Menu.Technologies.Desc'), 'technologies-Btn');
 
@@ -598,13 +627,14 @@ let _menu = {
 
 	/**
 	 * KampanienMap
-	 *
+	 * CampaniaMap
 	 * @returns {*|jQuery}
 	 */
 	campagneMap_Btn: () => {
 		let btn_MapBG = $('<div />').attr({ 'id': 'campagneMap-Btn', 'data-slug': 'campagneMap' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Campagne.Title'), '<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n('Menu.Campagne.Warning') + '<br></em>' + i18n('Menu.Campagne.Desc'), 'campagneMap-Btn');
 
 		let btn_Map = $('<span />');
@@ -622,13 +652,14 @@ let _menu = {
 
 	/**
 	 * citymap
-	 *
+	 * citymap
 	 * @returns {*|jQuery}
 	 */
 	citymap_Btn: () => {
 		let btn_CityBG = $('<div />').attr({ 'id': 'citymap-Btn', 'data-slug': 'citymap' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'), 'citymap-Btn');
 
 		let btn_City = $('<span />');
@@ -644,13 +675,14 @@ let _menu = {
 
 	/**
 	 * Evente in der Stadt und der Umgebung
-	 *
+	 * Events in the city and the surrounding area
 	 * @returns {null|undefined|jQuery}
 	 */
 	hiddenRewards_Btn: () => {
 		let btn_RewardsBG = $('<div />').attr({ 'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'), 'hiddenRewards-Btn');
 
 		let btn_Rewards = $('<span />');
@@ -666,12 +698,14 @@ let _menu = {
 
 	/**
 	 * Armeen
+	 * Army
 	 * @returns {*|jQuery}
 	 */
 	unit_Btn: () => {
 		let btn_UnitBG = $('<div />').attr({ 'id': 'unit-Btn', 'data-slug': 'unit' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Unit.Title'), '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'), 'unit-Btn');
 
 		let btn_Unit = $('<span />');
@@ -689,7 +723,7 @@ let _menu = {
 
 	/**
 	 * Notice function
-	 *
+	 * Notice function
 	 * @returns {null|undefined|jQuery|HTMLElement|void}
 	 */
 	notice_Btn: () => {
@@ -710,7 +744,7 @@ let _menu = {
 
 	/**
 	 * Einstellungen
-	 *
+	 * Settings
 	 */
 	settings_Btn: () => {
 
@@ -730,6 +764,7 @@ let _menu = {
 	},
 
 	/**
+	 * Statistic
 	 * Statistic
 	 * @returns {*|jQuery}
 	 */
@@ -753,7 +788,7 @@ let _menu = {
 
 	/**
 	 * Chat Button
-	 *
+	 * Chat Button
 	 * @returns {*|jQuery}
 	 */
 	chat_Btn: () => {
@@ -761,6 +796,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'), 'chat-Btn');
 
 		let btn_sp = $('<span />');
@@ -783,12 +819,14 @@ let _menu = {
 
 	/**
 	 * Set Übersicht
+	 * Set overview
 	 */
 	kits_Btn: ()=> {
 
 		let btn = $('<div />').attr({ 'id': 'kits-Btn', 'data-slug': 'kits' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Kits.Title'), i18n('Menu.Kits.Desc'), 'kits-Btn');
 
 		let btn_sp = $('<span />');
@@ -804,12 +842,14 @@ let _menu = {
 
 	/**
 	 * FP Produzierende LGs
+	 * FP producing LGs
 	 */
 	greatbuildings_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'), 'greatbuildings-Btn');
 
 		let btn_sp = $('<span />');
@@ -825,11 +865,13 @@ let _menu = {
 
 	/**
 	 * Marktplatz Filter
+	 * Marketplace filter
 	 */
 	market_Btn: () => {
 		let btn_MarketBG = $('<div />').attr({ 'id': 'market-Btn', 'data-slug': 'market' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Market.Title'), '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' + i18n('Menu.Market.Desc'), 'market-Btn');
 
 		let btn_Market = $('<span />');
@@ -847,16 +889,19 @@ let _menu = {
 
 	/**
 	 * Helfer Blaue Galaxie
+	 * Blue Galaxy helper
 	 */
 	bluegalaxy_Btn: () => {
 		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
 
+		// no BG => display none
 		// no BG => display none
 		if (!OwnGalaxy) return;
 
 		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'), 'bluegalaxy-Btn');
 
 		let btn_sp = $('<span />');
@@ -872,8 +917,10 @@ let _menu = {
 
 	/**
 	 * Moppelassistent
+	 * Moppel assistant
 	 * */
 	moppelhelper_Btn: () => {
+		// active?
 		// active?
 		if(!Settings.GetSetting('ShowPlayersMotivation')){
 			return;
@@ -882,6 +929,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'moppelhelper-Btn', 'data-slug': 'moppelhelper' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'), 'moppelhelper-Btn');
 
 		let btn_sp = $('<span />');
@@ -897,11 +945,13 @@ let _menu = {
 
 	/**
 	 * FP Collector box
+	 * FP Collector box
 	 */
 	fpCollector_Btn: () => {
 		let btn = $('<div />').attr({ 'id': 'fpCollector-Btn', 'data-slug': 'fpCollector' }).addClass('hud-btn');
 
 		// Tooltip einbinden
+		// Include tooltip
 		_menu.toolTippBox(i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'), 'fpCollector-Btn');
 
 		let btn_sp = $('<span />');
