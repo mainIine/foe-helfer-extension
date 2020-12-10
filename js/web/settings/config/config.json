@@ -101,7 +101,12 @@
 		"group": "Extension",
 		"sort": 3
 	},
-
+	{
+		"name": "SelectedMenu",
+		"callback": "MenuSelected",
+		"group": "Extension",
+		"sort": 4
+	},
 	{
 		"name": "About",
 		"callback": "About",
