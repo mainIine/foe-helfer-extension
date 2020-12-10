@@ -116,10 +116,12 @@ let BlueGalaxy = {
             return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
         });
 
-        let DoubleCollections = 0;
+        let DoubleCollections = 0,
+            GalaxyFactor = 0;
         for (let i = 0; i < BonusService.Bonuses.length; i++) {
             if (BonusService.Bonuses[i]['type'] === 'double_collection') {
                 DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
+                GalaxyFactor = BonusService.Bonuses[i]['value'] / 100;
                 break;
             }
         }
@@ -143,10 +145,11 @@ let BlueGalaxy = {
         h.push('<strong class="title">' + Title + '</strong><br>');
         h.push('</div>');       
 
+        let table = [];
         if (DoubleCollections > 0 && Buildings.length > 0) {
-            h.push('<table class="foe-table">');
+            table.push('<table class="foe-table">');
 
-            h.push('<thead>' +
+            table.push('<thead>' +
                 '<tr>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.FP') + '</th>' +
@@ -156,29 +159,42 @@ let BlueGalaxy = {
                 '</tr>' +
                 '</thead>');
 
-            let CollectionsLeft = DoubleCollections;
+            let CollectionsLeft = DoubleCollections,
+                FPBonusSum = 0,
+                GoodsBonusSum = 0;
+
             for (let i = 0; i < Buildings.length; i++) {
                 if (CollectionsLeft <= 0) break;
 
                 let BuildingName = MainParser.CityEntities[Buildings[i]['EntityID']]['name'];
 
-                h.push('<tr>');
-                h.push('<td>' + BuildingName + '</td>');
-                h.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
-                h.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
+                table.push('<tr>');
+                table.push('<td>' + BuildingName + '</td>');
+                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
+                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
                 if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
-                    h.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
+                    table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
+
+                    FPBonusSum += Buildings[i]['FP'] * GalaxyFactor;
+                    GoodsBonusSum += Buildings[i]['Goods'] * GalaxyFactor;
                 }
                 else {
-                    h.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
+                    table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
                 }
-                h.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
-                h.push('</tr>');               
+                table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
+                table.push('</tr>');
             }
 
-            h.push('</table');
+            table.push('</table');
+
+            if (FPBonusSum > 0 || GoodsBonusSum > 0) {
+                h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
+                h.push('<br>');
+            }
         }
+
+        h.push(table.join(''));
 
         $('#bluegalaxyBody').html(h.join(''));
     },
