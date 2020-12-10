@@ -301,6 +301,7 @@ let Settings = {
 		MainParser.ExportFile(blob1, file);
 	},
 
+
 	/**
 	 * Relocation for Menu
 	 * 
@@ -339,6 +340,7 @@ let Settings = {
 		return dp.join('');
 
 	},
+
 
 	/**
 	 * Import saved settigns
