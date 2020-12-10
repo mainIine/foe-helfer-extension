@@ -299,7 +299,7 @@
     "Settings.SendGildMemberLGInfo.Title": "Más céhtagok Lb adatai",
     "Settings.SendInvestigations.Desc": "Belépés a „Városháza”> „Hírek”> „Nevezetes épületek” elküldi az FP beruházásait",
     "Settings.SendInvestigations.Title": "FP befektetés",
-    "Settings.SendPlayersMotivation.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",
+    "Settings.ShowPlayersMotivation.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",
     "Settings.Version.Desc": "Chrome Bővítmény Verzió",
     "Settings.Version.GuildId": "Céh-Id:",
     "Settings.Version.PlayerId": "Játékos-Id:",
