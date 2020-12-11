@@ -15,11 +15,14 @@
 
 let _menu_bottom = {
 
+	btnSize: 45,
+
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
 	 * @constructor
 	 */
+
 	BuildOverlayMenu: () => {
 
 		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
@@ -84,7 +87,7 @@ let _menu_bottom = {
 	 */
 	Prepare: () => {
 
-		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / 55);
+		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -94,12 +97,12 @@ let _menu_bottom = {
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
-		_menu.HudWidth = (_menu.HudCount * 55);
+		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
 		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
 
 		$('#foe-helper-hud').width(_menu.HudWidth + 3);
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
-		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55));
+		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
 
 
@@ -233,7 +236,7 @@ let _menu_bottom = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'x',
-			distance: 20,
+			distance: 15,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
