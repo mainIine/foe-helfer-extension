@@ -981,7 +981,7 @@ const FoEproxy = (function () {
 	//--------------------------------------------------------------------------------------------------
 
 
-	// Moppel Aktivitäten
+	// Greatbuildings: LG Belohnungen von Arche in Events zählen
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
 		if (data.responseData['events']) {
 			GreatBuildings.HandleEventPage(data.responseData['events']);
@@ -1029,7 +1029,7 @@ const FoEproxy = (function () {
 	// Quests
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
 		if (PostData[0].requestClass === 'QuestService' && PostData[0].requestMethod === 'advanceQuest') {
-			StrategyPoints.HandleAdvanceQuest(PostData[0]);
+			FPCollector.HandleAdvanceQuest(PostData[0]);
 		}
 
 		MainParser.Quests = data.responseData;

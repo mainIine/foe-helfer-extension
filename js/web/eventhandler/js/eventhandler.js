@@ -446,14 +446,14 @@ let EventHandler = {
 				if (j < Visits.length) {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
-					let StrongColor = EventHandler.GetMoppelDateColor(Days);
+					let StrongColor = (Days < 3.5 ? HTML.GetColorGradient(Days, 0, 3.5, '33ee00', 'eeee00') : HTML.GetColorGradient(Days, 3.5, 7, 'eeee00', 'ee3300'));
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					let EventType = EventHandler.GetEventType(Visits[j]);
 
 					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
-					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
+					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ee3300">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
 				}
 			}
 			h.push('</tr>');
@@ -477,31 +477,6 @@ let EventHandler = {
 		if (Event['eventtype'] === 'trade_accepted') return 'Trade';
 		if (Event['eventtype'] === 'great_building_built' || Event['eventtype'] === 'great_building_contribution') return 'GB';
 		return 'Other';
-    },
-
-
-	/**
-	* Returns strong class for formating mopppel date
-	*
-	* @param Days
-	*/
-	GetMoppelDateColor: (Days) => {
-		let Maximum = 7;
-		let StepSize = Maximum / 256 / 2;
-		let Steps = Math.round(Days / StepSize);
-
-		Steps = Math.min(Math.max(Steps, 0), 511);
-
-		if (Steps < 256) {
-			let StepString = Steps.toString(16);
-			if (StepString.length < 2) StepString = "3" + StepString;
-			return StepString + "ee33";
-		}
-		else {
-			let StepString = (511-Steps).toString(16);
-			if (StepString.length < 2) StepString = "3" + StepString;
-			return "ee" + StepString + "33";
-        }
     },
 
 
