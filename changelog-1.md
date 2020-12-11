@@ -644,7 +644,7 @@
 - Armeeübersicht:
     - [#434](https://github.com/dsiekiera/foe-helfer-extension/issues/434) [#467](https://github.com/dsiekiera/foe-helfer-extension/issues/467) Neue Armee Boni integriert
     
-- Verhandlungsassitent:    
+- Verhandlungsassistent:    
     - [#519](https://github.com/dsiekiera/foe-helfer-extension/issues/519) Nummerntasten Anzeige und Benutzung (erste Zahl Person, zweite Taste Gut + Leertaste abschicken)
 
 - Menü:
@@ -657,7 +657,7 @@
 - Menü:
     - [#411](https://github.com/dsiekiera/foe-helfer-extension/issues/411) [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) doppelte Einträge gefixt
 
-- Verhandlungsassitent:
+- Verhandlungsassistent:
     - [#421](https://github.com/dsiekiera/foe-helfer-extension/issues/421) Vorrats-Tooltip beim Verhandlungsassistent blieb sichtbar
     - [#459](https://github.com/dsiekiera/foe-helfer-extension/issues/459) zeigte ausgeschlossene Güter
     - [#491](https://github.com/dsiekiera/foe-helfer-extension/issues/491) Fehler beim Verhandlungsassistent

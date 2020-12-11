@@ -68,7 +68,7 @@ let _menu_bottom = {
 
 		if (reset) {
 			// Slider nach links resetten
-			$('#foe-helper-hud-slider').css({
+			$('#foe-helper-hud-slider').css({ 
 				left: 0
 			});
 
@@ -76,7 +76,13 @@ let _menu_bottom = {
 			_menu.ActiveSlide = 1;
 
 			$('.hud-btn-left').removeClass('hud-btn-left-active');
-			$('.hud-btn-right').addClass('hud-btn-right-active');
+
+			if (_menu.SlideParts > 1) {
+				$('.hud-btn-right').addClass('hud-btn-right-active');
+			}
+			else { //Gesamtes Menü passt auf 1 Seite => Kein Scrollbutton nach unten
+				$('.hud-btn-right').removeClass('hud-btn-right-active');
+			}
 		}
 	},
 
@@ -86,8 +92,10 @@ let _menu_bottom = {
 	 *
 	 */
 	Prepare: () => {
+		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
 		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
+		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -98,7 +106,7 @@ let _menu_bottom = {
 		}
 
 		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
-		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
+		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
 		$('#foe-helper-hud').width(_menu.HudWidth + 3);
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
