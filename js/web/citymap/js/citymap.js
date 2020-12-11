@@ -358,7 +358,7 @@ let CityMap = {
 			type = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
 		    const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
-		    const str = `${type}: ${count} (${pct}%)<br>`;
+		    const str = `${type}:<br> ${count} (${pct}%)<br><br>`;
 		    txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
