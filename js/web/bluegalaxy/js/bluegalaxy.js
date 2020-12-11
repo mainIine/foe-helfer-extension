@@ -29,6 +29,8 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
  });
 
 let BlueGalaxy = {
+    GoodsValue : 0.2,
+
 
 	/**
 	 * Show or hide the box
@@ -40,6 +42,11 @@ let BlueGalaxy = {
 
         if ($('#bluegalaxy').length === 0) {
 
+            let GoodsValue = localStorage.getItem('BlueGalaxyGoodsValue');
+            if (GoodsValue != null) {
+                BlueGalaxy.GoodsValue = parseFloat(GoodsValue);
+            }
+
             HTML.Box({
                 id: 'bluegalaxy',
                 title: i18n('Boxes.BlueGalaxy.Title'),
@@ -49,6 +56,13 @@ let BlueGalaxy = {
             });
 
             HTML.AddCssFile('bluegalaxy');
+
+            $('#bluegalaxy').on('blur', '#goodsValue', function () {
+                BlueGalaxy.GoodsValue = parseFloat($('#goodsValue').val());
+                if (isNaN(BlueGalaxy.GoodsValue)) BlueGalaxy.GoodsValue = 0;
+                localStorage.setItem('BlueGalaxyGoodsValue', BlueGalaxy.GoodsValue);
+                BlueGalaxy.CalcBody();
+            });
 
             // A building should be shown on the map
             $('#bluegalaxy').on('click', '.foe-table .show-entity', function () {
@@ -69,30 +83,60 @@ let BlueGalaxy = {
 	 * @constructor
 	 */
     CalcBody: () => {
-        GreatBuildings.RefreshFPBuildings();
+        let Buildings = [],
+            CityMap = Object.values(MainParser.CityMapData);
 
-        let FPBuildings = GreatBuildings.FPBuildings.filter(obj => (obj['CurrentFP'] > 0));
+        for (let i = 0; i < CityMap.length; i++) {
+            let ID = CityMap[i]['id'],
+                EntityID = CityMap[i]['cityentity_id'],
+                CityEntity = MainParser.CityEntities[EntityID];
 
-        FPBuildings = FPBuildings.sort(function (a, b) {
-            return b['CurrentFP'] - a['CurrentFP'];
+            if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
+
+            let Production = Productions.readType(CityMap[i]);
+            if (Production['motivatedproducts']) {
+                let FP = Production['products']['strategy_points'];
+                if (!FP) FP = 0;
+
+                let GoodsSum = 0;
+                for (j = 0; j < GoodsList.length; j++) {
+                    let GoodID = GoodsList[j]['id'];
+                    if (Production['products'][GoodID]) {
+                        GoodsSum += Production['products'][GoodID];
+                    }
+                }
+
+                Buildings.push({ ID: ID, EntityID: EntityID, FP: FP, Goods: GoodsSum, In: Production['in'], At: Production['at'] });
+            }
+        }
+                
+        Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); //Alles über 23h ausblenden
+
+        Buildings = Buildings.sort(function (a, b) {
+            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
         });
 
-        let DoubleCollections = 0;
+        let DoubleCollections = 0,
+            GalaxyFactor = 0;
         for (let i = 0; i < BonusService.Bonuses.length; i++) {
             if (BonusService.Bonuses[i]['type'] === 'double_collection') {
                 DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
+                GalaxyFactor = BonusService.Bonuses[i]['value'] / 100;
                 break;
             }
         }
 
         let h = [];
+        h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
+        h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + i18n('Boxes.BlueGalaxy.TTGoodsValue') + '">');
+
         h.push('<div class="text-center dark-bg header">');
 
         let Title;
         if (DoubleCollections === 0) {
             Title = i18n('Boxes.BlueGalaxy.NoChargesLeft');
         }
-        else if (FPBuildings.length === 0) {
+        else if (Buildings.length === 0) {
             Title = i18n('Boxes.BlueGalaxy.NoProductionsDone');
         }
         else {
@@ -101,40 +145,56 @@ let BlueGalaxy = {
         h.push('<strong class="title">' + Title + '</strong><br>');
         h.push('</div>');       
 
-        if (DoubleCollections > 0 && FPBuildings.length > 0) {
-            h.push('<table class="foe-table">');
+        let table = [];
+        if (DoubleCollections > 0 && Buildings.length > 0) {
+            table.push('<table class="foe-table">');
 
-            h.push('<thead>' +
+            table.push('<thead>' +
                 '<tr>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.FP') + '</th>' +
+                '<th>' + i18n('Boxes.BlueGalaxy.Goods') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
                 '<th></th>' +
                 '</tr>' +
                 '</thead>');
 
-            let CollectionsLeft = DoubleCollections;
-            for (let i = 0; i < FPBuildings.length; i++) {
+            let CollectionsLeft = DoubleCollections,
+                FPBonusSum = 0,
+                GoodsBonusSum = 0;
+
+            for (let i = 0; i < Buildings.length; i++) {
                 if (CollectionsLeft <= 0) break;
 
-                let BuildingName = MainParser.CityEntities[FPBuildings[i]['EntityID']]['name'];
+                let BuildingName = MainParser.CityEntities[Buildings[i]['EntityID']]['name'];
 
-                h.push('<tr>');
-                h.push('<td>' + BuildingName + '</td>');
-                h.push('<td>' + FPBuildings[i]['CurrentFP'] + '</td>');
-                if (FPBuildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
-                    h.push('<td><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
+                table.push('<tr>');
+                table.push('<td>' + BuildingName + '</td>');
+                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
+                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
+                if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
+                    table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
+
+                    FPBonusSum += Buildings[i]['FP'] * GalaxyFactor;
+                    GoodsBonusSum += Buildings[i]['Goods'] * GalaxyFactor;
                 }
                 else {
-                    h.push('<td><strong class="error">' + moment.unix(FPBuildings[i]['At']).fromNow() + '</strong></td>');
+                    table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
                 }
-                h.push('<td class="text-right"><span class="show-entity" data-id="' + FPBuildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
-                h.push('</tr>');               
+                table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
+                table.push('</tr>');
             }
 
-            h.push('</table');
+            table.push('</table');
+
+            if (FPBonusSum > 0 || GoodsBonusSum > 0) {
+                h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
+                h.push('<br>');
+            }
         }
+
+        h.push(table.join(''));
 
         $('#bluegalaxyBody').html(h.join(''));
     },
