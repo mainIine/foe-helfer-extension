@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
-body {
+ body {
 	position: absolute !important;
 	height: 100% !important;
 	width: 100% !important;
@@ -332,142 +332,47 @@ p {
 
 /***************************************************************/
 
-#foe-helper-hud {
-	position: absolute;
-	left: 1000px;
-	z-index: 150;
-	width: 270px;
-	height: 64px;
-	bottom: 0;
-	padding-left: 20px;
-	padding-right: 28px;
-	transition: height 0.2s linear;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.75rem;
-	font-weight: 400;
+#menu_box {
+    top: 30%;
+    right: 15%;
+    width: 120px;
+    height: 60px;
+    min-width: 120px !important;
+    min-height: 60px !important;
+}
+#menu_box .title {
+    font-size: 115%;
 }
 
-#foe-helper-hud::before,
-#foe-helper-hud::after,
-.hud-btn,
-.hud-btn-left::before,
-.hud-btn-left-active::before,
-.hud-btn-right::before,
-.hud-btn-right-active::before {
-	background: url('../images/hud/menu.png') top left no-repeat;
+#menu_box .header {
+    margin-bottom: 2px;
+    padding: 1em 0;
 }
 
-#foe-helper-hud::before {
-	content: '';
-	height: 64px;
-	width: 26px;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-}
-
-#foe-helper-hud::after {
-	content: '';
-	height: 64px;
-	width: 24px;
-	background-position: -246px 0;
-	position: absolute;
-	bottom: 0;
-	right: 0;
-}
-
-
-#foe-helper-hud-wrapper {
-	width: 220px;
-	height: 64px;
-	position: absolute;
-	bottom: 0;
-	left: 26px;
-	overflow: hidden;
-	background: url('../images/hud/menu-bg.png') top left repeat-x;
-}
-
-#foe-helper-hud-slider {
-	position: absolute;
-	left: 0;
-	bottom: 1px;
-	transition: left 0.7s ease-in-out;
-	height: 59px;
-}
-
-.hud-btn-left,
-.hud-btn-right{
-	position: absolute;
-	height: 63px;
-	width: 20px;
-	right: 2px;
-	bottom: 0;
-	display: block;
-	z-index: 1;
-}
-
-.hud-btn-left {
-	left: 1px;
-}
-
-.hud-btn-right {
-
-}
-
-.hud-btn-left::before,
-.hud-btn-right::before {
-	content: '';
-	height: 58px;
-	width: 16px;
-	display: block;
-	position: absolute;
-	right: 1px;
-	bottom: 1px;
-}
-
-.hud-btn-left::before {
-	background-position: -255px -65px;
-	transform: scaleX(-1);
-}
-
-.hud-btn-right::before {
-	background-position: -256px -65px;
-}
-
-.hud-btn-left-active::before {
-	background-position: -255px -123px;
-}
-.hud-btn-left-active:hover::before {
-	background-position: -239px -65px;
-}
-
-.hud-btn-right-active::before {
-	background-position: -256px -123px;
-}
-
-.hud-btn-right-active:hover::before {
-	background-position: -240px -65px;
+#menu_box #menu_boxBody {
+	overflow: auto;
+	overflow-y: auto;
 }
 
 .hud-btn {
-	display: block;
-	background-position: -183px -123px;
+	background: url('../images/hud/menu-right.png') top left no-repeat;
+}
+
+.hud-btn {
+	display: inline-block;
+	background-position: -122px -33px;
 	width: 55px;
 	height: 55px;
 	position: relative;
-	margin-bottom: 2px;
-	float: left;
-	top: 2px;
 }
 
 .hud-btn-red {
-	background-position: -183px -66px;
+	background-position: -65px -33px;
 }
 
 .hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
-	display: block;
 	width: 38px;
 	height: 38px;
 	background-size: contain;
@@ -477,10 +382,10 @@ p {
 }
 
 .menu-placeholder {
+	display: inline-block;
 	width: 55px;
-	height: 56px;
-	background: url('../images/hud/menu.png') -126px -64px no-repeat;
-	float: left;
+	height: 55px;
+	background: url('../images/hud/menu-right.png') -122px -90px no-repeat;
 }
 
 .hud-btn span.hud-counter {
@@ -547,8 +452,20 @@ p {
 	background-image: url('../images/menu/citymap.png');
 }
 
+#questlist-Btn span {
+	background-image: url('../images/menu/quest.png');
+}
+
 #chat-Btn span {
 	background-image: url('../images/menu/chat.png');
+}
+
+#forum-Btn span {
+	background-image: url('../images/menu/forum.png');
+}
+
+#ask-Btn span {
+	background-image: url('../images/menu/ask.png');
 }
 
 #settings-Btn span {
@@ -557,6 +474,10 @@ p {
 
 #stats-Btn span {
 	  background-image: url('../images/menu/stats.png');
+}
+
+#github-Btn span {
+	background-image: url('../images/menu/bug.png');
 }
 
 #infobox-Btn span {
@@ -748,7 +669,6 @@ Tabs */
 	padding: 10px;
 	background-color: rgba(40, 18, 7, 0.8);
 }
-
 /* ---------------------------------------------------------------------------------------------------------------------
 Tooltip */
 
@@ -758,7 +678,6 @@ Tooltip */
 	position: absolute;
 	width: 180px;
 	right: 0;
-	bottom: 70px;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
 	border-image: url('../images/hud/tooltip_bg.png') 10 round;
@@ -799,7 +718,6 @@ Tooltip */
 
 
 /***********************************************************************************/
-
 
 #fp-bar {
 	z-index: 100;
