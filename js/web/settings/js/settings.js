@@ -518,8 +518,11 @@ let Settings = {
 				heading: i18n('Settings.NotificationPosition.ToastTestHeader'),
 				text: i18n('Settings.NotificationPosition.ToastTestBody'),
 				icon: 'success',
-				hideAfter: 5000,
-				position: pos
+				hideAfter: 6000,
+				position: pos,
+				afterHidden: function () {
+					$('.jq-toast-wrap').remove();
+				}
 			});
 		});
 

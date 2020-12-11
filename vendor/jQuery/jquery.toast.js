@@ -371,9 +371,7 @@ if ( typeof Object.create !== 'function' ) {
 		beforeShow: function () {},
 		afterShown: function () {},
 		beforeHide: function () {},
-		afterHidden: function () {
-			$('.jq-toast-wrap').remove();
-		},
+		afterHidden: function () {},
 		onClick: function () {}
 	};
 
