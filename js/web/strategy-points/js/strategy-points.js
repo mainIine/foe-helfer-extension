@@ -13,22 +13,6 @@
  * **************************************************************************************
  */
 
-/*
-Integriert:
-- der Wert einer doppelten Ernte
-- diplomatische Geschenke / Kriegsbeute
-- Relikte in der GEX
-- die FPs zwischen den Kämpfen der GG
-- Tavernenbesuch
-- Schleifenquests
-
-Bitte testen:
-- geplünderte FP
-
-Fehlt noch:
-- Event-Quests Belohnungen
-- Tägliche Herausforderung
-*/
 
 FoEproxy.addHandler('ResourceShopService', 'getContexts', (data)=> {
 	if (data['responseData']['0']['context'] !== 'forgePoints') {

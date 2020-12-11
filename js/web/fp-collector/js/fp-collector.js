@@ -48,7 +48,6 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 	}
 
 	StrategyPoints.insertIntoDB({
-		place: 'Guildexpedition',
 		event: 'chest',
 		amount: d['amount'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
@@ -66,7 +65,6 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 	const player = PlayerDict[postData[0]['requestData'][0]];
 	console.log(player)
 	StrategyPoints.insertIntoDB({
-		place: 'FriendsTavern',
 		event: 'satDown',
 		notes: player ? player.PlayerName : undefined,
 		amount: d['rewardResources']['resources']['strategy_points'],
@@ -93,7 +91,6 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 			let PlunderedFP = PlunderReward['product']['resources']['strategy_points'];
 
 			StrategyPoints.insertIntoDB({
-				place: 'OtherPlayer',
 				event: 'plunderReward',
 				amount: PlunderedFP,
 				date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
