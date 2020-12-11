@@ -315,6 +315,49 @@ let FPCollector = {
 
 
 	/**
+ * Handles FP collected from Quests
+ * 
+ */
+	HandleAdvanceQuest: (PostData) => {
+		if (PostData['requestData'] && PostData['requestData'][0]) {
+			let QuestID = PostData['requestData'][0];
+
+			for (let Quest of MainParser.Quests) {
+				if (Quest['id'] !== QuestID || Quest['state'] !== 'collectReward') continue;
+
+				// normale Quest-Belohnung
+				if (Quest['genericRewards']) {
+					for (let Reward of Quest['genericRewards']) {
+						if (Reward['subType'] === 'strategy_points') {
+							StrategyPoints.insertIntoDB({
+								place: 'Quest',
+								event: 'collectReward',
+								amount: Reward['amount'],
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+							});
+						}
+					}
+				}
+
+				// Belohnung einer Schleifenquest
+				if (Quest['rewards']) {
+					for (let Reward of Quest['rewards']) {
+						if (Reward['type'] === 'forgepoint_package') {
+							StrategyPoints.insertIntoDB({
+								place: 'Quest',
+								event: 'collectReward',
+								amount: Number(Reward['subType']),
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+							});
+						}
+					}
+				}
+			}
+		}
+	},
+
+
+	/**
 	 * Get Total fps from one specific day
 	 *
 	 * @param date

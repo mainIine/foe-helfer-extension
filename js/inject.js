@@ -162,7 +162,6 @@
 			const s = [
 				'_languages',
 				'_helper',
-				'_api',
 				'_menu',
 				'_menu_bottom',
 				'_menu_right',
