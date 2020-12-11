@@ -108,6 +108,19 @@
 		"sort": 4
 	},
 	{
+		"name": "ShowNotifications",
+		"status": true,
+		"group": "Extension",
+		"sort": 5
+	},
+	{
+		"name": "NotificationsPosition",
+		"callback": "NotificationView",
+		"group": "Extension",
+		"status": "bottom-right",
+		"sort": 6
+	},
+	{
 		"name": "About",
 		"callback": "About",
 		"group": "About",

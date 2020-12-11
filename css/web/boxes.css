@@ -317,10 +317,10 @@
 .jq-toast-wrap { display: block; position: fixed; /*width: 250px*/;  pointer-events: none !important; margin: 0; padding: 0; letter-spacing: normal; z-index: 9000 !important; }
 .jq-toast-wrap * { margin: 0; padding: 0; }
 
-.jq-toast-wrap.bottom-left { bottom: 20px; left: 20px; }
-.jq-toast-wrap.bottom-right { bottom: 70px; right: 26px; }
-.jq-toast-wrap.top-left { top: 20px; left: 20px; }
-.jq-toast-wrap.top-right { top: 20px; right: 40px; }
+.jq-toast-wrap.bottom-left { bottom: 20px; left: 20px; right: unset }
+.jq-toast-wrap.bottom-right { bottom: 70px; right: 26px; left: unset }
+.jq-toast-wrap.top-left { top: 20px; left: 20px; right: unset }
+.jq-toast-wrap.top-right { top: 20px; right: 40px; left: unset }
 
 .jq-toast-single { display: block; /*width: 100%*/; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 12px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: #444444; color: white; }
 
