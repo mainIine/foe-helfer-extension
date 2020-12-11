@@ -71,7 +71,13 @@ let _menu_right = {
 			_menu.ActiveSlide = 1;
 
 			$('.hud-btn-up').removeClass('hud-btn-up-active');
-			$('.hud-btn-down').addClass('hud-btn-down-active');
+
+			if (_menu.SlideParts > 1) {
+				$('.hud-btn-down').addClass('hud-btn-down-active');
+			}
+			else { //Gesamtes Menü passt auf 1 Seite => Kein Scrollbutton nach unten
+				$('.hud-btn-down').removeClass('hud-btn-down-active');	
+			}
 		}
 	},
 
@@ -81,8 +87,10 @@ let _menu_right = {
 	 *
 	 */
 	Prepare: () => {
+		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
+		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -92,7 +100,7 @@ let _menu_right = {
 		}
 
 		_menu.HudHeight = (_menu.HudCount * 55);
-		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
+		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
 		$('#foe-helper-hud').height(_menu.HudHeight + 2);
 		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
