@@ -35,7 +35,8 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
-// when a great building where the player has invested has been levelledFoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
+// when a great building where the player has invested has been levelled
+FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
 
     if (data && data['responseData'] && data['responseData']) {
         // save the number of returned FPs to show in the infoboard message
