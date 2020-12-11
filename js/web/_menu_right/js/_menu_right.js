@@ -180,6 +180,7 @@ let _menu_right = {
 			}
 		}
 
+		_menu.Items = _menu.Items.filter(e => e);
 		_menu_right.CheckButtons();
 	},
 
