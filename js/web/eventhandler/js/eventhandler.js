@@ -328,7 +328,7 @@ let EventHandler = {
 		}
 
 		/* Filters */
-
+		h.push('<div class="text-center dark-bg header"><strong class="title">' + i18n('Boxes.MoppelHelper.HeaderWarning') + '</strong><br></div>');
 		h.push('<div class="dark-bg"><div class="dropdown" style="float:right">');
         h.push('<input type="checkbox" class="dropdown-checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
         h.push('<ul>');
@@ -343,18 +343,28 @@ let EventHandler = {
 		h.push('</div>');
 		
 		h.push('<div class="tabs"><ul class="horizontal">');
-		if(PlayerDictNeighborsUpdated) 
+
+		if (PlayerDictNeighborsUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
-		else
-			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
-		if(PlayerDictGuildUpdated) 
+		}
+		else {
+			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.NeighborsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+		}
+
+		if (PlayerDictGuildUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
-		else
-			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
-		if(PlayerDictFriendsUpdated) 
+		}
+		else {
+			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.GuildSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+		}
+
+		if (PlayerDictFriendsUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
-		else
-			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+		}
+		else {
+			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+		}
+
 		h.push('</ul></div></div>');
 
 		h.push('<table id="moppelhelperTable" class="foe-table sortable-table">');		
