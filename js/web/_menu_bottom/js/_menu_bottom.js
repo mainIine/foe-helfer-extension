@@ -229,10 +229,9 @@ let _menu_bottom = {
 		$('.hud-btn').stop().hover(function(){
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = ($this.offset().top - $('[data-btn="' + id + '"]').height()-50),
 				x = ($this.offset().left + 30);
 
-			$('[data-btn="' + id + '"]').css({ left: x + 'px', top: y+"px" }).show();
+			$('[data-btn="' + id + '"]').css({ left: x + 'px' }).show();
 
 		}, function(){
 			let id = $(this).attr('id');
