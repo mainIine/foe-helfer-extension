@@ -229,7 +229,7 @@ let _menu_right = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
-			distance: 20,
+			distance: 15,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
