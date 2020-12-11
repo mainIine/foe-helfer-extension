@@ -462,6 +462,39 @@ let HTML = {
 
 
 	/**
+	* Returns strong class for formating mopppel date
+	*
+	* @param Value
+    * @param MinValue
+    * @param MaxValue
+    * @param Color1
+    * @param Color2
+	*/
+	GetColorGradient: (Value, MinValue, MaxValue, Color1, Color2) => {
+		let Factor2 = (Value - MinValue) / (MaxValue - MinValue);
+		Factor2 = Math.max(Factor2, 0);
+		Factor2 = Math.min(Factor2, 1);
+
+		let Factor1 = 1 - Factor2;
+
+		let Color1Int = parseInt(Color1, 16);
+		let Color2Int = parseInt(Color2, 16);
+
+		let Rgb1 = [Math.floor(Color1Int / 256 / 256), Math.floor(Color1Int / 256) % 256, Color1Int % 256];
+		let Rgb2 = [Math.floor(Color2Int / 256 / 256), Math.floor(Color2Int / 256) % 256, Color2Int % 256];
+
+		let RgbRet = [];
+		for (let i = 0; i < 3; i++) {
+			RgbRet[i] = Math.round(Rgb1[i] * Factor1 + Rgb2[i] * Factor2);
+		}
+
+		let ColorRet = RgbRet[0] * 256 * 256 + RgbRet[1] * 256 + RgbRet[2];
+
+		return ColorRet.toString(16);
+	},
+
+
+	/**
 	 * Ersetzt Variablen in einem String mit Argumenten
 	 *
 	 * @param string
