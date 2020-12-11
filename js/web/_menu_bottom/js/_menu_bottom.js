@@ -14,6 +14,7 @@
  */
 
 let _menu_bottom = {
+
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
@@ -232,7 +233,7 @@ let _menu_bottom = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'x',
-			distance: 10,
+			distance: 20,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},

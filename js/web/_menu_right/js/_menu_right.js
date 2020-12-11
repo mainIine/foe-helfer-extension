@@ -14,6 +14,7 @@
  */
 
 let _menu_right = {
+
 	/**
 	 *
 	 */
@@ -39,9 +40,10 @@ let _menu_right = {
 
 			// korrekten Platz für das Menu ermitteln
 			_menu_right.SetMenuHeight();
+
+			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
 
-		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function (event) {
@@ -51,7 +53,7 @@ let _menu_right = {
 
 
 	/**
-	 * Sammelfunktion
+	 * Collective function
 	 *
 	 * @param reset
 	 */
@@ -75,7 +77,7 @@ let _menu_right = {
 
 
 	/**
-	 * Ermittelt die Fensterhöhe und ermittelt die passende Höhe
+	 * Determines the window height and determines the appropriate height
 	 *
 	 */
 	Prepare: () => {
@@ -98,8 +100,7 @@ let _menu_right = {
 
 
 	/**
-	 * Bindet alle benötigten Button ein
-	 *
+	 * Integrates all required buttons
 	 */
 	ListLinks: () => {
 		let hudSlider = $('#foe-helper-hud-slider'),
@@ -186,8 +187,7 @@ let _menu_right = {
 
 
 	/**
-	 * Panel scrollbar machen
-	 *
+	 * Make panel scrollable
 	 */
 	CheckButtons: () => {
 
@@ -229,7 +229,7 @@ let _menu_right = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
-			distance: 10,
+			distance: 20,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
@@ -285,7 +285,7 @@ let _menu_right = {
 
 
 	/**
-	 * Klick Funktion
+	 * Click function
 	 */
 	ClickButtonDown: () => {
 		$('.hud-btn-down').removeClass('hasFocus');
@@ -311,7 +311,7 @@ let _menu_right = {
 
 
 	/**
-	 * Klick Funktion
+	 * Click function
 	 */
 	ClickButtonUp: () => {
 		$('.hud-btn-up').removeClass('hasFocus');
