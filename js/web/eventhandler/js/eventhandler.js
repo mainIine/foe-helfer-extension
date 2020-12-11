@@ -446,7 +446,7 @@ let EventHandler = {
 				if (j < Visits.length) {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
-					let StrongColor = EventHandler.GetMoppelDateColor(Days);
+					let StrongColor = EventHandler.GetMoppelDateColor(Days, j);
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					let EventType = EventHandler.GetEventType(Visits[j]);
 
@@ -485,10 +485,10 @@ let EventHandler = {
 	*
 	* @param Days
 	*/
-	GetMoppelDateColor: (Days) => {
+	GetMoppelDateColor: (Days, EventNr) => {
 		let Maximum = 7;
 		let StepSize = Maximum / 256 / 2;
-		let Steps = Math.round(Days / StepSize);
+		let Steps = Math.round((Days-EventNr) / StepSize);
 
 		Steps = Math.min(Math.max(Steps, 0), 511);
 
