@@ -160,6 +160,7 @@ let _menu_box = {
 		// Sortierfunktion der Menü-items
 		$('#menu_boxBody').sortable({
 			placeholder: 'menu-placeholder',
+			distance: 10,
 			start: function () {
 				$('#menu_box').addClass('is--sorting');
 			},
