@@ -185,6 +185,7 @@ let _menu_bottom = {
 			}
 		}
 
+		_menu.Items = _menu.Items.filter(e => e);
 		_menu_bottom.CheckButtons();
 	},
 
@@ -263,6 +264,8 @@ let _menu_bottom = {
 				});
 			},
 			stop: function () {
+				// Sortierung zwischenspeichern
+				let storedItems = _menu.Items;
 				_menu.Items = [];
 
 				$('.hud-btn').each(function () {
@@ -272,6 +275,7 @@ let _menu_bottom = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
+				if (_menu.equalTo(storedItems)) return;
 
 				$.toast({
 					heading: i18n('Menu.SaveMessage.Title'),

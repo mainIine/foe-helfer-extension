@@ -130,6 +130,7 @@ let _menu_box = {
 			}
 		}
 
+		_menu.Items = _menu.Items.filter(e => e);
 		_menu_box.CheckButtons();
 	},
 	/**
@@ -177,13 +178,19 @@ let _menu_box = {
 				});
 			},
 			stop: function () {
+				// Sortierung zwischenspeichern
+				let storedItems = _menu.Items;
 				_menu.Items = [];
+
 				$('.hud-btn').each(function () {
 					_menu.Items.push($(this).data('slug'));
 				});
+
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#menu_box').removeClass('is--sorting');
+				if (_menu.equalTo(storedItems)) return;
+
 				$.toast({
 					heading: i18n('Menu.SaveMessage.Title'),
 					text: i18n('Menu.SaveMessage.Desc'),

@@ -109,6 +109,21 @@ let _menu = {
 		$('body').append(ToolTipp);
 	},
 
+	/**
+	 * Prüft, ob sich etwas an der Sortierung der Items verändert hat.
+	 *
+	 * @param storedItems
+	 * @returns {boolean}
+	 */
+	equalTo: (storedItems) => {
+		for (let i = 0; i < storedItems.length; i++) {
+			// Es hat sich etwas an der Sortierung verändert
+			if (storedItems[i] !== _menu.Items[i]) return false;
+		}
+
+		return true;
+	},
+
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
@@ -549,7 +564,11 @@ let _menu = {
 		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
 
 		// no BG => display none
-		if (!OwnGalaxy) return;
+		if (!OwnGalaxy) {
+			let index = _menu.Items.indexOf('bluegalaxy');
+			delete _menu.Items[index];
+			return;
+		}
 
 		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
 
