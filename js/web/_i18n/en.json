@@ -730,5 +730,20 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English"
+    "_Language": "English",
+	"Settings.Entry.ShowNotifications": "Notifications",
+	"Settings.ShowNotifications.Title": "Notifications",
+	"Settings.Entry.NotificationsPosition": "Notify position",
+	"Settings.NotificationsPosition.Title": "Notify position",
+	"Settings.ShowNotifications.Desc": "The assistant uses notifications in various places. You can switch this on or off here.",
+	"Settings.NotificationsPosition.Desc": "Where do you want the notifications to appear on your screen?",
+	"Menu.Notification.Position.bottom-left": "bottom left",
+	"Menu.Notification.Position.bottom-right": "bottom right",
+	"Menu.Notification.Position.top-right": "top right",
+	"Menu.Notification.Position.top-left": "top left",
+	"Menu.Notification.Position.bottom-center": "bottom middle",
+	"Menu.Notification.Position.top-center": "top middle",
+	"Menu.Notification.Position.mid-center": "middle middle",
+	"Settings.NotificationPosition.ToastTestHeader": "Preview notification",
+	"Settings.NotificationPosition.ToastTestBody" : "This is the position you have chosen.<br>Before you test the next position, wait until this message disappears."
 }

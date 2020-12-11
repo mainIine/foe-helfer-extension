@@ -730,5 +730,20 @@
     "WsChat.UserLeave": " ist gegangen.",
     "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
-    "_Language": "Deutsch"
+    "_Language": "Deutsch",
+	"Settings.Entry.ShowNotifications": "Benachrichtigungen",
+	"Settings.ShowNotifications.Title": "Benachrichtigungen",
+	"Settings.Entry.NotificationsPosition": "Benachrichtiguns- position",
+	"Settings.NotificationsPosition.Title": "Benachrichtigung Position",
+	"Settings.ShowNotifications.Desc": "Der Helfer benutzt an verschiedenen Stellen Benachrichtigungen. Hier kannst Du esie an- oder abschalten.",
+	"Settings.NotificationsPosition.Desc": "Auf welcher Stelle Deines Bildschirmes sollen die Benachrichtigungen erscheinen?",
+	"Menu.Notification.Position.bottom-left": "unten links",
+	"Menu.Notification.Position.bottom-right": "unten rechts",
+	"Menu.Notification.Position.top-right": "oben rechts",
+	"Menu.Notification.Position.top-left": "oben links",
+	"Menu.Notification.Position.bottom-center": "unten mitte",
+	"Menu.Notification.Position.top-center": "oben mitte",
+	"Menu.Notification.Position.mid-center": "mitte mitte",
+	"Settings.NotificationPosition.ToastTestHeader": "Benachrichtigungs Vorschau",
+	"Settings.NotificationPosition.ToastTestBody" : "Ab sofort erscheinen deine Benachrichtigungen an dieser Position.<br>Befor du die nächste Position testest, warte bis diese Meldung verschwunden ist."
 }
