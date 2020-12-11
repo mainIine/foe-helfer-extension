@@ -229,6 +229,7 @@ let _menu_right = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
+			distance: 10,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
@@ -270,6 +271,12 @@ let _menu_right = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
+				$.toast({
+					heading: i18n('Menu.SaveMessage.Title'),
+					text: i18n('Menu.SaveMessage.Desc'),
+					icon: 'success',
+					hideAfter: 5000
+				});
 			}
 		});
 
