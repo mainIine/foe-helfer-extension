@@ -21,6 +21,7 @@
     min-width: 95px !important;
 	min-height: 50px !important;    
 	border-image-source: url(../images/hud/window-menu.png);
+	border-radius: 15px;
 }
 
 #menu_box.closed {
@@ -79,7 +80,7 @@
 	display: inline-block;
 	width: 45px;
 	height: 45px;
-	background: url('../images/hud/menu-sm.png') -122px -90px no-repeat;
+	background: url('../images/hud/menu-sm.png') -126px -64px no-repeat;
 }
 
 .hud-btn span.hud-counter {
