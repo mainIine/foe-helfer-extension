@@ -94,7 +94,7 @@ let BlueGalaxy = {
             if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
 
             let Production = Productions.readType(CityMap[i]);
-            if (Production['motivatedproducts']) {
+            if (Production['products']) {
                 let FP = Production['products']['strategy_points'];
                 if (!FP) FP = 0;
 

@@ -610,7 +610,6 @@ const FoEproxy = (function () {
 		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));
 		MainParser.SaveBuildings(MainParser.CityMapData);
-		FPCollector.CityMapDataBackUp = MainParser.CityMapData;
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
