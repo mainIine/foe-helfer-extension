@@ -93,7 +93,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 });
 
 
-// double Collection by Blue Galaxy
+// double Collection by Blue Galaxy contains [id, type]
 FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 
 	for(let i in data['responseData'])
@@ -106,7 +106,7 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 		}
 
 		const id = data['responseData'][i]['id'];
-		const building = Object.values(MainParser.CityMapData).find(e => e.id === id)[0];
+		const building = Object.values(FPCollector.CityMapDataBackUp).find(e => e.id === id)[0];
 		const eID = building.cityentity_id;
 
 		let name = MainParser.CityEntities[eID]['name'],
