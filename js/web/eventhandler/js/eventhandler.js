@@ -450,20 +450,20 @@ let EventHandler = {
 			h.push('<tr>');
 			h.push('<td class="is-number" data-number="' + (i + 1) + '">#' + (i + 1) + '</td>');
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
-			h.push('<td data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
+			h.push('<td style="white-space:nowrap" data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 			for (let j = 0; j < EventHandler.MaxVisitCount; j++) {
 				if (j < Visits.length) {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
-					let StrongColor = (Days < 3.5 ? HTML.GetColorGradient(Days, 0, 3.5, '33ee00', 'eeee00') : HTML.GetColorGradient(Days, 3.5, 7, 'eeee00', 'ee3300'));
+					let StrongColor = (Days < 3 * (j + 1) ? HTML.GetColorGradient(Days, 0, 3 * (j + 1), '00ff00', 'ffff00') : HTML.GetColorGradient(Days, 3 * (j + 1), 7 * (j + 1), 'ffff00', 'ff0000'));
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					let EventType = EventHandler.GetEventType(Visits[j]);
 
 					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
-					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ee3300">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
+					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
 				}
 			}
 			h.push('</tr>');

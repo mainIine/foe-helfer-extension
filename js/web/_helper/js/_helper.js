@@ -490,7 +490,11 @@ let HTML = {
 
 		let ColorRet = RgbRet[0] * 256 * 256 + RgbRet[1] * 256 + RgbRet[2];
 
-		return ColorRet.toString(16);
+		let Ret = ColorRet.toString(16);
+		while (Ret.length < 6) {
+			Ret = '0' + Ret;
+		}
+		return Ret;
 	},
 
 
