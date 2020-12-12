@@ -608,8 +608,9 @@ const FoEproxy = (function () {
 
 		// Alle Gebäude sichern
 		LastMapPlayerID = ExtPlayerID;
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));
 		MainParser.SaveBuildings(MainParser.CityMapData);
+		FPCollector.CityMapDataBackUp = MainParser.CityMapData;
 
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
@@ -708,11 +709,11 @@ const FoEproxy = (function () {
 			}
 		}
 		else if (data.requestMethod === 'removeBuilding') {
-				let ID = postData[0].requestData[0];
-				if (ID && MainParser.CityMapData[ID]) {
-					delete MainParser.CityMapData[ID];
-				}
+			let ID = postData[0].requestData[0];
+			if (ID && MainParser.CityMapData[ID]) {
+				delete MainParser.CityMapData[ID];
 			}
+		}
 	});
 
 
@@ -2016,6 +2017,8 @@ let MainParser = {
 		if ($('#bluegalaxy').length > 0) {
 			BlueGalaxy.CalcBody();
 		}
+
+		FPCollector.CityMapDataNew = Buildings;
 	},
 
 

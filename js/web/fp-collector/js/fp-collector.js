@@ -39,6 +39,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 	});
 });
 
+
 // GEX FP from chest
 FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 	const d = data['responseData'];
@@ -53,6 +54,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
 });
+
 
 // Visit other tavern
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
@@ -72,15 +74,6 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 	});
 });
 
-// double Collection by Blue Galaxy
-FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
-
-	if(data['responseData'][0]['type'] !== 'citymap_icon_double_collection'){
-		return;
-	}
-
-	StrategyPoints.pickupProductionId = data['responseData'][0]['id'];
-});
 
 // Plunder reward
 FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
@@ -99,51 +92,47 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 	}
 });
 
-// BlueGalaxy event (double PickUp)
-FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 
-	if(!StrategyPoints.pickupProductionId){
-		return;
-	}
+// double Collection by Blue Galaxy
+FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 
-	const pickUpID = StrategyPoints.pickupProductionId;
-	const d = data['responseData']['updatedEntities'];
-
-	for(let i in d)
+	for(let i in data['responseData'])
 	{
-		if(!d.hasOwnProperty(i)) continue;
+		if(!data['responseData'].hasOwnProperty(i)) continue;
 
-		if(pickUpID !== d[i]['id']){
-			return ;
+		if(data['responseData'][i]['type'] !== 'citymap_icon_double_collection')
+		{
+			return;
 		}
 
-		let id = d[i]['cityentity_id'],
-			name = MainParser.CityEntities[id]['name'],
+		const id = data['responseData'][i]['id'];
+		const building = Object.values(MainParser.CityMapData).find(e => e.id === id)[0];
+		const eID = building.cityentity_id;
+
+		let name = MainParser.CityEntities[eID]['name'],
 			amount;
 
-		// Eventbuildings
-		if(d[i]['type'] === 'residential')
+		if(building.type === 'residential')
 		{
 			// has this building forge points?
-			if(!d[i]['state']['current_product']['product']['resources']['strategy_points']){
+			if(!building['state']['current_product']['product']['resources']['strategy_points']){
 				return;
 			}
 
-			amount = d[i]['state']['current_product']['product']['resources']['strategy_points'];
+			amount = building['state']['current_product']['product']['resources']['strategy_points'];
 		}
 
 		// Production building like Terrace fields
 		else {
-			let level = d[i]['level'],
-				products = MainParser.CityEntities[id]['entity_levels'][level]['production_values'];
+			let level = building.level,
+				products = MainParser.CityEntities[eID]['entity_levels'][level]['production_values'];
 
-			const product = Object.values(products).filter(f => f['type'] === 'strategy_points');
+			const product = Object.values(products).filter(f => f['type'] === 'strategy_points')[0];
 
-			amount = product[0]['value'];
+			amount = product['value'];
 		}
 
 		StrategyPoints.insertIntoDB({
-			place: 'pickupProduction',
 			event: 'double_collection',
 			notes: name,
 			amount: amount,
@@ -151,19 +140,21 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 		});
 	}
 
-	// reset
-	StrategyPoints.pickupProductionId = null;
+	FPCollector.CityMapDataBackUp = FPCollector.CityMapDataNew;
 });
 
 
 /**
- * @type {{calculateTotal: (function(*=): number), maxDateFilter, TodayEntries: null, lockDates: [], buildBody: (function(): Promise<void>), intiateDatePicker: (function(): Promise<void>), getPossibleEventsByDate: (function(): []), currentDateFilter, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
+ * @type {{maxDateFilter, CityMapDataNew: null, buildBody: (function(): Promise<void>), currentDateFilter, calculateTotalByType: (function(*=): number), ShowFPCollectorBox: (function(): Promise<void>), calculateTotal: (function(): number), TodayEntries: null, lockDates: [], ToggleHeader: FPCollector.ToggleHeader, CityMapDataBackUp: null, intiateDatePicker: (function(): Promise<void>), getPossibleEventsByDate: (function(): []), DatePicker: null, HandleAdvanceQuest: FPCollector.HandleAdvanceQuest, minDateFilter: null}}
  */
 let FPCollector = {
 
 	minDateFilter: null,
 	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
 	currentDateFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
+
+	CityMapDataNew: null,
+	CityMapDataBackUp: null,
 
 	lockDates: [],
 	TodayEntries: null,
