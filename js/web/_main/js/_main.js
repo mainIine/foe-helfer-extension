@@ -13,7 +13,6 @@
  * **************************************************************************************
  */
 
-
 {
 	// jQuery detection
 	let intval = -1;
@@ -1088,6 +1087,7 @@ let MainParser = {
 	Conversations: [],
 	CityMetaId: null,
 	CityEntities: null,
+	StartUpType: null,
 
 	// alle Gebäude des Spielers
 	CityMapData: {},
@@ -1107,6 +1107,39 @@ let MainParser = {
 	BuildingSets: null,
 
 	InnoCDN: 'https://foede.innogamescdn.com/',
+
+
+
+	/**
+	* Version specific StartUp Code
+    * Todo: Add code that should be executed only until the next update
+	*
+	*/
+	VersionSpecificStartupCode: () => {
+		let LastStartedVersion = localStorage.getItem('LastStartedVersion');
+		let LastAgreedVersion = localStorage.getItem('LastAgreedVersion');
+
+		if (!LastStartedVersion) {
+			MainParser.StartUpType = 'DeletedSettings';
+			/* Fresh install of deleted settings */
+			/* Attention: If you do stuff here it might be executed every start when surfing in incognito mode */
+		}
+		else if (LastStartedVersion !== extVersion) {
+			MainParser.StartUpType = 'UpdatedVersion';
+			/* We have a new version installed and started the first time */
+		}
+		else if (LastAgreedVersion !== extVersion) {
+			MainParser.StartUpType = 'NotAgreed';
+			/* This is a second start, but the player has not yet agreed to the new prompt */
+		}
+		else {
+			MainParser.StartUpType = 'RegularStart';
+			/* Normal start */
+        }
+
+		localStorage.setItem('LastStartedVersion', extVersion);
+		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
+    },
 
 
 	/** @type {Record<string,string>} */
@@ -1578,6 +1611,8 @@ let MainParser = {
 	 */
 	StartUp: (d) => {
 		Settings.Init(false);
+
+		MainParser.VersionSpecificStartupCode();
 
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
