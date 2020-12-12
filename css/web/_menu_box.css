@@ -18,7 +18,7 @@
     right: 15%;
     width: 120px;
     height: 60px;
-    min-width: 120px !important;
+    min-width: 95px !important;
 	min-height: 50px !important;    
 	border-image-source: url(../images/hud/window-menu.png);
 }
