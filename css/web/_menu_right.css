@@ -116,7 +116,7 @@
 }
 
 .hud-btn-up-active::before {
-	background-position: -124px 0;
+	background-position: -123px 0;
 }
 .hud-btn-up-active:hover::before {
 	background-position: -66px -16px;
