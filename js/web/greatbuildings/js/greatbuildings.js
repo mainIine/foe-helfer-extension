@@ -296,7 +296,7 @@ let GreatBuildings =
 
                 h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
-                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
+                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['FP']*10)/10) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
             }
             else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
@@ -400,7 +400,7 @@ let GreatBuildings =
         }
         else if (Level > 0) {
             if (Charges) { // Blaue Galaxie
-                 StartProduction = GreatBuildings.GetGalaxyProduction(Productions, Charges, Level, false);
+                 StartProduction = GreatBuildings.GetGalaxyProduction(Productions, Charges, Level-1, false);
             }
             else {
                 StartProduction = Productions[Level - 1];
