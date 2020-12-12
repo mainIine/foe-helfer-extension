@@ -654,7 +654,7 @@ let EventHandler = {
 				sunday: /Domingo a las (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 			},
 			cz: {
-				today: /dnes v\xC2\xA0(?<h>[012]?\d):(?<m>[0-5]?\d)\xC2\xA0hod/g,
+				today: /dnes v (?<h>[012]?\d):(?<m>[0-5]?\d) hod/g, //Old Format: /dnes v\xC2\xA0(?<h>[012]?\d):(?<m>[0-5]?\d)\xC2\xA0hod/g
 				yesterday: /včera v (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				monday: /Pondělí v (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				tuesday: /Úterý v (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
