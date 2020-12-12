@@ -19,10 +19,23 @@
     width: 120px;
     height: 60px;
     min-width: 120px !important;
-    min-height: 60px !important;
+	min-height: 50px !important;    
+	border-image-source: url(../images/hud/window-menu.png);
 }
+
+#menu_box.closed {
+	border-image-source: url(../images/hud/window-menu-closed.png);
+	min-height: 0 !important;    
+}
+
 #menu_box .title {
     font-size: 115%;
+}
+
+#menu_boxHeader {
+	top: -37px;
+	left: 1px;
+	right: -7px;
 }
 
 #menu_box .header {
@@ -36,42 +49,42 @@
 }
 
 .hud-btn {
-	background: url('../images/hud/menu-right.png') top left no-repeat;
+	background: url('../images/hud/menu-sm.png') top left no-repeat;
 }
 
 .hud-btn {
 	display: inline-block;
-	background-position: -122px -33px;
-	width: 55px;
-	height: 55px;
+	background-position: -183px -123px;
+	width: 45px;
+	height: 45px;
 	position: relative;
 }
 
 .hud-btn-red {
-	background-position: -65px -33px;
+	background-position: -183px -66px;
 }
 
 .hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
-	width: 38px;
-	height: 38px;
+	width: 65%;
+	height: 65%;
 	background-size: contain;
 	position: absolute;
-	top: 8px;
-	left: 9px;
+	top: 7px;
+	left: 7px;
 }
 
 .menu-placeholder {
 	display: inline-block;
-	width: 55px;
-	height: 55px;
-	background: url('../images/hud/menu-right.png') -122px -90px no-repeat;
+	width: 45px;
+	height: 45px;
+	background: url('../images/hud/menu-sm.png') -122px -90px no-repeat;
 }
 
 .hud-btn span.hud-counter {
-	width: 16px;
-	height: 16px;
+	width: 15px;
+	height: 15px;
 	position: absolute;
 	padding: 2px;
 	bottom: 4px;
