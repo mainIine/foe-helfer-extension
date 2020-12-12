@@ -22,11 +22,12 @@
 	min-height: 50px !important;    
 	border-image-source: url(../images/hud/window-menu.png);
 	border-radius: 15px;
+	border-width: 30px 7px 7px 7px;
 }
 
 #menu_box.closed {
 	border-image-source: url(../images/hud/window-menu-closed.png);
-	min-height: 0 !important;    
+	min-height: 0 !important;
 }
 
 #menu_box .title {
@@ -34,9 +35,18 @@
 }
 
 #menu_boxHeader {
-	top: -37px;
+	top: -31px;
 	left: 1px;
-	right: -7px;
+	right: -5px;
+}
+
+#menu_box.closed #menu_boxHeader {
+	top: -33px;
+}
+
+#menu_box .window-head span.title {
+	font-size: 100%;
+	color: #eee;
 }
 
 #menu_box .header {
@@ -87,16 +97,18 @@
 	width: 15px;
 	height: 15px;
 	position: absolute;
-	padding: 2px;
+	padding: 1px;
 	bottom: 4px;
 	top: unset;
-	left: 5px;
+	left: 4px;
 	background-color: var(--hud-counter);
 	border-radius: 50%;
-	line-height: 16px;
+	line-height: 13px;
 	text-align: center;
     box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-    pointer-events: none;
+	pointer-events: none;
+	font-weight: bold;
+	font-size: 0.8rem;
 }
 
 /* ---------------------------------------------------------------------------------------------------------------------
