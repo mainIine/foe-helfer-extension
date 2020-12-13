@@ -5,12 +5,12 @@
 **New**
 - Menu:
     - [#1664](https://github.com/dsiekiera/foe-helfer-extension/issues/1664) [#1665](https://github.com/dsiekiera/foe-helfer-extension/issues/1665) There are now 3 menu variants (right, bottom and box).
-    - Selectable via "Settings > Extension > Change menu".
+    - Selectable via "Settings > General > Change Menu".
     - Redesign (smaller, new graphics) of the bottom and box variant for more space
 
 - Extension:
-    - Notifications can now be switched off via "Settings > Extension > Notification".
-    - The notifications can appear at different positions "Settings > Extension > Notification positions".
+    - Notifications can now be switched off via "Settings > General > Notification".
+    - The notifications can appear at different positions "Settings > General > Notification positions".
 
 **Update**
 - City overview:
@@ -38,8 +38,6 @@
 
 - Menu:
     - [#1681](https://github.com/dsiekiera/foe-helfer-extension/issues/1681) the drag&drop was too sensitive and always gave the message "The new menu order has been saved", we have changed that
-      *** Translated with www.DeepL.com/Translator (free version) ***
-
 
 
 ---
