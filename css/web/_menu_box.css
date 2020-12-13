@@ -30,10 +30,6 @@
 	min-height: 0 !important;
 }
 
-#menu_box .title {
-    font-size: 115%;
-}
-
 #menu_boxHeader {
 	top: -31px;
 	left: 1px;
@@ -45,8 +41,9 @@
 }
 
 #menu_box .window-head span.title {
-	font-size: 100%;
+	font-size: 95%;
 	color: #eee;
+	padding-top: 1px;
 }
 
 #menu_box .header {
