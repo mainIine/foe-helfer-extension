@@ -95,11 +95,16 @@ const i18n_loadPromise = (async() => {
 
 
 document.addEventListener("DOMContentLoaded", function(){
-	// aktuelle Welt notieren
+	// note current world
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
 
-	// Fullscreen erkennen und verarbeiten
+	// register resize functions
+	window.addEventListener('resize', ()=>{
+		MainParser.ResizeFunctions();
+	});
+
+	// Detect and process fullscreen
 	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
 		if (!window.screenTop && !window.screenY) {
 			HTML.LeaveFullscreen();
@@ -651,6 +656,9 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
 
+		// update FP-Bar for more customizable
+		$('#fp-bar').removeClass('main gex gg era_outpost').addClass(ActiveMap);
+
 		if (ActiveMap === 'era_outpost') {
 			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
 		}
@@ -659,6 +667,7 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
+
 		if (ActiveMap === 'gg') return; //getEntities wurde in den GG ausgelöst => Map nicht ändern
 
 		let MainGrid = false;
@@ -680,13 +689,14 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		StrategyPoints.HandleWindowResize();
+		$('#fp-bar').removeClass('main gex gg era_outpost').addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
+		$('#fp-bar').removeClass('main gex gg era_outpost').addClass(ActiveMap);
 	});
 
 
@@ -2145,6 +2155,13 @@ let MainParser = {
 		let RegEx = new RegExp(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi);
 
 		return text.replace(RegEx, '');
+	},
+
+
+	ResizeFunctions: ()=> {
+
+		// FP-Bar
+		StrategyPoints.HandleWindowResize();
 	},
 
 

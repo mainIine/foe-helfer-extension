@@ -563,8 +563,7 @@ Tabs */
 	color: var(--text-normal);
 	position: fixed;
 	top: 2px;
-	left: 416px;
-	width: calc(100% - 818px);
+	left: calc(50vw  + 130px);
 	display: flex;
 	justify-content: flex-end;
 }
@@ -587,21 +586,9 @@ Tabs */
 	margin: 5px 0 0 30px;
 }
 
-#fp-bar.medium-screen {}
-#fp-bar.medium-screen .buyable-fp {
-	float: left;
-}
-
-#fp-bar.small-screen {
-	justify-content: flex-start;
-	top: 36px;
-	left: 2px;
-}
-
 #fp-bar.small-screen .fp-storage, #fp-bar.small-screen .buyable-fp {
 	border: 1px solid rgba(243, 214, 160, 0.65);
 	border-radius: 4px;
-	float: left;
 }
 
 #fp-bar.small-screen .fp-storage {
@@ -610,6 +597,15 @@ Tabs */
 
 #fp-bar.small-screen .buyable-fp {
 	background-color: rgba(0, 0, 0, 0.75);
+}
+
+#fp-bar.main.small-screen {
+	top: 50px;
+	left: calc(50vw - 46px);
+}
+
+#fp-bar.gex.small-screen {
+	top: 80px;
 }
 
 #fp-bar .fp-bar-main {
