@@ -1,0 +1,156 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 style-menu.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:37 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#menu_box {
+    top: 30%;
+    right: 15%;
+    width: 120px;
+    height: 60px;
+    min-width: 95px !important;
+	min-height: 50px !important;    
+	border-image-source: url(../images/hud/window-menu.png);
+	border-radius: 15px;
+	border-width: 30px 7px 7px 7px;
+}
+
+#menu_box.closed {
+	border-image-source: url(../images/hud/window-menu-closed.png);
+	min-height: 0 !important;
+}
+
+#menu_boxHeader {
+	top: -31px;
+	left: 1px;
+	right: -5px;
+}
+
+#menu_box.closed #menu_boxHeader {
+	top: -33px;
+}
+
+#menu_box .window-head span.title {
+	font-size: 95%;
+	color: #eee;
+	padding-top: 1px;
+}
+
+#menu_box .header {
+    margin-bottom: 2px;
+    padding: 1em 0;
+}
+
+#menu_box #menu_boxBody {
+	overflow: auto;
+	overflow-y: auto;
+}
+
+.hud-btn {
+	background: url('../images/hud/menu-sm.png') top left no-repeat;
+}
+
+.hud-btn {
+	display: inline-block;
+	background-position: -183px -123px;
+	width: 45px;
+	height: 45px;
+	position: relative;
+}
+
+.hud-btn-red {
+	background-position: -183px -66px;
+}
+
+.hud-btn span:first-child {
+	background-position: center center;
+	background-repeat: no-repeat;
+	width: 65%;
+	height: 65%;
+	background-size: contain;
+	position: absolute;
+	top: 7px;
+	left: 7px;
+}
+
+.menu-placeholder {
+	display: inline-block;
+	width: 45px;
+	height: 45px;
+	background: url('../images/hud/menu-sm.png') -126px -66px no-repeat;
+}
+
+.hud-btn span.hud-counter {
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	padding: 1px;
+	bottom: 4px;
+	top: unset;
+	left: 4px;
+	background-color: var(--hud-counter);
+	border-radius: 50%;
+	line-height: 13px;
+	text-align: center;
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+	pointer-events: none;
+	font-weight: bold;
+	font-size: 0.8rem;
+}
+
+/* ---------------------------------------------------------------------------------------------------------------------
+Tooltip */
+
+.toolTipWrapper {
+	text-align: left;
+	display: none;
+	position: absolute;
+	width: 180px;
+	right: 0;
+	border: 10px solid transparent;
+	background-color: #5e5a4e;
+	border-image: url('../images/hud/tooltip_bg.png') 10 round;
+	z-index: 999;
+	transform: translateX(-50%);
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: #f2ede1;
+	padding: 3px;
+	pointer-events: none;
+	user-select: none;
+}
+
+.toolTipWrapper::after {
+	content: '';
+	width: 18px;
+	height: 31px;
+	display: inline-block;
+	position: absolute;
+	bottom: -26px;
+	transform: translateX(-50%);
+	left: 50%;
+	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
+}
+
+.toolTipWrapper .tooltip-error {
+	color: #f79090;
+}
+
+.toolTipWrapper .toolTipHeader {
+	color: #bdc5cb;
+	background-color: #313d45;
+	box-shadow: inset 0 0 2px var(--black);
+	margin: -7px -7px 2px -7px;
+	padding: 0 5px 1.3px;
+}

@@ -13,12 +13,12 @@
  * **************************************************************************************
  */
 
-// trenne Code vom Globalen Scope
+// separate code from global scope
 {
 
 	/**
-	 * Lädt ein JavaScript in der Webseite. Der zurückgegebene Promise wird aufgelöst, sobald der code geladen wurde.
-	 * @param {string} src die zu ladende URL
+	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
+	 * @param {string} src the URL to load
 	 * @returns {Promise<void>}
 	 */
 	function promisedLoadCode(src) {
@@ -46,8 +46,8 @@
 	}
 
 
-	// prüfen ob jQuery im DOM geladen wurde
-	// => jQuery Loaded event abfangen
+	// check whether jQuery has been loaded in the DOM
+	// => Catch jQuery Loaded event
 	const jQueryLoading = new Promise(resolve => {
 		window.addEventListener('foe-helper#jQuery-loaded', evt => {
 			resolve();
@@ -60,12 +60,12 @@
 	let   lng = chrome.i18n.getUILanguage();
 	const uLng = localStorage.getItem('user-language');
 
-	// wir brauchen nur den ersten Teil
+	// we only need the first part
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
 	}
 
-	// gibt es eine Übersetzung?
+	// is there a translation?
 	if (Languages.PossibleLanguages[lng] === undefined) {
 		lng = 'en';
 	}
@@ -73,7 +73,7 @@
 	if (uLng !== null){
 		lng = uLng;
 	} else {
-		// damit man die sprache auslesen kann ohne diese über die einstellungen einmal ändern zu müssen
+		// so that the language can be read out without having to change it once via the settings
 		localStorage.setItem('user-language', lng);
 	}
 
@@ -82,17 +82,20 @@
 
 	let tid = setInterval(InjectCSS, 0);
 	function InjectCSS() {
-		// Dokument geladen
+		// Document loaded
 		if(document.head !== null){
+			let MenuSetting = localStorage.getItem('SelectedMenu');
+			MenuSetting = MenuSetting ?? 'BottomBar';
+			let cssname = "_menu_"+MenuSetting.toLowerCase().replace("bar","");
 
 			let cssFiles = [
 				'variables',
 				'goods',
-				'style-menu',
+				cssname,
 				'boxes'
 			];
 
-			// Stylesheet einfügen
+			// insert stylesheet
 			for(let i in cssFiles)
 			{
 				if(!cssFiles.hasOwnProperty(i)) {
@@ -111,7 +114,7 @@
 
 	async function InjectCode() {
 		try {
-			// setze einige globale Variablen
+			// set some global variables
 			let script = document.createElement('script');
 			script.innerText = `
 				const extID='${chrome.runtime.id}',
@@ -121,13 +124,13 @@
 					devMode=${!('update_url' in chrome.runtime.getManifest())};
 			`;
 			(document.head || document.documentElement).appendChild(script);
-			// Das script wurde (angeblich) direkt ausgeführt und kann wieder entfernt werden.
+			// The script was (supposedly) executed directly and can be removed again.
 			script.remove();
 
-			// lade die main
+			// load the main
 			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
 
-			// warte zunächst, dass ant und i18n geladen sind
+			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
 
 
@@ -151,7 +154,7 @@
 					'dexie/dexie.min', // indexDB helper lib
 				];
 
-			// lade zunächst alle vendor-scripte (unbekannte reihenfolge)
+			// load all vendor scripts first (unknown order)
 			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
 
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
@@ -159,8 +162,10 @@
 			const s = [
 				'_languages',
 				'_helper',
-				'_api',
 				'_menu',
+				'_menu_bottom',
+				'_menu_right',
+				'_menu_box',
 				'indexdb',
 				'kits',
 				'outposts',
@@ -194,7 +199,7 @@
 				'fp-collector',
 			];
 
-			// Scripte laden (nacheinander)
+			// load scripts (one after the other)
 			for (let i = 0; i < s.length; i++)
 			{
 				await promisedLoadCode(`${extURL}js/web/${s[i]}/js/${s[i]}.js?v=${v}`);
@@ -202,7 +207,7 @@
 
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 
-			// Wenn #content Verfügbar ist, wurde ein Flash-Inhalt geladen...
+			// If #content is available, flash content has been loaded ...
 			let IsForum = false;
 			if (window !== undefined && window.location !== undefined && window.location.pathname !== undefined && window.location.pathname.includes('forum')) {
 				IsForum = true;
@@ -213,17 +218,17 @@
 			}
 
 		} catch (err) {
-			// stelle sicher, dass bei einem unvollständiges Laden nicht der paket-buffer im FoEproxy voll läuft.
+			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
 			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
 		}
 	}
 
-	// Firefox unterstützt keine direkte kommunikation mit background.js
-	// also müssen die Nachrichten weitergeleitet werden.
+	// Firefox does not support direct communication with background.js
+	// so the messages have to be forwarded.
 	// @ts-ignore
 	if (!chrome.app) {
-		// höre auf dem window objekt auf spezielle Nachrichten unter '<extID>#message'
-		// und leite sie weiter wenn sie von dieser Seite kommen
+		// listen on the window object for special messages under '<extID> #message'
+		// and forward them if they come from this site
 		window.addEventListener(chrome.runtime.id+'#message', (/** @type {CustomEvent} */ evt) => {
 			if (evt.srcElement === window) {
 				try {
@@ -235,5 +240,5 @@
 		});
 	}
 
-	// Ende der Trennung vom Globalen Scope
+	// End of the separation from the global scope
 }

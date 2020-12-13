@@ -12,7 +12,7 @@
  * **************************************************************************************
  */
 
-// trenne Code vom Globalen Scope
+// separate code from global scope
 {
 
 	chrome.runtime.onInstalled.addListener(() => {
@@ -23,23 +23,23 @@
 				en: 'An update for the FoE Helper has just been installed.%0A%0ACan the game be reloaded now or do you want to do it yourself later%3F'
 			};
 
-		// is ein "-" drin? ==> en-en, en-us, en-gb usw...
+		// is a "-" in there? ==> en-en, en-us, en-gb etc ...
 		if(lng.indexOf('-') > -1){
 			lng = lng.split('-')[0];
 		}
 
-		// Fallback auf "en"
+		// Fallback to "en"
 		if(lng !== 'de' && lng !== 'en'){
 			lng = 'en';
 		}
 
-		// Kein Entwickler und Spieler fragen ob das Spiel neu geladen werden darf
+		// No developer and player ask if the game can be reloaded
 		if(!isDevMode() && confirm(unescape(ask[lng])) === true){
 			chrome.tabs.query({active: true, currentWindow: true}, (tabs)=> {
-				// sind wir in FoE?
+				// are we in FoE?
 				if(tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
 
-					// ja? dann neu laden
+					// Yes? then reload
 					chrome.tabs.reload(tabs[0].id);
 				}
 			});
@@ -52,7 +52,7 @@
 
 
 	/**
-	 * Sind wir im DevMode?
+	 * Are we in DevMode?
 	 *
 	 * @returns {boolean}
 	 */
@@ -66,7 +66,7 @@
 
 	const defaultInnoCDN = 'https://foede.innogamescdn.com/';
 
-	// // automatisches Update der lokalen daten
+	// // automatic update of local data
 	// window.addEventListener('storage', evt => {
 	// 	if (!evt.isTrusted) return;
 	// 	if (evt.key === 'PlayerData') {
@@ -85,10 +85,10 @@
 					iconUrl: "images/app48.png"
 				};
 
-			// Desktop Meldung zusammen setzen
+			// Compose desktop message
 			chrome.notifications.create('', opt, (id)=> {
 
-				// nach definiertem Timeout automatisch entfernen
+				// Remove automatically after a defined timeout
 				setTimeout(()=> {chrome.notifications.clear(id)}, t);
 			});
 
@@ -97,10 +97,10 @@
 			let url = `js/web/ws-chat/html/chat.html?player=${request.player}&world=${request.world}&lang=${request.lang}`,
 				popupUrl = chrome.runtime.getURL(url);
 
-			// Prüfen ob ein PopUp mit dieser URL bereits existiert
+			// Check whether a popup with this URL already exists
 			chrome.tabs.query({url:popupUrl}, (tab)=>{
 
-				// nur öffnen wenn noch nicht passiert
+				// only open if not already done
 				if(tab.length < 1){
 
 					let o = {
@@ -111,12 +111,12 @@
 						focused: true
 					};
 
-					// Popup erzeugen
+					// generate a popup
 					let id = chrome.windows.create(o, (win)=> {
 						popupWindowId = win.id;
 					});
 
-				// gibt es schon, nach "vorn" holen
+				// already exists, bring it to the "front"
 				} else {
 					chrome.windows.update(popupWindowId, {
 						focused:true
@@ -177,7 +177,7 @@
 	}
 
 	/**
-	 * Auf einen response von _main.js lauschen
+	 * Listen for a response from _main.js
 	 */
 	// @ts-ignore
 	if (chrome.app) { // Chrome
@@ -186,7 +186,7 @@
 	}
 	chrome.runtime.onMessage.addListener(handleWebpageRequests);
 
-	// ende der Trennung vom Globalen Scope
+	// End of the separation from the global scope
 }
 
 /*

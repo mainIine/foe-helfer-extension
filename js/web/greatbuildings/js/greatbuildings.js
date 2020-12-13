@@ -296,7 +296,7 @@ let GreatBuildings =
 
                 h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
                 h.push('<td>' + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['Cost'])) + '</td>');               
-                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['FP'])) + '</td>');
+                h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['FP']*10)/10) + '</td>');
                 h.push('<td><strong class="text-bright">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(ROIResults[Index]['ROIValues'][BestLevel]['ROI'])) + '</strong></td>');
             }
             else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
@@ -340,19 +340,20 @@ let GreatBuildings =
 
         for (let i = 0; i < CityMap.length; i++) {
             let ID = CityMap[i]['id']
-                EntityID = CityMap[i]['cityentity_id'],
+            EntityID = CityMap[i]['cityentity_id'],
                 CityEntity = MainParser.CityEntities[EntityID];
 
             if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
 
-            let Production = Productions.readType(CityMap[i]);
             if (GreatBuildings.BlueGalaxyStaticFPs[EntityID]) {
-                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID], CurrentFP: Production['products']['strategy_points'], In: Production['in'], At: Production['at']});
+                GreatBuildings.FPBuildings.push({ ID: ID, FP: GreatBuildings.BlueGalaxyStaticFPs[EntityID] });
             }
-            else if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
+            else {
+                let Production = Productions.readType(CityMap[i]);
+                if (Production['motivatedproducts'] && Production['motivatedproducts']['strategy_points']) {
                     let FP = Production['motivatedproducts']['strategy_points'];
-                    let CurrentFP = Production['products']['strategy_points'];
-                GreatBuildings.FPBuildings.push({ ID: ID, EntityID: EntityID, FP: FP, CurrentFP: CurrentFP, In: Production['in'], At: Production['at']});
+                    GreatBuildings.FPBuildings.push({ ID: ID, FP: FP });
+                }
             }
         }
 
@@ -399,7 +400,7 @@ let GreatBuildings =
         }
         else if (Level > 0) {
             if (Charges) { // Blaue Galaxie
-                 StartProduction = GreatBuildings.GetGalaxyProduction(Productions, Charges, Level, false);
+                 StartProduction = GreatBuildings.GetGalaxyProduction(Productions, Charges, Level-1, false);
             }
             else {
                 StartProduction = Productions[Level - 1];
