@@ -46,7 +46,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	IsLevelScroll = false,
 	EventCountdown = false,
 	GameTimeOffset = 0,
-	StartUpDone = false;
+	StartUpDone = false,
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'];
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -657,7 +658,7 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		// update FP-Bar for more customizable
-		$('#fp-bar').removeClass('main gex gg era_outpost').addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 
 		if (ActiveMap === 'era_outpost') {
 			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
@@ -689,14 +690,27 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass('main gex gg era_outpost').addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass('main gex gg era_outpost').addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+	});
+
+
+	// gg is entered
+	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+		ActiveMap = 'gg';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+	});
+
+	// gvg is entered
+	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
+		ActiveMap = 'gvg';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 	});
 
 
