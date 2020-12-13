@@ -1,4 +1,4 @@
-﻿/*
+/*
  * **************************************************************************************
  *
  * Dateiname:                 eventhandler.js
@@ -328,7 +328,7 @@ let EventHandler = {
 		}
 
 		/* Filters */
-
+		h.push('<div class="text-center dark-bg header"><strong class="title">' + i18n('Boxes.MoppelHelper.HeaderWarning') + '</strong><br></div>');
 		h.push('<div class="dark-bg"><div class="dropdown" style="float:right">');
         h.push('<input type="checkbox" class="dropdown-checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
         h.push('<ul>');
@@ -343,18 +343,28 @@ let EventHandler = {
 		h.push('</div>');
 		
 		h.push('<div class="tabs"><ul class="horizontal">');
-		if(PlayerDictNeighborsUpdated) 
+
+		if (PlayerDictNeighborsUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
-		else
-			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
-		if(PlayerDictGuildUpdated) 
+		}
+		else {
+			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.NeighborsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+		}
+
+		if (PlayerDictGuildUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
-		else
-			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
-		if(PlayerDictFriendsUpdated) 
+		}
+		else {
+			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.GuildSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+		}
+
+		if (PlayerDictFriendsUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
-		else
-			h.push('<li class="disabled"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+		}
+		else {
+			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+		}
+
 		h.push('</ul></div></div>');
 
 		h.push('<table id="moppelhelperTable" class="foe-table sortable-table">');		
@@ -442,18 +452,40 @@ let EventHandler = {
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
 			h.push('<td data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
+			var counts = {
+				'MoppelEvent': 0,
+				'TavernVisit': 0,
+				'Attack': 0,
+				'Plunder': 0,
+				'GB': 0,
+				'Other': 0,
+				'Trade': 0
+			}
 			for (let j = 0; j < EventHandler.MaxVisitCount; j++) {
 				if (j < Visits.length) {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
-					let StrongColor = (Days < 3.5 ? HTML.GetColorGradient(Days, 0, 3.5, '33ee00', 'eeee00') : HTML.GetColorGradient(Days, 3.5, 7, 'eeee00', 'ee3300'));
-					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					let EventType = EventHandler.GetEventType(Visits[j]);
-
+					counts[EventType]++;
+					let DaysX = 0
+					let StrongColor = ""
+					if (EventType == 'Attack' || EventType == 'Plunder') {
+						DaysX = Days-counts[EventType];
+						StrongColor = (DaysX > 3 ? HTML.GetColorGradient(DaysX, 3, 7, 'eeee00', '33ee00') : HTML.GetColorGradient(DaysX, 0, 3, 'ee3300', 'eeee00'));
+					}
+					else {
+						DaysX = Math.sqrt((Days)/counts[EventType]);
+						StrongColor = (DaysX < 1.4 ? HTML.GetColorGradient(DaysX, 0, 1.4, '33ee00', 'eeee00') : HTML.GetColorGradient(DaysX, 1.4, 2, 'eeee00', 'ee3300'));
+						
+					}
+		
+						
+					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
+					
 					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
-					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ee3300">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
+					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ee3300'+(j > 0 ?  "; font-size:0" : "") +'">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
 				}
 			}
 			h.push('</tr>');
@@ -644,7 +676,7 @@ let EventHandler = {
 				sunday: /Domingo a las (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 			},
 			cz: {
-				today: /dnes v\xC2\xA0(?<h>[012]?\d):(?<m>[0-5]?\d)\xC2\xA0hod/g,
+				today: /dnes v (?<h>[012]?\d):(?<m>[0-5]?\d) hod/g, //Old Format: /dnes v\xC2\xA0(?<h>[012]?\d):(?<m>[0-5]?\d)\xC2\xA0hod/g
 				yesterday: /včera v (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				monday: /Pondělí v (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				tuesday: /Úterý v (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
