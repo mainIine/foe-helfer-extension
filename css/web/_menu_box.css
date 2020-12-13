@@ -87,7 +87,7 @@
 	display: inline-block;
 	width: 45px;
 	height: 45px;
-	background: url('../images/hud/menu-sm.png') -126px -64px no-repeat;
+	background: url('../images/hud/menu-sm.png') -126px -66px no-repeat;
 }
 
 .hud-btn span.hud-counter {
