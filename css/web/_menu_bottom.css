@@ -1,0 +1,225 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 style-menu.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              16.12.19, 19:53 Uhr
+ * zuletzt bearbeitet:       16.12.19, 19:37 Uhr
+ *
+ * Copyright © 2019
+ *
+ * **************************************************************************************
+ */
+
+#foe-helper-hud {
+	position: absolute;
+	left: 1000px;
+	z-index: 150;
+	width: 270px;
+	height: 53px;
+	bottom: 0;
+	padding-left: 20px;
+	padding-right: 28px;
+	transition: height 0.2s linear;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.75rem;
+	font-weight: 400;
+}
+
+#foe-helper-hud::before,
+#foe-helper-hud::after,
+.hud-btn,
+.hud-btn-left::before,
+.hud-btn-left-active::before,
+.hud-btn-right::before,
+.hud-btn-right-active::before {
+	background: url('../images/hud/menu-sm.png') top left no-repeat;
+}
+
+#foe-helper-hud::before {
+	content: '';
+	height: 52px;
+	width: 26px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+#foe-helper-hud::after {
+	content: '';
+	height: 52px;
+	width: 24px;
+	background-position: -246px 0;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+#foe-helper-hud-wrapper {
+	width: 220px;
+	height: 53px;
+	position: absolute;
+	bottom: 0;
+	left: 26px;
+	overflow: hidden;
+	background: url('../images/hud/menu-bg-sm.png') top left repeat-x;
+}
+
+#foe-helper-hud-slider {
+	position: absolute;
+	left: 0;
+	bottom: 1px;
+	transition: left 0.7s ease-in-out;
+	height: 47px;
+}
+
+.hud-btn-left,
+.hud-btn-right{
+	position: absolute;
+	height: 52px;
+	width: 20px;
+	right: 2px;
+	bottom: 0;
+	display: block;
+	z-index: 1;
+}
+
+.hud-btn-left {
+	left: 1px;
+}
+
+.hud-btn-left::before,
+.hud-btn-right::before {
+	content: '';
+	height: 46px;
+	width: 16px;
+	display: block;
+	position: absolute;
+	right: 1px;
+	bottom: 1px;
+}
+
+.hud-btn-left::before {
+	background-position: -255px -65px;
+	transform: scaleX(-1);
+}
+
+.hud-btn-right::before {
+	background-position: -256px -65px;
+}
+
+.hud-btn-left-active::before {
+	background-position: -255px -123px;
+}
+.hud-btn-left-active:hover::before {
+	background-position: -239px -65px;
+}
+
+.hud-btn-right-active::before {
+	background-position: -256px -123px;
+}
+
+.hud-btn-right-active:hover::before {
+	background-position: -240px -65px;
+}
+
+.hud-btn {
+	display: block;
+	background-position: -183px -123px;
+	width: 45px;
+	height: 45px;
+	position: relative;
+	margin-bottom: 2px;
+	float: left;
+	top: 2px;
+}
+
+.hud-btn-red {
+	background-position: -183px -66px;
+}
+
+.hud-btn span:first-child {
+	background-position: center center;
+	background-repeat: no-repeat;
+	display: block;
+	width: 65%;
+	height: 65%;
+	background-size: contain;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+}
+
+.menu-placeholder {
+	width: 45px;
+	height: 46px;
+	background: url('../images/hud/menu-sm.png') -126px -64px no-repeat;
+	float: left;
+}
+
+.hud-btn span.hud-counter {
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	padding: 2px;
+	bottom: 4px;
+	top: unset;
+	left: 5px;
+	background-color: var(--hud-counter);
+	border-radius: 50%;
+	line-height: 16px;
+	text-align: center;
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------------------------------------------------------------------
+Tooltip */
+
+.toolTipWrapper {
+	text-align: left;
+	display: none;
+	position: absolute;
+	width: 180px;
+	right: 0;
+	bottom: 70px;
+	border: 10px solid transparent;
+	background-color: #5e5a4e;
+	border-image: url('../images/hud/tooltip_bg.png') 10 round;
+	z-index: 999;
+	transform: translateX(-50%);
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: #f2ede1;
+	padding: 3px;
+	pointer-events: none;
+	user-select: none;
+}
+
+.toolTipWrapper::after {
+	content: '';
+	width: 18px;
+	height: 31px;
+	display: inline-block;
+	position: absolute;
+	bottom: -26px;
+	transform: translateX(-50%);
+	left: 50%;
+	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
+}
+
+.toolTipWrapper .tooltip-error {
+	color: #f79090;
+}
+
+.toolTipWrapper .toolTipHeader {
+	color: #bdc5cb;
+	background-color: #313d45;
+	box-shadow: inset 0 0 2px var(--black);
+	margin: -7px -7px 2px -7px;
+	padding: 0 5px 1.3px;
+}

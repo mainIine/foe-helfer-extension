@@ -129,6 +129,7 @@ let HTML = {
 	 * title
 	 * ask = null
 	 * auto_close = true
+	 * onlyTitle = title
 	 * dragdrop = true
 	 * resize = false
 	 * speaker = false
@@ -139,13 +140,19 @@ let HTML = {
 	 */
 	Box: (args)=> {
 
+		let title = $('<span />').addClass('title').html(args['title']);
+
+		if(args['onlyTitle'] !== true){
+			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+		}
+
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>'),
 
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append( head ).append( body ).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
+
 
 		if(args['auto_close'] !== false){
 			head.append(close);
@@ -369,8 +376,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: 200,
-			minWidth: 250,
+			minHeight: $(box).css("min-width") || 200,
+			minWidth: $(box).css("min-height") || 250,
 			stop: (e, $el)=>{
 				let size = $el.element.width() + '|' + $el.element.height();
 
@@ -451,6 +458,43 @@ let HTML = {
 		} else {
 			return Number(number).toLocaleString(i18n('Local'));
 		}
+	},
+
+
+	/**
+	* Returns strong class for formating mopppel date
+	*
+	* @param Value
+    * @param MinValue
+    * @param MaxValue
+    * @param Color1
+    * @param Color2
+	*/
+	GetColorGradient: (Value, MinValue, MaxValue, Color1, Color2) => {
+		let Factor2 = (Value - MinValue) / (MaxValue - MinValue);
+		Factor2 = Math.max(Factor2, 0);
+		Factor2 = Math.min(Factor2, 1);
+
+		let Factor1 = 1 - Factor2;
+
+		let Color1Int = parseInt(Color1, 16);
+		let Color2Int = parseInt(Color2, 16);
+
+		let Rgb1 = [Math.floor(Color1Int / 256 / 256), Math.floor(Color1Int / 256) % 256, Color1Int % 256];
+		let Rgb2 = [Math.floor(Color2Int / 256 / 256), Math.floor(Color2Int / 256) % 256, Color2Int % 256];
+
+		let RgbRet = [];
+		for (let i = 0; i < 3; i++) {
+			RgbRet[i] = Math.round(Rgb1[i] * Factor1 + Rgb2[i] * Factor2);
+		}
+
+		let ColorRet = RgbRet[0] * 256 * 256 + RgbRet[1] * 256 + RgbRet[2];
+
+		let Ret = ColorRet.toString(16);
+		while (Ret.length < 6) {
+			Ret = '0' + Ret;
+		}
+		return Ret;
 	},
 
 

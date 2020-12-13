@@ -13,7 +13,6 @@
  * **************************************************************************************
  */
 
-
 {
 	// jQuery detection
 	let intval = -1;
@@ -47,7 +46,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	IsLevelScroll = false,
 	EventCountdown = false,
 	GameTimeOffset = 0,
-	StartUpDone = false;
+	StartUpDone = false,
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'];
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -96,11 +96,16 @@ const i18n_loadPromise = (async() => {
 
 
 document.addEventListener("DOMContentLoaded", function(){
-	// aktuelle Welt notieren
+	// note current world
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
 
-	// Fullscreen erkennen und verarbeiten
+	// register resize functions
+	window.addEventListener('resize', ()=>{
+		MainParser.ResizeFunctions();
+	});
+
+	// Detect and process fullscreen
 	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
 		if (!window.screenTop && !window.screenY) {
 			HTML.LeaveFullscreen();
@@ -609,7 +614,7 @@ const FoEproxy = (function () {
 
 		// Alle Gebäude sichern
 		LastMapPlayerID = ExtPlayerID;
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));
 		MainParser.SaveBuildings(MainParser.CityMapData);
 
 		// Güterliste
@@ -652,6 +657,9 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
 
+		// update FP-Bar for more customizable
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+
 		if (ActiveMap === 'era_outpost') {
 			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
 		}
@@ -660,6 +668,7 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
+
 		if (ActiveMap === 'gg') return; //getEntities wurde in den GG ausgelöst => Map nicht ändern
 
 		let MainGrid = false;
@@ -681,13 +690,27 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		StrategyPoints.HandleWindowResize();
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+	});
+
+
+	// gg is entered
+	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+		ActiveMap = 'gg';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+	});
+
+	// gvg is entered
+	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
+		ActiveMap = 'gvg';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 	});
 
 
@@ -709,17 +732,17 @@ const FoEproxy = (function () {
 			}
 		}
 		else if (data.requestMethod === 'removeBuilding') {
-				let ID = postData[0].requestData[0];
-				if (ID && MainParser.CityMapData[ID]) {
-					delete MainParser.CityMapData[ID];
-				}
+			let ID = postData[0].requestData[0];
+			if (ID && MainParser.CityMapData[ID]) {
+				delete MainParser.CityMapData[ID];
 			}
+		}
 	});
 
 
 	// Produktion wird eingesammelt/gestartet/abgebrochen
 	FoEproxy.addHandler('CityProductionService', (data, postData) => {
-		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
+		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'pickupAll' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
 			let Buildings = data.responseData['updatedEntities'];
 			if (!Buildings) return;
 
@@ -900,94 +923,6 @@ const FoEproxy = (function () {
 
 	}
 
-
-	FoEproxy.addHandler('BattlefieldService','getArmyPreview',(data,postData) =>{
-		if(!MainParser.activateDownload) return;
-		debugger;
-		if(MainParser.savedFight === null) MainParser.savedFight = new Map();
-		if(data.responseData.length > 1)
-		{
-			if(data.responseData[0]["__class__"] === "Army"){
-				/** @type {prev1,prev2,fight1,fight2} */
-				var x = {
-					prev1:null,
-					prev2: null,
-					fight1: null,
-					fight2:null
-				};
-				x.prev1 = data.responseData[0];
-				x.prev2 = data.responseData[1];
-				var sfSize = MainParser.savedFight.size;
-				MainParser.savedFight.set(sfSize,x);
-			}
-		}
-		else if(data.responseData.length == 1){
-			if(data.responseData[0]["__class__"] === "Army"){
-				/** @type {prev1,prev2,fight1,fight2} */
-				var x = {
-					prev1:null,
-					prev2: null,
-					fight1: null,
-					fight2:null
-				};
-				x.prev1 = data.responseData[0];
-				var sfSize = MainParser.savedFight.size;
-				MainParser.savedFight.set(sfSize,x);
-				/* let json = JSON.stringify(data.responseData[0]),
-					blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
-					file = `prev_${data.responseData[0]["id"]}.json`;
-
-				MainParser.ExportFile(blob1, file); */
-			}
-		}
-	});
-
-	FoEproxy.addHandler('GuildExpeditionService','getEncounter',(data,postData) =>{
-		if(!MainParser.activateDownload) return;
-		debugger;
-		if(data.responseData.length == 1){
-			/** @type {prev1,prev2,fight1,fight2} */
-			var x = {
-				prev1:null,
-				prev2: null,
-				fight1: null,
-				fight2:null
-			};
-			x.prev1 = data.responseData["armyWaves"][0];
-			x.prev2 = data.responseData["armyWaves"][1];
-			var sfSize = MainParser.savedFight.size;
-			MainParser.savedFight.set(sfSize,x);
-		}
-	});
-
-	FoEproxy.addHandler('BattlefieldService','startByBattleType',(data,postData) =>{
-		if(!MainParser.activateDownload) return;
-		debugger;
-		if(data.responseData["isAutoBattle"]){
-			if(data.responseData["__class__"] === "BattleRealm"){
-				//Two Wave Battle -> second wave won
-				if(data.responseData["armyId"]){
-					var sfSize= MainParser.savedFight.size;
-					if(sfSize > 0){
-						/** @type {{prev1,prev2,fight1,fight2}} */
-						var x = MainParser.savedFight.get(sfSize-1);
-						if(x.prev2 !== null && x.fight2 === null) x.fight2 = data.responseData;
-						MainParser.savedFight.set(sfSize-1,x);
-					}
-				}//first wave -> maybe second wave but not
-				else{
-					var sfSize= MainParser.savedFight.size;
-					if(sfSize > 0){
-						/** @type {prev1,prev2,fight1,fight2} */
-						var x = MainParser.savedFight.get(sfSize-1);
-						if(x.prev1 !== null && x.fight2 === null) x.fight1 = data.responseData;
-						MainParser.savedFight.set(sfSize-1,x);
-					}
-				}
-			}
-		}
-	});
-
 	// --------------------------------------------------------------------------------------------------
 	// Gilden-GüterLog wird aufgerufen
 
@@ -1069,7 +1004,7 @@ const FoEproxy = (function () {
 	//--------------------------------------------------------------------------------------------------
 
 
-	// Moppel Aktivitäten
+	// Greatbuildings: LG Belohnungen von Arche in Events zählen
 	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
 		if (data.responseData['events']) {
 			GreatBuildings.HandleEventPage(data.responseData['events']);
@@ -1088,7 +1023,10 @@ const FoEproxy = (function () {
 		}
 		// zweite Runde
 		else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
-			_menu.BuildOverlayMenu();
+			let MenuSetting = localStorage.getItem('SelectedMenu');
+			MenuSetting = MenuSetting ?? 'BottomBar';
+			MainParser.SelectedMenu = MenuSetting;
+			_menu.CallSelectedMenu(MenuSetting);
 			MainMenuLoaded = true;
 
 			MainParser.setLanguage();
@@ -1114,7 +1052,7 @@ const FoEproxy = (function () {
 	// Quests
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
 		if (PostData[0].requestClass === 'QuestService' && PostData[0].requestMethod === 'advanceQuest') {
-			StrategyPoints.HandleAdvanceQuest(PostData[0]);
+			FPCollector.HandleAdvanceQuest(PostData[0]);
 		}
 
 		MainParser.Quests = data.responseData;
@@ -1158,13 +1096,14 @@ let HelperBeta = {
 /**
  *
  * @type {{BuildingSelectionKits: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): (undefined)), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): number), SocialbarList: (function(*): (undefined)), Championship: MainParser.Championship, Inventory: {}, compareTime: (function(*, *): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): (undefined)), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts,
- * : MainParser.sendExtMessage, ClearText: (function(*): *), checkNextUpdate: (function(*=): *), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=, *): boolean), BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
+ * : MainParser.sendExtMessage, ClearText: (function(*): *), checkNextUpdate: (function(*=): *), Language: string, SelectedMenu: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=, *): boolean), BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
 
 	activateDownload: false,
 	savedFight:null,
 	Language: 'en',
+	SelectedMenu: 'BottomBar',
 	i18n: null,
 	BonusService: null,
 	EmissaryService: null,
@@ -1172,6 +1111,7 @@ let MainParser = {
 	Conversations: [],
 	CityMetaId: null,
 	CityEntities: null,
+	StartUpType: null,
 
 	// alle Gebäude des Spielers
 	CityMapData: {},
@@ -1191,6 +1131,39 @@ let MainParser = {
 	BuildingSets: null,
 
 	InnoCDN: 'https://foede.innogamescdn.com/',
+
+
+
+	/**
+	* Version specific StartUp Code
+    * Todo: Add code that should be executed only until the next update
+	*
+	*/
+	VersionSpecificStartupCode: () => {
+		let LastStartedVersion = localStorage.getItem('LastStartedVersion');
+		let LastAgreedVersion = localStorage.getItem('LastAgreedVersion');
+
+		if (!LastStartedVersion) {
+			MainParser.StartUpType = 'DeletedSettings';
+			/* Fresh install of deleted settings */
+			/* Attention: If you do stuff here it might be executed every start when surfing in incognito mode */
+		}
+		else if (LastStartedVersion !== extVersion) {
+			MainParser.StartUpType = 'UpdatedVersion';
+			/* We have a new version installed and started the first time */
+		}
+		else if (LastAgreedVersion !== extVersion) {
+			MainParser.StartUpType = 'NotAgreed';
+			/* This is a second start, but the player has not yet agreed to the new prompt */
+		}
+		else {
+			MainParser.StartUpType = 'RegularStart';
+			/* Normal start */
+        }
+
+		localStorage.setItem('LastStartedVersion', extVersion);
+		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
+    },
 
 
 	/** @type {Record<string,string>} */
@@ -1663,6 +1636,8 @@ let MainParser = {
 	StartUp: (d) => {
 		Settings.Init(false);
 
+		MainParser.VersionSpecificStartupCode();
+
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
@@ -1820,19 +1795,6 @@ let MainParser = {
 			url: ApiURL + 'LGInventory/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			data: JSON.stringify(d)
 		});
-	},
-
-	/**
-	 * Export Fight Log
-	 *
-	 * @constructor
-	 */
-	ExportFight:()=>{
-		let json = JSON.stringify(Array.from(MainParser.savedFight.entries())),
-			blob1 = new Blob([json], { type: "application/json;charset=utf-8" }),
-			file = `${Date.now()}.json`;
-
-		MainParser.ExportFile(blob1, file);
 	},
 
 	/**
@@ -2078,6 +2040,8 @@ let MainParser = {
 		if ($('#bluegalaxy').length > 0) {
 			BlueGalaxy.CalcBody();
 		}
+
+		FPCollector.CityMapDataNew = Buildings;
 	},
 
 
@@ -2205,6 +2169,13 @@ let MainParser = {
 		let RegEx = new RegExp(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi);
 
 		return text.replace(RegEx, '');
+	},
+
+
+	ResizeFunctions: ()=> {
+
+		// FP-Bar
+		StrategyPoints.HandleWindowResize();
 	},
 
 
