@@ -485,7 +485,7 @@ let EventHandler = {
 					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
-					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ee3300'+(j > 0 ?  "; font-size:0" : "") +'">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
+					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ee3300">' + (j > 0 ?  "" : i18n('Boxes.MoppelHelper.Never')) + '</strong></td>');
 				}
 			}
 			h.push('</tr>');
