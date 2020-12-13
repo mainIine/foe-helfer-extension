@@ -1,4 +1,4 @@
-﻿/*
+/*
  * **************************************************************************************
  *
  * Dateiname:                 eventhandler.js
@@ -382,6 +382,9 @@ let EventHandler = {
 	 *
 	 * */
 	CalcMoppelHelperTable: async () => {
+		const gradmin=0;
+		const gradmid=Math.sqrt(2);
+		const gradmax=2;
 		let h = [];
 
 		let PlayerList = [];
@@ -466,10 +469,11 @@ let EventHandler = {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
 					let EventType = EventHandler.GetEventType(Visits[j]);
-					let StrongColor = (Days-counts[EventType] < 3.5 ? HTML.GetColorGradient(Days, 0, 3.5, '33ee00', 'eeee00') : HTML.GetColorGradient(Days-counts[EventType], 3.5, 7, 'eeee00', 'ee3300'));
-					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					counts[EventType]++;
-
+					let DaysX = Math.sqrt((Days)/counts[EventType]);
+					let StrongColor = (DaysX < gradmid ? HTML.GetColorGradient(DaysX, gradmin, gradmid, '33ee00', 'eeee00') : HTML.GetColorGradient(DaysX, gradmid, gradmax, 'eeee00', 'ee3300'));
+					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
+					
 					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
