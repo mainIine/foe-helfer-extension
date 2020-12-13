@@ -31,7 +31,7 @@ let _menu_box = {
 
 		HTML.Box({
 			id: 'menu_box',
-			title: 'FoE Helper',
+			title: i18n('Global.BoxTitle'),
 			onlyTitle: true,
 			dragdrop: true,
 			minimize: true,
