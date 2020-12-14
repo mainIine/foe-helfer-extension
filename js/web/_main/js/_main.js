@@ -658,10 +658,10 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		// update FP-Bar for more customizable
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		// $('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
+			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 		}
 	});
 
@@ -690,27 +690,32 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
+	// gex is entered
+	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+		ActiveMap = 'gex';
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+	});
 
 	// gg is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		ActiveMap = 'gg';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// gvg is entered
 	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 		ActiveMap = 'gvg';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
@@ -1024,7 +1029,7 @@ const FoEproxy = (function () {
 		// zweite Runde
 		else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting ?? 'BottomBar';
+			MenuSetting = MenuSetting || 'BottomBar';
 			MainParser.SelectedMenu = MenuSetting;
 			_menu.CallSelectedMenu(MenuSetting);
 			MainMenuLoaded = true;
@@ -1561,6 +1566,8 @@ let MainParser = {
 				data: JSON.stringify(data)
 			});
 
+			if (!Settings.GetSetting('ShowNotifications')) return;
+
 			$.toast({
 				heading: d['other_player']['name'] + ' geupdated',
 				text: HTML.i18nReplacer(
@@ -1569,7 +1576,8 @@ let MainParser = {
 						'player' : d['other_player']['name']
 					}
 				),
-				icon: 'success'
+				icon: 'success',
+				position: Settings.GetSetting('NotificationsPosition', true)
 			});
 		}
 	},
@@ -1594,11 +1602,16 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		$.toast({
-			heading: i18n('API.UpdateSuccess'),
-			text: i18n('API.GEXPlayer'),
-			icon: 'success'
-		});
+		if(Settings.GetSetting('ShowNotifications'))
+		{
+			$.toast({
+				heading: i18n('API.UpdateSuccess'),
+				text: i18n('API.GEXPlayer'),
+				icon: 'success',
+				position: Settings.GetSetting('NotificationsPosition', true)
+			});
+		}
+
 
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
@@ -1620,10 +1633,13 @@ let MainParser = {
 			data: JSON.stringify(data)
 		});
 
+		if (!Settings.GetSetting('ShowNotifications')) return;
+
 		$.toast({
 			heading: i18n('API.UpdateSuccess'),
 			text: i18n('API.GEXChampionship'),
-			icon: 'success'
+			icon: 'success',
+			position: Settings.GetSetting('NotificationsPosition', true)
 		});
 	},
 
@@ -1861,6 +1877,8 @@ let MainParser = {
 				if(r['status'] === 'OK'){
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
+					if (!Settings.GetSetting('ShowNotifications')) return;
+
 					$.toast({
 						heading: i18n('Boxes.Investment.PlayerFound'),
 						text: HTML.i18nReplacer(
@@ -1870,17 +1888,21 @@ let MainParser = {
 							}
 						),
 						icon: 'success',
-						hideAfter: 2600
+						hideAfter: 2600,
+						position: Settings.GetSetting('NotificationsPosition', true)
 					});
 
 				} else if (r['status'] === 'NOTICE') {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
+					if (!Settings.GetSetting('ShowNotifications')) return;
+
 					$.toast({
 						heading: i18n('Boxes.Investment.AllUpToDate'),
 						text: i18n('Boxes.Investment.AllUpToDateDesc'),
 						icon: 'info',
-						hideAfter: 6000
+						hideAfter: 6000,
+						position: Settings.GetSetting('NotificationsPosition', true)
 					});
 				}
 			});

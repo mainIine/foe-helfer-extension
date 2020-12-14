@@ -654,6 +654,8 @@
     "Menu.fpCollector.Title": "FP Collector",
     "Menu.greatbuildings.Desc": "Welches FP produzierende LG solltest du als nächstes ausbauen?",
     "Menu.greatbuildings.Title": "LG Investitionen",
+	"Menu.alerts.Title": "Alarm",
+	"Menu.alerts.Desc": "Manage alerts [und noch irgend ein Text]",
     "Settings.About.Desc": "Der FoE Helper ist eine kostenlose Browser-Erweiterung für Forge of Empires, die von Spielern für Spieler entwickelt wurde. Das Tool ist nicht mit InnoGames verbunden.",
     "Settings.About.RatingDesc": "Gefällt dir, was du siehst? Dann würden wir uns über eine Rezension im Store freuen!",
     "Settings.About.RatingTitle": "Bewerte die Extension",

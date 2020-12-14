@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.5.4.1
+
+**Bugfix**
+- Menü:
+    - [#1701](https://github.com/dsiekiera/foe-helfer-extension/issues/1701) [#1702](https://github.com/dsiekiera/foe-helfer-extension/issues/1702) in älteren Browsern konnte der Helfer nicht geladen werden
+
+- Produktionsübersicht:
+    - [#1696](https://github.com/dsiekiera/foe-helfer-extension/issues/1696) In manchen Browsers war die Tabelle nicht breit genug
+
+- Extension:
+    - [#1699](https://github.com/dsiekiera/foe-helfer-extension/issues/1699) Benachrichtiungen wurden trotz Deaktivierung dargestellt
+
+---
+
 ##### 2.5.4.0
 
 **Neu**
@@ -31,7 +45,7 @@
 **Bugfix**
 - FP-Collector:
     - [#1690](https://github.com/dsiekiera/foe-helfer-extension/issues/1690) der Collector hat nicht alle Verdopplungen gezählt
-    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungefehler behoben
+    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungsfehler behoben
 
 - Erweiterung:
     - [#1687](https://github.com/dsiekiera/foe-helfer-extension/issues/1687) im Firefox wurden nicht alle Übersetzungen geladen
