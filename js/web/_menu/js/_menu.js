@@ -629,5 +629,23 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
+	},
+
+
+	alerts_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.alerts.Title'), i18n('Menu.alerts.Desc'), 'alerts-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			Alerts.init();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
 	}
 };
