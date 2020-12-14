@@ -248,7 +248,7 @@ let Infoboard = {
                 msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
             
                 // wenn nicht angezeigt werden soll, direkt verstecken
-            if ((!status || !(textfilter.some(e => msg.includes(e)))) && bd.class !== 'welcome') {
+            if ((!status || !(textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase())))) && bd.class !== 'welcome') {
                 tr.hide();
             }
 
@@ -301,7 +301,7 @@ let Infoboard = {
                 textfilter = $('input[data-type="text"]').val().split("|"),
                 type = tr.attr('class');
                 
-                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().includes(e))) || tr.hasClass('welcome')) {
+                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
                     tr.hide();
