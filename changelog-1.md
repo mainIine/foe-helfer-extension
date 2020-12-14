@@ -31,7 +31,7 @@
 **Bugfix**
 - FP-Collector:
     - [#1690](https://github.com/dsiekiera/foe-helfer-extension/issues/1690) der Collector hat nicht alle Verdopplungen gezählt
-    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungefehler behoben
+    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungsfehler behoben
 
 - Erweiterung:
     - [#1687](https://github.com/dsiekiera/foe-helfer-extension/issues/1687) im Firefox wurden nicht alle Übersetzungen geladen

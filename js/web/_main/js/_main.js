@@ -1561,6 +1561,8 @@ let MainParser = {
 				data: JSON.stringify(data)
 			});
 
+			if (!Settings.GetSetting('ShowNotifications')) return;
+
 			$.toast({
 				heading: d['other_player']['name'] + ' geupdated',
 				text: HTML.i18nReplacer(
@@ -1569,7 +1571,8 @@ let MainParser = {
 						'player' : d['other_player']['name']
 					}
 				),
-				icon: 'success'
+				icon: 'success',
+				position: Settings.GetSetting('NotificationsPosition')
 			});
 		}
 	},
@@ -1594,11 +1597,16 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		$.toast({
-			heading: i18n('API.UpdateSuccess'),
-			text: i18n('API.GEXPlayer'),
-			icon: 'success'
-		});
+		if(Settings.GetSetting('ShowNotifications'))
+		{
+			$.toast({
+				heading: i18n('API.UpdateSuccess'),
+				text: i18n('API.GEXPlayer'),
+				icon: 'success',
+				position: Settings.GetSetting('NotificationsPosition')
+			});
+		}
+
 
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
@@ -1620,10 +1628,13 @@ let MainParser = {
 			data: JSON.stringify(data)
 		});
 
+		if (!Settings.GetSetting('ShowNotifications')) return;
+
 		$.toast({
 			heading: i18n('API.UpdateSuccess'),
 			text: i18n('API.GEXChampionship'),
-			icon: 'success'
+			icon: 'success',
+			position: Settings.GetSetting('NotificationsPosition')
 		});
 	},
 
@@ -1861,6 +1872,8 @@ let MainParser = {
 				if(r['status'] === 'OK'){
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
+					if (!Settings.GetSetting('ShowNotifications')) return;
+
 					$.toast({
 						heading: i18n('Boxes.Investment.PlayerFound'),
 						text: HTML.i18nReplacer(
@@ -1870,17 +1883,21 @@ let MainParser = {
 							}
 						),
 						icon: 'success',
-						hideAfter: 2600
+						hideAfter: 2600,
+						position: Settings.GetSetting('NotificationsPosition')
 					});
 
 				} else if (r['status'] === 'NOTICE') {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
+					if (!Settings.GetSetting('ShowNotifications')) return;
+
 					$.toast({
 						heading: i18n('Boxes.Investment.AllUpToDate'),
 						text: i18n('Boxes.Investment.AllUpToDateDesc'),
 						icon: 'info',
-						hideAfter: 6000
+						hideAfter: 6000,
+						position: Settings.GetSetting('NotificationsPosition')
 					});
 				}
 			});

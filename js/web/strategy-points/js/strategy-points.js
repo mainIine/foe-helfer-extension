@@ -102,9 +102,6 @@ let StrategyPoints = {
 		let width = window.innerWidth,
 			elem = $('#fp-bar').children().length;
 
-		console.log('width: ', width);
-		console.log('elem: ', elem);
-
 		switch (ActiveMap){
 			case 'gex':
 				if((elem === 3 && width <= 1313) || (elem === 2 && width <= 1170) || elem === 1 && width < 970)
