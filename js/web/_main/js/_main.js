@@ -1024,7 +1024,7 @@ const FoEproxy = (function () {
 		// zweite Runde
 		else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting ?? 'BottomBar';
+			MenuSetting = MenuSetting || 'BottomBar';
 			MainParser.SelectedMenu = MenuSetting;
 			_menu.CallSelectedMenu(MenuSetting);
 			MainMenuLoaded = true;
