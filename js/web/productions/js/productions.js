@@ -23,18 +23,7 @@ let Productions = {
 
 	ActiveTab: 1,
 
-	BuildingTypes: {
-		greatbuilding: i18n('Boxes.Productions.Headings.greatbuilding'),
-		production: i18n('Boxes.Productions.Headings.production'),
-		random_production: i18n('Boxes.Productions.Headings.random_production'),
-		residential: i18n('Boxes.Productions.Headings.residential'),
-		decoration: i18n('Boxes.Productions.Headings.decoration'),
-		street: i18n('Boxes.Productions.Headings.street'),
-		goods: i18n('Boxes.Productions.Headings.goods'),
-		culture: i18n('Boxes.Productions.Headings.culture'),
-		main_building: i18n('Boxes.Productions.Headings.main_building'),
-		boost: i18n('Boxes.Productions.Headings.boost'),
-	},
+	BuildingTypes: {},
 
 	Tabs: [],
 	TabsContent: [],
@@ -71,6 +60,19 @@ let Productions = {
 	init: () => {
 
 		moment.locale(i18n('Local'));
+
+		if (Object.keys(Productions.BuildingTypes).length === 0) {
+			Productions.BuildingTypes.greatbuilding = i18n('Boxes.Productions.Headings.greatbuilding');
+			Productions.BuildingTypes.production = i18n('Boxes.Productions.Headings.production');
+			Productions.BuildingTypes.random_production = i18n('Boxes.Productions.Headings.random_production');
+			Productions.BuildingTypes.residential = i18n('Boxes.Productions.Headings.residential');
+			Productions.BuildingTypes.decoration = i18n('Boxes.Productions.Headings.decoration');
+			Productions.BuildingTypes.street = i18n('Boxes.Productions.Headings.street');
+			Productions.BuildingTypes.goods = i18n('Boxes.Productions.Headings.goods');
+			Productions.BuildingTypes.culture = i18n('Boxes.Productions.Headings.culture');
+			Productions.BuildingTypes.main_building = i18n('Boxes.Productions.Headings.main_building');
+			Productions.BuildingTypes.boost = i18n('Boxes.Productions.Headings.boost');
+		}
 
 		Productions.CombinedCityMapData = MainParser.CityMapData;
 		if (MainParser.CityMapEraOutpostData) {

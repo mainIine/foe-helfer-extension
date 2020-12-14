@@ -14,11 +14,15 @@
  */
 
 let _menu_bottom = {
+
+	btnSize: 45,
+
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
 	 * @constructor
 	 */
+
 	BuildOverlayMenu: () => {
 
 		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
@@ -64,7 +68,7 @@ let _menu_bottom = {
 
 		if (reset) {
 			// Slider nach links resetten
-			$('#foe-helper-hud-slider').css({
+			$('#foe-helper-hud-slider').css({ 
 				left: 0
 			});
 
@@ -72,7 +76,13 @@ let _menu_bottom = {
 			_menu.ActiveSlide = 1;
 
 			$('.hud-btn-left').removeClass('hud-btn-left-active');
-			$('.hud-btn-right').addClass('hud-btn-right-active');
+
+			if (_menu.SlideParts > 1) {
+				$('.hud-btn-right').addClass('hud-btn-right-active');
+			}
+			else { //Gesamtes Menü passt auf 1 Seite => Kein Scrollbutton nach unten
+				$('.hud-btn-right').removeClass('hud-btn-right-active');
+			}
 		}
 	},
 
@@ -82,8 +92,10 @@ let _menu_bottom = {
 	 *
 	 */
 	Prepare: () => {
+		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
-		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / 55);
+		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
+		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -93,12 +105,12 @@ let _menu_bottom = {
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
-		_menu.HudWidth = (_menu.HudCount * 55);
-		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
+		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
+		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
 		$('#foe-helper-hud').width(_menu.HudWidth + 3);
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
-		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * 55));
+		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
 
 
@@ -185,6 +197,7 @@ let _menu_bottom = {
 			}
 		}
 
+		_menu.Items = _menu.Items.filter(e => e);
 		_menu_bottom.CheckButtons();
 	},
 
@@ -216,10 +229,9 @@ let _menu_bottom = {
 		$('.hud-btn').stop().hover(function(){
 			let $this = $(this),
 				id = $this.attr('id'),
-				y = ($this.offset().top - $('[data-btn="' + id + '"]').height()-50),
 				x = ($this.offset().left + 30);
 
-			$('[data-btn="' + id + '"]').css({ left: x + 'px', top: y+"px" }).show();
+			$('[data-btn="' + id + '"]').css({ left: x + 'px' }).show();
 
 		}, function(){
 			let id = $(this).attr('id');
@@ -231,7 +243,7 @@ let _menu_bottom = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'x',
-			distance: 10,
+			distance: 15,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
@@ -264,6 +276,8 @@ let _menu_bottom = {
 				});
 			},
 			stop: function () {
+				// Sortierung zwischenspeichern
+				let storedItems = _menu.Items;
 				_menu.Items = [];
 
 				$('.hud-btn').each(function () {
@@ -273,6 +287,7 @@ let _menu_bottom = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
+				if (_menu.equalTo(storedItems)) return;
 
 				$.toast({
 					heading: i18n('Menu.SaveMessage.Title'),

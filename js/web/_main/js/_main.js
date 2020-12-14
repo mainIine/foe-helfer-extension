@@ -13,7 +13,6 @@
  * **************************************************************************************
  */
 
-
 {
 	// jQuery detection
 	let intval = -1;
@@ -47,7 +46,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	IsLevelScroll = false,
 	EventCountdown = false,
 	GameTimeOffset = 0,
-	StartUpDone = false;
+	StartUpDone = false,
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'];
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -96,11 +96,16 @@ const i18n_loadPromise = (async() => {
 
 
 document.addEventListener("DOMContentLoaded", function(){
-	// aktuelle Welt notieren
+	// note current world
 	ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
 
-	// Fullscreen erkennen und verarbeiten
+	// register resize functions
+	window.addEventListener('resize', ()=>{
+		MainParser.ResizeFunctions();
+	});
+
+	// Detect and process fullscreen
 	$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(){
 		if (!window.screenTop && !window.screenY) {
 			HTML.LeaveFullscreen();
@@ -609,7 +614,7 @@ const FoEproxy = (function () {
 
 		// Alle Gebäude sichern
 		LastMapPlayerID = ExtPlayerID;
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));;
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));
 		MainParser.SaveBuildings(MainParser.CityMapData);
 
 		// Güterliste
@@ -652,6 +657,9 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
 
+		// update FP-Bar for more customizable
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+
 		if (ActiveMap === 'era_outpost') {
 			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
 		}
@@ -660,6 +668,7 @@ const FoEproxy = (function () {
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
+
 		if (ActiveMap === 'gg') return; //getEntities wurde in den GG ausgelöst => Map nicht ändern
 
 		let MainGrid = false;
@@ -681,13 +690,27 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		StrategyPoints.HandleWindowResize();
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+	});
+
+
+	// gg is entered
+	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+		ActiveMap = 'gg';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+	});
+
+	// gvg is entered
+	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
+		ActiveMap = 'gvg';
+		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
 	});
 
 
@@ -709,17 +732,17 @@ const FoEproxy = (function () {
 			}
 		}
 		else if (data.requestMethod === 'removeBuilding') {
-				let ID = postData[0].requestData[0];
-				if (ID && MainParser.CityMapData[ID]) {
-					delete MainParser.CityMapData[ID];
-				}
+			let ID = postData[0].requestData[0];
+			if (ID && MainParser.CityMapData[ID]) {
+				delete MainParser.CityMapData[ID];
 			}
+		}
 	});
 
 
 	// Produktion wird eingesammelt/gestartet/abgebrochen
 	FoEproxy.addHandler('CityProductionService', (data, postData) => {
-		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
+		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'pickupAll' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
 			let Buildings = data.responseData['updatedEntities'];
 			if (!Buildings) return;
 
@@ -1088,6 +1111,7 @@ let MainParser = {
 	Conversations: [],
 	CityMetaId: null,
 	CityEntities: null,
+	StartUpType: null,
 
 	// alle Gebäude des Spielers
 	CityMapData: {},
@@ -1107,6 +1131,39 @@ let MainParser = {
 	BuildingSets: null,
 
 	InnoCDN: 'https://foede.innogamescdn.com/',
+
+
+
+	/**
+	* Version specific StartUp Code
+    * Todo: Add code that should be executed only until the next update
+	*
+	*/
+	VersionSpecificStartupCode: () => {
+		let LastStartedVersion = localStorage.getItem('LastStartedVersion');
+		let LastAgreedVersion = localStorage.getItem('LastAgreedVersion');
+
+		if (!LastStartedVersion) {
+			MainParser.StartUpType = 'DeletedSettings';
+			/* Fresh install of deleted settings */
+			/* Attention: If you do stuff here it might be executed every start when surfing in incognito mode */
+		}
+		else if (LastStartedVersion !== extVersion) {
+			MainParser.StartUpType = 'UpdatedVersion';
+			/* We have a new version installed and started the first time */
+		}
+		else if (LastAgreedVersion !== extVersion) {
+			MainParser.StartUpType = 'NotAgreed';
+			/* This is a second start, but the player has not yet agreed to the new prompt */
+		}
+		else {
+			MainParser.StartUpType = 'RegularStart';
+			/* Normal start */
+        }
+
+		localStorage.setItem('LastStartedVersion', extVersion);
+		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
+    },
 
 
 	/** @type {Record<string,string>} */
@@ -1579,6 +1636,8 @@ let MainParser = {
 	StartUp: (d) => {
 		Settings.Init(false);
 
+		MainParser.VersionSpecificStartupCode();
+
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
@@ -1981,6 +2040,8 @@ let MainParser = {
 		if ($('#bluegalaxy').length > 0) {
 			BlueGalaxy.CalcBody();
 		}
+
+		FPCollector.CityMapDataNew = Buildings;
 	},
 
 
@@ -2108,6 +2169,13 @@ let MainParser = {
 		let RegEx = new RegExp(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi);
 
 		return text.replace(RegEx, '');
+	},
+
+
+	ResizeFunctions: ()=> {
+
+		// FP-Bar
+		StrategyPoints.HandleWindowResize();
 	},
 
 

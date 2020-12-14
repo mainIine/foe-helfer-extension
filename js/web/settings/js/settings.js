@@ -312,20 +312,13 @@ let Settings = {
 
 		dp.push('<select class="setting-dropdown" id="change-menu">');
 
-		for (let index = 0; index < _menu.MenuOptions.length; index++) {
+		for (let index = 0; index < _menu.MenuOptions.length; index++)
+		{
 			const element = _menu.MenuOptions[index];
 			if(element[Object.keys(element)[0]]){
 				dp.push('<option value="' + Object.keys(element)[0] + '"' + (MainParser.SelectedMenu === Object.keys(element)[0] ? ' selected' : '') + '>' + i18n('Menu.' + Object.keys(element)[0]) + '</option>');
 			}
 		}
-
-		// for (let opt in _menu.MenuOptions) {
-		// 	if (!_menu.MenuOptions.hasOwnProperty(opt)) {
-		// 		break;
-		// 	}
-		// 	console.warn(opt);
-		// 	dp.push('<option value="' + opt + '"' + (MainParser.SelectedMenu === opt ? ' selected' : '') + '>' + i18n('Menu.' + opt) + '</option>');
-		// }
 
 		dp.push('</select>');
 
@@ -333,7 +326,7 @@ let Settings = {
 			let selMenu = $(this).val();
 
 			localStorage.setItem('SelectedMenu', selMenu);
-			//chrome.runtime.reload();
+
 			location.reload();
 		});
 
@@ -485,5 +478,54 @@ let Settings = {
 		});
 
 		return ip;
+	},
+
+
+	NotificationView: ()=> {
+		let elements = [],
+			settingPos = localStorage.getItem('NotificationPosition'),
+			positions = [
+				'bottom-left',
+				'bottom-right',
+				'top-right',
+				'top-left',
+				'bottom-center',
+				'top-center',
+				'mid-center'
+			];
+
+		if(!settingPos)
+		{
+			settingPos = 'bottom-right';
+		}
+
+		elements.push('<select class="setting-dropdown" id="notification-position">');
+
+		for (let pos in positions) {
+			if (!positions.hasOwnProperty(pos)) {break;}
+
+			elements.push(`<option value="${positions[pos]}"${(settingPos === positions[pos] ? ' selected' : '')}>${i18n('Menu.Notification.Position.' + positions[pos])}</option>`);
+		}
+
+		elements.push('</select>');
+
+		$('#SettingsBoxBody').on('change', '#notification-position', function() {
+			let pos = $(this).val();
+
+			localStorage.setItem('NotificationPosition', pos);
+
+			$.toast({
+				heading: i18n('Settings.NotificationPosition.ToastTestHeader'),
+				text: i18n('Settings.NotificationPosition.ToastTestBody'),
+				icon: 'success',
+				hideAfter: 6000,
+				position: pos,
+				afterHidden: function () {
+					$('.jq-toast-wrap').remove();
+				}
+			});
+		});
+
+		return elements.join('');
 	}
 };
