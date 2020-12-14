@@ -30,9 +30,6 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 	StrategyPoints.RefreshBuyableForgePoints(data.responseData.formula);
 });
 
-window.addEventListener('resize', ()=>{
-	StrategyPoints.HandleWindowResize();
-});
 
 // GEX started
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
@@ -102,17 +99,32 @@ let StrategyPoints = {
 	 */
 	HandleWindowResize: () => {
 
-		if ( window.innerWidth < 1250 && ActiveMap !== 'gex'){
-			$('#fp-bar').removeClass('medium-screen');
-			$('#fp-bar').addClass('small-screen');
-		}
-		else if ( window.innerWidth < 1400 && ActiveMap !== 'gex'){
-			$('#fp-bar').removeClass('small-screen');
-			$('#fp-bar').addClass('medium-screen');
-		}
-		else {
-			$('#fp-bar').removeClass('small-screen');
-			$('#fp-bar').removeClass('medium-screen');
+		let width = window.innerWidth,
+			elem = $('#fp-bar').children().length;
+
+		switch (ActiveMap){
+			case 'gex':
+				if((elem === 3 && width <= 1313) || (elem === 2 && width <= 1170) || elem === 1 && width < 970)
+				{
+					$('#fp-bar').addClass('small-screen')
+				}
+				else {
+					$('#fp-bar').removeClass('small-screen')
+				}
+				break;
+
+			case 'gg':
+
+				break;
+
+			default: // main or unknown
+				if(elem === 1 && width < 1235)
+				{
+					$('#fp-bar').addClass('small-screen')
+				}
+				else {
+					$('#fp-bar').removeClass('small-screen')
+				}
 		}
 	},
 
@@ -124,7 +136,7 @@ let StrategyPoints = {
 		}
 
 		if( $('.fp-bar-main').length === 0){
-			$('#fp-bar').append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
+			$('#fp-bar').addClass(`game-cursor ${ActiveMap}`).append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
 
 		} else {
 			$('.fp-bar-main').show();
@@ -197,7 +209,7 @@ let StrategyPoints = {
 		if( $('#fp-bar').length < 1 ){
 			let div = $('<div />').attr({
 				id: 'fp-bar',
-				class: 'game-cursor'
+				class: `game-cursor ${ActiveMap}`
 			}).append( `<div class="fp-storage"><div>0</div></div>` );
 
 			$('body').append(div);
@@ -205,6 +217,7 @@ let StrategyPoints = {
 		}
 
 		if ( isNaN( value ) ){ return; }
+
 		StrategyPoints.InventoryFP = value;
 
 		let delimiter = Number(1000).toLocaleString().substring(1,2);
