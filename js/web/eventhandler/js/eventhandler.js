@@ -136,6 +136,7 @@ let EventHandler = {
 				});
             }
 			else if (count === 0) {
+				if (!Settings.GetSetting('ShowNotifications')) return;
 				$.toast({
 					heading: i18n('Boxes.Investment.AllUpToDate'),
 					text: i18n('Boxes.Investment.AllUpToDateDesc'),
@@ -144,6 +145,7 @@ let EventHandler = {
 				});
 			}
 			else {
+				if (!Settings.GetSetting('ShowNotifications')) return;
 				$.toast({
 					heading: i18n('Boxes.Investment.PlayerFound'),
 					text: HTML.i18nReplacer(
