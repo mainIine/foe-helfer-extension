@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.5.4.1 
+
+**Bugfix**
+- Menu:
+    - [#1701](https://github.com/dsiekiera/foe-helfer-extension/issues/1701) [#1702](https://github.com/dsiekiera/foe-helfer-extension/issues/1702) in older browsers the helper could not be loaded
+
+- Production overview:
+    - [#1696](https://github.com/dsiekiera/foe-helfer-extension/issues/1696) In some browsers the table was not wide enough
+
+- Extension:
+    - [#1699](https://github.com/dsiekiera/foe-helfer-extension/issues/1699) Notifications were displayed despite deactivation
+
+---
+
 ##### 2.5.4.0
 
 **New**
