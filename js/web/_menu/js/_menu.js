@@ -641,7 +641,7 @@ let _menu = {
 		let btn_sp = $('<span />');
 
 		btn_sp.on('click', function () {
-			Alerts.init();
+			Alerts.show();
 		});
 
 		btn.append(btn_sp);
