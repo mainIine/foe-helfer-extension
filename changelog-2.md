@@ -1,6 +1,6 @@
 ## Changelog - Extension
 
-##### 2.5.4.1
+##### 2.5.4.1 
 
 **Bugfix**
 - Menu:
