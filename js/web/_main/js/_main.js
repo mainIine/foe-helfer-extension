@@ -658,10 +658,10 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		// update FP-Bar for more customizable
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		// $('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
+			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 		}
 	});
 
@@ -690,27 +690,32 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
+	// gex is entered
+	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+		ActiveMap = 'gex';
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+	});
 
 	// gg is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		ActiveMap = 'gg';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// gvg is entered
 	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 		ActiveMap = 'gvg';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
@@ -1572,7 +1577,7 @@ let MainParser = {
 					}
 				),
 				icon: 'success',
-				position: Settings.GetSetting('NotificationsPosition')
+				position: Settings.GetSetting('NotificationsPosition', true)
 			});
 		}
 	},
@@ -1603,7 +1608,7 @@ let MainParser = {
 				heading: i18n('API.UpdateSuccess'),
 				text: i18n('API.GEXPlayer'),
 				icon: 'success',
-				position: Settings.GetSetting('NotificationsPosition')
+				position: Settings.GetSetting('NotificationsPosition', true)
 			});
 		}
 
@@ -1634,7 +1639,7 @@ let MainParser = {
 			heading: i18n('API.UpdateSuccess'),
 			text: i18n('API.GEXChampionship'),
 			icon: 'success',
-			position: Settings.GetSetting('NotificationsPosition')
+			position: Settings.GetSetting('NotificationsPosition', true)
 		});
 	},
 
@@ -1884,7 +1889,7 @@ let MainParser = {
 						),
 						icon: 'success',
 						hideAfter: 2600,
-						position: Settings.GetSetting('NotificationsPosition')
+						position: Settings.GetSetting('NotificationsPosition', true)
 					});
 
 				} else if (r['status'] === 'NOTICE') {
@@ -1897,7 +1902,7 @@ let MainParser = {
 						text: i18n('Boxes.Investment.AllUpToDateDesc'),
 						icon: 'info',
 						hideAfter: 6000,
-						position: Settings.GetSetting('NotificationsPosition')
+						position: Settings.GetSetting('NotificationsPosition', true)
 					});
 				}
 			});

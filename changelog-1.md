@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.5.4.1
+
+**Bugfix**
+- Menü:
+    - [#1701](https://github.com/dsiekiera/foe-helfer-extension/issues/1701) [#1702](https://github.com/dsiekiera/foe-helfer-extension/issues/1702) in älteren Browsern konnte der Helfer nicht geladen werden
+
+- Produktionsübersicht:
+    - [#1696](https://github.com/dsiekiera/foe-helfer-extension/issues/1696) In manchen Browsers war die Tabelle nicht breit genug
+
+- Extension:
+    - [#1699](https://github.com/dsiekiera/foe-helfer-extension/issues/1699) Benachrichtiungen wurden trotz Deaktivierung dargestellt
+
+---
+
 ##### 2.5.4.0
 
 **Neu**

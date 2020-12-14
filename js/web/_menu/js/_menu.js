@@ -631,12 +631,16 @@ let _menu = {
 		return btn;
 	},
 
-
+	/**
+	 * Shows the box for managing all alerts
+	 *
+	 * @returns {*|jQuery}
+	 */
 	alerts_Btn: () => {
-		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
+		let btn = $('<div />').attr({ 'id': 'Alerts-Btn', 'data-slug': 'Alerts' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.alerts.Title'), i18n('Menu.alerts.Desc'), 'alerts-Btn');
+		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'Alerts-Btn');
 
 		let btn_sp = $('<span />');
 

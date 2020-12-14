@@ -133,7 +133,7 @@ let EventHandler = {
 					text: HTML.i18nReplacer(i18n('Boxes.Investment.DateParseErrorDesc'), { InvalidDate: InvalidDates[0]}),
 					icon: 'error',
 					hideAfter: 6000,
-					position: Settings.GetSetting('NotificationsPosition')
+					position: Settings.GetSetting('NotificationsPosition', true)
 				});
             }
 			else if (count === 0) {
@@ -144,7 +144,7 @@ let EventHandler = {
 					text: i18n('Boxes.Investment.AllUpToDateDesc'),
 					icon: 'info',
 					hideAfter: 6000,
-					position: Settings.GetSetting('NotificationsPosition')
+					position: Settings.GetSetting('NotificationsPosition', true)
 				});
 			}
 			else {
@@ -158,7 +158,7 @@ let EventHandler = {
 					),
 					icon: 'success',
 					hideAfter: 2600,
-					position: Settings.GetSetting('NotificationsPosition')
+					position: Settings.GetSetting('NotificationPosition', true)
 				});
 			}
 		});
