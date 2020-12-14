@@ -19,6 +19,9 @@ let Parts = {
 	IsPreviousLevel: false,
 	IsNextLevel: false,
 
+	LockExistingPlaces: true,
+	TrustExistingPlaces: false,
+
 	Level: undefined,
 	SafePlaces: undefined,
 	Maezens: [],
@@ -308,14 +311,21 @@ let Parts = {
 
         for (let i = 0; i < 5; i++) {
 			if (FPRewards[i] <= Parts.Maezens[i] || Rest <= Parts.Maezens[i]) {
-				Eigens[i] = Math.ceil(Rest + (Parts.Maezens[i + 1] !== undefined ? Parts.Maezens[i + 1] : 0) - Parts.Maezens[i]);
-				Eigens[i] = Math.max(Eigens[i], 0);
-				Rest -= Eigens[i];
+				if (Parts.LockExistingPlaces) { //Bestehende Einzahlung absichern
+					let NextMaezen = Parts.Maezens[i + 1] !== undefined ? Parts.Maezens[i + 1] : 0;
+					Eigens[i] = Math.ceil(Rest + (Parts.TrustExistingPlaces ? 0 : NextMaezen) - Parts.Maezens[i]);
+					Eigens[i] = Math.max(Eigens[i], 0);
+					Rest -= Eigens[i];
+				}
+				else {
+					Eigens[i] = 0;
+                }
                 continue;
             }
 
-			Eigens[i] = Math.ceil(Rest + Parts.Maezens[i] - 2 * FPRewards[i]);
-            if (Eigens[i] < 0) {
+			Eigens[i] = Math.ceil(Rest + (Parts.TrustExistingPlaces ? 0 : Parts.Maezens[i]) - 2 * FPRewards[i]);
+			if (Eigens[i] < 0) {
+				if (Parts.TrustExistingPlaces) Eigens[i] = (Math.min(Eigens[i] + Parts.Maezens[i], 0));
                 Dangers[i] = Math.floor(0 - Eigens[i]/2);
                 Eigens[i] = 0;
             }
