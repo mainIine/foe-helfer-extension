@@ -24,7 +24,6 @@
 #Productions #ProductionsBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	max-height: 500px;
 	margin-top: 2px;
 }
 
