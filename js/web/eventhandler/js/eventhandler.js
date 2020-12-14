@@ -132,20 +132,24 @@ let EventHandler = {
 					heading: i18n('Boxes.Investment.DateParseError'),
 					text: HTML.i18nReplacer(i18n('Boxes.Investment.DateParseErrorDesc'), { InvalidDate: InvalidDates[0]}),
 					icon: 'error',
-					hideAfter: 6000
+					hideAfter: 6000,
+					position: Settings.GetSetting('NotificationsPosition')
 				});
             }
 			else if (count === 0) {
 				if (!Settings.GetSetting('ShowNotifications')) return;
+
 				$.toast({
 					heading: i18n('Boxes.Investment.AllUpToDate'),
 					text: i18n('Boxes.Investment.AllUpToDateDesc'),
 					icon: 'info',
-					hideAfter: 6000
+					hideAfter: 6000,
+					position: Settings.GetSetting('NotificationsPosition')
 				});
 			}
 			else {
 				if (!Settings.GetSetting('ShowNotifications')) return;
+
 				$.toast({
 					heading: i18n('Boxes.Investment.PlayerFound'),
 					text: HTML.i18nReplacer(
@@ -153,7 +157,8 @@ let EventHandler = {
 						{count: count}
 					),
 					icon: 'success',
-					hideAfter: 2600
+					hideAfter: 2600,
+					position: Settings.GetSetting('NotificationsPosition')
 				});
 			}
 		});
