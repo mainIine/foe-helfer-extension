@@ -17,40 +17,42 @@ let _menu_box = {
 
 	/**
 	 * Create the div holders and put them to the DOM
-	 *
-	 * @constructor
 	 */
 	BuildBoxMenu: () => {
 		_menu_box.Show();
 	},
 
+
+	/**
+	 * Create a html box and put it into the DOM
+	 */
 	Show: () => {
         moment.locale(i18n('Local'));
-        if ($('#menu_box').length === 0) {
-            HTML.Box({
-                id: 'menu_box',
-				title: 'Menü',
-				onlyTitle: true,
-                dragdrop: true,
-                minimize: true,
-				resize: true,
-				auto_close:false
-			});
-			_menu_box.CalcBody();
-			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 
-        } else {
-            HTML.CloseOpenBox('menu_box');
-        }
+		HTML.Box({
+			id: 'menu_box',
+			title: i18n('Global.BoxTitle'),
+			onlyTitle: true,
+			dragdrop: true,
+			minimize: true,
+			resize: true,
+			auto_close:false
+		});
+		_menu_box.CalcBody();
+
+		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 	},
-	
+
+
 	CalcBody: () => {
 		_menu_box.ListLinks();
 	},
 
+
 	/**
-	 * Bindet alle benötigten Button ein
+	 * Integrates all required buttons
 	 *
+	 * @constructor
 	 */
 	ListLinks: () => {
 		let StorgedItems = localStorage.getItem('MenuSort');
@@ -132,6 +134,8 @@ let _menu_box = {
 
 		_menu_box.CheckButtons();
 	},
+
+
 	/**
 	 * Tooltips etc
 	 *
@@ -142,7 +146,7 @@ let _menu_box = {
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');
 		});
-		// Tooltipp top ermitteln und einblenden
+
 		$('.hud-btn').stop().hover(function(){
 			let $this = $(this),
 				id = $this.attr('id'),
@@ -157,10 +161,10 @@ let _menu_box = {
 			$('[data-btn="' + id + '"]').hide();
 		});
 
-		// Sortierfunktion der Menü-items
+		// Sorting function of the menu items
 		$('#menu_boxBody').sortable({
 			placeholder: 'menu-placeholder',
-			distance: 10,
+			distance: 15,
 			start: function () {
 				$('#menu_box').addClass('is--sorting');
 			},
@@ -195,8 +199,10 @@ let _menu_box = {
 		});
 		HiddenRewards.SetCounter();
 	},
+
+
 	/**
-	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
+	 * Hides a button. The HUD slider must already be filled for this.
 	 *
 	 * @param buttonId
 	 * @constructor
@@ -206,8 +212,10 @@ let _menu_box = {
 			$($('#menu_boxBody').children(`div#${buttonId}`)[0]).hide();
 
 	},
+
+
 	/**
-	 * Zeigt ein versteckten Button wieder.
+	 * Shows a hidden button again
 	 */
 	ShowButton: (buttonId) => {
 		if ($('#menu_boxBody').has(`div#${buttonId}`))

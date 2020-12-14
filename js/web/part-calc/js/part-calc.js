@@ -550,7 +550,7 @@ let Parts = {
 
 		$('#OwnPartBoxBody').html(h.join(''));
 
-		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
+		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel && !Parts.IsNextLevel) {
 			Parts.CalcBodyPowerLeveling();
 		}
 

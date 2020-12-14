@@ -1,5 +1,47 @@
 ## Changelog - Extension
 
+##### 2.5.4.0
+
+**New**
+- Menu:
+    - [#1664](https://github.com/dsiekiera/foe-helfer-extension/issues/1664) [#1665](https://github.com/dsiekiera/foe-helfer-extension/issues/1665) There are now 3 menu variants (right, bottom and box).
+    - Selectable via "Settings > General > Change Menu".
+    - Redesign (smaller, new graphics) of the bottom and box variant for more space
+
+- Extension:
+    - Notifications can now be switched off via "Settings > General > Notification".
+    - The notifications can appear at different positions "Settings > General > Notification positions".
+
+**Update**
+- City overview:
+    - [#1659](https://github.com/dsiekiera/foe-helfer-extension/issues/1659) Translations for the statistics have been added
+
+- Blue Galaxy Helper:
+    - [#1653](https://github.com/dsiekiera/foe-helfer-extension/issues/1653) can now weight by goods. If you only want to weight by FP, change the value to "0" (zero).
+
+- Production overview:
+    - [#1646](https://github.com/dsiekiera/foe-helfer-extension/issues/1646) now updates when harvest is collected with diamonds
+
+- Infobox:
+    - [#1552](https://github.com/dsiekiera/foe-helfer-extension/issues/1552) from now on you can search for a text in the filter
+
+- Extension:
+    - many translations from [i18n.foe-helper.com](http://i18n.foe-helper.com/projects/foe-helper/extension/) have been integrated. Help us to integrate even more translations and register yourself
+
+**Bugfix**
+- FP Collector:
+    - [#1690](https://github.com/dsiekiera/foe-helfer-extension/issues/1690) the collector did not count all duplications
+    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) fixed translation error
+
+- Extension:
+    - [#1687](https://github.com/dsiekiera/foe-helfer-extension/issues/1687) in Firefox not all translations were loaded
+
+- Menu:
+    - [#1681](https://github.com/dsiekiera/foe-helfer-extension/issues/1681) the drag&drop was too sensitive and always gave the message "The new menu order has been saved", we have changed that
+
+
+---
+
 ##### 2.5.3.2
 
 **BugFix**
@@ -7,6 +49,15 @@
     - A small bug prevented the menu button
 
 ---
+
+##### 2.5.3.2
+
+**BugFix**
+- FP Collector:
+    - A small bug prevented the menu button
+
+---
+
 
 ##### 2.5.3.1
 

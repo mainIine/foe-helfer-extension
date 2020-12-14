@@ -39,6 +39,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 	});
 });
 
+
 // GEX FP from chest
 FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 	const d = data['responseData'];
@@ -48,12 +49,12 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 	}
 
 	StrategyPoints.insertIntoDB({
-		place: 'Guildexpedition',
 		event: 'chest',
 		amount: d['amount'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
 });
+
 
 // Visit other tavern
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
@@ -66,7 +67,6 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 	const player = PlayerDict[postData[0]['requestData'][0]];
 	console.log(player)
 	StrategyPoints.insertIntoDB({
-		place: 'FriendsTavern',
 		event: 'satDown',
 		notes: player ? player.PlayerName : undefined,
 		amount: d['rewardResources']['resources']['strategy_points'],
@@ -74,15 +74,6 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 	});
 });
 
-// double Collection by Blue Galaxy
-FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
-
-	if(data['responseData'][0]['type'] !== 'citymap_icon_double_collection'){
-		return;
-	}
-
-	StrategyPoints.pickupProductionId = data['responseData'][0]['id'];
-});
 
 // Plunder reward
 FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
@@ -93,7 +84,6 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 			let PlunderedFP = PlunderReward['product']['resources']['strategy_points'];
 
 			StrategyPoints.insertIntoDB({
-				place: 'OtherPlayer',
 				event: 'plunderReward',
 				amount: PlunderedFP,
 				date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
@@ -102,71 +92,44 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 	}
 });
 
-// BlueGalaxy event (double PickUp)
-FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 
-	if(!StrategyPoints.pickupProductionId){
-		return;
-	}
+// double Collection by Blue Galaxy contains [id, type]
+FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
+	for(let i in data['responseData']) {
+		if(!data['responseData'].hasOwnProperty(i)) continue;
 
-	const pickUpID = StrategyPoints.pickupProductionId;
-	const d = data['responseData']['updatedEntities'];
+		if (data['responseData'][i]['type'] !== 'citymap_icon_double_collection') continue;
 
-	for(let i in d)
-	{
-		if(!d.hasOwnProperty(i)) continue;
+		let CityMapID = data['responseData'][i]['id'],
+			Building = MainParser.CityMapData[CityMapID],
+			CityEntity = MainParser.CityEntities[Building['cityentity_id']];
 
-		if(pickUpID !== d[i]['id']){
-			return ;
-		}
+		let Production = Productions.readType(Building);
+		if (!Production['products']) continue;
 
-		let id = d[i]['cityentity_id'],
-			name = MainParser.CityEntities[id]['name'],
-			amount;
-
-		// Eventbuildings
-		if(d[i]['type'] === 'residential')
-		{
-			// has this building forge points?
-			if(!d[i]['state']['current_product']['product']['resources']['strategy_points']){
-				return;
-			}
-
-			amount = d[i]['state']['current_product']['product']['resources']['strategy_points'];
-		}
-
-		// Production building like Terrace fields
-		else {
-			let level = d[i]['level'],
-				products = MainParser.CityEntities[id]['entity_levels'][level]['production_values'];
-
-			const product = Object.values(products).filter(f => f['type'] === 'strategy_points');
-
-			amount = product[0]['value'];
-		}
+		let FP = Production['products']['strategy_points'];
+		if (!FP) continue;
 
 		StrategyPoints.insertIntoDB({
-			place: 'pickupProduction',
 			event: 'double_collection',
-			notes: name,
-			amount: amount,
+			notes: CityEntity['name'],
+			amount: FP,
 			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 		});
 	}
-
-	// reset
-	StrategyPoints.pickupProductionId = null;
 });
 
 
 /**
- * @type {{calculateTotal: (function(*=): number), maxDateFilter, TodayEntries: null, lockDates: [], buildBody: (function(): Promise<void>), intiateDatePicker: (function(): Promise<void>), getPossibleEventsByDate: (function(): []), currentDateFilter, DatePicker: null, ShowFPCollectorBox: (function(): Promise<void>), minDateFilter: null}}
+ * @type {{maxDateFilter, CityMapDataNew: null, buildBody: (function(): Promise<void>), currentDateFilter, calculateTotalByType: (function(*=): number), ShowFPCollectorBox: (function(): Promise<void>), calculateTotal: (function(): number), TodayEntries: null, lockDates: [], ToggleHeader: FPCollector.ToggleHeader, intiateDatePicker: (function(): Promise<void>), getPossibleEventsByDate: (function(): []), DatePicker: null, HandleAdvanceQuest: FPCollector.HandleAdvanceQuest, minDateFilter: null}}
  */
 let FPCollector = {
 
 	minDateFilter: null,
 	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
 	currentDateFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
+
+	CityMapDataNew: null,
 
 	lockDates: [],
 	TodayEntries: null,

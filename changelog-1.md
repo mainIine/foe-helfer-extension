@@ -1,5 +1,46 @@
 ## Changelog - Extension
 
+##### 2.5.4.0
+
+**Neu**
+- Menü: 
+    - [#1664](https://github.com/dsiekiera/foe-helfer-extension/issues/1664) [#1665](https://github.com/dsiekiera/foe-helfer-extension/issues/1665) Es gibt nun 3 Menü Varianten (rechts, unten und Box)
+    - Auswählbar über "Einstellungen > Erweiterung > Menü wechseln"
+    - Redesign (kleiner, neue Grafiken) des unteren und der Box Variante für mehr Platz
+
+- Erweiterung:
+    - Die Benachrichtigungen sind nun abschaltbar "Einstellungen > Erweiterung > Benachrichtigung"
+    - Die Benachrichtiungen können an unterschiedlichen Positionen erscheinen "Einstellungen > Erweiterung > Benachrichtigungs- positionen"
+
+**Update**
+- Stadtübersicht:
+    - [#1659](https://github.com/dsiekiera/foe-helfer-extension/issues/1659) Übersetzungen für die Statistiken wurden ergänzt
+
+- Blaue Galaxy Helfer:
+    - [#1653](https://github.com/dsiekiera/foe-helfer-extension/issues/1653) kann nun nach Güter gewichten. Soll nur nach FP gewichtet werden, ändere den Wert auf "0" (Null)
+
+- Produktionsübersicht:
+    - [#1646](https://github.com/dsiekiera/foe-helfer-extension/issues/1646) aktualisiert sich nun wenn die Ernte mit Diamanten eingesammelt wird
+
+- Infobox: 
+    - [#1552](https://github.com/dsiekiera/foe-helfer-extension/issues/1552) ab sofort kann im Filter nach einem Text gesucht werden
+
+- Erweiterung:
+    - viele Übersetzungen von [i18n.foe-helper.com](http://i18n.foe-helper.com/projects/foe-helper/extension/) wurden integriert. Helfe auch du noch mehr Übersetzungen zu integrieren und registriere dich
+
+**Bugfix**
+- FP-Collector:
+    - [#1690](https://github.com/dsiekiera/foe-helfer-extension/issues/1690) der Collector hat nicht alle Verdopplungen gezählt
+    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungefehler behoben
+
+- Erweiterung:
+    - [#1687](https://github.com/dsiekiera/foe-helfer-extension/issues/1687) im Firefox wurden nicht alle Übersetzungen geladen
+
+- Menü:
+    - [#1681](https://github.com/dsiekiera/foe-helfer-extension/issues/1681) das Drag&Drop war zu empfindlich und hat immer die Meldung gerbacht "Das neue Menü-Reihenfolge wurde gespeichert", das haben wir geändert
+
+---
+
 ##### 2.5.3.2
 
 **BugFix**
@@ -643,7 +684,7 @@
 - Armeeübersicht:
     - [#434](https://github.com/dsiekiera/foe-helfer-extension/issues/434) [#467](https://github.com/dsiekiera/foe-helfer-extension/issues/467) Neue Armee Boni integriert
     
-- Verhandlungsassitent:    
+- Verhandlungsassistent:    
     - [#519](https://github.com/dsiekiera/foe-helfer-extension/issues/519) Nummerntasten Anzeige und Benutzung (erste Zahl Person, zweite Taste Gut + Leertaste abschicken)
 
 - Menü:
@@ -656,7 +697,7 @@
 - Menü:
     - [#411](https://github.com/dsiekiera/foe-helfer-extension/issues/411) [#413](https://github.com/dsiekiera/foe-helfer-extension/issues/413) doppelte Einträge gefixt
 
-- Verhandlungsassitent:
+- Verhandlungsassistent:
     - [#421](https://github.com/dsiekiera/foe-helfer-extension/issues/421) Vorrats-Tooltip beim Verhandlungsassistent blieb sichtbar
     - [#459](https://github.com/dsiekiera/foe-helfer-extension/issues/459) zeigte ausgeschlossene Güter
     - [#491](https://github.com/dsiekiera/foe-helfer-extension/issues/491) Fehler beim Verhandlungsassistent

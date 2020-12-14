@@ -14,6 +14,7 @@
  */
 
 let _menu_right = {
+
 	/**
 	 *
 	 */
@@ -39,9 +40,10 @@ let _menu_right = {
 
 			// korrekten Platz für das Menu ermitteln
 			_menu_right.SetMenuHeight();
+
+			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
 
-		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function (event) {
@@ -51,7 +53,7 @@ let _menu_right = {
 
 
 	/**
-	 * Sammelfunktion
+	 * Collective function
 	 *
 	 * @param reset
 	 */
@@ -69,18 +71,26 @@ let _menu_right = {
 			_menu.ActiveSlide = 1;
 
 			$('.hud-btn-up').removeClass('hud-btn-up-active');
-			$('.hud-btn-down').addClass('hud-btn-down-active');
+
+			if (_menu.SlideParts > 1) {
+				$('.hud-btn-down').addClass('hud-btn-down-active');
+			}
+			else { //Gesamtes Menü passt auf 1 Seite => Kein Scrollbutton nach unten
+				$('.hud-btn-down').removeClass('hud-btn-down-active');	
+			}
 		}
 	},
 
 
 	/**
-	 * Ermittelt die Fensterhöhe und ermittelt die passende Höhe
+	 * Determines the window height and determines the appropriate height
 	 *
 	 */
 	Prepare: () => {
+		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
+		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
@@ -90,7 +100,7 @@ let _menu_right = {
 		}
 
 		_menu.HudHeight = (_menu.HudCount * 55);
-		_menu.SlideParts = Math.ceil($("#foe-helper-hud-slider").children().length / _menu.HudCount);
+		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
 		$('#foe-helper-hud').height(_menu.HudHeight + 2);
 		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
@@ -98,8 +108,7 @@ let _menu_right = {
 
 
 	/**
-	 * Bindet alle benötigten Button ein
-	 *
+	 * Integrates all required buttons
 	 */
 	ListLinks: () => {
 		let hudSlider = $('#foe-helper-hud-slider'),
@@ -180,13 +189,13 @@ let _menu_right = {
 			}
 		}
 
+		_menu.Items = _menu.Items.filter(e => e);
 		_menu_right.CheckButtons();
 	},
 
 
 	/**
-	 * Panel scrollbar machen
-	 *
+	 * Make panel scrollable
 	 */
 	CheckButtons: () => {
 
@@ -228,7 +237,7 @@ let _menu_right = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
-			distance: 10,
+			distance: 15,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},
@@ -284,7 +293,7 @@ let _menu_right = {
 
 
 	/**
-	 * Klick Funktion
+	 * Click function
 	 */
 	ClickButtonDown: () => {
 		$('.hud-btn-down').removeClass('hasFocus');
@@ -310,7 +319,7 @@ let _menu_right = {
 
 
 	/**
-	 * Klick Funktion
+	 * Click function
 	 */
 	ClickButtonUp: () => {
 		$('.hud-btn-up').removeClass('hasFocus');
