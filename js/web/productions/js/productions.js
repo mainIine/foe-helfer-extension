@@ -513,11 +513,12 @@ let Productions = {
 		HTML.AddCssFile('productions');
 
 		HTML.Box({
-			'id': 'Productions',
-			'title': i18n('Boxes.Productions.Title'),
-			'auto_close': true,
-			'dragdrop': true,
-			'minimize': true
+			id: 'Productions',
+			title: i18n('Boxes.Productions.Title'),
+			auto_close: true,
+			dragdrop: true,
+			minimize: true,
+			resize: true
 		});
 
 		Productions.ActiveTab = 1;
