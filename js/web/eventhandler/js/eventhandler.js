@@ -158,7 +158,7 @@ let EventHandler = {
 					),
 					icon: 'success',
 					hideAfter: 2600,
-					position: Settings.GetSetting('NotificationPosition', true)
+					position: Settings.GetSetting('NotificationsPosition', true)
 				});
 			}
 		});
