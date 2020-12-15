@@ -122,7 +122,8 @@ let Settings = {
 							$('<input class="setting-check game-cursor" type="checkbox" />')
 						)
 					);
-				if ("SelectedMenu" !== d['name']) {
+
+				if ("SelectedMenu" !== d['name'] && 'NotificationsPosition' !== d['name']) {
 
 					let s = localStorage.getItem(d['name']);
 
@@ -214,16 +215,17 @@ let Settings = {
 
 
 	/**
-	 * Gibt den Status aus dem localStorage oder den Settings zurück
+	 * Returns the status from the localStorage or the Settings
 	 *
 	 * @param name
+	 * @param is_string
 	 * @returns {any}
 	 */
-	GetSetting: (name) => {
+	GetSetting: (name, is_string =false) => {
 		let s = localStorage.getItem(name);
 
 		if (s !== null) {
-			return JSON.parse(s);
+			return is_string ? s : JSON.parse(s);
 
 		} else {
 
@@ -512,7 +514,7 @@ let Settings = {
 		$('#SettingsBoxBody').on('change', '#notification-position', function() {
 			let pos = $(this).val();
 
-			localStorage.setItem('NotificationPosition', pos);
+			localStorage.setItem('NotificationsPosition', pos);
 
 			$.toast({
 				heading: i18n('Settings.NotificationPosition.ToastTestHeader'),
