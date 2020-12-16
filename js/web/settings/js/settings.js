@@ -101,7 +101,7 @@ let Settings = {
 				childLis = [],
 				childDivs = [];
 
-			parentLis.push(`<li><a href="#tab-${i}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
+			parentLis.push(`<li><a href="#tab-${i}" title="${i18n('Settings.Tab.' + g)}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
 
 			for (let x in grps) {
 				if (!grps.hasOwnProperty(x)) {
