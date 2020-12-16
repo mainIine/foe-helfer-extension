@@ -78,6 +78,12 @@
 		"sort": 9
 	},
 	{
+		"name": "AutoOpenInfoBox",
+		"status": false,
+		"group": "Boxes",
+		"sort": 10
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
