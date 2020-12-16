@@ -23,8 +23,6 @@ let Productions = {
 
 	ActiveTab: 1,
 
-	BuildingTypes: {},
-
 	Tabs: [],
 	TabsContent: [],
 
@@ -46,11 +44,15 @@ let Productions = {
 
 	Buildings: [
 		'greatbuilding',
-		'residential',
-		'random_production',
 		'production',
-		'main_building',
+		'random_production',
+		'residential',
+		'decoration',
 		'street',
+		'goods',
+		'culture',
+		'main_building',
+		'clan_power_production',
 		'boost',
 	],
 
@@ -60,20 +62,6 @@ let Productions = {
 	init: () => {
 
 		moment.locale(i18n('Local'));
-
-		if (Object.keys(Productions.BuildingTypes).length === 0) {
-			Productions.BuildingTypes.greatbuilding = i18n('Boxes.Productions.Headings.greatbuilding');
-			Productions.BuildingTypes.production = i18n('Boxes.Productions.Headings.production');
-			Productions.BuildingTypes.random_production = i18n('Boxes.Productions.Headings.random_production');
-			Productions.BuildingTypes.residential = i18n('Boxes.Productions.Headings.residential');
-			Productions.BuildingTypes.decoration = i18n('Boxes.Productions.Headings.decoration');
-			Productions.BuildingTypes.street = i18n('Boxes.Productions.Headings.street');
-			Productions.BuildingTypes.goods = i18n('Boxes.Productions.Headings.goods');
-			Productions.BuildingTypes.culture = i18n('Boxes.Productions.Headings.culture');
-			Productions.BuildingTypes.main_building = i18n('Boxes.Productions.Headings.main_building');
-			Productions.BuildingTypes.clan_power_production = i18n('Boxes.Productions.Headings.clan_power_production');
-			Productions.BuildingTypes.boost = i18n('Boxes.Productions.Headings.boost');
-		}
 
 		Productions.CombinedCityMapData = MainParser.CityMapData;
 		if (MainParser.CityMapEraOutpostData) {
@@ -324,7 +312,6 @@ let Productions = {
 			eid: d['cityentity_id'],
 			type: d['type'],
 			era: era,
-			hasDate: false,
 			at: (MainParser.getCurrentDate().getTime()) / 1000,
 			in: 0
 		};
@@ -477,7 +464,6 @@ let Productions = {
 			let At = d['state']['next_state_transition_at'],
 				In = d['state']['next_state_transition_in'];
 
-			if (At && In) Ret.hasDate = true;
 			if (At) Ret.at = At;
 			if (In) Ret.in = In;
 		}
@@ -863,7 +849,6 @@ let Productions = {
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('</tr>');
-
 			}
 
 			table.push( rowA.join('') );
@@ -905,9 +890,6 @@ let Productions = {
 		{
 			if(building.hasOwnProperty(i))
 			{
-				rowC.push('<tr class="' + building[i]['type'] + ' ' + (!building[i]['hasDate'] || building[i]['at'] * 1000 >= MainParser.getCurrentDateTime() ? 'notdone' : '') + '">');
-				rowC.push('<td>' + building[i]['name'] + '</td>');
-
 				let pA = [],
 					prod = building[i]['products'],
 					ShowTime = false;
@@ -922,6 +904,9 @@ let Productions = {
 						}
 					}
 				}
+
+				rowC.push('<tr class="' + building[i]['type'] + ' ' + (!ShowTime || building[i]['at'] * 1000 >= MainParser.getCurrentDateTime() ? 'notdone' : '') + '">');
+				rowC.push('<td>' + building[i]['name'] + '</td>');
 
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
 
@@ -1091,7 +1076,7 @@ let Productions = {
 			{
 				if(!$('#parent-' + matches[0]).length)
 				{
-					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="5">' + Productions.BuildingTypes[matches[0]] + '</th></tr></tbody>').appendTo('.all-mode');
+					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="5">' + i18n('Boxes.Productions.Headings.' + matches[0]) + '</th></tr></tbody>').appendTo('.all-mode');
 				}
 
 				$(this).appendTo( $('#parent-' + matches[0]) );
@@ -1108,7 +1093,7 @@ let Productions = {
 		{
 			if(Productions.Buildings.hasOwnProperty(i))
 			{
-				drop.append( $('<option />').attr('data-type', Productions.Buildings[i]).text( Productions.BuildingTypes[Productions.Buildings[i]] ).addClass('game-cursor') )
+				drop.append($('<option />').attr('data-type', Productions.Buildings[i]).text(i18n('Boxes.Productions.Headings.' + Productions.Buildings[i])).addClass('game-cursor') )
 			}
 		}
 
