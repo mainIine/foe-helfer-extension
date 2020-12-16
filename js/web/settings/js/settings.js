@@ -221,7 +221,7 @@ let Settings = {
 	 * @param is_string
 	 * @returns {any}
 	 */
-	GetSetting: (name, is_string =false) => {
+	GetSetting: (name, is_string = false) => {
 		let s = localStorage.getItem(name);
 
 		if (s !== null) {
@@ -314,10 +314,9 @@ let Settings = {
 
 		dp.push('<select class="setting-dropdown" id="change-menu">');
 
-		for (let index = 0; index < _menu.MenuOptions.length; index++)
-		{
+		for (let index = 0; index < _menu.MenuOptions.length; index++) {
 			const element = _menu.MenuOptions[index];
-			if(element[Object.keys(element)[0]]){
+			if (element[Object.keys(element)[0]]) {
 				dp.push('<option value="' + Object.keys(element)[0] + '"' + (MainParser.SelectedMenu === Object.keys(element)[0] ? ' selected' : '') + '>' + i18n('Menu.' + Object.keys(element)[0]) + '</option>');
 			}
 		}
@@ -461,7 +460,8 @@ let Settings = {
 			step: 1,
 			min: 2
 		}),
-			value = localStorage.getItem('MenuLength');
+		value = localStorage.getItem('MenuLength');
+		ip[0].defaultValue = ip[0].value = value;
 
 		if (null !== value) {
 			ip.val(value);
@@ -482,8 +482,40 @@ let Settings = {
 		return ip;
 	},
 
+	/**
+	 *	Erzeugt ein Input Feld
+	 *
+	 * @returns {null|undefined|jQuery}
+	 */
+	InfoboxInputEntryCount: () => {
+		let ip = $('<input />').addClass('setting-input').attr({
+			type: 'number',
+			id: 'infobox-entry-length',
+			step: 1,
+			min: 1
+		}),
+			value = localStorage.getItem('EntryCount') || 0;
+		ip[0].defaultValue = ip[0].value = value;
 
-	NotificationView: ()=> {
+		localStorage.setItem('EntryCount', value);
+
+		$('#SettingsBox').on('keyup', '#infobox-entry-length', function () {
+			let value = $(this).val();
+
+			if (value > 0) {
+				localStorage.setItem('EntryCount', value);
+			} else {
+				localStorage.setItem('EntryCount', 0);
+			}
+
+			Infoboard.MaxEntries = value;
+		});
+
+		return ip;
+	},
+
+
+	NotificationView: () => {
 		let elements = [],
 			settingPos = localStorage.getItem('NotificationPosition'),
 			positions = [
@@ -496,22 +528,21 @@ let Settings = {
 				'mid-center'
 			];
 
-		if(!settingPos)
-		{
+		if (!settingPos) {
 			settingPos = 'bottom-right';
 		}
 
 		elements.push('<select class="setting-dropdown" id="notification-position">');
 
 		for (let pos in positions) {
-			if (!positions.hasOwnProperty(pos)) {break;}
+			if (!positions.hasOwnProperty(pos)) { break; }
 
 			elements.push(`<option value="${positions[pos]}"${(settingPos === positions[pos] ? ' selected' : '')}>${i18n('Menu.Notification.Position.' + positions[pos])}</option>`);
 		}
 
 		elements.push('</select>');
 
-		$('#SettingsBoxBody').on('change', '#notification-position', function() {
+		$('#SettingsBoxBody').on('change', '#notification-position', function () {
 			let pos = $(this).val();
 
 			localStorage.setItem('NotificationsPosition', pos);
