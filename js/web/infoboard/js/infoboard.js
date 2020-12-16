@@ -252,7 +252,7 @@ let Infoboard = {
 
         if ($('#BackgroundInfo').length > 0) {
             if(bd['class'] !== 'welcome' && add){
-                if(Infoboard.MaxEntries > 0 && Infoboard.History.length-1 > Infoboard.MaxEntries){
+                if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries){
                     Infoboard.History.shift();
                 }
                 Infoboard.History.push(bd);
@@ -267,8 +267,8 @@ let Infoboard = {
             if ((!status || !(textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase())))) && bd.class !== 'welcome') {
                 tr.hide();
             }else{
-                if(Infoboard.MaxEntries > 0 && Infoboard.History.length-1 > Infoboard.MaxEntries){
-                    while(Infoboard.MaxEntries > 0 && Infoboard.History.length-1 > Infoboard.MaxEntries){
+                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
                         let trLast = $('#BackgroundInfoTable tbody tr:last-child')[0];
                         trLast.parentNode.removeChild(trLast);
                     }
