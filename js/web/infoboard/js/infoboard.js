@@ -56,7 +56,7 @@ FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
 
 /**
  *
- * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null, History: Array, MaxEntries:Number}}
  */
 let Infoboard = {
 
@@ -66,6 +66,8 @@ let Infoboard = {
     SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg", "text"],
     SavedTextFilter: "",
     DebugWebSocket: false,
+    History: [],
+    MaxEntries: 0,
 
 
     /**
@@ -186,6 +188,12 @@ let Infoboard = {
             msg: i18n('Boxes.Infobox.Messages.Welcome'),
         });
 
+        Infoboard.MaxEntries = localStorage.getItem("EntryCount") || 0;
+        for (let i = 0; i < Infoboard.History.length; i++) {
+            const element = Infoboard.History[i];
+            Infoboard.PostMessage(element,false);
+        }
+
         $('#BackgroundInfo').on('click', '#infoboxTone', function () {
 
             let disabled = $(this).hasClass('deactivated');
@@ -240,16 +248,31 @@ let Infoboard = {
     },
 
 
-    PostMessage: (bd) => {
+    PostMessage: (bd,add = true) => {
 
         if ($('#BackgroundInfo').length > 0) {
+            if(bd['class'] !== 'welcome' && add){
+                if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries){
+                    Infoboard.History.shift();
+                }
+                Infoboard.History.push(bd);
+            }
+            if(bd['class'] === 'welcome' && Infoboard.History.length > 0) return;
+
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 textfilter = $('input[data-type="text"]').val().split("|"),
                 msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
-            
-                // wenn nicht angezeigt werden soll, direkt verstecken
+
+            // wenn nicht angezeigt werden soll, direkt verstecken
             if ((!status || !(textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase())))) && bd.class !== 'welcome') {
                 tr.hide();
+            }else{
+                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+                        let trLast = $('#BackgroundInfoTable tbody tr:last-child')[0];
+                        trLast.parentNode.removeChild(trLast);
+                    }
+                }
             }
 
             if (img) {
@@ -297,10 +320,10 @@ let Infoboard = {
             localStorage.setItem("infoboxTextFilter", $('input[data-type="text"]').val());
 
             $('#BackgroundInfoTable tbody tr').each(function () {
-                let tr = $(this), 
-                textfilter = $('input[data-type="text"]').val().split("|"),
-                type = tr.attr('class');
-                
+                let tr = $(this),
+                    textfilter = $('input[data-type="text"]').val().split("|"),
+                    type = tr.attr('class');
+
                 if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
@@ -318,6 +341,7 @@ let Infoboard = {
     ResetBox: () => {
         $('#BackgroundInfo').on('click', '.btn-reset-box', function () {
             $('#BackgroundInfoTable tbody').html('');
+            Infoboard.History = [];
         });
     }
 };

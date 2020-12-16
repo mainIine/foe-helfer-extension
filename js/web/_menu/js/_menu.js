@@ -68,7 +68,9 @@ let _menu = {
 				eval(element[selMenu]);
 			}
 		}
-
+		if(Settings.GetSetting('AutoOpenInfoBox')){
+			Infoboard.Show();
+		}
 	},
 
 	/**
