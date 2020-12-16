@@ -51,7 +51,7 @@ let Productions = {
 		'production',
 		'main_building',
 		'street',
-		'boost'
+		'boost',
 	],
 
 	/**
@@ -71,6 +71,7 @@ let Productions = {
 			Productions.BuildingTypes.goods = i18n('Boxes.Productions.Headings.goods');
 			Productions.BuildingTypes.culture = i18n('Boxes.Productions.Headings.culture');
 			Productions.BuildingTypes.main_building = i18n('Boxes.Productions.Headings.main_building');
+			Productions.BuildingTypes.clan_power_production = i18n('Boxes.Productions.Headings.clan_power_production');
 			Productions.BuildingTypes.boost = i18n('Boxes.Productions.Headings.boost');
 		}
 
@@ -323,6 +324,7 @@ let Productions = {
 			eid: d['cityentity_id'],
 			type: d['type'],
 			era: era,
+			hasDate: false,
 			at: (MainParser.getCurrentDate().getTime()) / 1000,
 			in: 0
 		};
@@ -475,6 +477,7 @@ let Productions = {
 			let At = d['state']['next_state_transition_at'],
 				In = d['state']['next_state_transition_in'];
 
+			if (At && In) Ret.hasDate = true;
 			if (At) Ret.at = At;
 			if (In) Ret.in = In;
 		}
@@ -575,6 +578,7 @@ let Productions = {
 				countProducts = [],
 				countAll = 0,
 				countAllMotivated = 0,
+				countAllDone = 0,
 				sizes = [],
 				sizetooltips = [];
       
@@ -588,7 +592,7 @@ let Productions = {
 						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0);
 
 					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
 	            }
 
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
@@ -599,11 +603,12 @@ let Productions = {
 					if(type !== 'packaging')
 					{
 						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type),
-						MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
+							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
 							CssClass = '';
 
 						countAll += ProductCount;
 						countAllMotivated += MotivatedProductCount;
+						countAllDone += (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime() ? ProductCount : 0);
 
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
@@ -636,11 +641,11 @@ let Productions = {
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
-						rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
-
+						
 						if (type !== 'population' && type !== 'happiness') {
+							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 							}
 							else {
 								rowA.push('<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
@@ -675,6 +680,7 @@ let Productions = {
 								countProducts[p] += Amount;
 								CurrentBuildingCount += Amount;
 								countAll += Amount;
+								countAllDone += (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime() ? Amount : 0);
 
 								pA.push(HTML.Format(Amount) + ' ' + Productions.GetGoodName(p));
 							}
@@ -685,7 +691,7 @@ let Productions = {
 							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>';
 
 						if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>';
+							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>';
 						}
 						else {
 							tds += '<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
@@ -831,8 +837,11 @@ let Productions = {
 				table.push('<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span>');
 				table.push('</th>');
 
-				table.push('<th colspan="2"></th>');
-				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
+				table.push('<th colspan="6" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong>');
+				if (type !== 'population' && type !== 'happiness') {
+					table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong>');
+				}
+				table.push('</th>');
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -896,7 +905,7 @@ let Productions = {
 		{
 			if(building.hasOwnProperty(i))
 			{
-				rowC.push('<tr class="' + building[i]['type'] + '">');
+				rowC.push('<tr class="' + building[i]['type'] + ' ' + (!building[i]['hasDate'] || building[i]['at'] * 1000 >= MainParser.getCurrentDateTime() ? 'notdone' : '') + '">');
 				rowC.push('<td>' + building[i]['name'] + '</td>');
 
 				let pA = [],
@@ -922,7 +931,7 @@ let Productions = {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
 
 					if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 					}
 					else {
 						rowC.push('<td style="white-space:nowrap" colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
@@ -1103,6 +1112,8 @@ let Productions = {
 			}
 		}
 
+		drop.append($('<option />').attr('data-type', 'done').text(i18n('Boxes.Productions.Headings.Done')))
+
 		$('#all-dropdown-th').append(drop);
 
 		setTimeout(()=>{
@@ -1118,13 +1129,18 @@ let Productions = {
 		$('#Productions').on('change', '#all-drop', function() {
 			let t = $('select#all-drop :selected').data('type');
 
-			if(t === 'all')
-			{
+			if (t === 'all') {
 				$('.all-mode').find('.parent').show();
+				$('.all-mode').find('.notdone').show();
 			}
+			else if (t === 'done') {
+				$('.all-mode').find('.parent').show();
+				$('.all-mode').find('.notdone').hide();
+            }
 			else {
 				$('.all-mode').find('.parent').hide();
 				$('.all-mode').find('#parent-' + t).show();
+				$('.all-mode').find('.notdone').show();
 			}
 		});
 	},
