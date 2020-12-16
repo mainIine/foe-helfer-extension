@@ -547,8 +547,15 @@ let Parts = {
 		Parts.BuildBackgroundBody(Parts.Maezens, Eigens, NonExts);
 
         // Wieviel fehlt noch bis zum leveln?
-		if (Parts.IsPreviousLevel === false && !Parts.IsNextLevel) {
-			let rest = (Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points']);
+		if (Parts.IsPreviousLevel === false) {
+			let rest;
+			if (Parts.IsNextLevel) {
+				rest = Total;
+			}
+			else {
+				rest = Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points'];
+			}
+
             h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
             h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 
@@ -560,7 +567,7 @@ let Parts = {
 
 		$('#OwnPartBoxBody').html(h.join(''));
 
-		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel && !Parts.IsNextLevel) {
+		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
 			Parts.CalcBodyPowerLeveling();
 		}
 
@@ -993,7 +1000,7 @@ let Parts = {
 			CityEntity = MainParser.CityEntities[EntityID],
 			EraName = GreatBuildings.GetEraName(EntityID),
 			Era = Technologies.Eras[EraName],
-			MinLevel = Parts.CityMapEntity['level'],
+			MinLevel = Parts.Level,
 			MaxLevel = Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length);
 
 		let Totals = [],
