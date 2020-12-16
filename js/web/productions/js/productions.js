@@ -562,6 +562,7 @@ let Productions = {
 				rowA = [],
 				rowB = [],
 				countProducts = [],
+				countProductsDone = [],
 				countAll = 0,
 				countAllMotivated = 0,
 				countAllDone = 0,
@@ -655,18 +656,21 @@ let Productions = {
 
 						for(let p in buildings[i]['products'])
 						{
-							if(buildings[i]['products'].hasOwnProperty(p) && (Productions.Types.includes(p) === false || p === 'packaging'))
-							{
-								if(countProducts[p] === undefined)
-								{
+							if (buildings[i]['products'].hasOwnProperty(p) && (Productions.Types.includes(p) === false || p === 'packaging')) {
+								if (countProducts[p] === undefined) {
 									countProducts[p] = 0;
+									countProductsDone[p] = 0;
 								}
 
 								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i]['dailyfactor'], p);
 								countProducts[p] += Amount;
 								CurrentBuildingCount += Amount;
 								countAll += Amount;
-								countAllDone += (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime() ? Amount : 0);
+
+								if (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime()) {
+									countProductsDone[p] += Amount;
+									countAllDone += Amount;
+								}
 
 								pA.push(HTML.Format(Amount) + ' ' + Productions.GetGoodName(p));
 							}
@@ -733,7 +737,8 @@ let Productions = {
 			if(Productions.isEmpty(countProducts) === false)
 			{
 				let eras = [],
-					eraSums = [];
+					eraSums = [],
+					eraSumsDone = [];
 
 				// nach Zeitalter gruppieren und Array zusammen fummlen
 				for(let ca in countProducts)
@@ -750,8 +755,10 @@ let Productions = {
 
 						if (!eraSums[era]) {
 							eraSums[era] = 0;
+							eraSumsDone[era] = 0;
 						}
 						eraSums[era] += countProducts[ca];
+						eraSumsDone[era] += countProductsDone[ca];
 					}
 				}
 
@@ -775,12 +782,11 @@ let Productions = {
 				// Zeitalterweise in die Tabelle legen
 				for (let era = eras.length; era >= 0; era--)
 				{
-					if(!eras.hasOwnProperty(era))
-					{
-						continue;
-					}
-
-					table.push('<tr><th colspan="4"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th><th colspan="2" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong></th></tr>');
+					if (!eras.hasOwnProperty(era)) continue;
+					
+					table.push('<tr><th colspan="3"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th>');
+					table.push('<th colspan="3" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong>');
+					table.push(' <span class="success">' + i18n('Boxes.Productions.Done') + ':</span> <strong class="success">' + HTML.Format(eraSumsDone[era]) + '</strong></th ></tr > ');
 
 					table.push('<tr><td colspan="6" class="all-products">');
 
@@ -792,7 +798,8 @@ let Productions = {
 
 				table.push('<tbody class="packaging-mode packaging-single">');
 
-				table.push('<tr class="other-header"><td class="total-products text-right" colspan="6"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td></tr>');
+				table.push('<tr class="other-header"><td class="total-products text-right" colspan="6"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong>');
+				table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong></td ></tr > ');
 
 				table.push('<tr class="sorter-header">');
 				table.push('<th class="ascending game-cursor" data-type="packaging-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');

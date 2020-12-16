@@ -32,6 +32,10 @@
 	color: var(--text-success);
 }
 
+#Productions #ProductionsBody span.success {
+	color: var(--text-success);
+}
+
 #Productions #ProductionsBody .show-entity {
 	display: inline-block;
 	width: 20px;
