@@ -127,9 +127,6 @@ let BlueGalaxy = {
         }
 
         let h = [];
-        h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
-        h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + i18n('Boxes.BlueGalaxy.TTGoodsValue') + '">');
-
         h.push('<div class="text-center dark-bg header">');
 
         let Title;
@@ -147,6 +144,9 @@ let BlueGalaxy = {
 
         let table = [];
         if (DoubleCollections > 0 && Buildings.length > 0) {
+            h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
+            h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + i18n('Boxes.BlueGalaxy.TTGoodsValue') + '">');
+
             table.push('<table class="foe-table">');
 
             table.push('<thead>' +
