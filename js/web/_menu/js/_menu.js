@@ -28,8 +28,7 @@ let _menu = {
 	MenuOptions:[
 		{'BottomBar':"_menu_bottom.BuildOverlayMenu()"},
 		{'RightBar':"_menu_right.BuildOverlayMenu()"},
-		{'Box':"_menu_box.BuildBoxMenu()"},
-		// {'Dropdown':"alert('hello')"}
+		{'Box':"_menu_box.BuildBoxMenu()"}
 	],
 
 	Items: [
@@ -56,22 +55,27 @@ let _menu = {
 		'fpCollector'
 	],
 
+
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
-		for (let index = 0; index < _menu.MenuOptions.length; index++) {
+
+		for (let index = 0; index < _menu.MenuOptions.length; index++)
+		{
 			const element = _menu.MenuOptions[index];
 			if(element[selMenu]){
 				eval(element[selMenu]);
 			}
 		}
+
 		if(Settings.GetSetting('AutoOpenInfoBox')){
 			Infoboard.Show();
 		}
 	},
+
 
 	/**
 	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
@@ -87,7 +91,7 @@ let _menu = {
 
 
 	/**
-	 * Zeigt ein versteckten Button wieder.
+	 * Shows a hidden button again
 	 */
 	ShowButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
@@ -111,8 +115,9 @@ let _menu = {
 		$('body').append(ToolTipp);
 	},
 
+
 	/**
-	 * Prüft, ob sich etwas an der Sortierung der Items verändert hat.
+	 * Checks whether anything has changed in the sorting of the items.
 	 *
 	 * @param storedItems
 	 * @returns {boolean}
