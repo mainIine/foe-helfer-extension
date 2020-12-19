@@ -528,7 +528,7 @@ let HTML = {
 
 		$this.addClass('on-top');
 	},
-	
+
 
 	EnterFullscreen: ()=> {
 
