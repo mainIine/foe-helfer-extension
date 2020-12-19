@@ -1210,12 +1210,16 @@ let MainParser = {
 	 * @param data
 	 */
 	sendExtMessage: (data) => {
-		// @ts-ignore
-		if (typeof chrome !== 'undefined') {
-			chrome.runtime.sendMessage(extID, data);
-		} else {
-			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
-		}
+		return new Promise((resolve, reject) => {
+			// @ts-ignore
+			if (typeof chrome !== 'undefined') {
+				chrome.runtime.sendMessage(extID, data, resolve);
+			} else {
+				// TODO: implement
+				reject(new Error("backwards Communication from Extension not implemented"));
+				window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
+			}
+		});
 	},
 
 
@@ -1264,7 +1268,7 @@ let MainParser = {
 	/**
 	 * Gibt das aktuelle Datum in Spielzeit zurück
 	 *
-	 * @returns {number}
+	 * @returns {Date}
 	 */
 	getCurrentDate: () => {
 		return new Date(Date.now() + GameTimeOffset);
@@ -1274,7 +1278,7 @@ let MainParser = {
 	/**
 	 * Führt eine Rundung unter Berücksichtigung der Fließkomma Ungenauigkeit durch
 	 *
-	 * @param value
+	 * @param {number} value
 	 * @returns {number}
 	 */
 	round: (value) => {
@@ -1292,8 +1296,8 @@ let MainParser = {
 	/**
 	 * Der Storage hat immer schon einen Zeitaufschlag
 	 *
-	 * @param actual
-	 * @param storage
+	 * @param {number} actual
+	 * @param {number} storage
 	 * @returns {string|boolean}
 	 */
 	compareTime: (actual, storage)=> {
@@ -1381,9 +1385,7 @@ let MainParser = {
 		const pID = ExtPlayerID;
 		const cW = ExtWorld;
 		const gID = ExtGuildID;
-		const formData = new FormData();
 
-		MainParser.obj2FormData(formData, 'data', data);
 
 		let req = fetch(
 			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
