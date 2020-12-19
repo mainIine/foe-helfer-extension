@@ -37,6 +37,7 @@
 
 .fpcollector-body {
 	display: none;
+	background-color: rgba(0,0,0,0.25);
 }
 
 .fpcollector-accordion strong,
@@ -79,6 +80,22 @@
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 3px 0;
+	position: relative;
+}
+
+.fpcollector-head::after {
+	content: ' ';
+	background-image: url('../images/chevron-left.svg');
+	background-size: contain;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: 10px;
+	top: 4px;
+}
+
+.fpcollector-accordion.open .fpcollector-head::after {
+	background-image: url('../images/chevron-down.svg');
 }
 
 .fpcollector-head span.image {
