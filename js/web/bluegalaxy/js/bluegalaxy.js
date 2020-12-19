@@ -15,7 +15,9 @@
 
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
     if (data.responseData['updatedEntities']) {
-        let Entities = data.responseData['updatedEntities'];
+
+    	let Entities = data.responseData['updatedEntities'];
+
         for (let i = 0; i < Entities.length; i++) {
             if (Entities[i]['cityentity_id'] === 'X_OceanicFuture_Landmark3') {
                 if ($('#bluegalaxy').length === 0) {

@@ -336,10 +336,6 @@ let Market = {
 
         h.push('</table>');
 
-        $('#MarketBody').html(h.join('')).promise().done(function(){
-			HTML.Dropdown();
-        });
-
         $('.td-tooltip').tooltip({
             html: true,
             container: '#Market'
