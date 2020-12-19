@@ -100,7 +100,7 @@ $(async function(){
 		item.appendChild(link);
 
 		item.appendChild(document.createTextNode(alert.data.title));
-		item.appendChild(document.createTextNode(alert.data.message));
+		item.appendChild(document.createTextNode(alert.data.body));
 
 		const time = document.createElement('span');
 		time.classList.add('text-right');
