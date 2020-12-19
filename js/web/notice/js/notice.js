@@ -592,10 +592,6 @@ let Notice = {
 		content +=		`</div>
 					</div>
 				</div>`;
-
-		$('#notices-modal-playersBody').html(content).promise().done(function(){
-			HTML.Dropdown();
-		});
 	},
 
 

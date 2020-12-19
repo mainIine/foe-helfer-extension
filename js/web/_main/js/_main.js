@@ -755,6 +755,18 @@ const FoEproxy = (function () {
 		}
 	});
 
+	// Freund entfernt
+	FoEproxy.addHandler('FriendService', 'deleteFriend', (data, postData) => {
+		let FriendID = data.responseData;
+		if (PlayerDict[FriendID]) {
+			PlayerDict[FriendID]['isFriend'] = false;
+		}
+
+		if ($('#moppelhelper').length === 0) {
+			EventHandler.CalcMoppelHelperTable();
+		}
+	});
+
 
 	// Nachricht geöffnet
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {

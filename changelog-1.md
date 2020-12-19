@@ -1,5 +1,40 @@
 ## Changelog - Extension
 
+##### 2.5.4.2
+
+**Update**
+- Produktionsübersicht:
+    - Alcatraz in die Übersicht für "Einheiten" hinzugefügt
+    
+- FP-Collector:
+    - Pfeile hinzugefügt um dazustellen das man die Einträge aufklappen kann
+
+- Infobox:
+    - [#1704](https://github.com/dsiekiera/foe-helfer-extension/issues/1704) Kann ab sofort, wenn gewünscht mit dem Spielstart geladen werden => "Einstellungen > Boxen > Infobox"
+    - [#1416](https://github.com/dsiekiera/foe-helfer-extension/issues/1416) Kann ab ab sofort auf eine Länge beschränkt werden => "Einstellungen > Boxen > Infobox Nachrichten" um den Browser bei sehr vielen Einträgen zu schonen
+  - Die Einträge der Infobox werden gespeichert wenn sie nur geschlossen und wieder geöffnet wird
+
+
+**Bugfix**
+- Extension:
+    - [#1720](https://github.com/dsiekiera/foe-helfer-extension/issues/1720) Filter im Moppelassistent reagiert falsch, wenn Infobox offen ist
+    - [#1707](https://github.com/dsiekiera/foe-helfer-extension/issues/1707) Einige Mitteilungen wurden nicht angezeigt
+
+- Menü-Box:
+    - [#1717](https://github.com/dsiekiera/foe-helfer-extension/issues/1717) Wenn die Box oben am Rand liegt, verschwanden die Tooltips ausserhalb des sichtbaren Bereiches
+
+- Produktionsübersicht: 
+    - [#1709](https://github.com/dsiekiera/foe-helfer-extension/issues/1709) Die Box wurde zu lang, die ist nun wieder scrollbar
+
+- Infobox:
+    - [#1694](https://github.com/dsiekiera/foe-helfer-extension/issues/1694) Falsche Übersetzung im Filter gefixt "GvG" => "GG"
+    - Der Nachrichtenfilter ist nun case-Insesitive (Groß- Kleinschreibung wird ignoriert)
+    
+- Moppelhelfer:
+    - [#1658](https://github.com/dsiekiera/foe-helfer-extension/issues/1658) Datumserkennung für CZ gefixt
+
+---
+
 ##### 2.5.4.1
 
 **Bugfix**

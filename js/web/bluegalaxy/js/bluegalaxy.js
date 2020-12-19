@@ -15,7 +15,9 @@
 
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
     if (data.responseData['updatedEntities']) {
-        let Entities = data.responseData['updatedEntities'];
+
+    	let Entities = data.responseData['updatedEntities'];
+
         for (let i = 0; i < Entities.length; i++) {
             if (Entities[i]['cityentity_id'] === 'X_OceanicFuture_Landmark3') {
                 if ($('#bluegalaxy').length === 0) {
@@ -127,9 +129,6 @@ let BlueGalaxy = {
         }
 
         let h = [];
-        h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
-        h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + i18n('Boxes.BlueGalaxy.TTGoodsValue') + '">');
-
         h.push('<div class="text-center dark-bg header">');
 
         let Title;
@@ -143,10 +142,18 @@ let BlueGalaxy = {
             Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
         }
         h.push('<strong class="title">' + Title + '</strong><br>');
+
+        if (DoubleCollections > 0 && Buildings.length > 0) {
+            h.push('<br>');
+            h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
+            h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + i18n('Boxes.BlueGalaxy.TTGoodsValue') + '">');    
+        }
+
         h.push('</div>');       
 
         let table = [];
-        if (DoubleCollections > 0 && Buildings.length > 0) {
+        if (DoubleCollections > 0 && Buildings.length > 0) { 
+
             table.push('<table class="foe-table">');
 
             table.push('<thead>' +
