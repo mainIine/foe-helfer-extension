@@ -19,12 +19,8 @@
 //          building collection timer expires, etc.
 // TODO - Alerts set up for collection (on GB or other buildings) should reset on collection (i.e. alert categories)
 
-let AlertsDB = new Dexie('foe_helper_alerts_database');
-AlertsDB.version(1).stores({
-    // [id,expires,title,body,repeat,persistent,tag,category,vibrate,actions]
-    alerts: '++id,expires,repeat,tag,category'
-});
-AlertsDB.open();
+// @ts-ignore
+Dexie.delete('foe_helper_alerts_database');
 // persistent alerts will be stored only once and the expires time will be updated before garbage collection so that
 // all expired alerts can be removed without having to use compound indexes or "compound where = collection filtering)
 // e.g. where('expires').above(_current_timestamp_) and where('persistent').equals('1') as that is not supported by Dixie.
@@ -96,13 +92,114 @@ const BattlegroundSectorNames = {
 };
 
 let Alerts = function(){
+	/**
+	 * @typedef FoEAlertData
+	 * @type {object}
+	 * @property {string} title
+	 * @property {string} body
+	 * @property {number} expires
+	 * @property {number} repeat
+	 * @property {any[]|null} actions
+	 * @property {string} category
+	 * @property {boolean} persistent
+	 * @property {string} tag
+	 * @property {boolean} vibrate
+	 */
+	/**
+	 * @typedef FoEAlert
+	 * @type {object}
+	 * @property {number} [id]
+	 * @property {FoEAlertData} data
+	 * @property {boolean} triggered
+	 * @property {boolean} handled
+	 * @property {boolean} hasNotification
+	 */
 
     let tmp = {};
 
     tmp.debug = true;
-    tmp.log = function(o){ if (tmp.debug){ console.log(o); } };
+    tmp.log = function(/** @type {any} */o){ if (tmp.debug){ console.log(o); } };
 
-    tmp.db = AlertsDB;
+	tmp.extAlerts = {
+		/**
+		 * gets an alert by it's id
+		 * @param {number} id the id of the alert to get
+		 * @returns {Promise<FoEAlert|undefined>}
+		 */
+		get: (id) => {
+			return MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'get',
+				id: +id,
+			});
+		},
+		/**
+		 * gets all alerts (for this origin)
+		 * @returns {Promise<FoEAlert[]>}
+		 */
+		getAll: () => {
+			return MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'getAll',
+			});
+		},
+		/**
+		 * creates a new alert
+		 * @param {FoEAlertData} data the data to associate with the new alert
+		 * @returns {Promise<void>}
+		 */
+		create: (data) => {
+			return MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'create',
+				data: data,
+			});
+		},
+		/**
+		 * replaces the data of an alert
+		 * @param {number} id the id of the alert to replace the data of
+		 * @param {FoEAlertData} data the new data to set
+		 * @returns {Promise<number>} the id of the possibly changed alert
+		 */
+		setData: (id, data) => {
+			return MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'setData',
+				data: data,
+				id: +id,
+			});
+		},
+		/**
+		 * deletes an alert
+		 * @param {number} id the id of the alert to delete
+		 * @returns {Promise<boolean>} true if an alert was deleted
+		 */
+		delete: (id) => {
+			return MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'delete',
+				id: +id,
+			});
+		},
+		/**
+		 * triggers a preview of an alert
+		 * @param {FoEAlertData} data the alert data to create an alert preview from
+		 */
+		preview: (data) => {
+			return MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'preview',
+				data: data,
+			});
+		},
+	};
+
 
     tmp.data = {
         options: {
@@ -113,11 +210,20 @@ let Alerts = function(){
                 // we'll fetch data from the db only once in this many milliseconds
                 increment: 5000
             }
-        },
+		},
+		flatenData: alarm => {
+			alarm.data.id = alarm.id;
+			return alarm.data;
+		},
         active: () => {
             let ts = moment().valueOf();
-            const alerts = tmp.db.alerts.where('expires').above(ts);
-            return alerts;
+			return tmp.extAlerts.getAll()
+				.then(arr =>
+					arr
+					.filter(elem => elem.data.expires > ts)
+					.map(tmp.data.flatenData)
+				)
+			;
         },
         add: (alert) => {
 
@@ -128,10 +234,10 @@ let Alerts = function(){
             // is called the next time. In such case, the alert would never be triggered.
             if ( alert && ( alert.expires < tmp.data.options.timestamp.next ) ) {
                 tmp.data.options.timestamp.next = null;
-            }
+			}
 
-            // be explicit about the fields we want to add
-            return tmp.db.alerts.add({
+			// be explicit about the fields we want to add
+			const cleanData = {
                 title: alert.title,
                 body: alert.body,
                 expires: alert.expires,
@@ -141,13 +247,17 @@ let Alerts = function(){
                 category: 'default',
                 vibrate: false,
                 actions: null
-            });
+            };
+			
+            return tmp.extAlerts.create(cleanData);
         },
         addBulk: (alerts) => {
-            let items = [];
+			let items = [];
+			/** @type {Promise<number>} */
+			let lastInsert = Promise.reject();
             for( let i = 0; i < alerts.length; i++ ){
-                let alert = alerts[i];
-                items.push({
+				let alert = alerts[i];
+				const cleanData = {
                     title: alert.title,
                     body: alert.body,
                     expires: alert.expires,
@@ -157,51 +267,78 @@ let Alerts = function(){
                     category: 'default',
                     vibrate: false,
                     actions: null
-                });
+                };
+				
+				lastInsert = tmp.extAlerts.create(cleanData);
+
+                items.push(cleanData);
             }
-            return tmp.db.alerts.bulkAdd( items );
+            return lastInsert;
         },
         delete: (id) => {
-            return tmp.db.alerts.delete( parseInt(id) );
+			return tmp.extAlerts.delete( parseInt(id) );
         },
-        garbage: () => {
-            let timestamp = Date.now();
-            tmp.data.refresh().then(function(){
+        garbage: async () => {
+            const timestamp = Date.now()-1000;
+			try {
+				await tmp.data.refresh();
                 // TODO modify this to enable the display of alerts which expired while offline
-                // one option ^ is to modify refresh
-                tmp.db.alerts.where('expires').below( timestamp ).delete();
-            }).catch(function(error){
+				// one option ^ is to modify refresh
+				const alerts = await tmp.extAlerts.getAll();
+				for (let alert of alerts) {
+					if (alert.data.expires < timestamp) {
+						tmp.extAlerts.delete(alert.id);
+					}
+				}
+			} catch (error) {
                 tmp.log('Alerts - Garbage collection failed');
                 tmp.log(error);
-            });
+            }
         },
         get: (id) => {
-            return tmp.db.alerts.where( 'id' ).equals( id ).first();
+			id = +id;
+            return tmp.extAlerts.get(id).then(tmp.data.flatenData);
         },
         next: () => {
 
-            let now = Date.now();
+            let now = Date.now()-1000;
             if ( now < tmp.data.options.timestamp.next ){ return null; }
 
             if ( !tmp.data.options.timestamp.next ) { tmp.data.options.timestamp.next = now };
             let n = tmp.data.options.timestamp.next;
             tmp.data.options.timestamp.next = now + tmp.data.options.timestamp.increment;
 
-            return tmp.db.alerts.where('expires').between( n, tmp.data.options.timestamp.next );
+			return tmp.extAlerts.getAll()
+				.then(arr => arr.filter(
+						elem => elem.data.expires >= n
+						&& elem.data.expires <= tmp.data.options.timestamp.next
+					)
+					.map(tmp.data.flatenData)
+				)
+			;
         },
-        refresh: () => {
-            let timestamp = Date.now();
-            return tmp.db.alerts.where('repeat').above(-1).modify(function(alert){
-                alert.expires = tmp.repeat.nextExpiration( alert.expires, alert.repeat, timestamp );
-            });
+        refresh: async () => {
+			let timestamp = Date.now()-1000;
+			const alerts = await tmp.extAlerts.getAll();
+			const tasks = [];
+			for (let alert of alerts) {
+				if (alert.data.repeat <= -1) continue;
+				const newExpire = tmp.repeat.nextExpiration( alert.data.expires, alert.data.repeat, timestamp );
+				if (alert.data.expires !== newExpire) {
+					alert.data.expire = newExpire;
+					tasks.push(tmp.extAlerts.setData(alert.id, alert.data));
+				}
+			}
+			return Promise.all(tasks);
         },
-        update: (id, changes) => {
+        update: async (id, changes) => {
             // @see tmp.data.add
             if ( changes && ( changes.expires < tmp.data.options.timestamp.next ) ) {
                 tmp.data.options.timestamp.next = null;
-            }
-            return tmp.db.alerts.update( parseInt(id), changes );
-        }
+			}
+			const data = await tmp.data.get(id);
+            return tmp.extAlerts.setData(id, Object.assign(data, changes));
+	  }
     };
 
     tmp.model = {
@@ -227,6 +364,7 @@ let Alerts = function(){
 
 		alertsUpdateTime: 60,
 
+		/** @type {Object.<string,{info: string, title: string, value: number|boolean}>} */
 		data: {
 			early: {
 				info: i18n('Boxes.Alerts.Preferences.Early.Info'),
@@ -356,15 +494,6 @@ let Alerts = function(){
 						tmp.log('tmp.timer.process invalid data');
 						return;
 					}
-					const options = {
-						body: alert.body,
-						dir: 'ltr',
-						icon: extUrl + 'images/app48.png',
-						renotify: ( alert.tag ) ? true : false,
-						requireInteraction: alert.persistent,
-						tag: alert.tag
-					};
-					NotificationManager.notify( alert.title, options )
 
 					tmp.repeat.update(alert, timestamp);
 					delete tmp.timer.nextAlerts[id];
@@ -374,6 +503,9 @@ let Alerts = function(){
 			}
 		},
 
+		/**
+		 * @param {number} timestamp
+		 */
 		update: (timestamp) => {
 
 			// do the visual updates only iff the box is visible
@@ -402,9 +534,8 @@ let Alerts = function(){
 					return;
 				}
 
-				promise.each( function ( alert ) {
-					tmp.timer.addNext( alert );
-				} ).then( function () {
+				promise.then( function ( alerts ) {
+					for(let alert of alerts) tmp.timer.addNext( alert );
 					tmp.timer.process( timestamp );
 					tmp.timer.isUpdating = false;
 				} );
@@ -484,57 +615,19 @@ let Alerts = function(){
 
 						// remove an overlays currently present (if any)
 						$('#AlertsBody .no-permission').remove();
-
-						if ( ! NotificationManager.isEnabled ){
-
-							let labels = {
-								default: i18n('Boxes.Alerts.Permissions.Default'),
-								denied: i18n('Boxes.Alerts.Permissions.Denied'), //Todo: Insert link for Firefox
-								enable: i18n('Boxes.Alerts.Permissions.Enable'),
-								refresh: i18n('Boxes.Alerts.Permissions.Refresh'),
-							};
-
-							let html = '';
-
-							// if the notification permissions have never been given (permission === 'default')
-							if ( NotificationManager.canBeEnabled ){
-								// Enable notifications in your browser to use this feature.
-								html += `<p>${labels.default}</p>`;
-								// Add a button to request notification permissions
-								html += `<p><span class="btn-default game-cursor notification-permissions">${labels.enable}</span></p>`;
-
-								$('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
-									$('#AlertsBody').on('click', '.notification-permissions', function(){
-
-										// request permissions and handle the user reply
-										NotificationManager.enable().then( (result) => {
-											tmp.web.body.overlay.permissions.render();
-										});
-									});
-								});
-							}
-							else {
-								html += `<p>${labels.denied}</p>`;
-								html += `<p><span class="btn-default game-cursor notification-refresh">${labels.refresh}</span></p>`;
-								$('#AlertsBody').append($('<div />').addClass('no-permission text-center').html(html)).promise().done(function(){
-									$('#AlertsBody').on('click', '.notification-refresh', function(){
-										// reload from cache (no need to refresh from the server = reload(true)
-										window.location.reload(false);
-									});
-								});
-							}
-						}
 					},
 				},
 			},
 			tabs: {
 
+				/** @type {string[]} */
 				head: [],
+				/** @type {string[]} */
 				content: [],
 
 				/**
-				 * @param id
-				 * @param label
+				 * @param {string} id
+				 * @param {string} label
 				 */
 				addHead: ( id, label ) => {
 					tmp.web.body.tabs.head.push(
@@ -543,8 +636,8 @@ let Alerts = function(){
 				},
 
 				/**
-				 * @param id
-				 * @param content
+				 * @param {string} id
+				 * @param {string} content
 				 */
 				addContent: ( id, content ) => {
 					tmp.web.body.tabs.content.push( `<div id="${id}">${content}</div>` );
@@ -681,20 +774,23 @@ let Alerts = function(){
 
 					const alerts = tmp.data.active();
 
-					alerts.each(function(alert){
-						let persist = ( alert.persistent ) ? ' checked="checked"' : '';
-						html += `<tr id="alert-id-${alert.id}">
-						<td>${moment(alert.expires).from(dt)}</td>
-						<td class="column-160">${alert.title}</td>
-						<td>${labels.repeats[alert.repeat+""]}</td>
-						<td><input type="checkbox"${persist}></td>
-						<td class="text-right">
-							<span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
-							<span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">${labels.edit}</span>
-							<span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
-						</td>
-					</tr>`;
-					}).then( () => {
+					alerts.then(function(alerts){
+						for (let alert of alerts) {
+							let persist = ( alert.persistent ) ? ' checked="checked"' : '';
+							html += `<tr id="alert-id-${alert.id}">
+							<td>${moment(alert.expires).from(dt)}</td>
+							<td class="column-160">${alert.title}</td>
+							<td>${labels.repeats[alert.repeat+""]}</td>
+							<td><input type="checkbox"${persist}></td>
+							<td class="text-right">
+								<span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
+								<span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">${labels.edit}</span>
+								<span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
+							</td>
+						</tr>`;
+						}
+					})
+					.then( () => {
 						$( '#alerts-table tbody' ).empty().append( html ).promise().done( function () {
 
 							$('#alerts-table').find('span.alert-button').on('click', function(){
@@ -896,15 +992,14 @@ let Alerts = function(){
 						tmp.log('tmp.web.forms.actions.preview: invalid data');
 						return;
 					}
-					const options = {
-						body: data.body,
-						dir: 'ltr',
-						icon: extUrl + 'images/app48.png',
-						renotify: true,
-						requireInteraction: data.persistent,
-						tag: 'FoE.Alerts.preview'
-					};
-					NotificationManager.notify( data.title, options );
+					const cpy = {
+						expires: new Date(data.datetime).getTime(),
+						category: '',
+						tag: '',
+						vibrate: false,
+						...data,
+					}
+					tmp.extAlerts.preview(cpy);
 				},
 				previewNew: () => {
 					if ( ! tmp.web.forms.actions.validate() ) {
@@ -1484,106 +1579,6 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
     Alerts.update.data.timers( data['responseData'] );
 });
 
-
-let NotificationManager = {
-
-    debug: true,
-    isEnabled: true, //(Notification && Notification.permission === 'granted' ),
-    canBeEnabled: null,
-
-    init: ()=> {
-        // Permission can be requested if and only if the original value equals to 'default' and the permission
-        // has not been denied. If originally the (permission) value is default, then we request the permission,
-        // the user denies it and then resets the browser's settings a page refresh is needed before permissions can be
-        // requested again
-        if( NotificationManager.canBeEnabled === null ){
-            // set this only once at the beginning, i.e. before the user can change it
-            NotificationManager.canBeEnabled = (Notification && Notification.permission === 'default');
-        }
-    },
-
-    // ----- use Promise to implement notifications
-    // https://codeburst.io/a-simple-guide-to-es6-promises-d71bacd2e13a
-    // https://web-push-book.gauntface.com/demos/notification-examples/
-    // https://web-push-book.gauntface.com/demos/notification-examples/notification-examples.js
-
-    // ----- implement Promise timeout cancellation
-    // Promise timeout cancellation:
-    // https://stackoverflow.com/questions/25345701/how-to-cancel-timeout-inside-of-javascript-promise
-
-    /**
-     * Requests Notification permissions and return the Promise instance
-     * @returns {Promise}
-     *
-     * @use:
-     *
-     * NotificationManager.enable().then( (result) => {
-     *      if ( NotificationManager.isEnabled ){
-     *          // do something
-     *      }
-     *      else {
-     *          // do something else
-     *
-     *          // explain to the user how he/she can re-enable notifications, e.g.
-      *         // "To (re)enable notifications in your browser navigate to chrome://settings/content/notifications
-     *      }
-     * }
-     */
-    enable: ()=> {
-
-        if ( ! NotificationManager.canBeEnabled ){
-            // throw an Error saying that permissions cannot be requested
-            NotificationManager._log( 'Notification permissions cannot be requested. Reset the browser settings and refresh!' );
-            return Promise.resolve( Notification.permission );
-        }
-
-        let promise = new Promise( (resolve, reject) => {
-            const permissionPromise = Notification.requestPermission((result) => {
-                NotificationManager.isEnabled = (result === 'granted');
-                // Once the user grants or denies permissions, it is not longer possible to request permissions again
-                // (until the page is refreshed) even if the browser settings are updated (permission reset to default),
-                // the permission popup will not show until the next refresh/reload of the page
-                // NotificationManager.canBeEnabled = (result === 'default');
-                NotificationManager.canBeEnabled = false;
-            });
-            if (permissionPromise){
-                permissionPromise.then(resolve, reject);
-            }
-        });
-        return promise;
-    },
-
-    notify: (title, options)=> {
-        MainParser.sendExtMessage({type: 'showNotification', title, options});
-        return;
-        // if FoE is focused, don't show notifications, maybe instead post to the Infobox?
-        // https://web-push-book.gauntface.com/demos/notification-examples/
-        try {
-            new Notification( title, {
-                actions: options.actions,
-                body: options.body,
-                dir: 'ltr',
-                icon: options.icon,
-                renotify: ( options.tag ) ? true : false,
-                requireInteraction: options.persistent,
-                vibrate: options.vibrate,
-                tag: options.tag,
-            });
-        }
-        catch( error ){
-            NotificationManager._log('NotificationManager.notify:');
-            NotificationManager._log( error );
-        }
-    },
-
-    _log: (o)=> {
-        if ( NotificationManager.debug ) {
-            console.log( o );
-        }
-    }
-};
-
-NotificationManager.init();
 
 /**
  * Observable pattern using subscribe/unsubscribe (instead of add/remove observer). The notify is private

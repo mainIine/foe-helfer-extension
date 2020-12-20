@@ -33,10 +33,10 @@ let _menu_box = {
 			id: 'menu_box',
 			title: i18n('Global.BoxTitle'),
 			onlyTitle: true,
-			dragdrop: true,
+			dragdrop: '_menu_box.CheckButtons()',
 			minimize: true,
 			resize: true,
-			auto_close:false
+			auto_close: false
 		});
 		_menu_box.CalcBody();
 
@@ -142,7 +142,9 @@ let _menu_box = {
 	 */
 	CheckButtons: () => {
 
-		let activeIdx = 0;
+		let activeIdx = 0,
+			top = $('#menu_box').offset().top < 90;
+
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');
 		});
@@ -151,9 +153,18 @@ let _menu_box = {
 			let $this = $(this),
 				id = $this.attr('id'),
 				y = ($this.offset().top - $('[data-btn="' + id + '"]').height()-30),
-				x = ($this.offset().left + 30);
+				x = ($this.offset().left + 23);
 
-			$('[data-btn="' + id + '"]').css({ left: x + 'px', top:y+"px" }).show();
+			$('[data-btn="' + id + '"]').removeClass('isOnTop');
+
+			// not enougth space to top viewport
+			if(top)
+			{
+				y = ($this.offset().top + 50);
+				$('[data-btn="' + id + '"]').addClass('isOnTop');
+			}
+
+			$('[data-btn="' + id + '"]').css({ left: x, top: y}).show();
 
 		}, function(){
 			let id = $(this).attr('id');
@@ -197,6 +208,7 @@ let _menu_box = {
 				});
 			}
 		});
+
 		HiddenRewards.SetCounter();
 	},
 

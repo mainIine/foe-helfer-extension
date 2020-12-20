@@ -122,6 +122,8 @@ helper.permutations = (()=>{
 
 let HTML = {
 
+	customFunctions: [],
+
 	/**
 	 * Erzeugt eine HTML Box im DOM
 	 *
@@ -202,7 +204,7 @@ let HTML = {
 
 
 			if(args['auto_close']){
-				$(`#${args.id}`).on('click', '#' + args['id'] + 'close', function(){
+				$(`#${args.id}`).on('click', `#${args['id']}close`, function(){
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
 					});
@@ -217,6 +219,12 @@ let HTML = {
 
 			if(args['dragdrop']) {
 				HTML.DragBox(document.getElementById(args['id']), args['saveCords']);
+
+				// is there a callback function?
+				if (typeof args['dragdrop'] !== 'boolean')
+				{
+					HTML.customFunctions[args['id']] = args['dragdrop'];
+				}
 			}
 
 			if(args['resize']) {
@@ -334,6 +342,12 @@ let HTML = {
 		function closeDragElement() {
 			document.onpointerup = null;
 			document.onpointermove = null;
+
+			// is there a callback function after drag&drop
+			if(HTML.customFunctions[id])
+			{
+				new Function(`${HTML.customFunctions[id]}`)();
+			}
 		}
 	},
 
@@ -527,40 +541,6 @@ let HTML = {
 		$('.window-box').removeClass('on-top');
 
 		$this.addClass('on-top');
-	},
-
-
-	Dropdown: ()=> {
-
-		for (const option of document.querySelectorAll(".custom-option")) {
-			option.addEventListener('click', function(){
-				if (!this.classList.contains('selected')) {
-					let $this = $(this),
-						txt = $this.text();
-
-					$this.parent().find('.custom-option.selected').removeClass('selected');
-					$this.addClass('selected');
-
-					setTimeout(()=>{
-						$this.closest('.custom-select-wrapper').find('.trigger').text(txt);
-					},150);
-				}
-			})
-		}
-
-		for (const dropdown of document.querySelectorAll(".custom-select-wrapper")) {
-			dropdown.addEventListener('click', function() {
-				this.querySelector('.custom-select').classList.toggle('dd-open');
-			})
-		}
-
-		window.addEventListener('click', function(e) {
-			for (const select of document.querySelectorAll('.custom-select')) {
-				if (!select.contains(e.target)) {
-					select.classList.remove('dd-open');
-				}
-			}
-		});
 	},
 
 
