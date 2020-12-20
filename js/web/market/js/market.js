@@ -336,8 +336,9 @@ let Market = {
 
         h.push('</table>');
 
-        const marketBody = document.getElementById('MarketBody');
-        if (marketBody) marketBody.innerHTML = h.join('');
+		$('#MarketBody').html(h.join('')).promise().done(function(){
+			HTML.Dropdown();
+		});
 
         $('.td-tooltip').tooltip({
             html: true,
