@@ -1207,19 +1207,27 @@ let MainParser = {
 	/**
 	 * Etwas zur background.js schicken
 	 *
-	 * @param data
+	 * @param {any & {type: string}} data
 	 */
-	sendExtMessage: (data) => {
-		return new Promise((resolve, reject) => {
+	sendExtMessage: async (data) => {
+		let response = null;
+		// @ts-ignore
+		if (typeof chrome !== 'undefined') {
 			// @ts-ignore
-			if (typeof chrome !== 'undefined') {
-				chrome.runtime.sendMessage(extID, data, resolve);
-			} else {
-				// TODO: implement
-				reject(new Error("backwards Communication from Extension not implemented"));
-				window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
-			}
-		});
+			response = await new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
+		} else if (typeof browser !== 'undefined') {
+			response = await browser.runtime.sendMessage(extID, data);
+		} else {
+			// TODO: implement
+			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
+			throw new Error("backwards Communication from Extension not implemented");
+		}
+
+		if (response.ok) {
+			return response.data;
+		} else {
+			throw new Error('EXT-API error: '+response.error);
+		}
 	},
 
 

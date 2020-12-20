@@ -279,7 +279,7 @@ let Alerts = function(){
 			return tmp.extAlerts.delete( parseInt(id) );
         },
         garbage: async () => {
-            const timestamp = Date.now()-1000;
+			const timestamp = Date.now()-1000;
 			try {
 				await tmp.data.refresh();
                 // TODO modify this to enable the display of alerts which expired while offline
@@ -325,7 +325,7 @@ let Alerts = function(){
 				if (alert.data.repeat <= -1) continue;
 				const newExpire = tmp.repeat.nextExpiration( alert.data.expires, alert.data.repeat, timestamp );
 				if (alert.data.expires !== newExpire) {
-					alert.data.expire = newExpire;
+					alert.data.expires = newExpire;
 					tasks.push(tmp.extAlerts.setData(alert.id, alert.data));
 				}
 			}
