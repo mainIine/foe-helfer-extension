@@ -1,4 +1,4 @@
-﻿/*
+/*
  * **************************************************************************************
  *
  * Dateiname:                 market.js
@@ -335,6 +335,9 @@ let Market = {
         }
 
         h.push('</table>');
+
+        const marketBody = document.getElementById('MarketBody');
+        if (marketBody) marketBody.innerHTML = h.join('');
 
         $('.td-tooltip').tooltip({
             html: true,
