@@ -1,5 +1,40 @@
 ## Changelog - Extension
 
+##### 2.5.4.2
+
+**Update**
+- Production overview:
+    - Alcatraz added to the overview for "units"
+
+- FP Collector:
+    - Arrows added to show that you can expand the entries
+
+- Infobox:
+    - [#1704](https://github.com/dsiekiera/foe-helfer-extension/issues/1704) Can now be loaded with the game start if desired => "Settings > Boxes > Infobox".
+    - [#1416](https://github.com/dsiekiera/foe-helfer-extension/issues/1416) Can be limited to one length from now on => "Settings > Boxes > Infobox News" to spare the browser with very many entries
+    - The entries of the infobox are saved if it is only closed and opened again
+
+
+**Bugfix**
+- Extension:
+    - [#1720](https://github.com/dsiekiera/foe-helfer-extension/issues/1720) Filter in Moppelassistent reacts wrong if infobox is open
+    - [#1707](https://github.com/dsiekiera/foe-helfer-extension/issues/1707) Some messages were not displayed
+
+- Menu box:
+    - [#1717](https://github.com/dsiekiera/foe-helfer-extension/issues/1717) When the box is on top of the border, the tooltips disappeared outside the visible area
+
+- Production overview:
+    - [#1709](https://github.com/dsiekiera/foe-helfer-extension/issues/1709) The box became too long, it is now scrollable again
+
+- Infobox:
+    - [#1694](https://github.com/dsiekiera/foe-helfer-extension/issues/1694) Fixed wrong translation in filter "GvG" => "GG"
+    - The message filter is now case-insensitive (case is ignored)
+
+- Moppelhelfer:
+    - [#1658](https://github.com/dsiekiera/foe-helfer-extension/issues/1658) Date detection for CZ fixed
+
+---
+
 ##### 2.5.4.1 
 
 **Bugfix**
