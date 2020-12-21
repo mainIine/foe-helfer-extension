@@ -44,20 +44,30 @@ let i18n = {
 
 $(async function(){
 
-	const Alerts = {
-		getAll: function() {
-			return browser.runtime.sendMessage({type: 'alerts', action: 'getAll'});
-		},
-		getAllRaw: function() {
-			return browser.runtime.sendMessage({type: 'alerts', action: 'getAllRaw'});
-		},
-		create: function(data) {
-			throw new Error("Not supported");
-		},
-		delete: function(id) {
-			return browser.runtime.sendMessage({type: 'alerts', action: 'delete', id: id});
+	const Alerts = (() => {
+		async function extApiCall(request) {
+			const res = await browser.runtime.sendMessage(request);
+			if (res.ok) {
+				return res.data;
+			} else {
+				throw new Error("EXT-API error: "+res.error);
+			}
 		}
-	};
+		return {
+			getAll: function() {
+				return extApiCall({type: 'alerts', action: 'getAll'});
+			},
+			getAllRaw: function() {
+				return extApiCall({type: 'alerts', action: 'getAllRaw'});
+			},
+			create: function(data) {
+				throw new Error("Not supported");
+			},
+			delete: function(id) {
+				return extApiCall({type: 'alerts', action: 'delete', id: id});
+			}
+		};
+	})();
 
 	$('body').on('click', '.foe-link', ()=> {
 		chrome.tabs.create({url: "https://foe-rechner.de/"});

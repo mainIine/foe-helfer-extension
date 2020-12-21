@@ -64,6 +64,7 @@ alertsDB.version(1).stores({
 	 */
 
 	const Alerts = (() => {
+		"use strict";
 		const db = alertsDB;
 		const prefix = 'foe-alert:';
 		const previevId = 'foe-alert-preview';
@@ -331,6 +332,7 @@ alertsDB.version(1).stores({
 
 
 	browser.runtime.onInstalled.addListener(() => {
+		"use strict";
 		const version = browser.runtime.getManifest().version;
 		let lng = browser.i18n.getUILanguage();
 		const ask = {
@@ -391,223 +393,285 @@ alertsDB.version(1).stores({
 	// });
 
 	/**
+	 * creates the return value for a successfull api-call
+	 * @param {any} data the data to send as an response
+	 * @returns {{ok: true, data: any}}
+	 */
+	function APIsuccess(data) {
+		return {ok: true, data: data};
+	}
+
+	/**
+	 * creates the return value for an error
+	 * @param {string} message the error message
+	 * @returns {{ok: false, error: string}}
+	 */
+	function APIerror(message) {
+		return {ok: false, error: message};
+	}
+
+	/**
 	 * handles internal and external extension communication
 	 * @param {any} request 
 	 * @param {browser.runtime.MessageSender} sender 
+	 * @returns {Promise<{ok: true, data: any} | {ok: false, error: string}>}
 	 */
-	function handleWebpageRequests(request, sender) {
-		if (typeof request !== 'object' || typeof request.type !== 'string') return null;
+	async function handleWebpageRequests(request, sender) {
+		"use strict";
+		if (typeof request !== 'object') return APIerror('expecting an object as message');
+		if (typeof request.type !== 'string') return APIerror('expecting an "type": string');
 
 		/** @type {string} */
 		const type = request.type;
 
-		if (type === 'test') {
-			return {type: 'testresponse', data: request};
-		} else
+		switch (type) {
+		case 'test': { // type
+			return APIsuccess({type: 'testresponse', data: request});
+		}
 
-		if (type === 'alerts') {
-			// erweiterte API für die Extension
+		case 'alerts': { // type
+			// extended alerts-API for internal use
 			if (sender.id === browser.runtime.id) {
-				if (typeof request.action !== 'string') return null;
+				if (typeof request.action !== 'string') return APIerror('expecting an "action": string');
 				const action = request.action;
 
-				if (action === 'getAll') {
-					return Alerts
-						.getAll(null)
-						.then(arr => arr.map(a => ({
-							id: a.id,
-							data: a.data,
-							triggered: a.triggered,
-							handled: a.handled,
-							hasNotification: a.hasNotification,
-						})))
-					;
-
-				} else if (action === 'getAllRaw') {
-					return Alerts
-						.getAll(null)
-					;
-
-				} else if (action === 'setData') {
-					const id = request.id;
-					if (!Number.isInteger(id)) return false;
-					const data = Alerts.getValidData(request.data);
-					return Alerts.setData(id, data);
-
-				} else if (action === 'previewId') {
-					return Alerts.get(request.id).then(alert => {
-						if (alert == null) return false;
-						// Deaktiviere die standard behandlung durch die entfernung der id
-						delete alert.id;
-						Alerts.trigger(alert)
-					});
-
-				} else if (action === 'delete') {
-					return Alerts.delete(request.id).then(() => true);
+				switch (action) {
+				case 'getAll': { // action
+					const alerts = await Alerts.getAll(null);
+					const strippedAlerts = alerts.map(a => ({
+						id: a.id,
+						data: a.data,
+						triggered: a.triggered,
+						handled: a.handled,
+						hasNotification: a.hasNotification,
+					}));
+					return APIsuccess(strippedAlerts);
 				}
 
-			} else { // eingeschränkte API für externe Seiten
-				if (!Number.isInteger(request.playerId)) return false;
-				if (typeof request.action !== 'string') return false;
+				case 'getAllRaw': { // action
+					const alerts = await Alerts.getAll(null);
+					return APIsuccess(alerts);
+				}
+
+				case 'setData': { // action
+					const id = request.id;
+					if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
+					const data = Alerts.getValidData(request.data);
+					const retId = await Alerts.setData(id, data);
+					return APIsuccess(retId);
+				}
+
+				case 'previewId': { // action
+					const id = request.id;
+					if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
+
+					const alert = await Alerts.get(id);
+					if (alert == null) return APIerror(`alert #${id} not found`);
+
+					// Deaktiviere die standard behandlung durch die entfernung der id
+					delete alert.id;
+					await Alerts.trigger(alert)
+					return APIsuccess(true);
+				}
+
+				case 'delete': { // action
+					const id = request.id;
+					if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
+
+					await Alerts.delete(id);
+					return APIsuccess(true);
+				}
+
+				} // end of switch action
+
+			} else { // limited alerts-API for external use
+				if (!Number.isInteger(request.playerId)) return APIerror('malformed request: expected "playerId": integer');
+				if (typeof request.action !== 'string') return APIerror('malformed request: expected "action": string');
 
 				const playerId = request.playerId;
 				const action = request.action;
 				// @ts-ignore
 				const server = sender.origin;
 
-				if (action === 'getAll') {
-					return Alerts
-						.getAll({server, playerId})
-						.then(alerts => {
-							return alerts.map(a => ({
-								id: a.id,
-								data: a.data,
-								triggered: a.triggered,
-								handled: a.handled,
-								hasNotification: a.hasNotification,
-							}));
-						})
-					;
-
-				} else if (action === 'get') {
-					const id = request.id;
-					if (!Number.isInteger(id)) return false;
-					return Alerts
-						.get(id)
-						.then(alert => {
-							if (alert == null || alert.server !== server || alert.playerId !== playerId) return undefined;
-							return {
-								id: alert.id,
-								data: alert.data,
-								triggered: alert.triggered,
-								handled: alert.handled,
-								hasNotification: alert.hasNotification,
-							};
-						})
-					;
-
-				} else if (action === 'create') {
-					const data = Alerts.getValidData(request.data);
-					return Alerts.create(data, server, playerId);
-
-				} else if (action === 'setData') {
-					const id = request.id;
-					if (!Number.isInteger(id)) return false;
-					const data = Alerts.getValidData(request.data);
-
-					return Alerts.get(id)
-						.then(alert => {
-							if (!alert || alert.server !== server || alert.playerId !== playerId) return false;
-							Alerts.setData(id, data);
-							return true;
-						})
-					;
-
-				} else if (action === 'preview') {
-					try {
-						const data = Alerts.getValidData(request.data);
-						const alert = Alerts.createTemp(data, server, playerId);
-						Alerts.trigger(alert)
-						.then(id => {
-							setTimeout(() => {
-								browser.notifications.clear(id);
-							}, 5000);
-						});
-					} catch (err) {
-						console.error(err);
-					}
-					return true;
-
-				} else if (action === 'delete') {
-					const id = request.id;
-					if (!Number.isInteger(id)) return false;
-
-					return Alerts.get(id)
-						.then(alert => {
-							if (!alert || alert.server !== server || alert.playerId !== playerId) return false;
-							Alerts.delete(id);
-							return true;
-						})
-					;
+				switch (action) {
+				case 'getAll': { // action
+					const alerts = await Alerts.getAll({server, playerId});
+					const strippedAlerts = alerts.map(a => (
+						{
+							id: a.id,
+							data: a.data,
+							triggered: a.triggered,
+							handled: a.handled,
+							hasNotification: a.hasNotification,
+						}
+					));
+					return APIsuccess(strippedAlerts);
 				}
 
-			} // ende der eingeschränkten alerts-api
+				case 'get': { // action
+					const id = request.id;
+					if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
 
-		} // ende der alerts-api
+					const alert = await Alerts.get(id);
+					if (alert == null || alert.server !== server || alert.playerId !== playerId) return APIsuccess(undefined);
+					const strippedAlert = {
+						id: alert.id,
+						data: alert.data,
+						triggered: alert.triggered,
+						handled: alert.handled,
+						hasNotification: alert.hasNotification,
+					};
+					return APIsuccess(strippedAlert);
+				}
 
-		else if (request.type === 'message') {
+				case 'create': { // action
+					let data = null;
+					try {
+						data = Alerts.getValidData(request.data);
+					} catch (e) {
+						return APIerror(e);
+					}
+					const alertId = await  Alerts.create(data, server, playerId);
+					return APIsuccess(alertId);
+				}
+
+				case 'setData': { // action
+					const id = request.id;
+					if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+
+					let data = null;
+					try {
+						data = Alerts.getValidData(request.data);
+					} catch (e) {
+						return APIerror(e);
+					}
+
+					const alert = await Alerts.get(id);
+					if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
+
+					await Alerts.setData(id, data);
+					return APIsuccess(true);
+				}
+
+				case 'preview': { // action
+					let data = null;
+					try {
+						data = Alerts.getValidData(request.data);
+					} catch (e) {
+						return APIerror(e);
+					}
+
+					const alert = Alerts.createTemp(data, server, playerId);
+					const id = await Alerts.trigger(alert);
+					setTimeout(() => {
+						browser.notifications.clear(id);
+					}, 5000);
+
+					return APIsuccess(true);
+				}
+
+				case 'delete': { // action
+					const id = request.id;
+					if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+
+					const alert = await Alerts.get(id);
+					if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
+					await Alerts.delete(id);
+					return APIsuccess(true);
+				}
+
+				} // end of switch action
+
+			} // end of limited alerts-API
+
+		} // end of alerts-API
+
+		case 'message': { // type
 			let t = request.time;
 			const opt = {
-					type: "basic",
-					title: request.title,
-					message: request.msg,
-					iconUrl: "images/app48.png"
-				};
+				type: "basic",
+				title: request.title,
+				message: request.msg,
+				iconUrl: "images/app48.png"
+			};
 
 			// Compose desktop message
 			// @ts-ignore
-			browser.notifications.create(null, opt).then(id => {
+			await browser.notifications.create(null, opt).then(id => {
 				// Remove automatically after a defined timeout
 				setTimeout(()=> {browser.notifications.clear(id)}, t);
 			});
+			return APIsuccess(true);
+		}
 
-		} else if(request.type === 'chat'){
-
-			let url = `js/web/ws-chat/html/chat.html?player=${request.player}&world=${request.world}&lang=${request.lang}`,
-				popupUrl = browser.runtime.getURL(url);
+		case 'chat': { // type
+			const url = `js/web/ws-chat/html/chat.html?player=${request.player}&world=${request.world}&lang=${request.lang}`;
+			const popupUrl = browser.runtime.getURL(url);
 
 			// Check whether a popup with this URL already exists
-			browser.tabs.query({url:popupUrl}).then(tab =>{
+			const tabs = await browser.tabs.query({url: popupUrl});
 
-				// only open if not already done
-				if (tab.length >= 1) {
-					// already exists, bring it to the "front"
-					browser.windows.update(tab[0].windowId, {
-						focused: true
-					});
-				} else {
-					// create a new popup
-					browser.windows.create({
-						url: url,
-						type: 'popup',
-						width: 500,
-						height: 520,
-						// @ts-ignore
-						focused: true,
-					});
-				}
-			});
+			// only open if not already done
+			if (tabs.length >= 1) {
+				// already exists, bring it to the "front"
+				await browser.windows.update(tabs[0].windowId, {
+					focused: true
+				});
+			} else {
+				// create a new popup
+				await browser.windows.create({
+					url: url,
+					type: 'popup',
+					width: 500,
+					height: 520,
+					// @ts-ignore
+					focused: true,
+				});
+			}
+			return APIsuccess(true);
+		}
 
-		} else if(request.type === 'storeData'){
-			browser.storage.local.set({ [request.key] : request.data });
+		case 'storeData': { // type
+			await browser.storage.local.set({ [request.key] : request.data });
+			return APIsuccess(true);
+		}
 
-		} else if(request.type === 'send2Api') {
-
+		case 'send2Api': { // type
 			let xhr = new XMLHttpRequest();
 
 			xhr.open('POST', request.url);
 			xhr.setRequestHeader('Content-Type', 'application/json');
 			xhr.send(request.data);
 
-		} else if(request.type === 'setInnoCDN') {
+			return APIsuccess(true);
+		}
+
+		case 'setInnoCDN': { // type
 			localStorage.setItem('InnoCDN', request.url);
+			return APIsuccess(true);
+		}
 
-		} else if(request.type === 'getInnoCDN') {
+		case 'getInnoCDN': { // type
 			let cdnUrl = localStorage.getItem('InnoCDN');
-			return Promise.resolve([cdnUrl || defaultInnoCDN, cdnUrl != null]);
+			return APIsuccess([cdnUrl || defaultInnoCDN, cdnUrl != null]);
+		}
 
-		} else if(request.type === 'setPlayerData') {
+		case 'setPlayerData': { // type
 			const data = request.data;
 
 			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
 			playerdata[data.world+'-'+data.player_id] = data;
 			localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
 
-		} else if(request.type === 'getPlayerData') {
-			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-			return Promise.resolve(playerdata[request.world+'-'+request.player_id]);
+			return APIsuccess(true);
+		}
 
-		} else if(request.type === 'showNotification') {
+		case 'getPlayerData': { // type
+			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+			return APIsuccess(playerdata[request.world+'-'+request.player_id]);
+		}
+
+		case 'showNotification': { // type
 			try {
 				const title = request.title;
 				const options = request.options;
@@ -625,8 +689,14 @@ alertsDB.version(1).stores({
 			catch( error ){
 				console.error('NotificationManager.notify:');
 				console.error( error );
+				return APIsuccess(false);
 			}
+			return APIsuccess(true);
 		}
+
+		} // end of switch type
+
+		return APIerror(`unknown request type: ${type}`);
 	}
 
 	browser.runtime.onMessage.addListener(handleWebpageRequests);
