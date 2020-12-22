@@ -397,13 +397,13 @@ let Productions = {
 			CityEntity['staticResources']['resources']['population'];
 		}
 
-		if (d['state'] && d['state']['__class__'] !== 'ConstructionState' && d['state']['__class__'] !== 'UnconnectedState') {
+		if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
 
 			if (CityEntity['staticResources'] && CityEntity['staticResources']['resources'] && CityEntity['staticResources']['resources']['population']) {
 				Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
 			}
 
-			if (CityEntity['provided_happiness']) {
+			if (CityEntity['provided_happiness'] && d['state']['__class__'] !== 'UnconnectedState') {
 				let Faktor = 1;
 
 				if (d['state']['__class__'] === 'PolishedState') {
