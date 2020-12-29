@@ -1,5 +1,24 @@
 ## Changelog - Extension
 
+
+##### 2.5.4.3
+
+**Update**
+- Production overview:
+    - [#1647](https://github.com/dsiekiera/foe-helfer-extension/issues/1647) [#1662](https://github.com/dsiekiera/foe-helfer-extension/issues/1662) From now on you can see what is ready and can be harvested in green colour in the top right corner of each tab
+
+**Bugfix**
+- Extension:
+    - Compatibility with older browsers restored
+
+- Marketplace Filter:
+    - [#1723](https://github.com/dsiekiera/foe-helfer-extension/issues/1723) The content of the marketplace filter was not displayed, Goes now again
+
+- Production overview:
+    - [#1726](https://github.com/dsiekiera/foe-helfer-extension/issues/1726) Event buildings that are not connected to a road still produce population, this has been fixed
+
+---
+
 ##### 2.5.4.2
 
 **Update**

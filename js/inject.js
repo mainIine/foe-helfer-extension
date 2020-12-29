@@ -85,8 +85,8 @@
 		// Document loaded
 		if(document.head !== null){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting ?? 'BottomBar';
-			let cssname = "_menu_"+MenuSetting.toLowerCase().replace("bar","");
+			MenuSetting = MenuSetting ? MenuSetting : 'BottomBar';
+			let cssname = "_menu_" + MenuSetting.toLowerCase().replace("bar","");
 
 			let cssFiles = [
 				'variables',

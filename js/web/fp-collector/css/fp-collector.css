@@ -20,6 +20,10 @@
 	left: calc(50vw - 310px);
 }
 
+#fp-collectorBody {
+	overflow-y: auto;
+}
+
 #fp-collectorBody .head {
 	display: flex;
 	flex-direction: row;
@@ -27,12 +31,6 @@
 	justify-items: center;
 	padding: 5px 10px;
 	margin-bottom: 2px;
-}
-
-#fp-collectorBodyInner {
-	overflow: auto;
-	overflow-x: hidden;
-	max-height: 360px;
 }
 
 .fpcollector-body {
@@ -51,7 +49,6 @@
 
 .fpcollector-body div {
 	border-bottom: 1px solid var(--border-table-top);
-	padding-left: 30px;
 	font-size: 90%;
 	padding: 2px 0 2px 30px;
 }
