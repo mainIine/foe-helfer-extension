@@ -147,7 +147,7 @@ input[type=number] {
 	background: var(--background-btn-moz);
 	background: var(--background-btn-webkit);
 	background: var(--background-btn);
-	border: var(--black) 1px solid;
+	border: #2a0f00 1px solid;
 	border-radius: 4px;
 	color: var(--text-btn);
 	cursor: url('../images/cursor_default.cur'), auto;
@@ -190,6 +190,30 @@ input[type=number] {
 	background: var(--background-btn-green-moz);
 	background: var(--background-btn-green-webkit);
 	background: var(--background-btn-green);
+}
+
+.btn-group {
+	display: inline-flex;
+}
+
+.btn-group .btn-default.btn-tight {
+	margin: 0;
+	padding: 1px 4px;
+}
+
+.btn-group .btn-default {
+	border-radius: 0;
+	border-right-width: 0;
+	padding: 0.2rem 0.5rem;
+}
+
+.btn-group .btn-default:first-child {
+	border-radius: 4px 0 0 4px;
+}
+
+.btn-group .btn-default:last-child {
+	border-radius: 0 4px 4px 0;
+	border-right-width: 1px;
 }
 
 .ml-auto {

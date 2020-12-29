@@ -489,11 +489,13 @@ let Stats = {
 				</div>
 				<div class="option-era-wrap text-center">
 					<strong>${i18n('Boxes.Stats.Era')}:</strong> ${btnGroupByEra}<br>
+					<span class="btn-group">
 					${btnSelectAllEra}
 					${btnSelectMyEra}
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
 					${btnSelectAll}
 					${btnSelectNoEra}
+					</span>
 				</div>
 				<div class="tabs">
 					<ul class="horizontal">
@@ -502,7 +504,9 @@ let Stats = {
 				</div>
 				<div class="option-chart-type-wrap text-center">
 					${btnTglAnnotations}<br>
+					<span class="btn-group">
 					${chartTypes.join('')}
+					</span>
 				</div>`;
 	},
 
