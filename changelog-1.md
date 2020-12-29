@@ -1,5 +1,24 @@
 ## Changelog - Extension
 
+
+##### 2.5.4.3
+
+**Update**
+- Produktionsübersicht:
+    - [#1647](https://github.com/dsiekiera/foe-helfer-extension/issues/1647) [#1662](https://github.com/dsiekiera/foe-helfer-extension/issues/1662) Ab sofort steht in jedem Tab in grüner Farbe rechts oben was fertig ist und geerntet werden kann
+
+**Bugfix**
+- Extension:
+    - Kompatibilität zu älteren Browsern wieder hergestellt 
+
+- Marktplatz Filter:
+    - [#1723](https://github.com/dsiekiera/foe-helfer-extension/issues/1723) Der Inhalt des Marktplatz-Filters wurde nicht angezeigt, Geht nun wieder
+
+- Produktionsübersicht:
+    - [#1726](https://github.com/dsiekiera/foe-helfer-extension/issues/1726) Eventgebäude die nicht an eine Straße angeschlossen sind produzieren dennoch Bevölkerung, das wurde korrigiert
+
+---
+
 ##### 2.5.4.2
 
 **Update**
