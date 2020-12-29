@@ -30,6 +30,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
+	h.push('</div>');
 	background-color: rgba(0,0,0, 0.7);
 }
 
@@ -149,11 +150,6 @@
 #costCalculatorBody .costFactorWrapper > span {
 	display: inline-block;
 	margin-right: 15px;
-}
-
-#costCalculatorBody .costFactorWrapper .btn-default:not(:first-child) {
-	display: inline-block;
-	margin-left: 3px;
 }
 
 #costCalculatorBody #costTable {

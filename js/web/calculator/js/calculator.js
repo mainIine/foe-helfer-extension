@@ -155,6 +155,7 @@ let Calculator = {
 
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
+		h.push('<div class="btn-group">');
 		// different arc bonus-buttons
 		let investmentSteps = [80, 85, 90, MainParser.ArkBonus];
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
@@ -162,8 +163,7 @@ let Calculator = {
 		investmentSteps.forEach(bonus => {
 			h.push(`<button class="btn btn-default btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
-
-		h.push('<br>');
+        h.push('</div><br>');
 		
 		h.push('<span><strong>' + i18n('Boxes.Calculator.FriendlyInvestment') + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 

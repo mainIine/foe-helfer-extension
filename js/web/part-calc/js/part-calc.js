@@ -406,6 +406,7 @@ let Parts = {
 
         h.push('</td>');
         h.push('<td class="text-right">');
+        h.push('<span class="btn-group">');
 
 		// different arc bonus-buttons
 		let investmentSteps = [80,85,90];
@@ -415,6 +416,7 @@ let Parts = {
 			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
+        h.push('</span>');
         h.push('</td>');
         h.push('</tr></table>');
 

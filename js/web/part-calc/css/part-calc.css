@@ -71,10 +71,6 @@
 	font-size: 85%;
 }
 
-#OwnPartBox #OwnPartBoxBody .btn-set-arc {
-	margin-right: 5px;
-}
-
 
 #OwnPartBox #OwnPartBoxBody strong {
 	color: var(--text-bright);
