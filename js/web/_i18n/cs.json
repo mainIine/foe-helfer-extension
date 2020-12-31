@@ -378,7 +378,7 @@
     "Settings.SendInvestigations.Title": "Investování VB",
     "Settings.ShowPlayersMotivation.Desc": "Záznamy odesílat na foe-rechner.de",
     "Settings.Tab.Sending": "přenos Dat",
-    "Settings.Version.Desc": "<p>Verze rozšíření pro Chrome</p><a target='_blank' href='https://foe-rechner.de/extension/update?v=__version__&lang=__language__'  class='game-cursor'>Changelog</a>",
+    "Settings.Version.Desc": "The data below can be marked to copy them.",
     "Settings.Version.GuildId": "Id cechu:",
     "Settings.Version.PlayerId": "Id hráče:",
     "Settings.Version.Title": "Verze",
