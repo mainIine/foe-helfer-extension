@@ -552,8 +552,8 @@ let Alerts = function(){
 			build: () => {
 
 				let labels = {
-					alerts: i18n('Boxes.Alerts.Tabs.Alerts'),
-					preferences: i18n('Boxes.Alerts.Tabs.Preferences'),
+					alerts: '<span>'+i18n('Boxes.Alerts.Tabs.Alerts')+'</span>',
+					preferences: '<span>'+i18n('Boxes.Alerts.Tabs.Preferences')+'</span>',
 				}
 
 				tmp.web.body.tabs.clean();
@@ -785,7 +785,7 @@ let Alerts = function(){
 							<td class="text-right">
 								<span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
 								<span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">${labels.edit}</span>
-								<span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
+								<span class="btn-default alert-button btn-delete" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
 							</td>
 						</tr>`;
 						}
@@ -1188,22 +1188,31 @@ let Alerts = function(){
 
 				return `<form id="alert-form">
 				<input type="hidden" id="alert-id" value="${id}"/>
-				<p class="full-width">
+				<div class="full-width">
 					<label for="alert-title">${labels.title}</label>
 					<input type="text" id="alert-title" name="title" placeholder="${labels.title}" value="${data.alert.title}">
-				</p>
-				<p class="full-width">
-					<label for="alert-body">${labels.body}</label>
 					<textarea id="alert-body" name="body" maxlength="176">${data.alert.body}</textarea>
-				</p>
-				<p class="full-width text-right mt--10">
-					<small id="alert-body-counter"></small>
-				</p>
-				<p class="extra-vs-8">
+					<div class="text-right">
+						<small id="alert-body-counter"></small>
+					</div>
+				</div>
+				<div class="col">
 					<label for="alert-datetime">${labels.datetime}</label>
 					<input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${expires}" step="1">
 					<span id="alert-expires"></span>
-				<p>
+				
+					<div class="btn-group" role="group" aria-label="Date Group">						
+						<span class="btn-default datetime-preset" data-time="-60">-${labels.times['1m']}</span>
+						<span class="btn-default datetime-preset" data-time="60">${labels.times['1m']}</span>
+						<span class="btn-default datetime-preset" data-time="300">${labels.times['5m']}</span>
+						<span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
+						<span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
+						<span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
+						<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
+						<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
+					</div>
+				</div>
+				<div class="col">
 					<label for="alert-auto">${labels.presets.header}</label>
 <!--                        <select id="alert-presets-categories">
 						<option value="">${labels.presets.antique}</option>
@@ -1220,20 +1229,7 @@ let Alerts = function(){
 						${battlegroundOptions}
 						</optgroup>
 					</select>
-				</p>
-				
-				<div class="btn-group" role="group" aria-label="Date Group">						
-					<span class="btn-default datetime-preset" data-time="-60">-${labels.times['1m']}</span>
-					<span class="btn-default datetime-preset" data-time="60">${labels.times['1m']}</span>
-					<span class="btn-default datetime-preset" data-time="300">${labels.times['5m']}</span>
-					<span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
-					<span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
-					<span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
-					<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
-					<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
 				</div>
-				<p class="full-width text-right mt--10">
-				</p>
 				
 				<p class="full-width radio-toolbar extra-vs-8">
 					${labels.repeats.repeat}

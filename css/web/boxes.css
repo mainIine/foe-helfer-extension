@@ -140,7 +140,7 @@ input[type=number] {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	padding: 0.2rem 1rem;
+	padding: 0.2rem 0.8rem;
 	font-size: 0.8rem;
 	line-height: 1.5;
 	background: var(--background-btn-fallback);
@@ -190,6 +190,17 @@ input[type=number] {
 	background: var(--background-btn-green-moz);
 	background: var(--background-btn-green-webkit);
 	background: var(--background-btn-green);
+}
+
+.btn-delete, .btn-delete:not([disabled]):hover {
+	background: var(--background-btn-red-fallback);
+	background: var(--background-btn-red-moz);
+	background: var(--background-btn-red-webkit);
+	background: var(--background-btn-red);
+}
+
+.btn-delete:hover {
+	color: var(--text-light);
 }
 
 .btn-group {
@@ -402,7 +413,7 @@ p {
 }
 
 #Alerts-Btn span {
-	background-image: url('../images/menu/icon-alerts.png');
+	background-image: url('../images/menu/alerts.png');
 }
 
 #notice-Btn span {
