@@ -36,6 +36,11 @@
 	--background-btn-green-moz: -moz-linear-gradient(top, #469e2b 0%, #1f6517 100%);
 	--background-btn-green-fallback: #6eaa5c;
 
+	--background-btn-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
+	--background-btn-red-webkit: -webkit-linear-gradient(top, #871313 0%,#440909 100%);
+	--background-btn-red-moz: -moz-linear-gradient(top, #871313 0%,#440909 100%);
+	--background-btn-red-fallback: #821a1a;
+
 	--background-table-hover: rgba(243, 214, 160, 0.2);
 	--background-table-odd: rgba(255,255,255, 0.07);
 	--background-table-info: rgba(33, 150, 243, 0.3);

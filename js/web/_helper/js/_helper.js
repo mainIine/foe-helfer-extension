@@ -122,6 +122,8 @@ helper.permutations = (()=>{
 
 let HTML = {
 
+	customFunctions: [],
+
 	/**
 	 * Erzeugt eine HTML Box im DOM
 	 *
@@ -202,7 +204,7 @@ let HTML = {
 
 
 			if(args['auto_close']){
-				$(`#${args.id}`).on('click', '#' + args['id'] + 'close', function(){
+				$(`#${args.id}`).on('click', `#${args['id']}close`, function(){
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
 					});
@@ -217,6 +219,12 @@ let HTML = {
 
 			if(args['dragdrop']) {
 				HTML.DragBox(document.getElementById(args['id']), args['saveCords']);
+
+				// is there a callback function?
+				if (typeof args['dragdrop'] !== 'boolean')
+				{
+					HTML.customFunctions[args['id']] = args['dragdrop'];
+				}
 			}
 
 			if(args['resize']) {
@@ -334,6 +342,12 @@ let HTML = {
 		function closeDragElement() {
 			document.onpointerup = null;
 			document.onpointermove = null;
+
+			// is there a callback function after drag&drop
+			if(HTML.customFunctions[id])
+			{
+				new Function(`${HTML.customFunctions[id]}`)();
+			}
 		}
 	},
 

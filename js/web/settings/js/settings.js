@@ -101,7 +101,7 @@ let Settings = {
 				childLis = [],
 				childDivs = [];
 
-			parentLis.push(`<li><a href="#tab-${i}" title="${i18n('Settings.Tab.' + g)}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
+			parentLis.push(`<li><a href="#tab-${i}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
 
 			for (let x in grps) {
 				if (!grps.hasOwnProperty(x)) {
@@ -153,7 +153,7 @@ let Settings = {
 				cs.find('.check').addClass(status ? '' : 'unchecked');
 				cs.find('.toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'));
 
-				childLis.push(`<li><a href="#subtab-${cnt}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
+				childLis.push(`<li><a href="#subtab-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
 
 				let h = c.append(cr.append(ct, cd, cs));
 				childDivs.push('<div id="subtab-' + cnt + '" class="sub-tab">' + h.html() + '</div>');
@@ -170,7 +170,7 @@ let Settings = {
 		}
 
 		content = `<div class='tabs settings'>`;
-		content += `<ul class='horizontal'>${parentLis.join('')}</ul>`;
+		content += `<ul class='horizontal dark-bg'>${parentLis.join('')}</ul>`;
 		content += div.join('');
 		content += `</div>`;
 
