@@ -648,7 +648,7 @@ let Alerts = function(){
 					tmp.web.body.tabs.content = [];
 				},
 				renderHead: () => {
-					return '<ul class="horizontal">' + tmp.web.body.tabs.head.join( '' ) + '</ul>';
+					return '<ul class="horizontal dark-bg">' + tmp.web.body.tabs.head.join( '' ) + '</ul>';
 				},
 				renderContent: () => {
 					return tmp.web.body.tabs.content.join( '' );
