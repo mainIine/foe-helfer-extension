@@ -170,7 +170,7 @@ let Settings = {
 		}
 
 		content = `<div class='tabs settings'>`;
-		content += `<ul class='horizontal'>${parentLis.join('')}</ul>`;
+		content += `<ul class='horizontal dark-bg'>${parentLis.join('')}</ul>`;
 		content += div.join('');
 		content += `</div>`;
 
