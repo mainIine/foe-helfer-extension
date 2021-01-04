@@ -71,10 +71,6 @@
 	font-size: 85%;
 }
 
-#OwnPartBox #OwnPartBoxBody .btn-set-arc {
-	margin-right: 5px;
-}
-
 
 #OwnPartBox #OwnPartBoxBody strong {
 	color: var(--text-bright);
@@ -153,7 +149,7 @@
 	content: "";
 	width: 36px;
 	height: 36px;
-	background-position: 3px -52px;
+	background-position: 5px -52px;
 	position: absolute;
 	top: -13px;
 	left: -33px;
@@ -166,7 +162,7 @@
 	background-position: -75px -2px;
 	position: absolute;
 	top: -6px;
-	left: -27px;
+	left: -25px;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow:hover {

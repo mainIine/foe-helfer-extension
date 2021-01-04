@@ -131,7 +131,7 @@ Tooltip */
 	user-select: none;
 }
 
-.toolTipWrapper::after {
+.toolTipWrapper:not(.isOnTop)::after {
 	content: '';
 	width: 18px;
 	height: 31px;
@@ -141,6 +141,18 @@ Tooltip */
 	transform: translateX(-50%);
 	left: 50%;
 	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
+}
+
+.toolTipWrapper.isOnTop::after {
+	content: '';
+	width: 26px;
+	height: 22px;
+	display: inline-block;
+	position: absolute;
+	top: -26px;
+	left: 81px;
+	background: url('../images/hud/tooltip_bg_arrow.png') top center no-repeat;
+	transform: rotate(180deg);
 }
 
 .toolTipWrapper .tooltip-error {
