@@ -761,13 +761,13 @@ Tabs */
 	top: 30%;
 	left: 40%;
 	border-color: transparent;
-	border-width: 35px 10px 10px 10px;
+	border-width: 28px 7px 7px 7px;
 	border-style: solid;
 	border-image-source: url('../images/hud/window.png');
 	border-image-slice: 54 28 28;
 	border-image-width: 54px 28px 28px;
 	border-image-repeat: round;
-	border-image-outset: 0.3;
+	border-image-outset: 0.6;
 	border-radius: 20px;
 	user-select: none;
 }
