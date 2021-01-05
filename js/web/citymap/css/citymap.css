@@ -217,10 +217,6 @@
 	background-color: #6c757d;
 	border-color: #4d565e;
 }
-#grid-outer span.old {
-	background-color: #915a8c;
-	border-color: #4d565e;
-}
 #grid-outer span.goods {
 	background-color: #7d2a4d;
 	border-color: #6a2a3a;
@@ -289,6 +285,9 @@
 	-ms-animation: pulse 3s infinite ease-in-out;
 	-moz-animation: pulse 3s infinite ease-in-out;
 	animation: pulse 3s infinite ease-in-out;
+}
+.diagonal {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,.5) 6px, rgba(255,255,255,.5) 10px);
 }
 
 /* ------------------------------------------------------------------------- */
