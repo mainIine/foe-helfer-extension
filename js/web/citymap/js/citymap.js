@@ -170,6 +170,7 @@ let CityMap = {
 
 		// Button for submit Box
 		if (CityMap.IsExtern === false) {
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }).text(i18n('Boxes.CityMap.HighlightOldBuildings')));
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
 		}
 
@@ -254,12 +255,12 @@ let CityMap = {
 				continue;
 
 			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
-
+		
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
 				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
 				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
-
+			
 				f = $('<span />').addClass('entity ' + d['type']).css({
 						width: w + 'em',
 						height: h + 'em',
@@ -302,6 +303,7 @@ let CityMap = {
 				f.attr({
 					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
 				})
+				if (era<CurrentEraID) {f.addClass('oldBuildings')}
 			}
 
 			// die Größe wurde geändert, wieder aktivieren
@@ -399,6 +401,12 @@ let CityMap = {
 
 			$('#CityMapSubmitBody').html(desc);
 		}
+	},
+	/**
+	 * Highlight old buildings
+	 */
+	highlightOldBuildings: ()=> {
+		$('.oldBuildings').toggleClass('pulsateSlow');
 	},
 
 
