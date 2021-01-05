@@ -52,7 +52,9 @@ let _menu = {
 		'market',
 		'bluegalaxy',
 		'moppelhelper',
-		'fpCollector'
+		'fpCollector',
+		// 'alerts',
+		// 'unitsGex',
 	],
 
 
@@ -653,6 +655,28 @@ let _menu = {
 
 		btn_sp.on('click', function () {
 			Alerts.show();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+	/**
+	 * Shows the box for gex units stats
+	 *
+	 * @returns {*|jQuery}
+	 */
+	unitsGex_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'unitsGex-Btn', 'data-slug': 'unitsGex' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.unitsGex.Title'), i18n('Menu.unitsGex.Desc'), 'unitsGex-Btn');
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			UnitGex.showBox();
 		});
 
 		btn.append(btn_sp);

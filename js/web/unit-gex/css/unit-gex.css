@@ -1,0 +1,44 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 unit-gex.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              05.01.21, 14:15 Uhr
+ * zuletzt bearbeitet:       05.01.21, 14:15 Uhr
+ *
+ * Copyright © 2021
+ *
+ * **************************************************************************************
+ */
+
+#unitsGex {
+	width: 600px;
+	height: 450px;
+	top: calc(50vh - 225px);
+	left: calc(50vw - 310px);
+}
+
+#unitsGexBody {
+	overflow-y: auto;
+}
+
+#unitsGexBody .waves {
+	display: flex;
+}
+
+#unitsGexBody .waves .wave-1,
+#unitsGexBody .waves .wave-2 {
+	width: 70px;
+}
+
+#unitsGexBody .waves .wave-1.own,
+#unitsGexBody .waves .wave-2.own {
+	margin-right: 20px;
+}
+
+#unitsGexBody .units-icon {
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
