@@ -138,6 +138,7 @@
     "Boxes.CityMap.residential": "Residential Buildings",
     "Boxes.CityMap.street": "Streets",
     "Boxes.CityMap.tower": "Towers",
+    "Boxes.CityMap.HighlightOldBuildings": "Highlight old buildings",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Costs",
     "Boxes.EventChests.CostPerPrize": "Cost/Prize",
