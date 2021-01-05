@@ -330,6 +330,10 @@ p {
 	color: var(--text-info);
 }
 
+.text-muted {
+	color: var(--text-muted);
+}
+
 .text-bold {
 	font-weight: 700;
 }
@@ -590,6 +594,56 @@ Tabs */
 }
 
 
+/*----------------------------------------------------------------------------------------------------------------------
+Accordion */
+
+.foehelper-accordion strong,
+.foehelper-accordion span {
+	display: inline-block;
+}
+
+.foehelper-accordion-head {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 2px;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
+	padding: 3px 0;
+	position: relative;
+}
+
+.foehelper-accordion-head::after {
+	content: ' ';
+	background-image: url('../images/hud/chevron-left.svg');
+	background-size: contain;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	right: 10px;
+	top: 4px;
+}
+
+.foehelper-accordion.open .foehelper-accordion-head::after {
+	background-image: url('../images/hud/chevron-down.svg');
+}
+
+
+.foehelper-accordion-body {
+	display: none;
+	background-color: rgba(0,0,0,0.25);
+}
+
+.foehelper-accordion-body div {
+	font-size: 90%;
+	padding: 2px 0;
+}
+
+.foehelper-accordion.open .foehelper-accordion-body {
+	display: block;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------
+FP-Bar */
 
 #fp-bar {
 	z-index: 100;
@@ -1252,7 +1306,7 @@ Tabs */
 }
 
 .litepicker .container__months {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 repeat;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../css/images/hud/box-bg.png') 0 0 repeat;
     -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
 	box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
 	border: 1px solid #000;
@@ -1262,4 +1316,56 @@ Tabs */
 	margin: -5px -5px 0;
 	background-color: var(--background-table-odd);
 	border-radius: 3px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------
+SettingsBox */
+
+.settingsbox-wrapper {
+	text-align: left;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	border: 5px solid transparent;
+	background: transparent url('../images/hud/box-bg.png') center top no-repeat;
+	background-size: cover;
+	border-image: url('../images/hud/settings_bg.png') 5 round;
+	color: var(--text-normal);
+	padding: 10px;
+	z-index: 15;
+	border-radius: 5px;
+	box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);
+	min-width: 120px;
+	max-width: 280px;
+}
+
+.settingsbox-wrapper::after {
+	content: '';
+	position: absolute;
+	background: url('../images/hud/settings_bg_arrow.png') center center no-repeat;
+	top: -18px;
+	width: 29px;
+	height: 18px;
+	right: 40px;
+}
+
+.settingsbox-wrapper input[type="text"],
+.settingsbox-wrapper input[type="number"] {
+	text-align: center;
+	padding: 1px 5px;
+	line-height: 1.5;
+	background-color: var(--background-light);
+	color: var(--text-medium);
+	background-clip: padding-box;
+	border: 1px solid var(--text-dark);
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.settingsbox-wrapper p:last-child {
+	margin-bottom: 0;
+}
+
+.settingsbox-wrapper hr {
+	border-top: 1px solid var(--text-dark);
+	border-bottom: 1px solid var(--text-medium2);
 }

@@ -586,9 +586,10 @@ const FoEproxy = (function () {
 		// Player-ID, Gilden-ID und Name setzten
 		MainParser.StartUp(data.responseData.user_data);
 
-		// check if FP Db exists
+		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
+		UnitGex.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
@@ -1105,15 +1106,15 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'alerts'
+		'alerts',
+		'unitsGex'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
 
 /**
  *
- * @type {{BuildingSelectionKits: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): (undefined)), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): number), SocialbarList: (function(*): (undefined)), Championship: MainParser.Championship, Inventory: {}, compareTime: (function(*, *): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): (undefined)), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts,
- * : MainParser.sendExtMessage, ClearText: (function(*): *), checkNextUpdate: (function(*=): *), Language: string, SelectedMenu: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=, *): boolean), BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
+ * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: (function(*): undefined), activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
 
@@ -1679,8 +1680,8 @@ let MainParser = {
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
-		CurrentEra = d['era']['era'],
-			CurrentEraID = Technologies.Eras[CurrentEra];
+		CurrentEra = d['era']['era'];
+		CurrentEraID = Technologies.Eras[CurrentEra];
 
 		MainParser.sendExtMessage({
 			type: 'storeData',
@@ -1835,6 +1836,7 @@ let MainParser = {
 		});
 	},
 
+
 	/**
 	 * Motivieren Polieren tracken, wenn gewünscht
 	 *
@@ -1958,67 +1960,96 @@ let MainParser = {
 	 *
 	 * @param d
 	 * @param Source
+	 * @param ListType
+	 * @constructor
 	 */
 	UpdatePlayerDict: (d, Source, ListType = undefined) => {
-		if (Source === 'Conversation') {
-			for (let i in d['messages']) {
+		if (Source === 'Conversation')
+		{
+			for (let i in d['messages'])
+			{
+				if(!d['messages'].hasOwnProperty(i))
+					continue;
+
 				let Message = d['messages'][i];
-				if (Message.sender !== undefined) {
+
+				if (Message.sender !== undefined)
+				{
 					MainParser.UpdatePlayerDictCore(Message.sender);
 				}
 			}
 		}
 
-		else if (Source === 'LGOverview') {
+		else if (Source === 'LGOverview')
+		{
 			MainParser.UpdatePlayerDictCore(d[0].player);
 		}
 
-		else if (Source === 'LGContributions') {
-				for (let i in d) {
-					MainParser.UpdatePlayerDictCore(d[i].player);
-				}
+		else if (Source === 'LGContributions')
+		{
+			for (let i in d)
+			{
+				if(!d.hasOwnProperty(i))
+					continue;
+
+				MainParser.UpdatePlayerDictCore(d[i].player);
+			}
+		}
+
+		else if (Source === 'PlayerList')
+		{
+			for (let i in d)
+			{
+				if(!d.hasOwnProperty(i))
+					continue;
+
+				MainParser.UpdatePlayerDictCore(d[i]);
 			}
 
-			else if (Source === 'PlayerList') {
-					for (let i in d) {
-						MainParser.UpdatePlayerDictCore(d[i]);
-					}
+			if (ListType === 'getNeighborList')
+			{
+				PlayerDictNeighborsUpdated = true;
+			}
+			else if (ListType === 'getClanMemberList')
+			{
+				PlayerDictGuildUpdated = true;
+			}
+			else if (ListType === 'getFriendsList')
+			{
+					PlayerDictFriendsUpdated = true;
+			}
 
-					if (ListType === 'getNeighborList') {
-						PlayerDictNeighborsUpdated = true;
-					}
-					else if (ListType === 'getClanMemberList') {
-						PlayerDictGuildUpdated = true;
-					}
-					else if (ListType === 'getFriendsList') {
-							PlayerDictFriendsUpdated = true;
-						}
+			if ($('#moppelhelper').length > 0)
+			{
+				EventHandler.CalcMoppelHelperBody();
+			}
 
-					if ($('#moppelhelper').length > 0) {
-						EventHandler.CalcMoppelHelperBody();
-					}
-
-					// Todo: Welcher Typ es ist muss mitgesendet werden [Nachbar,Gildi,Freund]
-					if (Settings.GetSetting('GlobalSend')) {
-						MainParser.sendExtMessage({
-							type: 'send2Api',
-							url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld + '&type=' + ListType,
-							data: JSON.stringify(d)
-						});
-					}
-				}
+			if (Settings.GetSetting('GlobalSend'))
+			{
+				MainParser.sendExtMessage({
+					type: 'send2Api',
+					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld + '&type=' + ListType,
+					data: JSON.stringify(d)
+				});
+			}
+		}
 	},
 
 
 	/**
 	 * Update player information
 	 *
-	 * @param d
+	 * @param Player
+	 * @constructor
 	 */
 	UpdatePlayerDictCore: (Player) => {
+
 		let PlayerID = Player['player_id'];
-		if (PlayerID !== undefined) {
+
+		if (PlayerID !== undefined)
+		{
 			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+
 			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
 			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
 			if (Player['clan'] !== undefined) PlayerDict[PlayerID]['ClanName'] = Player['clan']['name'];
@@ -2223,14 +2254,22 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Create a blob for file download
+	 *
+	 * @param Blob
+	 * @param FileName
+	 * @constructor
+	 */
 	ExportFile: (Blob, FileName) => {
 		// Browsercheck
 		let isIE = !!document.documentMode;
 
-		if (isIE) {
+		if (isIE)
+		{
 			window.navigator.msSaveBlob(Blob, FileName);
-
-		} else {
+		}
+		else {
 			let url = window.URL || window.webkitURL,
 				link = url.createObjectURL(Blob),
 				a = document.createElement('a');
