@@ -14,18 +14,38 @@
  */
 
 #unitsGex {
-	width: 600px;
-	height: 450px;
-	top: calc(50vh - 225px);
-	left: calc(50vw - 310px);
+	width: 470px;
+	height: 400px;
+	top: calc(50vh - 200px);
+	left: calc(50vw - 235px);
+}
+
+#unitsGexBody .foehelper-accordion-body {
+	padding: 0 10px;
 }
 
 #unitsGexBody {
 	overflow-y: auto;
 }
 
+#unitsGexBody .unitgex-stats-wrapper {
+	display: flex;
+	flex-direction: row;
+}
+
+#unitsGexBody .unitgex-stats-wrapper .unitgex-stats {
+	width: 50%;
+}
+
 #unitsGexBody .waves {
 	display: flex;
+	flex-direction: row;
+}
+
+#unitsGexBody .waves-wrapper {
+	width: 50%;
+	display: flex;
+	flex-direction: row;
 }
 
 #unitsGexBody .waves .wave-1,
@@ -41,4 +61,23 @@
 #unitsGexBody .units-icon {
 	margin-right: 5px;
 	margin-bottom: 5px;
+	position: relative;
+}
+
+#unitsGexBody .units-icon .health {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background-color: #bc0b0b;
+}
+
+#unitsGexBody .units-icon .health .fit {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 4px;
+	background-color: #248609;
 }
