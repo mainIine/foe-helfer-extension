@@ -287,7 +287,7 @@
 	animation: pulse 3s infinite ease-in-out;
 }
 .diagonal {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(255,255,255,.5) 6px, rgba(255,255,255,.5) 10px);
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(150,150,150,.5) 5px, rgba(255,255,255,.5) 10px)
 }
 
 /* ------------------------------------------------------------------------- */
