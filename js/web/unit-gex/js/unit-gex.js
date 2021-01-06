@@ -19,12 +19,21 @@ FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) =
 	if(postData[0]['requestClass'] !== 'GuildExpeditionService')
 		return;
 
-	UnitGex.DB_Data['id'] = ((postData[0]['requestData'][0] + 1) / 2);
+	let id = postData[0]['requestData'][0];
+
+	if(id === 1)
+	{
+		UnitGex.DB_Data['id'] = id;
+	}
+	else {
+		UnitGex.DB_Data['id'] = ((postData[0]['requestData'][0] / 2) + 1);
+	}
 });
 
 
 // After battle
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
+
 	if(postData[0]['requestData'][0]['type'] !== 'guild_expedition')
 		return;
 
@@ -59,11 +68,6 @@ let UnitGex = {
 	UnitsLoaded: false,
 	DB_Data: [],
 
-	Mapper: {
-		1: 1,
-
-		5: 4
-	},
 
 	/**
 	 *
@@ -90,6 +94,11 @@ let UnitGex = {
 			});
 
 		UnitGex.DB_Data = [];
+
+		if($('#unitsGex').length > 1)
+		{
+			UnitGex.buildBody();
+		}
 	},
 
 
