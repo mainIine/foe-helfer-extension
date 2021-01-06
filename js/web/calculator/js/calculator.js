@@ -728,7 +728,7 @@ let Calculator = {
 
 
 	SettingsInsertNewRow: ()=> {
-    	let nV = `<p class="new-row">neuer Wert: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
 
 		$(nV).insertAfter( $('.new-row:eq(-1)') );
 	},
