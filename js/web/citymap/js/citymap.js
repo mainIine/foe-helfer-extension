@@ -406,7 +406,7 @@ let CityMap = {
 	 * Highlight old buildings
 	 */
 	highlightOldBuildings: ()=> {
-		$('.oldBuildings').toggleClass('pulsateSlow');
+		$('.oldBuildings').toggleClass('diagonal');
 	},
 
 
