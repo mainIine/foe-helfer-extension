@@ -13,28 +13,13 @@
  * **************************************************************************************
  */
 
-/*
- * **************************************************************************************
- *
- * Dateiname:                 unit-gex.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              04.01.21, 17:39 Uhr
- * zuletzt bearbeitet:       04.01.21, 17:39 Uhr
- *
- * Copyright © 2021
- *
- * **************************************************************************************
- */
-
 
 // Encounter, get round number
 FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) => {
 	if(postData[0]['requestClass'] !== 'GuildExpeditionService')
 		return;
 
-	UnitGex.DB_Data['id'] = ((postData[0]['requestData'][0] / 2) + 1);
+	UnitGex.DB_Data['id'] = ((postData[0]['requestData'][0] + 1) / 2);
 });
 
 
@@ -73,6 +58,12 @@ let UnitGex = {
 	db: null,
 	UnitsLoaded: false,
 	DB_Data: [],
+
+	Mapper: {
+		1: 1,
+
+		5: 4
+	},
 
 	/**
 	 *
