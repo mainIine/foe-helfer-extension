@@ -21,13 +21,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) =
 
 	let id = postData[0]['requestData'][0];
 
-	if(id % 2)
-	{
-		UnitGex.DB_Data['id'] = ((id / 2) + 1);
-	}
-	else {
-		UnitGex.DB_Data['id'] = ((id + 1) / 2);
-	}
+	UnitGex.DB_Data['id'] = ((id + 2) / 2);
 });
 
 
