@@ -56,7 +56,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 });
 
 
-// Visit other tavern
+// Visit other players (motivation)
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
 	const d = data['responseData'];
 
@@ -65,10 +65,10 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 	}
 
 	const player = PlayerDict[postData[0]['requestData'][0]];
-	console.log(player)
+
 	StrategyPoints.insertIntoDB({
 		event: 'satDown',
-		notes: player ? player.PlayerName : undefined,
+		notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[player['Avatar']]}.jpg"><span>${player['PlayerName']}</span>` : undefined,
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});

@@ -158,7 +158,7 @@ let UnitGex = {
 			if(entries.length === 0)
 			{
 				tr.push(`<div class="foehelper-accordion-head dark-bg ${i}-head">
-							<strong class="text-warning">${i}.</strong> <em class="text-muted">kein Eintrag gefunden</em>
+							<span class="text-warning">${i}.</span> <em class="text-muted">kein Eintrag gefunden</em>
 						</div>`);
 			}
 
@@ -166,33 +166,61 @@ let UnitGex = {
 				const E = entries[0];
 
 				tr.push(`<div class="foehelper-accordion-head dark-bg ${i}-head" onclick="UnitGex.ToggleHeader('${i}')">
-							<strong class="text-warning">${i}.</strong> <strong class="text-${E['Data']['winner'] === 1 ? 'success' : 'danger'}">${E['Data']['winner'] === 1 ? 'Gewonnen' : 'Verloren'}</strong>
+							<span class="text-warning" style="margin-right:10px">${i}.</span> <strong class="text-${E['Data']['winner'] === 1 ? 'success' : 'danger'}">${E['Data']['winner'] === 1 ? 'Gewonnen' : 'Verloren'}</strong>
 						</div>`);
 
 				tr.push(`<div class="foehelper-accordion-body ${i}-body">`);
 
-				tr.push(	`<div class="unitgex-stats">Lorem ipsum</div>`);
+				tr.push(	`<div class="unitgex-stats-wrapper">`);
+				tr.push(		`<div class="unitgex-stats">Welle 1</div>`);
+
+				if(E['Units'][1]){
+					tr.push(		`<div class="unitgex-stats">Welle 2</div>`);
+				}
+
+				tr.push(	`</div>`);
 
 				tr.push(	`<div class="waves">`);
 
 				const OT1 = E['Units'][0].filter(e => e['teamFlag'] === 1).sort((a, b) => a['initialUnitOrderIndex'] - b['initialUnitOrderIndex']);
 				const ET1 = E['Units'][0].filter(e => e['teamFlag'] === 2).sort((a, b) => a['initialUnitOrderIndex'] - b['initialUnitOrderIndex']);
 
-				tr.push(		`<div class="wave-1 own">`);
-
+				tr.push(		`<div class="waves-wrapper">`);
+				tr.push(			`<div class="wave-1 own">`);
 				OT1.forEach((el, i) => {
+					// console.log('el: ', el);
 					tr.push(UnitGex.PrepareUnit(el));
 				});
+				tr.push(			`</div>`);
 
-				tr.push(		`</div>`);
-
-				tr.push(		`<div class="wave-1 enemy">`);
-
+				tr.push(			`<div class="wave-1 enemy">`);
 				ET1.forEach((el, i) => {
 					tr.push(UnitGex.PrepareUnit(el));
 				});
-
+				tr.push(			`</div>`);
 				tr.push(		`</div>`);
+
+				if(E['Units'][1])
+				{
+					const OT2 = E['Units'][1].filter(e => e['teamFlag'] === 1).sort((a, b) => a['initialUnitOrderIndex'] - b['initialUnitOrderIndex']);
+					const ET2 = E['Units'][1].filter(e => e['teamFlag'] === 2).sort((a, b) => a['initialUnitOrderIndex'] - b['initialUnitOrderIndex']);
+
+					tr.push(		`<div class="waves-wrapper">`);
+					tr.push(			`<div class="wave-2 own">`);
+					OT2.forEach((el, i) => {
+						tr.push(UnitGex.PrepareUnit(el));
+					});
+					tr.push(			`</div>`);
+
+					tr.push(			`<div class="wave-2 enemy">`);
+					ET2.forEach((el, i) => {
+						tr.push(UnitGex.PrepareUnit(el));
+					});
+					tr.push(			`</div>`);
+					tr.push(		`</div>`);
+				}
+
+
 				tr.push(	`</div>`);
 				tr.push(`</div>`);
 
@@ -211,9 +239,12 @@ let UnitGex = {
 	PrepareUnit: (entry)=> {
 		let type = Unit.Types.find(obj => (obj['unitTypeId'] === entry['unitTypeId'])),
 			cache = Unit.Cache['units'].find(obj => (obj['unitId'] === entry['unitId'])),
-			era = Technologies.Eras[type['minEra']];
+			era = Technologies.Eras[type['minEra']],
+			fit = (entry['currentHitpoints'] * 10);
 
-		return `<span class="units-icon ${entry['unitTypeId']}"></span>`;
+		// console.log('entry: ', entry);
+
+		return `<span class="units-icon ${entry['unitTypeId']}"><span class="health"><span class="fit" style="width:${fit}%"></span></span></span>`;
 	},
 
 
