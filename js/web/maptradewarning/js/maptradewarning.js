@@ -1,10 +1,10 @@
 
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
-
+	//closes box when opening army screen
 	HTML.CloseOpenBox('mapTradeWarningDialog');
 });
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-
+	//closes box when going back to city
 	HTML.CloseOpenBox('mapTradeWarningDialog');
 });
 FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
@@ -13,7 +13,7 @@ FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
 	if(!Settings.GetSetting('ShowMapTradeWarning')){
 		return;
     }
-    
+    //closes box if still open for some reason
     HTML.CloseOpenBox('mapTradeWarningDialog');
 
     return mapTradeWarning.ShowMapDialog();
@@ -25,7 +25,7 @@ FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
 let mapTradeWarning = {
 
 	/**
-	 * Shows a User Box when a province is opened
+	 * Shows a User Box covering the 'Negotiate' button in province sector screens
 	 *
 	 * @constructor
 	 */
