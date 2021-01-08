@@ -90,6 +90,12 @@
 		"sort": 11
 	},
 	{
+		"name": "ShowMapTradeWarning",
+		"status": true,
+		"group": "Boxes",
+		"sort": 12
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
