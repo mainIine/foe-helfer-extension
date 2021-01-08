@@ -198,6 +198,7 @@
 				'eventhandler',
 				'fp-collector',
 				'unit-gex',
+				'maptradewarning',
 			];
 
 			// load scripts (one after the other)
