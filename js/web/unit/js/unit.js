@@ -133,7 +133,8 @@ let Unit = {
 						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
 					});
 
-			} else {
+			}
+			else {
 				let countDownDate = moment.unix(Unit.alca['state']['next_state_transition_at']);
 
 				let x = setInterval(function() {
@@ -181,13 +182,14 @@ let Unit = {
 
         Unit.Attack = [];
 
-        for (let i in Unit.Cache['units']) {
-
+        for (let i in Unit.Cache['units'])
+        {
         	if(!Unit.Cache['units'].hasOwnProperty(i)){
         		break;
         	}
 
-            if (Unit.Cache['units'][i]['is_attacking']) {
+            if (Unit.Cache['units'][i]['is_attacking'])
+            {
                 Unit.Attack[Unit.Attack.length] = Unit.Cache['units'][i];
             }
         }

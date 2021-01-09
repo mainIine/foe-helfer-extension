@@ -166,19 +166,24 @@ let HTML = {
 			min.insertAfter(title);
 		}
 
+		// insert a wrench icon
+		// set a click event on it
+		if(args['settings']){
+			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
+			set.insertAfter(title);
+
+			if (typeof args['settings'] !== 'boolean')
+			{
+				HTML.customFunctions[`${args['id']}Settings`] = args['settings'];
+			}
+		}
+
 		// Lautsprecher für Töne
 		if(args['speaker']){
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
 			spk.insertAfter(title);
 
 			$('#' + args['speaker']).addClass( localStorage.getItem(args['speaker']) );
-		}
-
-		// insert a wrench icon
-		// set a click event on it
-		if(args['settings']){
-			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
-			set.insertAfter(title);
 		}
 
 		// es gibt gespeicherte Koordinaten
@@ -227,6 +232,29 @@ let HTML = {
 				}
 			}
 
+			// is there a callback function?
+			if(args['settings'])
+			{
+				if (typeof args['settings'] !== 'boolean')
+				{
+					$(`#${args['id']}`).on('click', `#${args['id']}-settings`, function(){
+
+						// exist? remove!
+						if( $(`#${args['id']}SettingsBox`).length > 0 )
+						{
+							$(`#${args['id']}SettingsBox`).fadeToggle('fast', function(){
+								$(this).remove();
+							});
+						}
+
+						// create a new one
+						else {
+							HTML.SettingsBox(args['id']);
+						}
+					});
+				}
+			}
+
 			if(args['resize']) {
 				HTML.Resizeable(args['id'], args['keepRatio']);
 			}
@@ -242,7 +270,7 @@ let HTML = {
 			div.fadeToggle('fast');
 
             // Stop propagation of key event out of inputs in this box to FOE
-            $(`#${args.id}`).on('keydown keyup', (e) => {
+            $(`#${args['id']}`).on('keydown keyup', (e) => {
                 e.stopPropagation();
             });
 
@@ -255,7 +283,7 @@ let HTML = {
 
 
 	/**
-	 * Minimiert auf Klick die Box
+	 * Click to minimise the box
 	 *
 	 * @param div
 	 */
@@ -279,7 +307,7 @@ let HTML = {
 
 
 	/**
-	 * Macht eine HTML BOX DragAble
+	 * Makes an HTML BOX DragAble
 	 *
 	 * @param el
 	 * @param save
@@ -413,6 +441,21 @@ let HTML = {
 		else {
 			box.resizable(options);
 		}
+	},
+
+
+	SettingsBox: (id)=> {
+
+		let box = $('<div />').attr({
+			id: `${id}SettingsBox`,
+			class: 'settingsbox-wrapper'
+		});
+
+		$(`#${id}`).append(box);
+
+		setTimeout(()=> {
+			new Function(`${HTML.customFunctions[id + 'Settings']}`)();
+		}, 100);
 	},
 
 

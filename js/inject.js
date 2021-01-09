@@ -197,6 +197,7 @@
 				'bluegalaxy',
 				'eventhandler',
 				'fp-collector',
+				'unit-gex',
 			];
 
 			// load scripts (one after the other)

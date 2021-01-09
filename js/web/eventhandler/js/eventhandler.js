@@ -171,7 +171,7 @@ let EventHandler = {
 
 	ParseDate: (DateString) => {
 		// Czech today contains &nbsp (0x00A0) => replace with blank
-		var NBSPRegex = new RegExp(String.fromCharCode(160), "g");
+		let NBSPRegex = new RegExp(String.fromCharCode(160), "g");
 		DateString = DateString.replace(NBSPRegex, " ");
 
 		let OldLocale = moment.locale();
