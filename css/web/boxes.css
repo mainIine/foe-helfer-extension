@@ -834,7 +834,7 @@ FP-Bar */
 	top: 30%;
 	left: 40%;
 	border-color: transparent;
-	border-width: 28px 7px 7px 7px;
+	border-width: 27px 5px 4px 5px;
 	border-style: solid;
 	border-image-source: url('../images/hud/window.png');
 	border-image-slice: 54 28 28;
