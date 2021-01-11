@@ -23,6 +23,7 @@
 	border-image-source: url(../images/hud/window-menu.png);
 	border-radius: 15px;
 	border-width: 30px 7px 7px 7px;
+	border-image-outset: 0.3;
 }
 
 #menu_box.closed {

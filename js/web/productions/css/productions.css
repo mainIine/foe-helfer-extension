@@ -16,16 +16,13 @@
 #Productions {
 	top: 100px;
 	left: 100px;
-	padding: 5px 0 0 0;
 	width: 780px;
 	height: 500px;
 }
 
-
 #Productions #ProductionsBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	margin-top: 2px;
 }
 
 #Productions #ProductionsBody strong.success {
