@@ -169,7 +169,9 @@ input[type=number] {
 	background: var(--background-btn-active-moz);
 	background: var(--background-btn-active-webkit);
 	background: var(--background-btn-active);
+	color: var(--text-light);
 	cursor: url('../images/cursor_hover.cur'), auto;
+	text-shadow: 0 1px 1px var(--black);
 }
 
 .btn-tight {
@@ -278,6 +280,11 @@ table.foe-table th,
 	background-color: var(--50-black);
 }
 
+.windowbody .dark-bg:last-child {
+	margin-bottom: -3px;
+	border-radius: 0 0 4px 4px;
+}
+
 table.foe-table tbody tr:nth-child(odd) {
 	background-color: var(--background-table-odd);
 }
@@ -310,6 +317,14 @@ p {
 }
 .text-right {
 	text-align: right;
+}
+.text-light {
+	color: var(--text-light);
+}
+
+.flex {
+	display: flex;
+	justify-content: center;
 }
 
 .wsnw {
@@ -426,6 +441,10 @@ p {
 
 #bluegalaxy-Btn span {
 	background-image: url('../images/menu/BlueGalaxy.png');
+}
+
+#unitsGex-Btn span {
+	background-image: url('../images/menu/gex.png');
 }
 
 
