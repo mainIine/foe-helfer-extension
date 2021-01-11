@@ -1,7 +1,7 @@
 ﻿{
     "API.GEXChampionship": "GEX lonca yerleşimi güncellendi",
     "API.GEXPlayer": "GEX Üyelerinin yerleşimleri güncellendi",
-    "API.LGGildMember": "__player __ adlı kullanıcının Devasaları gönderildi",
+    "API.LGGildMember": "__player__ adlı kullanıcının Devasaları gönderildi",
     "API.LGInvest": "Devasa yatırımlarınız aktarıldı",
     "API.UpdateSuccess": "Güncelleme yapıldı",
     "Boxes.Calculator.ActiveRecurringQuest": "Etkinlik Döngü görevi:",
