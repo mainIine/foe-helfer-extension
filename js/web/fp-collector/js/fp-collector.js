@@ -56,7 +56,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 });
 
 
-// Visit other tavern
+// Visit other players (motivation)
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
 	const d = data['responseData'];
 
@@ -65,10 +65,10 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 	}
 
 	const player = PlayerDict[postData[0]['requestData'][0]];
-	console.log(player)
+
 	StrategyPoints.insertIntoDB({
 		event: 'satDown',
-		notes: player ? player.PlayerName : undefined,
+		notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[player['Avatar']]}.jpg"><span>${player['PlayerName']}</span>` : undefined,
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
@@ -231,9 +231,6 @@ let FPCollector = {
 
 		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal());
 
-		// ${i18n('Boxes.FPCollector.Who')} ${i18n('Boxes.FPCollector.What')}
-
-
 		if(FPCollector.TodayEntries.length === 0)
 		{
 			tr.push(`<div class="text-center" style="padding:15px"><em>${i18n('Boxes.FPCollector.NoEntriesFound')}</em></div>`);
@@ -247,15 +244,15 @@ let FPCollector = {
 				const sumTotal = await FPCollector.calculateTotalByType(event);
 				const entriesEvent = await StrategyPoints.db['ForgePointsStats'].where({date: FPCollector.currentDateFilter, event: event}).toArray();
 
-				tr.push(`<div class="fpcollector-accordion ${event}">`);
+				tr.push(`<div class="foehelper-accordion ${event}">`);
 
-				tr.push(	`<div class="fpcollector-head game-cursor dark-bg ${event}-head" onclick="FPCollector.ToggleHeader('${event}')">
+				tr.push(	`<div class="foehelper-accordion-head game-cursor dark-bg ${event}-head" onclick="FPCollector.ToggleHeader('${event}')">
 								<span class="image"></span>
 								<strong class="text-warning">${sumTotal}</strong>
 								<span>${i18n('Boxes.FPCollector.' + event)}</span>
 							</div>`);
 
-				tr.push(	`<div class="fpcollector-body ${event}-body">`);
+				tr.push(	`<div class="foehelper-accordion-body ${event}-body">`);
 
 				 entriesEvent.forEach(e => {
 					 tr.push(`<div>
@@ -405,7 +402,7 @@ let FPCollector = {
 		let $this = $(`.${event}`),
 			isOpen = $this.hasClass('open');
 
-		$('.fpcollector-accordion').removeClass('open');
+		$('#fp-collectorBodyInner .foehelper-accordion').removeClass('open');
 
 		if(!isOpen){
 			$this.addClass('open');

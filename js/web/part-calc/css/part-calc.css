@@ -149,10 +149,10 @@
 	content: "";
 	width: 36px;
 	height: 36px;
-	background-position: 3px -52px;
+	background-position: 5px -52px;
 	position: absolute;
 	top: -13px;
-	left: -33px;
+	left: -30px;
 	z-index: -1;
 }
 
@@ -162,7 +162,7 @@
 	background-position: -75px -2px;
 	position: absolute;
 	top: -6px;
-	left: -27px;
+	left: -22px;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow:hover {

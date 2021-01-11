@@ -1001,7 +1001,7 @@ let Productions = {
 	 * @returns {string}
 	 */
 	GetTabs: ()=> {
-		return '<ul class="horizontal">' + Productions.Tabs.join('') + '</ul>';
+		return '<ul class="horizontal dark-bg">' + Productions.Tabs.join('') + '</ul>';
 	},
 
 
