@@ -12,13 +12,5 @@
     text-align: center;
     font-size: 120%;
     background-color: rgba(103, 1, 1, 0.5);
-    /*animation: mapTradeWarningBlink 2s linear infinite;*/
 }
-/*
-@keyframes mapTradeWarningBlink {
-    0% {color: #fafa6c;}
-    25% {color: #fcfcb2;}
-    50% {color: transparent;}
-    75% {color: #fcfcb2;}
-    100% {color: #fafa6c;}
-}*/
+
