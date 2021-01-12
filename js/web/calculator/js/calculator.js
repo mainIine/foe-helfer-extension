@@ -247,7 +247,7 @@ let Calculator = {
 							RecurringQuestString = i18n('Boxes.Calculator.Done');
 						}
 
-						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539">' + RecurringQuestString + '</span></em></div>');
+						h.push('<div class="text-center dark-bg" style="padding:3px 0;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539">' + RecurringQuestString + '</span></em></div>');
 					}
 				}
 			}
@@ -690,7 +690,7 @@ let Calculator = {
 			buttons,
 			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
-			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
 
 
 		if(sB)
@@ -709,10 +709,10 @@ let Calculator = {
 		buttons.forEach(bonus => {
 			if(bonus === 'ark')
 			{
-				c.push(`<p style="padding-left:37px"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
+				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
 			}
 			else {
-				c.push(`<p><span class="btn btn-default" onclick="Calculator.SettingsRemoveRow(this)">-</span> <input type="hidden" class="settings-values" value="${bonus}"> <button class="btn btn-default">${bonus}%</button></p>`);
+				c.push(`<p class="btn-group flex"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Calculator.SettingsRemoveRow(this)">x</span> </p>`);
 			}
 		});
 
@@ -728,7 +728,7 @@ let Calculator = {
 
 
 	SettingsInsertNewRow: ()=> {
-    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
 
 		$(nV).insertAfter( $('.new-row:eq(-1)') );
 	},
