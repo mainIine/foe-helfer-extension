@@ -20,7 +20,7 @@ FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
 });
 
 /**
- * @type {{ShowRogueDialog: BattleAssist.ShowMapDialog}}
+ * @type {{ShowMapDialog: mapTradeWarning.ShowMapDialog}}
  */
 let mapTradeWarning = {
 
