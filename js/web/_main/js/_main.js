@@ -1680,7 +1680,8 @@ let MainParser = {
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
-		CurrentEra = d['era']['era'];
+		CurrentEra = d['era'];
+		if (CurrentEra['era']) CurrentEra = CurrentEra['era'];
 		CurrentEraID = Technologies.Eras[CurrentEra];
 
 		MainParser.sendExtMessage({
