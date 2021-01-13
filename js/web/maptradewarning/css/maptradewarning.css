@@ -1,10 +1,10 @@
 #mapTradeWarningDialog {
     top: calc(50vh + 165px);
-    left: calc(50vw - 175px);
+    left: calc(50vw - 180px);
 }
 
 #mapTradeWarningDialogBody {
-    width: 160px;
+    width: 170px;
     height: 25px;
     display: flex;
     justify-content: center;
