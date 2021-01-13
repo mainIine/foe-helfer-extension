@@ -40,7 +40,7 @@
 }
 
 .foehelper-accordion-body div {
-	border-bottom: 1px solid var(--border-table-top);
+	border-top: 1px solid var(--border-table-top);
 	padding: 2px 0 2px 30px;
 }
 
@@ -53,6 +53,12 @@
 
 .foehelper-accordion-body div .desc {
 	width: 45%;
+}
+
+.foehelper-accordion-body div img {
+	max-height: 25px;
+	border-radius: 2px;
+	margin-right: 4px;;
 }
 
 .foehelper-accordion-head span.image {
