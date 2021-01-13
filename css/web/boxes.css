@@ -815,7 +815,7 @@ FP-Bar */
 .window-ask,
 .window-speaker,
 .window-close {
-	background-image:  url('../images/hud/box-sprite.png');
+	background-image:  url('../images/hud/box-sprite.png'), url('../images/hud/box-sprite.png');
 }
 
 /* ---------------------------------------------------------------------------------------- */
@@ -863,9 +863,9 @@ FP-Bar */
 	display: flex;
 	justify-content: space-between;
 	position: absolute;
-	top: -30px;
+	top: -29px;
 	left: 7px;
-	right: 3px;
+	right: 5px;
 }
 
 .window-head span.title {
@@ -883,82 +883,82 @@ FP-Bar */
 
 .window-head span.window-ask {
 	display: inline-block;
-	background-position: -26px -1px;
+	background-position: -28px -1px, -2px -26px;
 	margin-right: 3px;
-	width: 26px;
-	height: 24px;
+	width: 22px;
+	height: 22px;
 	position: relative;
 }
 
 .window-head span.window-ask:hover {
-	background-position: -26px -25px;
+	background-position: -28px -1px, -28px -26px;
 }
 
 .window-head span.window-speaker {
-	height: 24px;
+	height: 22px;
 	display: inline-block;
 	position: relative;
-	background-position: -101px -1px;
-	width: 35px;
+	background-position: -105px -2px, -2px -26px;
+	width: 22px;
 	margin-right: 3px;
 }
 
 .window-head span.window-speaker:hover {
-    background-position: -101px -25px;
+    background-position: -146px -2px, -28px -26px;
 }
 
 .window-head span.window-speaker.deactivated {
-	background-position: -146px -25px;
+	background-position: -146px -2px, -2px -26px;
 }
 
 .window-head span.window-speaker.deactivated:hover {
-	background-position: -146px -1px;
+	background-position: -105px -2px, -28px -26px;
 }
 
 
 .window-head span.window-minimize {
-	background-position: -51px -1px;
+	background-position: -53px -2px, -2px -26px;
 	margin-right: 3px;
-	width: 25px;
-	height: 24px;
+	width: 22px;
+	height: 22px;
 	display: inline-block;
 	position: relative;
 }
 .open .window-head span.window-minimize:hover {
-	background-position: -51px -25px;
+	background-position: -53px -2px, -28px -26px;
 }
 .closed .window-head span.window-minimize {
-	background-position: -76px -1px;
+	background-position: -77px -1px, -2px -26px;
 }
 .closed .window-head span.window-minimize:hover {
-	background-position: -76px -25px;
+	background-position: -77px -1px, -28px -26px;
 }
 
 
 .window-head span.window-settings {
-	background-position: -191px -1px;
+	background-position: -192px -2px, -2px -26px;
 	display: inline-block;
-	width: 24px;
-	height: 24px;
+	width: 22px;
+	height: 22px;
 	position: relative;
 	margin-right: 2px;
 }
 
 .window-head span.window-settings:hover {
-	background-position: -191px -25px;
+	background-position: -192px -2px, -28px -26px;
 }
 
 
 .window-head span.window-close {
-	background-position: 0 -1px;
+	background-position: -2px -2px, -2px -26px;
 	display: inline-block;
-	width: 25px;
-	height: 24px;
+	width: 22px;
+	height: 22px;
 	position: relative;
 }
 
 .window-head span.window-close:hover {
-	background-position: 0 -25px;
+	background-position: -2px -2px, -28px -26px;
 }
 
 .window-body {
