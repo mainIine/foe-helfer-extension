@@ -111,7 +111,11 @@
 	background-image: url('../images/plunder.png') !important;
 }
 
+.foehelper-accordion-head.collectReward-head span.image {
+	background-image: url('../images/quest.png') !important;
+}
+
 /* Events */
-.foehelper-accordion-head.winterEvent-head span.image {
+.foehelper-accordion-head.winterEvent-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image {
 	background-image: url('../images/event.png') !important;
 }

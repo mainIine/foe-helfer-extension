@@ -386,7 +386,8 @@ let Parts = {
 				
         // Info-Block
         h.push('<div class="dark-bg">');
-        h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
+        h.push('<div class="flex" style="justify-content: space-evenly">');
+        h.push('<div class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
 		if (Parts.IsPreviousLevel) {
@@ -402,11 +403,9 @@ let Parts = {
 			}
 			h.push('</p>');
 		}
+        h.push('</div>');
 		
-
-        h.push('</td>');
-        h.push('<td class="text-right">');
-        h.push('<span class="btn-group">');
+        h.push('<span class="btn-group" style="align-items: center;">');
 
 		// different arc bonus-buttons
 		let investmentSteps = [80,85,90];
@@ -417,8 +416,7 @@ let Parts = {
 		});
 
         h.push('</span>');
-        h.push('</td>');
-        h.push('</tr></table>');
+        h.push('</div>');
 
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
