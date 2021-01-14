@@ -246,7 +246,7 @@ let FPCollector = {
 
 				tr.push(`<div class="foehelper-accordion ${event}">`);
 
-				tr.push(	`<div class="foehelper-accordion-head game-cursor dark-bg ${event}-head" onclick="FPCollector.ToggleHeader('${event}')">
+				tr.push(	`<div class="foehelper-accordion-head game-cursor ${event}-head" onclick="FPCollector.ToggleHeader('${event}')">
 								<span class="image"></span>
 								<strong class="text-warning">${sumTotal}</strong>
 								<span>${i18n('Boxes.FPCollector.' + event)}</span>
