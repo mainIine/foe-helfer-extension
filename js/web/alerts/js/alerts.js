@@ -675,7 +675,8 @@ let Alerts = function(){
 					<table id="alerts-table" class="foe-table">
 						<thead>
 							<tr>
-								<th>${labels.expiration}</th><th class="column-160">${labels.title}</th>
+								<th class="column-160">${labels.title}</th>
+								<th>${labels.expiration}</th>
 								<th>${labels.repeat}</th><th>${labels.persistent}</th>
 								<th>&nbsp;</th>
 							 </tr>
@@ -778,8 +779,8 @@ let Alerts = function(){
 						for (let alert of alerts) {
 							let persist = ( alert.persistent ) ? ' checked="checked"' : '';
 							html += `<tr id="alert-id-${alert.id}">
-							<td>${moment(alert.expires).from(dt)}</td>
 							<td class="column-160">${alert.title}</td>
+							<td>${moment(alert.expires).from(dt)}</td>
 							<td>${labels.repeats[alert.repeat+""]}</td>
 							<td><input type="checkbox"${persist}></td>
 							<td class="text-right">

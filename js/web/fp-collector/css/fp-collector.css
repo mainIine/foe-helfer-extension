@@ -122,6 +122,6 @@
 }
 
 /* Events */
-.foehelper-accordion-head.winterEvent-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image {
+.foehelper-accordion-head.winterEvent-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image , .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
 	background-image: url('../images/event.png') !important;
 }

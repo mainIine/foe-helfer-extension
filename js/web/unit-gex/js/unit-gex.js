@@ -113,7 +113,7 @@ let UnitGex = {
 			});
 
 			$('#unitsGexBody').append(
-				`<div class="dark-bg head">
+				`<div class="head">
 					<div class="text-warning"></div>
 					<div class="text-right"></div>
 				</div>`,
@@ -157,7 +157,7 @@ let UnitGex = {
 
 			if(entries.length === 0)
 			{
-				tr.push(`<div class="foehelper-accordion-head dark-bg ${i}-head">
+				tr.push(`<div class="foehelper-accordion-head ${i}-head">
 							<span class="text-warning">${i}.</span> <em class="text-muted">kein Eintrag gefunden</em>
 						</div>`);
 			}
@@ -165,7 +165,7 @@ let UnitGex = {
 			else {
 				const E = entries[0];
 
-				tr.push(`<div class="foehelper-accordion-head dark-bg ${i}-head" onclick="UnitGex.ToggleHeader('${i}')">
+				tr.push(`<div class="foehelper-accordion-head ${i}-head" onclick="UnitGex.ToggleHeader('${i}')">
 							<span class="text-warning" style="margin-right:10px">${i}.</span> <strong class="text-${E['Data']['winner'] === 1 ? 'success' : 'danger'}">${E['Data']['winner'] === 1 ? 'Gewonnen' : 'Verloren'}</strong>
 						</div>`);
 
