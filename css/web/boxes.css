@@ -201,8 +201,12 @@ input[type=number] {
 	background: var(--background-btn-red);
 }
 
-.btn-delete:hover {
+.btn-delete:hover, .btn-delete:not([disabled]):hover {
 	color: var(--text-light);
+	background: var(--background-btn-red-active-fallback);
+	background: var(--background-btn-red-active-moz);
+	background: var(--background-btn-red-active-webkit);
+	background: var(--background-btn-red-active);
 }
 
 .btn-group {
