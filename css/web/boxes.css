@@ -624,7 +624,6 @@ Accordion */
 .foehelper-accordion-head {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 2px;
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 3px 0;
