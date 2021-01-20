@@ -71,10 +71,6 @@
 	font-size: 85%;
 }
 
-#OwnPartBox #OwnPartBoxBody .btn-set-arc {
-	margin-right: 5px;
-}
-
 
 #OwnPartBox #OwnPartBoxBody strong {
 	color: var(--text-bright);
@@ -153,32 +149,32 @@
 	content: "";
 	width: 36px;
 	height: 36px;
-	background-position: 3px -52px;
+	background-position: 5px -52px;
 	position: absolute;
 	top: -13px;
-	left: -33px;
+	left: -30px;
 	z-index: -1;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow {
-	width: 24px;
-	height: 24px;
-	background-position: -75px -2px;
+	width: 22px;
+	height: 22px;
+	background-position: -77px -2px, -2px -26px;
 	position: absolute;
 	top: -6px;
-	left: -27px;
+	left: -20px;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow:hover {
-	background-position: -75px -26px;
+	background-position: -77px -2px, -28px -26px;
 }
 
 .show .OwnPartBoxBackground .outerArrow span.arrow {
-	background-position: -52px -2px;
+	background-position: -53px -2px, -2px -26px;
 }
 
 .show .OwnPartBoxBackground .outerArrow span.arrow:hover {
-	background-position: -52px -26px;
+	background-position: -53px -2px, -28px -26px;
 }
 
 

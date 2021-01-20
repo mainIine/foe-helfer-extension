@@ -740,8 +740,8 @@ let ProvinceMap = {
 
 			if (e.short)
 			{
-
-				switch (e.short.substring(1, 2)) {
+				switch (e.short.substring(1, 2))
+				{
 					case '4':
 						ProvinceMap.MapCTX.fillStyle = "rgba(234,255,0,.9)";
 						break;
@@ -778,8 +778,10 @@ let ProvinceMap = {
 		let e, s;
 		let path = new Path2D();
 
-		for (let o = 0; o < i.length; o++){
-			switch (i.charAt(o)){
+		for (let o = 0; o < i.length; o++)
+		{
+			switch (i.charAt(o))
+			{
 
 				case "M":
 					(e = ProvinceMap.ParseMove(++o, i)), path.moveTo(e.x, e.y), (o = e.index - 1);
@@ -1616,6 +1618,3 @@ let ProvinceMap = {
 		}]
 	},
 }
-
-
-

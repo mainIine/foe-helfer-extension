@@ -24,7 +24,9 @@ let Calculator = {
 	Rankings : undefined,
 	CityMapEntity : undefined,
 	LastRecurringQuests: undefined,
-
+	DefaultButtons: [
+		80, 85, 90, 'ark'
+	],
 
 	/**
 	 * Show calculator
@@ -37,9 +39,9 @@ let Calculator = {
         moment.locale(MainParser.Language);
 
         // close at the second click
-		if ($('#costCalculator').length > 0 && action === 'menu') {
+		if ($('#costCalculator').length > 0 && action === 'menu')
+		{
 			HTML.CloseOpenBox('costCalculator');
-
 			return;
 		}
 
@@ -63,13 +65,14 @@ let Calculator = {
 			}
 
             HTML.Box({
-				'id': 'costCalculator',
-				'title': i18n('Boxes.Calculator.Title'),
-				'ask': i18n('Boxes.Calculator.HelpLink'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true,
-				'speaker': 'CalculatorTone'
+				id: 'costCalculator',
+				title: i18n('Boxes.Calculator.Title'),
+				ask: i18n('Boxes.Calculator.HelpLink'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				speaker: 'CalculatorTone',
+				settings: 'Calculator.ShowCalculatorSettings()'
 			});
 
 			// CSS in den DOM prügeln
@@ -155,15 +158,35 @@ let Calculator = {
 
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
+		h.push('<div class="btn-group">');
+
 		// different arc bonus-buttons
-		let investmentSteps = [80, 85, 90, MainParser.ArkBonus];
+		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
+			customButtons = localStorage.getItem('CustomCalculatorButtons');
+
+		// custom buttons available
+		if(customButtons)
+		{
+			investmentSteps = [];
+			let bonuses = JSON.parse(customButtons);
+
+			bonuses.forEach(bonus => {
+				if(bonus === 'ark')
+				{
+					investmentSteps.push(MainParser.ArkBonus);
+				}
+				else {
+					investmentSteps.push(bonus);
+				}
+			})
+		}
+
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
 			h.push(`<button class="btn btn-default btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
-
-		h.push('<br>');
+        h.push('</div><br>');
 		
 		h.push('<span><strong>' + i18n('Boxes.Calculator.FriendlyInvestment') + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 
@@ -225,7 +248,7 @@ let Calculator = {
 							RecurringQuestString = i18n('Boxes.Calculator.Done');
 						}
 
-						h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539">' + RecurringQuestString + '</span></em></div>');
+						h.push('<div class="text-center dark-bg" style="padding:3px 0;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539">' + RecurringQuestString + '</span></em></div>');
 					}
 				}
 			}
@@ -279,7 +302,8 @@ let Calculator = {
 			BestGewinn = -999999,
 			SaveLastRankCost = undefined;
 
-		for (let i = 0; i < Calculator.Rankings.length; i++) {
+		for (let i = 0; i < Calculator.Rankings.length; i++)
+		{
 			let Rank,
 				CurrentFP,
 				TotalFP,
@@ -450,8 +474,8 @@ let Calculator = {
 			if (SaveStates[Rank] !== 'Self' && Kurs > 0) {
 				if (Kurs < BestKurs) {
 					BestKurs = Kurs;
-					BestKursNettoFP = FPNettoRewards[Rank];
-					BestKursEinsatz = SaveRankCosts[Rank];
+					let BestKursNettoFP = FPNettoRewards[Rank],
+						BestKursEinsatz = SaveRankCosts[Rank];
 				}
 			}
 
@@ -660,4 +684,89 @@ let Calculator = {
             Calculator.SoundFile.play();
         }
     },
+
+
+	ShowCalculatorSettings: ()=> {
+		let c = [],
+			buttons,
+			defaults = Calculator.DefaultButtons,
+			sB = localStorage.getItem('CustomCalculatorButtons'),
+			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+
+
+		if(sB)
+		{
+			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
+			buttons = JSON.parse(sB);
+
+			buttons = buttons.filter((item, index) => buttons.indexOf(item) === index); // remove duplicates
+			buttons.sort((a, b) => a - b); // order
+		}
+		else {
+			buttons = defaults;
+		}
+
+
+		buttons.forEach(bonus => {
+			if(bonus === 'ark')
+			{
+				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
+			}
+			else {
+				c.push(`<p class="btn-group flex"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Calculator.SettingsRemoveRow(this)">x</span> </p>`);
+			}
+		});
+
+		// new own button
+		c.push(nV);
+
+		// save button
+		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+
+		// insert into DOM
+		$('#costCalculatorSettingsBox').html(c.join(''));
+	},
+
+
+	SettingsInsertNewRow: ()=> {
+    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+
+		$(nV).insertAfter( $('.new-row:eq(-1)') );
+	},
+
+
+	SettingsRemoveRow: ($this)=> {
+		$($this).closest('p').fadeToggle('fast', function(){
+			$(this).remove();
+		});
+	},
+
+
+	SettingsSaveValues: ()=> {
+
+    	let values = [];
+
+    	// get each visible value
+		$('.settings-values').each(function(){
+			let v = $(this).val().trim();
+
+			if(v){
+				if(v !== 'ark'){
+					values.push( parseFloat(v) );
+				} else {
+					values.push(v);
+				}
+			}
+		});
+
+		// save new buttons
+		localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
+
+		$(`#costCalculatorSettingsBox`).fadeToggle('fast', function(){
+			$(this).remove();
+
+			// reload box
+			Calculator.Show();
+		});
+	}
 };

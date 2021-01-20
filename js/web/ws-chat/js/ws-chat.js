@@ -385,8 +385,8 @@ let Chat = {
 					resolve
 				)
 			)
-			.then(([cdn, wasSet]) => {
-				Chat.InnoCDN = cdn;
+			.then((result) => {
+				Chat.InnoCDN = result.data[0];
 				Chat.loadPortraits();
 			})
 		;

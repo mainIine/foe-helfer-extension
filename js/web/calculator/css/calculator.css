@@ -151,11 +151,6 @@
 	margin-right: 15px;
 }
 
-#costCalculatorBody .costFactorWrapper .btn-default:not(:first-child) {
-	display: inline-block;
-	margin-left: 3px;
-}
-
 #costCalculatorBody #costTable {
 	user-select: text;
 }
