@@ -981,10 +981,7 @@ const FoEproxy = (function () {
 		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendGildMemberLGInfo')) {
 			return;
 		}
-		if (data.responseData.other_player.clan_id !== ExtGuildID){
-			return;
-		}
-		MainParser.OtherPlayersLGs(data.responseData);
+		MainParser.OtherPlayersLGs(data['responseData']);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -1561,11 +1558,8 @@ let MainParser = {
 			}
 
 			// nur wenn es eines dieser Gebäude ist
-			if(lg[k]['cityentity_id'].indexOf("_Landmark") > -1 ||
-				lg[k]['cityentity_id'].indexOf("X_AllAge_Expedition") > -1 ||
-				lg[k]['cityentity_id'].indexOf("X_AllAge_EasterBonus4") > -1 ||
-				lg[k]['cityentity_id'].indexOf("X_AllAge_Oracle") > -1
-			){
+			if(lg[k]['type'] === 'greatbuilding')
+			{
 				let lgd = {
 
 					cityentity_id: lg[k]['cityentity_id'],
