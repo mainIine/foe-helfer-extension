@@ -190,15 +190,12 @@ div.alert-popup #alert-expires,
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding: 0.2rem 1rem;
     font-size: 0.8rem;
     line-height: 1.5;
     background: rgb(183,112,55);
     background: -moz-linear-gradient(top, rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
     background: -webkit-linear-gradient(top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
     background: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-    border: #000 1px solid;
-    border-radius: 4px;
     color: var(--text-normal);
     cursor: url(https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur), auto;
     transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
@@ -221,6 +218,10 @@ div.alert-popup #alert-expires,
     text-overflow: ellipsis;
     white-space: nowrap;
 
+}
+
+input.hidden {
+    display: none;
 }
 
 /* Preferences */

@@ -37,6 +37,10 @@ let Parts = {
 
 	PowerLevelingMaxLevel: 999999,
 
+	DefaultButtons: [
+		80, 85, 90, 'ark'
+	],
+
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
 	 */
@@ -69,13 +73,14 @@ let Parts = {
 
 		// Box in den DOM
 		HTML.Box({
-			'id': 'OwnPartBox',
-			'title': i18n('Boxes.OwnpartCalculator.Title'),
-			'ask': i18n('Boxes.OwnpartCalculator.HelpLink'),
-			'auto_close': true,
-			'dragdrop': true,
-			'minimize': true,
-			'speaker': 'PartsTone'
+			id: 'OwnPartBox',
+			title: i18n('Boxes.OwnpartCalculator.Title'),
+			ask: i18n('Boxes.OwnpartCalculator.HelpLink'),
+			auto_close: true,
+			dragdrop: true,
+			minimize: true,
+			speaker: 'PartsTone',
+			settings: 'Parts.ShowCalculatorSettings()'
 		});
 
 		// CSS in den DOM prügeln
@@ -386,9 +391,11 @@ let Parts = {
 				
         // Info-Block
         h.push('<div class="dark-bg">');
-        h.push('<table style="width: 1&"><tr><td style="width: 65%" class="text-center">');
+        h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
+
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
+
 		if (Parts.IsPreviousLevel) {
 			h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
 		}
@@ -406,15 +413,36 @@ let Parts = {
 
         h.push('</td>');
         h.push('<td class="text-right">');
+        h.push('<span class="btn-group">');
 
 		// different arc bonus-buttons
-		let investmentSteps = [80,85,90];
+		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
+			customButtons = localStorage.getItem('CustomPartCalcButtons');
 
+		// custom buttons available
+		if(customButtons)
+		{
+			investmentSteps = [];
+			let bonuses = JSON.parse(customButtons);
+
+			bonuses.forEach(bonus => {
+				if(bonus === 'ark')
+				{
+					investmentSteps.push(MainParser.ArkBonus);
+				}
+				else {
+					investmentSteps.push(bonus);
+				}
+			})
+		}
+
+		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
 			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
+        h.push('</span>');
         h.push('</td>');
         h.push('</tr></table>');
 
@@ -1063,6 +1091,7 @@ let Parts = {
 		};
 	},
 
+
 	CalcTableBodyPowerLeveling: (h, data) => {
 		const {
 			HasDoubleCollection,
@@ -1076,12 +1105,12 @@ let Parts = {
 
 		for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
-			h.push('<td style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][0]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][1]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][2]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][3]) + '</td>');
-			h.push('<td class="bright">' + HTML.Format(Places[i][4]) + '</td>');
+			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
+			h.push('<td>' + HTML.Format(Places[i][0]) + '</td>');
+			h.push('<td class="text-light">' + HTML.Format(Places[i][1]) + '</td>');
+			h.push('<td>' + HTML.Format(Places[i][2]) + '</td>');
+			h.push('<td class="text-light">' + HTML.Format(Places[i][3]) + '</td>');
+			h.push('<td>' + HTML.Format(Places[i][4]) + '</td>');
 			if (HasDoubleCollection) {
 				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
 				h.push('<td>' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
@@ -1090,6 +1119,7 @@ let Parts = {
 			h.push('</tr>');
         }
 	},
+
 
 	UpdateTableBodyPowerLeveling: () => {
 		const tableBody = document.getElementById('PowerLevelingBoxTableBody');
@@ -1113,6 +1143,7 @@ let Parts = {
 		}
 
 	},
+
 
 	CalcBodyPowerLeveling: () => {
 		const data = Parts.CalcBodyPowerLevelingData();
@@ -1163,6 +1194,91 @@ let Parts = {
 		$('#PowerLevelingBoxBody').html(h.join(''));
 
     },
+
+
+	ShowCalculatorSettings: ()=> {
+		let c = [],
+			buttons,
+			defaults = Parts.DefaultButtons,
+			sB = localStorage.getItem('CustomPartCalcButtons'),
+			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
+
+
+		if(sB)
+		{
+			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
+			buttons = JSON.parse(sB);
+
+			buttons = buttons.filter((item, index) => buttons.indexOf(item) === index); // remove duplicates
+			buttons.sort((a, b) => a - b); // order
+		}
+		else {
+			buttons = defaults;
+		}
+
+
+		buttons.forEach(bonus => {
+			if(bonus === 'ark')
+			{
+				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
+			}
+			else {
+				c.push(`<p class="btn-group flex"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Parts.SettingsRemoveRow(this)">x</span> </p>`);
+			}
+		});
+
+		// new own button
+		c.push(nV);
+
+		// save button
+		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+
+		// insert into DOM
+		$('#OwnPartBoxSettingsBox').html(c.join(''));
+	},
+
+
+	SettingsInsertNewRow: ()=> {
+		let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
+
+		$(nV).insertAfter( $('.new-row:eq(-1)') );
+	},
+
+
+	SettingsRemoveRow: ($this)=> {
+		$($this).closest('p').fadeToggle('fast', function(){
+			$(this).remove();
+		});
+	},
+
+
+	SettingsSaveValues: ()=> {
+
+		let values = [];
+
+		// get each visible value
+		$('.settings-values').each(function(){
+			let v = $(this).val().trim();
+
+			if(v){
+				if(v !== 'ark'){
+					values.push( parseFloat(v) );
+				} else {
+					values.push(v);
+				}
+			}
+		});
+
+		// save new buttons
+		localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));
+
+		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
+			$(this).remove();
+
+			// reload box
+			Parts.Show();
+		});
+	}
 };
 
 

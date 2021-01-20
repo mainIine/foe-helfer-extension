@@ -279,6 +279,16 @@
 	-moz-animation: pulse 1s infinite ease-in-out;
 	animation: pulse 1s infinite ease-in-out;
 }
+.pulsateSlow {
+	-webkit-animation: pulse 3s infinite ease-in-out;
+	-o-animation: pulse 3s infinite ease-in-out;
+	-ms-animation: pulse 3s infinite ease-in-out;
+	-moz-animation: pulse 3s infinite ease-in-out;
+	animation: pulse 3s infinite ease-in-out;
+}
+.diagonal {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(150,150,150,.5) 5px, rgba(255,255,255,.5) 10px)
+}
 
 /* ------------------------------------------------------------------------- */
 

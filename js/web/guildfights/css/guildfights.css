@@ -41,8 +41,8 @@
 }
 
 #GildPlayersBody tr td img {
-	max-width: 40px;
-	border-radius: 50%;
+	max-width: 25px;
+	border-radius: 2px;
 }
 
 #GildPlayersBody tr.mark-player td {

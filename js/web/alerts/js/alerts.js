@@ -552,8 +552,8 @@ let Alerts = function(){
 			build: () => {
 
 				let labels = {
-					alerts: i18n('Boxes.Alerts.Tabs.Alerts'),
-					preferences: i18n('Boxes.Alerts.Tabs.Preferences'),
+					alerts: '<span>'+i18n('Boxes.Alerts.Tabs.Alerts')+'</span>',
+					preferences: '<span>'+i18n('Boxes.Alerts.Tabs.Preferences')+'</span>',
 				}
 
 				tmp.web.body.tabs.clean();
@@ -648,7 +648,7 @@ let Alerts = function(){
 					tmp.web.body.tabs.content = [];
 				},
 				renderHead: () => {
-					return '<ul class="horizontal">' + tmp.web.body.tabs.head.join( '' ) + '</ul>';
+					return '<ul class="horizontal dark-bg">' + tmp.web.body.tabs.head.join( '' ) + '</ul>';
 				},
 				renderContent: () => {
 					return tmp.web.body.tabs.content.join( '' );
@@ -675,7 +675,8 @@ let Alerts = function(){
 					<table id="alerts-table" class="foe-table">
 						<thead>
 							<tr>
-								<th>${labels.expiration}</th><th class="column-160">${labels.title}</th>
+								<th class="column-160">${labels.title}</th>
+								<th>${labels.expiration}</th>
 								<th>${labels.repeat}</th><th>${labels.persistent}</th>
 								<th>&nbsp;</th>
 							 </tr>
@@ -778,14 +779,14 @@ let Alerts = function(){
 						for (let alert of alerts) {
 							let persist = ( alert.persistent ) ? ' checked="checked"' : '';
 							html += `<tr id="alert-id-${alert.id}">
-							<td>${moment(alert.expires).from(dt)}</td>
 							<td class="column-160">${alert.title}</td>
+							<td>${moment(alert.expires).from(dt)}</td>
 							<td>${labels.repeats[alert.repeat+""]}</td>
 							<td><input type="checkbox"${persist}></td>
 							<td class="text-right">
 								<span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
 								<span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">${labels.edit}</span>
-								<span class="btn-default alert-button" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
+								<span class="btn-default alert-button btn-delete" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
 							</td>
 						</tr>`;
 						}
@@ -1188,22 +1189,31 @@ let Alerts = function(){
 
 				return `<form id="alert-form">
 				<input type="hidden" id="alert-id" value="${id}"/>
-				<p class="full-width">
+				<div class="full-width">
 					<label for="alert-title">${labels.title}</label>
 					<input type="text" id="alert-title" name="title" placeholder="${labels.title}" value="${data.alert.title}">
-				</p>
-				<p class="full-width">
-					<label for="alert-body">${labels.body}</label>
 					<textarea id="alert-body" name="body" maxlength="176">${data.alert.body}</textarea>
-				</p>
-				<p class="full-width text-right mt--10">
-					<small id="alert-body-counter"></small>
-				</p>
-				<p class="extra-vs-8">
+					<div class="text-right">
+						<small id="alert-body-counter"></small>
+					</div>
+				</div>
+				<div class="col">
 					<label for="alert-datetime">${labels.datetime}</label>
 					<input type="datetime-local" id="alert-datetime" name="alert-datetime" value="${expires}" step="1">
 					<span id="alert-expires"></span>
-				<p>
+				
+					<div class="btn-group" role="group" aria-label="Date Group">						
+						<span class="btn-default datetime-preset" data-time="-60">-${labels.times['1m']}</span>
+						<span class="btn-default datetime-preset" data-time="60">${labels.times['1m']}</span>
+						<span class="btn-default datetime-preset" data-time="300">${labels.times['5m']}</span>
+						<span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
+						<span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
+						<span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
+						<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
+						<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
+					</div>
+				</div>
+				<div class="col">
 					<label for="alert-auto">${labels.presets.header}</label>
 <!--                        <select id="alert-presets-categories">
 						<option value="">${labels.presets.antique}</option>
@@ -1220,44 +1230,37 @@ let Alerts = function(){
 						${battlegroundOptions}
 						</optgroup>
 					</select>
-				</p>
-				
-				<p class="full-width text-right mt--10">
-					<span class="btn-default datetime-preset" data-time="-60">-${labels.times['1m']}</span>
-					<span class="btn-default datetime-preset" data-time="60">${labels.times['1m']}</span>
-					<span class="btn-default datetime-preset" data-time="300">${labels.times['5m']}</span>
-					<span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
-					<span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
-					<span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
-					<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
-					<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
-				</p>
+				</div>
 				
 				<p class="full-width radio-toolbar extra-vs-8">
 					${labels.repeats.repeat}
 					<input id="alert-repeat-never" type="radio" name="alert-repeat" value="-1"${repeats['-1']}>
-					<label for="alert-repeat-never">${labels.repeats.never}</label>
+					<label for="alert-repeat-never" class="btn-default">${labels.repeats.never}</label>
 					${labels.repeats.every}
-					<input id="alert-repeat-5m" type="radio" name="alert-repeat" value="300"${repeats['300']}>
-					<label for="alert-repeat-5m">${labels.times['5m']}</label>
-					<input id="alert-repeat-15m" type="radio" name="alert-repeat" value="900"${repeats['900']}>
-					<label for="alert-repeat-15m">${labels.times['15m']}</label>
-					<input id="alert-repeat-1h" type="radio" name="alert-repeat" value="3600"${repeats['3600']}>
-					<label for="alert-repeat-1h">${labels.times['1h']}</label>
-					<input id="alert-repeat-4h" type="radio" name="alert-repeat" value="14400"${repeats['14400']}>
-					<label for="alert-repeat-4h">${labels.times['4h']}</label>
-					<input id="alert-repeat-8h" type="radio" name="alert-repeat" value="28800"${repeats['28800']}>
-					<label for="alert-repeat-8h">${labels.times['8h']}</label>
-					<input id="alert-repeat-1d" type="radio" name="alert-repeat" value="86400"${repeats['86400']}>
-					<label for="alert-repeat-1d">${labels.times['1d']}</label>
+					<span class="btn-group" role="group" aria-label="Date Group">	
+						<label for="alert-repeat-5m" class="btn-default">${labels.times['5m']}</label>
+						<input id="alert-repeat-5m" type="radio" name="alert-repeat" class="hidden" value="300"${repeats['300']}>
+						<input id="alert-repeat-15m" type="radio" name="alert-repeat" class="hidden" value="900"${repeats['900']}>
+						<label for="alert-repeat-15m" class="btn-default">${labels.times['15m']}</label>
+						<input id="alert-repeat-1h" type="radio" name="alert-repeat" class="hidden" value="3600"${repeats['3600']}>
+						<label for="alert-repeat-1h" class="btn-default">${labels.times['1h']}</label>
+						<input id="alert-repeat-4h" type="radio" name="alert-repeat" class="hidden" value="14400"${repeats['14400']}>
+						<label for="alert-repeat-4h" class="btn-default">${labels.times['4h']}</label>
+						<input id="alert-repeat-8h" type="radio" name="alert-repeat" class="hidden" value="28800"${repeats['28800']}>
+						<label for="alert-repeat-8h" class="btn-default">${labels.times['8h']}</label>
+						<input id="alert-repeat-1d" type="radio" name="alert-repeat" class="hidden" value="86400"${repeats['86400']}>
+						<label for="alert-repeat-1d" class="btn-default">${labels.times['1d']}</label>
+					</span>
 				</p>
 				
 				<p class="full-width radio-toolbar">
 					${labels.persist.persistence}
-					<input id="alert-persistent-off" type="radio" name="alert-persistent"${persistent_off} value="off">
-					<label for="alert-persistent-off">${labels.persist.off}</label>
-					<input id="alert-persistent-on" type="radio" name="alert-persistent"${persistent_on} value="on">
-					<label for="alert-persistent-on">${labels.persist.on}</label>
+					<span class="btn-group">
+						<label for="alert-persistent-off" class="btn-default">${labels.persist.off}</label>
+						<input id="alert-persistent-off" type="radio" name="alert-persistent"${persistent_off} value="off">
+						<input id="alert-persistent-on" type="radio" name="alert-persistent"${persistent_on} value="on">
+						<label for="alert-persistent-on" class="btn-default">${labels.persist.on}</label>
+					</span>
 					<br><small>${labels.persist.description}</small>
 				</p>
 				
@@ -1322,12 +1325,7 @@ let Alerts = function(){
 					render: (options) => {
 						let form = tmp.web.forms.render(options);
 						return `<div class="box-inner">
-									<div class="box-inner-content">
-										<h3>${options.form.header}</h3>
-										<div class="box-inner-form">
-											${form}
-										</div>
-									</div>
+									${form}
 								</div>`;
 					}
 				},

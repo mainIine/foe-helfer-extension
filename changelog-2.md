@@ -1,6 +1,33 @@
 ## Changelog - Extension
 
 
+##### 2.5.4.4
+**New**
+- Trade blocker:
+    - If desired, a small box in the map of continents overlays the "Negotiate" button to avoid accidentally pressing it
+
+**Update**
+- Extension:
+    - more modern design for the boxes
+    - new modern buttons for the boxes integrated
+    - various translations integrated
+
+- FP Collector:
+    - Graphics added (current/upcoming events)
+
+- Cost calculator:
+    - Settings button added in the box, values of the arch subsidy can now be set.
+
+- Own contribution calculator:
+    - Settings button added in the box, values of the arch subsidy can now be set.
+
+**Bugfix**
+- Research costs:
+    - [#1754](https://github.com/dsiekiera/foe-helfer-extension/issues/1754) Values were no longer displayed
+
+---
+
+
 ##### 2.5.4.3
 
 **Update**
