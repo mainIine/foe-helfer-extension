@@ -1485,7 +1485,7 @@ let MainParser = {
 			time = MainParser.checkNextUpdate(lg_name);
 
 		// noch nicht wieder updaten oder es ist kein "eigenes" LG
-		if (time !== true || d['player_id'] !== ExtPlayerID) {
+		if (!time || d['player_id'] !== ExtPlayerID) {
 			return false;
 		}
 
@@ -1510,12 +1510,14 @@ let MainParser = {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
 			realData = {
-				'entity': dataEntity,
-				'ranking': d['Rankings'],
-				'bonus': d['Bonus']
+				entity: dataEntity,
+				ranking: d['Rankings'],
+				bonus: d['Bonus'],
+				era: CurrentEraID
 			}
 
-		if (dataEntity['player_id'] !== ExtPlayerID) {
+		if (dataEntity['player_id'] !== ExtPlayerID)
+		{
 			return false;
 		}
 
