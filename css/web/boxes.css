@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
- body {
+body {
 	position: absolute !important;
 	height: 100% !important;
 	width: 100% !important;
@@ -201,12 +201,8 @@ input[type=number] {
 	background: var(--background-btn-red);
 }
 
-.btn-delete:hover, .btn-delete:not([disabled]):hover {
+.btn-delete:hover {
 	color: var(--text-light);
-	background: var(--background-btn-red-active-fallback);
-	background: var(--background-btn-red-active-moz);
-	background: var(--background-btn-red-active-webkit);
-	background: var(--background-btn-red-active);
 }
 
 .btn-group {
@@ -392,7 +388,7 @@ p {
 }
 
 #technologies-Btn span {
-    background-image: url('../images/menu/technologies.png');
+	background-image: url('../images/menu/technologies.png');
 }
 
 #hiddenRewards-Btn span:first-child {
@@ -416,7 +412,7 @@ p {
 }
 
 #stats-Btn span {
-	  background-image: url('../images/menu/stats.png');
+	background-image: url('../images/menu/stats.png');
 }
 
 #infobox-Btn span {
@@ -628,6 +624,7 @@ Accordion */
 .foehelper-accordion-head {
 	display: flex;
 	flex-direction: row;
+	margin-bottom: 2px;
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 3px 0;
@@ -789,7 +786,7 @@ FP-Bar */
 #invest-bar,
 #reward-bar {
 	display: inline;
-    margin-left: 7%;
+	margin-left: 7%;
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
@@ -799,7 +796,7 @@ FP-Bar */
 }
 
 #reward-bar {
-    margin-left: 10%;
+	margin-left: 10%;
 }
 
 #invest-bar strong {
@@ -907,7 +904,7 @@ FP-Bar */
 }
 
 .window-head span.window-speaker:hover {
-    background-position: -146px -2px, -28px -26px;
+	background-position: -146px -2px, -28px -26px;
 }
 
 .window-head span.window-speaker.deactivated {
@@ -1328,8 +1325,8 @@ FP-Bar */
 }
 
 .litepicker .container__months {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../css/images/hud/box-bg.png') 0 0 repeat;
-    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
+	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../css/images/hud/box-bg.png') 0 0 repeat;
+	-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
 	box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
 	border: 1px solid #000;
 }
@@ -1368,7 +1365,7 @@ SettingsBox */
 	top: -18px;
 	width: 29px;
 	height: 18px;
-	right: 40px;
+	right: 35px;
 }
 
 .settingsbox-wrapper input[type="text"],

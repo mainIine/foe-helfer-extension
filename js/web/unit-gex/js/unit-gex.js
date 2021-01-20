@@ -126,7 +126,7 @@ let UnitGex = {
 
 
 	buildBody: async ()=> {
-
+		/*
 		if(!Unit.Cache)
 		{
 			$('#unitsGexBodyInner').html(`<div class="no-units">${i18n('Boxes.UnitsGex.NoUnitsAvailable')}</div>`);
@@ -142,7 +142,7 @@ let UnitGex = {
 			});
 
 			return;
-		}
+		}*/
 
 		let tr = [];
 
@@ -238,7 +238,7 @@ let UnitGex = {
 
 	PrepareUnit: (entry)=> {
 		let type = Unit.Types.find(obj => (obj['unitTypeId'] === entry['unitTypeId'])),
-			cache = Unit.Cache['units'].find(obj => (obj['unitId'] === entry['unitId'])),
+			//cache = Unit.Cache['units'].find(obj => (obj['unitId'] === entry['unitId'])),
 			era = Technologies.Eras[type['minEra']],
 			fit = (entry['currentHitpoints'] * 10);
 

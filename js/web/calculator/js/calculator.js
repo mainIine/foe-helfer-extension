@@ -159,6 +159,7 @@ let Calculator = {
 		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
 		h.push('<div class="btn-group">');
+
 		// different arc bonus-buttons
 		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
 			customButtons = localStorage.getItem('CustomCalculatorButtons');
