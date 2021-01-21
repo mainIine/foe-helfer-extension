@@ -1,5 +1,31 @@
 ## Changelog - Extension
 
+##### 2.5.4.4
+**Neu**
+- Handelsblocker:
+    - Wenn gewünscht, legt sich eine kleine Box in der Karte der Kontinente über den "Verhandeln"-Button um diesen nicht ausversehen zu drücken
+
+**Update**
+- Extension:
+    - moderneres Design für die Boxen
+    - neue modernere Buttons für die Boxen integriert
+    - diverse Übersetzungen von euch integriert
+
+- FP-Collector:
+    - Grafiken ergänzt (aktuelle/kommende Events)
+
+- Kostenrechner:
+    - Einstellungsbutton in der Box hinzugefügt, Werte der Archeförderung lassen sich nun einstellen
+
+- Eigenanteilsrechner:
+    - Einstellungsbutton in der Box hinzugefügt, Werte der Archeförderung lassen sich nun einstellen
+    
+
+**Bugfix**
+- Forschungskosten:
+    - [#1754](https://github.com/dsiekiera/foe-helfer-extension/issues/1754) Es wurden keine Werte mehr angezeigt
+
+---
 
 ##### 2.5.4.3
 
