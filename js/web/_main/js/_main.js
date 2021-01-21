@@ -564,7 +564,7 @@ const FoEproxy = (function () {
 
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
-		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml");
+		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits");
 
 		if(idx !== -1) {
 			MainParser.InnoCDN = requestData.url.substring(0, idx+1);
@@ -1110,7 +1110,6 @@ let HelperBeta = {
 };
 
 /**
- *
  * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: (function(*): undefined), activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
@@ -1128,25 +1127,25 @@ let MainParser = {
 	CityEntities: null,
 	StartUpType: null,
 
-	// alle Gebäude des Spielers
+	// all buildings of the player
 	CityMapData: {},
 	CityMapEraOutpostData: null,
 	OtherPlayerCityMapData: {},
 
-	// freugeschaltete Erweiterungen
+	// Unlocked extensions
 	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
 	Inventory: {},
 
-	// Updatestufen der Eventgebäude
+	// Update levels of the event buildings
 	BuildingSelectionKits: null,
 
-	// Gebäude Sets
+	// Building sets
 	BuildingSets: null,
 
-	InnoCDN: 'https://foede.innogamescdn.com/',
 
+	InnoCDN: 'https://foede.innogamescdn.com/',
 
 
 	/**
@@ -1239,7 +1238,7 @@ let MainParser = {
 
 
 	/**
-	 * Rechnet auf die aktuelle Zeit x Minuten oder x Stunden drauf
+	 * Add x minutes or x hours to the current time
 	 *
 	 * @param hrs
 	 * @param min
@@ -1262,7 +1261,7 @@ let MainParser = {
 
 
 	/**
-	 * Gibt die aktuelle Datumszeit zurück
+	 * Returns the current date time
 	 *
 	 * @returns {number}
 	 */
@@ -1272,7 +1271,7 @@ let MainParser = {
 
 
 	/**
-	 * Gibt das aktuelle Datum in Spielzeit zurück
+	 * Returns the current date in playing time
 	 *
 	 * @returns {Date}
 	 */
@@ -1282,7 +1281,7 @@ let MainParser = {
 
 
 	/**
-	 * Führt eine Rundung unter Berücksichtigung der Fließkomma Ungenauigkeit durch
+	 * Performs rounding taking into account floating point inaccuracy
 	 *
 	 * @param {number} value
 	 * @returns {number}
@@ -1300,7 +1299,7 @@ let MainParser = {
 
 
 	/**
-	 * Der Storage hat immer schon einen Zeitaufschlag
+	 * Storage has always had a time surcharge
 	 *
 	 * @param {number} actual
 	 * @param {number} storage
@@ -1344,7 +1343,7 @@ let MainParser = {
 
 
 	/**
-	 * prüfen ob ein Update notwendig ist
+	 * Check whether an update is necessary
 	 *
 	 * @param ep
 	 * @returns {*}
@@ -1358,7 +1357,8 @@ let MainParser = {
 
 
 	/**
-	 * Fügt einen Wert zu einem FormData Objekt unter dem angegebenen prefix/key hinzu und serialisiert dabei objekte/arrays.
+	 * Adds a value to a FormData object under the specified prefix/key, serialising objects/arrays.
+	 *
 	 * @param {FormData} formData the formdata to add this data to
 	 * @param {string} prefix the prefix/key for the value to store
 	 * @param {any} value the value to store
@@ -1380,7 +1380,7 @@ let MainParser = {
 
 
 	/**
-	 * Daten nach "Hause" schicken
+	 * Sending data "home"
 	 *
 	 * @param data
 	 * @param ep
@@ -1420,7 +1420,7 @@ let MainParser = {
 
 
 	/**
-	 * Gildenmitglieder durchsteppen
+	 * Stitching through guild members
 	 *
 	 * @param d
 	 */
@@ -1472,11 +1472,10 @@ let MainParser = {
 
 
 	/**
-	 * Eigenes LGs updaten
-	 * Zeitfenster - 15min
+	 * Update own LGs
+	 * Time slot - 15min
 	 *
 	 * @param d
-	 * @param e
 	 * @returns {boolean}
 	 */
 	OwnLG: (d)=> {
@@ -1485,7 +1484,7 @@ let MainParser = {
 			time = MainParser.checkNextUpdate(lg_name);
 
 		// noch nicht wieder updaten oder es ist kein "eigenes" LG
-		if (time !== true || d['player_id'] !== ExtPlayerID) {
+		if (!time || d['player_id'] !== ExtPlayerID) {
 			return false;
 		}
 
@@ -1510,12 +1509,14 @@ let MainParser = {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
 			realData = {
-				'entity': dataEntity,
-				'ranking': d['Rankings'],
-				'bonus': d['Bonus']
+				entity: dataEntity,
+				ranking: d['Rankings'],
+				bonus: d['Bonus'],
+				era: CurrentEraID
 			}
 
-		if (dataEntity['player_id'] !== ExtPlayerID) {
+		if (dataEntity['player_id'] !== ExtPlayerID)
+		{
 			return false;
 		}
 
@@ -1528,7 +1529,7 @@ let MainParser = {
 
 
 	/**
-	 * LGs anderer Spieler updaten, aber nur Gilden eigenen
+	 * Update other players' LGs, but only guilds' own LGs.
 	 *
 	 * @param d
 	 * @returns {boolean}
@@ -1601,12 +1602,13 @@ let MainParser = {
 
 
 	/**
+	 * Collect gex stats from players for website
 	 *
 	 * @param d
 	 */
 	GuildExpedition: (d)=> {
 
-		// doppeltes Senden unterdrücken
+		// Suppress double sending
 		let time = MainParser.checkNextUpdate('API-GEXPlayer');
 
 		if(time !== true){
@@ -1629,12 +1631,13 @@ let MainParser = {
 			});
 		}
 
-
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
 
 
 	/**
+	 * Collect gild overview from current gex
+	 *
 	 * @param d
 	 */
 	Championship: (d)=> {
@@ -1662,7 +1665,7 @@ let MainParser = {
 
 
 	/**
-	 * Spieler Daten sichern
+	 * Back up player data
 	 *
 	 * @param d
 	 */
@@ -1726,7 +1729,7 @@ let MainParser = {
 
 
 	/**
-	 * Eigene Daten updaten (Gildenwechsel etc)
+	 * Update own data (guild change etc)
 	 *
 	 * @param d
 	 */
@@ -1754,7 +1757,7 @@ let MainParser = {
 
 	/**
 	 * Alle Gebäude sichern,
-	 * Eigene LGs updaten
+	 * Update your own LGs
 	 *
 	 * @param d
 	 */
@@ -1797,7 +1800,7 @@ let MainParser = {
 
 
 	/**
-	 * Sammelt aktive Boosts der Stadt
+	 * Collects active boosts from the city
 	 *
 	 * @param d
 	 */
@@ -1819,7 +1822,7 @@ let MainParser = {
 
 
 	/**
-	 * LGs des Spielers speichern
+	 * Save LGs of the player
 	 *
 	 * @param d
 	 */
@@ -1833,7 +1836,7 @@ let MainParser = {
 
 
 	/**
-	 * Motivieren Polieren tracken, wenn gewünscht
+	 * Motivating Polishing Tracking, if desired
 	 *
 	 * @param d
 	 */
@@ -1930,7 +1933,7 @@ let MainParser = {
 
 
 	/**
-	 * Archenbonus global ermitteln
+	 * Determine ark bonus globally
 	 *
 	 * @param LimitedBonuses
 	 */
@@ -2060,7 +2063,7 @@ let MainParser = {
 
 
 	/**
-	 * Übersetzungen für die Güter zusammen setzen
+	 * Compose translations for the goods
 	 *
 	 * @param d
 	 */
@@ -2074,7 +2077,7 @@ let MainParser = {
 
 
 	/**
-	 * Aktualisiert das Inventar
+	 * Updates the inventory
 	 *
 	 * @param Items
 	 */
@@ -2088,7 +2091,7 @@ let MainParser = {
 
 
 	/**
-	 * Aktualisiert ein Gebäude von CityMapData oder CityMapEraOutpost
+	 * Updates a building from CityMapData or CityMapEraOutpost
 	 *
 	 * @param Buildings
 	 * */
@@ -2116,36 +2119,43 @@ let MainParser = {
 
 
 	/**
-	 * Titel der Chats sammeln
+	 * Collect titles of the chats
 	 *
 	 * @param d
 	 */
 	setConversations: (d)=> {
 
-		// Falls der Cache leer ist den Speicher auslesen
-		if (MainParser.Conversations.length === 0) {
+		// If the cache is empty, read out the memory.
+		if (MainParser.Conversations.length === 0)
+		{
 			let StorageHeader = localStorage.getItem('ConversationsHeaders');
-			if (StorageHeader !== null) {
+			if (StorageHeader !== null)
+			{
 				MainParser.Conversations = JSON.parse(StorageHeader);
 			}
 		}
 
-		if (d['teasers']) {
-			for (let k in d['teasers']) {
-				if (!d['teasers'].hasOwnProperty(k)) {
+		if (d['teasers'])
+		{
+			for (let k in d['teasers'])
+			{
+				if (!d['teasers'].hasOwnProperty(k))
+				{
 					continue;
 				}
 
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
-				// Ist bereits ein Key vorhanden?
-				if (key !== -1) {
+
+				// Is a key already available?
+				if (key !== -1)
+				{
 					MainParser.Conversations[key]['type'] = d['type'];
 					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
 					MainParser.Conversations[key]['hidden'] = d['teasers'][k]['isHidden'];
 					MainParser.Conversations[key]['favorite'] = d['teasers'][k]['isFavorite'];
 					MainParser.Conversations[key]['important'] = d['teasers'][k]['isImportant'];
 				}
-				// → Key erstellen
+				// → Create key
 				else {
 					MainParser.Conversations.push({
 						type: d['type'],
@@ -2158,22 +2168,30 @@ let MainParser = {
 				}
 
 			}
-		} else if (d['category'] && d['category']['teasers']) {
-			for (let k in d['category']['teasers']) {
-				if (!d['category']['teasers'].hasOwnProperty(k)) {
+
+		}
+		else if (d['category'] && d['category']['teasers'])
+		{
+			for (let k in d['category']['teasers'])
+			{
+				if (!d['category']['teasers'].hasOwnProperty(k))
+				{
 					continue;
 				}
 
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['category']['teasers'][k]['id']));
-				// Ist bereits ein Key vorhanden?
-				if (key !== -1) {
+
+				// Is a key already available?
+				if (key !== -1)
+				{
 					MainParser.Conversations[key]['type'] = d['category']['type'];
 					MainParser.Conversations[key]['title'] = d['category']['teasers'][k]['title'];
 					MainParser.Conversations[key]['hidden'] = d['category']['teasers'][k]['isHidden'];
 					MainParser.Conversations[key]['favorite'] = d['category']['teasers'][k]['isFavorite'];
 					MainParser.Conversations[key]['important'] = d['category']['teasers'][k]['isImportant'];
 				}
-				// → Key erstellen
+
+				// → Create key
 				else {
 					MainParser.Conversations.push({
 						type: d['category']['type'],
@@ -2184,7 +2202,6 @@ let MainParser = {
 						favorite: d['category']['teasers'][k]['isImportant']
 					});
 				}
-
 			}
 		}
 
@@ -2197,7 +2214,7 @@ let MainParser = {
 
 
 	/**
-	 * Via Ajax eine jSON holen
+	 * Get a jSON via Ajax
 	 *
 	 */
 	loadJSON: (url, callback)=> {
