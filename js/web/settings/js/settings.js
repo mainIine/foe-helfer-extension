@@ -189,7 +189,7 @@ let Settings = {
 
 
 	/**
-	 * Beim Klick speichern
+	 * Save on click
 	 *
 	 * @param el
 	 * @param changeText

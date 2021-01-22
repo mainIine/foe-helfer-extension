@@ -2022,11 +2022,11 @@ let MainParser = {
 				EventHandler.CalcMoppelHelperBody();
 			}
 
-			if (Settings.GetSetting('GlobalSend'))
+			if (Settings.GetSetting('GlobalSend') && ListType === 'getClanMemberList')
 			{
 				MainParser.sendExtMessage({
 					type: 'send2Api',
-					url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld + '&type=' + ListType,
+					url: `${ApiURL}GuildMembers/?player_id=${ExtPlayerID}&guild_id=${ExtGuildID}&world=${ExtWorld}`,
 					data: JSON.stringify(d)
 				});
 			}

@@ -183,6 +183,8 @@
     "Boxes.Gildfights.Player": "Spieler",
     "Boxes.Gildfights.Title": "Spieler Übersicht",
     "Boxes.Gildfights.Total": "Gesamt",
+	"Boxes.Gildfights.ExportCSV": "Exportieren als CSV",
+	"Boxes.Gildfights.ExportJSON": "Exportieren als jSON",
     "Boxes.GreatBuildings.ArcBonus": "Fördern mit",
     "Boxes.GreatBuildings.Cost": "Kosten",
     "Boxes.GreatBuildings.CostPerDailyFP": "Kosten / tgl. FP",
