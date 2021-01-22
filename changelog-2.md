@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 2.5.5.0
+
+**Update**
+- Cost calculator:
+    - Table headings partly replaced by icons, translations are much too long in some languages.
+
+- Own contribution calculator:
+    - [#1507](https://github.com/dsiekiera/foe-helfer-extension/issues/1507) Table headings partly replaced by icons, translations are much too long in some languages
+
+- Guild Battle Box:
+    - Table headings partly swapped by icons, translations are way too long in some languages
+
+**Bugfix**
+- Extension:
+    - [#1770](https://github.com/dsiekiera/foe-helfer-extension/issues/1770) on the beta the player avatars were not loaded correctly, we have already fixed this as a precautionary measure
+
+---
 
 ##### 2.5.4.4
 **New**
