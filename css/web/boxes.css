@@ -203,6 +203,10 @@ input[type=number] {
 
 .btn-delete:hover {
 	color: var(--text-light);
+	background: var(--background-btn-red-active-fallback);
+	background: var(--background-btn-red-active-moz);
+	background: var(--background-btn-red-active-webkit);
+	background: var(--background-btn-red-active);
 }
 
 .btn-group {
@@ -875,6 +879,10 @@ FP-Bar */
 	overflow: hidden;
 	white-space: pre;
 	text-overflow: ellipsis;
+}
+
+.window-head span.title small em {
+	font-weight: lighter;
 }
 
 .window-head span:nth-child(2) {

@@ -1,5 +1,23 @@
 ## Changelog - Extension
 
+##### 2.5.5.0
+
+**Update**
+- Kostenrechner:
+    - Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
+
+- Eigenanteilsrechner:
+    - [#1507](https://github.com/dsiekiera/foe-helfer-extension/issues/1507) Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
+
+- Gildengefecht Box:
+    - Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
+
+**Bugfix**
+- Extension:
+    - [#1770](https://github.com/dsiekiera/foe-helfer-extension/issues/1770) auf der Beta wurden die Spieler-Avatare nicht korrekt geladen, das haben wir vorsorglich bereits behoben
+
+---
+
 ##### 2.5.4.4
 **Neu**
 - Handelsblocker:

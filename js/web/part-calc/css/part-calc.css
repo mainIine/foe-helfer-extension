@@ -129,6 +129,42 @@
 	left: 0;
 }
 
+#OwnPartBox tr th span {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	vertical-align: bottom;
+}
+
+#OwnPartBox tr th span.blueprint {
+	background: url(../../x_img/blueprint.png) center no-repeat;
+	background-size: contain;
+}
+
+#OwnPartBox tr th span.medal {
+	background: url(../../x_img/medal.png) center no-repeat;
+	background-size: contain;
+}
+
+#OwnPartBox tr th span.arc_bonus {
+	background: url(../../x_img/arc_bonus.png) center no-repeat;
+	background-size: contain;
+}
+
+#OwnPartBox tr th span.forgepoints {
+	background: url(../../x_img/forgepoints.png) center no-repeat;
+	background-size: contain;
+}
+
+#OwnPartBox tr th span.forgepoints_done {
+	background: url(../../x_img/forgepoints_done.png) center no-repeat;
+	background-size: contain;
+}
+
+#OwnPartBox tr td:nth-child(6) {
+	border-left: 3px solid rgba(0,0,0,0.01);
+}
+
 .OwnPartBoxBackground {
 	position: absolute;
 	width: 210px;
