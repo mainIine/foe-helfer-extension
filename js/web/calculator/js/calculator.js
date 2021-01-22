@@ -193,10 +193,7 @@ let Calculator = {
         h.push('</div>');
 
         // Tabelle zusammen fummeln
-		h.push('<table style="width:100%"><tbody><tr>');
-		h.push('<td><table id="costTableFordern" class="foe-table"></table></td>');
-		h.push('<td><table id="costTableBPMeds" class="foe-table"></table></td>');
-		h.push('</tr></tbody></table>');
+		h.push('<table id="costTableFordern" style="width:100%" class="foe-table"></table>');
 
         // Wieviel fehlt noch bis zum leveln?
 		let rest = (Calculator.CityMapEntity['state']['invested_forge_points'] === undefined ? Calculator.CityMapEntity['state']['forge_points_for_level_up'] : Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.CityMapEntity['state']['invested_forge_points']);
@@ -272,7 +269,6 @@ let Calculator = {
 	 */
 	CalcBody: ()=> {
 		let hFordern = [],
-			hBPMeds = [],
 			BestKurs = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
 			ForderArc = 1 + (Calculator.ForderBonus / 100);
@@ -455,9 +451,6 @@ let Calculator = {
 			'<th>#</th>' +
 			'<th><span class="forgepoints" title="' + i18n('Boxes.Calculator.Commitment') + '"></span></th>' +
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
-			'</thead>');
-
-		hBPMeds.push('<thead>' +
 			'<th><span class="blueprint" title="' + i18n('Boxes.Calculator.BPs') + '"></span></th>' +
 			'<th><span class="medal" title="' + i18n('Boxes.Calculator.Meds') + '"></span></th>' +
 			'</thead>');
@@ -589,19 +582,6 @@ let Calculator = {
 				GewinnTooltip = [];
 			}
 
-			hFordern.push('<tr class="' + RowClass + '">');
-			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + RankTooltip.join('<br>') + '">' + RankText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + EinsatzTooltip.join('<br>') + '">' + EinsatzText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + GewinnTooltip.join('<br>') + '">' + GewinnText + '</strong></td>');
-			hFordern.push('</tr>');
-
-
-			//else if (ForderStates[Rank] === 'LevelWarning') {
-			//	let ToolTip = ;
-			//}
-
-
-
 			// BP+Meds
 
 			RowClass = '';
@@ -625,14 +605,17 @@ let Calculator = {
 				RowClass = 'bg-green';
 			}
 
-			hBPMeds.push('<tr class="' + RowClass + '">');
-			hBPMeds.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
-			hBPMeds.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
-			hBPMeds.push('</tr>');
+
+			hFordern.push('<tr class="' + RowClass + '">');
+			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + RankTooltip.join('<br>') + '">' + RankText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + EinsatzTooltip.join('<br>') + '">' + EinsatzText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + GewinnTooltip.join('<br>') + '">' + GewinnText + '</strong></td>');
+			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
+			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
+			hFordern.push('</tr>');
 		}
 
 		$('#costTableFordern').html(hFordern.join(''));
-		$('#costTableBPMeds').html(hBPMeds.join(''));
 
 		$('.td-tooltip').tooltip({
 			html: true,

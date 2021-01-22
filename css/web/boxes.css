@@ -881,6 +881,10 @@ FP-Bar */
 	text-overflow: ellipsis;
 }
 
+.window-head span.title small em {
+	font-weight: lighter;
+}
+
 .window-head span:nth-child(2) {
 	margin-left: auto;
 }

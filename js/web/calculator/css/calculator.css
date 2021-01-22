@@ -81,6 +81,10 @@
 	margin: 0 10px;
 }
 
+#costCalculator #costCalculatorBody table.foe-table {
+	margin-top: 3px;
+}
+
 #costCalculator tr th {
 	text-align: center;
 }
