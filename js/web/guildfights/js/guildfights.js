@@ -237,11 +237,11 @@ let GildFights = {
 			b.push('<td>' + playerNew['name'] + '</td>');
 
 			b.push('<td class="text-center">');
-			b.push(playerNew['negotiationsWon']);
+			b.push(playerNew['negotiationsWon']  + negotaionAddOn);
 			b.push('</td>');
 
 			b.push('<td class="text-center">');
-			b.push(playerNew['battlesWon']);
+			b.push(playerNew['battlesWon'] + fightAddOn);
 			b.push('</td>');
 			
 			b.push('<td class="text-center">');
