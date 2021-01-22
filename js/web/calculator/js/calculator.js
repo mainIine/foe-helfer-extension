@@ -453,13 +453,13 @@ let Calculator = {
 		// Tabellen ausgeben
 		hFordern.push('<thead>' +
 			'<th>#</th>' +
-			'<th>' + i18n('Boxes.Calculator.Commitment') + '</th>' +
+			'<th><span class="forgepoints" title="' + i18n('Boxes.Calculator.Commitment') + '"></span></th>' +
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
 			'</thead>');
 
 		hBPMeds.push('<thead>' +
-			'<th>' + i18n('Boxes.Calculator.BPs') + '</th>' +
-			'<th>' + i18n('Boxes.Calculator.Meds') + '</th>' +
+			'<th><span class="blueprint" title="' + i18n('Boxes.Calculator.BPs') + '"></span></th>' +
+			'<th><span class="medal" title="' + i18n('Boxes.Calculator.Meds') + '"></span></th>' +
 			'</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
