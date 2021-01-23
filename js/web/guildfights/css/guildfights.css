@@ -14,9 +14,9 @@
  */
 
 #GildPlayers {
-	left: calc(50vw - 275px);
+	left: calc(50vw - 285px);
 	top: calc(50vw - 270px);
-	width: 550px;
+	width: 570px;
 	height: 500px;
 }
 
@@ -24,8 +24,7 @@
 	height: 22px !important;
 }
 
-
-#GildPlayersHeader small {
+#GuildPlayersHeader small {
 	font-weight: lighter;
 }
 
