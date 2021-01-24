@@ -469,7 +469,7 @@ Tabs */
 }
 
 .window-body .tabs ul.horizontal li {
-	margin: 0 6px 0 0;
+	margin: 0 4px 0 0;
 	padding: 0;
 	display: inline-block;
 	line-height: 33px;
@@ -488,7 +488,7 @@ Tabs */
 	text-decoration: none;
 	display: block;
 	position: relative;
-	padding: 0 12px;
+	padding: 0 8px;
 	color: var(--text-tab);
 }
 
