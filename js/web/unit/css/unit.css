@@ -34,24 +34,29 @@
 
 #UnitOverview .health {
 	display: block;
-	background-color: #ff5026;
-	height: 5px;
+	background-color: #821212;
 	position: relative;
+	width: 80px;
+	border-radius: 2px;
+	height: 15px;
 }
 
-#UnitOverview .health span {
+#UnitOverview .health .bar {
 	position: relative;
-	background-color: #1e7e34;
-	height: 5px;
+	background-color: #138a21;
+	height: 15px;
 	display: block;
-	border-radius: 10px;
+	border-radius: 2px;
 }
 
-#UnitOverview span.percent {
+#UnitOverview .percent {
 	display: block;
 	text-align: center;
 	font-size: 75%;
-	border-radius: 10px;
+	width: 80px;
+	top: 0;
+	left: 0;
+	position: absolute;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li a span {

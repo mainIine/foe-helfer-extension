@@ -110,7 +110,7 @@ let Unit = {
 		// der Spieler besitzt ein Alca
 		if (Unit.alca !== undefined){
 
-			top.push('<div style="padding: 4px;" class="text-center">');
+			top.push('<div style="padding: 4px;" class="text-center dark-bg">');
 
 			if(Unit.alca['state']['next_state_transition_at'] === undefined) {
 				text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
@@ -170,7 +170,7 @@ let Unit = {
 		attack.push('<thead>');
 			attack.push('<tr>');
 				attack.push('<th></th>');
-				attack.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+				attack.push('<th class="text-center" style="width:29%">' + i18n('Boxes.Units.Unit') + '</th>');
 				attack.push('<th class="text-center">' + i18n('Boxes.Units.Status') + '</th>');
 				attack.push('<th class="text-center">' + i18n('Boxes.Units.Attack') + '</th>');
 				attack.push('<th class="text-center">' + i18n('Boxes.Units.Defend') + '</th>');
@@ -209,7 +209,7 @@ let Unit = {
 			attack.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
-			attack.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
+			attack.push('<td class="text-center"><span class="health"><span class="bar" style="width:' + status + '%"></span><span class="percent">' + status + '%</span></span></td>');
 
 			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
 
@@ -219,8 +219,8 @@ let Unit = {
 			let Attack = MainParser.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
 				Defense = MainParser.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
-			attack.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
-			attack.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em> <strong class="text-success">= ' + Attack + '</strong></td>');
+			attack.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em> <strong class="text-success">= ' + Defense + '</strong></td>');
 
 			attack.push('</tr>');
 		}
@@ -245,17 +245,15 @@ let Unit = {
 		Unit.SetTabs('defense');
 
 		defense.push('<table class="foe-table">');
-
 		defense.push('<thead>');
 			defense.push('<tr>');
 				defense.push('<th></th>');
-				defense.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-				defense.push('<th>' + i18n('Boxes.Units.Status') + '</th>');
-				defense.push('<th>' + i18n('Boxes.Units.Attack') + '</th>');
-				defense.push('<th>' + i18n('Boxes.Units.Defend') + '</th>');
+				defense.push('<th class="text-center" style="width:29%">' + i18n('Boxes.Units.Unit') + '</th>');
+				defense.push('<th class="text-center">' + i18n('Boxes.Units.Status') + '</th>');
+				defense.push('<th class="text-center">' + i18n('Boxes.Units.Attack') + '</th>');
+				defense.push('<th class="text-center">' + i18n('Boxes.Units.Defend') + '</th>');
 			defense.push('</tr>');
 		defense.push('</thead>');
-
 		defense.push('<tbody>');
 
         Unit.Defense = [];
@@ -279,7 +277,7 @@ let Unit = {
 			defense.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
-			defense.push('<td class="text-center"><span class="health"><span style="width:' + status + '%"></span></span><span class="percent">' + status + '%</span></td>');
+			defense.push('<td class="text-center"><span class="health"><span class="bar" style="width:' + status + '%"></span><span class="percent">' + status + '%</span></span></td>');
 
 			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
 
@@ -289,8 +287,8 @@ let Unit = {
 			let Attack = MainParser.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
 				Defense = MainParser.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
 
-			defense.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em><br><strong class="text-success">= ' + Attack + '</strong></td>');
-			defense.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em><br><strong class="text-success">= ' + Defense + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em> <strong class="text-success">= ' + Attack + '</strong></td>');
+			defense.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em> <strong class="text-success">= ' + Defense + '</strong></td>');
 
 			defense.push('</tr>');
 		}
@@ -427,7 +425,7 @@ let Unit = {
 	 * @returns {string}
 	 */
 	GetTabs: ()=> {
-		return '<ul class="horizontal">' + Unit.Tabs.join('') + '</ul>';
+		return '<ul class="horizontal dark-bg">' + Unit.Tabs.join('') + '</ul>';
 	},
 
 

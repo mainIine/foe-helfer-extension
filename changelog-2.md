@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.5.5.1
+
+**Bugfix**
+- Guild Battle Box:
+    - [#1779](https://github.com/dsiekiera/foe-helfer-extension/issues/1779) with the export function of the overview came a he small bug that did not show the difference between the snapshots anymore
+
+---
+
+##### 2.5.5.0
+
+**Update**
+- Cost calculator:
+    - Table headings partly replaced by icons, translations are much too long in some languages.
+
+- Own contribution calculator:
+    - [#1507](https://github.com/dsiekiera/foe-helfer-extension/issues/1507) Table headings partly replaced by icons, translations are much too long in some languages
+
+- Guild Battle Box:
+    - Table headings partly swapped by icons, translations are way too long in some languages
+
+**Bugfix**
+- Extension:
+    - [#1770](https://github.com/dsiekiera/foe-helfer-extension/issues/1770) on the beta the player avatars were not loaded correctly, we have already fixed this as a precautionary measure
+
+---
 
 ##### 2.5.4.4
 **New**
