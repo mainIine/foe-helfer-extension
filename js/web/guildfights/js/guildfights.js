@@ -418,15 +418,7 @@ let GildFights = {
 
 							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + cP[y]['progress'] + '%"></span></span></td>');
 						}
-						for(let x = 0; x < 3; x++)
-						{
-							t.push('<td>');
-							t.push('&nbsp;');
-							t.push('</td>');
-						}
-						t.push('<td>');
-						t.push('</td>');
-						for(let x = 0; x < 3; x++)
+						for(let x = 0; x < 7; x++)
 						{
 							t.push('<td>');
 							t.push('&nbsp;');
