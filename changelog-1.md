@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.5.1
+
+**Bugfix**
+- Gildengefecht Box:
+    - [#1779](https://github.com/dsiekiera/foe-helfer-extension/issues/1779) mit der Exportfunktion der Übersicht kam ein er kleiner Bug der den Unterschied zwischen den Schnappschüssen nicht mehr anzeigte
+
+---
+
 ##### 2.5.5.0
 
 **Update**

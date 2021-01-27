@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.5.1
+
+**Bugfix**
+- Guild Battle Box:
+    - [#1779](https://github.com/dsiekiera/foe-helfer-extension/issues/1779) with the export function of the overview came a he small bug that did not show the difference between the snapshots anymore
+
+---
+
 ##### 2.5.5.0
 
 **Update**
