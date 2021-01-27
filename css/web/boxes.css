@@ -451,6 +451,13 @@ p {
 	background-image: url('../images/menu/gex.png');
 }
 
+#sectorcalc-Btn span {
+	background-image: url('../images/menu/sector.png');
+}
+
+#motivator-Btn span {
+	background-image: url('../images/menu/motivator.png');
+}
 
 /***********************************************************************************/
 
@@ -760,6 +767,7 @@ FP-Bar */
 .game-cursor option,
 .window-minimize,
 .window-settings,
+.window-map,
 .window-close,
 .window-head:not(span),
 .foe-helper-overlay,
@@ -767,7 +775,7 @@ FP-Bar */
 .window-box,
 .cursor-default,
 .button--lg,
-.custom-option,
+.custom-option,#
 .hud-btn,
 .tabs a {
 	cursor: url('../images/cursor_default.cur'), auto;
@@ -777,6 +785,7 @@ FP-Bar */
 .game-cursor option:hover,
 .window-minimize:hover,
 .window-settings:hover,
+.window-map:hover,
 .window-close:hover,
 .window-head:not(span):hover,
 .button-own:hover,
@@ -815,8 +824,8 @@ FP-Bar */
 .OwnPartBoxBackground .outerArrow:before,
 .OwnPartBoxBackground .outerArrow span.arrow,
 .window-minimize,
-.window-settings,
 .window-ask,
+.window-settings,
 .window-speaker,
 .window-close {
 	background-image:  url('../images/hud/box-sprite.png'), url('../images/hud/box-sprite.png');
@@ -831,7 +840,6 @@ FP-Bar */
 	font-size: 0.9rem;
 	font-weight: 400;
 	color: var(--text-normal);
-	text-shadow: 0 1px 1px var(--65-black);
 	position: absolute;
 	text-align: left;
 	padding: 1px;
@@ -956,6 +964,17 @@ FP-Bar */
 	background-position: -192px -2px, -28px -26px;
 }
 
+.window-head span.window-map {
+    background-image: url(../images/hud/map3.png), url(../images/hud/box-sprite.png);
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    margin-right: 2px;
+    background-repeat: no-repeat;
+    background-size: 11px , 240px;
+	background-position: 6px, -2px -26px;
+}
 
 .window-head span.window-close {
 	background-position: -2px -2px, -2px -26px;
