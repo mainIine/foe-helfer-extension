@@ -114,7 +114,7 @@
 #LiveGildFightingBody tr td span.attack {
 	display: block;
 	height: 5px;
-	background-color: rgba(255,255,255,0.45);
+	width:200%;
 }
 
 #LiveGildFightingBody tr td span.attack span {
@@ -133,4 +133,20 @@
 	height: 100%;
 	background: transparent url('../images/volcano_archipelago_bg.jpg');
 	background-size: 100%;
+}
+#tableleft {
+    border-spacing: 0;
+    border-collapse: separate;
+    width: 85%;
+	background-color: transparent;
+}
+#tableright {
+    border-spacing: 0;
+    border-collapse: separate;
+    width: 15%;
+	background-color: transparent;
+	top: 0;
+	right: 0;
+    position: absolute;
+
 }
