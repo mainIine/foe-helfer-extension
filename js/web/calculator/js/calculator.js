@@ -231,7 +231,7 @@ let Calculator = {
 
 		// Schleifenquest für "Benutze FP" suchen
 		for (let Quest of MainParser.Quests) {
-			if (Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) {
+			if ((Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) || Quest.id == 933010) {
 				for (let cond of Quest.successConditions) {
 					let CurrentProgress = cond.currentProgress !== undefined ? cond.currentProgress : 0;
 					let MaxProgress = cond.maxProgress;

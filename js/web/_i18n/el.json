@@ -1,5 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "ΕΣ Κατάταξη Συντεχνίας, ενημερώθηκε",
+    "API.GEXChampionship": "ΕΣ Κατάταξη Συντεχνίας, ενημερώθηκε.",
     "API.GEXPlayer": "ΕΣ Κατάταξη Μέλους, ενημερώθηκε",
     "API.LGGildMember": "__player__ Πληροφορίες ΜΚ, ενημερώθηκαν",
     "API.LGInvest": "Οι Επενδύσεις σου σε ΜΚ, ενημερώθηκαν",
@@ -527,7 +527,7 @@
     "Boxes.Units.ReadyToLoot": "Έτοιμο για λεηλασία!",
     "Boxes.Units.Status": "Κατάσταση",
     "Boxes.Units.Title": "Επισκόπηση Μονάδων",
-    "Boxes.Units.Unbind": "Εκπαιδευμένες",
+    "Boxes.Units.Unbind": "Ανεξάρτητες",
     "Boxes.Units.Unit": "Μονάδα",
     "Boxes.UnitsGex.NoUnitsAvailable": "Δεν εντοπίστηκαν διαθέσιμα δεδομένα μονάδας. Πατήστε το πλήκτρο \"U\"",
     "Boxes.mapTradeWarning.Text": "Αποτροπή",
