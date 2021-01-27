@@ -53,6 +53,8 @@ let _menu = {
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
+		'sectorcalc'
+		//'motivation'
 		// 'alerts',
 		// 'unitsGex',
 	],
@@ -158,6 +160,40 @@ let _menu = {
 
 		return btn_CalcBG;
 	},
+
+				/**
+	 * Sektor Rechner
+	 * 	
+	 * @returns {*|jQuery}
+	 * */
+	sectorcalc_Btn: () => {
+
+		let btn_CalcSecBG = $('<div />').attr({ 'id': 'sectorcalc-Btn', 'data-slug': 'sectorcalc' }).addClass('hud-btn hud-btn-red');
+		desc = i18n('Menu.Sectorcalc.Desc') + '<br>' + i18n('Menu.Sectorcalc.Warning');
+
+
+		btn_CalcSecBG.removeClass('hud-btn-red');
+		desc = i18n('Menu.Sectorcalc.Desc');
+
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Sectorcalc.Title'), desc , 'sectorcalc-Btn');
+
+		let btn_CalcSec = $('<span />');
+
+
+		 btn_CalcSec.on('click', function () {
+
+		 	if (GildFights.ProvinceNames !== null) {
+		 	GildFights.ShowGildBox();
+		 }
+		 });
+
+		btn_CalcSecBG.append(btn_CalcSec);
+
+		return btn_CalcSecBG;
+	},
+
 
 	/**
 	 * Eigenanteilsrechner Button
@@ -450,6 +486,7 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * Statistic
 	 * @returns {*|jQuery}
@@ -523,6 +560,7 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * FP Produzierende LGs
 	 */
@@ -595,6 +633,7 @@ let _menu = {
 		return btn;
 	},
 
+	
 	/**
 	 * Moppelassistent
 	 * */
