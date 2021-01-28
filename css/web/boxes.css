@@ -90,7 +90,7 @@ input[type=number] {
 	z-index: 1;
 	margin:0;
 	padding:0;
-	box-shadow: 0 1px 1px var(--50-black);
+	box-shadow: 0 1px 1px var(--black-50);
 
 	transition: opacity .15s ease-out;
 	opacity: 0;
@@ -281,7 +281,7 @@ table.foe-table thead tr th,
 table.foe-table th,
 .dark-bg,
 .thead th {
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 }
 
 .windowbody .dark-bg:last-child {
@@ -472,7 +472,7 @@ Tabs */
 }
 
 .window-body .tabs ul.horizontal li {
-	margin: 0 6px 0 0;
+	margin: 0 4px 0 0;
 	padding: 0;
 	display: inline-block;
 	line-height: 33px;
@@ -491,7 +491,7 @@ Tabs */
 	text-decoration: none;
 	display: block;
 	position: relative;
-	padding: 0 12px;
+	padding: 0 8px;
 	color: var(--text-tab);
 }
 
@@ -836,6 +836,7 @@ FP-Bar */
 	font-size: 0.9rem;
 	font-weight: 400;
 	color: var(--text-normal);
+	text-shadow: 0 1px 1px var(--black-65);
 	position: absolute;
 	text-align: left;
 	padding: 1px;
@@ -1298,7 +1299,7 @@ FP-Bar */
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 	width: 100%;
 	height: 100%;
 	z-index: 250;
@@ -1317,6 +1318,10 @@ FP-Bar */
 	justify-content: center;
 }
 
+.no-select {
+	user-select: none !important;
+}
+
 /* date picker overwrite */
 
 :root{
@@ -1329,7 +1334,7 @@ FP-Bar */
 	--litepickerDayColor: var(--text-normal) !important;
 	--litepickerDayColorHover: var(--text-bright) !important;
 	--litepickerDayIsTodayColor: var(--text-bright) !important;
-	--litepickerDayIsInRange: var(--50-black) !important;
+	--litepickerDayIsInRange: var(--black-50) !important;
 	--litepickerDayIsLockedColor: var(--text-medium) !important;
 	--litepickerDayIsBookedColor: var(--text-medium) !important;
 	--litepickerDayIsStartColor: var(--text-dark) !important;
