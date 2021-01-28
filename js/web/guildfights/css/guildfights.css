@@ -147,6 +147,7 @@
 	background-color: transparent;
 	top: 0;
 	right: 0;
-    position: absolute;
+	position: absolute;
+	user-select: text;
 
 }
