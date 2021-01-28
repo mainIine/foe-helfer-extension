@@ -68,14 +68,13 @@ let GildFights = {
 	 */
 	init: ()=> {
 
-		if(GildFights.InjectionLoaded === false){
+		if(GildFights.InjectionLoaded === false)
+		{
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
-				if ($('#LiveGildFighting').length > 0) {
-
-					if(data.responseData[0] !== undefined){
-						GildFights.RefreshTable(data.responseData[0]);
-						refresh();
-					}
+				if ($('#LiveGildFighting').length > 0 && data['responseData'][0] !== undefined)
+				{
+					GildFights.RefreshTable(data['responseData'][0]);
+					ProvinceMap.Refresh();
 				}
 			});
 			GildFights.InjectionLoaded = true;
@@ -352,7 +351,6 @@ let GildFights = {
 	 */
 	BuildFightContent: () => {
 
-
 		let t = [],
 		mP = GildFights.MapData['map']['provinces'],
 		bP = GildFights.MapData['battlegroundParticipants'],
@@ -362,7 +360,10 @@ let GildFights = {
 
 		t.push('<table class="foe-table" id="tableleft">');
 		t.push('<thead style="font-size:10px">');
-		t.push('<th>' + own['clan']['name'] + '<span class="head-color" style="background-color:' + color['mainColour'] + '"></span></th>'); // show own guild
+
+		// show own guild
+		t.push('<th>' + own['clan']['name'] + '<span class="head-color" style="background-color:' + color['mainColour'] + '"></span></th>');
+
 		for(let x in bP)
 		{
 			if(!bP.hasOwnProperty(x))
@@ -402,7 +403,7 @@ let GildFights = {
 						t.push('<td>');
 						t.push(mP[i]['title']);
 						t.push('</td>');
-						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="text-center">');
+						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="text-center" colspan="8">');
 					
 						let cP = mP[i]['conquestProgress'];
 
@@ -418,42 +419,32 @@ let GildFights = {
 
 							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + cP[y]['progress'] + '%"></span></span></td>');
 						}
-						for(let x = 0; x < 7; x++)
-						{
-							t.push('<td>');
-							t.push('&nbsp;');
-							t.push('</td>');
-						}
+
 					}
-				} 
+				}
 
-				if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0 && mP[i]['conquestProgress'][0]['participantId'] === bP[x]['participantId']) // If sectors doesnt belong to anyone 
+				// If sectors doesnt belong to anyone
+				if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0 && mP[i]['conquestProgress'][0]['participantId'] === bP[x]['participantId'])
 				{
-						t.push('<tr id=' + cnt + ' data-id="' + cnt + '">');
-						t.push('<td>');
-						t.push(mP[i]['title']);
-						t.push('</td>');
-						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="text-center">');
-					
-						let cP = mP[i]['conquestProgress'];
-						for(let y in cP)
-						{
-							if(!cP.hasOwnProperty(y))
-							{
-								break;
-							}
-							let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
-							color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+					t.push('<tr id=' + cnt + ' data-id="' + cnt + '">');
+					t.push('<td>');
+					t.push(mP[i]['title']);
+					t.push('</td>');
+					t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="text-center" colspan="8">');
 
-							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + cP[y]['progress'] + '%"></span></span></td>');
-						}
-						for(let x = 0; x < 7; x++)
+					let cP = mP[i]['conquestProgress'];
+
+					for(let y in cP)
+					{
+						if(!cP.hasOwnProperty(y))
 						{
-							t.push('<td>');
-							t.push('&nbsp;');
-							t.push('</td>');
+							break;
 						}
-					
+						let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
+						color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+
+						t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + cP[y]['progress'] + '%"></span></span></td>');
+					}
 				} 
 			}
 			cnt++;
@@ -487,29 +478,30 @@ let GildFights = {
 		
 			for(let x = 0; x < 1; x++)
 			{						
-					if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
-					{	
-						arraysector.push(sectorfree); // push all datas into arrays
-						arrayprov.push(mP[i]);
-					}
+				if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
+				{
+					arraysector.push(sectorfree); // push all datas into arrays
+					arrayprov.push(mP[i]);
+				}
 			}
-	}
+		}
 
-	arraysector.sort();
-	let prov = arrayprov.sort(function(a, b) { return a.lockedUntil - b.lockedUntil;}).map(e => `${e.title}`);
-	
-	for(let x = 0; x < 9; x++) 
-	{	
-		t.push('<tr>');         
-		t.push('<td>');
-		t.push(prov[x]);
-		t.push('&nbsp;&nbsp;&nbsp;');
-		t.push(arraysector[x]);
-		t.push('</td>');
-		t.push('</tr>');
-	}		
+		arraysector.sort();
+		let prov = arrayprov.sort(function(a, b) { return a.lockedUntil - b.lockedUntil;}).map(e => `${e.title}`);
+
+		for(let x = 0; x < 9; x++)
+		{
+			t.push('<tr>');
+			t.push('<td>');
+			t.push(prov[x]);
+			t.push('&nbsp;&nbsp;&nbsp;');
+			t.push(arraysector[x]);
+			t.push('</td>');
+			t.push('</tr>');
+		}
+
 		t.push('</tbody>');
-		t.push('</table>');	
+		t.push('</table>');
 		$('#LiveGildFightingBody').html( t.join('') );
 	},
 
@@ -560,7 +552,7 @@ let GildFights = {
 			// nach 1s die Klasse wieder entfernen
 			setTimeout(() =>  {
 				cell.removeClass('red-pulse');
-			}, 1000);
+			}, 1200);
 		}
 	},
 
@@ -837,12 +829,25 @@ let ProvinceMap = {
 
 			provinces.forEach(province => {
 				province.updateGGMap();
-			})
-
+			});
 		}
 
 		init();
-		refresh();
+		// refresh();
+
+		ProvinceMap.Refresh();
+	},
+
+
+	Refresh: ()=> {
+		// requestAnimationFrame(refresh) // loop
+		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Map.width, ProvinceMap.Map.height)
+
+		const provinces = ProvinceMap.MapMerged;
+
+		provinces.forEach(province => {
+			province.updateGGMap();
+		});
 	},
 
 

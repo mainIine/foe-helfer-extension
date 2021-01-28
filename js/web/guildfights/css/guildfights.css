@@ -114,7 +114,7 @@
 #LiveGildFightingBody tr td span.attack {
 	display: block;
 	height: 5px;
-	width:200%;
+	width: 100%;
 }
 
 #LiveGildFightingBody tr td span.attack span {
