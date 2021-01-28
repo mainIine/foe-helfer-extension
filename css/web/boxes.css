@@ -973,6 +973,10 @@ FP-Bar */
 	background-position: 6px, -2px -26px;
 }
 
+.window-head span.window-map:hover {
+	background-position: 6px, -28px -26px;
+}
+
 .window-head span.window-close {
 	background-position: -2px -2px, -2px -26px;
 	display: inline-block;
