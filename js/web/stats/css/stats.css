@@ -88,6 +88,7 @@
 /* Highcharts table wrapper */
 #stats .highcharts-data-table {
 	overflow: scroll;
+	user-select: text;
 }
 
 #stats .highcharts-data-table caption {
