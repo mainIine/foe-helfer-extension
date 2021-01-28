@@ -122,7 +122,7 @@
 
 #OwnPartBox .black-bg {
 	position: absolute;
-	background-color: var(--65-black);
+	background-color: var(--black-65);
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -340,6 +340,7 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 	max-height: 500px;
+	user-select: text;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td, #PowerLevelingBox #PowerLevelingBoxBody .foe-table th {
