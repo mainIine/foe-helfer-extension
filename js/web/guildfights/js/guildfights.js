@@ -358,11 +358,12 @@ let GildFights = {
 		color = GildFights.Colors.find(e => e['id'] === 'own_guild_colour'),
 		own = bP.find(e => e['clan']['id'] === ExtGuildID);
 
-		t.push('<table class="foe-table" id="tableleft">');
-		t.push('<thead style="font-size:10px">');
+		t.push('<ul id="guilds" class="dark-bg">');
 
+		// to do: translation
+		t.push('<li><h1>Gilden</h1></li>');
 		// show own guild
-		t.push('<th>' + own['clan']['name'] + '<span class="head-color" style="background-color:' + color['mainColour'] + '"></span></th>');
+		t.push('<li style="border-left-color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
 
 		for(let x in bP)
 		{
@@ -374,13 +375,17 @@ let GildFights = {
 			{
 				let color = GildFights.SortedColors.find(e => e['id'] === bP[x]['participantId']);
 
-				t.push('<th>' + bP[x]['clan']['name'] + '<span class="head-color" style="background-color:' + color['main'] + '"></span></th>');
+				t.push('<li style="border-left-color:' + color['main'] + '">' + bP[x]['clan']['name'] + '</li>');
 			}
 		}
 
-		t.push('<th></th>');
-		t.push('</thead>');
+		t.push('</ul>');
+
+		t.push('<table id="progress" class="foe-table">');
 		t.push('<tbody>');
+		t.push('<thead>');
+		t.push('<tr><th colspan="2">Fortschritt</th></tr>');
+		t.push('</thead>');
 
 		for(let i in mP)
 		{
@@ -388,7 +393,6 @@ let GildFights = {
 			{
 				break;
 			}
-
 
 			for(let x = 0; x < bP.length; x++)
 			{				
@@ -403,7 +407,7 @@ let GildFights = {
 						t.push('<td>');
 						t.push(mP[i]['title']);
 						t.push('</td>');
-						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="text-center" colspan="8">');
+						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '">');
 					
 						let cP = mP[i]['conquestProgress'];
 
@@ -417,7 +421,7 @@ let GildFights = {
 							let p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
 							color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
 
-							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + cP[y]['progress'] + '%"></span></span></td>');
+							t.push('<span class="attack attacker-' + cP[y]['participantId'] + '" style="background-color:'+ color['main'] +';width:' + (cP[y]['progress']*2) + 'px">'+ cP[y]['progress'] +'</span>');
 						}
 
 					}
@@ -430,7 +434,7 @@ let GildFights = {
 					t.push('<td>');
 					t.push(mP[i]['title']);
 					t.push('</td>');
-					t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="text-center" colspan="8">');
+					t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '">');
 
 					let cP = mP[i]['conquestProgress'];
 
@@ -452,9 +456,9 @@ let GildFights = {
 
 		t.push('</tbody>');
 		t.push('</table>');
-		t.push('<table class="foe-table" id="tableright">');
-		t.push('<thead><th style="position: inherit;">Nächste Sektoren</th></thead>');
-		t.push('<tbody>');
+
+		t.push('<ul id="nextup" class="dark-bg">');
+		t.push('<li><h1>Nächste Sektoren</h1></li>');
 
 		let arraysector = [], 
 			 arrayprov = [];
@@ -491,17 +495,14 @@ let GildFights = {
 
 		for(let x = 0; x < 9; x++)
 		{
-			t.push('<tr>');
-			t.push('<td>');
+			t.push('<li>');
 			t.push(prov[x]);
 			t.push('&nbsp;&nbsp;&nbsp;');
 			t.push(arraysector[x]);
-			t.push('</td>');
-			t.push('</tr>');
+			t.push('</li>');
 		}
 
-		t.push('</tbody>');
-		t.push('</table>');
+		t.push('</ul>');
 		$('#LiveGildFightingBody').html( t.join('') );
 	},
 
