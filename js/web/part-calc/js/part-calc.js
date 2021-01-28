@@ -1106,11 +1106,11 @@ let Parts = {
 		for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
 			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
-			h.push('<td><span class="hidden-text"> - #1: </span>' + HTML.Format(Places[i][0]) + '</td>');
-			h.push('<td class="text-light"><span class="hidden-text"> - #2: </span>' + HTML.Format(Places[i][1]) + '</td>');
-			h.push('<td><span class="hidden-text"> - #3: </span>' + HTML.Format(Places[i][2]) + '</td>');
-			h.push('<td class="text-light"><span class="hidden-text"> - #4: </span>' + HTML.Format(Places[i][3]) + '</td>');
-			h.push('<td><span class="hidden-text"> - #5: </span>' + HTML.Format(Places[i][4]) + '</td>');
+			h.push('<td><span class="hidden-text"> - #1 (</span>' + HTML.Format(Places[i][0]) + '</td>');
+			h.push('<td class="text-light"><span class="hidden-text">) - #2 (</span>' + HTML.Format(Places[i][1]) + '</td>');
+			h.push('<td><span class="hidden-text">) - #3 (</span>' + HTML.Format(Places[i][2]) + '</td>');
+			h.push('<td class="text-light"><span class="hidden-text">) - #4 (</span>' + HTML.Format(Places[i][3]) + '</td>');
+			h.push('<td><span class="hidden-text">) - #5 (</span>' + HTML.Format(Places[i][4]) + '<span class="hidden-text">)</span></td>');
 			if (HasDoubleCollection) {
 				h.push('<td class="success no-select"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
 				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
