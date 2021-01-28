@@ -34,9 +34,9 @@ let Productions = {
 		'premium',			// Diamanten
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
+		'units',			// Einheiten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
-		'units',			// Einheiten
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
