@@ -177,7 +177,15 @@ let HTML = {
 				HTML.customFunctions[`${args['id']}Settings`] = args['settings'];
 			}
 		}
+		if(args['map']){
+			let set = $('<span />').addClass('window-map').attr('id', `${args['id']}-map`);
+			set.insertAfter(title);
 
+			if (typeof args['map'] !== 'boolean')
+			{
+				HTML.customFunctions[`${args['id']}Map`] = args['map'];
+			}
+		}
 		// Lautsprecher für Töne
 		if(args['speaker']){
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
@@ -254,7 +262,28 @@ let HTML = {
 					});
 				}
 			}
+			
+			if(args['map'])
+			{
+				if (typeof args['map'] !== 'boolean')
+				{
+					$(`#${args['id']}`).on('click', `#${args['id']}-map`, function(){
 
+						// exist? remove!
+						if( $(`#${args['id']}MapBox`).length > 0 )
+						{
+							$(`#${args['id']}MapBox`).fadeToggle('fast', function(){
+								$(this).remove();
+							});
+						}
+
+						// create a new one
+						else {
+							HTML.MapBox(args['id']);
+						}
+					});
+				}
+			}
 			if(args['resize']) {
 				HTML.Resizeable(args['id'], args['keepRatio']);
 			}
@@ -458,6 +487,12 @@ let HTML = {
 		}, 100);
 	},
 
+	MapBox: (id)=> {
+
+		setTimeout(()=> {
+			new Function(`${HTML.customFunctions[id + 'Map']}`)();
+		}, 100);
+	},
 
 	/**
 	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
