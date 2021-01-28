@@ -35,7 +35,7 @@
 	border: 2px solid var(--hud-border-success);
 	border-right: none;
 	margin: 2px 0;
-	box-shadow: 1px -1px 1px var(--50-black);
+	box-shadow: 1px -1px 1px var(--black-50);
 }
 
 #bonus-hud .hud-btn.hud-btn-red {
@@ -69,7 +69,7 @@
 	border-radius: 50%;
 	line-height: 16px;
 	text-align: center;
-	box-shadow: 0 1px 1px 1px var(--50-black);
+	box-shadow: 0 1px 1px 1px var(--black-50);
 	text-shadow: 0 1px 1px var(--black);
 	font-weight: bold;
 }
