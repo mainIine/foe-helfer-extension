@@ -1302,6 +1302,10 @@ FP-Bar */
 	justify-content: center;
 }
 
+.no-select {
+	user-select: none !important;
+}
+
 /* date picker overwrite */
 
 :root{
