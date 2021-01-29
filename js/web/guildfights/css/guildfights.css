@@ -88,18 +88,34 @@
 
 #LiveGildFightingBody {
 	overflow: auto;
+	display: flex;
 }
 
-#LiveGildFightingBody tr th  {
-	position: sticky;
-	top: 0;
-	background-color: rgba(0,0,0, 0.45);
-	white-space: nowrap;
+#LiveGildFightingBody ul {
+	list-style: none;
+	margin: 0;
+	padding: 0 5px;
+	user-select: text;
 }
 
-#LiveGildFightingBody tr th span.head-color {
-	height: 5px;
-	display: block;
+#LiveGildFightingBody #guilds, #LiveGildFightingBody #nextup {
+	width: 220px;
+}
+
+#LiveGildFightingBody #guilds li {
+	border-left-width: 3px;
+	border-left-style: solid;
+	padding-left: 3px;
+	margin-bottom: 1px;
+	font-size: 90%;
+}
+
+#LiveGildFightingBody #guilds li:first-child {
+	border-left-width: 0;
+}
+
+#LiveGildFightingBody tr td:first-child {
+	width: 60px;
 }
 
 #LiveGildFightingBody tr td {
@@ -111,15 +127,24 @@
 	transition: background-color .6s;
 }
 
-#LiveGildFightingBody tr td span.attack {
+#LiveGildFightingBody tr td span.attack-wrapper {
 	display: block;
-	height: 5px;
-	background-color: rgba(255,255,255,0.45);
+	height: 10px;
+	width: 100%;
+	line-height: 10px;
+	font-size: 10px;
+	background-color: rgba(255,255,255,.1);
+	margin-right: 10px;
 }
 
-#LiveGildFightingBody tr td span.attack span {
-	height: 5px;
+#LiveGildFightingBody tr td span.attack {
 	display: block;
+	height: 10px;
+	width: 100%;
+	line-height: 10px;
+	color: var(--text-dark);
+	text-shadow: none;
+	font-weight: bold;
 }
 
 /*************************************************************************************************************/
