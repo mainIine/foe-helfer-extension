@@ -53,6 +53,7 @@ let _menu = {
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
+		'gildfight'
 		// 'alerts',
 		// 'unitsGex',
 	],
@@ -158,6 +159,7 @@ let _menu = {
 
 		return btn_CalcBG;
 	},
+
 
 	/**
 	 * Eigenanteilsrechner Button
@@ -450,6 +452,7 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * Statistic
 	 * @returns {*|jQuery}
@@ -523,6 +526,7 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * FP Produzierende LGs
 	 */
@@ -595,6 +599,7 @@ let _menu = {
 		return btn;
 	},
 
+	
 	/**
 	 * Moppelassistent
 	 * */
@@ -682,5 +687,39 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
+	},
+
+
+	/**
+	 * Guildfight Overview
+	 * 	
+	 * @returns {*|jQuery}
+	 * */
+	gildfight_Btn: () => {
+
+		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red');
+		desc = i18n('Menu.Gildfight.Desc') + '<br>' + i18n('Menu.Gildfight.Warning');
+
+
+		btn_BG.removeClass('hud-btn-red');
+		desc = i18n('Menu.Gildfight.Desc');
+
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Gildfight.Title'), desc , 'gildfight-Btn');
+
+		let btn = $('<span />');
+
+
+		 btn.on('click', function () {
+
+		 	if (GildFights.ProvinceNames !== null) {
+		 	GildFights.ShowGildBox();
+		 }
+		 });
+
+		btn_BG.append(btn);
+
+		return btn_BG;
 	}
 };
