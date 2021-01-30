@@ -468,14 +468,18 @@ let GildFights = {
 		{
 			if(!prov.hasOwnProperty(x)) continue;
 
+			console.log('prov: ', prov[x]); // ownerId
+
+			let countDownDate = moment.unix(prov[x]['lockedUntil']),
+				color = GildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
+				intervalID = setInterval(function(){
+					GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
+				}, 1000);
+
 			t.push(`<li id="timer-${prov[x]['id']}">`);
-			t.push(`<span class="prov-name">${prov[x]['title']}</span>`);
+			t.push(`<span class="prov-name"${color['main'] ? ' style="color:' + color['main'] + '"' : ''}>${prov[x]['title']}</span>`);
 			t.push(`<span class="time-static">${arraysector[x]}</span>`);
 
-			let countDownDate = moment.unix(prov[x]['lockedUntil']);
-			let intervalID = setInterval(function() {
-				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
-			}, 1000);
 
 			GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
@@ -497,7 +501,8 @@ let GildFights = {
 
 	UpdateCounter: (countDownDate, intervalID, id) => {
 
-		let idSpan = $(`#counter-${id}`);
+		let idSpan = $(`#counter-${id}`),
+			removeIt = false;
 
 		if(countDownDate.isValid())
 		{
@@ -505,20 +510,29 @@ let GildFights = {
 
 			if (diff <= 0)
 			{
-				clearInterval(intervalID);
-				$(`#timer-${id}`).fadeToggle(function(){
-					$(this).remove();
-				});
+				removeIt = true;
 			}
 			else {
 				idSpan.text(moment.utc(diff).format('HH:mm:ss'));
 			}
 		}
 		else {
+			removeIt = true;
+		}
+
+		if(removeIt)
+		{
 			clearInterval(intervalID);
-			$(`#timer-${id}`).fadeToggle(function(){
-				$(this).remove();
-			});
+
+			idSpan.text('');
+			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">offen</strong>`); // @ToDo: translate
+
+			// remove timer after 10s
+			setTimeout(()=> {
+				$(`#timer-${id}`).fadeToggle(function(){
+					$(this).remove();
+				});
+			}, 10000);
 		}
 	},
 
