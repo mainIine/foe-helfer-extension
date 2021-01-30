@@ -44,7 +44,6 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 });
 
 
-
 /**
  *
  * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, NewAction: null, PlayersPortraits: null, PrevAction: null}}
@@ -67,6 +66,8 @@ let GildFights = {
 	 * Zündung
 	 */
 	init: ()=> {
+		// moment.js global set
+		moment.locale(MainParser.Language);
 
 		if(GildFights.InjectionLoaded === false)
 		{
@@ -129,7 +130,7 @@ let GildFights = {
 
 
 	/**
-	 * Zeigt die große Map mit Gefechten
+	 * Creates the box with the data
 	 */
 	ShowGildBox: ()=> {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
@@ -153,7 +154,7 @@ let GildFights = {
 
 
 	/**
-	 * Zeigt die Spielerübersicht
+	 * Shows the player overview
 	 */
 	ShowPlayerBox: () => {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
@@ -179,7 +180,7 @@ let GildFights = {
 
 
 	/**
-	 * Inhalt des Snapshots darstellen
+	 * Display the contents of the snapshot
 	 */
 	BuildPlayerContent: ()=> {
 		let t = [],
@@ -309,7 +310,221 @@ let GildFights = {
 
 
 	/**
-	 * Farben der einzelenen Gilden ermitteln und zuordnen
+	 * Contents of the card box
+	 */
+	BuildFightContent: () => {
+
+		let t = [],
+			mP = GildFights.MapData['map']['provinces'],
+			bP = GildFights.MapData['battlegroundParticipants'],
+			cnt = 0,
+			color = GildFights.Colors.find(e => e['id'] === 'own_guild_colour'),
+			own = bP.find(e => e['clan']['id'] === ExtGuildID);
+
+		t.push('<ul id="guilds" class="dark-bg">');
+
+		// @Todo: translation
+		t.push('<li class="header">Gilden</li>');
+		// show own guild
+		t.push('<li style="border-left-color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
+
+		for(let x in bP)
+		{
+			if(!bP.hasOwnProperty(x))
+			{
+				break;
+			}
+			if(bP[x]['clan']['id'] !== ExtGuildID)  // everything except own guild
+			{
+				let color = GildFights.SortedColors.find(e => e['id'] === bP[x]['participantId']);
+
+				t.push('<li style="border-left-color:' + color['main'] + '">' + bP[x]['clan']['name'] + '</li>');
+			}
+		}
+
+		t.push('</ul>');
+
+		t.push('<table id="progress" class="foe-table">');
+		t.push('<tbody>');
+		t.push('<thead>');
+		t.push('<tr><th colspan="2">Fortschritt</th></tr>'); // @Todo: translation
+		t.push('</thead>');
+
+		for(let i in mP)
+		{
+			if(!mP.hasOwnProperty(i))
+			{
+				break;
+			}
+
+			for(let x = 0; x < bP.length; x++)
+			{
+				if(mP[i]['ownerId'] !== undefined && bP[x]['participantId'] === mP[i]['ownerId'])
+				{
+					// show current fights
+					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
+					{
+						t.push(`<tr id="province-${cnt}" data-id="${cnt}">`);
+						t.push('<td>');
+						t.push(mP[i]['title']);
+						t.push('</td>');
+						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
+
+						let cP = mP[i]['conquestProgress'];
+
+						for(let y in cP)
+						{
+							if(!cP.hasOwnProperty(y))
+							{
+								break;
+							}
+
+							let max = cP[y]['maxProgress'],
+								progess = cP[y]['progress'],
+								width = Math.round((progess * 100) / max),
+								p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
+								color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+
+							t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
+						}
+					}
+				}
+
+				// If sectors doesnt belong to anyone
+				if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0 && mP[i]['conquestProgress'][0]['participantId'] === bP[x]['participantId'])
+				{
+					t.push('<tr id=province-' + cnt + ' data-id="' + cnt + '">');
+					t.push('<td>');
+					t.push(mP[i]['title']);
+					t.push('</td>');
+					t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '">');
+
+					let cP = mP[i]['conquestProgress'];
+
+					for(let y in cP)
+					{
+						if(!cP.hasOwnProperty(y))
+						{
+							break;
+						}
+
+						let max = cP[y]['maxProgress'],
+							progess = cP[y]['progress'],
+							width = Math.round((progess * 100) / max),
+							p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
+							color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+
+						t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + width + '%"></span></span></td>');
+					}
+				}
+			}
+			cnt++;
+		}
+
+		t.push('</tbody>');
+		t.push('</table>');
+
+		// @Todo: translation
+		t.push('<ul id="nextup" class="dark-bg">');
+		t.push('<li class="header">Nächste Sektoren</li>');
+		t.push(`<li class="head"><span class="prov-name">Provinz</span><span class="time-static">um</span><span class="time-dynamic">in</span></li>`);
+
+		let arraysector = [],
+			arrayprov = [];
+
+		// Time until next sectors will be available
+		for(let i in mP)
+		{
+			if(!mP.hasOwnProperty(i)) continue;
+
+			let date = new Date(),
+				basictime = 1610000000, // given by foe
+				maxtime = 950400, // 11 days GG
+				locked = mP[i]['lockedUntil'] - basictime, // seconds whole locked time
+				newtime = maxtime - locked;
+
+			date.setDate(date.getDate() + (1 + 7 - date.getDay()) % 7) + date.setHours(7) + date.setMinutes(13) + date.setSeconds(0);
+
+			// immer bis Montags 07:13:00
+			date.setSeconds(date.getSeconds() - newtime);
+			let sectorfree = date.toLocaleTimeString();
+
+
+			for(let x = 0; x < 1; x++)
+			{
+				if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
+				{
+					arraysector.push(sectorfree); // push all datas into arrays
+					arrayprov.push(mP[i]);
+				}
+			}
+		}
+
+		arraysector.sort();
+		let prov = arrayprov.sort((a, b)=> { return a.lockedUntil - b.lockedUntil});
+
+		let cntTimers = 0;
+		for(let x in prov)
+		{
+			if(!prov.hasOwnProperty(x)) continue;
+
+			t.push(`<li id="timer-${prov[x]['id']}">`);
+			t.push(`<span class="prov-name">${prov[x]['title']}</span>`);
+			t.push(`<span class="time-static">${arraysector[x]}</span>`);
+
+			let countDownDate = moment.unix(prov[x]['lockedUntil']);
+			let intervalID = setInterval(function() {
+				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
+			}, 1000);
+
+			GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
+
+			t.push(`<span class="time-dynamic" id="counter-${prov[x]['id']}">${arraysector[x]}</span>`);
+			t.push('</li>');
+
+			// show only the next 10 timers
+			if(cntTimers === 9){
+				break;
+			}
+			cntTimers++;
+		}
+
+		t.push('</ul>');
+
+		$('#LiveGildFightingBody').html( t.join('') );
+	},
+
+
+	UpdateCounter: (countDownDate, intervalID, id) => {
+
+		let idSpan = $(`#counter-${id}`);
+
+		if(countDownDate.isValid())
+		{
+			let diff = countDownDate.diff(moment());
+
+			if (diff <= 0)
+			{
+				clearInterval(intervalID);
+				$(`#timer-${id}`).fadeToggle(function(){
+					$(this).remove();
+				});
+			}
+			else {
+				idSpan.text(moment.utc(diff).format('HH:mm:ss'));
+			}
+		}
+		else {
+			clearInterval(intervalID);
+			$(`#timer-${id}`).fadeToggle(function(){
+				$(this).remove();
+			});
+		}
+	},
+
+
+	/**
+	 * Determine and assign colours of the individual guilds
 	 */
 	PrepareColors: ()=> {
 
@@ -348,174 +563,6 @@ let GildFights = {
 		}
 
 		GildFights.SortedColors = colors;
-	},
-
-
-	/**
-	 * Inhalt der Kartenbox
-	 */
-	BuildFightContent: () => {
-
-		let t = [],
-		mP = GildFights.MapData['map']['provinces'],
-		bP = GildFights.MapData['battlegroundParticipants'],
-		cnt = 0,
-		color = GildFights.Colors.find(e => e['id'] === 'own_guild_colour'),
-		own = bP.find(e => e['clan']['id'] === ExtGuildID);
-
-		t.push('<ul id="guilds" class="dark-bg">');
-
-		// to do: translation
-		t.push('<li><h1>Gilden</h1></li>');
-		// show own guild
-		t.push('<li style="border-left-color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
-
-		for(let x in bP)
-		{
-			if(!bP.hasOwnProperty(x))
-			{
-				break;
-			}
-			if(bP[x]['clan']['id'] !== ExtGuildID)  // everything except own guild
-			{
-				let color = GildFights.SortedColors.find(e => e['id'] === bP[x]['participantId']);
-
-				t.push('<li style="border-left-color:' + color['main'] + '">' + bP[x]['clan']['name'] + '</li>');
-			}
-		}
-
-		t.push('</ul>');
-
-		t.push('<table id="progress" class="foe-table">');
-		t.push('<tbody>');
-		t.push('<thead>');
-		t.push('<tr><th colspan="2">Fortschritt</th></tr>');
-		t.push('</thead>');
-
-		for(let i in mP)
-		{
-			if(!mP.hasOwnProperty(i))
-			{
-				break;
-			}
-
-			for(let x = 0; x < bP.length; x++)
-			{				
-
-				if(mP[i]['ownerId'] !== undefined && bP[x]['participantId'] === mP[i]['ownerId'])
-				{
-					// show current fights
-					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
-					{
-						t.push(`<tr id="province-${cnt}" data-id="${cnt}">`);
-						t.push('<td>');
-						t.push(mP[i]['title']);
-						t.push('</td>');
-						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
-					
-						let cP = mP[i]['conquestProgress'];
-
-						for(let y in cP)
-						{
-							if(!cP.hasOwnProperty(y))
-							{
-								break;
-							}
-
-							let max = cP[y]['maxProgress'],
-								progess = cP[y]['progress'],
-								width = Math.round((progess * 100) / max),
-								p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
-								color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
-
-							t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
-						}
-
-					}
-				}
-
-				// If sectors doesnt belong to anyone
-				if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0 && mP[i]['conquestProgress'][0]['participantId'] === bP[x]['participantId'])
-				{
-					t.push('<tr id=' + cnt + ' data-id="' + cnt + '">');
-					t.push('<td>');
-					t.push(mP[i]['title']);
-					t.push('</td>');
-					t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '">');
-
-					let cP = mP[i]['conquestProgress'];
-
-					for(let y in cP)
-					{
-						if(!cP.hasOwnProperty(y))
-						{
-							break;
-						}
-						let max = cP[y]['maxProgress'],
-							progess = cP[y]['progress'],
-							width = Math.round((progess * 100) / max),
-							p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
-						color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
-
-						t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + width + '%"></span></span></td>');
-					}
-				} 
-			}
-			cnt++;
-		}
-
-		t.push('</tbody>');
-		t.push('</table>');
-
-		t.push('<ul id="nextup" class="dark-bg">');
-		t.push('<li><h1>Nächste Sektoren</h1></li>');
-
-		let arraysector = [], 
-			 arrayprov = [];
-			 
-		// Time until next sectors will be available
-		for(let i in mP)
-		{
-			let date = new Date(),
-			basictime = 1610000000, // given by foe
-			maxtime = 950400, // 11 days GG
-			locked = mP[i]['lockedUntil'] - basictime, // seconds whole locked time
-			newtime = maxtime - locked;
-			date.setDate(date.getDate() + (1 + 7 - date.getDay()) % 7) + date.setHours(7) + date.setMinutes(13) + date.setSeconds(0);
-
-			// immer bis Montags 07:13:00
-			date.setSeconds(date.getSeconds() - newtime); 
-			let sectorfree = date.toLocaleTimeString(); 
-
-			if(!mP.hasOwnProperty(i))
-			{
-				break;
-			}
-		
-			for(let x = 0; x < 1; x++)
-			{						
-				if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
-				{
-					arraysector.push(sectorfree); // push all datas into arrays
-					arrayprov.push(mP[i]);
-				}
-			}
-		}
-
-		arraysector.sort();
-		let prov = arrayprov.sort(function(a, b) { return a.lockedUntil - b.lockedUntil;}).map(e => e.title);
-
-		for(let x = 0; x < 9; x++)
-		{
-			t.push('<li>');
-			t.push(prov[x]);
-			t.push('&nbsp;&nbsp;&nbsp;');
-			t.push(arraysector[x]);
-			t.push('</li>');
-		}
-
-		t.push('</ul>');
-		$('#LiveGildFightingBody').html( t.join('') );
 	},
 
 
@@ -1787,6 +1834,3 @@ let ProvinceMap = {
 		}]
 	},
 }
-
-
-
