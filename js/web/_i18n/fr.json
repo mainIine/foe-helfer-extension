@@ -1,5 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Le classement de l'Expédition de Guilde (EG) a été mis à jour",
+    "API.GEXChampionship": "Le classement de l'Expédition de Guilde a été mis à jour.",
     "API.GEXPlayer": "Le classement des contributions en Expédition de Guilde (EG) a été mis à jour",
     "API.LGGildMember": "Les informations à propos des GM de __player__ ont été mises à jour",
     "API.LGInvest": "Les infos sur vos investissements de GMs ont été mises à jour",
@@ -158,7 +158,7 @@
     "Boxes.FPCollector.Where": "Où ?",
     "Boxes.FPCollector.Who": "Qui ?",
     "Boxes.FPCollector.antiquesDealer": "Vendeur d'antiquités",
-    "Boxes.FPCollector.battlegrounds_conquest": "Récompense GB après négociation ou combat",
+    "Boxes.FPCollector.battlegrounds_conquest": "Récompense CdB après négociation ou combat",
     "Boxes.FPCollector.chest": "Récompense de rencontre",
     "Boxes.FPCollector.chestEvent": "Récompense d'événement",
     "Boxes.FPCollector.collectReward": "Récompense",
@@ -789,5 +789,5 @@
     "WsChat.UserLeave": " est parti.",
     "WsChat.UserReEnter": " est revenu dans la pièce.",
     "WsChat.World": "Monde - ",
-    "_Language": "Français"
+    "_Language": "Polir"
 }
