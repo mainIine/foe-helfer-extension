@@ -98,15 +98,49 @@
 	user-select: text;
 }
 
-#LiveGildFightingBody #guilds, #LiveGildFightingBody #nextup {
-	width: 220px;
+#LiveGildFightingBody #guilds {
+	width: 170px;
+	flex: 0 0 170px;
 }
 
-#LiveGildFightingBody #guilds li {
+#LiveGildFightingBody #nextup {
+	width: 200px;
+	flex: 0 0 200px;
+	overflow-y: auto;
+}
+
+#LiveGildFightingBody #nextup li {
+	margin-bottom: 3px;
+	display: flex;
+	flex-direction: row;
+}
+
+#LiveGildFightingBody li.header {
+	font-size: 1.5em;
+}
+
+#LiveGildFightingBody #nextup li span {
+	display: inline-block;
+}
+
+#LiveGildFightingBody #nextup li span.prov-name {
+	width: 4rem;
+}
+
+#LiveGildFightingBody #nextup li:not(.head) span.prov-name {
+	font-weight: bold;
+	color: var(--text-bright);
+}
+
+#LiveGildFightingBody #nextup li span.time-static {
+	width: 4.2rem;
+}
+
+#LiveGildFightingBody #guilds li:not(.header) {
 	border-left-width: 3px;
 	border-left-style: solid;
-	padding-left: 3px;
-	margin-bottom: 1px;
+	padding-left: 5px;
+	margin-bottom: 3px;
 	font-size: 90%;
 }
 
