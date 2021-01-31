@@ -321,30 +321,7 @@ let GildFights = {
 			color = GildFights.Colors.find(e => e['id'] === 'own_guild_colour'),
 			own = bP.find(e => e['clan']['id'] === ExtGuildID);
 
-		t.push('<ul id="guilds" class="dark-bg">');
-
-		// @Todo: translation
-		t.push('<li class="header">Gilden</li>');
-		// show own guild
-		t.push('<li style="border-left-color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
-
-		for(let x in bP)
-		{
-			if(!bP.hasOwnProperty(x))
-			{
-				break;
-			}
-			if(bP[x]['clan']['id'] !== ExtGuildID)  // everything except own guild
-			{
-				let color = GildFights.SortedColors.find(e => e['id'] === bP[x]['participantId']);
-
-				t.push('<li style="border-left-color:' + color['main'] + '">' + bP[x]['clan']['name'] + '</li>');
-			}
-		}
-
-		t.push('</ul>');
-
-		t.push('<table id="progress" class="foe-table">');
+		t.push('<div id="progress"><table class="foe-table">');
 		t.push('<tbody>');
 		t.push('<thead>');
 		t.push('<tr><th colspan="2">Fortschritt</th></tr>'); // @Todo: translation
@@ -365,7 +342,7 @@ let GildFights = {
 					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
 					{
 						t.push(`<tr id="province-${cnt}" data-id="${cnt}">`);
-						t.push('<td>');
+						t.push(`<td>`);
 						t.push(mP[i]['title']);
 						t.push('</td>');
 						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
@@ -385,7 +362,7 @@ let GildFights = {
 								p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
 								color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
 
-							t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
+							t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%"> </span></span>`);
 						}
 					}
 				}
@@ -422,12 +399,33 @@ let GildFights = {
 		}
 
 		t.push('</tbody>');
-		t.push('</table>');
+		t.push('</table></div>');
+
+		t.push('<div id="guilds" class="dark-bg"><ul>');
 
 		// @Todo: translation
-		t.push('<ul id="nextup" class="dark-bg">');
-		t.push('<li class="header">Nächste Sektoren</li>');
-		t.push(`<li class="head"><span class="prov-name">Provinz</span><span class="time-static">um</span><span class="time-dynamic">in</span></li>`);
+		// show own guild
+		t.push('<li style="color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
+
+		for(let x in bP)
+		{
+			if(!bP.hasOwnProperty(x))
+			{
+				break;
+			}
+			if(bP[x]['clan']['id'] !== ExtGuildID)  // everything except own guild
+			{
+				let color = GildFights.SortedColors.find(e => e['id'] === bP[x]['participantId']);
+
+				t.push('<li style="color:' + color['main'] + '">' + bP[x]['clan']['name'] + '</li>');
+			}
+		}
+
+		t.push('</ul></div>');
+
+		// @Todo: translation
+		t.push('<div id="nextup"><table class="foe-table"');
+		t.push('<thead><tr><th class="prov-name">Provinz</th><th class="time-static">um</th><th class="time-dynamic">in</th></tr></thead>');
 
 		let arraysector = [],
 			arrayprov = [];
@@ -476,15 +474,15 @@ let GildFights = {
 					GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 				}, 1000);
 
-			t.push(`<li id="timer-${prov[x]['id']}">`);
-			t.push(`<span class="prov-name"${color['main'] ? ' style="color:' + color['main'] + '"' : ''}>${prov[x]['title']}</span>`);
-			t.push(`<span class="time-static">${arraysector[x]}</span>`);
+			t.push(`<tr id="timer-${prov[x]['id']}">`);
+			t.push(`<td class="prov-name"${color['main'] ? ' style="color:' + color['main'] + '"' : ''}>${prov[x]['title']}</td>`);
+			t.push(`<td class="time-static">${arraysector[x]}</td>`);
 
 
 			GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
-			t.push(`<span class="time-dynamic" id="counter-${prov[x]['id']}">${arraysector[x]}</span>`);
-			t.push('</li>');
+			t.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${arraysector[x]}</td>`);
+			t.push('</tr>');
 
 			// show only the next 10 timers
 			if(cntTimers === 9){
@@ -493,7 +491,7 @@ let GildFights = {
 			cntTimers++;
 		}
 
-		t.push('</ul>');
+		t.push('</table></div>');
 
 		$('#LiveGildFightingBody').html( t.join('') );
 	},

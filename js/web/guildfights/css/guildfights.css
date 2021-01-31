@@ -75,7 +75,6 @@
 	border-right: 1px solid var(--text-bright);
 }
 
-
 #GildPlayersBody tr.bg-green td {
 	background-color: var(--background-table-success);
 }
@@ -99,57 +98,35 @@
 }
 
 #LiveGildFightingBody #guilds {
-	width: 170px;
-	flex: 0 0 170px;
+	display: flex;
+	align-items: center;
+}
+
+#LiveGildFightingBody #guilds li {
+	margin-bottom: 10px;
+	font-size: 90%;
+	display: block;
+	text-align: center;
 }
 
 #LiveGildFightingBody #nextup {
-	width: 200px;
-	flex: 0 0 200px;
 	overflow-y: auto;
+	user-select: text;
 }
 
-#LiveGildFightingBody #nextup li {
-	margin-bottom: 3px;
-	display: flex;
-	flex-direction: row;
-}
-
-#LiveGildFightingBody li.header {
-	font-size: 1.5em;
-}
-
-#LiveGildFightingBody #nextup li span {
-	display: inline-block;
-}
-
-#LiveGildFightingBody #nextup li span.prov-name {
-	width: 4rem;
-}
-
-#LiveGildFightingBody #nextup li:not(.head) span.prov-name {
+#LiveGildFightingBody #nextup td.prov-name {
 	font-weight: bold;
 	color: var(--text-bright);
 }
 
-#LiveGildFightingBody #nextup li span.time-static {
-	width: 4.2rem;
+#LiveGildFightingBody #progress {
+	width: 50%;
+	overflow-y: auto;
+	flex-grow: 2;
 }
 
-#LiveGildFightingBody #guilds li:not(.header) {
-	border-left-width: 3px;
-	border-left-style: solid;
-	padding-left: 5px;
-	margin-bottom: 3px;
-	font-size: 90%;
-}
-
-#LiveGildFightingBody #guilds li:first-child {
-	border-left-width: 0;
-}
-
-#LiveGildFightingBody tr td:first-child {
-	width: 60px;
+#LiveGildFightingBody #progress tr td:first-child {
+	width: 50px;
 }
 
 #LiveGildFightingBody tr td {
@@ -157,28 +134,28 @@
 }
 
 #LiveGildFightingBody tr td.red-pulse {
-	background-color: rgba(255, 0, 0, 0.45);
+	background-color: rgba(187, 154, 91, 0.45);
 	transition: background-color .6s;
 }
 
 #LiveGildFightingBody tr td span.attack-wrapper {
 	display: block;
-	height: 10px;
+	height: 11px;
 	width: 100%;
-	line-height: 10px;
-	font-size: 10px;
-	background-color: rgba(255,255,255,.1);
-	margin-right: 10px;
+	line-height: 11px;
+	font-size: 11px;
+	background-color: rgba(0,0,0,.1);
 }
 
 #LiveGildFightingBody tr td span.attack {
 	display: block;
-	height: 10px;
+	height: 11px;
 	width: 100%;
-	line-height: 10px;
-	color: var(--text-dark);
+	line-height: 11px;
+	color: var(--text-darker);
 	text-shadow: none;
 	font-weight: bold;
+	opacity: 0.8;
 }
 
 /*************************************************************************************************************/
