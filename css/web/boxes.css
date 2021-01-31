@@ -90,7 +90,7 @@ input[type=number] {
 	z-index: 1;
 	margin:0;
 	padding:0;
-	box-shadow: 0 1px 1px var(--50-black);
+	box-shadow: 0 1px 1px var(--black-50);
 
 	transition: opacity .15s ease-out;
 	opacity: 0;
@@ -281,7 +281,7 @@ table.foe-table thead tr th,
 table.foe-table th,
 .dark-bg,
 .thead th {
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 }
 
 .windowbody .dark-bg:last-child {
@@ -451,6 +451,9 @@ p {
 	background-image: url('../images/menu/gex.png');
 }
 
+#gildfight-Btn span {
+	background-image: url('../images/menu/gildfight.png');
+}
 
 /***********************************************************************************/
 
@@ -760,6 +763,7 @@ FP-Bar */
 .game-cursor option,
 .window-minimize,
 .window-settings,
+.window-map,
 .window-close,
 .window-head:not(span),
 .foe-helper-overlay,
@@ -777,6 +781,7 @@ FP-Bar */
 .game-cursor option:hover,
 .window-minimize:hover,
 .window-settings:hover,
+.window-map:hover,
 .window-close:hover,
 .window-head:not(span):hover,
 .button-own:hover,
@@ -815,8 +820,8 @@ FP-Bar */
 .OwnPartBoxBackground .outerArrow:before,
 .OwnPartBoxBackground .outerArrow span.arrow,
 .window-minimize,
-.window-settings,
 .window-ask,
+.window-settings,
 .window-speaker,
 .window-close {
 	background-image:  url('../images/hud/box-sprite.png'), url('../images/hud/box-sprite.png');
@@ -831,7 +836,7 @@ FP-Bar */
 	font-size: 0.9rem;
 	font-weight: 400;
 	color: var(--text-normal);
-	text-shadow: 0 1px 1px var(--65-black);
+	text-shadow: 0 1px 1px var(--black-65);
 	position: absolute;
 	text-align: left;
 	padding: 1px;
@@ -956,6 +961,21 @@ FP-Bar */
 	background-position: -192px -2px, -28px -26px;
 }
 
+.window-head span.window-map {
+    background-image: url(../images/hud/map.png), url(../images/hud/box-sprite.png);
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    margin-right: 2px;
+    background-repeat: no-repeat;
+    background-size: 11px , 240px;
+	background-position: 6px, -2px -26px;
+}
+
+.window-head span.window-map:hover {
+	background-position: 6px, -28px -26px;
+}
 
 .window-head span.window-close {
 	background-position: -2px -2px, -2px -26px;
@@ -1283,7 +1303,7 @@ FP-Bar */
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 	width: 100%;
 	height: 100%;
 	z-index: 250;
@@ -1302,6 +1322,10 @@ FP-Bar */
 	justify-content: center;
 }
 
+.no-select {
+	user-select: none !important;
+}
+
 /* date picker overwrite */
 
 :root{
@@ -1314,7 +1338,7 @@ FP-Bar */
 	--litepickerDayColor: var(--text-normal) !important;
 	--litepickerDayColorHover: var(--text-bright) !important;
 	--litepickerDayIsTodayColor: var(--text-bright) !important;
-	--litepickerDayIsInRange: var(--50-black) !important;
+	--litepickerDayIsInRange: var(--black-50) !important;
 	--litepickerDayIsLockedColor: var(--text-medium) !important;
 	--litepickerDayIsBookedColor: var(--text-medium) !important;
 	--litepickerDayIsStartColor: var(--text-dark) !important;
