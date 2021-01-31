@@ -387,7 +387,7 @@ let GildFights = {
 						p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
 						color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
 
-					t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%"></span>${cP[y]['progress']}</span>`);
+					t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
 				}
 			}
 		}
