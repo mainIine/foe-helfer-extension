@@ -716,7 +716,7 @@ let ProvinceMap = {
 		y: undefined
 	},
 
-	StrokeWidth: 5,
+	StrokeWidth: 4,
 	StrokeColor: '#fff',
 	FrameSize: 1,
 
@@ -834,14 +834,18 @@ let ProvinceMap = {
 
 
 			ProvinceMap.MapCTX.globalAlpha = 1;
-			ProvinceMap.MapCTX.font = '62px "Source Sans Pro"';
+			ProvinceMap.MapCTX.font = 'bold 45px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.stroke(path);
+			ProvinceMap.MapCTX.globalAlpha = 0.5;
+			ProvinceMap.MapCTX.fill(path);
 
-			ProvinceMap.MapCTX.strokeText(this.short, this.flag.x, this.flag.y);
-			ProvinceMap.MapCTX.strokeStyle = '#fff';
+			ProvinceMap.MapCTX.globalAlpha = 1;
+			ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
 			ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y);
-
+			ProvinceMap.MapCTX.globalAlpha = 0.7;
+			ProvinceMap.MapCTX.fillStyle = '#000000';
+			ProvinceMap.MapCTX.fillText(this.short, this.flag.x+2, this.flag.y+4);
 
 			// Mouseover? Tooltipp!
 			if(ProvinceMap.MapCTX.isPointInPath(path, mouse.x + this.flag.x, mouse.y + this.flag.y) && this.lockedUntil){
