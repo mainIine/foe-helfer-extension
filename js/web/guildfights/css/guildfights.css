@@ -101,6 +101,7 @@
 #LiveGildFightingBody #guilds {
 	width: 170px;
 	flex: 0 0 170px;
+	user-select: none;
 }
 
 #LiveGildFightingBody #nextup {
