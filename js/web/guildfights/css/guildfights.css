@@ -136,6 +136,10 @@
 	width: 4.2rem;
 }
 
+#LiveGildFightingBody #nextup li span.time-dynamic {
+	user-select: none;
+}
+
 #LiveGildFightingBody #guilds li:not(.header) {
 	border-left-width: 3px;
 	border-left-style: solid;
