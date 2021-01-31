@@ -1,5 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Le classement de l'Expédition de Guilde a été mis à jour.",
+    "API.GEXChampionship": "Le classement de l'Expédition de Guilde a été mis à jour",
     "API.GEXPlayer": "Le classement des contributions en Expédition de Guilde (EG) a été mis à jour",
     "API.LGGildMember": "Les informations à propos des GM de __player__ ont été mises à jour",
     "API.LGInvest": "Les infos sur vos investissements de GMs ont été mises à jour",
@@ -11,7 +11,7 @@
     "Boxes.Alerts.Form.Battleground": "Provinces des Champs de Bataille de Guilde (CBG)",
     "Boxes.Alerts.Form.Body": "Corps",
     "Boxes.Alerts.Form.Create": "Créer",
-    "Boxes.Alerts.Form.CreateAlert": "Rues",
+    "Boxes.Alerts.Form.CreateAlert": "Créer une alerte",
     "Boxes.Alerts.Form.CreateAllSectors": "Créer pour tous les secteurs",
     "Boxes.Alerts.Form.CreateNewAlert": "Créer une nouvelle notification",
     "Boxes.Alerts.Form.Datetime": "Date &amp; Heure",
@@ -94,7 +94,7 @@
     "Boxes.Calculator.LGNotOpen": "Le niveau suivant de ce GM est bloqué.",
     "Boxes.Calculator.LevelWarning": "ATTENTION : Élévation du GM à son niveau supérieur !",
     "Boxes.Calculator.MaxLevel": "Niveau max",
-    "Boxes.Calculator.Meds": "Méd.",
+    "Boxes.Calculator.Meds": "Médailles",
     "Boxes.Calculator.Profit": "Gain",
     "Boxes.Calculator.Settings.Save": "Enregistrer",
     "Boxes.Calculator.Settings.newValue": "Nouvelle valeur",
@@ -360,7 +360,7 @@
     "Boxes.OwnpartCalculator.IncludeData": "Données incluses",
     "Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
     "Boxes.OwnpartCalculator.LGTotalFP": "Total PFs requis",
-    "Boxes.OwnpartCalculator.Meds": "Méd.",
+    "Boxes.OwnpartCalculator.Meds": "Médailles",
     "Boxes.OwnpartCalculator.NoPlaceSafe": "Non sécurisé",
     "Boxes.OwnpartCalculator.Note": "Ne pas oublier",
     "Boxes.OwnpartCalculator.OldLevel": "Ancien niveau",
@@ -789,5 +789,5 @@
     "WsChat.UserLeave": " est parti.",
     "WsChat.UserReEnter": " est revenu dans la pièce.",
     "WsChat.World": "Monde - ",
-    "_Language": "Polir"
+    "_Language": "Anglais"
 }
