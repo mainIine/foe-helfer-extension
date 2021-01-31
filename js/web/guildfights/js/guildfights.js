@@ -75,12 +75,6 @@ let GildFights = {
 				if ($('#LiveGildFighting').length > 0 && data['responseData'][0] !== undefined)
 				{
 					GildFights.RefreshTable(data['responseData'][0]);
-
-					// is map box opened?
-					if($('#ProvinceMap').length > 0)
-					{
-						ProvinceMap.Refresh();
-					}
 				}
 			});
 			GildFights.InjectionLoaded = true;
@@ -317,7 +311,6 @@ let GildFights = {
 		let t = [],
 			mP = GildFights.MapData['map']['provinces'],
 			bP = GildFights.MapData['battlegroundParticipants'],
-			cnt = 0,
 			color = GildFights.Colors.find(e => e['id'] === 'own_guild_colour'),
 			own = bP.find(e => e['clan']['id'] === ExtGuildID);
 
@@ -334,6 +327,8 @@ let GildFights = {
 				break;
 			}
 
+			let id = mP[i]['id'];
+
 			for(let x = 0; x < bP.length; x++)
 			{
 				if(mP[i]['ownerId'] !== undefined && bP[x]['participantId'] === mP[i]['ownerId'])
@@ -341,11 +336,11 @@ let GildFights = {
 					// show current fights
 					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
 					{
-						t.push(`<tr id="province-${cnt}" data-id="${cnt}">`);
+						t.push(`<tr id="province-${id}" data-id="${id}">`);
 						t.push(`<td>`);
 						t.push(mP[i]['title']);
 						t.push('</td>');
-						t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
+						t.push('<td data-field="' + id + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
 
 						let cP = mP[i]['conquestProgress'];
 
@@ -362,40 +357,39 @@ let GildFights = {
 								p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
 								color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
 
-							t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%"> </span></span>`);
+							t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
 						}
-					}
-				}
-
-				// If sectors doesnt belong to anyone
-				if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0 && mP[i]['conquestProgress'][0]['participantId'] === bP[x]['participantId'])
-				{
-					t.push('<tr id=province-' + cnt + ' data-id="' + cnt + '">');
-					t.push('<td>');
-					t.push(mP[i]['title']);
-					t.push('</td>');
-					t.push('<td data-field="' + cnt + '-' + mP[i]['ownerId'] + '">');
-
-					let cP = mP[i]['conquestProgress'];
-
-					for(let y in cP)
-					{
-						if(!cP.hasOwnProperty(y))
-						{
-							break;
-						}
-
-						let max = cP[y]['maxProgress'],
-							progess = cP[y]['progress'],
-							width = Math.round((progess * 100) / max),
-							p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
-							color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
-
-						t.push('<span class="attack attacker-' + cP[y]['participantId'] + '"><span style="background-color:'+ color['main'] +';width:' + width + '%"></span></span></td>');
 					}
 				}
 			}
-			cnt++;
+
+			// If sectors doesnt belong to anyone
+			if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0)
+			{
+				t.push(`<tr id="province-${id}" data-id="${id}">`);
+				t.push('<td>');
+				t.push(mP[i]['title']);
+				t.push('</td>');
+				t.push('<td data-field="' + id + '">');
+
+				let cP = mP[i]['conquestProgress'];
+
+				for(let y in cP)
+				{
+					if(!cP.hasOwnProperty(y))
+					{
+						break;
+					}
+
+					let max = cP[y]['maxProgress'],
+						progess = cP[y]['progress'],
+						width = Math.round((progess * 100) / max),
+						p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
+						color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+
+					t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
+				}
+			}
 		}
 
 		t.push('</tbody>');
@@ -448,13 +442,10 @@ let GildFights = {
 			let sectorfree = date.toLocaleTimeString();
 
 
-			for(let x = 0; x < 1; x++)
+			if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
 			{
-				if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
-				{
-					arraysector.push(sectorfree); // push all datas into arrays
-					arrayprov.push(mP[i]);
-				}
+				arraysector.push(sectorfree); // push all datas into arrays
+				arrayprov.push(mP[i]);
 			}
 		}
 
@@ -466,11 +457,9 @@ let GildFights = {
 		{
 			if(!prov.hasOwnProperty(x)) continue;
 
-			console.log('prov: ', prov[x]); // ownerId
-
 			let countDownDate = moment.unix(prov[x]['lockedUntil']),
 				color = GildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
-				intervalID = setInterval(function(){
+				intervalID = setInterval(()=>{
 					GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 				}, 1000);
 
@@ -630,8 +619,9 @@ let GildFights = {
 
 			// Attackers already exist
 			if( cell.find('.attacker-' + d['participantId']).length > 0 ){
-				// Update only the percentages
-				cell.find('.attacker-' + d['participantId']).css({'width': width + '%'});
+
+				// Update the percentages and progress counter
+				cell.find('.attacker-' + d['participantId']).css({'width': width + '%'}).text(progess);
 			}
 
 			// Insert new "bar
@@ -699,9 +689,9 @@ let GildFights = {
 }
 };
 
-
 /**
- * @type {{ProvinceObject: {}, FrameSize: number, prepare: ProvinceMap.prepare, MapMerged: [], ParseNumber: (function(*=, *): {num: number, index: *}), MapCTX: {}, ParseMove: (function(*=, *=)), ParseCurve: (function(*=, *=)), StrokeColor: string, MapSize: {width: number, height: number}, Refresh: ProvinceMap.Refresh, ParsePathToCanvas: (function(*=): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, DrawProvinces: ProvinceMap.DrawProvinces, ProvinceData: (function(): ({flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]})[]), SVGPaths: (function(): ({path: string, id: number}|{path: string, id: number}|{path: string, id: number}|{path: string, id: number}|{path: string, id: number})[]), Map: {}, hexToRgb: (function(*=, *=): string)}}
+ *
+ * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, MapMerged: [], ParseNumber: (function(*=, *): {num: number, index: *}), MapCTX: {}, ParseMove: (function(*=, *=)), ParseCurve: (function(*=, *=)), StrokeColor: string, MapSize: {width: number, height: number}, PrepareProvinces: ProvinceMap.PrepareProvinces, Refresh: ProvinceMap.Refresh, ParsePathToCanvas: (function(*=): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, DrawProvinces: ProvinceMap.DrawProvinces, ToolTipId: boolean, ProvinceData: (function(): ({flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]}|{flag: {x: number, y: number}, name: string, short: string, id: number, connections: number[]})[]), SVGPaths: (function(): ({path: string, id: number}|{path: string, id: number}|{path: string, id: number}|{path: string, id: number}|{path: string, id: number})[]), Map: {}, hexToRgb: (function(*=, *=): string)}}
  */
 let ProvinceMap = {
 
@@ -710,6 +700,9 @@ let ProvinceMap = {
 
 	MapMerged: [],
 	ProvinceObject: {},
+
+	ToolTipActive: false,
+	ToolTipId: false,
 
 	Mouse: {
 		x: undefined,
@@ -767,42 +760,25 @@ let ProvinceMap = {
 		ProvinceMap.MapCTX.translate(-3, -3);
 		ProvinceMap.MapCTX.globalCompositeOperation = 'destination-over';
 
-		const mouse = {
-			x: undefined,
-			y: undefined,
-			oX: undefined,
-			oY: undefined
-		}
-
 		ProvinceMap.Map.addEventListener('mousedown', e => {
 			handleMouseDown(e);
 		});
 
 		// get the mouse-cords relativ the the minified canvas
-		function handleMouseDown(e){
+		function handleMouseDown(e)
+		{
 			e.preventDefault();
 			e.stopPropagation();
 
 			const $canvas = $(ProvinceMap.Map),
 				canvasOffset = $canvas.offset(),
-				offsetX = canvasOffset.left,
-				offsetY = canvasOffset.top;
+				canvasWidth = $canvas.width(),
+				offsetX = e.pageX - canvasOffset.left,
+				offsetY = e.pageY - canvasOffset.top,
+				factor = ((canvasWidth / 2500) * 100);
 
-			const canvas = ProvinceMap.Map;
-			const imgSize = {
-				width: 600,
-				height: 400
-			};
-			const canvasSize = canvas.getBoundingClientRect();
-			const canvasX = e.ClientX - canvasSize.x;
-			const canvasY = e.ClientY - canvasSize.x;
-			const imageX = canvasX / canvasSize.width * imgSize.width;
-			const imageY = canvasY / canvasSize.height * imgSize.height;
-
-			mouse.x = parseInt(e.clientX - offsetX);
-			mouse.y = parseInt(e.clientY - offsetY);
-			mouse.oX = offsetX;
-			mouse.oy = offsetY;
+			ProvinceMap.Mouse.x = ((offsetX * 100) / factor);
+			ProvinceMap.Mouse.y = ((offsetY * 100) / factor);
 
 			ProvinceMap.Refresh();
 		}
@@ -822,9 +798,27 @@ let ProvinceMap = {
 		}
 
 
-		Province.prototype.drawGGMap = function() {
+		Province.prototype.drawGGMap = function()
+		{
 
 			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
+
+			/*
+
+				"this" object
+
+				alpha: 0.3
+				fillStyle: "rgba(190,189,189,.3)"
+				flag: {x: 878, y: 1063}
+				id: 9
+				links: (5) [2, 8, 10, 22, 23]
+				name: "C2: Tayencoria"
+				ownerID: 56596
+				ownerName: "Vandalen"
+				path: "M853.82,1179.501c-1.966-3.399-3.049-5.821-4.618-7.874 c-4...."
+				short: "C2T"
+				strokeStyle: "rgb(190,189,189)"
+			*/
 
 			ProvinceMap.MapCTX.globalAlpha = this.alpha;
 			ProvinceMap.MapCTX.strokeStyle = this.strokeStyle;
@@ -832,7 +826,7 @@ let ProvinceMap = {
 
 			const path = ProvinceMap.ParsePathToCanvas(this.path);
 
-
+			// Province border
 			ProvinceMap.MapCTX.globalAlpha = 1;
 			ProvinceMap.MapCTX.font = 'bold 45px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
@@ -840,21 +834,27 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.globalAlpha = 0.5;
 			ProvinceMap.MapCTX.fill(path);
 
+			// Title e.g. "B4D"
 			ProvinceMap.MapCTX.globalAlpha = 1;
-			ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
+			ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
 			ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y);
+
+			// Shadow from title
 			ProvinceMap.MapCTX.globalAlpha = 0.7;
 			ProvinceMap.MapCTX.fillStyle = '#000000';
 			ProvinceMap.MapCTX.fillText(this.short, this.flag.x+2, this.flag.y+4);
 
-			// Mouseover? Tooltipp!
-			if(ProvinceMap.MapCTX.isPointInPath(path, mouse.x + this.flag.x, mouse.y + this.flag.y) && this.lockedUntil){
 
+			// Mouseclick? Tooltip!
+			if(ProvinceMap.MapCTX.isPointInPath(path, ProvinceMap.Mouse.x, ProvinceMap.Mouse.y) && this.lockedUntil)
+			{
 				ProvinceMap.MapCTX.font = '40px Arial';
 				ProvinceMap.MapCTX.fillStyle  = '#ffffff';
 				ProvinceMap.MapCTX.textAlign = 'left';
 
-				ProvinceMap.MapCTX.fillText(moment.unix(this.lockedUntil).format('HH:mm:ss'), mouse.oX + this.flag.x, mouse.oY + this.flag.y);
+				ProvinceMap.MapCTX.fillText(moment.unix(this.lockedUntil).format('HH:mm:ss'), ProvinceMap.Mouse.x, ProvinceMap.Mouse.y);
+
+				ProvinceMap.ToolTipActive = true;
 			}
 		}
 
@@ -940,9 +940,23 @@ let ProvinceMap = {
 
 		const provinces = ProvinceMap.MapMerged;
 
+		ProvinceMap.ToolTipActive = false;
 		provinces.forEach(province => {
 			province.updateGGMap();
 		});
+
+		if(!ProvinceMap.ToolTipActive)
+		{
+			clearInterval(ProvinceMap.ToolTipId);
+			ProvinceMap.ToolTipId = false;
+		}
+		/*
+		else {
+			ProvinceMap.ToolTipId = setInterval(()=>{
+				ProvinceMap.Refresh();
+			}, 1000);
+		}
+		*/
 	},
 
 
