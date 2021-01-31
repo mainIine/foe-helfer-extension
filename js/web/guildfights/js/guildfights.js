@@ -437,33 +437,19 @@ let GildFights = {
 		{
 			if(!mP.hasOwnProperty(i)) continue;
 
-			let date = new Date(),
-				basictime = 1610000000, // given by foe
-				maxtime = 950400, // 11 days GG
-				locked = mP[i]['lockedUntil'] - basictime, // seconds whole locked time
-				newtime = maxtime - locked;
-
-			date.setDate(date.getDate() + (1 + 7 - date.getDay()) % 7) + date.setHours(7) + date.setMinutes(13) + date.setSeconds(0);
-
-			// immer bis Montags 07:13:00
-			date.setSeconds(date.getSeconds() - newtime);
-			let sectorfree = date.toLocaleTimeString();
-
-
-			for(let x = 0; x < 1; x++)
-			{
+			let sectorfree = moment.unix(mP[i]['lockedUntil']).format('HH:mm:ss');
+			
 				if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
 				{
 					arraysector.push(sectorfree); // push all datas into arrays
 					arrayprov.push(mP[i]);
 				}
-			}
 		}
 
 		arraysector.sort();
 		let prov = arrayprov.sort((a, b)=> { return a.lockedUntil - b.lockedUntil});
-
 		let cntTimers = 0;
+		
 		for(let x in prov)
 		{
 			if(!prov.hasOwnProperty(x)) continue;
@@ -475,11 +461,10 @@ let GildFights = {
 				intervalID = setInterval(function(){
 					GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 				}, 1000);
-
+				
 			t.push(`<li id="timer-${prov[x]['id']}">`);
 			t.push(`<span class="prov-name"${color['main'] ? ' style="color:' + color['main'] + '"' : ''}>${prov[x]['title']}</span>`);
 			t.push(`<span class="time-static">${arraysector[x]}</span>`);
-
 
 			GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
