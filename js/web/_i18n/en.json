@@ -1,6 +1,6 @@
 ﻿{
-    "API.GEXChampionship": "GEx Gilden-Ranking Info wurde aktualisiert.",
-    "API.GEXPlayer": "GE Members Ranking info has been updated",
+    "API.GEXChampionship": "Guild expedition ranking info has been updated",
+    "API.GEXPlayer": "GEx Members Ranking info has been updated",
     "API.LGGildMember": "__player__'s GB info has been updated",
     "API.LGInvest": "Your great building Investment info has been updated",
     "API.UpdateSuccess": "Info Updated Successfully!",
@@ -11,8 +11,8 @@
     "Boxes.Alerts.Form.Battleground": "Battleground Provinces",
     "Boxes.Alerts.Form.Body": "Body",
     "Boxes.Alerts.Form.Create": "Create",
-    "Boxes.Alerts.Form.CreateAlert": "Streets",
-    "Boxes.Alerts.Form.CreateAllSectors": "Create For All Sectors",
+    "Boxes.Alerts.Form.CreateAlert": "Create alert",
+    "Boxes.Alerts.Form.CreateAllSectors": "Create for all sectors",
     "Boxes.Alerts.Form.CreateNewAlert": "Create New Alert",
     "Boxes.Alerts.Form.Datetime": "Date &amp; Time",
     "Boxes.Alerts.Form.Delete": "Delete",
@@ -791,5 +791,5 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "Polish"
+    "_Language": "English"
 }
