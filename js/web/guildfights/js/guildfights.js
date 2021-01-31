@@ -387,7 +387,7 @@ let GildFights = {
 						p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
 						color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
 
-					t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
+					t.push(`<span class="attack-wrapper"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%"></span>${cP[y]['progress']}</span>`);
 				}
 			}
 		}
@@ -419,40 +419,24 @@ let GildFights = {
 
 		// @Todo: translation
 		t.push('<div id="nextup"><table class="foe-table"');
-		t.push('<thead><tr><th class="prov-name">Provinz</th><th class="time-static">um</th><th class="time-dynamic">in</th></tr></thead>');
+		t.push('<thead><tr><th class="prov-name" style="user-select:text">Provinz</th><th class="time-static" style="user-select:text">um</th><th class="time-dynamic">in</th></tr></thead>');
 
-		let arraysector = [],
-			arrayprov = [];
+		let arrayprov = [];
 
 		// Time until next sectors will be available
 		for(let i in mP)
 		{
 			if(!mP.hasOwnProperty(i)) continue;
 
-			let date = new Date(),
-				basictime = 1610000000, // given by foe
-				maxtime = 950400, // 11 days GG
-				locked = mP[i]['lockedUntil'] - basictime, // seconds whole locked time
-				newtime = maxtime - locked;
-
-			date.setDate(date.getDate() + (1 + 7 - date.getDay()) % 7) + date.setHours(7) + date.setMinutes(13) + date.setSeconds(0);
-
-			// immer bis Montags 07:13:00
-			date.setSeconds(date.getSeconds() - newtime);
-			let sectorfree = date.toLocaleTimeString();
-
 
 			if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
 			{
-				arraysector.push(sectorfree); // push all datas into arrays
-				arrayprov.push(mP[i]);
+					arrayprov.push(mP[i]);  // push all datas into array
 			}
 		}
 
-		arraysector.sort();
 		let prov = arrayprov.sort((a, b)=> { return a.lockedUntil - b.lockedUntil});
 
-		let cntTimers = 0;
 		for(let x in prov)
 		{
 			if(!prov.hasOwnProperty(x)) continue;
@@ -464,21 +448,14 @@ let GildFights = {
 				}, 1000);
 
 			t.push(`<tr id="timer-${prov[x]['id']}">`);
-			t.push(`<td class="prov-name"${color['main'] ? ' style="color:' + color['main'] + '"' : ''}>${prov[x]['title']}</td>`);
-			t.push(`<td class="time-static">${arraysector[x]}</td>`);
-
+			t.push(`<td class="prov-name"${color['main'] ? ' style="user-select:text; color:' + color['main'] + '"' : ''}>${prov[x]['title']}</td>`);
 
 			GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
-			t.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${arraysector[x]}</td>`);
+			t.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm:ss')}</td>`);
+			t.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 			t.push('</tr>');
-
-			// show only the next 10 timers
-			if(cntTimers === 9){
-				break;
 			}
-			cntTimers++;
-		}
 
 		t.push('</table></div>');
 
