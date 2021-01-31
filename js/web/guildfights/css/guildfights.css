@@ -94,7 +94,6 @@
 	list-style: none;
 	margin: 0;
 	padding: 0 5px;
-	user-select: text;
 }
 
 #LiveGildFightingBody #guilds {
@@ -111,7 +110,6 @@
 
 #LiveGildFightingBody #nextup {
 	overflow-y: auto;
-	user-select: text;
 }
 
 #LiveGildFightingBody #nextup td.prov-name {
