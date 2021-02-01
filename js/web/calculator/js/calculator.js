@@ -264,8 +264,7 @@ let Calculator = {
 
 
 	/**
-	 * Der Tabellen-Körper mit allen Funktionen
-	 *
+	 * The table body with all functions
 	 */
 	CalcBody: ()=> {
 		let hFordern = [],
@@ -625,10 +624,10 @@ let Calculator = {
 		
 
 	/**
-	 * Formatiert den Kurs
-	 * *
-	 * * @param Kurs
-	 * */
+	 * Formats the course
+	 *
+	 * @param Kurs
+	 */
 	FormatKurs: (Kurs) => {
 		if (Kurs === 0) {
 			return '-';
@@ -640,10 +639,10 @@ let Calculator = {
 
 
 	/**
-	 * Formatiert die +/- Anzeige neben dem Ertrag (falls vorhanden)
-	 * *
-	 * *@param ForderRankDiff
-	 * */
+	 * Formats the +/- display next to the yield (if present)
+	 *
+	 * @param ForderRankDiff
+	 */
 	FormatForderRankDiff: (ForderRankDiff) => {
 		if (ForderRankDiff < 0) {
 			return ' <small class="text-success">' + HTML.Format(ForderRankDiff) + '</small>';
