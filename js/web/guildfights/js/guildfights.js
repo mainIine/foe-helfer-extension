@@ -120,7 +120,7 @@ let GildFights = {
 		} else {
 			GildFights.ShowPlayerBox();
 		}
-    },
+	},
 
 
 	/**
@@ -182,15 +182,15 @@ let GildFights = {
 			tN = 0,
 			tF = 0;
 
-			GildFights.PlayerBoxContent = [];
+		GildFights.PlayerBoxContent = [];
 
-			GildFights.PlayerBoxContent.push({
-				player: 'player',
-				negotiationsWon: 'negotiations',
-				battlesWon: 'battles',
-				total: 'total'
-			})
-	
+		GildFights.PlayerBoxContent.push({
+			player: 'player',
+			negotiationsWon: 'negotiations',
+			battlesWon: 'battles',
+			total: 'total'
+		})
+
 		for(let i in GildFights.NewAction)
 		{
 			if(!GildFights.NewAction.hasOwnProperty(i)){
@@ -241,7 +241,7 @@ let GildFights = {
 			b.push('<td class="text-center">');
 			b.push(playerNew['battlesWon'] + fightAddOn);
 			b.push('</td>');
-			
+
 			b.push('<td class="text-center">');
 			let both = playerNew['battlesWon'] + (playerNew['negotiationsWon']*2);
 			b.push(both);
@@ -257,9 +257,9 @@ let GildFights = {
 			})
 		}
 
-        let tNF = (tN*2)+tF;
+		let tNF = (tN*2)+tF;
 
-        t.push('<table class="foe-table">');
+		t.push('<table class="foe-table">');
 
 		t.push('<thead>');
 		t.push('<tr>');
@@ -431,7 +431,7 @@ let GildFights = {
 
 			if(mP[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mP[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
 			{
-					arrayprov.push(mP[i]);  // push all datas into array
+				arrayprov.push(mP[i]);  // push all datas into array
 			}
 		}
 
@@ -455,7 +455,7 @@ let GildFights = {
 			t.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm:ss')}</td>`);
 			t.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 			t.push('</tr>');
-			}
+		}
 
 		t.push('</table></div>');
 
@@ -656,14 +656,14 @@ let GildFights = {
 
 			blob = new Blob([csv.join('\r\n')], {type: 'text/csv;charset=utf-8'});
 			file = `ggfights-${ExtWorld}.csv`;
+		}
+
+		MainParser.ExportFile(blob, file);
+
+		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function(){
+			$(this).remove();
+		});
 	}
-
-	MainParser.ExportFile(blob, file);
-
-	$(`#GildPlayersSettingsBox`).fadeToggle('fast', function(){
-		$(this).remove();
-	});
-}
 };
 
 /**
@@ -963,7 +963,7 @@ let ProvinceMap = {
 			if (e.short)
 			{
 
-				switch (e.short.substring(1, 2)) 
+				switch (e.short.substring(1, 2))
 				{
 					case '4':
 						ProvinceMap.MapCTX.fillStyle = "rgba(234,255,0,.9)";
@@ -1024,7 +1024,7 @@ let ProvinceMap = {
 					break;
 
 				case "z":
-					// ProvinceMap.MapCTX.closePath();
+				// ProvinceMap.MapCTX.closePath();
 			}
 		}
 

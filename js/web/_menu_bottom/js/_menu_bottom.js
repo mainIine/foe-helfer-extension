@@ -289,10 +289,11 @@ let _menu_bottom = {
 				$('#foe-helper-hud').removeClass('is--sorting');
 				if (_menu.equalTo(storedItems)) return;
 
-				$.toast({
-					heading: i18n('Menu.SaveMessage.Title'),
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Menu.SaveMessage.Title'),
 					text: i18n('Menu.SaveMessage.Desc'),
-					icon: 'success',
+					type: 'success',
 					hideAfter: 5000
 				});
 			}

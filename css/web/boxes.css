@@ -1136,11 +1136,15 @@ FP-Bar */
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-.jq-toast-wrap { display: block; position: fixed; /*width: 250px*/;  pointer-events: none !important; margin: 0; padding: 0; letter-spacing: normal; z-index: 9000 !important; }
+.jq-toast-wrap { display: block; position: fixed; pointer-events: none !important; margin: 0; padding: 0; letter-spacing: normal; z-index: 9000 !important; }
 .jq-toast-wrap * { margin: 0; padding: 0; }
 
-.jq-toast-wrap.bottom-left { bottom: 20px; left: 20px; right: unset }
-.jq-toast-wrap.bottom-right { bottom: 70px; right: 26px; left: unset }
+.jq-toast-wrap.bottom-left { bottom: 162px; left: 20px; right: unset }
+
+.jq-toast-wrap.bottom-right { bottom: 13px; right: 17px; left: unset }
+.jq-toast-wrap.menu-rightbar.bottom-right { right: 80px;}
+.jq-toast-wrap.menu-bottombar.bottom-right { bottom: 60px;}
+
 .jq-toast-wrap.top-left { top: 20px; left: 20px; right: unset }
 .jq-toast-wrap.top-right { top: 20px; right: 40px; left: unset }
 
