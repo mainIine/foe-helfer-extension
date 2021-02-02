@@ -147,16 +147,10 @@ let Investment = {
 		}
 
 		MainParser.send2Server(Investment.Data, 'LGInvestments', function(r){
-
-
-			if (r['status'] === 'OK'){
-				// localStorage.setItem('LGInvestments', MainParser.getAddedDateTime(0, 5));
-			}
-
-			$.toast({
-				heading: i18n('API.UpdateSuccess'),
+			HTML.ShowToastMsg({
+				head: i18n('API.UpdateSuccess'),
 				text: i18n('API.LGInvest'),
-				icon: 'success'
+				type: 'success'
 			});
 		});
 	}

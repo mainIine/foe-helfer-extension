@@ -487,12 +487,13 @@ let HTML = {
 		}, 100);
 	},
 
-	MapBox: (id)=> {
 
+	MapBox: (id)=> {
 		setTimeout(()=> {
 			new Function(`${HTML.customFunctions[id + 'Map']}`)();
 		}, 100);
 	},
+
 
 	/**
 	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
@@ -663,5 +664,21 @@ let HTML = {
 
 	LeaveFullscreen:()=> {
 
+	},
+
+
+	ShowToastMsg: (d)=> {
+
+		if (!Settings.GetSetting('ShowNotifications') && !d['show']) return;
+
+		$.toast({
+			heading: d['head'],
+			text: d['text'],
+			icon: d['type'],
+			hideAfter: d['hideAfter'],
+			position: Settings.GetSetting('NotificationsPosition', true),
+			extraClass: localStorage.getItem('SelectedMenu') || 'bottombar',
+			stack: localStorage.getItem('NotificationStack') || 4
+		});
 	}
 };
