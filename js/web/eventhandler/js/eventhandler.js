@@ -127,38 +127,35 @@ let EventHandler = {
 				if (isNew) count++;
 			}
 
-			if (InvalidDates.length > 0) {
-				$.toast({
-					heading: i18n('Boxes.Investment.DateParseError'),
+			if (InvalidDates.length > 0)
+			{
+
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Boxes.Investment.DateParseError'),
 					text: HTML.i18nReplacer(i18n('Boxes.Investment.DateParseErrorDesc'), { InvalidDate: InvalidDates[0]}),
-					icon: 'error',
+					type: 'error',
 					hideAfter: 6000,
-					position: Settings.GetSetting('NotificationsPosition', true)
 				});
             }
 			else if (count === 0) {
-				if (!Settings.GetSetting('ShowNotifications')) return;
 
-				$.toast({
-					heading: i18n('Boxes.Investment.AllUpToDate'),
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.Investment.AllUpToDate'),
 					text: i18n('Boxes.Investment.AllUpToDateDesc'),
-					icon: 'info',
+					type: 'info',
 					hideAfter: 6000,
-					position: Settings.GetSetting('NotificationsPosition', true)
 				});
 			}
 			else {
-				if (!Settings.GetSetting('ShowNotifications')) return;
-
-				$.toast({
-					heading: i18n('Boxes.Investment.PlayerFound'),
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.Investment.PlayerFound'),
 					text: HTML.i18nReplacer(
 						count === 1 ? i18n('Boxes.Investment.PlayerFoundCount') : i18n('Boxes.Investment.PlayerFoundCounter'),
 						{count: count}
 					),
-					icon: 'success',
+					type: 'success',
 					hideAfter: 2600,
-					position: Settings.GetSetting('NotificationsPosition', true)
 				});
 			}
 		});
@@ -387,11 +384,12 @@ let EventHandler = {
 	},
 
 
-	/*
-	 * Aktualisiert nur die Tabelle des Moppelhelper
-	 * 
+	/**
+	 * Updates the Motivation Helper table
 	 *
-	 * */
+	 * @returns {Promise<void>}
+	 * @constructor
+	 */
 	CalcMoppelHelperTable: async () => {
 		let h = [];
 
@@ -416,12 +414,16 @@ let EventHandler = {
 		h.push('<th></th>');
 		h.push('<th data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
 		h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
-		for (let i = 0; i < EventHandler.MaxVisitCount; i++) {
+
+		for (let i = 0; i < EventHandler.MaxVisitCount; i++)
+		{
 			h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i + 1) + '</th>');
 		}
+
 		h.push('</tr>');
 
-		for (let i = 0; i < PlayerList.length; i++) {
+		for (let i = 0; i < PlayerList.length; i++)
+		{
 			let Player = PlayerList[i];
 
 			if (Player['IsSelf']) continue;
@@ -460,11 +462,17 @@ let EventHandler = {
 
 			h.push('<tr>');
 			h.push('<td class="is-number" data-number="' + (i + 1) + '">#' + (i + 1) + '</td>');
+
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
+
 			h.push('<td style="white-space:nowrap" data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
+
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
-			for (let j = 0; j < EventHandler.MaxVisitCount; j++) {
-				if (j < Visits.length) {
+
+			for (let j = 0; j < EventHandler.MaxVisitCount; j++)
+			{
+				if (j < Visits.length)
+				{
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
 					let StrongColor = (Days < 3 * (j + 1) ? HTML.GetColorGradient(Days, 0, 3 * (j + 1), '00ff00', 'ffff00') : HTML.GetColorGradient(Days, 3 * (j + 1), 7 * (j + 1), 'ffff00', 'ff0000'));
@@ -485,11 +493,14 @@ let EventHandler = {
 		await $('#moppelhelperTable').html(h.join(''))
     },
 
-	/*
-	 * Return the Type of the Event
-	 * 
+
+	/**
+	 * Return the type of the event
+	 *
 	 * @param Event
-	 * */
+	 * @returns {string}
+	 * @constructor
+	 */
 	GetEventType: (Event) => {
 		if (Event['eventtype'] === 'social_interaction' && (Event['interactiontype'] === 'motivate' || Event['interactiontype'] === 'polish' || Event['interactiontype'] === 'polivate_failed')) return 'MoppelEvent';
 		if (Event['eventtype'] === 'friend_tavern_sat_down') return 'TavernVisit';
@@ -505,7 +516,7 @@ let EventHandler = {
 	 * Returns the shapes for regex function
 	 *
 	 * @param lng
-	 * @returns {{yesterday: string, sunday: string, saturday: string, tuesday: string, today: string, wednesday: string, thursday: string, friday: string, monday: string}|*}
+	 * @returns {{yesterday: RegExp, sunday: RegExp, saturday: RegExp, tuesday: RegExp, today: RegExp, wednesday: RegExp, thursday: RegExp, friday: RegExp, monday: RegExp}|*}
 	 * @constructor
 	 */
 	DateShapes: (lng)=> {
