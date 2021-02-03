@@ -16,19 +16,20 @@
 #Productions {
 	top: 100px;
 	left: 100px;
-	padding: 5px 0 0 0;
-	width: 720px;
+	width: 780px;
+	height: 500px;
 }
-
 
 #Productions #ProductionsBody {
 	overflow-x: hidden;
 	overflow-y: auto;
-	max-height: 500px;
-	margin-top: 2px;
 }
 
 #Productions #ProductionsBody strong.success {
+	color: var(--text-success);
+}
+
+#Productions #ProductionsBody span.success {
 	color: var(--text-success);
 }
 

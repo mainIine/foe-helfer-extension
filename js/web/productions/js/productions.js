@@ -23,8 +23,6 @@ let Productions = {
 
 	ActiveTab: 1,
 
-	BuildingTypes: {},
-
 	Tabs: [],
 	TabsContent: [],
 
@@ -46,12 +44,16 @@ let Productions = {
 
 	Buildings: [
 		'greatbuilding',
-		'residential',
-		'random_production',
 		'production',
-		'main_building',
+		'random_production',
+		'residential',
+		'decoration',
 		'street',
-		'boost'
+		'goods',
+		'culture',
+		'main_building',
+		'clan_power_production',
+		'boost',
 	],
 
 	/**
@@ -60,19 +62,6 @@ let Productions = {
 	init: () => {
 
 		moment.locale(i18n('Local'));
-
-		if (Object.keys(Productions.BuildingTypes).length === 0) {
-			Productions.BuildingTypes.greatbuilding = i18n('Boxes.Productions.Headings.greatbuilding');
-			Productions.BuildingTypes.production = i18n('Boxes.Productions.Headings.production');
-			Productions.BuildingTypes.random_production = i18n('Boxes.Productions.Headings.random_production');
-			Productions.BuildingTypes.residential = i18n('Boxes.Productions.Headings.residential');
-			Productions.BuildingTypes.decoration = i18n('Boxes.Productions.Headings.decoration');
-			Productions.BuildingTypes.street = i18n('Boxes.Productions.Headings.street');
-			Productions.BuildingTypes.goods = i18n('Boxes.Productions.Headings.goods');
-			Productions.BuildingTypes.culture = i18n('Boxes.Productions.Headings.culture');
-			Productions.BuildingTypes.main_building = i18n('Boxes.Productions.Headings.main_building');
-			Productions.BuildingTypes.boost = i18n('Boxes.Productions.Headings.boost');
-		}
 
 		Productions.CombinedCityMapData = MainParser.CityMapData;
 		if (MainParser.CityMapEraOutpostData) {
@@ -336,6 +325,10 @@ let Productions = {
 			if (d['state']['current_product']['clan_power']) {
 				CurrentResources['clan_power'] = d['state']['current_product']['clan_power']; // z.B. Ruhmeshalle
 			}
+
+			if (d['state']['current_product']['name'] === 'penal_unit') {
+				CurrentResources['units'] = d['state']['current_product']['amount'];
+			}
 			
 			if (d['state']['current_product']['units']) {
 				CurrentResources['units'] = d['state']['current_product']['units'];
@@ -404,13 +397,13 @@ let Productions = {
 			CityEntity['staticResources']['resources']['population'];
 		}
 
-		if (d['state'] && d['state']['__class__'] !== 'ConstructionState' && d['state']['__class__'] !== 'UnconnectedState') {
+		if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
 
 			if (CityEntity['staticResources'] && CityEntity['staticResources']['resources'] && CityEntity['staticResources']['resources']['population']) {
 				Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
 			}
 
-			if (CityEntity['provided_happiness']) {
+			if (CityEntity['provided_happiness'] && d['state']['__class__'] !== 'UnconnectedState') {
 				let Faktor = 1;
 
 				if (d['state']['__class__'] === 'PolishedState') {
@@ -513,11 +506,12 @@ let Productions = {
 		HTML.AddCssFile('productions');
 
 		HTML.Box({
-			'id': 'Productions',
-			'title': i18n('Boxes.Productions.Title'),
-			'auto_close': true,
-			'dragdrop': true,
-			'minimize': true
+			id: 'Productions',
+			title: i18n('Boxes.Productions.Title'),
+			auto_close: true,
+			dragdrop: true,
+			minimize: true,
+			resize: true
 		});
 
 		Productions.ActiveTab = 1;
@@ -568,8 +562,10 @@ let Productions = {
 				rowA = [],
 				rowB = [],
 				countProducts = [],
+				countProductsDone = [],
 				countAll = 0,
 				countAllMotivated = 0,
+				countAllDone = 0,
 				sizes = [],
 				sizetooltips = [];
       
@@ -583,7 +579,7 @@ let Productions = {
 						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0);
 
 					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Production.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
 	            }
 
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
@@ -594,11 +590,12 @@ let Productions = {
 					if(type !== 'packaging')
 					{
 						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type),
-						MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
+							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
 							CssClass = '';
 
 						countAll += ProductCount;
 						countAllMotivated += MotivatedProductCount;
+						countAllDone += (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime() ? ProductCount : 0);
 
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
@@ -614,6 +611,12 @@ let Productions = {
 							if (type === 'strategy_points') {
 								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 							}
+							else if (type === 'premium') {
+								EfficiencyString = HTML.Format(MainParser.round(efficiency * 1000) / 1000);
+							}
+							else if (type === 'units') {
+								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
+							}
 							else {
 								EfficiencyString = HTML.Format(MainParser.round(efficiency));
 							}
@@ -625,11 +628,11 @@ let Productions = {
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + size + '" title="' + SizeToolTip + '">' + size + '</td>');
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
-						rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
-
+						
 						if (type !== 'population' && type !== 'happiness') {
+							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 							}
 							else {
 								rowA.push('<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
@@ -653,17 +656,21 @@ let Productions = {
 
 						for(let p in buildings[i]['products'])
 						{
-							if(buildings[i]['products'].hasOwnProperty(p) && (Productions.Types.includes(p) === false || p === 'packaging'))
-							{
-								if(countProducts[p] === undefined)
-								{
+							if (buildings[i]['products'].hasOwnProperty(p) && (Productions.Types.includes(p) === false || p === 'packaging')) {
+								if (countProducts[p] === undefined) {
 									countProducts[p] = 0;
+									countProductsDone[p] = 0;
 								}
 
 								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i]['dailyfactor'], p);
 								countProducts[p] += Amount;
 								CurrentBuildingCount += Amount;
 								countAll += Amount;
+
+								if (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime()) {
+									countProductsDone[p] += Amount;
+									countAllDone += Amount;
+								}
 
 								pA.push(HTML.Format(Amount) + ' ' + Productions.GetGoodName(p));
 							}
@@ -674,7 +681,7 @@ let Productions = {
 							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>';
 
 						if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>';
+							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>';
 						}
 						else {
 							tds += '<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
@@ -730,7 +737,8 @@ let Productions = {
 			if(Productions.isEmpty(countProducts) === false)
 			{
 				let eras = [],
-					eraSums = [];
+					eraSums = [],
+					eraSumsDone = [];
 
 				// nach Zeitalter gruppieren und Array zusammen fummlen
 				for(let ca in countProducts)
@@ -747,8 +755,10 @@ let Productions = {
 
 						if (!eraSums[era]) {
 							eraSums[era] = 0;
+							eraSumsDone[era] = 0;
 						}
 						eraSums[era] += countProducts[ca];
+						eraSumsDone[era] += countProductsDone[ca];
 					}
 				}
 
@@ -772,12 +782,11 @@ let Productions = {
 				// Zeitalterweise in die Tabelle legen
 				for (let era = eras.length; era >= 0; era--)
 				{
-					if(!eras.hasOwnProperty(era))
-					{
-						continue;
-					}
-
-					table.push('<tr><th colspan="4"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th><th colspan="2" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong></th></tr>');
+					if (!eras.hasOwnProperty(era)) continue;
+					
+					table.push('<tr><th colspan="3"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th>');
+					table.push('<th colspan="3" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong>');
+					table.push(' <span class="success">' + i18n('Boxes.Productions.Done') + ':</span> <strong class="success">' + HTML.Format(eraSumsDone[era]) + '</strong></th ></tr > ');
 
 					table.push('<tr><td colspan="6" class="all-products">');
 
@@ -789,7 +798,8 @@ let Productions = {
 
 				table.push('<tbody class="packaging-mode packaging-single">');
 
-				table.push('<tr class="other-header"><td class="total-products text-right" colspan="6"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong></td></tr>');
+				table.push('<tr class="other-header"><td class="total-products text-right" colspan="6"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong>');
+				table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong></td ></tr > ');
 
 				table.push('<tr class="sorter-header">');
 				table.push('<th class="ascending game-cursor" data-type="packaging-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
@@ -820,8 +830,11 @@ let Productions = {
 				table.push('<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span>');
 				table.push('</th>');
 
-				table.push('<th colspan="2"></th>');
-				table.push('<th colspan="4" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong></th>');
+				table.push('<th colspan="6" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong>');
+				if (type !== 'population' && type !== 'happiness') {
+					table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong>');
+				}
+				table.push('</th>');
 				table.push('</tr>');
 
 				table.push('</thead>');
@@ -843,7 +856,6 @@ let Productions = {
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('</tr>');
-
 			}
 
 			table.push( rowA.join('') );
@@ -885,9 +897,6 @@ let Productions = {
 		{
 			if(building.hasOwnProperty(i))
 			{
-				rowC.push('<tr class="' + building[i]['type'] + '">');
-				rowC.push('<td>' + building[i]['name'] + '</td>');
-
 				let pA = [],
 					prod = building[i]['products'],
 					ShowTime = false;
@@ -903,6 +912,9 @@ let Productions = {
 					}
 				}
 
+				rowC.push('<tr class="' + building[i]['type'] + ' ' + (!ShowTime || building[i]['at'] * 1000 >= MainParser.getCurrentDateTime() ? 'notdone' : '') + '">');
+				rowC.push('<td>' + building[i]['name'] + '</td>');
+
 				rowC.push('<td>' + pA.join('<br>') + '</td>');
 
 				rowC.push('<td>' + i18n('Eras.' + building[i]['era']) + '</td>');
@@ -911,7 +923,7 @@ let Productions = {
 					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
 
 					if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Production.Done') + '</strong></td>');
+						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 					}
 					else {
 						rowC.push('<td style="white-space:nowrap" colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
@@ -989,7 +1001,7 @@ let Productions = {
 	 * @returns {string}
 	 */
 	GetTabs: ()=> {
-		return '<ul class="horizontal">' + Productions.Tabs.join('') + '</ul>';
+		return '<ul class="horizontal dark-bg">' + Productions.Tabs.join('') + '</ul>';
 	},
 
 
@@ -1071,7 +1083,7 @@ let Productions = {
 			{
 				if(!$('#parent-' + matches[0]).length)
 				{
-					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="5">' + Productions.BuildingTypes[matches[0]] + '</th></tr></tbody>').appendTo('.all-mode');
+					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="5">' + i18n('Boxes.Productions.Headings.' + matches[0]) + '</th></tr></tbody>').appendTo('.all-mode');
 				}
 
 				$(this).appendTo( $('#parent-' + matches[0]) );
@@ -1088,9 +1100,11 @@ let Productions = {
 		{
 			if(Productions.Buildings.hasOwnProperty(i))
 			{
-				drop.append( $('<option />').attr('data-type', Productions.Buildings[i]).text( Productions.BuildingTypes[Productions.Buildings[i]] ).addClass('game-cursor') )
+				drop.append($('<option />').attr('data-type', Productions.Buildings[i]).text(i18n('Boxes.Productions.Headings.' + Productions.Buildings[i])).addClass('game-cursor') )
 			}
 		}
+
+		drop.append($('<option />').attr('data-type', 'done').text(i18n('Boxes.Productions.Headings.Done')))
 
 		$('#all-dropdown-th').append(drop);
 
@@ -1107,13 +1121,18 @@ let Productions = {
 		$('#Productions').on('change', '#all-drop', function() {
 			let t = $('select#all-drop :selected').data('type');
 
-			if(t === 'all')
-			{
+			if (t === 'all') {
 				$('.all-mode').find('.parent').show();
+				$('.all-mode').find('.notdone').show();
 			}
+			else if (t === 'done') {
+				$('.all-mode').find('.parent').show();
+				$('.all-mode').find('.notdone').hide();
+            }
 			else {
 				$('.all-mode').find('.parent').hide();
 				$('.all-mode').find('#parent-' + t).show();
+				$('.all-mode').find('.notdone').show();
 			}
 		});
 	},

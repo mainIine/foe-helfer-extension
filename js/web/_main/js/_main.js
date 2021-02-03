@@ -564,7 +564,7 @@ const FoEproxy = (function () {
 
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
-		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits.xml");
+		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits");
 
 		if(idx !== -1) {
 			MainParser.InnoCDN = requestData.url.substring(0, idx+1);
@@ -586,9 +586,10 @@ const FoEproxy = (function () {
 		// Player-ID, Gilden-ID und Name setzten
 		MainParser.StartUp(data.responseData.user_data);
 
-		// check if FP Db exists
+		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
+		UnitGex.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
@@ -658,10 +659,10 @@ const FoEproxy = (function () {
 		ActiveMap = data.responseData.gridId;
 
 		// update FP-Bar for more customizable
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		// $('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));;
+			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 		}
 	});
 
@@ -690,27 +691,32 @@ const FoEproxy = (function () {
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));;
 
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
+	// gex is entered
+	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+		ActiveMap = 'gex';
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+	});
 
 	// gg is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		ActiveMap = 'gg';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// gvg is entered
 	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 		ActiveMap = 'gvg';
-		$('#fp-bar').removeClass(possibleMaps.join(' ')).addClass(ActiveMap);
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
@@ -747,6 +753,18 @@ const FoEproxy = (function () {
 			if (!Buildings) return;
 
 			MainParser.UpdateCityMap(Buildings)
+		}
+	});
+
+	// Freund entfernt
+	FoEproxy.addHandler('FriendService', 'deleteFriend', (data, postData) => {
+		let FriendID = data.responseData;
+		if (PlayerDict[FriendID]) {
+			PlayerDict[FriendID]['isFriend'] = false;
+		}
+
+		if ($('#moppelhelper').length === 0) {
+			EventHandler.CalcMoppelHelperTable();
 		}
 	});
 
@@ -963,10 +981,7 @@ const FoEproxy = (function () {
 		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendGildMemberLGInfo')) {
 			return;
 		}
-		if (data.responseData.other_player.clan_id !== ExtGuildID){
-			return;
-		}
-		MainParser.OtherPlayersLGs(data.responseData);
+		MainParser.OtherPlayersLGs(data['responseData']);
 	});
 
 	//--------------------------------------------------------------------------------------------------
@@ -1024,7 +1039,7 @@ const FoEproxy = (function () {
 		// zweite Runde
 		else if (MainMenuLoaded !== false && MainMenuLoaded !== true){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting ?? 'BottomBar';
+			MenuSetting = MenuSetting || 'BottomBar';
 			MainParser.SelectedMenu = MenuSetting;
 			_menu.CallSelectedMenu(MenuSetting);
 			MainMenuLoaded = true;
@@ -1088,15 +1103,14 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'alerts'
+		'alerts',
+		'unitsGex'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
 
 /**
- *
- * @type {{BuildingSelectionKits: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): (undefined)), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): number), SocialbarList: (function(*): (undefined)), Championship: MainParser.Championship, Inventory: {}, compareTime: (function(*, *): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): (undefined)), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts,
- * : MainParser.sendExtMessage, ClearText: (function(*): *), checkNextUpdate: (function(*=): *), Language: string, SelectedMenu: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=, *): boolean), BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
+ * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: (function(*): undefined), activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
 
@@ -1113,25 +1127,25 @@ let MainParser = {
 	CityEntities: null,
 	StartUpType: null,
 
-	// alle Gebäude des Spielers
+	// all buildings of the player
 	CityMapData: {},
 	CityMapEraOutpostData: null,
 	OtherPlayerCityMapData: {},
 
-	// freugeschaltete Erweiterungen
+	// Unlocked extensions
 	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
 	Inventory: {},
 
-	// Updatestufen der Eventgebäude
+	// Update levels of the event buildings
 	BuildingSelectionKits: null,
 
-	// Gebäude Sets
+	// Building sets
 	BuildingSets: null,
 
-	InnoCDN: 'https://foede.innogamescdn.com/',
 
+	InnoCDN: 'https://foede.innogamescdn.com/',
 
 
 	/**
@@ -1190,14 +1204,26 @@ let MainParser = {
 	/**
 	 * Etwas zur background.js schicken
 	 *
-	 * @param data
+	 * @param {any & {type: string}} data
 	 */
-	sendExtMessage: (data) => {
+	sendExtMessage: async (data) => {
+		let response = null;
 		// @ts-ignore
 		if (typeof chrome !== 'undefined') {
-			chrome.runtime.sendMessage(extID, data);
+			// @ts-ignore
+			response = await new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
+		} else if (typeof browser !== 'undefined') {
+			response = await browser.runtime.sendMessage(extID, data);
 		} else {
+			// TODO: implement
 			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
+			throw new Error("backwards Communication from Extension not implemented");
+		}
+
+		if (response.ok) {
+			return response.data;
+		} else {
+			throw new Error('EXT-API error: '+response.error);
 		}
 	},
 
@@ -1212,7 +1238,7 @@ let MainParser = {
 
 
 	/**
-	 * Rechnet auf die aktuelle Zeit x Minuten oder x Stunden drauf
+	 * Add x minutes or x hours to the current time
 	 *
 	 * @param hrs
 	 * @param min
@@ -1235,7 +1261,7 @@ let MainParser = {
 
 
 	/**
-	 * Gibt die aktuelle Datumszeit zurück
+	 * Returns the current date time
 	 *
 	 * @returns {number}
 	 */
@@ -1245,9 +1271,9 @@ let MainParser = {
 
 
 	/**
-	 * Gibt das aktuelle Datum in Spielzeit zurück
+	 * Returns the current date in playing time
 	 *
-	 * @returns {number}
+	 * @returns {Date}
 	 */
 	getCurrentDate: () => {
 		return new Date(Date.now() + GameTimeOffset);
@@ -1255,9 +1281,9 @@ let MainParser = {
 
 
 	/**
-	 * Führt eine Rundung unter Berücksichtigung der Fließkomma Ungenauigkeit durch
+	 * Performs rounding taking into account floating point inaccuracy
 	 *
-	 * @param value
+	 * @param {number} value
 	 * @returns {number}
 	 */
 	round: (value) => {
@@ -1273,10 +1299,10 @@ let MainParser = {
 
 
 	/**
-	 * Der Storage hat immer schon einen Zeitaufschlag
+	 * Storage has always had a time surcharge
 	 *
-	 * @param actual
-	 * @param storage
+	 * @param {number} actual
+	 * @param {number} storage
 	 * @returns {string|boolean}
 	 */
 	compareTime: (actual, storage)=> {
@@ -1317,7 +1343,7 @@ let MainParser = {
 
 
 	/**
-	 * prüfen ob ein Update notwendig ist
+	 * Check whether an update is necessary
 	 *
 	 * @param ep
 	 * @returns {*}
@@ -1331,7 +1357,8 @@ let MainParser = {
 
 
 	/**
-	 * Fügt einen Wert zu einem FormData Objekt unter dem angegebenen prefix/key hinzu und serialisiert dabei objekte/arrays.
+	 * Adds a value to a FormData object under the specified prefix/key, serialising objects/arrays.
+	 *
 	 * @param {FormData} formData the formdata to add this data to
 	 * @param {string} prefix the prefix/key for the value to store
 	 * @param {any} value the value to store
@@ -1353,7 +1380,7 @@ let MainParser = {
 
 
 	/**
-	 * Daten nach "Hause" schicken
+	 * Sending data "home"
 	 *
 	 * @param data
 	 * @param ep
@@ -1364,9 +1391,7 @@ let MainParser = {
 		const pID = ExtPlayerID;
 		const cW = ExtWorld;
 		const gID = ExtGuildID;
-		const formData = new FormData();
 
-		MainParser.obj2FormData(formData, 'data', data);
 
 		let req = fetch(
 			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
@@ -1395,7 +1420,7 @@ let MainParser = {
 
 
 	/**
-	 * Gildenmitglieder durchsteppen
+	 * Stitching through guild members
 	 *
 	 * @param d
 	 */
@@ -1447,11 +1472,10 @@ let MainParser = {
 
 
 	/**
-	 * Eigenes LGs updaten
-	 * Zeitfenster - 15min
+	 * Update own LGs
+	 * Time slot - 15min
 	 *
 	 * @param d
-	 * @param e
 	 * @returns {boolean}
 	 */
 	OwnLG: (d)=> {
@@ -1460,7 +1484,7 @@ let MainParser = {
 			time = MainParser.checkNextUpdate(lg_name);
 
 		// noch nicht wieder updaten oder es ist kein "eigenes" LG
-		if (time !== true || d['player_id'] !== ExtPlayerID) {
+		if (!time || d['player_id'] !== ExtPlayerID) {
 			return false;
 		}
 
@@ -1485,12 +1509,14 @@ let MainParser = {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
 			realData = {
-				'entity': dataEntity,
-				'ranking': d['Rankings'],
-				'bonus': d['Bonus']
+				entity: dataEntity,
+				ranking: d['Rankings'],
+				bonus: d['Bonus'],
+				era: CurrentEraID
 			}
 
-		if (dataEntity['player_id'] !== ExtPlayerID) {
+		if (dataEntity['player_id'] !== ExtPlayerID)
+		{
 			return false;
 		}
 
@@ -1503,7 +1529,7 @@ let MainParser = {
 
 
 	/**
-	 * LGs anderer Spieler updaten, aber nur Gilden eigenen
+	 * Update other players' LGs, but only guilds' own LGs.
 	 *
 	 * @param d
 	 * @returns {boolean}
@@ -1533,11 +1559,8 @@ let MainParser = {
 			}
 
 			// nur wenn es eines dieser Gebäude ist
-			if(lg[k]['cityentity_id'].indexOf("_Landmark") > -1 ||
-				lg[k]['cityentity_id'].indexOf("X_AllAge_Expedition") > -1 ||
-				lg[k]['cityentity_id'].indexOf("X_AllAge_EasterBonus4") > -1 ||
-				lg[k]['cityentity_id'].indexOf("X_AllAge_Oracle") > -1
-			){
+			if(lg[k]['type'] === 'greatbuilding')
+			{
 				let lgd = {
 
 					cityentity_id: lg[k]['cityentity_id'],
@@ -1561,6 +1584,8 @@ let MainParser = {
 				data: JSON.stringify(data)
 			});
 
+			if (!Settings.GetSetting('ShowNotifications')) return;
+
 			$.toast({
 				heading: d['other_player']['name'] + ' geupdated',
 				text: HTML.i18nReplacer(
@@ -1569,19 +1594,21 @@ let MainParser = {
 						'player' : d['other_player']['name']
 					}
 				),
-				icon: 'success'
+				icon: 'success',
+				position: Settings.GetSetting('NotificationsPosition', true)
 			});
 		}
 	},
 
 
 	/**
+	 * Collect gex stats from players for website
 	 *
 	 * @param d
 	 */
 	GuildExpedition: (d)=> {
 
-		// doppeltes Senden unterdrücken
+		// Suppress double sending
 		let time = MainParser.checkNextUpdate('API-GEXPlayer');
 
 		if(time !== true){
@@ -1594,17 +1621,23 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		$.toast({
-			heading: i18n('API.UpdateSuccess'),
-			text: i18n('API.GEXPlayer'),
-			icon: 'success'
-		});
+		if(Settings.GetSetting('ShowNotifications'))
+		{
+			$.toast({
+				heading: i18n('API.UpdateSuccess'),
+				text: i18n('API.GEXPlayer'),
+				icon: 'success',
+				position: Settings.GetSetting('NotificationsPosition', true)
+			});
+		}
 
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
 
 
 	/**
+	 * Collect gild overview from current gex
+	 *
 	 * @param d
 	 */
 	Championship: (d)=> {
@@ -1620,16 +1653,19 @@ let MainParser = {
 			data: JSON.stringify(data)
 		});
 
+		if (!Settings.GetSetting('ShowNotifications')) return;
+
 		$.toast({
 			heading: i18n('API.UpdateSuccess'),
 			text: i18n('API.GEXChampionship'),
-			icon: 'success'
+			icon: 'success',
+			position: Settings.GetSetting('NotificationsPosition', true)
 		});
 	},
 
 
 	/**
-	 * Spieler Daten sichern
+	 * Back up player data
 	 *
 	 * @param d
 	 */
@@ -1641,8 +1677,9 @@ let MainParser = {
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtWorld = window.location.hostname.split('.')[0];
-		CurrentEra = d['era']['era'],
-			CurrentEraID = Technologies.Eras[CurrentEra];
+		CurrentEra = d['era'];
+		if (CurrentEra['era']) CurrentEra = CurrentEra['era'];
+		CurrentEraID = Technologies.Eras[CurrentEra];
 
 		MainParser.sendExtMessage({
 			type: 'storeData',
@@ -1692,7 +1729,7 @@ let MainParser = {
 
 
 	/**
-	 * Eigene Daten updaten (Gildenwechsel etc)
+	 * Update own data (guild change etc)
 	 *
 	 * @param d
 	 */
@@ -1720,7 +1757,7 @@ let MainParser = {
 
 	/**
 	 * Alle Gebäude sichern,
-	 * Eigene LGs updaten
+	 * Update your own LGs
 	 *
 	 * @param d
 	 */
@@ -1763,7 +1800,7 @@ let MainParser = {
 
 
 	/**
-	 * Sammelt aktive Boosts der Stadt
+	 * Collects active boosts from the city
 	 *
 	 * @param d
 	 */
@@ -1785,7 +1822,7 @@ let MainParser = {
 
 
 	/**
-	 * LGs des Spielers speichern
+	 * Save LGs of the player
 	 *
 	 * @param d
 	 */
@@ -1797,8 +1834,9 @@ let MainParser = {
 		});
 	},
 
+
 	/**
-	 * Motivieren Polieren tracken, wenn gewünscht
+	 * Motivating Polishing Tracking, if desired
 	 *
 	 * @param d
 	 */
@@ -1861,6 +1899,8 @@ let MainParser = {
 				if(r['status'] === 'OK'){
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
+					if (!Settings.GetSetting('ShowNotifications')) return;
+
 					$.toast({
 						heading: i18n('Boxes.Investment.PlayerFound'),
 						text: HTML.i18nReplacer(
@@ -1870,17 +1910,21 @@ let MainParser = {
 							}
 						),
 						icon: 'success',
-						hideAfter: 2600
+						hideAfter: 2600,
+						position: Settings.GetSetting('NotificationsPosition', true)
 					});
 
 				} else if (r['status'] === 'NOTICE') {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
+					if (!Settings.GetSetting('ShowNotifications')) return;
+
 					$.toast({
 						heading: i18n('Boxes.Investment.AllUpToDate'),
 						text: i18n('Boxes.Investment.AllUpToDateDesc'),
 						icon: 'info',
-						hideAfter: 6000
+						hideAfter: 6000,
+						position: Settings.GetSetting('NotificationsPosition', true)
 					});
 				}
 			});
@@ -1889,7 +1933,7 @@ let MainParser = {
 
 
 	/**
-	 * Archenbonus global ermitteln
+	 * Determine ark bonus globally
 	 *
 	 * @param LimitedBonuses
 	 */
@@ -1914,67 +1958,96 @@ let MainParser = {
 	 *
 	 * @param d
 	 * @param Source
+	 * @param ListType
+	 * @constructor
 	 */
 	UpdatePlayerDict: (d, Source, ListType = undefined) => {
-		if (Source === 'Conversation') {
-			for (let i in d['messages']) {
+		if (Source === 'Conversation')
+		{
+			for (let i in d['messages'])
+			{
+				if(!d['messages'].hasOwnProperty(i))
+					continue;
+
 				let Message = d['messages'][i];
-				if (Message.sender !== undefined) {
+
+				if (Message.sender !== undefined)
+				{
 					MainParser.UpdatePlayerDictCore(Message.sender);
 				}
 			}
 		}
 
-		else if (Source === 'LGOverview') {
+		else if (Source === 'LGOverview')
+		{
 			MainParser.UpdatePlayerDictCore(d[0].player);
 		}
 
-		else if (Source === 'LGContributions') {
-				for (let i in d) {
-					MainParser.UpdatePlayerDictCore(d[i].player);
-				}
+		else if (Source === 'LGContributions')
+		{
+			for (let i in d)
+			{
+				if(!d.hasOwnProperty(i))
+					continue;
+
+				MainParser.UpdatePlayerDictCore(d[i].player);
+			}
+		}
+
+		else if (Source === 'PlayerList')
+		{
+			for (let i in d)
+			{
+				if(!d.hasOwnProperty(i))
+					continue;
+
+				MainParser.UpdatePlayerDictCore(d[i]);
 			}
 
-			else if (Source === 'PlayerList') {
-					for (let i in d) {
-						MainParser.UpdatePlayerDictCore(d[i]);
-					}
+			if (ListType === 'getNeighborList')
+			{
+				PlayerDictNeighborsUpdated = true;
+			}
+			else if (ListType === 'getClanMemberList')
+			{
+				PlayerDictGuildUpdated = true;
+			}
+			else if (ListType === 'getFriendsList')
+			{
+					PlayerDictFriendsUpdated = true;
+			}
 
-					if (ListType === 'getNeighborList') {
-						PlayerDictNeighborsUpdated = true;
-					}
-					else if (ListType === 'getClanMemberList') {
-						PlayerDictGuildUpdated = true;
-					}
-					else if (ListType === 'getFriendsList') {
-							PlayerDictFriendsUpdated = true;
-						}
+			if ($('#moppelhelper').length > 0)
+			{
+				EventHandler.CalcMoppelHelperBody();
+			}
 
-					if ($('#moppelhelper').length > 0) {
-						EventHandler.CalcMoppelHelperBody();
-					}
-
-					// Todo: Welcher Typ es ist muss mitgesendet werden [Nachbar,Gildi,Freund]
-					if (Settings.GetSetting('GlobalSend')) {
-						MainParser.sendExtMessage({
-							type: 'send2Api',
-							url: ApiURL + 'OtherPlayers/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld + '&type=' + ListType,
-							data: JSON.stringify(d)
-						});
-					}
-				}
+			if (Settings.GetSetting('GlobalSend') && ListType === 'getClanMemberList')
+			{
+				MainParser.sendExtMessage({
+					type: 'send2Api',
+					url: `${ApiURL}GuildMembers/?player_id=${ExtPlayerID}&guild_id=${ExtGuildID}&world=${ExtWorld}`,
+					data: JSON.stringify(d)
+				});
+			}
+		}
 	},
 
 
 	/**
 	 * Update player information
 	 *
-	 * @param d
+	 * @param Player
+	 * @constructor
 	 */
 	UpdatePlayerDictCore: (Player) => {
+
 		let PlayerID = Player['player_id'];
-		if (PlayerID !== undefined) {
+
+		if (PlayerID !== undefined)
+		{
 			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+
 			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
 			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
 			if (Player['clan'] !== undefined) PlayerDict[PlayerID]['ClanName'] = Player['clan']['name'];
@@ -1990,7 +2063,7 @@ let MainParser = {
 
 
 	/**
-	 * Übersetzungen für die Güter zusammen setzen
+	 * Compose translations for the goods
 	 *
 	 * @param d
 	 */
@@ -2004,7 +2077,7 @@ let MainParser = {
 
 
 	/**
-	 * Aktualisiert das Inventar
+	 * Updates the inventory
 	 *
 	 * @param Items
 	 */
@@ -2018,7 +2091,7 @@ let MainParser = {
 
 
 	/**
-	 * Aktualisiert ein Gebäude von CityMapData oder CityMapEraOutpost
+	 * Updates a building from CityMapData or CityMapEraOutpost
 	 *
 	 * @param Buildings
 	 * */
@@ -2046,36 +2119,43 @@ let MainParser = {
 
 
 	/**
-	 * Titel der Chats sammeln
+	 * Collect titles of the chats
 	 *
 	 * @param d
 	 */
 	setConversations: (d)=> {
 
-		// Falls der Cache leer ist den Speicher auslesen
-		if (MainParser.Conversations.length === 0) {
+		// If the cache is empty, read out the memory.
+		if (MainParser.Conversations.length === 0)
+		{
 			let StorageHeader = localStorage.getItem('ConversationsHeaders');
-			if (StorageHeader !== null) {
+			if (StorageHeader !== null)
+			{
 				MainParser.Conversations = JSON.parse(StorageHeader);
 			}
 		}
 
-		if (d['teasers']) {
-			for (let k in d['teasers']) {
-				if (!d['teasers'].hasOwnProperty(k)) {
+		if (d['teasers'])
+		{
+			for (let k in d['teasers'])
+			{
+				if (!d['teasers'].hasOwnProperty(k))
+				{
 					continue;
 				}
 
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['teasers'][k]['id']));
-				// Ist bereits ein Key vorhanden?
-				if (key !== -1) {
+
+				// Is a key already available?
+				if (key !== -1)
+				{
 					MainParser.Conversations[key]['type'] = d['type'];
 					MainParser.Conversations[key]['title'] = d['teasers'][k]['title'];
 					MainParser.Conversations[key]['hidden'] = d['teasers'][k]['isHidden'];
 					MainParser.Conversations[key]['favorite'] = d['teasers'][k]['isFavorite'];
 					MainParser.Conversations[key]['important'] = d['teasers'][k]['isImportant'];
 				}
-				// → Key erstellen
+				// → Create key
 				else {
 					MainParser.Conversations.push({
 						type: d['type'],
@@ -2088,22 +2168,30 @@ let MainParser = {
 				}
 
 			}
-		} else if (d['category'] && d['category']['teasers']) {
-			for (let k in d['category']['teasers']) {
-				if (!d['category']['teasers'].hasOwnProperty(k)) {
+
+		}
+		else if (d['category'] && d['category']['teasers'])
+		{
+			for (let k in d['category']['teasers'])
+			{
+				if (!d['category']['teasers'].hasOwnProperty(k))
+				{
 					continue;
 				}
 
 				let key = MainParser.Conversations.findIndex((obj)=> (obj.id === d['category']['teasers'][k]['id']));
-				// Ist bereits ein Key vorhanden?
-				if (key !== -1) {
+
+				// Is a key already available?
+				if (key !== -1)
+				{
 					MainParser.Conversations[key]['type'] = d['category']['type'];
 					MainParser.Conversations[key]['title'] = d['category']['teasers'][k]['title'];
 					MainParser.Conversations[key]['hidden'] = d['category']['teasers'][k]['isHidden'];
 					MainParser.Conversations[key]['favorite'] = d['category']['teasers'][k]['isFavorite'];
 					MainParser.Conversations[key]['important'] = d['category']['teasers'][k]['isImportant'];
 				}
-				// → Key erstellen
+
+				// → Create key
 				else {
 					MainParser.Conversations.push({
 						type: d['category']['type'],
@@ -2114,7 +2202,6 @@ let MainParser = {
 						favorite: d['category']['teasers'][k]['isImportant']
 					});
 				}
-
 			}
 		}
 
@@ -2127,7 +2214,7 @@ let MainParser = {
 
 
 	/**
-	 * Via Ajax eine jSON holen
+	 * Get a jSON via Ajax
 	 *
 	 */
 	loadJSON: (url, callback)=> {
@@ -2179,14 +2266,22 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Create a blob for file download
+	 *
+	 * @param Blob
+	 * @param FileName
+	 * @constructor
+	 */
 	ExportFile: (Blob, FileName) => {
 		// Browsercheck
 		let isIE = !!document.documentMode;
 
-		if (isIE) {
+		if (isIE)
+		{
 			window.navigator.msSaveBlob(Blob, FileName);
-
-		} else {
+		}
+		else {
 			let url = window.URL || window.webkitURL,
 				link = url.createObjectURL(Blob),
 				a = document.createElement('a');

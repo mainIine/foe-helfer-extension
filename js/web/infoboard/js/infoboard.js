@@ -56,7 +56,7 @@ FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
 
 /**
  *
- * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null}}
+ * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null, History: Array, MaxEntries:Number}}
  */
 let Infoboard = {
 
@@ -66,6 +66,8 @@ let Infoboard = {
     SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg", "text"],
     SavedTextFilter: "",
     DebugWebSocket: false,
+    History: [],
+    MaxEntries: 0,
 
 
     /**
@@ -148,7 +150,7 @@ let Infoboard = {
         h.push('<div class="filter-row">');
 
         h.push('<div class="dropdown">');
-        h.push('<input type="checkbox" class="dropdown-checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
+        h.push('<input type="checkbox" class="dropdown-checkbox" id="infobox-checkbox-toggle"><label class="dropdown-label game-cursor" for="infobox-checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
 
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
@@ -185,6 +187,12 @@ let Infoboard = {
             type: i18n('Menu.Info.Title'),
             msg: i18n('Boxes.Infobox.Messages.Welcome'),
         });
+
+        Infoboard.MaxEntries = localStorage.getItem("EntryCount") || 0;
+        for (let i = 0; i < Infoboard.History.length; i++) {
+            const element = Infoboard.History[i];
+            Infoboard.PostMessage(element,false);
+        }
 
         $('#BackgroundInfo').on('click', '#infoboxTone', function () {
 
@@ -240,16 +248,31 @@ let Infoboard = {
     },
 
 
-    PostMessage: (bd) => {
+    PostMessage: (bd,add = true) => {
 
         if ($('#BackgroundInfo').length > 0) {
+            if(bd['class'] !== 'welcome' && add){
+                if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries){
+                    Infoboard.History.shift();
+                }
+                Infoboard.History.push(bd);
+            }
+            if(bd['class'] === 'welcome' && Infoboard.History.length > 0) return;
+
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 textfilter = $('input[data-type="text"]').val().split("|"),
                 msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
-            
-                // wenn nicht angezeigt werden soll, direkt verstecken
-            if ((!status || !(textfilter.some(e => msg.includes(e)))) && bd.class !== 'welcome') {
+
+            // wenn nicht angezeigt werden soll, direkt verstecken
+            if ((!status || !(textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase())))) && bd.class !== 'welcome') {
                 tr.hide();
+            }else{
+                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+                        let trLast = $('#BackgroundInfoTable tbody tr:last-child')[0];
+                        trLast.parentNode.removeChild(trLast);
+                    }
+                }
             }
 
             if (img) {
@@ -297,11 +320,11 @@ let Infoboard = {
             localStorage.setItem("infoboxTextFilter", $('input[data-type="text"]').val());
 
             $('#BackgroundInfoTable tbody tr').each(function () {
-                let tr = $(this), 
-                textfilter = $('input[data-type="text"]').val().split("|"),
-                type = tr.attr('class');
-                
-                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().includes(e))) || tr.hasClass('welcome')) {
+                let tr = $(this),
+                    textfilter = $('input[data-type="text"]').val().split("|"),
+                    type = tr.attr('class');
+
+                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
                     tr.hide();
@@ -318,6 +341,7 @@ let Infoboard = {
     ResetBox: () => {
         $('#BackgroundInfo').on('click', '.btn-reset-box', function () {
             $('#BackgroundInfoTable tbody').html('');
+            Infoboard.History = [];
         });
     }
 };

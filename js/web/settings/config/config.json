@@ -78,6 +78,24 @@
 		"sort": 9
 	},
 	{
+		"name": "AutoOpenInfoBox",
+		"status": false,
+		"group": "Boxes",
+		"sort": 10
+	},
+	{
+		"name": "InfoboxEntryCount",
+		"callback": "InfoboxInputEntryCount",
+		"group": "Boxes",
+		"sort": 11
+	},
+	{
+		"name": "ShowMapTradeWarning",
+		"status": true,
+		"group": "Boxes",
+		"sort": 12
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",

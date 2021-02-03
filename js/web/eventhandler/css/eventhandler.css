@@ -76,14 +76,15 @@
     text-align: center;
 }
 
-#moppelhelper #moppelhelperBody table.foe-table tr th::nth-child(3) {
+#moppelhelper #moppelhelperBody table.foe-table tr th:nth-child(3) {
     text-align: left;
 }
 
 #moppelhelper #moppelhelperBody .events-sprite-50.sm {
     text-align: center;
 	display: inline-block;
-	margin-right: 2px;
+    margin-right: 2px;
+    vertical-align: text-bottom;
 }
 
 #moppelhelper #moppelhelperBody .events-sprite-50.sm::before {

@@ -132,18 +132,24 @@ let EventHandler = {
 					heading: i18n('Boxes.Investment.DateParseError'),
 					text: HTML.i18nReplacer(i18n('Boxes.Investment.DateParseErrorDesc'), { InvalidDate: InvalidDates[0]}),
 					icon: 'error',
-					hideAfter: 6000
+					hideAfter: 6000,
+					position: Settings.GetSetting('NotificationsPosition', true)
 				});
             }
 			else if (count === 0) {
+				if (!Settings.GetSetting('ShowNotifications')) return;
+
 				$.toast({
 					heading: i18n('Boxes.Investment.AllUpToDate'),
 					text: i18n('Boxes.Investment.AllUpToDateDesc'),
 					icon: 'info',
-					hideAfter: 6000
+					hideAfter: 6000,
+					position: Settings.GetSetting('NotificationsPosition', true)
 				});
 			}
 			else {
+				if (!Settings.GetSetting('ShowNotifications')) return;
+
 				$.toast({
 					heading: i18n('Boxes.Investment.PlayerFound'),
 					text: HTML.i18nReplacer(
@@ -151,7 +157,8 @@ let EventHandler = {
 						{count: count}
 					),
 					icon: 'success',
-					hideAfter: 2600
+					hideAfter: 2600,
+					position: Settings.GetSetting('NotificationsPosition', true)
 				});
 			}
 		});
@@ -163,6 +170,10 @@ let EventHandler = {
 
 
 	ParseDate: (DateString) => {
+		// Czech today contains &nbsp (0x00A0) => replace with blank
+		let NBSPRegex = new RegExp(String.fromCharCode(160), "g");
+		DateString = DateString.replace(NBSPRegex, " ");
+
 		let OldLocale = moment.locale();
 		moment.locale('en-US');
 
@@ -330,7 +341,7 @@ let EventHandler = {
 		/* Filters */
 		h.push('<div class="text-center dark-bg header"><strong class="title">' + i18n('Boxes.MoppelHelper.HeaderWarning') + '</strong><br></div>');
 		h.push('<div class="dark-bg"><div class="dropdown" style="float:right">');
-        h.push('<input type="checkbox" class="dropdown-checkbox" id="checkbox-toggle"><label class="dropdown-label game-cursor" for="checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
+        h.push('<input type="checkbox" class="dropdown-checkbox" id="event-checkbox-toggle"><label class="dropdown-label game-cursor" for="event-checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filtermoppelevents game-cursor" ' + (EventHandler.FilterMoppelEvents ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filtertavernvisits game-cursor" ' + (EventHandler.FilterTavernVisits ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></li>');

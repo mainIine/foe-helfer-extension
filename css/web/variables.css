@@ -26,18 +26,28 @@
 	--background-btn-disabled-moz: -moz-linear-gradient(top, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
 	--background-btn-disabled-fallback: rgb(42, 42, 42);
 
-	--background-btn-active: linear-gradient(to bottom, rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-	--background-btn-active-webkit: -webkit-linear-gradient(top, rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-	--background-btn-active-moz: -moz-linear-gradient(top, rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
-	--background-btn-active-fallback: rgb(228,193,75);
+	--background-btn-active: linear-gradient(to bottom, rgb(245, 205, 72) 0%,rgb(223, 154, 52) 1%,rgb(186, 99, 32) 30%,rgb(146, 71, 21) 99%,rgb(163, 93, 40) 100%);
+	--background-btn-active-webkit: -webkit-linear-gradient(top, rgb(245, 205, 72) 0%,rgb(223, 154, 52) 1%,rgb(186, 99, 32) 30%,rgb(146, 71, 21) 99%,rgb(163, 93, 40) 100%);
+	--background-btn-active-moz: -moz-linear-gradient(top, rgb(245, 205, 72) 0%, rgb(223, 154, 52) 1%, rgb(186, 99, 32) 30%, rgb(146, 71, 21) 99%, rgb(163, 93, 40) 100%);
+	--background-btn-active-fallback: rgb(245, 205, 72);
 
 	--background-btn-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
 	--background-btn-green-webkit: -webkit-linear-gradient(top, #469e2b 0%,#1f6517 100%);
 	--background-btn-green-moz: -moz-linear-gradient(top, #469e2b 0%, #1f6517 100%);
 	--background-btn-green-fallback: #6eaa5c;
 
+	--background-btn-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
+	--background-btn-red-webkit: -webkit-linear-gradient(top, #871313 0%,#440909 100%);
+	--background-btn-red-moz: -moz-linear-gradient(top, #871313 0%,#440909 100%);
+	--background-btn-red-fallback: #821a1a;
+
+	--background-btn-red-active: linear-gradient(to bottom, #a71f1f 0%,#590d0d 100%);
+	--background-btn-red-active-webkit: -webkit-linear-gradient(top, #a71f1f 0%,#590d0d 100%);
+	--background-btn-red-active-moz: -moz-linear-gradient(top, #a71f1f 0%,#590d0d 100%);
+	--background-btn-red-active-fallback: #a71f1f;
+
 	--background-table-hover: rgba(243, 214, 160, 0.2);
-	--background-table-odd: rgba(255,255,255, 0.07);
+	--background-table-odd: rgba(255, 158, 69, 0.07);
 	--background-table-info: rgba(33, 150, 243, 0.3);
 	--background-table-success: rgba(18, 125, 9, 0.3);
 	--background-table-error: rgba(121, 8, 8, 0.3);

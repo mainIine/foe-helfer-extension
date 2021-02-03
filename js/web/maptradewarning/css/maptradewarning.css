@@ -1,0 +1,16 @@
+#mapTradeWarningDialog {
+    top: calc(50vh + 165px);
+    left: calc(50vw - 180px);
+}
+
+#mapTradeWarningDialogBody {
+    width: 170px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 120%;
+    background-color: rgba(103, 1, 1, 0.5);
+}
+

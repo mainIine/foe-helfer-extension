@@ -14,9 +14,9 @@
  */
 
 #GildPlayers {
-	left: calc(50vw - 300px);
+	left: calc(50vw - 285px);
 	top: calc(50vw - 270px);
-	width: 600px;
+	width: 570px;
 	height: 500px;
 }
 
@@ -24,25 +24,44 @@
 	height: 22px !important;
 }
 
-
-#GildPlayersHeader small {
+#GuildPlayersHeader small {
 	font-weight: lighter;
 }
 
 #GildPlayersBody {
 	overflow-x: hidden;
 	overflow-y: auto;
+	user-select: text;
 }
 
 #GildPlayersBody tr th  {
 	position: sticky;
 	top: 0;
 	background-color: rgba(0,0,0, 0.45);
+    line-height: 25px;
+
+}
+
+#GildPlayersBody tr th span {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	vertical-align: bottom;
+}
+
+#GildPlayersBody tr th span.negotiation {
+	background: url(../../x_img/negotiation.png) center no-repeat;
+	background-size: contain;
+}
+
+#GildPlayersBody tr th span.fight {
+	background: url(../../x_img/fight.png) center no-repeat;
+	background-size: contain;
 }
 
 #GildPlayersBody tr td img {
-	max-width: 40px;
-	border-radius: 50%;
+	max-width: 25px;
+	border-radius: 2px;
 }
 
 #GildPlayersBody tr.mark-player td {

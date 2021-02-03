@@ -81,6 +81,36 @@
 	margin: 0 10px;
 }
 
+#costCalculator #costCalculatorBody table.foe-table {
+	margin-top: 3px;
+}
+
+#costCalculator tr th {
+	text-align: center;
+}
+
+#costCalculator tr th span {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	vertical-align: bottom;
+}
+
+#costCalculator tr th span.blueprint {
+	background: url(../../x_img/blueprint.png) center no-repeat;
+	background-size: contain;
+}
+
+#costCalculator tr th span.medal {
+	background: url(../../x_img/medal.png) center no-repeat;
+	background-size: contain;
+}
+
+#costCalculator tr th span.forgepoints {
+	background: url(../../x_img/forgepoints.png) center no-repeat;
+	background-size: contain;
+}
+
 #costCalculator #costCalculatorBody .foe-table td {
 	white-space: nowrap;
 }
@@ -96,7 +126,7 @@
 
 #costCalculator #costCalculatorBody .text-grey,
 #costCalculator #costCalculatorBody .text-grey strong {
-	color: #9a9a9a;
+	color: #b1b1b1;
 	opacity: 0.75;
 }
 
@@ -149,11 +179,6 @@
 #costCalculatorBody .costFactorWrapper > span {
 	display: inline-block;
 	margin-right: 15px;
-}
-
-#costCalculatorBody .costFactorWrapper .btn-default:not(:first-child) {
-	display: inline-block;
-	margin-left: 3px;
 }
 
 #costCalculatorBody #costTable {

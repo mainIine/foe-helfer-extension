@@ -45,8 +45,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 
 /**
- *
- * @type {{init: GildFights.init, PrepareColors: (function(): (undefined)), ShowPlayerBox: GildFights.ShowPlayerBox, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: [], ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*): (undefined)), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, NewAction: null, PlayersPortraits: null, PrevAction: null}}
+ * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, NewAction: null, PlayersPortraits: null, PrevAction: null}}
  */
 let GildFights = {
 
@@ -60,6 +59,7 @@ let GildFights = {
 	SortedColors: null,
 	ProvinceNames : null,
 	InjectionLoaded: false,
+	PlayerBoxContent: [],
 
 	/**
 	 * Zündung
@@ -84,18 +84,21 @@ let GildFights = {
 
 	HandlePlayerLeaderboard: (d) => {
 		// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
-		if (localStorage.getItem('GildFights.NewAction') !== null) {
+		if (localStorage.getItem('GildFights.NewAction') !== null)
+		{
 			GildFights.PrevAction = JSON.parse(localStorage.getItem('GildFights.NewAction'));
 			GildFights.PrevActionTimestamp = parseInt(localStorage.getItem('GildFights.NewActionTimestamp'));
 		}
-		else if (GildFights.NewAction !== null) {
+		else if (GildFights.NewAction !== null)
+		{
 			GildFights.PrevAction = GildFights.NewAction;
 			GildFights.PrevActionTimestamp = GildFights.NewActionTimestamp;
 		}
 
 		let players = [];
 
-		for (let i in d) {
+		for (let i in d)
+		{
 			if (!d.hasOwnProperty(i)) {
 				break;
 			}
@@ -136,7 +139,6 @@ let GildFights = {
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
-				minimize: true
 			});
 
 			// add css to the dom
@@ -161,7 +163,8 @@ let GildFights = {
 				title: i18n('Boxes.Gildfights.Title'),
 				auto_close: true,
 				dragdrop: true,
-				minimize: true
+				minimize: true,
+				settings: 'GildFights.ShowExportButton()'
 			});
 
 			// CSS in den DOM prügeln
@@ -180,6 +183,15 @@ let GildFights = {
 			b = [],
 			tN = 0,
 			tF = 0;
+
+		GildFights.PlayerBoxContent = [];
+
+		GildFights.PlayerBoxContent.push({
+			player: 'player',
+			negotiationsWon: 'negotiations',
+			battlesWon: 'battles',
+			total: 'total'
+		})
 
 		for(let i in GildFights.NewAction)
 		{
@@ -225,7 +237,7 @@ let GildFights = {
 			b.push('<td>' + playerNew['name'] + '</td>');
 
 			b.push('<td class="text-center">');
-			b.push(playerNew['negotiationsWon'] + negotaionAddOn);
+			b.push(playerNew['negotiationsWon']  + negotaionAddOn);
 			b.push('</td>');
 
 			b.push('<td class="text-center">');
@@ -238,6 +250,13 @@ let GildFights = {
 			b.push('</td>');
 
 			b.push('</tr>');
+
+			GildFights.PlayerBoxContent.push({
+				player: playerNew['name'],
+				negotiationsWon: playerNew['negotiationsWon'],
+				battlesWon: playerNew['battlesWon'],
+				total: both
+			})
 		}
 
         let tNF = (tN*2)+tF;
@@ -250,8 +269,8 @@ let GildFights = {
 		t.push('<th>&nbsp;</th>');
 		t.push('<th>&nbsp;</th>');
 		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
-		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Negotiations') + ' <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
-		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Fights') + ' <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
+		t.push('<th class="text-center"><span class="negotiation" title="' + i18n('Boxes.Gildfights.Negotiations') + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
+		t.push('<th class="text-center"><span class="fight" title="' + i18n('Boxes.Gildfights.Fights') + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
 
 		t.push('</tr>');
@@ -477,6 +496,55 @@ let GildFights = {
 				cell.removeClass('red-pulse');
 			}, 1000);
 		}
+	},
+
+
+	ShowExportButton: () => {
+		let c = `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('csv')">${i18n('Boxes.Gildfights.ExportCSV')}</button></p>`;
+
+		c += `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('json')">${i18n('Boxes.Gildfights.ExportJSON')}</button></p>`;
+
+		// insert into DOM
+		$('#GildPlayersSettingsBox').html(c);
+	},
+
+
+	SettingsExport: (type)=> {
+
+		let blob, file;
+
+		if(type === 'json')
+		{
+			let json = JSON.stringify(GildFights.PlayerBoxContent);
+
+			blob = new Blob([json], {type: 'application/json;charset=utf-8'});
+			file = `ggfights-${ExtWorld}.json`;
+		}
+
+		else if (type === 'csv')
+		{
+			let csv = [];
+
+			for(let i in GildFights.PlayerBoxContent)
+			{
+				if(!GildFights.PlayerBoxContent.hasOwnProperty(i))
+				{
+					break;
+				}
+
+				let r = GildFights.PlayerBoxContent[i];
+				csv.push(`${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
+			}
+
+			blob = new Blob([csv.join('\r\n')], {type: 'text/csv;charset=utf-8'});
+			file = `ggfights-${ExtWorld}.csv`;
+		}
+
+		MainParser.ExportFile(blob, file);
+
+		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function(){
+			$(this).remove();
+		});
 	}
 };
 
@@ -740,8 +808,8 @@ let ProvinceMap = {
 
 			if (e.short)
 			{
-
-				switch (e.short.substring(1, 2)) {
+				switch (e.short.substring(1, 2))
+				{
 					case '4':
 						ProvinceMap.MapCTX.fillStyle = "rgba(234,255,0,.9)";
 						break;
@@ -778,8 +846,10 @@ let ProvinceMap = {
 		let e, s;
 		let path = new Path2D();
 
-		for (let o = 0; o < i.length; o++){
-			switch (i.charAt(o)){
+		for (let o = 0; o < i.length; o++)
+		{
+			switch (i.charAt(o))
+			{
 
 				case "M":
 					(e = ProvinceMap.ParseMove(++o, i)), path.moveTo(e.x, e.y), (o = e.index - 1);
@@ -1616,6 +1686,3 @@ let ProvinceMap = {
 		}]
 	},
 }
-
-
-

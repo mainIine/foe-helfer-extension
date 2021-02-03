@@ -20,6 +20,10 @@
 	left: calc(50vw - 310px);
 }
 
+#fp-collectorBody {
+	overflow-y: auto;
+}
+
 #fp-collectorBody .head {
 	display: flex;
 	flex-direction: row;
@@ -29,59 +33,35 @@
 	margin-bottom: 2px;
 }
 
-#fp-collectorBodyInner {
-	overflow: auto;
-	overflow-x: hidden;
-	max-height: 360px;
+#fp-collectorBody .foehelper-accordion-head strong {
+	width: 30px;
+	text-align: right;
+	margin: 0 8px 0 2px;
 }
 
-.fpcollector-body {
-	display: none;
-}
-
-.fpcollector-accordion strong,
-.fpcollector-accordion span {
-	display: inline-block;
-}
-
-.fpcollector-accordion.open .fpcollector-body {
-	display: block;
-}
-
-.fpcollector-body div {
-	border-bottom: 1px solid var(--border-table-top);
-	padding-left: 30px;
-	font-size: 90%;
+.foehelper-accordion-body div {
+	border-top: 1px solid var(--border-table-top);
 	padding: 2px 0 2px 30px;
 }
 
-.fpcollector-body div .fps {
+.foehelper-accordion-body div .fps {
 	width: 30px;
 	color: var(--text-bright);
 	text-align: right;
 	margin: 0 8px 0 2px;
 }
 
-.fpcollector-body div .desc {
+.foehelper-accordion-body div .desc {
 	width: 45%;
 }
 
-.fpcollector-head strong {
-	width: 30px;
-	text-align: right;
-	margin: 0 8px 0 2px;
+.foehelper-accordion-body div img {
+	max-height: 25px;
+	border-radius: 2px;
+	margin-right: 4px;;
 }
 
-.fpcollector-head {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 2px;
-	border-top: 1px solid var(--border-table-top);
-	border-bottom: 1px solid var(--border-table-bottom);
-	padding: 3px 0;
-}
-
-.fpcollector-head span.image {
+.foehelper-accordion-head span.image {
 	width: 30px;
 	height: 22px;
 	background-size: 20px auto;
@@ -89,55 +69,59 @@
 	background-position: center;
 }
 
-.fpcollector-head.hiddenReward-head span.image {
+.foehelper-accordion-head.hiddenReward-head span.image {
 	background-image: url('../images/incident.png');
 }
 
-.fpcollector-head.chest-head  span.image {
+.foehelper-accordion-head.chest-head  span.image {
 	background-image: url('../images/expedition.png');
 }
 
-.fpcollector-head.guildExpedition-head span.image {
+.foehelper-accordion-head.guildExpedition-head span.image {
 	background-image: url('../images/relic.png');
 }
 
-.fpcollector-head.battlegrounds_conquest-head span.image {
+.foehelper-accordion-head.battlegrounds_conquest-head span.image {
 	background-image: url('../images/gbg-gray.png');
 }
 
-.fpcollector-head.satDown-head span.image {
+.foehelper-accordion-head.satDown-head span.image {
 	background-image: url('../images/tavern.png');
 }
 
-.fpcollector-head.Quest-head span.image {
+.foehelper-accordion-head.Quest-head span.image {
 	background-image: url('../images/quest.png');
 }
 
-.fpcollector-head.spoilsOfWar-head span.image {
+.foehelper-accordion-head.spoilsOfWar-head span.image {
 	background-image: url('../images/spoils_of_war.png');
 }
 
-.fpcollector-head.diplomaticGifts-head span.image {
+.foehelper-accordion-head.diplomaticGifts-head span.image {
 	background-image: url('../images/diplomatic_gifts.png');
 }
 
-.fpcollector-head.antiquesDealer-head span.image {
+.foehelper-accordion-head.antiquesDealer-head span.image {
 	background-image: url('../images/ant.png');
 }
 
-.fpcollector-head.double_collection-head span.image {
+.foehelper-accordion-head.double_collection-head span.image {
 	background-image: url('../../../../css/images/menu/BlueGalaxy.png');
 }
 
-.fpcollector-head.dailyChallenges-head span.image {
+.foehelper-accordion-head.dailyChallenges-head span.image {
 	background-image: url('../images/dailyChallenges.png') !important;
 }
 
-.fpcollector-head.plunderReward-head span.image {
+.foehelper-accordion-head.plunderReward-head span.image {
 	background-image: url('../images/plunder.png') !important;
 }
 
+.foehelper-accordion-head.collectReward-head span.image {
+	background-image: url('../images/quest.png') !important;
+}
+
 /* Events */
-.fpcollector-head.winterEvent-head span.image {
+.foehelper-accordion-head.winterEvent-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image , .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
 	background-image: url('../images/event.png') !important;
 }

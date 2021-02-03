@@ -1,5 +1,125 @@
 ## Changelog - Extension
 
+##### 2.5.5.1
+
+**Bugfix**
+- Gildengefecht Box:
+    - [#1779](https://github.com/dsiekiera/foe-helfer-extension/issues/1779) mit der Exportfunktion der Übersicht kam ein er kleiner Bug der den Unterschied zwischen den Schnappschüssen nicht mehr anzeigte
+
+---
+
+##### 2.5.5.0
+
+**Update**
+- Kostenrechner:
+    - Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
+
+- Eigenanteilsrechner:
+    - [#1507](https://github.com/dsiekiera/foe-helfer-extension/issues/1507) Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
+
+- Gildengefecht Box:
+    - Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
+
+**Bugfix**
+- Extension:
+    - [#1770](https://github.com/dsiekiera/foe-helfer-extension/issues/1770) auf der Beta wurden die Spieler-Avatare nicht korrekt geladen, das haben wir vorsorglich bereits behoben
+
+---
+
+##### 2.5.4.4
+**Neu**
+- Handelsblocker:
+    - Wenn gewünscht, legt sich eine kleine Box in der Karte der Kontinente über den "Verhandeln"-Button um diesen nicht ausversehen zu drücken
+
+**Update**
+- Extension:
+    - moderneres Design für die Boxen
+    - neue modernere Buttons für die Boxen integriert
+    - diverse Übersetzungen von euch integriert
+
+- FP-Collector:
+    - Grafiken ergänzt (aktuelle/kommende Events)
+
+- Kostenrechner:
+    - Einstellungsbutton in der Box hinzugefügt, Werte der Archeförderung lassen sich nun einstellen
+
+- Eigenanteilsrechner:
+    - Einstellungsbutton in der Box hinzugefügt, Werte der Archeförderung lassen sich nun einstellen
+    
+
+**Bugfix**
+- Forschungskosten:
+    - [#1754](https://github.com/dsiekiera/foe-helfer-extension/issues/1754) Es wurden keine Werte mehr angezeigt
+
+---
+
+##### 2.5.4.3
+
+**Update**
+- Produktionsübersicht:
+    - [#1647](https://github.com/dsiekiera/foe-helfer-extension/issues/1647) [#1662](https://github.com/dsiekiera/foe-helfer-extension/issues/1662) Ab sofort steht in jedem Tab in grüner Farbe rechts oben was fertig ist und geerntet werden kann
+
+**Bugfix**
+- Extension:
+    - Kompatibilität zu älteren Browsern wieder hergestellt 
+
+- Marktplatz Filter:
+    - [#1723](https://github.com/dsiekiera/foe-helfer-extension/issues/1723) Der Inhalt des Marktplatz-Filters wurde nicht angezeigt, Geht nun wieder
+
+- Produktionsübersicht:
+    - [#1726](https://github.com/dsiekiera/foe-helfer-extension/issues/1726) Eventgebäude die nicht an eine Straße angeschlossen sind produzieren dennoch Bevölkerung, das wurde korrigiert
+
+---
+
+##### 2.5.4.2
+
+**Update**
+- Produktionsübersicht:
+    - Alcatraz in die Übersicht für "Einheiten" hinzugefügt
+    
+- FP-Collector:
+    - Pfeile hinzugefügt um dazustellen das man die Einträge aufklappen kann
+
+- Infobox:
+    - [#1704](https://github.com/dsiekiera/foe-helfer-extension/issues/1704) Kann ab sofort, wenn gewünscht mit dem Spielstart geladen werden => "Einstellungen > Boxen > Infobox"
+    - [#1416](https://github.com/dsiekiera/foe-helfer-extension/issues/1416) Kann ab ab sofort auf eine Länge beschränkt werden => "Einstellungen > Boxen > Infobox Nachrichten" um den Browser bei sehr vielen Einträgen zu schonen
+  - Die Einträge der Infobox werden gespeichert wenn sie nur geschlossen und wieder geöffnet wird
+
+
+**Bugfix**
+- Extension:
+    - [#1720](https://github.com/dsiekiera/foe-helfer-extension/issues/1720) Filter im Moppelassistent reagiert falsch, wenn Infobox offen ist
+    - [#1707](https://github.com/dsiekiera/foe-helfer-extension/issues/1707) Einige Mitteilungen wurden nicht angezeigt
+
+- Menü-Box:
+    - [#1717](https://github.com/dsiekiera/foe-helfer-extension/issues/1717) Wenn die Box oben am Rand liegt, verschwanden die Tooltips ausserhalb des sichtbaren Bereiches
+
+- Produktionsübersicht: 
+    - [#1709](https://github.com/dsiekiera/foe-helfer-extension/issues/1709) Die Box wurde zu lang, die ist nun wieder scrollbar
+
+- Infobox:
+    - [#1694](https://github.com/dsiekiera/foe-helfer-extension/issues/1694) Falsche Übersetzung im Filter gefixt "GvG" => "GG"
+    - Der Nachrichtenfilter ist nun case-Insesitive (Groß- Kleinschreibung wird ignoriert)
+    
+- Moppelhelfer:
+    - [#1658](https://github.com/dsiekiera/foe-helfer-extension/issues/1658) Datumserkennung für CZ gefixt
+
+---
+
+##### 2.5.4.1
+
+**Bugfix**
+- Menü:
+    - [#1701](https://github.com/dsiekiera/foe-helfer-extension/issues/1701) [#1702](https://github.com/dsiekiera/foe-helfer-extension/issues/1702) in älteren Browsern konnte der Helfer nicht geladen werden
+
+- Produktionsübersicht:
+    - [#1696](https://github.com/dsiekiera/foe-helfer-extension/issues/1696) In manchen Browsers war die Tabelle nicht breit genug
+
+- Extension:
+    - [#1699](https://github.com/dsiekiera/foe-helfer-extension/issues/1699) Benachrichtiungen wurden trotz Deaktivierung dargestellt
+
+---
+
 ##### 2.5.4.0
 
 **Neu**
@@ -31,7 +151,7 @@
 **Bugfix**
 - FP-Collector:
     - [#1690](https://github.com/dsiekiera/foe-helfer-extension/issues/1690) der Collector hat nicht alle Verdopplungen gezählt
-    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungefehler behoben
+    - [#1693](https://github.com/dsiekiera/foe-helfer-extension/issues/1693) Übersetzungsfehler behoben
 
 - Erweiterung:
     - [#1687](https://github.com/dsiekiera/foe-helfer-extension/issues/1687) im Firefox wurden nicht alle Übersetzungen geladen
