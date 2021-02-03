@@ -48,7 +48,7 @@ if ( typeof Object.create !== 'function' ) {
 			let _toastContent = '';
 
 			this._toastEl = this._toastEl || $('<div></div>', {
-				class : 'jq-toast-single'
+				class : `jq-toast-single`
 			});
 
 			// For the loader on top
@@ -206,7 +206,7 @@ if ( typeof Object.create !== 'function' ) {
 			if ( _container.length === 0 ) {
 
 				_container = $('<div></div>',{
-					class: "jq-toast-wrap",
+					class: `jq-toast-wrap${this.options.extraClass ? ' menu-' + this.options.extraClass.toLowerCase() : ''}`,
 					role: "alert",
 					"aria-live": "polite"
 				});
@@ -357,6 +357,7 @@ if ( typeof Object.create !== 'function' ) {
 	$.toast.options = {
 		text: '',
 		heading: '',
+		extraClass: '',
 		showHideTransition: 'fade',
 		allowToastClose: false,
 		hideAfter: 3000,

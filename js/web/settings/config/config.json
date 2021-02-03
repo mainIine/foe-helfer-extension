@@ -139,6 +139,12 @@
 		"sort": 6
 	},
 	{
+		"name": "NotificationsStack",
+		"callback": "NotificationStack",
+		"group": "Extension",
+		"sort": 7
+	},
+	{
 		"name": "About",
 		"callback": "About",
 		"group": "About",
