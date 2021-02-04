@@ -41,6 +41,8 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	GildFights.init();
 	GildFights.MapData = data['responseData'];
 	ActiveMap = 'gg';
+
+	$('#gildfight-Btn').removeClass('hud-btn-red');
 });
 
 
@@ -317,7 +319,7 @@ let GildFights = {
 		t.push('<div id="progress"><table class="foe-table">');
 		t.push('<tbody>');
 		t.push('<thead>');
-		t.push('<tr><th colspan="2">' + i18n(Boxes.Gildfights.Progress) + '</th></tr>'); // @Todo: translation
+		t.push('<tr><th colspan="2">' + i18n('Boxes.Gildfights.Progress') + '</th></tr>');
 		t.push('</thead>');
 
 		for(let i in mP)
@@ -419,7 +421,7 @@ let GildFights = {
 
 		// @Todo: translation
 		t.push('<div id="nextup"><table class="foe-table"');
-		t.push('<thead><tr><th class="prov-name" style="user-select:text">' + i18n(Boxes.Gildfights.Province) + '</th><th class="time-static" style="user-select:text">' + i18n(Boxes.Gildfights.Time) + '</th><th class="time-dynamic">' + i18n(Boxes.Gildfights.Count) + '</th></tr></thead>');
+		t.push('<thead><tr><th class="prov-name" style="user-select:text">' + i18n('Boxes.Gildfights.Province') + '</th><th class="time-static" style="user-select:text">' + i18n('Boxes.Gildfights.Time') + '</th><th class="time-dynamic">' + i18n('Boxes.Gildfights.Count') + '</th></tr></thead>');
 
 		let arrayprov = [];
 
