@@ -44,6 +44,10 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 	$('#gildfight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
+
+	if( $('#ProvinceMap').length > 0 ){
+		ProvinceMap.Refresh();
+	}
 });
 
 
@@ -75,7 +79,7 @@ let GildFights = {
 		if(GildFights.InjectionLoaded === false)
 		{
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
-				if ($('#LiveGildFighting').length > 0 && data['responseData'][0] !== undefined)
+				if ($('#LiveGildFighting').length > 0 && data['responseData'][0])
 				{
 					GildFights.RefreshTable(data['responseData'][0]);
 				}
@@ -557,7 +561,7 @@ let GildFights = {
 		// Province was taken over
 		if(data['lockedUntil'] !== undefined)
 		{
-			$('[data-id="province-' + data['id'] + '"]').fadeToggle(function(){
+			$(`#province-${data['id']}`).fadeToggle(function(){
 				$(this).remove();
 			});
 
@@ -576,7 +580,7 @@ let GildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				width = Math.round((progess * 100) / max),
-				cell = $(`[data-field="${data['id']}-${data['ownerId']}"]`),
+				cell = $(`#province-${data['id']}`),
 				p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			// <tr> is not present, create it
