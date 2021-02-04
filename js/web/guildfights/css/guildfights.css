@@ -98,11 +98,19 @@
 	user-select: text;
 }
 
-#LiveGildFightingBody #guilds, #LiveGildFightingBody #nextup {
-	width: 220px;
-}
 #LiveGildFightingBody #progress {
 	width: 100%;
+}
+
+#LiveGildFightingBody #guilds {
+	flex: 0 0 160px;
+}
+
+#LiveGildFightingBody #nextup {
+	font-size: 90%;
+	overflow: hidden;
+	overflow-y: auto;
+	flex: 0 0 210px;
 }
 
 #LiveGildFightingBody #guilds li {
