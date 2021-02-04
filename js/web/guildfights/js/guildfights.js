@@ -382,7 +382,7 @@ let GildFights = {
 				t.push('<td>');
 				t.push(mP[i]['title']);
 				t.push('</td>');
-				t.push('<td data-field="' + id + '">');
+				t.push('<td data-field="' + id + '" class="bar-holder">');
 
 				let cP = mP[i]['conquestProgress'];
 
@@ -429,7 +429,7 @@ let GildFights = {
 
 		t.push('</ul></div>');
 
-		// @Todo: translation
+
 		t.push('<div id="nextup"><table class="foe-table"');
 		t.push('<thead><tr><th class="prov-name" style="user-select:text">' + i18n('Boxes.Gildfights.Province') + '</th><th class="time-static" style="user-select:text">' + i18n('Boxes.Gildfights.Time') + '</th><th class="time-dynamic">' + i18n('Boxes.Gildfights.Count') + '</th></tr></thead>');
 
@@ -569,7 +569,7 @@ let GildFights = {
 		if(data['conquestProgress'].length === 0 || data['lockedUntil'])
 		{
 			// count bars in one province
-			let elements = $(`#province-${data['id']}`).find('.bar-holder').children().length;
+			let elements = $(`#province-${data['id']}`).find('.attack-wrapper').length;
 
 			// remove the current bar
 			$(`.attack-wrapper-${data['id']}`).fadeToggle(function(){
@@ -628,7 +628,7 @@ let GildFights = {
 
 				let mD = GildFights.MapData['map']['provinces'].find(d => d.id === data['id']);
 
-				$('#progress').find('table.foe-table').append(
+				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
 						$('<td />').text(mD['title']),
 						$('<td />').attr({
@@ -654,6 +654,7 @@ let GildFights = {
 			// Insert new "bar
 			else {
 				let color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+
 				cell.find('.bar-holder').append(
 					$('<span />').addClass(`attack-wrapper attack-wrapper-${data['id']}`).append(
 						$('<span />').attr({
