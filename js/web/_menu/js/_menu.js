@@ -705,7 +705,6 @@ let _menu = {
 		let btn = $('<span />');
 
 		 btn.on('click', function (){
-
 		 	if(GildFights.MapData) {
 				GildFights.ShowGildBox();
 			 }

@@ -43,6 +43,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	ActiveMap = 'gg';
 
 	$('#gildfight-Btn').removeClass('hud-btn-red');
+	$('#selectorCalc-Btn-closed').remove();
 });
 
 
