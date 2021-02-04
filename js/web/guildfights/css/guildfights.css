@@ -50,12 +50,12 @@
 }
 
 #GildPlayersBody tr th span.negotiation {
-	background: url(../../x_img/negotiation.png) center no-repeat;
+	background: url('../../x_img/negotiation.png') center no-repeat;
 	background-size: contain;
 }
 
 #GildPlayersBody tr th span.fight {
-	background: url(../../x_img/fight.png) center no-repeat;
+	background: url('../../x_img/fight.png') center no-repeat;
 	background-size: contain;
 }
 
@@ -100,6 +100,9 @@
 
 #LiveGildFightingBody #guilds, #LiveGildFightingBody #nextup {
 	width: 220px;
+}
+#LiveGildFightingBody #progress {
+	width: 100%;
 }
 
 #LiveGildFightingBody #guilds li {
