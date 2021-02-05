@@ -278,6 +278,7 @@
     "Boxes.Market.TradePartnerFriend": "Friends",
     "Boxes.Market.TradePartnerGuild": "Guild members",
     "Boxes.Market.TradePartnerNeighbor": "Neighbors",
+    "Boxes.Market.TradePartnerMyself": "Yours",
     "Boxes.MoppelHelper.Attacks": "Attacks",
     "Boxes.MoppelHelper.Days": "__days__ day(s)",
     "Boxes.MoppelHelper.Event": "Event",
