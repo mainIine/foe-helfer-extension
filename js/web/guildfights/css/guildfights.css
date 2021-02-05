@@ -50,12 +50,12 @@
 }
 
 #GildPlayersBody tr th span.negotiation {
-	background: url(../../x_img/negotiation.png) center no-repeat;
+	background: url('../../x_img/negotiation.png') center no-repeat;
 	background-size: contain;
 }
 
 #GildPlayersBody tr th span.fight {
-	background: url(../../x_img/fight.png) center no-repeat;
+	background: url('../../x_img/fight.png') center no-repeat;
 	background-size: contain;
 }
 
@@ -98,8 +98,21 @@
 	user-select: text;
 }
 
-#LiveGildFightingBody #guilds, #LiveGildFightingBody #nextup {
-	width: 220px;
+#LiveGildFightingBody #progress {
+	width: 100%;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+#LiveGildFightingBody #guilds {
+	flex: 0 0 160px;
+}
+
+#LiveGildFightingBody #nextup {
+	font-size: 90%;
+	overflow: hidden;
+	overflow-y: auto;
+	flex: 0 0 210px;
 }
 
 #LiveGildFightingBody #guilds li {
@@ -122,8 +135,8 @@
 	transition: background-color .6s;
 }
 
-#LiveGildFightingBody tr td.red-pulse {
-	background-color: rgba(255, 0, 0, 0.45);
+#LiveGildFightingBody tr.red-pulse td {
+	background-color: rgba(255, 0, 0, 0.5);
 	transition: background-color .6s;
 }
 

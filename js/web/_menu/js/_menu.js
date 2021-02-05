@@ -697,27 +697,17 @@ let _menu = {
 	 * */
 	gildfight_Btn: () => {
 
-		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn');
-		desc = i18n('Menu.Gildfight.Desc');
+		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red'),
+			desc = i18n('Menu.Gildfight.Warning') + '<br>' + i18n('Menu.Gildfight.Desc');
 
-		if (GildFights.ProvinceNames === null) {
-			btn_BG.addClass('hud-btn-red');
-			desc = i18n('Menu.Gildfight.Desc') + '<br>' + i18n('Menu.Gildfight.Warning');
-		}
-		
-
-
-		// Tooltip einbinden
 		_menu.toolTippBox(i18n('Menu.Gildfight.Title'), desc , 'gildfight-Btn');
 
 		let btn = $('<span />');
 
-
-		 btn.on('click', function () {
-
-		 	if (GildFights.ProvinceNames !== null) {
-		 	GildFights.ShowGildBox();
-		 }
+		 btn.on('click', function (){
+		 	if(GildFights.MapData) {
+				GildFights.ShowGildBox();
+			 }
 		 });
 
 		btn_BG.append(btn);
