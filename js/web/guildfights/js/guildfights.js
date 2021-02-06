@@ -359,7 +359,7 @@ let GildFights = {
 				}
 			}
 
-
+	
 			for(let x = 0; x < bP.length; x++)
 			{
 				if(mP[i]['ownerId'] !== undefined && bP[x]['participantId'] === mP[i]['ownerId'])
@@ -430,7 +430,7 @@ let GildFights = {
 
 		t.push('<div id="guilds" class="dark-bg"><ul>');
 
-		t.push('<li style="color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
+		t.push('<li style="user-select:none; color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
 
 		for(let x in bP)
 		{
@@ -471,7 +471,8 @@ let GildFights = {
 		for(let x in prov)
 		{
 			if(!prov.hasOwnProperty(x)) continue;
-
+			if(prov[x]['neighbor'].includes(own['participantId'])) // Show only neighbors
+			{
 			let countDownDate = moment.unix(prov[x]['lockedUntil']),
 				color = GildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
 				intervalID = setInterval(()=>{
@@ -483,9 +484,10 @@ let GildFights = {
 
 			GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
-			t.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm:ss')}</td>`);
+			t.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 			t.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 			t.push('</tr>');
+			}
 		}
 
 		t.push('</table></div>');
