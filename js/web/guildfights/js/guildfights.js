@@ -342,20 +342,21 @@ let GildFights = {
 
 			let id = mP[i]['id'];
 
-			let neighbor = ProvinceMap.ProvinceData().find(e => e['id'] === id).map(e => e['connections']);
+			mP[i]['neighbor'] = [];
 
-			for(let x in neighbor)
+			let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
+
+			for(let x in linkIDs)
 			{
-				if(!neighbor.hasOwnProperty(x)) {
+				if(!linkIDs.hasOwnProperty(x)) {
 					continue;
 				}
 
-				if(!mP[i]['neighbor']) {
-					mP[i]['neighbor'] = [];
-				}
-				let neighborID = GildFights.MapData['map']['provinces'].find(e => e.id === neighbor[x]);
+				let neighborID = GildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
 
-				mP[i]['neighbor'].push(neighborID['ownerID']);
+				if(neighborID['ownerId']){
+					mP[i]['neighbor'].push(neighborID['ownerId']);
+				}
 			}
 
 
@@ -400,7 +401,7 @@ let GildFights = {
 				t.push('<td>');
 				t.push(mP[i]['title']);
 				t.push('</td>');
-				t.push('<td data-field="' + id + '" class="bar-holder">');
+				t.push(`<td data-field="${id}" class="bar-holder">`);
 
 				let cP = mP[i]['conquestProgress'];
 
