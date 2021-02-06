@@ -367,11 +367,13 @@ let GildFights = {
 					// show current fights
 					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
 					{
+						let pColor = GildFights.SortedColors.find(e => e['id'] === mP[i]['ownerId']);
+
 						t.push(`<tr id="province-${id}" data-id="${id}">`);
-						t.push(`<td>`);
+						t.push(`<td style="color:${pColor['main']}">`);
 						t.push(mP[i]['title']);
 						t.push('</td>');
-						t.push('<td data-field="' + id + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
+						t.push(`<td data-field="${id}-${mP[i]['ownerId']}" class="bar-holder">`);
 
 						let cP = mP[i]['conquestProgress'];
 
