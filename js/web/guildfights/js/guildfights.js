@@ -57,8 +57,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 
 /**
- *
- * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, NewAction: null, PlayersPortraits: null, PrevAction: null}}
+ * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*=): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, Neighbours: [], NewAction: null, PlayersPortraits: null, PrevAction: null, UpdateCounter: GildFights.UpdateCounter}}
  */
 let GildFights = {
 
@@ -67,6 +66,7 @@ let GildFights = {
 	NewAction: null,
 	NewActionTimestamp: null,
 	MapData: null,
+	Neighbours: [],
 	PlayersPortraits: null,
 	Colors : null,
 	SortedColors: null,
@@ -394,6 +394,24 @@ let GildFights = {
 
 			let id = mP[i]['id'];
 
+			mP[i]['neighbor'] = [];
+
+			let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
+
+			for(let x in linkIDs)
+			{
+				if(!linkIDs.hasOwnProperty(x)) {
+					continue;
+				}
+
+				let neighborID = GildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
+
+				if(neighborID['ownerId']){
+					mP[i]['neighbor'].push(neighborID['ownerId']);
+				}
+			}
+
+
 			for(let x = 0; x < bP.length; x++)
 			{
 				if(mP[i]['ownerId'] !== undefined && bP[x]['participantId'] === mP[i]['ownerId'])
@@ -402,7 +420,7 @@ let GildFights = {
 					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
 					{
 						progress.push(`<tr id="province-${id}" data-id="${id}">`);
-						progress.push(`<td>`);
+						progress.push(`<td style="color:${pColor['main']}">>`);
 						progress.push(mP[i]['title']);
 						progress.push('</td>');
 						progress.push('<td data-field="' + id + '-' + mP[i]['ownerId'] + '" class="bar-holder">');
