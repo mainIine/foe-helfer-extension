@@ -57,8 +57,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 
 /**
- *
- * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, NewAction: null, PlayersPortraits: null, PrevAction: null}}
+ * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*=): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, Neighbours: [], NewAction: null, PlayersPortraits: null, PrevAction: null, UpdateCounter: GildFights.UpdateCounter}}
  */
 let GildFights = {
 
@@ -67,6 +66,7 @@ let GildFights = {
 	NewAction: null,
 	NewActionTimestamp: null,
 	MapData: null,
+	Neighbours: [],
 	PlayersPortraits: null,
 	Colors : null,
 	SortedColors: null,
@@ -326,6 +326,7 @@ let GildFights = {
 			color = GildFights.Colors.find(e => e['id'] === 'own_guild_colour'),
 			own = bP.find(e => e['clan']['id'] === ExtGuildID);
 
+
 		t.push('<div id="progress"><table class="foe-table">');
 
 		t.push('<thead>');
@@ -340,6 +341,23 @@ let GildFights = {
 			}
 
 			let id = mP[i]['id'];
+
+			let neighbor = ProvinceMap.ProvinceData().find(e => e['id'] === id).map(e => e['connections']);
+
+			for(let x in neighbor)
+			{
+				if(!neighbor.hasOwnProperty(x)) {
+					continue;
+				}
+
+				if(!mP[i]['neighbor']) {
+					mP[i]['neighbor'] = [];
+				}
+				let neighborID = GildFights.MapData['map']['provinces'].find(e => e.id === neighbor[x]);
+
+				mP[i]['neighbor'].push(neighborID['ownerID']);
+			}
+
 
 			for(let x = 0; x < bP.length; x++)
 			{
@@ -409,8 +427,6 @@ let GildFights = {
 
 		t.push('<div id="guilds" class="dark-bg"><ul>');
 
-		// @Todo: translation
-		// show own guild
 		t.push('<li style="color:' + color['mainColour'] + '">' + own['clan']['name'] + '</li>');
 
 		for(let x in bP)
