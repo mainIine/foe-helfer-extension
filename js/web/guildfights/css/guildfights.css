@@ -88,14 +88,28 @@
 
 #LiveGildFightingBody {
 	overflow: auto;
-	display: flex;
 }
 
-#LiveGildFightingBody ul {
-	list-style: none;
-	margin: 0;
-	padding: 0 5px;
-	user-select: text;
+#LiveGildFightingBody .tabs ul li a span {
+	width: 21px;
+	top: 6px;
+	background: transparent url('../../unit/images/unit-icons.png') 0 3px no-repeat;
+	background-size: 90px 20px;
+}
+
+#LiveGildFightingBody .tabs ul li.gbgprogress a span {
+	background: transparent url('../../stats/images/tabs.png') -237px 0 no-repeat;
+}
+
+#LiveGildFightingBody .tabs ul li.gbgnextup a span {
+	background: transparent url('../../stats/images/tabs.png') -237px 0 no-repeat;
+}
+
+#LiveGildFightingBody #nextup {
+	font-size: 90%;
+	overflow: hidden;
+	overflow-y: auto;
+	flex-grow: 2;
 }
 
 #LiveGildFightingBody #progress {
@@ -104,31 +118,12 @@
 	overflow-y: auto;
 }
 
-#LiveGildFightingBody #guilds {
-	flex: 0 0 160px;
-}
-
-#LiveGildFightingBody #nextup {
-	font-size: 90%;
-	overflow: hidden;
-	overflow-y: auto;
-	flex: 0 0 210px;
-}
-
-#LiveGildFightingBody #guilds li {
-	border-left-width: 3px;
-	border-left-style: solid;
-	padding-left: 3px;
-	margin-bottom: 1px;
-	font-size: 90%;
-}
-
-#LiveGildFightingBody #guilds li:first-child {
-	border-left-width: 0;
-}
-
-#LiveGildFightingBody tr td:first-child {
+#LiveGildFightingBody #progress tr td:first-child {
 	width: 60px;
+}
+
+#LiveGildFightingBody #progress tr td:nth-child(2) {
+	width: 50%;
 }
 
 #LiveGildFightingBody tr td {
@@ -136,7 +131,7 @@
 }
 
 #LiveGildFightingBody tr.red-pulse td {
-	background-color: rgba(255, 0, 0, 0.5);
+	background-color: rgba(208, 200, 172, 0.3);
 	transition: background-color .6s;
 }
 
