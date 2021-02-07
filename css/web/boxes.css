@@ -261,6 +261,9 @@ input[type=number] {
 	scrollbar-width: thin;
 }
 
+table {
+	border-collapse: collapse;
+}
 
 .foe-table {
 	border-spacing: 0;
@@ -287,6 +290,10 @@ table.foe-table th,
 .windowbody .dark-bg:last-child {
 	margin-bottom: -3px;
 	border-radius: 0 0 4px 4px;
+}
+
+.dark-bg:hover, table.foe-table tbody tr.dark-bg:nth-child(odd) {
+	background-color: var(--black-50) !important;
 }
 
 table.foe-table tbody tr:nth-child(odd) {
