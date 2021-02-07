@@ -734,7 +734,7 @@ let _menu = {
 		let btn_Investment = $('<span />');
 
 		btn_Investment.on('click', function () {
-			Investment.BuildBox();
+			Investment.BuildBox(false);
 		});
 
 		btn_InvestH.append(btn_Investment);
