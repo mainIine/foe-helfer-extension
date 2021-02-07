@@ -54,7 +54,7 @@ let _menu = {
 		'moppelhelper',
 		'fpCollector',
 		'gildfight',
-		'investhistory'
+		'investment'
 		// 'alerts',
 		// 'unitsGex',
 	],
@@ -705,11 +705,11 @@ let _menu = {
 
 		let btn = $('<span />');
 
-		 btn.on('click', function (){
-		 	if(GildFights.MapData) {
+		btn.on('click', function (){
+			if(GildFights.MapData) {
 				GildFights.ShowGildBox();
-			 }
-		 });
+			}
+		});
 
 		btn_BG.append(btn);
 
@@ -721,24 +721,28 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	investhistory_Btn: () => {
+	investment_Btn: () => {
 
 		let btn_InvestH = $('<div />').attr({
-			'id': 'investhistory-Btn',
-			'data-slug': 'investhistory'
+			'id': 'investment-Btn',
+			'data-slug': 'investment'
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.InvestHistory.Title'), i18n('Menu.InvestHistory.Desc'), 'investhistory-Btn');
+		_menu.toolTippBox(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
 
-		let btn_InvestHistory = $('<span />');
+		let btn_Investment = $('<span />');
 
-		btn_InvestHistory.on('click', function () {
-			InvestHistory.Box();
+		btn_Investment.on('click', function () {
+			if ($('#Investment').length === 0) {
+			Investment.Box();
+			}
+			else {
+				HTML.CloseOpenBox('Investment');
+			}
 		});
 
-		btn_InvestH.append(btn_InvestHistory);
-
+		btn_InvestH.append(btn_Investment);
 
 		return btn_InvestH;
 	}
