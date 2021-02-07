@@ -705,11 +705,11 @@ let _menu = {
 
 		let btn = $('<span />');
 
-		 btn.on('click', function (){
-		 	if(GildFights.MapData) {
+		btn.on('click', function (){
+			if(GildFights.MapData) {
 				GildFights.ShowGildBox();
-			 }
-		 });
+			}
+		});
 
 		btn_BG.append(btn);
 
@@ -729,9 +729,9 @@ let _menu = {
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.InvestHistory.Title'), i18n('Menu.InvestHistory.Desc'), 'investment-Btn');
+		_menu.toolTippBox(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
 
-		let btn_InvestHistory = $('<span />');
+		let btn_Investment = $('<span />');
 
 		btn_InvestHistory.on('click', function () {
 			Investment.BuildBox();
