@@ -1,16 +1,118 @@
 #Investment {
-	width: 370px;
-	padding: 10px;
+	width: 750px;
+	height: 450px;
+	top: calc(50vh - 200px);
+	left: calc(50vw - 310px);
 }
 
 #Investment #InvestmentBody {
 	overflow: auto;
 }
 
+#InvestmentBody .total-wrapper {
+	display: inline-flex;
+	justify-content: space-around;
+	width: calc(100% - 20px);
+	padding: 10px;
+}
+
 #Investment #InvestmentBody strong {
 	color: var(--text-bright);
 }
 
-#Investment #InvestmentBody #total-fp {
-	margin-top: 10px;
+
+#InvestmentBody #history-wrapper {
+	border-top: 2px solid var(--text-bright);
+}
+
+#InvestmentBody table {
+	position: relative;
+}
+
+#InvestmentBody table th {
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+#InvestmentBody table tr.new td {
+	background: #a9e09269;
+}
+
+#InvestmentBody table tr.hidden {
+	display: none;
+}
+
+#InvestmentBody div.detail {
+	padding-left: 10px;
+}
+
+#InvestmentBody table tbody tr {
+	opacity: .999;
+}
+
+#InvestmentBody table tbody td.progress {
+	border-left: 1px solid var(--border-table-top);
+	border-right: 1px solid var(--border-table-top);
+	background: none;
+
+}
+
+#InvestmentBody table tbody tr.fphistory{
+	cursor: pointer;
+}
+
+#InvestmentBody table tbody td {
+	position: relative;
+}
+
+#InvestmentBody table tbody td div.progbar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background-color: rgb(1, 143, 1);
+	z-index: -1;
+}
+
+#InvestmentBody table tbody td div.diff {
+	position: absolute;
+	min-width: 10px;
+	text-align: center;
+	right: 2px;
+	top: 1px;
+	font-size: 0.8em;
+	border-radius: 10px;
+	padding: 1px 2px;
+	border: 1px solid #ffffff80;
+	opacity: 0.65;
+}
+#InvestmentBody table tbody tr:hover div.diff {
+	opacity:1;
+}
+
+#InvestmentBody table tbody td div.diff.success {
+	background: rgb(2, 44, 0);
+}
+
+#InvestmentBody table tbody td div.diff.error {
+	background: #bf0000;
+}
+#InvestmentBody table tbody td span.success{
+	color: var(--text-success);
+}
+#InvestmentBody table tbody td span.error{
+	color: #f11616;
+}
+#InvestmentBody table tbody td span.warning{
+	color: #ccb21f;
+}
+
+#InvestmentBody table tbody td img.rank {
+	width: 20px;
+}
+#InvestmentBody table th.center,
+#InvestmentBody table td.center {
+	text-align: center;
 }

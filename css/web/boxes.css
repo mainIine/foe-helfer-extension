@@ -796,30 +796,6 @@ FP-Bar */
 }
 
 /*******************************************************************************/
-#invest-bar,
-#reward-bar {
-	display: inline;
-	margin-left: 7%;
-	z-index: 100;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
-	color: var(--text-normal);
-	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
-	user-select: text;
-}
-
-#reward-bar {
-	margin-left: 10%;
-}
-
-#invest-bar strong {
-	color: var(--text-bright);
-}
-
-#reward-bar strong {
-	color: var(--text-bright);
-}
-
 
 .OwnPartBoxBackground .outerArrow:before,
 .OwnPartBoxBackground .outerArrow span.arrow,
@@ -837,7 +813,7 @@ FP-Bar */
 	background: url('../images/hud/box-bg.png') center center repeat;
 	z-index: 100;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	font-weight: 400;
 	color: var(--text-normal);
 	text-shadow: 0 1px 1px var(--black-65);
