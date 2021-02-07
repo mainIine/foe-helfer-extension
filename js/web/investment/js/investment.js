@@ -63,7 +63,7 @@ let Investment = {
      */
     CalcFPs: ()=> {
 
-		if (Investment.Data === null || (Investment.Data !== null && Investment.Data.length <= 0){
+		if (Investment.Data === null || (Investment.Data !== null && Investment.Data.length <= 0)){
 			return;
 		}
 
