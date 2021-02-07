@@ -96,7 +96,7 @@
 	top: 1px;
 	font-size: 0.85em;
 	padding: 1px 2px;
-	color: var(--text-light);
+	color: var(--text-bright);
 	font-weight: bold;
 	text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
