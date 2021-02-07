@@ -113,6 +113,7 @@ let IndexDB = {
             players: 'id,date',
             pvpActions: '++id,playerId,date,type',
             greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
+            investhistory: '++id,playerId,entity_id,&[playerId+entity_id],name,level,max_progress,current_progress,profit,currentFp,fphistory,date',
 			forgeStats: '++id,type,amount,date', // FP Collector
             statsGBGPlayers: 'date', // battleground
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
@@ -149,6 +150,7 @@ let IndexDB = {
                 players: 'id,date',
                 actions: '++id,playerId,date,type',
                 greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
+                investhistory: '++id,playerId,entity_id,&[playerId+entity_id],name,level,max_progress,current_progress,profit,currentFp,fphistory,date'
             });
             betaDB.open();
             if (!(await betaDB.players.count())) {
