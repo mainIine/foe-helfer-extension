@@ -202,6 +202,11 @@ let GildFights = {
 			// add css to the dom
 			HTML.AddCssFile('guildfights');
 		}
+		else {
+			HTML.CloseOpenBox('LiveGildFighting');
+			return;
+		}
+
 		GildFights.BuildFightContent();
 	},
 

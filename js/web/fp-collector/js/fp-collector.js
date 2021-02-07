@@ -214,6 +214,10 @@ let FPCollector = {
 
 			if (hidePicker) $('#FPCollectorPicker').hide();
 		}
+		else {
+			HTML.CloseOpenBox('fp-collector');
+			return;
+		}
 
 		FPCollector.buildBody();
 	},
