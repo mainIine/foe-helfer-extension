@@ -166,7 +166,7 @@ let GildFights = {
 	 */
 	SetTabContent: (id, content)=> {
 		// ab dem zweiten Eintrag verstecken
-		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
+		let style = GildFights.TabsContent.length > 0 ? ' style="display:none"' : '';
 
 		GildFights.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
 	},

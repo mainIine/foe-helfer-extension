@@ -55,8 +55,11 @@ let InvestHistory = {
         let arc = 1 + (MainParser.ArkBonus / 100);
         let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
         let UpdatedList = false;
-        for (let i in LGData) {
-            if (LGData.hasOwnProperty(i)) {
+
+        for (let i in LGData)
+        {
+            if (LGData.hasOwnProperty(i))
+            {
                 let PlayerID = LGData[i]['player']['player_id'],
                     PlayerName = LGData[i]['player']['name'],
                     Avatar = LGData[i]['player']['avatar'],
@@ -72,6 +75,7 @@ let InvestHistory = {
                 let Profit = 0;
                 let GbhasUpdate = false;
                 let arrfphistory = [];
+
                 //console.log(contribution['reward']['strategy_point_amount']);
                 if (undefined !== LGData[i]['reward']) {
                     CurrentErtrag = MainParser.round(LGData[i]['reward']['strategy_point_amount'] !== undefined ? LGData[i]['reward']['strategy_point_amount'] * arc : 0);
@@ -86,7 +90,7 @@ let InvestHistory = {
                     .first();
 
                 // LG gefunden mit investierten FP => Wert bekannt
-                if (CurrentGB != undefined && CurrentGB['current_progress'] < CurrentProgress) {
+                if (CurrentGB !== undefined && CurrentGB['current_progress'] < CurrentProgress) {
                     GbhasUpdate = true;
                     increase = CurrentProgress - CurrentGB['current_progress'];
                     let data = {
@@ -102,11 +106,13 @@ let InvestHistory = {
                     }
                     arrfphistory.push(data);
                 }
-                if (CurrentGB != undefined && FullSync) {
+
+                if (CurrentGB !== undefined && FullSync) {
                     allGB = InvestHistory.remove_key_from_array(allGB, CurrentGB.id);
                 }
+
                 //console.log("Update");
-                if (CurrentGB == undefined || GbhasUpdate) {
+                if (CurrentGB === undefined || GbhasUpdate) {
                     UpdatedList = true;
                     InvestHistory.RefreshInvestHistoryDB({
                         playerId: PlayerID,
@@ -211,8 +217,9 @@ let InvestHistory = {
             .where('id').above(0)
             .toArray();
 
-        if (CurrentGB == undefined)
+        if (CurrentGB === undefined)
             return;
+
         let data = CurrentGB;
 
         for (let x = 0; x < data.length; x++) {
@@ -234,7 +241,7 @@ let InvestHistory = {
             let rankImageValue = contribution['rank'] <= 6 ? contribution['rank'] : 6;
             let history = {};
 
-            if (contribution['fphistory'] != '[]') {
+            if (contribution['fphistory'] !== '[]') {
                 hasFpHistory = true;
                 hasFpHistoryClass = 'fphistory ';
                 history = JSON.parse(contribution['fphistory'] || false);
@@ -245,7 +252,7 @@ let InvestHistory = {
                     }
                 }
             }
-            if (contribution['increase'] == 0) {
+            if (contribution['increase'] === 0) {
                 DiffText = 0;
             } else {
                 DiffText = '+' + contribution['increase'];
@@ -272,7 +279,7 @@ let InvestHistory = {
                 if ($(this).next("tr.detailview").length) {
                     $(this).next("tr.detailview").remove();
                 } else {
-                    if (typeof ($(this).attr("data-detail")) != 'undefined' && $(this).attr("data-detail") != '{}') {
+                    if (typeof ($(this).attr("data-detail")) !== 'undefined' && $(this).attr("data-detail") !== '{}') {
                         let id = $(this).attr("id");
                         let detail = JSON.parse($(this).attr("data-detail"));
                         let max_progress = $(this).attr("data-max-progress");
@@ -297,10 +304,10 @@ let InvestHistory = {
     ShowInvestHistorySettings: () => {
         let c = [],
             InvestHistorySettings = JSON.parse(localStorage.getItem('InvestHistorySettings')),
-            showEntryDate = (InvestHistorySettings && InvestHistorySettings.showEntryDate !== undefined) ? InvestHistorySettings.showEntryDate : 0;
+            showEntryDate = (InvestHistorySettings && InvestHistorySettings.showEntryDate !== undefined) ? InvestHistorySettings.showEntryDate : 0,
             showRestFp = (InvestHistorySettings && InvestHistorySettings.showRestFp !== undefined) ? InvestHistorySettings.showRestFp : 0;
-        c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate == 1) ? ' checked="checked"':''} /> <label for="showentrydate">Zeige Eintragsdatum</label></p>`);
-        c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp == 1) ? ' checked="checked"':''} /> <label for="showrestfp">Zeige restliche FP</label></p>`);
+        c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">Zeige Eintragsdatum</label></p>`);
+        c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">Zeige restliche FP</label></p>`);
         c.push(`<hr><p><button id="save-InvestHistory-settings" class="btn btn-default" style="width:100%" onclick="InvestHistory.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
         $('#InvestHistorySettingsBox').html(c.join(''));
 
