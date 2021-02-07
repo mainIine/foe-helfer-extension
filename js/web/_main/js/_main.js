@@ -811,10 +811,10 @@ const FoEproxy = (function () {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
 		
 		//Update der Investitions Historie
-		if (InvestHistory) {
+		if (Investment) {
 			for (let i in data.responseData)
 				if (data.responseData[i]['forge_points'] !== undefined) {
-					InvestHistory.UpdateData([data.responseData[i]], false);
+					Investment.UpdateData([data.responseData[i]], false);
 				}
 		}
 
