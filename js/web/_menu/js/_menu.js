@@ -54,7 +54,7 @@ let _menu = {
 		'moppelhelper',
 		'fpCollector',
 		'gildfight',
-		'investhistory'
+		'investment'
 		// 'alerts',
 		// 'unitsGex',
 	],
@@ -721,24 +721,23 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	investhistory_Btn: () => {
+	investment_Btn: () => {
 
 		let btn_InvestH = $('<div />').attr({
-			'id': 'investhistory-Btn',
-			'data-slug': 'investhistory'
+			'id': 'investment-Btn',
+			'data-slug': 'investment'
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.InvestHistory.Title'), i18n('Menu.InvestHistory.Desc'), 'investhistory-Btn');
+		_menu.toolTippBox(i18n('Menu.InvestHistory.Title'), i18n('Menu.InvestHistory.Desc'), 'investment-Btn');
 
 		let btn_InvestHistory = $('<span />');
 
 		btn_InvestHistory.on('click', function () {
-			InvestHistory.Box();
+			Investment.BuildBox();
 		});
 
 		btn_InvestH.append(btn_InvestHistory);
-
 
 		return btn_InvestH;
 	}
