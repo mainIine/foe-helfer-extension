@@ -809,6 +809,15 @@ const FoEproxy = (function () {
 	// Übersicht der LGs eines Nachbarn
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
+		
+		//Update der Investitions Historie
+		if (InvestHistory) {
+			for (let i in data.responseData)
+				if (data.responseData[i]['forge_points'] !== undefined) {
+					InvestHistory.UpdateData([data.responseData[i]], false);
+				}
+		}
+
 	});
 
 	// es wird ein LG eines Spielers geöffnet
