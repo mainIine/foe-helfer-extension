@@ -199,6 +199,7 @@
 				'fp-collector',
 				'unit-gex',
 				'maptradewarning',
+				'investhistory'
 			];
 
 			// load scripts (one after the other)

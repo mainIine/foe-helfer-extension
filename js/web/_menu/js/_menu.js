@@ -53,7 +53,8 @@ let _menu = {
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
-		'gildfight'
+		'gildfight',
+		'investhistory'
 		// 'alerts',
 		// 'unitsGex',
 	],
@@ -713,5 +714,32 @@ let _menu = {
 		btn_BG.append(btn);
 
 		return btn_BG;
+	},
+	
+	/**
+	 * InfoBox für Investitions Historie
+	 *
+	 * @returns {*|jQuery}
+	 */
+	investhistory_Btn: () => {
+
+		let btn_InvestH = $('<div />').attr({
+			'id': 'investhistory-Btn',
+			'data-slug': 'investhistory'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.InvestHistory.Title'), i18n('Menu.InvestHistory.Desc'), 'investhistory-Btn');
+
+		let btn_InvestHistory = $('<span />');
+
+		btn_InvestHistory.on('click', function () {
+			InvestHistory.Box();
+		});
+
+		btn_InvestH.append(btn_InvestHistory);
+
+
+		return btn_InvestH;
 	}
 };
