@@ -47,6 +47,10 @@ let Investment = {
 
             HTML.AddCssFile('investment');
         }
+        else {
+            HTML.CloseOpenBox('Investment');
+            return;
+        }
 
         Investment.Show();
     },
