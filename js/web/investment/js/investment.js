@@ -242,7 +242,7 @@ let Investment = {
                         let detail = JSON.parse($(this).attr("data-detail"));
                         let max_progress = $(this).attr("data-max-progress");
                         let d = [];
-                        d.push('<tr class="detailview dark-bg"><td colspan="6"><table>');
+                        d.push('<tr class="detailview dark-bg"><td colspan="'+$(this).find("td").length+'"><table>');
 
                         for (let i in detail) {
                             if (detail.hasOwnProperty(i)) {
