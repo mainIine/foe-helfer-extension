@@ -1,0 +1,114 @@
+#InvestHistory {
+	width: 370px;
+	font-size: 0.8rem;
+	height: 500px;
+}
+
+#InvestHistory #InvestHistoryBody {
+	overflow: auto;
+
+}
+
+#InvestHistory #InvestHistoryBody .foe_table {
+	width: 100%;
+}
+
+#InvestHistory #InvestHistoryBody strong {
+	color: var(--text-bright);
+}
+
+#InvestHistory #InvestHistoryBody #total-fp {
+	margin-top: 10px;
+}
+
+#InvestHistory table {
+	position: relative;
+}
+
+#InvestHistory table th {
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+#InvestHistory table tr.new td {
+	background: #a9e09269;
+}
+
+#InvestHistory table tr.hidden {
+	display: none;
+}
+
+#InvestHistory div.detail {
+	padding-left: 10px;
+}
+
+#InvestHistory table tbody tr {
+	opacity: .999;
+}
+
+#InvestHistory table tbody td.progress {
+	border-left: 1px solid var(--border-table-top);
+	border-right: 1px solid var(--border-table-top);
+	background: none;
+
+}
+
+#InvestHistory table tbody tr.fphistory{
+	cursor: pointer;
+}
+
+#InvestHistory table tbody td {
+	position: relative;
+}
+
+#InvestHistory table tbody td div.progbar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background-color: rgb(1, 143, 1);
+	z-index: -1;
+}
+
+#InvestHistory table tbody td div.diff {
+	position: absolute;
+	min-width: 10px;
+	text-align: center;
+	right: 2px;
+	top: 1px;
+	font-size: 0.8em;
+	border-radius: 10px;
+	padding: 1px 2px;
+	border: 1px solid #ffffff80;
+	opacity: 0.65;
+}
+#InvestHistory table tbody tr:hover div.diff {
+	opacity:1;
+}
+
+#InvestHistory table tbody td div.diff.success {
+	background: rgb(2, 44, 0);
+}
+
+#InvestHistory table tbody td div.diff.error {
+	background: #bf0000;
+}
+#InvestHistory table tbody td span.success{
+	color: var(--text-success);
+}
+#InvestHistory table tbody td span.error{
+	color: #f11616;
+}
+#InvestHistory table tbody td span.warning{
+	color: #ccb21f;
+}
+
+#InvestHistory table tbody td img.rank {
+	width: 20px;
+}
+#InvestHistory table th.center,
+#InvestHistory table td.center {
+    text-align: center;
+}
