@@ -264,7 +264,10 @@ let InvestHistory = {
             if (showEntryDate) {
                 h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHmm')}">${moment(contribution['date']).format('DD.MM.-H:mm')}</td>`);
             }
-            h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+            h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
+            if (DiffText > 0)
+                h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+            h.push(`</td>`);
             if (showRestFp) {
                 h.push(`<td class="is-number center" data-number="${restFp}">${restFp}</td>`);
             }
