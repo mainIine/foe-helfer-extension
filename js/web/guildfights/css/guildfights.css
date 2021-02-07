@@ -102,7 +102,10 @@
 }
 
 #LiveGildFightingBody .tabs ul li.gbgnextup a span {
-	background: transparent url('../../stats/images/tabs.png') -237px 0 no-repeat;
+	background: transparent url('../../x_img/hourglass.png') no-repeat;
+	background-size: contain;
+	top: 8px;
+    position: relative;
 }
 
 #LiveGildFightingBody #nextup {
