@@ -81,9 +81,10 @@
 }
 
 #LiveGildFighting {
-	top: 30%;
-	right: 15%;
-	width: 900px;
+	left: calc(50vw - 325px);
+	top: calc(50vw - 250px);
+	width: 750px;
+	height: 500px;
 }
 
 #LiveGildFightingBody {
@@ -161,8 +162,10 @@
 /*************************************************************************************************************/
 
 #ProvinceMap {
-	width: 790px;
-	height: 620px;
+	width: 560px;
+	height: 438px;
+	left: calc(50vw - 280px);
+	top: calc(50vw - 219px);
 }
 
 #ProvinceMap #province-map {
