@@ -699,7 +699,7 @@ let _menu = {
 	gildfight_Btn: () => {
 
 		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red'),
-			desc = i18n('Menu.Gildfight.Warning') + '<br>' + i18n('Menu.Gildfight.Desc');
+			desc = i18n('Menu.Gildfight.Warning') + i18n('Menu.Gildfight.Desc');
 
 		_menu.toolTippBox(i18n('Menu.Gildfight.Title'), desc , 'gildfight-Btn');
 

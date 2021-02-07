@@ -58,7 +58,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 /**
  *
- * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, NewAction: null, PlayersPortraits: null, PrevAction: null}}
+ * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*=): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, Neighbours: [], NewAction: null, PlayersPortraits: null, PrevAction: null, UpdateCounter: GildFights.UpdateCounter}}
  */
 let GildFights = {
 
@@ -67,6 +67,7 @@ let GildFights = {
 	NewAction: null,
 	NewActionTimestamp: null,
 	MapData: null,
+	Neighbours: [],
 	PlayersPortraits: null,
 	Colors : null,
 	SortedColors: null,
@@ -190,7 +191,7 @@ let GildFights = {
 
 			HTML.Box({
 				id: 'LiveGildFighting',
-				title: 'Live Gefechte',
+				title: i18n('Menu.Gildfight.Title'),
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
@@ -502,7 +503,8 @@ let GildFights = {
 		for(let x in prov)
 		{
 			if(!prov.hasOwnProperty(x)) continue;
-
+			if(prov[x]['neighbor'].includes(own['participantId'])) // Show only neighbors
+			{
 			let countDownDate = moment.unix(prov[x]['lockedUntil']),
 				color = GildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
 				intervalID = setInterval(()=>{
@@ -518,6 +520,7 @@ let GildFights = {
 			nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 			nextup.push(`<td>${prov[x]['owner']}</td>`);
 			nextup.push('</tr>');
+			}
 		}
 
 		nextup.push('</table></div>');
