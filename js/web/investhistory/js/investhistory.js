@@ -264,13 +264,16 @@ let InvestHistory = {
             if (showEntryDate) {
                 h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHmm')}">${moment(contribution['date']).format('DD.MM.-H:mm')}</td>`);
             }
-            h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+            h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
+            if (DiffText !== 0)
+                h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+            h.push(`</td>`);
             if (showRestFp) {
                 h.push(`<td class="is-number center" data-number="${restFp}">${restFp}</td>`);
             }
             h.push(`<td class="is-number center" data-number="${contribution['rank']}"><img class="rank" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
             h.push(`<td class="is-number center" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
-            h.push(`<td class="is-number center" data-number="${RealProfit}"><span class="${RealProfitClass}">${RealProfit}</span></td></tr>`);
+            h.push(`<td class="is-number center" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td></tr>`);
         }
         h.push('</tbody></table>');
         $('#InvestHistory').find('#InvestHistoryBody').html(h.join('')).promise().done(function () {

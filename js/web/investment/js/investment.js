@@ -130,12 +130,12 @@ let Investment = {
         h.push('<th class="is-number" data-type="overview-group">Fortschritt</th>');
 
         if (showRestFp) {
-            h.push('<th class="is-number center" data-type="overview-group" title="Wieviele FP noch bis zum leveln">Rest FP</th>');
+            h.push('<th class="is-number text-center" data-type="overview-group" title="Wieviele FP noch bis zum leveln">Rest FP</th>');
         }
 
-        h.push('<th class="is-number center" data-type="overview-group">&nbsp;</th>' +
-            '<th class="is-number center" data-type="overview-group" title="Wieviel habe ich eingezahlt">Invest</th>' +
-            '<th class="is-number center" data-type="overview-group" title="erzielter Gewinn, gelb -> Platz ist noch nicht sicher, rot/grün -> Verlust/Gewinn sicher" >Gewinn</th>' +
+        h.push('<th class="is-number text-center" data-type="overview-group">&nbsp;</th>' +
+            '<th class="is-number text-center" data-type="overview-group" title="Wieviel habe ich eingezahlt">Invest</th>' +
+            '<th class="is-number text-center" data-type="overview-group" title="erzielter Gewinn, gelb -> Platz ist noch nicht sicher, rot/grün -> Verlust/Gewinn sicher" >Gewinn</th>' +
             '</tr>' +
             '</thead><tbody class="overview-group">');
 
@@ -196,13 +196,15 @@ let Investment = {
             if (showEntryDate) {
                 h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHmm')}">${moment(contribution['date']).format('DD.MM.-H:mm')}</td>`);
             }
-            h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}<div class="diff ${DiffClass}">${DiffText}</div></td>`);
-            if (showRestFp) {
-                h.push(`<td class="is-number center" data-number="${restFp}">${restFp}</td>`);
+            h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
+            if (DiffText !== 0)
+                h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+            h.push(`</td>`);            if (showRestFp) {
+                h.push(`<td class="is-number text-center" data-number="${restFp}">${restFp}</td>`);
             }
-            h.push(`<td class="is-number center" data-number="${contribution['rank']}"><img class="rank" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
-            h.push(`<td class="is-number center" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
-            h.push(`<td class="is-number center" data-number="${RealProfit}"><span class="${RealProfitClass}">${RealProfit}</span></td></tr>`);
+            h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
+            h.push(`<td class="is-number text-center" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
+            h.push(`<td class="is-number text-center" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td></tr>`);
         }
 
         h.push('</tbody></table>');
@@ -232,13 +234,15 @@ let Investment = {
             $('.sortable-table tbody tr').on('click', function () {
                 if ($(this).next("tr.detailview").length) {
                     $(this).next("tr.detailview").remove();
+                    $(this).removeClass('open');
                 } else {
                     if (typeof ($(this).attr("data-detail")) !== 'undefined' && $(this).attr("data-detail") !== '{}') {
+                        $(this).addClass('open');
                         let id = $(this).attr("id");
                         let detail = JSON.parse($(this).attr("data-detail"));
                         let max_progress = $(this).attr("data-max-progress");
                         let d = [];
-                        d.push('<tr class="detailview"><td colspan="6"><table>');
+                        d.push('<tr class="detailview dark-bg"><td colspan="6"><table>');
 
                         for (let i in detail) {
                             if (detail.hasOwnProperty(i)) {
@@ -247,7 +251,7 @@ let Investment = {
                             }
                         }
 
-                        d.push('</td></tr>');
+                        d.push('</table></td></tr>');
                         $(d.join('')).insertAfter($('#' + id));
                     }
                 }
