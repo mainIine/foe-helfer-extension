@@ -42,7 +42,7 @@
     "Boxes.Alerts.Permissions.Denied": "Notificările au fost dezactivate. Pentru a activa notificările din browser, mergi la chrome://settings/content/notifications și apoi reîncarcă această pagină.",
     "Boxes.Alerts.Permissions.Enable": "Activează",
     "Boxes.Alerts.Permissions.Refresh": "Reîncarcă",
-    "Boxes.Alerts.Preferences.Auction.Info": "Creează automat o noua alerta cand Eu fac o oferta la Licitatiile Negustorului de antichitati...",
+    "Boxes.Alerts.Preferences.Auction.Info": "Creează automat o noua alerta cand Eu fac o oferta la Licitatiile Negustorului de antichitati",
     "Boxes.Alerts.Preferences.Auction.Title": "Licitatiile Negustorului de Antichitati",
     "Boxes.Alerts.Preferences.Battlegrounds.Info": "Trimiteți o alertă instantanee atunci când există o activitate mare în câmpurile de luptă ale breslei (de exemplu, 10 lupte într-un singur sector în 5 secunde). Vă rugăm să rețineți că această funcție funcționează numai atunci când Bataliile Ghildei sunt deschise în joc!",
     "Boxes.Alerts.Preferences.Battlegrounds.Title": "Trackerul Bataliilor Ghildei",
