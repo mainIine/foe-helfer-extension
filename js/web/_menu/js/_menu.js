@@ -733,11 +733,11 @@ let _menu = {
 
 		let btn_Investment = $('<span />');
 
-		btn_InvestHistory.on('click', function () {
+		btn_Investment.on('click', function () {
 			Investment.BuildBox();
 		});
 
-		btn_InvestH.append(btn_InvestHistory);
+		btn_InvestH.append(btn_Investment);
 
 		return btn_InvestH;
 	}
