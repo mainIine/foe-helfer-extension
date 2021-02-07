@@ -733,16 +733,11 @@ let _menu = {
 
 		let btn_Investment = $('<span />');
 
-		btn_Investment.on('click', function () {
-			if ($('#Investment').length === 0) {
-			Investment.Box();
-			}
-			else {
-				HTML.CloseOpenBox('Investment');
-			}
+		btn_InvestHistory.on('click', function () {
+			Investment.BuildBox();
 		});
 
-		btn_InvestH.append(btn_Investment);
+		btn_InvestH.append(btn_InvestHistory);
 
 		return btn_InvestH;
 	}

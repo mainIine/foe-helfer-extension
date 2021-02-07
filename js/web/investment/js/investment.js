@@ -16,14 +16,14 @@
 // LG Investitionen
 FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
 	Investment.Data = data['responseData'];
-    Investment.CalcBar();
 
     Investment.UpdateData(Investment.Data, true).then((e) => {
         if (Settings.GetSetting('ShowInvestments')){
-            Investment.Box();
+            Investment.BuildBox();
         }
-        Investment.SendToServer();
     });
+
+    Investment.SendToServer();
 });
 
 
@@ -32,7 +32,8 @@ let Investment = {
     Einsatz: 0,
     Ertrag: 0,
 
-    Box: ()=> {
+
+    BuildBox: ()=> {
         if ($('#Investment').length === 0) {
             HTML.Box({
                 id: 'Investment',
@@ -44,7 +45,6 @@ let Investment = {
                 settings: 'Investment.ShowInvestmentSettings()'
             });
 
-            // CSS in den DOM prügeln
             HTML.AddCssFile('investment');
         }
 
@@ -57,7 +57,7 @@ let Investment = {
      *
      * @constructor
      */
-    CalcBar: ()=> {
+    CalcFPs: ()=> {
 
 		if (Investment.Data !== null && Investment.Data.length <= 0){
 			return;
@@ -91,15 +91,16 @@ let Investment = {
     },
 
 
-
     Show: async ()=> {
+
+        Investment.CalcFPs();
+
         let Gewinn = Investment.Ertrag - Investment.Einsatz;
 
-        let div = $('#InvestmentBody'),
-            b = [],
+        let b = [],
             h = [];
 
-        b.push(`<div class="total-wrapper">`);
+        b.push(`<div class="total-wrapper dark-bg">`);
 
         if (Investment.Data !== null && Investment.Data.length > 0){
             b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
@@ -142,11 +143,7 @@ let Investment = {
             '</tr>' +
             '</thead><tbody class="overview-group">');
 
-        let CurrentGB = await IndexDB.db.investhistory
-            .where('id')
-            .above(0)
-            .reverse()
-            .toArray();
+        let CurrentGB = await IndexDB.db.investhistory.reverse().toArray();
 
         if (CurrentGB === undefined)
             return;
@@ -158,10 +155,13 @@ let Investment = {
             const contribution = data[x];
             let Profit = contribution['profit'];
             let RealProfit = Profit - contribution['currentFp'];
-            let RealProfitClass = RealProfit > 0 && contribution['currentFp'] >= contribution['max_progress'] - contribution['current_progress'] ? 'success' : 'error';
+            let RealProfitClass = contribution['currentFp'] >= contribution['max_progress'] - contribution['current_progress'] ? 'success' : 'error';
 
             if (contribution['currentFp'] < contribution['max_progress'] - contribution['current_progress']) {
                 RealProfitClass = 'warning';
+            }
+            else if(RealProfit < 0){
+                RealProfitClass = 'error';
             }
 
             let hasFpHistory = false;
@@ -268,16 +268,18 @@ let Investment = {
             InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
             showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
             showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
+
         c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">Zeige Eintragsdatum</label></p>`);
         c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">Zeige restliche FP</label></p>`);
         c.push(`<hr><p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
-        $('#InvestmentSettingsBox').html(c.join(''));
 
+        $('#InvestmentSettingsBox').html(c.join(''));
     },
 
 
     RefreshInvestmentDB: async (Investment) => {
         await IndexDB.addUserFromPlayerDictIfNotExists(Investment['playerId'], true);
+
         let CurrentInvest = await IndexDB.db.investhistory
             .where({
                 playerId: Investment['playerId'],
@@ -285,7 +287,8 @@ let Investment = {
             })
             .first();
 
-        if (CurrentInvest === undefined) {
+        if (CurrentInvest === undefined)
+        {
             await IndexDB.db.investhistory.add({
                 playerId: Investment['playerId'],
                 playerName: Investment['playerName'],
@@ -302,7 +305,8 @@ let Investment = {
                 increase: Investment['increase'],
                 date: MainParser.getCurrentDate()
             });
-        } else {
+        }
+        else {
             await IndexDB.db.investhistory.update(CurrentInvest.id, {
                 currentFp: Investment['currentFp'],
                 gbname: Investment['gbname'],
@@ -320,6 +324,7 @@ let Investment = {
         if (LGData !== null && LGData.length <= 0) {
             return;
         }
+
         let arc = 1 + (MainParser.ArkBonus / 100);
         let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
         let UpdatedList = false;
@@ -358,29 +363,35 @@ let Investment = {
                     .first();
 
                 // LG gefunden mit investierten FP => Wert bekannt
-                if (CurrentGB !== undefined && CurrentGB['current_progress'] < CurrentProgress) {
+                if (CurrentGB !== undefined && CurrentGB['current_progress'] < CurrentProgress)
+                {
                     GbhasUpdate = true;
                     increase = CurrentProgress - CurrentGB['current_progress'];
+
                     let data = {
                         current_progress: CurrentProgress,
                         date: MainParser.getCurrentDate(),
                         increase: increase
                     }
+
                     let fphistory = JSON.parse(CurrentGB['fphistory']);
                     for (let i in fphistory) {
                         if (fphistory.hasOwnProperty(i)) {
                             arrfphistory.push(fphistory[i]);
                         }
                     }
+
                     arrfphistory.push(data);
                 }
 
-                if (CurrentGB !== undefined && FullSync) {
+                if (CurrentGB !== undefined && FullSync)
+                {
                     allGB = Investment.remove_key_from_array(allGB, CurrentGB.id);
                 }
 
                 //console.log("Update");
-                if (CurrentGB === undefined || GbhasUpdate) {
+                if (CurrentGB === undefined || GbhasUpdate)
+                {
                     UpdatedList = true;
                     Investment.RefreshInvestmentDB({
                         playerId: PlayerID,
@@ -400,30 +411,28 @@ let Investment = {
                 }
             }
         }
-        // gelevelte LGs löschen
-        if (FullSync && allGB.length >= 1) {
-            await IndexDB.db.investhistory.where('id').anyOf(allGB).delete();
-        }
-        if ($("#Investment").length && UpdatedList) {
-            // Wait a little for Updating Store
-            setTimeout(() => {
-                Investment.Show();
-            }, 1000);
 
+        // Delete leveled GBs
+        if (FullSync && allGB.length >= 1)
+        {
+            await IndexDB.db.investhistory.where('id').anyOf(allGB).delete();
         }
     },
     
 
     SettingsSaveValues: () => {
         let value = {};
+
         value.showEntryDate = 0;
         value.showRestFp = 0;
 
-        if ($("#showentrydate").is(':checked')) {
+        if ($("#showentrydate").is(':checked'))
+        {
             value.showEntryDate = 1;
         }
 
-        if ($("#showrestfp").is(':checked')) {
+        if ($("#showrestfp").is(':checked'))
+        {
             value.showRestFp = 1;
         }
 
@@ -444,7 +453,7 @@ let Investment = {
     
     
 	/**
-	 * Wenn gewollt, zum Server schicken
+	 * If wanted, send to server
 	 */
 	SendToServer: ()=> {
 

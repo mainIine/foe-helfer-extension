@@ -275,9 +275,9 @@ let FPCollector = {
 
 
 	/**
- * Handles FP collected from Quests
- * 
- */
+	 * Handles FP collected from Quests
+	 *
+	 */
 	HandleAdvanceQuest: (PostData) => {
 		if (PostData['requestData'] && PostData['requestData'][0]) {
 			let QuestID = PostData['requestData'][0];
