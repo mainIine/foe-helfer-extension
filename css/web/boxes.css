@@ -997,6 +997,7 @@ FP-Bar */
 	font-size: 0.8rem;
 	line-height: 18px;
 	padding: 2px 5px;
+	border-radius: 2px;
 }
 
 .closed .window-body {
