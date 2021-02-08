@@ -19,7 +19,7 @@ FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
 
     Investment.UpdateData(Investment.Data, true).then((e) => {
         if (Settings.GetSetting('ShowInvestments')){
-            Investment.BuildBox();
+            Investment.BuildBox(true);
         }
     });
 
@@ -33,7 +33,7 @@ let Investment = {
     Ertrag: 0,
 
 
-    BuildBox: ()=> {
+    BuildBox: (event)=> {
         if ($('#Investment').length === 0) {
             HTML.Box({
                 id: 'Investment',
@@ -47,7 +47,7 @@ let Investment = {
 
             HTML.AddCssFile('investment');
         }
-        else {
+        else if(!event) {
             HTML.CloseOpenBox('Investment');
             return;
         }
