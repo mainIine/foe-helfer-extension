@@ -633,6 +633,8 @@
     "Menu.HiddenRewards.Title": "Ereignisse",
     "Menu.Info.Desc": "Zeigt dir alle Dinge an die im \"Hintergrund\" passieren.<br><em>Füllt sich nach und nach mit Infos...</em>",
     "Menu.Info.Title": "Infobox",
+    "Menu.Investment.Title":"Investitionen",
+    "Menu.Investment.Desc":"Zeigt den Fortschritt der Investitionen an.",
     "Menu.Kits.Desc": "Listet alle vorhandenen Gebäude-, Upgrade- und Auswahlkits auf.",
     "Menu.Kits.Title": "Gebäude-Kits",
     "Menu.Market.Desc": "Handel auf dem Markt filtern",

@@ -151,7 +151,7 @@
 					'date-range/lightpick',
 					'lit-html/lit-html.bundle.min',
 					'SimpleMarkdown/simple-markdown.min',
-					'dexie/dexie.min', // indexDB helper lib
+					'dexie/dexie.min',
 				];
 
 			// load all vendor scripts first (unknown order)
@@ -198,7 +198,7 @@
 				'eventhandler',
 				'fp-collector',
 				'unit-gex',
-				'maptradewarning',
+				'maptradewarning'
 			];
 
 			// load scripts (one after the other)
