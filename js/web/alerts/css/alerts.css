@@ -224,9 +224,18 @@ input.hidden {
     display: none;
 }
 
+#Alerts .icon-repeat {
+    background-image: url('../../x_img/repeat.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
 #Alerts .btn-edit {
     background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn);
-    background-size: 18px 18px, cover;
+    background-size: 13px 13px, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
     width: 18px;
@@ -238,7 +247,7 @@ input.hidden {
 
 #Alerts .btn-delete {
     background-image: url('../../x_img/trash.svg'), var(--background-btn-red);
-    background-size: 18px 18px, cover;
+    background-size: 13px 13px, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
     width: 18px;

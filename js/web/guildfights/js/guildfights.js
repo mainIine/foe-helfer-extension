@@ -428,7 +428,7 @@ let GildFights = {
 
 						progress.push(`<tr id="province-${id}" data-id="${id}">`);
 
-						progress.push(`<td style="color:${pColor['main']}">${mP[i]['title']}</td>`);
+						progress.push(`<td><b style="color:${pColor['main']}">${mP[i]['title']}</b></td>`);
 						progress.push(`<td data-field="${id}-${mP[i]['ownerId']}" class="bar-holder">`);
 
 						let cP = mP[i]['conquestProgress'];
