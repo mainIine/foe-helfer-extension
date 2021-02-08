@@ -784,9 +784,11 @@ let Alerts = function(){
 							<td>${labels.repeats[alert.repeat+""]}</td>
 							<td><input type="checkbox"${persist}></td>
 							<td class="text-right">
+								<div class="btn-group">
 								<span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
-								<span class="btn-default alert-button" data-id="${alert.id}" data-action="edit">${labels.edit}</span>
-								<span class="btn-default alert-button btn-delete" data-id="${alert.id}" data-action="delete">${labels.delete}</span>
+								<span class="btn-default alert-button btn-edit" data-id="${alert.id}" data-action="edit" title="${labels.edit}"></span>
+								<span class="btn-default alert-button btn-delete" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
+								</div>
 							</td>
 						</tr>`;
 						}

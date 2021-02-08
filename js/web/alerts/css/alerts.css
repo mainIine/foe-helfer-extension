@@ -224,6 +224,30 @@ input.hidden {
     display: none;
 }
 
+#Alerts .btn-edit {
+    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn);
+    background-size: 18px 18px, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    width: 18px;
+}
+
+#Alerts .btn-edit:hover {
+    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn-active);
+}
+
+#Alerts .btn-delete {
+    background-image: url('../../x_img/trash.svg'), var(--background-btn-red);
+    background-size: 18px 18px, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    width: 18px;
+}
+
+#Alerts .btn-delete:hover {
+    background-image: url('../../x_img/trash.svg'), var(--background-btn-red-active);
+}
+
 /* Preferences */
 #Alerts #alerts-preferences .item {
     border: .5px solid var(--border-table-top);
