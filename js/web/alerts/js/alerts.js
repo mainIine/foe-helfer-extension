@@ -677,7 +677,7 @@ let Alerts = function(){
 							<tr>
 								<th class="column-160">${labels.title}</th>
 								<th>${labels.expiration}</th>
-								<th>${labels.repeat}</th><th>${labels.persistent}</th>
+								<th><span title="${labels.repeat}" class="icon-repeat"></span></th><th>${labels.persistent}</th>
 								<th>&nbsp;</th>
 							 </tr>
 						</thead>
@@ -785,9 +785,9 @@ let Alerts = function(){
 							<td><input type="checkbox"${persist}></td>
 							<td class="text-right">
 								<div class="btn-group">
-								<span class="btn-default alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
-								<span class="btn-default alert-button btn-edit" data-id="${alert.id}" data-action="edit" title="${labels.edit}"></span>
-								<span class="btn-default alert-button btn-delete" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
+								<span class="btn-default btn-tight alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
+								<span class="btn-default btn-tight alert-button btn-edit" data-id="${alert.id}" data-action="edit" title="${labels.edit}"></span>
+								<span class="btn-default btn-tight alert-button btn-delete" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
 								</div>
 							</td>
 						</tr>`;
