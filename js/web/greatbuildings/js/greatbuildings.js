@@ -162,9 +162,9 @@ let GreatBuildings =
         if (LastMapPlayerID !== ExtPlayerID) {
             h.push('<strong class="player-name"><span>' + PlayerDict[LastMapPlayerID]['PlayerName'] + '</span></strong>');
         }
-        h.push('<br>')
+        h.push('<br><strong>')
         h.push(i18n('Boxes.GreatBuildings.ArcBonus') + ' ');
-        h.push('<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
+        h.push('</strong><input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
         h.push('<br><br>')
         h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">');
         h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
