@@ -125,7 +125,7 @@ let HTML = {
 	customFunctions: [],
 
 	/**
-	 * Erzeugt eine HTML Box im DOM
+	 * Creates an HTML box in the DOM
 	 *
 	 * id
 	 * title
@@ -218,6 +218,10 @@ let HTML = {
 
 			if(args['auto_close']){
 				$(`#${args.id}`).on('click', `#${args['id']}close`, function(){
+
+					// remove settings box if open
+					$(`#${args.id}`).find('.settingsbox-wrapper').remove();
+
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
 					});

@@ -471,7 +471,7 @@ let Parts = {
 
         h.push('<tr>');
         h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
-        h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Deposit') + '</th>');
+        h.push('<th class="text-center"><span class="forgepoints" title="' + i18n('Boxes.OwnpartCalculator.Deposit') + '"></th>');
         h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
 		h.push('<th class="text-center"><span class="blueprint" title="' + i18n('Boxes.OwnpartCalculator.BPs') + '"></span></th>');
 		h.push('<th class="text-center"><span class="medal" title="' + i18n('Boxes.OwnpartCalculator.Meds') + '"></span></th>');
