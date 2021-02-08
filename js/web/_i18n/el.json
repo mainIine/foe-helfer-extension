@@ -537,7 +537,7 @@
     "Boxes.Units.Unbind": "Ανεξάρτητες",
     "Boxes.Units.Unit": "Μονάδα",
     "Boxes.UnitsGex.NoUnitsAvailable": "Δεν εντοπίστηκαν διαθέσιμα δεδομένα μονάδας. Πατήστε το πλήκτρο \"U\"",
-    "Boxes.mapTradeWarning.Text": "Αποτροπή",
+    "Boxes.mapTradeWarning.Text": "Εμπόδιση Διαπραγμάτευσης",
     "Boxes.mapTradeWarning.Title": "Εμπορία",
     "Date": "DD-MMM-YY",
     "DateTime": "DD-MMM-YY @ HH:mm:ss a",
