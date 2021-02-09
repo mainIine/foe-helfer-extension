@@ -24,7 +24,7 @@
 	height: 22px !important;
 }
 
-#GuildPlayersHeader small {
+#GildPlayersHeader small {
 	font-weight: lighter;
 }
 
@@ -110,7 +110,6 @@
 }
 
 #LiveGildFightingBody #nextup {
-	font-size: 90%;
 	overflow: hidden;
 	overflow-y: auto;
 	flex-grow: 2;
