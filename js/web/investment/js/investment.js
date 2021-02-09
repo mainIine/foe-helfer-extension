@@ -353,7 +353,6 @@ let Investment = {
                 let GbhasUpdate = false;
                 let arrfphistory = [];
 
-                //console.log(contribution['reward']['strategy_point_amount']);
                 if (undefined !== LGData[i]['reward']) {
                     CurrentErtrag = MainParser.round(LGData[i]['reward']['strategy_point_amount'] !== undefined ? LGData[i]['reward']['strategy_point_amount'] * arc : 0);
                     Profit = CurrentErtrag;
@@ -365,6 +364,17 @@ let Investment = {
                         entity_id: EntityID
                     })
                     .first();
+
+                // Remove GreatBuilding which has a new reinvestment and wasn't updated before
+                if (CurrentGB !== undefined && CurrentGB['level'] != GBLevel){
+                    await IndexDB.db.investhistory
+                    .where({
+                        playerId: PlayerID,
+                        entity_id: EntityID
+                    })
+                    .delete();
+                    CurrentGB = undefined;
+                }
 
                 // LG gefunden mit investierten FP => Wert bekannt
                 if (CurrentGB !== undefined && CurrentGB['current_progress'] < CurrentProgress)
@@ -393,7 +403,6 @@ let Investment = {
                     allGB = Investment.remove_key_from_array(allGB, CurrentGB.id);
                 }
 
-                //console.log("Update");
                 if (CurrentGB === undefined || GbhasUpdate)
                 {
                     UpdatedList = true;
