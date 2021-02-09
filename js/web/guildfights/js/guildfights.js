@@ -58,7 +58,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 /**
  *
- * @type {{ShowExportButton: GildFights.ShowExportButton, init: GildFights.init, PrepareColors: (function(): undefined), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, PlayerBoxContent: [], PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, Colors: null, InjectionLoaded: boolean, RefreshTable: (function(*=): undefined), MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, Neighbours: [], NewAction: null, PlayersPortraits: null, PrevAction: null, UpdateCounter: GildFights.UpdateCounter}}
+ * @type {{ShowExportButton: GildFights.ShowExportButton, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: (function(): undefined), BuildFightContent: GildFights.BuildFightContent, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, SetTabContent: GildFights.SetTabContent, NewAction: null, TabsContent: [], PrevAction: null, UpdateCounter: GildFights.UpdateCounter, init: GildFights.init, PrepareColors: (function(): undefined), ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, SetTabs: GildFights.SetTabs, GetTabs: (function(): string), PlayerBoxContent: [], Colors: null, RefreshTable: (function(*=): undefined), Neighbours: [], Tabs: [], PlayersPortraits: null}}
  */
 let GildFights = {
 
@@ -401,13 +401,17 @@ let GildFights = {
 			let id = mP[i]['id'];
 
 			mP[i]['neighbor'] = [];
+
 			let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
+
 			for(let x in linkIDs)
 			{
 				if(!linkIDs.hasOwnProperty(x)) {
 					continue;
 				}
+
 				let neighborID = GildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
+
 				if(neighborID['ownerId']){
 					mP[i]['neighbor'].push(neighborID['ownerId']);
 				}
@@ -420,11 +424,11 @@ let GildFights = {
 					// show current fights
 					if(mP[i]['conquestProgress'].length > 0 && (mP[i]['lockedUntil'] === undefined))
 					{
+						let pColor = GildFights.SortedColors.find(e => e['id'] === mP[i]['ownerId']);
+
 						progress.push(`<tr id="province-${id}" data-id="${id}">`);
-						
-						progress.push(`<td style="color:${color['main']}">`);
-						progress.push(mP[i]['title']);
-						progress.push('</td>');
+
+						progress.push(`<td><b style="color:${pColor['main']}">${mP[i]['title']}</b></td>`);
 						progress.push(`<td data-field="${id}-${mP[i]['ownerId']}" class="bar-holder">`);
 
 						let cP = mP[i]['conquestProgress'];
@@ -445,9 +449,7 @@ let GildFights = {
 							progress.push(`<span class="attack-wrapper attack-wrapper-${cP[y]['participantId']}"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
 						}
 						
-						progress.push(`<td>`);
-						progress.push(bP[x].clan.name);
-						progress.push('</td>');
+						progress.push(`<td>${bP[x]['clan']['name']}</td>`);
 					}
 				}
 			}
@@ -456,9 +458,7 @@ let GildFights = {
 			if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0)
 			{
 				progress.push(`<tr id="province-${id}" data-id="${id}">`);
-				progress.push('<td>');
-				progress.push(mP[i]['title']);
-				progress.push('</td>');
+				progress.push(`<td>${mP[i]['title']}</td>`);
 				progress.push('<td data-field="' + id + '" class="bar-holder">');
 
 				let cP = mP[i]['conquestProgress'];
@@ -472,11 +472,9 @@ let GildFights = {
 
 					let max = cP[y]['maxProgress'],
 						progess = cP[y]['progress'],
-						width = Math.round((progess * 100) / max),
-						p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === cP[y]['participantId'])),
-						color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
+						width = Math.round((progess * 100) / max);
 
-					progress.push(`<span class="attack-wrapper attack-wrapper-${cP[y]['participantId']}"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
+					progress.push(`<span class="attack-wrapper attack-wrapper-${cP[y]['participantId']}"><span class="attack attacker-${cP[y]['participantId']}" style="width:${width}%">${cP[y]['progress']}</span></span>`);
 				}
 				
 				progress.push('<td> </td>');
@@ -647,6 +645,7 @@ let GildFights = {
 				$(this).remove();
 			});
 
+			// only 1 bar was inside, remove the complete row
 			if(elements === 1){
 				$(`#province-${data['id']}`).fadeToggle(function(){
 					$(this).remove();
@@ -686,7 +685,7 @@ let GildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				width = Math.round((progess * 100) / max),
-				cell = $(`#province-${data['id']}`),
+				cell = $(`tr#province-${data['id']}`),
 				p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			// <tr> is not present, create it
@@ -705,7 +704,8 @@ let GildFights = {
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'bar-holder'
-						})
+						}),
+						$('<td />').text(p['clan']['name'])
 					)
 				);
 
