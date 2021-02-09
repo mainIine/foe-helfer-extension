@@ -214,6 +214,28 @@ let StrategyPoints = {
 
 			$('body').append(div);
 			StrategyPoints.HandleWindowResize();
+
+            // Add clock for F11 op
+            Time = new Date()
+            let div2 = $('<div />').attr('id', 'clock');
+
+            function startTime() {
+              var today = new Date();
+              var h = today.getHours();
+              var m = today.getMinutes();
+              h = checkTime(h);
+              m = checkTime(m);
+              document.getElementById('clock').innerHTML =
+              h + ":" + m;
+              var t = setTimeout(startTime, 5000);
+            }
+            function checkTime(i) {
+              if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+              return i;
+            }
+
+		    $('body').append(div2).ready(startTime);
+
 		}
 
 		if ( isNaN( value ) ){ return; }

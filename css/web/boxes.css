@@ -754,6 +754,27 @@ FP-Bar */
 	margin-left: 2px;
 }
 
+
+/***********************************************************************************/
+/*clock */
+#clock {
+	z-index: 100;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	/*font-family: "LCDMono";*/
+	font-size: 1.0rem;
+	color: var(--text-normal);
+	/*color: #FFB539;*/
+	position: fixed;
+	top: 8px;
+	left: calc(0vW + 400px);
+	width: calc(50vw - 106px - 405px);
+	text-shadow: 0 0 1px rgba(0,0,0, 0.8);
+	user-select: text;
+	white-space: nowrap;
+}
+
+
+
 /*******************************************************************************/
 
 .game-cursor,
