@@ -129,6 +129,11 @@
 	width: 50%;
 }
 
+#LiveGildFightingBody table.foe-table tr.highlight-row {
+	background-color: rgba(40, 18, 7, 0.8);
+	color: var(--text-bright);
+}
+
 #LiveGildFightingBody tr td {
 	transition: background-color .6s;
 }
