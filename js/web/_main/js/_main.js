@@ -812,10 +812,7 @@ const FoEproxy = (function () {
 		
 		//Update der Investitions Historie
 		if (Investment) {
-			for (let i in data.responseData)
-				if (data.responseData[i]['forge_points'] !== undefined) {
-					Investment.UpdateData([data.responseData[i]], false);
-				}
+			Investment.UpdateData(data.responseData, false);
 		}
 
 	});
