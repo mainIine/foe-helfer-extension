@@ -1123,6 +1123,8 @@ let HelperBeta = {
  */
 let MainParser = {
 
+	foeHelperBgApiHandler: /** @type {null|((request: {type: string}&object) => Promise<{ok:true, data: any}|{ok:false, error:string}>)}*/ (null),
+
 	activateDownload: false,
 	savedFight:null,
 	Language: 'en',
@@ -1216,20 +1218,30 @@ let MainParser = {
 	 * @param {any & {type: string}} data
 	 */
 	sendExtMessage: async (data) => {
-		let response = null;
+		const bgApiHandler = MainParser.foeHelperBgApiHandler;
+		/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
+		let _responsePromise = null;
 		// @ts-ignore
 		if (typeof chrome !== 'undefined') {
 			// @ts-ignore
-			response = await new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
-		} else if (typeof browser !== 'undefined') {
-			response = await browser.runtime.sendMessage(extID, data);
+			_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
+		} else if (bgApiHandler != null) {
+			_responsePromise = bgApiHandler(data);
 		} else {
-			// TODO: implement
-			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
-			throw new Error("backwards Communication from Extension not implemented");
+			throw new Error('No implementation for Extension communication found');
+		}
+		const responsePromise = _responsePromise;
+		
+		const response = await new Promise((resolve, reject) => {
+			responsePromise.then(resolve, reject);
+			setTimeout(()=>resolve({ok: false, error: "response timeout for: "+JSON.stringify(data)}), 1000)
+		});
+
+		if (typeof response !== 'object' || typeof response.ok !== 'boolean') {
+			throw new Error('invalid response from Extension-API call');
 		}
 
-		if (response.ok) {
+		if (response.ok === true) {
 			return response.data;
 		} else {
 			throw new Error('EXT-API error: '+response.error);
@@ -2287,3 +2299,8 @@ let MainParser = {
 		}
 	}
 };
+
+if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler instanceof Function) {
+	MainParser.foeHelperBgApiHandler = window.foeHelperBgApiHandler;
+	delete window.foeHelperBgApiHandler;
+}
