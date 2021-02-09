@@ -543,9 +543,13 @@ let GildFights = {
 			$('.gbg-tabs').tabslet({active: 1});
 
 			$('#LiveGildFighting').on('click', 'tr', function(){
-				$('table.foe-table').find('tr').removeClass('.highlight-row');
-
-				$(this).addClass('highlight-row');
+				if($(this).hasClass('highlight-row'))
+				{
+					$(this).removeClass('highlight-row');
+				}
+				else {
+					$(this).addClass('highlight-row');
+				}
 			});
 		});
 	},
