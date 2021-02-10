@@ -1119,7 +1119,7 @@ let HelperBeta = {
 };
 
 /**
- * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: (function(*): undefined), activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
+ * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, foeHelperBgApiHandler: null, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: MainParser.Championship, activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
 
@@ -1219,17 +1219,23 @@ let MainParser = {
 	 */
 	sendExtMessage: async (data) => {
 		const bgApiHandler = MainParser.foeHelperBgApiHandler;
+
 		/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
 		let _responsePromise = null;
+
 		// @ts-ignore
 		if (typeof chrome !== 'undefined') {
 			// @ts-ignore
 			_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
-		} else if (bgApiHandler != null) {
+		}
+		else if (bgApiHandler != null) {
 			_responsePromise = bgApiHandler(data);
-		} else {
+
+		}
+		else {
 			throw new Error('No implementation for Extension communication found');
 		}
+
 		const responsePromise = _responsePromise;
 		
 		const response = await new Promise((resolve, reject) => {
@@ -1237,13 +1243,15 @@ let MainParser = {
 			setTimeout(()=>resolve({ok: false, error: "response timeout for: "+JSON.stringify(data)}), 1000)
 		});
 
-		if (typeof response !== 'object' || typeof response.ok !== 'boolean') {
+		if (typeof response !== 'object' || typeof response.ok !== 'boolean')
+		{
 			throw new Error('invalid response from Extension-API call');
 		}
 
 		if (response.ok === true) {
 			return response.data;
-		} else {
+		}
+		else {
 			throw new Error('EXT-API error: '+response.error);
 		}
 	},
