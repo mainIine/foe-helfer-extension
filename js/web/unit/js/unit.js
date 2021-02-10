@@ -116,12 +116,12 @@ let Unit = {
 				text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
 
 			}
-			// es gab eine Ernte...
+			// there was a harvest...
 			else if(Unit.NextHarvest !== null){
 				let countDownDate = moment.unix(Unit.NextHarvest);
 
 				let x = setInterval(function() {
-					Unit.UpdateAlcaLable(countDownDate,x);
+					Unit.UpdateAlcaLable(countDownDate, x);
 				}, 1000);
 
 				Unit.UpdateAlcaLable(countDownDate, x);
@@ -157,7 +157,7 @@ let Unit = {
 		}
 
 
-		// Angriffsarmee
+		// Attack army
 		let attack = [];
 
 		Unit.Tabs = [];
@@ -184,7 +184,8 @@ let Unit = {
 
         for (let i in Unit.Cache['units'])
         {
-        	if(!Unit.Cache['units'].hasOwnProperty(i)){
+        	if(!Unit.Cache['units'].hasOwnProperty(i))
+        	{
         		break;
         	}
 
@@ -194,7 +195,8 @@ let Unit = {
             }
         }
 
-        for(let i in Unit.Attack) {
+        for(let i in Unit.Attack)
+        {
 			if(!Unit.Attack.hasOwnProperty(i)){
 				break;
 			}

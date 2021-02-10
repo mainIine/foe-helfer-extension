@@ -809,6 +809,15 @@ const FoEproxy = (function () {
 	// Übersicht der LGs eines Nachbarn
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
+		
+		//Update der Investitions Historie
+		if (Investment) {
+			for (let i in data.responseData)
+				if (data.responseData[i]['forge_points'] !== undefined) {
+					Investment.UpdateData([data.responseData[i]], false);
+				}
+		}
+
 	});
 
 	// es wird ein LG eines Spielers geöffnet
@@ -1114,6 +1123,8 @@ let HelperBeta = {
  */
 let MainParser = {
 
+	foeHelperBgApiHandler: /** @type {null|((request: {type: string}&object) => Promise<{ok:true, data: any}|{ok:false, error:string}>)}*/ (null),
+
 	activateDownload: false,
 	savedFight:null,
 	Language: 'en',
@@ -1207,20 +1218,30 @@ let MainParser = {
 	 * @param {any & {type: string}} data
 	 */
 	sendExtMessage: async (data) => {
-		let response = null;
+		const bgApiHandler = MainParser.foeHelperBgApiHandler;
+		/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
+		let _responsePromise = null;
 		// @ts-ignore
 		if (typeof chrome !== 'undefined') {
 			// @ts-ignore
-			response = await new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
-		} else if (typeof browser !== 'undefined') {
-			response = await browser.runtime.sendMessage(extID, data);
+			_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
+		} else if (bgApiHandler != null) {
+			_responsePromise = bgApiHandler(data);
 		} else {
-			// TODO: implement
-			window.dispatchEvent(new CustomEvent(extID+'#message', {detail: data}));
-			throw new Error("backwards Communication from Extension not implemented");
+			throw new Error('No implementation for Extension communication found');
+		}
+		const responsePromise = _responsePromise;
+		
+		const response = await new Promise((resolve, reject) => {
+			responsePromise.then(resolve, reject);
+			setTimeout(()=>resolve({ok: false, error: "response timeout for: "+JSON.stringify(data)}), 1000)
+		});
+
+		if (typeof response !== 'object' || typeof response.ok !== 'boolean') {
+			throw new Error('invalid response from Extension-API call');
 		}
 
-		if (response.ok) {
+		if (response.ok === true) {
 			return response.data;
 		} else {
 			throw new Error('EXT-API error: '+response.error);
@@ -1584,18 +1605,15 @@ let MainParser = {
 				data: JSON.stringify(data)
 			});
 
-			if (!Settings.GetSetting('ShowNotifications')) return;
-
-			$.toast({
-				heading: d['other_player']['name'] + ' geupdated',
+			HTML.ShowToastMsg({
+				head: d['other_player']['name'] + ' updated',
 				text: HTML.i18nReplacer(
 					i18n('API.LGGildMember'),
 					{
 						'player' : d['other_player']['name']
 					}
 				),
-				icon: 'success',
-				position: Settings.GetSetting('NotificationsPosition', true)
+				type: 'success',
 			});
 		}
 	},
@@ -1621,15 +1639,11 @@ let MainParser = {
 			data: JSON.stringify(d)
 		});
 
-		if(Settings.GetSetting('ShowNotifications'))
-		{
-			$.toast({
-				heading: i18n('API.UpdateSuccess'),
-				text: i18n('API.GEXPlayer'),
-				icon: 'success',
-				position: Settings.GetSetting('NotificationsPosition', true)
-			});
-		}
+		HTML.ShowToastMsg({
+			head: i18n('API.UpdateSuccess'),
+			text: i18n('API.GEXPlayer'),
+			type: 'success',
+		});
 
 		localStorage.setItem('API-GEXPlayer', MainParser.getAddedDateTime(0, 1));
 	},
@@ -1653,13 +1667,10 @@ let MainParser = {
 			data: JSON.stringify(data)
 		});
 
-		if (!Settings.GetSetting('ShowNotifications')) return;
-
-		$.toast({
-			heading: i18n('API.UpdateSuccess'),
+		HTML.ShowToastMsg({
+			head: i18n('API.UpdateSuccess'),
 			text: i18n('API.GEXChampionship'),
-			icon: 'success',
-			position: Settings.GetSetting('NotificationsPosition', true)
+			type: 'success',
 		});
 	},
 
@@ -1899,32 +1910,26 @@ let MainParser = {
 				if(r['status'] === 'OK'){
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(0, 10));
 
-					if (!Settings.GetSetting('ShowNotifications')) return;
-
-					$.toast({
-						heading: i18n('Boxes.Investment.PlayerFound'),
+					HTML.ShowToastMsg({
+						head: i18n('Boxes.Investment.PlayerFound'),
 						text: HTML.i18nReplacer(
 							r.new === 1 ? i18n('Boxes.Investment.PlayerFoundCount') : i18n('Boxes.Investment.PlayerFoundCounter'),
 							{
 								count: r.new
 							}
 						),
-						icon: 'success',
-						hideAfter: 2600,
-						position: Settings.GetSetting('NotificationsPosition', true)
+						type: 'success',
+						hideAfter: 2600
 					});
 
 				} else if (r['status'] === 'NOTICE') {
 					localStorage.setItem('OtherPlayersMotivation-' + page, MainParser.getAddedDateTime(1, 0));
 
-					if (!Settings.GetSetting('ShowNotifications')) return;
-
-					$.toast({
-						heading: i18n('Boxes.Investment.AllUpToDate'),
+					HTML.ShowToastMsg({
+						head: i18n('Boxes.Investment.AllUpToDate'),
 						text: i18n('Boxes.Investment.AllUpToDateDesc'),
-						icon: 'info',
-						hideAfter: 6000,
-						position: Settings.GetSetting('NotificationsPosition', true)
+						type: 'success',
+						hideAfter: 6000
 					});
 				}
 			});
@@ -2294,3 +2299,8 @@ let MainParser = {
 		}
 	}
 };
+
+if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler instanceof Function) {
+	MainParser.foeHelperBgApiHandler = window.foeHelperBgApiHandler;
+	delete window.foeHelperBgApiHandler;
+}

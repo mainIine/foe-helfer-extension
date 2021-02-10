@@ -18,7 +18,7 @@
 	flex-direction: row;
 	justify-content: space-around;
 	align-items: center;
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 	height: 50px;
 	border-bottom: 2px solid #864c1e;
 }
@@ -88,6 +88,7 @@
 /* Highcharts table wrapper */
 #stats .highcharts-data-table {
 	overflow: scroll;
+	user-select: text;
 }
 
 #stats .highcharts-data-table caption {
