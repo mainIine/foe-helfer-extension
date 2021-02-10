@@ -773,7 +773,8 @@ let Productions = {
 
 				table.push('<thead>');
 
-				if (Productions.ShowDaily) {
+				if (Productions.ShowDaily)
+				{
 					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 				}
 				else {
