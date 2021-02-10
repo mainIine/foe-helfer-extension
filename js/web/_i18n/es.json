@@ -1,8 +1,8 @@
 ﻿{
-    "API.GEXChampionship": "Se ha actualizado la información de la clasificación del gremio en la EG",
-    "API.GEXPlayer": "Se han actualizado los puestos de los miembros en la EG",
-    "API.LGGildMember": "Los GEs de __player__ han sido transferidos",
-    "API.LGInvest": "Tus inversiones en grandes edificios han sido transferidas",
+    "API.GEXChampionship": "Se ha actualizado la clasificación de la Expedición de Gremio",
+    "API.GEXPlayer": "Se ha actualizado la clasificación de los miembros en la Expedición de Gremio",
+    "API.LGGildMember": "La información de los GE de__player__ha sido actualizada",
+    "API.LGInvest": "Tus inversiones en grandes edificios han sido actualizadas",
     "API.UpdateSuccess": "¡Actualización realizada con éxito!",
     "Boxes.Alerts.Form.Antiques.Auction": "Subasta",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Se reinicia en",
