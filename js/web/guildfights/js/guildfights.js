@@ -526,7 +526,18 @@ let GildFights = {
 				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td>${prov[x]['owner']}</td>`);
-				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}"><button class="btn-default" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button></td>`);
+
+				let content = `<button class="btn-default" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
+
+				if(GildFights.Alerts.includes(prov[x]['id'])){
+					content = '&#10004;';
+				}
+
+				if(!Alerts){
+					content = '';
+				}
+
+				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${content}</td>`);
 				nextup.push('</tr>');
 			}
 		}
@@ -825,9 +836,9 @@ let GildFights = {
 			}
 
 			resp.forEach((alert) => {
-				if(alert['data']['category'] === 'alerts'){
+				if(alert['data']['category'] === 'gbg'){
 					let name = alert['data']['title'],
-						prov = GildFights.MapData['map']['provinces'].find(e => e.title === name);
+						prov = GildFights.MapData['map']['provinces'].find(e => e.title === name); // short name of the province must match
 
 					GildFights.Alerts.push(prov['id']);
 				}
@@ -846,7 +857,7 @@ let GildFights = {
 			repeat: -1,
 			persistent: true,
 			tag: '',
-			category: 'alerts',
+			category: 'gbg',
 			vibrate: false,
 			actions: null
 		};
@@ -865,8 +876,7 @@ let GildFights = {
 			hideAfter: 5000
 		});
 
-		// @ToDo: insert tick => remove Button
-		// $(`#alert-${id}`)
+		$(`#alert-${id}`).text('&#10004;');
 	}
 };
 
