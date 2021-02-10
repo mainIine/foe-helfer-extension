@@ -117,9 +117,9 @@ let CityMap = {
 			w = $('<div />').attr({'id':'wrapper'});
 
 		if(CityMap.IsExtern === false){
-			w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+			w.append( $('<div />').attr({'id': 'map-container', 'class':'dark-bg' }).append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 		} else {
-			w.append( $('<div />').attr('id', 'map-container').addClass('with-sidebar').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) );
+			w.append( $('<div />').attr({'id': 'map-container', 'class':'dark-bg' }).addClass('with-sidebar').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) );
 		}
 
 
@@ -383,7 +383,7 @@ let CityMap = {
 	 * Show the submit box
 	 */
 	showSumbitBox: ()=> {
-		if( $('#city-map-submit').length < 1 )
+		if( $('#city-map-submit').length < 1 && $('#CityMapSubmit').length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -396,10 +396,13 @@ let CityMap = {
 			HTML.AddCssFile('citymap');
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
-
+			
 			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
+		}
+		else {
+			$('#CityMapSubmit').remove();
 		}
 	},
 	/**

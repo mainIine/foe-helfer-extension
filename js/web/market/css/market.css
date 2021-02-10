@@ -49,7 +49,7 @@
 
 #Market #MarketBody td.goods-image { 
 	padding: 0;
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 }
 
 #Market #MarketBody .goods-sprite-50.sm {
