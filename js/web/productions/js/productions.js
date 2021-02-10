@@ -1306,7 +1306,24 @@ let Productions = {
 		else if (GoodType === 'units'){
 			return i18n('Boxes.Productions.Units');
 
-		} else {
+		}
+		else if (GoodType === 'att_boost_attacker') {
+			return i18n('Boxes.Productions.att_boost_attacker');
+
+		}
+		else if (GoodType === 'att_boost_defender') {
+			return i18n('Boxes.Productions.att_boost_defender');
+
+		}
+		else if (GoodType === 'def_boost_attacker') {
+			return i18n('Boxes.Productions.def_boost_attacker');
+
+		}
+		else if (GoodType === 'def_boost_defender') {
+			return i18n('Boxes.Productions.def_boost_defender');
+
+		}
+		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
 
