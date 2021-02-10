@@ -876,7 +876,7 @@ let GildFights = {
 			hideAfter: 5000
 		});
 
-		$(`#alert-${id}`).text('&#10004;');
+		$(`#alert-${id}`).html('&#10004;');
 	}
 };
 
