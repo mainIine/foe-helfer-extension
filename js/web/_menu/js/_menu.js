@@ -53,7 +53,8 @@ let _menu = {
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
-		'gildfight'
+		'gildfight',
+		'investment'
 		// 'alerts',
 		// 'unitsGex',
 	],
@@ -704,29 +705,47 @@ let _menu = {
 	 * */
 	gildfight_Btn: () => {
 
-		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red');
-		desc = i18n('Menu.Gildfight.Desc') + '<br>' + i18n('Menu.Gildfight.Warning');
+		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red'),
+			desc = i18n('Menu.Gildfight.Warning') + i18n('Menu.Gildfight.Desc');
 
-
-		btn_BG.removeClass('hud-btn-red');
-		desc = i18n('Menu.Gildfight.Desc');
-
-
-		// Tooltip einbinden
 		_menu.toolTippBox(i18n('Menu.Gildfight.Title'), desc , 'gildfight-Btn');
 
 		let btn = $('<span />');
 
-
-		 btn.on('click', function () {
-
-		 	if (GildFights.ProvinceNames !== null) {
-		 	GildFights.ShowGildBox();
-		 }
-		 });
+		btn.on('click', function (){
+			if(GildFights.MapData) {
+				GildFights.ShowGildBox();
+			}
+		});
 
 		btn_BG.append(btn);
 
 		return btn_BG;
+	},
+	
+	/**
+	 * InfoBox für Investitions Historie
+	 *
+	 * @returns {*|jQuery}
+	 */
+	investment_Btn: () => {
+
+		let btn_InvestH = $('<div />').attr({
+			'id': 'investment-Btn',
+			'data-slug': 'investment'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
+
+		let btn_Investment = $('<span />');
+
+		btn_Investment.on('click', function () {
+			Investment.BuildBox(false);
+		});
+
+		btn_InvestH.append(btn_Investment);
+
+		return btn_InvestH;
 	}
 };

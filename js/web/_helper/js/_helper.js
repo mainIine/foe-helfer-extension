@@ -125,7 +125,7 @@ let HTML = {
 	customFunctions: [],
 
 	/**
-	 * Erzeugt eine HTML Box im DOM
+	 * Creates an HTML box in the DOM
 	 *
 	 * id
 	 * title
@@ -218,6 +218,10 @@ let HTML = {
 
 			if(args['auto_close']){
 				$(`#${args.id}`).on('click', `#${args['id']}close`, function(){
+
+					// remove settings box if open
+					$(`#${args.id}`).find('.settingsbox-wrapper').remove();
+
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
 					});
@@ -487,12 +491,13 @@ let HTML = {
 		}, 100);
 	},
 
-	MapBox: (id)=> {
 
+	MapBox: (id)=> {
 		setTimeout(()=> {
 			new Function(`${HTML.customFunctions[id + 'Map']}`)();
 		}, 100);
 	},
+
 
 	/**
 	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
@@ -663,5 +668,21 @@ let HTML = {
 
 	LeaveFullscreen:()=> {
 
+	},
+
+
+	ShowToastMsg: (d)=> {
+
+		if (!Settings.GetSetting('ShowNotifications') && !d['show']) return;
+
+		$.toast({
+			heading: d['head'],
+			text: d['text'],
+			icon: d['type'],
+			hideAfter: d['hideAfter'],
+			position: Settings.GetSetting('NotificationsPosition', true),
+			extraClass: localStorage.getItem('SelectedMenu') || 'bottombar',
+			stack: localStorage.getItem('NotificationStack') || 4
+		});
 	}
 };
