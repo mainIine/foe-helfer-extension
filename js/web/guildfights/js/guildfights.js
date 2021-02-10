@@ -138,6 +138,7 @@ let GildFights = {
 		}
 	},
 
+
 	/**
 	 * Merkt sich alle Tabs
 	 *
@@ -540,6 +541,16 @@ let GildFights = {
 		
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
 			$('.gbg-tabs').tabslet({active: 1});
+
+			$('#LiveGildFighting').on('click', 'tr', function(){
+				if($(this).hasClass('highlight-row'))
+				{
+					$(this).removeClass('highlight-row');
+				}
+				else {
+					$(this).addClass('highlight-row');
+				}
+			});
 		});
 	},
 
