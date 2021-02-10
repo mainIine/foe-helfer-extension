@@ -363,7 +363,7 @@ let _menu = {
 			}
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
-				let PlayerName = (Player ? Player['name'] : '???');
+				let PlayerName = (Player ? Player['PlayerName'] : '???');
 				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
             }
 		});

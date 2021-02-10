@@ -24,7 +24,7 @@
     "Boxes.Calculator.TTLossSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Strata = __paid__<small>(vložené)</small> - __bruttoreward__<small>(odmena)</small> = __loss__",
     "Boxes.Calculator.TTPaidTooLess": "Vložili ste __paid__BV namiesto __topay__BV. Je to o __tooless__FP menej.",
     "Boxes.Calculator.TTPaidTooMuch": "Vložili ste __paid__BV namiesto __topay__FP. Je to o __toomuch__FP viac.",
-    "Boxes.Calculator.TTProfitSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __paid__<small>(Vložené)</small> = __profit__",
+    "Boxes.Calculator.TTProfitSelf": "Odmena = __nettoreward__<small>(základná odmena)</small> * __arcfactor__%<small>(bonus oblúka)</small> = __bruttoreward__<br>Vložené: __paid__<br>Zisk = __bruttoreward__<small>(odmena)</small> - __paid__<small>(Vložené)</small> = __profit__<br>Place locked at: __safe__",
     "Boxes.Calculator.Title": "VB kalkulačka",
     "Boxes.Calculator.Up2LevelUp": "Do ukončenia úrovne ostáva",
     "Boxes.Campagne.AlreadyDone": " už získané!",
