@@ -812,10 +812,7 @@ const FoEproxy = (function () {
 		
 		//Update der Investitions Historie
 		if (Investment) {
-			for (let i in data.responseData)
-				if (data.responseData[i]['forge_points'] !== undefined) {
-					Investment.UpdateData([data.responseData[i]], false);
-				}
+			Investment.UpdateData(data.responseData, false);
 		}
 
 	});
@@ -1220,17 +1217,23 @@ let MainParser = {
 	 */
 	sendExtMessage: async (data) => {
 		const bgApiHandler = MainParser.foeHelperBgApiHandler;
+
 		/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
 		let _responsePromise = null;
+
 		// @ts-ignore
 		if (typeof chrome !== 'undefined') {
 			// @ts-ignore
 			_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
-		} else if (bgApiHandler != null) {
+		}
+		else if (bgApiHandler != null) {
 			_responsePromise = bgApiHandler(data);
-		} else {
+
+		}
+		else {
 			throw new Error('No implementation for Extension communication found');
 		}
+
 		const responsePromise = _responsePromise;
 		
 		const response = await new Promise((resolve, reject) => {
@@ -1238,13 +1241,15 @@ let MainParser = {
 			setTimeout(()=>resolve({ok: false, error: "response timeout for: "+JSON.stringify(data)}), 1000)
 		});
 
-		if (typeof response !== 'object' || typeof response.ok !== 'boolean') {
+		if (typeof response !== 'object' || typeof response.ok !== 'boolean')
+		{
 			throw new Error('invalid response from Extension-API call');
 		}
 
 		if (response.ok === true) {
 			return response.data;
-		} else {
+		}
+		else {
 			throw new Error('EXT-API error: '+response.error);
 		}
 	},
