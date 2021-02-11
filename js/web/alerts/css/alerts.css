@@ -13,14 +13,17 @@
     width: 650px;
 }
 
-#Alerts #AlertsBody { min-height: 160px; }
+#Alerts #AlertsBody .tabs, #Alerts #AlertsBody #alerts-tab-list {
+    height: 100%;
+}
 
 #Alerts #AlertsBody .scrollable{
-    max-height: 550px;
-    min-height: 160px;
+    height: 350px;
+    height: calc(100% - 40px);
     overflow: hidden;
     overflow-y: auto;
     margin: 2px 0 4px 0;
+    border-bottom: 1px solid var(--black-50);
 }
 
 #Alerts #AlertsBody .content {
@@ -290,4 +293,9 @@ input.hidden {
 }
 #Alerts #alerts-preferences .item .item-row .value {
     width: 34%;
+}
+
+/* hide tabs */
+#Alerts #AlertsBody .tabs ul {
+    display: none;
 }

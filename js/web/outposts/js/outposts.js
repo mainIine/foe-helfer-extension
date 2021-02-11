@@ -303,7 +303,8 @@ let Outposts = {
 		t.push('<th class="text-center">' + i18n('Boxes.Outpost.TitleFree') + '</th>');
 
 		// Güter durchgehen
-		for (let resourceID of resourceIDs) {
+		for (let resourceID of resourceIDs)
+		{
 			let IconID = resourceID;
 			if (resourceID === 'barley' || resourceID === 'pottery' || resourceID === 'flowers' || resourceID === 'sacrificial_offerings') IconID = 'fine_' + IconID;
 			t.push(`<th class="text-center"><span class="goods-sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
