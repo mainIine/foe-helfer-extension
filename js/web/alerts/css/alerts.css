@@ -16,11 +16,12 @@
 #Alerts #AlertsBody { min-height: 160px; }
 
 #Alerts #AlertsBody .scrollable{
-    max-height: 550px;
-    min-height: 160px;
+    height: 550px;
+    height: calc(100% - 40px);
     overflow: hidden;
     overflow-y: auto;
     margin: 2px 0 4px 0;
+    border-bottom: 1px solid var(--black-50);
 }
 
 #Alerts #AlertsBody .content {
@@ -290,4 +291,17 @@ input.hidden {
 }
 #Alerts #alerts-preferences .item .item-row .value {
     width: 34%;
+}
+
+#Alerts #AlertsBody .tabs {
+    height: 100%;
+}
+
+#Alerts #AlertsBody #alerts-tab-list {
+    height: 100%;
+}
+
+/* hide tabs */
+#Alerts #AlertsBody .tabs ul {
+    display: none;
 }
