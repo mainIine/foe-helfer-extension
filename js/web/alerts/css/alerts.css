@@ -13,10 +13,12 @@
     width: 650px;
 }
 
-#Alerts #AlertsBody { min-height: 160px; }
+#Alerts #AlertsBody .tabs, #Alerts #AlertsBody #alerts-tab-list {
+    height: 100%;
+}
 
 #Alerts #AlertsBody .scrollable{
-    height: 550px;
+    height: 350px;
     height: calc(100% - 40px);
     overflow: hidden;
     overflow-y: auto;
@@ -291,14 +293,6 @@ input.hidden {
 }
 #Alerts #alerts-preferences .item .item-row .value {
     width: 34%;
-}
-
-#Alerts #AlertsBody .tabs {
-    height: 100%;
-}
-
-#Alerts #AlertsBody #alerts-tab-list {
-    height: 100%;
 }
 
 /* hide tabs */
