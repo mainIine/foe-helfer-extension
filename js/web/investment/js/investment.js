@@ -316,6 +316,7 @@ let Investment = {
                 gbname: Investment['gbname'],
                 current_progress: Investment['current_progress'],
                 profit: Investment['profit'],
+                rank: Investment['rank'],
                 fphistory: Investment['fphistory'],
                 increase: Investment['increase']
             });
@@ -332,13 +333,29 @@ let Investment = {
         let arc = 1 + (MainParser.ArkBonus / 100);
         let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
         let UpdatedList = false;
+        let playerSyncGbKeys = null;
 
         for (let i in LGData)
         {
             if (LGData.hasOwnProperty(i))
             {
-                let PlayerID = LGData[i]['player']['player_id'],
-                    PlayerName = LGData[i]['player']['name'],
+                let PlayerID = LGData[i]['player']['player_id'];
+
+                // if update started from Player GB Overview
+                // get all available investment from Storage to check if already leveled
+                if (!FullSync && playerSyncGbKeys === null) {
+                    playerSyncGbKeys = await IndexDB.db.investhistory
+                        .filter(function (player) {
+                            return player.playerId === PlayerID;
+                        })
+                        .keys();
+                }
+
+                if (LGData[i]['forge_points'] === undefined) {
+                    continue;
+                }
+
+                let PlayerName = LGData[i]['player']['name'],
                     Avatar = LGData[i]['player']['avatar'],
                     EntityID = LGData[i]['entity_id'],
                     GBName = LGData[i]['name'],
@@ -403,6 +420,10 @@ let Investment = {
                     allGB = Investment.remove_key_from_array(allGB, CurrentGB.id);
                 }
 
+                if (CurrentGB !== undefined && !FullSync) {
+                    playerSyncGbKeys = Investment.remove_key_from_array(playerSyncGbKeys, CurrentGB.id);
+                }
+
                 if (CurrentGB === undefined || GbhasUpdate)
                 {
                     UpdatedList = true;
@@ -425,10 +446,21 @@ let Investment = {
             }
         }
 
-        // Delete leveled GBs
+        // Delete leveled GBs in FullSync from GB Overview 
         if (FullSync && allGB.length >= 1)
         {
+            UpdatedList=true;
             await IndexDB.db.investhistory.where('id').anyOf(allGB).delete();
+        }
+
+        // Delete leveled GBs from GB Player Overview 
+        if (!FullSync && playerSyncGbKeys.length >= 1) {
+            UpdatedList=true;
+            await IndexDB.db.investhistory.where('id').anyOf(playerSyncGbKeys).delete();
+        }
+        
+        if (UpdatedList && $('#Investment').length !== 0) {
+            Investment.Show();
         }
     },
     
