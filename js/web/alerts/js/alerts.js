@@ -1477,7 +1477,8 @@ let Alerts = function(){
 					title: i18n( 'Boxes.Alerts.Title', 'Alerts' ),
 					auto_close: true,
 					dragdrop: true,
-					minimize: true
+					minimize: true,
+					resize: true
 				} );
 				tmp.web.body.build();
 			}

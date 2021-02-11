@@ -54,8 +54,8 @@ let _menu = {
 		'moppelhelper',
 		'fpCollector',
 		'gildfight',
-		'investment'
-		// 'alerts',
+		'investment',
+		'alerts',
 		// 'unitsGex',
 	],
 
