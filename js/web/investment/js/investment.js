@@ -254,7 +254,7 @@ let Investment = {
                         for (let i in detail) {
                             if (detail.hasOwnProperty(i)) {
                                 let restFP = (max_progress * 1 - detail[i].current_progress * 1)
-                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - H:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>verbleibende FP: ' + restFP + '</td></tr>');
+                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - H:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
                             }
                         }
 
