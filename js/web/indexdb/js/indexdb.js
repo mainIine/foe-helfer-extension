@@ -113,7 +113,25 @@ let IndexDB = {
             players: 'id,date',
             pvpActions: '++id,playerId,date,type',
             greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
-			forgeStats: '++id,type,amount,date', // FP Collector
+            forgeStats: '++id,type,amount,date', // FP Collector
+            statsGBGPlayers: 'date', // battleground
+            statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
+            statsRewards: 'date', // Collected rewards by Himeji, etc
+            statsRewardTypes: 'id', // Human readable cache info about rewards
+            statsUnitsD: 'date',
+            statsUnitsH: 'date',
+            statsTreasurePlayerH: 'date',
+            statsTreasurePlayerD: 'date',
+            statsTreasureClanH: 'date, clanId',
+            statsTreasureClanD: 'date, clanId',
+        });
+
+        db.version(2).stores({
+            players: 'id,date',
+            pvpActions: '++id,playerId,date,type',
+            greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
+            investhistory: '++id,playerId,entity_id,&[playerId+entity_id],name,level,max_progress,current_progress,profit,currentFp,fphistory,date',
+            forgeStats: '++id,type,amount,date', // FP Collector
             statsGBGPlayers: 'date', // battleground
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
             statsRewards: 'date', // Collected rewards by Himeji, etc
@@ -145,11 +163,20 @@ let IndexDB = {
         const betaDBName = 'FoeHelper_' + playerId;
         if (await Dexie.exists(betaDBName)) {
             betaDB = new Dexie(betaDBName);
+            
             betaDB.version(1).stores({
                 players: 'id,date',
                 actions: '++id,playerId,date,type',
                 greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
+           });
+
+            betaDB.version(2).stores({
+                players: 'id,date',
+                actions: '++id,playerId,date,type',
+                greatbuildings: '++id,playerId,name,&[playerId+name],level,currentFp,bestRateNettoFp,bestRateCosts,date',
+                investhistory: '++id,playerId,entity_id,&[playerId+entity_id],name,level,max_progress,current_progress,profit,currentFp,fphistory,date'
             });
+
             betaDB.open();
             if (!(await betaDB.players.count())) {
                 betaDB = null;

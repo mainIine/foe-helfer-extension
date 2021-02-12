@@ -125,7 +125,7 @@ let HTML = {
 	customFunctions: [],
 
 	/**
-	 * Erzeugt eine HTML Box im DOM
+	 * Creates an HTML box in the DOM
 	 *
 	 * id
 	 * title
@@ -177,7 +177,15 @@ let HTML = {
 				HTML.customFunctions[`${args['id']}Settings`] = args['settings'];
 			}
 		}
+		if(args['map']){
+			let set = $('<span />').addClass('window-map').attr('id', `${args['id']}-map`);
+			set.insertAfter(title);
 
+			if (typeof args['map'] !== 'boolean')
+			{
+				HTML.customFunctions[`${args['id']}Map`] = args['map'];
+			}
+		}
 		// Lautsprecher für Töne
 		if(args['speaker']){
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
@@ -210,6 +218,10 @@ let HTML = {
 
 			if(args['auto_close']){
 				$(`#${args.id}`).on('click', `#${args['id']}close`, function(){
+
+					// remove settings box if open
+					$(`#${args.id}`).find('.settingsbox-wrapper').remove();
+
 					$('#' + args['id']).fadeToggle('fast', function(){
 						$(this).remove();
 					});
@@ -254,7 +266,28 @@ let HTML = {
 					});
 				}
 			}
+			
+			if(args['map'])
+			{
+				if (typeof args['map'] !== 'boolean')
+				{
+					$(`#${args['id']}`).on('click', `#${args['id']}-map`, function(){
 
+						// exist? remove!
+						if( $(`#${args['id']}MapBox`).length > 0 )
+						{
+							$(`#${args['id']}MapBox`).fadeToggle('fast', function(){
+								$(this).remove();
+							});
+						}
+
+						// create a new one
+						else {
+							HTML.MapBox(args['id']);
+						}
+					});
+				}
+			}
 			if(args['resize']) {
 				HTML.Resizeable(args['id'], args['keepRatio']);
 			}
@@ -459,6 +492,13 @@ let HTML = {
 	},
 
 
+	MapBox: (id)=> {
+		setTimeout(()=> {
+			new Function(`${HTML.customFunctions[id + 'Map']}`)();
+		}, 100);
+	},
+
+
 	/**
 	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
 	 *
@@ -628,5 +668,21 @@ let HTML = {
 
 	LeaveFullscreen:()=> {
 
+	},
+
+
+	ShowToastMsg: (d)=> {
+
+		if (!Settings.GetSetting('ShowNotifications') && !d['show']) return;
+
+		$.toast({
+			heading: d['head'],
+			text: d['text'],
+			icon: d['type'],
+			hideAfter: d['hideAfter'],
+			position: Settings.GetSetting('NotificationsPosition', true),
+			extraClass: localStorage.getItem('SelectedMenu') || 'bottombar',
+			stack: localStorage.getItem('NotificationStack') || 4
+		});
 	}
 };
