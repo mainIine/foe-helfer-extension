@@ -810,5 +810,20 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English"
+    "_Language": "English",
+    "Boxes.Investment.Overview.Player": "Player",
+    "Boxes.Investment.Overview.Building": "Building",
+    "Boxes.Investment.Overview.EntryTime": "Entry Time",
+    "Boxes.Investment.Overview.EntryTimeDesc": "When was the first deposit recorded?",
+    "Boxes.Investment.Overview.Progress": "Progress",
+    "Boxes.Investment.Overview.RestFP": "Rest FP",
+    "Boxes.Investment.Overview.RestFPDesc": "How many FP still to level up",
+    "Boxes.Investment.Overview.Profit": "Profit",
+    "Boxes.Investment.Overview.ProfitDesc": "profit achieved, yellow -> Rank is not safe, red/green -> Loss/Profit safe",
+    "Boxes.Investment.Overview.Invested": "Invested",
+    "Boxes.Investment.Overview.InvestedDesc": "How many FP were invested",
+    "Boxes.Investment.Overview.SettingsEntryTime": "show entry time",
+    "Boxes.Investment.Overview.SettingsRestFP": "show rest FP",
+    "Boxes.Investment.Overview.SettingsSave": "Save"
+
 }
