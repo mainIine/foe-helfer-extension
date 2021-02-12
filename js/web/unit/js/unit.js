@@ -102,61 +102,14 @@ let Unit = {
 	 */
 	BuildBox:()=> {
 
-		let top = [],
-			text = '';
+		let top = [];
 
 		Unit.RefreshAlca();
 
-		// der Spieler besitzt ein Alca
-		if (Unit.alca !== undefined){
-
-			top.push('<div style="padding: 4px;" class="text-center dark-bg">');
-
-			if(Unit.alca['state']['next_state_transition_at'] === undefined) {
-				text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
-
-			}
-			// there was a harvest...
-			else if(Unit.NextHarvest !== null)
-			{
-				let countDownDate = moment.unix(Unit.NextHarvest);
-
-				let x = setInterval(function() {
-					Unit.UpdateAlcaLable(countDownDate, x);
-				}, 1000);
-
-				Unit.UpdateAlcaLable(countDownDate, x);
-
-				text = HTML.i18nReplacer(
-					i18n('Boxes.Units.NextUnitsIn'),
-					{
-						count: Unit.NextAmount,
-						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
-					});
-
-			}
-			else {
-				let countDownDate = moment.unix(Unit.alca['state']['next_state_transition_at']);
-
-				let x = setInterval(function() {
-					Unit.UpdateAlcaLable(countDownDate,x);
-				}, 1000);
-
-				Unit.UpdateAlcaLable(countDownDate, x);
-
-				text = HTML.i18nReplacer(
-					i18n('Boxes.Units.NextUnitsIn'),
-					{
-						count: Unit.alca.state.current_product.amount,
-						harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
-					});
-			}
-
-			top.push('<div class="alca-info text-center">' + text + '</div>');
-
-			top.push('</div>');
+		if (Unit.alca)
+		{
+			top.push('<div style="padding: 4px;" class="text-center dark-bg" id="alca-timer"></div>');
 		}
-
 
 		// Attack army
 		let attack = [];
@@ -309,7 +262,6 @@ let Unit = {
 		Unit.SetTabContent('defense', defense.join(''));
 
 
-		
 		// alle Einheiten im Überblick
 		let pool = [],
 			eras = [],
@@ -398,8 +350,61 @@ let Unit = {
 		
 
 		$('#UnitOverview').find('#UnitOverviewBody').html( h.join('') ).promise().done(function(){
+			Unit.BuildTimer();
 			$('.unit-tabs').tabslet({active: 1});
 		});
+	},
+
+
+	BuildTimer: ()=> {
+		let text;
+
+		if(!Unit.alca)
+		{
+			return ;
+		}
+
+		if(Unit.alca['state']['next_state_transition_at'] === undefined) {
+			text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
+
+		}
+		// there was a harvest...
+		else if(Unit.NextHarvest !== null)
+		{
+			let countDownDate = moment.unix(Unit.NextHarvest);
+
+			let x = setInterval(function() {
+				Unit.UpdateAlcaLable(countDownDate, x);
+			}, 1000);
+
+			Unit.UpdateAlcaLable(countDownDate, x);
+
+			text = HTML.i18nReplacer(
+				i18n('Boxes.Units.NextUnitsIn'),
+				{
+					count: Unit.NextAmount,
+					harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
+				});
+
+		}
+		else {
+			let countDownDate = moment.unix(Unit.alca['state']['next_state_transition_at']);
+
+			let x = setInterval(function() {
+				Unit.UpdateAlcaLable(countDownDate,x);
+			}, 1000);
+
+			Unit.UpdateAlcaLable(countDownDate, x);
+
+			text = HTML.i18nReplacer(
+				i18n('Boxes.Units.NextUnitsIn'),
+				{
+					count: Unit.alca.state.current_product.amount,
+					harvest: moment.unix(Unit.alca['state']['next_state_transition_at']).format('HH:mm:ss')
+				});
+		}
+
+		$('#alca-timer').html(`<div class="alca-info text-center">${text}</div>`);
 	},
 
 
@@ -414,10 +419,10 @@ let Unit = {
 		}
 
 		// update next harvest time if pickup
-		if(data['updatedEntities'][0]['cityentity_id'] && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
+		if(data && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
 		{
 			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
-			Unit.BuildBox();
+			Unit.BuildTimer();
 		}
     },
 
