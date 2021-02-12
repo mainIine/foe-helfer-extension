@@ -825,6 +825,8 @@
     "Boxes.Investment.Overview.SettingsEntryTime": "show entry time",
     "Boxes.Investment.Overview.SettingsRestFP": "show rest FP",
     "Boxes.Investment.Overview.SettingsSave": "Save",
-    "Boxes.Investment.Overview.RemainingFP": "remaining FP"
+    "Boxes.Investment.Overview.RemainingFP": "remaining FP",
+    "Boxes.Investment.Overview.SettingsHiddenGB": "show hidden GB",
+    "Boxes.Investment.Overview.HideGB": "Hide GB from calculation and list."
 
 }
