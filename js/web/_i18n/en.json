@@ -448,6 +448,8 @@
     "Boxes.Settings.Active": "Active",
     "Boxes.Settings.Inactive": "Inactive",
     "Boxes.Settings.Title": "Settings",
+	"Boxes.Settings.DeletedBoxCoordsHead": "Deleted!",
+	"Boxes.Settings.DeletedBoxCoordsBody": "All the coords from the boxes are deleted.",
     "Boxes.Stats.BtnAll": "All",
     "Boxes.Stats.BtnAllPlayableEras": "All Ages",
     "Boxes.Stats.BtnAllPlayableErasTitle": "Select all playable ages (without: No Age, Special)",
