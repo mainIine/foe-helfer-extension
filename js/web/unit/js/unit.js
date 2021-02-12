@@ -34,7 +34,7 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 });
 
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
-	Unit.RefreshAlca();
+	Unit.RefreshAlca(data['responseData']);
 
 	if (Unit.alca && postData && postData[0] && postData[0]['requestData'] && postData[0]['requestData'][0] && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
@@ -117,7 +117,8 @@ let Unit = {
 
 			}
 			// there was a harvest...
-			else if(Unit.NextHarvest !== null){
+			else if(Unit.NextHarvest !== null)
+			{
 				let countDownDate = moment.unix(Unit.NextHarvest);
 
 				let x = setInterval(function() {
@@ -406,8 +407,18 @@ let Unit = {
 	 * Sucht nach dem Alcatraz
 	 * *
 	 * */
-	RefreshAlca: () => {
-		if (!Unit.alca) Unit.alca = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'));
+	RefreshAlca: (data) => {
+		if (!Unit.alca)
+		{
+			Unit.alca = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'))
+		}
+
+		// update next harvest time if pickup
+		if(data['updatedEntities'][0]['cityentity_id'] && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
+		{
+			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
+			Unit.BuildBox();
+		}
     },
 
 

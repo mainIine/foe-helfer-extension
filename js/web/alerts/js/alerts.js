@@ -121,6 +121,7 @@ let Alerts = function(){
     tmp.log = function(/** @type {any} */o){ if (tmp.debug){ console.log(o); } };
 
 	tmp.extAlerts = {
+
 		/**
 		 * gets an alert by it's id
 		 * @param {number} id the id of the alert to get
@@ -134,6 +135,7 @@ let Alerts = function(){
 				id: +id,
 			});
 		},
+
 		/**
 		 * gets all alerts (for this origin)
 		 * @returns {Promise<FoEAlert[]>}
@@ -145,6 +147,7 @@ let Alerts = function(){
 				action: 'getAll',
 			});
 		},
+
 		/**
 		 * creates a new alert
 		 * @param {FoEAlertData} data the data to associate with the new alert
@@ -158,6 +161,7 @@ let Alerts = function(){
 				data: data,
 			});
 		},
+
 		/**
 		 * replaces the data of an alert
 		 * @param {number} id the id of the alert to replace the data of
@@ -173,6 +177,7 @@ let Alerts = function(){
 				id: +id,
 			});
 		},
+
 		/**
 		 * deletes an alert
 		 * @param {number} id the id of the alert to delete
@@ -186,6 +191,7 @@ let Alerts = function(){
 				id: +id,
 			});
 		},
+
 		/**
 		 * triggers a preview of an alert
 		 * @param {FoEAlertData} data the alert data to create an alert preview from
@@ -864,6 +870,7 @@ let Alerts = function(){
 					tmp.web.forms.aux.textareaCounter.text(`(${value.length}/${maxlength})`);
 				}
 			},
+
 			actions: {
 				createSectors: () => {
 
@@ -1061,6 +1068,7 @@ let Alerts = function(){
 					return true;
 				}
 			},
+
 			data: () => {
 				return {
 					id: $( '#alert-id' ).val(),
@@ -1071,6 +1079,7 @@ let Alerts = function(){
 					persistent: $( 'input[name=alert-persistent]:checked', '#alert-form' ).val() === 'on'
 				};
 			},
+
 			/**
 			 * The data object should include the following fields:
 			 *      data.alert                  = alert object data
@@ -1468,7 +1477,8 @@ let Alerts = function(){
 					title: i18n( 'Boxes.Alerts.Title', 'Alerts' ),
 					auto_close: true,
 					dragdrop: true,
-					minimize: true
+					minimize: true,
+					resize: true
 				} );
 				tmp.web.body.build();
 			}
@@ -1566,6 +1576,10 @@ let Alerts = function(){
                 },
             },
         },
+
+		getAll: () => {
+			return tmp.extAlerts.getAll();
+		}
     };
 
     return pub;
@@ -1604,6 +1618,7 @@ let TimeManager = function(){
             });
         }
     };
+
     // public
     let pub = {
 
