@@ -34,9 +34,9 @@ let Productions = {
 		'premium',			// Diamanten
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
+		'units',			// Einheiten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
-		'units',			// Einheiten
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
@@ -765,7 +765,8 @@ let Productions = {
 
 				table.push('<thead>');
 
-				if (Productions.ShowDaily) {
+				if (Productions.ShowDaily)
+				{
 					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 				}
 				else {

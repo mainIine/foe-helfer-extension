@@ -37,6 +37,8 @@ let Parts = {
 
 	PowerLevelingMaxLevel: 999999,
 
+	InjectionLoaded: false,
+
 	DefaultButtons: [
 		80, 85, 90, 'ark'
 	],
@@ -85,6 +87,15 @@ let Parts = {
 
 		// CSS in den DOM prügeln
 		HTML.AddCssFile('part-calc');
+
+		// if building is open, socket information would send if some payed in
+		if(Parts.InjectionLoaded === false)
+		{
+			FoEproxy.addWsHandler('CityMapService', 'updateEntity', data => {
+				console.log('data[\'responseData\'][0]: ', data['responseData'][0]);
+			});
+			Parts.InjectionLoaded = true;
+		}
 
 		// Body zusammen fummeln
 		Parts.Show();
@@ -222,9 +233,11 @@ let Parts = {
 		Parts.Maezens = [];
 
 		Parts.CurrentBuildingID = cityentity_id;
-		if (Parts.IsPreviousLevel) {
+		if (Parts.IsPreviousLevel)
+		{
 			Total = 0;
-			for (let i = 0; i < Parts.Rankings.length; i++) {
+			for (let i = 0; i < Parts.Rankings.length; i++)
+			{
 				let ToAdd = Parts.Rankings[i]['forge_points'];
 				if (ToAdd !== undefined) Total += ToAdd;
 			}
@@ -235,13 +248,16 @@ let Parts = {
 			Parts.Level = 0;
 		}
 
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < 5; i++)
+		{
 			arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
 		}
 
 		// Wenn in Rankings nichts mehr steht, dann abbrechen
-		if (! Parts.IsNextLevel) {
-			for (let i = 0; i < Parts.Rankings.length; i++) {
+		if (! Parts.IsNextLevel)
+		{
+			for (let i = 0; i < Parts.Rankings.length; i++)
+			{
 				if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
 					EigenStart = Parts.Rankings[i]['forge_points'];
 					Rest -= EigenStart;
@@ -254,8 +270,10 @@ let Parts = {
 				Parts.Maezens[Place] = Parts.Rankings[i]['forge_points'];
 				if (Parts.Maezens[Place] === undefined) Parts.Maezens[Place] = 0;
 
-				if (Place < 5) {
-					if (Parts.Rankings[i]['reward'] !== undefined) {
+				if (Place < 5)
+				{
+					if (Parts.Rankings[i]['reward'] !== undefined)
+					{
 						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
 						FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
@@ -279,7 +297,8 @@ let Parts = {
 			}
 
 			//Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
-			for (let i = Parts.Maezens.length; i < 5; i++) {
+			for (let i = Parts.Maezens.length; i < 5; i++)
+			{
 				Parts.Maezens[i] = 0;
 				FPRewards[i] = 0;
 				MedalRewards[i] = 0;
@@ -314,8 +333,10 @@ let Parts = {
 
         Rest -= ExtTotal;
 
-        for (let i = 0; i < 5; i++) {
-			if (FPRewards[i] <= Parts.Maezens[i] || Rest <= Parts.Maezens[i]) {
+        for (let i = 0; i < 5; i++)
+        {
+			if (FPRewards[i] <= Parts.Maezens[i] || Rest <= Parts.Maezens[i])
+			{
 				if (Parts.LockExistingPlaces) { //Bestehende Einzahlung absichern
 					let NextMaezen = Parts.Maezens[i + 1] !== undefined ? Parts.Maezens[i + 1] : 0;
 					Eigens[i] = Math.ceil(Rest + (Parts.TrustExistingPlaces ? 0 : NextMaezen) - Parts.Maezens[i]);
@@ -471,7 +492,7 @@ let Parts = {
 
         h.push('<tr>');
         h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
-        h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Deposit') + '</th>');
+        h.push('<th class="text-center"><span class="forgepoints" title="' + i18n('Boxes.OwnpartCalculator.Deposit') + '"></th>');
         h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
 		h.push('<th class="text-center"><span class="blueprint" title="' + i18n('Boxes.OwnpartCalculator.BPs') + '"></span></th>');
 		h.push('<th class="text-center"><span class="medal" title="' + i18n('Boxes.OwnpartCalculator.Meds') + '"></span></th>');
@@ -481,9 +502,11 @@ let Parts = {
         h.push('</thead>');
         h.push('<tbody>');
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++)
+        {
             EigenCounter += Eigens[i];
-            if (i === 0 && EigenStart > 0) {
+            if (i === 0 && EigenStart > 0)
+            {
                 EigenCounter += EigenStart;
 
                 h.push('<tr>');
@@ -506,7 +529,8 @@ let Parts = {
             h.push('<tr>');
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
-            if (NonExts[i]) {
+            if (NonExts[i])
+            {
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
                 if (LeveltLG[i]) {
                     h.push('<td class="text-center"><strong class="error">levelt</strong></td>');
@@ -544,12 +568,14 @@ let Parts = {
         }
 
         let MaezenRest = 0;
-		for (let i = 5; i < Parts.Maezens.length; i++) {
+		for (let i = 5; i < Parts.Maezens.length; i++)
+		{
 			MaezenRest += Parts.Maezens[i];
         }
 
         //Bestehende Einzahlungen, die aus den P5 raus geschoben wurden
-        if (MaezenRest > 0) {
+        if (MaezenRest > 0)
+        {
             h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Parts.Maezens.length > 6 ? ('-' + Parts.Maezens.length) : '') + '</td>');
             h.push('<td class="text-center">-</td>');
@@ -559,7 +585,8 @@ let Parts = {
         }
 
         //Restzahlung
-        if (Eigens[5] > 0) {
+        if (Eigens[5] > 0)
+        {
             EigenCounter += Eigens[5];
 
             h.push('<tr>');
@@ -575,7 +602,8 @@ let Parts = {
 		Parts.BuildBackgroundBody(Parts.Maezens, Eigens, NonExts);
 
         // Wieviel fehlt noch bis zum leveln?
-		if (Parts.IsPreviousLevel === false) {
+		if (Parts.IsPreviousLevel === false)
+		{
 			let rest;
 			if (Parts.IsNextLevel) {
 				rest = Total;
@@ -1106,16 +1134,16 @@ let Parts = {
 		for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
 			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
-			h.push('<td>' + HTML.Format(Places[i][0]) + '</td>');
-			h.push('<td class="text-light">' + HTML.Format(Places[i][1]) + '</td>');
-			h.push('<td>' + HTML.Format(Places[i][2]) + '</td>');
-			h.push('<td class="text-light">' + HTML.Format(Places[i][3]) + '</td>');
-			h.push('<td>' + HTML.Format(Places[i][4]) + '</td>');
+			h.push('<td><span class="hidden-text"> - #1 (</span>' + HTML.Format(Places[i][0]) + '<span class="hidden-text">)</span></td>');
+			h.push('<td class="text-light"><span class="hidden-text"> - #2 (</span>' + HTML.Format(Places[i][1]) + '<span class="hidden-text">)</span></td>');
+			h.push('<td><span class="hidden-text"> - #3 (</span>' + HTML.Format(Places[i][2]) + '<span class="hidden-text">)</span></td>');
+			h.push('<td class="text-light"><span class="hidden-text"> - #4 (</span>' + HTML.Format(Places[i][3]) + '<span class="hidden-text">)</span></td>');
+			h.push('<td><span class="hidden-text"> - #5 (</span>' + HTML.Format(Places[i][4]) + '<span class="hidden-text">)</span></td>');
 			if (HasDoubleCollection) {
-				h.push('<td class="success"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
-				h.push('<td>' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
+				h.push('<td class="success no-select"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
+				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
-			h.push('<td><strong class="info">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
+			h.push('<td><strong class="info no-select">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
 			h.push('</tr>');
         }
 	},

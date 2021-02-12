@@ -279,10 +279,12 @@ let _menu_right = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#foe-helper-hud').removeClass('is--sorting');
-				$.toast({
-					heading: i18n('Menu.SaveMessage.Title'),
+
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Menu.SaveMessage.Title'),
 					text: i18n('Menu.SaveMessage.Desc'),
-					icon: 'success',
+					type: 'success',
 					hideAfter: 5000
 				});
 			}

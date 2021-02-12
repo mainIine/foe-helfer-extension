@@ -214,6 +214,10 @@ let FPCollector = {
 
 			if (hidePicker) $('#FPCollectorPicker').hide();
 		}
+		else {
+			HTML.CloseOpenBox('fp-collector');
+			return;
+		}
 
 		FPCollector.buildBody();
 	},
@@ -275,9 +279,9 @@ let FPCollector = {
 
 
 	/**
- * Handles FP collected from Quests
- * 
- */
+	 * Handles FP collected from Quests
+	 *
+	 */
 	HandleAdvanceQuest: (PostData) => {
 		if (PostData['requestData'] && PostData['requestData'][0]) {
 			let QuestID = PostData['requestData'][0];
