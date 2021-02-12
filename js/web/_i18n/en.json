@@ -824,6 +824,7 @@
     "Boxes.Investment.Overview.InvestedDesc": "How many FP were invested",
     "Boxes.Investment.Overview.SettingsEntryTime": "show entry time",
     "Boxes.Investment.Overview.SettingsRestFP": "show rest FP",
-    "Boxes.Investment.Overview.SettingsSave": "Save"
+    "Boxes.Investment.Overview.SettingsSave": "Save",
+    "Boxes.Investment.Overview.RemainingFP": "remaining FP"
 
 }
