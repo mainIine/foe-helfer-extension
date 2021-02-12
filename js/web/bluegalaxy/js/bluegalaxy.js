@@ -60,8 +60,11 @@ let BlueGalaxy = {
             HTML.AddCssFile('bluegalaxy');
 
             $('#bluegalaxy').on('blur', '#goodsValue', function () {
+
                 BlueGalaxy.GoodsValue = parseFloat($('#goodsValue').val());
+
                 if (isNaN(BlueGalaxy.GoodsValue)) BlueGalaxy.GoodsValue = 0;
+
                 localStorage.setItem('BlueGalaxyGoodsValue', BlueGalaxy.GoodsValue);
                 BlueGalaxy.CalcBody();
             });
@@ -112,7 +115,7 @@ let BlueGalaxy = {
             }
         }
                 
-        Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); //Alles über 23h ausblenden
+        Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); // Hide everything above 23h
 
         Buildings = Buildings.sort(function (a, b) {
             return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
@@ -120,7 +123,9 @@ let BlueGalaxy = {
 
         let DoubleCollections = 0,
             GalaxyFactor = 0;
-        for (let i = 0; i < BonusService.Bonuses.length; i++) {
+
+        for (let i = 0; i < BonusService.Bonuses.length; i++)
+        {
             if (BonusService.Bonuses[i]['type'] === 'double_collection') {
                 DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
                 GalaxyFactor = BonusService.Bonuses[i]['value'] / 100;
@@ -141,6 +146,7 @@ let BlueGalaxy = {
         else {
             Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
         }
+
         h.push('<strong class="title">' + Title + '</strong><br>');
 
         if (DoubleCollections > 0 && Buildings.length > 0) {

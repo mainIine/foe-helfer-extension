@@ -63,6 +63,7 @@ let _menu = {
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
+	 * @param selMenu
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
@@ -82,15 +83,16 @@ let _menu = {
 
 
 	/**
-	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
+	 * Hides a button. The HUD slider must already be filled for this.
 	 *
 	 * @param buttonId
 	 * @constructor
 	 */
 	HideButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
+		{
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
-
+		}
 	},
 
 
@@ -99,7 +101,9 @@ let _menu = {
 	 */
 	ShowButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
+		{
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
+		}
 	},
 
 
