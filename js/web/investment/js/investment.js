@@ -129,21 +129,21 @@ let Investment = {
         h.push('<table id="InvestmentTable" class="foe-table sortable-table">');
         h.push('<thead>' +
             '<tr class="sorter-header">' +
-            '<th class="case-sensitive" data-type="overview-group">Spieler</th>' +
-            '<th class="case-sensitive" data-type="overview-group">Gebäude</th>');
+            '<th class="case-sensitive" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Player') + '</th>' +
+            '<th class="case-sensitive" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Building') + '</th>');
 
         if (showEntryDate)
-            h.push('<th class="is-number" data-type="overview-group" title="Wann wurde der erste Betrag eingezahlt">Eintragszeit</th>');
+            h.push('<th class="is-number" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
 
-        h.push('<th class="is-number" data-type="overview-group">Fortschritt</th>');
+        h.push('<th class="is-number" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Progress') + '</th>');
 
         if (showRestFp) {
-            h.push('<th class="is-number text-center" data-type="overview-group" title="Wieviele FP noch bis zum leveln">Rest FP</th>');
+            h.push('<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
         }
 
         h.push('<th class="is-number text-center" data-type="overview-group">&nbsp;</th>' +
-            '<th class="is-number text-center" data-type="overview-group" title="Wieviel habe ich eingezahlt">Invest</th>' +
-            '<th class="is-number text-center" data-type="overview-group" title="erzielter Gewinn, gelb -> Platz ist noch nicht sicher, rot/grün -> Verlust/Gewinn sicher" >Gewinn</th>' +
+            '<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.InvestedDesc') + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
+            '<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.ProfitDesc') + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
             '</tr>' +
             '</thead><tbody class="overview-group">');
 
@@ -254,7 +254,7 @@ let Investment = {
                         for (let i in detail) {
                             if (detail.hasOwnProperty(i)) {
                                 let restFP = (max_progress * 1 - detail[i].current_progress * 1)
-                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - H:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>verbleibende FP: ' + restFP + '</td></tr>');
+                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - H:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
                             }
                         }
 
@@ -273,9 +273,9 @@ let Investment = {
             showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
             showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
 
-        c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">Zeige Eintragsdatum</label></p>`);
-        c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">Zeige restliche FP</label></p>`);
-        c.push(`<hr><p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+        c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
+        c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">${i18n('Boxes.Investment.Overview.SettingsRestFP')}</label></p>`);
+        c.push(`<hr><p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
         $('#InvestmentSettingsBox').html(c.join(''));
     },
