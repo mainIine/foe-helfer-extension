@@ -807,5 +807,22 @@
     "WsChat.UserLeave": " ist gegangen.",
     "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
-    "_Language": "Deutsch"
+    "_Language": "Deutsch",
+    "Boxes.Investment.Overview.Player": "Spieler",
+    "Boxes.Investment.Overview.Building": "Gebäude",
+    "Boxes.Investment.Overview.EntryTime": "Eintragszeit",
+    "Boxes.Investment.Overview.EntryTimeDesc": "Wann wurde die erste Einzahlung erfasst?",
+    "Boxes.Investment.Overview.Progress": "Fortschritt",
+    "Boxes.Investment.Overview.RestFP": "Rest FP",
+    "Boxes.Investment.Overview.RestFPDesc": "Wieviele FP noch bis zum leveln?",
+    "Boxes.Investment.Overview.Profit": "Gewinn",
+    "Boxes.Investment.Overview.ProfitDesc": "erzielter Gewinn, gelb -> Platz ist noch nicht sicher, rot/grün -> Verlust/Gewinn sicher",
+    "Boxes.Investment.Overview.Invested": "Investiert",
+    "Boxes.Investment.Overview.InvestedDesc": "Wieviele FP wurden investiert?",
+    "Boxes.Investment.Overview.SettingsEntryTime": "zeige Eintragsdatum",
+    "Boxes.Investment.Overview.SettingsRestFP": "zeige restliche FP",
+    "Boxes.Investment.Overview.SettingsSave": "Speichern",
+    "Boxes.Investment.Overview.RemainingFP": "verbleibende FP"
+
+
 }
