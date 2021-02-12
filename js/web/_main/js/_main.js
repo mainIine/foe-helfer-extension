@@ -1109,7 +1109,6 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'alerts',
 		'unitsGex'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
