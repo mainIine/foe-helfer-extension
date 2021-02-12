@@ -13,14 +13,17 @@
     width: 650px;
 }
 
-#Alerts #AlertsBody { min-height: 160px; }
+#Alerts #AlertsBody .tabs, #Alerts #AlertsBody #alerts-tab-list {
+    height: 100%;
+}
 
 #Alerts #AlertsBody .scrollable{
-    max-height: 550px;
-    min-height: 160px;
+    height: 350px;
+    height: calc(100% - 40px);
     overflow: hidden;
     overflow-y: auto;
     margin: 2px 0 4px 0;
+    border-bottom: 1px solid var(--black-50);
 }
 
 #Alerts #AlertsBody .content {
@@ -224,6 +227,39 @@ input.hidden {
     display: none;
 }
 
+#Alerts .icon-repeat {
+    background-image: url('../../x_img/repeat.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+#Alerts .btn-edit {
+    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn);
+    background-size: 13px 13px, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    width: 18px;
+}
+
+#Alerts .btn-edit:hover {
+    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn-active);
+}
+
+#Alerts .btn-delete {
+    background-image: url('../../x_img/trash.svg'), var(--background-btn-red);
+    background-size: 13px 13px, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    width: 18px;
+}
+
+#Alerts .btn-delete:hover {
+    background-image: url('../../x_img/trash.svg'), var(--background-btn-red-active);
+}
+
 /* Preferences */
 #Alerts #alerts-preferences .item {
     border: .5px solid var(--border-table-top);
@@ -257,4 +293,9 @@ input.hidden {
 }
 #Alerts #alerts-preferences .item .item-row .value {
     width: 34%;
+}
+
+/* hide tabs */
+#Alerts #AlertsBody .tabs ul {
+    display: none;
 }

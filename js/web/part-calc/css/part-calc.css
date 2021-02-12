@@ -40,12 +40,15 @@
 	top: -3px;
 }
 
-#OwnPartBox .OwnPartDrops .inputWrapper input {
-	max-width: 45px;
+#OwnPartBox .OwnPartDrops .inputWrapper input, #OwnPartBox .OwnPartDrops div select, #OwnPartBox #OwnPartTable input, #PowerLevelingBox input, .OwnPartBoxBackground input, .OwnPartBoxBackground select  {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
+}
+
+#OwnPartBox .OwnPartDrops .inputWrapper input {
+	max-width: 45px;
 	text-align: right;
 	margin: 0;
 	font-size: 0.8rem;
@@ -54,10 +57,6 @@
 
 #OwnPartBox .OwnPartDrops div select {
 	line-height: 1.5;
-	background-color: var(--background-light);
-	color: var(--text-medium);
-	background-clip: padding-box;
-	border: 1px solid var(--text-dark);
 	max-width: 160px;
 }
 
@@ -94,10 +93,6 @@
 
 #OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
 	line-height: 1.5;
-	background-color: var(--background-light);
-	color: var(--text-medium);
-	background-clip: padding-box;
-	border: 1px solid var(--text-dark);
 	width: 35px;
 	text-align: center;
 }
@@ -122,7 +117,7 @@
 
 #OwnPartBox .black-bg {
 	position: absolute;
-	background-color: var(--65-black);
+	background-color: var(--black-65);
 	top: 0;
 	right: 0;
 	bottom: 0;
@@ -238,25 +233,8 @@
 	margin-bottom: 6px;
 }
 
-.OwnPartBoxBackground input[id=player-name],
+.OwnPartBoxBackground input,
 .OwnPartBoxBackground select {
-	background-color: var(--background-light);
-	color: var(--text-medium);
-	background-clip: padding-box;
-	border: 1px solid var(--text-dark);
-	font-size: 0.8rem;
-	height: 18px;
-	width: 164px;
-	margin-bottom: 10px;
-	padding: 2px 5px;
-}
-
-.OwnPartBoxBackground input[id=build-name],
-.OwnPartBoxBackground select {
-	background-color: var(--background-light);
-	color: var(--text-medium);
-	background-clip: padding-box;
-	border: 1px solid var(--text-dark);
 	font-size: 0.8rem;
 	height: 18px;
 	width: 164px;
@@ -266,16 +244,9 @@
 
 .OwnPartBoxBackground input[id=copystring],
 .OwnPartBoxBackground select {
-	background-color: var(--background-light);
-	color: var(--text-medium);
-	background-clip: padding-box;
-	border: 1px solid var(--text-dark);
 	font-size: 0.6rem;
 	font-weight: bold;
-	height: 18px;
 	width: 300px;
-	margin-bottom: 10px;
-	padding: 2px 5px;
 }
 
 .OwnPartBoxBackground select {
@@ -299,6 +270,7 @@
 	position: absolute;
 	top: 3px;
 	left: 1px;
+	width: auto;
 }
 
 .OwnPartBoxBackground label.form-check-label {
@@ -329,7 +301,6 @@
 	background-color: rgba(255,255,255, 0.1);
 }
 
-
 #PowerLevelingBox {
 	top: 30%;
 	left: 100px;
@@ -340,6 +311,7 @@
 	overflow-x: hidden;
 	overflow-y: auto;
 	max-height: 500px;
+	user-select: text;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td, #PowerLevelingBox #PowerLevelingBoxBody .foe-table th {
@@ -362,4 +334,12 @@
 #PowerLevelingBox table.foe-table th {
 	position: sticky;
 	top: 0;
+}
+
+#PowerLevelingBox .hidden-text {
+	opacity: 0;
+	display: inline-block;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
 }

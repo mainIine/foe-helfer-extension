@@ -53,7 +53,9 @@ let _menu = {
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
-		// 'alerts',
+		'gildfight',
+		'investment',
+		'alerts',
 		// 'unitsGex',
 	],
 
@@ -61,6 +63,7 @@ let _menu = {
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
+	 * @param selMenu
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
@@ -80,15 +83,16 @@ let _menu = {
 
 
 	/**
-	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
+	 * Hides a button. The HUD slider must already be filled for this.
 	 *
 	 * @param buttonId
 	 * @constructor
 	 */
 	HideButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
+		{
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
-
+		}
 	},
 
 
@@ -97,7 +101,9 @@ let _menu = {
 	 */
 	ShowButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
+		{
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
+		}
 	},
 
 
@@ -158,6 +164,7 @@ let _menu = {
 
 		return btn_CalcBG;
 	},
+
 
 	/**
 	 * Eigenanteilsrechner Button
@@ -450,6 +457,7 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * Statistic
 	 * @returns {*|jQuery}
@@ -523,6 +531,7 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * FP Produzierende LGs
 	 */
@@ -595,6 +604,7 @@ let _menu = {
 		return btn;
 	},
 
+	
 	/**
 	 * Moppelassistent
 	 * */
@@ -682,5 +692,57 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
+	},
+
+
+	/**
+	 * Guildfight Overview
+	 * 	
+	 * @returns {*|jQuery}
+	 * */
+	gildfight_Btn: () => {
+
+		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red'),
+			desc = i18n('Menu.Gildfight.Warning') + i18n('Menu.Gildfight.Desc');
+
+		_menu.toolTippBox(i18n('Menu.Gildfight.Title'), desc , 'gildfight-Btn');
+
+		let btn = $('<span />');
+
+		btn.on('click', function (){
+			if(GildFights.MapData) {
+				GildFights.ShowGildBox();
+			}
+		});
+
+		btn_BG.append(btn);
+
+		return btn_BG;
+	},
+	
+	/**
+	 * InfoBox für Investitions Historie
+	 *
+	 * @returns {*|jQuery}
+	 */
+	investment_Btn: () => {
+
+		let btn_InvestH = $('<div />').attr({
+			'id': 'investment-Btn',
+			'data-slug': 'investment'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
+
+		let btn_Investment = $('<span />');
+
+		btn_Investment.on('click', function () {
+			Investment.BuildBox(false);
+		});
+
+		btn_InvestH.append(btn_Investment);
+
+		return btn_InvestH;
 	}
 };

@@ -24,7 +24,7 @@
 	height: 22px !important;
 }
 
-#GuildPlayersHeader small {
+#GildPlayersHeader small {
 	font-weight: lighter;
 }
 
@@ -50,12 +50,12 @@
 }
 
 #GildPlayersBody tr th span.negotiation {
-	background: url(../../x_img/negotiation.png) center no-repeat;
+	background: url('../../x_img/negotiation.png') center no-repeat;
 	background-size: contain;
 }
 
 #GildPlayersBody tr th span.fight {
-	background: url(../../x_img/fight.png) center no-repeat;
+	background: url('../../x_img/fight.png') center no-repeat;
 	background-size: contain;
 }
 
@@ -81,52 +81,95 @@
 }
 
 #LiveGildFighting {
-	top: 30%;
-	right: 15%;
-	width: 900px;
+	left: calc(50vw - 325px);
+	top: calc(50vw - 250px);
+	width: 750px;
+	height: 500px;
 }
 
 #LiveGildFightingBody {
 	overflow: auto;
 }
 
-#LiveGildFightingBody tr th  {
-	position: sticky;
-	top: 0;
-	background-color: rgba(0,0,0, 0.45);
-	white-space: nowrap;
+#LiveGildFightingBody .tabs ul li a span {
+	width: 21px;
+	top: 6px;
+	background: transparent url('../../unit/images/unit-icons.png') 0 3px no-repeat;
+	background-size: 90px 20px;
 }
 
-#LiveGildFightingBody tr th span.head-color {
-	height: 5px;
-	display: block;
+#LiveGildFightingBody .tabs ul li.gbgprogress a span {
+	background: transparent url('../../stats/images/tabs.png') -237px 0 no-repeat;
+}
+
+#LiveGildFightingBody .tabs ul li.gbgnextup a span {
+	background: transparent url('../../x_img/hourglass.png') no-repeat;
+	background-size: contain;
+	top: 8px;
+    position: relative;
+}
+
+#LiveGildFightingBody #nextup {
+	overflow: hidden;
+	overflow-y: auto;
+	flex-grow: 2;
+}
+
+#LiveGildFightingBody #progress {
+	width: 100%;
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+#LiveGildFightingBody #progress tr td:first-child {
+	width: 60px;
+}
+
+#LiveGildFightingBody #progress tr td:nth-child(2) {
+	width: 50%;
+}
+
+#LiveGildFightingBody table.foe-table tr.highlight-row {
+	background-color: rgba(40, 18, 7, 0.8);
+	color: var(--text-bright);
 }
 
 #LiveGildFightingBody tr td {
 	transition: background-color .6s;
 }
 
-#LiveGildFightingBody tr td.red-pulse {
-	background-color: rgba(255, 0, 0, 0.45);
+#LiveGildFightingBody tr.red-pulse td {
+	background-color: rgba(208, 200, 172, 0.3);
 	transition: background-color .6s;
+}
+
+#LiveGildFightingBody tr td span.attack-wrapper {
+	display: block;
+	height: 10px;
+	width: 100%;
+	line-height: 10px;
+	font-size: 10px;
+	background-color: rgba(255,255,255,.1);
+	margin-right: 10px;
 }
 
 #LiveGildFightingBody tr td span.attack {
 	display: block;
-	height: 5px;
-	background-color: rgba(255,255,255,0.45);
-}
-
-#LiveGildFightingBody tr td span.attack span {
-	height: 5px;
-	display: block;
+	height: 10px;
+	width: 100%;
+	line-height: 10px;
+	color: var(--text-dark);
+	text-shadow: none;
+	font-weight: bold;
 }
 
 /*************************************************************************************************************/
 
 #ProvinceMap {
-	width: 790px;
-	height: 620px;
+	width: 560px;
+	height: 438px;
+	left: calc(50vw - 280px);
+	top: calc(50vw - 219px);
 }
 
 #ProvinceMap #province-map {

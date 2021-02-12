@@ -5,6 +5,7 @@
 	--text-medium: #93795D;
 	--text-medium2: #7b5730;
 	--text-dark: #4c2f1e;
+	--text-darker: #271911;
 	--text-muted: #8a8a8a;
 
 	--text-tab-active: #e2e2e2;
@@ -65,8 +66,8 @@
 
 	--grey: #444;
 	--black: #000;
-	--50-black: rgba(0, 0, 0, 0.5);
-	--65-black: rgba(0,0,0, 0.65);
+	--black-50: rgba(0, 0, 0, 0.5);
+	--black-65: rgba(0,0,0, 0.65);
 
 	--text-success: #29b206;
 	--text-info: #2196f3;

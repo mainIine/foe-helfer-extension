@@ -1,16 +1,122 @@
 #Investment {
-	width: 370px;
-	padding: 10px;
+	width: 750px;
+	height: 450px;
+	top: calc(50vh - 200px);
+	left: calc(50vw - 310px);
 }
 
 #Investment #InvestmentBody {
 	overflow: auto;
 }
 
+#InvestmentBody .total-wrapper {
+	display: inline-flex;
+	justify-content: space-around;
+	width: calc(100% - 20px);
+	padding: 10px;
+}
+
 #Investment #InvestmentBody strong {
 	color: var(--text-bright);
 }
 
-#Investment #InvestmentBody #total-fp {
-	margin-top: 10px;
+
+#InvestmentBody #history-wrapper {
+	border-top: 2px solid var(--text-bright);
+}
+
+#InvestmentBody table {
+	position: relative;
+}
+
+#InvestmentBody table th {
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+#InvestmentBody table tr.new td {
+	background: var(--background-table-success);
+}
+
+#InvestmentBody table tr.hidden {
+	display: none;
+}
+
+#InvestmentBody div.detail {
+	padding-left: 10px;
+}
+
+#InvestmentBody table tbody tr {
+	opacity: .999;
+}
+
+#InvestmentBody table tbody td.progress {
+	border-left: 1px solid var(--border-table-top);
+	border-right: 1px solid var(--border-table-top);
+	background: none;
+	color: var(--text-light);
+	position: relative;
+}
+
+#InvestmentBody table tbody tr.fphistory {
+	position: relative;
+}
+
+#InvestmentBody table tbody tr.fphistory td:last-child {
+    background-image: url('../../../../css/images/hud/chevron-left.svg');
+    background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
+#InvestmentBody table tbody tr.fphistory.open td:last-child {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+}
+
+#InvestmentBody table tbody td div.progbar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background: var(--background-btn-green-fallback);
+	background: var(--background-btn-green-moz);
+	background: var(--background-btn-green-webkit);
+	background: var(--background-btn-green);
+	z-index: -1;
+	color: var(--text-light);
+}
+
+#InvestmentBody table tbody td div.diff {
+	position: absolute;
+	min-width: 10px;
+	text-align: center;
+	right: 2px;
+	top: 1px;
+	font-size: 0.85em;
+	padding: 1px 2px;
+	color: var(--text-bright);
+	font-weight: bold;
+	text-shadow: 0 2px 2px black, 0 1px 0 black;
+}
+#InvestmentBody table tbody tr:hover div.diff {
+	opacity:1;
+}
+
+#InvestmentBody table tbody td div.diff.error {
+	background: #bf0000;
+}
+#InvestmentBody table tbody td .success{
+	color: var(--text-success);
+}
+#InvestmentBody table tbody td .error{
+	color: #f11616;
+}
+#InvestmentBody table tbody td .warning{
+	color: var(--text-bright);
+}
+
+#InvestmentBody table tbody td img.rank {
+	width: 22px;
 }

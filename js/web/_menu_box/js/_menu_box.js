@@ -200,10 +200,12 @@ let _menu_box = {
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
 				$('#menu_box').removeClass('is--sorting');
-				$.toast({
-					heading: i18n('Menu.SaveMessage.Title'),
+
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Menu.SaveMessage.Title'),
 					text: i18n('Menu.SaveMessage.Desc'),
-					icon: 'success',
+					type: 'success',
 					hideAfter: 5000
 				});
 			}

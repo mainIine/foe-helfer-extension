@@ -17,6 +17,7 @@
 	top: 30%;
 	right: 15%;
 	width: 450px;
+	height: 500px;
 }
 
 #technologies #technologiesBody {
@@ -84,7 +85,7 @@
 	position: absolute;
 	white-space: nowrap;
 	text-align: left;
-	background: var(--65-black);
+	background: var(--black-65);
 	padding: 5px;
 	right: 6px;
 	top: 25px;
@@ -97,7 +98,7 @@
 }
 #technologies #technologiesBody td.goods-image { 
 	padding: 0;
-	background-color: var(--50-black);
+	background-color: var(--black-50);
 }
 
 #technologies #technologiesBody .goods-sprite-50.sm {
