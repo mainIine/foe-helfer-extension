@@ -69,7 +69,7 @@ let Unit = {
 
 
 	/**
-	 * Erstellt eine HTML Box für den DOM
+	 * Creates an HTML box for the DOM
 	 *
 	 */
 	Show: ()=> {
@@ -98,7 +98,7 @@ let Unit = {
 
 
 	/**
-	 * Rendern und in den BoxContent
+	 * Render and place in the BoxContent
 	 */
 	BuildBox:()=> {
 
@@ -294,18 +294,19 @@ let Unit = {
 		pool.push('<table class="foe-table">');
 
 		pool.push('<thead>');
-		pool.push('<tr>');
-		pool.push('<th></th>');
-		pool.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-		pool.push('<th class="text-center">' + i18n('Boxes.Units.Bind') + '</th>');
-		pool.push('<th class="text-center">' + i18n('Boxes.Units.Unbind') + '</th>');
-		pool.push('</tr>');
+			pool.push('<tr>');
+				pool.push('<th></th>');
+				pool.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+				pool.push('<th class="text-center">' + i18n('Boxes.Units.Bind') + '</th>');
+				pool.push('<th class="text-center">' + i18n('Boxes.Units.Unbind') + '</th>');
+			pool.push('</tr>');
 		pool.push('</thead>');
 
 		pool.push('<tbody>');
 
 
-		for (let era = eras.length; era >= 0;era--){
+		for (let era = eras.length; era >= 0;era--)
+		{
 			if(!eras.hasOwnProperty(era)){
 				continue;
 			}
@@ -314,16 +315,17 @@ let Unit = {
 			pool.push('<th colspan="4">' + i18n('Eras.' + era) + '</th>');
 			pool.push('</tr>');
 
-			for(let i in eras[era]){
+			for(let i in eras[era])
+			{
 				if(!eras[era].hasOwnProperty(i)){
 					break;
 				}
 
 				pool.push('<tr>');
-				pool.push('<td><span class="units-icon ' + eras[era][i]['id'] + '"></span></td>');
-				pool.push('<td>' + eras[era][i]['name'] + '</td>');
-				pool.push('<td class="text-center">' + eras[era][i]['attached'] + '</td>');
-				pool.push('<td class="text-center">' + eras[era][i]['unattached'] + '</td>');
+					pool.push('<td><span class="units-icon ' + eras[era][i]['id'] + '"></span></td>');
+					pool.push('<td>' + eras[era][i]['name'] + '</td>');
+					pool.push('<td class="text-center">' + eras[era][i]['attached'] + '</td>');
+					pool.push('<td class="text-center">' + eras[era][i]['unattached'] + '</td>');
 				pool.push('</tr>');
 			}
 
@@ -356,6 +358,11 @@ let Unit = {
 	},
 
 
+	/**
+	 * Create the timer info for the top box content
+	 *
+	 * @constructor
+	 */
 	BuildTimer: ()=> {
 		let text;
 
@@ -409,9 +416,11 @@ let Unit = {
 
 
 	/**
-	 * Sucht nach dem Alcatraz
-	 * *
-	 * */
+	 * Search for the Alcatraz
+	 *
+	 * @param data
+	 * @constructor
+	 */
 	RefreshAlca: (data) => {
 		if (!Unit.alca)
 		{
@@ -428,7 +437,7 @@ let Unit = {
 
 
 	/**
-	 * Merkt sich alle Tabs
+	 * Remembers all tabs
 	 *
 	 * @param id
 	 */
@@ -438,7 +447,7 @@ let Unit = {
 
 
 	/**
-	 * Gibt alle gemerkten Tabs aus
+	 * Outputs all bookmarked tabs
 	 *
 	 * @returns {string}
 	 */
@@ -448,7 +457,7 @@ let Unit = {
 
 
 	/**
-	 * Speichert BoxContent zwischen
+	 * Saves BoxContent between
 	 *
 	 * @param id
 	 * @param content
@@ -459,7 +468,7 @@ let Unit = {
 
 
 	/**
-	 * Setzt alle gespeicherten Tabs zusammen
+	 * Assembles all saved tabs
 	 *
 	 * @returns {string}
 	 */
@@ -469,17 +478,20 @@ let Unit = {
 
 
 	/**
-	 * Aktuallisiert die Anzeige für die Alcatraz-Produktion
+	 * Updates the display for the Alcatraz production
 	 * 
 	 */
 	UpdateAlcaLable:(countDownDate, intervalID)=>{
-		if(countDownDate.isValid()){
+		if(countDownDate.isValid())
+		{
 			let diff = countDownDate.diff(moment());
 
-			if (diff <= 0) {
+			if (diff <= 0)
+			{
 				clearInterval(intervalID);
 				$('.alca-info').html('<span class="text-danger"><strong>'+i18n('Boxes.Units.ReadyToLoot')+'</strong></span>');
-			} else
+			}
+			else
 				$('.alca-countdown').text(moment.utc(diff).format("HH:mm:ss"));
 		}
 		else{
@@ -490,9 +502,12 @@ let Unit = {
 
 
 	/**
-	* Wandelt ein Boost Array in ein Dict um
-	* *
-	* */
+	 * Converts a Boost Array into a Dict
+	 *
+	 * @param BoostArray
+	 * @returns {[]}
+	 * @constructor
+	 */
 	GetBoostDict: (BoostArray) => {
 		let Ret = [];
 
@@ -515,9 +530,12 @@ let Unit = {
 
 
 	/**
-		 * Berechnet die summierten Boni
-		 * *
-		 */
+	 * Calculates the summed bonuses
+	 *
+	 * @param Boosts
+	 * @returns {[]}
+	 * @constructor
+	 */
 	GetBoostSums: (Boosts) => {
 		let Ret = [],
 			CurrentBoost = undefined;
@@ -579,8 +597,9 @@ let Unit = {
 
 
 	/**
-	 * Die letzten Einheiten die aus dem Alca gekommen sind
+	 * The last units that came out of the Alca
 	 *
+	 * @constructor
 	 */
 	GetLastAlcaUnits: ()=> {
 
@@ -602,15 +621,18 @@ let Unit = {
 		let LastAlca = [],
 			LastTotal = AlcaUnits.length;
 
-		for(let i in AlcaUnits) {
-			if(!AlcaUnits.hasOwnProperty(i)){
+		for(let i in AlcaUnits)
+		{
+			if(!AlcaUnits.hasOwnProperty(i))
+			{
 				break;
 			}
 
 			let type = Unit.Types.find(obj => (obj['unitTypeId'] === AlcaUnits[i]['unitTypeId'])),
 				era = Technologies.Eras[type['minEra']];
 
-			if(LastAlca[AlcaUnits[i]['unitTypeId']] === undefined){
+			if(LastAlca[AlcaUnits[i]['unitTypeId']] === undefined)
+			{
 				LastAlca[AlcaUnits[i]['unitTypeId']] = {
 					era: era,
 					id: AlcaUnits[i]['unitTypeId'],
@@ -618,7 +640,8 @@ let Unit = {
 					count: 1
 				};
 
-			} else {
+			}
+			else {
 				LastAlca[AlcaUnits[i]['unitTypeId']]['count']++;
 			}
 		}
@@ -628,30 +651,32 @@ let Unit = {
 		last.push('<table class="foe-table">');
 
 		last.push('<thead>');
-		last.push('<tr>');
-		last.push('<th class="text-warning">' + LastTotal + 'x</th>');
-		last.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
-		last.push('<th class="text-center">' + i18n('Boxes.Units.Quantity') + '</th>');
-		last.push('<th class="text-center">' + i18n('Boxes.Units.Proportionally') + '</th>');
-		last.push('</tr>');
+			last.push('<tr>');
+				last.push('<th class="text-warning">' + LastTotal + 'x</th>');
+				last.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
+				last.push('<th class="text-center">' + i18n('Boxes.Units.Quantity') + '</th>');
+				last.push('<th class="text-center">' + i18n('Boxes.Units.Proportionally') + '</th>');
+			last.push('</tr>');
 		last.push('</thead>');
 
 		last.push('<tbody>');
 
 		let cnt = 0;
 
-		for(let i in LastAlca) {
-			if(!LastAlca.hasOwnProperty(i)){
+		for(let i in LastAlca)
+		{
+			if(!LastAlca.hasOwnProperty(i))
+			{
 				break;
 			}
 
 			last.push('<tr data-era="' + LastAlca[i]['era'] + '">');
 
-			last.push('<td><span class="units-icon ' + LastAlca[i]['id'] + '"></span></td>');
-			last.push('<td>' + LastAlca[i]['name'] + '</td>');
+				last.push('<td><span class="units-icon ' + LastAlca[i]['id'] + '"></span></td>');
+				last.push('<td>' + LastAlca[i]['name'] + '</td>');
 
-			last.push('<td class="text-center">' + LastAlca[i]['count'] + 'x</td>');
-			last.push('<td class="text-center">' + MainParser.round((LastAlca[i]['count'] * 100 ) / LastTotal) + '%</td>');
+				last.push('<td class="text-center">' + LastAlca[i]['count'] + 'x</td>');
+				last.push('<td class="text-center">' + MainParser.round((LastAlca[i]['count'] * 100 ) / LastTotal) + '%</td>');
 
 			last.push('</tr>');
 
