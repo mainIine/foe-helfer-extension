@@ -110,7 +110,7 @@ let Investment = {
         }
         
         b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
-
+        b.push(`<div id="hidden-bar" class="hide text-center"><img src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
         b.push(`</div>`);
 
         b.push(`<div id="history-wrapper"></div>`);
@@ -210,7 +210,7 @@ let Investment = {
                 DiffClass = 'success';
             }
 
-            hiddenClass=(showHiddenGb && isHidden) ? ' ishidden' : (isHidden) ? ' hide' : '';
+            hiddenClass=(showHiddenGb && isHidden) ? ' ishidden' : (isHidden) ? ' ishidden hide' : '';
 
             h.push(`<tr id="invhist${x}" data-id="${contribution['id']}" data-max-progress="${contribution['max_progress']}" data-detail='${JSON.stringify(history)}' class="${hasFpHistoryClass}${newerClass}${hiddenClass}"><td class="case-sensitive" data-text="${contribution['playerName'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['Avatar']]}.jpg" alt="${contribution['playerName']}"> ${contribution['playerName']}</td>`);
             h.push('<td class="case-sensitive" data-text="' + contribution['gbname'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
@@ -557,6 +557,15 @@ let Investment = {
         let Einsatz = Investment.Einsatz - Investment.HiddenInvestment;
         let Gewinn = Ertrag - Einsatz;
         
+        let hiddenElements = $('#InvestmentTable tr.ishidden').length;
+        if(hiddenElements > 0){
+            $('#hidden-bar').removeClass('hide');
+            $('#hidden-bar .hidden-elements').html(hiddenElements);
+        }
+        else {
+            $('#hidden-bar').addClass('hide');
+        }
+
         $('.invest-storage').easy_number_animate({
             start_value: 0,
             end_value: Einsatz,
