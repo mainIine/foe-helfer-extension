@@ -138,7 +138,7 @@ let Settings = {
 				}
 				else if (status === undefined) {
 					let b = $('<span />').addClass('button-wrapper').append(
-						$('<button class="btn-default" id="${button}" onclick="Settings.' + button + '()">' + i18n(`Settings.${d['name']}.Button`) + '</button>')
+						$(`<button class="btn-default" id="${button}" onclick="Settings.${button}()">${i18n('Settings.' + d['name'] + '.Button')}</button>`)
 					);
 
 					cs.html(b);
@@ -408,11 +408,12 @@ let Settings = {
 			}
 		});
 
-		$('#ResetBoxCoords').addClass('btn-green');
-
-		setTimeout(() => {
-			$('#ResetBoxCoords').removeClass('btn-green');
-		}, 2000)
+		HTML.ShowToastMsg({
+			head: i18n('Boxes.Settings.DeletedBoxCoordsHead'),
+			text: i18n('Boxes.Settings.DeletedBoxCoordsBody'),
+			type: 'success',
+			hideAfter: 4000
+		});
 	},
 
 
