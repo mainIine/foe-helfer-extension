@@ -699,6 +699,7 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
 		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+
 	});
 
 	// gex is entered
@@ -711,6 +712,9 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		ActiveMap = 'gg';
 		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+		setTimeout(()=> {
+		GildFights.ShowGildBox();
+		},1000);
 	});
 
 	// gvg is entered
@@ -813,7 +817,7 @@ const FoEproxy = (function () {
 		//Update der Investitions Historie
 		if (Investment) {
 			Investment.UpdateData(data.responseData, false);
-		}
+				}
 
 	});
 
@@ -1213,44 +1217,44 @@ let MainParser = {
 	 *
 	 * @param {any & {type: string}} data
 	 */
-	sendExtMessage: async (data) => {
-		const bgApiHandler = MainParser.foeHelperBgApiHandler;
-
-		/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
-		let _responsePromise = null;
-
-		// @ts-ignore
-		if (typeof chrome !== 'undefined') {
+		sendExtMessage: async (data) => {
+			const bgApiHandler = MainParser.foeHelperBgApiHandler;
+	
+			/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
+			let _responsePromise = null;
+	
 			// @ts-ignore
-			_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
-		}
-		else if (bgApiHandler != null) {
-			_responsePromise = bgApiHandler(data);
-
-		}
-		else {
-			throw new Error('No implementation for Extension communication found');
-		}
-
-		const responsePromise = _responsePromise;
-		
-		const response = await new Promise((resolve, reject) => {
-			responsePromise.then(resolve, reject);
-			setTimeout(()=>resolve({ok: false, error: "response timeout for: "+JSON.stringify(data)}), 1000)
-		});
-
-		if (typeof response !== 'object' || typeof response.ok !== 'boolean')
-		{
-			throw new Error('invalid response from Extension-API call');
-		}
-
-		if (response.ok === true) {
-			return response.data;
-		}
-		else {
-			throw new Error('EXT-API error: '+response.error);
-		}
-	},
+			if (typeof chrome !== 'undefined') {
+				// @ts-ignore
+				_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
+			}
+			else if (bgApiHandler != null) {
+				_responsePromise = bgApiHandler(data);
+	
+			}
+			else {
+				throw new Error('No implementation for Extension communication found');
+			}
+	
+			const responsePromise = _responsePromise;
+			
+			const response = await new Promise((resolve, reject) => {
+				responsePromise.then(resolve, reject);
+				setTimeout(()=>resolve({ok: false, error: "response timeout for: "+JSON.stringify(data)}), 1000)
+			});
+	
+			if (typeof response !== 'object' || typeof response.ok !== 'boolean')
+			{
+				throw new Error('invalid response from Extension-API call');
+			}
+	
+			if (response.ok === true) {
+				return response.data;
+			}
+			else {
+				throw new Error('EXT-API error: '+response.error);
+			}
+		},
 
 
 	/**
