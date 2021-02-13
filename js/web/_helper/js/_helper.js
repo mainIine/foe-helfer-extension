@@ -177,6 +177,17 @@ let HTML = {
 				HTML.customFunctions[`${args['id']}Settings`] = args['settings'];
 			}
 		}
+
+		if(args['popout']){
+			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-popout`);
+			set.insertAfter(title);
+
+			if (typeof args['popout'] !== 'boolean')
+			{
+				HTML.customFunctions[`${args['id']}PopOut`] = args['popout'];
+			}
+		}
+
 		if(args['map']){
 			let set = $('<span />').addClass('window-map').attr('id', `${args['id']}-map`);
 			set.insertAfter(title);
@@ -186,6 +197,7 @@ let HTML = {
 				HTML.customFunctions[`${args['id']}Map`] = args['map'];
 			}
 		}
+
 		// Lautsprecher für Töne
 		if(args['speaker']){
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
@@ -266,6 +278,16 @@ let HTML = {
 					});
 				}
 			}
+
+			if(args['popout'])
+			{
+				if (typeof args['popout'] !== 'boolean')
+				{
+					$(`#${args['id']}`).on('click', `#${args['id']}-popout`, function(){
+						HTML.PopOutBox(args['id']);
+					});
+				}
+			}
 			
 			if(args['map'])
 			{
@@ -288,6 +310,7 @@ let HTML = {
 					});
 				}
 			}
+
 			if(args['resize']) {
 				HTML.Resizeable(args['id'], args['keepRatio']);
 			}
@@ -326,11 +349,14 @@ let HTML = {
 		$(btn).bind('click', function(){
 			let box = $(this).closest('.window-box'),
 				open = box.hasClass('open');
-			if(open === true){
+
+			if(open === true)
+			{
 				box.removeClass('open');
 				box.addClass('closed');
 				box.find('.window-body').css("visibility", "hidden");
-			} else {
+			}
+			else {
 				box.removeClass('closed');
 				box.addClass('open');
 				box.find('.window-body').css("visibility", "visible");
@@ -340,7 +366,7 @@ let HTML = {
 
 
 	/**
-	 * Makes an HTML BOX DragAble
+	 * Makes an HTML BOX Dragable
 	 *
 	 * @param el
 	 * @param save
@@ -489,6 +515,11 @@ let HTML = {
 		setTimeout(()=> {
 			new Function(`${HTML.customFunctions[id + 'Settings']}`)();
 		}, 100);
+	},
+
+
+	PopOutBox: (id)=> {
+		new Function(`${HTML.customFunctions[id + 'PopOut']}`)();
 	},
 
 
@@ -684,5 +715,34 @@ let HTML = {
 			extraClass: localStorage.getItem('SelectedMenu') || 'bottombar',
 			stack: localStorage.getItem('NotificationStack') || 4
 		});
+	},
+
+
+	PopOutBoxBuilder: (params)=> {
+
+		let id = params['id'];
+
+		const winHtml = `<!DOCTYPE html>
+						<html>
+							<head id="popout-${id}-head">
+								<title>PopOut Test - ${i18n('Boxes.Outpost.Title')}</title>
+								<link rel="stylesheet" href="${extUrl}css/web/variables.css">
+								<link rel="stylesheet" href="${extUrl}css/web/boxes.css">
+								<link rel="stylesheet" href="${extUrl}css/web/goods.css">
+							</head>
+							<body id="popout-${id}-body"></body>
+						</html>`;
+
+		const winUrl = URL.createObjectURL(
+			new Blob([winHtml], { type: "text/html" })
+		);
+
+		const winObject = window.open(
+			winUrl,
+			`popOut-${id}`,
+			`width=${params['width']},height=${params['height']},screenX=200,screenY=200`
+		);
+
+		return winObject;
 	}
 };
