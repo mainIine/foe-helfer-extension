@@ -81,14 +81,26 @@
 }
 
 #LiveGildFighting {
+	width: 350px;
 	left: calc(50vw - 325px);
 	top: calc(50vw - 250px);
-	width: 750px;
-	height: 500px;
 }
 
 #LiveGildFightingBody {
 	overflow: auto;
+}
+
+#LiveGildFightingBody .guilds {
+	float:right;
+}
+
+#LiveGildFightingBody .guilds li {
+	border-left-width: 3px;
+	border-left-style: solid;
+	margin-bottom: 1px;
+	font-size: 80%;
+	overflow-y: hidden;
+	padding: 15px 10px 15px 5px;
 }
 
 #LiveGildFightingBody .tabs ul li a span {
@@ -113,20 +125,22 @@
 	overflow: hidden;
 	overflow-y: auto;
 	flex-grow: 2;
+	position: relative;
+	float:left;
+	width:62%;
+	height: 380px;
 }
 
 #LiveGildFightingBody #progress {
-	width: 100%;
 	overflow: hidden;
 	overflow-y: auto;
+	float:left;
+	width:62%;
+	height: 380px;
 }
 
 #LiveGildFightingBody #progress tr td:first-child {
 	width: 60px;
-}
-
-#LiveGildFightingBody #progress tr td:nth-child(2) {
-	width: 50%;
 }
 
 #LiveGildFightingBody table.foe-table tr.highlight-row {
@@ -136,6 +150,7 @@
 
 #LiveGildFightingBody tr td {
 	transition: background-color .6s;
+	width:40%;
 }
 
 #LiveGildFightingBody tr.red-pulse td {
@@ -177,3 +192,110 @@
 	background: transparent url('../images/volcano_archipelago_bg.jpg');
 	background-size: 100%;
 }
+
+.alert {
+	background: url(../images/alerts.png);
+	background-size: 20px;
+	border: 0;
+    width: 20px;
+	height: 20px;
+	outline:none
+}
+.noalert {
+	background: transparent;
+	border: 0;
+    width: 20px;
+	height: 20px;
+	color: white;
+	outline:none
+}
+
+.toggle2{
+    background: url(../images/menu.png) no-repeat;
+    background-size: 150px;
+    height: 22px;
+    background-position-x: -52px;
+    background-position-y: -396px;
+    width: 23px;
+    border: 0;
+    top: 5px;
+    z-index: 1;
+    left: 10px;
+    outline: none;
+    position: relative;
+}
+
+#toggle:hover::before {
+	content: '';
+    position: absolute;
+    background-image: url(../images/tab-active.png);
+    background-repeat: no-repeat;
+    background-position: center left;
+    width: 8%;
+    height: 33px;
+}
+
+#toggle:before {
+	content: '';
+    position: absolute;
+    background-image: url(../images/tab.png);
+    background-repeat: no-repeat;
+    background-position: center left;
+    width: 8%;
+    height: 33px;
+}
+#toggle:after {
+    content: '';
+    position: absolute;
+    background-image: url(../images/tab.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+    width: 5%;
+    height: 33px;
+}
+#toggle:hover::after {
+    content: '';
+    position: absolute;
+    background-image: url(../images/tab-active.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+    width: 5%;
+    height: 33px;
+}
+
+.toggled {
+    background: url(../images/menu.png) no-repeat;
+    background-size: 150px;
+    height: 22px;
+    background-position-x: -52px;
+    background-position-y: -396px;
+    width: 23px;
+    border: 0;
+    top: 5px;
+    z-index: 1;
+    left: 8px;
+    outline: none;
+    position: relative;
+}
+
+
+#toggled:before {
+	content: '';
+    position: absolute;
+    background-image: url(../images/tab-active.png);
+    background-repeat: no-repeat;
+    background-position: center left;
+    width: 12%;
+    height: 33px;
+}
+
+#toggled:after{ 
+    content: '';
+    position: absolute;
+    background-image: url(../images/tab-active.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+    width: 8%;
+    height: 33px;
+}
+
