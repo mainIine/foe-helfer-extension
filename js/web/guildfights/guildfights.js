@@ -788,7 +788,6 @@ let GildFights = {
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'bar-holder'
 						}),
-						$('<td />').text(p['clan']['name'])
 						)
 				);
 
