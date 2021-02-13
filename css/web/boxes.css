@@ -306,7 +306,7 @@ table.foe-table:not(.no-hover) tbody tr:hover {
 
 table.foe-table tr th,
 table.foe-table tr td {
-	padding: 2px 5px;
+	padding: 5px 4px;
 }
 
 table.foe-table tr td {
@@ -442,7 +442,7 @@ p {
 	background-image: url('../images/menu/kits.png');
 }
 
-#alerts-Btn span {
+#Alerts-Btn span {
 	background-image: url('../images/menu/alerts.png');
 }
 
