@@ -826,7 +826,8 @@
     "Boxes.Investment.Overview.SettingsSave": "Speichern",
     "Boxes.Investment.Overview.RemainingFP": "verbleibende FP",
     "Boxes.Investment.Overview.SettingsHiddenGB": "zeige ausgeblendete LG",
-    "Boxes.Investment.Overview.HideGB": "LG aus Berechnung und Liste ausblenden."
+    "Boxes.Investment.Overview.HideGB": "LG aus Berechnung und Liste ausblenden.",
+    "Boxes.Investment.HiddenGB": "versteckte LG"
 
 
 }

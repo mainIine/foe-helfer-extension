@@ -142,3 +142,11 @@
 #InvestmentBody table tbody td .hideicon.ishidden-on {
 	background: url(../images/unvisible.png);
 }
+
+#InvestmentBody #hidden-bar.hide{
+	display:none;
+}
+#InvestmentBody #hidden-bar img{
+	width: 16px;
+	height: 16px;
+}
