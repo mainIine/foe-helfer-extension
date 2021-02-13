@@ -716,6 +716,10 @@ let GildFights = {
 				pColor = GildFights.SortedColors.find(e => e['id'] === data['ownerId']),
 				p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
+			if(!data['id']){
+				continue;
+			}
+
 			// <tr> is not present, create it
 			if(cell.length === 0)
 			{
@@ -978,7 +982,7 @@ let ProvinceMap = {
 			ProvinceMap.Mouse.x = ((offsetX * 100) / factor);
 			ProvinceMap.Mouse.y = ((offsetY * 100) / factor);
 
-			ProvinceMap.Refresh();
+			// ProvinceMap.Refresh();
 		}
 
 		// Objects
@@ -1029,20 +1033,40 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.font = 'bold 45px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.stroke(path);
-			ProvinceMap.MapCTX.globalAlpha = 0.5;
-			ProvinceMap.MapCTX.fill(path);
 
-			// Title e.g. "B4D"
-			ProvinceMap.MapCTX.globalAlpha = 1;
-			ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
-			ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y);
+			// if is spawn, no text => image
+			if(this.flagImg)
+			{
+				ProvinceMap.MapCTX.globalAlpha = 0.2;
+				ProvinceMap.MapCTX.fill(path);
 
-			// Shadow from title
-			ProvinceMap.MapCTX.globalAlpha = 0.7;
-			ProvinceMap.MapCTX.fillStyle = '#000000';
-			ProvinceMap.MapCTX.fillText(this.short, this.flag.x+2, this.flag.y+4);
+				let flag_image = new Image(),
+					flag_x = this.flagPos.x,
+					flag_y = this.flagPos.y;
 
+				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
 
+				flag_image.onload = function(){
+					ProvinceMap.MapCTX.globalAlpha = 1;
+					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y);
+				}
+			}
+			else {
+				ProvinceMap.MapCTX.globalAlpha = 0.5;
+				ProvinceMap.MapCTX.fill(path);
+
+				// Title e.g. "B4D"
+				ProvinceMap.MapCTX.globalAlpha = 1;
+				ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
+				ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y);
+
+				// Shadow from title
+				ProvinceMap.MapCTX.globalAlpha = 0.7;
+				ProvinceMap.MapCTX.fillStyle = '#000000';
+				ProvinceMap.MapCTX.fillText(this.short, this.flag.x+2, this.flag.y+4);
+			}
+
+			/*
 			// Mouseclick? Tooltip!
 			if(ProvinceMap.MapCTX.isPointInPath(path, ProvinceMap.Mouse.x, ProvinceMap.Mouse.y) && this.lockedUntil)
 			{
@@ -1054,6 +1078,7 @@ let ProvinceMap = {
 
 				ProvinceMap.ToolTipActive = true;
 			}
+			*/
 		}
 
 		Province.prototype.updateGGMap = function(){
@@ -1080,6 +1105,7 @@ let ProvinceMap = {
 					short: pD.short,
 					links: pD.connections,
 					flag: pD.flag,
+					flagPos: pD.flagPos,
 					path: path,
 					strokeStyle: '#444',
 					fillStyle: null,
@@ -1088,8 +1114,8 @@ let ProvinceMap = {
 
 				const prov = GildFights.MapData['map']['provinces'][i.id];
 
-				if(prov['ownerId']){
-
+				if(prov['ownerId'])
+				{
 					const colors = GildFights.SortedColors.find(c => (c['id'] === prov['ownerId']));
 
 					data['ownerID'] = prov['ownerId'];
@@ -1098,7 +1124,15 @@ let ProvinceMap = {
 					data['strokeStyle'] = ProvinceMap.hexToRgb(colors['main']);
 					data['alpha'] = 0.3;
 
-					if(prov['lockedUntil']){
+					if(prov['isSpawnSpot'])
+					{
+						let clan = GildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
+
+						data['flagImg'] = clan['clan']['flag'].toLowerCase();
+					}
+
+					if(prov['lockedUntil'])
+					{
 						data['lockedUntil'] = prov['lockedUntil'];
 					}
 				}
@@ -1107,18 +1141,6 @@ let ProvinceMap = {
 			});
 
 			ProvinceMap.MapMerged = provinces;
-		}
-
-		// Animation Loop
-		function refresh() {
-			// requestAnimationFrame(refresh) // loop
-			ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Map.width, ProvinceMap.Map.height)
-
-			// provinces.updateGGMap();
-
-			provinces.forEach(province => {
-				province.updateGGMap();
-			});
 		}
 
 		init();
@@ -1139,6 +1161,7 @@ let ProvinceMap = {
 		const provinces = ProvinceMap.MapMerged;
 
 		ProvinceMap.ToolTipActive = false;
+
 		provinces.forEach(province => {
 			province.updateGGMap();
 		});
@@ -1594,6 +1617,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1176,
 				y: 310
+			},
+			flagPos: {
+				x: 1131,
+				y: 265
 			}
 		}, {
 			id: 29,
@@ -1630,6 +1657,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1723,
 				y: 398
+			},
+			flagPos: {
+				x: 1678,
+				y: 353
 			}
 		}, {
 			id: 33,
@@ -1666,6 +1697,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1970,
 				y: 842
+			},
+			flagPos: {
+				x: 1925,
+				y: 797
 			}
 		}, {
 			id: 37,
@@ -1702,6 +1737,10 @@ let ProvinceMap = {
 			flag: {
 				x: 2113,
 				y: 1504
+			},
+			flagPos: {
+				x: 2068,
+				y: 1469
 			}
 		}, {
 			id: 41,
@@ -1738,6 +1777,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1240,
 				y: 1521
+			},
+			flagPos: {
+				x: 1195,
+				y: 1476
 			}
 		}, {
 			id: 45,
@@ -1774,6 +1817,10 @@ let ProvinceMap = {
 			flag: {
 				x: 455,
 				y: 1410
+			},
+			flagPos: {
+				x: 410,
+				y: 1365
 			}
 		}, {
 			id: 49,
@@ -1810,6 +1857,10 @@ let ProvinceMap = {
 			flag: {
 				x: 429,
 				y: 851
+			},
+			flagPos: {
+				x: 384,
+				y: 806
 			}
 		}, {
 			id: 53,
@@ -1846,6 +1897,10 @@ let ProvinceMap = {
 			flag: {
 				x: 507,
 				y: 361
+			},
+			flagPos: {
+				x: 462,
+				y: 316
 			}
 		}, {
 			id: 57,
