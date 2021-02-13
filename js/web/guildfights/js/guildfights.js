@@ -527,7 +527,7 @@ let GildFights = {
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td>${prov[x]['owner']}</td>`);
 
-				let content = `<button class="btn-default" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
+				let content = `<button class="btn-default btn-tight" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
 
 				if(GildFights.Alerts.includes(prov[x]['id'])){
 					content = '&#10004;';
