@@ -431,7 +431,7 @@ let GildFights = {
 
 						progress.push(`<tr id="province-${id}" data-id="${id}">`);
 
-						progress.push(`<td><b style="color:${pColor['main']}">${mP[i]['title']}</b></td>`);
+						progress.push(`<td><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mP[i]['title']}</b></td>`);
 						progress.push(`<td data-field="${id}-${mP[i]['ownerId']}" class="bar-holder">`);
 
 						let cP = mP[i]['conquestProgress'];
@@ -519,15 +519,15 @@ let GildFights = {
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}">`);
-				nextup.push(`<td class="prov-name"${color['main'] ? ' style="user-select:text; color:' + color['main'] + '"' : ''}><b>${prov[x]['title']}</b></td>`);
+				nextup.push(`<td class="prov-name" style="user-select:text;"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
 
 				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
-				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm:ss')}</td>`);
+				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td>${prov[x]['owner']}</td>`);
 
-				let content = `<button class="btn-default" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
+				let content = `<button class="btn-default btn-tight" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
 
 				if(GildFights.Alerts.includes(prov[x]['id'])){
 					content = '&#10004;';
@@ -728,7 +728,10 @@ let GildFights = {
 
 				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
-						$('<td />').text(mD['title']).css({'color':pColor['main']}),
+						$('<td />').append(
+							$('<span />').css({'background-color':pColor['main']}).attr({class: 'province-color'}),
+							$('<b />').text(mD['title']),
+						),
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'bar-holder'

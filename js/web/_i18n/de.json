@@ -188,7 +188,7 @@
     "Boxes.Gildfights.Province": "Provinz",
     "Boxes.Gildfights.SaveMessage.Desc": "Der Alarm für die Provinz __provinceName__ wurde gespeichert!",
     "Boxes.Gildfights.SaveMessage.Title": "Gespeichert!",
-    "Boxes.Gildfights.SetAlert": "Alarm setzten",
+    "Boxes.Gildfights.SetAlert": "Alarm setzen",
     "Boxes.Gildfights.Time": "um",
     "Boxes.Gildfights.Title": "Spieler Übersicht",
     "Boxes.Gildfights.Total": "Gesamt",
@@ -824,7 +824,10 @@
     "Boxes.Investment.Overview.SettingsEntryTime": "zeige Eintragsdatum",
     "Boxes.Investment.Overview.SettingsRestFP": "zeige restliche FP",
     "Boxes.Investment.Overview.SettingsSave": "Speichern",
-    "Boxes.Investment.Overview.RemainingFP": "verbleibende FP"
+    "Boxes.Investment.Overview.RemainingFP": "verbleibende FP",
+    "Boxes.Investment.Overview.SettingsHiddenGB": "zeige ausgeblendete LG",
+    "Boxes.Investment.Overview.HideGB": "LG aus Berechnung und Liste ausblenden.",
+    "Boxes.Investment.HiddenGB": "versteckte LG"
 
 
 }
