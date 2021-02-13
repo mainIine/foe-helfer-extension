@@ -80,15 +80,25 @@
 	background-color: var(--background-table-success);
 }
 
+/*************************************************************************************************************/
+
 #LiveGildFighting {
-	left: calc(50vw - 325px);
+	left: calc(50vw - 250px);
 	top: calc(50vw - 250px);
-	width: 750px;
+	width: 500px;
 	height: 500px;
 }
 
 #LiveGildFightingBody {
 	overflow: auto;
+	font-size: 90%;
+}
+
+#LiveGildFightingBody .province-color {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	display: inline-block;
 }
 
 #LiveGildFightingBody .tabs ul li a span {
