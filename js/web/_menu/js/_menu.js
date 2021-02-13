@@ -55,7 +55,7 @@ let _menu = {
 		'fpCollector',
 		'gildfight',
 		'investment',
-		'alerts',
+		'alerts'
 		// 'unitsGex',
 	],
 
@@ -63,6 +63,7 @@ let _menu = {
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
+	 * @param selMenu
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
@@ -82,15 +83,16 @@ let _menu = {
 
 
 	/**
-	 * Versteckt ein Button. Der HUD Slider muss dafür schon befüllt sein
+	 * Hides a button. The HUD slider must already be filled for this.
 	 *
 	 * @param buttonId
 	 * @constructor
 	 */
 	HideButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
+		{
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
-
+		}
 	},
 
 
@@ -99,7 +101,9 @@ let _menu = {
 	 */
 	ShowButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
+		{
 			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
+		}
 	},
 
 
@@ -626,6 +630,7 @@ let _menu = {
 		return btn;
     },
 
+
 	/**
 	 * FP Collector box
 	 */
@@ -646,16 +651,17 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * Shows the box for managing all alerts
 	 *
 	 * @returns {*|jQuery}
 	 */
 	alerts_Btn: () => {
-		let btn = $('<div />').attr({ 'id': 'Alerts-Btn', 'data-slug': 'Alerts' }).addClass('hud-btn');
+		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'Alerts-Btn');
+		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'alerts-Btn');
 
 		let btn_sp = $('<span />');
 
@@ -667,6 +673,7 @@ let _menu = {
 
 		return btn;
 	},
+
 
 	/**
 	 * Shows the box for gex units stats
@@ -715,7 +722,8 @@ let _menu = {
 
 		return btn_BG;
 	},
-	
+
+
 	/**
 	 * InfoBox für Investitions Historie
 	 *

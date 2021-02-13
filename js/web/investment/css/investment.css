@@ -100,6 +100,15 @@
 	font-weight: bold;
 	text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
+
+#InvestmentBody table tbody tr.hide {
+	display: none;
+}
+
+#InvestmentBody table tbody tr.ishidden{
+	opacity: 0.4;
+}
+
 #InvestmentBody table tbody tr:hover div.diff {
 	opacity:1;
 }
@@ -119,4 +128,25 @@
 
 #InvestmentBody table tbody td img.rank {
 	width: 22px;
+}
+#InvestmentBody table tbody td .hideicon {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	display: block;
+}
+#InvestmentBody table tbody td .hideicon.ishidden-off {
+	background: url(../images/visible.png);
+}
+
+#InvestmentBody table tbody td .hideicon.ishidden-on {
+	background: url(../images/unvisible.png);
+}
+
+#InvestmentBody #hidden-bar.hide{
+	display:none;
+}
+#InvestmentBody #hidden-bar img{
+	width: 16px;
+	height: 16px;
 }
