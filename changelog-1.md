@@ -6,6 +6,9 @@
 - Extension:
     - viele Übersetzungen/Korrekturen von [i18n.foe-helper.com](https://i18n.foe-helper.com) integriert [#1849](https://github.com/dsiekiera/foe-helfer-extension/issues/1849)
 
+- Ivestitionen:
+    - es lassen sich ab sofort unrentable LBs ausblenden und aus der Rechnung entfernen
+
 **BugFix**
 - Alerts:
     - [#1841](https://github.com/dsiekiera/foe-helfer-extension/issues/1841) das Icon vom Alarm Modul lies sich nicht verschieben oder verschwand einfach

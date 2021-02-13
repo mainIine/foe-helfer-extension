@@ -7,6 +7,9 @@
 - Extension:
     - many translations/corrections from [i18n.foe-helper.com](https://i18n.foe-helper.com) integrated [#1849](https://github.com/dsiekiera/foe-helfer-extension/issues/1849)
 
+- Investments:
+    - From now on, unprofitable LBs can be hidden and removed from the calculation
+
 **BugFix**
 - Alerts:
     - [#1841](https://github.com/dsiekiera/foe-helfer-extension/issues/1841) the icon of the alert module could not be moved or just disappeared
