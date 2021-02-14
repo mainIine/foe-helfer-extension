@@ -55,7 +55,7 @@ let _menu = {
 		'fpCollector',
 		'gildfight',
 		'investment',
-		'alerts',
+		'alerts'
 		// 'unitsGex',
 	],
 
@@ -630,6 +630,7 @@ let _menu = {
 		return btn;
     },
 
+
 	/**
 	 * FP Collector box
 	 */
@@ -650,16 +651,17 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * Shows the box for managing all alerts
 	 *
 	 * @returns {*|jQuery}
 	 */
 	alerts_Btn: () => {
-		let btn = $('<div />').attr({ 'id': 'Alerts-Btn', 'data-slug': 'Alerts' }).addClass('hud-btn');
+		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'Alerts-Btn');
+		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'alerts-Btn');
 
 		let btn_sp = $('<span />');
 
@@ -671,6 +673,7 @@ let _menu = {
 
 		return btn;
 	},
+
 
 	/**
 	 * Shows the box for gex units stats
@@ -719,7 +722,8 @@ let _menu = {
 
 		return btn_BG;
 	},
-	
+
+
 	/**
 	 * InfoBox für Investitions Historie
 	 *
