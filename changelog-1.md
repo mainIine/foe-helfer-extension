@@ -1,5 +1,23 @@
 ## Changelog - Extension
 
+##### 2.5.6.1
+
+**Update**
+- Extension:
+    - viele Übersetzungen/Korrekturen von [i18n.foe-helper.com](https://i18n.foe-helper.com) integriert [#1849](https://github.com/dsiekiera/foe-helfer-extension/issues/1849)
+
+- Ivestitionen:
+    - es lassen sich ab sofort unrentable LBs ausblenden und aus der Rechnung entfernen
+
+**BugFix**
+- Alerts:
+    - [#1841](https://github.com/dsiekiera/foe-helfer-extension/issues/1841) das Icon vom Alarm Modul lies sich nicht verschieben oder verschwand einfach
+
+- Martplatzfilter:
+    - [#1847](https://github.com/dsiekiera/foe-helfer-extension/issues/1847) die Standardfilter waren verschwunden und die Box beim Start leer
+
+---
+
 ##### 2.5.6.0
 **Neu**
 - Alerts (Alarme):
