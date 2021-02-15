@@ -216,7 +216,7 @@ let Investment = {
             h.push('<td class="case-sensitive" data-text="' + contribution['gbname'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
             h.push(`<td class="is-number text-center" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
             if (showEntryDate) {
-                h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHmm')}">${moment(contribution['date']).format('DD.MM.-H:mm')}</td>`);
+                h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format('DD.MM.-HH:mm')}</td>`);
             }
             h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
             if (DiffText !== 0)
@@ -300,7 +300,7 @@ let Investment = {
         let c = [],
             InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
             showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
-            showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
+            showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0,
             showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
 
         c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);

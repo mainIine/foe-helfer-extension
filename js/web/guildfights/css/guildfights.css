@@ -80,15 +80,46 @@
 	background-color: var(--background-table-success);
 }
 
+/*************************************************************************************************************/
+
 #LiveGildFighting {
-	left: calc(50vw - 325px);
+	left: calc(50vw - 250px);
 	top: calc(50vw - 250px);
-	width: 750px;
+	width: 500px;
 	height: 500px;
 }
 
 #LiveGildFightingBody {
 	overflow: auto;
+	font-size: 90%;
+}
+
+#LiveGildFightingBody .province-color {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	box-shadow: 0 1px 1px var(--black-65);
+	border-radius: 50%;
+}
+
+/* A */
+#province-0 .province-color, #province-4 .province-color, #province-5 .province-color, #province-12 .province-color, #province-13 .province-color, #province-14 .province-color, #province-15 .province-color, #province-28 .province-color, #province-29 .province-color, #province-30 .province-color, #province-31 .province-color, #province-32 .province-color, #province-33 .province-color, #province-34 .province-color, #province-35 .province-color, #timer-0 .province-color, #timer-4 .province-color, #timer-5 .province-color, #timer-12 .province-color, #timer-13 .province-color, #timer-14 .province-color, #timer-15 .province-color, #timer-28 .province-color, #timer-29 .province-color, #timer-30 .province-color, #timer-31 .province-color, #timer-32 .province-color, #timer-33 .province-color, #timer-34 .province-color, #timer-35 .province-color {
+	border-radius: 2px 100% 2px 2px;
+}
+
+/* B */
+#province-1 .province-color, #province-6 .province-color, #province-7 .province-color, #province-16 .province-color, #province-17 .province-color, #province-18 .province-color, #province-19 .province-color, #province-36 .province-color, #province-37 .province-color, #province-38 .province-color, #province-39 .province-color, #province-40 .province-color, #province-41 .province-color, #province-42 .province-color, #province-43 .province-color, #timer-1 .province-color, #timer-6 .province-color, #timer-7 .province-color, #timer-16 .province-color, #timer-17 .province-color, #timer-18 .province-color, #timer-19 .province-color, #timer-36 .province-color, #timer-37 .province-color, #timer-38 .province-color, #timer-39 .province-color, #timer-40 .province-color, #timer-41 .province-color, #timer-42 .province-color, #timer-43 .province-color {
+	border-radius: 2px 2px 100% 2px;
+}
+
+/* C */
+#province-2 .province-color, #province-8 .province-color, #province-9 .province-color, #province-20 .province-color, #province-21 .province-color, #province-22 .province-color, #province-23 .province-color, #province-44 .province-color, #province-45 .province-color, #province-46 .province-color, #province-47 .province-color, #province-48 .province-color, #province-49 .province-color, #province-50 .province-color, #province-51 .province-color, #timer-2 .province-color, #timer-8 .province-color, #timer-9 .province-color, #timer-20 .province-color, #timer-21 .province-color, #timer-22 .province-color, #timer-23 .province-color, #timer-44 .province-color, #timer-45 .province-color, #timer-46 .province-color, #timer-47 .province-color, #timer-48 .province-color, #timer-49 .province-color, #timer-50 .province-color, #timer-51 .province-color {
+	border-radius: 2px 2px 2px 100%;
+}
+
+/* D */
+#province-3 .province-color, #province-10 .province-color, #province-11 .province-color, #province-24 .province-color, #province-25 .province-color, #province-26 .province-color, #province-27 .province-color, #province-52 .province-color, #province-53 .province-color, #province-54 .province-color, #province-55 .province-color, #province-56 .province-color, #province-57 .province-color, #province-58 .province-color, #province-59 .province-color, #timer-3 .province-color, #timer-10 .province-color, #timer-11 .province-color, #timer-24 .province-color, #timer-25 .province-color, #timer-26 .province-color, #timer-27 .province-color, #timer-52 .province-color, #timer-53 .province-color, #timer-54 .province-color, #timer-55 .province-color, #timer-56 .province-color, #timer-57 .province-color, #timer-58 .province-color, #timer-59 .province-color {
+	border-radius: 100% 2px 2px 2px;
 }
 
 #LiveGildFightingBody .tabs ul li a span {
