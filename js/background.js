@@ -418,6 +418,12 @@ alertsDB.version(1).stores({
 	 */
 	async function handleWebpageRequests(request, sender) {
 		"use strict";
+		if (!sender.origin) sender.origin = sender.url;
+		// remove sender.id if it was just a forwarded message, so it can't run into private API's
+		if (typeof request === 'object' && request.type === 'packed') {
+			delete sender.id;
+			request = request.data;
+		}
 		if (typeof request !== 'object') return APIerror('expecting an object as message');
 		if (typeof request.type !== 'string') return APIerror('expecting an "type": string');
 

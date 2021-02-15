@@ -442,7 +442,7 @@ p {
 	background-image: url('../images/menu/kits.png');
 }
 
-#Alerts-Btn span {
+#alerts-Btn span {
 	background-image: url('../images/menu/alerts.png');
 }
 
@@ -1411,4 +1411,18 @@ SettingsBox */
 .settingsbox-wrapper hr {
 	border-top: 1px solid var(--text-dark);
 	border-bottom: 1px solid var(--text-medium2);
+}
+
+
+
+
+.popup-body {
+	background: url('../images/hud/box-bg.png') center center repeat;
+	z-index: 100;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: var(--text-normal);
+	text-shadow: 0 1px 1px var(--black-65);
+	user-select: none;
 }
