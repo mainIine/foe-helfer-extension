@@ -76,19 +76,22 @@ let Investment = {
 
         let arc = 1 + (MainParser.ArkBonus / 100);
 
-        for (let x = 0; x < data.length; x++) {
+        for (let x = 0; x < data.length; x++)
+        {
             const contribution = data[x];
 
             Investment.Einsatz += contribution['forge_points'];
 
-            if (undefined !== contribution['reward']) {
+            if (undefined !== contribution['reward'])
+            {
                 let CurrentErtrag = MainParser.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
                 
-                if (contribution['forge_points'] >= contribution['max_progress'] - contribution['current_progress']) {
+                if (contribution['forge_points'] >= contribution['max_progress'] - contribution['current_progress'])
+                {
                     Investment.Ertrag += CurrentErtrag;
                 }
 
-                // Platz kann nicht sicher sein => Nur maximal Einzahlung ansetzen
+                // Place cannot be secure => Only apply maximum deposit
                 else {
                     Investment.Ertrag += Math.min(contribution['forge_points'], CurrentErtrag);
                 }
@@ -104,13 +107,15 @@ let Investment = {
 
         b.push(`<div class="total-wrapper dark-bg">`);
 
-        if (Investment.Data !== null && Investment.Data.length > 0){
+        if (Investment.Data !== null && Investment.Data.length > 0)
+        {
             b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
             b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong></div>`);
         }
         
         b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
         b.push(`<div id="hidden-bar" class="hide text-center"><img src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
+
         b.push(`</div>`);
 
         b.push(`<div id="history-wrapper"></div>`);
@@ -133,11 +138,15 @@ let Investment = {
             '<th class="is-number text-center" data-type="overview-group"></th>');
 
         if (showEntryDate)
-            h.push('<th class="is-number" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+        {
+			h.push('<th class="is-number" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+		}
+
 
         h.push('<th class="is-number" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Progress') + '</th>');
 
-        if (showRestFp) {
+        if (showRestFp)
+        {
             h.push('<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
         }
 
@@ -163,7 +172,8 @@ let Investment = {
             let RealProfit = Profit - contribution['currentFp'];
             let RealProfitClass = contribution['currentFp'] >= contribution['max_progress'] - contribution['current_progress'] ? 'success' : 'error';
 
-            if (contribution['currentFp'] < contribution['max_progress'] - contribution['current_progress']) {
+            if (contribution['currentFp'] < contribution['max_progress'] - contribution['current_progress'])
+            {
                 RealProfitClass = 'warning';
             }
             else if(RealProfit < 0){
@@ -181,8 +191,6 @@ let Investment = {
             let isHidden = typeof contribution['ishidden'] !== 'undefined' ? contribution['ishidden'] : 0;
             let hiddenClass = '';            
             let history = {};
-
-
 
             if(isHidden)
             {
@@ -216,15 +224,22 @@ let Investment = {
             h.push('<td class="case-sensitive" data-text="' + contribution['gbname'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
             h.push(`<td class="is-number text-center" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
             if (showEntryDate) {
-                h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHmm')}">${moment(contribution['date']).format('DD.MM.-H:mm')}</td>`);
+                h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format('DD.MM.-HH:mm')}</td>`);
             }
             h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
+
             if (DiffText !== 0)
-                h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
-            h.push(`</td>`);            
-            if (showRestFp) {
+            {
+				h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+			}
+
+            h.push(`</td>`);
+
+            if (showRestFp)
+            {
                 h.push(`<td class="is-number text-center" data-number="${restFp}">${restFp}</td>`);
             }
+
             h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
             h.push(`<td class="is-number text-center gbinvestment" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
             h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td></tr>`);
@@ -273,9 +288,9 @@ let Investment = {
                 let gbstate = $(otd).attr('data-number');
                 let HiddenProfit = parseInt($(otr).find('.gbprofit').attr('data-number'));
                 let HiddenInvestment = parseInt($(otr).find('.gbinvestment').attr('data-number'));
-                
-                gbstate = gbstate == '1' ? 0 : 1;
-                if(gbstate == 0){
+
+                if(gbstate !== '1')
+                {
                     Investment.HiddenProfit -= HiddenProfit;
                     Investment.HiddenInvestment -= HiddenInvestment;
                 }
@@ -288,9 +303,8 @@ let Investment = {
                 $(otd).attr('data-number', gbstate);
                 $(this).toggleClass('ishidden-on ishidden-off');
                 
-                Investment.SwitchGBVisibility(id,gbstate);
+                Investment.SwitchGBVisibility(id, gbstate);
                 Investment.showFPOverview();
-
             });
         });
     },
@@ -300,7 +314,7 @@ let Investment = {
         let c = [],
             InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
             showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
-            showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
+            showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0,
             showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
 
         c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
@@ -549,7 +563,8 @@ let Investment = {
             return ele !== value;
         });
     },
-    
+
+
     showFPOverview: () => {
 
         Investment.CalcFPs();
@@ -558,7 +573,9 @@ let Investment = {
         let Gewinn = Ertrag - Einsatz;
         
         let hiddenElements = $('#InvestmentTable tr.ishidden').length;
-        if(hiddenElements > 0){
+
+        if(hiddenElements > 0)
+        {
             $('#hidden-bar').removeClass('hide');
             $('#hidden-bar .hidden-elements').html(hiddenElements);
         }
@@ -584,7 +601,8 @@ let Investment = {
             duration: 750
         });
     },
-    
+
+
 	/**
 	 * If wanted, send to server
 	 */
