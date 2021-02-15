@@ -96,6 +96,7 @@
     "Boxes.Calculator.MaxLevel": "Nivel max",
     "Boxes.Calculator.Meds": "Medallas",
     "Boxes.Calculator.Profit": "Ganancia",
+    "Boxes.Calculator.Settings.Save": "Guardar",
     "Boxes.Calculator.Step": "Nivel ",
     "Boxes.Calculator.TTForderCosts": "Costes = __nettoreward__<small>(premio neto)</small> * __forderfactor__%<small>(Inversores amistosos)</small> = __costs__",
     "Boxes.Calculator.TTForderFPStockLow": "ATENCION: El stock de FP es demasiado bajo<br>Sólo tienes __fpstock__ de __costs__FP<br>Esos son __tooless__FP de menos",
