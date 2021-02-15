@@ -250,6 +250,7 @@
     "Boxes.Investment.Overview.HideGB": "Hide GB from calculation and list.",
     "Boxes.Investment.Overview.Invested": "Invested",
     "Boxes.Investment.Overview.InvestedDesc": "How many FP were invested",
+    "Boxes.Investment.Overview.LastUpdate": "updated",
     "Boxes.Investment.Overview.Player": "Player",
     "Boxes.Investment.Overview.Profit": "Profit",
     "Boxes.Investment.Overview.ProfitDesc": "profit achieved, yellow -> Rank is not safe, red/green -> Loss/Profit safe",
@@ -664,6 +665,8 @@
     "Menu.HiddenRewards.Title": "Incidents",
     "Menu.Info.Desc": "Displays events that are happening in the \"background\".<br><em>Fills up with info…  </em>",
     "Menu.Info.Title": "Info Box",
+    "Menu.Investment.Desc": "???",
+    "Menu.Investment.Title": "???",
     "Menu.Kits.Desc": "Displays all your in-stock building Sets, Upgrades and Selection Kits.",
     "Menu.Kits.Title": "Sets, Upgrades & Kits",
     "Menu.Market.Desc": "Displays and Filters all trades that are in the Market",
@@ -774,8 +777,8 @@
     "Settings.NotificationPosition.ToastTestHeader": "Preview notification",
     "Settings.NotificationsPosition.Desc": "Where do you want the notifications to appear on your screen?",
     "Settings.NotificationsPosition.Title": "Notify position",
-	"Settings.NotificationsStack.Desc": "How many info messages do you want to see at once? The default is a maximum of 4.",
-	"Settings.NotificationsStack.Title": "Notify stacks",
+    "Settings.NotificationsStack.Desc": "How many info messages do you want to see at once? The default is a maximum of 4.",
+    "Settings.NotificationsStack.Title": "Notify stacks",
     "Settings.ResetBoxPositions.Button": "Delete!",
     "Settings.ResetBoxPositions.Desc": "Should all box coordinates be reset?",
     "Settings.ResetBoxPositions.Title": "Box Coordinates",
@@ -833,6 +836,5 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English",
-    "Boxes.Investment.Overview.LastUpdate": "updated"
+    "_Language": "English"
 }
