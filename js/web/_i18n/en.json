@@ -831,5 +831,6 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English"
+    "_Language": "English",
+    "Boxes.Investment.Overview.LastUpdate": "updated"
 }
