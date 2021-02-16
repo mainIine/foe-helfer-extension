@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              16.02.21, 23:02 Uhr
+ * zuletzt bearbeitet:       16.02.21, 22:35 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -86,21 +86,18 @@ let Investment = {
         if (AllInvestments === undefined)
             return;
 
-        for (let i in AllInvestments){
-            
-            if(AllInvestments.hasOwnProperty(i)){
-                
-                let ishidden = (typeof AllInvestments[i].ishidden != 'undefined') ? AllInvestments[i].ishidden : 0;
-                
-                isNotSafe = AllInvestments[i].currentFp < AllInvestments[i].max_progress - AllInvestments[i].current_progress ? true : false;
-                removeUnsafe = (isNotSafe && removeUnsafeCalc) ? true : false;
+        for (let i in AllInvestments)
+        {
+            if(AllInvestments.hasOwnProperty(i))
+            {
+                let ishidden = (typeof AllInvestments[i].ishidden != 'undefined') ? AllInvestments[i].ishidden : 0,
+                    isNotSafe = AllInvestments[i].currentFp < AllInvestments[i].max_progress - AllInvestments[i].current_progress,
+                    removeUnsafe = !!(isNotSafe && removeUnsafeCalc);
 
                 countHiddenElements += ishidden ? 1 : 0;
                 sumEinsatz += ishidden ? 0 : AllInvestments[i].currentFp;
                 sumErtrag += ishidden || removeUnsafe ? 0 : AllInvestments[i].profit - AllInvestments[i].currentFp;
-
             }
-
         }
 
         Investment.Ertrag = sumErtrag;
@@ -108,7 +105,6 @@ let Investment = {
         Investment.HiddenElements = countHiddenElements;
 
         Investment.showFPOverview(easy_animate_start_values);
-
     },
 
 
@@ -249,9 +245,9 @@ let Investment = {
 
         h.push('</tbody></table>');
         
-        if (lastupdate != 0) {
-
-            let uptodateClass='uptodate';
+        if (lastupdate)
+        {
+            let uptodateClass = 'uptodate';
             
             let date = moment(lastupdate).unix();
             let actdate = moment(MainParser.getCurrentDate()).unix();
@@ -259,7 +255,8 @@ let Investment = {
             let updrequTitle = i18n('Boxes.Investment.UpToDate');
 
             // set notification class if last update ist older then 30 minutes
-            if(datediff >= 1800){
+            if(datediff >= 1800)
+            {
                 uptodateClass='updaterequired';
                 updrequTitle = i18n('Boxes.Investment.UpdateRequired');
             }
@@ -272,11 +269,15 @@ let Investment = {
             $('.sortable-table').tableSorter();
 
             $('.sortable-table tbody tr').on('click', function () {
-                if ($(this).next("tr.detailview").length) {
+
+                if ($(this).next("tr.detailview").length)
+                {
                     $(this).next("tr.detailview").remove();
                     $(this).removeClass('open');
-                } else {
-                    if (typeof ($(this).attr("data-detail")) !== 'undefined' && $(this).attr("data-detail") !== '{}') {
+                }
+                else {
+                    if (typeof ($(this).attr("data-detail")) !== 'undefined' && $(this).attr("data-detail") !== '{}')
+                    {
                         $(this).addClass('open');
                         let id = $(this).attr("id");
                         let detail = JSON.parse($(this).attr("data-detail"));
@@ -284,7 +285,8 @@ let Investment = {
                         let d = [];
                         d.push('<tr class="detailview dark-bg"><td colspan="'+$(this).find("td").length+'"><table>');
 
-                        for (let i in detail) {
+                        for (let i in detail)
+                        {
                             if (detail.hasOwnProperty(i)) {
                                 let restFP = (max_progress * 1 - detail[i].current_progress * 1)
                                 d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - HH:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
@@ -332,7 +334,7 @@ let Investment = {
             InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
             showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
             showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0,
-            showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
+            showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0,
             removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
         c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
@@ -450,7 +452,7 @@ let Investment = {
                     .first();
 
                 // Remove GreatBuilding which has a new reinvestment and wasn't updated before
-                if (CurrentGB !== undefined && CurrentGB['level'] != GBLevel){
+                if (CurrentGB !== undefined && CurrentGB['level'] !== GBLevel){
                     await IndexDB.db.investhistory
                     .where({
                         playerId: PlayerID,
@@ -498,7 +500,7 @@ let Investment = {
                 if (CurrentGB === undefined || GbhasUpdate)
                 {
                     UpdatedList = true;
-                    Investment.RefreshInvestmentDB({
+                    await Investment.RefreshInvestmentDB({
                         playerId: PlayerID,
                         playerName: PlayerName,
                         Avatar: Avatar,
@@ -614,7 +616,7 @@ let Investment = {
             $('#hidden-bar').addClass('hide');
         }
         
-        let investstart = (startvalues.investsto != Einsatz) ? startvalues.investsto : 0;
+        let investstart = (startvalues.investsto !== Einsatz) ? startvalues.investsto : 0;
         
         $('.invest-storage').easy_number_animate({
             start_value: investstart,
@@ -622,7 +624,7 @@ let Investment = {
             duration: 750
         });
         
-        let rewardstart = (startvalues.rewardsto != Ertrag) ? startvalues.rewardsto : 0;
+        let rewardstart = (startvalues.rewardsto !== Ertrag) ? startvalues.rewardsto : 0;
         
         $('.reward-storage').easy_number_animate({
             start_value: rewardstart,
@@ -631,7 +633,7 @@ let Investment = {
         });
         
         let sumTotal = (StrategyPoints.AvailableFP + Ertrag + Einsatz);
-        let totalstart = (startvalues.totalsto != sumTotal) ? startvalues.totalsto : 0;
+        let totalstart = (startvalues.totalsto !== sumTotal) ? startvalues.totalsto : 0;
         
         $('.total-storage-invest').easy_number_animate({
             start_value: totalstart,
