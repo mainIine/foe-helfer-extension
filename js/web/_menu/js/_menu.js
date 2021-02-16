@@ -362,7 +362,14 @@ let _menu = {
 		let btn_City = $('<span />');
 
 		btn_City.on('click', function () {
-			CityMap.init();
+			if (LastMapPlayerID === ExtPlayerID) {
+				CityMap.init();
+			}
+			else {
+				let Player = PlayerDict[LastMapPlayerID];
+				let PlayerName = (Player ? Player['PlayerName'] : '???');
+				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
+            }
 		});
 
 		btn_CityBG.append(btn_City);

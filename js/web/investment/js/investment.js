@@ -31,8 +31,7 @@ let Investment = {
 	Data: null,
     Einsatz: 0,
     Ertrag: 0,
-    HiddenProfit: 0,
-    HiddenInvestment: 0,
+    HiddenElements: 0,
 
 
     BuildBox: (event)=> {
@@ -63,37 +62,48 @@ let Investment = {
      *
      * @constructor
      */
-    CalcFPs: ()=> {
+    CalcFPs: async ()=> {
 
-		if (Investment.Data === null || (Investment.Data !== null && Investment.Data.length <= 0)){
-			return;
-		}
+        let sumEinsatz = 0;
+        let sumErtrag = 0;
+        let countHiddenElements = 0;
 
-		let data = Investment.Data;
+        // save previous values for number animation 
+        let easy_animate_start_values = {
+            investsto: Investment.Einsatz,
+            rewardsto: Investment.Ertrag,
+            totalsto: (StrategyPoints.AvailableFP + Investment.Ertrag + Investment.Einsatz)
+        }
 
         Investment.Einsatz = 0;
         Investment.Ertrag = 0;
+        Investment.HiddenElements = 0;
+        
+        let AllInvestments = await IndexDB.db.investhistory.reverse().toArray();
 
-        let arc = 1 + (MainParser.ArkBonus / 100);
+        if (AllInvestments === undefined)
+            return;
 
-        for (let x = 0; x < data.length; x++) {
-            const contribution = data[x];
-
-            Investment.Einsatz += contribution['forge_points'];
-
-            if (undefined !== contribution['reward']) {
-                let CurrentErtrag = MainParser.round(contribution['reward']['strategy_point_amount'] !== undefined ? contribution['reward']['strategy_point_amount'] * arc : 0);
+        for (let i in AllInvestments){
+            
+            if(AllInvestments.hasOwnProperty(i)){
                 
-                if (contribution['forge_points'] >= contribution['max_progress'] - contribution['current_progress']) {
-                    Investment.Ertrag += CurrentErtrag;
-                }
+                let ishidden = (typeof AllInvestments[i].ishidden != 'undefined') ? AllInvestments[i].ishidden : 0;
+                
+                countHiddenElements += ishidden ? 1 : 0;
+                sumEinsatz += ishidden ? 0 : AllInvestments[i].currentFp;
+                sumErtrag += ishidden ? 0 : AllInvestments[i].profit - AllInvestments[i].currentFp;
 
-                // Platz kann nicht sicher sein => Nur maximal Einzahlung ansetzen
-                else {
-                    Investment.Ertrag += Math.min(contribution['forge_points'], CurrentErtrag);
-                }
             }
+
         }
+
+        Investment.Ertrag = sumErtrag;
+        Investment.Einsatz = sumEinsatz;
+        Investment.HiddenElements = countHiddenElements;
+
+        Investment.showFPOverview(easy_animate_start_values);
+
     },
 
 
@@ -104,19 +114,18 @@ let Investment = {
 
         b.push(`<div class="total-wrapper dark-bg">`);
 
-        if (Investment.Data !== null && Investment.Data.length > 0){
-            b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
-            b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong></div>`);
-        }
-        
+        b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
+        b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong></div>`);
         b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
         b.push(`<div id="hidden-bar" class="hide text-center"><img src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
+
         b.push(`</div>`);
 
         b.push(`<div id="history-wrapper"></div>`);
 
-        $('#InvestmentBody').html(b.join(''));
-
+        $('#InvestmentBody').html(b.join('')).promise().done(function(){
+            Investment.CalcFPs();
+        });
 
         // Table for history
 
@@ -124,6 +133,7 @@ let Investment = {
         let showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0;
         let showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
         let showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
+        let lastupdate = (InvestmentSettings && InvestmentSettings.lastupdate !== undefined) ? InvestmentSettings.lastupdate : 0;
 
         h.push('<table id="InvestmentTable" class="foe-table sortable-table">');
         h.push('<thead>' +
@@ -133,11 +143,15 @@ let Investment = {
             '<th class="is-number text-center" data-type="overview-group"></th>');
 
         if (showEntryDate)
-            h.push('<th class="is-number" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+        {
+			h.push('<th class="is-number" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+		}
+
 
         h.push('<th class="is-number" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Progress') + '</th>');
 
-        if (showRestFp) {
+        if (showRestFp)
+        {
             h.push('<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
         }
 
@@ -153,8 +167,6 @@ let Investment = {
             return;
 
         let data = CurrentGB;
-        Investment.HiddenProfit = 0;
-        Investment.HiddenInvestment = 0;
 
         for (let x = 0; x < data.length; x++)
         {
@@ -163,7 +175,8 @@ let Investment = {
             let RealProfit = Profit - contribution['currentFp'];
             let RealProfitClass = contribution['currentFp'] >= contribution['max_progress'] - contribution['current_progress'] ? 'success' : 'error';
 
-            if (contribution['currentFp'] < contribution['max_progress'] - contribution['current_progress']) {
+            if (contribution['currentFp'] < contribution['max_progress'] - contribution['current_progress'])
+            {
                 RealProfitClass = 'warning';
             }
             else if(RealProfit < 0){
@@ -181,14 +194,6 @@ let Investment = {
             let isHidden = typeof contribution['ishidden'] !== 'undefined' ? contribution['ishidden'] : 0;
             let hiddenClass = '';            
             let history = {};
-
-
-
-            if(isHidden)
-            {
-                Investment.HiddenProfit += RealProfit;
-                Investment.HiddenInvestment += contribution['currentFp'];
-            }
 
             if (contribution['fphistory'] !== '[]')
             {
@@ -219,22 +224,31 @@ let Investment = {
                 h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format('DD.MM.-HH:mm')}</td>`);
             }
             h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
+
             if (DiffText !== 0)
-                h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
-            h.push(`</td>`);            
-            if (showRestFp) {
+            {
+				h.push(`<div class="diff ${DiffClass}">${DiffText}</div></td>`);
+			}
+
+            h.push(`</td>`);
+
+            if (showRestFp)
+            {
                 h.push(`<td class="is-number text-center" data-number="${restFp}">${restFp}</td>`);
             }
+
             h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
             h.push(`<td class="is-number text-center gbinvestment" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
             h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td></tr>`);
         }
 
         h.push('</tbody></table>');
+        
+        if(lastupdate != 0){
+            h.push(`<div class="last-update-message">${i18n('Boxes.Investment.Overview.LastUpdate')}: ${moment(lastupdate).format('DD.MM.YY-HH:mm')}</div>`);
+        }
 
         $('#history-wrapper').html(h.join('')).promise().done(function(){
-
-            Investment.showFPOverview();
 
             $('.sortable-table').tableSorter();
 
@@ -254,7 +268,7 @@ let Investment = {
                         for (let i in detail) {
                             if (detail.hasOwnProperty(i)) {
                                 let restFP = (max_progress * 1 - detail[i].current_progress * 1)
-                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - H:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
+                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - HH:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
                             }
                         }
 
@@ -267,30 +281,22 @@ let Investment = {
             $("#history-wrapper .hideicon").on('click',function(e){
 
                 e.stopPropagation();
+                
                 let otr = $(this).parents("tr");
                 let otd = $(this).parent();
                 let id = $(otr).attr('data-id');
-                let gbstate = $(otd).attr('data-number');
-                let HiddenProfit = parseInt($(otr).find('.gbprofit').attr('data-number'));
-                let HiddenInvestment = parseInt($(otr).find('.gbinvestment').attr('data-number'));
-                
-                gbstate = gbstate == '1' ? 0 : 1;
-                if(gbstate == 0){
-                    Investment.HiddenProfit -= HiddenProfit;
-                    Investment.HiddenInvestment -= HiddenInvestment;
-                }
-                else {
-                    Investment.HiddenProfit += HiddenProfit;
-                    Investment.HiddenInvestment += HiddenInvestment;
-                }
+                let gbstate = parseInt($(otd).attr('data-number'),10);
 
+                //reverse state 
+                gbstate = (gbstate) ? 0 : 1;
+                
                 $(otr).toggleClass('ishidden');
                 $(otd).attr('data-number', gbstate);
-                $(this).toggleClass('ishidden-on ishidden-off');
+                $(this).toggleClass('ishidden-on ishidden-off');                
                 
-                Investment.SwitchGBVisibility(id,gbstate);
-                Investment.showFPOverview();
-
+                Investment.SwitchGBVisibility(id, gbstate);
+                
+                Investment.CalcFPs();
             });
         });
     },
@@ -501,6 +507,13 @@ let Investment = {
         if (UpdatedList && $('#Investment').length !== 0) {
             Investment.Show();
         }
+
+        // Set Update Date in local Storage
+        if(FullSync){
+            let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
+            InvestmentSettings['lastupdate'] = MainParser.getCurrentDate();
+            localStorage.setItem('InvestmentSettings', JSON.stringify(InvestmentSettings));
+        }
     },
 
 
@@ -515,24 +528,26 @@ let Investment = {
 
 
     SettingsSaveValues: () => {
-        let value = {};
+        
+        let value = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
 
-        value.showEntryDate = 0;
-        value.showRestFp = 0;
+        value['showEntryDate'] = 0;
+        value['showRestFp'] = 0;
+        value['showHiddenGb'] = 0;
 
         if ($("#showentrydate").is(':checked'))
         {
-            value.showEntryDate = 1;
+            value['showEntryDate'] = 1;
         }
         
         if ($("#showrestfp").is(':checked'))
         {
-            value.showRestFp = 1;
+            value['showRestFp'] = 1;
         }
 
         if ($("#showhiddengb").is(':checked'))
         {
-            value.showHiddenGb = 1;
+            value['showHiddenGb'] = 1;
         }
 
         localStorage.setItem('InvestmentSettings', JSON.stringify(value));
@@ -549,42 +564,50 @@ let Investment = {
             return ele !== value;
         });
     },
-    
-    showFPOverview: () => {
 
-        Investment.CalcFPs();
-        let Ertrag = Investment.Ertrag - (Investment.HiddenInvestment + Investment.HiddenProfit);
-        let Einsatz = Investment.Einsatz - Investment.HiddenInvestment;
-        let Gewinn = Ertrag - Einsatz;
-        
-        let hiddenElements = $('#InvestmentTable tr.ishidden').length;
-        if(hiddenElements > 0){
+
+    showFPOverview: (startvalues) => {
+
+        let Ertrag = Investment.Ertrag;
+        let Einsatz = Investment.Einsatz;
+        let hiddenElements = Investment.HiddenElements;
+
+        if(hiddenElements > 0)
+        {
             $('#hidden-bar').removeClass('hide');
             $('#hidden-bar .hidden-elements').html(hiddenElements);
         }
         else {
             $('#hidden-bar').addClass('hide');
         }
-
+        
+        let investstart = (startvalues.investsto != Einsatz) ? startvalues.investsto : 0;
+        
         $('.invest-storage').easy_number_animate({
-            start_value: 0,
+            start_value: investstart,
             end_value: Einsatz,
             duration: 750
         });
-
+        
+        let rewardstart = (startvalues.rewardsto != Ertrag) ? startvalues.rewardsto : 0;
+        
         $('.reward-storage').easy_number_animate({
-            start_value: 0,
-            end_value: Gewinn,
+            start_value: rewardstart,
+            end_value: Ertrag,
             duration: 750
         });
-
+        
+        let sumTotal = (StrategyPoints.AvailableFP + Ertrag + Einsatz);
+        let totalstart = (startvalues.totalsto != sumTotal) ? startvalues.totalsto : 0;
+        
         $('.total-storage-invest').easy_number_animate({
-            start_value: 0,
-            end_value: (StrategyPoints.AvailableFP + Ertrag),
+            start_value: totalstart,
+            end_value: sumTotal,
             duration: 750
         });
     },
-    
+
+
 	/**
 	 * If wanted, send to server
 	 */
