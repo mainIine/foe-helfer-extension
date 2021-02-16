@@ -23,6 +23,7 @@
 
 #InvestmentBody #history-wrapper {
 	border-top: 2px solid var(--text-bright);
+	margin-bottom: 18px;
 }
 
 #InvestmentBody table {
@@ -146,7 +147,19 @@
 #InvestmentBody #hidden-bar.hide{
 	display:none;
 }
+
 #InvestmentBody #hidden-bar img{
 	width: 16px;
 	height: 16px;
+}
+
+#InvestmentBody .last-update-message{
+	position: absolute;
+	bottom: 2px;
+	right: 6px;
+	background: rgba(0, 0, 0, 0.392);
+	width: auto;
+	padding: 1px 5px;
+	font-size: 0.9em;
+	opacity: 0.7;
 }
