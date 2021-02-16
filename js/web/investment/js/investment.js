@@ -261,7 +261,7 @@ let Investment = {
                 updrequTitle = i18n('Boxes.Investment.UpdateRequired');
             }
 
-            h.push(`<div class="last-update-message invest-tooltip" title="${updrequTitle}"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(lastupdate).format('DD.MM.YY-HH:mm')}</span></div>`);
+            h.push(`<div class="last-update-message invest-tooltip" title="${updrequTitle}"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(lastupdate).format(i18n('DateTime'))}</span></div>`);
         }
 
         $('#history-wrapper').html(h.join('')).promise().done(function(){
@@ -289,7 +289,7 @@ let Investment = {
                         {
                             if (detail.hasOwnProperty(i)) {
                                 let restFP = (max_progress * 1 - detail[i].current_progress * 1)
-                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - HH:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
+                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format(i18n('DateTime')) + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
                             }
                         }
 
