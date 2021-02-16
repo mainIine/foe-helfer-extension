@@ -125,6 +125,84 @@ let _menu = {
 
 
 	/**
+	* Integrates all required buttons
+	*/
+	ListLinks: (InsertMenuFunction) => {
+		let StorgedItems = localStorage.getItem('MenuSort');
+
+		// Beta-Funktionen
+		if (HelperBeta.active) {
+			_menu.Items.unshift(...HelperBeta.menu);
+		}
+
+		if (StorgedItems !== null) {
+			let storedItems = JSON.parse(StorgedItems);
+
+			let missingMenu = storedItems.filter(function (sI) {
+				return !_menu.Items.some(function (mI) {
+					return sI === mI;
+				});
+			});
+
+			let missingStored = _menu.Items.filter(function (mI) {
+				return !storedItems.some(function (sI) {
+					return sI === mI;
+				});
+			});
+
+			_menu.Items = JSON.parse(StorgedItems);
+
+			let items = missingMenu.concat(missingStored);
+
+			// es gibt tatsächlich was neues...
+			if (items.length > 0) {
+				for (let i in items) {
+					if (!items.hasOwnProperty(i)) {
+						break;
+					}
+
+					// ... neues kommt vorne dran ;-)
+					_menu.Items.unshift(items[i]);
+				}
+			}
+		}
+
+		// Beta-Funktionen rausfiltern
+		_menu.Items = _menu.Items.filter(e => {
+			if (HelperBeta.active) return true;
+			if (HelperBeta.menu.includes(e)) return false;
+			return true;
+		});
+
+		// Dubletten rausfiltern
+		function unique(arr) {
+			return arr.filter(function (value, index, self) {
+				return self.indexOf(value) === index;
+			});
+		}
+
+		_menu.Items = unique(_menu.Items);
+
+		// Menüpunkte einbinden
+		for (let i in _menu.Items) {
+			if (!_menu.Items.hasOwnProperty(i)) {
+				break;
+			}
+
+			const name = _menu.Items[i] + '_Btn';
+
+			// gibt es eine Funktion?
+			if (_menu[name] !== undefined) {
+				let MenuItem = _menu[name]();
+				InsertMenuFunction(MenuItem);
+			}
+		}
+
+		_menu.Items = _menu.Items.filter(e => e);
+	},
+
+
+	/**
 	 * Checks whether anything has changed in the sorting of the items.
 	 *
 	 * @param storedItems
@@ -668,7 +746,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'alerts-Btn');
+		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'Alerts-Btn');
 
 		let btn_sp = $('<span />');
 
