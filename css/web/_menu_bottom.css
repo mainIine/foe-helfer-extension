@@ -165,6 +165,7 @@ Tooltip */
 
 .toolTipWrapper {
 	right: 0;
+	bottom: 60px;
 	transform: translateX(-50%);
 }
 
