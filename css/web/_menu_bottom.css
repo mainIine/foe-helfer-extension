@@ -159,22 +159,6 @@
 	float: left;
 }
 
-.hud-btn span.hud-counter {
-	width: 16px;
-	height: 16px;
-	position: absolute;
-	padding: 2px;
-	bottom: 4px;
-	top: unset;
-	left: 5px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
-	line-height: 16px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-    pointer-events: none;
-}
-
 
 /* ---------------------------------------------------------------------------------------------------------------------
 Tooltip */
