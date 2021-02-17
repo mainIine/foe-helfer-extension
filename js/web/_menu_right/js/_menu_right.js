@@ -36,7 +36,8 @@ let _menu_right = {
 		$('body').append(hud).ready(function () {
 
 			// Buttons einfügen
-			_menu_right.ListLinks();
+			_menu.ListLinks(_menu_right.InsertMenuItem);
+			_menu_right.CheckButtons();
 
 			// korrekten Platz für das Menu ermitteln
 			_menu_right.SetMenuHeight();
@@ -50,6 +51,16 @@ let _menu_right = {
 			_menu_right.SetMenuHeight(true);
 		};
 	},
+
+
+	/**
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#foe-helper-hud-slider').append(MenuItem);
+    },
 
 
 	/**
@@ -104,93 +115,6 @@ let _menu_right = {
 
 		$('#foe-helper-hud').height(_menu.HudHeight + 2);
 		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
-	},
-
-
-	/**
-	 * Integrates all required buttons
-	 */
-	ListLinks: () => {
-		let hudSlider = $('#foe-helper-hud-slider'),
-			StorgedItems = localStorage.getItem('MenuSort');
-
-		// Beta-Funktionen
-		if (HelperBeta.active) {
-			_menu.Items.unshift(...HelperBeta.menu);
-		}
-
-		if (StorgedItems !== null) {
-			let storedItems = JSON.parse(StorgedItems);
-
-			// es ist kein neues Item hinzugekommen
-			if (_menu.Items.length === storedItems.length) {
-				_menu.Items = JSON.parse(StorgedItems);
-			}
-
-			// ermitteln in welchem Array was fehlt...
-			else {
-				let missingMenu = storedItems.filter(function (sI) {
-					return !_menu.Items.some(function (mI) {
-						return sI === mI;
-					});
-				});
-
-				let missingStored = _menu.Items.filter(function (mI) {
-					return !storedItems.some(function (sI) {
-						return sI === mI;
-					});
-				});
-
-				_menu.Items = JSON.parse(StorgedItems);
-
-				let items = missingMenu.concat(missingStored);
-
-				// es gibt tatsächlich was neues...
-				if (items.length > 0) {
-					for (let i in items) {
-						if (!items.hasOwnProperty(i)) {
-							break;
-						}
-
-						// ... neues kommt vorne dran ;-)
-						_menu.Items.unshift(items[i]);
-					}
-				}
-			}
-		}
-
-		// Beta-Funktionen rausfiltern
-		_menu.Items = _menu.Items.filter(e => {
-			if (HelperBeta.active) return true;
-			if (HelperBeta.menu.includes(e)) return false;
-			return true;
-		});
-
-		// Dubletten rausfiltern
-		function unique(arr) {
-			return arr.filter(function (value, index, self) {
-				return self.indexOf(value) === index;
-			});
-		}
-
-		_menu.Items = unique(_menu.Items);
-
-		// Menüpunkte einbinden
-		for (let i in _menu.Items) {
-			if (!_menu.Items.hasOwnProperty(i)) {
-				break;
-			}
-
-			const name = _menu.Items[i] + '_Btn';
-
-			// gibt es eine Funktion?
-			if (_menu[name] !== undefined) {
-				hudSlider.append(_menu[name]());
-			}
-		}
-
-		_menu.Items = _menu.Items.filter(e => e);
-		_menu_right.CheckButtons();
 	},
 
 

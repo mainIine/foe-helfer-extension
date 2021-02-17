@@ -45,96 +45,20 @@ let _menu_box = {
 
 
 	CalcBody: () => {
-		_menu_box.ListLinks();
+		_menu.ListLinks(_menu_box.InsertMenuItem);
+		_menu_box.CheckButtons();
 	},
 
 
 	/**
-	 * Integrates all required buttons
-	 *
-	 * @constructor
-	 */
-	ListLinks: () => {
-		let StorgedItems = localStorage.getItem('MenuSort');
-
-		// Beta-Funktionen
-		if (HelperBeta.active) {
-			_menu.Items.unshift(...HelperBeta.menu);
-		}
-
-		if (StorgedItems !== null) {
-			let storedItems = JSON.parse(StorgedItems);
-
-			// es ist kein neues Item hinzugekommen
-			if (_menu.Items.length === storedItems.length) {
-				_menu.Items = JSON.parse(StorgedItems);
-			}
-
-			// ermitteln in welchem Array was fehlt...
-			else {
-				let missingMenu = storedItems.filter(function (sI) {
-					return !_menu.Items.some(function (mI) {
-						return sI === mI;
-					});
-				});
-
-				let missingStored = _menu.Items.filter(function (mI) {
-					return !storedItems.some(function (sI) {
-						return sI === mI;
-					});
-				});
-
-				_menu.Items = JSON.parse(StorgedItems);
-
-				let items = missingMenu.concat(missingStored);
-
-				// es gibt tatsächlich was neues...
-				if (items.length > 0) {
-					for (let i in items) {
-						if (!items.hasOwnProperty(i)) {
-							break;
-						}
-
-						// ... neues kommt vorne dran ;-)
-						_menu.Items.unshift(items[i]);
-					}
-				}
-			}
-		}
-
-		// Beta-Funktionen rausfiltern
-		_menu.Items = _menu.Items.filter(e => {
-			if (HelperBeta.active) return true;
-			if (HelperBeta.menu.includes(e)) return false;
-			return true;
-		});
-
-		// Dubletten rausfiltern
-		function unique(arr) {
-			return arr.filter(function (value, index, self) {
-				return self.indexOf(value) === index;
-			});
-		}
-
-		_menu.Items = unique(_menu.Items);
-
-		// Menüpunkte einbinden
-		for (let i in _menu.Items) {
-			if (!_menu.Items.hasOwnProperty(i)) {
-				break;
-			}
-
-			const name = _menu.Items[i] + '_Btn';
-
-			// gibt es eine Funktion?
-			if (_menu[name] !== undefined) {
-				$('#menu_boxBody').append(_menu[name]());
-			}
-		}
-
-		_menu_box.CheckButtons();
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#menu_boxBody').append(MenuItem);
 	},
-
+		
 
 	/**
 	 * Tooltips etc
