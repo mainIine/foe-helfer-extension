@@ -91,24 +91,6 @@
 	background: url('../images/hud/menu-sm.png') -126px -66px no-repeat;
 }
 
-.hud-btn span.hud-counter {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	padding: 1px;
-	bottom: 4px;
-	top: unset;
-	left: 4px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
-	line-height: 13px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-	pointer-events: none;
-	font-weight: bold;
-	font-size: 0.8rem;
-}
-
 /* ---------------------------------------------------------------------------------------------------------------------
 Tooltip */
 
