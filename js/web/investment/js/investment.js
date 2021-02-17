@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              16.02.21, 23:02 Uhr
+ * zuletzt bearbeitet:       16.02.21, 22:35 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -74,6 +74,8 @@ let Investment = {
             rewardsto: Investment.Ertrag,
             totalsto: (StrategyPoints.AvailableFP + Investment.Ertrag + Investment.Einsatz)
         }
+        let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings'));
+        let removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
         Investment.Einsatz = 0;
         Investment.Ertrag = 0;
@@ -84,18 +86,18 @@ let Investment = {
         if (AllInvestments === undefined)
             return;
 
-        for (let i in AllInvestments){
-            
-            if(AllInvestments.hasOwnProperty(i)){
-                
-                let ishidden = (typeof AllInvestments[i].ishidden != 'undefined') ? AllInvestments[i].ishidden : 0;
-                
+        for (let i in AllInvestments)
+        {
+            if(AllInvestments.hasOwnProperty(i))
+            {
+                let ishidden = (typeof AllInvestments[i].ishidden != 'undefined') ? AllInvestments[i].ishidden : 0,
+                    isNotSafe = AllInvestments[i].currentFp < AllInvestments[i].max_progress - AllInvestments[i].current_progress,
+                    removeUnsafe = !!(isNotSafe && removeUnsafeCalc);
+
                 countHiddenElements += ishidden ? 1 : 0;
                 sumEinsatz += ishidden ? 0 : AllInvestments[i].currentFp;
-                sumErtrag += ishidden ? 0 : AllInvestments[i].profit - AllInvestments[i].currentFp;
-
+                sumErtrag += ishidden || removeUnsafe ? 0 : AllInvestments[i].profit - AllInvestments[i].currentFp;
             }
-
         }
 
         Investment.Ertrag = sumErtrag;
@@ -103,7 +105,6 @@ let Investment = {
         Investment.HiddenElements = countHiddenElements;
 
         Investment.showFPOverview(easy_animate_start_values);
-
     },
 
 
@@ -111,13 +112,19 @@ let Investment = {
 
         let b = [],
             h = [];
+        let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings'));
+        let showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0;
+        let showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
+        let showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
+        let lastupdate = (InvestmentSettings && InvestmentSettings.lastupdate !== undefined) ? InvestmentSettings.lastupdate : 0;
+        let removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
         b.push(`<div class="total-wrapper dark-bg">`);
 
         b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
-        b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong></div>`);
-        b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
-        b.push(`<div id="hidden-bar" class="hide text-center"><img src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
+        b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong>${removeUnsafeCalc?'<span class="safe">  (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
+        b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong>${removeUnsafeCalc?'<span class="safe"> (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
+        b.push(`<div id="hidden-bar" class="hide text-center"><img class="invest-tooltip" src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
 
         b.push(`</div>`);
 
@@ -129,12 +136,6 @@ let Investment = {
 
         // Table for history
 
-        let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings'));
-        let showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0;
-        let showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
-        let showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
-        let lastupdate = (InvestmentSettings && InvestmentSettings.lastupdate !== undefined) ? InvestmentSettings.lastupdate : 0;
-
         h.push('<table id="InvestmentTable" class="foe-table sortable-table">');
         h.push('<thead>' +
             '<tr class="sorter-header">' +
@@ -144,7 +145,7 @@ let Investment = {
 
         if (showEntryDate)
         {
-			h.push('<th class="is-number" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+			h.push('<th class="is-number invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
 		}
 
 
@@ -152,12 +153,12 @@ let Investment = {
 
         if (showRestFp)
         {
-            h.push('<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
+            h.push('<th class="is-number text-center invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
         }
 
         h.push('<th class="is-number text-center" data-type="overview-group">&nbsp;</th>' +
-            '<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.InvestedDesc') + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
-            '<th class="is-number text-center" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.ProfitDesc') + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
+            '<th class="is-number text-center invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.InvestedDesc') + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
+            '<th class="is-number text-center invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.ProfitDesc') + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
             '</tr>' +
             '</thead><tbody class="overview-group">');
 
@@ -219,9 +220,9 @@ let Investment = {
 
             h.push(`<tr id="invhist${x}" data-id="${contribution['id']}" data-max-progress="${contribution['max_progress']}" data-detail='${JSON.stringify(history)}' class="${hasFpHistoryClass}${newerClass}${hiddenClass}"><td class="case-sensitive" data-text="${contribution['playerName'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['Avatar']]}.jpg" alt="${contribution['playerName']}"> ${contribution['playerName']}</td>`);
             h.push('<td class="case-sensitive" data-text="' + contribution['gbname'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
-            h.push(`<td class="is-number text-center" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
+            h.push(`<td class="is-number text-center invest-tooltip" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
             if (showEntryDate) {
-                h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format('DD.MM.-HH:mm')}</td>`);
+                h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format(i18n('Date'))}</td>`);
             }
             h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
 
@@ -237,15 +238,30 @@ let Investment = {
                 h.push(`<td class="is-number text-center" data-number="${restFp}">${restFp}</td>`);
             }
 
-            h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
+            h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank invest-tooltip" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
             h.push(`<td class="is-number text-center gbinvestment" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
             h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td></tr>`);
         }
 
         h.push('</tbody></table>');
         
-        if(lastupdate != 0){
-            h.push(`<div class="last-update-message">${i18n('Boxes.Investment.Overview.LastUpdate')}: ${moment(lastupdate).format('DD.MM.YY-HH:mm')}</div>`);
+        if (lastupdate)
+        {
+            let uptodateClass = 'uptodate';
+            
+            let date = moment(lastupdate).unix();
+            let actdate = moment(MainParser.getCurrentDate()).unix();
+            let datediff = actdate - date;
+            let updrequTitle = i18n('Boxes.Investment.UpToDate');
+
+            // set notification class if last update ist older then 30 minutes
+            if(datediff >= 1800)
+            {
+                uptodateClass='updaterequired';
+                updrequTitle = i18n('Boxes.Investment.UpdateRequired');
+            }
+
+            h.push(`<div class="last-update-message invest-tooltip" title="${updrequTitle}"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(lastupdate).format(i18n('DateTime'))}</span></div>`);
         }
 
         $('#history-wrapper').html(h.join('')).promise().done(function(){
@@ -253,11 +269,15 @@ let Investment = {
             $('.sortable-table').tableSorter();
 
             $('.sortable-table tbody tr').on('click', function () {
-                if ($(this).next("tr.detailview").length) {
+
+                if ($(this).next("tr.detailview").length)
+                {
                     $(this).next("tr.detailview").remove();
                     $(this).removeClass('open');
-                } else {
-                    if (typeof ($(this).attr("data-detail")) !== 'undefined' && $(this).attr("data-detail") !== '{}') {
+                }
+                else {
+                    if (typeof ($(this).attr("data-detail")) !== 'undefined' && $(this).attr("data-detail") !== '{}')
+                    {
                         $(this).addClass('open');
                         let id = $(this).attr("id");
                         let detail = JSON.parse($(this).attr("data-detail"));
@@ -265,10 +285,11 @@ let Investment = {
                         let d = [];
                         d.push('<tr class="detailview dark-bg"><td colspan="'+$(this).find("td").length+'"><table>');
 
-                        for (let i in detail) {
+                        for (let i in detail)
+                        {
                             if (detail.hasOwnProperty(i)) {
                                 let restFP = (max_progress * 1 - detail[i].current_progress * 1)
-                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format('DD.MM.YY - HH:mm') + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
+                                d.push('<tr class="detail"><td>' + moment(detail[i].date).format(i18n('DateTime')) + ' :</td><td> +' + detail[i].increase + ' </td><td>' + i18n('Boxes.Investment.Overview.RemainingFP') + ': ' + restFP + '</td></tr>');
                             }
                         }
 
@@ -298,6 +319,12 @@ let Investment = {
                 
                 Investment.CalcFPs();
             });
+
+            $('.invest-tooltip').tooltip({
+                html: true,
+                container: '#history-wrapper'
+            });
+
         });
     },
 
@@ -307,11 +334,13 @@ let Investment = {
             InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
             showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
             showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0,
-            showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
+            showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0,
+            removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
         c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
         c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">${i18n('Boxes.Investment.Overview.SettingsRestFP')}</label></p>`);
         c.push(`<p class="text-center"><input id="showhiddengb" name="showhiddengb" value="1" type="checkbox" ${(showHiddenGb === 1) ? ' checked="checked"':''} /> <label for="showhiddengb">${i18n('Boxes.Investment.Overview.SettingsHiddenGB')}</label></p>`);
+        c.push(`<p class="text-center"><input id="removeunsafecalc" name="removeunsafecalc" value="1" type="checkbox" ${(removeUnsafeCalc === 1) ? ' checked="checked"':''} /> <label for="removeunsafecalc">${i18n('Boxes.Investment.Overview.SettingsUnsafeCalc')}</label></p>`);
         c.push(`<hr><p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
         $('#InvestmentSettingsBox').html(c.join(''));
@@ -423,7 +452,7 @@ let Investment = {
                     .first();
 
                 // Remove GreatBuilding which has a new reinvestment and wasn't updated before
-                if (CurrentGB !== undefined && CurrentGB['level'] != GBLevel){
+                if (CurrentGB !== undefined && CurrentGB['level'] !== GBLevel){
                     await IndexDB.db.investhistory
                     .where({
                         playerId: PlayerID,
@@ -471,7 +500,7 @@ let Investment = {
                 if (CurrentGB === undefined || GbhasUpdate)
                 {
                     UpdatedList = true;
-                    Investment.RefreshInvestmentDB({
+                    await Investment.RefreshInvestmentDB({
                         playerId: PlayerID,
                         playerName: PlayerName,
                         Avatar: Avatar,
@@ -534,6 +563,7 @@ let Investment = {
         value['showEntryDate'] = 0;
         value['showRestFp'] = 0;
         value['showHiddenGb'] = 0;
+        value['removeUnsafeCalc'] = 0;
 
         if ($("#showentrydate").is(':checked'))
         {
@@ -548,6 +578,11 @@ let Investment = {
         if ($("#showhiddengb").is(':checked'))
         {
             value['showHiddenGb'] = 1;
+        }
+
+        if ($("#removeunsafecalc").is(':checked'))
+        {
+            value['removeUnsafeCalc'] = 1;
         }
 
         localStorage.setItem('InvestmentSettings', JSON.stringify(value));
@@ -581,7 +616,7 @@ let Investment = {
             $('#hidden-bar').addClass('hide');
         }
         
-        let investstart = (startvalues.investsto != Einsatz) ? startvalues.investsto : 0;
+        let investstart = (startvalues.investsto !== Einsatz) ? startvalues.investsto : 0;
         
         $('.invest-storage').easy_number_animate({
             start_value: investstart,
@@ -589,7 +624,7 @@ let Investment = {
             duration: 750
         });
         
-        let rewardstart = (startvalues.rewardsto != Ertrag) ? startvalues.rewardsto : 0;
+        let rewardstart = (startvalues.rewardsto !== Ertrag) ? startvalues.rewardsto : 0;
         
         $('.reward-storage').easy_number_animate({
             start_value: rewardstart,
@@ -598,7 +633,7 @@ let Investment = {
         });
         
         let sumTotal = (StrategyPoints.AvailableFP + Ertrag + Einsatz);
-        let totalstart = (startvalues.totalsto != sumTotal) ? startvalues.totalsto : 0;
+        let totalstart = (startvalues.totalsto !== sumTotal) ? startvalues.totalsto : 0;
         
         $('.total-storage-invest').easy_number_animate({
             start_value: totalstart,

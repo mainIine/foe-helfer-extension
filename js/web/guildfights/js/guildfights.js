@@ -590,7 +590,7 @@ let GildFights = {
 		let showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
         c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"':''} /> <label for="showguildcolumn">${i18n('Boxes.Gildfights.ShowOwner')}</label></p>`);
-        c.push(`<p><button onclick="Gildfights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Gildfights.SaveSettings')}</button></p>`);
+        c.push(`<p><button onclick="GildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Gildfights.SaveSettings')}</button></p>`);
 		
 		// insert into DOM
         $('#LiveGildFightingSettingsBox').html(c.join(''));
