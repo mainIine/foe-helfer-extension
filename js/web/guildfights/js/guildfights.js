@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              18.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       18.02.21, 09:45 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -188,8 +188,11 @@ let GildFights = {
 
 	/**
 	 * Creates the box with the data
+	 *
+	 * @param reload
+	 * @constructor
 	 */
-	ShowGildBox: ()=> {
+	ShowGildBox: (reload)=> {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#LiveGildFighting').length === 0 ){
 
@@ -207,7 +210,7 @@ let GildFights = {
 			// add css to the dom
 			HTML.AddCssFile('guildfights');
 		}
-		else {
+		else if(!reload) {
 			HTML.CloseOpenBox('LiveGildFighting');
 			return;
 		}
@@ -584,6 +587,7 @@ let GildFights = {
 		});
 	},
 
+
     ShowLiveFightSettings: () => {
         let c = [];
 		let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
@@ -595,6 +599,7 @@ let GildFights = {
 		// insert into DOM
         $('#LiveGildFightingSettingsBox').html(c.join(''));
 	},
+
 
 	SaveLiveFightSettings: () => {
 		let value = {};
@@ -608,10 +613,11 @@ let GildFights = {
 
         localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 
-        $(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
-            $(this).remove();
-            GildFights.ShowGildBox();
-        });
+		$(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
+			$.when($(`#LiveGildFightingSettingsBox`).remove()).then(
+				GildFights.ShowGildBox(true)
+			);
+		});
     },
 
 
