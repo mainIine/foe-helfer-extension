@@ -86,6 +86,7 @@ let GuildMemberStat = {
     GBFId: undefined,
     GEXId: undefined,
     AllMemberKeys: [],
+    hasGuildMemberRights: false,
 
 
     /**
@@ -134,6 +135,9 @@ let GuildMemberStat = {
 
 
     UpdateData: async (source, data) => {
+
+        hasGuildMemberRights = ExtGuildPermission > 126 ? true : false;
+
         switch (source) {
             case 'clandata':
                 let memberdata = GuildMemberStat.Data.members;
@@ -148,9 +152,11 @@ let GuildMemberStat = {
                 for (let i in memberdata) {
                     if (memberdata.hasOwnProperty(i)) {
 
+                        memberdata[i]['activity'] = hasGuildMemberRights ? memberdata[i]['activity'] : null;
+
                         GuildMemberStat.RefreshGuildMemberDB(memberdata[i]);
 
-                        if (memberdata[i].activity < 2) {
+                        if (hasGuildMemberRights && memberdata[i].activity < 2) {
                             let Warning = {
                                 player_id: memberdata[i].player_id,
                                 lastwarn: moment(MainParser.getCurrentDate()).format('DD.MM.YYYY'),
@@ -435,9 +441,12 @@ let GuildMemberStat = {
             '<tr class="sorter-header">' +
             '<th class="case-sensitive" data-type="overview-group">Spieler</th>' +
             '<th class="is-number" data-type="overview-group">Punkte</th>' +
-            '<th class="case-sensitive" data-type="overview-group">Zeitalter</th>' +
-            '<th class="is-number" data-type="overview-group">Aktivität</th>' +
-            '<th class="is-number" data-type="overview-group">Posts</th>' +
+            '<th class="is-number" data-type="overview-group">Zeitalter</th>');
+
+        if (hasGuildMemberRights)
+            h.push('<th class="is-number" data-type="overview-group">Aktivität</th>');
+
+        h.push('<th class="is-number" data-type="overview-group">Posts</th>' +
             '<th class="is-number" data-type="overview-group">GEX</th>' +
             '<th class="is-number" data-type="overview-group">GG</th>' +
             '</tr>' +
@@ -514,8 +523,11 @@ let GuildMemberStat = {
             h.push(`<tr id="invhist${x}" class="${hasDetail?'hasdetail ':''}${deletedMember?'strikeout ':''}${stateClass}"  data-warnings='${JSON.stringify(activityWarnings)}' data-gex='${JSON.stringify(gexActivity)}' data-gbg='${JSON.stringify(gbgActivity)}'>`);
             h.push(`<td class="case-sensitive gms-tooltip" data-text="${contribution['name'].toLowerCase().replace(/[\W_ ]+/g, "")}" title="ID: ${contribution['player_id']}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['avatar']]}.jpg" alt="${contribution['name']}"> ${contribution['name']}</td>`);
             h.push(`<td class="is-number" data-number="${contribution['score']}">${HTML.Format(contribution['score'])}</td>`);
-            h.push(`<td class="case-sensitive" data-text="${i18n('Eras.'+Technologies.Eras[contribution['era']]).toLowerCase().replace(/[\W_ ]+/g, "")}">${i18n('Eras.'+Technologies.Eras[contribution['era']])}</td>`);
-            h.push(`<td class="is-number" data-number="${contribution['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/act_${contribution['activity']}.png" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
+            h.push(`<td class="is-number" data-number="${Technologies.Eras[contribution['era']]}">${i18n('Eras.'+Technologies.Eras[contribution['era']])}</td>`);
+            
+            if (hasGuildMemberRights)
+                h.push(`<td class="is-number" data-number="${contribution['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/act_${contribution['activity']}.png" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
+            
             h.push(`<td class="is-number" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
             h.push(`<td class="is-number" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
             h.push(`<td class="is-number" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
