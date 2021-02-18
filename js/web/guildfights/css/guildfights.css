@@ -152,12 +152,8 @@
 	overflow-y: auto;
 }
 
-#LiveGildFightingBody #progress tr td:first-child {
+#LiveGildFightingBody #progress tr td:first-child, #LiveGildFightingBody #nextup tr td:first-child {
 	width: 60px;
-}
-
-#LiveGildFightingBody #progress tr td:nth-child(2) {
-	width: 50%;
 }
 
 #LiveGildFightingBody table.foe-table tr.highlight-row {
