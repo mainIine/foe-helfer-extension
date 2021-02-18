@@ -31,6 +31,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtPlayerID = 0,
 	ExtPlayerName = null,
 	ExtGuildID = 0,
+	ExtGuildPermission = 0,
 	ExtWorld = '',
 	CurrentEra = null,
 	CurrentEraID = null,
@@ -1694,6 +1695,7 @@ let MainParser = {
 
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
+		ExtGuildPermission = d['clan_permissions'];
 		ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era'];
 		if (CurrentEra['era']) CurrentEra = CurrentEra['era'];
