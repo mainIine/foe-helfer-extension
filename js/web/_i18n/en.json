@@ -841,5 +841,10 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English"
+    "_Language": "English",
+    "Boxes.GuildMemberStat.Title": "Guild Member Overview",
+    "Menu.GuildMemberStat.Title": "Guild Member Overview",
+    "Menu.GuildMemberStat.Desc": "A guild member statistic",
+    "Menu.GuildMemberStat.Warning": "Please load ingame guild member overview to activate statistic",
+    "Boxes.GuildMemberStat.LastUpdate": "Date"
 }

@@ -840,5 +840,10 @@
     "WsChat.UserLeave": " ist gegangen.",
     "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
-    "_Language": "Deutsch"
+    "_Language": "Deutsch",
+    "Boxes.GuildMemberStat.Title": "Gilden Mitglieder Übersicht",
+    "Menu.GuildMemberStat.Title": "Gilden Mitglieder Übersicht",
+    "Menu.GuildMemberStat.Desc": "Listet eine Statistik über die Gildenmitlieder auf",
+    "Menu.GuildMemberStat.Warning": "Bitte erst einmal die Gildenmitglieder Übersicht im Spiel öffnen.",
+    "Boxes.GuildMemberStat.LastUpdate": "Stand"
 }

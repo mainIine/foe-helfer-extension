@@ -590,6 +590,7 @@ const FoEproxy = (function () {
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
 		UnitGex.checkForDB(ExtPlayerID);
+		GuildMemberStat.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
@@ -1109,7 +1110,8 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex'
+		'unitsGex',
+		'guildmemberstat'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
