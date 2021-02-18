@@ -1,13 +1,17 @@
-FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
+FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) =>
+{
     let requestMethod = postData[0]['requestMethod'];
-    if (requestMethod === 'getOwnClanData') {
+    if (requestMethod === 'getOwnClanData')
+    {
         GuildMemberStat.Data = data.responseData;
 
-        if ($('#guildmemberstat-Btn').hasClass('hud-btn-red')) {
+        if ($('#guildmemberstat-Btn').hasClass('hud-btn-red'))
+        {
             $('#guildmemberstat-Btn').removeClass('hud-btn-red');
             $('#guildmemberstat-Btn-closed').remove();
         }
-        if (GuildMemberStat.Data !== undefined) {
+        if (GuildMemberStat.Data !== undefined)
+        {
             GuildMemberStat.UpdateData('clandata', null);
         }
         //GuildMemberStat.BuildBox(false);
@@ -15,16 +19,20 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
 });
 
 // Forum Activity 
-FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) =>
+{
     let ConversationData = data.responseData;
-    if (ConversationData !== undefined) {
+    if (ConversationData !== undefined)
+    {
         GuildMemberStat.UpdateData('forum', ConversationData);
     }
 });
 
-FoEproxy.addHandler('ConversationService', 'getMessages', (data, postData) => {
+FoEproxy.addHandler('ConversationService', 'getMessages', (data, postData) =>
+{
     let ConversationData = data.responseData;
-    if (ConversationData !== undefined) {
+    if (ConversationData !== undefined)
+    {
         GuildMemberStat.UpdateData('forum', {
             messages: ConversationData
         });
@@ -32,20 +40,27 @@ FoEproxy.addHandler('ConversationService', 'getMessages', (data, postData) => {
 });
 
 // GEX member statistic
-FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, postData) => {
+FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, postData) =>
+{
     GuildMemberStat.GexData = data.responseData;
-    if (GuildMemberStat.GexData !== undefined) {
+    if (GuildMemberStat.GexData !== undefined)
+    {
         GuildMemberStat.UpdateData('gex', null);
     }
 
 });
 
-FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
+{
     let Data = data.responseData;
-    if (Data !== undefined) {
-        if (data.responseData['state'] !== 'inactive') {
+    if (Data !== undefined)
+    {
+        if (data.responseData['state'] !== 'inactive')
+        {
             GuildMemberStat.GEXId = Data.nextStateTime;
-        } else {
+        }
+        else
+        {
             GuildMemberStat.GEXId = (Data.nextStateTime * 1 - 86400);
         }
     }
@@ -54,24 +69,31 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
 
 
 // GuildBattleGround member statistic
-FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
+FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) =>
+{
     GuildMemberStat.GBGData = data.responseData;
-    if (GuildMemberStat.GBGData !== undefined) {
+    if (GuildMemberStat.GBGData !== undefined)
+    {
         GuildMemberStat.UpdateData('gbg', null);
     }
 });
 
-FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
+FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) =>
+{
     let Data = data.responseData;
-    if (Data !== undefined) {
+    if (Data !== undefined)
+    {
         GuildMemberStat.GBFId = Data.endsAt;
     }
 });
 
-FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
-    if (data.responseData['stateId'] !== 'participating') {
+FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) =>
+{
+    if (data.responseData['stateId'] !== 'participating')
+    {
         let Data = data.responseData;
-        if (Data !== undefined) {
+        if (Data !== undefined)
+        {
             GuildMemberStat.GBFId = parseInt(Data.startsAt) - 259200;
             GuildMemberStat.UpdateData('gbg', data.responseData['playerLeaderboardEntries']);
         }
@@ -93,7 +115,8 @@ let GuildMemberStat = {
      *
      * @returns {Promise<void>}
      */
-    checkForDB: async (playerID) => {
+    checkForDB: async (playerID) =>
+    {
         const DBName = `FoeHelperDB_GuildMemberStat_${playerID}`;
 
         GuildMemberStat.db = new Dexie(DBName);
@@ -111,9 +134,11 @@ let GuildMemberStat = {
     },
 
 
+    BuildBox: (event) =>
+    {
 
-    BuildBox: (event) => {
-        if ($('#GuildMemberStat').length === 0) {
+        if ($('#GuildMemberStat').length === 0)
+        {
             HTML.Box({
                 id: 'GuildMemberStat',
                 title: i18n('Boxes.GuildMemberStat.Title'),
@@ -124,8 +149,12 @@ let GuildMemberStat = {
                 settings: 'GuildMemberStat.GuildMemberStatSettings()'
             });
 
+            $('#GuildMemberStat').append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+
             HTML.AddCssFile('guildmemberstat');
-        } else if (!event) {
+        }
+        else if (!event)
+        {
             HTML.CloseOpenBox('GuildMemberStat');
             return;
         }
@@ -134,35 +163,42 @@ let GuildMemberStat = {
     },
 
 
-    UpdateData: async (source, data) => {
+    UpdateData: async (source, data) =>
+    {
 
         hasGuildMemberRights = ExtGuildPermission > 126 ? true : false;
 
-        switch (source) {
+        switch (source)
+        {
+
             case 'clandata':
                 let memberdata = GuildMemberStat.Data.members;
 
-                if (typeof memberdata == 'undefined') {
+                if (typeof memberdata == 'undefined')
+                {
                     return;
                 }
 
                 // Recognize member which are gone
                 GuildMemberStat.AllMemberKeys = await GuildMemberStat.db.player.where('id').equals(0).keys();
 
-                for (let i in memberdata) {
-                    if (memberdata.hasOwnProperty(i)) {
+                for (let i in memberdata)
+                {
+                    if (memberdata.hasOwnProperty(i))
+                    {
 
                         memberdata[i]['activity'] = hasGuildMemberRights ? memberdata[i]['activity'] : null;
 
                         GuildMemberStat.RefreshGuildMemberDB(memberdata[i]);
 
-                        if (hasGuildMemberRights && memberdata[i].activity < 2) {
+                        if (hasGuildMemberRights && memberdata[i].activity < 2)
+                        {
                             let Warning = {
                                 player_id: memberdata[i].player_id,
-                                lastwarn: moment(MainParser.getCurrentDate()).format('DD.MM.YYYY'),
+                                lastwarn: MainParser.getCurrentDate(),
                                 warnings: [{
                                     activity: 1,
-                                    date: moment(MainParser.getCurrentDate()).format('DD.MM.YYYY')
+                                    date: MainParser.getCurrentDate()
                                 }]
                             }
                             GuildMemberStat.SetActivityWarning(Warning, false);
@@ -176,8 +212,10 @@ let GuildMemberStat = {
                 localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStatSettings));
 
                 // Wait a little before delete gone members
-                setTimeout(() => {
-                    if (GuildMemberStat.AllMemberKeys.length >= 1) {
+                setTimeout(() =>
+                {
+                    if (GuildMemberStat.AllMemberKeys.length >= 1)
+                    {
                         GuildMemberStat.DeleteGuildMemberDB(GuildMemberStat.AllMemberKeys);
                         GuildMemberStat.AllMemberKeys = [];
                     }
@@ -186,14 +224,18 @@ let GuildMemberStat = {
                 break;
 
             case 'gex':
+
                 let gexdata = GuildMemberStat.GexData;
 
-                if (typeof gexdata == 'undefined') {
+                if (typeof gexdata == 'undefined')
+                {
                     return;
                 }
                 let gexid = GuildMemberStat.GEXId;
-                for (let i in gexdata) {
-                    if (gexdata.hasOwnProperty(i)) {
+                for (let i in gexdata)
+                {
+                    if (gexdata.hasOwnProperty(i))
+                    {
                         let rank = (i * 1 + 1);
                         let gexDB = {
                             gexweek: gexid,
@@ -208,19 +250,25 @@ let GuildMemberStat = {
             case 'gbg':
                 let gbgdata = [];
 
-                if (data !== null) {
+                if (data !== null)
+                {
                     gbgdata = data;
-                } else {
+                }
+                else
+                {
                     gbgdata = GuildMemberStat.GBGData;
                 }
 
-                if (typeof gbgdata == 'undefined') {
+                if (typeof gbgdata == 'undefined')
+                {
                     return;
                 }
                 let gbgid = GuildMemberStat.GBFId;
 
-                for (let i in gbgdata) {
-                    if (gbgdata.hasOwnProperty(i)) {
+                for (let i in gbgdata)
+                {
+                    if (gbgdata.hasOwnProperty(i))
+                    {
                         let gbgDB = {
                             gbgid: gbgid,
                             data: gbgdata[i]
@@ -232,13 +280,17 @@ let GuildMemberStat = {
 
             case 'forum':
                 let messagedata = data.messages;
-                if (typeof messagedata == 'undefined') {
+                if (typeof messagedata == 'undefined')
+                {
                     return;
                 }
                 let messages = [];
-                for (let i in messagedata) {
-                    if (messagedata.hasOwnProperty(i)) {
-                        if (typeof messagedata[i].sender != 'undefined' && typeof messagedata[i].sender.player_id != 'undefined') {
+                for (let i in messagedata)
+                {
+                    if (messagedata.hasOwnProperty(i))
+                    {
+                        if (typeof messagedata[i].sender != 'undefined' && typeof messagedata[i].sender.player_id != 'undefined')
+                        {
                             let m = {
                                 player_id: messagedata[i].sender.player_id,
                                 message_id: messagedata[i].id
@@ -249,11 +301,11 @@ let GuildMemberStat = {
                 }
                 GuildMemberStat.RefreshForumDB(messages);
                 break;
-
         }
     },
 
-    SetActivityWarning: async (Warning, force) => {
+    SetActivityWarning: async (Warning, force) =>
+    {
 
         let playerID = Warning.player_id;
 
@@ -263,12 +315,18 @@ let GuildMemberStat = {
             })
             .first();
 
-        if (CurrentMember === undefined) {
+        if (CurrentMember === undefined)
+        {
             await GuildMemberStat.db.activity.put(Warning);
-        } else {
+        }
+        else
+        {
 
-            if ((moment(MainParser.getCurrentDate()).format('DD.MM.YYYY') != CurrentMember.lastwarn) || force) {
+            if ((moment(MainParser.getCurrentDate()).format('DD.MM.YYYY') != moment(CurrentMember.lastwarn).format('DD.MM.YYYY')) || force)
+            {
+
                 await GuildMemberStat.db.activity.where('player_id').equals(playerID).modify(x => x.warnings.push(Warning.warnings[0]));
+
                 await GuildMemberStat.db.activity.update(CurrentMember.player_id, {
                     lastwarn: Warning.lastwarn
                 });
@@ -278,8 +336,10 @@ let GuildMemberStat = {
     },
 
 
-    RefreshForumDB: async (Messages) => {
-        for (let i in Messages) {
+    RefreshForumDB: async (Messages) =>
+    {
+        for (let i in Messages)
+        {
             let player_id = Messages[i].player_id;
             let message_id = Messages[i].message_id;
             let CurrentData = await GuildMemberStat.db.forum
@@ -288,7 +348,8 @@ let GuildMemberStat = {
                 })
                 .first();
 
-            if (CurrentData === undefined) {
+            if (CurrentData === undefined)
+            {
                 let m = [];
                 m.push(message_id);
                 await GuildMemberStat.db.forum.add({
@@ -296,7 +357,9 @@ let GuildMemberStat = {
                     message_id: m,
                     lastupdate: MainParser.getCurrentDate()
                 });
-            } else {
+            }
+            else
+            {
                 let message_ids = CurrentData.message_id;
                 message_ids.push(message_id);
 
@@ -309,7 +372,9 @@ let GuildMemberStat = {
         }
     },
 
-    RefreshPlayerGBGDB: async (Member) => {
+
+    RefreshPlayerGBGDB: async (Member) =>
+    {
         let GBGPlayer = Member.data;
         let gbgid = Member.gbgid;
         let rank = (typeof GBGPlayer.rank != 'undefined' ? GBGPlayer.rank : 0);
@@ -323,7 +388,8 @@ let GuildMemberStat = {
             })
             .first();
 
-        if (CurrentGBGData === undefined) {
+        if (CurrentGBGData === undefined)
+        {
             await GuildMemberStat.db.gbg.add({
                 player_id: GBGPlayer.player.player_id,
                 gbgid: gbgid,
@@ -331,7 +397,9 @@ let GuildMemberStat = {
                 negotiationsWon: negotiationsWon,
                 rank: rank
             });
-        } else {
+        }
+        else
+        {
             await GuildMemberStat.db.gbg.update(CurrentGBGData.id, {
                 battlesWon: battlesWon,
                 negotiationsWon: negotiationsWon,
@@ -341,7 +409,8 @@ let GuildMemberStat = {
     },
 
 
-    RefreshPlayerGexDB: async (Member) => {
+    RefreshPlayerGexDB: async (Member) =>
+    {
 
         let GexPlayer = Member.data;
         let gexweek = Member.gexweek;
@@ -357,7 +426,8 @@ let GuildMemberStat = {
             })
             .first();
 
-        if (CurrentGexData === undefined) {
+        if (CurrentGexData === undefined)
+        {
             await GuildMemberStat.db.gex.add({
                 player_id: GexPlayer.player.player_id,
                 gexweek: gexweek,
@@ -365,7 +435,9 @@ let GuildMemberStat = {
                 expeditionPoints: expeditionPoints,
                 rank: rank
             });
-        } else {
+        }
+        else
+        {
             await GuildMemberStat.db.gex.update(CurrentGexData.id, {
                 solvedEncounters: solvedEncounters,
                 expeditionPoints: expeditionPoints,
@@ -375,7 +447,8 @@ let GuildMemberStat = {
     },
 
 
-    RefreshGuildMemberDB: async (Member) => {
+    RefreshGuildMemberDB: async (Member) =>
+    {
 
         let CurrentMember = await GuildMemberStat.db.player
             .where({
@@ -383,7 +456,8 @@ let GuildMemberStat = {
             })
             .first();
 
-        if (CurrentMember === undefined) {
+        if (CurrentMember === undefined)
+        {
             await GuildMemberStat.db.player.add({
                 player_id: Member['player_id'],
                 name: Member['name'],
@@ -398,8 +472,9 @@ let GuildMemberStat = {
                 deleted: 0,
                 updated: MainParser.getCurrentDate()
             });
-        } else {
-
+        }
+        else
+        {
             GuildMemberStat.AllMemberKeys = GuildMemberStat.remove_key_from_array(GuildMemberStat.AllMemberKeys, parseInt(CurrentMember.id));
 
             await GuildMemberStat.db.player.update(CurrentMember.id, {
@@ -418,9 +493,10 @@ let GuildMemberStat = {
     },
 
 
-    DeleteGuildMemberDB: async (arr) => {
-
-        for (let id in arr) {
+    DeleteGuildMemberDB: async (arr) =>
+    {
+        for (let id in arr)
+        {
             await GuildMemberStat.db.player.update(arr[id], {
                 deleted: MainParser.getCurrentDate()
             });
@@ -428,8 +504,8 @@ let GuildMemberStat = {
     },
 
 
-    Show: async () => {
-
+    Show: async () =>
+    {
         let h = [];
 
         let GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
@@ -439,17 +515,17 @@ let GuildMemberStat = {
         h.push('<table id="GuildMemberTable" class="foe-table sortable-table">');
         h.push('<thead>' +
             '<tr class="sorter-header">' +
-            '<th class="case-sensitive" data-type="overview-group">Spieler</th>' +
-            '<th class="is-number" data-type="overview-group">Punkte</th>' +
-            '<th class="is-number" data-type="overview-group">Zeitalter</th>');
+            `<th class="case-sensitive" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
+            `<th class="is-number" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
+            `<th class="is-number" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
 
         if (hasGuildMemberRights)
-            h.push('<th class="is-number" data-type="overview-group">Aktivität</th>');
+            h.push(`<th class="is-number" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.MemberActiviy')}"><span class="activity"></span></th>`);
 
-        h.push('<th class="is-number" data-type="overview-group">Posts</th>' +
-            '<th class="is-number" data-type="overview-group">GEX</th>' +
-            '<th class="is-number" data-type="overview-group">GG</th>' +
-            '</tr>' +
+        h.push(`<th class="is-number text-center gms-tooltip" data-type="overview-group"  title="${i18n('Boxes.GuildMemberStat.GuildMessages')}"><span class="messages"></span></th>` +
+            `<th class="is-number text-center gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.GexParticipation')}"><span class="gex"></span></th>` +
+            `<th class="is-number text-center gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.GbgParticipation')}"><span class="gbg"></span></th>` +
+            '<th></th></tr>' +
             '</thead><tbody class="overview-group">');
 
         let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
@@ -459,7 +535,8 @@ let GuildMemberStat = {
 
         let data = CurrentMember;
 
-        for (let x = 0; x < data.length; x++) {
+        for (let x = 0; x < data.length; x++)
+        {
 
             let ActWarnCount = 0;
             let gexActivityCount = 0;
@@ -472,81 +549,103 @@ let GuildMemberStat = {
             // Get inactivity warnings
             let activityWarnings = await GuildMemberStat.db.activity.where('player_id').equals(contribution['player_id']).toArray();
 
-            if (activityWarnings !== undefined && typeof activityWarnings[0] != 'undefined') {
+            if (activityWarnings !== undefined && typeof activityWarnings[0] != 'undefined')
+            {
                 ActWarnCount = activityWarnings[0].warnings.length;
                 if (ActWarnCount > 0)
                     hasDetail = true;
-            } else activityWarnings = {};
+            }
+            else activityWarnings = {};
 
             // Get gex activity
 
-            let gexActivity = await GuildMemberStat.db.gex.where('player_id').equals(contribution['player_id']).and(function (item) {
+            let gexActivity = await GuildMemberStat.db.gex.where('player_id').equals(contribution['player_id']).and(function (item)
+            {
                 return item.solvedEncounters > 0
             }).toArray();
-            if (gexActivity !== undefined) {
+            
+            if (gexActivity !== undefined)
+            {
                 gexActivityCount = gexActivity.length;
                 if (gexActivityCount > 0)
                     hasDetail = true;
 
-            } else gexActivity = {};
+            }
+            else gexActivity = {};
 
             // Get GBG activity
 
-            let gbgActivity = await GuildMemberStat.db.gbg.where('player_id').equals(contribution['player_id']).and(function (item) {
+            let gbgActivity = await GuildMemberStat.db.gbg.where('player_id').equals(contribution['player_id']).and(function (item)
+            {
                 return (item.battlesWon > 0 || item.negotiationsWon > 0) ? true : false
             }).toArray();
-            if (gbgActivity !== undefined) {
+            
+            if (gbgActivity !== undefined)
+            {
                 gbgActivityCount = gbgActivity.length;
                 if (gbgActivityCount > 0)
                     hasDetail = true;
-            } else gbgActivity = {};
+            }
+            else gbgActivity = {};
 
             // Get forum posts
 
             let forumActivity = await GuildMemberStat.db.forum.where({
                 player_id: contribution['player_id']
             }).first();
-            if (forumActivity !== undefined) {
+            
+            if (forumActivity !== undefined)
+            {
                 forumActivityCount = forumActivity.message_id.length;
-
-            } else forumActivity = {};
+            }
+            else forumActivity = {};
+            
             let stateClass = "normal";
-            if (forumActivityCount <= 5 && gbgActivityCount == 0 && gexActivityCount == 0) {
+            
+            if (forumActivityCount <= 5 && gbgActivityCount == 0 && gexActivityCount == 0)
+            {
                 stateClass = "warning";
             }
-            if (stateClass == "warning" && ActWarnCount > 0) {
+            
+            if (stateClass == "warning" && ActWarnCount > 0)
+            {
                 stateClass = "error";
             }
 
             deletedMember = (typeof contribution['deleted'] != 'undefined' && contribution['deleted'] != 0) ? true : false;
 
-            h.push(`<tr id="invhist${x}" class="${hasDetail?'hasdetail ':''}${deletedMember?'strikeout ':''}${stateClass}"  data-warnings='${JSON.stringify(activityWarnings)}' data-gex='${JSON.stringify(gexActivity)}' data-gbg='${JSON.stringify(gbgActivity)}'>`);
+            h.push(`<tr id="invhist${x}" class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout ' : ''}${stateClass}"  data-warnings='${JSON.stringify(activityWarnings)}' data-gex='${JSON.stringify(gexActivity)}' data-gbg='${JSON.stringify(gbgActivity)}'>`);
             h.push(`<td class="case-sensitive gms-tooltip" data-text="${contribution['name'].toLowerCase().replace(/[\W_ ]+/g, "")}" title="ID: ${contribution['player_id']}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['avatar']]}.jpg" alt="${contribution['name']}"> ${contribution['name']}</td>`);
             h.push(`<td class="is-number" data-number="${contribution['score']}">${HTML.Format(contribution['score'])}</td>`);
-            h.push(`<td class="is-number" data-number="${Technologies.Eras[contribution['era']]}">${i18n('Eras.'+Technologies.Eras[contribution['era']])}</td>`);
-            
+            h.push(`<td class="is-number" data-number="${Technologies.Eras[contribution['era']]}">${i18n('Eras.' + Technologies.Eras[contribution['era']])}</td>`);
+
             if (hasGuildMemberRights)
                 h.push(`<td class="is-number" data-number="${contribution['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/act_${contribution['activity']}.png" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
-            
-            h.push(`<td class="is-number" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
-            h.push(`<td class="is-number" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
-            h.push(`<td class="is-number" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
-            h.push(`</tr>`);
+
+            h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
+            h.push(`<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
+            h.push(`<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
+            h.push(`<td></td></tr>`);
 
         }
+        
         h.push(`</tbody></table>`);
 
-        if (lastupdate != 0) {
+        if (lastupdate != 0)
+        {
             let uptodateClass = 'uptodate';
             let date = moment(lastupdate).unix();
             let actdate = moment(MainParser.getCurrentDate()).unix();
-            if (actdate - date >= 20) {
+            
+            if (actdate - date >= 10800)
+            {
                 uptodateClass = 'updaterequired';
             }
-            h.push(`<div class="last-update-message"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(lastupdate).format('DD.MM.YY-HH:mm')}</span></div>`);
+            h.push(`<div class="last-update-message"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(lastupdate).format(i18n('DateTime'))}</span></div>`);
         }
 
-        $('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
+        $('#GuildMemberStatBody').html(h.join('')).promise().done(function ()
+        {
             $('.sortable-table').tableSorter();
 
             $('.gms-tooltip').tooltip({
@@ -554,13 +653,18 @@ let GuildMemberStat = {
                 container: '#GuildMemberStatBody'
             });
 
-            $('.sortable-table tbody tr').on('click', function () {
-                if ($(this).next("tr.detailview").length) {
+            $('.sortable-table tbody tr').on('click', function ()
+            {
+                if ($(this).next("tr.detailview").length)
+                {
                     $(this).next("tr.detailview").remove();
                     $(this).removeClass('open');
-                } else {
+                }
+                else
+                {
 
-                    if ($(this).hasClass("hasdetail")) {
+                    if ($(this).hasClass("hasdetail"))
+                    {
 
                         let d = [];
                         d.push('<tr class="detailview dark-bg"><td colspan="' + $(this).find("td").length + '"><div class="detail-wrapper">');
@@ -568,15 +672,22 @@ let GuildMemberStat = {
                         $(this).addClass('open');
                         let id = $(this).attr("id");
 
-                        if (typeof $(this).attr("data-warnings") !== 'undefined' && $(this).attr("data-warnings") !== '{}') {
-                            d.push('<div class="detail-item warnings"><table><thead><tr><th>Inaktivität</th><th>Datum</th></tr></thead><tbody>');
+                        if (typeof $(this).attr("data-warnings") !== 'undefined' && $(this).attr("data-warnings") !== '{}')
+                        {
+                            d.push(`<div class="detail-item warnings"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th></tr></thead><tbody>`);
+
                             let warnings = JSON.parse($(this).attr("data-warnings"));
-                            for (let i in warnings) {
-                                if (warnings.hasOwnProperty(i)) {
+
+                            for (let i in warnings)
+                            {
+                                if (warnings.hasOwnProperty(i))
+                                {
                                     let warnlist = warnings[i].warnings;
-                                    if (warnlist.length >= 1) {
-                                        for (let k in warnlist) {
-                                            d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k)+1)}</td><td>${warnlist[k].date}</td></tr>`);
+                                    if (warnlist.length >= 1)
+                                    {
+                                        for (let k in warnlist)
+                                        {
+                                            d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k) + 1)}</td><td>${moment(warnlist[k].date).format(i18n('Date'))}</td></tr>`);
                                         }
                                     }
                                 }
@@ -584,11 +695,14 @@ let GuildMemberStat = {
                             d.push('</tbody></table></div>');
                         }
 
-                        if (typeof $(this).attr("data-gex") !== 'undefined' && $(this).attr("data-gex") !== '[]') {
-                            d.push('<div class="detail-item gex"><table><thead><tr><th>GEX Woche</th><th>Platz</th><th>Punkte</th><th>Stufen</th></tr></thead><tbody>');
+                        if (typeof $(this).attr("data-gex") !== 'undefined' && $(this).attr("data-gex") !== '[]')
+                        {
+                            d.push(`<div class="detail-item gex"><table><thead><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th></tr></thead><tbody>`);
                             let gex = JSON.parse($(this).attr("data-gex"));
-                            for (let i in gex) {
-                                if (gex.hasOwnProperty(i)) {
+                            for (let i in gex)
+                            {
+                                if (gex.hasOwnProperty(i))
+                                {
                                     let week = moment.unix(gex[i].gexweek).week().toString();
                                     week = (week.length == 1) ? '0' + week : week;
                                     d.push('<tr><td>' + moment.unix(gex[i].gexweek).year() + '-' + week + '</td><td>' + gex[i].rank + '</td><td>' + HTML.Format(gex[i].expeditionPoints) + ' </td><td>' + gex[i].solvedEncounters + '</td></tr>');
@@ -596,11 +710,14 @@ let GuildMemberStat = {
                             }
                             d.push('</tbody></table></div>');
                         }
-                        if (typeof $(this).attr("data-gbg") !== 'undefined' && $(this).attr("data-gbg") !== '[]') {
-                            d.push('<div class="detail-item gbg"><table><thead><tr><th>GG Zyklus</th><th>Platz</th><th>Kämpfe</th><th>Verhandlungen</th></tr></thead><tbody>');
+                        if (typeof $(this).attr("data-gbg") !== 'undefined' && $(this).attr("data-gbg") !== '[]')
+                        {
+                            d.push(`<div class="detail-item gbg"><table><thead><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th></tr></thead><tbody>`);
                             let gbg = JSON.parse($(this).attr("data-gbg"));
-                            for (let i in gbg) {
-                                if (gbg.hasOwnProperty(i)) {
+                            for (let i in gbg)
+                            {
+                                if (gbg.hasOwnProperty(i))
+                                {
                                     let week = moment.unix(gbg[i].gbgid).week();
                                     let lastweek = week - 1;
                                     week = (week.toString().length == 1) ? '0' + week : week;
@@ -615,48 +732,54 @@ let GuildMemberStat = {
                     }
                 }
             });
+
+            // Fade out loading screen
+            $("#gms-loading-data").fadeOut(800);
         });
     },
 
 
-    GuildMemberStatSettings: () => {
+    GuildMemberStatSettings: () =>
+    {
         let c = [];
         GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
 
-        // c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
-        // c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">${i18n('Boxes.Investment.Overview.SettingsRestFP')}</label></p>`);
-        // c.push(`<p class="text-center"><input id="showhiddengb" name="showhiddengb" value="1" type="checkbox" ${(showHiddenGb === 1) ? ' checked="checked"':''} /> <label for="showhiddengb">${i18n('Boxes.Investment.Overview.SettingsHiddenGB')}</label></p>`);
         c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn btn-default" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
         $('#GuildMemberStatSettingsBox').html(c.join(''));
     },
 
 
-    SettingsSaveValues: () => {
+    SettingsSaveValues: () =>
+    {
 
         let value = JSON.parse(localStorage.getItem('GuildMemberStatSettings') || '{}');
 
         localStorage.setItem('InvestmentSettings', JSON.stringify(value));
 
-        $(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
+        $(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function ()
+        {
             $(this).remove();
             GuildMemberStat.Show();
         });
     },
 
     // helper functions
-
-    uniq_array: (a) => {
+    uniq_array: (a) =>
+    {
         var seen = {};
-        return a.filter(function (item) {
+        return a.filter(function (item)
+        {
             return seen.hasOwnProperty(item) ? false : (seen[item] = true);
         });
     },
 
 
-    remove_key_from_array: (arr, value) => {
-        return arr.filter(function (ele) {
+    remove_key_from_array: (arr, value) =>
+    {
+        return arr.filter(function (ele)
+        {
             return ele !== value;
         });
-    },
+    }
 }
