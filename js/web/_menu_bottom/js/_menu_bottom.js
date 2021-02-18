@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:49 Uhr
+ * erstellt am:	              18.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       18.02.21, 09:37 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -55,6 +55,16 @@ let _menu_bottom = {
 		window.onresize = function (event) {
 			_menu_bottom.SetMenuWidth(true);
 		};
+	},
+
+
+	/**
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#foe-helper-hud-slider').append(MenuItem);
 	},
 
 
