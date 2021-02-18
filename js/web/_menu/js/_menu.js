@@ -57,6 +57,7 @@ let _menu = {
 		'investment',
 		'alerts'
 		// 'unitsGex',
+		// 'guildmemberstats'
 	],
 
 
@@ -833,5 +834,31 @@ let _menu = {
 		btn_InvestH.append(btn_Investment);
 
 		return btn_InvestH;
+	},
+
+
+	/**
+	 * Guild member statistic
+	 */
+	guildmemberstat_Btn: () => {
+		let btn_GuildMemberBG = $('<div />').attr({
+			'id': 'guildmemberstat-Btn',
+			'data-slug': 'guildmemberstat'
+		}).addClass('hud-btn hud-btn-red');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'), 'guildmemberstat-Btn');
+
+		let btn_GuildMember = $('<span />');
+
+		btn_GuildMember.bind('click', function () {
+			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
+				GuildMemberStat.BuildBox(false);
+			}
+		});
+
+		btn_GuildMemberBG.append(btn_GuildMember);
+
+		return btn_GuildMemberBG;
 	}
 };
