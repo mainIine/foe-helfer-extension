@@ -845,5 +845,21 @@
     "Menu.GuildMemberStat.Title": "Gilden Mitglieder Übersicht",
     "Menu.GuildMemberStat.Desc": "Listet eine Statistik über die Gildenmitlieder auf",
     "Menu.GuildMemberStat.Warning": "Bitte erst einmal die Gildenmitglieder Übersicht im Spiel öffnen.",
-    "Boxes.GuildMemberStat.LastUpdate": "Stand"
+    "Boxes.GuildMemberStat.LastUpdate": "Stand",
+    "Boxes.GuildMemberStat.MemberActiviy": "Aktivität des Gildenmitglieds",
+    "Boxes.GuildMemberStat.GuildMessages": "Anzahl der Beiträge im Gilden Nachrichtenzentrum",
+    "Boxes.GuildMemberStat.GexParticipation": "Gildenexpeditions Teilnahmen",
+    "Boxes.GuildMemberStat.GbgParticipation": "Gildengefechts Teilnahmen",
+    "Boxes.GuildMemberStat.Rank": "Rang",
+    "Boxes.GuildMemberStat.Points": "Punkte",
+    "Boxes.GuildMemberStat.Ages": "Zeitalter",
+    "Boxes.GuildMemberStat.Member": "Mitglied",
+    "Boxes.GuildMemberStat.Battles": "Kämpfe",
+    "Boxes.GuildMemberStat.Negotiations": "Verhandlungen",
+    "Boxes.GuildMemberStat.GBFRound": "GG Runde",
+    "Boxes.GuildMemberStat.GEXWeek": "GEX Woche",
+    "Boxes.GuildMemberStat.Date": "Datum",
+    "Boxes.GuildMemberStat.Inactivity": "Inaktivität",
+    "Boxes.GuildMemberStat.Level": "Stufe"
+
 }
