@@ -478,7 +478,7 @@ let GildFights = {
 			if(mP[i]['ownerId'] === undefined && mP[i]['conquestProgress'].length > 0)
 			{
 				progress.push(`<tr id="province-${id}" data-id="${id}">`);
-				progress.push(`<td>${mP[i]['title']}</td>`);
+				progress.push(`<td><b>${mP[i]['title']}</b></td>`);
 				progress.push('<td data-field="' + id + '" class="bar-holder">');
 
 				let cP = mP[i]['conquestProgress'];
@@ -498,7 +498,9 @@ let GildFights = {
 					progress.push(`<span class="attack-wrapper attack-wrapper-${cP[y]['participantId']}"><span class="attack attacker-${cP[y]['participantId']}" style="background-color:${color['main'] };width:${width}%">${cP[y]['progress']}</span></span>`);
 				}
 
-				progress.push(`<td><em>${i18n('Boxes.Gildfights.NoOwner')}</em></td>`);
+				if(showGuildColumn) {
+					progress.push(`<td><em>${i18n('Boxes.Gildfights.NoOwner')}</em></td>`);
+				}
 			}
 		}
 
