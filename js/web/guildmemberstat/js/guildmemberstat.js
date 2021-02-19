@@ -185,18 +185,24 @@ let GuildMemberStat = {
                     if (memberdata.hasOwnProperty(i))
                     {
                         memberdata[i]['activity'] = hasGuildMemberRights ? memberdata[i]['activity'] : null;
-                        
+
                         ActiveMembers.push(memberdata[i].player_id);
 
                         GuildMemberStat.RefreshGuildMemberDB(memberdata[i]);
+
+                        if (memberdata[i].activity === undefined)
+                        {
+                            memberdata[i].activity = 0;
+                        }
 
                         if (hasGuildMemberRights && memberdata[i].activity < 2)
                         {
                             let Warning = {
                                 player_id: memberdata[i].player_id,
                                 lastwarn: MainParser.getCurrentDate(),
+                                lastactivity: memberdata[i]['activity'],
                                 warnings: [{
-                                    activity: 1,
+                                    activity: memberdata[i].activity,
                                     date: MainParser.getCurrentDate()
                                 }]
                             }
@@ -313,14 +319,19 @@ let GuildMemberStat = {
         }
         else
         {
+            if (CurrentMember.lastactivity === undefined)
+            {
+                CurrentMember.lastactivity = 1;
+            }
 
-            if ((moment(MainParser.getCurrentDate()).format('DD.MM.YYYY') != moment(CurrentMember.lastwarn).format('DD.MM.YYYY')) || force)
+            if ((moment(MainParser.getCurrentDate()).format('DD.MM.YYYY') != moment(CurrentMember.lastwarn).format('DD.MM.YYYY')) || CurrentMember.lastactivity != Warning.lastactivity)
             {
 
                 await GuildMemberStat.db.activity.where('player_id').equals(playerID).modify(x => x.warnings.push(Warning.warnings[0]));
 
                 await GuildMemberStat.db.activity.update(CurrentMember.player_id, {
-                    lastwarn: Warning.lastwarn
+                    lastwarn: Warning.lastwarn,
+                    lastactivity: Warning.lastactivity
                 });
 
             }
@@ -456,6 +467,7 @@ let GuildMemberStat = {
                 era: Member['era'],
                 avatar: Member['avatar'],
                 score: Member['score'],
+                prev_score: Member['score'],
                 is_online: Member['is_online'],
                 is_active: Member['is_active'],
                 city_name: Member['city_name'],
@@ -472,6 +484,7 @@ let GuildMemberStat = {
                 era: Member['era'],
                 avatar: Member['avatar'],
                 score: Member['score'],
+                prev_score: CurrentMember.score,
                 is_online: Member['is_online'],
                 is_active: Member['is_active'],
                 city_name: Member['city_name'],
@@ -485,7 +498,7 @@ let GuildMemberStat = {
 
     MarkMemberAsDeleted: async (arr) =>
     {
-        await GuildMemberStat.db.player.where('player_id').noneOf(arr).modify({ date:MainParser.getCurrentDate() });
+        await GuildMemberStat.db.player.where('player_id').noneOf(arr).modify({ date: MainParser.getCurrentDate() });
     },
 
 
@@ -548,7 +561,7 @@ let GuildMemberStat = {
             {
                 return item.solvedEncounters > 0
             }).toArray();
-            
+
             if (gexActivity !== undefined)
             {
                 gexActivityCount = gexActivity.length;
@@ -564,7 +577,7 @@ let GuildMemberStat = {
             {
                 return (item.battlesWon > 0 || item.negotiationsWon > 0) ? true : false
             }).toArray();
-            
+
             if (gbgActivity !== undefined)
             {
                 gbgActivityCount = gbgActivity.length;
@@ -578,30 +591,33 @@ let GuildMemberStat = {
             let forumActivity = await GuildMemberStat.db.forum.where({
                 player_id: contribution['player_id']
             }).first();
-            
+
             if (forumActivity !== undefined)
             {
                 forumActivityCount = forumActivity.message_id.length;
             }
             else forumActivity = {};
-            
+
             let stateClass = "normal";
-            
+
             if (forumActivityCount <= 5 && gbgActivityCount == 0 && gexActivityCount == 0)
             {
                 stateClass = "warning";
             }
-            
+
             if (stateClass == "warning" && ActWarnCount > 0)
             {
                 stateClass = "error";
             }
 
-            deletedMember = (typeof contribution['deleted'] != 'undefined' && contribution['deleted'] != 0) ? true : false;
+            let deletedMember = (typeof contribution['deleted'] != 'undefined' && contribution['deleted'] != 0) ? true : false;
+            let scoreDiff = contribution['score'] - contribution['prev_score'];
+            let scoreDiffClass = scoreDiff >= 0 ? 'green' : 'red';
+            scoreDiff = scoreDiff > 0 ? '+' + scoreDiff : scoreDiff;
 
             h.push(`<tr id="invhist${x}" class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout ' : ''}${stateClass}"  data-warnings='${JSON.stringify(activityWarnings)}' data-gex='${JSON.stringify(gexActivity)}' data-gbg='${JSON.stringify(gbgActivity)}'>`);
             h.push(`<td class="case-sensitive gms-tooltip" data-text="${contribution['name'].toLowerCase().replace(/[\W_ ]+/g, "")}" title="ID: ${contribution['player_id']}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['avatar']]}.jpg" alt="${contribution['name']}"> ${contribution['name']}</td>`);
-            h.push(`<td class="is-number" data-number="${contribution['score']}">${HTML.Format(contribution['score'])}</td>`);
+            h.push(`<td class="is-number" data-number="${contribution['score']}">${HTML.Format(contribution['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + scoreDiff + '</span>' : ''}</td>`);
             h.push(`<td class="is-number" data-number="${Technologies.Eras[contribution['era']]}">${i18n('Eras.' + Technologies.Eras[contribution['era']])}</td>`);
 
             if (hasGuildMemberRights)
@@ -613,7 +629,7 @@ let GuildMemberStat = {
             h.push(`<td></td></tr>`);
 
         }
-        
+
         h.push(`</tbody></table>`);
 
         if (lastupdate != 0)
@@ -621,7 +637,7 @@ let GuildMemberStat = {
             let uptodateClass = 'uptodate';
             let date = moment(lastupdate).unix();
             let actdate = moment(MainParser.getCurrentDate()).unix();
-            
+
             if (actdate - date >= 10800)
             {
                 uptodateClass = 'updaterequired';
