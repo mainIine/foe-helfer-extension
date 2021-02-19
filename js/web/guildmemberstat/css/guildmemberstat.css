@@ -156,6 +156,10 @@
     z-index: 1;
 }
 
+#GuildMemberStatBody table tr td {
+    position: relative
+}
+
 #GuildMemberStatBody td .detail-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -202,6 +206,14 @@
     background: #f800005c;
 }
 
+#GuildMemberStatBody .prev_score.green {
+    color: var(--text-success);
+}
+
+#GuildMemberStatBody .prev_score.red {
+    color: #f800005c;
+}
+
 #GuildMemberStatBody .last-update-message {
     position: absolute;
     bottom: 2px;
@@ -236,4 +248,15 @@
 
 #GuildMemberStatBody .last-update-message .icon.updaterequired {
     background: url(../images/update_required.svg);
+}
+
+#GuildMemberStatBody .prev_score {
+    position: relative;
+    right: 0px;
+    top: -4px;
+    font-size: 0.85em;
+    padding: 0 0 0 3px;
+    color: var(--text-bright);
+    font-weight: bold;
+    text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
