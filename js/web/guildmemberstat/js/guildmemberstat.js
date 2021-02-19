@@ -107,7 +107,6 @@ let GuildMemberStat = {
     GBGData: undefined,
     GBFId: undefined,
     GEXId: undefined,
-    AllMemberKeys: [],
     hasGuildMemberRights: false,
 
 
@@ -179,15 +178,15 @@ let GuildMemberStat = {
                     return;
                 }
 
-                // Recognize member which are gone
-                GuildMemberStat.AllMemberKeys = await GuildMemberStat.db.player.where('id').equals(0).keys();
+                let ActiveMembers = [];
 
                 for (let i in memberdata)
                 {
                     if (memberdata.hasOwnProperty(i))
                     {
-
                         memberdata[i]['activity'] = hasGuildMemberRights ? memberdata[i]['activity'] : null;
+                        
+                        ActiveMembers.push(memberdata[i].player_id);
 
                         GuildMemberStat.RefreshGuildMemberDB(memberdata[i]);
 
@@ -211,15 +210,8 @@ let GuildMemberStat = {
                 GuildMemberStatSettings['lastupdate'] = MainParser.getCurrentDate();
                 localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStatSettings));
 
-                // Wait a little before delete gone members
-                setTimeout(() =>
-                {
-                    if (GuildMemberStat.AllMemberKeys.length >= 1)
-                    {
-                        GuildMemberStat.DeleteGuildMemberDB(GuildMemberStat.AllMemberKeys);
-                        GuildMemberStat.AllMemberKeys = [];
-                    }
-                }, 1000);
+                // Array with all valid player_id is send to mark all player_id which ar not in this array as deleted
+                GuildMemberStat.MarkMemberAsDeleted(ActiveMembers); // @Todo: Remove marked members from DB after certain time or in settings
 
                 break;
 
@@ -475,8 +467,6 @@ let GuildMemberStat = {
         }
         else
         {
-            GuildMemberStat.AllMemberKeys = GuildMemberStat.remove_key_from_array(GuildMemberStat.AllMemberKeys, parseInt(CurrentMember.id));
-
             await GuildMemberStat.db.player.update(CurrentMember.id, {
                 name: Member['name'],
                 era: Member['era'],
@@ -493,14 +483,9 @@ let GuildMemberStat = {
     },
 
 
-    DeleteGuildMemberDB: async (arr) =>
+    MarkMemberAsDeleted: async (arr) =>
     {
-        for (let id in arr)
-        {
-            await GuildMemberStat.db.player.update(arr[id], {
-                deleted: MainParser.getCurrentDate()
-            });
-        }
+        await GuildMemberStat.db.player.where('player_id').noneOf(arr).modify({ date:MainParser.getCurrentDate() });
     },
 
 
@@ -520,7 +505,7 @@ let GuildMemberStat = {
             `<th class="is-number" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
 
         if (hasGuildMemberRights)
-            h.push(`<th class="is-number" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.MemberActiviy')}"><span class="activity"></span></th>`);
+            h.push(`<th class="is-number gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.MemberActiviy')}"><span class="activity"></span></th>`);
 
         h.push(`<th class="is-number text-center gms-tooltip" data-type="overview-group"  title="${i18n('Boxes.GuildMemberStat.GuildMessages')}"><span class="messages"></span></th>` +
             `<th class="is-number text-center gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.GexParticipation')}"><span class="gex"></span></th>` +
