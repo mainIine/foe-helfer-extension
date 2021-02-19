@@ -227,7 +227,8 @@
 				'eventhandler',
 				'fp-collector',
 				'unit-gex',
-				'maptradewarning'
+				'maptradewarning',
+				'guildmemberstat'
 			];
 
 			// load scripts (one after the other)

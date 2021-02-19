@@ -466,6 +466,10 @@ p {
 	background-image: url('../images/menu/investhistory.png');
 }
 
+#guildmemberstat-Btn span {
+	background-image: url('../images/menu/guildmemberstat.png');
+}
+
 .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;
