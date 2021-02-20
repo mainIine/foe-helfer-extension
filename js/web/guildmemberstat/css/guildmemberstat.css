@@ -5,12 +5,15 @@
     left: calc(50vw - 310px);
 }
 
+.text-bright {
+    color: var(--text-bright);
+}
+
 #GuildMemberStat #GuildMemberStatBody {
     font-size: 0.9rem;
     overflow-y: scroll;
 
 }
-
 
 #GuildMemberStat #gms-loading-data {
     position: absolute;
@@ -100,20 +103,28 @@
     margin-bottom: 18px;
 }
 
-#GuildMemberStatBody table tbody tr.hasdetail {
+#GuildMemberStatBody table tr.hasdetail {
     position: relative;
 }
 
-#GuildMemberStatBody table tbody tr.hasdetail td:last-child {
+#GuildMemberStatBody table tr.hasdetail td:last-child,
+#GuildMemberStatBody table thead.hasdetail tr th:last-child {
     background-image: url('../../../../css/images/hud/chevron-left.svg');
     background-size: 20px 20px;
     background-position: center right;
     background-repeat: no-repeat;
+    width: 7px;
 
 }
 
-#GuildMemberStatBody table tbody tr.hasdetail.open td:last-child {
+#GuildMemberStatBody table tr.hasdetail.open td:last-child,
+#GuildMemberStatBody table thead.hasdetail.open tr th:last-child {
     background-image: url('../../../../css/images/hud/chevron-down.svg');
+    width: 7px;
+}
+
+#GuildMemberStatBody table tbody.closed {
+    display: none;
 }
 
 #GuildMemberStatBody tr th span {
@@ -124,8 +135,8 @@
 }
 
 #GuildMemberStatBody .detail-item tr th span {
-    width: 18px;
-    height: 18px;
+    width: 23px;
+    height: 23px;
     vertical-align: center;
 }
 
@@ -149,11 +160,17 @@
     background-size: contain;
 }
 
+#GuildMemberStatBody tr th span.guildbuild {
+    background: transparent url(../../productions/images/productions.png) -238px 0px no-repeat;
+}
+
 #GuildMemberStatBody table th {
+    line-height: 23px;
     position: sticky;
     top: 0;
     cursor: pointer;
     z-index: 1;
+
 }
 
 #GuildMemberStatBody table tr td {
@@ -189,8 +206,14 @@
     background: #ffbb004d;
 }
 
-#GuildMemberStatBody table tr.strikeout td {
-    position: relative
+#GuildMemberStatBody table tr.strikeout {
+    opacity: 0.8;
+}
+
+#GuildMemberStatBody table tr.strikeout td,
+#GuildMemberStatBody table tr.inactive {
+    position: relative;
+    opacity: 0.5;
 }
 
 #GuildMemberStatBody table tr.strikeout td:before {
@@ -198,7 +221,7 @@
     position: absolute;
     top: 50%;
     left: 0;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid #b7b7b7;
     width: 100%;
 }
 
@@ -211,7 +234,7 @@
 }
 
 #GuildMemberStatBody .prev_score.red {
-    color: #f800005c;
+    color: #ff0000db;
 }
 
 #GuildMemberStatBody .last-update-message {
