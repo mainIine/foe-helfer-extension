@@ -861,6 +861,8 @@
     "Boxes.GuildMemberStat.GEXWeek": "GEX Week",
     "Boxes.GuildMemberStat.Date": "Date",
     "Boxes.GuildMemberStat.Inactivity": "Inactivity",
-    "Boxes.GuildMemberStat.Level": "Level"
+    "Boxes.GuildMemberStat.MemberLeavedGuild": "Player is not in guild anymore.",
+    "Boxes.GuildMemberStat.GuildSupportBuildings": "Guild supporting buildings",
+    "Boxes.GuildMemberStat.TotalGuildGoods": "Total of all goods"
 
 }
