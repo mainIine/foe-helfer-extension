@@ -31,6 +31,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtPlayerID = 0,
 	ExtPlayerName = null,
 	ExtGuildID = 0,
+	ExtGuildPermission = 0,
 	ExtWorld = '',
 	CurrentEra = null,
 	CurrentEraID = null,
@@ -590,6 +591,7 @@ const FoEproxy = (function () {
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
 		UnitGex.checkForDB(ExtPlayerID);
+		GuildMemberStat.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
@@ -1109,13 +1111,14 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex'
+		'unitsGex',
+		'guildmemberstat'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
 
 /**
- * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, foeHelperBgApiHandler: null, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: MainParser.Championship, activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, AllBoosts: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
+ * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: (function(*): undefined), activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, BoostSums: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
 
@@ -1127,6 +1130,7 @@ let MainParser = {
 	SelectedMenu: 'BottomBar',
 	i18n: null,
 	BonusService: null,
+	Boosts: {},
 	EmissaryService: null,
 	PlayerPortraits: null,
 	Conversations: [],
@@ -1199,7 +1203,7 @@ let MainParser = {
 	/**
 	 * Speichert alle aktiven Boosts
 	 */
-	AllBoosts: {
+	BoostSums: {
 		'def_boost_defender': 0,
 		'happiness_amount': 0,
 		'att_boost_attacker': 0,
@@ -1691,6 +1695,7 @@ let MainParser = {
 
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
+		ExtGuildPermission = d['clan_permissions'];
 		ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era'];
 		if (CurrentEra['era']) CurrentEra = CurrentEra['era'];
@@ -1797,7 +1802,7 @@ let MainParser = {
 				if(d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined)
 				{
 					if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
-						MainParser.AllBoosts[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
+						MainParser.BoostSums[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
 					}
 				}
 			}
@@ -1820,13 +1825,21 @@ let MainParser = {
 	 * @param d
 	 */
 	CollectBoosts: (d)=>{
-		for(let i in d)
+		MainParser.Boosts = {};
+
+		for (let i in d)
 		{
 			if (!d.hasOwnProperty(i)) continue;
 
-			if (MainParser.AllBoosts[d[i]['type']] !== undefined)
-			{
-				MainParser.AllBoosts[d[i]['type']] += d[i]['value']
+			let Boost = d[i];
+
+			let EntityID = Boost['entityId'];
+			if (!EntityID) EntityID = 0;
+			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = [];
+			MainParser.Boosts[EntityID].push(Boost);
+
+			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
+				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}
 
 			if (d[i]['type'] === 'extra_negotiation_turn') {

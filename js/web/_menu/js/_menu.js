@@ -55,8 +55,9 @@ let _menu = {
 		'fpCollector',
 		'gildfight',
 		'investment',
-		'alerts',
+		'alerts'
 		// 'unitsGex',
+		// 'guildmemberstats'
 	],
 
 
@@ -121,6 +122,84 @@ let _menu = {
 		ToolTipp.prepend($('<div />').addClass('toolTipHeader').text(title));
 
 		$('body').append(ToolTipp);
+	},
+
+
+	/**
+	* Integrates all required buttons
+	*/
+	ListLinks: (InsertMenuFunction) => {
+		let StorgedItems = localStorage.getItem('MenuSort');
+
+		// Beta-Funktionen
+		if (HelperBeta.active) {
+			_menu.Items.unshift(...HelperBeta.menu);
+		}
+
+		if (StorgedItems !== null) {
+			let storedItems = JSON.parse(StorgedItems);
+
+			let missingMenu = storedItems.filter(function (sI) {
+				return !_menu.Items.some(function (mI) {
+					return sI === mI;
+				});
+			});
+
+			let missingStored = _menu.Items.filter(function (mI) {
+				return !storedItems.some(function (sI) {
+					return sI === mI;
+				});
+			});
+
+			_menu.Items = JSON.parse(StorgedItems);
+
+			let items = missingMenu.concat(missingStored);
+
+			// es gibt tatsächlich was neues...
+			if (items.length > 0) {
+				for (let i in items) {
+					if (!items.hasOwnProperty(i)) {
+						break;
+					}
+
+					// ... neues kommt vorne dran ;-)
+					_menu.Items.unshift(items[i]);
+				}
+			}
+		}
+
+		// Beta-Funktionen rausfiltern
+		_menu.Items = _menu.Items.filter(e => {
+			if (HelperBeta.active) return true;
+			if (HelperBeta.menu.includes(e)) return false;
+			return true;
+		});
+
+		// Dubletten rausfiltern
+		function unique(arr) {
+			return arr.filter(function (value, index, self) {
+				return self.indexOf(value) === index;
+			});
+		}
+
+		_menu.Items = unique(_menu.Items);
+
+		// Menüpunkte einbinden
+		for (let i in _menu.Items) {
+			if (!_menu.Items.hasOwnProperty(i)) {
+				break;
+			}
+
+			const name = _menu.Items[i] + '_Btn';
+
+			// gibt es eine Funktion?
+			if (_menu[name] !== undefined) {
+				let MenuItem = _menu[name]();
+				InsertMenuFunction(MenuItem);
+			}
+		}
+
+		_menu.Items = _menu.Items.filter(e => e);
 	},
 
 
@@ -362,7 +441,14 @@ let _menu = {
 		let btn_City = $('<span />');
 
 		btn_City.on('click', function () {
-			CityMap.init();
+			if (LastMapPlayerID === ExtPlayerID) {
+				CityMap.init();
+			}
+			else {
+				let Player = PlayerDict[LastMapPlayerID];
+				let PlayerName = (Player ? Player['PlayerName'] : '???');
+				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
+            }
 		});
 
 		btn_CityBG.append(btn_City);
@@ -630,6 +716,7 @@ let _menu = {
 		return btn;
     },
 
+
 	/**
 	 * FP Collector box
 	 */
@@ -650,13 +737,14 @@ let _menu = {
 		return btn;
 	},
 
+
 	/**
 	 * Shows the box for managing all alerts
 	 *
 	 * @returns {*|jQuery}
 	 */
 	alerts_Btn: () => {
-		let btn = $('<div />').attr({ 'id': 'Alerts-Btn', 'data-slug': 'Alerts' }).addClass('hud-btn');
+		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
 
 		// Tooltip einbinden
 		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'Alerts-Btn');
@@ -671,6 +759,7 @@ let _menu = {
 
 		return btn;
 	},
+
 
 	/**
 	 * Shows the box for gex units stats
@@ -719,7 +808,8 @@ let _menu = {
 
 		return btn_BG;
 	},
-	
+
+
 	/**
 	 * InfoBox für Investitions Historie
 	 *
@@ -744,5 +834,31 @@ let _menu = {
 		btn_InvestH.append(btn_Investment);
 
 		return btn_InvestH;
+	},
+
+
+	/**
+	 * Guild member statistic
+	 */
+	guildmemberstat_Btn: () => {
+		let btn_GuildMemberBG = $('<div />').attr({
+			'id': 'guildmemberstat-Btn',
+			'data-slug': 'guildmemberstat'
+		}).addClass('hud-btn hud-btn-red');
+
+		// Tooltip einbinden
+		_menu.toolTippBox(i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'), 'guildmemberstat-Btn');
+
+		let btn_GuildMember = $('<span />');
+
+		btn_GuildMember.bind('click', function () {
+			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
+				GuildMemberStat.BuildBox(false);
+			}
+		});
+
+		btn_GuildMemberBG.append(btn_GuildMember);
+
+		return btn_GuildMemberBG;
 	}
 };
