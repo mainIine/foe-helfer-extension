@@ -112,6 +112,10 @@
 	background-color: rgba(0,0,0, 0.5);
 }
 
+#stats .goods-sprite-50 {
+	width: 30px;
+}
+
 #stats .highcharts-data-table table tbody tr:nth-child(odd) {
 	background-color: rgba(255,255,255, 0.07);
 }

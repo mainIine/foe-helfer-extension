@@ -32,11 +32,15 @@ let Productions = {
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
 		'premium',			// Diamanten
-		'population',		// Bevölkerung
-		'happiness',		// Zufriedenheit
 		'units',			// Einheiten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
+		'population',		// Bevölkerung
+		'happiness',		// Zufriedenheit
+		'att_boost_attacker', //Angriffsbonus angreifende Armee
+		'def_boost_attacker', //Verteidigungsbonus angreifende Armee
+		'att_boost_defender', //Angriffsbonus verteidigenden Armee
+		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
 		'packaging',		// Güter Gruppe (5 verschieden z.B.)
 	],
 
@@ -69,8 +73,8 @@ let Productions = {
 		}
 
 		// Münzboost ausrechnen und bereitstellen
-        Productions.Boosts['money'] = ((MainParser.AllBoosts['coin_production'] + 100) / 100);
-        Productions.Boosts['supplies'] = ((MainParser.AllBoosts['supply_production'] + 100) / 100);
+		Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
+		Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
 
 		// leere Arrays erzeugen
 		for(let i in Productions.Types)
@@ -127,25 +131,6 @@ let Productions = {
 					HappinessSum += building['products']['happiness'];
 				}
 			}
-		}
-
-		let HappinessBonus = MainParser.AllBoosts['happiness_amount'];
-		if (HappinessBonus && HappinessBonus !== 0) {
-			let building = {
-				name: i18n('Boxes.Productions.AdjacentBuildings'),
-				type: 'boost',
-				products: [],
-				motivatedproducts: [],
-				at: (MainParser.getCurrentDate().getTime()) / 1000,
-				era: 0,
-				in: 0
-			}
-			building.products['happiness'] = HappinessBonus;
-			building.motivatedproducts['happiness'] = HappinessBonus;
-
-			HappinessSum += HappinessBonus;
-
-			Productions.BuildingsAll.push(building);
 		}
 
 		let ProdBonus = 0;
@@ -374,27 +359,47 @@ let Productions = {
 
         for (let Resource in CurrentResources)
         {
-            if(!CurrentResources.hasOwnProperty(Resource))
-            {
-            	break;
-			}
-
+			if (!CurrentResources.hasOwnProperty(Resource)) continue;
+            
 			if (Resource !== 'credits') { // Marscredits nicht zu den Gütern zählen
 				Products[Resource] = CurrentResources[Resource];
 			}
 		}
 
-		if (d['bonus']) {
-			if (d['bonus']['type'] === 'population') {
-				Products['population'] = (Products['population'] ? Products['population'] : 0) + d['bonus']['value'];
-			}
-			else if (d['bonus']['type'] === 'happiness') {
-				Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + d['bonus']['value'];
-			}
-		}
+		if (MainParser.Boosts[d['id']]) {
+			let Boosts = MainParser.Boosts[d['id']];
+			for (let i = 0; i < Boosts.length; i++) {
+				let Boost = Boosts[i];
 
-		if (CityEntity['staticResources'] && CityEntity['staticResources']['resources']) {
-			CityEntity['staticResources']['resources']['population'];
+				if (Boost['type'] === 'happiness_amount') {
+					Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + Boost['value'];
+				}
+
+				if (Boost['type'] === 'att_boost_attacker' || Boost['type'] === 'att_boost_defender' || Boost['type'] === 'def_boost_attacker' || Boost['type'] === 'def_boost_defender') {
+					Products[Boost['type']] = (Products[Boost['type']] ? Products[Boost['type']] : 0) + Boost['value'];
+                }
+            }
+        }
+
+		if (d['bonus']) {
+			let BonusType = d['bonus']['type'];
+			if (BonusType === 'population' || BonusType === 'happiness') {
+				Products[BonusType] = (Products[BonusType] ? Products[BonusType] : 0) + d['bonus']['value'];
+			}
+			else if (BonusType === 'military_boost') {
+				Products['att_boost_attacker'] = (Products['att_boost_attacker'] ? Products['att_boost_attacker'] : 0) + d['bonus']['value'];
+				Products['def_boost_attacker'] = (Products['def_boost_attacker'] ? Products['def_boost_attacker'] : 0) + d['bonus']['value'];
+			}
+			else if (BonusType === 'fierce_resistance') {
+				Products['att_boost_defender'] = (Products['att_boost_defender'] ? Products['att_boost_defender'] : 0) + d['bonus']['value'];
+				Products['def_boost_defender'] = (Products['def_boost_defender'] ? Products['def_boost_defender'] : 0) + d['bonus']['value'];
+			}
+			else if (BonusType === 'advanced_tactics') {
+				Products['att_boost_attacker'] = (Products['att_boost_attacker'] ? Products['att_boost_attacker'] : 0) + d['bonus']['value'];
+				Products['att_boost_defender'] = (Products['att_boost_defender'] ? Products['att_boost_defender'] : 0) + d['bonus']['value'];
+				Products['def_boost_attacker'] = (Products['def_boost_attacker'] ? Products['def_boost_attacker'] : 0) + d['bonus']['value'];
+				Products['def_boost_defender'] = (Products['def_boost_defender'] ? Products['def_boost_defender'] : 0) + d['bonus']['value'];
+            }
 		}
 
 		if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
@@ -617,6 +622,9 @@ let Productions = {
 							else if (type === 'units') {
 								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 							}
+							else if (type === 'att_boost_attacker' || type === 'att_boost_defender' || type === 'def_boost_attacker' || type === 'def_boost_defender') {
+								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
+							}
 							else {
 								EfficiencyString = HTML.Format(MainParser.round(efficiency));
 							}
@@ -629,7 +637,7 @@ let Productions = {
 						rowA.push('<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>');
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 						
-						if (type !== 'population' && type !== 'happiness') {
+						if (Productions.TypeHasProduction(type)) {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
 							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
 								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
@@ -819,7 +827,7 @@ let Productions = {
 
 				table.push('<th colspan="3">');
 
-				if (type !== 'population' && type !== 'happiness') {
+				if (Productions.TypeHasProduction(type)) {
 					if (Productions.ShowDaily) {
 						table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
 					}
@@ -832,7 +840,7 @@ let Productions = {
 				table.push('</th>');
 
 				table.push('<th colspan="6" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong>');
-				if (type !== 'population' && type !== 'happiness') {
+				if (Productions.TypeHasProduction(type)) {
 					table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong>');
 				}
 				table.push('</th>');
@@ -848,7 +856,7 @@ let Productions = {
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
 				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
 				table.push('<th class="is-number game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.era') + '</th>');
-				if (type !== 'population' && type !== 'happiness') {
+				if (Productions.TypeHasProduction(type)) {
 					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
 				}
 				else {
@@ -907,7 +915,7 @@ let Productions = {
 					if(prod.hasOwnProperty(p))
 					{
 						pA.push(HTML.Format(Productions.GetDaily(prod[p], building[i]['dailyfactor'], p)) + ' ' + Productions.GetGoodName(p));
-						if (p !== 'happiness' && p !== 'population') {
+						if (Productions.TypeHasProduction(p)) {
 							ShowTime = true;
 						}
 					}
@@ -1019,6 +1027,19 @@ let Productions = {
 		Productions.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
 	},
 
+	/**
+	 * Gibt an, ob der jeweilige Ressourcentyp produziert wird oder nicht (z.B. Bevölkerung, Zufriedenheits, Kampfboosts)
+	*
+    * @param Type
+    */
+	TypeHasProduction: (Type) => {
+		if (Type === 'population' || Type === 'happiness' || Type === 'att_boost_attacker' || Type === 'att_boost_defender' || Type === 'def_boost_attacker' || Type === 'def_boost_defender') {
+			return false;
+		}
+		else {
+			return true;
+        }
+    },
 
 	/**
 	 * Setzt alle gespeicherten Tabellen zusammen
@@ -1285,7 +1306,24 @@ let Productions = {
 		else if (GoodType === 'units'){
 			return i18n('Boxes.Productions.Units');
 
-		} else {
+		}
+		else if (GoodType === 'att_boost_attacker') {
+			return i18n('Boxes.Productions.att_boost_attacker');
+
+		}
+		else if (GoodType === 'att_boost_defender') {
+			return i18n('Boxes.Productions.att_boost_defender');
+
+		}
+		else if (GoodType === 'def_boost_attacker') {
+			return i18n('Boxes.Productions.def_boost_attacker');
+
+		}
+		else if (GoodType === 'def_boost_defender') {
+			return i18n('Boxes.Productions.def_boost_defender');
+
+		}
+		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
 
@@ -1302,7 +1340,7 @@ let Productions = {
 	 * */
 	GetDaily: (Amount, dailyfactor, type) => {
 		let Factor;
-		if (Productions.ShowDaily && type !== 'happiness' && type !== 'population') {
+		if (Productions.ShowDaily && Productions.TypeHasProduction(type)) {
 			Factor = dailyfactor;
 		}
 		else {

@@ -1,0 +1,285 @@
+#GuildMemberStat {
+    width: 750px;
+    height: 600px;
+    top: calc(50vh - 200px);
+    left: calc(50vw - 310px);
+}
+
+.text-bright {
+    color: var(--text-bright);
+}
+
+#GuildMemberStat #GuildMemberStatBody {
+    font-size: 0.9rem;
+    overflow-y: scroll;
+
+}
+
+#GuildMemberStat #gms-loading-data {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000c0;
+    z-index: 100;
+    opacity: 1;
+
+}
+
+#gms-loading-data .loadericon {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #543118;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+#gms-loading-data .loadericon:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #f8af36;
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+
+#gms-loading-data .loadericon:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #f3d6a0;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+#GuildMemberStatBody #GuildMemberTable {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+#GuildMemberStatBody table tr.hasdetail {
+    position: relative;
+}
+
+#GuildMemberStatBody table tr.hasdetail td:last-child,
+#GuildMemberStatBody table thead.hasdetail tr th:last-child {
+    background-image: url('../../../../css/images/hud/chevron-left.svg');
+    background-size: 20px 20px;
+    background-position: center right;
+    background-repeat: no-repeat;
+    width: 7px;
+
+}
+
+#GuildMemberStatBody table tr.hasdetail.open td:last-child,
+#GuildMemberStatBody table thead.hasdetail.open tr th:last-child {
+    background-image: url('../../../../css/images/hud/chevron-down.svg');
+    width: 7px;
+}
+
+#GuildMemberStatBody table tbody.closed {
+    display: none;
+}
+
+#GuildMemberStatBody tr th span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    vertical-align: bottom;
+}
+
+#GuildMemberStatBody .detail-item tr th span {
+    width: 23px;
+    height: 23px;
+    vertical-align: center;
+}
+
+#GuildMemberStatBody tr th span.activity {
+    background: url(../images/act_th.png) center no-repeat;
+    background-size: contain;
+}
+
+#GuildMemberStatBody tr th span.gex {
+    background: url(../images/gex_th.png) center no-repeat;
+    background-size: contain;
+}
+
+#GuildMemberStatBody tr th span.gbg {
+    background: url(../images/gbg_th.png) center no-repeat;
+    background-size: contain;
+}
+
+#GuildMemberStatBody tr th span.messages {
+    background: url(../images/posts_th.png) center no-repeat;
+    background-size: contain;
+}
+
+#GuildMemberStatBody tr th span.guildbuild {
+    background: transparent url(../../productions/images/productions.png) -238px 0px no-repeat;
+}
+
+#GuildMemberStatBody table th {
+    line-height: 23px;
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    z-index: 1;
+
+}
+
+#GuildMemberStatBody table tr td {
+    position: relative
+}
+
+#GuildMemberStatBody td .detail-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#GuildMemberStatBody td .detail-item {
+    flex-grow: 1;
+    min-width: 50%;
+    padding: 2px 3px;
+    box-sizing: border-box;
+}
+
+#GuildMemberStatBody td .detail-item table {
+    width: 100%;
+}
+
+#GuildMemberStatBody img.small {
+    width: 18px;
+    height: 18px;
+}
+
+#GuildMemberStatBody .warn {
+    color: var(--text-bright);
+}
+
+#GuildMemberStatBody table tr.warning {
+    background: #ffbb004d;
+}
+
+#GuildMemberStatBody table tr.strikeout {
+    opacity: 0.8;
+}
+
+#GuildMemberStatBody table tr.strikeout td,
+#GuildMemberStatBody table tr.inactive {
+    position: relative;
+    opacity: 0.5;
+}
+
+#GuildMemberStatBody table tr.strikeout td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 1px solid #b7b7b7;
+    width: 100%;
+}
+
+#GuildMemberStatBody table tr.error {
+    background: #f800005c;
+}
+
+#GuildMemberStatBody .prev_score.green {
+    color: var(--text-success);
+}
+
+#GuildMemberStatBody .prev_score.red {
+    color: #ff0000db;
+}
+
+#GuildMemberStatBody .last-update-message {
+    position: absolute;
+    bottom: 2px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.392);
+    width: auto;
+    height: auto;
+    padding: 1px 5px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    line-height: 18px;
+    display: flex;
+}
+
+#GuildMemberStatBody .last-update-message .updaterequired {
+    color: var(--text-bright);
+}
+
+#GuildMemberStatBody .last-update-message span.icon {
+    display: block;
+    text-indent: -9999px;
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+    margin-right: 5px;
+}
+
+#GuildMemberStatBody .last-update-message .icon.uptodate {
+    background: url(../images/uptodate.svg);
+
+}
+
+#GuildMemberStatBody .last-update-message .icon.updaterequired {
+    background: url(../images/update_required.svg);
+}
+
+#GuildMemberStatBody .prev_score {
+    position: relative;
+    right: 0px;
+    top: -4px;
+    font-size: 0.85em;
+    padding: 0 0 0 3px;
+    color: var(--text-bright);
+    font-weight: bold;
+    text-shadow: 0 2px 2px black, 0 1px 0 black;
+}
