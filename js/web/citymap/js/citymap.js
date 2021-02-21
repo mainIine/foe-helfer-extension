@@ -274,7 +274,7 @@ let CityMap = {
 		    if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
 			CityMap.OccupiedArea2[d.type] += (AreaNeeded);
 
-			if (d.type !== 'street') {
+			if (d.type !== 'street' && CityMap.CityData[b]['state']['__class__'] !== 'UnconnectedState') {
 				let RequiredStreet = d['requirements']['street_connection_level'] | 0
 
 				if (RequiredStreet) {
