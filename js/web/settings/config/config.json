@@ -18,12 +18,6 @@
 		"sort": 2
 	},
 	{
-		"name": "SendInvestigations",
-		"status": false,
-		"group": "Sending",
-		"sort": 3
-	},
-	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
