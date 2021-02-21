@@ -228,6 +228,7 @@
 	"Boxes.GuildMemberStat.GuildSupportBuildings": "Guild supporting buildings",
 	"Boxes.GuildMemberStat.Inactivity": "Inactivity",
 	"Boxes.GuildMemberStat.LastUpdate": "last update",
+    "Boxes.GuildMemberStat.Level": "Level",
 	"Boxes.GuildMemberStat.Member": "Member",
 	"Boxes.GuildMemberStat.MemberActiviy": "Member activity",
 	"Boxes.GuildMemberStat.MemberLeavedGuild": "Player is not in guild anymore.",
