@@ -845,7 +845,7 @@
     "Menu.GuildMemberStat.Title": "Gilden Mitglieder Übersicht",
     "Menu.GuildMemberStat.Desc": "Listet eine Statistik über die Gildenmitlieder auf",
     "Menu.GuildMemberStat.Warning": "Bitte erst einmal die Gildenmitglieder Übersicht im Spiel öffnen.",
-    "Boxes.GuildMemberStat.LastUpdate": "Stand",
+    "Boxes.GuildMemberStat.LastUpdate": "letzte Aktualisierung",
     "Boxes.GuildMemberStat.MemberActiviy": "Aktivität des Gildenmitglieds",
     "Boxes.GuildMemberStat.GuildMessages": "Anzahl der Beiträge im Gilden Nachrichtenzentrum",
     "Boxes.GuildMemberStat.GexParticipation": "Gildenexpeditions Teilnahmen",
