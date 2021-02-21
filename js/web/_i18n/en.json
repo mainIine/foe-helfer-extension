@@ -846,7 +846,7 @@
     "Menu.GuildMemberStat.Title": "Guild Member Overview",
     "Menu.GuildMemberStat.Desc": "A guild member statistic",
     "Menu.GuildMemberStat.Warning": "Please load ingame guild member overview to activate statistic",
-    "Boxes.GuildMemberStat.LastUpdate": "Date",
+    "Boxes.GuildMemberStat.LastUpdate": "last update",
     "Boxes.GuildMemberStat.MemberActiviy": "Member activity",
     "Boxes.GuildMemberStat.GuildMessages": "Number of messages in the guild message center",
     "Boxes.GuildMemberStat.GexParticipation": "Guild Expedition participation",

@@ -162,6 +162,8 @@ let GuildMemberStat = {
             HTML.CloseOpenBox('GuildMemberStat');
             return;
         }
+        
+        moment.locale(i18n('Local'));
 
         GuildMemberStat.Show();
     },
@@ -200,16 +202,16 @@ let GuildMemberStat = {
                         GuildGoodsBuildings.push({ entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: Object.values(Resources)[0], goods: null }, level: null });
                     }
                 }
-                
+
                 if (entity[i].state && entity[i]['state']['current_product'])
                 {
                     if (entity[i]['state']['current_product']['name'] !== 'clan_goods')
                     {
                         continue;
                     }
-                    
+
                     let totalgoods = entity[i]['state']['current_product']['goods'].map(good => good.value).reduce((sum, good) => good + sum);
-                    
+
                     GuildGoodsBuildings.push({ entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: totalgoods, goods: entity[i]['state']['current_product']['goods'] }, level: entity[i]['level'] });
                 }
             }
@@ -269,6 +271,16 @@ let GuildMemberStat = {
                             GuildMemberStat.SetActivityWarning(Warning, false);
                         }
                     }
+                }
+
+                // Update Own Guild support buildings
+                if (MainParser.CityMapData && MainParser.CityMapData.length)
+                {
+                    let self = {
+                        player_id: ExtPlayerID,
+                        era: CurrentEraID
+                    }
+                    GuildMemberStat.ReadGuildMemberBuildings({ city_map: { entities: Object.values(MainParser.CityMapData) } }, self);
                 }
 
                 // Insert update time
@@ -614,21 +626,21 @@ let GuildMemberStat = {
         let lastupdate = (GuildMemberStatSettings && GuildMemberStatSettings.lastupdate !== undefined) ? GuildMemberStatSettings.lastupdate : 0;
 
 
-        h.push('<table id="GuildMemberTable" class="foe-table sortable-table">');
+        h.push('<table id="GuildMemberTable" class="foe-table">');
         h.push('<thead>' +
             '<tr class="sorter-header">' +
-            `<th class="case-sensitive" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
-            `<th class="is-number" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
-            `<th class="is-number" data-type="overview-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
+            `<th class="case-sensitive" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
+            `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
+            `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
 
         if (GuildMemberStat.hasGuildMemberRights)
-            h.push(`<th class="is-number gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.MemberActiviy')}"><span class="activity"></span></th>`);
+            h.push(`<th class="is-number gms-tooltip" data-type="gms-group" title="${i18n('Boxes.GuildMemberStat.MemberActiviy')}"><span class="activity"></span></th>`);
 
-        h.push(`<th class="is-number text-center gms-tooltip" data-type="overview-group"  title="${i18n('Boxes.GuildMemberStat.GuildMessages')}"><span class="messages"></span></th>` +
-            `<th class="is-number text-center gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.GexParticipation')}"><span class="gex"></span></th>` +
-            `<th class="is-number text-center gms-tooltip" data-type="overview-group" title="${i18n('Boxes.GuildMemberStat.GbgParticipation')}"><span class="gbg"></span></th>` +
+        h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${i18n('Boxes.GuildMemberStat.GuildMessages')}"><span class="messages"></span></th>` +
+            `<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${i18n('Boxes.GuildMemberStat.GexParticipation')}"><span class="gex"></span></th>` +
+            `<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${i18n('Boxes.GuildMemberStat.GbgParticipation')}"><span class="gbg"></span></th>` +
             '<th></th></tr>' +
-            '</thead><tbody class="overview-group">');
+            '</thead><tbody class="gms-group">');
 
         let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
 
@@ -717,7 +729,7 @@ let GuildMemberStat = {
             }
 
             // Get Guild supporting Buildings 
-            if (contribution['guildbuildings'] !== undefined)
+            if (contribution['guildbuildings'] !== undefined && contribution['guildbuildings']['buildings'] != undefined)
             {
                 guildBuildingsCount = contribution['guildbuildings']['buildings'].length;
                 hasDetail = (guildBuildingsCount > 0) ? true : hasDetail;
@@ -728,7 +740,7 @@ let GuildMemberStat = {
             let scoreDiffClass = scoreDiff >= 0 ? 'green' : 'red';
             scoreDiff = scoreDiff > 0 ? '+' + scoreDiff : scoreDiff;
 
-            h.push(`<tr id="invhist${x}" ` +
+            h.push(`<tr id="gms${x}" ` +
                 `class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
                 `${ActWarnCount > 0 ? " data-warnings='" + JSON.stringify(activityWarnings) + "'}'" : ''}` +
                 `${gexActivityCount > 0 ? " data-gex='" + JSON.stringify(gexActivity) + "'}'" : ''}` +
@@ -768,14 +780,14 @@ let GuildMemberStat = {
 
         $('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
 
-            $('.sortable-table').tableSorter();
+            $('#GuildMemberTable').tableSorter();
 
-            $('.gms-tooltip').tooltip({
+            $('#GuildMemberTable .gms-tooltip').tooltip({
                 html: true,
                 container: '#GuildMemberStatBody'
             });
 
-            $('.sortable-table tbody tr').on('click', function () {
+            $('#GuildMemberTable > tbody tr').on('click', function () {
 
                 if ($(this).next("tr.detailview").length)
                 {
@@ -857,10 +869,9 @@ let GuildMemberStat = {
                     if (typeof $(this).attr("data-buildings") !== 'undefined' && $(this).attr("data-buildings") !== '{}')
                     {
                         let guildbuildings = JSON.parse($(this).attr("data-buildings"));
-                        
 
-                        d.push(`<div class="detail-item buidlings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).format(i18n('Date'))})</th><th></th></tr></thead><tbody class="closed">`);
-                        let totalGoods=0;
+                        d.push(`<div class="detail-item buidlings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="closed">`);
+                        let totalGoods = 0;
                         for (let i in guildbuildings['buildings'])
                         {
                             let plbuilding = guildbuildings.buildings[i];
@@ -876,7 +887,7 @@ let GuildMemberStat = {
                     d.push('</div></td></tr>');
 
                     $(d.join('')).insertAfter($('#' + id)).promise().done(function () {
-                        $("thead.hasdetail").off('click').on('click', function () {
+                        $("#GuildMemberTable thead.hasdetail").off('click').on('click', function () {
                             let thead = $(this);
                             if ($(thead).hasClass('open'))
                             {
