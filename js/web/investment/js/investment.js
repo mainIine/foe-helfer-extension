@@ -136,31 +136,31 @@ let Investment = {
 
 		// Table for history
 
-		h.push('<table id="InvestmentTable" class="foe-table sortable-table">');
+		h.push('<table id="InvestmentTable" class="foe-table">');
 		h.push('<thead>' +
 			'<tr class="sorter-header">' +
-			'<th class="case-sensitive" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Player') + '</th>' +
-			'<th class="case-sensitive" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Building') + '</th>' +
-			'<th class="is-number text-center" data-type="overview-group"></th>');
+			'<th class="case-sensitive" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Player') + '</th>' +
+			'<th class="case-sensitive" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Building') + '</th>' +
+			'<th class="is-number text-center" data-type="invest-group"></th>');
 
 		if (showEntryDate)
 		{
-			h.push('<th class="is-number invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+			h.push('<th class="is-number invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
 		}
 
 
-		h.push('<th class="is-number" data-type="overview-group">' + i18n('Boxes.Investment.Overview.Progress') + '</th>');
+		h.push('<th class="is-number" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Progress') + '</th>');
 
 		if (showRestFp)
 		{
-			h.push('<th class="is-number text-center invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
+			h.push('<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
 		}
 
-		h.push('<th class="is-number text-center" data-type="overview-group">&nbsp;</th>' +
-			'<th class="is-number text-center invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.InvestedDesc') + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
-			'<th class="is-number text-center invest-tooltip" data-type="overview-group" title="' + i18n('Boxes.Investment.Overview.ProfitDesc') + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
+		h.push('<th class="is-number text-center" data-type="invest-group">&nbsp;</th>' +
+			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.InvestedDesc') + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
+			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.ProfitDesc') + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
 			'</tr>' +
-			'</thead><tbody class="overview-group">');
+			'</thead><tbody class="invest-group">');
 
 		let CurrentGB = await IndexDB.db.investhistory.reverse().toArray();
 
@@ -266,9 +266,9 @@ let Investment = {
 
 		$('#history-wrapper').html(h.join('')).promise().done(function(){
 
-			$('.sortable-table').tableSorter();
+			$('#InvestmentTable').tableSorter();
 
-			$('.sortable-table tbody tr').on('click', function () {
+			$('#InvestmentTable tbody tr').on('click', function () {
 
 				if ($(this).next("tr.detailview").length)
 				{
