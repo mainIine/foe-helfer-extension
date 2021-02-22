@@ -341,7 +341,7 @@ let GreatBuildings =
                     h.push('<td>-</td>');
                 }
 
-                if (j > 0) {
+                if (j === 0) {
                     if (ShowGoodCosts[Index]) {
                         h.push('<td><input title="' + i18n('Boxes.GreatBuildings.TTGoodCosts') + '" type="number" id="GreatBuildingsGoodCosts' + Index + '" step="1" min="0" max="999999" value="' + GreatBuildings.FPGreatBuildings[Index].GoodCosts + '"></td>');
                     }
@@ -349,7 +349,7 @@ let GreatBuildings =
                         h.push('<td class="text-center">-</td>');
                     }
                 }
-                else { //j=0
+                else { //j>0
                     h.push('<td></td>')
                 }
                                 
