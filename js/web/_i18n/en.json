@@ -209,7 +209,6 @@
     "Boxes.GreatBuildings.HideNewGBs": "Hide GBs not built",
     "Boxes.GreatBuildings.Level": "Level",
     "Boxes.GreatBuildings.RewardPerDay": "Arc: FP Rewards/day from other players",
-    "Boxes.GreatBuildings.Suggestion2": "Suggestion 2",
     "Boxes.GreatBuildings.SuggestionDescription": "GBs at the top of the list are best value",
     "Boxes.GreatBuildings.SuggestionTitle": "FP GB ROI compared",
     "Boxes.GreatBuildings.TTFPPerTile": "How many daily FPs per tile are lost for making space for new GBs? Example: You are removing some Shrines of Knowledge to build a GB => 1FP/5 tiles = 0.2FP/tile",
