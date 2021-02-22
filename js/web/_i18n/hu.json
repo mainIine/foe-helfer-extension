@@ -535,8 +535,6 @@
     "Settings.SendGEXInfo.Title": "C.E. értékelések",
     "Settings.SendGildMemberLGInfo.Desc": "Más céhtagok látogatásakor az összes Lb adatot elküldik a foe-rechner.de címre, amikor a Globális aktiválódik.",
     "Settings.SendGildMemberLGInfo.Title": "Más céhtagok Lb adatai",
-    "Settings.SendInvestigations.Desc": "Belépés a „Városháza”> „Hírek”> „Nevezetes épületek” oldalra, elküldi az FP beruházásokat.",
-    "Settings.SendInvestigations.Title": "FP befektetés",
     "Settings.ShowNotifications.Title": "Értesítések",
     "Settings.ShowOwnPartOnAllGBs.Title": "Saját nevezetes számláló minden nevezetes épülethez",
     "Settings.ShowPlayersMotivation.Desc": "A motivációs tevékenységeket küldje át az események meghívásakor?",

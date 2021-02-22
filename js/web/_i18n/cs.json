@@ -373,8 +373,6 @@
     "Settings.SendGEXInfo.Title": "Vyhodnocení CE",
     "Settings.SendGildMemberLGInfo.Desc": "Po zapnutí se po každé návštěvě měst členů vašeho cechu odešlou data o jejich velkolepých budovách na foe-rechner.de",
     "Settings.SendGildMemberLGInfo.Title": "Velkolepé budovy členů cechu",
-    "Settings.SendInvestigations.Desc": "Otevření radnice'> 'Novinky'> 'Velkolepé budovy' se opošlou data o investování VB na foe-rechner.de",
-    "Settings.SendInvestigations.Title": "Investování VB",
     "Settings.ShowPlayersMotivation.Desc": "Záznamy odesílat na foe-rechner.de",
     "Settings.Tab.Sending": "přenos Dat",
     "Settings.Version.Desc": "Níže uvedená data mohou být označena pro kopírování.",

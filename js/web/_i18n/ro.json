@@ -604,8 +604,6 @@
     "Settings.SendGEXInfo.Title": "Evaluarea EG",
     "Settings.SendGildMemberLGInfo.Desc": "Când vizitezi colegii de ghildă, toate datele CL vor fi trimise către foe-rechner.de, după ce se revine la Global.",
     "Settings.SendGildMemberLGInfo.Title": "Datele clădirilor legendare ale membrilor ghildei",
-    "Settings.SendInvestigations.Desc": "Când accesezi 'Primărie'> 'Noutăți'> 'Clădiri legendare' datele despre PF investite vor fi transmise",
-    "Settings.SendInvestigations.Title": "PF investite",
     "Settings.ShowPlayersMotivation.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
     "Settings.Version.Desc": "Versiunea extensiei pentru ",
     "Settings.Version.GuildId": "ID ghildă:",

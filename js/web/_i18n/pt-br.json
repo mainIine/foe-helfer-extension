@@ -505,8 +505,6 @@
     "Settings.SendGEXInfo.Title": "Avaliações da Expedição da Guilda",
     "Settings.SendGildMemberLGInfo.Desc": "Quando visitar as cidades de outros membros da guilda, todos os dados dos GEs serão enviados também para foe-rechner.de .",
     "Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
-    "Settings.SendInvestigations.Desc": "Enviar dados de investimento em GEs ao entrar na aba da 'Prefeitura'> 'Notícias'> 'Grandes Edifícios'.",
-    "Settings.SendInvestigations.Title": "Investimento PFs",
     "Settings.ShowPlayersMotivation.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?<br><br><em>Reinicie o jogo após mudança</em>",
     "Settings.Version.Desc": "Os dados abaixo podem ser copiados.",
     "Settings.Version.GuildId": "ID da guilda:",

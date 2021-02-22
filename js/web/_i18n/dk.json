@@ -506,8 +506,6 @@
     "Settings.SendGEXInfo.Title": "KE evaluering",
     "Settings.SendGildMemberLGInfo.Desc": "Ved besøg hos klanmedlemmer bliver samtlige SB data overført til foe-rechner.de, hvis global er aktiveret.",
     "Settings.SendGildMemberLGInfo.Title": "Klanmedlemmernes SB data",
-    "Settings.SendInvestigations.Desc": "Overfører FP investeringerne ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i'.",
-    "Settings.SendInvestigations.Title": "FP investeringer",
     "Settings.ShowBlueGalaxyHelper.Desc": "Viser en assistent, der foreslår hvilke bygninger du skal høste efter du har høstet den Blå Galakse",
     "Settings.ShowBlueGalaxyHelper.Title": "Vis den Blå Galakse assistent",
     "Settings.ShowInvestments.Desc": "Ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i' vises en oversigt over investeringer i andre spillers SBer.",
