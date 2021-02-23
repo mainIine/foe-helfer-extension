@@ -162,7 +162,7 @@ let GuildMemberStat = {
             HTML.CloseOpenBox('GuildMemberStat');
             return;
         }
-        
+
         moment.locale(i18n('Local'));
 
         GuildMemberStat.Show();
@@ -248,13 +248,13 @@ let GuildMemberStat = {
 
                         ActiveMembers.push(memberdata[i].player_id);
 
-                        GuildMemberStat.RefreshGuildMemberDB(memberdata[i]);
-
                         // activity is not present when member is offline since 8 days
-                        if (memberdata[i].activity === undefined)
+                        if (typeof memberdata[i].activity === 'undefined')
                         {
                             memberdata[i].activity = 0;
                         }
+
+                        await GuildMemberStat.RefreshGuildMemberDB(memberdata[i]);
 
                         if (GuildMemberStat.hasGuildMemberRights && memberdata[i].activity < 2)
                         {
@@ -268,7 +268,7 @@ let GuildMemberStat = {
                                 }]
                             }
 
-                            GuildMemberStat.SetActivityWarning(Warning, false);
+                            await GuildMemberStat.SetActivityWarning(Warning, false);
                         }
                     }
                 }
@@ -289,8 +289,12 @@ let GuildMemberStat = {
                 localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStatSettings));
 
                 // Array with all valid player_id is send to mark all player_id which ar not in this array as deleted
-                GuildMemberStat.MarkMemberAsDeleted(ActiveMembers); // @Todo: Remove marked members from DB after certain time or in settings
-
+                await GuildMemberStat.MarkMemberAsDeleted(ActiveMembers); // @Todo: Remove marked members from DB after certain time or in settings
+                
+                if (GuildMemberStat.hasGuildMemberRights)
+                {
+                    GuildMemberStat.BuildBox(true);
+                }
                 break;
 
             case 'gex':
@@ -629,6 +633,7 @@ let GuildMemberStat = {
         h.push('<table id="GuildMemberTable" class="foe-table">');
         h.push('<thead>' +
             '<tr class="sorter-header">' +
+            `<th class="is-number" data-type="gms-group"></th>` +
             `<th class="case-sensitive" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
             `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
             `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
@@ -662,6 +667,7 @@ let GuildMemberStat = {
         let CurrentForumActivity = await GuildMemberStat.db.forum.toArray();
 
         let data = CurrentMember;
+        let deletedCount = 0;
 
         for (let x = 0; x < data.length; x++)
         {
@@ -735,7 +741,8 @@ let GuildMemberStat = {
                 hasDetail = (guildBuildingsCount > 0) ? true : hasDetail;
             }
 
-            let deletedMember = (typeof contribution['deleted'] != 'undefined' && contribution['deleted'] != 0) ? true : false;
+            let deletedMember = (typeof contribution['deleted'] !== 'undefined' && contribution['deleted'] != 0) ? true : false;
+            deletedCount += deletedMember ? 1 : 0;
             let scoreDiff = contribution['score'] - contribution['prev_score'];
             let scoreDiffClass = scoreDiff >= 0 ? 'green' : 'red';
             scoreDiff = scoreDiff > 0 ? '+' + scoreDiff : scoreDiff;
@@ -748,7 +755,8 @@ let GuildMemberStat = {
                 `${guildBuildingsCount > 0 ? " data-buildings='" + JSON.stringify(contribution['guildbuildings']) + "'}'" : ''}` +
                 `${deletedMember ? 'title="' + i18n('Boxes.GuildMemberStat.MemberLeavedGuild') + '"' : ''}>`);
 
-            h.push(`<td class="case-sensitive" data-text="${contribution['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['avatar']]}.jpg" alt="${contribution['name']}"> <span style="user-select:text">${contribution['name']}</span></td>`);
+            h.push(`<td class="is-number text-center" data-number="${x * 1 + 1}">${!deletedMember ? '#' + (x * 1 + 1 - deletedCount) : ''}</td>`);
+            h.push(`<td class="case-sensitive copyable" data-text="${contribution['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['avatar']]}.jpg" alt="${contribution['name']}"> <span>${contribution['name']}</span></td>`);
             h.push(`<td class="is-number" data-number="${contribution['score']}">${HTML.Format(contribution['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + scoreDiff + '</span>' : ''}</td>`);
             h.push(`<td class="is-number" data-number="${Technologies.Eras[contribution['era']]}">${i18n('Eras.' + Technologies.Eras[contribution['era']])}</td>`);
 
@@ -779,6 +787,16 @@ let GuildMemberStat = {
         }
 
         $('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
+            
+            // @Todo: Demo Feature ClipboarBbox, integrate or remove?
+            // $("#GuildMemberStat .copy-to-clipboard").on('click', function () {
+            //     
+            //     if (ClipboardBox !== undefined)
+            //     {
+            //         ClipboardBox.AddSelectionToBox();
+            //     }
+
+            // });
 
             $('#GuildMemberTable').tableSorter();
 
@@ -803,6 +821,8 @@ let GuildMemberStat = {
 
                     let d = [];
                     let isNoMemberClass = $(this).hasClass('strikeout') ? ' inactive' : '';
+                    let activityWarnState = ['Red','Yellow'];
+
                     d.push('<tr class="detailview dark-bg' + isNoMemberClass + '"><td colspan="' + $(this).find("td").length + '"><div class="detail-wrapper">');
 
                     $(this).addClass('open');
@@ -810,7 +830,7 @@ let GuildMemberStat = {
 
                     if (typeof $(this).attr("data-warnings") !== 'undefined' && $(this).attr("data-warnings") !== '{}')
                     {
-                        d.push(`<div class="detail-item warnings"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th></tr></thead><tbody>`);
+                        d.push(`<div class="detail-item warnings"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th></tr></thead><tbody class="copyable">`);
 
                         let warnings = JSON.parse($(this).attr("data-warnings"));
 
@@ -823,7 +843,8 @@ let GuildMemberStat = {
                                 {
                                     for (let k in warnlist)
                                     {
-                                        d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k) + 1)}</td><td>${moment(warnlist[k].date).format(i18n('Date'))}</td></tr>`);
+                                        // @Todo: Add translation for activity state
+                                        d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k) + 1)}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td><td>${moment(warnlist[k].date).format(i18n('Date'))}</td></tr>`);
                                     }
                                 }
                             }
@@ -870,7 +891,7 @@ let GuildMemberStat = {
                     {
                         let guildbuildings = JSON.parse($(this).attr("data-buildings"));
 
-                        d.push(`<div class="detail-item buidlings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="closed">`);
+                        d.push(`<div class="detail-item buidlings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="closed copyable">`);
                         let totalGoods = 0;
                         for (let i in guildbuildings['buildings'])
                         {
