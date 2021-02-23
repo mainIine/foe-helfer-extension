@@ -283,3 +283,15 @@
     font-weight: bold;
     text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
+
+#GuildMemberStatBody .copyable{
+    user-select: text;
+}
+
+#GuildMemberStatBody .hidden-text{
+    opacity: 0;
+    display: inline-block;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
