@@ -54,7 +54,7 @@
 		- es muss nur der Browser offen sein, nicht das Spiel um die Benachrichtigungen zu erhalten
 
 
-- Gildengefechte Übersicht: _danke an [vegaz337](https://github.com/vegaz337) für die Vorlage_
+- Gildengefechte Übersicht:
 	- zur Box der Spielerfortschritte, ist nun eine neue Box (im Menü) gekommen, die alle Fortschritte der umkämpften Provinzen in Echtzeit darstellt
 	- ein zweiter Reiter zeigt in Echtzeit an, wann angrenzende Sektoren deiner Gilde, demnächst ihre Sperre verlieren
 	- durch den Klick auf den kleinen Map-Marker, rechts oben in der Box, erscheint eine MiniMap die sich in Echtzeit aktualisiert
