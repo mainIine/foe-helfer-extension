@@ -310,15 +310,3 @@
     height: 1px;
     overflow: hidden;
 }
-
-#GuildMemberStatBody .copyable{
-    user-select: text;
-}
-
-#GuildMemberStatBody .hidden-text{
-    opacity: 0;
-    display: inline-block;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
