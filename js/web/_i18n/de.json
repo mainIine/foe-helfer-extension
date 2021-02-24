@@ -327,7 +327,7 @@
     "Boxes.Market.TradePartner": "Handelspartner",
     "Boxes.Market.TradePartnerFriend": "Freunde",
     "Boxes.Market.TradePartnerGuild": "Gilden Mitglieder",
-    "Boxes.Market.TradePartnerMyself": "Eigene",
+    "Boxes.Market.ShowOwnOffers": "Eigene Angebote",
     "Boxes.Market.TradePartnerNeighbor": "Nachbarn",
     "Boxes.MoppelHelper.Attacks": "Angriffe",
     "Boxes.MoppelHelper.Days": "__days__ Tag(e)",
