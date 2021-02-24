@@ -67,7 +67,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Du betalade __paid__FP istället för __topay__FP. Det är __tooless__FP för mycket.",
     "Boxes.Calculator.TTPaidTooMuch": "Du betalade __paid__FP istället för __topay__FP. Det är __toomuch__FP för lite.",
     "Boxes.Calculator.TTProfit": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Kostnad: __costs__ - Place locked at: __safe__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __costs__<small>(kostnad)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __paid__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __paid__<small>(betalning)</small> = __profit__<br>Place locked at: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Belöning = __nettoreward__<small>(netto vinst)</small> * __arcfactor__%<small>(Ark bonus)</small> = __bruttoreward__<br>Betalade: __paid__<br>Vinst = __bruttoreward__<small>(belöning)</small> - __paid__<small>(betalning)</small> = __profit__",
     "Boxes.Calculator.Title": "Kostnadskalkylator",
     "Boxes.Calculator.Up2LevelUp": "Till nästa nivå",
     "Boxes.Campagne.AlreadyDone": " Redan erövrad!",

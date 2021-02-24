@@ -108,7 +108,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Πληρώσατε __paid__ FP αντί __topay__ FP. Αυτό είναι __tooless__FP λιγότερα.",
     "Boxes.Calculator.TTPaidTooMuch": "Πληρώσατε __paid__ FP αντί __topay__ FP. Αυτό είναι __toomuch__FP περισσότερα.",
     "Boxes.Calculator.TTProfit": "Συν.Ανταμοιβή = __nettoreward__ <small>(Ανταμοιβή)</small> X __arcfactor__% <small>(Μπόνους Θόλου)</small> = __bruttoreward__<br>Κόστος: __costs__ - Θέση κλειδωμένη στη: __safe__ <br>Κέρδος = __bruttoreward__ <small>(Ανταμοιβή)</small> - __costs__ <small>(Κόστος)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Συν.Ανταμοιβή = __nettoreward__ <small>(Ανταμοιβή)</small> * __arcfactor__% <small>(Μπόνους Θόλου)</small> = __bruttoreward__ <br>Πληρωμή: __paid__<br>Κέρδος = __bruttoreward__ <small>(Ανταμοιβή)</ small> - __paid__ <small>(Πληρωμή)</small> = __profit__<br> Θέση κλείδωσε σε: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Συν.Ανταμοιβή = __nettoreward__ <small>(Ανταμοιβή)</small> * __arcfactor__% <small>(Μπόνους Θόλου)</small> = __bruttoreward__ <br>Πληρωμή: __paid__<br>Κέρδος = __bruttoreward__ <small>(Ανταμοιβή)</ small> - __paid__ <small>(Πληρωμή)</small> = __profit__",
     "Boxes.Calculator.Title": "Υπολογιστής Κόστους ΜΚ",
     "Boxes.Calculator.Up2LevelUp": "Υπόλοιπο FP για επόμενο επίπεδο",
     "Boxes.Campagne.AlreadyDone": " Ήδη κατακτήθηκε! Μπράβο :)",

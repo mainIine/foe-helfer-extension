@@ -104,7 +104,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Du hast __paid__FP statt __topay__FP bezahlt. Das sind __tooless__FP zu wenig.",
     "Boxes.Calculator.TTPaidTooMuch": "Du hast __paid__FP statt __topay__FP bezahlt. Das sind __toomuch__FP zu viel.",
     "Boxes.Calculator.TTProfit": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Einsatz: __costs__ - Platz sicher ab: __safe__<br>Differenz = __bruttoreward__<small>(Ertrag)</small> - __costs__<small>(Einsatz)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Bezahlt: __paid__<br>Differenz = __bruttoreward__<small>(Ertrag)</small> - __paid__<small>(Bezahlt)</small> = __profit__<br> Platz sicher ab: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Ertrag = __nettoreward__<small>(Netto Mäzen)</small> * __arcfactor__%<small>(Arche Bonus)</small> = __bruttoreward__<br>Bezahlt: __paid__<br>Differenz = __bruttoreward__<small>(Ertrag)</small> - __paid__<small>(Bezahlt)</small> = __profit__",
     "Boxes.Calculator.Title": "Kostenrechner",
     "Boxes.Calculator.Up2LevelUp": "Bis zum leveln",
     "Boxes.Campagne.AlreadyDone": " Bereits erobert!",

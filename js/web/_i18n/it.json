@@ -95,7 +95,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Hai pagato __paid__PF anziché __topay__PF. __tooless__PF in meno.",
     "Boxes.Calculator.TTPaidTooMuch": "Hai pagato __paid__PF invece di __topay__PF. __toomuch__PF in più.",
     "Boxes.Calculator.TTProfit": "Ricompensa = __nettoreward__ <small>(Ricompensa Netta)</small> * __arcfactor__% <small>(Bonus Arc)</small> = __bruttoreward__<br>Costo: __costs__ - Posizione bloccata: __safe__<br>Profitto = __bruttoreward__ <small>(Ricompensa)</small> - __costs__ <small>(Costo)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (Ricompensa Netta) </small> * __arcfactor__% <small> (Bonus Arc) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Profitto = __bruttoreward__ <small> (Ricompensa) </small> - __paid__ <small> (Pagato) </small> = __profit__<br>Place locked at: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Ricompensa = __nettoreward__ <small> (Ricompensa Netta) </small> * __arcfactor__% <small> (Bonus Arc) </small> = __bruttoreward__ <br> Pagato: __paid__ <br> Profitto = __bruttoreward__ <small> (Ricompensa) </small> - __paid__ <small> (Pagato) </small> = __profit__",
     "Boxes.Calculator.Title": "Calcolatore dei costi",
     "Boxes.Calculator.Up2LevelUp": "Fino al livello successivo",
     "Boxes.Campagne.AlreadyDone": " Già conquistato! Ben fatto :)",
