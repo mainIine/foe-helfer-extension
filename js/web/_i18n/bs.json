@@ -87,7 +87,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Vi ste platili __paid__ FP-a umjesto __topay__ FP-a. To je __tooless__FP-a manje.",
     "Boxes.Calculator.TTPaidTooMuch": "Platili ste __paid__ FP-a umjesto __topay__ FP-a. To je __toomuch__FP-a manje.",
     "Boxes.Calculator.TTProfit": "Nagrada = __nettoreward__ <small>(Net Nagrada)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Nagrada = __nettoreward__ <small>(Net Nagrada)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Platiti: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__<br>Place locked at: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Nagrada = __nettoreward__ <small>(Net Nagrada)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Platiti: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__",
     "Boxes.Calculator.Title": "GB kalkulator troškova",
     "Boxes.Calculator.Up2LevelUp": "Preostalih FP-a za unapređenje",
     "Boxes.Campagne.AlreadyDone": " Već je osvojeno! Odličan posao :)",

@@ -108,7 +108,7 @@
     "Boxes.Calculator.TTPaidTooLess": "<br>Vous avez payé __paid__ PF au lieu de __topay__ PF.<br> Il manque <b>__tooless__</b> PF.",
     "Boxes.Calculator.TTPaidTooMuch": "<br>Vous avez payé __paid__ PF au lieu de __topay__ PF.<br> C'est <b>__toomuch__</b> PF de trop.",
     "Boxes.Calculator.TTProfit": "Récompense = __nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small> = __bruttoreward__ PF<br>Coût : __costs__ - Place sécurisée à : __safe__ PF<br>Gain : __bruttoreward__ <small>(récompense)</small> - __costs__ <small>(coût)</small> = __profit__ PF",
-    "Boxes.Calculator.TTProfitSelf": "Récompense = __nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small> = __bruttoreward__<br>Payé : __paid__<br>Gain = __bruttoreward__ <small>(récompense)</small> - __paid__ <small>(payé)</small> = __profit__<br> Place sécurisée à : __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Récompense = __nettoreward__ <small>(base)</small> x __arcfactor__% <small>(bonus)</small> = __bruttoreward__<br>Payé : __paid__<br>Gain = __bruttoreward__ <small>(récompense)</small> - __paid__ <small>(payé)</small> = __profit__",
     "Boxes.Calculator.Title": "Calculs GM externes",
     "Boxes.Calculator.Up2LevelUp": "Jusqu'au niveau suivant",
     "Boxes.Campagne.AlreadyDone": " Déjà conquis ! Bien joué :)",

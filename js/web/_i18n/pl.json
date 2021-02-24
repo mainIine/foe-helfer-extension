@@ -103,7 +103,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __tooless__ PR za mało.",
     "Boxes.Calculator.TTPaidTooMuch": "Wpłaciłeś __paid__ PR zamiast __topay__ PR, tzn. __toomuch__ PR za dużo.",
     "Boxes.Calculator.TTProfit": "Nagroda = __nettoreward__ <small>(Nagroda netto)</small> X __arcfactor__% <small>(Bonus Arc)</small> = __bruttoreward__<br>Cost: __costs__ - Miejsce zablokowane: __safe__<br>Zysk = __bruttoreward__ <small>(Nagroda)</small> - __costs__ <small>(Koszt)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Zwrot = __nettoreward__<small>(Bazowy zwrot)</small> * __arcfactor__%<small>(Bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Zysk = __bruttoreward__<small>(Zwrot)</small> - __paid__<small>(Wpłata)</small> = __profit__<br> Miejsce zablokowane: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Zwrot = __nettoreward__<small>(Bazowy zwrot)</small> * __arcfactor__%<small>(Bonus Arki)</small> = __bruttoreward__<br>Wpłata: __paid__<br>Zysk = __bruttoreward__<small>(Zwrot)</small> - __paid__<small>(Wpłata)</small> = __profit__",
     "Boxes.Calculator.Title": "Kalkulator budowy pereł (PA)",
     "Boxes.Calculator.Up2LevelUp": "Do zamknięcia",
     "Boxes.Campagne.AlreadyDone": " Już zdobyte! Brawo :)",
