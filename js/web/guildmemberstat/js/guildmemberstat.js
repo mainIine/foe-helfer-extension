@@ -1,3 +1,18 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 guildmemberstat.js
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
+ *
+ * Copyright © 2021
+ *
+ * **************************************************************************************
+ */
+
 FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
     let requestMethod = postData[0]['requestMethod'];
     if (requestMethod === 'getOwnClanData')
@@ -795,6 +810,8 @@ let GuildMemberStat = {
             //     {
             //         ClipboardBox.AddSelectionToBox();
             //     }
+
+            // });
 
             // });
 

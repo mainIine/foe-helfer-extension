@@ -1,3 +1,18 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 guildmemberstat.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
+ *
+ * Copyright © 2021
+ *
+ * **************************************************************************************
+ */
+
 #GuildMemberStat {
     width: 750px;
     height: 600px;
@@ -282,6 +297,18 @@
     color: var(--text-bright);
     font-weight: bold;
     text-shadow: 0 2px 2px black, 0 1px 0 black;
+}
+
+#GuildMemberStatBody .copyable{
+    user-select: text;
+}
+
+#GuildMemberStatBody .hidden-text{
+    opacity: 0;
+    display: inline-block;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 #GuildMemberStatBody .copyable{

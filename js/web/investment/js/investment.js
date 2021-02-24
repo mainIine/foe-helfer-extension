@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              18.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       18.02.21, 09:48 Uhr
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
  *
  * Copyright © 2021
  *
@@ -15,7 +15,6 @@
 
 // LG Investitionen
 FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
-	
 	Investment.Data = data['responseData'];
 
 	Investment.UpdateData(Investment.Data, true).then((e) => {
@@ -24,6 +23,7 @@ FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
 		}
 	});
 
+	Investment.SendToServer();
 });
 
 
@@ -640,6 +640,32 @@ let Investment = {
 			end_value: sumTotal,
 			duration: 750
 		});
-	}
+	},
 
+
+	/**
+	 * If wanted, send to server
+	 */
+	SendToServer: ()=> {
+
+		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendInvestigations')){
+			return;
+		}
+
+		if (MainParser.checkNextUpdate('LGInvestments') !== true){
+			return;
+		}
+
+		if (Investment.Data === null || Investment.Data.length <= 0){
+			return;
+		}
+
+		MainParser.send2Server(Investment.Data, 'LGInvestments', function(r){
+			HTML.ShowToastMsg({
+				head: i18n('API.UpdateSuccess'),
+				text: i18n('API.LGInvest'),
+				type: 'success'
+			});
+		});
+	}
 };
