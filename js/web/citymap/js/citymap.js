@@ -399,8 +399,12 @@ let CityMap = {
 	/**
 	 * Show the submit box
 	 */
-	showSumbitBox: ()=> {
-		if( $('#city-map-submit').length < 1 && $('#CityMapSubmit').length < 1)
+	showSumbitBox: () => {
+		if ($('#CityMapSubmit').length > 0) {
+			$('#CityMapSubmit').remove();
+		}
+
+		if ($('#CityMapSubmit').length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -417,9 +421,6 @@ let CityMap = {
 			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
-		}
-		else {
-			$('#CityMapSubmit').remove();
 		}
 	},
 	/**
