@@ -129,6 +129,11 @@ let GuildMemberStat = {
     GBFId: undefined,
     GEXId: undefined,
     hasGuildMemberRights: false,
+    Settings: {
+        showDeletedMembers: 1,
+        deleteOlderThan: 14,
+        lastupdate: 0
+    },
 
 
     /**
@@ -168,7 +173,7 @@ let GuildMemberStat = {
                 settings: 'GuildMemberStat.GuildMemberStatSettings()'
             });
 
-            $('#GuildMemberStat').append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+            GuildMemberStat.showPreloader('#GuildMemberStat');
 
             HTML.AddCssFile('guildmemberstat');
         }
@@ -179,7 +184,8 @@ let GuildMemberStat = {
         }
 
         moment.locale(i18n('Local'));
-
+        
+        GuildMemberStat.InitSettings();
         GuildMemberStat.Show();
     },
 
@@ -240,6 +246,8 @@ let GuildMemberStat = {
 
     UpdateData: async (source, data) => {
 
+        GuildMemberStat.InitSettings();
+
         GuildMemberStat.hasGuildMemberRights = ExtGuildPermission >= 126 ? true : false;
 
         switch (source)
@@ -299,13 +307,18 @@ let GuildMemberStat = {
                 }
 
                 // Insert update time
-                let GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings') || '{}');
-                GuildMemberStatSettings['lastupdate'] = MainParser.getCurrentDate();
-                localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStatSettings));
+                GuildMemberStat.Settings.lastupdate = MainParser.getCurrentDate();
+                localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStat.Settings));
 
                 // Array with all valid player_id is send to mark all player_id which ar not in this array as deleted
-                await GuildMemberStat.MarkMemberAsDeleted(ActiveMembers); // @Todo: Remove marked members from DB after certain time or in settings
-                
+                await GuildMemberStat.MarkMemberAsDeleted(ActiveMembers);
+
+                //Delete ex members which delete data is older than the given days [ 0 = no deletion ]
+                if (GuildMemberStat.Settings.deleteOlderThan > 0)
+                {
+                    await GuildMemberStat.DeleteExMembersOlderThan(GuildMemberStat.Settings.deleteOlderThan);
+                }
+
                 if (GuildMemberStat.hasGuildMemberRights)
                 {
                     GuildMemberStat.BuildBox(true);
@@ -628,12 +641,50 @@ let GuildMemberStat = {
         {
             return;
         }
+
         for (let i in unknownMembers)
         {
-            await GuildMemberStat.db.player.update(unknownMembers[i].id, {
-                deleted: MainParser.getCurrentDate()
-            });
+            if (unknownMembers.deleted === 0)
+            {
+                await GuildMemberStat.db.player.update(unknownMembers[i].id, {
+                    deleted: MainParser.getCurrentDate()
+                });
+            }
         }
+    },
+
+
+    DeleteExMembersOlderThan: async (days) => {
+
+        let currentExMembers = await GuildMemberStat.db.player.where('deleted').notEqual(0).toArray();
+
+        if (currentExMembers === undefined || currentExMembers.length <= 0)
+        {
+            return;
+        }
+
+        currentExMembers.forEach(member => {
+
+            var time = +moment(member.deleted);
+
+            if (Math.floor((+MainParser.getCurrentDate() - time) / 86400000) > days)
+            {
+                let db = GuildMemberStat.db;
+
+                db.transaction("rw", db.player, db.gex, db.gbg, db.activity, db.warning, db.forum, async () => {
+
+                    await GuildMemberStat.db.player.where('id').equals(member.id).delete();
+                    await GuildMemberStat.db.gex.where('player_id').equals(member.player_id).delete();
+                    await GuildMemberStat.db.gbg.where('player_id').equals(member.player_id).delete();
+                    await GuildMemberStat.db.activity.where('player_id').equals(member.player_id).delete();
+                    await GuildMemberStat.db.warning.where('player_id').equals(member.player_id).delete();
+                    await GuildMemberStat.db.forum.where('player_id').equals(member.player_id).delete();
+
+                });
+
+            }
+
+        });
     },
 
 
@@ -641,9 +692,7 @@ let GuildMemberStat = {
 
         let h = [];
 
-        let GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
-        let lastupdate = (GuildMemberStatSettings && GuildMemberStatSettings.lastupdate !== undefined) ? GuildMemberStatSettings.lastupdate : 0;
-
+        GuildMemberStat.InitSettings();
 
         h.push('<table id="GuildMemberTable" class="foe-table">');
         h.push('<thead>' +
@@ -757,10 +806,16 @@ let GuildMemberStat = {
             }
 
             let deletedMember = (typeof contribution['deleted'] !== 'undefined' && contribution['deleted'] != 0) ? true : false;
-            deletedCount += deletedMember ? 1 : 0;
+
+            if (deletedMember && !GuildMemberStat.Settings.showDeletedMembers)
+            {
+                continue;
+            }
+
             let scoreDiff = contribution['score'] - contribution['prev_score'];
             let scoreDiffClass = scoreDiff >= 0 ? 'green' : 'red';
             scoreDiff = scoreDiff > 0 ? '+' + scoreDiff : scoreDiff;
+            deletedCount += deletedMember ? 1 : 0;
 
             h.push(`<tr id="gms${x}" ` +
                 `class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
@@ -787,10 +842,10 @@ let GuildMemberStat = {
 
         h.push(`</tbody></table>`);
 
-        if (lastupdate != 0)
+        if (GuildMemberStat.Settings.lastupdate != 0)
         {
             let uptodateClass = 'uptodate';
-            let date = moment(lastupdate).unix();
+            let date = moment(GuildMemberStat.Settings.lastupdate).unix();
             let actdate = moment(MainParser.getCurrentDate()).unix();
 
             if (actdate - date >= 10800)
@@ -798,11 +853,11 @@ let GuildMemberStat = {
                 uptodateClass = 'updaterequired';
             }
 
-            h.push(`<div class="last-update-message"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(lastupdate).format(i18n('DateTime'))}</span></div>`);
+            h.push(`<div class="last-update-message"><span class="icon ${uptodateClass}"></span> <span class="${uptodateClass}">${moment(GuildMemberStat.Settings.lastupdate).format(i18n('DateTime'))}</span></div>`);
         }
 
         $('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
-            
+
             // @Todo: Demo Feature ClipboardBox, integrate or remove?
             // $("#GuildMemberStat .copy-to-clipboard").on('click', function () {
             //     
@@ -836,7 +891,7 @@ let GuildMemberStat = {
 
                     let d = [];
                     let isNoMemberClass = $(this).hasClass('strikeout') ? ' inactive' : '';
-                    let activityWarnState = ['Red','Yellow'];
+                    let activityWarnState = ['Red', 'Yellow'];
 
                     d.push('<tr class="detailview dark-bg' + isNoMemberClass + '"><td colspan="' + $(this).find("td").length + '"><div class="detail-wrapper">');
 
@@ -941,27 +996,59 @@ let GuildMemberStat = {
             });
 
             // Fade out loading screen
-            $("#gms-loading-data").fadeOut(800);
+            $("#gms-loading-data").fadeOut(800, function () { $(this).remove() });
         });
+    },
+
+
+    InitSettings: () => {
+
+        let GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
+        GuildMemberStat.Settings.lastupdate = (GuildMemberStatSettings && GuildMemberStatSettings.lastupdate !== undefined) ? GuildMemberStatSettings.lastupdate : 0;
+        GuildMemberStat.Settings.showDeletedMembers = (GuildMemberStatSettings && GuildMemberStatSettings.showDeletedMembers !== undefined) ? GuildMemberStatSettings.showDeletedMembers : GuildMemberStat.Settings.showDeletedMembers;
+        GuildMemberStat.Settings.deleteOlderThan = (GuildMemberStatSettings && GuildMemberStatSettings.deleteOlderThan !== undefined) ? GuildMemberStatSettings.deleteOlderThan : GuildMemberStat.Settings.deleteOlderThan;
+
     },
 
 
     GuildMemberStatSettings: () => {
 
         let c = [];
-        GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
+        let deleteAfterDays = [0, 3, 7, 14, 31]
 
+        c.push(`<p class="text-center"><input id="gmsShowDeletedMembers" name="showdeletedmembers" value="1" type="checkbox" ${(GuildMemberStat.Settings.showDeletedMembers === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowDeletedMembers">${i18n('Boxes.GuildMemberStat.ShowDeletedMembers')}</label></p>`);
+        c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.DeleteExMembersAfter')} <select id="gmsDeleteOlderThan" name="deleteolderthan">`);
+
+        deleteAfterDays.forEach(days => {
+            let option = days + ' ' + i18n('Boxes.GuildMemberStat.Days');
+            if (days === 0)
+                option = i18n('Boxes.GuildMemberStat.Never');
+            c.push(`<option value="${days}" ${GuildMemberStat.Settings.deleteOlderThan == days ? ' selected="selected"' : ''}>${option}</option>`);
+        });
+
+        c.push(`</select>`);
         c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn btn-default" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
         $('#GuildMemberStatSettingsBox').html(c.join(''));
     },
 
 
-    SettingsSaveValues: () => {
+    SettingsSaveValues: async () => {
 
-        let value = JSON.parse(localStorage.getItem('GuildMemberStatSettings') || '{}');
+        let tmpDeleteOlder = parseInt($('#gmsDeleteOlderThan').val());
 
-        localStorage.setItem('InvestmentSettings', JSON.stringify(value));
+        GuildMemberStat.Settings.showDeletedMembers = $("#gmsShowDeletedMembers").is(':checked') ? 1 : 0;
+
+        if (GuildMemberStat.Settings.deleteOlderThan != tmpDeleteOlder && tmpDeleteOlder > 0)
+        {
+            GuildMemberStat.showPreloader('#GuildMemberStat');
+
+            await GuildMemberStat.DeleteExMembersOlderThan(tmpDeleteOlder);
+        }
+
+        GuildMemberStat.Settings.deleteOlderThan = tmpDeleteOlder;
+
+        localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStat.Settings));
 
         $(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
             $(this).remove();
@@ -972,10 +1059,17 @@ let GuildMemberStat = {
     // helper functions
     uniq_array: (a) => {
 
-        var seen = {};
+        let seen = {};
         return a.filter(function (item) {
             return seen.hasOwnProperty(item) ? false : (seen[item] = true);
         });
+    },
+
+
+    showPreloader: (id) => {
+
+        $(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+
     },
 
 
