@@ -803,15 +803,13 @@ let GuildMemberStat = {
 
         $('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
             
-            // @Todo: Demo Feature ClipboarBbox, integrate or remove?
+            // @Todo: Demo Feature ClipboardBox, integrate or remove?
             // $("#GuildMemberStat .copy-to-clipboard").on('click', function () {
             //     
             //     if (ClipboardBox !== undefined)
             //     {
             //         ClipboardBox.AddSelectionToBox();
             //     }
-
-            // });
 
             // });
 
