@@ -1,6 +1,31 @@
 ## Changelog - Extension
 
 
+##### 2.5.6.2
+
+**Update**
+- Production Overview:
+    - [#1668](https://github.com/dsiekiera/foe-helfer-extension/issues/1668) Attack and Defence have been added as new tabs.
+
+- Guild Battles:
+    - improved view if province has no owner yet
+
+- Investments:
+    - [#1853](https://github.com/dsiekiera/foe-helfer-extension/issues/1853) Investments can be ignored - and squares can be shown as "safe" only
+
+**BugFix**
+- Menu:
+    - [#1861](https://github.com/dsiekiera/foe-helfer-extension/issues/1861) Due to a case sensitive bug, the alert icon could not be moved, or disappeared
+
+- Alerts:
+    - [#1848](https://github.com/dsiekiera/foe-helfer-extension/issues/1848) Firefox bug: alert could not be created
+
+- Investments:
+    - [#1854](https://github.com/dsiekiera/foe-helfer-extension/issues/1854) Wrong sorting of entry time for investments corrected
+
+---
+
+
 ##### 2.5.6.1
 
 **Update**
