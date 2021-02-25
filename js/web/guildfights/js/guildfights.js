@@ -753,6 +753,7 @@ let GildFights = {
 							$('<span />').css({'background-color':pColor['main']}).attr({class: 'province-color'}),
 							$('<b />').text(mD['title']),
 						),
+						// @todo: dont add guild name when disabled via settings
 						$('<td />').text(p['clan']['name']),
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,

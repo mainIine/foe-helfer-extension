@@ -161,17 +161,17 @@
 }
 
 #GuildMemberStatBody tr th span.gex {
-    background: url(../images/gex_th.png) center no-repeat;
+    background: url(../../x_img/ge.png) center no-repeat;
     background-size: contain;
 }
 
 #GuildMemberStatBody tr th span.gbg {
-    background: url(../images/gbg_th.png) center no-repeat;
+    background: url(../../x_img/gbg-gray.png) center no-repeat;
     background-size: contain;
 }
 
 #GuildMemberStatBody tr th span.messages {
-    background: url(../images/posts_th.png) center no-repeat;
+    background: url(../../x_img/msg.png) center no-repeat;
     background-size: contain;
 }
 
