@@ -96,7 +96,7 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable td:first-child {
-	background: url(../images/gbg-gray.png) center center no-repeat;
+	background: url(../../x_img/gbg-gray.png) center center no-repeat;
 	background-size: contain;
 	width: 30px;
 }
@@ -111,76 +111,76 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable .msg td:first-child {
-	background-image: url(../images/msg.png);
+	background-image: url(../../x_img/msg.png);
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .msg-important td:first-child {
-	background-image: url(../images/msg-important.png);
+	background-image: url(../../x_img/msg-important.png);
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .msg-favorite td:first-child {
-	background-image: url(../images/msg-favorite.png);
+	background-image: url(../../x_img/msg-favorite.png);
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .auction td:first-child {
-	background-image: url(../images/ant.png);
+	background-image: url(../../x_img/ant.png);
 }
 
 #BackgroundInfoTable .gex td:first-child {
-	background-image: url(../images/ge.png);
+	background-image: url(../../x_img/ge.png);
 }
 
 #BackgroundInfoTable .level td:first-child {
-	background-image: url(../images/gb.png);
+	background-image: url(../../x_img/gb.png);
 }
 
 #BackgroundInfoTable .trade td:first-child {
-	background-image: url(../images/trade.png);
+	background-image: url(../../x_img/trade.png);
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .gbg-red td:first-child {
-	background-image: url(../images/gbg-red.png);
+	background-image: url(../../x_img/gbg-red.png);
 }
 
 #BackgroundInfoTable .gbg-green td:first-child {
-	background-image: url(../images/gbg-green.png);
+	background-image: url(../../x_img/gbg-green.png);
 }
 
 #BackgroundInfoTable .gbg-yellow td:first-child {
-	background-image: url(../images/gbg-yellow.png);
+	background-image: url(../../x_img/gbg-yellow.png);
 }
 
 #BackgroundInfoTable .gbg-teal td:first-child {
-	background-image: url(../images/gbg-teal.png);
+	background-image: url(../../x_img/gbg-teal.png);
 }
 
 #BackgroundInfoTable .gbg-orange td:first-child {
-	background-image: url(../images/gbg-orange.png);
+	background-image: url(../../x_img/gbg-orange.png);
 }
 
 #BackgroundInfoTable .gbg-blue td:first-child {
-	background-image: url(../images/gbg-blue.png);
+	background-image: url(../../x_img/gbg-blue.png);
 }
 
 #BackgroundInfoTable .gbg-purple td:first-child {
-	background-image: url(../images/gbg-purple.png);
+	background-image: url(../../x_img/gbg-purple.png);
 }
 
 #BackgroundInfoTable .gbg-pink td:first-child {
-	background-image: url(../images/gbg-pink.png);
+	background-image: url(../../x_img/gbg-pink.png);
 }
 
 #BackgroundInfoTable .gbg-lock td:first-child {
-	background-image: url(../images/gbg-lock.png);
+	background-image: url(../../x_img/gbg-lock.png);
 	background-size: 30px;
 }
 
 #BackgroundInfoTable .gbg-undefined td:first-child {
-	background-image: url(../images/gbg-undefined.png);
+	background-image: url(../../x_img/gbg-undefined.png);
 }
 
 input.textfilter{
