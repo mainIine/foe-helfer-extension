@@ -175,6 +175,14 @@
     background-size: contain;
 }
 
+#GuildMemberStatBody tr th span.edit {
+    width: 16px;
+    height: 16px;
+    background: url(../images/edit.png) center no-repeat;
+    background-size: contain;
+
+}
+
 #GuildMemberStatBody tr th span.guildbuild {
     background: transparent url(../../productions/images/productions.png) -238px 0px no-repeat;
 }
@@ -299,14 +307,53 @@
     text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
 
-#GuildMemberStatBody .copyable{
+#GuildMemberStatBody .copyable {
     user-select: text;
 }
 
-#GuildMemberStatBody .hidden-text{
+#GuildMemberStatBody .hidden-text {
     opacity: 0;
     display: inline-block;
     width: 1px;
     height: 1px;
     overflow: hidden;
+}
+
+#GuildMemberStat .deleteButton {
+    background: #ff000036;
+    border: 1px solid #f800005c;
+    border-radius: 2em;
+    color: #fff;
+    font-size: 14px;
+    height: 18px;
+    padding: 0;
+    text-align: center;
+    width: 18px;
+    position: absolute;
+    right: 4px;
+    top: 1px;
+    cursor: pointer;
+    display: none;
+}
+
+#GuildMemberStat #gms-filter-input {
+    width: 100%;
+}
+
+#GuildMemberStat .warningoverlay {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #150f09f2;
+}
+#GuildMemberStat .warningoverlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }
