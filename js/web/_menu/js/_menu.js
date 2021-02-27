@@ -25,12 +25,8 @@ let _menu = {
 	HudHeight: 0,
 	HudWidth: 0,
 
-	MenuOptions:[
-		{'BottomBar':"_menu_bottom.BuildOverlayMenu()"},
-		{'RightBar':"_menu_right.BuildOverlayMenu()"},
-		{'Box':"_menu_box.BuildBoxMenu()"}
-	],
-
+	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
+	
 	Items: [
 		'calculator',
 		'partCalc',
@@ -68,14 +64,15 @@ let _menu = {
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
-
-		for (let index = 0; index < _menu.MenuOptions.length; index++)
-		{
-			const element = _menu.MenuOptions[index];
-			if(element[selMenu]){
-				eval(element[selMenu]);
-			}
+		if (selMenu === 'BottomBar') {
+			_menu_bottom.BuildOverlayMenu();
 		}
+		else if (selMenu === 'RightBar') {
+			_menu_right.BuildOverlayMenu();
+		}
+		else if (selMenu === 'Box') {
+			_menu_box.BuildBoxMenu();
+        }
 
 		if(Settings.GetSetting('AutoOpenInfoBox')){
 			Infoboard.Show();
