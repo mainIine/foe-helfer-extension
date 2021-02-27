@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:49 Uhr
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -42,7 +42,8 @@ let _menu_bottom = {
 		$('body').append(hud).promise().done(function(){
 
 			// Buttons einfügen
-			_menu_bottom.ListLinks();
+			_menu.ListLinks(_menu_bottom.InsertMenuItem);
+			_menu_bottom.CheckButtons();
 
 			// korrekten Platz für das Menu ermitteln
 			_menu_bottom.SetMenuWidth();
@@ -54,6 +55,36 @@ let _menu_bottom = {
 		window.onresize = function (event) {
 			_menu_bottom.SetMenuWidth(true);
 		};
+	},
+
+
+	/**
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#foe-helper-hud-slider').append(MenuItem);
+	},
+
+
+	/**
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#foe-helper-hud-slider').append(MenuItem);
+	},
+
+
+	/**
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#foe-helper-hud-slider').append(MenuItem);
 	},
 
 
@@ -112,95 +143,7 @@ let _menu_bottom = {
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
 		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
-
-
-	/**
-	 * Bindet alle benötigten Button ein
-	 *
-	 */
-	ListLinks: () => {
-		let hudSlider = $('#foe-helper-hud-slider'),
-			StorgedItems = localStorage.getItem('MenuSort');
-
-		// Beta-Funktionen
-		if (HelperBeta.active) {
-			_menu.Items.unshift(...HelperBeta.menu);
-		}
-
-		if (StorgedItems !== null) {
-			let storedItems = JSON.parse(StorgedItems);
-
-			// es ist kein neues Item hinzugekommen
-			if (_menu.Items.length === storedItems.length) {
-				_menu.Items = JSON.parse(StorgedItems);
-			}
-
-			// ermitteln in welchem Array was fehlt...
-			else {
-				let missingMenu = storedItems.filter(function (sI) {
-					return !_menu.Items.some(function (mI) {
-						return sI === mI;
-					});
-				});
-
-				let missingStored = _menu.Items.filter(function (mI) {
-					return !storedItems.some(function (sI) {
-						return sI === mI;
-					});
-				});
-
-				_menu.Items = JSON.parse(StorgedItems);
-
-				let items = missingMenu.concat(missingStored);
-
-				// es gibt tatsächlich was neues...
-				if (items.length > 0) {
-					for (let i in items) {
-						if (!items.hasOwnProperty(i)) {
-							break;
-						}
-
-						// ... neues kommt vorne dran ;-)
-						_menu.Items.unshift(items[i]);
-					}
-				}
-			}
-		}
-
-		// Beta-Funktionen rausfiltern
-		_menu.Items = _menu.Items.filter(e => {
-			if (HelperBeta.active) return true;
-			if (HelperBeta.menu.includes(e)) return false;
-			return true;
-		});
-
-		// Dubletten rausfiltern
-		function unique(arr) {
-			return arr.filter(function (value, index, self) {
-				return self.indexOf(value) === index;
-			});
-		}
-
-		_menu.Items = unique(_menu.Items);
-
-		// Menüpunkte einbinden
-		for (let i in _menu.Items) {
-			if (!_menu.Items.hasOwnProperty(i)) {
-				break;
-			}
-
-			const name = _menu.Items[i] + '_Btn';
-
-			// gibt es eine Funktion?
-			if (_menu[name] !== undefined) {
-				hudSlider.append(_menu[name]());
-			}
-		}
-
-		_menu.Items = _menu.Items.filter(e => e);
-		_menu_bottom.CheckButtons();
-	},
-
+	
 
 	/**
 	 * Panel scrollbar machen

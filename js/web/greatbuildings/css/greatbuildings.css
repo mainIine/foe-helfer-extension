@@ -23,7 +23,6 @@
 #greatbuildings #greatbuildingsBody {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 600px;
 }
 
 #greatbuildings #greatbuildingsBody strong.success {
