@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:30 Uhr
+ * erstellt am:	              16.02.21, 23:02 Uhr
+ * zuletzt bearbeitet:       16.02.21, 21:46 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -75,19 +75,18 @@ let Unit = {
 	Show: ()=> {
 
 		if ($('#UnitOverview').length === 0) {
+			HTML.AddCssFile('unit');
+
 			let args = {
-				'id': 'UnitOverview',
-				'title': i18n('Boxes.Units.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true
+				id: 'UnitOverview',
+				title: i18n('Boxes.Units.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true
 			};
 
 			HTML.Box(args);
 			moment.locale(i18n('Local'));
-
-			// CSS in den DOM prügeln
-			HTML.AddCssFile('unit');
 
 		} else {
 			HTML.CloseOpenBox('UnitOverview');

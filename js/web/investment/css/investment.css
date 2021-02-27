@@ -1,3 +1,18 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 investment.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
+ *
+ * Copyright © 2021
+ *
+ * **************************************************************************************
+ */
+
 #Investment {
 	width: 750px;
 	height: 450px;
@@ -23,6 +38,7 @@
 
 #InvestmentBody #history-wrapper {
 	border-top: 2px solid var(--text-bright);
+	margin-bottom: 18px;
 }
 
 #InvestmentBody table {
@@ -146,7 +162,78 @@
 #InvestmentBody #hidden-bar.hide{
 	display:none;
 }
+
 #InvestmentBody #hidden-bar img{
 	width: 16px;
 	height: 16px;
+}
+
+#InvestmentBody .last-update-message {
+    position: absolute;
+    bottom: 1px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.392);
+    padding: 1px 10px 1px 5px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    line-height: 18px;
+    display: flex;
+}
+
+#InvestmentBody .last-update-message .updaterequired {
+    color: var(--text-bright);
+}
+
+#InvestmentBody .last-update-message span.icon {
+    display: block;
+    text-indent: -9999px;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+#InvestmentBody .last-update-message .icon.uptodate {
+    background: url(../images/uptodate.svg);
+	background-size: 18px 18px;
+
+}
+
+#InvestmentBody .last-update-message .icon.updaterequired {
+    background: url(../images/update_required.svg);
+	background-size: 18px 18px;
+}
+
+#InvestmentBody .last-update-message {
+    position: absolute;
+    bottom: 1px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.392);
+    padding: 1px 10px 1px 5px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    line-height: 18px;
+    display: flex;
+}
+
+#InvestmentBody .last-update-message .updaterequired {
+    color: var(--text-bright);
+}
+
+#InvestmentBody .last-update-message span.icon {
+    display: block;
+    text-indent: -9999px;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+#InvestmentBody .last-update-message .icon.uptodate {
+    background: url(../images/uptodate.svg);
+	background-size: 18px 18px;
+
+}
+
+#InvestmentBody .last-update-message .icon.updaterequired {
+    background: url(../images/update_required.svg);
+	background-size: 18px 18px;
 }

@@ -34,7 +34,7 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
 /**
  * Market function
  *
- * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradePartnerMyself: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: Market.TestGoodFilter, TestFilter: Market.TestFilter, TradeFairStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, CalcBody: Market.CalcBody, TradeForLower: boolean}}
+ * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: (function(*, *): boolean), TestFilter: (function(*): boolean), TradeFairStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, OnlyAffordable: boolean, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, ShowOwnOffers: boolean, CalcBody: Market.CalcBody, TradeForLower: boolean}}
  */
 let Market = {
     Trades: [],
@@ -44,10 +44,10 @@ let Market = {
     MaxResults: 100,
     OnlyAffordable: false,
 
-    TradePartnerNeighbor : false,
-    TradePartnerGuild : false,
-    TradePartnerFriend: false,
-    TradePartnerMyself: false,
+    TradePartnerNeighbor: true,
+    TradePartnerGuild: true,
+    TradePartnerFriend: true,
+    ShowOwnOffers: false,
 
     TradeForHigher: true,
     TradeForEqual: true,
@@ -66,16 +66,18 @@ let Market = {
 	 * Create a div-box for the DOM + Eventlistener
 	 */
     Show: ()=> {
-        if ($('#Market').length === 0) {
+        if ($('#Market').length === 0)
+        {
             HTML.Box({
-                'id': 'Market',
-                'title': i18n('Boxes.Market.Title'),
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': true
+                id: 'Market',
+                title: i18n('Boxes.Market.Title'),
+                auto_close: true,
+                dragdrop: true,
+                minimize: true,
+                resize: true
             });
 
-            // CSS in den DOM prügeln
+            // add css to DOM
             HTML.AddCssFile('market');
 
 
@@ -114,8 +116,8 @@ let Market = {
                 Market.CalcBody();
             });
 
-            $('#Market').on('click', '.tradepartnermyself', function () {
-                Market.TradePartnerMyself = !Market.TradePartnerMyself;
+            $('#Market').on('click', '.showownoffers', function () {
+                Market.ShowOwnOffers = !Market.ShowOwnOffers;
                 Market.CalcBody();
             });
 
@@ -277,7 +279,7 @@ let Market = {
         h.push('<tr>');
         h.push('<td><label class="game-cursor" for="maxresults">' + i18n('Boxes.Market.MaxResults') + '</label></td>');
         h.push('<td><input type="number" id="maxresults" step="1" min="1" max="1000000" value="' + Market.MaxResults + '"></td>');
-        h.push('<td><label class="game-cursor"><input class="tradepartnermyself game-cursor" ' + (Market.TradePartnerMyself ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerMyself') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="showownoffers game-cursor" ' + (Market.ShowOwnOffers ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.ShowOwnOffers') + '</label></td>');
         h.push('<td></td>');
         h.push('<td><label class="game-cursor"><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</label></td>');
         h.push('</tr>');
@@ -386,10 +388,17 @@ let Market = {
         }
 
         //Tradepartner
-        if (!((Market.TradePartnerNeighbor && Trade['merchant']['is_neighbor'] && !Trade['merchant']['is_self']) || (Market.TradePartnerGuild && Trade['merchant']['is_guild_member'] && !Trade['merchant']['is_self']) || (Market.TradePartnerFriend && Trade['merchant']['is_friend'] && !Trade['merchant']['is_self']) || (Trade['merchant']['is_self'] && Market.TradePartnerMyself))) {
-            return false;
+        if (Trade['merchant']['is_self']) {
+            if (!Market.ShowOwnOffers) {
+                return false;
+            }
         }
-
+        else { //Not self
+            if (!((Market.TradePartnerNeighbor && Trade['merchant']['is_neighbor']) || (Market.TradePartnerGuild && Trade['merchant']['is_guild_member']) || (Market.TradePartnerFriend && Trade['merchant']['is_friend']))) {
+                return false;
+            }
+        }
+        
         let OfferGoodID = Trade['offer']['good_id'],
             NeedGoodID = Trade['need']['good_id'],
             OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],

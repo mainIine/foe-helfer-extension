@@ -25,6 +25,7 @@ let CityMap = {
 	CityView: 'skew',
 	UnlockedAreas: null,
 	OccupiedArea: 0,
+	EfficiencyFactor: 0,
 	IsExtern: false,
 
 
@@ -116,12 +117,7 @@ let CityMap = {
 		let oB = $('#city-map-overlayBody'),
 			w = $('<div />').attr({'id':'wrapper'});
 
-		if(CityMap.IsExtern === false){
-			w.append( $('<div />').attr({'id': 'map-container', 'class':'dark-bg' }).append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
-		} else {
-			w.append( $('<div />').attr({'id': 'map-container', 'class':'dark-bg' }).addClass('with-sidebar').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) );
-		}
-
+			w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -237,7 +233,8 @@ let CityMap = {
 		$('#grid-outer').find('.entity').remove();
 
 		CityMap.OccupiedArea = 0;
-        	CityMap.OccupiedArea2 = [];
+		CityMap.OccupiedArea2 = [];
+		let StreetsNeeded = 0;
 
 		if(CityMap.IsExtern === false) {
 			// Unlocked Areas rendern
@@ -271,10 +268,19 @@ let CityMap = {
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
 
-			CityMap.OccupiedArea += (parseInt(d['width']) * parseInt(d['length']));
+			let AreaNeeded = parseInt(d['width']) * parseInt(d['length']);
+			CityMap.OccupiedArea += (AreaNeeded);
             
-		        if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
-		        CityMap.OccupiedArea2[d.type] += (parseInt(d['width']) * parseInt(d['length']));
+		    if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+			CityMap.OccupiedArea2[d.type] += (AreaNeeded);
+
+			if (d.type !== 'street' && CityMap.CityData[b]['state']['__class__'] !== 'UnconnectedState') {
+				let RequiredStreet = d['requirements']['street_connection_level'] | 0
+
+				if (RequiredStreet) {
+					StreetsNeeded += Math.min(parseFloat(d['width']), parseFloat(d['length'])) * RequiredStreet / 2;
+				}
+			}
 
 			// Search age
 			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
@@ -315,6 +321,9 @@ let CityMap = {
 			$('#grid-outer').append( f );
 		}
 
+		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
+		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
+
 		// Gebäudenamen via Tooltip
 		$('.entity').tooltip({
 			container: '#city-map-overlayBody',
@@ -347,8 +356,12 @@ let CityMap = {
 		}
 
 		$('.total-area').html(txtTotal);
-		$('.occupied-area').html(txtFree);
-        
+
+		// Non player city => Unlocked areas cant be detected => dont show free space
+		if (!CityMap.IsExtern) {
+			$('.occupied-area').html(txtFree);
+        }
+		
 		sortable = [];
 		for( x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
 		sortable.sort((a, b) => a[1] - b[1]);
@@ -357,10 +370,14 @@ let CityMap = {
 		let txtCount = [];
 		for( x in sortable ){
 		    let type =  sortable[x][0];
-			type = i18n('Boxes.CityMap.' + type)
+			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
 		    const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
-		    const str = `${type}:<br> ${count} (${pct}%)<br><br>`;
+			let str = `${TypeName}:<br> ${count} (${pct}%)<br>`;
+			if (type === 'street') {
+				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
+			}
+			str = str + '<br>';
 		    txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
@@ -382,8 +399,12 @@ let CityMap = {
 	/**
 	 * Show the submit box
 	 */
-	showSumbitBox: ()=> {
-		if( $('#city-map-submit').length < 1 && $('#CityMapSubmit').length < 1)
+	showSumbitBox: () => {
+		if ($('#CityMapSubmit').length > 0) {
+			$('#CityMapSubmit').remove();
+		}
+
+		if ($('#CityMapSubmit').length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -400,9 +421,6 @@ let CityMap = {
 			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
-		}
-		else {
-			$('#CityMapSubmit').remove();
 		}
 	},
 	/**
