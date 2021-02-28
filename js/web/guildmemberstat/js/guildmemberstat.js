@@ -25,7 +25,7 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
             $('#guildmemberstat-Btn-closed').remove();
         }
 
-        if (GuildMemberStat.Data !== undefined)
+        if (GuildMemberStat.Data !== undefined && !GuildMemberStat.hasUpdateProgress)
         {
             GuildMemberStat.UpdateData('clandata', null);
         }
@@ -130,6 +130,7 @@ let GuildMemberStat = {
     GEXId: undefined,
     hasGuildMemberRights: false,
     acceptedDeleteWarning: false,
+    hasUpdateProgress: false,
     Settings: {
         autoStartOnUpdate: 1,
         showDeletedMembers: 1,
@@ -268,11 +269,14 @@ let GuildMemberStat = {
 
                 let ActiveMembers = [];
 
+                GuildMemberStat.hasUpdateProgress = true;
+                
                 for (let i in memberdata)
                 {
                     if (memberdata.hasOwnProperty(i))
                     {
                         memberdata[i]['activity'] = GuildMemberStat.hasGuildMemberRights ? memberdata[i]['activity'] : null;
+                        memberdata[i]['rank'] = (i * 1 + 1);
 
                         ActiveMembers.push(memberdata[i].player_id);
 
@@ -354,6 +358,10 @@ let GuildMemberStat = {
                     }
                 }
 
+                if ($('#GuildMemberStatBody').length)
+                {
+                    GuildMemberStat.Show();
+                }
                 break;
 
             case 'gbg':
@@ -376,6 +384,11 @@ let GuildMemberStat = {
                         }
                         GuildMemberStat.RefreshPlayerGBGDB(gbgDB);
                     }
+                }
+
+                if ($('#GuildMemberStatBody').length)
+                {
+                    GuildMemberStat.Show();
                 }
 
                 break;
@@ -611,6 +624,7 @@ let GuildMemberStat = {
                 avatar: Member['avatar'],
                 score: Member['score'],
                 prev_score: Member['score'],
+                rank: [Member['rank'], Member['rank']],
                 is_online: Member['is_online'],
                 is_active: Member['is_active'],
                 city_name: Member['city_name'],
@@ -622,12 +636,15 @@ let GuildMemberStat = {
         }
         else
         {
+            let prevRank = typeof CurrentMember.rank !== 'undefined' ? CurrentMember.rank[1] : Member['rank'];
+
             await GuildMemberStat.db.player.update(CurrentMember.id, {
                 name: Member['name'],
                 era: Member['era'],
                 avatar: Member['avatar'],
                 score: Member['score'],
                 prev_score: CurrentMember.score,
+                rank: [prevRank, Member['rank']],
                 is_online: Member['is_online'],
                 is_active: Member['is_active'],
                 city_name: Member['city_name'],
@@ -704,6 +721,8 @@ let GuildMemberStat = {
 
         GuildMemberStat.InitSettings();
 
+        GuildMemberStat.hasUpdateProgress = false;
+
         if (GuildMemberStat.Settings.showSearchbar)
         {
             h.push(`<input type="text" name="filter" id="gms-filter-input" placeholder="${i18n('Boxes.GuildMemberStat.Search')}" onkeyup="GuildMemberStat.filterTable('gms-filter-input','GuildMemberTable')" />`);
@@ -756,8 +775,8 @@ let GuildMemberStat = {
             let guildBuildingsCount = 0;
             let hasDetail = false;
 
-            const contribution = data[x];
-            let MemberID = contribution['player_id'];
+            const member = data[x];
+            let MemberID = member['player_id'];
 
             // Get available activity warnings
             activityWarnings = CurrentActivityWarnings.filter(function (item) {
@@ -814,43 +833,48 @@ let GuildMemberStat = {
             }
 
             // Get Guild supporting Buildings 
-            if (contribution['guildbuildings'] !== undefined && contribution['guildbuildings']['buildings'] != undefined)
+            if (member['guildbuildings'] !== undefined && member['guildbuildings']['buildings'] != undefined)
             {
-                guildBuildingsCount = contribution['guildbuildings']['buildings'].length;
+                guildBuildingsCount = member['guildbuildings']['buildings'].length;
                 hasDetail = (guildBuildingsCount > 0) ? true : hasDetail;
             }
 
-            let deletedMember = (typeof contribution['deleted'] !== 'undefined' && contribution['deleted'] != 0) ? true : false;
-
+            let deletedMember = (typeof member['deleted'] !== 'undefined' && member['deleted'] != 0) ? true : false;
+            deletedCount += deletedMember ? 1 : 0;
+            
             if (deletedMember && !GuildMemberStat.Settings.showDeletedMembers)
             {
                 continue;
             }
 
-            let scoreDiff = contribution['score'] - contribution['prev_score'];
+            let scoreDiff = member['score'] - member['prev_score'];
             let scoreDiffClass = scoreDiff >= 0 ? 'green' : 'red';
+            let rank = (x * 1 + 1);
+            
+            member['rank'] = typeof member['rank'] !== 'undefined' ? member['rank'] : [rank, rank]
+            let rankDiffClass = (member['rank'] && member['rank'][1] > member['rank'][0]) ? ' decreased' : member['rank'][0] > member['rank'][1] ? ' increased' : '';
+
             scoreDiff = scoreDiff > 0 ? '+' + scoreDiff : scoreDiff;
-            deletedCount += deletedMember ? 1 : 0;
 
             // build an dictionary for detail views
             if (GuildMemberStat.MemberDict[MemberID] === undefined) GuildMemberStat.MemberDict[MemberID] = {};
             if (ActWarnCount > 0) GuildMemberStat.MemberDict[MemberID]['activity'] = activityWarnings;
             if (gexActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gex'] = gexActivity;
             if (gbgActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gbg'] = gbgActivity;
-            if (guildBuildingsCount > 0) GuildMemberStat.MemberDict[MemberID]['guildbuildings'] = contribution['guildbuildings'];
+            if (guildBuildingsCount > 0) GuildMemberStat.MemberDict[MemberID]['guildbuildings'] = member['guildbuildings'];
 
             h.push(`<tr id="gms${x}" ` +
                 `class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
                 `" data-id="${MemberID}"` +
                 `${deletedMember ? 'title="' + i18n('Boxes.GuildMemberStat.MemberLeavedGuild') + '"' : ''}>`);
 
-            h.push(`<td class="is-number text-center" data-number="${x * 1 + 1}">${!deletedMember ? '#' + (x * 1 + 1 - deletedCount) : ''}</td>`);
-            h.push(`<td class="case-sensitive copyable" data-text="${contribution['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['avatar']]}.jpg" alt="${contribution['name']}"> <span>${contribution['name']}</span></td>`);
-            h.push(`<td class="is-number" data-number="${contribution['score']}">${HTML.Format(contribution['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + scoreDiff + '</span>' : ''}</td>`);
-            h.push(`<td class="is-number" data-number="${Technologies.Eras[contribution['era']]}">${i18n('Eras.' + Technologies.Eras[contribution['era']])}</td>`);
+            h.push(`<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>`);
+            h.push(`<td class="case-sensitive copyable" data-text="${member['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member['avatar']]}.jpg" alt="${member['name']}"> <span>${member['name']}</span></td>`);
+            h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + scoreDiff + '</span>' : ''}</td>`);
+            h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);
 
             if (GuildMemberStat.hasGuildMemberRights)
-                h.push(`<td class="is-number" data-number="${contribution['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/act_${contribution['activity']}.png" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
+                h.push(`<td class="is-number" data-number="${member['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/act_${member['activity']}.png" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
 
             h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
             h.push(`<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
@@ -876,16 +900,6 @@ let GuildMemberStat = {
         }
 
         $('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
-
-            // @Todo: Demo Feature ClipboardBox, integrate or remove?
-            // $("#GuildMemberStat .copy-to-clipboard").on('click', function () {
-            //     
-            //     if (ClipboardBox !== undefined)
-            //     {
-            //         ClipboardBox.AddSelectionToBox();
-            //     }
-
-            // });
 
             $('#GuildMemberTable').tableSorter();
 
@@ -993,7 +1007,6 @@ let GuildMemberStat = {
                         let totalGoods = 0;
 
                         d.push(`<div class="detail-item buidlings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="closed copyable">`);
-
 
                         for (let i in guildbuildings['buildings'])
                         {
@@ -1142,6 +1155,7 @@ let GuildMemberStat = {
         }
     },
 
+
     InitSettings: () => {
 
         let GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
@@ -1233,6 +1247,7 @@ let GuildMemberStat = {
             return ele !== value;
         });
     },
+
 
     filterTable: (input, table) => {
         var input, filter, table, tr, td, cell, i, j;
