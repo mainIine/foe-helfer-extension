@@ -200,6 +200,30 @@
     position: relative
 }
 
+#GuildMemberStatBody table tr td.increased:after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5px 10px 5px;
+    border-color: transparent transparent var(--text-success) transparent;
+}
+
+#GuildMemberStatBody table tr td.decreased:after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 5px 0px 5px;
+    border-color: #ff0000 transparent transparent transparent;
+}
+
 #GuildMemberStatBody td .detail-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -336,6 +360,10 @@
     display: none;
 }
 
+#GuildMemberStat .deleteButton:hover {
+    background: #00000036;
+}
+
 #GuildMemberStat #gms-filter-input {
     width: 100%;
 }
@@ -350,6 +378,7 @@
     overflow: auto;
     background-color: #150f09f2;
 }
+
 #GuildMemberStat .warningoverlay-content {
     position: absolute;
     top: 50%;
