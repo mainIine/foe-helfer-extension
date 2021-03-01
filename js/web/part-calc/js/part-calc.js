@@ -1087,14 +1087,14 @@ let Parts = {
 				EigenBruttos[i] = Parts.RemainingOwnPart;
             }
 			
-			let FPGreatBuilding = GreatBuildings.FPGreatBuildings.find(obj => (obj.ID === EntityID));
+			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID));
 			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
 				HasDoubleCollection = true;
-				if (i < FPGreatBuilding.Productions.length) {
-					DoubleCollections[i] = FPGreatBuilding.Productions[i];
+				if (i < FPGreatBuilding.FPProductions.length) {
+					DoubleCollections[i] = FPGreatBuilding.FPProductions[i];
 				}
 				else {
-					DoubleCollections[i] = MainParser.round(FPGreatBuilding.Productions[9] * (i + 1) / 10);
+					DoubleCollections[i] = MainParser.round(FPGreatBuilding.FPProductions[9] * (i + 1) / 10);
                 }
 			}
 			else {
