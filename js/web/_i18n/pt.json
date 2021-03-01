@@ -102,7 +102,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Pagou __paid__ PFs em vez de __topay__ PFs. Faltam __tooless__PFs.",
     "Boxes.Calculator.TTPaidTooMuch": "Pagou __paid__ PFs em vez de __topay__ PFs. Foram __toomuch__PFs a mais.",
     "Boxes.Calculator.TTProfit": "Recompensa = __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Cost: __costs__ - Place locked at: __safe__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Recompensa = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__<br>Place locked at: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Recompensa = __nettoreward__ <small>(Net Reward)</small> * __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Paid: __paid__<br>Profit = __bruttoreward__ <small>(Reward)</small> - __paid__ <small>(Paid)</small> = __profit__",
     "Boxes.Calculator.Title": "Calculador de investimento GE",
     "Boxes.Calculator.Up2LevelUp": "Até nivelar",
     "Boxes.Campagne.AlreadyDone": " Já conquistado! Parabéns :)",

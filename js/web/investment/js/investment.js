@@ -14,16 +14,29 @@
  */
 
 // LG Investitionen
-FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
-	
-	Investment.Data = data['responseData'];
+FoEproxy.addHandler('GreatBuildingsService', (data) => {
 
-	Investment.UpdateData(Investment.Data, true).then((e) => {
-		if (Settings.GetSetting('ShowInvestments')){
-			Investment.BuildBox(true);
-		}
-	});
+	if(typeof data['requestMethod'] === 'undefined') 
+	{
+		return;
+	}
 
+	if (data['requestMethod'] !== 'getContributions')
+	{
+		Investment.RequestBlockTime = +MainParser.getCurrentDate();
+	}
+
+	if (data['requestMethod'] === 'getContributions')
+	{
+		Investment.Data = data['responseData'];
+
+		Investment.UpdateData(Investment.Data, true).then((e) => {
+		if (Settings.GetSetting('ShowInvestments') && (+MainParser.getCurrentDate() - Investment.RequestBlockTime) > 2000)
+			{
+				Investment.BuildBox(true);
+			}
+		});
+	}
 });
 
 
@@ -32,6 +45,7 @@ let Investment = {
 	Einsatz: 0,
 	Ertrag: 0,
 	HiddenElements: 0,
+	RequestBlockTime: 0,
 
 
 	BuildBox: (event)=> {
