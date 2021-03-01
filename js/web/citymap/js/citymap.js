@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              01.03.21, 15:53 Uhr
+ * zuletzt bearbeitet:       01.03.21, 15:50 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -440,7 +440,9 @@ let CityMap = {
 		let d = {
 			entities: MainParser.CityMapData,
 			areas: CityMap.UnlockedAreas,
-			metaid: MainParser.CityMetaId
+			entityId: MainParser.CityEntitiesMetaId,
+			setId: MainParser.CitySetsMetaId,
+			upgradeId: MainParser.CityBuildingsUpgradesMetaId
 		};
 
 		MainParser.send2Server(d, 'CityPlanner', function(){
