@@ -101,7 +101,7 @@
     "Boxes.Calculator.TTPaidTooLess": "Je hebt __paid__FP gestort i.p.v. __topay__FP. Dat is __tooless__FP te weinig.",
     "Boxes.Calculator.TTPaidTooMuch": "Je hebt __paid__FP gestort i.p.v. __topay__FP. Dat is __toomuch__FP te veel.",
     "Boxes.Calculator.TTProfit": "Beloning= __nettoreward__ <small>(Net Reward)</small> X __arcfactor__% <small>(Arc Bonus)</small> = __bruttoreward__<br>Kosten: __costs__ - Plaats beveiligd aan: __safe__<br>Winst = __bruttoreward__ <small>(Reward)</small> - __costs__ <small>(Cost)</small> = __profit__",
-    "Boxes.Calculator.TTProfitSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __paid__<br>Winst = __bruttoreward__<small>(beloning)</small> - __paid__<small>(gestort)</small> = __profit__<br>Place locked at: __safe__",
+    "Boxes.Calculator.TTProfitSelf": "Beloning = __nettoreward__<small>(netto beloning)</small> * __arcfactor__%<small>(Arc bonus)</small> = __bruttoreward__<br>Gestort: __paid__<br>Winst = __bruttoreward__<small>(beloning)</small> - __paid__<small>(gestort)</small> = __profit__",
     "Boxes.Calculator.Title": "FP-calculator",
     "Boxes.Calculator.Up2LevelUp": "Nog te storten",
     "Boxes.Campagne.AlreadyDone": " Reeds veroverd! Goed gedaan :)",
