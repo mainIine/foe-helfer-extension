@@ -76,9 +76,9 @@ let GreatBuildings =
     FPPerTile: 0.2,
     HideNewGBs: false,
 
-    GoodsValue0: 0, //.2,
-    GoodsValue1: 0, //.15,
-    GoodsValue3: 0, //.1,
+    GoodsValue0: 0.2,
+    GoodsValue1: 0.15,
+    GoodsValue3: 0.1,
 
     GreatBuildingEntityCache: null,
     FPRewards: 0,
@@ -313,7 +313,7 @@ let GreatBuildings =
 
             let SkipGB = true;
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) { //Search for level with production
-                if (FPProductions[j] > 0 + GoodsProductions[j] * GoodsValue > 0) {
+                if (FPProductions[j] + GoodsProductions[j] * GoodsValue > 0) {
                     SkipGB = false;
                     break;
                 }
