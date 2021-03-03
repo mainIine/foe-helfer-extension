@@ -234,6 +234,12 @@
     min-width: 50%;
     padding: 2px 3px;
     box-sizing: border-box;
+    overflow: hidden;
+}
+
+#GuildMemberStatBody td .detail-item .scrollable{
+    max-height: 120px;
+    overflow-y: auto;
 }
 
 #GuildMemberStatBody td .detail-item table {
@@ -366,6 +372,18 @@
 
 #GuildMemberStat #gms-filter-input {
     width: 100%;
+}
+
+#GuildMemberStat .activeCircle{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 6px;
+    background: var(--background-btn-green-fallback);
+	background: var(--background-btn-green-moz);
+	background: var(--background-btn-green-webkit);
+	background: var(--background-btn-green);
 }
 
 #GuildMemberStat .warningoverlay {
