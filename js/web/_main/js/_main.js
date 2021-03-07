@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:49 Uhr
+ * erstellt am:	              01.03.21, 15:53 Uhr
+ * zuletzt bearbeitet:       01.03.21, 15:50 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -470,18 +470,23 @@ const FoEproxy = (function () {
 	/**
 	 * @this {XHR}
 	 */
-	function xhrOnLoadHandler() {
+	function xhrOnLoadHandler()
+	{
 		if (!proxyEnabled) return;
-		if (xhrQueue) {
+
+		if (xhrQueue)
+		{
 			xhrQueue.push(this);
 			return;
 		}
+
 		const requestData = getRequestData(this);
 		const url = requestData.url;
 		const postData = requestData.postData;
 
 		// handle raw request handlers
-		for (let callback of proxyRaw) {
+		for (let callback of proxyRaw)
+		{
 			try {
 				callback(this, requestData);
 			} catch (e) {
@@ -491,19 +496,34 @@ const FoEproxy = (function () {
 
 		// handle metadata request handlers
 		const metadataIndex = url.indexOf("metadata?id=");
-		if (metadataIndex > -1) {
+
+		if (metadataIndex > -1)
+		{
 			const metaURLend = metadataIndex + "metadata?id=".length,
 				metaArray = url.substring(metaURLend).split('-', 2),
 				meta = metaArray[0];
 
-			if(meta === 'city_entities'){
-				MainParser.CityMetaId = metaArray[1];
+			switch(meta)
+			{
+				case 'city_entities':
+					MainParser.CityEntitiesMetaId = metaArray[1];
+					break;
+
+				case 'building_sets':
+					MainParser.CitySetsMetaId = metaArray[1];
+					break;
+
+				case 'building_upgrades':
+					MainParser.CityBuildingsUpgradesMetaId = metaArray[1];
+					break;
 			}
 
 			const metaHandler = proxyMetaMap[meta];
 
-			if (metaHandler) {
-				for (let callback of metaHandler) {
+			if (metaHandler)
+			{
+				for (let callback of metaHandler)
+				{
 					try {
 						callback(this, postData);
 					} catch (e) {
@@ -514,25 +534,30 @@ const FoEproxy = (function () {
 		}
 
 		// nur die jSON mit den Daten abfangen
-		if (url.indexOf("game/json?h=") > -1) {
+		if (url.indexOf("game/json?h=") > -1)
+		{
 
 			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
 
 			let requestData = postData;
+
 			try {
 				requestData = JSON.parse(new TextDecoder().decode(postData));
 				// StartUp Service zuerst behandeln
 				for (let entry of d) {
-					if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
+					if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')
+					{
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 					}
 				}
 
 				for (let entry of d) {
-					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
+					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData'))
+					{
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 					}
 				}
+
 			} catch (e) {
 				console.log('Can\'t parse postData: ', postData);
 			}
@@ -540,8 +565,10 @@ const FoEproxy = (function () {
 		}
 	}
 
-	XHR.send = function(postData) {
-		if (proxyEnabled) {
+	XHR.send = function(postData)
+	{
+		if (proxyEnabled)
+		{
 			const data = getRequestData(this);
 			data.postData = postData;
 			this.addEventListener('load', xhrOnLoadHandler, {capture: false, passive: true});
@@ -1118,7 +1145,8 @@ let HelperBeta = {
 };
 
 /**
- * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), CityMetaId: null, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: (function(*): undefined), activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, BoostSums: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
+ *
+ * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, CityBuildingsUpgradesMetaId: null, setGoodsData: MainParser.setGoodsData, SaveLGInventory: MainParser.SaveLGInventory, SaveBuildings: MainParser.SaveBuildings, Conversations: [], UpdateCityMap: MainParser.UpdateCityMap, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, foeHelperBgApiHandler: null, CityEntities: null, ArkBonus: number, InnoCDN: string, OtherPlayersMotivation: MainParser.OtherPlayersMotivation, Boosts: {}, obj2FormData: obj2FormData, GuildExpedition: (function(*=): undefined), UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: null, Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*=, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), SocialbarList: (function(*): undefined), Championship: MainParser.Championship, activateDownload: boolean, Inventory: {}, compareTime: (function(number, number): (string|boolean)), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: (function(*): undefined), UnlockedAreas: null, CityEntitiesMetaId: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: (function(*): Promise<*|undefined>), BoostSums: {supply_production: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, happiness_amount: number}, ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*=): string|boolean), CitySetsMetaId: null, Language: string, UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, BonusService: null, OwnLGData: (function(*): boolean), setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, OtherPlayersLGs: (function(*): boolean), CityMapData: {}, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, getCurrentDateTime: (function(): number), OwnLG: (function(*=): boolean), round: (function(number): number), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, send2Server: MainParser.send2Server}}
  */
 let MainParser = {
 
@@ -1134,7 +1162,9 @@ let MainParser = {
 	EmissaryService: null,
 	PlayerPortraits: null,
 	Conversations: [],
-	CityMetaId: null,
+	CityEntitiesMetaId: null,
+	CitySetsMetaId: null,
+	CityBuildingsUpgradesMetaId: null,
 	CityEntities: null,
 	StartUpType: null,
 
