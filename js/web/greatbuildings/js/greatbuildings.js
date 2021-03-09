@@ -75,7 +75,7 @@ let GreatBuildings =
     FPPerTile: 0.2,
     HideNewGBs: false,
 
-    ShowGoods: true,
+    ShowGoods: false,
     GoodsValue0: 0.2,
     GoodsValue1: 0.15,
     GoodsValue3: 0.1,
@@ -261,29 +261,31 @@ let GreatBuildings =
         h.push(i18n('Boxes.GreatBuildings.ShowGoods'));
         h.push('<br>');
 
-        h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + CurrentEraID) }) + ' ');
-        h.push('<input type="number" id="goodsValue0" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue0 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
-        if (GreatBuildings.GoodsValue0 > 0) {
-            h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue0 * 100) / 100 }) + ')</small>')
-        }
-        h.push('<br>');
+        if (GreatBuildings.ShowGoods) { //Güterwert - Boxen ausblenden, wenn Güter deaktiviert
+            h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + CurrentEraID) }) + ' ');
+            h.push('<input type="number" id="goodsValue0" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue0 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
+            if (GreatBuildings.GoodsValue0 > 0) {
+                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue0 * 100) / 100 }) + ')</small>')
+            }
+            h.push('<br>');
 
-        if (CurrentEraID >= 3) { //Ab Eisenzeit => Star Gazer liefert Bronzezeitgüter
-            h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 1)) }) + ' ');
-            h.push('<input type="number" id="goodsValue1" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue1 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
-            if (GreatBuildings.GoodsValue1 > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue1 * 100) / 100 }) + ')</small>')
+            if (CurrentEraID >= 3) { //Ab Eisenzeit => Star Gazer liefert Bronzezeitgüter
+                h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 1)) }) + ' ');
+                h.push('<input type="number" id="goodsValue1" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue1 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
+                if (GreatBuildings.GoodsValue1 > 0) {
+                    h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue1 * 100) / 100 }) + ')</small>')
+                }
+                h.push('<br>');
             }
-            h.push('<br>');
-        }
-        
-        if (CurrentEraID >= 10) { //Ab Moderne => Unveredelte Güter
-            h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 3)) }) + ' ');
-            h.push('<input type="number" id="goodsValue3" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue3 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
-            if (GreatBuildings.GoodsValue3 > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue3 * 100) / 100 }) + ')</small>')
+
+            if (CurrentEraID >= 10) { //Ab Moderne => Unveredelte Güter
+                h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 3)) }) + ' ');
+                h.push('<input type="number" id="goodsValue3" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue3 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
+                if (GreatBuildings.GoodsValue3 > 0) {
+                    h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue3 * 100) / 100 }) + ')</small>')
+                }
+                h.push('<br>');
             }
-            h.push('<br>');
         }
 
         h.push('<br>');
