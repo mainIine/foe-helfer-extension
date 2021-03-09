@@ -21,7 +21,7 @@
     "Boxes.Alerts.Form.Expiration": "Opens In",
     "Boxes.Alerts.Form.Expired": "Expired",
     "Boxes.Alerts.Form.Expires": "Expires",
-    "Boxes.Alerts.Form.Neighborhood": "Neighbourhood",
+    "Boxes.Alerts.Form.Neighborhood": "Neighborhood",
     "Boxes.Alerts.Form.Persistence": "Persistence",
     "Boxes.Alerts.Form.Persistence.Description": "Should the Alert remain open until the user dismisses or clicks the notification",
     "Boxes.Alerts.Form.Persistence.Off": "Off",

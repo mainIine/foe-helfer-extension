@@ -868,7 +868,7 @@ let GuildMemberStat = {
             h.push(`<tr id="gms${x}" ` +
                 `class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
                 `" data-id="${MemberID}"` +
-                `${deletedMember ? 'title="' + i18n('Boxes.GuildMemberStat.MemberLeavedGuild') + '"' : ''}>`);
+                `${deletedMember ? 'title="' + HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberLeavedGuild')) + '"' : ''}>`);
 
             h.push(`<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>`);
             h.push(`<td class="case-sensitive copyable" data-text="${member['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member['avatar']]}.jpg" alt="${member['name']}"> <span>${member['name']}</span></td>`);

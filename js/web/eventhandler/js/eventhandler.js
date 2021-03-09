@@ -356,21 +356,21 @@ let EventHandler = {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
 		}
 		else {
-			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.NeighborsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.NeighborsSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
 		}
 
 		if (PlayerDictGuildUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
 		}
 		else {
-			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.GuildSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.GuildSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
 		}
 
 		if (PlayerDictFriendsUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
 		}
 		else {
-			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.FriendsSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
 		}
 
 		h.push('</ul></div></div>');
