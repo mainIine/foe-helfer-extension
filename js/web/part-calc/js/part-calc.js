@@ -258,16 +258,24 @@ let Parts = {
 		{
 			for (let i = 0; i < Parts.Rankings.length; i++)
 			{
-				if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
-					EigenStart = Parts.Rankings[i]['forge_points'];
+				//Eigentümer
+				let CurrentMaezen = Parts.Rankings[i]['forge_points'];
+				if (Parts.Rankings[i]['player'] && Parts.Rankings[i]['player']['player_id'] === Parts.CityMapEntity['player_id']) {
+					EigenStart = CurrentMaezen;
 					Rest -= EigenStart;
+					continue;
+                }
+				//Gelöschter Spieler
+				else if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
+					Rest -= CurrentMaezen;
+					MaezenTotal += CurrentMaezen;
 					continue;
 				}
 
 				let Place = Parts.Rankings[i]['rank'] - 1,
 					MedalCount = 0;
 
-				Parts.Maezens[Place] = Parts.Rankings[i]['forge_points'];
+				Parts.Maezens[Place] = CurrentMaezen;
 				if (Parts.Maezens[Place] === undefined) Parts.Maezens[Place] = 0;
 
 				if (Place < 5)
@@ -492,10 +500,10 @@ let Parts = {
 
         h.push('<tr>');
         h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
-        h.push('<th class="text-center"><span class="forgepoints" title="' + i18n('Boxes.OwnpartCalculator.Deposit') + '"></th>');
+		h.push('<th class="text-center"><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Deposit')) + '"></th>');
         h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
-		h.push('<th class="text-center"><span class="blueprint" title="' + i18n('Boxes.OwnpartCalculator.BPs') + '"></span></th>');
-		h.push('<th class="text-center"><span class="medal" title="' + i18n('Boxes.OwnpartCalculator.Meds') + '"></span></th>');
+		h.push('<th class="text-center"><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
+		h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
         h.push('</tr>');

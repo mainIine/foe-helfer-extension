@@ -203,7 +203,7 @@ let Negotiation = {
 					GoodAmount = MainParser.round(GoodAmount * 10) / 10;
 				}
 
-				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(Stock) + '">' +
+				h.push('<div class="good" data-slug="' + GoodName + '" title="' + HTML.i18nTooltip(i18n('Boxes.Negotiation.Stock')) + ' ' + HTML.Format(Stock) + '">' +
 					'<span class="goods-sprite ' + GoodName + '"></span><br>' +
 					'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
