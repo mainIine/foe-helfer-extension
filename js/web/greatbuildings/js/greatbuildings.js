@@ -109,6 +109,21 @@ let GreatBuildings =
                 GreatBuildings.FPPerTile = parseFloat(FPPerTile);
             }
 
+            let GoodsValue0 = localStorage.getItem('GreatBuildingsGoodsValue0');
+            if (GoodsValue0 != null) {
+                GreatBuildings.GoodsValue0 = parseFloat(GoodsValue0);
+            }
+
+            let GoodsValue1 = localStorage.getItem('GreatBuildingsGoodsValue1');
+            if (GoodsValue1 != null) {
+                GreatBuildings.GoodsValue1 = parseFloat(GoodsValue1);
+            }
+
+            let GoodsValue3 = localStorage.getItem('GreatBuildingsGoodsValue3');
+            if (GoodsValue3 != null) {
+                GreatBuildings.GoodsValue3 = parseFloat(GoodsValue3);
+            }
+
             let ShowGoods = localStorage.getItem('GreatBuildingsShowGoods');
             if (ShowGoods != null) {
                 GreatBuildings.ShowGoods = ShowGoods;
@@ -172,6 +187,27 @@ let GreatBuildings =
                 GreatBuildings.CalcBody();
             });
 
+            $('#greatbuildings').on('blur', '#goodsValue0', function () {
+                GreatBuildings.GoodsValue0 = parseFloat($('#goodsValue0').val());
+                if (isNaN(GreatBuildings.GoodsValue0)) GreatBuildings.GoodsValue0 = 0;
+                localStorage.setItem('GreatBuildingsGoodsValue0', GreatBuildings.GoodsValue0);
+                GreatBuildings.CalcBody();
+            });
+
+            $('#greatbuildings').on('blur', '#goodsValue1', function () {
+                GreatBuildings.GoodsValue1 = parseFloat($('#goodsValue1').val());
+                if (isNaN(GreatBuildings.GoodsValue1)) GreatBuildings.GoodsValue1 = 0;
+                localStorage.setItem('GreatBuildingsGoodsValue1', GreatBuildings.GoodsValue1);
+                GreatBuildings.CalcBody();
+            });
+
+            $('#greatbuildings').on('blur', '#goodsValue3', function () {
+                GreatBuildings.GoodsValue3 = parseFloat($('#goodsValue3').val());
+                if (isNaN(GreatBuildings.GoodsValue3)) GreatBuildings.GoodsValue3 = 0;
+                localStorage.setItem('GreatBuildingsGoodsValue3', GreatBuildings.GoodsValue3);
+                GreatBuildings.CalcBody();
+            });
+
             for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
                 $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
                     GreatBuildings.GreatBuildingsData[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
@@ -196,7 +232,7 @@ let GreatBuildings =
             HTML.CloseOpenBox('greatbuildings');
         }
 
-        GreatBuildings.CalcBody();
+        GreatBuildings.CalcBody();       
     },
 
 
@@ -220,15 +256,37 @@ let GreatBuildings =
         h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
         h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTRewardPerDay')) + '">');
         h.push('<br><br>');
+
         h.push('<input id="ShowGoods" class="showgoods game-cursor" ' + (GreatBuildings.ShowGoods ? 'checked' : '') + ' type="checkbox">');
         h.push(i18n('Boxes.GreatBuildings.ShowGoods'));
         h.push('<br>');
-        h.push(i18n('Boxes.GreatBuildings.GoodsValue') + ' ' + i18n('Eras.' + CurrentEraID) + ' ');
+
+        h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + CurrentEraID) }) + ' ');
         h.push('<input type="number" id="goodsValue0" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue0 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
         if (GreatBuildings.GoodsValue0 > 0) {
             h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue0 * 100) / 100 }) + ')</small>')
         }
-        h.push('<br><br>');
+        h.push('<br>');
+
+        if (CurrentEraID >= 3) { //Ab Eisenzeit => Star Gazer liefert Bronzezeitgüter
+            h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 1)) }) + ' ');
+            h.push('<input type="number" id="goodsValue1" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue1 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
+            if (GreatBuildings.GoodsValue1 > 0) {
+                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue1 * 100) / 100 }) + ')</small>')
+            }
+            h.push('<br>');
+        }
+        
+        if (CurrentEraID >= 10) { //Ab Moderne => Unveredelte Güter
+            h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 3)) }) + ' ');
+            h.push('<input type="number" id="goodsValue3" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue3 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
+            if (GreatBuildings.GoodsValue3 > 0) {
+                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue3 * 100) / 100 }) + ')</small>')
+            }
+            h.push('<br>');
+        }
+
+        h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
         h.push('</div>');
 
