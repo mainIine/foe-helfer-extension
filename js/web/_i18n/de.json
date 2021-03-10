@@ -211,7 +211,7 @@
     "Boxes.GreatBuildings.HideNewGBs": "Nicht gebaute LG ausblenden",
     "Boxes.GreatBuildings.Level": "Stufe",
     "Boxes.GreatBuildings.NewGBCostsTT": "Enthält Güterkosten zum Bau im Wert von __goodcosts__ FP",
-    "Boxes.GreatBuildings.NewGBFPProductionTT": "__tiles__ * __fppertile__ = __opcost__ FP wurden abgezogen. Diese gehen verloren, um die __tiles__ Felder Platz für das legendäre Bauwerk zu schaffen",
+    "Boxes.GreatBuildings.NewGBFPProductionTT": "__tiles__ * __fppertile__ = __opcost__ FP/Tag wurden abgezogen. Diese gehen verloren, um die __tiles__ Felder Platz für das legendäre Bauwerk zu schaffen",
     "Boxes.GreatBuildings.RewardPerDay": "Arche: Mäzen FP von fremden LG/Tag",
     "Boxes.GreatBuildings.ShowGoods": "Güterproduktion berücksichtigen",
     "Boxes.GreatBuildings.SuggestionDescription": "Bauwerke oben in der Liste sind besser",
