@@ -192,10 +192,10 @@ $('#grid-outer').css('font-size', ScaleUnit);
 				break;
 			}
 
-			let w = (ua[i]['width'] ),
+			let w = (ua[i]['width']),
 				h = (ua[i]['length']),
-				x = (ua[i]['x'] ),
-				y = (ua[i]['y'] ),
+				x = (ua[i]['x']),
+				y = (ua[i]['y']),
 
 				G = $('#map-grid'),
 
@@ -254,10 +254,10 @@ $('#grid-outer').css('font-size', ScaleUnit);
 
 			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
 		
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['x'])),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['y'])),
-				w = (parseInt(d['width']) ),
-				h = (parseInt(d['length']),
+				x = CityMap.CityData[b]['x'] === undefined ? 0 : parseInt(CityMap.CityData[b]['x']),
+				y = CityMap.CityData[b]['y'] === undefined ? 0 : parseInt(CityMap.CityData[b]['y']),
+				w = parseInt(d['width']),
+				h = parseInt(d['length']),
 			
 				f = $('<span />').addClass('entity ' + d['type']).css({
 						width: w + 'em',
