@@ -97,7 +97,7 @@ let Technologies = {
         VirtualFuture: 17,
         SpaceAgeMars: 18,
         SpaceAgeAsteroidBelt: 19,
-        SpaceAgeVenus: 20
+        SpaceAgeVenus: 20,
     },
 
 
@@ -122,7 +122,7 @@ let Technologies = {
         17: 'VirtualFuture',
         18: 'SpaceAgeMars',
         19: 'SpaceAgeAsteroidBelt',
-        20: 'SpaceAgeVenus'
+        20: 'SpaceAgeVenus',
     },
 
 
@@ -258,7 +258,7 @@ let Technologies = {
         }
 
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
-            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeAsteroidBelt']);
+            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeVenus']);
 
         h.push('<div class="dark-bg" style="margin-bottom: 3px">');
 	        h.push('<div class="techno-head">');
@@ -302,7 +302,11 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'asteroid_ice';
-            for (let i = 85; i < GoodsList.length; i++) {
+            for (let i = 85; i < 90; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+            OutputList[OutputList.length] = 'venus_carbon';
+            for (let i = 90; i < GoodsList.length; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
 
