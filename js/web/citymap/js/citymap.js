@@ -140,7 +140,7 @@ let CityMap = {
 
 		/* Scalierung wechseln */
 		let scaleView = $('<select />').attr('id', 'scale-view').addClass('game-cursor')
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 60).attr('data-scale', 60).text('60%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 40).attr('data-scale', 40).text('40%').addClass('game-cursor') )
 			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 80).attr('data-scale', 80).text('80%').addClass('game-cursor') )
 			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 100).attr('data-scale', 100).text('100%').addClass('game-cursor') )
 			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 120).attr('data-scale', 120).text('120%').addClass('game-cursor') )
@@ -150,14 +150,14 @@ let CityMap = {
 		;
 
 		menu.append(scaleView);
-$('#grid-outer').css('font-size', ScaleUnit);
+
 		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
 
 			CityMap.ScaleUnit = unit;
 
 			$('#grid-outer').attr('data-unit', unit);
-			$('#grid-outer').css('font-size', unit);
+			$('#grid-outer').css('font-size', unit+'%');
 			localStorage.setItem('CityMapScale', unit);
 
 			//CityMap.SetBuildings(CityMap.CityData, false);
@@ -254,10 +254,10 @@ $('#grid-outer').css('font-size', ScaleUnit);
 
 			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
 		
-				x = CityMap.CityData[b]['x'] === undefined ? 0 : parseInt(CityMap.CityData[b]['x']),
-				y = CityMap.CityData[b]['y'] === undefined ? 0 : parseInt(CityMap.CityData[b]['y']),
-				w = parseInt(d['width']),
-				h = parseInt(d['length']),
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['x']))),
+				y = (CityMap.CityData[b]['y'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['y']))),
+				w = (parseInt(d['width'])),
+				h = (parseInt(d['length'])),
 			
 				f = $('<span />').addClass('entity ' + d['type']).css({
 						width: w + 'em',
@@ -332,7 +332,7 @@ $('#grid-outer').css('font-size', ScaleUnit);
 		});
 
 		$('#grid-outer').draggable();
-
+		$('#grid-outer').css('font-size', CityMap.ScaleUnit+'%');
 		CityMap.getAreas();
 	},
 
