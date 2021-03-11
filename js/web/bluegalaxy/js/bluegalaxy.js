@@ -152,7 +152,10 @@ let BlueGalaxy = {
         if (DoubleCollections > 0 && Buildings.length > 0) {
             h.push('<br>');
             h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
-            h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + i18n('Boxes.BlueGalaxy.TTGoodsValue') + '">');    
+            h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
+            if (BlueGalaxy.GoodsValue > 0) {
+                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), {goods: Math.round(1/BlueGalaxy.GoodsValue*100)/100}) + ')</small>')
+            }
         }
 
         h.push('</div>');       
