@@ -254,7 +254,7 @@ $('#grid-outer').css('font-size', ScaleUnit);
 
 			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
 		
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['x']))),
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['x'])),
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['y'])),
 				w = (parseInt(d['width']) ),
 				h = (parseInt(d['length']),
