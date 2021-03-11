@@ -150,18 +150,19 @@ let CityMap = {
 		;
 
 		menu.append(scaleView);
-
+$('#grid-outer').css('font-size', ScaleUnit);
 		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
 
 			CityMap.ScaleUnit = unit;
 
 			$('#grid-outer').attr('data-unit', unit);
+			$('#grid-outer').css('font-size', unit);
 			localStorage.setItem('CityMapScale', unit);
 
-			CityMap.SetBuildings(CityMap.CityData, false);
+			//CityMap.SetBuildings(CityMap.CityData, false);
 
-			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+			//$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 		});
 
 		// Button for submit Box
@@ -191,10 +192,10 @@ let CityMap = {
 				break;
 			}
 
-			let w = ((ua[i]['width'] * CityMap.ScaleUnit) / 100 ),
-				h = ((ua[i]['length'] * CityMap.ScaleUnit) / 100 ),
-				x = ((ua[i]['x'] * CityMap.ScaleUnit) / 100 ),
-				y = ((ua[i]['y'] * CityMap.ScaleUnit) / 100 ),
+			let w = (ua[i]['width'] ),
+				h = (ua[i]['length']),
+				x = (ua[i]['x'] ),
+				y = (ua[i]['y'] ),
 
 				G = $('#map-grid'),
 
@@ -253,10 +254,10 @@ let CityMap = {
 
 			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
 		
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
-				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['x']))),
+				y = (CityMap.CityData[b]['y'] === undefined ? 0 : (parseInt(CityMap.CityData[b]['y'])),
+				w = (parseInt(d['width']) ),
+				h = (parseInt(d['length']),
 			
 				f = $('<span />').addClass('entity ' + d['type']).css({
 						width: w + 'em',
