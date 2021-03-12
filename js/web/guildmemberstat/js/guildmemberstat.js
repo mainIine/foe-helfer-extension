@@ -308,7 +308,7 @@ let GuildMemberStat = {
                 }
 
                 // Update Own Guild support buildings
-                if (MainParser.CityMapData && MainParser.CityMapData.length)
+                if (MainParser.CityMapData && Object.keys(MainParser.CityMapData).length > 0)
                 {
                     let self = {
                         player_id: ExtPlayerID,
