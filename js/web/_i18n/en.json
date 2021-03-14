@@ -369,6 +369,7 @@
     "Boxes.Negotiation.Average": "Preference Order",
     "Boxes.Negotiation.Canceled": "Negotiation has been cancelled",
     "Boxes.Negotiation.Chance": "Chance",
+    "Boxes.Negotiation.WorthIt": "Worth it",
     "Boxes.Negotiation.DragDrop": "Drag & Drop the resource icons above to rearrange the average display yourself to determine a new sequence from the first attempt.",
     "Boxes.Negotiation.GoodsCritical": "WARNING!: Goods stock at CRITICAL level!",
     "Boxes.Negotiation.GoodsLow": "ATTENTION: Goods stock is LOW!",
