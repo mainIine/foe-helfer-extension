@@ -149,13 +149,30 @@ let Negotiation = {
 			let sceg = localStorage.getItem('NegotiationSaveCurrentEraGoods'),
 				sm = localStorage.getItem('NegotiationSaveMedals');
 
+			const mainTable = Negotiation.Tables[Negotiation.GetTableName(Negotiation.TryCount, Negotiation.GoodCount)];
+			const currentTable = Negotiation.CurrentTable;
+			let originalCost = 0;
+			let currentCost = 0;
+			for(let i = 0; i < Negotiation.GoodCount; i++) {
+				if(!['money', 'supplies'].includes(Negotiation.GoodsOrdered[i].resourceId)) {
+					originalCost += mainTable.go[i];
+					currentCost += currentTable.go[i];
+				}
+			}
+			let chanceRatio = currentTable.c / mainTable.c;
+			let inverseCostRatio = originalCost / currentCost;
+			let worthIt = Math.round(chanceRatio * inverseCostRatio * 50);
+
 			h.push('<tbody>');
 
 			h.push('<tr>');
-			h.push('<td colspan="' + (CurrentTry === 1 ? '1' : '4') + '" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="' + (CurrentTry === 1 ? '1' : '2') + '" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
 			if (CurrentTry === 1) {
 				h.push('<td colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"' + ((sceg === null || sceg === 'true') ? ' checked' : '') + '></label></td>');
 				h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></td>');
+			}
+			else {
+				h.push('<td colspan="2" class="' + ((worthIt < 50) ? 'text-danger' : 'text-warning') + '"><strong>' + i18n('Boxes.Negotiation.WorthIt') + ': ' + HTML.Format((worthIt > 9000) ? '>9000' : worthIt) + '%</strong></td>');
 			}
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
