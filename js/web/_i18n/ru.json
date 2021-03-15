@@ -221,6 +221,7 @@
     "Boxes.Notice.GroupName": "Название группы",
     "Boxes.Notice.ModalChoosePlayer": "Выберите игрока",
     "Boxes.Notice.NewGroup": "Группа",
+    "Boxes.Notice.NewGroupDesc": "Сначала создайте группу… ",
     "Boxes.Notice.Save": "Сохранить",
     "Boxes.Notice.SelectPlayerGroupDefault": "-- Создать группу игроков? --",
     "Boxes.Notice.SelectPlayerGroupFriend": "Друзья",
