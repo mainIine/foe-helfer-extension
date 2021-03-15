@@ -172,7 +172,7 @@ let Negotiation = {
 				h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></td>');
 			}
 			else {
-				h.push('<td colspan="2" class="' + ((worthIt < 50) ? 'text-danger' : 'text-warning') + '"><strong>' + i18n('Boxes.Negotiation.WorthIt') + ': ' + HTML.Format((worthIt > 9000) ? '>9000' : worthIt) + '%</strong></td>');
+				h.push('<td colspan="2" class="' + ((worthIt < 50) ? 'text-danger' : 'text-warning') + '"><strong>' + i18n('Boxes.Negotiation.WorthIt') + ': ' + HTML.Escape((worthIt > 9000) ? '>9000' : worthIt) + '%</strong></td>');
 			}
 			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
