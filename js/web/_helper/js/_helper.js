@@ -588,6 +588,18 @@ let HTML = {
 		}
 	},
 
+	/**
+	 * HTML-escapes string
+	 *
+	 * @param string
+	 * @returns {*}
+	 */
+	Escape: (() => {
+		// This method was recommended to me by Mozilla addons staff
+		const htmlEscapeDiv = document.createElement('div'); 
+		return (string) => (htmlEscapeDiv.textContent = string, htmlEscapeDiv.innerHTML);
+	})();
+
 
 	/**
 	* Returns strong class for formating mopppel date
