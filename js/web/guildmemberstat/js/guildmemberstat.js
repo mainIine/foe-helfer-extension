@@ -957,7 +957,7 @@ let GuildMemberStat = {
                                         // @Todo: Add translation for activity state
                                         d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k) + 1)}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
                                             `<td>${moment(warnlist[k].date).format(i18n('Date'))}</td>` +
-                                            `<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${i18n("Boxes.GuildMemberStat.DeleteInactivityWarning")}">x</button></td></tr>`);
+                                            `<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${i18n('Boxes.GuildMemberStat.DeleteInactivityWarning')}">x</button></td></tr>`);
                                     }
                                 }
                             }
@@ -980,7 +980,7 @@ let GuildMemberStat = {
                                 d.push(`<tr><td>${gexweek}<span class="${activeGexClass}"></span></td>` + 
                                     `<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` + 
                                     `<td>${gex[i].solvedEncounters}</td>` + 
-                                    `<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton" title="${i18n("Boxes.GuildMemberStat.DeleteInactivityWarning")}">x</button></td>` + 
+                                    `<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` + 
                                     `</tr>`);
                             }
                         }
@@ -1008,7 +1008,7 @@ let GuildMemberStat = {
                                     `<td>${gbg[i].rank}</td>` +
                                     `<td>${gbg[i].battlesWon}</td>` + 
                                     `<td>${gbg[i].negotiationsWon}</td>` +
-                                    `<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${i18n("Boxes.GuildMemberStat.DeleteGBGRound")}">x</button></td>` +
+                                    `<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${i18n('Boxes.GuildMemberStat.DeleteGBGRound')}">x</button></td>` +
                                     `</tr>`);
                             }
                         }
