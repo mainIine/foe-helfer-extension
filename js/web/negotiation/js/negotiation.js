@@ -160,7 +160,7 @@ let Negotiation = {
 				}
 			}
 			let chanceRatio = currentTable.c / mainTable.c;
-			let inverseCostRatio = originalCost / currentCost;
+			let inverseCostRatio = (originalCost === 0) ? 1 : (originalCost / currentCost);
 			let worthIt = Math.round(chanceRatio * inverseCostRatio * 50);
 
 			h.push('<tbody>');
