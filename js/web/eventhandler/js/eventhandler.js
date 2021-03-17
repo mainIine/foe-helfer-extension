@@ -465,7 +465,7 @@ let EventHandler = {
 
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
 
-			h.push('<td style="white-space:nowrap" data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
+			h.push('<td style="white-space:nowrap" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + Player['PlayerName'] + '</td>');
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 
