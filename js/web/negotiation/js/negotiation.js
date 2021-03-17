@@ -67,9 +67,6 @@ let Negotiation = {
 	CONST_Context_GE: 'guildExpedition',
 	CONST_Context_GBG: 'guildBattleground',
 
-	TavernBoostExpireTime : undefined,
-
-
 	/**
 	 * Box in den DOM legen
 	 *
@@ -528,10 +525,9 @@ let Negotiation = {
 		// Setze die Korrekte Versuchs-anzahl
 		if (forcedTryCount != null) {
 			Negotiation.TryCount = forcedTryCount;
-		} else if (responseData.context === Negotiation.CONST_Context_GE) {
-			Negotiation.TryCount = moment.unix(Negotiation.TavernBoostExpireTime) > Date.now() ? 4 : 3;
-		} else {
-			Negotiation.TryCount = Negotiation.GoodCount > 6 ? 4 : 3;
+		}
+		else {
+			Negotiation.TryCount = ResourceStock['negotiation_game_turn'];
 		}
 
 		Negotiation.Guesses = [];
@@ -985,12 +981,6 @@ FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => 
 
 FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 	Negotiation.ExitNegotiation();
-});
-
-FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
-	if (data.responseData['type'] === 'extra_negotiation_turn') {
-		Negotiation.TavernBoostExpireTime = data.responseData['expireTime'];
-	}
 });
 
 
