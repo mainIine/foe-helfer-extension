@@ -1,5 +1,35 @@
 ## Changelog - Extension
 
+##### 2.5.6.3
+
+**Update**
+- Investitionsübersicht:
+    - [#1871](https://github.com/dsiekiera/foe-helfer-extension/issues/1871) Es werden keine Daten mehr an foe-rechner.de gesendet
+
+- Forschungskostenrechner:
+    - [#1897](https://github.com/dsiekiera/foe-helfer-extension/issues/1897) Ab diesem Update wird das Zeitalter Venus korrekt erkannt
+
+- Gildengefechte:
+    - Wir haben die Ansicht der Gildengefechte-Box umgeschrieben, für die Übersichtlichkeit
+
+- Moppelassistent:
+    - [#1912](https://github.com/dsiekiera/foe-helfer-extension/issues/1912) Die Sortierung der Namen hat nicht richtig funktioniert, das klappt nun
+
+**BugFix**
+- Extension:
+    - [#1892](https://github.com/dsiekiera/foe-helfer-extension/issues/1892) Ein doppeltes Anführungszeichen konnte ein Tooltip zerstören
+
+- Verhandlungsassistent:
+    - [#1879](https://github.com/dsiekiera/foe-helfer-extension/issues/1879) Manchmal wurden die anzahl der Züge nicht korrekt erkannt, das wurde behoben
+
+- Eigenanteilsrechner:
+    - [#1891](https://github.com/dsiekiera/foe-helfer-extension/issues/1891) Erledigter Eigenanteil wurde falsch berechnet, wenn gelöschter Spieler etwas eingezahlt hatte
+
+- Gebäude-Kits:
+    - [#1910](https://github.com/dsiekiera/foe-helfer-extension/issues/1910) Die Anzahl wird nun korrekt berechnet
+
+---
+
 ##### 2.5.6.2
 
 **Update**
