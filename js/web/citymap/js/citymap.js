@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              19.03.21, 10:12 Uhr
- * zuletzt bearbeitet:       19.03.21, 10:11 Uhr
+ * erstellt am:	              19.03.21, 10:20 Uhr
+ * zuletzt bearbeitet:       19.03.21, 10:20 Uhr
  *
  * Copyright © 2021
  *
@@ -451,6 +451,9 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Copy citydata to the clipboard
+	 */
 	copyMetaInfos:()=> {
 		helper.str.copyToClipboard(JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas}));
 
