@@ -610,6 +610,11 @@ const FoEproxy = (function () {
 	// Player- und Gilden-ID setzen
 	FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
 
+		window.addEventListener("error", function (e) {
+			console.error(e.error);
+			e.preventDefault();
+		});
+
 		// Player-ID, Gilden-ID und Name setzten
 		MainParser.StartUp(data.responseData.user_data);
 
@@ -1887,10 +1892,6 @@ let MainParser = {
 
 			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
-			}
-
-			if (d[i]['type'] === 'extra_negotiation_turn') {
-				Negotiation.TavernBoostExpireTime = d[i]['expireTime'];
 			}
 		}
 	},
