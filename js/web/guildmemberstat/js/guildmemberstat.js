@@ -738,11 +738,11 @@ let GuildMemberStat = {
             `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
 
         if (GuildMemberStat.hasGuildMemberRights)
-            h.push(`<th class="is-number gms-tooltip" data-type="gms-group" title="${i18n('Boxes.GuildMemberStat.MemberActiviy')}"><span class="activity"></span></th>`);
+            h.push(`<th class="is-number gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberActiviy'))}"><span class="activity"></span></th>`);
 
-        h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${i18n('Boxes.GuildMemberStat.GuildMessages')}"><span class="messages"></span></th>` +
-            `<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${i18n('Boxes.GuildMemberStat.GexParticipation')}"><span class="gex"></span></th>` +
-            `<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${i18n('Boxes.GuildMemberStat.GbgParticipation')}"><span class="gbg"></span></th>` +
+        h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildMessages'))}"><span class="messages"></span></th>` +
+            `<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GexParticipation'))}"><span class="gex"></span></th>` +
+            `<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GbgParticipation'))}"><span class="gbg"></span></th>` +
             '<th></th></tr>' +
             '</thead><tbody class="gms-group">');
 
@@ -957,7 +957,7 @@ let GuildMemberStat = {
                                         // @Todo: Add translation for activity state
                                         d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k) + 1)}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
                                             `<td>${moment(warnlist[k].date).format(i18n('Date'))}</td>` +
-                                            `<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${i18n("Boxes.GuildMemberStat.DeleteInactivityWarning")}">x</button></td></tr>`);
+                                            `<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteInactivityWarning'))}">x</button></td></tr>`);
                                     }
                                 }
                             }
@@ -980,7 +980,7 @@ let GuildMemberStat = {
                                 d.push(`<tr><td>${gexweek}<span class="${activeGexClass}"></span></td>` + 
                                     `<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` + 
                                     `<td>${gex[i].solvedEncounters}</td>` + 
-                                    `<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton" title="${i18n("Boxes.GuildMemberStat.DeleteInactivityWarning")}">x</button></td>` + 
+                                    `<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` + 
                                     `</tr>`);
                             }
                         }
@@ -1008,7 +1008,7 @@ let GuildMemberStat = {
                                     `<td>${gbg[i].rank}</td>` +
                                     `<td>${gbg[i].battlesWon}</td>` + 
                                     `<td>${gbg[i].negotiationsWon}</td>` +
-                                    `<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${i18n("Boxes.GuildMemberStat.DeleteGBGRound")}">x</button></td>` +
+                                    `<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteGBGRound'))}">x</button></td>` +
                                     `</tr>`);
                             }
                         }
@@ -1040,8 +1040,6 @@ let GuildMemberStat = {
                     d.push('</div></td></tr>');
 
                     $(d.join('')).insertAfter($('#' + id)).promise().done(function () {
-
-                        $('#GuildMemberTable .detail-item .gms-tooltip').tooltip();
 
                         // Show Delete Buttons 
                         $('#GuildMemberTable th span.edit').off('click').on('click', function (e) {

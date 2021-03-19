@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              19.03.21, 10:12 Uhr
+ * zuletzt bearbeitet:       19.03.21, 10:04 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -713,13 +713,12 @@ let Parts = {
 			'</div>');
 
 		// ---------------------------------------------------------------------------------------------
-		$('#OwnPartBox').off("click",'.button-own');
-		$('#OwnPartBox').on('click', '.button-own', function(){
+
+		$('#OwnPartBox').off("click",'.button-own').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction($(this), 'copy');
 			helper.str.copyToClipboard(copyParts);
 		});
-		$('#OwnPartBox').off("click",'.button-save-own');
-		$('#OwnPartBox').on('click', '.button-save-own', function(){
+		$('#OwnPartBox').off("click",'.button-save-own').on('click', '.button-save-own', function(){
 			Parts.CopyFunction($(this), 'save');
 		});
 
