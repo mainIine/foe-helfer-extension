@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.03.21, 15:53 Uhr
- * zuletzt bearbeitet:       01.03.21, 15:50 Uhr
+ * erstellt am:	              19.03.21, 15:33 Uhr
+ * zuletzt bearbeitet:       19.03.21, 15:32 Uhr
  *
  * Copyright © 2021
  *
@@ -1158,7 +1158,8 @@ let MainParser = {
 	foeHelperBgApiHandler: /** @type {null|((request: {type: string}&object) => Promise<{ok:true, data: any}|{ok:false, error:string}>)}*/ (null),
 
 	activateDownload: false,
-	savedFight:null,
+	savedFight: null,
+	DebugMode: false,
 	Language: 'en',
 	SelectedMenu: 'BottomBar',
 	i18n: null,
@@ -1586,7 +1587,7 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'send2Api',
-			url: `${ApiURL}OwnLGData/?world=${ExtWorld}`,
+			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}`,
 			data: JSON.stringify(realData)
 		});
 	},

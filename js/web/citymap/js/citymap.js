@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              19.03.21, 10:20 Uhr
- * zuletzt bearbeitet:       19.03.21, 10:20 Uhr
+ * erstellt am:	              19.03.21, 15:33 Uhr
+ * zuletzt bearbeitet:       19.03.21, 10:21 Uhr
  *
  * Copyright © 2021
  *
@@ -421,6 +421,8 @@ let CityMap = {
 			$('#CityMapSubmitBody').html(desc);
 		}
 	},
+
+
 	/**
 	 * Highlight old buildings
 	 */
