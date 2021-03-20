@@ -15,6 +15,9 @@
 - Moppelassistent:
     - [#1912](https://github.com/dsiekiera/foe-helfer-extension/issues/1912) Die Sortierung der Namen hat nicht richtig funktioniert, das klappt nun
 
+- LG Investitionen:
+    - Option für die Berücksichtigung von Güterproduktionen
+
 **BugFix**
 - Extension:
     - [#1892](https://github.com/dsiekiera/foe-helfer-extension/issues/1892) Ein doppeltes Anführungszeichen konnte ein Tooltip zerstören
