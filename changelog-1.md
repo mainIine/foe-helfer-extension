@@ -18,6 +18,9 @@
 - LG Investitionen:
     - Option für die Berücksichtigung von Güterproduktionen
 
+- Bonus Bar:
+	- Die Bonus Bar zeigt nun auch abgeschlossene Quests an
+
 **BugFix**
 - Extension:
     - [#1892](https://github.com/dsiekiera/foe-helfer-extension/issues/1892) Ein doppeltes Anführungszeichen konnte ein Tooltip zerstören
