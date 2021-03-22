@@ -94,6 +94,10 @@
 	background-image: url('../images/aid_goods.png');
 }
 
+#bonus-hud .donequests-icon {
+	background-image: url('../images/donequests.png');
+}
+
 
 .bonus-blink {
 	-webkit-animation: bgblink 1.2s;

@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.03.21, 15:53 Uhr
- * zuletzt bearbeitet:       01.03.21, 15:50 Uhr
+ * erstellt am:	              19.03.21, 15:33 Uhr
+ * zuletzt bearbeitet:       19.03.21, 15:32 Uhr
  *
  * Copyright © 2021
  *
@@ -1143,6 +1143,9 @@ const FoEproxy = (function () {
 		if ($('#OwnPartBox').length > 0) {
 			Parts.Show();
 		}
+		if ($('#bonus-hud').length > 0) {
+			BonusService.CalcBonusData();
+		}
 	});
 
 
@@ -1184,6 +1187,7 @@ let MainParser = {
 
 	activateDownload: false,
 	savedFight: null,
+	DebugMode: false,
 	Language: 'en',
 	SelectedMenu: 'BottomBar',
 	i18n: null,
@@ -1608,7 +1612,7 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'send2Api',
-			url: `${ApiURL}OwnLGData/?world=${ExtWorld}`,
+			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}`,
 			data: JSON.stringify(realData)
 		});
 	},
