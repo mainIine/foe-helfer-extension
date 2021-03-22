@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              19.03.21, 15:33 Uhr
+ * zuletzt bearbeitet:       19.03.21, 10:21 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -41,7 +41,7 @@ let CityMap = {
 			CityMap.IsExtern = false;
 			Data = MainParser.CityMapData;
 		}
-		// Neighbor
+		// Neighbor or other modul
 		else {
 			CityMap.IsExtern = true;
 		}
@@ -54,12 +54,12 @@ let CityMap = {
 		let scale = localStorage.getItem('CityMapScale'),
 			view = localStorage.getItem('CityMapView');
 
-		// es wurde bereits eine Scallierung gesetzt?
+		// a scaling has already been set?
 		if(null !== scale){
 			CityMap.ScaleUnit = parseInt(scale);
 		}
 
-		// es wurde bereits eine Ansicht gesetzt?
+		// a view has already been set?
 		if(null !== view){
 			CityMap.CityView = view;
 		}
@@ -67,7 +67,6 @@ let CityMap = {
 
 		if( $('#city-map-overlay').length < 1 )
 		{
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('citymap');
 
 			HTML.Box({
@@ -85,14 +84,10 @@ let CityMap = {
 			}, 100);
 
 		}
-		// Close temporär deaktivert, bis der Bug mit dem doppelten Handler am Auge Icon gefixed ist
-		//else {
-		//	HTML.CloseOpenBox('city-map-overlay');
-		//}
 
 		setTimeout(()=>{
 
-			// eigene Stadt
+			// separate city
 			if(Data === false)
 			{
 				setTimeout(()=>{
@@ -167,6 +162,9 @@ let CityMap = {
 		// Button for submit Box
 		if (CityMap.IsExtern === false) {
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }).text(i18n('Boxes.CityMap.HighlightOldBuildings')));
+
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
+
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
 		}
 
@@ -274,7 +272,7 @@ let CityMap = {
 		    if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
 			CityMap.OccupiedArea2[d.type] += (AreaNeeded);
 
-			if (d.type !== 'street') {
+			if (d.type !== 'street' && CityMap.CityData[b]['state']['__class__'] !== 'UnconnectedState') {
 				let RequiredStreet = d['requirements']['street_connection_level'] | 0
 
 				if (RequiredStreet) {
@@ -399,8 +397,12 @@ let CityMap = {
 	/**
 	 * Show the submit box
 	 */
-	showSumbitBox: ()=> {
-		if( $('#city-map-submit').length < 1 && $('#CityMapSubmit').length < 1)
+	showSumbitBox: () => {
+		if ($('#CityMapSubmit').length > 0) {
+			$('#CityMapSubmit').remove();
+		}
+
+		if ($('#CityMapSubmit').length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -418,10 +420,9 @@ let CityMap = {
 
 			$('#CityMapSubmitBody').html(desc);
 		}
-		else {
-			$('#CityMapSubmit').remove();
-		}
 	},
+
+
 	/**
 	 * Highlight old buildings
 	 */
@@ -439,11 +440,30 @@ let CityMap = {
 		let d = {
 			entities: MainParser.CityMapData,
 			areas: CityMap.UnlockedAreas,
-			metaid: MainParser.CityMetaId
+			metaIDs: {
+				entity: MainParser.CityEntitiesMetaId,
+				set: MainParser.CitySetsMetaId,
+				upgrade: MainParser.CityBuildingsUpgradesMetaId
+			}
 		};
 
 		MainParser.send2Server(d, 'CityPlanner', function(){
 			$('#CityMapSubmitBody').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
 		});
 	},
+
+
+	/**
+	 * Copy citydata to the clipboard
+	 */
+	copyMetaInfos:()=> {
+		helper.str.copyToClipboard(JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas}));
+
+		HTML.ShowToastMsg({
+			head: i18n('Boxes.CityMap.ToastHeadCopyData'),
+			text: i18n('Boxes.CityMap.ToastBodyCopyData'),
+			type: 'info',
+			hideAfter: 4000,
+		});
+	}
 };

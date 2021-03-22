@@ -317,7 +317,7 @@ let Settings = {
 		for (let index = 0; index < _menu.MenuOptions.length; index++) {
 			const element = _menu.MenuOptions[index];
 			if (element[Object.keys(element)[0]]) {
-				dp.push('<option value="' + Object.keys(element)[0] + '"' + (MainParser.SelectedMenu === Object.keys(element)[0] ? ' selected' : '') + '>' + i18n('Menu.' + Object.keys(element)[0]) + '</option>');
+				dp.push('<option value="' + element + '"' + (MainParser.SelectedMenu === element ? ' selected' : '') + '>' + i18n('Menu.' + element) + '</option>');
 			}
 		}
 

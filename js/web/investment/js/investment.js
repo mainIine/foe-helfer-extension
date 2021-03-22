@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              18.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       18.02.21, 09:48 Uhr
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
  *
  * Copyright © 2021
  *
@@ -14,16 +14,29 @@
  */
 
 // LG Investitionen
-FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data) => {
-	Investment.Data = data['responseData'];
+FoEproxy.addHandler('GreatBuildingsService', (data) => {
 
-	Investment.UpdateData(Investment.Data, true).then((e) => {
-		if (Settings.GetSetting('ShowInvestments')){
-			Investment.BuildBox(true);
-		}
-	});
+	if(typeof data['requestMethod'] === 'undefined') 
+	{
+		return;
+	}
 
-	Investment.SendToServer();
+	if (data['requestMethod'] !== 'getContributions')
+	{
+		Investment.RequestBlockTime = +MainParser.getCurrentDate();
+	}
+
+	if (data['requestMethod'] === 'getContributions')
+	{
+		Investment.Data = data['responseData'];
+
+		Investment.UpdateData(Investment.Data, true).then((e) => {
+		if (Settings.GetSetting('ShowInvestments') && (+MainParser.getCurrentDate() - Investment.RequestBlockTime) > 2000)
+			{
+				Investment.BuildBox(true);
+			}
+		});
+	}
 });
 
 
@@ -32,6 +45,7 @@ let Investment = {
 	Einsatz: 0,
 	Ertrag: 0,
 	HiddenElements: 0,
+	RequestBlockTime: 0,
 
 
 	BuildBox: (event)=> {
@@ -145,7 +159,7 @@ let Investment = {
 
 		if (showEntryDate)
 		{
-			h.push('<th class="is-number invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.EntryTimeDesc') + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
+			h.push('<th class="is-number invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.EntryTimeDesc')) + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
 		}
 
 
@@ -153,12 +167,12 @@ let Investment = {
 
 		if (showRestFp)
 		{
-			h.push('<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.RestFPDesc') + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
+			h.push('<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.RestFPDesc')) + '">' + i18n('Boxes.Investment.Overview.RestFP') + '</th>');
 		}
 
 		h.push('<th class="is-number text-center" data-type="invest-group">&nbsp;</th>' +
-			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.InvestedDesc') + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
-			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + i18n('Boxes.Investment.Overview.ProfitDesc') + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
+			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.InvestedDesc')) + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
+				'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.ProfitDesc')) + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
 			'</tr>' +
 			'</thead><tbody class="invest-group">');
 
@@ -640,32 +654,6 @@ let Investment = {
 			end_value: sumTotal,
 			duration: 750
 		});
-	},
-
-
-	/**
-	 * If wanted, send to server
-	 */
-	SendToServer: ()=> {
-
-		if (!Settings.GetSetting('GlobalSend') || !Settings.GetSetting('SendInvestigations')){
-			return;
-		}
-
-		if (MainParser.checkNextUpdate('LGInvestments') !== true){
-			return;
-		}
-
-		if (Investment.Data === null || Investment.Data.length <= 0){
-			return;
-		}
-
-		MainParser.send2Server(Investment.Data, 'LGInvestments', function(r){
-			HTML.ShowToastMsg({
-				head: i18n('API.UpdateSuccess'),
-				text: i18n('API.LGInvest'),
-				type: 'success'
-			});
-		});
 	}
+
 };

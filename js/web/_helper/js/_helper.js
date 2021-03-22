@@ -651,6 +651,18 @@ let HTML = {
 	},
 
 
+	/**
+	* Ersetzt " durch &quot;
+	*
+	* @param string
+	* @param args
+	* @returns {*}
+	*/
+	i18nTooltip: (string) => {
+		return string.replace(/"/g, "&quot;")
+	},
+
+
 	BringToFront: ($this)=> {
 		$('.window-box').removeClass('on-top');
 

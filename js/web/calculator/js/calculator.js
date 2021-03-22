@@ -448,10 +448,10 @@ let Calculator = {
 		// Tabellen ausgeben
 		hFordern.push('<thead>' +
 			'<th>#</th>' +
-			'<th><span class="forgepoints" title="' + i18n('Boxes.Calculator.Commitment') + '"></span></th>' +
+			'<th><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment')) + '"></span></th>' +
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
-			'<th><span class="blueprint" title="' + i18n('Boxes.Calculator.BPs') + '"></span></th>' +
-			'<th><span class="medal" title="' + i18n('Boxes.Calculator.Meds') + '"></span></th>' +
+			'<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>' +
+			'<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>' +
 			'</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
@@ -530,7 +530,7 @@ let Calculator = {
 				}
 
 				if (ForderGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn, 'safe': SaveRankCosts[Rank] })]
+					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn })]
 				}
 				else {
 					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
@@ -606,9 +606,9 @@ let Calculator = {
 
 
 			hFordern.push('<tr class="' + RowClass + '">');
-			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + RankTooltip.join('<br>') + '">' + RankText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + EinsatzTooltip.join('<br>') + '">' + EinsatzText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + GewinnTooltip.join('<br>') + '">' + GewinnText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
 			hFordern.push('</tr>');

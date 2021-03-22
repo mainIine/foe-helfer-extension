@@ -75,23 +75,27 @@
 }
 
 #bonus-hud .first_strike-icon {
-	background-image: url('../images/first_strike.png');
+	background-image: url('../../x_img/first_strike.png');
 }
 
 #bonus-hud .spoils_of_war-icon {
-	background-image: url('../images/spoils_of_war.png');
+	background-image: url('../../x_img/spoils_of_war.png');
 }
 
 #bonus-hud .diplomatic_gifts-icon {
-	background-image: url('../images/diplomatic_gifts.png');
+	background-image: url('../../x_img/diplomatic_gifts.png');
 }
 
 #bonus-hud .missile_launch-icon {
-	background-image: url('../images/missile_launch.png');
+	background-image: url('../../x_img/missile_launch.png');
 }
 
 #bonus-hud .aid_goods-icon {
-	background-image: url('../images/aid_goods.png');
+	background-image: url('../../x_img/aid_goods.png');
+}
+
+#bonus-hud .donequests-icon {
+	background-image: url('../../x_img/quest.png');
 }
 
 
