@@ -28,7 +28,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) =
 // After battle
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
 
-	if(postData[0]['requestData'][0]['type'] !== 'guild_expedition')
+	if (!postData[0]['requestData'][0] || !postData[0]['requestData'][0]['type'] || postData[0]['requestData'][0]['type'] !== 'guild_expedition')
 		return;
 
 	let round = data['responseData']['battleType']['currentWaveId'] || 0;
