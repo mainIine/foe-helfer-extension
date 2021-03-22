@@ -224,12 +224,12 @@
     border-color: #ff0000 transparent transparent transparent;
 }
 
-#GuildMemberStatBody td .detail-wrapper {
+#GuildMemberStatBody .detail-wrapper {
     display: flex;
     flex-wrap: wrap;
 }
 
-#GuildMemberStatBody td .detail-item {
+#GuildMemberStatBody .detail-item {
     flex-grow: 1;
     min-width: 50%;
     padding: 2px 3px;
@@ -237,12 +237,12 @@
     overflow: hidden;
 }
 
-#GuildMemberStatBody td .detail-item .scrollable{
+#GuildMemberStatBody .detail-item .scrollable{
     max-height: 120px;
     overflow-y: auto;
 }
 
-#GuildMemberStatBody td .detail-item table {
+#GuildMemberStatBody .detail-item table {
     width: 100%;
 }
 
@@ -371,7 +371,11 @@
 }
 
 #GuildMemberStat #gms-filter-input {
-    width: 100%;
+    width: 30%;
+    float: right;
+    background-color: var(--background-light);
+    font-size: 1rem;
+    padding: 3px 5px;
 }
 
 #GuildMemberStat .activeCircle{
@@ -403,4 +407,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+}
+
+#GuildMemberStat tr.nohover:hover {
+    background-color: var(--background-table-odd);
 }
