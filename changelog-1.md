@@ -19,7 +19,7 @@
     - Option für die Berücksichtigung von Güterproduktionen
 
 - Bonus Bar:
-	- Die Bonus Bar zeigt nun auch abgeschlossene Quests an
+	- [#1915](https://github.com/dsiekiera/foe-helfer-extension/issues/1915) Bonus Bar zeigt nun auch abgeschlossene Quests an
 
 **BugFix**
 - Extension:
