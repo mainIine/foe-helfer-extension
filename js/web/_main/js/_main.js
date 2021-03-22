@@ -1118,6 +1118,9 @@ const FoEproxy = (function () {
 		if ($('#OwnPartBox').length > 0) {
 			Parts.Show();
 		}
+		if ($('#bonus-hud').length > 0) {
+			BonusService.CalcBonusData();
+		}
 	});
 
 

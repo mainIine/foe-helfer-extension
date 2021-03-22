@@ -1097,7 +1097,7 @@ let Parts = {
 				EigenBruttos[i] = Parts.RemainingOwnPart;
             }
 			
-			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID));
+			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID && obj.FPProductions));
 			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
 				HasDoubleCollection = true;
 				if (i < FPGreatBuilding.FPProductions.length) {
