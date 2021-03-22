@@ -34,7 +34,7 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
 /**
  * Market function
  *
- * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: (function(*, *): boolean), TestFilter: (function(*): boolean), TradeFairStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, OnlyAffordable: boolean, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, TradePartnerMyself: boolean, CalcBody: Market.CalcBody, TradeForLower: boolean}}
+ * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: (function(*, *): boolean), TestFilter: (function(*): boolean), TradeFairStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, OnlyAffordable: boolean, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, ShowOwnOffers: boolean, CalcBody: Market.CalcBody, TradeForLower: boolean}}
  */
 let Market = {
     Trades: [],
@@ -47,7 +47,7 @@ let Market = {
     TradePartnerNeighbor: true,
     TradePartnerGuild: true,
     TradePartnerFriend: true,
-    TradePartnerMyself: false,
+    ShowOwnOffers: false,
 
     TradeForHigher: true,
     TradeForEqual: true,
@@ -116,8 +116,8 @@ let Market = {
                 Market.CalcBody();
             });
 
-            $('#Market').on('click', '.tradepartnermyself', function () {
-                Market.TradePartnerMyself = !Market.TradePartnerMyself;
+            $('#Market').on('click', '.showownoffers', function () {
+                Market.ShowOwnOffers = !Market.ShowOwnOffers;
                 Market.CalcBody();
             });
 
@@ -265,12 +265,12 @@ let Market = {
 
         h.push('<td><label class="game-cursor"><input class="tradepartnerguild game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerGuild') + '</label></td>');
         h.push('<td><label class="game-cursor"><input class="tradeforequal game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForEqual') + '</label></td>');
-        h.push('<td><label class="game-cursor"><input class="tradefairstock game-cursor" ' + (Market.TradeFairStock ? 'checked' : '') + ' type="checkbox" title="' + i18n('Boxes.Market.TradeFairStockTT') + '">' + i18n('Boxes.Market.TradeFairStock') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="tradefairstock game-cursor" ' + (Market.TradeFairStock ? 'checked' : '') + ' type="checkbox" title="' + HTML.i18nTooltip(i18n('Boxes.Market.TradeFairStockTT')) + '">' + i18n('Boxes.Market.TradeFairStock') + '</label></td>');
         h.push('</tr>');
 
         h.push('<tr>');
         h.push('<td><label class="game-cursor" for="minquantity">' + i18n('Boxes.Market.MinQuantity') + '</label></td>');
-        h.push('<td title="' + i18n('Boxes.Market.TTMinQuantity') + '"><input type="number" id="minquantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
+        h.push('<td title="' + HTML.i18nTooltip(i18n('Boxes.Market.TTMinQuantity')) + '"><input type="number" id="minquantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
         h.push('<td><label class="game-cursor"><input class="tradepartnerfriend game-cursor" ' + (Market.TradePartnerFriend ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerFriend') + '</label></td>');
         h.push('<td><label class="game-cursor"><input class="tradeforlower game-cursor" ' + (Market.TradeForLower ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForLower') + '</label></td>');
         h.push('<td><label class="game-cursor"><input class="tradefair game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFair') + '</label></td>');
@@ -279,7 +279,7 @@ let Market = {
         h.push('<tr>');
         h.push('<td><label class="game-cursor" for="maxresults">' + i18n('Boxes.Market.MaxResults') + '</label></td>');
         h.push('<td><input type="number" id="maxresults" step="1" min="1" max="1000000" value="' + Market.MaxResults + '"></td>');
-        h.push('<td><label class="game-cursor"><input class="tradepartnermyself game-cursor" ' + (Market.TradePartnerMyself ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerMyself') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="showownoffers game-cursor" ' + (Market.ShowOwnOffers ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.ShowOwnOffers') + '</label></td>');
         h.push('<td></td>');
         h.push('<td><label class="game-cursor"><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</label></td>');
         h.push('</tr>');
@@ -324,11 +324,11 @@ let Market = {
 
                 h.push('<tr>');
                 h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['offer']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td><strong class="td-tooltip" title="' + OfferTT + '">' + GoodsData[Trade['offer']['good_id']]['name'] + '</strong></td>');
-                h.push('<td><strong class="td-tooltip" title="' + OfferTT + '">' + Trade['offer']['value'] + '</strong></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[Trade['offer']['good_id']]['name'] + '</strong></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Trade['offer']['value'] + '</strong></td>');
                 h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[Trade['need']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td><strong class="td-tooltip" title="' + NeedTT + '">' + GoodsData[Trade['need']['good_id']]['name'] + '</strong></td>');
-                h.push('<td><strong class="td-tooltip" title="' + NeedTT + '">' + Trade['need']['value'] + '</strong></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[Trade['need']['good_id']]['name'] + '</strong></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Trade['need']['value'] + '</strong></td>');
                 h.push('<td class="text-center">' + HTML.Format(MainParser.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
                 h.push('<td class="text-center">' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
@@ -388,10 +388,17 @@ let Market = {
         }
 
         //Tradepartner
-        if (!((Market.TradePartnerNeighbor && Trade['merchant']['is_neighbor'] && !Trade['merchant']['is_self']) || (Market.TradePartnerGuild && Trade['merchant']['is_guild_member'] && !Trade['merchant']['is_self']) || (Market.TradePartnerFriend && Trade['merchant']['is_friend'] && !Trade['merchant']['is_self']) || (Trade['merchant']['is_self'] && Market.TradePartnerMyself))) {
-            return false;
+        if (Trade['merchant']['is_self']) {
+            if (!Market.ShowOwnOffers) {
+                return false;
+            }
         }
-
+        else { //Not self
+            if (!((Market.TradePartnerNeighbor && Trade['merchant']['is_neighbor']) || (Market.TradePartnerGuild && Trade['merchant']['is_guild_member']) || (Market.TradePartnerFriend && Trade['merchant']['is_friend']))) {
+                return false;
+            }
+        }
+        
         let OfferGoodID = Trade['offer']['good_id'],
             NeedGoodID = Trade['need']['good_id'],
             OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],

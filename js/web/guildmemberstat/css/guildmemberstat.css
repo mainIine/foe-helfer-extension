@@ -1,3 +1,18 @@
+/*
+ * **************************************************************************************
+ *
+ * Dateiname:                 guildmemberstat.css
+ * Projekt:                   foe-chrome
+ *
+ * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
+ * erstellt am:	              24.02.21, 09:49 Uhr
+ * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
+ *
+ * Copyright © 2021
+ *
+ * **************************************************************************************
+ */
+
 #GuildMemberStat {
     width: 750px;
     height: 600px;
@@ -146,18 +161,26 @@
 }
 
 #GuildMemberStatBody tr th span.gex {
-    background: url(../images/gex_th.png) center no-repeat;
+    background: url(../../x_img/ge.png) center no-repeat;
     background-size: contain;
 }
 
 #GuildMemberStatBody tr th span.gbg {
-    background: url(../images/gbg_th.png) center no-repeat;
+    background: url(../../x_img/gbg-gray.png) center no-repeat;
     background-size: contain;
 }
 
 #GuildMemberStatBody tr th span.messages {
-    background: url(../images/posts_th.png) center no-repeat;
+    background: url(../../x_img/msg.png) center no-repeat;
     background-size: contain;
+}
+
+#GuildMemberStatBody tr th span.edit {
+    width: 16px;
+    height: 16px;
+    background: url(../images/edit.png) center no-repeat;
+    background-size: contain;
+
 }
 
 #GuildMemberStatBody tr th span.guildbuild {
@@ -177,19 +200,49 @@
     position: relative
 }
 
-#GuildMemberStatBody td .detail-wrapper {
+#GuildMemberStatBody table tr td.increased:after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5px 10px 5px;
+    border-color: transparent transparent var(--text-success) transparent;
+}
+
+#GuildMemberStatBody table tr td.decreased:after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 5px 0px 5px;
+    border-color: #ff0000 transparent transparent transparent;
+}
+
+#GuildMemberStatBody .detail-wrapper {
     display: flex;
     flex-wrap: wrap;
 }
 
-#GuildMemberStatBody td .detail-item {
+#GuildMemberStatBody .detail-item {
     flex-grow: 1;
     min-width: 50%;
     padding: 2px 3px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
-#GuildMemberStatBody td .detail-item table {
+#GuildMemberStatBody .detail-item .scrollable{
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+#GuildMemberStatBody .detail-item table {
     width: 100%;
 }
 
@@ -282,4 +335,80 @@
     color: var(--text-bright);
     font-weight: bold;
     text-shadow: 0 2px 2px black, 0 1px 0 black;
+}
+
+#GuildMemberStatBody .copyable {
+    user-select: text;
+}
+
+#GuildMemberStatBody .hidden-text {
+    opacity: 0;
+    display: inline-block;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+#GuildMemberStat .deleteButton {
+    background: #ff000036;
+    border: 1px solid #f800005c;
+    border-radius: 2em;
+    color: #fff;
+    font-size: 14px;
+    height: 18px;
+    padding: 0;
+    text-align: center;
+    width: 18px;
+    position: absolute;
+    right: 4px;
+    top: 1px;
+    cursor: pointer;
+    display: none;
+}
+
+#GuildMemberStat .deleteButton:hover {
+    background: #00000036;
+}
+
+#GuildMemberStat #gms-filter-input {
+    width: 30%;
+    float: right;
+    background-color: var(--background-light);
+    font-size: 1rem;
+    padding: 3px 5px;
+}
+
+#GuildMemberStat .activeCircle{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 6px;
+    background: var(--background-btn-green-fallback);
+	background: var(--background-btn-green-moz);
+	background: var(--background-btn-green-webkit);
+	background: var(--background-btn-green);
+}
+
+#GuildMemberStat .warningoverlay {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #150f09f2;
+}
+
+#GuildMemberStat .warningoverlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#GuildMemberStat tr.nohover:hover {
+    background-color: var(--background-table-odd);
 }
