@@ -37,7 +37,7 @@
     "Boxes.Alerts.Form.Tag": "Tag",
     "Boxes.Alerts.Form.Tag.Description": "Tags können verwendet werden um Benachrichtigungen zu gruppieren (eine neue Benachrichtigung mit einem Tag ersetzt eine ältere Benachrichtigung mit demselben Tag)",
     "Boxes.Alerts.Form.Title": "Titel",
-    "Boxes.Alerts.Preferences.Auction.Info": "Automatisch einen neuen Timer erstellen sobald ich ein Gebot im Antiquitätenhändler abgebe",
+    "Boxes.Alerts.Preferences.Auction.Info": "Automatisch einen neuen Timer erstellen sobald ich ein Gebot im Antiquitätenhändler abgebe.",
     "Boxes.Alerts.Preferences.Auction.Title": "Antiquitätenhändler Auktion",
     "Boxes.Alerts.Preferences.Battlegrounds.Info": "Sendet sofort eine Benachrichtigung bei hoher Aktivität in den Gildengefechten (z.B. 10 Angriffe auf einen einzelnen Sektor innerhalb von 5 Sekunden). Dies funktioniert nur wenn die Gildengefechte im Spiel geöffnet bleiben!",
     "Boxes.Alerts.Preferences.Battlegrounds.Title": "Gildengefechte überwachen",
