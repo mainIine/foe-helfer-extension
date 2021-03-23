@@ -914,8 +914,8 @@ const FoEproxy = (function () {
 				lgUpdateData.Rankings = Rankings;
 				lgUpdateData.Bonus = Bonus;
 
-				if (lgUpdateData.Rankings && lgUpdateData.CityMapEntity) {
-					MainParser.OwnLGData(lgUpdateData);
+				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
+					if(!IsLevelScroll) MainParser.OwnLGData(lgUpdateData);
 				}
 
 				lgUpdate();
