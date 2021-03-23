@@ -5,10 +5,10 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
+ * erstellt am:	              22.03.21, 10:04 Uhr
+ * zuletzt bearbeitet:       22.03.21, 10:04 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -48,7 +48,7 @@ let Outposts = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				popout: 'Outposts.PopOutBox()'
+				// popout: 'Outposts.PopOutBox()'
 			};
 
 			HTML.Box(args);
