@@ -239,16 +239,6 @@
 
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 
-			// If #content is available, flash content has been loaded ...
-			let IsForum = false;
-			if (window !== undefined && window.location !== undefined && window.location.pathname !== undefined && window.location.pathname.includes('forum')) {
-				IsForum = true;
-            }
-
-			if (document.getElementById('content') && !IsForum ){
-				alert('You installed the FoE Helper but didn\'t switch the game to HTML5. Check that in your game settings!');
-			}
-
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
 			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
