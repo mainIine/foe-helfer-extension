@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              11.03.21, 16:47 Uhr
- * zuletzt bearbeitet:       11.03.21, 16:30 Uhr
+ * erstellt am:	              22.03.21, 09:28 Uhr
+ * zuletzt bearbeitet:       21.03.21, 11:52 Uhr
  *
  * Copyright © 2021
  *
@@ -850,11 +850,16 @@ let GildFights = {
 				return ;
 			}
 
+			let currentTime = MainParser.getCurrentDateTime();
+
 			resp.forEach((alert) => {
 				if(alert['data']['category'] === 'gbg')
 				{
-					let name = alert['data']['title'],
-						prov = GildFights.MapData['map']['provinces'].find(e => e.title === name); // short name of the province must match
+					let alertTime = alert['data']['expires'],
+						name = alert['data']['title'],
+						prov = GildFights.MapData['map']['provinces'].find(
+							e => e.title === name && alertTime > currentTime
+						);
 
 					GildFights.Alerts.push(prov['id']);
 				}
