@@ -5,8 +5,8 @@
  * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              19.03.21, 10:20 Uhr
- * zuletzt bearbeitet:       19.03.21, 10:17 Uhr
+ * erstellt am:	              23.03.21, 13:11 Uhr
+ * zuletzt bearbeitet:       22.03.21, 15:56 Uhr
  *
  * Copyright © 2021
  *
@@ -423,7 +423,7 @@ let Parts = {
 				
         // Info-Block
         h.push('<div class="dark-bg">');
-        h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
+        h.push('<table style="width: 100%"><tr><td class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
@@ -439,7 +439,6 @@ let Parts = {
 			if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][Parts.Level + 1]) {
 				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 			}
-			h.push('</p>');
 		}
 		
 
