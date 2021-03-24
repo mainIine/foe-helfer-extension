@@ -2,12 +2,13 @@
  * **************************************************************************************
  *
  * Dateiname:                 background.js
- * Projekt:                   foe
+ * Projekt:                   foe-chrome
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.11.19, 09:44 Uhr
+ * erstellt am:	              23.03.21, 13:11 Uhr
+ * zuletzt bearbeitet:       23.03.21, 13:05 Uhr
  *
- * Copyright © 2019
+ * Copyright © 2021
  *
  * **************************************************************************************
  */
@@ -365,7 +366,7 @@ alertsDB.version(1).stores({
 			});
 
 			browser.tabs.create({
-				url: `https://foe-rechner.de/extension/update?v=${version}&lang=${lng}`
+				url: `https://foe-helper.com/extension/update?v=${version}${lng === 'de' ? '&lang=de' : ''}`
 			});
 		}
 	});
