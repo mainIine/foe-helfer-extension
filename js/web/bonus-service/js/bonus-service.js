@@ -256,13 +256,16 @@ let BonusService = {
 					a = parseInt(si.text());
 
 				// Bonus is empty
-				if(b['amount'] === undefined || b['amount'] <= 0){
+				if (b['amount'] === undefined || b['amount'] <= 0) {
 					si.closest('.hud-btn').addClass('hud-btn-red');
 					si.hide();
 				}
 
 				// Bonus ticker down, when changed
-				else if(a !== b['amount']) {
+				else if (a !== b['amount']) {
+					si.closest('.hud-btn').removeClass('hud-btn-red');
+					si.show();
+
 					si.text(b['amount']);
 
 					si.addClass('bonus-blink');
