@@ -13,7 +13,7 @@
  * **************************************************************************************
  */
 
-#GuildMemberStat {
+ #GuildMemberStat {
     width: 750px;
     height: 600px;
     top: calc(50vh - 200px);
@@ -411,4 +411,31 @@
 
 #GuildMemberStat tr.nohover:hover {
     background-color: var(--background-table-odd);
+}
+
+#GuildMemberStat .goods-sprite-50.sm {
+    width: 25px;
+    height: 19px;
+    vertical-align: middle;
+}
+
+#GuildMemberStat .goods-sprite-50.sm::before {
+    zoom: 0.7;
+    overflow: hidden;
+    position: static;
+    display: inline-block;
+}
+
+#GuildMemberStat .goods-count{
+    font-size: 0.8em;
+}
+
+#GuildMemberStat td.goods-image {
+    padding: 0;
+    width: 25px;
+    text-align: center;
+}
+
+#GuildMemberStat .padding-0 {
+    padding: 0;
 }

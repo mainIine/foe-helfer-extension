@@ -6,7 +6,7 @@
  *
  * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
  * erstellt am:	              24.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       21.03.21, 22:46 Uhr
+ * zuletzt bearbeitet:       26.03.21, 23:58 Uhr
  *
  * Copyright © 2021
  *
@@ -30,6 +30,20 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
                 }
 
             });
+        }
+    }
+});
+
+// Treasury Goods 
+FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
+    let requestMethod = postData[0]['requestMethod'];
+    if (requestMethod === 'getTreasury')
+    {
+        let Goods = data.responseData.resources;
+
+        if (Goods !== undefined)
+        {
+            GuildMemberStat.setEraGoods(Goods);
         }
     }
 });
@@ -130,6 +144,7 @@ let GuildMemberStat = {
     GBGData: undefined,
     GBGId: undefined,
     GEXId: undefined,
+    TreasuryGoodsData: {},
     CurrentStatGroup: 'Member',
     hasGuildMemberRights: false,
     acceptedDeleteWarning: false,
@@ -216,6 +231,10 @@ let GuildMemberStat = {
                     $("#gms-filter-input").fadeOut(200);
                     GuildMemberStat.ShowGuildEras();
                     break;
+                case 'GuildGoods':
+                    $("#gms-filter-input").fadeOut(200);
+                    GuildMemberStat.ShowGuildGoods();
+                    break;
             }
         });
 
@@ -240,7 +259,7 @@ let GuildMemberStat = {
                 if (CityEntity['type'] && CityEntity['type'] === 'clan_power_production')
                 {
 
-                    let value = CityEntity['entity_levels'].find(data => data.era == Member.era);
+                    let value = CityEntity['entity_levels'].find(data => data.era === Member.era);
                     let clan_power = typeof value.clan_power !== 'undefined' ? value.clan_power : 0;
 
                     GuildPowerBuildings.push({ entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: null });
@@ -258,22 +277,34 @@ let GuildMemberStat = {
 
                         let Ability = CityEntity['abilities'][AbilityIndex];
                         let Resources = 0;
+                        let eraId = entity[i].level !== undefined ? (entity[i].level + 1) : null;
+                        let era = eraId !== null ? Technologies.EraNames[eraId] : null;
+                        let goods = null;
 
                         if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources'])
                         {
-                            Resources = Ability['additionalResources']['AllAge']['resources'];
+                            Resources = Object.values(Ability['additionalResources']['AllAge']['resources'])[0];
                         }
 
                         // Check for clan power building (Ehrenstatue etc.)
                         if (Ability['additionalResources'][Member.era] !== undefined && Ability['additionalResources'][Member.era]['resources'] !== undefined && Ability['additionalResources'][Member.era]['resources']['clan_power'] !== undefined)
                         {
-
                             let clan_power = Ability['additionalResources'][Member.era]['resources']['clan_power'];
-                            GuildPowerBuildings.push({ entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: null });
-
+                            GuildPowerBuildings.push({ entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: eraId, era: era });
                         }
 
-                        GuildGoodsBuildings.push({ entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: Object.values(Resources)[0], goods: null }, level: null });
+                        let goodSum = Resources;
+
+                        if (era !== null)
+                        {
+                            goods = Object.values(GoodsData).filter(function (Good) {
+                                return Good.era == era && Good.abilities.goodsProduceable !== undefined;
+                            }).map(function (row) {
+                                return { good_id: row.id, value: goodSum / 5 };
+                            }).sort(function (a, b) { return a.good_id.localeCompare(b.good_id) });
+                        }
+
+                        GuildGoodsBuildings.push({ entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: goodSum, goods: goods }, level: eraId, era: era });
                     }
                 }
 
@@ -286,39 +317,10 @@ let GuildMemberStat = {
 
                     let totalgoods = entity[i]['state']['current_product']['goods'].map(good => good.value).reduce((sum, good) => good + sum);
 
-                    GuildGoodsBuildings.push({ entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: totalgoods, goods: entity[i]['state']['current_product']['goods'] }, level: entity[i]['level'] });
+                    GuildGoodsBuildings.push({ entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: totalgoods, goods: entity[i]['state']['current_product']['goods'].sort(function (a, b) { return a.good_id.localeCompare(b.good_id) }) }, level: entity[i]['level'], era: Member.era });
                 }
             }
         }
-
-        //Group Buildings and sum up resource/power values
-        GuildPowerBuildings = GuildPowerBuildings.reduce(function (res, obj) {
-            if (!(obj.name in res))
-            {
-                res.__array.push(res[obj.name] = obj);
-                res[obj.name].count = 1;
-            }
-            else
-            {
-                res[obj.name].power.value += +obj.power.value;
-                res[obj.name].count += 1;
-            }
-            return res;
-        }, { __array: [] }).__array;
-
-        GuildGoodsBuildings = GuildGoodsBuildings.reduce(function (res, obj) {
-            if (!(obj.name in res))
-            {
-                res.__array.push(res[obj.name] = obj);
-                res[obj.name].count = 1;
-            }
-            else
-            {
-                res[obj.name].resources.totalgoods += +obj.resources.totalgoods;
-                res[obj.name].count += 1;
-            }
-            return res;
-        }, { __array: [] }).__array;
 
         let PlayerGuildBuildings = { player_id: Member.player_id, era: Member.era, guildbuildings: GuildPowerBuildings.concat(GuildGoodsBuildings) };
 
@@ -809,6 +811,7 @@ let GuildMemberStat = {
         h.push(`<li${GuildMemberStat.CurrentStatGroup === 'Member' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Member"><span>${i18n('Boxes.GuildMemberStat.GuildMembers')}</span></a></li>`);
         h.push(`<li${GuildMemberStat.CurrentStatGroup === 'Eras' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Eras"><span>${i18n('Boxes.GuildMemberStat.Eras')}</span></a></li>`);
         h.push(`<li${GuildMemberStat.CurrentStatGroup === 'GuildBuildings' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="GuildBuildings"><span>${i18n('Boxes.GuildMemberStat.GuildBuildings')}</span></a></li>`);
+        h.push(`<li${GuildMemberStat.CurrentStatGroup === 'GuildGoods' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="GuildGoods"><span>${i18n('Boxes.GuildMemberStat.GuildGoods')}</span></a></li>`);
 
         if (GuildMemberStat.Settings.showSearchbar)
         {
@@ -823,7 +826,7 @@ let GuildMemberStat = {
             `<th class="is-number" data-type="gms-group"></th>` +
             `<th class="case-sensitive" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
             `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
-            `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Ages')}</th>`);
+            `<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Eras')}</th>`);
 
         if (GuildMemberStat.hasGuildMemberRights)
             h.push(`<th class="is-number gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberActiviy'))}"><span class="activity"></span></th>`);
@@ -960,7 +963,7 @@ let GuildMemberStat = {
 
             h.push(`<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>`);
             h.push(`<td class="case-sensitive copyable" data-text="${member['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member['avatar']]}.jpg" alt="${member['name']}"> <span>${member['name']}</span></td>`);
-            h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + scoreDiff + '</span>' : ''}</td>`);
+            h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
             h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);
 
             if (GuildMemberStat.hasGuildMemberRights)
@@ -1030,7 +1033,7 @@ let GuildMemberStat = {
                     // Create Inactivity Overview
                     if (Member['activity'] !== undefined)
                     {
-                        d.push(`<div class="detail-item warnings"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody class="copyable">`);
+                        d.push(`<div class="detail-item warnings"><div class="scrollable"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody class="copyable">`);
 
                         let warnings = Member['activity'];
 
@@ -1038,20 +1041,20 @@ let GuildMemberStat = {
                         {
                             if (warnings.hasOwnProperty(i))
                             {
-                                let warnlist = warnings[i].warnings;
+                                let warnlist = warnings[i].warnings.sort((a, b) => b.date - a.date);
+
                                 if (warnlist.length >= 1)
                                 {
                                     for (let k in warnlist)
                                     {
-                                        // @Todo: Add translation for activity state
-                                        d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(parseInt(k) + 1)}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
+                                        d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(warnlist.length - parseInt(k))}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
                                             `<td>${moment(warnlist[k].date).format(i18n('Date'))}</td>` +
                                             `<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteInactivityWarning'))}">x</button></td></tr>`);
                                     }
                                 }
                             }
                         }
-                        d.push('</tbody></table></div>');
+                        d.push('</tbody></table></div></div>');
                     }
 
                     // Create GEX Overview
@@ -1114,33 +1117,74 @@ let GuildMemberStat = {
 
                         d.push(`<div class="detail-item buildings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="closed copyable">`);
 
-                        let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined });
-                        let guildPowerBuildings = guildbuildings['buildings'].filter(function (data) { return data.power !== undefined });
+                        // Group GuildGoods buildings by name and their era
+                        let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined }).reduce(function (res, obj) {
+                            let objname = obj.name + '#' + obj.level + '#';
+                            if (!(objname in res))
+                            {
+                                res.__array.push(res[objname] = obj);
+                                res[objname].count = 1;
+                            }
+                            else
+                            {
+                                res[objname].resources.totalgoods += +obj.resources.totalgoods;
+                                res[objname].count += 1;
+                            }
+                            return res;
+                        }, { __array: [] }).__array.sort(function (a, b) { return a.name.localeCompare(b.name) });
+
+                        // Group guildpower buildings only by name. Era isn't relevant here
+                        let guildPowerBuildings = guildbuildings['buildings'].filter(function (data) { return data.power !== undefined }).reduce(function (res, obj) {
+                            if (!(obj.name in res))
+                            {
+                                res.__array.push(res[obj.name] = obj);
+                                res[obj.name].count = 1;
+                            }
+                            else
+                            {
+                                res[obj.name].power.value += +obj.power.value;
+                                res[obj.name].count += 1;
+                            }
+                            return res;
+                        }, { __array: [] }).__array.sort(function (a, b) { return a.name.localeCompare(b.name) });
 
                         d.push(`<tr class="nohover"><td colspan="2"><div class="detail-wrapper">`);
 
                         if (guildGoodsBuildings.length)
                         {
-                            d.push(`<div class="detail-item guildgoods"><table><thead><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
+                            d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
+
                             guildGoodsBuildings.forEach(plbuilding => {
+                                let goodslist = '';
                                 let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
                                 let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
                                 totalGoods += goodCount;
-                                d.push(`<tr><td>${countBuilding} x ${plbuilding.name} ${plbuilding.level !== null ? '(' + plbuilding.level + ')' : ''}</td><td class="text-right">${HTML.Format(goodCount)}</td></tr>`);
+                                if (plbuilding.resources.goods !== undefined && plbuilding.resources.goods !== null)
+                                {
+                                    goodslist = plbuilding.resources.goods.map(good => {
+                                        return `<span title="${good.value} x ${GoodsData[good.good_id]['name']}" class="goods-sprite-50 sm ${good.good_id}"></span> `;
+                                    }).join('');
+
+                                }
+
+                                d.push(`<tr><td>${countBuilding} x ${plbuilding.name.replace(/\#[0-9]+\#/, '')} ${plbuilding.level !== null ? '(' + plbuilding.level + ')' : ''}</td><td class="text-right">${goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : ''}</td><td class="text-right">${HTML.Format(goodCount)}</td></tr>`);
                             });
-                            d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildGoods')}</td><td class="text-right text-bright">${HTML.Format(totalGoods)}</td></tr>`);
+
+                            d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildGoods')}</td><td></td><td class="text-right text-bright">${HTML.Format(totalGoods)}</td></tr>`);
                             d.push(`</tbody></table></div>`);
                         }
 
                         if (guildPowerBuildings.length)
                         {
-                            d.push(`<div class="detail-item guildgoods"><table><thead><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
+                            d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
+
                             guildPowerBuildings.forEach(plbuilding => {
                                 let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
                                 let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
                                 totalPower += powerCount;
                                 d.push(`<tr><td>${countBuilding} x  ${plbuilding.name} ${plbuilding.level !== null ? '(' + plbuilding.level + ')' : ''}</td><td class="text-right">${HTML.Format(powerCount)}</td></tr>`);
                             });
+
                             d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildPower')}</td><td class="text-right text-bright">${HTML.Format(totalPower)}</td></tr>`);
                             d.push(`</tbody></table></div>`);
                         }
@@ -1244,12 +1288,14 @@ let GuildMemberStat = {
             });
 
             // Fade out loading screen
-            $("#gms-loading-data").fadeOut(800, function () { $(this).remove() });
+            GuildMemberStat.hidePreloader('#GuildMemberStat');
         });
     },
 
 
     ShowGuildEras: async () => {
+
+        GuildMemberStat.InitSettings();
 
         let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).reverse().sortBy('score');
         let d = [];
@@ -1267,7 +1313,7 @@ let GuildMemberStat = {
                 obj
             );
             res[eraId].score += obj.score;
-            
+
             return res;
         }, []);
 
@@ -1276,13 +1322,14 @@ let GuildMemberStat = {
         if (EraGroup)
         {
             d.push(`<div class="detail-item guildgoods">` +
-                `<table id="GuildErasTable" class="foe-table">` +
+                `<table id="GuildErasTable" class="foe-table copyable">` +
                 `<thead><tr class="sorter-header">` +
                 `<th class="is-number" data-type="gms-era">#</th>` +
                 `<th class="case-sensitive" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
                 `<th class="is-number text-center" data-type="gms-era">${i18n('Boxes.GuildMemberStat.GuildMembers')}</th>` +
                 `<th class="is-number text-right" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Points')}</th><th></th></tr>` +
                 `</thead><tbody class="gms-era">`);
+
             for (let era in EraGroup)
             {
 
@@ -1323,26 +1370,41 @@ let GuildMemberStat = {
                     let eraId = $(this).attr('data-id');
                     let h = [];
 
-                    h.push(`<tr class="detailview dark-bg"><td colspan="${$(this).find("td").length}"><div class="detail-wrapper">` +
-                        `<table><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th></tr><tbody>`);
-                    if(EraGroup[eraId].members !== undefined){
-                        
-                        let EraMembers = EraGroup[eraId].members.sort(function(a,b){ return a.score>b.score});
-                        
+                    h.push(`<tr class="detailview dark-bg"><td colspan="${$(this).find("td").length}"><div class="detail-wrapper"><div class="detail-item">` +
+                        `<table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th class="text-right">${i18n('Boxes.GuildMemberStat.Points')}</th></tr></thead><tbody>`);
+                    if (EraGroup[eraId].members !== undefined)
+                    {
+
+                        let EraMembers = EraGroup[eraId].members.sort(function (a, b) { return a.score > b.score });
+
                         EraMembers.forEach(member => {
-                            h.push(`<tr><td>${member.rank[1]}</td><td>${member.name}</td><td>${i18n('Eras.' + eraId)}</td><td>${HTML.Format(member.score)}</td></tr>`);
+                            h.push(`<tr><td>${member.rank[1]}</td><td>${member.name}</td><td>${i18n('Eras.' + eraId)}</td><td class="text-right">${HTML.Format(member.score)}</td></tr>`);
                         });
 
                     }
-                    h.push('</tbody></table></div></td></tr>');
+                    h.push('</tbody></table></div>');
+
+                    // Show in stock Treasury Goods for Era 
+                    if (GuildMemberStat.TreasuryGoodsData !== null && typeof GuildMemberStat.TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined')
+                    {
+                        let EraTreasuryGoods = GuildMemberStat.TreasuryGoodsData[EraGroup[eraId].era];
+
+                        h.push(`<div class="detail-item"><table><thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
+                        EraTreasuryGoods.forEach(good => {
+                            h.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
+                        });
+
+                        h.push(`<tr><td colspan="3" class="text-right"><i>${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(GuildMemberStat.TreasuryGoodsData.updated).fromNow()}</i></td></tr>`);
+                        h.push(`</tbody></table></div>`);
+
+                    }
+                    h.push('</div></td></tr>');
 
                     $(h.join('')).insertAfter($('#era' + eraId));
                 }
             });
 
-            $('#gms-loading-data').fadeOut(600, function () {
-                $(this).remove();
-            });
+            GuildMemberStat.hidePreloader('#GuildMemberStat');
         });
 
     },
@@ -1350,34 +1412,23 @@ let GuildMemberStat = {
 
     ShowGuildBuildings: async () => {
 
+        GuildMemberStat.InitSettings();
+
+        GuildMemberStat.CurrentStatGroup = 'GuildBuildings';
+
         let d = [];
         let totalGoods = 0;
         let totalPower = 0;
 
-        let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).toArray();
-        let gmsBuildingDict = [];
+        let gmsBuildingDict = await GuildMemberStat.GetGuildMemberBuildings();
 
-        GuildMemberStat.CurrentStatGroup = 'GuildBuildings';
-
-        for (let x = 0; x < GuildMembers.length; x++)
-        {
-            const member = GuildMembers[x];
-
-            if (typeof member['guildbuildings'] !== 'undefined')
-            {
-                gmsBuildingDict.push(...member['guildbuildings']['buildings']);
-            }
-        }
-        
         // add notification for how to update guild building statisitc
         d.push(`<div style="padding: 10px;">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')}</div>`);
 
         if (gmsBuildingDict === undefined || gmsBuildingDict.length <= 0)
         {
             $("#gmsContentWrapper").html(d.join(''));
-            $('#gms-loading-data').fadeOut(600, function () {
-                $(this).remove();
-            });
+            GuildMemberStat.hidePreloader('#GuildMemberStat');
             return;
         }
 
@@ -1425,12 +1476,12 @@ let GuildMemberStat = {
         }, { __array: [] }).__array.sort(function (a, b) {
             return a.name.localeCompare(b.name);
         });
-        
+
         d.push(`<div class="detail-wrapper">`);
 
         if (guildGoodsBuildings.length)
         {
-            d.push(`<div class="detail-item guildgoods"><table class="foe-table"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
+            d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
 
             guildGoodsBuildings.forEach(plbuilding => {
                 let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
@@ -1445,7 +1496,7 @@ let GuildMemberStat = {
 
         if (guildPowerBuildings.length)
         {
-            d.push(`<div class="detail-item guildgoods"><table class="foe-table"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
+            d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
 
             guildPowerBuildings.forEach(plbuilding => {
                 let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
@@ -1461,10 +1512,140 @@ let GuildMemberStat = {
         d.push(`</div>`);
 
         $('#gmsContentWrapper').html(d.join('')).promise().done(function () {
-            $('#gms-loading-data').fadeOut(600, function () {
-                $(this).remove();
-            });
+            GuildMemberStat.hidePreloader('#GuildMemberStat');
         });
+    },
+
+
+    ShowGuildGoods: async () => {
+
+        GuildMemberStat.InitSettings();
+
+        let d = [];
+        let ErasGuildGoods = await GuildMemberStat.GetGuildMemberBuildings();
+        //console.log(ErasGuildGoods); return;
+
+        ErasGuildGoods = ErasGuildGoods.reduce(function (res, obj) {
+
+            if (obj.era !== undefined && obj.resources !== undefined && obj.resources.goods !== undefined && obj.resources.goods !== null)
+            {
+
+                eraId = Technologies.Eras[obj['era']];
+
+                if (!(eraId in res))
+                {
+                    res[eraId] = {};
+                    obj.resources.goods.forEach(good => {
+                        res[eraId][good.good_id] = { name: GoodsData[good.good_id].name, value: good.value };
+                    });
+                }
+                else
+                {
+                    obj.resources.goods.forEach(good => {
+                        res[eraId][good.good_id].value += good.value;
+                    });
+                }
+            }
+            return res;
+
+        }, {});
+
+        // add notification for how to update guild building statisitc and Treasury Goods List
+        d.push(`<div style="padding: 10px;">1. ${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')}<br />2. ${i18n('Boxes.GuildMemberStat.GuildTreasuryNotification')}</div>`);
+
+        if (ErasGuildGoods === null)
+        {
+            GuildMemberStat.hidePreloader('#GuildMemberStat');
+            return;
+        }
+        d.push(`<table class="foe-table"><thead><tr><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th> ${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th><th> ${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th></thead><tbody>`);
+
+        for (let eraId in Object.keys(Technologies.Eras))
+        {
+
+            if (eraId < 3 || Technologies.EraNames[eraId] === undefined) { continue; }
+
+            d.push(`<tr><td>${i18n('Eras.' + eraId)}</td>`);
+
+            // Goods from Guild Building productions
+            if (ErasGuildGoods[eraId] !== undefined)
+            {
+                let DailyGuildGoods = ErasGuildGoods[eraId];
+
+                d.push(`<td class="padding-0">`);
+                d.push(`<div class="detail-item"><table class="foe-table copyable">`);
+                //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th></tr></thead>`);
+                d.push(`<tbody>`);
+
+                for (let i in DailyGuildGoods)
+                {
+                    if (DailyGuildGoods.hasOwnProperty(i))
+                    {
+                        d.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${i}"></span></td><td>${DailyGuildGoods[i].name}</td><td class="text-right">${HTML.Format(DailyGuildGoods[i].value)}</td></tr>`);
+                    }
+                };
+                d.push(`</tbody></table></div>`);
+                d.push(`</td>`);
+            }
+            else
+            {
+                d.push(`<td class="text-center">-</td>`);
+            }
+
+
+            // In stock guild good for the era
+
+            if (GuildMemberStat.TreasuryGoodsData !== null && typeof GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined')
+            {
+                let EraTreasuryGoods = GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]].sort(function (a, b) { return a.good.localeCompare(b.good) });
+                d.push(`<td class="padding-0">`);
+
+                d.push(`<div class="detail-item"><table class="foe-table copyable">`);
+                //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead>`);
+                d.push(`<tbody>`);
+                EraTreasuryGoods.forEach(good => {
+                    d.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
+                });
+
+                d.push(`</tbody></table></div>`);
+                d.push(`</td>`);
+
+            }
+            else
+            {
+                d.push(`<td class="text-center">-</td>`);
+            }
+
+            d.push(`</td></tr>`);
+        };
+
+        d.push(`</tbody></table>`);
+
+        $('#gmsContentWrapper').html(d.join('')).promise().done(function () {
+            GuildMemberStat.hidePreloader('#GuildMemberStat');
+        });
+    },
+
+
+    GetGuildMemberBuildings: async () => {
+
+        let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).toArray();
+        let gmsBuildingDict = [];
+
+        GuildMemberStat.CurrentStatGroup = 'GuildBuildings';
+
+        for (let x = 0; x < GuildMembers.length; x++)
+        {
+            const member = GuildMembers[x];
+
+            if (typeof member['guildbuildings'] !== 'undefined')
+            {
+                gmsBuildingDict.push(...member['guildbuildings']['buildings']);
+            }
+        }
+
+        return gmsBuildingDict;
+
     },
 
 
@@ -1501,18 +1682,20 @@ let GuildMemberStat = {
 
     InitSettings: () => {
 
-        let GuildMemberStatSettings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
+        let Settings = JSON.parse(localStorage.getItem('GuildMemberStatSettings'));
+        let TreasuryGoods = JSON.parse(localStorage.getItem('GuildMemberStatTreasuryGoods'));
 
-        if (!GuildMemberStatSettings)
+        if (!Settings)
         {
             return;
         }
 
-        GuildMemberStat.Settings.lastupdate = (GuildMemberStatSettings.lastupdate !== undefined) ? GuildMemberStatSettings.lastupdate : 0;
-        GuildMemberStat.Settings.showDeletedMembers = (GuildMemberStatSettings.showDeletedMembers !== undefined) ? GuildMemberStatSettings.showDeletedMembers : GuildMemberStat.Settings.showDeletedMembers;
-        GuildMemberStat.Settings.deleteOlderThan = (GuildMemberStatSettings.deleteOlderThan !== undefined) ? GuildMemberStatSettings.deleteOlderThan : GuildMemberStat.Settings.deleteOlderThan;
-        GuildMemberStat.Settings.autoStartOnUpdate = (GuildMemberStatSettings.autoStartOnUpdate !== undefined) ? GuildMemberStatSettings.autoStartOnUpdate : GuildMemberStat.Settings.autoStartOnUpdate;
-        GuildMemberStat.Settings.showSearchbar = (GuildMemberStatSettings.showSearchbar !== undefined) ? GuildMemberStatSettings.showSearchbar : GuildMemberStat.Settings.showSearchbar;
+        GuildMemberStat.Settings.lastupdate = (Settings.lastupdate !== undefined) ? Settings.lastupdate : 0;
+        GuildMemberStat.Settings.showDeletedMembers = (Settings.showDeletedMembers !== undefined) ? Settings.showDeletedMembers : GuildMemberStat.Settings.showDeletedMembers;
+        GuildMemberStat.Settings.deleteOlderThan = (Settings.deleteOlderThan !== undefined) ? Settings.deleteOlderThan : GuildMemberStat.Settings.deleteOlderThan;
+        GuildMemberStat.Settings.autoStartOnUpdate = (Settings.autoStartOnUpdate !== undefined) ? Settings.autoStartOnUpdate : GuildMemberStat.Settings.autoStartOnUpdate;
+        GuildMemberStat.Settings.showSearchbar = (Settings.showSearchbar !== undefined) ? Settings.showSearchbar : GuildMemberStat.Settings.showSearchbar;
+        GuildMemberStat.TreasuryGoodsData = (TreasuryGoods !== undefined) ? TreasuryGoods : {};
 
     },
 
@@ -1571,6 +1754,34 @@ let GuildMemberStat = {
         });
     },
 
+
+    setEraGoods: (d) => {
+
+        GuildMemberStat.TreasuryGoodsData = {};
+
+        for (let i in d)
+        {
+            if (d.hasOwnProperty(i))
+            {
+                let era = GoodsData[i]['era'];
+                let name = GoodsData[i]['name'];
+
+                if (!(era in GuildMemberStat.TreasuryGoodsData))
+                {
+                    GuildMemberStat.TreasuryGoodsData[era] = [];
+                }
+
+                GuildMemberStat.TreasuryGoodsData[era].push({ good: i, name: name, value: d[i] });
+            }
+        }
+
+        GuildMemberStat.TreasuryGoodsData.updated = +MainParser.getCurrentDate();
+
+        localStorage.setItem('GuildMemberStatTreasuryGoods', JSON.stringify(GuildMemberStat.TreasuryGoodsData));
+
+    },
+
+
     // helper functions
     uniq_array: (a) => {
 
@@ -1584,6 +1795,14 @@ let GuildMemberStat = {
     showPreloader: (id) => {
 
         $(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+
+    },
+
+    hidePreloader: () => {
+
+        $('#gms-loading-data').fadeOut(600, function () {
+            $(this).remove();
+        });
 
     },
 
