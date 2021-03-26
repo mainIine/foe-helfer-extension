@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.6.4
+
+**Bugfix**
+
+- Gebäude-Kits:
+    - Kann wieder wie gewohnt aufgerufen werden
+
+---
+
 ##### 2.5.6.3
 
 **Update**
