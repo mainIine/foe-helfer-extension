@@ -1558,7 +1558,7 @@ let GuildMemberStat = {
             GuildMemberStat.hidePreloader('#GuildMemberStat');
             return;
         }
-        d.push(`<table class="foe-table"><thead><tr><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th> ${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th><th> ${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th></thead><tbody>`);
+        d.push(`<table id="TreasuryGoodsTable" class="foe-table"><thead><tr><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th> ${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th><th> ${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th></thead><tbody>`);
 
         for (let eraId in Object.keys(Technologies.Eras))
         {
@@ -1572,7 +1572,7 @@ let GuildMemberStat = {
             {
                 let DailyGuildGoods = ErasGuildGoods[eraId];
 
-                d.push(`<td class="padding-0">`);
+                d.push(`<td class="dark">`);
                 d.push(`<div class="detail-item"><table class="foe-table copyable">`);
                 //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th></tr></thead>`);
                 d.push(`<tbody>`);
@@ -1589,16 +1589,14 @@ let GuildMemberStat = {
             }
             else
             {
-                d.push(`<td class="text-center">-</td>`);
+                d.push(`<td class="text-center dark">-</td>`);
             }
 
-
             // In stock guild good for the era
-
             if (GuildMemberStat.TreasuryGoodsData !== null && typeof GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined')
             {
                 let EraTreasuryGoods = GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]].sort(function (a, b) { return a.good.localeCompare(b.good) });
-                d.push(`<td class="padding-0">`);
+                d.push(`<td>`);
 
                 d.push(`<div class="detail-item"><table class="foe-table copyable">`);
                 //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead>`);
@@ -1797,6 +1795,7 @@ let GuildMemberStat = {
         $(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
 
     },
+
 
     hidePreloader: () => {
 
