@@ -205,6 +205,7 @@
 				'unit',
 				'alerts',
 				'guildfights',
+				'gvg',
 				'stats',
 				'campagnemap',
 				'bonus-service',

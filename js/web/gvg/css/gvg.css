@@ -1,0 +1,24 @@
+#gvg-hud {
+	background: var(--black-50) url('../../x_img/gvg-independences.png') no-repeat 3px center;
+	border: 1px solid #754e26;
+	border-radius: 4px;
+	position: absolute;
+	left: 408px;
+	z-index: 750;
+	top: 3px;
+	padding: 3px 3px 3px 33px;
+	height: 28px;
+	width: 60px;
+	box-sizing: border-box;
+
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.75rem;
+	font-weight: 400;
+	color: #f7dba4;
+	text-align: left;
+}
+
+#gvg-hud p {
+	line-height: 20px;
+	margin: 0;
+}
