@@ -448,8 +448,15 @@
     background-color: var(--black-50) !important;
 }
 
-#GuildMemberStat #TreasuryGoodsTable tbody tr td:nth-child(2),
-#GuildMemberStat #TreasuryGoodsTable tbody tr td:nth-child(3) {
+#GuildMemberStat #TreasuryGoodsTable tbody tr td.detail {
     width: 50%;
     padding: 0;
+}
+
+#GuildMemberStat #TreasuryGoodsTable tbody tr td.detail tr:first-child td {
+    border-top: none;
+}
+
+#GuildMemberStat #TreasuryGoodsTable tbody tr td.detail tr:last-child td {
+    border-bottom: none;
 }
