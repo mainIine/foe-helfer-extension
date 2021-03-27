@@ -212,7 +212,6 @@ let GuildMemberStat = {
 
         $('#GuildMemberStat').on('click', '.toggle-statistic', function () {
 
-            GuildMemberStat.showPreloader("#GuildMemberStat");
             GuildMemberStat.CurrentStatGroup = $(this).data('value');
 
             $("#gmsTabs").find("li").removeClass("active");
@@ -224,18 +223,16 @@ let GuildMemberStat = {
                     GuildMemberStat.Show();
                     break;
                 case 'GuildBuildings':
-                    $("#gms-filter-input").fadeOut(200);
                     GuildMemberStat.ShowGuildBuildings();
                     break;
                 case 'Eras':
-                    $("#gms-filter-input").fadeOut(200);
                     GuildMemberStat.ShowGuildEras();
                     break;
                 case 'GuildGoods':
-                    $("#gms-filter-input").fadeOut(200);
                     GuildMemberStat.ShowGuildGoods();
                     break;
             }
+
         });
 
         GuildMemberStat.Show();
@@ -409,6 +406,7 @@ let GuildMemberStat = {
 
                 if (GuildMemberStat.hasGuildMemberRights && GuildMemberStat.Settings.autoStartOnUpdate)
                 {
+                    GuildMemberStat.CurrentStatGroup = 'Member';
                     GuildMemberStat.BuildBox(true);
                 }
                 break;
@@ -467,6 +465,7 @@ let GuildMemberStat = {
 
                 if ($('#GuildMemberStatBody').length)
                 {
+                    GuildMemberStat.CurrentStatGroup = 'Member';
                     GuildMemberStat.Show();
                 }
 
@@ -574,6 +573,7 @@ let GuildMemberStat = {
 
             if ($("#GuildMemberStat").length)
             {
+                GuildMemberStat.CurrentStatGroup = 'Member';
                 GuildMemberStat.Show();
             }
         }
@@ -802,9 +802,9 @@ let GuildMemberStat = {
 
         let h = [];
 
-        GuildMemberStat.InitSettings();
-        GuildMemberStat.CurrentStatGroup = 'Member';
+        GuildMemberStat.showPreloader("#GuildMemberStat");
 
+        GuildMemberStat.InitSettings();
         GuildMemberStat.hasUpdateProgress = false;
 
         h.push('<div class="tabs"><ul id="gmsTabs" class="horizontal">');
@@ -1295,6 +1295,7 @@ let GuildMemberStat = {
 
     ShowGuildEras: async () => {
 
+        GuildMemberStat.showPreloader("#GuildMemberStat");
         GuildMemberStat.InitSettings();
 
         let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).reverse().sortBy('score');
@@ -1412,8 +1413,8 @@ let GuildMemberStat = {
 
     ShowGuildBuildings: async () => {
 
+        GuildMemberStat.showPreloader("#GuildMemberStat");
         GuildMemberStat.InitSettings();
-
         GuildMemberStat.CurrentStatGroup = 'GuildBuildings';
 
         let d = [];
@@ -1519,11 +1520,12 @@ let GuildMemberStat = {
 
     ShowGuildGoods: async () => {
 
+        GuildMemberStat.showPreloader("#GuildMemberStat");
         GuildMemberStat.InitSettings();
+        GuildMemberStat.CurrentStatGroup = 'GuildGoods';
 
         let d = [];
         let ErasGuildGoods = await GuildMemberStat.GetGuildMemberBuildings();
-        //console.log(ErasGuildGoods); return;
 
         ErasGuildGoods = ErasGuildGoods.reduce(function (res, obj) {
 
@@ -1572,7 +1574,7 @@ let GuildMemberStat = {
             {
                 let DailyGuildGoods = ErasGuildGoods[eraId];
 
-                d.push(`<td class="dark">`);
+                d.push(`<td class="detail dark">`);
                 d.push(`<div class="detail-item"><table class="foe-table copyable">`);
                 //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th></tr></thead>`);
                 d.push(`<tbody>`);
@@ -1589,14 +1591,14 @@ let GuildMemberStat = {
             }
             else
             {
-                d.push(`<td class="text-center dark">-</td>`);
+                d.push(`<td class="detail text-center dark">-</td>`);
             }
 
             // In stock guild good for the era
             if (GuildMemberStat.TreasuryGoodsData !== null && typeof GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined')
             {
                 let EraTreasuryGoods = GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]].sort(function (a, b) { return a.good.localeCompare(b.good) });
-                d.push(`<td>`);
+                d.push(`<td class="detail">`);
 
                 d.push(`<div class="detail-item"><table class="foe-table copyable">`);
                 //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead>`);
@@ -1611,7 +1613,7 @@ let GuildMemberStat = {
             }
             else
             {
-                d.push(`<td class="text-center">-</td>`);
+                d.push(`<td class="detail text-center">-</td>`);
             }
 
             d.push(`</td></tr>`);
@@ -1629,8 +1631,6 @@ let GuildMemberStat = {
 
         let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).toArray();
         let gmsBuildingDict = [];
-
-        GuildMemberStat.CurrentStatGroup = 'GuildBuildings';
 
         for (let x = 0; x < GuildMembers.length; x++)
         {
@@ -1777,6 +1777,11 @@ let GuildMemberStat = {
 
         localStorage.setItem('GuildMemberStatTreasuryGoods', JSON.stringify(GuildMemberStat.TreasuryGoodsData));
 
+        if ($('#GuildMemberStatBody').length && (GuildMemberStat.CurrentStatGroup === 'GuildGoods'))
+        {
+            GuildMemberStat.ShowGuildGoods();
+        }
+
     },
 
 
@@ -1792,7 +1797,10 @@ let GuildMemberStat = {
 
     showPreloader: (id) => {
 
-        $(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+        if (!$('#gms-loading-data').length)
+        {
+            $(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+        }
 
     },
 
