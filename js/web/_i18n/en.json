@@ -873,6 +873,7 @@
     "Settings.Version.PlayerId": "Player ID:",
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
+    "StrategyPoints.BuyableFP": "Number of forge points that can be bought with coins.",
     "Time": "HH:mm:ss a",
     "WsChat.Connected": "Connected!",
     "WsChat.ConnectionClosed": "Connection closed!",
