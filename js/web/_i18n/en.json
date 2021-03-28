@@ -647,7 +647,7 @@
     "Eras.8": "Industrial Age",
     "Eras.9": "Progressive Era",
     "Global.BoxTitle": "FoE Helper",
-    "GvG.Independences.Tooltip": "Amount of Independences granted since Recalc.",
+    "GvG.Independences.Tooltip": "Amount of Independences granted and sieges you placed yourself since last calculation.",
     "GvG.Independences.Tooltip.Warning": "Can be inaccurate, if you play on multiple desktop devices.",
     "HiddenRewards.Positions.cityRoadBig": "2-lane Road",
     "HiddenRewards.Positions.cityRoadSmall": "Single-lane Road",
