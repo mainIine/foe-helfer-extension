@@ -869,6 +869,7 @@
     "Settings.Version.PlayerId": "Spieler Id:",
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "Welt:",
+    "StrategyPoints.BuyableFP": "Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
     "Time": "HH:mm:ss",
     "WsChat.Connected": "Verbunden!",
     "WsChat.ConnectionClosed": "Verbindung geschlossen!",
