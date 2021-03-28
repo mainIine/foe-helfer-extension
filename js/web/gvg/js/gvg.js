@@ -1,3 +1,16 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
 FoEproxy.addHandler('ClanBattleService', 'grantIndependence', (data, postData) => {
     GvG.CountIndepences(data.responseData.__class__);
 });
@@ -11,16 +24,21 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 	GvG.HideGvgHud();
 });
 
+
+/**
+ * GvG Class
+ *
+ * @type {{NextCalc: (string|number), ShowGvgHud: GvG.ShowGvgHud, CountIndepences: GvG.CountIndepences, Independences: (string|number), HideGvgHud: GvG.HideGvgHud, ResetIndependences: GvG.ResetIndependences}}
+ */
 let GvG = {
     Independences: localStorage.getItem('GvGIndependencesCount') || 0,
 	NextCalc: localStorage.getItem('GvGRecalcTime') || 0,
 
     /**
 	 * Build HUD
-	 * @param data
 	 */
 	ShowGvgHud: () => {
-		if ($('#gvg-hud').length == 0) {
+		if ($('#gvg-hud').length === 0) {
 			HTML.AddCssFile('gvg');
 			let div = $('<div />');
 
@@ -36,12 +54,9 @@ let GvG = {
 							i18n('GvG.Independences.Tooltip') + '<br>' + 
 							'<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em')
 					.attr('data-placement','bottom')
-					.tooltip(
-						{
-							'template': '<div class="tooltip foe-skin" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
-							'html': true
-						}
-					);
+					.tooltip({
+						useFoEHelperSkin: true
+					});
 			});
 		}
 		else {
@@ -51,7 +66,6 @@ let GvG = {
 
     /**
 	 * Hide HUD
-	 * @param data
 	 */
 	HideGvgHud: () => {
 		if ($('#gvg-hud').length > 0) {
@@ -82,7 +96,7 @@ let GvG = {
 
     /**
 	 * Reset Independence Counter after Recalc
-	 * @param data
+	 * @param calcTime
 	 */
 	 ResetIndependences: (calcTime)=> {
 		let storedRecalc = localStorage.getItem('GvGRecalcTime');
