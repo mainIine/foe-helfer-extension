@@ -35,7 +35,6 @@ let GvG = {
 
     /**
 	 * Build HUD
-	 * @param data
 	 */
 	ShowGvgHud: () => {
 		if ($('#gvg-hud').length == 0) {
@@ -67,7 +66,6 @@ let GvG = {
 
     /**
 	 * Hide HUD
-	 * @param data
 	 */
 	HideGvgHud: () => {
 		if ($('#gvg-hud').length > 0) {
