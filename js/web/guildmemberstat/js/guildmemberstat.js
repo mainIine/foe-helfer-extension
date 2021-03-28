@@ -235,6 +235,7 @@ let GuildMemberStat = {
 
         });
 
+        GuildMemberStat.CurrentStatGroup = 'Member';
         GuildMemberStat.Show();
     },
 
@@ -1295,12 +1296,15 @@ let GuildMemberStat = {
 
     ShowGuildEras: async () => {
 
+        GuildMemberStat.CurrentStatGroup = 'Eras';
         GuildMemberStat.showPreloader("#GuildMemberStat");
         GuildMemberStat.InitSettings();
 
         let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).reverse().sortBy('score');
         let d = [];
         let rank = 1;
+        let TreasuryGoodsData = GuildMemberStat.TreasuryGoodsData;
+        let hasTreasuryTotals = (TreasuryGoodsData !== undefined && TreasuryGoodsData !== null && TreasuryGoodsData.hasOwnProperty('totals')) ? true : false;
 
         // group members to era
         const EraGroup = GuildMembers.reduce((res, obj) => {
@@ -1327,8 +1331,9 @@ let GuildMemberStat = {
                 `<thead><tr class="sorter-header">` +
                 `<th class="is-number" data-type="gms-era">#</th>` +
                 `<th class="case-sensitive" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
-                `<th class="is-number text-center" data-type="gms-era">${i18n('Boxes.GuildMemberStat.GuildMembers')}</th>` +
-                `<th class="is-number text-right" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Points')}</th><th></th></tr>` +
+                `<th class="is-number text-center" data-type="gms-era">${i18n('Boxes.GuildMemberStat.GuildMembers')}</th>`);
+            d.push(`<th class="is-number ${hasTreasuryTotals ? 'text-right' : 'text-center'}" data-type="gms-era">${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th>`);
+            d.push(`<th class="is-number text-right" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Points')}</th><th></th></tr>` +
                 `</thead><tbody class="gms-era">`);
 
             for (let era in EraGroup)
@@ -1339,8 +1344,19 @@ let GuildMemberStat = {
                 d.push(`<tr id="era${EraGroup[era].eraId}" data-id="${EraGroup[era].eraId}" class="hasdetail">` +
                     `<td class="is-number" data-number="${EraGroup[era].eraId}">${EraGroup[era].eraId}</td>` +
                     `<td class="case-sensitive" data-text="${i18n('Eras.' + EraGroup[era].eraId)}">${i18n('Eras.' + EraGroup[era].eraId)}</td>` +
-                    `<td class="is-number text-center" data-number="${countEra}">${countEra}</td>` +
-                    `<td class="is-number text-right" data-number="${EraGroup[era].score}">${HTML.Format(EraGroup[era].score)}</td><td></td>` +
+                    `<td class="is-number text-center" data-number="${countEra}">${countEra}</td>`);
+
+                if (hasTreasuryTotals)
+                {
+                    eraTotals = TreasuryGoodsData['totals'].hasOwnProperty([EraGroup[era].era]) ? TreasuryGoodsData.totals[EraGroup[era].era] : 0;
+                    d.push(`<td title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.LastUpdate')) + ' ' + moment(TreasuryGoodsData.updated).fromNow()}" class="is-number text-right gms-tooltip" data-number="${eraTotals}">${HTML.Format(eraTotals)}</td>`);
+                }
+                else
+                {
+                    d.push(`<td title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildTreasuryNotification'))}" class="gms-tooltip is-number text-center" data-number="${EraGroup[era].eraId}">-</td>`);
+                }
+
+                d.push(`<td class="is-number text-right" data-number="${EraGroup[era].score}">${HTML.Format(EraGroup[era].score)}</td><td></td>` +
                     `</tr>`);
             };
             d.push(`</tbody></table></div>`);
@@ -1351,6 +1367,11 @@ let GuildMemberStat = {
         $('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 
             $("#GuildErasTable").tableSorter();
+
+            $('#GuildErasTable .gms-tooltip').tooltip({
+                html: true,
+                container: '#GuildMemberStatBody'
+            });
 
             $('#GuildErasTable > tbody tr').on('click', function () {
 
@@ -1386,16 +1407,16 @@ let GuildMemberStat = {
                     h.push('</tbody></table></div>');
 
                     // Show in stock Treasury Goods for Era 
-                    if (GuildMemberStat.TreasuryGoodsData !== null && typeof GuildMemberStat.TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined')
+                    if (TreasuryGoodsData !== null && typeof TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined')
                     {
-                        let EraTreasuryGoods = GuildMemberStat.TreasuryGoodsData[EraGroup[eraId].era];
+                        let EraTreasuryGoods = TreasuryGoodsData[EraGroup[eraId].era];
 
                         h.push(`<div class="detail-item"><table><thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
                         EraTreasuryGoods.forEach(good => {
                             h.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
                         });
 
-                        h.push(`<tr><td colspan="3" class="text-right"><i>${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(GuildMemberStat.TreasuryGoodsData.updated).fromNow()}</i></td></tr>`);
+                        h.push(`<tr><td colspan="3" class="text-right"><i>${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(TreasuryGoodsData.updated).fromNow()}</i></td></tr>`);
                         h.push(`</tbody></table></div>`);
 
                     }
@@ -1526,6 +1547,7 @@ let GuildMemberStat = {
 
         let d = [];
         let ErasGuildGoods = await GuildMemberStat.GetGuildMemberBuildings();
+        let TreasuryGoodsData = GuildMemberStat.TreasuryGoodsData;
 
         ErasGuildGoods = ErasGuildGoods.reduce(function (res, obj) {
 
@@ -1564,7 +1586,6 @@ let GuildMemberStat = {
 
         for (let eraId in Object.keys(Technologies.Eras))
         {
-
             if (eraId < 3 || Technologies.EraNames[eraId] === undefined) { continue; }
 
             d.push(`<tr><td>${i18n('Eras.' + eraId)}</td>`);
@@ -1576,7 +1597,6 @@ let GuildMemberStat = {
 
                 d.push(`<td class="detail dark">`);
                 d.push(`<div class="detail-item"><table class="foe-table copyable">`);
-                //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th></tr></thead>`);
                 d.push(`<tbody>`);
 
                 for (let i in DailyGuildGoods)
@@ -1591,18 +1611,18 @@ let GuildMemberStat = {
             }
             else
             {
-                d.push(`<td class="detail text-center dark">-</td>`);
+                d.push(`<td class="detail text-center dark gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildBuildingNotification'))}">-</td>`);
             }
 
             // In stock guild good for the era
-            if (GuildMemberStat.TreasuryGoodsData !== null && typeof GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined')
+            if (TreasuryGoodsData !== undefined && TreasuryGoodsData !== null && typeof TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined')
             {
-                let EraTreasuryGoods = GuildMemberStat.TreasuryGoodsData[Technologies.EraNames[eraId]].sort(function (a, b) { return a.good.localeCompare(b.good) });
+                let EraTreasuryGoods = TreasuryGoodsData[Technologies.EraNames[eraId]].sort(function (a, b) { return a.good.localeCompare(b.good) });
                 d.push(`<td class="detail">`);
 
                 d.push(`<div class="detail-item"><table class="foe-table copyable">`);
-                //d.push(`<thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead>`);
                 d.push(`<tbody>`);
+
                 EraTreasuryGoods.forEach(good => {
                     d.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
                 });
@@ -1613,7 +1633,7 @@ let GuildMemberStat = {
             }
             else
             {
-                d.push(`<td class="detail text-center">-</td>`);
+                d.push(`<td class="detail text-center gms-tooltip" ${TreasuryGoodsData === null ? `title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildTreasuryNotification'))}"` : ''}>-</td>`);
             }
 
             d.push(`</td></tr>`);
@@ -1622,6 +1642,12 @@ let GuildMemberStat = {
         d.push(`</tbody></table>`);
 
         $('#gmsContentWrapper').html(d.join('')).promise().done(function () {
+
+            $('#TreasuryGoodsTable .gms-tooltip').tooltip({
+                html: true,
+                container: '#GuildMemberStatBody'
+            });
+
             GuildMemberStat.hidePreloader('#GuildMemberStat');
         });
     },
@@ -1756,6 +1782,7 @@ let GuildMemberStat = {
     setEraGoods: (d) => {
 
         GuildMemberStat.TreasuryGoodsData = {};
+        let eraGoodsTotals = {};
 
         for (let i in d)
         {
@@ -1767,19 +1794,31 @@ let GuildMemberStat = {
                 if (!(era in GuildMemberStat.TreasuryGoodsData))
                 {
                     GuildMemberStat.TreasuryGoodsData[era] = [];
+                    eraGoodsTotals[era] = 0;
+
                 }
 
                 GuildMemberStat.TreasuryGoodsData[era].push({ good: i, name: name, value: d[i] });
+                eraGoodsTotals[era] += d[i];
             }
         }
 
         GuildMemberStat.TreasuryGoodsData.updated = +MainParser.getCurrentDate();
+        GuildMemberStat.TreasuryGoodsData.totals = eraGoodsTotals;
 
         localStorage.setItem('GuildMemberStatTreasuryGoods', JSON.stringify(GuildMemberStat.TreasuryGoodsData));
 
-        if ($('#GuildMemberStatBody').length && (GuildMemberStat.CurrentStatGroup === 'GuildGoods'))
+        if ($('#GuildMemberStatBody').length)
         {
-            GuildMemberStat.ShowGuildGoods();
+            switch (GuildMemberStat.CurrentStatGroup)
+            {
+                case 'GuildGoods':
+                    GuildMemberStat.ShowGuildGoods();
+                    break;
+                case 'Eras':
+                    GuildMemberStat.ShowGuildEras();
+                    break;
+            }
         }
 
     },
