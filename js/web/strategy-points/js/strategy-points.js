@@ -190,7 +190,7 @@ let StrategyPoints = {
 		}
 
 		if($('div.buyable-fp').length === 0) {
-			$('#fp-bar').append(`<div class="buyable-fp"><div>${ HTML.Format(amount)}</div></div>`);
+			$('#fp-bar').append(`<div class="buyable-fp" title="${HTML.i18nTooltip(i18n('StrategyPoints.BuyableFP'))}"><div>${ HTML.Format(amount)}</div></div>`);
 
 		} else {
 			$('div.buyable-fp div').text(HTML.Format(amount));
