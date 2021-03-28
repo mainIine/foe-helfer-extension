@@ -1,22 +1,13 @@
-/*
- * **************************************************************************************
- * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * **************************************************************************************
- */
-
 FoEproxy.addHandler('ClanBattleService', 'grantIndependence', (data, postData) => {
     GvG.CountIndepences(data.responseData.__class__);
 });
 
+FoEproxy.addHandler('ClanBattleService', 'deploySiegeArmy', (data, postData) => {
+    GvG.CountSieges(data.responseData.__class__);
+});
+
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-    GvG.ResetIndependences(data.responseData.continent.calculation_time.start_time);
+    GvG.Recalc(data.responseData.continent.calculation_time.start_time);
 	GvG.ShowGvgHud();
 });
 
@@ -24,21 +15,17 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 	GvG.HideGvgHud();
 });
 
-
-/**
- * GvG Class
- *
- * @type {{NextCalc: (string|number), ShowGvgHud: GvG.ShowGvgHud, CountIndepences: GvG.CountIndepences, Independences: (string|number), HideGvgHud: GvG.HideGvgHud, ResetIndependences: GvG.ResetIndependences}}
- */
 let GvG = {
     Independences: localStorage.getItem('GvGIndependencesCount') || 0,
+    Sieges: localStorage.getItem('GvGSiegesCount') || 0,
 	NextCalc: localStorage.getItem('GvGRecalcTime') || 0,
 
     /**
 	 * Build HUD
+	 * @param data
 	 */
 	ShowGvgHud: () => {
-		if ($('#gvg-hud').length === 0) {
+		if ($('#gvg-hud').length == 0) {
 			HTML.AddCssFile('gvg');
 			let div = $('<div />');
 
@@ -48,24 +35,27 @@ let GvG = {
 			});
 
 			$('body').append(div).promise().done(function() {
-				div.append('<p>'+GvG.Independences+'/4</p>')
-					.attr('title', 
-							'<h3>' + i18n('Global.BoxTitle') + '</h3>' + 
-							i18n('GvG.Independences.Tooltip') + '<br>' + 
-							'<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em')
-					.attr('data-placement','bottom')
-					.tooltip({
-						useFoEHelperSkin: true
-					});
+				div.append('<div class="independences">'+GvG.Independences+'/4</div><div class="sieges">'+GvG.Sieges+'</div>')
+					.tooltip(
+						{
+							'title': '<h3>' + i18n('Global.BoxTitle') + '</h3>' + i18n('GvG.Independences.Tooltip') + '<br>' + 
+								'<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>',
+							'template': '<div class="tooltip foe-skin" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
+							'placement': 'bottom',
+							'html': true
+						}
+					);
 			});
 		}
 		else {
-			$('#gvg-hud p').text(GvG.Independences+'/4');
+			$('#gvg-hud .independences').text(GvG.Independences+'/4');
+			$('#gvg-hud .sieges').text(GvG.Sieges);
 		}
 	},
 
     /**
 	 * Hide HUD
+	 * @param data
 	 */
 	HideGvgHud: () => {
 		if ($('#gvg-hud').length > 0) {
@@ -80,11 +70,8 @@ let GvG = {
 	 * @param data
 	 */
 	 CountIndepences: (data)=> {
-		let count = localStorage.getItem('GvGIndependencesCount');
+		let count = localStorage.getItem('GvGIndependencesCount') || 0;
 
-		if (count === null) {
-			count = 0;
-		}
 		if (data === "Success") {
 			count++;
 		}
@@ -95,22 +82,37 @@ let GvG = {
 	},
 
     /**
-	 * Reset Independence Counter after Recalc
+	 * Count Indepences on GvGMap
+	 * @param data
+	 */
+	 CountSieges: (data)=> {
+		let count = localStorage.getItem('GvGSiegesCount') || 0;
+
+		if (data === "Success") {
+			count++;
+		}
+
+		GvG.Sieges = count;
+		localStorage.setItem('GvGSiegesCount', count);
+		GvG.ShowGvgHud();
+	},
+
+    /**
+	 * Reset data after Recalc
 	 * @param calcTime
 	 */
-	 ResetIndependences: (calcTime)=> {
-		let storedRecalc = localStorage.getItem('GvGRecalcTime');
+	 Recalc: (calcTime)=> {
+		let storedRecalc = localStorage.getItem('GvGRecalcTime') || 0;
 
-		if (storedRecalc === null) {
-			localStorage.setItem('GvGRecalcTime', calcTime);
-		}
-		else if (storedRecalc < calcTime) {
+		if (storedRecalc != null && storedRecalc < calcTime) {
 			GvG.Independences = 0;
+			GvG.Sieges = 0;
 			localStorage.setItem('GvGIndependencesCount', GvG.Independences);
+			localStorage.setItem('GvGSiegesCount', GvG.Sieges);
+			localStorage.setItem('GvGRecalcTime', calcTime);
+			GvG.ShowGvgHud();
 		}
 
 		GvG.NextCalc = calcTime;
-		localStorage.setItem('GvGRecalcTime', calcTime);
-		GvG.ShowGvgHud();
 	},
 }
