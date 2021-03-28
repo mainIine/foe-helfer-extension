@@ -13,11 +13,14 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 
 let GvG = {
     Independences: localStorage.getItem('GvGIndependencesCount') || 0,
-	NextCalc: 0,
+	NextCalc: localStorage.getItem('GvGRecalcTime') || 0,
 
+    /**
+	 * Build HUD
+	 * @param data
+	 */
 	ShowGvgHud: () => {
 		if ($('#gvg-hud').length == 0) {
-
 			HTML.AddCssFile('gvg');
 			let div = $('<div />');
 
@@ -27,7 +30,18 @@ let GvG = {
 			});
 
 			$('body').append(div).promise().done(function() {
-				div.append('<p>'+GvG.Independences+'/4</p>');
+				div.append('<p>'+GvG.Independences+'/4</p>')
+					.attr('title', 
+							'<h3>' + i18n('Global.BoxTitle') + '</h3>' + 
+							i18n('GvG.Independences.Tooltip') + '<br>' + 
+							'<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em')
+					.attr('data-placement','bottom')
+					.tooltip(
+						{
+							'template': '<div class="tooltip foe-skin" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
+							'html': true
+						}
+					);
 			});
 		}
 		else {
@@ -35,6 +49,10 @@ let GvG = {
 		}
 	},
 
+    /**
+	 * Hide HUD
+	 * @param data
+	 */
 	HideGvgHud: () => {
 		if ($('#gvg-hud').length > 0) {
 			$('#gvg-hud').fadeToggle(function() {
@@ -45,7 +63,6 @@ let GvG = {
 
     /**
 	 * Count Indepences on GvGMap
-	 *
 	 * @param data
 	 */
 	 CountIndepences: (data)=> {
@@ -64,7 +81,7 @@ let GvG = {
 	},
 
     /**
-	 *
+	 * Reset Independence Counter after Recalc
 	 * @param data
 	 */
 	 ResetIndependences: (calcTime)=> {
