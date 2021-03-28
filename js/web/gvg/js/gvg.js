@@ -36,13 +36,12 @@ let GvG = {
 
 			$('body').append(div).promise().done(function() {
 				div.append('<div class="independences">'+GvG.Independences+'/4</div><div class="sieges">'+GvG.Sieges+'</div>')
+					.attr('title', i18n('GvG.Independences.Tooltip') + '<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
 					.tooltip(
 						{
-							'title': '<h3>' + i18n('Global.BoxTitle') + '</h3>' + i18n('GvG.Independences.Tooltip') + '<br>' + 
-								'<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>',
-							'template': '<div class="tooltip foe-skin" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
-							'placement': 'bottom',
-							'html': true
+							headLine: i18n('Global.BoxTitle'),
+							placement: 'bottom',
+							html: true
 						}
 					);
 			});
