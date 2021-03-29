@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _menu_bottom.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              24.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -55,6 +53,16 @@ let _menu_bottom = {
 		window.onresize = function (event) {
 			_menu_bottom.SetMenuWidth(true);
 		};
+	},
+
+
+	/**
+	* Fügt ein MenüItem ein
+	*
+	* @param MenuItem
+	*/
+	InsertMenuItem: (MenuItem) => {
+		$('#foe-helper-hud-slider').append(MenuItem);
 	},
 
 
