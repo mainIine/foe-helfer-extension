@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 boxes.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:23 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -488,10 +486,17 @@ p {
 	font-size: 0.8rem;
 }
 
+.tooltip.foe-skin {
+	opacity: 1;
+}
+
 .toolTipWrapper {
-	text-align: left;
 	display: none;
 	position: absolute;
+}
+
+.toolTipWrapper, .foe-skin .tooltip-inner {
+	text-align: left;
 	width: 180px;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
@@ -506,16 +511,18 @@ p {
 	user-select: none;
 }
 
-.toolTipWrapper .tooltip-error {
+.toolTipWrapper .tooltip-error, .foe-skin .tooltip-inner em {
 	color: #f79090;
 }
 
-.toolTipWrapper .toolTipHeader {
+.toolTipWrapper .toolTipHeader, .foe-skin .tooltip-inner h3 {
 	color: #bdc5cb;
 	background-color: #313d45;
 	box-shadow: inset 0 0 2px var(--black);
 	margin: -7px -7px 2px -7px;
 	padding: 0 5px 1.3px;
+	font-weight: normal;
+	font-size: inherit;
 }
 
 /***********************************************************************************/
