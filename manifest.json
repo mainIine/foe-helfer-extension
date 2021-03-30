@@ -14,7 +14,8 @@
 		"clipboardWrite",
 	  	"management",
 		"https://*.forgeofempires.com/*",
-		"https://foe-rechner.de/*",
+		"https://foe-helper.com/*",
+		"https://*.foe-helper.com/*",
 		"https://*.foe-rechner.de/*"
 	],
 

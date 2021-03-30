@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 boxes.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:23 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -488,34 +486,64 @@ p {
 	font-size: 0.8rem;
 }
 
-.toolTipWrapper {
+.tooltip.foe-skin {
+	opacity: 1;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+}
+
+.tooltip.top.foe-skin > .tooltip-arrow {
+	border-top-color: #606052 !important;
+	border-top-width: 11px;
+}
+
+.tooltip.bottom.foe-skin > .tooltip-arrow {
+	border-bottom-color: #3f4444 !important;
+}
+
+.tooltip.right.foe-skin > .tooltip-arrow {
+	border-right-color: #606052 !important;
+}
+
+.tooltip.left.foe-skin > .tooltip-arrow {
+	border-left-color: #606052 !important;
+}
+
+.tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
-	display: none;
-	position: absolute;
 	width: 180px;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
 	border-image: url('../images/hud/tooltip_bg.png') 10 round;
 	z-index: 999;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
-	font-weight: 400;
 	color: #f2ede1;
 	padding: 3px;
 	pointer-events: none;
 	user-select: none;
+	margin: 0;
+	opacity: 1;
 }
 
-.toolTipWrapper .tooltip-error {
+.tooltip.foe-skin h3 + .tooltip-inner {
+	padding: 23px 3px 3px;
+}
+
+.tooltip.foe-skin .tooltip-inner em {
 	color: #f79090;
 }
 
-.toolTipWrapper .toolTipHeader {
+.tooltip.foe-skin h3 {
 	color: #bdc5cb;
-	background-color: #313d45;
+	background: #313d45 !important;
 	box-shadow: inset 0 0 2px var(--black);
-	margin: -7px -7px 2px -7px;
+	margin: 0 7px -30px;
+	position: relative;
+	z-index: 1000;
 	padding: 0 5px 1.3px;
+	font-weight: normal;
+	font-size: inherit;
+	text-align: left;
 }
 
 /***********************************************************************************/
