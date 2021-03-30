@@ -81,10 +81,15 @@ let GvG = {
 	 * @param data
 	 */
 	 CountIndepences: (data)=> {
+		let time = MainParser.getCurrentDateTime(); 
+		let storedRecalc = localStorage.getItem('GvGRecalcTime')*1000;
 		let count = localStorage.getItem('GvGIndependencesCount') || 0;
 
 		if (data === "Success") {
-			count++;
+			if (time > storedRecalc)
+				count = 0;
+			else
+				count++;
 		}
 
 		GvG.Independences = count;
@@ -97,10 +102,15 @@ let GvG = {
 	 * @param data
 	 */
 	 CountSieges: (data)=> {
+		let time = MainParser.getCurrentDateTime(); 
+		let storedRecalc = localStorage.getItem('GvGRecalcTime')*1000;
 		let count = localStorage.getItem('GvGSiegesCount') || 0;
 
 		if (data === "Success") {
-			count++;
+			if (time > storedRecalc)
+				count = 0;
+			else
+				count++;
 		}
 
 		GvG.Sieges = count;
