@@ -107,8 +107,10 @@ let GvG = {
 		let count = localStorage.getItem('GvGSiegesCount') || 0;
 
 		if (data === "Success") {
-			if (time > storedRecalc)
+			if (time > storedRecalc) {
 				count = 0;
+				localStorage.setItem('GvGRecalcTime', time);
+			}
 			else
 				count++;
 		}
