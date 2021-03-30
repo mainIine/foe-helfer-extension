@@ -48,9 +48,10 @@ let GvG = {
 
 			$('body').append(div).promise().done(function() {
 				div.append('<div class="independences">'+GvG.Independences+'/4</div><div class="sieges">'+GvG.Sieges+'</div>')
-					.attr('title', i18n('GvG.Independences.Tooltip') + '<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
+					.attr('title', i18n('GvG.Independences.Tooltip') + '<br><em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
 					.tooltip(
 						{
+							useFoEHelperSkin: true,
 							headLine: i18n('Global.BoxTitle'),
 							placement: 'bottom',
 							html: true
