@@ -48,10 +48,21 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 
 // Forum Activity 
 FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+    
     let ConversationData = data.responseData;
+    
     if (ConversationData !== undefined)
     {
-        GuildMemberStat.UpdateData('forum', ConversationData);
+        // Check for guild message type (1 is personal message)
+        if(ConversationData.type !== undefined && (ConversationData.type === 3 || ConversationData.type === 7))
+        {
+            if(ConversationData.id !== undefined)
+            {
+                GuildMemberStat.ConversationIds.push(ConversationData.id);
+                GuildMemberStat.UpdateData('forum', ConversationData);            
+            }
+
+        }
     }
 });
 
@@ -143,6 +154,7 @@ let GuildMemberStat = {
     GBGId: undefined,
     GEXId: undefined,
     TreasuryGoodsData: {},
+    ConversationIds: [],
     CurrentStatGroup: 'Member',
     hasGuildMemberRights: false,
     acceptedDeleteWarning: false,
@@ -214,6 +226,7 @@ let GuildMemberStat = {
 
             $("#gmsTabs").find("li").removeClass("active");
             $(this).parent().addClass("active");
+            $('#gms-filter-input').remove();
 
             switch (GuildMemberStat.CurrentStatGroup)
             {
@@ -484,6 +497,11 @@ let GuildMemberStat = {
                 {
                     if (messagedata.hasOwnProperty(i))
                     {
+                        if(typeof messagedata[i].conversationId === 'undefined' && !GuildMemberStat.ConversationIds.includes(messagedata[i].conversationId))
+                        {
+                            continue;
+                        }
+
                         if (typeof messagedata[i].sender != 'undefined' && typeof messagedata[i].sender.player_id != 'undefined')
                         {
                             let m = {
