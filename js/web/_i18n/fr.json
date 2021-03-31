@@ -648,7 +648,7 @@
     "Eras.8": "Âge Industriel",
     "Eras.9": "Ère Progressiste",
     "Global.BoxTitle": "FoE Assistant",
-    "GvG.Independences.Tooltip": "Nombre de secteurs libérés depuis le re-calcul.",
+    "GvG.Independences.Tooltip": "Nombre de secteurs libérés et sièges placés par vous-même depuis le dernier calcul.",
     "GvG.Independences.Tooltip.Warning": "Peut être inexact, si vous jouez sur plusieurs appareils de bureau.",
     "HiddenRewards.Positions.cityRoadBig": "Rue à deux voies",
     "HiddenRewards.Positions.cityRoadSmall": "Route",
