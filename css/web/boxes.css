@@ -488,41 +488,62 @@ p {
 
 .tooltip.foe-skin {
 	opacity: 1;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
 }
 
-.toolTipWrapper {
-	display: none;
-	position: absolute;
+.tooltip.top.foe-skin > .tooltip-arrow {
+	border-top-color: #606052 !important;
+	border-top-width: 11px;
 }
 
-.toolTipWrapper, .foe-skin .tooltip-inner {
+.tooltip.bottom.foe-skin > .tooltip-arrow {
+	border-bottom-color: #3f4444 !important;
+}
+
+.tooltip.right.foe-skin > .tooltip-arrow {
+	border-right-color: #606052 !important;
+}
+
+.tooltip.left.foe-skin > .tooltip-arrow {
+	border-left-color: #606052 !important;
+}
+
+.tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
 	width: 180px;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
 	border-image: url('../images/hud/tooltip_bg.png') 10 round;
 	z-index: 999;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
-	font-weight: 400;
 	color: #f2ede1;
 	padding: 3px;
 	pointer-events: none;
 	user-select: none;
+	margin: 0;
+	opacity: 1;
 }
 
-.toolTipWrapper .tooltip-error, .foe-skin .tooltip-inner em {
+.tooltip.foe-skin h3 + .tooltip-inner {
+	padding: 23px 3px 3px;
+}
+
+.tooltip.foe-skin .tooltip-inner em {
 	color: #f79090;
 }
 
-.toolTipWrapper .toolTipHeader, .foe-skin .tooltip-inner h3 {
+.tooltip.foe-skin h3 {
 	color: #bdc5cb;
-	background-color: #313d45;
+	background: #313d45 !important;
 	box-shadow: inset 0 0 2px var(--black);
-	margin: -7px -7px 2px -7px;
+	margin: 0 7px -30px;
+	position: relative;
+	z-index: 1000;
 	padding: 0 5px 1.3px;
 	font-weight: normal;
 	font-size: inherit;
+	text-align: left;
 }
 
 /***********************************************************************************/

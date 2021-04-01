@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2021  FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -48,12 +48,15 @@ let GvG = {
 
 			$('body').append(div).promise().done(function() {
 				div.append('<div class="independences">'+GvG.Independences+'/4</div><div class="sieges">'+GvG.Sieges+'</div>')
-					.attr('title', i18n('GvG.Independences.Tooltip') + '<em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
-					.tooltip({
-						headLine: i18n('Global.BoxTitle'),
-						placement: 'bottom',
-						html: true
-					});
+					.attr('title', i18n('GvG.Independences.Tooltip') + '<br><em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
+					.tooltip(
+						{
+							useFoEHelperSkin: true,
+							headLine: i18n('Global.BoxTitle'),
+							placement: 'bottom',
+							html: true
+						}
+					);
 			});
 		}
 		else {
@@ -78,10 +81,15 @@ let GvG = {
 	 * @param data
 	 */
 	 CountIndepences: (data)=> {
+		let time = MainParser.getCurrentDateTime(); 
+		let storedRecalc = localStorage.getItem('GvGRecalcTime')*1000;
 		let count = localStorage.getItem('GvGIndependencesCount') || 0;
 
 		if (data === "Success") {
-			count++;
+			if (time > storedRecalc)
+				count = 0;
+			else
+				count++;
 		}
 
 		GvG.Independences = count;
@@ -94,10 +102,17 @@ let GvG = {
 	 * @param data
 	 */
 	 CountSieges: (data)=> {
+		let time = MainParser.getCurrentDateTime(); 
+		let storedRecalc = localStorage.getItem('GvGRecalcTime')*1000;
 		let count = localStorage.getItem('GvGSiegesCount') || 0;
 
 		if (data === "Success") {
-			count++;
+			if (time > storedRecalc) {
+				count = 0;
+				localStorage.setItem('GvGRecalcTime', time);
+			}
+			else
+				count++;
 		}
 
 		GvG.Sieges = count;
