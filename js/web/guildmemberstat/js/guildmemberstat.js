@@ -48,10 +48,21 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 
 // Forum Activity 
 FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+
     let ConversationData = data.responseData;
+
     if (ConversationData !== undefined)
     {
-        GuildMemberStat.UpdateData('forum', ConversationData);
+        // Check for guild message type (1 is personal message)
+        if (ConversationData.type !== undefined && (ConversationData.type === 3 || ConversationData.type === 7))
+        {
+            if (ConversationData.id !== undefined)
+            {
+                GuildMemberStat.ConversationIds.push(ConversationData.id);
+                GuildMemberStat.UpdateData('forum', ConversationData);
+            }
+
+        }
     }
 });
 
@@ -143,6 +154,7 @@ let GuildMemberStat = {
     GBGId: undefined,
     GEXId: undefined,
     TreasuryGoodsData: {},
+    ConversationIds: [],
     CurrentStatGroup: 'Member',
     hasGuildMemberRights: false,
     acceptedDeleteWarning: false,
@@ -214,6 +226,7 @@ let GuildMemberStat = {
 
             $("#gmsTabs").find("li").removeClass("active");
             $(this).parent().addClass("active");
+            $('#gms-filter-input').remove();
 
             switch (GuildMemberStat.CurrentStatGroup)
             {
@@ -484,6 +497,11 @@ let GuildMemberStat = {
                 {
                     if (messagedata.hasOwnProperty(i))
                     {
+                        if (typeof messagedata[i].conversationId === 'undefined' && !GuildMemberStat.ConversationIds.includes(messagedata[i].conversationId))
+                        {
+                            continue;
+                        }
+
                         if (typeof messagedata[i].sender != 'undefined' && typeof messagedata[i].sender.player_id != 'undefined')
                         {
                             let m = {
@@ -794,6 +812,13 @@ let GuildMemberStat = {
             }
 
         });
+    },
+
+
+    ResetMessageCounter: async () => {
+
+        await GuildMemberStat.db.forum.clear();
+
     },
 
 
@@ -1731,7 +1756,7 @@ let GuildMemberStat = {
         c.push(`<p class="text-left"><input id="gmsAutoStartOnUpdate" name="autostartonupdate" value="1" type="checkbox" ${(Settings.autoStartOnUpdate === 1) ? ' checked="checked"' : ''} /> <label for="gmsAutoStartOnUpdate">${i18n('Boxes.GuildMemberStat.AutoStartOnUpdate')}</label></p>`);
         c.push(`<p class="text-left"><input id="gmsShowSearchbar" name="showsearchbar" value="1" type="checkbox" ${(Settings.showSearchbar === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowSearchbar">${i18n('Boxes.GuildMemberStat.ShowSearchbar')}</label></p>`);
         c.push(`<p class="text-left"><input id="gmsShowDeletedMembers" name="showdeletedmembers" value="1" type="checkbox" ${(Settings.showDeletedMembers === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowDeletedMembers">${i18n('Boxes.GuildMemberStat.ShowDeletedMembers')}</label></p>`);
-        c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.DeleteExMembersAfter')} <select id="gmsDeleteOlderThan" name="deleteolderthan">`);
+        c.push(`<hr><p class="text-left">${i18n('Boxes.GuildMemberStat.DeleteExMembersAfter')} <select id="gmsDeleteOlderThan" name="deleteolderthan">`);
 
         deleteAfterDays.forEach(days => {
             let option = days + ' ' + i18n('Boxes.GuildMemberStat.Days');
@@ -1741,6 +1766,14 @@ let GuildMemberStat = {
         });
 
         c.push(`</select>`);
+        c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.ResetMessageCounter')} ` +
+            `<select id="gmsResetMessageCounter" name="resetmessagecounter">`);
+        for (let i = 0; i <= 6; i++)
+        {
+            if (i == 4) { c.push(`<option value="reset">${i18n('Boxes.GuildMemberStat.ConfirmYes')}</option>`); }
+            else { c.push(`<option value="0">${i18n('Boxes.GuildMemberStat.ConfirmNo')}</option>`); }
+        }
+        c.push(`</select></p>`);
         c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn btn-default" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
         $('#GuildMemberStatSettingsBox').html(c.join(''));
@@ -1750,6 +1783,7 @@ let GuildMemberStat = {
     SettingsSaveValues: async () => {
 
         let tmpDeleteOlder = parseInt($('#gmsDeleteOlderThan').val());
+        let resetMessageCounter = $('#gmsResetMessageCounter').val();
 
         GuildMemberStat.Settings.showDeletedMembers = $("#gmsShowDeletedMembers").is(':checked') ? 1 : 0;
         GuildMemberStat.Settings.autoStartOnUpdate = $("#gmsAutoStartOnUpdate").is(':checked') ? 1 : 0;
@@ -1765,6 +1799,11 @@ let GuildMemberStat = {
         GuildMemberStat.Settings.deleteOlderThan = tmpDeleteOlder;
 
         localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStat.Settings));
+
+        if (resetMessageCounter === 'reset')
+        {
+            await GuildMemberStat.ResetMessageCounter();
+        }
 
         $(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
             $(this).remove();
