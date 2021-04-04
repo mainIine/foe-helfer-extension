@@ -771,8 +771,18 @@ let HTML = {
 				$(this).find('td').each(function () {
 					if (ColumnNames[ColumnID]) { //skip if no columnname set
 						let Key = ColumnNames[ColumnID];
-						let Value = $(this).text();
-						Value = Value.replace(/,/g, ""); //Remove comma (123,456 => 123456)
+						let Value;
+						if ($(this).attr('exportvalue')) {
+							Value = $(this).attr('exportvalue');
+						}
+						else if ($(this).attr('data-number')) {
+							Value = $(this).attr('data-number');
+						}
+						else {
+							Value = $(this).text();
+							if (Value === '-') Value = '0';
+						}
+						
 						CurrentRow[Key] = Value;
 					}
 
