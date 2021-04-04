@@ -177,7 +177,7 @@
     "Boxes.FPCollector.winterEventGandPrice": "Μεγάλο Βραβείο Χειμερινής Εκδήλωσης",
     "Boxes.FPCollector.winterEventGrandPrice": "Μεγάλο Βραβείο Χειμερινής Εκδήλωσης",
     "Boxes.Gildfights.Count": "μέσα",
-    "Boxes.Gildfights.ExportCSV": "Εξαγωγή ως CSV",
+    "Boxes.General.ExportCSV": "Εξαγωγή ως CSV",
     "Boxes.General.ExportJSON": "Εξαγωγή ως jSON",
     "Boxes.Gildfights.Fights": "Μάχες",
     "Boxes.Gildfights.LastSnapshot": " - Τελευταίο στιγμιότυπο: __time__ πριν",
