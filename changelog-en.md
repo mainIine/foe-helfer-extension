@@ -1,6 +1,15 @@
 ## Changelog - Extension
 
 
+##### 2.5.6.4
+
+**Bugfix**
+
+- Building kits:
+    - Can be called up again as usual
+
+---
+
 ##### 2.5.6.3
 
 **Update**

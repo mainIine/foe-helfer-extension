@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 guildfights.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.03.21, 09:28 Uhr
- * zuletzt bearbeitet:       21.03.21, 11:52 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -446,7 +444,7 @@ let GildFights = {
 
 						progress.push(`<tr id="province-${id}" data-id="${id}">`);
 
-						console.log('gbgGuilds[x]: ', gbgGuilds[x]);
+						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
 						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
 						
@@ -1080,7 +1078,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.stroke(path);
 
 			// if is spawn, no text => image
-			if(this.flagImg)
+			if(this.flagImg && this.flagPos)
 			{
 				ProvinceMap.MapCTX.globalAlpha = 0.2;
 				ProvinceMap.MapCTX.fill(path);
@@ -1755,6 +1753,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1900,
 				y: 1000
+			},
+			flagPos: {
+				x: 1790,
+				y: 945
 			}
 		}, {
 			id: 38,
@@ -1795,6 +1797,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1951,
 				y: 1590
+			},
+			flagPos: {
+				x: 1921,
+				y: 1540
 			}
 		}, {
 			id: 42,
@@ -1844,6 +1850,10 @@ let ProvinceMap = {
 			flag: {
 				x: 808,
 				y: 1586
+			},
+			flagPos: {
+				x: 778,
+				y: 1536
 			}
 		}, {
 			id: 47,
@@ -1884,6 +1894,10 @@ let ProvinceMap = {
 			flag: {
 				x: 257,
 				y: 1182
+			},
+			flagPos: {
+				x: 217,
+				y: 1099
 			}
 		}, {
 			id: 51,
@@ -1933,6 +1947,10 @@ let ProvinceMap = {
 			flag: {
 				x: 398,
 				y: 465
+			},
+			flagPos: {
+				x: 370,
+				y: 442
 			}
 		}, {
 			id: 56,
