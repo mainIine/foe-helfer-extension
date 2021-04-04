@@ -1,8 +1,20 @@
 /*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/*
 https://github.com/kamranahmedse/jquery-toast-plugin
 */
 
-// jQuery toast plugin created by Kamran Ahmed copyright MIT license 2015
 if ( typeof Object.create !== 'function' ) {
 	Object.create = function( obj ) {
 		function F() {}
