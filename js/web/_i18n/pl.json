@@ -175,7 +175,7 @@
     "Boxes.FPCollector.winterEventGrandPrice": "Nagroda główna wydarzenia zimowego",
     "Boxes.Gildfights.Count": "w",
     "Boxes.Gildfights.ExportCSV": "Eksport jako CSV",
-    "Boxes.Gildfights.ExportJSON": "Eksport jako jSON",
+    "Boxes.General.ExportJSON": "Eksport jako jSON",
     "Boxes.Gildfights.Fights": "Walki",
     "Boxes.Gildfights.LastSnapshot": " - ostatni migawka: __time__ ago",
     "Boxes.Gildfights.Negotiations": "Negocjacje",

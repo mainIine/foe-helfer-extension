@@ -174,7 +174,7 @@
     "Boxes.FPCollector.winterEventGrandPrice": "Eveniment de iarna, pret total",
     "Boxes.Gildfights.Count": "in",
     "Boxes.Gildfights.ExportCSV": "Exporta ca CSV",
-    "Boxes.Gildfights.ExportJSON": "Exporta ca jSON",
+    "Boxes.General.ExportJSON": "Exporta ca jSON",
     "Boxes.Gildfights.Fights": "Lupte",
     "Boxes.Gildfights.LastSnapshot": " - Ultima înregistrare __time__ ago",
     "Boxes.Gildfights.Negotiations": "Negocieri",

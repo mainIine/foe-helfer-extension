@@ -791,8 +791,8 @@ let GildFights = {
 
 
 	ShowExportButton: () => {
-		let c = `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('csv')">${i18n('Boxes.Gildfights.ExportCSV')}</button></p>`;
-		c += `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('json')">${i18n('Boxes.Gildfights.ExportJSON')}</button></p>`;
+		let c = `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('csv')">${i18n('Boxes.General.ExportCSV')}</button></p>`;
+		c += `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('json')">${i18n('Boxes.General.ExportJSON')}</button></p>`;
 
 		$('#GildPlayersSettingsBox').html(c);
 	},

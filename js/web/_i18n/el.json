@@ -1,4 +1,4 @@
-﻿{
+﻿W{
     "API.GEXChampionship": "ΕΣ Κατάταξη Συντεχνίας, ενημερώθηκε",
     "API.GEXPlayer": "ΕΣ Κατάταξη Μέλους, ενημερώθηκε",
     "API.LGGildMember": "__player__ Πληροφορίες ΜΚ, ενημερώθηκαν",
@@ -178,7 +178,7 @@
     "Boxes.FPCollector.winterEventGrandPrice": "Μεγάλο Βραβείο Χειμερινής Εκδήλωσης",
     "Boxes.Gildfights.Count": "μέσα",
     "Boxes.Gildfights.ExportCSV": "Εξαγωγή ως CSV",
-    "Boxes.Gildfights.ExportJSON": "Εξαγωγή ως jSON",
+    "Boxes.General.ExportJSON": "Εξαγωγή ως jSON",
     "Boxes.Gildfights.Fights": "Μάχες",
     "Boxes.Gildfights.LastSnapshot": " - Τελευταίο στιγμιότυπο: __time__ πριν",
     "Boxes.Gildfights.Negotiations": "Διαπραγματεύσεις",
