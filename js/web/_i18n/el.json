@@ -1,4 +1,4 @@
-﻿W{
+﻿{
     "API.GEXChampionship": "ΕΣ Κατάταξη Συντεχνίας, ενημερώθηκε",
     "API.GEXPlayer": "ΕΣ Κατάταξη Μέλους, ενημερώθηκε",
     "API.LGGildMember": "__player__ Πληροφορίες ΜΚ, ενημερώθηκαν",
@@ -214,7 +214,7 @@
     "Boxes.GreatBuildings.TTGoodCostsColumn": "Παραθέτει το κόστος FP για την αγορά των απαραίτητων αγαθών (ισχύει μόνο για Μεγάλα Κτίρια που δεν έχετε κατασκευάσει ακόμα)",
     "Boxes.GreatBuildings.TTRewardPerDay": "Προαιρετικά: Πόσες ανταμοιβές FP λαμβάνετε ανά ημέρα; Αυτές οι πληροφορίες χρησιμοποιούνται για τον υπολογισμό κέρδους στα επόμενα επίπεδα Θόλου. Για να λάβετε μια πρόταση, μεταβείτε στο Δημαρχείο> Ειδήσεις> Ιστορικό εκδηλώσεων και μετακινηθείτε σε όλες τις σελίδες",
     "Boxes.GreatBuildings.Title": "Επενδύσεις σε ΜΚ",
-    "Boxes.GuildMemberStat.Ages": "Εποχές",
+    "Boxes.GuildMemberStat.Eras": "Εποχές",
     "Boxes.GuildMemberStat.AutoStartOnUpdate": "Άνοιξε επισκόπηση μετά την ενημέρωση",
     "Boxes.GuildMemberStat.Battles": "Μάχες",
     "Boxes.GuildMemberStat.Date": "Ημερομηνία",

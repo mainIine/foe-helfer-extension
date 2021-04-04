@@ -225,7 +225,7 @@
     "Boxes.GreatBuildings.TTGoodsValue": "Cette valeur est utilisée pour classer les bâtiments produisant des ressources. Combien de PF vaut une ressource pour vous ?",
     "Boxes.GreatBuildings.TTRewardPerDay": "Optionnel : Combien de récompenses en PFs recevez-vous par jour ? Cette information est utilisée pour calculer la rentabilité sur d'autres niveaux d'Arche plus élevés. Pour obtenir une suggestion, se rendre dans : Hôtel de Ville > Nouvelles > Historique des événements > et défiler toutes les pages",
     "Boxes.GreatBuildings.Title": "Aperçu investissement GM",
-    "Boxes.GuildMemberStat.Ages": "Eres",
+    "Boxes.GuildMemberStat.Eras": "Eres",
     "Boxes.GuildMemberStat.AutoStartOnUpdate": "ouvrir l'aperçu après la mise à jour",
     "Boxes.GuildMemberStat.Battles": "Batailles",
     "Boxes.GuildMemberStat.ConfirmNo": "Non",
