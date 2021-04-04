@@ -777,9 +777,18 @@ let HTML = {
 						Value = Value.replace(/,/g, ""); //Remove comma (123,456 => 123456)
 						CurrentRow[Key] = Value;
 					}
-					ColumnID += 1;
+
+					let ColumnCount = $(this).attr('colspan');
+					if (ColumnCount) {
+						ColumnID += ColumnCount;
+					}
+					else {
+						ColumnID += 1;
+					}
+					 ColumnCount;
 				});
-				if(ColumnID >= 1) DataRows.push(CurrentRow); //Dont push rows without td
+
+				if(Object.keys(CurrentRow).length > 0) DataRows.push(CurrentRow); //Dont push empty rows
 			});
 
 			let FileContent;
@@ -797,7 +806,12 @@ let HTML = {
 					let CurrentCells = [];
 
 					for (let j = 0; j < ValidColumnNames.length; j++) {
-						CurrentCells.push(DataRow[ValidColumnNames[j]].replace(/;/g, ''));
+						if (DataRow[ValidColumnNames[j]]) {
+							CurrentCells.push(DataRow[ValidColumnNames[j]].replace(/;/g, ''));
+						}
+						else {
+							CurrentCells.push('');
+                        }
 					}
 					Rows.push(CurrentCells.join(';'));
 				}
