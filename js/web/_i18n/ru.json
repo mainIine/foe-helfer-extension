@@ -195,6 +195,7 @@
     "Boxes.GreatBuildings.FPCostGoods": "Стоимость товаров на ВС в СО",
     "Boxes.GreatBuildings.FPPerTile": "Новые ВС: При установке ВС вместо старых зданий, СО/клетка в день",
     "Boxes.GreatBuildings.GreatBulding": "Великие Строения",
+    "Boxes.GreatBuildings.HelpLink": "https://foe-helper.com/docs/en/gb-investments/",
     "Boxes.GreatBuildings.HideNewGBs": "Скрыть отсутствующие ВС",
     "Boxes.GreatBuildings.Level": "Уровень",
     "Boxes.HiddenRewards.Disappears": "Исчезнут",
