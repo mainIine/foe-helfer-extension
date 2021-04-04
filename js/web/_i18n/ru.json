@@ -222,7 +222,6 @@
     "Boxes.Investment.AllUpToDateDesc": "Эта информация уже собрана",
     "Boxes.Investment.CurrReward": "Текущая прибыль: ",
     "Boxes.Investment.DateParseError": "Ошибка обработки данных",
-    "Boxes.Investment.DateParseErrorDesc": "не может быть проанализирован",
     "Boxes.Investment.HiddenGB": "Скрытый GB",
     "Boxes.Investment.InvestBar": "СО вложено: ",
     "Boxes.Investment.Overview.Building": "Обзор строительства",
