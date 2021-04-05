@@ -1,14 +1,12 @@
 ﻿/*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 eventhandler.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              20.11.20, 14:31 Uhr
- * zuletzt bearbeitet:       20.11.20, 14:31 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -356,21 +354,21 @@ let EventHandler = {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
 		}
 		else {
-			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.NeighborsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.NeighborsSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
 		}
 
 		if (PlayerDictGuildUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
 		}
 		else {
-			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.GuildSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.GuildSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
 		}
 
 		if (PlayerDictFriendsUpdated) {
 			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
 		}
 		else {
-			h.push('<li class="disabled" title="' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
+			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.FriendsSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
 		}
 
 		h.push('</ul></div></div>');
@@ -465,7 +463,7 @@ let EventHandler = {
 
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
 
-			h.push('<td style="white-space:nowrap" data-text="' + Player['PlayerName'] + '">' + Player['PlayerName'] + '</td>');
+			h.push('<td style="white-space:nowrap" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + Player['PlayerName'] + '</td>');
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 

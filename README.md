@@ -3,7 +3,7 @@
 
 [![Translation status](http://i18n.foe-helper.com/widgets/foe-helper/-/extension/svg-badge.svg)](http://i18n.foe-helper.com/engage/foe-helper/?utm_source=widget)
 
-You can install it from here: [Chrome Store](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf) or [Firefox Add-Ons](https://addons.mozilla.org/addon/foe-helper/).
+You can install it from here: [Chrome Store](https://chrome.google.com/webstore/detail/foe-helper/bkagcmloachflbbkfmfiggipaelfamdf), [Firefox Add-Ons](https://addons.mozilla.org/addon/foe-helper/) or [Microsoft Edge-Add-Ons](https://microsoftedge.microsoft.com/addons/detail/cpmacpalonncbafboibpcjcpadloannb).
 
 A complete manual for installing in Opera or Mircosoft Edge Chromium can be found here: [foe-rechner.de/docs/](https://foe-rechner.de/docs/)
 
