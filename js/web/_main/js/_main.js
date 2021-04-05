@@ -48,7 +48,10 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	EventCountdown = false,
 	GameTimeOffset = 0,
 	StartUpDone = false,
-	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'];
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
+	MessageBroker = new SimpleJsMQ.MessageBroker();
+	
+MessageBroker.createTopicIfNotExists('MainParser');
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -1288,6 +1291,11 @@ let MainParser = {
 		}
 
 		if (response.ok === true) {
+			MessageBroker.getTopic('MainParser').register(
+				'sentExtMessage', 
+				'SendExtMessagePayload', 
+				{requestData: data, responseData: response.data}
+			);
 			return response.data;
 		}
 		else {

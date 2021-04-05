@@ -819,6 +819,7 @@ let Alerts = function(){
 									if ( action === 'delete' ){
 										tmp.data.delete(id).then(function(){
 											tmp.web.body.tabs.updateAlerts();
+											tmp.topic.register('deleted', 'AlertPayload', result);
 										}).catch(function(error){
 											console.log(error);
 										});
@@ -1502,6 +1503,17 @@ let Alerts = function(){
 
             tmp.data.garbage();
             TimeManager.subscribe( tmp.timer );
+			tmp.topic = MessageBroker.createTopicIfNotExists('AlertManager');
+			MessageBroker.subscribeToTopic('MainParser', 'AlertManager', (event) => {
+				if (event.getName() == 'sentExtMessage' && 
+					event.getPayload().getType() == 'SendExtMessagePayload' &&
+					event.getPayload().getData().requestData.type == 'alerts' && 
+					event.getPayload().getData().requestData.action == 'create') {
+					if ( $('#alerts-tab-list').is(':visible') ){
+						tmp.web.body.tabs.updateAlerts();
+					}
+				}
+			});
         },
 
         show: () => {

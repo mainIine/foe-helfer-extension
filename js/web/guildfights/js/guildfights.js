@@ -55,6 +55,16 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	}
 });
 
+MessageBroker.subscribeToTopic('AlertManager', 'GildFights', (event) => {
+	if (event.getName() == 'deleted' && event.getPayload().getType() === 'AlertPayload' && event.getPayload().getData().category === 'gbg') {
+	GildFights.GetAlerts().then(() => {
+			if ($('#LiveGildFighting').is(':visible')) {
+				GildFights.ShowGildBox(true, true);
+			}
+		});
+	}
+});
+
 
 /**
  * @type {{ShowExportButton: GildFights.ShowExportButton, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: (function(): undefined), BuildFightContent: GildFights.BuildFightContent, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, SetTabContent: GildFights.SetTabContent, NewAction: null, TabsContent: [], PrevAction: null, UpdateCounter: GildFights.UpdateCounter, init: GildFights.init, PrepareColors: (function(): undefined), ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, SetTabs: GildFights.SetTabs, GetTabs: (function(): string), PlayerBoxContent: [], Colors: null, RefreshTable: (function(*=): undefined), SetAlert: GildFights.SetAlert, Neighbours: [], Tabs: [], PlayersPortraits: null}}
@@ -78,6 +88,7 @@ let GildFights = {
 
 	Tabs: [],
 	TabsContent: [],
+	CurrentTab: 1,
 
 	/**
 	 * Zündung
@@ -192,7 +203,7 @@ let GildFights = {
 	 * @param reload
 	 * @constructor
 	 */
-	ShowGildBox: (reload)=> {
+	ShowGildBox: (reload, preserve)=> {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
 		if( $('#LiveGildFighting').length === 0 ){
 
@@ -214,7 +225,7 @@ let GildFights = {
 			return;
 		}
 
-		GildFights.BuildFightContent();
+		GildFights.BuildFightContent(preserve);
 	},
 
 
@@ -379,8 +390,10 @@ let GildFights = {
 	/**
 	 * Contents of the card box
 	 */
-	BuildFightContent: () => {
-
+	BuildFightContent: (preserve) => {
+		if (!preserve) {
+			GildFights.CurrentTab = 1;
+		}
 		GildFights.Tabs = [];
 		GildFights.TabsContent = [];
 
@@ -581,7 +594,10 @@ let GildFights = {
 		h.push('</div>');
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
-			$('.gbg-tabs').tabslet({active: 1});
+			$('.gbg-tabs').tabslet({active: GildFights.CurrentTab});
+			$('.gbg-tabs').on('_after', (e) => {
+				GildFights.CurrentTab = (e.target.innerHTML.indexOf('gbgnextup') > -1 ? 2 : 1);
+			});
 
 			$('#LiveGildFighting').on('click', 'tr', function(e){
 
@@ -837,20 +853,22 @@ let GildFights = {
 	},
 
 
-	GetAlerts: ()=> {
-
+	GetAlerts: async()=> {
+		return new Promise(async (resolve, reject) => {
 		// is alert.js included?
 		if(!Alerts){
-			return ;
+				resolve();
 		}
 
 		// fetch all alerts and search the id
-		Alerts.getAll().then((resp)=> {
+			return Alerts.getAll().then((resp)=> {
 			if(resp.length === 0){
-				return ;
+					resolve();
 			}
 
 			let currentTime = MainParser.getCurrentDateTime();
+
+				GildFights.Alerts = [];
 
 			resp.forEach((alert) => {
 				if(alert['data']['category'] === 'gbg')
@@ -860,10 +878,13 @@ let GildFights = {
 						prov = GildFights.MapData['map']['provinces'].find(
 							e => e.title === name && alertTime > currentTime
 						);
-
+						if (prov !== undefined) {
 					GildFights.Alerts.push(prov['id']);
 				}
-			})
+					}
+				});
+				resolve();
+			});
 		});
 	},
 

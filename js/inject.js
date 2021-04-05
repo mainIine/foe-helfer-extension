@@ -156,15 +156,9 @@
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
 			
-			// load the main
-			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
-
-			// first wait for ant and i18n to be loaded
-			await jQueryLoading;
-
-
 			const extURL = chrome.extension.getURL(''),
 				vendorScripts = [
+					'simpleJsMQ/simpleJsMQ',
 					'i18njs/i18njs.min',
 					'moment/moment-with-locales.min',
 					'CountUp/jquery.easy_number_animate.min',
@@ -185,6 +179,13 @@
 
 			// load all vendor scripts first (unknown order)
 			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
+
+			// load the main
+			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
+
+			// first wait for ant and i18n to be loaded
+			await jQueryLoading;
+
 
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
