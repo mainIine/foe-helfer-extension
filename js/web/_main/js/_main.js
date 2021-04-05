@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _main.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              01.03.21, 15:53 Uhr
- * zuletzt bearbeitet:       01.03.21, 15:50 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -611,6 +609,11 @@ const FoEproxy = (function () {
 	// Player- und Gilden-ID setzen
 	FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
 
+		window.addEventListener("error", function (e) {
+			console.error(e.error);
+			e.preventDefault();
+		});
+
 		// Player-ID, Gilden-ID und Name setzten
 		MainParser.StartUp(data.responseData.user_data);
 
@@ -883,7 +886,7 @@ const FoEproxy = (function () {
 				lgUpdateData.Bonus = Bonus;
 
 				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
-					MainParser.OwnLGData(lgUpdateData);
+					if(!IsLevelScroll) MainParser.OwnLGData(lgUpdateData);
 				}
 
 				lgUpdate();
@@ -1113,6 +1116,9 @@ const FoEproxy = (function () {
 		if ($('#OwnPartBox').length > 0) {
 			Parts.Show();
 		}
+		if ($('#bonus-hud').length > 0) {
+			BonusService.CalcBonusData();
+		}
 	});
 
 
@@ -1153,7 +1159,8 @@ let MainParser = {
 	foeHelperBgApiHandler: /** @type {null|((request: {type: string}&object) => Promise<{ok:true, data: any}|{ok:false, error:string}>)}*/ (null),
 
 	activateDownload: false,
-	savedFight:null,
+	savedFight: null,
+	DebugMode: false,
 	Language: 'en',
 	SelectedMenu: 'BottomBar',
 	i18n: null,
@@ -1581,7 +1588,7 @@ let MainParser = {
 
 		MainParser.sendExtMessage({
 			type: 'send2Api',
-			url: `${ApiURL}OwnLGData/?world=${ExtWorld}`,
+			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}`,
 			data: JSON.stringify(realData)
 		});
 	},
@@ -1870,10 +1877,6 @@ let MainParser = {
 
 			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
-			}
-
-			if (d[i]['type'] === 'extra_negotiation_turn') {
-				Negotiation.TavernBoostExpireTime = d[i]['expireTime'];
 			}
 		}
 	},

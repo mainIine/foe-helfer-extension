@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 guildfights.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              18.02.21, 10:34 Uhr
- * zuletzt bearbeitet:       18.02.21, 10:31 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -340,8 +338,8 @@ let GildFights = {
 		t.push('<th>&nbsp;</th>');
 		t.push('<th>&nbsp;</th>');
 		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
-		t.push('<th class="text-center"><span class="negotiation" title="' + i18n('Boxes.Gildfights.Negotiations') + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
-		t.push('<th class="text-center"><span class="fight" title="' + i18n('Boxes.Gildfights.Fights') + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
+		t.push('<th class="text-center"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
+		t.push('<th class="text-center"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
 
 		t.push('</tr>');
@@ -446,7 +444,7 @@ let GildFights = {
 
 						progress.push(`<tr id="province-${id}" data-id="${id}">`);
 
-						console.log('gbgGuilds[x]: ', gbgGuilds[x]);
+						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
 						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
 						
@@ -577,7 +575,7 @@ let GildFights = {
 		h.push('<div class="gbg-tabs tabs">');
 		h.push( GildFights.GetTabs() );
 		h.push( GildFights.GetTabContent() );
-		h.push('<button class="btn-default">MAP</button>');
+		h.push('<button class="btn-default" onclick="ProvinceMap.buildMap()">MAP</button>');
 		h.push('</div>');
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
@@ -791,8 +789,8 @@ let GildFights = {
 
 
 	ShowExportButton: () => {
-		let c = `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('csv')">${i18n('Boxes.Gildfights.ExportCSV')}</button></p>`;
-		c += `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('json')">${i18n('Boxes.Gildfights.ExportJSON')}</button></p>`;
+		let c = `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('csv')">${i18n('Boxes.General.ExportCSV')}</button></p>`;
+		c += `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('json')">${i18n('Boxes.General.ExportJSON')}</button></p>`;
 
 		$('#GildPlayersSettingsBox').html(c);
 	},
@@ -850,11 +848,16 @@ let GildFights = {
 				return ;
 			}
 
+			let currentTime = MainParser.getCurrentDateTime();
+
 			resp.forEach((alert) => {
 				if(alert['data']['category'] === 'gbg')
 				{
-					let name = alert['data']['title'],
-						prov = GildFights.MapData['map']['provinces'].find(e => e.title === name); // short name of the province must match
+					let alertTime = alert['data']['expires'],
+						name = alert['data']['title'],
+						prov = GildFights.MapData['map']['provinces'].find(
+							e => e.title === name && alertTime > currentTime
+						);
 
 					GildFights.Alerts.push(prov['id']);
 				}
@@ -1075,7 +1078,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.stroke(path);
 
 			// if is spawn, no text => image
-			if(this.flagImg)
+			if(this.flagImg && this.flagPos)
 			{
 				ProvinceMap.MapCTX.globalAlpha = 0.2;
 				ProvinceMap.MapCTX.fill(path);
@@ -1750,6 +1753,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1900,
 				y: 1000
+			},
+			flagPos: {
+				x: 1790,
+				y: 945
 			}
 		}, {
 			id: 38,
@@ -1790,6 +1797,10 @@ let ProvinceMap = {
 			flag: {
 				x: 1951,
 				y: 1590
+			},
+			flagPos: {
+				x: 1921,
+				y: 1540
 			}
 		}, {
 			id: 42,
@@ -1839,6 +1850,10 @@ let ProvinceMap = {
 			flag: {
 				x: 808,
 				y: 1586
+			},
+			flagPos: {
+				x: 778,
+				y: 1536
 			}
 		}, {
 			id: 47,
@@ -1879,6 +1894,10 @@ let ProvinceMap = {
 			flag: {
 				x: 257,
 				y: 1182
+			},
+			flagPos: {
+				x: 217,
+				y: 1099
 			}
 		}, {
 			id: 51,
@@ -1928,6 +1947,10 @@ let ProvinceMap = {
 			flag: {
 				x: 398,
 				y: 465
+			},
+			flagPos: {
+				x: 370,
+				y: 442
 			}
 		}, {
 			id: 56,

@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 negotiation.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:14 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -66,9 +64,6 @@ let Negotiation = {
 
 	CONST_Context_GE: 'guildExpedition',
 	CONST_Context_GBG: 'guildBattleground',
-
-	TavernBoostExpireTime : undefined,
-
 
 	/**
 	 * Box in den DOM legen
@@ -203,7 +198,7 @@ let Negotiation = {
 					GoodAmount = MainParser.round(GoodAmount * 10) / 10;
 				}
 
-				h.push('<div class="good" data-slug="' + GoodName + '" title="' + i18n('Boxes.Negotiation.Stock') + ' ' + HTML.Format(Stock) + '">' +
+				h.push('<div class="good" data-slug="' + GoodName + '" title="' + HTML.i18nTooltip(i18n('Boxes.Negotiation.Stock')) + ' ' + HTML.Format(Stock) + '">' +
 					'<span class="goods-sprite ' + GoodName + '"></span><br>' +
 					'<span class="text-' + TextClass + '">' + HTML.Format(GoodAmount) + '</span>' +
 					'</div>');
@@ -473,7 +468,7 @@ let Negotiation = {
 		if (responseData.context === Negotiation.CONST_Context_GBG) {
 			if (! $('#negotiation-Btn').hasClass('hud-btn-red')) {
 				$('#negotiation-Btn').addClass('hud-btn-red');
-				_menu.toolTippBox(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
+				_menu.toolTipp(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
 			}
 			return; //No Negotiation helper for GBG
 		}
@@ -528,10 +523,9 @@ let Negotiation = {
 		// Setze die Korrekte Versuchs-anzahl
 		if (forcedTryCount != null) {
 			Negotiation.TryCount = forcedTryCount;
-		} else if (responseData.context === Negotiation.CONST_Context_GE) {
-			Negotiation.TryCount = moment.unix(Negotiation.TavernBoostExpireTime) > Date.now() ? 4 : 3;
-		} else {
-			Negotiation.TryCount = Negotiation.GoodCount > 6 ? 4 : 3;
+		}
+		else {
+			Negotiation.TryCount = ResourceStock['negotiation_game_turn'];
 		}
 
 		Negotiation.Guesses = [];
@@ -985,12 +979,6 @@ FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => 
 
 FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
 	Negotiation.ExitNegotiation();
-});
-
-FoEproxy.addHandler('BoostService', 'addBoost', (data, postData) => {
-	if (data.responseData['type'] === 'extra_negotiation_turn') {
-		Negotiation.TavernBoostExpireTime = data.responseData['expireTime'];
-	}
 });
 
 

@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 bonus-service.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              10.07.20, 15:44 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -73,7 +72,8 @@ let BonusService = {
 		'spoils_of_war',
 		'diplomatic_gifts',
 		'missile_launch',
-		'aid_goods'
+		'aid_goods',
+		'donequests'
 	],
 
 	/**
@@ -179,7 +179,16 @@ let BonusService = {
 				continue;
 			}
 
-			let b = d.find(e => (e['type'] === bt[i]));
+			let b;
+			if (bt[i] === 'donequests') {
+				b = {
+					type: "donequests",
+					amount: BonusService.GetDoneQuestsCount()
+				};
+			}
+			else {
+				b = d.find(e => (e['type'] === bt[i]));
+			}
 
 			if(b !== undefined){
 				let sp = $('<div />'),
@@ -199,7 +208,7 @@ let BonusService = {
 					class: 'bonus'
 				});
 
-				if(b['amount'] === undefined || b['amount'] === -1){
+				if(b['amount'] === undefined || b['amount'] <= 0){
 					sp.addClass('hud-btn-red');
 					si.css({
 						display: 'none'
@@ -229,7 +238,16 @@ let BonusService = {
 				break;
 			}
 
-			let b = d.find(e => (e['type'] === bt[i]));
+			let b;
+			if (bt[i] === 'donequests') {
+				b = {
+					type: "donequests",
+					amount: BonusService.GetDoneQuestsCount()
+				};
+			}
+			else {
+				b = d.find(e => (e['type'] === bt[i]));
+			}
 
 			if(b !== undefined){
 
@@ -237,13 +255,16 @@ let BonusService = {
 					a = parseInt(si.text());
 
 				// Bonus is empty
-				if(b['amount'] === undefined || b['amount'] === -1){
+				if (b['amount'] === undefined || b['amount'] <= 0) {
 					si.closest('.hud-btn').addClass('hud-btn-red');
 					si.hide();
 				}
 
 				// Bonus ticker down, when changed
-				else if(a !== b['amount']) {
+				else if (a !== b['amount']) {
+					si.closest('.hud-btn').removeClass('hud-btn-red');
+					si.show();
+
 					si.text(b['amount']);
 
 					si.addClass('bonus-blink');
@@ -255,4 +276,18 @@ let BonusService = {
 			}
 		}
 	},
+
+	/**
+	 * Überprüft, ob ein Quest erledigt ist
+	 */
+	GetDoneQuestsCount: () => {
+		if (!MainParser.Quests) return 0;
+
+		let Ret = 0;
+		for (let i = 0; i < MainParser.Quests.length; i++) {
+			let Quest = MainParser.Quests[i];
+			if (Quest['state'] === 'collectReward') Ret += 1;
+		}
+		return Ret;
+    }
 }

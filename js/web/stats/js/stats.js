@@ -1,3 +1,16 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
 // Guild Battlegrounds leader board log
 // Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
@@ -145,8 +158,8 @@ let Stats = {
 		VirtualFuture: ['cryptocash', 'data_crystals', 'golden_rice', 'nanites', 'tea_silk'],
 		SpaceAgeMars: ['biotech_crops', 'lubricants', 'fusion_reactors', 'mars_microbes', 'superalloys'],
 		SpaceAgeAsteroidBelt: ['bromine', 'compound_fluid', 'processed_material', 'platinum_crystals', 'nickel'],
-		SpaceAgeVenus: [],
-		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice']
+		SpaceAgeVenus: ['soy_proteins', 'microgreen_supplement', 'herbal_snack', 'sugar_crystals', 'glowing_seaweed'],
+		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon']
 	},
 
 	PlayableEras: [
@@ -168,7 +181,7 @@ let Stats = {
 		'VirtualFuture',
 		'SpaceAgeMars',
 		'SpaceAgeAsteroidBelt',
-		'SpaceAgeVenus'
+		'SpaceAgeVenus',
 	],
 
 	// State for UI

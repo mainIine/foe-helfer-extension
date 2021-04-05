@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 background.js
- * Projekt:                   foe
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       19.11.19, 09:44 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -365,7 +364,7 @@ alertsDB.version(1).stores({
 			});
 
 			browser.tabs.create({
-				url: `https://foe-rechner.de/extension/update?v=${version}&lang=${lng}`
+				url: `https://foe-helper.com/extension/update?v=${version}${lng === 'de' ? '&lang=de' : ''}`
 			});
 		}
 	});
