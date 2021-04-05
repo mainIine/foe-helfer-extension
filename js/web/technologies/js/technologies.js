@@ -342,8 +342,8 @@ let Technologies = {
     */
     ShowSettingsButton: () => {
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('.foe-table.exportable'), 'csv', 'technologies')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('.foe-table.exportable'), 'json', 'technologies')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'csv', 'technologies')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'json', 'technologies')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
         $('#technologiesSettingsBox').html(h.join(''));
     },
