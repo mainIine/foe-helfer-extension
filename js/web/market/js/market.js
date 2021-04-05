@@ -73,7 +73,8 @@ let Market = {
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
-                resize: true
+                resize: true,
+                settings: 'Market.ShowSettingsButton()'
             });
 
             // add css to DOM
@@ -294,14 +295,14 @@ let Market = {
         h.push('</div>');
 
         // Table
-        h.push('<table class="foe-table">');
+        h.push('<table class="foe-table exportable">');
 
         h.push('<thead>');
         h.push('<tr>');
-        h.push('<th colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.RateColumn') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.PlayerColumn') + '</th>');
+        h.push('<th columnname2="Offered goods" columnname3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th columnname2="Offered goods" columnname3="Offered amount"colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th columnname="Rate">' + i18n('Boxes.Market.RateColumn') + '</th>');
+        h.push('<th columnname="Player">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');
         h.push('</tr>');
         h.push('</thead>');
@@ -469,5 +470,16 @@ let Market = {
             if (TradeGood === AllowedGoods[i]) return true;
         }
         return false
+    },
+
+    /**
+    *
+    */
+    ShowSettingsButton: () => {
+        let h = [];
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+
+        $('#MarketSettingsBox').html(h.join(''));
     },
 };
