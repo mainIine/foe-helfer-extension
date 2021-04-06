@@ -1221,8 +1221,8 @@ FP-Bar */
 .jq-toast-single h2 { font-family: arial, sans-serif; font-size: 14px; margin: 0 0 7px; background: none; color: inherit; line-height: inherit; letter-spacing: normal; }
 .jq-toast-single a { color: #eee; text-decoration: none; font-weight: bold; border-bottom: 1px solid white; padding-bottom: 3px; font-size: 12px; }
 
-.jq-toast-single ul { margin: 0 0 0 15px; background: none; padding:0; }
-.jq-toast-single ul li { list-style-type: disc !important; line-height: 17px; background: none; margin: 0; padding: 0; letter-spacing: normal; }
+.jq-toast-single ul { margin: 0; background: none; padding:0;list-style: none }
+.jq-toast-single ul li { line-height: 17px; background: none; margin: 0; padding: 0; letter-spacing: normal; }
 
 .close-jq-toast-single { position: absolute; top: 3px; right: 7px; font-size: 14px; cursor: pointer; }
 
