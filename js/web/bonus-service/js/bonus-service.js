@@ -49,6 +49,12 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
     }
 });
 
+FoEproxy.addWsHandler('FoeHelperService', 'QuestsUpdated', data => {
+	if ($('#bonus-hud').length > 0) {
+		BonusService.CalcBonusData();
+	}
+});
+
 // Guildfights enter
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 	BonusService.InitBonus();

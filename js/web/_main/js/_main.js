@@ -304,7 +304,11 @@ const FoEproxy = (function () {
 
 		removeRawWsHandler: function(callback) {
 			wsRawHandler = wsRawHandler.filter(c => c !== callback);
-		}
+		},
+
+		pushWsMessage: function (service, method, data) {
+			proxyWsAction(service, method, data);
+        }
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
@@ -1113,15 +1117,7 @@ const FoEproxy = (function () {
 
 		MainParser.Quests = data.responseData;
 
-		if($('#costCalculator').length > 0){
-			Calculator.Show();
-		}
-		if ($('#OwnPartBox').length > 0) {
-			Parts.Show();
-		}
-		if ($('#bonus-hud').length > 0) {
-			BonusService.CalcBonusData();
-		}
+		FoEproxy.pushWsMessage('FoeHelperService', 'QuestsUpdated', null);
 	});
 
 
