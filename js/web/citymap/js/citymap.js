@@ -445,8 +445,35 @@ let CityMap = {
 			}
 		};
 
-		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#CityMapSubmitBody').html('<p class="text-center"><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-helper.com">foe-helper.com</a></span>');
+		MainParser.send2Server(d, 'CityPlanner', function(resp){
+
+			if(resp.status === 'OK')
+			{
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitSuccess'),
+						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
+					],
+					type: 'success',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitError'),
+						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
+					],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+
+			$('#CityMapSubmit').fadeToggle(function(){
+				$(this).remove();
+			});
 		});
 	},
 
