@@ -484,6 +484,34 @@ let Settings = {
 	},
 
 	/**
+	 * Alle benötigten Buttons hinzufügen
+	 */
+	 MenuContent: () => {
+		let bl = $('<div />');
+
+		for (let i in _menu.Items) {
+			if (!_menu.Items.hasOwnProperty(i)) {
+				break;
+			}
+
+			const name = _menu.Items[i];
+
+			// gibt es eine Funktion?
+			if (_menu[name + '_Btn'] !== undefined) {
+				let btnBG = $('<div />').attr({ id: 'setting-' + name + '-Btn' }).addClass('hud-btn');
+				btnBG.addClass(_menu.HiddenItems.includes(name) ? 'hud-btn-red' : '');
+
+				let btn = $(`<span onclick=_menu.ToggleItemVisibility("${name}")></span>`);
+		
+				btnBG.append(btn);
+				bl.append(btnBG);
+			}
+		}
+
+		return bl.html();
+	},
+
+	/**
 	 *	Erzeugt ein Input Feld
 	 *
 	 * @returns {null|undefined|jQuery}

@@ -174,6 +174,10 @@ input[type=number] {
 	text-shadow: 0 1px 1px var(--black);
 }
 
+.btn-hidden {
+	display: none;
+}
+
 .btn-tight {
 	margin: 1px;
 	padding: 1px 4px;
@@ -366,107 +370,107 @@ p {
 
 /* MENU ICONS */
 
-#market-Btn span {
+[id$=market-Btn] span {
 	background-image: url('../images/menu/market.png');
 }
 
-#moppelhelper-Btn span {
+[id$=moppelhelper-Btn] span {
 	background-image: url('../images/menu/polivation.png');
 }
 
-#fpCollector-Btn span {
+[id$=fpCollector-Btn] span {
 	background-image: url('../images/menu/forgepoints.png');
 }
 
-#greatbuildings-Btn span {
+[id$=greatbuildings-Btn] span {
 	background-image: url('../images/menu/greatbuildings.png');
 }
 
-#productions-Btn span {
+[id$=productions-Btn] span {
 	background-image: url('../images/menu/productions.png');
 }
 
-#calculator-Btn span {
+[id$=calculator-Btn] span {
 	background-image: url('../images/menu/calculator.png');
 }
 
-#outpost-Btn span {
+[id$=outpost-Btn] span {
 	background-image: url('../images/menu/vikings_ship.png');
 }
 
-#partCalc-Btn span {
+[id$=partCalc-Btn] span {
 	background-image: url('../images/menu/part-calc.png');
 }
 
-#technologies-Btn span {
+[id$=technologies-Btn] span {
 	background-image: url('../images/menu/technologies.png');
 }
 
-#hiddenRewards-Btn span:first-child {
+[id$=hiddenRewards-Btn] span:first-child {
 	background-image: url('../images/menu/incident_crates.png');
 }
 
-#campagneMap-Btn span {
+[id$=campagneMap-Btn] span {
 	background-image: url('../images/menu/map.png');
 }
 
-#citymap-Btn span {
+[id$=citymap-Btn] span {
 	background-image: url('../images/menu/citymap.png');
 }
 
-#chat-Btn span {
+[id$=chat-Btn] span {
 	background-image: url('../images/menu/chat.png');
 }
 
-#settings-Btn span {
+[id$=settings-Btn] span {
 	background-image: url('../images/menu/settings.png');
 }
 
-#stats-Btn span {
+[id$=stats-Btn] span {
 	background-image: url('../images/menu/stats.png');
 }
 
-#infobox-Btn span {
+[id$=infobox-Btn] span {
 	background-image: url('../images/menu/info.png');
 }
 
-#unit-Btn span {
+[id$=unit-Btn] span {
 	background-image: url('../images/menu/units.png');
 }
 
-#negotiation-Btn span {
+[id$=negotiation-Btn] span {
 	background-image: url('../images/menu/negotation.png');
 }
 
-#kits-Btn span {
+[id$=kits-Btn] span {
 	background-image: url('../images/menu/kits.png');
 }
 
-#alerts-Btn span {
+[id$=alerts-Btn] span {
 	background-image: url('../images/menu/alerts.png');
 }
 
-#notice-Btn span {
+[id$=notice-Btn] span {
 	background-image: url('../images/menu/notices.png');
 }
 
-#bluegalaxy-Btn span {
+[id$=bluegalaxy-Btn] span {
 	background-image: url('../images/menu/BlueGalaxy.png');
 }
 
-#unitsGex-Btn span {
+[id$=unitsGex-Btn] span {
 	background-image: url('../images/menu/gex.png');
 }
 
-#gildfight-Btn span {
+[id$=gildfight-Btn] span {
 	background-image: url('../images/menu/gbg.png');
 }
 
-#investment-Btn span {
+[id$=investment-Btn] span {
 	background-image: url('../images/menu/investhistory.png');
 }
 
-#guildmemberstat-Btn span {
+[id$=guildmemberstat-Btn] span {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
