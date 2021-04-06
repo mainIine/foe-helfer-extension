@@ -589,7 +589,7 @@
     "Boxes.Units.Unbind": "Свободный",
     "Boxes.Units.Unit": "Юнит",
     "Boxes.UnitsGex.NoUnitsAvailable": "Нет информации по юнитам. Нажмите \"U\" чтобы открыть обзор армии",
-    "Date": "ДД-МММ-ГГ",
+    "Date": "DD-MMM-YY",
     "DateTime": "DD.MM.YYYY HH:mm",
     "Eras.0": "Без эпохи",
     "Eras.1": "Каменный Век",
