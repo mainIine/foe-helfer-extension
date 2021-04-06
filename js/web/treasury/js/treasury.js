@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -101,7 +101,7 @@ let Treasury = {
             h.push(CurrentLine.join(';'));
         }
 
-        let ExportString = h.join('\n');
+        let ExportString = h.join('\r\n');
         let BOM = "\uFEFF";
         let Blob1 = new Blob([BOM + ExportString], { type: "application/octet-binary;charset=ANSI" });
         MainParser.ExportFile(Blob1, 'GBG-export.csv');

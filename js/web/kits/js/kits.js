@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -12,7 +12,7 @@
  */
 
 /**
- * @type {{ItemTd: Kits.ItemTd, init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
+ * @type {{BuildingSelectionKits: null, ItemTd: (function(*=): string), init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), BuildingSets: null, ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
@@ -437,14 +437,12 @@ let Kits = {
 };
 
 // Updatestufen der Eventgebäude
-
 FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 	Kits.BuildingSelectionKits = JSON.parse(xhr.responseText);
 });
 
 
 // Building-Sets
-
 FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
 	Kits.BuildingSets = JSON.parse(xhr.responseText);
 });
