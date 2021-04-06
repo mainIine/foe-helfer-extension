@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -446,7 +446,7 @@ let CityMap = {
 		};
 
 		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#CityMapSubmitBody').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+			$('#CityMapSubmitBody').html('<p class="text-center"><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-helper.com">foe-helper.com</a></span>');
 		});
 	},
 

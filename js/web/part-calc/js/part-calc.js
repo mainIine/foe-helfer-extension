@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021  FoE-Helper and there team - All Rights Reserved
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -18,7 +18,7 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 	if (!data.responseData['other_player']) return; // Nur fremde LGs
 	if (data.responseData['other_player']['player_id'] !== Parts.CityMapEntity['player_id']) return; // Selber Spieler
 
-	let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === Event['great_building_name']));
+	let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === data.responseData['great_building_name']));
 	if (!Entity) return; // LG nicht gefunden
 
 	if (Entity['id'] !== Parts.CityMapEntity['cityentity_id']) // Selbes LG
