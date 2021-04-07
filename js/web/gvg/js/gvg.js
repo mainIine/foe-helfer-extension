@@ -93,7 +93,7 @@ let GvG = {
 
 		GvG.Independences = count;
 		localStorage.setItem('GvGIndependencesCount', count);
-		GvG.ShowGvgHud();
+		//GvG.ShowGvgHud();
 	},
 
     /**
@@ -113,7 +113,7 @@ let GvG = {
 
 		GvG.Sieges = count;
 		localStorage.setItem('GvGSiegesCount', count);
-		GvG.ShowGvgHud();
+		//GvG.ShowGvgHud();
 	},
 
     /**
@@ -126,7 +126,7 @@ let GvG = {
 
 		if (storedRecalc != null) {
 			localStorage.setItem('GvGRecalcTime', calcTime);
-			GvG.ShowGvgHud();
+			//GvG.ShowGvgHud();
 		}
 		if (resetHappened) {
 			localStorage.setItem('GvGReset', false);
