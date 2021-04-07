@@ -55,6 +55,7 @@ let _menu = {
 		// 'guildmemberstats'
 	],
 
+	HiddenItems: [],
 
 	/**
 	 * Create the div holders and put them to the DOM
@@ -106,7 +107,7 @@ let _menu = {
 		}
 	},
 
-
+	
 	/**
 	 * Tooltip Box
 	 *
@@ -204,8 +205,49 @@ let _menu = {
 		}
 
 		_menu.Items = _menu.Items.filter(e => e);
+
+		// Nicht verwendete Menüpunkte verstecken
+		let StoredHiddenItems = localStorage.getItem('MenuHiddenItems');
+
+		if (StoredHiddenItems !== null) {
+			_menu.HiddenItems = JSON.parse(StoredHiddenItems);
+
+			for (let i in _menu.HiddenItems) {
+				if (!_menu.Items.hasOwnProperty(i)) {
+					break;
+				}
+
+				$('#' + _menu.HiddenItems[i] + '-Btn').addClass('btn-hidden');
+			}
+		}
 	},
 
+	/**
+	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
+	 * 
+	 * @param name 
+	 */
+	ToggleItemVisibility: (name) => {
+		// settings button cannot be disabled
+		if(name == 'settings') return;
+
+		if(_menu.HiddenItems.includes(name)){
+			$('#' + name + '-Btn').removeClass('btn-hidden');
+			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
+
+			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
+				if (e == name) return false;
+				return true;
+			});
+		}else{
+			$('#' + name + '-Btn').addClass('btn-hidden');
+			$('#setting-' + name + '-Btn').addClass('hud-btn-red');
+
+			_menu.HiddenItems.push(name);
+		}
+		
+		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+	},
 
 	/**
 	 * Checks whether anything has changed in the sorting of the items.
