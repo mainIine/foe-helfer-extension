@@ -135,6 +135,7 @@ let _menu = {
 	*/
 	ListLinks: (InsertMenuFunction) => {
 		let StorgedItems = localStorage.getItem('MenuSort');
+		let HiddenItems = localStorage.getItem('MenuHiddenItems');
 
 		// Beta-Funktionen
 		if (HelperBeta.active) {
@@ -160,27 +161,26 @@ let _menu = {
 
 			let items = missingMenu.concat(missingStored);
 
-			// es gibt tatsächlich was neues...
+			// there is indeed something new...
 			if (items.length > 0) {
 				for (let i in items) {
 					if (!items.hasOwnProperty(i)) {
 						break;
 					}
 
-					// ... neues kommt vorne dran ;-)
+					// ... new comes in front ;-)
 					_menu.Items.unshift(items[i]);
 				}
 			}
 		}
 
-		// Beta-Funktionen rausfiltern
+		// Filter out beta functions
 		_menu.Items = _menu.Items.filter(e => {
 			if (HelperBeta.active) return true;
-			if (HelperBeta.menu.includes(e)) return false;
-			return true;
+			return !HelperBeta.menu.includes(e);
 		});
 
-		// Dubletten rausfiltern
+		// Filter out duplicates
 		function unique(arr) {
 			return arr.filter(function (value, index, self) {
 				return self.indexOf(value) === index;
@@ -189,8 +189,17 @@ let _menu = {
 
 		_menu.Items = unique(_menu.Items);
 
+		// remove all hidden items
+		if(HiddenItems !== null)
+		{
+			let hiddenItems = JSON.parse(HiddenItems);
+
+			_menu.Items = _menu.Items.filter(val => !hiddenItems.includes(val));
+		}
+
 		// Menüpunkte einbinden
-		for (let i in _menu.Items) {
+		for (let i in _menu.Items)
+		{
 			if (!_menu.Items.hasOwnProperty(i)) {
 				break;
 			}
@@ -199,28 +208,13 @@ let _menu = {
 
 			// gibt es eine Funktion?
 			if (_menu[name] !== undefined) {
-				let MenuItem = _menu[name]();
-				InsertMenuFunction(MenuItem);
+				InsertMenuFunction(_menu[name]());
 			}
 		}
 
 		_menu.Items = _menu.Items.filter(e => e);
-
-		// Nicht verwendete Menüpunkte verstecken
-		let StoredHiddenItems = localStorage.getItem('MenuHiddenItems');
-
-		if (StoredHiddenItems !== null) {
-			_menu.HiddenItems = JSON.parse(StoredHiddenItems);
-
-			for (let i in _menu.HiddenItems) {
-				if (!_menu.Items.hasOwnProperty(i)) {
-					break;
-				}
-
-				$('#' + _menu.HiddenItems[i] + '-Btn').addClass('btn-hidden');
-			}
-		}
 	},
+
 
 	/**
 	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
@@ -228,18 +222,17 @@ let _menu = {
 	 * @param name 
 	 */
 	ToggleItemVisibility: (name) => {
-		// settings button cannot be disabled
-		if(name == 'settings') return;
 
-		if(_menu.HiddenItems.includes(name)){
+		if(_menu.HiddenItems.includes(name))
+		{
 			$('#' + name + '-Btn').removeClass('btn-hidden');
 			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
 
 			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
-				if (e == name) return false;
-				return true;
+				return e !== name;
 			});
-		}else{
+		}
+		else {
 			$('#' + name + '-Btn').addClass('btn-hidden');
 			$('#setting-' + name + '-Btn').addClass('hud-btn-red');
 
@@ -248,6 +241,7 @@ let _menu = {
 		
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
 	},
+
 
 	/**
 	 * Checks whether anything has changed in the sorting of the items.
@@ -264,6 +258,8 @@ let _menu = {
 		return true;
 	},
 
+
+	/*----------------------------------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
@@ -292,7 +288,7 @@ let _menu = {
 
 
 	/**
-	 * Eigenanteilsrechner Button
+	 * Own contribution calculator button
 	 *
 	 * @returns {*|jQuery}
 	 */
@@ -354,7 +350,7 @@ let _menu = {
 	},
 
 	/**
-	 * FP Gesamtanzahl Button
+	 * Product overview button
 	 *
 	 * @returns {*|jQuery}
 	 */
