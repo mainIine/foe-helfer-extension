@@ -172,10 +172,6 @@ input[type=number] {
 	text-shadow: 0 1px 1px var(--black);
 }
 
-.btn-hidden {
-	display: none;
-}
-
 .btn-tight {
 	margin: 1px;
 	padding: 1px 4px;

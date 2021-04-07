@@ -11,6 +11,9 @@
  * **************************************************************************************
  */
 
+/**
+ * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: (function(*=, *=): *), MenuSelected: (function(): string), BoxGroups: [string, string, string, string], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: (function(*=, *=): undefined), InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
+ */
 let Settings = {
 
 	/**
@@ -481,25 +484,33 @@ let Settings = {
 		return ip;
 	},
 
+
 	/**
-	 * Alle benötigten Buttons hinzufügen
+	 * Add all the buttons you need
 	 */
-	 MenuContent: () => {
+	MenuContent: () => {
 		let bl = $('<div />');
 
-		for (let i in _menu.Items) {
+		for (let i in _menu.Items)
+		{
 			if (!_menu.Items.hasOwnProperty(i)) {
 				break;
 			}
 
 			const name = _menu.Items[i];
 
-			// gibt es eine Funktion?
-			if (_menu[name + '_Btn'] !== undefined) {
-				let btnBG = $('<div />').attr({ id: 'setting-' + name + '-Btn' }).addClass('hud-btn');
+			// exclude settings
+			if(name === 'settings'){
+				continue;
+			}
+
+			// is there a function?
+			if (_menu[name + '_Btn'])
+			{
+				let btnBG = $('<div />').attr({ id: `setting-${name}-Btn` }).addClass('hud-btn');
 				btnBG.addClass(_menu.HiddenItems.includes(name) ? 'hud-btn-red' : '');
 
-				let btn = $(`<span onclick=_menu.ToggleItemVisibility("${name}")></span>`);
+				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
 		
 				btnBG.append(btn);
 				bl.append(btnBG);
@@ -508,6 +519,7 @@ let Settings = {
 
 		return bl.html();
 	},
+
 
 	/**
 	 *	Erzeugt ein Input Feld
