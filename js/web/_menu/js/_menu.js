@@ -57,6 +57,7 @@ let _menu = {
 
 	HiddenItems: [],
 
+
 	/**
 	 * Create the div holders and put them to the DOM
 	 *
@@ -64,6 +65,7 @@ let _menu = {
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
+
 		if (selMenu === 'BottomBar') {
 			_menu.selectedMenu = 'BottomBar';
 			_menu_bottom.BuildOverlayMenu();
@@ -120,12 +122,23 @@ let _menu = {
 
 		$(btn).attr('title', desc);
 
+		let pos = (_menu.selectedMenu === 'RightBar' ? 'left' : 'top');
+
+		// fix the tooltip position when menu is box and at the top border
+		if(_menu.selectedMenu === 'Box'){
+			let top = $('#menu_box').offset().top;
+
+			if(top < 120){
+				pos = 'bottom';
+			}
+		}
+
 		return $(btn).tooltip({
 			useFoEHelperSkin: true,
 			headLine: title,
 			content: desc,
 			container: 'body',
-			placement: (_menu.selectedMenu === 'RightBar' ? 'left' : 'top')
+			placement: pos
 		});
 	},
 

@@ -390,10 +390,10 @@ let Settings = {
 	 */
 	Help: () => {
 		return '<ul class="helplist">' +
-			'<li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
+			'<li><a href="https://foe-helper.com" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
 			'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' + i18n('Settings.Help.Forums') + '</a></li>' +
 			'<li><a href="https://discord.gg/z97KZq4" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-			'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
+			'<li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
 			'</ul>';
 	},
 
