@@ -246,6 +246,7 @@
     "Boxes.Infobox.ResetBox": "Újratöltés",
     "Boxes.Infobox.Title": "Infó doboz",
     "Boxes.Investment.CurrReward": "Jelenlegi profit: ",
+    "Boxes.Investment.DateParseError": "Hiba történt a dátum elemzése során",
     "Boxes.Investment.InvestBar": "Befektetett Forge pontok: ",
     "Boxes.Investment.Overview.Building": "Épület",
     "Boxes.Investment.Overview.Invested": "Befektetés",
