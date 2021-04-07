@@ -837,7 +837,7 @@
     "Settings.InfoboxEntryCount.Title": "Infobox Anzahl an Nachrichten",
     "Settings.MenuContent.Desc": "Welche Buttons willst du im Menü haben?<br>Grün: Button wird angezeigt. Rot: Button wird nicht angezeigt.",
     "Settings.MenuContent.Title": "Menü Inhalt",
-    "Settings.MenuLength.Desc": "Wie viele Elemente soll das Menü hoch sein?<br> Leer oder \"0\" ist automatische Höhe.",
+    "Settings.MenuLength.Desc": "Wie viele Elemente soll das Menü hoch oder breit sein?<br> Leer oder \"0\" ist automatische Höhe.<br>Gilt nicht für die \"Menü Box\".",
     "Settings.MenuLength.Title": "Menü Länge",
     "Settings.NotificationPosition.ToastTestBody": "Ab sofort erscheinen deine Benachrichtigungen an dieser Position.<br>Bevor du die nächste Position testest, warte bis diese Meldung verschwunden ist.",
     "Settings.NotificationPosition.ToastTestHeader": "Benachrichtigungs Vorschau",
