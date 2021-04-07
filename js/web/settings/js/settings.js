@@ -507,8 +507,10 @@ let Settings = {
 			// is there a function?
 			if (_menu[name + '_Btn'])
 			{
-				let btnBG = $('<div />').attr({ id: `setting-${name}-Btn` }).addClass('hud-btn');
-				btnBG.addClass(_menu.HiddenItems.includes(name) ? 'hud-btn-red' : '');
+				let btnBG = $('<div />')
+					.attr({ id: `setting-${name}-Btn` })
+					.addClass('hud-btn')
+					.addClass(_menu.HiddenItems.includes(name) ? 'hud-btn-red' : '');
 
 				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
 		
