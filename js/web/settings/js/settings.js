@@ -489,15 +489,26 @@ let Settings = {
 	 * Add all the buttons you need
 	 */
 	MenuContent: () => {
-		let bl = $('<div />');
+		let bl = $('<div />'),
+			menuItems = _menu.Items,
+			HiddenItems = localStorage.getItem('MenuHiddenItems'),
+			hiddenArray = [];
 
-		for (let i in _menu.Items)
+		// Reattach already hidden icons
+		if (HiddenItems !== null) {
+			hiddenArray = JSON.parse(HiddenItems);
+			menuItems.push(...hiddenArray);
+		}
+
+		console.log(hiddenArray);
+
+		for (let i in menuItems)
 		{
-			if (!_menu.Items.hasOwnProperty(i)) {
+			if (!menuItems.hasOwnProperty(i)) {
 				break;
 			}
 
-			const name = _menu.Items[i];
+			const name = menuItems[i];
 
 			// exclude settings
 			if(name === 'settings'){
@@ -510,7 +521,7 @@ let Settings = {
 				let btnBG = $('<div />')
 					.attr({ id: `setting-${name}-Btn` })
 					.addClass('hud-btn')
-					.addClass(_menu.HiddenItems.includes(name) ? 'hud-btn-red' : '');
+					.addClass(hiddenArray.includes(name) ? 'hud-btn-red' : '');
 
 				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
 		

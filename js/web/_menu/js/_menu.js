@@ -206,7 +206,7 @@ let _menu = {
 		if(HiddenItems !== null)
 		{
 			let hiddenItems = JSON.parse(HiddenItems);
-
+			_menu.HiddenItems = hiddenItems;
 			_menu.Items = _menu.Items.filter(val => !hiddenItems.includes(val));
 		}
 
