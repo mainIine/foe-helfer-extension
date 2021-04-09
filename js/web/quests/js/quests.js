@@ -17,10 +17,6 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 	if(postData[0]['requestClass'] !== 'QuestService' && postData[0]['requestMethod'] !== 'abortQuest')
 		return;
 
-	if (!Settings.GetSetting('Show2kQuestMark')) {
-		return;
-	}
-
 	Quests.UpdateCounter();
 });
 
@@ -59,6 +55,11 @@ let Quests = {
 			Quests.InsertStorage();
 		}
 
+
+		if (!Settings.GetSetting('Show2kQuestMark')) {
+			return;
+		}
+
 		HTML.AddCssFile('quests');
 
 		// some html for visual view
@@ -85,6 +86,7 @@ let Quests = {
 					)
 			);
 		});
+
 	},
 
 
@@ -96,7 +98,9 @@ let Quests = {
 	UpdateCounter: ()=> {
 		Quests.Counter--;
 
-		$('#quest-counter-value').text(Quests.Counter);
+		if (Settings.GetSetting('Show2kQuestMark')) {
+			$('#quest-counter-value').text(Quests.Counter);
+		}
 
 		Quests.InsertStorage();
 	},
