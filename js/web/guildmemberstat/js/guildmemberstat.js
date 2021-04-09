@@ -353,14 +353,24 @@ let GuildMemberStat = {
 		{
 			case 'clandata':
 
+				let currentClanId = GuildMemberStat.Data.id !== undefined ? GuildMemberStat.Data.id : undefined;
 				let memberdata = GuildMemberStat.Data.members;
 
-				if (typeof memberdata == 'undefined')
+				if ( typeof memberdata === 'undefined' || currentClanId === undefined )
 				{
 					return;
 				}
 
 				let ActiveMembers = [];
+				let localClanId = JSON.parse(localStorage.getItem('GuildMemberStatClanId'));
+				
+				if(!localClanId) 
+				{
+					localClanId = currentClanId;
+				}
+
+				// set after how many days ex members are deleted ( -1 : instantly after guild change )
+				let deleteOlderThan = localClanId !== currentClanId ? -1 : GuildMemberStat.Settings.deleteOlderThan; 
 
 				GuildMemberStat.hasUpdateProgress = true;
 
@@ -408,17 +418,18 @@ let GuildMemberStat = {
 					await GuildMemberStat.ReadGuildMemberBuildings({city_map: {entities: Object.values(MainParser.CityMapData)}}, self);
 				}
 
-				// Insert update time
+				// Insert update time & current GuildId
 				GuildMemberStat.Settings.lastupdate = MainParser.getCurrentDate();
 				localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStat.Settings));
+				localStorage.setItem('GuildMemberStatClanId', currentClanId);
 
 				// Array with all valid player_id is send to mark all player_id which ar not in this array as deleted
 				await GuildMemberStat.MarkMemberAsDeleted(ActiveMembers);
 
 				//Delete ex members which delete data is older than the given days [ 0 = no deletion ]
-				if (GuildMemberStat.Settings.deleteOlderThan > 0)
+				if (deleteOlderThan > 0 || deleteOlderThan === -1)
 				{
-					await GuildMemberStat.DeleteExMembersOlderThan(GuildMemberStat.Settings.deleteOlderThan);
+					await GuildMemberStat.DeleteExMembersOlderThan(deleteOlderThan);
 				}
 
 				if (GuildMemberStat.hasGuildMemberRights && GuildMemberStat.Settings.autoStartOnUpdate)
@@ -967,6 +978,7 @@ let GuildMemberStat = {
 
 			let deletedMember = (typeof member['deleted'] !== 'undefined' && member['deleted'] !== 0);
 			deletedCount += deletedMember ? 1 : 0;
+			let activityIcon = !deletedMember ? `act_${member['activity']}.png` : 'act_deleted.png';
 
 			if (deletedMember && !GuildMemberStat.Settings.showDeletedMembers)
 			{
@@ -1000,7 +1012,7 @@ let GuildMemberStat = {
 			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);
 
 			if (GuildMemberStat.hasGuildMemberRights)
-				h.push(`<td class="is-number" data-number="${member['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/act_${member['activity']}.png" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
+				h.push(`<td class="is-number" data-number="${member['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/${activityIcon}" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
 
 			h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
 			h.push(`<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
@@ -1768,7 +1780,7 @@ let GuildMemberStat = {
 	GuildMemberStatSettings: () => {
 
 		let c = [];
-		let deleteAfterDays = [0, 3, 7, 14, 31]
+		let deleteAfterDays = [-1, 3, 7, 14, 31, 0]
 		let Settings = GuildMemberStat.Settings;
 
 		c.push(`<p class="text-left"><input id="gmsAutoStartOnUpdate" name="autostartonupdate" value="1" type="checkbox" ${(Settings.autoStartOnUpdate === 1) ? ' checked="checked"' : ''} /> <label for="gmsAutoStartOnUpdate">${i18n('Boxes.GuildMemberStat.AutoStartOnUpdate')}</label></p>`);
@@ -1777,9 +1789,12 @@ let GuildMemberStat = {
 		c.push(`<hr><p class="text-left">${i18n('Boxes.GuildMemberStat.DeleteExMembersAfter')} <select id="gmsDeleteOlderThan" name="deleteolderthan">`);
 
 		deleteAfterDays.forEach(days => {
-			let option = days + ' ' + i18n('Boxes.GuildMemberStat.Days');
-			if (days === 0)
-				option = i18n('Boxes.GuildMemberStat.Never');
+			let option = '';
+
+			if(days === -1) { option = i18n('Boxes.GuildMemberStat.Instantly'); }
+			else if(days === 0) { option = i18n('Boxes.GuildMemberStat.Never'); }
+			else { option = days + ' ' + i18n('Boxes.GuildMemberStat.Days'); }
+
 			c.push(`<option value="${days}" ${Settings.deleteOlderThan === days ? ' selected="selected"' : ''}>${option}</option>`);
 		});
 
@@ -1807,7 +1822,7 @@ let GuildMemberStat = {
 		GuildMemberStat.Settings.autoStartOnUpdate = $("#gmsAutoStartOnUpdate").is(':checked') ? 1 : 0;
 		GuildMemberStat.Settings.showSearchbar = $("#gmsShowSearchbar").is(':checked') ? 1 : 0;
 
-		if (GuildMemberStat.Settings.deleteOlderThan !== tmpDeleteOlder && tmpDeleteOlder > 0)
+		if (GuildMemberStat.Settings.deleteOlderThan !== tmpDeleteOlder && (tmpDeleteOlder > 0 || tmpDeleteOlder === -1))
 		{
 			GuildMemberStat.showPreloader('#GuildMemberStat');
 
