@@ -1115,6 +1115,10 @@ const FoEproxy = (function () {
 			MainMenuLoaded = true;
 
 			MainParser.setLanguage();
+
+			if (Settings.GetSetting('Show2kQuestMark')) {
+				Quests.init();
+			}
 		}
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
 	});

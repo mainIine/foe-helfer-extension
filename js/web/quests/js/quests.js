@@ -71,9 +71,18 @@ let Quests = {
 
 		$('body').append(div).promise().done(function(){
 			$('#quests-counter-hud').append(
-				$('<div />').addClass('hud-btn-gold').append(
-					$('<span />').attr('id', 'quest-counter-value').text( Quests.Counter )
-				)
+				$('<div />')
+					.addClass('hud-btn-gold')
+					.attr('title', i18n('quests.CounterTooltip.Content'))
+					.tooltip({
+						extraClass: 'quest-tooltip',
+						placement: 'right'
+					})
+					.append(
+						$('<span />')
+							.attr('id', 'quest-counter-value')
+							.text( Quests.Counter )
+					)
 			);
 		});
 	},
@@ -105,11 +114,3 @@ let Quests = {
 		}));
 	}
 };
-
-
-window.addEventListener('foe-helper#loaded', () => {
-	if (Settings.GetSetting('Show2kQuestMark')) {
-		Quests.init();
-	}
-}, {capture: false, once: true, passive: true});
-
