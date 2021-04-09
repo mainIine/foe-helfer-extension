@@ -905,5 +905,6 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English"
+    "_Language": "English",
+    "quests.CounterTooltip.Content": "There is a limit of 2000 rejected quests per day"
 }

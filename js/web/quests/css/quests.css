@@ -16,7 +16,7 @@
     left: 0;
     z-index: 750;
     width: 43px;
-    top: 60px;
+    top: 65px;
 
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     font-size: 0.75rem;
@@ -43,4 +43,8 @@
     left: 0;
     top: 14px;
     text-align: center;
+}
+
+.quest-tooltip {
+    width: 200px !important;
 }
