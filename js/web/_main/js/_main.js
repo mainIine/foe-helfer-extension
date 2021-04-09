@@ -2348,3 +2348,6 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	MainParser.foeHelperBgApiHandler = window.foeHelperBgApiHandler;
 	delete window.foeHelperBgApiHandler;
 }
+
+console.log('FOE Helper version ' + extVersion + ' started. ID: ' + extID);
+console.log(navigator.userAgent);
