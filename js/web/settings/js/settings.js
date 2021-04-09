@@ -37,7 +37,7 @@ let Settings = {
 	 * @param start
 	 * @constructor
 	 */
-	Init: (start = true) => {
+	Init: () => {
 		Settings.LoadConfig((response) => {
 			Settings.Preferences = response;
 		});
@@ -231,12 +231,8 @@ let Settings = {
 		} else {
 
 			if (Settings.Preferences === null) {
-
-				Settings.LoadConfig((response) => {
-					Settings.Preferences = response;
-
-					return Settings.Preferences.find(itm => itm['name'] === name)['status'];
-				});
+				console.error('Error getting default value of setting "' + name + '". config.json not loaded');
+				return null;
 
 			} else {
 				return Settings.Preferences.find(itm => itm['name'] === name)['status'];
@@ -643,5 +639,7 @@ escape
 		});
 
 		return ip;
-	}
+	},
 };
+
+Settings.Init(); // Darf hier aufgerufen werden, da keine anderen Module benötigt werden. config.json soll bis zum StartUp geladen sein

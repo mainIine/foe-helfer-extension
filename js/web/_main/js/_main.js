@@ -1102,19 +1102,17 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
 		if (!StartUpDone) return;
 
-		// erste Runde
-		if (MainMenuLoaded === false) {
-			MainMenuLoaded = data.responseData.time;
-		}
-		// zweite Runde
-		else if (MainMenuLoaded !== false && MainMenuLoaded !== true) {
+		if (!MainMenuLoaded) {
+			MainMenuLoaded = true;
+			
 			let MenuSetting = localStorage.getItem('SelectedMenu');
 			MenuSetting = MenuSetting || 'BottomBar';
 			MainParser.SelectedMenu = MenuSetting;
 			_menu.CallSelectedMenu(MenuSetting);
-			MainMenuLoaded = true;
-
+			
 			MainParser.setLanguage();
+
+			Quests.init();
 		}
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
 	});

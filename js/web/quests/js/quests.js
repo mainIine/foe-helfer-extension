@@ -105,11 +105,3 @@ let Quests = {
 		}));
 	}
 };
-
-
-window.addEventListener('foe-helper#loaded', () => {
-	if (Settings.GetSetting('Show2kQuestMark')) {
-		Quests.init();
-	}
-}, {capture: false, once: true, passive: true});
-
