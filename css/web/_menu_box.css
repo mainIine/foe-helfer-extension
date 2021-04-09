@@ -18,14 +18,14 @@
     height: 60px;
     min-width: 95px !important;
 	min-height: 50px !important;    
-	border-image-source: url(../images/hud/window-menu.png);
+	border-image-source: url('../images/hud/window-menu.png');
 	border-radius: 15px;
 	border-width: 30px 7px 7px 7px;
 	border-image-outset: 0.3;
 }
 
 #menu_box.closed {
-	border-image-source: url(../images/hud/window-menu-closed.png);
+	border-image-source: url('../images/hud/window-menu-closed.png');
 	min-height: 0 !important;
 }
 
@@ -52,7 +52,6 @@
 
 #menu_box #menu_boxBody {
 	overflow: auto;
-	overflow-y: auto;
 }
 
 .hud-btn {
