@@ -49,7 +49,7 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
     }
 });
 
-FoEproxy.addWsHandler('FoeHelperService', 'QuestsUpdated', data => {
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
 	}
@@ -274,6 +274,8 @@ let BonusService = {
 					si.text(b['amount']);
 
 					si.addClass('bonus-blink');
+
+					if (bt[i] === 'donequests') Calculator.SoundFile.play();
 
 					setTimeout(()=>{
 						si.removeClass('bonus-blink');

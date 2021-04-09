@@ -303,6 +303,14 @@ const FoEproxy = (function () {
 			map[method] = list.filter(c => c !== callback);
 		},
 
+		addFoeHelperHandler: function (method, callback) {
+			this.addWsHandler('FoeHelperService', method, callback);
+		},
+
+		removeFoeHelperHandler: function (method, callback) {
+			this.removeWsHandler('FoeHelperService', method, callback);
+		},
+
 		// for raw requests access
 		addRawWsHandler: function (callback) {
 			if (wsRawHandler.indexOf(callback) !== -1) {
@@ -317,8 +325,9 @@ const FoEproxy = (function () {
 			wsRawHandler = wsRawHandler.filter(c => c !== callback);
 		},
 
-		pushWsMessage: function (service, method, data) {
-			proxyWsAction(service, method, data);
+		pushFoeHelperMessage: function (method, data = null) {
+			_proxyWsAction('FoeHelperService', method, data);
+			_proxyWsAction('FoeHelperService', method, data);
 		}
 	};
 
@@ -1140,16 +1149,7 @@ const FoEproxy = (function () {
 
 		MainParser.Quests = data.responseData;
 
-		if ($('#costCalculator').length > 0) {
-			Calculator.Show();
-		}
-		if ($('#OwnPartBox').length > 0) {
-			Parts.Show();
-		}
-		if ($('#bonus-hud').length > 0) {
-			BonusService.CalcBonusData();
-		}
-
+		FoEproxy.pushFoeHelperMessage('QuestsUpdated');
 	});
 
 

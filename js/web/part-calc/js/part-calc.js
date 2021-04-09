@@ -29,7 +29,7 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
     }
 });
 
-FoEproxy.addWsHandler('FoeHelperService', 'QuestsUpdated', data => {
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#OwnPartBox').length > 0) {
 		Parts.Show();
 	}
