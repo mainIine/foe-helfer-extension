@@ -315,7 +315,11 @@ const FoEproxy = (function () {
 
 		removeRawWsHandler: function (callback) {
 			wsRawHandler = wsRawHandler.filter(c => c !== callback);
-		}
+		},
+
+		pushWsMessage: function (service, method, data) {
+			proxyWsAction(service, method, data);
+        }
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
@@ -1147,6 +1151,7 @@ const FoEproxy = (function () {
 		if ($('#bonus-hud').length > 0) {
 			BonusService.CalcBonusData();
 		}
+
 	});
 
 

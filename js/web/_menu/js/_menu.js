@@ -55,6 +55,8 @@ let _menu = {
 		// 'guildmemberstats'
 	],
 
+	HiddenItems: [],
+
 
 	/**
 	 * Create the div holders and put them to the DOM
@@ -63,6 +65,7 @@ let _menu = {
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
+
 		if (selMenu === 'BottomBar') {
 			_menu.selectedMenu = 'BottomBar';
 			_menu_bottom.BuildOverlayMenu();
@@ -106,7 +109,7 @@ let _menu = {
 		}
 	},
 
-
+	
 	/**
 	 * Tooltip Box
 	 *
@@ -119,12 +122,23 @@ let _menu = {
 
 		$(btn).attr('title', desc);
 
+		let pos = (_menu.selectedMenu === 'RightBar' ? 'left' : 'top');
+
+		// fix the tooltip position when menu is box and at the top border
+		if(_menu.selectedMenu === 'Box'){
+			let top = $('#menu_box').offset().top;
+
+			if(top < 120){
+				pos = 'bottom';
+			}
+		}
+
 		return $(btn).tooltip({
 			useFoEHelperSkin: true,
 			headLine: title,
 			content: desc,
 			container: 'body',
-			placement: (_menu.selectedMenu === 'RightBar' ? 'left' : 'top')
+			placement: pos
 		});
 	},
 
@@ -134,6 +148,7 @@ let _menu = {
 	*/
 	ListLinks: (InsertMenuFunction) => {
 		let StorgedItems = localStorage.getItem('MenuSort');
+		let HiddenItems = localStorage.getItem('MenuHiddenItems');
 
 		// Beta-Funktionen
 		if (HelperBeta.active) {
@@ -159,27 +174,26 @@ let _menu = {
 
 			let items = missingMenu.concat(missingStored);
 
-			// es gibt tatsächlich was neues...
+			// there is indeed something new...
 			if (items.length > 0) {
 				for (let i in items) {
 					if (!items.hasOwnProperty(i)) {
 						break;
 					}
 
-					// ... neues kommt vorne dran ;-)
+					// ... new comes in front ;-)
 					_menu.Items.unshift(items[i]);
 				}
 			}
 		}
 
-		// Beta-Funktionen rausfiltern
+		// Filter out beta functions
 		_menu.Items = _menu.Items.filter(e => {
 			if (HelperBeta.active) return true;
-			if (HelperBeta.menu.includes(e)) return false;
-			return true;
+			return !HelperBeta.menu.includes(e);
 		});
 
-		// Dubletten rausfiltern
+		// Filter out duplicates
 		function unique(arr) {
 			return arr.filter(function (value, index, self) {
 				return self.indexOf(value) === index;
@@ -188,8 +202,17 @@ let _menu = {
 
 		_menu.Items = unique(_menu.Items);
 
+		// remove all hidden items
+		if(HiddenItems !== null)
+		{
+			let hiddenItems = JSON.parse(HiddenItems);
+			_menu.HiddenItems = hiddenItems;
+			_menu.Items = _menu.Items.filter(val => !hiddenItems.includes(val));
+		}
+
 		// Menüpunkte einbinden
-		for (let i in _menu.Items) {
+		for (let i in _menu.Items)
+		{
 			if (!_menu.Items.hasOwnProperty(i)) {
 				break;
 			}
@@ -198,12 +221,38 @@ let _menu = {
 
 			// gibt es eine Funktion?
 			if (_menu[name] !== undefined) {
-				let MenuItem = _menu[name]();
-				InsertMenuFunction(MenuItem);
+				InsertMenuFunction(_menu[name]());
 			}
 		}
 
 		_menu.Items = _menu.Items.filter(e => e);
+	},
+
+
+	/**
+	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
+	 * 
+	 * @param name 
+	 */
+	ToggleItemVisibility: (name) => {
+
+		if(_menu.HiddenItems.includes(name))
+		{
+			$('#' + name + '-Btn').removeClass('btn-hidden');
+			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
+
+			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
+				return e !== name;
+			});
+		}
+		else {
+			$('#' + name + '-Btn').addClass('btn-hidden');
+			$('#setting-' + name + '-Btn').addClass('hud-btn-red');
+
+			_menu.HiddenItems.push(name);
+		}
+		
+		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
 	},
 
 
@@ -222,6 +271,8 @@ let _menu = {
 		return true;
 	},
 
+
+	/*----------------------------------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
@@ -250,7 +301,7 @@ let _menu = {
 
 
 	/**
-	 * Eigenanteilsrechner Button
+	 * Own contribution calculator button
 	 *
 	 * @returns {*|jQuery}
 	 */
@@ -312,7 +363,7 @@ let _menu = {
 	},
 
 	/**
-	 * FP Gesamtanzahl Button
+	 * Product overview button
 	 *
 	 * @returns {*|jQuery}
 	 */

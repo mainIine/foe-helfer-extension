@@ -12,20 +12,20 @@
  */
 
 FoEproxy.addHandler('ClanBattleService', 'grantIndependence', (data, postData) => {
-    GvG.CountIndepences(data.responseData.__class__);
+    GvG.AddIndepences(data.responseData.__class__);
 });
 
 FoEproxy.addHandler('ClanBattleService', 'deploySiegeArmy', (data, postData) => {
-    GvG.CountSieges(data.responseData.__class__);
+    GvG.AddSieges(data.responseData.__class__);
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
     GvG.Recalc(data.responseData.continent.calculation_time.start_time);
-	GvG.ShowGvgHud();
+	//GvG.ShowGvgHud();
 });
 
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-	GvG.HideGvgHud();
+	//GvG.HideGvgHud();
 });
 
 let GvG = {
@@ -80,44 +80,40 @@ let GvG = {
 	 * Count Indepences on GvGMap
 	 * @param data
 	 */
-	 CountIndepences: (data)=> {
+	 AddIndepences: (data)=> {
 		let time = MainParser.getCurrentDateTime(); 
-		let storedRecalc = localStorage.getItem('GvGRecalcTime')*1000;
 		let count = localStorage.getItem('GvGIndependencesCount') || 0;
+		let resetHappened = localStorage.getItem('GvGReset') || false;
 
 		if (data === "Success") {
-			if (time > storedRecalc)
-				count = 0;
-			else
-				count++;
+			if (time > NextCalc && !resetHappened)
+				GvG.ResetData();
+			count++;
 		}
 
 		GvG.Independences = count;
 		localStorage.setItem('GvGIndependencesCount', count);
-		GvG.ShowGvgHud();
+		//GvG.ShowGvgHud();
 	},
 
     /**
 	 * Count Indepences on GvGMap
 	 * @param data
 	 */
-	 CountSieges: (data)=> {
+	 AddSieges: (data)=> {
 		let time = MainParser.getCurrentDateTime(); 
-		let storedRecalc = localStorage.getItem('GvGRecalcTime')*1000;
 		let count = localStorage.getItem('GvGSiegesCount') || 0;
+		let resetHappened = localStorage.getItem('GvGReset') || false;
 
 		if (data === "Success") {
-			if (time > storedRecalc) {
-				count = 0;
-				localStorage.setItem('GvGRecalcTime', time);
-			}
-			else
-				count++;
+			if (time > NextCalc && !resetHappened)
+				GvG.ResetData();
+			count++;
 		}
 
 		GvG.Sieges = count;
 		localStorage.setItem('GvGSiegesCount', count);
-		GvG.ShowGvgHud();
+		//GvG.ShowGvgHud();
 	},
 
     /**
@@ -126,16 +122,24 @@ let GvG = {
 	 */
 	 Recalc: (calcTime)=> {
 		let storedRecalc = localStorage.getItem('GvGRecalcTime') || 0;
+		let resetHappened = localStorage.getItem('GvGReset') || false;
 
-		if (storedRecalc != null && storedRecalc < calcTime) {
-			GvG.Independences = 0;
-			GvG.Sieges = 0;
-			localStorage.setItem('GvGIndependencesCount', GvG.Independences);
-			localStorage.setItem('GvGSiegesCount', GvG.Sieges);
+		if (storedRecalc != null) {
 			localStorage.setItem('GvGRecalcTime', calcTime);
-			GvG.ShowGvgHud();
+			//GvG.ShowGvgHud();
+		}
+		if (resetHappened) {
+			localStorage.setItem('GvGReset', false);
 		}
 
 		GvG.NextCalc = calcTime;
 	},
+
+	ResetData() {
+		GvG.Independences = 0;
+		GvG.Sieges = 0;
+		localStorage.setItem('GvGIndependencesCount', GvG.Independences);
+		localStorage.setItem('GvGSiegesCount', GvG.Sieges);
+		localStorage.setItem('GvGReset', true);
+	}
 }
