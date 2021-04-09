@@ -29,6 +29,12 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
     }
 });
 
+FoEproxy.addWsHandler('FoeHelperService', 'QuestsUpdated', data => {
+	if ($('#OwnPartBox').length > 0) {
+		Parts.Show();
+	}
+});
+
 let Parts = {
 	CityMapEntity: undefined,
 	Rankings: undefined,

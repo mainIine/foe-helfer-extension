@@ -211,3 +211,9 @@
 #SettingsBoxBody hr {
 	border: 1px solid var(--text-dark);
 }
+
+/* Menu Inhalt */
+.setting .hud-btn {
+	margin-right: 6px;
+	margin-bottom: 6px;
+}
