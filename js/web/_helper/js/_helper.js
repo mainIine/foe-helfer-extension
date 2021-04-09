@@ -696,6 +696,16 @@ let HTML = {
 	},
 
 
+	escapeHtml: (text)=> {
+		return text
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
+	},
+
+
 	ShowToastMsg: (d) => {
 
 		if (!Settings.GetSetting('ShowNotifications') && !d['show']) return;
@@ -740,6 +750,7 @@ let HTML = {
 		return winObject;
 	},
 
+
 	ExportTable: (Table, Format, FileName) => {
 		if (!Table || Table.length === 0) return;
 
@@ -765,7 +776,7 @@ let HTML = {
                 }
 			});
 
-			DataRows = [];
+			let DataRows = [];
 			$(Table).find('tr').each(function () {
 				let CurrentRow = {};
 				let ColumnID = 0;
@@ -845,6 +856,7 @@ let HTML = {
 		});
 	},
 
+
 	ParseFloatLocalIfPossible: (NumberString) => {
 		if (HTML.IsReversedFloatFormat === undefined) { //FloatFormat bestimmen, wenn noch unbekannt
 			let ExampleNumberString = Number(1.2).toLocaleString(i18n('Local'))
@@ -873,6 +885,7 @@ let HTML = {
 			return RetNumber;
 		}
 	},
+
 
 	ParseFloatNonLocalIfPossible: (NumberString) => {
 		let Ret = Number(NumberString);

@@ -1,0 +1,46 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#quests-counter-hud {
+    position: absolute;
+    left: 0;
+    z-index: 750;
+    width: 43px;
+    top: 60px;
+
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+#quests-counter-hud .hud-btn-gold {
+    left: 5px;
+    width: 37px;
+    height: 37px;
+    background-image: none;
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 no-repeat;
+    border-radius: 0 50% 50% 0;
+    border: 2px solid var(--text-bright);
+    border-left: none;
+    margin: 2px 0;
+    box-shadow: 1px -1px 1px var(--black-50);
+}
+
+#quests-counter-hud .hud-btn-gold #quest-counter-value {
+    width: 32px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 14px;
+    text-align: center;
+}

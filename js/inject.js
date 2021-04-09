@@ -227,7 +227,8 @@
 				'fp-collector',
 				'unit-gex',
 				'maptradewarning',
-				'guildmemberstat'
+				'guildmemberstat',
+				'quests'
 			];
 
 			// load scripts (one after the other)
