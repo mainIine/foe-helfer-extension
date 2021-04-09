@@ -500,8 +500,7 @@ let Settings = {
 			menuItems.push(...hiddenArray);
 		}
 
-		console.log(hiddenArray);
-
+escape
 		for (let i in menuItems)
 		{
 			if (!menuItems.hasOwnProperty(i)) {
