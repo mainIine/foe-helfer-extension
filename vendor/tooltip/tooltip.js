@@ -122,6 +122,11 @@
 					$tip.addClass('foe-skin');
 				}
 
+				if(this.options.extraClass !== '') {
+					console.log('this.options.extraClass: ', this.options.extraClass);
+					$tip.addClass(this.options.extraClass);
+				}
+
 				if (this.options.animation) {
 					$tip.addClass('fade')
 				}
@@ -341,6 +346,7 @@
 		animation: true
 		, placement: 'top'
 		, selector: false
+		, extraClass: ''
 		, template: '<div class="tooltip"><div class="tooltip-arrow"></div><h3></h3><div class="tooltip-inner"></div></div>'
 		, trigger: 'hover focus'
 		, title: ''
