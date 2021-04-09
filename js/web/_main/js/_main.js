@@ -308,7 +308,7 @@ const FoEproxy = (function () {
 
 		pushWsMessage: function (service, method, data) {
 			proxyWsAction(service, method, data);
-        }
+		}
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
