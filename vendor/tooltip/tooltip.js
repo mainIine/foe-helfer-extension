@@ -123,7 +123,6 @@
 				}
 
 				if(this.options.extraClass !== '') {
-					console.log('this.options.extraClass: ', this.options.extraClass);
 					$tip.addClass(this.options.extraClass);
 				}
 
