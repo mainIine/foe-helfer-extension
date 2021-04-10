@@ -807,6 +807,7 @@
     "Settings.Entry.SelectedMenu": "Position du menu",
     "Settings.Entry.SendGEXInfo": "Envoi des infos de l'EG",
     "Settings.Entry.SendGildMemberLGInfo": "Envoi des infos des GM de la guilde",
+    "Settings.Entry.Show2kQuestMark": "Badge pour 2000 quêtes",
     "Settings.Entry.ShowBlueGalaxyHelper": "Galaxie Bleue",
     "Settings.Entry.ShowEventChest": "Coffre d’événement",
     "Settings.Entry.ShowGuildTreasuryLogExport": "Export tréso. guilde",
@@ -855,6 +856,8 @@
     "Settings.SendGEXInfo.Title": "Evaluations des expéditions de guildes",
     "Settings.SendGildMemberLGInfo.Desc": "En visitant les autres membres de la guilde, les données des GM seront envoyées à foe-rechner.de quand l'option d'envoi est activé.",
     "Settings.SendGildMemberLGInfo.Title": "Chargement des données des GM des membres de la guilde",
+    "Settings.Show2kQuestMark.Desc": "Affiche un petit badge avec un compteur pour indiquer combien de quêtes vous pouvez encore refuser.",
+    "Settings.Show2kQuestMark.Title": "Badge pour 2000 quêtes",
     "Settings.ShowBlueGalaxyHelper.Desc": "Affiche un outil suggérant des bâtiments à récolter avec le bonus de la galaxie bleue",
     "Settings.ShowBlueGalaxyHelper.Title": "Afficher l'assistant Galaxie Bleue",
     "Settings.ShowEventChest.Desc": "Affiche la fenêtre des meilleurs prix pour un événement",
@@ -902,5 +905,6 @@
     "WsChat.UserLeave": " est parti.",
     "WsChat.UserReEnter": " est revenu dans la pièce.",
     "WsChat.World": "Monde - ",
-    "_Language": "Anglais"
+    "_Language": "Anglais",
+    "quests.CounterTooltip.Content": "Il y a une limite de 2000 quêtes rejetées par jour"
 }
