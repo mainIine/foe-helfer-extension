@@ -313,6 +313,7 @@
     "Boxes.Investment.Overview.Progress": "Előrehaladás",
     "Boxes.Investment.Overview.RemainingFP": "Fennmaradó FP",
     "Boxes.Investment.Overview.RestFP": "Hiányzó FP",
+    "Boxes.Investment.Overview.RestFPDesc": "Hány FP kell még a szintlépéshez",
     "Boxes.Investment.Overview.SettingsEntryTime": "befektetés idejének megjelenítése",
     "Boxes.Investment.Overview.SettingsHiddenGB": "mutasd a rejtett N.É.-t",
     "Boxes.Investment.Overview.SettingsRestFP": "mutasd a hiányzó FP-t",
