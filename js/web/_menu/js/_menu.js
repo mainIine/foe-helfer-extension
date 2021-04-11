@@ -876,7 +876,7 @@ let _menu = {
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTipp(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
 
 		let btn_sp = $('<span />').on('click', function () {
 			Investment.BuildBox(false);
