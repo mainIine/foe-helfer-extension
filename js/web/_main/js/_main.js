@@ -303,6 +303,14 @@ const FoEproxy = (function () {
 			map[method] = list.filter(c => c !== callback);
 		},
 
+		addFoeHelperHandler: function (method, callback) {
+			this.addWsHandler('FoeHelperService', method, callback);
+		},
+
+		removeFoeHelperHandler: function (method, callback) {
+			this.removeWsHandler('FoeHelperService', method, callback);
+		},
+
 		// for raw requests access
 		addRawWsHandler: function (callback) {
 			if (wsRawHandler.indexOf(callback) !== -1) {
@@ -317,9 +325,10 @@ const FoEproxy = (function () {
 			wsRawHandler = wsRawHandler.filter(c => c !== callback);
 		},
 
-		pushWsMessage: function (service, method, data) {
-			proxyWsAction(service, method, data);
-        }
+		pushFoeHelperMessage: function (method, data = null) {
+			_proxyWsAction('FoeHelperService', method, data);
+			_proxyWsAction('FoeHelperService', method, data);
+		}
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
@@ -1102,19 +1111,17 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
 		if (!StartUpDone) return;
 
-		// erste Runde
-		if (MainMenuLoaded === false) {
-			MainMenuLoaded = data.responseData.time;
-		}
-		// zweite Runde
-		else if (MainMenuLoaded !== false && MainMenuLoaded !== true) {
+		if (!MainMenuLoaded) {
+			MainMenuLoaded = true;
+			
 			let MenuSetting = localStorage.getItem('SelectedMenu');
 			MenuSetting = MenuSetting || 'BottomBar';
 			MainParser.SelectedMenu = MenuSetting;
 			_menu.CallSelectedMenu(MenuSetting);
-			MainMenuLoaded = true;
-
+			
 			MainParser.setLanguage();
+
+			Quests.init();
 		}
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
 	});
@@ -1142,16 +1149,7 @@ const FoEproxy = (function () {
 
 		MainParser.Quests = data.responseData;
 
-		if ($('#costCalculator').length > 0) {
-			Calculator.Show();
-		}
-		if ($('#OwnPartBox').length > 0) {
-			Parts.Show();
-		}
-		if ($('#bonus-hud').length > 0) {
-			BonusService.CalcBonusData();
-		}
-
+		FoEproxy.pushFoeHelperMessage('QuestsUpdated');
 	});
 
 
@@ -2350,3 +2348,6 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	MainParser.foeHelperBgApiHandler = window.foeHelperBgApiHandler;
 	delete window.foeHelperBgApiHandler;
 }
+
+console.log('FOE Helper version ' + extVersion + ' started. ID: ' + extID);
+console.log(navigator.userAgent);

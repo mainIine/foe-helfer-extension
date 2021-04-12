@@ -90,6 +90,12 @@
 		"sort": 12
 	},
 	{
+		"name": "Show2kQuestMark",
+		"status": false,
+		"group": "Boxes",
+		"sort": 13
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
