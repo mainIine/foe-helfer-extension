@@ -812,6 +812,7 @@
     "Settings.Entry.ShowGuildTreasuryLogExport": "Guild Treasury Export Log",
     "Settings.Entry.ShowInvestments": "Display FP Investment Sum",
     "Settings.Entry.ShowMapTradeWarning": "Negotiate Blocker",
+    "Settings.Entry.Show2kQuestMark": "2k quest mark",
     "Settings.Entry.ShowMarketFilter": "Market Filter",
     "Settings.Entry.ShowNotifications": "Notifications",
     "Settings.Entry.ShowOwnPartOnAllGBs": "GB Calculator",
@@ -865,6 +866,8 @@
     "Settings.ShowInvestments.Title": "Display FP Investment sums",
     "Settings.ShowMapTradeWarning.Desc": "Display a window that covers the 'Negotiate' Button in Provinces preventing accidental clicking ",
     "Settings.ShowMapTradeWarning.Title": "Negotiate Blocker",
+    "Settings.Show2kQuestMark.Desc": "Shows a small bagde with a counter of how many quests you can still refuse.",
+    "Settings.Show2kQuestMark.Title": "2000 quest mark",
     "Settings.ShowMarketFilter.Desc": "Displays a Trade filtering tool when the Market console is opened.",
     "Settings.ShowMarketFilter.Title": "Display market filter tool",
     "Settings.ShowNotifications.Desc": "The assistant uses notifications in various places. You can switch this on or off here.",
@@ -902,5 +905,6 @@
     "WsChat.UserLeave": " has gone.",
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
-    "_Language": "English"
+    "_Language": "English",
+    "quests.CounterTooltip.Content": "There is a limit of 2000 rejected quests per day"
 }

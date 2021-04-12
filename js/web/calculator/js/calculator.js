@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
-FoEproxy.addWsHandler('FoeHelperService', 'QuestsUpdated', data => {
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#costCalculator').length > 0) {
 		Calculator.Show();
 	}
