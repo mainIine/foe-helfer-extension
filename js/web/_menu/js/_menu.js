@@ -50,9 +50,9 @@ let _menu = {
 		'fpCollector',
 		'gildfight',
 		'investment',
-		'alerts'
+		'alerts',
+		'guildmemberstat'
 		// 'unitsGex',
-		// 'guildmemberstats'
 	],
 
 	HiddenItems: [],
