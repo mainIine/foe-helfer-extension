@@ -234,7 +234,7 @@
     "Boxes.GuildMemberStat.ConfirmYes": "Igen",
     "Boxes.GuildMemberStat.Date": "Dátum",
     "Boxes.GuildMemberStat.Days": "napok",
-    "Boxes.GuildMemberStat.DeleteDataWarning": "Ha törli a korábban rögzített adatokat, akkor azok végérvényesen elvesznek.",
+    "Boxes.GuildMemberStat.DeleteDataWarning": "Ha törlöd a korábban rögzített adatokat, akkor azok végérvényesen elvesznek.",
     "Boxes.GuildMemberStat.DeleteExMembersAfter": "volt tag törlése ennyi idő után",
     "Boxes.GuildMemberStat.DeleteGBGRound": "Céh-csatatér Kör törlése",
     "Boxes.GuildMemberStat.DeleteInactivityWarning": "inaktivitási figyelmeztetés törlése",
