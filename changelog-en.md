@@ -3,6 +3,17 @@
 
 ##### 2.5.6.4
 
+**New**
+- Guild members statistic:
+	- Display detailed information of the guild members:
+		- Eras
+		- GEX/GBG Participations
+		- Number of messages in the guild message center
+		- Guild goods producing buildings
+		- Inactivity history (only with guild founder/leader rights)
+	- Overview of all guild goods producing buildings of the guild members
+	- Overview of available guild treasury goods  
+
 **Bugfix**
 
 - Building kits:

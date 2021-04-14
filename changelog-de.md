@@ -2,6 +2,17 @@
 
 ##### 2.5.6.4
 
+**Neu**
+- Gildenmitglieder Statistik:
+	- Anzeige detailierter Informationen der Gildenmitglieder:
+		- Zeitalter
+		- GEX/GG Teilnahmen
+		- Anzahl der Nachrichten im Gildenforum
+		- Gildengüter produzierende Gebäude
+		- Inaktivitätsverlauf (nur mit Gildengründer/-führer Rechten)
+	- Übersicht aller Gildengüter produzierender Gebäude der Gildenmitglieder
+	- Übersicht der vorhandenen Gildenkassen Güter 
+
 **Bugfix**
 
 - Gebäude-Kits:
