@@ -49,6 +49,12 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
     }
 });
 
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#bonus-hud').length > 0) {
+		BonusService.CalcBonusData();
+	}
+});
+
 // Guildfights enter
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 	BonusService.InitBonus();
@@ -268,6 +274,8 @@ let BonusService = {
 					si.text(b['amount']);
 
 					si.addClass('bonus-blink');
+
+					if (bt[i] === 'donequests') Calculator.SoundFile.play();
 
 					setTimeout(()=>{
 						si.removeClass('bonus-blink');
