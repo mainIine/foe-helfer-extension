@@ -257,6 +257,33 @@ let _menu = {
 
 
 	/**
+	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
+	 * 
+	 * @param name 
+	 */
+	ToggleItemVisibility: (name) => {
+
+		if(_menu.HiddenItems.includes(name))
+		{
+			$('#' + name + '-Btn').removeClass('btn-hidden');
+			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
+
+			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
+				return e !== name;
+			});
+		}
+		else {
+			$('#' + name + '-Btn').addClass('btn-hidden');
+			$('#setting-' + name + '-Btn').addClass('hud-btn-red');
+
+			_menu.HiddenItems.push(name);
+		}
+		
+		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+	},
+
+
+	/**
 	 * Checks whether anything has changed in the sorting of the items.
 	 *
 	 * @param storedItems
