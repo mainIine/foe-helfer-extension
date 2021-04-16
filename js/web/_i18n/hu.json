@@ -518,6 +518,8 @@
     "Boxes.Productions.ModeDaily": "Napi term.",
     "Boxes.Productions.ModeGroups": "Csoport",
     "Boxes.Productions.ModeSingle": "Egyedülálló",
+    "Boxes.Productions.NoAsteroidDataWarning": "Az aszteroidaövből származó árukat nem tartalmazza. Kérlek, látogasd meg aszteroidaöv előőrsét, majd nyisd meg újra ezt az ablakot",
+    "Boxes.Productions.NoMarsDataWarning": "A Marsról származó árukat nem tartalmazza. Kérlek, látogasd meg a Mars előőrsét, majd nyisd meg újra ezt az ablakot",
     "Boxes.Productions.SearchInput": "Épület keresés... ",
     "Boxes.Productions.TTGoodsEra": "Ez az oszlop az épület korát mutatja, nem a termékekét.",
     "Boxes.Productions.Title": "Termelés áttekintése",
