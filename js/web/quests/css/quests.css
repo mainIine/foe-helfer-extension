@@ -25,24 +25,26 @@
 
 #quests-counter-hud .hud-btn-gold {
     left: 5px;
-    width: 37px;
-    height: 37px;
-    background-image: none;
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 no-repeat;
-    border-radius: 0 50% 50% 0;
-    border: 2px solid var(--text-bright);
+    width: 57px;
+    height: 30px;
+    background: #c9af7f url('../../x_img/quest.png') no-repeat 1px center;
+    background-size: 39%;
+    border-radius: 0 25px 25px 0;
+    border: 2px solid var(--text-darker);
     border-left: none;
     margin: 2px 0;
-    box-shadow: 1px -1px 1px var(--black-50);
+    box-shadow: none;
 }
 
 #quests-counter-hud .hud-btn-gold #quest-counter-value {
     width: 32px;
     display: inline-block;
     position: absolute;
-    left: 0;
-    top: 14px;
+    left: 22px;
+    top: 10px;
     text-align: center;
+    font-weight: bold;
+    color: var(--text-darker);
 }
 
 .quest-tooltip {
