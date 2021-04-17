@@ -847,7 +847,7 @@ let GuildMemberStat = {
 		GuildMemberStat.InitSettings();
 		GuildMemberStat.hasUpdateProgress = false;
 
-		h.push('<div class="tabs"><ul id="gmsTabs" class="horizontal">');
+		h.push('<div class="tabs dark-bg"><ul id="gmsTabs" class="horizontal">');
 		h.push(`<li${GuildMemberStat.CurrentStatGroup === 'Member' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Member"><span>${i18n('Boxes.GuildMemberStat.GuildMembers')}</span></a></li>`);
 		h.push(`<li${GuildMemberStat.CurrentStatGroup === 'Eras' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Eras"><span>${i18n('Boxes.GuildMemberStat.Eras')}</span></a></li>`);
 		h.push(`<li${GuildMemberStat.CurrentStatGroup === 'GuildBuildings' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="GuildBuildings"><span>${i18n('Boxes.GuildMemberStat.GuildBuildings')}</span></a></li>`);
@@ -855,7 +855,7 @@ let GuildMemberStat = {
 
 		if (GuildMemberStat.Settings.showSearchbar)
 		{
-			h.push(`<input type="text" name="filter" id="gms-filter-input" placeholder="${i18n('Boxes.GuildMemberStat.Search')}" onkeyup="GuildMemberStat.filterTable('gms-filter-input','GuildMemberTable')" />`);
+			h.push(`<li style="float:right"><input type="text" name="filter" id="gms-filter-input" placeholder="${i18n('Boxes.GuildMemberStat.Search')}" onkeyup="GuildMemberStat.filterTable('gms-filter-input','GuildMemberTable')" /></li>`);
 		}
 
 		h.push(`</ul></div>`);
