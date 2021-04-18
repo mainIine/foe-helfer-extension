@@ -1,23 +1,54 @@
 ## Changelog - Extension
 
-
 ##### 2.5.6.4
 
 **New**
-- Guild members statistic:
-	- Display detailed information of the guild members:
-		- Eras
-		- GEX/GBG Participations
-		- Number of messages in the guild message center
+- Guild members statistics:
+	- Display detailed information of guild members:
+		- Ages
+		- GEX/GG Participations
+		- Number of messages in the guild forum
 		- Guild goods producing buildings
 		- Inactivity history (only with guild founder/leader rights)
 	- Overview of all guild goods producing buildings of the guild members
-	- Overview of available guild treasury goods  
+	- Overview of available guild goods
+
+- GVG releases:
+	- [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Shows how many releases you yourself have already made in the GvG since settlement (8pm).
+
+- Quest Completion Info:
+	- [#1915](https://github.com/mainIine/foe-helfer-extension/issues/1915) Quest completion notification in guild battles.
+		- makes a sound when a quest is completed
+
+- Quest Boundary:
+	- [#1960](https://github.com/mainIine/foe-helfer-extension/issues/1960) Shows a small counter how many quests can still be skipped for this day.
+		- Is disabled by default (Settings > Boxes > 2k quest limit)
+
+- Export function for tables:
+	- [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) The tables in the modules "Marketfilter", "Technologies" and "Moppelassistent" can now be exported as .csv or .json file using the cogwheel icon
+
+**Update**
+- Proportionate share calculator:
+	- [#1923](https://github.com/mainIine/foe-helfer-extension/issues/1923) Automatic update when leveling foreign LGs.
+		- If a foreign LG is currently open in the EA calculator and this is leveled, the display is now automatically updated.
+
+- Menu:
+	- It is now possible to define which icons should be displayed in the menu via the settings; "Settings > Extensions > Menu Content".
 
 **Bugfix**
 
-- Building kits:
-    - Can be called up again as usual
+- Building Kits:
+	- Can be called up again as usual
+
+- EA/Cost Calculator:
+	- [#1921](https://github.com/mainIine/foe-helfer-extension/issues/1921) [#1958](https://github.com/mainIine/foe-helfer-extension/issues/1958) "Flying Island" added
+
+- Guild member statistics:
+	- [#1938](https://github.com/mainIine/foe-helfer-extension/issues/1938) Updated now the members who left the guild
+
+- Infobox:
+	- [#1941](https://github.com/mainIine/foe-helfer-extension/issues/1941) if there was a "<" or ">" in the title of a thread, there was an incorrect display
+	  
 
 ---
 
