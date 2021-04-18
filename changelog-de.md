@@ -13,10 +13,38 @@
 	- Übersicht aller Gildengüter produzierender Gebäude der Gildenmitglieder
 	- Übersicht der vorhandenen Gildenkassen Güter 
 
+- GVG Freigaben:
+	- [#1781](https://github.com/dsiekiera/foe-helfer-extension/issues/1781) Zeigt ab, wie viele Freigaben man selbst bereits seit der Abrechnung (20 Uhr) im GvG getätigt hat
+
+- Questabschluss Info:
+	- [#1915](https://github.com/dsiekiera/foe-helfer-extension/issues/1915) Questabschluss - Benachrichtigung in Gildengefechten
+		- lässt einen Sound erklingen wenn ein Quest abgeschlossen wurde
+
+- Quest Grenze:
+	- [#1960](https://github.com/dsiekiera/foe-helfer-extension/issues/1960) Zeigt einen kleinen Counter wie viele Quest für diesen Tag noch übersprungen werden können
+		- Ist per default deaktiviert (Einstellungen > Boxen > 2k Quest Grenze)
+
+**Update**
+- Eigenanteilsrechner:
+	- [#1923](https://github.com/dsiekiera/foe-helfer-extension/issues/1923) Automatische Aktualisierung beim Leveln fremder LGs
+		- Ist im EA Rechner gerade ein fremdes LG geöffnet und dieses wird gelevelt, so wird die Anzeige nun automatisch aktualisiert.
+
+- Menü:
+	- es lässt sich ab sofort über die Einstellungen festlegen welche Icons überhaupt im Menü dargestellt werden sollen; "Einstellungen > Erweiterungen > Menü Inhalt"
+
 **Bugfix**
 
 - Gebäude-Kits:
     - Kann wieder wie gewohnt aufgerufen werden
+
+- EA-/Kostenrechner:
+	- [#1921](https://github.com/dsiekiera/foe-helfer-extension/issues/1921) [#1958](https://github.com/dsiekiera/foe-helfer-extension/issues/1958) "Fliegende Insel" hinzugefügt
+	
+- Gildenmitglieder Statistik:
+	- [#1938](https://github.com/dsiekiera/foe-helfer-extension/issues/1938) Updated nun die Mitglieder die aus der Gilde ausgetreten sind
+
+- Infobox:
+	- [#1941](https://github.com/dsiekiera/foe-helfer-extension/issues/1941) wenn ein "<" oder ">" im Titel eins Threads war, gab es eine falsche Darstellung
 
 ---
 
