@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _menu.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:49 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to 
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md 
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -16,6 +14,7 @@
 let _menu = {
 
 	isBottom: false,
+	selectedMenu: 'BottomBar',
 	MenuScrollTop: 0,
 	MenuScrollLeft: 0,
 	SlideParts: 0,
@@ -25,12 +24,8 @@ let _menu = {
 	HudHeight: 0,
 	HudWidth: 0,
 
-	MenuOptions:[
-		{'BottomBar':"_menu_bottom.BuildOverlayMenu()"},
-		{'RightBar':"_menu_right.BuildOverlayMenu()"},
-		{'Box':"_menu_box.BuildBoxMenu()"}
-	],
-
+	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
+	
 	Items: [
 		'calculator',
 		'partCalc',
@@ -55,10 +50,12 @@ let _menu = {
 		'fpCollector',
 		'gildfight',
 		'investment',
-		'alerts'
+		'alerts',
+		'guildmemberstat'
 		// 'unitsGex',
-		// 'guildmemberstats'
 	],
+
+	HiddenItems: [],
 
 
 	/**
@@ -69,13 +66,18 @@ let _menu = {
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
 
-		for (let index = 0; index < _menu.MenuOptions.length; index++)
-		{
-			const element = _menu.MenuOptions[index];
-			if(element[selMenu]){
-				eval(element[selMenu]);
-			}
+		if (selMenu === 'BottomBar') {
+			_menu.selectedMenu = 'BottomBar';
+			_menu_bottom.BuildOverlayMenu();
 		}
+		else if (selMenu === 'RightBar') {
+			_menu.selectedMenu = 'RightBar';
+			_menu_right.BuildOverlayMenu();
+		}
+		else if (selMenu === 'Box') {
+			_menu.selectedMenu = 'Box';
+			_menu_box.BuildBoxMenu();
+        }
 
 		if(Settings.GetSetting('AutoOpenInfoBox')){
 			Infoboard.Show();
@@ -107,21 +109,37 @@ let _menu = {
 		}
 	},
 
-
+	
 	/**
 	 * Tooltip Box
 	 *
+	 * @param {object} btn
 	 * @param {string} title
 	 * @param {string} desc
 	 * @param {string} id
 	 */
-	toolTippBox: (title, desc, id) => {
+	toolTipp: (btn, title, desc, id = '') => {
 
-		let ToolTipp = $('<div />').addClass('toolTipWrapper').html(desc).attr('data-btn', id);
+		$(btn).attr('title', desc);
 
-		ToolTipp.prepend($('<div />').addClass('toolTipHeader').text(title));
+		let pos = (_menu.selectedMenu === 'RightBar' ? 'left' : 'top');
 
-		$('body').append(ToolTipp);
+		// fix the tooltip position when menu is box and at the top border
+		if(_menu.selectedMenu === 'Box'){
+			let top = $('#menu_box').offset().top;
+
+			if(top < 120){
+				pos = 'bottom';
+			}
+		}
+
+		return $(btn).tooltip({
+			useFoEHelperSkin: true,
+			headLine: title,
+			content: desc,
+			container: 'body',
+			placement: pos
+		});
 	},
 
 
@@ -130,6 +148,7 @@ let _menu = {
 	*/
 	ListLinks: (InsertMenuFunction) => {
 		let StorgedItems = localStorage.getItem('MenuSort');
+		let HiddenItems = localStorage.getItem('MenuHiddenItems');
 
 		// Beta-Funktionen
 		if (HelperBeta.active) {
@@ -155,27 +174,26 @@ let _menu = {
 
 			let items = missingMenu.concat(missingStored);
 
-			// es gibt tatsächlich was neues...
+			// there is indeed something new...
 			if (items.length > 0) {
 				for (let i in items) {
 					if (!items.hasOwnProperty(i)) {
 						break;
 					}
 
-					// ... neues kommt vorne dran ;-)
+					// ... new comes in front ;-)
 					_menu.Items.unshift(items[i]);
 				}
 			}
 		}
 
-		// Beta-Funktionen rausfiltern
+		// Filter out beta functions
 		_menu.Items = _menu.Items.filter(e => {
 			if (HelperBeta.active) return true;
-			if (HelperBeta.menu.includes(e)) return false;
-			return true;
+			return !HelperBeta.menu.includes(e);
 		});
 
-		// Dubletten rausfiltern
+		// Filter out duplicates
 		function unique(arr) {
 			return arr.filter(function (value, index, self) {
 				return self.indexOf(value) === index;
@@ -184,8 +202,17 @@ let _menu = {
 
 		_menu.Items = unique(_menu.Items);
 
+		// remove all hidden items
+		if(HiddenItems !== null)
+		{
+			let hiddenItems = JSON.parse(HiddenItems);
+			_menu.HiddenItems = hiddenItems;
+			_menu.Items = _menu.Items.filter(val => !hiddenItems.includes(val));
+		}
+
 		// Menüpunkte einbinden
-		for (let i in _menu.Items) {
+		for (let i in _menu.Items)
+		{
 			if (!_menu.Items.hasOwnProperty(i)) {
 				break;
 			}
@@ -194,12 +221,38 @@ let _menu = {
 
 			// gibt es eine Funktion?
 			if (_menu[name] !== undefined) {
-				let MenuItem = _menu[name]();
-				InsertMenuFunction(MenuItem);
+				InsertMenuFunction(_menu[name]());
 			}
 		}
 
 		_menu.Items = _menu.Items.filter(e => e);
+	},
+
+
+	/**
+	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
+	 * 
+	 * @param name 
+	 */
+	ToggleItemVisibility: (name) => {
+
+		if(_menu.HiddenItems.includes(name))
+		{
+			$('#' + name + '-Btn').removeClass('btn-hidden');
+			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
+
+			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
+				return e !== name;
+			});
+		}
+		else {
+			$('#' + name + '-Btn').addClass('btn-hidden');
+			$('#setting-' + name + '-Btn').addClass('hud-btn-red');
+
+			_menu.HiddenItems.push(name);
+		}
+		
+		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
 	},
 
 
@@ -218,10 +271,12 @@ let _menu = {
 		return true;
 	},
 
+
+	/*----------------------------------------------------------------------------------------------------------------*/
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
-	 * Kostenrechner Button
+	 * Cost calculator button
 	 *
 	 * @returns {*|jQuery}
 	 */
@@ -229,7 +284,7 @@ let _menu = {
 		let btn_CalcBG = $('<div />').attr({ 'id': 'calculator-Btn', 'data-slug': 'calculator' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Calculator.Title'), '<em id="calculator-Btn-closed" class="tooltip-error">' + i18n('Menu.Calculator.Warning') + '<br></em>' + i18n('Menu.Calculator.Desc'), 'calculator-Btn');
+		btn_CalcBG = _menu.toolTipp(btn_CalcBG, i18n('Menu.Calculator.Title'), '<em id="calculator-Btn-closed" class="tooltip-error">' + i18n('Menu.Calculator.Warning') + '<br></em>' + i18n('Menu.Calculator.Desc'), 'calculator-Btn');
 
 		let btn_Calc = $('<span />');
 
@@ -244,9 +299,8 @@ let _menu = {
 		return btn_CalcBG;
 	},
 
-
 	/**
-	 * Eigenanteilsrechner Button
+	 * Own contribution calculator button
 	 *
 	 * @returns {*|jQuery}
 	 */
@@ -254,7 +308,7 @@ let _menu = {
 		let btn_OwnBG = $('<div />').attr({ 'id': 'partCalc-Btn', 'data-slug': 'partCalc' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.OwnpartCalculator.Title'), '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>' + i18n('Menu.OwnpartCalculator.Desc'), 'partCalc-Btn');
+		btn_OwnBG = _menu.toolTipp(btn_OwnBG, i18n('Menu.OwnpartCalculator.Title'), '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>' + i18n('Menu.OwnpartCalculator.Desc'));
 
 		let btn_Own = $('<span />');
 
@@ -290,7 +344,7 @@ let _menu = {
 		}
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.OutP.Title'), desc, 'outpost-Btn');
+		btn_outPBG = _menu.toolTipp(btn_outPBG, i18n('Menu.OutP.Title'), desc);
 
 		let btn_outpost = $('<span />');
 
@@ -308,7 +362,7 @@ let _menu = {
 	},
 
 	/**
-	 * FP Gesamtanzahl Button
+	 * Product overview button
 	 *
 	 * @returns {*|jQuery}
 	 */
@@ -316,8 +370,7 @@ let _menu = {
 		let btn_FPsBG = $('<div />').attr({ 'id': 'productions-Btn', 'data-slug': 'productions' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'), 'productions-Btn');
-
+		btn_FPsBG = _menu.toolTipp(btn_FPsBG, i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'));
 
 		let btn_FPs = $('<span />');
 
@@ -339,7 +392,7 @@ let _menu = {
 		let btn_NegotiationBG = $('<div />').attr({ 'id': 'negotiation-Btn', 'data-slug': 'negotiation' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
+		btn_NegotiationBG = _menu.toolTipp(btn_NegotiationBG, i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'));
 
 		let btn_Negotiation = $('<span />');
 
@@ -364,7 +417,7 @@ let _menu = {
 		let btn_Info = $('<div />').attr({ 'id': 'infobox-Btn', 'data-slug': 'infobox' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Info.Title'), i18n('Menu.Info.Desc'), 'infobox-Btn');
+		btn_Info = _menu.toolTipp(btn_Info, i18n('Menu.Info.Title'), i18n('Menu.Info.Desc'));
 
 		let btn_Inf = $('<span />');
 
@@ -388,7 +441,7 @@ let _menu = {
 
 		// Tooltip einbinden
 
-		_menu.toolTippBox(i18n('Menu.Technologies.Title'), '<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + i18n('Menu.Technologies.Desc'), 'technologies-Btn');
+		btn_TechBG = _menu.toolTipp(btn_TechBG, i18n('Menu.Technologies.Title'), '<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + i18n('Menu.Technologies.Desc'));
 
 		let btn_Tech = $('<span />');
 
@@ -412,7 +465,7 @@ let _menu = {
 		let btn_MapBG = $('<div />').attr({ 'id': 'campagneMap-Btn', 'data-slug': 'campagneMap' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Campagne.Title'), '<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n('Menu.Campagne.Warning') + '<br></em>' + i18n('Menu.Campagne.Desc'), 'campagneMap-Btn');
+		btn_MapBG = _menu.toolTipp(btn_MapBG, i18n('Menu.Campagne.Title'), '<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n('Menu.Campagne.Warning') + '<br></em>' + i18n('Menu.Campagne.Desc'));
 
 		let btn_Map = $('<span />');
 
@@ -436,7 +489,7 @@ let _menu = {
 		let btn_CityBG = $('<div />').attr({ 'id': 'citymap-Btn', 'data-slug': 'citymap' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'), 'citymap-Btn');
+		btn_CityBG = _menu.toolTipp(btn_CityBG, i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
 
 		let btn_City = $('<span />');
 
@@ -457,7 +510,7 @@ let _menu = {
 	},
 
 	/**
-	 * Evente in der Stadt und der Umgebung
+	 * Events in the city and the surrounding area
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
@@ -465,7 +518,7 @@ let _menu = {
 		let btn_RewardsBG = $('<div />').attr({ 'id': 'hiddenRewards-Btn', 'data-slug': 'hiddenRewards' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'), 'hiddenRewards-Btn');
+		btn_RewardsBG = _menu.toolTipp(btn_RewardsBG, i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'));
 
 		let btn_Rewards = $('<span />');
 
@@ -479,14 +532,14 @@ let _menu = {
 	},
 
 	/**
-	 * Armeen
+	 * Armies
 	 * @returns {*|jQuery}
 	 */
 	unit_Btn: () => {
 		let btn_UnitBG = $('<div />').attr({ 'id': 'unit-Btn', 'data-slug': 'unit' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Unit.Title'), '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'), 'unit-Btn');
+		btn_UnitBG = _menu.toolTipp(btn_UnitBG, i18n('Menu.Unit.Title'), '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'), 'unit-Btn');
 
 		let btn_Unit = $('<span />');
 
@@ -509,7 +562,7 @@ let _menu = {
 	notice_Btn: () => {
 		let btn_NoticeBG = $('<div />').attr({ 'id': 'notice-Btn', 'data-slug': 'notice' }).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n('Menu.Notice.Title'), i18n('Menu.Notice.Desc'), 'notice-Btn');
+		btn_NoticeBG = _menu.toolTipp(btn_NoticeBG, i18n('Menu.Notice.Title'), i18n('Menu.Notice.Desc'), 'notice-Btn');
 
 		let btn_Notice = $('<span />');
 
@@ -523,14 +576,14 @@ let _menu = {
 	},
 
 	/**
-	 * Einstellungen
+	 * Settings
 	 *
 	 */
 	settings_Btn: () => {
 
 		let btn = $('<div />').attr({ 'id': 'settings-Btn', 'data-slug': 'settings' }).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n('Menu.Settings.Title'), i18n('Menu.Settings.Desc'), 'settings-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Settings.Title'), i18n('Menu.Settings.Desc'));
 
 		let btn_Set = $('<span />');
 
@@ -551,7 +604,7 @@ let _menu = {
 	stats_Btn: () => {
 		let btn_StatsBG = $('<div />').attr({ 'id': 'stats-Btn', 'data-slug': 'stats' }).addClass('hud-btn');
 
-		_menu.toolTippBox(i18n('Menu.Stats.Title'), i18n('Menu.Stats.Desc'), 'stats-Btn');
+		btn_StatsBG = _menu.toolTipp(btn_StatsBG, i18n('Menu.Stats.Title'), i18n('Menu.Stats.Desc'), 'stats-Btn');
 
 		let btn_Stats = $('<span />');
 
@@ -576,7 +629,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'), 'chat-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -604,7 +657,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'kits-Btn', 'data-slug': 'kits' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Kits.Title'), i18n('Menu.Kits.Desc'), 'kits-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Kits.Title'), i18n('Menu.Kits.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -617,7 +670,6 @@ let _menu = {
 		return btn;
 	},
 
-
 	/**
 	 * FP Produzierende LGs
 	 */
@@ -626,7 +678,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'greatbuildings-Btn', 'data-slug': 'greatbuildings' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'), 'greatbuildings-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -643,10 +695,10 @@ let _menu = {
 	 * Marktplatz Filter
 	 */
 	market_Btn: () => {
-		let btn_MarketBG = $('<div />').attr({ 'id': 'market-Btn', 'data-slug': 'market' }).addClass('hud-btn hud-btn-red');
+		let btn = $('<div />').attr({ 'id': 'market-Btn', 'data-slug': 'market' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Market.Title'), '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' + i18n('Menu.Market.Desc'), 'market-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Market.Title'), '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' + i18n('Menu.Market.Desc'));
 
 		let btn_Market = $('<span />');
 
@@ -656,13 +708,13 @@ let _menu = {
 			}
 		});
 
-		btn_MarketBG.append(btn_Market);
+		btn.append(btn_Market);
 
-		return btn_MarketBG;
+		return btn;
 	},
 
 	/**
-	 * Helfer Blaue Galaxie
+	 * Helper Blue Galaxy
 	 */
 	bluegalaxy_Btn: () => {
 		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
@@ -677,7 +729,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'bluegalaxy-Btn', 'data-slug': 'bluegalaxy' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'), 'bluegalaxy-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -703,7 +755,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'moppelhelper-Btn', 'data-slug': 'moppelhelper' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'), 'moppelhelper-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -724,7 +776,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'fpCollector-Btn', 'data-slug': 'fpCollector' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'), 'fpCollector-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -747,7 +799,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'alerts-Btn', 'data-slug': 'alerts' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'), 'Alerts-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -770,7 +822,7 @@ let _menu = {
 		let btn = $('<div />').attr({ 'id': 'unitsGex-Btn', 'data-slug': 'unitsGex' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.unitsGex.Title'), i18n('Menu.unitsGex.Desc'), 'unitsGex-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.unitsGex.Title'), i18n('Menu.unitsGex.Desc'));
 
 		let btn_sp = $('<span />');
 
@@ -791,22 +843,22 @@ let _menu = {
 	 * */
 	gildfight_Btn: () => {
 
-		let btn_BG = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red'),
+		let btn = $('<div />').attr({ 'id': 'gildfight-Btn', 'data-slug': 'gildfight' }).addClass('hud-btn hud-btn-red'),
 			desc = i18n('Menu.Gildfight.Warning') + i18n('Menu.Gildfight.Desc');
 
-		_menu.toolTippBox(i18n('Menu.Gildfight.Title'), desc , 'gildfight-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Gildfight.Title'), desc);
 
-		let btn = $('<span />');
+		let btn_sp = $('<span />');
 
-		btn.on('click', function (){
+		btn_sp.on('click', function (){
 			if(GildFights.MapData) {
 				GildFights.ShowGildBox();
 			}
 		});
 
-		btn_BG.append(btn);
+		btn.append(btn_sp);
 
-		return btn_BG;
+		return btn;
 	},
 
 
@@ -817,23 +869,21 @@ let _menu = {
 	 */
 	investment_Btn: () => {
 
-		let btn_InvestH = $('<div />').attr({
+		let btn = $('<div />').attr({
 			'id': 'investment-Btn',
 			'data-slug': 'investment'
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
+		btn= _menu.toolTipp(btn, i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'));
 
-		let btn_Investment = $('<span />');
-
-		btn_Investment.on('click', function () {
+		let btn_sp = $('<span />').on('click', function () {
 			Investment.BuildBox(false);
 		});
 
-		btn_InvestH.append(btn_Investment);
+		btn.append(btn_sp);
 
-		return btn_InvestH;
+		return btn;
 	},
 
 
@@ -841,24 +891,22 @@ let _menu = {
 	 * Guild member statistic
 	 */
 	guildmemberstat_Btn: () => {
-		let btn_GuildMemberBG = $('<div />').attr({
+		let btn = $('<div />').attr({
 			'id': 'guildmemberstat-Btn',
 			'data-slug': 'guildmemberstat'
 		}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTippBox(i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'), 'guildmemberstat-Btn');
+		_menu.toolTipp(i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'), 'guildmemberstat-Btn');
 
-		let btn_GuildMember = $('<span />');
-
-		btn_GuildMember.bind('click', function () {
+		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
 				GuildMemberStat.BuildBox(false);
 			}
 		});
 
-		btn_GuildMemberBG.append(btn_GuildMember);
+		btn.append(btn_sp);
 
-		return btn_GuildMemberBG;
+		return btn;
 	}
 };

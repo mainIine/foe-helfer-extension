@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 boxes.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:23 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -366,107 +364,107 @@ p {
 
 /* MENU ICONS */
 
-#market-Btn span {
+[id$=market-Btn] span {
 	background-image: url('../images/menu/market.png');
 }
 
-#moppelhelper-Btn span {
+[id$=moppelhelper-Btn] span {
 	background-image: url('../images/menu/polivation.png');
 }
 
-#fpCollector-Btn span {
+[id$=fpCollector-Btn] span {
 	background-image: url('../images/menu/forgepoints.png');
 }
 
-#greatbuildings-Btn span {
+[id$=greatbuildings-Btn] span {
 	background-image: url('../images/menu/greatbuildings.png');
 }
 
-#productions-Btn span {
+[id$=productions-Btn] span {
 	background-image: url('../images/menu/productions.png');
 }
 
-#calculator-Btn span {
+[id$=calculator-Btn] span {
 	background-image: url('../images/menu/calculator.png');
 }
 
-#outpost-Btn span {
+[id$=outpost-Btn] span {
 	background-image: url('../images/menu/vikings_ship.png');
 }
 
-#partCalc-Btn span {
+[id$=partCalc-Btn] span {
 	background-image: url('../images/menu/part-calc.png');
 }
 
-#technologies-Btn span {
+[id$=technologies-Btn] span {
 	background-image: url('../images/menu/technologies.png');
 }
 
-#hiddenRewards-Btn span:first-child {
+[id$=hiddenRewards-Btn] span:first-child {
 	background-image: url('../images/menu/incident_crates.png');
 }
 
-#campagneMap-Btn span {
+[id$=campagneMap-Btn] span {
 	background-image: url('../images/menu/map.png');
 }
 
-#citymap-Btn span {
+[id$=citymap-Btn] span {
 	background-image: url('../images/menu/citymap.png');
 }
 
-#chat-Btn span {
+[id$=chat-Btn] span {
 	background-image: url('../images/menu/chat.png');
 }
 
-#settings-Btn span {
+[id$=settings-Btn] span {
 	background-image: url('../images/menu/settings.png');
 }
 
-#stats-Btn span {
+[id$=stats-Btn] span {
 	background-image: url('../images/menu/stats.png');
 }
 
-#infobox-Btn span {
+[id$=infobox-Btn] span {
 	background-image: url('../images/menu/info.png');
 }
 
-#unit-Btn span {
+[id$=unit-Btn] span {
 	background-image: url('../images/menu/units.png');
 }
 
-#negotiation-Btn span {
+[id$=negotiation-Btn] span {
 	background-image: url('../images/menu/negotation.png');
 }
 
-#kits-Btn span {
+[id$=kits-Btn] span {
 	background-image: url('../images/menu/kits.png');
 }
 
-#alerts-Btn span {
+[id$=alerts-Btn] span {
 	background-image: url('../images/menu/alerts.png');
 }
 
-#notice-Btn span {
+[id$=notice-Btn] span {
 	background-image: url('../images/menu/notices.png');
 }
 
-#bluegalaxy-Btn span {
+[id$=bluegalaxy-Btn] span {
 	background-image: url('../images/menu/BlueGalaxy.png');
 }
 
-#unitsGex-Btn span {
+[id$=unitsGex-Btn] span {
 	background-image: url('../images/menu/gex.png');
 }
 
-#gildfight-Btn span {
+[id$=gildfight-Btn] span {
 	background-image: url('../images/menu/gbg.png');
 }
 
-#investment-Btn span {
+[id$=investment-Btn] span {
 	background-image: url('../images/menu/investhistory.png');
 }
 
-#guildmemberstat-Btn span {
+[id$=guildmemberstat-Btn] span {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
@@ -488,34 +486,64 @@ p {
 	font-size: 0.8rem;
 }
 
-.toolTipWrapper {
+.tooltip.foe-skin {
+	opacity: 1;
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.9rem;
+	font-weight: 400;
+}
+
+.tooltip.top.foe-skin > .tooltip-arrow {
+	border-top-color: #606052 !important;
+	border-top-width: 11px;
+}
+
+.tooltip.bottom.foe-skin > .tooltip-arrow {
+	border-bottom-color: #3f4444 !important;
+}
+
+.tooltip.right.foe-skin > .tooltip-arrow {
+	border-right-color: #606052 !important;
+}
+
+.tooltip.left.foe-skin > .tooltip-arrow {
+	border-left-color: #606052 !important;
+}
+
+.tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
-	display: none;
-	position: absolute;
 	width: 180px;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
 	border-image: url('../images/hud/tooltip_bg.png') 10 round;
 	z-index: 999;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
-	font-weight: 400;
 	color: #f2ede1;
 	padding: 3px;
 	pointer-events: none;
 	user-select: none;
+	margin: 0;
+	opacity: 1;
 }
 
-.toolTipWrapper .tooltip-error {
+.tooltip.foe-skin h3 + .tooltip-inner {
+	padding: 23px 3px 3px;
+}
+
+.tooltip.foe-skin .tooltip-inner em {
 	color: #f79090;
 }
 
-.toolTipWrapper .toolTipHeader {
+.tooltip.foe-skin h3 {
 	color: #bdc5cb;
-	background-color: #313d45;
+	background: #313d45 !important;
 	box-shadow: inset 0 0 2px var(--black);
-	margin: -7px -7px 2px -7px;
+	margin: 0 7px -30px;
+	position: relative;
+	z-index: 1000;
 	padding: 0 5px 1.3px;
+	font-weight: normal;
+	font-size: inherit;
+	text-align: left;
 }
 
 /***********************************************************************************/
@@ -529,7 +557,7 @@ Tabs */
 	border-bottom: 2px solid var(--border-tab);
 }
 
-.window-body .dark-bg .tabs ul.horizontal, .window-body .tabs ul.horizontal.dark-bg {
+.window-body .dark-bg .tabs ul.horizontal, .window-body .tabs ul.horizontal.dark-bg, .window-body .tabs.dark-bg ul.horizontal {
 	padding: 5px 0 0 6px;
 	margin: 0;
 }
@@ -1193,8 +1221,8 @@ FP-Bar */
 .jq-toast-single h2 { font-family: arial, sans-serif; font-size: 14px; margin: 0 0 7px; background: none; color: inherit; line-height: inherit; letter-spacing: normal; }
 .jq-toast-single a { color: #eee; text-decoration: none; font-weight: bold; border-bottom: 1px solid white; padding-bottom: 3px; font-size: 12px; }
 
-.jq-toast-single ul { margin: 0 0 0 15px; background: none; padding:0; }
-.jq-toast-single ul li { list-style-type: disc !important; line-height: 17px; background: none; margin: 0; padding: 0; letter-spacing: normal; }
+.jq-toast-single ul { margin: 0; background: none; padding:0;list-style: none }
+.jq-toast-single ul li { line-height: 17px; background: none; margin: 0; padding: 0; letter-spacing: normal; }
 
 .close-jq-toast-single { position: absolute; top: 3px; right: 7px; font-size: 14px; cursor: pointer; }
 

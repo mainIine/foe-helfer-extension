@@ -1,3 +1,16 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
 FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.Cache = HiddenRewards.prepareData(data.responseData.hiddenRewards);
     
@@ -147,7 +160,7 @@ let HiddenRewards = {
                 let hiddenReward = HiddenRewards.FilteredCache[idx];
 
                 h.push('<tr>');
-                h.push('<td class="incident" title="' + hiddenReward.type + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
+                h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
                 h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
                 h.push('</tr>');

@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 guildfights.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              27.12.19, 12:37 Uhr
- * zuletzt bearbeitet:       27.12.19, 12:37 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -140,10 +138,17 @@
     position: relative;
 }
 
+#LiveGildFightingBody .tabs > button {
+	position: absolute;
+	top: 7px;
+	right: 7px;
+}
+
 #LiveGildFightingBody #nextup {
 	overflow: hidden;
 	overflow-y: auto;
 	flex-grow: 2;
+	user-select: text;
 }
 
 #LiveGildFightingBody #progress {
@@ -165,29 +170,61 @@
 	transition: background-color .6s;
 }
 
-#LiveGildFightingBody tr.red-pulse td {
+#LiveGildFightingBody tr.pulse td {
 	background-color: rgba(208, 200, 172, 0.3);
 	transition: background-color .6s;
 }
 
-#LiveGildFightingBody tr td span.attack-wrapper {
-	display: block;
-	height: 10px;
-	width: 100%;
-	line-height: 10px;
-	font-size: 10px;
-	background-color: rgba(255,255,255,.1);
-	margin-right: 10px;
+#LiveGildFightingBody .attack {
+	display: inline-block;
+	line-height: 23px;
+	margin-right: 5px;
 }
 
-#LiveGildFightingBody tr td span.attack {
-	display: block;
-	height: 10px;
-	width: 100%;
-	line-height: 10px;
-	color: var(--text-dark);
-	text-shadow: none;
-	font-weight: bold;
+#LiveGildFightingBody .attack:before {
+	width: 19px;
+	height: 23px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	display: inline-block;
+	content: '';
+	vertical-align: middle;
+}
+
+#LiveGildFightingBody .gbg-red:before {
+	background-image: url(../../x_img/gbg-red.png);
+}
+
+#LiveGildFightingBody .gbg-green:before {
+	background-image: url(../../x_img/gbg-green.png);
+}
+
+#LiveGildFightingBody .gbg-yellow:before {
+	background-image: url(../../x_img/gbg-yellow.png);
+}
+
+#LiveGildFightingBody .gbg-teal:before {
+	background-image: url(../../x_img/gbg-teal.png);
+}
+
+#LiveGildFightingBody .gbg-orange:before {
+	background-image: url(../../x_img/gbg-orange.png);
+}
+
+#LiveGildFightingBody .gbg-blue:before {
+	background-image: url(../../x_img/gbg-blue.png);
+}
+
+#LiveGildFightingBody .gbg-purple:before {
+	background-image: url(../../x_img/gbg-purple.png);
+}
+
+#LiveGildFightingBody .gbg-pink:before {
+	background-image: url(../../x_img/gbg-pink.png);
+}
+
+#LiveGildFightingBody .gbg-own_guild_colour:before {
+	background-image: url(../../x_img/gbg-gray.png);
 }
 
 /*************************************************************************************************************/

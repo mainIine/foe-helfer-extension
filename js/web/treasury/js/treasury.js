@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 treasury.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              17.07.20, 18:30 Uhr
- * zuletzt bearbeitet:       17.07.20, 18:30 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -103,7 +101,7 @@ let Treasury = {
             h.push(CurrentLine.join(';'));
         }
 
-        let ExportString = h.join('\n');
+        let ExportString = h.join('\r\n');
         let BOM = "\uFEFF";
         let Blob1 = new Blob([BOM + ExportString], { type: "application/octet-binary;charset=ANSI" });
         MainParser.ExportFile(Blob1, 'GBG-export.csv');

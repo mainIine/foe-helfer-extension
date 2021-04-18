@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 infoboard.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -55,8 +53,7 @@ FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
 });
 
 /**
- *
- * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null, History: Array, MaxEntries:Number}}
+ * @type {{MaxEntries: number, DebugWebSocket: boolean, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: (function(*, *=): undefined), Box: (function(): (boolean|undefined)), History: [], Init: Infoboard.Init, InjectionLoaded: boolean, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: (function(*=, *=): undefined), PlayInfoSound: boolean}}
  */
 let Infoboard = {
 
@@ -127,13 +124,13 @@ let Infoboard = {
 
 
             HTML.Box({
-                'id': 'BackgroundInfo',
-                'title': i18n('Boxes.Infobox.Title'),
-                'auto_close': true,
-                'dragdrop': true,
-                'resize': true,
-                'minimize': true,
-                'speaker': 'infoboxTone'
+                id: 'BackgroundInfo',
+                title: i18n('Boxes.Infobox.Title'),
+                auto_close: true,
+                dragdrop: true,
+                resize: true,
+                minimize: true,
+                speaker: 'infoboxTone'
             });
 
             // CSS in den DOM prügeln
@@ -189,6 +186,7 @@ let Infoboard = {
         });
 
         Infoboard.MaxEntries = localStorage.getItem("EntryCount") || 0;
+
         for (let i = 0; i < Infoboard.History.length; i++) {
             const element = Infoboard.History[i];
             Infoboard.PostMessage(element,false);
@@ -374,9 +372,9 @@ let Info = {
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                'player': d['player']['name'],
-                'amount': HTML.Format(d['amount']),
-            }
+                    player: d['player']['name'],
+                    amount: HTML.Format(d['amount']),
+                }
             )
         };
     },
@@ -389,20 +387,26 @@ let Info = {
      * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
-        let header, message, image, chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
-        if (chat && chat['hidden']) return undefined;
+        let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']),
+            header, message, image;
+
+        if (chat && chat['hidden']){
+            return undefined;
+        }
 
         if (d['text'] !== '') {
             // normale Nachricht
             message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
-
-        } else if (d['attachment']) {
-            if (d['attachment']['type'] === 'great_building') {
+        }
+        else if (d['attachment'])
+        {
+            if (d['attachment']['type'] === 'great_building')
+            {
                 // legendäres Bauwerk
                 message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                    'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
-                    'level': d['attachment']['level']
+                    building: MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
+                    level: d['attachment']['level']
                 });
             }
             else if (d['attachment']['type'] === 'trade_offer') {
@@ -413,24 +417,33 @@ let Info = {
 
         if (chat) {
             // passendes Bildchen wählen
-            if (chat['important']) {
+            if (chat['important'])
+            {
                 image = 'msg-important';
-            } else if (chat['favorite']) {
+            }
+            else if (chat['favorite']) {
                 image = 'msg-favorite';
             }
 
-            if (d['sender'] && d['sender']['name']) {
+            chat['title'] = HTML.escapeHtml(chat['title']);
+
+            if (d['sender'] && d['sender']['name'])
+            {
                 // normale Chatnachricht (bekannte ID)
-                if (d['sender']['name'] === chat['title']) {
+                if (d['sender']['name'] === chat['title'])
+                {
                     header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
-                } else {
+                }
+                else {
                     header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
                 }
-            } else {
+            }
+            else {
                 // Chatnachricht vom System (Betreten/Verlassen)
                 header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
             }
-        } else {
+        }
+        else {
             return undefined;
         }
 
