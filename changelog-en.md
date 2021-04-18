@@ -1,6 +1,6 @@
 ## Changelog - Extension
 
-##### 2.5.6.4
+##### 2.5.7.0
 
 **New**
 - Guild members statistics:
