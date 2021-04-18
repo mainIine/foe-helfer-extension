@@ -875,7 +875,7 @@ let _menu = {
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		btn= _menu.toolTipp(btn, i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'));
+		btn = _menu.toolTipp(btn, i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
 			Investment.BuildBox(false);
@@ -897,7 +897,7 @@ let _menu = {
 		}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTipp(i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'), 'guildmemberstat-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
