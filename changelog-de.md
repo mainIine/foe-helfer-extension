@@ -14,7 +14,7 @@
 	- Übersicht der vorhandenen Gildenkassen Güter 
 
 - GVG Freigaben:
-	- [#1781](https://github.com/dsiekiera/foe-helfer-extension/issues/1781) Zeigt ab, wie viele Freigaben man selbst bereits seit der Abrechnung (20 Uhr) im GvG getätigt hat
+	- [#1781](https://github.com/dsiekiera/foe-helfer-extension/issues/1781) Zeigt an, wie viele Freigaben man selbst bereits seit der Abrechnung (20 Uhr) im GvG getätigt hat
 
 - Questabschluss Info:
 	- [#1915](https://github.com/dsiekiera/foe-helfer-extension/issues/1915) Questabschluss - Benachrichtigung in Gildengefechten
