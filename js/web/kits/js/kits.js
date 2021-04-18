@@ -1,19 +1,18 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 kits.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              27.03.20, 15:37 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
 
 /**
- * @type {{ItemTd: Kits.ItemTd, init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
+ * @type {{BuildingSelectionKits: null, ItemTd: (function(*=): string), init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), BuildingSets: null, ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
@@ -30,8 +29,9 @@ let Kits = {
 
 		let data = localStorage.getItem('KnownKitsData');
 
-		if(data === null || MainParser.checkNextUpdate('KnownKitsDate') === true){
-			MainParser.loadJSON('https://cache.foe-rechner.de/kits/sets.json', (data)=>{
+		if(data === null || MainParser.checkNextUpdate('KnownKitsDate') === true)
+		{
+			MainParser.loadJSON('https://cache.foe-helper.com/kits/sets.json', (data)=>{
 
 				localStorage.setItem('KnownKitsData', data);
 				localStorage.setItem('KnownKitsDate', MainParser.getAddedDateTime(48));
@@ -39,8 +39,8 @@ let Kits = {
 				Kits.KitsjSON = JSON.parse(data);
 				Kits.BuildBox();
 			});
-
-		} else {
+		}
+		else {
 			Kits.KitsjSON = JSON.parse(data);
 			Kits.BuildBox();
 		}
@@ -437,14 +437,12 @@ let Kits = {
 };
 
 // Updatestufen der Eventgebäude
-
 FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 	Kits.BuildingSelectionKits = JSON.parse(xhr.responseText);
 });
 
 
 // Building-Sets
-
 FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
 	Kits.BuildingSets = JSON.parse(xhr.responseText);
 });

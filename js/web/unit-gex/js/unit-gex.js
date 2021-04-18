@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 unit-gex.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              05.01.21, 14:15 Uhr
- * zuletzt bearbeitet:       05.01.21, 14:15 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -28,7 +26,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) =
 // After battle
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
 
-	if(postData[0]['requestData'][0]['type'] !== 'guild_expedition')
+	if (!postData[0]['requestData'][0] || !postData[0]['requestData'][0]['type'] || postData[0]['requestData'][0]['type'] !== 'guild_expedition')
 		return;
 
 	let round = data['responseData']['battleType']['currentWaveId'] || 0;

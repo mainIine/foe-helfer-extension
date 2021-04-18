@@ -1,3 +1,16 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
 !function ($) {
 
 	"use strict"; // jshint ;_;
@@ -48,7 +61,7 @@
 		, getOptions: function (options) {
 			options = $.extend({}, $.fn[this.type].defaults, this.$element.data(), options)
 
-			if (options.delay && typeof options.delay == 'number') {
+			if (options.delay && typeof options.delay === 'number') {
 				options.delay = {
 					show: options.delay
 					, hide: options.delay
@@ -64,7 +77,7 @@
 				, self
 
 			this._options && $.each(this._options, function (key, value) {
-				if (defaults[key] != value) options[key] = value
+				if (defaults[key] !== value) options[key] = value
 			}, this)
 
 			self = $(e.currentTarget)[this.type](options).data(this.type)
@@ -74,7 +87,7 @@
 			clearTimeout(this.timeout)
 			self.hoverState = 'in'
 			this.timeout = setTimeout(function() {
-				if (self.hoverState == 'in') self.show()
+				if (self.hoverState === 'in') self.show()
 			}, self.options.delay.show)
 		}
 
@@ -86,7 +99,7 @@
 
 			self.hoverState = 'out'
 			this.timeout = setTimeout(function() {
-				if (self.hoverState == 'out') self.hide()
+				if (self.hoverState === 'out') self.hide()
 			}, self.options.delay.hide)
 		}
 
@@ -104,6 +117,14 @@
 				if (e.isDefaultPrevented()) return
 				$tip = this.tip()
 				this.setContent()
+
+				if(this.options.useFoEHelperSkin) {
+					$tip.addClass('foe-skin');
+				}
+
+				if(this.options.extraClass !== '') {
+					$tip.addClass(this.options.extraClass);
+				}
 
 				if (this.options.animation) {
 					$tip.addClass('fade')
@@ -161,12 +182,12 @@
 			actualWidth = $tip[0].offsetWidth
 			actualHeight = $tip[0].offsetHeight
 
-			if (placement == 'top' && actualHeight != height) {
+			if (placement === 'top' && actualHeight !== height) {
 				offset.top = offset.top + height - actualHeight
 				replace = true
 			}
 
-			if (placement == 'bottom' || placement == 'top') {
+			if (placement === 'bottom' || placement === 'top') {
 				delta = 0
 
 				if (offset.left < 0){
@@ -194,6 +215,10 @@
 		, setContent: function () {
 			var $tip = this.tip()
 				, title = this.getTitle()
+
+			if(this.options.headLine) {
+				$tip.find('h3')[this.options.html ? 'html' : 'text'](this.options.headLine).css('display','block');
+			}
 
 			$tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
 			$tip.removeClass('fade in top bottom left right')
@@ -320,11 +345,14 @@
 		animation: true
 		, placement: 'top'
 		, selector: false
-		, template: '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+		, extraClass: ''
+		, template: '<div class="tooltip"><div class="tooltip-arrow"></div><h3></h3><div class="tooltip-inner"></div></div>'
 		, trigger: 'hover focus'
 		, title: ''
+		, headLine: ''
 		, delay: 0
-		, html: false
+		, useFoEHelperSkin: 0
+		, html: true
 		, container: false
 	}
 

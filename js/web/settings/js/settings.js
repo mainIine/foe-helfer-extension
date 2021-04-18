@@ -1,18 +1,19 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 settings.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
 
+/**
+ * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: (function(*=, *=): *), MenuSelected: (function(): string), BoxGroups: [string, string, string, string], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: (function(*=, *=): undefined), InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
+ */
 let Settings = {
 
 	/**
@@ -36,7 +37,7 @@ let Settings = {
 	 * @param start
 	 * @constructor
 	 */
-	Init: (start = true) => {
+	Init: () => {
 		Settings.LoadConfig((response) => {
 			Settings.Preferences = response;
 		});
@@ -230,12 +231,8 @@ let Settings = {
 		} else {
 
 			if (Settings.Preferences === null) {
-
-				Settings.LoadConfig((response) => {
-					Settings.Preferences = response;
-
-					return Settings.Preferences.find(itm => itm['name'] === name)['status'];
-				});
+				console.error('Error getting default value of setting "' + name + '". config.json not loaded');
+				return null;
 
 			} else {
 				return Settings.Preferences.find(itm => itm['name'] === name)['status'];
@@ -389,10 +386,10 @@ let Settings = {
 	 */
 	Help: () => {
 		return '<ul class="helplist">' +
-			'<li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
+			'<li><a href="https://foe-helper.com" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
 			'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' + i18n('Settings.Help.Forums') + '</a></li>' +
 			'<li><a href="https://discord.gg/z97KZq4" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-			'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
+			'<li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
 			'</ul>';
 	},
 
@@ -482,6 +479,55 @@ let Settings = {
 
 		return ip;
 	},
+
+
+	/**
+	 * Add all the buttons you need
+	 */
+	MenuContent: () => {
+		let bl = $('<div />'),
+			menuItems = _menu.Items,
+			HiddenItems = localStorage.getItem('MenuHiddenItems'),
+			hiddenArray = [];
+
+		// Reattach already hidden icons
+		if (HiddenItems !== null) {
+			hiddenArray = JSON.parse(HiddenItems);
+			menuItems.push(...hiddenArray);
+		}
+
+escape
+		for (let i in menuItems)
+		{
+			if (!menuItems.hasOwnProperty(i)) {
+				break;
+			}
+
+			const name = menuItems[i];
+
+			// exclude settings
+			if(name === 'settings'){
+				continue;
+			}
+
+			// is there a function?
+			if (_menu[name + '_Btn'])
+			{
+				let btnBG = $('<div />')
+					.attr({ id: `setting-${name}-Btn` })
+					.addClass('hud-btn')
+					.addClass(hiddenArray.includes(name) ? 'hud-btn-red' : '');
+
+				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
+		
+				btnBG.append(btn);
+				bl.append(btnBG);
+			}
+		}
+
+		return bl.html();
+	},
+
 
 	/**
 	 *	Erzeugt ein Input Feld
@@ -593,5 +639,7 @@ let Settings = {
 		});
 
 		return ip;
-	}
+	},
 };
+
+Settings.Init(); // Darf hier aufgerufen werden, da keine anderen Module benötigt werden. config.json soll bis zum StartUp geladen sein

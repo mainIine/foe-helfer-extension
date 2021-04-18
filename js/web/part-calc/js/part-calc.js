@@ -1,17 +1,39 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 part-calc.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              19.03.21, 10:20 Uhr
- * zuletzt bearbeitet:       19.03.21, 10:17 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
+
+// Fremdes LG gelevelt
+FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
+	if (!Parts.CityMapEntity || !Parts.Rankings) return; // Noch kein LG offen
+	if (data.responseData['type'] !== 'great_building_contribution') return; // Nur LG Events
+	if (!data.responseData['other_player']) return; // Nur fremde LGs
+	if (data.responseData['other_player']['player_id'] !== Parts.CityMapEntity['player_id']) return; // Selber Spieler
+
+	let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === data.responseData['great_building_name']));
+	if (!Entity) return; // LG nicht gefunden
+
+	if (Entity['id'] !== Parts.CityMapEntity['cityentity_id']) // Selbes LG
+
+	if ($('#OwnPartBox').length > 0) {
+		let NewLevel = data.responseData['level'];
+		Parts.Show(NewLevel);
+    }
+});
+
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#OwnPartBox').length > 0) {
+		Parts.Show();
+	}
+});
 
 let Parts = {
 	CityMapEntity: undefined,
@@ -36,8 +58,6 @@ let Parts = {
 	RemainingOwnPart: null,
 
 	PowerLevelingMaxLevel: 999999,
-
-	InjectionLoaded: false,
 
 	DefaultButtons: [
 		80, 85, 90, 'ark'
@@ -87,16 +107,7 @@ let Parts = {
 
 		// CSS in den DOM prügeln
 		HTML.AddCssFile('part-calc');
-
-		// if building is open, socket information would send if some payed in
-		if(Parts.InjectionLoaded === false)
-		{
-			FoEproxy.addWsHandler('CityMapService', 'updateEntity', data => {
-				console.log('data[\'responseData\'][0]: ', data['responseData'][0]);
-			});
-			Parts.InjectionLoaded = true;
-		}
-
+		
 		// Body zusammen fummeln
 		Parts.Show();
 
@@ -248,8 +259,7 @@ let Parts = {
 			Parts.Level = 0;
 		}
 
-		for (let i = 0; i < 5; i++)
-		{
+		for (let i = 0; i < 5; i++) {
 			arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
 		}
 
@@ -278,10 +288,8 @@ let Parts = {
 				Parts.Maezens[Place] = CurrentMaezen;
 				if (Parts.Maezens[Place] === undefined) Parts.Maezens[Place] = 0;
 
-				if (Place < 5)
-				{
-					if (Parts.Rankings[i]['reward'] !== undefined)
-					{
+				if (Place < 5) {
+					if (Parts.Rankings[i]['reward'] !== undefined) {
 						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
 						FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
@@ -305,8 +313,7 @@ let Parts = {
 			}
 
 			//Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
-			for (let i = Parts.Maezens.length; i < 5; i++)
-			{
+			for (let i = Parts.Maezens.length; i < 5; i++) {
 				Parts.Maezens[i] = 0;
 				FPRewards[i] = 0;
 				MedalRewards[i] = 0;
@@ -420,7 +427,7 @@ let Parts = {
 				
         // Info-Block
         h.push('<div class="dark-bg">');
-        h.push('<table style="width: 100%"><tr><td style="width: 65%" class="text-center">');
+        h.push('<table style="width: 100%"><tr><td class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
@@ -433,10 +440,9 @@ let Parts = {
 				h.push('<button class="btn btn-default btn-set-level" data-value="' + (Parts.Level - 1) + '">&lt;</button> ');
 			}
 			h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + Parts.Level + ' &rarr; ' + (parseInt(Parts.Level) + 1));
-			if (GreatBuildings.Rewards[Era][Parts.Level + 1]) {
+			if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][Parts.Level + 1]) {
 				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 			}
-			h.push('</p>');
 		}
 		
 
@@ -1067,7 +1073,7 @@ let Parts = {
 			EraName = GreatBuildings.GetEraName(EntityID),
 			Era = Technologies.Eras[EraName],
 			MinLevel = Parts.Level,
-			MaxLevel = Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length);
+			MaxLevel = (GreatBuildings.Rewards[Era] ? Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length) : 0);
 
 		let Totals = [],
 			Places = [],			

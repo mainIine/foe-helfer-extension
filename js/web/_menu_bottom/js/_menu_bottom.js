@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _menu_bottom.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              24.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -31,7 +29,6 @@ let _menu_bottom = {
 
 		hudWrapper.append(hudInner);
 
-
 		let btnUp = $('<span />').addClass('hud-btn-left'),
 			btnDown = $('<span />').addClass('hud-btn-right hud-btn-right-active');
 
@@ -41,17 +38,17 @@ let _menu_bottom = {
 
 		$('body').append(hud).promise().done(function(){
 
-			// Buttons einfügen
+			// Insert buttons
 			_menu.ListLinks(_menu_bottom.InsertMenuItem);
 			_menu_bottom.CheckButtons();
 
-			// korrekten Platz für das Menu ermitteln
+			// Determine the correct place for the menu
 			_menu_bottom.SetMenuWidth();
 
 			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
 
-		// Wenn sie die Fenstergröße verändert, neu berechnen
+		// If the window size changes, recalculate
 		window.onresize = function (event) {
 			_menu_bottom.SetMenuWidth(true);
 		};
@@ -77,15 +74,6 @@ let _menu_bottom = {
 		$('#foe-helper-hud-slider').append(MenuItem);
 	},
 
-
-	/**
-	* Fügt ein MenüItem ein
-	*
-	* @param MenuItem
-	*/
-	InsertMenuItem: (MenuItem) => {
-		$('#foe-helper-hud-slider').append(MenuItem);
-	},
 
 
 	/**

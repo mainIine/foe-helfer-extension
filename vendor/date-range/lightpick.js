@@ -1,13 +1,14 @@
-/*!
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- *     Litepicker v1.2.0 (https://github.com/wakirin/Litepicker)
- *     Package: litepicker (https://www.npmjs.com/package/litepicker)
- *     License: MIT (https://github.com/wakirin/Litepicker/blob/master/LICENCE.md)
- *     Copyright 2019-2020 Rinat G.
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
- *     Hash: 62407eff1ea84a5af628
- *     Generated on: 1587403526780
- *
+ * **************************************************************************************
  */
 !
 function(t, e) {

@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _menu_bottom.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              24.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       24.02.21, 09:46 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -210,6 +208,18 @@ Tooltip */
 	transform: translateX(-50%);
 	left: 50%;
 	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
+}
+
+.toolTipWrapper .tooltip-error {
+	color: #f79090;
+}
+
+.toolTipWrapper .toolTipHeader {
+	color: #bdc5cb;
+	background-color: #313d45;
+	box-shadow: inset 0 0 2px var(--black);
+	margin: -7px -7px 2px -7px;
+	padding: 0 5px 1.3px;
 }
 
 .toolTipWrapper .tooltip-error {
