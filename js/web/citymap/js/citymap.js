@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 citymap.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              19.03.21, 15:33 Uhr
- * zuletzt bearbeitet:       19.03.21, 10:21 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -447,8 +445,35 @@ let CityMap = {
 			}
 		};
 
-		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#CityMapSubmitBody').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+		MainParser.send2Server(d, 'CityPlanner', function(resp){
+
+			if(resp.status === 'OK')
+			{
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitSuccess'),
+						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
+					],
+					type: 'success',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitError'),
+						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
+					],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+
+			$('#CityMapSubmit').fadeToggle(function(){
+				$(this).remove();
+			});
 		});
 	},
 

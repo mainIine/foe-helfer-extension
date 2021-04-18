@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 outposts.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.03.21, 10:04 Uhr
- * zuletzt bearbeitet:       22.03.21, 10:04 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */

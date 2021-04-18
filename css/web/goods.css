@@ -1,21 +1,19 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 goods.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.03.21, 09:51 Uhr
- * zuletzt bearbeitet:       22.03.21, 09:50 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
 
 /* BOF generated */
 .goods-sprite {display:inline-block;height:3em;position: relative;}
-.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:1272px 202px;position:absolute;}
+.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:1272px 202px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
 .goods-sprite.goods::before{background-position:0 0;width:46px;height:56px;transform:rotate(-90deg)}
 .goods-sprite.corals::before{background-position:0 -58px;width:51px;height:51px}
 .goods-sprite.fine_corals::before{background-position:0 -58px;width:51px;height:51px}

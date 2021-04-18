@@ -1,14 +1,12 @@
 ﻿/*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 eventhandler.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              20.11.20, 14:31 Uhr
- * zuletzt bearbeitet:       20.11.20, 14:31 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -260,7 +258,8 @@ let EventHandler = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+				settings: 'EventHandler.ShowMoppelHelperSettingsButton()'
 			});
 
 			HTML.AddCssFile('eventhandler');
@@ -375,7 +374,7 @@ let EventHandler = {
 
 		h.push('</ul></div></div>');
 
-		h.push('<table id="moppelhelperTable" class="foe-table sortable-table">');		
+		h.push('<table id="moppelhelperTable" class="foe-table sortable-table exportable">');		
 		h.push('</table>');	
 
 		await $('#moppelhelperBody').html(h.join(''))
@@ -410,14 +409,14 @@ let EventHandler = {
 
 		h.push('<tbody class="moppelhelper">');
 		h.push('<tr class="sorter-header">');
-		h.push('<th class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
+		h.push('<th columnname="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
-		h.push('<th data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
-		h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
+		h.push('<th columnname="Name" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+		h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 
 		for (let i = 0; i < EventHandler.MaxVisitCount; i++)
 		{
-			h.push('<th class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i + 1) + '</th>');
+			h.push('<th columnname="Event'+ (i+1) +'" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i + 1) + '</th>');
 		}
 
 		h.push('</tr>');
@@ -479,7 +478,7 @@ let EventHandler = {
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					let EventType = EventHandler.GetEventType(Visits[j]);
 
-					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Seconds + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
+					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Days + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
 					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
@@ -509,7 +508,31 @@ let EventHandler = {
 		if (Event['eventtype'] === 'trade_accepted') return 'Trade';
 		if (Event['eventtype'] === 'great_building_built' || Event['eventtype'] === 'great_building_contribution') return 'GB';
 		return 'Other';
-    },
+	},
+
+
+	/**
+	*
+	*/
+	ShowMoppelHelperSettingsButton: () => {
+		let h = [];
+		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+
+		$('#moppelhelperSettingsBox').html(h.join(''));
+	},
+
+
+	/**
+	*
+	*/
+	ShowMoppelHelperSettingsButton: () => {
+		let h = [];
+		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+
+		$('#moppelhelperSettingsBox').html(h.join(''));
+	},
 
 
 	/**

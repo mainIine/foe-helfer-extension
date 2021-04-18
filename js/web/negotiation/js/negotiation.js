@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 negotiation.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:14 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -470,7 +468,7 @@ let Negotiation = {
 		if (responseData.context === Negotiation.CONST_Context_GBG) {
 			if (! $('#negotiation-Btn').hasClass('hud-btn-red')) {
 				$('#negotiation-Btn').addClass('hud-btn-red');
-				_menu.toolTippBox(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
+				_menu.toolTipp(i18n('Menu.Negotiation.Title'), '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'), 'negotiation-Btn');
 			}
 			return; //No Negotiation helper for GBG
 		}

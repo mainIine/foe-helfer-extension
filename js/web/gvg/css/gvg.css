@@ -1,0 +1,47 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#gvg-hud {
+	position: absolute;
+	left: 407px;
+	z-index: 100;
+	top: 3px;
+}
+
+#gvg-hud div {
+	line-height: 20px;
+	margin-right: 1px;
+	background-color: var(--black-50);
+	border: 1px solid #754e26;
+	border-radius: 4px;
+	height: 28px;
+	box-sizing: border-box;
+	float: left;
+
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.75rem;
+	font-weight: 400;
+	color: #f7dba4;
+	text-align: left;
+}
+
+#gvg-hud .independences {
+	background: var(--black-50) url('../../x_img/gvg-independences.png') no-repeat 3px center;
+	padding: 3px 3px 3px 33px;
+	width: 60px;
+}
+
+#gvg-hud .sieges {
+	background: var(--black-50) url('../../x_img/gvg-sieges.png') no-repeat 3px center;
+	padding: 3px 6px 3px 28px;
+}
