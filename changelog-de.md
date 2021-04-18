@@ -24,6 +24,9 @@
 	- [#1960](https://github.com/dsiekiera/foe-helfer-extension/issues/1960) Zeigt einen kleinen Counter wie viele Quest für diesen Tag noch übersprungen werden können
 		- Ist per default deaktiviert (Einstellungen > Boxen > 2k Quest Grenze)
 
+- Export Funktion für Tabellen:
+	- [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) Die Tabellen in den Modulen "Marktfilter", "Technologien" und "Moppelassistent" können nun mit Hilfe des Zahnrad Symbols als .csv oder .json Datei exportiert werden
+
 **Update**
 - Eigenanteilsrechner:
 	- [#1923](https://github.com/dsiekiera/foe-helfer-extension/issues/1923) Automatische Aktualisierung beim Leveln fremder LGs
