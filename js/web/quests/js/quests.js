@@ -40,7 +40,7 @@ let Quests = {
 			parts = JSON.parse(CounterStorage);
 
 			// current is older than stored date
-			if(moment(moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')).isAfter(parts['date'])){
+			if (!parts || !parts['date'] || moment(moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')).isAfter(parts['date'])){
 				Quests.Counter = 2000;
 			}
 			// is today
