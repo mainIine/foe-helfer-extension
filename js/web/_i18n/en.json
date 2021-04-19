@@ -39,7 +39,7 @@
     "Boxes.Alerts.Form.Title": "Title",
     "Boxes.Alerts.Preferences.Auction.Info": "Automatically create a new Alert when I make a bid in the Antiques Dealer.",
     "Boxes.Alerts.Preferences.Auction.Title": "Antiques Dealer Auction",
-    "Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant Alert when there is a high activity in GBG (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the GBG in-game window  is opened!",
+    "Boxes.Alerts.Preferences.Battlegrounds.Info": "Send an instant Alert when there is a high activity in GBG (for example, 10 fights in a single sector within 5 seconds). Please note that this function works only when the GBG in-game window is opened!",
     "Boxes.Alerts.Preferences.Battlegrounds.Title": "GBG Tracker",
     "Boxes.Alerts.Preferences.ComingSoon": "Coming Soon…  ",
     "Boxes.Alerts.Preferences.Early.Info": "Automatically generated Alert times (Antiques Dealer, GBG etc) will use this offset to send notification before the event actually happens. For example, setting this value to 30 (seconds), Auction Alerts will be displayed 30s before the auction actually ends!",
