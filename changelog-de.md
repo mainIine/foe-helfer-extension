@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.5.7.1
+
+**BugFix**
+
+- Extension:
+    - Firefox BugFix
+	- [#1970](https://github.com/mainIine/foe-helfer-extension/issues/1970) Menü Einstellung > Inhalt. versteckte Icons wurden nach mehrmaligem öffnen doppelt angezeigt
+	- Menütooltip für Gildenstatistik fehlte
+
+- Quest Grenze:
+	- date = null BugFix, zählt nun korrekt
+
+--
+
 ##### 2.5.7.0
 
 **Neu**

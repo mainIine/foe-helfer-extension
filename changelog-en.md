@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.5.7.1
+
+**BugFix**
+
+- Extension:
+	- Firefox BugFix
+	- [#1970](https://github.com/mainIine/foe-helfer-extension/issues/1970) Menu Setting > Content; hidden icons were shown twice after opening several times.
+	- Menu tool tip for guild statistics was missing
+
+- Quest border:
+	- date = null BugFix, counts correctly now.
+
+--
+
 ##### 2.5.7.0
 
 **New**
