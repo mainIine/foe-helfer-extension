@@ -494,9 +494,11 @@ let Settings = {
 		if (HiddenItems !== null) {
 			hiddenArray = JSON.parse(HiddenItems);
 			menuItems.push(...hiddenArray);
+
+			// remove dublicates
+			menuItems = menuItems.filter((item, index) => menuItems.indexOf(item) === index);
 		}
 
-escape
 		for (let i in menuItems)
 		{
 			if (!menuItems.hasOwnProperty(i)) {
