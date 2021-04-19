@@ -257,33 +257,6 @@ let _menu = {
 
 
 	/**
-	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
-	 * 
-	 * @param name 
-	 */
-	ToggleItemVisibility: (name) => {
-
-		if(_menu.HiddenItems.includes(name))
-		{
-			$('#' + name + '-Btn').removeClass('btn-hidden');
-			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
-
-			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
-				return e !== name;
-			});
-		}
-		else {
-			$('#' + name + '-Btn').addClass('btn-hidden');
-			$('#setting-' + name + '-Btn').addClass('hud-btn-red');
-
-			_menu.HiddenItems.push(name);
-		}
-		
-		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
-	},
-
-
-	/**
 	 * Checks whether anything has changed in the sorting of the items.
 	 *
 	 * @param storedItems
@@ -325,7 +298,6 @@ let _menu = {
 
 		return btn_CalcBG;
 	},
-
 
 	/**
 	 * Own contribution calculator button
@@ -903,7 +875,7 @@ let _menu = {
 		}).addClass('hud-btn');
 
 		// Tooltip einbinden
-		_menu.toolTipp(i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'), 'investment-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
 			Investment.BuildBox(false);
@@ -925,7 +897,7 @@ let _menu = {
 		}).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		_menu.toolTipp(i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'), 'guildmemberstat-Btn');
+		btn = _menu.toolTipp(btn, i18n('Menu.GuildMemberStat.Title'), '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
