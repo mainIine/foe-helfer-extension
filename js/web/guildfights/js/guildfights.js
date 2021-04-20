@@ -192,10 +192,10 @@ let GildFights = {
 	 * @param {integer} provId 
 	 * @param {integer} alertId 
 	 */
-	GetAlertButton: (alertActive, provId, alertId) => {
+	GetAlertButton: (alertActive, provId) => {
 		let btn;
 		if (alertActive) {
-			btn = `<button class="btn-default btn-tight" onclick="GildFights.DeleteAlert(${provId}, ${alertId})">${i18n('Boxes.Gildfights.DeleteAlert')}</button>`;
+			btn = `<button class="btn-default btn-tight" onclick="GildFights.DeleteAlert(${provId})">${i18n('Boxes.Gildfights.DeleteAlert')}</button>`;
 		} else {
 			btn = `<button class="btn-default btn-tight" onclick="GildFights.SetAlert(${provId})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
 		}
@@ -572,12 +572,7 @@ let GildFights = {
 
 				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
-				let alert = GildFights.Alerts.find((a) => a.provId == prov[x]['id']);
-				let content = GildFights.GetAlertButton(alert !== undefined, prov[x]['id'], alert !== undefined ? alert.alertId : undefined);
-
-				if(!Alerts){
-					content = '';
-				}
+				let content = GildFights.GetAlertButton(GildFights.Alerts.find((a) => a.provId == prov[x]['id']) !== undefined, prov[x]['id']);
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${content}</td>`);
 				nextup.push('</tr>');
 			}
@@ -953,7 +948,7 @@ let GildFights = {
 			data: data,
 		}).then((aId) => {
 			GildFights.Alerts.push({provId: id, alertId: aId});		
-			$(`#alert-${id}`).html(GildFights.GetAlertButton(true, id, aId));
+			$(`#alert-${id}`).html(GildFights.GetAlertButton(true, id));
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.Gildfights.SaveMessage.Title'),
 				text: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveMessage.Desc'), {provinceName: prov.title}),
@@ -964,13 +959,14 @@ let GildFights = {
 
 	},
 
-	DeleteAlert: (provId, alertId) => {
+	DeleteAlert: (provId) => {
 		let prov = GildFights.MapData['map']['provinces'].find(e => e.id === provId);
+		let alert = GildFights.Alerts.find((a) => a.provId == provId);
 		MainParser.sendExtMessage({
 			type: 'alerts',
 			playerId: ExtPlayerID,
 			action: 'delete',
-			id: alertId,
+			id: alert.alertId,
 		}).then(() => {
 			GildFights.Alerts = GildFights.Alerts.filter((a) => a.provId != provId);
 			HTML.ShowToastMsg({
@@ -979,7 +975,7 @@ let GildFights = {
 				type: 'success',
 				hideAfter: 5000
 			});
-			$(`#alert-${provId}`).html(GildFights.GetAlertButton(false, provId, alertId));
+			$(`#alert-${provId}`).html(GildFights.GetAlertButton(false, provId));
 		});
 	},
 
