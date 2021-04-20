@@ -572,8 +572,7 @@ let GildFights = {
 
 				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
-				let content = GildFights.GetAlertButton(prov[x]['id']);
-				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${content}</td>`);
+				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
 			}
 		}
