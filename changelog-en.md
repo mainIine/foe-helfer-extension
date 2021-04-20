@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.5.7.1
+
+**BugFix**
+
+- Extension:
+	- Firefox BugFix
+	- [#1970](https://github.com/mainIine/foe-helfer-extension/issues/1970) Menu Setting > Content; hidden icons were shown twice after opening several times.
+	- Menu tool tip for guild statistics was missing
+
+- Quest border:
+	- date = null BugFix, counts correctly now.
+
+--
+
 ##### 2.5.7.0
 
 **New**
@@ -39,6 +53,16 @@
 
 - Building Kits:
 	- Can be called up again as usual
+
+- EA/Cost Calculator:
+	- [#1921](https://github.com/mainIine/foe-helfer-extension/issues/1921) [#1958](https://github.com/mainIine/foe-helfer-extension/issues/1958) "Flying Island" added
+
+- Guild member statistics:
+	- [#1938](https://github.com/mainIine/foe-helfer-extension/issues/1938) Updated now the members who left the guild
+
+- Infobox:
+	- [#1941](https://github.com/mainIine/foe-helfer-extension/issues/1941) if there was a "<" or ">" in the title of a thread, there was an incorrect display
+	  
 
 - EA/Cost Calculator:
 	- [#1921](https://github.com/mainIine/foe-helfer-extension/issues/1921) [#1958](https://github.com/mainIine/foe-helfer-extension/issues/1958) "Flying Island" added
