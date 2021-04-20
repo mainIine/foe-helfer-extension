@@ -626,7 +626,7 @@ let GildFights = {
 			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`; 
 		});
 		if (copy != '') {
-			navigator.clipboard.writeText(copy).then(() => {
+			helper.str.copyToClipboard(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
 					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),
