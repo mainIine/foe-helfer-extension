@@ -39,7 +39,7 @@
     "Boxes.Alerts.Form.Title": "Titre",
     "Boxes.Alerts.Preferences.Auction.Info": "Créer automatiquement une nouvelle notification lorsque je fais une enchère chez le vendeur d'antiquités.",
     "Boxes.Alerts.Preferences.Auction.Title": "Enchère chez le vendeur d'antiquités",
-    "Boxes.Alerts.Preferences.Battlegrounds.Info": "Envoyez une notification en cas d'activité élevée dans les Champs de Bataille de Guilde (CBG), comme par exemple, 10 combats dans un même secteur en 5 secondes. Veuillez noter que cette fonction n'est active que lorsque les Champs de Bataille de Guilde (CBG) sont disponibles dans le jeu !",
+    "Boxes.Alerts.Preferences.Battlegrounds.Info": "Envoyez une notification en cas d'activité élevée en CBG (par exmeple, 10 combats dans un même secteur en 5 secondes). Veuillez noter que cette fonction n'est active que lorsque la fenêtre du CBG est ouverte dans le jeu !",
     "Boxes.Alerts.Preferences.Battlegrounds.Title": "Suivi du Champ de Bataille de Guilde (CBG)",
     "Boxes.Alerts.Preferences.ComingSoon": "Prochainement…  ",
     "Boxes.Alerts.Preferences.Early.Info": "Les alertes générées automatiquement (Vendeur d'antiquités, Champs de Bataille de guilde, etc.) seront programmées avec un décalage pour vous avertir avant que l’événement n'intervienne. Par exemple, configurer cette valeur sur 30 (secondes), vous permettra d'être alerté 30 secondes avant la fin d'une enchère !",
