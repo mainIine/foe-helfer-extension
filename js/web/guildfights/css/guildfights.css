@@ -138,10 +138,17 @@
     position: relative;
 }
 
-#LiveGildFightingBody .tabs > button {
+#LiveGildFightingBody .tabs > button.mapbutton {
 	position: absolute;
 	top: 7px;
 	right: 7px;
+}
+
+#LiveGildFightingBody .tabs > button.copybutton {
+	display: none;
+	position: absolute;
+	top: 7px;
+	right: 64px;
 }
 
 #LiveGildFightingBody #nextup {
