@@ -73,6 +73,7 @@ let GildFights = {
 	ProvinceNames : null,
 	InjectionLoaded: false,
 	PlayerBoxContent: [],
+	CopyCache: [],
 
 	showGuildColumn: 0,
 
@@ -185,6 +186,21 @@ let GildFights = {
 		return GildFights.TabsContent.join('');
 	},
 
+	/**
+	 * 
+	 * @param {boolean} alertActive
+	 * @param {integer} provId 
+	 * @param {integer} alertId 
+	 */
+	GetAlertButton: (alertActive, provId, alertId) => {
+		let btn;
+		if (alertActive) {
+			btn = `<button class="btn-default btn-tight" onclick="GildFights.DeleteAlert(${provId}, ${alertId})">${i18n('Boxes.Gildfights.DeleteAlert')}</button>`;
+		} else {
+			btn = `<button class="btn-default btn-tight" onclick="GildFights.SetAlert(${provId})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
+		}
+		return btn;
+	},
 
 	/**
 	 * Creates the box with the data
@@ -203,7 +219,7 @@ let GildFights = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-                settings: 'GildFights.ShowLiveFightSettings()'
+				settings: 'GildFights.ShowLiveFightSettings()'
 			});
 
 			// add css to the dom
@@ -381,6 +397,7 @@ let GildFights = {
 	 */
 	BuildFightContent: () => {
 
+		GildFights.CopyCache = [];
 		GildFights.Tabs = [];
 		GildFights.TabsContent = [];
 
@@ -446,12 +463,12 @@ let GildFights = {
 					{
 						let pColor = GildFights.SortedColors.find(e => e['id'] === mapdata[i]['ownerId']);
 
-						progress.push(`<tr id="province-${id}" data-id="${id}">`);
+						progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
 
 						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
 						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
-						
+
 						if(GildFights.showGuildColumn) {
 							progress.push(`<td>${gbgGuilds[x]['clan']['name']}</td>`);
 						}
@@ -477,7 +494,7 @@ let GildFights = {
 			// If sectors doesnt belong to anyone
 			if(mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0)
 			{
-				progress.push(`<tr id="province-${id}" data-id="${id}">`);
+				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
 				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
 
 				if(GildFights.showGuildColumn) {
@@ -544,7 +561,7 @@ let GildFights = {
 						GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
-				nextup.push(`<tr id="timer-${prov[x]['id']}">`);
+				nextup.push(`<tr id="timer-${prov[x]['id']}" data-tab="nextup" data-id=${prov[x]['id']}>`);
 				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
 
 				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
@@ -555,11 +572,8 @@ let GildFights = {
 
 				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
-				let content = `<button class="btn-default btn-tight" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
-
-				if(GildFights.Alerts.includes(prov[x]['id'])){
-					content = '&#10004;';
-				}
+				let alert = GildFights.Alerts.find((a) => a.provId == prov[x]['id']);
+				let content = GildFights.GetAlertButton(alert !== undefined, prov[x]['id'], alert !== undefined ? alert.alertId : undefined);
 
 				if(!Alerts){
 					content = '';
@@ -584,18 +598,56 @@ let GildFights = {
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
 			$('.gbg-tabs').tabslet({active: 1});
-
-			$('#LiveGildFighting').on('click', 'tr', function(e){
-
-				if($(this).hasClass('highlight-row'))
-				{
+			$('#LiveGildFighting').on('click', 'tr', function(e) {
+				if ($(this).hasClass('highlight-row')) {
 					$(this).removeClass('highlight-row');
-				}
-				else {
+					if ($(this).data('tab') == 'nextup') {
+						GildFights.RemoveFromCopyCache($(this).data('id'));
+					}
+				} else {
 					$(this).addClass('highlight-row');
+					if ($(this).data('tab') == 'nextup') {
+						GildFights.AddToCopyCache($(this).data('id'));
+					}
 				}
 			});
+			$('#LiveGildFighting').on('copy', function(e) {
+				GildFights.copyToClipBoard();
+			});
 		});
+	},
+
+	AddToCopyCache: (provId) => {
+		GildFights.CopyCache.push(GildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == provId));
+	},
+
+	RemoveFromCopyCache: (provId) => {
+		GildFights.CopyCache = GildFights.CopyCache.filter(elem => elem.id !== provId);
+	},
+
+	copyToClipBoard: () => {
+		let copy = '';
+		GildFights.CopyCache.sort(function(a,b) { return a.lockedUntil - b.lockedUntil});
+		GildFights.CopyCache.forEach((mapElem) => {
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`; 
+		});
+		if (copy != '') {
+			navigator.clipboard.writeText(copy).then(() => {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
+					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),
+					type: 'success',
+					hideAfter: 5000
+				});
+			});
+		} else {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.Gildfights.NoCopyToClipBoard.Title'),
+				text: i18n('Boxes.Gildfights.NoCopyToClipBoard.Desc'),
+				type: 'warning',
+				hideAfter: 5000
+			});
+		}
 	},
 
 
@@ -843,41 +895,44 @@ let GildFights = {
 	},
 
 
-	GetAlerts: ()=> {
-
-		// is alert.js included?
-		if(!Alerts){
-			return ;
-		}
-
-		// fetch all alerts and search the id
-		Alerts.getAll().then((resp)=> {
-			if(resp.length === 0){
-				return ;
+	GetAlerts: async()=> {
+		return new Promise(async (resolve, reject) => {
+			// is alert.js included?
+			if(!Alerts){
+				resolve();
 			}
 
-			let currentTime = MainParser.getCurrentDateTime();
-
-			resp.forEach((alert) => {
-				if(alert['data']['category'] === 'gbg')
-				{
-					let alertTime = alert['data']['expires'],
-						name = alert['data']['title'],
-						prov = GildFights.MapData['map']['provinces'].find(
-							e => e.title === name && alertTime > currentTime
-						);
-
-					GildFights.Alerts.push(prov['id']);
+			// fetch all alerts and search the id
+			return Alerts.getAll().then((resp)=> {
+				if(resp.length === 0){
+						resolve();
 				}
-			})
+
+				let currentTime = MainParser.getCurrentDateTime();
+
+				GildFights.Alerts = [];
+
+				resp.forEach((alert) => {
+					if(alert['data']['category'] === 'gbg')
+					{
+						let alertTime = alert['data']['expires'],
+							name = alert['data']['title'],
+							prov = GildFights.MapData['map']['provinces'].find(
+								e => e.title === name && alertTime > currentTime
+							);
+						if (prov !== undefined) {
+							GildFights.Alerts.push({provId: prov['id'], alertId: alert.id});
+						}
+					}
+				});
+				resolve();
+			});
 		});
 	},
 
 
 	SetAlert: (id)=> {
 		let prov = GildFights.MapData['map']['provinces'].find(e => e.id === id);
-
-		GildFights.Alerts.push(id);
 
 		const data = {
 			title: prov.title,
@@ -896,18 +951,37 @@ let GildFights = {
 			playerId: ExtPlayerID,
 			action: 'create',
 			data: data,
+		}).then((aId) => {
+			GildFights.Alerts.push({provId: id, alertId: aId});		
+			$(`#alert-${id}`).html(GildFights.GetAlertButton(true, id, aId));
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.Gildfights.SaveMessage.Title'),
+				text: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveMessage.Desc'), {provinceName: prov.title}),
+				type: 'success',
+				hideAfter: 5000
+			});
 		});
 
-		HTML.ShowToastMsg({
-			head: i18n('Boxes.Gildfights.SaveMessage.Title'),
-			text: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveMessage.Desc'), {provinceName: prov.title}),
-			type: 'success',
-			hideAfter: 5000
-		});
-
-		$(`#alert-${id}`).html('&#10004;');
 	},
 
+	DeleteAlert: (provId, alertId) => {
+		let prov = GildFights.MapData['map']['provinces'].find(e => e.id === provId);
+		MainParser.sendExtMessage({
+			type: 'alerts',
+			playerId: ExtPlayerID,
+			action: 'delete',
+			id: alertId,
+		}).then(() => {
+			GildFights.Alerts = GildFights.Alerts.filter((a) => a.provId != provId);
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.Gildfights.DeleteMessage.Title'),
+				text: HTML.i18nReplacer(i18n('Boxes.Gildfights.DeleteMessage.Desc'), {provinceName: prov.title}),
+				type: 'success',
+				hideAfter: 5000
+			});
+			$(`#alert-${provId}`).html(GildFights.GetAlertButton(false, provId, alertId));
+		});
+	},
 
 	ShowLiveFightSettings: () => {
 		let c = [];
@@ -1323,7 +1397,7 @@ let ProvinceMap = {
 					break;
 
 				case "z":
-				// ProvinceMap.MapCTX.closePath();
+					// ProvinceMap.MapCTX.closePath();
 			}
 		}
 
