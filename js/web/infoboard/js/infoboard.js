@@ -427,7 +427,7 @@ let Info = {
 
             if (chat['escaped_title'] === undefined) { 
                 chat['escaped_title'] = HTML.escapeHtml(chat['title']); 
-}
+            }
 
             if (d['sender'] && d['sender']['name'])
             {
