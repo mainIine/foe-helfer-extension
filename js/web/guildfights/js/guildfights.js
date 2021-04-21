@@ -594,11 +594,7 @@ let GildFights = {
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
 			$('.gbg-tabs').tabslet({active: 1});
 			$('.gbg-tabs').on('_after', (e) => {
-				if ($('#nextup').is(':visible') && GildFights.CopyCache.length > 0) {
-					$('.copybutton').show();
-				} else {
-					$('.copybutton').hide();
-				}
+				GildFights.ToggleCopyButton();
 			});
 			$('#LiveGildFighting').on('click', '.deletealertbutton', (e) => {
 				GildFights.DeleteAlert($(e.target).data('id'));
@@ -614,27 +610,33 @@ let GildFights = {
 					$(tr).removeClass('highlight-row');
 					if ($('#nextup').is(':visible')) {
 						GildFights.RemoveFromCopyCache($(tr).data('id'));
-						if (GildFights.CopyCache.length == 0) {
-							$('.copybutton').hide();
-						}
 					}
 				} else {
 					$(tr).addClass('highlight-row');
 					if ($('#nextup').is(':visible')) {
 						GildFights.AddToCopyCache($(tr).data('id'));
-						$('.copybutton').show();
 					}
 				}
 			});
 		});
 	},
 
+	ToggleCopyButton: () => {
+		if ($('#nextup').is(':visible') && GildFights.CopyCache.length > 0) {
+			$('.copybutton').show();
+		} else {
+			$('.copybutton').hide();
+		}
+	},
+
 	AddToCopyCache: (provId) => {
 		GildFights.CopyCache.push(GildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == provId));
+		GildFights.ToggleCopyButton();
 	},
 
 	RemoveFromCopyCache: (provId) => {
 		GildFights.CopyCache = GildFights.CopyCache.filter(elem => elem.id !== provId);
+		GildFights.ToggleCopyButton();
 	},
 
 	CopyToClipBoard: () => {
