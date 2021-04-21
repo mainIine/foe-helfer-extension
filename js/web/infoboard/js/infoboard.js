@@ -425,22 +425,24 @@ let Info = {
                 image = 'msg-favorite';
             }
 
-            chat['title'] = HTML.escapeHtml(chat['title']);
+            if (chat['escaped_title'] === undefined) { 
+                chat['escaped_title'] = HTML.escapeHtml(chat['title']); 
+}
 
             if (d['sender'] && d['sender']['name'])
             {
                 // normale Chatnachricht (bekannte ID)
                 if (d['sender']['name'] === chat['title'])
                 {
-                    header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
+                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
                 }
                 else {
-                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
+                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
                 }
             }
             else {
                 // Chatnachricht vom System (Betreten/Verlassen)
-                header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
+                header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
             }
         }
         else {
