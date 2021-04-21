@@ -73,8 +73,7 @@ let GildFights = {
 	ProvinceNames : null,
 	InjectionLoaded: false,
 	PlayerBoxContent: [],
-	CopyCache: [],
-
+	
 	showGuildColumn: 0,
 
 	Tabs: [],
@@ -561,7 +560,7 @@ let GildFights = {
 						GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
-				nextup.push(`<tr id="timer-${prov[x]['id']}" data-tab="nextup" data-id=${prov[x]['id']}>`);
+				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
 				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
 
 				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
@@ -591,58 +590,47 @@ let GildFights = {
 		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.buildMap()">MAP</button>');
 		h.push('</div>');
 
-		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
+		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function() {
 			$('.gbg-tabs').tabslet({active: 1});
 			$('.gbg-tabs').on('_after', (e) => {
 				GildFights.ToggleCopyButton();
 			});
-			$('#LiveGildFighting').on('click', '.deletealertbutton', (e) => {
-				GildFights.DeleteAlert($(e.target).data('id'));
+			$('#LiveGildFighting').on('click', '.deletealertbutton', function (e) {
+				GildFights.DeleteAlert($(this).data('id'));
 				e.stopPropagation();
 			});
-			$('#LiveGildFighting').on('click', '.setalertbutton', (e) => {
-				GildFights.SetAlert($(e.target).data('id'));
+			$('#LiveGildFighting').on('click', '.setalertbutton', function (e) {
+				GildFights.SetAlert($(this).data('id'));
 				e.stopPropagation();
 			});
-			$('#LiveGildFighting').on('click', 'tr', (e) => {
-				let tr = e.target.parentElement;
-				if ($(tr).hasClass('highlight-row')) {
-					$(tr).removeClass('highlight-row');
-					if ($('#nextup').is(':visible')) {
-						GildFights.RemoveFromCopyCache($(tr).data('id'));
-					}
+			$('#LiveGildFighting').on('click', 'tr', function () {
+				if ($(this).hasClass('highlight-row')) {
+					$(this).removeClass('highlight-row');
+					GildFights.ToggleCopyButton();
 				} else {
-					$(tr).addClass('highlight-row');
-					if ($('#nextup').is(':visible')) {
-						GildFights.AddToCopyCache($(tr).data('id'));
-					}
+					$(this).addClass('highlight-row');
+					GildFights.ToggleCopyButton();
 				}
 			});
 		});
 	},
 
 	ToggleCopyButton: () => {
-		if ($('#nextup').is(':visible') && GildFights.CopyCache.length > 0) {
+		if ($('#nextup').is(':visible') && $('.timer.highlight-row').length > 0) {
 			$('.copybutton').show();
 		} else {
 			$('.copybutton').hide();
 		}
 	},
 
-	AddToCopyCache: (provId) => {
-		GildFights.CopyCache.push(GildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == provId));
-		GildFights.ToggleCopyButton();
-	},
-
-	RemoveFromCopyCache: (provId) => {
-		GildFights.CopyCache = GildFights.CopyCache.filter(elem => elem.id !== provId);
-		GildFights.ToggleCopyButton();
-	},
-
 	CopyToClipBoard: () => {
 		let copy = '';
-		GildFights.CopyCache.sort(function(a,b) { return a.lockedUntil - b.lockedUntil});
-		GildFights.CopyCache.forEach((mapElem) => {
+		let copycache = []; 
+		$('.timer.highlight-row').each(function() {
+			copycache.push(GildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
+		})
+		copycache.sort(function(a,b) { return a.lockedUntil - b.lockedUntil});
+		copycache.forEach((mapElem) => {
 			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`; 
 		});
 		if (copy != '') {
@@ -697,7 +685,7 @@ let GildFights = {
 			setTimeout(()=> {
 				$(`#timer-${id}`).fadeToggle(function(){
 					$(this).remove();
-					GildFights.RemoveFromCopyCache(id);
+					GildFights.ToggleCopyButton();
 				});
 			}, 10000);
 		}
