@@ -906,5 +906,6 @@
     "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
     "_Language": "Deutsch",
-    "quests.CounterTooltip.Content": "Es gibt ein Limit von 2000 übersprungenen Quests pro Tag"
+    "quests.CounterTooltip.Content": "Es gibt ein Limit von 2000 übersprungenen Quests pro Tag",
+	"Boxes.FPCollector.chestEventGrandPrize": "Event Liga-Ergebniss"
 }
