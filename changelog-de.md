@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.7.2
+
+**BugFix**
+
+- Gildenmitglieder Statistik:
+	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau
+
+---
+
 ##### 2.5.7.1
 
 **BugFix**
