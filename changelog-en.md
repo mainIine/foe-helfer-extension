@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.7.2
+
+**BugFix**
+
+- Guild members statistics:
+	- The calculation of guild power was inaccurate in certain cases
+
+---
+
 ##### 2.5.7.1
 
 **BugFix**
