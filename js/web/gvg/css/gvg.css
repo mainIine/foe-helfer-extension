@@ -13,9 +13,19 @@
 
 #gvg-hud {
 	position: absolute;
-	left: 407px;
+	left: 405px;
 	z-index: 100;
-	top: 3px;
+	top: 3px;    
+	width: 64px;
+    height: 28px;
+    overflow: hidden;
+	transition: 0.3s all linear;
+}
+
+#gvg-hud:hover {
+	overflow: auto;
+	height: auto;
+	background: url('../../../../css/images/hud/box-bg.png');
 }
 
 #gvg-hud div {
@@ -32,16 +42,22 @@
 	font-size: 0.75rem;
 	font-weight: 400;
 	color: #f7dba4;
-	text-align: left;
+	text-align: center;
+	padding: 3px 6px 3px 33px;
+	background: var(--black-50);
+	width: 60px;
+	margin: 0 0 2px 2px;
 }
 
 #gvg-hud .independences {
 	background: var(--black-50) url('../../x_img/gvg-independences.png') no-repeat 3px center;
-	padding: 3px 3px 3px 33px;
-	width: 60px;
 }
 
 #gvg-hud .sieges {
-	background: var(--black-50) url('../../x_img/gvg-sieges.png') no-repeat 3px center;
-	padding: 3px 6px 3px 28px;
+	background: var(--black-50) url('../../x_img/gvg-sieges.png') no-repeat 6px center;
+}
+
+#gvg-hud .defenders {
+	background: var(--black-50) url('../../x_img/gvg-defenders.png') no-repeat 6px center;
+	background-size: 20px 20px;
 }
