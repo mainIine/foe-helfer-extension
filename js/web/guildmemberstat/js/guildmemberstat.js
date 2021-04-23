@@ -301,9 +301,9 @@ let GuildMemberStat = {
 						}
 
 						// Check for clan power building (Ehrenstatue etc.)
-						if (Ability['additionalResources'][Member.era] !== undefined && Ability['additionalResources'][Member.era]['resources'] !== undefined && Ability['additionalResources'][Member.era]['resources']['clan_power'] !== undefined)
+						if (era !== null && Ability['additionalResources'][era] !== undefined && Ability['additionalResources'][era]['resources'] !== undefined && Ability['additionalResources'][era]['resources']['clan_power'] !== undefined)
 						{
-							let clan_power = Ability['additionalResources'][Member.era]['resources']['clan_power'];
+							let clan_power = Ability['additionalResources'][era]['resources']['clan_power'];
 							GuildPowerBuildings.push({ entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: eraId, era: era });
 						}
 
@@ -1234,7 +1234,7 @@ let GuildMemberStat = {
 								let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
 								let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
 								totalPower += powerCount;
-								d.push(`<tr><td>${countBuilding} x  ${plbuilding.name} ${plbuilding.level !== null ? '(' + plbuilding.level + ')' : ''}</td><td class="text-right">${HTML.Format(powerCount)}</td></tr>`);
+								d.push(`<tr><td>${countBuilding} x  ${plbuilding.name}</td><td class="text-right">${HTML.Format(powerCount)}</td></tr>`);
 							});
 
 							d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildPower')}</td><td class="text-right text-bright">${HTML.Format(totalPower)}</td></tr>`);
