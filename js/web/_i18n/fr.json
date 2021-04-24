@@ -877,7 +877,7 @@
     "Settings.ShowOwnPartOnAllGBs.Title": "Calculatrice GM externe",
     "Settings.ShowPlayersMotivation.Desc": "Les activités de PO/MO devraient-elles être enregistrées à chaque occurrence d'un événement ?<br><br><em>Recharger le jeu après modification</em>",
     "Settings.ShowPlayersMotivation.Title": "Activité PO/MO",
-    "Settings.ShowRougeUnitWarning.Desc": "Placer une boîte sur les boutons \"Attaque\" ou \"Bataille auto.\" afin d'éviter une défaite s'il ne reste que des voyous après la première vague.<br>Si de précieuses unités d'une future ère ont été tuées, cette case vous donne la chance de les soigner avec des diamants.",
+    "Settings.ShowRougeUnitWarning.Desc": "Masquer les boutons \"Attaque\" et \"Bataille auto.\" afin d'éviter une défaite s'il ne reste que des voyous après la première vague.<br>Si de précieuses unités d'une future ère ont été tuées, cette option vous donne la chance de les soigner avec des diamants.",
     "Settings.ShowRougeUnitWarning.Title": "Afficher les aides au combat",
     "Settings.Tab.About": "À propos",
     "Settings.Tab.Boxes": "Fenêtres",
