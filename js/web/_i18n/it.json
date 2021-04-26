@@ -122,7 +122,7 @@
     "Boxes.CityMap.HighlightOldBuildings": "Evidenzia costruzioni dell'Era più antica",
     "Boxes.CityMap.NormalPerspecitve": "Vista dall'alto",
     "Boxes.CityMap.ShowSubmitBox": "Mostra casella di invio dati",
-    "Boxes.CityMap.SubmitError": "I dati della tua città non potevano essere inviati al server. Per favore, fai notare questo errore direttamente a",
+    "Boxes.CityMap.SubmitError": "I dati della tua città non potevano essere inviati al server. Per favore, fai notare questo errore direttamente a ",
     "Boxes.CityMap.SubmitErrorHeader": "È avvenuto un errore",
     "Boxes.CityMap.SubmitSuccess": "I dati sono stati trasferiti correttamente…  Ora visita ",
     "Boxes.CityMap.TitleSend": "Invia dati",
