@@ -164,6 +164,7 @@
     "Boxes.FPCollector.battlegrounds_conquest": "GBG (after negotiation or fight)",
     "Boxes.FPCollector.chest": "GE reward",
     "Boxes.FPCollector.chestEvent": "Event Reward",
+    "Boxes.FPCollector.chestEventGrandPrize": "Event league result",
     "Boxes.FPCollector.collectReward": "Reward",
     "Boxes.FPCollector.dailyChallenges": "Daily Challenge",
     "Boxes.FPCollector.diplomaticGifts": "Diplomatic Gift",
@@ -876,7 +877,7 @@
     "Settings.ShowOwnPartOnAllGBs.Title": "Display the  'GB calculator' for all GBs",
     "Settings.ShowPlayersMotivation.Desc": "Should the motivation activities be tracked when the events are called?<br><br><em>Reload game after conversion</em>",
     "Settings.ShowPlayersMotivation.Title": "Motivation Activity",
-    "Settings.ShowRougeUnitWarning.Desc": "Display a window over the \"Attack\" or \"Auto Battle\" buttons to prevent accidental clicking when only Rogues remain after the first wave.<br>If units of a higher era were killed, this widow gives you the chance to heal them with diamonds.",
+    "Settings.ShowRougeUnitWarning.Desc": "Display a window over the \"Attack\" or \"Auto Battle\" buttons to prevent accidental clicking when only Rogues remain after the first wave.<br>If units of a higher era were killed, this window gives you the chance to heal them with diamonds.",
     "Settings.ShowRougeUnitWarning.Title": "Show battle assists",
     "Settings.Tab.About": "About",
     "Settings.Tab.Boxes": "Boxes",
@@ -906,6 +907,5 @@
     "WsChat.UserReEnter": " has entered the room again.",
     "WsChat.World": "World - ",
     "_Language": "English",
-    "quests.CounterTooltip.Content": "There is a limit of 2000 rejected quests per day",
-	"Boxes.FPCollector.chestEventGrandPrize": "Event league result"
+    "quests.CounterTooltip.Content": "There is a limit of 2000 rejected quests per day"
 }

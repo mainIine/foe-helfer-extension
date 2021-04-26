@@ -201,7 +201,7 @@ let Market = {
 								${i18n('Boxes.Market.AllGoods')}
 							</span>`);
 
-							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							for (let era = 0; era <= Technologies.Eras.SpaceAgeVenus - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
@@ -242,7 +242,7 @@ let Market = {
 								${i18n('Boxes.Market.AllGoods')}
 							</span>`);
 
-							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							for (let era = 0; era <= Technologies.Eras.SpaceAgeVenus - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
