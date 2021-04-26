@@ -1637,9 +1637,9 @@ let GuildMemberStat = {
 		}
 		d.push(`<table id="TreasuryGoodsTable" class="foe-table"><thead><tr><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th> ${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th><th> ${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th></thead><tbody>`);
 
-		for (let eraId in Object.keys(Technologies.Eras))
+		for (let eraId = Technologies.Eras.IronAge; eraId < Technologies.Eras.NextEra; eraId++)
 		{
-			if (eraId < 3 || Technologies.EraNames[eraId] === undefined) { continue; }
+			if (Technologies.EraNames[eraId] === undefined) continue;
 
 			d.push(`<tr><td>${i18n('Eras.' + eraId)}</td>`);
 

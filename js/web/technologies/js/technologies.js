@@ -96,6 +96,7 @@ let Technologies = {
         SpaceAgeMars: 18,
         SpaceAgeAsteroidBelt: 19,
         SpaceAgeVenus: 20,
+        NextEra: 21,
     },
 
 
@@ -257,7 +258,7 @@ let Technologies = {
         }
 
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
-            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeVenus']);
+            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras.NextEra - 1);
 
         h.push('<div class="dark-bg" style="margin-bottom: 3px">');
 	        h.push('<div class="techno-head">');
