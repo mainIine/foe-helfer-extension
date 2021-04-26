@@ -180,6 +180,7 @@
     "Boxes.FPCollector.winterEvent": "Winterevent",
     "Boxes.FPCollector.winterEventGandPrice": "Winterevent Hauptpreis",
     "Boxes.FPCollector.winterEventGrandPrice": "Winterevent Hauptpreis",
+    "Boxes.General.Export": "Export",
     "Boxes.General.ExportCSV": "Exportieren als CSV",
     "Boxes.General.ExportJSON": "Exportieren als jSON",
     "Boxes.Gildfights.CopyToClipBoard.Desc": "Die Angriffszeiten für die ausgewählten Provinzen wurde kopiert.",
