@@ -181,6 +181,7 @@
     "Boxes.FPCollector.winterEvent": "Événement hivernal",
     "Boxes.FPCollector.winterEventGandPrice": "Grand prix de l'événement hivernal",
     "Boxes.FPCollector.winterEventGrandPrice": "Grand prix de l'événement hivernal",
+    "Boxes.General.Export": "Exporter",
     "Boxes.General.ExportCSV": "Exporter en CSV",
     "Boxes.General.ExportJSON": "Exporter en jSON",
     "Boxes.Gildfights.Count": "dans",
