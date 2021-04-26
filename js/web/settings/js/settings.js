@@ -486,7 +486,7 @@ let Settings = {
 	 */
 	MenuContent: () => {
 		let bl = $('<div />'),
-			menuItems = _menu.Items,
+			menuItems = Array.from(_menu.Items),
 			HiddenItems = localStorage.getItem('MenuHiddenItems'),
 			hiddenArray = [];
 
@@ -494,9 +494,6 @@ let Settings = {
 		if (HiddenItems !== null) {
 			hiddenArray = JSON.parse(HiddenItems);
 			menuItems.push(...hiddenArray);
-
-			// remove dublicates
-			menuItems = menuItems.filter((item, index) => menuItems.indexOf(item) === index);
 		}
 
 		for (let i in menuItems)
