@@ -666,6 +666,7 @@
     "GvG.Independences.Tooltip.Warning": "Kann ungenau sein, wenn du an mehreren Desktop-Geräten spielst.",
     "HiddenRewards.Positions.cityRoadBig": "zweispurige Strasse",
     "HiddenRewards.Positions.cityRoadSmall": "einspurige Strasse",
+    "HiddenRewards.Positions.culturalOutpost": "Scherbe - Kult. Siedlung",
     "HiddenRewards.Positions.guildExpedition": "Gildenexpedition",
     "HiddenRewards.Positions.nature": "Natur",
     "HiddenRewards.Positions.shore": "Küste",
@@ -915,5 +916,5 @@
     "WsChat.World": "Welt - ",
     "_Language": "Deutsch",
     "quests.CounterTooltip.Content": "Es gibt ein Limit von 2000 übersprungenen Quests pro Tag",
-	"Boxes.FPCollector.chestEventGrandPrize": "Event Liga-Ergebniss"
+    "Boxes.FPCollector.chestEventGrandPrize": "Event Liga-Ergebniss"
 }
