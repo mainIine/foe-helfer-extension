@@ -2,6 +2,12 @@
 
 ##### 2.5.7.2
 
+**New**
+
+- Guild members statistics:
+	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) Export function for each tab of the statistics.
+	- Detail view of all guild buildings (revisit of all guild members recommended) 
+
 **BugFix**
 
 - Guild members statistics:

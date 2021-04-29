@@ -226,9 +226,19 @@
     border-color: #ff0000 transparent transparent transparent;
 }
 
+#GuildMemberStatBody table tr.outdated{
+    text-decoration: line-through;
+}
+
+#GuildMemberStatBody .view_notification{
+    padding: 5px 0 5px 10px;
+    line-height: 25px;
+}
+
 #GuildMemberStatBody .detail-wrapper {
     display: flex;
     flex-wrap: wrap;
+    clear: both;
 }
 
 #GuildMemberStatBody .detail-item {
@@ -455,4 +465,8 @@
 
 #GuildMemberStat #TreasuryGoodsTable tbody tr td.detail tr:last-child td {
     border-bottom: none;
+}
+
+#GuildMemberStatBody .buildinglist.hide {
+    display:none;
 }
