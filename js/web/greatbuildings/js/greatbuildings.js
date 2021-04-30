@@ -697,7 +697,7 @@ let GreatBuildings =
 
         let Level10 = CityEntity['strategy_points_for_upgrade'][9];
 
-        if (TotalFP <= 10) {
+        if (TotalFP <= Level10) {
             for (let i = 0; i < 10; i++) {
                 if (CityEntity['strategy_points_for_upgrade'][i] === TotalFP)
                     return (i + 1);
