@@ -434,7 +434,13 @@ let Parts = {
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
 
 		if (Parts.IsPreviousLevel) {
-			h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+			let Level = GreatBuildings.GetLevel(cityentity_id, Total);
+			if (Level) {
+				h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + (Level-1) + ' &rarr; ' + (Level));
+			}
+			else { //Level unbekannt
+				h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+            }
 		}
 		else {
 			if (Parts.IsNextLevel) {
