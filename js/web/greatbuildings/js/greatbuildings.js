@@ -692,6 +692,26 @@ let GreatBuildings =
     },
 
 
+    GetLevel: (EntityID, TotalFP) => {
+        let CityEntity = MainParser.CityEntities[EntityID];
+
+        let Level10 = CityEntity['strategy_points_for_upgrade'][9];
+
+        if (TotalFP <= Level10) {
+            for (let i = 0; i < 10; i++) {
+                if (CityEntity['strategy_points_for_upgrade'][i] === TotalFP)
+                    return (i + 1);
+            }
+            return undefined;
+        }
+        else {
+            let Factor = TotalFP / Level10;
+
+            return 10 + Math.round(Math.log(Factor) / Math.log(1.025));
+        }
+    },
+
+
     GetMaezen: (P1, ArcBoni) => {
         let Ret = [];
 
