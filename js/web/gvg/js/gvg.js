@@ -12,15 +12,18 @@
  */
 
 FoEproxy.addHandler('ClanBattleService', 'grantIndependence', (data, postData) => {
-    GvG.AddIndepences(data.responseData.__class__);
+    //GvG.AddCount(data.responseData.__class__, GvG.Independences, 'GvGIndependencesCount');
+	GvG.AddIndepences(data.responseData.__class__);
 });
 
 FoEproxy.addHandler('ClanBattleService', 'deploySiegeArmy', (data, postData) => {
-    GvG.AddSieges(data.responseData.__class__);
+    //GvG.AddCount(data.responseData.__class__, GvG.Defenders, 'GvGDefendersCount');
+	GvG.AddSieges(data.responseData.__class__);
 });
 
 FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData) => {
-    GvG.AddDefenders(data.responseData.__class__);
+    //GvG.AddCount(data.responseData.__class__, GvG.Sieges, 'GvGSiegesCount');
+	GvG.AddDefenders(data.responseData.__class__);
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
@@ -85,10 +88,30 @@ let GvG = {
     /**
 	 * Add Granted Indepence on GvGMap
 	 * @param data
+	 *
+	 AddCount: (data, variable, local)=> {
+		let nextCalc = localStorage.getItem('GvGRecalcTime')*1 || 0;
+		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
+
+		console.log(nextCalc, time);
+		if (data === "Success") {
+			if (time != nextCalc) {
+				GvG.ResetData();
+			}
+			variable++;
+		}
+
+		localStorage.setItem(local, variable);
+		GvG.ShowGvgHud();
+	},
+
+    /**
+	 * Add Granted Indepence on GvGMap
+	 * @param data
 	 */
 	 AddIndepences: (data)=> {
 		let nextCalc = localStorage.getItem('GvGRecalcTime')*1 || 0;
-		let time = MainParser.getCurrentDateTime()/1000; 
+		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 
 		console.log(nextCalc, time);
 		if (data === "Success") {
@@ -108,9 +131,9 @@ let GvG = {
 	 */
 	 AddDefenders: (data)=> {
 		let nextCalc = localStorage.getItem('GvGRecalcTime')*1 || 0;
-		let time = MainParser.getCurrentDateTime()/1000; 
+		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 
-		console.log(nextCalc, time);
+		console.log('Defender added', nextCalc, time);
 		if (data === "Success") {
 			if (time > nextCalc) {
 				GvG.ResetData();
@@ -128,7 +151,7 @@ let GvG = {
 	 */
 	 AddSieges: (data)=> {
 		let nextCalc = localStorage.getItem('GvGRecalcTime')*1 || 0;
-		let time = MainParser.getCurrentDateTime()/1000; 
+		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 
 		console.log("Siege placed", nextCalc, time);
 		if (data === "Success") {
@@ -149,6 +172,8 @@ let GvG = {
 	 SetRecalc: (calcTime)=> {
 
 		if (GvG.NextCalc != calcTime) {
+			//if (calcTime > GvG.NextCalc)
+			//	GvG.ResetData();
 			localStorage.setItem('GvGRecalcTime', calcTime);
 		}
 		GvG.ShowGvgHud();
@@ -160,15 +185,17 @@ let GvG = {
 	 * Reset all Data
 	 */
 	ResetData() {
+		console.log('reset');
 		let time = MainParser.getCurrentDateTime()/1000; 
 
 		GvG.Independences = 0;
 		GvG.Sieges = 0;
 		GvG.Defenders = 0;
+		GvG.NextCalc = time+80000;
 		
 		localStorage.setItem('GvGIndependencesCount', GvG.Independences);
 		localStorage.setItem('GvGSiegesCount', GvG.Sieges);
 		localStorage.setItem('GvGDefendersCount', GvG.Defenders);
-		localStorage.setItem('GvGRecalcTime', time+86400);
+		localStorage.setItem('GvGRecalcTime', GvG.NextCalc);
 	}
 }
