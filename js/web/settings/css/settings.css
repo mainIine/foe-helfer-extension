@@ -222,4 +222,5 @@
 .setting .hud-btn {
 	margin-right: 6px;
 	margin-bottom: 6px;
+	float: left;
 }
