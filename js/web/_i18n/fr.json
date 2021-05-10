@@ -304,7 +304,7 @@
     "Boxes.Investment.DateParseErrorDesc": "La valeur \"__InvalidDate__\" n'a pas pu être interprétée comme une date",
     "Boxes.Investment.HiddenGB": "Nombre de GM masqués",
     "Boxes.Investment.InvestBar": "PF investis : ",
-    "Boxes.Investment.Overview.AdditionalColumns": "Colonne additionnelle",
+    "Boxes.Investment.Overview.AdditionalColumns": "Colonnes additionnelles",
     "Boxes.Investment.Overview.Blueprints": "Plans",
     "Boxes.Investment.Overview.Building": "Grand Monument",
     "Boxes.Investment.Overview.EntryTime": "Date",
