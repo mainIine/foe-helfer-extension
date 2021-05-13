@@ -214,6 +214,9 @@ let IndexDB = {
                 // rewards
                 rewards: 'date', // Collected rewards by Himeji, etc
                 rewardTypes: 'id', // Human readable cache info about rewards
+				// aid rewards
+                aidRewards: 'date', // Collected rewards by aiding
+                aidRewardTypes: 'id', // Human readable cache info about aid rewards
                 // units
                 unitsDaily: 'date',
                 units: 'date',
