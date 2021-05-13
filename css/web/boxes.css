@@ -1126,7 +1126,7 @@ FP-Bar */
 }
 
 .tooltip.in {
-	opacity: 0.9;
+	opacity: 1;
 	filter: alpha(opacity=90);
 }
 

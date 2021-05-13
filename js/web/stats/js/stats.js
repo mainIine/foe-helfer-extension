@@ -35,11 +35,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
     await IndexDB.getDB();
 
 	for (let reward of rewards) {
-		// default is incident reward
-		if (rewardIncidentSource === 'default') {
-			continue;
-		}
-
+		
 		// Add reward info to the db
 		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
 			// Reduce amount of saved data
@@ -129,6 +125,32 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 	});
 });
 
+//Aid log
+FoEproxy.addHandler('OtherPlayerService', 'rewardResources', async (data, postData) => {
+	const r = data.responseData;
+	if (!Array.isArray(r)) {
+		return;
+	}
+	const [aidRewards, aidRewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
+
+    await IndexDB.getDB();
+
+	for (let reward of aidRewards) {
+
+		// Add reward info to the db
+		if (!(await IndexDB.db.statsAidRewardTypes.get(reward.resources))) {
+			delete reward.__class__;
+			await IndexDB.db.statsAidRewardTypes.put(reward);
+		}
+
+		// Add reward incident record
+		await IndexDB.db.statsAid.add({
+			date: MainParser.getCurrentDate(),
+			type: aidRewardIncidentSource,
+			amount: reward.resources.money || 0
+		});
+	}
+});
 
 /**
  * @type {{RenderOptions: (function(): string), isSelectedUnitSources: (function(): boolean), DatePickerObj: null, applyDeltaToSeriesIfNeed: (function({series: *, [p: string]: *}): {series: *, chartType: string}), shortEraName: (function(*): (void|string|*)), Render: (function(): Promise<void>), RenderButton: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), updateCharts: (function(): Promise<void>), getSelectedEras: (function(): string[]), updateOptions: Stats.updateOptions, treasureSources: [string, string, string, string], createUnitsSeries: (function(): Promise<{series, pointFormat: string, footerFormat: string}>), loadHighcharts: (function(): Promise<void>), RemoveTable: Stats.RemoveTable, createTreasureSeries: (function(): Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>), ResMap: {NoAge: [string, string, string, string, string], special: [string, string, string, string]}, RenderCheckbox: (function({name: *, isActive: *, dataType: *, value: *}): string), state: {eras: {}, showAnnotations: boolean, period: string, currentType: null, chartType: string, rewardSource: string, eraSelectOpen: boolean, source: string, isGroupByEra: boolean}, createRewardSeries: (function(): Promise<{series: {data: this, name: string}[], title: string}>), isVisitingCulturalOutpost: boolean, isSelectedGBGSources: (function(): boolean), gbgSources: [string], promisedLoadCode: (function(*=): Promise<unknown>), createGBGSeries: (function(*=): Promise<{series: {data, avatarUrl: (string), name: string}[], pointFormat: string}>), createTreasureGroupByEraSeries: (function(): Promise<{series: {data, name: *}[]}>), RenderTab: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), kilos: (function(*=): string), HandlePlayerLeaderboard: (function(*=): Promise<undefined>), isSelectedTreasureSources: (function(): boolean), RenderBox: (function({name: *, isActive: *, disabled: *, dataType: *, value: *}): string), getAnnotations: (function(): Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: {useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}[]}>), updateCommonChart: (function({series: *, colors?: *, pointFormat?: *, footerFormat?: *, chartType?: *}): Promise<void>), RenderSecondaryOptions: (function(): string), PlayableEras: string[], unitSources: [string, string], equals: (function(*=, *=): boolean), isSelectedRewardSources: (function(): boolean), Show: Stats.Show, RenderEraSwitchers: (function(): string), updateRewardCharts: Stats.updateRewardCharts, rewardSources: [string]}}
@@ -180,6 +202,7 @@ let Stats = {
 	unitSources: ['statsUnitsH', 'statsUnitsD'],
 	rewardSources: ['statsRewards'],
 	gbgSources: ['statsGBGPlayers'],
+	aidSources: ['statsAid'],
 	isSelectedTreasureSources: () => Stats.treasureSources.includes(Stats.state.source),
 	isSelectedUnitSources: () => Stats.unitSources.includes(Stats.state.source),
 	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
@@ -258,34 +281,30 @@ let Stats = {
 						Stats.state.eras = {};
 						Object.keys(Stats.ResMap).map(it => Stats.state.eras[it] = true);
 
-					} else
-						if (isChangedToMyTreasure) {
-							// If changed to player's treasure select 2 last eras
-							Stats.state.eras = {};
-							Stats.state.eras = {
-								[Technologies.EraNames[CurrentEraID]]: true,
-							};
+					} else if (isChangedToMyTreasure) {
+						// If changed to player's treasure select 2 last eras
+						Stats.state.eras = {};
+						Stats.state.eras = {
+							[Technologies.EraNames[CurrentEraID]]: true,
+						};
+						if (CurrentEraID > 2) {
+							Stats.state.eras[Technologies.EraNames[CurrentEraID - 1]] = true;
+						}
 
-							if (CurrentEraID > 2) {
-								Stats.state.eras[Technologies.EraNames[CurrentEraID - 1]] = true;
-							}
+					} else if (isChangedToClanTreasure) {
+						// If changed to treasure select all playable eras
+						Stats.state.eras = {};
+						Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
 
-						} else
-							if (isChangedToClanTreasure) {
-								// If changed to treasure select all playable eras
-								Stats.state.eras = {};
-								Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
+					} else if (isChangedToGBG) {
+						Stats.state.chartType = 'delta';
+						Stats.isGG = true;
 
-							} else
-								if (isChangedToGBG) {
-									Stats.state.chartType = 'delta';
-									Stats.isGG = true;
+					} else if (isChangedToReward) {
+						Stats.state.period = 'sinceTuesday';
+						Stats.state.rewardSource = 'guildExpedition';
 
-								} else
-									if (isChangedToReward) {
-										Stats.state.period = 'sinceTuesday';
-										Stats.state.rewardSource = 'guildExpedition';
-									}
+					}
 
 					Stats.state.source = value || 'statsTreasurePlayerH';
 					break;
@@ -524,11 +543,12 @@ let Stats = {
 		//btnsPeriodSelect.push('<input class="game-cursor" id="GVGDatePicker" type="text">');
 
 		const btnsRewardSelect = [
-			'__event',
-			'battlegrounds_conquest', // Battle ground
+			'default', //incidents
+			'__event', //event rewards
+			'battlegrounds_conquest', // Battlegrounds
 			'guildExpedition', // Temple of Relics
 			'spoilsOfWar', // Himeji Castle
-			'diplomaticGifts',
+			'diplomaticGifts', //Space Carrier
 		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Rewards.Source.' + it),
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),
@@ -1151,8 +1171,14 @@ let Stats = {
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
 					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
-				} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-					url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+					//fix for fragment missing images for buildings
+					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
+						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
+							url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+						}
+					}
+				}else if (rewardInfo.type == 'building' && rewardInfo.subType) {
+						url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
 				}
 				if (url) {
 					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`;

@@ -116,6 +116,8 @@ let IndexDB = {
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
             statsRewards: 'date', // Collected rewards by Himeji, etc
             statsRewardTypes: 'id', // Human readable cache info about rewards
+			statsAidRewards: 'date', // Collected rewards by aiding
+            statsAidRewardTypes: 'id', // Human readable cache info about aid rewards
             statsUnitsD: 'date',
             statsUnitsH: 'date',
             statsTreasurePlayerH: 'date',
@@ -134,6 +136,8 @@ let IndexDB = {
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
             statsRewards: 'date', // Collected rewards by Himeji, etc
             statsRewardTypes: 'id', // Human readable cache info about rewards
+			statsAidRewards: 'date', // Collected rewards by aiding
+            statsAidRewardTypes: 'id', // Human readable cache info about aid rewards
             statsUnitsD: 'date',
             statsUnitsH: 'date',
             statsTreasurePlayerH: 'date',
@@ -247,6 +251,8 @@ let IndexDB = {
                 statsGBGPlayerCache: 'playerCache',
                 statsRewards: 'rewards',
                 statsRewardTypes: 'rewardTypes',
+				statsAidRewards: 'aidRewards',
+                statsAidRewardTypes: 'aidRewardTypes',
                 statsUnitsD: 'unitsDaily',
                 statsUnitsH: 'units',
                 statsTreasurePlayerH: 'treasurePlayer',
