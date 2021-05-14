@@ -383,7 +383,7 @@ let IndexDB = {
         await IndexDB.db.players.clear();
         await IndexDB.db.greatbuildings.clear();
 
-        for (const table of ['statsRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
+        for (const table of ['statsRewards','statsAidRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
             await IndexDB.db[table].where('date').below(daylyExpiryTime).delete();
         }
 
