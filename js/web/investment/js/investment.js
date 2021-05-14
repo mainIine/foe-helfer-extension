@@ -181,7 +181,7 @@ let Investment = {
 		
 		if(showBlueprints)
 		{
-			h.push('<th class="is-number text-center" data-type="invest-group"><span class="blueprints" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Blueprints')) + '"></span></th><th></th>');
+			h.push('<th class="is-number text-center" data-type="invest-group"><span class="blueprints" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Blueprints')) + '"></span></th>');
 		}
 		
 		h.push('<th></th></tr></thead><tbody class="invest-group">');
