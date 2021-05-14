@@ -23,19 +23,31 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, po
 		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 	}
 });
-
+//Currently in Outpost
+var city = 0;
+FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
+	if (data.responseData['gridId'] === 'cultural_outpost') {
+		city=1;
+	}
+});
+FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
+		city=0;
+});
 // Reward log
 FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
 	const r = data.responseData;
 	if (!Array.isArray(r)) {
 		return;
 	}
-	const [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
+	var [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
 
     await IndexDB.getDB();
 
 	for (let reward of rewards) {
-		
+		//split flying island incidents from normal ones
+		if (rewardIncidentSource === 'default' && city === 1){
+				rewardIncidentSource = 'shards';
+		}
 		// Add reward info to the db
 		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
 			// Reduce amount of saved data
@@ -202,7 +214,6 @@ let Stats = {
 	unitSources: ['statsUnitsH', 'statsUnitsD'],
 	rewardSources: ['statsRewards'],
 	gbgSources: ['statsGBGPlayers'],
-	aidSources: ['statsAid'],
 	isSelectedTreasureSources: () => Stats.treasureSources.includes(Stats.state.source),
 	isSelectedUnitSources: () => Stats.unitSources.includes(Stats.state.source),
 	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
@@ -549,6 +560,7 @@ let Stats = {
 			'guildExpedition', // Temple of Relics
 			'spoilsOfWar', // Himeji Castle
 			'diplomaticGifts', //Space Carrier
+			'shards', //Flying Island
 		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Rewards.Source.' + it),
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),
