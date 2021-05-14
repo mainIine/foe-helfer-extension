@@ -48,17 +48,6 @@
 *   "subType": "premium",
 *   "amount": 50,
 * }
-* Structure of "aidStatsRewards" db
-* {
-*   date: Date,
-*   reward: string, // eg. money, sugar_crystals
-*   amount: number,
-* }
-* Structure "aidStatsRewardTypes" db
-* {
-*   "keys": "money",
-*	"values": "290",
-* }
 * Structure of "statsUnitsD", "statsUnitsH"
 * {
 *   date: Date,
@@ -127,8 +116,6 @@ let IndexDB = {
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
             statsRewards: 'date', // Collected rewards by Himeji, etc
             statsRewardTypes: 'id', // Human readable cache info about rewards
-			statsAidRewards: 'date', // Collected rewards by aiding
-            statsAidRewardTypes: 'key', // Human readable cache info about aid rewards
             statsUnitsD: 'date',
             statsUnitsH: 'date',
             statsTreasurePlayerH: 'date',
@@ -147,8 +134,6 @@ let IndexDB = {
             statsGBGPlayerCache: 'id, date', // Cache of players for using in gbgPlayers
             statsRewards: 'date', // Collected rewards by Himeji, etc
             statsRewardTypes: 'id', // Human readable cache info about rewards
-			statsAidRewards: 'date', // Collected rewards by aiding
-            statsAidRewardTypes: 'key', // Human readable cache info about aid rewards
             statsUnitsD: 'date',
             statsUnitsH: 'date',
             statsTreasurePlayerH: 'date',
@@ -225,9 +210,6 @@ let IndexDB = {
                 // rewards
                 rewards: 'date', // Collected rewards by Himeji, etc
                 rewardTypes: 'id', // Human readable cache info about rewards
-				// aid rewards
-                aidRewards: 'date', // Collected rewards by aiding
-                aidRewardTypes: 'key', // Human readable cache info about aid rewards
                 // units
                 unitsDaily: 'date',
                 units: 'date',
@@ -265,8 +247,6 @@ let IndexDB = {
                 statsGBGPlayerCache: 'playerCache',
                 statsRewards: 'rewards',
                 statsRewardTypes: 'rewardTypes',
-				statsAidRewards: 'aidRewards',
-                statsAidRewardTypes: 'aidRewardTypes',
                 statsUnitsD: 'unitsDaily',
                 statsUnitsH: 'units',
                 statsTreasurePlayerH: 'treasurePlayer',
@@ -383,7 +363,7 @@ let IndexDB = {
         await IndexDB.db.players.clear();
         await IndexDB.db.greatbuildings.clear();
 
-        for (const table of ['statsRewards','statsAidRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
+        for (const table of ['statsRewards', 'statsUnitsD', 'statsTreasurePlayerD', 'statsTreasureClanD']) {
             await IndexDB.db[table].where('date').below(daylyExpiryTime).delete();
         }
 
