@@ -48,6 +48,17 @@
 *   "subType": "premium",
 *   "amount": 50,
 * }
+* Structure of "aidStatsRewards" db
+* {
+*   date: Date,
+*   reward: string, // eg. money, sugar_crystals
+*   amount: number,
+* }
+* Structure "aidStatsRewardTypes" db
+* {
+*   "keys": "money",
+*	"values": "290",
+* }
 * Structure of "statsUnitsD", "statsUnitsH"
 * {
 *   date: Date,
@@ -117,7 +128,7 @@ let IndexDB = {
             statsRewards: 'date', // Collected rewards by Himeji, etc
             statsRewardTypes: 'id', // Human readable cache info about rewards
 			statsAidRewards: 'date', // Collected rewards by aiding
-            statsAidRewardTypes: 'id', // Human readable cache info about aid rewards
+            statsAidRewardTypes: 'key', // Human readable cache info about aid rewards
             statsUnitsD: 'date',
             statsUnitsH: 'date',
             statsTreasurePlayerH: 'date',
@@ -137,7 +148,7 @@ let IndexDB = {
             statsRewards: 'date', // Collected rewards by Himeji, etc
             statsRewardTypes: 'id', // Human readable cache info about rewards
 			statsAidRewards: 'date', // Collected rewards by aiding
-            statsAidRewardTypes: 'id', // Human readable cache info about aid rewards
+            statsAidRewardTypes: 'key', // Human readable cache info about aid rewards
             statsUnitsD: 'date',
             statsUnitsH: 'date',
             statsTreasurePlayerH: 'date',
@@ -216,7 +227,7 @@ let IndexDB = {
                 rewardTypes: 'id', // Human readable cache info about rewards
 				// aid rewards
                 aidRewards: 'date', // Collected rewards by aiding
-                aidRewardTypes: 'id', // Human readable cache info about aid rewards
+                aidRewardTypes: 'key', // Human readable cache info about aid rewards
                 // units
                 unitsDaily: 'date',
                 units: 'date',
