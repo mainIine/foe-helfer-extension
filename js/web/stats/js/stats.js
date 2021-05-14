@@ -1174,16 +1174,18 @@ let Stats = {
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
-			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` :
-				  rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
-			// Asset image if not goods or goods sprite
+			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` : '';
+			// Asset image if not unit
 			let pointImage = '';
-			if (rewardInfo.type != 'good' && rewardInfo.type != 'unit') {
+			if (rewardInfo.type != 'unit') {
 				let url = '';
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
 					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
 					//fix for fragment missing images for buildings
+					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
+						url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_random_goods.png`;
+					}
 					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
 						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
 							url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
