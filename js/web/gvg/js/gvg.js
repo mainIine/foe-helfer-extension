@@ -35,9 +35,9 @@ FoEproxy.addHandler('ClanBattleService', 'getProvinceDetailed', (data, postData)
 	GvGMap.MapDataTime = MainParser.getCurrentDateTime();
 });
 
-FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
+/*FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	console.log(data['responseData']);
-});
+});*/
 
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 	GvG.HideGvgHud();
