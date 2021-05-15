@@ -25,14 +25,12 @@ FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData)
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 	if (GvG.Actions == undefined) {
-		GvG.InitActions();
+		GvG.initActions();
 	}
-	GvG.SetRecalc(data.responseData.continent.calculation_time.start_time, true);
+	GvG.setRecalc(data.responseData.continent.calculation_time.start_time, true);
 });
 
-FoEproxy.addHandler('ClanBattleService', 'getProvinceDetailed', (data, postData) => {
-	console.log("Entered Province", data.responseData.province_detailed.era);
-	
+FoEproxy.addHandler('ClanBattleService', 'getProvinceDetailed', (data, postData) => {	
 	GvGProvince.MapData = data['responseData'];
 	GvGProvince.MapDataTime = MainParser.getCurrentDateTime();
 });
@@ -45,7 +43,7 @@ let GvG = {
 	Actions: undefined,
 	Init: false,
 
-	InitActions: () => {
+	initActions: () => {
 		console.log("GvG Init");
 		let Actions = JSON.parse(localStorage.getItem('GvGActions'));
 
@@ -67,7 +65,7 @@ let GvG = {
     /**
 	 * Build HUD
 	 */
-	ShowGvgHud: () => {
+	showGvgHud: () => {
 		if ($('#gvg-hud').length == 0) {
 			HTML.AddCssFile('gvg');
 			let div = $('<div />');
@@ -88,7 +86,7 @@ let GvG = {
 							html: true
 						}
 					)
-					.append('<button class="btn-default mapbutton" onclick="GvGProvince.ShowGvgMap()">MAP</button>');
+					.append('<button class="btn-default mapbutton" onclick="GvGProvince.showGvgMap()">MAP</button>');
 			});
 		}
 		else {
@@ -119,7 +117,7 @@ let GvG = {
 
 		if (time > GvG.Actions.NextCalc) { // when on a map during recalc
 			console.log('time > GvG.Actions.NextCalc');
-			GvG.ResetData();
+			GvG.resetData();
 		}
 
 		if (requestMethod === "deployDefendingArmy" && response === "Success") {
@@ -133,7 +131,7 @@ let GvG = {
 		}
 
 		GvG.LastAction = time;
-		GvG.ShowGvgHud();
+		GvG.showGvgHud();
 		
 		localStorage.setItem('GvGActions', JSON.stringify(GvG.Actions));
 	},
@@ -142,14 +140,14 @@ let GvG = {
 	 * Set Recalc time
 	 * @param calcTime
 	 */
-	 SetRecalc: (calcTime) => {
+	 setRecalc: (calcTime) => {
 		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 
 		if (GvG.Actions.NextCalc != calcTime) {
 			GvG.Actions.NextCalc = calcTime;
 			/*if ((time-20) < calcTime) { // when switching maps via overview during recalc
 				console.log('Reset during Recalc');
-				GvG.ResetData(calcTime);
+				GvG.resetData(calcTime);
 			}*/
 		}
 
@@ -159,18 +157,18 @@ let GvG = {
 
 		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction != 0) {
 			console.log('GvG.Actions.LastAction < GvG.Actions.PrevCalc');
-			GvG.ResetData(calcTime);
+			GvG.resetData(calcTime);
 		}
 
 		localStorage.setItem('GvGActions', JSON.stringify(GvG.Actions));
-		console.log("SetRecalc", GvG.Actions);
-		GvG.ShowGvgHud();
+		console.log("setRecalc", GvG.Actions);
+		GvG.showGvgHud();
 	},
 
     /**
 	 * Reset all Data
 	 */
-	ResetData: (calcTime = 0) => {
+	resetData: (calcTime = 0) => {
 		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 		console.log('GvG Data Reset');
 
@@ -195,17 +193,24 @@ let GvGProvince = {
 	MapDataTime: 0,
 	MapCTX: {},
 
-	Mouse: {
-		x: undefined,
-		y: undefined
+	Actions: {
+		edit: false,
+		drag: true
 	},
 
+	Width: 0,
+	Height: 0,
 	HexWidth: 50,
 	HexHeight: 40,
+	CurrentGuild: {
+		id: 0
+	},
 
 	Sectors: [],
 	Guilds: [],
 	PowerValues: [],
+	ProvinceData: {},
+	GuildData: {},
 
 	Colors: {
         "blank": [{"r":240,"g":240,"b":240}],
@@ -277,7 +282,7 @@ let GvGProvince = {
 	/**
 	 * Build GvG Map
 	 */
-	ShowGvgMap: () => {
+	showGvgMap: () => {
 		if ($('#gvg-map').length == 0) {
 
 			moment.locale(MainParser.Language);
@@ -291,62 +296,61 @@ let GvGProvince = {
 				resize: true
 			});
 
-			GvGProvince.BuildMap();
+			GvGProvince.buildMap();
 		}
 	},
 
     /**
 	 * Hide HUD
 	 */
-	HideGvgMap: () => {
+	hideGvgMap: () => {
 		if ($('#GvGMap').length > 0) {
 			$('#GvGMap').remove();
 			$('#gvg-map').remove();
 		}
 	},
 
-	BuildMap: () => {
+	buildMap: () => {
 
-		GvGProvince.PowerValues = GvGProvince.MapData.province_detailed.power_values;
 		let h = [];
-        h.push('<div id="GvGMapInfo"></div><div id="GvGMapWrap"><canvas id="gvg-map"></canvas></div><div id="GvGMapGuilds"></div>');
+        h.push('<div id="GvGMapInfo"></div><div id="GvGMapActions" class="btn-group"><span id="editMap" class="btn-default">Edit</span><span id="dragMap" class="btn-default active">Drag</span></div><div id="GvGMapWrap"><canvas id="gvg-map"></canvas></div><div id="GvGMapGuilds"></div>');
 		$('#GvGMapBody').html(h.join(''));
 
 		GvGProvince.Map = document.getElementById("gvg-map");
 		GvGProvince.MapCTX = GvGProvince.Map.getContext('2d');
 		GvGProvince.Guilds = [];
 		GvGProvince.Sectors = [];
-		let provinceData = GvGProvince.MapData.province_detailed;
-		let guildData = GvGProvince.MapData.province_detailed.clans;
-		let bounds = GvGProvince.MapData.province_detailed.bounds;
-		let width = (provinceData.bounds.x_max - provinceData.bounds.x_min)*GvGProvince.HexWidth+GvGProvince.HexWidth/2;
-		let height = (provinceData.bounds.y_max - provinceData.bounds.y_min)*GvGProvince.HexHeight*0.8;
+		GvGProvince.ProvinceData = GvGProvince.MapData.province_detailed;
+		GvGProvince.GuildData = GvGProvince.MapData.province_detailed.clans;
+		GvGProvince.PowerValues = GvGProvince.MapData.province_detailed.power_values;
+		GvGProvince.Width = (GvGProvince.ProvinceData.bounds.x_max - GvGProvince.ProvinceData.bounds.x_min)*GvGProvince.HexWidth+GvGProvince.HexWidth/2;
+		GvGProvince.Height = (GvGProvince.ProvinceData.bounds.y_max - GvGProvince.ProvinceData.bounds.y_min)*GvGProvince.HexHeight*0.8;
 
 		$(GvGProvince.Map).attr({
 			'id': 'gvg-map',
-            'width': width,
-            'height': height
+            'width': GvGProvince.Width,
+            'height': GvGProvince.Height
         });
 		
-		GvGProvince.MapCTX.clearRect(0, 0, width, height);
+		GvGProvince.MapCTX.clearRect(0, 0, GvGProvince.Width, GvGProvince.Height);
 
-        guildData.forEach(function (guild) {
+        GvGProvince.GuildData.forEach(function (guild) {
 			let guildOnMap = {
 				id: guild.id,
 				name: guild.name,
 				flag: guild.flag,
-				color: GvGProvince.GetColor(guild),
-				flagCoordinates: GvGProvince.FlagImageCoordinates(guild.flag),
+				color: GvGProvince.getColor(guild),
+				flagCoordinates: GvGProvince.getFlagImageCoordinates(guild.flag),
 				power: 0,
 				sectors: 0,
 			};
 			GvGProvince.Guilds.push(guildOnMap);
         });
 
-        provinceData.sectors.forEach(function (sector) {
-            if ((sector.terrain == 'plain' || sector.terrain == 'beach') && sector.hitpoints != undefined) {
-                let realX = (sector.position.x - bounds.x_min) * GvGProvince.HexWidth;
-                let realY = (sector.position.y - bounds.y_min) * GvGProvince.HexHeight;
+        GvGProvince.ProvinceData.sectors.forEach(function (sector) {
+            if (/*(sector.terrain == 'plain' || sector.terrain == 'beach') /*&&*/ sector.hitpoints != undefined) {
+                let realX = (sector.position.x - GvGProvince.ProvinceData.bounds.x_min) * GvGProvince.HexWidth;
+                let realY = (sector.position.y - GvGProvince.ProvinceData.bounds.y_min) * GvGProvince.HexHeight;
 				let newSector = {};
 
 				if (sector.position.y % 2 == 0) {
@@ -366,17 +370,86 @@ let GvGProvince = {
 			}
         });
 
+		GvGProvince.drawInfo();
+		GvGProvince.buildGuilds();
+
+		let editBtn = document.getElementById("editMap");
+		let dragBtn = document.getElementById("dragMap");
+
+        editBtn.addEventListener('click', function (e) {
+            GvGProvince.Actions.edit = true;
+			GvGProvince.Actions.drag = false;
+			dragBtn.classList.remove('btn-default-active');
+			editBtn.classList.add('btn-default-active');
+        }, false);
+        dragBtn.addEventListener('click', function (e) {
+            GvGProvince.Actions.edit = false;
+			GvGProvince.Actions.drag = true;
+			editBtn.classList.remove('btn-default-active');
+			dragBtn.classList.add('btn-default-active');
+        }, false);
+
+		GvGProvince.mapDragOrEdit();
+		GvGProvince.setCurrentGuild();
+	},
+
+	drawInfo: () => {
 		GvGProvince.MapCTX.font = "bold 22px Arial";
 		GvGProvince.MapCTX.textAlign = "left";
-		GvGProvince.MapCTX.fillStyle = '#ddd';
-		GvGProvince.MapCTX.fillText(provinceData.era, 10, 25);
+		GvGProvince.MapCTX.fillStyle = '#ffb539';
+		GvGProvince.MapCTX.fillText(GvGProvince.ProvinceData.era, 10, 25);
 		GvGProvince.MapCTX.font = "12px Arial";
-		GvGProvince.MapCTX.fillText(moment(GvGProvince.MapDataTime).format('D.M.YY - HH:mm:ss'), 10, 45);
+		GvGProvince.MapCTX.fillStyle = '#ccc';
+		GvGProvince.MapCTX.fillText('Data fetched: '+ moment(GvGProvince.MapDataTime).format('D.M.YY - HH:mm:ss'), 10, 45);
+	},
 
-		GvGProvince.BuildGuilds();
+	setCurrentGuild: () => {
+        $('#GvGGuilds tr').click(function (e) {
+			let id = $(this).attr('id').replace('id-', '')/1;
+			$('#GvGGuilds tr').removeClass('active');
+			$(this).addClass('active');
+			
+			GvGProvince.CurrentGuild = GvGProvince.Guilds.find(x => x.id  === id);
+			console.log(GvGProvince.CurrentGuild);
+        });
+	},
 
-        GvGProvince.Map.addEventListener("mousedown", function (e) {
-			let currentSector = GvGProvince.setSector(e);
+	mapDragOrEdit: () => {
+		const wrapper = document.getElementById('GvGMapWrap');	
+		let pos = { top: 0, left: 0, x: 0, y: 0 };
+		
+		const mouseDownHandler = function(e) {	
+			pos = {
+				left: wrapper.scrollLeft,
+				top: wrapper.scrollTop,
+				x: e.clientX,
+				y: e.clientY,
+			};
+	
+			document.addEventListener('mousemove', mouseMoveHandler);
+			document.addEventListener('mouseup', mouseUpHandler);
+		};
+	
+		const mouseMoveHandler = function(e) {
+			const dx = e.clientX - pos.x;
+			const dy = e.clientY - pos.y;
+			wrapper.scrollTop = pos.top - dy;
+			wrapper.scrollLeft = pos.left - dx;
+		};
+	
+		const mouseUpHandler = function() {	
+			document.removeEventListener('mousemove', mouseMoveHandler);
+			document.removeEventListener('mouseup', mouseUpHandler);
+		};
+
+        GvGProvince.Map.addEventListener('mousedown', function (e) {
+			if (GvGProvince.Actions.drag) {
+				wrapper.addEventListener('mousedown', mouseDownHandler);
+			}
+			if (GvGProvince.Actions.edit) {
+				wrapper.removeEventListener('mousedown', mouseDownHandler);
+			}
+			GvGProvince.setSector(e);
         }, false);
 	},
 
@@ -384,7 +457,20 @@ let GvGProvince = {
         GvGProvince.Sectors.forEach(function (sector) {
             if (e.offsetX >= (sector.position.x + 5) && e.offsetX <= (sector.position.x + GvGProvince.HexWidth - 5)) {
                 if (e.offsetY >= (sector.position.y + 5) && e.offsetY <= (sector.position.y + GvGProvince.HexHeight - 5)) {
-					GvGProvince.ShowSector(sector);
+					if (GvGProvince.Actions.drag) {
+						GvGProvince.showSector(sector);
+						console.log('hi');
+					}
+					else {
+						let prevOwner = sector.owner;
+						sector.owner = GvGProvince.CurrentGuild;
+						if (sector.owner.id == 0)
+							sector.owner.color = sector.setColorByTerrain();
+						if (sector.terrain == "plain" || sector.terrain == "beach") {
+							sector.draw();
+						}
+						GvGProvince.recalcGuildProvinces(prevOwner, sector.owner, sector);
+					}
                     return sector;
                 }
             }
@@ -392,19 +478,51 @@ let GvGProvince = {
 		return undefined;
     },
 
-	ShowSector: (sector) => {
-		let html = '<div class="sectorInfo">';
-		html += '<span class="guildflag '+sector.owner.flag+'" style="background-color: '+GvGProvince.ColorStringify(sector.owner.color)+';border-color: '+GvGProvince.ColorStringify(sector.owner.color)+'"></span>';
-		html += '<b class="text-bright">'+ sector.owner.name +'</b><br>';
-		html += 'Coords: '+ sector.coords() +'<br>';
-		html += 'Power: '+ sector.power +'<br>';
-		html += 'Protected: '+ sector.isProtected +'<br>';
-		html += 'Beach: '+ sector.beach +'<br>';
-		html += '</div>';
+	recalcGuildProvinces: (oldGuild, newGuild, sector) => {
+		if (oldGuild.id > 0) {
+			oldGuild.sectors--;
+			oldGuild.power -= sector.power;
+		}
+
+		if (newGuild.id > 0) {
+			newGuild.sectors++;
+			newGuild.power += sector.power;
+		}
+
+		GvGProvince.updateGuildData(oldGuild);
+		GvGProvince.updateGuildData(newGuild);
+	},
+
+	updateGuildData: (guild) => {
+		let tableRow = document.getElementById("id-"+guild.id);
+		if (tableRow != null) {
+			let html = '<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGProvince.colorToString(guild.color)+'"></span>'+guild.name+'</td>';
+			html += '<td class="text-center">'+guild.sectors+'</td>';
+			html += '<td class="text-center">'+guild.power+'</td>';
+			tableRow.innerHTML = html;
+		}
+	},
+
+	showSector: (sector) => {
+		let html = '';
+		if (sector.owner.name != undefined) {
+			html = '<div class="sectorInfo">'
+			html += '<span class="guildflag '+sector.owner.flag+'" style="background-color: '+GvGProvince.colorToString(sector.owner.color)+';border-color: '+GvGProvince.colorToString(sector.owner.color)+'"></span>';
+			html += '<b class="text-bright">'+ sector.owner.name +'</b><br>';
+			html += 'Hitpoints: '+ sector.hitpoints +'/80<br>';
+			html += 'Coords: '+ sector.coords() +'<br>';
+			html += 'Power: '+ sector.power +'<br>';
+			if (sector.isProtected)
+				html += 'Sector is protected<br>';
+			html += 'Terrain: '+ sector.terrain +'<br>';
+			if (sector.underSiege())
+				html += 'Under Siege by: '+ sector.underSiege() +'<br>';
+			html += '</div>';
+		}
 		document.getElementById("GvGMapInfo").innerHTML = html;
     },
 
-	BuildGuilds: () => {
+	buildGuilds: () => {
         let t = [];
 
         GvGProvince.Guilds.sort(function(a, b) {
@@ -415,15 +533,15 @@ let GvGProvince = {
             return 0;
         });
 
-		t.push('<table class="foe-table">');
+		t.push('<table id="GvGGuilds" class="foe-table">');
 		t.push('<thead><tr>');
 		t.push('<th>Name</th>');
 		t.push('<th>Sectors</th>');
 		t.push('<th>Power</th>');
 		t.push('</tr></thead>');
 		GvGProvince.Guilds.forEach(function (guild) {
-			t.push('<tr>');
-			t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGProvince.ColorStringify(guild.color)+'"></span>'+guild.name+'</td>');
+			t.push('<tr id="id-'+guild.id+'">');
+			t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGProvince.colorToString(guild.color)+'"></span>'+guild.name+'</td>');
 			t.push('<td class="text-center">'+guild.sectors+'</td>');
 			t.push('<td class="text-center">'+guild.power+'</td>');
 			t.push('</tr>');
@@ -433,7 +551,7 @@ let GvGProvince = {
 		$('#GvGMapGuilds').html(t.join(''));
 	},
 
-	GetColor: (guild) => {
+	getColor: (guild) => {
         flag = guild.flag.split("_") || null;
         let color = {"r":255,"g":255,"b":255};
 
@@ -455,7 +573,7 @@ let GvGProvince = {
         return color;
     },
 
-	FlagImageCoordinates: (flag) => {
+	getFlagImageCoordinates: (flag) => {
         let id = flag.split("_");
 
         if (id[id.length - 1].toLowerCase() == "r" || id[id.length - 1].toLowerCase() == "g")
@@ -469,13 +587,12 @@ let GvGProvince = {
         return {"x": (id % 10 ) * (GvGProvince.HexWidth), "y": Math.floor(id / 10) * (GvGProvince.HexHeight)};
     },
 
-	ColorStringify: (color) => {
+	colorToString: (color) => {
 		return "rgb("+color.r+","+color.g+","+color.b+")";
 	},
 }
 
 class Sector {
-
 	constructor(x, y, info) {
 		this.position = {
 			"x": x,
@@ -488,9 +605,13 @@ class Sector {
 		this.power = parseInt(GvGProvince.PowerValues[info.power]) || GvGProvince.PowerValues[0];
 		this.powerMultiplicator = parseInt(info.power)+1 || 1;
 		this.isProtected = info.is_protected;
-		this.owner = this.findOwnerById(info.owner_id) || { id: 0 };
+		this.terrain = info.terrain;
 		this.headquarter = (info.building != null);
-		this.beach = (info.terrain == "beach");
+		this.hitpoints = info.hitpoints;
+		this.owner = this.findOwnerById(info.owner_id) || { id: 0, color: this.setColorByTerrain() };
+		this.siege = {
+			"clan": info.siege_clan_id || 0,
+		};
 	}
 
 	findOwnerById(id) {
@@ -498,10 +619,32 @@ class Sector {
 		return guild;
 	}
 
-	might() {
-		return this.power;
+	underSiege() {
+		if (this.siege.clan != 0)
+			return GvGProvince.Guilds.find(x => x.id  === this.siege.clan).name;
+		return false;
 	}
 
+	setColorByTerrain() {
+		let color = {};
+		if (this.terrain == "beach") {
+			color = {"r":233,"g":233,"b":114-this.powerMultiplicator*10};
+		}
+		else if (this.terrain == "plain") {
+			color = {"r":126-this.powerMultiplicator*10,"g":222-this.powerMultiplicator*10,"b":110-this.powerMultiplicator*10};
+		}
+		else {
+			if (this.terrain == "rocks")
+				color = {"r":50,"g":50,"b":50};
+			if (this.terrain == "water")
+				color = {"r":4,"g":28,"b":45};
+		}
+		return color;
+	}
+
+	/**
+	 * Draws a sector on the map + flag and HQ/status if it has an owner
+	 */
 	draw() {
 		this.drawHex();
 		this.drawHexText();
@@ -525,23 +668,19 @@ class Sector {
 		}
 	}
 
+	/**
+	 * Redraw
+	 */
 	redraw() {
 		this.drawHex();
 		this.drawHexText();
 	}
 
+	/**
+	 * Draws Sector hexagon in its color
+	 */
 	drawHex() {
-		if (this.beach && this.owner.id < 0) {
-			this.owner.color = {"r":233,"g":233,"b":114-this.powerMultiplicator*10};
-		}
-		else if (this.owner.id < 0) {
-			this.owner.color = {"r":126-this.powerMultiplicator*10,"g":222-this.powerMultiplicator*10,"b":110-this.powerMultiplicator*10};
-		}
-		else if (this.owner.id == 0) {
-			this.owner.color = {"r":this.owner.id%255,"g":(this.owner.id+100)%255,"b":this.owner.id%120+100};
-		}
-
-		GvGProvince.MapCTX.fillStyle = GvGProvince.ColorStringify(this.owner.color);
+		GvGProvince.MapCTX.fillStyle = GvGProvince.colorToString(this.owner.color);
 		GvGProvince.MapCTX.beginPath();
 		GvGProvince.MapCTX.moveTo(this.position.x + GvGProvince.HexWidth / 2, this.position.y);
 		GvGProvince.MapCTX.lineTo(this.position.x + GvGProvince.HexWidth, this.position.y + GvGProvince.HexHeight * 0.25);
@@ -555,18 +694,27 @@ class Sector {
 		GvGProvince.MapCTX.stroke();
 	}
 
+	/**
+	 * Draws Sector coordinates (and power)
+	 */
 	drawHexText() {
 		GvGProvince.MapCTX.font = "9px Arial";
 		GvGProvince.MapCTX.textAlign = "center";
-		GvGProvince.MapCTX.fillStyle = ((this.owner.color.r+this.owner.color.g+this.owner.color.b) < 400) ? '#ddd':'#222';
-		//GvGProvince.MapCTX.fillText(this.might(), this.position.x + GvGProvince.HexWidth / 2, this.position.y + GvGProvince.HexHeight * 0.3);
+		GvGProvince.MapCTX.fillStyle = ((this.owner.color.r+this.owner.color.g+this.owner.color.b) < 420) ? '#ddd' : '#222';
 		GvGProvince.MapCTX.fillText(this.coords(), this.position.x + GvGProvince.HexWidth / 2, this.position.y + GvGProvince.HexHeight * 0.8);
+		if (this.owner.id == 0 && this.terrain != "water" && this.terrain != "rocks")
+			GvGProvince.MapCTX.fillText(this.power, this.position.x + GvGProvince.HexWidth / 2, this.position.y + GvGProvince.HexHeight * 0.3);
 	}
 
+	/**
+	 * Returns Sectors coordinates (with ~ if beach)
+	 */
 	coords() {
-		if (this.beach)
+		if (this.terrain == "beach")
 			return "~"+this.coordinates.x + ", " + this.coordinates.y+"~";
 		GvGProvince.MapCTX.font = "bold 10px Arial";
-		return this.coordinates.x + ", " + this.coordinates.y;
+		if (this.terrain == "plain")
+			return this.coordinates.x + ", " + this.coordinates.y;
+		return "";
 	}
 }
