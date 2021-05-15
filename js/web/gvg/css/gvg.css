@@ -84,6 +84,7 @@
 	background-color: #111213;
 	border-right: 2px solid var(--text-dark);
 	cursor: grab;
+	overflow: hidden;
 }
 
 #GvGMapGuilds {
