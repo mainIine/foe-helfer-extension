@@ -33,6 +33,7 @@ FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
 FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
 		isCurrentlyInOutpost=0;
 });
+
 // Reward log
 FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
 	const r = data.responseData;
@@ -42,10 +43,20 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	var [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
     await IndexDB.getDB();
 
+//split league rewards from incidents
+/*			FoEproxy.addHandler('InventoryService', 'useItem', async (data2, postData2) => {
+				if (data2.responseData){
+					console.log("Ja!");
+				}
+			});
+*/			
 	for (let reward of rewards) {
-		//split flying island incidents from normal ones
-		if (rewardIncidentSource === 'default' && isCurrentlyInOutpost === 1){
+
+		if (rewardIncidentSource === 'default') {
+			//split flying island incidents from normal ones
+			if (isCurrentlyInOutpost === 1){
 				rewardIncidentSource = 'shards';
+			}
 		}
 		// Add reward info to the db
 		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
