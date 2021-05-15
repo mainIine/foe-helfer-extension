@@ -24,14 +24,14 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, po
 	}
 });
 //Currently in Outpost
-var city = 0;
+var isCurrentlyInOutpost = 0;
 FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
 	if (data.responseData['gridId'] === 'cultural_outpost') {
-		city=1;
+		isCurrentlyInOutpost=1;
 	}
 });
 FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
-		city=0;
+		isCurrentlyInOutpost=0;
 });
 // Reward log
 FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
@@ -44,7 +44,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 
 	for (let reward of rewards) {
 		//split flying island incidents from normal ones
-		if (rewardIncidentSource === 'default' && city === 1){
+		if (rewardIncidentSource === 'default' && isCurrentlyInOutpost === 1){
 				rewardIncidentSource = 'shards';
 		}
 		// Add reward info to the db
