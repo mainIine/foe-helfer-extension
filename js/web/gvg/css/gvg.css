@@ -108,7 +108,7 @@
 	left: 10px;
 	border-radius: 4px;
 	padding: 5px;
-	border: 1px solid var(--text-bright);
+	border: 1px solid var(--text-dark);
 	background-color: #210b02;
 	width: 200px;
 	font-size: 90%;
