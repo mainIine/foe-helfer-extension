@@ -400,7 +400,6 @@ let GvGMap = {
 			GvGMap.Actions.drag = false;
 			dragBtn.classList.remove('btn-default-active');
 			editBtn.classList.add('btn-default-active');
-            GvGMap.buildMap('big');
         }, false);
         dragBtn.addEventListener('click', function (e) {
             GvGMap.Actions.edit = false;
