@@ -62,8 +62,6 @@
 	background-size: 20px 20px;
 }
 
-
-
 #GvGMap {
 	left: calc(50vw - 285px);
 	top: calc(50vw - 270px);
@@ -83,20 +81,25 @@
 	overflow: auto;
 	background-color: #111213;
 	border-right: 2px solid var(--text-dark);
-	cursor: grab;
+	overflow: hidden;
 }
 
 #GvGMapGuilds {
-	width: 30%;
 	height: inherit;
 	overflow: auto;
-	max-width: 300px;
+	width: 320px;
 }
 
 #GvGMapInfo {
 	position: absolute;
 	bottom: 0;
 	left: 0;
+}
+
+#GvGMapActions{
+	position: absolute;
+	top: 10px;
+	right: 332px;
 }
 
 .sectorInfo {
@@ -138,6 +141,10 @@
 	background-repeat: no-repeat;
 }
 
+#GvGGuilds.foe-table tr.active {
+	background-color: var(--black-50);
+}
+
 .guildflag.flag_1 { background-position:  -57px -9px; }
 .guildflag.flag_2, .guildflag.flag_2_G { background-position: -102px -9px; }
 .guildflag.flag_3, .guildflag.flag_3_G  { background-position: -148px -9px; }
@@ -164,7 +171,7 @@
 .guildflag.flag_22, .guildflag.flag_22_G { background-position: -102px -80px; }
 .guildflag.flag_23 { background-position: -148px -80px; }
 .guildflag.flag_24, .guildflag.flag_24_R { background-position: -193px -81px; }
-.guildflag.flag_25, .guildflag.flag_25_R { background-position: -237px -80px; }
+.guildflag.flag_25, .guildflag.flag_25_G { background-position: -237px -80px; }
 .guildflag.flag_26 { background-position: -282px -81px; }
 .guildflag.flag_27, .guildflag.flag_27_R { background-position: -327px -80px; }
 .guildflag.flag_28, .guildflag.flag_28_R { background-position: -373px -80px; }
