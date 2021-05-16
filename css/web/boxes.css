@@ -340,7 +340,7 @@ p {
 	white-space: nowrap;
 }
 
-.text-warning {
+.text-warning, .text-bright {
 	color: var(--text-bright);
 }
 
