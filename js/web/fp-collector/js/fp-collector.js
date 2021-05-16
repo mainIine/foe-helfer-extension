@@ -24,10 +24,13 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 		return;
 	}
 
-	// default is hiddenreward
+	// default is hiddenreward or leaguereward
 	else if(event === 'default')
 	{
 		event = 'hiddenReward';
+		if(postData[0].requestMethod === 'useItem'){
+			event = 'leagueReward';
+			}
 	}
 
 	StrategyPoints.insertIntoDB({
