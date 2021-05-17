@@ -92,7 +92,7 @@ let GvG = {
 							html: true
 						}
 					)
-					.append('<button class="btn-default mapbutton" onclick="GvGMap.show()">MAP</button>');
+					.append('<button class="btn-default mapbutton" onclick="GvGMap.showMap()">MAP</button>');
 			});
 		}
 		else {
@@ -189,7 +189,6 @@ let GvG = {
 	}
 }
 
-// todo: dont fuck up the edit when using zoom
 let GvGMap = {
 	OnloadDataTime: 0,
 	Canvas: {},
@@ -307,6 +306,7 @@ let GvGMap = {
 	 * @param content
 	 */
 	SetTabContent: (id, content)=> {
+		// ab dem zweiten Eintrag verstecken
 		let style = GvGMap.TabsContent.length > 0 ? ' style="display:none"' : '';
 
 		GvGMap.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
@@ -327,16 +327,16 @@ let GvGMap = {
 		GvGMap.Map.Sectors = [];
 		GvGMap.Map.ProvinceData = GvGMap.Map.OnloadData.province_detailed;
 		GvGMap.Map.GuildData = GvGMap.Map.OnloadData.province_detailed.clans;
+		GvGMap.PowerValues = GvGMap.Map.OnloadData.province_detailed.power_values;
 		GvGMap.Map.Era = GvGMap.Map.OnloadData.province_detailed.era;
-		GvGMap.Map.Width = (GvGMap.Map.ProvinceData.bounds.x_max - GvGMap.Map.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
-		GvGMap.Map.Height = (GvGMap.Map.ProvinceData.bounds.y_max - GvGMap.Map.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
 		GvGMap.Map.HexWidth = hexWidth;
 		GvGMap.Map.HexHeight = hexHeight;
-		GvGMap.PowerValues = GvGMap.Map.OnloadData.province_detailed.power_values;
 		GvGMap.Size = 'small';
 		if (hexWidth > 50) {
 			GvGMap.Size = 'big';
 		}
+		GvGMap.Map.Width = (GvGMap.Map.ProvinceData.bounds.x_max - GvGMap.Map.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
+		GvGMap.Map.Height = (GvGMap.Map.ProvinceData.bounds.y_max - GvGMap.Map.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
 		GvGMap.CurrentGuild = {};
 		GvGMap.OwnGuild.Id = GvGMap.Map.OnloadData.clan_data.clan.id;
 		GvGMap.OwnGuild.Members = GvGMap.Map.OnloadData.clan_data.clan.members;
@@ -345,7 +345,7 @@ let GvGMap = {
 	/**
 	 * Show GvG Map
 	 */
-	show: () => {
+	showMap: () => {
 		if ($('#gvg-map').length == 0) {
 
 			moment.locale(MainParser.Language);
@@ -396,6 +396,7 @@ let GvGMap = {
 		GvGMap.populateCanvas(mapSize, initial);
 		GvGMap.drawInfo();
 		GvGMap.showGuilds();
+
 		GvGLog.show();
 
 		let editBtn = document.getElementById("editMap");
@@ -434,12 +435,14 @@ let GvGMap = {
 		t.push('</div>');
 		$('#gvgOptions').html(t.join(''));
 
+
         $('#GvGGuilds tr').click(function (e) {
 			let id = $(this).attr('id').replace('id-', '')/1;
 			$('#GvGGuilds tr').removeClass('active');
 			$(this).addClass('active');
 			
 			GvGMap.CurrentGuild = GvGMap.Map.Guilds.find(x => x.id  === id);
+			console.log(GvGMap.CurrentGuild);
         });
 
 		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
@@ -478,11 +481,6 @@ let GvGMap = {
 		
 		GvGMap.CanvasCTX.clearRect(0, 0, GvGMap.Map.Width, GvGMap.Map.Height);
 
-		GvGMap.addGuilds();
-		GvGMap.addSectors();
-	},
-
-	addGuilds: () => {
         GvGMap.Map.GuildData.forEach(function (guild) {
 			let guildOnMap = {
 				id: guild.id,
@@ -498,9 +496,7 @@ let GvGMap = {
 				GvGMap.CurrentGuild = guildOnMap;
 			}
         });
-	},
 
-	addSectors: () => {
         GvGMap.Map.ProvinceData.sectors.forEach(function (sector) {
             if (sector.hitpoints != undefined) {
                 let realX = (sector.position.x - GvGMap.Map.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
@@ -703,10 +699,6 @@ let GvGMap = {
         return color;
     },
 
-	colorToString: (color) => {
-		return "rgb("+color.r+","+color.g+","+color.b+")";
-	},
-
 	getFlagImageCoordinates: (flag) => {
         let id = flag.split("_");
 
@@ -721,6 +713,10 @@ let GvGMap = {
         return {"x": (id % 10 ) * (GvGMap.Map.HexWidth), "y": Math.floor(id / 10) * (GvGMap.Map.HexHeight)};
     },
 
+	colorToString: (color) => {
+		return "rgb("+color.r+","+color.g+","+color.b+")";
+	},
+
 	showGuildFlagAndName: (id) => {
 		guild = GvGMap.findGuildById(id);
 		if (id < 0) {
@@ -731,6 +727,108 @@ let GvGMap = {
 		}
 		return i18n('Boxes.GvGMap.Log.UnknownGuild');
 	}
+}
+
+let GvGLog = {
+	Entries: [],
+
+	DummyData: [],
+
+	testData: () => {
+		GvGLog.DummyData.forEach(function (data) {
+			GvGLog.addEntry(data);
+		});
+	},
+
+	addEntry: (response) => {
+		if (response != undefined && response.type != undefined) {
+			let type = response.type.replace('ClanBattle/','');
+			let entry = {
+				class: response.__class__,
+				sectorId: response.sector_id,
+				timestamp: response.timestamp,
+				type: type,
+				sourceClan: response.source_clan_id,
+				targetClan: response.target_clan_id,
+				details: {},
+			};
+			if (response.__class__ == "ClanBattleArmyChange") {
+				entry.details = {
+					hitpoints: response.hitpoints,
+					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
+				}
+			}
+			else if (response.__class__ == "ClanBattleSectorChange") { // sector_independence_granted, sector_conquered, sector_slot_unlocked
+				entry.details = {
+					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
+				}
+				if (entry.type == "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
+					entry.details = {};
+				}
+			}
+			else if (response.__class__ == "ClanBattleBuildingChange") { // headquarter_placed
+				entry.details = {
+					nextRelocate: response.building.next_relocate
+				}
+			}
+			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed") {
+				GvGLog.Entries.unshift(entry);
+				return entry;
+			}
+		}
+		return undefined;
+	},
+
+	showEntry: (entry) => {
+		let tr = GvGLog.buildEntry(entry);
+		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
+			$('#GvGlog').prepend(tr);
+		});
+	},
+
+	buildEntry: (entry) => {
+		let t = [];
+		let sector = MapSector.findById(entry.sectorId);
+		if (sector != undefined) { // if sector is on map
+			let sectorCoords = MapSector.coords(sector);
+			t.push('<tr id="log-id-'+entry.sourceClan+'" class="'+entry.type+' logEntry">');
+			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
+			t.push('<td>');
+				if (entry.sourceClan != entry.targetClan && entry.targetClan != undefined && entry.sourceClan != undefined)
+					t.push(GvGMap.showGuildFlagAndName(entry.sourceClan) +' → '+ GvGMap.showGuildFlagAndName(entry.targetClan));
+				else if (entry.sourceClan != undefined)
+					t.push(GvGMap.showGuildFlagAndName(entry.sourceClan));
+				t.push('<br>'+i18n('Boxes.GvGMap.Log.'+entry.type));
+				if (entry.details.playerId != undefined) {
+					if (entry.details.playerId > 0) {
+						let memberName = GvGMap.OwnGuild.Members.find(x => x.player_id  === entry.details.playerId).name;
+						t.push(', '+memberName);
+					}
+				}
+				//t.push(', HP: '+entry.hitpoints);
+			t.push('</td>');
+			t.push('</tr>');
+		}
+		return t.join('');
+	},
+
+	show: () => {
+        let t = [];
+		t.push('<div class="dark-bg text-center"><input type="text" data-type="text" id="logFilter" placeholder="Name, Sector, Guild, Action.." class="gvglogfilter filter-msg game-cursor" value=""></input></div>');
+		t.push('<table id="GvGlog" class="foe-table">');
+		t.push('<thead><tr>');
+		t.push('<th>Sector</th>');
+		t.push('<th>Info</th>');
+		t.push('</tr></thead>');
+
+		GvGLog.Entries.forEach(function(entry) {
+			let tr = GvGLog.buildEntry(entry);
+			t.push(tr);
+		});
+		t.push('</table>');
+
+		GvGMap.SetTabContent('gvgmaplog', t.join(''));
+	},
 }
 
 let MapSector = {
@@ -840,6 +938,8 @@ let MapSector = {
 	 * Draws Sector hexagon in its owners color
 	 */
 	drawHex: (sector) => {
+		if (sector.owner.id <= 0)
+			console.log(sector.owner, sector.terrain);
 		GvGMap.CanvasCTX.fillStyle = GvGMap.colorToString(sector.owner.color);
 		GvGMap.CanvasCTX.beginPath();
 		GvGMap.CanvasCTX.moveTo(sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y);
@@ -869,7 +969,7 @@ let MapSector = {
 	},
 
 	/**
-	 * Returns Sectors coordinates
+	 * Returns Sectors coordinates (with ~ if beach)
 	 */
 	coords(sector) {
 		if (sector.terrain == "beach")
@@ -877,99 +977,5 @@ let MapSector = {
 		if (sector.terrain == "plain")
 			return sector.coordinates.x + ", " + sector.coordinates.y;
 		return "";
-	},
-}
-
-let GvGLog = {
-	Entries: [],
-
-	show: () => {
-        let t = [];
-		t.push('<div class="dark-bg text-center"><input type="text" data-type="text" id="logFilter" placeholder="Filter..." class="gvglogfilter filter-msg game-cursor" value=""></input></div>');
-		t.push('<table id="GvGlog" class="foe-table">');
-		t.push('<thead><tr>');
-		t.push('<th>Sector</th>');
-		t.push('<th>Info</th>');
-		t.push('</tr></thead>');
-
-		GvGLog.Entries.forEach(function(entry) {
-			let tr = GvGLog.buildEntry(entry);
-			t.push(tr);
-		});
-		t.push('</table>');
-
-		GvGMap.SetTabContent('gvgmaplog', t.join(''));
-	},
-
-	addEntry: (response) => {
-		if (response != undefined && response.type != undefined) {
-			let type = response.type.replace('ClanBattle/','');
-			let entry = {
-				class: response.__class__,
-				sectorId: response.sector_id,
-				timestamp: response.timestamp,
-				type: type,
-				sourceClan: response.source_clan_id,
-				targetClan: response.target_clan_id,
-				details: {},
-			};
-			if (response.__class__ == "ClanBattleArmyChange") {
-				entry.details = {
-					hitpoints: response.hitpoints,
-					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
-				}
-			}
-			else if (response.__class__ == "ClanBattleSectorChange") { // sector_independence_granted, sector_conquered, sector_slot_unlocked
-				entry.details = {
-					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
-				}
-				if (entry.type == "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
-					entry.details = {};
-				}
-			}
-			else if (response.__class__ == "ClanBattleBuildingChange") { // headquarter_placed
-				entry.details = {
-					nextRelocate: response.building.next_relocate
-				}
-			}
-			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed") {
-				GvGLog.Entries.unshift(entry);
-				return entry;
-			}
-		}
-		return undefined;
-	},
-
-	buildEntry: (entry) => {
-		let t = [];
-		let sector = MapSector.findById(entry.sectorId);
-		if (sector != undefined) { // if sector is on map
-			let sectorCoords = MapSector.coords(sector);
-			t.push('<tr id="log-id-'+entry.sourceClan+'" class="'+entry.type+' logEntry">');
-			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
-			t.push('<td>');
-				if (entry.sourceClan != entry.targetClan && entry.targetClan != undefined && entry.sourceClan != undefined)
-					t.push(GvGMap.showGuildFlagAndName(entry.sourceClan) +' → '+ GvGMap.showGuildFlagAndName(entry.targetClan));
-				else if (entry.sourceClan != undefined)
-					t.push(GvGMap.showGuildFlagAndName(entry.sourceClan));
-				t.push('<br>'+i18n('Boxes.GvGMap.Log.'+entry.type));
-				if (entry.details.playerId != undefined) {
-					if (entry.details.playerId > 0) {
-						let memberName = GvGMap.OwnGuild.Members.find(x => x.player_id  === entry.details.playerId).name;
-						t.push(', '+memberName);
-					}
-				}
-				//t.push(', HP: '+entry.hitpoints);
-			t.push('</td>');
-			t.push('</tr>');
-		}
-		return t.join('');
-	},
-
-	showEntry: (entry) => {
-		let tr = GvGLog.buildEntry(entry);
-		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
-			$('#GvGlog').prepend(tr);
-		});
 	},
 }
