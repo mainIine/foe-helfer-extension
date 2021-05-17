@@ -762,7 +762,7 @@ let GvGLog = {
 				}
 			}
 			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp") {
-				GvGLog.Entries.push(entry);
+				GvGLog.Entries.unshift(entry);
 				return entry;
 			}
 		}
@@ -772,7 +772,7 @@ let GvGLog = {
 	showEntry: (entry) => {
 		let tr = GvGLog.buildEntry(entry);
 		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
-			$('#GvGlog').append(tr);
+			$('#GvGlog').prepend(tr);
 		});
 	},
 
