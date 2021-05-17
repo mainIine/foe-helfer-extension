@@ -286,6 +286,7 @@
     "Boxes.GvGMap.Guild.Power": "Power",
     "Boxes.GvGMap.Guild.Sectors": "Sectors",
     "Boxes.GvGMap.Log": "Log",
+    "Boxes.GvGMap.Log.clan_defeated": "Clan defeated",
     "Boxes.GvGMap.Log.defender_damaged": "Defender damaged",
     "Boxes.GvGMap.Log.defender_defeated": "Defender defeated",
     "Boxes.GvGMap.Log.defender_deployed": "Defender deployed",
