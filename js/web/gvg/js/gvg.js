@@ -82,7 +82,7 @@ let GvG = {
 			});
 
 			$('body').append(div).promise().done(function() {
-				div.append('<div class="independences">'+GvG.Actions.Independences+'/4</div><div class="sieges">'+GvG.Actions.Sieges+'</div><div class="defenders">'+GvG.Actions.Defenders+'</div>')
+				div.append('<div class="independences">'+GvG.Actions.Independences+'/4</div>')
 					.attr('title', i18n('GvG.Independences.Tooltip') + '<br><em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
 					.tooltip(
 						{
@@ -97,8 +97,6 @@ let GvG = {
 		}
 		else {
 			$('#gvg-hud .independences').text(GvG.Actions.Independences+'/4');
-			$('#gvg-hud .sieges').text(GvG.Actions.Sieges);
-			$('#gvg-hud .defenders').text(GvG.Actions.Defenders);
 		}
 	},
 
@@ -211,7 +209,6 @@ let GvGMap = {
 		Id: 0,
 		Members: [],
 	},
-
 	Actions: {
 		edit: false,
 		drag: true
@@ -220,7 +217,6 @@ let GvGMap = {
 		id: 0
 	},
 	PowerValues: [],
-
 	Colors: {
         "blank": [{"r":240,"g":240,"b":240}],
         "b": [
@@ -289,7 +285,6 @@ let GvGMap = {
 
 	/**
 	 * Merkt sich alle Tabs
-	 *
 	 * @param id
 	 */
 	SetTabs: (id)=> {
@@ -298,7 +293,6 @@ let GvGMap = {
 
 	/**
 	 * Gibt alle gemerkten Tabs aus
-	 *
 	 * @returns {string}
 	 */
 	GetTabs: ()=> {
@@ -307,7 +301,6 @@ let GvGMap = {
 
 	/**
 	 * Speichert BoxContent zwischen
-	 *
 	 * @param id
 	 * @param content
 	 */
@@ -320,14 +313,13 @@ let GvGMap = {
 
 	/**
 	 * Setzt alle gespeicherten Tabellen zusammen
-	 *
 	 * @returns {string}
 	 */
 	GetTabContent: ()=> {
 		return GvGMap.TabsContent.join('');
 	},
 
-	initMap: (hexWidth, hexHeight) => {
+	initMap: (hexWidth, hexHeight, initial = true) => {
 		GvGMap.Canvas = document.getElementById("gvg-map");
 		GvGMap.CanvasCTX = GvGMap.Canvas.getContext('2d');
 		GvGMap.Map.Guilds = [];
@@ -350,7 +342,7 @@ let GvGMap = {
 	},
 
 	/**
-	 * Build GvG Map
+	 * Show GvG Map
 	 */
 	showMap: () => {
 		if ($('#gvg-map').length == 0) {
@@ -359,7 +351,7 @@ let GvGMap = {
 
 			HTML.Box({
 				id: 'GvGMap',
-				title: i18n('Boxes.GvGMap.Title')+ 'BETA!',
+				title: i18n('Boxes.GvGMap.Title')+ ' BETA!',
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
@@ -370,7 +362,10 @@ let GvGMap = {
 		}
 	},
 
-	buildMap: (mapSize = 'small') => {
+	/**
+	 * Build GvG Map
+	 */
+	buildMap: (mapSize = 'small', initial = true) => {
 		GvGMap.Tabs = [];
 		GvGMap.TabsContent = [];
 
@@ -381,6 +376,7 @@ let GvGMap = {
         h.push('<div id="GvGMapInfo"></div>');
 		h.push('<div id="GvGMapActions" class="btn-group">');
 			h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
+			h.push('<span id="noGuild" class="btn-default btn-inset" style="display: none;"></span>');
 			h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
 			h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
 		h.push('</div>');
@@ -390,37 +386,40 @@ let GvGMap = {
 
 		$('#GvGMapBody').html(h.join(''));
 
-		GvGMap.populateCanvas(mapSize);
+		GvGMap.populateCanvas(mapSize, initial);
 		GvGMap.drawInfo();
 		GvGMap.showGuilds();
 
-		//GvGLog.testData();
 		GvGLog.show();
 
 		let editBtn = document.getElementById("editMap");
 		let dragBtn = document.getElementById("dragMap");
 		let zoomBtn = document.getElementById("zoomMap");
+		let noGuildBtn = document.getElementById("noGuild");
 
         editBtn.addEventListener('click', function (e) {
             GvGMap.Actions.edit = true;
 			GvGMap.Actions.drag = false;
 			dragBtn.classList.remove('btn-default-active');
 			editBtn.classList.add('btn-default-active');
+			noGuildBtn.style.display = 'block';
         }, false);
         dragBtn.addEventListener('click', function (e) {
             GvGMap.Actions.edit = false;
 			GvGMap.Actions.drag = true;
 			editBtn.classList.remove('btn-default-active');
 			dragBtn.classList.add('btn-default-active');
+			noGuildBtn.style.display = 'none';
         }, false);
 		zoomBtn.addEventListener('click', function (e) {
 			if (GvGMap.Size == 'small')
-            	GvGMap.buildMap('big');
+            	GvGMap.buildMap('big', false);
 			else
-				GvGMap.buildMap();
+				GvGMap.buildMap('small', false);
         }, false);
-
-		GvGMap.setCurrentGuild(); // todo: is broken
+		noGuildBtn.addEventListener('click', function (e) {
+			GvGMap.CurrentGuild = { id: 0 };
+        }, false);
 		GvGMap.mapDragOrEdit();
 		
 		t.push('<div class="gvg-tabs tabs">');
@@ -428,6 +427,16 @@ let GvGMap = {
 		t.push( GvGMap.GetTabContent() );
 		t.push('</div>');
 		$('#gvgOptions').html(t.join(''));
+
+
+        $('#GvGGuilds tr').click(function (e) {
+			let id = $(this).attr('id').replace('id-', '')/1;
+			$('#GvGGuilds tr').removeClass('active');
+			$(this).addClass('active');
+			
+			GvGMap.CurrentGuild = GvGMap.Map.Guilds.find(x => x.id  === id);
+			console.log(GvGMap.CurrentGuild);
+        });
 
 		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
 			$('.gvg-tabs').tabslet({active: 1});
@@ -451,11 +460,11 @@ let GvGMap = {
 		});
 	},
 
-	populateCanvas: (mapSize) => {
+	populateCanvas: (mapSize, initial) => {
 		if (mapSize != 'small') 
-			GvGMap.initMap(90,72);
+			GvGMap.initMap(90,72,initial);
 		else 
-			GvGMap.initMap(50,40);
+			GvGMap.initMap(50,40,initial);
 
 		$(GvGMap.Canvas).attr({
 			'id': 'gvg-map',
@@ -515,16 +524,6 @@ let GvGMap = {
 		GvGMap.CanvasCTX.fillText('Data fetched: '+ moment(GvGMap.Map.OnloadDataTime).format('D.M.YY - HH:mm:ss'), 10, 45);
 	},
 
-	setCurrentGuild: () => {
-        $('#GvGGuilds tr').click(function (e) {
-			let id = $(this).attr('id').replace('id-', '')/1;
-			$('#GvGGuilds tr').removeClass('active');
-			$(this).addClass('active');
-			
-			GvGMap.CurrentGuild = GvGMap.Map.Guilds.find(x => x.id  === id);
-        });
-	},
-
 	findGuildById: (id) => {
 		return GvGMap.Map.Guilds.find(x => x.id  === id);
 	},
@@ -579,14 +578,15 @@ let GvGMap = {
 					if (GvGMap.Actions.drag) {
 						GvGMap.showSector(sector);
 					}
-					else {
+					else { // edit
 						let prevOwner = sector.owner;
 						sector.owner = GvGMap.CurrentGuild;
-						console.log(sector.owner);
-						if (sector.owner.id <= 0)
+						if (sector.owner.id <= 0) {
+							console.log('hallo');
 							sector.owner.color = MapSector.setColorByTerrain(sector);
+						}
 						if (sector.terrain == "plain" || sector.terrain == "beach") {
-							MapSector.draw(sector);
+							MapSector.draw(sector, true);
 						}
 						GvGMap.recalcGuildProvinces(prevOwner, sector.owner, sector);
 					}
@@ -865,10 +865,10 @@ let MapSector = {
 	setColorByTerrain: (sector) => {
 		let color = {};
 		if (sector.terrain == "beach") {
-			color = {"r":233,"g":233,"b":114-(parseInt(sector.power)+1)*10};
+			color = {"r":233,"g":233,"b":114-(parseInt(sector.powerMultiplicator)+1)*10};
 		}
 		else if (sector.terrain == "plain") {
-			color = {"r":126-(parseInt(sector.power)+1)*10,"g":222-(parseInt(sector.power)+1)*10,"b":110-(parseInt(sector.power)+1)*10};
+			color = {"r":126-(parseInt(sector.powerMultiplicator)+1)*10,"g":222-(parseInt(sector.powerMultiplicator)+1)*10,"b":110-(parseInt(sector.powerMultiplicator)+1)*10};
 		}
 		else {
 			if (sector.terrain == "rocks")
@@ -882,7 +882,7 @@ let MapSector = {
 	/**
 	 * Draws a sector on the map + flag and HQ/status if it has an owner
 	 */
-	draw: (sector) => {
+	draw: (sector, redraw = false) => {
 		MapSector.drawHex(sector);
 		MapSector.drawHexText(sector);
 		if (sector.owner.id > 0) {
@@ -907,11 +907,12 @@ let MapSector = {
 			}
 
 			img.onload = function () {
-				if (sector.headquarter)
-					GvGMap.CanvasCTX.drawImage(img, imgPositions.hqX, imgPositions.hqY, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight, sector.position.x, sector.position.y, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight);
-				if (sector.isProtected)
-					GvGMap.CanvasCTX.drawImage(img, imgPositions.shieldX, imgPositions.shieldY, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight, sector.position.x, sector.position.y, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight);
-
+				if (!redraw) {
+					if (sector.headquarter)
+						GvGMap.CanvasCTX.drawImage(img, imgPositions.hqX, imgPositions.hqY, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight, sector.position.x, sector.position.y, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight);
+					if (sector.isProtected)
+						GvGMap.CanvasCTX.drawImage(img, imgPositions.shieldX, imgPositions.shieldY, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight, sector.position.x, sector.position.y, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight);
+				}
 				if (GvGMap.Size != 'small') {
 					GvGMap.CanvasCTX.drawImage(img, flag.x, flag.y, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight, sector.position.x, sector.position.y, GvGMap.Map.HexWidth, GvGMap.Map.HexHeight);
 				}
@@ -920,14 +921,6 @@ let MapSector = {
 				}
 			}
 		}
-	},
-
-	/**
-	 * Redraw
-	 */
-	redraw: (sector) => {
-		MapSector.drawHex(sector);
-		MapSector.drawHexText(sector);
 	},
 
 	/**

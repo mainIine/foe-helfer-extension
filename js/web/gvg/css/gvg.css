@@ -104,6 +104,20 @@
 	z-index: 100;
 }
 
+#noGuild.btn-inset {
+	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	padding: 0.2rem;
+}
+
+#noGuild::before {
+	background: #fff;
+	content: '';
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+	border-radius: 10px;
+}
+
 #GvGlog {
 	font-size: 90%;
 }
@@ -122,6 +136,7 @@
 	background-color: #210b02;
 	width: 200px;
 	font-size: 90%;
+	z-index: 101;
 }
 
 .sectorInfo .guildflag {
