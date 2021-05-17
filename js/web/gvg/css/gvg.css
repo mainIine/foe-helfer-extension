@@ -74,6 +74,20 @@
 	display: flex;
 	align-items: stretch;
 	overflow: hidden;
+	justify-content: space-between;
+}
+
+#GvGMapContent {
+	height: inherit;
+	overflow: auto;
+	overflow: hidden;
+	position: relative;
+}
+
+#GvGMapMeta {
+	position: relative;
+	height: 40px;
+	overflow: hidden;
 }
 
 #GvGMapWrap {
@@ -89,6 +103,7 @@
 	height: inherit;
 	overflow: auto;
 	min-width: 300px;
+	flex-grow: 2;
 }
 
 #GvGMapInfo {
@@ -98,10 +113,10 @@
 }
 
 #GvGMapActions {
-	position: absolute;
-	top: 10px;
-	right: 310px;
 	z-index: 100;
+	position: absolute;
+	left: 7px;
+	top: 7px;
 }
 
 #noGuild.btn-inset {
@@ -184,11 +199,11 @@
 .guildflag.flag_11, .guildflag.flag_11_G { background-position:  -57px -45px; }
 .guildflag.flag_12 { background-position: -102px -44px; }
 .guildflag.flag_13 { background-position: -148px -45px; }
-.guildflag.flag_14 { background-position: -193px -45px; }
+.guildflag.flag_14, .guildflag.flag_14_R { background-position: -193px -45px; }
 .guildflag.flag_15 { background-position: -237px -45px; }
 .guildflag.flag_16, .guildflag.flag_16_G { background-position: -282px -45px; }
-.guildflag.flag_17 { background-position: -327px -45px; }
-.guildflag.flag_18 { background-position: -372px -46px; }
+.guildflag.flag_17, .guildflag.flag_17_G { background-position: -327px -45px; }
+.guildflag.flag_18, .guildflag.flag_18_R { background-position: -372px -46px; }
 .guildflag.flag_19 { background-position: -418px -45px; }
 
 .guildflag.flag_20, .guildflag.flag_20_R { background-position: -13px -81px; }
