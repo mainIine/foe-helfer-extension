@@ -250,7 +250,7 @@ let GvGMap = {
             {"r":210,"g":61,"b":89}
         ],
         "g": [
-            {"r":0,"g":220,"b":0},
+            {"r":162,"g":185,"b":12},
             {"r":50,"g":200,"b":70},
             {"r":0,"g":180,"b":0},
             {"r":50,"g":160,"b":70},
@@ -265,19 +265,20 @@ let GvGMap = {
             {"r":50,"g":200,"b":80}
         ],
         "premium": [
-            {"r":2,"g":2,"b":2},
-            {"r":36,"g":76,"b":32},
-            {"r":13,"g":43,"b":70},
-            {"r":14,"g":77,"b":86},
-            {"r":79,"g":26,"b":126},
-            {"r":100,"g":63,"b":33},
-            {"r":232,"g":189,"b":64},
-            {"r":35,"g":60,"b":30},
-            {"r":93,"g":100,"b":104},
-            {"r":80,"g":70,"b":97},
-            {"r":61,"g":13,"b":13},
-            {"r":56,"g":81,"b":16},
-            {"r":210,"g":150,"b":21}]
+            [{"r":2,"g":2,"b":2},{"r":30,"g":30,"b":30},{"r":60,"g":10,"b":10},{"r":100,"g":20,"b":50}],
+            [{"r":36,"g":76,"b":32},{"r":36,"g":106,"b":32},{"r":10,"g":76,"b":10},{"r":0,"g":27,"b":82}],
+            [{"r":13,"g":43,"b":70},{"r":10,"g":10,"b":10},{"r":0,"g":0,"b":50},{"r":10,"g":10,"b":30}],
+            [{"r":14,"g":77,"b":86},{"r":14,"g":77,"b":86},{"r":14,"g":77,"b":86},{"r":14,"g":77,"b":86}],
+            [{"r":79,"g":26,"b":126},{"r":40,"g":10,"b":50},{"r":43,"g":14,"b":78},{"r":60,"g":16,"b":110}],
+            [{"r":100,"g":63,"b":33},{"r":80,"g":43,"b":13},{"r":120,"g":83,"b":53},{"r":50,"g":10,"b":0}],
+            [{"r":232,"g":189,"b":64},{"r":210,"g":150,"b":21},{"r":232,"g":189,"b":64},{"r":232,"g":189,"b":64}],
+            [{"r":35,"g":60,"b":30},{"r":36,"g":76,"b":32},{"r":35,"g":60,"b":30},{"r":35,"g":60,"b":30}],
+            [{"r":44,"g":57,"b":64},{"r":28,"g":35,"b":39},{"r":30,"g":10,"b":50},{"r":47,"g":20,"b":41}],
+            [{"r":80,"g":70,"b":97},{"r":80,"g":70,"b":97},{"r":80,"g":70,"b":97},{"r":80,"g":70,"b":97}],
+            [{"r":61,"g":13,"b":13},{"r":120,"g":40,"b":0},{"r":50,"g":10,"b":1},{"r":61,"g":13,"b":13}],
+            [{"r":56,"g":81,"b":16},{"r":56,"g":81,"b":16},{"r":56,"g":81,"b":16},{"r":56,"g":81,"b":16}],
+            [{"r":210,"g":150,"b":21},{"r":210,"g":150,"b":21},{"r":210,"g":150,"b":21},{"r":210,"g":150,"b":21}]
+		]
     },
 
 	Tabs: [],
@@ -351,7 +352,7 @@ let GvGMap = {
 
 			HTML.Box({
 				id: 'GvGMap',
-				title: i18n('Boxes.GvGMap.Title')+ ' BETA!',
+				title: i18n('Boxes.GvGMap.Title')+ ' - BETA!',
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
@@ -373,16 +374,21 @@ let GvGMap = {
 		GvGMap.SetTabs('gvgmaplog');
 
 		let h = [], t = [];
+		h.push('<div id="GvGMapContent" class="mapFeature">');
+			h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
+			h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
+				h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
+				h.push('<span id="noGuild" class="btn-default btn-inset" style="display: none;"></span>');
+				h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+				h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
+				h.push('</div>');
+				h.push('</div>');
+			h.push('<div id="GvGMapWrap" class="mapFeature">');
+			h.push('<canvas id="gvg-map"></canvas>');
+			h.push('</div>');
+		h.push('</div>');
         h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
-		h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
-			h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
-			h.push('<span id="noGuild" class="btn-default btn-inset" style="display: none;"></span>');
-			h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
-			h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
-		h.push('</div>');
-		h.push('<div id="GvGMapWrap" class="mapFeature">');
-		h.push('<canvas id="gvg-map"></canvas>');
-		h.push('</div>');
+		//h.push('<span id="gvgOptionsToggleView" class="btn-default">Toggle</span>');
 		h.push('<div id="gvgOptions"></div>');
 
 		$('#GvGMapBody').html(h.join(''));
@@ -677,7 +683,8 @@ let GvGMap = {
 
         if (flag != null)  {
             if (flag[0].search("premium") >= 0) {
-                color = GvGMap.Colors.premium[flag[flag.length-1]-1];
+                //color = GvGMap.Colors.premium[flag[flag.length-1]-1];
+				color = GvGMap.Colors.premium[flag[flag.length-1]-1][Math.round(guild.id/4)%4];
 			}
             else if (flag[flag.length - 1].toLowerCase() == "r") {
                 color = GvGMap.Colors.r[Math.round(guild.id/13)%13];
@@ -755,6 +762,9 @@ let GvGLog = {
 				entry.details = {
 					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
 				}
+				if (entry.type == "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
+					entry.details = {};
+				}
 			}
 			else if (response.__class__ == "ClanBattleBuildingChange") { // headquarter_placed
 				entry.details = {
@@ -804,7 +814,7 @@ let GvGLog = {
 
 	show: () => {
         let t = [];
-		t.push('<input type="text" data-type="text" id="logFilter" placeholder="Name, Sector.." class="gvglogfilter filter-msg game-cursor" value=""></input>');
+		t.push('<div class="dark-bg text-center"><input type="text" data-type="text" id="logFilter" placeholder="Name, Sector, Guild, Action.." class="gvglogfilter filter-msg game-cursor" value=""></input></div>');
 		t.push('<table id="GvGlog" class="foe-table">');
 		t.push('<thead><tr>');
 		t.push('<th>Sector</th>');
@@ -952,7 +962,7 @@ let MapSector = {
 		if (GvGMap.Size == 'big')
 			GvGMap.CanvasCTX.font = "12px Arial";
 		GvGMap.CanvasCTX.textAlign = "center";
-		GvGMap.CanvasCTX.fillStyle = ((sector.owner.color.r+sector.owner.color.g+sector.owner.color.b) < 300) ? '#ddd' : '#222';
+		GvGMap.CanvasCTX.fillStyle = ((sector.owner.color.r+sector.owner.color.g+sector.owner.color.b) < 350) ? '#ddd' : '#222';
 		GvGMap.CanvasCTX.fillText(MapSector.coords(sector), sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.85);
 		if (GvGMap.Size == 'big' && sector.terrain != "water" && sector.terrain != "rocks")
 			GvGMap.CanvasCTX.fillText(sector.power, sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.25);
