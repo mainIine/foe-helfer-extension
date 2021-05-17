@@ -582,7 +582,6 @@ let GvGMap = {
 						let prevOwner = sector.owner;
 						sector.owner = GvGMap.CurrentGuild;
 						if (sector.owner.id <= 0) {
-							console.log('hallo');
 							sector.owner.color = MapSector.setColorByTerrain(sector);
 						}
 						if (sector.terrain == "plain" || sector.terrain == "beach") {
@@ -734,7 +733,7 @@ let GvGLog = {
 	},
 
 	addEntry: (response) => {
-		if (response != undefined) {
+		if (response != undefined && response.type != undefined) {
 			let type = response.type.replace('ClanBattle/','');
 			let entry = {
 				class: response.__class__,
@@ -761,7 +760,7 @@ let GvGLog = {
 					nextRelocate: response.building.next_relocate
 				}
 			}
-			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp") {
+			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed") {
 				GvGLog.Entries.unshift(entry);
 				return entry;
 			}
@@ -863,12 +862,13 @@ let MapSector = {
 	},
 
 	setColorByTerrain: (sector) => {
+		let powerMultiplicator = sector.powerMultiplicator || 1;
 		let color = {};
 		if (sector.terrain == "beach") {
-			color = {"r":233,"g":233,"b":114-(parseInt(sector.powerMultiplicator)+1)*10};
+			color = {"r":233,"g":233,"b":114-(parseInt(powerMultiplicator)+1)*10};
 		}
 		else if (sector.terrain == "plain") {
-			color = {"r":126-(parseInt(sector.powerMultiplicator)+1)*10,"g":222-(parseInt(sector.powerMultiplicator)+1)*10,"b":110-(parseInt(sector.powerMultiplicator)+1)*10};
+			color = {"r":126-(parseInt(powerMultiplicator)+1)*10,"g":222-(parseInt(powerMultiplicator)+1)*10,"b":110-(parseInt(powerMultiplicator)+1)*10};
 		}
 		else {
 			if (sector.terrain == "rocks")
@@ -927,6 +927,8 @@ let MapSector = {
 	 * Draws Sector hexagon in its owners color
 	 */
 	drawHex: (sector) => {
+		if (sector.owner.id <= 0)
+			console.log(sector.owner, sector.terrain);
 		GvGMap.CanvasCTX.fillStyle = GvGMap.colorToString(sector.owner.color);
 		GvGMap.CanvasCTX.beginPath();
 		GvGMap.CanvasCTX.moveTo(sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y);
