@@ -293,6 +293,7 @@
     "Boxes.GvGMap.Guild.Power": "Macht",
     "Boxes.GvGMap.Guild.Sectors": "Sektoren",
     "Boxes.GvGMap.Log": "Protokoll",
+    "Boxes.GvGMap.Log.clan_defeated": "Gilde besiegt",
     "Boxes.GvGMap.Log.defender_damaged": "VA angeschlagen",
     "Boxes.GvGMap.Log.defender_defeated": "VA vernichtet",
     "Boxes.GvGMap.Log.defender_deployed": "VA gestellt",

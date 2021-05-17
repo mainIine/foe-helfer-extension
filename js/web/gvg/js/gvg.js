@@ -373,16 +373,17 @@ let GvGMap = {
 		GvGMap.SetTabs('gvgmaplog');
 
 		let h = [], t = [];
-        h.push('<div id="GvGMapInfo"></div>');
-		h.push('<div id="GvGMapActions" class="btn-group">');
+        h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
+		h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
 			h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
 			h.push('<span id="noGuild" class="btn-default btn-inset" style="display: none;"></span>');
 			h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
 			h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
 		h.push('</div>');
-		h.push('<div id="GvGMapWrap">');
-		h.push('<canvas id="gvg-map"></canvas></div><div id="gvgOptions">');
+		h.push('<div id="GvGMapWrap" class="mapFeature">');
+		h.push('<canvas id="gvg-map"></canvas>');
 		h.push('</div>');
+		h.push('<div id="gvgOptions"></div>');
 
 		$('#GvGMapBody').html(h.join(''));
 
