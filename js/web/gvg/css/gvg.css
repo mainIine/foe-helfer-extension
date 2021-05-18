@@ -119,9 +119,13 @@
 	top: 7px;
 }
 
-#noGuild.btn-inset {
+.btn-default.btn-inset {
 	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	padding: 0.2rem;
+}
+
+.editAction {
+	display: none;
 }
 
 #noGuild::before {
