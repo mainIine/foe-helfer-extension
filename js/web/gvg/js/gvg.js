@@ -33,6 +33,9 @@ FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 FoEproxy.addHandler('ClanBattleService', 'getProvinceDetailed', (data, postData) => {	
 	GvGMap.Map.OnloadData = data['responseData'];
 	GvGMap.Map.OnloadDataTime = MainParser.getCurrentDateTime();
+	if ($('#GvGMap').length > 0) {
+		GvGMap.show();
+	}
 });
 
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
@@ -41,7 +44,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
-	if (entry != undefined) {
+	if (entry != undefined && GvGMap.Actions.edit == false) {
 		MapSector.updateSector(entry.sectorId,entry.sourceClan,entry.type);
 	}
 	if ($('#gvgmaplog').length > 0 && entry != undefined)	{
@@ -95,7 +98,7 @@ let GvG = {
 							html: true
 						}
 					)
-					.append('<button class="btn-default mapbutton" onclick="GvGMap.showMap()">MAP</button>');
+					.append('<button class="btn-default mapbutton" onclick="GvGMap.show()">MAP</button>');
 			});
 		}
 		else {
@@ -348,7 +351,7 @@ let GvGMap = {
 	/**
 	 * Show GvG Map
 	 */
-	showMap: () => {
+	show: () => {
 		if ($('#gvg-map').length == 0) {
 
 			moment.locale(MainParser.Language);
@@ -362,6 +365,9 @@ let GvGMap = {
 				resize: true
 			});
 
+			GvGMap.buildMap();
+		}
+		else {
 			GvGMap.buildMap();
 		}
 	},
