@@ -73,21 +73,37 @@
 	height: inherit;
 	display: flex;
 	align-items: stretch;
+	overflow: hidden;
+	justify-content: space-between;
+}
+
+#GvGMapContent {
+	height: inherit;
+	overflow: auto;
+	overflow: hidden;
+	position: relative;
+}
+
+#GvGMapMeta {
+	position: relative;
+	height: 40px;
+	overflow: hidden;
 }
 
 #GvGMapWrap {
-	width: 80%;
 	height: inherit;
 	overflow: auto;
 	background-color: #111213;
 	border-right: 2px solid var(--text-dark);
 	overflow: hidden;
+	position: relative;
 }
 
 #gvgOptions {
 	height: inherit;
 	overflow: auto;
-	width: 350px;
+	min-width: 300px;
+	flex-grow: 2;
 }
 
 #GvGMapInfo {
@@ -97,9 +113,32 @@
 }
 
 #GvGMapActions {
+	z-index: 100;
 	position: absolute;
-	top: 10px;
-	right: 332px;
+	left: 7px;
+	top: 7px;
+}
+
+#noGuild.btn-inset {
+	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	padding: 0.2rem;
+}
+
+#noGuild::before {
+	background: #fff;
+	content: '';
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+	border-radius: 10px;
+}
+
+#GvGlog {
+	font-size: 90%;
+}
+
+#GvGlog table.foe-table tbody tr:nth-child(odd) {
+	background-color: inherit;
 }
 
 .sectorInfo {
@@ -112,6 +151,7 @@
 	background-color: #210b02;
 	width: 200px;
 	font-size: 90%;
+	z-index: 101;
 }
 
 .sectorInfo .guildflag {
@@ -159,11 +199,11 @@
 .guildflag.flag_11, .guildflag.flag_11_G { background-position:  -57px -45px; }
 .guildflag.flag_12 { background-position: -102px -44px; }
 .guildflag.flag_13 { background-position: -148px -45px; }
-.guildflag.flag_14 { background-position: -193px -45px; }
+.guildflag.flag_14, .guildflag.flag_14_R { background-position: -193px -45px; }
 .guildflag.flag_15 { background-position: -237px -45px; }
 .guildflag.flag_16, .guildflag.flag_16_G { background-position: -282px -45px; }
-.guildflag.flag_17 { background-position: -327px -45px; }
-.guildflag.flag_18 { background-position: -372px -46px; }
+.guildflag.flag_17, .guildflag.flag_17_G { background-position: -327px -45px; }
+.guildflag.flag_18, .guildflag.flag_18_R { background-position: -372px -46px; }
 .guildflag.flag_19 { background-position: -418px -45px; }
 
 .guildflag.flag_20, .guildflag.flag_20_R { background-position: -13px -81px; }
