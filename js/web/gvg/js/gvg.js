@@ -33,7 +33,7 @@ FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
 FoEproxy.addHandler('ClanBattleService', 'getProvinceDetailed', (data, postData) => {	
 	GvGMap.Map.OnloadData = data['responseData'];
 	GvGMap.Map.OnloadDataTime = MainParser.getCurrentDateTime();
-	if ($('#GvGMap').length > 0) {
+	if ($('#GvGMapWrap').length > 0) {
 		GvGMap.show();
 	}
 });
@@ -200,7 +200,7 @@ let GvGMap = {
 	Canvas: {},
 	CanvasCTX: {},
 	Map: {
-		OnloadData: {},
+		OnloadData: null,
 		ProvinceData: {},
 		GuildData: {},
 		Sectors: [],
@@ -271,19 +271,19 @@ let GvGMap = {
             {"r":50,"g":200,"b":80}
         ],
         "premium": [
-            [{"r":2,"g":2,"b":2},{"r":30,"g":30,"b":30},{"r":60,"g":10,"b":10},{"r":100,"g":20,"b":50}],
-            [{"r":36,"g":76,"b":32},{"r":36,"g":106,"b":32},{"r":10,"g":76,"b":10},{"r":0,"g":27,"b":82}],
-            [{"r":13,"g":43,"b":70},{"r":10,"g":10,"b":10},{"r":0,"g":0,"b":50},{"r":10,"g":10,"b":30}],
-            [{"r":14,"g":77,"b":86},{"r":14,"g":77,"b":86},{"r":14,"g":77,"b":86},{"r":14,"g":77,"b":86}],
-            [{"r":79,"g":26,"b":126},{"r":40,"g":10,"b":50},{"r":43,"g":14,"b":78},{"r":60,"g":16,"b":110}],
-            [{"r":100,"g":63,"b":33},{"r":80,"g":43,"b":13},{"r":120,"g":83,"b":53},{"r":50,"g":10,"b":0}],
-            [{"r":232,"g":189,"b":64},{"r":210,"g":150,"b":21},{"r":232,"g":189,"b":64},{"r":232,"g":189,"b":64}],
+            [{"r":2,"g":2,"b":2},{"r":19,"g":0,"b":0},{"r":65,"g":0,"b":0},{"r":98,"g":0,"b":25}],
+            [{"r":22,"g":62,"b":11},{"r":17,"g":17,"b":17},{"r":18,"g":53,"b":40},{"r":9,"g":55,"b":75}],
+            [{"r":11,"g":25,"b":62},{"r":8,"g":7,"b":8},{"r":17,"g":63,"b":112},{"r":3,"g":24,"b":92}],
+            [{"r":9,"g":55,"b":75},{"r":13,"g":93,"b":57},{"r":49,"g":25,"b":13},{"r":11,"g":62,"b":47}],
+            [{"r":56,"g":11,"b":62},{"r":88,"g":10,"b":70},{"r":83,"g":34,"b":133},{"r":33,"g":2,"b":68}],
+            [{"r":79,"g":17,"b":0},{"r":117,"g":44,"b":7},{"r":47,"g":33,"b":23},{"r":62,"g":18,"b":11}],
+            [{"r":242,"g":185,"b":0},{"r":214,"g":150,"b":37},{"r":187,"g":116,"b":13},{"r":200,"g":105,"b":11}],
             [{"r":35,"g":60,"b":30},{"r":36,"g":76,"b":32},{"r":35,"g":60,"b":30},{"r":35,"g":60,"b":30}],
             [{"r":44,"g":57,"b":64},{"r":28,"g":35,"b":39},{"r":30,"g":10,"b":50},{"r":47,"g":20,"b":41}],
-            [{"r":80,"g":70,"b":97},{"r":80,"g":70,"b":97},{"r":80,"g":70,"b":97},{"r":80,"g":70,"b":97}],
-            [{"r":61,"g":13,"b":13},{"r":120,"g":40,"b":0},{"r":50,"g":10,"b":1},{"r":61,"g":13,"b":13}],
-            [{"r":56,"g":81,"b":16},{"r":56,"g":81,"b":16},{"r":56,"g":81,"b":16},{"r":56,"g":81,"b":16}],
-            [{"r":210,"g":150,"b":21},{"r":210,"g":150,"b":21},{"r":210,"g":150,"b":21},{"r":210,"g":150,"b":21}]
+            [{"r":50,"g":36,"b":51},{"r":56,"g":50,"b":63},{"r":61,"g":25,"b":84},{"r":80,"g":70,"b":97}],
+            [{"r":50,"g":19,"b":6},{"r":95,"g":13,"b":8},{"r":128,"g":20,"b":13},{"r":130,"g":38,"b":10}],
+            [{"r":31,"g":62,"b":109},{"r":0,"g":9,"b":102},{"r":14,"g":29,"b":67},{"r":38,"g":34,"b":63}],
+            [{"r":37,"g":48,"b":37},{"r":6,"g":87,"b":0},{"r":21,"g":58,"b":24},{"r":30,"g":67,"b":0}]
 		]
     },
 
@@ -372,108 +372,124 @@ let GvGMap = {
 		}
 	},
 
+    /**
+	 * Hide 
+	 */
+	hide: () => {
+		if ($('#GvGMap').length > 0) {
+			$('#GvGMap').remove();
+		}
+	},
+
 	/**
 	 * Build GvG Map
 	 */
 	buildMap: (mapSize = 'small', initial = true) => {
-		GvGMap.Tabs = [];
-		GvGMap.TabsContent = [];
-
-		GvGMap.SetTabs('gvgmapguilds');
-		GvGMap.SetTabs('gvgmaplog');
-
 		let h = [], t = [];
-		h.push('<div id="GvGMapContent" class="mapFeature">');
-			h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
-			h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
-				h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
-				h.push('<span id="noGuild" class="btn-default btn-inset" style="display: none;"></span>');
-				h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
-				h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
+		if (GvGMap.Map.OnloadData != null) {
+			GvGMap.Tabs = [];
+			GvGMap.TabsContent = [];
+
+			GvGMap.SetTabs('gvgmapguilds');
+			GvGMap.SetTabs('gvgmaplog');
+
+			h.push('<div id="GvGMapContent" class="mapFeature">');
+				h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
+				h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
+					h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
+					h.push('<span id="noGuild" class="btn-default btn-inset" style="display: none;"></span>');
+					h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+					h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
+					h.push('</div>');
+					h.push('</div>');
+				h.push('<div id="GvGMapWrap" class="mapFeature">');
+				h.push('<canvas id="gvg-map"></canvas>');
 				h.push('</div>');
-				h.push('</div>');
-			h.push('<div id="GvGMapWrap" class="mapFeature">');
-			h.push('<canvas id="gvg-map"></canvas>');
 			h.push('</div>');
-		h.push('</div>');
-        h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
-		//h.push('<span id="gvgOptionsToggleView" class="btn-default">Toggle</span>');
-		h.push('<div id="gvgOptions"></div>');
+			h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
+			//h.push('<span id="gvgOptionsToggleView" class="btn-default">Toggle</span>');
+			h.push('<div id="gvgOptions"></div>');
 
-		$('#GvGMapBody').html(h.join(''));
+			$('#GvGMapBody').html(h.join(''));
 
-		GvGMap.populateCanvas(mapSize, initial);
-		GvGMap.drawInfo();
-		GvGMap.showGuilds();
+			GvGMap.populateCanvas(mapSize, initial);
+			GvGMap.drawInfo();
+			GvGMap.showGuilds();
 
-		GvGLog.show();
+			GvGLog.show();
 
-		let editBtn = document.getElementById("editMap");
-		let dragBtn = document.getElementById("dragMap");
-		let zoomBtn = document.getElementById("zoomMap");
-		let noGuildBtn = document.getElementById("noGuild");
+			let editBtn = document.getElementById("editMap");
+			let dragBtn = document.getElementById("dragMap");
+			let zoomBtn = document.getElementById("zoomMap");
+			let noGuildBtn = document.getElementById("noGuild");
 
-        editBtn.addEventListener('click', function (e) {
-            GvGMap.Actions.edit = true;
-			GvGMap.Actions.drag = false;
-			dragBtn.classList.remove('btn-default-active');
-			editBtn.classList.add('btn-default-active');
-			noGuildBtn.style.display = 'block';
-        }, false);
-        dragBtn.addEventListener('click', function (e) {
-            GvGMap.Actions.edit = false;
-			GvGMap.Actions.drag = true;
-			editBtn.classList.remove('btn-default-active');
-			dragBtn.classList.add('btn-default-active');
-			noGuildBtn.style.display = 'none';
-        }, false);
-		zoomBtn.addEventListener('click', function (e) {
-			if (GvGMap.Size == 'small')
-            	GvGMap.buildMap('big', false);
-			else
-				GvGMap.buildMap('small', false);
-        }, false);
-		noGuildBtn.addEventListener('click', function (e) {
-			GvGMap.CurrentGuild = { id: 0 };
-        }, false);
-		GvGMap.mapDragOrEdit();
-		
-		t.push('<div class="gvg-tabs tabs">');
-		t.push( GvGMap.GetTabs() );
-		t.push( GvGMap.GetTabContent() );
-		t.push('</div>');
-		$('#gvgOptions').html(t.join(''));
-
-
-        $('#GvGGuilds tr').click(function (e) {
-			let id = $(this).attr('id').replace('id-', '')/1;
-			$('#GvGGuilds tr').removeClass('active');
-			$(this).addClass('active');
-			
-			GvGMap.CurrentGuild = GvGMap.Map.Guilds.find(x => x.id  === id);
-			console.log(GvGMap.CurrentGuild);
-        });
-
-		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
-			$('.gvg-tabs').tabslet({active: 1});
-			$('.gvg-tabs .gvgmapguilds span').text(i18n('Boxes.GvGMap.Guild.Name'));
-			$('.gvg-tabs .gvgmaplog span').text(i18n('Boxes.GvGMap.Log'));
-
-			let textFilter = document.getElementById("logFilter");
-			textFilter.addEventListener('keyup', function (e) {
-				let search = textFilter.value.toLowerCase();
-				let logEntries = document.getElementsByClassName("logEntry");
-				for (i = 0; i < logEntries.length; i++) {
-					let text = logEntries[i].textContent.toLowerCase();
-					if (!text.includes(search)) {
-						logEntries[i].style.display = "none";
-					}
-					else {
-						logEntries[i].style.display = "table-row";
-					}
-				}
+			editBtn.addEventListener('click', function (e) {
+				GvGMap.Actions.edit = true;
+				GvGMap.Actions.drag = false;
+				dragBtn.classList.remove('btn-default-active');
+				editBtn.classList.add('btn-default-active');
+				noGuildBtn.style.display = 'block';
 			}, false);
-		});
+			dragBtn.addEventListener('click', function (e) {
+				GvGMap.Actions.edit = false;
+				GvGMap.Actions.drag = true;
+				editBtn.classList.remove('btn-default-active');
+				dragBtn.classList.add('btn-default-active');
+				noGuildBtn.style.display = 'none';
+			}, false);
+			zoomBtn.addEventListener('click', function (e) {
+				if (GvGMap.Size == 'small')
+					GvGMap.buildMap('big', false);
+				else
+					GvGMap.buildMap('small', false);
+			}, false);
+			noGuildBtn.addEventListener('click', function (e) {
+				GvGMap.CurrentGuild = { id: 0 };
+			}, false);
+			GvGMap.mapDragOrEdit();
+			
+			t.push('<div class="gvg-tabs tabs">');
+			t.push( GvGMap.GetTabs() );
+			t.push( GvGMap.GetTabContent() );
+			t.push('</div>');
+			$('#gvgOptions').html(t.join(''));
+
+			$('#GvGMap').find('#gvgmaplog').promise().done(function() {
+				$('.gvg-tabs').tabslet({active: 2});
+				$('.gvg-tabs .gvgmapguilds span').text(i18n('Boxes.GvGMap.Guild.Name'));
+				$('.gvg-tabs .gvgmaplog span').text(i18n('Boxes.GvGMap.Log'));
+
+				$('#GvGGuilds tr').click(function (e) {
+					let id = $(this).attr('id').replace('id-', '')/1;
+					$('#GvGGuilds tr').removeClass('active');
+					$(this).addClass('active');
+					
+					GvGMap.CurrentGuild = GvGMap.Map.Guilds.find(x => x.id  === id);
+				});
+
+				let textFilter = document.getElementById("logFilter");
+				textFilter.addEventListener('keyup', function (e) {
+					let search = textFilter.value.toLowerCase();
+					GvGLog.FilterValue = search;
+					let logEntries = document.getElementsByClassName("logEntry");
+					for (i = 0; i < logEntries.length; i++) {
+						let text = logEntries[i].textContent.toLowerCase();
+						if (!text.includes(search)) {
+							logEntries[i].style.display = "none";
+						}
+						else {
+							logEntries[i].style.display = "table-row";
+						}
+					}
+				}, false);
+			});
+		}
+		else {
+			h.push('<div class="dark-bg text-center" style="width: 100%;"><h2>Please open a map!</h2></div>');
+
+			$('#GvGMapBody').html(h.join(''));
+			GvGMap.hide();
+		}
 	},
 
 	populateCanvas: (mapSize, initial) => {
@@ -537,7 +553,7 @@ let GvGMap = {
 		GvGMap.CanvasCTX.fillText(GvGMap.Map.Era, 10, 25);
 		GvGMap.CanvasCTX.font = "12px Arial";
 		GvGMap.CanvasCTX.fillStyle = '#ccc';
-		GvGMap.CanvasCTX.fillText('Data fetched: '+ moment(GvGMap.Map.OnloadDataTime).format('D.M.YY - HH:mm:ss'), 10, 45);
+		GvGMap.CanvasCTX.fillText(moment(GvGMap.Map.OnloadDataTime).format('D.M.YY'), 10, 45);
 	},
 
 	findGuildById: (id) => {
@@ -743,14 +759,7 @@ let GvGMap = {
 
 let GvGLog = {
 	Entries: [],
-
-	DummyData: [],
-
-	testData: () => {
-		GvGLog.DummyData.forEach(function (data) {
-			GvGLog.addEntry(data);
-		});
-	},
+	FilterValue: '',
 
 	addEntry: (response) => {
 		if (response != undefined && response.type != undefined) {
@@ -821,7 +830,9 @@ let GvGLog = {
 			t.push('</td>');
 			t.push('</tr>');
 		}
-		return t.join('');
+		let tr = t.join('');
+		console.log(tr);
+		return tr;
 	},
 
 	show: () => {
