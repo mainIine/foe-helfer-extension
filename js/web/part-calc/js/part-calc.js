@@ -21,12 +21,19 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 	let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === data.responseData['great_building_name']));
 	if (!Entity) return; // LG nicht gefunden
 
-	if (Entity['id'] !== Parts.CityMapEntity['cityentity_id']) // Selbes LG
+	if (Entity['id'] !== Parts.CityMapEntity['cityentity_id']) return; // Selbes LG
 
 	if ($('#OwnPartBox').length > 0) {
 		let NewLevel = data.responseData['level'];
 		Parts.Show(NewLevel);
+		if (Parts.PlayInfoSound) Calculator.SoundFile.play();
     }
+});
+
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#OwnPartBox').length > 0) {
+		Parts.Show();
+	}
 });
 
 let Parts = {
@@ -427,7 +434,13 @@ let Parts = {
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
 
 		if (Parts.IsPreviousLevel) {
-			h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+			let Level = GreatBuildings.GetLevel(cityentity_id, Total);
+			if (Level) {
+				h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + (Level-1) + ' &rarr; ' + (Level));
+			}
+			else { //Level unbekannt
+				h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+            }
 		}
 		else {
 			if (Parts.IsNextLevel) {

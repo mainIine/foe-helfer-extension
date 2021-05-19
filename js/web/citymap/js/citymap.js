@@ -266,8 +266,8 @@ let CityMap = {
 
 			let AreaNeeded = parseInt(d['width']) * parseInt(d['length']);
 			CityMap.OccupiedArea += (AreaNeeded);
-            
-		    if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+
+			if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
 			CityMap.OccupiedArea2[d.type] += (AreaNeeded);
 
 			if (d.type !== 'street' && CityMap.CityData[b]['state']['__class__'] !== 'UnconnectedState') {
@@ -356,8 +356,8 @@ let CityMap = {
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (!CityMap.IsExtern) {
 			$('.occupied-area').html(txtFree);
-        }
-		
+		}
+
 		sortable = [];
 		for( x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
 		sortable.sort((a, b) => a[1] - b[1]);
@@ -413,7 +413,7 @@ let CityMap = {
 			HTML.AddCssFile('citymap');
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
-			
+
 			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
@@ -445,8 +445,35 @@ let CityMap = {
 			}
 		};
 
-		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#CityMapSubmitBody').html('<p class="text-center"><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-helper.com">foe-helper.com</a></span>');
+		MainParser.send2Server(d, 'CityPlanner', function(resp){
+
+			if(resp.status === 'OK')
+			{
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitSuccess'),
+						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
+					],
+					type: 'success',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitError'),
+						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
+					],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+
+			$('#CityMapSubmit').fadeToggle(function(){
+				$(this).remove();
+			});
 		});
 	},
 
@@ -454,14 +481,16 @@ let CityMap = {
 	/**
 	 * Copy citydata to the clipboard
 	 */
-	copyMetaInfos:()=> {
-		helper.str.copyToClipboard(JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas}));
-
-		HTML.ShowToastMsg({
-			head: i18n('Boxes.CityMap.ToastHeadCopyData'),
-			text: i18n('Boxes.CityMap.ToastBodyCopyData'),
-			type: 'info',
-			hideAfter: 4000,
-		});
+	copyMetaInfos: () => {
+		helper.str.copyToClipboard(
+			JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas})
+		).then(() => {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.ToastHeadCopyData'),
+				text: i18n('Boxes.CityMap.ToastBodyCopyData'),
+				type: 'info',
+				hideAfter: 4000,
+			})
+		});	
 	}
 };

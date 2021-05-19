@@ -36,13 +36,20 @@ helper.str = {
 	 *
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
-	copyToClipboard: function(textToCopy){
-		let copyFrom = $('<textarea/>');
-		copyFrom.text(textToCopy);
-		$('body').append(copyFrom);
-		copyFrom.select();
-		document.execCommand('copy');
-		copyFrom.remove();
+	copyToClipboard: async(textToCopy) => {
+		if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(textToCopy);
+		} else {
+			return new Promise(async (resolve) => {
+				let copyFrom = $('<textarea/>');
+				copyFrom.text(textToCopy);
+				$('body').append(copyFrom);
+				copyFrom.select();
+				document.execCommand('copy');
+				copyFrom.remove();
+				resolve();
+			});
+		}
 	}
 };
 
@@ -121,6 +128,7 @@ helper.permutations = (()=>{
 let HTML = {
 
 	customFunctions: [],
+	IsReversedFloatFormat: undefined,
 
 	/**
 	 * Creates an HTML box in the DOM
@@ -695,6 +703,16 @@ let HTML = {
 	},
 
 
+	escapeHtml: (text)=> {
+		return text
+			.replace(/&/g, "&amp;")
+			.replace(/</g, "&lt;")
+			.replace(/>/g, "&gt;")
+			.replace(/"/g, "&quot;")
+			.replace(/'/g, "&#039;");
+	},
+
+
 	ShowToastMsg: (d) => {
 
 		if (!Settings.GetSetting('ShowNotifications') && !d['show']) return;
@@ -739,6 +757,7 @@ let HTML = {
 		return winObject;
 	},
 
+
 	ExportTable: (Table, Format, FileName) => {
 		if (!Table || Table.length === 0) return;
 
@@ -764,15 +783,28 @@ let HTML = {
                 }
 			});
 
-			DataRows = [];
+			let DataRows = [];
 			$(Table).find('tr').each(function () {
 				let CurrentRow = {};
 				let ColumnID = 0;
 				$(this).find('td').each(function () {
 					if (ColumnNames[ColumnID]) { //skip if no columnname set
 						let Key = ColumnNames[ColumnID];
-						let Value = $(this).text();
-						Value = Value.replace(/,/g, ""); //Remove comma (123,456 => 123456)
+						let Value;
+						if ($(this).attr('exportvalue')) {
+							Value = $(this).attr('exportvalue');
+							Value = HTML.ParseFloatNonLocalIfPossible(Value);
+						}
+						else if ($(this).attr('data-number')) {
+							Value = $(this).attr('data-number');
+							Value = HTML.ParseFloatNonLocalIfPossible(Value);
+						}
+						else {
+							Value = $(this).text();
+							if (Value === '-') Value = '0';
+							Value = HTML.ParseFloatLocalIfPossible(Value);
+						}
+						
 						CurrentRow[Key] = Value;
 					}
 
@@ -804,8 +836,14 @@ let HTML = {
 					let CurrentCells = [];
 
 					for (let j = 0; j < ValidColumnNames.length; j++) {
-						if (DataRow[ValidColumnNames[j]]) {
-							CurrentCells.push(DataRow[ValidColumnNames[j]].replace(/;/g, ''));
+						let CurrentCell = DataRow[ValidColumnNames[j]];
+						if (CurrentCell !== undefined) {
+							if ($.isNumeric(CurrentCell)) {
+								CurrentCells.push(Number(CurrentCell).toLocaleString(i18n('Local')));
+							}
+							else {
+								CurrentCells.push(CurrentCell);
+                            }
 						}
 						else {
 							CurrentCells.push('');
@@ -823,5 +861,46 @@ let HTML = {
 			let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
 			MainParser.ExportFile(Blob1, FileName + '.' + Format);
 		});
+	},
+
+
+	ParseFloatLocalIfPossible: (NumberString) => {
+		if (HTML.IsReversedFloatFormat === undefined) { //FloatFormat bestimmen, wenn noch unbekannt
+			let ExampleNumberString = Number(1.2).toLocaleString(i18n('Local'))
+			if (ExampleNumberString.charAt(1) === ',') {
+				HTML.IsReversedFloatFormat = true;
+			}
+			else {
+				HTML.IsReversedFloatFormat = false;
+			}
+		}
+
+		let Ret = NumberString;
+		if (HTML.IsReversedFloatFormat) {
+			Ret = Ret.replace(/\./g, "") //1000er Trennzeichen entfernen
+			Ret = Ret.replace(/,/g, ".") //Komma ersetzen
+		}
+		else {
+			Ret = Ret.replace(/,/g, "") //1000er Trennzeichen entfernen
+		}
+
+		let RetNumber = Number(Ret);
+		if (isNaN(RetNumber)) {
+			return NumberString;
+		}
+		else {
+			return RetNumber;
+		}
+	},
+
+
+	ParseFloatNonLocalIfPossible: (NumberString) => {
+		let Ret = Number(NumberString);
+		if (isNaN(Ret)) {
+			return NumberString;
+		}
+		else {
+			return Ret;
+        }
 	},
 };
