@@ -63,10 +63,10 @@
 }
 
 #GvGMap {
-	left: calc(50vw - 285px);
-	top: calc(50vw - 270px);
-	width: 570px;
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
 	width: 800px;
+	height: 500px;
 }
 
 #GvGMapBody {
