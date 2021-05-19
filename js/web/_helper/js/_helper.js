@@ -36,13 +36,8 @@ helper.str = {
 	 *
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
-	copyToClipboard: function(textToCopy){
-		let copyFrom = $('<textarea/>');
-		copyFrom.text(textToCopy);
-		$('body').append(copyFrom);
-		copyFrom.select();
-		document.execCommand('copy');
-		copyFrom.remove();
+	copyToClipboard: async function(textToCopy) {
+		await navigator.clipboard.writeText(textToCopy);
 	}
 };
 
