@@ -321,7 +321,7 @@ let GvGMap = {
 		GvGMap.Size = size;
 		GvGMap.Map.Width = (GvGMap.Map.ProvinceData.bounds.x_max - GvGMap.Map.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
 		GvGMap.Map.Height = (GvGMap.Map.ProvinceData.bounds.y_max - GvGMap.Map.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
-		GvGMap.CurrentGuild = {};
+		GvGMap.CurrentGuild = GvGMap.NoGuild;
 	},
 
 	/**
@@ -423,7 +423,7 @@ let GvGMap = {
 					GvGMap.buildMap('small', false);
 			}, false);
 			noGuildBtn.addEventListener('click', function (e) {
-				GvGMap.CurrentGuild = { id: 0 };
+				GvGMap.CurrentGuild = GvGMap.NoGuild;
 			}, false);
 			GvGMap.mapDragOrEdit();
 			
@@ -1024,7 +1024,7 @@ let MapSector = {
 		MapSector.drawHex(sector);
 		MapSector.drawHexText(sector);
 		let imgSizeFactor = 0.5;
-		
+
 		if (sector.owner.id > 0) {
 			let flag = sector.owner.flagCoordinates;
 		
