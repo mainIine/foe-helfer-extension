@@ -47,6 +47,10 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 	}
 });
 
+// add close button to info
+// remove slot_unlocked entry from any guild that is not your own
+// translate eras
+
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
 	if (entry != undefined && GvGMap.Actions.edit === false) {
@@ -168,7 +172,7 @@ let GvG = {
 
 		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction !== 0) {
 			console.log('GvG.Actions.LastAction < GvG.Actions.PrevCalc');
-			GvG.resetData(calcTime);
+			//GvG.resetData(calcTime);
 		}
 
 		localStorage.setItem('GvGActions', JSON.stringify(GvG.Actions));
@@ -418,7 +422,7 @@ let GvGMap = {
 			}, false);
 			zoomBtn.addEventListener('click', function (e) {
 				if (GvGMap.Size === 'small')
-					GvGMap.buildMap('big', false);
+					GvGMap.buildMap('mini', false);
 				else
 					GvGMap.buildMap('small', false);
 			}, false);
@@ -628,18 +632,18 @@ let GvGMap = {
 						GvGMap.showSector(sector);
 					}
 					else { // edit
-						let prevOwner = sector.owner;
-						if (sector.owner.id == GvGMap.NoGuild.ID)
-							prevOwner = GvGMap.NoGuild;
-
-						sector.owner = GvGMap.CurrentGuild;
-						if (sector.owner.id <= 0) {
-							sector.owner.color = MapSector.getColorByTerrain(sector);
-						}
 						if (sector.terrain === "plain" || sector.terrain === "beach") {
+							let prevOwner = sector.owner;
+							if (sector.owner.id == GvGMap.NoGuild.ID)
+								prevOwner = GvGMap.NoGuild;
+
+							sector.owner = GvGMap.CurrentGuild;
+							if (sector.owner.id <= 0) {
+								sector.owner.color = MapSector.getColorByTerrain(sector);
+							}
 							MapSector.draw(sector, true);
+							GvGMap.recalcGuildProvinces(prevOwner, sector.owner, sector);
 						}
-						GvGMap.recalcGuildProvinces(prevOwner, sector.owner, sector);
 					}
                     return sector;
                 }
@@ -675,8 +679,8 @@ let GvGMap = {
 
 	showSector: (sector) => {
 		let html = '';
-		if (sector.owner.name != undefined) {
-			html = '<div class="sectorInfo">'
+		if (sector.owner.id != 0) {
+			html += '<div id="sectorInfo">';
 			html += '<span class="guildflag '+sector.owner.flag+'" style="background-color: '+GvGMap.colorToString(sector.owner.color)+';border-color: '+GvGMap.colorToString(sector.owner.color)+'"></span>';
 			html += '<b class="text-bright">'+ sector.owner.name +'</b><br>';
 			if (MapSector.underSiege(sector))
@@ -841,7 +845,7 @@ let GvGLog = {
 					nextRelocate: response.building.next_relocate
 				}
 			}
-			else if (response.__class__ === "ClanBattleClanChange" && type == "clan_entered") { // headquarter_placed
+			else if (response.__class__ === "ClanBattleClanChange" && type == "clan_entered") {
 				// add Guild to pool
 				let guildOnMap = {
 					id: response.source_clan_id,
@@ -858,7 +862,7 @@ let GvGLog = {
 				entry.targetClan = response.target_clan_id;
 				entry.details = {
 					hitpoints: response.hitpoints,
-					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
+					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0,
 				}
 			}
 
@@ -880,9 +884,11 @@ let GvGLog = {
 	buildEntry: (entry) => {
 		let t = [];
 		let sector = MapSector.getById(entry.sectorId);
+		// wenn eigene gilde target clan ist und defender_damaged -> rot
+		let hostileAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_damaged' || entry.type == 'defender_defeated')) ? 'alert' : '';
 		if (sector != null) { // if sector is on map
 			let sectorCoords = MapSector.coords(sector);
-			t.push('<tr class="'+entry.type+' logEntry">');
+			t.push('<tr class="'+entry.type+' '+hostileAction+' logEntry">');
 			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
 			t.push('<td>');
 				if (entry.sourceClan != entry.targetClan && entry.targetClan != undefined && entry.sourceClan != undefined)
