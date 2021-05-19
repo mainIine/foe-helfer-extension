@@ -1438,6 +1438,37 @@ let GuildMemberStat = {
 
 		d.push(`</div>`);
 
+		d.push(`<div class="detail-wrapper buildinglist detail hide">`);
+		d.push(`<div class="detail-item guildbuildings"><table id="guildbuildingslist" class="foe-table"><thead><tr class="sorter-header">` +
+			`<th class="is-number" data-type="gms-gbl">#</th>` + 
+			`<th class="case-sensitive" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildBuildings')}</th>` +
+			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Level')}</th>` +
+			`<th class="case-sensitive" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
+			`<th class="is-number" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
+			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildGoods')}</th>` +
+			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildPower')}</th>` +
+			`</tr></thead><tbody class="gms-gbl copyable">`);
+		let bCounter = 1;
+		allGuildBuildings.forEach(plbuilding => {
+			
+			let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
+			let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
+			let level = plbuilding.level !== null && plbuilding.level !== undefined ? plbuilding.level : 0;
+
+			ExportContent.push([plbuilding.name, (plbuilding.level !== null ? plbuilding.level : ''), Technologies.Eras[plbuilding.era], i18n('Eras.' + Technologies.Eras[plbuilding.era]), plbuilding.member,  (plbuilding.power !== undefined ? plbuilding.power.value : 0), (plbuilding.resources !== undefined ? plbuilding.resources.totalgoods : 0)]);
+			
+			d.push(`<tr${plbuilding.gbid === undefined ? ` class="outdated" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildBuildingNotification'))}"` : ''}">` +
+				`<td class="is-number" data-number="${bCounter}">${bCounter++}</td>` + 
+				`<td class="case-sensitive" data-text="${plbuilding.name.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.name}</td>` + 
+				`<td class="is-number text-center" data-number="${level}">${HTML.Format(level)}</td>` +
+				`<td class="case-sensitive" data-text="${plbuilding.member.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.member}</td>` +
+				`<td class="is-number" data-number="${Technologies.Eras[plbuilding.era]}">${plbuilding.era !== undefined ? i18n('Eras.' + Technologies.Eras[plbuilding.era]) : '-'}</td>` + 
+				`<td class="is-number text-center" data-number="${goodCount}">${HTML.Format(goodCount)}</td>` + 
+				`<td class="is-number text-center" data-number="${powerCount}">${HTML.Format(powerCount)}</td></tr>`);
+		});
+		
+		d.push(`</tbody></table></div></div>`);
+
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 
 			$("#GuildErasTable").tableSorter();
@@ -1805,6 +1836,10 @@ let GuildMemberStat = {
 			});
 
 			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			
+			$('#gmsContentWrapper #toggleBuildingView').on('click', function(){
+				$('#gmsContentWrapper .buildinglist').toggleClass('hide show');
+			});
 		});
 	},
 
@@ -2040,6 +2075,67 @@ let GuildMemberStat = {
 		return arr.filter(function (ele) {
 			return ele !== value;
 		});
+	},
+
+
+	ExportContent: (filename, type) => {
+
+		var content = GuildMemberStat.ExportData;
+		var FileContent = '';
+
+		for (var i = 0; i < content.length; i++)
+		{
+			var value = content[i];
+
+			for (var j = 0; j < value.length; j++)
+			{
+				var innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
+				var result = innerValue.replace(/"/g, '""');
+				if (result.search(/("|,|\n)/g) >= 0)
+					result = '"' + result + '"';
+				if (j > 0)
+					FileContent += ';';
+				FileContent += result;
+			}
+
+			FileContent += '\r\n';
+		}
+		let BOM = "\uFEFF";
+
+		if (type === 'json')
+		{
+			FileContent = GuildMemberStat.CsvToJson(FileContent);
+		}
+
+		let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
+		MainParser.ExportFile(Blob1, filename + '.' + type);
+
+		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
+			$(this).remove();
+		});
+	},
+
+
+	CsvToJson: (csv) => {
+
+		var lines = csv.split("\r\n");
+		var result = [];
+		var headers = lines[0].split(";");
+
+		for (var i = 1; i < lines.length - 1; i++)
+		{
+			var obj = {};
+			var currentline = lines[i].split(";");
+
+			for (var j = 0; j < headers.length; j++)
+			{
+				obj[headers[j]] = currentline[j];
+			}
+
+			result.push(obj);
+		}
+
+		return JSON.stringify(result); 
 	},
 
 

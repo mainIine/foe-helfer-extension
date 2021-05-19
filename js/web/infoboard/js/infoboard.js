@@ -248,8 +248,10 @@ let Infoboard = {
 
     PostMessage: (bd,add = true) => {
 
-        if ($('#BackgroundInfo').length > 0) {
-            if(bd['class'] !== 'welcome' && add){
+        if ($('#BackgroundInfo').length > 0)
+        {
+            if(bd['class'] !== 'welcome' && add)
+            {
                 if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries){
                     Infoboard.History.shift();
                 }
@@ -259,14 +261,20 @@ let Infoboard = {
 
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 textfilter = $('input[data-type="text"]').val().split("|"),
-                msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
+                msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />'),
+				filterStatus = textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase()));
 
             // wenn nicht angezeigt werden soll, direkt verstecken
-            if ((!status || !(textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase())))) && bd.class !== 'welcome') {
+            if ((!status || !filterStatus) && bd.class !== 'welcome')
+            {
                 tr.hide();
-            }else{
-                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
-                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+            }
+            else
+            {
+                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries)
+                {
+                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries)
+					{
                         let trLast = $('#BackgroundInfoTable tbody tr:last-child')[0];
                         trLast.parentNode.removeChild(trLast);
                     }
@@ -287,7 +295,8 @@ let Infoboard = {
 
             $('#BackgroundInfoTable tbody').prepend(tr);
 
-            if (Infoboard.PlayInfoSound && status) {
+            if (Infoboard.PlayInfoSound && status && filterStatus)
+            {
                 Infoboard.SoundFile.play();
             }
         }
