@@ -1,7 +1,7 @@
 // NEU
 /*
  * **************************************************************************************
- * Copyright (C) 2021  FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -25,7 +25,7 @@ FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData)
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-	if (GvG.Actions == undefined) {
+	if (GvG.Actions === undefined) {
 		GvG.initActions();
 	}
 	GvG.setRecalc(data.responseData.continent.calculation_time.start_time, true);
@@ -56,10 +56,10 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
-	if (entry != undefined && GvGMap.Actions.edit == false) {
+	if (entry != undefined && GvGMap.Actions.edit === false) {
 		MapSector.update(entry.sectorId,entry.sourceClan,entry.type);
 	}
-	if ($('#gvgmaplog').length > 0 && entry != undefined)	{
+	if ($('#gvgmaplog').length > 0 && entry)	{
 		GvGLog.showEntry(entry);
 	}
 });
@@ -71,7 +71,7 @@ let GvG = {
 	initActions: () => {
 		let Actions = JSON.parse(localStorage.getItem('GvGActions'));
 
-		if (Actions == null) {			
+		if (Actions === null) {			
 			Actions = {
 				Independences: 0,
 				Sieges: 0,
@@ -90,7 +90,7 @@ let GvG = {
 	 * Build HUD
 	 */
 	showGvgHud: () => {
-		if ($('#gvg-hud').length == 0) {
+		if ($('#gvg-hud').length === 0) {
 			HTML.AddCssFile('gvg');
 			let div = $('<div />');
 
@@ -162,18 +162,18 @@ let GvG = {
 	 * Set Recalc time
 	 * @param calcTime
 	 */
-	 setRecalc: (calcTime) => {
+    setRecalc: (calcTime) => {
 		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 
-		if (GvG.Actions.NextCalc != calcTime) {
+		if (GvG.Actions.NextCalc !== calcTime) {
 			GvG.Actions.NextCalc = calcTime;
 		}
 
-		if (GvG.Actions.PrevCalc == 0) {
+		if (GvG.Actions.PrevCalc === 0) {
 			GvG.Actions.PrevCalc = (calcTime-86400);
 		}
 
-		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction != 0) {
+		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction !== 0) {
 			console.log('GvG.Actions.LastAction < GvG.Actions.PrevCalc');
 			GvG.resetData(calcTime);
 		}
@@ -329,7 +329,7 @@ let GvGMap = {
 	 * Show GvG Map
 	 */
 	show: () => {
-		if ($('#gvg-map').length == 0) {
+		if ($('#gvg-map').length === 0) {
 
 			moment.locale(MainParser.Language);
 
@@ -418,7 +418,7 @@ let GvGMap = {
 				$('.editAction').hide();
 			}, false);
 			zoomBtn.addEventListener('click', function (e) {
-				if (GvGMap.Size == 'small')
+				if (GvGMap.Size === 'small')
 					GvGMap.buildMap('big', false);
 				else
 					GvGMap.buildMap('small', false);
@@ -511,7 +511,7 @@ let GvGMap = {
 					sectors: 0,
 				};
 				GvGMap.Map.Guilds.push(guildOnMap);
-				if ((guild.id) == GvGMap.OwnGuild.Id) {
+				if ((guild.id) === GvGMap.OwnGuild.Id) {
 					GvGMap.CurrentGuild = guildOnMap;
 				}
 			});
@@ -528,7 +528,7 @@ let GvGMap = {
                 let realY = (sector.position.y - GvGMap.Map.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
 				let newSector = {};
 
-				if (sector.position.y % 2 == 0) {
+				if (sector.position.y % 2 === 0) {
 					newSector = MapSector.create(realX, realY * 0.75, sector);
 				}
 				else {
@@ -616,7 +616,7 @@ let GvGMap = {
 						if (sector.owner.id <= 0) {
 							sector.owner.color = MapSector.getColorByTerrain(sector);
 						}
-						if (sector.terrain == "plain" || sector.terrain == "beach") {
+						if (sector.terrain === "plain" || sector.terrain === "beach") {
 							MapSector.draw(sector, true);
 						}
 						GvGMap.recalcGuildProvinces(prevOwner, sector.owner, sector);
@@ -709,9 +709,9 @@ let GvGMap = {
         if (flag != null)  {
             if (flag[0].search("premium") >= 0) 
 				color = GvGMap.Colors.premium[flag[flag.length-1]-1][Math.round(guild.id/4)%4];
-            else if (flag[flag.length - 1].toLowerCase() == "r") 
+            else if (flag[flag.length - 1].toLowerCase() === "r") 
                 color = GvGMap.Colors.r[Math.round(guild.id/13)%13];
-            else if (flag[flag.length - 1].toLowerCase() == "g")
+            else if (flag[flag.length - 1].toLowerCase() === "g")
                 color = GvGMap.Colors.g[Math.round(guild.id/13)%13];
             else
 				if (flag.length != 1)
@@ -724,7 +724,7 @@ let GvGMap = {
 	getFlagImageCoordinates: (flag) => {
         let id = flag.split("_");
 
-        if (id[id.length - 1].toLowerCase() == "r" || id[id.length - 1].toLowerCase() == "g")
+        if (id[id.length - 1].toLowerCase() === "r" || id[id.length - 1].toLowerCase() === "g")
             id = parseInt(id[id.length - 2]);
         else
             id = parseInt(id[id.length - 1]);
@@ -745,7 +745,7 @@ let GvGMap = {
 		if (id < 0) {
 			return i18n('Boxes.GvGMap.Log.NPC');
 		}
-		else if (guild == GvGMap.OwnGuild) {
+		else if (guild === GvGMap.OwnGuild) {
 			return '<span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span> '+ guild.name;
 		}
 		else if (guild != null) {
@@ -806,22 +806,22 @@ let GvGLog = {
 				sourceClan: response.source_clan_id,
 				details: {},
 			};
-			if (response.__class__ == "ClanBattleSectorChange") { // sector_independence_granted, sector_conquered, sector_slot_unlocked
+			if (response.__class__ === "ClanBattleSectorChange") { // sector_independence_granted, sector_conquered, sector_slot_unlocked
 				entry.targetClan = response.target_clan_id;
 				entry.details = {
-					playerId: (response.source_clan_id == GvGMap.OwnGuild.Id) ? response.player_id : 0
+					playerId: (response.source_clan_id === GvGMap.OwnGuild.Id) ? response.player_id : 0
 				}
-				if (entry.type == "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
+				if (entry.type === "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
 					entry.details = {};
 				}
 			}
-			else if (response.__class__ == "ClanBattleBuildingChange") { // headquarter_placed
+			else if (response.__class__ === "ClanBattleBuildingChange") { // headquarter_placed
 				entry.targetClan = response.target_clan_id;
 				entry.details = {
 					nextRelocate: response.building.next_relocate
 				}
 			}
-			else if (response.__class__ == "ClanBattleClanChange" && type == "clan_entered") { // headquarter_placed
+			else if (response.__class__ === "ClanBattleClanChange" && type == "clan_entered") { // headquarter_placed
 				// add Guild to pool
 				let guildOnMap = {
 					id: response.source_clan_id,
@@ -954,25 +954,25 @@ let MapSector = {
 		let sector = MapSector.getById(sectorId);
 
 		if (sector != null) {
-			if (type == "sector_conquered") {
+			if (type === "sector_conquered") {
 				sector.owner = guild;
 				sector.isProtected = true;
 				sector.headquarter = false;
 				sector.siege.clan = 0;
 				MapSector.draw(sector);
 			}
-			else if (type == "sector_independence_granted" || type == "sector_conquered") {
+			else if (type === "sector_independence_granted" || type === "sector_conquered") {
 				sector.owner.id = 0;
 				sector.owner.color = MapSector.getColorByTerrain(sector);
 				sector.siege.clan = 0;
 				MapSector.draw(sector);
 			}
-			else if (type == "headquarter_placed") {
+			else if (type === "headquarter_placed") {
 				sector.headquarter = true;
 				// todo: run through all sectors with guildid, remove old HQ
 				MapSector.draw(sector);
 			}
-			else if (type == "siege_deployed") {
+			else if (type === "siege_deployed") {
 				sector.siege.clan = ownerId;
 				MapSector.draw(sector);
 			}
@@ -982,16 +982,16 @@ let MapSector = {
 	getColorByTerrain: (sector) => {
 		let powerMultiplicator = sector.powerMultiplicator || 1;
 		let color = {};
-		if (sector.terrain == "beach") {
+		if (sector.terrain === "beach") {
 			color = {"r":233,"g":233,"b":114-(parseInt(powerMultiplicator)+1)*10};
 		}
-		else if (sector.terrain == "plain") {
+		else if (sector.terrain === "plain") {
 			color = {"r":126-(parseInt(powerMultiplicator)+1)*10,"g":222-(parseInt(powerMultiplicator)+1)*10,"b":110-(parseInt(powerMultiplicator)+1)*10};
 		}
 		else {
-			if (sector.terrain == "rocks")
+			if (sector.terrain === "rocks")
 				color = {"r":50,"g":50,"b":50};
-			if (sector.terrain == "water")
+			if (sector.terrain === "water")
 				color = {"r":4,"g":28,"b":45};
 		}
 		return color;
@@ -1074,12 +1074,12 @@ let MapSector = {
 	 */
 	drawHexText: (sector) => {
 		GvGMap.CanvasCTX.font = "9px Arial";
-		if (GvGMap.Size == 'big')
+		if (GvGMap.Size === 'big')
 			GvGMap.CanvasCTX.font = "12px Arial";
 		GvGMap.CanvasCTX.textAlign = "center";
 		GvGMap.CanvasCTX.fillStyle = ((sector.owner.color.r+sector.owner.color.g+sector.owner.color.b) < 350) ? '#ddd' : '#222';
 		GvGMap.CanvasCTX.fillText(MapSector.coords(sector), sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.85);
-		if (GvGMap.Size == 'big' && sector.terrain != "water" && sector.terrain != "rocks")
+		if (GvGMap.Size === 'big' && sector.terrain !== "water" && sector.terrain !== "rocks")
 			GvGMap.CanvasCTX.fillText(sector.power, sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.25);
 	},
 
@@ -1087,9 +1087,9 @@ let MapSector = {
 	 * Returns Sectors coordinates (with ~ if beach)
 	 */
 	coords(sector) {
-		if (sector.terrain == "beach")
+		if (sector.terrain === "beach")
 			return sector.coordinates.x + ", " + sector.coordinates.y;
-		if (sector.terrain == "plain")
+		if (sector.terrain === "plain")
 			return sector.coordinates.x + ", " + sector.coordinates.y;
 		return "";
 	},
