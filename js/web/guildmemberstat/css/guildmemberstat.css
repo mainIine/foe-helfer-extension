@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
- #GuildMemberStat {
+#GuildMemberStat {
     width: 750px;
     height: 600px;
     top: calc(50vh - 200px);
@@ -465,10 +465,6 @@
 
 #GuildMemberStat #TreasuryGoodsTable tbody tr td.detail tr:last-child td {
     border-bottom: none;
-}
-
-#GuildMemberStatBody .buildinglist.hide {
-    display:none;
 }
 
 #GuildMemberStatBody .buildinglist.hide {
