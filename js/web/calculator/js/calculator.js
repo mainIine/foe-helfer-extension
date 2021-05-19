@@ -11,6 +11,12 @@
  * **************************************************************************************
  */
 
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#costCalculator').length > 0) {
+		Calculator.Show();
+	}
+});
+
 let Calculator = {
 
 	ForderBonus: 90,

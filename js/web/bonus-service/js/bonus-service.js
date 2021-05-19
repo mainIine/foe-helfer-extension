@@ -49,6 +49,12 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
     }
 });
 
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#bonus-hud').length > 0) {
+		BonusService.CalcBonusData();
+	}
+});
+
 // Guildfights enter
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 	BonusService.InitBonus();
@@ -269,6 +275,8 @@ let BonusService = {
 
 					si.addClass('bonus-blink');
 
+					if (bt[i] === 'donequests') Calculator.SoundFile.play();
+
 					setTimeout(()=>{
 						si.removeClass('bonus-blink');
 					}, 3500);
@@ -286,6 +294,7 @@ let BonusService = {
 		let Ret = 0;
 		for (let i = 0; i < MainParser.Quests.length; i++) {
 			let Quest = MainParser.Quests[i];
+			if (Quest['category'] === 'outpost') continue;
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;

@@ -419,13 +419,12 @@ let Unit = {
 	 * @constructor
 	 */
 	RefreshAlca: (data) => {
-		if (!Unit.alca)
-		{
+		if (!Unit.alca) {
 			Unit.alca = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'))
 		}
 
 		// update next harvest time if pickup
-		if(data && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
+		if (data && data['updatedEntities'] && data['updatedEntities'][0] && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
 		{
 			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
 			Unit.BuildTimer();
