@@ -141,11 +141,15 @@
 	font-size: 90%;
 }
 
-#GvGlog table.foe-table tbody tr:nth-child(odd) {
+#GvGlog.foe-table tbody tr:nth-child(odd) {
 	background-color: inherit;
 }
 
-.sectorInfo {
+#GvGlog.foe-table tr.alert {
+	background-color: rgba(192,0,0,0.2);
+}
+
+#sectorInfo {
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
@@ -158,7 +162,7 @@
 	z-index: 101;
 }
 
-.sectorInfo .guildflag {
+#sectorInfo .guildflag {
 	float: right;
 	border-width: 5px;
 	border-style: solid;
@@ -169,7 +173,7 @@
 	height: 20px;
 }
 
-.sectorInfo b {
+#sectorInfo b {
     color: var(--text-bright);
 }
 
