@@ -1438,37 +1438,6 @@ let GuildMemberStat = {
 
 		d.push(`</div>`);
 
-		d.push(`<div class="detail-wrapper buildinglist detail hide">`);
-		d.push(`<div class="detail-item guildbuildings"><table id="guildbuildingslist" class="foe-table"><thead><tr class="sorter-header">` +
-			`<th class="is-number" data-type="gms-gbl">#</th>` + 
-			`<th class="case-sensitive" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildBuildings')}</th>` +
-			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Level')}</th>` +
-			`<th class="case-sensitive" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
-			`<th class="is-number" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
-			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildGoods')}</th>` +
-			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildPower')}</th>` +
-			`</tr></thead><tbody class="gms-gbl copyable">`);
-		let bCounter = 1;
-		allGuildBuildings.forEach(plbuilding => {
-			
-			let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
-			let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
-			let level = plbuilding.level !== null && plbuilding.level !== undefined ? plbuilding.level : 0;
-
-			ExportContent.push([plbuilding.name, (plbuilding.level !== null ? plbuilding.level : ''), Technologies.Eras[plbuilding.era], i18n('Eras.' + Technologies.Eras[plbuilding.era]), plbuilding.member,  (plbuilding.power !== undefined ? plbuilding.power.value : 0), (plbuilding.resources !== undefined ? plbuilding.resources.totalgoods : 0)]);
-			
-			d.push(`<tr${plbuilding.gbid === undefined ? ` class="outdated" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildBuildingNotification'))}"` : ''}">` +
-				`<td class="is-number" data-number="${bCounter}">${bCounter++}</td>` + 
-				`<td class="case-sensitive" data-text="${plbuilding.name.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.name}</td>` + 
-				`<td class="is-number text-center" data-number="${level}">${HTML.Format(level)}</td>` +
-				`<td class="case-sensitive" data-text="${plbuilding.member.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.member}</td>` +
-				`<td class="is-number" data-number="${Technologies.Eras[plbuilding.era]}">${plbuilding.era !== undefined ? i18n('Eras.' + Technologies.Eras[plbuilding.era]) : '-'}</td>` + 
-				`<td class="is-number text-center" data-number="${goodCount}">${HTML.Format(goodCount)}</td>` + 
-				`<td class="is-number text-center" data-number="${powerCount}">${HTML.Format(powerCount)}</td></tr>`);
-		});
-		
-		d.push(`</tbody></table></div></div>`);
-
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 
 			$("#GuildErasTable").tableSorter();
@@ -1672,6 +1641,15 @@ let GuildMemberStat = {
 			let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
 			let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
 			let level = plbuilding.level !== null && plbuilding.level !== undefined ? plbuilding.level : 0;
+			let goodslist = '';
+
+			if (plbuilding.resources && plbuilding.resources.goods && plbuilding.resources.goods !== null)
+			{
+				goodslist = plbuilding.resources.goods.map(good => {
+					return `<span title="${good.value} x ${GoodsData[good.good_id]['name']}" class="goods-sprite-50 sm ${good.good_id}"></span> `;
+				}).join('');
+
+			}
 
 			ExportContent.push([plbuilding.name, (plbuilding.level !== null ? plbuilding.level : ''), Technologies.Eras[plbuilding.era], i18n('Eras.' + Technologies.Eras[plbuilding.era]), plbuilding.member,  (plbuilding.power !== undefined ? plbuilding.power.value : 0), (plbuilding.resources !== undefined ? plbuilding.resources.totalgoods : 0)]);
 			
@@ -1681,7 +1659,7 @@ let GuildMemberStat = {
 				`<td class="is-number text-center" data-number="${level}">${HTML.Format(level)}</td>` +
 				`<td class="case-sensitive" data-text="${plbuilding.member.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.member}</td>` +
 				`<td class="is-number" data-number="${Technologies.Eras[plbuilding.era]}">${plbuilding.era !== undefined ? i18n('Eras.' + Technologies.Eras[plbuilding.era]) : '-'}</td>` + 
-				`<td class="is-number text-center" data-number="${goodCount}">${HTML.Format(goodCount)}</td>` + 
+				`<td class="is-number text-center gms-tooltip" data-number="${goodCount}" title="${HTML.i18nTooltip(goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : '')}">${HTML.Format(goodCount)}</td>` + 
 				`<td class="is-number text-center" data-number="${powerCount}">${HTML.Format(powerCount)}</td></tr>`);
 		});
 		
@@ -1690,6 +1668,11 @@ let GuildMemberStat = {
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 			
 			$('#guildbuildingslist').tableSorter();
+			
+			$('#guildbuildingslist .gms-tooltip').tooltip({
+				html: true,
+				container: '#GuildMemberStatBody'
+			});
 			
 			GuildMemberStat.hidePreloader('#GuildMemberStat');
 			
@@ -1836,10 +1819,6 @@ let GuildMemberStat = {
 			});
 
 			GuildMemberStat.hidePreloader('#GuildMemberStat');
-			
-			$('#gmsContentWrapper #toggleBuildingView').on('click', function(){
-				$('#gmsContentWrapper .buildinglist').toggleClass('hide show');
-			});
 		});
 	},
 
@@ -2075,67 +2054,6 @@ let GuildMemberStat = {
 		return arr.filter(function (ele) {
 			return ele !== value;
 		});
-	},
-
-
-	ExportContent: (filename, type) => {
-
-		var content = GuildMemberStat.ExportData;
-		var FileContent = '';
-
-		for (var i = 0; i < content.length; i++)
-		{
-			var value = content[i];
-
-			for (var j = 0; j < value.length; j++)
-			{
-				var innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
-				var result = innerValue.replace(/"/g, '""');
-				if (result.search(/("|,|\n)/g) >= 0)
-					result = '"' + result + '"';
-				if (j > 0)
-					FileContent += ';';
-				FileContent += result;
-			}
-
-			FileContent += '\r\n';
-		}
-		let BOM = "\uFEFF";
-
-		if (type === 'json')
-		{
-			FileContent = GuildMemberStat.CsvToJson(FileContent);
-		}
-
-		let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-		MainParser.ExportFile(Blob1, filename + '.' + type);
-
-		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
-			$(this).remove();
-		});
-	},
-
-
-	CsvToJson: (csv) => {
-
-		var lines = csv.split("\r\n");
-		var result = [];
-		var headers = lines[0].split(";");
-
-		for (var i = 1; i < lines.length - 1; i++)
-		{
-			var obj = {};
-			var currentline = lines[i].split(";");
-
-			for (var j = 0; j < headers.length; j++)
-			{
-				obj[headers[j]] = currentline[j];
-			}
-
-			result.push(obj);
-		}
-
-		return JSON.stringify(result); 
 	},
 
 
