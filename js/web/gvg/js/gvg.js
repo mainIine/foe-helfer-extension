@@ -50,7 +50,6 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 // add close button to info
 // translate era on canvas
 // add option to clear entries
-// bug: map breaks sometimes when opening it again (log entries needed?) 
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
@@ -943,8 +942,9 @@ let GvGLog = {
 
 		GvGLog.Entries.forEach(function(entry) {
 			if (entry != null) {
-				let tr = GvGLog.buildEntry(entry).outerHTML;
-				t.push(tr);
+				let tr = GvGLog.buildEntry(entry);
+				if (tr != null)
+					t.push(re.outerHTML);
 			}
 		});
 		t.push('</table>');
