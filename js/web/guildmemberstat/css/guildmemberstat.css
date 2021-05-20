@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
- #GuildMemberStat {
+#GuildMemberStat {
     width: 750px;
     height: 600px;
     top: calc(50vh - 200px);

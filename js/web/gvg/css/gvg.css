@@ -63,31 +63,97 @@
 }
 
 #GvGMap {
-	left: calc(50vw - 285px);
-	top: calc(50vw - 270px);
-	width: 570px;
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
 	width: 800px;
+	height: 500px;
 }
 
 #GvGMapBody {
 	height: inherit;
 	display: flex;
 	align-items: stretch;
+	overflow: hidden;
+	justify-content: space-between;
+}
+
+#GvGMapContent {
+	height: inherit;
+	overflow: auto;
+	overflow: hidden;
+	position: relative;
+}
+
+#GvGMapMeta {
+	position: relative;
+	height: 40px;
+	overflow: hidden;
 }
 
 #GvGMapWrap {
-	width: 80%;
 	height: inherit;
 	overflow: auto;
 	background-color: #111213;
-	border-right: 2px solid var(--text-dark);
 	overflow: hidden;
+	position: relative;
 }
 
 #gvgOptions {
 	height: inherit;
 	overflow: auto;
-	width: 350px;
+	min-width: 300px;
+	flex-grow: 2;
+	position: relative;
+	border-left: 2px solid var(--text-dark);
+}
+
+#gvgOptions.collapsed {
+	width: 0;
+	min-width: 0;
+	overflow: hidden;
+	background-color: var(--black-50);
+	border-left: none;
+}
+
+#gvgOptions.collapsed #gvgOptionsContent{
+	display: none;
+}
+
+#toggleOptions {
+	position: absolute;
+	top: 50%;
+	right: 1px;
+	width: 13px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #784720;
+    border-radius: 7px 0 0 7px;
+	border: 1px solid #1f0c06;
+	color: #1f0c06;
+	border-right: none;
+    z-index: 15;
+	text-align: center;
+}
+
+#toggleOptions::before {
+	content: '>';
+	display: block;
+}
+
+#toggleOptions.collapsed::before {
+	content: '<';
+	display: block;
+}
+
+#logFilterWrap {
+    float: right;
+	position: absolute;
+	top: -30px;
+    right: 5px;
+}
+
+#logFilterWrap input {
+    width: 120px;
 }
 
 #GvGMapInfo {
@@ -97,12 +163,47 @@
 }
 
 #GvGMapActions {
+	z-index: 100;
 	position: absolute;
-	top: 10px;
-	right: 332px;
+	left: 7px;
+	top: 7px;
 }
 
-.sectorInfo {
+.btn-default.btn-inset {
+	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	padding: 0.2rem;
+}
+
+.editAction {
+	display: none;
+}
+
+#noGuild::before {
+	background: #fff;
+	content: '';
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+	border-radius: 10px;
+}
+
+#GvGlog {
+	font-size: 90%;
+}
+
+#GvGlog.foe-table tr:nth-child(odd) {
+	background-color: inherit;
+}
+
+#GvGlog.foe-table tr.alert {
+	background-color: rgba(192,0,0,0.2);
+}
+
+#GvGlog.foe-table tr.friendly {
+	background-color: rgba(47,82,5,0.4);
+}
+
+#sectorInfo {
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
@@ -112,9 +213,10 @@
 	background-color: #210b02;
 	width: 200px;
 	font-size: 90%;
+	z-index: 101;
 }
 
-.sectorInfo .guildflag {
+#sectorInfo .guildflag {
 	float: right;
 	border-width: 5px;
 	border-style: solid;
@@ -125,7 +227,7 @@
 	height: 20px;
 }
 
-.sectorInfo b {
+#sectorInfo b {
     color: var(--text-bright);
 }
 
@@ -159,11 +261,11 @@
 .guildflag.flag_11, .guildflag.flag_11_G { background-position:  -57px -45px; }
 .guildflag.flag_12 { background-position: -102px -44px; }
 .guildflag.flag_13 { background-position: -148px -45px; }
-.guildflag.flag_14 { background-position: -193px -45px; }
+.guildflag.flag_14, .guildflag.flag_14_R { background-position: -193px -45px; }
 .guildflag.flag_15 { background-position: -237px -45px; }
 .guildflag.flag_16, .guildflag.flag_16_G { background-position: -282px -45px; }
-.guildflag.flag_17 { background-position: -327px -45px; }
-.guildflag.flag_18 { background-position: -372px -46px; }
+.guildflag.flag_17, .guildflag.flag_17_G { background-position: -327px -45px; }
+.guildflag.flag_18, .guildflag.flag_18_R { background-position: -372px -46px; }
 .guildflag.flag_19 { background-position: -418px -45px; }
 
 .guildflag.flag_20, .guildflag.flag_20_R { background-position: -13px -81px; }
