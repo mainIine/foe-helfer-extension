@@ -423,7 +423,7 @@ let GvGMap = {
 			}, false);
 			zoomBtn.addEventListener('click', function (e) {
 				if (GvGMap.Size === 'small')
-					GvGMap.buildMap('mini', false);
+					GvGMap.buildMap('big', false);
 				else
 					GvGMap.buildMap('small', false);
 			}, false);
