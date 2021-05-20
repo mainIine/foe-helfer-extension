@@ -63,10 +63,10 @@
 }
 
 #GvGMap {
-	left: calc(50vw - 285px);
-	top: calc(50vw - 270px);
-	width: 570px;
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
 	width: 800px;
+	height: 500px;
 }
 
 #GvGMapBody {
@@ -119,9 +119,13 @@
 	top: 7px;
 }
 
-#noGuild.btn-inset {
+.btn-default.btn-inset {
 	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	padding: 0.2rem;
+}
+
+.editAction {
+	display: none;
 }
 
 #noGuild::before {
@@ -137,11 +141,15 @@
 	font-size: 90%;
 }
 
-#GvGlog table.foe-table tbody tr:nth-child(odd) {
+#GvGlog.foe-table tbody tr:nth-child(odd) {
 	background-color: inherit;
 }
 
-.sectorInfo {
+#GvGlog.foe-table tr.alert {
+	background-color: rgba(192,0,0,0.2);
+}
+
+#sectorInfo {
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
@@ -154,7 +162,7 @@
 	z-index: 101;
 }
 
-.sectorInfo .guildflag {
+#sectorInfo .guildflag {
 	float: right;
 	border-width: 5px;
 	border-style: solid;
@@ -165,7 +173,7 @@
 	height: 20px;
 }
 
-.sectorInfo b {
+#sectorInfo b {
     color: var(--text-bright);
 }
 
