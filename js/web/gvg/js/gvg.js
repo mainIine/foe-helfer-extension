@@ -454,7 +454,7 @@ let GvGMap = {
 
 			$('#GvGMap').find('#gvgmaplog').promise().done(function() {
 				$('.gvg-tabs').tabslet({active: 2});
-				$('.gvg-tabs .gvgmapguilds span').text(i18n('Boxes.GvGMap.Guild.Name'));
+				$('.gvg-tabs .gvgmapguilds span').text(i18n('Boxes.GvGMap.Guilds'));
 				$('.gvg-tabs .gvgmaplog span').text(i18n('Boxes.GvGMap.Log'));
 
 				$('#GvGGuilds tr').click(function (e) {
@@ -936,8 +936,8 @@ let GvGLog = {
 		t.push('<div id="logFilterWrap" class="dark-bg"><input type="text" data-type="text" id="logFilter" placeholder="'+i18n('Boxes.Infobox.Filter')+'" class="gvglogfilter filter-msg game-cursor" value=""></input></div>');
 		t.push('<table id="GvGlog" class="foe-table">');
 		t.push('<thead><tr>');
-		t.push('<th>Sector</th>');
-		t.push('<th>Info</th>');
+		t.push('<th>'+i18n('Boxes.GvGMap.Log.Sector')+'</th>');
+		t.push('<th>'+i18n('Boxes.GvGMap.Log.Info')+'</th>');
 		t.push('</tr></thead>');
 
 		GvGLog.Entries.forEach(function(entry) {
