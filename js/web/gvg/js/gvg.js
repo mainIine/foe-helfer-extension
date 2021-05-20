@@ -48,7 +48,6 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 });
 
 // add close button to info
-// translate era on canvas
 // add option to clear entries
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
@@ -56,7 +55,7 @@ FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) =>
 	if (entry != undefined && GvGMap.Actions.edit === false) {
 		MapSector.update(entry.sectorId,entry.sourceClan,entry.type);
 	}
-	if ($('#gvgmaplog').length > 0 && entry)	{
+	if ($('#gvgmaplog').length > 0 && entry) {
 		GvGLog.showEntry(entry);
 	}
 });
@@ -579,10 +578,11 @@ let GvGMap = {
 	},
 
 	drawInfo: () => {
+		let era = (Technologies.Eras[GvGMap.Map.Era] != 0) ? i18n('Eras.'+Technologies.Eras[GvGMap.Map.Era]) : i18n('Eras.GvGAllAge');
 		GvGMap.CanvasCTX.font = "bold 22px Arial";
 		GvGMap.CanvasCTX.textAlign = "left";
 		GvGMap.CanvasCTX.fillStyle = '#ffb539';
-		GvGMap.CanvasCTX.fillText(GvGMap.Map.Era, 10, 25);
+		GvGMap.CanvasCTX.fillText(era, 10, 25);
 		GvGMap.CanvasCTX.font = "12px Arial";
 		GvGMap.CanvasCTX.fillStyle = '#ccc';
 		GvGMap.CanvasCTX.fillText(moment(GvGMap.Map.OnloadDataTime).format('D.M.YY'), 10, 45);
