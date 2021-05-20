@@ -49,7 +49,8 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 
 // add close button to info
 // remove slot_unlocked entry from any guild that is not your own
-// translate eras
+// translate era on canvas
+// add option to clear entries
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
@@ -877,18 +878,26 @@ let GvGLog = {
 	showEntry: (entry) => {
 		let tr = GvGLog.buildEntry(entry);
 		$('#GvGMap').find('#gvgmaplog').promise().done(function() {
-			$('#GvGlog').prepend(tr);
+			if (tr != null) {
+				let text = tr.textContent.toLowerCase();
+				if (!text.includes(GvGLog.FilterValue)) {
+					console.log('hey');
+					tr.style.display = 'none';
+				}
+				$('#GvGlog').prepend(tr);
+				console.log(tr);
+			}
 		});
 	},
 
 	buildEntry: (entry) => {
 		let t = [];
 		let sector = MapSector.getById(entry.sectorId);
-		// wenn eigene gilde target clan ist und defender_damaged -> rot
-		let hostileAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_damaged' || entry.type == 'defender_defeated')) ? 'alert' : '';
+		let hostileAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_damaged' || entry.type == 'defender_defeated')) ? 'alert' : 'noAlert';
+		let friendlyAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_deployed' || entry.type == 'defender_replaced')) ? 'friendly' : 'actionUnknown';
+		let tr = document.createElement('tr');
 		if (sector != null) { // if sector is on map
 			let sectorCoords = MapSector.coords(sector);
-			t.push('<tr class="'+entry.type+' '+hostileAction+' logEntry">');
 			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
 			t.push('<td>');
 				if (entry.sourceClan != entry.targetClan && entry.targetClan != undefined && entry.sourceClan != undefined)
@@ -904,10 +913,12 @@ let GvGLog = {
 				}
 				//t.push(', HP: '+entry.hitpoints);
 			t.push('</td>');
-			t.push('</tr>');
+			let html = t.join('');
+			tr.classList.add(entry.type,hostileAction,friendlyAction,'logEntry');
+			tr.innerHTML = html;
+			return tr;
 		}
-		let tr = t.join('');
-		return tr;
+		return null;
 	},
 
 	show: () => {
@@ -920,7 +931,7 @@ let GvGLog = {
 		t.push('</tr></thead>');
 
 		GvGLog.Entries.forEach(function(entry) {
-			let tr = GvGLog.buildEntry(entry);
+			let tr = GvGLog.buildEntry(entry).outerHTML;
 			t.push(tr);
 		});
 		t.push('</table>');
