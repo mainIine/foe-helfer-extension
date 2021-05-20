@@ -48,9 +48,9 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 });
 
 // add close button to info
-// remove slot_unlocked entry from any guild that is not your own
 // translate era on canvas
 // add option to clear entries
+// bug: map breaks sometimes when opening it again (log entries needed?) 
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
@@ -403,11 +403,9 @@ let GvGMap = {
 			GvGMap.SetTabs('gvgmaplog');
 
 			GvGMap.buildContent();
-
 			GvGMap.populateCanvas(mapSize, initial);
 			GvGMap.drawInfo();
 			GvGMap.showGuilds();
-
 			GvGLog.show();
 
 			let editBtn = document.getElementById("editMap");
@@ -880,7 +878,7 @@ let GvGLog = {
 				}
 			}
 
-			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed" && type != "clan_defeated") {
+			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed" && type != "clan_defeated" && type != "sector_slot_unlocked") {
 				GvGLog.Entries.unshift(entry);
 				return entry;
 			}
