@@ -354,7 +354,7 @@ let GvGMap = {
 	},
 
     /**
-	 * Hide 
+	 * Hide GvG Map
 	 */
 	hide: () => {
 		if ($('#GvGMap').length > 0) {
@@ -374,7 +374,7 @@ let GvGMap = {
 			GvGMap.SetTabs('gvgmapguilds');
 			GvGMap.SetTabs('gvgmaplog');
 
-			h.push('<div id="GvGMapContent" class="mapFeature">');
+			h.push('<div id="toggleOptions"></div><div id="GvGMapContent" class="mapFeature">');
 				h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
 				h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
 					h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
@@ -390,7 +390,7 @@ let GvGMap = {
 				h.push('</div>');
 			h.push('</div>');
 			h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
-			h.push('<div id="gvgOptions"></div>');
+			h.push('<div id="gvgOptions"><div id="gvgOptionsContent"></div></div>');
 
 			$('#GvGMapBody').html(h.join(''));
 
@@ -406,6 +406,12 @@ let GvGMap = {
 			let noGuildBtn = document.getElementById("noGuild");
 			let dragBtn = document.getElementById("dragMap");
 			let zoomBtn = document.getElementById("zoomMap");
+			let toggleListBtn = document.getElementById("toggleOptions");
+
+			toggleListBtn.addEventListener('click', function (e) {
+				$('#gvgOptions').toggleClass('collapsed');
+				$(this).toggleClass('collapsed');
+			}, false);
 
 			editBtn.addEventListener('click', function (e) {
 				GvGMap.Actions.edit = true;
@@ -436,7 +442,7 @@ let GvGMap = {
 			t.push( GvGMap.GetTabs() );
 			t.push( GvGMap.GetTabContent() );
 			t.push('</div>');
-			$('#gvgOptions').html(t.join(''));
+			$('#gvgOptionsContent').html(t.join(''));
 
 			$('#GvGMap').find('#gvgmaplog').promise().done(function() {
 				$('.gvg-tabs').tabslet({active: 2});
@@ -476,6 +482,11 @@ let GvGMap = {
 		}
 	},
 
+	/**
+	 * Creates a guild object from the response data
+	 * @param {*} data - responseData for a clan
+	 * @returns Object - guild
+	 */
 	createGuild: (data) => {
 		let guild = {
 			id: data.id,
@@ -489,13 +500,11 @@ let GvGMap = {
 		return guild;
 	},
 
+	/**
+	 * @param {*} mapSize - string, sizes are small, mini, big
+	 */
 	populateCanvas: (mapSize, initial) => {
-		if (mapSize == 'small') 
-			GvGMap.initMap('small');
-		else if (mapSize == 'mini') 
-			GvGMap.initMap('mini',initial);
-		else 
-			GvGMap.initMap('big',initial);
+		GvGMap.initMap(mapSize,initial);
 
 		$(GvGMap.Canvas).attr({
 			'id': 'gvg-map',
@@ -507,15 +516,7 @@ let GvGMap = {
 
 		if (GvGMap.Map.Guilds.length == 0) {
 			GvGMap.Map.GuildData.forEach(function (guild) {
-				let guildOnMap = {
-					id: guild.id,
-					name: guild.name,
-					flag: guild.flag,
-					color: GvGMap.getGuildColor(guild),
-					flagCoordinates: GvGMap.getFlagImageCoordinates(guild.flag),
-					power: 0,
-					sectors: 0,
-				};
+				let guildOnMap = GvGMap.createGuild(guild);
 				GvGMap.Map.Guilds.push(guildOnMap);
 				if ((guild.id) === GvGMap.OwnGuild.Id) {
 					GvGMap.CurrentGuild = guildOnMap;
@@ -923,7 +924,7 @@ let GvGLog = {
 
 	show: () => {
         let t = [];
-		t.push('<div class="dark-bg text-center"><input type="text" data-type="text" id="logFilter" placeholder="'+i18n('Boxes.Infobox.Filter')+'" class="gvglogfilter filter-msg game-cursor" value=""></input></div>');
+		t.push('<div id="logFilterWrap" class="dark-bg"><input type="text" data-type="text" id="logFilter" placeholder="'+i18n('Boxes.Infobox.Filter')+'" class="gvglogfilter filter-msg game-cursor" value=""></input></div>');
 		t.push('<table id="GvGlog" class="foe-table">');
 		t.push('<thead><tr>');
 		t.push('<th>Sector</th>');

@@ -94,7 +94,6 @@
 	height: inherit;
 	overflow: auto;
 	background-color: #111213;
-	border-right: 2px solid var(--text-dark);
 	overflow: hidden;
 	position: relative;
 }
@@ -104,6 +103,57 @@
 	overflow: auto;
 	min-width: 300px;
 	flex-grow: 2;
+	position: relative;
+	border-left: 2px solid var(--text-dark);
+}
+
+#gvgOptions.collapsed {
+	width: 0;
+	min-width: 0;
+	overflow: hidden;
+	background-color: var(--black-50);
+	border-left: none;
+}
+
+#gvgOptions.collapsed #gvgOptionsContent{
+	display: none;
+}
+
+#toggleOptions {
+	position: absolute;
+	top: 50%;
+	right: 1px;
+	width: 13px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #784720;
+    border-radius: 7px 0 0 7px;
+	border: 1px solid #1f0c06;
+	color: #1f0c06;
+	border-right: none;
+    z-index: 15;
+	text-align: center;
+}
+
+#toggleOptions::before {
+	content: '>';
+	display: block;
+}
+
+#toggleOptions.collapsed::before {
+	content: '<';
+	display: block;
+}
+
+#logFilterWrap {
+    float: right;
+	position: absolute;
+	top: -30px;
+    right: 5px;
+}
+
+#logFilterWrap input {
+    width: 120px;
 }
 
 #GvGMapInfo {
