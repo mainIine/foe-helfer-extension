@@ -141,7 +141,7 @@
 	font-size: 90%;
 }
 
-#GvGlog.foe-table tbody tr:nth-child(odd) {
+#GvGlog.foe-table tr:nth-child(odd) {
 	background-color: inherit;
 }
 
