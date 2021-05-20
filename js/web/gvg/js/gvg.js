@@ -133,11 +133,6 @@ let GvG = {
 	AddCount: (response, requestMethod) => {
 		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
 
-		if (time > GvG.Actions.NextCalc) { // when on a map during recalc
-			console.log('time > GvG.Actions.NextCalc');
-			GvG.resetData();
-		}
-
 		if (requestMethod === "deployDefendingArmy" && response === "Success") {
 			GvG.Actions.Defenders++;
 		}
