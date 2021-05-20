@@ -222,7 +222,8 @@ let GvGMap = {
 	},
 	Actions: {
 		edit: false,
-		drag: true
+		drag: true,
+		list: true,
 	},
 	PowerValues: [],
 	Colors: {
@@ -362,11 +363,38 @@ let GvGMap = {
 		}
 	},
 
+	buildContent: () => {
+		let h = [];
+		let collapsed = 'collapsed';
+		if (GvGMap.Actions.list) {
+			collapsed = '';
+		}
+		h.push('<div id="toggleOptions" class="'+collapsed+'"></div><div id="GvGMapContent" class="mapFeature">');
+		h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
+		h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
+			h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
+			h.push('<span id="noGuild" class="btn-default btn-inset editAction"></span>');
+			//h.push('<span id="pickGuild" class="btn-default btn-inset editAction"></span>');
+			//h.push('<span id="markerRed" class="btn-default btn-inset editAction"></span>');
+			h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+			h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
+			h.push('</div>');
+			h.push('</div>');
+		h.push('<div id="GvGMapWrap" class="mapFeature">');
+		h.push('<canvas id="gvg-map"></canvas>');
+		h.push('</div>');
+		h.push('</div>');
+		h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
+		h.push('<div id="gvgOptions" class="'+collapsed+'"><div id="gvgOptionsContent"></div></div>');
+
+		$('#GvGMapBody').html(h.join(''));
+	},
+
 	/**
 	 * Build GvG Map
 	 */
 	buildMap: (mapSize = 'small', initial = true) => {
-		let h = [], t = [];
+		let t = [];
 		if (GvGMap.Map.OnloadData != null) {
 			GvGMap.Tabs = [];
 			GvGMap.TabsContent = [];
@@ -374,25 +402,7 @@ let GvGMap = {
 			GvGMap.SetTabs('gvgmapguilds');
 			GvGMap.SetTabs('gvgmaplog');
 
-			h.push('<div id="toggleOptions"></div><div id="GvGMapContent" class="mapFeature">');
-				h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
-				h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
-					h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
-					h.push('<span id="noGuild" class="btn-default btn-inset editAction"></span>');
-					//h.push('<span id="pickGuild" class="btn-default btn-inset editAction"></span>');
-					//h.push('<span id="markerRed" class="btn-default btn-inset editAction"></span>');
-					h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
-					h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
-					h.push('</div>');
-					h.push('</div>');
-				h.push('<div id="GvGMapWrap" class="mapFeature">');
-				h.push('<canvas id="gvg-map"></canvas>');
-				h.push('</div>');
-			h.push('</div>');
-			h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
-			h.push('<div id="gvgOptions"><div id="gvgOptionsContent"></div></div>');
-
-			$('#GvGMapBody').html(h.join(''));
+			GvGMap.buildContent();
 
 			GvGMap.populateCanvas(mapSize, initial);
 			GvGMap.drawInfo();
@@ -411,6 +421,7 @@ let GvGMap = {
 			toggleListBtn.addEventListener('click', function (e) {
 				$('#gvgOptions').toggleClass('collapsed');
 				$(this).toggleClass('collapsed');
+				GvGMap.Actions.list = (GvGMap.Actions.list == true) ? false : true;
 			}, false);
 
 			editBtn.addEventListener('click', function (e) {
@@ -436,6 +447,7 @@ let GvGMap = {
 			noGuildBtn.addEventListener('click', function (e) {
 				GvGMap.CurrentGuild = GvGMap.NoGuild;
 			}, false);
+
 			GvGMap.mapDragOrEdit();
 			
 			t.push('<div class="gvg-tabs tabs">');
@@ -837,7 +849,7 @@ let GvGLog = {
 				entry.details = {
 					playerId: (response.source_clan_id === GvGMap.OwnGuild.Id) ? response.player_id : 0
 				}
-				if (entry.type === "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
+				if (entry.type == "sector_slot_unlocked" && entry.sourceClan != GvGMap.OwnGuild.Id) {
 					entry.details = {};
 				}
 			}
