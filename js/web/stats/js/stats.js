@@ -50,8 +50,12 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 			if (isCurrentlyInOutpost === 1){
 				rewardIncidentSource = 'shards';
 			}
-			//split league rewards from incidents
+			//split league rewards and fragment assembly from incidents
 			if(postData[0].requestMethod === 'useItem'){
+				continue;
+			}
+			//split quest rewards from incidents
+			if(postData[0].requestMethod === 'advanceQuest'){
 				continue;
 			}
 		}

@@ -333,7 +333,7 @@ let GuildMemberStat = {
 
 					let totalgoods = entity[i]['state']['current_product']['goods'].map(good => good.value).reduce((sum, good) => good + sum);
 
-					GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: totalgoods, goods: entity[i]['state']['current_product']['goods'].sort(function (a, b) { return a.good_id.localeCompare(b.good_id) }) }, level: parseInt(entity[i]['level']), era: Member.era });
+					GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: totalgoods, goods: entity[i]['state']['current_product']['goods'].sort(function (a, b) { return a.good_id.localeCompare(b.good_id) }) }, level: entity[i]['level'], era: Member.era });
 				}
 
 				GBTempID++;
@@ -1533,14 +1533,17 @@ let GuildMemberStat = {
 		let fullGBList = $.extend(true,[],gmsBuildingDict);
 
 		let allGuildBuildings = fullGBList.reduce(function (res, obj) {
-			if (obj.gbid === undefined) { res.__array.push(res[obj.gbid] = obj); }
+			if (obj.gbid === undefined) { res.__array.push(res['outdated'] = obj); }
 
-			if (!(obj.gbid in res)){
-				res.__array.push(res[obj.gbid] = obj);
+			let buildingID = obj.member + '' + obj.gbid;
+
+			if (!(buildingID in res)){
+				res.__array.push(res[buildingID] = obj);
 			}
 			else {
-				res[obj.gbid] = Object.assign(res[obj.gbid],obj);
+				res[buildingID] = Object.assign(res[buildingID],obj);
 			}
+			
 			return res;
 		}, { __array: [] }).__array.sort(function (a, b) {
 			return a.name.localeCompare(b.name) || (a.level-b.level);
@@ -1635,7 +1638,9 @@ let GuildMemberStat = {
 			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildGoods')}</th>` +
 			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildPower')}</th>` +
 			`</tr></thead><tbody class="gms-gbl copyable">`);
+
 		let bCounter = 1;
+
 		allGuildBuildings.forEach(plbuilding => {
 			
 			let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
