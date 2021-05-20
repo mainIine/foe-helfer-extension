@@ -542,6 +542,7 @@ let Stats = {
 			'__event', //event rewards
 			'battlegrounds_conquest', // Battlegrounds
 			'guildExpedition', // Temple of Relics
+			'pvp_arena', //PvP Arena
 			'spoilsOfWar', // Himeji Castle
 			'diplomaticGifts', //Space Carrier
 			'shards', //Flying Island
