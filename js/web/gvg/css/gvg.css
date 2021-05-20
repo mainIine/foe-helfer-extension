@@ -149,6 +149,10 @@
 	background-color: rgba(192,0,0,0.2);
 }
 
+#GvGlog.foe-table tr.friendly {
+	background-color: rgba(47,82,5,0.4);
+}
+
 #sectorInfo {
 	position: absolute;
 	bottom: 10px;
