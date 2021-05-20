@@ -939,7 +939,7 @@ let GvGLog = {
 			if (entry != null) {
 				let tr = GvGLog.buildEntry(entry);
 				if (tr != null)
-					t.push(re.outerHTML);
+					t.push(tr.outerHTML);
 			}
 		});
 		t.push('</table>');
