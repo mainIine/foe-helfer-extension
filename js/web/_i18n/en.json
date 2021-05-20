@@ -694,6 +694,7 @@
     "Eras.7": "Colonial Age",
     "Eras.8": "Industrial Age",
     "Eras.9": "Progressive Era",
+    "Eras.GvGAllAge": "All Ages",
     "Global.BoxTitle": "FoE Helper",
     "GvG.Independences.Tooltip": "Amount of Independences granted since last calculation.",
     "GvG.Independences.Tooltip.Warning": "Can be inaccurate, if you play on multiple desktop devices.",
