@@ -931,8 +931,10 @@ let GvGLog = {
 		t.push('</tr></thead>');
 
 		GvGLog.Entries.forEach(function(entry) {
-			let tr = GvGLog.buildEntry(entry).outerHTML;
-			t.push(tr);
+			if (entry != null) {
+				let tr = GvGLog.buildEntry(entry).outerHTML;
+				t.push(tr);
+			}
 		});
 		t.push('</table>');
 
