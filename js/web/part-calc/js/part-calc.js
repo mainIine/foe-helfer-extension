@@ -730,7 +730,7 @@ let Parts = {
 
 		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction($(this), 'copy');
-			helper.str.copyToClipboard(copyParts);
+			helper.str.copyToClipboardLegacy(copyParts);
 		});
 
 		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
