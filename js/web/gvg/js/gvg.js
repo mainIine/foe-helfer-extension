@@ -97,6 +97,7 @@ let GvG = {
 
 			$('body').append(div).promise().done(function() {
 				div.append('<div class="independences">'+GvG.Actions.Independences+'/4</div>')
+					.append('<button class="btn-default mapbutton" onclick="GvGMap.show()"></button>')
 					.attr('title', i18n('GvG.Independences.Tooltip') + '<br><em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
 					.tooltip(
 						{
@@ -105,8 +106,7 @@ let GvG = {
 							placement: 'bottom',
 							html: true
 						}
-					)
-					.append('<button class="btn-default mapbutton" onclick="GvGMap.show()">MAP</button>');
+					);
 			});
 		}
 		else {
@@ -284,6 +284,7 @@ let GvGMap = {
     },
 	NoGuild: { id: 0, name: i18n('Boxes.GvGMap.Log.NPC'), color: {r:100,g:100,b:100} },
 	CurrentGuild: { id: 0, name: i18n('Boxes.GvGMap.Log.NPC'), color: {r:100,g:100,b:100} },
+	ActiveTab: 1,
 
 	Tabs: [],
 	TabsContent: [],
@@ -439,7 +440,7 @@ let GvGMap = {
 				GvGMap.CurrentGuild = GvGMap.NoGuild;
 			}, false);
 
-			GvGMap.mapDragOrEdit();
+			GvGMap.mapDrag();
 			
 			t.push('<div class="gvg-tabs tabs">');
 			t.push( GvGMap.GetTabs() );
@@ -448,7 +449,7 @@ let GvGMap = {
 			$('#gvgOptionsContent').html(t.join(''));
 
 			$('#GvGMap').find('#gvgmaplog').promise().done(function() {
-				$('.gvg-tabs').tabslet({active: 2});
+				$('.gvg-tabs').tabslet({active: GvGMap.ActiveTab });
 				$('.gvg-tabs .gvgmapguilds span').text(i18n('Boxes.GvGMap.Guilds'));
 				$('.gvg-tabs .gvgmaplog span').text(i18n('Boxes.GvGMap.Log'));
 
@@ -458,6 +459,13 @@ let GvGMap = {
 					$(this).addClass('active');
 					
 					GvGMap.CurrentGuild = GvGMap.Map.Guilds.find(x => x.id  === id);
+				});
+
+				$('.gvgmapguilds').click(function() {
+					GvGMap.ActiveTab = 1;
+				});
+				$('.gvgmaplog').click(function() {
+					GvGMap.ActiveTab = 2;
 				});
 
 				let textFilter = document.getElementById("logFilter");
@@ -583,15 +591,15 @@ let GvGMap = {
 		GvGMap.CanvasCTX.fillText(moment(GvGMap.Map.OnloadDataTime).format('D.M.YY'), 10, 45);
 	},
 
-	findGuildById: (id) => {
+	getGuildById: (id) => {
 		return GvGMap.Map.Guilds.find(x => x.id  === id);
 	},
 
-	findSectorById: (id) => {
+	getSectorById: (id) => {
 		return GvGMap.Map.Sectors.find(x => x.id  === id);
 	},
 
-	mapDragOrEdit: () => {
+	mapDrag: () => {
 		const wrapper = document.getElementById('GvGMapWrap');	
 		let pos = { top: 0, left: 0, x: 0, y: 0 };
 		
@@ -771,8 +779,7 @@ let GvGMap = {
 	},
 
 	showGuildFlagAndName: (id) => {
-		let guild = GvGMap.findGuildById(id);
-		console.log(id, guild, GvGMap.Map.Guilds);
+		let guild = GvGMap.getGuildById(id);
 		if (id < 0) {
 			return i18n('Boxes.GvGMap.Log.NPC');
 		}
@@ -789,7 +796,7 @@ let GvGMap = {
 	 * Merkt sich alle Tabs
 	 * @param id
 	 */
-	 SetTabs: (id)=> {
+	SetTabs: (id)=> {
 		GvGMap.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
 	},
 
@@ -874,9 +881,6 @@ let GvGLog = {
 			}
 
 			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed" && type != "clan_defeated" && type != "sector_slot_unlocked") {
-				if (entry.type == 'sector_independence_granted') {
-					console.log(entry.sourceClan,GvGMap.findGuildById(entry.sourceClan),entry);
-				}
 				GvGLog.Entries.unshift(entry);
 				return entry;
 			}
@@ -903,7 +907,6 @@ let GvGLog = {
 		let hostileAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_damaged' || entry.type == 'defender_defeated')) ? 'alert' : 'noAlert';
 		let friendlyAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_deployed' || entry.type == 'defender_replaced')) ? 'friendly' : 'actionUnknown';
 		let tr = document.createElement('tr');
-		console.log(entry.sourceClan);
 		if (sector != null) { // if sector is on map
 			let sectorCoords = MapSector.coords(sector);
 			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
