@@ -91,14 +91,6 @@
 	background-image: url('../images/quest.png');
 }
 
-.foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
-	background-image: url('../images/Archeology_chest.png');
-}
-
-.foehelper-accordion-head.reward_calendar-head span.image {
-	background-image: url('../images/Calendar.png');
-}
-
 .foehelper-accordion-head.spoilsOfWar-head span.image {
 	background-image: url('../images/spoils_of_war.png');
 }
