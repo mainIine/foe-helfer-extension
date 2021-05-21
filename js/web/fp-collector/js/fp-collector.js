@@ -143,6 +143,7 @@ let FPCollector = {
 	 * @constructor
 	 */
 	ShowFPCollectorBox: async ()=> {
+		moment.locale(i18n('Local'));
 
 		if( $('#fp-collector').length < 1 )
 		{
@@ -400,7 +401,7 @@ let FPCollector = {
 			text = `${dateStart.format(i18n('Date'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
 		}
 		else {
-			text = `${dateStart.format('DD.MM')}` + " - " + `${dateEnd.format(i18n('Date'))}`;
+			text = `${dateStart.format(i18n('DateShort'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
 		}
 
 		return text;

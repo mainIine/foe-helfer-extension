@@ -500,6 +500,7 @@
     "Boxes.Units.Unit": "Unità",
     "Date": "DD-MMM-YY",
     "DateTime": "D / M / YY h: mm: ss a",
+    "DateShort": "DD-MMM",
     "Eras.0": "Nessuna età",
     "Eras.1": "Età della pietra",
     "Eras.10": "Età Moderna",

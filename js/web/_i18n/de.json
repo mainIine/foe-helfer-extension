@@ -632,6 +632,7 @@
     "Boxes.mapTradeWarning.Title": "Handel",
     "Date": "DD.MM.YYYY",
     "DateTime": "DD.MM.YYYY HH:mm [Uhr]",
+    "DateShort": "DD.MM",
     "Eras.0": "Kein Zeitalter",
     "Eras.1": "Steinzeit",
     "Eras.10": "Moderne",

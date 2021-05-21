@@ -616,6 +616,7 @@
     "Boxes.mapTradeWarning.Title": "Переговоры",
     "Date": "DD-MMM-YY",
     "DateTime": "DD.MM.YYYY HH:mm",
+    "DateShort": "DD-MMM",
     "Eras.0": "Без эпохи",
     "Eras.1": "Каменный Век",
     "Eras.10": "Эпоха Модерна",

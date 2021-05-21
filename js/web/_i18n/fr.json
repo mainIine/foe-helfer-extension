@@ -632,6 +632,7 @@
     "Boxes.mapTradeWarning.Title": "Commerce",
     "Date": "DD-MMM-YY",
     "DateTime": "DD.MM.YYYY HH:mm",
+    "DateShort": "DD-MMM",
     "Eras.0": "Sans ère",
     "Eras.1": "Âge de Pierre",
     "Eras.10": "Ère Moderne",

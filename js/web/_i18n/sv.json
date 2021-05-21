@@ -632,6 +632,7 @@
     "Boxes.mapTradeWarning.Title": "Handel",
     "Date": "YYYY-MM-DD",
     "DateTime": "YYYY-MM-DD HH:mm",
+    "DateShort": "YYYY-MM-DD",
     "Eras.0": "Alla eror",
     "Eras.1": "Stenåldern",
     "Eras.10": "Modern tid",

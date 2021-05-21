@@ -600,6 +600,7 @@
     "Boxes.mapTradeWarning.Title": "Εμπορία",
     "Date": "DD-MMM-YY",
     "DateTime": "DD-MMM-YY @ HH:mm:ss a",
+    "DateShort": "DD-MMM",
     "Eras.0": "Καμία Εποχή",
     "Eras.1": "Λίθινη Εποχή",
     "Eras.10": "Σύγχρονη Εποχή",

@@ -632,6 +632,7 @@
     "Boxes.mapTradeWarning.Title": "Handel",
     "Date": "DD-MMM-YY",
     "DateTime": "D/M/YY @ h:mm:ss a",
+    "DateShort": "DD-MMM",
     "Eras.0": "Bez epoki",
     "Eras.1": "Epoka Kamienia",
     "Eras.10": "Modernizm",

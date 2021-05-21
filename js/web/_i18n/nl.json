@@ -462,6 +462,7 @@
     "Boxes.Units.Unit": "Eenheid",
     "Date": "DD-MM-YY",
     "DateTime": "DD-MM-YY HH:mm:ss a",
+    "DateShort": "DD-MM",
     "Eras.0": "Geen tijdperk",
     "Eras.1": "Steentijd",
     "Eras.10": "Moderne tijdperk",

@@ -632,6 +632,7 @@
     "Boxes.mapTradeWarning.Title": "Trade",
     "Date": "DD-MMM-YY",
     "DateTime": "DD-MMM-YY @ HH:mm:ss a",
+    "DateShort": "DD-MMM",
     "Eras.0": "No age",
     "Eras.1": "Stone Age",
     "Eras.10": "Modern Era",
