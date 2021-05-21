@@ -52,11 +52,11 @@ FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData
 
 FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) => {	
 	let entry = GvGLog.addEntry(data.responseData);
-	if (entry != undefined && GvGMap.Actions.edit === false) {
-		MapSector.update(entry.sectorId,entry.sourceClan,entry.type);
-	}
 	if ($('#gvgmaplog').length > 0 && entry) {
 		GvGLog.showEntry(entry);
+	}
+	if (entry != undefined && GvGMap.Actions.edit === false) {
+		MapSector.update(entry.sectorId,entry.sourceClan,entry.type);
 	}
 });
 
@@ -517,7 +517,7 @@ let GvGMap = {
 		
 		GvGMap.CanvasCTX.clearRect(0, 0, GvGMap.Map.Width, GvGMap.Map.Height);
 
-		if (GvGMap.Map.Guilds.length == 0) {
+		if (GvGMap.Map.Guilds.length <= 3) { // this is to prevent a bug and a stupid solution
 			GvGMap.Map.GuildData.forEach(function (guild) {
 				let guildOnMap = GvGMap.createGuild(guild);
 				GvGMap.Map.Guilds.push(guildOnMap);
@@ -772,13 +772,14 @@ let GvGMap = {
 
 	showGuildFlagAndName: (id) => {
 		let guild = GvGMap.findGuildById(id);
+		console.log(id, guild, GvGMap.Map.Guilds);
 		if (id < 0) {
 			return i18n('Boxes.GvGMap.Log.NPC');
 		}
-		else if (guild === GvGMap.OwnGuild) {
+		/*else if (guild === GvGMap.OwnGuild) {
 			return '<span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span> '+ guild.name;
-		}
-		else if (guild != null) {
+		}*/
+		else if (guild != undefined) {
 			return '<span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span> '+ guild.name;
 		}
 		return i18n('Boxes.GvGMap.Log.UnknownGuild');
@@ -873,6 +874,9 @@ let GvGLog = {
 			}
 
 			if (entry.details != {} && type != "defender_low_hp" && type != "siege_low_hp" && type != "sector_fog_changed" && type != "clan_defeated" && type != "sector_slot_unlocked") {
+				if (entry.type == 'sector_independence_granted') {
+					console.log(entry.sourceClan,GvGMap.findGuildById(entry.sourceClan),entry);
+				}
 				GvGLog.Entries.unshift(entry);
 				return entry;
 			}
@@ -886,11 +890,9 @@ let GvGLog = {
 			if (tr != null) {
 				let text = tr.textContent.toLowerCase();
 				if (!text.includes(GvGLog.FilterValue)) {
-					console.log('hey');
 					tr.style.display = 'none';
 				}
 				$('#GvGlog').prepend(tr);
-				console.log(tr);
 			}
 		});
 	},
@@ -901,6 +903,7 @@ let GvGLog = {
 		let hostileAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_damaged' || entry.type == 'defender_defeated')) ? 'alert' : 'noAlert';
 		let friendlyAction = (entry.targetClan == GvGMap.OwnGuild.Id && (entry.type == 'defender_deployed' || entry.type == 'defender_replaced')) ? 'friendly' : 'actionUnknown';
 		let tr = document.createElement('tr');
+		console.log(entry.sourceClan);
 		if (sector != null) { // if sector is on map
 			let sectorCoords = MapSector.coords(sector);
 			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
@@ -1007,7 +1010,7 @@ let MapSector = {
 				MapSector.draw(sector);
 			}
 			else if (type === "sector_independence_granted" || type === "sector_conquered") {
-				sector.owner.id = 0;
+				sector.owner = GvGMap.NoGuild;
 				sector.owner.color = MapSector.getColorByTerrain(sector);
 				sector.siege.clan = 0;
 				MapSector.draw(sector);
