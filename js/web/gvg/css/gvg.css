@@ -15,17 +15,10 @@
 	position: absolute;
 	left: 405px;
 	z-index: 100;
-	top: 3px;    
-	width: 64px;
+	top: 3px;
     height: 28px;
     overflow: hidden;
 	transition: 0.3s all linear;
-}
-
-#gvg-hud:hover {
-	overflow: auto;
-	height: auto;
-	background: url('../../../../css/images/hud/box-bg.png');
 }
 
 #gvg-hud div {
@@ -60,6 +53,19 @@
 #gvg-hud .defenders {
 	background: var(--black-50) url('../../x_img/gvg-defenders.png') no-repeat 6px center;
 	background-size: 20px 20px;
+}
+#gvg-hud .mapbutton {
+	padding: 0;
+}
+#gvg-hud .mapbutton::before {
+	background-image: url('../../x_img/gvg-tiles.png');
+	background-repeat: no-repeat;
+	background-size: 21px 16px;
+    content: '';
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-position: center;
 }
 
 #GvGMap {

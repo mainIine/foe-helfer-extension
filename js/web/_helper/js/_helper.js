@@ -50,7 +50,16 @@ helper.str = {
 				resolve();
 			});
 		}
-	}
+	},
+
+	copyToClipboardLegacy: (textToCopy) => {
+		let copyFrom = $('<textarea/>');
+		copyFrom.text(textToCopy);
+		$('body').append(copyFrom);
+		copyFrom.select();
+		document.execCommand('copy');
+		copyFrom.remove();
+    },
 };
 
 helper.arr = {
