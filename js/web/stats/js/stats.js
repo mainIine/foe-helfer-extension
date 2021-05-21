@@ -50,8 +50,12 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 			if (isCurrentlyInOutpost === 1){
 				rewardIncidentSource = 'shards';
 			}
-			//split league rewards from incidents
+			//split league rewards and fragment assembly from incidents
 			if(postData[0].requestMethod === 'useItem'){
+				continue;
+			}
+			//split quest rewards from incidents
+			if(postData[0].requestMethod === 'advanceQuest'){
 				continue;
 			}
 		}
@@ -538,6 +542,7 @@ let Stats = {
 			'__event', //event rewards
 			'battlegrounds_conquest', // Battlegrounds
 			'guildExpedition', // Temple of Relics
+			'pvp_arena', //PvP Arena
 			'spoilsOfWar', // Himeji Castle
 			'diplomaticGifts', //Space Carrier
 			'shards', //Flying Island
