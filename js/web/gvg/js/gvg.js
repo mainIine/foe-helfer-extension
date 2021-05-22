@@ -143,7 +143,7 @@ let GvG = {
 			GvG.Actions.Independences++;
 		}
 
-		GvG.LastAction = time;
+		GvG.Actions.LastAction = time;
 		GvG.showGvgHud();
 		
 		localStorage.setItem('GvGActions', JSON.stringify(GvG.Actions));
