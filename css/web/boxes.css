@@ -162,7 +162,7 @@ input[type=number] {
 }
 
 .btn-default:not([disabled]):hover,
-.btn-default-active:not([disabled]){
+.btn-active:not([disabled]){
 	background: var(--background-btn-active-fallback);
 	background: var(--background-btn-active-moz);
 	background: var(--background-btn-active-webkit);
