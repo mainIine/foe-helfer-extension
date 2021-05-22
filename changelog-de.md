@@ -20,6 +20,8 @@
 	- Sobald sie da ist, werden auch die Belohnungen aus der PvP Arena erfasst.
 - FP-Einsammlungen:
 	- Man kann jetzt einen Zeitraum auswählen. Danke an Likeke181.
+- LB-Aufladungen/Quests:
+	- Den Symbolen wurden Tooltips hinzugefügt.
 
 **BugFix**
 

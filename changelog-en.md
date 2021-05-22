@@ -20,6 +20,8 @@
 	- The PvP Arena rewards will be tracked as soon as it is available.
 - FP Collector:
 	- You can now select a date range in the FP Collector. Thanks to Likeke181.
+- GB Charges/Quests:
+	- We added tooltips.
 
 **BugFix**
 
