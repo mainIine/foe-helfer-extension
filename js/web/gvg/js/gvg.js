@@ -592,7 +592,7 @@ let GvGMap = {
 				else 
 					sector.position.x = realX + (GvGMap.Map.HexWidth * 0.5);
 
-				MapSector.draw(sector,true);
+				MapSector.draw(sector);
 			});
 		}
 	},
