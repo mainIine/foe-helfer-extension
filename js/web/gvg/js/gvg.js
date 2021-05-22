@@ -390,11 +390,10 @@ let GvGMap = {
 	 * Build GvG Map
 	 */
 	buildMap: (mapSize = 'small', initial = true) => {
-		let t = [];
+		let t = [], h = [];
 		if (GvGMap.Map.OnloadData != null) {
 			GvGMap.Tabs = [];
 			GvGMap.TabsContent = [];
-
 			GvGMap.SetTabs('gvgmapguilds');
 			GvGMap.SetTabs('gvgmaplog');
 

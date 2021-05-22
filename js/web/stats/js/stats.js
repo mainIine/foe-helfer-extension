@@ -554,10 +554,10 @@ let Stats = {
 			value: it,
 		}));
 
-		return `<div class="option-2-period">
+		return `<div class="option-2-period btn-group">
 					${btnsPeriodSelect.join('')}
 				</div>
-				<div class="option-2-reward-source">
+				<div class="option-2-reward-source btn-group">
 					${btnsRewardSelect.join('')}
 				</div>`;
 	},
