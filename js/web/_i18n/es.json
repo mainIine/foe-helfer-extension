@@ -514,6 +514,7 @@
     "Boxes.Units.Unit": "Unidad",
     "Date": "DD-MMM-YY",
     "DateTime": "DD.MM.YYYY HH:mm [Uhr]",
+    "DateShort": "DD-MMM",
     "Eras.0": "Sin edad",
     "Eras.1": "Edad de Piedra",
     "Eras.10": "Edad Moderna",
