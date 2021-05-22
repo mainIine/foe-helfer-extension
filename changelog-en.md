@@ -4,9 +4,6 @@
 
 **New**
 
-- Guild members statistics:
-	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) Export function for each tab of the statistics.
-	- Detail view of all guild buildings (revisit of all guild members recommended) 
 - GvG Map & Log (BETA):
 	- GvG Map shows all guilds currently present on the map with the state of each sector. The state is updated everytime you re-visit the map.
 	- Edit the Map: When clicking on "edit" you can choose a guild from the list by clicking on it (or none via the button with the white circle) and change each sector. The guild list then updates the amount of sectors and power each guild gains/loses.
@@ -14,6 +11,14 @@
 	- GvG Log Filter: Filter the log by any character in an entry.
 - GVG Independences:
 	- Shows how many sectors you released since last Recalc.
+
+**Update**
+
+- Guild members statistics:
+	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) Export function for each tab of the statistics.
+	- Detail view of all guild buildings (revisit of all guild members recommended)
+- Investment overview:
+	- [#1990](https://github.com/mainIine/foe-helfer-extension/issues/1990) Display of medals and blueprints selectable via box menu
 - Addition to Stats: 
 	- The Shards from Flying Island will now be tracked.
 	- Incidents will now be tracked.
