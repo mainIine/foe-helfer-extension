@@ -436,6 +436,7 @@
     "Boxes.Units.Unit": "Jedinica",
     "Date": "DD-MMM-YY",
     "DateTime": "DD-MMM-YY @ HH:mm:ss a",
+    "DateShort": "DD-MMM",
     "Eras.0": "Nema doba",
     "Eras.1": "Kameno doba",
     "Eras.10": "Moderno doba",

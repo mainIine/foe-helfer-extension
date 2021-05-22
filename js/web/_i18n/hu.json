@@ -632,6 +632,7 @@
     "Boxes.mapTradeWarning.Title": "Piac",
     "Date": "YYYY.MM.DD",
     "DateTime": "YY/M/D h:mm:ss a",
+    "DateShort": "YYYY.MM.DD",
     "Eras.0": "Korszak nélküli",
     "Eras.1": "Kőkorszak",
     "Eras.10": "Modern kor",

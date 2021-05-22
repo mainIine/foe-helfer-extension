@@ -403,6 +403,7 @@
     "Boxes.Units.Unit": "Enhed",
     "Date": "DD.MM.YYYY",
     "DateTime": "DD.MM.YYYY [kl.] HH:mm",
+    "DateShort": "DD.MM",
     "Eras.0": "Ingen tidsalder",
     "Eras.1": "Stenalder",
     "Eras.10": "Moderne Era",

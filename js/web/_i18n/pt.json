@@ -514,6 +514,7 @@
     "Boxes.mapTradeWarning.Title": "Negociar",
     "Date": "DD-MMM-AA",
     "DateTime": "DD-MMM-AA @ HH:mm:ss a",
+    "DateShort": "DD-MMM",
     "Eras.0": "Sem Era",
     "Eras.1": "Idade da Pedra",
     "Eras.10": "Era Moderna",
