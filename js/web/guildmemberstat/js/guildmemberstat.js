@@ -1533,9 +1533,13 @@ let GuildMemberStat = {
 		let fullGBList = $.extend(true,[],gmsBuildingDict);
 
 		let allGuildBuildings = fullGBList.reduce(function (res, obj) {
-			if (obj.gbid === undefined) { res.__array.push(res['outdated'] = obj); }
 
-			let buildingID = obj.member + '' + obj.gbid;
+			if (obj.gbid === undefined) { 
+				res.__array.push(res['outdated'] = obj);
+				return res;
+			}
+
+			let buildingID = obj.member.toLowerCase().replace(/[\W_ ]+/g, "") + '' + obj.gbid;
 
 			if (!(buildingID in res)){
 				res.__array.push(res[buildingID] = obj);
