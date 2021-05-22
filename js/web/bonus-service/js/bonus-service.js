@@ -202,7 +202,10 @@ let BonusService = {
 					si = $('<span />');
 
 				sp.attr({
-					class: `hud-btn`
+					class: `hud-btn`,
+					title: 'FoE Helper: '+i18n('Boxes.BonusService.'+bt[i]),
+				}).tooltip({
+					placement: 'left'
 				});
 
 				sb.attr({

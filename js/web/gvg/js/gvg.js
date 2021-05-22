@@ -419,15 +419,15 @@ let GvGMap = {
 			editBtn.addEventListener('click', function (e) {
 				GvGMap.Actions.edit = true;
 				GvGMap.Actions.drag = false;
-				dragBtn.classList.remove('btn-default-active');
-				editBtn.classList.add('btn-default-active');
+				dragBtn.classList.remove('btn-active');
+				editBtn.classList.add('btn-active');
 				$('.editAction').show();
 			}, false);
 			dragBtn.addEventListener('click', function (e) {
 				GvGMap.Actions.edit = false;
 				GvGMap.Actions.drag = true;
-				editBtn.classList.remove('btn-default-active');
-				dragBtn.classList.add('btn-default-active');
+				editBtn.classList.remove('btn-active');
+				dragBtn.classList.add('btn-active');
 				$('.editAction').hide();
 			}, false);
 			zoomBtn.addEventListener('click', function (e) {
