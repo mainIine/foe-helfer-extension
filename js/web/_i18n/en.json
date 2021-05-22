@@ -298,6 +298,7 @@
     "Boxes.GvGMap.Log.defender_defeated": "Defender defeated",
     "Boxes.GvGMap.Log.defender_deployed": "Defender deployed",
     "Boxes.GvGMap.Log.defender_replaced": "Defender replaced",
+    "Boxes.GvGMap.Log.Explanation": "This log is filled with actions that occur while you are active on a GvG map. The information will (currently) not be saved.",
     "Boxes.GvGMap.Log.headquarter_placed": "HQ placed",
     "Boxes.GvGMap.Log.Info": "Info",
     "Boxes.GvGMap.Log.NPC": "NPC",

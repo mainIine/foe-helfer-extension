@@ -948,6 +948,7 @@ let GvGLog = {
 					t.push(tr.outerHTML);
 			}
 		});
+		t.push('<tr><td colspan="2">'+i18n('Boxes.GvGMap.Log.Explanation')+'</td></tr>');
 		t.push('</table>');
 
 		GvGMap.SetTabContent('gvgmaplog', t.join(''));
