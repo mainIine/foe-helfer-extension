@@ -195,6 +195,7 @@
 
 #GvGlog {
 	font-size: 90%;
+	width: 295px;
 }
 
 #GvGlog.foe-table tr:nth-child(odd) {

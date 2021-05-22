@@ -1,18 +1,39 @@
 ## Changelog - Extension
 
-##### 2.5.7.2
+##### 2.5.8
 
 **Neu**
+
+- GvG Karte & Protokoll (BETA):
+	- GvG Karte: Zeigt alle Gilden, die gerade auf einer Karte vertreten sind (auch die, die nur belagern). Die Sektoren zeigen beim Klick weitere Details an. Diese Details werden beim Neuladen einer Karte aktualisiert.
+	- Karte bearbeiten: Beim Klick auf Bearbeiten kannst du aus der Liste eine Gilde auswählen (oder oben über den weißen Button gar keine) und dann die Sektoren der gewünschten Gilde zuteilen. Die Gildenliste wird entsprechend aktualisiert. 
+	- GvG Protokoll: Erfasst alle Aktionen, die auf einer GvG Karte passieren während du die betrachtest.
+	- GvG Protokoll Filter: Kann den Log nach allen enthaltenen Zeichen filtern.
+- GVG Freigaben:
+	- Anzahl deiner Sektor-Freigaben seit der letzten Abrechnung.
+
+**Update**
 
 - Gildenmitglieder Statistik:
 	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) Exportfunktion für jeden Tab der Statistik
 	- Detailansicht aller Gildengebäude (erneuter Besuch aller Gildenmitglieder für die korrekte Darstellung empfohlen.) 
+- Investitionsübersicht:
+	- [#1990](https://github.com/mainIine/foe-helfer-extension/issues/1990) Anzeige von Medaillen und Blaupausen über Boxmenü auswählbar
+- Statistiken: 
+	- Die Belohnungen der fliegenden Insel werden nun erfasst.
+	- Ereignisse werden jetzt erfasst.
+	- Sobald sie da ist, werden auch die Belohnungen aus der PvP Arena erfasst.
+- FP-Einsammlungen:
+	- Man kann jetzt einen Zeitraum auswählen. Danke an Likeke181.
+- LB-Aufladungen/Quests:
+	- Den Symbolen wurden Tooltips hinzugefügt.
 
 **BugFix**
 
 - Gildenmitglieder Statistik:
-	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau
-
+	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau.
+- FP-Einsammlungen:
+	- Manchmal wurden zu den Ereignissen FP aus anderen Quellen hinzugezählt.
 ---
 
 ##### 2.5.7.1
