@@ -363,15 +363,17 @@ let GvGMap = {
 		if (GvGMap.Actions.list) {
 			collapsed = '';
 		}
+		let editActive = (GvGMap.Actions.edit == true) ? 'btn-active' : '';
+		let dragActive = (GvGMap.Actions.drag == true) ? 'btn-active' : '';
 		h.push('<div id="toggleOptions" class="'+collapsed+'"></div><div id="GvGMapContent" class="mapFeature">');
 		h.push('<div id="GvGMapMeta" class="dark-bg mapFeature">');
 		h.push('<div id="GvGMapActions" class="btn-group mapFeature">');
-			h.push('<span id="editMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
+			h.push('<span id="editMap" class="btn-default '+editActive+'">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
 			h.push('<span id="noGuild" class="btn-default btn-inset editAction"></span>');
 			//h.push('<span id="pickGuild" class="btn-default btn-inset editAction"></span>');
 			//h.push('<span id="markerRed" class="btn-default btn-inset editAction"></span>');
 			h.push('<span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
-			h.push('<span id="dragMap" class="btn-default active">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
+			h.push('<span id="dragMap" class="btn-default '+dragActive+'">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
 			h.push('</div>');
 			h.push('</div>');
 		h.push('<div id="GvGMapWrap" class="mapFeature">');
@@ -398,48 +400,11 @@ let GvGMap = {
 
 			GvGMap.buildContent();
 			GvGMap.populateCanvas(mapSize, initial);
-			GvGMap.drawInfo();
+			GvGMap.drawCanvasInfo();
 			GvGMap.showGuilds();
 			GvGLog.show();
 
-			let editBtn = document.getElementById("editMap");
-			let pickGuildBtn = document.getElementById("pickGuild");
-			let markRedBtn = document.getElementById("markerRed");
-			let noGuildBtn = document.getElementById("noGuild");
-			let dragBtn = document.getElementById("dragMap");
-			let zoomBtn = document.getElementById("zoomMap");
-			let toggleListBtn = document.getElementById("toggleOptions");
-
-			toggleListBtn.addEventListener('click', function (e) {
-				$('#gvgOptions').toggleClass('collapsed');
-				$(this).toggleClass('collapsed');
-				GvGMap.Actions.list = (GvGMap.Actions.list == true) ? false : true;
-			}, false);
-
-			editBtn.addEventListener('click', function (e) {
-				GvGMap.Actions.edit = true;
-				GvGMap.Actions.drag = false;
-				dragBtn.classList.remove('btn-active');
-				editBtn.classList.add('btn-active');
-				$('.editAction').show();
-			}, false);
-			dragBtn.addEventListener('click', function (e) {
-				GvGMap.Actions.edit = false;
-				GvGMap.Actions.drag = true;
-				editBtn.classList.remove('btn-active');
-				dragBtn.classList.add('btn-active');
-				$('.editAction').hide();
-			}, false);
-			zoomBtn.addEventListener('click', function (e) {
-				if (GvGMap.Size === 'small')
-					GvGMap.buildMap('big', false);
-				else
-					GvGMap.buildMap('small', false);
-			}, false);
-			noGuildBtn.addEventListener('click', function (e) {
-				GvGMap.CurrentGuild = GvGMap.NoGuild;
-			}, false);
-
+			GvGMap.events();
 			GvGMap.mapDrag();
 			
 			t.push('<div class="gvg-tabs tabs">');
@@ -491,6 +456,47 @@ let GvGMap = {
 			$('#GvGMapBody').html(h.join(''));
 			GvGMap.hide();
 		}
+	},
+
+	events: () => {
+		let editBtn = document.getElementById("editMap");
+		let pickGuildBtn = document.getElementById("pickGuild");
+		let markRedBtn = document.getElementById("markerRed");
+		let noGuildBtn = document.getElementById("noGuild");
+		let dragBtn = document.getElementById("dragMap");
+		let zoomBtn = document.getElementById("zoomMap");
+		let toggleListBtn = document.getElementById("toggleOptions");
+
+		toggleListBtn.addEventListener('click', function (e) {
+			$('#gvgOptions').toggleClass('collapsed');
+			$(this).toggleClass('collapsed');
+			GvGMap.Actions.list = (GvGMap.Actions.list == true) ? false : true;
+		}, false);
+
+		editBtn.addEventListener('click', function (e) {
+			GvGMap.Actions.edit = true;
+			GvGMap.Actions.drag = false;
+			dragBtn.classList.remove('btn-active');
+			editBtn.classList.add('btn-active');
+			$('.editAction').show();
+			$('#sectorInfo').remove();
+		}, false);
+		dragBtn.addEventListener('click', function (e) {
+			GvGMap.Actions.edit = false;
+			GvGMap.Actions.drag = true;
+			editBtn.classList.remove('btn-active');
+			dragBtn.classList.add('btn-active');
+			$('.editAction').hide();
+		}, false);
+		zoomBtn.addEventListener('click', function (e) {
+			if (GvGMap.Size === 'small')
+				GvGMap.buildMap('big', false);
+			else
+				GvGMap.buildMap('small', false);
+		}, false);
+		noGuildBtn.addEventListener('click', function (e) {
+			GvGMap.CurrentGuild = GvGMap.NoGuild;
+		}, false);
 	},
 
 	/**
@@ -580,7 +586,7 @@ let GvGMap = {
 		}
 	},
 
-	drawInfo: () => {
+	drawCanvasInfo: () => {
 		let era = (Technologies.Eras[GvGMap.Map.Era] != 0) ? i18n('Eras.'+Technologies.Eras[GvGMap.Map.Era]) : i18n('Eras.GvGAllAge');
 		GvGMap.CanvasCTX.font = "bold 22px Arial";
 		GvGMap.CanvasCTX.textAlign = "left";
