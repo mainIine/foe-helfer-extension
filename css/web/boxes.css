@@ -162,7 +162,7 @@ input[type=number] {
 }
 
 .btn-default:not([disabled]):hover,
-.btn-default-active:not([disabled]){
+.btn-active:not([disabled]){
 	background: var(--background-btn-active-fallback);
 	background: var(--background-btn-active-moz);
 	background: var(--background-btn-active-webkit);
@@ -231,6 +231,11 @@ input[type=number] {
 	border-right-width: 1px;
 }
 
+.btn-group .btn-default:first-child:last-child {
+	border-radius: 4px;
+	border-right-width: 1px;
+}
+
 .ml-auto {
 	margin-left: auto;
 }
@@ -263,15 +268,7 @@ table {
 	border-collapse: collapse;
 }
 
-.foe-table {
-	border-spacing: 0;
-	border-collapse: separate;
-	width: 100%;
-	background-color: transparent;
-}
-
-
-table.foe-table {
+.foe-table, table.foe-table {
 	border-spacing: 0;
 	border-collapse: separate;
 	width: 100%;
@@ -344,13 +341,11 @@ p {
 	color: var(--text-bright);
 }
 
-.text-danger,
-.danger {
+.text-danger, .danger {
 	color: #f92727;
 }
 
-.text-info,
-.info {
+.text-info, .info {
 	color: var(--text-info);
 }
 
@@ -744,7 +739,6 @@ Accordion */
 	background-image: url('../images/hud/chevron-down.svg');
 }
 
-
 .foehelper-accordion-body {
 	display: none;
 	background-color: rgba(0,0,0,0.25);
@@ -1111,8 +1105,6 @@ FP-Bar */
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 .tooltip {
 	position: absolute;
