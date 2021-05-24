@@ -21,11 +21,12 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 	let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === data.responseData['great_building_name']));
 	if (!Entity) return; // LG nicht gefunden
 
-	if (Entity['id'] !== Parts.CityMapEntity['cityentity_id']) // Selbes LG
+	if (Entity['id'] !== Parts.CityMapEntity['cityentity_id']) return; // Selbes LG
 
 	if ($('#OwnPartBox').length > 0) {
 		let NewLevel = data.responseData['level'];
 		Parts.Show(NewLevel);
+		if (Parts.PlayInfoSound) Calculator.SoundFile.play();
     }
 });
 
@@ -433,7 +434,13 @@ let Parts = {
 		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
 
 		if (Parts.IsPreviousLevel) {
-			h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+			let Level = GreatBuildings.GetLevel(cityentity_id, Total);
+			if (Level) {
+				h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + (Level-1) + ' &rarr; ' + (Level));
+			}
+			else { //Level unbekannt
+				h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
+            }
 		}
 		else {
 			if (Parts.IsNextLevel) {
@@ -474,7 +481,7 @@ let Parts = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
         h.push('</span>');
@@ -723,7 +730,7 @@ let Parts = {
 
 		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction($(this), 'copy');
-			helper.str.copyToClipboard(copyParts);
+			helper.str.copyToClipboardLegacy(copyParts);
 		});
 
 		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){

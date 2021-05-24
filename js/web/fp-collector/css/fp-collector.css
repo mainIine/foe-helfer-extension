@@ -119,7 +119,23 @@
 	background-image: url('../images/quest.png') !important;
 }
 
+.foehelper-accordion-head.chestEventGrandPrize-head span.image {
+	background-image: url('../images/chestEventGrandPrize.png') !important;
+}
+
+.foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
+	background-image: url('../images/stPatricksEvent.png');
+}
+
+.foehelper-accordion-head.winterEventGandPrize-head span.image, .foehelper-accordion-head.winterEvent-head span.image {
+	background-image: url('../images/winterEvent.png');
+}
+
+.foehelper-accordion-head.archeologyEvent-head span.image, .foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
+	background-image: url('../images/archeologyEvent.png');
+}
+
 /* Events */
-.foehelper-accordion-head.winterEvent-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image , .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
+.foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
 	background-image: url('../images/event.png') !important;
 }

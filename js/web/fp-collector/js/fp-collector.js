@@ -24,10 +24,13 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 		return;
 	}
 
-	// default is hiddenreward
+	// default is hiddenreward or leaguereward
 	else if(event === 'default')
 	{
 		event = 'hiddenReward';
+		if(postData[0].requestMethod === 'useItem'){
+			event = 'leagueReward';
+			}
 	}
 
 	StrategyPoints.insertIntoDB({
@@ -126,6 +129,7 @@ let FPCollector = {
 	minDateFilter: null,
 	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
 	currentDateFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
+	currentDateEndFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
 
 	CityMapDataNew: null,
 
@@ -142,6 +146,7 @@ let FPCollector = {
 	 * @constructor
 	 */
 	ShowFPCollectorBox: async ()=> {
+		moment.locale(i18n('Local'));
 
 		if( $('#fp-collector').length < 1 )
 		{
@@ -205,7 +210,7 @@ let FPCollector = {
 			$('#fp-collectorBody').append(
 				`<div class="dark-bg head">
 					<div class="text-warning"><strong>${i18n('Boxes.FPCollector.TotalFP')} <span id="fp-collector-total-fp"></span></strong></div>
-					<div class="text-right"><button class="btn btn-default" id="FPCollectorPicker">${moment(FPCollector.currentDateFilter).format(i18n('Date'))}</button></div>
+					<div class="text-right"><button class="btn btn-default" id="FPCollectorPicker">${FPCollector.formatRange()}</button></div>
 				</div>`,
 				`<div id="fp-collectorBodyInner"></div>`
 			);
@@ -229,7 +234,7 @@ let FPCollector = {
 	buildBody: async ()=> {
 
 		let tr = [];
-		FPCollector.TodayEntries = await StrategyPoints.db['ForgePointsStats'].where('date').equals(FPCollector.currentDateFilter).toArray();
+		FPCollector.TodayEntries = await StrategyPoints.db['ForgePointsStats'].where('date').between(FPCollector.currentDateFilter, FPCollector.currentDateEndFilter, true, true).toArray();
 
 		$('#fp-collector-total-fp').text(await FPCollector.calculateTotal());
 
@@ -244,7 +249,7 @@ let FPCollector = {
 			for (const event of events)
 			{
 				const sumTotal = await FPCollector.calculateTotalByType(event);
-				const entriesEvent = await StrategyPoints.db['ForgePointsStats'].where({date: FPCollector.currentDateFilter, event: event}).toArray();
+				const entriesEvent = FPCollector.getEntriesByEvent(event);
 
 				tr.push(`<div class="foehelper-accordion ${event}">`);
 
@@ -328,10 +333,9 @@ let FPCollector = {
 	calculateTotal: async ()=> {
 		let totalFP = 0;
 
-		await StrategyPoints.db['ForgePointsStats']
-			.where('date')
-			.equals(FPCollector.currentDateFilter)
-			.each (entry => totalFP += entry.amount);
+		FPCollector.TodayEntries.forEach(e => {
+			totalFP += e.amount
+		});
 
 		return totalFP;
 	},
@@ -340,13 +344,12 @@ let FPCollector = {
 	calculateTotalByType: async (event)=> {
 		let totalFPByType = 0;
 
-		await StrategyPoints.db['ForgePointsStats']
-			.where({
-				date: FPCollector.currentDateFilter,
-				event: event
-			})
-			.each(entry => totalFPByType += entry.amount)
-		;
+		FPCollector.TodayEntries.forEach(e => {
+			if(e['event'] === event)
+			{
+				totalFPByType += e.amount
+			}
+		});
 
 		return totalFPByType;
 	},
@@ -367,7 +370,7 @@ let FPCollector = {
 			element: document.getElementById('FPCollectorPicker'),
 			format: i18n('Date'),
 			lang: MainParser.Language,
-			singleMode: true,
+			singleMode: false,
 			splitView: false,
 			numberOfMonths: 1,
 			numberOfColumns: 1,
@@ -375,14 +378,36 @@ let FPCollector = {
 			lockDays: FPCollector.lockDates,
 			minDate: FPCollector.minDateFilter,
 			maxDate: FPCollector.maxDateFilter,
+			startDate: FPCollector.currentDateFilter,
+			endDate: FPCollector.currentDateEndFilter,
 			showWeekNumbers: false,
-			onSelect: async (date)=> {
-				$('#FPCollectorPicker').text(`${moment(date).format(i18n('Date'))}`);
+			onSelect: async (dateStart, dateEnd)=> {
+				FPCollector.currentDateFilter = moment(dateStart).format('YYYY-MM-DD');
+				FPCollector.currentDateEndFilter = moment(dateEnd).format('YYYY-MM-DD');
 
-				FPCollector.currentDateFilter = moment(date).format('YYYY-MM-DD');
+				$('#FPCollectorPicker').text(FPCollector.formatRange());
 				await FPCollector.buildBody();
 			}
 		});
+	},
+
+
+	formatRange: ()=> {
+		let text = undefined;
+		let dateStart = moment(FPCollector.currentDateFilter);
+		let dateEnd = moment(FPCollector.currentDateEndFilter);
+
+		if (dateStart.isSame(dateEnd)){
+			text = `${dateStart.format(i18n('Date'))}`;
+		}
+		else if (dateStart.year() !== (dateEnd.year())){
+			text = `${dateStart.format(i18n('Date'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
+		}
+		else {
+			text = `${dateStart.format(i18n('DateShort'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
+		}
+
+		return text;
 	},
 
 
@@ -397,6 +422,20 @@ let FPCollector = {
 		});
 
 		return available;
+	},
+
+
+	getEntriesByEvent: (event)=> {
+		let entries = [];
+
+		FPCollector.TodayEntries.forEach(e => {
+			if(e['event'] === event)
+			{
+				entries.push(e)
+			}
+		});
+
+		return entries;
 	},
 
 

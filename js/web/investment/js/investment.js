@@ -127,6 +127,8 @@ let Investment = {
 		let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings'));
 		let showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0;
 		let showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
+		let showMedals = (InvestmentSettings && InvestmentSettings.showMedals !== undefined) ? InvestmentSettings.showMedals : 0;
+		let showBlueprints = (InvestmentSettings && InvestmentSettings.showBlueprints !== undefined) ? InvestmentSettings.showBlueprints : 0;
 		let showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0;
 		let lastupdate = (InvestmentSettings && InvestmentSettings.lastupdate !== undefined) ? InvestmentSettings.lastupdate : 0;
 		let removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
@@ -170,9 +172,19 @@ let Investment = {
 
 		h.push('<th class="is-number text-center" data-type="invest-group">&nbsp;</th>' +
 			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.InvestedDesc')) + '">' + i18n('Boxes.Investment.Overview.Invested') + '</th>' +
-				'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.ProfitDesc')) + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>' +
-			'</tr>' +
-			'</thead><tbody class="invest-group">');
+			'<th class="is-number text-center invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.ProfitDesc')) + '" >' + i18n('Boxes.Investment.Overview.Profit') + '</th>');
+		
+		if(showMedals)
+		{
+			h.push('<th class="is-number text-center" data-type="invest-group"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Medals')) + '"></span></th>');
+		}
+		
+		if(showBlueprints)
+		{
+			h.push('<th class="is-number text-center" data-type="invest-group"><span class="blueprints" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Blueprints')) + '"></span></th>');
+		}
+		
+		h.push('<th></th></tr></thead><tbody class="invest-group">');
 
 		let CurrentGB = await IndexDB.db.investhistory.reverse().toArray();
 
@@ -205,6 +217,8 @@ let Investment = {
 			let restFp = contribution['max_progress'] - contribution['current_progress'];
 			let rankImageValue = contribution['rank'] <= 6 ? contribution['rank'] : 6;
 			let isHidden = typeof contribution['ishidden'] !== 'undefined' ? contribution['ishidden'] : 0;
+			let Blueprints = typeof contribution['blueprints'] !== 'undefined' ? contribution['blueprints'] : 0;
+			let Medals = typeof contribution['medals'] !== 'undefined' ? contribution['medals'] : 0;
 			let hiddenClass = '';
 			let history = {};
 
@@ -252,7 +266,19 @@ let Investment = {
 
 			h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank invest-tooltip" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
 			h.push(`<td class="is-number text-center gbinvestment" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
-			h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td></tr>`);
+			h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td>`);
+			
+			if(showMedals)
+			{
+				h.push(`<td class="is-number text-center gbmedals" data-number="${Medals}"><b class="${RealProfitClass === 'error' ? 'success' : RealProfitClass}">${HTML.Format(Medals)}</b></td>`);
+			}
+			
+			if(showBlueprints)
+			{
+				h.push(`<td class="is-number text-center gbblueprints" data-number="${Blueprints}"><b class="${RealProfitClass === 'error' ? 'success' : RealProfitClass}">${HTML.Format(Blueprints)}</b></td>`);
+			}
+
+			h.push('<td></td></tr>');
 		}
 
 		h.push('</tbody></table>');
@@ -346,13 +372,17 @@ let Investment = {
 			InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
 			showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
 			showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0,
+			showBlueprints = (InvestmentSettings && InvestmentSettings.showBlueprints !== undefined) ? InvestmentSettings.showBlueprints : 0,
+			showMedals = (InvestmentSettings && InvestmentSettings.showMedals !== undefined) ? InvestmentSettings.showMedals : 0,
 			showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0,
 			removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
-		c.push(`<p class="text-center"><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
-		c.push(`<p class="text-center"><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">${i18n('Boxes.Investment.Overview.SettingsRestFP')}</label></p>`);
-		c.push(`<p class="text-center"><input id="showhiddengb" name="showhiddengb" value="1" type="checkbox" ${(showHiddenGb === 1) ? ' checked="checked"':''} /> <label for="showhiddengb">${i18n('Boxes.Investment.Overview.SettingsHiddenGB')}</label></p>`);
-		c.push(`<p class="text-center"><input id="removeunsafecalc" name="removeunsafecalc" value="1" type="checkbox" ${(removeUnsafeCalc === 1) ? ' checked="checked"':''} /> <label for="removeunsafecalc">${i18n('Boxes.Investment.Overview.SettingsUnsafeCalc')}</label></p>`);
+		c.push(`<p>${i18n('Boxes.Investment.Overview.AdditionalColumns')}:</p><p><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
+		c.push(`<p><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">${i18n('Boxes.Investment.Overview.SettingsRestFP')}</label></p>`);
+		c.push(`<p><input id="showmedals" name="showmedals" value="1" type="checkbox" ${(showMedals === 1) ? ' checked="checked"':''} /> <label for="showmedals">${i18n('Boxes.Investment.Overview.Medals')}</label></p>`);
+		c.push(`<p><input id="showblueprints" name="showblueprints" value="1" type="checkbox" ${(showBlueprints === 1) ? ' checked="checked"':''} /> <label for="showblueprints">${i18n('Boxes.Investment.Overview.Blueprints')}</label></p>`);
+		c.push(`<p><hr /><input id="showhiddengb" name="showhiddengb" value="1" type="checkbox" ${(showHiddenGb === 1) ? ' checked="checked"':''} /> <label for="showhiddengb">${i18n('Boxes.Investment.Overview.SettingsHiddenGB')}</label></p>`);
+		c.push(`<p><input id="removeunsafecalc" name="removeunsafecalc" value="1" type="checkbox" ${(removeUnsafeCalc === 1) ? ' checked="checked"':''} /> <label for="removeunsafecalc">${i18n('Boxes.Investment.Overview.SettingsUnsafeCalc')}</label></p>`);
 		c.push(`<hr><p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
 		$('#InvestmentSettingsBox').html(c.join(''));
@@ -384,6 +414,8 @@ let Investment = {
 				current_progress: Investment['current_progress'],
 				max_progress: Investment['max_progress'],
 				profit: Investment['profit'],
+				medals: Investment['medals'],
+				blueprints: Investment['blueprints'],
 				increase: Investment['increase'],
 				ishidden: Investment['ishidden'],
 				date: MainParser.getCurrentDate()
@@ -395,6 +427,8 @@ let Investment = {
 				gbname: Investment['gbname'],
 				current_progress: Investment['current_progress'],
 				profit: Investment['profit'],
+				medals: Investment['medals'],
+				blueprints: Investment['blueprints'],
 				rank: Investment['rank'],
 				fphistory: Investment['fphistory'],
 				increase: Investment['increase'],
@@ -446,12 +480,16 @@ let Investment = {
 					Rank = LGData[i]['rank'],
 					increase = 0;
 				let CurrentErtrag = 0.0;
+				let Medals = 0;
+				let Blueprints = 0;
 				let Profit = 0;
 				let GbhasUpdate = false;
 				let arrfphistory = [];
 				let isHidden = 0;
 
 				if (undefined !== LGData[i]['reward']) {
+					Medals = MainParser.round(LGData[i]['reward']['resources'] !== undefined && LGData[i]['reward']['resources']['medals'] !== undefined ?  LGData[i]['reward']['resources']['medals'] * arc : 0);
+					Blueprints = MainParser.round(LGData[i]['reward']['blueprints'] !== undefined ? LGData[i]['reward']['blueprints'] * arc : 0);
 					CurrentErtrag = MainParser.round(LGData[i]['reward']['strategy_point_amount'] !== undefined ? LGData[i]['reward']['strategy_point_amount'] * arc : 0);
 					Profit = CurrentErtrag;
 				}
@@ -501,12 +539,15 @@ let Investment = {
 					allGB = Investment.remove_key_from_array(allGB, CurrentGB.id);
 				}
 
-				if (CurrentGB !== undefined && !FullSync) {
+				if (CurrentGB !== undefined && !FullSync)
+				{
 					playerSyncGbKeys = Investment.remove_key_from_array(playerSyncGbKeys, CurrentGB.id);
 				}
 
-				if(CurrentGB !== undefined && CurrentGB['ishidden'] === undefined){
+				if(CurrentGB !== undefined && (CurrentGB['ishidden'] === undefined || CurrentGB['medals'] === undefined))
+				{
 					GbhasUpdate=true;
+					arrfphistory = JSON.parse(CurrentGB['fphistory']);
 				}
 
 				if (CurrentGB === undefined || GbhasUpdate)
@@ -525,6 +566,8 @@ let Investment = {
 						current_progress: CurrentProgress,
 						max_progress: MaxProgress,
 						profit: Profit,
+						medals: Medals,
+						blueprints: Blueprints,
 						ishidden: isHidden,
 						increase: increase
 					});
@@ -574,6 +617,8 @@ let Investment = {
 
 		value['showEntryDate'] = 0;
 		value['showRestFp'] = 0;
+		value['showBlueprints'] = 0;
+		value['showMedals'] = 0;
 		value['showHiddenGb'] = 0;
 		value['removeUnsafeCalc'] = 0;
 
@@ -585,6 +630,16 @@ let Investment = {
 		if ($("#showrestfp").is(':checked'))
 		{
 			value['showRestFp'] = 1;
+		}
+
+		if ($("#showmedals").is(':checked'))
+		{
+			value['showMedals'] = 1;
+		}
+
+		if ($("#showblueprints").is(':checked'))
+		{
+			value['showBlueprints'] = 1;
 		}
 
 		if ($("#showhiddengb").is(':checked'))

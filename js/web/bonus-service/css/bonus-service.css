@@ -72,6 +72,10 @@
 	font-weight: bold;
 }
 
+#bonus-hud .tooltip {
+	width: 200px;
+}
+
 #bonus-hud .first_strike-icon {
 	background-image: url('../../x_img/first_strike.png');
 }

@@ -186,7 +186,7 @@ Tooltip */
 	top: 50%;
 	border: 10px solid transparent;
 	background-color: #5e5a4e;
-	border-image: url('../images/hud/tooltip_bg.png') 10 round;
+	border-image: url('../images/hud/tooltip_bg.png') 10px round;
 	z-index: 999;
 	transform: translateY(-50%);
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";

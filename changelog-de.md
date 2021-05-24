@@ -1,5 +1,57 @@
 ## Changelog - Extension
 
+##### 2.5.8
+
+**Neu**
+
+- GvG Karte & Protokoll (BETA):
+	- GvG Karte: Zeigt alle Gilden, die gerade auf einer Karte vertreten sind (auch die, die nur belagern). Die Sektoren zeigen beim Klick weitere Details an. Diese Details werden beim Neuladen einer Karte aktualisiert.
+	- Karte bearbeiten: Beim Klick auf Bearbeiten kannst du aus der Liste eine Gilde auswählen (oder oben über den weißen Button gar keine) und dann die Sektoren der gewünschten Gilde zuteilen. Die Gildenliste wird entsprechend aktualisiert. 
+	- GvG Protokoll: Erfasst alle Aktionen, die auf einer GvG Karte passieren während du sie betrachtest.
+	- GvG Protokoll Filter: Kann den Log nach allen enthaltenen Zeichen filtern.
+- GVG Freigaben:
+	- [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Anzahl deiner Sektor-Freigaben seit der letzten Abrechnung.
+
+**Update**
+- Extension:
+    - [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) [#1975](https://github.com/mainIine/foe-helfer-extension/issues/1975) Exportmöglichkeiten für diverse Boxen des Helfers. (Die Tabellen für "Markt", "Technologien" und "MoppelHelper" können nun in CSV exportiert werden. Weitere werden in zukünftigen Updates hinzugefügt)
+- Gildenmitglieder Statistik:
+	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) [#1924](https://github.com/mainIine/foe-helfer-extension/issues/1924) Exportfunktion für jeden Tab der Statistik
+	- Detailansicht aller Gildengebäude (erneuter Besuch aller Gildenmitglieder für die korrekte Darstellung empfohlen.) 
+- Investitionsübersicht:
+	- [#1990](https://github.com/mainIine/foe-helfer-extension/issues/1990) Anzeige von Medaillen und Blaupausen über Boxmenü auswählbar
+- Statistiken: 
+	- Die Belohnungen der fliegenden Insel werden nun erfasst.
+	- Ereignisse werden jetzt erfasst.
+	- Sobald sie da ist, werden auch die Belohnungen aus der PvP Arena erfasst.
+- FP-Einsammlungen:
+	- Man kann jetzt einen Zeitraum auswählen. Danke an Likeke181.
+- LB-Aufladungen/Quests:
+	- Den Symbolen wurden Tooltips hinzugefügt.
+
+**BugFix**
+- Extension:
+    - [#2022](https://github.com/mainIine/foe-helfer-extension/issues/2022) Typo in deutscher Übersetzung ("Himej" >> "Himeji")
+- Menü:
+    - [#1928](https://github.com/mainIine/foe-helfer-extension/issues/1928) Fehler im CSS Code zerstörte Tooltipp
+- Einstellungen:
+    - [#1999](https://github.com/mainIine/foe-helfer-extension/issues/1999) [#2000](https://github.com/mainIine/foe-helfer-extension/issues/2000) Im Einstellungsmenü des Helfers war die Ansicht bei der Auswahl der Menü-Icons in einer bestimmten Ansicht falsch
+- Gildenmitglieder Statistik:
+	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau.
+- FP-Einsammlungen:
+	- Manchmal wurden zu den Ereignissen FP aus anderen Quellen hinzugezählt.
+- Infoboard:
+    - Das "Ping" kam immer, obwohl nach einem besstimmten Inhalt gefiltert wurde. Das ist nun behoben
+- BonusBar:
+    - [#1989](https://github.com/mainIine/foe-helfer-extension/issues/1989) Außenposten Quests werden bei Quest Icon der BonusBar gezählt
+- Eigenanteilsrechner:
+    - [#1994](https://github.com/mainIine/foe-helfer-extension/issues/1994) Beim Zurückblättern von Leveln wird nun das Level korrekt anzeigen
+    - [#2004](https://github.com/mainIine/foe-helfer-extension/issues/2004) Es fehlte Stufe 52
+- Produktionsübersicht:
+    - [#2026](https://github.com/mainIine/foe-helfer-extension/issues/2026) FP Produktion des Luftschiffs wurde nicht gezählt wenn nicht motiviert
+    
+---
+
 ##### 2.5.7.1
 
 **BugFix**

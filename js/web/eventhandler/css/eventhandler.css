@@ -25,10 +25,6 @@
     overflow-y: auto;
 }
 
-.text-bright {
-    color: var(--text-bright);
-}
-
 #moppelhelper .title {
     font-size: 115%;
 }
