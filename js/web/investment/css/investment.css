@@ -83,6 +83,7 @@
     background-size: 20px 20px;
 	background-position: center right;
 	background-repeat: no-repeat;
+	min-width: 4px;
 }
 
 #InvestmentBody table tbody tr.fphistory.open td:last-child {
@@ -234,4 +235,38 @@
 #InvestmentBody .last-update-message .icon.updaterequired {
     background: url(../images/update_required.svg);
 	background-size: 18px 18px;
+}
+
+#InvestmentBody tr th span {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	vertical-align: bottom;
+}
+
+#InvestmentBody tr th span.blueprints {
+	background: url(../../x_img/blueprint.png) center no-repeat;
+	background-size: contain;
+}
+
+#InvestmentBody tr th span.medal {
+	background: url(../../x_img/medal.png) center no-repeat;
+	background-size: contain;
+}
+
+#InvestmentBody tr th span {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	vertical-align: bottom;
+}
+
+#InvestmentBody tr th span.blueprints {
+	background: url(../../x_img/blueprint.png) center no-repeat;
+	background-size: contain;
+}
+
+#InvestmentBody tr th span.medal {
+	background: url(../../x_img/medal.png) center no-repeat;
+	background-size: contain;
 }

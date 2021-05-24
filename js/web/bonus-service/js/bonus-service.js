@@ -202,7 +202,10 @@ let BonusService = {
 					si = $('<span />');
 
 				sp.attr({
-					class: `hud-btn`
+					class: `hud-btn`,
+					title: 'FoE Helper: '+i18n('Boxes.BonusService.'+bt[i]),
+				}).tooltip({
+					placement: 'left'
 				});
 
 				sb.attr({
@@ -294,6 +297,7 @@ let BonusService = {
 		let Ret = 0;
 		for (let i = 0; i < MainParser.Quests.length; i++) {
 			let Quest = MainParser.Quests[i];
+			if (Quest['category'] === 'outpost') continue;
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;

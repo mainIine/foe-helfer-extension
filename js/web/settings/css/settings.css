@@ -1,4 +1,4 @@
-/*
+ /*
  * **************************************************************************************
  * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
@@ -133,8 +133,11 @@
 #SettingsBoxBody .tabs ul.vertical {
 	position: static;
 	width: 200px;
+	height: auto;
 	padding-top: 5px;
+	margin-bottom: 2px;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #SettingsBoxBody .tabs ul.vertical li {
@@ -143,8 +146,11 @@
 
 #SettingsBoxBody .tabs .sub-tab {
 	margin-left: 0;
+	margin-bottom: 2px;
 	border-left: 0;
 	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #SettingsBoxBody .helplist {
@@ -216,4 +222,5 @@
 .setting .hud-btn {
 	margin-right: 6px;
 	margin-bottom: 6px;
+	float: left;
 }

@@ -36,14 +36,30 @@ helper.str = {
 	 *
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
-	copyToClipboard: function(textToCopy){
+	copyToClipboard: async(textToCopy) => {
+		if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(textToCopy);
+		} else {
+			return new Promise(async (resolve) => {
+				let copyFrom = $('<textarea/>');
+				copyFrom.text(textToCopy);
+				$('body').append(copyFrom);
+				copyFrom.select();
+				document.execCommand('copy');
+				copyFrom.remove();
+				resolve();
+			});
+		}
+	},
+
+	copyToClipboardLegacy: (textToCopy) => {
 		let copyFrom = $('<textarea/>');
 		copyFrom.text(textToCopy);
 		$('body').append(copyFrom);
 		copyFrom.select();
 		document.execCommand('copy');
 		copyFrom.remove();
-	}
+    },
 };
 
 helper.arr = {

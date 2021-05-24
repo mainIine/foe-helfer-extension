@@ -23,6 +23,16 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, po
 		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 	}
 });
+//Currently in Outpost
+var isCurrentlyInOutpost = 0;
+FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
+	if (data.responseData['gridId'] === 'cultural_outpost') {
+		isCurrentlyInOutpost=1;
+	}
+});
+FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
+		isCurrentlyInOutpost=0;
+});
 
 // Reward log
 FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
@@ -30,16 +40,25 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	if (!Array.isArray(r)) {
 		return;
 	}
-	const [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
-
+	var [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
     await IndexDB.getDB();
-
+	
 	for (let reward of rewards) {
-		// default is incident reward
-		if (rewardIncidentSource === 'default') {
-			continue;
-		}
 
+		if (rewardIncidentSource === 'default') {
+			//split flying island incidents from normal ones
+			if (isCurrentlyInOutpost === 1){
+				rewardIncidentSource = 'shards';
+			}
+			//split league rewards and fragment assembly from incidents
+			if(postData[0].requestMethod === 'useItem'){
+				continue;
+			}
+			//split quest rewards from incidents
+			if(postData[0].requestMethod === 'advanceQuest'){
+				continue;
+			}
+		}
 		// Add reward info to the db
 		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
 			// Reduce amount of saved data
@@ -129,9 +148,8 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 	});
 });
 
-
 /**
- * @type {{RenderOptions: (function(): string), isSelectedUnitSources: (function(): boolean), DatePickerObj: null, applyDeltaToSeriesIfNeed: (function({series: *, [p: string]: *}): {series: *, chartType: string}), shortEraName: (function(*): (void|string|*)), Render: (function(): Promise<void>), RenderButton: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), updateCharts: (function(): Promise<void>), getSelectedEras: (function(): string[]), updateOptions: Stats.updateOptions, treasureSources: [string, string, string, string], createUnitsSeries: (function(): Promise<{series, pointFormat: string, footerFormat: string}>), loadHighcharts: (function(): Promise<void>), RemoveTable: Stats.RemoveTable, createTreasureSeries: (function(): Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>), ResMap: {NoAge: [string, string, string, string, string], StoneAge: [], PostModernEra: [string, string, string, string, string], ContemporaryEra: [string, string, string, string, string], TomorrowEra: [string, string, string, string, string], ArcticFuture: [string, string, string, string, string], IronAge: [string, string, string, string, string], ModernEra: [string, string, string, string, string], OceanicFuture: [string, string, string, string, string], SpaceAgeAsteroidBelt: [string, string, string, string, string], SpaceAgeVenus: [], special: [string, string, string, string], LateMiddleAge: [string, string, string, string, string], EarlyMiddleAge: [string, string, string, string, string], VirtualFuture: [string, string, string, string, string], SpaceAgeMars: [string, string, string, string, string], BronzeAge: [string, string, string, string, string], IndustrialAge: [string, string, string, string, string], ProgressiveEra: [string, string, string, string, string], HighMiddleAge: [string, string, string, string, string], ColonialAge: [string, string, string, string, string], FutureEra: [string, string, string, string, string]}, RenderCheckbox: (function({name: *, isActive: *, dataType: *, value: *}): string), state: {eras: {}, showAnnotations: boolean, period: string, currentType: null, chartType: string, rewardSource: string, eraSelectOpen: boolean, source: string, isGroupByEra: boolean}, createRewardSeries: (function(): Promise<{series: {data: this, name: string}[], title: string}>), isVisitingCulturalOutpost: boolean, isSelectedGBGSources: (function(): boolean), gbgSources: [string], promisedLoadCode: (function(*=): Promise<unknown>), createGBGSeries: (function(*=): Promise<{series: {data, avatarUrl: (string), name: string}[], pointFormat: string}>), createTreasureGroupByEraSeries: (function(): Promise<{series: {data, name: *}[]}>), RenderTab: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), kilos: (function(*=): string), HandlePlayerLeaderboard: (function(*=): Promise<undefined>), isSelectedTreasureSources: (function(): boolean), RenderBox: (function({name: *, isActive: *, disabled: *, dataType: *, value: *}): string), getAnnotations: (function(): Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: {useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}[]}>), updateCommonChart: (function({series: *, colors?: *, pointFormat?: *, footerFormat?: *, chartType?: *}): Promise<void>), RenderSecondaryOptions: (function(): string), PlayableEras: string[], unitSources: [string, string], equals: (function(*=, *=): boolean), isSelectedRewardSources: (function(): boolean), Show: Stats.Show, RenderEraSwitchers: (function(): string), updateRewardCharts: Stats.updateRewardCharts, rewardSources: [string]}}
+ * @type {{RenderOptions: (function(): string), isSelectedUnitSources: (function(): boolean), DatePickerObj: null, applyDeltaToSeriesIfNeed: (function({series: *, [p: string]: *}): {series: *, chartType: string}), shortEraName: (function(*): (void|string|*)), Render: (function(): Promise<void>), RenderButton: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), updateCharts: (function(): Promise<void>), getSelectedEras: (function(): string[]), updateOptions: Stats.updateOptions, treasureSources: [string, string, string, string], createUnitsSeries: (function(): Promise<{series, pointFormat: string, footerFormat: string}>), loadHighcharts: (function(): Promise<void>), RemoveTable: Stats.RemoveTable, createTreasureSeries: (function(): Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>), ResMap: {NoAge: [string, string, string, string, string], special: [string, string, string, string]}, RenderCheckbox: (function({name: *, isActive: *, dataType: *, value: *}): string), state: {eras: {}, showAnnotations: boolean, period: string, currentType: null, chartType: string, rewardSource: string, eraSelectOpen: boolean, source: string, isGroupByEra: boolean}, createRewardSeries: (function(): Promise<{series: {data: this, name: string}[], title: string}>), isVisitingCulturalOutpost: boolean, isSelectedGBGSources: (function(): boolean), gbgSources: [string], promisedLoadCode: (function(*=): Promise<unknown>), createGBGSeries: (function(*=): Promise<{series: {data, avatarUrl: (string), name: string}[], pointFormat: string}>), createTreasureGroupByEraSeries: (function(): Promise<{series: {data, name: *}[]}>), RenderTab: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), kilos: (function(*=): string), HandlePlayerLeaderboard: (function(*=): Promise<undefined>), isSelectedTreasureSources: (function(): boolean), RenderBox: (function({name: *, isActive: *, disabled: *, dataType: *, value: *}): string), getAnnotations: (function(): Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: {useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}[]}>), updateCommonChart: (function({series: *, colors?: *, pointFormat?: *, footerFormat?: *, chartType?: *}): Promise<void>), RenderSecondaryOptions: (function(): string), PlayableEras: string[], unitSources: [string, string], equals: (function(*=, *=): boolean), isSelectedRewardSources: (function(): boolean), Show: Stats.Show, RenderEraSwitchers: (function(): string), updateRewardCharts: Stats.updateRewardCharts, rewardSources: [string]}}
  */
 let Stats = {
 
@@ -139,50 +157,10 @@ let Stats = {
 
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
-		StoneAge: [],
-		BronzeAge: ['dye', 'cypress', 'alabaster', 'sandstone', 'wine'],
-		IronAge: ['cloth', 'ebony', 'lead', 'gems', 'limestone'],
-		EarlyMiddleAge: ['marble', 'bronze', 'gold', 'granite', 'honey'],
-		HighMiddleAge: ['brick', 'herbs', 'glass', 'ropes', 'salt'],
-		LateMiddleAge: ['basalt', 'brass', 'gunpowder', 'silk', 'talc'],
-		ColonialAge: ['coffee', 'porcelain', 'paper', 'tar', 'wire'],
-		IndustrialAge: ['coke', 'fertilizer', 'rubber', 'textiles', 'whaleoil'],
-		ProgressiveEra: ['asbestos', 'explosives', 'petroleum', 'machineparts', 'tinplate'],
-		ModernEra: ['convenience_food', 'ferroconcrete', 'flavorants', 'luxury_materials', 'packaging'],
-		PostModernEra: ['dna_data', 'filters', 'renewable_resources', 'semiconductors', 'steel'],
-		ContemporaryEra: ['bionics', 'electromagnets', 'gas', 'plastics', 'robots'],
-		TomorrowEra: ['nutrition_research', 'papercrete', 'preservatives', 'smart_materials', 'translucent_concrete'],
-		FutureEra: ['algae', 'biogeochemical_data', 'nanoparticles', 'purified_water', 'superconductors'],
-		ArcticFuture: ['ai_data', 'bioplastics', 'nanowire', 'paper_batteries', 'transester_gas'],
-		OceanicFuture: ['artificial_scales', 'biolight', 'corals', 'pearls', 'plankton'],
-		VirtualFuture: ['cryptocash', 'data_crystals', 'golden_rice', 'nanites', 'tea_silk'],
-		SpaceAgeMars: ['biotech_crops', 'lubricants', 'fusion_reactors', 'mars_microbes', 'superalloys'],
-		SpaceAgeAsteroidBelt: ['bromine', 'compound_fluid', 'processed_material', 'platinum_crystals', 'nickel'],
-		SpaceAgeVenus: ['soy_proteins', 'microgreen_supplement', 'herbal_snack', 'sugar_crystals', 'glowing_seaweed'],
-		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon']
+		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon'],
 	},
 
-	PlayableEras: [
-		'BronzeAge',
-		'IronAge',
-		'EarlyMiddleAge',
-		'HighMiddleAge',
-		'LateMiddleAge',
-		'ColonialAge',
-		'IndustrialAge',
-		'ProgressiveEra',
-		'ModernEra',
-		'PostModernEra',
-		'ContemporaryEra',
-		'TomorrowEra',
-		'FutureEra',
-		'ArcticFuture',
-		'OceanicFuture',
-		'VirtualFuture',
-		'SpaceAgeMars',
-		'SpaceAgeAsteroidBelt',
-		'SpaceAgeVenus',
-	],
+	PlayableEras: [],
 
 	// State for UI
 	state: {
@@ -196,6 +174,23 @@ let Stats = {
 		rewardSource: 'guildExpedition', // filter by type of reward
 		currentType: null
 	},
+
+	/*
+	 * Initializes ResMap and PlayableEras
+	 */
+	Init: () => {
+		for (let Era = Technologies.Eras.BronzeAge; Era < Technologies.Eras.NextEra; Era++) {
+			let EraName = Technologies.EraNames[Era];
+			if (!EraName) continue;
+
+			Stats.PlayableEras.push(EraName);
+			Stats.ResMap[EraName] = [];
+
+			for (let i = 0; i < 5; i++) {
+				Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
+            }
+		}
+    },
 
 	DatePickerObj: null,
 
@@ -281,34 +276,30 @@ let Stats = {
 						Stats.state.eras = {};
 						Object.keys(Stats.ResMap).map(it => Stats.state.eras[it] = true);
 
-					} else
-						if (isChangedToMyTreasure) {
-							// If changed to player's treasure select 2 last eras
-							Stats.state.eras = {};
-							Stats.state.eras = {
-								[Technologies.EraNames[CurrentEraID]]: true,
-							};
+					} else if (isChangedToMyTreasure) {
+						// If changed to player's treasure select 2 last eras
+						Stats.state.eras = {};
+						Stats.state.eras = {
+							[Technologies.EraNames[CurrentEraID]]: true,
+						};
+						if (CurrentEraID > 2) {
+							Stats.state.eras[Technologies.EraNames[CurrentEraID - 1]] = true;
+						}
 
-							if (CurrentEraID > 2) {
-								Stats.state.eras[Technologies.EraNames[CurrentEraID - 1]] = true;
-							}
+					} else if (isChangedToClanTreasure) {
+						// If changed to treasure select all playable eras
+						Stats.state.eras = {};
+						Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
 
-						} else
-							if (isChangedToClanTreasure) {
-								// If changed to treasure select all playable eras
-								Stats.state.eras = {};
-								Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
+					} else if (isChangedToGBG) {
+						Stats.state.chartType = 'delta';
+						Stats.isGG = true;
 
-							} else
-								if (isChangedToGBG) {
-									Stats.state.chartType = 'delta';
-									Stats.isGG = true;
+					} else if (isChangedToReward) {
+						Stats.state.period = 'sinceTuesday';
+						Stats.state.rewardSource = 'guildExpedition';
 
-								} else
-									if (isChangedToReward) {
-										Stats.state.period = 'sinceTuesday';
-										Stats.state.rewardSource = 'guildExpedition';
-									}
+					}
 
 					Stats.state.source = value || 'statsTreasurePlayerH';
 					break;
@@ -547,11 +538,14 @@ let Stats = {
 		//btnsPeriodSelect.push('<input class="game-cursor" id="GVGDatePicker" type="text">');
 
 		const btnsRewardSelect = [
-			'__event',
-			'battlegrounds_conquest', // Battle ground
+			'default', //incidents
+			'__event', //event rewards
+			'battlegrounds_conquest', // Battlegrounds
 			'guildExpedition', // Temple of Relics
+			'pvp_arena', //PvP Arena
 			'spoilsOfWar', // Himeji Castle
-			'diplomaticGifts',
+			'diplomaticGifts', //Space Carrier
+			'shards', //Flying Island
 		].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.Rewards.Source.' + it),
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),
@@ -560,10 +554,10 @@ let Stats = {
 			value: it,
 		}));
 
-		return `<div class="option-2-period">
+		return `<div class="option-2-period btn-group">
 					${btnsPeriodSelect.join('')}
 				</div>
-				<div class="option-2-reward-source">
+				<div class="option-2-reward-source btn-group">
 					${btnsRewardSelect.join('')}
 				</div>`;
 	},
@@ -642,7 +636,7 @@ let Stats = {
 	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-default-active' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}">${name}</button>`,
+	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-active' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}">${name}</button>`,
 
 
 	/**
@@ -1165,17 +1159,25 @@ let Stats = {
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
-			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` :
-				  rewardInfo.type === 'good' ? `goods-sprite ${rewardInfo.subType}` : '';
-			// Asset image if not goods or goods sprite
+			const iconClass = rewardInfo.type === 'unit' ? `units-icon ${rewardInfo.subType}` : '';
+			// Asset image if not unit
 			let pointImage = '';
-			if (rewardInfo.type != 'good' && rewardInfo.type != 'unit') {
+			if (rewardInfo.type != 'unit') {
 				let url = '';
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
 					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
-				} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-					url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+					//fix for fragment missing images for buildings
+					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
+						url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_random_goods.png`;
+					}
+					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
+						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
+							url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+						}
+					}
+				}else if (rewardInfo.type == 'building' && rewardInfo.subType) {
+						url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
 				}
 				if (url) {
 					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`;

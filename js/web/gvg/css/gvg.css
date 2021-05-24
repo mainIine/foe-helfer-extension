@@ -13,9 +13,12 @@
 
 #gvg-hud {
 	position: absolute;
-	left: 407px;
+	left: 405px;
 	z-index: 100;
 	top: 3px;
+    height: 28px;
+    overflow: hidden;
+	transition: 0.3s all linear;
 }
 
 #gvg-hud div {
@@ -32,16 +35,265 @@
 	font-size: 0.75rem;
 	font-weight: 400;
 	color: #f7dba4;
-	text-align: left;
+	text-align: center;
+	padding: 3px 6px 3px 33px;
+	background: var(--black-50);
+	width: 60px;
+	margin: 0 0 2px 2px;
 }
 
 #gvg-hud .independences {
 	background: var(--black-50) url('../../x_img/gvg-independences.png') no-repeat 3px center;
-	padding: 3px 3px 3px 33px;
-	width: 60px;
 }
 
 #gvg-hud .sieges {
-	background: var(--black-50) url('../../x_img/gvg-sieges.png') no-repeat 3px center;
-	padding: 3px 6px 3px 28px;
+	background: var(--black-50) url('../../x_img/gvg-sieges.png') no-repeat 6px center;
 }
+
+#gvg-hud .defenders {
+	background: var(--black-50) url('../../x_img/gvg-defenders.png') no-repeat 6px center;
+	background-size: 20px 20px;
+}
+#gvg-hud .mapbutton {
+	padding: 0;
+}
+#gvg-hud .mapbutton::before {
+	background-image: url('../../x_img/gvg-tiles.png');
+	background-repeat: no-repeat;
+	background-size: 21px 16px;
+    content: '';
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-position: center;
+}
+
+#GvGMap {
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
+	width: 800px;
+	height: 500px;
+}
+
+#GvGMapBody {
+	height: inherit;
+	display: flex;
+	align-items: stretch;
+	overflow: hidden;
+	justify-content: space-between;
+}
+
+#GvGMapContent {
+	height: inherit;
+	overflow: auto;
+	overflow: hidden;
+	position: relative;
+}
+
+#GvGMapMeta {
+	position: relative;
+	height: 40px;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 0.33rem;
+}
+
+.btn-default.btn-inset {
+	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	padding: 0.2rem;
+}
+
+.editAction {
+	display: none;
+}
+
+#noGuild::before {
+	background: #fff;
+	content: '';
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+	border-radius: 10px;
+}
+
+#GvGMapWrap {
+	height: inherit;
+	overflow: auto;
+	background-color: #111213;
+	overflow: hidden;
+	position: relative;
+}
+
+#gvgOptions {
+	height: inherit;
+	overflow: auto;
+	min-width: 300px;
+	flex-grow: 2;
+	position: relative;
+	border-left: 2px solid var(--text-dark);
+}
+
+#gvgOptions.collapsed {
+	width: 0;
+	min-width: 0;
+	overflow: hidden;
+	background-color: var(--black-50);
+	border-left: none;
+}
+
+#gvgOptions.collapsed #gvgOptionsContent{
+	display: none;
+}
+
+#toggleOptions {
+	position: absolute;
+	top: 50%;
+	right: 1px;
+	width: 13px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #784720;
+    border-radius: 7px 0 0 7px;
+	border: 1px solid #1f0c06;
+	color: #1f0c06;
+	border-right: none;
+    z-index: 15;
+	text-align: center;
+}
+
+#toggleOptions::before {
+	content: '>';
+	display: block;
+}
+
+#toggleOptions.collapsed::before {
+	content: '<';
+	display: block;
+}
+
+#logFilterWrap {
+    float: right;
+	position: absolute;
+	top: -30px;
+    right: 5px;
+}
+
+#logFilterWrap input {
+    width: 120px;
+}
+
+#GvGMapInfo {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+#GvGlog {
+	font-size: 90%;
+	width: 295px;
+}
+
+#GvGlog.foe-table tr:nth-child(odd) {
+	background-color: inherit;
+}
+
+#GvGlog.foe-table tr.alert {
+	background-color: rgba(192,0,0,0.2);
+}
+
+#GvGlog.foe-table tr.friendly {
+	background-color: rgba(47,82,5,0.4);
+}
+
+#sectorInfo {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	border-radius: 4px;
+	padding: 5px;
+	border: 1px solid var(--text-dark);
+	background-color: #210b02;
+	width: 200px;
+	font-size: 90%;
+	z-index: 101;
+}
+
+#sectorInfo .guildflag {
+	float: right;
+	border-width: 5px;
+	border-style: solid;
+	border-radius: 50px;
+    position: absolute;
+    bottom: 6px;
+    right: 2px;
+	height: 20px;
+}
+
+#sectorInfo b {
+    color: var(--text-bright);
+}
+
+.guildflag {
+	width: 20px;
+	height: 18px;
+	border-radius: 2px;
+	display: inline-block;
+	margin-right: 3px;
+	box-shadow: 0 1px 2px var(--black-50);
+	vertical-align: middle;
+	background-image: url(../img/flags_small.png);
+	background-repeat: no-repeat;
+}
+
+#GvGGuilds.foe-table tr.active {
+	background-color: var(--black-50);
+}
+
+.guildflag.flag_1 { background-position:  -57px -9px; }
+.guildflag.flag_2, .guildflag.flag_2_G { background-position: -102px -9px; }
+.guildflag.flag_3, .guildflag.flag_3_G  { background-position: -148px -9px; }
+.guildflag.flag_4 { background-position: -193px -9px; }
+.guildflag.flag_5, .guildflag.flag_5_R { background-position: -237px -9px; }
+.guildflag.flag_6 { background-position: -282px -9px; }
+.guildflag.flag_7 { background-position: -327px -9px; }
+.guildflag.flag_8 { background-position: -372px -9px; }
+.guildflag.flag_9, .guildflag.flag_9_G { background-position: -418px -9px; }
+
+.guildflag.flag_10 { background-position:  -11px -45px; }
+.guildflag.flag_11, .guildflag.flag_11_G { background-position:  -57px -45px; }
+.guildflag.flag_12 { background-position: -102px -44px; }
+.guildflag.flag_13 { background-position: -148px -45px; }
+.guildflag.flag_14, .guildflag.flag_14_R { background-position: -193px -45px; }
+.guildflag.flag_15 { background-position: -237px -45px; }
+.guildflag.flag_16, .guildflag.flag_16_G { background-position: -282px -45px; }
+.guildflag.flag_17, .guildflag.flag_17_G { background-position: -327px -45px; }
+.guildflag.flag_18, .guildflag.flag_18_R { background-position: -372px -46px; }
+.guildflag.flag_19 { background-position: -418px -45px; }
+
+.guildflag.flag_20, .guildflag.flag_20_R { background-position: -13px -81px; }
+.guildflag.flag_21, .guildflag.flag_21_R  { background-position: -58px -81px; }
+.guildflag.flag_22, .guildflag.flag_22_G { background-position: -102px -80px; }
+.guildflag.flag_23 { background-position: -148px -80px; }
+.guildflag.flag_24, .guildflag.flag_24_R { background-position: -193px -81px; }
+.guildflag.flag_25, .guildflag.flag_25_G { background-position: -237px -80px; }
+.guildflag.flag_26 { background-position: -282px -81px; }
+.guildflag.flag_27, .guildflag.flag_27_R { background-position: -327px -80px; }
+.guildflag.flag_28, .guildflag.flag_28_R { background-position: -373px -80px; }
+.guildflag.flag_29 { background-position: -418px -80px; }
+
+.guildflag.flag_30, .guildflag.flag_30_R { background-position: -12px -117px; }
+.guildflag.flag_31, .guildflag.flag_31_R { background-position: -57px -116px; }
+.guildflag.flag_32, .guildflag.flag_32_G { background-position: -103px -117px; }
+
+.guildflag.premium_flag_1 { background-position:  -57px -153px; }
+.guildflag.premium_flag_2 { background-position: -102px -153px; }
+.guildflag.premium_flag_3 { background-position: -148px -153px; }
+.guildflag.premium_flag_4 { background-position: -193px -153px; }
+.guildflag.premium_flag_5 { background-position: -237px -153px; }
+.guildflag.premium_flag_6 { background-position: -282px -153px; }
+.guildflag.premium_flag_7 { background-position: -327px -153px; }
+.guildflag.premium_flag_8 { background-position: -372px -153px; }
+.guildflag.premium_flag_9 { background-position: -418px -153px; }
+.guildflag.premium_flag_10 { background-position: -12px -189px; }
+.guildflag.premium_flag_11 { background-position: -57px -189px; }
+.guildflag.premium_flag_12 { background-position: -103px -189px; }

@@ -201,7 +201,7 @@ let Market = {
 								${i18n('Boxes.Market.AllGoods')}
 							</span>`);
 
-							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
@@ -242,7 +242,7 @@ let Market = {
 								${i18n('Boxes.Market.AllGoods')}
 							</span>`);
 
-							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
@@ -300,7 +300,7 @@ let Market = {
         h.push('<thead>');
         h.push('<tr>');
         h.push('<th columnname2="Offered goods" columnname3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th columnname2="Offered goods" columnname3="Offered amount"colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th columnname2="Requested goods" columnname3="Requested amount"colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
         h.push('<th columnname="Rate">' + i18n('Boxes.Market.RateColumn') + '</th>');
         h.push('<th columnname="Player">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');

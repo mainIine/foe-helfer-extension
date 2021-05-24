@@ -1,5 +1,57 @@
 ## Changelog - Extension
 
+##### 2.5.8
+
+**New**
+
+- GvG Map & Protocol (BETA):
+    - GvG Map: Shows all guilds that are currently represented on a map (also those that are only besieging). The sectors show more details when clicked. These details are updated when a map is reloaded.
+    - Edit map: When you click on Edit, you can select a guild from the list (or none at all via the white button at the top) and then assign the sectors to the desired guild. The guild list will be updated accordingly.
+    - GvG Protocol: Records all actions that happen on a GvG map while you are viewing it.
+    - GvG Log Filter: Can filter the log by all characters it contains.
+- GVG shares:
+    - [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Number of your sector releases since the last accounting.
+
+**Update**
+- Extension:
+    - [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) [#1975](https://github.com/mainIine/foe-helfer-extension/issues/1975) Export options for various boxes of the helper. (The tables for "Market", "Technologies" and "MoppelHelper" can now be exported to CSV. More will be added in future updates)
+- Guild member statistics:
+    - [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) [#1924](https://github.com/mainIine/foe-helfer-extension/issues/1924) Export function for each tab of the statistics.
+    - Detail view of all guild buildings (revisit of all guild members recommended for correct display).
+- Investment overview:
+    - [#1990](https://github.com/mainIine/foe-helfer-extension/issues/1990) Display of medals and blueprints selectable via box menu.
+- Statistics:
+    - Flying island rewards are now recorded.
+    - Events are now recorded.
+    - Once there, rewards from the PvP arena will also be recorded.
+- FP collections:
+    - You can now select a time period. Thanks to Likeke181.
+- LB recharges/quests:
+    - Tooltips have been added to the icons.
+
+**BugFix**
+- Extension:
+    - [#2022](https://github.com/mainIine/foe-helfer-extension/issues/2022) Typo in German translation ("Himej" >> "Himeji").
+- Menu:
+    - [#1928](https://github.com/mainIine/foe-helfer-extension/issues/1928) Bug in CSS code destroyed tooltip.
+- Settings:
+    - [#1999](https://github.com/mainIine/foe-helfer-extension/issues/1999) [#2000](https://github.com/mainIine/foe-helfer-extension/issues/2000) In the helper's settings menu, the view was wrong when selecting menu icons in a certain view
+- Guild Member Statistics:
+    - Guild power calculation was inaccurate in certain cases.
+- FP collections:
+    - Sometimes FP from other sources were added to events.
+- Infoboard:
+    - The "ping" always came even though filtered for a specific content. This is now fixed
+- BonusBar:
+    - [#1989](https://github.com/mainIine/foe-helfer-extension/issues/1989) Outpost quests are counted at quest icon of the BonusBar
+- Own share calculator:
+    - [#1994](https://github.com/mainIine/foe-helfer-extension/issues/1994) Scrolling back levels will now show the level correctly
+    - [#2004](https://github.com/mainIine/foe-helfer-extension/issues/2004) Level 52 was missing
+- Production overview:
+    - [#2026](https://github.com/mainIine/foe-helfer-extension/issues/2026) FP production of airship was not counted if not motivated
+
+---
+
 ##### 2.5.7.1
 
 **BugFix**
@@ -26,9 +78,6 @@
 		- Inactivity history (only with guild founder/leader rights)
 	- Overview of all guild goods producing buildings of the guild members
 	- Overview of available guild goods
-
-- GVG releases:
-	- [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Shows how many releases you yourself have already made in the GvG since settlement (8pm).
 
 - Quest Completion Info:
 	- [#1915](https://github.com/mainIine/foe-helfer-extension/issues/1915) Quest completion notification in guild battles.
