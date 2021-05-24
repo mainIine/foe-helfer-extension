@@ -154,20 +154,13 @@ let GvG = {
 	 * @param calcTime
 	 */
     setRecalc: (calcTime) => {
-		let time = Math.ceil(MainParser.getCurrentDateTime()/1000); 
+		GvG.Actions.PrevCalc = (calcTime-86400);
 
-		if (GvG.Actions.NextCalc !== calcTime) {
+		if (GvG.Actions.NextCalc !== calcTime) 
 			GvG.Actions.NextCalc = calcTime;
-		}
 
-		if (GvG.Actions.PrevCalc === 0) {
-			GvG.Actions.PrevCalc = (calcTime-86400);
-		}
-
-		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction !== 0) {
-			console.log('GvG.Actions.LastAction < GvG.Actions.PrevCalc');
-			//GvG.resetData(calcTime);
-		}
+		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction !== 0) 
+			GvG.resetData(calcTime);
 
 		localStorage.setItem('GvGActions', JSON.stringify(GvG.Actions));
 		GvG.showGvgHud();
@@ -197,10 +190,10 @@ let GvGMap = {
 	OnloadDataTime: 0,
 	Canvas: {},
 	CanvasCTX: {},
+	GuildData: {},
+	ProvinceData: {},
+	OnloadData: null,
 	Map: {
-		OnloadData: null,
-		ProvinceData: {},
-		GuildData: {},
 		Sectors: [],
 		Guilds: [],
 		Width: 0,
@@ -220,8 +213,8 @@ let GvGMap = {
 	},
 	PowerValues: [],
 	Colors: {
-        "blank": [{r:240,g:240,b:240}],
-        "b": [
+        blank: [{r:240,g:240,b:240}],
+        b: [
             {r:0,g:185,b:238},
             {r:0,g:159,b:227},
             {r:0,g:72,b:153},
@@ -240,7 +233,7 @@ let GvGMap = {
             {r:24,g:5,b:71},
             {r:38,g:8,b:115},
         ],
-        "r": [
+        r: [
             {r:203,g:78,b:72},
             {r:163,g:77,b:68},
             {r:227,g:80,b:0},
@@ -259,7 +252,7 @@ let GvGMap = {
             {r:222,g:49,b:14},
             {r:111,g:22,b:22},
         ],
-        "g": [
+        g: [
             {r:0,g:180,b:0},
             {r:0,g:100,b:0},
             {r:0,g:60,b:0},
@@ -278,7 +271,7 @@ let GvGMap = {
             {r:5,g:29,b:17},
             {r:49,g:68,b:8},
         ],
-        "premium": [
+        premium: [
             [{r:2,g:2,b:2},{r:19,g:0,b:0},{r:65,g:0,b:0},{r:98,g:0,b:25},{r:30,g:30,b:30},{r:100,g:22,b:0}], // skull
             [{r:22,g:62,b:11},{r:17,g:17,b:17},{r:18,g:53,b:40},{r:9,g:55,b:75},{r:74,g:74,b:74},{r:43,g:62,b:49}], // shield colorful green&grey
             [{r:11,g:25,b:62},{r:8,g:7,b:8},{r:17,g:63,b:112},{r:3,g:24,b:92},{r:0,g:30,b:117},{r:24,g:5,b:71}], // shield blue&black
@@ -286,7 +279,7 @@ let GvGMap = {
             [{r:56,g:11,b:62},{r:88,g:10,b:70},{r:83,g:34,b:133},{r:33,g:2,b:68}], // horses
             [{r:79,g:17,b:0},{r:117,g:44,b:7},{r:47,g:33,b:23},{r:62,g:18,b:11}], // vikings
             [{r:242,g:185,b:0},{r:214,g:150,b:37},{r:187,g:116,b:13},{r:200,g:105,b:11}], // phoenix
-            [{r:35,g:60,b:30},{r:36,g:76,b:32},{r:35,g:60,b:30},{r:35,g:60,b:30}], // dragon
+            [{r:35,g:60,b:30},{r:36,g:76,b:32},{r:35,g:60,b:30},{r:35,g:60,b:30},{r:5,g:91,b:37},{r:0,g:60,b:0}], // dragon
             [{r:44,g:57,b:64},{r:28,g:35,b:39},{r:30,g:10,b:50},{r:47,g:20,b:41}], // red blue shield
             [{r:50,g:36,b:51},{r:56,g:50,b:63},{r:61,g:25,b:84},{r:80,g:70,b:97}], // green blue shield
             [{r:50,g:19,b:6},{r:95,g:13,b:8},{r:128,g:20,b:13},{r:130,g:38,b:10}], // helmet and swords
@@ -302,16 +295,16 @@ let GvGMap = {
 	TabsContent: [],
 
 	initData: (response, initial = true) => {
-		GvGMap.Map.OnloadData = response;
-		GvGMap.Map.OnloadDataTime = MainParser.getCurrentDateTime();
+		GvGMap.OnloadData = response;
+		GvGMap.OnloadDataTime = MainParser.getCurrentDateTime();
+		GvGMap.ProvinceData = GvGMap.OnloadData.province_detailed;
+		GvGMap.GuildData = GvGMap.OnloadData.province_detailed.clans;
+		GvGMap.PowerValues = GvGMap.OnloadData.province_detailed.power_values;
+		GvGMap.Map.Era = GvGMap.OnloadData.province_detailed.era;
 		GvGMap.Map.Guilds = [];
 		GvGMap.Map.Sectors = [];
-		GvGMap.Map.ProvinceData = GvGMap.Map.OnloadData.province_detailed;
-		GvGMap.Map.GuildData = GvGMap.Map.OnloadData.province_detailed.clans;
-		GvGMap.PowerValues = GvGMap.Map.OnloadData.province_detailed.power_values;
-		GvGMap.Map.Era = GvGMap.Map.OnloadData.province_detailed.era;
-		GvGMap.OwnGuild.Id = GvGMap.Map.OnloadData.clan_data.clan.id;
-		GvGMap.OwnGuild.Members = GvGMap.Map.OnloadData.clan_data.clan.members;
+		GvGMap.OwnGuild.Id = GvGMap.OnloadData.clan_data.clan.id;
+		GvGMap.OwnGuild.Members = GvGMap.OnloadData.clan_data.clan.members;
 	},
 
 	initMap: (size = 'small', initial = true) => {
@@ -331,8 +324,8 @@ let GvGMap = {
 		GvGMap.Map.HexWidth = hexWidth;
 		GvGMap.Map.HexHeight = hexHeight;
 		GvGMap.Size = size;
-		GvGMap.Map.Width = (GvGMap.Map.ProvinceData.bounds.x_max - GvGMap.Map.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
-		GvGMap.Map.Height = (GvGMap.Map.ProvinceData.bounds.y_max - GvGMap.Map.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
+		GvGMap.Map.Width = (GvGMap.ProvinceData.bounds.x_max - GvGMap.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
+		GvGMap.Map.Height = (GvGMap.ProvinceData.bounds.y_max - GvGMap.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
 		GvGMap.CurrentGuild = GvGMap.NoGuild;
 	},
 
@@ -403,7 +396,7 @@ let GvGMap = {
 	 */
 	buildMap: (mapSize = 'small', initial = true) => {
 		let t = [], h = [];
-		if (GvGMap.Map.OnloadData != null) {
+		if (GvGMap.OnloadData != null) {
 			GvGMap.Tabs = [];
 			GvGMap.TabsContent = [];
 			GvGMap.SetTabs('gvgmapguilds');
@@ -543,7 +536,7 @@ let GvGMap = {
 		GvGMap.CanvasCTX.clearRect(0, 0, GvGMap.Map.Width, GvGMap.Map.Height);
 
 		if (GvGMap.Map.Guilds.length <= 3) { // this is to prevent a bug and a stupid solution
-			GvGMap.Map.GuildData.forEach(function (guild) {
+			GvGMap.GuildData.forEach(function (guild) {
 				let guildOnMap = GvGMap.createGuild(guild);
 				GvGMap.Map.Guilds.push(guildOnMap);
 				if ((guild.id) === GvGMap.OwnGuild.Id) {
@@ -558,11 +551,11 @@ let GvGMap = {
 		}
 
 		if (GvGMap.Map.Sectors.length == 0) {
-			GvGMap.Map.ProvinceData.sectors.forEach(function (sector) {
+			GvGMap.ProvinceData.sectors.forEach(function (sector) {
 				if (sector.hitpoints != undefined) {
-					let realX = (sector.position.x - GvGMap.Map.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
-					let realY = (sector.position.y - GvGMap.Map.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
 					let newSector = {};
+					let realX = (sector.position.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
+					let realY = (sector.position.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
 
 					if (sector.position.y % 2 === 0) 
 						newSector = MapSector.create(realX, realY * 0.75, sector);
@@ -582,8 +575,8 @@ let GvGMap = {
 		}
 		else { // on zoom or clicking when already opened
 			GvGMap.Map.Sectors.forEach(function (sector) {
-				let realX = (sector.coordinates.x - GvGMap.Map.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
-				let realY = (sector.coordinates.y - GvGMap.Map.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
+				let realX = (sector.coordinates.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
+				let realY = (sector.coordinates.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
 				sector.position.x = realX;
 				sector.position.y = realY * 0.75;
 
@@ -605,7 +598,7 @@ let GvGMap = {
 		GvGMap.CanvasCTX.fillText(era, 10, 25);
 		GvGMap.CanvasCTX.font = "12px Arial";
 		GvGMap.CanvasCTX.fillStyle = '#ccc';
-		GvGMap.CanvasCTX.fillText(moment(GvGMap.Map.OnloadDataTime).format('D.M.YY'), 10, 45);
+		GvGMap.CanvasCTX.fillText(moment(GvGMap.OnloadDataTime).format('D.M.YY'), 10, 45);
 	},
 
 	getGuildById: (id) => {
@@ -870,7 +863,8 @@ let GvGLog = {
 				details: {},
 			};
 			if (response.__class__ === "ClanBattleSectorChange") { // sector_independence_granted, sector_conquered, sector_slot_unlocked
-				entry.targetClan = response.target_clan_id;
+				if (type != 'sector_independence_granted')
+					entry.targetClan = response.target_clan_id;
 				entry.details = {
 					playerId: (response.source_clan_id === GvGMap.OwnGuild.Id) ? response.player_id : 0
 				}
@@ -1040,7 +1034,11 @@ let MapSector = {
 				MapSector.draw(sector);
 			}
 			else if (type === "sector_independence_granted" || type === "sector_conquered") {
-				sector.owner = GvGMap.NoGuild;
+				if (type === "sector_independence_granted")
+					sector.owner = GvGMap.NoGuild;
+				else 
+					sector.owner = guild;
+					
 				sector.owner.color = MapSector.getColorByTerrain(sector);
 				sector.siege.clan = 0;
 				MapSector.draw(sector);
