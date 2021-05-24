@@ -231,7 +231,7 @@ input[type=number] {
 	border-right-width: 1px;
 }
 
-.btn-group .btn-default:first-child:last-child {
+.btn-group .btn-default:only-child {
 	border-radius: 4px;
 	border-right-width: 1px;
 }
