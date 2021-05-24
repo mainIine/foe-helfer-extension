@@ -124,8 +124,8 @@ let GreatBuildings =
             }
 
             let ShowGoods = localStorage.getItem('GreatBuildingsShowGoods');
-            if (ShowGoods != null) {
-                GreatBuildings.ShowGoods = ShowGoods;
+            if (ShowGoods === 'true') {
+                GreatBuildings.ShowGoods = true;
             }
 
             GreatBuildings.RewardPerDay = MainParser.round(GreatBuildings.FPRewards / 6);
