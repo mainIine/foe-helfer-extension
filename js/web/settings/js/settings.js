@@ -486,7 +486,7 @@ let Settings = {
 	 */
 	MenuContent: () => {
 		let bl = $('<div />'),
-			menuItems = _menu.Items,
+			menuItems = Array.from(_menu.Items),
 			HiddenItems = localStorage.getItem('MenuHiddenItems'),
 			hiddenArray = [];
 
@@ -496,7 +496,6 @@ let Settings = {
 			menuItems.push(...hiddenArray);
 		}
 
-escape
 		for (let i in menuItems)
 		{
 			if (!menuItems.hasOwnProperty(i)) {
