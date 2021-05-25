@@ -639,7 +639,7 @@ let GildFights = {
 
 		if (copy !== '')
 		{
-			helper.str.copyToClipboard(copy).then(() => {
+			helper.str.copyToClipboardLegacy(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
 					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),

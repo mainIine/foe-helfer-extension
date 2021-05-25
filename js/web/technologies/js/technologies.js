@@ -175,12 +175,12 @@ let Technologies = {
         // Zeitalter vor und zurück schalten
         $('#technologies').on('click', '.btn-switchage', function () {
 
-            $('.btn-switchage').removeClass('btn-default-active');
+            $('.btn-switchage').removeClass('btn-active');
 
             Technologies.SelectedEraID = $(this).data('value');
             Technologies.CalcBody();
 
-            $(this).addClass('btn-default-active');
+            $(this).addClass('btn-active');
         });
 
 		Technologies.BuildBox();

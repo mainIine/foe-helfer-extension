@@ -260,7 +260,12 @@ let Productions = {
 				let Ability = CityEntity['abilities'][AbilityIndex];
 
 				if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
-					AdditionalResources = Ability['additionalResources']['AllAge']['resources'];
+					let NewResources = Ability['additionalResources']['AllAge']['resources'];
+					for (let resource in NewResources) {
+						if (!NewResources.hasOwnProperty(resource)) continue;
+						if (!AdditionalResources[resource]) AdditionalResources[resource] = 0;
+						AdditionalResources[resource] += NewResources[resource];
+                    }
 				}
 
 				// this buildung produces random units
@@ -273,7 +278,6 @@ let Productions = {
 		// Zeitalter suchen
 		if (CityEntity['is_multi_age'] && d['level']) {
 			era = d['level'] + 1;
-
 		}
 		// Great building
 		else if (CityEntity['strategy_points_for_upgrade']) {
