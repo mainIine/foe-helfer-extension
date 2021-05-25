@@ -15,17 +15,10 @@
 	position: absolute;
 	left: 405px;
 	z-index: 100;
-	top: 3px;    
-	width: 64px;
+	top: 3px;
     height: 28px;
     overflow: hidden;
 	transition: 0.3s all linear;
-}
-
-#gvg-hud:hover {
-	overflow: auto;
-	height: auto;
-	background: url('../../../../css/images/hud/box-bg.png');
 }
 
 #gvg-hud div {
@@ -61,6 +54,19 @@
 	background: var(--black-50) url('../../x_img/gvg-defenders.png') no-repeat 6px center;
 	background-size: 20px 20px;
 }
+#gvg-hud .mapbutton {
+	padding: 0;
+}
+#gvg-hud .mapbutton::before {
+	background-image: url('../../x_img/gvg-tiles.png');
+	background-repeat: no-repeat;
+	background-size: 21px 16px;
+    content: '';
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-position: center;
+}
 
 #GvGMap {
 	left: calc(50vw - 400px);
@@ -88,6 +94,26 @@
 	position: relative;
 	height: 40px;
 	overflow: hidden;
+	box-sizing: border-box;
+	padding: 0.33rem;
+}
+
+.btn-default.btn-inset {
+	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	padding: 0.2rem;
+}
+
+.editAction {
+	display: none;
+}
+
+#noGuild::before {
+	background: #fff;
+	content: '';
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+	border-radius: 10px;
 }
 
 #GvGMapWrap {
@@ -162,33 +188,9 @@
 	left: 0;
 }
 
-#GvGMapActions {
-	z-index: 100;
-	position: absolute;
-	left: 7px;
-	top: 7px;
-}
-
-.btn-default.btn-inset {
-	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-	padding: 0.2rem;
-}
-
-.editAction {
-	display: none;
-}
-
-#noGuild::before {
-	background: #fff;
-	content: '';
-	width: 18px;
-    height: 18px;
-    display: inline-block;
-	border-radius: 10px;
-}
-
 #GvGlog {
 	font-size: 90%;
+	width: 295px;
 }
 
 #GvGlog.foe-table tr:nth-child(odd) {

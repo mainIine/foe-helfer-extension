@@ -481,7 +481,7 @@ let Parts = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
         h.push('</span>');
@@ -730,7 +730,7 @@ let Parts = {
 
 		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction($(this), 'copy');
-			helper.str.copyToClipboard(copyParts);
+			helper.str.copyToClipboardLegacy(copyParts);
 		});
 
 		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
