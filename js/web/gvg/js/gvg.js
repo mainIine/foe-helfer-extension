@@ -1165,7 +1165,7 @@ let MapSector = {
 				GvGMap.CanvasCTX.font = "12px Arial";
 			GvGMap.CanvasCTX.textAlign = "center";
 			GvGMap.CanvasCTX.fillStyle = ((sector.owner.color.r+sector.owner.color.g+sector.owner.color.b) < 350) ? '#ddd' : '#222';
-			GvGMap.CanvasCTX.fillText(MapSector.coords(sector), sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.85);
+			GvGMap.CanvasCTX.fillText(MapSector.coords(sector, true), sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.85);
 			if (GvGMap.Size === 'big' && sector.terrain !== "water" && sector.terrain !== "rocks")
 				GvGMap.CanvasCTX.fillText(sector.power, sector.position.x + GvGMap.Map.HexWidth / 2, sector.position.y + GvGMap.Map.HexHeight * 0.25);
 		}
@@ -1174,8 +1174,10 @@ let MapSector = {
 	/**
 	 * Returns Sectors coordinates (with ~ if beach)
 	 */
-	coords(sector) {
-		if (sector.terrain === "beach" || sector.terrain === "plain")
+	coords(sector, draw = false) {
+		if (sector.terrain === "beach" && draw)
+			return "~"+sector.coordinates.x + ", " + sector.coordinates.y+"~";
+		if (sector.terrain === "plain")
 			return sector.coordinates.x + ", " + sector.coordinates.y;
 		return "";
 	},
