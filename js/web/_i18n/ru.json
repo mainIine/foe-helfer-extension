@@ -77,6 +77,8 @@
     "Boxes.BlueGalaxy.NoProductionsDone": "Нет завершенных производств СО",
     "Boxes.BlueGalaxy.TTGoodsValue": "Это значение используется для выявления коэффициента зданий, производящих товары. Укажите примерную стоимость 1 товара в СО",
     "Boxes.BlueGalaxy.Title": "Синяя Галактика",
+    "Boxes.BonusService.donequests": "Просмотр выполненных заданий",
+    "Boxes.BonusService.first_strike": "Количество попыток для первого удара",
     "Boxes.Calculator.ActiveRecurringQuest": "Активный круговой квест:",
     "Boxes.Calculator.ArkBonus": "Бонус Арки",
     "Boxes.Calculator.AvailableFP": "Доступные СО",
