@@ -127,6 +127,11 @@
 	background-image: url('../images/quest.png') !important;
 }
 
+.foehelper-accordion-head.pvp_arena-head span.image {
+	background-image: url('../images/pvp_arena.png');
+}
+
+/* Events */
 .foehelper-accordion-head.chestEventGrandPrize-head span.image {
 	background-image: url('../images/chestEventGrandPrize.png') !important;
 }
@@ -143,7 +148,6 @@
 	background-image: url('../images/archeologyEvent.png');
 }
 
-/* Events */
 .foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
 	background-image: url('../images/event.png') !important;
 }
