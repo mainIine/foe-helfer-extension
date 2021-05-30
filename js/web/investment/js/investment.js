@@ -137,7 +137,7 @@ let Investment = {
 
 		b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
 		b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong>${removeUnsafeCalc?'<span class="safe">  (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
-		b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong>${removeUnsafeCalc?'<span class="safe"> (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
+		b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
 		b.push(`<div id="hidden-bar" class="hide text-center"><img class="invest-tooltip" src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
 
 		b.push(`</div>`);
@@ -208,7 +208,6 @@ let Investment = {
 				RealProfitClass = 'error';
 			}
 
-			let hasFpHistory = false;
 			let hasFpHistoryClass = '';
 			let newerClass = '';
 			let DiffText = '';
@@ -224,7 +223,6 @@ let Investment = {
 
 			if (contribution['fphistory'] !== '[]')
 			{
-				hasFpHistory = true;
 				hasFpHistoryClass = 'fphistory ';
 				history = JSON.parse(contribution['fphistory'] || false);
 				for (let i in history) {
@@ -448,6 +446,8 @@ let Investment = {
 		let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
 		let UpdatedList = false;
 		let playerSyncGbKeys = null;
+		let arcLevelCheck = JSON.parse(localStorage.getItem('InvestmentArcBonus'));
+		let forceFullUpdate = !arcLevelCheck || arcLevelCheck != MainParser.ArkBonus ? true : false;
 
 		for (let i in LGData)
 		{
@@ -544,9 +544,11 @@ let Investment = {
 					playerSyncGbKeys = Investment.remove_key_from_array(playerSyncGbKeys, CurrentGB.id);
 				}
 
-				if(CurrentGB !== undefined && (CurrentGB['ishidden'] === undefined || CurrentGB['medals'] === undefined))
+				if(CurrentGB !== undefined && (CurrentGB['ishidden'] === undefined || CurrentGB['medals'] === undefined || forceFullUpdate))
 				{
 					GbhasUpdate=true;
+					
+					if(!arrfphistory.length)
 					arrfphistory = JSON.parse(CurrentGB['fphistory']);
 				}
 
@@ -592,11 +594,12 @@ let Investment = {
 			Investment.Show();
 		}
 
-		// Set Update Date in local Storage
+		// Set Update Date + ArcBonus in local Storage
 		if(FullSync){
 			let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
 			InvestmentSettings['lastupdate'] = MainParser.getCurrentDate();
 			localStorage.setItem('InvestmentSettings', JSON.stringify(InvestmentSettings));
+			localStorage.setItem('InvestmentArcBonus', MainParser.ArkBonus);
 		}
 	},
 
