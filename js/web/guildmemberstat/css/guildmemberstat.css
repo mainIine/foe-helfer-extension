@@ -111,7 +111,8 @@
     }
 }
 
-#GuildMemberStatBody #GuildMemberTable {
+#GuildMemberStatBody #GuildMemberTable, 
+#GuildMemberStatBody #gmsContentWrapper {
     position: relative;
     margin-bottom: 18px;
 }
