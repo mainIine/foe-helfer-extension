@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.9
+
+**BugFix**
+- Investitionsübersicht:
+	-[#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Gewinn/Medaillen/Blaupausen wurden nach dem leveln der eigenen Arche nicht sofort aktualisiert.
+
+---
+
 ##### 2.5.8
 
 **Neu**
