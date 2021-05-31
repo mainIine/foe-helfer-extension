@@ -122,19 +122,24 @@
 	border-radius: 10px;
 }
 
-#markerRed::before {
+#markerRed::before, #markerRedX::before {
 	color: rgb(211, 5, 5);
 	content: '▼';
 }
 
-#markerYellow::before {
+#markerYellow::before, #markerYellowX::before {
 	color: rgb(211, 163, 5);
 	content: '▼';
 }
 
-#markerBlue::before {
+#markerBlue::before, #markerBlueX::before {
 	color: rgb(5, 129, 211);
 	content: '▼';
+}
+
+#markerRedX::before, #markerYellowX::before, #markerBlueX::before {
+	content: 'x';
+	line-height: 14px;
 }
 
 #GvGMapWrap {
