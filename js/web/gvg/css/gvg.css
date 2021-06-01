@@ -105,15 +105,41 @@
 
 .editAction {
 	display: none;
+	font-size: 20px;
+    line-height: 20px;
 }
 
-#noGuild::before {
-	background: #fff;
+.editAction::before {
+	display: none;
 	content: '';
 	width: 18px;
     height: 18px;
     display: inline-block;
+}
+
+#noGuild::before {
+	background: #fff;
 	border-radius: 10px;
+}
+
+#markerRed::before, #markerRedX::before {
+	color: rgb(211, 5, 5);
+	content: '▼';
+}
+
+#markerYellow::before, #markerYellowX::before {
+	color: rgb(211, 163, 5);
+	content: '▼';
+}
+
+#markerBlue::before, #markerBlueX::before {
+	color: rgb(5, 129, 211);
+	content: '▼';
+}
+
+#markerRedX::before, #markerYellowX::before, #markerBlueX::before {
+	content: 'x';
+	line-height: 14px;
 }
 
 #GvGMapWrap {
