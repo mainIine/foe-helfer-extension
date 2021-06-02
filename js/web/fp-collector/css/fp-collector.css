@@ -136,6 +136,14 @@
 	background-image: url('../images/chestEventGrandPrize.png') !important;
 }
 
+.foehelper-accordion-head.card_duel-head span.image {
+	background-image: url('../images/soccer_cup.png') !important;
+}
+
+.foehelper-accordion-head.wildlife_event-head span.image {
+	background-image: url('../images/wildlife_event.png') !important;
+}
+
 .foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
 	background-image: url('../images/stPatricksEvent.png');
 }

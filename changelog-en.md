@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.9
+
+**BugFix**
+-  Investment overview:
+	-[#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Profit/medals/blueprints were not updated immediately after leveling your own ark.
+
+---
+
 ##### 2.5.8
 
 **New**
