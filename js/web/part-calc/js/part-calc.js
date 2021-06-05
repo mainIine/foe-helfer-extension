@@ -413,10 +413,13 @@ let Parts = {
 		let PlayerName = undefined,
 			PlayerID = Parts.CityMapEntity['player_id'];
 
-		if (PlayerID !== ExtPlayerID) { //LG eines anderen Spielers
+		if (PlayerID !== ExtPlayerID) {
+			PlayerName = ExtPlayerName
+		}
+		else { //LG eines anderen Spielers
 			PlayerName = PlayerDict[PlayerID]['PlayerName'];
 		}
-
+		
 		for (let i = 0; i < 5; i++) {
 			Parts.CurrentMaezens[i] = Parts.Maezens[i] | 0;
 		}
@@ -436,7 +439,7 @@ let Parts = {
         h.push('<table style="width: 100%"><tr><td class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 
-		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
+		if (PlayerName) h.push('<strong>' + PlayerName + '</strong><br>');
 
 		if (Parts.IsPreviousLevel) {
 			let Level = GreatBuildings.GetLevel(cityentity_id, Total);
@@ -456,6 +459,7 @@ let Parts = {
 				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 			}
 		}
+		h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 		
 
         h.push('</td>');
@@ -495,19 +499,23 @@ let Parts = {
 
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
+		h.push('<tr>');
+		h.push('<td colspan="4"></td>');
+		h.push('<td>' + i18n('Boxes.OwnpartCalculator.ExistingPayments') + '</td>');
+		h.push('</tr>');
+
         h.push('<tr>');
-		h.push('<td class="text-center" colspan="2" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
 		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		h.push('<td><input id="SecureExistingPayments" class="secureexistingpayments game-cursor" type="checkbox">' + i18n('Boxes.OwnpartCalculator.Secure') + '</td>');
         h.push('</tr>');
 
         h.push('<tr>');
-        if (EigenStart > 0) {
-            h.push('<td colspan="2" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+		h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+		if (EigenStart > 0) {
 			h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
         }
-        else {
-            h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></th>');
-        }
+		h.push('<td><input id="TrustExistingPayments" class="trustexistingpayments game-cursor" type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</td>');
         h.push('</tr>');
 
         h.push('</table>');
@@ -645,7 +653,6 @@ let Parts = {
 			h.push('<div class="text-center">');
 			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
 			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
-			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
         }
 
