@@ -221,7 +221,7 @@
     "Boxes.GreatBuildings.HideNewGBs": "Nem megépített nevezetes épületek elrejtése",
     "Boxes.GreatBuildings.Level": "Szint",
     "Boxes.GreatBuildings.NewGBCostsTT": "Tartalmazza az áruk költségét is, mely a Nevezetes Épület felépítéséhez szükséges, __goodcosts__ FP költséggel számolva",
-    "Boxes.GreatBuildings.NewGBFPProductionTT": "__tiltes__ × __fppertile__ = __opcost__ FP levonásra került. Ez elvész azáltal, hogy eltávolítunk más FP-t gyártó épületet, hogy helyet kapjunk __tiles__ mező számára a nagy épület felépítéséhez",
+    "Boxes.GreatBuildings.NewGBFPProductionTT": "__tiles__ × __fppertile__ = __opcost__ FP levonásra került. Ez elvész azáltal, hogy eltávolítunk más FP-t gyártó épületet, hogy helyet kapjunk __tiles__ mező számára a nagy épület felépítéséhez",
     "Boxes.GreatBuildings.RewardPerDay": "Bárka: FP jutalom/nap már játékosoktól",
     "Boxes.GreatBuildings.ShowGoods": "Árutermelés figyelembevétele",
     "Boxes.GreatBuildings.SuggestionDescription": "A lista elején levő épületek a legjobbak",
