@@ -42,7 +42,7 @@ let GreatBuildings =
         { 'ID': 'X_EarlyMiddleAge_Landmark1', 'GoodCosts': 20, 'FPProductions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Hagia 
         { 'ID': 'X_EarlyMiddleAge_Landmark3', 'GoodCosts': 20, 'GoodsProductions': [5, 5, 6, 7, 8, 8, 9, 10, 11, 12], GoodsIncrease: 1 }, //Galata
         { 'ID': 'X_HighMiddleAge_Landmark1', 'GoodCosts': 25, 'GoodsProductions': [10, 12, 13, 15, 17, 18, 20, 22, 24, 25], GoodsIncrease: 1 }, //St. Mark
-        { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'FPProductions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Castel del Monte
+        { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'FPProductions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6], 'AttackProductions': [3, 6, 9, 12, 15, 18, 21, 24, 27, 30], 'AttackIncrease': 0.5 }, //Castel del Monte
         { 'ID': 'X_ColonialAge_Landmark1', 'GoodCosts': 40, 'GoodsProductions': [7, 8, 9, 10, 11, 12, 13, 14, 16, 17], GoodsIncrease: 1 }, //Frauenkirche
         { 'ID': 'X_IndustrialAge_Landmark1', 'GoodCosts': 50, 'GoodsProductions': [11, 12, 14, 16, 18, 20, 21, 23, 25, 27], GoodsIncrease: 1 }, //Royal Albert
         { 'ID': 'X_PostModernEra_Landmark1', 'GoodCosts': 75, 'FPProductions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10] }, //Cape
@@ -79,6 +79,9 @@ let GreatBuildings =
     GoodsValue1: 0.15,
     GoodsValue3: 0.1,
 
+    ShowAttack: false,
+    AttackValue: 0.2,
+
     GreatBuildingEntityCache: null,
     FPRewards: 0,
     EventDict: {},
@@ -108,24 +111,35 @@ let GreatBuildings =
                 GreatBuildings.FPPerTile = parseFloat(FPPerTile);
             }
 
-            let GoodsValue0 = localStorage.getItem('GreatBuildingsGoodsValue0');
-            if (GoodsValue0 != null) {
-                GreatBuildings.GoodsValue0 = parseFloat(GoodsValue0);
-            }
-
-            let GoodsValue1 = localStorage.getItem('GreatBuildingsGoodsValue1');
-            if (GoodsValue1 != null) {
-                GreatBuildings.GoodsValue1 = parseFloat(GoodsValue1);
-            }
-
-            let GoodsValue3 = localStorage.getItem('GreatBuildingsGoodsValue3');
-            if (GoodsValue3 != null) {
-                GreatBuildings.GoodsValue3 = parseFloat(GoodsValue3);
-            }
 
             let ShowGoods = localStorage.getItem('GreatBuildingsShowGoods');
             if (ShowGoods === 'true') {
                 GreatBuildings.ShowGoods = true;
+            }
+
+            let GoodsValue0 = localStorage.getItem('GreatBuildingsGoodsValue0');
+            if (GoodsValue0 !== null) {
+                GreatBuildings.GoodsValue0 = parseFloat(GoodsValue0);
+            }
+
+            let GoodsValue1 = localStorage.getItem('GreatBuildingsGoodsValue1');
+            if (GoodsValue1 !== null) {
+                GreatBuildings.GoodsValue1 = parseFloat(GoodsValue1);
+            }
+
+            let GoodsValue3 = localStorage.getItem('GreatBuildingsGoodsValue3');
+            if (GoodsValue3 !== null) {
+                GreatBuildings.GoodsValue3 = parseFloat(GoodsValue3);
+            }
+
+            let ShowAttack = localStorage.getItem('GreatBuildingsShowAttack');
+            if (ShowAttack === 'true') {
+                GreatBuildings.ShowAttack = true;
+            }
+
+            let AttackValue = localStorage.getItem('GreatBuildingsAttackValue');
+            if (AttackValue !== null) {
+                GreatBuildings.AttackValue = parseFloat(AttackValue);
             }
 
             GreatBuildings.RewardPerDay = MainParser.round(GreatBuildings.FPRewards / 6);
@@ -216,6 +230,24 @@ let GreatBuildings =
                 });
             }
 
+            $('#greatbuildings').on('click', '.showattack', function () {
+                let $this = $(this),
+                    id = $this.data('id'),
+                    v = $this.prop('checked');
+
+                GreatBuildings.ShowAttack = v;
+                localStorage.setItem('GreatBuildingsShowAttack', GreatBuildings.ShowAttack);
+
+                GreatBuildings.CalcBody();
+            });
+
+            $('#greatbuildings').on('blur', '#attackValue', function () {
+                GreatBuildings.AttackValue = parseFloat($('#attackValue').val());
+                if (isNaN(GreatBuildings.AttackValue)) GreatBuildings.AttackValue = 0;
+                localStorage.setItem('GreatBuildingsAttackValue', GreatBuildings.AttackValue);
+                GreatBuildings.CalcBody();
+            });
+
             // Weiter Level aufklappen
             $('#greatbuildings').on('click', '.btn-toggle-detail', function () {
                 let Index = $(this).data('value');
@@ -287,6 +319,19 @@ let GreatBuildings =
             }
         }
 
+        h.push('<input id="ShowAttack" class="showattack game-cursor" ' + (GreatBuildings.ShowAttack ? 'checked' : '') + ' type="checkbox">');
+        h.push(i18n('Boxes.GreatBuildings.ShowAttack'));
+        h.push('<br>');
+
+        if (GreatBuildings.ShowAttack) { //Güterwert - Boxen ausblenden, wenn Güter deaktiviert
+            h.push(i18n('Boxes.GreatBuildings.AttackValue'));
+            h.push('<input type="number" id="attackValue" step="0.01" min="0" max="1000" value="' + GreatBuildings.AttackValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTAttackValue')) + '">');
+            if (GreatBuildings.AttackValue > 0) {
+                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.AttackValue'), { percent: Math.round(1 / GreatBuildings.AttackValue * 100) / 100 }) + ')</small>')
+            }
+            h.push('<br>');
+        }
+
         h.push('<br>');
         h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
         h.push('</div>');
@@ -301,6 +346,7 @@ let GreatBuildings =
         h.push('<th>' + i18n('Boxes.GreatBuildings.Costs') + '</th>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.DailyFP') + '</th>');
         if (GreatBuildings.ShowGoods) h.push('<th>' + i18n('Boxes.GreatBuildings.DailyGoods') + '</th>');
+        if (GreatBuildings.ShowAttack) h.push('<th>' + i18n('Boxes.GreatBuildings.Attack') + '</th>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.BreakEven') + '</th>');
         h.push('<th title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodCostsColumn')) + '">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>');
         h.push('</tr>');
@@ -342,10 +388,14 @@ let GreatBuildings =
 
             let FPProductions = [],
                 GoodsProductions = [],
-                GoodsValue = 0;
+                GoodsValue = 0,
+                AttackProductions = [],
+                AttackValue = GreatBuildings.AttackValue;
+
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
                 FPProductions[j] = 0;
                 GoodsProductions[j] = 0;
+                AttackProductions[j] = 0;
 
                 if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1') {
                     FPProductions[j] = GBData.Rewards[j] * 18.5;
@@ -378,6 +428,15 @@ let GreatBuildings =
                             GoodsProductions[j] = Math.floor(GBData.GoodsProductions[9] + Math.ceil((j - 9) * GBData.GoodsIncrease));
                         }
                     }
+
+                    if (GBData.AttackProductions) {
+                        if (j < 10) {
+                            AttackProductions[j] = GBData.AttackProductions[j];
+                        }
+                        else {
+                            AttackProductions[j] = Math.floor(GBData.AttackProductions[9] + Math.ceil((j - 9) * GBData.AttackIncrease));
+                        }
+                    }
                 }
 
                 if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1' || GBData.ID === 'X_OceanicFuture_Landmark3') { // Himeji, Freighter, Galaxy
@@ -398,10 +457,11 @@ let GreatBuildings =
             }
 
             if (!GreatBuildings.ShowGoods) GoodsValue = 0;
+            if (!GreatBuildings.ShowAttack) AttackValue = 0;
 
             let SkipGB = true;
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) { //Search for level with production
-                if (FPProductions[j] + GoodsProductions[j] * GoodsValue > 0) {
+                if (FPProductions[j] + GoodsProductions[j] * GoodsValue + AttackProductions[j] * AttackValue > 0) {
                     SkipGB = false;
                     break;
                 }
@@ -413,11 +473,11 @@ let GreatBuildings =
             let CurrentLevel = (OwnGB !== undefined ? OwnGB['level'] : -1);
 
             let Size = CityEntity['length'] * CityEntity['width'];
-            let CurrentROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, FPProductions, GoodsProductions, GoodsValue, Size * GreatBuildings.FPPerTile, GBData.GoodCosts, DoubleCollection, Charges);
+            let CurrentROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, Size * GreatBuildings.FPPerTile, GBData.GoodCosts, DoubleCollection, Charges);
             let ROIResults = [CurrentROIResult];
 
             while (CurrentROIResult['BestLevel'] < NettoCosts.length - 1) {
-                CurrentROIResult = GreatBuildings.GetROIValues(CurrentROIResult['BestLevel'] + 1, NettoCosts, FPProductions, GoodsProductions, GoodsValue, Size * GreatBuildings.FPPerTile, GBData.GoodCosts, DoubleCollection, Charges)
+                CurrentROIResult = GreatBuildings.GetROIValues(CurrentROIResult['BestLevel'] + 1, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, Size * GreatBuildings.FPPerTile, GBData.GoodCosts, DoubleCollection, Charges)
                 if (CurrentROIResult.BestLevel) {
                     ROIResults.push(CurrentROIResult);
                 }
@@ -486,24 +546,37 @@ let GreatBuildings =
                         FPProduction = CurrentROIResult['ROIValues'][BestLevel]['FP'],
                         GoodsProduction = CurrentROIResult['ROIValues'][BestLevel]['Goods'],
                         GoodsValue = CurrentROIResult['GoodsValue'],
+                        AttackProduction = CurrentROIResult['ROIValues'][BestLevel]['Attack'],
+                        AttackValue = CurrentROIResult['AttackValue'],
                         BreakEven = CurrentROIResult['ROIValues'][BestLevel]['ROI'],
                         BreakEvenString = (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(BreakEven)),
                         CostsTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBCostsTT'), { 'goodcosts': CurrentROIResult['BuildCosts'] }) : ''),
                         FPProductionTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBFPProductionTT'), { 'tiles': CurrentROIResult['BuildDailyCosts'] / GreatBuildings.FPPerTile, 'fppertile': GreatBuildings.FPPerTile, 'opcost': CurrentROIResult['BuildDailyCosts'] }) : '');
 
                     let BreakEvenTT;
-                    if (GoodsProduction * GoodsValue !== 0) {
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue*10)/10 });
+
+                    let HasGoodsProduction = (GoodsProduction * GoodsValue !== 0),
+                        HasAttackProduction = (AttackProduction * AttackValue !== 0);
+
+                    if (HasGoodsProduction && HasAttackProduction) { //FP + Goods + Attack
+                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10, 'attackproduction': Math.round(AttackProduction * 10) / 10, 'attackvalue': AttackValue, 'attackproductionvalue': Math.round(AttackProduction * AttackValue * 10) / 10 });
                     }
-                    else {
+                    else if (HasGoodsProduction) { //FP + Goods
+                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10 });
+                    }
+                    else if (HasAttackProduction) { //FP + Attack
+                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTAttack'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'attackproduction': Math.round(AttackProduction * 10) / 10, 'attackvalue': AttackValue, 'attackproductionvalue': Math.round(AttackProduction * AttackValue * 10) / 10 });
+                    }
+                    else { //FP only
                         BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTT'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10 });
                     }
-
+                                        
                     h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
                     h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
                     h.push('<td title="' + HTML.i18nTooltip(CostsTT) + '">' + HTML.Format(MainParser.round(Costs)) + '</td>');
                     h.push('<td title="' + HTML.i18nTooltip(FPProductionTT) + '">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(FPProduction * 10) / 10) + '</td>');
                     if (GreatBuildings.ShowGoods) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(GoodsProduction * 10) / 10) + '</td>');
+                    if (GreatBuildings.ShowAttack) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(AttackProduction * 10) / 10) + '</td>');
                     h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="text-bright">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
                 }
                 else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
@@ -513,6 +586,7 @@ let GreatBuildings =
                     h.push('<td>-</td>');
                     h.push('<td>-</td>');
                     if (GreatBuildings.ShowGoods) h.push('<td>-</td>');
+                    if (GreatBuildings.ShowAttack) h.push('<td>-</td>');
                     h.push('<td>-</td>');
                 }
 
@@ -601,8 +675,8 @@ let GreatBuildings =
     },
 
 
-    GetROIValues: (Level, NettoCosts, FPProductions, GoodsProductions, GoodsValue, BuildDailyCosts, BuildCosts, DoubleCollection, Charges) => {
-        let Ret = { 'CurrentLevel': Level, 'BestLevel': undefined, ROIValues: [], GoodsValue: GoodsValue, BuildDailyCosts: BuildDailyCosts, BuildCosts: BuildCosts };
+    GetROIValues: (Level, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, BuildDailyCosts, BuildCosts, DoubleCollection, Charges) => {
+        let Ret = { 'CurrentLevel': Level, 'BestLevel': undefined, ROIValues: [], GoodsValue: GoodsValue, AttackValue: AttackValue, BuildDailyCosts: BuildDailyCosts, BuildCosts: BuildCosts };
 
         let DoubleCollections = [];
         if (Charges) {
@@ -615,6 +689,7 @@ let GreatBuildings =
 
         let StartFPProduction = 0,
             StartGoodsProduction = 0,
+            StartAttackProduction = 0,
             CurrentInvestment = 0;
 
         if (Level === -1) {
@@ -629,6 +704,7 @@ let GreatBuildings =
             else {
                 StartFPProduction = FPProductions[Level - 1];
                 StartGoodsProduction = GoodsProductions[Level - 1];
+                StartAttackProduction = AttackProductions[Level - 1];
             }
         }
 
@@ -643,11 +719,14 @@ let GreatBuildings =
                 else {
                     CurrentInvestment -= FPProductions[i];
                     CurrentInvestment -= GoodsProductions[i] * GoodsValue;
+                    CurrentInvestment -= AttackProductions[i] * AttackValue;
                 }
             }
 
             let CurrentFPProduction,
-                CurrentGoodsProduction;
+                CurrentGoodsProduction,
+                CurrentAttackProduction = 0;
+
             if (Charges) { // Blaue Galaxie
                 CurrentFPProduction = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, i, false)['FP'];
                 CurrentGoodsProduction = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, i, false)['Goods'];
@@ -655,11 +734,12 @@ let GreatBuildings =
             else {
                 CurrentFPProduction = FPProductions[i];
                 CurrentGoodsProduction = GoodsProductions[i];
+                CurrentAttackProduction = AttackProductions[i];
             }
 
-            Ret['ROIValues'][i] = { 'Costs': CurrentInvestment, 'FP': CurrentFPProduction - StartFPProduction, 'Goods': CurrentGoodsProduction - StartGoodsProduction, 'ROI': CurrentInvestment / ((CurrentFPProduction - StartFPProduction) + (CurrentGoodsProduction - StartGoodsProduction) * GoodsValue) };
+            Ret['ROIValues'][i] = { 'Costs': CurrentInvestment, 'FP': CurrentFPProduction - StartFPProduction, 'Goods': CurrentGoodsProduction - StartGoodsProduction, 'Attack': CurrentAttackProduction - StartAttackProduction, 'ROI': CurrentInvestment / ((CurrentFPProduction - StartFPProduction) + (CurrentGoodsProduction - StartGoodsProduction) * GoodsValue) + (CurrentAttackProduction - StartAttackProduction) * AttackValue };
 
-            if (CurrentFPProduction + CurrentGoodsProduction * GoodsValue > StartFPProduction + StartGoodsProduction * GoodsValue) {
+            if (CurrentFPProduction + CurrentGoodsProduction * GoodsValue + CurrentAttackProduction * AttackValue > StartFPProduction + StartGoodsProduction * GoodsValue + StartAttackProduction * AttackValue) {
                 if (Ret['ROIValues'][i]['ROI'] < BestValue) {
                     Ret['BestLevel'] = i;
                     BestValue = Ret['ROIValues'][i]['ROI'];
