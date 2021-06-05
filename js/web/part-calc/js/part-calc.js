@@ -150,6 +150,29 @@ let Parts = {
 			Parts.collectExternals();
 		});
 
+		// Bestehende Einzahlungen absichern
+		$('#OwnPartBox').on('click', '.lockexistingpayments', function () {
+			let $this = $(this),
+				id = $this.data('id'),
+				v = $this.prop('checked');
+
+			Parts.LockExistingPlaces = v;
+
+			Parts.Show();
+		});
+
+		// Bestehende Einzahlungen vertrauen
+		$('#OwnPartBox').on('click', '.trustexistingpayments', function () {
+			let $this = $(this),
+				id = $this.data('id'),
+				v = $this.prop('checked');
+
+			Parts.TrustExistingPlaces = v;
+
+			Parts.Show();
+		});
+
+
 		// Next/Previous level
 		$('#OwnPartBox').on('click', '.btn-set-level', function () {
 			let Level = parseFloat($(this).data('value'));
@@ -500,22 +523,25 @@ let Parts = {
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
 		h.push('<tr>');
-		h.push('<td colspan="4"></td>');
+		h.push('<td colspan="2"></td>');
 		h.push('<td>' + i18n('Boxes.OwnpartCalculator.ExistingPayments') + '</td>');
 		h.push('</tr>');
 
         h.push('<tr>');
-		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
-		h.push('<td><input id="SecureExistingPayments" class="secureexistingpayments game-cursor" type="checkbox">' + i18n('Boxes.OwnpartCalculator.Secure') + '</td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		h.push('<td class="text-center"><input id="lockexistingpayments" class="lockexistingpayments game-cursor" ' + (Parts.LockExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Lock') + '</td>');
         h.push('</tr>');
 
         h.push('<tr>');
-		h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
 		if (EigenStart > 0) {
-			h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+			h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+		}
+		else {
+			h.push('<td></td>');
         }
-		h.push('<td><input id="TrustExistingPayments" class="trustexistingpayments game-cursor" type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</td>');
+		h.push('<td class="text-center"><input id="trustexistingpayments" class="trustexistingpayments game-cursor" ' + (Parts.TrustExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</td>');
         h.push('</tr>');
 
         h.push('</table>');
