@@ -778,7 +778,8 @@ let Parts = {
 		});
 
 		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
-			Parts.CopyFunction($(this), 'save');
+			let copyParts = Parts.CopyFunction($(this), 'save');
+			helper.str.copyToClipboardLegacy(copyParts);
 			Parts.Show();
 		});
 
@@ -1060,15 +1061,13 @@ let Parts = {
 			Parts.SaveCopy.push(CopyString);
 		}
 
-		// Nur wenn "Kopieren" etwas ausgeben
+		let copy = Parts.SaveCopy.join('\n');
+
 		if (Action === 'copy') {
-			let copy = Parts.SaveCopy.join('\n');
-
-			// wieder leer machen
-			Parts.SaveCopy = [];
-
-			return copy;
+			Parts.SaveCopy = []; // Kopieren löscht die Liste
 		}
+
+		return copy;
 	},
 
 
