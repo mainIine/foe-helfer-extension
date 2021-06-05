@@ -505,7 +505,7 @@
     "Boxes.OwnpartCalculator.Done": "Done",
     "Boxes.OwnpartCalculator.ExistingPayments": "Existing payments",
     "Boxes.OwnpartCalculator.Ext": "Ext",
-    "Boxes.OwnpartCalculator.GBsNoted": "__GBCount__ great buildings noted",
+    "Boxes.OwnpartCalculator.GBsNoted": "__GBCount__ great building(s) noted",
     "Boxes.OwnpartCalculator.HelpLink": "https://foe-helper.com/docs/en/gb-calculator/",
     "Boxes.OwnpartCalculator.IncludeData": "Included data",
     "Boxes.OwnpartCalculator.IndividualName": "individual GB name",
