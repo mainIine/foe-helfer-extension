@@ -292,7 +292,12 @@ let Parts = {
 				if (Place < 5) {
 					if (Parts.Rankings[i]['reward'] !== undefined) {
 						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
-						FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
+						if (FPCount > 0) {
+							FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
+						}
+						else {
+							FPRewards[Place] = 1;
+                        }
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
 						// Medallien berechnen
@@ -634,8 +639,12 @@ let Parts = {
 			}
 
             h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
-            h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+            h.push('<em style="width:30%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+			h.push('</div>');
 
+			h.push('<div class="text-center">');
+			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
+			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
         }
