@@ -673,13 +673,13 @@ let Parts = {
 			}
 
             h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
-            h.push('<em style="width:30%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+            h.push('<em">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 			h.push('</div>');
 
 			h.push('<div class="text-center">');
 			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
 			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
-			h.push(HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), {'GBCount': Parts.SaveCopy.length}));
+			h.push(HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': Parts.SaveCopy.length }));
 			h.push('</div>');
         }
 
@@ -774,10 +774,12 @@ let Parts = {
 		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction($(this), 'copy');
 			helper.str.copyToClipboardLegacy(copyParts);
+			Parts.Show();
 		});
 
 		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
 			Parts.CopyFunction($(this), 'save');
+			Parts.Show();
 		});
 
 		// Box wurde schon in den DOM gelegt?
@@ -1059,8 +1061,7 @@ let Parts = {
 		}
 
 		// Nur wenn "Kopieren" etwas ausgeben
-		if(Action === 'copy')
-		{
+		if (Action === 'copy') {
 			let copy = Parts.SaveCopy.join('\n');
 
 			// wieder leer machen
