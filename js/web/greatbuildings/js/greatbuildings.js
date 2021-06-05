@@ -493,10 +493,10 @@ let GreatBuildings =
 
                     let BreakEvenTT;
                     if (GoodsProduction * GoodsValue !== 0) {
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEventTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue*10)/10 });
+                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue*10)/10 });
                     }
                     else {
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEventTT'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10 });
+                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTT'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10 });
                     }
 
                     h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
