@@ -1034,15 +1034,10 @@ let Parts = {
 	CopyFunction: (Event, Action) => {
 		let CopyString = $('#copystring').val();
 		
-		$(Event).addClass('btn-green');
+		$(Event).removeClass('btn-green');
 
-		// nach 1,75s den grünen Rahmen wieder ausblenden
-		setTimeout(function(){
-			$(Event).removeClass('btn-green');
-
-			// wieder zuklappen
-			Parts.BackGroundBoxAnimation(false);
-		}, 1750);
+		// wieder zuklappen
+		Parts.BackGroundBoxAnimation(false);
 
 		if(Parts.SaveCopy.length > 0){
 			for(let i = 0; i < Parts.SaveCopy.length; i++)
