@@ -37,9 +37,11 @@ let GreatBuildings =
     },
 
     GreatBuildingsData: [
-        { 'ID': 'X_BronzeAge_Landmark1', 'GoodCosts': 0, 'GoodsProductions': [6, 7, 8, 9, 10, 11, 12, 13, 14, 15], GoodsIncrease: 1}, //Babel
+        { 'ID': 'X_BronzeAge_Landmark1', 'GoodCosts': 0, 'GoodsProductions': [6, 7, 8, 9, 10, 11, 12, 13, 14, 15], GoodsIncrease: 1 }, //Babel
+        { 'ID': 'X_BronzeAge_Landmark2', 'GoodCosts': 0, 'AttackProductions': [3, 6, 9, 12, 15, 18, 21, 24, 27, 30], AttackIncrease: 0.5 }, //Zeus
         { 'ID': 'X_IronAge_Landmark2', 'GoodCosts': 0, 'GoodsProductions': [8, 9, 10, 12, 13, 14, 15, 17, 18, 19], GoodsIncrease: 1 }, //Lighthouse Alexandria
         { 'ID': 'X_EarlyMiddleAge_Landmark1', 'GoodCosts': 20, 'FPProductions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Hagia 
+        { 'ID': 'X_EarlyMiddleAge_Landmark2', 'GoodCosts': 20, 'AttackProductions': [3, 6, 9, 12, 15, 18, 21, 24, 27, 30], AttackIncrease: 0.5 }, //Aachen
         { 'ID': 'X_EarlyMiddleAge_Landmark3', 'GoodCosts': 20, 'GoodsProductions': [5, 5, 6, 7, 8, 8, 9, 10, 11, 12], GoodsIncrease: 1 }, //Galata
         { 'ID': 'X_HighMiddleAge_Landmark1', 'GoodCosts': 25, 'GoodsProductions': [10, 12, 13, 15, 17, 18, 20, 22, 24, 25], GoodsIncrease: 1 }, //St. Mark
         { 'ID': 'X_LateMiddleAge_Landmark3', 'GoodCosts': 30, 'FPProductions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6], 'AttackProductions': [3, 6, 9, 12, 15, 18, 21, 24, 27, 30], 'AttackIncrease': 0.5 }, //Castel del Monte
@@ -49,10 +51,11 @@ let GreatBuildings =
         { 'ID': 'X_ContemporaryEra_Landmark2', 'GoodCosts': 100, 'FPProductions': [1, 1, 2, 2, 3, 3, 4, 4, 5, 6] }, //Inno Tower
         { 'ID': 'X_FutureEra_Landmark1', 'GoodCosts': 150, 'Rewards': [0.1, 0.12, 0.14, 0.17, 0.19, 0.22, 0.24, 0.26, 0.28, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.4, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.5, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.6, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.7, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.795, 0.8, 0.805, 0.81, 0.815, 0.82, 0.825, 0.83, 0.835, 0.84, 0.845, 0.85, 0.855, 0.86, 0.865, 0.87, 0.875, 0.88, 0.885, 0.89, 0.895, 0.9, 0.901, 0.902, 0.903, 0.904, 0.905, 0.906, 0.907, 0.908, 0.909, 0.91, 0.911, 0.912, 0.913, 0.914, 0.915, 0.916, 0.917, 0.918, 0.919, 0.92, 0.921, 0.922, 0.923, 0.924, 0.925, 0.926, 0.927, 0.928, 0.929, 0.93, 0.931, 0.932, 0.933, 0.934, 0.935, 0.936, 0.937, 0.938, 0.939, 0.94, 0.941, 0.942, 0.943, 0.944, 0.945, 0.946, 0.947, 0.948, 0.949, 0.95, 0.951, 0.952, 0.953, 0.954, 0.955, 0.956, 0.957, 0.958, 0.959, 0.96, 0.961, 0.962, 0.963, 0.964, 0.965, 0.966, 0.967, 0.968, 0.969, 0.97, 0.971, 0.972, 0.973, 0.974, 0.975, 0.976, 0.977, 0.978, 0.979, 0.98, 0.981, 0.982, 0.983, 0.984, 0.985, 0.986, 0.987, 0.988, 0.989, 0.99, 0.991, 0.992, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.999, 1, 1] }, //Arche
         { 'ID': 'X_FutureEra_Landmark2', 'GoodCosts': 150, 'GoodsProductions': [13, 16, 18, 20, 22, 25, 27, 29, 31, 34], GoodsIncrease: 1 }, //Rainforest
-        { 'ID': 'X_ArcticFuture_Landmark2', 'GoodCosts': 200, 'FPProductions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10] }, //Arctic Orangerie
+        { 'ID': 'X_ArcticFuture_Landmark2', 'GoodCosts': 200, 'FPProductions': [2, 2, 3, 4, 5, 6, 6, 7, 8, 10], 'AttackProductions': [4.87, 5.07, 5.28, 5.5, 5.73, 5.96, 6.2, 6.45, 6.71, 6.98, 7.39, 7.53, 7.67, 7.82, 7.96, 8.12, 8.27, 8.43, 8.59, 8.75, 8.91, 9.08, 9.25, 9.43, 9.6, 9.79, 9.97, 10.15, 10.34, 10.54, 10.73, 10.93, 11.13, 11.34, 11.54, 11.76, 11.97, 12.19, 12.41, 12.63, 12.86, 13.09, 13.32, 13.56, 13.79, 14.04, 14.28, 14.53, 14.78, 15.03, 15.29, 15.55, 15.81, 16.08, 16.35, 16.62, 16.89, 17.17, 17.45, 17.73, 18.02, 18.3, 18.59, 18.89, 19.18, 19.48, 19.77, 20.07, 20.38, 20.68, 20.99, 21.3, 21.61, 21.92, 22.23, 22.55, 22.86, 23.18, 23.5, 23.82, 24.14, 24.46, 24.78, 25.1, 25.43, 25.75, 26.08, 26.4, 26.73, 27.05, 27.37, 27.7, 28.02, 28.35, 28.67, 29, 29.32, 29.64, 29.96, 30.28, 30.6, 30.92, 31.24, 31.55, 31.87, 32.18, 32.49, 32.8, 33.11, 33.42, 33.72, 34.03, 34.33, 34.62, 34.92, 35.21, 35.51, 35.8, 36.08, 36.37, 36.65, 36.93, 37.21, 37.48, 37.75, 38.02, 38.29, 38.55, 38.81, 39.07, 39.32, 39.57, 39.82, 40.06, 40.31, 40.54, 40.78, 41.01, 41.24, 41.47, 41.69, 41.91, 42.13, 42.34, 42.56, 42.76, 42.97, 43.17, 43.37, 43.56, 43.76, 43.95, 44.13, 44.31, 44.5, 44.85, 44.85, 45.02, 45.19, 45.35, 45.67, 45.67, 45.83, 45.98] }, //Arctic Orangerie
         { 'ID': 'X_OceanicFuture_Landmark1', 'GoodCosts': 300, 'GoodsProductions': [20, 24, 28, 30, 34, 38, 42, 44, 48, 52], GoodsIncrease: 2 }, //Atlantis
         { 'ID': 'X_OceanicFuture_Landmark2', 'GoodCosts': 300, 'FPProductions': [1, 1, 3, 3, 4, 4, 5, 5, 6, 8] }, //Kraken
         { 'ID': 'X_OceanicFuture_Landmark3', 'GoodCosts': 300, 'Rewards': [0.17, 0.19, 0.21, 0.23, 0.25, 0.27, 0.29, 0.3, 0.31, 0.32, 0.33, 0.34, 0.35, 0.35, 0.36, 0.37, 0.38, 0.38, 0.39, 0.4, 0.4, 0.41, 0.42, 0.42, 0.43, 0.43, 0.44, 0.45, 0.45, 0.46, 0.47, 0.47, 0.48, 0.49, 0.49, 0.5, 0.5, 0.51, 0.52, 0.52, 0.53, 0.53, 0.54, 0.54, 0.55, 0.55, 0.56, 0.56, 0.57, 0.57, 0.58, 0.58, 0.59, 0.59, 0.6, 0.6, 0.61, 0.61, 0.61, 0.62, 0.62, 0.62, 0.63, 0.63, 0.64, 0.64, 0.64, 0.65, 0.65, 0.65, 0.65, 0.66, 0.66, 0.66, 0.67, 0.67, 0.67, 0.67, 0.68, 0.68, 0.68, 0.68, 0.69, 0.69, 0.69, 0.69, 0.69, 0.69, 0.7, 0.7, 0.7], Charges: [4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15] }, // Blue Galaxy
+        { 'ID': 'X_VirtualFuture_Landmark1', 'GoodCosts': 0, 'AttackProductions': [2, 4, 6, 8, 10, 12, 14, 16, 18, 20], AttackIncrease: 0.5 }, //Terrakotta
         { 'ID': 'X_VirtualFuture_Landmark2', 'GoodCosts': 500, 'Rewards': [0.28, 0.36, 0.44, 0.52, 0.75, 0.85, 0.95, 1.05, 1.15, 1.25, 1.281, 1.3125, 1.3435, 1.3745, 1.4055, 1.7232, 1.7598, 1.7958, 1.8318, 1.8672, 1.9026, 1.9368, 1.971, 2.0046, 2.0376, 2.07, 2.1018, 2.4885, 2.5242, 2.5585, 2.5928, 2.6257, 2.6586, 2.6901, 2.7202, 2.7503, 2.7797, 2.8077, 2.835, 2.8616, 3.3, 3.328, 3.3552, 3.3824, 3.408, 3.4328, 3.4568, 3.4792, 3.5016, 3.5232, 3.544, 3.564, 3.5824, 3.6008, 3.6184, 3.6352, 3.652, 4.1256, 4.1427, 4.1589, 4.1742, 4.1886, 4.203, 4.2165, 4.23, 4.2417, 4.2543, 4.2651, 4.2759, 4.2867, 4.2966, 4.3056, 4.3155, 4.3236, 4.3317, 4.3398, 4.3479, 4.3551, 4.3614, 4.3677, 4.374, 4.3803, 4.3857, 4.3011, 4.3965, 4.4019, 4.4064, 4.4109, 4.4154, 4.419, 4.914, 4.918, 4.922, 4.926, 4.93, 4.933, 4.936, 4.939, 4.942, 4.945, 4.948, 4.95, 4.953, 4.955, 4.957, 4.959, 4.961, 4.963, 4.965, 4.967, 4.968, 4.97, 4.971, 4.973, 4.974, 4.975, 4.976, 4.978, 4.979, 4.98, 4.981, 4.982, 4.982, 4.983, 4.984, 4.985, 4.986] }, //Himeji
         { 'ID': 'X_SpaceAgeMars_Landmark1', 'GoodCosts': 750, 'GoodsProductions': [5, 10, 15, 20, 25, 30, 35, 40, 45, 50], GoodsIncrease: 2.5 }, //Star Gazer
         { 'ID': 'X_SpaceAgeAsteroidBelt_Landmark1', 'GoodCosts': 1000, 'Rewards': [0.28, 0.36, 0.44, 0.52, 0.75, 0.85, 0.95, 1.05, 1.15, 1.25, 1.281, 1.3125, 1.3435, 1.3745, 1.4055, 1.7232, 1.7598, 1.7958, 1.8318, 1.8672, 1.9026, 1.9368, 1.971, 2.0046, 2.0376, 2.07, 2.1018, 2.4885, 2.5242, 2.5585, 2.5928, 2.6257, 2.6586, 2.6901, 2.7202, 2.7503, 2.7797, 2.8077, 2.835, 2.8616, 3.3, 3.328, 3.3552, 3.3824, 3.408, 3.4328, 3.4568, 3.4792, 3.5016, 3.5232, 3.544, 3.564, 3.5824, 3.6008, 3.6184, 3.6352, 3.652, 4.1256, 4.1427, 4.1589, 4.1742, 4.1886, 4.203, 4.2165, 4.23, 4.2417, 4.2543, 4.2651, 4.2759, 4.2867, 4.2966, 4.3056, 4.3155, 4.3236, 4.3317, 4.3398, 4.3479, 4.3551, 4.3614, 4.3677, 4.374, 4.3803, 4.3857, 4.3011, 4.3965, 4.4019, 4.4064, 4.4109, 4.4154, 4.419, 4.914, 4.918, 4.922, 4.926, 4.93, 4.933, 4.936, 4.939, 4.942, 4.945, 4.948, 4.95, 4.953, 4.955, 4.957, 4.959, 4.961, 4.963, 4.965, 4.967, 4.968, 4.97, 4.971, 4.973, 4.974, 4.975, 4.976, 4.978, 4.979, 4.98, 4.981, 4.982, 4.982, 4.983, 4.984, 4.985, 4.986] }, //Space Carrier
@@ -327,7 +330,7 @@ let GreatBuildings =
             h.push(i18n('Boxes.GreatBuildings.AttackValue'));
             h.push('<input type="number" id="attackValue" step="0.01" min="0" max="1000" value="' + GreatBuildings.AttackValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTAttackValue')) + '">');
             if (GreatBuildings.AttackValue > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.AttackValue'), { percent: Math.round(1 / GreatBuildings.AttackValue * 100) / 100 }) + ')</small>')
+                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.AttackPerFP'), { percent: Math.round(1 / GreatBuildings.AttackValue * 100) / 100 }) + ')</small>')
             }
             h.push('<br>');
         }
@@ -430,11 +433,16 @@ let GreatBuildings =
                     }
 
                     if (GBData.AttackProductions) {
-                        if (j < 10) {
-                            AttackProductions[j] = GBData.AttackProductions[j];
+                        if (GBData.ID === 'X_ArcticFuture_Landmark2') {
+                            AttackProductions[j] = GBData.AttackProductions[j] * (100 + MainParser.BoostSums['att_boost_attacker']) / 100 / 2; //Assume critical hit of +50% damage equals +100% attack, No defense boost => /2
                         }
                         else {
-                            AttackProductions[j] = Math.floor(GBData.AttackProductions[9] + Math.ceil((j - 9) * GBData.AttackIncrease));
+                            if (j < 10) {
+                                AttackProductions[j] = GBData.AttackProductions[j];
+                            }
+                            else {
+                                AttackProductions[j] = Math.floor(GBData.AttackProductions[9] + Math.ceil((j - 9) * GBData.AttackIncrease));
+                            }
                         }
                     }
                 }
@@ -719,7 +727,7 @@ let GreatBuildings =
                 else {
                     CurrentInvestment -= FPProductions[i];
                     CurrentInvestment -= GoodsProductions[i] * GoodsValue;
-                    CurrentInvestment -= AttackProductions[i] * AttackValue;
+                    //Keine Doppelernte bei Angriffsbonus
                 }
             }
 
@@ -737,7 +745,7 @@ let GreatBuildings =
                 CurrentAttackProduction = AttackProductions[i];
             }
 
-            Ret['ROIValues'][i] = { 'Costs': CurrentInvestment, 'FP': CurrentFPProduction - StartFPProduction, 'Goods': CurrentGoodsProduction - StartGoodsProduction, 'Attack': CurrentAttackProduction - StartAttackProduction, 'ROI': CurrentInvestment / ((CurrentFPProduction - StartFPProduction) + (CurrentGoodsProduction - StartGoodsProduction) * GoodsValue) + (CurrentAttackProduction - StartAttackProduction) * AttackValue };
+            Ret['ROIValues'][i] = { 'Costs': CurrentInvestment, 'FP': CurrentFPProduction - StartFPProduction, 'Goods': CurrentGoodsProduction - StartGoodsProduction, 'Attack': CurrentAttackProduction - StartAttackProduction, 'ROI': CurrentInvestment / ((CurrentFPProduction - StartFPProduction) + (CurrentGoodsProduction - StartGoodsProduction) * GoodsValue + (CurrentAttackProduction - StartAttackProduction) * AttackValue) };
 
             if (CurrentFPProduction + CurrentGoodsProduction * GoodsValue + CurrentAttackProduction * AttackValue > StartFPProduction + StartGoodsProduction * GoodsValue + StartAttackProduction * AttackValue) {
                 if (Ret['ROIValues'][i]['ROI'] < BestValue) {
