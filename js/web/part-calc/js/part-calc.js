@@ -150,6 +150,29 @@ let Parts = {
 			Parts.collectExternals();
 		});
 
+		// Bestehende Einzahlungen absichern
+		$('#OwnPartBox').on('click', '.lockexistingpayments', function () {
+			let $this = $(this),
+				id = $this.data('id'),
+				v = $this.prop('checked');
+
+			Parts.LockExistingPlaces = v;
+
+			Parts.Show();
+		});
+
+		// Bestehende Einzahlungen vertrauen
+		$('#OwnPartBox').on('click', '.trustexistingpayments', function () {
+			let $this = $(this),
+				id = $this.data('id'),
+				v = $this.prop('checked');
+
+			Parts.TrustExistingPlaces = v;
+
+			Parts.Show();
+		});
+
+
 		// Next/Previous level
 		$('#OwnPartBox').on('click', '.btn-set-level', function () {
 			let Level = parseFloat($(this).data('value'));
@@ -292,7 +315,12 @@ let Parts = {
 				if (Place < 5) {
 					if (Parts.Rankings[i]['reward'] !== undefined) {
 						let FPCount = (Parts.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['strategy_point_amount']) : 0);
-						FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
+						if (FPCount > 0) {
+							FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
+						}
+						else {
+							FPRewards[Place] = 1;
+                        }
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
 						// Medallien berechnen
@@ -408,10 +436,13 @@ let Parts = {
 		let PlayerName = undefined,
 			PlayerID = Parts.CityMapEntity['player_id'];
 
-		if (PlayerID !== ExtPlayerID) { //LG eines anderen Spielers
+		if (PlayerID !== ExtPlayerID) {
+			PlayerName = ExtPlayerName
+		}
+		else { //LG eines anderen Spielers
 			PlayerName = PlayerDict[PlayerID]['PlayerName'];
 		}
-
+		
 		for (let i = 0; i < 5; i++) {
 			Parts.CurrentMaezens[i] = Parts.Maezens[i] | 0;
 		}
@@ -431,7 +462,7 @@ let Parts = {
         h.push('<table style="width: 100%"><tr><td class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 
-		if (PlayerName) h.push('<strong>' + PlayerName + '</strong> - ');
+		if (PlayerName) h.push('<strong>' + PlayerName + '</strong><br>');
 
 		if (Parts.IsPreviousLevel) {
 			let Level = GreatBuildings.GetLevel(cityentity_id, Total);
@@ -451,6 +482,7 @@ let Parts = {
 				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 			}
 		}
+		h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 		
 
         h.push('</td>');
@@ -490,19 +522,26 @@ let Parts = {
 
         h.push('<table style="margin-bottom: 3px; width: 100%">');
 
+		h.push('<tr>');
+		h.push('<td colspan="2"></td>');
+		h.push('<td>' + i18n('Boxes.OwnpartCalculator.ExistingPayments') + '</td>');
+		h.push('</tr>');
+
         h.push('<tr>');
-		h.push('<td class="text-center" colspan="2" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-		h.push('<td class="text-center" colspan="2">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		h.push('<td class="text-center"><input id="lockexistingpayments" class="lockexistingpayments game-cursor" ' + (Parts.LockExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Lock') + '</td>');
         h.push('</tr>');
 
         h.push('<tr>');
-        if (EigenStart > 0) {
-            h.push('<td colspan="2" class="text-center" style="width: 50%">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
-			h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+		if (EigenStart > 0) {
+			h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+		}
+		else {
+			h.push('<td></td>');
         }
-        else {
-            h.push('<td colspan="2" class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></th>');
-        }
+		h.push('<td class="text-center"><input id="trustexistingpayments" class="trustexistingpayments game-cursor" ' + (Parts.TrustExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</td>');
         h.push('</tr>');
 
         h.push('</table>');
@@ -634,9 +673,13 @@ let Parts = {
 			}
 
             h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
-            h.push('<em style="width:70%">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+            h.push('<em">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+			h.push('</div>');
 
-			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('<div class="text-center">');
+			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
+			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+			if (Parts.SaveCopy.length > 0) h.push('<br>' + HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': Parts.SaveCopy.length }));
 			h.push('</div>');
         }
 
@@ -731,10 +774,13 @@ let Parts = {
 		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
 			let copyParts = Parts.CopyFunction($(this), 'copy');
 			helper.str.copyToClipboardLegacy(copyParts);
+			Parts.Show();
 		});
 
 		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
-			Parts.CopyFunction($(this), 'save');
+			let copyParts = Parts.CopyFunction($(this), 'save');
+			helper.str.copyToClipboardLegacy(copyParts);
+			Parts.Show();
 		});
 
 		// Box wurde schon in den DOM gelegt?
@@ -1015,16 +1061,13 @@ let Parts = {
 			Parts.SaveCopy.push(CopyString);
 		}
 
-		// Nur wenn "Kopieren" etwas ausgeben
-		if(Action === 'copy')
-		{
-			let copy = Parts.SaveCopy.join('\n');
+		let copy = Parts.SaveCopy.join('\n');
 
-			// wieder leer machen
-			Parts.SaveCopy = [];
-
-			return copy;
+		if (Action === 'copy') {
+			Parts.SaveCopy = []; // Kopieren löscht die Liste
 		}
+
+		return copy;
 	},
 
 
