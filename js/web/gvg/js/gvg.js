@@ -378,12 +378,12 @@ let GvGMap = {
 			h.push('<span id="editMap" class="btn-default '+editActive+'">'+i18n('Boxes.GvGMap.Action.Edit')+'</span>');
 			h.push('<span id="noGuild" class="btn-default btn-inset editAction"></span>');
 			//h.push('<span id="pickGuild" class="btn-default btn-inset editAction"></span>');
-			h.push('<span id="markerRed" class="btn-default btn-inset editAction"></span>');
+			/*h.push('<span id="markerRed" class="btn-default btn-inset editAction"></span>');
 			h.push('<span id="markerRedX" class="btn-default btn-inset editAction"></span>');
 			h.push('<span id="markerYellow" class="btn-default btn-inset editAction"></span>');
 			h.push('<span id="markerYellowX" class="btn-default btn-inset editAction"></span>');
 			h.push('<span id="markerBlue" class="btn-default btn-inset editAction"></span>');
-			h.push('<span id="markerBlueX" class="btn-default btn-inset editAction"></span>');
+			h.push('<span id="markerBlueX" class="btn-default btn-inset editAction"></span>');*/
 			h.push('<span id="dragMap" class="btn-default '+dragActive+'">'+i18n('Boxes.GvGMap.Action.Drag')+'</span>');
 			h.push('</div>');
 			h.push('<div class="btn-group"><span id="zoomMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span></div>');
@@ -462,7 +462,7 @@ let GvGMap = {
 			});
 			setTimeout(function(){ }, 500);
 		}
-		else {
+		else { // map overview
 			h.push('<div class="dark-bg text-center" style="width: 100%;"><h2>Please open a map!</h2></div>');
 
 			$('#GvGMapBody').html(h.join(''));
@@ -890,6 +890,8 @@ let GvGMap = {
 let GvGLog = {
 	Entries: [],
 	FilterValue: '',
+	FilteredSectors: [],
+	FilteredActions: [],
 
 	addEntry: (response) => {
 		if (response != undefined && response.type != undefined) {
