@@ -473,12 +473,12 @@ let GvGMap = {
 	events: () => {
 		let editBtn = document.getElementById("editMap");
 		let pickGuildBtn = document.getElementById("pickGuild");
-		let markRedBtn = document.getElementById("markerRed");
+		/*let markRedBtn = document.getElementById("markerRed");
 		let markRedCrossBtn = document.getElementById("markerRedX");
 		let markYellowBtn = document.getElementById("markerYellow");
 		let markYellowCrossBtn = document.getElementById("markerYellowX");
 		let markBlueBtn = document.getElementById("markerBlue");
-		let markBlueCrossBtn = document.getElementById("markerBlueX");
+		let markBlueCrossBtn = document.getElementById("markerBlueX");*/
 		let noGuildBtn = document.getElementById("noGuild");
 		let dragBtn = document.getElementById("dragMap");
 		let zoomBtn = document.getElementById("zoomMap");
@@ -515,6 +515,7 @@ let GvGMap = {
 			else
 				GvGMap.buildMap('small', false);
 		}, false);
+		/*
 		markRedBtn.addEventListener('click', function (e) {
 			GvGMap.Marker = 'red';
 		}, false);
@@ -533,6 +534,7 @@ let GvGMap = {
 		markBlueCrossBtn.addEventListener('click', function (e) {
 			GvGMap.Marker = 'blueCross';
 		}, false);
+		*/
 		noGuildBtn.addEventListener('click', function (e) {
 			GvGMap.CurrentGuild = GvGMap.NoGuild;
 		}, false);

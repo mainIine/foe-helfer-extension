@@ -254,12 +254,10 @@ let GreatBuildings =
             });
 
             // Weiter Level aufklappen
-            $('#greatbuildings').on('click', '.btn-toggle-detail', function () {
+            $('#greatbuildings').on('click', '.gbmainrow', function () {
                 let Index = $(this).data('value');
                 GreatBuildings.DetailsVisible[Index] = !GreatBuildings.DetailsVisible[Index];
-
-                let ButtonText = (GreatBuildings.DetailsVisible[Index] ? '-' : '+');
-                $(this).text(ButtonText);
+                $(this).toggleClass('active');
                 
                 GreatBuildings.RefreshDetailsVisible(Index);                
             });
@@ -345,7 +343,6 @@ let GreatBuildings =
 
         h.push('<thead>');
         h.push('<tr>');
-        h.push('<th></th>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.Costs') + '</th>');
@@ -537,7 +534,10 @@ let GreatBuildings =
                 let CurrentROIResult = AllROIResults[Index][j];
 
                 if (j === 0) {
-                    h.push('<tr class="gbmainrow" ' + (j > 0 ? 'data-value="' + Index + '"' : '') + '>');
+                    if (AllROIResults[Index].length >= 1) {
+                        h.push('<tr class="gbmainrow" data-value="' + Index + '">');
+                        let ButtonText = (GreatBuildings.DetailsVisible[Index] ? '-' : '+');
+                    }
                 }
                 else {
                     h.push('<tr class="gbdetailsrow" data-value="' + Index + '" ' + (j === 0 || GreatBuildings.DetailsVisible[Index] ? '' : 'style="display:none;"') + '>');
@@ -546,19 +546,6 @@ let GreatBuildings =
                 if (CurrentROIResult['BestLevel'] !== undefined) {
                     let CurrentLevel = Math.max(CurrentROIResult['CurrentLevel'], 0);
                     BestLevel = CurrentROIResult['BestLevel'];
-
-                    if (j === 0) {
-                        if (AllROIResults[Index].length >= 1) {
-                            let ButtonText = (GreatBuildings.DetailsVisible[Index] ? '-' : '+');
-                            h.push('<td><button class="btn btn-default btn-toggle-detail" data-value="' + Index + '">' + ButtonText + '</button></td>');
-                        }
-                        else {
-                            h.push('<td></td>');
-                        }
-                    }
-                    else {
-                        h.push('<td></td>');
-                    }
 
                     let Costs = CurrentROIResult['ROIValues'][BestLevel]['Costs'],
                         FPProduction = CurrentROIResult['ROIValues'][BestLevel]['FP'],
