@@ -109,8 +109,18 @@
 	padding: 0.2rem 0.4rem;
 }
 
+#OwnPartBox .btn-default.btn-tight {
+	padding: 0.2rem;
+}
+
 #OwnPartBox #up-to-level-up {
 	color: var(--text-bright);
+}
+
+#OwnPartBox .bottom-buttons {
+	padding: 0 0.3rem 0.3rem;
+	display: flex;
+	justify-content: space-between;
 }
 
 #OwnPartBox .black-bg {

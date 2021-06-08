@@ -482,7 +482,6 @@ let Parts = {
 				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 			}
 		}
-		h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 		
 
         h.push('</td>');
@@ -661,6 +660,8 @@ let Parts = {
 
 		Parts.BuildBackgroundBody(Parts.Maezens, Eigens, NonExts);
 
+		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
+
         // Wieviel fehlt noch bis zum leveln?
 		if (Parts.IsPreviousLevel === false)
 		{
@@ -676,14 +677,17 @@ let Parts = {
             h.push('<em">' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 			h.push('</div>');
 
-			h.push('<div class="text-center">');
+			h.push('<div class="bottom-buttons text-center dark-bg">');
+			h.push('<div class="btn-group">');
 			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
 			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			if (Parts.SaveCopy.length > 0) h.push('<br>' + HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': Parts.SaveCopy.length }));
 			h.push('</div>');
+			h.push('<div class="btn-group">');
+			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('</div>');
+			h.push('</div>');
         }
-
-		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
 		$('#OwnPartBoxBody').html(h.join(''));
 
