@@ -1262,10 +1262,12 @@ let MainParser = {
 
 	/** @type {Record<string,string>} */
 	BoostMapper: {
-		'supplies_boost': 'supply_production',
-		'happiness': 'happiness_amount',
-		'military_boost': 'att_boost_attacker',
-		'money_boost': 'coin_production'
+		'supplies_boost': ['supply_production'],
+		'happiness': ['happiness_amount'],
+		'military_boost': ['att_boost_attacker', 'def_boost_attacker'],
+		'fierce_resistance': ['att_boost_defender', 'def_boost_defender'],
+		'advanced_tactics': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
+		'money_boost': ['coin_production']
 	},
 
 
@@ -1273,9 +1275,11 @@ let MainParser = {
 	 * Speichert alle aktiven Boosts
 	 */
 	BoostSums: {
-		'def_boost_defender': 0,
-		'happiness_amount': 0,
 		'att_boost_attacker': 0,
+		'def_boost_attacker': 0,
+		'att_boost_defender': 0,
+		'def_boost_defender': 0,
+		'happiness_amount': 0,			
 		'coin_production': 0,
 		'supply_production': 0
 	},
@@ -1858,9 +1862,12 @@ let MainParser = {
 
 				lgs.push(b);
 
-				if (d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']] !== undefined) {
+				if (d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']]) {
 					if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
-						MainParser.BoostSums[MainParser.BoostMapper[d[i]['bonus']['type']]] += d[i]['bonus']['value']
+						let Boosts = MainParser.BoostMapper[d[i]['bonus']['type']];
+						for (let j = 0; j < Boosts.length;j++) {
+							MainParser.BoostSums[Boosts[j]] += d[i]['bonus']['value'];
+                        }
 					}
 				}
 			}

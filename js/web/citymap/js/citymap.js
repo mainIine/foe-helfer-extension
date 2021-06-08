@@ -351,10 +351,9 @@ let CityMap = {
 			$('#sidebar').append(aW);
 		}
 
-		$('.total-area').html(txtTotal);
-
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (!CityMap.IsExtern) {
+			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
 		}
 
