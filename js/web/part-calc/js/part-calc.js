@@ -436,7 +436,7 @@ let Parts = {
 		let PlayerName = undefined,
 			PlayerID = Parts.CityMapEntity['player_id'];
 
-		if (PlayerID !== ExtPlayerID) {
+		if (PlayerID === ExtPlayerID) {
 			PlayerName = ExtPlayerName
 		}
 		else { //LG eines anderen Spielers
