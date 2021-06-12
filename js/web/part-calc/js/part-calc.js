@@ -681,8 +681,8 @@ let Parts = {
 			h.push('<div class="btn-group">');
 			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
 			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
-			if (Parts.SaveCopy.length > 0) h.push('<br>' + HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': Parts.SaveCopy.length }));
 			h.push('</div>');
+			if (Parts.SaveCopy.length > 0) h.push(HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': Parts.SaveCopy.length }));
 			h.push('<div class="btn-group">');
 			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
