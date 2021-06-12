@@ -52,7 +52,7 @@ let Parts = {
 	CurrentBuildingID: false,
 	CurrentBuildingPercents: [90, 90, 90, 90, 90],
 	Exts: [0, 0, 0, 0, 0],
-	SaveCopy: [],
+	SaveCopy: {},
 	PlayInfoSound: null,
 
 	CurrentMaezens: [],
@@ -682,7 +682,9 @@ let Parts = {
 			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
 			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			h.push('</div>');
-			if (Parts.SaveCopy.length > 0) h.push(HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': Parts.SaveCopy.length }));
+
+			let SaveCopyLength = Object.keys(Parts.SaveCopy).length;
+			if (SaveCopyLength > 0) h.push(HTML.i18nReplacer(i18n('Boxes.OwnpartCalculator.GBsNoted'), { 'GBCount': SaveCopyLength }));
 			h.push('<div class="btn-group">');
 			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
@@ -1037,36 +1039,28 @@ let Parts = {
 	 */
 	CopyFunction: (Event, Action) => {
 		let CopyString = $('#copystring').val();
+		let StoragePreamble = Parts.GetStoragePreamble();
 		
 		$(Event).removeClass('btn-green');
 
 		// wieder zuklappen
 		Parts.BackGroundBoxAnimation(false);
 
-		if(Parts.SaveCopy.length > 0){
-			for(let i = 0; i < Parts.SaveCopy.length; i++)
-			{
-				// prüfen ob dieses LG mit diesem Namen schon enthalten ist, löschen
-				if(Parts.SaveCopy[i].indexOf(CopyString) > -1)
-				{
-					// raus löschen
-					Parts.SaveCopy.splice(i, 1);
-				}
-			}
-		}
+		Parts.SaveCopy[StoragePreamble] = CopyString;
 
-		// wenn dieser Wert noch nicht im Array liegt...
-		if(Parts.SaveCopy.includes(CopyString) === false){
-			Parts.SaveCopy.push(CopyString);
-		}
-
-		let copy = Parts.SaveCopy.join('\n');
+		let Copy = "";
+		let Keys = Object.keys(Parts.SaveCopy);
+		for (let i = 0; i < Keys.length; i++) {
+			let Key = Keys[i];
+			Copy += Parts.SaveCopy[Key];
+			if (i < Keys.length) Copy += '\n';
+        }
 
 		if (Action === 'copy') {
-			Parts.SaveCopy = []; // Kopieren löscht die Liste
+			Parts.SaveCopy = {}; // Kopieren löscht die Liste
 		}
 
-		return copy;
+		return Copy;
 	},
 
 
