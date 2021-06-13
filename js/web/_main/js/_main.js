@@ -634,6 +634,7 @@ const FoEproxy = (function () {
 		EventHandler.checkForDB(ExtPlayerID);
 		UnitGex.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
+		GexStat.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
