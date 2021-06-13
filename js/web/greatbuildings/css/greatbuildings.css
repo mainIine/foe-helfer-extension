@@ -57,3 +57,19 @@
     color: var(--text-bright);
     margin: 0 10px;
 }
+
+#greatbuildings #greatbuildingsBody .gbmainrow td {
+    padding: 0.3rem 5px;
+}
+
+#greatbuildings #greatbuildingsBody .gbmainrow td:last-child {
+    background-image: url('../../../../css/images/hud/chevron-left.svg');
+    background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+	min-width: 4px;
+}
+
+#greatbuildings #greatbuildingsBody .gbmainrow.active td:last-child {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+}
