@@ -463,6 +463,10 @@ p {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
+[id$=gexstat-Btn] span {
+	background-image: url('../images/menu/gex.png');
+}
+
 .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;

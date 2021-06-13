@@ -368,7 +368,7 @@ let FPCollector = {
 
 		FPCollector.DatePicker = new Litepicker({
 			element: document.getElementById('FPCollectorPicker'),
-			format: i18n('Date'),
+			format: 'YYYY-MM-DD',
 			lang: MainParser.Language,
 			singleMode: false,
 			splitView: false,
