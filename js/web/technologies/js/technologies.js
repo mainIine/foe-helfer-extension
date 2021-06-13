@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -175,12 +175,12 @@ let Technologies = {
         // Zeitalter vor und zurück schalten
         $('#technologies').on('click', '.btn-switchage', function () {
 
-            $('.btn-switchage').removeClass('btn-default-active');
+            $('.btn-switchage').removeClass('btn-active');
 
             Technologies.SelectedEraID = $(this).data('value');
             Technologies.CalcBody();
 
-            $(this).addClass('btn-default-active');
+            $(this).addClass('btn-active');
         });
 
 		Technologies.BuildBox();
