@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -1412,6 +1412,7 @@ let GuildMemberStat = {
 				}
 
 				let countEra = typeof EraGroup[era].members.length != 'undefined' ? EraGroup[era].members.length : 1;
+				let eraTotals = 0;
 
 				d.push(`<tr id="era${EraGroup[era].eraId}" data-id="${EraGroup[era].eraId}" class="hasdetail">` +
 					`<td class="is-number" data-number="${EraGroup[era].eraId}">${EraGroup[era].eraId}</td>` +
@@ -1533,14 +1534,21 @@ let GuildMemberStat = {
 		let fullGBList = $.extend(true,[],gmsBuildingDict);
 
 		let allGuildBuildings = fullGBList.reduce(function (res, obj) {
-			if (obj.gbid === undefined) { res.__array.push(res[obj.gbid] = obj); }
 
-			if (!(obj.gbid in res)){
-				res.__array.push(res[obj.gbid] = obj);
+			if (obj.gbid === undefined) { 
+				res.__array.push(res['outdated'] = obj);
+				return res;
+			}
+
+			let buildingID = obj.member.toLowerCase().replace(/[\W_ ]+/g, "") + '' + obj.gbid;
+
+			if (!(buildingID in res)){
+				res.__array.push(res[buildingID] = obj);
 			}
 			else {
-				res[obj.gbid] = Object.assign(res[obj.gbid],obj);
+				res[buildingID] = Object.assign(res[buildingID],obj);
 			}
+			
 			return res;
 		}, { __array: [] }).__array.sort(function (a, b) {
 			return a.name.localeCompare(b.name) || (a.level-b.level);
@@ -1635,12 +1643,23 @@ let GuildMemberStat = {
 			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildGoods')}</th>` +
 			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildPower')}</th>` +
 			`</tr></thead><tbody class="gms-gbl copyable">`);
+
 		let bCounter = 1;
+
 		allGuildBuildings.forEach(plbuilding => {
 			
 			let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
 			let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
 			let level = plbuilding.level !== null && plbuilding.level !== undefined ? plbuilding.level : 0;
+			let goodslist = '';
+
+			if (plbuilding.resources && plbuilding.resources.goods && plbuilding.resources.goods !== null)
+			{
+				goodslist = plbuilding.resources.goods.map(good => {
+					return `<span title="${good.value} x ${GoodsData[good.good_id]['name']}" class="goods-sprite-50 sm ${good.good_id}"></span> `;
+				}).join('');
+
+			}
 
 			ExportContent.push([plbuilding.name, (plbuilding.level !== null ? plbuilding.level : ''), Technologies.Eras[plbuilding.era], i18n('Eras.' + Technologies.Eras[plbuilding.era]), plbuilding.member,  (plbuilding.power !== undefined ? plbuilding.power.value : 0), (plbuilding.resources !== undefined ? plbuilding.resources.totalgoods : 0)]);
 			
@@ -1650,7 +1669,7 @@ let GuildMemberStat = {
 				`<td class="is-number text-center" data-number="${level}">${HTML.Format(level)}</td>` +
 				`<td class="case-sensitive" data-text="${plbuilding.member.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.member}</td>` +
 				`<td class="is-number" data-number="${Technologies.Eras[plbuilding.era]}">${plbuilding.era !== undefined ? i18n('Eras.' + Technologies.Eras[plbuilding.era]) : '-'}</td>` + 
-				`<td class="is-number text-center" data-number="${goodCount}">${HTML.Format(goodCount)}</td>` + 
+				`<td class="is-number text-center gms-tooltip" data-number="${goodCount}" title="${HTML.i18nTooltip(goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : '')}">${HTML.Format(goodCount)}</td>` + 
 				`<td class="is-number text-center" data-number="${powerCount}">${HTML.Format(powerCount)}</td></tr>`);
 		});
 		
@@ -1659,6 +1678,11 @@ let GuildMemberStat = {
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 			
 			$('#guildbuildingslist').tableSorter();
+			
+			$('#guildbuildingslist .gms-tooltip').tooltip({
+				html: true,
+				container: '#GuildMemberStatBody'
+			});
 			
 			GuildMemberStat.hidePreloader('#GuildMemberStat');
 			

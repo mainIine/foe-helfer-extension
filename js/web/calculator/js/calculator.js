@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -187,7 +187,7 @@ let Calculator = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-default-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-default btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
         h.push('</div><br>');
 		
