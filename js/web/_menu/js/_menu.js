@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to 
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md 
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md 
  * for full license details.
  *
  * **************************************************************************************
@@ -51,7 +51,8 @@ let _menu = {
 		'gildfight',
 		'investment',
 		'alerts',
-		'guildmemberstat'
+		'guildmemberstat',
+		'gexstat'
 		// 'unitsGex',
 	],
 
@@ -908,5 +909,29 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
-	}
+	},
+
+	/**
+	 * GEX statistic
+	 */
+		gexstat_Btn: () => {
+			let btn = $('<div />').attr({
+				'id': 'gexstat-Btn',
+				'data-slug': 'gexstat'
+			}).addClass('hud-btn');
+	
+			// Tooltip einbinden
+			btn = _menu.toolTipp(btn, i18n('Menu.GexStat.Title'), i18n('Menu.GexStat.Desc'));
+	
+			let btn_sp = $('<span />').bind('click', function () {
+				if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
+					GexStat.BuildBox(false);
+				}
+			});
+	
+			btn.append(btn_sp);
+	
+			return btn;
+		}	
+	
 };
