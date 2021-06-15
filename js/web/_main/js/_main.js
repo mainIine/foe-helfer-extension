@@ -999,16 +999,11 @@ const FoEproxy = (function () {
 			if ($('#OwnPartBox').length > 0) {
 				Parts.Show();
 			}
-
-			if (!IsLevelScroll) {
-				MainParser.OwnLG(CityMapEntity.responseData[0]);
-			}
 		}
 
-		//Fremdes LG
-		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
-			LastKostenrechnerOpenTime = MainParser.getCurrentDateTime()
-
+		// Fremdes LG
+		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll)
+		{
 			$('#calculator-Btn').removeClass('hud-btn-red');
 			$('#calculator-Btn-closed').remove();
 
@@ -1532,33 +1527,6 @@ let MainParser = {
 				data: JSON.stringify(player)
 			});
 		}
-	},
-
-
-	/**
-	 * Update own LGs
-	 * Time slot - 15min
-	 *
-	 * @param d
-	 * @returns {boolean}
-	 */
-	OwnLG: (d) => {
-
-		let lg_name = 'LG-' + d['cityentity_id'] + '-' + ExtPlayerID,
-			time = MainParser.checkNextUpdate(lg_name);
-
-		// noch nicht wieder updaten oder es ist kein "eigenes" LG
-		if (!time || d['player_id'] !== ExtPlayerID) {
-			return false;
-		}
-
-		MainParser.send2Server(d, 'OwnLG', function (r) {
-
-			// nach Erfolg, Zeitstempel in den LocalStorage
-			if (r['status'] === 'OK') {
-				localStorage.setItem(lg_name, MainParser.getAddedDateTime(0, 15));
-			}
-		});
 	},
 
 
