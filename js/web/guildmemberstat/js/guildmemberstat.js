@@ -1871,7 +1871,7 @@ let GuildMemberStat = {
 		let GreatBuildings = await GuildMemberStat.GetGuildMemberBuildings('greatbuildings');
 		let allMemberIds = Object.keys(GuildMemberStat.MemberDict);
 
-		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')}</div>`);
+		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} <button style="float:right" id="toggleGreatBuildingView" class="btn btn-default">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
 
 		if (GreatBuildings === null)
 		{
@@ -1880,6 +1880,7 @@ let GuildMemberStat = {
 			return;
 		}
 
+		let GreatBuildingsDetail = $.extend(true, [], GreatBuildings);
 		let exportData = GuildMemberStat.ExportData = [];
 
 		exportData.push(['gbname', 'city_entity_id', 'member', 'level', 'max_level', 'invested_forge_points', 'forge_points_for_level_up']);
@@ -1957,11 +1958,49 @@ let GuildMemberStat = {
 		d.push(`</tbody></table>`);
 		d.push(`</div>`);
 
+		d.push(`<div class="detail-wrapper greatbuildinglist detail hide">`);
+		d.push(`<table id="gblist_detail" class="foe-table"><thead><tr class="sorter-header">` +
+			`<th class="case-sensitive" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.GreatBuildings')}</th>` +
+			`<th class="case-sensitive" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
+			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.Level')}</th>` +
+			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.UnlockedLevel')}</th>` +
+			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.FpInvested')}</th>` +
+			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.FpForLevelUp')}</th>` +
+			`<th></th></tr></thead><tbody class="gms-greatbl-detail">`);
+		
+		GreatBuildingsDetail = GreatBuildingsDetail.sort(function (a, b) {
+			return a.name.localeCompare(b.name) || (a.level - b.level);
+		});
+
+		for (let x = 0; x < GreatBuildingsDetail.length; x++)
+		{
+			const dbuilding = GreatBuildingsDetail[x];
+			let invested_forge_points = dbuilding.invested_forge_points ? dbuilding.invested_forge_points : 0;
+			let forge_points_for_level_up = dbuilding.max_level > dbuilding.level ? dbuilding.forge_points_for_level_up : 0
+			let investable = dbuilding.max_level > dbuilding.level ? true : false;
+
+			d.push(`<tr id="gms_detail_${x}" data-id="${x}">` +
+				`<td class="case-sensitive ascending" data-text="${dbuilding.name.toLowerCase().replace(/[\W_ ]+/g, "")}">${dbuilding.name}</td>` +
+				`<td class="case-sensitive" data-text="${dbuilding.member.toLowerCase().replace(/[\W_ ]+/g, "")}">${dbuilding.member}</td>` +
+				`<td class="text-center" data-number="${dbuilding.level}">${dbuilding.level}</td>` +
+				`<td class="text-center" data-number="${dbuilding.max_level}">${dbuilding.max_level}</td>` +
+				`<td class="text-center" data-number="${invested_forge_points}">${investable ? invested_forge_points : '-'}</td>` +
+				`<td class="text-center" data-number="${forge_points_for_level_up - invested_forge_points}">${HTML.Format(forge_points_for_level_up - invested_forge_points)}</td>` +
+				`<td></td></tr>`);
+		}
+
+		d.push(`</tbody></table>`);
+		d.push(`</div>`);
+
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 
-			$('#gblist').tableSorter();
+			$('#gblist,#gblist_detail').tableSorter();
 
 			GuildMemberStat.hidePreloader('#GuildMemberStat');
+
+			$('#gmsContentWrapper #toggleGreatBuildingView').on('click', function () {
+				$('#gmsContentWrapper .greatbuildinglist').toggleClass('hide show');
+			});
 
 			$('#gblist > tbody tr.hasdetail').off().on('click', function () {
 
@@ -2005,7 +2044,7 @@ let GuildMemberStat = {
 							`<td class="text-center" data-number="${player[i].level}">${player[i].level}</td>` +
 							`<td class="text-center" data-number="${player[i].max_level}">${player[i].max_level}</td>` +
 							`<td class="text-center" data-number="${player[i].investedfp}">${player[i].fplevelup !== 0 ? player[i].investedfp : '-'}</td>` +
-							`<td class="text-center" data-number="${player[i].fplevelup}">${HTML.Format(player[i].fplevelup - player[i].investedfp)}</td>` +
+							`<td class="text-center" data-number="${player[i].fplevelup - player[i].investedfp}">${HTML.Format(player[i].fplevelup - player[i].investedfp)}</td>` +
 							`</tr>`);
 					}
 					d.push('</tbody></table>');
