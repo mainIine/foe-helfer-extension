@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
-#GuildMemberStat {
+ #GuildMemberStat {
     width: 750px;
     height: 600px;
     top: calc(50vh - 200px);
@@ -111,7 +111,7 @@
     }
 }
 
-#GuildMemberStatBody #GuildMemberTable, 
+#GuildMemberStatBody #GuildMemberTable,
 #GuildMemberStatBody #gmsContentWrapper {
     position: relative;
     margin-bottom: 18px;
@@ -227,11 +227,11 @@
     border-color: #ff0000 transparent transparent transparent;
 }
 
-#GuildMemberStatBody table tr.outdated{
+#GuildMemberStatBody table tr.outdated {
     text-decoration: line-through;
 }
 
-#GuildMemberStatBody .view_notification{
+#GuildMemberStatBody .view_notification {
     padding: 5px 0 5px 10px;
     line-height: 25px;
 }
@@ -469,5 +469,16 @@
 }
 
 #GuildMemberStatBody .buildinglist.hide {
-    display:none;
+    display: none;
+}
+
+#GuildMemberStat .settingtitle {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+#GuildMemberStat .no_gb_member {
+    margin-top: 6px;
 }
