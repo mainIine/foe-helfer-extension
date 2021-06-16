@@ -14,19 +14,19 @@
 
 /* Box */
 #greatbuildings {
-    top: 30%;
-    right: 15%;
-    width: 470px;
-    height: 500px;
+	top: 30%;
+	right: 15%;
+	width: 470px;
+	height: 500px;
 }
 
 #greatbuildings #greatbuildingsBody {
-    overflow-x: hidden;
-    overflow-y: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 #greatbuildings #greatbuildingsBody strong.success {
-    color: var(--text-success);
+	color: var(--text-success);
 }
 
 .text-bright {
@@ -43,8 +43,8 @@
 }
 
 #greatbuildings #greatbuildingsBody td {
-    position: relative;
-    font-size: 85%;
+	position: relative;
+	font-size: 85%;
 }
 
 #greatbuildings #greatbuildingsBody .foe-table tr:first-child td:nth-child(5) strong {
@@ -52,19 +52,19 @@
 }
 
 #greatbuildings #greatbuildingsBody strong.player-name {
-    display: block;
-    white-space: nowrap;
-    color: var(--text-bright);
-    margin: 0 10px;
+	display: block;
+	white-space: nowrap;
+	color: var(--text-bright);
+	margin: 0 10px;
 }
 
 #greatbuildings #greatbuildingsBody .gbmainrow td {
-    padding: 0.3rem 5px;
+	padding: 0.3rem 5px;
 }
 
 #greatbuildings #greatbuildingsBody .gbmainrow td:last-child {
-    background-image: url('../../../../css/images/hud/chevron-left.svg');
-    background-size: 20px 20px;
+	background-image: url('../../../../css/images/hud/chevron-left.svg');
+	background-size: 20px 20px;
 	background-position: center right;
 	background-repeat: no-repeat;
 	min-width: 4px;
