@@ -1030,7 +1030,7 @@ let GuildMemberStat = {
 			if (gexActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gex'] = gexActivity;
 			if (gbgActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gbg'] = gbgActivity;
 			if (guildBuildingsCount > 0) GuildMemberStat.MemberDict[MemberID]['guildbuildings'] = member['guildbuildings'];
-			GuildMemberStat.MemberDict[MemberID]['name'] = member['name'];		
+			GuildMemberStat.MemberDict[MemberID]['name'] = member['name'];
 
 			h.push(`<tr id="gms${x}" ` +
 				`class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
@@ -1867,7 +1867,7 @@ let GuildMemberStat = {
 		GuildMemberStat.CurrentStatGroup = 'GreatBuildings';
 
 		let d = [];
-		
+
 		let GreatBuildings = await GuildMemberStat.GetGuildMemberBuildings('greatbuildings');
 		let allMemberIds = Object.keys(GuildMemberStat.MemberDict);
 
@@ -1882,13 +1882,13 @@ let GuildMemberStat = {
 
 		let exportData = GuildMemberStat.ExportData = [];
 
-		exportData.push(['city_entity_id', 'gbname', 'level', 'max_level', 'invested_forge_points', 'forge_points_for_level_up', 'member']);
+		exportData.push(['gbname', 'city_entity_id', 'member', 'level', 'max_level', 'invested_forge_points', 'forge_points_for_level_up']);
 
 		let GBOverview = GreatBuildings.reduce(function (res, obj) {
 
 			obj.invested_forge_points = obj.invested_forge_points ? obj.invested_forge_points : 0
 
-			exportData.push(Object.values(obj));
+			exportData.push([obj.name, obj.cityentity_id, obj.member, obj.level, obj.max_level, obj.invested_forge_points, obj.forge_points_for_level_up]);
 
 			let d = {
 				cityentity_id: obj.cityentity_id,
@@ -1903,12 +1903,12 @@ let GuildMemberStat = {
 				res[obj.cityentity_id].min_level = obj.level;
 				res[obj.cityentity_id].player = [{
 					member: obj.member,
-					fplevelup: obj.max_level>obj.level ? obj.forge_points_for_level_up : 0,
+					fplevelup: obj.max_level > obj.level ? obj.forge_points_for_level_up : 0,
 					investedfp: obj.invested_forge_points,
 					level: obj.level,
 					max_level: obj.max_level
 				}];
-				res[obj.cityentity_id].NoGbMember = allMemberIds.filter(function(value){ 
+				res[obj.cityentity_id].NoGbMember = allMemberIds.filter(function (value) {
 					return value != obj.player_id;
 				});
 			}
@@ -1920,12 +1920,12 @@ let GuildMemberStat = {
 				res[obj.cityentity_id].min_level = res[obj.cityentity_id].min_level > obj.level ? obj.level : res[obj.cityentity_id].min_level;
 				res[obj.cityentity_id].player.push({
 					member: obj.member,
-					fplevelup: obj.max_level>obj.level ? obj.forge_points_for_level_up : 0,
+					fplevelup: obj.max_level > obj.level ? obj.forge_points_for_level_up : 0,
 					investedfp: obj.invested_forge_points,
 					level: obj.level,
 					max_level: obj.max_level
 				});
-				res[obj.cityentity_id].NoGbMember = res[obj.cityentity_id].NoGbMember.filter(function(value){ 
+				res[obj.cityentity_id].NoGbMember = res[obj.cityentity_id].NoGbMember.filter(function (value) {
 					return value != obj.player_id;
 				});
 			}
@@ -2011,11 +2011,12 @@ let GuildMemberStat = {
 					d.push('</tbody></table>');
 
 					// Show guild member without this great building
-					if(NoGbMember !== undefined && NoGbMember.length){
+					if (NoGbMember !== undefined && NoGbMember.length)
+					{
 						let NoGbMemberName = [];
-						d.push(`<div class="no_gb_member copyable"><span class="text-bright"><i>${HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberWithoutGB'), {'greatbuilding':  GBOverview[id]['name']})}</i>: </span>`);
+						d.push(`<div class="no_gb_member copyable"><span class="text-bright"><i>${HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberWithoutGB'), { 'greatbuilding': GBOverview[id]['name'] })}</i>: </span>`);
 						NoGbMember.forEach(member => { NoGbMemberName.push(GuildMemberStat.MemberDict[member].name) });
-						d.push(NoGbMemberName.sort( function (a,b) { return a.localeCompare(b) }).join(', '));
+						d.push(NoGbMemberName.sort(function (a, b) { return a.localeCompare(b) }).join(', '));
 						d.push(`</div>`);
 					}
 
