@@ -468,7 +468,8 @@
     border-bottom: none;
 }
 
-#GuildMemberStatBody .buildinglist.hide {
+#GuildMemberStatBody .buildinglist.hide,
+#GuildMemberStatBody .greatbuildinglist.hide {
     display: none;
 }
 
