@@ -103,7 +103,9 @@
         let table = this;
         this.on('click', 'tr.sorter-header th', function (){
             //Remove incjected detailviews
-            $("tr.detailview").remove();
+            if(!$(this).parent().hasClass("subsort")){
+                $("tr.detailview").remove();
+            }
             
             if (!$(this).hasClass('no-sort')) {
                 let type = 'string';
