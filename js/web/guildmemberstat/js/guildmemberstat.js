@@ -232,7 +232,7 @@ let GuildMemberStat = {
 
 			$("#gmsTabs").find("li").removeClass("active");
 			$(this).parent().addClass("active");
-			$('#gms-filter-input').remove();
+			$('#gms-filter-input').val('').removeClass('highlight').hide();
 
 			switch (GuildMemberStat.CurrentStatGroup)
 			{
@@ -882,7 +882,7 @@ let GuildMemberStat = {
 
 		if (GuildMemberStat.Settings.showSearchbar)
 		{
-			h.push(`<li style="float:right"><input type="text" name="filter" id="gms-filter-input" placeholder="${i18n('Boxes.GuildMemberStat.Search')}" onkeyup="GuildMemberStat.filterTable('gms-filter-input','GuildMemberTable')" /></li>`);
+			h.push(`<li style="float:right"><input type="text" name="filter" id="gms-filter-input" placeholder="${i18n('Boxes.GuildMemberStat.Search')}" /></li>`);
 		}
 
 		h.push(`</ul></div>`);
@@ -1074,6 +1074,11 @@ let GuildMemberStat = {
 		$('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
 
 			let currentTime = MainParser.round(+MainParser.getCurrentDate() / 1000);
+
+			$('#gms-filter-input').show();
+			$('#gms-filter-input').off().on('keyup', function () {
+				GuildMemberStat.filterTable('gms-filter-input', 'GuildMemberTable');
+			});
 
 			$('#GuildMemberTable').tableSorter();
 
@@ -1967,7 +1972,7 @@ let GuildMemberStat = {
 			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.FpInvested')}</th>` +
 			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.FpForLevelUp')}</th>` +
 			`<th></th></tr></thead><tbody class="gms-greatbl-detail">`);
-		
+
 		GreatBuildingsDetail = GreatBuildingsDetail.sort(function (a, b) {
 			return a.name.localeCompare(b.name) || (a.level - b.level);
 		});
@@ -1995,12 +2000,37 @@ let GuildMemberStat = {
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 
 			$('#gblist,#gblist_detail').tableSorter();
+			$('#gms-filter-input').show();
+			$('#gms-filter-input').off().on('keyup', function () {
+				if ($('.greatbuildinglist.grouped').hasClass("show"))
+				{
+					GuildMemberStat.filterTable('gms-filter-input', 'gblist');
+				}
+				else if ($('.greatbuildinglist.detail').hasClass("show"))
+				{
+					GuildMemberStat.filterTable('gms-filter-input', 'gblist_detail');
+				}
 
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			});
 
 			$('#gmsContentWrapper #toggleGreatBuildingView').on('click', function () {
-				$('#gmsContentWrapper .greatbuildinglist').toggleClass('hide show');
+				$('#gmsContentWrapper .greatbuildinglist').toggleClass('hide show').promise().done(function () {
+					
+					if ($('#gms-filter-input').is(":visible") && $('#gms-filter-input').val() !== '')
+					{
+						if ($('.greatbuildinglist.grouped').hasClass("show"))
+						{
+							GuildMemberStat.filterTable('gms-filter-input', 'gblist');
+						}
+						else if ($('.greatbuildinglist.detail').hasClass("show"))
+						{
+							GuildMemberStat.filterTable('gms-filter-input', 'gblist_detail');
+						}
+					}
+				});
 			});
+
+			GuildMemberStat.hidePreloader('#GuildMemberStat');
 
 			$('#gblist > tbody tr.hasdetail').off().on('click', function () {
 
@@ -2382,6 +2412,13 @@ let GuildMemberStat = {
 		filter = input.value.toUpperCase();
 		table = document.getElementById(t);
 		tr = table.getElementsByTagName("tr");
+
+		if (input.value.length > 0) {
+			input.classList.add("highlight");
+		}
+		else {
+			input.classList.remove("highlight");
+		}
 
 		for (i = 1; i < tr.length; i++)
 		{
