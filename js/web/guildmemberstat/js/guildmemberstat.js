@@ -1031,6 +1031,7 @@ let GuildMemberStat = {
 			if (gbgActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gbg'] = gbgActivity;
 			if (guildBuildingsCount > 0) GuildMemberStat.MemberDict[MemberID]['guildbuildings'] = member['guildbuildings'];
 			GuildMemberStat.MemberDict[MemberID]['name'] = member['name'];
+			GuildMemberStat.MemberDict[MemberID]['deleted'] = deletedMember;
 
 			h.push(`<tr id="gms${x}" ` +
 				`class="${hasDetail ? 'hasdetail ' : ''}${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
@@ -2084,7 +2085,12 @@ let GuildMemberStat = {
 					{
 						let NoGbMemberName = [];
 						d.push(`<div class="no_gb_member copyable"><span class="text-bright"><i>${HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberWithoutGB'), { 'greatbuilding': GBOverview[id]['name'] })}</i>: </span>`);
-						NoGbMember.forEach(member => { NoGbMemberName.push(GuildMemberStat.MemberDict[member].name) });
+						NoGbMember.forEach(member => { 
+							if (!GuildMemberStat.MemberDict[member].deleted)
+							{
+								NoGbMemberName.push(GuildMemberStat.MemberDict[member].name);
+							}
+						});
 						d.push(NoGbMemberName.sort(function (a, b) { return a.localeCompare(b) }).join(', '));
 						d.push(`</div>`);
 					}
