@@ -536,7 +536,7 @@
     "Boxes.OwnpartCalculator.Done": "Erledigt",
     "Boxes.OwnpartCalculator.ExistingPayments": "Bestehende Einzahlungen",
     "Boxes.OwnpartCalculator.Ext": "Ext",
-    "Boxes.OwnpartCalculator.GBsNoted": "__GBCount__ legendäre Bauwerk(e) gemerkt",
+    "Boxes.OwnpartCalculator.GBsNoted": "__GBCount__ gemerkt",
     "Boxes.OwnpartCalculator.HelpLink": "https://foe-helper.com/docs/de/eigenanteilsrechner/?lang=de",
     "Boxes.OwnpartCalculator.IncludeData": "Enthaltene Daten",
     "Boxes.OwnpartCalculator.IndividualName": "Individueller LG Name",
