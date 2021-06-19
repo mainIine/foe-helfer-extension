@@ -788,6 +788,7 @@
     "Menu.greatbuildings.Title": "Επένδυση ΜΚ",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Υπάρχει όριο 2000 απορριφθέντων αποστολών ανά ημέρα",
     "Settings.About.Desc": "Το FoE Helper είναι μια δωρεάν επέκταση προγράμματος περιήγησης για το Forge of Empires που αναπτύχθηκε για παίκτες από παίκτες. Το εργαλείο δεν σχετίζεται με την InnoGames.",
     "Settings.About.RatingDesc": "Αν σας αρέσει αυτό που βλέπετε και τι κάνουμε, αφήστε μια καλή κριτική στο Store!",
     "Settings.About.RatingTitle": "Βαθμολογήστε την Επέκταση",
@@ -914,6 +915,5 @@
     "WsChat.UserLeave": " έφυγε.",
     "WsChat.UserReEnter": " έχει εισέλθει ξανά στο δωμάτιο.",
     "WsChat.World": "Κόσμος - ",
-    "_Language": "Ελληνικά",
-    "Quests.CounterTooltip.Content": "Υπάρχει όριο 2000 απορριφθέντων αποστολών ανά ημέρα"
+    "_Language": "Ελληνικά"
 }

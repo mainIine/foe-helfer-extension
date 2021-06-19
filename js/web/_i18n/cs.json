@@ -831,6 +831,7 @@
     "Menu.greatbuildings.Title": "Investice BV",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Existuje limit 2 000 odmítnutých úkolů za den",
     "Settings.About.Desc": "FoE Helper je bezplatné rozšíření WWW prohlížeče pro Forge of Empires, vyvinuté hráči pro hráče. Tento nástroj není žádným způsobem spojen s InnoGames.",
     "Settings.About.RatingDesc": "Pokud se vám líbí, co vidíte a co děláme, nechte prosím v Obchodě dobrou recenzi!",
     "Settings.About.RatingTitle": "Ohodnotit rozšíření",
@@ -957,6 +958,5 @@
     "WsChat.UserLeave": " odešel/a.",
     "WsChat.UserReEnter": " znovu vstoupil/a do místnosti.",
     "WsChat.World": "Svět ",
-    "_Language": "Čeština",
-    "Quests.CounterTooltip.Content": "Existuje limit 2 000 odmítnutých úkolů za den"
+    "_Language": "Čeština"
 }

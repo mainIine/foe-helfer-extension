@@ -893,6 +893,7 @@
     "Menu.greatbuildings.Title": "LG Investitionen",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Es gibt ein Limit von 2000 übersprungenen Quests pro Tag",
     "Settings.About.Desc": "Der FoE Helper ist eine kostenlose Browser-Erweiterung für Forge of Empires, die von Spielern für Spieler entwickelt wurde. Das Tool ist nicht mit InnoGames verbunden.",
     "Settings.About.RatingDesc": "Gefällt dir, was du siehst? Dann würden wir uns über eine Rezension im Store freuen!",
     "Settings.About.RatingTitle": "Bewerte die Extension",
@@ -1019,6 +1020,5 @@
     "WsChat.UserLeave": " ist gegangen.",
     "WsChat.UserReEnter": " hat den Chat erneut betreten.",
     "WsChat.World": "Welt - ",
-    "_Language": "Deutsch",
-    "Quests.CounterTooltip.Content": "Es gibt ein Limit von 2000 übersprungenen Quests pro Tag"
+    "_Language": "Deutsch"
 }
