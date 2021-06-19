@@ -1381,7 +1381,6 @@ let Productions = {
 			HTML.Box({
 				id: 'ProductionsRating',
 				title: i18n('Boxes.ProductionsRating.Title'),
-				ask: i18n('Boxes.ProductionsRating.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
