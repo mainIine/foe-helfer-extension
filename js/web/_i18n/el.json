@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "ΕΣ Κατάταξη Συντεχνίας, ενημερώθηκε",
-    "API.GEXPlayer": "ΕΣ Κατάταξη Μέλους, ενημερώθηκε",
     "API.LGGildMember": "__player__ Πληροφορίες ΜΚ, ενημερώθηκαν",
-    "API.UpdateSuccess": "Οι Πληροφορίες Ενημερώθηκαν Επιτυχώς!",
     "Boxes.Alerts.Form.Antiques.Auction": "Δημοπρασία",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Χρόνος Παύσης Πλειστηριασμού",
     "Boxes.Alerts.Form.Antiques.Dealer": "Παλαιοπώλης",

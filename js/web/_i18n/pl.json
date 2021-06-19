@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Ranking wypraw gildyjnych został zaktualizowany",
-    "API.GEXPlayer": "Zaktualizowano ranking graczy w wyprawie gildyjnej",
     "API.LGGildMember": "Zaktualizowano perły architektury gracza __player__",
-    "API.UpdateSuccess": "Wykonano aktualizację!",
     "Boxes.Alerts.Form.Antiques.Auction": "Aukcja",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Czas pomiędzy aukcjami",
     "Boxes.Alerts.Form.Antiques.Dealer": "Handlarz antykami",

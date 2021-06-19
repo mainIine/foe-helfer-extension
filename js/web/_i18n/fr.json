@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Le classement de l'EG a été mis à jour",
-    "API.GEXPlayer": "Le classement des contributions en Expédition de Guilde (EG) a été mis à jour",
     "API.LGGildMember": "Les informations des GM de __player__ ont été mises à jour",
-    "API.UpdateSuccess": "Mise à jour effectuée avec succès !",
     "Boxes.Alerts.Form.Antiques.Auction": "Enchère",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Délai de l'enchère",
     "Boxes.Alerts.Form.Antiques.Dealer": "Vendeur d'antiquités",
