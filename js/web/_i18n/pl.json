@@ -832,6 +832,7 @@
     "Menu.greatbuildings.Title": "Budowa Pereł Architektury",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Istnieje limit 2000 odrzuconych zadań dziennie",
     "Settings.About.Desc": "FoE Helper to bezpłatne rozszerzenie do przeglądarki Forge of Empires opracowane dla graczy przez graczy. Narzędzie nie jest powiązane z InnoGames.",
     "Settings.About.RatingDesc": "Jeśli podoba Ci się to, co widzisz i co robimy, zostaw dobrą recenzję w Sklepie!",
     "Settings.About.RatingTitle": "Oceń rozszerzenie",
@@ -958,6 +959,5 @@
     "WsChat.UserLeave": " Odszedł.",
     "WsChat.UserReEnter": " Ponownie wszedł do pokoju.",
     "WsChat.World": "Świat - ",
-    "_Language": "Polski",
-    "Quests.CounterTooltip.Content": "Istnieje limit 2000 odrzuconych zadań dziennie"
+    "_Language": "Polski"
 }

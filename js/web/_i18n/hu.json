@@ -790,6 +790,7 @@
     "Menu.greatbuildings.Title": "Nevezetes befektetés",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Naponta legfeljebb 2000 küldetést lehet elutasítani",
     "Settings.About.Desc": "A FoE Helper egy ingyenes böngészőbővítmény a Forge of Empires számára, amelyet játékosok fejlesztettek ki a játékosok számára. Az eszköz nem áll kapcsolatban az InnoGames céggel.",
     "Settings.About.RatingDesc": "Ha tetszik, amit látsz és amit csinálunk, akkor kérlek adj jó értékelést a Webáruházban!",
     "Settings.About.RatingTitle": "Értékeld a bővítményt",
@@ -916,6 +917,5 @@
     "WsChat.UserLeave": " kilépett.",
     "WsChat.UserReEnter": " visszalépett a szobába.",
     "WsChat.World": "Világ - ",
-    "_Language": "Magyar",
-    "Quests.CounterTooltip.Content": "Naponta legfeljebb 2000 küldetést lehet elutasítani"
+    "_Language": "Magyar"
 }
