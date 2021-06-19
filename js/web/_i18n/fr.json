@@ -959,5 +959,5 @@
     "WsChat.UserReEnter": " est revenu dans la pièce.",
     "WsChat.World": "Monde - ",
     "_Language": "Anglais",
-    "quests.CounterTooltip.Content": "Il y a une limite de 2000 quêtes rejetées par jour"
+    "Quests.CounterTooltip.Content": "Il y a une limite de 2000 quêtes rejetées par jour"
 }

@@ -908,5 +908,5 @@
     "WsChat.UserReEnter": " har anslutit till rummet igen.",
     "WsChat.World": "Värld - ",
     "_Language": "Svenska",
-    "quests.CounterTooltip.Content": "Det finns en begränsning på 2000 avbrutna uppdrag per dag"
+    "Quests.CounterTooltip.Content": "Det finns en begränsning på 2000 avbrutna uppdrag per dag"
 }

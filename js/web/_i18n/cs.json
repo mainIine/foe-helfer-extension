@@ -958,5 +958,5 @@
     "WsChat.UserReEnter": " znovu vstoupil/a do místnosti.",
     "WsChat.World": "Svět ",
     "_Language": "Čeština",
-    "quests.CounterTooltip.Content": "Existuje limit 2 000 odmítnutých úkolů za den"
+    "Quests.CounterTooltip.Content": "Existuje limit 2 000 odmítnutých úkolů za den"
 }
