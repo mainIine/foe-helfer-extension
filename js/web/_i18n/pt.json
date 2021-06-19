@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "O Ranking de Guilds do GE foi atualizado",
-    "API.GEXPlayer": "O Ranking de Jogadores do GE foi atualizado",
     "API.LGGildMember": "As informações de GBs do __player__ foram atualizadas",
-    "API.UpdateSuccess": "Atualização realizada com sucesso!",
     "Boxes.Alerts.Form.Antiques.Auction": "Leilão",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Leilão em pausa",
     "Boxes.Alerts.Form.Antiques.Dealer": "Negociante de Antiguidades",
