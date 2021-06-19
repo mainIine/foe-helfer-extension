@@ -31,6 +31,7 @@ let _menu = {
 		'partCalc',
 		'outpost',
 		'productions',
+		'productionrating',
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
@@ -382,6 +383,28 @@ let _menu = {
 		btn_FPsBG.append(btn_FPs);
 
 		return btn_FPsBG;
+	},
+
+	/**
+	 * Outpost Button
+	 *
+	 * @returns {*|jQuery}
+	 */
+	productionrating_Btn: () => {
+		let btn_prodratBG = $('<div />').attr({ 'id': 'productionrating-Btn', 'data-slug': 'productionrating' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn_prodratBG = _menu.toolTipp(btn_prodratBG, i18n('Menu.ProductionRating.Title'), i18n('Menu.ProductionRating.Desc'));
+
+		let btn_prodrat = $('<span />');
+
+		btn_prodrat.bind('click', function () {
+			Productions.ShowRating();
+		});
+
+		btn_prodratBG.append(btn_prodrat);
+
+		return btn_prodratBG;
 	},
 
 	/**
