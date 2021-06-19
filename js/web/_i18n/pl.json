@@ -959,5 +959,5 @@
     "WsChat.UserReEnter": " Ponownie wszedł do pokoju.",
     "WsChat.World": "Świat - ",
     "_Language": "Polski",
-    "quests.CounterTooltip.Content": "Istnieje limit 2000 odrzuconych zadań dziennie"
+    "Quests.CounterTooltip.Content": "Istnieje limit 2000 odrzuconych zadań dziennie"
 }
