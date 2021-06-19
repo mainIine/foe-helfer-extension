@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Обновлена позиция гильдии в ЭГ",
-    "API.GEXPlayer": "Обновлены места участников ЭГ",
     "API.LGGildMember": "ВС игрока __player__ были обработаны",
-    "API.UpdateSuccess": "Обновление выполнено!",
     "Boxes.Alerts.Form.Antiques.Auction": "Аукцион",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Перезагрузка аукциона",
     "Boxes.Alerts.Form.Antiques.Dealer": "Антиквар",

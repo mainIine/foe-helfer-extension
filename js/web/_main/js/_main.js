@@ -463,10 +463,12 @@ const FoEproxy = (function () {
 	 * This function gets the callbacks from proxyMap[service][method],proxyMap[service]['all'] and proxyMap['all']['all'] and executes them.
 	 */
 	function proxyAction(service, method, data, postData) {
-		_proxyAction(service, method, data, postData);
-		_proxyAction('all', method, data, postData);
-		_proxyAction(service, 'all', data, postData);
-		_proxyAction('all', 'all', data, postData);
+		let filteredPostData = postData.filter(r => r && r.requestId && data && data.requestId && r.requestId === data.requestId); //Nur postData mit zugehöriger requestId weitergeben
+
+		_proxyAction(service, method, data, filteredPostData);
+		_proxyAction('all', method, data, filteredPostData);
+		_proxyAction(service, 'all', data, filteredPostData);
+		_proxyAction('all', 'all', data, filteredPostData);
 	}
 
 	// Achtung! Die XMLHttpRequest.prototype.open und XMLHttpRequest.prototype.send funktionen werden nicht zurück ersetzt,
@@ -1143,7 +1145,8 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex'
+		'unitsGex',
+		'productionsrating'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };

@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "GE Kilta Sijoitus tiedot ovat päivittynyt",
-    "API.GEXPlayer": "Killan Jäsenten' Sijoitus tiedot ovat päivittyneet",
     "API.LGGildMember": "__player__ HR tiedot ovat päivittyneet",
-    "API.UpdateSuccess": "Tiedot päivitetty onnistuneesti!",
     "Boxes.Alerts.Form.Antiques.Auction": "Huutokauppa",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Huutokaupan jäähettelyaika",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiikkimyyjä",

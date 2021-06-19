@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "IE placering för imperiet har uppdaterats",
-    "API.GEXPlayer": "IE rankning för medlemmar har uppdaterats",
     "API.LGGildMember": "__player__'s MB info har uppdaterats",
-    "API.UpdateSuccess": "Uppdatering utförd!",
     "Boxes.Alerts.Form.Antiques.Auction": "Auktion",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auktion avsvalning",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antikhandlare",
@@ -784,6 +781,7 @@
     "Menu.greatbuildings.Title": "MB Investering",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Det finns en begränsning på 2000 avbrutna uppdrag per dag",
     "Settings.About.Desc": "\"FoE Helper\" är en gratis webbläsare-plugin för \"Forge of Empires\" utvecklad för spelare av spelare. Detta verktyg är inte affilierat med InnoGames.",
     "Settings.About.RatingDesc": "Om du gillar vad du ser och vad vi gör, vänligen lämna en positiv recension där du installerade pluginen!",
     "Settings.About.RatingTitle": "Betygsätt pluginen",
@@ -910,6 +908,5 @@
     "WsChat.UserLeave": " har lämnat.",
     "WsChat.UserReEnter": " har anslutit till rummet igen.",
     "WsChat.World": "Värld - ",
-    "_Language": "Svenska",
-    "quests.CounterTooltip.Content": "Det finns en begränsning på 2000 avbrutna uppdrag per dag"
+    "_Language": "Svenska"
 }

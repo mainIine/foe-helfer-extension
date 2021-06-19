@@ -149,7 +149,7 @@
 #Productions #ProductionsBody .tabs ul li.happiness a span {
 	background-position: -156px 6px;
 }
-#Productions #ProductionsBody .tabs ul li.packaging a span {
+#Productions #ProductionsBody .tabs ul li.goods a span {
 	background-position: -104px 6px;
 }
 #Productions #ProductionsBody .tabs ul li.premium a span {
@@ -175,5 +175,83 @@
 	background-position: -365px 6px;
 }
 #Productions #ProductionsBody .tabs ul li.def_boost_defender a span {
+	background-position: -390px 6px;
+}
+
+
+
+
+
+
+
+#ProductionsRating {
+	top: 100px;
+	left: 100px;
+	width: 780px;
+	height: 500px;
+}
+
+#ProductionsRating #ProductionsRatingBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#ProductionsRating #ProductionsRatingBody strong.success {
+	color: var(--text-success);
+}
+
+#ProductionsRating #ProductionsRatingBody strong.error {
+	color: #ec4d4d;
+}
+
+#ProductionsRating #ProductionsRatingBody table tr td.resicon {
+	background: transparent url('../images/productions.png') -233px 5px no-repeat;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.empty {
+	background-position: 1000px, 1000px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.strategy_points {
+	background-position: 0 4px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.money {
+	background-position: -26px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.supplies {
+	background-position: -51px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.medals {
+	background-position: -78px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.population {
+	background-position: -183px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.happiness {
+	background-position: -156px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.goods {
+	background-position: -104px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.premium {
+	background-position: -209px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.all {
+	background-position: -130px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.clan_power {
+	background-position: -262px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.units {
+	background-position: -287px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.att_boost_attacker {
+	background-position: -311px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.att_boost_defender {
+	background-position: -338px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.def_boost_attacker {
+	background-position: -365px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table tr td.resicon.def_boost_defender {
 	background-position: -390px 6px;
 }
