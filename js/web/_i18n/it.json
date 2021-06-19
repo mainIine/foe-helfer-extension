@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Il posizionamento della gilda (Spedizione) è stato aggiornato",
-    "API.GEXPlayer": "La classifica dei membri (Spedizione) è stata aggiornata",
     "API.LGGildMember": "I Grandi Edifici di __player__ sono stati inviati",
-    "API.UpdateSuccess": "Aggiornamento eseguito!",
     "Boxes.Alerts.Form.Antiques.Auction": "Asta",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Conto alla rovescia dell'asta",
     "Boxes.Alerts.Form.Antiques.Dealer": "Rivenditore di oggetti d'antiquariato",

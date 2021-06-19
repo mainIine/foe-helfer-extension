@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Clasamentul cu contributia membrilor ghildei la EG au fost actualizate",
-    "API.GEXPlayer": "Contribuția membrilor ghildei la EG a fost actualizată",
     "API.LGGildMember": "Datele despre clădirile legendare ale lui __player__'s au fost transmise",
-    "API.UpdateSuccess": "Actualizare efectuată cu succes!",
     "Boxes.Alerts.Form.Antiques.Auction": "Licitaţie",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Reîncărcare la licitație",
     "Boxes.Alerts.Form.Antiques.Dealer": "Negustor de antichitati.",

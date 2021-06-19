@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Die Gildenplatzierung wurde aktualisiert",
-    "API.GEXPlayer": "Die Platzierungen der Mitglieder wurden aktualisiert",
     "API.LGGildMember": "__player__'s LB wurden übermittelt",
-    "API.UpdateSuccess": "Update durchgeführt!",
     "Boxes.Alerts.Form.Antiques.Auction": "Auktion",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auktion beendet",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiquitätenhändler",

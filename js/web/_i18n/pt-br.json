@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Posicionamento da guilda na expedição foi atualizado",
-    "API.GEXPlayer": "Classificação dos membros na expedição da guilda atualizados",
     "API.LGGildMember": "Informações do GE de __player__ foram atualizadas",
-    "API.UpdateSuccess": "Informações atualizadas com sucesso!",
     "Boxes.Alerts.Form.Antiques.Auction": "Leilão",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Leião recarregado",
     "Boxes.Alerts.Form.Antiques.Dealer": "Mercador de Antiguidades",

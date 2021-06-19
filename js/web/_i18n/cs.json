@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Umístění cechu v CE bylo aktualizováno",
-    "API.GEXPlayer": "Informace o pořadí členů v CE byly aktualizovány",
     "API.LGGildMember": "Informace o VB hráče __player__ byly aktualizovány",
-    "API.UpdateSuccess": "Informace úspěšně aktualizovány!",
     "Boxes.Alerts.Form.Antiques.Auction": "Aukce",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Obnovení aukce",
     "Boxes.Alerts.Form.Antiques.Dealer": "Starožitník",
