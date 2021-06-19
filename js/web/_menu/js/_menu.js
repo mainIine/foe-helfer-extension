@@ -30,8 +30,7 @@ let _menu = {
 		'calculator',
 		'partCalc',
 		'outpost',
-		'productions',
-		'productionrating',
+		'productions',	
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
@@ -55,6 +54,7 @@ let _menu = {
 		'guildmemberstat',
 		'gexstat'
 		// 'unitsGex',
+		// 'productionrating',
 	],
 
 	HiddenItems: [],

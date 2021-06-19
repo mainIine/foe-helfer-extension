@@ -1441,7 +1441,7 @@ let Productions = {
 		h.push('</div>');
 
 		if (Productions.RatingCurrentTab === 'Settings') {
-			h.push('<table>');
+			h.push('<table class="foe-table">');
 
 			h.push('<thead>')
 			h.push('<tr>');
@@ -1457,11 +1457,11 @@ let Productions = {
 				let Type = Productions.RatingTypes[i];
 
 				h.push('<tr>');
-				h.push('<td class="resicon ' + Type + '">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>');
+				h.push('<td class="resicon ' + Type + '">&nbsp;&nbsp;</td>');
 				h.push('<td>' + Productions.GetGoodName(Type) + '</td>');
-				h.push('<td><input id="Enabled-' + Type + '" class="enabled game-cursor" ' + (Productions.RatingEnableds[Type] ? 'checked' : '') + ' type="checkbox"></td>');
+				h.push('<td class="text-center"><input id="Enabled-' + Type + '" class="enabled game-cursor" ' + (Productions.RatingEnableds[Type] ? 'checked' : '') + ' type="checkbox"></td>');
 				if (Productions.RatingEnableds[Type]) {
-					h.push('<td><input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" value="' + Productions.RatingProdPerTiles[Type] + '"></td>');
+					h.push('<td class="text-center"><input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" value="' + Productions.RatingProdPerTiles[Type] + '"></td>');
 				}
 				else {
 					h.push('<td></td>');
