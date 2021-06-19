@@ -394,7 +394,7 @@ let _menu = {
 		let btn_prodratBG = $('<div />').attr({ 'id': 'productionrating-Btn', 'data-slug': 'productionrating' }).addClass('hud-btn');
 
 		// Tooltip einbinden
-		btn_prodratBG = _menu.toolTipp(btn_prodratBG, i18n('Menu.ProductionRating.Title'), i18n('Menu.ProductionRating.Desc'));
+		btn_prodratBG = _menu.toolTipp(btn_prodratBG, i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
 
 		let btn_prodrat = $('<span />');
 
