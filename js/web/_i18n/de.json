@@ -905,12 +905,13 @@
     "Settings.AutomaticNegotiation.Title": "Verhandlungsassistent",
     "Settings.ChangeLanguage.Desc": "Wähle deine bevorzugte Sprache aus der drop-down-Liste",
     "Settings.ChangeLanguage.Title": "Sprache wechseln",
-
+    "Settings.EnableSound.Desc": "Sollen Soundeffekte der Extension aktiviert werden",
+    "Settings.EnableSound.Title": "Ton aktivieren",
     "Settings.Entry.About": "Über uns",
     "Settings.Entry.AutoOpenInfoBox": "Infobox",
     "Settings.Entry.AutomaticNegotiation": "Verhandlungsassistent",
     "Settings.Entry.ChangeLanguage": "Sprache wechseln",
-
+    "Settings.Entry.EnableSound": "Ton aktivieren",
     "Settings.Entry.ExportSettings": "Import / Export",
     "Settings.Entry.GlobalSend": "Übermittlungen",
     "Settings.Entry.Help": "Hilfe",
