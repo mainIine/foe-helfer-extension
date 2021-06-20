@@ -65,13 +65,15 @@ let Infoboard = {
     DebugWebSocket: false,
     History: [],
     MaxEntries: 0,
-    World = localStorage.getItem('current_world'),
+    World: '',
 
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
      * */
     Init: () => {
+        Infoboard.World = localStorage.getItem('current_world');
+
         FoEproxy.addRawWsHandler(data => {
             Infoboard.HandleMessage('in', data);
         });
