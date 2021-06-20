@@ -100,7 +100,7 @@
 		"callback": "MenuContent",
 		"group": "Extension",
 		"sort": 2
-	},	
+	},
 	{
 		"name": "MenuLength",
 		"callback": "MenuInputLength",
@@ -120,23 +120,29 @@
 		"sort": 5
 	},
 	{
+		"name": "DisbleSound",
+		"status":  false,
+		"group": "Extension",
+		"sort": 6
+	},
+	{
 		"name": "ShowNotifications",
 		"status": true,
 		"group": "Extension",
-		"sort": 6
+		"sort": 7
 	},
 	{
 		"name": "NotificationsPosition",
 		"callback": "NotificationView",
 		"group": "Extension",
 		"status": "bottom-right",
-		"sort": 7
+		"sort": 8
 	},
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
 		"group": "Extension",
-		"sort": 8
+		"sort": 9
 	},
 	{
 		"name": "About",
