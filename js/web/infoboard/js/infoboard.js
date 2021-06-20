@@ -297,7 +297,7 @@ let Infoboard = {
 
             if (Infoboard.PlayInfoSound && status && filterStatus)
             {
-                if (!Settings.GetSetting('DisableSound')) Infoboard.SoundFile.play();
+                if (Settings.GetSetting('EnableSound')) Infoboard.SoundFile.play();
             }
         }
     },

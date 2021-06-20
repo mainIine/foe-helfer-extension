@@ -120,8 +120,8 @@
 		"sort": 5
 	},
 	{
-		"name": "DisbleSound",
-		"status":  false,
+		"name": "EnableSound",
+		"status":  true,
 		"group": "Extension",
 		"sort": 6
 	},

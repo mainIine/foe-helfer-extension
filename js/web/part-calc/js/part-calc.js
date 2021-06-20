@@ -27,7 +27,7 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 		let NewLevel = data.responseData['level'];
 		Parts.Show(NewLevel);
 		if (Parts.PlayInfoSound) {
-			if (!Settings.GetSetting('DisableSound')) Calculator.SoundFile.play();
+			if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
 		}
     }
 });
