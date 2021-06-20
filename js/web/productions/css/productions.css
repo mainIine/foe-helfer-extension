@@ -196,6 +196,10 @@
 	overflow-y: auto;
 }
 
+#ProductionsRating #ProductionsRatingBody table td {
+	font-size: 85%;
+}
+
 #ProductionsRating #ProductionsRatingBody strong.success {
 	color: var(--text-success);
 }

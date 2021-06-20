@@ -249,7 +249,7 @@ let Productions = {
 	 * alle Produkte auslesen
 	 *
 	 * @param d
-	 * @returns {{eid: *, at: *, in: *, name: *, id: *, type: *, products: *}}
+	 * @returns {{eid: *, at: *, in: *, name: *, id: *, type: *, products: *, motivatedproducts: *}}
 	 */
 	readType: (d) => {
 		let Products = [],
@@ -258,35 +258,12 @@ let Productions = {
 			CityEntity = MainParser.CityEntities[EntityID],
 			AdditionalResources = [],
 			Units,
-			era;
+			era,
+			DoubleProductionWhenMotivated = false;
 
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
 		if(Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
-
-		if (CityEntity['abilities'])
-		{
-			for (let AbilityIndex in CityEntity['abilities'])
-			{
-				if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex)) continue
-
-				let Ability = CityEntity['abilities'][AbilityIndex];
-
-				if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
-					let NewResources = Ability['additionalResources']['AllAge']['resources'];
-					for (let resource in NewResources) {
-						if (!NewResources.hasOwnProperty(resource)) continue;
-						if (!AdditionalResources[resource]) AdditionalResources[resource] = 0;
-						AdditionalResources[resource] += NewResources[resource];
-                    }
-				}
-
-				// this buildung produces random units
-				else if(Ability['__class__'] === 'RandomUnitOfAgeWhenMotivatedAbility') {
-					Units = Ability['amount'];
-				}
-            }
-        }
 
 		// Zeitalter suchen
 		if (CityEntity['is_multi_age'] && d['level']) {
@@ -305,6 +282,59 @@ let Productions = {
 				if (era === 0) era = CurrentEraID; //AllAge => Current era
 			}
 		}
+
+		if (CityEntity['abilities'])
+		{
+			for (let AbilityIndex in CityEntity['abilities'])
+			{
+				if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex)) continue
+
+				let Ability = CityEntity['abilities'][AbilityIndex];
+
+				if (Ability['__class__'] === 'DoubleProductionWhenMotivatedAbility') DoubleProductionWhenMotivated = true;
+
+				if (d['state']['is_motivated'] === false && Ability['additionalResources']) {
+					if (Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
+						let NewResources = Ability['additionalResources']['AllAge']['resources'];
+						for (let Resource in NewResources) {
+							if (!NewResources.hasOwnProperty(Resource)) continue;
+
+							if (Resource.startsWith('random_good') || Resource.startsWith('all_goods')) {
+								let Amount = NewResources[Resource] / 5;
+
+								let StartIndex = (era - 2) * 5;
+								if (StartIndex >= 0 && StartIndex+5 <= GoodsList.length) {
+									for (let i = 0; i < 5; i++) {
+										let Resource2 = GoodsList[StartIndex+i]['id'];
+										if (!AdditionalResources[Resource2]) AdditionalResources[Resource2] = 0;
+										AdditionalResources[Resource2] += Amount;
+                                    }
+                                }
+							}
+							else {
+								if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
+								AdditionalResources[Resource] += NewResources[Resource];
+                            }
+						}
+					}
+
+					let EraName = Technologies.EraNames[era];
+					if (EraName && Ability['additionalResources'][EraName] && Ability['additionalResources'][EraName]['resources']) {
+						let NewResources = Ability['additionalResources'][EraName]['resources'];
+						for (let Resource in NewResources) {
+							if (!NewResources.hasOwnProperty(Resource)) continue;
+							if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
+							AdditionalResources[Resource] += NewResources[Resource];
+						}
+                    }
+				}
+
+				// this buildung produces random units
+				else if(Ability['__class__'] === 'RandomUnitOfAgeWhenMotivatedAbility') {
+					Units = Ability['amount'];
+				}
+            }
+        }
 
 		let Ret = {
 			name: CityEntity['name'],
@@ -453,16 +483,19 @@ let Productions = {
 			MotivatedProducts = [];
 
 		for (let ProductName in Products) {
-			MotivatedProducts[ProductName] = Products[ProductName];
+			let MotivationFactor;
+			if ((ProductName === 'money' || ProductName === 'supplies' || ProductName === 'clan_power') && DoubleProductionWhenMotivated && d['state']['is_motivated'] === false) {
+				MotivationFactor = 2;
+			}
+			else { //Keine Doppelproduktion durch Motivierung oder schon motiviert
+				MotivationFactor = 1;
+            }
+
+			MotivatedProducts[ProductName] = Products[ProductName] * MotivationFactor;
 		}
 
         for (let Resource in AdditionalResources) {
-
-            if (!AdditionalResources.hasOwnProperty(Resource)) {
-            	break;
-			}
-
-            if (Resource.startsWith('random_good') || Resource.startsWith('all_goods')) continue;
+			if (!AdditionalResources.hasOwnProperty(Resource)) continue;
 
 			AdditionalProduct = AdditionalResources[Resource];
 
@@ -571,6 +604,7 @@ let Productions = {
 				rowA = [],
 				rowB = [],
 				countProducts = [],
+				countProductsMotivated = [],
 				countProductsDone = [],
 				countAll = 0,
 				countAllMotivated = 0,
@@ -664,27 +698,38 @@ let Productions = {
 						let tds = '<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>';
 
 						let pA = [],
-							CurrentBuildingCount = 0;
+							CurrentBuildingCount = 0,
+							CurrentBuildingMotivatedCount = 0;
 
-						for(let p in buildings[i]['products'])
+						for(let p in buildings[i]['motivatedproducts'])
 						{
-							if (buildings[i]['products'].hasOwnProperty(p) && (Productions.Types.includes(p) === false)) {
+							if (!buildings[i]['motivatedproducts'].hasOwnProperty(p)) continue;
+
+							if (Productions.Types.includes(p) === false) {
 								if (countProducts[p] === undefined) {
 									countProducts[p] = 0;
+									countProductsMotivated[p] = 0;
 									countProductsDone[p] = 0;
 								}
 
-								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i]['dailyfactor'], p);
+								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i]['dailyfactor'], p),
+									MotivatedAmount = Productions.GetDaily(buildings[i]['motivatedproducts'][p], buildings[i]['dailyfactor'], p);
+
 								countProducts[p] += Amount;
+								countProductsMotivated[p] += MotivatedAmount;
+
 								CurrentBuildingCount += Amount;
+								CurrentBuildingMotivatedCount += MotivatedAmount;
+
 								countAll += Amount;
+								countAllMotivated += MotivatedAmount;
 
 								if (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime()) {
 									countProductsDone[p] += Amount;
 									countAllDone += Amount;
 								}
 
-								pA.push(HTML.Format(Amount) + ' ' + Productions.GetGoodName(p));
+								pA.push(HTML.Format(Amount) + (Amount !== MotivatedAmount ? '/' + HTML.Format(MotivatedAmount) : '') + ' ' + Productions.GetGoodName(p));
 							}
 						}
 
@@ -704,8 +749,7 @@ let Productions = {
 
 						rowA.push(tds);
 
-						countProducts.filter(val => val);
-
+						// countMotivatedProducts.filter(val => val); ?????
 					}
 				}
 			}
@@ -750,28 +794,28 @@ let Productions = {
 			{
 				let eras = [],
 					eraSums = [],
+					eraSumsMotivated = [],
 					eraSumsDone = [];
 
 				// nach Zeitalter gruppieren und Array zusammen fummlen
 				for(let ca in countProducts)
 				{
-					if(countProducts.hasOwnProperty(ca))
-					{
-						let era = Technologies.Eras[GoodsData[ca]['era']];
+					if (!countProducts.hasOwnProperty(ca)) continue;
 
-						if(eras[era] === undefined){
-							eras[era] = [];
-						}
+					let era = Technologies.Eras[GoodsData[ca]['era']];
 
-						eras[era].push('<span>' + Productions.GetGoodName(ca) + ' <strong>' + HTML.Format(countProducts[ca]) + '</strong></span>');
+					if (eras[era] === undefined) eras[era] = [];
 
-						if (!eraSums[era]) {
-							eraSums[era] = 0;
-							eraSumsDone[era] = 0;
-						}
-						eraSums[era] += countProducts[ca];
-						eraSumsDone[era] += countProductsDone[ca];
+					eras[era].push('<span>' + Productions.GetGoodName(ca) + ' <strong>' + HTML.Format(countProducts[ca]) + (countProducts[ca] !== countProductsMotivated[ca] ? '/' + HTML.Format(countProductsMotivated[ca]) : '') + '</strong></span>');
+
+					if (eraSums[era] === undefined) {
+						eraSums[era] = 0;
+						eraSumsMotivated[era] = 0;
+						eraSumsDone[era] = 0;
 					}
+					eraSums[era] += countProducts[ca];
+					eraSumsMotivated[era] += countProductsMotivated[ca];
+					eraSumsDone[era] += countProductsDone[ca];
 				}
 
 
@@ -791,6 +835,9 @@ let Productions = {
 				if (CurrentEraID === 19 && !MainParser.CityMapEraOutpostData) {
 					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
 				}
+				if (CurrentEraID === 20 && !MainParser.CityMapEraOutpostData) {
+					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoVenusDataWarning') + '</th></tr>');
+				}
 
 				// Zeitalterweise in die Tabelle legen
 				for (let era = eras.length; era >= 0; era--)
@@ -798,7 +845,7 @@ let Productions = {
 					if (!eras.hasOwnProperty(era)) continue;
 					
 					table.push('<tr><th colspan="3"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th>');
-					table.push('<th colspan="3" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + '</strong>');
+					table.push('<th colspan="3" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + (eraSums[era] !== eraSumsMotivated[era] ? '/' + HTML.Format(eraSumsMotivated[era]) : '') + '</strong>');
 					table.push(' <span class="success">' + i18n('Boxes.Productions.Done') + ':</span> <strong class="success">' + HTML.Format(eraSumsDone[era]) + '</strong></th ></tr > ');
 
 					table.push('<tr><td colspan="6" class="all-products">');
@@ -823,7 +870,6 @@ let Productions = {
 				table.push('<th class="no-sort">&nbsp;</th>');
 				table.push('</tr>');
 			}
-
 			else {
 				table.push('<thead>');
 
@@ -1269,20 +1315,23 @@ let Productions = {
 	/**
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
-	 * @param id
+	 * @param ids
 	 */
-	ShowFunction: (id)=> {
+	ShowFunction: (ids) => {
+		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
 		CityMap.init(MainParser.CityMapData);
 
 		$('[data-entityid]').removeClass('pulsate');
 
 		setTimeout(() => {
-			let target = $('[data-entityid="' + id + '"]');
+			for (let i = 0; i < IDArray.length; i++) {
+				let target = $('[data-entityid="' + IDArray[i] + '"]');
 
-			$('#map-container').scrollTo(target, 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+				if(i === 0) $('#map-container').scrollTo(target, 800, { offset: { left: -280, top: -280 }, easing: 'swing' });
 
-			target.addClass('pulsate');
+				target.addClass('pulsate');
+            }		
 		}, 500);
 	},
 
@@ -1390,6 +1439,38 @@ let Productions = {
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('productions');
 
+			// Ein Gebäude soll auf der Karte dargestellt werden
+			$('#ProductionsRating').on('click', '.foe-table .show-entity', function () {
+				let ID = $(this).data('id');
+
+				let Parts = ID.split('='),
+					GroupType = (Parts.length >= 1 ? Parts[0] : ''),
+					GroupID = (Parts.length >= 2 ? Parts[1] : '');
+									
+				let IDs = [];
+				for (let i in MainParser.CityMapData) {
+					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
+
+					let CurrentBuilding = MainParser.CityMapData[i];
+
+					if (GroupType === 'entityid') {
+						if (CurrentBuilding['cityentity_id'] === GroupID) IDs.push(i);
+					}
+					else if (GroupType === 'setId' || GroupType === 'chainId') {
+						let Entity = MainParser.CityEntities[CurrentBuilding['cityentity_id']];
+
+						if (!Entity['abilities']) continue;
+						for (let j = 0; j < Entity['abilities'].length; j++) {
+							let Ability = Entity['abilities'][j];
+
+							if (Ability[GroupType] === GroupID) IDs.push(i);
+						}
+					}
+                }
+
+				Productions.ShowFunction(IDs);
+			});
+
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
@@ -1440,6 +1521,7 @@ let Productions = {
 		h.push('</ul>');
 		h.push('</div>');
 
+		//Einstellungen
 		if (Productions.RatingCurrentTab === 'Settings') {
 			h.push('<table class="foe-table">');
 
@@ -1472,40 +1554,41 @@ let Productions = {
 
 			h.push('</table>');
 		}
+		//Ergebnisse
 		else if (Productions.RatingCurrentTab === 'Results') {
-			h.push('<table class="foe-table sortable-table">');
-
-			h.push('<thead>');
-			h.push('<tr>');
-			h.push('<td>' + i18n('Boxes.ProductionsRating.BuildingName') + '</td>');
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i];
-
-				if (!Productions.RatingEnableds[Type]) continue;
-
-				h.push('<td class="resicon ' + Type + '"></td>');
-			}
-			h.push('<td>' + i18n('Boxes.ProductionsRating.Score') + '</td>');
-			h.push('</tr>');
-			h.push('<thead>');
-
-			h.push('<tbody>');
-			let Buildings = [];
+			//Schritt1: Berechnung
+			let BuildingGroups = {};
 			for (let i in MainParser.CityMapData) {
 				if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
 
-				let Building = MainParser.CityMapData[i];
-				let Entity = MainParser.CityEntities[Building['cityentity_id']];
+				let Building = MainParser.CityMapData[i],
+					Entity = MainParser.CityEntities[Building['cityentity_id']],
+					GroupID = Building['cityentity_id'],
+					GroupName = Entity['name'],
+					GroupType = 'cityentity_id';
 
-				//Keine Gebäude, die man nicht abreißen kann, keine ChainLinkablity (z.B. Waggons, Bahnen)
+				//Keine Gebäude, die man nicht abreißen kann
 				if (Entity['abilities']) {
 					let SkipBuilding = false;
 					for (let j = 0; j < Entity['abilities'].length; j++) {
-						let Class = Entity['abilities'][j]['__class__'];
-						if (Class === 'NotsellableAbility' || Class === 'ChainLinkAbility') {
+						let Ability = Entity['abilities'][j],
+							Class = Ability['__class__'];
+
+						if (Class === 'NotsellableAbility') {
 							SkipBuilding = true;
 							break;
 						}
+						else if (Ability['chainId']) {
+							GroupID = Ability['chainId'];
+							GroupName = (MainParser.BuildingChains[Ability['chainId']] ? MainParser.BuildingChains[Ability['chainId']]['name'] : Ability['chainId']);
+							GroupType = 'chainId';
+						}
+						else if (Ability['setId']) {
+							GroupID = Ability['setId'];
+							GroupName = (MainParser.BuildingSets[Ability['setId']] ? MainParser.BuildingSets[Ability['setId']]['name'] : Ability['setId']);
+							GroupType = 'setId';
+
+                        }
 					}
 					if (SkipBuilding) continue;
 				}
@@ -1514,7 +1597,7 @@ let Productions = {
 				if (Entity['type'] === 'greatbuilding' || Entity['type'] === 'street' || Entity['type'] === 'military') continue;
 
 				let Production = Productions.readType(Building);
-				let Score = 0;
+				//let Score = 0;
 
 				Production['motivatedproducts']['goods'] = 0;
 				for (let Type in Production['motivatedproducts']) {
@@ -1528,50 +1611,113 @@ let Productions = {
 					if (!Productions.Types.includes(Type)) {
 						Production.motivatedproducts['goods'] += Production.motivatedproducts[Type];
 						delete Production.motivatedproducts[Type];
-                    }
-                }
+					}
+				}
 
 				for (let Type in Production['motivatedproducts']) {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
-					if (Productions.RatingEnableds[Type]) {
-						let width = parseInt(Entity['width']),
-							length = parseInt(Entity['length']),
-							RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0),
-							Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2),
-							CurrentScore = (Productions.RatingProdPerTiles[Type] > 0 ? Production.motivatedproducts[Type] / Productions.RatingProdPerTiles[Type] / Tiles : 0);
-
-						Score += CurrentScore;
+					if (!Productions.RatingEnableds[Type]) {
+						delete Production.motivatedproducts[Type];						
 					}
-					else {
-						delete Production.motivatedproducts[Type];
-                    }
 				}
-				Production['Score'] = Score;
-				Buildings.push(Production);
+				if (!BuildingGroups[GroupID]) BuildingGroups[GroupID] = [];
+
+				Production.GroupName = GroupName;
+				Production.GroupType = GroupType;
+				BuildingGroups[GroupID].push(Production);
 			}
-			Buildings = Buildings.sort(function (a, b) {
+
+			let GroupStats = [];
+			for (let GroupID in BuildingGroups) {
+				if (!BuildingGroups.hasOwnProperty(GroupID)) continue;
+
+				let CurrentGroup = BuildingGroups[GroupID],
+					TotalProducts = {},
+					TotalTiles = 0;
+
+				for (let i = 0; i < CurrentGroup.length; i++) {
+					let CurrentBuilding = CurrentGroup[i],
+						Entity = MainParser.CityEntities[CurrentBuilding['eid']];
+
+					for (let ResName in CurrentBuilding['motivatedproducts']) {
+						if (!CurrentBuilding['motivatedproducts'].hasOwnProperty(ResName)) continue;
+
+						if (!TotalProducts[ResName]) TotalProducts[ResName] = 0;
+						TotalProducts[ResName] += CurrentBuilding['motivatedproducts'][ResName];
+					}
+
+					let width = parseInt(Entity['width']),
+						length = parseInt(Entity['length']),
+						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0),
+						Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
+
+					TotalTiles += Tiles;
+				}
+
+				let TotalPoints = 0;
+				for (let ResName in TotalProducts) {
+					if (!TotalProducts.hasOwnProperty(ResName)) continue;
+
+					if (!Productions.RatingEnableds[ResName] || Productions.RatingProdPerTiles[ResName] <= 0) continue;
+
+					TotalPoints += TotalProducts[ResName] / Productions.RatingProdPerTiles[ResName];
+				}
+
+				let GroupStat = {};
+				GroupStat['ID'] = GroupID;
+				GroupStat['GroupName'] = CurrentGroup[0]['GroupName'];
+				GroupStat['GroupType'] = CurrentGroup[0]['GroupType'];
+				GroupStat['Count'] = CurrentGroup.length;
+				GroupStat['TotalProducts'] = TotalProducts;
+				GroupStat['Score'] = TotalPoints / TotalTiles;
+
+				GroupStats.push(GroupStat);
+            }
+
+			GroupStats = GroupStats.sort(function (a, b) {
 				return a['Score'] - b['Score'];
 			});
 
-			for (let i = 0; i < Buildings.length; i++) {
-				let Building = Buildings[i],
-					Entity = MainParser.CityEntities[Building['eid']];
+			//Schritt2: Header
+			h.push('<table class="foe-table sortable-table">');
+
+			h.push('<thead>');
+			h.push('<tr>');
+			h.push('<td>' + i18n('Boxes.ProductionsRating.BuildingName') + '</td>');
+			for (let i = 0; i < Productions.RatingTypes.length; i++) {
+				let Type = Productions.RatingTypes[i];
+
+				if (!Productions.RatingEnableds[Type]) continue;
+
+				h.push('<td class="resicon ' + Type + '"></td>');
+			}
+			h.push('<td>' + i18n('Boxes.ProductionsRating.Score') + '</td>');
+			h.push('<td></td>');
+			h.push('</tr>');
+			h.push('<thead>');
+
+			//Schritt3: Body
+			h.push('<tbody>');
+			
+			for (let i = 0; i < GroupStats.length; i++) {
+				let GroupStat = GroupStats[i];
 
 				h.push('<tr>');
-				h.push('<td>' + Entity['name'] + '</td>');
+				h.push('<td>' + GroupStat['Count'] + 'x ' + GroupStat['GroupName'] + '</td>');
 				for (let j = 0; j < Productions.RatingTypes.length; j++) {
 					let Type = Productions.RatingTypes[j];
 
 					if (!Productions.RatingEnableds[Type]) continue;
 
-					let Amount = (Building['motivatedproducts'][Type] ? Building['motivatedproducts'][Type] : 0);
+					let Amount = (GroupStat['TotalProducts'][Type] ? GroupStat['TotalProducts'][Type] : 0);
 					h.push('<td>' + HTML.Format(Math.round(Amount)) + '</td>');
 				}
 
-				let ScorePercent = Math.round(Building['Score'] * 100);
+				let ScorePercent = Math.round(GroupStat['Score'] * 100);
 
-				h.push('<td><strong class="' + (ScorePercent >=100 ? 'success' : 'error') + '">' + (ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
+				h.push('<td><strong class="' + (ScorePercent >= 100 ? 'success' : 'error') + '">' + (ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
+				h.push('<td class="text-right"><span class="show-entity" data-id="' + GroupStat['GroupType'] + '=' + GroupStat['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
 				h.push('</tr>');
             }
 
@@ -1600,7 +1746,7 @@ let Productions = {
 			return 0;
 		}
 		if (Type === 'units') {
-			return 0;
+			return 0.2;
 		}
 		if (Type === 'clan_power') {
 			return 0;
@@ -1621,10 +1767,10 @@ let Productions = {
 			return 1;
 		}
 		if (Type === 'att_boost_defender') {
-			return 0;
+			return 6;
 		}
 		if (Type === 'def_boost_defender') {
-			return 0;
+			return 6;
 		}
 		if (Type === 'goods') {
 			return 1;
