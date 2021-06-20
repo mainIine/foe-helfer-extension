@@ -599,7 +599,25 @@ const FoEproxy = (function () {
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
-		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));;
+		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Updatestufen der Eventgebäude
+	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
+		let SelectKitArray = JSON.parse(xhr.responseText)
+		MainParser.BuildingSelectionKits = Object.assign({}, ...SelectKitArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Building-Sets
+	FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
+		let BuildingSetArray = JSON.parse(xhr.responseText);
+		MainParser.BuildingSets = Object.assign({}, ...BuildingSetArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Building-Sets
+	FoEproxy.addMetaHandler('building_chains', (xhr, postData) => {
+		let BuildingChainsArray = JSON.parse(xhr.responseText);
+		MainParser.BuildingChains = Object.assign({}, ...BuildingChainsArray.map((x) => ({ [x.id]: x })));
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -1191,6 +1209,9 @@ let MainParser = {
 
 	// Building sets
 	BuildingSets: null,
+
+	//Winterzug etc.
+	BuildingChains: null,
 
 
 	InnoCDN: 'https://foede.innogamescdn.com/',

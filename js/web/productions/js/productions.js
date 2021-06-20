@@ -1312,20 +1312,23 @@ let Productions = {
 	/**
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
-	 * @param id
+	 * @param ids
 	 */
-	ShowFunction: (id)=> {
+	ShowFunction: (ids) => {
+		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
 		CityMap.init(MainParser.CityMapData);
 
 		$('[data-entityid]').removeClass('pulsate');
 
 		setTimeout(() => {
-			let target = $('[data-entityid="' + id + '"]');
+			for (let i = 0; i < IDArray.length; i++) {
+				let target = $('[data-entityid="' + IDArray[i] + '"]');
 
-			$('#map-container').scrollTo(target, 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+				if(i === 0) $('#map-container').scrollTo(target, 800, { offset: { left: -280, top: -280 }, easing: 'swing' });
 
-			target.addClass('pulsate');
+				target.addClass('pulsate');
+            }		
 		}, 500);
 	},
 
@@ -1433,6 +1436,38 @@ let Productions = {
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('productions');
 
+			// Ein Gebäude soll auf der Karte dargestellt werden
+			$('#ProductionsRating').on('click', '.foe-table .show-entity', function () {
+				let ID = $(this).data('id');
+
+				let Parts = ID.split('='),
+					GroupType = (Parts.length >= 1 ? Parts[0] : ''),
+					GroupID = (Parts.length >= 2 ? Parts[1] : '');
+									
+				let IDs = [];
+				for (let i in MainParser.CityMapData) {
+					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
+
+					let CurrentBuilding = MainParser.CityMapData[i];
+
+					if (GroupType === 'entityid') {
+						if (CurrentBuilding['cityentity_id'] === GroupID) IDs.push(i);
+					}
+					else if (GroupType === 'setId' || GroupType === 'chainId') {
+						let Entity = MainParser.CityEntities[CurrentBuilding['cityentity_id']];
+
+						if (!Entity['abilities']) continue;
+						for (let j = 0; j < Entity['abilities'].length; j++) {
+							let Ability = Entity['abilities'][j];
+
+							if (Ability[GroupType] === GroupID) IDs.push(i);
+						}
+					}
+                }
+
+				Productions.ShowFunction(IDs);
+			});
+
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
@@ -1483,6 +1518,7 @@ let Productions = {
 		h.push('</ul>');
 		h.push('</div>');
 
+		//Einstellungen
 		if (Productions.RatingCurrentTab === 'Settings') {
 			h.push('<table class="foe-table">');
 
@@ -1515,40 +1551,41 @@ let Productions = {
 
 			h.push('</table>');
 		}
+		//Ergebnisse
 		else if (Productions.RatingCurrentTab === 'Results') {
-			h.push('<table class="foe-table sortable-table">');
-
-			h.push('<thead>');
-			h.push('<tr>');
-			h.push('<td>' + i18n('Boxes.ProductionsRating.BuildingName') + '</td>');
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i];
-
-				if (!Productions.RatingEnableds[Type]) continue;
-
-				h.push('<td class="resicon ' + Type + '"></td>');
-			}
-			h.push('<td>' + i18n('Boxes.ProductionsRating.Score') + '</td>');
-			h.push('</tr>');
-			h.push('<thead>');
-
-			h.push('<tbody>');
-			let Buildings = [];
+			//Schritt1: Berechnung
+			let BuildingGroups = {};
 			for (let i in MainParser.CityMapData) {
 				if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
 
-				let Building = MainParser.CityMapData[i];
-				let Entity = MainParser.CityEntities[Building['cityentity_id']];
+				let Building = MainParser.CityMapData[i],
+					Entity = MainParser.CityEntities[Building['cityentity_id']],
+					GroupID = Building['cityentity_id'],
+					GroupName = Entity['name'],
+					GroupType = 'cityentity_id';
 
-				//Keine Gebäude, die man nicht abreißen kann, keine ChainLinkablity (z.B. Waggons, Bahnen)
+				//Keine Gebäude, die man nicht abreißen kann
 				if (Entity['abilities']) {
 					let SkipBuilding = false;
 					for (let j = 0; j < Entity['abilities'].length; j++) {
-						let Class = Entity['abilities'][j]['__class__'];
-						if (Class === 'NotsellableAbility' || Class === 'ChainLinkAbility' || Class === 'BuildingSetAbility') {
+						let Ability = Entity['abilities'][j],
+							Class = Ability['__class__'];
+
+						if (Class === 'NotsellableAbility') {
 							SkipBuilding = true;
 							break;
 						}
+						else if (Ability['chainId']) {
+							GroupID = Ability['chainId'];
+							GroupName = (MainParser.BuildingChains[Ability['chainId']] ? MainParser.BuildingChains[Ability['chainId']]['name'] : Ability['chainId']);
+							GroupType = 'chainId';
+						}
+						else if (Ability['setId']) {
+							GroupID = Ability['setId'];
+							GroupName = (MainParser.BuildingSets[Ability['setId']] ? MainParser.BuildingSets[Ability['setId']]['name'] : Ability['setId']);
+							GroupType = 'setId';
+
+                        }
 					}
 					if (SkipBuilding) continue;
 				}
@@ -1557,7 +1594,7 @@ let Productions = {
 				if (Entity['type'] === 'greatbuilding' || Entity['type'] === 'street' || Entity['type'] === 'military') continue;
 
 				let Production = Productions.readType(Building);
-				let Score = 0;
+				//let Score = 0;
 
 				Production['motivatedproducts']['goods'] = 0;
 				for (let Type in Production['motivatedproducts']) {
@@ -1571,50 +1608,113 @@ let Productions = {
 					if (!Productions.Types.includes(Type)) {
 						Production.motivatedproducts['goods'] += Production.motivatedproducts[Type];
 						delete Production.motivatedproducts[Type];
-                    }
-                }
+					}
+				}
 
 				for (let Type in Production['motivatedproducts']) {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
-					if (Productions.RatingEnableds[Type]) {
-						let width = parseInt(Entity['width']),
-							length = parseInt(Entity['length']),
-							RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0),
-							Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2),
-							CurrentScore = (Productions.RatingProdPerTiles[Type] > 0 ? Production.motivatedproducts[Type] / Productions.RatingProdPerTiles[Type] / Tiles : 0);
-
-						Score += CurrentScore;
+					if (!Productions.RatingEnableds[Type]) {
+						delete Production.motivatedproducts[Type];						
 					}
-					else {
-						delete Production.motivatedproducts[Type];
-                    }
 				}
-				Production['Score'] = Score;
-				Buildings.push(Production);
+				if (!BuildingGroups[GroupID]) BuildingGroups[GroupID] = [];
+
+				Production.GroupName = GroupName;
+				Production.GroupType = GroupType;
+				BuildingGroups[GroupID].push(Production);
 			}
-			Buildings = Buildings.sort(function (a, b) {
+
+			let GroupStats = [];
+			for (let GroupID in BuildingGroups) {
+				if (!BuildingGroups.hasOwnProperty(GroupID)) continue;
+
+				let CurrentGroup = BuildingGroups[GroupID],
+					TotalProducts = {},
+					TotalTiles = 0;
+
+				for (let i = 0; i < CurrentGroup.length; i++) {
+					let CurrentBuilding = CurrentGroup[i],
+						Entity = MainParser.CityEntities[CurrentBuilding['eid']];
+
+					for (let ResName in CurrentBuilding['motivatedproducts']) {
+						if (!CurrentBuilding['motivatedproducts'].hasOwnProperty(ResName)) continue;
+
+						if (!TotalProducts[ResName]) TotalProducts[ResName] = 0;
+						TotalProducts[ResName] += CurrentBuilding['motivatedproducts'][ResName];
+					}
+
+					let width = parseInt(Entity['width']),
+						length = parseInt(Entity['length']),
+						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0),
+						Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
+
+					TotalTiles += Tiles;
+				}
+
+				let TotalPoints = 0;
+				for (let ResName in TotalProducts) {
+					if (!TotalProducts.hasOwnProperty(ResName)) continue;
+
+					if (!Productions.RatingEnableds[ResName] || Productions.RatingProdPerTiles[ResName] <= 0) continue;
+
+					TotalPoints += TotalProducts[ResName] / Productions.RatingProdPerTiles[ResName];
+				}
+
+				let GroupStat = {};
+				GroupStat['ID'] = GroupID;
+				GroupStat['GroupName'] = CurrentGroup[0]['GroupName'];
+				GroupStat['GroupType'] = CurrentGroup[0]['GroupType'];
+				GroupStat['Count'] = CurrentGroup.length;
+				GroupStat['TotalProducts'] = TotalProducts;
+				GroupStat['Score'] = TotalPoints / TotalTiles;
+
+				GroupStats.push(GroupStat);
+            }
+
+			GroupStats = GroupStats.sort(function (a, b) {
 				return a['Score'] - b['Score'];
 			});
 
-			for (let i = 0; i < Buildings.length; i++) {
-				let Building = Buildings[i],
-					Entity = MainParser.CityEntities[Building['eid']];
+			//Schritt2: Header
+			h.push('<table class="foe-table sortable-table">');
+
+			h.push('<thead>');
+			h.push('<tr>');
+			h.push('<td>' + i18n('Boxes.ProductionsRating.BuildingName') + '</td>');
+			for (let i = 0; i < Productions.RatingTypes.length; i++) {
+				let Type = Productions.RatingTypes[i];
+
+				if (!Productions.RatingEnableds[Type]) continue;
+
+				h.push('<td class="resicon ' + Type + '"></td>');
+			}
+			h.push('<td>' + i18n('Boxes.ProductionsRating.Score') + '</td>');
+			h.push('<td></td>');
+			h.push('</tr>');
+			h.push('<thead>');
+
+			//Schritt3: Body
+			h.push('<tbody>');
+			
+			for (let i = 0; i < GroupStats.length; i++) {
+				let GroupStat = GroupStats[i];
 
 				h.push('<tr>');
-				h.push('<td>' + Entity['name'] + '</td>');
+				h.push('<td>' + GroupStat['Count'] + 'x ' + GroupStat['GroupName'] + '</td>');
 				for (let j = 0; j < Productions.RatingTypes.length; j++) {
 					let Type = Productions.RatingTypes[j];
 
 					if (!Productions.RatingEnableds[Type]) continue;
 
-					let Amount = (Building['motivatedproducts'][Type] ? Building['motivatedproducts'][Type] : 0);
+					let Amount = (GroupStat['TotalProducts'][Type] ? GroupStat['TotalProducts'][Type] : 0);
 					h.push('<td>' + HTML.Format(Math.round(Amount)) + '</td>');
 				}
 
-				let ScorePercent = Math.round(Building['Score'] * 100);
+				let ScorePercent = Math.round(GroupStat['Score'] * 100);
 
-				h.push('<td><strong class="' + (ScorePercent >=100 ? 'success' : 'error') + '">' + (ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
+				h.push('<td><strong class="' + (ScorePercent >= 100 ? 'success' : 'error') + '">' + (ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
+				h.push('<td class="text-right"><span class="show-entity" data-id="' + GroupStat['GroupType'] + '=' + GroupStat['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
 				h.push('</tr>');
             }
 
@@ -1643,7 +1743,7 @@ let Productions = {
 			return 0;
 		}
 		if (Type === 'units') {
-			return 0;
+			return 0.2;
 		}
 		if (Type === 'clan_power') {
 			return 0;
@@ -1664,10 +1764,10 @@ let Productions = {
 			return 1;
 		}
 		if (Type === 'att_boost_defender') {
-			return 0;
+			return 6;
 		}
 		if (Type === 'def_boost_defender') {
-			return 0;
+			return 6;
 		}
 		if (Type === 'goods') {
 			return 1;
