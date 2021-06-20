@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__'s GB info has been updated",
     "Boxes.Alerts.Form.Antiques.Auction": "Auction",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cool-down",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer",
@@ -967,10 +966,6 @@
     "Settings.ResetBoxPositions.Title": "Box Coordinates",
     "Settings.SelectedMenu.Desc": "Choose your preferred menu from the drop-down list (game will automatically reload)",
     "Settings.SelectedMenu.Title": "Change Menu",
-    "Settings.SendGEXInfo.Desc": "When clicking in the GE on placements or rankings the data transmitted",
-    "Settings.SendGEXInfo.Title": "GE evaluations",
-    "Settings.SendGildMemberLGInfo.Desc": "When visiting other guild members, upload GB data to foe-rechner.de.",
-    "Settings.SendGildMemberLGInfo.Title": "Upload guild members' GB data",
     "Settings.Show2kQuestMark.Desc": "Shows a small bagde with a counter of how many quests you can still refuse.",
     "Settings.Show2kQuestMark.Title": "2000 quest mark",
     "Settings.ShowBlueGalaxyHelper.Desc": "Displays a tool that suggests buildings to collect after collecting your Blue Galaxy",
