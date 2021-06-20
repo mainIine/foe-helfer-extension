@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__'s MB info har uppdaterats",
     "Boxes.Alerts.Form.Antiques.Auction": "Auktion",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auktion avsvalning",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antikhandlare",
@@ -855,10 +854,6 @@
     "Settings.ResetBoxPositions.Title": "Dialog kordinater",
     "Settings.SelectedMenu.Desc": "Välj din föredragna meny från släpp-ner-listan (spelet kommer att laddas om automatiskt)",
     "Settings.SelectedMenu.Title": "Ändra meny",
-    "Settings.SendGEXInfo.Desc": "När du är inne i IE, placering eller rank, överförs datan",
-    "Settings.SendGEXInfo.Title": "IE utvärdering",
-    "Settings.SendGildMemberLGInfo.Desc": "När du besäker andra imperiemedlemmar kommer MB data skickas till foe-helper.com vid globala aktiviteter.",
-    "Settings.SendGildMemberLGInfo.Title": "Skicka andra imperie-medlemmars MB data",
     "Settings.Show2kQuestMark.Desc": "Visar en liten indikator med en räknare på hur många uppdrag du fortfarande kan hoppa över.",
     "Settings.Show2kQuestMark.Title": "Markering för 2000 uppdrag",
     "Settings.ShowBlueGalaxyHelper.Desc": "Visar ett verktyg som föreslår byggnader att skörda efter skörd av Den blå galaxen",

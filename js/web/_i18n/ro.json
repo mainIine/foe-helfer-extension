@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "Datele despre clădirile legendare ale lui __player__'s au fost transmise",
     "Boxes.Alerts.Form.Antiques.Auction": "Licitaţie",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Reîncărcare la licitație",
     "Boxes.Alerts.Form.Antiques.Dealer": "Negustor de antichitati.",
@@ -673,10 +672,6 @@
     "Settings.ResetBoxPositions.Button": "Șterge!",
     "Settings.ResetBoxPositions.Desc": "Dorești resetarea tuturor coordonatelor casetei?",
     "Settings.ResetBoxPositions.Title": "Coordonatele casetei",
-    "Settings.SendGEXInfo.Desc": "Datele sunt transmise când accesezi clasamentul EG",
-    "Settings.SendGEXInfo.Title": "Evaluarea EG",
-    "Settings.SendGildMemberLGInfo.Desc": "Când vizitezi colegii de ghildă, toate datele CL vor fi trimise către foe-rechner.de, după ce se revine la Global.",
-    "Settings.SendGildMemberLGInfo.Title": "Datele clădirilor legendare ale membrilor ghildei",
     "Settings.ShowPlayersMotivation.Desc": "Ar trebui să fie transferate activitățile de motivație la misiunile evenimentelor?",
     "Settings.Version.Desc": "Versiunea extensiei pentru",
     "Settings.Version.GuildId": "ID ghildă:",
