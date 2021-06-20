@@ -835,6 +835,9 @@ let Productions = {
 				if (CurrentEraID === 19 && !MainParser.CityMapEraOutpostData) {
 					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
 				}
+				if (CurrentEraID === 20 && !MainParser.CityMapEraOutpostData) {
+					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoVenusDataWarning') + '</th></tr>');
+				}
 
 				// Zeitalterweise in die Tabelle legen
 				for (let era = eras.length; era >= 0; era--)

@@ -612,6 +612,7 @@
     "Boxes.Productions.ModeSingle": "List",
     "Boxes.Productions.NoAsteroidDataWarning": "Goods from Asteroid Belt are not included. Please visit your Asteroid Belt outpost and open the box again",
     "Boxes.Productions.NoMarsDataWarning": "Goods from Mars are not included. Please visit your Mars outpost and open the box again",
+    "Boxes.Productions.NoVenusDataWarning": "Goods from Venus are not included. Please visit your Venus outpost and open the box again",
     "Boxes.Productions.SearchInput": "Search Building… ",
     "Boxes.Productions.SizeTT": "Size including average road space requirement of __streetnettosize__ tiles",
     "Boxes.Productions.TTGoodsEra": "This column shows the era of the building, NOT the era of the produced goods",
