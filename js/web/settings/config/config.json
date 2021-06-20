@@ -6,18 +6,6 @@
 		"sort": 0
 	},
 	{
-		"name": "SendGEXInfo",
-		"status": true,
-		"group": "Sending",
-		"sort": 1
-	},
-	{
-		"name": "SendGildMemberLGInfo",
-		"status": false,
-		"group": "Sending",
-		"sort": 2
-	},
-	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
@@ -43,7 +31,7 @@
 	},
 	{
 		"name": "ShowOwnPartOnAllGBs",
-		"status": false,
+		"status": true,
 		"group": "Boxes",
 		"sort": 5
 	},

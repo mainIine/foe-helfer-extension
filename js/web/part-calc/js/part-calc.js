@@ -679,17 +679,21 @@ let Parts = {
 
 			h.push('<div class="bottom-buttons text-center dark-bg">');
 			h.push('<div class="btn-group">');
-			h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-			h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+			if (Parts.SafePlaces.length > 0) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
+				h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
+				h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+			}
+			else {
+				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
+            }
 			h.push('</div>');
 
-			let SaveCopyLength = Object.keys(Parts.SaveCopy).length;
-			if (SaveCopyLength > 0) h.push();
 			h.push('<div class="btn-group">');
 			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
 			h.push('</div>');
 
+			let SaveCopyLength = Object.keys(Parts.SaveCopy).length;
 			if (SaveCopyLength > 0) {
 				let GBList = "",
 					Keys = Object.keys(Parts.SaveCopy);
