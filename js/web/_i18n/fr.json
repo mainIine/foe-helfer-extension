@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "Les informations des GM de __player__ ont été mises à jour",
     "Boxes.Alerts.Form.Antiques.Auction": "Enchère",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Délai de l'enchère",
     "Boxes.Alerts.Form.Antiques.Dealer": "Vendeur d'antiquités",
@@ -906,10 +905,6 @@
     "Settings.ResetBoxPositions.Title": "Positionnement des fenêtres",
     "Settings.SelectedMenu.Desc": "Choisissez votre menu préféré dans la liste déroulante (le jeu se rechargera automatiquement)",
     "Settings.SelectedMenu.Title": "Changer le menu",
-    "Settings.SendGEXInfo.Desc": "Quand vous cliquez sur l'emplacement des expéditions de guildes ou sur le classement, les infos sont envoyées.",
-    "Settings.SendGEXInfo.Title": "Evaluations des expéditions de guildes",
-    "Settings.SendGildMemberLGInfo.Desc": "En visitant les autres membres de la guilde, les données des GM seront envoyées à foe-rechner.de quand l'option d'envoi est activé.",
-    "Settings.SendGildMemberLGInfo.Title": "Chargement des données des GM des membres de la guilde",
     "Settings.Show2kQuestMark.Desc": "Affiche un petit badge avec un compteur pour indiquer combien de quêtes vous pouvez encore refuser.",
     "Settings.Show2kQuestMark.Title": "Badge des 2000 quêtes",
     "Settings.ShowBlueGalaxyHelper.Desc": "Affiche un outil suggérant des bâtiments à récolter avec le bonus de la galaxie bleue",

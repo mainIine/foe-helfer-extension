@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
     "Boxes.Alerts.Form.Antiques.Auction": "Veiling",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Veiling wachttijd",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiquair",
@@ -898,10 +897,6 @@
     "Settings.ResetBoxPositions.Title": "Coördinaten vensters",
     "Settings.SelectedMenu.Desc": "Kies je voorkeurmenu uit de keuzelijst (spel ververst automatisch)",
     "Settings.SelectedMenu.Title": "Verander Menu",
-    "Settings.SendGEXInfo.Desc": "Wanneer je in GE klikt op de ranglijst of het bijdrage-overzicht, worden de gegevens verzonden",
-    "Settings.SendGEXInfo.Title": "GE evaluaties",
-    "Settings.SendGildMemberLGInfo.Desc": "Wanneer je andere gildeleden bezoekt, zal alle data van de Grootse gebouwen verzonden worden naar foe-rechner.de.",
-    "Settings.SendGildMemberLGInfo.Title": "Upload GG-data van gildeleden",
     "Settings.Show2kQuestMark.Desc": "Toon een teller met het aantal opdrachten die je nog mag afbreken.",
     "Settings.Show2kQuestMark.Title": "2k opdracht markering",
     "Settings.ShowBlueGalaxyHelper.Desc": "Toon een tool die suggesties doet welke gebouwen je moet oogsten na het oogsten van je Blauwe Melkweg",
