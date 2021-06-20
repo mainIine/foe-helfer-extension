@@ -256,7 +256,7 @@ let Calculator = {
 
 		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
 			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
-				if (!Settings.GetSetting('DisableSound')) Calculator.SoundFile.play();
+				if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
 			}
         }
 
@@ -666,7 +666,7 @@ let Calculator = {
 	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
-			if (!Settings.GetSetting('DisableSound')) Calculator.SoundFile.play();
+			if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
         }
     },
 
