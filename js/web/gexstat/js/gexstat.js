@@ -106,7 +106,8 @@ let GexStat = {
 		$('#GexStat').on('click', '.toggle-statistic', function () {
 
 			GexStat.CurrentStatGroup = $(this).data('value');
-
+			
+			$('#gexsContentWrapper').attr('class','default');
 			$("#gexsTabs").find("li").removeClass("active");
 			$(this).parent().addClass("active");
 			$("#gexs_weekswitch").attr("data-group", GexStat.CurrentStatGroup);
@@ -360,7 +361,7 @@ let GexStat = {
 			`</div>`);
 
 		h.push(`<table id="gexsParticipationTable" class="foe-table">` +
-			`<thead><tr class="sorter-header">` +
+			`<thead class="sticky"><tr class="sorter-header">` +
 			`<th class="text-center is-number" data-type="gexs-group">#</th>` +
 			`<th class="text-center is-number" data-type="gexs-group"><span class="level"></span></th>` +
 			`<th class="case-sensitive" data-type="gexs-group">${i18n('Boxes.GexStat.Player')}</th>` +
@@ -405,7 +406,7 @@ let GexStat = {
 		GexStat.InitSettings();
 		GexStat.CurrentStatGroup = 'Course';
 		$('#gexs_weekswitch').slideUp();
-		$('#gexsParticipationTable').html(`<div id="highcharts">Loading...</div>`);
+		$('#gexsContentWrapper').addClass('chart');
 
 		let CourseData = {
 			allMemberData: [],
