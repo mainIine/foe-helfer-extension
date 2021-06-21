@@ -26,6 +26,15 @@
 	background-color: transparent;
 }
 
+.info-table a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.info-table a:hover {
+	text-decoration: underline;
+}
+
 table.info-table:not(.no-hover) tbody tr:hover {
 	background-color: var(--background-table-hover) !important;
 }
