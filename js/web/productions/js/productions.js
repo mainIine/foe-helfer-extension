@@ -30,7 +30,7 @@ let Productions = {
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
 		'units',			// Einheiten
-		'premium'			// Diamanten
+		'premium',			// Diamanten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 		'population',		// Bevölkerung
