@@ -252,7 +252,7 @@ let Settings = {
 				<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
-					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${ExtGuildID}</dd>
+					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
 					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
 				</dl>`;
 	},
