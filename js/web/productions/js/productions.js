@@ -30,6 +30,7 @@ let Productions = {
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
 		'units',			// Einheiten
+		'premium'			// Diamanten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 		'population',		// Bevölkerung
@@ -1453,7 +1454,7 @@ let Productions = {
 
 					let CurrentBuilding = MainParser.CityMapData[i];
 
-					if (GroupType === 'entityid') {
+					if (GroupType === 'cityentity_id') {
 						if (CurrentBuilding['cityentity_id'] === GroupID) IDs.push(i);
 					}
 					else if (GroupType === 'setId' || GroupType === 'chainId') {
