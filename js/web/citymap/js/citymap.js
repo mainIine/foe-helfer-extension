@@ -284,7 +284,7 @@ let CityMap = {
 
 			}
 			// Great building
-			else if (d['strategy_points_for_upgrade']) {
+			else if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
 			else {

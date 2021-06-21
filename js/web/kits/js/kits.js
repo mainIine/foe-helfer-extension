@@ -19,8 +19,6 @@ let Kits = {
 	KitsjSON: null,
 	ShowMissing: false,
 	Inventory: null,
-	BuildingSelectionKits: null,
-	BuildingSets: null,
 
 	/**
 	 * Get all sets from the server
@@ -435,14 +433,3 @@ let Kits = {
 		$('#kits-toggle-button').text(Kits.ShowMissing ? i18n('Boxes.Kits.ToggleButtonActive') : i18n('Boxes.Kits.ToggleButtonInActive'))
 	}
 };
-
-// Updatestufen der Eventgebäude
-FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
-	Kits.BuildingSelectionKits = JSON.parse(xhr.responseText);
-});
-
-
-// Building-Sets
-FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
-	Kits.BuildingSets = JSON.parse(xhr.responseText);
-});

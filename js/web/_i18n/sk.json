@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Umiestnenie cechov v CE bolo aktualizované",
-    "API.GEXPlayer": "Umiestnenie hráčov v CE bolo aktualizované",
     "API.LGGildMember": "Informácie o Veľkolepých budovách hráča __player__ boli odoslané",
-    "API.UpdateSuccess": "Úspešne aktualizované",
     "Boxes.Alerts.Form.Antiques.Auction": "Aukcia",
     "Boxes.Alerts.Form.Antiques.Dealer": "Predajca starožitností",
     "Boxes.Alerts.Form.Antiques.Exchange": "Denné ponuky",

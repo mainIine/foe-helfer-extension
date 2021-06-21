@@ -463,10 +463,12 @@ const FoEproxy = (function () {
 	 * This function gets the callbacks from proxyMap[service][method],proxyMap[service]['all'] and proxyMap['all']['all'] and executes them.
 	 */
 	function proxyAction(service, method, data, postData) {
-		_proxyAction(service, method, data, postData);
-		_proxyAction('all', method, data, postData);
-		_proxyAction(service, 'all', data, postData);
-		_proxyAction('all', 'all', data, postData);
+		let filteredPostData = postData.filter(r => r && r.requestId && data && data.requestId && r.requestId === data.requestId); //Nur postData mit zugehöriger requestId weitergeben
+
+		_proxyAction(service, method, data, filteredPostData);
+		_proxyAction('all', method, data, filteredPostData);
+		_proxyAction(service, 'all', data, filteredPostData);
+		_proxyAction('all', 'all', data, filteredPostData);
 	}
 
 	// Achtung! Die XMLHttpRequest.prototype.open und XMLHttpRequest.prototype.send funktionen werden nicht zurück ersetzt,
@@ -597,7 +599,25 @@ const FoEproxy = (function () {
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
-		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));;
+		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Updatestufen der Eventgebäude
+	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
+		let SelectKitArray = JSON.parse(xhr.responseText)
+		MainParser.BuildingSelectionKits = Object.assign({}, ...SelectKitArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Building-Sets
+	FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
+		let BuildingSetArray = JSON.parse(xhr.responseText);
+		MainParser.BuildingSets = Object.assign({}, ...BuildingSetArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Building-Sets
+	FoEproxy.addMetaHandler('building_chains', (xhr, postData) => {
+		let BuildingChainsArray = JSON.parse(xhr.responseText);
+		MainParser.BuildingChains = Object.assign({}, ...BuildingChainsArray.map((x) => ({ [x.id]: x })));
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -1143,7 +1163,8 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex'
+		'unitsGex',
+		'productionsrating'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
@@ -1188,6 +1209,9 @@ let MainParser = {
 
 	// Building sets
 	BuildingSets: null,
+
+	//Winterzug etc.
+	BuildingChains: null,
 
 
 	InnoCDN: 'https://foede.innogamescdn.com/',
