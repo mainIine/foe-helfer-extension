@@ -196,6 +196,14 @@
 	overflow-y: auto;
 }
 
+#ProductionsRating #ProductionsRatingBody table th {
+	font-size: 85%;
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
 #ProductionsRating #ProductionsRatingBody table td {
 	font-size: 85%;
 }
@@ -208,54 +216,107 @@
 	color: #ec4d4d;
 }
 
-#ProductionsRating #ProductionsRatingBody table tr td.resicon {
+#ProductionsRating #ProductionsRatingBody table td.resicon {
 	background: transparent url('../images/productions.png') -233px 5px no-repeat;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.empty {
+#ProductionsRating #ProductionsRatingBody table td.resicon.empty table td.resicon.empty {
 	background-position: 1000px, 1000px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.strategy_points {
+#ProductionsRating #ProductionsRatingBody table td.resicon.strategy_points {
 	background-position: 0 4px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.money {
+#ProductionsRating #ProductionsRatingBody table td.resicon.money {
 	background-position: -26px 5px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.supplies {
+#ProductionsRating #ProductionsRatingBody table td.resicon.supplies {
 	background-position: -51px 5px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.medals {
+#ProductionsRating #ProductionsRatingBody table td.resicon.medals {
 	background-position: -78px 5px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.population {
+#ProductionsRating #ProductionsRatingBody table td.resicon.population {
 	background-position: -183px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.happiness {
+#ProductionsRating #ProductionsRatingBody table td.resicon.happiness {
 	background-position: -156px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.goods {
+#ProductionsRating #ProductionsRatingBody table td.resicon.goods {
 	background-position: -104px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.premium {
+#ProductionsRating #ProductionsRatingBody table td.resicon.premium {
 	background-position: -209px 5px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.all {
+#ProductionsRating #ProductionsRatingBody table td.resicon.all {
 	background-position: -130px 5px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.clan_power {
+#ProductionsRating #ProductionsRatingBody table td.resicon.clan_power {
 	background-position: -262px 5px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.units {
+#ProductionsRating #ProductionsRatingBody table td.resicon.units {
 	background-position: -287px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.att_boost_attacker {
+#ProductionsRating #ProductionsRatingBody table td.resicon.att_boost_attacker {
 	background-position: -311px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.att_boost_defender {
+#ProductionsRating #ProductionsRatingBody table td.resicon.att_boost_defender {
 	background-position: -338px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.def_boost_attacker {
+#ProductionsRating #ProductionsRatingBody table td.resicon.def_boost_attacker {
 	background-position: -365px 6px;
 }
-#ProductionsRating #ProductionsRatingBody table tr td.resicon.def_boost_defender {
+#ProductionsRating #ProductionsRatingBody table td.resicon.def_boost_defender {
+	background-position: -390px 6px;
+}
+
+
+#ProductionsRating #ProductionsRatingBody table th.resicon {
+	background: transparent url('../images/productions.png') -233px 5px no-repeat;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.empty table th.resicon.empty {
+	background-position: 1000px, 1000px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.strategy_points {
+	background-position: 0 4px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.money {
+	background-position: -26px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.supplies {
+	background-position: -51px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.medals {
+	background-position: -78px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.population {
+	background-position: -183px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.happiness {
+	background-position: -156px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.goods {
+	background-position: -104px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.premium {
+	background-position: -209px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.all {
+	background-position: -130px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.clan_power {
+	background-position: -262px 5px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.units {
+	background-position: -287px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.att_boost_attacker {
+	background-position: -311px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.att_boost_defender {
+	background-position: -338px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.def_boost_attacker {
+	background-position: -365px 6px;
+}
+#ProductionsRating #ProductionsRatingBody table th.resicon.def_boost_defender {
 	background-position: -390px 6px;
 }
