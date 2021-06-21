@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "De Gilde Expeditie ranglijst is bijgewerkt",
-    "API.GEXPlayer": "De Gilde Expeditie bijdragelijst is bijgewerkt",
     "API.LGGildMember": "__player__'s Grootse Gebouwen zijn toegevoegd",
-    "API.UpdateSuccess": "Info succesvol bijgewerkt!",
     "Boxes.Alerts.Form.Antiques.Auction": "Veiling",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Veiling wachttijd",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiquair",
@@ -827,6 +824,7 @@
     "Menu.greatbuildings.Title": "GG investering",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Er is een limiet van 2000 afgebroken opdrachten per dag",
     "Settings.About.Desc": "De FoE Helper is een gratis browser extensie voor Forge of Empires ontwikkeld voor spelers door spelers. De tool heeft <u>geen</u> officiële verbintenis aan InnoGames.",
     "Settings.About.RatingDesc": "Als wat u ziet en wat wij doen u bevalt, laat dan aub een goede beoordeling achter in de Store!",
     "Settings.About.RatingTitle": "Beoordeel de Extensie",
@@ -953,6 +951,5 @@
     "WsChat.UserLeave": " heeft de chat verlaten.",
     "WsChat.UserReEnter": " is opnieuw toegetreden.",
     "WsChat.World": "Wereld - ",
-    "_Language": "Nederlands",
-    "quests.CounterTooltip.Content": "Er is een limiet van 2000 afgebroken opdrachten per dag"
+    "_Language": "Nederlands"
 }

@@ -40,6 +40,15 @@
     text-align: center;
 }
 
+#moppelhelper #moppelhelperBody td a {
+    color: var(--text-bright);
+    text-decoration: none;
+}
+
+#moppelhelper #moppelhelperBody td a:hover {
+    text-decoration: underline;
+}
+
 #moppelhelper #moppelhelperBody .dropdown span.arrow {
 	top: 14px;
 	right: 8px;

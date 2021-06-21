@@ -30,7 +30,7 @@ let _menu = {
 		'calculator',
 		'partCalc',
 		'outpost',
-		'productions',
+		'productions',	
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
@@ -54,6 +54,7 @@ let _menu = {
 		'guildmemberstat',
 		'gexstat'
 		// 'unitsGex',
+		// 'productionrating',
 	],
 
 	HiddenItems: [],
@@ -382,6 +383,28 @@ let _menu = {
 		btn_FPsBG.append(btn_FPs);
 
 		return btn_FPsBG;
+	},
+
+	/**
+	 * Outpost Button
+	 *
+	 * @returns {*|jQuery}
+	 */
+	productionrating_Btn: () => {
+		let btn_prodratBG = $('<div />').attr({ 'id': 'productionrating-Btn', 'data-slug': 'productionrating' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn_prodratBG = _menu.toolTipp(btn_prodratBG, i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
+
+		let btn_prodrat = $('<span />');
+
+		btn_prodrat.bind('click', function () {
+			Productions.ShowRating();
+		});
+
+		btn_prodratBG.append(btn_prodrat);
+
+		return btn_prodratBG;
 	},
 
 	/**

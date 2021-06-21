@@ -396,6 +396,7 @@ let Info = {
      * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
+        console.log(d);
         let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']),
             header, message, image;
 
@@ -446,7 +447,8 @@ let Info = {
                     header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
                 }
                 else {
-                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
+                    let link = 'https://foe.scoredb.io/' + ExtWorld + '/player/' + d['sender']['player_id'];
+                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em><a href="' + link + '" target="_blank">' + d['sender']['name'] + '</a></em></div>';
                 }
             }
             else {

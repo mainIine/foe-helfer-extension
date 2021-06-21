@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "Il posizionamento della gilda (Spedizione) è stato aggiornato",
-    "API.GEXPlayer": "La classifica dei membri (Spedizione) è stata aggiornata",
     "API.LGGildMember": "I Grandi Edifici di __player__ sono stati inviati",
-    "API.UpdateSuccess": "Aggiornamento eseguito!",
     "Boxes.Alerts.Form.Antiques.Auction": "Asta",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Conto alla rovescia dell'asta",
     "Boxes.Alerts.Form.Antiques.Dealer": "Rivenditore di oggetti d'antiquariato",
@@ -823,6 +820,7 @@
     "Menu.fpCollector.Title": "Panoramica Esattore FP",
     "Menu.greatbuildings.Desc": "Quale GE per la produzione di PF dovresti aggiornare dopo?",
     "Menu.greatbuildings.Title": "Investimenti GE",
+    "Quests.CounterTooltip.Content": "C'è un limite di 2000 missioni rifiutate al giorno",
     "Settings.About.Desc": "FoE Helper è un'estensione gratuita per Forge of Empires sviluppata per i giocatori, dai giocatori. Lo strumento non è affiliato con InnoGames.",
     "Settings.About.RatingDesc": "Se ti piace quello che vedi e cosa facciamo, lascia una buona recensione nello store!",
     "Settings.About.RatingTitle": "Dai un voto all'estensione",
@@ -934,6 +932,5 @@
     "WsChat.UserLeave": " è andato.",
     "WsChat.UserReEnter": " è entrato di nuovo nella stanza.",
     "WsChat.World": "Mondo ",
-    "_Language": "Italiano",
-    "quests.CounterTooltip.Content": "C'è un limite di 2000 missioni rifiutate al giorno"
+    "_Language": "Italiano"
 }

@@ -1,8 +1,5 @@
 ﻿{
-    "API.GEXChampionship": "C.E. Céh helyezése frissült",
-    "API.GEXPlayer": "C.E. tagok helyezése frissült",
     "API.LGGildMember": "__player__ játékos nevezetes épületei elküldésre kerültek",
-    "API.UpdateSuccess": "Frissítés megtörtént!",
     "Boxes.Alerts.Form.Antiques.Auction": "Árverés",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Árverés lejárt",
     "Boxes.Alerts.Form.Antiques.Dealer": "Régiségkereskedő",
@@ -793,6 +790,7 @@
     "Menu.greatbuildings.Title": "Nevezetes befektetés",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "Quests.CounterTooltip.Content": "Naponta legfeljebb 2000 küldetést lehet elutasítani",
     "Settings.About.Desc": "A FoE Helper egy ingyenes böngészőbővítmény a Forge of Empires számára, amelyet játékosok fejlesztettek ki a játékosok számára. Az eszköz nem áll kapcsolatban az InnoGames céggel.",
     "Settings.About.RatingDesc": "Ha tetszik, amit látsz és amit csinálunk, akkor kérlek adj jó értékelést a Webáruházban!",
     "Settings.About.RatingTitle": "Értékeld a bővítményt",
@@ -919,6 +917,5 @@
     "WsChat.UserLeave": " kilépett.",
     "WsChat.UserReEnter": " visszalépett a szobába.",
     "WsChat.World": "Világ - ",
-    "_Language": "Magyar",
-    "quests.CounterTooltip.Content": "Naponta legfeljebb 2000 küldetést lehet elutasítani"
+    "_Language": "Magyar"
 }
