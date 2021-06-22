@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "Informace o VB hráče __player__ byly aktualizovány",
     "Boxes.Alerts.Form.Antiques.Auction": "Aukce",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Obnovení aukce",
     "Boxes.Alerts.Form.Antiques.Dealer": "Starožitník",
@@ -905,10 +904,6 @@
     "Settings.ResetBoxPositions.Title": "Návrat k původnímu nastavení",
     "Settings.SelectedMenu.Desc": "Vyberte preferovanou nabídku z rozbalovacího seznamu (hra se automaticky obnoví)",
     "Settings.SelectedMenu.Title": "Upravit Menu",
-    "Settings.SendGEXInfo.Desc": "Při otevření umístění cechu a pořadí hráčů se údaje odešlou na foe-rechner.de",
-    "Settings.SendGEXInfo.Title": "Vyhodnocení CE",
-    "Settings.SendGildMemberLGInfo.Desc": "Při návštěvě měst členů vašeho cechu se odešlou data o jejich VB na foe-rechner.de.",
-    "Settings.SendGildMemberLGInfo.Title": "Uložit data pro VB členů cechu",
     "Settings.Show2kQuestMark.Desc": "Zobrazuje malý odznak s počítadlem počtu úkolů, které ještě můžete odmítnout.",
     "Settings.Show2kQuestMark.Title": "2000 značek úkolů",
     "Settings.ShowBlueGalaxyHelper.Desc": "Zobrazí nástroj, který navrhuje budovy ke shromažďování po sběru z vaší Modré galaxie",

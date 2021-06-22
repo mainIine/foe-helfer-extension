@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "Zaktualizowano perły architektury gracza __player__",
     "Boxes.Alerts.Form.Antiques.Auction": "Aukcja",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Czas pomiędzy aukcjami",
     "Boxes.Alerts.Form.Antiques.Dealer": "Handlarz antykami",
@@ -906,10 +905,6 @@
     "Settings.ResetBoxPositions.Title": "Ustawienie pozycji przycisków",
     "Settings.SelectedMenu.Desc": "Wybierz preferowane menu z rozwijanej listy (gra automatycznie załaduje się ponownie)",
     "Settings.SelectedMenu.Title": "Zmień menu",
-    "Settings.SendGEXInfo.Desc": "Po kliknięciu na ranking aktywności lub miejsce gildii dane zostają uaktualnione",
-    "Settings.SendGEXInfo.Title": "Aktualizacja Wypraw Gildyjnych",
-    "Settings.SendGildMemberLGInfo.Desc": "Przy odwiedzinach członka gildii przesyła dane o jego perłach na foe-rechner.de przy zaznaczonej globalnej synchronizacji.",
-    "Settings.SendGildMemberLGInfo.Title": "Aktualizuj dane o perłach członków gildii",
     "Settings.Show2kQuestMark.Desc": "Pokazuje małą torebkę z licznikiem, z ilu zadań możesz jeszcze odmówić.",
     "Settings.Show2kQuestMark.Title": "Znak misji 2000",
     "Settings.ShowBlueGalaxyHelper.Desc": "Pokazuje narzędzie sugerujące budynki do zebrania po zebraniu niebieskiej galaktyki",

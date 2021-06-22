@@ -1451,7 +1451,7 @@ SettingsBox */
 	border-image: url('../images/hud/settings_bg.png') 5 round;
 	color: var(--text-normal);
 	padding: 10px;
-	z-index: 15;
+	z-index: 20;
 	border-radius: 5px;
 	box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);
 	min-width: 120px;

@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "",
     "Boxes.Alerts.Form.Antiques.Auction": "",
     "Boxes.Alerts.Form.Antiques.Cooldown": "",
     "Boxes.Alerts.Form.Antiques.Dealer": "",
@@ -451,10 +450,6 @@
     "Settings.ResetBoxPositions.Button": "",
     "Settings.ResetBoxPositions.Desc": "",
     "Settings.ResetBoxPositions.Title": "",
-    "Settings.SendGEXInfo.Desc": "",
-    "Settings.SendGEXInfo.Title": "",
-    "Settings.SendGildMemberLGInfo.Desc": "",
-    "Settings.SendGildMemberLGInfo.Title": "",
     "Settings.ShowInvestments.Desc": "",
     "Settings.ShowInvestments.Title": "",
     "Settings.ShowOwnPartOnAllGBs.Desc": "",
