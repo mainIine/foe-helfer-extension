@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__ játékos nevezetes épületei elküldésre kerültek",
     "Boxes.Alerts.Form.Antiques.Auction": "Árverés",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Árverés lejárt",
     "Boxes.Alerts.Form.Antiques.Dealer": "Régiségkereskedő",
@@ -864,10 +863,6 @@
     "Settings.ResetBoxPositions.Title": "Doboz koordinátái",
     "Settings.SelectedMenu.Desc": "Válaszd ki a menü kívánt helyzetét a legördülő listából (a játék automatikusan újratöltődik)",
     "Settings.SelectedMenu.Title": "Menü pozíciójának megváltoztatása",
-    "Settings.SendGEXInfo.Desc": "Ha az helyezésekre vagy rangsorolásra kattintasz a C.E.-ban, akkor továbbítja az adatokat",
-    "Settings.SendGEXInfo.Title": "C.E. értékelések",
-    "Settings.SendGildMemberLGInfo.Desc": "Más céhtagok látogatásakor az összes Lb adatot elküldik a foe-rechner.de címre, amikor a Globális aktiválódik.",
-    "Settings.SendGildMemberLGInfo.Title": "Céh tagok N.É. adatait töltse fel",
     "Settings.Show2kQuestMark.Desc": "Címke feltüntetése egy kis számlálóval, ami megmutatja hogy hány küldetést utasíthatsz még el.",
     "Settings.Show2kQuestMark.Title": "2000 küldetés feltüntetése",
     "Settings.ShowBlueGalaxyHelper.Desc": "Megjelenít egy eszközt, amely további épületeket javasol begyűjtésre a Kék Galaxis begyűjtése után",

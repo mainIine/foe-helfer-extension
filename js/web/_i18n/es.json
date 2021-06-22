@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "La información de los GE de__player__ha sido actualizada",
     "Boxes.Alerts.Form.Antiques.Auction": "Subasta",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Se reinicia en",
     "Boxes.Alerts.Form.Antiques.Dealer": "Mercader de Antigüedades",
@@ -700,10 +699,6 @@
     "Settings.ResetBoxPositions.Title": "Coordenadas del box",
     "Settings.SelectedMenu.Desc": "Elija su preferencia desde el menú desplegable (el juego se re cargara automáticamente)",
     "Settings.SelectedMenu.Title": "Cambio de Menu",
-    "Settings.SendGEXInfo.Desc": "Transmite los datos de EG al hacer clic en rankings o colocaciones",
-    "Settings.SendGEXInfo.Title": "EG evaluaciones",
-    "Settings.SendGildMemberLGInfo.Desc": "Cuando visitas otros miembros del gremio, todos los datos de los grandes edificios son transferidas a foe-rechner.de, si global esta activado.",
-    "Settings.SendGildMemberLGInfo.Title": "Datos de grandes edificios de otros miembros del gremio",
     "Settings.ShowBlueGalaxyHelper.Desc": "Muestra una herramienta con la sugerencia de que edificios recolectar después de recolectar el Galaxia Azul",
     "Settings.ShowBlueGalaxyHelper.Title": "Mostrar Ayudante Galaxia Azul",
     "Settings.ShowEventChest.Desc": "Muestra el cofre de la mejor recompensa para un evento.",

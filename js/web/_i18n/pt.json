@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "As informações de GBs do __player__ foram atualizadas",
     "Boxes.Alerts.Form.Antiques.Auction": "Leilão",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Leilão em pausa",
     "Boxes.Alerts.Form.Antiques.Dealer": "Negociante de Antiguidades",
@@ -704,10 +703,6 @@
     "Settings.ResetBoxPositions.Title": "Coordenadas da Box",
     "Settings.SelectedMenu.Desc": "Escolhe o teu menu preferido da seguinte lista (o jogo vai recarregar automaticamente)",
     "Settings.SelectedMenu.Title": "Alterar menu",
-    "Settings.SendGEXInfo.Desc": "Ao clicar num GE a data é transmitida",
-    "Settings.SendGEXInfo.Title": "Avaliação GE",
-    "Settings.SendGildMemberLGInfo.Desc": "Quando visitas as cidades de outros membros da guilda, todos os dados dos GEs serão enviados também para foe-rechner.de.",
-    "Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
     "Settings.ShowBlueGalaxyHelper.Desc": "Mostra uma ferramenta para sugerir os edifícios a recolher com a Galáxia Azul",
     "Settings.ShowBlueGalaxyHelper.Title": "Mostrar o auxiliar da Galáxia Azul",
     "Settings.ShowEventChest.Desc": "Mostra a caixa dos melhores preços para um evento.",

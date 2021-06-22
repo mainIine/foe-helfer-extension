@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__ HR tiedot ovat päivittyneet",
     "Boxes.Alerts.Form.Antiques.Auction": "Huutokauppa",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Huutokaupan jäähettelyaika",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiikkimyyjä",
@@ -830,10 +829,6 @@
     "Settings.ResetBoxPositions.Title": "",
     "Settings.SelectedMenu.Desc": "",
     "Settings.SelectedMenu.Title": "",
-    "Settings.SendGEXInfo.Desc": "",
-    "Settings.SendGEXInfo.Title": "",
-    "Settings.SendGildMemberLGInfo.Desc": "",
-    "Settings.SendGildMemberLGInfo.Title": "",
     "Settings.ShowBlueGalaxyHelper.Desc": "",
     "Settings.ShowBlueGalaxyHelper.Title": "",
     "Settings.ShowEventChest.Desc": "",
