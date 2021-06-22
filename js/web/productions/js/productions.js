@@ -1540,7 +1540,7 @@ let Productions = {
 				let Type = Productions.RatingTypes[i];
 
 				h.push('<tr>');
-				h.push('<td class="resicon ' + Type + '">&nbsp;&nbsp;</td>');
+				h.push('<td style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></td>');
 				h.push('<td>' + Productions.GetGoodName(Type) + '</td>');
 				h.push('<td class="text-center"><input id="Enabled-' + Type + '" class="enabled game-cursor" ' + (Productions.RatingEnableds[Type] ? 'checked' : '') + ' type="checkbox"></td>');
 				if (Productions.RatingEnableds[Type]) {
@@ -1691,7 +1691,7 @@ let Productions = {
 
 				if (!Productions.RatingEnableds[Type]) continue;
 
-				h.push('<th class="resicon ' + Type + '"></th>');
+				h.push('<th style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></th>');
 			}
 			h.push('<th>' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th></th>');
