@@ -534,7 +534,7 @@
     "Boxes.OwnpartCalculator.Done": "Fait",
     "Boxes.OwnpartCalculator.ExistingPayments": "Paiements existants",
     "Boxes.OwnpartCalculator.Ext": "Ext.",
-    "Boxes.OwnpartCalculator.GBsNoted": "__greatbuilding__enregistré",
+    "Boxes.OwnpartCalculator.GBsNoted": "__GBCount__ enregistré",
     "Boxes.OwnpartCalculator.HelpLink": "https://foe-helper.com/docs/en/gb-calculator/",
     "Boxes.OwnpartCalculator.IncludeData": "Données incluses",
     "Boxes.OwnpartCalculator.IndividualName": "Nom individuel",
