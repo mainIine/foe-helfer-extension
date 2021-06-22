@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "Informações do GE de __player__ foram atualizadas",
     "Boxes.Alerts.Form.Antiques.Auction": "Leilão",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Leião recarregado",
     "Boxes.Alerts.Form.Antiques.Dealer": "Mercador de Antiguidades",
@@ -553,10 +552,6 @@
     "Settings.ResetBoxPositions.Button": "Apagar!",
     "Settings.ResetBoxPositions.Desc": "Reiniciar todas as coordenadas de todas as janelas?",
     "Settings.ResetBoxPositions.Title": "Coordenadas da Box",
-    "Settings.SendGEXInfo.Desc": "Dados dos rankings e lugares na expedição da guilda serão enviados, quando clicados",
-    "Settings.SendGEXInfo.Title": "Avaliações da Expedição da Guilda",
-    "Settings.SendGildMemberLGInfo.Desc": "Quando visitar as cidades de outros membros da guilda, todos os dados dos GEs serão enviados também para foe-rechner.de .",
-    "Settings.SendGildMemberLGInfo.Title": "GEs de outros membros da guilda",
     "Settings.ShowPlayersMotivation.Desc": "As atividades de motivação devem ser transferidas quando os eventos são chamados?<br><br><em>Reinicie o jogo após mudança</em>",
     "Settings.Version.Desc": "Os dados abaixo podem ser copiados.",
     "Settings.Version.GuildId": "ID da guilda:",

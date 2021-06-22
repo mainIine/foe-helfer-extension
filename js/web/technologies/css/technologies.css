@@ -38,6 +38,14 @@
 	color: var(--text-bright);
 }
 
+#technologies #technologiesBody table th {
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+	font-size: 85%;
+}
+
 #technologies #technologiesBody tr.total-row td {
 	border-top: 2px solid #efcf9a;
 	font-weight: 700;

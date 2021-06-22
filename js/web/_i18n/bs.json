@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__ GB info je osvježen",
     "Boxes.Alerts.Form.Antiques.Auction": "Aukcija",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Vrijeme između aukcija",
     "Boxes.Alerts.Form.Antiques.Dealer": "Prodavač antikviteta",
@@ -592,10 +591,6 @@
     "Settings.ResetBoxPositions.Button": "Obriši!",
     "Settings.ResetBoxPositions.Desc": "Trebaju li sve koordinate kutija biti resetovane?",
     "Settings.ResetBoxPositions.Title": "Koordinate kutije",
-    "Settings.SendGEXInfo.Desc": "Kada kliknete na GE na položajima ili rangirate prenesene podatke",
-    "Settings.SendGEXInfo.Title": "GE evaulacije",
-    "Settings.SendGildMemberLGInfo.Desc": "Kada posjećujete Guild članove, prenesite GB podatke na foe-rechner.de.",
-    "Settings.SendGildMemberLGInfo.Title": "Prenesite podatke o Posebnim objektima članova Guild-a",
     "Settings.ShowGuildTreasuryLogExport.Desc": "Prikazuje alat za izvoz registra riznice Guild-a u .csv datoteku prilikom otvaranja prozora registra riznice Guild-a",
     "Settings.ShowGuildTreasuryLogExport.Title": "Prikaži alat za izvoz registra Guild riznice",
     "Settings.ShowInvestments.Desc": "Prikažite zbroj podataka o FP investiranju prilikom ulaska na 'Gradska kuća'> 'Vijesti'> 'Posebni objekti'.",

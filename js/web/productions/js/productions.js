@@ -30,6 +30,7 @@ let Productions = {
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
 		'units',			// Einheiten
+		'premium',			// Diamanten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 		'population',		// Bevölkerung
@@ -1453,7 +1454,7 @@ let Productions = {
 
 					let CurrentBuilding = MainParser.CityMapData[i];
 
-					if (GroupType === 'entityid') {
+					if (GroupType === 'cityentity_id') {
 						if (CurrentBuilding['cityentity_id'] === GroupID) IDs.push(i);
 					}
 					else if (GroupType === 'setId' || GroupType === 'chainId') {
@@ -1684,16 +1685,16 @@ let Productions = {
 
 			h.push('<thead>');
 			h.push('<tr>');
-			h.push('<td>' + i18n('Boxes.ProductionsRating.BuildingName') + '</td>');
+			h.push('<th>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
 				if (!Productions.RatingEnableds[Type]) continue;
 
-				h.push('<td class="resicon ' + Type + '"></td>');
+				h.push('<th class="resicon ' + Type + '"></th>');
 			}
-			h.push('<td>' + i18n('Boxes.ProductionsRating.Score') + '</td>');
-			h.push('<td></td>');
+			h.push('<th>' + i18n('Boxes.ProductionsRating.Score') + '</th>');
+			h.push('<th></th>');
 			h.push('</tr>');
 			h.push('<thead>');
 

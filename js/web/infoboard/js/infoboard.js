@@ -297,7 +297,7 @@ let Infoboard = {
 
             if (Infoboard.PlayInfoSound && status && filterStatus)
             {
-                Infoboard.SoundFile.play();
+                if (Settings.GetSetting('EnableSound')) Infoboard.SoundFile.play();
             }
         }
     },
@@ -396,7 +396,6 @@ let Info = {
      * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
-        console.log(d);
         let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']),
             header, message, image;
 

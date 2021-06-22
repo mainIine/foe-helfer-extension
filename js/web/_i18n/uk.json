@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "Інформація про ВС __player__ оновлено",
     "Boxes.Alerts.Form.Antiques.Auction": "Аукціон",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Аукціон завершується",
     "Boxes.Alerts.Form.Antiques.Dealer": "Антиквар",
@@ -451,10 +450,6 @@
     "Settings.ResetBoxPositions.Button": "",
     "Settings.ResetBoxPositions.Desc": "",
     "Settings.ResetBoxPositions.Title": "",
-    "Settings.SendGEXInfo.Desc": "",
-    "Settings.SendGEXInfo.Title": "",
-    "Settings.SendGildMemberLGInfo.Desc": "",
-    "Settings.SendGildMemberLGInfo.Title": "",
     "Settings.ShowInvestments.Desc": "",
     "Settings.ShowInvestments.Title": "",
     "Settings.ShowOwnPartOnAllGBs.Desc": "",

@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__ Πληροφορίες ΜΚ, ενημερώθηκαν",
     "Boxes.Alerts.Form.Antiques.Auction": "Δημοπρασία",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Χρόνος Παύσης Πλειστηριασμού",
     "Boxes.Alerts.Form.Antiques.Dealer": "Παλαιοπώλης",
@@ -862,10 +861,6 @@
     "Settings.ResetBoxPositions.Title": "Συντεταγμένες Παραθύρων",
     "Settings.SelectedMenu.Desc": "Επιλέξτε το μενού που προτιμάτε από την αναπτυσσόμενη λίστα (το παιχνίδι θα επαναφορτωθεί αυτόματα)",
     "Settings.SelectedMenu.Title": "Αλλαγή Μενού",
-    "Settings.SendGEXInfo.Desc": "Όταν κάνετε κλικ στο ΕΣ σε τοποθετήσεις ή ταξινομήσεις, τα δεδομένα μεταφέρονται",
-    "Settings.SendGEXInfo.Title": "ΕΣ αξιολογήσεις",
-    "Settings.SendGildMemberLGInfo.Desc": "Όταν επισκέπτεστε άλλα μέλη της Συντεχνίας, ανεβάστε τα δεδομένα ΜΚ στο foe-rechner.de.",
-    "Settings.SendGildMemberLGInfo.Title": "Ανεβάστε τα δεδομένα Μεγάλων Κτιρίων μελών της συντεχνίας",
     "Settings.Show2kQuestMark.Desc": "Εμφανίζει ένα μικρό σήμα με έναν μετρητή πόσων αποστολών μπορείτε ακόμα να απορρίψετε.",
     "Settings.Show2kQuestMark.Title": "2000 σημείο αποστολών",
     "Settings.ShowBlueGalaxyHelper.Desc": "Εμφάνιση εργαλείου με προτάσεις συλλογής κτιρίων, μετά από την συλλογή του Μπλέ Γαλαξία",

@@ -278,7 +278,9 @@ let BonusService = {
 
 					si.addClass('bonus-blink');
 
-					if (bt[i] === 'donequests') Calculator.SoundFile.play();
+					if (bt[i] === 'donequests') {
+						if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+					}
 
 					setTimeout(()=>{
 						si.removeClass('bonus-blink');

@@ -61,7 +61,14 @@ FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) =>
 });
 
 let GvG = {
-	Actions: undefined,
+	Actions: {
+		Independences: 0,
+		Sieges: 0,
+		Defenders: 0,
+		NextCalc: 0,
+		PrevCalc: 0,
+		LastAction: 0
+	},
 	Init: false,
 
 	initActions: () => {
