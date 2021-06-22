@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__'s SB'er er blevet overført",
     "Boxes.Alerts.Form.Antiques.Auction": "Auktion",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auktion ventetid",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antikvitetshandler",
@@ -491,10 +490,6 @@
     "Settings.ResetBoxPositions.Button": "Slet!",
     "Settings.ResetBoxPositions.Desc": "Skal alle infobokse flyttes tilbage til deres oprindelige position på skærmen?",
     "Settings.ResetBoxPositions.Title": "Infoboks positioner",
-    "Settings.SendGEXInfo.Desc": "Overfører data ved tryk på placeringerne eller ranglisten i KE",
-    "Settings.SendGEXInfo.Title": "KE evaluering",
-    "Settings.SendGildMemberLGInfo.Desc": "Ved besøg hos klanmedlemmer bliver samtlige SB data overført til foe-helper.com, hvis global er aktiveret.",
-    "Settings.SendGildMemberLGInfo.Title": "Klanmedlemmernes SB data",
     "Settings.ShowBlueGalaxyHelper.Desc": "Viser en assistent, der foreslår hvilke bygninger du skal høste efter du har høstet den Blå Galakse",
     "Settings.ShowBlueGalaxyHelper.Title": "Vis den Blå Galakse assistent",
     "Settings.ShowInvestments.Desc": "Ved besøg i 'Rådhus' > 'Nyheder' > 'Storslåede Bygninger, som du deltager i' vises en oversigt over investeringer i andre spillers SBer.",
