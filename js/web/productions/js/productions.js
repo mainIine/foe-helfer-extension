@@ -1530,8 +1530,8 @@ let Productions = {
 			h.push('<tr>');
 			h.push('<th></th>'); //Symbol
 			h.push('<th></th>'); //ResourceName
-			h.push('<th>' + i18n('Boxes.ProductionsRating.Enabled') + '</th>');
-			h.push('<th>' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</th>');
+			h.push('<th class="text-center">' + i18n('Boxes.ProductionsRating.Enabled') + '</th>');
+			h.push('<th class="text-center">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</th>');
 			h.push('</tr>');
 			h.push('</thead>')
 
@@ -1712,7 +1712,7 @@ let Productions = {
 					if (!Productions.RatingEnableds[Type]) continue;
 
 					let Amount = (GroupStat['TotalProducts'][Type] ? GroupStat['TotalProducts'][Type] : 0);
-					h.push('<td>' + HTML.Format(Math.round(Amount)) + '</td>');
+					h.push('<td class="text-center">' + HTML.Format(Math.round(Amount)) + '</td>');
 				}
 
 				let ScorePercent = Math.round(GroupStat['Score'] * 100);
