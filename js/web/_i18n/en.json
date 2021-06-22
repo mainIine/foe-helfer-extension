@@ -409,6 +409,7 @@
     "Boxes.Investment.PlayerFound": "New Events found!",
     "Boxes.Investment.PlayerFoundCount": "Collected __count__ new player Events",
     "Boxes.Investment.PlayerFoundCounter": "__count__ new player Events were found.",
+    "Boxes.Investment.Rank": "Rank",
     "Boxes.Investment.Safe": "safe",
     "Boxes.Investment.Title": "Your FP Investments Summary",
     "Boxes.Investment.TotalFP": "Stock + Invested + Profit = ",
