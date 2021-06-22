@@ -54,7 +54,7 @@ let GexStat = {
 	Chart: undefined,
 	Settings: {
 		deleteOlderThan: 20,
-		showAxisLabel: false,
+		showAxisLabel: true,
 	},
 
 	/**
@@ -571,7 +571,7 @@ let GexStat = {
 				shared: true
 			},
 			exporting: {
-				enabled: GexStat.Settings.showAxisLabel
+				enabled: false
 			},
 			responsive: {
 				rules: [{

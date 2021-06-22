@@ -42,6 +42,14 @@
 	padding: 1em 0;
 }
 
+#greatbuildings #greatbuildingsBody table th {
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+	font-size: 85%;
+}
+
 #greatbuildings #greatbuildingsBody td {
 	position: relative;
 	font-size: 85%;

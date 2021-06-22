@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "ВС игрока __player__ были обработаны",
     "Boxes.Alerts.Form.Antiques.Auction": "Аукцион",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Перезагрузка аукциона",
     "Boxes.Alerts.Form.Antiques.Dealer": "Антиквар",
@@ -832,10 +831,6 @@
     "Settings.ResetBoxPositions.Title": "Координаты панелей",
     "Settings.SelectedMenu.Desc": "Выберите предпочитаемый вид меню из выпадающего списка (игра будет перезагружена автоматически)",
     "Settings.SelectedMenu.Title": "Изменить меню",
-    "Settings.SendGEXInfo.Desc": "Когда открываете в ЭГ окно со списком вложений, эти данные будут передаваться на сервер",
-    "Settings.SendGEXInfo.Title": "Оценка ЭГ",
-    "Settings.SendGildMemberLGInfo.Desc": "Когда вы посещаете города других участников гильдии, все данные о ВС будут переданы на foe-rechner.de, если включена эта опция.",
-    "Settings.SendGildMemberLGInfo.Title": "Данные о ВС других участников гильдии",
     "Settings.ShowBlueGalaxyHelper.Desc": "Показывает окно, которое предлагает наилучшие здания для сбора с синей галактикой",
     "Settings.ShowBlueGalaxyHelper.Title": "Показывать помощник Синей Галактики",
     "Settings.ShowEventChest.Desc": "Показывать окно с шансами выигрыша в сундуках ивентов",
