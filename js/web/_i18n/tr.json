@@ -1,5 +1,4 @@
 ﻿{
-    "API.LGGildMember": "__player__ adlı kullanıcının Devasaları gönderildi",
     "Boxes.Alerts.Form.Antiques.Auction": "Açık Artırma",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antika Satıcısı",
     "Boxes.Alerts.Form.Antiques.Exchange": "Günlük  Teklifler",
@@ -384,10 +383,6 @@
     "Settings.ResetBoxPositions.Button": "Sil!",
     "Settings.ResetBoxPositions.Desc": "Tüm kutu koordinatları sıfırlansınmı?",
     "Settings.ResetBoxPositions.Title": "Kutu Koordinatları",
-    "Settings.SendGEXInfo.Desc": "GEX'teki yerleşimleri veya sıralama listelerini tıklarken verileri gönderir",
-    "Settings.SendGEXInfo.Title": "GEX Değerlendirme",
-    "Settings.SendGildMemberLGInfo.Desc": "Diğer lonca üyelerini ziyaret ederken, Genel etkinleştirilirse tüm Devasa verileri foe-rechner.de adresine gönderilir.",
-    "Settings.SendGildMemberLGInfo.Title": "Diğer lonca üyelerinden Devasa verileri",
     "Settings.ShowPlayersMotivation.Desc": "Olaylar çağrıldığında Taverna faaliyetleri göz ardı edilmeli midir?",
     "Settings.Version.Desc": "The data below can be marked to copy them.",
     "Settings.Version.GuildId": "Lonca Id:",

@@ -23,6 +23,14 @@
     max-height: 750px;
 }
 
+#Market #MarketBody table th {
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+	font-size: 85%;
+}
+
 #Market #MarketBody td {
     position: relative;
     font-size: 85%;
