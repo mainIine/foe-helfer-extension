@@ -1605,8 +1605,10 @@ let Productions = {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
 					Production.motivatedproducts[Type] *= Production['dailyfactor'];
-					if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
-					if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
+					if (Building['type'] === 'residential' || Building['type'] === 'production') {
+						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
+						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
+					}
 
 					//Güter zusammenfassen
 					if (!Productions.Types.includes(Type)) {
@@ -1750,7 +1752,12 @@ let Productions = {
 			return 0.2;
 		}
 		if (Type === 'clan_power') {
-			return 0;
+			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'] //Hall of fame lvl2
+				Level = CurrentEraID - 1;
+
+			if (!Entity || !Entity['entity_levels'] || !Entity['entity_levels'][Level] || !Entity['entity_levels'][Level]['clan_power']) return 0;
+
+			return 2 * Entity['entity_levels'][Level]['clan_power'] / 10.5; //Motivated hall of fame lvl2
 		}
 		if (Type === 'clan_goods') {
 			return 0;
@@ -1768,7 +1775,7 @@ let Productions = {
 			return 1;
 		}
 		if (Type === 'att_boost_defender') {
-			return 6;
+			return 4;
 		}
 		if (Type === 'def_boost_defender') {
 			return 6;
