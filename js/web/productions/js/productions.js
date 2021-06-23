@@ -1530,8 +1530,8 @@ let Productions = {
 			h.push('<tr>');
 			h.push('<th></th>'); //Symbol
 			h.push('<th></th>'); //ResourceName
-			h.push('<th>' + i18n('Boxes.ProductionsRating.Enabled') + '</th>');
-			h.push('<th>' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</th>');
+			h.push('<th class="text-center">' + i18n('Boxes.ProductionsRating.Enabled') + '</th>');
+			h.push('<th class="text-center">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</th>');
 			h.push('</tr>');
 			h.push('</thead>')
 
@@ -1540,7 +1540,7 @@ let Productions = {
 				let Type = Productions.RatingTypes[i];
 
 				h.push('<tr>');
-				h.push('<td class="resicon ' + Type + '">&nbsp;&nbsp;</td>');
+				h.push('<td style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></td>');
 				h.push('<td>' + Productions.GetGoodName(Type) + '</td>');
 				h.push('<td class="text-center"><input id="Enabled-' + Type + '" class="enabled game-cursor" ' + (Productions.RatingEnableds[Type] ? 'checked' : '') + ' type="checkbox"></td>');
 				if (Productions.RatingEnableds[Type]) {
@@ -1605,8 +1605,10 @@ let Productions = {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
 					Production.motivatedproducts[Type] *= Production['dailyfactor'];
-					if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
-					if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
+					if (Building['type'] === 'residential' || Building['type'] === 'production') {
+						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
+						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
+					}
 
 					//Güter zusammenfassen
 					if (!Productions.Types.includes(Type)) {
@@ -1691,7 +1693,7 @@ let Productions = {
 
 				if (!Productions.RatingEnableds[Type]) continue;
 
-				h.push('<th class="resicon ' + Type + '"></th>');
+				h.push('<th style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></th>');
 			}
 			h.push('<th>' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th></th>');
@@ -1712,7 +1714,7 @@ let Productions = {
 					if (!Productions.RatingEnableds[Type]) continue;
 
 					let Amount = (GroupStat['TotalProducts'][Type] ? GroupStat['TotalProducts'][Type] : 0);
-					h.push('<td>' + HTML.Format(Math.round(Amount)) + '</td>');
+					h.push('<td class="text-center">' + HTML.Format(Math.round(Amount)) + '</td>');
 				}
 
 				let ScorePercent = Math.round(GroupStat['Score'] * 100);
@@ -1750,7 +1752,12 @@ let Productions = {
 			return 0.2;
 		}
 		if (Type === 'clan_power') {
-			return 0;
+			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'] //Hall of fame lvl2
+				Level = CurrentEraID - 1;
+
+			if (!Entity || !Entity['entity_levels'] || !Entity['entity_levels'][Level] || !Entity['entity_levels'][Level]['clan_power']) return 0;
+
+			return 2 * Entity['entity_levels'][Level]['clan_power'] / 10.5; //Motivated hall of fame lvl2
 		}
 		if (Type === 'clan_goods') {
 			return 0;
@@ -1768,7 +1775,7 @@ let Productions = {
 			return 1;
 		}
 		if (Type === 'att_boost_defender') {
-			return 6;
+			return 4;
 		}
 		if (Type === 'def_boost_defender') {
 			return 6;

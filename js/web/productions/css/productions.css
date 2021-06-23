@@ -216,107 +216,57 @@
 	color: #ec4d4d;
 }
 
-#ProductionsRating #ProductionsRatingBody table td.resicon {
-	background: transparent url('../images/productions.png') -233px 5px no-repeat;
+#ProductionsRating #ProductionsRatingBody table span.resicon {
+	display: inline-block;
+	width: 24px;
+	height: 26px;
+	background: transparent url('../images/productions.png') -236px 2px no-repeat;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.empty table td.resicon.empty {
+#ProductionsRating #ProductionsRatingBody table span.resicon.empty{
 	background-position: 1000px, 1000px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.strategy_points {
-	background-position: 0 4px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.strategy_points {
+	background-position: 0 0;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.money {
-	background-position: -26px 5px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.money {
+	background-position: -26px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.supplies {
-	background-position: -51px 5px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.supplies {
+	background-position: -51px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.medals {
-	background-position: -78px 5px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.medals {
+	background-position: -78px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.population {
-	background-position: -183px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.population {
+	background-position: -183px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.happiness {
-	background-position: -156px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.happiness {
+	background-position: -158px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.goods {
-	background-position: -104px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.goods {
+	background-position: -104px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.premium {
-	background-position: -209px 5px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.premium {
+	background-position: -209px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.all {
-	background-position: -130px 5px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.all {
+	background-position: -130px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.clan_power {
-	background-position: -262px 5px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.clan_power {
+	background-position: -262px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.units {
-	background-position: -287px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.units {
+	background-position: -287px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.att_boost_attacker {
-	background-position: -311px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_attacker {
+	background-position: -311px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.att_boost_defender {
-	background-position: -338px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_defender {
+	background-position: -338px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.def_boost_attacker {
-	background-position: -365px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_attacker {
+	background-position: -365px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table td.resicon.def_boost_defender {
-	background-position: -390px 6px;
-}
-
-
-#ProductionsRating #ProductionsRatingBody table th.resicon {
-	background: transparent url('../images/productions.png') -233px 5px no-repeat;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.empty table th.resicon.empty {
-	background-position: 1000px, 1000px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.strategy_points {
-	background-position: 0 4px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.money {
-	background-position: -26px 5px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.supplies {
-	background-position: -51px 5px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.medals {
-	background-position: -78px 5px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.population {
-	background-position: -183px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.happiness {
-	background-position: -156px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.goods {
-	background-position: -104px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.premium {
-	background-position: -209px 5px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.all {
-	background-position: -130px 5px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.clan_power {
-	background-position: -262px 5px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.units {
-	background-position: -287px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.att_boost_attacker {
-	background-position: -311px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.att_boost_defender {
-	background-position: -338px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.def_boost_attacker {
-	background-position: -365px 6px;
-}
-#ProductionsRating #ProductionsRatingBody table th.resicon.def_boost_defender {
-	background-position: -390px 6px;
+#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_defender {
+	background-position: -390px 2px;
 }
