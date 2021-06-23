@@ -262,7 +262,7 @@ let Investment = {
 				h.push(`<td class="is-number text-center" data-number="${restFp}">${restFp}</td>`);
 			}
 
-			h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank invest-tooltip" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="Rang ${contribution['rank']}" /></td>`);
+			h.push(`<td class="is-number text-center" data-number="${contribution['rank']}"><img class="rank invest-tooltip" src="${extUrl}js/web/x_img/gb_p${rankImageValue}.png" title="${i18n('Boxes.Investment.Rank')} ${contribution['rank']}" /></td>`);
 			h.push(`<td class="is-number text-center gbinvestment" data-number="${contribution['currentFp']}">${contribution['currentFp']}</td>`);
 			h.push(`<td class="is-number text-center gbprofit" data-number="${RealProfit}"><b class="${RealProfitClass}">${RealProfit}</b></td>`);
 			
