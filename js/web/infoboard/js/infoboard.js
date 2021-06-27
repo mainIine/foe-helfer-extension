@@ -33,25 +33,6 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
-// when a great building where the player has invested has been levelled
-FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
-
-    if (data && data['responseData'] && data['responseData']) {
-        // save the number of returned FPs to show in the infoboard message
-        Info.ReturnFPPoints = (data['responseData']['strategy_point_amount']) ? data.responseData.strategy_point_amount : 0;
-
-        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
-        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
-        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
-        if (Info.ReturnFPMessageData) {
-            let bd = Info.OtherPlayerService_newEventgreat_building_contribution(Info.ReturnFPMessageData);
-            Info.ReturnFPMessageData = null;
-            Infoboard.PostMessage(bd);
-        }
-    }
-
-});
-
 /**
  * @type {{MaxEntries: number, DebugWebSocket: boolean, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: (function(*, *=): undefined), Box: (function(): (boolean|undefined)), History: [], Init: Infoboard.Init, InjectionLoaded: boolean, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: (function(*=, *=): undefined), PlayInfoSound: boolean}}
  */
@@ -363,13 +344,6 @@ let Info = {
 
 
     /**
-     * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
-     * und müssen gesammelt werden
-     */
-    ReturnFPPoints: -1,
-    ReturnFPMessageData: null,
-
-    /**
      * Jmd hat in einer Auktion mehr geboten
      *
      * @param d
@@ -598,8 +572,20 @@ let Info = {
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
 
-        let newFP = Info.ReturnFPPoints;
-        if (d['rank'] >= 6) { newFP = 0; }
+        let newFP=-1;
+        if (d['rank'] >= 6) {
+            newFP = 0
+        }
+        else {
+            let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === d['great_building_name']));
+                EntityID = Entity['id'],
+                EraName = EraName = GreatBuildings.GetEraName(EntityID),
+                Era = Technologies.Eras[EraName],
+                P1 = GreatBuildings.Rewards[Era][Parts.Level],
+                FPRewards = GreatBuildings.GetMaezen(P1, MainParser.ArkBonus);
+
+                newFP = FPRewards[d['rank'] - 1];
+        }
 
         let data = {
             class: 'level',
@@ -610,23 +596,10 @@ let Info = {
                 building: d['great_building_name'],
                 level: d['level'],
                 rank: d['rank'],
-                fps: newFP
+                fps: newFP !== -1 ? newFP : '???'
             }
             )
         };
-
-        // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
-        // so store the data and post the message from that handler (using the stored data)
-        // ... but only if the rank is 5 and higher (1-5), otherwise, there is no reward
-        // (and BlueprintService.newReward is not triggered)
-        if (d['rank'] < 6 && Info.ReturnFPPoints == -1) {
-            Info.ReturnFPMessageData = d;
-            return undefined;
-        }
-
-        // zurück setzen
-        Info.ReturnFPPoints = -1;
-        Info.ReturnFPMessageData = null;
 
         return data;
     },

@@ -1568,14 +1568,13 @@ let Productions = {
 					GroupName = Entity['name'],
 					GroupType = 'cityentity_id';
 
-				//Keine Gebäude, die man nicht abreißen kann
 				if (Entity['abilities']) {
 					let SkipBuilding = false;
 					for (let j = 0; j < Entity['abilities'].length; j++) {
 						let Ability = Entity['abilities'][j],
 							Class = Ability['__class__'];
 
-						if (Class === 'NotsellableAbility') {
+						if (Class === 'NotsellableAbility') { //Keine Gebäude, die man nicht abreißen kann
 							SkipBuilding = true;
 							break;
 						}
