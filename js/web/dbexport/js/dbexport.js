@@ -142,7 +142,7 @@ let DBExport = {
             c.push(`<div class="column"><h2>Datenbank: ${DexieDB.name}</h2>` +
                 `<p><button class="btn btn-default" id="exportLink" href="#">Klicke hier um die Datenbank zu exportieren.</button>`+
                 `<button class="btn btn-default" id="exportFull" href="#">Klicke hier um alle Daten zu exportieren.</button></p>` +
-                `<div id="dropzone">Ziehe eine lokale ${DexieDB.name}.json hier herein, um die Datenbank zu importieren.</div></div>` +
+                `<div id="dropzone">Ziehe eine lokale ${DexieDB.name.replace('_'+ExtPlayerID,'')}.json hier herein, um die Datenbank zu importieren.</div></div>` +
                 `<div class="column"><h3>Datenbank Übersicht</h3>` +
                 `<table class="foe-table"><thead><th>Tabellenname</th><th>Primärschlüssel</th><th>Anzahl der Zeilen</th></thead>` +
                 `<tbody>`);
