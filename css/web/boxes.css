@@ -467,6 +467,10 @@ p {
 	background-image: url('../images/menu/gex.png');
 }
 
+[id$=dbexport-Btn] span {
+	background-image: url('../images/menu/dbexport.png');
+}
+
 .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;
