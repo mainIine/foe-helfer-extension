@@ -179,6 +179,8 @@
 					'lit-html/lit-html.bundle.min',
 					'SimpleMarkdown/simple-markdown.min',
 					'dexie/dexie.min',
+					'dexie/dexie-export-import',
+					'downloadjs/downloadjs.min'
 				];
 
 			// load all vendor scripts first (unknown order)
@@ -229,7 +231,8 @@
 				'maptradewarning',
 				'guildmemberstat',
 				'quests',
-				'gexstat'
+				'gexstat',
+				'dbexport'
 			];
 
 			// load scripts (one after the other)

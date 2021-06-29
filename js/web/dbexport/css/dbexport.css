@@ -1,0 +1,121 @@
+#DBExport {
+    width: 750px;
+    height: 600px;
+    top: calc(50vh - 200px);
+    left: calc(50vw - 310px);
+}
+
+#DBExport #DBExportBody {
+    overflow-y: scroll;
+}
+
+#dbexport_wrapper {
+    padding: 10px;
+}
+
+#dropzone {
+    width: 100%;
+    height: 20px;
+    border: 2px dotted #bbb;
+    border-radius: 10px;
+    padding: 20px 0px;
+    color: #bbb;
+    text-align: center;
+}
+
+table {
+    text-align: left;
+}
+
+#DBExport #dbex-loading-data {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000c0;
+    z-index: 100;
+    opacity: 1;
+
+}
+
+#dbex-loading-data .loadericon {
+	display: block;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #543118;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+
+#dbex-loading-data .loadericon:before {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #f8af36;
+	-webkit-animation: spin 3s linear infinite;
+	animation: spin 3s linear infinite;
+}
+
+#dbex-loading-data .loadericon:after {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #f3d6a0;
+	-webkit-animation: spin 1.5s linear infinite;
+	animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes glow {
+	from {
+		box-shadow: inset 0 0 5px -5px #fc8f007c;
+	}
+
+	to {
+		box-shadow: inset 0 0 5px 5px #fc8f007c;
+	}
+}
