@@ -2,6 +2,16 @@
 
 ##### 2.5.9
 
+**Neu**
+- GEX results
+	- the results of the guild expeditions are saved chronologically each week (ranking and member participation). Visiting the participant overview and opening the guild ranking list is necessary for updating the data.
+	- graphical representation of the progress of the guild expeditions (points, encounters, members (total), participants, rank).
+
+**Update**
+- Guild Member Statistics
+	- [#2033](https://github.com/mainIine/foe-helfer-extension/issues/2033) GB List of all guild members
+	Filterable list of the GB of all guild members with the current level, unlocked levels, invested FP and required FP to level up.
+
 **BugFix**
 -  Investment overview:
 	-[#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Profit/medals/blueprints were not updated immediately after leveling your own ark.
