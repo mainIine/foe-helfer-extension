@@ -49,7 +49,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	Fights = [],
 	OwnUnits = [],
 	EnemyUnits = [],
-	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'];
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
+	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__';
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -1412,6 +1413,21 @@ let MainParser = {
 		return MainParser.compareTime(a, s);
 	},
 
+
+	/**
+	 * @param PlayerID
+	 * @param PlayerName
+	 */
+	GetPlayerLink: (PlayerID, PlayerName) => {
+		if (Settings.GetSetting('ShowPlayerLinks')) {
+			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
+
+			return '<a href="' + PlayerLink + '" target="_blank">' + PlayerName + '</a>';
+		}
+		else {
+			return PlayerName;
+        }
+    },
 
 	/**
 	 * Adds a value to a FormData object under the specified prefix/key, serialising objects/arrays.
