@@ -803,12 +803,50 @@ let GexStat = {
 
 	GetChartSeries: async (data) => {
 
+		const buildZones = function (data) {
+
+			var zones = [],
+				i = -1, len = data.length, current, previous, dashStyle, value;
+
+			while (data[++i] === null);
+			zones.push({
+				value: i
+			});
+
+			while (++i < len)
+			{
+				previous = data[i - 1];
+				current = data[i];
+				dashStyle = '';
+
+				if (previous !== null && current === null)
+				{
+					dashStyle = 'solid';
+					value = i - 1;
+				} else if (previous === null && current !== null)
+				{
+					dashStyle = 'dot';
+					value = i;
+				}
+
+				if (dashStyle)
+				{
+					zones.push({
+						dashStyle: dashStyle,
+						value: value
+					});
+				}
+			}
+
+			return zones;
+		}
+
 		const chartSeries = {
-			points: { name: i18n('Boxes.GexStat.Points'), data: data.pointsData, color: '#DDDF0D', yAxis: 0, zIndex: 3 },
-			encounters: { gridLineWidth: 0, name: i18n('Boxes.GexStat.Encounters'), data: data.encounterData, color: '#7798BF', zIndex: 3, yAxis: 2 },
+			points: { name: i18n('Boxes.GexStat.Points'), zones: buildZones(data.pointsData), zoneAxis: 'x', connectNulls: true, data: data.pointsData, color: '#DDDF0D', yAxis: 0, zIndex: 3 },
+			encounters: { gridLineWidth: 0, zones: buildZones(data.encounterData), zoneAxis: 'x', connectNulls: true, name: i18n('Boxes.GexStat.Encounters'), data: data.encounterData, color: '#7798BF', zIndex: 3, yAxis: 2 },
 			member: { type: 'column', name: i18n('Boxes.GexStat.Member'), data: data.allMemberData, color: '#55bf3b', pointPadding: 0.3, pointPlacement: -0.2, yAxis: 1, zIndex: 1 },
 			participants: { type: 'column', name: i18n('Boxes.GexStat.Participant'), data: data.activeMemberData, color: '#DF5353', pointPadding: 0.4, pointPlacement: -0.2, yAxis: 1, zIndex: 2 },
-			rank: { name: i18n('Boxes.GexStat.Rank'), data: data.rankData, color: '#d6dae0', yAxis: 3, marker: { symbol: 'square' }, dataLabels: { enabled: true }, zIndex: 2 }
+			rank: { name: i18n('Boxes.GexStat.Rank'), zones: buildZones(data.rankData), zoneAxis: 'x', connectNulls: true, data: data.rankData, color: '#d6dae0', yAxis: 3, marker: { symbol: 'square' }, dataLabels: { enabled: true }, zIndex: 2 }
 		}
 
 		let series = { data: [], yaxis: [] };
