@@ -350,12 +350,14 @@ let Info = {
      * @returns {{class: 'auction', msg: string, type: string}}
      */
     ItemAuctionService_updateBid: (d) => {
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+
         return {
             class: 'auction',
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    player: d['player']['name'],
+                    PlayerLink,
                     amount: HTML.Format(d['amount']),
                 }
             )
@@ -417,11 +419,10 @@ let Info = {
                 // normale Chatnachricht (bekannte ID)
                 if (d['sender']['name'] === chat['title'])
                 {
-                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
+                    header = '<div><strong class="bright">' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</strong></div>';
                 }
                 else {
-                    let link = 'https://foe.scoredb.io/' + ExtWorld + '/player/' + d['sender']['player_id'];
-                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em><a href="' + link + '" target="_blank">' + d['sender']['name'] + '</a></em></div>';
+                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em>' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</em></div>';
                 }
             }
             else {
@@ -581,18 +582,20 @@ let Info = {
                 EntityID = Entity['id'],
                 EraName = EraName = GreatBuildings.GetEraName(EntityID),
                 Era = Technologies.Eras[EraName],
-                P1 = GreatBuildings.Rewards[Era][Parts.Level],
+                P1 = GreatBuildings.Rewards[Era][d['level']],
                 FPRewards = GreatBuildings.GetMaezen(P1, MainParser.ArkBonus);
 
                 newFP = FPRewards[d['rank'] - 1];
         }
+
+        let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
 
         let data = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.LevelUp'), {
-                player: d['other_player']['name'],
+                player: PlayerLink,
                 building: d['great_building_name'],
                 level: d['level'],
                 rank: d['rank'],
@@ -612,12 +615,14 @@ let Info = {
      * @returns {{class: 'trade', msg: string, type: string}}
      */
     OtherPlayerService_newEventtrade_accepted: (d) => {
+        let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
+
         return {
             class: 'trade',
             type: i18n('Boxes.Infobox.FilterTrade'),
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Trade'), {
-                'player': d['other_player']['name'],
+                'player': PlayerLink,
                 'offer': GoodsData[d['offer']['good_id']]['name'],
                 'offerValue': d['offer']['value'],
                 'need': GoodsData[d['need']['good_id']]['name'],
@@ -641,12 +646,14 @@ let Info = {
             return false;
         }
 
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+
         return {
             class: 'gex',
             type: 'GEX',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.GEX'), {
-                'player': d['player']['name'],
+                'player': PlayerLink,
                 'points': HTML.Format(d['expeditionPoints'])
             }
             )
