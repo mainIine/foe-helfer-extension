@@ -50,11 +50,11 @@ let DBExport = {
         h.push('<div id="dbexport_wrapper">');
         h.push('<p>Bitte eine Datenbank auswählen</p>');
         h.push(`<select id="selDexieDB" name="dexiedb"><option value=""${DBExport.selectedDB === undefined ? ' selected="selected"' : ''}>Bitte eine Datenbank auswählen</option>`);
-        
+
         databases.forEach(item => {
             h.push(`<option value="${item}"${DBExport.selectedDB === item ? ' selected="selected"' : ''}>${item}</option>`);
         });
-        
+
         h.push(`</select>`);
         h.push('</p><div id="databaseInfo"></div>');
 
@@ -83,7 +83,7 @@ let DBExport = {
                 $('#DBExportBody #databaseInfo').html("");
             }
         });
-        
+
         DBExport.hidePreloader();
     },
 
@@ -105,7 +105,7 @@ let DBExport = {
 
             const database = DBExport.allDatabases[i];
             let DexieDB = await new Dexie(database);
-            
+
             await DexieDB.open();
 
             try
@@ -114,12 +114,14 @@ let DBExport = {
                 fullBlob.push(blob);
                 console.log(blob);
                 download(blob, ExtWorld + '_' + DexieDB.name + "_" + moment().format("YYYYMMDD-HHmmss") + ".json", "application/json");
+                await DexieDB.close();
             }
             catch (error)
             {
                 console.error('' + error);
             }
         }
+
         DBExport.hidePreloader();
     },
 
@@ -140,18 +142,18 @@ let DBExport = {
             })));
 
             c.push(`<div class="column"><h2>Datenbank: ${DexieDB.name}</h2>` +
-                `<p><button class="btn btn-default" id="exportLink" href="#">Klicke hier um die Datenbank zu exportieren.</button>`+
+                `<p><button class="btn btn-default" id="exportLink" href="#">Klicke hier um die Datenbank zu exportieren.</button>` +
                 `<button class="btn btn-default" id="exportFull" href="#">Klicke hier um alle Daten zu exportieren.</button></p>` +
-                `<div id="dropzone">Ziehe eine lokale ${DexieDB.name.replace('_'+ExtPlayerID,'')}.json hier herein, um die Datenbank zu importieren.</div></div>` +
+                `<div id="dropzone">Ziehe eine lokale ${DexieDB.name.replace('_' + ExtPlayerID, '')}.json hier herein, um die Datenbank zu importieren.</div></div>` +
                 `<div class="column"><h3>Datenbank Übersicht</h3>` +
                 `<table class="foe-table"><thead><th>Tabellenname</th><th>Primärschlüssel</th><th>Anzahl der Zeilen</th></thead>` +
                 `<tbody>`);
-            
+
             tables.map(({ name, count, primKey }) => { c.push(`<tr><td>Table: "${name}"</td><td>${primKey}</td><td>${count}</td></tr>`) });
             c.push(`</tbody></table></div>`);
 
             $('#DBExportBody #databaseInfo').html(c.join('')).promise().done(function () {
-                
+
                 $('#exportLink').off('click').on('click', async function () {
                     DBExport.showPreloader('#DBExport');
 
@@ -159,9 +161,10 @@ let DBExport = {
                     {
                         const blob = await DexieDB.export({ prettyJson: true, progressCallback });
                         console.log(blob);
-                        download(blob, DexieDB.name + "_"+moment().format("YYYYMMDD-HHmmss")+".json", "application/json");
+                        download(blob, DexieDB.name + "_" + moment().format("YYYYMMDD-HHmmss") + ".json", "application/json");
                         DBExport.hidePreloader();
-                    } catch (error)
+                    }
+                    catch (error)
                     {
                         console.error('' + error);
                     }
@@ -169,17 +172,17 @@ let DBExport = {
                 });
 
                 $('#exportFull').off('click').on('click', async function () {
-                    
+
                     DBExport.showPreloader('#DBExport');
                     await DBExport.FullExport();
 
                 });
 
-                
+
 
                 const dropZoneDiv = document.getElementById('dropzone');
                 // Configure dropZoneDiv
-                
+
                 dropZoneDiv.ondragover = event => {
                     event.stopPropagation();
                     event.preventDefault();
@@ -194,22 +197,36 @@ let DBExport = {
 
                     // Pick the File from the drop event (a File is also a Blob):
                     const file = ev.dataTransfer.files[0];
-                    
+
                     try
                     {
                         if (!file) throw new Error(`Only files can be dropped here`);
-                        
+
                         console.log("Importing " + file.name);
-                        
+                        const importMeta = await DexieDB.peek(file);
+
+                        //Abort Import if selected DB != File DB
+                        if (!importMeta || !importMeta.data || importMeta.data.databaseName !== DBExport.selectedDB)
+                        {
+                            console.log("Import aborted: wrong file for selected DB");
+                            DBExport.hidePreloader();
+                            return;
+                        }
+
+                        // Delete existing DB
+                        console.log("Delete existing " + importMeta.data.databaseName)
                         await DexieDB.delete();
-                        
+
+                        console.log("Import DB " + importMeta.data.databaseName + " from file")
+
                         DexieDB = await Dexie.import(file, {
                             progressCallback
                         });
+
                         console.log("Import complete");
-                        
+
                         await DBExport.Show();
-                    } 
+                    }
                     catch (error)
                     {
                         console.error('' + error);
@@ -223,19 +240,19 @@ let DBExport = {
 
     showPreloader: (id) => {
 
-		if (!$('#dbex-loading-data').length)
-		{
-			$(id).append('<div id="dbex-loading-data"><div class="loadericon"></div></div>');
-		}
+        if (!$('#dbex-loading-data').length)
+        {
+            $(id).append('<div id="dbex-loading-data"><div class="loadericon"></div></div>');
+        }
 
-	},
+    },
 
 
-	hidePreloader: () => {
+    hidePreloader: () => {
 
-		$('#dbex-loading-data').fadeOut(600, function () {
-			$(this).remove();
-		});
+        $('#dbex-loading-data').fadeOut(600, function () {
+            $(this).remove();
+        });
 
-	}
+    }
 }
