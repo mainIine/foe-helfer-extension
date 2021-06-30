@@ -55,6 +55,8 @@ let GexStat = {
 	Settings: {
 		deleteOlderThan: 20,
 		showAxisLabel: true,
+		chartSeries: ['points', 'encounters', 'member', 'participants', 'rank'],
+		showRoundLimit: 10
 	},
 
 	/**
@@ -106,8 +108,8 @@ let GexStat = {
 		$('#GexStat').on('click', '.toggle-statistic', function () {
 
 			GexStat.CurrentStatGroup = $(this).data('value');
-			
-			$('#gexsContentWrapper').attr('class','default');
+
+			$('#gexsContentWrapper').attr('class', 'default');
 			$("#gexsTabs").find("li").removeClass("active");
 			$(this).parent().addClass("active");
 			$("#gexs_weekswitch").attr("data-group", GexStat.CurrentStatGroup);
@@ -418,14 +420,13 @@ let GexStat = {
 			pointSum: 0
 		};
 
-		let GexParticipation = await GexStat.db.participation.reverse().limit(30).toArray();
-		let GexRanking = await GexStat.db.ranking.reverse().limit(30).toArray();
+		let GexParticipation = await GexStat.db.participation.reverse().limit(GexStat.Settings.showRoundLimit).toArray();
+		let GexRanking = await GexStat.db.ranking.reverse().limit(GexStat.Settings.showRoundLimit).toArray();
 
-		if ((!GexParticipation || GexParticipation === null) && (!GexRanking || GexRanking === null))
+		if ((!GexParticipation || !GexParticipation.length) && (!GexRanking || !GexRanking.length))
 		{
 			GexStat.hidePreloader("#GexStat");
-			h.push(`<div class="no-data"><p>${i18n('Boxes.GexStat.ParticipationNoData')}</p></div>`);
-			$('#gexsContentWrapper').html(h.join(''));
+			$('#gexsContentWrapper').html(`<div class="no-data"><p>${i18n('Boxes.GexStat.ParticipationNoData')}</p></div>`);
 			return;
 		}
 
@@ -435,6 +436,8 @@ let GexStat = {
 		for (let x = 0; x < data.length; x++)
 		{
 			const gexweek = data[x];
+			let hasParticipation = true;
+			let hasParticipants = true;
 
 			CourseData.weeks.push(moment(gexweek.gexweek * 1000).format(i18n('Date')));
 			CourseData.pointSum += gexweek.expeditionPoints !== undefined ? gexweek.expeditionPoints : 0;
@@ -442,26 +445,49 @@ let GexStat = {
 			CourseData.encounterData.push(gexweek.solvedEncounters !== undefined ? gexweek.solvedEncounters : null);
 			CourseData.allMemberData.push(gexweek.countMember !== undefined ? gexweek.countMember : null);
 
-			if (!gexweek.participation && !gexweek.activeMembers) { CourseData.activeMemberData.push(null); continue; }
+			if (!gexweek.participation && !gexweek.activeMembers) { CourseData.activeMemberData.push(null); hasParticipation = false; }
+			if (!gexweek.participants && !gexweek.currentGuildRank) { CourseData.rankData.push(null); hasParticipants = false; }
 
-			if (!gexweek.activeMembers)
+			if (!gexweek.activeMembers && hasParticipation)
 			{
-				CourseData.activeMemberData.push(gexweek.participation.filter(function (solved) {
+				let count = gexweek.participation.filter(function (solved) {
 					return solved.solvedEncounters > 0;
-				}).length);
+				}).length;
+
+				CourseData.activeMemberData.push(count);
+				// Update DB
+				await GexStat.db.participation.update(gexweek.gexweek, { activeMembers: count });
 			}
-			else
+			else if (hasParticipation)
 			{
 				CourseData.activeMemberData.push(gexweek.activeMembers);
 			}
 
+			if (!gexweek.currentGuildRank && hasParticipants)
+			{
+				let rankdata = gexweek.participants.filter(function (d) {
+					return d.guildId === ExtGuildID;
+				});
+
+				CourseData.rankData.push(rankdata[0].rank);
+				//Update DB
+				await GexStat.db.ranking.update(gexweek.gexweek, { currentGuildRank: rankdata[0].rank });
+			}
+			else if (hasParticipants)
+			{
+				CourseData.rankData.push(gexweek.currentGuildRank);
+			}
+
 		}
-		
+		//console.log(CourseData);
+
 		// to prevent double include of Highcharts get it from Stats module 
 		await Stats.loadHighcharts();
 
+		const series = await GexStat.GetChartSeries(CourseData);
+
 		GexStat.Chart = new Highcharts.chart('gexsContentWrapper', {
-			
+
 			title: {
 				text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
 			},
@@ -472,49 +498,42 @@ let GexStat = {
 			yAxis: [{
 				allowDecimals: false,
 				labels: {
-					enabled: GexStat.Settings.showAxisLabel,
-					format: '{value}',
-					style: {
-						color: '#fff'
-					}
+					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
 				},
 				title: {
-					enabled: GexStat.Settings.showAxisLabel,
+					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
 					text: i18n('Boxes.GexStat.Points'),
-					style: {
-						color: '#fff'
-					}
 				}
 			}, {
 				allowDecimals: false,
 				title: {
-					enabled: GexStat.Settings.showAxisLabel,
-					text: i18n('Boxes.GexStat.Member'),
-					style: {
-						color: '#fff'
-					}
+					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+					text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
 				},
 				labels: {
-					enabled: GexStat.Settings.showAxisLabel,
-					format: '{value}',
-					style: {
-						color: '#fff'
-					}
+					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
 				},
 				opposite: true
 			},
 			{
 				allowDecimals: false,
 				labels: {
-					enabled: GexStat.Settings.showAxisLabel,
+					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
 				},
 				title: {
-					enabled: GexStat.Settings.showAxisLabel,
+					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
 					text: i18n('Boxes.GexStat.Encounters'),
-					style: {
-						color: '#fff'
-					}
 				},
+			},
+			{
+				allowDecimals: false,
+				labels: {
+					enabled: false,
+				},
+				title: {
+					enabled: false
+				},
+				reversed: true
 			}],
 			xAxis: {
 				categories: CourseData.weeks,
@@ -537,36 +556,7 @@ let GexStat = {
 					}
 				}
 			},
-			series: [{
-				name: i18n('Boxes.GexStat.Points'),
-				data: CourseData.pointsData,
-				zIndex: 3
-			},
-			{
-				gridLineWidth: 0,
-				name: i18n('Boxes.GexStat.Encounters'),
-				data: CourseData.encounterData,
-				type: 'spline',
-				zIndex: 3,
-				yAxis: 2
-			},
-			{
-				type: 'column',
-				name: i18n('Boxes.GexStat.Member'),
-				data: CourseData.allMemberData,
-				pointPadding: 0.3,
-				pointPlacement: -0.2,
-				yAxis: 1,
-				zIndex: 1
-			}, {
-				type: 'column',
-				name: i18n('Boxes.GexStat.Participant'),
-				data: CourseData.activeMemberData,
-				pointPadding: 0.4,
-				pointPlacement: -0.2,
-				yAxis: 1,
-				zIndex: 2
-			}],
+			series: series.data,
 			tooltip: {
 				shared: true
 			},
@@ -719,9 +709,10 @@ let GexStat = {
 
 		let c = [];
 		let deleteAfterWeeks = [5, 10, 20, 30, 52, 0];
+		let showRounds = [3, 5, 10, 15, 20, 25, 30];
 		let Settings = GexStat.Settings;
 
-		c.push(`<p class="text-left"><span class="settingtitle">General</span>${i18n('Boxes.GexStat.DeleteDataOlderThan')} <select id="gexsDeleteOlderThan" name="deleteolderthan">`);
+		c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.GexStat.General')}</span>${i18n('Boxes.GexStat.DeleteDataOlderThan')} <select id="gexsDeleteOlderThan" name="deleteolderthan">`);
 		deleteAfterWeeks.forEach(weeks => {
 			let option = '';
 			if (weeks === 0) { option = i18n('Boxes.GexStat.Never'); }
@@ -731,7 +722,22 @@ let GexStat = {
 		});
 
 		c.push(`</select>`);
-		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.GexStat.Course')}</span><input id="gmsShowAxisLabel" name="showaxislabel" value="1" type="checkbox" ${(Settings.showAxisLabel) ? ' checked="checked"' : ''} /> <label for="gmsShowAxisLabel">${i18n('Boxes.GexStat.ShowAxisLabel')}</label></p>`);
+		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.GexStat.Course')}</span>` +
+			`<input id="gmsShowAxisLabel" name="showaxislabel" value="1" type="checkbox" ${(Settings.showAxisLabel) ? ' checked="checked"' : ''} /> <label for="gmsShowAxisLabel">${i18n('Boxes.GexStat.ShowAxisLabel')}</label>` +
+			`</p>` +
+			`<p class="text-left"><input id="gmsShowChartPoints" name="showchartenpoints" value="1" type="checkbox" ${(Settings.chartSeries.includes('points')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartPoints"><i>${i18n('Boxes.GexStat.Points')}</i></label><br />` +
+			`<input id="gmsShowChartEncounters" name="showchartencounters" value="1" type="checkbox" ${(Settings.chartSeries.includes('encounters')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartEncounters"><i>${i18n('Boxes.GexStat.Encounters')}</i></label><br />` +
+			`<input id="gmsShowChartMember" name="showchartmember" value="1" type="checkbox" ${(Settings.chartSeries.includes('member')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartMember"><i>${i18n('Boxes.GexStat.Member')}</i></label><br />` +
+			`<input id="gmsShowChartParticipants" name="showchartparticipants" value="1" type="checkbox" ${(Settings.chartSeries.includes('participants')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartParticipants"><i>${i18n('Boxes.GexStat.Participant')}</i><br /></label>` +
+			`<input id="gmsShowChartRank" name="showchartrank" value="1" type="checkbox" ${(Settings.chartSeries.includes('rank')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartRank"><i>${i18n('Boxes.GexStat.Rank')}</i></label>` +
+			`</p>`);
+		c.push(`<p class="text-left">${i18n('Boxes.GexStat.CompareLast')} <select id="gexsShowRoundLimit" name="showroundlimit">`);
+		showRounds.forEach(round => {
+			let option = round + ' ' + i18n('Boxes.GexStat.Rounds');
+			c.push(`<option value="${round}" ${Settings.showRoundLimit === round ? ' selected="selected"' : ''}>${option}</option>`);
+		});
+
+		c.push(`</select></p>`);
 		c.push(`<hr><p><button id="save-GexStat-settings" class="btn btn-default" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
 		$('#GexStatSettingsBox').html(c.join(''));
 
@@ -741,6 +747,7 @@ let GexStat = {
 	SettingsSaveValues: async () => {
 
 		let tmpDeleteOlder = parseInt($('#gexsDeleteOlderThan').val());
+		let showRoundLimit = parseInt($('#gexsShowRoundLimit').val());
 
 		if (GexStat.Settings.deleteOlderThan !== tmpDeleteOlder && tmpDeleteOlder > 0)
 		{
@@ -750,7 +757,19 @@ let GexStat = {
 		}
 
 		GexStat.Settings.deleteOlderThan = tmpDeleteOlder;
+		GexStat.Settings.showRoundLimit = showRoundLimit;
 		GexStat.Settings.showAxisLabel = $("#gmsShowAxisLabel").is(':checked') ? true : false;
+
+		let chartSeries = GexStat.Settings.chartSeries = [];
+
+		if ($("#gmsShowChartPoints").is(':checked')) { chartSeries.push('points'); }
+		if ($("#gmsShowChartEncounters").is(':checked')) { chartSeries.push('encounters'); }
+		if ($("#gmsShowChartMember").is(':checked')) { chartSeries.push('member'); }
+		if ($("#gmsShowChartParticipants").is(':checked')) { chartSeries.push('participants'); }
+		if ($("#gmsShowChartRank").is(':checked')) { chartSeries.push('rank'); }
+
+		// if nothing is selected, set series to default
+		if (!chartSeries.length) { chartSeries.push('points', 'encounters', 'member', 'participants', 'rank') }
 
 		localStorage.setItem('GexStatSettings', JSON.stringify(GexStat.Settings));
 
@@ -775,7 +794,72 @@ let GexStat = {
 		}
 
 		GexStatStat.Settings.deleteOlderThan = (Settings.deleteOlderThan !== undefined) ? Settings.deleteOlderThan : GexStatStat.Settings.deleteOlderThan;
+		GexStatStat.Settings.showAxisLabel = (Settings.showAxisLabel !== undefined) ? Settings.showAxisLabel : GexStatStat.Settings.showAxisLabel;
+		GexStatStat.Settings.chartSeries = (Settings.chartSeries !== undefined && Settings.chartSeries.length) ? Settings.chartSeries : GexStatStat.Settings.chartSeries;
+		GexStatStat.Settings.showRoundLimit = (Settings.showRoundLimit !== undefined) ? Settings.showRoundLimit : GexStatStat.Settings.showRoundLimit;
 
+	},
+
+
+	GetChartSeries: async (data) => {
+
+		const buildZones = function (data) {
+
+			var zones = [],
+				i = -1, len = data.length, current, previous, dashStyle, value;
+
+			while (data[++i] === null);
+			zones.push({
+				value: i
+			});
+
+			while (++i < len)
+			{
+				previous = data[i - 1];
+				current = data[i];
+				dashStyle = '';
+
+				if (previous !== null && current === null)
+				{
+					dashStyle = 'solid';
+					value = i - 1;
+				} else if (previous === null && current !== null)
+				{
+					dashStyle = 'dot';
+					value = i;
+				}
+
+				if (dashStyle)
+				{
+					zones.push({
+						dashStyle: dashStyle,
+						value: value
+					});
+				}
+			}
+
+			return zones;
+		}
+
+		const chartSeries = {
+			points: { name: i18n('Boxes.GexStat.Points'), zones: buildZones(data.pointsData), zoneAxis: 'x', connectNulls: true, data: data.pointsData, color: '#DDDF0D', yAxis: 0, zIndex: 3 },
+			encounters: { gridLineWidth: 0, zones: buildZones(data.encounterData), zoneAxis: 'x', connectNulls: true, name: i18n('Boxes.GexStat.Encounters'), data: data.encounterData, color: '#7798BF', zIndex: 3, yAxis: 2 },
+			member: { type: 'column', name: i18n('Boxes.GexStat.Member'), data: data.allMemberData, color: '#55bf3b', pointPadding: 0.3, pointPlacement: -0.2, yAxis: 1, zIndex: 1 },
+			participants: { type: 'column', name: i18n('Boxes.GexStat.Participant'), data: data.activeMemberData, color: '#DF5353', pointPadding: 0.4, pointPlacement: -0.2, yAxis: 1, zIndex: 2 },
+			rank: { name: i18n('Boxes.GexStat.Rank'), zones: buildZones(data.rankData), zoneAxis: 'x', connectNulls: true, data: data.rankData, color: '#d6dae0', yAxis: 3, marker: { symbol: 'square' }, dataLabels: { enabled: true }, zIndex: 2 }
+		}
+
+		let series = { data: [], yaxis: [] };
+
+		GexStat.Settings.chartSeries.forEach(v => {
+			series.data.push(chartSeries[v]);
+			if (!series.yaxis.includes(chartSeries[v].yAxis))
+			{
+				series.yaxis.push(chartSeries[v].yAxis);
+			}
+		});
+
+		return series;
 	},
 
 
