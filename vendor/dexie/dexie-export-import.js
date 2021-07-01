@@ -1804,6 +1804,11 @@
   Dexie.prototype.import = function (blob, options) {
     return importInto(this, blob, options);
   };
+
+  Dexie.prototype.peek = function (blob) {
+    return peakImportFile(blob);
+  };
+
   Dexie.import = function (blob, options) { return importDB(blob, options); };
   var dexieExportImport = (function () {
     throw new Error("This addon extends Dexie.prototype globally and does not have be included in Dexie constructor's addons options.");

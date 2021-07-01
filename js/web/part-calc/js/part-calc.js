@@ -464,7 +464,7 @@ let Parts = {
         h.push('<table style="width: 100%"><tr><td class="text-center">');
 		h.push('<h1 class="lg-info">' + MainParser.CityEntities[cityentity_id]['name'] + '</h1>');
 
-		if (PlayerName) h.push('<strong>' + PlayerName + '</strong><br>');
+		if (PlayerName) h.push('<strong>' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</strong><br>');
 
 		if (Parts.IsPreviousLevel) {
 			let Level = GreatBuildings.GetLevel(cityentity_id, Total);

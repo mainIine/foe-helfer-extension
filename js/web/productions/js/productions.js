@@ -620,7 +620,7 @@ let Productions = {
 					let Entity = MainParser.CityEntities[MainParser.CityMapData[i]['cityentity_id']],
 						width = parseInt(Entity['width']),
 						length = parseInt(Entity['length']),
-						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0);
+						RequiredStreet = (Entity['type'] === 'street' || MainParser.CityMapData[i]['state']['__class__'] === 'UnconnectedState' ? 0 : Entity['requirements']['street_connection_level'] | 0);
 
 					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
 					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
@@ -1568,14 +1568,13 @@ let Productions = {
 					GroupName = Entity['name'],
 					GroupType = 'cityentity_id';
 
-				//Keine Gebäude, die man nicht abreißen kann
 				if (Entity['abilities']) {
 					let SkipBuilding = false;
 					for (let j = 0; j < Entity['abilities'].length; j++) {
 						let Ability = Entity['abilities'][j],
 							Class = Ability['__class__'];
 
-						if (Class === 'NotsellableAbility') {
+						if (Class === 'NotsellableAbility') { //Keine Gebäude, die man nicht abreißen kann
 							SkipBuilding = true;
 							break;
 						}
@@ -1604,7 +1603,7 @@ let Productions = {
 				for (let Type in Production['motivatedproducts']) {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
-					Production.motivatedproducts[Type] *= Production['dailyfactor'];
+					if(Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
 					if (Building['type'] === 'residential' || Building['type'] === 'production') {
 						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
 						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
@@ -1652,7 +1651,7 @@ let Productions = {
 
 					let width = parseInt(Entity['width']),
 						length = parseInt(Entity['length']),
-						RequiredStreet = (Entity['type'] === 'street' ? 0 : Entity['requirements']['street_connection_level'] | 0),
+						RequiredStreet = (Entity['type'] === 'street' || MainParser.CityMapData[CurrentBuilding['id']]['state']['__class__'] === 'UnconnectedState' ? 0 : Entity['requirements']['street_connection_level'] | 0),
 						Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
 
 					TotalTiles += Tiles;
