@@ -242,7 +242,6 @@
     "Boxes.GreatBuildings.AttackValue": "Valeur de notation de 1% de bonus d'attaque (en PF)",
     "Boxes.GreatBuildings.BreakEven": "Rentabilité à",
     "Boxes.GreatBuildings.BreakEvenTT": "Cela prendra __days__ jours pour que l'investissement de __costs__ PF soit remboursé avec la production journalière de __fpproduction__ PF/jour",
-    "Boxes.GreatBuildings.BreakEvenTTAttack": "?",
     "Boxes.GreatBuildings.BreakEvenTTGoods": "Cela prendra __days__ jours pour que l'investissement de __costs__ PF soit remboursé avec la production journalière de __fpproduction__ PF/jour et __goodsproduction__ ressources/jour (égal __goodsproduction__ * __goodsvalue__ = __goodsproductionvalue__ PF/jour)",
     "Boxes.GreatBuildings.BreakEvenUnit": "__days__ jours",
     "Boxes.GreatBuildings.Costs": "Coût en PF",
