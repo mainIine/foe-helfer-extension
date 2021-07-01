@@ -149,8 +149,6 @@ let GreatBuildings =
 
             GreatBuildings.RewardPerDay = MainParser.round(GreatBuildings.FPRewards / 6);
 
-            GreatBuildings.DetailsVisible = {};
-
             HTML.Box({
                 id: 'greatbuildings',
                 title: i18n('Boxes.GreatBuildings.Title'),
@@ -271,6 +269,8 @@ let GreatBuildings =
 
 
     CalcBody: () => {
+        GreatBuildings.DetailsVisible = {};
+
         let h = [];
         h.push('<div class="text-center dark-bg header">');
         h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong><br>');
@@ -585,7 +585,6 @@ let GreatBuildings =
                     h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="text-bright">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
                 }
                 else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
-                    h.push('<td></td>');
                     h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
                     h.push('<td>-</td>');
                     h.push('<td>-</td>');
