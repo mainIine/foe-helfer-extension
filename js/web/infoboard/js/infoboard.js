@@ -33,25 +33,6 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
-// when a great building where the player has invested has been levelled
-FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
-
-    if (data && data['responseData'] && data['responseData']) {
-        // save the number of returned FPs to show in the infoboard message
-        Info.ReturnFPPoints = (data['responseData']['strategy_point_amount']) ? data.responseData.strategy_point_amount : 0;
-
-        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
-        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
-        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
-        if (Info.ReturnFPMessageData) {
-            let bd = Info.OtherPlayerService_newEventgreat_building_contribution(Info.ReturnFPMessageData);
-            Info.ReturnFPMessageData = null;
-            Infoboard.PostMessage(bd);
-        }
-    }
-
-});
-
 /**
  * @type {{MaxEntries: number, DebugWebSocket: boolean, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: (function(*, *=): undefined), Box: (function(): (boolean|undefined)), History: [], Init: Infoboard.Init, InjectionLoaded: boolean, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: (function(*=, *=): undefined), PlayInfoSound: boolean}}
  */
@@ -363,25 +344,20 @@ let Info = {
 
 
     /**
-     * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
-     * und müssen gesammelt werden
-     */
-    ReturnFPPoints: -1,
-    ReturnFPMessageData: null,
-
-    /**
      * Jmd hat in einer Auktion mehr geboten
      *
      * @param d
      * @returns {{class: 'auction', msg: string, type: string}}
      */
     ItemAuctionService_updateBid: (d) => {
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+
         return {
             class: 'auction',
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    player: d['player']['name'],
+                    PlayerLink,
                     amount: HTML.Format(d['amount']),
                 }
             )
@@ -443,11 +419,10 @@ let Info = {
                 // normale Chatnachricht (bekannte ID)
                 if (d['sender']['name'] === chat['title'])
                 {
-                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
+                    header = '<div><strong class="bright">' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</strong></div>';
                 }
                 else {
-                    let link = 'https://foe.scoredb.io/' + ExtWorld + '/player/' + d['sender']['player_id'];
-                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em><a href="' + link + '" target="_blank">' + d['sender']['name'] + '</a></em></div>';
+                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em>' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</em></div>';
                 }
             }
             else {
@@ -598,35 +573,36 @@ let Info = {
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
 
-        let newFP = Info.ReturnFPPoints;
-        if (d['rank'] >= 6) { newFP = 0; }
+        let newFP=-1;
+        if (d['rank'] >= 6) {
+            newFP = 0
+        }
+        else {
+            let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === d['great_building_name']));
+                EntityID = Entity['id'],
+                EraName = EraName = GreatBuildings.GetEraName(EntityID),
+                Era = Technologies.Eras[EraName],
+                P1 = GreatBuildings.Rewards[Era][d['level']],
+                FPRewards = GreatBuildings.GetMaezen(P1, MainParser.ArkBonus);
+
+                newFP = FPRewards[d['rank'] - 1];
+        }
+
+        let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
 
         let data = {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.LevelUp'), {
-                player: d['other_player']['name'],
+                player: PlayerLink,
                 building: d['great_building_name'],
                 level: d['level'],
                 rank: d['rank'],
-                fps: newFP
+                fps: newFP !== -1 ? newFP : '???'
             }
             )
         };
-
-        // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
-        // so store the data and post the message from that handler (using the stored data)
-        // ... but only if the rank is 5 and higher (1-5), otherwise, there is no reward
-        // (and BlueprintService.newReward is not triggered)
-        if (d['rank'] < 6 && Info.ReturnFPPoints == -1) {
-            Info.ReturnFPMessageData = d;
-            return undefined;
-        }
-
-        // zurück setzen
-        Info.ReturnFPPoints = -1;
-        Info.ReturnFPMessageData = null;
 
         return data;
     },
@@ -639,12 +615,14 @@ let Info = {
      * @returns {{class: 'trade', msg: string, type: string}}
      */
     OtherPlayerService_newEventtrade_accepted: (d) => {
+        let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
+
         return {
             class: 'trade',
             type: i18n('Boxes.Infobox.FilterTrade'),
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Trade'), {
-                'player': d['other_player']['name'],
+                'player': PlayerLink,
                 'offer': GoodsData[d['offer']['good_id']]['name'],
                 'offerValue': d['offer']['value'],
                 'need': GoodsData[d['need']['good_id']]['name'],
@@ -668,12 +646,14 @@ let Info = {
             return false;
         }
 
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+
         return {
             class: 'gex',
             type: 'GEX',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.GEX'), {
-                'player': d['player']['name'],
+                'player': PlayerLink,
                 'points': HTML.Format(d['expeditionPoints'])
             }
             )

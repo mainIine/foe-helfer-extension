@@ -49,7 +49,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	Fights = [],
 	OwnUnits = [],
 	EnemyUnits = [],
-	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'];
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
+	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__';
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -981,6 +982,8 @@ const FoEproxy = (function () {
 		lgUpdateData = null;
 		let IsPreviousLevel = false;
 
+		if (!Rankings) return; //Keine Rankings => Fehlermeldung z.B. "Stufe wurde bereits erhöht" wenn man versucht einzuzahlen obwohl schon gelevelt wurde
+
 		//Eigenes LG
 		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
 			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
@@ -1411,6 +1414,21 @@ let MainParser = {
 		return MainParser.compareTime(a, s);
 	},
 
+
+	/**
+	 * @param PlayerID
+	 * @param PlayerName
+	 */
+	GetPlayerLink: (PlayerID, PlayerName) => {
+		if (Settings.GetSetting('ShowPlayerLinks')) {
+			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
+
+			return '<a href="' + PlayerLink + '" target="_blank">' + PlayerName + '</a>';
+		}
+		else {
+			return PlayerName;
+        }
+    },
 
 	/**
 	 * Adds a value to a FormData object under the specified prefix/key, serialising objects/arrays.

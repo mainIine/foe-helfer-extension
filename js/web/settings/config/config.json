@@ -6,6 +6,12 @@
 		"sort": 0
 	},
 	{
+		"name": "ShowPlayerLinks",
+		"status": true,
+		"group": "Sending",
+		"sort": 1
+	},
+	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
@@ -121,7 +127,7 @@
 	},
 	{
 		"name": "EnableSound",
-		"status":  true,
+		"status": true,
 		"group": "Extension",
 		"sort": 6
 	},
