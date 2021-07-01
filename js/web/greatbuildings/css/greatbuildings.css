@@ -55,10 +55,6 @@
 	font-size: 85%;
 }
 
-#greatbuildings #greatbuildingsBody .foe-table tr:first-child td:nth-child(5) strong {
-	color: var(--text-success);
-}
-
 #greatbuildings #greatbuildingsBody strong.player-name {
 	display: block;
 	white-space: nowrap;
