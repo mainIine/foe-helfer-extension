@@ -555,6 +555,7 @@ let GreatBuildings =
                         AttackValue = CurrentROIResult['AttackValue'],
                         BreakEven = CurrentROIResult['ROIValues'][BestLevel]['ROI'],
                         BreakEvenString = (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(BreakEven)),
+                        BreakEvenClass = (i === 0 ? 'text-success' : 'text-bright');
                         CostsTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBCostsTT'), { 'goodcosts': CurrentROIResult['BuildCosts'] }) : ''),
                         FPProductionTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBFPProductionTT'), { 'tiles': Math.round(CurrentROIResult['BuildDailyCosts'] / GreatBuildings.FPPerTile * 100)/100, 'fppertile': GreatBuildings.FPPerTile, 'opcost': Math.round(CurrentROIResult['BuildDailyCosts'] * 100)/ 100 }) : '');
 
@@ -582,7 +583,7 @@ let GreatBuildings =
                     h.push('<td title="' + HTML.i18nTooltip(FPProductionTT) + '">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(FPProduction * 10) / 10) + '</td>');
                     if (GreatBuildings.ShowGoods) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(GoodsProduction * 10) / 10) + '</td>');
                     if (GreatBuildings.ShowAttack) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(AttackProduction * 10) / 10) + '</td>');
-                    h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="text-bright">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
+                    h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="' + BreakEvenClass + '">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
                 }
                 else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
                     h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
