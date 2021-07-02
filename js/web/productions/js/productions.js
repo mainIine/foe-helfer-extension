@@ -749,8 +749,6 @@ let Productions = {
 							'</tr>';
 
 						rowA.push(tds);
-
-						// countMotivatedProducts.filter(val => val); ?????
 					}
 				}
 			}
