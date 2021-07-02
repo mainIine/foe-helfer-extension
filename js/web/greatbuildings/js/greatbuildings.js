@@ -149,8 +149,6 @@ let GreatBuildings =
 
             GreatBuildings.RewardPerDay = MainParser.round(GreatBuildings.FPRewards / 6);
 
-            GreatBuildings.DetailsVisible = {};
-
             HTML.Box({
                 id: 'greatbuildings',
                 title: i18n('Boxes.GreatBuildings.Title'),
@@ -271,6 +269,8 @@ let GreatBuildings =
 
 
     CalcBody: () => {
+        GreatBuildings.DetailsVisible = {};
+
         let h = [];
         h.push('<div class="text-center dark-bg header">');
         h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong><br>');
@@ -555,6 +555,7 @@ let GreatBuildings =
                         AttackValue = CurrentROIResult['AttackValue'],
                         BreakEven = CurrentROIResult['ROIValues'][BestLevel]['ROI'],
                         BreakEvenString = (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(BreakEven)),
+                        BreakEvenClass = (i === 0 ? 'text-success' : 'text-bright');
                         CostsTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBCostsTT'), { 'goodcosts': CurrentROIResult['BuildCosts'] }) : ''),
                         FPProductionTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBFPProductionTT'), { 'tiles': Math.round(CurrentROIResult['BuildDailyCosts'] / GreatBuildings.FPPerTile * 100)/100, 'fppertile': GreatBuildings.FPPerTile, 'opcost': Math.round(CurrentROIResult['BuildDailyCosts'] * 100)/ 100 }) : '');
 
@@ -564,7 +565,7 @@ let GreatBuildings =
                         HasAttackProduction = (AttackProduction * AttackValue !== 0);
 
                     if (HasGoodsProduction && HasAttackProduction) { //FP + Goods + Attack
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10, 'attackproduction': Math.round(AttackProduction * 10) / 10, 'attackvalue': AttackValue, 'attackproductionvalue': Math.round(AttackProduction * AttackValue * 10) / 10 });
+                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoodsAttack'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10, 'attackproduction': Math.round(AttackProduction * 10) / 10, 'attackvalue': AttackValue, 'attackproductionvalue': Math.round(AttackProduction * AttackValue * 10) / 10 });
                     }
                     else if (HasGoodsProduction) { //FP + Goods
                         BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10 });
@@ -582,10 +583,9 @@ let GreatBuildings =
                     h.push('<td title="' + HTML.i18nTooltip(FPProductionTT) + '">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(FPProduction * 10) / 10) + '</td>');
                     if (GreatBuildings.ShowGoods) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(GoodsProduction * 10) / 10) + '</td>');
                     if (GreatBuildings.ShowAttack) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(AttackProduction * 10) / 10) + '</td>');
-                    h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="text-bright">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
+                    h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="' + BreakEvenClass + '">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
                 }
                 else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
-                    h.push('<td></td>');
                     h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
                     h.push('<td>-</td>');
                     h.push('<td>-</td>');
