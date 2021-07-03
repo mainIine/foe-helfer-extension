@@ -265,9 +265,7 @@ let Settings = {
 	 * @constructor
 	 */
 	ExportView: () => {
-		return `<p>${i18n('Settings.ExportSettings.ViewExport')} <button class="btn-default" id="export-settings" onclick="Settings.ExportSettings()">${i18n('Settings.ExportSettings.Button')}</button></p>
-				<hr>
-				<p>${i18n('Settings.ExportSettings.ViewImport')} <input type="file" id="import-settings" onchange="Settings.ImportSettings()" accept="application/json"></p>`;
+		return `<p><button class="btn-default" onclick="DBExport.BuildBox()">${i18n('Settings.ExportSettings.OpenImportExportTool')}</button></p>`;
 	},
 
 
