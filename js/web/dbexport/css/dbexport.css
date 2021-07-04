@@ -107,6 +107,12 @@ table {
 	color: rgb(158, 0, 0);
 }
 
+#DBExport #debex_import_wrapper .errmsg {
+	color: var(--text-normal);
+	font-size: 0.8rem;
+	display: block;
+}
+
 #dbex-loading-data .loadericon {
 	display: block;
 	position: absolute;
