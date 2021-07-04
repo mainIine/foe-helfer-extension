@@ -299,7 +299,7 @@ let DBExport = {
         let json = JSON.parse(fileContent);
 
         Object.keys(json).forEach(function (k) {
-            if (!excludeKeys.includes(k))
+            if (!excludeKeys.includes(k) && k.indexOf("forgeofempires.com") === -1)
             {
                 localStorage.setItem(k, json[k]);
             }
