@@ -294,7 +294,7 @@ let DBExport = {
 
     ImportLocalStorage: async (blob, filename) => {
 
-        const excludeKeys = ['current_world', 'current_player_name'];
+        const excludeKeys = ['current_world', 'current_player_name', 'current_player_id', 'current_guild_id'];
         let fileContent = await blob.text();
         let json = JSON.parse(fileContent);
 
