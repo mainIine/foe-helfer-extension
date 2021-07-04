@@ -1,47 +1,115 @@
 #DBExport {
-    width: 750px;
-    height: 600px;
-    top: calc(50vh - 200px);
-    left: calc(50vw - 310px);
+	width: 750px;
+	height: 550px;
+	top: calc(50vh - 300px);
+	left: calc(50vw - 210px);
 }
 
 #DBExport #DBExportBody {
-    overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 #dbexport_wrapper {
-    padding: 10px;
+	padding: 10px;
 }
 
-#dropzone {
-    width: 100%;
-    height: 20px;
-    border: 2px dotted #bbb;
-    border-radius: 10px;
-    padding: 20px 0px;
-    color: #bbb;
-    text-align: center;
+#dbex_dropzone {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	height: 50px;
+	border: 2px dotted #bbb;
+	border-radius: 10px;
+	padding: 20px 0px;
+	color: #bbb;
+	cursor: pointer;
+}
+
+#dbex_fileupload {
+	display: none;
 }
 
 table {
-    text-align: left;
+	text-align: left;
 }
 
 #DBExport #dbex-loading-data {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000000c0;
-    z-index: 100;
-    opacity: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000000c0;
+	z-index: 100;
+	opacity: 1;
 
+}
+
+#DBExport #dbex-loading-data .message {
+	position: relative;
+	top: 47%;
+	width: 100%;
+	height: 100px;
+	text-align: center;
+}
+
+#DBExport #dbex-loading-data .message .progress {
+	display: block;
+	font-size: 1.4rem;
+}
+
+#DBExport #dbex-loading-data .progressbar {
+	min-width: 80px;
+	width: fit-content;
+	background: transparent;
+	margin: 0 auto;
+	font-size: 1.0rem;
+
+}
+
+#DBExport #dbex-loading-data .progressbar .state {
+	width: 80px;
+	background-color: var(--text-bright);
+	height: 9px;
+	margin-top: 5px;
+}
+
+#DBExport #debex_import_wrapper {
+	padding: 10px 0;
+	text-align: center;
+}
+
+#DBExport #debex_import_wrapper p.error {
+	color: var(--text-bright);
+}
+
+#DBExport #debex_import_wrapper p.success {
+	color: var(--text-bright);
+}
+
+#DBExport #debex_import_wrapper .icon {
+	width: 22px;
+	height: 22px;
+	display: inline-block;
+
+}
+
+#DBExport #debex_import_wrapper .icon.success {
+	background-image: url(../../../../css/images/hud/success-icon.png);
+	background-repeat: no-repeat;
+	zoom: 0.7;
+}
+
+#DBExport #debex_import_wrapper .icon.error {
+	font-size: 1.3rem;
+	color: rgb(158, 0, 0);
 }
 
 #dbex-loading-data .loadericon {
 	display: block;
-	position: relative;
+	position: absolute;
 	left: 50%;
 	top: 50%;
 	width: 150px;
