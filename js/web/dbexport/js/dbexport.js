@@ -197,6 +197,7 @@ let DBExport = {
     UploadFile: async (file) => {
         try
         {
+            let SuccessState = 1;
             if (!file || !file.name || !file.type || (file.type !== 'application/json' && file.type !== 'application/zip'))
             {
                 $("#debex_import_wrapper").html(`<p class="error">${i18n('Boxes.DBExport.ImportFileError')}</p>`);
@@ -221,8 +222,15 @@ let DBExport = {
                         break;
                     }
 
-                    await DBExport.ImportDexieDB(file);
-                    $("#debex_import_wrapper").append(`<p class="success">${i18n('Boxes.DBExport.ImportSuccessful')}</p>`);
+                    let World = file.name.slice(0, file.name.indexOf('_'));
+                    let response = await DBExport.ImportDexieDB(file, World);
+
+                    if (response < SuccessState) { SuccessState = response; }
+
+                    let SuccessMessage = SuccessState === 1 ? i18n('Boxes.DBExport.ImportSuccessful') : (SuccessState === 0 ? i18n('Boxes.DBExport.ImportPartlySuccessful') : i18n('Boxes.DBExport.ImportFileError'));
+                    $("#debex_import_wrapper").append(`<p class="success">${SuccessMessage}</p>` +
+                        `<p><button onclick="location.reload();" class="btn-default">${i18n('Boxes.DBExport.ReloadPage')}</button></p>`);
+
                     DBExport.hidePreloader();
                     break;
 
@@ -235,20 +243,29 @@ let DBExport = {
                             $("#dbex-loading-data .message").html('<span class="progress">' + exportState + ' / ' + exportCounter + '</span>' +
                                 '<div class="progressbar"><div class="state"></div></div>');
                             zip.forEach(async function (relativePath, zipEntry) {
+
+                                let response = undefined;
                                 return Promise.all([
                                     promises.push(zip.file(zipEntry.name).async("blob").then(async function (blob) {
+
                                         if (zipEntry.name.search('localStorage') == 4)
                                         {
                                             $("#dbex-loading-data .message").html('<span class="progress">' + (++exportState) + ' / ' + exportCounter + '</span>' +
                                                 '<div class="progressbar"><div class="state" style="width:50%;"></div></div>');
-                                            await DBExport.ImportLocalStorage(blob, zipEntry.name);
+                                            response = await DBExport.ImportLocalStorage(blob, zipEntry.name);
 
                                         }
                                         else
                                         {
                                             $("#dbex-loading-data .message").html('<span class="progress">' + (++exportState) + ' / ' + exportCounter + '</span>' +
                                                 '<div class="progressbar"><div class="state"></div></div>');
-                                            await DBExport.ImportDexieDB(blob, zipEntry.name);
+                                            let World = zipEntry.name.slice(0, zipEntry.name.indexOf('_'));
+                                            response = await DBExport.ImportDexieDB(blob, World);
+                                        }
+
+                                        if (response < SuccessState)
+                                        {
+                                            SuccessState = response;
                                         }
 
                                     }))]
@@ -260,7 +277,9 @@ let DBExport = {
                         });
 
                     Promise.all(promises).then(function () {
-                        $("#debex_import_wrapper").append(`<p class="success">${i18n('Boxes.DBExport.ImportSuccessful')}</p>`);
+                        let SuccessMessage = SuccessState === 1 ? i18n('Boxes.DBExport.ImportSuccessful') : (SuccessState === 0 ? i18n('Boxes.DBExport.ImportPartlySuccessful') : i18n('Boxes.DBExport.ImportFileError'));
+                        $("#debex_import_wrapper").append(`<p class="success">${SuccessMessage}</p>` +
+                            `<p><button onclick="location.reload();" class="btn-default">${i18n('Boxes.DBExport.ReloadPage')}</button></p>`);
                         DBExport.hidePreloader();
                     });
                     break;
@@ -289,40 +308,53 @@ let DBExport = {
     },
 
 
-    ImportDexieDB: async (blob) => {
+    ImportDexieDB: async (blob, World) => {
 
         let DexieDB = new Dexie();
         const importMeta = await DexieDB.peek(blob);
 
         if (!importMeta || !importMeta.data)
         {
-            $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><br />${i18n('Boxes.DBExport.ImportFileError')}</p>`);
-            DBExport.hidePreloader();
-            return;
+            $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><span class="errmsg">${i18n('Boxes.DBExport.ImportFileError')}</span></p>`);
+            return 0;
         }
         let dbName = importMeta.data.databaseName;
-
-        // check if DB has the right PlayerID
-        let ImportPlayerID = parseInt(dbName.split(/_/).pop().trim());
-
-        if (ExtPlayerID !== ImportPlayerID)
+        try
         {
-            $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><br />${i18n('Boxes.DBExport.WrongDBPlayerID')}</p>`);
-            DBExport.hidePreloader();
-            return;
+            // check if DB has the right PlayerID and World
+            let Filename = dbName.split(/_/);
+            let ImportPlayerID = Array.isArray(Filename) ? parseInt(Filename.pop()) : undefined;
+
+            if (ExtPlayerID !== ImportPlayerID)
+            {
+                $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><span class="errmsg">${i18n('Boxes.DBExport.WrongDBPlayerID')}</span></p>`);
+                return 0;
+            }
+
+            if (ExtWorld !== World)
+            {
+                $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><span class="errmsg">${i18n('Boxes.DBExport.WrongDBWorld')}</span></p>`);
+                return 0;
+            }
+
+            // Import File
+            let importDB = await new Dexie(dbName);
+
+            await importDB.delete();
+
+            importDB = await Dexie.import(blob, {
+                progressCallback
+            });
+
+            $("#debex_import_wrapper").append(`<p class="success">${dbName} <span class="icon success"></span></p>`);
+            return 1;
         }
-
-        // Import File
-        let importDB = await new Dexie(dbName);
-
-        await importDB.delete();
-
-        $("#debex_import_wrapper").append(`<p class="success">${dbName} <span class="icon success"></span></p>`);
-
-        importDB = await Dexie.import(blob, {
-            progressCallback
-        });
-
+        catch (error)
+        {
+            $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><span class="errmsg">${i18n('Boxes.DBExport.ImportFileError')}</span></p>`);
+            console.error('' + error);
+            return 0;
+        }
     },
 
 
@@ -392,7 +424,7 @@ let DBExport = {
             }
             else
             {
-                download(localStorageBlob, ExtWorld + '_localStorage_' + moment().format("YYYYMMDD-HHmmss") + ".json", "application/json");
+                download(localStorageBlob, ExtWorld + '_localStorage_' + moment().format("YYMMDD-HHmm") + "_" + ExtPlayerID + ".json", "application/json");
             }
 
         }
@@ -435,7 +467,7 @@ let DBExport = {
         {
             zip.generateAsync({ type: "blob" })
                 .then(function (blob) {
-                    download(blob, ExtWorld + "_foe_helper_export_" + moment().format("YYYYMMDD-HHmmss") + ".zip", "application/zip");
+                    download(blob, ExtWorld + "_foe_helper_export_" + moment().format("YYMMDD-HHmm") + "_" + ExtPlayerID + ".zip", "application/zip");
                     DBExport.hidePreloader();
                 });
         }
