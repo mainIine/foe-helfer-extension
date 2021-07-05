@@ -4,7 +4,7 @@
 
 **Neu**
 - GEX results
-	- the results of the guild expeditions are saved chronologically each week (ranking and member participation). Visiting the participant overview and opening the guild ranking list is necessary for updating the data.
+	- The results of the guild expeditions are saved chronologically each week (ranking and member participation). Visiting the participant overview and opening the guild ranking list is necessary for updating the data.
 	- graphical representation of the progress of the guild expeditions (points, encounters, members (total), participants, rank).
 
 **Update**
@@ -14,7 +14,8 @@
 
 **BugFix**
 -  Investment overview:
-	-[#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Profit/medals/blueprints were not updated immediately after leveling your own ark.
+	- [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Profit/medals/blueprints were not updated immediately after leveling your own ark.
+	- Hidden GBs became visible again after levelling the own ark although no investment had taken place.
 
 ---
 
