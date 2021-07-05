@@ -549,7 +549,14 @@ let Investment = {
 					GbhasUpdate=true;
 					
 					if(!arrfphistory.length)
-					arrfphistory = JSON.parse(CurrentGB['fphistory']);
+					{
+						arrfphistory = JSON.parse(CurrentGB['fphistory']);
+					}
+					
+					if(CurrentGB['ishidden'] !== undefined) 
+					{
+						isHidden = CurrentGB['ishidden'];
+					}
 				}
 
 				if (CurrentGB === undefined || GbhasUpdate)
