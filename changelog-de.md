@@ -14,7 +14,8 @@
 
 **BugFix**
 - Investitionsübersicht:
-	-[#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Gewinn/Medaillen/Blaupausen wurden nach dem leveln der eigenen Arche nicht sofort aktualisiert.
+	- [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Gewinn/Medaillen/Blaupausen wurden nach dem leveln der eigenen Arche nicht sofort aktualisiert.
+	- Ausgeblendete LG wurden nach dem leveln der eigenen Arche wieder eingeblendet obwohl keine Investition stattgefunden hat.  
 
 ---
 
