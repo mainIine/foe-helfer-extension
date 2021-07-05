@@ -825,7 +825,7 @@ let GexStat = {
 
 		const buildZones = function (data) {
 
-			var zones = [],
+			let zones = [],
 				i = -1, len = data.length, current, previous, dashStyle, value;
 
 			while (data[++i] === null);
@@ -910,6 +910,7 @@ let GexStat = {
 					});
 				});
 				break;
+
 			case 'Participation':
 				let Participation = await GexStat.db.participation.reverse().limit(exportLimit).toArray();
 				if (!Participation) { return; }
@@ -920,25 +921,25 @@ let GexStat = {
 					participation.sort((a, b) => a.rank - b.rank).forEach(participant => {
 						exportData.push([weekdate, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank]);
 					});
-
 				});
-
 				break;
+
 			case 'Course':
 				return;
-				break;
 		}
 
 		if (!exportData.length) { return; }
 
+		let filetype = "text/csv;charset=utf-8";
+
 		for (let i = 0; i < exportData.length; i++)
 		{
-			var value = exportData[i];
+			let value = exportData[i];
 
-			for (var j = 0; j < value.length; j++)
+			for (let j = 0; j < value.length; j++)
 			{
-				var innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
-				var result = innerValue.replace(/"/g, '""');
+				let innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
+				let result = innerValue.replace(/"/g, '""');
 				if (result.search(/("|,|\n)/g) >= 0)
 					result = '"' + result + '"';
 				if (j > 0)
@@ -952,10 +953,11 @@ let GexStat = {
 
 		if (type === 'json')
 		{
-			FileContent = GuildMemberStat.CsvToJson(FileContent);
+			FileContent = GexStat.CsvToJson(FileContent);
+			filetype = "text/json;charset=utf-8";
 		}
 
-		let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
+		let Blob1 = new Blob([BOM + FileContent], { type: filetype });
 		MainParser.ExportFile(Blob1, content + '.' + type);
 
 		$('#GexStatSettingsBox').fadeToggle('fast', function () {
@@ -986,9 +988,9 @@ let GexStat = {
 
 	CsvToJson: (csv) => {
 
-		var lines = csv.split("\r\n");
-		var result = [];
-		var headers = lines[0].split(";");
+		let lines = csv.split("\r\n");
+		let result = [];
+		let headers = lines[0].split(";");
 
 		for (let i = 1; i < lines.length - 1; i++)
 		{
