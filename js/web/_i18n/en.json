@@ -212,6 +212,7 @@
     "Boxes.GexStat.Course": "Course",
     "Boxes.GexStat.DeleteDataOlderThan": "delete data older than",
     "Boxes.GexStat.Encounters": "Encounters",
+    "Boxes.GexStat.ExportLast": "export last",
     "Boxes.GexStat.General": "General",
     "Boxes.GexStat.Gex": "GEX",
     "Boxes.GexStat.Level": "level",
