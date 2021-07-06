@@ -56,7 +56,8 @@ let GexStat = {
 		deleteOlderThan: 20,
 		showAxisLabel: true,
 		chartSeries: ['points', 'encounters', 'member', 'participants', 'rank'],
-		showRoundLimit: 10
+		showRoundLimit: 10,
+		exportLimit: 10
 	},
 
 	/**
@@ -594,6 +595,8 @@ let GexStat = {
 
 	ShowTabContent: (StatGroup, week) => {
 
+		if ($('#GexStatSettingsBox').length) { $('#GexStatSettingsBox').remove(); }
+
 		switch (StatGroup)
 		{
 			case 'Ranking':
@@ -710,6 +713,7 @@ let GexStat = {
 		let c = [];
 		let deleteAfterWeeks = [5, 10, 20, 30, 52, 0];
 		let showRounds = [3, 5, 10, 15, 20, 25, 30];
+		let exportLimits = [1, 2, 3, 5, 10, 15, 20, 25, 30];
 		let Settings = GexStat.Settings;
 
 		c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.GexStat.General')}</span>${i18n('Boxes.GexStat.DeleteDataOlderThan')} <select id="gexsDeleteOlderThan" name="deleteolderthan">`);
@@ -738,6 +742,19 @@ let GexStat = {
 		});
 
 		c.push(`</select></p>`);
+		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.General.Export')}</span>` +
+			`${i18n('Boxes.GexStat.ExportLast')} <select id="gexsExportLimit" name="exportlimit">`);
+		exportLimits.forEach(round => {
+			let option = round + ' ' + i18n('Boxes.GexStat.Rounds');
+			c.push(`<option value="${round}" ${Settings.exportLimit === round ? ' selected="selected"' : ''}>${option}</option>`);
+		});
+		c.push(`</select></p>`);
+
+		let disabledExport = '';
+		if (GexStat.CurrentStatGroup === 'Course') { disabledExport = ' disabled'; }
+
+		c.push(`<p class="text-left"><button class="btn btn-default" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}"${disabledExport}>CSV</button>` +
+			`<button class="btn btn-default" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}"${disabledExport}>JSON</button></p>`);
 		c.push(`<hr><p><button id="save-GexStat-settings" class="btn btn-default" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
 		$('#GexStatSettingsBox').html(c.join(''));
 
@@ -748,6 +765,7 @@ let GexStat = {
 
 		let tmpDeleteOlder = parseInt($('#gexsDeleteOlderThan').val());
 		let showRoundLimit = parseInt($('#gexsShowRoundLimit').val());
+		let exportLimit = parseInt($('#gexsExportLimit').val());
 
 		if (GexStat.Settings.deleteOlderThan !== tmpDeleteOlder && tmpDeleteOlder > 0)
 		{
@@ -758,6 +776,7 @@ let GexStat = {
 
 		GexStat.Settings.deleteOlderThan = tmpDeleteOlder;
 		GexStat.Settings.showRoundLimit = showRoundLimit;
+		GexStat.Settings.exportLimit = exportLimit;
 		GexStat.Settings.showAxisLabel = $("#gmsShowAxisLabel").is(':checked') ? true : false;
 
 		let chartSeries = GexStat.Settings.chartSeries = [];
@@ -797,6 +816,7 @@ let GexStat = {
 		GexStatStat.Settings.showAxisLabel = (Settings.showAxisLabel !== undefined) ? Settings.showAxisLabel : GexStatStat.Settings.showAxisLabel;
 		GexStatStat.Settings.chartSeries = (Settings.chartSeries !== undefined && Settings.chartSeries.length) ? Settings.chartSeries : GexStatStat.Settings.chartSeries;
 		GexStatStat.Settings.showRoundLimit = (Settings.showRoundLimit !== undefined) ? Settings.showRoundLimit : GexStatStat.Settings.showRoundLimit;
+		GexStatStat.Settings.exportLimit = (Settings.exportLimit !== undefined) ? Settings.exportLimit : GexStatStat.Settings.exportLimit;
 
 	},
 
@@ -805,7 +825,7 @@ let GexStat = {
 
 		const buildZones = function (data) {
 
-			var zones = [],
+			let zones = [],
 				i = -1, len = data.length, current, previous, dashStyle, value;
 
 			while (data[++i] === null);
@@ -862,6 +882,90 @@ let GexStat = {
 		return series;
 	},
 
+	ExportContent: async (content, type) => {
+
+		let exportLimit = $('#gexsExportLimit').length ? parseInt($('#gexsExportLimit').val()) : GexStat.Settings.exportLimit;
+		let exportData = [];
+		let FileContent = '';
+
+		if (!content || !type || isNaN(exportLimit))
+		{
+			return;
+		}
+
+		switch (content)
+		{
+			case 'Ranking':
+				let Ranking = await GexStat.db.ranking.reverse().limit(exportLimit).toArray();
+				if (!Ranking) { return; }
+				exportData.push(['gexWeek', 'guildID', 'guildName', 'guildWorld', 'guildLevel', 'guildMember', 'result', 'rank']);
+
+				Ranking.sort((a, b) => a.gexweek - b.gexweek).forEach(gexweek => {
+					if (!gexweek.gexweek || !gexweek.participants) { return; }
+					let participants = gexweek.participants;
+					let weekdate = moment(gexweek.gexweek * 1000).format(i18n('Date'));
+
+					participants.sort((a, b) => a.rank - b.rank).forEach(participant => {
+						exportData.push([weekdate, participant.guildId, participant.name, participant.worldName, participant.level, participant.memberCount, participant.points + '%', participant.rank]);
+					});
+				});
+				break;
+
+			case 'Participation':
+				let Participation = await GexStat.db.participation.reverse().limit(exportLimit).toArray();
+				if (!Participation) { return; }
+				exportData.push(['gexWeek', 'player', 'expeditionPoints', 'solvedEncounters', 'rank']);
+				Participation.sort((a, b) => a.gexweek - b.gexweek).forEach(gexweek => {
+					let participation = gexweek.participation;
+					let weekdate = moment(gexweek.gexweek * 1000).format(i18n('Date'));
+					participation.sort((a, b) => a.rank - b.rank).forEach(participant => {
+						exportData.push([weekdate, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank]);
+					});
+				});
+				break;
+
+			case 'Course':
+				return;
+		}
+
+		if (!exportData.length) { return; }
+
+		let filetype = "text/csv;charset=utf-8";
+
+		for (let i = 0; i < exportData.length; i++)
+		{
+			let value = exportData[i];
+
+			for (let j = 0; j < value.length; j++)
+			{
+				let innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
+				let result = innerValue.replace(/"/g, '""');
+				if (result.search(/("|,|\n)/g) >= 0)
+					result = '"' + result + '"';
+				if (j > 0)
+					FileContent += ';';
+				FileContent += result;
+			}
+
+			FileContent += '\r\n';
+		}
+		let BOM = "\uFEFF";
+
+		if (type === 'json')
+		{
+			FileContent = GexStat.CsvToJson(FileContent);
+			filetype = "text/json;charset=utf-8";
+		}
+
+		let Blob1 = new Blob([BOM + FileContent], { type: filetype });
+		MainParser.ExportFile(Blob1, content + '.' + type);
+
+		$('#GexStatSettingsBox').fadeToggle('fast', function () {
+			$(this).remove();
+		});
+
+	},
+
 
 	showPreloader: (id) => {
 
@@ -879,6 +983,29 @@ let GexStat = {
 			$(this).remove();
 		});
 
+	},
+
+
+	CsvToJson: (csv) => {
+
+		let lines = csv.split("\r\n");
+		let result = [];
+		let headers = lines[0].split(";");
+
+		for (let i = 1; i < lines.length - 1; i++)
+		{
+			let obj = {};
+			let currentline = lines[i].split(";");
+
+			for (let j = 0; j < headers.length; j++)
+			{
+				obj[headers[j]] = currentline[j];
+			}
+
+			result.push(obj);
+		}
+
+		return JSON.stringify(result);
 	},
 
 }
