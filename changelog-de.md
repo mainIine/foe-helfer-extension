@@ -6,6 +6,9 @@
 - GEX Ergebnisse
 	- die Ergebnisse der Gildenexpeditionen werden chronologisch jede Woche gespeichert (Rangliste und Mitgliederbeteiligung). Der Besuch der Teilnehmerübersicht und das Öffnen der Gilden Rangliste ist für die Aktualisierung der Daten notwendig. 
 	- grafische Darstellung des Verlaufs der Gildenexpeditionen (Punkte, Begegnungen, Mitglieder (gesamt), Teilnehmer, Rang)
+	- Export der Ergebnisse (Rangliste und Mitgliederbeteiligung) zu CSV / JSON
+- Export der Einstellungen und Daten
+	- Die gesamte Konfiguration des FOE-Helper sowie alle lokal gepeicherten Datenbanken können nun in den Einstellungen unter Import/Export gesichert und auf einem anderen PC oder Browser wiederhergestellt werden. 
 
 **Update**
 - Gildenmitglieder Übersicht
