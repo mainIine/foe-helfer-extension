@@ -728,7 +728,7 @@ let _menu = {
 
 		btn_Market.bind('click', function () {
 			if ($('#market-Btn').hasClass('hud-btn-red') === false) {
-				Market.Show();
+				Market.Show(false);
 			}
 		});
 
