@@ -635,7 +635,7 @@ let _menu = {
 		btn_Stats.on('click', function () {
 			Stats.page = 1;
 			Stats.filterByPlayerId = null;
-			Stats.Show();
+			Stats.Show(false);
 		});
 
 		btn_StatsBG.append(btn_Stats);
