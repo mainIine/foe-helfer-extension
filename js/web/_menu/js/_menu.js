@@ -519,12 +519,12 @@ let _menu = {
 
 		btn_City.on('click', function () {
 			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init();
+				CityMap.init(false);
 			}
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
 				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
+				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
             }
 		});
 
