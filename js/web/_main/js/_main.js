@@ -1419,8 +1419,7 @@ let MainParser = {
 	 * @param PlayerName
 	 */
 	GetPlayerLink: (PlayerID, PlayerName) => {
-		if (localStorage.getItem('ShowPlayerLinks') === 'true') {
-		//if (Settings.GetSetting('ShowPlayerLinks')) {
+		if (Settings.GetSetting('ShowPlayerLinks')) {
 			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
 
 			return '<a href="' + PlayerLink + '" target="_blank">' + PlayerName + '</a>';
