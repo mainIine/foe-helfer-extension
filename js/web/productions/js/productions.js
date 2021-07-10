@@ -1470,6 +1470,12 @@ let Productions = {
 				Productions.ShowFunction(IDs);
 			});
 
+			$('#ProductionsRating').on('click', '.toggle-tab', function () {
+				Productions.RatingCurrentTab = $(this).data('value');
+
+				Productions.CalcRatingBody();
+			});
+
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
@@ -1492,12 +1498,6 @@ let Productions = {
 					Productions.RatingProdPerTiles[Type] = parseFloat($('#ProdPerTile-' + Type).val());
 					if (isNaN(Productions.RatingProdPerTiles[Type])) Productions.RatingProdPerTiles[Type] = 0;
 					localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles));
-					Productions.CalcRatingBody();
-				});
-
-				$('#ProductionsRating').on('click', '.toggle-tab', function () {
-					Productions.RatingCurrentTab = $(this).data('value');
-
 					Productions.CalcRatingBody();
 				});
 			}
