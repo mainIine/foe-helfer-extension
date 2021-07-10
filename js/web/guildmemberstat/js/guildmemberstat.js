@@ -2096,6 +2096,7 @@ let GuildMemberStat = {
 						NoGbMember = NoGbMember.filter(member => { return !GuildMemberStat.MemberDict[member].deleted });
 						NoGbMember = NoGbMember.sort(function (a, b) { return GuildMemberStat.MemberDict[a].name.localeCompare(GuildMemberStat.MemberDict[b].name) });
 
+						d.push(`<div class="no_gb_member copyable"><span class="text-bright"><i>${HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberWithoutGB'), { 'greatbuilding': GBOverview[id]['name'] })}</i>: </span>`);
 						for (let i = 0; i < NoGbMember.length; i++) {
 							d.push(MainParser.GetPlayerLink(NoGbMember[i], GuildMemberStat.MemberDict[NoGbMember[i]].name));
 							if (i < NoGbMember.length - 1) d.push(', ');
