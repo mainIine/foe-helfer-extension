@@ -63,6 +63,9 @@
 - Marktfilter:
 	- [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) Korrektur falscher Angaben in der Spalte "Seite" des "Vorteilhaft" Filters bei eigenen Angeboten
 
+- Infobox:
+	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) In der Infobox konnten beim Leveln von LGs manchmal falsche FP Werte angezeigt werden
+
 - CityMap:
 	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet
 
