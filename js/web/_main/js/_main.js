@@ -1131,8 +1131,7 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex',
-		'productionsrating'
+		'unitsGex'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
