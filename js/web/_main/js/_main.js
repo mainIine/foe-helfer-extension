@@ -1948,19 +1948,27 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Loads a file from a given URL
+	 *
+	 * @param url
+	 * @param callback
+	 */
 	loadFile: (url, callback) => {
 
 		let xhr = new XMLHttpRequest();
 		xhr.open('GET', url, true);
 		xhr.responseType = 'blob';
 		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4 && xhr.status === 200) {
+			if (xhr.readyState === 4 && xhr.status === 200)
+			{
 				let reader = new FileReader();
 				reader.readAsArrayBuffer(xhr.response);
 				reader.onload = function (e) {
 					callback(e.target.result);
 				};
-			} else {
+			}
+			else {
 				callback(false);
 			}
 		};
