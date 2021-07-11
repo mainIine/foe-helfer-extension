@@ -374,7 +374,7 @@ let GreatBuildings =
             let CityEntity = MainParser.CityEntities[GBData.ID];
             if (!CityEntity) continue; //Great building has been removed from the game => skip
 
-            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));;
+            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
             let Era = Technologies.Eras[EraName];
             let DoubleCollection = (GBData.ID !== 'X_FutureEra_Landmark1');
