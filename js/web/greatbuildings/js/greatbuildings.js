@@ -327,7 +327,7 @@ let GreatBuildings =
         h.push('<br>');
 
         if (GreatBuildings.ShowAttack) { //Güterwert - Boxen ausblenden, wenn Güter deaktiviert
-            h.push(i18n('Boxes.GreatBuildings.AttackValue'));
+            h.push(i18n('Boxes.GreatBuildings.AttackValue')) + ' ';
             h.push('<input type="number" id="attackValue" step="0.01" min="0" max="1000" value="' + GreatBuildings.AttackValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTAttackValue')) + '">');
             if (GreatBuildings.AttackValue > 0) {
                 h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.AttackPerFP'), { percent: Math.round(1 / GreatBuildings.AttackValue * 100) / 100 }) + ')</small>')
@@ -374,7 +374,7 @@ let GreatBuildings =
             let CityEntity = MainParser.CityEntities[GBData.ID];
             if (!CityEntity) continue; //Great building has been removed from the game => skip
 
-            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));;
+            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
             let Era = Technologies.Eras[EraName];
             let DoubleCollection = (GBData.ID !== 'X_FutureEra_Landmark1');
@@ -523,10 +523,26 @@ let GreatBuildings =
         for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
             if (!ROIResultMap[i]['ROIResults'] || !ROIResultMap[i]['ROIResults'][0]) continue;
 
-            let Index = ROIResultMap[i]['index'];
-            let GBData = GreatBuildings.GreatBuildingsData[Index];
-            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));;
-            let IsRandomFP = (GBData.ID === 'X_OceanicFuture_Landmark3' || GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1');
+            let Index = ROIResultMap[i]['index'],
+                GBData = GreatBuildings.GreatBuildingsData[Index],
+                FPValueSign = '',
+                GoodsValueSign = '',
+                AttackValueSign = '',
+                TotalValueSign = '';
+
+            if (GBData.ID === 'X_OceanicFuture_Landmark3') {               
+                FPValueSign = 'Ø ';
+                TotalValueSign = 'Ø ';
+            }
+            else if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1' || GBData.ID === 'X_AllAge_Expedition' || GBData.ID === 'X_SpaceAgeVenus_Landmark1') {
+                FPValueSign = 'Ø ';
+                GoodsValueSign = 'Ø ';
+                TotalValueSign = 'Ø ';
+            }
+            else if (GBData.ID === 'X_ArcticFuture_Landmark2') {
+                AttackValueSign = 'Ø ';
+                TotalValueSign = 'Ø ';
+            }
 
             if (GreatBuildings.HideNewGBs && IsNewGBs[Index]) continue;
 
@@ -536,7 +552,6 @@ let GreatBuildings =
                 if (j === 0) {
                     if (AllROIResults[Index].length >= 1) {
                         h.push('<tr class="gbmainrow" data-value="' + Index + '">');
-                        let ButtonText = (GreatBuildings.DetailsVisible[Index] ? '-' : '+');
                     }
                 }
                 else {
@@ -554,8 +569,8 @@ let GreatBuildings =
                         AttackProduction = CurrentROIResult['ROIValues'][BestLevel]['Attack'],
                         AttackValue = CurrentROIResult['AttackValue'],
                         BreakEven = CurrentROIResult['ROIValues'][BestLevel]['ROI'],
-                        BreakEvenString = (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(BreakEven)),
-                        BreakEvenClass = (i === 0 ? 'text-success' : 'text-bright');
+                        BreakEvenString = TotalValueSign + HTML.Format(MainParser.round(BreakEven)),
+                        BreakEvenClass = (i === 0 && j === 0 ? 'text-success' : 'text-bright');
                         CostsTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBCostsTT'), { 'goodcosts': CurrentROIResult['BuildCosts'] }) : ''),
                         FPProductionTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBFPProductionTT'), { 'tiles': Math.round(CurrentROIResult['BuildDailyCosts'] / GreatBuildings.FPPerTile * 100)/100, 'fppertile': GreatBuildings.FPPerTile, 'opcost': Math.round(CurrentROIResult['BuildDailyCosts'] * 100)/ 100 }) : '');
 
@@ -580,9 +595,9 @@ let GreatBuildings =
                     h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
                     h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
                     h.push('<td title="' + HTML.i18nTooltip(CostsTT) + '">' + HTML.Format(MainParser.round(Costs)) + '</td>');
-                    h.push('<td title="' + HTML.i18nTooltip(FPProductionTT) + '">' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(FPProduction * 10) / 10) + '</td>');
-                    if (GreatBuildings.ShowGoods) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(GoodsProduction * 10) / 10) + '</td>');
-                    if (GreatBuildings.ShowAttack) h.push('<td>' + (IsRandomFP ? 'Ø ' : '') + HTML.Format(MainParser.round(AttackProduction * 10) / 10) + '</td>');
+                    h.push('<td title="' + HTML.i18nTooltip(FPProductionTT) + '">' + FPValueSign + HTML.Format(MainParser.round(FPProduction * 10) / 10) + '</td>');
+                    if (GreatBuildings.ShowGoods) h.push('<td>' + GoodsValueSign + HTML.Format(MainParser.round(GoodsProduction * 10) / 10) + '</td>');
+                    if (GreatBuildings.ShowAttack) h.push('<td>' + AttackValueSign + HTML.Format(MainParser.round(AttackProduction * 10) / 10) + '</td>');
                     h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="' + BreakEvenClass + '">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
                 }
                 else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
