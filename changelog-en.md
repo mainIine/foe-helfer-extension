@@ -76,7 +76,7 @@
 - Incidents:
 	- [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Fragments of the flying island added
 
-- Außenposten:
+- Outpost:
 	- [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Egypt outpost was showing wrong values for loot required
 
 ---
