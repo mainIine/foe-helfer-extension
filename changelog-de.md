@@ -9,17 +9,68 @@
 	- Export der Ergebnisse (Rangliste und Mitgliederbeteiligung) zu CSV / JSON
 - Export der Einstellungen und Daten
 	- Die gesamte Konfiguration des FOE-Helper sowie alle lokal gepeicherten Datenbanken können nun in den Einstellungen unter Import/Export gesichert und auf einem anderen PC oder Browser wiederhergestellt werden. 
+- Gebäude Effizienzbewertung
+	- Tool zum Auffinden nicht mehr effizienter Gebäude. Der Spieler legt fest welchen Ertrag pro Feld er wünscht. Das Tool gibt aus, welche Gebäude diesen Ertrag erreichen welche nicht.
+- Links zum Spielerprofil auf scoredb.io
+	- Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt
 
 **Update**
 - Gildenmitglieder Übersicht
 	- [#2033](https://github.com/mainIine/foe-helfer-extension/issues/2033) LG Liste aller Gildenmitglieder
 	Filterbare Liste der LG aller Gildenmitglieder mit der aktuellen Stufe, freigeschalteten Stufen, investierten FP und benötigten FP zum Leveln.
 
+- LG Investitionen
+    - Option für die Berücksichtigung von Boni für die angreifende Armee
+	- Unterstützung für Relikttempel und fliegende Insel
+
+- Produktionsübersicht
+    - Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert ist angezeigt
+
+- Eigenanteilsrechner
+	- Die Buttons "Kopieren" und "Merken" sind nun auch im Hauptfenster vorhanden sofern ein Platz sicher ist. Es werden hierbei die Defaulteinstellungen zum Kopieren verwendet
+	- Anzeige welche legendären Gebäude bereits gemerkt wurden
+	- Nach dem Merken eines Gebäudes wird nun die aktuelle Liste auch in die Zwischenablage kopiert
+	- Plätze, die als Mäzenbelohnung keine FP abwerfen werden und mit 1FP vorgeschlagen
+	- In der Copybox wurde die Option "Alle + leere" durch die Option "Auto + nicht sichere" ersetzt. Diese kopiert alle Plätze, die noch nicht belegt sind
+
+- Diverses
+	- Globale Einstellung zum Deaktivieren aller Soundeffekte im Foe Helfer hinzugefügt
+	- Bei langen Tabellen wurde der Header beim Hinunterscrollen nun fixiert
+
 **BugFix**
+- Gildenmitglieder Übersicht
+	- [#2085](https://github.com/mainIine/foe-helfer-extension/issues/2085) Falsche Anzeige des Zeitalters bei Gildengüter produzierenden Gebäuden
+	- [#2086](https://github.com/mainIine/foe-helfer-extension/issues/2086) Gildengüter/macht produzierende Gebäude wurden in der Detailansicht manchmal nicht angezeigt
+
+- Eigenanteilsrechner:
+	- [#2052](https://github.com/mainIine/foe-helfer-extension/issues/2052) Mehrfaches Merken desselben legendären Bauwerks konnte zu doppelten Zeilen führen
+	- [#2075](https://github.com/mainIine/foe-helfer-extension/issues/2075) Beim Einzahlen in legendäre Gebäude, die bereits gelevelt wurden konnten ungültige Werte angezeigt werden
+
+- FP Einsammlungen:
+	- [#2089](https://github.com/mainIine/foe-helfer-extension/issues/2089) Beim Datumsauswahldialog wurde das Jahr 1912 ausgewählt wenn die Sprache des Foe Helfers auf Niederländisch eingestellt war
+
 - Investitionsübersicht:
 	- [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Gewinn/Medaillen/Blaupausen wurden nach dem leveln der eigenen Arche nicht sofort aktualisiert.
-	- Ausgeblendete LG wurden nach dem leveln der eigenen Arche wieder eingeblendet obwohl keine Investition stattgefunden hat.  
+	- Ausgeblendete LG wurden nach dem leveln der eigenen Arche wieder eingeblendet obwohl keine Investition stattgefunden hat.
 
+- Produktionsübersicht:
+	- [#2062](https://github.com/mainIine/foe-helfer-extension/issues/2062) Güterproduktion: Warnmeldung falls der Venus Außenposten noch nicht besucht wurde hinzugefügt (wie bei Mars und Asteroiden)
+	- [#2058](https://github.com/mainIine/foe-helfer-extension/issues/2058) Beim Upgraden von Straßen konnten ungültige Werte angezeigt werden.
+
+- LG Investitionen:
+	- [#2029](https://github.com/mainIine/foe-helfer-extension/issues/2029) Güter berücksichtigen ließ sich nicht permanent deaktivieren
+
+- Marktfilter:
+	- [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) Korrektur falscher Angaben in der Spalte "Seite" des "Vorteilhaft" Filters bei eigenen Angeboten
+
+- CityMap:
+	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet
+
+- Ereignisse:
+	- [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Scherben der fliegenden Insel hinzugefügt
+
+- Außenposten:
+	- [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Berechnung der benötigten Beute bei Ägyptern fehlerhaft
 ---
 
 ##### 2.5.8
