@@ -7,12 +7,15 @@
 	- die Ergebnisse der Gildenexpeditionen werden chronologisch jede Woche gespeichert (Rangliste und Mitgliederbeteiligung). Der Besuch der Teilnehmerübersicht und das Öffnen der Gilden Rangliste ist für die Aktualisierung der Daten notwendig. 
 	- grafische Darstellung des Verlaufs der Gildenexpeditionen (Punkte, Begegnungen, Mitglieder (gesamt), Teilnehmer, Rang)
 	- Export der Ergebnisse (Rangliste und Mitgliederbeteiligung) zu CSV / JSON
+
 - Export der Einstellungen und Daten
 	- Die gesamte Konfiguration des FOE-Helper sowie alle lokal gepeicherten Datenbanken können nun in den Einstellungen unter Import/Export gesichert und auf einem anderen PC oder Browser wiederhergestellt werden. 
+
 - Gebäude Effizienzbewertung
 	- Tool zum Auffinden nicht mehr effizienter Gebäude. Der Spieler legt fest welchen Ertrag pro Feld er wünscht. Das Tool gibt aus, welche Gebäude diesen Ertrag erreichen welche nicht.
+
 - Links zum Spielerprofil auf scoredb.io
-	- Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt
+	- Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt (kann im Einstellungsmenü aktivert bzw. deaktiviert werden)
 
 **Update**
 - Gildenmitglieder Übersicht
@@ -24,7 +27,7 @@
 	- Unterstützung für Relikttempel und fliegende Insel
 
 - Produktionsübersicht
-    - Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert ist angezeigt
+    - Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert/poliert ist angezeigt
 
 - Eigenanteilsrechner
 	- Die Buttons "Kopieren" und "Merken" sind nun auch im Hauptfenster vorhanden sofern ein Platz sicher ist. Es werden hierbei die Defaulteinstellungen zum Kopieren verwendet
@@ -56,6 +59,7 @@
 - Produktionsübersicht:
 	- [#2062](https://github.com/mainIine/foe-helfer-extension/issues/2062) Güterproduktion: Warnmeldung falls der Venus Außenposten noch nicht besucht wurde hinzugefügt (wie bei Mars und Asteroiden)
 	- [#2058](https://github.com/mainIine/foe-helfer-extension/issues/2058) Beim Upgraden von Straßen konnten ungültige Werte angezeigt werden.
+	- [#2090](https://github.com/mainIine/foe-helfer-extension/issues/2090) Rundung der Größenangaben auf 1 Stelle geändert, da der Wert auch den durchschnittlichen Straßenbedarf enthält
 
 - LG Investitionen:
 	- [#2029](https://github.com/mainIine/foe-helfer-extension/issues/2029) Güter berücksichtigen ließ sich nicht permanent deaktivieren
@@ -67,7 +71,7 @@
 	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) In der Infobox konnten beim Leveln von LGs manchmal falsche FP Werte angezeigt werden
 
 - CityMap:
-	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet
+	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet, da die freigeschalteten Erweiterungen nur bei der eigenen Stadt bekannt sind
 
 - Ereignisse:
 	- [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Scherben der fliegenden Insel hinzugefügt
