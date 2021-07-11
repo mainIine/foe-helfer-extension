@@ -379,6 +379,10 @@ p {
 	background-image: url('../images/menu/productions.png');
 }
 
+[id$=productionsrating-Btn] span {
+	background-image: url('../images/menu/productionsrating.png');
+}
+
 [id$=calculator-Btn] span {
 	background-image: url('../images/menu/calculator.png');
 }
