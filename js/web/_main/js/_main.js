@@ -1131,8 +1131,7 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex',
-		'productionsrating'
+		'unitsGex'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
@@ -1419,15 +1418,17 @@ let MainParser = {
 	 * @param PlayerName
 	 */
 	GetPlayerLink: (PlayerID, PlayerName) => {
-		if (Settings.GetSetting('ShowPlayerLinks')) {
+		if (Settings.GetSetting('ShowPlayerLinks'))
+		{
 			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
 
-			return '<a href="' + PlayerLink + '" target="_blank">' + PlayerName + '</a>';
+			return `<a class="external-link game-cursor" href="${PlayerLink}" target="_blank">${PlayerName} <svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg></a>`;
 		}
 		else {
 			return PlayerName;
         }
     },
+
 
 	/**
 	 * Adds a value to a FormData object under the specified prefix/key, serialising objects/arrays.
@@ -1948,19 +1949,27 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Loads a file from a given URL
+	 *
+	 * @param url
+	 * @param callback
+	 */
 	loadFile: (url, callback) => {
 
 		let xhr = new XMLHttpRequest();
 		xhr.open('GET', url, true);
 		xhr.responseType = 'blob';
 		xhr.onreadystatechange = function () {
-			if (xhr.readyState === 4 && xhr.status === 200) {
+			if (xhr.readyState === 4 && xhr.status === 200)
+			{
 				let reader = new FileReader();
 				reader.readAsArrayBuffer(xhr.response);
 				reader.onload = function (e) {
 					callback(e.target.result);
 				};
-			} else {
+			}
+			else {
 				callback(false);
 			}
 		};
