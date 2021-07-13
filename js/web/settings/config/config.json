@@ -84,6 +84,12 @@
 		"sort": 13
 	},
 	{
+		"name": "ShowPlayerLinks",
+		"status": true,
+		"group": "Boxes",
+		"sort": 14
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
