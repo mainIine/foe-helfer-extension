@@ -52,9 +52,9 @@ let _menu = {
 		'investment',
 		'alerts',
 		'guildmemberstat',
-		'gexstat'
+		'gexstat',
+		'productionsrating',
 		// 'unitsGex',
-		// 'productionsrating',
 	],
 
 	HiddenItems: [],
