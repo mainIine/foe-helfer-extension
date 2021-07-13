@@ -62,6 +62,8 @@ let Parts = {
 
 	PowerLevelingMaxLevel: 999999,
 
+	PlaceAvailables: [],
+
 	DefaultButtons: [
 		80, 85, 90, 'ark'
 	],
@@ -264,8 +266,9 @@ let Parts = {
 			EigenTotal, // Summe aller Eigenanteile
 			ExtTotal = 0, // Summe aller Externen Einzahlungen
 			EigenCounter = 0, // Eigenanteile Counter während Tabellenerstellung
-			Rest = Total, // Verbleibende FP: Counter während Berechnung
-			NonExts = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
+			Rest = Total; // Verbleibende FP: Counter während Berechnung
+
+		Parts.PlaceAvailables = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
 
 		Parts.Maezens = [];
 
@@ -414,7 +417,7 @@ let Parts = {
 					Dangers[i] -= Parts.Maezens[i] - Rest;
 				Parts.Maezens[i] = Rest;
             }
-            NonExts[i] = true;
+			Parts.PlaceAvailables[i] = true;
 			MaezenTotal += Parts.Maezens[i];
 			Rest -= Eigens[i] + Parts.Maezens[i];
         }
@@ -454,7 +457,7 @@ let Parts = {
 		for (let i = 0; i < 5; i++) {
 			if (Eigens[i] > 0) break;
 				
-			if (NonExts[i]) {
+			if (Parts.PlaceAvailables[i]) {
 				Parts.SafePlaces.push(i);
 			}
 		}
@@ -590,7 +593,7 @@ let Parts = {
             h.push('<tr>');
             h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
-            if (NonExts[i])
+			if (Parts.PlaceAvailables[i])
             {
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
                 if (LeveltLG[i]) {
@@ -660,7 +663,7 @@ let Parts = {
         h.push('</tbody>');
         h.push('</table>');
 
-		Parts.BuildBackgroundBody(Parts.Maezens, Eigens, NonExts);
+		Parts.BuildBackgroundBody();
 
 		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
@@ -772,14 +775,14 @@ let Parts = {
 		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong></span></p>');
 
         let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> <span>' + i18n('Boxes.OwnpartCalculator.Auto') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.IsNextLevel || Parts.SafePlaces.includes(0) ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.IsNextLevel || Parts.SafePlaces.includes(1) ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.IsNextLevel || Parts.SafePlaces.includes(2) ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.IsNextLevel || Parts.SafePlaces.includes(3) ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.IsNextLevel || Parts.SafePlaces.includes(4) ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</span></label>' +
 			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.IsNextLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.All') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-all-withempty"><input type="checkbox" class="form-check-input" id="chain-all-withempty" data-place="all-withempty"> <span>' + i18n('Boxes.OwnpartCalculator.AllWithEmpty') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.IsNextLevel ? '' : 'checked') + '> <span>' + i18n('Boxes.OwnpartCalculator.Auto') + '</span></label>' +
+			'<label class="form-check-label-wide game-cursor" for="chain-auto-unsafe"><input type="checkbox" class="form-check-input" id="chain-auto-unsafe" data-place="auto-unsafe"> <span>' + i18n('Boxes.OwnpartCalculator.AutoWithUnsafe') + '</span></label>' +
 		'</div>';
 
 		h.push(cb);
@@ -840,37 +843,37 @@ let Parts = {
 			let PlaceName = $(this).data('place');
 
 			if (PlaceName) {
-				if (PlaceName === 'auto') { //auto: all und P1-5 deaktivieren, auto aktivieren
-					$('#chain-auto').prop('checked', true);
-					$('#chain-all').prop('checked', false);
-					$('#chain-all-withempty').prop('checked', false);
-
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', false);
-					}
-				}
-				else if (PlaceName === 'all') { //all: auto und P1-5 deaktivieren, all aktivieren
-					$('#chain-auto').prop('checked', false);
+				if (PlaceName === 'all') { //all: auto deaktivieren, P1-5 aktivieren
 					$('#chain-all').prop('checked', true);
-					$('#chain-all-withempty').prop('checked', false);
+					$('#chain-auto').prop('checked', false);
+					$('#chain-auto-unsafe').prop('checked', false);
 
 					for (let i = 0; i < 5; i++) {
 						$('#chain-p' + (i + 1)).prop('checked', true);
 					}
 				}
-				else if (PlaceName === 'all-withempty') { //all: auto und P1-5 deaktivieren, all aktivieren
-						$('#chain-auto').prop('checked', false);
-						$('#chain-all').prop('checked', false);
-						$('#chain-all-withempty').prop('checked', true);
-
-						for (let i = 0; i < 5; i++) {
-							$('#chain-p' + (i + 1)).prop('checked', true);
-						}
-					}
-				else { //P1-5: auto und all deaktivieren
-					$('#chain-auto').prop('checked', false);
+				else if (PlaceName === 'auto') { //auto: all/auto-unsafe deaktivieren, P1-P5 ermitteln
 					$('#chain-all').prop('checked', false);
-					$('#chain-all-withempty').prop('checked', false);
+					$('#chain-auto').prop('checked', true);
+					$('#chain-auto-unsafe').prop('checked', false);
+					
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', Parts.SafePlaces.includes(i));
+					}
+				}
+				else if (PlaceName === 'auto-unsafe') { //auto-unsafe: all/auto deaktivieren, P1-5 ermitteln
+					$('#chain-all').prop('checked', false);
+					$('#chain-auto').prop('checked', false);
+					$('#chain-auto-unsafe').prop('checked', true);
+
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', Parts.PlaceAvailables[i]);
+					}
+				}
+				else { //P1-5: auto und all deaktivieren
+					$('#chain-all').prop('checked', false);
+					$('#chain-auto').prop('checked', false);
+					$('#chain-auto-unsafe').prop('checked', false);
 				}
 			}
 
@@ -982,9 +985,9 @@ let Parts = {
 			Descending = $('#options-descending').prop('checked'),
 			LevelUp = $('#options-levelup').prop('checked');
 
-		let PlaceAuto = $('#chain-auto').prop('checked'),
-			PlaceAll = $('#chain-all').prop('checked'),
-			PlaceAllWithEmpty = $('#chain-all-withempty').prop('checked'),
+		let PlaceAll = $('#chain-all').prop('checked'),
+			PlaceAuto = $('#chain-auto').prop('checked'),
+			PlaceAutoUnsafe = $('#chain-auto-unsafe').prop('checked'),			
 			Ps = [
 				$('#chain-p1').prop('checked'),
 				$('#chain-p2').prop('checked'),
@@ -999,7 +1002,12 @@ let Parts = {
 				Places.push(Parts.SafePlaces[i]);
 			}
 		}
-		else if (PlaceAll || PlaceAllWithEmpty) {
+		else if (PlaceAutoUnsafe) {
+			for (let i = 0; i < Parts.PlaceAvailables.length; i++) {
+				if(Parts.PlaceAvailables[i]) Places.push(i);
+			}
+        }
+		else if (PlaceAll) {
 			for (let i = 0; i < 5; i++) {
 				Places.push(i);
 			}
@@ -1039,7 +1047,10 @@ let Parts = {
 		}
 		else if (PlaceAuto) {
 			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
-        }
+		}
+		else if (PlaceAutoUnsafe) {
+			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceAvailable'));
+		}
 
 		let CopyString = Ret.join(' ');
 		$('#copystring').val(CopyString);
