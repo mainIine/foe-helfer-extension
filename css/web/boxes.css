@@ -31,6 +31,18 @@ input[type=number] {
 	-moz-appearance:textfield;
 }
 
+a[target="_blank"] {
+	color: var(--text-bright);
+	text-decoration: underline;
+}
+
+a[target="_blank"] svg {
+	fill: var(--text-bright);
+	width: 16px;
+	height: 12px;
+	text-decoration: underline;
+}
+
 /**
 	Dropdown
 */
@@ -377,6 +389,10 @@ p {
 
 [id$=productions-Btn] span {
 	background-image: url('../images/menu/productions.png');
+}
+
+[id$=productionsrating-Btn] span {
+	background-image: url('../images/menu/productionsrating.png');
 }
 
 [id$=calculator-Btn] span {

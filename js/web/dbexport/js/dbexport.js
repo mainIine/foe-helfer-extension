@@ -465,7 +465,7 @@ let DBExport = {
         $("#dbex-loading-data .message .progressbar").html(i18n('Boxes.DBExport.Compression'));
         if (exportCounter > 1)
         {
-            zip.generateAsync({ type: "blob" })
+            zip.generateAsync({ type: "blob", compression: "DEFLATE" })
                 .then(function (blob) {
                     download(blob, ExtWorld + "_foe_helper_export_" + moment().format("YYMMDD-HHmm") + "_" + ExtPlayerID + ".zip", "application/zip");
                     DBExport.hidePreloader();
