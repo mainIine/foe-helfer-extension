@@ -3,81 +3,81 @@
 ##### 2.5.9
 
 **New**
-- GEX results
-	- The results of the guild expeditions are saved chronologically each week (ranking and member participation). Visiting the participant overview and opening the guild ranking list is necessary for updating the data.
-	- graphical representation of the progress of the guild expeditions (points, encounters, members (total), participants, rank).
-	- Export of the results (ranking and member participation) to CSV / JSON
+- GEX Results
+    - the results of the guild expeditions are stored chronologically each week (ranking and member participation). Visiting the participation overview and opening the guild ranking list is necessary to update the data.
+    - Graphical representation of the progress of the guild expeditions (points, encounters, members (total), participants, rank)
+    - Export of the results (ranking list and member participation) to CSV / JSON
 
 - Export of settings and data
-	- The entire configuration of the FOE Helper as well as all locally saved databases can now be saved in the settings under Import/Export and restored on another PC or browser
+    - The entire configuration of the FOE Helper as well as all locally saved databases can now be saved in the settings under Import/Export and restored on another PC or browser.
 
-- Building efficiency rating
-	- Find your non efficient buildings. The player defines how much resources/tile he expects from buildings. The tool checks which buildings meet the requirements.
+- Building Efficiency Rating
+    - Tool to find buildings that are no longer efficient. The player determines which yield per field he wants. The tool indicates which buildings achieve this yield and which do not.
 
 - Links to the player profile on scoredb.io
-	- Player name in Foe helper will be replaced by links to the player profile on scoredb.io
+    - [#149](https://github.com/mainIine/foe-helfer-extension/issues/149) Player names in Foe Helper are replaced by links to the player's profile on the scoredb.io site (can be activated or deactivated in the settings menu)
 
-**Update**
-- Guild Member Statistics
-	- [#2033](https://github.com/mainIine/foe-helfer-extension/issues/2033) GB List of all guild members
-	Filterable list of the GB of all guild members with the current level, unlocked levels, invested FP and required FP to level up.
+**Update
+- Guild members overview
+    - [#2033](https://github.com/mainIine/foe-helfer-extension/issues/2033) LG list of all guild members
+      Filterable list of the LG of all guild members with the current level, unlocked levels, invested FP and required FP to level up.
 
-	- GB Investment
-    - Option to take boni for attacking army into account	
-	- Support for temple of relics and flying island
+- LG Investments
+    - [#1550](https://github.com/mainIine/foe-helfer-extension/issues/1550) Option to consider bonuses for the attacking army.
+    - Support for relic temple and flying island.
 
-- Production overview
-    - Now every resource will additionally show maximum production under the condition that every building is motivated/polished (like already implemented with forge points)
+- Production overview:
+    - [#2060](https://github.com/mainIine/foe-helfer-extension/issues/2060) It is now shown for all resources like forgen points additionally the maximum production when everything is motivated/polished
 
-- GB Calculator
-	- The buttons "Copy" and "Note" are now also available in the main window. The default settings for copying are used
-	- The main window will now display a list of all noted buildings
-	- After noting a building the list is also copied to clipboard
-	- Spots that do not give forge point rewards are now always suggested with 1FP
-	- In the copy box the option "All + Empty" is replaced by the option "Auto + Unsafe". This option copies all spots that are not already taken.
+- Own share calculator:
+    - [#2045](https://github.com/mainIine/foe-helfer-extension/issues/2045) The buttons "Copy" and "Remember" are now also available in the main window if a place is safe. The default settings for copying are used.
+    - Display which legendary buildings have already been bookmarked
+    - After memorising a building, the current list is now also copied to the clipboard.
+    - [#2046](https://github.com/mainIine/foe-helfer-extension/issues/2046) Places that do not yield FP as a patron reward are suggested with 1FP.
+    - In the copy box, the option "All + empty" has been replaced with the option "Auto + not safe". This copies all places that are not yet occupied
 
-- Others
-	- Global settings to disable all sound effects in Foe helper (General => Enable sound)
-	- Long tables now have a fixed header when scrolling down
+- Misc:
+    - [#1965](https://github.com/mainIine/foe-helfer-extension/issues/1965) Added global setting to disable all sound effects in Foe Helper.
+    - [#2064](https://github.com/mainIine/foe-helfer-extension/issues/2064) For long tables the header was fixed when scrolling down now
 
 **BugFix**
-- Guild member overview
-	- [#2085](https://github.com/mainIine/foe-helfer-extension/issues/2085) Era names of buildings producing guild goods are now correctly formatted
-	- [#2086](https://github.com/mainIine/foe-helfer-extension/issues/2086) Some buildings producing guild goods/power disappeared in detail view
+- Guild members overview
+    - [#2085](https://github.com/mainIine/foe-helfer-extension/issues/2085) Wrong display of age for guild goods producing buildings
+    - [#2086](https://github.com/mainIine/foe-helfer-extension/issues/2086) Guild goods/power producing buildings were sometimes not displayed in the detail view
 
-- GB Calculator:
-	- [#2052](https://github.com/mainIine/foe-helfer-extension/issues/2052) Pressing the Note button multiple times on the same great building could result in duplicate lines
-	- [#2075](https://github.com/mainIine/foe-helfer-extension/issues/2075) When investing into great buildings that have already been leveled invalid values could be displayed
+- Own share calculator:
+    - [#2052](https://github.com/mainIine/foe-helfer-extension/issues/2052) Multiple memorisation of the same legendary building could result in duplicate lines
+    - [#2075](https://github.com/mainIine/foe-helfer-extension/issues/2075) Depositing into legendary buildings that have already been leveled could display invalid values
 
-- FP Collector overview:
-	- [#2089](https://github.com/mainIine/foe-helfer-extension/issues/2089) In the date selection dialog the year 1912 was selected if the language of Foe helper was set to Dutch
+- FP collections:
+    - [#2089](https://github.com/mainIine/foe-helfer-extension/issues/2089) In the date selection dialogue the year 1912 was selected if the language of the foe helper was set to Dutch
 
--  Investment overview:
-	- [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Profit/medals/blueprints were not updated immediately after leveling your own ark.
-	- Hidden GBs became visible again after levelling the own ark although no investment had taken place.
+- Investment overview:
+    - [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Winnings/medals/blueprints were not updated immediately after leveling your own ark.
+    - Hidden LG were shown again after leveling the own ark although no investment took place.
 
-- Production Overview:
-	- [#2062](https://github.com/mainIine/foe-helfer-extension/issues/2062) Good production: Warning message if Venus outpost has not been visited yet (which means goods production data is incomplete) was missing
-	- [#2058](https://github.com/mainIine/foe-helfer-extension/issues/2058) When upgrading streets there could be invalid values
-	- [#2090](https://github.com/mainIine/foe-helfer-extension/issues/2090) Rounding of size column changed to 1 digit because as size also includes average street requirements there can be half tiles
+- Production overview:
+    - [#2062](https://github.com/mainIine/foe-helfer-extension/issues/2062) Goods production: Added warning message if Venus outpost has not been visited yet (like Mars and Asteroids).
+    - [#2058](https://github.com/mainIine/foe-helfer-extension/issues/2058) Invalid values could be displayed when upgrading roads.
+    - [#2090](https://github.com/mainIine/foe-helfer-extension/issues/2090) Changed rounding of size values to 1 digit, as the value also contains the average road demand.
 
-- GB Investment:
-	- [#2029](https://github.com/mainIine/foe-helfer-extension/issues/2029) Considering goods productions could not be disable again permanently when it has previously been enabled
+- LG investments:
+    - [#2029](https://github.com/mainIine/foe-helfer-extension/issues/2029) Consider goods could not be permanently deactivated
 
 - Market filter:
-	- [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) For own trades the column "Page" was displaying wrong data. Also the filter "advantage" and "disadvantage" was not working as expected
+    - [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) Corrected wrong information in the "Page" column of the "Advantageous" filter for own offers
 
 - Infobox:
-	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) The infobox was sometimes showing wrong values for received forge points after a great building is leveled
+    - [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) [#2065](https://github.com/mainIine/foe-helfer-extension/issues/2065) Sometimes wrong FP values could be displayed in the infobox when levelling LGs.
 
 - CityMap:
-	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Total and free squares are not correctly hidden for cities of other players because information of unlocked expansions is only available for own cities
+    - [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Display of total and free area for foreign cities hidden, because the unlocked extensions are only known for the own city
 
-- Incidents:
-	- [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Fragments of the flying island added
+- Events:
+    - [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Added shards of the flying island
 
-- Outpost:
-	- [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Egypt outpost was showing wrong values for loot required
+- Outposts:
+    - [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Calculation of the required loot for Egyptians faulty
 
 ---
 
