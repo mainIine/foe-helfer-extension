@@ -221,7 +221,6 @@
 				'greatbuildings',
 				'notice',
 				'inventory-tracker',
-				'ws-chat',
 				'treasury',
 				'market',
 				'bluegalaxy',
