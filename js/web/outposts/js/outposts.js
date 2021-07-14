@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -46,6 +46,7 @@ let Outposts = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
+				resize: true
 				// popout: 'Outposts.PopOutBox()'
 			};
 
@@ -333,7 +334,7 @@ let Outposts = {
 					for (let CostResourceName in sums) {
 						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
 												
-						resourceCost += Math.max(Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName] | 0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
+						resourceCost += Math.max(Math.ceil((sums[CostResourceName] - (ResourceStock[CostResourceName] | 0)) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
                     }
                 }
 				const resourceInStock = currStock[resourceID];
@@ -359,7 +360,7 @@ let Outposts = {
 						let CostResourceName = resourceIDs[CostResource];
 						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
 
-						resourceSumAfter += Math.max(Math.ceil((sums[CostResourceName] - ResourceStock[CostResourceName]|0) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
+						resourceSumAfter += Math.max(Math.ceil((sums[CostResourceName] - (ResourceStock[CostResourceName] | 0)) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
 					}
 				}
 				else {

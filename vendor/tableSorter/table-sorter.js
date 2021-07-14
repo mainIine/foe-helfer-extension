@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -103,7 +103,9 @@
         let table = this;
         this.on('click', 'tr.sorter-header th', function (){
             //Remove incjected detailviews
-            $("tr.detailview").remove();
+            if(!$(this).parent().hasClass("subsort")){
+                $("tr.detailview").remove();
+            }
             
             if (!$(this).hasClass('no-sort')) {
                 let type = 'string';

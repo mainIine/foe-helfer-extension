@@ -1,0 +1,334 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com//mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#GexStat {
+	width: 750px;
+	height: 450px;
+	top: calc(50vh - 225px);
+	left: calc(50vw - 325px);
+}
+
+#GexStat #GexStatBody {
+	overflow-y: auto;
+}
+
+#GexStat #gexsContentWrapper {
+	height: auto;
+}
+
+#GexStat #gexsContentWrapper.chart {
+	height: calc( 100% - 44px );
+}
+
+#GexStat #gexs-loading-data,
+#GexStat .overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000000c0;
+	z-index: 100;
+	opacity: 1;
+
+}
+
+#GexStat .overlay {
+	display: table;
+}
+
+#GexStat .no-data {
+	padding: 20px 10px;
+}
+
+#gexs-loading-data .loadericon {
+	display: block;
+	position: relative;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #543118;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+
+#gexs-loading-data .loadericon:before {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #f8af36;
+	-webkit-animation: spin 3s linear infinite;
+	animation: spin 3s linear infinite;
+}
+
+#gexs-loading-data .loadericon:after {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #f3d6a0;
+	-webkit-animation: spin 1.5s linear infinite;
+	animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes glow {
+	from {
+		box-shadow: inset 0 0 5px -5px #fc8f007c;
+	}
+
+	to {
+		box-shadow: inset 0 0 5px 5px #fc8f007c;
+	}
+}
+
+#GexStat div.flex {
+	display: flex;
+}
+
+#GexStat .mbottom2 {
+	margin-bottom: 2px;
+}
+
+#GexStat .justify-content-between {
+	justify-content: space-between !important;
+}
+
+#GexStat .clanflag,
+#GexStat .claninfo,
+#GexStat .avatar,
+#GexStat .membername {
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+
+#GexStat .clanflag img {
+	width: 36px;
+	height: 36px;
+	margin-right: 7px;
+}
+
+#GexStat .avatar img {
+	width: 25px;
+	height: 25px;
+	margin-right: 7px;
+}
+
+#GexStat .clanworld {
+	font-size: 0.9em;
+	font-style: italic;
+}
+
+#GexStat .td-rank {
+	width: 50px;
+}
+
+#GexStatBody table thead.sticky th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#GexStat table tbody td.progress {
+	border-left: 1px solid var(--border-table-top);
+	border-right: 1px solid var(--border-table-top);
+	background: none;
+	color: var(--text-light);
+	position: relative;
+	min-width: 150px;
+}
+
+#GexStat table tbody td div.progbar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	background: var(--background-btn-green-fallback);
+	background: var(--background-btn-green-moz);
+	background: var(--background-btn-green-webkit);
+	background: var(--background-btn-green);
+	z-index: -1;
+	color: var(--text-light);
+}
+
+#GexStat table tbody td div.progbar.rank-1 {
+	background: #e7b829;
+	background: -moz-linear-gradient(top, #e7b829 0%, #8d5101 100%);
+	background: -webkit-linear-gradient(top, #e7b829 0%, #8d5101 100%);
+	background: linear-gradient(to bottom, #e7b829 0%, #8d5101 100%);
+}
+
+
+#GexStat table tbody td div.progbar.rank-2 {
+	background: #9bb8c5;
+	background: -moz-linear-gradient(top, #9bb8c5 0%, #445b61 100%);
+	background: -webkit-linear-gradient(top, #9bb8c5 0%, #445b61 100%);
+	background: linear-gradient(to bottom, #9bb8c5 0%, #445b61 100%);
+}
+
+#GexStat table tbody td div.progbar.rank-3 {
+	background: #d99a72;
+	background: -moz-linear-gradient(top, #d99a72 0%, #783014 100%);
+	background: -webkit-linear-gradient(top, #d99a72 0%, #783014 100%);
+	background: linear-gradient(to bottom, #d99a72 0%, #783014 100%);
+}
+
+#GexStat table tbody td div.progbar.glow {
+	animation: glow 1.2s infinite alternate;
+}
+
+#GexStat span.trophie {
+	background: transparent url(./images/trophies.png) 0 0 no-repeat;
+	background-size: cover;
+	display: inline-block;
+	width: 19px;
+	height: 20px;
+	position: relative;
+	vertical-align: middle;
+	margin-left: 8px;
+}
+
+#GexStat .trophie.silver {
+	background-position: 0 -39px
+}
+
+#GexStat .trophie.bronze {
+	background-position: 0 -20px
+}
+
+#GexStat span.level {
+	background: transparent url(../../x_img/ge.png) 0 0 no-repeat;
+	background-size: cover;
+	display: inline-block;
+	width: 23px;
+	height: 20px;
+	position: relative;
+	vertical-align: middle;
+}
+
+#GexStat span.level.level4 {
+	background: transparent url(./images/gex_level4.png) 0 0 no-repeat;
+}
+
+#GexStat .winner-rank {
+	background: transparent url(./images/winner-rank.png) 0 -74px no-repeat;
+	display: inline-block;
+	width: 47px;
+	height: 33px;
+	position: relative;
+}
+
+#GexStat .rank-0 {
+	background-position: 0 -74px;
+}
+
+#GexStat .rank-1 {
+	background-position: 0 -107px;
+}
+
+#GexStat .rank-2 {
+	background-position: 0 0;
+}
+
+#GexStat .rank-3 {
+	background-position: 0 -37px;
+}
+
+#GexStat .winner-rank span {
+	position: absolute;
+	top: 8px;
+	left: 20px;
+}
+
+#GexStat .weekswitch {
+	padding: 5px;
+}
+
+#GexStat #gexs-select-gexweek {
+	margin-right: 4px;
+}
+
+#GexStat .participation_overview {
+	padding: 5px;
+	display: flex;
+}
+
+#GexStat .participation_overview>div {
+	color: var(--text-bright);
+}
+
+#GexStat #gexsParticipationTable {
+	border-top: 1px solid var(--border-table-top);
+}
+
+#GexStat #gexsParticipationTable .sorter-header th {
+	cursor: pointer;
+}
+
+#GexStat #gexsParticipationTable tbody tr td:nth-child(1),
+#GexStat #gexsParticipationTable tbody tr td:nth-child(2) {
+	width: 23px;
+}
+
+#GexStat .highcharts-container {
+	width: 100%;
+	height: 100%;
+}
+
+#GexStat .settingtitle {
+	display: block;
+	margin-bottom: 7px;
+	font-size: 0.9em;
+	text-decoration: underline;
+}

@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -252,7 +252,7 @@ let Settings = {
 				<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
-					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${ExtGuildID}</dd>
+					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
 					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
 				</dl>`;
 	},
@@ -265,9 +265,7 @@ let Settings = {
 	 * @constructor
 	 */
 	ExportView: () => {
-		return `<p>${i18n('Settings.ExportSettings.ViewExport')} <button class="btn-default" id="export-settings" onclick="Settings.ExportSettings()">${i18n('Settings.ExportSettings.Button')}</button></p>
-				<hr>
-				<p>${i18n('Settings.ExportSettings.ViewImport')} <input type="file" id="import-settings" onchange="Settings.ImportSettings()" accept="application/json"></p>`;
+		return `<p><button class="btn-default" onclick="DBExport.BuildBox()">${i18n('Settings.ExportSettings.OpenImportExportTool')}</button></p>`;
 	},
 
 

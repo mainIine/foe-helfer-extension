@@ -6,18 +6,6 @@
 		"sort": 0
 	},
 	{
-		"name": "SendGEXInfo",
-		"status": true,
-		"group": "Sending",
-		"sort": 1
-	},
-	{
-		"name": "SendGildMemberLGInfo",
-		"status": false,
-		"group": "Sending",
-		"sort": 2
-	},
-	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
@@ -43,7 +31,7 @@
 	},
 	{
 		"name": "ShowOwnPartOnAllGBs",
-		"status": false,
+		"status": true,
 		"group": "Boxes",
 		"sort": 5
 	},
@@ -96,6 +84,12 @@
 		"sort": 13
 	},
 	{
+		"name": "ShowPlayerLinks",
+		"status": true,
+		"group": "Boxes",
+		"sort": 14
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
@@ -112,7 +106,7 @@
 		"callback": "MenuContent",
 		"group": "Extension",
 		"sort": 2
-	},	
+	},
 	{
 		"name": "MenuLength",
 		"callback": "MenuInputLength",
@@ -132,23 +126,29 @@
 		"sort": 5
 	},
 	{
-		"name": "ShowNotifications",
+		"name": "EnableSound",
 		"status": true,
 		"group": "Extension",
 		"sort": 6
+	},
+	{
+		"name": "ShowNotifications",
+		"status": true,
+		"group": "Extension",
+		"sort": 7
 	},
 	{
 		"name": "NotificationsPosition",
 		"callback": "NotificationView",
 		"group": "Extension",
 		"status": "bottom-right",
-		"sort": 7
+		"sort": 8
 	},
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
 		"group": "Extension",
-		"sort": 8
+		"sort": 9
 	},
 	{
 		"name": "About",

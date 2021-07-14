@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -14,7 +14,7 @@
 #Productions {
 	top: 100px;
 	left: 100px;
-	width: 780px;
+	width: 820px;
 	height: 500px;
 }
 
@@ -149,7 +149,7 @@
 #Productions #ProductionsBody .tabs ul li.happiness a span {
 	background-position: -156px 6px;
 }
-#Productions #ProductionsBody .tabs ul li.packaging a span {
+#Productions #ProductionsBody .tabs ul li.goods a span {
 	background-position: -104px 6px;
 }
 #Productions #ProductionsBody .tabs ul li.premium a span {
@@ -176,4 +176,97 @@
 }
 #Productions #ProductionsBody .tabs ul li.def_boost_defender a span {
 	background-position: -390px 6px;
+}
+
+
+
+
+
+
+
+#ProductionsRating {
+	top: 100px;
+	left: 100px;
+	width: 780px;
+	height: 500px;
+}
+
+#ProductionsRating #ProductionsRatingBody {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#ProductionsRating #ProductionsRatingBody table th {
+	font-size: 85%;
+	position: sticky;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+#ProductionsRating #ProductionsRatingBody table td {
+	font-size: 85%;
+}
+
+#ProductionsRating #ProductionsRatingBody strong.success {
+	color: var(--text-success);
+}
+
+#ProductionsRating #ProductionsRatingBody strong.error {
+	color: #ec4d4d;
+}
+
+#ProductionsRating #ProductionsRatingBody table span.resicon {
+	display: inline-block;
+	width: 24px;
+	height: 26px;
+	background: transparent url('../images/productions.png') -236px 2px no-repeat;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.empty{
+	background-position: 1000px, 1000px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.strategy_points {
+	background-position: 0 0;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.money {
+	background-position: -26px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.supplies {
+	background-position: -51px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.medals {
+	background-position: -78px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.population {
+	background-position: -183px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.happiness {
+	background-position: -158px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.goods {
+	background-position: -104px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.premium {
+	background-position: -209px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.all {
+	background-position: -130px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.clan_power {
+	background-position: -262px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.units {
+	background-position: -287px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_attacker {
+	background-position: -311px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_defender {
+	background-position: -338px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_attacker {
+	background-position: -365px 2px;
+}
+#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_defender {
+	background-position: -390px 2px;
 }
