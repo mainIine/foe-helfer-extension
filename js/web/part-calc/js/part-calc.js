@@ -76,6 +76,7 @@ let Parts = {
 		// Gibt es schon? Raus...
 		if ($('#OwnPartBox').length > 0) {
 			HTML.CloseOpenBox('OwnPartBox');
+			HTML.CloseOpenBox('PowerLevelingBox');
 
 			return;
 		}
@@ -200,7 +201,7 @@ let Parts = {
 
 		$('#OwnPartBox').on('click', '.button-powerleveling', function () {
 			Parts.PowerLevelingMaxLevel = 999999;
-			Parts.ShowPowerLeveling();
+			Parts.ShowPowerLeveling(false);
 		});
 	},
 
@@ -974,7 +975,7 @@ let Parts = {
     },
 
 
-	RefreshCopyString: () => {
+	BuildCopyString: (Places, Maezens, Level, PlaceAll, PlaceAuto, PlaceAutoUnsafe) => {
 		let PlayerName = $('#player-name').val(),
 			BuildingName = $('#build-name').val();
 
@@ -984,7 +985,46 @@ let Parts = {
 			IncludeFP = $('#options-fp').prop('checked'),
 			Descending = $('#options-descending').prop('checked'),
 			LevelUp = $('#options-levelup').prop('checked');
+		
+		if (Descending) Places.reverse();
 
+		let Ret = [];
+		if (IncludePlayerName) Ret.push(PlayerName);
+
+		if (IncludeBuildingName) Ret.push(BuildingName);
+
+		if (LevelUp) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
+
+		if (IncludeLevel) Ret.push(Level + '->' + (Level + 1));
+
+		if (Places.length > 0) {
+			for (let i = 0; i < Places.length; i++) {
+				let Place = Places[i];
+
+				if(PlaceAll && Maezens[Place] === 0){
+					continue;
+				}
+
+				if (IncludeFP) {
+					Ret.push('P' + (Place + 1) + '(' + Maezens[Place] + ')');
+				}
+				else {
+					Ret.push('P' + (Place + 1));
+				}
+			}
+		}
+		else if (PlaceAuto) {
+			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
+		}
+		else if (PlaceAutoUnsafe) {
+			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceAvailable'));
+		}
+
+		return Ret.join(' ');
+	},
+
+
+	RefreshCopyString: () => {
 		let PlaceAll = $('#chain-all').prop('checked'),
 			PlaceAuto = $('#chain-auto').prop('checked'),
 			PlaceAutoUnsafe = $('#chain-auto-unsafe').prop('checked'),			
@@ -1018,41 +1058,8 @@ let Parts = {
             }
 		}
 
-		if (Descending) Places.reverse();
+		let CopyString = Parts.BuildCopyString(Places, Parts.Maezens, Parts.Level, PlaceAll, PlaceAuto, PlaceAutoUnsafe);
 
-		let Ret = [];
-		if (IncludePlayerName) Ret.push(PlayerName);
-
-		if (IncludeBuildingName) Ret.push(BuildingName);
-
-		if (LevelUp) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
-
-		if (IncludeLevel) Ret.push(Parts.Level + '->' + (Parts.Level + 1));
-
-		if (Places.length > 0) {
-			for (let i = 0; i < Places.length; i++) {
-				let Place = Places[i];
-
-				if(PlaceAll && Parts.Maezens[Place] === 0){
-					continue;
-				}
-
-				if (IncludeFP) {
-					Ret.push('P' + (Place + 1) + '(' + Parts.Maezens[Place] + ')');
-				}
-				else {
-					Ret.push('P' + (Place + 1));
-				}
-			}
-		}
-		else if (PlaceAuto) {
-			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
-		}
-		else if (PlaceAutoUnsafe) {
-			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceAvailable'));
-		}
-
-		let CopyString = Ret.join(' ');
 		$('#copystring').val(CopyString);
 
 		return CopyString;
@@ -1093,12 +1100,12 @@ let Parts = {
 	},
 
 
-	ShowPowerLeveling: () => {
-		Parts.BuildBoxPowerLeveling();
+	ShowPowerLeveling: (event) => {
+		Parts.BuildBoxPowerLeveling(event);
 	},
 
-	
-	BuildBoxPowerLeveling: () => {
+
+	BuildBoxPowerLeveling: (event) => {
 		// Gibt es schon? Raus...
 		if ($('#PowerLevelingBox').length === 0) {
 			// Box in den DOM
@@ -1132,6 +1139,11 @@ let Parts = {
 					Parts.UpdateTableBodyPowerLeveling();
 				}
 			});
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('PowerLevelingBox');
+			return;
 		}
 
 		// Body zusammen fummeln
@@ -1232,8 +1244,16 @@ let Parts = {
 				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
 			h.push('<td><strong class="info no-select">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
+			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn-default button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
 			h.push('</tr>');
         }
+
+		$("#PowerLevelingBox").off('click','.button-powerlevel-copy').on('click', '.button-powerlevel-copy', function(){
+			let gb_level = parseInt($(this).parent().find(".hidden-text").html());
+
+			let copyParts = Parts.BuildCopyString([0, 1, 2, 3, 4], Places[gb_level], gb_level, true, false, false);
+			helper.str.copyToClipboardLegacy(copyParts);
+		});
 	},
 
 
@@ -1298,6 +1318,7 @@ let Parts = {
 			h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
 		}
 		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
+		h.push('<th></th>');
 		h.push('</tr>');
 		h.push('</thead>');
 
