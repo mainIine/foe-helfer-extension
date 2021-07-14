@@ -41,7 +41,6 @@ let _menu = {
 		'unit',
 		'settings',
 		'stats',
-		'chat',
 		'kits',
 		'greatbuildings',
 		'market',
@@ -643,35 +642,6 @@ let _menu = {
 		return btn_StatsBG;
 	},
 
-	/**
-	 * Chat Button
-	 *
-	 * @returns {*|jQuery}
-	 */
-	chat_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		btn = _menu.toolTipp(btn, i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'));
-
-		let btn_sp = $('<span />');
-
-		btn_sp.on('click', function () {
-			MainParser.sendExtMessage({
-				type: 'chat',
-				player: ExtPlayerID,
-				name: ExtPlayerName,
-				guild: ExtGuildID,
-				world: ExtWorld,
-				lang: MainParser.Language
-			});
-		});
-
-		btn.append(btn_sp);
-
-		return btn;
-	},
 
 	/**
 	 * Set Übersicht
