@@ -33,7 +33,7 @@ let CityMap = {
 	 * @param Data
 	 * @param Title
 	 */
-	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
 		if (Data === null) { // No data => own city
 			CityMap.IsExtern = false;
@@ -81,6 +81,11 @@ let CityMap = {
 				CityMap.PrepareBox(Title);
 			}, 100);
 
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('city-map-overlay');
+			return;
 		}
 
 		setTimeout(()=>{
