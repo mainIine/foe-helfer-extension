@@ -15,7 +15,7 @@
 	- Tool zum Auffinden nicht mehr effizienter Gebäude. Der Spieler legt fest welchen Ertrag pro Feld er wünscht. Das Tool gibt aus, welche Gebäude diesen Ertrag erreichen welche nicht.
 
 - Links zum Spielerprofil auf scoredb.io
-	- Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt (kann im Einstellungsmenü aktivert bzw. deaktiviert werden)
+	- [#149](https://github.com/mainIine/foe-helfer-extension/issues/149) Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt (kann im Einstellungsmenü aktivert bzw. deaktiviert werden)
 
 **Update**
 - Gildenmitglieder Übersicht
@@ -23,22 +23,22 @@
 	Filterbare Liste der LG aller Gildenmitglieder mit der aktuellen Stufe, freigeschalteten Stufen, investierten FP und benötigten FP zum Leveln.
 
 - LG Investitionen
-    - Option für die Berücksichtigung von Boni für die angreifende Armee
+    - [#1550](https://github.com/mainIine/foe-helfer-extension/issues/1550) Option für die Berücksichtigung von Boni für die angreifende Armee
 	- Unterstützung für Relikttempel und fliegende Insel
 
-- Produktionsübersicht
-    - Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert/poliert ist angezeigt
+- Produktionsübersicht:
+    - [#2060](https://github.com/mainIine/foe-helfer-extension/issues/2060) Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert/poliert ist angezeigt
 
-- Eigenanteilsrechner
-	- Die Buttons "Kopieren" und "Merken" sind nun auch im Hauptfenster vorhanden sofern ein Platz sicher ist. Es werden hierbei die Defaulteinstellungen zum Kopieren verwendet
+- Eigenanteilsrechner:
+	- [#2045](https://github.com/mainIine/foe-helfer-extension/issues/2045) Die Buttons "Kopieren" und "Merken" sind nun auch im Hauptfenster vorhanden sofern ein Platz sicher ist. Es werden hierbei die Defaulteinstellungen zum Kopieren verwendet
 	- Anzeige welche legendären Gebäude bereits gemerkt wurden
 	- Nach dem Merken eines Gebäudes wird nun die aktuelle Liste auch in die Zwischenablage kopiert
-	- Plätze, die als Mäzenbelohnung keine FP abwerfen werden und mit 1FP vorgeschlagen
+	- [#2046](https://github.com/mainIine/foe-helfer-extension/issues/2046) Plätze, die als Mäzenbelohnung keine FP abwerfen werden und mit 1FP vorgeschlagen
 	- In der Copybox wurde die Option "Alle + leere" durch die Option "Auto + nicht sichere" ersetzt. Diese kopiert alle Plätze, die noch nicht belegt sind
 
-- Diverses
-	- Globale Einstellung zum Deaktivieren aller Soundeffekte im Foe Helfer hinzugefügt
-	- Bei langen Tabellen wurde der Header beim Hinunterscrollen nun fixiert
+- Diverses:
+	- [#1965](https://github.com/mainIine/foe-helfer-extension/issues/1965) Globale Einstellung zum Deaktivieren aller Soundeffekte im Foe Helfer hinzugefügt
+	- [#2064](https://github.com/mainIine/foe-helfer-extension/issues/2064) Bei langen Tabellen wurde der Header beim Hinunterscrollen nun fixiert
 
 **BugFix**
 - Gildenmitglieder Übersicht
@@ -68,7 +68,7 @@
 	- [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) Korrektur falscher Angaben in der Spalte "Seite" des "Vorteilhaft" Filters bei eigenen Angeboten
 
 - Infobox:
-	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) In der Infobox konnten beim Leveln von LGs manchmal falsche FP Werte angezeigt werden
+	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) [#2065](https://github.com/mainIine/foe-helfer-extension/issues/2065) In der Infobox konnten beim Leveln von LGs manchmal falsche FP Werte angezeigt werden
 
 - CityMap:
 	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet, da die freigeschalteten Erweiterungen nur bei der eigenen Stadt bekannt sind
@@ -78,6 +78,7 @@
 
 - Außenposten:
 	- [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Berechnung der benötigten Beute bei Ägyptern fehlerhaft
+
 ---
 
 ##### 2.5.8
