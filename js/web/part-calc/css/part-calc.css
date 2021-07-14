@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -109,8 +109,19 @@
 	padding: 0.2rem 0.4rem;
 }
 
+#OwnPartBox .btn-default.btn-tight {
+	padding: 0.2rem;
+}
+
 #OwnPartBox #up-to-level-up {
 	color: var(--text-bright);
+}
+
+#OwnPartBox .bottom-buttons {
+	padding: 0 0.3rem 0.3rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 #OwnPartBox .black-bg {
@@ -282,6 +293,17 @@
 	position: relative;
 }
 
+.OwnPartBoxBackground label.form-check-label-wide {
+	padding: 1px;
+	line-height: 1.4rem;
+	margin: 0 0 5px 0;
+	width: calc(2/3*100% - (1 - 1/3)*8px);
+	background-color: rgba(255,255,255, 0.07);
+	vertical-align: middle;
+	transition: background-color 0.2s linear;
+	position: relative;
+}
+
 .OwnPartBoxBackground label.form-check-label:nth-child(-n+3) {
 	margin-top: 0;
 }
@@ -296,6 +318,23 @@
 }
 
 .OwnPartBoxBackground label.form-check-label:hover {
+	background-color: rgba(255,255,255, 0.1);
+}
+
+.OwnPartBoxBackground label.form-check-label-wide:nth-child(-n+3) {
+	margin-top: 0;
+}
+
+.OwnPartBoxBackground label.form-check-label-wide:nth-child(3n) {
+	margin-right: 0;
+}
+
+.OwnPartBoxBackground label.form-check-label-wide span {
+	display: inline-block;
+	margin-left: 22px;
+}
+
+.OwnPartBoxBackground label.form-check-label-wide:hover {
 	background-color: rgba(255,255,255, 0.1);
 }
 
