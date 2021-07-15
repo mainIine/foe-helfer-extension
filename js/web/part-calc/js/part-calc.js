@@ -1139,6 +1139,12 @@ let Parts = {
 					Parts.UpdateTableBodyPowerLeveling();
 				}
 			});
+			box.on('click', '.button-powerlevel-copy', function () {
+				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
+
+				let copyParts = Parts.BuildCopyString([0, 1, 2, 3, 4], Places[gb_level], gb_level, true, false, false);
+				helper.str.copyToClipboardLegacy(copyParts);
+			});
 		}
 		else if (!event)
 		{
@@ -1247,13 +1253,6 @@ let Parts = {
 			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn-default button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
 			h.push('</tr>');
         }
-
-		$("#PowerLevelingBox").off('click','.button-powerlevel-copy').on('click', '.button-powerlevel-copy', function(){
-			let gb_level = parseInt($(this).parent().find(".hidden-text").html());
-
-			let copyParts = Parts.BuildCopyString([0, 1, 2, 3, 4], Places[gb_level], gb_level, true, false, false);
-			helper.str.copyToClipboardLegacy(copyParts);
-		});
 	},
 
 
