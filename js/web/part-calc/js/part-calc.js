@@ -61,6 +61,7 @@ let Parts = {
 	RemainingOwnPart: null,
 
 	PowerLevelingMaxLevel: 999999,
+	PowerLevelingData: null,
 
 	PlaceAvailables: [],
 
@@ -768,8 +769,8 @@ let Parts = {
 			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (localStorage.getItem('OwnPartIncludeLevel' + KeyPart2) === "true" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (localStorage.getItem('OwnPartIncludeFP' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (localStorage.getItem('OwnPartDescending' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup" ' + (localStorage.getItem('OwnPartLevelup' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (localStorage.getItem('OwnPartOwnPart' + KeyPart2) !== "false" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup"> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (localStorage.getItem('OwnPartOwnPart' + KeyPart2) === "true" ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
 			'</div>';
 
 		h.push(Options)
@@ -898,9 +899,6 @@ let Parts = {
 				}
 				else if (OptionsName === 'descending') {
 					localStorage.setItem('OwnPartDescending' + StoragePreamble, $('#options-descending').prop('checked'));
-				}
-				else if (OptionsName === 'levelup') {
-					localStorage.setItem('OwnPartLevelUp' + StoragePreamble, $('#options-levelup').prop('checked'));
 				}
 				else if (OptionsName === 'ownpart') {
 					localStorage.setItem('OwnPartOwnPart' + StoragePreamble, $('#options-ownpart').prop('checked'));
@@ -1152,7 +1150,7 @@ let Parts = {
 			box.on('click', '.button-powerlevel-copy', function () {
 				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
 
-				let copyParts = Parts.BuildCopyString([0, 1, 2, 3, 4], Places[gb_level], gb_level, EigenNettos[gb_level], true, false, false);
+				let copyParts = Parts.BuildCopyString([0, 1, 2, 3, 4], Parts.PowerLevelingData.Places[gb_level], gb_level, Parts.PowerLevelingData.EigenNettos[gb_level], true, false, false);
 				helper.str.copyToClipboardLegacy(copyParts);
 			});
 		}
@@ -1236,7 +1234,7 @@ let Parts = {
 	},
 
 
-	CalcTableBodyPowerLeveling: (h, data) => {
+	CalcTableBodyPowerLeveling: (h) => {
 		const {
 			HasDoubleCollection,
 			Places,
@@ -1245,7 +1243,7 @@ let Parts = {
 			EigenBruttos,
 			DoubleCollections,
 			EigenNettos
-		} = data;
+		} = Parts.PowerLevelingData;
 
 		for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
@@ -1269,36 +1267,36 @@ let Parts = {
 	UpdateTableBodyPowerLeveling: () => {
 		const tableBody = document.getElementById('PowerLevelingBoxTableBody');
 		if (tableBody) {
-			const data = Parts.CalcBodyPowerLevelingData();
+			Parts.PowerLevelingData = Parts.CalcBodyPowerLevelingData();
 			/** @type {string[]} */
 			const h = [];
 			
-			Parts.CalcTableBodyPowerLeveling(h, data);
+			Parts.CalcTableBodyPowerLeveling(h);
 
 			tableBody.innerHTML = h.join('');
 
 			const maxlevel = /** @type {HTMLInputElement} */(document.getElementById('maxlevel'));
-			if (maxlevel.value != ''+data.MaxLevel) {
-				maxlevel.value = ''+data.MaxLevel;
+			if (maxlevel.value != '' + Parts.PowerLevelingData.MaxLevel) {
+				maxlevel.value = '' + Parts.PowerLevelingData.MaxLevel;
 			}
-			Parts.PowerLevelingMaxLevel = data.MaxLevel;
+			Parts.PowerLevelingMaxLevel = Parts.PowerLevelingData.MaxLevel;
 
 			const ownPartSum = /** @type {HTMLElement} */(document.getElementById('PowerLevelingBoxOwnPartSum'));
-			ownPartSum.innerText = HTML.Format(MainParser.round(data.OwnPartSum));
+			ownPartSum.innerText = HTML.Format(MainParser.round(Parts.PowerLevelingData.OwnPartSum));
 		}
 
 	},
 
 
 	CalcBodyPowerLeveling: () => {
-		const data = Parts.CalcBodyPowerLevelingData();
+		Parts.PowerLevelingData = Parts.CalcBodyPowerLevelingData();
 
 		const {
 			HasDoubleCollection,
 			CityEntity,
 			OwnPartSum,
 			MaxLevel,
-		} = data;
+		} = Parts.PowerLevelingData;
 
 		let h = [];
 
@@ -1332,7 +1330,7 @@ let Parts = {
 		h.push('</thead>');
 
 		h.push('<tbody id="PowerLevelingBoxTableBody">');
-		Parts.CalcTableBodyPowerLeveling(h, data);
+		Parts.CalcTableBodyPowerLeveling(h);
 		h.push('</tbody>');
 
 		h.push('</table>');
