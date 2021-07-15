@@ -41,7 +41,6 @@ let _menu = {
 		'unit',
 		'settings',
 		'stats',
-		'chat',
 		'kits',
 		'greatbuildings',
 		'market',
@@ -519,12 +518,12 @@ let _menu = {
 
 		btn_City.on('click', function () {
 			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init();
+				CityMap.init(false);
 			}
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
 				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
+				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
             }
 		});
 
@@ -635,7 +634,7 @@ let _menu = {
 		btn_Stats.on('click', function () {
 			Stats.page = 1;
 			Stats.filterByPlayerId = null;
-			Stats.Show();
+			Stats.Show(false);
 		});
 
 		btn_StatsBG.append(btn_Stats);
@@ -643,35 +642,6 @@ let _menu = {
 		return btn_StatsBG;
 	},
 
-	/**
-	 * Chat Button
-	 *
-	 * @returns {*|jQuery}
-	 */
-	chat_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		btn = _menu.toolTipp(btn, i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'));
-
-		let btn_sp = $('<span />');
-
-		btn_sp.on('click', function () {
-			MainParser.sendExtMessage({
-				type: 'chat',
-				player: ExtPlayerID,
-				name: ExtPlayerName,
-				guild: ExtGuildID,
-				world: ExtWorld,
-				lang: MainParser.Language
-			});
-		});
-
-		btn.append(btn_sp);
-
-		return btn;
-	},
 
 	/**
 	 * Set Übersicht
@@ -728,7 +698,7 @@ let _menu = {
 
 		btn_Market.bind('click', function () {
 			if ($('#market-Btn').hasClass('hud-btn-red') === false) {
-				Market.Show();
+				Market.Show(false);
 			}
 		});
 
