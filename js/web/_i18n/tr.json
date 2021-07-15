@@ -18,7 +18,7 @@
     "Boxes.Alerts.Form.Expires": "Bitiş tarihi",
     "Boxes.Alerts.Form.Neighborhood": "Komşuluk",
     "Boxes.Alerts.Form.Persistence": "Kalıcılık",
-    "Boxes.Alerts.Form.Persistence.Description": "Kullanıcı bildirimi kapatana veya tıklatana kadar bildirim açık kalırsa",
+    "Boxes.Alerts.Form.Persistence.Description": "Kullanıcı bildirimi kapatana veya tıklatana kadar bildirim açık kalsın mı?",
     "Boxes.Alerts.Form.Persistence.Off": "Kapalı",
     "Boxes.Alerts.Form.Persistence.On": "Açık",
     "Boxes.Alerts.Form.Persistent": "Kalıcı",
