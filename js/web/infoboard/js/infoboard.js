@@ -357,7 +357,7 @@ let Info = {
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                    PlayerLink,
+                    player: PlayerLink,
                     amount: HTML.Format(d['amount']),
                 }
             )
