@@ -117,6 +117,8 @@ let Productions = {
 		let PopulationSum = 0,
 			HappinessSum = 0;
 
+		Productions.Boosts = [];
+
 		for(let i in d)
 		{
 			if (!d.hasOwnProperty(i)) continue;
