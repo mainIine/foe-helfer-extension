@@ -296,7 +296,7 @@ let Productions = {
 
 				if (Ability['__class__'] === 'DoubleProductionWhenMotivatedAbility') DoubleProductionWhenMotivated = true;
 
-				if (d['state']['is_motivated'] === false && Ability['additionalResources']) {
+				if (d['state']['is_motivated'] === false && Ability['additionalResources'] && Ability['__class__'] === 'AddResourcesWhenMotivatedAbility') {
 					if (Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
 						let NewResources = Ability['additionalResources']['AllAge']['resources'];
 						for (let Resource in NewResources) {
