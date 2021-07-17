@@ -231,6 +231,7 @@ let _menu_bottom = {
 		});
 
 		HiddenRewards.SetCounter();
+		BlueGalaxy.SetCounter();
 	},
 
 	/**

@@ -30,6 +30,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
 
 let BlueGalaxy = {
     GoodsValue : 0.2,
+    DoubleCollections : 0,
 
 
 	/**
@@ -119,13 +120,12 @@ let BlueGalaxy = {
             return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
         });
 
-        let DoubleCollections = 0,
-            GalaxyFactor = 0;
+        let GalaxyFactor = 0;
 
         for (let i = 0; i < BonusService.Bonuses.length; i++)
         {
             if (BonusService.Bonuses[i]['type'] === 'double_collection') {
-                DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
+                BlueGalaxy.DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
                 GalaxyFactor = BonusService.Bonuses[i]['value'] / 100;
                 break;
             }
@@ -135,7 +135,7 @@ let BlueGalaxy = {
         h.push('<div class="text-center dark-bg header">');
 
         let Title;
-        if (DoubleCollections === 0) {
+        if (BlueGalaxy.DoubleCollections === 0) {
             Title = i18n('Boxes.BlueGalaxy.NoChargesLeft');
         }
         else if (Buildings.length === 0) {
@@ -147,7 +147,7 @@ let BlueGalaxy = {
 
         h.push('<strong class="title">' + Title + '</strong><br>');
 
-        if (DoubleCollections > 0 && Buildings.length > 0) {
+        if (BlueGalaxy.DoubleCollections > 0 && Buildings.length > 0) {
             h.push('<br>');
             h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
             h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
@@ -159,7 +159,7 @@ let BlueGalaxy = {
         h.push('</div>');       
 
         let table = [];
-        if (DoubleCollections > 0 && Buildings.length > 0) { 
+        if (BlueGalaxy.DoubleCollections > 0 && Buildings.length > 0) { 
 
             table.push('<table class="foe-table">');
 
@@ -173,7 +173,7 @@ let BlueGalaxy = {
                 '</tr>' +
                 '</thead>');
 
-            let CollectionsLeft = DoubleCollections,
+            let CollectionsLeft = BlueGalaxy.DoubleCollections,
                 FPBonusSum = 0,
                 GoodsBonusSum = 0;
 
@@ -210,6 +210,16 @@ let BlueGalaxy = {
 
         h.push(table.join(''));
 
+        BlueGalaxy.SetCounter();
+
         $('#bluegalaxyBody').html(h.join(''));
     },
+
+    SetCounter: ()=> {
+        if (BlueGalaxy.CollectionsLeft > 0){
+            $('#hidden-blue-galaxy-count').text(BlueGalaxy.CollectionsLeft).show();
+        } else {
+            $('#hidden-blue-galaxy-count').hide();
+        }
+    }
 };
