@@ -216,8 +216,8 @@ let BlueGalaxy = {
     },
 
     SetCounter: ()=> {
-        if (BlueGalaxy.CollectionsLeft > 0){
-            $('#hidden-blue-galaxy-count').text(BlueGalaxy.CollectionsLeft).show();
+        if (BlueGalaxy.DoubleCollections > 0){
+            $('#hidden-blue-galaxy-count').text(BlueGalaxy.DoubleCollections).show();
         } else {
             $('#hidden-blue-galaxy-count').hide();
         }
