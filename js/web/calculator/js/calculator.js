@@ -144,7 +144,7 @@ let Calculator = {
 			h.push('<span class="player-name">' + MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
 
 			if (Calculator.ClanName) {
-				h.push(` [${Calculator.ClanName}]`);
+				h.push(`</br>[${Calculator.ClanName}]`);
 			}
 
 			h.push('</span>');
