@@ -731,7 +731,7 @@ let _menu = {
 			BlueGalaxy.Show();
 		});
 
-		btn.append(btn_sp);
+		btn.append(btn_sp, $('<span id="hidden-blue-galaxy-count" class="hud-counter">0</span>'));
 
 		return btn;
 	},
