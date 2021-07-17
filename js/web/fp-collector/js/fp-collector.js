@@ -307,8 +307,8 @@ let FPCollector = {
 				}
 
 				// Belohnung einer Schleifenquest
-				if (Quest['rewards']) {
-					for (let Reward of Quest['rewards']) {
+				if (Quest['genericRewards']) {
+					for (let Reward of Quest['genericRewards']) {
 						if (Reward['type'] === 'forgepoint_package') {
 							StrategyPoints.insertIntoDB({
 								place: 'Quest',
