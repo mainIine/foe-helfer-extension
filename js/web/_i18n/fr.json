@@ -578,6 +578,7 @@
     "Boxes.OwnpartCalculator.Order": "Ordre",
     "Boxes.OwnpartCalculator.OwnPart": "Contrib. perso",
     "Boxes.OwnpartCalculator.OwnPartRemaining": "Restant",
+    "Boxes.OwnpartCalculator.OwnPartShort": "CP",
     "Boxes.OwnpartCalculator.PatronPart": "Contrib. externe",
     "Boxes.OwnpartCalculator.Place": "Place",
     "Boxes.OwnpartCalculator.Places": "Places",
