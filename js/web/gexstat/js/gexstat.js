@@ -805,18 +805,18 @@ let GexStat = {
 
 	InitSettings: () => {
 
-		let Settings = JSON.parse(localStorage.getItem('GexStatStatSettings'));
+		let Settings = JSON.parse(localStorage.getItem('GexStatSettings'));
 
 		if (!Settings)
 		{
 			return;
 		}
 
-		GexStatStat.Settings.deleteOlderThan = (Settings.deleteOlderThan !== undefined) ? Settings.deleteOlderThan : GexStatStat.Settings.deleteOlderThan;
-		GexStatStat.Settings.showAxisLabel = (Settings.showAxisLabel !== undefined) ? Settings.showAxisLabel : GexStatStat.Settings.showAxisLabel;
-		GexStatStat.Settings.chartSeries = (Settings.chartSeries !== undefined && Settings.chartSeries.length) ? Settings.chartSeries : GexStatStat.Settings.chartSeries;
-		GexStatStat.Settings.showRoundLimit = (Settings.showRoundLimit !== undefined) ? Settings.showRoundLimit : GexStatStat.Settings.showRoundLimit;
-		GexStatStat.Settings.exportLimit = (Settings.exportLimit !== undefined) ? Settings.exportLimit : GexStatStat.Settings.exportLimit;
+		GexStat.Settings.deleteOlderThan = (Settings.deleteOlderThan !== undefined) ? Settings.deleteOlderThan : GexStat.Settings.deleteOlderThan;
+		GexStat.Settings.showAxisLabel = (Settings.showAxisLabel !== undefined) ? Settings.showAxisLabel : GexStat.Settings.showAxisLabel;
+		GexStat.Settings.chartSeries = (Settings.chartSeries !== undefined && Settings.chartSeries.length) ? Settings.chartSeries : GexStat.Settings.chartSeries;
+		GexStat.Settings.showRoundLimit = (Settings.showRoundLimit !== undefined) ? Settings.showRoundLimit : GexStat.Settings.showRoundLimit;
+		GexStat.Settings.exportLimit = (Settings.exportLimit !== undefined) ? Settings.exportLimit : GexStat.Settings.exportLimit;
 
 	},
 
