@@ -2,6 +2,9 @@
 
 ##### 2.5.9.1
 
+**BugFix**
+- GEX Ergebnisse
+	- Die gespeicherten Einstellungen wurden nach Reload des Spiels wieder auf die Standardeinstellungen gesetzt.  
 
 
 ---
