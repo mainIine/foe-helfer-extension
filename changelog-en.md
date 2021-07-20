@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 2.5.9.1
+
+**BugFix**
+- GEX Results
+	- The saved settings were reset to the default settings after reloading the game.  
+
+
+---
+
 ##### 2.5.9
 
 **New**
