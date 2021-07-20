@@ -1372,7 +1372,7 @@ let Parts = {
 		});
 
 		// new own button
-		c.push(nV);danger
+		c.push(nV);
 
 		// save button
 		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
