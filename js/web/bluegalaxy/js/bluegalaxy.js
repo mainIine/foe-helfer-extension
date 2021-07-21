@@ -26,11 +26,28 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
             }
         }
     }
- });
+});
+
+FoEproxy.addFoeHelperHandler('BonusUpdated', data => {
+    for (let i = 0; i < BonusService.Bonuses.length; i++) {
+        if (BonusService.Bonuses[i]['type'] === 'double_collection') {
+            BlueGalaxy.DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
+            BlueGalaxy.GalaxyFactor = BonusService.Bonuses[i]['value'] / 100;
+            break;
+        }
+    }
+
+    BlueGalaxy.SetCounter();
+
+    if ($('#bluegalaxy').length > 0) {
+        BlueGalaxy.CalcBody();
+    }
+});
 
 let BlueGalaxy = {
     GoodsValue : 0.2,
     DoubleCollections : 0,
+    GalaxyFactor : 0,
 
 
 	/**
@@ -120,17 +137,6 @@ let BlueGalaxy = {
             return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
         });
 
-        let GalaxyFactor = 0;
-
-        for (let i = 0; i < BonusService.Bonuses.length; i++)
-        {
-            if (BonusService.Bonuses[i]['type'] === 'double_collection') {
-                BlueGalaxy.DoubleCollections = BonusService.Bonuses[i]['amount'] | 0;
-                GalaxyFactor = BonusService.Bonuses[i]['value'] / 100;
-                break;
-            }
-        }
-
         let h = [];
         h.push('<div class="text-center dark-bg header">');
 
@@ -190,8 +196,8 @@ let BlueGalaxy = {
                     table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
 
-                    FPBonusSum += Buildings[i]['FP'] * GalaxyFactor;
-                    GoodsBonusSum += Buildings[i]['Goods'] * GalaxyFactor;
+                    FPBonusSum += Buildings[i]['FP'] * BlueGalaxy.GalaxyFactor;
+                    GoodsBonusSum += Buildings[i]['Goods'] * BlueGalaxy.GalaxyFactor;
                 }
                 else {
                     table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');

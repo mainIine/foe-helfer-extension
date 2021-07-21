@@ -495,6 +495,7 @@ p {
 	bottom: 4px;
 	top: unset;
 	left: 4px;
+	background-image: none;
 	background-color: var(--hud-counter);
 	border-radius: 50%;
 	line-height: 13px;
