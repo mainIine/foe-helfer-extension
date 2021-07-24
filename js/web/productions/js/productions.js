@@ -1606,12 +1606,14 @@ let Productions = {
 				for (let Type in Production['motivatedproducts']) {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
-					if(Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
+					if (Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
 					if (Building['type'] === 'residential' || Building['type'] === 'production') {
 						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
 						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
 					}
+				}
 
+				for (let Type in Production['motivatedproducts']) {
 					//Güter zusammenfassen
 					if (!Productions.Types.includes(Type)) {
 						Production.motivatedproducts['goods'] += Production.motivatedproducts[Type];
