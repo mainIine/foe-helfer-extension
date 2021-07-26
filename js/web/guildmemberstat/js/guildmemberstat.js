@@ -1921,6 +1921,7 @@ let GuildMemberStat = {
 				res[obj.cityentity_id].max_level = obj.level;
 				res[obj.cityentity_id].min_level = obj.level;
 				res[obj.cityentity_id].player = [{
+					player_id: obj.player_id,
 					member: obj.member,
 					fplevelup: obj.max_level > obj.level ? obj.forge_points_for_level_up : 0,
 					investedfp: obj.invested_forge_points,
