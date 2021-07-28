@@ -61,20 +61,13 @@ FoEproxy.addWsHandler('ClanBattleService', 'changeProvince', (data, postData) =>
 });
 
 let GvG = {
-	Actions: {
-		Independences: 0,
-		Sieges: 0,
-		Defenders: 0,
-		NextCalc: 0,
-		PrevCalc: 0,
-		LastAction: 0
-	},
+	Actions: undefined,
 	Init: false,
 
 	initActions: () => {
 		let Actions = JSON.parse(localStorage.getItem('GvGActions'));
 
-		if (Actions === null) {			
+		if (Actions === null) {	
 			Actions = {
 				Independences: 0,
 				Sieges: 0,
@@ -166,8 +159,9 @@ let GvG = {
 		if (GvG.Actions.NextCalc !== calcTime) 
 			GvG.Actions.NextCalc = calcTime;
 
-		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction !== 0) 
+		if (GvG.Actions.LastAction < GvG.Actions.PrevCalc && GvG.Actions.LastAction !== 0) {
 			GvG.resetData(calcTime);
+		}
 
 		localStorage.setItem('GvGActions', JSON.stringify(GvG.Actions));
 		GvG.showGvgHud();

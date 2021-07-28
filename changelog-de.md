@@ -12,6 +12,9 @@
 **BugFix**
 - GEX Ergebnisse
 	- Die gespeicherten Einstellungen wurden nach Reload des Spiels wieder auf die Standardeinstellungen gesetzt.
+
+- GvG Freigaben
+	- Die Zähler wurden nach Neuladen des Spiels zurückgesetzt. Passiert nun nicht mehr.
 	
 - Gildenmitglieder Übersicht
 	-[#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Ungültiger scoredb Link bei einigen Spielern im Tab "legendäre Bauwerke"
