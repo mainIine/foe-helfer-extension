@@ -589,6 +589,7 @@
     "Boxes.OwnpartCalculator.Title": "GB Calculator",
     "Boxes.OwnpartCalculator.Trust": "Trust",
     "Boxes.OwnpartCalculator.YourName": "Your name",
+    "Boxes.PowerLeveling.CopyValues": "???",
     "Boxes.PowerLeveling.DoubleCollection": "Double Collection",
     "Boxes.PowerLeveling.Level": "Level",
     "Boxes.PowerLeveling.MaxLevel": "Max level",
@@ -1023,6 +1024,5 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
     "StrategyPoints.BuyableFP": "Number of forge points that can be bought with coins.",
-    "Time": "HH:mm:ss a",
     "_Language": "English"
 }
