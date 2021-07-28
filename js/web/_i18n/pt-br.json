@@ -509,8 +509,6 @@
     "Menu.Campagne.Desc": "Resumo dos recursos necessários para conquistar um setor do Mapa de Campanha.",
     "Menu.Campagne.Title": "Campanha",
     "Menu.Campagne.Warning": "Desabilitado: Abra uma provincia primeiro!",
-    "Menu.Chat.Desc": "Converse em tempo real com todos os membros da guilda",
-    "Menu.Chat.Title": "Chat ao vivo da guilda",
     "Menu.Citymap.Desc": "Mostra a cidade vista de cima",
     "Menu.Citymap.Title": "Mapa da cidade",
     "Menu.HiddenRewards.Desc": "Resumo dos incidentes escondidos",
@@ -558,7 +556,5 @@
     "Settings.Version.PlayerId": "ID do jogador:",
     "Settings.Version.Title": "Versão",
     "Settings.Version.World": "Mundo:",
-    "WsChat.Guild": "Guilda ",
-    "WsChat.SendBtn": "Enviar",
     "_Language": "Inglês"
 }
