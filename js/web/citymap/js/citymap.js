@@ -440,6 +440,12 @@ let CityMap = {
 	SubmitData: ()=> {
 
 		let d = {
+			player: {
+				name: ExtPlayerName,
+				id: ExtPlayerID,
+				world: ExtWorld,
+				avatar: ExtPlayerAvatar
+			},
 			entities: MainParser.CityMapData,
 			areas: CityMap.UnlockedAreas,
 			metaIDs: {
