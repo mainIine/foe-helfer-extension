@@ -28,6 +28,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	LastMapPlayerID = null,
 	ExtPlayerID = 0,
 	ExtPlayerName = null,
+	ExtPlayerAvatar = null,
 	ExtGuildID = 0,
 	ExtGuildPermission = 0,
 	ExtWorld = '',
@@ -1565,6 +1566,8 @@ let MainParser = {
 			key: 'current_player_name',
 			data: ExtPlayerName
 		});
+
+		ExtPlayerAvatar = d.portrait_id;
 
 		MainParser.sendExtMessage({
 			type: 'setPlayerData',
