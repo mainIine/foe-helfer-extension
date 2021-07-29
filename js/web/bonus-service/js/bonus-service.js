@@ -40,13 +40,11 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	BonusService.Bonuses = data['responseData'];
 
-	if($('#bonus-hud').length > 0){
+	FoEproxy.pushFoeHelperMessage('BonusUpdated');
+
+	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
 	}
-
-	if ($('#bluegalaxy').length > 0) {
-		BlueGalaxy.CalcBody();
-    }
 });
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {

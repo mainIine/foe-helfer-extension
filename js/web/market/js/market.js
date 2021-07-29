@@ -64,7 +64,7 @@ let Market = {
 	/**
 	 * Create a div-box for the DOM + Eventlistener
 	 */
-    Show: ()=> {
+    Show: (event = true)=> {
         if ($('#Market').length === 0)
         {
             HTML.Box({
@@ -161,6 +161,11 @@ let Market = {
                 Market.CalcBody();
             });
         }
+		else if (!event)
+		{
+			HTML.CloseOpenBox('Market');
+			return;
+		}
 
         Market.CalcBody();
     },

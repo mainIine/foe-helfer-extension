@@ -518,12 +518,12 @@ let _menu = {
 
 		btn_City.on('click', function () {
 			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init();
+				CityMap.init(false);
 			}
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
 				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
+				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
             }
 		});
 
@@ -634,7 +634,7 @@ let _menu = {
 		btn_Stats.on('click', function () {
 			Stats.page = 1;
 			Stats.filterByPlayerId = null;
-			Stats.Show();
+			Stats.Show(false);
 		});
 
 		btn_StatsBG.append(btn_Stats);
@@ -698,7 +698,7 @@ let _menu = {
 
 		btn_Market.bind('click', function () {
 			if ($('#market-Btn').hasClass('hud-btn-red') === false) {
-				Market.Show();
+				Market.Show(false);
 			}
 		});
 
@@ -731,7 +731,7 @@ let _menu = {
 			BlueGalaxy.Show();
 		});
 
-		btn.append(btn_sp);
+		btn.append(btn_sp, $('<span id="hidden-blue-galaxy-count" class="hud-counter">0</span>'));
 
 		return btn;
 	},
