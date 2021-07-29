@@ -746,8 +746,6 @@
     "Menu.Campagne.Desc": "Обзор ресурсов, требуемых для захвата провинции.",
     "Menu.Campagne.Title": "Карта континента",
     "Menu.Campagne.Warning": "Отключено: Для включения посетите провинцию!",
-    "Menu.Chat.Desc": "Общайтесь с участниками гильдии в реальном времени",
-    "Menu.Chat.Title": "Чат гильдии",
     "Menu.Citymap.Desc": "Обзор города с высоты птичьего полета",
     "Menu.Citymap.Title": "Обзор города",
     "Menu.Dropdown": "Выпадающим списком",
@@ -919,9 +917,5 @@
     "Settings.Version.Title": "Версия",
     "Settings.Version.World": "Мир:",
     "StrategyPoints.BuyableFP": "Количество СО, которое можно купить за монеты.",
-    "WsChat.Connected": "Подключено!",
-    "WsChat.ConnectionClosed": "Соединение закрыто!",
-    "WsChat.ConnectionError": "Ошибка подключения",
-    "WsChat.World": "Мир - ",
     "_Language": "Русский"
 }

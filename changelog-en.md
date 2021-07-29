@@ -5,7 +5,8 @@
 **BugFix**
 - GEX Results
 	- The saved settings were reset to the default settings after reloading the game.  
-
+- GvG Independences
+	- The counters were reset after reloading the game. This issue has been resolved.
 
 ---
 
