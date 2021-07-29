@@ -117,6 +117,8 @@ let Productions = {
 		let PopulationSum = 0,
 			HappinessSum = 0;
 
+		Productions.Boosts = [];
+
 		for(let i in d)
 		{
 			if (!d.hasOwnProperty(i)) continue;
@@ -294,7 +296,7 @@ let Productions = {
 
 				if (Ability['__class__'] === 'DoubleProductionWhenMotivatedAbility') DoubleProductionWhenMotivated = true;
 
-				if (d['state']['is_motivated'] === false && Ability['additionalResources']) {
+				if (d['state']['is_motivated'] === false && Ability['additionalResources'] && Ability['__class__'] === 'AddResourcesWhenMotivatedAbility') {
 					if (Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
 						let NewResources = Ability['additionalResources']['AllAge']['resources'];
 						for (let Resource in NewResources) {
@@ -1604,12 +1606,14 @@ let Productions = {
 				for (let Type in Production['motivatedproducts']) {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
-					if(Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
+					if (Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
 					if (Building['type'] === 'residential' || Building['type'] === 'production') {
 						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
 						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
 					}
+				}
 
+				for (let Type in Production['motivatedproducts']) {
 					//Güter zusammenfassen
 					if (!Productions.Types.includes(Type)) {
 						Production.motivatedproducts['goods'] += Production.motivatedproducts[Type];

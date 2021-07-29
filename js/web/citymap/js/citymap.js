@@ -33,7 +33,7 @@ let CityMap = {
 	 * @param Data
 	 * @param Title
 	 */
-	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
 		if (Data === null) { // No data => own city
 			CityMap.IsExtern = false;
@@ -81,6 +81,11 @@ let CityMap = {
 				CityMap.PrepareBox(Title);
 			}, 100);
 
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('city-map-overlay');
+			return;
 		}
 
 		setTimeout(()=>{
@@ -395,7 +400,8 @@ let CityMap = {
 	 * Show the submit box
 	 */
 	showSumbitBox: () => {
-		if ($('#CityMapSubmit').length > 0) {
+		if ($('#CityMapSubmit').length > 0)
+		{
 			$('#CityMapSubmit').remove();
 		}
 
@@ -435,6 +441,12 @@ let CityMap = {
 	SubmitData: ()=> {
 
 		let d = {
+			player: {
+				name: ExtPlayerName,
+				id: ExtPlayerID,
+				world: ExtWorld,
+				avatar: ExtPlayerAvatar
+			},
 			entities: MainParser.CityMapData,
 			areas: CityMap.UnlockedAreas,
 			metaIDs: {
