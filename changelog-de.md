@@ -3,29 +3,32 @@
 ##### 2.5.9.1
 
 **Update**
-- Blaue Galaxie
+- Blaue Galaxie:
 	-[#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) Die Anzahl der verbleibenden Aufladungen wird nun im Menüicon angezeigt
 
-- EARechner
+- EA-Rechner:
 	-[#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Eigenanteil kann nun auch zum Copystring hinzugefügt werden
 
 **BugFix**
-- GEX Ergebnisse
+- Erweiterung: 
+    - [#1547](https://github.com/mainIine/foe-helfer-extension/issues/1547) Einige Boxen wurden beim zweiten Klick ins Menü nicht geschlossen
+
+- GEX Ergebnisse:
 	- Die gespeicherten Einstellungen wurden nach Reload des Spiels wieder auf die Standardeinstellungen gesetzt.
 
-- GvG Freigaben
-	- Die Zähler wurden nach Neuladen des Spiels zurückgesetzt. Passiert nun nicht mehr.
+- GvG Freigaben:
+	- [#2104](https://github.com/mainIine/foe-helfer-extension/issues/2104) Die Zähler wurden nach Neuladen des Spiels zurückgesetzt. Passiert nun nicht mehr.
 	
-- Gildenmitglieder Übersicht
+- Gildenmitglieder Übersicht:
 	-[#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Ungültiger scoredb Link bei einigen Spielern im Tab "legendäre Bauwerke"
 
-- Menü
+- Menü:
 	-[#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Einige Boxen konnten durch einen 2. Klick des Menüicons nicht geschlossen werden
 
-- Infoboard
+- Infoboard:
 	-[#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) Der Spielername wurde nicht korrekt angezeigt, wenn man in einer Auktion überboten wurde
 
-- Produktionsübersicht/Effizienzbewertung
+- Produktionsübersicht/Effizienzbewertung:
 	-[#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Falsche Werte von Vorrats/Münzproduktion bei mehrmaligem öffnen der Produktionsübersicht
 	-[#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Ungültige Werte bei der Güterproduktion bei Gebäuden, die Gildengüter produzieren
 	-[#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Ungültige Werte bei der Güterproduktion, falls gerade eine Produktionsoption <> 24h aktiv ist

@@ -400,7 +400,8 @@ let CityMap = {
 	 * Show the submit box
 	 */
 	showSumbitBox: () => {
-		if ($('#CityMapSubmit').length > 0) {
+		if ($('#CityMapSubmit').length > 0)
+		{
 			$('#CityMapSubmit').remove();
 		}
 
