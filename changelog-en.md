@@ -2,11 +2,36 @@
 
 ##### 2.5.9.1
 
+**Update**
+- Blue Galaxy:
+    -[#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) The number of remaining recharges is now shown in the menu icon
+
+- EA Calculator:
+	-[#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Own share can now also be added to the copystring
+
 **BugFix**
-- GEX Results
-	- The saved settings were reset to the default settings after reloading the game.  
-- GvG Independences
-	- The counters were reset after reloading the game. This issue has been resolved.
+- Extension:
+    - [#1547](https://github.com/mainIine/foe-helfer-extension/issues/1547) Some boxes were not closed on second click into menu
+
+- GEX results:
+    - Saved settings were reset to default after reloading the game.
+
+- GvG approvals:
+    - [#2104](https://github.com/mainIine/foe-helfer-extension/issues/2104) Counters were reset after reloading the game. Does not happen anymore.
+
+- Guild members overview:
+	-[#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Invalid scoredb link for some players in the "legendary buildings" tab.
+
+- Menu:
+    -[#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Some boxes could not be closed by a 2nd click of the menu icon
+
+- Infoboard:
+    -[#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) The player name was not displayed correctly when being outbid in an auction
+
+- Production overview/efficiency rating:
+    -[#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Wrong values of stock/coin production when opening the production overview several times.
+    -[#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Invalid values of goods production for buildings producing guild goods
+    -[#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Invalid values for goods production if a production option is currently active <> 24h
 
 ---
 
