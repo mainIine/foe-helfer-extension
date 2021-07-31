@@ -991,7 +991,7 @@
     "Settings.SelectedMenu.Title": "Change Menu",
     "Settings.Show2kQuestMark.Desc": "Shows a small bagde with a counter of how many quests you can still refuse.",
     "Settings.Show2kQuestMark.Title": "2000 quest mark",
-    "Settings.ShowBlueGalaxyHelper.Desc": "Displays a tool that suggests buildings to collect after collecting your Blue Galaxy",
+    "Settings.ShowBlueGalaxyHelper.Desc": "Displays a tool that suggests buildings to collect after collecting your Blue Galaxy. Automatically closes the tool when all charges were used.",
     "Settings.ShowBlueGalaxyHelper.Title": "Display Blue Galaxy Helper",
     "Settings.ShowEventChest.Desc": "Displays an Event's Prize chance summary window",
     "Settings.ShowEventChest.Title": "Display Event Chest Box",
