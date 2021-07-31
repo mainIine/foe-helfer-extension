@@ -20,7 +20,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
             if (Entities[i]['cityentity_id'] === 'X_OceanicFuture_Landmark3') {
                 if ($('#bluegalaxy').length === 0) {
                     if (Settings.GetSetting('ShowBlueGalaxyHelper')) {
-                        BlueGalaxy.Show(true);
+                        BlueGalaxy.Show();
                     }                    
                 }
             }
@@ -40,7 +40,7 @@ FoEproxy.addFoeHelperHandler('BonusUpdated', data => {
     BlueGalaxy.SetCounter();
 
     if ($('#bluegalaxy').length > 0) {
-        BlueGalaxy.CalcBody();
+        BlueGalaxy.Show(auto_close=true);
     }
 });
 
