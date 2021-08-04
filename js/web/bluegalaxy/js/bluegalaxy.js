@@ -20,7 +20,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData
             if (Entities[i]['cityentity_id'] === 'X_OceanicFuture_Landmark3') {
                 if ($('#bluegalaxy').length === 0) {
                     if (Settings.GetSetting('ShowBlueGalaxyHelper')) {
-                        BlueGalaxy.Show();
+                        BlueGalaxy.Show(true);
                     }                    
                 }
             }
@@ -55,7 +55,7 @@ let BlueGalaxy = {
 	 *
 	 * @constructor
 	 */
-    Show: () => {
+    Show: (auto_close = false) => {
         moment.locale(i18n('Local'));
 
         if ($('#bluegalaxy').length === 0) {
@@ -93,6 +93,10 @@ let BlueGalaxy = {
 			BlueGalaxy.CalcBody();
 
         } else {
+            HTML.CloseOpenBox('bluegalaxy');
+        }
+
+        if (auto_close && BlueGalaxy.DoubleCollections === 0) {
             HTML.CloseOpenBox('bluegalaxy');
         }
     },
