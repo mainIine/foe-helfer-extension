@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.9.2
+
+**BugFix**
+- Guild members overview:
+	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Representation of the GEX calendar week is now the beginning of the GEX and no longer the end
+
+---
+
 ##### 2.5.9.1
 
 **Update**

@@ -1157,7 +1157,7 @@ let GuildMemberStat = {
 								break;
 							}
 
-							let gexweek = moment.unix(gex[i].gexweek).format('YYYY-ww');
+							let gexweek = moment.unix(gex[i].gexweek).subtract(7,'d').format('YYYY-ww');
 							let activeGexClass = gex[i].gexweek >= currentTime ? ' activeCircle' : '';
 
 							d.push(`<tr><td>${gexweek}<span class="${activeGexClass}"></span></td>` +
