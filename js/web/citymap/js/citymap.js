@@ -14,7 +14,7 @@
 
 /**
  *
- * @type {{init: CityMap.init, showSumbitBox: CityMap.showSumbitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
+ * @type {{init: CityMap.init, showSubmitBox: CityMap.showSubmitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
  */
 let CityMap = {
 	CityData: null,
@@ -168,7 +168,7 @@ let CityMap = {
 
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 
-			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
 		}
 
 
@@ -399,13 +399,15 @@ let CityMap = {
 	/**
 	 * Show the submit box
 	 */
-	showSumbitBox: () => {
-		if ($('#CityMapSubmit').length > 0)
+	showSubmitBox: () => {
+		let $CityMapSubmit = $('#CityMapSubmit');
+
+		if ($CityMapSubmit.length > 0)
 		{
-			$('#CityMapSubmit').remove();
+			$CityMapSubmit.remove();
 		}
 
-		if ($('#CityMapSubmit').length < 1)
+		if ($CityMapSubmit.length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -414,7 +416,6 @@ let CityMap = {
 				'saveCords': false
 			});
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('citymap');
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
@@ -440,21 +441,24 @@ let CityMap = {
 	 */
 	SubmitData: ()=> {
 
-		let d = {
-			player: {
-				name: ExtPlayerName,
-				id: ExtPlayerID,
-				world: ExtWorld,
-				avatar: ExtPlayerAvatar
-			},
-			entities: MainParser.CityMapData,
-			areas: CityMap.UnlockedAreas,
-			metaIDs: {
-				entity: MainParser.CityEntitiesMetaId,
-				set: MainParser.CitySetsMetaId,
-				upgrade: MainParser.CityBuildingsUpgradesMetaId
-			}
-		};
+		let currentDate = new Date(),
+			d = {
+				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
+				player: {
+					name: ExtPlayerName,
+					id: ExtPlayerID,
+					world: ExtWorld,
+					avatar: ExtPlayerAvatar
+				},
+				eras: Technologies.Eras,
+				entities: MainParser.CityMapData,
+				areas: CityMap.UnlockedAreas,
+				metaIDs: {
+					entity: MainParser.CityEntitiesMetaId,
+					set: MainParser.CitySetsMetaId,
+					upgrade: MainParser.CityBuildingsUpgradesMetaId
+				}
+			};
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){
 
