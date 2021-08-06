@@ -6,6 +6,9 @@
 - Gildenmitglieder Übersicht:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
 
+- Export der Einstellungen und Daten
+	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
+
 ---
 
 ##### 2.5.9.1
