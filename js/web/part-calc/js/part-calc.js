@@ -204,6 +204,100 @@ let Parts = {
 			Parts.PowerLevelingMaxLevel = 999999;
 			Parts.ShowPowerLeveling(false);
 		});
+
+		$('#OwnPartBox').on('click', '.button-own', function () {
+			let copyParts = Parts.CopyFunction($(this), 'copy');
+			helper.str.copyToClipboardLegacy(copyParts);
+			Parts.Show(Parts.Level);
+		});
+
+		$('#OwnPartBox').on('click', '.button-save-own', function () {
+			let copyParts = Parts.CopyFunction($(this), 'save');
+			helper.str.copyToClipboardLegacy(copyParts);
+			Parts.Show(Parts.Level);
+		});
+
+		$('#OwnPartBox').on('click', '.form-check-input', function () {
+			let PlaceName = $(this).data('place');
+
+			if (PlaceName) {
+				if (PlaceName === 'all') { //all: auto deaktivieren, P1-5 aktivieren
+					$('#chain-all').prop('checked', true);
+					$('#chain-auto').prop('checked', false);
+					$('#chain-auto-unsafe').prop('checked', false);
+
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', true);
+					}
+				}
+				else if (PlaceName === 'auto') { //auto: all/auto-unsafe deaktivieren, P1-P5 ermitteln
+					$('#chain-all').prop('checked', false);
+					$('#chain-auto').prop('checked', true);
+					$('#chain-auto-unsafe').prop('checked', false);
+
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', Parts.SafePlaces.includes(i));
+					}
+				}
+				else if (PlaceName === 'auto-unsafe') { //auto-unsafe: all/auto deaktivieren, P1-5 ermitteln
+					$('#chain-all').prop('checked', false);
+					$('#chain-auto').prop('checked', false);
+					$('#chain-auto-unsafe').prop('checked', true);
+
+					for (let i = 0; i < 5; i++) {
+						$('#chain-p' + (i + 1)).prop('checked', Parts.PlaceAvailables[i]);
+					}
+				}
+				else { //P1-5: auto und all deaktivieren
+					$('#chain-all').prop('checked', false);
+					$('#chain-auto').prop('checked', false);
+					$('#chain-auto-unsafe').prop('checked', false);
+				}
+			}
+
+			let OptionsName = $(this).data('options');
+
+			if (OptionsName) {
+				let StoragePreamble = Parts.GetStoragePreamble();
+
+				if (OptionsName === 'player') {
+					localStorage.setItem('OwnPartIncludePlayer' + StoragePreamble, $('#options-player').prop('checked'));
+				}
+				else if (OptionsName === 'gb') {
+					localStorage.setItem('OwnPartIncludeGB' + StoragePreamble, $('#options-gb').prop('checked'));
+				}
+				else if (OptionsName === 'level') {
+					localStorage.setItem('OwnPartIncludeLevel' + StoragePreamble, $('#options-level').prop('checked'));
+				}
+				else if (OptionsName === 'fp') {
+					localStorage.setItem('OwnPartIncludeFP' + StoragePreamble, $('#options-fp').prop('checked'));
+				}
+				else if (OptionsName === 'descending') {
+					localStorage.setItem('OwnPartDescending' + StoragePreamble, $('#options-descending').prop('checked'));
+				}
+				else if (OptionsName === 'ownpart') {
+					localStorage.setItem('OwnPartOwnPart' + StoragePreamble, $('#options-ownpart').prop('checked'));
+				}
+			}
+
+			Parts.RefreshCopyString();
+		});
+
+		$('#OwnPartBox').on('blur', '#player-name', function () {
+			let PlayerName = $('#player-name').val();
+
+			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', PlayerName);
+
+			Parts.RefreshCopyString();
+		});
+
+		$('#OwnPartBox').on('blur', '#build-name', function () {
+			let BuildingName = $('#build-name').val();
+
+			localStorage.setItem("OwnPartBuildingName" + Parts.CityMapEntity['cityentity_id'], BuildingName);
+
+			Parts.RefreshCopyString();
+		});
 	},
 
 
@@ -688,7 +782,7 @@ let Parts = {
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
 				h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-				h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
 			else {
 				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
@@ -794,24 +888,12 @@ let Parts = {
 
 		h.push('<input type="text" id="copystring" value="">');
 		
-		h.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
-				'<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ' +
-				'<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>' +
-			'</div>');
+		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
+		h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
+		h.push('</div>');
 
 		// ---------------------------------------------------------------------------------------------
-
-		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
-			let copyParts = Parts.CopyFunction($(this), 'copy');
-			helper.str.copyToClipboardLegacy(copyParts);
-			Parts.Show();
-		});
-
-		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
-			let copyParts = Parts.CopyFunction($(this), 'save');
-			helper.str.copyToClipboardLegacy(copyParts);
-			Parts.Show();
-		});
 
 		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
@@ -840,88 +922,6 @@ let Parts = {
 			} else {
 				Parts.BackGroundBoxAnimation(true);
 			}
-		});
-
-		$OwnPartBox.on('click', '.form-check-input', function(){
-			let PlaceName = $(this).data('place');
-
-			if (PlaceName) {
-				if (PlaceName === 'all') { //all: auto deaktivieren, P1-5 aktivieren
-					$('#chain-all').prop('checked', true);
-					$('#chain-auto').prop('checked', false);
-					$('#chain-auto-unsafe').prop('checked', false);
-
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', true);
-					}
-				}
-				else if (PlaceName === 'auto') { //auto: all/auto-unsafe deaktivieren, P1-P5 ermitteln
-					$('#chain-all').prop('checked', false);
-					$('#chain-auto').prop('checked', true);
-					$('#chain-auto-unsafe').prop('checked', false);
-					
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', Parts.SafePlaces.includes(i));
-					}
-				}
-				else if (PlaceName === 'auto-unsafe') { //auto-unsafe: all/auto deaktivieren, P1-5 ermitteln
-					$('#chain-all').prop('checked', false);
-					$('#chain-auto').prop('checked', false);
-					$('#chain-auto-unsafe').prop('checked', true);
-
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', Parts.PlaceAvailables[i]);
-					}
-				}
-				else { //P1-5: auto und all deaktivieren
-					$('#chain-all').prop('checked', false);
-					$('#chain-auto').prop('checked', false);
-					$('#chain-auto-unsafe').prop('checked', false);
-				}
-			}
-
-			let OptionsName = $(this).data('options');
-
-			if (OptionsName) {
-				let StoragePreamble = Parts.GetStoragePreamble();
-
-				if (OptionsName === 'player') {
-					localStorage.setItem('OwnPartIncludePlayer' + StoragePreamble, $('#options-player').prop('checked'));
-				}
-				else if (OptionsName === 'gb') {
-					localStorage.setItem('OwnPartIncludeGB' + StoragePreamble, $('#options-gb').prop('checked'));
-                }
-				else if (OptionsName === 'level') {
-					localStorage.setItem('OwnPartIncludeLevel' + StoragePreamble, $('#options-level').prop('checked'));
-				}
-				else if (OptionsName === 'fp') {
-					localStorage.setItem('OwnPartIncludeFP' + StoragePreamble, $('#options-fp').prop('checked'));
-				}
-				else if (OptionsName === 'descending') {
-					localStorage.setItem('OwnPartDescending' + StoragePreamble, $('#options-descending').prop('checked'));
-				}
-				else if (OptionsName === 'ownpart') {
-					localStorage.setItem('OwnPartOwnPart' + StoragePreamble, $('#options-ownpart').prop('checked'));
-				}
-			}
-
-			Parts.RefreshCopyString();
-		});
-
-		$OwnPartBox.on('blur', '#player-name', function () {
-			let PlayerName = $('#player-name').val();
-
-			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', PlayerName);
-
-			Parts.RefreshCopyString();
-		});
-
-		$OwnPartBox.on('blur', '#build-name', function () {
-			let BuildingName = $('#build-name').val();
-
-			localStorage.setItem("OwnPartBuildingName" + Parts.CityMapEntity['cityentity_id'], BuildingName);
-
-			Parts.RefreshCopyString();
 		});
 	},
 
