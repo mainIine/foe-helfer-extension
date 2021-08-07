@@ -1021,7 +1021,7 @@ const FoEproxy = (function () {
 			$('#partCalc-Btn-closed').remove();
 
 			if ($('#OwnPartBox').length > 0) {
-				Parts.Show();
+				Parts.CalcBody();
 			}
 		}
 
