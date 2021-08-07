@@ -1035,8 +1035,8 @@ const FoEproxy = (function () {
 			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
 
 			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').is(':visible')) {
-				Calculator.Show(Rankings, CityMapEntity.responseData[0]);
+			if ($('#costCalculator').length > 0) {
+				Calculator.Show();
 			}
 		}
 
