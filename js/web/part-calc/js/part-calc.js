@@ -44,18 +44,9 @@ let Parts = {
 	IsPreviousLevel: false,
 	IsNextLevel: false,
 
-	LockExistingPlaces: true,
-	TrustExistingPlaces: false,
-
 	Level: undefined,
 	SafePlaces: undefined,
 	Maezens: [],
-
-	CurrentBuildingID: false,
-	CurrentBuildingPercents: [90, 90, 90, 90, 90],
-	Exts: [0, 0, 0, 0, 0],
-	SaveCopy: {},
-	PlayInfoSound: null,
 
 	CurrentMaezens: [],
 	RemainingOwnPart: null,
@@ -64,10 +55,36 @@ let Parts = {
 	PowerLevelingData: null,
 
 	PlaceAvailables: [],
+	CopyStrings: {},
 
 	DefaultButtons: [
 		80, 85, 90, 'ark'
 	],
+
+	// Settings
+	PlayInfoSound: null,
+
+	LockExistingPlaces: true,
+	TrustExistingPlaces: false,
+
+	ArcPercents: [90, 90, 90, 90, 90],
+	Exts: [0, 0, 0, 0, 0],
+
+	//Settings Copybox
+	CopyPlayerName: null,
+	CopyBuildingName: null,
+
+	CopyIncludePlayer: null,
+	CopyIncludeGB: null,
+	CopyIncludeFP: null,
+	CopyIncludeOwnPart: null,
+	CopyDescending: null,
+	CopyIncludeLevelString: null,
+
+	CopyModeAuto: null,
+	CopyModeAll: null,
+	CopyModeAllUnsafe: null,
+	CopyPlaces: [0, 0, 0, 0, 0],
 
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
@@ -85,12 +102,10 @@ let Parts = {
 				Parts.PlayInfoSound = (spk !== 'deactivated');
 			}
 
-			// prüfen ob es hinterlegte Werte gibt
+			//ArcPercents
 			let perc = localStorage.getItem('CurrentBuildingPercentArray');
-
-			// Array zurück holen
 			if (perc !== null) {
-				Parts.CurrentBuildingPercents = JSON.parse(perc);
+				Parts.ArcPercents = JSON.parse(perc);
 			}
 
 			// Box in den DOM
@@ -121,7 +136,7 @@ let Parts = {
 					aprc.push(ArkBonus);
 				});
 
-				Parts.CurrentBuildingPercents = aprc;
+				Parts.ArcPercents = aprc;
 				localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(aprc));
 
 				Parts.collectExternals();
@@ -140,11 +155,11 @@ let Parts = {
 				if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
 
 				for (let i = 0; i < 5; i++) {
-					Parts.CurrentBuildingPercents[i] = ArkBonus;
+					Parts.ArcPercents[i] = ArkBonus;
 					$('.arc-percent-input').eq(i).val(ArkBonus);
 				}
 
-				localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
+				localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.ArcPercents));
 
 				Parts.collectExternals();
 			});
@@ -292,7 +307,7 @@ let Parts = {
 				Parts.RefreshCopyString();
 			});
 
-			Parts.CalcBox();
+			Parts.CalcBody();
 		}
 		else {
 			HTML.CloseOpenBox('OwnPartBox');
@@ -326,9 +341,7 @@ let Parts = {
 	 *
 	 */
 	CalcBody: (NextLevel) => {
-		if (Parts.CityMapEntity['level'] === NextLevel) {		
-			NextLevel = 0;
-		}
+		if (Parts.CityMapEntity['level'] === NextLevel) NextLevel = 0;
 		
 		let cityentity_id = Parts.CityMapEntity['cityentity_id'];
 		let CityEntity = MainParser.CityEntities[cityentity_id];
@@ -368,7 +381,6 @@ let Parts = {
 
 		Parts.Maezens = [];
 
-		Parts.CurrentBuildingID = cityentity_id;
 		if (Parts.IsPreviousLevel)
 		{
 			Total = 0;
@@ -385,7 +397,7 @@ let Parts = {
 		}
 
 		for (let i = 0; i < 5; i++) {
-			arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
+			arcs[i] = ((parseFloat(Parts.ArcPercents[i]) + 100) / 100);
 		}
 
 		// Wenn in Rankings nichts mehr steht, dann abbrechen
@@ -454,7 +466,7 @@ let Parts = {
 			let P1 = GreatBuildings.Rewards[Era][Parts.Level];
 
 			Parts.Maezens = [0, 0, 0, 0, 0];
-			FPRewards = GreatBuildings.GetMaezen(P1, Parts.CurrentBuildingPercents)
+			FPRewards = GreatBuildings.GetMaezen(P1, Parts.ArcPercents)
 			MedalRewards = [0, 0, 0, 0, 0];
 			BPRewards = [0, 0, 0, 0, 0];
 		}
@@ -613,7 +625,7 @@ let Parts = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-default btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
         h.push('</span>');
@@ -722,7 +734,7 @@ let Parts = {
 			h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
             h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
 			h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + Parts.Exts[i] + '"></td>');
-            h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.CurrentBuildingPercents[i] + '"></td>');
+			h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
 
             h.push('</tr>');
         }
@@ -794,10 +806,10 @@ let Parts = {
 			h.push('</div>');
 			h.push('</div>');
 
-			let SaveCopyLength = Object.keys(Parts.SaveCopy).length;
+			let SaveCopyLength = Object.keys(Parts.CopyString).length;
 			if (SaveCopyLength > 0) {
 				let GBList = "",
-					Keys = Object.keys(Parts.SaveCopy);
+					Keys = Object.keys(Parts.CopyStrings);
 
 				for (let i = 0; i < Keys.length; i++) {
 					GBList += MainParser.CityEntities[Keys[i]]['name'];
@@ -845,7 +857,9 @@ let Parts = {
 		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
 		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + PlayerName + '"></div>');
-		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
+
+		let EntityID = Parts.CityMapEntity['cityentity_id'];
+		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[EntityID]['name']) + '"></div>');
 
 		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong></span></p>');
 
@@ -854,7 +868,7 @@ let Parts = {
 			KeyPart2 = '';
 		}
 		else {
-			KeyPart2 = Parts.CityMapEntity['cityentity_id'];
+			KeyPart2 = EntityID
 		}
 
 		let Options = '<div class="checkboxes">' +
@@ -1090,18 +1104,18 @@ let Parts = {
 		// wieder zuklappen
 		Parts.BackGroundBoxAnimation(false);
 
-		Parts.SaveCopy[StoragePreamble] = CopyString;
+		Parts.CopyStrings[StoragePreamble] = CopyString;
 
 		let Copy = "";
-		let Keys = Object.keys(Parts.SaveCopy);
+		let Keys = Object.keys(Parts.CopyStrings);
 		for (let i = 0; i < Keys.length; i++) {
 			let Key = Keys[i];
-			Copy += Parts.SaveCopy[Key];
+			Copy += Parts.CopyStrings[Key];
 			if (i < Keys.length) Copy += '\n';
         }
 
 		if (Action === 'copy') {
-			Parts.SaveCopy = {}; // Kopieren löscht die Liste
+			Parts.CopyStrings = {}; // Kopieren löscht die Liste
 		}
 
 		return Copy;
@@ -1191,7 +1205,7 @@ let Parts = {
             }
 
 			if (i > MinLevel) {
-				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.CurrentBuildingPercents)
+				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.ArcPercents)
 
 				EigenBruttos[i] = Totals[i] - Places[i][0] - Places[i][1] - Places[i][2] - Places[i][3] - Places[i][4]
 			}
