@@ -25,7 +25,7 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 
 	if ($('#OwnPartBox').length > 0) {
 		let NewLevel = data.responseData['level'];
-		Parts.Show(NewLevel);
+		Parts.CalcBody(NewLevel);
 		if (Parts.PlayInfoSound) {
 			if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
 		}
@@ -34,7 +34,7 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#OwnPartBox').length > 0) {
-		Parts.Show();
+		Parts.CalcBody();
 	}
 });
 
@@ -44,18 +44,9 @@ let Parts = {
 	IsPreviousLevel: false,
 	IsNextLevel: false,
 
-	LockExistingPlaces: true,
-	TrustExistingPlaces: false,
-
 	Level: undefined,
 	SafePlaces: undefined,
 	Maezens: [],
-
-	CurrentBuildingID: false,
-	CurrentBuildingPercents: [90, 90, 90, 90, 90],
-	Exts: [0, 0, 0, 0, 0],
-	SaveCopy: {},
-	PlayInfoSound: null,
 
 	CurrentMaezens: [],
 	RemainingOwnPart: null,
@@ -64,146 +55,264 @@ let Parts = {
 	PowerLevelingData: null,
 
 	PlaceAvailables: [],
+	CopyStrings: {},
 
 	DefaultButtons: [
 		80, 85, 90, 'ark'
 	],
 
+	// Settings
+	PlayInfoSound: null,
+
+	LockExistingPlaces: true,
+	TrustExistingPlaces: false,
+
+	ArcPercents: [90, 90, 90, 90, 90],
+	Exts: [0, 0, 0, 0, 0],
+
+	//Settings Copybox
+	CopyPlayerName: null,
+	CopyBuildingName: null,
+
+	CopyIncludePlayer: null,
+	CopyIncludeGB: null,
+	CopyIncludeFP: null,
+	CopyIncludeOwnPart: null,
+	CopyDescending: null,
+	CopyIncludeLevelString: null,
+
+	CopyModeAuto: null,
+	CopyModeAll: null,
+	CopyModeAllUnsafe: null,
+	CopyPlaces: [0, 0, 0, 0, 0],
+
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
 	 */
-	buildBox: () => {
+	Show: () => {
 
 		// Gibt es schon? Raus...
-		if ($('#OwnPartBox').length > 0) {
-			HTML.CloseOpenBox('OwnPartBox');
-			HTML.CloseOpenBox('PowerLevelingBox');
+		if ($('#OwnPartBox').length === 0) {
+			let spk = localStorage.getItem('PartsTone');
+			if (spk === null) {
+				localStorage.setItem('PartsTone', 'deactivated');
+				Parts.PlayInfoSound = false;
+			}
+			else {
+				Parts.PlayInfoSound = (spk !== 'deactivated');
+			}
 
-			return;
-		}
+			//ArcPercents
+			let perc = localStorage.getItem('CurrentBuildingPercentArray');
+			if (perc !== null) {
+				Parts.ArcPercents = JSON.parse(perc);
+			}
 
-		let spk = localStorage.getItem('PartsTone');
-
-		if (spk === null) {
-			localStorage.setItem('PartsTone', 'deactivated');
-			Parts.PlayInfoSound = false;
-		}
-		else {
-			Parts.PlayInfoSound = (spk !== 'deactivated');
-		}
-
-		// prüfen ob es hinterlegte Werte gibt
-		let perc = localStorage.getItem('CurrentBuildingPercentArray');
-
-		// Array zurück holen
-		if (perc !== null) {
-			Parts.CurrentBuildingPercents = JSON.parse(perc);
-		}
-
-		// Box in den DOM
-		HTML.Box({
-			id: 'OwnPartBox',
-			title: i18n('Boxes.OwnpartCalculator.Title'),
-			ask: i18n('Boxes.OwnpartCalculator.HelpLink'),
-			auto_close: true,
-			dragdrop: true,
-			minimize: true,
-			speaker: 'PartsTone',
-			settings: 'Parts.ShowCalculatorSettings()'
-		});
-
-		// CSS in den DOM prügeln
-		HTML.AddCssFile('part-calc');
-		
-		// Body zusammen fummeln
-		Parts.Show();
-
-		// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
-		$('#OwnPartBox').on('blur', '.arc-percent-input', function () {
-			let aprc = [];
-
-			$('.arc-percent-input').each(function () {
-				let ArkBonus = parseFloat($(this).val());
-				if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
-				aprc.push(ArkBonus);
+			// Box in den DOM
+			HTML.Box({
+				id: 'OwnPartBox',
+				title: i18n('Boxes.OwnpartCalculator.Title'),
+				ask: i18n('Boxes.OwnpartCalculator.HelpLink'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				speaker: 'PartsTone',
+				settings: 'Parts.ShowCalculatorSettings()'
 			});
 
-			Parts.CurrentBuildingPercents = aprc;
-			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(aprc));
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('part-calc');
 
-			Parts.collectExternals();
-		});
+			// Body zusammen fummeln
+			Parts.CalcBody();
 
+			// Für einen Platz wurde der Wert geändert, alle durchsteppen, übergeben und sichern
+			$('#OwnPartBox').on('blur', '.arc-percent-input', function () {
+				let aprc = [];
 
-		// Es wird ein externer Platz eingetragen
-		$('#OwnPartBox').on('blur', '.ext-part-input', function () {
-			Parts.collectExternals();
-		});
+				$('.arc-percent-input').each(function () {
+					let ArkBonus = parseFloat($(this).val());
+					if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
+					aprc.push(ArkBonus);
+				});
 
+				Parts.ArcPercents = aprc;
+				localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(aprc));
 
-		// eine neuer globaler Arche-Satz wird gewählt
-		$('#OwnPartBox').on('click', '.btn-set-arc', function () {
-			let ArkBonus = parseFloat($(this).data('value'));
-			if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
-
-			for (let i = 0; i < 5; i++) {
-				Parts.CurrentBuildingPercents[i] = ArkBonus;
-				$('.arc-percent-input').eq(i).val(ArkBonus);
-			}
-
-			localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.CurrentBuildingPercents));
-
-			Parts.collectExternals();
-		});
-
-		// Bestehende Einzahlungen absichern
-		$('#OwnPartBox').on('click', '.lockexistingpayments', function () {
-			let $this = $(this),
-				id = $this.data('id'),
-				v = $this.prop('checked');
-
-			Parts.LockExistingPlaces = v;
-
-			Parts.Show();
-		});
-
-		// Bestehende Einzahlungen vertrauen
-		$('#OwnPartBox').on('click', '.trustexistingpayments', function () {
-			let $this = $(this),
-				id = $this.data('id'),
-				v = $this.prop('checked');
-
-			Parts.TrustExistingPlaces = v;
-
-			Parts.Show();
-		});
+				Parts.collectExternals();
+			});
 
 
-		// Next/Previous level
-		$('#OwnPartBox').on('click', '.btn-set-level', function () {
-			let Level = parseFloat($(this).data('value'));
-			if (Level !== Level) Level = 0; //NaN => 0
-			Parts.Show(Level);
-		});
+			// Es wird ein externer Platz eingetragen
+			$('#OwnPartBox').on('blur', '.ext-part-input', function () {
+				Parts.collectExternals();
+			});
 
-		$('#OwnPartBox').on('click', '#PartsTone', function () {
 
-			let disabled = $(this).hasClass('deactivated');
+			// eine neuer globaler Arche-Satz wird gewählt
+			$('#OwnPartBox').on('click', '.btn-set-arc', function () {
+				let ArkBonus = parseFloat($(this).data('value'));
+				if (ArkBonus !== ArkBonus) ArkBonus = 0; //NaN => 0
 
-			localStorage.setItem('PartsTone', (disabled ? '' : 'deactivated'));
-			Parts.PlayInfoSound = !!disabled;
+				for (let i = 0; i < 5; i++) {
+					Parts.ArcPercents[i] = ArkBonus;
+					$('.arc-percent-input').eq(i).val(ArkBonus);
+				}
 
-			if (disabled === true) {
-				$('#PartsTone').removeClass('deactivated');
-			} else {
-				$('#PartsTone').addClass('deactivated');
-			}
-		});
+				localStorage.setItem('CurrentBuildingPercentArray', JSON.stringify(Parts.ArcPercents));
 
-		$('#OwnPartBox').on('click', '.button-powerleveling', function () {
-			Parts.PowerLevelingMaxLevel = 999999;
-			Parts.ShowPowerLeveling(false);
-		});
+				Parts.collectExternals();
+			});
+
+			// Bestehende Einzahlungen absichern
+			$('#OwnPartBox').on('click', '.lockexistingpayments', function () {
+				let $this = $(this),
+					id = $this.data('id'),
+					v = $this.prop('checked');
+
+				Parts.LockExistingPlaces = v;
+
+				Parts.CalcBody();
+			});
+
+			// Bestehende Einzahlungen vertrauen
+			$('#OwnPartBox').on('click', '.trustexistingpayments', function () {
+				let $this = $(this),
+					id = $this.data('id'),
+					v = $this.prop('checked');
+
+				Parts.TrustExistingPlaces = v;
+
+				Parts.CalcBody();
+			});
+
+
+			// Next/Previous level
+			$('#OwnPartBox').on('click', '.btn-set-level', function () {
+				let Level = parseFloat($(this).data('value'));
+				if (Level !== Level) Level = 0; //NaN => 0
+				Parts.CalcBody(Level);
+			});
+
+			$('#OwnPartBox').on('click', '#PartsTone', function () {
+
+				let disabled = $(this).hasClass('deactivated');
+
+				localStorage.setItem('PartsTone', (disabled ? '' : 'deactivated'));
+				Parts.PlayInfoSound = !!disabled;
+
+				if (disabled === true) {
+					$('#PartsTone').removeClass('deactivated');
+				} else {
+					$('#PartsTone').addClass('deactivated');
+				}
+			});
+
+			$('#OwnPartBox').on('click', '.button-powerleveling', function () {
+				Parts.PowerLevelingMaxLevel = 999999;
+				Parts.ShowPowerLeveling(false);
+			});
+
+			$('#OwnPartBox').on('click', '.button-own', function () {
+				let copyParts = Parts.CopyFunction($(this), 'copy');
+				helper.str.copyToClipboardLegacy(copyParts);
+				Parts.CalcBody(Parts.Level);
+			});
+
+			$('#OwnPartBox').on('click', '.button-save-own', function () {
+				let copyParts = Parts.CopyFunction($(this), 'save');
+				helper.str.copyToClipboardLegacy(copyParts);
+				Parts.CalcBody(Parts.Level);
+			});
+
+			$('#OwnPartBox').on('click', '.form-check-input', function () {
+				let PlaceName = $(this).data('place');
+
+				if (PlaceName) {
+					if (PlaceName === 'all') { //all: auto deaktivieren, P1-5 aktivieren
+						$('#chain-all').prop('checked', true);
+						$('#chain-auto').prop('checked', false);
+						$('#chain-auto-unsafe').prop('checked', false);
+
+						for (let i = 0; i < 5; i++) {
+							$('#chain-p' + (i + 1)).prop('checked', true);
+						}
+					}
+					else if (PlaceName === 'auto') { //auto: all/auto-unsafe deaktivieren, P1-P5 ermitteln
+						$('#chain-all').prop('checked', false);
+						$('#chain-auto').prop('checked', true);
+						$('#chain-auto-unsafe').prop('checked', false);
+
+						for (let i = 0; i < 5; i++) {
+							$('#chain-p' + (i + 1)).prop('checked', Parts.SafePlaces.includes(i));
+						}
+					}
+					else if (PlaceName === 'auto-unsafe') { //auto-unsafe: all/auto deaktivieren, P1-5 ermitteln
+						$('#chain-all').prop('checked', false);
+						$('#chain-auto').prop('checked', false);
+						$('#chain-auto-unsafe').prop('checked', true);
+
+						for (let i = 0; i < 5; i++) {
+							$('#chain-p' + (i + 1)).prop('checked', Parts.PlaceAvailables[i]);
+						}
+					}
+					else { //P1-5: auto und all deaktivieren
+						$('#chain-all').prop('checked', false);
+						$('#chain-auto').prop('checked', false);
+						$('#chain-auto-unsafe').prop('checked', false);
+					}
+				}
+
+				let OptionsName = $(this).data('options');
+
+				if (OptionsName) {
+					let StoragePreamble = Parts.GetStoragePreamble();
+
+					if (OptionsName === 'player') {
+						localStorage.setItem('OwnPartIncludePlayer' + StoragePreamble, $('#options-player').prop('checked'));
+					}
+					else if (OptionsName === 'gb') {
+						localStorage.setItem('OwnPartIncludeGB' + StoragePreamble, $('#options-gb').prop('checked'));
+					}
+					else if (OptionsName === 'level') {
+						localStorage.setItem('OwnPartIncludeLevel' + StoragePreamble, $('#options-level').prop('checked'));
+					}
+					else if (OptionsName === 'fp') {
+						localStorage.setItem('OwnPartIncludeFP' + StoragePreamble, $('#options-fp').prop('checked'));
+					}
+					else if (OptionsName === 'descending') {
+						localStorage.setItem('OwnPartDescending' + StoragePreamble, $('#options-descending').prop('checked'));
+					}
+					else if (OptionsName === 'ownpart') {
+						localStorage.setItem('OwnPartOwnPart' + StoragePreamble, $('#options-ownpart').prop('checked'));
+					}
+				}
+
+				Parts.RefreshCopyString();
+			});
+
+			$('#OwnPartBox').on('blur', '#player-name', function () {
+				let PlayerName = $('#player-name').val();
+
+				localStorage.setItem(ExtPlayerID + '_PlayerCopyName', PlayerName);
+
+				Parts.RefreshCopyString();
+			});
+
+			$('#OwnPartBox').on('blur', '#build-name', function () {
+				let BuildingName = $('#build-name').val();
+
+				localStorage.setItem("OwnPartBuildingName" + Parts.CityMapEntity['cityentity_id'], BuildingName);
+
+				Parts.RefreshCopyString();
+			});
+
+			Parts.CalcBody();
+		}
+		else {
+			HTML.CloseOpenBox('OwnPartBox');
+			HTML.CloseOpenBox('PowerLevelingBox');
+		}
 	},
 
 
@@ -223,7 +332,7 @@ let Parts = {
 			Parts.Exts[i] = parseInt(v);
 		});
 
-		Parts.Show(Parts.Level);
+		Parts.CalcBody(Parts.Level);
 	},
 
 
@@ -231,10 +340,8 @@ let Parts = {
 	 * Sichtbarer Teil
 	 *
 	 */
-	Show: (NextLevel) => {
-		if (Parts.CityMapEntity['level'] === NextLevel) {		
-			NextLevel = 0;
-		}
+	CalcBody: (NextLevel) => {
+		if (Parts.CityMapEntity['level'] === NextLevel) NextLevel = 0;
 		
 		let cityentity_id = Parts.CityMapEntity['cityentity_id'];
 		let CityEntity = MainParser.CityEntities[cityentity_id];
@@ -274,7 +381,6 @@ let Parts = {
 
 		Parts.Maezens = [];
 
-		Parts.CurrentBuildingID = cityentity_id;
 		if (Parts.IsPreviousLevel)
 		{
 			Total = 0;
@@ -291,7 +397,7 @@ let Parts = {
 		}
 
 		for (let i = 0; i < 5; i++) {
-			arcs[i] = ((parseFloat(Parts.CurrentBuildingPercents[i]) + 100) / 100);
+			arcs[i] = ((parseFloat(Parts.ArcPercents[i]) + 100) / 100);
 		}
 
 		// Wenn in Rankings nichts mehr steht, dann abbrechen
@@ -360,7 +466,7 @@ let Parts = {
 			let P1 = GreatBuildings.Rewards[Era][Parts.Level];
 
 			Parts.Maezens = [0, 0, 0, 0, 0];
-			FPRewards = GreatBuildings.GetMaezen(P1, Parts.CurrentBuildingPercents)
+			FPRewards = GreatBuildings.GetMaezen(P1, Parts.ArcPercents)
 			MedalRewards = [0, 0, 0, 0, 0];
 			BPRewards = [0, 0, 0, 0, 0];
 		}
@@ -519,7 +625,7 @@ let Parts = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-set-arc${( Parts.CurrentBuildingPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-default btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
         h.push('</span>');
@@ -628,7 +734,7 @@ let Parts = {
 			h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
             h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
 			h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input" value="' + Parts.Exts[i] + '"></td>');
-            h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.CurrentBuildingPercents[i] + '"></td>');
+			h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
 
             h.push('</tr>');
         }
@@ -688,7 +794,7 @@ let Parts = {
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
 				h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-				h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
 			else {
 				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
@@ -700,10 +806,10 @@ let Parts = {
 			h.push('</div>');
 			h.push('</div>');
 
-			let SaveCopyLength = Object.keys(Parts.SaveCopy).length;
+			let SaveCopyLength = Object.keys(Parts.CopyStrings).length;
 			if (SaveCopyLength > 0) {
 				let GBList = "",
-					Keys = Object.keys(Parts.SaveCopy);
+					Keys = Object.keys(Parts.CopyStrings);
 
 				for (let i = 0; i < Keys.length; i++) {
 					GBList += MainParser.CityEntities[Keys[i]]['name'];
@@ -751,7 +857,9 @@ let Parts = {
 		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
 
 		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" placeholder="' + i18n('Boxes.OwnpartCalculator.YourName') + '" value="' + PlayerName + '"></div>');
-		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[Parts.CurrentBuildingID]['name']) + '"></div>');
+
+		let EntityID = Parts.CityMapEntity['cityentity_id'];
+		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" placeholder="' + i18n('Boxes.OwnpartCalculator.IndividualName') + '"  value="' + (BuildingName !== null ? BuildingName : MainParser.CityEntities[EntityID]['name']) + '"></div>');
 
 		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong></span></p>');
 
@@ -760,7 +868,7 @@ let Parts = {
 			KeyPart2 = '';
 		}
 		else {
-			KeyPart2 = Parts.CityMapEntity['cityentity_id'];
+			KeyPart2 = EntityID
 		}
 
 		let Options = '<div class="checkboxes">' +
@@ -794,24 +902,12 @@ let Parts = {
 
 		h.push('<input type="text" id="copystring" value="">');
 		
-		h.push('<div class="btn-outer text-center" style="margin-top: 10px">' +
-				'<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ' +
-				'<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>' +
-			'</div>');
+		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
+		h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
+		h.push('</div>');
 
 		// ---------------------------------------------------------------------------------------------
-
-		$OwnPartBox.off('click','.button-own').on('click', '.button-own', function(){
-			let copyParts = Parts.CopyFunction($(this), 'copy');
-			helper.str.copyToClipboardLegacy(copyParts);
-			Parts.Show();
-		});
-
-		$OwnPartBox.off('click','.button-save-own').on('click', '.button-save-own', function(){
-			let copyParts = Parts.CopyFunction($(this), 'save');
-			helper.str.copyToClipboardLegacy(copyParts);
-			Parts.Show();
-		});
 
 		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
@@ -840,88 +936,6 @@ let Parts = {
 			} else {
 				Parts.BackGroundBoxAnimation(true);
 			}
-		});
-
-		$OwnPartBox.on('click', '.form-check-input', function(){
-			let PlaceName = $(this).data('place');
-
-			if (PlaceName) {
-				if (PlaceName === 'all') { //all: auto deaktivieren, P1-5 aktivieren
-					$('#chain-all').prop('checked', true);
-					$('#chain-auto').prop('checked', false);
-					$('#chain-auto-unsafe').prop('checked', false);
-
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', true);
-					}
-				}
-				else if (PlaceName === 'auto') { //auto: all/auto-unsafe deaktivieren, P1-P5 ermitteln
-					$('#chain-all').prop('checked', false);
-					$('#chain-auto').prop('checked', true);
-					$('#chain-auto-unsafe').prop('checked', false);
-					
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', Parts.SafePlaces.includes(i));
-					}
-				}
-				else if (PlaceName === 'auto-unsafe') { //auto-unsafe: all/auto deaktivieren, P1-5 ermitteln
-					$('#chain-all').prop('checked', false);
-					$('#chain-auto').prop('checked', false);
-					$('#chain-auto-unsafe').prop('checked', true);
-
-					for (let i = 0; i < 5; i++) {
-						$('#chain-p' + (i + 1)).prop('checked', Parts.PlaceAvailables[i]);
-					}
-				}
-				else { //P1-5: auto und all deaktivieren
-					$('#chain-all').prop('checked', false);
-					$('#chain-auto').prop('checked', false);
-					$('#chain-auto-unsafe').prop('checked', false);
-				}
-			}
-
-			let OptionsName = $(this).data('options');
-
-			if (OptionsName) {
-				let StoragePreamble = Parts.GetStoragePreamble();
-
-				if (OptionsName === 'player') {
-					localStorage.setItem('OwnPartIncludePlayer' + StoragePreamble, $('#options-player').prop('checked'));
-				}
-				else if (OptionsName === 'gb') {
-					localStorage.setItem('OwnPartIncludeGB' + StoragePreamble, $('#options-gb').prop('checked'));
-                }
-				else if (OptionsName === 'level') {
-					localStorage.setItem('OwnPartIncludeLevel' + StoragePreamble, $('#options-level').prop('checked'));
-				}
-				else if (OptionsName === 'fp') {
-					localStorage.setItem('OwnPartIncludeFP' + StoragePreamble, $('#options-fp').prop('checked'));
-				}
-				else if (OptionsName === 'descending') {
-					localStorage.setItem('OwnPartDescending' + StoragePreamble, $('#options-descending').prop('checked'));
-				}
-				else if (OptionsName === 'ownpart') {
-					localStorage.setItem('OwnPartOwnPart' + StoragePreamble, $('#options-ownpart').prop('checked'));
-				}
-			}
-
-			Parts.RefreshCopyString();
-		});
-
-		$OwnPartBox.on('blur', '#player-name', function () {
-			let PlayerName = $('#player-name').val();
-
-			localStorage.setItem(ExtPlayerID + '_PlayerCopyName', PlayerName);
-
-			Parts.RefreshCopyString();
-		});
-
-		$OwnPartBox.on('blur', '#build-name', function () {
-			let BuildingName = $('#build-name').val();
-
-			localStorage.setItem("OwnPartBuildingName" + Parts.CityMapEntity['cityentity_id'], BuildingName);
-
-			Parts.RefreshCopyString();
 		});
 	},
 
@@ -1090,18 +1104,18 @@ let Parts = {
 		// wieder zuklappen
 		Parts.BackGroundBoxAnimation(false);
 
-		Parts.SaveCopy[StoragePreamble] = CopyString;
+		Parts.CopyStrings[StoragePreamble] = CopyString;
 
 		let Copy = "";
-		let Keys = Object.keys(Parts.SaveCopy);
+		let Keys = Object.keys(Parts.CopyStrings);
 		for (let i = 0; i < Keys.length; i++) {
 			let Key = Keys[i];
-			Copy += Parts.SaveCopy[Key];
+			Copy += Parts.CopyStrings[Key];
 			if (i < Keys.length) Copy += '\n';
         }
 
 		if (Action === 'copy') {
-			Parts.SaveCopy = {}; // Kopieren löscht die Liste
+			Parts.CopyStrings = {}; // Kopieren löscht die Liste
 		}
 
 		return Copy;
@@ -1191,7 +1205,7 @@ let Parts = {
             }
 
 			if (i > MinLevel) {
-				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.CurrentBuildingPercents)
+				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.ArcPercents)
 
 				EigenBruttos[i] = Totals[i] - Places[i][0] - Places[i][1] - Places[i][2] - Places[i][3] - Places[i][4]
 			}
@@ -1420,7 +1434,7 @@ let Parts = {
 			$(this).remove();
 
 			// reload box
-			Parts.Show();
+			Parts.CalcBody();
 		});
 	}
 };
