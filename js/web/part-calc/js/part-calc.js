@@ -806,7 +806,7 @@ let Parts = {
 			h.push('</div>');
 			h.push('</div>');
 
-			let SaveCopyLength = Object.keys(Parts.CopyString).length;
+			let SaveCopyLength = Object.keys(Parts.CopyStrings).length;
 			if (SaveCopyLength > 0) {
 				let GBList = "",
 					Keys = Object.keys(Parts.CopyStrings);
