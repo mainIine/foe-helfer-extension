@@ -316,7 +316,7 @@ let _menu = {
 		btn_Own.on('click', function () {
 			// nur wenn es für diese Session ein LG gibt zünden
 			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) {
-				Parts.buildBox();
+				Parts.Show();
 			}
 		});
 
