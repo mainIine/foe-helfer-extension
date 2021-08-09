@@ -8,7 +8,7 @@
  *
  * ==========================================================================
  *
- * Version 1.0.0, Thu Nov 19 2020
+ * Version 1.0.3, Fri Jul 02 2021
  *
  * http://dexie.org
  *
@@ -19,32 +19,35 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('dexie')) :
     typeof define === 'function' && define.amd ? define(['exports', 'dexie'], factory) :
-      (factory((global.DexieExportImport = {}), global.Dexie));
+      (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.DexieExportImport = {}, global.Dexie));
 }(this, (function (exports, Dexie) {
   'use strict';
 
-  Dexie = Dexie && Dexie.hasOwnProperty('default') ? Dexie['default'] : Dexie;
+  function _interopDefaultLegacy(e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var Dexie__default = /*#__PURE__*/_interopDefaultLegacy(Dexie);
 
   /*! *****************************************************************************
-  Copyright (c) Microsoft Corporation. All rights reserved.
-  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-  this file except in compliance with the License. You may obtain a copy of the
-  License at http://www.apache.org/licenses/LICENSE-2.0
+  Copyright (c) Microsoft Corporation.
 
-  THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-  WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-  MERCHANTABLITY OR NON-INFRINGEMENT.
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted.
 
-  See the Apache Version 2.0 License for specific language governing permissions
-  and limitations under the License.
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
   ***************************************************************************** */
 
   function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
       function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
       function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-      function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+      function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   }
@@ -337,7 +340,7 @@
                     typeSpec = TSON.types[typeName];
                     if (typeSpec && typeSpec.finalize)
                     {
-                      b = Dexie.getByKeyPath(item, arrayType ? "$." + keyPath : keyPath);
+                      b = Dexie__default['default'].getByKeyPath(item, arrayType ? "$." + keyPath : keyPath);
                       typeSpec.finalize(b, allChunks.slice(b.start, b.end));
                     }
                   }
@@ -373,8 +376,8 @@
                 filter = options.filter;
                 _loop_1 = function (tableName) {
                   var table, primKey, inbound, LIMIT, emptyTableExport, emptyTableExportJson, posEndRowsArray, lastKey, lastNumRows, mayHaveMoreRows, _loop_2, state_1;
-                  return __generator(this, function (_a) {
-                    switch (_a.label)
+                  return __generator(this, function (_b) {
+                    switch (_b.label)
                     {
                       case 0:
                         table = db.table(tableName);
@@ -412,21 +415,21 @@
                         mayHaveMoreRows = true;
                         _loop_2 = function () {
                           var chunkedCollection, values, filteredValues, tsonValues, json, keys, keyvals, tsonTuples, json;
-                          return __generator(this, function (_a) {
-                            switch (_a.label)
+                          return __generator(this, function (_c) {
+                            switch (_c.label)
                             {
                               case 0:
                                 if (progressCallback)
                                 {
                                   // Keep ongoing transaction private
-                                  Dexie.ignoreTransaction(function () { return progressCallback(progress); });
+                                  Dexie__default['default'].ignoreTransaction(function () { return progressCallback(progress); });
                                 }
                                 chunkedCollection = lastKey == null ?
                                   table.limit(LIMIT) :
                                   table.where(':id').above(lastKey).limit(LIMIT);
                                 return [4 /*yield*/, chunkedCollection.toArray()];
                               case 1:
-                                values = _a.sent();
+                                values = _c.sent();
                                 if (values.length === 0)
                                   return [2 /*return*/, "break"];
                                 if (lastKey != null && lastNumRows > 0)
@@ -445,10 +448,10 @@
                                   values;
                                 tsonValues = filteredValues.map(function (value) { return TSON.encapsulate(value); });
                                 if (!TSON.mustFinalize()) return [3 /*break*/, 3];
-                                return [4 /*yield*/, Dexie.waitFor(TSON.finalize(tsonValues))];
+                                return [4 /*yield*/, Dexie__default['default'].waitFor(TSON.finalize(tsonValues))];
                               case 2:
-                                _a.sent();
-                                _a.label = 3;
+                                _c.sent();
+                                _c.label = 3;
                               case 3:
                                 json = JSON.stringify(tsonValues, undefined, prettyJson ? 2 : undefined);
                                 if (prettyJson)
@@ -458,12 +461,12 @@
                                 slices.push(new Blob([json.substring(1, json.length - 1)]));
                                 lastNumRows = filteredValues.length;
                                 lastKey = values.length > 0 ?
-                                  Dexie.getByKeyPath(values[values.length - 1], primKey.keyPath) :
+                                  Dexie__default['default'].getByKeyPath(values[values.length - 1], primKey.keyPath) :
                                   null;
                                 return [3 /*break*/, 8];
                               case 4: return [4 /*yield*/, chunkedCollection.primaryKeys()];
                               case 5:
-                                keys = _a.sent();
+                                keys = _c.sent();
                                 keyvals = keys.map(function (key, i) { return [key, values[i]]; });
                                 if (filter)
                                   keyvals = keyvals.filter(function (_a) {
@@ -472,10 +475,10 @@
                                   });
                                 tsonTuples = keyvals.map(function (tuple) { return TSON.encapsulate(tuple); });
                                 if (!TSON.mustFinalize()) return [3 /*break*/, 7];
-                                return [4 /*yield*/, Dexie.waitFor(TSON.finalize(tsonTuples))];
+                                return [4 /*yield*/, Dexie__default['default'].waitFor(TSON.finalize(tsonTuples))];
                               case 6:
-                                _a.sent();
-                                _a.label = 7;
+                                _c.sent();
+                                _c.label = 7;
                               case 7:
                                 json = JSON.stringify(tsonTuples, undefined, prettyJson ? 2 : undefined);
                                 if (prettyJson)
@@ -487,19 +490,19 @@
                                 lastKey = keys.length > 0 ?
                                   keys[keys.length - 1] :
                                   null;
-                                _a.label = 8;
+                                _c.label = 8;
                               case 8:
                                 progress.completedRows += values.length;
                                 return [2 /*return*/];
                             }
                           });
                         };
-                        _a.label = 1;
+                        _b.label = 1;
                       case 1:
                         if (!mayHaveMoreRows) return [3 /*break*/, 3];
                         return [5 /*yield**/, _loop_2()];
                       case 2:
-                        state_1 = _a.sent();
+                        state_1 = _b.sent();
                         if (state_1 === "break")
                           return [3 /*break*/, 3];
                         return [3 /*break*/, 1];
@@ -532,7 +535,7 @@
                 if (progressCallback)
                 {
                   // Keep ongoing transaction private
-                  Dexie.ignoreTransaction(function () { return progressCallback(progress); });
+                  Dexie__default['default'].ignoreTransaction(function () { return progressCallback(progress); });
                 }
                 return [2 /*return*/];
             }
@@ -592,7 +595,7 @@
             if (progressCallback)
             {
               // Keep ongoing transaction private
-              Dexie.ignoreTransaction(function () { return progressCallback(progress); });
+              Dexie__default['default'].ignoreTransaction(function () { return progressCallback(progress); });
             }
             return [2 /*return*/, new Blob(slices, { type: "text/json" })];
         }
@@ -1069,7 +1072,7 @@
             case S.CLOSE_KEY:
             case S.CLOSE_OBJECT:
               if (isWhitespace(c)) continue;
-              var event = (parser.state === S.CLOSE_KEY) ? 'key' : 'object';
+              (parser.state === S.CLOSE_KEY) ? 'key' : 'object';
               if (c === Char.colon)
               {
                 if (parser.state === S.CLOSE_OBJECT)
@@ -1523,7 +1526,7 @@
           case 1:
             stream = _a.sent();
             dbExport = stream.result.data;
-            db = new Dexie(dbExport.databaseName);
+            db = new Dexie__default['default'](dbExport.databaseName);
             db.version(dbExport.databaseVersion).stores(extractDbSchema(dbExport));
             return [4 /*yield*/, importInto(db, stream, options)];
           case 2:
@@ -1569,9 +1572,9 @@
             {
               case 0:
                 _loop_1 = function (tableExport) {
-                  var tableName, table, tableSchemaStr, sourceRows, rows, i, obj, filter, filteredRows, _a, keys, values;
-                  return __generator(this, function (_b) {
-                    switch (_b.label)
+                  var tableName, table, tableSchemaStr, sourceRows, rows, i, obj, filter, filteredRows, _c, keys, values;
+                  return __generator(this, function (_d) {
+                    switch (_d.label)
                     {
                       case 0:
                         if (!tableExport.rows)
@@ -1581,7 +1584,7 @@
                         if (progressCallback)
                         {
                           // Keep ongoing transaction private
-                          Dexie.ignoreTransaction(function () { return progressCallback(progress); });
+                          Dexie__default['default'].ignoreTransaction(function () { return progressCallback(progress); });
                         }
                         tableName = tableExport.tableName;
                         table = db.table(tableName);
@@ -1621,25 +1624,19 @@
                               return filter(tableName, value, key);
                             }) :
                           rows;
-                        _a = tableExport.inbound ?
+                        _c = tableExport.inbound ?
                           [undefined, filteredRows] :
-                          [filteredRows.map(function (row) { return row[0]; }), rows.map(function (row) { return row[1]; })], keys = _a[0], values = _a[1];
-                        if (!options.clearTablesBeforeImport) return [3 /*break*/, 2];
-                        return [4 /*yield*/, table.clear()];
-                      case 1:
-                        _b.sent();
-                        _b.label = 2;
-                      case 2:
-                        if (!options.overwriteValues) return [3 /*break*/, 4];
+                          [filteredRows.map(function (row) { return row[0]; }), rows.map(function (row) { return row[1]; })], keys = _c[0], values = _c[1];
+                        if (!options.overwriteValues) return [3 /*break*/, 2];
                         return [4 /*yield*/, table.bulkPut(values, keys)];
+                      case 1:
+                        _d.sent();
+                        return [3 /*break*/, 4];
+                      case 2: return [4 /*yield*/, table.bulkAdd(values, keys)];
                       case 3:
-                        _b.sent();
-                        return [3 /*break*/, 6];
-                      case 4: return [4 /*yield*/, table.bulkAdd(values, keys)];
-                      case 5:
-                        _b.sent();
-                        _b.label = 6;
-                      case 6:
+                        _d.sent();
+                        _d.label = 4;
+                      case 4:
                         progress.completedRows += rows.length;
                         if (!rows.incomplete)
                         {
@@ -1678,7 +1675,7 @@
                 // This will only be possible in workers.
                 jsonStream.pullSync(CHUNK_SIZE);
                 return [3 /*break*/, 7];
-              case 5: return [4 /*yield*/, Dexie.waitFor(jsonStream.pullAsync(CHUNK_SIZE))];
+              case 5: return [4 /*yield*/, Dexie__default['default'].waitFor(jsonStream.pullAsync(CHUNK_SIZE))];
               case 6:
                 _b.sent();
                 _b.label = 7;
@@ -1686,22 +1683,21 @@
               case 8: return [3 /*break*/, 10];
               case 9:
                 return [3 /*break*/, 0];
-                _b.label = 10;
               case 10: return [2 /*return*/];
             }
           });
         });
       }
-      var CHUNK_SIZE, jsonStream, dbExportFile, readBlobsSynchronously, dbExport, progressCallback, progress;
-      return __generator(this, function (_a) {
-        switch (_a.label)
+      var CHUNK_SIZE, jsonStream, dbExportFile, readBlobsSynchronously, dbExport, progressCallback, progress, _i, _a, table;
+      return __generator(this, function (_b) {
+        switch (_b.label)
         {
           case 0:
             options = options || {}; // All booleans defaults to false.
             CHUNK_SIZE = options.chunkSizeBytes || (DEFAULT_KILOBYTES_PER_CHUNK * 1024);
             return [4 /*yield*/, loadUntilWeGotEnoughData(exportedData, CHUNK_SIZE)];
           case 1:
-            jsonStream = _a.sent();
+            jsonStream = _b.sent();
             dbExportFile = jsonStream.result;
             readBlobsSynchronously = 'FileReaderSync' in self;
             dbExport = dbExportFile.data;
@@ -1723,23 +1719,37 @@
             if (progressCallback)
             {
               // Keep ongoing transaction private
-              Dexie.ignoreTransaction(function () { return progressCallback(progress); });
+              Dexie__default['default'].ignoreTransaction(function () { return progressCallback(progress); });
             }
-            if (!options.noTransaction) return [3 /*break*/, 3];
-            return [4 /*yield*/, importAll()];
+            if (!options.clearTablesBeforeImport) return [3 /*break*/, 5];
+            _i = 0, _a = db.tables;
+            _b.label = 2;
           case 2:
-            _a.sent();
-            return [3 /*break*/, 5];
-          case 3: return [4 /*yield*/, db.transaction('rw', db.tables, importAll)];
+            if (!(_i < _a.length)) return [3 /*break*/, 5];
+            table = _a[_i];
+            return [4 /*yield*/, table.clear()];
+          case 3:
+            _b.sent();
+            _b.label = 4;
           case 4:
-            _a.sent();
-            _a.label = 5;
+            _i++;
+            return [3 /*break*/, 2];
           case 5:
+            if (!options.noTransaction) return [3 /*break*/, 7];
+            return [4 /*yield*/, importAll()];
+          case 6:
+            _b.sent();
+            return [3 /*break*/, 9];
+          case 7: return [4 /*yield*/, db.transaction('rw', db.tables, importAll)];
+          case 8:
+            _b.sent();
+            _b.label = 9;
+          case 9:
             progress.done = true;
             if (progressCallback)
             {
               // Keep ongoing transaction private
-              Dexie.ignoreTransaction(function () { return progressCallback(progress); });
+              Dexie__default['default'].ignoreTransaction(function () { return progressCallback(progress); });
             }
             return [2 /*return*/];
         }
@@ -1798,29 +1808,27 @@
   //
   // Extend Dexie interface (runtime wise)
   //
-  Dexie.prototype.export = function (options) {
+  Dexie__default['default'].prototype.export = function (options) {
     return exportDB(this, options);
   };
-  Dexie.prototype.import = function (blob, options) {
+  Dexie__default['default'].prototype.import = function (blob, options) {
     return importInto(this, blob, options);
   };
-
-  Dexie.prototype.peek = function (blob) {
+  Dexie__default['default'].prototype.peek = function (blob) {
     return peakImportFile(blob);
   };
 
-  Dexie.import = function (blob, options) { return importDB(blob, options); };
+  Dexie__default['default'].import = function (blob, options) { return importDB(blob, options); };
   var dexieExportImport = (function () {
     throw new Error("This addon extends Dexie.prototype globally and does not have be included in Dexie constructor's addons options.");
   });
 
+  exports.default = dexieExportImport;
   exports.exportDB = exportDB;
   exports.importDB = importDB;
   exports.importInto = importInto;
   exports.peakImportFile = peakImportFile;
-  exports.default = dexieExportImport;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=dexie-export-import.js.map
