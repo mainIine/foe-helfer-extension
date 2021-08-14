@@ -1790,5 +1790,5 @@ let Productions = {
 		else {
 			return 0;
         }
-    },
+	},
 };
