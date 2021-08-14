@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -364,7 +364,7 @@ alertsDB.version(1).stores({
 			});
 
 			browser.tabs.create({
-				url: `https://foe-helper.com/extension/update?v=${version}${lng === 'de' ? '&lang=de' : ''}`
+				url: `https://foe-helper.com/extension/update?v=${version}&lang=${lng}`
 			});
 		}
 	});
@@ -430,274 +430,247 @@ alertsDB.version(1).stores({
 		const type = request.type;
 
 		switch (type) {
-		case 'test': { // type
-			return APIsuccess({type: 'testresponse', data: request});
-		}
+			case 'test': { // type
+				return APIsuccess({type: 'testresponse', data: request});
+			}
 
-		case 'alerts': { // type
-			// extended alerts-API for internal use
-			if (sender.id === browser.runtime.id) {
-				if (typeof request.action !== 'string') return APIerror('expecting an "action": string');
-				const action = request.action;
+			case 'alerts': { // type
+				// extended alerts-API for internal use
+				if (sender.id === browser.runtime.id) {
+					if (typeof request.action !== 'string') return APIerror('expecting an "action": string');
+					const action = request.action;
 
-				switch (action) {
-				case 'getAll': { // action
-					const alerts = await Alerts.getAll(null);
-					const strippedAlerts = alerts.map(a => ({
-						id: a.id,
-						data: a.data,
-						triggered: a.triggered,
-						handled: a.handled,
-						hasNotification: a.hasNotification,
-					}));
-					return APIsuccess(strippedAlerts);
-				}
-
-				case 'getAllRaw': { // action
-					const alerts = await Alerts.getAll(null);
-					return APIsuccess(alerts);
-				}
-
-				case 'setData': { // action
-					const id = request.id;
-					if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
-					const data = Alerts.getValidData(request.data);
-					const retId = await Alerts.setData(id, data);
-					return APIsuccess(retId);
-				}
-
-				case 'previewId': { // action
-					const id = request.id;
-					if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
-
-					const alert = await Alerts.get(id);
-					if (alert == null) return APIerror(`alert #${id} not found`);
-
-					// Deaktiviere die standard behandlung durch die entfernung der id
-					delete alert.id;
-					await Alerts.trigger(alert)
-					return APIsuccess(true);
-				}
-
-				case 'delete': { // action
-					const id = request.id;
-					if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
-
-					await Alerts.delete(id);
-					return APIsuccess(true);
-				}
-
-				} // end of switch action
-
-			} else { // limited alerts-API for external use
-				if (!Number.isInteger(request.playerId)) return APIerror('malformed request: expected "playerId": integer');
-				if (typeof request.action !== 'string') return APIerror('malformed request: expected "action": string');
-
-				const playerId = request.playerId;
-				const action = request.action;
-				// @ts-ignore
-				const server = sender.origin;
-
-				switch (action) {
-				case 'getAll': { // action
-					const alerts = await Alerts.getAll({server, playerId});
-					const strippedAlerts = alerts.map(a => (
-						{
-							id: a.id,
-							data: a.data,
-							triggered: a.triggered,
-							handled: a.handled,
-							hasNotification: a.hasNotification,
+					switch (action) {
+						case 'getAll': { // action
+							const alerts = await Alerts.getAll(null);
+							const strippedAlerts = alerts.map(a => ({
+								id: a.id,
+								data: a.data,
+								triggered: a.triggered,
+								handled: a.handled,
+								hasNotification: a.hasNotification,
+							}));
+							return APIsuccess(strippedAlerts);
 						}
-					));
-					return APIsuccess(strippedAlerts);
-				}
 
-				case 'get': { // action
-					const id = request.id;
-					if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+						case 'getAllRaw': { // action
+							const alerts = await Alerts.getAll(null);
+							return APIsuccess(alerts);
+						}
 
-					const alert = await Alerts.get(id);
-					if (alert == null || alert.server !== server || alert.playerId !== playerId) return APIsuccess(undefined);
-					const strippedAlert = {
-						id: alert.id,
-						data: alert.data,
-						triggered: alert.triggered,
-						handled: alert.handled,
-						hasNotification: alert.hasNotification,
-					};
-					return APIsuccess(strippedAlert);
-				}
+						case 'setData': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
+							const data = Alerts.getValidData(request.data);
+							const retId = await Alerts.setData(id, data);
+							return APIsuccess(retId);
+						}
 
-				case 'create': { // action
-					let data = null;
-					try {
-						data = Alerts.getValidData(request.data);
-					} catch (e) {
-						return APIerror(e);
-					}
-					const alertId = await  Alerts.create(data, server, playerId);
-					return APIsuccess(alertId);
-				}
+						case 'previewId': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
 
-				case 'setData': { // action
-					const id = request.id;
-					if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+							const alert = await Alerts.get(id);
+							if (alert == null) return APIerror(`alert #${id} not found`);
 
-					let data = null;
-					try {
-						data = Alerts.getValidData(request.data);
-					} catch (e) {
-						return APIerror(e);
-					}
+							// Deaktiviere die standard behandlung durch die entfernung der id
+							delete alert.id;
+							await Alerts.trigger(alert)
+							return APIsuccess(true);
+						}
 
-					const alert = await Alerts.get(id);
-					if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
+						case 'delete': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('expecting an "id": integer');
 
-					await Alerts.setData(id, data);
-					return APIsuccess(true);
-				}
+							await Alerts.delete(id);
+							return APIsuccess(true);
+						}
 
-				case 'preview': { // action
-					let data = null;
-					try {
-						data = Alerts.getValidData(request.data);
-					} catch (e) {
-						return APIerror(e);
-					}
+					} // end of switch action
 
-					const alert = Alerts.createTemp(data, server, playerId);
-					const id = await Alerts.trigger(alert);
-					setTimeout(() => {
-						browser.notifications.clear(id);
-					}, 5000);
+				} else { // limited alerts-API for external use
+					if (!Number.isInteger(request.playerId)) return APIerror('malformed request: expected "playerId": integer');
+					if (typeof request.action !== 'string') return APIerror('malformed request: expected "action": string');
 
-					return APIsuccess(true);
-				}
-
-				case 'delete': { // action
-					const id = request.id;
-					if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
-
-					const alert = await Alerts.get(id);
-					if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
-					await Alerts.delete(id);
-					return APIsuccess(true);
-				}
-
-				} // end of switch action
-
-			} // end of limited alerts-API
-
-		} // end of alerts-API
-
-		case 'message': { // type
-			let t = request.time;
-			const opt = {
-				type: "basic",
-				title: request.title,
-				message: request.msg,
-				iconUrl: "images/app48.png"
-			};
-
-			// Compose desktop message
-			// @ts-ignore
-			await browser.notifications.create(null, opt).then(id => {
-				// Remove automatically after a defined timeout
-				setTimeout(()=> {browser.notifications.clear(id)}, t);
-			});
-			return APIsuccess(true);
-		}
-
-		case 'chat': { // type
-			const url = `js/web/ws-chat/html/chat.html?player=${request.player}&world=${request.world}&lang=${request.lang}`;
-			const popupUrl = browser.runtime.getURL(url);
-
-			// Check whether a popup with this URL already exists
-			const tabs = await browser.tabs.query({url: popupUrl});
-
-			// only open if not already done
-			if (tabs.length >= 1) {
-				// already exists, bring it to the "front"
-				await browser.windows.update(tabs[0].windowId, {
-					focused: true
-				});
-			} else {
-				// create a new popup
-				await browser.windows.create({
-					url: url,
-					type: 'popup',
-					width: 500,
-					height: 520,
+					const playerId = request.playerId;
+					const action = request.action;
 					// @ts-ignore
-					focused: true,
+					const server = sender.origin;
+
+					switch (action) {
+						case 'getAll': { // action
+							const alerts = await Alerts.getAll({server, playerId});
+							const strippedAlerts = alerts.map(a => (
+								{
+									id: a.id,
+									data: a.data,
+									triggered: a.triggered,
+									handled: a.handled,
+									hasNotification: a.hasNotification,
+								}
+							));
+							return APIsuccess(strippedAlerts);
+						}
+
+						case 'get': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+
+							const alert = await Alerts.get(id);
+							if (alert == null || alert.server !== server || alert.playerId !== playerId) return APIsuccess(undefined);
+							const strippedAlert = {
+								id: alert.id,
+								data: alert.data,
+								triggered: alert.triggered,
+								handled: alert.handled,
+								hasNotification: alert.hasNotification,
+							};
+							return APIsuccess(strippedAlert);
+						}
+
+						case 'create': { // action
+							let data = null;
+							try {
+								data = Alerts.getValidData(request.data);
+							} catch (e) {
+								return APIerror(e);
+							}
+							const alertId = await  Alerts.create(data, server, playerId);
+							return APIsuccess(alertId);
+						}
+
+						case 'setData': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+
+							let data = null;
+							try {
+								data = Alerts.getValidData(request.data);
+							} catch (e) {
+								return APIerror(e);
+							}
+
+							const alert = await Alerts.get(id);
+							if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
+
+							await Alerts.setData(id, data);
+							return APIsuccess(true);
+						}
+
+						case 'preview': { // action
+							let data = null;
+							try {
+								data = Alerts.getValidData(request.data);
+							} catch (e) {
+								return APIerror(e);
+							}
+
+							const alert = Alerts.createTemp(data, server, playerId);
+							const id = await Alerts.trigger(alert);
+							setTimeout(() => {
+								browser.notifications.clear(id);
+							}, 5000);
+
+							return APIsuccess(true);
+						}
+
+						case 'delete': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+
+							const alert = await Alerts.get(id);
+							if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
+							await Alerts.delete(id);
+							return APIsuccess(true);
+						}
+
+					} // end of switch action
+
+				} // end of limited alerts-API
+
+			} // end of alerts-API
+
+			case 'message': { // type
+				let t = request.time;
+				const opt = {
+					type: "basic",
+					title: request.title,
+					message: request.msg,
+					iconUrl: "images/app48.png"
+				};
+
+				// Compose desktop message
+				// @ts-ignore
+				await browser.notifications.create(null, opt).then(id => {
+					// Remove automatically after a defined timeout
+					setTimeout(()=> {browser.notifications.clear(id)}, t);
 				});
+				return APIsuccess(true);
 			}
-			return APIsuccess(true);
-		}
 
-		case 'storeData': { // type
-			await browser.storage.local.set({ [request.key] : request.data });
-			return APIsuccess(true);
-		}
-
-		case 'send2Api': { // type
-			let xhr = new XMLHttpRequest();
-
-			xhr.open('POST', request.url);
-			xhr.setRequestHeader('Content-Type', 'application/json');
-			xhr.send(request.data);
-
-			return APIsuccess(true);
-		}
-
-		case 'setInnoCDN': { // type
-			localStorage.setItem('InnoCDN', request.url);
-			return APIsuccess(true);
-		}
-
-		case 'getInnoCDN': { // type
-			let cdnUrl = localStorage.getItem('InnoCDN');
-			return APIsuccess([cdnUrl || defaultInnoCDN, cdnUrl != null]);
-		}
-
-		case 'setPlayerData': { // type
-			const data = request.data;
-
-			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-			playerdata[data.world+'-'+data.player_id] = data;
-			localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
-
-			return APIsuccess(true);
-		}
-
-		case 'getPlayerData': { // type
-			const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-			return APIsuccess(playerdata[request.world+'-'+request.player_id]);
-		}
-
-		case 'showNotification': { // type
-			try {
-				const title = request.title;
-				const options = request.options;
-				new Notification( title, {
-					actions: options.actions,
-					body: options.body,
-					dir: 'ltr',
-					icon: options.icon,
-					renotify: !!(options.tag),
-					requireInteraction: options.persistent,
-					vibrate: options.vibrate,
-					tag: options.tag,
-				});
+			case 'storeData': { // type
+				await browser.storage.local.set({ [request.key] : request.data });
+				return APIsuccess(true);
 			}
-			catch( error ){
-				console.error('NotificationManager.notify:');
-				console.error( error );
-				return APIsuccess(false);
+
+			case 'send2Api': { // type
+				let xhr = new XMLHttpRequest();
+
+				xhr.open('POST', request.url);
+				xhr.setRequestHeader('Content-Type', 'application/json');
+				xhr.send(request.data);
+
+				return APIsuccess(true);
 			}
-			return APIsuccess(true);
-		}
+
+			case 'setInnoCDN': { // type
+				localStorage.setItem('InnoCDN', request.url);
+				return APIsuccess(true);
+			}
+
+			case 'getInnoCDN': { // type
+				let cdnUrl = localStorage.getItem('InnoCDN');
+				return APIsuccess([cdnUrl || defaultInnoCDN, cdnUrl != null]);
+			}
+
+			case 'setPlayerData': { // type
+				const data = request.data;
+
+				const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+				playerdata[data.world+'-'+data.player_id] = data;
+				localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
+
+				return APIsuccess(true);
+			}
+
+			case 'getPlayerData': { // type
+				const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
+				return APIsuccess(playerdata[request.world+'-'+request.player_id]);
+			}
+
+			case 'showNotification': { // type
+				try {
+					const title = request.title;
+					const options = request.options;
+					new Notification( title, {
+						actions: options.actions,
+						body: options.body,
+						dir: 'ltr',
+						icon: options.icon,
+						renotify: !!(options.tag),
+						requireInteraction: options.persistent,
+						vibrate: options.vibrate,
+						tag: options.tag,
+					});
+				}
+				catch( error ){
+					console.error('NotificationManager.notify:');
+					console.error( error );
+					return APIsuccess(false);
+				}
+				return APIsuccess(true);
+			}
 
 		} // end of switch type
 

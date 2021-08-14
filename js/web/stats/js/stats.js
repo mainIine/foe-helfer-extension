@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -50,8 +50,12 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 			if (isCurrentlyInOutpost === 1){
 				rewardIncidentSource = 'shards';
 			}
-			//split league rewards from incidents
+			//split league rewards and fragment assembly from incidents
 			if(postData[0].requestMethod === 'useItem'){
+				continue;
+			}
+			//split quest rewards from incidents
+			if(postData[0].requestMethod === 'advanceQuest'){
 				continue;
 			}
 		}
@@ -203,7 +207,7 @@ let Stats = {
 	/**
 	 * Show Box
 	 */
-	Show: () => {
+	Show: (event) => {
 		if ($('#stats').length === 0) {
 			let args = {
 				'id': 'stats',
@@ -218,6 +222,11 @@ let Stats = {
 			moment.locale(i18n('Local'));
 			HTML.AddCssFile('stats');
 			HTML.AddCssFile('unit');
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('stats');
+			return;
 		}
 
 		// If not selected any era, preselect 2 last eras of user
@@ -538,6 +547,7 @@ let Stats = {
 			'__event', //event rewards
 			'battlegrounds_conquest', // Battlegrounds
 			'guildExpedition', // Temple of Relics
+			'pvp_arena', //PvP Arena
 			'spoilsOfWar', // Himeji Castle
 			'diplomaticGifts', //Space Carrier
 			'shards', //Flying Island
@@ -549,10 +559,10 @@ let Stats = {
 			value: it,
 		}));
 
-		return `<div class="option-2-period">
+		return `<div class="option-2-period btn-group">
 					${btnsPeriodSelect.join('')}
 				</div>
-				<div class="option-2-reward-source">
+				<div class="option-2-reward-source btn-group">
 					${btnsRewardSelect.join('')}
 				</div>`;
 	},
@@ -631,7 +641,7 @@ let Stats = {
 	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-default-active' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}">${name}</button>`,
+	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-active' : ''}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}">${name}</button>`,
 
 
 	/**

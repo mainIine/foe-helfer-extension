@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -24,6 +24,15 @@
 	border-collapse: separate;
 	width: 100%;
 	background-color: transparent;
+}
+
+.info-table a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.info-table a:hover {
+	text-decoration: underline;
 }
 
 table.info-table:not(.no-hover) tbody tr:hover {
@@ -94,7 +103,7 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable td:first-child {
-	background: url(../../x_img/gbg-gray.png) center center no-repeat;
+	background: url('../../x_img/gbg-gray.png') center center no-repeat;
 	background-size: contain;
 	width: 30px;
 }
@@ -104,81 +113,90 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable .welcome td:first-child {
-	background-image: url(../../../../css/images/menu/info.png);
+	background-image: url('../../../../css/images/menu/info.png');
 	background-size: 30px;
 }
 
 #BackgroundInfoTable .msg td:first-child {
-	background-image: url(../../x_img/msg.png);
+	background-image: url('../../x_img/msg.png');
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .msg-important td:first-child {
-	background-image: url(../../x_img/msg-important.png);
+	background-image: url('../../x_img/msg-important.png');
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .msg-favorite td:first-child {
-	background-image: url(../../x_img/msg-favorite.png);
+	background-image: url('../../x_img/msg-favorite.png');
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .auction td:first-child {
-	background-image: url(../../x_img/ant.png);
+	background-image: url('../../x_img/ant.png');
 }
 
 #BackgroundInfoTable .gex td:first-child {
-	background-image: url(../../x_img/ge.png);
+	background-image: url('../../x_img/ge.png');
 }
 
 #BackgroundInfoTable .level td:first-child {
-	background-image: url(../../x_img/gb.png);
+	background-image: url('../../x_img/gb.png');
 }
 
 #BackgroundInfoTable .trade td:first-child {
-	background-image: url(../../x_img/trade.png);
+	background-image: url('../../x_img/trade.png');
 	background-size: 25px;
 }
 
 #BackgroundInfoTable .gbg-red td:first-child {
-	background-image: url(../../x_img/gbg-red.png);
+	background-image: url('../../x_img/gbg-red.png');
 }
 
 #BackgroundInfoTable .gbg-green td:first-child {
-	background-image: url(../../x_img/gbg-green.png);
+	background-image: url('../../x_img/gbg-green.png');
 }
 
 #BackgroundInfoTable .gbg-yellow td:first-child {
-	background-image: url(../../x_img/gbg-yellow.png);
+	background-image: url('../../x_img/gbg-yellow.png');
 }
 
 #BackgroundInfoTable .gbg-teal td:first-child {
-	background-image: url(../../x_img/gbg-teal.png);
+	background-image: url('../../x_img/gbg-teal.png');
 }
 
 #BackgroundInfoTable .gbg-orange td:first-child {
-	background-image: url(../../x_img/gbg-orange.png);
+	background-image: url('../../x_img/gbg-orange.png');
 }
 
 #BackgroundInfoTable .gbg-blue td:first-child {
-	background-image: url(../../x_img/gbg-blue.png);
+	background-image: url('../../x_img/gbg-blue.png');
 }
 
 #BackgroundInfoTable .gbg-purple td:first-child {
-	background-image: url(../../x_img/gbg-purple.png);
+	background-image: url('../../x_img/gbg-purple.png');
 }
 
 #BackgroundInfoTable .gbg-pink td:first-child {
-	background-image: url(../../x_img/gbg-pink.png);
+	background-image: url('../../x_img/gbg-pink.png');
 }
 
 #BackgroundInfoTable .gbg-lock td:first-child {
-	background-image: url(../../x_img/gbg-lock.png);
+	background-image: url('../../x_img/gbg-lock.png');
 	background-size: 30px;
 }
 
 #BackgroundInfoTable .gbg-undefined td:first-child {
-	background-image: url(../../x_img/gbg-undefined.png);
+	background-image: url('../../x_img/gbg-undefined.png');
+}
+
+#BackgroundInfoTable a[target="_blank"] {
+	color: var(--text-normal);
+	text-decoration: underline;
+}
+
+#BackgroundInfoTable a[target="_blank"] svg {
+	fill: var(--text-normal);
 }
 
 input.textfilter{

@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -14,7 +14,7 @@
 
 /**
  *
- * @type {{init: CityMap.init, showSumbitBox: CityMap.showSumbitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
+ * @type {{init: CityMap.init, showSubmitBox: CityMap.showSubmitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
  */
 let CityMap = {
 	CityData: null,
@@ -33,7 +33,7 @@ let CityMap = {
 	 * @param Data
 	 * @param Title
 	 */
-	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
 		if (Data === null) { // No data => own city
 			CityMap.IsExtern = false;
@@ -81,6 +81,11 @@ let CityMap = {
 				CityMap.PrepareBox(Title);
 			}, 100);
 
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('city-map-overlay');
+			return;
 		}
 
 		setTimeout(()=>{
@@ -163,7 +168,7 @@ let CityMap = {
 
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 
-			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
 		}
 
 
@@ -284,7 +289,7 @@ let CityMap = {
 
 			}
 			// Great building
-			else if (d['strategy_points_for_upgrade']) {
+			else if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
 			else {
@@ -351,10 +356,9 @@ let CityMap = {
 			$('#sidebar').append(aW);
 		}
 
-		$('.total-area').html(txtTotal);
-
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (!CityMap.IsExtern) {
+			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
 		}
 
@@ -395,12 +399,15 @@ let CityMap = {
 	/**
 	 * Show the submit box
 	 */
-	showSumbitBox: () => {
-		if ($('#CityMapSubmit').length > 0) {
-			$('#CityMapSubmit').remove();
+	showSubmitBox: () => {
+		let $CityMapSubmit = $('#CityMapSubmit');
+
+		if ($CityMapSubmit.length > 0)
+		{
+			$CityMapSubmit.remove();
 		}
 
-		if ($('#CityMapSubmit').length < 1)
+		if ($CityMapSubmit.length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -409,7 +416,6 @@ let CityMap = {
 				'saveCords': false
 			});
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('citymap');
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
@@ -435,15 +441,24 @@ let CityMap = {
 	 */
 	SubmitData: ()=> {
 
-		let d = {
-			entities: MainParser.CityMapData,
-			areas: CityMap.UnlockedAreas,
-			metaIDs: {
-				entity: MainParser.CityEntitiesMetaId,
-				set: MainParser.CitySetsMetaId,
-				upgrade: MainParser.CityBuildingsUpgradesMetaId
-			}
-		};
+		let currentDate = new Date(),
+			d = {
+				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
+				player: {
+					name: ExtPlayerName,
+					id: ExtPlayerID,
+					world: ExtWorld,
+					avatar: ExtPlayerAvatar
+				},
+				eras: Technologies.Eras,
+				entities: MainParser.CityMapData,
+				areas: CityMap.UnlockedAreas,
+				metaIDs: {
+					entity: MainParser.CityEntitiesMetaId,
+					set: MainParser.CitySetsMetaId,
+					upgrade: MainParser.CityBuildingsUpgradesMetaId
+				}
+			};
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){
 

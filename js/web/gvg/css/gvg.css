@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -15,17 +15,10 @@
 	position: absolute;
 	left: 405px;
 	z-index: 100;
-	top: 3px;    
-	width: 64px;
+	top: 3px;
     height: 28px;
     overflow: hidden;
 	transition: 0.3s all linear;
-}
-
-#gvg-hud:hover {
-	overflow: auto;
-	height: auto;
-	background: url('../../../../css/images/hud/box-bg.png');
 }
 
 #gvg-hud div {
@@ -61,12 +54,25 @@
 	background: var(--black-50) url('../../x_img/gvg-defenders.png') no-repeat 6px center;
 	background-size: 20px 20px;
 }
+#gvg-hud .mapbutton {
+	padding: 0;
+}
+#gvg-hud .mapbutton::before {
+	background-image: url('../../x_img/gvg-tiles.png');
+	background-repeat: no-repeat;
+	background-size: 21px 16px;
+    content: '';
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-position: center;
+}
 
 #GvGMap {
-	left: calc(50vw - 285px);
-	top: calc(50vw - 270px);
-	width: 570px;
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
 	width: 800px;
+	height: 500px;
 }
 
 #GvGMapBody {
@@ -88,13 +94,58 @@
 	position: relative;
 	height: 40px;
 	overflow: hidden;
+	box-sizing: border-box;
+	padding: 0.33rem;
+}
+
+.btn-default.btn-inset {
+	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
+	padding: 0.2rem;
+}
+
+.editAction {
+	display: none;
+	font-size: 20px;
+    line-height: 20px;
+}
+
+.editAction::before {
+	display: none;
+	content: '';
+	width: 18px;
+    height: 18px;
+    display: inline-block;
+}
+
+#noGuild::before {
+	background: #fff;
+	border-radius: 10px;
+}
+
+#markerRed::before, #markerRedX::before {
+	color: rgb(211, 5, 5);
+	content: '▼';
+}
+
+#markerYellow::before, #markerYellowX::before {
+	color: rgb(211, 163, 5);
+	content: '▼';
+}
+
+#markerBlue::before, #markerBlueX::before {
+	color: rgb(5, 129, 211);
+	content: '▼';
+}
+
+#markerRedX::before, #markerYellowX::before, #markerBlueX::before {
+	content: 'x';
+	line-height: 14px;
 }
 
 #GvGMapWrap {
 	height: inherit;
 	overflow: auto;
 	background-color: #111213;
-	border-right: 2px solid var(--text-dark);
 	overflow: hidden;
 	position: relative;
 }
@@ -104,6 +155,57 @@
 	overflow: auto;
 	min-width: 300px;
 	flex-grow: 2;
+	position: relative;
+	border-left: 2px solid var(--text-dark);
+}
+
+#gvgOptions.collapsed {
+	width: 0;
+	min-width: 0;
+	overflow: hidden;
+	background-color: var(--black-50);
+	border-left: none;
+}
+
+#gvgOptions.collapsed #gvgOptionsContent{
+	display: none;
+}
+
+#toggleOptions {
+	position: absolute;
+	top: 50%;
+	right: 1px;
+	width: 13px;
+	height: 25px;
+	line-height: 25px;
+	background-color: #784720;
+    border-radius: 7px 0 0 7px;
+	border: 1px solid #1f0c06;
+	color: #1f0c06;
+	border-right: none;
+    z-index: 15;
+	text-align: center;
+}
+
+#toggleOptions::before {
+	content: '>';
+	display: block;
+}
+
+#toggleOptions.collapsed::before {
+	content: '<';
+	display: block;
+}
+
+#logFilterWrap {
+    float: right;
+	position: absolute;
+	top: -30px;
+    right: 5px;
+}
+
+#logFilterWrap input {
+    width: 120px;
 }
 
 #GvGMapInfo {
@@ -112,36 +214,24 @@
 	left: 0;
 }
 
-#GvGMapActions {
-	z-index: 100;
-	position: absolute;
-	left: 7px;
-	top: 7px;
-}
-
-#noGuild.btn-inset {
-	background: linear-gradient(to top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-	padding: 0.2rem;
-}
-
-#noGuild::before {
-	background: #fff;
-	content: '';
-	width: 18px;
-    height: 18px;
-    display: inline-block;
-	border-radius: 10px;
-}
-
 #GvGlog {
 	font-size: 90%;
+	width: 295px;
 }
 
-#GvGlog table.foe-table tbody tr:nth-child(odd) {
+#GvGlog.foe-table tr:nth-child(odd) {
 	background-color: inherit;
 }
 
-.sectorInfo {
+#GvGlog.foe-table tr.alert {
+	background-color: rgba(192,0,0,0.2);
+}
+
+#GvGlog.foe-table tr.friendly {
+	background-color: rgba(47,82,5,0.4);
+}
+
+#sectorInfo {
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
@@ -154,7 +244,7 @@
 	z-index: 101;
 }
 
-.sectorInfo .guildflag {
+#sectorInfo .guildflag {
 	float: right;
 	border-width: 5px;
 	border-style: solid;
@@ -165,7 +255,7 @@
 	height: 20px;
 }
 
-.sectorInfo b {
+#sectorInfo b {
     color: var(--text-bright);
 }
 
