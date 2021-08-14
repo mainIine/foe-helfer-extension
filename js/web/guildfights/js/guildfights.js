@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -615,6 +615,7 @@ let GildFights = {
 		});
 	},
 
+
 	ToggleCopyButton: () => {
 		if ($('#nextup').is(':visible') && $('.timer.highlight-row').length > 0) {
 			$('.copybutton').show();
@@ -623,31 +624,28 @@ let GildFights = {
 		}
 	},
 
+
 	CopyToClipBoard: () => {
 		let copy = '';
 		let copycache = []; 
 		$('.timer.highlight-row').each(function() {
 			copycache.push(GildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
-		})
+		});
+
 		copycache.sort(function(a,b) { return a.lockedUntil - b.lockedUntil});
 		copycache.forEach((mapElem) => {
 			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`; 
 		});
-		if (copy != '') {
-			helper.str.copyToClipboard(copy).then(() => {
+
+		if (copy !== '')
+		{
+			helper.str.copyToClipboardLegacy(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
 					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),
 					type: 'success',
 					hideAfter: 5000
 				});
-			});
-		} else {
-			HTML.ShowToastMsg({
-				head: i18n('Boxes.Gildfights.NoCopyToClipBoard.Title'),
-				text: i18n('Boxes.Gildfights.NoCopyToClipBoard.Desc'),
-				type: 'warning',
-				hideAfter: 5000
 			});
 		}
 	},
@@ -907,8 +905,9 @@ let GildFights = {
 
 			// fetch all alerts and search the id
 			return Alerts.getAll().then((resp)=> {
-				if(resp.length === 0){
-						resolve();
+				if(resp.length === 0)
+				{
+					resolve();
 				}
 
 				let currentTime = MainParser.getCurrentDateTime();
@@ -923,7 +922,9 @@ let GildFights = {
 							prov = GildFights.MapData['map']['provinces'].find(
 								e => e.title === name && alertTime > currentTime
 							);
-						if (prov !== undefined) {
+
+						if (prov !== undefined)
+						{
 							GildFights.Alerts.push({provId: prov['id'], alertId: alert.id});
 						}
 					}

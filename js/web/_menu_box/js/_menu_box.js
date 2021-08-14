@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -134,6 +134,7 @@ let _menu_box = {
 		});
 
 		HiddenRewards.SetCounter();
+		BlueGalaxy.SetCounter();
 	},
 
 

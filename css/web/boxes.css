@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -29,6 +29,18 @@ input[type=number]::-webkit-outer-spin-button {
 /* Firefox */
 input[type=number] {
 	-moz-appearance:textfield;
+}
+
+a[target="_blank"] {
+	color: var(--text-bright);
+	text-decoration: underline;
+}
+
+a[target="_blank"] svg {
+	fill: var(--text-bright);
+	width: 16px;
+	height: 12px;
+	text-decoration: underline;
 }
 
 /**
@@ -162,7 +174,7 @@ input[type=number] {
 }
 
 .btn-default:not([disabled]):hover,
-.btn-default-active:not([disabled]){
+.btn-active:not([disabled]){
 	background: var(--background-btn-active-fallback);
 	background: var(--background-btn-active-moz);
 	background: var(--background-btn-active-webkit);
@@ -231,6 +243,11 @@ input[type=number] {
 	border-right-width: 1px;
 }
 
+.btn-group .btn-default:only-child {
+	border-radius: 4px;
+	border-right-width: 1px;
+}
+
 .ml-auto {
 	margin-left: auto;
 }
@@ -263,15 +280,7 @@ table {
 	border-collapse: collapse;
 }
 
-.foe-table {
-	border-spacing: 0;
-	border-collapse: separate;
-	width: 100%;
-	background-color: transparent;
-}
-
-
-table.foe-table {
+.foe-table, table.foe-table {
 	border-spacing: 0;
 	border-collapse: separate;
 	width: 100%;
@@ -344,13 +353,11 @@ p {
 	color: var(--text-bright);
 }
 
-.text-danger,
-.danger {
+.text-danger, .danger {
 	color: #f92727;
 }
 
-.text-info,
-.info {
+.text-info, .info {
 	color: var(--text-info);
 }
 
@@ -382,6 +389,10 @@ p {
 
 [id$=productions-Btn] span {
 	background-image: url('../images/menu/productions.png');
+}
+
+[id$=productionsrating-Btn] span {
+	background-image: url('../images/menu/productionsrating.png');
 }
 
 [id$=calculator-Btn] span {
@@ -468,6 +479,14 @@ p {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
+[id$=gexstat-Btn] span {
+	background-image: url('../images/menu/gex.png');
+}
+
+[id$=dbexport-Btn] span {
+	background-image: url('../images/menu/dbexport.png');
+}
+
 .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;
@@ -476,6 +495,7 @@ p {
 	bottom: 4px;
 	top: unset;
 	left: 4px;
+	background-image: none;
 	background-color: var(--hud-counter);
 	border-radius: 50%;
 	line-height: 13px;
@@ -743,7 +763,6 @@ Accordion */
 .foehelper-accordion.open .foehelper-accordion-head::after {
 	background-image: url('../images/hud/chevron-down.svg');
 }
-
 
 .foehelper-accordion-body {
 	display: none;
@@ -1112,8 +1131,6 @@ FP-Bar */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
-
 .tooltip {
 	position: absolute;
 	z-index: 1030;
@@ -1455,7 +1472,7 @@ SettingsBox */
 	border-image: url('../images/hud/settings_bg.png') 5 round;
 	color: var(--text-normal);
 	padding: 10px;
-	z-index: 15;
+	z-index: 20;
 	border-radius: 5px;
 	box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);
 	min-width: 120px;

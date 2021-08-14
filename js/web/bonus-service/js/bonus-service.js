@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -40,13 +40,11 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	BonusService.Bonuses = data['responseData'];
 
-	if($('#bonus-hud').length > 0){
+	FoEproxy.pushFoeHelperMessage('BonusUpdated');
+
+	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
 	}
-
-	if ($('#bluegalaxy').length > 0) {
-		BlueGalaxy.CalcBody();
-    }
 });
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
@@ -202,7 +200,10 @@ let BonusService = {
 					si = $('<span />');
 
 				sp.attr({
-					class: `hud-btn`
+					class: `hud-btn`,
+					title: 'FoE Helper: '+i18n('Boxes.BonusService.'+bt[i]),
+				}).tooltip({
+					placement: 'left'
 				});
 
 				sb.attr({
@@ -275,7 +276,9 @@ let BonusService = {
 
 					si.addClass('bonus-blink');
 
-					if (bt[i] === 'donequests') Calculator.SoundFile.play();
+					if (bt[i] === 'donequests') {
+						if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+					}
 
 					setTimeout(()=>{
 						si.removeClass('bonus-blink');

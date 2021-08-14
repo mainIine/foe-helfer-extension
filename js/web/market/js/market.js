@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -64,7 +64,7 @@ let Market = {
 	/**
 	 * Create a div-box for the DOM + Eventlistener
 	 */
-    Show: ()=> {
+    Show: (event = true)=> {
         if ($('#Market').length === 0)
         {
             HTML.Box({
@@ -161,6 +161,11 @@ let Market = {
                 Market.CalcBody();
             });
         }
+		else if (!event)
+		{
+			HTML.CloseOpenBox('Market');
+			return;
+		}
 
         Market.CalcBody();
     },
@@ -308,7 +313,8 @@ let Market = {
         h.push('</thead>');
 
         let Counter = 0;
-        let Pos = 0;
+        let Pos = 0,
+            OwnPos = 0;
         for (let i = 0; i < Market.Trades.length; i++)
         {
             if (Counter >= Market.MaxResults) break;
@@ -319,8 +325,9 @@ let Market = {
                     NeedGoodID = Trade['need']['good_id'],
                     OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],
                     NeedEra = Technologies.Eras[GoodsData[NeedGoodID]['era']],
-                    OfferTT = HTML.i18nReplacer(i18n('Boxes.Market.OfferTT'), { 'era': i18n('Eras.' + OfferEra), 'stock': HTML.Format(ResourceStock[OfferGoodID]) });
-                    NeedTT = HTML.i18nReplacer(i18n('Boxes.Market.NeedTT'), { 'era': i18n('Eras.' + NeedEra), 'stock': HTML.Format(ResourceStock[NeedGoodID]) });
+                    OfferTT = HTML.i18nReplacer(i18n('Boxes.Market.OfferTT'), { 'era': i18n('Eras.' + OfferEra), 'stock': HTML.Format(ResourceStock[OfferGoodID]) }),
+                    NeedTT = HTML.i18nReplacer(i18n('Boxes.Market.NeedTT'), { 'era': i18n('Eras.' + NeedEra), 'stock': HTML.Format(ResourceStock[NeedGoodID]) }),
+                    CurrentPos = (Trade['merchant']['is_self'] ? OwnPos : Pos);
 
                 h.push('<tr>');
                 h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['offer']['good_id']]['id'] +'"></span></td>'); 
@@ -331,13 +338,16 @@ let Market = {
                 h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Trade['need']['value'] + '</strong></td>');
                 h.push('<td class="text-center">' + HTML.Format(MainParser.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
-                h.push('<td class="text-center">' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
+                h.push('<td class="text-center">' + (Math.floor(CurrentPos / 10 + 1)) + '-' + (CurrentPos % 10 + 1) + '</td>');
                 h.push('</tr>');
 
                 Counter += 1;
             }
 
-            if (!Trade['merchant']['is_self']) { //Eigene Handel rausfiltern
+            if (Trade['merchant']['is_self']) { //Eigene Handel rausfiltern
+                OwnPos += 1;
+            }
+            else {
                 Pos += 1;
             }
         }
@@ -388,7 +398,8 @@ let Market = {
         }
 
         //Tradepartner
-        if (Trade['merchant']['is_self']) {
+        let IsOwnOffer = Trade['merchant']['is_self'];
+        if (IsOwnOffer) {
             if (!Market.ShowOwnOffers) {
                 return false;
             }
@@ -418,11 +429,15 @@ let Market = {
         let Rate = Trade['offer']['value'] / Trade['need']['value'];
         let Rating = Rate * Math.pow(2, EraDiff);
 
-        if (Rating > 1 && !Market.TradeAdvantage) {
+        CurrentTradeAdvantage = (IsOwnOffer ? Market.TradeDisadvantage : Market.TradeAdvantage);
+        if (Rating > 1 && !CurrentTradeAdvantage) {
             return false;
         }
         if (Rating === 1) { // Fair
-            if (ResourceStock[OfferGoodID] + Trade['offer']['value']/2 < ResourceStock[NeedGoodID] - Trade['need']['value']/2) { //Stock is higher
+            let CurrentOfferValue = (IsOwnOffer ? Trade['need']['value'] : Trade['offer']['value']),
+                CurrentNeedValue = (IsOwnOffer ? Trade['offer']['value'] : Trade['need']['value']);
+
+            if (ResourceStock[OfferGoodID] + CurrentOfferValue/2 < ResourceStock[NeedGoodID] - CurrentNeedValue/2) { //Stock is higher
                 if (!Market.TradeFairStock) {
                     return false;
                 }
@@ -433,6 +448,8 @@ let Market = {
                 }
             }
         }
+
+        CurrentTradeDisdvantage = (IsOwnOffer ? Market.TradeAdvantage : Market.TradeDisadvantage);
         if (Rating < 1 && !Market.TradeDisadvantage) {
             return false;
         }

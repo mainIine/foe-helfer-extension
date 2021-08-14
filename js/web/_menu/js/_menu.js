@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to 
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md 
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md 
  * for full license details.
  *
  * **************************************************************************************
@@ -30,7 +30,7 @@ let _menu = {
 		'calculator',
 		'partCalc',
 		'outpost',
-		'productions',
+		'productions',	
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
@@ -41,7 +41,6 @@ let _menu = {
 		'unit',
 		'settings',
 		'stats',
-		'chat',
 		'kits',
 		'greatbuildings',
 		'market',
@@ -51,7 +50,9 @@ let _menu = {
 		'gildfight',
 		'investment',
 		'alerts',
-		'guildmemberstat'
+		'guildmemberstat',
+		'gexstat',
+		'productionsrating',
 		// 'unitsGex',
 	],
 
@@ -315,7 +316,7 @@ let _menu = {
 		btn_Own.on('click', function () {
 			// nur wenn es für diese Session ein LG gibt zünden
 			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) {
-				Parts.buildBox();
+				Parts.Show();
 			}
 		});
 
@@ -381,6 +382,28 @@ let _menu = {
 		btn_FPsBG.append(btn_FPs);
 
 		return btn_FPsBG;
+	},
+
+	/**
+	 * Outpost Button
+	 *
+	 * @returns {*|jQuery}
+	 */
+	productionsrating_Btn: () => {
+		let btn_prodratBG = $('<div />').attr({ 'id': 'productionsrating-Btn', 'data-slug': 'productionsrating' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn_prodratBG = _menu.toolTipp(btn_prodratBG, i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
+
+		let btn_prodrat = $('<span />');
+
+		btn_prodrat.bind('click', function () {
+			Productions.ShowRating();
+		});
+
+		btn_prodratBG.append(btn_prodrat);
+
+		return btn_prodratBG;
 	},
 
 	/**
@@ -495,12 +518,12 @@ let _menu = {
 
 		btn_City.on('click', function () {
 			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init();
+				CityMap.init(false);
 			}
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
 				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(MainParser.OtherPlayerCityMapData, PlayerName);
+				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
             }
 		});
 
@@ -611,7 +634,7 @@ let _menu = {
 		btn_Stats.on('click', function () {
 			Stats.page = 1;
 			Stats.filterByPlayerId = null;
-			Stats.Show();
+			Stats.Show(false);
 		});
 
 		btn_StatsBG.append(btn_Stats);
@@ -619,35 +642,6 @@ let _menu = {
 		return btn_StatsBG;
 	},
 
-	/**
-	 * Chat Button
-	 *
-	 * @returns {*|jQuery}
-	 */
-	chat_Btn: () => {
-
-		let btn = $('<div />').attr({ 'id': 'chat-Btn', 'data-slug': 'chat' }).addClass('hud-btn');
-
-		// Tooltip einbinden
-		btn = _menu.toolTipp(btn, i18n('Menu.Chat.Title'), i18n('Menu.Chat.Desc'));
-
-		let btn_sp = $('<span />');
-
-		btn_sp.on('click', function () {
-			MainParser.sendExtMessage({
-				type: 'chat',
-				player: ExtPlayerID,
-				name: ExtPlayerName,
-				guild: ExtGuildID,
-				world: ExtWorld,
-				lang: MainParser.Language
-			});
-		});
-
-		btn.append(btn_sp);
-
-		return btn;
-	},
 
 	/**
 	 * Set Übersicht
@@ -704,7 +698,7 @@ let _menu = {
 
 		btn_Market.bind('click', function () {
 			if ($('#market-Btn').hasClass('hud-btn-red') === false) {
-				Market.Show();
+				Market.Show(false);
 			}
 		});
 
@@ -737,7 +731,7 @@ let _menu = {
 			BlueGalaxy.Show();
 		});
 
-		btn.append(btn_sp);
+		btn.append(btn_sp, $('<span id="hidden-blue-galaxy-count" class="hud-counter">0</span>'));
 
 		return btn;
 	},
@@ -908,5 +902,30 @@ let _menu = {
 		btn.append(btn_sp);
 
 		return btn;
-	}
+	},
+
+
+	/**
+	 * GEX statistic
+	 */
+	gexstat_Btn: () => {
+		let btn = $('<div />').attr({
+			'id': 'gexstat-Btn',
+			'data-slug': 'gexstat'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.GexStat.Title'), i18n('Menu.GexStat.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
+				GexStat.BuildBox(false);
+			}
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+	
 };

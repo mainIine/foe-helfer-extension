@@ -1,18 +1,182 @@
 ## Changelog - Extension
 
-##### 2.5.7.2
+##### 2.5.9.2
+
+**BugFix**
+- Gildenmitglieder Übersicht:
+	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
+
+- Export der Einstellungen und Daten
+	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
+
+---
+
+##### 2.5.9.1
+
+**Update**
+- Blaue Galaxie:
+	-[#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) Die Anzahl der verbleibenden Aufladungen wird nun im Menüicon angezeigt
+
+- EA-Rechner:
+	-[#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Eigenanteil kann nun auch zum Copystring hinzugefügt werden
+
+**BugFix**
+- Erweiterung: 
+    - [#1547](https://github.com/mainIine/foe-helfer-extension/issues/1547) Einige Boxen wurden beim zweiten Klick ins Menü nicht geschlossen
+
+- GEX Ergebnisse:
+	- Die gespeicherten Einstellungen wurden nach Reload des Spiels wieder auf die Standardeinstellungen gesetzt.
+
+- GvG Freigaben:
+	- [#2104](https://github.com/mainIine/foe-helfer-extension/issues/2104) Die Zähler wurden nach Neuladen des Spiels zurückgesetzt. Passiert nun nicht mehr.
+	
+- Gildenmitglieder Übersicht:
+	-[#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Ungültiger scoredb Link bei einigen Spielern im Tab "legendäre Bauwerke"
+
+- Menü:
+	-[#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Einige Boxen konnten durch einen 2. Klick des Menüicons nicht geschlossen werden
+
+- Infoboard:
+	-[#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) Der Spielername wurde nicht korrekt angezeigt, wenn man in einer Auktion überboten wurde
+
+- Produktionsübersicht/Effizienzbewertung:
+	-[#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Falsche Werte von Vorrats/Münzproduktion bei mehrmaligem öffnen der Produktionsübersicht
+	-[#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Ungültige Werte bei der Güterproduktion bei Gebäuden, die Gildengüter produzieren
+	-[#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Ungültige Werte bei der Güterproduktion, falls gerade eine Produktionsoption <> 24h aktiv ist
+
+---
+
+##### 2.5.9
+
+**Neu**
+- GEX Ergebnisse
+	- die Ergebnisse der Gildenexpeditionen werden chronologisch jede Woche gespeichert (Rangliste und Mitgliederbeteiligung). Der Besuch der Teilnehmerübersicht und das Öffnen der Gilden Rangliste ist für die Aktualisierung der Daten notwendig. 
+	- grafische Darstellung des Verlaufs der Gildenexpeditionen (Punkte, Begegnungen, Mitglieder (gesamt), Teilnehmer, Rang)
+	- Export der Ergebnisse (Rangliste und Mitgliederbeteiligung) zu CSV / JSON
+
+- Export der Einstellungen und Daten
+	- Die gesamte Konfiguration des FOE-Helper sowie alle lokal gepeicherten Datenbanken können nun in den Einstellungen unter Import/Export gesichert und auf einem anderen PC oder Browser wiederhergestellt werden. 
+
+- Gebäude Effizienzbewertung
+	- Tool zum Auffinden nicht mehr effizienter Gebäude. Der Spieler legt fest welchen Ertrag pro Feld er wünscht. Das Tool gibt aus, welche Gebäude diesen Ertrag erreichen welche nicht.
+
+- Links zum Spielerprofil auf scoredb.io
+	- [#149](https://github.com/mainIine/foe-helfer-extension/issues/149) Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt (kann im Einstellungsmenü aktivert bzw. deaktiviert werden)
+
+**Update**
+- Gildenmitglieder Übersicht
+	- [#2033](https://github.com/mainIine/foe-helfer-extension/issues/2033) LG Liste aller Gildenmitglieder
+	Filterbare Liste der LG aller Gildenmitglieder mit der aktuellen Stufe, freigeschalteten Stufen, investierten FP und benötigten FP zum Leveln.
+
+- LG Investitionen
+    - [#1550](https://github.com/mainIine/foe-helfer-extension/issues/1550) Option für die Berücksichtigung von Boni für die angreifende Armee
+	- Unterstützung für Relikttempel und fliegende Insel
+
+- Produktionsübersicht:
+    - [#2060](https://github.com/mainIine/foe-helfer-extension/issues/2060) Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert/poliert ist angezeigt
+
+- Eigenanteilsrechner:
+	- [#2045](https://github.com/mainIine/foe-helfer-extension/issues/2045) Die Buttons "Kopieren" und "Merken" sind nun auch im Hauptfenster vorhanden sofern ein Platz sicher ist. Es werden hierbei die Defaulteinstellungen zum Kopieren verwendet
+	- Anzeige welche legendären Gebäude bereits gemerkt wurden
+	- Nach dem Merken eines Gebäudes wird nun die aktuelle Liste auch in die Zwischenablage kopiert
+	- [#2046](https://github.com/mainIine/foe-helfer-extension/issues/2046) Plätze, die als Mäzenbelohnung keine FP abwerfen werden und mit 1FP vorgeschlagen
+	- In der Copybox wurde die Option "Alle + leere" durch die Option "Auto + nicht sichere" ersetzt. Diese kopiert alle Plätze, die noch nicht belegt sind
+
+- Diverses:
+	- [#1965](https://github.com/mainIine/foe-helfer-extension/issues/1965) Globale Einstellung zum Deaktivieren aller Soundeffekte im Foe Helfer hinzugefügt
+	- [#2064](https://github.com/mainIine/foe-helfer-extension/issues/2064) Bei langen Tabellen wurde der Header beim Hinunterscrollen nun fixiert
+
+**BugFix**
+- Gildenmitglieder Übersicht
+	- [#2085](https://github.com/mainIine/foe-helfer-extension/issues/2085) Falsche Anzeige des Zeitalters bei Gildengüter produzierenden Gebäuden
+	- [#2086](https://github.com/mainIine/foe-helfer-extension/issues/2086) Gildengüter/macht produzierende Gebäude wurden in der Detailansicht manchmal nicht angezeigt
+
+- Eigenanteilsrechner:
+	- [#2052](https://github.com/mainIine/foe-helfer-extension/issues/2052) Mehrfaches Merken desselben legendären Bauwerks konnte zu doppelten Zeilen führen
+	- [#2075](https://github.com/mainIine/foe-helfer-extension/issues/2075) Beim Einzahlen in legendäre Gebäude, die bereits gelevelt wurden konnten ungültige Werte angezeigt werden
+
+- FP Einsammlungen:
+	- [#2089](https://github.com/mainIine/foe-helfer-extension/issues/2089) Beim Datumsauswahldialog wurde das Jahr 1912 ausgewählt wenn die Sprache des Foe Helfers auf Niederländisch eingestellt war
+
+- Investitionsübersicht:
+	- [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Gewinn/Medaillen/Blaupausen wurden nach dem leveln der eigenen Arche nicht sofort aktualisiert.
+	- Ausgeblendete LG wurden nach dem leveln der eigenen Arche wieder eingeblendet obwohl keine Investition stattgefunden hat.
+
+- Produktionsübersicht:
+	- [#2062](https://github.com/mainIine/foe-helfer-extension/issues/2062) Güterproduktion: Warnmeldung falls der Venus Außenposten noch nicht besucht wurde hinzugefügt (wie bei Mars und Asteroiden)
+	- [#2058](https://github.com/mainIine/foe-helfer-extension/issues/2058) Beim Upgraden von Straßen konnten ungültige Werte angezeigt werden.
+	- [#2090](https://github.com/mainIine/foe-helfer-extension/issues/2090) Rundung der Größenangaben auf 1 Stelle geändert, da der Wert auch den durchschnittlichen Straßenbedarf enthält
+
+- LG Investitionen:
+	- [#2029](https://github.com/mainIine/foe-helfer-extension/issues/2029) Güter berücksichtigen ließ sich nicht permanent deaktivieren
+
+- Marktfilter:
+	- [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) Korrektur falscher Angaben in der Spalte "Seite" des "Vorteilhaft" Filters bei eigenen Angeboten
+
+- Infobox:
+	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) [#2065](https://github.com/mainIine/foe-helfer-extension/issues/2065) In der Infobox konnten beim Leveln von LGs manchmal falsche FP Werte angezeigt werden
+
+- CityMap:
+	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet, da die freigeschalteten Erweiterungen nur bei der eigenen Stadt bekannt sind
+
+- Ereignisse:
+	- [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Scherben der fliegenden Insel hinzugefügt
+
+- Außenposten:
+	- [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Berechnung der benötigten Beute bei Ägyptern fehlerhaft
+
+---
+
+##### 2.5.8
 
 **Neu**
 
+- GvG Karte & Protokoll (BETA):
+	- GvG Karte: Zeigt alle Gilden, die gerade auf einer Karte vertreten sind (auch die, die nur belagern). Die Sektoren zeigen beim Klick weitere Details an. Diese Details werden beim Neuladen einer Karte aktualisiert.
+	- Karte bearbeiten: Beim Klick auf Bearbeiten kannst du aus der Liste eine Gilde auswählen (oder oben über den weißen Button gar keine) und dann die Sektoren der gewünschten Gilde zuteilen. Die Gildenliste wird entsprechend aktualisiert. 
+	- GvG Protokoll: Erfasst alle Aktionen, die auf einer GvG Karte passieren während du sie betrachtest.
+	- GvG Protokoll Filter: Kann den Log nach allen enthaltenen Zeichen filtern.
+- GVG Freigaben:
+	- [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Anzahl deiner Sektor-Freigaben seit der letzten Abrechnung.
+
+**Update**
+- Extension:
+    - [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) [#1975](https://github.com/mainIine/foe-helfer-extension/issues/1975) Exportmöglichkeiten für diverse Boxen des Helfers. (Die Tabellen für "Markt", "Technologien" und "MoppelHelper" können nun in CSV exportiert werden. Weitere werden in zukünftigen Updates hinzugefügt)
 - Gildenmitglieder Statistik:
-	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) Exportfunktion für jeden Tab der Statistik
+	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) [#1924](https://github.com/mainIine/foe-helfer-extension/issues/1924) Exportfunktion für jeden Tab der Statistik
 	- Detailansicht aller Gildengebäude (erneuter Besuch aller Gildenmitglieder für die korrekte Darstellung empfohlen.) 
+- Investitionsübersicht:
+	- [#1990](https://github.com/mainIine/foe-helfer-extension/issues/1990) Anzeige von Medaillen und Blaupausen über Boxmenü auswählbar
+- Statistiken: 
+	- Die Belohnungen der fliegenden Insel werden nun erfasst.
+	- Ereignisse werden jetzt erfasst.
+	- Sobald sie da ist, werden auch die Belohnungen aus der PvP Arena erfasst.
+- FP-Einsammlungen:
+	- Man kann jetzt einen Zeitraum auswählen. Danke an Likeke181.
+- LB-Aufladungen/Quests:
+	- Den Symbolen wurden Tooltips hinzugefügt.
 
 **BugFix**
-
+- Extension:
+    - [#2022](https://github.com/mainIine/foe-helfer-extension/issues/2022) Typo in deutscher Übersetzung ("Himej" >> "Himeji")
+- Menü:
+    - [#1928](https://github.com/mainIine/foe-helfer-extension/issues/1928) Fehler im CSS Code zerstörte Tooltipp
+- Einstellungen:
+    - [#1999](https://github.com/mainIine/foe-helfer-extension/issues/1999) [#2000](https://github.com/mainIine/foe-helfer-extension/issues/2000) Im Einstellungsmenü des Helfers war die Ansicht bei der Auswahl der Menü-Icons in einer bestimmten Ansicht falsch
 - Gildenmitglieder Statistik:
-	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau
-
+	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau.
+- FP-Einsammlungen:
+	- Manchmal wurden zu den Ereignissen FP aus anderen Quellen hinzugezählt.
+- Infoboard:
+    - Das "Ping" kam immer, obwohl nach einem besstimmten Inhalt gefiltert wurde. Das ist nun behoben
+- BonusBar:
+    - [#1989](https://github.com/mainIine/foe-helfer-extension/issues/1989) Außenposten Quests werden bei Quest Icon der BonusBar gezählt
+- Eigenanteilsrechner:
+    - [#1994](https://github.com/mainIine/foe-helfer-extension/issues/1994) Beim Zurückblättern von Leveln wird nun das Level korrekt anzeigen
+    - [#2004](https://github.com/mainIine/foe-helfer-extension/issues/2004) Es fehlte Stufe 52
+- Produktionsübersicht:
+    - [#2026](https://github.com/mainIine/foe-helfer-extension/issues/2026) FP Produktion des Luftschiffs wurde nicht gezählt wenn nicht motiviert
+    
 ---
 
 ##### 2.5.7.1
