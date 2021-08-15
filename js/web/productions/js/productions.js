@@ -259,6 +259,7 @@ let Productions = {
 			CurrentResources = [],
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
+			BuildingSize = CityMap.GetBuildingSize(d),
 			AdditionalResources = [],
 			Units,
 			era,
@@ -453,7 +454,7 @@ let Productions = {
 				Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
 			}
 
-			if (CityEntity['provided_happiness'] && d['state']['__class__'] !== 'UnconnectedState') {
+			if (CityEntity['provided_happiness'] && BuildingSize['is_connected']) {
 				let Faktor = 1;
 
 				if (d['state']['__class__'] === 'PolishedState') {
@@ -619,13 +620,10 @@ let Productions = {
 				for (let i in MainParser.CityMapData) {
 					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
 
-					let Entity = MainParser.CityEntities[MainParser.CityMapData[i]['cityentity_id']],
-						width = parseInt(Entity['width']),
-						length = parseInt(Entity['length']),
-						RequiredStreet = (Entity['type'] === 'street' || MainParser.CityMapData[i]['state']['__class__'] === 'UnconnectedState' ? 0 : Entity['requirements']['street_connection_level'] | 0);
+					let BuildingSize = CityMap.GetBuildingSize(MainParser.CityMapData[i]);
 
-					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
+					sizes[MainParser.CityMapData[i]['cityentity_id']] = BuildingSize['total_area'];
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (BuildingSize['street_area'] > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': BuildingSize['street_area'] }) : '');
 	            }
 
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
@@ -636,8 +634,7 @@ let Productions = {
 					if(type !== 'goods')
 					{
 						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type),
-							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
-							CssClass = '';
+							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type);
 
 						countAll += ProductCount;
 						countAllMotivated += MotivatedProductCount;
@@ -1654,12 +1651,9 @@ let Productions = {
 						TotalProducts[ResName] += CurrentBuilding['motivatedproducts'][ResName];
 					}
 
-					let width = parseInt(Entity['width']),
-						length = parseInt(Entity['length']),
-						RequiredStreet = (Entity['type'] === 'street' || MainParser.CityMapData[CurrentBuilding['id']]['state']['__class__'] === 'UnconnectedState' ? 0 : Entity['requirements']['street_connection_level'] | 0),
-						Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
+					let BuildingSize = CityMap.GetBuildingSize(MainParser.CityMapData[CurrentBuilding['id']]);
 
-					TotalTiles += Tiles;
+					TotalTiles += BuildingSize['total_area'];
 				}
 
 				let TotalPoints = 0;

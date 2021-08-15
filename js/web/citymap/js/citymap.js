@@ -14,7 +14,7 @@
 
 /**
  *
- * @type {{init: CityMap.init, showSubmitBox: CityMap.showSubmitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
+ * @type {{init: CityMap.init, showSubmitBox: CityMap.showSubmitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, GetBuildingSize: CityMap.GetBuildingSize(CityMapEntity)}}
  */
 let CityMap = {
 	CityData: null,
@@ -62,7 +62,7 @@ let CityMap = {
 			CityMap.CityView = view;
 		}
 
-
+		
 		if( $('#city-map-overlay').length < 1 )
 		{
 			HTML.AddCssFile('citymap');
