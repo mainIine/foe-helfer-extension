@@ -116,12 +116,11 @@ let HiddenRewards = {
     RefreshGui: () => {       
         HiddenRewards.FilteredCache = [];
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
-            let StartTime = moment.unix(HiddenRewards.Cache[i].starts),
-                EndTime = moment.unix(HiddenRewards.Cache[i].expires);
-
+	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts),
+		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
-                HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
-            }
+            	HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
+           }
         }
 
         HiddenRewards.SetCounter();
@@ -156,9 +155,10 @@ let HiddenRewards = {
                 if (!HiddenRewards.FilteredCache.hasOwnProperty(idx)) {
                     break;
                 }
-
+				
                 let hiddenReward = HiddenRewards.FilteredCache[idx];
-
+				
+		
                 h.push('<tr>');
                 h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
