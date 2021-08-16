@@ -1690,7 +1690,7 @@ let Productions = {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
 					if (Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
-					if (Building['type'] === 'residential' || Building['type'] === 'production' || building['type'] === 'generic_building') {
+					if (Building['type'] === 'residential' || Building['type'] === 'production' || Building['type'] === 'generic_building') {
 						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
 						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
 					}
