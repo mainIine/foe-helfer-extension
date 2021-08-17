@@ -147,7 +147,6 @@ let Parts = {
 			// LockExistingPayments
 			$('#OwnPartBox').on('click', '.lockexistingpayments', function () {
 				let $this = $(this),
-					id = $this.data('id'),
 					v = $this.prop('checked');
 
 				Parts.LockExistingPlaces = v;
@@ -158,7 +157,6 @@ let Parts = {
 			// TrustExistingPayments
 			$('#OwnPartBox').on('click', '.trustexistingpayments', function () {
 				let $this = $(this),
-					id = $this.data('id'),
 					v = $this.prop('checked');
 
 				Parts.TrustExistingPlaces = v;
@@ -900,10 +898,10 @@ let Parts = {
 			Parts.CopyBuildingName = MainParser.CityEntities[EntityID]['name'];
         }
 
-		if (localStorage.getItem('OwnPart_CopyFormatPerGB') === 'true') {
+		if (localStorage.getItem(Parts.GetStorageKey('CopyFormatPerGB', null)) === 'true') {
 			let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludePlayer !== null) {
-				Parts.CopyIncludePlayer = SavedCopyIncludePlayer;
+				Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
 			}
 			else {
 				Parts.CopyIncludePlayer = true;
@@ -911,7 +909,7 @@ let Parts = {
 
 			let SavedCopyIncludeGB = localStorage.getItem(Parts.GetStorageKey('CopyIncludeGB', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludeGB !== null) {
-				Parts.CopyIncludeGB = SavedCopyIncludeGB;
+				Parts.CopyIncludeGB = (SavedCopyIncludeGB === 'true');
 			}
 			else {
 				Parts.CopyIncludeGB = true;
@@ -919,7 +917,7 @@ let Parts = {
 
 			let SavedCopyIncludeLevel = localStorage.getItem(Parts.GetStorageKey('CopyIncludeLevel', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludeLevel !== null) {
-				Parts.CopyIncludeLevel = SavedCopyIncludeLevel;
+				Parts.CopyIncludeLevel = (SavedCopyIncludeLevel === 'true');
 			}
 			else {
 				Parts.CopyIncludeLevel = true;
@@ -927,7 +925,7 @@ let Parts = {
 
 			let SavedCopyIncludeFP = localStorage.getItem(Parts.GetStorageKey('CopyIncludeFP', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludeFP !== null) {
-				Parts.CopyIncludeFP = SavedCopyIncludeFP;
+				Parts.CopyIncludeFP = (SavedCopyIncludeFP === 'true');
 			}
 			else {
 				Parts.CopyIncludeFP = true;
@@ -935,7 +933,7 @@ let Parts = {
 
 			let SavedCopyIncludeOwnPart = localStorage.getItem(Parts.GetStorageKey('CopyIncludeOwnPart', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludeOwnPart !== null) {
-				Parts.CopyIncludeOwnPart = SavedCopyIncludeOwnPart;
+				Parts.CopyIncludeOwnPart = (SavedCopyIncludeOwnPart === 'true');
 			}
 			else {
 				Parts.CopyIncludeOwnPart = false;
@@ -943,7 +941,7 @@ let Parts = {
 
 			let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyDescending !== null) {
-				Parts.CopyDescending = SavedCopyDescending;
+				Parts.CopyDescending = (SavedCopyDescending === 'true');
 			}
 			else {
 				Parts.CopyDescending = true;
@@ -1447,6 +1445,8 @@ let Parts = {
 		// new own button
 		c.push(nV);
 
+		c.push('<input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
+
 		// save button
 		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
@@ -1489,10 +1489,15 @@ let Parts = {
 		// save new buttons
 		localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));
 
+		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
+		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
+		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
+
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();
 
 			// reload box
+			if (Parts.CopyFormatPerGB !== OldCopyFormatPerGB) Parts.FirstCycle = true;
 			Parts.CalcBody();
 		});
 	}
