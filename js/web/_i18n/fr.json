@@ -589,6 +589,7 @@
     "Boxes.OwnpartCalculator.Title": "Calcul de PF pour mes GMs",
     "Boxes.OwnpartCalculator.Trust": "Confiance",
     "Boxes.OwnpartCalculator.YourName": "Votre nom",
+    "Boxes.PowerLeveling.CopyValues": "Copier les valeurs",
     "Boxes.PowerLeveling.DoubleCollection": "Double récolte",
     "Boxes.PowerLeveling.Level": "Niveau",
     "Boxes.PowerLeveling.MaxLevel": "Niveau max",
@@ -1023,5 +1024,6 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "ID Monde :",
     "StrategyPoints.BuyableFP": "Nombre de Points Forge pouvant être achetés avec des pièces.",
+    "Time": "HH:mm:ss a",
     "_Language": "Anglais"
 }
