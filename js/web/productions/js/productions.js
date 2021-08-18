@@ -55,7 +55,7 @@ let Productions = {
 		'culture',
 		'main_building',
 		'clan_power_production',
-		'boost',
+		'generic_building'
 	],
 
 	RatingCurrentTab: 'Settings',
@@ -166,7 +166,7 @@ let Productions = {
 
 			let building = Productions.BuildingsAll[i];
 
-			if (building['type'] === 'residential' || building['type'] === 'production')
+			if (building['type'] === 'residential' || building['type'] === 'production' || building['type'] === 'generic_building')
 			{
 				if (building['products']['money']) {
 					building['products']['money'] = MainParser.round(building['products']['money'] * Productions.Boosts['money']);
@@ -256,26 +256,24 @@ let Productions = {
 	 */
 	readType: (d) => {
 		let Products = [],
-			CurrentResources = [],
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
-			AdditionalResources = [],
-			Units,
-			era,
-			DoubleProductionWhenMotivated = false;
+			BuildingSize = CityMap.GetBuildingSize(d),
+			era;
 
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
 		if(Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
 
-		// Zeitalter suchen
-		if (CityEntity['is_multi_age'] && d['level']) {
-			era = d['level'] + 1;
-		}
 		// Great building
-		else if (CityEntity['type'] === 'greatbuilding') {
+		if (CityEntity['type'] === 'greatbuilding') {
 			era = CurrentEraID;
 		}
+		// Multi era
+		else if (d['level']) {
+			era = d['level'] + 1;
+		}
+		// Zeitalter suchen
 		else {
 			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
 				testEra = regExString.exec(d['cityentity_id']);
@@ -285,59 +283,6 @@ let Productions = {
 				if (era === 0) era = CurrentEraID; //AllAge => Current era
 			}
 		}
-
-		if (CityEntity['abilities'])
-		{
-			for (let AbilityIndex in CityEntity['abilities'])
-			{
-				if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex)) continue
-
-				let Ability = CityEntity['abilities'][AbilityIndex];
-
-				if (Ability['__class__'] === 'DoubleProductionWhenMotivatedAbility') DoubleProductionWhenMotivated = true;
-
-				if (d['state']['is_motivated'] === false && Ability['additionalResources'] && Ability['__class__'] === 'AddResourcesWhenMotivatedAbility') {
-					if (Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
-						let NewResources = Ability['additionalResources']['AllAge']['resources'];
-						for (let Resource in NewResources) {
-							if (!NewResources.hasOwnProperty(Resource)) continue;
-
-							if (Resource.startsWith('random_good') || Resource.startsWith('all_goods')) {
-								let Amount = NewResources[Resource] / 5;
-
-								let StartIndex = (era - 2) * 5;
-								if (StartIndex >= 0 && StartIndex+5 <= GoodsList.length) {
-									for (let i = 0; i < 5; i++) {
-										let Resource2 = GoodsList[StartIndex+i]['id'];
-										if (!AdditionalResources[Resource2]) AdditionalResources[Resource2] = 0;
-										AdditionalResources[Resource2] += Amount;
-                                    }
-                                }
-							}
-							else {
-								if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
-								AdditionalResources[Resource] += NewResources[Resource];
-                            }
-						}
-					}
-
-					let EraName = Technologies.EraNames[era];
-					if (EraName && Ability['additionalResources'][EraName] && Ability['additionalResources'][EraName]['resources']) {
-						let NewResources = Ability['additionalResources'][EraName]['resources'];
-						for (let Resource in NewResources) {
-							if (!NewResources.hasOwnProperty(Resource)) continue;
-							if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
-							AdditionalResources[Resource] += NewResources[Resource];
-						}
-                    }
-				}
-
-				// this buildung produces random units
-				else if(Ability['__class__'] === 'RandomUnitOfAgeWhenMotivatedAbility') {
-					Units = Ability['amount'];
-				}
-            }
-        }
 
 		let Ret = {
 			name: CityEntity['name'],
@@ -349,171 +294,7 @@ let Productions = {
 			in: 0
 		};
 
-		if (d.state && d['state']['current_product'])
-		{
-			if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
-				CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
-			}
-
-			if (d['state']['current_product']['clan_power']) {
-				CurrentResources['clan_power'] = d['state']['current_product']['clan_power']; // z.B. Ruhmeshalle
-			}
-
-			if (d['state']['current_product']['name'] === 'penal_unit') {
-				CurrentResources['units'] = d['state']['current_product']['amount'];
-			}
-			
-			if (d['state']['current_product']['units']) {
-				CurrentResources['units'] = d['state']['current_product']['units'];
-			}
-
-			if (d['state']['current_product']['name'] === 'clan_goods' && d['state']['current_product']['goods']) {
-				let GoodSum = 0;
-
-				for (let i = 0; i < d['state']['current_product']['goods'].length; i++) {
-					GoodSum += d['state']['current_product']['goods'][i]['value'];
-				}
-
-				if (GoodSum > 0) {
-					CurrentResources['clan_goods'] = GoodSum;
-                }
-            }
-
-			if (d['state']['current_product']['guildProduct'] && d['state']['current_product']['guildProduct']['resources']) {
-				let GoodSum = 0;
-
-				for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
-					if(!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
-
-					if (ResourceName === 'clan_power') {
-						CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'][ResourceName];					
-					}
-					else {
-						GoodSum += d['state']['current_product']['guildProduct']['resources'][ResourceName];
-                    }
-				}
-
-				if (GoodSum > 0) {
-					CurrentResources['clan_goods'] = GoodSum;
-				}
-			}
-		}
-
-		// Units filled?
-		if (Units) CurrentResources['units'] = Units;
-		
-        for (let Resource in CurrentResources)
-        {
-			if (!CurrentResources.hasOwnProperty(Resource)) continue;
-            
-			if (Resource !== 'credits') { // Marscredits nicht zu den Gütern zählen
-				Products[Resource] = CurrentResources[Resource];
-			}
-		}
-
-		if (MainParser.Boosts[d['id']]) {
-			let Boosts = MainParser.Boosts[d['id']];
-			for (let i = 0; i < Boosts.length; i++) {
-				let Boost = Boosts[i];
-
-				if (Boost['type'] === 'happiness_amount') {
-					Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + Boost['value'];
-				}
-
-				if (Boost['type'] === 'att_boost_attacker' || Boost['type'] === 'att_boost_defender' || Boost['type'] === 'def_boost_attacker' || Boost['type'] === 'def_boost_defender') {
-					Products[Boost['type']] = (Products[Boost['type']] ? Products[Boost['type']] : 0) + Boost['value'];
-                }
-            }
-        }
-
-		if (d['bonus']) {
-			let BonusType = d['bonus']['type'];
-			if (BonusType === 'population' || BonusType === 'happiness') {
-				Products[BonusType] = (Products[BonusType] ? Products[BonusType] : 0) + d['bonus']['value'];
-			}
-			else if (BonusType === 'military_boost') {
-				Products['att_boost_attacker'] = (Products['att_boost_attacker'] ? Products['att_boost_attacker'] : 0) + d['bonus']['value'];
-				Products['def_boost_attacker'] = (Products['def_boost_attacker'] ? Products['def_boost_attacker'] : 0) + d['bonus']['value'];
-			}
-			else if (BonusType === 'fierce_resistance') {
-				Products['att_boost_defender'] = (Products['att_boost_defender'] ? Products['att_boost_defender'] : 0) + d['bonus']['value'];
-				Products['def_boost_defender'] = (Products['def_boost_defender'] ? Products['def_boost_defender'] : 0) + d['bonus']['value'];
-			}
-			else if (BonusType === 'advanced_tactics') {
-				Products['att_boost_attacker'] = (Products['att_boost_attacker'] ? Products['att_boost_attacker'] : 0) + d['bonus']['value'];
-				Products['att_boost_defender'] = (Products['att_boost_defender'] ? Products['att_boost_defender'] : 0) + d['bonus']['value'];
-				Products['def_boost_attacker'] = (Products['def_boost_attacker'] ? Products['def_boost_attacker'] : 0) + d['bonus']['value'];
-				Products['def_boost_defender'] = (Products['def_boost_defender'] ? Products['def_boost_defender'] : 0) + d['bonus']['value'];
-            }
-		}
-
-		if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
-
-			if (CityEntity['staticResources'] && CityEntity['staticResources']['resources'] && CityEntity['staticResources']['resources']['population']) {
-				Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
-			}
-
-			if (CityEntity['provided_happiness'] && d['state']['__class__'] !== 'UnconnectedState') {
-				let Faktor = 1;
-
-				if (d['state']['__class__'] === 'PolishedState') {
-					Faktor = 2;
-				}
-
-				Products['happiness'] = CityEntity['provided_happiness'] * Faktor;
-			}
-		}
-
-		if (CityEntity['entity_levels'] && CityEntity['entity_levels'][d['level']]) {
-			let EntityLevel = CityEntity['entity_levels'][d['level']];
-
-			if (EntityLevel['provided_population']) {
-				Products['population'] = (Products['population'] ? Products['population'] : 0) + EntityLevel['provided_population'];
-			}
-
-			if (EntityLevel['provided_happiness']) {
-				let Faktor = 1;
-
-				if (d['state']['__class__'] === 'PolishedState') {
-					Faktor = 2;
-				}
-
-				Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
-			}
-		}
-
-        let AdditionalProduct,
-			MotivatedProducts = [];
-
-		for (let ProductName in Products) {
-			let MotivationFactor;
-			if ((ProductName === 'money' || ProductName === 'supplies' || ProductName === 'clan_power') && DoubleProductionWhenMotivated && d['state']['is_motivated'] === false) {
-				MotivationFactor = 2;
-			}
-			else { //Keine Doppelproduktion durch Motivierung oder schon motiviert
-				MotivationFactor = 1;
-            }
-
-			MotivatedProducts[ProductName] = Products[ProductName] * MotivationFactor;
-		}
-
-        for (let Resource in AdditionalResources) {
-			if (!AdditionalResources.hasOwnProperty(Resource)) continue;
-
-			AdditionalProduct = AdditionalResources[Resource];
-
-			if (AdditionalProduct > 0) {
-				if (Products[Resource] === undefined) {
-					Products[Resource] = 0;
-					MotivatedProducts[Resource] = AdditionalProduct;
-				}
-				else if (Products[Resource] < AdditionalProduct) {
-					MotivatedProducts[Resource] += AdditionalProduct;
-				}
-			}
-		}
-
-		if (d['state'] ) {
+		if (d['state']) {
 			let At = d['state']['next_state_transition_at'],
 				In = d['state']['next_state_transition_in'];
 
@@ -521,15 +302,321 @@ let Productions = {
 			if (In) Ret.in = In;
 		}
 
-		Ret.products = Products;
-		Ret.motivatedproducts = MotivatedProducts;
+		//GenericCityEntity
+		if (CityEntity['components']) {
+			let Products = {},
+				MotivatedProducts = {};
 
-		if (d['state'] && d['state']['current_product'] && d['state']['current_product']['production_time']) {
-			Ret['dailyfactor'] = 86400 / d['state']['current_product']['production_time'];
+			if (d.state && d['state']['productionOption'] && d['state']['productionOption']['products']) {
+				let CurrentProducts = d['state']['productionOption']['products'];
+				for (let i = 0; i < CurrentProducts.length; i++) {
+					let CurrentProduct = CurrentProducts[i];
+
+					if (CurrentProduct['playerResources']) {
+						if (CurrentProduct['playerResources'] && CurrentProduct['playerResources']['resources']) {
+							let Resources = CurrentProduct['playerResources']['resources'];
+							for (let ResName in Resources) {
+								if (!CurrentProduct['onlyWhenMotivated'] || d['state']['is_motivated']) {
+									if (!Products[ResName]) Products[ResName] = 0;
+									Products[ResName] += Resources[ResName];
+								}
+
+								if (!MotivatedProducts[ResName]) MotivatedProducts[ResName] = 0;
+								MotivatedProducts[ResName] += Resources[ResName];
+							}
+						}
+					}
+
+					if (CurrentProduct['guildResources']) {
+						if (CurrentProduct['guildResources'] && CurrentProduct['guildResources']['resources']) {
+							let Resources = CurrentProduct['guildResources']['resources'];
+							if (Resources['all_goods_of_age']) {
+								if (!CurrentProduct['onlyWhenMotivated'] || d['state']['is_motivated']) {
+									if (!Products['clan_goods']) Products['clan_goods'] = 0;
+									Products['clan_goods'] += Resources['all_goods_of_age'];
+								}
+
+								if (!MotivatedProducts['clan_goods']) MotivatedProducts['clan_goods'] = 0;
+								MotivatedProducts['clan_goods'] += Resources['all_goods_of_age'];
+                            }
+						}
+					}
+				}
+			}
+
+			if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
+				let EraName = Technologies.EraNames[era],
+					EraComponents = CityEntity['components'][EraName];
+
+				if (EraComponents) {
+					if (EraComponents['staticResources'] && EraComponents['staticResources']['resources'] && EraComponents['staticResources']['resources']['resources']) {
+						let Population = EraComponents['staticResources']['resources']['resources']['population'];
+						if (Population) {
+							if (!Products['population']) Products['population'] = 0;
+							Products['population'] += Population;
+
+							if (!MotivatedProducts['population']) MotivatedProducts['population'] = 0;
+							MotivatedProducts['population'] += Population;
+                        }
+					}
+
+					if (BuildingSize['is_connected'] && EraComponents['happiness']) {
+						let Happiness = EraComponents['happiness']['provided'];
+
+						if (Happiness) {
+							if (d['state']['__class__'] === 'PolishedState') Happiness *= 2;
+
+							if (!Products['happiness']) Products['happiness'] = 0;
+							Products['happiness'] += Happiness;
+
+							if (!MotivatedProducts['happiness']) MotivatedProducts['happiness'] = 0;
+							MotivatedProducts['happiness'] += Happiness;
+                        }
+                    }
+				}
+			}
+
+			Ret.products = Products;
+			Ret.motivatedproducts = MotivatedProducts;
+
+			if (d['state'] && d['state']['productionOption'] && d['state']['productionOption']['time']) {
+				Ret['dailyfactor'] = 86400 / d['state']['productionOption']['time'];
+			}
+			else {
+				Ret['dailyfactor'] = 1;
+			}
 		}
+
+		// Legacy Building
 		else {
-			Ret['dailyfactor'] = 1;
-        }
+			let CurrentResources = [],
+				AdditionalResources = [],
+				Units,
+				DoubleProductionWhenMotivated = false;
+
+			if (CityEntity['abilities']) {
+				for (let AbilityIndex in CityEntity['abilities']) {
+					if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex)) continue
+
+					let Ability = CityEntity['abilities'][AbilityIndex];
+
+					if (Ability['__class__'] === 'DoubleProductionWhenMotivatedAbility') DoubleProductionWhenMotivated = true;
+
+					if (d['state']['is_motivated'] === false && Ability['additionalResources'] && Ability['__class__'] === 'AddResourcesWhenMotivatedAbility') {
+						if (Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
+							let NewResources = Ability['additionalResources']['AllAge']['resources'];
+							for (let Resource in NewResources) {
+								if (!NewResources.hasOwnProperty(Resource)) continue;
+
+								if (Resource.startsWith('random_good') || Resource.startsWith('all_goods')) {
+									let Amount = NewResources[Resource] / 5;
+
+									let StartIndex = (era - 2) * 5;
+									if (StartIndex >= 0 && StartIndex + 5 <= GoodsList.length) {
+										for (let i = 0; i < 5; i++) {
+											let Resource2 = GoodsList[StartIndex + i]['id'];
+											if (!AdditionalResources[Resource2]) AdditionalResources[Resource2] = 0;
+											AdditionalResources[Resource2] += Amount;
+										}
+									}
+								}
+								else {
+									if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
+									AdditionalResources[Resource] += NewResources[Resource];
+								}
+							}
+						}
+
+						let EraName = Technologies.EraNames[era];
+						if (EraName && Ability['additionalResources'][EraName] && Ability['additionalResources'][EraName]['resources']) {
+							let NewResources = Ability['additionalResources'][EraName]['resources'];
+							for (let Resource in NewResources) {
+								if (!NewResources.hasOwnProperty(Resource)) continue;
+								if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
+								AdditionalResources[Resource] += NewResources[Resource];
+							}
+						}
+					}
+
+					// this buildung produces random units
+					else if (Ability['__class__'] === 'RandomUnitOfAgeWhenMotivatedAbility') {
+						Units = Ability['amount'];
+					}
+				}
+			}
+
+			if (d.state && d['state']['current_product']) {
+				if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
+					CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
+				}
+
+				if (d['state']['current_product']['clan_power']) {
+					CurrentResources['clan_power'] = d['state']['current_product']['clan_power']; // z.B. Ruhmeshalle
+				}
+
+				if (d['state']['current_product']['name'] === 'penal_unit') {
+					CurrentResources['units'] = d['state']['current_product']['amount'];
+				}
+
+				if (d['state']['current_product']['units']) {
+					CurrentResources['units'] = d['state']['current_product']['units'];
+				}
+
+				if (d['state']['current_product']['name'] === 'clan_goods' && d['state']['current_product']['goods']) {
+					let GoodSum = 0;
+
+					for (let i = 0; i < d['state']['current_product']['goods'].length; i++) {
+						GoodSum += d['state']['current_product']['goods'][i]['value'];
+					}
+
+					if (GoodSum > 0) {
+						CurrentResources['clan_goods'] = GoodSum;
+					}
+				}
+
+				if (d['state']['current_product']['guildProduct'] && d['state']['current_product']['guildProduct']['resources']) {
+					let GoodSum = 0;
+
+					for (let ResourceName in d['state']['current_product']['guildProduct']['resources']) {
+						if (!d['state']['current_product']['guildProduct']['resources'].hasOwnProperty(ResourceName)) continue;
+
+						if (ResourceName === 'clan_power') {
+							CurrentResources[ResourceName] = d['state']['current_product']['guildProduct']['resources'][ResourceName];
+						}
+						else {
+							GoodSum += d['state']['current_product']['guildProduct']['resources'][ResourceName];
+						}
+					}
+
+					if (GoodSum > 0) {
+						CurrentResources['clan_goods'] = GoodSum;
+					}
+				}
+			}
+
+			// Units filled?
+			if (Units) CurrentResources['units'] = Units;
+
+			for (let Resource in CurrentResources) {
+				if (!CurrentResources.hasOwnProperty(Resource)) continue;
+
+				if (Resource !== 'credits') { // Marscredits nicht zu den Gütern zählen
+					Products[Resource] = CurrentResources[Resource];
+				}
+			}
+
+			if (MainParser.Boosts[d['id']]) {
+				let Boosts = MainParser.Boosts[d['id']];
+				for (let i = 0; i < Boosts.length; i++) {
+					let Boost = Boosts[i];
+
+					if (Boost['type'] === 'happiness_amount') {
+						Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + Boost['value'];
+					}
+
+					if (Boost['type'] === 'att_boost_attacker' || Boost['type'] === 'att_boost_defender' || Boost['type'] === 'def_boost_attacker' || Boost['type'] === 'def_boost_defender') {
+						Products[Boost['type']] = (Products[Boost['type']] ? Products[Boost['type']] : 0) + Boost['value'];
+					}
+				}
+			}
+
+			if (d['bonus']) {
+				let BonusType = d['bonus']['type'];
+				if (BonusType === 'population' || BonusType === 'happiness') {
+					Products[BonusType] = (Products[BonusType] ? Products[BonusType] : 0) + d['bonus']['value'];
+				}
+				else if (BonusType === 'military_boost') {
+					Products['att_boost_attacker'] = (Products['att_boost_attacker'] ? Products['att_boost_attacker'] : 0) + d['bonus']['value'];
+					Products['def_boost_attacker'] = (Products['def_boost_attacker'] ? Products['def_boost_attacker'] : 0) + d['bonus']['value'];
+				}
+				else if (BonusType === 'fierce_resistance') {
+					Products['att_boost_defender'] = (Products['att_boost_defender'] ? Products['att_boost_defender'] : 0) + d['bonus']['value'];
+					Products['def_boost_defender'] = (Products['def_boost_defender'] ? Products['def_boost_defender'] : 0) + d['bonus']['value'];
+				}
+				else if (BonusType === 'advanced_tactics') {
+					Products['att_boost_attacker'] = (Products['att_boost_attacker'] ? Products['att_boost_attacker'] : 0) + d['bonus']['value'];
+					Products['att_boost_defender'] = (Products['att_boost_defender'] ? Products['att_boost_defender'] : 0) + d['bonus']['value'];
+					Products['def_boost_attacker'] = (Products['def_boost_attacker'] ? Products['def_boost_attacker'] : 0) + d['bonus']['value'];
+					Products['def_boost_defender'] = (Products['def_boost_defender'] ? Products['def_boost_defender'] : 0) + d['bonus']['value'];
+				}
+			}
+
+			if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
+
+				if (CityEntity['staticResources'] && CityEntity['staticResources']['resources'] && CityEntity['staticResources']['resources']['population']) {
+					Products['population'] = (Products['population'] ? Products['population'] : 0) + CityEntity['staticResources']['resources']['population'];
+				}
+
+				if (CityEntity['provided_happiness'] && BuildingSize['is_connected']) {
+					let Faktor = 1;
+
+					if (d['state']['__class__'] === 'PolishedState') {
+						Faktor = 2;
+					}
+
+					Products['happiness'] = CityEntity['provided_happiness'] * Faktor;
+				}
+			}
+
+			if (CityEntity['entity_levels'] && CityEntity['entity_levels'][d['level']]) {
+				let EntityLevel = CityEntity['entity_levels'][d['level']];
+
+				if (EntityLevel['provided_population']) {
+					Products['population'] = (Products['population'] ? Products['population'] : 0) + EntityLevel['provided_population'];
+				}
+
+				if (EntityLevel['provided_happiness']) {
+					let Faktor = 1;
+
+					if (d['state']['__class__'] === 'PolishedState') {
+						Faktor = 2;
+					}
+
+					Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
+				}
+			}
+
+			let AdditionalProduct,
+				MotivatedProducts = [];
+
+			for (let ProductName in Products) {
+				let MotivationFactor;
+				if ((ProductName === 'money' || ProductName === 'supplies' || ProductName === 'clan_power') && DoubleProductionWhenMotivated && d['state']['is_motivated'] === false) {
+					MotivationFactor = 2;
+				}
+				else { //Keine Doppelproduktion durch Motivierung oder schon motiviert
+					MotivationFactor = 1;
+				}
+
+				MotivatedProducts[ProductName] = Products[ProductName] * MotivationFactor;
+			}
+
+			for (let Resource in AdditionalResources) {
+				if (!AdditionalResources.hasOwnProperty(Resource)) continue;
+
+				AdditionalProduct = AdditionalResources[Resource];
+
+				if (AdditionalProduct > 0) {
+					if (Products[Resource] === undefined) {
+						Products[Resource] = 0;
+						MotivatedProducts[Resource] = AdditionalProduct;
+					}
+					else if (Products[Resource] < AdditionalProduct) {
+						MotivatedProducts[Resource] += AdditionalProduct;
+					}
+				}
+			}
+
+			Ret.products = Products;
+			Ret.motivatedproducts = MotivatedProducts;
+
+			if (d['state'] && d['state']['current_product'] && d['state']['current_product']['production_time']) {
+				Ret['dailyfactor'] = 86400 / d['state']['current_product']['production_time'];
+			}
+			else {
+				Ret['dailyfactor'] = 1;
+			}
+		}
 
 		return Ret;
 	},
@@ -619,13 +706,10 @@ let Productions = {
 				for (let i in MainParser.CityMapData) {
 					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
 
-					let Entity = MainParser.CityEntities[MainParser.CityMapData[i]['cityentity_id']],
-						width = parseInt(Entity['width']),
-						length = parseInt(Entity['length']),
-						RequiredStreet = (Entity['type'] === 'street' || MainParser.CityMapData[i]['state']['__class__'] === 'UnconnectedState' ? 0 : Entity['requirements']['street_connection_level'] | 0);
+					let BuildingSize = CityMap.GetBuildingSize(MainParser.CityMapData[i]);
 
-					sizes[MainParser.CityMapData[i]['cityentity_id']] = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (RequiredStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': (Math.min(width, length) * RequiredStreet / 2) }) : '');
+					sizes[MainParser.CityMapData[i]['cityentity_id']] = BuildingSize['total_area'];
+					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (BuildingSize['street_area'] > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': BuildingSize['street_area'] }) : '');
 	            }
 
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
@@ -636,8 +720,7 @@ let Productions = {
 					if(type !== 'goods')
 					{
 						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type),
-							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type),
-							CssClass = '';
+							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type);
 
 						countAll += ProductCount;
 						countAllMotivated += MotivatedProductCount;
@@ -1607,7 +1690,7 @@ let Productions = {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
 					if (Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
-					if (Building['type'] === 'residential' || Building['type'] === 'production') {
+					if (Building['type'] === 'residential' || Building['type'] === 'production' || Building['type'] === 'generic_building') {
 						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
 						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
 					}
@@ -1654,12 +1737,9 @@ let Productions = {
 						TotalProducts[ResName] += CurrentBuilding['motivatedproducts'][ResName];
 					}
 
-					let width = parseInt(Entity['width']),
-						length = parseInt(Entity['length']),
-						RequiredStreet = (Entity['type'] === 'street' || MainParser.CityMapData[CurrentBuilding['id']]['state']['__class__'] === 'UnconnectedState' ? 0 : Entity['requirements']['street_connection_level'] | 0),
-						Tiles = (width * length) + (Math.min(width, length) * RequiredStreet / 2);
+					let BuildingSize = CityMap.GetBuildingSize(MainParser.CityMapData[CurrentBuilding['id']]);
 
-					TotalTiles += Tiles;
+					TotalTiles += BuildingSize['total_area'];
 				}
 
 				let TotalPoints = 0;
@@ -1790,5 +1870,5 @@ let Productions = {
 		else {
 			return 0;
         }
-    },
+	},
 };
