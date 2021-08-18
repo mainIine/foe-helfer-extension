@@ -552,7 +552,7 @@
     "Boxes.OwnpartCalculator.AutoWithUnsafe": "Auto + Not locked",
     "Boxes.OwnpartCalculator.BPs": "BPs",
     "Boxes.OwnpartCalculator.BuildingName": "Building",
-    "Boxes.OwnpartCalculator.CopyFormatPerGB": "???",
+    "Boxes.OwnpartCalculator.CopyFormatPerGB": "Save copy format per great building",
     "Boxes.OwnpartCalculator.CopyValues": "Copy values",
     "Boxes.OwnpartCalculator.Deposit": "FPs",
     "Boxes.OwnpartCalculator.Done": "Done",
