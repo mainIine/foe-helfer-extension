@@ -166,7 +166,7 @@ let Productions = {
 
 			let building = Productions.BuildingsAll[i];
 
-			if (building['type'] === 'residential' || building['type'] === 'production' || Building['type'] === 'generic_building')
+			if (building['type'] === 'residential' || building['type'] === 'production' || building['type'] === 'generic_building')
 			{
 				if (building['products']['money']) {
 					building['products']['money'] = MainParser.round(building['products']['money'] * Productions.Boosts['money']);
