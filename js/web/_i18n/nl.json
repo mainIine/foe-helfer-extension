@@ -260,7 +260,6 @@
     "Boxes.GreatBuildings.AttackPerFP": "1 FP is gelijk aan __percent__% bonus voor je aanvallend leger",
     "Boxes.GreatBuildings.BreakEven": "Break-even in",
     "Boxes.GreatBuildings.BreakEvenTT": "Het duurt __days__ dagen totdat de investering van __costs__ FP is terugverdient bij een dagelijkse productie van __fpproduction__ FP/dag",
-    "Boxes.GreatBuildings.BreakEvenTTAttack": "Het duurt __days__ dagen totdat de investering van __costs__ FP is terugverdient bij een dagelijkse productie vanf __fpproduction__ FP/dag en __goodsproduction__ goederen/dag (gelijk aan __goodsproduction__ * __goodsvalue__ = __goodsproductionvalue__ FP/dag)",
     "Boxes.GreatBuildings.BreakEvenTTGoods": "Het duurt __days__ dagen totdat de investering van __costs__ FP is terugverdient bij een dagelijkse productie vanf __fpproduction__ FP/dag en __goodsproduction__ goederen/dag (gelijk aan __goodsproduction__ * __goodsvalue__ = __goodsproductionvalue__ FP/dag)",
     "Boxes.GreatBuildings.BreakEvenUnit": "__days__ dagen",
     "Boxes.GreatBuildings.Costs": "Kosten",
