@@ -198,7 +198,7 @@ let DBExport = {
         try
         {
             let SuccessState = 1;
-            if (!file || !file.name || !file.type || (file.type !== 'application/json' && file.type !== 'application/zip'))
+            if (!file || !file.name || !file.type || (file.type !== 'application/json' && file.type !== 'application/zip' && file.type !== 'application/x-zip-compressed'))
             {
                 $("#debex_import_wrapper").html(`<p class="error">${i18n('Boxes.DBExport.ImportFileError')}</p>`);
                 DBExport.hidePreloader();
@@ -235,6 +235,7 @@ let DBExport = {
                     break;
 
                 case 'application/zip':
+                case 'application/x-zip-compressed':
 
                     await JSZip.loadAsync(file)
                         .then(function (zip) {
