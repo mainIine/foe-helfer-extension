@@ -690,6 +690,7 @@ const FoEproxy = (function () {
 
 		// freigeschaltete Erweiterungen sichern
 		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.BlockedAreas = data.responseData.city_map.blocked_areas;
 
 		// EventCountdown
 		let eventCountDownFeature = data.responseData.feature_flags.features.filter((v) => { return (v.feature === "event_start_countdown") });

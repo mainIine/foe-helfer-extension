@@ -14,7 +14,7 @@
 
 /**
  *
- * @type {{init: CityMap.init, showSubmitBox: CityMap.showSubmitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
+ * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos}}
  */
 let CityMap = {
 	CityData: null,
@@ -22,6 +22,7 @@ let CityMap = {
 	ScaleUnit: 100,
 	CityView: 'skew',
 	UnlockedAreas: null,
+	BlockedAreas: null,
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
 	IsExtern: false,
@@ -115,7 +116,7 @@ let CityMap = {
 		let oB = $('#city-map-overlayBody'),
 			w = $('<div />').attr({'id':'wrapper'});
 
-			w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -241,7 +242,7 @@ let CityMap = {
 			// Unlocked Areas rendern
 			CityMap.BuildGrid();
 		}
-		
+
 		let MinX = 0,
 			MinY = 0,
 			MaxX = 63,
@@ -253,18 +254,18 @@ let CityMap = {
 				continue;
 
 			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
-		
+
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
 				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
 				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
-			
+
 				f = $('<span />').addClass('entity ' + d['type']).css({
-						width: w + 'em',
-						height: h + 'em',
-						left: x + 'em',
-						top: y + 'em'
-					})
+					width: w + 'em',
+					height: h + 'em',
+					left: x + 'em',
+					top: y + 'em'
+				})
 					.attr('title', d['name'])
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
@@ -352,7 +353,7 @@ let CityMap = {
 			aW.append( $('<p />').addClass('total-area') );
 			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<p />').addClass('building-count-area') );
-            
+
 			$('#sidebar').append(aW);
 		}
 
@@ -369,16 +370,16 @@ let CityMap = {
 
 		let txtCount = [];
 		for( x in sortable ){
-		    let type =  sortable[x][0];
+			let type =  sortable[x][0];
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
-		    const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
 			let str = `${TypeName}:<br> ${count} (${pct}%)<br>`;
 			if (type === 'street') {
 				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
 			}
 			str = str + '<br>';
-		    txtCount.push(str);
+			txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
 
@@ -453,6 +454,7 @@ let CityMap = {
 				eras: Technologies.Eras,
 				entities: MainParser.CityMapData,
 				areas: CityMap.UnlockedAreas,
+				blockedAreas: CityMap.BlockedAreas,
 				metaIDs: {
 					entity: MainParser.CityEntitiesMetaId,
 					set: MainParser.CitySetsMetaId,
@@ -506,6 +508,6 @@ let CityMap = {
 				type: 'info',
 				hideAfter: 4000,
 			})
-		});	
+		});
 	}
 };
