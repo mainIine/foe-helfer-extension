@@ -14,7 +14,7 @@
 
 /**
  *
- * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos}}
+ * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos, GetBuildingSize: (CityMapEntity)}}
  */
 let CityMap = {
 	CityData: null,
@@ -248,21 +248,20 @@ let CityMap = {
 			MaxX = 63,
 			MaxY = 63;
 
-		for (let b in CityMap.CityData)
-		{
-			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY)
-				continue;
+		for (let b in CityMap.CityData) {
+			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
-			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
+			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
+				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
 
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
-				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
+				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
+				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
+				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
 
 				f = $('<span />').addClass('entity ' + d['type']).css({
-					width: w + 'em',
-					height: h + 'em',
+					width: xsize + 'em',
+					height: ysize + 'em',
 					left: x + 'em',
 					top: y + 'em'
 				})
@@ -270,19 +269,12 @@ let CityMap = {
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
 
-			let AreaNeeded = parseInt(d['width']) * parseInt(d['length']);
-			CityMap.OccupiedArea += (AreaNeeded);
+			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
-			if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
-			CityMap.OccupiedArea2[d.type] += (AreaNeeded);
+			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
 
-			if (d.type !== 'street' && CityMap.CityData[b]['state']['__class__'] !== 'UnconnectedState') {
-				let RequiredStreet = d['requirements']['street_connection_level'] | 0
-
-				if (RequiredStreet) {
-					StreetsNeeded += Math.min(parseFloat(d['width']), parseFloat(d['length'])) * RequiredStreet / 2;
-				}
-			}
+			StreetsNeeded += BuildingSize['street_area'];
 
 			// Search age
 			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
@@ -509,5 +501,38 @@ let CityMap = {
 				hideAfter: 4000,
 			})
 		});
-	}
+	},
+
+	GetBuildingSize: (CityMapEntity) => {
+		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
+
+		let Ret = {};
+
+		Ret['is_connected'] = (CityMapEntity['state']['__class__'] !== 'UnconnectedState' && CityMapEntity['state']['pausedAt'] === undefined && CityMapEntity['state']['pausedState'] === undefined);
+
+		if (CityEntity['requirements']) {
+			Ret['xsize'] = CityEntity['width'];
+			Ret['ysize'] = CityEntity['length'];
+
+			if (CityEntity['type'] !== 'street') {
+				Ret['streets_required'] = CityEntity['requirements']['street_connection_level'] | 0;
+			}
+			else {
+				Ret['streets_required'] = 0;
+			}
+		}
+		else {
+			let Size = CityEntity['components']['AllAge']['placement']['size'];
+
+			Ret['xsize'] = Size['x'];
+			Ret['ysize'] = Size['y'];
+			Ret['streets_required'] = CityEntity['components']['AllAge']['streetConnectionRequirement']['requiredLevel'] | 0;
+		}
+
+		Ret['building_area'] = Ret['xsize'] * Ret['ysize'];
+		Ret['street_area'] = (Ret['is_connected'] ? parseFloat(Math.min(Ret['xsize'], Ret['ysize'])) * Ret['streets_required'] / 2 : 0);
+		Ret['total_area'] = Ret['building_area'] + Ret['street_area'];
+
+		return Ret;
+	},
 };
