@@ -90,6 +90,12 @@
 		"sort": 14
 	},
 	{
+		"name": "HideHelperDuringBattle",
+		"status": false,
+		"group": "Boxes",
+		"sort": 15
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
