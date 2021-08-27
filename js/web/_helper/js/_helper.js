@@ -366,6 +366,37 @@ let HTML = {
 		});
 	},
 
+	Minimize: () => {
+		$('body').find("#menu_box").removeClass('open');
+		$('body').find("#menu_box").addClass('closed');
+		$('body').find('.window-body').css("visibility", "hidden");
+	},
+
+	Maximize: () => {
+		$('body').find("#menu_box").removeClass('closed');
+		$('body').find("#menu_box").addClass('open');
+		$('body').find('.window-body').css("visibility", "visible");
+	},
+
+	/**
+	 * Handle minimizing helper during battle
+	 */
+	MinimizeBeforeBattle: () => {
+		let HideHelperDuringBattle = localStorage.getItem('HideHelperDuringBattle');
+		let MenuSetting = localStorage.getItem('SelectedMenu');
+		if (HideHelperDuringBattle == 'true' && MenuSetting == 'Box' && $('body').find("#menu_box").hasClass('open')) {
+			HTML.Minimize();
+			HTML.boxWasMinimizedForBattle = true;
+		}
+	},
+
+	MaximizeAfterBattle: () => {
+		let MenuSetting = localStorage.getItem('SelectedMenu');
+		if (MenuSetting == 'Box' && HTML.boxWasMinimizedForBattle) {
+			HTML.Maximize();
+			HTML.boxWasMinimizedForBattle = false;
+		}
+	},
 
 	/**
 	 * Makes an HTML BOX Dragable

@@ -843,8 +843,9 @@ const FoEproxy = (function () {
 		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
 	});
 
-	// Kampf beendet
 	FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
+
+		// Kampf beendet
 		if (data.responseData["armyId"] == 1 || data.responseData["state"]["round"] == 1 || data.responseData["battleType"]["totalWaves"] == 1) {
 			let units = data.responseData.state.unitsOrder;
 			for (let i = 0; i < units.length; i++) {
@@ -870,8 +871,40 @@ const FoEproxy = (function () {
 				}
 			}
 		}
+
+		// not autobattling in either round 1 or 2
+		if (!data.responseData["isAutoBattle"]) {
+			HTML.MinimizeBeforeBattle();
+		}
+
+		// round was won with autobattle
+		// winnerBit==1 round won, winnerBit==2 round lost
+		if (data.responseData['state']['winnerBit'] > 0) {
+			HTML.MaximizeAfterBattle();
+		}
 	});
 
+	FoEproxy.addHandler('BattlefieldService', 'submitMove', (data, postData) => {
+		// round was won/lost by auto-complete battle during manual turn
+		if (data.responseData['winnerBit'] > 0) {
+			HTML.MaximizeAfterBattle();
+		}
+	});
+
+	// if battle was interrupted by browser refresh/server restart
+	FoEproxy.addHandler('BattlefieldService', 'continueBattle', (data, postData) => {
+		// round in progress was not auto-battle
+		if (!data.responseData["isAutoBattle"]) {
+			HTML.MinimizeBeforeBattle();
+		}
+	});
+
+	// if user surrenders
+	FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
+		if (data.responseData["surrenderBit"] == 1) {
+			HTML.MaximizeAfterBattle();
+		}
+	});
 
 	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
 	FoEproxy.addHandler('OtherPlayerService', 'all', (data, postData) => {
