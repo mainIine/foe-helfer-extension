@@ -367,15 +367,15 @@ let HTML = {
 	},
 
 	Minimize: () => {
-		$('body').find("#menu_box").removeClass('open');
-		$('body').find("#menu_box").addClass('closed');
-		$('body').find('.window-body').css("visibility", "hidden");
+		$('body').find('#menu_box').removeClass('open');
+		$('body').find('#menu_box').addClass('closed');
+		$('#menu_box').find('.window-body').css("visibility", "hidden");
 	},
 
 	Maximize: () => {
 		$('body').find("#menu_box").removeClass('closed');
 		$('body').find("#menu_box").addClass('open');
-		$('body').find('.window-body').css("visibility", "visible");
+		$('#menu_box').find('.window-body').css("visibility", "visible");
 	},
 
 	/**
