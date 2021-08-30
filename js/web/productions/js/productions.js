@@ -55,6 +55,7 @@ let Productions = {
 		'culture',
 		'main_building',
 		'clan_power_production',
+		'off_grid',
 		'generic_building'
 	],
 
