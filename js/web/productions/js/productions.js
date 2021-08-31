@@ -55,6 +55,7 @@ let Productions = {
 		'culture',
 		'main_building',
 		'clan_power_production',
+		'off_grid',
 		'generic_building'
 	],
 
@@ -123,10 +124,10 @@ let Productions = {
 		{
 			if (!d.hasOwnProperty(i)) continue;
 
-			if (d[i]['id'] >= 2000000000) continue;
+			if (d[i]['id'] >= 2000000000 && d[i]['cityentity_id'] !== 'V_AllAge_CastleSystem1') continue; //Exclude all off grid buildings except Castle
 
 			// dem Rathaus evt Boosts hinzufügen (tägliche FP, Botschafter Bonus)
-			if(d[i]['id'] === 1 && !d[i]['mainBuildingPrepared']){
+			if (d[i]['id'] === 1 && !d[i]['mainBuildingPrepared']) {
 				d[i] = Productions.prepareMainBuilding(d[i]);
 			}
 
@@ -575,6 +576,45 @@ let Productions = {
 					Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + EntityLevel['provided_happiness'] * Faktor;
 				}
 			}
+
+			if (d['cityentity_id'] === 'V_AllAge_CastleSystem1') {
+				for (let i in MainParser.Boosts) {
+					if (!MainParser.Boosts.hasOwnProperty(i)) continue;
+
+					let BoostList = MainParser.Boosts[i],
+						NewBoostList = [];
+
+					for (let j = 0; j < BoostList.length; j++) {
+						let Boost = BoostList[j];
+
+						if (Boost['origin'] !== 'castle_system') continue;
+
+						if (MainParser.BoostMapper[Boost['type']]) {
+							let MappedBoosts = MainParser.BoostMapper[Boost['type']];
+							for (let k = 0; k < MappedBoosts.length; k++) {
+								let NewBoost = Object.assign({}, Boost);
+								NewBoost['type'] = MappedBoosts[k];
+								NewBoostList.push(NewBoost);
+							}
+						}
+						else {
+							NewBoostList.push(Boost);
+						}
+					}
+
+					for (let j = 0; j < NewBoostList.length; j++) {
+						let Boost = NewBoostList[j];
+
+						let ResName = Boost['type'],
+							Value = Boost['value'];
+
+						if (!Productions.Types.includes(ResName)) continue;
+
+						if (!Products[ResName]) Products[ResName] = 0;
+						Products[ResName] += Value;
+					}
+				}
+            }
 
 			let AdditionalProduct,
 				MotivatedProducts = [];

@@ -1223,9 +1223,12 @@ let MainParser = {
 		'supplies_boost': ['supply_production'],
 		'happiness': ['happiness_amount'],
 		'military_boost': ['att_boost_attacker', 'def_boost_attacker'],
+		'att_def_boost_attacker': ['att_boost_attacker', 'def_boost_attacker'],
 		'fierce_resistance': ['att_boost_defender', 'def_boost_defender'],
+		'att_def_boost_defender': ['att_boost_defender', 'def_boost_defender'],
 		'advanced_tactics': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
-		'money_boost': ['coin_production']
+		'money_boost': ['coin_production'],
+		
 	},
 
 
