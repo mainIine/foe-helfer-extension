@@ -9,6 +9,9 @@
 - Export der Einstellungen und Daten
 	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
 
+- Investitionsübersicht:
+	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) Die Investitionsliste wird jetzt korrekt aktualisiert, wenn keine Investitionen mehr vorhanden sind.
+
 ---
 
 ##### 2.5.9.1
