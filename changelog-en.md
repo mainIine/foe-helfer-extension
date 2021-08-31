@@ -9,6 +9,9 @@
 - Export of settings and data
 	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Fixed world-specific error when importing local settings.
 
+- Investment overview::
+	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) The investment list is now correctly updated when there are no more investments.
+
 ---
 
 ##### 2.5.9.1

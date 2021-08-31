@@ -26,6 +26,10 @@ FoEproxy.addHandler('GreatBuildingsService', (data) => {
 
 	if (data['requestMethod'] === 'getContributions')
 	{
+		if(!data['responseData'] ){
+			return;
+		}
+
 		Investment.Data = data['responseData'];
 
 		Investment.UpdateData(Investment.Data, true).then((e) => {
@@ -437,10 +441,6 @@ let Investment = {
 
 
 	UpdateData: async (LGData, FullSync) => {
-
-		if (LGData !== null && LGData.length <= 0) {
-			return;
-		}
 
 		let arc = 1 + (MainParser.ArkBonus / 100);
 		let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
