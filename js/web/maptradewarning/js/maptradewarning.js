@@ -6,28 +6,38 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
  */
 
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData) => {
-	//closes box when opening army screen
-	HTML.CloseOpenBox('mapTradeWarningDialog');
-});
-FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-	//closes box when going back to city
-	HTML.CloseOpenBox('mapTradeWarningDialog');
-});
-FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
-
-	// if setting is true?
-	if(!Settings.GetSetting('ShowMapTradeWarning')){
-		return;
-    }
-    //closes box if still open for some reason
+    // Closes the box when the player is about to attack a sector
     HTML.CloseOpenBox('mapTradeWarningDialog');
+});
+
+FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
+    // Closes the box when the player navigates back to the city
+    HTML.CloseOpenBox('mapTradeWarningDialog');
+});
+
+FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
+    // Is the warning enabled in the settings?
+    if (!Settings.GetSetting('ShowMapTradeWarning')) {
+        return;
+    }
+
+    // Closes the box when the player visits a province that is completely conquered
+    if (data.responseData && data.responseData.filter(e => !e.isPlayerOwned).length === 0) {
+        HTML.CloseOpenBox('mapTradeWarningDialog');
+        return;
+    }
+
+    // Don't create a new box while another one is still open
+    if ($('#mapTradeWarningDialog').length > 0) {
+        return;
+    }
 
     return mapTradeWarning.ShowMapDialog();
 });
@@ -37,11 +47,11 @@ FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
  */
 let mapTradeWarning = {
 
-	/**
-	 * Shows a User Box covering the 'Negotiate' button in province sector screens
-	 *
-	 * @constructor
-	 */
+    /**
+     * Shows a User Box covering the 'Negotiate' button in province sector screens
+     *
+     * @constructor
+     */
     ShowMapDialog: () => {
         HTML.AddCssFile('maptradewarning');
         

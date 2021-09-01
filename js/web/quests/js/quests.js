@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -72,7 +72,7 @@ let Quests = {
 			$('#quests-counter-hud').append(
 				$('<div />')
 					.addClass('hud-btn-gold')
-					.attr('title', 'FoE Helper: ' + i18n('quests.CounterTooltip.Content'))
+					.attr('title', 'FoE Helper: ' + i18n('Quests.CounterTooltip.Content'))
 					.tooltip({
 						extraClass: 'quest-tooltip',
 						placement: 'right'

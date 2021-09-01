@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -141,10 +141,10 @@ let Calculator = {
 		h.push('<p class="header"><strong><span class="building-name">' + BuildingName + '</span>');
 
 		if (Calculator.PlayerName) {
-			h.push('<span class="player-name">' + Calculator.PlayerName);
+			h.push('<span class="player-name">' + MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
 
 			if (Calculator.ClanName) {
-				h.push(` [${Calculator.ClanName}]`);
+				h.push(`</br>[${Calculator.ClanName}]`);
 			}
 
 			h.push('</span>');
@@ -256,7 +256,7 @@ let Calculator = {
 
 		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
 			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
-				Calculator.SoundFile.play();
+				if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
 			}
         }
 
@@ -666,7 +666,7 @@ let Calculator = {
 	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
-            Calculator.SoundFile.play();
+			if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
         }
     },
 

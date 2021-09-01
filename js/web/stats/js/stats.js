@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -207,7 +207,7 @@ let Stats = {
 	/**
 	 * Show Box
 	 */
-	Show: () => {
+	Show: (event) => {
 		if ($('#stats').length === 0) {
 			let args = {
 				'id': 'stats',
@@ -222,6 +222,11 @@ let Stats = {
 			moment.locale(i18n('Local'));
 			HTML.AddCssFile('stats');
 			HTML.AddCssFile('unit');
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('stats');
+			return;
 		}
 
 		// If not selected any era, preselect 2 last eras of user

@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -33,7 +33,7 @@ let CityMap = {
 	 * @param Data
 	 * @param Title
 	 */
-	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
 		if (Data === null) { // No data => own city
 			CityMap.IsExtern = false;
@@ -81,6 +81,11 @@ let CityMap = {
 				CityMap.PrepareBox(Title);
 			}, 100);
 
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('city-map-overlay');
+			return;
 		}
 
 		setTimeout(()=>{
@@ -284,7 +289,7 @@ let CityMap = {
 
 			}
 			// Great building
-			else if (d['strategy_points_for_upgrade']) {
+			else if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
 			else {
@@ -351,10 +356,9 @@ let CityMap = {
 			$('#sidebar').append(aW);
 		}
 
-		$('.total-area').html(txtTotal);
-
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (!CityMap.IsExtern) {
+			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
 		}
 
@@ -396,7 +400,8 @@ let CityMap = {
 	 * Show the submit box
 	 */
 	showSumbitBox: () => {
-		if ($('#CityMapSubmit').length > 0) {
+		if ($('#CityMapSubmit').length > 0)
+		{
 			$('#CityMapSubmit').remove();
 		}
 
@@ -436,6 +441,12 @@ let CityMap = {
 	SubmitData: ()=> {
 
 		let d = {
+			player: {
+				name: ExtPlayerName,
+				id: ExtPlayerID,
+				world: ExtWorld,
+				avatar: ExtPlayerAvatar
+			},
 			entities: MainParser.CityMapData,
 			areas: CityMap.UnlockedAreas,
 			metaIDs: {
