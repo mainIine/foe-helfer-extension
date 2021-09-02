@@ -8,6 +8,9 @@
 		- Won battles of the members can be displayed in the overview (can be activated in the settings of the guild member overview).
 		- Won battles and whether the player is still an active member of the guild were included in the export.
 
+- Investment overview:
+	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Display of a column with the date of the last investment into the GB
+
 **BugFix**
 - Guild members overview:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Representation of the GEX calendar week is now the beginning of the GEX and no longer the end
@@ -15,7 +18,7 @@
 - Export of settings and data
 	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Fixed world-specific error when importing local settings.
 
-- Investment overview::
+- Investment overview:
 	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) The investment list is now correctly updated when there are no more investments.
 
 ---
