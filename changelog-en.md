@@ -2,6 +2,12 @@
 
 ##### 2.5.9.2
 
+**Update**
+- Guild members overview:
+	-[#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
+		- Won battles of the members can be displayed in the overview (can be activated in the settings of the guild member overview).
+		- Won battles and whether the player is still an active member of the guild were included in the export.
+
 **BugFix**
 - Guild members overview:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Representation of the GEX calendar week is now the beginning of the GEX and no longer the end
