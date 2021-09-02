@@ -408,6 +408,8 @@
     "Boxes.Investment.Overview.AdditionalColumns": "Additional columns",
     "Boxes.Investment.Overview.Blueprints": "BPs",
     "Boxes.Investment.Overview.Building": "Building",
+    "Boxes.Investment.Overview.DateOfIncrease": "Date of Increase",
+    "Boxes.Investment.Overview.DateOfIncreaseDesc": "Date and time of the last recorded deposit in the GB",
     "Boxes.Investment.Overview.EntryTime": "Entry Time",
     "Boxes.Investment.Overview.EntryTimeDesc": "When was the first deposit recorded?",
     "Boxes.Investment.Overview.HideGB": "Hide GB from calculation and list.",

@@ -408,6 +408,8 @@
     "Boxes.Investment.Overview.AdditionalColumns": "zusätzliche Spalten",
     "Boxes.Investment.Overview.Blueprints": "Blaupausen",
     "Boxes.Investment.Overview.Building": "Gebäude",
+    "Boxes.Investment.Overview.DateOfIncrease": "Zuwachsdatum",
+    "Boxes.Investment.Overview.DateOfIncreaseDesc": "Datum und Zeit der letzten Einzahlung in das LG",
     "Boxes.Investment.Overview.EntryTime": "Eintragszeit",
     "Boxes.Investment.Overview.EntryTimeDesc": "Wann wurde die erste Einzahlung erfasst?",
     "Boxes.Investment.Overview.HideGB": "LG aus Berechnung und Liste ausblenden.",

@@ -8,6 +8,9 @@
 		- Gewonnene Kämpfe der Mitglieder können in der Übersicht mit angezeigt werden (in den Einstellungen der Gilden Mitgliederübersicht aktivierbar).
 		- Gewonnene Kämpfe und ob der Spieler noch aktives Mitglied der Gilde ist, wurden in den Export mit aufgenommen.
 
+- Investitionsübersicht:
+	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Anzeige einer Spalte mit dem Datum der letzten Einzahlung in das LG
+
 **BugFix**
 - Gildenmitglieder Übersicht:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
