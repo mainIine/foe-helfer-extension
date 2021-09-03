@@ -168,6 +168,7 @@ let GuildMemberStat = {
 		autoStartOnUpdate: 1,
 		showDeletedMembers: 1,
 		showSearchbar: 1,
+		showBattlesWon: 0,
 		deleteOlderThan: 14,
 		lastupdate: 0
 	},
@@ -369,7 +370,7 @@ let GuildMemberStat = {
 		GuildMemberStat.InitSettings();
 		GuildMemberStat.MemberDict = {};
 
-		GuildMemberStat.hasGuildMemberRights = ExtGuildPermission >= 126;
+		GuildMemberStat.hasGuildMemberRights = ExtGuildPermission >= 126 || ExtGuildPermission === 95;
 
 		switch (source)
 		{
@@ -401,6 +402,7 @@ let GuildMemberStat = {
 					if (memberdata.hasOwnProperty(i))
 					{
 						memberdata[i]['activity'] = GuildMemberStat.hasGuildMemberRights ? memberdata[i]['activity'] : null;
+						memberdata[i]['won_battles'] = memberdata[i]['won_battles'] ? memberdata[i]['won_battles'] : 0;
 						memberdata[i]['rank'] = (i * 1 + 1);
 
 						ActiveMembers.push(memberdata[i].player_id);
@@ -774,6 +776,7 @@ let GuildMemberStat = {
 				is_active: Member['is_active'],
 				city_name: Member['city_name'],
 				activity: Member['activity'],
+				won_battles: Member['won_battles'],
 				date: MainParser.getCurrentDate(),
 				deleted: 0,
 				updated: MainParser.getCurrentDate()
@@ -794,6 +797,7 @@ let GuildMemberStat = {
 				is_active: Member['is_active'],
 				city_name: Member['city_name'],
 				activity: Member['activity'],
+				won_battles: Member['won_battles'],
 				deleted: 0,
 				updated: MainParser.getCurrentDate()
 			});
@@ -891,11 +895,19 @@ let GuildMemberStat = {
 			'<tr class="sorter-header">' +
 			`<th class="is-number" data-type="gms-group"></th>` +
 			`<th class="case-sensitive" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
-			`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
-			`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Eras')}</th>`);
+			`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Points')}</th>`);
+
+		if (GuildMemberStat.Settings.showBattlesWon)
+		{
+			h.push(`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Battles')}</th>`);
+		}
+
+		h.push(`<th class="is-number" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Eras')}</th>`);
 
 		if (GuildMemberStat.hasGuildMemberRights)
+		{
 			h.push(`<th class="is-number gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberActiviy'))}"><span class="activity"></span></th>`);
+		}
 
 		h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildMessages'))}"><span class="messages"></span></th>` +
 			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GexParticipation'))}"><span class="gex"></span></th>` +
@@ -906,7 +918,7 @@ let GuildMemberStat = {
 		let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
 		let exportData = GuildMemberStat.ExportData = [];
 
-		exportData.push(['rank', 'member', 'points', 'eraID', 'eraName', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation']);
+		exportData.push(['rank', 'member', 'points', 'eraID', 'eraName', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'won_battles', 'guildmember']);
 
 		if (CurrentMember === undefined)
 		{
@@ -1040,6 +1052,12 @@ let GuildMemberStat = {
 			h.push(`<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>`);
 			h.push(`<td class="case-sensitive copyable" data-text="${member['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member['avatar']]}.jpg" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>`);
 			h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
+
+			if (GuildMemberStat.Settings.showBattlesWon)
+			{
+				h.push(`<td class="is-number" data-number="${member['won_battles']}">${HTML.Format(member['won_battles'] ? member['won_battles'] : 0)}</td>`);
+			}
+
 			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);
 
 			if (GuildMemberStat.hasGuildMemberRights)
@@ -1050,7 +1068,7 @@ let GuildMemberStat = {
 			h.push(`<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
 			h.push(`<td></td></tr>`);
 
-			exportData.push([(rank - deletedCount), member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount]);
+			exportData.push([(rank - deletedCount), member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
 
 		}
 
@@ -1157,7 +1175,7 @@ let GuildMemberStat = {
 								break;
 							}
 
-							let gexweek = moment.unix(gex[i].gexweek).subtract(7,'d').format('YYYY-ww');
+							let gexweek = moment.unix(gex[i].gexweek).subtract(7, 'd').format('YYYY-ww');
 							let activeGexClass = gex[i].gexweek >= currentTime ? ' activeCircle' : '';
 
 							d.push(`<tr><td>${gexweek}<span class="${activeGexClass}"></span></td>` +
@@ -1262,16 +1280,19 @@ let GuildMemberStat = {
 
 								let Entity = MainParser.CityEntities[plbuilding.entity_id];
 								let LevelString;
-								if (plbuilding.level === null) {
+								if (plbuilding.level === null)
+								{
 									LevelString = '';
 								}
-								else if (Entity && Entity.type === 'greatbuilding') {
+								else if (Entity && Entity.type === 'greatbuilding')
+								{
 									LevelString = '(' + plbuilding.level + ')';
 								}
-								else {
+								else
+								{
 									LevelString = '(' + i18n('Eras.' + plbuilding.level) + ')';
-                                }
-								
+								}
+
 								d.push(`<tr><td>${countBuilding} x ${plbuilding.name.replace(/\#[0-9]+\#/, '')} ${LevelString}</td><td class="text-right">${goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : ''}</td><td class="text-right">${HTML.Format(goodCount)}</td></tr>`);
 							});
 
@@ -1705,7 +1726,7 @@ let GuildMemberStat = {
 			}
 
 			ExportContent.push([plbuilding.name, (plbuilding.level !== null ? plbuilding.level : ''), Technologies.Eras[plbuilding.era], i18n('Eras.' + Technologies.Eras[plbuilding.era]), plbuilding.member, (plbuilding.power !== undefined ? plbuilding.power.value : 0), (plbuilding.resources !== undefined ? plbuilding.resources.totalgoods : 0)]);
-			
+
 			d.push(`<tr${plbuilding.gbid === undefined ? ` class="outdated" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildBuildingNotification'))}"` : ''}">` +
 				`<td class="is-number" data-number="${bCounter}">${bCounter++}</td>` +
 				`<td class="case-sensitive" data-text="${plbuilding.name.toLowerCase().replace(/[\W_ ]+/g, "")}">${plbuilding.name}</td>` +
@@ -2030,7 +2051,7 @@ let GuildMemberStat = {
 
 			$('#gmsContentWrapper #toggleGreatBuildingView').on('click', function () {
 				$('#gmsContentWrapper .greatbuildinglist').toggleClass('hide show').promise().done(function () {
-					
+
 					if ($('#gms-filter-input').is(":visible") && $('#gms-filter-input').val() !== '')
 					{
 						if ($('.greatbuildinglist.grouped').hasClass("show"))
@@ -2081,7 +2102,7 @@ let GuildMemberStat = {
 					for (let i in player)
 					{
 						if (!player.hasOwnProperty(i)) continue;
-						
+
 						d.push(`<tr><td data-text="${player[i].member.toLowerCase().replace(/[\W_ ]+/g, "")}">${MainParser.GetPlayerLink(player[i].player_id, player[i].member)}</td>` +
 							`<td class="text-center" data-number="${player[i].level}">${player[i].level}</td>` +
 							`<td class="text-center" data-number="${player[i].max_level}">${player[i].max_level}</td>` +
@@ -2098,10 +2119,11 @@ let GuildMemberStat = {
 						NoGbMember = NoGbMember.sort(function (a, b) { return GuildMemberStat.MemberDict[a].name.localeCompare(GuildMemberStat.MemberDict[b].name) });
 
 						d.push(`<div class="no_gb_member copyable"><span class="text-bright"><i>${HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberWithoutGB'), { 'greatbuilding': GBOverview[id]['name'] })}</i>: </span>`);
-						for (let i = 0; i < NoGbMember.length; i++) {
+						for (let i = 0; i < NoGbMember.length; i++)
+						{
 							d.push(MainParser.GetPlayerLink(NoGbMember[i], GuildMemberStat.MemberDict[NoGbMember[i]].name));
 							if (i < NoGbMember.length - 1) d.push(', ');
-                        }
+						}
 						d.push(`</div>`);
 					}
 
@@ -2199,6 +2221,7 @@ let GuildMemberStat = {
 		GuildMemberStat.Settings.deleteOlderThan = (Settings.deleteOlderThan !== undefined) ? Settings.deleteOlderThan : GuildMemberStat.Settings.deleteOlderThan;
 		GuildMemberStat.Settings.autoStartOnUpdate = (Settings.autoStartOnUpdate !== undefined) ? Settings.autoStartOnUpdate : GuildMemberStat.Settings.autoStartOnUpdate;
 		GuildMemberStat.Settings.showSearchbar = (Settings.showSearchbar !== undefined) ? Settings.showSearchbar : GuildMemberStat.Settings.showSearchbar;
+		GuildMemberStat.Settings.showBattlesWon = (Settings.showBattlesWon !== undefined) ? Settings.showBattlesWon : GuildMemberStat.Settings.showBattlesWon;
 		GuildMemberStat.TreasuryGoodsData = (TreasuryGoods !== undefined) ? TreasuryGoods : {};
 
 	},
@@ -2213,6 +2236,7 @@ let GuildMemberStat = {
 		c.push(`<p class="text-left"><input id="gmsAutoStartOnUpdate" name="autostartonupdate" value="1" type="checkbox" ${(Settings.autoStartOnUpdate === 1) ? ' checked="checked"' : ''} /> <label for="gmsAutoStartOnUpdate">${i18n('Boxes.GuildMemberStat.AutoStartOnUpdate')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gmsShowSearchbar" name="showsearchbar" value="1" type="checkbox" ${(Settings.showSearchbar === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowSearchbar">${i18n('Boxes.GuildMemberStat.ShowSearchbar')}</label></p>`);
 		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.GuildMemberStat.GuildMembers')}</span><input id="gmsShowDeletedMembers" name="showdeletedmembers" value="1" type="checkbox" ${(Settings.showDeletedMembers === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowDeletedMembers">${i18n('Boxes.GuildMemberStat.ShowDeletedMembers')}</label></p>`);
+		c.push(`<p class="text-left"><input id="gmsShowBattlesWon" name="showbattleswon" value="1" type="checkbox" ${(Settings.showBattlesWon === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowBattlesWon">${i18n('Boxes.GuildMemberStat.ShowBattlesWon')}</label></p>`);
 		c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.DeleteExMembersAfter')} <select id="gmsDeleteOlderThan" name="deleteolderthan">`);
 
 		deleteAfterDays.forEach(days => {
@@ -2250,6 +2274,7 @@ let GuildMemberStat = {
 		GuildMemberStat.Settings.showDeletedMembers = $("#gmsShowDeletedMembers").is(':checked') ? 1 : 0;
 		GuildMemberStat.Settings.autoStartOnUpdate = $("#gmsAutoStartOnUpdate").is(':checked') ? 1 : 0;
 		GuildMemberStat.Settings.showSearchbar = $("#gmsShowSearchbar").is(':checked') ? 1 : 0;
+		GuildMemberStat.Settings.showBattlesWon = $("#gmsShowBattlesWon").is(':checked') ? 1 : 0;
 
 		if (GuildMemberStat.Settings.deleteOlderThan !== tmpDeleteOlder && (tmpDeleteOlder > 0 || tmpDeleteOlder === -1))
 		{
@@ -2429,10 +2454,12 @@ let GuildMemberStat = {
 		table = document.getElementById(t);
 		tr = table.getElementsByTagName("tr");
 
-		if (input.value.length > 0) {
+		if (input.value.length > 0)
+		{
 			input.classList.add("highlight");
 		}
-		else {
+		else
+		{
 			input.classList.remove("highlight");
 		}
 
