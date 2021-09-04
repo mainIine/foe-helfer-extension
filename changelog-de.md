@@ -2,12 +2,20 @@
 
 ##### 2.5.9.2
 
+**Update**
+- EA-Rechner:
+-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed the logic how settings are saved in GB calculator.
+	Note: This will mean that some settings in GB calculator (like copy format) will revert to default settings once after this update
+
 **BugFix**
 - Gildenmitglieder Übersicht:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
 
 - Export der Einstellungen und Daten
 	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
+
+- Produktionsübersicht, Stadtübersicht, Gebäudeeffizienzbewertung
+	-[#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Absturz behoben, der durch das neue Eventgebäude "Golden Crops" (Herbestevent) am Betaserver ausgelöst wurde
 
 ---
 
