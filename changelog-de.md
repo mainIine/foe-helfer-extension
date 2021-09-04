@@ -3,9 +3,17 @@
 ##### 2.5.9.2
 
 **Update**
+- Gildenmitglieder Übersicht:
+	-[#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
+		- Gewonnene Kämpfe der Mitglieder können in der Übersicht mit angezeigt werden (in den Einstellungen der Gilden Mitgliederübersicht aktivierbar).
+		- Gewonnene Kämpfe und ob der Spieler noch aktives Mitglied der Gilde ist, wurden in den Export mit aufgenommen.
+
+- Investitionsübersicht:
+	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Anzeige einer Spalte mit dem Datum der letzten Einzahlung in das LG
+
 - EA-Rechner:
--[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed the logic how settings are saved in GB calculator.
-	Note: This will mean that some settings in GB calculator (like copy format) will revert to default settings once after this update
+	-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed the logic how settings are saved in GB calculator.
+		Note: This will mean that some settings in GB calculator (like copy format) will revert to default settings once after this update
 
 **BugFix**
 - Gildenmitglieder Übersicht:
@@ -13,6 +21,9 @@
 
 - Export der Einstellungen und Daten
 	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
+
+- Investitionsübersicht:
+	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) Die Investitionsliste wird jetzt korrekt aktualisiert, wenn keine Investitionen mehr vorhanden sind.
 
 - Produktionsübersicht, Stadtübersicht, Gebäudeeffizienzbewertung
 	-[#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Absturz behoben, der durch das neue Eventgebäude "Golden Crops" (Herbestevent) am Betaserver ausgelöst wurde
