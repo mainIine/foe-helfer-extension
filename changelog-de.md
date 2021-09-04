@@ -28,6 +28,9 @@
 - Produktionsübersicht, Stadtübersicht, Gebäudeeffizienzbewertung
 	-[#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Absturz behoben, der durch das neue Eventgebäude "Golden Crops" (Herbestevent) am Betaserver ausgelöst wurde
 
+- LG Investitionen
+	-[#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Güterproduktion des Atlantis Museum korrigiert
+
 ---
 
 ##### 2.5.9.1
