@@ -370,7 +370,7 @@ let GuildMemberStat = {
 		GuildMemberStat.InitSettings();
 		GuildMemberStat.MemberDict = {};
 
-		GuildMemberStat.hasGuildMemberRights = ExtGuildPermission >= 126 || ExtGuildPermission === 95;
+		GuildMemberStat.hasGuildMemberRights = ExtGuildPermission >= 94;
 
 		switch (source)
 		{
