@@ -21,6 +21,7 @@
 **BugFix**
 - Gildenmitglieder Übersicht:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
+	-[#2128](https://github.com/mainIine/foe-helfer-extension/issues/2128) Die Übersicht öffnet sich nicht mehr automatisch und Inaktivitäten wurden nicht mehr übernommen aufgrund geänderter Berechtigungswerte durch Inno
 
 - Export der Einstellungen und Daten
 	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
