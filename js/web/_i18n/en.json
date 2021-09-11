@@ -1015,7 +1015,7 @@
     "Settings.ShowNotifications.Title": "Notifications",
     "Settings.ShowOwnPartOnAllGBs.Desc": "Displays the 'GB calculator' for GBs of other players",
     "Settings.ShowOwnPartOnAllGBs.Title": "Display the  'GB calculator' for all GBs",
-    "Settings.ShowPlayerLinks.Desc": "Replace all player names with links to the players profile on scoredb",
+    "Settings.ShowPlayerLinks.Desc": "Replace all player names with links to the players profile on ScoreDB",
     "Settings.ShowPlayerLinks.Title": "Show player links",
     "Settings.ShowPlayersMotivation.Desc": "Should the motivation activities be tracked when the events are called?<br><br><em>Reload game after conversion</em>",
     "Settings.ShowPlayersMotivation.Title": "Motivation Activity",
