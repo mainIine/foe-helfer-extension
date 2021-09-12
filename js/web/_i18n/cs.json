@@ -119,7 +119,7 @@
     "Boxes.CityMap.CavalierPerspecitve": "Pespektivní pohled",
     "Boxes.CityMap.CopyMetaInfos": "Kopírovat data mapy města",
     "Boxes.CityMap.Desc1": "Pro pomoc s plánováním Vašeho města je třeba poslat data na foe-rechner.de",
-    "Boxes.CityMap.Desc2": "Odeslat",
+    "Boxes.CityMap.Submit": "Odeslat",
     "Boxes.CityMap.FreeArea": "Použitelných čtverců: ",
     "Boxes.CityMap.HighlightOldBuildings": "Zvýraznit budovy předchozích epoch",
     "Boxes.CityMap.NormalPerspecitve": "Půdorysný pohled",

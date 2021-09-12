@@ -99,7 +99,7 @@
     "Boxes.Campagne.Title": "Fetih Maliyeti ",
     "Boxes.CityMap.CavalierPerspecitve": "Kavalier Perspektifi",
     "Boxes.CityMap.Desc1": "Şehrinizi planlayabilmeniz için verilerinizi foe-rechner.de adresine göndermeliyiz. Orada istediğiniz gibi deneyebilirsiniz.",
-    "Boxes.CityMap.Desc2": "Gönder",
+    "Boxes.CityMap.Submit": "Gönder",
     "Boxes.CityMap.FreeArea": "Boş Alan: ",
     "Boxes.CityMap.NormalPerspecitve": "Normal",
     "Boxes.CityMap.SubmitSuccess": "Verileriniz gönderildi... şimdi geçebilirsiniz ",

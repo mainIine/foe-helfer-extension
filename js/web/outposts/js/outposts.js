@@ -515,7 +515,7 @@ let Outposts = {
 
 		t.push('<tr>');
 		t.push('<td colspan="8" class="text-right">');
-		t.push(`<button class="btn-default" onclick="Outposts.SubmitData()">${i18n('Boxes.Outpost.SubmitData2Server')}</button>`);
+		t.push(`<button class="btn-default" onclick="Outposts.SubmitData()">${i18n('Boxes.CityMap.Submit')}</button>`);
 		t.push('</td>');
 		t.push('</tr>');
 
