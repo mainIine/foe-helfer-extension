@@ -12,8 +12,11 @@
 	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Anzeige einer Spalte mit dem Datum der letzten Einzahlung in das LG
 
 - EA-Rechner:
-	-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed the logic how settings are saved in GB calculator.
-		Note: This will mean that some settings in GB calculator (like copy format) will revert to default settings once after this update
+	-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Logik geändert wie Einstellungen im EA Rechner gespeichert werden
+		Anmerkung: Diese Änderungen haben zu Folge, dass einige Einstellungen (z.B. Copy Format) nach dem Update einmalig auf Standardeinstellungen zurück gesetzt werden müssen
+
+- Moppelassistent:
+	-[#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Spieleraktivitätsicons hinzugefügt, die anzeigen ob der Spieler mehr als 2 (gelb) oder 7 (rot) Tage nicht mehr eingelogged war (funktioniert für Freunde und Gildenmitglieder falls man mindestens Anführerrechte besitzt)
 
 - Produktionsübersicht:
 	Boni und tägliche Belohnungskiste des Burgsystems hinzugefügt
