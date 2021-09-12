@@ -110,7 +110,7 @@
     "Boxes.Campagne.Title": "Pris for erobring af ",
     "Boxes.CityMap.CavalierPerspecitve": "Fugle perspektiv",
     "Boxes.CityMap.Desc1": "For at kunne bruge byplanlæggeren, skal vi sende dine data til foe-helper.com",
-    "Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Send</button>",
+    "Boxes.CityMap.Submit": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Send</button>",
     "Boxes.CityMap.FreeArea": "Ubrugt område: ",
     "Boxes.CityMap.NormalPerspecitve": "Normalt perspektiv",
     "Boxes.CityMap.ShowSubmitBox": "Vis overførselsvinduet",

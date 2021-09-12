@@ -118,7 +118,7 @@
     "Boxes.CityMap.CavalierPerspecitve": "Кавалерская перспектива",
     "Boxes.CityMap.CopyMetaInfos": "Скопировать данные города",
     "Boxes.CityMap.Desc1": "Нам необходимо отправить данные на сервер foe-helper.com, чтобы помочь Вам лучше распланировать город.",
-    "Boxes.CityMap.Desc2": "Отправить",
+    "Boxes.CityMap.Submit": "Отправить",
     "Boxes.CityMap.FreeArea": "Свободные ячейки: ",
     "Boxes.CityMap.HighlightOldBuildings": "Выделить здания предыдущих эпох",
     "Boxes.CityMap.NormalPerspecitve": "Вид сверху",

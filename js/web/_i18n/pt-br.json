@@ -119,7 +119,7 @@
     "Boxes.CityMap.CavalierPerspecitve": "Perspectiva Cavaleira",
     "Boxes.CityMap.CopyMetaInfos": "Copiar dados do mapa da cidade",
     "Boxes.CityMap.Desc1": "Para planejar sua cidade, precisamos enviar seus dados para foe-rechner.de",
-    "Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Enviar</button>",
+    "Boxes.CityMap.Submit": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Enviar</button>",
     "Boxes.CityMap.FreeArea": "Área livre: ",
     "Boxes.CityMap.HighlightOldBuildings": "Destacar os edifícios inferiores da Era",
     "Boxes.CityMap.NormalPerspecitve": "Vista do Topo",

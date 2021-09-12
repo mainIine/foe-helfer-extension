@@ -119,7 +119,7 @@
     "Boxes.CityMap.CavalierPerspecitve": "Perspective cavalière",
     "Boxes.CityMap.CopyMetaInfos": "Copier les données du plan de la cité",
     "Boxes.CityMap.Desc1": "Pour planifier votre ville, nous devons envoyer vos données à foe-helper.com. Vous pourrez alors vous y défouler. <br>Si vous n'y avez pas encore de compte, vos données de base seront envoyées avec cette transmission. Vous pouvez ensuite enregistrer votre compte sur le site.",
-    "Boxes.CityMap.Desc2": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
+    "Boxes.CityMap.Submit": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Envoyer</button>",
     "Boxes.CityMap.FreeArea": "Surface disponible : ",
     "Boxes.CityMap.HighlightOldBuildings": "Montrer les bâtiments des anciennes ères",
     "Boxes.CityMap.NormalPerspecitve": "Standard",

@@ -119,7 +119,7 @@
     "Boxes.CityMap.CavalierPerspecitve": "Izometryczny",
     "Boxes.CityMap.CopyMetaInfos": "Skopiuj dane planera miasta",
     "Boxes.CityMap.Desc1": "Aby lepiej zaprojektować Twoje miasto, musimy przesłać Twoje dane na stronę foe-rechner.de",
-    "Boxes.CityMap.Desc2": "Wyślij",
+    "Boxes.CityMap.Submit": "Wyślij",
     "Boxes.CityMap.FreeArea": "Wolny obszar: ",
     "Boxes.CityMap.HighlightOldBuildings": "Oznacz stare budynki",
     "Boxes.CityMap.NormalPerspecitve": "Standardowy",
