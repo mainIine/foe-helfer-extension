@@ -326,7 +326,15 @@ let Outposts = {
 
 			t.push('<tr>');
 
-			t.push('<td>' + advancement.name + '</td>');
+			if (advancement['rewards'].length > 0) {
+				let EntityID = advancement['rewards'][0],
+					Entity = MainParser.CityEntities[EntityID];
+
+				t.push('<td>' + Entity['name'] + '</td>');
+            }
+			else{
+				t.push('<td>' + advancement.name + '</td>');
+			}			
 
 			// X oder Haken
 			t.push('<td class="text-center">' + (unlocked ? '&#10004;' : '&#10060;') + '</td>');
