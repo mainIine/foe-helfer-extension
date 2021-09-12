@@ -667,7 +667,7 @@ let Outposts = {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.Outpost.SubmitErrorHeader'),
 					text: [
-						i18n('Boxes.CityMap.Outpost'),
+						i18n('Boxes.CityMap.SubmitError'),
 						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
 					],
 					type: 'error',
