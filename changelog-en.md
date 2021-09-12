@@ -11,6 +11,13 @@
 - Investment overview:
 	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Display of a column with the date of the last investment into the GB
 
+- GB calculator:
+	-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed the logic how settings are saved in GB calculator.
+		Note: This will mean that some settings in GB calculator (like copy format) will revert to default settings once after this update
+
+- Moppel helper:
+	-[#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Included new activity icons showing if friends/guild members have not been active in the last 2 (yellow) or 7 (red) days (works for friends and guild members if you have at least leader permissions)
+
 **BugFix**
 - Guild members overview:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Representation of the GEX calendar week is now the beginning of the GEX and no longer the end
