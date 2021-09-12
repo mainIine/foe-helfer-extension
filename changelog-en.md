@@ -18,6 +18,9 @@
 - Moppel helper:
 	-[#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Included new activity icons showing if friends/guild members have not been active in the last 2 (yellow) or 7 (red) days (works for friends and guild members if you have at least leader permissions)
 
+- Production overview:
+	Castle system: Attack/defense bonus and daily reward chest added
+
 **BugFix**
 - Guild members overview:
 	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Representation of the GEX calendar week is now the beginning of the GEX and no longer the end
@@ -29,6 +32,11 @@
 - Investment overview:
 	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) The investment list is now correctly updated when there are no more investments.
 
+- Production overview, CityMap, Building efficiency
+	-[#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Resolved crash if the new event building "golden crops" (fall event) was placed in the city
+
+- GB Investments
+	-[#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Goods production of Alcatraz fixed
 ---
 
 ##### 2.5.9.1
