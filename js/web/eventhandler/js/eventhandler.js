@@ -421,6 +421,7 @@ let EventHandler = {
 
 		h.push('</tr>');
 
+		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
 		for (let i = 0; i < PlayerList.length; i++)
 		{
 			let Player = PlayerList[i];
@@ -457,14 +458,18 @@ let EventHandler = {
 
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
-			});
-
+			});	
+			
 			h.push('<tr>');
 			h.push('<td class="is-number" data-number="' + (i + 1) + '">#' + (i + 1) + '</td>');
 
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
 
 			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
+
+			if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
+				h.push(`<img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png">`);
+            }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
