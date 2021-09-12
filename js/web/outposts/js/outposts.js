@@ -654,9 +654,9 @@ let Outposts = {
 			if(resp.status === 'OK')
 			{
 				HTML.ShowToastMsg({
-					head: i18n('Boxes.Outpost.SubmitSuccessHeader'),
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
 					text: [
-						i18n('Boxes.Outpost.SubmitSuccess'),
+						i18n('Boxes.CityMap.SubmitSuccess'),
 						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
 					],
 					type: 'success',
@@ -665,7 +665,7 @@ let Outposts = {
 			}
 			else {
 				HTML.ShowToastMsg({
-					head: i18n('Boxes.Outpost.SubmitErrorHeader'),
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
 					text: [
 						i18n('Boxes.CityMap.SubmitError'),
 						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
