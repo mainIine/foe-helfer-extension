@@ -38,6 +38,8 @@
 - LG Investitionen
 	-[#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Güterproduktion des Atlantis Museum korrigiert
 
+- Außenposten
+	-[#2147](https://github.com/mainIine/foe-helfer-extension/issues/2147) Moghulreich: Namen des ersten Gebäudes korrigiert von "Allee" in "Wasserkanal"
 ---
 
 ##### 2.5.9.1
