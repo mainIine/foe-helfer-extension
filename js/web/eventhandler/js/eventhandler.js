@@ -351,26 +351,9 @@ let EventHandler = {
 		
 		h.push('<div class="tabs"><ul class="horizontal">');
 
-		if (PlayerDictNeighborsUpdated) {
-			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
-		}
-		else {
-			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.NeighborsSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
-		}
-
-		if (PlayerDictGuildUpdated) {
-			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
-		}
-		else {
-			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.GuildSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
-		}
-
-		if (PlayerDictFriendsUpdated) {
-			h.push('<li class="' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
-		}
-		else {
-			h.push('<li class="disabled" title="' + HTML.i18nTooltip(i18n('Boxes.MoppelHelper.FriendsSocialTabTT')) + '"><a><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
-		}
+		h.push('<li class="' + (!PlayerDictNeighborsUpdated ? 'disabled' : '') + ' ' + (EventHandler.CurrentPlayerGroup === 'Neighbors' ? 'active' : '') + '"><a class="toggle-players" data-value="Neighbors"><span>' + i18n('Boxes.MoppelHelper.Neighbors') + '</span></a></li>');
+		h.push('<li class="' + (!PlayerDictGuildUpdated ? 'disabled' : '') + ' ' + (EventHandler.CurrentPlayerGroup === 'Guild' ? 'active' : '') + '"><a class="toggle-players" data-value="Guild"><span>' + i18n('Boxes.MoppelHelper.GuildMembers') + '</span></a></li>');
+		h.push('<li class="' + (!PlayerDictFriendsUpdated ? 'disabled' : '') + ' ' + (EventHandler.CurrentPlayerGroup === 'Friends' ? 'active' : '') + '"><a class="toggle-players" data-value="Friends"><span>' + i18n('Boxes.MoppelHelper.Friends') + '</span></a></li>');
 
 		h.push('</ul></div></div>');
 
@@ -394,12 +377,27 @@ let EventHandler = {
 
 		let PlayerList = [];
 		if (EventHandler.CurrentPlayerGroup === 'Friends') {
+			if (!PlayerDictFriendsUpdated) {
+				h.push('<div class="text-center"><strong class="bigerror">' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '</strong></div>');
+				await $('#moppelhelperTable').html(h.join(''))
+				return;
+            }
 			PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsFriend'] === true));
 		}
 		else if (EventHandler.CurrentPlayerGroup === 'Guild') {
+			if (!PlayerDictGuildUpdated) {
+				h.push('<div class="text-center"><strong class="bigerror">' + i18n('Boxes.MoppelHelper.GuildSocialTabTT') + '</strong></div>');
+				await $('#moppelhelperTable').html(h.join(''))
+				return;
+			}
 			PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsGuildMember'] === true));
 		}
 		else if (EventHandler.CurrentPlayerGroup === 'Neighbors') {
+			if (!PlayerDictNeighborsUpdated) {
+				h.push('<div class="text-center"><strong class="bigerror">' + i18n('Boxes.MoppelHelper.NeighborsSocialTabTT') + '</strong></div>');
+				await $('#moppelhelperTable').html(h.join(''))
+				return;
+			}
 			PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsNeighbor'] === true));
 		}
 
