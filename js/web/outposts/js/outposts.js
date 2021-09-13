@@ -326,7 +326,15 @@ let Outposts = {
 
 			t.push('<tr>');
 
-			t.push('<td>' + advancement.name + '</td>');
+			if (advancement['rewards'].length > 0) {
+				let EntityID = advancement['rewards'][0],
+					Entity = MainParser.CityEntities[EntityID];
+
+				t.push('<td>' + Entity['name'] + '</td>');
+            }
+			else{
+				t.push('<td>' + advancement.name + '</td>');
+			}			
 
 			// X oder Haken
 			t.push('<td class="text-center">' + (unlocked ? '&#10004;' : '&#10060;') + '</td>');
@@ -515,7 +523,7 @@ let Outposts = {
 
 		t.push('<tr>');
 		t.push('<td colspan="8" class="text-right">');
-		t.push(`<button class="btn-default" onclick="Outposts.SubmitData()">${i18n('Boxes.Outpost.SubmitData2Server')}</button>`);
+		t.push(`<button class="btn-default" onclick="Outposts.SubmitData()">${i18n('Boxes.CityMap.Submit')}</button>`);
 		t.push('</td>');
 		t.push('</tr>');
 
@@ -654,9 +662,9 @@ let Outposts = {
 			if(resp.status === 'OK')
 			{
 				HTML.ShowToastMsg({
-					head: i18n('Boxes.Outpost.SubmitSuccessHeader'),
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
 					text: [
-						i18n('Boxes.Outpost.SubmitSuccess'),
+						i18n('Boxes.CityMap.SubmitSuccess'),
 						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
 					],
 					type: 'success',
@@ -665,9 +673,9 @@ let Outposts = {
 			}
 			else {
 				HTML.ShowToastMsg({
-					head: i18n('Boxes.Outpost.SubmitErrorHeader'),
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
 					text: [
-						i18n('Boxes.CityMap.Outpost'),
+						i18n('Boxes.CityMap.SubmitError'),
 						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
 					],
 					type: 'error',

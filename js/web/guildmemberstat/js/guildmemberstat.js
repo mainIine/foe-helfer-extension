@@ -175,6 +175,13 @@ let GuildMemberStat = {
 	MemberDict: {},
 	ExportData: undefined,
 
+	GuildPermission_Founder: 1,
+	GuildPermission_Leader: 2,
+	GuildPermission_Inviter: 4,
+	GuildPermission_Moderator: 8,
+	GuildPermission_Trusted: 16,
+	GuildPermission_GBGOfficer: 64,
+
 
 	/**
 	 *
@@ -370,7 +377,7 @@ let GuildMemberStat = {
 		GuildMemberStat.InitSettings();
 		GuildMemberStat.MemberDict = {};
 
-		GuildMemberStat.hasGuildMemberRights = ExtGuildPermission >= 94;
+		GuildMemberStat.hasGuildMemberRights = (ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0;
 
 		switch (source)
 		{
