@@ -126,11 +126,6 @@ let Productions = {
 
 			if (d[i]['id'] >= 2000000000 && d[i]['cityentity_id'] !== 'V_AllAge_CastleSystem1') continue; //Exclude all off grid buildings except Castle
 
-			// dem Rathaus evt Boosts hinzufügen (tägliche FP, Botschafter Bonus)
-			if (d[i]['id'] === 1 && !d[i]['mainBuildingPrepared']) {
-				d[i] = Productions.prepareMainBuilding(d[i]);
-			}
-
 			// jede einzelne Produktart holen
 			let building = Productions.readType(d[i]);
 
@@ -578,6 +573,10 @@ let Productions = {
 			}
 
 			if (d['cityentity_id'] === 'V_AllAge_CastleSystem1') {
+				Ret.at = undefined;
+				Ret.in = undefined;
+
+				//Boosts
 				for (let i in MainParser.Boosts) {
 					if (!MainParser.Boosts.hasOwnProperty(i)) continue;
 
@@ -613,6 +612,56 @@ let Productions = {
 						if (!Products[ResName]) Products[ResName] = 0;
 						Products[ResName] += Value;
 					}
+				}
+
+				//Daily Chest
+				let CastleLevel,
+					CastlePoints = ResourceStock['castle_points'] | 0;
+
+				for (let i=0; i < MainParser.CastleSystemLevels.length; i++) {
+					let NextLevel = MainParser.CastleSystemLevels[i];
+					if (CastlePoints < NextLevel['requiredPoints']) break;
+					CastleLevel = NextLevel;
+				}			
+
+				if (CastleLevel) {
+					let DailyReward = CastleLevel['dailyReward'][CurrentEra];
+
+					for (let i = 0; i < DailyReward['rewards'].length; i++) {
+						let Reward = DailyReward['rewards'][i];
+						let Resources = Productions.CalcAverageRewards(Reward);
+
+						for (let ResName in Resources) {
+							if (!Resources.hasOwnProperty(ResName)) continue;
+
+							if (!Products[ResName]) Products[ResName] = 0;
+							Products[ResName] += Resources[ResName];
+                        }
+                    }
+                }
+				
+			}
+			else if(d['type'] === 'main_building') {
+				// Botschafter durchsteppen
+				if (MainParser.EmissaryService !== null) {
+
+					for (let i in MainParser.EmissaryService) {
+						if (!MainParser.EmissaryService.hasOwnProperty(i)) continue;
+
+						let Emissary = MainParser.EmissaryService[i],
+							ResName = (Emissary['bonus']['type'] === 'unit' ? 'units' : Emissary['bonus']['subType']);
+
+						if (!Products[ResName]) Products[ResName] = 0;
+						Products[ResName] += Emissary['bonus']['amount'];
+					}
+				}
+
+				// es gibt min 1 täglichen FP
+				if (MainParser.BonusService !== null) {
+					let FPBonus = MainParser.BonusService.find(o => (o['type'] === 'daily_strategypoint'));
+
+					if (!Products['strategy_points']) Products['strategy_points'] = 0;
+					Products['strategy_points'] += FPBonus['value'];
 				}
             }
 
@@ -661,6 +710,30 @@ let Productions = {
 		return Ret;
 	},
 
+
+	/**
+	 * Calculates average reward of a GenericReward
+	 * */
+	CalcAverageRewards: (GenericReward, DropChance=100) => {
+		let Ret = {};
+
+		if (GenericReward['type'] === 'resource' || GenericReward['type'] === 'good') {
+			Ret[GenericReward['subType']] = GenericReward['amount'] * DropChance/100.0;
+		}
+		else if(GenericReward['type'] === 'chest') {
+			for (let i = 0; i < GenericReward['possible_rewards'].length; i++) {
+				let CurrentReward = GenericReward['possible_rewards'][i];
+
+				let Rewards = Productions.CalcAverageRewards(CurrentReward['reward'], CurrentReward['drop_chance']);
+				for (let ResName in Rewards) {
+					if (!Ret[ResName]) Ret[ResName] = 0;
+					Ret[ResName] += Rewards[ResName];
+                }
+            }
+		}
+
+		return Ret;
+    },
 
 	/**
 	 * HTML Box erstellen und einblenden
@@ -805,8 +878,11 @@ let Productions = {
 						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
 						
 						if (Productions.TypeHasProduction(type)) {
-							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>');
-							if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + (buildings[i]['at'] ? moment.unix(buildings[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>');
+							if (!buildings[i]['at']) { //No date available
+								rowA.push('<td>');
+                            }						
+							else if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
 								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 							}
 							else {
@@ -864,9 +940,12 @@ let Productions = {
 
 						tds += '<td class="is-number" data-number="' + CurrentBuildingCount + '">' + pA.join('<br>') + '</td>' +
 							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + HTML.i18nTooltip(i18n('Boxes.Productions.TTGoodsEra')) + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
-							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + moment.unix(buildings[i]['at']).format(i18n('DateTime')) + '</td>';
+							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + (buildings[i]['at'] ? moment.unix(buildings[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>';
 
-						if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+						if (!buildings[i]['at']) {
+							tds += '<td></td>';
+                        }
+						else if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
 							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>';
 						}
 						else {
@@ -1106,9 +1185,12 @@ let Productions = {
 				rowC.push('<td>' + i18n('Eras.' + building[i]['era']) + '</td>');
 
 				if (ShowTime) {
-					rowC.push('<td>' + moment.unix(building[i]['at']).format(i18n('DateTime')) + '</td>');
+					rowC.push('<td>' + (building[i]['at'] ? moment.unix(building[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>');
 
-					if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
+					if (!building[i]['at']) {
+						rowC.push('<td></td>');
+                    }
+					else if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
 						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 					}
 					else {
@@ -1377,65 +1459,6 @@ let Productions = {
 				return false;
 		}
 		return true;
-	},
-
-
-	/**
-	 * Fügt dem Rathaus vor dem verarbeiten diverse Bonus und Boost zu
-	 *
-	 * @param d
-	 * @returns {*}
-	 */
-	prepareMainBuilding: (d)=>{
-
-		// Botschafter durchsteppen
-		if(MainParser.EmissaryService !== null)
-		{
-
-			for(let i in MainParser.EmissaryService)
-			{
-				if(!MainParser.EmissaryService.hasOwnProperty(i)){
-					break
-				}
-
-				let em = MainParser.EmissaryService[i];
-
-				if(em['bonus']['type'] === 'unit'){
-					if(d['state']['current_product']['product']['resources']['units'] === undefined){
-						d['state']['current_product']['product']['resources']['units'] = 0;
-					}
-
-					d['state']['current_product']['product']['resources']['units'] += em['bonus']['amount'];
-
-				} else {
-					if(d['state']['current_product']['product']['resources'][ em['bonus']['subType'] ] === undefined){
-						d['state']['current_product']['product']['resources'][ em['bonus']['subType'] ] = 0;
-					}
-
-					d['state']['current_product']['product']['resources'][ em['bonus']['subType'] ] += em['bonus']['amount'];
-				}
-			}
-		}
-
-		// es gibt min 1 täglichen FP
-		if(MainParser.BonusService !== null)
-		{
-			let dailyFP = MainParser.BonusService.find(o => (o['type'] === 'daily_strategypoint'));
-
-			// tägliche FP ans Rathaus übergeben
-			if(dailyFP && dailyFP['value'] )
-			{
-				if(d['state']['current_product']['product']['resources']['strategy_points'] === undefined){
-					d['state']['current_product']['product']['resources']['strategy_points'] = 0;
-				}
-
-				d['state']['current_product']['product']['resources']['strategy_points'] += dailyFP['value'];
-			}
-		}
-
-		d['mainBuildingPrepared'] = true;
-
-		return d;
 	},
 
 
