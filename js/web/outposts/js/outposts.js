@@ -651,7 +651,7 @@ let Outposts = {
 				},
 				type: localStorage.getItem('OutpostType'),
 				eras: Technologies.Eras,
-				entities:Outposts.CityMap['entities'],
+				entities: Outposts.CityMap['entities'],
 				areas: Outposts.CityMap['unlocked_areas'],
 				blockedAreas: Outposts.CityMap['blocked_areas'],
 				allEntities: Outposts.Advancements
@@ -740,6 +740,7 @@ FoEproxy.addHandler('OutpostService', 'getAll', (/** @type {FoE_NETWORK_OutpostS
 	Outposts.UpdateOutpostData();
 });
 
+
 FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostService_start} */ data, _postData) => {
 	// store changed informations
 	const culture = data.responseData;
@@ -752,8 +753,6 @@ FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostSe
 	}
 	Outposts.UpdateOutpostData();
 });
-
-// OutpostService.cancel wird von einem OutpostService.getAll gefolgt
 
 
 // Gebäude des Außenpostens sichern
@@ -797,13 +796,17 @@ FoEproxy.addHandler('CityProductionService', 'startProduction', (/** @type {FoE_
 	}
 });
 
+
 FoEproxy.addHandler('CityMapService', 'getCityMap', (/** @type {FoE_NETWORK_CityMapService_getCityMap} */data, _postData) => {
 	const response = data.responseData;
-	if (response.gridId === 'cultural_outpost') {
+
+	if (response.gridId === 'cultural_outpost')
+	{
 		Outposts.CityMap = data.responseData;
 		Outposts.RequestGUIUpdate();
 	}
 });
+
 
 FoEproxy.addHandler('CityMapService', 'placeExpansion', (/** @type {FoE_NETWORK_CityMapService_placeExpansion} */data, postData) => {
 	// TODO: update city layout Data
