@@ -616,7 +616,7 @@ const FoEproxy = (function () {
 		MainParser.BuildingSets = Object.assign({}, ...BuildingSetArray.map((x) => ({ [x.id]: x })));
 	});
 
-	// Building-Sets
+	// Building-Chains
 	FoEproxy.addMetaHandler('building_chains', (xhr, postData) => {
 		let BuildingChainsArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingChains = Object.assign({}, ...BuildingChainsArray.map((x) => ({ [x.id]: x })));
