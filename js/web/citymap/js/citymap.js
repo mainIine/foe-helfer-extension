@@ -503,6 +503,7 @@ let CityMap = {
 		});
 	},
 
+
 	GetBuildingSize: (CityMapEntity) => {
 		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
