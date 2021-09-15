@@ -39,7 +39,7 @@
 	-[#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Goods production of Alcatraz fixed
 
 - Guild Battle Box:
-	- Fixed incorrect character encoding during export
+	-[#2150](https://github.com/mainIine/foe-helfer-extension/issues/2150) Fixed incorrect character encoding during export
 
 ---
 
