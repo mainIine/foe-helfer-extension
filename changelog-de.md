@@ -40,6 +40,10 @@
 
 - Außenposten
 	-[#2147](https://github.com/mainIine/foe-helfer-extension/issues/2147) Moghulreich: Namen des ersten Gebäudes korrigiert von "Allee" in "Wasserkanal"
+
+- Gildengefecht Box:
+	-[#2150](https://github.com/mainIine/foe-helfer-extension/issues/2150) Fehlerhafte Zeichenkodierung beim Export behoben
+
 ---
 
 ##### 2.5.9.1
