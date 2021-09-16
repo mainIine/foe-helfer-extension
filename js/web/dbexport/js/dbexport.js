@@ -198,7 +198,7 @@ let DBExport = {
         try
         {
             let SuccessState = 1;
-            if (!file || !file.name || !file.type || (file.type !== 'application/json' && file.type !== 'application/zip'))
+            if (!file || !file.name || !file.type || (file.type !== 'application/json' && file.type !== 'application/zip' && file.type !== 'application/x-zip-compressed'))
             {
                 $("#debex_import_wrapper").html(`<p class="error">${i18n('Boxes.DBExport.ImportFileError')}</p>`);
                 DBExport.hidePreloader();
@@ -214,7 +214,7 @@ let DBExport = {
                         '<div class="progressbar"><div class="state"></div></div>');
 
                     // check for localStorage
-                    if (file.name.search('localStorage') == 4)
+                    if (file.name.search('localStorage') == 4 || file.name.search('localStorage') == 5)
                     {
                         await DBExport.ImportLocalStorage(file, file.name);
                         $("#debex_import_wrapper").append(`<p class="success">${i18n('Boxes.DBExport.ImportSuccessful')}</p>`);
@@ -235,6 +235,7 @@ let DBExport = {
                     break;
 
                 case 'application/zip':
+                case 'application/x-zip-compressed':
 
                     await JSZip.loadAsync(file)
                         .then(function (zip) {
@@ -248,7 +249,7 @@ let DBExport = {
                                 return Promise.all([
                                     promises.push(zip.file(zipEntry.name).async("blob").then(async function (blob) {
 
-                                        if (zipEntry.name.search('localStorage') == 4)
+                                        if (zipEntry.name.search('localStorage') == 4 || zipEntry.name.search('localStorage') == 5)
                                         {
                                             $("#dbex-loading-data .message").html('<span class="progress">' + (++exportState) + ' / ' + exportCounter + '</span>' +
                                                 '<div class="progressbar"><div class="state" style="width:50%;"></div></div>');
@@ -315,10 +316,12 @@ let DBExport = {
 
         if (!importMeta || !importMeta.data)
         {
-            $("#debex_import_wrapper").append(`<p class="error">${dbName} <span class="icon error">X</span><span class="errmsg">${i18n('Boxes.DBExport.ImportFileError')}</span></p>`);
+            $("#debex_import_wrapper").append(`<p class="error"><span class="icon error">X</span><span class="errmsg">${i18n('Boxes.DBExport.ImportFileError')}</span></p>`);
             return 0;
         }
-        let dbName = importMeta.data.databaseName;
+
+        let dbName = importMeta.data.databaseName ? importMeta.data.databaseName : '';
+
         try
         {
             // check if DB has the right PlayerID and World

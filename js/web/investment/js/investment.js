@@ -26,6 +26,10 @@ FoEproxy.addHandler('GreatBuildingsService', (data) => {
 
 	if (data['requestMethod'] === 'getContributions')
 	{
+		if(!data['responseData'] ){
+			return;
+		}
+
 		Investment.Data = data['responseData'];
 
 		Investment.UpdateData(Investment.Data, true).then((e) => {
@@ -126,6 +130,7 @@ let Investment = {
 			h = [];
 		let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings'));
 		let showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0;
+		let showInvestmentIncreaseDate = (InvestmentSettings && InvestmentSettings.showInvestmentIncreaseDate !== undefined) ? InvestmentSettings.showInvestmentIncreaseDate : 0;
 		let showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0;
 		let showMedals = (InvestmentSettings && InvestmentSettings.showMedals !== undefined) ? InvestmentSettings.showMedals : 0;
 		let showBlueprints = (InvestmentSettings && InvestmentSettings.showBlueprints !== undefined) ? InvestmentSettings.showBlueprints : 0;
@@ -162,6 +167,10 @@ let Investment = {
 			h.push('<th class="is-number invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.EntryTimeDesc')) + '">' + i18n('Boxes.Investment.Overview.EntryTime') + '</th>');
 		}
 
+		if (showInvestmentIncreaseDate)
+		{
+			h.push('<th class="is-number invest-tooltip" data-type="invest-group" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.DateOfIncreaseDesc')) + '">' + i18n('Boxes.Investment.Overview.DateOfIncrease') + '</th>');
+		}
 
 		h.push('<th class="is-number" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Progress') + '</th>');
 
@@ -219,6 +228,7 @@ let Investment = {
 			let Blueprints = typeof contribution['blueprints'] !== 'undefined' ? contribution['blueprints'] : 0;
 			let Medals = typeof contribution['medals'] !== 'undefined' ? contribution['medals'] : 0;
 			let hiddenClass = '';
+			let lastInvestmentIncreaseDate = null;
 			let history = {};
 
 			if (contribution['fphistory'] !== '[]')
@@ -228,7 +238,11 @@ let Investment = {
 				for (let i in history) {
 					if (history.hasOwnProperty(i)) {
 						if ((+MainParser.getCurrentDate() - 300 * 1000) < new Date(history[i].date).getTime())
+						{
 							newerClass = 'new';
+						}
+
+						lastInvestmentIncreaseDate = history[i].date;
 					}
 				}
 			}
@@ -245,9 +259,17 @@ let Investment = {
 			h.push(`<tr id="invhist${x}" data-id="${contribution['id']}" data-max-progress="${contribution['max_progress']}" data-detail='${JSON.stringify(history)}' class="${hasFpHistoryClass}${newerClass}${hiddenClass}"><td class="case-sensitive" data-text="${contribution['playerName'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['Avatar']]}.jpg" alt="${contribution['playerName']}"> ${contribution['playerName']}</td>`);
 			h.push('<td class="case-sensitive" data-text="' + contribution['gbname'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
 			h.push(`<td class="is-number text-center invest-tooltip" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
+			
 			if (showEntryDate) {
 				h.push(`<td class="is-numeric" data-number="${moment(contribution['date']).format('YYMMDDHHmm')}">${moment(contribution['date']).format(i18n('Date'))}</td>`);
 			}
+
+			if (showInvestmentIncreaseDate) {
+				let increaseSort = lastInvestmentIncreaseDate ? moment(lastInvestmentIncreaseDate).format('YYMMDDHHmm') : 0;
+				let increaseDate = lastInvestmentIncreaseDate ? moment(lastInvestmentIncreaseDate).format(i18n('DateTime')) : '-';
+				h.push(`<td class="is-numeric invest-tooltip" data-number="${increaseSort}">${increaseDate}</td>`);
+			}
+
 			h.push(`<td class="is-number progress" data-number="${progressWidth}"><div class="progbar" style="width: ${progressWidth}%"></div> ${contribution['current_progress']} / ${contribution['max_progress']}`);
 
 			if (DiffText !== 0)
@@ -369,6 +391,7 @@ let Investment = {
 		let c = [],
 			InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings')),
 			showEntryDate = (InvestmentSettings && InvestmentSettings.showEntryDate !== undefined) ? InvestmentSettings.showEntryDate : 0,
+			showInvestmentIncreaseDate = (InvestmentSettings && InvestmentSettings.showInvestmentIncreaseDate !== undefined) ? InvestmentSettings.showInvestmentIncreaseDate : 0,
 			showRestFp = (InvestmentSettings && InvestmentSettings.showRestFp !== undefined) ? InvestmentSettings.showRestFp : 0,
 			showBlueprints = (InvestmentSettings && InvestmentSettings.showBlueprints !== undefined) ? InvestmentSettings.showBlueprints : 0,
 			showMedals = (InvestmentSettings && InvestmentSettings.showMedals !== undefined) ? InvestmentSettings.showMedals : 0,
@@ -376,6 +399,7 @@ let Investment = {
 			removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
 		c.push(`<p>${i18n('Boxes.Investment.Overview.AdditionalColumns')}:</p><p><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
+		c.push(`<p><input id="showinvestmentincreasedate" name="showinvestmentincreasedate" value="1" type="checkbox" ${(showInvestmentIncreaseDate === 1) ? ' checked="checked"':''} /> <label for="showinvestmentincreasedate">${i18n('Boxes.Investment.Overview.DateOfIncrease')}</label></p>`);
 		c.push(`<p><input id="showrestfp" name="showrestfp" value="1" type="checkbox" ${(showRestFp === 1) ? ' checked="checked"':''} /> <label for="showrestfp">${i18n('Boxes.Investment.Overview.SettingsRestFP')}</label></p>`);
 		c.push(`<p><input id="showmedals" name="showmedals" value="1" type="checkbox" ${(showMedals === 1) ? ' checked="checked"':''} /> <label for="showmedals">${i18n('Boxes.Investment.Overview.Medals')}</label></p>`);
 		c.push(`<p><input id="showblueprints" name="showblueprints" value="1" type="checkbox" ${(showBlueprints === 1) ? ' checked="checked"':''} /> <label for="showblueprints">${i18n('Boxes.Investment.Overview.Blueprints')}</label></p>`);
@@ -437,10 +461,6 @@ let Investment = {
 
 
 	UpdateData: async (LGData, FullSync) => {
-
-		if (LGData !== null && LGData.length <= 0) {
-			return;
-		}
 
 		let arc = 1 + (MainParser.ArkBonus / 100);
 		let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
@@ -631,6 +651,7 @@ let Investment = {
 		value['showMedals'] = 0;
 		value['showHiddenGb'] = 0;
 		value['removeUnsafeCalc'] = 0;
+		value['showInvestmentIncreaseDate'] = 0;
 
 		if ($("#showentrydate").is(':checked'))
 		{
@@ -660,6 +681,11 @@ let Investment = {
 		if ($("#removeunsafecalc").is(':checked'))
 		{
 			value['removeUnsafeCalc'] = 1;
+		}
+
+		if ($("#showinvestmentincreasedate").is(':checked'))
+		{
+			value['showInvestmentIncreaseDate'] = 1;
 		}
 
 		localStorage.setItem('InvestmentSettings', JSON.stringify(value));
