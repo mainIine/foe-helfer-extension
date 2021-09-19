@@ -856,12 +856,13 @@ let GildFights = {
 	SettingsExport: (type)=> {
 
 		let blob, file;
+		let BOM = "\uFEFF";
 
 		if(type === 'json')
 		{
 			let json = JSON.stringify(GildFights.PlayerBoxContent);
 
-			blob = new Blob([json], {
+			blob = new Blob([BOM + json], {
 				type: 'application/json;charset=utf-8'
 			});
 			file = `ggfights-${ExtWorld}.json`;
@@ -882,7 +883,7 @@ let GildFights = {
 				csv.push(`${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
 			}
 
-			blob = new Blob([csv.join('\r\n')], {
+			blob = new Blob([BOM + csv.join('\r\n')], {
 				type: 'text/csv;charset=utf-8'
 			});
 			file = `ggfights-${ExtWorld}.csv`;

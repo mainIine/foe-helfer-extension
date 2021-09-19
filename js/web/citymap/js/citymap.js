@@ -14,7 +14,7 @@
 
 /**
  *
- * @type {{init: CityMap.init, showSubmitBox: CityMap.showSubmitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, GetBuildingSize: CityMap.GetBuildingSize(CityMapEntity)}}
+ * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos, GetBuildingSize: (CityMapEntity)}}
  */
 let CityMap = {
 	CityData: null,
@@ -22,6 +22,7 @@ let CityMap = {
 	ScaleUnit: 100,
 	CityView: 'skew',
 	UnlockedAreas: null,
+	BlockedAreas: null,
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
 	IsExtern: false,
@@ -62,7 +63,7 @@ let CityMap = {
 			CityMap.CityView = view;
 		}
 
-		
+
 		if( $('#city-map-overlay').length < 1 )
 		{
 			HTML.AddCssFile('citymap');
@@ -115,7 +116,7 @@ let CityMap = {
 		let oB = $('#city-map-overlayBody'),
 			w = $('<div />').attr({'id':'wrapper'});
 
-			w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -188,7 +189,9 @@ let CityMap = {
 
 		for(let i in ua)
 		{
-			if (!ua.hasOwnProperty(i)) continue;
+			if(!ua.hasOwnProperty(i)){
+				break;
+			}
 
 			let w = ((ua[i]['width'] * CityMap.ScaleUnit) / 100 ),
 				h = ((ua[i]['length'] * CityMap.ScaleUnit) / 100 ),
@@ -239,37 +242,36 @@ let CityMap = {
 			// Unlocked Areas rendern
 			CityMap.BuildGrid();
 		}
-		
+
 		let MinX = 0,
 			MinY = 0,
 			MaxX = 63,
 			MaxY = 63;
 
-		for (let b in CityMap.CityData)
-		{
+		for (let b in CityMap.CityData) {
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
 			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
-		
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
+
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
+				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
 				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
-			
+
 				f = $('<span />').addClass('entity ' + d['type']).css({
-						width: xsize + 'em',
-						height: ysize + 'em',
-						left: x + 'em',
-						top: y + 'em'
-					})
+					width: xsize + 'em',
+					height: ysize + 'em',
+					left: x + 'em',
+					top: y + 'em'
+				})
 					.attr('title', d['name'])
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
 
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
-			if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
 			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
 
 			StreetsNeeded += BuildingSize['street_area'];
@@ -343,7 +345,7 @@ let CityMap = {
 			aW.append( $('<p />').addClass('total-area') );
 			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<p />').addClass('building-count-area') );
-            
+
 			$('#sidebar').append(aW);
 		}
 
@@ -360,16 +362,16 @@ let CityMap = {
 
 		let txtCount = [];
 		for( x in sortable ){
-		    let type =  sortable[x][0];
+			let type =  sortable[x][0];
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
-		    const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
 			let str = `${TypeName}:<br> ${count} (${pct}%)<br>`;
 			if (type === 'street') {
 				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
 			}
 			str = str + '<br>';
-		    txtCount.push(str);
+			txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
 
@@ -411,7 +413,7 @@ let CityMap = {
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
 
-			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
+			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Submit') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
 		}
@@ -444,6 +446,7 @@ let CityMap = {
 				eras: Technologies.Eras,
 				entities: MainParser.CityMapData,
 				areas: CityMap.UnlockedAreas,
+				blockedAreas: CityMap.BlockedAreas,
 				metaIDs: {
 					entity: MainParser.CityEntitiesMetaId,
 					set: MainParser.CitySetsMetaId,
@@ -497,8 +500,9 @@ let CityMap = {
 				type: 'info',
 				hideAfter: 4000,
 			})
-		});	
+		});
 	},
+
 
 	GetBuildingSize: (CityMapEntity) => {
 		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
@@ -516,7 +520,7 @@ let CityMap = {
 			}
 			else {
 				Ret['streets_required'] = 0;
-            }
+			}
 		}
 		else {
 			let Size = CityEntity['components']['AllAge']['placement']['size'];
