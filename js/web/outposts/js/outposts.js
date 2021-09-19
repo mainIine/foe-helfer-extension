@@ -18,10 +18,10 @@ let Outposts = {
 
 	/** @type {FoE_JSON_CulturalOutpost|null} */
 	OutpostData : null,
-	
+
 	/** @type {FoE_JSON_Advancement[]|null} */
 	Advancements : null,
-	
+
 	/** @type {FoE_JSON_CityMap|null} */
 	CityMap: null,
 
@@ -58,16 +58,24 @@ let Outposts = {
 			window.addEventListener('change', (event) => {
 				const target = /** @type {HTMLInputElement} */(event.target);
 				const namePrefix = 'foe_helper_';
-				if (target.tagName === 'INPUT' && target.type === 'radio' && target.checked && target.name.startsWith(namePrefix) && Outposts.OutpostData) {
+
+				if (target.tagName === 'INPUT' && target.type === 'radio' && target.checked && target.name.startsWith(namePrefix) && Outposts.OutpostData)
+				{
 					const cultureName = Outposts.OutpostData.content;
 					const name = target.name.substr(namePrefix.length);
 					let value = target.value;
-					if (value === '#off') {
-						if (Outposts.PlannedTiles[cultureName]) {
+
+					if (value === '#off')
+					{
+						if (Outposts.PlannedTiles[cultureName])
+						{
 							delete Outposts.PlannedTiles[cultureName][name];
 						}
-					} else {
-						if (!Outposts.PlannedTiles[cultureName]) {
+					}
+					else
+					{
+						if (!Outposts.PlannedTiles[cultureName])
+						{
 							Outposts.PlannedTiles[cultureName] = {};
 						}
 						Outposts.PlannedTiles[cultureName][name] = value;
@@ -132,12 +140,12 @@ let Outposts = {
 		/** @type {{name: string, diplomacy: number}[]}} */
 		const UnlockedDiplomacyBuildings =
 			advancements
-			.filter(building => building.isUnlocked && building.rewards[0].toLocaleLowerCase().indexOf('diplomacy') > -1)
-			.map(building => {
-				let BuildingData = MainParser.CityEntities[building.rewards[0]];
-				return {name: building.name, diplomacy: BuildingData.staticResources.resources.diplomacy};
-			})
-			.reverse()
+				.filter(building => building.isUnlocked && building.rewards[0].toLocaleLowerCase().indexOf('diplomacy') > -1)
+				.map(building => {
+					let BuildingData = MainParser.CityEntities[building.rewards[0]];
+					return {name: building.name, diplomacy: BuildingData.staticResources.resources.diplomacy};
+				})
+				.reverse()
 		;
 
 		/** @type {FoE_JSON_Goods} */
@@ -146,19 +154,19 @@ let Outposts = {
 		/** @type {FoE_JSON_Goods} */
 		let sums = Object.fromEntries(resourceIDs.map(id => [id, 0]));
 
-		
+
 
 		let tileSelectablePrices =
 			Outposts.CityMap
-			? /** @type {FoE_JSON_CityEntityTilesetSelectablePrice[]|undefined} */
-			(Outposts.CityMap.tilesets.filter(t => t.available && t.type === 'selectablePrice'))
-			: undefined
+				? /** @type {FoE_JSON_CityEntityTilesetSelectablePrice[]|undefined} */
+				(Outposts.CityMap.tilesets.filter(t => t.available && t.type === 'selectablePrice'))
+				: undefined
 		;
 		/** @type {null|[string, FoE_JSON_PartialGoods][]} */
 		const nextTilesCosts =
 			tileSelectablePrices
-			? (tileSelectablePrices.map(tile => [tile.id, tile.requirements.cost.resources]))
-			: null
+				? (tileSelectablePrices.map(tile => [tile.id, tile.requirements.cost.resources]))
+				: null
 		;
 
 		/** @type {number} */
@@ -171,7 +179,7 @@ let Outposts = {
 				}
 				const production = state.current_product;
 				if (!production) return acc;
-				
+
 				if (production.__class__ === 'CityEntityProductionProduct') {
 					const amount = production.product.resources[primaryResourceId];
 					if (amount != null) {
@@ -220,7 +228,7 @@ let Outposts = {
 
 		// Münzen und aktuelle Münz-Produktion
 		t.push(
-			  '</span><span><strong>'
+			'</span><span><strong>'
 			+ GoodsData[primaryResourceId].name + ': ' + HTML.Format(ResourceStock[primaryResourceId]||0)
 			+ '</strong> (+ '
 			+ (current4HProductionRate > 0 ? HTML.Format(MainParser.round(current4HProductionRate)) : '???')
@@ -268,7 +276,7 @@ let Outposts = {
 							const isPlanned = plannedTiles[tileID]===resourceID;
 							if (displayAllTiles) {
 								t.push(
-									  '<td class="text-center'+(canPurchase?' text-success':'')+'">'
+									'<td class="text-center'+(canPurchase?' text-success':'')+'">'
 									+ '<label><input type="radio" value="'+resourceID+'" name="foe_helper_'+tileID+'"'
 									+ (isPlanned?' checked':'')
 									+ '/><span>'
@@ -318,7 +326,15 @@ let Outposts = {
 
 			t.push('<tr>');
 
-			t.push('<td>' + advancement.name + '</td>');
+			if (advancement['rewards'].length > 0) {
+				let EntityID = advancement['rewards'][0],
+					Entity = MainParser.CityEntities[EntityID];
+
+				t.push('<td>' + Entity['name'] + '</td>');
+            }
+			else{
+				t.push('<td>' + advancement.name + '</td>');
+			}			
 
 			// X oder Haken
 			t.push('<td class="text-center">' + (unlocked ? '&#10004;' : '&#10060;') + '</td>');
@@ -333,16 +349,16 @@ let Outposts = {
 				else { //Goldmünzen bzw. Beute => abhängig von anderen Güterkosten
 					for (let CostResourceName in sums) {
 						if (CostResourceName === 'diplomacy' || CostResourceName === goodProductionResourceId) continue;
-												
+
 						resourceCost += Math.max(Math.ceil((sums[CostResourceName] - (ResourceStock[CostResourceName] | 0)) / 5) * (goodProductionResourceId === 'egyptians_loot' ? 50 : 1000), 0);
-                    }
-                }
+					}
+				}
 				const resourceInStock = currStock[resourceID];
-								
+
 				if (!resourceCost) resourceCost = 0;
 
 				t.push('<td class="text-center" nowrap="nowrap">');
-				
+
 				if (unlocked) {
 					// bereits erforscht
 					t.push('<span class="text-muted">' + HTML.Format(resourceCost) + '</span>');
@@ -367,9 +383,9 @@ let Outposts = {
 					resourceSumAfter = resourceSumBefore + resourceCost;
 				}
 				sums[resourceID] = resourceSumAfter;
-				
+
 				const displayVal = HTML.Format(displaySums && resourceID !== 'diplomacy' && resourceID !== goodProductionResourceId ? resourceSumAfter : resourceCost);
-				
+
 				if (resourceInStock >= resourceSumAfter) {
 					// Es sind genug Güter vorhanden.
 					t.push('<span class="text-success">' +displayVal + '</span>' );
@@ -408,7 +424,7 @@ let Outposts = {
 						t.push('<span class="diplomacy-ask">?<span class="diplomacy-tip">' + content.join('<br>') + '</span></span>');
 					}
 				}
-			
+
 				t.push('</td>');
 			}
 
@@ -439,13 +455,13 @@ let Outposts = {
 					const resourceCost = plannedTilesCostSum[resourceID];
 					if (resourceCost > 0) {
 						const resourceInStock = currStock[resourceID];
-						
+
 						const resourceSumBefore = sums[resourceID];
 						const resourceSumAfter = resourceID === 'diplomacy' ? resourceCost : resourceSumBefore + resourceCost;
 						sums[resourceID] = resourceSumAfter;
-						
+
 						const displayVal = HTML.Format(displaySums ? resourceSumAfter : resourceCost);
-						
+
 						t.push('<td class="text-center">');
 						if (resourceInStock < resourceSumBefore) {
 							t.push(displayVal);
@@ -469,7 +485,7 @@ let Outposts = {
 			}
 		}
 
-		
+
 		// Benötigt
 		t.push('<tr class="total-row">');
 
@@ -505,6 +521,11 @@ let Outposts = {
 
 		t.push('</tr>');
 
+		t.push('<tr>');
+		t.push('<td colspan="8" class="text-right">');
+		t.push(`<button class="btn-default" onclick="Outposts.SubmitData()">${i18n('Boxes.CityMap.Submit')}</button>`);
+		t.push('</td>');
+		t.push('</tr>');
 
 		t.push('</table>');
 
@@ -521,24 +542,24 @@ let Outposts = {
 	UpdateOutpostData: () => {
 		const outposts = Outposts.OutpostsData;
 		if (!outposts) return;
-		
+
 		/** @type {number} */
 		let LastStartedTime = 0;
-		
+
 		let currentOutpost = outposts.find(
 			outpost => outpost.startedAt !== undefined && outpost.startedAt > LastStartedTime
 		);
-		
+
 		if (currentOutpost) {
 			let OldOutpostType = localStorage.getItem('OutpostType'),
 				NewOutpostType = currentOutpost.content;
-				
+
 			if (OldOutpostType === undefined || OldOutpostType !== NewOutpostType) {
 				localStorage.setItem('OutpostType', NewOutpostType);
 				localStorage.removeItem('OutpostBuildings'); //Typ des Außenpostens hat sich geändert => Gebäude löschen => führt dazu, dass Button erst nach dem Besuch des Außenpostens grün wird
 				Outposts.Advancements = null;
-		}
-		
+			}
+
 			Outposts.OutpostData = currentOutpost;
 			Outposts.RequestGUIUpdate();
 		} else {
@@ -553,11 +574,11 @@ let Outposts = {
 
 	/**
 	 * Sucht die benötigten Resources für den Außenposten heraus
-	 * 
+	 *
 	 * @returns {void}
 	 */
-    CollectResources: () => {
-        if (Outposts.OutpostData === null) return; //Kein Außenposten aktiv
+	CollectResources: () => {
+		if (Outposts.OutpostData === null) return; //Kein Außenposten aktiv
 		Outposts.RequestGUIUpdate();
 	},
 
@@ -568,7 +589,7 @@ let Outposts = {
 	 * @param {FoE_JSON_Advancement[]} d
 	 */
 	SaveBuildings: (d)=>{
-        localStorage.setItem('OutpostBuildings', JSON.stringify(d));
+		localStorage.setItem('OutpostBuildings', JSON.stringify(d));
 
 		Outposts.Advancements = d;
 
@@ -605,7 +626,7 @@ let Outposts = {
 	/**
 	 * Bei sichtbarer Anzeige sorgt ein Aufruf dieser Funktion dafür,
 	 * dass die Anzeige zum nächsten Frame neu generiert wird.
-	 * 
+	 *
 	 * @returns {void}
 	 */
 	RequestGUIUpdate: () => {
@@ -615,6 +636,53 @@ let Outposts = {
 				requestAnimationFrame(Outposts.BuildInfoBoxContent);
 			}
 		}
+	},
+
+
+	SubmitData: () => {
+		let currentDate = new Date(),
+			d = {
+				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
+				player: {
+					name: ExtPlayerName,
+					id: ExtPlayerID,
+					world: ExtWorld,
+					avatar: ExtPlayerAvatar
+				},
+				type: localStorage.getItem('OutpostType'),
+				eras: Technologies.Eras,
+				entities: Outposts.CityMap['entities'],
+				areas: Outposts.CityMap['unlocked_areas'],
+				blockedAreas: Outposts.CityMap['blocked_areas'],
+				allEntities: Outposts.Advancements
+			};
+
+		MainParser.send2Server(d, 'CityPlanner', function(resp){
+
+			if(resp.status === 'OK')
+			{
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitSuccess'),
+						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
+					],
+					type: 'success',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitError'),
+						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
+					],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+		});
 	},
 
 
@@ -672,6 +740,7 @@ FoEproxy.addHandler('OutpostService', 'getAll', (/** @type {FoE_NETWORK_OutpostS
 	Outposts.UpdateOutpostData();
 });
 
+
 FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostService_start} */ data, _postData) => {
 	// store changed informations
 	const culture = data.responseData;
@@ -684,9 +753,6 @@ FoEproxy.addHandler('OutpostService', 'start', (/** @type {FoE_NETWORK_OutpostSe
 	}
 	Outposts.UpdateOutpostData();
 });
-
-// OutpostService.cancel wird von einem OutpostService.getAll gefolgt
-
 
 
 // Gebäude des Außenpostens sichern
@@ -730,13 +796,17 @@ FoEproxy.addHandler('CityProductionService', 'startProduction', (/** @type {FoE_
 	}
 });
 
+
 FoEproxy.addHandler('CityMapService', 'getCityMap', (/** @type {FoE_NETWORK_CityMapService_getCityMap} */data, _postData) => {
 	const response = data.responseData;
-	if (response.gridId === 'cultural_outpost') {
+
+	if (response.gridId === 'cultural_outpost')
+	{
 		Outposts.CityMap = data.responseData;
 		Outposts.RequestGUIUpdate();
 	}
 });
+
 
 FoEproxy.addHandler('CityMapService', 'placeExpansion', (/** @type {FoE_NETWORK_CityMapService_placeExpansion} */data, postData) => {
 	// TODO: update city layout Data

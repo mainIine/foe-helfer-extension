@@ -18,25 +18,34 @@
         <link href="../css/popup.css" rel="stylesheet">
     </head>
     <body>
-    	<h5 data-translate="title">FoE Helfer</h5>
-
-        <p data-translate="desc">
-            Dir gefällt diese kleine kostenlose Extension und du möchtest sie supporten damit das weiterhin so bleibt?<br> Dann ist jede kleine Spende für Support immer gern gesehen.
-        </p>
-
-        <p class="text-center">
-            <span class="paypal-link">
-                <img class="img-fluid" src="../css/images/paypal-donate.jpg" alt="PayPal Donation">
-            </span>
-        </p>
-
-        <p data-translate="thanks">
-            Vielen Dank! <a href="alerts.html" class="text-right">Alerts</a>
-        </p>
-
-        <p class="text-right mt-3 mb-0">
+        <section>
+            <h3 data-translate="title">FoE Helfer</h3>
+            <p data-translate="intro">A thirdparty browser extension for Forge of Empires.</p>
+        </section>
+        <section id="links">
+            <ul class="helplist">
+                <li><a href="https://discord.gg/z97KZq4" target="_blank"><span class="discord">&nbsp;</span>Discord</a></li>
+                <li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>GitHub</a></li>
+                <li><a href="https://foe-helper.com" target="_blank"><span class="website">&nbsp;</span>Website</a></li>
+            </ul>
+        </section>
+        <section id="donate">
+            <h3 data-translate="donate">Spenden</h3>
+            <p>
+                <span data-translate="desc">Dir gefällt diese kleine kostenlose Extension?<br> Jede kleine Spende ist immer gern gesehen. </span>
+                <span data-translate="thanks">
+                    Vielen Dank! <a href="alerts.html" class="text-right">Alerts</a>
+                </span>
+            </p>
+            <p>
+                <span class="paypal-link">
+                    <img src="../css/images/paypal-donate.png" alt="PayPal Donation">
+                </span>
+            </p>
+        </section>
+        <footer class="text-right">
             <small class="text-muted">&copy; 2021 - <span class="foe-link">foe-helper.com</span></small>
-        </p>
+        </footer>
 
         <script src="/vendor/jQuery/jquery.min.js"></script>
         <script src="../js/popup.js"></script>

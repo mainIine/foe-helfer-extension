@@ -12,8 +12,33 @@
  */
 
 body {
-    min-width: 350px;
-    padding: 25px;
+    min-width: 300px;
+	background-color: #fff;
+	margin: 0;
+	font-size: 1em;
+}
+
+body > section, body > footer {
+	padding: 15px;
+}
+
+p {
+	margin: 0.25rem 0 0.5rem;
+}
+
+p:last-child {
+	margin-bottom: 0;
+}
+
+section {
+	border-bottom: 1px solid #ccc;
+}
+
+h3 {
+	color: #1573d4;
+	font-weight: bold;
+	margin: 0;
+	font-size: 1.1em;
 }
 
 .foe-link {
@@ -22,5 +47,74 @@ body {
 }
 
 .paypal-link {
+	text-align: center;
+	display: block;
+}
+
+.paypal-link img {
 	cursor: pointer;
+	width: 160px;
+}
+
+footer {
+	background-color: #eee;
+	font-size: 90%;
+	text-align: right;
+}
+
+#links {
+	background-color: #333;
+	font-size: 85%;
+	padding: 5px 0 2px;
+}
+
+#donate {
+	font-size: 90%;
+}
+
+.helplist {
+	margin: 0;
+	list-style: none;
+	padding: 0;
+	text-align: center;
+}
+
+.helplist li {
+	display: inline-block;
+	margin: 0;
+}
+
+.helplist a {
+	text-decoration: none;
+	display: block;
+	overflow: hidden;
+	padding: 5px;
+	color: var(--text-normal);
+	line-height: 26px;
+	color: #eee;
+}
+
+.helplist li span {
+	display: inline-block;
+	background-color: #000;
+	width: 30px;
+	height: 32px;
+	margin-right: 3px;
+	background: url('../js/web/settings/images/help.png') 0 0 no-repeat;
+	text-decoration: none;
+}
+
+.helplist .discord {
+	background-position: -33px 0;
+}
+
+.helplist .forums {
+	background-position: -63px 0;
+	width: 34px;
+	margin-right: 4px;
+}
+
+.helplist .website {
+	background-position: -97px 0;
+	width: 32px;
 }
