@@ -377,7 +377,7 @@ let GreatBuildings =
             let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));
             let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
             let Era = Technologies.Eras[EraName];
-            let DoubleCollection = (GBData.ID !== 'X_FutureEra_Landmark1');
+            let DoubleCollection = (GBData.ID !== 'X_FutureEra_Landmark1' && GBData.ID !== 'X_AllAge_Expedition' && GBData.ID !== 'X_SpaceAgeVenus_Landmark1');
 
             let NettoCosts = [];
             for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {

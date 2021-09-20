@@ -4,52 +4,59 @@
 
 **Update**
 - Gildenmitglieder Übersicht:
-	-[#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
-		- Gewonnene Kämpfe der Mitglieder können in der Übersicht mit angezeigt werden (in den Einstellungen der Gilden Mitgliederübersicht aktivierbar).
-		- Gewonnene Kämpfe und ob der Spieler noch aktives Mitglied der Gilde ist, wurden in den Export mit aufgenommen.
+    - [#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
+        - Gewonnene Kämpfe der Mitglieder können in der Übersicht mit angezeigt werden (in den Einstellungen der Gilden Mitgliederübersicht aktivierbar).
+        - Gewonnene Kämpfe und ob der Spieler noch aktives Mitglied der Gilde ist, wurden in den Export mit aufgenommen.
 
 - Investitionsübersicht:
-	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Anzeige einer Spalte mit dem Datum der letzten Einzahlung in das LG
+    - [#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Anzeige einer Spalte mit dem Datum der letzten Einzahlung in das LG
 
 - EA-Rechner:
-	-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Logik geändert wie Einstellungen im EA Rechner gespeichert werden
-		Anmerkung: Diese Änderungen haben zu Folge, dass einige Einstellungen (z.B. Copy Format) nach dem Update einmalig auf Standardeinstellungen zurück gesetzt werden müssen
+    - [#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Logik geändert wie Einstellungen im EA Rechner gespeichert werden.
+        Anmerkung: Diese Änderungen haben zu Folge, dass einige Einstellungen (z.B. Copy Format) nach dem Update einmalig auf Standardeinstellungen zurück gesetzt werden müssen
 
 - Moppelassistent:
-	-[#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Spieleraktivitätsicons hinzugefügt, die anzeigen ob der Spieler mehr als 2 (gelb) oder 7 (rot) Tage nicht mehr eingelogged war (funktioniert für Freunde und Gildenmitglieder falls man mindestens Anführerrechte besitzt)
+    - [#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Spieleraktivitätsicons hinzugefügt, die anzeigen ob der Spieler mehr als 2 (gelb) oder 7 (rot) Tage nicht mehr eingelogged war (funktioniert für Freunde und Gildenmitglieder falls man mindestens Anführerrechte besitzt)
 
 - Produktionsübersicht:
-	Boni und tägliche Belohnungskiste des Burgsystems hinzugefügt
+    - Boni und tägliche Belohnungskiste des Burgsystems hinzugefügt
+  
+- Blaue Galaxie Helfer:
+	- [#2103](https://github.com/mainIine/foe-helfer-extension/issues/2103) Wenn das automatische öffnen aktiviert ist, schließt sich die Box am Ende aller Versuche auch automatisch
 
 **BugFix**
 - Gildenmitglieder Übersicht:
-	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
-	-[#2128](https://github.com/mainIine/foe-helfer-extension/issues/2128) Die Übersicht öffnet sich nicht mehr automatisch und Inaktivitäten wurden nicht mehr übernommen aufgrund geänderter Berechtigungswerte durch Inno
+    - [#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
+    - [#2128](https://github.com/mainIine/foe-helfer-extension/issues/2128) Die Übersicht öffnet sich nicht mehr automatisch und Inaktivitäten wurden nicht mehr übernommen aufgrund geänderter Berechtigungswerte durch Inno
 
 - Export der Einstellungen und Daten
-	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
+    - [#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
 
 - Investitionsübersicht:
-	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) Die Investitionsliste wird jetzt korrekt aktualisiert, wenn keine Investitionen mehr vorhanden sind.
+    - [#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) Die Investitionsliste wird jetzt korrekt aktualisiert, wenn keine Investitionen mehr vorhanden sind.
 
 - Produktionsübersicht, Stadtübersicht, Gebäudeeffizienzbewertung
-	-[#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Absturz behoben, der durch das neue Eventgebäude "Golden Crops" (Herbestevent) am Betaserver ausgelöst wurde
+    - [#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Absturz behoben, der durch das neue Eventgebäude "Golden Crops" (Herbestevent) am Betaserver ausgelöst wurde
 
 - LG Investitionen
-	-[#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Güterproduktion des Atlantis Museum korrigiert
+    - [#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Güterproduktion des Atlantis Museum korrigiert
 
 - Außenposten
-	-[#2147](https://github.com/mainIine/foe-helfer-extension/issues/2147) Moghulreich: Namen des ersten Gebäudes korrigiert von "Allee" in "Wasserkanal"
+    - [#2147](https://github.com/mainIine/foe-helfer-extension/issues/2147) Moghulreich: Namen des ersten Gebäudes korrigiert von "Allee" in "Wasserkanal"
+
+- Gildengefecht Box:
+    - [#2150](https://github.com/mainIine/foe-helfer-extension/issues/2150) Fehlerhafte Zeichenkodierung beim Export behoben
+
 ---
 
 ##### 2.5.9.1
 
 **Update**
 - Blaue Galaxie:
-	-[#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) Die Anzahl der verbleibenden Aufladungen wird nun im Menüicon angezeigt
+    - [#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) Die Anzahl der verbleibenden Aufladungen wird nun im Menüicon angezeigt
 
 - EA-Rechner:
-	-[#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Eigenanteil kann nun auch zum Copystring hinzugefügt werden
+    - [#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Eigenanteil kann nun auch zum Copystring hinzugefügt werden
 
 **BugFix**
 - Erweiterung: 
@@ -62,18 +69,18 @@
 	- [#2104](https://github.com/mainIine/foe-helfer-extension/issues/2104) Die Zähler wurden nach Neuladen des Spiels zurückgesetzt. Passiert nun nicht mehr.
 	
 - Gildenmitglieder Übersicht:
-	-[#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Ungültiger scoredb Link bei einigen Spielern im Tab "legendäre Bauwerke"
+    - [#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Ungültiger scoredb Link bei einigen Spielern im Tab "legendäre Bauwerke"
 
 - Menü:
-	-[#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Einige Boxen konnten durch einen 2. Klick des Menüicons nicht geschlossen werden
+    - [#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Einige Boxen konnten durch einen 2. Klick des Menüicons nicht geschlossen werden
 
 - Infoboard:
-	-[#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) Der Spielername wurde nicht korrekt angezeigt, wenn man in einer Auktion überboten wurde
+    - [#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) Der Spielername wurde nicht korrekt angezeigt, wenn man in einer Auktion überboten wurde
 
 - Produktionsübersicht/Effizienzbewertung:
-	-[#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Falsche Werte von Vorrats/Münzproduktion bei mehrmaligem öffnen der Produktionsübersicht
-	-[#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Ungültige Werte bei der Güterproduktion bei Gebäuden, die Gildengüter produzieren
-	-[#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Ungültige Werte bei der Güterproduktion, falls gerade eine Produktionsoption <> 24h aktiv ist
+    - [#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Falsche Werte von Vorrats/Münzproduktion bei mehrmaligem öffnen der Produktionsübersicht
+    - [#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Ungültige Werte bei der Güterproduktion bei Gebäuden, die Gildengüter produzieren
+    - [#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Ungültige Werte bei der Güterproduktion, falls gerade eine Produktionsoption <> 24h aktiv ist
 
 ---
 
