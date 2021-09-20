@@ -4,49 +4,60 @@
 
 **Update**
 - Guild members overview:
-	-[#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
-		- Won battles of the members can be displayed in the overview (can be activated in the settings of the guild member overview).
-		- Won battles and whether the player is still an active member of the guild were included in the export.
+	- [#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
+		- Won fights of members can be displayed in the overview (can be activated in the settings of the guild member overview).
+		- Won battles and whether the player is still an active member of the guild have been included in the export.
 
 - Investment overview:
-	-[#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Display of a column with the date of the last investment into the GB
+	- [#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Display of a column with the date of the last payment into the LG.
 
-- GB calculator:
-	-[#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed the logic how settings are saved in GB calculator.
-		Note: This will mean that some settings in GB calculator (like copy format) will revert to default settings once after this update
+- EA Calculator:
+	- [#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Changed logic of how settings are saved in EA Calculator.
+	  Note: These changes mean that some settings (e.g. Copy Format) have to be reset to default settings once after the update.
 
-- Moppel helper:
-	-[#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Included new activity icons showing if friends/guild members have not been active in the last 2 (yellow) or 7 (red) days (works for friends and guild members if you have at least leader permissions)
+- Moppelassistent:
+	- [#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Added player activity icons that show if the player has not been logged in for more than 2 (yellow) or 7 (red) days (works for friends and guild members if you have at least leader rights)
 
 - Production overview:
-	Castle system: Attack/defense bonus and daily reward chest added
+	- Bonuses and daily reward box of the castle system added
 
-**BugFix**
-- Guild members overview:
-	-[#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Representation of the GEX calendar week is now the beginning of the GEX and no longer the end
-	-[#2128](https://github.com/mainIine/foe-helfer-extension/issues/2128) The overview no longer opens automatically and inactivities were no longer taken over due to changed authorisation values through Inno
+- Blue Galaxy Helper:
+	- [#2103](https://github.com/mainIine/foe-helfer-extension/issues/2103) If auto-open is enabled, the box will also close automatically at the end of all attempts.
+
+**BugFix
+- Guild Member Overview:
+	- [#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Display of GEX calendar week is now the beginning of the GEX and not the end anymore
+	- [#2128](https://github.com/mainIine/foe-helfer-extension/issues/2128) Overview no longer opens automatically and inactivities were no longer taken over due to changed permission values by Inno
 
 - Export of settings and data
-	-[#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Fixed world-specific error when importing local settings.
+	- [#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Fixed world-specific error when importing local settings.
 
 - Investment overview:
-	-[#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) The investment list is now correctly updated when there are no more investments.
+	- [#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) Investment list is now correctly updated when there are no more investments.
 
-- Production overview, CityMap, Building efficiency
-	-[#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Resolved crash if the new event building "golden crops" (fall event) was placed in the city
+- Production overview, city overview, building efficiency rating
+	- [#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Fixed crash caused by new event building "Golden Crops" (Herbes event) on beta server.
 
-- GB Investments
-	-[#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Goods production of Alcatraz fixed
+- LG Investments
+	- [#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Goods production of the Atlantis Museum corrected
+
+- Outpost
+	- [#2147](https://github.com/mainIine/foe-helfer-extension/issues/2147) Moghul Empire: Name of first building corrected from "Avenue" to "Water Canal
+
+- Guild Battle Box:
+	- [#2150](https://github.com/mainIine/foe-helfer-extension/issues/2150) Fixed incorrect character encoding on export.
+
 ---
+
 
 ##### 2.5.9.1
 
 **Update**
 - Blue Galaxy:
-    -[#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) The number of remaining recharges is now shown in the menu icon
+    - [#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) The number of remaining recharges is now shown in the menu icon
 
 - EA Calculator:
-	-[#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Own share can now also be added to the copystring
+    - [#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Own share can now also be added to the copystring
 
 **BugFix**
 - Extension:
@@ -59,18 +70,18 @@
     - [#2104](https://github.com/mainIine/foe-helfer-extension/issues/2104) Counters were reset after reloading the game. Does not happen anymore.
 
 - Guild members overview:
-	-[#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Invalid scoredb link for some players in the "legendary buildings" tab.
+    - [#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Invalid scoredb link for some players in the "legendary buildings" tab.
 
 - Menu:
-    -[#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Some boxes could not be closed by a 2nd click of the menu icon
+    - [#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Some boxes could not be closed by a 2nd click of the menu icon
 
 - Infoboard:
-    -[#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) The player name was not displayed correctly when being outbid in an auction
+    - [#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) The player name was not displayed correctly when being outbid in an auction
 
 - Production overview/efficiency rating:
-    -[#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Wrong values of stock/coin production when opening the production overview several times.
-    -[#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Invalid values of goods production for buildings producing guild goods
-    -[#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Invalid values for goods production if a production option is currently active <> 24h
+    - [#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Wrong values of stock/coin production when opening the production overview several times.
+    - [#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Invalid values of goods production for buildings producing guild goods
+    - [#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Invalid values for goods production if a production option is currently active <> 24h
 
 ---
 

@@ -12,7 +12,7 @@
  */
 
 /**
- * @type {{BuildingSelectionKits: null, ItemTd: (function(*=): string), init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): []), BuildingSets: null, ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
+ * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
@@ -29,7 +29,7 @@ let Kits = {
 
 		if(data === null || MainParser.checkNextUpdate('KnownKitsDate') === true)
 		{
-			MainParser.loadJSON('https://cache.foe-helper.com/kits/sets.json', (data)=>{
+			MainParser.loadJSON(extURL + 'js/web/kits/data/sets.json', (data)=>{
 
 				localStorage.setItem('KnownKitsData', data);
 				localStorage.setItem('KnownKitsDate', MainParser.getAddedDateTime(48));
@@ -133,7 +133,8 @@ let Kits = {
 					itemUgr = inv.find(el => el['itemAssetName'] === building['update']);
 				}
 
-				if(itemL1){
+				if(itemL1)
+				{
 					itemRow.push({
 						type: 'first',
 						item: itemL1,
