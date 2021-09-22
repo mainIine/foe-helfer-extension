@@ -7,12 +7,10 @@
 	"manifest_version": 2,
 	"permissions": [
 		"alarms",
-		"activeTab",
 		"storage",
 		"tabs",
 	  	"notifications",
 		"clipboardWrite",
-	  	"management",
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
