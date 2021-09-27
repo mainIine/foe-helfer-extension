@@ -40,7 +40,7 @@ FoEproxy.addFoeHelperHandler('BonusUpdated', data => {
     BlueGalaxy.SetCounter();
 
     if ($('#bluegalaxy').length > 0) {
-        BlueGalaxy.CalcBody();
+        BlueGalaxy.Show(event=true, auto_close=true);
     }
 });
 
@@ -55,7 +55,7 @@ let BlueGalaxy = {
 	 *
 	 * @constructor
 	 */
-    Show: () => {
+    Show: (event=false, auto_close = false) => {
         moment.locale(i18n('Local'));
 
         if ($('#bluegalaxy').length === 0) {
@@ -90,9 +90,16 @@ let BlueGalaxy = {
                 Productions.ShowFunction($(this).data('id'));
             });
 
-			BlueGalaxy.CalcBody();
+            BlueGalaxy.CalcBody();
 
-        } else {
+        } else if (event) {
+            BlueGalaxy.CalcBody();
+        }
+        else {
+            HTML.CloseOpenBox('bluegalaxy');
+        }
+
+        if (auto_close && BlueGalaxy.DoubleCollections === 0) {
             HTML.CloseOpenBox('bluegalaxy');
         }
     },
