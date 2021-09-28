@@ -641,7 +641,7 @@ let Productions = {
                 }
 				
 			}
-			else if(d['type'] === 'main_building') {
+			else if(d['id'] === 1) {
 				// Botschafter durchsteppen
 				if (MainParser.EmissaryService !== null) {
 
@@ -816,13 +816,13 @@ let Productions = {
 				sizetooltips = [];
       
 				// Gebäudegrößen für Effizienzberechnung laden
-				for (let i in MainParser.CityMapData) {
-					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
+				for (let i in Productions.CombinedCityMapData) {
+					if (!Productions.CombinedCityMapData.hasOwnProperty(i)) continue;
 
-					let BuildingSize = CityMap.GetBuildingSize(MainParser.CityMapData[i]);
+					let BuildingSize = CityMap.GetBuildingSize(Productions.CombinedCityMapData[i]);
 
-					sizes[MainParser.CityMapData[i]['cityentity_id']] = BuildingSize['total_area'];
-					sizetooltips[MainParser.CityMapData[i]['cityentity_id']] = (BuildingSize['street_area'] > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': BuildingSize['street_area'] }) : '');
+					sizes[Productions.CombinedCityMapData[i]['cityentity_id']] = BuildingSize['total_area'];
+					sizetooltips[Productions.CombinedCityMapData[i]['cityentity_id']] = (BuildingSize['street_area'] > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': BuildingSize['street_area'] }) : '');
 	            }
 
 			// einen Typ durchsteppen [money,supplies,strategy_points,...]
