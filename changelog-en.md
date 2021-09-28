@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 2.5.9.3
+
+**Update**
+- Guild members overview:
+	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) Show 0 values for Gex/GG in guild member statistic
+		- Optionally via the settings menu of the box, the entries of the individual players can now also be displayed, in which the player had no participation in GE or GBG
+	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Date format GE/GBG in the guild member statistic
+		- The date format of Gex/GG participations can now be changed from calendar week to start date, end date or calendar week.
+
+---
+
 ##### 2.5.9.2
 
 **Update**
