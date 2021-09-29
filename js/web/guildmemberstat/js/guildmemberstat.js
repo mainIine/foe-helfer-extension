@@ -149,7 +149,7 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 
 
 /**
- * @type {{GBGId: undefined, acceptedDeleteWarning: boolean, ConversationIds: [], hasUpdateProgress: boolean, RefreshPlayerGBGDB: (function(*): Promise<void>), ReadGuildMemberBuildings: (function(*, *): Promise<void>), uniq_array: (function(*): *), CurrentStatGroup: string, MemberDict: {}, RefreshGuildMemberDB: (function(*): Promise<void>), TreasuryGoodsData: {}, RefreshForumDB: (function(*): Promise<void>), BuildBox: (function(*=): undefined), GBGData: undefined, hasGuildMemberRights: boolean, UpdateData: (function(*, *=): Promise<undefined>), ResetMessageCounter: (function(): Promise<void>), InitSettings: (function(): undefined), DeletePlayerDetail: (function(*=): Promise<undefined>), SettingsSaveValues: (function(): Promise<void>), RefreshPlayerGexDB: (function(*): Promise<void>), RefreshPlayerGuildBuildingsDB: (function(*): Promise<void>), Settings: {deleteOlderThan: number, lastupdate: number, showSearchbar: number, autoStartOnUpdate: number, showDeletedMembers: number}, showPreloader: GuildMemberStat.showPreloader, MarkMemberAsDeleted: (function(*=): Promise<undefined>), ShowGuildEras: (function(): Promise<void>), ShowGreatBuildings: (function(): Promise<void>), filterTable: GuildMemberStat.filterTable, checkForDB: (function(*): Promise<void>), Data: undefined, GetGuildMemberBuildings: (function(): []), GexData: undefined, remove_key_from_array: (function(*, *): *), hidePreloader: GuildMemberStat.hidePreloader, SetActivityWarning: (function(*=, *): Promise<void>), GuildMemberStatSettings: GuildMemberStat.GuildMemberStatSettings, setEraGoods: GuildMemberStat.setEraGoods, Show: (function(): Promise<undefined>), ShowGuildBuildings: (function(): Promise<undefined>), ShowGuildGoods: (function(): Promise<undefined>), GEXId: undefined, DeleteExMembersOlderThan: (function(*): Promise<undefined>), ExportData: undefined, db: null}}
+ * @type {{GBGId: undefined, acceptedDeleteWarning: boolean, ConversationIds: [], hasUpdateProgress: boolean, RefreshPlayerGBGDB: (function(*): Promise<void>), ReadGuildMemberBuildings: (function(*, *): Promise<void>), uniq_array: (function(*): *), CurrentStatGroup: string, MemberDict: {}, RefreshGuildMemberDB: (function(*): Promise<void>), TreasuryGoodsData: {}, RefreshForumDB: (function(*): Promise<void>), BuildBox: (function(*=): undefined), GBGData: undefined, hasGuildMemberRights: boolean, UpdateData: (function(*, *=): Promise<undefined>), ResetMessageCounter: (function(): Promise<void>), InitSettings: (function(): undefined), DeletePlayerDetail: (function(*=): Promise<undefined>), SettingsSaveValues: (function(): Promise<void>), RefreshPlayerGexDB: (function(*): Promise<void>), RefreshPlayerGuildBuildingsDB: (function(*): Promise<void>), Settings: {deleteOlderThan: number, lastupdate: number, showSearchbar: number, showBattlesWon: number, gexgbgDateFormat: string, showZeroValues: number, autoStartOnUpdate: number, showDeletedMembers: number}, showPreloader: GuildMemberStat.showPreloader, MarkMemberAsDeleted: (function(*=): Promise<undefined>), ShowGuildEras: (function(): Promise<void>), ShowGreatBuildings: (function(): Promise<void>), filterTable: GuildMemberStat.filterTable, checkForDB: (function(*): Promise<void>), Data: undefined, GetGuildMemberBuildings: (function(): []), GexData: undefined, remove_key_from_array: (function(*, *): *), hidePreloader: GuildMemberStat.hidePreloader, SetActivityWarning: (function(*=, *): Promise<void>), GuildMemberStatSettings: GuildMemberStat.GuildMemberStatSettings, setEraGoods: GuildMemberStat.setEraGoods, Show: (function(): Promise<undefined>), ShowGuildBuildings: (function(): Promise<undefined>), ShowGuildGoods: (function(): Promise<undefined>), GEXId: undefined, DeleteExMembersOlderThan: (function(*): Promise<undefined>), ExportData: undefined, db: null}}
  */
 let GuildMemberStat = {
 	db: null,
@@ -169,6 +169,8 @@ let GuildMemberStat = {
 		showDeletedMembers: 1,
 		showSearchbar: 1,
 		showBattlesWon: 0,
+		gexgbgDateFormat: 'week',
+		showZeroValues: 0,
 		deleteOlderThan: 14,
 		lastupdate: 0
 	},
@@ -935,11 +937,25 @@ let GuildMemberStat = {
 		let CurrentActivityWarnings = await GuildMemberStat.db.activity.toArray();
 
 		let CurrentGexActivity = await GuildMemberStat.db.gex.where('player_id').above(0).and(function (item) {
-			return item.solvedEncounters > 0
+			if (GuildMemberStat.Settings.showZeroValues === 1)
+			{
+				return item;
+			}
+			else
+			{
+				return item.solvedEncounters > 0;
+			}
 		}).reverse().sortBy('gexweek');
 
 		let CurrentGbgActivity = await GuildMemberStat.db.gbg.where('player_id').above(0).and(function (item) {
-			return (item.battlesWon > 0 || item.negotiationsWon > 0)
+			if (GuildMemberStat.Settings.showZeroValues === 1)
+			{
+				return item;
+			}
+			else
+			{
+				return (item.battlesWon > 0 || item.negotiationsWon > 0);
+			}
 		}).reverse().sortBy('gbgid');
 
 		let CurrentForumActivity = await GuildMemberStat.db.forum.toArray();
@@ -1182,12 +1198,17 @@ let GuildMemberStat = {
 								break;
 							}
 
-							let gexweek = moment.unix(gex[i].gexweek).subtract(7, 'd').format('YYYY-ww');
+							let gexenddate = moment.unix(gex[i].gexweek);
+							let gexstartdate = moment.unix(gex[i].gexweek).subtract(7, 'd');
+							let gexweek = gexstartdate.format('YYYY-ww');
+							let gexdate = gexstartdate.format(i18n('Date'));
 							let activeGexClass = gex[i].gexweek >= currentTime ? ' activeCircle' : '';
+							let tooltip = gexstartdate.format(i18n('Date')) + ' - ' + gexenddate.format(i18n('Date'));
+							let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gexdate : (GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gexenddate.format(i18n('Date')) : gexweek);
 
-							d.push(`<tr><td>${gexweek}<span class="${activeGexClass}"></span></td>` +
+							d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGexClass}"></span></td>` +
 								`<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` +
-								`<td>${gex[i].solvedEncounters}</td>` +
+								`<td>${HTML.Format(gex[i].solvedEncounters)}</td>` +
 								`<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` +
 								`</tr>`);
 
@@ -1210,15 +1231,21 @@ let GuildMemberStat = {
 							}
 
 							let activeGbgClass = gbg[i].gbgid >= currentTime ? ' activeCircle' : '';
+							let gbgenddate = moment.unix(gbg[i].gbgid);
+							let gbgstartdate = moment.unix(gbg[i].gbgid).subtract(11, 'd');
+							let tooltip = gbgstartdate.format(i18n('Date')) + ' - ' + gbgenddate.format(i18n('Date'));
 							let week = moment.unix(gbg[i].gbgid).week();
 							let lastweek = week - 1;
+
 							week = (week.toString().length === 1) ? '0' + week : week;
 							lastweek = (lastweek.toString().length === 1) ? '0' + lastweek : lastweek;
 
-							d.push(`<tr><td>${moment.unix(gbg[i].gbgid).year()} - ${lastweek}/${week}<span class="${activeGbgClass}"></span></td>` +
+							let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gbgstartdate.format(i18n('Date')) : ( GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gbgenddate.format(i18n('Date')) : `${moment.unix(gbg[i].gbgid).year()} - ${lastweek}/${week}`);
+
+							d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGbgClass}"></span></td>` +
 								`<td>${gbg[i].rank}</td>` +
-								`<td>${gbg[i].battlesWon}</td>` +
-								`<td>${gbg[i].negotiationsWon}</td>` +
+								`<td>${HTML.Format(gbg[i].battlesWon)}</td>` +
+								`<td>${HTML.Format(gbg[i].negotiationsWon)}</td>` +
 								`<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteGBGRound'))}">x</button></td>` +
 								`</tr>`);
 						}
@@ -1415,6 +1442,11 @@ let GuildMemberStat = {
 								$(thead).next().removeClass("closed").addClass('open');
 							}
 
+						});
+
+						$('#GuildMemberTable .gms-tooltip').tooltip({
+							html: true,
+							container: '#GuildMemberStatBody'
 						});
 					});
 				}
@@ -2229,6 +2261,8 @@ let GuildMemberStat = {
 		GuildMemberStat.Settings.autoStartOnUpdate = (Settings.autoStartOnUpdate !== undefined) ? Settings.autoStartOnUpdate : GuildMemberStat.Settings.autoStartOnUpdate;
 		GuildMemberStat.Settings.showSearchbar = (Settings.showSearchbar !== undefined) ? Settings.showSearchbar : GuildMemberStat.Settings.showSearchbar;
 		GuildMemberStat.Settings.showBattlesWon = (Settings.showBattlesWon !== undefined) ? Settings.showBattlesWon : GuildMemberStat.Settings.showBattlesWon;
+		GuildMemberStat.Settings.gexgbgDateFormat = (Settings.gexgbgDateFormat !== undefined) ? Settings.gexgbgDateFormat : GuildMemberStat.Settings.gexgbgDateFormat;
+		GuildMemberStat.Settings.showZeroValues = (Settings.showZeroValues !== undefined) ? Settings.showZeroValues : GuildMemberStat.Settings.showZeroValues;
 		GuildMemberStat.TreasuryGoodsData = (TreasuryGoods !== undefined) ? TreasuryGoods : {};
 
 	},
@@ -2244,6 +2278,12 @@ let GuildMemberStat = {
 		c.push(`<p class="text-left"><input id="gmsShowSearchbar" name="showsearchbar" value="1" type="checkbox" ${(Settings.showSearchbar === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowSearchbar">${i18n('Boxes.GuildMemberStat.ShowSearchbar')}</label></p>`);
 		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.GuildMemberStat.GuildMembers')}</span><input id="gmsShowDeletedMembers" name="showdeletedmembers" value="1" type="checkbox" ${(Settings.showDeletedMembers === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowDeletedMembers">${i18n('Boxes.GuildMemberStat.ShowDeletedMembers')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gmsShowBattlesWon" name="showbattleswon" value="1" type="checkbox" ${(Settings.showBattlesWon === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowBattlesWon">${i18n('Boxes.GuildMemberStat.ShowBattlesWon')}</label></p>`);
+		c.push(`<p class="text-left"><input id="gmsShowZeroValues" name="showzerovalues" value="1" type="checkbox" ${(Settings.showZeroValues === 1) ? ' checked="checked"' : ''} /> <label for="gmsShowZeroValues">${i18n('Boxes.GuildMemberStat.ShowZeroValues')}</label></p>`);
+		c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.GexGbgDateFormat')} <select id="gmsGexGbgDateFormat" name="gexgbgdateformat">` +
+			`<option value="week" ${Settings.gexgbgDateFormat === 'week' ? ' selected="selected"' : ''}>${i18n('Boxes.GuildMemberStat.CalendarWeek')}</option>` +
+			`<option value="date" ${Settings.gexgbgDateFormat === 'date' ? ' selected="selected"' : ''}>${i18n('Boxes.GuildMemberStat.StartDate')}</option>` +
+			`<option value="enddate" ${Settings.gexgbgDateFormat === 'enddate' ? ' selected="selected"' : ''}>${i18n('Boxes.GuildMemberStat.EndDate')}</option>` +
+			`</select></p>`);
 		c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.DeleteExMembersAfter')} <select id="gmsDeleteOlderThan" name="deleteolderthan">`);
 
 		deleteAfterDays.forEach(days => {
@@ -2282,6 +2322,8 @@ let GuildMemberStat = {
 		GuildMemberStat.Settings.autoStartOnUpdate = $("#gmsAutoStartOnUpdate").is(':checked') ? 1 : 0;
 		GuildMemberStat.Settings.showSearchbar = $("#gmsShowSearchbar").is(':checked') ? 1 : 0;
 		GuildMemberStat.Settings.showBattlesWon = $("#gmsShowBattlesWon").is(':checked') ? 1 : 0;
+		GuildMemberStat.Settings.showZeroValues = $("#gmsShowZeroValues").is(':checked') ? 1 : 0;
+		GuildMemberStat.Settings.gexgbgDateFormat = $('#gmsGexGbgDateFormat').val() || 'week';
 
 		if (GuildMemberStat.Settings.deleteOlderThan !== tmpDeleteOlder && (tmpDeleteOlder > 0 || tmpDeleteOlder === -1))
 		{
