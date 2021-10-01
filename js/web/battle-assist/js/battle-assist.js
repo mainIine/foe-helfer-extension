@@ -38,7 +38,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
             alive.push(unit.unitTypeId);
         } else {
             const unitEra = Unit.Types.find(e => e.unitTypeId === unit.unitTypeId)?.minEra;
-            if (Technologies.Eras[unitEra] > CurrentEraID)
+            if (CurrentEraID && Technologies.Eras[unitEra] > CurrentEraID)
             	nextEraUnitDead = true;
         }
     }
