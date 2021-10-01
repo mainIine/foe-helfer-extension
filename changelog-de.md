@@ -3,6 +3,12 @@
 ##### 2.5.9.3
 
 **Update**
+- Gildengefecht Box:
+	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Erweiterung der Snapshot Funktion:
+		-chronologische Speicherung der einzelnen Gildengefechtsrunden
+		-jeder Snapshot innerhalb der aktuell laufenden Gildengefechtsrunde, mit den jeweiligen Zuwächsen der Mitglieder, wird gespeichert. Mit Beginn einer neuen Gildengefechtsrunde werden die gespeicherten Snapshots der vorherigen Runde gelöscht.
+		-Filterfunktion für die gepeicherten Snapshots (Spieler und Datum)
+
 - Gildenmitglieder Übersicht:
 	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) 0 Werte bei Gex/GG in der Gildenmitgliederverwaltung anzeigen
 		- Optional über das Einstellungsmenü der Box können nun auch die Einträge der einzelnen Spieler angezeigt werden, an dem der Spieler keine Teilnahme an GEX od. GG hatte
