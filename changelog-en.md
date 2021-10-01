@@ -3,6 +3,12 @@
 ##### 2.5.9.3
 
 **Update**
+- Guild Battle Box:
+	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Improvement of the snapshot feature:
+		- Chronological storage of the individual Guild Battlegrounds rounds.
+		- Each snapshot within the currently running Guild Battlegrounds round, with the respective increases of the members, is saved. With the start of a new Guild Battlegrounds round, the saved snapshots of the previous round will be deleted.
+		- Filter function for saved snapshots (player and date)
+
 - Guild members overview:
 	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) Show 0 values for Gex/GG in guild member statistic
 		- Optionally via the settings menu of the box, the entries of the individual players can now also be displayed, in which the player had no participation in GE or GBG
