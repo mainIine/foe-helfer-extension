@@ -498,6 +498,8 @@ let GildFights = {
 		if (CurrentSnapshot === undefined)
 		{
 			newRound = true;
+			// if there is a new GBG round delete previous snapshots
+			GildFights.DeleteOldSnapshots(GildFights.CurrentGBGRound);
 		}
 
 		let t = [],
@@ -700,6 +702,8 @@ let GildFights = {
 			playerName = null,
 			dailyFights = [],
 			detaildata = [],
+			sumN = 0,
+			sumF = 0,
 			h = [];
 
 		if (player_id === null && content === "player") return;
@@ -773,6 +777,8 @@ let GildFights = {
 			h.push('</thead><tbody class="gbg-log-group">');
 
 			detaildata.forEach(e => {
+				sumN += e.negotiations;
+				sumF += e.battles;
 				let sum = (e.battles + e.negotiations * 2);
 				h.push('<tr data-id="' + e.time + '" id="gbgtime_' + e.time + '">');
 				h.push(`<td class="is-number" data-number="${e.time}">${moment.unix(e.time).format(i18n('DateTime'))}</td>`);
@@ -791,6 +797,9 @@ let GildFights = {
 		$('#GildPlayersDetailViewBody').html(h.join('')).promise().done(function () {
 
 			$('#GildPlayersDetailViewBody .gbglog').tableSorter();
+
+			// $('#gbgLogSumN').html(sumN);
+			// $('#gbgLogSumF').html(sumF);
 
 			if ($('#gbgLogDatepicker').length !== 0)
 			{
@@ -830,6 +839,13 @@ let GildFights = {
 			});
 
 		});
+	},
+
+
+	DeleteOldSnapshots: async (gbground) => {
+
+		let deleteCount = await GildFights.db.snapshots.where("gbground").notEqual(gbground).delete();
+
 	},
 
 

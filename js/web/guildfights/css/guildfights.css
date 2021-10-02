@@ -181,6 +181,7 @@
 #GildPlayersDetailViewBody .sorter-header th {
 	cursor: pointer;
 }
+
 #GildPlayersDetailViewBody table.foe-table tr td:last-child,
 #GildPlayersDetailViewBody table.foe-table tr th:last-child {
 	width: 15px;
