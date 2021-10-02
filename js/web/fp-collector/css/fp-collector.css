@@ -124,28 +124,32 @@
 }
 
 /* Events */
-.foehelper-accordion-head.chestEventGrandPrize-head span.image {
-	background-image: url('../images/chestEventGrandPrize.png') !important;
+.foehelper-accordion-head.archeologyEvent-head span.image, .foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
+	background-image: url('../images/archeologyEvent.png');
 }
 
 .foehelper-accordion-head.card_duel-head span.image {
 	background-image: url('../images/soccer_cup.png') !important;
 }
 
-.foehelper-accordion-head.wildlife_event-head span.image {
-	background-image: url('../images/wildlife_event.png') !important;
+.foehelper-accordion-head.chestEventGrandPrize-head span.image {
+	background-image: url('../images/chestEventGrandPrize.png') !important;
 }
 
 .foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
 	background-image: url('../images/stPatricksEvent.png');
 }
 
-.foehelper-accordion-head.winterEventGandPrize-head span.image, .foehelper-accordion-head.winterEvent-head span.image {
-	background-image: url('../images/winterEvent.png');
+.foehelper-accordion-head.summerEvent-head span.image {
+	background-image: url('../images/summer_event.png') !important;
 }
 
-.foehelper-accordion-head.archeologyEvent-head span.image, .foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
-	background-image: url('../images/archeologyEvent.png');
+.foehelper-accordion-head.wildlife_event-head span.image {
+	background-image: url('../images/wildlife_event.png') !important;
+}
+
+.foehelper-accordion-head.winterEventGandPrize-head span.image, .foehelper-accordion-head.winterEvent-head span.image {
+	background-image: url('../images/winterEvent.png');
 }
 
 .foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
