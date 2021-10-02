@@ -140,6 +140,7 @@
     "Boxes.CityMap.street": "Utak",
     "Boxes.CityMap.tower": "Tornyok",
     "Boxes.Citymap.Efficiency": "Hatékonyság",
+    "Boxes.DBExport.LocalSettings": "Lokális beállítások",
     "Boxes.EventChests.Chance": "Esély",
     "Boxes.EventChests.Cost": "Költség",
     "Boxes.EventChests.CostPerPrize": "Költség/Jutalom",
