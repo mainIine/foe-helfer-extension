@@ -2,6 +2,10 @@
 
 ##### 2.5.9.3
 
+**BugFix**
+- Menu:
+	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) The menu tooltip warning is displayed permanently, even if the conditions has been met.
+
 **Update**
 - Guild Battle Box:
 	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Improvement of the snapshot feature:
