@@ -244,6 +244,17 @@
 	vertical-align: bottom;
 }
 
+#InvestmentBody span.icon.medal {
+	background: url(../../x_img/medal.png) center no-repeat;
+    background-size: contain;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+
 #InvestmentBody tr th span.blueprints {
 	background: url(../../x_img/blueprint.png) center no-repeat;
 	background-size: contain;

@@ -422,6 +422,7 @@
     "Boxes.Investment.Overview.Invested": "Investiert",
     "Boxes.Investment.Overview.InvestedDesc": "Wieviele FP wurden investiert?",
     "Boxes.Investment.Overview.Medals": "Medaillen",
+    "Boxes.Investment.Overview.MedalsProfit": "Medaillen-Gewinn",
     "Boxes.Investment.Overview.Player": "Spieler",
     "Boxes.Investment.Overview.Profit": "Gewinn",
     "Boxes.Investment.Overview.ProfitDesc": "erzielter Gewinn, gelb -> Platz ist noch nicht sicher, rot/grün -> Verlust/Gewinn sicher",

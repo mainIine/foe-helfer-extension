@@ -422,6 +422,7 @@
     "Boxes.Investment.Overview.Invested": "Invested",
     "Boxes.Investment.Overview.InvestedDesc": "How many FPs were invested",
     "Boxes.Investment.Overview.Medals": "Medals",
+    "Boxes.Investment.Overview.MedalsProfit": "Medals profit",
     "Boxes.Investment.Overview.Player": "Player",
     "Boxes.Investment.Overview.Profit": "Profit",
     "Boxes.Investment.Overview.ProfitDesc": "profit achieved; yellow = Rank is not safe; red/green = Loss/Profit safe",
