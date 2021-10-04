@@ -2,6 +2,10 @@
 
 ##### 2.5.9.3
 
+**BugFix**
+- Menü:
+	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) Die Tooltipwarnung wird dauerhaft angezeigt, auch wenn die Bedingungen erfüllt wurden.
+
 **Update**
 - Gildengefecht Box:
 	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Erweiterung der Snapshot Funktion:
