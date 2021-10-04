@@ -119,7 +119,7 @@
 				this.setContent()
 
 				if(this.$element.hasClass('hud-btn-red')) {
-					$tip.addClass('warning');
+					$tip.addClass('disabled');
 				}
 
 				if(this.options.useFoEHelperSkin) {
@@ -225,7 +225,7 @@
 			}
 
 			$tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-			$tip.removeClass('fade in top bottom left right warning')
+			$tip.removeClass('fade in top bottom left right disabled')
 		}
 
 		, hide: function () {
