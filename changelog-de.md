@@ -19,6 +19,9 @@
 	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Datumsformat Gex/GG in der Mitgliederverwaltung
 		- Das Datumsformat der Gex/GG Teilnahmen kann nun von Kalenderwoche zu Startdatum, Enddatum oder Kalenderwoche geändert werden
 
+- Investitionsübersicht:
+	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) Der gesamte Gewinn an Medaillen wird in der Investitionsübersicht mit angezeigt, wenn in den Einstellungen der Box die Spalte Medaillen aktiviert ist.
+
 ---
 
 ##### 2.5.9.2

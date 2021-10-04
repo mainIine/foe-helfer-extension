@@ -19,6 +19,9 @@
 	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Date format GE/GBG in the guild member statistic
 		- The date format of Gex/GG participations can now be changed from calendar week to start date, end date or calendar week.
 
+- Investment overview:
+	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) The total profit of medals is displayed in the investment overview if the column medals is selected in the box settings
+
 ---
 
 ##### 2.5.9.2
