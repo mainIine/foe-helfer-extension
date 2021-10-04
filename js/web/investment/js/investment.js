@@ -46,6 +46,7 @@ let Investment = {
 	Data: null,
 	Einsatz: 0,
 	Ertrag: 0,
+	Medals: 0,
 	HiddenElements: 0,
 	RequestBlockTime: 0,
 
@@ -82,14 +83,17 @@ let Investment = {
 
 		let sumEinsatz = 0;
 		let sumErtrag = 0;
+		let	sumMedals = 0;
 		let countHiddenElements = 0;
 
 		// save previous values for number animation
 		let easy_animate_start_values = {
 			investsto: Investment.Einsatz,
 			rewardsto: Investment.Ertrag,
-			totalsto: (StrategyPoints.AvailableFP + Investment.Ertrag + Investment.Einsatz)
+			totalsto: (StrategyPoints.AvailableFP + Investment.Ertrag + Investment.Einsatz),
+			medalssto: Investment.Medals
 		}
+
 		let InvestmentSettings = JSON.parse(localStorage.getItem('InvestmentSettings'));
 		let removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
 
@@ -113,11 +117,13 @@ let Investment = {
 				countHiddenElements += ishidden ? 1 : 0;
 				sumEinsatz += ishidden ? 0 : AllInvestments[i].currentFp;
 				sumErtrag += ishidden || removeUnsafe ? 0 : AllInvestments[i].profit - AllInvestments[i].currentFp;
+				sumMedals += ishidden || removeUnsafe ? 0 : (AllInvestments[i].medals ? AllInvestments[i].medals : 0);
 			}
 		}
 
 		Investment.Ertrag = sumErtrag;
 		Investment.Einsatz = sumEinsatz;
+		Investment.Medals = sumMedals;
 		Investment.HiddenElements = countHiddenElements;
 
 		Investment.showFPOverview(easy_animate_start_values);
@@ -141,8 +147,12 @@ let Investment = {
 		b.push(`<div class="total-wrapper dark-bg">`);
 
 		b.push(`<div id="invest-bar">${i18n('Boxes.Investment.InvestBar')} <strong class="invest-storage">0</strong></div>`);
-		b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong>${removeUnsafeCalc?'<span class="safe">  (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
+		b.push(`<div id="reward-bar">${i18n('Boxes.Investment.CurrReward')}<strong class="reward-storage">0</strong>${removeUnsafeCalc ? '<span class="safe">  (' + i18n('Boxes.Investment.Safe') + ')</span>':''}</div>`);
 		b.push(`<div id="total-fp" class="text-center">${i18n('Boxes.Investment.TotalFP')}<strong class="total-storage-invest">0</strong></div>`);
+		
+		if (showMedals === 1) {
+			b.push('<div id="total-medals" class="text-center"><span class="invest-tooltip icon medal" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.MedalsProfit')) + '"></span><strong class="total-medals-reward">0</strong></div>');
+		}
 		b.push(`<div id="hidden-bar" class="hide text-center"><img class="invest-tooltip" src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
 
 		b.push(`</div>`);
@@ -708,6 +718,7 @@ let Investment = {
 
 		let Ertrag = Investment.Ertrag;
 		let Einsatz = Investment.Einsatz;
+		let Medals = Investment.Medals;
 		let hiddenElements = Investment.HiddenElements;
 
 		if(hiddenElements > 0)
@@ -743,6 +754,18 @@ let Investment = {
 			end_value: sumTotal,
 			duration: 750
 		});
+
+		let medalsstart = (startvalues.medalssto !== Medals) ? startvalues.medalssto : 0;
+
+		if($("#total-medals").length !== 0) 
+		{
+			$('.total-medals-reward').easy_number_animate({
+				start_value: medalsstart,
+				end_value: Medals,
+				duration: 750
+			});
+
+		}
 	}
 
 };
