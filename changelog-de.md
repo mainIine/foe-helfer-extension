@@ -18,6 +18,7 @@
 		- Optional über das Einstellungsmenü der Box können nun auch die Einträge der einzelnen Spieler angezeigt werden, an dem der Spieler keine Teilnahme an GEX od. GG hatte
 	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Datumsformat Gex/GG in der Mitgliederverwaltung
 		- Das Datumsformat der Gex/GG Teilnahmen kann nun von Kalenderwoche zu Startdatum, Enddatum oder Kalenderwoche geändert werden
+	- [#2174](https://github.com/mainIine/foe-helfer-extension/issues/2174): In der Mitgliederliste und den Zeitaltern ist es nun möglich alle Details mit einen Klick anzuzeigen/auszuklappen.
 
 - Investitionsübersicht:
 	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) Der gesamte Gewinn an Medaillen wird in der Investitionsübersicht mit angezeigt, wenn in den Einstellungen der Box die Spalte Medaillen aktiviert ist.
