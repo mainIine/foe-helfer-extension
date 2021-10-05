@@ -18,6 +18,8 @@
 		- Optionally via the settings menu of the box, the entries of the individual players can now also be displayed, in which the player had no participation in GE or GBG
 	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Date format GE/GBG in the guild member statistic
 		- The date format of Gex/GG participations can now be changed from calendar week to start date, end date or calendar week.
+	- [#2174](https://github.com/mainIine/foe-helfer-extension/issues/2174):
+		- In the member list and the era overview it is now possible to display/expand all details with one click.
 
 - Investment overview:
 	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) The total profit of medals is displayed in the investment overview if the column medals is selected in the box settings

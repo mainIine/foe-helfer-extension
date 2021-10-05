@@ -154,6 +154,7 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 let GuildMemberStat = {
 	db: null,
 	Data: undefined,
+	EraGroup: undefined,
 	GexData: undefined,
 	GBGData: undefined,
 	GBGId: undefined,
@@ -573,7 +574,7 @@ let GuildMemberStat = {
 					return;
 				}
 
-				if (data['player_id'] !== undefined && data['guildbuildings'] !== undefined && data['guildbuildings'].length)
+				if (data['player_id'] !== undefined && data['guildbuildings'] !== undefined && data['greatbuildings'] !== undefined)
 				{
 					await GuildMemberStat.RefreshPlayerGuildBuildingsDB(data);
 				}
@@ -921,7 +922,7 @@ let GuildMemberStat = {
 		h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildMessages'))}"><span class="messages"></span></th>` +
 			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GexParticipation'))}"><span class="gex"></span></th>` +
 			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GbgParticipation'))}"><span class="gbg"></span></th>` +
-			'<th></th></tr>' +
+			'<th class="expand-all closed"></th></tr>' +
 			'</thead><tbody class="gms-group">');
 
 		let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
@@ -1114,8 +1115,6 @@ let GuildMemberStat = {
 
 		$('#GuildMemberStatBody').html(h.join('')).promise().done(function () {
 
-			let currentTime = MainParser.round(+MainParser.getCurrentDate() / 1000);
-
 			$('#gms-filter-input').show();
 			$('#gms-filter-input').off().on('keyup', function () {
 				GuildMemberStat.filterTable('gms-filter-input', 'GuildMemberTable');
@@ -1128,333 +1127,381 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			$('#GuildMemberTable > tbody tr').on('click', function () {
+			$('#GuildMemberTable thead .expand-all').off('click').on('click', async function (e) {
+				e.preventDefault();
 
-				if ($(this).next("tr.detailview").length)
+				let tr = $('#GuildMemberTable > tbody').children('tr');
+				let expand = $(this).hasClass('closed') ? true : false;
+				$(this).toggleClass("closed open");
+
+				if (expand === true)
 				{
-					$(this).next("tr.detailview").remove();
-					$(this).removeClass('open');
+					GuildMemberStat.showPreloader("#GuildMemberStat");
+					setTimeout(() => { GuildMemberStat.ShowMemberDetail(tr, expand), 300 });
 				}
 				else
 				{
-					if (!$(this).hasClass("hasdetail"))
-					{
-						return;
-					}
-
-					let d = [];
-					let MemberID = parseInt($(this).attr("data-id"));
-					let isNoMemberClass = $(this).hasClass('strikeout') ? ' inactive' : '';
-					let activityWarnState = ['Red', 'Yellow'];
-
-					d.push('<tr class="detailview dark-bg' + isNoMemberClass + '"><td colspan="' + $(this).find("td").length + '"><div class="detail-wrapper">');
-
-					$(this).addClass('open');
-
-					let id = $(this).attr("id");
-					let Member = GuildMemberStat.MemberDict[MemberID];
-
-					// Create Inactivity Overview
-					if (Member['activity'] !== undefined)
-					{
-						d.push(`<div class="detail-item warnings"><div class="scrollable"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody class="copyable">`);
-
-						let warnings = Member['activity'];
-
-						for (let i in warnings)
-						{
-							if (warnings.hasOwnProperty(i))
-							{
-								let warnlist = warnings[i].warnings.sort((a, b) => b.date - a.date);
-
-								if (warnlist.length >= 1)
-								{
-									for (let k in warnlist)
-									{
-										if (!warnlist.hasOwnProperty(k))
-										{
-											break;
-										}
-
-										d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(warnlist.length - parseInt(k))}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
-											`<td>${moment(warnlist[k].date).format(i18n('Date'))}</td>` +
-											`<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteInactivityWarning'))}">x</button></td></tr>`);
-									}
-								}
-							}
-						}
-						d.push('</tbody></table></div></div>');
-					}
-
-					// Create GEX Overview
-					if (Member['gex'] !== undefined)
-					{
-						d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
-						let gex = Member['gex'];
-						for (let i in gex)
-						{
-							if (!gex.hasOwnProperty(i))
-							{
-								break;
-							}
-
-							let gexenddate = moment.unix(gex[i].gexweek);
-							let gexstartdate = moment.unix(gex[i].gexweek).subtract(7, 'd');
-							let gexweek = gexstartdate.format('YYYY-ww');
-							let gexdate = gexstartdate.format(i18n('Date'));
-							let activeGexClass = gex[i].gexweek >= currentTime ? ' activeCircle' : '';
-							let tooltip = gexstartdate.format(i18n('Date')) + ' - ' + gexenddate.format(i18n('Date'));
-							let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gexdate : (GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gexenddate.format(i18n('Date')) : gexweek);
-
-							d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGexClass}"></span></td>` +
-								`<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` +
-								`<td>${HTML.Format(gex[i].solvedEncounters)}</td>` +
-								`<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` +
-								`</tr>`);
-
-						}
-						d.push('</tbody></table></div></div>');
-					}
-
-					// Create GBG Overview
-					if (Member['gbg'] !== undefined)
-					{
-						d.push(`<div class="detail-item gbg"><div class="scrollable"><table><thead><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
-
-						let gbg = Member['gbg'];
-
-						for (let i in gbg)
-						{
-							if (!gbg.hasOwnProperty(i))
-							{
-								break;
-							}
-
-							let activeGbgClass = gbg[i].gbgid >= currentTime ? ' activeCircle' : '';
-							let gbgenddate = moment.unix(gbg[i].gbgid);
-							let gbgstartdate = moment.unix(gbg[i].gbgid).subtract(11, 'd');
-							let tooltip = gbgstartdate.format(i18n('Date')) + ' - ' + gbgenddate.format(i18n('Date'));
-							let week = moment.unix(gbg[i].gbgid).week();
-							let lastweek = week - 1;
-
-							week = (week.toString().length === 1) ? '0' + week : week;
-							lastweek = (lastweek.toString().length === 1) ? '0' + lastweek : lastweek;
-
-							let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gbgstartdate.format(i18n('Date')) : ( GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gbgenddate.format(i18n('Date')) : `${moment.unix(gbg[i].gbgid).year()} - ${lastweek}/${week}`);
-
-							d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGbgClass}"></span></td>` +
-								`<td>${gbg[i].rank}</td>` +
-								`<td>${HTML.Format(gbg[i].battlesWon)}</td>` +
-								`<td>${HTML.Format(gbg[i].negotiationsWon)}</td>` +
-								`<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteGBGRound'))}">x</button></td>` +
-								`</tr>`);
-						}
-
-						d.push('</tbody></table></div></div>');
-					}
-
-					// Create Guild supporting buildings Overview
-					if (Member['guildbuildings'] !== undefined)
-					{
-						let guildbuildings = Member['guildbuildings'];
-						let totalGoods = 0;
-						let totalPower = 0;
-
-						d.push(`<div class="detail-item buildings"><table><thead class="hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="closed copyable">`);
-
-						// Group GuildGoods buildings by name and their era
-						let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined }).reduce(function (res, obj) {
-							let objname = obj.name + '#' + obj.level + '#';
-							if (!(objname in res))
-							{
-								res.__array.push(res[objname] = obj);
-								res[objname].count = 1;
-							}
-							else
-							{
-								res[objname].resources.totalgoods += +obj.resources.totalgoods;
-								res[objname].count += 1;
-							}
-							return res;
-						}, { __array: [] }).__array.sort(function (a, b) { return a.name.localeCompare(b.name) });
-
-						// Group guildpower buildings only by name. Era isn't relevant here
-						let guildPowerBuildings = guildbuildings['buildings'].filter(function (data) { return data.power !== undefined }).reduce(function (res, obj) {
-							if (!(obj.name in res))
-							{
-								res.__array.push(res[obj.name] = obj);
-								res[obj.name].count = 1;
-							}
-							else
-							{
-								res[obj.name].power.value += +obj.power.value;
-								res[obj.name].count += 1;
-							}
-							return res;
-						}, { __array: [] }).__array.sort(function (a, b) { return a.name.localeCompare(b.name) });
-
-						d.push(`<tr class="nohover"><td colspan="2"><div class="detail-wrapper">`);
-
-						if (guildGoodsBuildings.length)
-						{
-							d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
-
-							guildGoodsBuildings.forEach(plbuilding => {
-								let goodslist = '';
-								let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
-								let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
-								totalGoods += goodCount;
-								if (plbuilding.resources.goods !== undefined && plbuilding.resources.goods !== null)
-								{
-									goodslist = plbuilding.resources.goods.map(good => {
-										return `<span title="${good.value} x ${GoodsData[good.good_id]['name']}" class="goods-sprite-50 sm ${good.good_id}"></span> `;
-									}).join('');
-
-								}
-
-								let Entity = MainParser.CityEntities[plbuilding.entity_id];
-								let LevelString;
-								if (plbuilding.level === null)
-								{
-									LevelString = '';
-								}
-								else if (Entity && Entity.type === 'greatbuilding')
-								{
-									LevelString = '(' + plbuilding.level + ')';
-								}
-								else
-								{
-									LevelString = '(' + i18n('Eras.' + plbuilding.level) + ')';
-								}
-
-								d.push(`<tr><td>${countBuilding} x ${plbuilding.name.replace(/\#[0-9]+\#/, '')} ${LevelString}</td><td class="text-right">${goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : ''}</td><td class="text-right">${HTML.Format(goodCount)}</td></tr>`);
-							});
-
-							d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildGoods')}</td><td></td><td class="text-right text-bright">${HTML.Format(totalGoods)}</td></tr>`);
-							d.push(`</tbody></table></div>`);
-						}
-
-						if (guildPowerBuildings.length)
-						{
-							d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
-
-							guildPowerBuildings.forEach(plbuilding => {
-								let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
-								let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
-								totalPower += powerCount;
-								d.push(`<tr><td>${countBuilding} x  ${plbuilding.name}</td><td class="text-right">${HTML.Format(powerCount)}</td></tr>`);
-							});
-
-							d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildPower')}</td><td class="text-right text-bright">${HTML.Format(totalPower)}</td></tr>`);
-							d.push(`</tbody></table></div>`);
-						}
-
-						d.push('</div></td></tr></tbody></table></div>');
-					}
-
-					d.push('</div></td></tr>');
-
-					$(d.join('')).insertAfter($('#' + id)).promise().done(function () {
-
-						// Show Delete Buttons
-						$('#GuildMemberTable th span.edit').off('click').on('click', function (e) {
-
-							//Show modal Warning before delete
-							if (!GuildMemberStat.acceptedDeleteWarning)
-							{
-								$('<div/>', {
-									id: 'gms-modal-warning',
-									class: 'warningoverlay',
-									html: '<div class="warningoverlay-content">' + i18n('Boxes.GuildMemberStat.DeleteDataWarning') + '<br /><br /><button id="gms-accept-modal" class="btn btn-default">' + i18n('Boxes.GuildMemberStat.GotIt') + '</button><div>'
-								}).appendTo('#GuildMemberStatBody');
-
-								$('#GuildMemberStatBody').on('click', '#gms-accept-modal', function () {
-									$("#gms-modal-warning").fadeOut(400, function () { $("#gms-modal-warning").remove(); GuildMemberStat.acceptedDeleteWarning = true; });
-								});
-							}
-							e.stopPropagation();
-							$(this).closest('table').find('.deleteButton').fadeToggle(50);
-						});
-
-						// Delete an inactivity entry
-						$('#GuildMemberTable .deleteInactivity').off('click').on('click', function () {
-
-							let button = $(this);
-							let index = parseInt($(button).attr('data-warn'));
-							let player_id = parseInt($(button).attr('data-id'));
-
-							let delObj = {
-								player_id: player_id,
-								data: GuildMemberStat.MemberDict[player_id]['activity'][0]['warnings'][index],
-								content: 'activity'
-							}
-
-							GuildMemberStat.DeletePlayerDetail(delObj);
-
-							$(button).closest("tr").remove();
-
-						});
-
-						// Delete an gex entry
-						$('#GuildMemberTable .deleteGexWeek').off('click').on('click', function () {
-
-							let button = $(this);
-							let delObj = {
-								player_id: parseInt($(button).attr('data-id')),
-								data: { gexweek: parseInt($(button).attr('data-gexweek')) },
-								content: 'gex'
-							}
-
-							GuildMemberStat.DeletePlayerDetail(delObj);
-
-							$(button).closest("tr").remove();
-
-						});
-
-						// Delete an gbg entry
-						$('#GuildMemberTable .deleteGBG').off('click').on('click', function () {
-
-							let button = $(this);
-							let delObj = {
-								player_id: parseInt($(button).attr('data-id')),
-								data: { gbgid: parseInt($(button).attr('data-gbgid')) },
-								content: 'gbg'
-							}
-
-							GuildMemberStat.DeletePlayerDetail(delObj);
-
-							$(button).closest("tr").remove();
-
-						});
-
-						$('#GuildMemberTable thead.hasdetail').off('click').on('click', function () {
-
-							let thead = $(this);
-
-							if ($(thead).hasClass('open'))
-							{
-								$(thead).removeClass('open').addClass('closed');
-								$(thead).next().removeClass('open').addClass('closed');
-							}
-							else
-							{
-								$(thead).removeClass("closed").addClass('open');
-								$(thead).next().removeClass("closed").addClass('open');
-							}
-
-						});
-
-						$('#GuildMemberTable .gms-tooltip').tooltip({
-							html: true,
-							container: '#GuildMemberStatBody'
-						});
-					});
+					GuildMemberStat.ShowMemberDetail(tr, expand);
 				}
 			});
 
+			$('#GuildMemberTable > thead th:not(:last)').on('click', function () {
+				$('#GuildMemberTable > tbody tr').removeClass("open");
+				$('#GuildMemberTable th.expand-all').removeClass("open").addClass("closed");
+			});
+
+			$('#GuildMemberTable > tbody tr').on('click', function () {
+				let tr = [$(this)];
+				GuildMemberStat.ShowMemberDetail(tr);
+			});
+
 			// Fade out loading screen
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 		});
+	},
+
+	ShowMemberDetail: (arr, expand) => {
+
+		let currentTime = MainParser.round(+MainParser.getCurrentDate() / 1000);
+
+		if (!arr && arr.length === 0) { return; }
+
+		if (expand === false)
+		{
+			$("#GuildMemberTable > tbody tr.detailview").remove();
+			$("#GuildMemberTable > tbody tr").removeClass('open');
+			return;
+		}
+
+		$.each(arr, function () {
+
+			let e = $(this);
+
+
+			if (e.next("tr.detailview").length)
+			{
+				e.next("tr.detailview").remove();
+				e.removeClass('open');
+				if (expand !== true)
+					return;
+			}
+
+			if (!e.hasClass("hasdetail"))
+			{
+				return;
+			}
+
+			let d = [];
+			let MemberID = parseInt(e.attr("data-id"));
+			let isNoMemberClass = e.hasClass('strikeout') ? ' inactive' : '';
+			let activityWarnState = ['Red', 'Yellow'];
+
+			d.push('<tr class="detailview dark-bg' + isNoMemberClass + '"><td colspan="' + e.find("td").length + '"><div class="detail-wrapper">');
+
+			e.addClass('open');
+
+			let id = e.attr("id");
+			let Member = GuildMemberStat.MemberDict[MemberID];
+
+			// Create Inactivity Overview
+			if (Member['activity'] !== undefined)
+			{
+				d.push(`<div class="detail-item warnings"><div class="scrollable"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody class="copyable">`);
+
+				let warnings = Member['activity'];
+
+				for (let i in warnings)
+				{
+					if (warnings.hasOwnProperty(i))
+					{
+						let warnlist = warnings[i].warnings.sort((a, b) => b.date - a.date);
+
+						if (warnlist.length >= 1)
+						{
+							for (let k in warnlist)
+							{
+								if (!warnlist.hasOwnProperty(k))
+								{
+									break;
+								}
+
+								d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(warnlist.length - parseInt(k))}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
+									`<td>${moment(warnlist[k].date).format(i18n('Date'))}</td>` +
+									`<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteInactivityWarning'))}">x</button></td></tr>`);
+							}
+						}
+					}
+				}
+				d.push('</tbody></table></div></div>');
+			}
+
+			// Create GEX Overview
+			if (Member['gex'] !== undefined)
+			{
+				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
+				let gex = Member['gex'];
+				for (let i in gex)
+				{
+					if (!gex.hasOwnProperty(i))
+					{
+						break;
+					}
+
+					let gexenddate = moment.unix(gex[i].gexweek);
+					let gexstartdate = moment.unix(gex[i].gexweek).subtract(7, 'd');
+					let gexweek = gexstartdate.format('YYYY-ww');
+					let gexdate = gexstartdate.format(i18n('Date'));
+					let activeGexClass = gex[i].gexweek >= currentTime ? ' activeCircle' : '';
+					let tooltip = gexstartdate.format(i18n('Date')) + ' - ' + gexenddate.format(i18n('Date'));
+					let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gexdate : (GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gexenddate.format(i18n('Date')) : gexweek);
+
+					d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGexClass}"></span></td>` +
+						`<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` +
+						`<td>${HTML.Format(gex[i].solvedEncounters)}</td>` +
+						`<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` +
+						`</tr>`);
+
+				}
+				d.push('</tbody></table></div></div>');
+			}
+
+			// Create GBG Overview
+			if (Member['gbg'] !== undefined)
+			{
+				d.push(`<div class="detail-item gbg"><div class="scrollable"><table><thead><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
+
+				let gbg = Member['gbg'];
+
+				for (let i in gbg)
+				{
+					if (!gbg.hasOwnProperty(i))
+					{
+						break;
+					}
+
+					let activeGbgClass = gbg[i].gbgid >= currentTime ? ' activeCircle' : '';
+					let gbgenddate = moment.unix(gbg[i].gbgid);
+					let gbgstartdate = moment.unix(gbg[i].gbgid).subtract(11, 'd');
+					let tooltip = gbgstartdate.format(i18n('Date')) + ' - ' + gbgenddate.format(i18n('Date'));
+					let week = moment.unix(gbg[i].gbgid).week();
+					let lastweek = week - 1;
+
+					week = (week.toString().length === 1) ? '0' + week : week;
+					lastweek = (lastweek.toString().length === 1) ? '0' + lastweek : lastweek;
+
+					let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gbgstartdate.format(i18n('Date')) : (GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gbgenddate.format(i18n('Date')) : `${moment.unix(gbg[i].gbgid).year()} - ${lastweek}/${week}`);
+
+					d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGbgClass}"></span></td>` +
+						`<td>${gbg[i].rank}</td>` +
+						`<td>${HTML.Format(gbg[i].battlesWon)}</td>` +
+						`<td>${HTML.Format(gbg[i].negotiationsWon)}</td>` +
+						`<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteGBGRound'))}">x</button></td>` +
+						`</tr>`);
+				}
+
+				d.push('</tbody></table></div></div>');
+			}
+
+			// Create Guild supporting buildings Overview
+			if (Member['guildbuildings'] !== undefined)
+			{
+				let guildbuildings = Member['guildbuildings'];
+				let totalGoods = 0;
+				let totalPower = 0;
+
+				d.push(`<div class="detail-item buildings"><table><thead class="${expand === true ? 'open ' : ''}hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="${expand !== true ? 'closed ' : ''}copyable">`);
+
+				// Group GuildGoods buildings by name and their era
+				let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined }).reduce(function (res, obj) {
+					let objname = obj.name + '#' + obj.level + '#';
+					if (!(objname in res))
+					{
+						res.__array.push(res[objname] = obj);
+						res[objname].count = 1;
+					}
+					else
+					{
+						res[objname].resources.totalgoods += +obj.resources.totalgoods;
+						res[objname].count += 1;
+					}
+					return res;
+				}, { __array: [] }).__array.sort(function (a, b) { return a.name.localeCompare(b.name) });
+
+				// Group guildpower buildings only by name. Era isn't relevant here
+				let guildPowerBuildings = guildbuildings['buildings'].filter(function (data) { return data.power !== undefined }).reduce(function (res, obj) {
+					if (!(obj.name in res))
+					{
+						res.__array.push(res[obj.name] = obj);
+						res[obj.name].count = 1;
+					}
+					else
+					{
+						res[obj.name].power.value += +obj.power.value;
+						res[obj.name].count += 1;
+					}
+					return res;
+				}, { __array: [] }).__array.sort(function (a, b) { return a.name.localeCompare(b.name) });
+
+				d.push(`<tr class="nohover"><td colspan="2"><div class="detail-wrapper">`);
+
+				if (guildGoodsBuildings.length)
+				{
+					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
+
+					guildGoodsBuildings.forEach(plbuilding => {
+						let goodslist = '';
+						let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
+						let goodCount = (plbuilding.resources && plbuilding.resources.totalgoods) ? plbuilding.resources.totalgoods : 0;
+						totalGoods += goodCount;
+						if (plbuilding.resources.goods !== undefined && plbuilding.resources.goods !== null)
+						{
+							goodslist = plbuilding.resources.goods.map(good => {
+								return `<span title="${good.value} x ${GoodsData[good.good_id]['name']}" class="goods-sprite-50 sm ${good.good_id}"></span> `;
+							}).join('');
+
+						}
+
+						let Entity = MainParser.CityEntities[plbuilding.entity_id];
+						let LevelString;
+						if (plbuilding.level === null)
+						{
+							LevelString = '';
+						}
+						else if (Entity && Entity.type === 'greatbuilding')
+						{
+							LevelString = '(' + plbuilding.level + ')';
+						}
+						else
+						{
+							LevelString = '(' + i18n('Eras.' + plbuilding.level) + ')';
+						}
+
+						d.push(`<tr><td>${countBuilding} x ${plbuilding.name.replace(/\#[0-9]+\#/, '')} ${LevelString}</td><td class="text-right">${goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : ''}</td><td class="text-right">${HTML.Format(goodCount)}</td></tr>`);
+					});
+
+					d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildGoods')}</td><td></td><td class="text-right text-bright">${HTML.Format(totalGoods)}</td></tr>`);
+					d.push(`</tbody></table></div>`);
+				}
+
+				if (guildPowerBuildings.length)
+				{
+					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
+
+					guildPowerBuildings.forEach(plbuilding => {
+						let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
+						let powerCount = (plbuilding.power && plbuilding.power.value) ? plbuilding.power.value : 0;
+						totalPower += powerCount;
+						d.push(`<tr><td>${countBuilding} x  ${plbuilding.name}</td><td class="text-right">${HTML.Format(powerCount)}</td></tr>`);
+					});
+
+					d.push(`<tr><td class="text-bright">${i18n('Boxes.GuildMemberStat.TotalGuildPower')}</td><td class="text-right text-bright">${HTML.Format(totalPower)}</td></tr>`);
+					d.push(`</tbody></table></div>`);
+				}
+
+				d.push('</div></td></tr></tbody></table></div>');
+			}
+
+			d.push('</div></td></tr>');
+
+			$(d.join('')).insertAfter('#' + id);
+
+		});
+
+		// Show Delete Buttons
+		$('#GuildMemberTable th span.edit').off('click').on('click', function (e) {
+
+			//Show modal Warning before delete
+			if (!GuildMemberStat.acceptedDeleteWarning)
+			{
+				$('<div/>', {
+					id: 'gms-modal-warning',
+					class: 'warningoverlay',
+					html: '<div class="warningoverlay-content">' + i18n('Boxes.GuildMemberStat.DeleteDataWarning') + '<br /><br /><button id="gms-accept-modal" class="btn btn-default">' + i18n('Boxes.GuildMemberStat.GotIt') + '</button><div>'
+				}).appendTo('#GuildMemberStatBody');
+
+				$('#GuildMemberStatBody').on('click', '#gms-accept-modal', function () {
+					$("#gms-modal-warning").fadeOut(400, function () { $("#gms-modal-warning").remove(); GuildMemberStat.acceptedDeleteWarning = true; });
+				});
+			}
+			e.stopPropagation();
+			$(this).closest('table').find('.deleteButton').fadeToggle(50);
+		});
+
+		// Delete an inactivity entry
+		$('#GuildMemberTable .deleteInactivity').off('click').on('click', function () {
+
+			let button = $(this);
+			let index = parseInt($(button).attr('data-warn'));
+			let player_id = parseInt($(button).attr('data-id'));
+
+			let delObj = {
+				player_id: player_id,
+				data: GuildMemberStat.MemberDict[player_id]['activity'][0]['warnings'][index],
+				content: 'activity'
+			}
+
+			GuildMemberStat.DeletePlayerDetail(delObj);
+
+			$(button).closest("tr").remove();
+
+		});
+
+		// Delete an gex entry
+		$('#GuildMemberTable .deleteGexWeek').off('click').on('click', function () {
+
+			let button = $(this);
+			let delObj = {
+				player_id: parseInt($(button).attr('data-id')),
+				data: { gexweek: parseInt($(button).attr('data-gexweek')) },
+				content: 'gex'
+			}
+
+			GuildMemberStat.DeletePlayerDetail(delObj);
+
+			$(button).closest("tr").remove();
+
+		});
+
+		// Delete an gbg entry
+		$('#GuildMemberTable .deleteGBG').off('click').on('click', function () {
+
+			let button = $(this);
+			let delObj = {
+				player_id: parseInt($(button).attr('data-id')),
+				data: { gbgid: parseInt($(button).attr('data-gbgid')) },
+				content: 'gbg'
+			}
+
+			GuildMemberStat.DeletePlayerDetail(delObj);
+
+			$(button).closest("tr").remove();
+
+		});
+
+		$('#GuildMemberTable thead.hasdetail').off('click').on('click', function () {
+
+			let thead = $(this);
+
+			if ($(thead).hasClass('open'))
+			{
+				$(thead).removeClass('open').addClass('closed');
+				$(thead).next().removeClass('open').addClass('closed');
+			}
+			else
+			{
+				$(thead).removeClass("closed").addClass('open');
+				$(thead).next().removeClass("closed").addClass('open');
+			}
+
+		});
+
+		$('#GuildMemberTable .gms-tooltip').tooltip({
+			html: true,
+			container: '#GuildMemberStatBody'
+		});
+
+		GuildMemberStat.hidePreloader("#GuildMemberStat");
+
 	},
 
 
@@ -1472,7 +1519,7 @@ let GuildMemberStat = {
 		let ExportContent = GuildMemberStat.ExportData = [];
 
 		// group members to era
-		const EraGroup = GuildMembers.reduce((res, obj) => {
+		let EraGroup = GuildMemberStat.EraGroup = GuildMembers.reduce((res, obj) => {
 			let eraId = Technologies.Eras[obj['era']];
 			if (!(eraId in res))
 			{
@@ -1487,19 +1534,17 @@ let GuildMemberStat = {
 			return res;
 		}, []);
 
-		d.push(`<div class="detail-wrapper">`);
-
 		if (EraGroup)
 		{
-			d.push(`<div class="detail-item guildgoods">` +
-				`<table id="GuildErasTable" class="foe-table copyable">` +
+			d.push(`<table id="GuildErasTable" class="foe-table">` +
 				`<thead><tr class="sorter-header">` +
 				`<th class="is-number" data-type="gms-era">#</th>` +
 				`<th class="case-sensitive" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
 				`<th class="is-number text-center" data-type="gms-era">${i18n('Boxes.GuildMemberStat.GuildMembers')}</th>`);
 			d.push(`<th class="is-number ${hasTreasuryTotals ? 'text-right' : 'text-center'}" data-type="gms-era">${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th>`);
-			d.push(`<th class="is-number text-right" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Points')}</th><th></th></tr>` +
-				`</thead><tbody class="gms-era">`);
+			d.push(`<th class="is-number text-right" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Points')}</th>` +
+				`<th class="expand-all closed"></th></tr>` +
+				`</thead><tbody class="gms-era copyable">`);
 
 			ExportContent.push(['eraId', 'era', 'numberOfMembers', 'treasuryGoods', 'memberPoints']);
 
@@ -1533,10 +1578,8 @@ let GuildMemberStat = {
 
 				ExportContent.push([EraGroup[era].eraId, i18n('Eras.' + EraGroup[era].eraId), countEra, eraTotals, EraGroup[era].score])
 			};
-			d.push(`</tbody></table></div>`);
+			d.push(`</tbody></table>`);
 		}
-
-		d.push(`</div>`);
 
 		$('#gmsContentWrapper').html(d.join('')).promise().done(function () {
 
@@ -1547,64 +1590,115 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			$('#GuildErasTable > tbody tr').on('click', function () {
+			$('#GuildErasTable thead .expand-all').off('click').on('click', async function (e) {
+				e.preventDefault();
 
-				if ($(this).next("tr.detailview").length)
+				let tr = $('#GuildErasTable > tbody').children('tr');
+				let expand = $(this).hasClass('closed') ? true : false;
+				$(this).toggleClass("closed open");
+
+				if (expand === true)
 				{
-					$(this).next("tr.detailview").remove();
-					$(this).removeClass('open');
+					GuildMemberStat.showPreloader("#GuildMemberStat");
+					setTimeout(() => { GuildMemberStat.ShowGuildEraDetail(tr, expand), 300 });
 				}
 				else
 				{
-					if (!$(this).hasClass("hasdetail"))
-					{
-						return;
-					}
-
-					$(this).addClass('open');
-
-					let eraId = $(this).attr('data-id');
-					let h = [];
-
-					h.push(`<tr class="detailview dark-bg"><td colspan="${$(this).find("td").length}"><div class="detail-wrapper"><div class="detail-item">` +
-						`<table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th class="text-right">${i18n('Boxes.GuildMemberStat.Points')}</th></tr></thead><tbody>`);
-					if (EraGroup[eraId].members !== undefined)
-					{
-
-						let EraMembers = EraGroup[eraId].members.sort(function (a, b) { return a.score > b.score });
-
-						EraMembers.forEach(member => {
-							h.push(`<tr><td>${member.rank[1]}</td><td>${MainParser.GetPlayerLink(member.player_id, member.name)}</td><td>${i18n('Eras.' + eraId)}</td><td class="text-right">${HTML.Format(member.score)}</td></tr>`);
-						});
-
-					}
-					h.push('</tbody></table></div>');
-
-					// Show in stock Treasury Goods for Era
-					if (TreasuryGoodsData !== null && typeof TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined')
-					{
-						let EraTreasuryGoods = TreasuryGoodsData[EraGroup[eraId].era];
-
-						h.push(`<div class="detail-item"><table><thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
-						EraTreasuryGoods.forEach(good => {
-							h.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
-						});
-
-						h.push(`<tr><td colspan="3" class="text-right"><i>${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(TreasuryGoodsData.updated).fromNow()}</i></td></tr>`);
-						h.push(`</tbody></table></div>`);
-
-					}
-					h.push('</div></td></tr>');
-
-					$(h.join('')).insertAfter($('#era' + eraId));
+					GuildMemberStat.ShowGuildEraDetail(tr, expand);
 				}
 			});
 
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			$('#GuildErasTable > thead th:not(:last)').on('click', function () {
+				$('#GuildErasTable > tbody tr').removeClass("open");
+				$('#GuildErasTable th.expand-all').removeClass("open").addClass("closed");
+			});
+
+			$('#GuildErasTable > tbody tr').on('click', function () {
+
+				let tr = [$(this)];
+				GuildMemberStat.ShowGuildEraDetail(tr);
+
+			});
+
+			GuildMemberStat.hidePreloader();
 		});
 
 	},
 
+
+	ShowGuildEraDetail: (arr, expand) => {
+
+		if (!arr && arr.length === 0) { return; }
+
+		let EraGroup = GuildMemberStat.EraGroup;
+		let TreasuryGoodsData = GuildMemberStat.TreasuryGoodsData;
+
+		if (expand === false)
+		{
+			$("#GuildErasTable > tbody tr.detailview").remove();
+			$("#GuildErasTable > tbody tr").removeClass('open');
+			return;
+		}
+
+		$.each(arr, function () {
+			let e = $(this);
+
+			if (e.next("tr.detailview").length)
+			{
+				e.next("tr.detailview").remove();
+				e.removeClass('open');
+			}
+			else
+			{
+				if (!e.hasClass("hasdetail"))
+				{
+					return;
+				}
+
+				e.addClass('open');
+
+				let eraId = e.attr('data-id');
+				let h = [];
+
+				h.push(`<tr class="detailview dark-bg"><td colspan="${e.find("td").length}"><div class="detail-wrapper"><div class="detail-item">` +
+					`<table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th class="text-right">${i18n('Boxes.GuildMemberStat.Points')}</th></tr></thead><tbody>`);
+
+				if (EraGroup[eraId].members !== undefined)
+				{
+
+					let EraMembers = EraGroup[eraId].members.sort(function (a, b) { return a.score > b.score });
+
+					EraMembers.forEach(member => {
+						h.push(`<tr><td>${member.rank[1]}</td><td>${MainParser.GetPlayerLink(member.player_id, member.name)}</td><td>${i18n('Eras.' + eraId)}</td><td class="text-right">${HTML.Format(member.score)}</td></tr>`);
+					});
+
+				}
+				h.push('</tbody></table></div>');
+
+				// Show in stock Treasury Goods for Era
+				if (TreasuryGoodsData !== null && typeof TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined')
+				{
+					let EraTreasuryGoods = TreasuryGoodsData[EraGroup[eraId].era];
+
+					h.push(`<div class="detail-item"><table><thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
+					EraTreasuryGoods.forEach(good => {
+						h.push(`<tr><td class="goods-image"><span class="goods-sprite-50 sm ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
+					});
+
+					h.push(`<tr><td colspan="3" class="text-right"><i>${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(TreasuryGoodsData.updated).fromNow()}</i></td></tr>`);
+					h.push(`</tbody></table></div>`);
+
+				}
+				h.push('</div></td></tr>');
+
+				$(h.join('')).insertAfter($('#era' + eraId));
+			}
+
+		});
+
+		GuildMemberStat.hidePreloader();
+
+	},
 
 	ShowGuildBuildings: async () => {
 
@@ -1626,7 +1720,7 @@ let GuildMemberStat = {
 		if (gmsBuildingDict === undefined || gmsBuildingDict.length <= 0)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 			return;
 		}
 
@@ -1787,7 +1881,7 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 
 			$('#gmsContentWrapper #toggleBuildingView').on('click', function () {
 				$('#gmsContentWrapper .buildinglist').toggleClass('hide show');
@@ -1837,7 +1931,7 @@ let GuildMemberStat = {
 		if (ErasGuildGoods === null)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 			return;
 		}
 
@@ -1933,7 +2027,7 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 		});
 	},
 
@@ -1954,7 +2048,7 @@ let GuildMemberStat = {
 		if (GreatBuildings === null)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 			return;
 		}
 
@@ -2105,7 +2199,7 @@ let GuildMemberStat = {
 				});
 			});
 
-			GuildMemberStat.hidePreloader('#GuildMemberStat');
+			GuildMemberStat.hidePreloader();
 
 			$('#gblist > tbody tr.hasdetail').off().on('click', function () {
 
@@ -2408,18 +2502,14 @@ let GuildMemberStat = {
 
 
 	showPreloader: (id) => {
-
-		if (!$('#gms-loading-data').length)
-		{
-			$(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
-		}
-
+		$('#gms-loading-data').remove();
+		$(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
 	},
 
 
 	hidePreloader: () => {
 
-		$('#gms-loading-data').fadeOut(600, function () {
+		$('#gms-loading-data').fadeOut(500, function () {
 			$(this).remove();
 		});
 
