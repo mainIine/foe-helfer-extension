@@ -231,6 +231,7 @@
     "Boxes.Gildfights.CopyToClipBoard.Desc": "A kiválasztott tartomány támadási ideje másolva.",
     "Boxes.Gildfights.CopyToClipBoard.Title": "Másolva!",
     "Boxes.Gildfights.Count": "időn belül",
+    "Boxes.Gildfights.Date": "Dátum",
     "Boxes.Gildfights.DeleteAlert": "Riasztás törlése",
     "Boxes.Gildfights.DeleteMessage.Desc": "A(z) __provinceName__ tartományra vonatkozó riasztás törölve!",
     "Boxes.Gildfights.DeleteMessage.Title": "Törölve!",
