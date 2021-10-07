@@ -635,6 +635,7 @@
     "Boxes.Stats.PeriodTitle.today": "Ma gyűjtött",
     "Boxes.Stats.Rewards.Source.__event": "Esemény",
     "Boxes.Stats.Rewards.Source.battlegrounds_conquest": "Céh-csatatér",
+    "Boxes.Stats.Rewards.Source.default": "Incidensek",
     "Boxes.Stats.Rewards.Source.diplomaticGifts": "Diplomáciai ajándékok",
     "Boxes.Stats.Rewards.Source.guildExpedition": "Céh expedíció",
     "Boxes.Stats.Rewards.Source.spoilsOfWar": "Hadizsákmány",
