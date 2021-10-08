@@ -2,9 +2,14 @@
 
 ##### 2.5.9.3
 
+**Neu**
+- Close all Box:
+	-[#2044](https://github.com/mainIine/foe-helfer-extension/issues/2044) Floating box to hide and close all FoE helper windows
+		- can be activated in the FoE Helper settings under Boxes -> Close all Box
+
 **BugFix**
 - Menu:
-	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) The menu tooltip warning is displayed permanently, even if the conditions has been met.
+	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) The tooltip warnings were permanently displayed even if the conditions were fulfilled.
 
 **Update**
 - Guild Battle Box:

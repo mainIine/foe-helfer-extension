@@ -2,16 +2,21 @@
 
 ##### 2.5.9.3
 
+**Neu**
+- Alles Schließen Box:
+	-[#2044](https://github.com/mainIine/foe-helfer-extension/issues/2044) Schwebende Box zum Ausblenden und Schließen aller FoE Helfer Fenster
+		- aktivierbar in den Einstellungen des Helfers unter Boxen -> Alles Schließen Box 
+
 **BugFix**
 - Menü:
-	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) Die Tooltipwarnung wird dauerhaft angezeigt, auch wenn die Bedingungen erfüllt wurden.
+	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) Die Tooltipwarnung wurden dauerhaft angezeigt, auch wenn die Bedingungen erfüllt waren.
 
 **Update**
 - Gildengefecht Box:
 	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Erweiterung der Snapshot Funktion:
-		-chronologische Speicherung der einzelnen Gildengefechtsrunden
-		-jeder Snapshot innerhalb der aktuell laufenden Gildengefechtsrunde, mit den jeweiligen Zuwächsen der Mitglieder, wird gespeichert. Mit Beginn einer neuen Gildengefechtsrunde werden die gespeicherten Snapshots der vorherigen Runde gelöscht.
-		-Filterfunktion für die gepeicherten Snapshots (Spieler und Datum)
+		- Chronologische Speicherung der einzelnen Gildengefechtsrunden
+		- Jeder Snapshot innerhalb der aktuell laufenden Gildengefechtsrunde, mit den jeweiligen Zuwächsen der Mitglieder, wird gespeichert. Mit Beginn einer neuen Gildengefechtsrunde werden die gespeicherten Snapshots der vorherigen Runde gelöscht.
+		- Filterfunktion für die gepeicherten Snapshots (Spieler und Datum)
 
 - Gildenmitglieder Übersicht:
 	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) 0 Werte bei Gex/GG in der Gildenmitgliederverwaltung anzeigen
