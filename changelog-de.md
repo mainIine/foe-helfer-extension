@@ -17,6 +17,7 @@
 		- Chronologische Speicherung der einzelnen Gildengefechtsrunden
 		- Jeder Snapshot innerhalb der aktuell laufenden Gildengefechtsrunde, mit den jeweiligen Zuwächsen der Mitglieder, wird gespeichert. Mit Beginn einer neuen Gildengefechtsrunde werden die gespeicherten Snapshots der vorherigen Runde gelöscht.
 		- Filterfunktion für die gepeicherten Snapshots (Spieler und Datum)
+	-[#2176](https://github.com/mainIine/foe-helfer-extension/issues/2176) Filter um nur Mitglieder mit einem veränderten Fortschritt anzuzeigen hinzugefügt.
 
 - Gildenmitglieder Übersicht:
 	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) 0 Werte bei Gex/GG in der Gildenmitgliederverwaltung anzeigen
