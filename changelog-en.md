@@ -17,6 +17,7 @@
 		- Chronological storage of the individual Guild Battlegrounds rounds.
 		- Each snapshot within the currently running Guild Battlegrounds round, with the respective increases of the members, is saved. With the start of a new Guild Battlegrounds round, the saved snapshots of the previous round will be deleted.
 		- Filter function for saved snapshots (player and date)
+	-[#2176](https://github.com/mainIine/foe-helfer-extension/issues/2176) Added filter to show only members with a changed progress.
 
 - Guild members overview:
 	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) Show 0 values for Gex/GG in guild member statistic
