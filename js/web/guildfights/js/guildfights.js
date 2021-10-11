@@ -262,6 +262,7 @@ let GildFights = {
 		GildFights.PlayerBoxSettings.showRoundSelector = (PlayerBoxSettings.showRoundSelector !== undefined) ? PlayerBoxSettings.showRoundSelector : GildFights.PlayerBoxSettings.showRoundSelector;
 		GildFights.PlayerBoxSettings.showLogButton = (PlayerBoxSettings.showLogButton !== undefined) ? PlayerBoxSettings.showLogButton : GildFights.PlayerBoxSettings.showLogButton;
 		GildFights.PlayerBoxSettings.showProgressFilter = (PlayerBoxSettings.showProgressFilter !== undefined) ? PlayerBoxSettings.showProgressFilter : GildFights.PlayerBoxSettings.showProgressFilter;
+		GildFights.PlayerBoxSettings.showOnlyActivePlayers = (PlayerBoxSettings.showOnlyActivePlayers !== undefined) ? PlayerBoxSettings.showOnlyActivePlayers : GildFights.PlayerBoxSettings.showOnlyActivePlayers;
 
 		if (GildFights.GBGAllRounds === undefined || GildFights.GBGAllRounds === null)
 		{
@@ -285,7 +286,7 @@ let GildFights = {
 			let nextweek = GildFights.GBGAllRounds[index - 1] || null;
 
 			h.push(`<div id="gbg_roundswitch" class="roundswitch dark-bg">`);
-			
+
 			if (GildFights.PlayerBoxSettings.showRoundSelector)
 			{
 				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
