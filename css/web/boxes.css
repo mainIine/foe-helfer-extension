@@ -1142,6 +1142,14 @@ FP-Bar */
 	visibility: visible;
 }
 
+.tooltip .tooltip-error {
+	display: none;
+}
+
+.tooltip.disabled .tooltip-error {
+	display: block;
+}
+
 .tooltip.in {
 	opacity: 1;
 	filter: alpha(opacity=100);
