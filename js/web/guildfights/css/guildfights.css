@@ -13,8 +13,15 @@
 
 #GildPlayers {
 	left: calc(50vw - 285px);
-	top: calc(50vw - 270px);
+	top: calc(50vh - 270px);
 	width: 570px;
+	height: 500px;
+}
+
+#GildPlayersDetailView {
+	left: calc(50vw + 285px);
+	top: calc(50vh - 250px);
+	width: 465px;
 	height: 500px;
 }
 
@@ -26,33 +33,45 @@
 	font-weight: lighter;
 }
 
-#GildPlayersBody {
+#GildPlayersBody,
+#GildPlayersDetailViewBody {
 	overflow-x: hidden;
 	overflow-y: auto;
+}
+
+#GildPlayersBody table tbody {
 	user-select: text;
 }
 
-#GildPlayersBody tr th  {
+#GildPlayersDetailViewBody {
+	user-select: none;
+}
+
+#GildPlayersBody tr th,
+#GildPlayersDetailViewBody tr th {
 	position: sticky;
 	top: 0;
-	background-color: rgba(0,0,0, 0.45);
-    line-height: 25px;
+	background-color: rgba(0, 0, 0, 0.45);
+	line-height: 25px;
 
 }
 
-#GildPlayersBody tr th span {
+#GildPlayersBody tr th span,
+#GildPlayersDetailViewBody tr th span {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
 	vertical-align: bottom;
 }
 
-#GildPlayersBody tr th span.negotiation {
+#GildPlayersBody tr th span.negotiation,
+#GildPlayersDetailViewBody tr th span.negotiation {
 	background: url('../../x_img/negotiation.png') center no-repeat;
 	background-size: contain;
 }
 
-#GildPlayersBody tr th span.fight {
+#GildPlayersBody tr th span.fight,
+#GildPlayersDetailViewBody tr th span.fight {
 	background: url('../../x_img/fight.png') center no-repeat;
 	background-size: contain;
 }
@@ -66,9 +85,11 @@
 	border-top: 1px solid var(--text-bright);
 	border-bottom: 1px solid var(--text-bright);
 }
+
 #GildPlayersBody tr.mark-player td:first-child {
 	border-left: 1px solid var(--text-bright);
 }
+
 #GildPlayersBody tr.mark-player td:last-child {
 	border-right: 1px solid var(--text-bright);
 }
@@ -78,11 +99,110 @@
 	background-color: var(--background-table-success);
 }
 
+#GildPlayersBody table .tdmin,
+#GildPlayersDetailViewBody table .tdmin {
+	width: 1%;
+	white-space: nowrap;
+}
+
+#GildPlayersBody .roundswitch {
+	padding: 2px 5px;
+}
+
+#GildPlayersBody .roundswitch .btn-set-week.last {
+	margin-right: 10px;
+}
+
+#GildPlayersBody .roundswitch:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+#GildPlayersBody #gbgLogFilter {
+	float: right;
+}
+
+#GildPlayersBody #gbg-select-gbground {
+	margin-right: 4px;
+}
+
+#GildPlayersSettingsBox .settingtitle {
+	display: block;
+	margin-bottom: 7px;
+	font-size: 0.9em;
+	text-decoration: underline;
+}
+
+#GildPlayersDetailViewBody .pname {
+	padding: 10px 5px;
+	color: var(--text-bright);
+	font-size: 1.0rem;
+}
+
+#GildPlayersDetailViewBody table tr.hasdetail {
+	position: relative;
+}
+
+#GildPlayersBody table.chevron-right td:last-child {
+	background-image: url('../../../../css/images/hud/chevron-right.svg');
+	background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+	width: 7px;
+}
+
+#GildPlayersDetailViewBody table tr.hasdetail td:last-child,
+#GildPlayersDetailViewBody table thead.hasdetail tr th:last-child {
+	background-image: url('../../../../css/images/hud/chevron-left.svg');
+	background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+	width: 7px;
+
+}
+
+#GildPlayersDetailViewBody table tr.hasdetail.open td:last-child,
+#GildPlayersDetailViewBody table thead.hasdetail.open tr th:last-child {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+	width: 7px;
+}
+
+#GildPlayersDetailViewBody tr.open td {
+	color: var(--text-bright);
+}
+
+#GildPlayersDetailViewBody .foe-table td.nopadding {
+	padding: 0;
+}
+
+
+#GildPlayersDetailViewBody .datetimepicker {
+	padding: 2px 0 0 2px;
+	background-color: rgba(0, 0, 0, 0.45);
+	height: 28px;
+	position: sticky;
+	top: 0;
+}
+
+#GildPlayersDetailViewBody .gbglog th {
+	top: 30px;
+}
+
+#GildPlayersDetailViewBody .sorter-header th {
+	cursor: pointer;
+}
+
+#GildPlayersDetailViewBody table.foe-table tr td:last-child,
+#GildPlayersDetailViewBody table.foe-table tr th:last-child {
+	width: 15px;
+}
+
 /*************************************************************************************************************/
 
 #LiveGildFighting {
 	left: calc(50vw - 250px);
-	top: calc(50vw - 250px);
+	top: calc(50vh - 250px);
 	width: 500px;
 	height: 500px;
 }
@@ -101,22 +221,138 @@
 }
 
 /* A */
-#province-0 .province-color, #province-4 .province-color, #province-5 .province-color, #province-12 .province-color, #province-13 .province-color, #province-14 .province-color, #province-15 .province-color, #province-28 .province-color, #province-29 .province-color, #province-30 .province-color, #province-31 .province-color, #province-32 .province-color, #province-33 .province-color, #province-34 .province-color, #province-35 .province-color, #timer-0 .province-color, #timer-4 .province-color, #timer-5 .province-color, #timer-12 .province-color, #timer-13 .province-color, #timer-14 .province-color, #timer-15 .province-color, #timer-28 .province-color, #timer-29 .province-color, #timer-30 .province-color, #timer-31 .province-color, #timer-32 .province-color, #timer-33 .province-color, #timer-34 .province-color, #timer-35 .province-color {
+#province-0 .province-color,
+#province-4 .province-color,
+#province-5 .province-color,
+#province-12 .province-color,
+#province-13 .province-color,
+#province-14 .province-color,
+#province-15 .province-color,
+#province-28 .province-color,
+#province-29 .province-color,
+#province-30 .province-color,
+#province-31 .province-color,
+#province-32 .province-color,
+#province-33 .province-color,
+#province-34 .province-color,
+#province-35 .province-color,
+#timer-0 .province-color,
+#timer-4 .province-color,
+#timer-5 .province-color,
+#timer-12 .province-color,
+#timer-13 .province-color,
+#timer-14 .province-color,
+#timer-15 .province-color,
+#timer-28 .province-color,
+#timer-29 .province-color,
+#timer-30 .province-color,
+#timer-31 .province-color,
+#timer-32 .province-color,
+#timer-33 .province-color,
+#timer-34 .province-color,
+#timer-35 .province-color {
 	border-radius: 2px 100% 2px 2px;
 }
 
 /* B */
-#province-1 .province-color, #province-6 .province-color, #province-7 .province-color, #province-16 .province-color, #province-17 .province-color, #province-18 .province-color, #province-19 .province-color, #province-36 .province-color, #province-37 .province-color, #province-38 .province-color, #province-39 .province-color, #province-40 .province-color, #province-41 .province-color, #province-42 .province-color, #province-43 .province-color, #timer-1 .province-color, #timer-6 .province-color, #timer-7 .province-color, #timer-16 .province-color, #timer-17 .province-color, #timer-18 .province-color, #timer-19 .province-color, #timer-36 .province-color, #timer-37 .province-color, #timer-38 .province-color, #timer-39 .province-color, #timer-40 .province-color, #timer-41 .province-color, #timer-42 .province-color, #timer-43 .province-color {
+#province-1 .province-color,
+#province-6 .province-color,
+#province-7 .province-color,
+#province-16 .province-color,
+#province-17 .province-color,
+#province-18 .province-color,
+#province-19 .province-color,
+#province-36 .province-color,
+#province-37 .province-color,
+#province-38 .province-color,
+#province-39 .province-color,
+#province-40 .province-color,
+#province-41 .province-color,
+#province-42 .province-color,
+#province-43 .province-color,
+#timer-1 .province-color,
+#timer-6 .province-color,
+#timer-7 .province-color,
+#timer-16 .province-color,
+#timer-17 .province-color,
+#timer-18 .province-color,
+#timer-19 .province-color,
+#timer-36 .province-color,
+#timer-37 .province-color,
+#timer-38 .province-color,
+#timer-39 .province-color,
+#timer-40 .province-color,
+#timer-41 .province-color,
+#timer-42 .province-color,
+#timer-43 .province-color {
 	border-radius: 2px 2px 100% 2px;
 }
 
 /* C */
-#province-2 .province-color, #province-8 .province-color, #province-9 .province-color, #province-20 .province-color, #province-21 .province-color, #province-22 .province-color, #province-23 .province-color, #province-44 .province-color, #province-45 .province-color, #province-46 .province-color, #province-47 .province-color, #province-48 .province-color, #province-49 .province-color, #province-50 .province-color, #province-51 .province-color, #timer-2 .province-color, #timer-8 .province-color, #timer-9 .province-color, #timer-20 .province-color, #timer-21 .province-color, #timer-22 .province-color, #timer-23 .province-color, #timer-44 .province-color, #timer-45 .province-color, #timer-46 .province-color, #timer-47 .province-color, #timer-48 .province-color, #timer-49 .province-color, #timer-50 .province-color, #timer-51 .province-color {
+#province-2 .province-color,
+#province-8 .province-color,
+#province-9 .province-color,
+#province-20 .province-color,
+#province-21 .province-color,
+#province-22 .province-color,
+#province-23 .province-color,
+#province-44 .province-color,
+#province-45 .province-color,
+#province-46 .province-color,
+#province-47 .province-color,
+#province-48 .province-color,
+#province-49 .province-color,
+#province-50 .province-color,
+#province-51 .province-color,
+#timer-2 .province-color,
+#timer-8 .province-color,
+#timer-9 .province-color,
+#timer-20 .province-color,
+#timer-21 .province-color,
+#timer-22 .province-color,
+#timer-23 .province-color,
+#timer-44 .province-color,
+#timer-45 .province-color,
+#timer-46 .province-color,
+#timer-47 .province-color,
+#timer-48 .province-color,
+#timer-49 .province-color,
+#timer-50 .province-color,
+#timer-51 .province-color {
 	border-radius: 2px 2px 2px 100%;
 }
 
 /* D */
-#province-3 .province-color, #province-10 .province-color, #province-11 .province-color, #province-24 .province-color, #province-25 .province-color, #province-26 .province-color, #province-27 .province-color, #province-52 .province-color, #province-53 .province-color, #province-54 .province-color, #province-55 .province-color, #province-56 .province-color, #province-57 .province-color, #province-58 .province-color, #province-59 .province-color, #timer-3 .province-color, #timer-10 .province-color, #timer-11 .province-color, #timer-24 .province-color, #timer-25 .province-color, #timer-26 .province-color, #timer-27 .province-color, #timer-52 .province-color, #timer-53 .province-color, #timer-54 .province-color, #timer-55 .province-color, #timer-56 .province-color, #timer-57 .province-color, #timer-58 .province-color, #timer-59 .province-color {
+#province-3 .province-color,
+#province-10 .province-color,
+#province-11 .province-color,
+#province-24 .province-color,
+#province-25 .province-color,
+#province-26 .province-color,
+#province-27 .province-color,
+#province-52 .province-color,
+#province-53 .province-color,
+#province-54 .province-color,
+#province-55 .province-color,
+#province-56 .province-color,
+#province-57 .province-color,
+#province-58 .province-color,
+#province-59 .province-color,
+#timer-3 .province-color,
+#timer-10 .province-color,
+#timer-11 .province-color,
+#timer-24 .province-color,
+#timer-25 .province-color,
+#timer-26 .province-color,
+#timer-27 .province-color,
+#timer-52 .province-color,
+#timer-53 .province-color,
+#timer-54 .province-color,
+#timer-55 .province-color,
+#timer-56 .province-color,
+#timer-57 .province-color,
+#timer-58 .province-color,
+#timer-59 .province-color {
 	border-radius: 100% 2px 2px 2px;
 }
 
@@ -135,16 +371,16 @@
 	background: transparent url('../../x_img/hourglass.png') no-repeat;
 	background-size: contain;
 	top: 8px;
-    position: relative;
+	position: relative;
 }
 
-#LiveGildFightingBody .tabs > button.mapbutton {
+#LiveGildFightingBody .tabs>button.mapbutton {
 	position: absolute;
 	top: 7px;
 	right: 7px;
 }
 
-#LiveGildFightingBody .tabs > button.copybutton {
+#LiveGildFightingBody .tabs>button.copybutton {
 	display: none;
 	position: absolute;
 	top: 7px;
@@ -164,7 +400,8 @@
 	overflow-y: auto;
 }
 
-#LiveGildFightingBody #progress tr td:first-child, #LiveGildFightingBody #nextup tr td:first-child {
+#LiveGildFightingBody #progress tr td:first-child,
+#LiveGildFightingBody #nextup tr td:first-child {
 	width: 60px;
 }
 
@@ -240,7 +477,7 @@
 	width: 560px;
 	height: 438px;
 	left: calc(50vw - 280px);
-	top: calc(50vw - 219px);
+	top: calc(50vh - 219px);
 }
 
 #ProvinceMap #province-map {
