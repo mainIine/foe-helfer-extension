@@ -118,6 +118,10 @@
 				$tip = this.tip()
 				this.setContent()
 
+				if(this.$element.hasClass('hud-btn-red')) {
+					$tip.addClass('disabled');
+				}
+
 				if(this.options.useFoEHelperSkin) {
 					$tip.addClass('foe-skin');
 				}
@@ -221,7 +225,7 @@
 			}
 
 			$tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-			$tip.removeClass('fade in top bottom left right')
+			$tip.removeClass('fade in top bottom left right disabled')
 		}
 
 		, hide: function () {
