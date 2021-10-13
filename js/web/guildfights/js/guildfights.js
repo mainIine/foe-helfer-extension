@@ -33,7 +33,7 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 	{
 		GildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
 
-		if (GildFights.curDateFilter === null || GildFights.curDateEndFilter === null) 
+		if (GildFights.curDateFilter === null || GildFights.curDateEndFilter === null)
 		{
 			GildFights.curDateFilter = moment.unix(GildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
 			GildFights.curDateEndFilter = moment.unix(GildFights.CurrentGBGRound).format('YYYYMMDD');
@@ -48,7 +48,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	GildFights.init();
 	GildFights.CurrentGBGRound = data['responseData']['endsAt'];
 
-	if (GildFights.curDateFilter === null || GildFights.curDateEndFilter === null) 
+	if (GildFights.curDateFilter === null || GildFights.curDateEndFilter === null)
 	{
 		GildFights.curDateFilter = moment.unix(GildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
 		GildFights.curDateEndFilter = MainParser.getCurrentDateTime();
@@ -74,7 +74,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 
 /**
- * @type {{ShowPlayerBoxSettings: GildFights.ShowPlayerBoxSettings, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, showGuildColumn: number, SettingsExport: GildFights.SettingsExport, PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: (function(*=): undefined), BuildFightContent: GildFights.BuildFightContent, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, SetTabContent: GildFights.SetTabContent, NewAction: null, TabsContent: [], GetAlerts: (function(): undefined), PrevAction: null, UpdateCounter: GildFights.UpdateCounter, init: GildFights.init, PrepareColors: (function(): undefined), ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, SetTabs: GildFights.SetTabs, GetTabs: (function(): string), PlayerBoxContent: [], Colors: null, RefreshTable: (function(*=): undefined), SetAlert: GildFights.SetAlert, Neighbours: [], Tabs: [], SaveLiveFightSettings: GildFights.SaveLiveFightSettings, Alerts: [], ShowLiveFightSettings: GildFights.ShowLiveFightSettings, PlayersPortraits: null}}
+ * @type {{SettingsExport: GildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GildFights.init, PrepareColors: GildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GildFights.ToggleProgressList, Colors: null, RefreshTable: GildFights.RefreshTable, SetAlert: GildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GildFights.SetTabs, CopyToClipBoard: GildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GildFights.SaveLiveFightSettings, ShowLiveFightSettings: GildFights.ShowLiveFightSettings, ShowDetailViewBox: GildFights.ShowDetailViewBox}}
  */
 let GildFights = {
 
@@ -111,10 +111,11 @@ let GildFights = {
 	Tabs: [],
 	TabsContent: [],
 
+
 	/**
-	*
-	* @returns {Promise<void>}
-	*/
+	 *
+	 * @returns {Promise<void>}
+	 */
 	checkForDB: async (playerID) => {
 
 		const DBName = `FoeHelperDB_GuildFights_${playerID}`;
@@ -151,6 +152,10 @@ let GildFights = {
 	},
 
 
+	/**
+	 * @param d
+	 * @returns {Promise<void>}
+	 */
 	HandlePlayerLeaderboard: async (d) => {
 		// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
 		if (localStorage.getItem('GildFights.NewAction') !== null)
@@ -209,6 +214,11 @@ let GildFights = {
 	},
 
 
+	/**
+	 * @param content
+	 * @param data
+	 * @returns {Promise<void>}
+	 */
 	UpdateDB: async (content, data) => {
 
 		if (content === 'history')
@@ -234,7 +244,7 @@ let GildFights = {
 				battles = data.battles;
 				negotiations = data.negotiations;
 			}
-			else 
+			else
 			{
 				battles = data.diffbat;
 				negotiations = data.diffneg;
@@ -254,6 +264,10 @@ let GildFights = {
 	},
 
 
+	/**
+	 * @param gbground
+	 * @returns {Promise<void>}
+	 */
 	SetBoxNavigation: async (gbground) => {
 		let h = [];
 		let i = 0;
@@ -262,7 +276,6 @@ let GildFights = {
 		GildFights.PlayerBoxSettings.showRoundSelector = (PlayerBoxSettings.showRoundSelector !== undefined) ? PlayerBoxSettings.showRoundSelector : GildFights.PlayerBoxSettings.showRoundSelector;
 		GildFights.PlayerBoxSettings.showLogButton = (PlayerBoxSettings.showLogButton !== undefined) ? PlayerBoxSettings.showLogButton : GildFights.PlayerBoxSettings.showLogButton;
 		GildFights.PlayerBoxSettings.showProgressFilter = (PlayerBoxSettings.showProgressFilter !== undefined) ? PlayerBoxSettings.showProgressFilter : GildFights.PlayerBoxSettings.showProgressFilter;
-		GildFights.PlayerBoxSettings.showOnlyActivePlayers = (PlayerBoxSettings.showOnlyActivePlayers !== undefined) ? PlayerBoxSettings.showOnlyActivePlayers : GildFights.PlayerBoxSettings.showOnlyActivePlayers;
 
 		if (GildFights.GBGAllRounds === undefined || GildFights.GBGAllRounds === null)
 		{
@@ -359,7 +372,10 @@ let GildFights = {
 
 	},
 
-
+	/**
+	 * Filters the list for players with new progress
+	 * @param id
+	 */
 	ToggleProgressList: (id) => {
 
 		let elem = $('#GildPlayersTable > tbody');
@@ -434,10 +450,10 @@ let GildFights = {
 	},
 
 	/**
-	 * 
+	 *
 	 * @param {boolean} alertActive
-	 * @param {integer} provId 
-	 * @param {integer} alertId 
+	 * @param {integer} provId
+	 * @param {integer} alertId
 	 */
 	GetAlertButton: (provId) => {
 		let btn;
@@ -513,7 +529,8 @@ let GildFights = {
 	},
 
 	/**
-	 * Shows the player detail view
+	 * Generates the snapshot detail box
+	 * @param d
 	 */
 	ShowDetailViewBox: (d) => {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
@@ -545,7 +562,9 @@ let GildFights = {
 
 
 	/**
-	 * Display the contents of the snapshot
+	 * Built the player content content
+	 * @param gbground
+	 * @returns {Promise<void>}
 	 */
 	BuildPlayerContent: async (gbground) => {
 
@@ -750,8 +769,6 @@ let GildFights = {
 					GildFights.ToggleProgressList('gbg_filterProgressList');
 				}
 			}
-
-
 		});
 
 		if ($('#GildPlayersHeader .title').find('.time-diff').length === 0)
@@ -776,6 +793,11 @@ let GildFights = {
 	},
 
 
+	/**
+	 *
+	 * @param d
+	 * @returns {Promise<void>}
+	 */
 	BuildDetailViewContent: async (d) => {
 
 		let player_id = d.player_id ? d.player_id : null,
@@ -790,7 +812,7 @@ let GildFights = {
 
 		if (player_id === null && content === "player") return;
 
-		if (content === "player") 
+		if (content === "player")
 		{
 			detaildata = await GildFights.db.snapshots.where({ gbground: gbground, player_id: player_id }).toArray();
 
@@ -836,7 +858,6 @@ let GildFights = {
 
 			});
 
-
 			h.push('</tbody></table>');
 		}
 		else if (content === "filter")
@@ -877,9 +898,6 @@ let GildFights = {
 		$('#GildPlayersDetailViewBody').html(h.join('')).promise().done(function () {
 
 			$('#GildPlayersDetailViewBody .gbglog').tableSorter();
-
-			// $('#gbgLogSumN').html(sumN);
-			// $('#gbgLogSumF').html(sumF);
 
 			if ($('#gbgLogDatepicker').length !== 0)
 			{
@@ -922,6 +940,10 @@ let GildFights = {
 	},
 
 
+	/**
+	 * @param gbground
+	 * @returns {Promise<void>}
+	 */
 	DeleteOldSnapshots: async (gbground) => {
 
 		let deleteCount = await GildFights.db.snapshots.where("gbground").notEqual(gbground).delete();
@@ -929,6 +951,10 @@ let GildFights = {
 	},
 
 
+	/**
+	 * @param data
+	 * @returns {Promise<void>}
+	 */
 	BuildDetailViewLog: async (data) => {
 		let h = [];
 		let d = await GildFights.db.snapshots.where({ player_id: data.player, date: data.date }).reverse().sortBy('date');
