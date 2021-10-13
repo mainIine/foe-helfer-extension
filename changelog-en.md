@@ -1,5 +1,37 @@
 ## Changelog - Extension
 
+##### 2.5.9.3
+
+**Neu**
+- Close all Box:
+	-[#2044](https://github.com/mainIine/foe-helfer-extension/issues/2044) Floating box to hide and close all FoE helper windows
+		- can be activated in the FoE Helper settings under Boxes -> Close all Box
+
+**BugFix**
+- Menu:
+	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) The tooltip warnings were permanently displayed even if the conditions were fulfilled.
+
+**Update**
+- Guild Battle Box:
+	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Improvement of the snapshot feature:
+		- Chronological storage of the individual Guild Battlegrounds rounds.
+		- Each snapshot within the currently running Guild Battlegrounds round, with the respective increases of the members, is saved. With the start of a new Guild Battlegrounds round, the saved snapshots of the previous round will be deleted.
+		- Filter function for saved snapshots (player and date)
+	-[#2176](https://github.com/mainIine/foe-helfer-extension/issues/2176) Added filter to show only members with a changed progress.
+
+- Guild members overview:
+	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) Show 0 values for Gex/GG in guild member statistic
+		- Optionally via the settings menu of the box, the entries of the individual players can now also be displayed, in which the player had no participation in GE or GBG
+	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Date format GE/GBG in the guild member statistic
+		- The date format of Gex/GG participations can now be changed from calendar week to start date, end date or calendar week.
+	- [#2174](https://github.com/mainIine/foe-helfer-extension/issues/2174):
+		- In the member list and the era overview it is now possible to display/expand all details with one click.
+
+- Investment overview:
+	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) The total profit of medals is displayed in the investment overview if the column medals is selected in the box settings
+
+---
+
 ##### 2.5.9.2
 
 **Update**
