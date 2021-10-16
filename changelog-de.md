@@ -1,5 +1,17 @@
 ## Changelog - Extension
 
+##### 2.5.9.4
+
+**Update**
+- versteckte Ereignisse:
+	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden.
+
+**BugFix**
+- Gildenmitglieder Übersicht:
+	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
+
+---
+
 ##### 2.5.9.3
 
 **Neu**
@@ -17,13 +29,14 @@
 		- Chronologische Speicherung der einzelnen Gildengefechtsrunden
 		- Jeder Snapshot innerhalb der aktuell laufenden Gildengefechtsrunde, mit den jeweiligen Zuwächsen der Mitglieder, wird gespeichert. Mit Beginn einer neuen Gildengefechtsrunde werden die gespeicherten Snapshots der vorherigen Runde gelöscht.
 		- Filterfunktion für die gepeicherten Snapshots (Spieler und Datum)
+	-[#2176](https://github.com/mainIine/foe-helfer-extension/issues/2176) Filter um nur Mitglieder mit einem veränderten Fortschritt anzuzeigen hinzugefügt.
 
 - Gildenmitglieder Übersicht:
 	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) 0 Werte bei Gex/GG in der Gildenmitgliederverwaltung anzeigen
 		- Optional über das Einstellungsmenü der Box können nun auch die Einträge der einzelnen Spieler angezeigt werden, an dem der Spieler keine Teilnahme an GEX od. GG hatte
 	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Datumsformat Gex/GG in der Mitgliederverwaltung
 		- Das Datumsformat der Gex/GG Teilnahmen kann nun von Kalenderwoche zu Startdatum, Enddatum oder Kalenderwoche geändert werden
-	- [#2174](https://github.com/mainIine/foe-helfer-extension/issues/2174): In der Mitgliederliste und den Zeitaltern ist es nun möglich alle Details mit einen Klick anzuzeigen/auszuklappen.
+	- [#2174](https://github.com/mainIine/foe-helfer-extension/issues/2174) In der Mitgliederliste und den Zeitaltern ist es nun möglich alle Details mit einem Klick anzuzeigen/auszuklappen.
 
 - Investitionsübersicht:
 	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) Der gesamte Gewinn an Medaillen wird in der Investitionsübersicht mit angezeigt, wenn in den Einstellungen der Box die Spalte Medaillen aktiviert ist.
