@@ -262,5 +262,6 @@
     "Settings.Version.PlayerId": "ID hráča:",
     "Settings.Version.Title": "Verzia:",
     "Settings.Version.World": "Svet:",
+    "StrategyPoints.BuyableFP": "Množstvo FP, ktoré sa dá kúpiť za mince.",
     "_Language": "Slovenčina"
 }
