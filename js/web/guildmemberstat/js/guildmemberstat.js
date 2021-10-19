@@ -287,6 +287,8 @@ let GuildMemberStat = {
 			{
 				let EntityID = entity[i]['cityentity_id'];
 				let CityEntity = MainParser.CityEntities[EntityID];
+				let EntityEraId = entity[i].level !== undefined ? (entity[i].level + 1) : null;
+				let EntityEra = EntityEraId !== null ? Technologies.EraNames[EntityEraId] : null;
 
 				if (entity[i]['type'] === 'greatbuilding')
 				{
@@ -324,8 +326,6 @@ let GuildMemberStat = {
 
 						let Ability = CityEntity['abilities'][AbilityIndex];
 						let Resources = 0;
-						let eraId = entity[i].level !== undefined ? (entity[i].level + 1) : null;
-						let era = eraId !== null ? Technologies.EraNames[eraId] : null;
 						let goods = null;
 
 						if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources'])
@@ -334,24 +334,61 @@ let GuildMemberStat = {
 						}
 
 						// Check for clan power building (Ehrenstatue etc.)
-						if (era !== null && Ability['additionalResources'][era] !== undefined && Ability['additionalResources'][era]['resources'] !== undefined && Ability['additionalResources'][era]['resources']['clan_power'] !== undefined)
+						if (EntityEra !== null && Ability['additionalResources'][EntityEra] !== undefined && Ability['additionalResources'][EntityEra]['resources'] !== undefined && Ability['additionalResources'][EntityEra]['resources']['clan_power'] !== undefined)
 						{
-							let clan_power = Ability['additionalResources'][era]['resources']['clan_power'];
-							GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: eraId, era: era });
+							let clan_power = Ability['additionalResources'][EntityEra]['resources']['clan_power'];
+							GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: EntityEra });
 						}
 
 						let goodSum = Resources;
 
-						if (era !== null)
+						if (EntityEra !== null)
 						{
 							goods = Object.values(GoodsData).filter(function (Good) {
-								return Good.era === era && Good.abilities.goodsProduceable !== undefined;
+								return Good.era === EntityEra && Good.abilities.goodsProduceable !== undefined;
 							}).map(function (row) {
 								return { good_id: row.id, value: goodSum / 5 };
 							}).sort(function (a, b) { return a.good_id.localeCompare(b.good_id) });
 						}
 
-						GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: goodSum, goods: goods }, level: eraId, era: era });
+						GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: goodSum, goods: goods }, level: EntityEraId, era: EntityEra });
+					}
+				}
+
+				// get buildings with new JSON format
+				// TODO Must be enhanced when new buildings are in place and its structure is known.
+				if (EntityEra && CityEntity['components'] && CityEntity['components'][EntityEra] && CityEntity['components'][EntityEra]['production'] && CityEntity['components'][EntityEra]['production']['options'])
+				{
+
+					let opt = CityEntity['components'][EntityEra]['production']['options'];
+					let goods = null;
+					let goodSum = 0;
+
+					for (let o in opt)
+					{
+						if (!opt.hasOwnProperty(o) || opt[o]['products'] === undefined) { continue; }
+						
+						let products = opt[o]['products'];
+						
+						for (let p in products)
+						{
+							if (!products.hasOwnProperty(p) || products[p]['guildResources'] === undefined || products[p]['guildResources']['resources'] === undefined) { continue; }
+							
+							let onlywhenmotivated = products[p].onlyWhenMotivated && products[p].onlyWhenMotivated === true ? true : false;
+
+							if (products[p]['guildResources']['resources']['all_goods_of_age'])
+							{
+								goodSum += products[p]['guildResources']['resources']['all_goods_of_age'];
+
+								goods = Object.values(GoodsData).filter(function (Good) {
+									return Good.era === EntityEra && Good.abilities.goodsProduceable !== undefined;
+								}).map(function (row) {
+									return { good_id: row.id, value: products[p]['guildResources']['resources']['all_goods_of_age'] / 5 };
+								}).sort(function (a, b) { return a.good_id.localeCompare(b.good_id) });
+							}
+
+							GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: goodSum, goods: goods, onlywhenmotivated: onlywhenmotivated }, level: EntityEraId, era: EntityEra });
+						}
 					}
 				}
 

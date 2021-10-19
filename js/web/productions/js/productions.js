@@ -312,13 +312,14 @@ let Productions = {
 						if (CurrentProduct['playerResources'] && CurrentProduct['playerResources']['resources']) {
 							let Resources = CurrentProduct['playerResources']['resources'];
 							for (let ResName in Resources) {
+								if (!Products[ResName]) Products[ResName] = 0;
+
 								if (!CurrentProduct['onlyWhenMotivated'] || d['state']['is_motivated']) {
-									if (!Products[ResName]) Products[ResName] = 0;
 									Products[ResName] += Resources[ResName];
 								}
 
 								if (!MotivatedProducts[ResName]) MotivatedProducts[ResName] = 0;
-								MotivatedProducts[ResName] += Resources[ResName];
+								MotivatedProducts[ResName] += Resources[ResName];							
 							}
 						}
 					}

@@ -1,5 +1,17 @@
 ## Changelog - Extension
 
+##### 2.5.9.4
+
+**Update**
+- Hidden rewards:
+	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) The box now closes automatically when all hidden events have been collected.
+
+**BugFix**
+- Guild members overview:
+	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Added Golden Crops as guild goods producing building
+
+---
+
 ##### 2.5.9.3
 
 **Neu**
