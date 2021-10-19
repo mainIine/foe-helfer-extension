@@ -1,5 +1,17 @@
 ## Changelog - Extension
 
+##### 2.5.9.4
+
+**Update**
+- versteckte Ereignisse:
+	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden.
+
+**BugFix**
+- Gildenmitglieder Übersicht:
+	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
+
+---
+
 ##### 2.5.9.3
 
 **Neu**
