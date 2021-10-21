@@ -29,7 +29,7 @@ let Kits = {
 
 		if(data === null || MainParser.checkNextUpdate('KnownKitsDate') === true)
 		{
-			MainParser.loadJSON(extURL + 'js/web/kits/data/sets.json', (data)=>{
+			MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=>{
 
 				localStorage.setItem('KnownKitsData', data);
 				localStorage.setItem('KnownKitsDate', MainParser.getAddedDateTime(48));
