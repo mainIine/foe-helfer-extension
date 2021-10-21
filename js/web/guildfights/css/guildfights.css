@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
- #GildPlayers {
+#GildPlayers {
 	left: calc(50vw - 285px);
 	top: calc(50vh - 270px);
 	width: 570px;
@@ -113,14 +113,25 @@
 	margin-right: 10px;
 }
 
+#GildPlayersBody .roundswitch:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 #GildPlayersBody #gbgLogFilter {
-	display: inline-block;
-	right: 5px;
-	position: absolute;
+	float: right;
 }
 
 #GildPlayersBody #gbg-select-gbground {
 	margin-right: 4px;
+}
+
+#GildPlayersSettingsBox .settingtitle {
+	display: block;
+	margin-bottom: 7px;
+	font-size: 0.9em;
+	text-decoration: underline;
 }
 
 #GildPlayersDetailViewBody .pname {
