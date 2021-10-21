@@ -286,13 +286,11 @@ let GexStat = {
 
 		h.push(`<table id="gexsRankingTable" class="foe-table">` +
 			`<tbody><tr>`);
-		//const map = (value, x1, y1, x2, y2) => (value - x1) * (y2 - x2) / (y1 - x1) + x2;
 
 		for (let x = 0; x < GexPaticipants.length; x++)
 		{
 			const participant = GexPaticipants[x];
 			let points = parseInt(participant.points);
-			//let progressWidth = map(points, 0, 133, 0, 100);
 			let progressWidth = points >= 100 ? 100 : points;
 			let rankClass = participant.rank <= 3 ? participant.rank : 0;
 			let stripedClass = points > 100 ? ' glow' : '';
@@ -627,6 +625,9 @@ let GexStat = {
 				//make unique Set of Gex weeks
 				GexStat.GexWeeks = [...new Set([...gexWeeksRanking, ...gexWeeksParticipation])];
 			}
+
+			GexStat.GexWeeks.sort(function (a, b) { return b - a });
+
 		}
 
 		// set latest gexweek to show if available and no specific gexweek is set
@@ -644,11 +645,14 @@ let GexStat = {
 
 		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length)
 		{
-			GexStat.CurrentGexWeek = gexweek;
-			let previousweek = gexweek - 604800;
-			let nextweek = gexweek + 604800;
 
-			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${!GexStat.GexWeeks.includes(previousweek) ? ' disabled' : ''}>&lt;</button> `);
+			let index = GexStat.GexWeeks.indexOf(gexweek);
+			let previousweek = GexStat.GexWeeks[index + 1] || null;
+			let nextweek = GexStat.GexWeeks[index - 1] || null;
+
+			GexStat.CurrentGexWeek = gexweek;
+
+			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 			h.push(`<select id="gexs-select-gexweek">`);
 
 			GexStat.GexWeeks.forEach(week => {
@@ -656,7 +660,7 @@ let GexStat = {
 			});
 
 			h.push(`</select>`);
-			h.push(`<button class="btn btn-default btn-set-week" data-week="${nextweek}"${!GexStat.GexWeeks.includes(nextweek) ? ' disabled' : ''}>&gt;</button>`);
+			h.push(`<button class="btn btn-default btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			h.push(`</div>`);
 		}
 

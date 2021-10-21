@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
- #GuildMemberStat {
+#GuildMemberStat {
     width: 750px;
     height: 600px;
     top: calc(50vh - 200px);
@@ -121,6 +121,7 @@
     position: relative;
 }
 
+#GuildMemberStatBody thead th.expand-all:last-child,
 #GuildMemberStatBody table tr.hasdetail td:last-child,
 #GuildMemberStatBody table thead.hasdetail tr th:last-child {
     background-image: url('../../../../css/images/hud/chevron-left.svg');
@@ -128,9 +129,9 @@
     background-position: center right;
     background-repeat: no-repeat;
     width: 7px;
-
 }
 
+#GuildMemberStatBody thead th.expand-all.open:last-child,
 #GuildMemberStatBody table tr.hasdetail.open td:last-child,
 #GuildMemberStatBody table thead.hasdetail.open tr th:last-child {
     background-image: url('../../../../css/images/hud/chevron-down.svg');
@@ -191,8 +192,11 @@
     position: sticky;
     top: 0;
     cursor: pointer;
-    z-index: 1;
+    z-index: 10;
+}
 
+#GuildMemberStatBody .detail-item>table th {
+    z-index: 1;
 }
 
 #GuildMemberStatBody table tr td {
@@ -301,6 +305,30 @@
 
 #GuildMemberStatBody .prev_score.red {
     color: #ff0000db;
+}
+
+#GuildMemberTable>tbody tr.hasdetail.open td,
+#GuildErasTable>tbody tr.hasdetail.open td {
+
+    border-top: 1px solid #ca8d2d;
+    border-bottom: none;
+}
+
+#GuildMemberTable>tbody tr.hasdetail.open td:first-child,
+#GuildErasTable>tbody tr.hasdetail.open td:first-child {
+    border-left: 1px solid #ca8d2d;
+}
+
+#GuildMemberTable>tbody tr.hasdetail.open td:last-child,
+#GuildErasTable>tbody tr.hasdetail.open td:last-child {
+    border-right: 1px solid #ca8d2d;
+}
+
+#GuildMemberTable>tbody tr.detailview>td:first-child,
+#GuildErasTable>tbody tr.detailview>td:first-child {
+    border-left: 1px solid #ca8d2d;
+    border-right: 1px solid #ca8d2d;
+    border-bottom: 1px solid #ca8d2d;
 }
 
 #GuildMemberStatBody .last-update-message {

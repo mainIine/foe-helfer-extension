@@ -66,28 +66,34 @@
 		"sort": 10
 	},
 	{
+		"name": "AutoOpenCloseBox",
+		"status": false,
+		"group": "Boxes",
+		"sort": 11
+	},
+	{
 		"name": "InfoboxEntryCount",
 		"callback": "InfoboxInputEntryCount",
 		"group": "Boxes",
-		"sort": 11
+		"sort": 12
 	},
 	{
 		"name": "ShowMapTradeWarning",
 		"status": true,
 		"group": "Boxes",
-		"sort": 12
+		"sort": 13
 	},
 	{
 		"name": "Show2kQuestMark",
 		"status": false,
 		"group": "Boxes",
-		"sort": 13
+		"sort": 14
 	},
 	{
 		"name": "ShowPlayerLinks",
 		"status": true,
 		"group": "Boxes",
-		"sort": 14
+		"sort": 15
 	},
 	{
 		"name": "ChangeLanguage",
