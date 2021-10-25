@@ -104,7 +104,7 @@
     "Boxes.Calculator.TTLoss": "Jutalom = __nettoreward__ <small>(Alap Jutalom)</small> X __arcfactor__% <small>(Bárka Bónusz)</small> = __bruttoreward__<br>Költség: __costs__ - Hely biztosítva: __safe__<br>Veszteség = __costs__ <small>(Költség)</small> - __bruttoreward__ <small>(Jutalom)</small> = __loss__",
     "Boxes.Calculator.TTLossSelf": "Jutalom = __nettoreward__ <small>(Alap jutalom)</small> X  __arcfactor__% <small>(Bárka bónusz)</small> = __bruttoreward__<br>Fizetve: __paid__<br>Veszteség = __paid__ <small>(Fizetve)</small> - __bruttoreward__ <small>(Jutalom)</small> = __loss__",
     "Boxes.Calculator.TTPaidTooLess": "Te __paid__ FP-t fizettél a __topay__ FP helyett. Ez __tooless__FP-vel kevesebb, mint kellett volna.",
-    "Boxes.Calculator.TTPaidTooMuch": "Te __paid__ FP-t fizettél a __topay__ FP helyett. Ez __toomuch__FP-vel kevesebb, mint kellett volna.",
+    "Boxes.Calculator.TTPaidTooMuch": "Te __paid__ FP-t fizettél a __topay__ FP helyett. Ez __toomuch__FP-vel több, mint kellett volna.",
     "Boxes.Calculator.TTProfit": "Jutalom = __nettoreward__ <small>(Alap jutalom)</small> X __arcfactor__% <small>(Bárka bónusz)</small> = __bruttoreward__<br>Költség: __costs__ - Helyezés biztosítva: __safe__<br>Profit = __bruttoreward__ <small>(Jutalom)</small> - __costs__ <small>(Költség)</small> = __profit__",
     "Boxes.Calculator.TTProfitSelf": "Jutalom = __nettoreward__ <small>(Alap jutalom)</small> X __arcfactor__% <small>(Bárka Bónusz)</small> = __bruttoreward__<br>Fizetve: __paid__<br>Profit = __bruttoreward__ <small>(Jutalom)</small> - __paid__ <small>(Fizetve)</small> = __profit__",
     "Boxes.Calculator.Title": "Nevezetes költség számoló",
