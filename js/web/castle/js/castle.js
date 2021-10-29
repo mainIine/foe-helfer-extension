@@ -186,12 +186,15 @@ FoEproxy.addHandler('ChallengeService', 'updateTaskProgress', (data, postData) =
     let d = data.responseData;
     let state = 'in_progress';
 
-    if (d['currentProgress'] && d['maxProgress'] && d['id'])
+    if (!d['flags'] || !d['flags'][0] || d['flags'][0] !== 'static_counter') { return; }
+
+    if (d['currentProgress'] && d['maxProgress'] && d['maxProgress'] === Castle.SevenDayChallenge)
     {
         if (d.currentProgress === d.maxProgress)
         {
             state = 'success';
         }
+
         Castle.curSevenDayChallenge = { id: d.id, state: state, currentProgress: d.currentProgress }
     }
 
@@ -399,7 +402,7 @@ let Castle = {
             scp = 0, scr = 0,       //Seven Day Challenge
             glsp = 0, glsr = 0,     //Gex Last Sections
             sir = 0, sip = 0, sipsum = 0, sirsum = 0, siwarn = false, //Bought Shop Items
-            aup = 0, aur = 0,        //Auction Bidding
+            aup = 0, aur = 0,       //Auction
             cp, cpwarn = false,     //Castle Points
             startOfDay = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
 
@@ -451,6 +454,15 @@ let Castle = {
         });
 
         // Daily Castle points
+        cp = {
+            points: '?',
+            nextCollectionPoints: '?',
+            currentStreak: '?',
+            maxStreak: '?',
+            success: false,
+            collected: startOfDay
+        };
+
         if (Castle.curDailyCastlePoints === undefined)
         {
             Castle.curDailyCastlePoints = JSON.parse(localStorage.getItem('CastleCurDailyCastlePoints'));
@@ -472,29 +484,19 @@ let Castle = {
         }
         else
         {
-            let cpstate = false;
             let locDailyPointsCollectionAvailableAt = localStorage.getItem('CastleDailyPointsCollectionAvailableAt');
 
             if (Castle.dailyPointsCollectionAvailableAt && Castle.dailyPointsCollectionAvailableAt > startOfDay)
             {
-                cpstate = true;
+                cp.success = true;
             }
             else if (locDailyPointsCollectionAvailableAt && locDailyPointsCollectionAvailableAt > startOfDay)
             {
-                cpstate = true;
+                cp.success = true;
             }
             else
             {
                 cpwarn = true;
-            }
-
-            cp = {
-                points: '?',
-                nextCollectionPoints: '?',
-                currentStreak: '?',
-                maxStreak: '?',
-                success: cpstate,
-                collected: startOfDay
             }
         }
 
@@ -699,21 +701,21 @@ let Castle = {
 
             return r + `<tr ${i.warning && i.warnnotice ? ' title="' + i.warnnotice + '" ' : ''}class="${i.warning ? 'warning ' : ''}${i.success ? 'success' : 'pending'}">
                 <td>${i.name}</td>
-                <td class="text-right">${i.progress} / ${i.maxprogress}</td>
-                <td class="text-right">${i.reward} / ${i.maxreward}</td>
+                <td class="text-right">${i.progress === i.maxprogress ? i.maxprogress : i.progress + ' / ' + i.maxprogress}</td>
+                <td class="text-right">${i.reward === i.maxreward ? i.maxreward : i.reward + ' / ' + i.maxreward}</td>
                 </tr>`;
 
         }).join(''));
 
         h.push(`</tbody></table></div>`);
-        
+
         h.push(`</div>`);
 
-        $('#CastleBody').html(h.join('')).promise().done(function(){
+        $('#CastleBody').html(h.join('')).promise().done(function () {
             $('#CastleBody tr[title], #CastleBody span[title]').tooltip({
-				html: false,
-				container: '#CastleBody'
-			});
+                html: false,
+                container: '#CastleBody'
+            });
         });
 
     },
@@ -730,6 +732,7 @@ let Castle = {
 
     },
 
+
     SettingsSaveValues: () => {
 
         Castle.Settings.showGroupNames = !!$("#casShowGroupNames").is(':checked');
@@ -740,8 +743,6 @@ let Castle = {
             $(this).remove();
             Castle.Show();
         });
-
-
     }
 
 }
