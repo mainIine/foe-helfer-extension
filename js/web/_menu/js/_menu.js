@@ -53,6 +53,7 @@ let _menu = {
 		'guildmemberstat',
 		'gexstat',
 		'productionsrating',
+		'castle'
 		// 'unitsGex',
 	],
 
@@ -924,6 +925,30 @@ let _menu = {
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
 				GexStat.BuildBox(false);
+			}
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+
+	/**
+	 * Castle System
+	 */
+	castle_Btn: () => {
+		let btn = $('<div />').attr({
+			'id': 'castle-Btn',
+			'data-slug': 'castle'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.Castle.Title'), i18n('Menu.Castle.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			if ($('#castle-Btn').hasClass('hud-btn-red') === false) {
+				Castle.BuildBox();
 			}
 		});
 
