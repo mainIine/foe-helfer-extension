@@ -114,7 +114,7 @@ let CityMap = {
 	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
-			w = $('<div />').attr({'id':'wrapper'});
+			w = $('<div />').attr({'id':'citymap-wrapper'});
 
 		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 
