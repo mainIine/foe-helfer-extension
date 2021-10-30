@@ -314,7 +314,7 @@ let Castle = {
     Settings: {
         showGroupNames: true,
         showSummary: true,
-        tableView: 'detail'
+        tableView: 'compact'
     },
 
 
