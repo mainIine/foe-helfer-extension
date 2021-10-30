@@ -18,12 +18,13 @@
 	left: calc(50vw - 325px);
 }
 
-#Castle .castle_wrapper .overview {
+#Castle .castle_wrapper #cas-points-wrapper {
 	padding: 5px;
 	display: flex;
 	justify-content: space-between;
 	color: var(--text-bright);
 }
+
 
 #Castle .castle_wrapper .content .warning {
 	color: var(--text-btn-disabled);
@@ -35,16 +36,18 @@
 	color: #d4962f;
 }
 
-#Castle .castle_wrapper .icon{
+#Castle .castle_wrapper .icon {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
 	vertical-align: bottom;
 }
 
-#Castle .castle_wrapper .icon.castle-points
-{
+#Castle .castle_wrapper .icon.castle-points {
 	background: url(./images/castle_icon.png) center no-repeat;
 	background-size: contain;
 }
 
+#Castle #cas-points-dif {
+	color: var(--text-success);
+}
