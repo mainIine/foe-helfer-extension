@@ -29,7 +29,7 @@ FoEproxy.addHandler('ItemShopService', 'purchaseItem', (data, postData) => {
             localStorage.setItem('CastleCurShopItems', JSON.stringify(Castle.curShopItems));
         }
 
-        Castle.UpdateCastlePoints();
+        Castle.ShowProgressTable();
     }
 });
 
@@ -54,7 +54,7 @@ FoEproxy.addHandler('ItemAuctionService', 'collectPrize', (data, postData) => {
 
         Castle.curAuctionWinning = d;
 
-        Castle.UpdateCastlePoints();
+        Castle.ShowProgressTable();
     }
 
 });
@@ -96,7 +96,7 @@ FoEproxy.addHandler('ItemShopService', 'getShop', (data, postData) => {
         Castle.curShopItems.date = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
         localStorage.setItem('CastleCurShopItems', JSON.stringify(Castle.curShopItems));
 
-        Castle.UpdateCastlePoints();
+        Castle.ShowProgressTable();
     }
 });
 
@@ -114,11 +114,13 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
         // New Start of Guild Expedition
         r.progress.currentEntityId = 0;
     }
+    if (!Castle.curGexLastOfSection || Castle.curGexLastOfSection.progress < r.progress.currentEntityId)
+    {
+        Castle.curGexLastOfSection = { progress: r.progress.currentEntityId, time: moment(MainParser.getCurrentDateTime()).startOf('day').unix() };
+        localStorage.setItem('CastleCurGexLastOfSection', JSON.stringify(Castle.curGexLastOfSection));
 
-    Castle.curGexLastOfSection = { progress: r.progress.currentEntityId, time: moment(MainParser.getCurrentDateTime()).startOf('day').unix() };
-    localStorage.setItem('CastleCurGexLastOfSection', JSON.stringify(Castle.curGexLastOfSection));
-
-    Castle.UpdateCastlePoints();
+        Castle.ShowProgressTable();
+    }
 
 });
 
@@ -131,10 +133,17 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 
     if (r['currentEntityId'] === undefined) { return; }
 
-    Castle.curGexLastOfSection = { progress: r.currentEntityId, time: moment(MainParser.getCurrentDateTime()).startOf('day').unix() };
-    localStorage.setItem('CastleCurGexLastOfSection', JSON.stringify(Castle.curGexLastOfSection));
+    if (!Castle.curGexLastOfSection || Castle.curGexLastOfSection.progress < r.currentEntityId)
+    {
+        Castle.curGexLastOfSection = { progress: r.currentEntityId, time: moment(MainParser.getCurrentDateTime()).startOf('day').unix() };
+        localStorage.setItem('CastleCurGexLastOfSection', JSON.stringify(Castle.curGexLastOfSection));
 
-    Castle.UpdateCastlePoints();
+        if (Castle.GexLastOfSectionsIds.includes(r.currentEntityId))
+        {
+            Castle.ShowProgressTable();
+        }
+    }
+
 });
 
 // Get new daily challenge
@@ -152,7 +161,7 @@ FoEproxy.addHandler('ChallengeService', 'getOptions', (data, postData) => {
         localStorage.setItem('CastleCurDailyChallenge', JSON.stringify(Castle.curDailyChallenge));
     }
 
-    Castle.UpdateCastlePoints();
+    Castle.ShowProgressTable();
 
 });
 
@@ -173,7 +182,7 @@ FoEproxy.addHandler('CastleSystemService', 'all', (data, postData) => {
         Castle.dailyPointsCollectionAvailableAt = data.responseData.dailyPointsCollectionAvailableAt;
         localStorage.setItem('CastleDailyPointsCollectionAvailableAt', Castle.dailyPointsCollectionAvailableAt);
 
-        Castle.UpdateCastlePoints();
+        Castle.ShowProgressTable();
     }
 
 });
@@ -220,7 +229,7 @@ FoEproxy.addHandler('ChallengeService', 'collectReward', (data, postData) => {
 
     }
 
-    Castle.UpdateCastlePoints();
+    Castle.ShowProgressTable();
 });
 
 // Get active challenges on startup
@@ -256,13 +265,13 @@ FoEproxy.addHandler('ChallengeService', 'getActiveChallenges', (data, postData) 
         Castle.curSevenDayChallenge = { state: 'inactive', currentProgress: 0 };
     }
 
-    Castle.UpdateCastlePoints();
+    Castle.ShowProgressTable();
 
 });
 
 /**
- *
- * @type {{DailyChallenge: number, curCastlePoints: undefined, AuctionWinningReward: undefined, curCastlePointsDiff: undefined, MaxDailyWinningBattlesReward: number, ShopTradeCoinsDivisor: number, DailyWinningBattlesReward: number, RewardGroups: {Shop: number, Daily: number, Gex: number, AntiqueDealer: number, Challenge: number}, curWinningBattles: undefined, curDailyCastlePoints: undefined, DailyNegotiations: number, curShopItems: undefined, BuildBox: Castle.BuildBox, curDailyChallenge: undefined, curLevel: undefined, startOfDay: *, DailyNegotiationsReward: number, curGexLastOfSection: undefined, SevenDayChallengeReward: number, SettingsSaveValues: Castle.SettingsSaveValues, NextNegotiationPoints: undefined, SevenDayChallenge: number, Settings: {showGroupNames: boolean}, UpdateCastlePoints: Castle.UpdateCastlePoints, dailyPointsCollectionAvailableAt: undefined, DailyWinningBattles: number, curSevenDayChallenge: undefined, ShopGemstonesDivisor: number, NextWinningBattlesPoints: undefined, DailyChallengeReward: number, CastleSettings: Castle.CastleSettings, MaxDailNegotiationsReward: number, MaxGexLastOfSections: number, curNegotiations: undefined, GexLastOfSectionsIds: number[], CreateRewardList: (function(): *[]), CastleLevelLimits: number[], DailyCastlePoints: number, Show: Castle.Show, WeeklyGexLastOfSection: number, curAuctionWinning: undefined}}
+ * 
+ * @type {{DailyChallenge: number, curCastlePoints: number, AuctionWinningReward: number, curCastlePointsDiff: number, MaxDailyWinningBattlesReward: number, ShopTradeCoinsDivisor: number, DailyWinningBattlesReward: number, RewardGroups: {Shop: number, Daily: number, Gex: number, AntiqueDealer: number, Challenge: number}, curWinningBattles: undefined, curDailyCastlePoints: undefined, DailyNegotiations: number, curShopItems: undefined, BuildBox: Castle.BuildBox, curDailyChallenge: undefined, curLevel: undefined, startOfDay: *, DailyNegotiationsReward: number, curGexLastOfSection: undefined, SevenDayChallengeReward: number, SettingsSaveValues: Castle.SettingsSaveValues, NextNegotiationPoints: undefined, SevenDayChallenge: number, Settings: {showSummary: boolean, tableView: string, showGroupNames: boolean}, UpdateCastlePoints: Castle.UpdateCastlePoints, ShowProgressTable: Castle.ShowProgressTable, dailyPointsCollectionAvailableAt: undefined, DailyWinningBattles: number, curSevenDayChallenge: undefined, ShopGemstonesDivisor: number, NextWinningBattlesPoints: undefined, DailyChallengeReward: number, CastleSettings: Castle.CastleSettings, MaxDailNegotiationsReward: number, MaxGexLastOfSections: number, curNegotiations: undefined, GexLastOfSectionsIds: number[], CreateRewardList: (function(): *[]), ShowCastlePoints: Castle.ShowCastlePoints, CastleLevelLimits: number[], DailyCastlePoints: number, Show: Castle.Show, WeeklyGexLastOfSection: number, curAuctionWinning: undefined}}
  */
 let Castle = {
 
@@ -286,8 +295,8 @@ let Castle = {
     WeeklyGexLastOfSection: 16,
 
     curAuctionWinning: undefined,
-    curCastlePoints: undefined,
-    curCastlePointsDiff: undefined,
+    curCastlePoints: 0,
+    curCastlePointsDiff: 0,
     curDailyCastlePoints: undefined,
     curDailyChallenge: undefined,
     curGexLastOfSection: undefined,
@@ -304,7 +313,8 @@ let Castle = {
 
     Settings: {
         showGroupNames: true,
-        showSummary: true
+        showSummary: true,
+        tableView: 'detail'
     },
 
 
@@ -329,8 +339,21 @@ let Castle = {
             HTML.CloseOpenBox('Castle');
             return;
         }
-        Castle.Settings = JSON.parse(localStorage.getItem('CastleSettings')) || Castle.Settings;
+
+        let Settings = JSON.parse(localStorage.getItem('CastleSettings'));
+
+        if (Settings)
+        {
+            for (let k in Settings)
+            {
+                if (!Settings.hasOwnProperty(k)) { continue; }
+                Castle.Settings[k] = Settings[k];
+            }
+        }
+
         Castle.Show();
+        Castle.ShowCastlePoints();
+        Castle.ShowProgressTable();
     },
 
     /**
@@ -342,12 +365,21 @@ let Castle = {
 
         if (ResourceStock.castle_points)
         {
-            if (Castle.curCastlePoints && ResourceStock.castle_points > Castle.curCastlePoints)
+            let increased = ResourceStock.castle_points > Castle.curCastlePoints;
+            let diff = 0;
+
+            if (Castle.curCastlePoints && increased)
             {
                 Castle.curCastlePointsDiff = ResourceStock.castle_points - Castle.curCastlePoints;
+                diff = Castle.curCastlePointsDiff;
             }
 
-            Castle.curCastlePoints = ResourceStock.castle_points ? ResourceStock.castle_points : 0;
+            Castle.curCastlePoints = ResourceStock.castle_points;
+
+            if (increased)
+            {
+                Castle.ShowCastlePoints(diff);
+            }
         }
 
         if (d !== null)
@@ -384,11 +416,12 @@ let Castle = {
                 Castle.AuctionWinningReward = n.castlePointsItemAuctionWinBidding ? n.castlePointsItemAuctionWinBidding : 30;
                 Castle.startOfDay = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
             }
-        }
 
-        if ($('#Castle').length === 1)
-        {
-            Castle.Show();
+            if ($('#Castle').length === 1)
+            {
+                Castle.ShowProgressTable();
+            }
+
         }
 
     },
@@ -669,18 +702,43 @@ let Castle = {
 
     Show: () => {
 
+        let h = [];
+
+        h.push(`<div class="castle_wrapper">`);
+        h.push(`<div class="overview dark-bg" id="cas-points-wrapper"></div>`);
+        h.push(`<div id="cas-table-wrapper" class="content"></div>`);
+        h.push(`</div>`);
+
+        $('#CastleBody').html(h.join(''));
+
+
+    },
+
+    ShowCastlePoints: (diff = null) => {
+
+        if ($('#Castle #cas-points-wrapper').length === 1)
+        {
+            $('#Castle #cas-points-wrapper').html(`
+                <span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(Castle.CastleLevelLimits[Castle.curLevel])}</span>
+                <span id="cas-points-dif">${diff ? '+' + diff : ''}</span>
+                <span> ${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span>
+            `).promise().done(function () {
+                $('#cas-points-dif').delay(2500).fadeOut(500);
+            });
+        }
+
+    },
+
+    ShowProgressTable: () => {
+
+        if ($('#Castle').length === 0) { return; }
+
         let h = [],
-            k = [],
             firstCaption = true,
             list = Castle.CreateRewardList();
 
-        h.push(`<div class="castle_wrapper">`);
-        h.push(`<div class="overview dark-bg">` +
-            `<span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(Castle.CastleLevelLimits[Castle.curLevel])}</span> ` +
-            `<span>${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span>` +
-            `</div>`);
-        h.push(`<div class="content">`);
         h.push(`<table class="foe-table">`);
+
         if (!Castle.Settings.showGroupNames)
         {
             h.push(`<thead><tr class="caption"><th>${i18n('Boxes.Castle.Type')}</th><th class="text-right"><span>${HTML.i18nTooltip(i18n('Boxes.Castle.Progress'))}</span></th><th class="text-right"><span>${HTML.i18nTooltip(i18n('Boxes.Castle.CastlePoints'))}</span></th></tr></thead>`);
@@ -699,19 +757,33 @@ let Castle = {
                 firstCaption = false;
             }
 
+            let progressStr, rewardStr;
+
+            switch (Castle.Settings.tableView)
+            {
+                case 'compact':
+                    progressStr = i.progress === i.maxprogress ? i.maxprogress : i.progress + ' / ' + i.maxprogress;
+                    rewardStr = i.reward === i.maxreward ? i.maxreward : i.reward + ' / ' + i.maxreward;
+                    break;
+
+                case 'detail':
+                default:
+                    progressStr = i.progress + ' / ' + i.maxprogress;
+                    rewardStr = i.reward + ' / ' + i.maxreward;
+                    break;
+            }
+
             return r + `<tr ${i.warning && i.warnnotice ? ' title="' + i.warnnotice + '" ' : ''}class="${i.warning ? 'warning ' : ''}${i.success ? 'success' : 'pending'}">
                 <td>${i.name}</td>
-                <td class="text-right">${i.progress === i.maxprogress ? i.maxprogress : i.progress + ' / ' + i.maxprogress}</td>
-                <td class="text-right">${i.reward === i.maxreward ? i.maxreward : i.reward + ' / ' + i.maxreward}</td>
+                <td class="text-right">${progressStr}</td>
+                <td class="text-right">${rewardStr}</td>
                 </tr>`;
 
         }).join(''));
 
-        h.push(`</tbody></table></div>`);
+        h.push(`</tbody></table>`);
 
-        h.push(`</div>`);
-
-        $('#CastleBody').html(h.join('')).promise().done(function () {
+        $('#Castle #cas-table-wrapper').html(h.join('')).promise().done(function () {
             $('#CastleBody tr[title], #CastleBody span[title]').tooltip({
                 html: false,
                 container: '#CastleBody'
@@ -725,8 +797,13 @@ let Castle = {
 
         let c = [];
         let Settings = Castle.Settings;
+        // c.push(`<p class="text-left">${i18n('Boxes.Castle.TableView')}  <select id="casTableStyle" name="tablestyle">`);
+        // c.push(`<option value="detail" ${Settings.tableView === 'detail' ? ' selected="selected"' : ''}>${i18n('Boxes.Castle.Detailed')}</option>`);
+        // c.push(`<option value="compact" ${Settings.tableView === 'compact' ? ' selected="selected"' : ''}>${i18n('Boxes.Castle.Compact')}</option>`);
+        // c.push(`</select>`);
 
-        c.push(`<p class="text-left"><input id="casShowGroupNames" name="showgroupnames" value="1" type="checkbox" ${Settings.showGroupNames === true ? ' checked="checked"' : ''} /> <label for="casShowGroupNames">${i18n('Boxes.Castle.ShowGroupNames')}</label>`);
+        c.push(`<p class="text-left"><input id="casShowGroupNames" name="showgroupnames" value="1" type="checkbox" ${Settings.showGroupNames === true ? ' checked="checked"' : ''} /> <label for="casShowGroupNames">${i18n('Boxes.Castle.ShowGroupNames')}</label></p>`);
+
         c.push(`<hr><p><button id="save-Castle-settings" class="btn btn-default" style="width:100%" onclick="Castle.SettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
         $('#CastleSettingsBox').html(c.join(''));
 
@@ -736,12 +813,14 @@ let Castle = {
     SettingsSaveValues: () => {
 
         Castle.Settings.showGroupNames = !!$("#casShowGroupNames").is(':checked');
+        // Castle.Settings.tableView = $('#casTableStyle').val();
 
         localStorage.setItem('CastleSettings', JSON.stringify(Castle.Settings));
 
         $(`#CastleSettingsBox`).fadeToggle('fast', function () {
             $(this).remove();
-            Castle.Show();
+            Castle.ShowCastlePoints();
+            Castle.ShowProgressTable();
         });
     }
 
