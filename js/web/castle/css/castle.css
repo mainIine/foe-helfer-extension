@@ -14,14 +14,16 @@
 #Castle {
 	width: fit-content;
 	height: fit-content;
+	min-width: 360px;
 	top: calc(50vh - 225px);
 	left: calc(50vw - 325px);
 }
 
-#Castle .castle_wrapper #cas-points-wrapper {
+#Castle .castle_wrapper #casPointsWrapper {
 	padding: 5px;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	color: var(--text-bright);
 }
 
@@ -32,8 +34,16 @@
 
 #Castle .castle_wrapper tr.caption td,
 #Castle .castle_wrapper tr.caption th {
-	background-color: var(--black-50);
+	background-color: var(--black-65);
 	color: #d4962f;
+	font-weight: inherit;
+}
+
+#Castle .castle_wrapper .foe-table tr th {
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
+	position: sticky;
+	top: 0;
 }
 
 #Castle .castle_wrapper .icon {
@@ -48,6 +58,60 @@
 	background-size: contain;
 }
 
-#Castle #cas-points-dif {
+#Castle #casPointsDiff {
+	padding-left: 5px;
 	color: var(--text-success);
+}
+
+#Castle #casLogWrapper .overview {
+	min-height: 300px;
+	max-height: 350px;
+	font-size: 0.9rem;
+	overflow-y: auto;
+}
+
+#Castle #casLogFooter {
+	width: 100%;
+	padding: 3px 0;
+	background: var(--black-50);
+	text-align: center;
+	color: var(--text-medium);
+
+}
+
+#Castle #casLogWrapper .hide {
+	display: none;
+}
+
+#Castle #casLogWrapper tr.caption {
+	cursor: pointer;
+}
+
+#Castle #casLogWrapper tr.caption td {
+	color: var(--text-normal);
+}
+
+#Castle #casLogWrapper tr.caption.closed td span,
+#Castle #casLogWrapper tr.caption.closed th span {
+	padding-right: 20px;
+	background-image: url(../../../../css/images/hud/chevron-right.svg);
+	background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
+#Castle #casLogWrapper tr.caption.open td span,
+#Castle #casLogWrapper tr.caption.open th span {
+	padding-right: 20px;
+	background-image: url(../../../../css/images/hud/chevron-down.svg);
+	background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
+#Castle .settingtitle {
+	display: block;
+	margin-bottom: 7px;
+	font-size: 0.9em;
+	text-decoration: underline;
 }
