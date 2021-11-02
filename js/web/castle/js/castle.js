@@ -174,7 +174,7 @@ FoEproxy.addHandler('CastleSystemService', 'all', (data, postData) => {
         data.requestMethod === 'collectDailyPoints' ||
         data.requestMethod === 'getCastleSystemPlayer')
     {
-        Castle.UpdateCastlePoints(data.responseData);
+        Castle.UpdateCastleData(data.responseData);
     }
 
     if (data.requestMethod === 'getOverview')
@@ -270,8 +270,7 @@ FoEproxy.addHandler('ChallengeService', 'getActiveChallenges', (data, postData) 
 });
 
 /**
- * 
- * @type {{DailyChallenge: number, curCastlePoints: number, AuctionWinningReward: number, curCastlePointsDiff: number, MaxDailyWinningBattlesReward: number, ShopTradeCoinsDivisor: number, DailyWinningBattlesReward: number, RewardGroups: {Shop: number, Daily: number, Gex: number, AntiqueDealer: number, Challenge: number}, curWinningBattles: undefined, curDailyCastlePoints: undefined, DailyNegotiations: number, curShopItems: undefined, BuildBox: Castle.BuildBox, curDailyChallenge: undefined, curLevel: undefined, startOfDay: *, DailyNegotiationsReward: number, curGexLastOfSection: undefined, SevenDayChallengeReward: number, SettingsSaveValues: Castle.SettingsSaveValues, NextNegotiationPoints: undefined, SevenDayChallenge: number, Settings: {showSummary: boolean, tableView: string, showGroupNames: boolean}, UpdateCastlePoints: Castle.UpdateCastlePoints, ShowProgressTable: Castle.ShowProgressTable, dailyPointsCollectionAvailableAt: undefined, DailyWinningBattles: number, curSevenDayChallenge: undefined, ShopGemstonesDivisor: number, NextWinningBattlesPoints: undefined, DailyChallengeReward: number, CastleSettings: Castle.CastleSettings, MaxDailNegotiationsReward: number, MaxGexLastOfSections: number, curNegotiations: undefined, GexLastOfSectionsIds: number[], CreateRewardList: (function(): *[]), ShowCastlePoints: Castle.ShowCastlePoints, CastleLevelLimits: number[], DailyCastlePoints: number, Show: Castle.Show, WeeklyGexLastOfSection: number, curAuctionWinning: undefined}}
+ * @type {{DailyChallenge: number, curCastlePoints: number, AuctionWinningReward: number, curCastlePointsDiff: number, UpdateCastleData: Castle.UpdateCastleData, MaxDailyWinningBattlesReward: number, ShopTradeCoinsDivisor: number, DailyWinningBattlesReward: number, SetCastlePointLog: Castle.SetCastlePointLog, RewardGroups: {Shop: number, Daily: number, Gex: number, AntiqueDealer: number, Challenge: number}, curWinningBattles: undefined, curDailyCastlePoints: undefined, DailyNegotiations: number, curShopItems: undefined, BuildBox: Castle.BuildBox, curDailyChallenge: undefined, curLevel: undefined, startOfDay: *, DailyNegotiationsReward: number, curGexLastOfSection: undefined, SevenDayChallengeReward: number, ShowLog: Castle.ShowLog, SettingsSaveValues: Castle.SettingsSaveValues, NextNegotiationPoints: undefined, SevenDayChallenge: number, Settings: {showSummary: boolean, showGroupNames: boolean, logDays: number}, CurrentView: string, UpdateCastlePoints: Castle.UpdateCastlePoints, ShowProgressTable: Castle.ShowProgressTable, dailyPointsCollectionAvailableAt: undefined, DailyWinningBattles: number, curSevenDayChallenge: undefined, ShopGemstonesDivisor: number, NextWinningBattlesPoints: undefined, DailyChallengeReward: number, CastleSettings: Castle.CastleSettings, MaxDailNegotiationsReward: number, MaxGexLastOfSections: number, curNegotiations: undefined, CastlePointLog: undefined, GexLastOfSectionsIds: number[], CreateRewardList: (function(): *[]), ShowCastlePoints: Castle.ShowCastlePoints, CastleLevelLimits: number[], DailyCastlePoints: number, Show: Castle.Show, WeeklyGexLastOfSection: number, curAuctionWinning: undefined}}
  */
 let Castle = {
 
@@ -314,8 +313,11 @@ let Castle = {
     Settings: {
         showGroupNames: true,
         showSummary: true,
-        tableView: 'compact'
+        logDays: 3
     },
+
+    CastlePointLog: undefined,
+    CurrentView: 'overview',
 
 
     BuildBox: () => {
@@ -344,24 +346,34 @@ let Castle = {
 
         if (Settings)
         {
-            for (let k in Settings)
+            for (const k in Settings)
             {
                 if (!Settings.hasOwnProperty(k)) { continue; }
                 Castle.Settings[k] = Settings[k];
             }
         }
 
+        if (!Castle.CastlePointLog)
+        {
+            Castle.CastlePointLog = JSON.parse(localStorage.getItem('CastlePointLog') || '[]');
+        }
+
         Castle.Show();
         Castle.ShowCastlePoints();
-        Castle.ShowProgressTable();
+
+        if (Castle.CurrentView === 'log')
+        {
+            Castle.ShowLog();
+        }
+        else
+        {
+            Castle.CurrentView = 'overview';
+            Castle.ShowProgressTable();
+        }
     },
 
-    /**
-     *
-     * @param d
-     *
-     */
-    UpdateCastlePoints: (d = null) => {
+
+    UpdateCastlePoints: () => {
 
         if (ResourceStock.castle_points)
         {
@@ -372,6 +384,7 @@ let Castle = {
             {
                 Castle.curCastlePointsDiff = ResourceStock.castle_points - Castle.curCastlePoints;
                 diff = Castle.curCastlePointsDiff;
+                Castle.SetCastlePointLog(diff);
             }
 
             Castle.curCastlePoints = ResourceStock.castle_points;
@@ -382,46 +395,51 @@ let Castle = {
             }
         }
 
-        if (d !== null)
+    },
+
+    /**
+     *
+     * @param d
+     *
+     */
+    UpdateCastleData: (d) => {
+
+        if (!d) { return; }
+
+        // Collect daily Castle points (CastleSystemService "requestMethod": "collectDailyPoints")
+        if (d.points && d.nextCollectionPoints)
         {
-
-            // Collect daily Castle points (CastleSystemService "requestMethod": "collectDailyPoints")
-            if (d.points && d.nextCollectionPoints)
-            {
-                Castle.curDailyCastlePoints = {
-                    points: d.points,
-                    nextCollectionPoints: d.nextCollectionPoints,
-                    currentStreak: d.currentStreak,
-                    maxStreak: d.maxStreak,
-                    success: true,
-                    collected: moment(MainParser.getCurrentDateTime()).startOf('day').unix()
-                }
-
-                localStorage.setItem('CastleCurDailyCastlePoints', JSON.stringify(Castle.curDailyCastlePoints));
-
+            Castle.curDailyCastlePoints = {
+                points: d.points,
+                nextCollectionPoints: d.nextCollectionPoints,
+                currentStreak: d.currentStreak,
+                maxStreak: d.maxStreak,
+                success: true,
+                collected: moment(MainParser.getCurrentDateTime()).startOf('day').unix()
             }
 
-            // CastleSystemService "requestMethod": "getOverview"
-            if (d.nextCastlePoints)
-            {
-                let n = d.nextCastlePoints;
+            localStorage.setItem('CastleCurDailyCastlePoints', JSON.stringify(Castle.curDailyCastlePoints));
+        }
 
-                Castle.curLevel = d.level ? d.level : Castle.curLevel;
-                Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;
-                Castle.NextNegotiationPoints = n.castlePointsWinNegotation !== undefined ? n.castlePointsWinNegotation : Castle.NextNegotiationPoints;
-                Castle.curWinningBattles = Castle.NextWinningBattlesPoints < Castle.DailyWinningBattlesReward ? (Castle.NextWinningBattlesPoints / 2) : Castle.DailyWinningBattles;
-                Castle.curNegotiations = Castle.NextNegotiationPoints < Castle.DailyNegotiationsReward ? (Castle.NextNegotiationPoints / 2) : Castle.DailyNegotiations;
-                Castle.ShopGemstonesDivisor = n.castlePointsItemShopGemstonesDivisor ? n.castlePointsItemShopGemstonesDivisor : Castle.ShopGemstonesDivisor;
-                Castle.ShopTradeCoinsDivisor = n.castlePointsItemShopTradeCoinsDivisor ? n.castlePointsItemShopTradeCoinsDivisor : Castle.ShopTradeCoinsDivisor;
-                Castle.AuctionWinningReward = n.castlePointsItemAuctionWinBidding ? n.castlePointsItemAuctionWinBidding : 30;
-                Castle.startOfDay = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
-            }
+        // CastleSystemService "requestMethod": "getOverview"
+        if (d.nextCastlePoints)
+        {
+            let n = d.nextCastlePoints;
 
-            if ($('#Castle').length === 1)
-            {
-                Castle.ShowProgressTable();
-            }
+            Castle.curLevel = d.level ? d.level : Castle.curLevel;
+            Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;
+            Castle.NextNegotiationPoints = n.castlePointsWinNegotation !== undefined ? n.castlePointsWinNegotation : Castle.NextNegotiationPoints;
+            Castle.curWinningBattles = Castle.NextWinningBattlesPoints < Castle.DailyWinningBattlesReward ? (Castle.NextWinningBattlesPoints / 2) : Castle.DailyWinningBattles;
+            Castle.curNegotiations = Castle.NextNegotiationPoints < Castle.DailyNegotiationsReward ? (Castle.NextNegotiationPoints / 2) : Castle.DailyNegotiations;
+            Castle.ShopGemstonesDivisor = n.castlePointsItemShopGemstonesDivisor ? n.castlePointsItemShopGemstonesDivisor : Castle.ShopGemstonesDivisor;
+            Castle.ShopTradeCoinsDivisor = n.castlePointsItemShopTradeCoinsDivisor ? n.castlePointsItemShopTradeCoinsDivisor : Castle.ShopTradeCoinsDivisor;
+            Castle.AuctionWinningReward = n.castlePointsItemAuctionWinBidding ? n.castlePointsItemAuctionWinBidding : 30;
+            Castle.startOfDay = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
+        }
 
+        if ($('#Castle').length === 1)
+        {
+            Castle.ShowProgressTable();
         }
 
     },
@@ -705,33 +723,64 @@ let Castle = {
         let h = [];
 
         h.push(`<div class="castle_wrapper">`);
-        h.push(`<div class="overview dark-bg" id="cas-points-wrapper"></div>`);
+        h.push(`<div class="overview dark-bg" id="casPointsWrapper"></div>`);
         h.push(`<div id="cas-table-wrapper" class="content"></div>`);
         h.push(`</div>`);
 
-        $('#CastleBody').html(h.join(''));
+        $('#CastleBody').html(h.join('')).promise().done(function () {
 
+            $('#Castle').on('click', '#casSwitchView', function () {
+
+                Castle.CurrentView = Castle.CurrentView === 'log' ? 'overview' : 'log';
+
+                if (Castle.CurrentView === 'log')
+                {
+                    $('#casSwitchView').html(i18n('Boxes.Castle.Overview'))
+                    Castle.ShowLog();
+                }
+                else
+                {
+                    $('#casSwitchView').html(i18n('Boxes.Castle.Log'))
+                    Castle.ShowProgressTable();
+                }
+
+            });
+        });
 
     },
 
+
     ShowCastlePoints: (diff = null) => {
 
-        if ($('#Castle #cas-points-wrapper').length === 1)
+        if ($('#Castle #casPointsWrapper').length === 1)
         {
-            $('#Castle #cas-points-wrapper').html(`
-                <span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(Castle.CastleLevelLimits[Castle.curLevel])}</span>
-                <span id="cas-points-dif">${diff ? '+' + diff : ''}</span>
-                <span> ${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span>
+            $('#Castle #casPointsWrapper').html(`
+                <div><span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(Castle.CastleLevelLimits[Castle.curLevel])}</span>
+                <span id="casPointsDiff">${diff ? '+' + diff : ''}</span><br />
+                <span>${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span></div>
+                <div><span id="casLogBtn"><button id="casSwitchView" class="btn btn-default"${!Castle.CastlePointLog || Castle.CastlePointLog.length === 0 ? ' disabled' : ''}>${Castle.CurrentView === 'log' ? i18n('Boxes.Castle.Overview') : i18n('Boxes.Castle.Log')}</button></span></div>
             `).promise().done(function () {
-                $('#cas-points-dif').delay(2500).fadeOut(500);
+
+                if (diff)
+                {
+                    $('#casPointsDiff').delay(2500).fadeOut(500, function () {
+                        $(this).html('');
+                    });
+
+                    if (Castle.CurrentView === 'log')
+                    {
+                        Castle.ShowLog();
+                    }
+                }
             });
         }
 
     },
 
+
     ShowProgressTable: () => {
 
-        if ($('#Castle').length === 0) { return; }
+        if ($('#Castle').length === 0 || Castle.CurrentView !== 'overview') { return; }
 
         let h = [],
             firstCaption = true,
@@ -757,21 +806,8 @@ let Castle = {
                 firstCaption = false;
             }
 
-            let progressStr, rewardStr;
-
-            switch (Castle.Settings.tableView)
-            {
-                case 'compact':
-                    progressStr = i.progress === i.maxprogress ? i.maxprogress : i.progress + ' / ' + i.maxprogress;
-                    rewardStr = i.reward === i.maxreward ? i.maxreward : i.reward + ' / ' + i.maxreward;
-                    break;
-
-                case 'detail':
-                default:
-                    progressStr = i.progress + ' / ' + i.maxprogress;
-                    rewardStr = i.reward + ' / ' + i.maxreward;
-                    break;
-            }
+            let progressStr = i.progress === i.maxprogress ? i.maxprogress : i.progress + ' / ' + i.maxprogress;
+            let rewardStr = i.reward === i.maxreward ? i.maxreward : i.reward + ' / ' + i.maxreward;
 
             return r + `<tr ${i.warning && i.warnnotice ? ' title="' + i.warnnotice + '" ' : ''}class="${i.warning ? 'warning ' : ''}${i.success ? 'success' : 'pending'}">
                 <td>${i.name}</td>
@@ -793,16 +829,97 @@ let Castle = {
     },
 
 
+    ShowLog: () => {
+
+        let h = [];
+        let elwidth = $('#Castle #cas-table-wrapper').width();
+        let sumPerDays = {};
+        let c = [];
+
+        Castle.CastlePointLog.forEach(entry => {
+            if (!sumPerDays[entry.date])
+            {
+                sumPerDays[entry.date] = 0;
+            }
+            sumPerDays[entry.date] += entry.value;
+        });
+
+        h.push(`<div id="casLogWrapper"><div class="overview">`);
+        h.push(`<table class="foe-table" id="casLogTable">
+            <thead><tr class="caption open"><th>${i18n('Boxes.Castle.Time')} <span></span></th><th class="text-right">${i18n('Boxes.Castle.CastlePoints')}</th></thead><tbody>`);
+
+        h.push(Castle.CastlePointLog.sort((a, b) => b.time - a.time).map((e) => {
+            let r = '';
+            if (!c.includes(e.date))
+            {
+                r = r + `<tr class="caption open" data-group="${e.date}"><td>${moment.unix(e.date).format(i18n('Date'))} <span></span></td><td class="text-right">${sumPerDays[e.date]}</td></tr>`;
+                c.push(e.date);
+            }
+
+            return r + `<tr data-group="${e.date}"><td>${moment.unix(e.time).format(i18n('DateTime'))}</td><td class="text-right">+${e.value}</td></tr>`;
+        }).join(''));
+
+        h.push(`</tbody></table></div>`);
+        h.push(`<div id="casLogFooter">${i18n('Boxes.Castle.LogDuration') + ': '+ Castle.Settings.logDays +' '+ i18n('Boxes.Castle.Days')}</div>`)
+        h.push(`</div>`);
+
+        $('#Castle #cas-table-wrapper').width(elwidth).html(h.join(''));
+
+        $('#casLogTable tbody tr.caption').on('click', function () {
+            let group = $(this).attr('data-group');
+            $(this).toggleClass("closed open");
+            $('#casLogTable tr[data-group="' + group + '"]').not('.caption').toggleClass("hide");
+        });
+
+        $('#casLogTable thead tr.caption').on('click', function () {
+            let isopen = $(this).hasClass('open');
+            let tc = isopen ? 'hide' : 'open';
+            $(this).toggleClass("closed open");
+            $('#casLogTable tbody tr[data-group].caption').removeClass("closed").removeClass("open").addClass(isopen? 'closed': 'open');
+            $('#casLogTable tr[data-group]').not('.caption').removeClass("hide").removeClass("show").addClass(tc);
+        });
+
+    },
+
+
+    SetCastlePointLog: (d) => {
+
+        if (!d) { return; }
+
+        let Time = MainParser.getCurrentDateTime();
+        let startOfDay = moment(Time).startOf('day').unix();
+        let removeLogsDate = startOfDay - Castle.Settings.logDays * 86400;
+        let CastlePointLog = Castle.CastlePointLog;
+
+        if (!CastlePointLog)
+        {
+            CastlePointLog = JSON.parse(localStorage.getItem('CastlePointLog') || '[]');
+        }
+
+        CastlePointLog.push({ date: startOfDay, time: moment(Time).unix(), value: d });
+
+        // remove old log days
+        Castle.CastlePointLog = CastlePointLog.filter(obj => {
+            return obj.date >= removeLogsDate;
+        });
+
+        localStorage.setItem('CastlePointLog', JSON.stringify(Castle.CastlePointLog));
+
+    },
+
+
     CastleSettings: () => {
 
         let c = [];
+        let logdurations = [3,5,7,14];
         let Settings = Castle.Settings;
-        // c.push(`<p class="text-left">${i18n('Boxes.Castle.TableView')}  <select id="casTableStyle" name="tablestyle">`);
-        // c.push(`<option value="detail" ${Settings.tableView === 'detail' ? ' selected="selected"' : ''}>${i18n('Boxes.Castle.Detailed')}</option>`);
-        // c.push(`<option value="compact" ${Settings.tableView === 'compact' ? ' selected="selected"' : ''}>${i18n('Boxes.Castle.Compact')}</option>`);
-        // c.push(`</select>`);
 
-        c.push(`<p class="text-left"><input id="casShowGroupNames" name="showgroupnames" value="1" type="checkbox" ${Settings.showGroupNames === true ? ' checked="checked"' : ''} /> <label for="casShowGroupNames">${i18n('Boxes.Castle.ShowGroupNames')}</label></p>`);
+        c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.Castle.Overview')}</span><input id="casShowGroupNames" name="showgroupnames" value="1" type="checkbox" ${Settings.showGroupNames === true ? ' checked="checked"' : ''} /> <label for="casShowGroupNames">${i18n('Boxes.Castle.ShowGroupNames')}</label></p>`);
+        c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.Castle.Log')}</span><label for="casLogDuration">${i18n('Boxes.Castle.LogDuration')}</label> <select id="casLogDuration" name="logduration">`);
+        logdurations.forEach(l => {
+            c.push(`<option value="${l}"${Castle.Settings.logDays === l ? ' selected="selected"' : ''}>${l + ' ' + i18n('Boxes.Castle.Days')}</option>`);
+        });
+        c.push(`</select></p>`);
 
         c.push(`<hr><p><button id="save-Castle-settings" class="btn btn-default" style="width:100%" onclick="Castle.SettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
         $('#CastleSettingsBox').html(c.join(''));
@@ -813,14 +930,22 @@ let Castle = {
     SettingsSaveValues: () => {
 
         Castle.Settings.showGroupNames = !!$("#casShowGroupNames").is(':checked');
-        // Castle.Settings.tableView = $('#casTableStyle').val();
+        Castle.Settings.logDays = parseInt($('#casLogDuration').val()) || Castle.Settings.logDays;
 
         localStorage.setItem('CastleSettings', JSON.stringify(Castle.Settings));
 
         $(`#CastleSettingsBox`).fadeToggle('fast', function () {
             $(this).remove();
             Castle.ShowCastlePoints();
-            Castle.ShowProgressTable();
+            
+            if(Castle.CurrentView === 'log') {
+                Castle.ShowLog();
+            }
+            else {
+                Castle.CurrentView = 'overview';
+                Castle.ShowProgressTable();
+            }
+            
         });
     }
 
