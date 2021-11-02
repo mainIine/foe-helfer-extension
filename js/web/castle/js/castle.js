@@ -440,7 +440,7 @@ let Castle = {
                 collected: moment(MainParser.getCurrentDateTime()).startOf('day').unix()
             }
 
-            rtype = 'castle_points';
+            rtype = 'castlePoints';
 
             localStorage.setItem('CastleCurDailyCastlePoints', JSON.stringify(Castle.curDailyCastlePoints));
         }
@@ -892,11 +892,11 @@ let Castle = {
             battle: i18n('Boxes.Castle.Battle'),
             negotiation: i18n('Boxes.Castle.Negotiation'),
             gex: i18n('Boxes.Castle.Gex'),
-            wonAuction: i18n('Boxes.Castle.AuctionsWon'),
             purchaseItem: i18n('Boxes.Castle.AntiqueDealer'),
             wonAuction: i18n('Boxes.Castle.AuctionsWon'),
             dailyChallenge: i18n('Boxes.Castle.DailyChallenge'),
-            sevenDayChallenge: i18n('Boxes.Castle.SevenDayChallenge')
+            sevenDayChallenge: i18n('Boxes.Castle.SevenDayChallenge'),
+            castlePoints: i18n('Boxes.Castle.CastlePoints')
         }
 
         Castle.CastlePointLog.forEach(entry => {
