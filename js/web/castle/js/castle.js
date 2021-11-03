@@ -23,10 +23,13 @@ FoEproxy.addHandler('ItemShopService', 'purchaseItem', (data, postData) => {
         {
             Castle.curShopItems.purchased.count += 1;
             Castle.curShopItems.available.count -= 1;
-            Castle.curShopItems.purchased.reward += Castle.curCastlePointsDiff;
-            Castle.curShopItems.available.reward -= Castle.curCastlePointsDiff;
+            Castle.curShopItems.purchased.reward += Castle.curCastlePointsDiff.diff;
+            Castle.curShopItems.available.reward -= Castle.curCastlePointsDiff.diff;
             Castle.curShopItems.date = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
             localStorage.setItem('CastleCurShopItems', JSON.stringify(Castle.curShopItems));
+
+            Castle.UpdateCastlePointsLog(data['requestId'], 'purchaseItem');
+
         }
 
         Castle.ShowProgressTable();
@@ -53,6 +56,8 @@ FoEproxy.addHandler('ItemAuctionService', 'collectPrize', (data, postData) => {
         localStorage.setItem('CastleCurAuctionWinning', JSON.stringify(d));
 
         Castle.curAuctionWinning = d;
+
+        Castle.UpdateCastlePointsLog(data['requestId'], 'wonAuction');
 
         Castle.ShowProgressTable();
     }
@@ -114,32 +119,41 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
         // New Start of Guild Expedition
         r.progress.currentEntityId = 0;
     }
-    if (!Castle.curGexLastOfSection || Castle.curGexLastOfSection.progress < r.progress.currentEntityId)
+
+    if (r['state'] && r['nextStateTime'])
     {
-        Castle.curGexLastOfSection = { progress: r.progress.currentEntityId, time: moment(MainParser.getCurrentDateTime()).startOf('day').unix() };
-        localStorage.setItem('CastleCurGexLastOfSection', JSON.stringify(Castle.curGexLastOfSection));
+        let GexEnd = r['state'] === 'inactive' ? r.nextStateTime : r.nextStateTime * 1 + 86400;
+        localStorage.setItem('CastleGexEnd', GexEnd);
+    }
+
+    if (Castle.curGexLastOfSection === undefined || Castle.curGexLastOfSection !== r.currentEntityId)
+    {
+        Castle.curGexLastOfSection = r.progress.currentEntityId;
+        localStorage.setItem('CastleCurGexLastOfSection', Castle.curGexLastOfSection);
 
         Castle.ShowProgressTable();
     }
 
 });
 
-// Get Gex Encounters after Negotiation
+// Get Gex Encounters after Battle/Negotiation
 FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 
-    if (data['responseData'] === undefined || data['responseData'][0] === undefined) { return; }
+    if (!data['responseData'] || !data['responseData'][0]) { return; }
 
+    let rid = data['requestId'];
     let r = data.responseData[0];
 
     if (r['currentEntityId'] === undefined) { return; }
 
-    if (!Castle.curGexLastOfSection || Castle.curGexLastOfSection.progress < r.currentEntityId)
+    if (!Castle.curGexLastOfSection || Castle.curGexLastOfSection < r.currentEntityId)
     {
-        Castle.curGexLastOfSection = { progress: r.currentEntityId, time: moment(MainParser.getCurrentDateTime()).startOf('day').unix() };
-        localStorage.setItem('CastleCurGexLastOfSection', JSON.stringify(Castle.curGexLastOfSection));
+        Castle.curGexLastOfSection = r.currentEntityId;
+        localStorage.setItem('CastleCurGexLastOfSection', Castle.curGexLastOfSection);
 
         if (Castle.GexLastOfSectionsIds.includes(r.currentEntityId))
         {
+            Castle.UpdateCastlePointsLog(rid, 'gex');
             Castle.ShowProgressTable();
         }
     }
@@ -168,13 +182,14 @@ FoEproxy.addHandler('ChallengeService', 'getOptions', (data, postData) => {
 // Get castle system data
 FoEproxy.addHandler('CastleSystemService', 'all', (data, postData) => {
 
-    if (!data || data['responseData'] === undefined || data['requestMethod'] === undefined) { return; }
+    if (!data || !data['responseData'] || !data['requestMethod']) { return; }
 
     if (data.requestMethod === 'getCastleSystemPlayer' ||
         data.requestMethod === 'collectDailyPoints' ||
         data.requestMethod === 'getCastleSystemPlayer')
     {
-        Castle.UpdateCastleData(data.responseData);
+
+        Castle.UpdateCastleData(data);
     }
 
     if (data.requestMethod === 'getOverview')
@@ -202,6 +217,7 @@ FoEproxy.addHandler('ChallengeService', 'updateTaskProgress', (data, postData) =
         if (d.currentProgress === d.maxProgress)
         {
             state = 'success';
+            Castle.UpdateCastlePointsLog(data['requestId'], 'sevenDayChallenge');
         }
 
         Castle.curSevenDayChallenge = { id: d.id, state: state, currentProgress: d.currentProgress }
@@ -227,6 +243,7 @@ FoEproxy.addHandler('ChallengeService', 'collectReward', (data, postData) => {
             Castle.curDailyChallenge = { id: null, state: 'success', expiresAt: r.expiresAt }
         }
 
+        Castle.UpdateCastlePointsLog(data['requestId'], 'dailyChallenge');
     }
 
     Castle.ShowProgressTable();
@@ -270,7 +287,7 @@ FoEproxy.addHandler('ChallengeService', 'getActiveChallenges', (data, postData) 
 });
 
 /**
- * @type {{DailyChallenge: number, curCastlePoints: number, AuctionWinningReward: number, curCastlePointsDiff: number, UpdateCastleData: Castle.UpdateCastleData, MaxDailyWinningBattlesReward: number, ShopTradeCoinsDivisor: number, DailyWinningBattlesReward: number, SetCastlePointLog: Castle.SetCastlePointLog, RewardGroups: {Shop: number, Daily: number, Gex: number, AntiqueDealer: number, Challenge: number}, curWinningBattles: undefined, curDailyCastlePoints: undefined, DailyNegotiations: number, curShopItems: undefined, BuildBox: Castle.BuildBox, curDailyChallenge: undefined, curLevel: undefined, startOfDay: *, DailyNegotiationsReward: number, curGexLastOfSection: undefined, SevenDayChallengeReward: number, ShowLog: Castle.ShowLog, SettingsSaveValues: Castle.SettingsSaveValues, NextNegotiationPoints: undefined, SevenDayChallenge: number, Settings: {showSummary: boolean, showGroupNames: boolean, logDays: number}, CurrentView: string, UpdateCastlePoints: Castle.UpdateCastlePoints, ShowProgressTable: Castle.ShowProgressTable, dailyPointsCollectionAvailableAt: undefined, DailyWinningBattles: number, curSevenDayChallenge: undefined, ShopGemstonesDivisor: number, NextWinningBattlesPoints: undefined, DailyChallengeReward: number, CastleSettings: Castle.CastleSettings, MaxDailNegotiationsReward: number, MaxGexLastOfSections: number, curNegotiations: undefined, CastlePointLog: undefined, GexLastOfSectionsIds: number[], CreateRewardList: (function(): *[]), ShowCastlePoints: Castle.ShowCastlePoints, CastleLevelLimits: number[], DailyCastlePoints: number, Show: Castle.Show, WeeklyGexLastOfSection: number, curAuctionWinning: undefined}}
+ * @type {{curCastlePoints: number, AuctionWinningReward: number, curCastlePointsDiff: {}, UpdateCastleData: Castle.UpdateCastleData, DailyWinningBattlesReward: number, RewardGroups: {Shop: number, Daily: number, Gex: number, AntiqueDealer: number, Challenge: number}, curWinningBattles: undefined, BuildBox: Castle.BuildBox, curDailyChallenge: undefined, curLevel: undefined, SevenDayChallengeReward: number, ShowLog: Castle.ShowLog, NextNegotiationPoints: undefined, SevenDayChallenge: number, Settings: {showSummary: boolean, showGroupNames: boolean, logDays: number}, ShowProgressTable: Castle.ShowProgressTable, DailyWinningBattles: number, ShopGemstonesDivisor: number, DailyChallengeReward: number, CastleSettings: Castle.CastleSettings, MaxDailNegotiationsReward: number, MaxGexLastOfSections: number, curNegotiations: undefined, CastleLevelLimits: number[], DailyCastlePoints: number, Show: Castle.Show, DailyChallenge: number, MaxDailyWinningBattlesReward: number, ShopTradeCoinsDivisor: number, SetCastlePointLog: Castle.SetCastlePointLog, curDailyCastlePoints: undefined, DailyNegotiations: number, curShopItems: undefined, startOfDay: *, DailyNegotiationsReward: number, curGexLastOfSection: undefined, UpdateCastlePointsLog: Castle.UpdateCastlePointsLog, SettingsSaveValues: Castle.SettingsSaveValues, CurrentView: string, UpdateCastlePoints: Castle.UpdateCastlePoints, dailyPointsCollectionAvailableAt: undefined, curSevenDayChallenge: undefined, NextWinningBattlesPoints: undefined, CastlePointLog: undefined, GexLastOfSectionsIds: number[], CreateRewardList: (function(): *[]), ShowCastlePoints: Castle.ShowCastlePoints, WeeklyGexLastOfSection: number, curAuctionWinning: undefined}}
  */
 let Castle = {
 
@@ -295,7 +312,7 @@ let Castle = {
 
     curAuctionWinning: undefined,
     curCastlePoints: 0,
-    curCastlePointsDiff: 0,
+    curCastlePointsDiff: {},
     curDailyCastlePoints: undefined,
     curDailyChallenge: undefined,
     curGexLastOfSection: undefined,
@@ -373,7 +390,7 @@ let Castle = {
     },
 
 
-    UpdateCastlePoints: () => {
+    UpdateCastlePoints: (rid) => {
 
         if (ResourceStock.castle_points)
         {
@@ -382,9 +399,9 @@ let Castle = {
 
             if (Castle.curCastlePoints && increased)
             {
-                Castle.curCastlePointsDiff = ResourceStock.castle_points - Castle.curCastlePoints;
-                diff = Castle.curCastlePointsDiff;
-                Castle.SetCastlePointLog(diff);
+                Castle.curCastlePointsDiff = { rid: rid, diff: ResourceStock.castle_points - Castle.curCastlePoints };
+                diff = Castle.curCastlePointsDiff.diff;
+                Castle.SetCastlePointLog(Castle.curCastlePointsDiff);
             }
 
             Castle.curCastlePoints = ResourceStock.castle_points;
@@ -404,7 +421,13 @@ let Castle = {
      */
     UpdateCastleData: (d) => {
 
-        if (!d) { return; }
+        if (!d || !d.responseData) { return; }
+
+        let rid = d['requestId'] || null;
+        let rtype;
+        let nextlevel = false;
+
+        d = d.responseData;
 
         // Collect daily Castle points (CastleSystemService "requestMethod": "collectDailyPoints")
         if (d.points && d.nextCollectionPoints)
@@ -418,6 +441,8 @@ let Castle = {
                 collected: moment(MainParser.getCurrentDateTime()).startOf('day').unix()
             }
 
+            rtype = 'castlePoints';
+
             localStorage.setItem('CastleCurDailyCastlePoints', JSON.stringify(Castle.curDailyCastlePoints));
         }
 
@@ -426,7 +451,18 @@ let Castle = {
         {
             let n = d.nextCastlePoints;
 
-            Castle.curLevel = d.level ? d.level : Castle.curLevel;
+            if (Castle.NextWinningBattlesPoints && Castle.NextWinningBattlesPoints != n.castlePointsWinBattle)
+            {
+                rtype = 'battle';
+            }
+            if (Castle.NextNegotiationPoints && Castle.NextNegotiationPoints != n.castlePointsWinNegotation)
+            {
+                rtype = 'negotiation';
+            }
+
+            nextlevel = Castle.curlevel && Castle.curlevel < d.level;
+
+            Castle.curLevel = d.level !== undefined ? d.level : Castle.curLevel;
             Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;
             Castle.NextNegotiationPoints = n.castlePointsWinNegotation !== undefined ? n.castlePointsWinNegotation : Castle.NextNegotiationPoints;
             Castle.curWinningBattles = Castle.NextWinningBattlesPoints < Castle.DailyWinningBattlesReward ? (Castle.NextWinningBattlesPoints / 2) : Castle.DailyWinningBattles;
@@ -437,9 +473,33 @@ let Castle = {
             Castle.startOfDay = moment(MainParser.getCurrentDateTime()).startOf('day').unix();
         }
 
+        if (rid && rtype) { Castle.UpdateCastlePointsLog(rid, rtype); }
+
         if ($('#Castle').length === 1)
         {
+            if(nextlevel) {
+                Castle.ShowCastlePoints();
+            }
+            
             Castle.ShowProgressTable();
+        }
+
+    },
+
+
+    UpdateCastlePointsLog: (rid, rtype) => {
+
+        let idx = Castle.CastlePointLog ? Castle.CastlePointLog.findIndex((obj => obj.rid && obj.rid === rid && obj.date === Castle.startOfDay)) : -1;
+
+        if (idx >= 0)
+        {
+            Castle.CastlePointLog[idx].name.push(rtype);
+            localStorage.setItem('CastlePointLog', JSON.stringify(Castle.CastlePointLog));
+
+            if (Castle.CurrentView === 'log')
+            {
+                Castle.ShowLog();
+            }
         }
 
     },
@@ -565,7 +625,6 @@ let Castle = {
             date: startOfDay
         });
 
-
         // Daily Challenge
         if (Castle.curDailyChallenge === undefined || Castle.curDailyChallenge.state === 'success')
         {
@@ -585,7 +644,6 @@ let Castle = {
             success: dcp === Castle.DailyChallenge,
             date: startOfDay
         });
-
 
         // Seven Day Challenge
         scp = Castle.curSevenDayChallenge.currentProgress
@@ -609,16 +667,24 @@ let Castle = {
         });
 
         // Gex Last of sections
+        let GexEnd = localStorage.getItem('CastleGexEnd');
+
         if (Castle.curGexLastOfSection === undefined)
         {
-            Castle.curGexLastOfSection = JSON.parse(localStorage.getItem('CastleCurGexLastOfSection'));
+            Castle.curGexLastOfSection = localStorage.getItem('CastleCurGexLastOfSection');
         }
 
-        if (Castle.curGexLastOfSection)
+        // Reset Gex if a new round started and isn't updatet atm
+        if (GexEnd && GexEnd < moment(MainParser.getCurrentDateTime()).unix())
+        {
+            Castle.curGexLastOfSection = 0;
+        }
+
+        if (Castle.curGexLastOfSection !== undefined)
         {
             let i = 0,
                 k = 0;
-            let progress = Castle.curGexLastOfSection.progress;
+            let progress = Castle.curGexLastOfSection;
 
             Castle.GexLastOfSectionsIds.forEach(level => {
 
@@ -651,7 +717,6 @@ let Castle = {
             success: glsp >= Castle.GexLastOfSectionsIds.length,
             date: startOfDay
         });
-
 
         // Item Shop
         if (Castle.curShopItems === undefined)
@@ -767,10 +832,6 @@ let Castle = {
                         $(this).html('');
                     });
 
-                    if (Castle.CurrentView === 'log')
-                    {
-                        Castle.ShowLog();
-                    }
                 }
             });
         }
@@ -831,10 +892,19 @@ let Castle = {
 
     ShowLog: () => {
 
-        let h = [];
+        let h = [], c = [];
         let elwidth = $('#Castle #cas-table-wrapper').width();
         let sumPerDays = {};
-        let c = [];
+        let typeNames = {
+            battle: i18n('Boxes.Castle.Battle'),
+            negotiation: i18n('Boxes.Castle.Negotiation'),
+            gex: i18n('Boxes.Castle.Gex'),
+            purchaseItem: i18n('Boxes.Castle.AntiqueDealer'),
+            wonAuction: i18n('Boxes.Castle.AuctionsWon'),
+            dailyChallenge: i18n('Boxes.Castle.DailyChallenge'),
+            sevenDayChallenge: i18n('Boxes.Castle.SevenDayChallenge'),
+            castlePoints: i18n('Boxes.Castle.CastlePoints')
+        }
 
         Castle.CastlePointLog.forEach(entry => {
             if (!sumPerDays[entry.date])
@@ -846,24 +916,29 @@ let Castle = {
 
         h.push(`<div id="casLogWrapper"><div class="overview">`);
         h.push(`<table class="foe-table" id="casLogTable">
-            <thead><tr class="caption open"><th>${i18n('Boxes.Castle.Time')} <span></span></th><th class="text-right">${i18n('Boxes.Castle.CastlePoints')}</th></thead><tbody>`);
+            <thead><tr class="caption open"><th>${i18n('Boxes.Castle.Time')} <span></span></th>
+            <th>${i18n('Boxes.Castle.Type')}</th><th class="text-right">${i18n('Boxes.Castle.CastlePoints')}</th>
+            </thead><tbody>`);
 
         h.push(Castle.CastlePointLog.sort((a, b) => b.time - a.time).map((e) => {
             let r = '';
             if (!c.includes(e.date))
             {
-                r = r + `<tr class="caption open" data-group="${e.date}"><td>${moment.unix(e.date).format(i18n('Date'))} <span></span></td><td class="text-right">${sumPerDays[e.date]}</td></tr>`;
+                r = r + `<tr class="caption open" data-group="${e.date}"><td>${moment.unix(e.date).format(i18n('Date'))} <span></span></td>
+                        <td colspan="2" class="text-right">${sumPerDays[e.date]}</td></tr>`;
                 c.push(e.date);
             }
 
-            return r + `<tr data-group="${e.date}"><td>${moment.unix(e.time).format(i18n('DateTime'))}</td><td class="text-right">+${e.value}</td></tr>`;
+            return r + `<tr data-group="${e.date}"><td>${moment.unix(e.time).format(i18n('DateTime'))}</td>
+                <td>${e.name && e.name.length ? e.name.map(n => { return typeNames[n] ? typeNames[n] : '' }).join(' + ') : ''}</td>
+                <td class="text-right">+${e.value}</td></tr>`;
         }).join(''));
 
         h.push(`</tbody></table></div>`);
-        h.push(`<div id="casLogFooter">${i18n('Boxes.Castle.LogDuration') + ': '+ Castle.Settings.logDays +' '+ i18n('Boxes.Castle.Days')}</div>`)
+        h.push(`<div id="casLogFooter">${i18n('Boxes.Castle.LogDuration') + ': ' + Castle.Settings.logDays + ' ' + i18n('Boxes.Castle.Days')}</div>`)
         h.push(`</div>`);
 
-        $('#Castle #cas-table-wrapper').width(elwidth).html(h.join(''));
+        $('#Castle #cas-table-wrapper').css({ 'min-width': elwidth }).html(h.join(''));
 
         $('#casLogTable tbody tr.caption').on('click', function () {
             let group = $(this).attr('data-group');
@@ -875,7 +950,7 @@ let Castle = {
             let isopen = $(this).hasClass('open');
             let tc = isopen ? 'hide' : 'open';
             $(this).toggleClass("closed open");
-            $('#casLogTable tbody tr[data-group].caption').removeClass("closed").removeClass("open").addClass(isopen? 'closed': 'open');
+            $('#casLogTable tbody tr[data-group].caption').removeClass("closed").removeClass("open").addClass(isopen ? 'closed' : 'open');
             $('#casLogTable tr[data-group]').not('.caption').removeClass("hide").removeClass("show").addClass(tc);
         });
 
@@ -896,7 +971,13 @@ let Castle = {
             CastlePointLog = JSON.parse(localStorage.getItem('CastlePointLog') || '[]');
         }
 
-        CastlePointLog.push({ date: startOfDay, time: moment(Time).unix(), value: d });
+        // remove requestIds from log 
+        CastlePointLog = CastlePointLog.map(e => {
+            delete e.rid
+            return e
+        });
+
+        CastlePointLog.push({ rid: d.rid, date: startOfDay, name: [], time: moment(Time).unix(), value: d.diff });
 
         // remove old log days
         Castle.CastlePointLog = CastlePointLog.filter(obj => {
@@ -911,7 +992,7 @@ let Castle = {
     CastleSettings: () => {
 
         let c = [];
-        let logdurations = [3,5,7,14];
+        let logdurations = [3, 5, 7, 14];
         let Settings = Castle.Settings;
 
         c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.Castle.Overview')}</span><input id="casShowGroupNames" name="showgroupnames" value="1" type="checkbox" ${Settings.showGroupNames === true ? ' checked="checked"' : ''} /> <label for="casShowGroupNames">${i18n('Boxes.Castle.ShowGroupNames')}</label></p>`);
@@ -937,15 +1018,17 @@ let Castle = {
         $(`#CastleSettingsBox`).fadeToggle('fast', function () {
             $(this).remove();
             Castle.ShowCastlePoints();
-            
-            if(Castle.CurrentView === 'log') {
+
+            if (Castle.CurrentView === 'log')
+            {
                 Castle.ShowLog();
             }
-            else {
+            else
+            {
                 Castle.CurrentView = 'overview';
                 Castle.ShowProgressTable();
             }
-            
+
         });
     }
 
