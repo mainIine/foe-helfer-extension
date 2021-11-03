@@ -425,6 +425,7 @@ let Castle = {
 
         let rid = d['requestId'] || null;
         let rtype;
+        let nextlevel = false;
 
         d = d.responseData;
 
@@ -459,7 +460,9 @@ let Castle = {
                 rtype = 'negotiation';
             }
 
-            Castle.curLevel = d.level ? d.level : Castle.curLevel;
+            nextlevel = Castle.curlevel && Castle.curlevel < d.level;
+
+            Castle.curLevel = d.level !== undefined ? d.level : Castle.curLevel;
             Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;
             Castle.NextNegotiationPoints = n.castlePointsWinNegotation !== undefined ? n.castlePointsWinNegotation : Castle.NextNegotiationPoints;
             Castle.curWinningBattles = Castle.NextWinningBattlesPoints < Castle.DailyWinningBattlesReward ? (Castle.NextWinningBattlesPoints / 2) : Castle.DailyWinningBattles;
@@ -474,6 +477,10 @@ let Castle = {
 
         if ($('#Castle').length === 1)
         {
+            if(nextlevel) {
+                Castle.ShowCastlePoints();
+            }
+            
             Castle.ShowProgressTable();
         }
 
