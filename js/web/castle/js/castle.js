@@ -965,7 +965,7 @@ let Castle = {
         }
 
         // remove requestIds from log 
-        Castle.CastlePointLog = Castle.CastlePointLog.map(e => {
+        CastlePointLog = CastlePointLog.map(e => {
             delete e.rid
             return e
         });
