@@ -624,10 +624,8 @@ let GexStat = {
 			{
 				//make unique Set of Gex weeks
 				GexStat.GexWeeks = [...new Set([...gexWeeksRanking, ...gexWeeksParticipation])];
+				GexStat.GexWeeks.sort(function (a, b) { return b - a });
 			}
-
-			GexStat.GexWeeks.sort(function (a, b) { return b - a });
-
 		}
 
 		// set latest gexweek to show if available and no specific gexweek is set
@@ -816,12 +814,13 @@ let GexStat = {
 			return;
 		}
 
-		GexStat.Settings.deleteOlderThan = (Settings.deleteOlderThan !== undefined) ? Settings.deleteOlderThan : GexStat.Settings.deleteOlderThan;
-		GexStat.Settings.showAxisLabel = (Settings.showAxisLabel !== undefined) ? Settings.showAxisLabel : GexStat.Settings.showAxisLabel;
-		GexStat.Settings.chartSeries = (Settings.chartSeries !== undefined && Settings.chartSeries.length) ? Settings.chartSeries : GexStat.Settings.chartSeries;
-		GexStat.Settings.showRoundLimit = (Settings.showRoundLimit !== undefined) ? Settings.showRoundLimit : GexStat.Settings.showRoundLimit;
-		GexStat.Settings.exportLimit = (Settings.exportLimit !== undefined) ? Settings.exportLimit : GexStat.Settings.exportLimit;
+		for (const k in Settings)
+		{
+			if (!Settings.hasOwnProperty(k) ||
+				!GexStat.Settings.hasOwnProperty(k)) { continue; }
 
+			GexStat.Settings[k] = Settings[k];
+		}
 	},
 
 
