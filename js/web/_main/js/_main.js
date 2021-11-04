@@ -50,6 +50,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	Fights = [],
 	OwnUnits = [],
 	EnemyUnits = [],
+	UnlockedFeatures = [],
 	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
 	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__';
 
@@ -702,6 +703,9 @@ const FoEproxy = (function () {
 		let eventCountDownFeature = data.responseData.feature_flags.features.filter((v) => { return (v.feature === "event_start_countdown") });
 		EventCountdown = eventCountDownFeature.length > 0 ? eventCountDownFeature[0]["time_string"] : false;
 
+		// Unlocked features
+		MainParser.UnlockedFeatures = data.responseData.unlocked_features.map(function(obj) { return obj.feature; });
+
 		Stats.Init();
 	});
 
@@ -1117,6 +1121,10 @@ const FoEproxy = (function () {
 		FoEproxy.pushFoeHelperMessage('QuestsUpdated');
 	});
 
+	// Update unlocked features
+	FoEproxy.addHandler('UnlockableFeatureService', 'getUnlockedFeatures', (data, postData) => {
+		MainParser.UnlockedFeatures = data.responseData.map(function(obj) { return obj.feature; });
+	});
 
 	// Alte, nich mehr benötigte localStorage einträge löschen (in 2 min)
 	setTimeout(() => {
