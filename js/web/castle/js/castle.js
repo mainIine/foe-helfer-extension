@@ -146,7 +146,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 
     if (r['currentEntityId'] === undefined) { return; }
 
-    if (!Castle.curGexLastOfSection || Castle.curGexLastOfSection < r.currentEntityId)
+    if (Castle.curGexLastOfSection === undefined || Castle.curGexLastOfSection < r.currentEntityId)
     {
         Castle.curGexLastOfSection = r.currentEntityId;
         localStorage.setItem('CastleCurGexLastOfSection', Castle.curGexLastOfSection);
@@ -292,7 +292,6 @@ FoEproxy.addHandler('ChallengeService', 'getActiveChallenges', (data, postData) 
 let Castle = {
 
     AuctionWinningReward: 30,
-    CastleLevelLimits: [500, 3000, 7500, 17500, 30000, 50000, 75000, 107600, 151100, 209900, 290000, 399600, 549900, 756200, 1039500],
     DailyCastlePoints: 1,
     DailyChallenge: 1,
     DailyChallengeReward: 100,
@@ -316,7 +315,7 @@ let Castle = {
     curDailyCastlePoints: undefined,
     curDailyChallenge: undefined,
     curGexLastOfSection: undefined,
-    curLevel: undefined,
+    curLevel: 0,
     curNegotiations: undefined,
     curSevenDayChallenge: undefined,
     curShopItems: undefined,
@@ -477,10 +476,11 @@ let Castle = {
 
         if ($('#Castle').length === 1)
         {
-            if(nextlevel) {
+            if (nextlevel)
+            {
                 Castle.ShowCastlePoints();
             }
-            
+
             Castle.ShowProgressTable();
         }
 
@@ -626,157 +626,174 @@ let Castle = {
         });
 
         // Daily Challenge
-        if (Castle.curDailyChallenge === undefined || Castle.curDailyChallenge.state === 'success')
+        if (MainParser.UnlockedFeatures.includes("daily_challenges"))
         {
-            dcp = 1;
-            dcr = Castle.DailyChallengeReward;
-        }
+            if (Castle.curDailyChallenge === undefined || Castle.curDailyChallenge.state === 'success')
+            {
+                dcp = 1;
+                dcr = Castle.DailyChallengeReward;
+            }
 
-        d.push({
-            name: i18n('Boxes.Castle.DailyChallenge'),
-            group: Castle.RewardGroups.Challenge,
-            sort: 1,
-            progress: dcp,
-            maxprogress: Castle.DailyChallenge,
-            reward: dcr,
-            maxreward: Castle.DailyChallengeReward,
-            warning: false,
-            success: dcp === Castle.DailyChallenge,
-            date: startOfDay
-        });
+
+            d.push({
+                name: i18n('Boxes.Castle.DailyChallenge'),
+                group: Castle.RewardGroups.Challenge,
+                sort: 1,
+                progress: dcp,
+                maxprogress: Castle.DailyChallenge,
+                reward: dcr,
+                maxreward: Castle.DailyChallengeReward,
+                warning: false,
+                success: dcp === Castle.DailyChallenge,
+                date: startOfDay
+            });
+        }
 
         // Seven Day Challenge
-        scp = Castle.curSevenDayChallenge.currentProgress
-
-        if (scp === 7)
+        if (MainParser.UnlockedFeatures.includes("daily_challenges"))
         {
-            scr = Castle.SevenDayChallengeReward;
-        }
+            scp = Castle.curSevenDayChallenge ? Castle.curSevenDayChallenge.currentProgress : 0;
 
-        d.push({
-            name: i18n('Boxes.Castle.SevenDayChallenge'),
-            group: Castle.RewardGroups.Challenge,
-            sort: 2,
-            progress: scp,
-            maxprogress: Castle.SevenDayChallenge,
-            reward: scr,
-            maxreward: Castle.SevenDayChallengeReward,
-            warning: false,
-            success: scp === Castle.SevenDayChallenge,
-            date: startOfDay
-        });
+            if (scp === 7)
+            {
+                scr = Castle.SevenDayChallengeReward;
+            }
+
+            d.push({
+                name: i18n('Boxes.Castle.SevenDayChallenge'),
+                group: Castle.RewardGroups.Challenge,
+                sort: 2,
+                progress: scp,
+                maxprogress: Castle.SevenDayChallenge,
+                reward: scr,
+                maxreward: Castle.SevenDayChallengeReward,
+                warning: false,
+                success: scp === Castle.SevenDayChallenge,
+                date: startOfDay
+            });
+        }
 
         // Gex Last of sections
-        let GexEnd = localStorage.getItem('CastleGexEnd');
-
-        if (Castle.curGexLastOfSection === undefined)
+        if (MainParser.UnlockedFeatures.includes("guild_expedition"))
         {
-            Castle.curGexLastOfSection = localStorage.getItem('CastleCurGexLastOfSection');
-        }
+            let GexEnd = localStorage.getItem('CastleGexEnd');
+            console.log(Castle.curGexLastOfSection);
 
-        // Reset Gex if a new round started and isn't updatet atm
-        if (GexEnd && GexEnd < moment(MainParser.getCurrentDateTime()).unix())
-        {
-            Castle.curGexLastOfSection = 0;
-        }
+            if (Castle.curGexLastOfSection === undefined)
+            {
+                Castle.curGexLastOfSection = localStorage.getItem('CastleCurGexLastOfSection');
+            }
 
-        if (Castle.curGexLastOfSection !== undefined)
-        {
-            let i = 0,
-                k = 0;
-            let progress = Castle.curGexLastOfSection;
+            // Reset Gex if a new round started and isn't updatet atm
+            if (GexEnd && GexEnd < moment(MainParser.getCurrentDateTime()).unix())
+            {
+                Castle.curGexLastOfSection = 0;
+            }
 
-            Castle.GexLastOfSectionsIds.forEach(level => {
+            if (Castle.curGexLastOfSection !== undefined)
+            {
+                let i = 0,
+                    k = 0;
+                let progress = Castle.curGexLastOfSection;
 
-                if (level <= progress)
-                {
-                    if (k % 4 === 0)
+                Castle.GexLastOfSectionsIds.forEach(level => {
+
+                    if (level <= progress)
                     {
-                        i += 15;
+                        if (k % 4 === 0)
+                        {
+                            i += 15;
+                        }
+
+                        glsr += i;
+                        k++;
+                        glsp++;
                     }
 
-                    glsr += i;
-                    k++;
-                    glsp++;
-                }
+                });
 
+            }
+
+            d.push({
+                name: i18n('Boxes.Castle.GexLastOfSections'),
+                group: Castle.RewardGroups.Gex,
+                sort: 1,
+                progress: glsp,
+                maxprogress: Castle.GexLastOfSectionsIds.length,
+                reward: glsr,
+                maxreward: Castle.MaxGexLastOfSections,
+                warning: Castle.curGexLastOfSection === undefined,
+                warnnotice: HTML.i18nTooltip(i18n("Boxes.Castle.VisitGexWarning")),
+                success: glsp >= Castle.GexLastOfSectionsIds.length,
+                date: startOfDay
             });
-
         }
-
-        d.push({
-            name: i18n('Boxes.Castle.GexLastOfSections'),
-            group: Castle.RewardGroups.Gex,
-            sort: 1,
-            progress: glsp,
-            maxprogress: Castle.GexLastOfSectionsIds.length,
-            reward: glsr,
-            maxreward: Castle.MaxGexLastOfSections,
-            warning: !Castle.curGexLastOfSection,
-            warnnotice: HTML.i18nTooltip(i18n("Boxes.Castle.VisitGexWarning")),
-            success: glsp >= Castle.GexLastOfSectionsIds.length,
-            date: startOfDay
-        });
 
         // Item Shop
-        if (Castle.curShopItems === undefined)
+        if (MainParser.UnlockedFeatures.includes("antiques_dealer"))
         {
-            Castle.curShopItems = JSON.parse(localStorage.getItem('CastleCurShopItems'));
-        }
+            if (Castle.curShopItems === undefined)
+            {
+                Castle.curShopItems = JSON.parse(localStorage.getItem('CastleCurShopItems'));
+            }
 
-        if (Castle.curShopItems && Castle.curShopItems.date === startOfDay)
-        {
-            sir = Castle.curShopItems.purchased.reward;
-            sirsum = Castle.curShopItems.purchased.reward + Castle.curShopItems.available.reward;
-            sip = Castle.curShopItems.purchased.count;
-            sipsum = Castle.curShopItems.purchased.count + Castle.curShopItems.available.count;
-        }
-        else
-        {
-            sipsum = 6;
-            siwarn = true;
-        }
+            if (Castle.curShopItems && Castle.curShopItems.date === startOfDay)
+            {
+                sir = Castle.curShopItems.purchased.reward;
+                sirsum = Castle.curShopItems.purchased.reward + Castle.curShopItems.available.reward;
+                sip = Castle.curShopItems.purchased.count;
+                sipsum = Castle.curShopItems.purchased.count + Castle.curShopItems.available.count;
+            }
+            else
+            {
+                sipsum = 6;
+                siwarn = true;
+            }
 
-        d.push({
-            name: i18n('Boxes.Castle.ShopAntiqueDealer'),
-            group: Castle.RewardGroups.AntiqueDealer,
-            sort: 1,
-            progress: sip,
-            maxprogress: sipsum,
-            reward: sir,
-            maxreward: sirsum,
-            warning: siwarn,
-            warnnotice: HTML.i18nTooltip(i18n('Boxes.Castle.VisitAntiqueDealerWarning')),
-            success: sip === sipsum,
-            date: startOfDay
-        });
-
-        // Won auction bidding
-        if (Castle.curAuctionWinning === undefined)
-        {
-            Castle.curAuctionWinning = JSON.parse(localStorage.getItem('CastleCurAuctionWinning'));
-        }
-
-        if (Castle.curAuctionWinning && Castle.curAuctionWinning['date'] && Castle.curAuctionWinning['rewards'] && Castle.curAuctionWinning.date === startOfDay)
-        {
-            Castle.curAuctionWinning.rewards.forEach(item => {
-                aup++;
-                aur += item.reward;
+            d.push({
+                name: i18n('Boxes.Castle.ShopAntiqueDealer'),
+                group: Castle.RewardGroups.AntiqueDealer,
+                sort: 1,
+                progress: sip,
+                maxprogress: sipsum,
+                reward: sir,
+                maxreward: sirsum,
+                warning: siwarn,
+                warnnotice: HTML.i18nTooltip(i18n('Boxes.Castle.VisitAntiqueDealerWarning')),
+                success: sip === sipsum,
+                date: startOfDay
             });
         }
 
-        d.push({
-            name: i18n('Boxes.Castle.AuctionsWon'),
-            group: Castle.RewardGroups.AntiqueDealer,
-            sort: 2,
-            progress: HTML.Format(aup),
-            maxprogress: HTML.Format(aup),
-            reward: HTML.Format(aur),
-            maxreward: HTML.Format(aur),
-            warning: false,
-            success: aup > 0,
-            date: startOfDay
-        });
+        // Won auction bidding
+        if (MainParser.UnlockedFeatures.includes("antiques_dealer"))
+        {
+            if (Castle.curAuctionWinning === undefined)
+            {
+                Castle.curAuctionWinning = JSON.parse(localStorage.getItem('CastleCurAuctionWinning'));
+            }
+
+            if (Castle.curAuctionWinning && Castle.curAuctionWinning['date'] && Castle.curAuctionWinning['rewards'] && Castle.curAuctionWinning.date === startOfDay)
+            {
+                Castle.curAuctionWinning.rewards.forEach(item => {
+                    aup++;
+                    aur += item.reward;
+                });
+            }
+
+            d.push({
+                name: i18n('Boxes.Castle.AuctionsWon'),
+                group: Castle.RewardGroups.AntiqueDealer,
+                sort: 2,
+                progress: HTML.Format(aup),
+                maxprogress: HTML.Format(aup),
+                reward: HTML.Format(aur),
+                maxreward: HTML.Format(aur),
+                warning: false,
+                success: aup > 0,
+                date: startOfDay
+            });
+        }
 
         return d.sort((a, b) => a.group - b.group || a.sort - b.sort);
 
@@ -819,8 +836,10 @@ let Castle = {
 
         if ($('#Castle #casPointsWrapper').length === 1)
         {
+            let CastleLimit = MainParser.CastleSystemLevels[Castle.curLevel].requiredPoints;
+
             $('#Castle #casPointsWrapper').html(`
-                <div><span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(Castle.CastleLevelLimits[Castle.curLevel])}</span>
+                <div><span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(CastleLimit)}</span>
                 <span id="casPointsDiff">${diff ? '+' + diff : ''}</span><br />
                 <span>${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span></div>
                 <div><span id="casLogBtn"><button id="casSwitchView" class="btn btn-default"${!Castle.CastlePointLog || Castle.CastlePointLog.length === 0 ? ' disabled' : ''}>${Castle.CurrentView === 'log' ? i18n('Boxes.Castle.Overview') : i18n('Boxes.Castle.Log')}</button></span></div>
