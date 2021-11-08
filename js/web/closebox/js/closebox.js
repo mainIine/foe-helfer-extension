@@ -11,6 +11,39 @@
  * **************************************************************************************
  */
 
+// AutoHide feature: Battle
+FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
+
+    const requestMethod = data.requestMethod;
+    const d = data.responseData;
+
+    switch (requestMethod)
+    {
+        case 'startByBattleType':
+            if (!d.isAutoBattle && CloseBox.Settings.AutoHideOnBattle)
+            {
+                CloseBox.HideAllBoxes();
+            }
+            break;
+        case 'submitMove':
+            if (d.winnerBit && CloseBox.Settings.AutoHideOnBattle)
+            {
+                CloseBox.ShowAllBoxes();
+            }
+            break;
+        case 'surrender':
+            if (d.surrenderBit && CloseBox.Settings.AutoHideOnBattle)
+            {
+                CloseBox.ShowAllBoxes();
+            }
+            break;
+    }
+
+});
+
+/**
+ * @type {{ShowAllBoxes: CloseBox.ShowAllBoxes, CloseAllBoxes: CloseBox.CloseAllBoxes, SaveSettings: CloseBox.SaveSettings, InitSettings: CloseBox.InitSettings, HideAllBoxes: CloseBox.HideAllBoxes, Show: CloseBox.Show, Excludes: {BackgroundInfo: {inj: string, name: *}, LiveGildFighting: {inj: string, name: *}}, Settings: {ButtonSize: number, AutoHideOnBattle: boolean, Excludes: *[], BoxAlignment: number, HideAllButton: boolean, CloseAllButton: boolean}, BuildBox: CloseBox.BuildBox, CloseBoxSettings: CloseBox.CloseBoxSettings}}
+ */
 let CloseBox = {
 
     Excludes: {
@@ -22,8 +55,9 @@ let CloseBox = {
         ButtonSize: 60,
         Excludes: [],
         BoxAlignment: 0,
-        HideAllButton: 1,
-        CloseAllButton: 1
+        HideAllButton: true,
+        CloseAllButton: true,
+        AutoHideOnBattle: false
     },
 
 
@@ -36,11 +70,13 @@ let CloseBox = {
             return;
         }
 
-        CloseBox.Settings.ButtonSize = (Settings.ButtonSize !== undefined) ? Settings.ButtonSize : CloseBox.Settings.ButtonSize;
-        CloseBox.Settings.Excludes = (Settings.Excludes !== undefined) ? Settings.Excludes : CloseBox.Settings.Excludes;
-        CloseBox.Settings.HideAllButton = (Settings.HideAllButton !== undefined) ? Settings.HideAllButton : CloseBox.Settings.HideAllButton;
-        CloseBox.Settings.CloseAllButton = (Settings.CloseAllButton !== undefined) ? Settings.CloseAllButton : CloseBox.Settings.CloseAllButton;
-        CloseBox.Settings.BoxAlignment = (Settings.BoxAlignment !== undefined) ? Settings.BoxAlignment : CloseBox.Settings.BoxAlignment;
+        for (const k in Settings)
+        {
+            if (!Settings.hasOwnProperty(k) ||
+                !CloseBox.Settings.hasOwnProperty(k)) { continue; }
+
+            CloseBox.Settings[k] = Settings[k];
+        }
     },
 
 
@@ -72,31 +108,21 @@ let CloseBox = {
         let bs = CloseBox.Settings.ButtonSize;
         let align = CloseBox.Settings.BoxAlignment === 1 ? ' vertical' : ' horizontal';
 
-        if (CloseBox.Settings.HideAllButton === 1)
+        if (CloseBox.Settings.HideAllButton)
         {
             h.push(`<button style="width: ${bs}px; height: ${bs}px; font-size: ${Math.round(bs / 2)}px;" id="cb-hide-all-windows" class="btn btn-default btn-green closebox${align}">&#128065</button>`);
         }
 
-        if (CloseBox.Settings.CloseAllButton === 1)
+        if (CloseBox.Settings.CloseAllButton)
         {
             h.push(`<button style="width: ${bs}px; height: ${bs}px; font-size: ${Math.round(bs / 2)}px;" id="cb-close-all-windows" class="btn btn-default closebox${align}">X</button>`);
         }
 
         $('#CloseBoxBody').html(h.join('')).promise().done(function () {
 
-            let self = $('#CloseBox');
-
             $("#cb-close-all-windows").on('click', function () {
 
-                let openBoxes = $('.window-box');
-
-                $.each(openBoxes, function () {
-                    let box = $(this);
-                    if (box.attr('id') !== self.attr('id') && !CloseBox.Settings.Excludes.includes(box.attr('id')))
-                    {
-                        box.remove();
-                    }
-                });
+                CloseBox.CloseAllBoxes();
             });
 
             $("#cb-hide-all-windows").on('click', function (e) {
@@ -106,38 +132,65 @@ let CloseBox = {
 
                 if (bt.hasClass("invisible"))
                 {
-                    bt.removeClass("invisible btn-delete").addClass("btn-green");
-                    $(".window-box, #foe-helper-hud").show();
+                    CloseBox.ShowAllBoxes();
                 }
                 else
                 {
-                    bt.removeClass("btn-green").addClass("invisible btn-delete");
-                    let openBoxes = $(".window-box, #foe-helper-hud");
-
-                    $.each(openBoxes, function () {
-                        let box = $(this);
-                        if (box.attr('id') !== self.attr('id'))
-                        {
-                            box.hide();
-                        }
-                    });
+                    CloseBox.HideAllBoxes();
                 }
             });
 
         });
     },
 
+    HideAllBoxes: () => {
+
+        $("#cb-hide-all-windows").removeClass("btn-green").addClass("invisible btn-delete");
+        let openBoxes = $(".window-box, #foe-helper-hud");
+
+        $.each(openBoxes, function () {
+
+            let box = $(this);
+            if (box.attr('id') !== 'CloseBox')
+            {
+                box.hide();
+            }
+        });
+
+    },
+
+    ShowAllBoxes: () => {
+
+        $("#cb-hide-all-windows").removeClass("invisible btn-delete").addClass("btn-green");
+        $(".window-box, #foe-helper-hud").show();
+    },
+
+    CloseAllBoxes: () => {
+
+        let openBoxes = $('.window-box');
+
+        $.each(openBoxes, function () {
+            let box = $(this);
+            if (box.attr('id') !== 'CloseBox' && !CloseBox.Settings.Excludes.includes(box.attr('id')))
+            {
+                box.remove();
+            }
+        });
+    },
+
+
 
     CloseBoxSettings: () => {
         let c = [];
-        let ButtonSizes = [40, 45, 50, 55, 60, 65, 70];
-        let Settings = CloseBox.Settings;
-        let Excludes = CloseBox.Excludes;
+        const ButtonSizes = [40, 45, 50, 55, 60, 65, 70];
+        const Settings = CloseBox.Settings;
+        const Excludes = CloseBox.Excludes;
 
         c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.CloseBox.View')}</span>`);
-        c.push(`<input id="cb_close_all_button" name="closeallbutton" value="1" type="checkbox" ${(Settings.CloseAllButton === 1) ? ' checked="checked"' : ''} /> <label for="cb_close_all_button"><i>${i18n('Boxes.CloseBox.CloseAllButton')}</i></label></p>`);
-        c.push(`<input id="cb_hide_all_button" name="hideallbutton" value="1" type="checkbox" ${(Settings.HideAllButton === 1) ? ' checked="checked"' : ''} /> <label for="cb_hide_all_button"><i>${i18n('Boxes.CloseBox.HideAllButton')}</i></label></p>`);
+        c.push(`<input id="cb_close_all_button" name="closeallbutton" value="1" type="checkbox" ${(Settings.CloseAllButton) ? ' checked="checked"' : ''} /> <label for="cb_close_all_button"><i>${i18n('Boxes.CloseBox.CloseAllButton')}</i></label></p>`);
+        c.push(`<input id="cb_hide_all_button" name="hideallbutton" value="1" type="checkbox" ${(Settings.HideAllButton) ? ' checked="checked"' : ''} /> <label for="cb_hide_all_button"><i>${i18n('Boxes.CloseBox.HideAllButton')}</i></label></p>`);
         c.push(`<p>${i18n('Boxes.CloseBox.ButtonSize')} <select id="cb_buttonsize" name="buttonsize">`);
+
         for (let k in ButtonSizes)
         {
             c.push(`<option value="${ButtonSizes[k]}" ${Settings.ButtonSize === ButtonSizes[k] ? ' selected="selected"' : ''}>${k * 1 + 1}</option>`);
@@ -158,9 +211,10 @@ let CloseBox = {
             c.push(`<input id="cb_exc_${k}" class="cb_exludes" name="excludes[]" value="${k}" type="checkbox" ${(Settings.Excludes.includes(k)) ? ' checked="checked"' : ''} /> <label for="cb_exc_${k}"><i>${Excludes[k].name}</i></label><br />`);
 
         }
-
+        c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.CloseBox.Automation')}</span>`);
+        c.push(`<input id="cb_auto_hide_on_battle" name="autohideonbattle" value="1" type="checkbox" ${(Settings.AutoHideOnBattle) ? ' checked="checked"' : ''} /> <label for="cb_auto_hide_on_battle"><i>${i18n('Boxes.CloseBox.AutoHideOnBattle')}</i></label></p>`);
         c.push(`<hr><p><button id="save-GexStat-settings" class="btn btn-default" style="width:100%" onclick="CloseBox.SaveSettings()">${i18n('Boxes.General.Save')}</button></p>`);
-        
+
         $('#CloseBoxSettingsBox').html(c.join(''));
 
     },
@@ -168,15 +222,16 @@ let CloseBox = {
 
     SaveSettings: () => {
 
-        let bs = parseInt($('#cb_buttonsize').val());
-        CloseBox.Settings.ButtonSize = bs;
+        CloseBox.Settings.ButtonSize = parseInt($('#cb_buttonsize').val());
         CloseBox.Settings.Excludes = [];
-        CloseBox.Settings.HideAllButton = $("#cb_hide_all_button").is(':checked') ? 1 : 0;
-        CloseBox.Settings.CloseAllButton = $("#cb_close_all_button").is(':checked') ? 1 : 0;
+        CloseBox.Settings.HideAllButton = !!$("#cb_hide_all_button").is(':checked');
+        CloseBox.Settings.CloseAllButton = !!$("#cb_close_all_button").is(':checked');
         CloseBox.Settings.BoxAlignment = parseInt($('#cb_boxalignment').val());
+        CloseBox.Settings.AutoHideOnBattle = !!$("#cb_auto_hide_on_battle").is(':checked');
+
         if (!CloseBox.Settings.HideAllButton && !CloseBox.Settings.CloseAllButton)
         {
-            CloseBox.Settings.CloseAllButton = 1;
+            CloseBox.Settings.CloseAllButton = true;
         }
 
         $("#CloseBoxSettingsBox input.cb_exludes:checked").each(function () {

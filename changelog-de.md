@@ -6,9 +6,15 @@
 - versteckte Ereignisse:
 	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden.
 
+- Alles Schließen Box:
+	- Option zum automatischen Ausblenden aller FoE Helfer Fenster beim Betreten eines Kampfes in den Einstellungen der Box hinzugefügt. 
+
 **BugFix**
 - Gildenmitglieder Übersicht:
 	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
+
+- Stadtübersicht:
+	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) falsches Hintergrundbild entfernt
 
 ---
 

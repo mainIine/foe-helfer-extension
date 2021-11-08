@@ -6,9 +6,16 @@
 - Hidden rewards:
 	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) The box now closes automatically when all hidden events have been collected.
 
+- Close all Box:
+	- Added option in the box settings to automatically hide all FoE helper windows when entering a battle.
+
 **BugFix**
 - Guild members overview:
 	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Added Golden Crops as guild goods producing building
+
+- City overview:
+	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) Fixed wrong background image
+
 
 ---
 
