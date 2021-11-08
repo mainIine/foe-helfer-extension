@@ -2,6 +2,12 @@
 
 ##### 2.5.9.4
 
+**Neu**
+- Burgsystem:
+	- [#2190](https://github.com/mainIine/foe-helfer-extension/issues/2190) Burgsystem Assistent:
+		- Übersicht über den Fortschritt der täglichen/ wöchentliche Ziele für den Erhalt von Burgpunkten
+		- Log über alle erhaltenen Burgpunkte der letzten Tage 
+
 **Update**
 - versteckte Ereignisse:
 	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden.
@@ -12,6 +18,7 @@
 **BugFix**
 - Gildenmitglieder Übersicht:
 	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
+	- [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Fehlerhafte Erhöhung der Gildengüter/macht beim mehrfachen erweitern der Detailansicht eines Mitglieds
 
 - Stadtübersicht:
 	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) falsches Hintergrundbild entfernt
