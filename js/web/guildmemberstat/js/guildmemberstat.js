@@ -1342,7 +1342,7 @@ let GuildMemberStat = {
 			// Create Guild supporting buildings Overview
 			if (Member['guildbuildings'] !== undefined)
 			{
-				let guildbuildings = Member['guildbuildings'];
+				let guildbuildings = $.extend(true, {}, Member['guildbuildings']);
 				let totalGoods = 0;
 				let totalPower = 0;
 

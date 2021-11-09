@@ -2,6 +2,12 @@
 
 ##### 2.5.9.4
 
+**New**
+- Castle System:
+	- [#2190](https://github.com/mainIine/foe-helfer-extension/issues/2190) Castle System Assistent:
+		- Overview of the progress of daily/weekly targets for obtaining castle points
+		- Log of all castle points received in the last few days
+
 **Update**
 - Hidden rewards:
 	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) The box now closes automatically when all hidden events have been collected.
@@ -12,6 +18,7 @@
 **BugFix**
 - Guild members overview:
 	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Added Golden Crops as guild goods producing building
+	- [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Fixed incorrect increase of guild goods and power when expanding the guild member several times
 
 - City overview:
 	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) Fixed wrong background image

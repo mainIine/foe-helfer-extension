@@ -141,6 +141,7 @@
     "Boxes.Castle.Time": "Time",
     "Boxes.Castle.Title": "Castle System",
     "Boxes.Castle.Type": "Type",
+    "Boxes.Castle.Unknown": "Unknown",
     "Boxes.Castle.VisitAntiqueDealerWarning": "Open the antique dealer to update the data.",
     "Boxes.Castle.VisitCastleWarning": "Open the castle overview to update the data.",
     "Boxes.Castle.VisitGexWarning": "Open the Gex overview to update the data.",
