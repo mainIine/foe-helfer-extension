@@ -1055,6 +1055,7 @@ const FoEproxy = (function () {
 		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
 		Outposts.CollectResources();
 		StrategyPoints.ShowFPBar();
+		Castle.UpdateCastlePoints(data['requestId']);
 	});
 
 
