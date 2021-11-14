@@ -19,7 +19,7 @@
 		]
 	},
 	{
-		"name":"CiderMill",
+		"name": "CiderMill",
 		"buildings": [
 			{
 				"first": "P_MultiAge_FallBonus16",
@@ -541,5 +541,66 @@
 			}
 		],
 		"kit": "selection_kit_harvest_fields"
+	},
+	{
+		"name": "MountainReserve",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WildBonus21a",
+				"update": "upgrade_kit_mountain_reserve"
+			}
+		],
+		"kit": "selection_kit_mountain_reserve"
+	},
+	{
+		"name": "PiratesHideout",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SummerBonus21i",
+				"update": "upgrade_kit_pirates_hideout"
+			}
+		],
+		"kit": "selection_kit_pirates_hideout",
+		"assets": [
+			"D_MultiAge_SummerBonus21Boat",
+			"D_MultiAge_SummerBonus21Pier",
+			"D_MultiAge_SummerBonus21Sharks"
+		]
+	},
+	{
+		"name": "GoldenCrops",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FallBonus21a",
+				"update": "upgrade_kit_golden_crops"
+			}
+		],
+		"kit": "selection_kit_golden_crops"
+	},
+	{
+		"name": "HorrorCircus",
+		"buildings": [
+			{
+				"first": "A_MultiAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_terror_teacups"
+			},
+			{
+				"first": "L_AllAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_wheel_of_death"
+			},
+			{
+				"first": "D_MultiAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_mystical_organ"
+			},
+			{
+				"first": "R_MultiAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_helter_skelter"
+			},
+			{
+				"first": "R_MultiAge_HalloweenBonusSet21c",
+				"update": "upgrade_kit_clown_town"
+			}
+		],
+		"kit": "selection_kit_horror_circus"
 	}
 ]
