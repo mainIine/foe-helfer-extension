@@ -12,6 +12,9 @@
 - Hidden rewards:
 	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) The box now closes automatically when all hidden events have been collected.
 
+- Guild members overview:
+	-[#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Timestamp in the file name when exporting the data
+
 - Close all Box:
 	- Added option in the box settings to automatically hide all FoE helper windows when entering a battle.
 
