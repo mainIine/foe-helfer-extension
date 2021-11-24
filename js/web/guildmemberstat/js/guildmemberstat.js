@@ -307,11 +307,11 @@ let GuildMemberStat = {
 				// Check for clan power building (Ruhmeshalle etc.)
 				if (CityEntity['type'] && CityEntity['type'] === 'clan_power_production')
 				{
-
-					let value = CityEntity['entity_levels'].find(data => data.era === Member.era);
+					let EntityLevel = EntityEra ? EntityEra : Member.era;
+					let value = CityEntity['entity_levels'].find(data => data.era === EntityLevel);
 					let clan_power = typeof value.clan_power !== 'undefined' ? value.clan_power : 0;
 
-					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: null, era: Member.era });
+					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityLevel, era: Member.era });
 				}
 
 				if (CityEntity['abilities'])
@@ -367,13 +367,13 @@ let GuildMemberStat = {
 					for (let o in opt)
 					{
 						if (!opt.hasOwnProperty(o) || opt[o]['products'] === undefined) { continue; }
-						
+
 						let products = opt[o]['products'];
-						
+
 						for (let p in products)
 						{
 							if (!products.hasOwnProperty(p) || products[p]['guildResources'] === undefined || products[p]['guildResources']['resources'] === undefined) { continue; }
-							
+
 							let onlywhenmotivated = products[p].onlyWhenMotivated && products[p].onlyWhenMotivated === true ? true : false;
 
 							if (products[p]['guildResources']['resources']['all_goods_of_age'])
