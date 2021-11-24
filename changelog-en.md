@@ -14,6 +14,7 @@
 
 - Guild members overview:
 	-[#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Timestamp in the file name when exporting the data
+	-[#2212](https://github.com/mainIine/foe-helfer-extension/issues/2212) for certain buildings (e.g. hall of fame) the produced guild power was calculated incorrectly 
 
 - Close all Box:
 	- Added option in the box settings to automatically hide all FoE helper windows when entering a battle.
