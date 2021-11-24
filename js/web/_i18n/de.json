@@ -244,7 +244,7 @@
     "Boxes.FPCollector.st_patricks_task_reward": "St. Patrick's Day - Aufgabe",
     "Boxes.FPCollector.wildlife_event": "Wildpark Event",
     "Boxes.FPCollector.winterEvent": "Winterevent",
-    "Boxes.FPCollector.winterEventGrandPrice": "Winterevent - Hauptpreis",
+    "Boxes.FPCollector.winterEventGrandPrize": "Winterevent - Hauptpreis",
     "Boxes.General.Export": "Export",
     "Boxes.General.ExportCSV": "Exportieren als CSV",
     "Boxes.General.ExportJSON": "Exportieren als jSON",
@@ -1086,5 +1086,18 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "Welt:",
     "StrategyPoints.BuyableFP": "Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
-    "_Language": "Deutsch"
+    "_Language": "Deutsch",
+	"Kits.Sets.AthlonAbbey": "Athlon Kloster",
+	"Kits.Sets.DruidTemple": "Druidentempel",
+	"Kits.Sets.FerrisWheel": "Riesenrad",
+	"Kits.Sets.GoldenCrops": "Goldene Felder",
+	"Kits.Sets.HorrorCircus":  "Horror Zirkus",
+	"Kits.Sets.MountainReserve": "Bergschutzgebiet",
+	"Kits.Sets.PiratesHideout": "Piratenversteck",
+	"Kits.Sets.SuishunMill": "Suishun Mühle",
+	"Kits.Sets.TerracottaVineyard": "Terrakotta Weingut",
+	"Kits.Sets.WinterCanal": "Winterkanal",
+	"Boxes.FPCollector.halloweenEvent":  "Halloween Event",
+	"Boxes.FPCollector.halloweenEventAutoCollect": "Halloween Event - Kürbis",
+	"Boxes.FPCollector.summerEvent": "Sommerevent"
 }
