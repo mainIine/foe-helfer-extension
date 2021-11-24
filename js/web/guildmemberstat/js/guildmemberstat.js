@@ -888,7 +888,7 @@ let GuildMemberStat = {
 
 		currentExMembers.forEach(member => {
 
-			var time = +moment(member.deleted);
+			let time = +moment(member.deleted);
 
 			if (Math.floor((+MainParser.getCurrentDate() - time) / 86400000) > days)
 			{
@@ -2563,17 +2563,18 @@ let GuildMemberStat = {
 
 	ExportContent: (filename, type) => {
 
-		var content = GuildMemberStat.ExportData;
-		var FileContent = '';
+		let content = GuildMemberStat.ExportData;
+		let FileContent = '';
+		let TimeStamp = moment().format('YYMMDD-HHmm');
 
-		for (var i = 0; i < content.length; i++)
+		for (let i = 0; i < content.length; i++)
 		{
-			var value = content[i];
+			let value = content[i];
 
-			for (var j = 0; j < value.length; j++)
+			for (let j = 0; j < value.length; j++)
 			{
-				var innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
-				var result = innerValue.replace(/"/g, '""');
+				let innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
+				let result = innerValue.replace(/"/g, '""');
 				if (result.search(/("|,|\n)/g) >= 0)
 					result = '"' + result + '"';
 				if (j > 0)
@@ -2591,7 +2592,7 @@ let GuildMemberStat = {
 		}
 
 		let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-		MainParser.ExportFile(Blob1, filename + '.' + type);
+		MainParser.ExportFile(Blob1, filename + '_' + TimeStamp + '.' + type);
 
 		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
@@ -2601,9 +2602,9 @@ let GuildMemberStat = {
 
 	CsvToJson: (csv) => {
 
-		var lines = csv.split("\r\n");
-		var result = [];
-		var headers = lines[0].split(";");
+		let lines = csv.split("\r\n");
+		let result = [];
+		let headers = lines[0].split(";");
 
 		for (let i = 1; i < lines.length - 1; i++)
 		{

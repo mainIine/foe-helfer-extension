@@ -12,6 +12,9 @@
 - versteckte Ereignisse:
 	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden.
 
+- Gildenmitglieder Übersicht:
+	-[#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Zeitstempel im Dateinamen beim Export der Daten
+
 - Alles Schließen Box:
 	- Option zum automatischen Ausblenden aller FoE Helfer Fenster beim Betreten eines Kampfes in den Einstellungen der Box hinzugefügt. 
 
