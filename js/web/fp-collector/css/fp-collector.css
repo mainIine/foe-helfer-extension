@@ -140,6 +140,10 @@
 	background-image: url('../images/halloween_event.png') !important;
 }
 
+.foehelper-accordion-head.summerEvent-head span.image {
+	background-image: url('../images/summer_event.png') !important;
+}
+
 .foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
 	background-image: url('../images/stPatricksEvent.png');
 }
@@ -154,6 +158,10 @@
 
 .foehelper-accordion-head.winterEventGandPrize-head span.image, .foehelper-accordion-head.winterEvent-head span.image {
 	background-image: url('../images/winterEvent.png');
+}
+
+.foehelper-accordion-head.halloweenEvent-head span.image, .foehelper-accordion-head.halloweenEventAutoCollect-head span.image {
+	background-image: url('../images/halloween_event.png') !important;
 }
 
 .foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
