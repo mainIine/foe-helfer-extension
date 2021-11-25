@@ -543,6 +543,56 @@
 		"kit": "selection_kit_harvest_fields"
 	},
 	{
+		"name": "TerracottaVineyard",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus21a",
+				"update": "upgrade_kit_terracotta_vineyard"
+			}
+		],
+		"kit": "selection_kit_terracotta_vineyard"
+	},
+	{
+		"name": "DruidTemple",
+		"buildings": [
+			{
+				"first": "R_MultiAge_PatrickBonus21a",
+				"update": "upgrade_kit_druid_temple"
+			}
+		],
+		"kit": "selection_kit_druid_temple"
+	},
+	{
+		"name": "SuishunMill",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SpringBonus21a",
+				"update": "upgrade_kit_suishun_mill"
+			}
+		],
+		"kit": "selection_kit_suishun_mill"
+	},
+	{
+		"name": "FerrisWheel",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus21a",
+				"update": "upgrade_kit_ferris_wheel"
+			}
+		],
+		"kit": "selection_kit_ferris_wheel"
+	},
+	{
+		"name": "AthlonAbbey",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SoccerBonus21a",
+				"update": "upgrade_kit_athlon_abbey"
+			}
+		],
+		"kit": "selection_kit_athlon_abbey"
+	},
+	{
 		"name": "MountainReserve",
 		"buildings": [
 			{
@@ -602,5 +652,15 @@
 			}
 		],
 		"kit": "selection_kit_horror_circus"
+	},
+	{
+		"name": "WinterCanal",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WinterBonus21a",
+				"update": "upgrade_kit_winter_canal"
+			}
+		],
+		"kit": "selection_kit_winter_canal"
 	}
 ]
