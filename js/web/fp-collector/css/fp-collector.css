@@ -12,158 +12,151 @@
  */
 
 #fp-collector {
-	width: 550px;
-	height: 400px;
-	top: calc(50vh - 200px);
-	left: calc(50vw - 310px);
+    width: 550px;
+    height: 400px;
+    top: calc(50vh - 200px);
+    left: calc(50vw - 310px);
 }
 
 #fp-collectorBody {
-	overflow-y: auto;
+    overflow-y: auto;
 }
 
-#fp-collectorBody .head {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	justify-items: center;
-	padding: 5px 10px;
-	margin-bottom: 2px;
-}
+    #fp-collectorBody .head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        justify-items: center;
+        padding: 5px 10px;
+        margin-bottom: 2px;
+    }
 
-#fp-collectorBody .foehelper-accordion-head strong {
-	width: 30px;
-	text-align: right;
-	margin: 0 8px 0 2px;
-}
+    #fp-collectorBody .foehelper-accordion-head strong {
+        width: 30px;
+        text-align: right;
+        margin: 0 8px 0 2px;
+    }
 
 .foehelper-accordion-body div {
-	border-top: 1px solid var(--border-table-top);
-	padding: 2px 0 2px 30px;
+    border-top: 1px solid var(--border-table-top);
+    padding: 2px 0 2px 30px;
 }
 
-.foehelper-accordion-body div .fps {
-	width: 30px;
-	color: var(--text-bright);
-	text-align: right;
-	margin: 0 8px 0 2px;
-}
+    .foehelper-accordion-body div .fps {
+        width: 30px;
+        color: var(--text-bright);
+        text-align: right;
+        margin: 0 8px 0 2px;
+    }
 
-.foehelper-accordion-body div .desc {
-	width: 45%;
-}
+    .foehelper-accordion-body div .desc {
+        width: 45%;
+    }
 
-.foehelper-accordion-body div img {
-	max-height: 25px;
-	border-radius: 2px;
-	margin-right: 4px;;
-}
+    .foehelper-accordion-body div img {
+        max-height: 25px;
+        border-radius: 2px;
+        margin-right: 4px;
+        ;
+    }
 
 .foehelper-accordion-head span.image {
-	width: 30px;
-	height: 22px;
-	background-size: 20px auto;
-	background-repeat: no-repeat;
-	background-position: center;
+    width: 30px;
+    height: 22px;
+    background-size: 20px auto;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .foehelper-accordion-head.hiddenReward-head span.image {
-	background-image: url('../images/incident.png');
+    background-image: url('../images/incident.png');
 }
 
-.foehelper-accordion-head.chest-head  span.image {
-	background-image: url('../images/expedition.png');
+.foehelper-accordion-head.chest-head span.image {
+    background-image: url('../images/expedition.png');
 }
 
 .foehelper-accordion-head.guildExpedition-head span.image {
-	background-image: url('../images/relic.png');
+    background-image: url('../images/relic.png');
 }
 
 .foehelper-accordion-head.battlegrounds_conquest-head span.image {
-	background-image: url('../images/gbg-gray.png');
+    background-image: url('../images/gbg-gray.png');
 }
 
 .foehelper-accordion-head.satDown-head span.image {
-	background-image: url('../images/tavern.png');
+    background-image: url('../images/tavern.png');
 }
 
 .foehelper-accordion-head.Quest-head span.image {
-	background-image: url('../images/quest.png');
+    background-image: url('../images/quest.png');
 }
 
 .foehelper-accordion-head.spoilsOfWar-head span.image {
-	background-image: url('../images/spoils_of_war.png');
+    background-image: url('../images/spoils_of_war.png');
 }
 
 .foehelper-accordion-head.diplomaticGifts-head span.image {
-	background-image: url('../images/diplomatic_gifts.png');
+    background-image: url('../images/diplomatic_gifts.png');
 }
 
 .foehelper-accordion-head.antiquesDealer-head span.image {
-	background-image: url('../images/ant.png');
+    background-image: url('../images/ant.png');
 }
 
 .foehelper-accordion-head.double_collection-head span.image {
-	background-image: url('../../../../css/images/menu/BlueGalaxy.png');
+    background-image: url('../../../../css/images/menu/BlueGalaxy.png');
 }
 
 .foehelper-accordion-head.dailyChallenges-head span.image {
-	background-image: url('../images/dailyChallenges.png') !important;
+    background-image: url('../images/dailyChallenges.png') !important;
 }
 
 .foehelper-accordion-head.plunderReward-head span.image {
-	background-image: url('../images/plunder.png') !important;
+    background-image: url('../images/plunder.png') !important;
 }
 
 .foehelper-accordion-head.collectReward-head span.image {
-	background-image: url('../images/quest.png') !important;
+    background-image: url('../images/quest.png') !important;
 }
 
 .foehelper-accordion-head.pvp_arena-head span.image {
-	background-image: url('../images/pvp_arena.png');
+    background-image: url('../images/pvp_arena.png');
 }
 
 /* Events */
-.foehelper-accordion-head.archeologyEvent-head span.image, .foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
-	background-image: url('../images/archeologyEvent.png');
+.foehelper-accordion-head.chestEventGrandPrize-head span.image {
+    background-image: url('../images/chestEventGrandPrize.png') !important;
 }
 
 .foehelper-accordion-head.card_duel-head span.image {
-	background-image: url('../images/soccer_cup.png') !important;
-}
-
-.foehelper-accordion-head.chestEventGrandPrize-head span.image {
-	background-image: url('../images/chestEventGrandPrize.png') !important;
-}
-
-.foehelper-accordion-head.halloweenEvent-head span.image, .foehelper-accordion-head.halloweenEventAutoCollect-head span.image {
-	background-image: url('../images/halloween_event.png') !important;
-}
-
-.foehelper-accordion-head.summerEvent-head span.image {
-	background-image: url('../images/summer_event.png') !important;
-}
-
-.foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
-	background-image: url('../images/stPatricksEvent.png');
-}
-
-.foehelper-accordion-head.summerEvent-head span.image {
-	background-image: url('../images/summer_event.png') !important;
+    background-image: url('../images/soccer_cup.png') !important;
 }
 
 .foehelper-accordion-head.wildlife_event-head span.image {
-	background-image: url('../images/wildlife_event.png') !important;
+    background-image: url('../images/wildlife_event.png') !important;
+}
+
+.foehelper-accordion-head.summerEvent-head span.image {
+    background-image: url('../images/summer_event.png') !important;
+}
+
+.foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
+    background-image: url('../images/stPatricksEvent.png');
 }
 
 .foehelper-accordion-head.winterEventGandPrize-head span.image, .foehelper-accordion-head.winterEvent-head span.image {
-	background-image: url('../images/winterEvent.png');
+    background-image: url('../images/winterEvent.png');
+}
+
+.foehelper-accordion-head.archeologyEvent-head span.image, .foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
+    background-image: url('../images/archeologyEvent.png');
 }
 
 .foehelper-accordion-head.halloweenEvent-head span.image, .foehelper-accordion-head.halloweenEventAutoCollect-head span.image {
-	background-image: url('../images/halloween_event.png') !important;
+    background-image: url('../images/halloween_event.png') !important;
 }
 
-.foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image  {
-	background-image: url('../images/event.png') !important;
+.foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image {
+    background-image: url('../images/event.png') !important;
 }
