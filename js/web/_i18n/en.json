@@ -247,7 +247,7 @@
     "Boxes.FPCollector.summerEvent": "Summer Event",
     "Boxes.FPCollector.wildlife_event": "Wildlife Event",
     "Boxes.FPCollector.winterEvent": "Winter Event",
-    "Boxes.FPCollector.winterEventGrandPrice": "Winter Event - Grand Prize",
+    "Boxes.FPCollector.winterEventGrandPrize": "Winter Event - Grand Prize",
     "Boxes.General.Export": "Export",
     "Boxes.General.ExportCSV": "Export as CSV",
     "Boxes.General.ExportJSON": "Export as jSON",
@@ -1099,5 +1099,18 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
     "StrategyPoints.BuyableFP": "Number of FPs that can be bought with coins.",
-    "_Language": "English"
+    "_Language": "English",
+	"Kits.Sets.AthlonAbbey": "Athlon Abbey",
+	"Kits.Sets.DruidTemple": "Druid Temple",
+	"Kits.Sets.FerrisWheel": "Ferris Wheel",
+	"Kits.Sets.GoldenCrops": "Golden Crops",
+	"Kits.Sets.HorrorCircus":  "Horror Circus",
+	"Kits.Sets.MountainReserve": "Mountain Reserve",
+	"Kits.Sets.PiratesHideout": "Pirate's Hideout",
+	"Kits.Sets.SuishunMill": "Suishun Mill",
+	"Kits.Sets.TerracottaVineyard": "Terracotta Vineyard",
+	"Kits.Sets.WinterCanal": "Winter Canal",
+	"Boxes.FPCollector.summerEvent": "Summer Event",
+	"Boxes.FPCollector.halloweenEvent":  "Halloween Event",
+	"Boxes.FPCollector.halloweenEventAutoCollect": "Halloween Event - Pumpkin"
 }
