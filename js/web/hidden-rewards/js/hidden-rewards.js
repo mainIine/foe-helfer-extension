@@ -81,6 +81,9 @@ let HiddenRewards = {
             else {
                 SkipEvent = false;
             }
+	   if (position === 'cityUnderwater') {
+		SkipEvent = true;
+	   }
 
             if (SkipEvent) {
                 continue;
