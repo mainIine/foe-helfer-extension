@@ -594,6 +594,8 @@ let Castle = {
             Castle.curDailyCastlePoints = JSON.parse(localStorage.getItem('CastleCurDailyCastlePoints'));
         }
 
+        const colAvailableAt = localStorage.getItem('CastleDailyPointsCollectionAvailableAt') || 0;
+
         if (Castle.curDailyCastlePoints)
         {
             cp = Castle.curDailyCastlePoints;
@@ -607,16 +609,18 @@ let Castle = {
             {
                 cp.points = cp.nextCollectionPoints;
             }
+
+            if(colAvailableAt > startOfDay ){
+                cp.success = true;
+            }
         }
         else
         {
-            let locDailyPointsCollectionAvailableAt = localStorage.getItem('CastleDailyPointsCollectionAvailableAt');
-
             if (Castle.dailyPointsCollectionAvailableAt && Castle.dailyPointsCollectionAvailableAt > startOfDay)
             {
                 cp.success = true;
             }
-            else if (locDailyPointsCollectionAvailableAt && locDailyPointsCollectionAvailableAt > startOfDay)
+            else if (colAvailableAt > startOfDay)
             {
                 cp.success = true;
             }
