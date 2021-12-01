@@ -2,13 +2,30 @@
 
 ##### 2.5.9.4
 
+**Neu**
+- Burgsystem:
+	- [#2190](https://github.com/mainIine/foe-helfer-extension/issues/2190) Burgsystem Assistent:
+		- Übersicht über den Fortschritt der täglichen/ wöchentliche Ziele für den Erhalt von Burgpunkten
+		- Log über alle erhaltenen Burgpunkte der letzten Tage 
+
 **Update**
 - versteckte Ereignisse:
-	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden.
+	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden
+
+- Gildenmitglieder Übersicht:
+	-[#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Zeitstempel im Dateinamen beim Export der Daten
+	-[#2212](https://github.com/mainIine/foe-helfer-extension/issues/2212) bei bestimmten Gebäuden (z.B. Ruhmeshalle) wurde die produzierte Gildenmacht falsch berechnet 
+
+- Alles Schließen Box:
+	- Option zum automatischen Ausblenden aller FoE Helfer Fenster beim Betreten eines Kampfes in den Einstellungen der Box hinzugefügt. 
 
 **BugFix**
 - Gildenmitglieder Übersicht:
 	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
+	- [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Fehlerhafte Erhöhung der Gildengüter/macht beim mehrfachen erweitern der Detailansicht eines Mitglieds
+
+- Stadtübersicht:
+	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) falsches Hintergrundbild entfernt
 
 ---
 
