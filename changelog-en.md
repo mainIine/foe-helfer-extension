@@ -1,5 +1,41 @@
 ## Changelog - Extension
 
+##### 2.5.10.0
+
+**New**
+- Castle System:
+	- [#2190](https://github.com/mainIine/foe-helfer-extension/issues/2190) Castle System Wizard:
+		- Overview of the progress of the daily/weekly targets for obtaining castle points.
+		- Log about all received castle points of the last days
+
+**Update**
+- hidden events:
+	- [#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) The box now closes automatically when all hidden events have been collected
+
+- guild members overview:
+	- [#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) timestamp in filename when exporting data
+	- [#2212](https://github.com/mainIine/foe-helfer-extension/issues/2212) for certain buildings (e.g. hall of fame) the produced guild power was calculated incorrectly
+
+- i18n:
+	- [#2208](https://github.com/mainIine/foe-helfer-extension/issues/2208) Missing translations added
+
+- Close All Box:
+	- Added option to automatically hide all FoE helper windows when entering a fight in the box settings.
+
+**BugFix**
+- Guild members overview:
+	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Added golden fields to the overview of guild goods producing buildings.
+	- [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Erroneous increase of guild goods/power when expanding a member's detail view multiple times
+
+- City overview:
+	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) removed wrong background image
+
+- Production overview:
+	- [#2187](https://github.com/mainIine/foe-helfer-extension/issues/2187) Golden fields were not recognised
+	- [#2188](https://github.com/mainIine/foe-helfer-extension/issues/2187) points of the city hall were not recognised
+
+---
+
 ##### 2.5.9.3
 
 **Neu**

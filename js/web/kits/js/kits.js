@@ -27,8 +27,6 @@ let Kits = {
 
 		let data = localStorage.getItem('KnownKitsData');
 
-		if(data === null || MainParser.checkNextUpdate('KnownKitsDate') === true)
-		{
 			MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=>{
 
 				localStorage.setItem('KnownKitsData', data);
@@ -37,11 +35,6 @@ let Kits = {
 				Kits.KitsjSON = JSON.parse(data);
 				Kits.BuildBox();
 			});
-		}
-		else {
-			Kits.KitsjSON = JSON.parse(data);
-			Kits.BuildBox();
-		}
 	},
 
 
