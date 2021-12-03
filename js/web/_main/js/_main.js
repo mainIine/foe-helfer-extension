@@ -50,6 +50,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	Fights = [],
 	OwnUnits = [],
 	EnemyUnits = [],
+	UnlockedFeatures = [],
 	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
 	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__';
 
@@ -702,6 +703,9 @@ const FoEproxy = (function () {
 		let eventCountDownFeature = data.responseData.feature_flags.features.filter((v) => { return (v.feature === "event_start_countdown") });
 		EventCountdown = eventCountDownFeature.length > 0 ? eventCountDownFeature[0]["time_string"] : false;
 
+		// Unlocked features
+		MainParser.UnlockedFeatures = data.responseData.unlocked_features.map(function(obj) { return obj.feature; });
+
 		Stats.Init();
 	});
 
@@ -849,8 +853,9 @@ const FoEproxy = (function () {
 		MainParser.UpdatePlayerDict(data.responseData, 'Conversation');
 	});
 
-	// Kampf beendet
 	FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
+
+		// Kampf beendet
 		if (data.responseData["armyId"] == 1 || data.responseData["state"]["round"] == 1 || data.responseData["battleType"]["totalWaves"] == 1) {
 			let units = data.responseData.state.unitsOrder;
 			for (let i = 0; i < units.length; i++) {
@@ -876,8 +881,40 @@ const FoEproxy = (function () {
 				}
 			}
 		}
+
+		// not autobattling in either round 1 or 2
+		if (!data.responseData["isAutoBattle"]) {
+			HTML.MinimizeBeforeBattle();
+		}
+
+		// round was won with autobattle
+		// winnerBit==1 round won, winnerBit==2 round lost
+		if (data.responseData['state']['winnerBit'] > 0) {
+			HTML.MaximizeAfterBattle();
+		}
 	});
 
+	FoEproxy.addHandler('BattlefieldService', 'submitMove', (data, postData) => {
+		// round was won/lost by auto-complete battle during manual turn
+		if (data.responseData['winnerBit'] > 0) {
+			HTML.MaximizeAfterBattle();
+		}
+	});
+
+	// if battle was interrupted by browser refresh/server restart
+	FoEproxy.addHandler('BattlefieldService', 'continueBattle', (data, postData) => {
+		// round in progress was not auto-battle
+		if (!data.responseData["isAutoBattle"]) {
+			HTML.MinimizeBeforeBattle();
+		}
+	});
+
+	// if user surrenders
+	FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
+		if (data.responseData["surrenderBit"] == 1) {
+			HTML.MaximizeAfterBattle();
+		}
+	});
 
 	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
 	FoEproxy.addHandler('OtherPlayerService', 'all', (data, postData) => {
@@ -1055,6 +1092,7 @@ const FoEproxy = (function () {
 		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
 		Outposts.CollectResources();
 		StrategyPoints.ShowFPBar();
+		Castle.UpdateCastlePoints(data['requestId']);
 	});
 
 
@@ -1116,6 +1154,10 @@ const FoEproxy = (function () {
 		FoEproxy.pushFoeHelperMessage('QuestsUpdated');
 	});
 
+	// Update unlocked features
+	FoEproxy.addHandler('UnlockableFeatureService', 'getUnlockedFeatures', (data, postData) => {
+		MainParser.UnlockedFeatures = data.responseData.map(function(obj) { return obj.feature; });
+	});
 
 	// Alte, nich mehr benötigte localStorage einträge löschen (in 2 min)
 	setTimeout(() => {
