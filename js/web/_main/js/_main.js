@@ -1839,6 +1839,7 @@ let MainParser = {
 			if (Player['is_self'] !== undefined) PlayerDict[PlayerID]['IsSelf'] = Player['is_self'];
 			if (Player['score'] !== undefined) PlayerDict[PlayerID]['Score'] = Player['score'];
 			if (Player['activity'] !== undefined) PlayerDict[PlayerID]['Activity'] = Player['activity'];
+			if (Player['era'] !== undefined) PlayerDict[PlayerID]['Era'] = Player['era'];
 		}
 	},
 
