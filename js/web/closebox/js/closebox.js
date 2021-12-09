@@ -159,11 +159,13 @@ let CloseBox = {
 
     },
 
+
     ShowAllBoxes: () => {
 
         $("#cb-hide-all-windows").removeClass("invisible btn-delete").addClass("btn-green");
         $(".window-box, #foe-helper-hud").show();
     },
+
 
     CloseAllBoxes: () => {
 
@@ -177,7 +179,6 @@ let CloseBox = {
             }
         });
     },
-
 
 
     CloseBoxSettings: () => {
