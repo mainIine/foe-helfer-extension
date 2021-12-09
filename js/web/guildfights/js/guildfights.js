@@ -2194,600 +2194,1154 @@ let ProvinceMap = {
 	},
 
 
-	ProvinceData: () => {
-		return [{
-			id: 0,
-			name: "A1: Mati Tudokk",
-			connections: [1, 3, 4, 5],
-			short: 'A1M',
-			flag: {
-				x: 1249,
-				y: 816
-			}
-		}, {
-			id: 1,
-			name: "B1: Ofrus Remyr",
-			connections: [0, 2, 6, 7],
-			short: 'B1O',
-			flag: {
-				x: 1327,
-				y: 996
-			}
-		}, {
-			id: 2,
-			name: "C1: Niali Diath",
-			connections: [1, 3, 8, 9],
-			short: 'C1N',
-			flag: {
-				x: 1064,
-				y: 1011
-			}
-		}, {
-			id: 3,
-			name: "D1: Brurat Andgiry",
-			connections: [0, 2, 10, 11],
-			short: 'D1B',
-			flag: {
-				x: 1064,
-				y: 838
-			}
-		}, {
-			id: 4,
-			name: "A2: Sladisk Icro",
-			connections: [0, 5, 11, 12, 13],
-			short: 'A2S',
-			flag: {
-				x: 1269,
-				y: 629
-			}
-		}, {
-			id: 5,
-			name: "A2: Tevomospa",
-			connections: [0, 4, 6, 14, 15],
-			short: 'A2T',
-			flag: {
-				x: 1482,
-				y: 752
-			}
-		}, {
-			id: 6,
-			name: "B2: Subeblic",
-			connections: [1, 5, 7, 16, 17],
-			short: 'B2S',
-			flag: {
-				x: 1541,
-				y: 984
-			}
-		}, {
-			id: 7,
-			name: "B2: Taspac",
-			connections: [1, 6, 8, 18, 19],
-			short: 'B2T',
-			flag: {
-				x: 1375,
-				y: 1197
-			}
-		}, {
-			id: 8,
-			name: "C2: Shadsterning",
-			connections: [2, 7, 9, 20, 21],
-			short: 'C2S',
-			flag: {
-				x: 1052,
-				y: 1217
-			}
-		}, {
-			id: 9,
-			name: "C2: Tayencoria",
-			connections: [2, 8, 10, 22, 23],
-			short: 'C2T',
-			flag: {
-				x: 878,
-				y: 1063
-			}
-		}, {
-			id: 10,
-			name: "D2: Slandmonii",
-			connections: [3, 9, 11, 24, 25],
-			short: 'D2S',
-			flag: {
-				x: 791,
-				y: 794
-			}
-		}, {
-			id: 11,
-			name: "D2: Tachmazer",
-			connections: [3, 4, 10, 26, 27],
-			short: 'D2T',
-			flag: {
-				x: 974,
-				y: 658
-			}
-		}, {
-			id: 12,
-			name: "A3: Vobolize",
-			connections: [4, 13, 27, 28, 29],
-			short: 'A3V',
-			flag: {
-				x: 1218,
-				y: 479
-			}
-		}, {
-			id: 13,
-			name: "A3: Xemga",
-			connections: [4, 12, 14, 30, 31],
-			short: 'A3X',
-			flag: {
-				x: 1407,
-				y: 523
-			}
-		}, {
-			id: 14,
-			name: "A3: Yelili",
-			connections: [5, 13, 15, 32, 33],
-			short: 'A3Y',
-			flag: {
-				x: 1592,
-				y: 574
-			}
-		}, {
-			id: 15,
-			name: "A3: Zamva",
-			connections: [5, 14, 16, 34, 35],
-			short: 'A3Z',
-			flag: {
-				x: 1693,
-				y: 710
-			}
-		}, {
-			id: 16,
-			name: "B3: Vishrain",
-			connections: [6, 15, 17, 36, 37],
-			short: 'B3V',
-			flag: {
-				x: 1721,
-				y: 889
-			}
-		}, {
-			id: 17,
-			name: "B3: Xidorpupo",
-			connections: [6, 16, 18, 38, 39],
-			short: 'B3X',
-			flag: {
-				x: 1800,
-				y: 1241
-			}
-		}, {
-			id: 18,
-			name: "B3: Yepadlic",
-			connections: [7, 17, 19, 40, 41],
-			short: 'B3Y',
-			flag: {
-				x: 1710,
-				y: 1364
-			}
-		}, {
-			id: 19,
-			name: "B3: Zilsier",
-			connections: [7, 18, 20, 42, 43],
-			short: 'B3Z',
-			flag: {
-				x: 1528,
-				y: 1401
-			}
-		}, {
-			id: 20,
-			name: "C3: Vilipne",
-			connections: [8, 19, 21, 44, 45],
-			short: 'C3V',
-			flag: {
-				x: 1132,
-				y: 1382
-			}
-		}, {
-			id: 21,
-			name: "C3: Xistan",
-			connections: [8, 20, 22, 46, 47],
-			short: 'C3X',
-			flag: {
-				x: 851,
-				y: 1343
-			}
-		}, {
-			id: 22,
-			name: "C3: Yeraim",
-			connections: [9, 21, 23, 48, 49],
-			short: 'C3Y',
-			flag: {
-				x: 656,
-				y: 1220
-			}
-		}, {
-			id: 23,
-			name: "C3: Zeaslo",
-			connections: [9, 22, 24, 50, 51],
-			short: 'C3Z',
-			flag: {
-				x: 569,
-				y: 1050
-			}
-		}, {
-			id: 24,
-			name: "D3: Verdebu",
-			connections: [10, 23, 25, 52, 53],
-			short: 'D3V',
-			flag: {
-				x: 592,
-				y: 824
-			}
-		}, {
-			id: 25,
-			name: "D3: Xiwait",
-			connections: [10, 24, 26, 54, 55],
-			short: 'D3X',
-			flag: {
-				x: 628,
-				y: 636
-			}
-		}, {
-			id: 26,
-			name: "D3: Yerat",
-			connections: [11, 25, 27, 56, 57],
-			short: 'D3Y',
-			flag: {
-				x: 788,
-				y: 520
-			}
-		}, {
-			id: 27,
-			name: "D3: Zilgypt",
-			connections: [11, 12, 26, 58, 59],
-			short: 'D3Z',
-			flag: {
-				x: 1025,
-				y: 484
-			}
-		}, {
-			id: 28,
-			name: "A4: Aithmirash",
-			connections: [12, 29, 59],
-			short: 'A4A',
-			flag: {
-				x: 1176,
-				y: 310
-			},
-			flagPos: {
-				x: 1131,
-				y: 265
-			}
-		}, {
-			id: 29,
-			name: "A4: Bangma Mynia",
-			connections: [12, 28, 30],
-			short: 'A4B',
-			flag: {
-				x: 1337,
-				y: 316
-			}
-		}, {
-			id: 30,
-			name: "A4: Cuatishca",
-			connections: [13, 29, 31],
-			short: 'A4C',
-			flag: {
-				x: 1473,
-				y: 354
-			}
-		}, {
-			id: 31,
-			name: "A4: Dilandmoor",
-			connections: [13, 30, 32],
-			short: 'A4D',
-			flag: {
-				x: 1591,
-				y: 391
-			}
-		}, {
-			id: 32,
-			name: "A4: Eda Monwe",
-			connections: [14, 31, 33],
-			short: 'A4E',
-			flag: {
-				x: 1723,
-				y: 398
-			},
-			flagPos: {
-				x: 1678,
-				y: 353
-			}
-		}, {
-			id: 33,
-			name: "A4: Frimoandbada",
-			connections: [14, 32, 34],
-			short: 'A4F',
-			flag: {
-				x: 1839,
-				y: 477
-			}
-		}, {
-			id: 34,
-			name: "A4: Gosolastan",
-			connections: [15, 33, 35],
-			short: 'A4G',
-			flag: {
-				x: 1962,
-				y: 590
-			}
-		}, {
-			id: 35,
-			name: "A4: Hasaint",
-			connections: [15, 34, 36],
-			short: 'A4H',
-			flag: {
-				x: 2047,
-				y: 688
-			}
-		}, {
-			id: 36,
-			name: "B4: Aguime",
-			connections: [16, 35, 37],
-			short: 'B4A',
-			flag: {
-				x: 1970,
-				y: 842
-			},
-			flagPos: {
-				x: 1925,
-				y: 797
-			}
-		}, {
-			id: 37,
-			name: "B4: Bliclatan",
-			connections: [16, 36, 38],
-			short: 'B4B',
-			flag: {
-				x: 1900,
-				y: 1000
-			},
-			flagPos: {
-				x: 1790,
-				y: 945
-			}
-		}, {
-			id: 38,
-			name: "B4: Capepesk",
-			connections: [17, 37, 39],
-			short: 'B4C',
-			flag: {
-				x: 2088,
-				y: 1176
-			}
-		}, {
-			id: 39,
-			name: "B4: Dalomstates",
-			connections: [17, 38, 40],
-			short: 'B4D',
-			flag: {
-				x: 2138,
-				y: 1361
-			}
-		}, {
-			id: 40,
-			name: "B4: Engthio",
-			connections: [18, 39, 41],
-			short: 'B4E',
-			flag: {
-				x: 2113,
-				y: 1504
-			},
-			flagPos: {
-				x: 2068,
-				y: 1469
-			}
-		}, {
-			id: 41,
-			name: "B4: Fradistaro",
-			connections: [18, 40, 42],
-			short: 'B4F',
-			flag: {
-				x: 1951,
-				y: 1590
-			},
-			flagPos: {
-				x: 1921,
-				y: 1540
-			}
-		}, {
-			id: 42,
-			name: "B4: Goima",
-			connections: [19, 41, 43],
-			short: 'B4G',
-			flag: {
-				x: 1735,
-				y: 1605
-			}
-		}, {
-			id: 43,
-			name: "B4: Hranreka",
-			connections: [19, 42, 44],
-			short: 'B4H',
-			flag: {
-				x: 1416,
-				y: 1454
-			}
-		}, {
-			id: 44,
-			name: "C4: Andgalbou",
-			connections: [20, 43, 45],
-			short: 'C4A',
-			flag: {
-				x: 1240,
-				y: 1521
-			},
-			flagPos: {
-				x: 1195,
-				y: 1476
-			}
-		}, {
-			id: 45,
-			name: "C4: Bangne Casau",
-			connections: [20, 44, 46],
-			short: 'C4B',
-			flag: {
-				x: 1015,
-				y: 1601
-			}
-		}, {
-			id: 46,
-			name: "C4: Cagalpo",
-			connections: [21, 45, 47],
-			short: 'C4C',
-			flag: {
-				x: 808,
-				y: 1586
-			},
-			flagPos: {
-				x: 778,
-				y: 1536
-			}
-		}, {
-			id: 47,
-			name: "C4: Denwana",
-			connections: [21, 46, 48],
-			short: 'C4D',
-			flag: {
-				x: 686,
-				y: 1532
-			}
-		}, {
-			id: 48,
-			name: "C4: Eastkiabumi",
-			connections: [22, 47, 49],
-			short: 'C4E',
-			flag: {
-				x: 455,
-				y: 1410
-			},
-			flagPos: {
-				x: 410,
-				y: 1365
-			}
-		}, {
-			id: 49,
-			name: "C4: Francedian",
-			connections: [22, 48, 50],
-			short: 'C4F',
-			flag: {
-				x: 304,
-				y: 1318
-			}
-		}, {
-			id: 50,
-			name: "C4: Guayla",
-			connections: [23, 49, 51],
-			short: 'C4G',
-			flag: {
-				x: 257,
-				y: 1182
-			},
-			flagPos: {
-				x: 217,
-				y: 1099
-			}
-		}, {
-			id: 51,
-			name: "C4: Hoguay",
-			connections: [23, 50, 52],
-			short: 'C4H',
-			flag: {
-				x: 267,
-				y: 1011
-			}
-		}, {
-			id: 52,
-			name: "D4: Arasruhana",
-			connections: [24, 51, 53],
-			short: 'D4A',
-			flag: {
-				x: 429,
-				y: 851
-			},
-			flagPos: {
-				x: 384,
-				y: 806
-			}
-		}, {
-			id: 53,
-			name: "D4: Basainti",
-			connections: [24, 52, 54],
-			short: 'D4B',
-			flag: {
-				x: 300,
-				y: 718
-			}
-		}, {
-			id: 54,
-			name: "D4: Camehermenle",
-			connections: [25, 53, 55],
-			short: 'D4C',
-			flag: {
-				x: 415,
-				y: 600
-			}
-		}, {
-			id: 55,
-			name: "D4: Dabiala",
-			connections: [25, 54, 56],
-			short: 'D4D',
-			flag: {
-				x: 398,
-				y: 465
-			},
-			flagPos: {
-				x: 370,
-				y: 442
-			}
-		}, {
-			id: 56,
-			name: "D4: Enggreboka",
-			connections: [26, 55, 57],
-			short: 'D4E',
-			flag: {
-				x: 507,
-				y: 361
-			},
-			flagPos: {
-				x: 462,
-				y: 316
-			}
-		}, {
-			id: 57,
-			name: "D4: Finnited",
-			connections: [26, 56, 58],
-			short: 'D4F',
-			flag: {
-				x: 723,
-				y: 311
-			}
-		}, {
-			id: 58,
-			name: "D4: Guayre Bhugera",
-			connections: [27, 57, 59],
-			short: 'D4G',
-			flag: {
-				x: 878,
-				y: 252
-			}
-		}, {
-			id: 59,
-			name: "D4: Honbo",
-			short: 'D4H',
-			connections: [27, 28, 58],
-			flag: {
-				x: 1042,
-				y: 302
-			}
-		}];
+		ProvinceData: () => {
+		if (GildFights.MapData.map['id'] === "volcano_archipelago") {
+			return [{
+				id: 0,
+				name: "A1: Mati Tudokk",
+				connections: [1, 3, 4, 5],
+				short: 'A1M',
+				flag: {
+					x: 1249,
+					y: 816
+				}
+			}, {
+				id: 1,
+				name: "B1: Ofrus Remyr",
+				connections: [0, 2, 6, 7],
+				short: 'B1O',
+				flag: {
+					x: 1327,
+					y: 996
+				}
+			}, {
+				id: 2,
+				name: "C1: Niali Diath",
+				connections: [1, 3, 8, 9],
+				short: 'C1N',
+				flag: {
+					x: 1064,
+					y: 1011
+				}
+			}, {
+				id: 3,
+				name: "D1: Brurat Andgiry",
+				connections: [0, 2, 10, 11],
+				short: 'D1B',
+				flag: {
+					x: 1064,
+					y: 838
+				}
+			}, {
+				id: 4,
+				name: "A2: Sladisk Icro",
+				connections: [0, 5, 11, 12, 13],
+				short: 'A2S',
+				flag: {
+					x: 1269,
+					y: 629
+				}
+			}, {
+				id: 5,
+				name: "A2: Tevomospa",
+				connections: [0, 4, 6, 14, 15],
+				short: 'A2T',
+				flag: {
+					x: 1482,
+					y: 752
+				}
+			}, {
+				id: 6,
+				name: "B2: Subeblic",
+				connections: [1, 5, 7, 16, 17],
+				short: 'B2S',
+				flag: {
+					x: 1541,
+					y: 984
+				}
+			}, {
+				id: 7,
+				name: "B2: Taspac",
+				connections: [1, 6, 8, 18, 19],
+				short: 'B2T',
+				flag: {
+					x: 1375,
+					y: 1197
+				}
+			}, {
+				id: 8,
+				name: "C2: Shadsterning",
+				connections: [2, 7, 9, 20, 21],
+				short: 'C2S',
+				flag: {
+					x: 1052,
+					y: 1217
+				}
+			}, {
+				id: 9,
+				name: "C2: Tayencoria",
+				connections: [2, 8, 10, 22, 23],
+				short: 'C2T',
+				flag: {
+					x: 878,
+					y: 1063
+				}
+			}, {
+				id: 10,
+				name: "D2: Slandmonii",
+				connections: [3, 9, 11, 24, 25],
+				short: 'D2S',
+				flag: {
+					x: 791,
+					y: 794
+				}
+			}, {
+				id: 11,
+				name: "D2: Tachmazer",
+				connections: [3, 4, 10, 26, 27],
+				short: 'D2T',
+				flag: {
+					x: 974,
+					y: 658
+				}
+			}, {
+				id: 12,
+				name: "A3: Vobolize",
+				connections: [4, 13, 27, 28, 29],
+				short: 'A3V',
+				flag: {
+					x: 1218,
+					y: 479
+				}
+			}, {
+				id: 13,
+				name: "A3: Xemga",
+				connections: [4, 12, 14, 30, 31],
+				short: 'A3X',
+				flag: {
+					x: 1407,
+					y: 523
+				}
+			}, {
+				id: 14,
+				name: "A3: Yelili",
+				connections: [5, 13, 15, 32, 33],
+				short: 'A3Y',
+				flag: {
+					x: 1592,
+					y: 574
+				}
+			}, {
+				id: 15,
+				name: "A3: Zamva",
+				connections: [5, 14, 16, 34, 35],
+				short: 'A3Z',
+				flag: {
+					x: 1693,
+					y: 710
+				}
+			}, {
+				id: 16,
+				name: "B3: Vishrain",
+				connections: [6, 15, 17, 36, 37],
+				short: 'B3V',
+				flag: {
+					x: 1721,
+					y: 889
+				}
+			}, {
+				id: 17,
+				name: "B3: Xidorpupo",
+				connections: [6, 16, 18, 38, 39],
+				short: 'B3X',
+				flag: {
+					x: 1800,
+					y: 1241
+				}
+			}, {
+				id: 18,
+				name: "B3: Yepadlic",
+				connections: [7, 17, 19, 40, 41],
+				short: 'B3Y',
+				flag: {
+					x: 1710,
+					y: 1364
+				}
+			}, {
+				id: 19,
+				name: "B3: Zilsier",
+				connections: [7, 18, 20, 42, 43],
+				short: 'B3Z',
+				flag: {
+					x: 1528,
+					y: 1401
+				}
+			}, {
+				id: 20,
+				name: "C3: Vilipne",
+				connections: [8, 19, 21, 44, 45],
+				short: 'C3V',
+				flag: {
+					x: 1132,
+					y: 1382
+				}
+			}, {
+				id: 21,
+				name: "C3: Xistan",
+				connections: [8, 20, 22, 46, 47],
+				short: 'C3X',
+				flag: {
+					x: 851,
+					y: 1343
+				}
+			}, {
+				id: 22,
+				name: "C3: Yeraim",
+				connections: [9, 21, 23, 48, 49],
+				short: 'C3Y',
+				flag: {
+					x: 656,
+					y: 1220
+				}
+			}, {
+				id: 23,
+				name: "C3: Zeaslo",
+				connections: [9, 22, 24, 50, 51],
+				short: 'C3Z',
+				flag: {
+					x: 569,
+					y: 1050
+				}
+			}, {
+				id: 24,
+				name: "D3: Verdebu",
+				connections: [10, 23, 25, 52, 53],
+				short: 'D3V',
+				flag: {
+					x: 592,
+					y: 824
+				}
+			}, {
+				id: 25,
+				name: "D3: Xiwait",
+				connections: [10, 24, 26, 54, 55],
+				short: 'D3X',
+				flag: {
+					x: 628,
+					y: 636
+				}
+			}, {
+				id: 26,
+				name: "D3: Yerat",
+				connections: [11, 25, 27, 56, 57],
+				short: 'D3Y',
+				flag: {
+					x: 788,
+					y: 520
+				}
+			}, {
+				id: 27,
+				name: "D3: Zilgypt",
+				connections: [11, 12, 26, 58, 59],
+				short: 'D3Z',
+				flag: {
+					x: 1025,
+					y: 484
+				}
+			}, {
+				id: 28,
+				name: "A4: Aithmirash",
+				connections: [12, 29, 59],
+				short: 'A4A',
+				flag: {
+					x: 1176,
+					y: 310
+				},
+				flagPos: {
+					x: 1131,
+					y: 265
+				}
+			}, {
+				id: 29,
+				name: "A4: Bangma Mynia",
+				connections: [12, 28, 30],
+				short: 'A4B',
+				flag: {
+					x: 1337,
+					y: 316
+				}
+			}, {
+				id: 30,
+				name: "A4: Cuatishca",
+				connections: [13, 29, 31],
+				short: 'A4C',
+				flag: {
+					x: 1473,
+					y: 354
+				}
+			}, {
+				id: 31,
+				name: "A4: Dilandmoor",
+				connections: [13, 30, 32],
+				short: 'A4D',
+				flag: {
+					x: 1591,
+					y: 391
+				}
+			}, {
+				id: 32,
+				name: "A4: Eda Monwe",
+				connections: [14, 31, 33],
+				short: 'A4E',
+				flag: {
+					x: 1723,
+					y: 398
+				},
+				flagPos: {
+					x: 1678,
+					y: 353
+				}
+			}, {
+				id: 33,
+				name: "A4: Frimoandbada",
+				connections: [14, 32, 34],
+				short: 'A4F',
+				flag: {
+					x: 1839,
+					y: 477
+				}
+			}, {
+				id: 34,
+				name: "A4: Gosolastan",
+				connections: [15, 33, 35],
+				short: 'A4G',
+				flag: {
+					x: 1962,
+					y: 590
+				}
+			}, {
+				id: 35,
+				name: "A4: Hasaint",
+				connections: [15, 34, 36],
+				short: 'A4H',
+				flag: {
+					x: 2047,
+					y: 688
+				}
+			}, {
+				id: 36,
+				name: "B4: Aguime",
+				connections: [16, 35, 37],
+				short: 'B4A',
+				flag: {
+					x: 1970,
+					y: 842
+				},
+				flagPos: {
+					x: 1925,
+					y: 797
+				}
+			}, {
+				id: 37,
+				name: "B4: Bliclatan",
+				connections: [16, 36, 38],
+				short: 'B4B',
+				flag: {
+					x: 1900,
+					y: 1000
+				},
+				flagPos: {
+					x: 1790,
+					y: 945
+				}
+			}, {
+				id: 38,
+				name: "B4: Capepesk",
+				connections: [17, 37, 39],
+				short: 'B4C',
+				flag: {
+					x: 2088,
+					y: 1176
+				}
+			}, {
+				id: 39,
+				name: "B4: Dalomstates",
+				connections: [17, 38, 40],
+				short: 'B4D',
+				flag: {
+					x: 2138,
+					y: 1361
+				}
+			}, {
+				id: 40,
+				name: "B4: Engthio",
+				connections: [18, 39, 41],
+				short: 'B4E',
+				flag: {
+					x: 2113,
+					y: 1504
+				},
+				flagPos: {
+					x: 2068,
+					y: 1469
+				}
+			}, {
+				id: 41,
+				name: "B4: Fradistaro",
+				connections: [18, 40, 42],
+				short: 'B4F',
+				flag: {
+					x: 1951,
+					y: 1590
+				},
+				flagPos: {
+					x: 1921,
+					y: 1540
+				}
+			}, {
+				id: 42,
+				name: "B4: Goima",
+				connections: [19, 41, 43],
+				short: 'B4G',
+				flag: {
+					x: 1735,
+					y: 1605
+				}
+			}, {
+				id: 43,
+				name: "B4: Hranreka",
+				connections: [19, 42, 44],
+				short: 'B4H',
+				flag: {
+					x: 1416,
+					y: 1454
+				}
+			}, {
+				id: 44,
+				name: "C4: Andgalbou",
+				connections: [20, 43, 45],
+				short: 'C4A',
+				flag: {
+					x: 1240,
+					y: 1521
+				},
+				flagPos: {
+					x: 1195,
+					y: 1476
+				}
+			}, {
+				id: 45,
+				name: "C4: Bangne Casau",
+				connections: [20, 44, 46],
+				short: 'C4B',
+				flag: {
+					x: 1015,
+					y: 1601
+				}
+			}, {
+				id: 46,
+				name: "C4: Cagalpo",
+				connections: [21, 45, 47],
+				short: 'C4C',
+				flag: {
+					x: 808,
+					y: 1586
+				},
+				flagPos: {
+					x: 778,
+					y: 1536
+				}
+			}, {
+				id: 47,
+				name: "C4: Denwana",
+				connections: [21, 46, 48],
+				short: 'C4D',
+				flag: {
+					x: 686,
+					y: 1532
+				}
+			}, {
+				id: 48,
+				name: "C4: Eastkiabumi",
+				connections: [22, 47, 49],
+				short: 'C4E',
+				flag: {
+					x: 455,
+					y: 1410
+				},
+				flagPos: {
+					x: 410,
+					y: 1365
+				}
+			}, {
+				id: 49,
+				name: "C4: Francedian",
+				connections: [22, 48, 50],
+				short: 'C4F',
+				flag: {
+					x: 304,
+					y: 1318
+				}
+			}, {
+				id: 50,
+				name: "C4: Guayla",
+				connections: [23, 49, 51],
+				short: 'C4G',
+				flag: {
+					x: 257,
+					y: 1182
+				},
+				flagPos: {
+					x: 217,
+					y: 1099
+				}
+			}, {
+				id: 51,
+				name: "C4: Hoguay",
+				connections: [23, 50, 52],
+				short: 'C4H',
+				flag: {
+					x: 267,
+					y: 1011
+				}
+			}, {
+				id: 52,
+				name: "D4: Arasruhana",
+				connections: [24, 51, 53],
+				short: 'D4A',
+				flag: {
+					x: 429,
+					y: 851
+				},
+				flagPos: {
+					x: 384,
+					y: 806
+				}
+			}, {
+				id: 53,
+				name: "D4: Basainti",
+				connections: [24, 52, 54],
+				short: 'D4B',
+				flag: {
+					x: 300,
+					y: 718
+				}
+			}, {
+				id: 54,
+				name: "D4: Camehermenle",
+				connections: [25, 53, 55],
+				short: 'D4C',
+				flag: {
+					x: 415,
+					y: 600
+				}
+			}, {
+				id: 55,
+				name: "D4: Dabiala",
+				connections: [25, 54, 56],
+				short: 'D4D',
+				flag: {
+					x: 398,
+					y: 465
+				},
+				flagPos: {
+					x: 370,
+					y: 442
+				}
+			}, {
+				id: 56,
+				name: "D4: Enggreboka",
+				connections: [26, 55, 57],
+				short: 'D4E',
+				flag: {
+					x: 507,
+					y: 361
+				},
+				flagPos: {
+					x: 462,
+					y: 316
+				}
+			}, {
+				id: 57,
+				name: "D4: Finnited",
+				connections: [26, 56, 58],
+				short: 'D4F',
+				flag: {
+					x: 723,
+					y: 311
+				}
+			}, {
+				id: 58,
+				name: "D4: Guayre Bhugera",
+				connections: [27, 57, 59],
+				short: 'D4G',
+				flag: {
+					x: 878,
+					y: 252
+				}
+			}, {
+				id: 59,
+				name: "D4: Honbo",
+				connections: [27, 28, 58],
+				short: 'D4H',
+				flag: {
+					x: 1042,
+					y: 302
+				}
+			}];
+		}
+		else if (GildFights.MapData.map['id'] === "waterfall_archipelago") {
+			return [{
+				id: 0,
+				name: "X1X: Elleorus",
+				connections: [ 1, 2, 3, 4, 5, 6],
+				short: 'X1X',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 1,
+				name: "A2A: Flunnipia",
+				connections: [ 0, 2, 6, 7, 8, 18],
+				short: 'A2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 2,
+				name: "B2A: Achinata",
+				connections: [ 0, 1, 3, 8, 9, 10],
+				short: 'B2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 3,
+				name: "C2A: Enudran",
+				connections: [ 0, 2, 4, 10, 11, 12],
+				short: 'C2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 4,
+				name: "D2A: Zebbeasos",
+				connections: [ 0, 3, 5, 12, 13, 14],
+				short: 'D2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 5,
+				name: "E2A: Appatinaka",
+				connections: [ 0, 4, 6, 14, 15, 16],
+				short: 'E2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 6,
+				name: "F2A: Kracciarhia",
+				connections: [ 0, 1, 5, 16, 17, 18],
+				short: 'F2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 7,
+				name: "A3A: Micianary",
+				connections: [ 1, 8, 18, 19, 20, 36],
+				short: 'A3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 8,
+				name: "A3B: Sheaggasia",
+				connections: [ 1, 2, 7, 9, 20, 21],
+				short: 'A3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 9,
+				name: "B3A: Birrathan",
+				connections: [ 2, 8, 10, 21, 22, 23],
+				short: 'B3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 10,
+				name: "B3B: Phiodeanet",
+				connections: [ 2, 3, 9, 11, 23, 24],
+				short: 'B3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 11,
+				name: "C3A: Ioppiorion",
+				connections: [ 3, 10, 12, 24, 25, 26],
+				short: 'C3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 12,
+				name: "C3B: Acyalyn",
+				connections: [ 3, 4, 11, 13, 26, 27],
+				short: 'C3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 13,
+				name: "D3A: Giobbolas",
+				connections: [ 4, 12, 14, 27, 28, 29],
+				short: 'D3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 14,
+				name: "D3B: Briocealyn",
+				connections: [ 4, 5, 13, 15, 29, 30],
+				short: 'D3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 15,
+				name: "E3A: Joviolmond",
+				connections: [ 5, 14, 16, 30, 31, 32],
+				short: 'E3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 16,
+				name: "E3B: Ciobiathis",
+				connections: [ 5, 6, 15, 17, 32, 33],
+				short: 'E3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 17,
+				name: "F3A: Preammirune",
+				connections: [ 6, 16, 18, 33, 34, 35],
+				short: 'F3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 18,
+				name: "F3B: Exoryme",
+				connections: [ 1, 6, 7, 17, 35, 36],
+				short: 'F3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 19,
+				name: "A4A: Phiossiania",
+				connections: [ 7, 20, 36, 37, 38, 60],
+				short: 'A4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 20,
+				name: "A4B: Klitimelan",
+				connections: [ 7, 8, 19, 21, 38, 39],
+				short: 'A4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 21,
+				name: "A4C: Ioclequey",
+				connections: [ 8, 9, 20, 22, 39, 40],
+				short: 'A4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 22,
+				name: "B4A: Lastaruz",
+				connections: [ 9, 21, 23, 40, 41, 42],
+				short: 'B4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 23,
+				name: "B4B: Ecceacyre",
+				connections: [ 9, 10, 22, 24, 42, 43],
+				short: 'B4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 24,
+				name: "B4C: Yastalyn",
+				connections: [ 10, 11, 23, 25, 43, 44],
+				short: 'B4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 25,
+				name: "C4A: Chobbiabis",
+				connections: [ 11, 24, 26, 44, 45, 46],
+				short: 'C4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 26,
+				name: "C4B: Mioccijan",
+				connections: [ 11, 12, 25, 27, 46, 47],
+				short: 'C4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 27,
+				name: "C4C: Cheabenium",
+				connections: [ 12, 13, 26, 28, 47, 48],
+				short: 'C4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 28,
+				name: "D4A: Diodiriel",
+				connections: [ 13, 27, 29, 48, 49, 50],
+				short: 'D4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 29,
+				name: "D4B: Driqela",
+				connections: [ 13, 14, 28, 30, 50, 51],
+				short: 'D4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 30,
+				name: "D4C: Gakiaran",
+				connections: [ 14, 15, 29, 31, 51, 52],
+				short: 'D4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 31,
+				name: "E4A: Phulotora",
+				connections: [ 15, 30, 32, 52, 53, 54],
+				short: 'E4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 32,
+				name: "E4B: Iccothaer",
+				connections: [ 15, 16, 31, 33, 54, 55],
+				short: 'E4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 33,
+				name: "E4C: Ohephere",
+				connections: [ 16, 17, 32, 34, 55, 56],
+				short: 'E4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 34,
+				name: "F4A: Xioceomos",
+				connections: [ 17, 33, 35, 56, 57, 58],
+				short: 'F4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 35,
+				name: "F4B: Oglilyn",
+				connections: [ 17, 18, 34, 36, 58, 59],
+				short: 'F4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 36,
+				name: "F4C: Omialanto",
+				connections: [ 7, 18, 19, 35, 59, 60],
+				short: 'F4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 37,
+				name: "A5A: Appiatoph",
+				connections: [ 19, 38, 60],
+				short: 'A5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 38,
+				name: "A5B: Cuchrarahe",
+				connections: [ 19, 20, 37, 39],
+				short: 'A5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 39,
+				name: "A5C: Eokkirune",
+				connections: [ 20, 21, 38, 40],
+				short: 'A5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 40,
+				name: "A5D: Iyoriyaz",
+				connections: [ 21, 22, 39, 41],
+				short: 'A5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 41,
+				name: "B5A: Strennearial",
+				connections: [ 22, 40, 42],
+				short: 'B5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 42,
+				name: "B5B: Atherathios",
+				connections: [ 22, 23, 41, 43],
+				short: 'B5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 43,
+				name: "B5C: Xeaxudin",
+				connections: [ 23, 24, 42, 44],
+				short: 'B5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 44,
+				name: "B5D: Stronolyn",
+				connections: [ 24, 25, 43, 45],
+				short: 'B5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 45,
+				name: "C5A: Stuckodod",
+				connections: [ 25, 44, 46],
+				short: 'C5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 46,
+				name: "C5B: Kazazriel",
+				connections: [ 25, 26, 45, 47],
+				short: 'C5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 47,
+				name: "C5C: Pilitallios",
+				connections: [ 26, 27, 46, 48],
+				short: 'C5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 48,
+				name: "C5D: Xishotish",
+				connections: [ 27, 28, 47, 49],
+				short: 'C5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 49,
+				name: "D5A: Gegleadore",
+				connections: [ 28, 48, 50],
+				short: 'D5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 50,
+				name: "D5B: Wrorrulan",
+				connections: [ 28, 29, 49, 51],
+				short: 'D5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 51,
+				name: "D5C: Cleoseotophy",
+				connections: [ 29, 30, 50, 52],
+				short: 'D5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 52,
+				name: "D5D: Equioque",
+				connections: [ 30, 31, 51, 53],
+				short: 'D5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 53,
+				name: "E5A: Eatutiar",
+				connections: [ 31, 52, 54],
+				short: 'E5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 54,
+				name: "E5B: Kaweariael",
+				connections: [ 31, 32, 53, 55],
+				short: 'E5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 55,
+				name: "E5C: Yossiryon",
+				connections: [ 32, 33, 54, 56],
+				short: 'E5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 56,
+				name: "E5D: Ecladorth",
+				connections: [ 33, 34, 55, 57],
+				short: 'E5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 57,
+				name: "F5A: Udriomond",
+				connections: [ 34, 56, 58],
+				short: 'F5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 58,
+				name: "F5B: Kreamenon",
+				connections: [ 34, 35, 57, 59],
+				short: 'F5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 59,
+				name: "F5C: Jokuthriaz",
+				connections: [ 35, 36, 58, 60],
+				short: 'F5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 60,
+				name: "F5D: Gleoleaterra",
+				connections: [ 19, 36, 37, 59],
+				short: 'F5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}];
+		}
 	},
 
 
