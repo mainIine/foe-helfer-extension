@@ -1,6 +1,6 @@
 ## Changelog - Extension
 
-##### 2.5.9.4
+##### 2.5.10.0
 
 **Neu**
 - Burgsystem:
@@ -10,22 +10,30 @@
 
 **Update**
 - versteckte Ereignisse:
-	-[#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden
+    - [#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden
 
 - Gildenmitglieder Übersicht:
-	-[#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Zeitstempel im Dateinamen beim Export der Daten
-	-[#2212](https://github.com/mainIine/foe-helfer-extension/issues/2212) bei bestimmten Gebäuden (z.B. Ruhmeshalle) wurde die produzierte Gildenmacht falsch berechnet 
+    - [#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Zeitstempel im Dateinamen beim Export der Daten
+    - [#2212](https://github.com/mainIine/foe-helfer-extension/issues/2212) bei bestimmten Gebäuden (z.B. Ruhmeshalle) wurde die produzierte Gildenmacht falsch berechnet
+
+- i18n:
+	- [#2208](https://github.com/mainIine/foe-helfer-extension/issues/2208) Fehlende Übersetzungen ergänzt
 
 - Alles Schließen Box:
-	- Option zum automatischen Ausblenden aller FoE Helfer Fenster beim Betreten eines Kampfes in den Einstellungen der Box hinzugefügt. 
+  - Option zum automatischen Ausblenden aller FoE Helfer Fenster beim Betreten eines Kampfes in den Einstellungen der Box hinzugefügt. 
 
 **BugFix**
 - Gildenmitglieder Übersicht:
-	- [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
-	- [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Fehlerhafte Erhöhung der Gildengüter/macht beim mehrfachen erweitern der Detailansicht eines Mitglieds
+  - [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
+  - [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Fehlerhafte Erhöhung der Gildengüter/macht beim mehrfachen Erweitern der Detailansicht eines Mitglieds
 
 - Stadtübersicht:
-	- [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) falsches Hintergrundbild entfernt
+  - [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) falsches Hintergrundbild entfernt
+
+- Produktionsübersicht:
+  - [#2187](https://github.com/mainIine/foe-helfer-extension/issues/2187) Goldene Felder wurden nicht erkannt
+  - [#2188](https://github.com/mainIine/foe-helfer-extension/issues/2187) Punkte des Rathauses wurden nicht erkannt
+  
 
 ---
 
