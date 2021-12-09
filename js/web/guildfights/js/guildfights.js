@@ -1751,7 +1751,7 @@ let ProvinceMap = {
 	},
 
 	buildMap: () => {
-		return;
+		if(GildFights.MapData['map']['id'] == "waterfall_archipelago") return;
 		if ($('#ProvinceMap').length === 0)
 		{
 			HTML.Box({
