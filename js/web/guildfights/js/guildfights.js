@@ -1304,7 +1304,7 @@ let GildFights = {
 
 		if (copy !== '')
 		{
-			helper.str.copyToClipboardLegacy(copy).then(() => {
+			helper.str.copyToClipboard(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
 					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),
