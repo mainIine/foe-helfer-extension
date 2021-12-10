@@ -1062,7 +1062,7 @@ let GildFights = {
 
 						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
-						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
+						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color${GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : ''}" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
 
 						if (GildFights.showGuildColumn)
 						{
@@ -1091,7 +1091,7 @@ let GildFights = {
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0)
 			{
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color${GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : ''}" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
 
 				if (GildFights.showGuildColumn)
 				{
@@ -1160,7 +1160,7 @@ let GildFights = {
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
-				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
+				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color${GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : ''}" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
 
 				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
@@ -1479,7 +1479,7 @@ let GildFights = {
 				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
 						$('<td />').append(
-							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' }),
+							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' + (GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : '') }),
 							$('<b />').text(mD['title']),
 						),
 						(GildFights.showGuildColumn ? $('<td />').text(p['clan']['name']) : ''),
