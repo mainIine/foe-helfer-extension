@@ -1214,6 +1214,11 @@ let GildFights = {
 					GildFights.ToggleCopyButton();
 				}
 			});
+
+			// Map-Button auf der Karte Wasserfall-Archipel deaktivieren
+			if (GildFights.MapData['map']['id'] == 'waterfall_archipelago') {
+				$('.mapbutton').prop('disabled', true);
+			}
 		});
 	},
 
@@ -1751,7 +1756,9 @@ let ProvinceMap = {
 	},
 
 	buildMap: () => {
-		if(GildFights.MapData['map']['id'] == "waterfall_archipelago") return;
+		// Map auf der Karte Wasserfall-Archipel deaktivieren
+		if (GildFights.MapData['map']['id'] == "waterfall_archipelago") return;
+
 		if ($('#ProvinceMap').length === 0)
 		{
 			HTML.Box({
