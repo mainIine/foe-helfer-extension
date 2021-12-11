@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.10.1
+
+**Update**
+-Gildengefechte:
+	- [#2230](https://github.com/mainIine/foe-helfer-extension/issues/2230) Neue Provinzen ergänzt
+
+---
+
 ##### 2.5.10.0
 
 **Neu**
