@@ -410,6 +410,7 @@ let EventHandler = {
 		h.push('<th columnname="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
 		h.push('<th columnname="Name" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+		h.push('<th columnname="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
 		h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 
 		for (let i = 0; i < EventHandler.MaxVisitCount; i++)
@@ -469,6 +470,8 @@ let EventHandler = {
 				h.push(`<img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png">`);
             }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
+
+			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${i18n('Eras.' + Technologies.Eras[Player['Era']])}</td>`);
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 
