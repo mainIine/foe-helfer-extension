@@ -3555,9 +3555,9 @@ let ProvinceMap = {
 					],
 					"short": "D4A",
 					"flag": {},
-					"flagPos": {
-						"x": 1131,
-						"y": 265
+					"flagPos":{
+						"x":1131,
+						"y":265
 					}
 				},
 				{
@@ -3615,9 +3615,9 @@ let ProvinceMap = {
 					],
 					"short": "E4B",
 					"flag": {},
-					"flagPos": {
-						"x": 1678,
-						"y": 353
+					"flagPos":{
+						"x":1678,
+						"y":353
 					}
 				},
 				{
@@ -3675,9 +3675,9 @@ let ProvinceMap = {
 					],
 					"short": "F4C",
 					"flag": {},
-					"flagPos": {
-						"x": 1925,
-						"y": 797
+					"flagPos":{
+						"x":1925,
+						"y":797
 					}
 				},
 				{
@@ -3690,9 +3690,9 @@ let ProvinceMap = {
 					],
 					"short": "A5A",
 					"flag": {},
-					"flagPos": {
-						"x": 1790,
-						"y": 945
+					"flagPos":{
+						"x":1790,
+						"y":945
 					}
 				},
 				{
@@ -3729,9 +3729,9 @@ let ProvinceMap = {
 					],
 					"short": "A5D",
 					"flag": {},
-					"flagPos": {
-						"x": 2068,
-						"y": 1469
+					"flagPos":{
+						"x":2068,
+						"y":1469
 					}
 				},
 				{
@@ -3744,9 +3744,9 @@ let ProvinceMap = {
 					],
 					"short": "B5A",
 					"flag": {},
-					"flagPos": {
-						"x": 1921,
-						"y": 1540
+					"flagPos":{
+						"x":1921,
+						"y":1540
 					}
 				},
 				{
@@ -3784,9 +3784,9 @@ let ProvinceMap = {
 					],
 					"short": "B5D",
 					"flag": {},
-					"flagPos": {
-						"x": 1195,
-						"y": 1476
+					"flagPos":{
+						"x":1195,
+						"y":1476
 					}
 				},
 				{
@@ -3811,9 +3811,9 @@ let ProvinceMap = {
 					],
 					"short": "C5B",
 					"flag": {},
-					"flagPos": {
-						"x": 778,
-						"y": 1536
+					"flagPos":{
+						"x":778,
+						"y":1536
 					}
 				},
 				{
@@ -3839,9 +3839,9 @@ let ProvinceMap = {
 					],
 					"short": "C5D",
 					"flag": {},
-					"flagPos": {
-						"x": 410,
-						"y": 1365
+					"flagPos":{
+						"x":410,
+						"y":1365
 					}
 				},
 				{
@@ -3866,9 +3866,9 @@ let ProvinceMap = {
 					],
 					"short": "D5B",
 					"flag": {},
-					"flagPos": {
-						"x": 217,
-						"y": 1099
+					"flagPos":{
+						"x":217,
+						"y":1099
 					}
 				},
 				{
@@ -3894,9 +3894,9 @@ let ProvinceMap = {
 					],
 					"short": "D5D",
 					"flag": {},
-					"flagPos": {
-						"x": 384,
-						"y": 806
+					"flagPos":{
+						"x":384,
+						"y":806
 					}
 				},
 				{
@@ -3933,9 +3933,9 @@ let ProvinceMap = {
 					],
 					"short": "E5C",
 					"flag": {},
-					"flagPos": {
-						"x": 370,
-						"y": 442
+					"flagPos":{
+						"x":370,
+						"y":442
 					}
 				},
 				{
@@ -3949,9 +3949,9 @@ let ProvinceMap = {
 					],
 					"short": "E5D",
 					"flag": {},
-					"flagPos": {
-						"x": 462,
-						"y": 316
+					"flagPos":{
+						"x":462,
+						"y":316
 					}
 				},
 				{
