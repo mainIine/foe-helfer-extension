@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.10.2
+
+**BugFix**
+- Gildenmitglieder Übersicht:
+	- [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Falscher Levelwert beim Export von Gildengebäuden behoben.
+
+---
+
 ##### 2.5.10.1
 
 **Update**
