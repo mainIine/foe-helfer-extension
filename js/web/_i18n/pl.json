@@ -911,7 +911,7 @@
     "Menu.OutP.Desc": "Przegląd surowców wymaganych przez Osadę.",
     "Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Niedostępne: Odwiedź osadę!<br></em>Przegląd potrzebnych surowców.",
     "Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Niedostępne: Rozpocznij osadę i przeładuj grę (F5)",
-    "Menu.OutP.Title": "Przegląd rozliczeń",
+    "Menu.OutP.Title": "Przegląd osady",
     "Menu.OwnpartCalculator.Desc": "Tworzy plan budowy własnej perły, pomaga obliczyć miejsca z wymian i pozwala generować wiadomości ogłaszające",
     "Menu.OwnpartCalculator.Title": "Kalkulator budowy (PA)",
     "Menu.OwnpartCalculator.Warning": "Niedostępne: Otwórz swoją perłę architektury!",
