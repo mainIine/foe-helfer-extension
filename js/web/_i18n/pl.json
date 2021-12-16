@@ -284,7 +284,7 @@
     "Boxes.GreatBuildings.DailyFP": "PR dziennie",
     "Boxes.GreatBuildings.DailyGoods": "Towarów dziennie",
     "Boxes.GreatBuildings.FPCostGoods": "Koszt towarów (PR)",
-    "Boxes.GreatBuildings.FPPerTile": "Nowe budynki: Dzienny przychód PR/kratkę budynków do usunięcia",
+    "Boxes.GreatBuildings.FPPerTile": "Nowe perły: Dzienny przychód PR/kratkę zastępowanych budynków",
     "Boxes.GreatBuildings.GoodsPerFP": "1 PR jest wart __goods__ towarów",
     "Boxes.GreatBuildings.GoodsValue": "Wartość 1 sztuki towaru z epoki __eraname__ w PR",
     "Boxes.GreatBuildings.GreatBulding": "Perła Architektury",
