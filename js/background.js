@@ -18,6 +18,9 @@ alertsDB.version(1).stores({
 	alerts: "++id,[server+playerId],data.expires"
 });
 
+let tabsToReload = [];
+let firstReload = false;
+
 // separate code from global scope
 {
 
@@ -331,43 +334,80 @@ alertsDB.version(1).stores({
 
 
 	browser.runtime.onInstalled.addListener(() => {
-		"use strict";
-		const version = browser.runtime.getManifest().version;
-		let lng = browser.i18n.getUILanguage();
-		const ask = {
-				de: 'Es wurde gerade ein Update f%FCr den FoE Helfer installiert.%0A%0ADarf das Spiel jetzt neu geladen werden oder m%F6chtest Du es sp%E4ter selber machen%3F',
-				en: 'An update for the FoE Helper has just been installed.%0A%0ACan the game be reloaded now or do you want to do it yourself later%3F'
-			};
 
-		// is a "-" in there? ==> en-en, en-us, en-gb etc ...
-		if(lng.indexOf('-') > -1){
-			lng = lng.split('-')[0];
-		}
 
-		// Fallback to "en"
-		if(lng !== 'de' && lng !== 'en'){
-			lng = 'en';
-		}
+		browser.tabs.query({currentWindow: true, url:"*://*.forgeofempires.com/game/index*"}).then((tabs)=> {
+			for(t of tabs){
+				tabsToReload.push(t.id);
+			}
+		});
 
-		/** @type {string} */
-		// @ts-ignore
-		const askText = ask[lng];
-		// No developer and player ask if the game can be reloaded
-		if(!isDevMode() && confirm(unescape(askText)) === true){
-			browser.tabs.query({active: true, currentWindow: true}).then((tabs)=> {
-				// are we in FoE?
-				if(tabs[0].url && tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
+		browser.tabs.query({active: true, currentWindow: true}).then((tabs)=> {
+			// are we in FoE?
+			if(tabs[0].url && tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
 
-					// Yes? then reload
-					browser.tabs.reload(tabs[0].id);
-				}
-			});
+				// Yes? then reload
+				reloadTab(tabs[0]);
+			}
+		});
 
-			browser.tabs.create({
-				url: `https://foe-helper.com/extension/update?v=${version}&lang=${lng}`
-			});
-		}
 	});
+
+	  
+	browser.tabs.onActivated.addListener((tab)=>{
+
+		//Check if tab needs to be reloaded
+		if(tabsToReload.includes(tab.tabId)){
+			reloadTab(tab);
+		}
+
+	});
+
+	function reloadTab(tab){
+		"use strict";
+			const version = browser.runtime.getManifest().version;
+			let lng = browser.i18n.getUILanguage();
+			const ask = {
+					de: 'Es wurde gerade ein Update f%FCr den FoE Helfer installiert.%0A%0ADarf das Spiel jetzt neu geladen werden oder m%F6chtest Du es sp%E4ter selber machen%3F',
+					en: 'An update for the FoE Helper has just been installed.%0A%0ACan the game be reloaded now or do you want to do it yourself later%3F'
+				};
+
+			// is a "-" in there? ==> en-en, en-us, en-gb etc ...
+			if(lng.indexOf('-') > -1){
+				lng = lng.split('-')[0];
+			}
+
+			// Fallback to "en"
+			if(lng !== 'de' && lng !== 'en'){
+				lng = 'en';
+			}
+
+			/** @type {string} */
+			// @ts-ignore
+			const askText = ask[lng];
+
+			// No developer and player ask if the game can be reloaded
+			if(confirm(unescape(askText)) === true){
+				browser.tabs.query({active: true, currentWindow: true}).then((tabs)=> {
+					// are we in FoE?
+					if(tabs[0].url && tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
+
+						// Yes? then reload
+						browser.tabs.reload(tabs[0].id);
+					}
+				});
+				//have we reloaded already? Only open changelog on first reload.
+				if(!firstReload){
+					browser.tabs.create({
+						url: `https://foe-helper.com/extension/update?v=${version}&lang=${lng}`
+					});
+					firstReload = true;
+				}
+			}
+
+			tabsToReload = tabsToReload.filter(e => e !== tab.tabId);
+	}
+	
 
 
 	/**
