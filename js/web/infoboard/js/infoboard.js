@@ -477,7 +477,7 @@ let Info = {
         let bP = GildFights.MapData['battlegroundParticipants'],
             prov;
 
-        if (data['id'] === 0) {
+        if (!data['id'] || data['id'] === 0) {
             prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']][0];
         } else {
             prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']].find(o => (o['id'] === data['id']));
