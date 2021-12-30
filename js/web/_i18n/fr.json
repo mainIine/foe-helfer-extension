@@ -183,6 +183,7 @@
     "Boxes.CloseBox.ExcludeFromClosing": "Exclure de la fermeture",
     "Boxes.CloseBox.HideAllButton": "Bouton Cacher tout",
     "Boxes.CloseBox.Horizontal": "horizontal",
+    "Boxes.CloseBox.Title": "Titre",
     "Boxes.CloseBox.Vertical": "vertical",
     "Boxes.CloseBox.View": "Afficher",
     "Boxes.DBExport.Compression": "compression",
