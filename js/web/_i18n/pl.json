@@ -152,6 +152,7 @@
     "Boxes.CloseBox.ExcludeFromClosing": "Nigdy nie zamykaj",
     "Boxes.CloseBox.HideAllButton": "przycisk ukrywania",
     "Boxes.CloseBox.Horizontal": "w poziomie",
+    "Boxes.CloseBox.Title": "Tytuł",
     "Boxes.CloseBox.Vertical": "w pionie",
     "Boxes.CloseBox.View": "Pokaż",
     "Boxes.DBExport.Compression": "kompresja",
