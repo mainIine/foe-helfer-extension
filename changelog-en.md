@@ -10,6 +10,9 @@
 - Investment overview:
 	- [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links added to the player profile on scoredb.io
 
+- FP collections:
+	- Formatting for larger values integrated
+
 ---
 
 ##### 2.5.10.1
