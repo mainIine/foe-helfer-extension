@@ -74,7 +74,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 
 /**
- * @type {{SettingsExport: GildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GildFights.init, PrepareColors: GildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GildFights.ToggleProgressList, Colors: null, RefreshTable: GildFights.RefreshTable, SetAlert: GildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GildFights.SetTabs, CopyToClipBoard: GildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GildFights.SaveLiveFightSettings, ShowLiveFightSettings: GildFights.ShowLiveFightSettings, ShowDetailViewBox: GildFights.ShowDetailViewBox}}
+ * @type {{SettingsExport: GildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), initiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GildFights.init, PrepareColors: GildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GildFights.ToggleProgressList, Colors: null, RefreshTable: GildFights.RefreshTable, SetAlert: GildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GildFights.SetTabs, CopyToClipBoard: GildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GildFights.SaveLiveFightSettings, ShowLiveFightSettings: GildFights.ShowLiveFightSettings, ShowDetailViewBox: GildFights.ShowDetailViewBox}}
  */
 let GildFights = {
 
@@ -901,7 +901,7 @@ let GildFights = {
 
 			if ($('#gbgLogDatepicker').length !== 0)
 			{
-				GildFights.intiateDatePicker();
+				GildFights.initiateDatePicker();
 			}
 			$('#GildPlayersDetailViewBody tr.sorter-header').on('click', function () {
 				$(this).parents('.foe-table').find('tr.open').removeClass("open");
@@ -1228,7 +1228,7 @@ let GildFights = {
 	 *
 	 * @returns {Promise<void>}
 	 */
-	intiateDatePicker: async () => {
+	initiateDatePicker: async () => {
 
 		GildFights.LogDatePicker = new Litepicker({
 			element: document.getElementById('gbgLogDatepicker'),

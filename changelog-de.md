@@ -8,7 +8,10 @@
 
 **Update**
 - Investitionsübersicht:
-	- [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links zum Spielerprofil auf scoredb.io hinzugefügt.
+    - [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links zum Spielerprofil auf scoredb.io hinzugefügt.
+
+- FP-Einsammlungen:
+	- Formatierung für größere Werte integriert
 
 ---
 
