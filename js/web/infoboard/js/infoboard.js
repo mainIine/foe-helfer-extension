@@ -228,6 +228,7 @@ let Infoboard = {
 
 
     PostMessage: (bd,add = true) => {
+        if (!bd['date']) bd['date'] = new Date();
 
         if ($('#BackgroundInfo').length > 0)
         {
@@ -270,7 +271,7 @@ let Infoboard = {
 
             tr.append(
                 '<td></td>' +
-                '<td>' + type + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + type + '<br><small><em>' + moment(bd['date']).format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
 
