@@ -1062,7 +1062,7 @@ let GildFights = {
 
 						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
-						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
+						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color${GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : ''}" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
 
 						if (GildFights.showGuildColumn)
 						{
@@ -1091,7 +1091,7 @@ let GildFights = {
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0)
 			{
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color${GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : ''}" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
 
 				if (GildFights.showGuildColumn)
 				{
@@ -1160,7 +1160,7 @@ let GildFights = {
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
-				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
+				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color${GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : ''}" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
 
 				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
@@ -1214,6 +1214,11 @@ let GildFights = {
 					GildFights.ToggleCopyButton();
 				}
 			});
+
+			// Map-Button auf der Karte Wasserfall-Archipel deaktivieren
+			if (GildFights.MapData['map']['id'] == 'waterfall_archipelago') {
+				$('.mapbutton').prop('disabled', true);
+			}
 		});
 	},
 
@@ -1299,7 +1304,7 @@ let GildFights = {
 
 		if (copy !== '')
 		{
-			helper.str.copyToClipboardLegacy(copy).then(() => {
+			helper.str.copyToClipboard(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
 					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),
@@ -1474,7 +1479,7 @@ let GildFights = {
 				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
 						$('<td />').append(
-							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' }),
+							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' + (GildFights.MapData['map']['id'] == 'waterfall_archipelago' ? '-round' : '') }),
 							$('<b />').text(mD['title']),
 						),
 						(GildFights.showGuildColumn ? $('<td />').text(p['clan']['name']) : ''),
@@ -1751,7 +1756,9 @@ let ProvinceMap = {
 	},
 
 	buildMap: () => {
-		if(GildFights.MapData['map']['id'] == "waterfall_archipelago") return;
+		// Map auf der Karte Wasserfall-Archipel deaktivieren
+		if (GildFights.MapData['map']['id'] == "waterfall_archipelago") return;
+
 		if ($('#ProvinceMap').length === 0)
 		{
 			HTML.Box({
@@ -3145,7 +3152,7 @@ let ProvinceMap = {
 			"waterfall_archipelago": [
 				{
 					"id": 0,
-					"name": "X1X",
+					"name": "X1X: Elleorus",
 					"connections": [
 						1,
 						2,
@@ -3159,7 +3166,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 1,
-					"name": "A2A",
+					"name": "A2A: Flunnipia",
 					"connections": [
 						7,
 						8,
@@ -3173,7 +3180,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 2,
-					"name": "B2A",
+					"name": "B2A: Achinata",
 					"connections": [
 						9,
 						10,
@@ -3187,7 +3194,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 3,
-					"name": "C2A",
+					"name": "C2A: Enudran",
 					"connections": [
 						11,
 						12,
@@ -3201,7 +3208,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 4,
-					"name": "D2A",
+					"name": "D2A: Zebbeasos",
 					"connections": [
 						13,
 						14,
@@ -3215,7 +3222,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 5,
-					"name": "E2A",
+					"name": "E2A: Appatinaka",
 					"connections": [
 						15,
 						16,
@@ -3229,7 +3236,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 6,
-					"name": "F2A",
+					"name": "F2A: Kracciarhia",
 					"connections": [
 						17,
 						18,
@@ -3243,7 +3250,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 7,
-					"name": "A3A",
+					"name": "A3A: Micianary",
 					"connections": [
 						19,
 						20,
@@ -3257,7 +3264,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 8,
-					"name": "A3B",
+					"name": "A3B: Sheaggasia",
 					"connections": [
 						20,
 						21,
@@ -3271,7 +3278,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 9,
-					"name": "B3A",
+					"name": "B3A: Birrathan",
 					"connections": [
 						22,
 						23,
@@ -3285,7 +3292,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 10,
-					"name": "B3B",
+					"name": "B3B: Phiodeanet",
 					"connections": [
 						23,
 						24,
@@ -3299,7 +3306,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 11,
-					"name": "C3A",
+					"name": "C3A: Ioppiorion",
 					"connections": [
 						25,
 						26,
@@ -3313,7 +3320,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 12,
-					"name": "C3B",
+					"name": "C3B: Acyalyn",
 					"connections": [
 						26,
 						27,
@@ -3327,7 +3334,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 13,
-					"name": "D3A",
+					"name": "D3A: Giobbolas",
 					"connections": [
 						28,
 						29,
@@ -3341,7 +3348,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 14,
-					"name": "D3B",
+					"name": "D3B: Briocealyn",
 					"connections": [
 						29,
 						30,
@@ -3355,7 +3362,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 15,
-					"name": "E3A",
+					"name": "E3A: Joviolmond",
 					"connections": [
 						31,
 						32,
@@ -3369,7 +3376,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 16,
-					"name": "E3B",
+					"name": "E3B: Ciobiathis",
 					"connections": [
 						32,
 						33,
@@ -3383,7 +3390,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 17,
-					"name": "F3A",
+					"name": "F3A: Preammirune",
 					"connections": [
 						34,
 						35,
@@ -3397,7 +3404,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 18,
-					"name": "F3B",
+					"name": "F3B: Exoryme",
 					"connections": [
 						35,
 						36,
@@ -3411,7 +3418,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 19,
-					"name": "A4A",
+					"name": "A4A: Phiossiania",
 					"connections": [
 						37,
 						20,
@@ -3425,7 +3432,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 20,
-					"name": "A4B",
+					"name": "A4B: Klitimelan",
 					"connections": [
 						38,
 						39,
@@ -3439,7 +3446,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 21,
-					"name": "A4C",
+					"name": "A4C: Ioclequey",
 					"connections": [
 						39,
 						40,
@@ -3453,7 +3460,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 22,
-					"name": "B4A",
+					"name": "B4A: Lastaruz",
 					"connections": [
 						41,
 						42,
@@ -3467,7 +3474,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 23,
-					"name": "B4B",
+					"name": "B4B: Ecceacyre",
 					"connections": [
 						42,
 						43,
@@ -3481,7 +3488,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 24,
-					"name": "B4C",
+					"name": "B4C: Yastalyn",
 					"connections": [
 						43,
 						44,
@@ -3495,7 +3502,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 25,
-					"name": "C4A",
+					"name": "C4A: Chobbiabis",
 					"connections": [
 						45,
 						46,
@@ -3509,7 +3516,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 26,
-					"name": "C4B",
+					"name": "C4B: Mioccijan",
 					"connections": [
 						46,
 						47,
@@ -3523,7 +3530,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 27,
-					"name": "C4C",
+					"name": "C4C: Cheabenium",
 					"connections": [
 						47,
 						48,
@@ -3537,7 +3544,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 28,
-					"name": "D4A",
+					"name": "D4A: Diodiriel",
 					"connections": [
 						49,
 						50,
@@ -3548,14 +3555,14 @@ let ProvinceMap = {
 					],
 					"short": "D4A",
 					"flag": {},
-					"flagPos": {
-						"x": 1131,
-						"y": 265
+					"flagPos":{
+						"x":1131,
+						"y":265
 					}
 				},
 				{
 					"id": 29,
-					"name": "D4B",
+					"name": "D4B: Driqela",
 					"connections": [
 						50,
 						51,
@@ -3569,7 +3576,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 30,
-					"name": "D4C",
+					"name": "D4C: Gakiaran",
 					"connections": [
 						51,
 						52,
@@ -3583,7 +3590,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 31,
-					"name": "E4A",
+					"name": "E4A: Phulotora",
 					"connections": [
 						53,
 						54,
@@ -3597,7 +3604,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 32,
-					"name": "E4B",
+					"name": "E4B: Iccothaer",
 					"connections": [
 						54,
 						55,
@@ -3608,14 +3615,14 @@ let ProvinceMap = {
 					],
 					"short": "E4B",
 					"flag": {},
-					"flagPos": {
-						"x": 1678,
-						"y": 353
+					"flagPos":{
+						"x":1678,
+						"y":353
 					}
 				},
 				{
 					"id": 33,
-					"name": "E4C",
+					"name": "E4C: Ohephere",
 					"connections": [
 						55,
 						56,
@@ -3629,7 +3636,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 34,
-					"name": "F4A",
+					"name": "F4A: Xioceomos",
 					"connections": [
 						57,
 						58,
@@ -3643,7 +3650,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 35,
-					"name": "F4B",
+					"name": "F4B: Oglilyn",
 					"connections": [
 						58,
 						59,
@@ -3657,7 +3664,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 36,
-					"name": "F4C",
+					"name": "F4C: Omialanto",
 					"connections": [
 						59,
 						60,
@@ -3668,14 +3675,14 @@ let ProvinceMap = {
 					],
 					"short": "F4C",
 					"flag": {},
-					"flagPos": {
-						"x": 1925,
-						"y": 797
+					"flagPos":{
+						"x":1925,
+						"y":797
 					}
 				},
 				{
 					"id": 37,
-					"name": "A5A",
+					"name": "A5A: Appiatoph",
 					"connections": [
 						38,
 						19,
@@ -3683,14 +3690,14 @@ let ProvinceMap = {
 					],
 					"short": "A5A",
 					"flag": {},
-					"flagPos": {
-						"x": 1790,
-						"y": 945
+					"flagPos":{
+						"x":1790,
+						"y":945
 					}
 				},
 				{
 					"id": 38,
-					"name": "A5B",
+					"name": "A5B: Cuchrarahe",
 					"connections": [
 						39,
 						20,
@@ -3701,7 +3708,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 39,
-					"name": "A5C",
+					"name": "A5C: Eokkirune",
 					"connections": [
 						40,
 						21,
@@ -3713,7 +3720,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 40,
-					"name": "A5D",
+					"name": "A5D: Iyoriyaz",
 					"connections": [
 						41,
 						22,
@@ -3722,14 +3729,14 @@ let ProvinceMap = {
 					],
 					"short": "A5D",
 					"flag": {},
-					"flagPos": {
-						"x": 2068,
-						"y": 1469
+					"flagPos":{
+						"x":2068,
+						"y":1469
 					}
 				},
 				{
 					"id": 41,
-					"name": "B5A",
+					"name": "B5A: Strennearial",
 					"connections": [
 						42,
 						22,
@@ -3737,14 +3744,14 @@ let ProvinceMap = {
 					],
 					"short": "B5A",
 					"flag": {},
-					"flagPos": {
-						"x": 1921,
-						"y": 1540
+					"flagPos":{
+						"x":1921,
+						"y":1540
 					}
 				},
 				{
 					"id": 42,
-					"name": "B5B",
+					"name": "B5B: Atherathios",
 					"connections": [
 						43,
 						23,
@@ -3756,7 +3763,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 43,
-					"name": "B5C",
+					"name": "B5C: Xeaxudin",
 					"connections": [
 						44,
 						24,
@@ -3768,7 +3775,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 44,
-					"name": "B5D",
+					"name": "B5D: Stronolyn",
 					"connections": [
 						45,
 						25,
@@ -3777,14 +3784,14 @@ let ProvinceMap = {
 					],
 					"short": "B5D",
 					"flag": {},
-					"flagPos": {
-						"x": 1195,
-						"y": 1476
+					"flagPos":{
+						"x":1195,
+						"y":1476
 					}
 				},
 				{
 					"id": 45,
-					"name": "C5A",
+					"name": "C5A: Stuckodod",
 					"connections": [
 						46,
 						25,
@@ -3795,7 +3802,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 46,
-					"name": "C5B",
+					"name": "C5B: Kazazriel",
 					"connections": [
 						47,
 						26,
@@ -3804,14 +3811,14 @@ let ProvinceMap = {
 					],
 					"short": "C5B",
 					"flag": {},
-					"flagPos": {
-						"x": 778,
-						"y": 1536
+					"flagPos":{
+						"x":778,
+						"y":1536
 					}
 				},
 				{
 					"id": 47,
-					"name": "C5C",
+					"name": "C5C: Pilitallios",
 					"connections": [
 						48,
 						27,
@@ -3823,7 +3830,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 48,
-					"name": "C5D",
+					"name": "C5D: Xishotish",
 					"connections": [
 						49,
 						28,
@@ -3832,14 +3839,14 @@ let ProvinceMap = {
 					],
 					"short": "C5D",
 					"flag": {},
-					"flagPos": {
-						"x": 410,
-						"y": 1365
+					"flagPos":{
+						"x":410,
+						"y":1365
 					}
 				},
 				{
 					"id": 49,
-					"name": "D5A",
+					"name": "D5A: Gegleadore",
 					"connections": [
 						50,
 						28,
@@ -3850,7 +3857,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 50,
-					"name": "D5B",
+					"name": "D5B: Wrorrulan",
 					"connections": [
 						51,
 						29,
@@ -3859,14 +3866,14 @@ let ProvinceMap = {
 					],
 					"short": "D5B",
 					"flag": {},
-					"flagPos": {
-						"x": 217,
-						"y": 1099
+					"flagPos":{
+						"x":217,
+						"y":1099
 					}
 				},
 				{
 					"id": 51,
-					"name": "D5C",
+					"name": "D5C: Cleoseotophy",
 					"connections": [
 						52,
 						30,
@@ -3878,7 +3885,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 52,
-					"name": "D5D",
+					"name": "D5D: Equioque",
 					"connections": [
 						53,
 						31,
@@ -3887,14 +3894,14 @@ let ProvinceMap = {
 					],
 					"short": "D5D",
 					"flag": {},
-					"flagPos": {
-						"x": 384,
-						"y": 806
+					"flagPos":{
+						"x":384,
+						"y":806
 					}
 				},
 				{
 					"id": 53,
-					"name": "E5A",
+					"name": "E5A: Eatutiar",
 					"connections": [
 						54,
 						31,
@@ -3905,7 +3912,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 54,
-					"name": "E5B",
+					"name": "E5B: Kaweariael",
 					"connections": [
 						55,
 						32,
@@ -3917,7 +3924,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 55,
-					"name": "E5C",
+					"name": "E5C: Yossiryon",
 					"connections": [
 						56,
 						33,
@@ -3926,14 +3933,14 @@ let ProvinceMap = {
 					],
 					"short": "E5C",
 					"flag": {},
-					"flagPos": {
-						"x": 370,
-						"y": 442
+					"flagPos":{
+						"x":370,
+						"y":442
 					}
 				},
 				{
 					"id": 56,
-					"name": "E5D",
+					"name": "E5D: Ecladorth",
 					"connections": [
 						57,
 						34,
@@ -3942,14 +3949,14 @@ let ProvinceMap = {
 					],
 					"short": "E5D",
 					"flag": {},
-					"flagPos": {
-						"x": 462,
-						"y": 316
+					"flagPos":{
+						"x":462,
+						"y":316
 					}
 				},
 				{
 					"id": 57,
-					"name": "F5A",
+					"name": "F5A: Udriomond",
 					"connections": [
 						58,
 						34,
@@ -3960,7 +3967,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 58,
-					"name": "F5B",
+					"name": "F5B: Kreamenon",
 					"connections": [
 						59,
 						35,
@@ -3972,7 +3979,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 59,
-					"name": "F5C",
+					"name": "F5C: Jokuthriaz",
 					"short": "F5C",
 					"connections": [
 						60,
@@ -3984,7 +3991,7 @@ let ProvinceMap = {
 				},
 				{
 					"id": 60,
-					"name": "F5D",
+					"name": "F5D: Gleoleaterra",
 					"short": "F5D",
 					"connections": [
 						37,

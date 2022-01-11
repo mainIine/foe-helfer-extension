@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 2.5.10.1
+
+**Update**
+- Guild Battles:
+- [#2230](https://github.com/mainIine/foe-helfer-extension/issues/2230) New provinces added
+
+---
+
 ##### 2.5.10.0
 
 **New**
