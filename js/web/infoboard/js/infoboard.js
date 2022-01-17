@@ -228,6 +228,7 @@ let Infoboard = {
 
 
     PostMessage: (bd,add = true) => {
+        if (!bd['date']) bd['date'] = new Date();
 
         if ($('#BackgroundInfo').length > 0)
         {
@@ -270,7 +271,7 @@ let Infoboard = {
 
             tr.append(
                 '<td></td>' +
-                '<td>' + type + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + type + '<br><small><em>' + moment(bd['date']).format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
 
@@ -477,7 +478,7 @@ let Info = {
         let bP = GildFights.MapData['battlegroundParticipants'],
             prov;
 
-        if (data['id'] === 0) {
+        if (!data['id'] || data['id'] === 0) {
             prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']][0];
         } else {
             prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']].find(o => (o['id'] === data['id']));

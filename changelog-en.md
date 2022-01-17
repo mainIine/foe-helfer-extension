@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+##### 2.5.10.2
+
+**BugFix**
+- Guild members overview:
+	- [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Fixed incorrect level value on guild building export.
+
+**Update**
+- Investment overview:
+	- [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links added to the player profile on scoredb.io
+
+- FP collections:
+	- Formatting for larger values integrated
+
+---
+
 ##### 2.5.10.1
 
 **Update**
