@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+##### 2.5.10.2
+
+**BugFix**
+- Gildenmitglieder Übersicht:
+	- [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Falscher Levelwert beim Export von Gildengebäuden behoben.
+
+**Update**
+- Investitionsübersicht:
+    - [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links zum Spielerprofil auf scoredb.io hinzugefügt.
+
+- FP-Einsammlungen:
+	- Formatierung für größere Werte integriert
+
+---
+
 ##### 2.5.10.1
 
 **Update**
