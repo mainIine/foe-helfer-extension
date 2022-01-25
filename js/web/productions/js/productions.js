@@ -673,7 +673,7 @@ let Productions = {
 
 			for (let ProductName in Products) {
 				let MotivationFactor;
-				if ((ProductName === 'money' || ProductName === 'supplies' || ProductName === 'clan_power') && DoubleProductionWhenMotivated && d['state']['is_motivated'] === false) {
+				if ((ProductName === 'money' || ProductName === 'supplies' || ProductName === 'clan_power') && DoubleProductionWhenMotivated && !d['state']['is_motivated']) {
 					MotivationFactor = 2;
 				}
 				else { //Keine Doppelproduktion durch Motivierung oder schon motiviert
