@@ -1,0 +1,48 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#stPatrickDialog {
+    top: 50px;
+    left: calc(100vw - 350px);
+}
+
+#stPatrickDialogBody {
+    width: 500px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 120%;
+    background-color: rgba(103, 1, 1, 0.5);
+}
+
+#stPatTable th {
+    font-weight: bold;
+}
+
+#stPatTable td {
+    padding-left: 10x;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+#stPatTable .highlight {
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+
+}
+#stPatNext td {
+    padding-left: 10x;
+    padding-right: 10px;
+}
