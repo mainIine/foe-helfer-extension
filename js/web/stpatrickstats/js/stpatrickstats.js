@@ -38,13 +38,17 @@ FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
     for (let x in game)
 	{
         let data2 = game[x];
+				
+		if(!data2['characterId']) {
+			continue;
+		}
 
         if (data2.type === 'upgrade_level') {
-			stPatrick.stPat[data2.characterId].level += data2.amount;
+			stPatrick.stPat[data2['characterId']].level += data2.amount;
 		}
 
         if (data2.type === 'upgrade_manager') {
-			stPatrick.stPat[data2.characterId].manager += data2.amount;
+			stPatrick.stPat[data2['characterId']].manager += data2.amount;
 		}
     }
 
