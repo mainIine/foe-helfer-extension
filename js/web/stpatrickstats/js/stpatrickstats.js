@@ -245,7 +245,7 @@ let stPatrick = {
             'minimize': false
         });
         var htmltext = `<table><tr><td style="width:50%"><table id="stPatTable"><tr><th colspan="3">`;
-        htmltext += `<img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" width="30" height="30">`;
+        htmltext += `<img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
         htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
         htmltext += `<td>${i18n('Boxes.stPatrick.Production')}</td>`;
         htmltext += `<td>${stPat.transport_1.baseData.name}</td>`;
@@ -256,19 +256,19 @@ let stPatrick = {
         htmltext += `<td id="stPatFest"></td>`;
         htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></td><td sytle="width:50%">`
         htmltext += `<table id="stPatNext" class="foe-table"><tr title="${stPat.workshop_1.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatworkshop_1Level"></td><td id="stPatworkshop_1" class="border-right"></td></tr><tr title="${stPat.workshop_2.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatworkshop_2Level"></td><td id="stPatworkshop_2" class="border-right"></td></tr><tr title="${stPat.workshop_3.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatworkshop_3Level"></td><td id="stPatworkshop_3" class="border-right"></td></tr><tr title="${stPat.workshop_4.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatworkshop_4Level"></td><td id="stPatworkshop_4" class="border-right"></td></tr><tr title="${stPat.workshop_5.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatworkshop_5Level"></td><td id="stPatworkshop_5" class="border-right"></td></tr><tr title="${stPat.transport_1.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPattransport_1Level"></td><td id="stPattransport_1" class="border-right"></td></tr><tr title="${stPat.market_1.baseData.name}">`;
-        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatmarket_1Level"></td><td id="stPatmarket_1" class="border-right"></td></tr><tr>`;
         htmltext += `</tr></table></td></tr></table>`;
         
