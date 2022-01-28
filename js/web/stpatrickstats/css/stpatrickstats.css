@@ -19,7 +19,7 @@
 #stPatrickDialogBody {
     width: 500px;
     height: 250px;
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     text-align: center;

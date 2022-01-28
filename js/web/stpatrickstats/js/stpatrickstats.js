@@ -244,7 +244,7 @@ let stPatrick = {
             'dragdrop': true,
             'minimize': false
         });
-        var htmltext = `<div style="width:50%; float:left"><table id="stPatTable"><tr><th colspan="3">`;
+        var htmltext = `<table><tr><td style="width:50%"><table id="stPatTable"><tr><th colspan="3">`;
         htmltext += `<img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" width="30" height="30">`;
         htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
         htmltext += `<td>${i18n('Boxes.stPatrick.Production')}</td>`;
@@ -254,7 +254,7 @@ let stPatrick = {
         htmltext += `<td id="stPatWork"></td>`;
         htmltext += `<td id="stPatShip"></td>`;
         htmltext += `<td id="stPatFest"></td>`;
-        htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></div><div sytle="width:50%"; float:right">`
+        htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></td><td sytle="width:50%">`
         htmltext += `<table id="stPatNext" class="foe-table"><tr title=${stPat.workshop_1.baseData.name}>`;
         htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" width="30" height="30"></td>`;
         htmltext += `<td id="stPatworkshop_1Level"></td><td id="stPatworkshop_1" class="border-right"></td></tr><tr title=${stPat.workshop_2.baseData.name}>`;
@@ -270,7 +270,7 @@ let stPatrick = {
         htmltext += `<td id="stPattransport_1Level"></td><td id="stPattransport_1" class="border-right"></td></tr><tr title=${stPat.market_1.baseData.name}>`;
         htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" width="30" height="30"></td>`;
         htmltext += `<td id="stPatmarket_1Level"></td><td id="stPatmarket_1" class="border-right"></td></tr><tr>`;
-        htmltext += `</tr></table></div>`;
+        htmltext += `</tr></table></td></tr></table>`;
         
         $('#stPatrickDialogBody').html(htmltext); 
     },
