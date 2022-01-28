@@ -93,6 +93,16 @@ let stPatrick = {
 		3 : "B",
 		4 : "T",
 		5 : "Q",
+		6 : "QT"
+	},
+	stPatNumTitles: {
+		0 : "",
+		1 : i18n('Boxes.stPatrick.K'),
+		2 : i18n('Boxes.stPatrick.M'),
+		3 : i18n('Boxes.stPatrick.B'),
+		4 : i18n('Boxes.stPatrick.T'),
+		5 : i18n('Boxes.stPatrick.Q'),
+		6 : i18n('Boxes.stPatrick.QT')
 	},
 
     /**
@@ -160,7 +170,7 @@ let stPatrick = {
 			}
 		}
 
-		while (sum > 1000 && degree<5) {
+		while (sum > 1000 && degree<6) {
 			sum /= 1000;
 			degree += 1;
 		}
@@ -190,11 +200,16 @@ let stPatrick = {
 		for (let x in stPatrick.stPat) {
 			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
 			$('#stPat'+x).text(`${stPatrick.stPat[x].need.toPrecision(3)} ${stPatrick.stPatNums[stPatrick.stPat[x].ndegree]}`);
+			$('#stPat'+x).attr('title', stPatrick.stPatNumTitles[stPatrick.stPat[x].ndegree]);
+		
 		}
 
 		$('#stPatWork').text(`${work.toPrecision(3)} ${stPatrick.stPatNums[workd]}`);
+		$('#stPatWork').attr('title', stPatrick.stPatNumTitles[workd]);
 		$('#stPatShip').text(`${ship.toPrecision(3)} ${stPatrick.stPatNums[shipd]}`);
+		$('#stPatShip').attr('title', stPatrick.stPatNumTitles[shipd]);
 		$('#stPatFest').text(`${fest.toPrecision(3)} ${stPatrick.stPatNums[festd]}`);
+		$('#stPatFest').attr('title', stPatrick.stPatNumTitles[festd]);
 	},
 
 
@@ -215,7 +230,7 @@ let stPatrick = {
 
 		p *= building.level;
 
-		while (p >= 1000 && d<5) {
+		while (p >= 1000 && d<6) {
 			p /= 1000;
 			d += 1;
 		}
@@ -232,7 +247,7 @@ let stPatrick = {
 			rank += 1;
 		}
 
-		while (p >= 1000 && d<5) {
+		while (p >= 1000 && d<6) {
 			p /= 1000;
 			d += 1;
 		}
@@ -255,7 +270,7 @@ let stPatrick = {
 			need += Math.pow(growth,i-1)*base;
 		}
 
-		while (need >= 1000 && ndegree<5) {
+		while (need >= 1000 && ndegree<6) {
 			need /= 1000;
 			ndegree += 1;
 		}
@@ -263,7 +278,7 @@ let stPatrick = {
 		building.need = need;
 		building.ndegree = ndegree;
 
-		while (p >= 1000 && d<5) {
+		while (p >= 1000 && d<6) {
 			p /= 1000;
 			d += 1;
 		}
@@ -287,7 +302,7 @@ let stPatrick = {
 		t /= 1 + tbonus;
 		p *= 3600/t;
 
-		while (p >= 1000 && d<5) {
+		while (p >= 1000 && d<6) {
 			p /= 1000;
 			d += 1;
 		}
