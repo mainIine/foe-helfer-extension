@@ -29,7 +29,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 });
 
 FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
-
+	
     if(postData[0]['requestClass'] !== 'IdleGameService')
     	return;
 
@@ -39,16 +39,12 @@ FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
 	{
         let data2 = game[x];
 
-		if(!data2['characterId']) {
-			continue;
-		}
-
         if (data2.type === 'upgrade_level') {
-			stPatrick.stPat[data2['characterId']].level += data2.amount;
+			stPatrick.stPat[data2.characterId].level += data2.amount;
 		}
 
         if (data2.type === 'upgrade_manager') {
-			stPatrick.stPat[data2['characterId']].manager += data2.amount;
+			stPatrick.stPat[data2.characterId].manager += data2.amount;
 		}
     }
 
@@ -114,13 +110,9 @@ let stPatrick = {
         let htmltext = `<table><tr><td style="width:50%"><table id="stPatTable"><tr><th colspan="3">`;
         htmltext += `<img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
         htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
-        htmltext += `<td>${i18n('Boxes.stPatrick.Production')}</td>`;
-        htmltext += `<td>${stPatrick.stPat.transport_1.baseData.name}</td>`;
-        htmltext += `<td>${stPatrick.stPat.market_1.baseData.name}</td>`;
-        htmltext += `</tr><tr>`;
-        htmltext += `<td id="stPatWork"></td>`;
-        htmltext += `<td id="stPatShip"></td>`;
-        htmltext += `<td id="stPatFest"></td>`;
+        htmltext += `<td>${stPatrick.stPat.market_1.baseData.name}<br><span id="stPatFest"></span></td>`;
+        htmltext += `<td rowspan="2">${i18n('Boxes.stPatrick.Production')}<br><span id="stPatWork"></span></td>`;
+        htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
         htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></td><td sytle="width:50%">`
         htmltext += `<table id="stPatNext" class="foe-table"><tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
