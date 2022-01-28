@@ -24,7 +24,6 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background-color: rgba(103, 1, 1, 0.5);
 }
 
 #stPatTable th {
@@ -38,11 +37,19 @@
 }
 
 #stPatTable .highlight {
-    color: rgb(255, 0, 0);
+    color: rgb(255, 82, 0);
     font-weight: bold;
 
 }
 #stPatNext td {
     padding-left: 10x;
     padding-right: 10px;
+}
+
+#stPatNext td.border-right {
+    border-right: 1px solid var(--border-table-bottom);
+}
+
+#stPatNext td.border-left {
+    border-left: 1px solid var(--border-table-top);
 }

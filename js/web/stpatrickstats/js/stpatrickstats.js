@@ -135,7 +135,7 @@ function stPatProduction (building) {
         building.ndegree = building.baseData.buyCostDegree;
         return building;
     }
-    
+ 
     var p = building.baseData.baseProductionValue;
     var d = building.baseData.baseProductionDegree|0;
     var t = building.baseData.productionDuration+building.baseData.rechargeDuration;
@@ -218,9 +218,11 @@ function stPatProduction (building) {
         d += 1;
     }
     
-    building.production = p;
-    building.degree = d;
-
+    if (building.manager > 0) {
+        building.production = p;
+        building.degree = d;
+    }
+    
     return building;
 }
 
@@ -244,7 +246,7 @@ let stPatrick = {
         });
         var htmltext = `<div style="width:50%; float:left"><table id="stPatTable"><tr><th colspan="3">`;
         htmltext += `<img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" width="30" height="30">`;
-        htmltext += `${i18n('Boxes.stPatrick.Hourly')}</th></tr><tr>`;
+        htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
         htmltext += `<td>${i18n('Boxes.stPatrick.Production')}</td>`;
         htmltext += `<td>${stPat.transport_1.baseData.name}</td>`;
         htmltext += `<td>${stPat.market_1.baseData.name}</td>`;
@@ -252,21 +254,22 @@ let stPatrick = {
         htmltext += '<td id="stPatWork"></td>';
         htmltext += '<td id="stPatShip"></td>';
         htmltext += '<td id="stPatFest"></td>';
-        htmltext += '</tr></table></div><div sytle="width:50%"; float:right"><table id="stPatNext"><tr>';
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPatworkshop_1Level"></td><td id="stPatworkshop_1"></td></tr><tr>`;
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPatworkshop_2Level"></td><td id="stPatworkshop_2"></td></tr><tr>`;
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPatworkshop_3Level"></td><td id="stPatworkshop_3"></td></tr><tr>`;
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPatworkshop_4Level"></td><td id="stPatworkshop_4"></td></tr><tr>`;
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPatworkshop_5Level"></td><td id="stPatworkshop_5"></td></tr><tr>`;
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPattransport_1Level"></td><td id="stPattransport_1"></td></tr><tr>`;
-        htmltext += `<td><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" width="30" height="30"></td>`;
-        htmltext += `<td id="stPatmarket_1Level"></td><td id="stPatmarket_1"></td></tr><tr>`;
+        htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></div><div sytle="width:50%"; float:right">`
+        htmltext += '<table id="stPatNext" class="foe-table"><tr>';
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPatworkshop_1Level"></td><td id="stPatworkshop_1" class="border-right"></td></tr><tr>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPatworkshop_2Level"></td><td id="stPatworkshop_2" class="border-right"></td></tr><tr>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPatworkshop_3Level"></td><td id="stPatworkshop_3" class="border-right"></td></tr><tr>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPatworkshop_4Level"></td><td id="stPatworkshop_4" class="border-right"></td></tr><tr>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPatworkshop_5Level"></td><td id="stPatworkshop_5" class="border-right"></td></tr><tr>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPattransport_1Level"></td><td id="stPattransport_1" class="border-right"></td></tr><tr>`;
+        htmltext += `<td class="border-left"><img src="https://foezz.innogamescdn.com/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" width="30" height="30"></td>`;
+        htmltext += `<td id="stPatmarket_1Level"></td><td id="stPatmarket_1" class="border-right"></td></tr><tr>`;
         htmltext += `</tr></table></div>`;
         
         $('#stPatrickDialogBody').html(htmltext); 
