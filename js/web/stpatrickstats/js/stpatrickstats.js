@@ -181,9 +181,7 @@ function stPatProduction (building) {
     for (i=building.level;i<x;i++) {
         need += Math.pow(growth,i-1)*base;
     }
-    console.log(need);
-    console.log(ndegree);
-
+    
     while (need >= 1000 && ndegree<5) {
         need /= 1000;
         ndegree += 1;
