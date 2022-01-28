@@ -201,16 +201,16 @@ let stPatrick = {
 		for (let x in stPatrick.stPat) {
 			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
 			$('#stPat'+x).text(`${stPatrick.stPat[x].need.toPrecision(3)} ${stPatrick.stPatNums[stPatrick.stPat[x].ndegree]}`);
-			$('#stPat'+x).attr('title', stPatrick.stPatNumTitles[stPatrick.stPat[x].ndegree]);
+			$('#stPat'+x).attr('title', `${stPatrick.stPat[x].need.toPrecision(3)} ${stPatrick.stPatNumTitles[stPatrick.stPat[x].ndegree]}`);
 		
 		}
 
 		$('#stPatWork').text(`${work.toPrecision(3)} ${stPatrick.stPatNums[workd]}`);
-		$('#stPatWork').attr('title', `${stPatrick.stPatNumTitles[workd]}\n${worktitle}`);
+		$('#stPatWork').attr('title', `${work.toPrecision(3)} ${stPatrick.stPatNumTitles[workd]}\n----------${worktitle}`);
 		$('#stPatShip').text(`${ship.toPrecision(3)} ${stPatrick.stPatNums[shipd]}`);
-		$('#stPatShip').attr('title', stPatrick.stPatNumTitles[shipd]);
+		$('#stPatShip').attr('title', `${ship.toPrecision(3)} ${stPatrick.stPatNumTitles[shipd]}`);
 		$('#stPatFest').text(`${fest.toPrecision(3)} ${stPatrick.stPatNums[festd]}`);
-		$('#stPatFest').attr('title', stPatrick.stPatNumTitles[festd]);
+		$('#stPatFest').attr('title', `${fest.toPrecision(3)} ${stPatrick.stPatNumTitles[festd]}`);
 	},
 
 
