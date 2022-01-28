@@ -163,10 +163,11 @@ let stPatrick = {
 				degree = stPatrick.stPat[b].degree;
 			}
 		}
-
+		let worktitle = ''
 		for (let b in stPatrick.stPat) {
 			if (stPatrick.stPat[b].type === 'work'){
 				sum += Math.pow(1000, stPatrick.stPat[b].degree - degree) * stPatrick.stPat[b].production
+				worktitle += `\n${stPatrick.stPat[b].baseData.name}: ${stPatrick.stPat[b].production.toPrecision(3)} ${stPatrick.stPatNums[stPatrick.stPat[b].degree]}`
 			}
 		}
 
@@ -205,7 +206,7 @@ let stPatrick = {
 		}
 
 		$('#stPatWork').text(`${work.toPrecision(3)} ${stPatrick.stPatNums[workd]}`);
-		$('#stPatWork').attr('title', stPatrick.stPatNumTitles[workd]);
+		$('#stPatWork').attr('title', `${stPatrick.stPatNumTitles[workd]}\n${worktitle}`);
 		$('#stPatShip').text(`${ship.toPrecision(3)} ${stPatrick.stPatNums[shipd]}`);
 		$('#stPatShip').attr('title', stPatrick.stPatNumTitles[shipd]);
 		$('#stPatFest').text(`${fest.toPrecision(3)} ${stPatrick.stPatNums[festd]}`);
