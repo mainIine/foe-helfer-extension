@@ -11,8 +11,6 @@
  * **************************************************************************************
  */
 
-
-
 FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 
     // Don't create a new box while another one is still open
@@ -31,12 +29,15 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 });
 
 FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
+	
     if(postData[0]['requestClass'] !== 'IdleGameService')
     	return;
 
-    for (let x in postData[0]['requestData'][1])
+	let game = postData[0]['requestData'][1];
+
+    for (let x in game)
 	{
-        let data2 = postData[0]['requestData'][1][x];
+        let data2 = game[x];
 
         if (data2.type === 'upgrade_level') {
 			stPatrick.stPat[data2.characterId].level += data2.amount;
@@ -246,7 +247,7 @@ let stPatrick = {
 		let need = 0;
 		let ndegree = building.baseData.baseUpgradeCostDegree|0;
 
-		for (i=building.level;i<x;i++) {
+		for (let i = building.level; i<x; i++) {
 			need += Math.pow(growth,i-1)*base;
 		}
 
@@ -265,6 +266,7 @@ let stPatrick = {
 
 		for (let i in building.baseData.bonuses) {
 			let bonus = building.baseData.bonuses[i];
+
 			if (building.manager < bonus.level) {
 				break;
 			}
@@ -276,9 +278,11 @@ let stPatrick = {
 					tbonus += bonus.amount;
 			}
 		}
+
 		p *= 1 + pbonus;
 		t /= 1 + tbonus;
 		p *= 3600/t;
+
 		while (p >= 1000 && d<5) {
 			p /= 1000;
 			d += 1;
