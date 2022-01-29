@@ -284,8 +284,25 @@
 	-moz-animation: pulse 3s infinite ease-in-out;
 	animation: pulse 3s infinite ease-in-out;
 }
-.diagonal {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(150,150,150,.5) 5px, rgba(255,255,255,.5) 10px)
+/* mark old buildings*/
+.older-1.diagonal {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(175, 255, 164, 0.5) 5px, rgba(175, 255, 164, 0.5) 10px)
+}
+.older-2.diagonal {
+	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgba(180, 139, 3, 0.5) 5px, rgba(180, 139, 3, 0.5) 10px)
+}
+.older-3.diagonal {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(250, 100, 100, 0.5) 5px, rgba(250, 100, 100, 0.5) 10px)
+}
+.to-old.diagonal {
+	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgba(255, 0, 0, 0.5) 5px, rgba(255,0,0,.5) 10px)
+}
+
+.to-old-legends span {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 3px;
 }
 
 /* ------------------------------------------------------------------------- */

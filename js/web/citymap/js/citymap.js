@@ -303,7 +303,30 @@ let CityMap = {
 				f.attr({
 					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
 				})
-				if (era<CurrentEraID) {f.addClass('oldBuildings')}
+
+				if (era < CurrentEraID) {
+                    f.addClass('oldBuildings');
+
+					let eraDiff = CurrentEraID - era;
+					
+					switch(eraDiff){
+						case 1:
+							f.addClass('older-1');
+							break;
+
+						case 2:
+							f.addClass('older-2');
+							break;
+
+						case 3:
+							f.addClass('older-3');
+							break;
+
+						default: 
+							f.addClass('to-old');
+							break;
+					}
+                }
 			}
 
 			// die Größe wurde geändert, wieder aktivieren
@@ -345,6 +368,7 @@ let CityMap = {
 			aW.append( $('<p />').addClass('total-area') );
 			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<p />').addClass('building-count-area') );
+			aW.append( $('<p />').addClass('to-old-legends').hide() );
 
 			$('#sidebar').append(aW);
 		}
@@ -374,7 +398,15 @@ let CityMap = {
 			txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
+		
+		let legends = [];
+		
+		legends.push(`<span class="older-1 diagonal"></span> ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
+		legends.push(`<span class="older-2 diagonal"></span> ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
+		legends.push(`<span class="older-3 diagonal"></span> ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
+		legends.push(`<span class="to-old diagonal"></span> ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
 
+		$('.to-old-legends').html(legends.join(''));
 	},
 
 
@@ -425,6 +457,7 @@ let CityMap = {
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
+		$('.building-count-area, .to-old-legends').fadeToggle();
 	},
 
 
