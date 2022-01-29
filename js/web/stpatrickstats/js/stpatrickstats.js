@@ -219,7 +219,11 @@ let stPatrick = {
 		if (building.level === 0) {
 			building.next = 1;
 			building.need = building.baseData.buyCostValue;
-			building.ndegree = building.baseData.buyCostDegree;
+			building.ndegree = building.baseData.buyCostDegree|0;
+			if (building.need >= 1000 && building.ndegree<6) {
+				building.need /= 1000;
+				building.ndegree += 1;
+			}			
 			return building;
 		}
 
