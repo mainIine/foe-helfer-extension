@@ -789,7 +789,7 @@
     "Boxes.stPatrick.Production": "Fabriken",
     "Boxes.stPatrick.Hourly": "Stündliche Produktion",
     "Boxes.stPatrick.Title": "St Patrick Mini Game Info",
-    "Boxes.stPatrick.Warning": "Aktualisierung der Werte kann verzögert sein - je nach Serverantwortzeit",
+    "Boxes.stPatrick.Warning": "Aktualisierung der Werte kann verzögert sein - je nach Serverantwortzeit. Angegebene Zeiten nehmen keine Rücksicht auf Aktualisierungen des Vorrat.",
     "Boxes.stPatrick.K":"Tausend",
     "Boxes.stPatrick.M":"Millionen",
     "Boxes.stPatrick.B":"Milliarden",

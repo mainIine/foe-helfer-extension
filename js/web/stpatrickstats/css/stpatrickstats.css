@@ -22,7 +22,7 @@
 }
 
 #stPatrickDialogBody {
-    width: 450px;
+    width: 550px;
     height: 219px;
     display: block;
     justify-content: center;
@@ -54,6 +54,13 @@
 
 #stPatNext td.border-right {
     border-right: 1px solid var(--border-table-bottom);
+}
+
+#stPatNext td.align-right {
+    text-align: right;
+}
+#stPatNext td.align-left {
+    text-align: left;
 }
 
 #stPatNext td.border-left {

@@ -18,7 +18,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		stPatrick.ShowDialog();
 	}
 
-    for (let x in data.responseData.characters) {
+	for (let x in data.responseData.characters) {
         let character = data.responseData.characters[x];
 
 		stPatrick.stPat[character.id].level = character.level|0;
@@ -105,6 +105,7 @@ let stPatrick = {
 		6 : i18n('Boxes.stPatrick.QT')
 	},
 
+
     /**
      * Shows a User Box with the current production stats
      *
@@ -121,28 +122,49 @@ let stPatrick = {
             'minimize': false
         });
 
-        let htmltext = `<table><tr><td style="width:50%"><table id="stPatTable"><tr><th colspan="3">`;
+        let htmltext = `<table><tr><td style="width:45%"><table id="stPatTable"><tr><th colspan="3">`;
         htmltext += `<img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
         htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
         htmltext += `<td>${stPatrick.stPat.market_1.baseData.name}<br><span id="stPatFest"></span></td>`;
         htmltext += `<td rowspan="2">${i18n('Boxes.stPatrick.Production')}<br><span id="stPatWork"></span></td>`;
         htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
-        htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></td><td sytle="width:50%">`
-        htmltext += `<table id="stPatNext" class="foe-table"><tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
+        htmltext += `</tr><tr><td colspan="3" style="color:rgba(0,255,221,0.64);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table></td><td sytle="width:55%">`
+        htmltext += `<table id="stPatNext" class="foe-table">`
+		htmltext += `<tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPatworkshop_1Level"></td><td id="stPatworkshop_1" class="border-right"></td></tr><tr title="${stPatrick.stPat.workshop_2.baseData.name}">`;
+        htmltext += `<td id="stPatworkshop_1Level"></td>`
+		htmltext += `<td id="stPatworkshop_1" class="align-right"></td>`
+		htmltext += `<td id="stPatworkshop_1Time" class="border-right align-left"></td></tr>`
+		htmltext += `<tr title="${stPatrick.stPat.workshop_2.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPatworkshop_2Level"></td><td id="stPatworkshop_2" class="border-right"></td></tr><tr title="${stPatrick.stPat.workshop_3.baseData.name}">`;
+        htmltext += `<td id="stPatworkshop_2Level"></td>`
+		htmltext += `<td id="stPatworkshop_2" class="align-right"></td>`
+		htmltext += `<td id="stPatworkshop_2Time" class="border-right align-left"></td></tr>`
+		htmltext += `<tr title="${stPatrick.stPat.workshop_3.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPatworkshop_3Level"></td><td id="stPatworkshop_3" class="border-right"></td></tr><tr title="${stPatrick.stPat.workshop_4.baseData.name}">`;
+        htmltext += `<td id="stPatworkshop_3Level"></td>`
+		htmltext += `<td id="stPatworkshop_3" class="align-right"></td>`
+		htmltext += `<td id="stPatworkshop_3Time" class="border-right align-left"></td></tr>`
+		htmltext += `<tr title="${stPatrick.stPat.workshop_4.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPatworkshop_4Level"></td><td id="stPatworkshop_4" class="border-right"></td></tr><tr title="${stPatrick.stPat.workshop_5.baseData.name}">`;
+        htmltext += `<td id="stPatworkshop_4Level"></td>`
+		htmltext += `<td id="stPatworkshop_4" class="align-right"></td>`
+		htmltext += `<td id="stPatworkshop_4Time" class="border-right align-left"></td></tr>`
+		htmltext += `<tr title="${stPatrick.stPat.workshop_5.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPatworkshop_5Level"></td><td id="stPatworkshop_5" class="border-right"></td></tr><tr title="${stPatrick.stPat.transport_1.baseData.name}">`;
+        htmltext += `<td id="stPatworkshop_5Level"></td>`
+		htmltext += `<td id="stPatworkshop_5" class="align-right"></td>`
+		htmltext += `<td id="stPatworkshop_5Time" class="border-right align-left"></td></tr>`
+		htmltext += `<tr title="${stPatrick.stPat.transport_1.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPattransport_1Level"></td><td id="stPattransport_1" class="border-right"></td></tr><tr title="${stPatrick.stPat.market_1.baseData.name}">`;
+        htmltext += `<td id="stPattransport_1Level"></td>`
+		htmltext += `<td id="stPattransport_1" class="align-right"></td>`
+		htmltext += `<td id="stPattransport_1Time" class="border-right align-left"></td></tr>`
+		htmltext += `<tr title="${stPatrick.stPat.market_1.baseData.name}">`;
         htmltext += `<td class="border-left"><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" ></td>`;
-        htmltext += `<td id="stPatmarket_1Level"></td><td id="stPatmarket_1" class="border-right"></td></tr><tr>`;
+        htmltext += `<td id="stPatmarket_1Level"></td>`
+		htmltext += `<td id="stPatmarket_1" class="align-right"></td>`
+		htmltext += `<td id="stPatmarket_1Time" class="border-right align-left"></td></tr><tr>`;
         htmltext += `</tr></table></td></tr></table>`;
         
         $('#stPatrickDialogBody').html(htmltext); 
@@ -190,7 +212,9 @@ let stPatrick = {
 			ident = '#stPatShip'
 		}
 		if (festd < degree || (festd === degree && fest < sum)) {
-			ident = '#stPatFest'
+			ident = '#stPatFest';
+			sum = fest;
+			degree = festd
 		}
 
 		$('#stPatWork').removeClass("highlight");
@@ -201,6 +225,7 @@ let stPatrick = {
 		for (let x in stPatrick.stPat) {
 			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
 			$('#stPat'+x).text(`${stPatrick.stPat[x].need.toPrecision(3)} ${stPatrick.stPatNums[stPatrick.stPat[x].ndegree]}`);
+			$('#stPat'+x+'Time').text(`(${stPatrick.time(stPatrick.stPat[x].need,stPatrick.stPat[x].ndegree,sum,degree)})`);
 			$('#stPat'+x).attr('title', `${stPatrick.stPat[x].need.toPrecision(3)} ${stPatrick.stPatNumTitles[stPatrick.stPat[x].ndegree]}`);
 		
 		}
@@ -212,7 +237,6 @@ let stPatrick = {
 		$('#stPatFest').text(`${fest.toPrecision(3)} ${stPatrick.stPatNums[festd]}`);
 		$('#stPatFest').attr('title', `${fest.toPrecision(3)} ${stPatrick.stPatNumTitles[festd]}`);
 	},
-
 
 	stPatProduction: (building) => {
 
@@ -318,5 +342,15 @@ let stPatrick = {
 		}
 
 		return building;
+	},
+
+	time: (amount, da, hourly, dh) => {
+		
+		hours = amount / hourly * Math.pow(1000,da-dh);
+		minutes = Math.floor((hours - Math.floor(hours))*60);
+		hours = Math.floor(hours);
+		time = `${hours}h`
+		time += hours < 24 ? `:${minutes}m` : ``
+		return time;
 	}
 };
