@@ -295,11 +295,14 @@ let stPatrick = {
 
 		let i = Math.min(stPatrick.Tasklist.length, 9);
 		for (let t = 3;t<9;t++) {
-			if (t<i) {
+			if (t < i) {
 				let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];
 				$('#stPatTask'+ t).text(`${Task.description}`);
+				$('#stPatTask'+ t).css('display', 'block');
+				
 			} else {
 				$('#stPatTask'+ t).text(``);
+				$('#stPatTask'+ t).css('display', 'none');
 			}
 		}
 
