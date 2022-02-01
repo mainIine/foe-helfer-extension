@@ -96,50 +96,7 @@ let scoutingTimes = {
                 htmltext += ` ${scoutingTimes.format(province.travelTime)}</td></tr>`;
             }
         }
-        
-        //console.log (Provinces);
-/*         for (let p in Provinces) {
-            let province = Provinces[p];
-            let traveltime =0;
-            
-            if ((province.isScouted|false) || (province.isPlayerOwned|false)) {
-                console.log(`${province.name}: owned or scouted`);
-                continue;
-            }
-            let mayScout = true;
-            for (let x in province.blockers){
-                let blockId = province.blockers[x];
-                if (!(Provinces[blockId].isPlayerOwned|false)) {
-                    mayScout = false;
-                    console.log(`${province.name}: blocked`);
-                }
-            }
-            if (!mayScout) continue;
-            
-            for (let x in province.parentIds){
-                let parentId = province.parentIds[x];
-                if (!(Provinces[parentId].isPlayerOwned|false)) {
-                    mayScout = false;
-                    console.log(`${province.name}: not all parents owned`);
-                }
-                for (c in Provinces[parentId].children) {
-                    if (Provinces[parentId].children[c].targetId === province.id) {
-                        traveltime = Provinces[parentId].children[c].travelTime;
-                        console.log(`${province.name}: ${traveltime}`);
-                    }
-                }
-            }
-            if (!mayScout) continue;
-            if (traveltime > 0) {
-                i += 1;
-                console.log(`${province.name}: ${traveltime}`);
-                htmltext += `<tr><td>${province.name}</td>`;
-                htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt="">`;
-                htmltext += ` ${scoutingTimes.numberWithCommas(province.scoutingCost)}</td>`;
-                htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
-                htmltext += ` ${scoutingTimes.format(traveltime)}</td></tr>`
-            }
-        } */
+       
         htmltext += `</table><div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
         console.log(htmltext);
         
