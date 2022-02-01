@@ -176,7 +176,7 @@ let stPatrick = {
         htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
         htmltext += `</tr><tr><td colspan="3" style="color: var(--text-bright);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table>`;
         
-		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4">${i18n('Boxes.stPatrick.BuildingUpgrades')}</th></tr>`;
+		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="stPatrick.hide('#stPatNext')">${i18n('Boxes.stPatrick.BuildingUpgrades')}</th></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
         htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
         htmltext += `<td id="stPatworkshop_1Level"></td>`;
@@ -213,17 +213,22 @@ let stPatrick = {
 		htmltext += `<td id="stPatmarket_1" class="align-right"></td>`;
 		htmltext += `<td id="stPatmarket_1Time" class="align-left"></td></tr>`;
         htmltext += `</table>`;
-        htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th>${i18n('Boxes.stPatrick.UpcomingTasks')}</th></tr>`;
+        htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}</th></tr>`;
 		htmltext += `<tr><td id="stPatTask3"></td></tr>`;
         htmltext += `<tr><td id="stPatTask4"></td></tr>`;
         htmltext += `<tr><td id="stPatTask5"></td></tr>`;
         htmltext += `<tr><td id="stPatTask6"></td></tr>`;
         htmltext += `<tr><td id="stPatTask7"></td></tr>`;
         htmltext += `<tr><td id="stPatTask8"></td></tr>`;
-        htmltext += `<tr><td id="stPatTown" style="color:var(--text-bright); font-weight:bold"></td></tr>`;
         htmltext += `</table>`;
+		htmltext += `<span id="stPatTown" style="color:var(--text-bright); font-weight:bold"></span>`;
+        
         
         $('#stPatrickDialogBody').html(htmltext); 
+		for (let t in stPatrick.hiddenTables) {
+			table= stPatrick.hiddenTables[t];
+			stPatrick.hide2(table);
+		};
     },
 
 
@@ -298,11 +303,11 @@ let stPatrick = {
 			if (t < i) {
 				let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];
 				$('#stPatTask'+ t).text(`${Task.description}`);
-				$('#stPatTask'+ t).css('display', 'block');
+				$('#stPatTask'+ t).removeClass('hide');
 				
 			} else {
 				$('#stPatTask'+ t).text(``);
-				$('#stPatTask'+ t).css('display', 'none');
+				$('#stPatTask'+ t).classList.add('hide');
 			}
 		}
 
@@ -436,5 +441,21 @@ let stPatrick = {
 	bigNum: (number) => {
 		bigNum = number >= 1000 ? `${Math.floor(number)}` : `${number.toPrecision(3)}`;
 		return bigNum;
-	}
+	},
+
+	hiddenTables: [],
+
+	hide: (id) => {
+		stPatrick.hide2(id);
+		let i = stPatrick.hiddenTables.indexOf(id);
+		if (i > -1) {
+			stPatrick.hiddenTables.splice(i , 1)
+		} else {
+			stPatrick.hiddenTables.push(id);
+		}
+	},
+
+	hide2: (id) => {
+		$(id).toggleClass("hide");
+	},
 };
