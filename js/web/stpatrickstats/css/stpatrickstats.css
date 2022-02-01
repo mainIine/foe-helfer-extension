@@ -60,3 +60,11 @@
     text-align: left;
     padding-left: 2px;
 }
+
+#stPatNext.hide td {
+    display: none;
+}
+
+#stPatTasks.hide td, #stPatTasks td.hide {
+    display: none;
+}
