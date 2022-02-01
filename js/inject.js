@@ -234,7 +234,8 @@
 				'dbexport',
 				'closebox',
 				'castle',
-				'stpatrickstats'
+				'stpatrickstats',
+				'scoutingtimes'
 			];
 
 			// load scripts (one after the other)
