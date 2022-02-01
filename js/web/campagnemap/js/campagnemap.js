@@ -77,7 +77,7 @@ let KampagneMap = {
 
         let OffeneProvinzen = [];
         KampagneMap.Provinces.forEach(prov => {
-            if (prov['isPlayerOwned'] === false) {
+            if (prov['isPlayerOwned'] != true) {
                 OffeneProvinzen.push(prov);
             }
         });
