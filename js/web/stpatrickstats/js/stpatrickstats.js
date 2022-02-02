@@ -281,7 +281,7 @@ let stPatrick = {
 		$('#stPatWork').removeClass("highlight");
 		$('#stPatShip').removeClass("highlight");
 		$('#stPatFest').removeClass("highlight");
-		$(ident)[0].classList.add("highlight");
+		$(ident).addClass("highlight");
 
 		for (let x in stPatrick.stPat) {
 			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
@@ -307,7 +307,7 @@ let stPatrick = {
 				
 			} else {
 				$('#stPatTask'+ t).text(``);
-				$('#stPatTask'+ t).classList.add('hide');
+				$('#stPatTask'+ t).addClass('hide');
 			}
 		}
 
