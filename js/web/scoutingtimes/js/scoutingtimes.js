@@ -17,6 +17,27 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
     HTML.CloseOpenBox('mapScoutingTimesDialog');
 });
 
+FoEproxy.addHandler('CastleSystemService', 'getCastleSystemPlayer', (data, postData) => {
+    //get Castle Level
+    scoutingTimes.castleLevel = data.responseData.level|0;    
+});
+
+FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
+
+    let resp = JSON.parse(data['response']);
+
+    for (let x in resp)
+	{
+		let l = resp[x];
+
+		if(!l['level'])
+		{
+			continue;
+		}
+		scoutingTimes.castleMeta[l['level']] = l;
+    }
+});
+
 FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
        
     // Is the box enabled in the settings?
@@ -83,22 +104,30 @@ let scoutingTimes = {
             }    
         }
         
+        let castlebonus = 1;
+        if (scoutingTimes.castleLevel > 0) {
+            for (let b in scoutingTimes.castleMeta[scoutingTimes.castleLevel].permanentRewards.BronzeAge) {
+                let boost = scoutingTimes.castleMeta[scoutingTimes.castleLevel].permanentRewards.BronzeAge[b];
+                if(boost.subType != 'army_scout_time') continue;
+                castlebonus -= boost.amount/100
+            }
+        }
+        
         while (toscout.length > 0) {
             i += 1;
             let p = toscout.pop();
             let province = Provinces[p];
-            console.log (province.travelTime);
+            
             if ((province.travelTime|0)>0) {
                 htmltext += `<tr><td>${province.name}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt="">`;
                 htmltext += ` ${scoutingTimes.numberWithCommas(province.scoutingCost)}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
-                htmltext += ` ${scoutingTimes.format(province.travelTime)}</td></tr>`;
+                htmltext += ` ${scoutingTimes.format(province.travelTime*castlebonus)}</td></tr>`;
             }
         }
        
         htmltext += `</table><div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
-        console.log(htmltext);
         
         if (i > 0) {
             $('#mapScoutingTimesDialogBody').html(htmltext);
@@ -125,4 +154,8 @@ let scoutingTimes = {
     numberWithCommas: (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
+
+    castleLevel: 0,
+    castleMeta:{},
+
 };
