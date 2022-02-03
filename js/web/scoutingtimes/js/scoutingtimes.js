@@ -17,15 +17,11 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
     HTML.CloseOpenBox('mapScoutingTimesDialog');
 });
 
-FoEproxy.addHandler('CastleSystemService', 'getCastleSystemPlayer', (data, postData) => {
-    //get Castle Level
-    scoutingTimes.castleLevel = data.responseData.level|0;    
-});
-
 FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
 
     let resp = JSON.parse(data['response']);
-
+    let castlebonus = 1;
+        
     for (let x in resp)
 	{
 		let l = resp[x];
@@ -34,7 +30,14 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
 		{
 			continue;
 		}
-		scoutingTimes.castleMeta[l['level']] = l;
+
+        for (let b in l.permanentRewards.BronzeAge) {
+            let boost = l.permanentRewards.BronzeAge[b];
+            if(boost.subType != 'army_scout_time') continue;
+            castlebonus = 1 - boost.amount/100
+        }
+    
+		scoutingTimes.castleBonuses[l['level']] = castlebonus;
     }
 });
 
@@ -46,9 +49,9 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
     }
     
     //do not show box, when scout is currently scouting
-    if (!(data.responseData.scout.path[0] == 0)) {
-        return;
-    }
+    //if (!(data.responseData.scout.path[0] == 0)) {
+    //    return;
+    //}
 
     // Don't create a new box while another one is still open
     if ($('#mapScoutingTimesDialog').length > 0) {
@@ -91,9 +94,10 @@ let scoutingTimes = {
             if (!(province.isPlayerOwned|false)) continue;
             for (c in province.children) {
                 let child = Provinces[province.children[c].targetId];
-                Provinces[province.children[c].targetId].travelTime = province.children[c].travelTime;
-                if (toscout.indexOf(child.id) > -1) continue;
                 if (child.isPlayerOwned|false) continue;
+                if (child.isScouted|false) continue;
+                if (toscout.indexOf(child.id) > -1) continue;
+                Provinces[child.id].travelTime = province.children[c].travelTime;
                 let mayScout = true;
                 for (b in child.blockers) {
                     let blockId = child.blockers[b];
@@ -105,14 +109,7 @@ let scoutingTimes = {
         }
         
         let castlebonus = 1;
-        if (scoutingTimes.castleLevel > 0) {
-            for (let b in scoutingTimes.castleMeta[scoutingTimes.castleLevel].permanentRewards.BronzeAge) {
-                let boost = scoutingTimes.castleMeta[scoutingTimes.castleLevel].permanentRewards.BronzeAge[b];
-                if(boost.subType != 'army_scout_time') continue;
-                castlebonus -= boost.amount/100
-            }
-        }
-        
+        if (Castle.curLevel>0) scoutingTimes.castleBonuses[Castle.curLevel];
         while (toscout.length > 0) {
             i += 1;
             let p = toscout.pop();
@@ -155,7 +152,6 @@ let scoutingTimes = {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
 
-    castleLevel: 0,
-    castleMeta:{},
+    castleBonuses:{},
 
 };
