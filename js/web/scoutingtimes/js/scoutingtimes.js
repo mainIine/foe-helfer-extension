@@ -58,7 +58,7 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
         return;
     }
     
-    return scoutingTimes.ShowDialog(data.responseData.provinces);
+    return scoutingTimes.ShowDialog(data.responseData);
 });
 
 let scoutingTimes = {
@@ -84,8 +84,8 @@ let scoutingTimes = {
         let Provinces = {};
         let toscout = [];
         
-        for (let p in data) {
-            let province = data[p];
+        for (let p in data.provinces) {
+            let province = data.provinces[p];
             Provinces[province.id] = province;
         }
         
@@ -98,6 +98,10 @@ let scoutingTimes = {
                 if (child.isScouted|false) continue;
                 if (toscout.indexOf(child.id) > -1) continue;
                 Provinces[child.id].travelTime = province.children[c].travelTime;
+                if (data.scout.path.indexOf(child.id)>=0) {
+                    Provinces[child.id].travelTime = data.scout.time_to_target;
+                    scoutingTimes.target = child.id;
+                }
                 let mayScout = true;
                 for (b in child.blockers) {
                     let blockId = child.blockers[b];
@@ -116,11 +120,11 @@ let scoutingTimes = {
             let province = Provinces[p];
             
             if ((province.travelTime|0)>0) {
-                htmltext += `<tr><td>${province.name}</td>`;
-                htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt="">`;
-                htmltext += ` ${scoutingTimes.numberWithCommas(province.scoutingCost)}</td>`;
+                htmltext += `<tr><td>${province.name}</td><td>`;
+                htmltext += (p === scoutingTimes.target) ? `...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${scoutingTimes.numberWithCommas(province.scoutingCost)}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
-                htmltext += ` ${scoutingTimes.format(province.travelTime*castlebonus)}</td></tr>`;
+                htmltext += ` ${scoutingTimes.format(province.travelTime*castlebonus)}`;
+                htmltext += `</td></tr>`;
             }
         }
        
@@ -153,5 +157,6 @@ let scoutingTimes = {
     },
 
     castleBonuses:{},
+    target:0,
 
 };
