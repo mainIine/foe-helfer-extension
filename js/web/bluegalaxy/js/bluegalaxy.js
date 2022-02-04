@@ -45,17 +45,20 @@ FoEproxy.addFoeHelperHandler('BonusUpdated', data => {
 });
 
 let BlueGalaxy = {
+
     GoodsValue : 0.2,
     DoubleCollections : 0,
     GalaxyFactor : 0,
 
 
-	/**
-	 * Show or hide the box
-	 *
-	 * @constructor
-	 */
-    Show: (event=false, auto_close = false) => {
+    /**
+     * Zeigt die Box an
+     *
+     * @param event
+     * @param auto_close
+     * @constructor
+     */
+    Show: (event= false, auto_close = false) => {
         moment.locale(i18n('Local'));
 
         if ($('#bluegalaxy').length === 0) {
@@ -70,7 +73,8 @@ let BlueGalaxy = {
                 title: i18n('Boxes.BlueGalaxy.Title'),
                 auto_close: true,
                 dragdrop: true,
-                minimize: true
+                minimize: true,
+                resize: true
             });
 
             HTML.AddCssFile('bluegalaxy');
@@ -106,7 +110,7 @@ let BlueGalaxy = {
 
 
 	/**
-	 * Builds the body
+	 * Content zusammen setzen
 	 *
 	 * @constructor
 	 */
@@ -245,6 +249,12 @@ let BlueGalaxy = {
         $('#bluegalaxyBody').html(h.join(''));
     },
 
+
+    /**
+     * Counter anzeigen
+     *
+     * @constructor
+     */
     SetCounter: ()=> {
         if (BlueGalaxy.DoubleCollections > 0){
             $('#hidden-blue-galaxy-count').text(BlueGalaxy.DoubleCollections).show();

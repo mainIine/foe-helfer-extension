@@ -452,6 +452,7 @@
     "Boxes.Infobox.ResetBox": "Clear All",
     "Boxes.Infobox.Title": "Infobox",
     "Boxes.Infobox.UnknownConversation": "Unknown Conversation",
+    "Boxes.Infobox.NewMessageArrived": "New message arrived!",
     "Boxes.Investment.AllUpToDate": "Event History page previously updated",
     "Boxes.Investment.AllUpToDateDesc": "This information has already been collected",
     "Boxes.Investment.CurrReward": "Current Profit: ",
