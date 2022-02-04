@@ -21,3 +21,7 @@
 #mapScoutingTimesDialogBody{
     width: 450px;
 }
+
+.scouted {
+    background-color:var(--background-table-success);
+}

@@ -89,19 +89,24 @@ let scoutingTimes = {
             Provinces[province.id] = province;
         }
         
+        let castlebonus = 1;
+        if (Castle.curLevel>0) castlebous = scoutingTimes.castleBonuses[Castle.curLevel];
+        
         for (let p in Provinces) {
             let province = Provinces[p];
             if (!(province.isPlayerOwned|false)) continue;
             for (c in province.children) {
                 let child = Provinces[province.children[c].targetId];
                 if (child.isPlayerOwned|false) continue;
-                if (child.isScouted|false) continue;
                 if (toscout.indexOf(child.id) > -1) continue;
-                Provinces[child.id].travelTime = province.children[c].travelTime;
-                if (data.scout.path.indexOf(child.id)>=0) {
+                Provinces[child.id].travelTime = province.children[c].travelTime * castlebonus;
+                if (data.scout.path[data.scout.path.length-1] === child.id) {
                     Provinces[child.id].travelTime = data.scout.time_to_target;
                     scoutingTimes.target = child.id;
                 }
+                
+                Provinces[child.id].isScouted = child.isScouted|false;
+                if (Provinces[child.id].isScouted) Provinces[child.id].travelTime = 0;
                 let mayScout = true;
                 for (b in child.blockers) {
                     let blockId = child.blockers[b];
@@ -112,18 +117,19 @@ let scoutingTimes = {
             }    
         }
         
-        let castlebonus = 1;
-        if (Castle.curLevel>0) scoutingTimes.castleBonuses[Castle.curLevel];
         while (toscout.length > 0) {
             i += 1;
             let p = toscout.pop();
             let province = Provinces[p];
             
+            if (province.isScouted) {
+                htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
+            }
             if ((province.travelTime|0)>0) {
                 htmltext += `<tr><td>${province.name}</td><td>`;
-                htmltext += (p === scoutingTimes.target) ? `...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${scoutingTimes.numberWithCommas(province.scoutingCost)}</td>`;
+                htmltext += (p === scoutingTimes.target) ? `...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
-                htmltext += ` ${scoutingTimes.format(province.travelTime*castlebonus)}`;
+                htmltext += ` ${scoutingTimes.format(province.travelTime)}`;
                 htmltext += `</td></tr>`;
             }
         }
@@ -147,7 +153,7 @@ let scoutingTimes = {
 
         timestring = (days>0) ? `${days}d ` : ``;
         timestring += (hours>0) ? `${hours}h ` : ``;
-        timestring += (min>0) ? `${min}m ` : ``;
+        timestring += ((min>0) || (min+hours+days === 0))  ? `${min}m ` : ``;
 
         return timestring
     },
