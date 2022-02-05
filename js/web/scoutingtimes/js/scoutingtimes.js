@@ -90,7 +90,7 @@ let scoutingTimes = {
         }
         
         let castlebonus = 1;
-        if (Castle.curLevel>0) castlebous = scoutingTimes.castleBonuses[Castle.curLevel];
+        if (Castle.curLevel>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
         
         for (let p in Provinces) {
             let province = Provinces[p];
