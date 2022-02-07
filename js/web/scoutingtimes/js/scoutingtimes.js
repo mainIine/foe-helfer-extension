@@ -69,18 +69,8 @@ let scoutingTimes = {
      * @constructor
      */
     ShowDialog: (data) => {
-        HTML.AddCssFile('scoutingtimes');
-        
-        HTML.Box({
-            'id': 'mapScoutingTimesDialog',
-            'title': i18n('Boxes.scoutingTimes.Title'),
-            'auto_close': true,
-            'dragdrop': true,
-            'minimize': false
-        });
 
         let htmltext = `<table class="foe-table"><tr><th>${i18n('Boxes.scoutingTimes.ProvinceName')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingCost')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingTime')}</th></tr>`;
-        let i = 0;
         let Provinces = {};
         let toscout = [];
         
@@ -110,22 +100,24 @@ let scoutingTimes = {
                 let mayScout = true;
                 for (b in child.blockers) {
                     let blockId = child.blockers[b];
-                    if (!(Provinces[blockId].isPlayerOwned|false)) mayScout = false;
+                    if (!(Provinces[blockId]?.isPlayerOwned|false)) mayScout = false;
                 }
                 if (!mayScout) continue;
                 toscout.push(child.id);
             }    
         }
         
+        let i = 0;
         while (toscout.length > 0) {
-            i += 1;
             let p = toscout.pop();
             let province = Provinces[p];
             
             if (province.isScouted) {
                 htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
+                i += 1;
             }
             if ((province.travelTime|0)>0) {
+                i += 1;
                 htmltext += `<tr><td>${province.name}</td><td>`;
                 htmltext += (p === scoutingTimes.target) ? `...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
@@ -137,9 +129,17 @@ let scoutingTimes = {
         htmltext += `</table><div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
         
         if (i > 0) {
+            HTML.AddCssFile('scoutingtimes');
+        
+            HTML.Box({
+                'id': 'mapScoutingTimesDialog',
+                'title': i18n('Boxes.scoutingTimes.Title'),
+                'auto_close': true,
+                'dragdrop': true,
+                'minimize': false
+            });
+    
             $('#mapScoutingTimesDialogBody').html(htmltext);
-        } else {
-            HTML.CloseOpenBox('mapScoutingTimesDialog');            
         }
     },
 
