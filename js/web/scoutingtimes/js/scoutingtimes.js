@@ -70,7 +70,6 @@ let scoutingTimes = {
      */
     ShowDialog: (data) => {
 
-        let htmltext = `<table class="foe-table"><tr><th>${i18n('Boxes.scoutingTimes.ProvinceName')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingCost')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingTime')}</th></tr>`;
         let Provinces = {};
         let toscout = [];
         
@@ -81,7 +80,7 @@ let scoutingTimes = {
         
         let castlebonus = 1;
         if (Castle.curLevel>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
-        console.log (Provinces);
+        
         for (let p in Provinces) {
             let province = Provinces[p];
             if (!(province.isPlayerOwned|false)) continue;
@@ -98,10 +97,6 @@ let scoutingTimes = {
                 Provinces[child.id].isScouted = child.isScouted|false;
                 if (Provinces[child.id].isScouted) Provinces[child.id].travelTime = 0;
                 let mayScout = true;
-                if (child.blockers.length > 0) {
-                    console.log (child.name);
-                    console.log (child.blockers);
-                }
                 for (b in child.blockers) {
                     let blockId = child.blockers[b];
                     if (!(Provinces[blockId]?.isPlayerOwned|false)) mayScout = false;
@@ -110,8 +105,10 @@ let scoutingTimes = {
                 toscout.push(child.id);
             }    
         }
-        console.log (toscout);
+
         let i = 0;
+        let htmltext = `<table class="foe-table"><tr><th>${i18n('Boxes.scoutingTimes.ProvinceName')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingCost')}</th><th>${i18n('Boxes.scoutingTimes.ScoutingTime')}</th></tr>`;
+        
         while (toscout.length > 0) {
             let p = toscout.pop();
             let province = Provinces[p];
@@ -168,5 +165,5 @@ let scoutingTimes = {
 
     castleBonuses:{},
     target:0,
-
+    
 };
