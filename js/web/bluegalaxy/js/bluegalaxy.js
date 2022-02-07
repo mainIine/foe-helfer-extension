@@ -40,22 +40,25 @@ FoEproxy.addFoeHelperHandler('BonusUpdated', data => {
     BlueGalaxy.SetCounter();
 
     if ($('#bluegalaxy').length > 0) {
-        BlueGalaxy.Show(event=true, auto_close=true);
+        BlueGalaxy.Show(true, true);
     }
 });
 
 let BlueGalaxy = {
+
     GoodsValue : 0.2,
     DoubleCollections : 0,
     GalaxyFactor : 0,
 
 
-	/**
-	 * Show or hide the box
-	 *
-	 * @constructor
-	 */
-    Show: (event=false, auto_close = false) => {
+    /**
+     * Zeigt die Box an
+     *
+     * @param event
+     * @param auto_close
+     * @constructor
+     */
+    Show: (event= false, auto_close = false) => {
         moment.locale(i18n('Local'));
 
         if ($('#bluegalaxy').length === 0) {
@@ -70,7 +73,8 @@ let BlueGalaxy = {
                 title: i18n('Boxes.BlueGalaxy.Title'),
                 auto_close: true,
                 dragdrop: true,
-                minimize: true
+                minimize: true,
+                resize: true
             });
 
             HTML.AddCssFile('bluegalaxy');
@@ -106,7 +110,7 @@ let BlueGalaxy = {
 
 
 	/**
-	 * Builds the body
+	 * Content zusammen setzen
 	 *
 	 * @constructor
 	 */
@@ -122,6 +126,9 @@ let BlueGalaxy = {
             if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
 
             let Production = Productions.readType(CityMap[i]);
+
+            //console.log(Production);
+
             if (Production['products']) {
                 let FP = Production['products']['strategy_points'];
                 if (!FP) FP = 0;
@@ -134,7 +141,14 @@ let BlueGalaxy = {
                     }
                 }
 
-                Buildings.push({ ID: ID, EntityID: EntityID, FP: FP, Goods: GoodsSum, In: Production['in'], At: Production['at'] });
+                Buildings.push({
+                    ID: ID, 
+                    EntityID: EntityID, 
+                    FP: FP, 
+                    Goods: GoodsSum, 
+                    In: Production['in'], 
+                    At: Production['at']
+                });
             }
         }
                 
@@ -199,6 +213,7 @@ let BlueGalaxy = {
                 table.push('<td>' + BuildingName + '</td>');
                 table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
                 table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
+
                 if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
                     table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
@@ -209,8 +224,14 @@ let BlueGalaxy = {
                 else {
                     table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
                 }
+
                 table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
                 table.push('</tr>');
+
+                // nur so viele ausgeben wie es auch Versuche gibt
+                //if(BlueGalaxy.DoubleCollections === (i +1)){
+                //    break;
+                //}
             }
 
             table.push('</table');
@@ -228,6 +249,12 @@ let BlueGalaxy = {
         $('#bluegalaxyBody').html(h.join(''));
     },
 
+
+    /**
+     * Counter anzeigen
+     *
+     * @constructor
+     */
     SetCounter: ()=> {
         if (BlueGalaxy.DoubleCollections > 0){
             $('#hidden-blue-galaxy-count').text(BlueGalaxy.DoubleCollections).show();

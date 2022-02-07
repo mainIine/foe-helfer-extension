@@ -474,7 +474,7 @@ let Castle = {
                 rtype = 'negotiation';
             }
 
-            nextlevel = Castle.curlevel && Castle.curlevel < d.level;
+            nextlevel = Castle.curLevel && Castle.curlLevel < d.level;
 
             Castle.curLevel = d.level !== undefined ? d.level : Castle.curLevel;
             Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;

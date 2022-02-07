@@ -102,9 +102,12 @@ let Parts = {
 	Show: () => {
 
 		// Gibt es schon? Raus...
-		if ($('#OwnPartBox').length === 0) {
+		if ($('#OwnPartBox').length === 0)
+		{
 			let spk = localStorage.getItem('PartsTone');
-			if (spk === null) {
+
+			if (spk === null)
+			{
 				localStorage.setItem('PartsTone', 'deactivated');
 				Parts.PlayInfoSound = false;
 			}
