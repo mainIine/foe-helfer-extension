@@ -165,9 +165,11 @@ let stPatrick = {
             'title': i18n('Boxes.stPatrick.Title'),
             'auto_close': true,
             'dragdrop': true,
-            'minimize': false
+            'minimize': true
         });
 
+		stPatrick.hiddenTables = JSON.parse(localStorage.getItem('stPatrickSettings') || '[]');
+		
         let htmltext = `<table id="stPatTable" style="width:100%"><tr><th colspan="2">`;
         htmltext += `<img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
         htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
@@ -443,8 +445,6 @@ let stPatrick = {
 		return bigNum;
 	},
 
-	hiddenTables: [],
-
 	hide: (id) => {
 		stPatrick.hide2(id);
 		let i = stPatrick.hiddenTables.indexOf(id);
@@ -453,9 +453,12 @@ let stPatrick = {
 		} else {
 			stPatrick.hiddenTables.push(id);
 		}
+		localStorage.setItem('stPatrickSettings', JSON.stringify(stPatrick.hiddenTables));
 	},
 
 	hide2: (id) => {
 		$(id).toggleClass("hide");
 	},
+
+	hiddenTables : [],
 };
