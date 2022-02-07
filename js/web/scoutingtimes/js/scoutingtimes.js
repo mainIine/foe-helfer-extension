@@ -33,7 +33,10 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
 
         for (let b in l.permanentRewards.BronzeAge) {
             let boost = l.permanentRewards.BronzeAge[b];
-            if(boost.subType != 'army_scout_time') continue;
+
+            if(boost.subType !== 'army_scout_time')
+                continue;
+
             castlebonus = 1 - boost.amount/100
         }
     
@@ -83,12 +86,17 @@ let scoutingTimes = {
         
         for (let p in Provinces) {
             let province = Provinces[p];
+
             if (!(province.isPlayerOwned|false)) continue;
-            for (c in province.children) {
+
+            for (let c in province.children)
+            {
                 let child = Provinces[province.children[c].targetId];
                 if (child.isPlayerOwned|false) continue;
                 if (toscout.indexOf(child.id) > -1) continue;
+
                 Provinces[child.id].travelTime = province.children[c].travelTime * castlebonus;
+
                 if (data.scout.path[data.scout.path.length-1] === child.id) {
                     Provinces[child.id].travelTime = data.scout.time_to_target;
                     scoutingTimes.target = child.id;
@@ -97,10 +105,12 @@ let scoutingTimes = {
                 Provinces[child.id].isScouted = child.isScouted|false;
                 if (Provinces[child.id].isScouted) Provinces[child.id].travelTime = 0;
                 let mayScout = true;
-                for (b in child.blockers) {
+
+                for (let b in child.blockers) {
                     let blockId = child.blockers[b];
                     if (!(Provinces[blockId]?.isPlayerOwned|false)) mayScout = false;
                 }
+
                 if (!mayScout) continue;
                 toscout.push(child.id);
             }    
@@ -112,7 +122,6 @@ let scoutingTimes = {
         while (toscout.length > 0) {
             let p = toscout.pop();
             let province = Provinces[p];
-            
             if (province.isScouted) {
                 htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
@@ -152,7 +161,7 @@ let scoutingTimes = {
         min = min % 60;
         hours = hours % 24;
 
-        timestring = (days>0) ? `${days}d ` : ``;
+        let timestring = (days>0) ? `${days}d ` : ``;
         timestring += (hours>0) ? `${hours}h ` : ``;
         timestring += ((min>0) || (min+hours+days === 0))  ? `${min}m ` : ``;
 
