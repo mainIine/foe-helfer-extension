@@ -141,11 +141,12 @@ let scoutingTimes = {
             HTML.AddCssFile('scoutingtimes');
         
             HTML.Box({
-                'id': 'mapScoutingTimesDialog',
-                'title': i18n('Boxes.scoutingTimes.Title'),
-                'auto_close': true,
-                'dragdrop': true,
-                'minimize': false
+                id: 'mapScoutingTimesDialog',
+                title: i18n('Boxes.scoutingTimes.Title'),
+                auto_close: true,
+                dragdrop: true,
+                minimize: false,
+                ask : i18n('Boxes.scoutingTimes.HelpLink'),
             });
     
             $('#mapScoutingTimesDialogBody').html(htmltext);
