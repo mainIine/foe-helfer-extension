@@ -82,7 +82,7 @@ let scoutingTimes = {
         }
         
         let castlebonus = 1;
-        if (Castle.curLevel>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
+        if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
         
         for (let p in Provinces) {
             let province = Provinces[p];
@@ -102,8 +102,7 @@ let scoutingTimes = {
                     scoutingTimes.target = child.id;
                 }
                 
-                Provinces[child.id].isScouted = child.isScouted|false;
-                if (Provinces[child.id].isScouted) Provinces[child.id].travelTime = 0;
+                if (child.isScouted|false) Provinces[child.id].travelTime = 0;
                 let mayScout = true;
 
                 for (let b in child.blockers) {
@@ -122,7 +121,7 @@ let scoutingTimes = {
         while (toscout.length > 0) {
             let p = toscout.pop();
             let province = Provinces[p];
-            if (province.isScouted) {
+            if (province.isScouted|false) {
                 htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
             }
