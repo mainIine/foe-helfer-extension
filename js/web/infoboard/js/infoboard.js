@@ -59,7 +59,7 @@ let Infoboard = {
 
         // Der Spieler ist wieder im FoE Tab
         window.onfocus = function() {
-            Infoboard.StopTitleBlinking();
+            // Infoboard.StopTitleBlinking();
         };
     },
 
@@ -231,7 +231,7 @@ let Infoboard = {
 
         // Der Spieler hat den FoE Tab verlassen
         window.onblur = function() {
-            Infoboard.StartTitleBlinking()
+            // Infoboard.StartTitleBlinking()
         };
 
         Infoboard.PostMessage(bd);
