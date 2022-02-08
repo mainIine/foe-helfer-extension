@@ -11,12 +11,18 @@
  * **************************************************************************************
  */
 
-#HiddenRewardBox {
+ #HiddenRewardBox {
     top: 30%;
     left: 30px;
 	max-height: 400px;
 }
 
+#HiddenRewardBox img {
+    height: auto;
+    width: auto;
+    max-width: 3.5em;
+    max-height: 2.5em;
+}
 #HiddenRewardBox #HiddenRewardBoxBody {
 	max-height: 400px;
 	min-width: 350px;
@@ -26,6 +32,7 @@
 
 #HiddenRewardBox table td.incident {
     vertical-align: middle;
+	text-align: center;	
     min-height: 30px;
 }
 
