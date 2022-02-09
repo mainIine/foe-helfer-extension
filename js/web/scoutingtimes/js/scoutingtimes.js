@@ -90,8 +90,7 @@ let scoutingTimes = {
         for (const p in Provinces) {
             if (Object.hasOwnProperty.call(Provinces, p)) {
                 const province = Provinces[p];
-                if (province.id <1700 || province.id >1800) continue;
-
+                
                 if (!(province.isPlayerOwned|false)) {
                     continue;
                 }
