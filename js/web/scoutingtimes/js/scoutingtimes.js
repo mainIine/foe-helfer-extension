@@ -106,7 +106,7 @@ let scoutingTimes = {
                         scoutingTimes.target = child.id;
                     }
                     
-                    if (child.isScouted|false) Provinces[child.id].travelTime = 0;
+                    if (child.isScouted|false) scoutingTimes.Provinces[child.id].travelTime = 0;
                     let mayScout = true;
 
                     for (let blockId of child.blockers) {
