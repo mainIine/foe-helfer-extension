@@ -99,7 +99,7 @@ let scoutingTimes = {
                         continue;
                     };
 
-                    scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (scoutingTimes.distance(data.scout.current_province,child.id) -1 ) * 600) * castlebonus;
+                    scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(data.scout.current_province,child.id) - 1, 0)) * 600) * castlebonus;
 
                     if (data.scout.path[data.scout.path.length-1] === child.id) {
                         scoutingTimes.Provinces[child.id].travelTime = data.scout.time_to_target;
@@ -195,7 +195,7 @@ let scoutingTimes = {
             }
             if (Distance === 1) break;
         }
-        console.log(scoutingTimes.Provinces[StartId].name + "to" + scoutingTimes.Provinces[GoalId].name + ": " + Distance);
+        console.log(scoutingTimes.Provinces[StartId].name + " to " + scoutingTimes.Provinces[GoalId].name + ": " + Distance);
         return Distance;
     },
 
