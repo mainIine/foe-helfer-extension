@@ -62,6 +62,8 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
 
 let scoutingTimes = {
 
+    Provinces: {},
+
     /**
      * Shows a box displaying the base scouting times
      *
@@ -69,19 +71,19 @@ let scoutingTimes = {
      */
     ShowDialog: (data) => {
 
-        let Provinces = {};
+        //let Provinces = {};
         let toscout = [];
         
         for (let province of data.provinces) {
-            Provinces[province.id] = province;
+            scoutingTimes.Provinces[province.id] = province;
         }
         
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
 
-        for (const p in Provinces) {
-            if (Object.hasOwnProperty.call(Provinces, p)) {
-                const province = Provinces[p];
+        for (const p in scoutingTimes.Provinces) {
+            if (Object.hasOwnProperty.call(scoutingTimes.Provinces, p)) {
+                const province = scoutingTimes.Provinces[p];
                 
                 if (!(province.isPlayerOwned|false)) {
                     continue;
@@ -89,7 +91,7 @@ let scoutingTimes = {
 
                 for (let element of province.children)
                 {
-                    let child = Provinces[element.targetId];
+                    let child = scoutingTimes.Provinces[element.targetId];
                     if (child.isPlayerOwned|false) {
                         continue;
                     };
@@ -97,10 +99,10 @@ let scoutingTimes = {
                         continue;
                     };
 
-                    Provinces[child.id].travelTime = element.travelTime * castlebonus;
+                    scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (scoutingTimes.distance(data.scout.current_province,child.id) -1 ) * 600) * castlebonus;
 
                     if (data.scout.path[data.scout.path.length-1] === child.id) {
-                        Provinces[child.id].travelTime = data.scout.time_to_target;
+                        scoutingTimes.Provinces[child.id].travelTime = data.scout.time_to_target;
                         scoutingTimes.target = child.id;
                     }
                     
@@ -108,7 +110,7 @@ let scoutingTimes = {
                     let mayScout = true;
 
                     for (let blockId of child.blockers) {
-                        if (!(Provinces[blockId]?.isPlayerOwned|false)) {
+                        if (!(scoutingTimes.Provinces[blockId]?.isPlayerOwned|false)) {
                             mayScout = false;
                         }
                     }
@@ -124,7 +126,7 @@ let scoutingTimes = {
         
         while (toscout.length > 0) {
             let p = toscout.pop();
-            let province = Provinces[p];
+            let province = scoutingTimes.Provinces[p];
             if (province.isScouted|false) {
                 htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
@@ -179,4 +181,42 @@ let scoutingTimes = {
     castleBonuses:{},
     target:0,
     
+    distance: (StartId, GoalId) => {
+        limit = Math.floor(Math.min(StartId/100,GoalId/100))*100
+        StartDist = scoutingTimes.GetDistances(StartId,limit);
+        GoalDist = scoutingTimes.GetDistances(GoalId,limit);
+
+        Distance = 1000;
+        for (let index in GoalDist) {
+            
+            if (StartDist[index]) {
+                DistanceNew = GoalDist[index].dist+StartDist[index].dist;
+                if (DistanceNew<Distance) Distance = DistanceNew;
+            }
+            if (Distance === 1) break;
+        }
+        console.log(scoutingTimes.Provinces[StartId].name + "to" + scoutingTimes.Provinces[GoalId].name + ": " + Distance);
+        return Distance;
+    },
+
+    GetDistances:(StartId,limit) => {
+        let temp = [[StartId,0]];
+        for (let Province of temp) {
+            if (Province[0]<limit) break;
+            if (!scoutingTimes.Provinces[Province[0]]?.parentIds) continue;
+            for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
+                temp.push([parent,Province[1]+1]);
+            }
+        }
+        let distx = {};
+        for (let p of temp) {
+            if (!distx[p[0]]) {
+                distx[p[0]] = {'id':p[0], 'dist': p[1]};
+            } else {
+                if (distx[p[0]]?.dist > p[1]) distx[p[0]] = {'id':p[0], 'dist': p[1]};
+            }
+        }
+        return distx;
+    },
+
 };
