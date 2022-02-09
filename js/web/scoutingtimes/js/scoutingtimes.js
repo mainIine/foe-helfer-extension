@@ -86,8 +86,6 @@ let scoutingTimes = {
         
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
-        
-        console.log("castlebonus:" + castlebonus);
 
         for (const p in Provinces) {
             if (Object.hasOwnProperty.call(Provinces, p)) {
@@ -95,10 +93,8 @@ let scoutingTimes = {
                 if (province.id <1700 || province.id >1800) continue;
 
                 if (!(province.isPlayerOwned|false)) {
-                    console.log(province.id + ": " + province.name + " is not owned by player");
                     continue;
                 }
-                console.log(province.id + ": " + province.name + " owned by player");
 
                 for (let c in province.children)
                 {
@@ -106,11 +102,9 @@ let scoutingTimes = {
                         const element = province.children[c];
                         let child = Provinces[element.targetId];
                         if (child.isPlayerOwned|false) {
-                            console.log("child: " + child.id + ": " + child.name + " is already owned by player");
                             continue;
                         };
                         if (toscout.indexOf(child.id) > -1) {
-                            console.log("child: " + child.id + ": " + child.name + " is already in scout list");
                             continue;
                         };
 
@@ -119,7 +113,6 @@ let scoutingTimes = {
                         if (data.scout.path[data.scout.path.length-1] === child.id) {
                             Provinces[child.id].travelTime = data.scout.time_to_target;
                             scoutingTimes.target = child.id;
-                            console.log("child: " + child.id + ": " + child.name + " is currently beeing scouted");
                         }
                         
                         if (child.isScouted|false) Provinces[child.id].travelTime = 0;
@@ -130,13 +123,11 @@ let scoutingTimes = {
                                 const blockId = child.blockers[b];
                                 if (!(Provinces[blockId]?.isPlayerOwned|false)) {
                                     mayScout = false;
-                                    console.log("child: " + child.id + ": " + child.name + " is blocked by " + blockId + "(" + Provinces[blockId]?.name +")");
                                 }
                             }
                         }
 
                         if (!mayScout) continue;
-                        console.log("child: " + child.id + ": " + child.name + " is added to scoutlist");
                         toscout.push(child.id);
                     }
                 }  
