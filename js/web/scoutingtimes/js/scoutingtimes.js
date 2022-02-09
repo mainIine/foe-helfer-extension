@@ -24,6 +24,7 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
         
     for (let x in resp)
 	{
+        if (!Object.hasOwnProperty.call(resp, x)) continue;
 		let l = resp[x];
 
 		if(!l['level'])
@@ -32,6 +33,7 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
 		}
 
         for (let b in l.permanentRewards.BronzeAge) {
+            if (!Object.hasOwnProperty.call(l.permanentRewards.BronzeAge, b)) continue;
             let boost = l.permanentRewards.BronzeAge[b];
 
             if(boost.subType !== 'army_scout_time')
@@ -77,6 +79,7 @@ let scoutingTimes = {
         let toscout = [];
         
         for (let p in data.provinces) {
+            if (!Object.hasOwnProperty.call(data.provinces, p)) continue;
             let province = data.provinces[p];
             Provinces[province.id] = province;
         }
@@ -86,54 +89,58 @@ let scoutingTimes = {
         
         console.log("castlebonus:" + castlebonus);
 
-        for (let p in Provinces) {
-            let province = Provinces[p];
-            if (province.id <1700 || province.id >1800) continue;
+        for (const p in Provinces) {
+            if (Object.hasOwnProperty.call(Provinces, p)) {
+                const province = Provinces[p];
+                if (province.id <1700 || province.id >1800) continue;
 
-            if (!(province.isPlayerOwned|false)) {
-                console.log(province.id + ": " + province.name + " is not owned by player");
-                continue;
-            }
-            console.log(province.id + ": " + province.name + " owned by player");
-
-            for (let c in province.children)
-            {
-                if (Object.hasOwnProperty.call(province.children, c)) {
-                    const element = province.children[c];
-                    let child = Provinces[element.targetId];
-                    if (child.isPlayerOwned|false) {
-                        console.log("child: " + child.id + ": " + child.name + " is already owned by player");
-                        continue;
-                    };
-                    if (toscout.indexOf(child.id) > -1) {
-                        console.log("child: " + child.id + ": " + child.name + " is already in scout list");
-                        continue;
-                    };
-
-                    Provinces[child.id].travelTime = element.travelTime * castlebonus;
-
-                    if (data.scout.path[data.scout.path.length-1] === child.id) {
-                        Provinces[child.id].travelTime = data.scout.time_to_target;
-                        scoutingTimes.target = child.id;
-                        console.log("child: " + child.id + ": " + child.name + " is currently beeing scouted");
-                    }
-                    
-                    if (child.isScouted|false) Provinces[child.id].travelTime = 0;
-                    let mayScout = true;
-
-                    for (let b in child.blockers) {
-                        let blockId = child.blockers[b];
-                        if (!(Provinces[blockId]?.isPlayerOwned|false)) {
-                            mayScout = false;
-                            console.log("child: " + child.id + ": " + child.name + " is blocked by " + blockId + "(" + Provinces[blockId]?.name +")");
-                        }
-                    }
-
-                    if (!mayScout) continue;
-                    console.log("child: " + child.id + ": " + child.name + " is added to scoutlist");
-                    toscout.push(child.id);
+                if (!(province.isPlayerOwned|false)) {
+                    console.log(province.id + ": " + province.name + " is not owned by player");
+                    continue;
                 }
-            }    
+                console.log(province.id + ": " + province.name + " owned by player");
+
+                for (let c in province.children)
+                {
+                    if (Object.hasOwnProperty.call(province.children, c)) {
+                        const element = province.children[c];
+                        let child = Provinces[element.targetId];
+                        if (child.isPlayerOwned|false) {
+                            console.log("child: " + child.id + ": " + child.name + " is already owned by player");
+                            continue;
+                        };
+                        if (toscout.indexOf(child.id) > -1) {
+                            console.log("child: " + child.id + ": " + child.name + " is already in scout list");
+                            continue;
+                        };
+
+                        Provinces[child.id].travelTime = element.travelTime * castlebonus;
+
+                        if (data.scout.path[data.scout.path.length-1] === child.id) {
+                            Provinces[child.id].travelTime = data.scout.time_to_target;
+                            scoutingTimes.target = child.id;
+                            console.log("child: " + child.id + ": " + child.name + " is currently beeing scouted");
+                        }
+                        
+                        if (child.isScouted|false) Provinces[child.id].travelTime = 0;
+                        let mayScout = true;
+
+                        for (const b in child.blockers) {
+                            if (Object.hasOwnProperty.call(child.blockers, b)) {
+                                const blockId = child.blockers[b];
+                                if (!(Provinces[blockId]?.isPlayerOwned|false)) {
+                                    mayScout = false;
+                                    console.log("child: " + child.id + ": " + child.name + " is blocked by " + blockId + "(" + Provinces[blockId]?.name +")");
+                                }
+                            }
+                        }
+
+                        if (!mayScout) continue;
+                        console.log("child: " + child.id + ": " + child.name + " is added to scoutlist");
+                        toscout.push(child.id);
+                    }
+                }  
+            }
         }
 
         let i = 0;
