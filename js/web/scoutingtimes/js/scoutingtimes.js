@@ -84,34 +84,55 @@ let scoutingTimes = {
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
         
+        console.log("castlebonus:" + castlebonus);
+
         for (let p in Provinces) {
             let province = Provinces[p];
+            if (province.id <1700 || province.id >1800) continue;
 
-            if (!(province.isPlayerOwned|false)) continue;
+            if (!(province.isPlayerOwned|false)) {
+                console.log(province.id + ": " + province.name + " is not owned by player");
+                continue;
+            }
+            console.log(province.id + ": " + province.name + " owned by player");
 
             for (let c in province.children)
             {
-                let child = Provinces[province.children[c].targetId];
-                if (child.isPlayerOwned|false) continue;
-                if (toscout.indexOf(child.id) > -1) continue;
+                if (Object.hasOwnProperty.call(province.children, c)) {
+                    const element = province.children[c];
+                    let child = Provinces[element.targetId];
+                    if (child.isPlayerOwned|false) {
+                        console.log("child: " + child.id + ": " + child.name + " is already owned by player");
+                        continue;
+                    };
+                    if (toscout.indexOf(child.id) > -1) {
+                        console.log("child: " + child.id + ": " + child.name + " is already in scout list");
+                        continue;
+                    };
 
-                Provinces[child.id].travelTime = province.children[c].travelTime * castlebonus;
+                    Provinces[child.id].travelTime = element.travelTime * castlebonus;
 
-                if (data.scout.path[data.scout.path.length-1] === child.id) {
-                    Provinces[child.id].travelTime = data.scout.time_to_target;
-                    scoutingTimes.target = child.id;
+                    if (data.scout.path[data.scout.path.length-1] === child.id) {
+                        Provinces[child.id].travelTime = data.scout.time_to_target;
+                        scoutingTimes.target = child.id;
+                        console.log("child: " + child.id + ": " + child.name + " is currently beeing scouted");
+                    }
+                    
+                    if (child.isScouted|false) Provinces[child.id].travelTime = 0;
+                    let mayScout = true;
+
+                    for (let b in child.blockers) {
+                        let blockId = child.blockers[b];
+                        if (!(Provinces[blockId]?.isPlayerOwned|false)) {
+                            mayScout = false;
+                            console.log("child: " + child.id + ": " + child.name + " is blocked by " + blockId + "(" + Provinces[blockId]?.name +")");
+                        }
+                    }
+
+                    if (!mayScout) continue;
+                    console.log("child: " + child.id + ": " + child.name + " is added to scoutlist");
+                    toscout.push(child.id);
                 }
-                
-                if (child.isScouted|false) Provinces[child.id].travelTime = 0;
-                let mayScout = true;
-
-                for (let b in child.blockers) {
-                    let blockId = child.blockers[b];
-                    if (!(Provinces[blockId]?.isPlayerOwned|false)) mayScout = false;
-                }
-
-                if (!mayScout) continue;
-                toscout.push(child.id);
             }    
         }
 
@@ -141,12 +162,11 @@ let scoutingTimes = {
             HTML.AddCssFile('scoutingtimes');
         
             HTML.Box({
-                id: 'mapScoutingTimesDialog',
-                title: i18n('Boxes.scoutingTimes.Title'),
-                auto_close: true,
-                dragdrop: true,
-                minimize: false,
-                ask : i18n('Boxes.scoutingTimes.HelpLink'),
+                'id': 'mapScoutingTimesDialog',
+                'title': i18n('Boxes.scoutingTimes.Title'),
+                'auto_close': true,
+                'dragdrop': true,
+                'minimize': false
             });
     
             $('#mapScoutingTimesDialogBody').html(htmltext);
