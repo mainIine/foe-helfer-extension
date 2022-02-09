@@ -64,6 +64,7 @@ let Unit = {
 
 	Tabs: [],
 	TabsContent: [],
+	CurrentTab: 1,
 
 
 	/**
@@ -80,6 +81,7 @@ let Unit = {
 				title: i18n('Boxes.Units.Title'),
 				auto_close: true,
 				dragdrop: true,
+				resize: true,
 				minimize: true
 			};
 
@@ -350,7 +352,10 @@ let Unit = {
 
 		$('#UnitOverview').find('#UnitOverviewBody').html( h.join('') ).promise().done(function(){
 			Unit.BuildTimer();
-			$('.unit-tabs').tabslet({active: 1});
+			$('.unit-tabs').tabslet({active: Unit.CurrentTab});
+			$('.unit-tabs').on("_after", function() {
+				Unit.CurrentTab = $('.unit-tabs li.active').index() + 1;
+			});
 		});
 	},
 

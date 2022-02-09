@@ -311,7 +311,7 @@ let GuildMemberStat = {
 					let value = CityEntity['entity_levels'].find(data => data.era === EntityLevel);
 					let clan_power = typeof value.clan_power !== 'undefined' ? value.clan_power : 0;
 
-					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityLevel, era: Member.era });
+					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: Member.era });
 				}
 
 				if (CityEntity['abilities'])

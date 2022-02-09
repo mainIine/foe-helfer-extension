@@ -233,7 +233,9 @@
 				'gexstat',
 				'dbexport',
 				'closebox',
-				'castle'
+				'castle',
+				'stpatrickstats',
+				'scoutingtimes'
 			];
 
 			// load scripts (one after the other)

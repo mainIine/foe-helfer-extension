@@ -366,17 +366,20 @@ let HTML = {
 		});
 	},
 
+
 	Minimize: () => {
 		$('body').find('#menu_box').removeClass('open');
 		$('body').find('#menu_box').addClass('closed');
 		$('#menu_box').find('.window-body').css("visibility", "hidden");
 	},
 
+
 	Maximize: () => {
 		$('body').find("#menu_box").removeClass('closed');
 		$('body').find("#menu_box").addClass('open');
 		$('#menu_box').find('.window-body').css("visibility", "visible");
 	},
+
 
 	/**
 	 * Handle minimizing helper during battle
@@ -390,6 +393,7 @@ let HTML = {
 		}
 	},
 
+
 	MaximizeAfterBattle: () => {
 		let MenuSetting = localStorage.getItem('SelectedMenu');
 		if (MenuSetting == 'Box' && HTML.boxWasMinimizedForBattle) {
@@ -397,6 +401,7 @@ let HTML = {
 			HTML.boxWasMinimizedForBattle = false;
 		}
 	},
+
 
 	/**
 	 * Makes an HTML BOX Dragable

@@ -25,13 +25,12 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 
 /**
  *
- * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : [], Upcoming : [], FirstCycle : true}}
+ * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : null, FirstCycle : true}}
  */
 let HiddenRewards = {
 
     Cache: null,
-    FilteredCache : [],
-    Upcoming : [],
+    FilteredCache : null,
     FirstCycle: true,
     
 	/**
@@ -120,21 +119,18 @@ let HiddenRewards = {
      */
     RefreshGui: (fromHandler = false) => {       
         HiddenRewards.FilteredCache = [];
-        HiddenRewards.Upcoming = [];
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
-	         let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
+	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts),
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
             	HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
-            }else if(StartTime > MainParser.getCurrentDateTime()){
-                HiddenRewards.Upcoming.push(HiddenRewards.Cache[i]);
-            }
+           }
         }
 
         HiddenRewards.SetCounter();
 
         if ($('#HiddenRewardBox').length >= 1) {
-            if(fromHandler && HiddenRewards.FilteredCache.length === 0 && HiddenRewards.Upcoming.length === 0 && $('#HiddenRewardBox').length) 
+            if(fromHandler && HiddenRewards.FilteredCache.length === 0 && $('#HiddenRewardBox').length) 
             {
                 $('#HiddenRewardBox').fadeOut('500', function() {
                     $(this).remove();
@@ -180,21 +176,6 @@ let HiddenRewards = {
                 h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
                 h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
-                h.push('</tr>');
-            }
-            for (let idx in HiddenRewards.Upcoming) {
-
-                if (!HiddenRewards.Upcoming.hasOwnProperty(idx)) {
-                    break;
-                }
-				
-                let hiddenReward = HiddenRewards.Upcoming[idx];
-				
-		
-                h.push('<tr>');
-                h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
-                h.push('<td>' + hiddenReward.position + '</td>');
-                h.push('<td class="">Erscheint ' + moment.unix(hiddenReward.starts).fromNow() + '</td>');
                 h.push('</tr>');
             }
         }
