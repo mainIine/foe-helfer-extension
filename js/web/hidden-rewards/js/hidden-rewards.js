@@ -122,8 +122,8 @@ let HiddenRewards = {
         HiddenRewards.FilteredCache = [];
         HiddenRewards.Upcoming = [];
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
-	        let StartTime = moment.unix(HiddenRewards.Cache[i].starts),
-		    EndTime = moment.unix(HiddenRewards.Cache[i].expires);
+	         let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
+		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
             	HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
             }else if(StartTime > MainParser.getCurrentDateTime()){
@@ -166,7 +166,7 @@ let HiddenRewards = {
 
         h.push('<tbody>');
 
-        if (HiddenRewards.FilteredCache.length > 0 || HiddenRewards.Upcoming.length > 0) {
+        if (HiddenRewards.FilteredCache.length > 0) {
             for (let idx in HiddenRewards.FilteredCache) {
 
                 if (!HiddenRewards.FilteredCache.hasOwnProperty(idx)) {
