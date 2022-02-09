@@ -22,20 +22,14 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
     let resp = JSON.parse(data['response']);
     let castlebonus = 1;
         
-    for (let x in resp)
+    for (let l of resp)
 	{
-        if (!Object.hasOwnProperty.call(resp, x)) continue;
-		let l = resp[x];
-
-		if(!l['level'])
+        if(!l['level'])
 		{
 			continue;
 		}
 
-        for (let b in l.permanentRewards.BronzeAge) {
-            if (!Object.hasOwnProperty.call(l.permanentRewards.BronzeAge, b)) continue;
-            let boost = l.permanentRewards.BronzeAge[b];
-
+        for (let boost of l.permanentRewards.BronzeAge) {
             if(boost.subType !== 'army_scout_time')
                 continue;
 
@@ -78,9 +72,7 @@ let scoutingTimes = {
         let Provinces = {};
         let toscout = [];
         
-        for (let p in data.provinces) {
-            if (!Object.hasOwnProperty.call(data.provinces, p)) continue;
-            let province = data.provinces[p];
+        for (let province of data.provinces) {
             Provinces[province.id] = province;
         }
         
@@ -95,42 +87,36 @@ let scoutingTimes = {
                     continue;
                 }
 
-                for (let c in province.children)
+                for (let element of province.children)
                 {
-                    if (Object.hasOwnProperty.call(province.children, c)) {
-                        const element = province.children[c];
-                        let child = Provinces[element.targetId];
-                        if (child.isPlayerOwned|false) {
-                            continue;
-                        };
-                        if (toscout.indexOf(child.id) > -1) {
-                            continue;
-                        };
+                    let child = Provinces[element.targetId];
+                    if (child.isPlayerOwned|false) {
+                        continue;
+                    };
+                    if (toscout.indexOf(child.id) > -1) {
+                        continue;
+                    };
 
-                        Provinces[child.id].travelTime = element.travelTime * castlebonus;
+                    Provinces[child.id].travelTime = element.travelTime * castlebonus;
 
-                        if (data.scout.path[data.scout.path.length-1] === child.id) {
-                            Provinces[child.id].travelTime = data.scout.time_to_target;
-                            scoutingTimes.target = child.id;
-                        }
-                        
-                        if (child.isScouted|false) Provinces[child.id].travelTime = 0;
-                        let mayScout = true;
-
-                        for (const b in child.blockers) {
-                            if (Object.hasOwnProperty.call(child.blockers, b)) {
-                                const blockId = child.blockers[b];
-                                if (!(Provinces[blockId]?.isPlayerOwned|false)) {
-                                    mayScout = false;
-                                }
-                            }
-                        }
-
-                        if (!mayScout) continue;
-                        toscout.push(child.id);
+                    if (data.scout.path[data.scout.path.length-1] === child.id) {
+                        Provinces[child.id].travelTime = data.scout.time_to_target;
+                        scoutingTimes.target = child.id;
                     }
+                    
+                    if (child.isScouted|false) Provinces[child.id].travelTime = 0;
+                    let mayScout = true;
+
+                    for (let blockId of child.blockers) {
+                        if (!(Provinces[blockId]?.isPlayerOwned|false)) {
+                            mayScout = false;
+                        }
+                    }
+
+                    if (!mayScout) continue;
+                    toscout.push(child.id);
                 }  
-            }
+            }  
         }
 
         let i = 0;
