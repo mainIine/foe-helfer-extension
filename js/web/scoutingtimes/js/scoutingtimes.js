@@ -77,7 +77,7 @@ let scoutingTimes = {
         for (let province of data.provinces) {
             scoutingTimes.Provinces[province.id] = province;
         }
-        
+
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
 
@@ -99,7 +99,12 @@ let scoutingTimes = {
                         continue;
                     };
 
-                    scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(data.scout.current_province,child.id) - 1, 0)) * 600) * castlebonus;
+                    if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
+                        if (province.id = data.scout.current_province){
+                            scoutingTimes.Provinces[child.id].fromCurrent = true;
+                        }
+                        scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(data.scout.current_province,child.id) - 1, 0)) * 600) * castlebonus;
+                    } 
 
                     if (data.scout.path[data.scout.path.length-1] === child.id) {
                         scoutingTimes.Provinces[child.id].travelTime = data.scout.time_to_target;
@@ -141,7 +146,8 @@ let scoutingTimes = {
             }
         }
        
-        htmltext += `</table><div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
+        htmltext += `</table>`
+        //htmltext += `<div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
         
         if (i > 0) {
             HTML.AddCssFile('scoutingtimes');
@@ -195,7 +201,6 @@ let scoutingTimes = {
             }
             if (Distance === 1) break;
         }
-        console.log(scoutingTimes.Provinces[StartId].name + " to " + scoutingTimes.Provinces[GoalId].name + ": " + Distance);
         return Distance;
     },
 
