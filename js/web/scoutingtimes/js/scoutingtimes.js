@@ -33,7 +33,7 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
             if(boost.subType !== 'army_scout_time')
                 continue;
 
-            castlebonus = 1 - boost.amount/100
+            castlebonus = 1 - boost.amount/100;
         }
     
 		scoutingTimes.castleBonuses[l['level']] = castlebonus;
@@ -188,7 +188,7 @@ let scoutingTimes = {
     target:0,
     
     distance: (StartId, GoalId) => {
-        limit = Math.floor(Math.min(StartId/100,GoalId/100))*100
+        limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
         StartDist = scoutingTimes.GetDistances(StartId,limit);
         GoalDist = scoutingTimes.GetDistances(GoalId,limit);
 
