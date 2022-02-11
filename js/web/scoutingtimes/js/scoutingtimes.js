@@ -22,22 +22,18 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
     let resp = JSON.parse(data['response']);
     let castlebonus = 1;
         
-    for (let x in resp)
+    for (let l of resp)
 	{
-		let l = resp[x];
-
-		if(!l['level'])
+        if(!l['level'])
 		{
 			continue;
 		}
 
-        for (let b in l.permanentRewards.BronzeAge) {
-            let boost = l.permanentRewards.BronzeAge[b];
-
+        for (let boost of l.permanentRewards.BronzeAge) {
             if(boost.subType !== 'army_scout_time')
                 continue;
 
-            castlebonus = 1 - boost.amount/100
+            castlebonus = 1 - boost.amount/100;
         }
     
 		scoutingTimes.castleBonuses[l['level']] = castlebonus;
@@ -66,6 +62,8 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
 
 let scoutingTimes = {
 
+    Provinces: {},
+
     /**
      * Shows a box displaying the base scouting times
      *
@@ -73,46 +71,59 @@ let scoutingTimes = {
      */
     ShowDialog: (data) => {
 
-        let Provinces = {};
+        //let Provinces = {};
         let toscout = [];
         
-        for (let p in data.provinces) {
-            let province = data.provinces[p];
-            Provinces[province.id] = province;
+        for (let province of data.provinces) {
+            scoutingTimes.Provinces[province.id] = province;
         }
-        
+
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
-        
-        for (let p in Provinces) {
-            let province = Provinces[p];
 
-            if (!(province.isPlayerOwned|false)) continue;
-
-            for (let c in province.children)
-            {
-                let child = Provinces[province.children[c].targetId];
-                if (child.isPlayerOwned|false) continue;
-                if (toscout.indexOf(child.id) > -1) continue;
-
-                Provinces[child.id].travelTime = province.children[c].travelTime * castlebonus;
-
-                if (data.scout.path[data.scout.path.length-1] === child.id) {
-                    Provinces[child.id].travelTime = data.scout.time_to_target;
-                    scoutingTimes.target = child.id;
-                }
+        for (const p in scoutingTimes.Provinces) {
+            if (Object.hasOwnProperty.call(scoutingTimes.Provinces, p)) {
+                const province = scoutingTimes.Provinces[p];
                 
-                if (child.isScouted|false) Provinces[child.id].travelTime = 0;
-                let mayScout = true;
-
-                for (let b in child.blockers) {
-                    let blockId = child.blockers[b];
-                    if (!(Provinces[blockId]?.isPlayerOwned|false)) mayScout = false;
+                if (!(province.isPlayerOwned|false)) {
+                    continue;
                 }
 
-                if (!mayScout) continue;
-                toscout.push(child.id);
-            }    
+                for (let element of province.children)
+                {
+                    let child = scoutingTimes.Provinces[element.targetId];
+                    if (child.isPlayerOwned|false) {
+                        continue;
+                    };
+                    if (toscout.indexOf(child.id) > -1) {
+                        continue;
+                    };
+
+                    if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
+                        if (province.id = data.scout.current_province){
+                            scoutingTimes.Provinces[child.id].fromCurrent = true;
+                        }
+                        scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(data.scout.current_province,child.id) - 1, 0)) * 600) * castlebonus;
+                    } 
+
+                    if (data.scout.path[data.scout.path.length-1] === child.id) {
+                        scoutingTimes.Provinces[child.id].travelTime = data.scout.time_to_target;
+                        scoutingTimes.target = child.id;
+                    }
+                    
+                    if (child.isScouted|false) scoutingTimes.Provinces[child.id].travelTime = 0;
+                    let mayScout = true;
+
+                    for (let blockId of child.blockers) {
+                        if (!(scoutingTimes.Provinces[blockId]?.isPlayerOwned|false)) {
+                            mayScout = false;
+                        }
+                    }
+
+                    if (!mayScout) continue;
+                    toscout.push(child.id);
+                }  
+            }  
         }
 
         let i = 0;
@@ -120,7 +131,7 @@ let scoutingTimes = {
         
         while (toscout.length > 0) {
             let p = toscout.pop();
-            let province = Provinces[p];
+            let province = scoutingTimes.Provinces[p];
             if (province.isScouted|false) {
                 htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
@@ -135,7 +146,8 @@ let scoutingTimes = {
             }
         }
        
-        htmltext += `</table><div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
+        htmltext += `</table>`
+        //htmltext += `<div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
         
         if (i > 0) {
             HTML.AddCssFile('scoutingtimes');
@@ -146,7 +158,7 @@ let scoutingTimes = {
                 auto_close: true,
                 dragdrop: true,
                 minimize: false,
-                ask : i18n('Boxes.scoutingTimes.HelpLink'),
+                ask: i18n('Boxes.scoutingTimes.HelpLink'),
             });
     
             $('#mapScoutingTimesDialogBody').html(htmltext);
@@ -175,4 +187,41 @@ let scoutingTimes = {
     castleBonuses:{},
     target:0,
     
+    distance: (StartId, GoalId) => {
+        limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
+        StartDist = scoutingTimes.GetDistances(StartId,limit);
+        GoalDist = scoutingTimes.GetDistances(GoalId,limit);
+
+        Distance = 1000;
+        for (let index in GoalDist) {
+            
+            if (StartDist[index]) {
+                DistanceNew = GoalDist[index].dist+StartDist[index].dist;
+                if (DistanceNew<Distance) Distance = DistanceNew;
+            }
+            if (Distance === 1) break;
+        }
+        return Distance;
+    },
+
+    GetDistances:(StartId,limit) => {
+        let temp = [[StartId,0]];
+        for (let Province of temp) {
+            if (Province[0]<limit) break;
+            if (!scoutingTimes.Provinces[Province[0]]?.parentIds) continue;
+            for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
+                temp.push([parent,Province[1]+1]);
+            }
+        }
+        let distx = {};
+        for (let p of temp) {
+            if (!distx[p[0]]) {
+                distx[p[0]] = {'id':p[0], 'dist': p[1]};
+            } else {
+                if (distx[p[0]]?.dist > p[1]) distx[p[0]] = {'id':p[0], 'dist': p[1]};
+            }
+        }
+        return distx;
+    },
+
 };

@@ -613,6 +613,7 @@
     "Boxes.Outpost.infoLine": "__runNumber__. Durchlauf, Bonus x4 Chance: __chanceX4__%",
     "Boxes.Outpost.nextTile": "nächste Erweiterung",
     "Boxes.Outpost.tileNotPlanned": "aus",
+    "Boxes.Outpost.including4x": "effektiv - inklusive x4 Chance",
     "Boxes.OwnpartCalculator.All": "Alle",
     "Boxes.OwnpartCalculator.Arc": "Arche",
     "Boxes.OwnpartCalculator.Auto": "Auto",

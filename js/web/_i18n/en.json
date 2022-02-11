@@ -611,6 +611,7 @@
     "Boxes.Outpost.infoLine": "Current LvL = __runNumber__; Bonus Chance (x4) = __chanceX4__%",
     "Boxes.Outpost.nextTile": "Next Expansion",
     "Boxes.Outpost.tileNotPlanned": "off",
+    "Boxes.Outpost.including4x": "effectively - including x4 chance",
     "Boxes.OwnpartCalculator.All": "All",
     "Boxes.OwnpartCalculator.Arc": "Arc",
     "Boxes.OwnpartCalculator.Auto": "Auto",

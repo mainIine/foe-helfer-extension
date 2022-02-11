@@ -516,7 +516,8 @@ let Outposts = {
 
 		for (let resourceID of resourceIDs) {
 			let difference = currStock[resourceID] - sums[resourceID];
-			t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
+			t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + ((resourceID !== 'diplomacy' && difference < 0) ? '" title="' + HTML.Format(Math.floor((difference)/(1 + 3*currentRun.productionBonusProbability))) + " " + i18n('Boxes.Outpost.including4x'): '') + '">' + HTML.Format(difference) + '</td>');
+			
 		}
 
 		t.push('</tr>');
