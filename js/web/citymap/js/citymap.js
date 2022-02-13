@@ -161,6 +161,8 @@ let CityMap = {
 			CityMap.SetBuildings(CityMap.CityData, false);
 
 			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+			$('.to-old-legends').hide();
+			$('.building-count-area').show();
 		});
 
 		// Button for submit Box
@@ -401,10 +403,10 @@ let CityMap = {
 		
 		let legends = [];
 		
-		legends.push(`<span class="older-1 diagonal"></span> ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
-		legends.push(`<span class="older-2 diagonal"></span> ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
-		legends.push(`<span class="older-3 diagonal"></span> ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
-		legends.push(`<span class="to-old diagonal"></span> ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
+		legends.push(`<span class="older-1 diagonal"></span> ${$('.older-1').length-1} ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
+		legends.push(`<span class="older-2 diagonal"></span> ${$('.older-2').length-1} ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
+		legends.push(`<span class="older-3 diagonal"></span> ${$('.older-3').length-1} ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
+		legends.push(`<span class="to-old diagonal"></span> ${$('.to-old').length-1} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
 
 		$('.to-old-legends').html(legends.join(''));
 	},
