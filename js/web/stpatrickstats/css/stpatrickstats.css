@@ -22,8 +22,8 @@
 }
 
 #stPatrickDialogBody {
-    width: 450px;
-    height: 219px;
+    width: 250px;
+    height: auto;
     display: block;
     justify-content: center;
     align-items: center;
@@ -37,8 +37,8 @@
 }
 
 #stPatTable td {
-    padding-left: 10x;
     padding-right: 10px;
+    padding-left: 10px;
     padding-bottom: 5px;
 }
 
@@ -48,14 +48,23 @@
 
 }
 #stPatNext td {
-    padding-left: 10x;
-    padding-right: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
-#stPatNext td.border-right {
-    border-right: 1px solid var(--border-table-bottom);
+#stPatNext td.align-right {
+    text-align: right;
+    padding-right: 2px;
+}
+#stPatNext td.align-left {
+    text-align: left;
+    padding-left: 2px;
 }
 
-#stPatNext td.border-left {
-    border-left: 1px solid var(--border-table-top);
+#stPatNext.hide td {
+    display: none;
+}
+
+#stPatTasks.hide td, #stPatTasks td.hide {
+    display: none;
 }

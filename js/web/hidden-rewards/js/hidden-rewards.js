@@ -120,7 +120,7 @@ let HiddenRewards = {
     RefreshGui: (fromHandler = false) => {       
         HiddenRewards.FilteredCache = [];
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
-	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts),
+	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
             	HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
@@ -173,7 +173,11 @@ let HiddenRewards = {
 				
 		
                 h.push('<tr>');
-                h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
+                let img =  hiddenReward.type;
+                if (hiddenReward.type.indexOf('outpost') > -1) {
+                    img = 'Shard_' + hiddenReward.type.substr(hiddenReward.type.length-2, 2);
+                }
+                h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + img + '.png" alt=""></td>');
                 h.push('<td>' + hiddenReward.position + '</td>');
                 h.push('<td class="">' + i18n('Boxes.HiddenRewards.Disappears') + ' ' + moment.unix(hiddenReward.expires).fromNow() + '</td>');
                 h.push('</tr>');

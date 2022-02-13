@@ -153,7 +153,7 @@ let Investment = {
 		if (showMedals === 1) {
 			b.push('<div id="total-medals" class="text-center"><span class="invest-tooltip icon medal" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.MedalsProfit')) + '"></span><strong class="total-medals-reward">0</strong></div>');
 		}
-		b.push(`<div id="hidden-bar" class="hide text-center"><img class="invest-tooltip" src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" /> <strong class="hidden-elements">0</strong></div>`);
+		b.push(`<div id="hidden-bar" class="hide text-center"><img class="invest-tooltip" src="${extUrl}js/web/investment/images/unvisible.png" title="${i18n('Boxes.Investment.HiddenGB')}" onclick="Investment.ToggleHidden()" /> <strong class="hidden-elements">0</strong></div>`);
 
 		b.push(`</div>`);
 
@@ -651,6 +651,16 @@ let Investment = {
 
 	},
 
+	ToggleHidden: () => {
+
+		let value = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
+
+		value['showHiddenGb'] = 1 - value['showHiddenGb'];
+
+		localStorage.setItem('InvestmentSettings', JSON.stringify(value));
+
+		Investment.Show();
+	},
 
 	SettingsSaveValues: () => {
 
