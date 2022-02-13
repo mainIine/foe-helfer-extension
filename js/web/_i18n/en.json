@@ -540,6 +540,8 @@
     "Boxes.MarketOffers.Era": "Era",
     "Boxes.MarketOffers.Good": "Good",
     "Boxes.MarketOffers.Inventory": "Inventory",
+    "Boxes.MarketOffers.InventoryOfferSum": "???",
+    "Boxes.MarketOffers.IventoryNeedSum": "???",
     "Boxes.MarketOffers.NeedSum": "Sum Requested",
     "Boxes.MarketOffers.OfferSum": "Sum Offered",
     "Boxes.MarketOffers.Title": "Goods Inventory",
