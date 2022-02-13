@@ -78,7 +78,7 @@ let MarketOffers = {
         h.push('<th columnname="OfferSum">' + i18n('Boxes.MarketOffers.OfferSum') + '</th>');
         h.push('<th columnname="NeedSum">' + i18n('Boxes.MarketOffers.NeedSum') + '</th>');
         h.push('<th columnname="InventoryOfferSum">' + i18n('Boxes.MarketOffers.InventoryOfferSum') + '</th>');
-        h.push('<th columnname="InventoryNeedSum">' + i18n('Boxes.MarketOffers.IventoryNeedSum') + '</th>');
+        h.push('<th columnname="InventoryNeedSum">' + i18n('Boxes.MarketOffers.InventoryNeedSum') + '</th>');
         h.push('</tr>');
         h.push('</thead>');
 
