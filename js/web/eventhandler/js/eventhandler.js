@@ -115,7 +115,9 @@ let EventHandler = {
 				entityid: EntityID,
 				isneighbor: IsNeighbor,
 				isguildmember: IsGuildMember,
-				isfriend: IsFriend
+				isfriend: IsFriend,
+				need: Event['need'],
+				offer: Event['offer']
 			}));
 		}
 
