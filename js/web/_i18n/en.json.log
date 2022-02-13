@@ -1,3 +1,0 @@
-﻿Key not used: Boxes.scoutingTimes.Warning
-Warning: Use of i18n("Key") in: warnnotice: HTML.i18nTooltip(i18n("Boxes.Castle.VisitCastleWarning")),
-Warning: Use of i18n("Key") in: warnnotice: HTML.i18nTooltip(i18n("Boxes.Castle.VisitGexWarning")),

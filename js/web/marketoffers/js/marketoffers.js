@@ -77,21 +77,28 @@ let MarketOffers = {
         h.push('<th columnname="Inventory">' + i18n('Boxes.MarketOffers.Inventory') + '</th>');
         h.push('<th columnname="OfferSum">' + i18n('Boxes.MarketOffers.OfferSum') + '</th>');
         h.push('<th columnname="NeedSum">' + i18n('Boxes.MarketOffers.NeedSum') + '</th>');
+        h.push('<th columnname="InventoryOfferSum">' + i18n('Boxes.MarketOffers.InventoryOfferSum') + '</th>');
+        h.push('<th columnname="IventoryNeedSum">' + i18n('Boxes.MarketOffers.IventoryNeedSum') + '</th>');
         h.push('</tr>');
         h.push('</thead>');
 
         for (let i = 0; i < GoodsList.length; i++) {
             let CurrentGood = GoodsList[i],
                 Era = Technologies.Eras[CurrentGood['era']],
-                GoodID = CurrentGood['id'];
+                GoodID = CurrentGood['id'],
+                Inventory = ResourceStock[GoodID],
+                OfferSum = OfferSums[GoodID],
+                NeedSum = NeedSums[GoodID];
 
             h.push('<tr>');
             h.push('<td>' + i18n('Eras.' + Era) + '</td>');
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodID + '"></span></td>');
             h.push('<td><strong>' + CurrentGood['name'] + '</strong></td>');
-            h.push('<td>' + ResourceStock[GoodID] + '</td>');
-            h.push('<td>' + OfferSums[GoodID] + '</td>');
-            h.push('<td>' + NeedSums[GoodID] + '</td>');
+            h.push('<td>' + HTML.Format(Inventory) + '</td>');
+            h.push('<td>' + HTML.Format(OfferSum) + '</td>');
+            h.push('<td>' + HTML.Format(NeedSum) + '</td>');
+            h.push('<td>' + HTML.Format(Inventory + OfferSum) + '</td>');
+            h.push('<td>' + HTML.Format(Inventory + NeedSum) + '</td>');
             
             h.push('</tr>');
         }
