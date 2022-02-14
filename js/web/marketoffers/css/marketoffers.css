@@ -71,3 +71,64 @@
     position: static;
     display: inline-block;
 }
+
+#MarketOffersEvents {
+    top: 100px;
+    right: 100px;
+    width: 650px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody {
+    overflow-y: auto;
+    min-height: 400px;
+    max-height: 750px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody table th {
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 85%;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td {
+    position: relative;
+    font-size: 85%;
+    vertical-align: middle;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td span.custom-option.era {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td span.custom-option:not(.era) {
+    padding-left: 20px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .filters th {
+    text-align: center;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .filters select {
+    width: 160px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td.goods-image {
+    padding: 0;
+    background-color: var(--black-50);
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .goods-sprite-50.sm {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .goods-sprite-50.sm::before {
+    zoom: 0.7;
+    overflow: hidden;
+    position: static;
+    display: inline-block;
+}
