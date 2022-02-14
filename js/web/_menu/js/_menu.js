@@ -44,7 +44,7 @@ let _menu = {
 		'kits',
 		'greatbuildings',
 		'market',
-		'marketoffers',
+		// 'marketoffers',
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
