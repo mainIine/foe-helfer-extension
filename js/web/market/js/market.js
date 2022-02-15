@@ -58,7 +58,9 @@ let Market = {
     TradeDisadvantage: false,
 
 	OfferSelect: null,
-	NeedSelect: null,
+    NeedSelect: null,
+
+    ScrollPositions: [],
 
 
 	/**
@@ -83,6 +85,8 @@ let Market = {
 
             $('#Market').on('click', '.custom-option', function(){
                 let func = $(this).closest('.custom-options').data('function');
+
+                Market.ScrollPositions[func] = $(this).closest('.custom-options').scrollTop();
 
                 Market[`${func}Select`] = $(this).text().trim();
 
@@ -355,7 +359,14 @@ let Market = {
         h.push('</table>');
 
 		$('#MarketBody').html(h.join('')).promise().done(function(){
-			HTML.Dropdown();
+            HTML.Dropdown();
+
+            $('#Market').find('.custom-options').each(function () {
+                let func = $(this).data('function');
+                let ScrollPos = Market.ScrollPositions[func];
+                if (ScrollPos) $(this).scrollTop(ScrollPos);
+            });
+
 		});
 
         $('.td-tooltip').tooltip({
