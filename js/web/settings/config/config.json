@@ -170,7 +170,7 @@
 	},
 	{
 		"name": "DrivePermission",
-		"calback": "DrivePermissions",
+		"callback": "DrivePermissions",
 		"group": "Extension",
 		"sort": 1
 	},
