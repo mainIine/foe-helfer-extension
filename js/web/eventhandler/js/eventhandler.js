@@ -374,8 +374,9 @@ let EventHandler = {
 	 */
 	CalcMoppelHelperTable: async () => {
 		let h = [];
-
 		let PlayerList = [];
+		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
+
 		if (EventHandler.CurrentPlayerGroup === 'Friends') {
 			if (!PlayerDictFriendsUpdated) {
 				h.push('<div class="text-center"><strong class="bigerror">' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '</strong></div>');
@@ -409,6 +410,11 @@ let EventHandler = {
 		h.push('<tr class="sorter-header">');
 		h.push('<th columnname="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
+
+		if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
+			h.push(`<th columnname="Activity" class="is-number" data-type="moppelhelper"><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_2.png"></th>`);
+		}
+
 		h.push('<th columnname="Name" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
 		h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 
@@ -419,7 +425,6 @@ let EventHandler = {
 
 		h.push('</tr>');
 
-		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
 		for (let i = 0; i < PlayerList.length; i++)
 		{
 			let Player = PlayerList[i];
@@ -463,11 +468,12 @@ let EventHandler = {
 
 			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
 
+			if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
+				h.push(`<td data-number="${Player['Activity']}"><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png"></td>`);
+			}
+
 			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
 
-			if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
-				h.push(`<img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png">`);
-            }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
