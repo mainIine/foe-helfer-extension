@@ -1131,5 +1131,8 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
     "StrategyPoints.BuyableFP": "Number of FPs that can be bought with coins.",
-    "_Language": "English"
+    "_Language": "English",
+    "Settings.Entry.DrivePermission": "Google Drive",
+    "Settings.DrivePermission.Title": "Google Drive Permissions",
+    "Settings.DrivePermission.Desc": "To use your data across devices, you can give FoE Helper permission to store a file with your data in your Google Drive.<br>Note: You can revoke the permission at any time."
 }
