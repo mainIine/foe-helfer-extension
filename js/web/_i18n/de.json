@@ -1131,5 +1131,8 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "Welt:",
     "StrategyPoints.BuyableFP": "Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
-    "_Language": "Deutsch"
+    "_Language": "Deutsch",
+    "Settings.Entry.DrivePermission": "Google Drive",
+    "Settings.DrivePermission.Title": "Google Drive Zugriff",
+    "Settings.DrivePermission.Desc": "Um Deine Daten Geräteübergreifend nutzen zu können kannst Du dem FoE Helfer die Erlaubnis geben eine Datei mit Deinen Daten in deinem Google Drive abzulegen.<br>Hinweis: Du kannst die Freigabe jederzeit widerrufen."
 }
