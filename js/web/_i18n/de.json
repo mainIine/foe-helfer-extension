@@ -274,6 +274,7 @@
     "Boxes.GexStat.Week": "Woche",
     "Boxes.GexStat.Weeks": "Wochen",
     "Boxes.GexStat.Copy": "Status GEx:\nNicht begonnen: __zero__ Spieler\nStufe 1: __inLevel1__ Spieler\nStufe 2: __inLevel2__ Spieler\nStufe 3: __inLevel3__ Spieler\nStufe 4: __inLevel4__ Spieler\nAbgeschlossen: __finished__ Spieler",
+    "Boxes.GexStat.Copy.Button": "Info über Fortschritt kopieren",
     "Boxes.GexStat.Copy.Toast.Success.Headline": "GEx Info",
     "Boxes.GexStat.Copy.Toast.Success.Text": "Die Information bzgl. Beteiligung wurde erfolgreich kopiert.",
     "Boxes.GexStat.Copy.Toast.Error.Headline": "GEx Info",
