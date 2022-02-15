@@ -31,6 +31,7 @@ let CityMap = {
 	/**
 	 * Zündung...
 	 *
+	 * @param event
 	 * @param Data
 	 * @param Title
 	 */
@@ -250,7 +251,8 @@ let CityMap = {
 			MaxX = 63,
 			MaxY = 63;
 
-		for (let b in CityMap.CityData) {
+		for (let b in CityMap.CityData)
+		{
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
 			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
@@ -381,18 +383,26 @@ let CityMap = {
 			$('.occupied-area').html(txtFree);
 		}
 
-		sortable = [];
-		for( x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
+		let sortable = [];
+		for(let x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
 		sortable.sort((a, b) => a[1] - b[1]);
 		sortable.reverse();
 
 		let txtCount = [];
-		for( x in sortable ){
+
+		for(let x in sortable )
+		{
+			if(!sortable.hasOwnProperty(x)){
+				break;
+			}
+
 			let type =  sortable[x][0];
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
 			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+
 			let str = `${TypeName}:<br> ${count} (${pct}%)<br>`;
+
 			if (type === 'street') {
 				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
 			}
