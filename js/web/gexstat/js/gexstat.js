@@ -317,6 +317,26 @@ let GexStat = {
 			// Fade out loading screen
 			GexStat.hidePreloader('#GexStat');
 		});
+
+		$('#GexStat').on('click', '.btn-copy-gex-info', function () {
+			GexStat.CopyInfo().then(function () {
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Boxes.GexStat.Copy.Toast.Success.Headline'),
+					text: i18n('Boxes.GexStat.Copy.Toast.Success.Text'),
+					type: 'success',
+					hideAfter: 6000,
+				});
+			}).catch(function () {
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Boxes.GexStat.Copy.Toast.Error.Headline'),
+					text: i18n('Boxes.GexStat.Copy.Toast.Error.Text'),
+					type: 'error',
+					hideAfter: 6000,
+				});
+			});
+		});
 	},
 
 
@@ -659,8 +679,14 @@ let GexStat = {
 
 			h.push(`</select>`);
 			h.push(`<button class="btn btn-default btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+
+			if(GexStat.CurrentStatGroup === 'Participation') {
+				h.push(`<button class="btn btn-default btn-copy-gex-info">Info kopieren</button>`);
+			}
+
 			h.push(`</div>`);
 		}
+
 
 
 		h.push(`<div id="gexsContentWrapper"></div>`);
@@ -883,6 +909,54 @@ let GexStat = {
 		});
 
 		return series;
+	},
+
+	CopyInfo: async () => {
+		let data = {
+			zero: 0,
+			inLevel1: 0,
+			inLevel2: 0,
+			inLevel3: 0,
+			inLevel4: 0,
+			finished: 0
+		};
+
+		let GexParticipation = await GexStat.db.participation.where('gexweek').equals(GexStat.CurrentGexWeek).first();
+
+		if(typeof GexParticipation === "undefined") {
+			throw new Error("No participation data!");
+		}
+
+		for(let idx in GexParticipation.participation) {
+			let player = GexParticipation.participation[idx];
+
+			if(player.solvedEncounters == 64) {
+				data.finished++;
+			} else if(player.solvedEncounters > 48 && player.solvedEncounters < 64) {
+				data.inLevel4++;
+			} else if(player.solvedEncounters > 32 && player.solvedEncounters <= 48) {
+				data.inLevel3++;
+			} else if(player.solvedEncounters > 16 && player.solvedEncounters <= 32) {
+				data.inLevel2++;
+			} else if(player.solvedEncounters > 0 && player.solvedEncounters <= 16) {
+				data.inLevel1++;
+			} else if(player.solvedEncounters == 0) {
+				data.zero++;
+			}
+		}
+
+		let copy = HTML.i18nReplacer(
+			i18n('Boxes.GexStat.Copy'), {
+				zero: data.zero,
+				inLevel1: data.inLevel1,
+				inLevel2: data.inLevel2,
+				inLevel3: data.inLevel3,
+				inLevel4: data.inLevel4,
+				finished: data.finished
+			}
+		);
+
+		helper.str.copyToClipboardLegacy(copy);
 	},
 
 	ExportContent: async (content, type) => {
