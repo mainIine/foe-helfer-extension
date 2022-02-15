@@ -36,6 +36,6 @@
 
   @keyframes scouting {
     0% {padding-left:5px;}
-    50% {padding-left:80px;}
+    50% {padding-left:50px;}
     100% {padding-left:5px;}
   }
