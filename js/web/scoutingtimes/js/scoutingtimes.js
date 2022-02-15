@@ -59,25 +59,11 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
 
 FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
        
-    // Is the box enabled in the settings?
-    if (!Settings.GetSetting('ShowScoutingTimes')) {
-        return;
-    }
-          
-    let Id = data.responseData[0].provinceId;
-    istaken = true;
-    for (let sector of data.responseData) {
-        if (!(sector.isPlayerOwned)) {
-            istaken = false;
-            break;
-        }
-    }
-
-    if (!istaken) return;
-            
-    scoutingTimes.Provinces[Id].isPlayerOwned = true;
-
-    return scoutingTimes.ShowDialog();
+    return scoutingTimes.CheckSectors(data);
+});
+FoEproxy.addHandler('CampaignService', 'buySector', (data, postData) => {
+       
+    return scoutingTimes.CheckSectors(data);
 });
 
 FoEproxy.addHandler('CampaignService', 'buyInstantScout', (data, postData) => {
@@ -91,6 +77,7 @@ FoEproxy.addHandler('CampaignService', 'buyInstantScout', (data, postData) => {
 
     return scoutingTimes.ShowDialog();
 });
+
 FoEproxy.addHandler('CampaignService', 'moveScoutToProvince', (data, postData) => {
        
     // Is the box enabled in the settings?
@@ -99,9 +86,8 @@ FoEproxy.addHandler('CampaignService', 'moveScoutToProvince', (data, postData) =
     }
     
     for (resp of postData) {
-        console.log (resp);
         if (resp.requestMethod === 'moveScoutToProvince') {
-            scoutingTimes.scoutTarget = resp.requestData[0][1];
+            scoutingTimes.scoutTarget = resp.requestData[0][resp.requestData[0].length - 1];
             scoutingTimes.scoutTraveltime = data.responseData;
         }
     }
@@ -188,8 +174,8 @@ let scoutingTimes = {
             }
             if ((province.travelTime|0)>0) {
                 i += 1;
-                htmltext += `<tr><td>${province.name}</td><td>`;
-                htmltext += (p === scoutingTimes.target) ? `...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
+                htmltext += `<tr><td>${province.name}</td>`;
+                htmltext += (p === scoutingTimes.target) ? `<td class="scouting">...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
                 htmltext += ` ${scoutingTimes.format(province.travelTime)}`;
                 htmltext += `</td></tr>`;
@@ -272,5 +258,27 @@ let scoutingTimes = {
         }
         return distx;
     },
+
+    CheckSectors: (data) => {
+            // Is the box enabled in the settings?
+        if (!Settings.GetSetting('ShowScoutingTimes')) {
+            return;
+        }
+        let Id = data.responseData[0].provinceId;
+        let istaken = true;
+        for (let sector of data.responseData) {
+            if (!(sector.isPlayerOwned)) {
+                istaken = false;
+                break;
+            }
+        }
+
+        if (!istaken) return;
+                    
+        scoutingTimes.Provinces[Id].isPlayerOwned = true;
+
+        return scoutingTimes.ShowDialog();
+
+    }
 
 };
