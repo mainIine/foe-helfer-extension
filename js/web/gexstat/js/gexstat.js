@@ -681,7 +681,7 @@ let GexStat = {
 			h.push(`<button class="btn btn-default btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 
 			if(GexStat.CurrentStatGroup === 'Participation') {
-				h.push(`<button class="btn btn-default btn-copy-gex-info">Info kopieren</button>`);
+				h.push(`<button class="btn btn-default btn-copy-gex-info">${i18n('Boxes.GexStat.Copy.Button')}</button>`);
 			}
 
 			h.push(`</div>`);
