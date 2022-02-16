@@ -179,6 +179,7 @@
     "Boxes.CityMap.OlderThan2Era": " liegen 2 ZA zurück",
     "Boxes.CityMap.OlderThan3Era": " liegen 3 ZA zurück",
     "Boxes.CityMap.OlderThan4Era": " liegen 4+ ZA zurück",
+    "Boxes.CityMap.FilterBuildings": "Gebäude Suchen",
     "Boxes.CloseBox.AutoHideOnBattle": "Alles Ausblenden beim Kampf",
     "Boxes.CloseBox.Automation": "Automatisierung",
     "Boxes.CloseBox.BoxAlignment": "Box Ausrichtung",

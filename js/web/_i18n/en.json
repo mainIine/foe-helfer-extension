@@ -179,6 +179,7 @@
     "Boxes.CityMap.OlderThan2Era": " are 2 Ages behind",
     "Boxes.CityMap.OlderThan3Era": " are 3 Ages behind",
     "Boxes.CityMap.OlderThan4Era": " are 4+ Ages behind",
+    "Boxes.CityMap.FilterBuildings": "Search Buildings",
     "Boxes.CloseBox.AutoHideOnBattle": "Auto hide all on battle",
     "Boxes.CloseBox.Automation": "Automation",
     "Boxes.CloseBox.BoxAlignment": "Box alignment",
