@@ -985,7 +985,7 @@
     "Menu.greatbuildings.Title": "GB Investment",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
-    "Quests.CounterTooltip.Content": "There is a limit of 2000 aborted quests per day.",
+    "Quests.CounterTooltip.Content": "There is a limit of 2000 aborted quests per day. In parentheses are the already completed quests",
     "Settings.About.Desc": "The FoE Helper is a free browser extension for Forge of Empires developed for players by players. The tool is not affiliated with InnoGames.",
     "Settings.About.RatingDesc": "If you like what you see and what we do, please leave a good review in the Store!",
     "Settings.About.RatingTitle": "Rate the Extension",

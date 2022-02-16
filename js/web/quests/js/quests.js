@@ -14,17 +14,21 @@
 // Quest is aborted?
 FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 	if(postData[0]['requestClass'] === 'QuestService' && postData[0]['requestMethod'] === 'abortQuest'){
-		Quests.UpdateCounter();
+		Quests.UpdateAbortCounter();
+	}
+
+	if(postData[0]['requestClass'] === 'QuestService' && postData[0]['requestMethod'] === 'advanceQuest'){
+		Quests.UpdateSolvedCounter();
 	}
 });
-
 
 /**
  * @type {{InsertStorage: Quests.InsertStorage, init: Quests.init, Counter: number, Date: null, UpdateCounter: Quests.UpdateCounter}}
  */
 let Quests = {
 
-	Counter: 2000,
+	AbortCounter: 2000,
+	SolvedCounter: 0,
 	Date: null,
 
 
@@ -41,11 +45,13 @@ let Quests = {
 
 			// current is older than stored date
 			if (!parts || !parts['date'] || moment(moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')).isAfter(parts['date'])){
-				Quests.Counter = 2000;
+				Quests.AbortCounter = 2000;
+				Quests.SolvedCounter = 0;
 			}
 			// is today
 			else {
-				Quests.Counter = parts['counter'];
+				Quests.AbortCounter = parts['abortCounter'];
+				Quests.SolvedCounter = parts['solvedCounter'];
 				Quests.Date = parts['date'];
 			}
 		}
@@ -80,29 +86,42 @@ let Quests = {
 					.append(
 						$('<span />')
 							.attr('id', 'quest-counter-value')
-							.text( Quests.Counter )
+							.text( Quests.AbortCounter + ' (' + Quests.SolvedCounter + ')' )
 					)
 			);
 		});
 
 	},
 
+	/**
+	 * Count down und save to LocalStorage
+	 *
+	 * @constructor
+	 */
+	UpdateAbortCounter: ()=> {
+		Quests.AbortCounter--;
+
+		if (Settings.GetSetting('Show2kQuestMark')) {
+			$('#quest-counter-value').text( Quests.AbortCounter + ' (' + Quests.SolvedCounter + ')' )
+		}
+
+		Quests.InsertStorage();
+	},
 
 	/**
 	 * Count down und save to LocalStorage
 	 *
 	 * @constructor
 	 */
-	UpdateCounter: ()=> {
-		Quests.Counter--;
+	UpdateSolvedCounter: ()=> {
+		Quests.SolvedCounter++;
 
 		if (Settings.GetSetting('Show2kQuestMark')) {
-			$('#quest-counter-value').text(Quests.Counter);
+			$('#quest-counter-value').text( Quests.AbortCounter + ' (' + Quests.SolvedCounter + ')' )
 		}
 
 		Quests.InsertStorage();
 	},
-
 
 	/**
 	 * Write data to LocalStorage
@@ -111,7 +130,8 @@ let Quests = {
 	 */
 	InsertStorage:()=> {
 		localStorage.setItem('QuestCounter', JSON.stringify({
-			counter: Quests.Counter,
+			abortCounter: Quests.AbortCounter,
+			solvedCounter: Quests.SolvedCounter,
 			date: Quests.Date
 		}));
 	}
