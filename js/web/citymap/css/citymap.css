@@ -333,3 +333,7 @@
     0% {opacity: 100%;}
     100% {opacity: 70%;}
   }
+
+#BuildingsFilter {
+	margin-left: auto;
+}
