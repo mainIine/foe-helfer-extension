@@ -586,7 +586,7 @@ let CityMap = {
 		spans = $('span.entity');
 		for (sp of spans) {
 			let title = $(sp).attr('data-original-title');
-			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase) > -1)) {
+			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase()) > -1)) {
 				$(sp).addClass('blinking');
 			} else {
 				$(sp).removeClass('blinking');
