@@ -10,7 +10,6 @@ let Lbsets = {
         MainParser.loadJSON(extUrl + 'js/web/lbsets/data/sets.json', (data)=>{
             Lbsets.lbs = JSON.parse(data);
             Lbsets.calcPossibleSets();
-            Lbsets.BuildBox();
         });
     },
 
@@ -54,7 +53,6 @@ let Lbsets = {
                 'dragdrop': true,
                 'minimize': true
             });
-
 
             let t = '<table class="foe-table">';
 
