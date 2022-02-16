@@ -317,3 +317,23 @@
 #CityMapSubmit #CityMapSubmitBody {
 	padding: 0.3rem;
 }
+
+.blinking {
+
+    border: 2px solid beige !important;
+    animation-name: blinking;
+    animation-duration: 0.75s;
+    opacity: 100%;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+  }
+
+  @keyframes blinking {
+    0% {opacity: 100%;}
+    100% {opacity: 70%;}
+  }
+
+#BuildingsFilter {
+	margin-left: auto;
+}

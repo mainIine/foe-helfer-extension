@@ -169,7 +169,7 @@ let CityMap = {
 		// Button for submit Box
 		if (CityMap.IsExtern === false) {
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }).text(i18n('Boxes.CityMap.HighlightOldBuildings')));
-
+			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
@@ -581,4 +581,18 @@ let CityMap = {
 
 		return Ret;
 	},
+
+	filterBuildings: (string) => {
+		spans = $('span.entity');
+		for (sp of spans) {
+			let title = $(sp).attr('data-original-title');
+			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase()) > -1)) {
+				$(sp).addClass('blinking');
+			} else {
+				$(sp).removeClass('blinking');
+			}
+
+		}
+
+	}
 };
