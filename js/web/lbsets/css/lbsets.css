@@ -1,0 +1,73 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#lbsets {
+    top: 15%;
+    left: 50%;
+    width: 650px;
+    transform: translateX(-50%);
+}
+
+#lbsets #lbsetsBody {
+    overflow: hidden;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+#lbsets #lbsetsBody table.foe-table tr th,
+#lbsets #lbsetsBody table.foe-table tr td {
+    padding: 5px;
+}
+
+#lbsets #lbsetsBodyTopbar {
+    padding: 3px;
+    text-align: right;
+}
+
+#lbsets table.foe-table th {
+    color: var(--text-bright);
+}
+
+#lbsets table.foe-table th.head {
+    order-top: 1px solid var(--text-bright);
+}
+
+#lbsets .item-asset {
+    padding: 5px;
+}
+
+#lbsets .sets-image,
+#lbsets .asset-image {
+    max-width: 90px;
+    max-height: 70px;
+}
+
+#lbsets td div.assets-row {
+    display: flex;
+}
+
+#lbsets td div.assets-row .item-asset:not(:first-child) {
+    margin-left: 10px;
+}
+
+#lbsets td.assets-header {
+    background-color: rgba(0,0,0, 0.3);
+    padding: 0 5px !important;
+}
+
+#lbsets td.is-missing,
+#lbsets .item-asset.is-missing {
+    background-color: rgba(140, 0, 0, 0.5);
+    opacity: 0.7;
+}

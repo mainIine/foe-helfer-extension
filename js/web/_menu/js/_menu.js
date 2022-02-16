@@ -53,7 +53,8 @@ let _menu = {
 		'guildmemberstat',
 		'gexstat',
 		'productionsrating',
-		'castle'
+		'castle',
+		'lbsets'
 		// 'unitsGex',
 	],
 
@@ -956,5 +957,26 @@ let _menu = {
 
 		return btn;
 	},
-	
+
+	/**
+	 * Lb sets
+	 */
+	lbsets_Btn: () => {
+		Lbsets.init();
+
+		let btn = $('<div />').attr({ 'id': 'lbsets-Btn', 'data-slug': 'lbsets' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.lbsets.Title'), i18n('Menu.lbsets.Desc'));
+
+		let btn_sp = $('<span />');
+
+		btn_sp.on('click', function () {
+			Lbsets.BuildBox();
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
 };

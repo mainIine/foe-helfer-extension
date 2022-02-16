@@ -491,6 +491,10 @@ p {
 	background-image: url('../images/menu/castle.png');
 }
 
+[id$=lbsets-Btn] span {
+	background-image: url('../images/menu/lbsets.png');
+}
+
 .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;

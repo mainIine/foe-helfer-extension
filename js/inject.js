@@ -233,7 +233,8 @@
 				'gexstat',
 				'dbexport',
 				'closebox',
-				'castle'
+				'castle',
+				'lbsets'
 			];
 
 			// load scripts (one after the other)
