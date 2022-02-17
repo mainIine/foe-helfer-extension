@@ -223,6 +223,7 @@
 				'inventory-tracker',
 				'treasury',
 				'market',
+				'marketoffers',
 				'bluegalaxy',
 				'eventhandler',
 				'fp-collector',

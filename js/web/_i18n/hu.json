@@ -307,7 +307,7 @@
     "Boxes.Gildfights.Total": "Összes",
     "Boxes.GreatBuildings.ArcBonus": "Építő bónusza",
     "Boxes.GreatBuildings.Attack": "% Támadás",
-    "Boxes.GreatBuildings.AttackPerFP": "1 FP __ százalék __%-os bónuszt jelent a támadó hadseregnek",
+    "Boxes.GreatBuildings.AttackPerFP": "1 FP __percent__%-os bónuszt jelent a támadó hadseregnek",
     "Boxes.GreatBuildings.AttackValue": "A támadó hadsereg 1%-os bónuszának értéke (FP-ben)",
     "Boxes.GreatBuildings.BreakEven": "Megtérülési idő",
     "Boxes.GreatBuildings.BreakEvenTT": "__days__ napba telik, mire a __costs__ FP befektetését megtérül, ha a termelés __fpproduction__ FP/nap",
