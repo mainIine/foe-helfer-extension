@@ -95,12 +95,14 @@ let EventHandler = {
 			}
 
 			let PlayerID = null,
+				PlayerName = null,
 				IsNeighbor = 0,
 				IsGuildMember = 0,
 				IsFriend = 0;
 
 			if (Event['other_player']) {
 				if (Event['other_player']['player_id']) PlayerID = Event['other_player']['player_id'];
+				if (Event['other_player']['name']) PlayerName = Event['other_player']['name'];
 				if (Event['other_player']['is_neighbor']) IsNeighbor = 1;
 				if (Event['other_player']['is_guild_member']) IsGuildMember = 1;
 				if (Event['other_player']['is_friend']) IsFriend = 1;
@@ -112,10 +114,13 @@ let EventHandler = {
 				eventtype: EventType,
 				interactiontype: InteractionType,
 				playerid: PlayerID,
+				playername: PlayerName,
 				entityid: EntityID,
 				isneighbor: IsNeighbor,
 				isguildmember: IsGuildMember,
-				isfriend: IsFriend
+				isfriend: IsFriend,
+				need: Event['need'],
+				offer: Event['offer']
 			}));
 		}
 
