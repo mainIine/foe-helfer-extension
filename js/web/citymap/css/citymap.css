@@ -320,7 +320,7 @@
 
 .blinking {
 
-    border: 2px solid beige !important;
+    border: 3px solid rgb(175 75 75) !important;
     animation-name: blinking;
     animation-duration: 0.75s;
     opacity: 100%;
