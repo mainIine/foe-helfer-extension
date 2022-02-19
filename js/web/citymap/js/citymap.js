@@ -406,7 +406,7 @@ let CityMap = {
 			if (type === 'street') {
 				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
 			}
-			str = str + '<br>';
+			str = `<span class="square ${type}"></span>${str}<br>`;
 			txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
