@@ -21,8 +21,17 @@
 
 #kits #kitsBody {
 	overflow: hidden;
-	max-height: 550px;
+	max-height: 600px;
 	overflow-y: auto;
+}
+
+
+#kits #kitsBody tr.headline th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	border-top: 1px solid var(--text-bright);
+	border-bottom: 1px solid var(--text-bright);
 }
 
 #kits #kitsBody table.foe-table tr th,
@@ -32,7 +41,12 @@
 
 #kits #kitsBodyTopbar {
 	padding: 3px;
-	text-align: right;
+	display: flex;
+	justify-content: space-around;
+}
+
+#kits #kits-triplestate-button {
+	min-width: 200px;
 }
 
 #kits table.foe-table th {
@@ -40,7 +54,7 @@
 }
 
 #kits table.foe-table th.head {
-	order-top: 1px solid var(--text-bright);
+	border-top: 1px solid var(--text-bright);
 }
 
 #kits .item-asset {
@@ -53,10 +67,12 @@
 	max-height: 70px;
 }
 
+#kits td div.kit-row,
 #kits td div.assets-row {
 	display: flex;
 }
 
+#kits td div.kit-row .item-asset:not(:first-child),
 #kits td div.assets-row .item-asset:not(:first-child) {
 	margin-left: 10px;
 }
