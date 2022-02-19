@@ -170,7 +170,11 @@ let HiddenRewards = {
                 }
 				
                 let hiddenReward = HiddenRewards.FilteredCache[idx];
-				
+		
+		//outpost_incident_type_name_filter
+		if (hiddenReward.type.includes('outpost')) {
+			hiddenReward.type = 'incident_outpost_' + hiddenReward.type.substr(-2, 2);
+		}
 		
                 h.push('<tr>');
                 h.push('<td class="incident" title="' + HTML.i18nTooltip(hiddenReward.type) + '"><img src="' + extUrl + 'js/web/hidden-rewards/images/' + hiddenReward.type + '.png" alt=""></td>');
