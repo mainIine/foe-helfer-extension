@@ -193,9 +193,18 @@ let Kits = {
 					buildings.push(itemRow);
 				}
 			}
-			// Building has asset buildings or kits ? show : ''
-			if (inv.find(el => el['itemAssetName'] === kits[set]['kit'])) {
-				show = true;
+			// [Building has asset buildings or kits on ShowMissing(1)] or [ShowMissing(2)] ? show !
+			if (kits[set]['kit'] && Array.isArray(kits[set]['kit'])) {
+				for (let a in kits[set]['assets']) {
+					if (inv.find(el => el['itemAssetName'] === kits[set]['kit'][a])) {
+						show = true;
+					}
+				}
+			}
+			else if (kits[set]['kit']) {
+				if (inv.find(el => el['itemAssetName'] === kits[set]['kit'])) {
+					show = true;
+				}
 			}
 			if (kits[set]['assets']) {
 				for (let a in kits[set]['assets']) {
