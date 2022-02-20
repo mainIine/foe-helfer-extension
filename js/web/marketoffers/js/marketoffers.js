@@ -77,18 +77,18 @@ let MarketOffers = {
 
         h.push('<span class="btn-default button-events">' + i18n('Boxes.MarketOffers.Events') + '</span>');
 
-        h.push('<table class="foe-table exportable">');
-        h.push('<thead>');
-        h.push('<tr>');
-        h.push('<th columnname="Era">' + i18n('Boxes.MarketOffers.Era') + '</th>')
-        h.push('<th columnname2="Good" colspan="2">' + i18n('Boxes.MarketOffers.Good') + '</th>');
-        h.push('<th columnname="Inventory">' + i18n('Boxes.MarketOffers.Inventory') + '</th>');
-        h.push('<th columnname="OfferSum">' + i18n('Boxes.MarketOffers.OfferSum') + '</th>');
-        h.push('<th columnname="NeedSum">' + i18n('Boxes.MarketOffers.NeedSum') + '</th>');
-        h.push('<th columnname="InventoryOfferSum">' + i18n('Boxes.MarketOffers.InventoryOfferSum') + '</th>');
-        h.push('<th columnname="InventoryNeedSum">' + i18n('Boxes.MarketOffers.InventoryNeedSum') + '</th>');
+        h.push('<table id="MarketOffersTable" class="foe-table sortable-table exportable">');
+        h.push('<tbody class="MarketOffers">');
+        h.push('<tr class="sorter-header" data-type="MarketOffers">');
+        h.push('<th columnname="Era" class="is-number ascending" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.Era') + '</th>')
+        h.push('<th></th>');
+        h.push('<th columnname2="Good" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.Good') + '</th>');
+        h.push('<th columnname="Inventory" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.Inventory') + '</th>');
+        h.push('<th columnname="OfferSum" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.OfferSum') + '</th>');
+        h.push('<th columnname="NeedSum" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.NeedSum') + '</th>');
+        h.push('<th columnname="InventoryOfferSum" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.InventoryOfferSum') + '</th>');
+        h.push('<th columnname="InventoryNeedSum" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.InventoryNeedSum') + '</th>');
         h.push('</tr>');
-        h.push('</thead>');
 
         for (let i = 0; i < GoodsList.length; i++) {
             let CurrentGood = GoodsList[i],
@@ -99,19 +99,21 @@ let MarketOffers = {
                 NeedSum = NeedSums[GoodID];
 
             h.push('<tr>');
-            h.push('<td>' + i18n('Eras.' + Era) + '</td>');
+            h.push('<td class="is-number" data-number="' + i + '">' + i18n('Eras.' + Era) + '</td>');
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodID + '"></span></td>');
-            h.push('<td><strong>' + CurrentGood['name'] + '</strong></td>');
-            h.push('<td>' + HTML.Format(Inventory) + '</td>');
-            h.push('<td>' + HTML.Format(OfferSum) + '</td>');
-            h.push('<td>' + HTML.Format(NeedSum) + '</td>');
-            h.push('<td>' + HTML.Format(Inventory + OfferSum) + '</td>');
-            h.push('<td>' + HTML.Format(Inventory + NeedSum) + '</td>');
+            h.push('<td data-text="' + CurrentGood['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong>' + CurrentGood['name'] + '</strong></td>');
+            h.push('<td class="is-number" data-number="' + Inventory + '">' + HTML.Format(Inventory) + '</td>');
+            h.push('<td class="is-number" data-number="' + OfferSum + '">' + HTML.Format(OfferSum) + '</td>');
+            h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(NeedSum) + '</td>');
+            h.push('<td class="is-number" data-number="' + (Inventory + OfferSum) + '">' + HTML.Format(Inventory + OfferSum) + '</td>');
+            h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(Inventory + NeedSum) + '</td>');
             
             h.push('</tr>');
         }
+        h.push('</tbody>');
 
         $('#MarketOffersBody').html(h.join(''));
+        $('.sortable-table').tableSorter();
     },
 
 
@@ -208,11 +210,9 @@ let MarketOffers = {
         h.push('<table id="MarketOffersEventsTable" class="foe-table sortable-table exportable">');
         h.push('</table>');
 
-        await $('#MarketOffersEventsBody').html(h.join(''))
+        await $('#MarketOffersEventsBody').html(h.join(''));
         MarketOffers.CalcEventsTable();
-        $('.sortable-table').tableSorter();      
-
-        $('#MarketOffersEventsBody').html(h.join(''));
+        $('.sortable-table').tableSorter();
     },
 
 
@@ -235,12 +235,19 @@ let MarketOffers = {
         });
 
         h.push('<tbody class="MarketOffersEvents">');
-        h.push('<tr class="sorter-header">');
-        h.push('<th columnname="Date" class="is-date descending" data-type="MarketOffersEvents">' + i18n('Boxes.MarketOffersEvents.Date') + '</th>');
-        h.push('<th columnname2="Offered goods" columnname3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th columnname2="Requested goods" columnname3="Requested amount"colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
-        h.push('<th columnname="Rate">' + i18n('Boxes.Market.RateColumn') + '</th>');
-        if (MarketOffers.CurrentEventsTab === 'accepted') h.push('<th columnname="Player">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
+        h.push('<tr class="sorter-header" data-type="MarketOffersEvents">');
+        h.push('<th columnname="Date" class="is-number descending" data-type="MarketOffersEvents">' + i18n('Boxes.MarketOffersEvents.Date') + '</th>');
+
+        h.push('<th></th>');
+        h.push('<th columnname="Offered goods" data-type="MarketOffersEvents">' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th columnname="Offered amount" class="is-number" data-type="MarketOffersEvents">' + i18n('Boxes.MarketOffersEvents.Count') + '</th>');
+
+        h.push('<th></th>');
+        h.push('<th columnname="Requested goods" data-type="MarketOffersEvents">' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th columnname="Requested amount" class="is-number" data-type="MarketOffersEvents">' + i18n('Boxes.MarketOffersEvents.Count') + '</th>');
+
+        h.push('<th columnname="Rate" class="is-number" data-type="MarketOffersEvents">' + i18n('Boxes.Market.RateColumn') + '</th>');
+        if (MarketOffers.CurrentEventsTab === 'accepted') h.push('<th columnname="Player" data-type="MarketOffersEvents">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('</tr>');
 
         for (let i = 0; i < EventList.length; i++) {
@@ -260,21 +267,29 @@ let MarketOffers = {
             if (!OfferGoodID || !NeedGoodID) continue;
 
             h.push('<tr>');
-            h.push('<td class="is-date" data-date="' + (Event['date']) + '">' + (Event['date'] ? moment.unix(Event['date'] / 1000).format(i18n('DateTime')) : i18n('Boxes.MarketOffersEvents.DateNA')) + '</td>');
+            h.push('<td class="is-number" data-number="' + (Event['date'].getTime()) + '">' + (Event['date'] ? moment.unix(Event['date'] / 1000).format(i18n('DateTime')) : i18n('Boxes.MarketOffersEvents.DateNA')) + '</td>');
+
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[OfferGoodID]['id'] + '"></span></td>');
-            h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[OfferGoodID]['name'] + '</strong></td>');
-            h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Event['offer']['value'] + '</strong></td>');
+            h.push('<td data-text="' + GoodsData[OfferGoodID]['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[OfferGoodID]['name'] + '</strong></td>');
+            h.push('<td class="is-number" data-number="' + Event['offer']['value'] + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Event['offer']['value'] + '</strong></td>');
+
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[NeedGoodID]['id'] + '"></span></td>');
-            h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
-            h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Event['need']['value'] + '</strong></td>');
-            h.push('<td class="text-center">' + HTML.Format(MainParser.round(Event['offer']['value'] / Event['need']['value'] * 100) / 100) + '</td>');
-            if(MarketOffers.CurrentEventsTab === 'accepted') h.push('<td>' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</td>');
+            h.push('<td data-text="' + GoodsData[OfferGoodID]['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
+            h.push('<td class="is-number" data-number="' + Event['need']['value'] + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Event['need']['value'] + '</strong></td>');
+
+            h.push('<td class="text-center" data-number="' + Event['offer']['value'] / Event['need']['value'] + '">' + HTML.Format(MainParser.round(Event['offer']['value'] / Event['need']['value'] * 100) / 100) + '</td>');
+            if (MarketOffers.CurrentEventsTab === 'accepted') h.push('<td data-text="' + PlayerName.toLowerCase().replace(/[\W_ ]+/g, "") + '">' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</td>');
             h.push('</tr>');
         }
 
         h.push('</tbody>');
 
-        await $('#MarketOffersEventsTable').html(h.join(''))
+        await $('#MarketOffersEventsTable').html(h.join(''));
+
+        $('.td-tooltip').tooltip({
+            html: true,
+            container: '#MarketOffersEvents'
+        });
     },
 
 
