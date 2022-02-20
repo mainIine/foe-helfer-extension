@@ -312,17 +312,31 @@
 }
 /* mark old buildings*/
 .older-1.diagonal {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(175, 255, 164, 0.5) 5px, rgba(175, 255, 164, 0.5) 10px)
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
 }
 .older-2.diagonal {
-	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgba(180, 139, 3, 0.5) 5px, rgba(180, 139, 3, 0.5) 10px)
+	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
 }
 .older-3.diagonal {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(250, 100, 100, 0.5) 5px, rgba(250, 100, 100, 0.5) 10px)
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
 .to-old.diagonal {
-	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgba(255, 0, 0, 0.5) 5px, rgba(255,0,0,.5) 10px)
+	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
+
+[data-view="skew"] .older-1.diagonal {
+	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
+}
+[data-view="skew"] .older-2.diagonal {
+	background-image: repeating-linear-gradient(250deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
+}
+[data-view="skew"] .older-3.diagonal {
+	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
+}
+[data-view="skew"] .to-old.diagonal {
+	background-image: repeating-linear-gradient(172deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
+}
+
 
 .to-old-legends span {
 	display: inline-block;
