@@ -12,7 +12,9 @@
  */
 
 /**
- * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
+ * Kits Class
+ *
+ * @type {{ItemTd: ((function(*): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemKitDiv: ((function(*): string)|*), GetInvententoryArray: (function(): *[]), ItemAssetDiv: ((function(*): string)|*), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
@@ -20,18 +22,12 @@ let Kits = {
 	ShowMissing: 0,
 	Inventory: null,
 
+
 	/**
 	 * Get all sets from the server
 	 */
 	init: ()=> {
-
-		let data = localStorage.getItem('KnownKitsData');
-
 		MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=>{
-
-			localStorage.setItem('KnownKitsData', data);
-			localStorage.setItem('KnownKitsDate', MainParser.getAddedDateTime(48));
-
 			Kits.KitsjSON = JSON.parse(data);
 			Kits.BuildBox();
 		});
@@ -51,11 +47,12 @@ let Kits = {
 			HTML.AddCssFile('kits');
 
 			HTML.Box({
-				'id': 'kits',
-				'title': i18n('Boxes.Kits.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true
+				id: 'kits',
+				title: i18n('Boxes.Kits.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
 			});
 
 			$('#kitsBody').append( $('<div />').attr('id', 'kitsBodyTopbar'), $('<div />').attr('id', 'kitsBodyInner') );
@@ -88,16 +85,14 @@ let Kits = {
 
 		let t = '<table class="foe-table">';
 
-		t += 	`<tr class="headline">
-					<th></th>
-					<th>${i18n('Boxes.Kits.Name')}</th>
-					<th></th>
-					<th>${i18n('Boxes.Kits.KitName')}</th>
+		t += 	`<tr class="headline" style="display:table-row">
+					<th colspan="2">${i18n('Boxes.Kits.Name')}</th>
+					<th colspan="2">${i18n('Boxes.Kits.KitName')}</th>
 				</tr>`;
 
 		// Sets durchsteppen
-		for (let set in kits) {
-
+		for (let set in kits)
+		{
 			if (!kits.hasOwnProperty(set)) {
 				break;
 			}
@@ -416,7 +411,7 @@ let Kits = {
 	 */
 	ItemTd: (el)=> {
 
-		if (!el || el['item'] == undefined) {
+		if (!el || el['item'] === undefined) {
 			return '';
 		}
 
@@ -454,14 +449,13 @@ let Kits = {
 	 * Create a div-row for assets of a set
 	 *
 	 * @param el
-	 * @param mark
 	 * @returns {string}
 	 * @constructor
 	 */
 	ItemAssetDiv: (el)=> {
 		
-		if (!el || el['item'] == undefined) {
-			return;
+		if (!el || el['item'] === undefined) {
+			return '';
 		}
 		let item = el['item'],
 			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'],
@@ -477,17 +471,16 @@ let Kits = {
 	 * Create a div-row for multible kits of a set
 	 *
 	 * @param el
-	 * @param mark
 	 * @returns {string}
 	 * @constructor
 	 */
 	ItemKitDiv: (el)=> {
 		
-		if (!el || el['item'] == undefined) {
-			return;
+		if (!el || el['item'] === undefined) {
+			return '';
 		}
 		let item = el['item'],
-			aName = el['missing'] ? item : item['itemAssetName'];
+			aName = el['missing'] ? item : item['itemAssetName'],
 			url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 
 		return 	`<div class="item-asset${(el['missing'] ? ' is-missing' : '')}">
@@ -508,7 +501,7 @@ let Kits = {
 		for (let i in MainParser.Inventory) {
 			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
 
-			let itemIdx = Ret.findIndex(e => e["itemAssetName"] == MainParser.Inventory[i]["itemAssetName"]);
+			let itemIdx = Ret.findIndex(e => e["itemAssetName"] === MainParser.Inventory[i]["itemAssetName"]);
 			
 			if (itemIdx > -1) {
 				Ret[itemIdx]["inStock"] += MainParser.Inventory[i]["inStock"];
