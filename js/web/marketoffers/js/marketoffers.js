@@ -113,7 +113,7 @@ let MarketOffers = {
         h.push('</tbody>');
 
         $('#MarketOffersBody').html(h.join(''));
-        $('.sortable-table').tableSorter();
+        $('#MarketOffersTable.sortable-table').tableSorter();
     },
 
 
@@ -212,7 +212,7 @@ let MarketOffers = {
 
         await $('#MarketOffersEventsBody').html(h.join(''));
         MarketOffers.CalcEventsTable();
-        $('.sortable-table').tableSorter();
+        $('#MarketOffersEventsTable.sortable-table').tableSorter();
     },
 
 
