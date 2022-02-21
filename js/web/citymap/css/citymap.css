@@ -187,12 +187,38 @@
 }
 
 /* ------------------------------ */
+
+#city-map-overlayBody {
+	--background-color-military: #fff;
+	--border-color-military: #fff;
+	--background-color-residential: #7abaff;
+	--border-color-residential: #219eff;
+	--background-color-decoration: #497445;
+	--border-color-decoration: #1c7430;
+	--background-color-street: #6c757d;
+	--border-color-street: #4d565e;
+	--background-color-goods: #7d2a4d;
+	--border-color-goods: #6a2a3a;
+	--background-color-culture: #7d4900;
+	--border-color-culture: #582c00;
+	--background-color-main_building: #ffb100;
+	--border-color-main_building: #ffb100;
+	--background-color-production: #416dff;
+	--border-color-production: #2732ff;
+	--background-color-greatbuilding: #ff5026;
+	--border-color-greatbuilding: #ff2101;
+	--background-color-random_production: #a8ff18;
+	--border-color-random_production: #4cff11;
+	--background-color-tower: #cdcdcd;
+	--border-color-tower: #787a7a;
+}
+
 #grid-outer span.entity {
 	display: block;
-	background-color: #fff;
+	background-color: var(--background-color-military);
 	position: absolute;
 	z-index: 10;
-	border: 1px solid;
+	border: 1px solid var(--border-color-military);
 
 	transition: all 0.3s ease-in-out;
 }
@@ -204,44 +230,44 @@
 }
 
 #grid-outer span.residential {
-	background-color: #7abaff;
-	border-color: #219eff;
+	background-color: var(--background-color-residential);
+	border-color: var(--border-color-residential);
 }
 #grid-outer span.decoration {
-	background-color: #497445;
-	border-color: #1c7430;
+	background-color: var(--background-color-decoration);
+	border-color: var(--border-color-decoration);
 }
 #grid-outer span.street {
-	background-color: #6c757d;
-	border-color: #4d565e;
+	background-color: var(--background-color-street);
+	border-color: var(--border-color-street);
 }
 #grid-outer span.goods {
-	background-color: #7d2a4d;
-	border-color: #6a2a3a;
+	background-color: var(--background-color-goods);
+	border-color: var(--border-color-goods);
 }
 #grid-outer span.culture {
-	background-color: #7d4900;
-	border-color: #582c00;
+	background-color: var(--background-color-culture);
+	border-color: var(--border-color-culture);
 }
 #grid-outer span.main_building {
-	background-color: #ffb100;
-	border-color: #ffb100;
+	background-color: var(--background-color-main_building);
+	border-color: var(--border-color-main_building);
 }
 #grid-outer span.production {
-	background-color: #416dff;
-	border-color: #2732ff;
+	background-color: var(--background-color-production);
+	border-color: var(--border-color-production);
 }
 #grid-outer span.greatbuilding {
-	background-color: #ff5026;
-	border-color: #ff2101;
+	background-color: var(--background-color-greatbuilding);
+	border-color: var(--border-color-greatbuilding);
 }
 #grid-outer span.random_production {
-	background-color: #a8ff18;
-	border-color: #4cff11;
+	background-color: var(--background-color-random_production);
+	border-color: var(--border-color-random_production);
 }
 #grid-outer span.tower {
-	background-color: #cdcdcd;
-	border-color: #787a7a;
+	background-color: var(--background-color-tower);
+	border-color: var(--border-color-tower);
 }
 
 #grid-outer span span {
@@ -284,8 +310,39 @@
 	-moz-animation: pulse 3s infinite ease-in-out;
 	animation: pulse 3s infinite ease-in-out;
 }
-.diagonal {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(150,150,150,.5) 5px, rgba(255,255,255,.5) 10px)
+/* mark old buildings*/
+.older-1.diagonal {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
+}
+.older-2.diagonal {
+	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
+}
+.older-3.diagonal {
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
+}
+.to-old.diagonal {
+	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
+}
+
+[data-view="skew"] .older-1.diagonal {
+	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
+}
+[data-view="skew"] .older-2.diagonal {
+	background-image: repeating-linear-gradient(250deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
+}
+[data-view="skew"] .older-3.diagonal {
+	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
+}
+[data-view="skew"] .to-old.diagonal {
+	background-image: repeating-linear-gradient(172deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
+}
+
+
+.to-old-legends span {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 3px;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -299,4 +356,74 @@
 
 #CityMapSubmit #CityMapSubmitBody {
 	padding: 0.3rem;
+}
+
+.blinking {
+
+    border: 3px solid rgb(175 75 75) !important;
+    animation-name: blinking;
+    animation-duration: 0.75s;
+    opacity: 100%;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+  }
+
+  @keyframes blinking {
+    0% {opacity: 100%;}
+    100% {opacity: 70%;}
+  }
+
+#BuildingsFilter {
+	margin-left: auto;
+}
+
+#area-state .building-count-area span.square {
+	background-color: var(--background-color-military);
+	border-color:  var(--border-color-military);
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+#area-state .building-count-area span.square.residential {
+	background-color: var(--background-color-residential);
+	border-color: var(--border-color-residential);
+}
+#area-state .building-count-area span.square.decoration {
+	background-color: var(--background-color-decoration);
+	border-color: var(--border-color-decoration);
+}
+#area-state .building-count-area span.square.street {
+	background-color: var(--background-color-street);
+	border-color: var(--border-color-street);
+}
+#area-state .building-count-area span.square.goods {
+	background-color: var(--background-color-goods);
+	border-color: var(--border-color-goods);
+}
+#area-state .building-count-area span.square.culture {
+	background-color: var(--background-color-culture);
+	border-color: var(--border-color-culture);
+}
+#area-state .building-count-area span.square.main_building {
+	background-color: var(--background-color-main_building);
+	border-color: var(--border-color-main_building);
+}
+#area-state .building-count-area span.square.production {
+	background-color: var(--background-color-production);
+	border-color: var(--border-color-production);
+}
+#area-state .building-count-area span.square.greatbuilding {
+	background-color: var(--background-color-greatbuilding);
+	border-color: var(--border-color-greatbuilding);
+}
+#area-state .building-count-area span.square.random_production {
+	background-color: var(--background-color-random_production);
+	border-color: var(--border-color-random_production);
+}
+#area-state .building-count-area span.square.tower {
+	background-color: var(--background-color-tower);
+	border-color: var(--border-color-tower);
 }

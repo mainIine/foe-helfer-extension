@@ -311,7 +311,7 @@ let GuildMemberStat = {
 					let value = CityEntity['entity_levels'].find(data => data.era === EntityLevel);
 					let clan_power = typeof value.clan_power !== 'undefined' ? value.clan_power : 0;
 
-					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityLevel, era: Member.era });
+					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: Member.era });
 				}
 
 				if (CityEntity['abilities'])
@@ -1591,7 +1591,7 @@ let GuildMemberStat = {
 				{
 					break;
 				}
-
+		
 				let countEra = typeof EraGroup[era].members.length != 'undefined' ? EraGroup[era].members.length : 1;
 				let eraTotals = 0;
 
@@ -1976,14 +1976,34 @@ let GuildMemberStat = {
 
 		ExportContent.push(['eraID', 'era', 'good', 'produceable', 'instock']);
 
+		let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).reverse().sortBy('score');
+		
+		let EraGroup = GuildMemberStat.EraGroup = GuildMembers.reduce((res, obj) => {
+			let eraId = Technologies.Eras[obj['era']];
+			if (!(eraId in res))
+			{
+				res[eraId] = { eraId: eraId, era: obj['era'], score: 0 };
+				res[eraId]['members'] = [];
+			}
+			res[eraId]['members'].push(
+				obj
+			);
+			res[eraId].score += obj.score;
+
+			return res;
+		}, []);
+
 		for (let eraId = Technologies.Eras.IronAge; eraId < Technologies.Eras.NextEra; eraId++)
 		{
 			if (Technologies.EraNames[eraId] === undefined) continue;
 
 			let currentEra = i18n('Eras.' + eraId);
 			let exportGood = {};
-
-			d.push(`<tr><td>${i18n('Eras.' + eraId)}</td>`);
+			
+			let countEra = typeof EraGroup[eraId]?.members?.length != 'undefined' ? EraGroup[eraId]?.members?.length : 0;
+			
+			
+			d.push(`<tr><td>${i18n('Eras.' + eraId)}<br>(${countEra} ${i18n('Boxes.GuildMemberStat.GuildMembers')})</td>`);
 
 			// Goods from Guild Building productions
 			if (ErasGuildGoods[eraId] !== undefined)

@@ -52,7 +52,9 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	EnemyUnits = [],
 	UnlockedFeatures = [],
 	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
-	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__';
+	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__',
+	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
+	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__';
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -634,7 +636,7 @@ const FoEproxy = (function () {
 
 		if (idx !== -1) {
 			MainParser.InnoCDN = requestData.url.substring(0, idx + 1);
-			MainParser.sendExtMessage({ type: 'setInnoCDN', url: MainParser.InnoCDN });
+			MainParser.sendExtMessage({type: 'setInnoCDN', url: MainParser.InnoCDN});
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function () {
@@ -856,6 +858,9 @@ const FoEproxy = (function () {
 	FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
 
 		// Kampf beendet
+		if (data.responseData["error_code"] == 901) {
+			return;
+		}
 		if (data.responseData["armyId"] == 1 || data.responseData["state"]["round"] == 1 || data.responseData["battleType"]["totalWaves"] == 1) {
 			let units = data.responseData.state.unitsOrder;
 			for (let i = 0; i < units.length; i++) {
@@ -1181,7 +1186,8 @@ let HelperBeta = {
 		location.reload();
 	},
 	menu: [
-		'unitsGex'
+		'unitsGex',
+		'marketoffers',
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
@@ -1480,8 +1486,40 @@ let MainParser = {
 		}
 		else {
 			return PlayerName;
-        }
-    },
+		}
+	},
+	
+	/**
+	 * @param GuildID
+	 * @param GuildName
+	 */
+	GetGuildLink: (GuildID, GuildName) => {
+		if (Settings.GetSetting('ShowPlayerLinks'))
+		{
+			let GuildLink = HTML.i18nReplacer(GuildLinkFormat, { 'world': ExtWorld.toUpperCase(), 'guildid': GuildID });
+
+			return `<a class="external-link game-cursor" href="${GuildLink}" target="_blank">${GuildName} <svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg></a>`;
+		}
+		else {
+			return GuildName;
+		}
+	},
+
+	/**
+	 * @param BuildingID
+	 * @param BuildingName
+	 */
+	GetBuildingLink: (BuildingID, BuildingName) => {
+		if (Settings.GetSetting('ShowPlayerLinks'))
+		{
+			let BuildingLink = HTML.i18nReplacer(BuildingsLinkFormat, {'buildingid': BuildingID });
+
+			return `<a class="external-link game-cursor" href="${BuildingLink}" target="_blank">${BuildingName} <svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg></a>`;
+		}
+		else {
+			return BuildingName;
+		}
+	},
 
 
 	/**
@@ -1839,6 +1877,7 @@ let MainParser = {
 			if (Player['is_self'] !== undefined) PlayerDict[PlayerID]['IsSelf'] = Player['is_self'];
 			if (Player['score'] !== undefined) PlayerDict[PlayerID]['Score'] = Player['score'];
 			if (Player['activity'] !== undefined) PlayerDict[PlayerID]['Activity'] = Player['activity'];
+			if (Player['era'] !== undefined) PlayerDict[PlayerID]['Era'] = Player['era'];
 		}
 	},
 

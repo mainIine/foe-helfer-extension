@@ -44,6 +44,7 @@ let _menu = {
 		'kits',
 		'greatbuildings',
 		'market',
+		// 'marketoffers',
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
@@ -708,6 +709,28 @@ let _menu = {
 		});
 
 		btn.append(btn_Market);
+
+		return btn;
+	},
+
+	/**
+	* Marktangebote
+	*/
+	marketoffers_Btn: () => {
+		let btn = $('<div />').attr({ 'id': 'marketoffers-Btn', 'data-slug': 'marketoffers' }).addClass('hud-btn hud-btn-red');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.MarketOffers.Title'), '<em id="marketoffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'));
+
+		let btn_MarketOffers = $('<span />');
+
+		btn_MarketOffers.bind('click', function () {
+			if ($('#marketoffers-Btn').hasClass('hud-btn-red') === false) {
+				MarketOffers.Show(false);
+			}
+		});
+
+		btn.append(btn_MarketOffers);
 
 		return btn;
 	},

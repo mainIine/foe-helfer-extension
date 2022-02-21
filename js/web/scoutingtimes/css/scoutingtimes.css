@@ -1,0 +1,41 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+
+
+ #mapScoutingTimesDialog img{
+    width: 25px;
+    height: 25px;
+}
+
+#mapScoutingTimesDialogBody{
+    width: 450px;
+}
+
+#mapScoutingTimesDialogBody tr.scouted {
+    background-color:var(--background-table-success);
+}
+
+#mapScoutingTimesDialogBody td.scouting {
+
+    animation-name: scouting;
+    animation-duration: 6s;
+    padding-left:5px;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes scouting {
+    0% {padding-left:5px;}
+    50% {padding-left:50px;}
+    100% {padding-left:5px;}
+  }
