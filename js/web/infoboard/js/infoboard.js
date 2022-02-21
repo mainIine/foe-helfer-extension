@@ -516,9 +516,9 @@ let Info = {
             prov;
 
         if (!data['id'] || data['id'] === 0) {
-            prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']][0];
+            prov = ProvinceMap.ProvinceData()[0];
         } else {
-            prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']].find(o => (o['id'] === data['id']));
+            prov = ProvinceMap.ProvinceData().find(o => (o['id'] === data['id']));
         }
 
         if (data['lockedUntil'] !== undefined) {
