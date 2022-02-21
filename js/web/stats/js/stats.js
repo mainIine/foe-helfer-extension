@@ -907,15 +907,17 @@ let Stats = {
 		const isNegativeValuesAllowed = !Stats.isSelectedGBGSources();
 
 		if (chartType === 'delta') {
-			chartType = 'line';
+			chartType = 'column';
 			series = series.map(s => {
 				if (isNegativeValuesAllowed) {
 					s.data = s.data.map((it, index, array) => [it[0], index > 0 ? ((it[1] || 0) - (array[index - 1][1] || 0)) : 0]);
 				} else {
 					s.data = s.data.map((it, index, array) => [it[0], index > 0 ? Math.max(0, ((it[1] || 0) - (array[index - 1][1] || 0))) : 0]);
 				}
+				s.data = s.data.filter(it => it[1] !== 0);
 				return s;
 			});
+			series = series.filter(s => (s.data?.length | 0) > 0);
 		}
 
 		return {
@@ -1068,7 +1070,7 @@ let Stats = {
 			},
 			boost: {
 				useAlpha: false,
-				seriesThreshold: 30,
+				seriesThreshold: (chartType === 'column') ? 300 : 30,
 				// debug: {
 				//	timeSetup: true,
 				//	timeSeriesProcessing: true,
@@ -1076,7 +1078,7 @@ let Stats = {
 				//	timeKDTree: true,
 				//	showSkipSummary: true,
 				// },
-				useGPUTranslations: true
+				useGPUTranslations: true,
 			},
 			colors,
 			title: {
@@ -1110,7 +1112,15 @@ let Stats = {
 					marker: {
 						enabled: false
 					}
-				}
+				},
+				column: {
+					stacking: 'normal',
+					pointPadding: 0,
+					groupPadding: 0,
+					dataLabels: {
+						enabled: false
+					}
+				},
 			},
 			series,
 			exporting: {

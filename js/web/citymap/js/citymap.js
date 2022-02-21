@@ -31,6 +31,7 @@ let CityMap = {
 	/**
 	 * Zündung...
 	 *
+	 * @param event
 	 * @param Data
 	 * @param Title
 	 */
@@ -161,12 +162,14 @@ let CityMap = {
 			CityMap.SetBuildings(CityMap.CityData, false);
 
 			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+			$('.to-old-legends').hide();
+			$('.building-count-area').show();
 		});
 
 		// Button for submit Box
 		if (CityMap.IsExtern === false) {
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }).text(i18n('Boxes.CityMap.HighlightOldBuildings')));
-
+			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
@@ -248,7 +251,8 @@ let CityMap = {
 			MaxX = 63,
 			MaxY = 63;
 
-		for (let b in CityMap.CityData) {
+		for (let b in CityMap.CityData)
+		{
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
 			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
@@ -303,7 +307,30 @@ let CityMap = {
 				f.attr({
 					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
 				})
-				if (era<CurrentEraID) {f.addClass('oldBuildings')}
+
+				if (era < CurrentEraID) {
+                    f.addClass('oldBuildings');
+
+					let eraDiff = CurrentEraID - era;
+					
+					switch(eraDiff){
+						case 1:
+							f.addClass('older-1');
+							break;
+
+						case 2:
+							f.addClass('older-2');
+							break;
+
+						case 3:
+							f.addClass('older-3');
+							break;
+
+						default: 
+							f.addClass('to-old');
+							break;
+					}
+                }
 			}
 
 			// die Größe wurde geändert, wieder aktivieren
@@ -345,6 +372,7 @@ let CityMap = {
 			aW.append( $('<p />').addClass('total-area') );
 			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<p />').addClass('building-count-area') );
+			aW.append( $('<p />').addClass('to-old-legends').hide() );
 
 			$('#sidebar').append(aW);
 		}
@@ -355,26 +383,42 @@ let CityMap = {
 			$('.occupied-area').html(txtFree);
 		}
 
-		sortable = [];
-		for( x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
+		let sortable = [];
+		for(let x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
 		sortable.sort((a, b) => a[1] - b[1]);
 		sortable.reverse();
 
 		let txtCount = [];
-		for( x in sortable ){
+
+		for(let x in sortable )
+		{
+			if(!sortable.hasOwnProperty(x)){
+				break;
+			}
+
 			let type =  sortable[x][0];
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
 			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+
 			let str = `${TypeName}:<br> ${count} (${pct}%)<br>`;
+
 			if (type === 'street') {
 				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
 			}
-			str = str + '<br>';
+			str = `<span class="square ${type}"></span>${str}<br>`;
 			txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
+		
+		let legends = [];
+		
+		legends.push(`<span class="older-1 diagonal"></span> ${$('#map-container .older-1').length} ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
+		legends.push(`<span class="older-2 diagonal"></span> ${$('#map-container .older-2').length} ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
+		legends.push(`<span class="older-3 diagonal"></span> ${$('#map-container .older-3').length} ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
+		legends.push(`<span class="to-old diagonal"></span> ${$('#map-container .to-old').length} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
 
+		$('.to-old-legends').html(legends.join(''));
 	},
 
 
@@ -425,6 +469,7 @@ let CityMap = {
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
+		$('.building-count-area, .to-old-legends').fadeToggle();
 	},
 
 
@@ -536,4 +581,18 @@ let CityMap = {
 
 		return Ret;
 	},
+
+	filterBuildings: (string) => {
+		spans = $('span.entity');
+		for (sp of spans) {
+			let title = $(sp).attr('data-original-title');
+			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase()) > -1)) {
+				$(sp).addClass('blinking');
+			} else {
+				$(sp).removeClass('blinking');
+			}
+
+		}
+
+	}
 };

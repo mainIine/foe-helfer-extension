@@ -212,7 +212,7 @@
 	font-size: 90%;
 }
 
-#LiveGildFightingBody .province-color {
+#LiveGildFightingBody .province-color, #LiveGildFightingBody .province-color-round {
 	width: 10px;
 	height: 10px;
 	display: inline-block;

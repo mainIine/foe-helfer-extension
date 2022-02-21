@@ -95,12 +95,14 @@ let EventHandler = {
 			}
 
 			let PlayerID = null,
+				PlayerName = null,
 				IsNeighbor = 0,
 				IsGuildMember = 0,
 				IsFriend = 0;
 
 			if (Event['other_player']) {
 				if (Event['other_player']['player_id']) PlayerID = Event['other_player']['player_id'];
+				if (Event['other_player']['name']) PlayerName = Event['other_player']['name'];
 				if (Event['other_player']['is_neighbor']) IsNeighbor = 1;
 				if (Event['other_player']['is_guild_member']) IsGuildMember = 1;
 				if (Event['other_player']['is_friend']) IsFriend = 1;
@@ -112,10 +114,13 @@ let EventHandler = {
 				eventtype: EventType,
 				interactiontype: InteractionType,
 				playerid: PlayerID,
+				playername: PlayerName,
 				entityid: EntityID,
 				isneighbor: IsNeighbor,
 				isguildmember: IsGuildMember,
-				isfriend: IsFriend
+				isfriend: IsFriend,
+				need: Event['need'],
+				offer: Event['offer']
 			}));
 		}
 
@@ -410,6 +415,7 @@ let EventHandler = {
 		h.push('<th columnname="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
 		h.push('<th columnname="Name" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+		h.push('<th columnname="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
 		h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 
 		for (let i = 0; i < EventHandler.MaxVisitCount; i++)
@@ -469,6 +475,8 @@ let EventHandler = {
 				h.push(`<img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png">`);
             }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
+
+			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${i18n('Eras.' + Technologies.Eras[Player['Era']])}</td>`);
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 
