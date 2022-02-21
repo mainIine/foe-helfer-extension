@@ -413,10 +413,10 @@ let CityMap = {
 		
 		let legends = [];
 		
-		legends.push(`<span class="older-1 diagonal"></span> ${$('.older-1').length-1} ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
-		legends.push(`<span class="older-2 diagonal"></span> ${$('.older-2').length-1} ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
-		legends.push(`<span class="older-3 diagonal"></span> ${$('.older-3').length-1} ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
-		legends.push(`<span class="to-old diagonal"></span> ${$('.to-old').length-1} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
+		legends.push(`<span class="older-1 diagonal"></span> ${$('#map-container .older-1').length} ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
+		legends.push(`<span class="older-2 diagonal"></span> ${$('#map-container .older-2').length} ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
+		legends.push(`<span class="older-3 diagonal"></span> ${$('#map-container .older-3').length} ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
+		legends.push(`<span class="to-old diagonal"></span> ${$('#map-container .to-old').length} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
 
 		$('.to-old-legends').html(legends.join(''));
 	},
