@@ -134,7 +134,11 @@ let Outposts = {
 		const buildings = Outposts.CityMap ? Outposts.CityMap.entities : [];
 		const plannedTiles = Outposts.PlannedTiles[OutpostData.content] || {};
 
-		const currentRun = OutpostData.playthroughs.find(run => !run.isCompleted);
+		const currentRun = {
+			id: OutpostData.completedPlaythroughs,
+			productionBonusProbability: OutpostData.completedPlaythroughs < OutpostData.playthroughs.length ? OutpostData.playthroughs[OutpostData.completedPlaythroughs].productionBonusProbability : OutpostData.playthroughs[OutpostData.playthroughs.length-1].productionBonusProbability,
+		}
+
 
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		/** @type {{name: string, diplomacy: number}[]}} */
