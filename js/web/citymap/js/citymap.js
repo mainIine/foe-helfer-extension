@@ -13,8 +13,9 @@
 
 
 /**
+ * CityMap class
  *
- * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos, GetBuildingSize: (CityMapEntity)}}
+ * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, GetBuildingSize: (function(*): {}), BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos}}
  */
 let CityMap = {
 	CityData: null,
@@ -32,8 +33,9 @@ let CityMap = {
 	 * Zündung...
 	 *
 	 * @param event
-	 * @param Data
-	 * @param Title
+	 * @param event
+	 * @param Data The City data
+	 * @param Title Name of the city
 	 */
 	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
