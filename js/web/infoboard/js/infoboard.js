@@ -348,10 +348,6 @@ let Infoboard = {
 
     StopTitleBlinking: ()=> {
 
-        if(!Infoboard.TitleBlinkEvent){
-            return;
-        }
-
         clearInterval(Infoboard.TitleBlinkEvent);
         document.title = Infoboard.OriginalDocumentTitle;
 
@@ -359,15 +355,13 @@ let Infoboard = {
     },
 
 
-    StartTitleBlinking: ()=> {
-        if(Infoboard.TitleBlinkEvent){
+    StartTitleBlinking: (txt)=> {
+        if(Infoboard.TitleBlinkEvent !== null){
             return;
         }
 
-        let icons = '📰 🗞️ 📋 📝 📜';
-
         Infoboard.TitleBlinkEvent = setInterval(()=> {
-            document.title = document.title === icons ? i18n('Boxes.Infobox.NewMessageArrived') : icons;
+            document.title = (document.title === Infoboard.OriginalDocumentTitle ? txt : Infoboard.OriginalDocumentTitle);
         }, 750);
     }
 };

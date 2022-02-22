@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+##### 2.6.0.1
+
+**Update**
+- Scout Info:
+	- With a MouseOver the age in which a province is open is displayed
+
+**BugFix**
+- Scout Info:
+	- [#2326](https://github.com/mainIine/foe-helfer-extension/issues/2326) [#2327](https://github.com/mainIine/foe-helfer-extension/issues/2327) With some players the game could crash completely
+
+- Outposts:
+	- the run-count and the 4x bonus were not processed correctly for the endless runs
+
+---
+
 ##### 2.6.0.0
 
 **New**
