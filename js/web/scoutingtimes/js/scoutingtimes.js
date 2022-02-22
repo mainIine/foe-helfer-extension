@@ -241,12 +241,17 @@ let scoutingTimes = {
 
     GetDistances:(StartId,limit) => {
         let temp = [[StartId,0]];
+        let i = 0;
         for (let Province of temp) {
             if (Province[0]<limit) break;
+            if (i > 1000) break;
             if (!scoutingTimes.Provinces[Province[0]]?.parentIds) continue;
             for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
+                i += 1;
+                if (i > 1000) break;
                 temp.push([parent,Province[1]+1]);
             }
+            
         }
         let distx = {};
         for (let p of temp) {
