@@ -69,7 +69,7 @@ $(async function(){
 	})();
 
 	$('body').on('click', '.foe-link', ()=> {
-		chrome.tabs.create({url: "https://foe-rechner.de/"});
+		chrome.tabs.create({url: "https://foe-helper.com/"});
 	});
 
 	if(lng !== 'de'){

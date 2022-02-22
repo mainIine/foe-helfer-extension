@@ -243,6 +243,7 @@ let scoutingTimes = {
     },
 
     GetDistances:(StartId,limit) => {
+
         let temp = [[StartId,0]];
         let i = 0;
         for (let Province of temp) {

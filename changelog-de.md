@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+##### 2.6.0.1
+
+**Update**
+- Scout-Info:
+  - Mit einem MouseOver wird das Zeitalter, in dem eine Provinz offen, ist angezeigt
+
+**BugFix**
+- Scout-Info:
+  - [#2326](https://github.com/mainIine/foe-helfer-extension/issues/2326) [#2327](https://github.com/mainIine/foe-helfer-extension/issues/2327) Bei manchen Spielern konnte das Spiel komplett abstürzen
+  
+- Außenposten:
+  - die Durchlauf-zahl und der 4x Bonus wurden für die Endlos-Durchläufe nicht korrekt bearbeitet
+
+---
+
 ##### 2.6.0.0
 
 **Neu**
