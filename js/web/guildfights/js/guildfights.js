@@ -1026,8 +1026,9 @@ let GildFights = {
             let id = mapdata[i]['id'];
 
             mapdata[i]['neighbor'] = [];
-
-            let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
+            let currentProvinceData = ProvinceMap.ProvinceData().find(e => e['id'] === (typeof id === 'undefined' ? 0 : id));
+            mapdata[i]['title'] = currentProvinceData['short'];
+            let linkIDs = currentProvinceData['connections'];
 
             for (let x in linkIDs)
             {
@@ -1035,8 +1036,7 @@ let GildFights = {
                 {
                     continue;
                 }
-
-                let neighborID = GildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
+                let neighborID = GildFights.MapData['map']['provinces'].find(e => linkIDs[x] === 0 ? (typeof e['id'] === 'undefined') : e['id'] === linkIDs[x]);
 
                 if (neighborID['ownerId'])
                 {
@@ -1061,7 +1061,6 @@ let GildFights = {
                         progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
 
                         //console.log('gbgGuilds[x]: ', gbgGuilds[x]);
-
                         progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
 
                         if (GildFights.showGuildColumn)
@@ -1596,39 +1595,41 @@ let GildFights = {
     GetAlerts: async () => {
         return new Promise(async (resolve, reject) => {
             // is alert.js included?
-            if (!Alerts)
+            if (typeof Alerts === 'undefined' || !Alerts)
             {
                 resolve();
             }
-
-            // fetch all alerts and search the id
-            return Alerts.getAll().then((resp) => {
-                if (resp.length === 0)
-                {
-                    resolve();
-                }
-
-                let currentTime = MainParser.getCurrentDateTime();
-
-                GildFights.Alerts = [];
-
-                resp.forEach((alert) => {
-                    if (alert['data']['category'] === 'gbg')
+            else
+            {
+                // fetch all alerts and search the id
+                return Alerts.getAll().then((resp) => {
+                    if (resp.length === 0)
                     {
-                        let alertTime = alert['data']['expires'],
-                            name = alert['data']['title'],
-                            prov = GildFights.MapData['map']['provinces'].find(
-                                e => e.title === name && alertTime > currentTime
-                            );
-
-                        if (prov !== undefined)
-                        {
-                            GildFights.Alerts.push({ provId: prov['id'], alertId: alert.id });
-                        }
+                        resolve();
                     }
+
+                    let currentTime = MainParser.getCurrentDateTime();
+
+                    GildFights.Alerts = [];
+
+                    resp.forEach((alert) => {
+                        if (alert['data']['category'] === 'gbg')
+                        {
+                            let alertTime = alert['data']['expires'],
+                                name = alert['data']['title'],
+                                prov = GildFights.MapData['map']['provinces'].find(
+                                    e => e.title === name && alertTime > currentTime
+                                );
+
+                            if (prov !== undefined)
+                            {
+                                GildFights.Alerts.push({ provId: prov['id'], alertId: alert.id });
+                            }
+                        }
+                    });
+                    resolve();
                 });
-                resolve();
-            });
+            }
         });
     },
 
