@@ -135,18 +135,21 @@ let scoutingTimes = {
                         continue;
                     };
 
-                    if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
-                        if (province.id === scoutingTimes.scoutPosition){
-                            scoutingTimes.Provinces[child.id].fromCurrent = true;
-                        }
-                        scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(scoutingTimes.scoutPosition,child.id) - 1, 0)) * 600) * castlebonus;
-                    } 
+                    if (child.isScouted|false) {
+                        scoutingTimes.Provinces[child.id].travelTime = 0;
+                    } else {
+                        if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
+                            if (province.id === scoutingTimes.scoutPosition){
+                                scoutingTimes.Provinces[child.id].fromCurrent = true;
+                            }
+                            scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(scoutingTimes.scoutPosition,child.id) - 1, 0)) * 600) * castlebonus;
+                        } 
 
-                    if (scoutingTimes.scoutTarget === child.id) {
-                        scoutingTimes.Provinces[child.id].travelTime = scoutingTimes.scoutTraveltime;
-                        scoutingTimes.target = child.id;
+                        if (scoutingTimes.scoutTarget === child.id) {
+                            scoutingTimes.Provinces[child.id].travelTime = scoutingTimes.scoutTraveltime;
+                            scoutingTimes.target = child.id;
+                        }
                     }
-                    
                     if (child.isScouted|false) scoutingTimes.Provinces[child.id].travelTime = 0;
                     let mayScout = true;
 
