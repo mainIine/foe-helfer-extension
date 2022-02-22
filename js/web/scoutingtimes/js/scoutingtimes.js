@@ -223,15 +223,15 @@ let scoutingTimes = {
     },
     
     distance: (StartId, GoalId) => {
-        limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
-        StartDist = scoutingTimes.GetDistances(StartId,limit);
-        GoalDist = scoutingTimes.GetDistances(GoalId,limit);
+        let limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
+        let StartDist = scoutingTimes.GetDistances(StartId,limit);
+        let GoalDist = scoutingTimes.GetDistances(GoalId,limit);
 
-        Distance = 1000;
+        let Distance = 1000;
         for (let index in GoalDist) {
             
             if (StartDist[index]) {
-                DistanceNew = GoalDist[index].dist+StartDist[index].dist;
+                let DistanceNew = GoalDist[index].dist+StartDist[index].dist;
                 if (DistanceNew<Distance) Distance = DistanceNew;
             }
             if (Distance === 1) break;
