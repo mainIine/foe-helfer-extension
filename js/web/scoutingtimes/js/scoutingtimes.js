@@ -172,12 +172,12 @@ let scoutingTimes = {
             let p = toscout.pop();
             let province = scoutingTimes.Provinces[p];
             if (province.isScouted|false) {
-                htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
+                htmltext += `<tr class="scouted" title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
             }
             if ((province.travelTime|0)>0) {
                 i += 1;
-                htmltext += `<tr><td>${province.name}</td>`;
+                htmltext += `<tr title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td>`;
                 htmltext += (p === scoutingTimes.target) ? `<td class="scouting">...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
                 htmltext += ` ${scoutingTimes.format(province.travelTime)}`;
