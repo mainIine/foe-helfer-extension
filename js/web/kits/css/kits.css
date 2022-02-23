@@ -21,7 +21,6 @@
 
 #kits #kitsBody {
 	overflow: hidden;
-	max-height: 600px;
 	overflow-y: auto;
 }
 
