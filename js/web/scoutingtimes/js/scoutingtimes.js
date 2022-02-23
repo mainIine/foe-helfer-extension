@@ -245,25 +245,27 @@ let scoutingTimes = {
     GetDistances:(StartId,limit) => {
 
         let temp = [[StartId,0]];
-        let i = 0;
+        let distx = {};
         for (let Province of temp) {
             if (Province[0]<limit) break;
-            if (i > 1000) break;
-            if (!scoutingTimes.Provinces[Province[0]]?.parentIds) continue;
+
+            let isShorter = false;
+
+            if (!distx[Province[0]]) {
+                distx[Province[0]] = {'id':Province[0], 'dist': Province[1]};
+                isShorter = true;
+            } else {
+                if (distx[Province[0]]?.dist > Province[1]) {
+                    distx[Province[0]] = {'id':Province[0], 'dist': Province[1]};
+                    isShorter = true;
+                }
+            }
+
+            if (!scoutingTimes.Provinces[Province[0]]?.parentIds || !isShorter) continue;
             for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
-                i += 1;
-                if (i > 1000) break;
                 temp.push([parent,Province[1]+1]);
             }
             
-        }
-        let distx = {};
-        for (let p of temp) {
-            if (!distx[p[0]]) {
-                distx[p[0]] = {'id':p[0], 'dist': p[1]};
-            } else {
-                if (distx[p[0]]?.dist > p[1]) distx[p[0]] = {'id':p[0], 'dist': p[1]};
-            }
         }
         return distx;
     },
