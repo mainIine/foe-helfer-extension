@@ -19,6 +19,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         let newSound = document.createElement("audio");
         newSound.id = "betterMusic1";
         newSound.volume = 0;
+        //newSound.loop = true;
         newSound.onloadedmetadata = function () {betterMusic.setEvent()}
         //newSound.onerror = function () {betterMusic.TrackSelector()}
         //newSound.onload = function () {betterMusic.play(this)}
@@ -27,6 +28,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         let newSound2 = document.createElement("audio");
         newSound2.id = "betterMusic2";
         newSound2.volume = 0;
+        //newSound2.loop = true;
         newSound2.onloadedmetadata = function () {betterMusic.setEvent()}
         //newSound2.onerror = function () {betterMusic.TrackSelector()}
         //newSound2.onload = function () {betterMusic.play(this)}
@@ -250,11 +252,11 @@ let betterMusic = {
                 
         let htmltext = ``;
         htmltext += `<table id="musicSettingsGeneral" class="musicSettings"><caption>General Settings</caption><tr>`;
-        htmltext += `<td style="text-align: center"><input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(this.value)"><br><label for="musicSettingsVolume">Volume</label></td>`;
+        htmltext += `<td style="text-align: center"><input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"><br><label for="musicSettingsVolume">Volume</label></td>`;
         htmltext += `<td><input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">start playing on game start</label></td></tr><tr>`;
         
         htmltext += `</tr></table><table id="musicSettingsTitle" class="musicSettings"><caption>Title Settings</caption><tr>`;
-        htmltext += `<td style="text-align: center"><input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = this.value"><br><label for="musicSettingsTransitionTime">Transition between Titels</label></td>`;
+        htmltext += `<td style="text-align: center"><input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"><br><label for="musicSettingsTransitionTime">Transition between Titels</label></td>`;
         htmltext += `<td><input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">let titles finish</label></td>`;
                
         htmltext += `</tr></table><table id="musicSettingsScenes" class="musicSettings"><caption>Scene Settings</caption><tr>`
@@ -320,25 +322,24 @@ let betterMusic = {
 
 
     switchTrack: (newTrack, transition = betterMusic.Settings.TransitionTime) => {
-        let $SoundC = $(`#${betterMusic.currentId}`);
-        let $SoundN = $(`#${betterMusic.nextId}`);
+        $SoundC = $(`#${betterMusic.currentId}`);
+        $SoundN = $(`#${betterMusic.nextId}`);
         
         if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
-            $SoundC[0].loop = true;
+            
             betterMusic.setEvent(0);
         } else {
-            $SoundC.animate({volume: 0}, transition);
             $SoundN[0].volume = 0;
-            $SoundC[0].loop = false;
-            $SoundN[0].loop = false;
+            $SoundC.animate({volume: 0}, transition);
             $SoundN[0].src = MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg';
             
-            var playPromise = $SoundN[0].play();
             clearTimeout(betterMusic.nextEvent);
-            betterMusic.playStatus = true;
-            betterMusic.currentTitle = newTrack;
+            var playPromise = $SoundN[0].play();
+
             if (playPromise !== undefined) {
                 playPromise.then(_ => {
+                    betterMusic.playStatus = true;
+                    betterMusic.currentTitle = newTrack;
                     $SoundN.animate({volume: 1*betterMusic.PossibleTracks[newTrack].Volume*betterMusic.Settings.Volume}, transition);
                 })
                 .catch(error => {
@@ -359,6 +360,9 @@ let betterMusic = {
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
             $(`#${betterMusic.currentId}`)[0].pause();
             $(`#${betterMusic.nextId}`)[0].pause();
+            $(`#${betterMusic.currentId}`)[0].src = "";
+            $(`#${betterMusic.nextId}`)[0].src = "";
+            
             $('#musicControl-Btn').addClass('musicmuted');
         }
     },
@@ -372,7 +376,7 @@ let betterMusic = {
 
     setEvent: (transition = betterMusic.Settings.TransitionTime) => {
         if (!betterMusic.playStatus) return;
-        $SoundC = $(`#${betterMusic.currentId}`);
+        let $SoundC = $(`#${betterMusic.currentId}`);
         let timeout = Math.floor($SoundC[0].duration * 1000 - transition);
         if (timeout != 'NaN') {
             clearTimeout(betterMusic.nextEvent);
