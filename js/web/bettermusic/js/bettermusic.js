@@ -363,6 +363,7 @@ let betterMusic = {
     setScene: (scene) => {
         if (!betterMusic.Scenes[scene] && betterMusic.currentTitle != scene) {
             if (betterMusic.Settings.Finish) return;
+            if (!betterMusic.playStatus) return;
             betterMusic.switchTrack(scene);
             return
         }
