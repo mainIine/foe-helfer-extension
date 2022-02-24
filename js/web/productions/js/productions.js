@@ -39,7 +39,7 @@ let Productions = {
 		'def_boost_attacker', //Verteidigungsbonus angreifende Armee
 		'att_boost_defender', //Angriffsbonus verteidigenden Armee
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
-		'goods',		// Güter Gruppe (5 verschieden z.B.)
+		'goods',			// Güter Gruppe (5 verschieden z.B.)
 	],
 
 	Boosts: [],
@@ -77,7 +77,7 @@ let Productions = {
 		'def_boost_attacker', //Verteidigungsbonus angreifende Armee
 		'att_boost_defender', //Angriffsbonus verteidigenden Armee
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
-		'goods',		// Güter Gruppe (5 verschieden z.B.)
+		'goods',				// Güter Gruppe (5 verschieden z.B.)
 	],
 
 	/**
@@ -211,8 +211,9 @@ let Productions = {
 						Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building['dailyfactor'], x);
 						Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
 
-					} else {
-
+					}
+					else
+					{
 						Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
 						Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
 						Productions.BuildingsProductsGroups[x][index]['count']++;

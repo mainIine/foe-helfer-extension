@@ -12,29 +12,22 @@
  */
 
 /**
- * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: boolean, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
+ * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
 	KitsjSON: null,
-	ShowMissing: false,
-	Inventory: null,
+	ShowMissing: 0,
+
 
 	/**
 	 * Get all sets from the server
 	 */
 	init: ()=> {
-
-		let data = localStorage.getItem('KnownKitsData');
-
-			MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=>{
-
-				localStorage.setItem('KnownKitsData', data);
-				localStorage.setItem('KnownKitsDate', MainParser.getAddedDateTime(48));
-
-				Kits.KitsjSON = JSON.parse(data);
-				Kits.BuildBox();
-			});
+		MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=>{
+			Kits.KitsjSON = JSON.parse(data);
+			Kits.BuildBox();
+		});
 	},
 
 
@@ -46,29 +39,30 @@ let Kits = {
 	BuildBox: ()=> {
 
 
-		if( $('#kits').length === 0 )
-		{
+		if ( $('#kits').length === 0 ) {
+
 			HTML.AddCssFile('kits');
 
 			HTML.Box({
-				'id': 'kits',
-				'title': i18n('Boxes.Kits.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true
+				id: 'kits',
+				title: i18n('Boxes.Kits.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
 			});
 
 			$('#kitsBody').append( $('<div />').attr('id', 'kitsBodyTopbar'), $('<div />').attr('id', 'kitsBodyInner') );
 
 			$('#kitsBodyTopbar').append(
 				$('<span />').attr({
-					id: 'kits-toggle-button',
-					class: 'btn-default',
+					id: 'kits-triplestate-button',
+					class: 'btn-default btn-tight',
 					onclick: 'Kits.ToggleView()'
-				}).text(Kits.ShowMissing ? i18n('Boxes.Kits.ToggleButtonActive') : i18n('Boxes.Kits.ToggleButtonInActive'))
+				}).text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
 			);
-
-		} else {
+		}
+		else {
 			HTML.CloseOpenBox('kits');
 		}
 
@@ -88,29 +82,28 @@ let Kits = {
 
 		let t = '<table class="foe-table">';
 
-		t += 	`<tr>
-					<th></th>
-					<th>${i18n('Boxes.Kits.Name')}</th>
-					<th></th>
-					<th>${i18n('Boxes.Kits.KitName')}</th>
+		t += 	`<tr class="headline" style="display:table-row">
+					<th colspan="2">${i18n('Boxes.Kits.Name')}</th>
+					<th colspan="2">${i18n('Boxes.Kits.KitName')}</th>
 				</tr>`;
 
 		// Sets durchsteppen
-		for(let set in kits)
-		{
-			if(!kits.hasOwnProperty(set)){
+		for (let set in kits) {
+
+			if (!kits.hasOwnProperty(set)) {
 				break;
 			}
 
 			let buildings = [],
+				missings = [],
 				assetRow = [],
-				show = false,
-				missings = [];
+				kitRow = [],
+				show = false;
 
 			// step buildings in a set
-			for(let i in kits[set]['buildings'])
-			{
-				if(!kits[set]['buildings'].hasOwnProperty(i)){
+			for (let i in kits[set]['buildings']) {
+
+				if (!kits[set]['buildings'].hasOwnProperty(i)) {
 					break;
 				}
 
@@ -122,12 +115,12 @@ let Kits = {
 					itemUgr = false;
 
 				// Upgrade Kit
-				if(building['update']) {
+				if (building['update']) {
 					itemUgr = inv.find(el => el['itemAssetName'] === building['update']);
 				}
 
-				if(itemL1)
-				{
+				if (itemL1) {
+
 					itemRow.push({
 						type: 'first',
 						item: itemL1,
@@ -136,7 +129,7 @@ let Kits = {
 
 					show = true;
 
-					if(!itemUgr && Kits.ShowMissing){
+					if (!itemUgr && Kits.ShowMissing > 0) {
 
 						itemRow.push({
 							type: 'update',
@@ -146,9 +139,9 @@ let Kits = {
 					}
 				}
 
-				if(itemUgr){
+				if (itemUgr) {
 
-					if(!itemL1 && Kits.ShowMissing){
+					if (!itemL1 && Kits.ShowMissing > 0) {
 						itemRow.push({
 							type: 'first',
 							item: entities[building['first']],
@@ -156,17 +149,17 @@ let Kits = {
 						});
 					}
 
+					show = true;
+
 					itemRow.push({
 						type: 'update',
 						item: itemUgr,
 						missing: false
 					});
-
-					show = true;
 				}
 
 				// both not in invetory, holdback
-				if(!itemL1 && !itemUgr && Kits.ShowMissing){
+				if (!itemL1 && !itemUgr && Kits.ShowMissing > 0) {
 					itemRow.push({
 						type: 'first',
 						item: entities[building['first']],
@@ -175,7 +168,7 @@ let Kits = {
 
 					missings.push(itemRow);
 
-					if(building['update']){
+					if (building['update']) {
 						itemRow.push({
 							type: 'update',
 							item: building['update'],
@@ -186,31 +179,58 @@ let Kits = {
 					}
 				}
 
-				if(itemRow.length){
+				if (itemRow.length) {
 					buildings.push(itemRow);
 				}
 			}
-
+			// [Building has asset buildings or kits on ShowMissing(1)] or [ShowMissing(2)] ? show !
+			if (kits[set]['kit'] && Array.isArray(kits[set]['kit'])) {
+				for (let a in kits[set]['kit']) {
+					if (inv.find(el => el['itemAssetName'] === kits[set]['kit'][a])) {
+						show = true;
+					}
+				}
+			}
+			else if (kits[set]['kit']) {
+				if (inv.find(el => el['itemAssetName'] === kits[set]['kit'])) {
+					show = true;
+				}
+			}
+			if (kits[set]['assets']) {
+				for (let a in kits[set]['assets']) {
+					if (inv.find(el => el['item']['cityEntityId'] === kits[set]['assets'][a])) {
+						show = true;
+					}
+				}
+			}
+			if (Kits.ShowMissing === 2) {
+				show = true;
+			}
 
 			// Building has asset buildings?
-			if(kits[set]['assets'])
-			{
-				for(let a in kits[set]['assets'])
-				{
-					if(!kits[set]['assets'].hasOwnProperty(a)){
+			if (kits[set]['assets']) {	
+
+				for (let a in kits[set]['assets']) {
+
+					if(!kits[set]['assets'].hasOwnProperty(a)) {
 						break;
 					}
 
 					let asset = inv.find(el => el['item']['cityEntityId'] === kits[set]['assets'][a]);
 
-					if(asset) {
+					if (asset) {
+
+						if (!buildings && Kits.ShowMissing > 0) {
+							buildings = missings;
+						}
+
 						assetRow.push({
 							element: 'asset',
 							item: asset,
 							missing: false
 						});
-
-					} else if(show && Kits.ShowMissing){
+					} 
+					else if (show && Kits.ShowMissing > 0) {
 
 						assetRow.push({
 							element: 'asset',
@@ -221,19 +241,52 @@ let Kits = {
 				}
 			}
 
-			if(assetRow.length){
+			if (assetRow.length) {
 				show = true;
 			}
+			
+			// selection kit exist?
+			if (kits[set]['kit'] && Array.isArray(kits[set]['kit']) ) {
 
-			let kitRow = [];
+				for (let a in kits[set]['kit']) {
+					
+					if(!kits[set]['kit'].hasOwnProperty(a)) {
+						break;
+					}
 
-			if(kits[set]['kit']){
+					let k = inv.find(el => el['itemAssetName'] === kits[set]['kit'][a]);
+
+					
+					if (k) {
+
+						if (!buildings && Kits.ShowMissing > 0) {
+							buildings = missings;
+						}
+
+						kitRow.push({
+							type: 'kit',
+							item: k,
+							show: true
+						});
+					}
+					else if (show && Kits.ShowMissing > 0) {
+
+						kitRow.push({
+							type: 'kit',
+							item: kits[set]['kit'][a],
+							show: true,
+							missing: true
+						});
+					}
+				}
+			}
+			else if (kits[set]['kit']) {
+
 				let k = inv.find(el => el['itemAssetName'] === kits[set]['kit']);
 
-				// selection kit exist
-				if(k){
+				if (k) {
 
-					if(!buildings && Kits.ShowMissing){
+					if (!buildings && Kits.ShowMissing > 0) {
 						buildings = missings;
 					}
 
@@ -243,47 +296,56 @@ let Kits = {
 						show: true
 					});
 				}
+				else if (show && Kits.ShowMissing > 0) {
+
+					kitRow.push({
+						type: 'kit',
+						item: kits[set]['kit'],
+						show: true,
+						missing: true
+					});
+				}
 			}
 
-			if(kitRow.length){
+			if (kitRow.length) {
 				show = true;
 			}
 
-			if(show)
-			{
-				t += `<tr><th colspan="4" class="head">${i18n('Kits.Sets.' + kits[set]['name'])}</th></tr>`;
+			if (show) {
 
-				if(buildings)
-				{
+				t += `<tr><th colspan="4" class="head">${kits[set]['name'] ? MainParser.GetBuildingLink(kits[set]['link'] ? kits[set]['link'] : kits[set]['name'], i18n('Kits.Sets.' + kits[set]['name'])) : kits[set]['groupname'] ? i18n('Kits.Sets.' + kits[set]['groupname']) : i18n('Boxes.Kits.Udate') + kits[set]['udate']}</th></tr>`;
+
+				if(buildings) {
+
 					buildings.forEach((e) => {
 						let rowTd = '';
 
-						if(e[0]['type'] === 'first'){
+						if (e[0]['type'] === 'first') {
 
 							rowTd += Kits.ItemTd(e[0]);
 
-							if(e[1] === undefined){
-								if(Kits.ShowMissing && e[1]){
+							if (e[1] === undefined) {
+								if (Kits.ShowMissing > 0 && e[1]) {
 									rowTd += Kits.ItemTd(e[1]);
-
-								} else {
+								}
+								else {
 									rowTd += '<td colspan="2"></td>';
 								}
-
-							} else {
+							}
+							else {
 								rowTd += Kits.ItemTd(e[1]);
 							}
+						} 
+						else if (e[0]['type'] === 'update') {
 
-						} else if(e[0]['type'] === 'update') {
-							if(Kits.ShowMissing){
+							if (Kits.ShowMissing > 0) {
 								rowTd += Kits.ItemTd(e[0]);
 								rowTd += Kits.ItemTd(e[1]);
-
-							} else {
+							} 
+							else {
 								rowTd += '<td colspan="2"></td>';
 								rowTd += Kits.ItemTd(e[0]);
 							}
-
 						}
 
 						t += '<tr>' + rowTd + '</tr>';
@@ -291,13 +353,13 @@ let Kits = {
 				}
 
 				// Asset listing
-				if(assetRow.length)
-				{
+				if (assetRow.length) {
+
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.Extensions')}</td></tr>`;
 					let rowTd = '<td colspan="4"><div class="assets-row">';
 
 					assetRow.forEach((e) => {
-						rowTd += Kits.ItemDiv(e);
+						rowTd += Kits.ItemAssetDiv(e);
 					});
 
 					rowTd += '</div></td>';
@@ -306,8 +368,21 @@ let Kits = {
 				}
 
 				// Kit listing
-				if(kitRow.length)
-				{
+				if (kitRow.length > 1) {
+
+					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
+					let rowTd = '<td colspan="4"><div class="kits-row">';
+
+					kitRow.forEach((e) => {
+						rowTd += Kits.ItemKitDiv(e);
+					});
+
+					rowTd += '</div></td>';
+
+					t += '<tr>' + rowTd + '</tr>';
+				}
+				else if (kitRow.length) {
+
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
 
 					let rowTd = Kits.ItemTd(kitRow[0]);
@@ -333,35 +408,66 @@ let Kits = {
 	 */
 	ItemTd: (el)=> {
 
-		if(!el){
+		if (!el || el['item'] == undefined) {
 			return '';
 		}
 
 		let item = el['item'],
 			aName,
 			td = '',
-			url;
+			url,
+			url_fragment = '';
 
-		if(el['type'] === 'first'){
+		if (el['type'] === 'first') {
 
 			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'];
 
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+		}
+		else if (el['type'] === 'update' || el['type'] === 'kit') {
 
-		} else if (el['type'] === 'update' || el['type'] === 'kit') {
 			aName = el['missing'] ? item : item['itemAssetName'];
 
+			if (aName.includes('fragment')) {
+				aName = aName.replace('fragment#', '');
+				url = MainParser.InnoCDN + 'assets/shared/icons/icon_fragment.png';
+				url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}"/>`;
+			}
+
 			url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+
+			if (aName.includes('building_')) {
+				if (!item['item']) {
+					if (aName == "building_road_to_victory") {
+						aName = "D_MultiAge_Battlegrounds2";
+					}
+					else if (aName == "building_iridescent_garden") {
+						aName = "D_MultiAge_Battlegrounds4";
+					}
+					else if (aName == "building_shrine_of_knowledge") {
+						aName = "R_MultiAge_EasterBonus5";
+					}
+					else if (aName == "building_wishing_well") {
+						aName = "L_AllAge_EasterBonus1";
+					}
+					else {
+						return '';
+					}
+				}
+				else {
+					aName = item['item']['reward']['assembledReward']['subType'];
+				}
+				url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+			}
 		}
 
-		if(el['missing']){
-
-			td += `<td class="text-center is-missing"><img class="kits-image" src="${url}" alt="${item['name']}" /></td>`;
-			td += `<td class="is-missing">${el['type'] === 'first' ? item['name'] : i18n('Boxes.Kits.UpgradeKit')}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
-
-		} else {
-			td += `<td class="text-center"><img class="kits-image" src="${url}" alt="${item['name']}" /></td>`;
-			td += `<td>${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${item['inStock']}</strong></td>`;
+		if (el['missing']) {
+			td += `<td class="text-center is-missing"><div class="kits-image-container"><img class="kits-image" src="${url}" alt="${item['name']}"/>${url_fragment}</div></td>`;
+			td += `<td class="is-missing">${el['type'] === 'first' ? item['name'] : el['type'] === 'update' ? i18n('Boxes.Kits.UpgradeKit') : el['type'] === 'kit' ? i18n('Boxes.Kits.SelectionKit') : i18n('Boxes.Kits.Fragment')}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
+		} 
+		else {
+			td += `<td class="text-center"><div class="kits-image-container"><img class="kits-image" src="${url}" alt="${item['name']}"/>${url_fragment}</div></td>`;
+			td += `<td>${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${item['inStock'] + (url_fragment ? '/' + item['item']['reward']['requiredAmount'] : '')}</strong></td>`;
 		}
 
 		return td;
@@ -372,12 +478,14 @@ let Kits = {
 	 * Create a div-row for assets of a set
 	 *
 	 * @param el
-	 * @param mark
 	 * @returns {string}
 	 * @constructor
 	 */
-	ItemDiv: (el)=> {
+	ItemAssetDiv: (el)=> {
 
+		if (!el || el['item'] == undefined) {
+			return '';
+		}
 		let item = el['item'],
 			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'],
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
@@ -385,6 +493,64 @@ let Kits = {
 		return 	`<div class="item-asset${(el['missing'] ? ' is-missing' : '')}">
 					<img class="asset-image" src="${url}" alt="${item['name']}" /><br>
 					${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${ (item['inStock'] ? item['inStock'] : '-' ) }</strong>
+				</div>`;
+	},
+	
+	/**
+	 * Create a div-row for multible kits of a set
+	 *
+	 * @param el
+	 * @returns {string}
+	 * @constructor
+	 */
+	ItemKitDiv: (el)=> {
+
+		if (!el || el['item'] == undefined) {
+			return '';
+		}
+		let item = el['item'],
+			aName = el['missing'] ? item : item['itemAssetName'],
+			url,
+			url_fragment = '';
+
+		if (aName.includes('fragment')) {
+			aName = aName.replace('fragment#', '');
+			url = MainParser.InnoCDN + 'assets/shared/icons/icon_fragment.png';
+			url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}" />`;
+		}
+
+		url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+
+		if (aName.includes('building_')) {
+			if (!item['item']) {
+				if (aName == "building_road_to_victory") {
+					aName = "D_MultiAge_Battlegrounds2";
+				}
+				else if (aName == "building_iridescent_garden") {
+					aName = "D_MultiAge_Battlegrounds4";
+				}
+				else if (aName == "building_shrine_of_knowledge") {
+					aName = "R_MultiAge_EasterBonus5";
+				}
+				else if (aName == "building_wishing_well") {
+					aName = "L_AllAge_EasterBonus1";
+				}
+				else {
+					return '';
+				}
+			}
+			else {
+				aName = item['item']['reward']['assembledReward']['subType'];
+			}
+			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+		}
+
+		return 	`<div class="item-kits${(el['missing'] ? ' is-missing' : '')}">
+					<div class="kits-image-container">
+						<img class="kits-image" src="${url}" alt="${item['name']}" />
+						${url_fragment}
+					</div><br>
+					${(!el['missing'] ? item['name'] : url_fragment ? i18n('Boxes.Kits.Fragment') : i18n('Boxes.Kits.SelectionKit'))}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${(item['inStock'] ? item['inStock'] : '-') + (url_fragment && item['item'] ? '/' + item['item']['reward']['requiredAmount'] : '')}</strong>
 				</div>`;
 	},
 
@@ -399,16 +565,25 @@ let Kits = {
 		let Ret = [];
 		for (let i in MainParser.Inventory) {
 			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
-
-			let itemIdx = Ret.findIndex(e => e["itemAssetName"] == MainParser.Inventory[i]["itemAssetName"]);
 			
+			let itemIdx = Ret.findIndex(e => e['itemAssetName'] == MainParser.Inventory[i]['itemAssetName']);
+
+			if (MainParser.Inventory[i]['itemAssetName'] == 'icon_fragment') {
+				itemIdx = Ret.findIndex(e => e['itemAssetName'] == MainParser.Inventory[i]['item']['reward']['id']);
+			}
+
 			if (itemIdx > -1) {
-				Ret[itemIdx]["inStock"] += MainParser.Inventory[i]["inStock"];
-			} else {
+				Ret[itemIdx]['inStock'] += MainParser.Inventory[i]['inStock'];
+			} 
+			else {
 				Ret.push(Object.assign({}, MainParser.Inventory[i]));
 			}
 		}
-
+		for (let i in Ret) {
+			if (Ret[i]['itemAssetName'] == "icon_fragment") {
+				Ret[i]['itemAssetName'] = Ret[i]['item']['reward']['id'];
+			}
+		}
 		return Ret;
     },
 
@@ -419,11 +594,11 @@ let Kits = {
 	 * @constructor
 	 */
 	ToggleView: ()=> {
-		Kits.ShowMissing = !Kits.ShowMissing;
+		Kits.ShowMissing === 0 ? Kits.ShowMissing = 1 : Kits.ShowMissing === 1 ? Kits.ShowMissing = 2 : Kits.ShowMissing = 0;
 
 		$('#kitsBodyInner').html('');
 		Kits.ReadSets();
 
-		$('#kits-toggle-button').text(Kits.ShowMissing ? i18n('Boxes.Kits.ToggleButtonActive') : i18n('Boxes.Kits.ToggleButtonInActive'))
+		$('#kits-triplestate-button').text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
 	}
 };

@@ -59,7 +59,7 @@ let Infoboard = {
 
         // Der Spieler ist wieder im FoE Tab
         window.onfocus = function() {
-            Infoboard.StopTitleBlinking();
+            // Infoboard.StopTitleBlinking();
         };
     },
 
@@ -231,7 +231,7 @@ let Infoboard = {
 
         // Der Spieler hat den FoE Tab verlassen
         window.onblur = function() {
-            Infoboard.StartTitleBlinking()
+            // Infoboard.StartTitleBlinking()
         };
 
         Infoboard.PostMessage(bd);
@@ -348,10 +348,6 @@ let Infoboard = {
 
     StopTitleBlinking: ()=> {
 
-        if(!Infoboard.TitleBlinkEvent){
-            return;
-        }
-
         clearInterval(Infoboard.TitleBlinkEvent);
         document.title = Infoboard.OriginalDocumentTitle;
 
@@ -359,15 +355,13 @@ let Infoboard = {
     },
 
 
-    StartTitleBlinking: ()=> {
-        if(Infoboard.TitleBlinkEvent){
+    StartTitleBlinking: (txt)=> {
+        if(Infoboard.TitleBlinkEvent !== null){
             return;
         }
 
-        let icons = '📰 🗞️ 📋 📝 📜';
-
         Infoboard.TitleBlinkEvent = setInterval(()=> {
-            document.title = document.title === icons ? i18n('Boxes.Infobox.NewMessageArrived') : icons;
+            document.title = (document.title === Infoboard.OriginalDocumentTitle ? txt : Infoboard.OriginalDocumentTitle);
         }, 750);
     }
 };
@@ -516,9 +510,9 @@ let Info = {
             prov;
 
         if (!data['id'] || data['id'] === 0) {
-            prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']][0];
+            prov = ProvinceMap.ProvinceData()[0];
         } else {
-            prov = ProvinceMap.ProvinceData()[GildFights.MapData['map']['id']].find(o => (o['id'] === data['id']));
+            prov = ProvinceMap.ProvinceData().find(o => (o['id'] === data['id']));
         }
 
         if (data['lockedUntil'] !== undefined) {
