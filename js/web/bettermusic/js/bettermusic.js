@@ -20,12 +20,16 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.id = "betterMusic1";
         newSound.volume = 0;
         newSound.onloadedmetadata = function () {betterMusic.setEvent()}
+        //newSound.onerror = function () {betterMusic.TrackSelector()}
+        //newSound.onload = function () {betterMusic.play(this)}
         $('#musicControl-Btn').append(newSound);
         betterMusic.currentId = newSound.id;
         let newSound2 = document.createElement("audio");
         newSound2.id = "betterMusic2";
         newSound2.volume = 0;
         newSound2.onloadedmetadata = function () {betterMusic.setEvent()}
+        //newSound2.onerror = function () {betterMusic.TrackSelector()}
+        //newSound2.onload = function () {betterMusic.play(this)}
         $('#musicControl-Btn').append(newSound2);
         betterMusic.nextId = newSound2.id;
         
@@ -206,16 +210,16 @@ let betterMusic = {
         "map":{Name: "Map", TitleList: []},
     },
     PossibleTracks: {
-        "FoE_CityTrack_Vs2": {Volume:1, Name:"Stone Age - Early Middle Ages", Age:0, Agelimit: 3},
-        "foe_music_hma_to_col_1_vs2": {Volume:1, Name:"High middle Ages - Colonial Age", Age:4, Agelimit: 6},
-        "foe_music_ind_to_pro_1_vs1": {Volume:1, Name:"Industrial Age - Progressive Era", Age:7, Agelimit: 8},
-        "foe_music_tmr_to_fut": {Volume:1, Name:"Modern Era - Space Age Mars", Age:9, Agelimit: 17},
-        "foe_music_mars": {Volume:1, Name:"Space Age Mars (Colony)", Age:17, Agelimit: 17, Outpost: true},
-        "foe_music_asteroid_belt_city": {Volume:1, Name:"Space Age Asteroid Belt - Space Age Venus", Age:18, Agelimit: 19},
-        "foe_music_asteroid_belt": {Volume:1, Name:"Space Age Asteroid Belt (Colony)", Age:18, Agelimit: 18, Outpost: true},
-        "foe_music_venus": {Volume:1, Name:"Space Age Venus (Colony)", Age:19, Agelimit: 19, Outpost: true},
-        "foe_music_jupiter_moon_city": {Volume:1, Name:"Space Age Jupiter Moon", Age:20, Agelimit: 20},
-        "foe_music_jupiter_moon": {Volume:1, Name:"Space Age Jupiter Moon (Colony)", Age:20, Agelimit: 20, Outpost: true},
+        "FoE_CityTrack_Vs2": {Volume:1, Name:"Stone Age - Early Middle Ages", Age:1, Agelimit: 4},
+        "foe_music_hma_to_col_1_vs2": {Volume:1, Name:"High middle Ages - Colonial Age", Age:5, Agelimit: 7},
+        "foe_music_ind_to_pro_1_vs1": {Volume:1, Name:"Industrial Age - Progressive Era", Age:8, Agelimit: 9},
+        "foe_music_tmr_to_fut": {Volume:1, Name:"Modern Era - Space Age Mars", Age:10, Agelimit: 18},
+        "foe_music_mars": {Volume:1, Name:"Space Age Mars (Colony)", Age:18, Agelimit: 18, Outpost: true},
+        "foe_music_asteroid_belt_city": {Volume:1, Name:"Space Age Asteroid Belt - Space Age Venus", Age:19, Agelimit: 20},
+        "foe_music_asteroid_belt": {Volume:1, Name:"Space Age Asteroid Belt (Colony)", Age:19, Agelimit: 19, Outpost: true},
+        "foe_music_venus": {Volume:1, Name:"Space Age Venus (Colony)", Age:20, Agelimit: 20, Outpost: true},
+        "foe_music_jupiter_moon_city": {Volume:1, Name:"Space Age Jupiter Moon", Age:21, Agelimit: 21},
+        "foe_music_jupiter_moon": {Volume:1, Name:"Space Age Jupiter Moon (Colony)", Age:21, Agelimit: 21, Outpost: true},
         "foe_music_tavern": {Volume:.7, Name:"Tavern"},
         "foe_music_expedition": {Volume:.7, Name:"Guild Expedition"},
         "foe_music_battlegrounds": {Volume:.7, Name:"Guild Battlegrounds"},
@@ -304,30 +308,49 @@ let betterMusic = {
 
     
     playRandom: (titles = Object.keys(betterMusic.PossibleTracks)) => {
-        betterMusic.switchTrack(titles[Math.floor(titles.length * Math.random())]);
+        
+        if ((titles?.length|0) == 0 ) return;
+        
+        let title = titles[Math.floor(titles.length * Math.random())];
+        
+        betterMusic.switchTrack(title);
+        
+        
     },
 
 
     switchTrack: (newTrack, transition = betterMusic.Settings.TransitionTime) => {
-        $SoundC = $(`#${betterMusic.currentId}`);
-        $SoundN = $(`#${betterMusic.nextId}`);
-        $SoundC.animate({volume: 0}, transition);
-        $SoundN[0].volume = 0;
-        $SoundN[0].src = MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg';
-        var playPromise = $SoundN[0].play();
-        clearTimeout(betterMusic.nextEvent);
-        betterMusic.playStatus = true;
-        betterMusic.currentTitle = newTrack;
-        if (playPromise !== undefined) {
-            playPromise.then(_ => {
-                $SoundN.animate({volume: 1*betterMusic.PossibleTracks[newTrack].Volume*betterMusic.Settings.Volume}, transition);
-            })
-            .catch(error => {
-            });
+        let $SoundC = $(`#${betterMusic.currentId}`);
+        let $SoundN = $(`#${betterMusic.nextId}`);
+        
+        if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
+            $SoundC[0].loop = true;
+            betterMusic.setEvent(0);
+        } else {
+            $SoundC.animate({volume: 0}, transition);
+            $SoundN[0].volume = 0;
+            $SoundC[0].loop = false;
+            $SoundN[0].loop = false;
+            $SoundN[0].src = MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg';
+            
+            var playPromise = $SoundN[0].play();
+            clearTimeout(betterMusic.nextEvent);
+            betterMusic.playStatus = true;
+            betterMusic.currentTitle = newTrack;
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    $SoundN.animate({volume: 1*betterMusic.PossibleTracks[newTrack].Volume*betterMusic.Settings.Volume}, transition);
+                })
+                .catch(error => {
+                    betterMusic.PossibleTracks[newTrack].banned = true;
+                    betterMusic.buildlist(betterMusic.currentScene);
+                    betterMusic.TrackSelector();
+                });
+            }
+
+            [betterMusic.currentId, betterMusic.nextId] = [betterMusic.nextId, betterMusic.currentId];
         }
-
-        [betterMusic.currentId, betterMusic.nextId] = [betterMusic.nextId, betterMusic.currentId];
-
+        return;
     },
 
     pause: (e) => {
@@ -345,13 +368,12 @@ let betterMusic = {
         $('#musicControl-Btn').removeClass('musicmuted');
         
         betterMusic.playRandom(betterMusic.Scenes[betterMusic.currentScene].TitleList);    
-        //betterMusic.switchTrack("foe_music_tavern");
     },
 
-    setEvent: () => {
+    setEvent: (transition = betterMusic.Settings.TransitionTime) => {
         if (!betterMusic.playStatus) return;
         $SoundC = $(`#${betterMusic.currentId}`);
-        let timeout = Math.floor($SoundC[0].duration * 1000 - betterMusic.Settings.TransitionTime);
+        let timeout = Math.floor($SoundC[0].duration * 1000 - transition);
         if (timeout != 'NaN') {
             clearTimeout(betterMusic.nextEvent);
             betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, timeout);
@@ -444,6 +466,7 @@ let betterMusic = {
     buildlist: (scene) => {
         betterMusic.Scenes[scene].TitleList = [];
         for (title in betterMusic.Settings.Scenes[scene]) {
+            if (betterMusic.PossibleTracks[title].banned) continue;
             if (scene==="settlement" && (betterMusic.PossibleTracks[title].Settlement != Outposts?.OutpostData?.content) && (betterMusic.PossibleTracks[title].Settlement != undefined) && (!betterMusic.IgnoreSettlement)) continue;
             if (scene==="colony" && (
                 ((betterMusic.PossibleTracks[title].Agelimit < CurrentEraID || betterMusic.PossibleTracks[title].Age > CurrentEraID ) && betterMusic.Settings.Colony == 2) ||
