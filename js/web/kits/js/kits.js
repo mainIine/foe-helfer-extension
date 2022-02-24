@@ -12,15 +12,12 @@
  */
 
 /**
- * Kits Class
- *
- * @type {{ItemTd: ((function(*): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemKitDiv: ((function(*): string)|*), GetInvententoryArray: (function(): *[]), ItemAssetDiv: ((function(*): string)|*), ToggleView: Kits.ToggleView, KitsjSON: null, Inventory: null, BuildBox: Kits.BuildBox}}
+ * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, BuildBox: Kits.BuildBox}}
  */
 let Kits = {
 
 	KitsjSON: null,
 	ShowMissing: 0,
-	Inventory: null,
 
 
 	/**
@@ -91,8 +88,8 @@ let Kits = {
 				</tr>`;
 
 		// Sets durchsteppen
-		for (let set in kits)
-		{
+		for (let set in kits) {
+
 			if (!kits.hasOwnProperty(set)) {
 				break;
 			}
@@ -188,7 +185,7 @@ let Kits = {
 			}
 			// [Building has asset buildings or kits on ShowMissing(1)] or [ShowMissing(2)] ? show !
 			if (kits[set]['kit'] && Array.isArray(kits[set]['kit'])) {
-				for (let a in kits[set]['assets']) {
+				for (let a in kits[set]['kit']) {
 					if (inv.find(el => el['itemAssetName'] === kits[set]['kit'][a])) {
 						show = true;
 					}
@@ -374,7 +371,7 @@ let Kits = {
 				if (kitRow.length > 1) {
 
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
-					let rowTd = '<td colspan="4"><div class="kit-row">';
+					let rowTd = '<td colspan="4"><div class="kits-row">';
 
 					kitRow.forEach((e) => {
 						rowTd += Kits.ItemKitDiv(e);
@@ -411,14 +408,15 @@ let Kits = {
 	 */
 	ItemTd: (el)=> {
 
-		if (!el || el['item'] === undefined) {
+		if (!el || el['item'] == undefined) {
 			return '';
 		}
 
 		let item = el['item'],
 			aName,
 			td = '',
-			url;
+			url,
+			url_fragment = '';
 
 		if (el['type'] === 'first') {
 
@@ -427,18 +425,49 @@ let Kits = {
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 		}
 		else if (el['type'] === 'update' || el['type'] === 'kit') {
+
 			aName = el['missing'] ? item : item['itemAssetName'];
 
+			if (aName.includes('fragment')) {
+				aName = aName.replace('fragment#', '');
+				url = MainParser.InnoCDN + 'assets/shared/icons/icon_fragment.png';
+				url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}"/>`;
+			}
+
 			url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+
+			if (aName.includes('building_')) {
+				if (!item['item']) {
+					if (aName == "building_road_to_victory") {
+						aName = "D_MultiAge_Battlegrounds2";
+					}
+					else if (aName == "building_iridescent_garden") {
+						aName = "D_MultiAge_Battlegrounds4";
+					}
+					else if (aName == "building_shrine_of_knowledge") {
+						aName = "R_MultiAge_EasterBonus5";
+					}
+					else if (aName == "building_wishing_well") {
+						aName = "L_AllAge_EasterBonus1";
+					}
+					else {
+						return '';
+					}
+				}
+				else {
+					aName = item['item']['reward']['assembledReward']['subType'];
+				}
+				url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+			}
 		}
 
 		if (el['missing']) {
-			td += `<td class="text-center is-missing"><img class="kits-image" src="${url}" alt="${item['name']}" /></td>`;
-			td += `<td class="is-missing">${el['type'] === 'first' ? item['name'] : el['type'] === 'kit' ? i18n('Boxes.Kits.SelectionKit') : i18n('Boxes.Kits.UpgradeKit')}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
+			td += `<td class="text-center is-missing"><div class="kits-image-container"><img class="kits-image" src="${url}" alt="${item['name']}"/>${url_fragment}</div></td>`;
+			td += `<td class="is-missing">${el['type'] === 'first' ? item['name'] : el['type'] === 'update' ? i18n('Boxes.Kits.UpgradeKit') : el['type'] === 'kit' ? i18n('Boxes.Kits.SelectionKit') : i18n('Boxes.Kits.Fragment')}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
 		} 
 		else {
-			td += `<td class="text-center"><img class="kits-image" src="${url}" alt="${item['name']}" /></td>`;
-			td += `<td>${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${item['inStock']}</strong></td>`;
+			td += `<td class="text-center"><div class="kits-image-container"><img class="kits-image" src="${url}" alt="${item['name']}"/>${url_fragment}</div></td>`;
+			td += `<td>${item['name']}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${item['inStock'] + (url_fragment ? '/' + item['item']['reward']['requiredAmount'] : '')}</strong></td>`;
 		}
 
 		return td;
@@ -453,8 +482,8 @@ let Kits = {
 	 * @constructor
 	 */
 	ItemAssetDiv: (el)=> {
-		
-		if (!el || el['item'] === undefined) {
+
+		if (!el || el['item'] == undefined) {
 			return '';
 		}
 		let item = el['item'],
@@ -475,17 +504,53 @@ let Kits = {
 	 * @constructor
 	 */
 	ItemKitDiv: (el)=> {
-		
-		if (!el || el['item'] === undefined) {
+
+		if (!el || el['item'] == undefined) {
 			return '';
 		}
 		let item = el['item'],
 			aName = el['missing'] ? item : item['itemAssetName'],
-			url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+			url,
+			url_fragment = '';
 
-		return 	`<div class="item-asset${(el['missing'] ? ' is-missing' : '')}">
-					<img class="asset-image" src="${url}" alt="${(el['missing'] ? i18n('Boxes.Kits.SelectionKit') : item['name'])}" /><br>
-					${(el['missing'] ? i18n('Boxes.Kits.SelectionKit') : item['name'])}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${ (item['inStock'] ? item['inStock'] : '-' ) }</strong>
+		if (aName.includes('fragment')) {
+			aName = aName.replace('fragment#', '');
+			url = MainParser.InnoCDN + 'assets/shared/icons/icon_fragment.png';
+			url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}" />`;
+		}
+
+		url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+
+		if (aName.includes('building_')) {
+			if (!item['item']) {
+				if (aName == "building_road_to_victory") {
+					aName = "D_MultiAge_Battlegrounds2";
+				}
+				else if (aName == "building_iridescent_garden") {
+					aName = "D_MultiAge_Battlegrounds4";
+				}
+				else if (aName == "building_shrine_of_knowledge") {
+					aName = "R_MultiAge_EasterBonus5";
+				}
+				else if (aName == "building_wishing_well") {
+					aName = "L_AllAge_EasterBonus1";
+				}
+				else {
+					return '';
+				}
+			}
+			else {
+				aName = item['item']['reward']['assembledReward']['subType'];
+			}
+			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+		}
+
+		return 	`<div class="item-kits${(el['missing'] ? ' is-missing' : '')}">
+					<div class="kits-image-container">
+						<img class="kits-image" src="${url}" alt="${item['name']}" />
+						${url_fragment}
+					</div><br>
+					${(!el['missing'] ? item['name'] : url_fragment ? i18n('Boxes.Kits.Fragment') : i18n('Boxes.Kits.SelectionKit'))}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${(item['inStock'] ? item['inStock'] : '-') + (url_fragment && item['item'] ? '/' + item['item']['reward']['requiredAmount'] : '')}</strong>
 				</div>`;
 	},
 
@@ -500,17 +565,25 @@ let Kits = {
 		let Ret = [];
 		for (let i in MainParser.Inventory) {
 			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
-
-			let itemIdx = Ret.findIndex(e => e["itemAssetName"] === MainParser.Inventory[i]["itemAssetName"]);
 			
+			let itemIdx = Ret.findIndex(e => e['itemAssetName'] == MainParser.Inventory[i]['itemAssetName']);
+
+			if (MainParser.Inventory[i]['itemAssetName'] == 'icon_fragment') {
+				itemIdx = Ret.findIndex(e => e['itemAssetName'] == MainParser.Inventory[i]['item']['reward']['id']);
+			}
+
 			if (itemIdx > -1) {
-				Ret[itemIdx]["inStock"] += MainParser.Inventory[i]["inStock"];
+				Ret[itemIdx]['inStock'] += MainParser.Inventory[i]['inStock'];
 			} 
 			else {
 				Ret.push(Object.assign({}, MainParser.Inventory[i]));
 			}
 		}
-
+		for (let i in Ret) {
+			if (Ret[i]['itemAssetName'] == "icon_fragment") {
+				Ret[i]['itemAssetName'] = Ret[i]['item']['reward']['id'];
+			}
+		}
 		return Ret;
     },
 
