@@ -526,6 +526,16 @@ p {
 	background-image: url('../images/menu/castle.png');
 }
 
+[id$=music-Btn] span {
+	background-image: url('../images/menu/music.png');
+}
+[id$=musicControl-Btn] span {
+	background-image: url('../images/menu/musicplay.png');
+}
+[id$=musicControl-Btn].musicmuted span {
+	background-image: url('../images/menu/musicmute.png');
+}
+
 .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;
