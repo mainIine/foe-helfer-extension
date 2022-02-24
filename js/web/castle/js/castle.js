@@ -474,7 +474,7 @@ let Castle = {
                 rtype = 'negotiation';
             }
 
-            nextlevel = Castle.curlevel && Castle.curlevel < d.level;
+            nextlevel = Castle.curLevel && Castle.curlLevel < d.level;
 
             Castle.curLevel = d.level !== undefined ? d.level : Castle.curLevel;
             Castle.NextWinningBattlesPoints = n.castlePointsWinBattle !== undefined ? n.castlePointsWinBattle : Castle.NextWinningBattlesPoints;
@@ -639,7 +639,7 @@ let Castle = {
             reward: cp.success ? cp.points : 0,
             maxreward: cp.points ? cp.points : '?',
             warning: cpwarn,
-            warnnotice: HTML.i18nTooltip(i18n("Boxes.Castle.VisitCastleWarning")),
+            warnnotice: HTML.i18nTooltip(i18n('Boxes.Castle.VisitCastleWarning')),
             success: cp.success,
             date: startOfDay
         });
@@ -741,7 +741,7 @@ let Castle = {
                 reward: glsr,
                 maxreward: Castle.MaxGexLastOfSections,
                 warning: Castle.curGexLastOfSection === undefined,
-                warnnotice: HTML.i18nTooltip(i18n("Boxes.Castle.VisitGexWarning")),
+                warnnotice: HTML.i18nTooltip(i18n('Boxes.Castle.VisitGexWarning')),
                 success: glsp >= Castle.GexLastOfSectionsIds.length,
                 date: startOfDay
             });

@@ -15,10 +15,10 @@
 	top: 30%;
 	right: 15%;
 	width: 490px;
+	height: 450px;
 }
 
 #UnitOverview .window-body {
-	max-height: 450px;
 	overflow-x: hidden;
 	overflow-y: auto;
 }

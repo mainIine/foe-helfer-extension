@@ -34,7 +34,7 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
 });
 
 /**
- * @type {{MaxEntries: number, DebugWebSocket: boolean, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: (function(*, *=): undefined), Box: (function(): (boolean|undefined)), History: [], Init: Infoboard.Init, InjectionLoaded: boolean, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: (function(*=, *=): undefined), PlayInfoSound: boolean}}
+ * @type {{MaxEntries: number, DebugWebSocket: boolean, OriginalDocumentTitle: string, TitleBlinkEvent: null, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: Infoboard.HandleMessage, Box: ((function(): (boolean|undefined))|*), History: *[], StartTitleBlinking: Infoboard.StartTitleBlinking, Init: Infoboard.Init, InjectionLoaded: boolean, StopTitleBlinking: Infoboard.StopTitleBlinking, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: Infoboard.PostMessage, PlayInfoSound: boolean}}
  */
 let Infoboard = {
 
@@ -46,7 +46,8 @@ let Infoboard = {
     DebugWebSocket: false,
     History: [],
     MaxEntries: 0,
-
+    OriginalDocumentTitle: document.title,
+    TitleBlinkEvent: null,
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
@@ -55,6 +56,11 @@ let Infoboard = {
         FoEproxy.addRawWsHandler(data => {
             Infoboard.HandleMessage('in', data);
         });
+
+        // Der Spieler ist wieder im FoE Tab
+        window.onfocus = function() {
+            // Infoboard.StopTitleBlinking();
+        };
     },
 
 
@@ -173,7 +179,7 @@ let Infoboard = {
             Infoboard.PostMessage(element,false);
         }
 
-        $('#BackgroundInfo').on('click', '#infoboxTone', function () {
+        div.on('click', '#infoboxTone', function () {
 
             let disabled = $(this).hasClass('deactivated');
 
@@ -223,11 +229,17 @@ let Infoboard = {
             return;
         }
 
+        // Der Spieler hat den FoE Tab verlassen
+        window.onblur = function() {
+            // Infoboard.StartTitleBlinking()
+        };
+
         Infoboard.PostMessage(bd);
     },
 
 
-    PostMessage: (bd,add = true) => {
+    PostMessage: (bd, add = true) => {
+        if (!bd['date']) bd['date'] = new Date();
 
         if ($('#BackgroundInfo').length > 0)
         {
@@ -270,7 +282,7 @@ let Infoboard = {
 
             tr.append(
                 '<td></td>' +
-                '<td>' + type + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + type + '<br><small><em>' + moment(bd['date']).format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
 
@@ -331,6 +343,26 @@ let Infoboard = {
             $('#BackgroundInfoTable tbody').html('');
             Infoboard.History = [];
         });
+    },
+
+
+    StopTitleBlinking: ()=> {
+
+        clearInterval(Infoboard.TitleBlinkEvent);
+        document.title = Infoboard.OriginalDocumentTitle;
+
+        Infoboard.TitleBlinkEvent = null;
+    },
+
+
+    StartTitleBlinking: (txt)=> {
+        if(Infoboard.TitleBlinkEvent !== null){
+            return;
+        }
+
+        Infoboard.TitleBlinkEvent = setInterval(()=> {
+            document.title = (document.title === Infoboard.OriginalDocumentTitle ? txt : Infoboard.OriginalDocumentTitle);
+        }, 750);
     }
 };
 
@@ -338,7 +370,7 @@ let Infoboard = {
 let Info = {
 
     /**
-     * Cache zum "merken" der kampfenden Gilden
+     * Cache zum "merken" der kämpfenden Gilden
      */
     GildPoints: {},
 
@@ -477,10 +509,10 @@ let Info = {
         let bP = GildFights.MapData['battlegroundParticipants'],
             prov;
 
-        if (data['id'] === 0) {
-            prov = GildFights.ProvinceNames[0]['provinces'][0];
+        if (!data['id'] || data['id'] === 0) {
+            prov = ProvinceMap.ProvinceData()[0];
         } else {
-            prov = GildFights.ProvinceNames[0]['provinces'].find(o => (o['id'] === data['id']));
+            prov = ProvinceMap.ProvinceData().find(o => (o['id'] === data['id']));
         }
 
         if (data['lockedUntil'] !== undefined) {
@@ -514,6 +546,7 @@ let Info = {
 
         // Es wird gerade gekämpft
         let color = GildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
+
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
                 break;
@@ -536,18 +569,22 @@ let Info = {
                     ts = colors['shadow'], ss = color['shadow'];
 
                 t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
-            } else {
+            }
+            else {
                 let tc = colors['highlight'],
                     ts = colors['shadow'];
 
                 t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
 
             }
+
             if (image) {
                 image = 'gbg-undefined';
-            } else {
+            }
+            else {
                 image = 'gbg-' + colors['cid'];
             }
+
             if (Info.GildPoints[data['id']] === undefined) {
                 Info.GildPoints[data['id']] = {};
             }
@@ -590,21 +627,19 @@ let Info = {
 
         let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
 
-        let data = {
+        return {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.LevelUp'), {
-                player: PlayerLink,
-                building: d['great_building_name'],
-                level: d['level'],
-                rank: d['rank'],
-                fps: newFP !== -1 ? newFP : '???'
-            }
+                    player: PlayerLink,
+                    building: d['great_building_name'],
+                    level: d['level'],
+                    rank: d['rank'],
+                    fps: newFP !== -1 ? newFP : '???'
+                }
             )
         };
-
-        return data;
     },
 
 

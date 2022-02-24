@@ -1,5 +1,101 @@
 ## Changelog - Extension
 
+##### 2.6.0.1
+
+**Update**
+- Scout Info:
+	- With a MouseOver the age in which a province is open is displayed
+
+**BugFix**
+- Scout Info:
+	- [#2326](https://github.com/mainIine/foe-helfer-extension/issues/2326) [#2327](https://github.com/mainIine/foe-helfer-extension/issues/2327) With some players the game could crash completely
+
+- Outposts:
+	- the run-count and the 4x bonus were not processed correctly for the endless runs
+
+---
+
+##### 2.6.0.0
+
+**New**
+- St. Pattrick [#2309](https://github.com/mainIine/foe-helfer-extension/issues/2309):
+	- Calculates the hourly production rates for each of the stations, and highlights the bottleneck
+	- Calculates the amount of clovers needed to bring a building to the next threshold, and gives a time estimate for producing the needed amount at the current production rate
+	- names the next 6 tasks to be done
+	- gives a time estimate for the "next city" based on the current production rate
+
+- Scout Info [#2311](https://github.com/mainIine/foe-helfer-extension/issues/2311):
+	- Added an info box for the scout. When the map is opened (regardless of which map the scout is currently on), it provides information about
+		- Provinces that are ready to be taken (green)
+		- cost and scouting time for provinces that can be scouted at the moment
+		- time remaining for current scouting
+
+**Update**
+- Investment overview:
+	- [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Added links to player profile on scoredb.io.
+
+- FP collections:
+	- Formatting for larger values integrated
+
+- Events:
+	- [#2314](https://github.com/mainIine/foe-helfer-extension/issues/2314) hidden rewards now show relics and shards from the Flying Island
+
+- City overview:
+	- [#2231](https://github.com/mainIine/foe-helfer-extension/issues/2294) [#2294](https://github.com/mainIine/foe-helfer-extension/issues/2310) color legend integrated - thanks to [stebach](https://github.com/stebach)
+	- [#2312](https://github.com/mainIine/foe-helfer-extension/issues/2312) Search field for finding buildings integrated
+	- [#2313](https://github.com/mainIine/foe-helfer-extension/issues/2313) When highlighting old buildings, they are now categorized in 4 different colors
+
+- Kits:
+	- [#2308](https://github.com/mainIine/foe-helfer-extension/issues/2308) Revised and reorganized, shows all parts of a kit + link to wiki - thanks to [oesi03](https://github.com/oesi03)
+
+- Stats module:
+	- [#2315](https://github.com/mainIine/foe-helfer-extension/issues/2315) Delta chart is now a bar chart
+
+- Guild overview:
+	- [#2316](https://github.com/mainIine/foe-helfer-extension/issues/2316) additional number of guild members in the guild estates
+
+- Outposts:
+	- [#2317](https://github.com/mainIine/foe-helfer-extension/issues/2317) goods overview now provides a cost estimate that shows the x4 bonus in a mouseover
+
+**BugFix**
+- Guild members overview:
+	- [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Fixed incorrect level value when exporting guild buildings.
+
+- Infobox:
+	- [#2241](https://github.com/mainIine/foe-helfer-extension/issues/2241) Timestamp was assigned differently when reopening the box
+	- [#2238](https://github.com/mainIine/foe-helfer-extension/issues/2238) No progress indicator for the X1X sector
+
+- Production overview:
+	- [#2276](https://github.com/mainIine/foe-helfer-extension/issues/2276) [#2282](https://github.com/mainIine/foe-helfer-extension/issues/2282) Unmotivated buildings are no longer displayed in the production overview
+
+- Map of continents:
+	- [#2273](https://github.com/mainIine/foe-helfer-extension/issues/2273) [#2274](https://github.com/mainIine/foe-helfer-extension/issues/2274) Continental map overview shows all provinces as conquered
+	
+---
+
+##### 2.5.10.2
+
+**BugFix**
+- Guild members overview:
+	- [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Fixed incorrect level value on guild building export.
+
+**Update**
+- Investment overview:
+	- [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links added to the player profile on scoredb.io
+
+- FP collections:
+	- Formatting for larger values integrated
+
+---
+
+##### 2.5.10.1
+
+**Update**
+- Guild Battles:
+- [#2230](https://github.com/mainIine/foe-helfer-extension/issues/2230) New provinces added
+
+---
+
 ##### 2.5.10.0
 
 **New**
