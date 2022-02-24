@@ -134,7 +134,11 @@ let Outposts = {
 		const buildings = Outposts.CityMap ? Outposts.CityMap.entities : [];
 		const plannedTiles = Outposts.PlannedTiles[OutpostData.content] || {};
 
-		const currentRun = OutpostData.playthroughs.find(run => !run.isCompleted);
+		const currentRun = {
+			id: OutpostData.completedPlaythroughs,
+			productionBonusProbability: OutpostData.completedPlaythroughs < OutpostData.playthroughs.length ? OutpostData.playthroughs[OutpostData.completedPlaythroughs].productionBonusProbability : OutpostData.playthroughs[OutpostData.playthroughs.length-1].productionBonusProbability,
+		}
+
 
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		/** @type {{name: string, diplomacy: number}[]}} */
@@ -516,7 +520,12 @@ let Outposts = {
 
 		for (let resourceID of resourceIDs) {
 			let difference = currStock[resourceID] - sums[resourceID];
-			t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + '">' + HTML.Format(difference) + '</td>');
+			let difference2 = null;
+			if (currentRun) {
+				difference2 = (resourceID !== goodProductionResourceId) ? Math.floor((difference)/(1 + 3*currentRun.productionBonusProbability)) : currStock[resourceID] - Math.floor((sums[resourceID])/(1 + 3*currentRun.productionBonusProbability));
+			}
+			t.push('<td class="text-center text-' + (difference < 0 ? 'danger' : 'success') + ((resourceID !== 'diplomacy' && difference < 0 && difference2 != null) ? '" title="' + HTML.Format(difference2) + " " + i18n('Boxes.Outpost.including4x'): '') + '">' + HTML.Format(difference) + '</td>');
+			
 		}
 
 		t.push('</tr>');

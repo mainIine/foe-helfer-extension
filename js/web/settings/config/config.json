@@ -169,12 +169,6 @@
 		"sort": 9
 	},
 	{
-		"name": "DrivePermission",
-		"calback": "DrivePermissions",
-		"group": "Extension",
-		"sort": 1
-	},
-	{
 		"name": "About",
 		"callback": "About",
 		"group": "About",

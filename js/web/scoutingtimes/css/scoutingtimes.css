@@ -22,6 +22,20 @@
     width: 450px;
 }
 
-.scouted {
+#mapScoutingTimesDialogBody tr.scouted {
     background-color:var(--background-table-success);
 }
+
+#mapScoutingTimesDialogBody td.scouting {
+
+    animation-name: scouting;
+    animation-duration: 6s;
+    padding-left:5px;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes scouting {
+    0% {padding-left:5px;}
+    50% {padding-left:50px;}
+    100% {padding-left:5px;}
+  }
