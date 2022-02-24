@@ -58,4 +58,12 @@
   text-align: center;
   margin: 0 auto;
 }
+#betterMusicDialogBody table.musicSettings td {
+  padding: 5px;
+  text-align: left;
+  width: 33%;
+}
+#betterMusicDialogBody table.musicSettings td:first-child {
+  text-align: right;
+}
 
