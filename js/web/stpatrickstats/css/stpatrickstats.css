@@ -14,8 +14,8 @@
 #stPatrickDialog {
 	top: 50px;
 	left: calc(100vw - 350px);
-	width: fit-content;
-	height: fit-content;
+	width: 280px;
+    height: auto;
 }
 
 #stPatrickDialog img {
