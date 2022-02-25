@@ -1,0 +1,69 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+
+#betterMusicDialog {
+  top: 50px;
+  left: calc(100vw - 350px);
+}
+
+#betterMusicDialogBody {
+  width: auto;
+  max-height: 800px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  font-size: 100%;
+  overflow-y: scroll;
+}
+
+.betterMusicSelected {
+  background-color: var(--background-table-success);
+}
+.betterMusicNotSelected {
+  background-color: var(--background-table-error);
+}
+
+#musicSettingsScenesX tr th:first-child {
+  writing-mode: horizontal-tb;
+  vertical-align: bottom;
+  text-align: left;
+}
+
+#musicSettingsScenesX tr th {
+  writing-mode:vertical-lr;
+  text-align: right;
+}
+
+#betterMusicDialogBody table caption{
+  font-weight: bold;
+  font-size: large;
+}
+
+#betterMusicDialogBody table {
+  padding-top: 10px;
+}
+
+#betterMusicDialogBody table.musicSettings {
+  text-align: center;
+  margin: 0 auto;
+}
+#betterMusicDialogBody table.musicSettings td {
+  padding: 5px;
+  text-align: left;
+  width: 33%;
+}
+#betterMusicDialogBody table.musicSettings td:first-child {
+  text-align: right;
+}
+

@@ -1,17 +1,75 @@
 ## Changelog - Extension
 
-##### 2.5.10.2
+##### 2.6.0.1
+
+**Update**
+- Scout-Info:
+  - Mit einem MouseOver wird das Zeitalter, in dem eine Provinz offen, ist angezeigt
 
 **BugFix**
-- Gildenmitglieder Übersicht:
-	- [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Falscher Levelwert beim Export von Gildengebäuden behoben.
+- Scout-Info:
+  - [#2326](https://github.com/mainIine/foe-helfer-extension/issues/2326) [#2327](https://github.com/mainIine/foe-helfer-extension/issues/2327) Bei manchen Spielern konnte das Spiel komplett abstürzen
+  
+- Außenposten:
+  - die Durchlauf-zahl und der 4x Bonus wurden für die Endlos-Durchläufe nicht korrekt bearbeitet
+
+---
+
+##### 2.6.0.0
+
+**Neu**
+- St. Pattrick [#2309](https://github.com/mainIine/foe-helfer-extension/issues/2309):
+  - berechnet die stündlichen Produktionsraten für jede der Stationen und hebt den Flaschenhals hervor 
+  - berechnet die benötigte Menge an Kleeblättern, um ein Gebäude auf den nächsten Schwellenwert zu bringen, und gibt eine Zeitschätzung für die Herstellung der benötigten Menge bei der aktuellen Produktionsrate an 
+  - nennt die nächsten 6 anstehenden Aufgaben 
+  - gibt eine Zeitschätzung für die "nächste Stadt" auf der Grundlage der aktuellen Produktion an
+
+- Scout-Info [#2311](https://github.com/mainIine/foe-helfer-extension/issues/2311):
+	- Es wurde eine Info-Box für den Späher hinzugefügt. Beim Öffnen der Karte (unabhängig davon, auf welcher Karte sich der Späher gerade befindet), gibt sie Informationen über
+        - Provinzen, die bereit sind, eingenommen zu werden (grün)
+        - Kosten und Aufklärungszeit für Provinzen, die gerade ausgekundschaftet werden können 
+        - verbleibende Zeit für die aktuelle Aufklärungsarbeit
 
 **Update**
 - Investitionsübersicht:
     - [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links zum Spielerprofil auf scoredb.io hinzugefügt.
 
 - FP-Einsammlungen:
-	- Formatierung für größere Werte integriert
+    - Formatierung für größere Werte integriert
+
+- Ereignisse:
+    - [#2314](https://github.com/mainIine/foe-helfer-extension/issues/2314) versteckte Belohnungen zeigen jetzt Relikte und Scherben der Fliegenden Insel an
+
+- Stadtübersicht:
+    - [#2231](https://github.com/mainIine/foe-helfer-extension/issues/2294) [#2294](https://github.com/mainIine/foe-helfer-extension/issues/2310) Farbliche Legende integriert - Danke an [stebach](https://github.com/stebach)
+    - [#2312](https://github.com/mainIine/foe-helfer-extension/issues/2312) Suchfeld für das finden von Gebäuden integriert
+    - [#2313](https://github.com/mainIine/foe-helfer-extension/issues/2313) Wenn alte Gebäude hervorgehoben werden, werden sie nun in 4 verschiedenen Farben kategorisiert
+
+- Kits:
+    - [#2308](https://github.com/mainIine/foe-helfer-extension/issues/2308) Überarbeitet und neu organisiert, zeigt alle Teile eines Sets an + Link zum Wiki - Danke an [oesi03](https://github.com/oesi03)
+
+- Statistikmodul:
+    - [#2315](https://github.com/mainIine/foe-helfer-extension/issues/2315) Delta-Diagramm ist jetzt ein Säulendiagramm
+
+- Gildenübersicht:
+    - [#2316](https://github.com/mainIine/foe-helfer-extension/issues/2316) zusätzliche Anzahl von Gildenmitgliedern in den Gildengütern
+
+- Außenposten:
+	- [#2317](https://github.com/mainIine/foe-helfer-extension/issues/2317) Die Güterübersicht liefert nun einen Kostenvoranschlag, der den x4 Bonus in einem Mouseover darstellt
+
+**BugFix**
+- Gildenmitglieder Übersicht:
+    - [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Falscher Levelwert beim Export von Gildengebäuden behoben.
+
+- Infobox:
+  - [#2241](https://github.com/mainIine/foe-helfer-extension/issues/2241) Der Zeitstempel wurde beim erneuten öffnen der Box anders vergeben
+  - [#2238](https://github.com/mainIine/foe-helfer-extension/issues/2238) Keine Fortschritsanzeige für den X1X Sektor
+
+- Produktionsübersicht: 
+  - [#2276](https://github.com/mainIine/foe-helfer-extension/issues/2276) [#2282](https://github.com/mainIine/foe-helfer-extension/issues/2282) Nicht motivierte Gebäude werden in der Produktionsübersicht nicht mehr angezeigt
+
+- Karte der Kontinente:
+  - [#2273](https://github.com/mainIine/foe-helfer-extension/issues/2273) [#2274](https://github.com/mainIine/foe-helfer-extension/issues/2274) Kontinentale Kartenübersicht zeigt alle Provinzen als erobert an
 
 ---
 

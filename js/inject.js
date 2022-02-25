@@ -223,6 +223,7 @@
 				'inventory-tracker',
 				'treasury',
 				'market',
+				'marketoffers',
 				'bluegalaxy',
 				'eventhandler',
 				'fp-collector',
@@ -235,7 +236,8 @@
 				'closebox',
 				'castle',
 				'stpatrickstats',
-				'scoutingtimes'
+				'scoutingtimes',
+				'bettermusic'
 			];
 
 			// load scripts (one after the other)

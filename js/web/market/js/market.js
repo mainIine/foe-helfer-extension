@@ -58,7 +58,9 @@ let Market = {
     TradeDisadvantage: false,
 
 	OfferSelect: null,
-	NeedSelect: null,
+    NeedSelect: null,
+
+    ScrollPositions: [],
 
 
 	/**
@@ -83,6 +85,8 @@ let Market = {
 
             $('#Market').on('click', '.custom-option', function(){
                 let func = $(this).closest('.custom-options').data('function');
+
+                Market.ScrollPositions[func] = $(this).closest('.custom-options').scrollTop();
 
                 Market[`${func}Select`] = $(this).text().trim();
 
@@ -330,11 +334,11 @@ let Market = {
                     CurrentPos = (Trade['merchant']['is_self'] ? OwnPos : Pos);
 
                 h.push('<tr>');
-                h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['offer']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[Trade['offer']['good_id']]['name'] + '</strong></td>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[OfferGoodID]['id'] +'"></span></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[OfferGoodID]['name'] + '</strong></td>');
                 h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Trade['offer']['value'] + '</strong></td>');
-                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[Trade['need']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[Trade['need']['good_id']]['name'] + '</strong></td>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[NeedGoodID]['id'] +'"></span></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
                 h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Trade['need']['value'] + '</strong></td>');
                 h.push('<td class="text-center">' + HTML.Format(MainParser.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
@@ -355,7 +359,14 @@ let Market = {
         h.push('</table>');
 
 		$('#MarketBody').html(h.join('')).promise().done(function(){
-			HTML.Dropdown();
+            HTML.Dropdown();
+
+            $('#Market').find('.custom-options').each(function () {
+                let func = $(this).data('function');
+                let ScrollPos = Market.ScrollPositions[func];
+                if (ScrollPos) $(this).scrollTop(ScrollPos);
+            });
+
 		});
 
         $('.td-tooltip').tooltip({

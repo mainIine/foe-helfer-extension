@@ -42,494 +42,494 @@ Dexie.delete('foe_helper_alerts_database');
 // xhr listener: antique dealer (get the auction timer)
 
 const BattlegroundSectorNames = {
-    "volcano_archipelago": {
-        0: {
-            "title": "A1:M",
-            "name": "Mati Tudokk"
-        },
-        1: {
-            "title": "B1:O",
-            "name": "Ofrus Remyr"
-        },
-        2: {
-            "title": "C1:N",
-            "name": "Niali Diath"
-        },
-        3: {
-            "title": "D1:B",
-            "name": "Brurat Andgiry"
-        },
-        4: {
-            "title": "A2:S",
-            "name": "Sladisk Icro"
-        },
-        5: {
-            "title": "A2:T",
-            "name": "Tevomospa"
-        },
-        6: {
-            "title": "B2:S",
-            "name": "Subeblic"
-        },
-        7: {
-            "title": "B2:T",
-            "name": "Taspac"
-        },
-        8: {
-            "title": "C2:S",
-            "name": "Shadsterning"
-        },
-        9: {
-            "title": "C2:T",
-            "name": "Tayencoria"
-        },
-        10: {
-            "title": "D2:S",
-            "name": "Slandmonii"
-        },
-        11: {
-            "title": "D2:T",
-            "name": "Tachmazer"
-        },
-        12: {
-            "title": "A3:V",
-            "name": "Vobolize"
-        },
-        13: {
-            "title": "A3:X",
-            "name": "Xemga"
-        },
-        14: {
-            "title": "A3:Y",
-            "name": "Yelili"
-        },
-        15: {
-            "title": "A3:Z",
-            "name": "Zamva"
-        },
-        16: {
-            "title": "B3:V",
-            "name": "Vishrain"
-        },
-        17: {
-            "title": "B3:X",
-            "name": "Xidorpupo"
-        },
-        18: {
-            "title": "B3:Y",
-            "name": "Yepadlic"
-        },
-        19: {
-            "title": "B3:Z",
-            "name": "Zilsier"
-        },
-        20: {
-            "title": "C3:V",
-            "name": "Vilipne"
-        },
-        21: {
-            "title": "C3:X",
-            "name": "Xistan"
-        },
-        22: {
-            "title": "C3:Y",
-            "name": "Yeraim"
-        },
-        23: {
-            "title": "C3:Z",
-            "name": "Zeaslo"
-        },
-        24: {
-            "title": "D3:V",
-            "name": "Verdebu"
-        },
-        25: {
-            "title": "D3:X",
-            "name": "Xiwait"
-        },
-        26: {
-            "title": "D3:Y",
-            "name": "Yerat"
-        },
-        27: {
-            "title": "D3:Z",
-            "name": "Zilgypt"
-        },
-        28: {
-            "title": "A4:A",
-            "name": "A"
-        },
-        29: {
-            "title": "A4:B",
-            "name": "Bangma Mynia"
-        },
-        30: {
-            "title": "A4:C",
-            "name": "Cuatishca"
-        },
-        31: {
-            "title": "A4:D",
-            "name": "Dilandmoor"
-        },
-        32: {
-            "title": "A4:E",
-            "name": "Eda Monwe"
-        },
-        33: {
-            "title": "A4:F",
-            "name": "Frimoandbada"
-        },
-        34: {
-            "title": "A4:G",
-            "name": "Gosolastan"
-        },
-        35: {
-            "title": "A4:H",
-            "name": "Hasaint"
-        },
-        36: {
-            "title": "B4:A",
-            "name": "Aguime"
-        },
-        37: {
-            "title": "B4:B",
-            "name": "Bliclatan"
-        },
-        38: {
-            "title": "B4:C",
-            "name": "Capepesk"
-        },
-        39: {
-            "title": "B4:D",
-            "name": "Dalomstates"
-        },
-        40: {
-            "title": "B4:E",
-            "name": "Engthio"
-        },
-        41: {
-            "title": "B4:F",
-            "name": "Fradistaro"
-        },
-        42: {
-            "title": "B4:G",
-            "name": "Goima"
-        },
-        43: {
-            "title": "B4:H",
-            "name": "Hranreka"
-        },
-        44: {
-            "title": "C4:A",
-            "name": "A"
-        },
-        45: {
-            "title": "C4:B",
-            "name": "Bangne Casau"
-        },
-        46: {
-            "title": "C4:C",
-            "name": "Cagalpo"
-        },
-        47: {
-            "title": "C4:D",
-            "name": "Denwana"
-        },
-        48: {
-            "title": "C4:E",
-            "name": "Eastkiabumi"
-        },
-        49: {
-            "title": "C4:F",
-            "name": "Francedian"
-        },
-        50: {
-            "title": "C4:G",
-            "name": "Guayla"
-        },
-        51: {
-            "title": "C4:H",
-            "name": "Hoguay"
-        },
-        52: {
-            "title": "D4:A",
-            "name": "Arasruhana"
-        },
-        53: {
-            "title": "D4:B",
-            "name": "Basainti"
-        },
-        54: {
-            "title": "D4:C",
-            "name": "Camehermenle"
-        },
-        55: {
-            "title": "D4:D",
-            "name": "Dabiala"
-        },
-        56: {
-            "title": "D4:E",
-            "name": "Enggreboka"
-        },
-        57: {
-            "title": "D4:F",
-            "name": "Finnited"
-        },
-        58: {
-            "title": "D4:G",
-            "name": "Guayre Bhugera"
-        },
-        59: {
-            "title": "D4:H",
-            "name": "Honbo"
-        }
-    },
-    "waterfall_archipelago": {
-        0: {
-            "title": "X1X",
-            "name": "Mati Tudokk"
-        },
-        1: {
-            "title": "A2A",
-            "name": "Ofrus Remyr"
-        },
-        2: {
-            "title": "B2A",
-            "name": "Niali Diath"
-        },
-        3: {
-            "title": "C2A",
-            "name": "Brurat Andgiry"
-        },
-        4: {
-            "title": "D2A",
-            "name": "Sladisk Icro"
-        },
-        5: {
-            "title": "E2A",
-            "name": "Tevomospa"
-        },
-        6: {
-            "title": "F2A",
-            "name": "Subeblic"
-        },
-        7: {
-            "title": "A3A",
-            "name": "Taspac"
-        },
-        8: {
-            "title": "A3B",
-            "name": "Shadsterning"
-        },
-        9: {
-            "title": "B3A",
-            "name": "Tayencoria"
-        },
-        10: {
-            "title": "B3B",
-            "name": "Slandmonii"
-        },
-        11: {
-            "title": "C3A",
-            "name": "Tachmazer"
-        },
-        12: {
-            "title": "C3B",
-            "name": "Vobolize"
-        },
-        13: {
-            "title": "D3A",
-            "name": "Xemga"
-        },
-        14: {
-            "title": "D3B",
-            "name": "Yelili"
-        },
-        15: {
-            "title": "E3A",
-            "name": "Zamva"
-        },
-        16: {
-            "title": "E3B",
-            "name": "Vishrain"
-        },
-        17: {
-            "title": "F3A",
-            "name": "Xidorpupo"
-        },
-        18: {
-            "title": "F3B",
-            "name": "Yepadlic"
-        },
-        19: {
-            "title": "A4A",
-            "name": "Zilsier"
-        },
-        20: {
-            "title": "A4B",
-            "name": "Vilipne"
-        },
-        21: {
-            "title": "A4C",
-            "name": "Xistan"
-        },
-        22: {
-            "title": "B4A",
-            "name": "Yeraim"
-        },
-        23: {
-            "title": "B4B",
-            "name": "Zeaslo"
-        },
-        24: {
-            "title": "B4C",
-            "name": "Verdebu"
-        },
-        25: {
-            "title": "C4A",
-            "name": "Xiwait"
-        },
-        26: {
-            "title": "C4B",
-            "name": "Yerat"
-        },
-        27: {
-            "title": "C4C",
-            "name": "Zilgypt"
-        },
-        28: {
-            "title": "D4A",
-            "name": "A"
-        },
-        29: {
-            "title": "D4B",
-            "name": "Bangma Mynia"
-        },
-        30: {
-            "title": "D4C",
-            "name": "Cuatishca"
-        },
-        31: {
-            "title": "E4A",
-            "name": "Dilandmoor"
-        },
-        32: {
-            "title": "E4B",
-            "name": "Eda Monwe"
-        },
-        33: {
-            "title": "E4C",
-            "name": "Frimoandbada"
-        },
-        34: {
-            "title": "F4A",
-            "name": "Gosolastan"
-        },
-        35: {
-            "title": "F4B",
-            "name": "Hasaint"
-        },
-        36: {
-            "title": "F4C",
-            "name": "Aguime"
-        },
-        37: {
-            "title": "A5A",
-            "name": "Bliclatan"
-        },
-        38: {
-            "title": "A5B",
-            "name": "Capepesk"
-        },
-        39: {
-            "title": "A5C",
-            "name": "Dalomstates"
-        },
-        40: {
-            "title": "A5D",
-            "name": "Engthio"
-        },
-        41: {
-            "title": "B5A",
-            "name": "Fradistaro"
-        },
-        42: {
-            "title": "B5B",
-            "name": "Goima"
-        },
-        43: {
-            "title": "B5C",
-            "name": "Hranreka"
-        },
-        44: {
-            "title": "B5D",
-            "name": "A"
-        },
-        45: {
-            "title": "C5A",
-            "name": "Bangne Casau"
-        },
-        46: {
-            "title": "C5B",
-            "name": "Cagalpo"
-        },
-        47: {
-            "title": "C5C",
-            "name": "Denwana"
-        },
-        48: {
-            "title": "C5D",
-            "name": "Eastkiabumi"
-        },
-        49: {
-            "title": "D5A",
-            "name": "Francedian"
-        },
-        50: {
-            "title": "D5B",
-            "name": "Guayla"
-        },
-        51: {
-            "title": "D5C",
-            "name": "Hoguay"
-        },
-        52: {
-            "title": "D5D",
-            "name": "Arasruhana"
-        },
-        53: {
-            "title": "E5A",
-            "name": "Basainti"
-        },
-        54: {
-            "title": "E5B",
-            "name": "Camehermenle"
-        },
-        55: {
-            "title": "E5C",
-            "name": "Dabiala"
-        },
-        56: {
-            "title": "E5D",
-            "name": "Enggreboka"
-        },
-        57: {
-            "title": "F5A",
-            "name": "Finnited"
-        },
-        58: {
-            "title": "F5B",
-            "name": "Guayre Bhugera"
-        },
-        59: {
-            "title": "F5C",
-            "name": "Honbo"
-        },
-        60: {
-            "title": "F5D",
-            "name": ""
-        }
-    }
+	"volcano_archipelago": {
+		0: {
+			"title": "A1:M",
+			"name": "Mati Tudokk"
+		},
+		1: {
+			"title": "B1:O",
+			"name": "Ofrus Remyr"
+		},
+		2: {
+			"title": "C1:N",
+			"name": "Niali Diath"
+		},
+		3: {
+			"title": "D1:B",
+			"name": "Brurat Andgiry"
+		},
+		4: {
+			"title": "A2:S",
+			"name": "Sladisk Icro"
+		},
+		5: {
+			"title": "A2:T",
+			"name": "Tevomospa"
+		},
+		6: {
+			"title": "B2:S",
+			"name": "Subeblic"
+		},
+		7: {
+			"title": "B2:T",
+			"name": "Taspac"
+		},
+		8: {
+			"title": "C2:S",
+			"name": "Shadsterning"
+		},
+		9: {
+			"title": "C2:T",
+			"name": "Tayencoria"
+		},
+		10: {
+			"title": "D2:S",
+			"name": "Slandmonii"
+		},
+		11: {
+			"title": "D2:T",
+			"name": "Tachmazer"
+		},
+		12: {
+			"title": "A3:V",
+			"name": "Vobolize"
+		},
+		13: {
+			"title": "A3:X",
+			"name": "Xemga"
+		},
+		14: {
+			"title": "A3:Y",
+			"name": "Yelili"
+		},
+		15: {
+			"title": "A3:Z",
+			"name": "Zamva"
+		},
+		16: {
+			"title": "B3:V",
+			"name": "Vishrain"
+		},
+		17: {
+			"title": "B3:X",
+			"name": "Xidorpupo"
+		},
+		18: {
+			"title": "B3:Y",
+			"name": "Yepadlic"
+		},
+		19: {
+			"title": "B3:Z",
+			"name": "Zilsier"
+		},
+		20: {
+			"title": "C3:V",
+			"name": "Vilipne"
+		},
+		21: {
+			"title": "C3:X",
+			"name": "Xistan"
+		},
+		22: {
+			"title": "C3:Y",
+			"name": "Yeraim"
+		},
+		23: {
+			"title": "C3:Z",
+			"name": "Zeaslo"
+		},
+		24: {
+			"title": "D3:V",
+			"name": "Verdebu"
+		},
+		25: {
+			"title": "D3:X",
+			"name": "Xiwait"
+		},
+		26: {
+			"title": "D3:Y",
+			"name": "Yerat"
+		},
+		27: {
+			"title": "D3:Z",
+			"name": "Zilgypt"
+		},
+		28: {
+			"title": "A4:A",
+			"name": "A"
+		},
+		29: {
+			"title": "A4:B",
+			"name": "Bangma Mynia"
+		},
+		30: {
+			"title": "A4:C",
+			"name": "Cuatishca"
+		},
+		31: {
+			"title": "A4:D",
+			"name": "Dilandmoor"
+		},
+		32: {
+			"title": "A4:E",
+			"name": "Eda Monwe"
+		},
+		33: {
+			"title": "A4:F",
+			"name": "Frimoandbada"
+		},
+		34: {
+			"title": "A4:G",
+			"name": "Gosolastan"
+		},
+		35: {
+			"title": "A4:H",
+			"name": "Hasaint"
+		},
+		36: {
+			"title": "B4:A",
+			"name": "Aguime"
+		},
+		37: {
+			"title": "B4:B",
+			"name": "Bliclatan"
+		},
+		38: {
+			"title": "B4:C",
+			"name": "Capepesk"
+		},
+		39: {
+			"title": "B4:D",
+			"name": "Dalomstates"
+		},
+		40: {
+			"title": "B4:E",
+			"name": "Engthio"
+		},
+		41: {
+			"title": "B4:F",
+			"name": "Fradistaro"
+		},
+		42: {
+			"title": "B4:G",
+			"name": "Goima"
+		},
+		43: {
+			"title": "B4:H",
+			"name": "Hranreka"
+		},
+		44: {
+			"title": "C4:A",
+			"name": "A"
+		},
+		45: {
+			"title": "C4:B",
+			"name": "Bangne Casau"
+		},
+		46: {
+			"title": "C4:C",
+			"name": "Cagalpo"
+		},
+		47: {
+			"title": "C4:D",
+			"name": "Denwana"
+		},
+		48: {
+			"title": "C4:E",
+			"name": "Eastkiabumi"
+		},
+		49: {
+			"title": "C4:F",
+			"name": "Francedian"
+		},
+		50: {
+			"title": "C4:G",
+			"name": "Guayla"
+		},
+		51: {
+			"title": "C4:H",
+			"name": "Hoguay"
+		},
+		52: {
+			"title": "D4:A",
+			"name": "Arasruhana"
+		},
+		53: {
+			"title": "D4:B",
+			"name": "Basainti"
+		},
+		54: {
+			"title": "D4:C",
+			"name": "Camehermenle"
+		},
+		55: {
+			"title": "D4:D",
+			"name": "Dabiala"
+		},
+		56: {
+			"title": "D4:E",
+			"name": "Enggreboka"
+		},
+		57: {
+			"title": "D4:F",
+			"name": "Finnited"
+		},
+		58: {
+			"title": "D4:G",
+			"name": "Guayre Bhugera"
+		},
+		59: {
+			"title": "D4:H",
+			"name": "Honbo"
+		}
+	},
+	"waterfall_archipelago": {
+		0: {
+			"title": "X1X",
+			"name": "Mati Tudokk"
+		},
+		1: {
+			"title": "A2A",
+			"name": "Ofrus Remyr"
+		},
+		2: {
+			"title": "B2A",
+			"name": "Niali Diath"
+		},
+		3: {
+			"title": "C2A",
+			"name": "Brurat Andgiry"
+		},
+		4: {
+			"title": "D2A",
+			"name": "Sladisk Icro"
+		},
+		5: {
+			"title": "E2A",
+			"name": "Tevomospa"
+		},
+		6: {
+			"title": "F2A",
+			"name": "Subeblic"
+		},
+		7: {
+			"title": "A3A",
+			"name": "Taspac"
+		},
+		8: {
+			"title": "A3B",
+			"name": "Shadsterning"
+		},
+		9: {
+			"title": "B3A",
+			"name": "Tayencoria"
+		},
+		10: {
+			"title": "B3B",
+			"name": "Slandmonii"
+		},
+		11: {
+			"title": "C3A",
+			"name": "Tachmazer"
+		},
+		12: {
+			"title": "C3B",
+			"name": "Vobolize"
+		},
+		13: {
+			"title": "D3A",
+			"name": "Xemga"
+		},
+		14: {
+			"title": "D3B",
+			"name": "Yelili"
+		},
+		15: {
+			"title": "E3A",
+			"name": "Zamva"
+		},
+		16: {
+			"title": "E3B",
+			"name": "Vishrain"
+		},
+		17: {
+			"title": "F3A",
+			"name": "Xidorpupo"
+		},
+		18: {
+			"title": "F3B",
+			"name": "Yepadlic"
+		},
+		19: {
+			"title": "A4A",
+			"name": "Zilsier"
+		},
+		20: {
+			"title": "A4B",
+			"name": "Vilipne"
+		},
+		21: {
+			"title": "A4C",
+			"name": "Xistan"
+		},
+		22: {
+			"title": "B4A",
+			"name": "Yeraim"
+		},
+		23: {
+			"title": "B4B",
+			"name": "Zeaslo"
+		},
+		24: {
+			"title": "B4C",
+			"name": "Verdebu"
+		},
+		25: {
+			"title": "C4A",
+			"name": "Xiwait"
+		},
+		26: {
+			"title": "C4B",
+			"name": "Yerat"
+		},
+		27: {
+			"title": "C4C",
+			"name": "Zilgypt"
+		},
+		28: {
+			"title": "D4A",
+			"name": "A"
+		},
+		29: {
+			"title": "D4B",
+			"name": "Bangma Mynia"
+		},
+		30: {
+			"title": "D4C",
+			"name": "Cuatishca"
+		},
+		31: {
+			"title": "E4A",
+			"name": "Dilandmoor"
+		},
+		32: {
+			"title": "E4B",
+			"name": "Eda Monwe"
+		},
+		33: {
+			"title": "E4C",
+			"name": "Frimoandbada"
+		},
+		34: {
+			"title": "F4A",
+			"name": "Gosolastan"
+		},
+		35: {
+			"title": "F4B",
+			"name": "Hasaint"
+		},
+		36: {
+			"title": "F4C",
+			"name": "Aguime"
+		},
+		37: {
+			"title": "A5A",
+			"name": "Bliclatan"
+		},
+		38: {
+			"title": "A5B",
+			"name": "Capepesk"
+		},
+		39: {
+			"title": "A5C",
+			"name": "Dalomstates"
+		},
+		40: {
+			"title": "A5D",
+			"name": "Engthio"
+		},
+		41: {
+			"title": "B5A",
+			"name": "Fradistaro"
+		},
+		42: {
+			"title": "B5B",
+			"name": "Goima"
+		},
+		43: {
+			"title": "B5C",
+			"name": "Hranreka"
+		},
+		44: {
+			"title": "B5D",
+			"name": "A"
+		},
+		45: {
+			"title": "C5A",
+			"name": "Bangne Casau"
+		},
+		46: {
+			"title": "C5B",
+			"name": "Cagalpo"
+		},
+		47: {
+			"title": "C5C",
+			"name": "Denwana"
+		},
+		48: {
+			"title": "C5D",
+			"name": "Eastkiabumi"
+		},
+		49: {
+			"title": "D5A",
+			"name": "Francedian"
+		},
+		50: {
+			"title": "D5B",
+			"name": "Guayla"
+		},
+		51: {
+			"title": "D5C",
+			"name": "Hoguay"
+		},
+		52: {
+			"title": "D5D",
+			"name": "Arasruhana"
+		},
+		53: {
+			"title": "E5A",
+			"name": "Basainti"
+		},
+		54: {
+			"title": "E5B",
+			"name": "Camehermenle"
+		},
+		55: {
+			"title": "E5C",
+			"name": "Dabiala"
+		},
+		56: {
+			"title": "E5D",
+			"name": "Enggreboka"
+		},
+		57: {
+			"title": "F5A",
+			"name": "Finnited"
+		},
+		58: {
+			"title": "F5B",
+			"name": "Guayre Bhugera"
+		},
+		59: {
+			"title": "F5C",
+			"name": "Honbo"
+		},
+		60: {
+			"title": "F5D",
+			"name": ""
+		}
+	}
 }
 
 let Alerts = function () {
@@ -699,7 +699,6 @@ let Alerts = function () {
 			return tmp.extAlerts.create(cleanData);
 		},
 		addBulk: (alerts) => {
-			let items = [];
 			/** @type {Promise<number>} */
 			let lastInsert = Promise.reject();
 			for (let i = 0; i < alerts.length; i++) {
@@ -717,8 +716,6 @@ let Alerts = function () {
 				};
 
 				lastInsert = tmp.extAlerts.create(cleanData);
-
-				items.push(cleanData);
 			}
 			return lastInsert;
 		},
@@ -757,10 +754,10 @@ let Alerts = function () {
 
 			return tmp.extAlerts.getAll()
 				.then(arr => arr.filter(
-					elem => elem.data.expires >= n
-						&& elem.data.expires <= tmp.data.options.timestamp.next
-				)
-					.map(tmp.data.flatenData)
+						elem => elem.data.expires >= n
+							&& elem.data.expires <= tmp.data.options.timestamp.next
+					)
+						.map(tmp.data.flatenData)
 				)
 				;
 		},
